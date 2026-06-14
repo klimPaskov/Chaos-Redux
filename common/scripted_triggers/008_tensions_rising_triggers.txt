@@ -1,0 +1,60 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 008 TENSIONS RISING TRIGGERS
+# ============================================================================
+# Gates and candidate checks for the Tensions Rising event. The event remains a
+# repeatable global pressure incident; these triggers prevent invalid actors,
+# terminal states, and baseline full-WT firings.
+# ============================================================================
+
+is_tensions_rising_world_tension_full = {
+	threat > constant:tensions_rising_gate.full_world_tension
+}
+
+is_tensions_rising_world_at_peace = {
+	NOT = {
+		any_country = {
+			has_war = yes
+		}
+	}
+}
+
+can_tensions_rising_baseline_fire = {
+	NOT = { is_tensions_rising_world_tension_full = yes }
+}
+
+is_tensions_rising_valid_diplomatic_country = {
+	exists = yes
+	is_subject = no
+	NOT = { has_capitulated = yes }
+	NOT = { original_tag = ZZZ }
+	NOT = { is_zombie_outbreak_country = yes }
+}
+
+is_tensions_rising_priority_relation_actor = {
+	is_tensions_rising_valid_diplomatic_country = yes
+	OR = {
+		is_major = yes
+		is_faction_leader = yes
+	}
+}
+
+is_tensions_rising_relation_target_for_prev = {
+	is_tensions_rising_valid_diplomatic_country = yes
+	NOT = { tag = PREV }
+	NOT = { has_war_with = PREV }
+	NOT = { is_subject_of = PREV }
+	OR = {
+		check_variable = { tensions_rising_stage > constant:tensions_rising_event_log.stage_2 }
+		NOT = { is_in_faction_with = PREV }
+	}
+}
+
+is_tensions_rising_ai_posture_candidate = {
+	is_tensions_rising_valid_diplomatic_country = yes
+	is_ai = yes
+	OR = {
+		is_major = yes
+		is_faction_leader = yes
+		has_war = yes
+	}
+}

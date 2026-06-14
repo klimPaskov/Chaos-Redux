@@ -1,8 +1,16 @@
-# Event 008 Achievement DDS Handoff
+# Event 008 Asset GFX Handoff
 
-These achievement icons are ready for the standard HOI4 custom-achievement pipeline under `gfx/achievements/`.
+The Event 008 report, news, super-event, and achievement assets are ready for their HOI4 GFX surfaces.
 
 The icons are registered in `interface/chaosx_achievements.gfx` using the repo achievement sprite pattern `GFX_achievement_<achievement_id>`.
+
+## Event and super-event images
+
+| Asset | Final DDS | Sprite alias | GFX file | Status |
+| --- | --- | --- | --- | --- |
+| Report image | `gfx/event_pictures/report_event_tensions_rising.dds` | `GFX_report_event_tensions_rising` | `interface/008_tensions_rising_event_images.gfx` | `complete` |
+| News image | `gfx/event_pictures/news_event_tensions_red_line.dds` | `GFX_news_event_tensions_red_line` | `interface/008_tensions_rising_event_images.gfx` | `complete` |
+| Super-event image | `gfx/super_events/super_event_tensions_red_line.dds` | `GFX_super_event_tensions_red_line` | `interface/chaosx_super_events.gfx` | `complete` |
 
 ## Completed DDS triplets
 
