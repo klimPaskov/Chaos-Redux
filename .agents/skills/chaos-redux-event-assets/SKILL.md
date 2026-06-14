@@ -470,6 +470,7 @@ For World War II-era subjects, prefer contemporary photographs, war corresponden
 Use:
 
 - realistic or period-authentic source imagery
+- black-and-white treatment with sepia applied
 - World War II-era visual fit when the event belongs to that era
 - period-appropriate framing where possible
 - strong subject clarity
@@ -484,11 +485,33 @@ Target size:
 210x176
 ```
 
-Use colour unless the event spec asks otherwise.
+Report event images must be black and white with sepia applied. Do not leave report event images in full colour unless the user explicitly requests a colour exception, and record that exception in the manifest.
 
-Generated report images must still be post-processed into the report-event house style. Use Photoshop when available for crop, tonal control, texture, contrast, dust/grain, edge treatment, and final review.
+### Report-event card treatment
 
-If Photoshop is unavailable, record that explicitly in the manifest and handoff. Do not hide the substitution. only use local image-processing tools when the parent prompt allows a non-Photoshop fallback.
+Report-event images use a finished `210x176` RGBA canvas. The source photograph is processed as a slightly tilted documentary card with transparent edge space and a soft drop shadow. The transparent corners are part of the style.
+
+Do not ask `$imagegen` to create the tilted card. Generate or source the documentary photograph first, then apply the card treatment locally. This keeps the tilt, shadow, and margins consistent.
+
+```bash
+python tools/process_report_event_image.py source.png processed_report_event.png
+python tools/process_report_event_image.py source_folder processed_folder
+```
+
+The script performs cover crop, black-and-white conversion, sepia application, grain, paper border, deterministic tilt, transparent canvas margin, and soft shadow. It writes RGBA PNG output. Convert the processed PNG to DDS through the normal repo workflow.
+
+Validation:
+
+- processed PNG is exactly `210x176`
+- final DDS is exactly `210x176`
+- corner pixels are transparent
+- no hard photo pixels are clipped
+- tilt is visible but subtle
+- shadow is soft and not a thick border
+- edge space is transparent, not black padding
+- source remains readable after crop, tilt, shadow, and DDS conversion
+
+Generated report images must still receive this local report-card treatment.
 
 ## 14. News event images
 

@@ -620,7 +620,7 @@ Good clutter-control patterns:
 - emergency decisions visible only during emergency states
 - late-game decisions hidden until the route payoff is reached
 
-For large targeted decision families, prefer a separate target-management category over dumping every target row into the main mechanic category. Use a compact `Show Decisions for [FROM.GetName]` / `Hide Decisions for [FROM.GetName]` flow when the human player only needs to inspect or act on one target at a time.
+For large targeted decision families, prefer a separate target-management category over dumping every target row into the main mechanic category. Use a compact `Show Decisions for [FROM.GetName]` / `Hide Decisions for [FROM.GetName]` flow when the human player only needs to inspect or act on one target at a time. AI should still see all decisions at once.
 
 The reusable selected-target pattern is:
 

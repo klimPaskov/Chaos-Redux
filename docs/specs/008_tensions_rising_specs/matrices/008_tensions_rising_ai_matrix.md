@@ -38,8 +38,8 @@ The final implementation can use existing AI strategy files or direct decision w
 | Existing hostile decisions | no direct change | small positive | high positive | very high positive | valid targets only |
 | War declaration | no direct change | no direct forced war | no forced war | no forced war | war goals and normal AI checks still required |
 | Rearmament / mobilization | no direct change | medium | high | very high | no free units from Event 8 |
-| Secret alliance systems | no direct change | medium if Event 11 exists | high if valid | high if valid | must respect Event 11 requirements |
-| Random War / war cluster pressure | no direct change | low indirect | medium indirect | high indirect | Event 4 remains owned by its own system |
+| Secret-diplomacy systems | no direct change | medium if an approved existing hook exists | high if valid | high if valid | must respect the owning event requirements |
+| War-adjacent systems | no direct change | low indirect | medium indirect | high indirect | through approved existing tension or AI posture hooks |
 
 ## AI weights by world condition
 

@@ -26,10 +26,9 @@ Treat every event as a contract across some or all of these surfaces:
 - random-event classification and registration
 - auto-fire or runtime hooks
 - shared scripted effects, scripted triggers, and script constants
-- event-name and debug-name mappings
-- event log names, actor mapping, event-details content, and evolution views
+- event logs, actor mapping, event-details content, and evolution views
 - super-event image, localisation, and audio wiring
-- decisions, ideas, AI, characters, unit templates, or special-country handling
+- decisions, ideas, AI, characters, unit templates, and more
 - `docs/events/` documentation and spreadsheet
 
 If a task seems to need custom one-off plumbing, first check whether the same behavior should become generic for future events.
@@ -50,9 +49,37 @@ Subagents do not remove the main agent's responsibility to wire, review, validat
 
 ## Spec and plan locations
 
-Source event specs now live under `docs/specs/<event_id>_<event_slug>_specs/`. Implementation should read those files as the main design source when they exist.
+Source event specs live under `docs/specs/<event_id>_<event_slug>_specs/`. Implementation should read those files as the main design source when they exist.
 
-Subagent plans, expansion addenda, audit follow-up notes, blocked reports, and implementation handoffs live under `docs/plans/<event_id>_<event_slug>_plans/`. Plans are working documents. If a plan becomes accepted source design, merge it into the relevant spec or report that it remains queued.
+Subagent plans, expansion addenda, audit follow-up notes, and implementation handoffs live under `docs/plans/<event_id>_<event_slug>_plans/`. Plans are working documents. If a plan becomes accepted source design, merge it into the relevant spec.
+
+## Spec fidelity and implementation quality
+
+When implementing from `docs/specs/`, treat mapped content as acceptance criteria. Do not silently replace mapped mechanics, routes, countries, decisions, achievements, assets, or super-events with smaller fallback versions. If something must be merged, renamed, skipped, or simplified, report it in the completion notes with the reason and affected files.
+
+Use dynamic factors for pressure, cooldowns, progress, chance, support, duration, costs, AI willingness, spawn strength, aid amounts, stage movement, and recognition when the spec calls for a living system. Flat values are allowed only as constants, caps, floors, or deliberate tuning anchors. Centralize shared values in script constants or documented tuning.
+
+Do not implement major decisions, missions, focus rewards, GUI buttons, or event responses as political power or command power purchases by default. Use concrete costs and requirements from the spec when relevant: XP, equipment, manpower, fuel, trains, convoys, supply, stability, war support, local support, held states, unit presence, foreign access, intelligence exposure, or time pressure. Tooltips must explain blocked nonstandard requirements.
+
+When the spec maps focus paths, implement a real tree, not a thin vertical chain. Preserve route locks, side branches, convergence points, hidden branches, crisis branches, AI weights, focus filters, varied icons, and branch payoffs. Rewards should vary across buildings, units, decisions, missions, advisors, identities, claims, cores, diplomacy, technologies, and mechanic changes. Do not fill trees with repeated new ideas, tiny modifiers, political power, stability, or war support.
+
+When implementing starting or route ideas, wire their lifecycle. Negative, mixed, staged, or route-specific ideas should be removed, upgraded, replaced, worsened, or consumed by the mapped decisions, focuses, missions, wars, failures, or reforms. Avoid dead idea stacks that never change.
+
+Mechanic variables must be visible somewhere meaningful, such as decision category text, scripted localisation, national spirit tooltip, scripted GUI, progress meter, or focus tooltip. Keep cause and effect readable. Values should be changed by the mapped decisions, focuses, missions, events, wars, state control, AI actions, and foreign influence. Use consistent localisation colours for important mechanic values and breakdowns.
+
+Large decision systems must hide obsolete or irrelevant actions. Use phases, active caps, target pools, route locks, thresholds, emergency visibility, regional grouping, cooldowns, or cleanup flags. The category should show current playable actions, not every possible debug action.
+
+If the spec defines achievements, implement the full achievement surface: tracking flags or variables, unlock triggers, disqualifiers, localisation, icons, docs, and any route or formable hooks. Do not convert hard achievements into automatic unlocks.
+
+Before completion, check every visible asset named or implied by the spec: flags, ideology flags, cosmetic flags, leaders, portraits, focus icons, decision icons, ideas, achievements, faction emblems, report or news images, super-event images, UI sprites, animated sprites, and static fallbacks. Do not claim completion while required visible assets are placeholders unless the completion report says so clearly.
+
+Do not generate real historical leaders, historical flags, or well-attested real symbols as fictional art. Source them, document source and license status when possible, and convert them to the required HOI4 format. Generated art is for fictional, symbolic, alternate, supernatural, or invented identities unless the user says otherwise.
+
+Any new, released, restored, transformed, or event-managed country that is expected to fight needs starting forces and a reinforcement pathway. Implement dynamic starting units, templates, equipment and manpower assumptions, commander or officer handling when relevant, and later unit growth through decisions, focuses, depots, objectives, volunteers, foreign support, mobilisation, or special mechanics. Do not leave a serious fighting country as an empty tag unless the spec says so and explains why.
+
+Major events and country-creation events need route-specific AI. Implement focus choices, decision choices, unit-raising choices, faction behavior, foreign influence behavior, rare variant handling, high-chaos exceptions, invalid-route blocking, and fallback behavior when preferred content becomes impossible.
+
+Do not reduce major spec effects to tiny decorative modifiers. Important effects must change incentives, unlock content, move visible mechanic values, alter army or economy behavior, create a real tradeoff, or connect to later outcomes. Small modifiers are fine as support, not as the whole payoff.
 
 ## Parent and subagent implementation ownership
 
@@ -62,7 +89,7 @@ Small subagent patches are allowed when they improve a specific surface without 
 
 The parent still owns final integration, docs, spreadsheets, event chain direction, completion claims, and any broad mechanic expansion. If a subagent sees a needed route family, new country package, new formable suite, new scripted GUI system, new event chain, or major balance redesign, it writes a plan under `docs/plans/<event_id>_<event_slug>_plans/` and stops.
 
-Every subagent edit must produce a handoff under `docs/plans/<event_id>_<event_slug>_plans/subagent_handoffs/` when the event id and slug are known. The handoff lists changed files, identifiers, behavior before and after, meaningful validation, skipped task-specific validation, remaining gaps, and follow-up work for the parent.
+Every subagent edit must produce a handoff under `docs/plans/<event_id>_<event_slug>_plans/subagent_handoffs/` when the event id and slug are known. The handoff lists changed files, identifiers, behavior before and after, meaningful validation, remaining gaps, and follow-up work for the parent.
 
 ## Event anatomy
 
@@ -268,17 +295,7 @@ Frequently-needed companion files:
 - `common/ideas/*.txt`
 - `common/ai_strategy/*.txt`
 - `common/ai_templates/*.txt`
-- and possibly more. Some events truly can touch all systems.
-
-If the event creates or manages non-standard countries, account for that in shared classification triggers. Any event-created or event-managed chaos country must be registered in `is_special_chaos_country` in `common/scripted_triggers/chaosx_dynamic_triggers.txt` and documented in `common/scripted_triggers/chaosx_dynamic_triggers.md`. If that chaos country is actually nonhuman rather than merely unusual, supernatural, extremist, or scenario-specific, also register it in `is_actual_nonhuman_country` and update the same documentation. Do not create event-specific duplicate classifiers such as `is_<event>_chaos_enemy`, `is_<event>_special_country`, or per-event nonhuman triggers when the shared triggers can express the category. Events interact with each other, so systems that usually affect normal countries, such as black plague, mass panic, civilian migration, or ideology spread, should exclude zombie, alien, and other nonhuman countries through the shared triggers instead of one-off checks.
-
-When an event can create a normal tag that may also already exist from vanilla, another mod, or prior campaign state, track whether the event actually created it before loading a runtime focus tree. A good pattern is to set a country flag immediately after `release = TAG` and have the focus-tree loader check that flag before `load_focus_tree`. Existing tags with their own meaningful trees should get crisis ideas, decisions, events, or additive branch integration, not a blind replacement tree.
-
-When adding additive crisis integration for an already-existing country, make each branch decision call the same shared systems used by event-created countries where possible: volunteer package helpers for manpower/equipment, patron-rivalry helpers for foreign influence, regional-faction goal helpers for bloc behavior, and League helpers for defensive coordination. Gate each one-shot branch with a clear trigger flag so it cannot duplicate rewards.
-
-When auditing event-created country packages, verify the whole playable-country surface, not only the release effect. Check country files, history files, tag registration, base localisation, ideology-specific cosmetic localisation (`TAG_democratic`, `TAG_communism`, `TAG_fascism`, `TAG_neutrality` plus `_DEF` and `_ADJ`), flags, decision/focus/idea icons, focus loading, AI strategy, docs, and manifests together. Count actual `focus = { id = TAG_* }` blocks rather than the focus-tree id to avoid including the focus-tree header as a focus. For existing-country variants, verify the event-created flag is set only on the release path and every `load_focus_tree` path is gated by that flag.
-
-Country-specific or tag-specific events must have a reusable valid-target trigger before they enter selection or manual firing. If the required country does not exist, the event should show `N/A` in the event list and must not queue a delayed event against the missing tag. For example, the Holy Realm checks for Tibet first, then Bhutan or Nepal only if Tibet is gone.
+- and possibly more. Some events can truly touch all systems.
 
 ### 3. Register the event in the random-event system
 
@@ -311,8 +328,6 @@ When a decision, focus, or event option grants a one-time package through a shar
 When a decision fires a follow-up popup whose options need computed state from the decision, do not put those state variables in the decision's generic cleanup helper. Keep only immediate aid/cost variables in the cleanup helper, preserve the popup option state as scoped country variables, and clear that option state from each event option after it is consumed.
 
 When a contest, rivalry, charter, or settlement event is meant to change later behavior, have each option set a persistent outcome flag and route future decisions/events through a small aftermath helper that reads those flags. Prefer this event-driven persistence over daily/weekly polling, and document which later action consumes the flags.
-
-When a focus capstone should form or enter a system that also has a paid decision path, split the system effect into a no-cost core helper and a paid decision wrapper. Decisions pay costs and call the core helper. focus rewards call the core helper only after checking the same eligibility trigger, so focus integration does not secretly charge political power.
 
 When custom or special tags can qualify for multiple named systems through broad eligibility triggers, route focus hooks by explicit tag groups before calling the shared helper. Do not let a broad first-match order decide which faction/system the tag joins. encode the intended mapping in the hook and let already-joined members use a maintenance/strengthening effect instead of creating a second membership.
 
@@ -354,6 +369,8 @@ Required detail-view plumbing:
 
 Do not hardcode one-off GUI behavior if it should be reusable by later events.
 
+When it's impossible for an event to fire due to conditions (the actor country doesn't exist, prerequisite not fulfilled, etc), always show `N/A` in the event list in place of a `0` for the weight.
+
 ### 6. Event cluster integration
 
 Event clusters are a catalogue layer above normal random events. The Clusters tab must show every registered cluster, while History shows only clusters that actually fired.
@@ -391,6 +408,13 @@ Member attributes are parallel arrays in `load_event_cluster_members`:
 
 To change a member's behavior, edit those attributes together. Do not reorder one array without the others.
 
+Member severity uses four values:
+
+- Low
+- Medium
+- High
+- Severe
+
 Cluster firing rules:
 
 - Automatic cluster firing happens from `try_fire_event_cluster_for_selected_event` after a member event is selected.
@@ -410,7 +434,7 @@ Known sensitive fields:
 
 For those fields, use a file-scoped `@NAME = literal` constant in the same script file and pass `days = @NAME`. Keep the value mirrored with the matching `common/script_constants/` tuning entry, and update both in the same change.
 
-Do not work around this by setting a temp variable and passing `days = temp_name`. those fields can reject variable tokens too.
+Do not work around this by setting a temp variable and passing `days = temp_name`. those fields can reject variable tokens too. In which case, a `meta_effect` must be used if possible.
 
 ### 8. Super-event integration
 
@@ -511,6 +535,7 @@ Rules:
 
 - use the `xlsx` skill
 - write for players, not script readers
+- don't put effects into descriptions
 - focus on what happens in play
 - keep the `Details` field aligned with the event-details window description
 - keep evolution and world-end columns aligned with the real chain structure
@@ -548,6 +573,16 @@ Rules:
 Preferred deck path:
 
 - `docs/presentations/chaos_redux_events.pptx`
+
+### Extra rules to follow
+
+Event Details text must never display mechanical effects. The Event Details window, spreadsheet `Details` field, and player-facing detail summaries should describe the situation and premise, not list rewards, penalties, modifiers, variable changes, or script effects. If an event is meant to apply gameplay effects immediately regardless of which option the player chooses, place the real effects in the event `immediate` block inside a `hidden_effect`. The option should not reapply those effects. The option may show the immediate result only through a custom tooltip for cosmetic clarity, so the player sees the consequence without turning Event Details into an effects list.
+
+If the event creates or manages non-standard countries, account for that in shared classification triggers. Any event-created or event-managed chaos country must be registered in `is_special_chaos_country` in `common/scripted_triggers/chaosx_dynamic_triggers.txt` and documented in `common/scripted_triggers/chaosx_dynamic_triggers.md`. If that chaos country is actually nonhuman rather than merely unusual, supernatural, extremist, or scenario-specific, also register it in `is_actual_nonhuman_country` and update the same documentation. Do not create event-specific duplicate classifiers such as `is_<event>_chaos_enemy`, `is_<event>_special_country`, or per-event nonhuman triggers when the shared triggers can express the category. Events interact with each other, so systems that usually affect normal countries, such as black plague, mass panic, civilian migration, or ideology spread, should exclude zombie, alien, and other nonhuman countries through the shared triggers instead of one-off checks.
+
+When an event can create a normal tag that may also already exist from vanilla, another mod, or prior campaign state, track whether the event actually created it before loading a runtime focus tree. A good pattern is to set a country flag immediately after `release = TAG` and have the focus-tree loader check that flag before `load_focus_tree`. Existing tags with their own meaningful trees should get crisis ideas, decisions, events, or additive branch integration, not a blind replacement tree.
+
+When auditing event-created country packages, verify the whole playable-country surface, not only the release effect. Check country files, history files, tag registration, base localisation, ideology-specific cosmetic localisation (`TAG_democratic`, `TAG_communism`, `TAG_fascism`, `TAG_neutrality` plus `_DEF` and `_ADJ`), flags, decision/focus/idea icons, focus loading, AI strategy, docs, and manifests together. For existing-country variants, verify the event-created flag is set only on the release path and every `load_focus_tree` path is gated by that flag.
 
 ## Formable nations as event surfaces
 
@@ -639,3 +674,8 @@ Before closing an event task, verify:
 12. `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is updated.
 13. If assets are required, `chaos-redux-event-assets` has been used.
 14. Generated assets are resized, converted to DDS 32 bit unsigned BGRB 8.8.8.8, moved into the correct folders, wired in `.gfx`, and recorded in an asset manifest.
+15. Spec-mapped mechanics, routes, countries, decisions, achievements, assets, and super-events are implemented or clearly reported as blocked, merged, renamed, skipped, or simplified.
+16. Dynamic values, concrete costs, mechanic visibility, decision category filtering, and effect strength are checked where the spec calls for them.
+17. Focus trees preserve route structure, focus filters, varied rewards, idea lifecycles, route-specific AI, and visible branch payoffs where relevant.
+18. New fighting countries have dynamic starting forces, template assumptions, equipment and manpower handling, and reinforcement pathways.
+19. Achievement tracking, historical source mode, full asset coverage, animated fallbacks, and placeholder status are checked where relevant.
