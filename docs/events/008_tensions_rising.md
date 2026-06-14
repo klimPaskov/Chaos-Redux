@@ -8,8 +8,8 @@ Event 008 Tensions Rising is a minor repeatable diplomatic-pressure event. In ca
 2. `tensions_rising_prepare_random_event_fire` blocks only the calm-world baseline if world tension is already full. Evolved stages can still fire at full world tension.
 3. The main popup keeps its description to flavour text. The dynamic mechanical summary appears on the option tooltip, and the actual scripted effect runs inside that option's hidden effect block.
 4. `get_tensions_rising_stage` maps the current Chaos Meter tier to Stage I-IV. Calm world stays at baseline stage `0`.
-5. Baseline firings add `+10` world tension and update the global highest-world-tension tracker.
-6. Evolved firings record the current Diplomatic Fever milestone if it has not already been logged, add the staged world-tension and chaos packet, apply the temporary timer pulse, select timed relation-shock pairs, apply AI posture ideas, schedule one delayed report, update achievement tracking, and trigger the Stage IV super-event if it has not already appeared.
+5. Baseline firings distribute `+10` world tension across existing non-placeholder countries and update the global highest-world-tension tracker.
+6. Evolved firings record the current Diplomatic Fever milestone if it has not already been logged, distribute the staged world-tension packet, add the staged chaos packet, apply the temporary timer pulse, select timed relation-shock pairs, apply AI posture ideas, schedule one delayed report, update achievement tracking, and trigger the Stage IV super-event if it has not already appeared.
 
 ## Stage Values
 
@@ -21,7 +21,7 @@ Event 008 Tensions Rising is a minor repeatable diplomatic-pressure event. In ca
 | Stage III | Chaos Tier | `+50` | `+25` | heavy relation pressure and Thin Wire tracking |
 | Stage IV | Totalen Chaos | `+100` | `+50` | strongest pressure and first-fire super-event |
 
-The world tension trigger uses HOI4's documented `0-1` `threat` scale. The full-tension gate is centralized as `constant:tensions_rising_gate.full_world_tension`.
+The world tension trigger uses HOI4's documented `0-1` `threat` scale. The full-tension gate is centralized as `constant:tensions_rising_gate.full_world_tension`. World-tension packets are distributed through `apply_tensions_rising_distributed_world_tension`; each selected existing non-placeholder country receives an equal named-threat slice. The recipient count is capped only when an all-country split would fall below `0.1` world-tension percentage points.
 
 ## Timer Pulse
 
