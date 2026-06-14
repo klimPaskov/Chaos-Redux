@@ -1,37 +1,214 @@
 add_namespace = chaosx.nr8
 
 ##############################################################################################################
-#    ##    ## ########      #######
-#    ###   ## ##     ##    ##     ##
-#    ####  ## ##     ##    ##     ##
-#    ## ## ## ########      #######
-#    ##  #### ##   ##      ##     ##
-#    ##   ### ##    ##     ##     ##
-#    ##    ## ##     ##     #######
+# CHAOS REDUX - EVENT 008: TENSIONS RISING
 ##############################################################################################################
-#   #     #                                #######
-#   #  #  #  ####  #####  #      #####        #    ###### #    #  ####  #  ####  #    #
-#   #  #  # #    # #    # #      #    #       #    #      ##   # #      # #    # ##   #
-#   #  #  # #    # #    # #      #    #       #    #####  # #  #  ####  # #    # # #  #
-#   #  #  # #    # #####  #      #    #       #    #      #  # #      # # #    # #  # #
-#   #  #  # #    # #   #  #      #    #       #    #      #   ## #    # # #    # #   ##
-#    ## ##   ####  #    # ###### #####        #    ###### #    #  ####  #  ####  #    #
-
+# Repeatable global diplomatic-pressure event. Calm firings only add world
+# tension below the full-WT cap; evolved Diplomatic Fever stages can fire at
+# full world tension and add direct chaos, timer pressure, relation shocks,
+# delayed reports, AI posture pressure, achievement state, and a one-time
+# non-terminal Stage IV super-event.
 ##############################################################################################################
 
 country_event = {
-    id = chaosx.nr8.1
-    title = chaosx.nr8.1.t
-    desc = chaosx.nr8.1.d
-    picture = GFX_report_event_ger_civil_war
+	id = chaosx.nr8.1
+	title = chaosx.nr8.1.t
+	desc = chaosx.nr8.1.d
+	picture = GFX_report_event_tensions_rising
 
-    is_triggered_only = yes
+	is_triggered_only = yes
 
-    immediate = {
-        add_threat = 5
-    }
+	immediate = {
+		apply_tensions_rising_event_effect = yes
+	}
 
-    option = {
-        name = chaosx.nr8.1.a
-    }
+	option = {
+		name = chaosx.nr8.1.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr8.2
+	title = chaosx.nr8.2.t
+	desc = chaosx.nr8.2.d
+	picture = GFX_report_event_tensions_rising
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr8.report.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr8.3
+	title = chaosx.nr8.3.t
+	desc = chaosx.nr8.3.d
+	picture = GFX_report_event_tensions_rising
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr8.report.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr8.4
+	title = chaosx.nr8.4.t
+	desc = chaosx.nr8.4.d
+	picture = GFX_report_event_tensions_rising
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr8.report.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr8.5
+	title = chaosx.nr8.5.t
+	desc = chaosx.nr8.5.d
+	picture = GFX_report_event_tensions_rising
+
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				is_ai = no
+				has_war = no
+				has_equipment = { convoy_1 > constant:tensions_rising_achievement.insurance_convoy_threshold }
+			}
+			set_country_flag = achievement_tensions_insurance_market_ready
+		}
+	}
+
+	option = {
+		name = chaosx.nr8.report.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr8.6
+	title = chaosx.nr8.6.t
+	desc = chaosx.nr8.6.d
+	picture = GFX_report_event_tensions_rising
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr8.report.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr8.7
+	title = chaosx.nr8.7.t
+	desc = chaosx.nr8.7.d
+	picture = GFX_report_event_tensions_rising
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr8.report.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr8.8
+	title = chaosx.nr8.8.t
+	desc = chaosx.nr8.8.d
+	picture = GFX_report_event_tensions_rising
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr8.report.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr8.9
+	title = chaosx.nr8.9.t
+	desc = chaosx.nr8.9.d
+	picture = GFX_report_event_tensions_rising
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr8.report.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr8.10
+	title = chaosx.nr8.10.t
+	desc = chaosx.nr8.10.d
+	picture = GFX_report_event_tensions_rising
+
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_global_flag = tensions_rising_recent_relation_damage
+				NOT = { has_global_flag = achievement_tensions_one_denial_ready }
+			}
+			set_global_flag = achievement_tensions_one_denial_ready
+		}
+	}
+
+	option = {
+		name = chaosx.nr8.report.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr8.12
+	title = chaosx.nr8.12.t
+	desc = chaosx.nr8.12.d
+	picture = GFX_news_event_tensions_red_line
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr8.report.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr8.20
+	title = chaosx.nr8.20.t
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				is_ai = no
+				has_country_flag = tensions_rising_thin_wire_watch
+				NOT = { has_country_flag = tensions_rising_thin_wire_broken }
+				has_war = no
+				is_tensions_rising_world_tension_full = yes
+			}
+			set_country_flag = achievement_tensions_thin_wire_ready
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr8.21
+	title = chaosx.nr8.21.t
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		subtract_from_variable = { global.tensions_rising_active_opinion_modifiers = 2 }
+		clamp_variable = {
+			var = global.tensions_rising_active_opinion_modifiers
+			min = 0
+		}
+	}
 }

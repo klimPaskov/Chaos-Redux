@@ -1,16 +1,18 @@
-# 008 Tensions Rising Achievement Icons Manifest
+# 008 Tensions Rising Asset Manifest
 
-Package scope: bounded Event 008 `Tensions Rising` achievement icon package only.
+Package scope: Event 008 `Tensions Rising` report art, news art, Stage IV super-event art, and achievement icon package.
 
 Reference inspection completed:
 - `.agents/skills/chaos-redux-event-assets/assets/achievements/achievement.png`
 - `.agents/skills/chaos-redux-event-assets/assets/achievements/achievement_grey.png`
 - `.agents/skills/chaos-redux-event-assets/assets/achievements/achievement_not_eligible.png`
 - Additional Chaos Redux achievement examples in the same folder for framing, contrast, and readability checks.
+- Existing Chaos Redux report, news, and super-event DDS dimensions and sprite wiring in `gfx/event_pictures/`, `gfx/super_events/`, `interface/008_tensions_rising_event_images.gfx`, and `interface/chaosx_super_events.gfx`.
 
 Source mode:
 - `$imagegen` for generated completed-state source art.
-- Local ImageMagick processing for exact `64x64` resize, tonal cleanup, grey variants, not-eligible red-cross variants, blackout window-count correction on the processed icon, and DDS conversion.
+- `$imagegen` plus local processing for the report, news, and super-event images.
+- Local ImageMagick processing for exact event image dimensions, exact `64x64` achievement resize, tonal cleanup, grey variants, not-eligible red-cross variants, blackout window-count correction on the processed icon, and DDS conversion.
 - Sprite aliases are registered in `interface/chaosx_achievements.gfx` using `GFX_achievement_<achievement_id>`.
 
 DDS conversion note:
@@ -19,6 +21,54 @@ DDS conversion note:
 - `file` reports a mix of `RGB888` and `ARGB8888` across the triplets; all exports remain valid uncompressed DDS outputs for the HOI4 achievement pipeline.
 
 ## Assets
+
+### `report_event_tensions_rising`
+- Asset type: report event image
+- Intended in-game use: main Event 008 popup
+- Related event id: `008`
+- Related event slug: `tensions_rising`
+- Source mode: `$imagegen`
+- Source PNG A: `docs/assets/008_tensions_rising/source_png/report_event_tensions_rising_source_a.png`
+- Source PNG B: `docs/assets/008_tensions_rising/source_png/report_event_tensions_rising_source_b.png`
+- Processed PNG: `docs/assets/008_tensions_rising/processed_png/report_event_tensions_rising.png`
+- Final DDS: `gfx/event_pictures/report_event_tensions_rising.dds`
+- Target size: `210x176`
+- Sprite name: `GFX_report_event_tensions_rising`
+- `.gfx` file: `interface/008_tensions_rising_event_images.gfx`
+- Notes: Diplomatic-cable pressure scene for the repeatable report event.
+- Asset status: `complete`
+
+### `news_event_tensions_red_line`
+- Asset type: news event image
+- Intended in-game use: Stage IV Red Line news surface
+- Related event id: `008`
+- Related event slug: `tensions_rising`
+- Source mode: `$imagegen`
+- Source PNG A: `docs/assets/008_tensions_rising/source_png/news_event_tensions_red_line_source_a.png`
+- Source PNG B: `docs/assets/008_tensions_rising/source_png/news_event_tensions_red_line_source_b.png`
+- Processed PNG: `docs/assets/008_tensions_rising/processed_png/news_event_tensions_red_line.png`
+- Final DDS: `gfx/event_pictures/news_event_tensions_red_line.dds`
+- Target size: `397x153`
+- Sprite name: `GFX_news_event_tensions_red_line`
+- `.gfx` file: `interface/008_tensions_rising_event_images.gfx`
+- Notes: Quiet red-line crisis news image; no readable text.
+- Asset status: `complete`
+
+### `super_event_tensions_red_line`
+- Asset type: super-event image
+- Intended in-game use: one-time non-terminal Stage IV super-event `The Red Line Disappears`
+- Related event id: `008`
+- Related event slug: `tensions_rising`
+- Source mode: `$imagegen`
+- Source PNG A: `docs/assets/008_tensions_rising/source_png/super_event_tensions_red_line_source_a.png`
+- Source PNG B: `docs/assets/008_tensions_rising/source_png/super_event_tensions_red_line_source_b.png`
+- Processed PNG: `docs/assets/008_tensions_rising/processed_png/super_event_tensions_red_line.png`
+- Final DDS: `gfx/super_events/super_event_tensions_red_line.dds`
+- Target size: `457x328`
+- Sprite name: `GFX_super_event_tensions_red_line`
+- `.gfx` file: `interface/chaosx_super_events.gfx`
+- Notes: Ministry lights and severed diplomatic line motif for the non-terminal super-event.
+- Asset status: `complete`
 
 ### `achievement_tensions_thin_wire`
 - Asset type: achievement icon triplet

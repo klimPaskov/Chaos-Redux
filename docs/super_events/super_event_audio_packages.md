@@ -327,6 +327,23 @@ This file records restored, sourced, and converted super-event audio assets used
 - Duration: 3:00 final cue.
 - Conversion notes: first three minutes rendered from the source OGG with short fade-in/fade-out and loudness normalization; OGG and WAV are rendered from the same source.
 
+## Tensions Rising
+
+### The Red Line Disappears
+
+- Super-event ID: `62`
+- Music file: `music/super_event_008_red_line_disappears.ogg`
+- Sound-channel file: `sound/chaosx_super_event_008_red_line_disappears.wav`
+- Sound definition: `chaosx_super_event_008_red_line_disappears_track`
+- Source title: `Symphony No. 40 in G minor, KV 550: III. Menuetto, Allegretto-Trio`
+- Composer / creator: Wolfgang Amadeus Mozart.
+- Performer / recording: Fulda Symphonic Orchestra, conducted by Simon Schindler.
+- Source URL: <https://commons.wikimedia.org/wiki/File:Wolfgang_Amadeus_Mozart_-_Symphony_40_g-moll_-_3._Menuetto,_Allegretto-Trio.ogg>
+- Source file: `docs/super_events/source_audio/mozart_symphony_40_menuetto_fulda_original.ogg`
+- License: EFF Open Audio License v1 for the recording; underlying Mozart composition is public domain.
+- Duration: 1:40 final cue.
+- Conversion notes: source silence trimmed from the opening, `100` seconds retained, and the last `5` seconds faded out. OGG and WAV are rendered from the same sourced recording.
+
 ## Mengele
 
 ### The Angel of Death Leaves the Camp
