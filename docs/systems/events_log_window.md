@@ -56,6 +56,7 @@ The Event Logs window tracks fired automatic events in a dedicated popup and exp
 - The cluster-details window shows cluster metadata, actor country, fired/skipped member counts, current or historical member status, and each member event's danger.
 - The cluster-details window puts current/unlock tier on one line and roll/member count on the next line. Roll displays `N/A` while the cluster is locked by chaos tier.
 - Cluster rows and cluster details use the same checkbox pattern as event rows. Disabling a cluster blocks automatic cluster firing but does not block manual triggering.
+- The footer bulk checkbox appears only on the Events and Clusters tabs. On Events it toggles all registered events through `global.disabled_events`; on Clusters it toggles all registered clusters through `global.disabled_event_clusters`.
 - Member rows are sorted by danger from lower danger to higher danger.
 - Clicking a member row opens the normal event-details popup for that event while keeping the cluster-details window open.
 

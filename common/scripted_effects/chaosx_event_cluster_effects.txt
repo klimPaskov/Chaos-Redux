@@ -1754,6 +1754,32 @@ events_log_toggle_selected_cluster_disabled = {
     rebuild_events_log_cluster_view = yes
 }
 
+events_log_toggle_all_clusters_enabled = {
+    if = {
+        limit = { check_variable = { global.disabled_event_clusters^num < 1 } }
+        clear_array = global.disabled_event_clusters
+        set_temp_variable = { events_log_all_clusters_count = global.event_clusters^num }
+        for_loop_effect = {
+            start = 0
+            end = events_log_all_clusters_count
+            value = i
+            add_to_array = {
+                array = global.disabled_event_clusters
+                value = global.event_clusters^i
+            }
+        }
+    }
+    else = {
+        clear_array = global.disabled_event_clusters
+    }
+    rebuild_events_log_cluster_view = yes
+    if = {
+        limit = { has_country_flag = events_log_cluster_details_open }
+        events_log_refresh_selected_cluster_details_state = yes
+        events_log_rebuild_selected_cluster_details_view = yes
+    }
+}
+
 events_log_trigger_selected_cluster_detail = {
     if = {
         limit = { check_variable = { events_log_selected_cluster_id > 0 } }
