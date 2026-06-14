@@ -20,7 +20,7 @@ Create a single animated portrait for Soviet Collapse evolution details. The ani
 - Animated sheet: `gfx/interface/leader_frames/soviet_collapse/soviet_collapse_evolution_portraits_sheet.dds`.
 - Static sprite: `GFX_soviet_collapse_evolution_portraits`.
 - Animated sprite: `GFX_soviet_collapse_evolution_portraits_animated`.
-- Playback: 4 FPS, looping, `play_on_show = yes`.
+- Playback: 1 FPS, looping, `play_on_show = yes`.
 - Anchor: center.
 
 ## Required Outputs

@@ -12,7 +12,7 @@ The Soviet Collapse evolution details portrait animation is registered in `inter
 | Frame size | `156x210` |
 | Frame count | `66` |
 | Sheet size | `10296x210` |
-| FPS | `4` |
+| FPS | `1` |
 | Loop | `looping = yes`, `play_on_show = yes`, `pause_on_loop = 0.0` |
 | Target `.gfx` | `interface/005_soviet_collapse_custom_icons.gfx` |
 | Target GUI | `interface/chaosx_events_log_popup.gui` |
