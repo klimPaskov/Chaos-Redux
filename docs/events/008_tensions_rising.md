@@ -6,9 +6,10 @@ Event 008 Tensions Rising is a minor repeatable diplomatic-pressure event. In ca
 
 1. `chaosx.nr8.1` fires from the standard repeatable random-event pool. Event 8 remains registered in `global.repeatable_events`.
 2. `tensions_rising_prepare_random_event_fire` blocks only the calm-world baseline if world tension is already full. Evolved stages can still fire at full world tension.
-3. `get_tensions_rising_stage` maps the current Chaos Meter tier to Stage I-IV. Calm world stays at baseline stage `0`.
-4. Baseline firings add `+10` world tension and update the global highest-world-tension tracker.
-5. Evolved firings record the current Diplomatic Fever milestone if it has not already been logged, add the staged world-tension and chaos packet, apply the temporary timer pulse, select timed relation-shock pairs, apply AI posture ideas, schedule one delayed report, update achievement tracking, and trigger the Stage IV super-event if it has not already appeared.
+3. The main popup keeps its description to flavour text. The dynamic mechanical summary appears on the option tooltip, and the actual scripted effect runs inside that option's hidden effect block.
+4. `get_tensions_rising_stage` maps the current Chaos Meter tier to Stage I-IV. Calm world stays at baseline stage `0`.
+5. Baseline firings add `+10` world tension and update the global highest-world-tension tracker.
+6. Evolved firings record the current Diplomatic Fever milestone if it has not already been logged, add the staged world-tension and chaos packet, apply the temporary timer pulse, select timed relation-shock pairs, apply AI posture ideas, schedule one delayed report, update achievement tracking, and trigger the Stage IV super-event if it has not already appeared.
 
 ## Stage Values
 
@@ -39,7 +40,7 @@ The global active-opinion counter is decremented by the hidden expiry event `cha
 
 ## Delayed Reports
 
-Evolved firings can schedule one delayed report from `chaosx.nr8.2` through `chaosx.nr8.12`. These reports describe cable traffic, embassy side doors, calm-map denial, neutral insurance rates, rumours, staff cars, fleet silence, border lamps, and the final normal briefing. They do not recurse into the main event effect and do not create direct war goals.
+Evolved firings can schedule one hidden delayed flavour report from `chaosx.nr8.2` through `chaosx.nr8.12`. These reports describe cable traffic, embassy side doors, calm-map denial, neutral insurance rates, rumours, staff cars, fleet silence, border lamps, and the final normal briefing. They do not recurse into the main event effect and do not create direct war goals.
 
 ## AI Posture
 
@@ -88,7 +89,7 @@ Achievement icons are generated final DDS triplets under `gfx/achievements/` and
 ## Assets
 
 - Report image: `GFX_report_event_tensions_rising`, backed by `gfx/event_pictures/report_event_tensions_rising.dds`
-- News image: `GFX_news_event_tensions_red_line`, backed by `gfx/event_pictures/news_event_tensions_red_line.dds`
+- News image: `GFX_news_event_tensions_red_line`, backed by `gfx/event_pictures/news_event_tensions_red_line.dds`, remains registered for news surfaces; hidden delayed report events use the report image.
 - Super-event image: `GFX_super_event_tensions_red_line`, backed by `gfx/super_events/super_event_tensions_red_line.dds`
 - Achievement source, processed PNGs, contact sheet, and DDS manifest: `docs/assets/008_tensions_rising/`
 - Super-event audio source and attribution: `docs/super_events/008_tensions_rising_super_event_research.md` and `docs/super_events/super_event_audio_packages.md`
