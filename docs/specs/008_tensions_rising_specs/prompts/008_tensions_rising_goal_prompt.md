@@ -17,6 +17,6 @@ Prompts:
 - `prompts/008_tensions_rising_scripted_system_prompt.md`
 - `prompts/008_tensions_rising_localisation_audit_prompt.md`
 
-Non-negotiables: Event 8 stays Minor Repeatable. Baseline Calm World firing is +10 world tension and only fires below 100% WT. Stage I: +10 chaos/+10 WT and can fire at 100% WT. Stage II: +15 chaos/+20 WT. Stage III: +25 chaos/+50 WT. Stage IV: +50 chaos/+100 WT. No super-event or world-end scenario. Add capped temporary timer pressure, timed relation shocks, delayed reports, event-log/evolution detail wiring, AI posture hooks, assets, achievements, and docs as specified. No direct war goals, countries, focus trees, cores, or formables.
+Non-negotiables: Event 8 stays Minor Repeatable. Baseline Calm World firing is +100 world tension and only fires below 100% WT. Stage I: +10 chaos/+100 WT and can fire at 100% WT. Stage II: +15 chaos/+200 WT. Stage III: +25 chaos/+500 WT. Stage IV: +50 chaos/+1000 WT. No super-event or world-end scenario. Add capped temporary timer pressure, timed relation shocks, delayed reports, event-log/evolution detail wiring, AI posture hooks, assets, achievements, and docs as specified. No direct war goals, countries, focus trees, cores, or formables.
 
 Keep iterating until the implementation satisfies the spec. Do not claim completion with fallbacks, placeholder assets, missing localisation, missing event-log/evolution surfaces, skipped achievements, uncapped pulse stacking, or unreported queued cluster work. Finish with a concrete completion report and validation evidence.
