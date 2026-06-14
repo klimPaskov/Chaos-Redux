@@ -4626,6 +4626,11 @@ has_soviet_collapse_caucasus_league_quorum = {
 is_soviet_collapse_caucasus_league_leader = {
 	exists = yes
 	is_faction_leader = yes
+	NOT = { is_soviet_collapse_neutral_triggerable_scenario_launcher = yes }
+	OR = {
+		SOV = { exists = no }
+		NOT = { is_in_faction_with = SOV }
+	}
 	OR = {
 		has_country_flag = soviet_collapse_caucasus_league_founder
 		AND = {
@@ -4668,6 +4673,11 @@ has_soviet_collapse_central_asian_league_quorum = {
 is_soviet_collapse_central_asian_league_leader = {
 	exists = yes
 	is_faction_leader = yes
+	NOT = { is_soviet_collapse_neutral_triggerable_scenario_launcher = yes }
+	OR = {
+		SOV = { exists = no }
+		NOT = { is_in_faction_with = SOV }
+	}
 	OR = {
 		has_country_flag = soviet_collapse_central_asian_league_founder
 		AND = {
@@ -4684,6 +4694,73 @@ has_soviet_collapse_existing_central_asian_league_leader = {
 	any_country = {
 		is_soviet_collapse_central_asia_league_region_tag = yes
 		is_soviet_collapse_central_asian_league_leader = yes
+	}
+}
+
+is_soviet_collapse_free_republics_league_invite_candidate = {
+	exists = yes
+	is_in_faction = no
+	OR = {
+		AND = {
+			has_country_flag = soviet_collapse_breakaway
+			OR = {
+				tag = UKR
+				tag = BLR
+				tag = KAZ
+				tag = LIT
+				tag = LAT
+				tag = EST
+				tag = GEO
+				tag = ARM
+				tag = AZR
+				tag = MOL
+				tag = UZB
+				tag = KYR
+				tag = TAJ
+				tag = TMS
+				tag = KAR
+				tag = KOM
+				tag = CRI
+				tag = TAT
+				tag = BSK
+				tag = FER
+				tag = YAK
+				tag = BYA
+				tag = TAN
+			}
+		}
+		AND = {
+			has_country_flag = soviet_collapse_high_chaos_successor
+			OR = {
+				tag = FEV
+				tag = SZA
+				tag = IUL
+				tag = UWD
+				tag = BAC
+				tag = KZR
+				tag = SOG
+				tag = KHW
+				tag = ALN
+			}
+		}
+	}
+	NOT = {
+		AND = {
+			is_soviet_collapse_caucasus_league_region_tag = yes
+			OR = {
+				has_global_flag = soviet_collapse_caucasus_league_announced
+				has_soviet_collapse_caucasus_league_quorum = yes
+			}
+		}
+	}
+	NOT = {
+		AND = {
+			is_soviet_collapse_central_asia_league_region_tag = yes
+			OR = {
+				has_global_flag = soviet_collapse_central_asian_league_announced
+				has_soviet_collapse_central_asian_league_quorum = yes
+			}
+		}
 	}
 }
 
