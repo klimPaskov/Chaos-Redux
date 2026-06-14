@@ -12,6 +12,15 @@
 @TENSIONS_RISING_WORLD_TENSION_20_MAX_RECIPIENTS = 200
 @TENSIONS_RISING_WORLD_TENSION_50_MAX_RECIPIENTS = 500
 @TENSIONS_RISING_WORLD_TENSION_100_MAX_RECIPIENTS = 1000
+@TENSIONS_RISING_RELATION_FOLLOWUP_WINDOW_DAYS = 120
+@TENSIONS_RISING_RECENT_RELATION_COUNTRY_DAYS = 150
+@TENSIONS_RISING_AI_POSTURE_STAGE_1_DAYS = 45
+@TENSIONS_RISING_AI_POSTURE_STAGE_2_DAYS = 75
+@TENSIONS_RISING_AI_POSTURE_STAGE_3_DAYS = 100
+@TENSIONS_RISING_AI_POSTURE_STAGE_4_DAYS = 140
+@TENSIONS_RISING_THIN_WIRE_FLAG_DAYS = 181
+@TENSIONS_RISING_RED_LINE_SUPER_EVENT_SLOT = 62
+@TENSIONS_RISING_RED_LINE_SUPER_EVENT_DAYS = 10
 
 tensions_rising_prepare_random_event_fire = {
 	get_tensions_rising_stage = yes
@@ -363,16 +372,36 @@ apply_tensions_rising_timer_pulse = {
 
 	if = {
 		limit = { check_variable = { tensions_rising_refresh_pulse_flag > 0 } }
-		meta_effect = {
-			text = {
-				set_global_flag = {
-					flag = tensions_rising_timer_pulse_active
-					value = [STAGE]
-					days = [DAYS]
-				}
+		if = {
+			limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_4 } }
+			set_global_flag = {
+				flag = tensions_rising_timer_pulse_active
+				value = constant:tensions_rising_event_log.stage_4
+				days = global.tensions_rising_timer_pulse_days
 			}
-			STAGE = "[?tensions_rising_stage|.0]"
-			DAYS = "[?global.tensions_rising_timer_pulse_days|.0]"
+		}
+		else_if = {
+			limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_3 } }
+			set_global_flag = {
+				flag = tensions_rising_timer_pulse_active
+				value = constant:tensions_rising_event_log.stage_3
+				days = global.tensions_rising_timer_pulse_days
+			}
+		}
+		else_if = {
+			limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_2 } }
+			set_global_flag = {
+				flag = tensions_rising_timer_pulse_active
+				value = constant:tensions_rising_event_log.stage_2
+				days = global.tensions_rising_timer_pulse_days
+			}
+		}
+		else = {
+			set_global_flag = {
+				flag = tensions_rising_timer_pulse_active
+				value = constant:tensions_rising_event_log.stage_1
+				days = global.tensions_rising_timer_pulse_days
+			}
 		}
 	}
 }
@@ -527,21 +556,11 @@ apply_tensions_rising_relation_pair = {
 		apply_tensions_rising_relation_modifier_to_targets = yes
 		add_to_variable = { global.tensions_rising_relation_pair_count = 1 }
 		add_to_variable = { global.tensions_rising_active_opinion_modifiers = 2 }
-		set_temp_variable = { tensions_rising_relation_followup_window_days = constant:tensions_rising_followup.relation_followup_window_days }
-		meta_effect = {
-			text = {
-				set_global_flag = {
-					flag = tensions_rising_recent_relation_damage
-					days = [DAYS]
-				}
-			}
-			DAYS = "[?tensions_rising_relation_followup_window_days|.0]"
-		}
+		set_global_flag = { flag = tensions_rising_recent_relation_damage days = @TENSIONS_RISING_RELATION_FOLLOWUP_WINDOW_DAYS }
 	}
 }
 
 apply_tensions_rising_relation_modifier_to_targets = {
-	set_temp_variable = { tensions_rising_recent_relation_cooldown_days = constant:tensions_rising_relation_pairs.recent_country_cooldown_days }
 	if = {
 		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_4 } }
 		event_target:tensions_rising_first_actor = {
@@ -549,33 +568,17 @@ apply_tensions_rising_relation_modifier_to_targets = {
 				target = event_target:tensions_rising_second_actor
 				modifier = tensions_rising_permanent_alert
 			}
-			meta_effect = {
-				text = {
-					set_country_flag = {
-						flag = tensions_rising_recent_relation_actor
-						days = [DAYS]
-					}
-				}
-				DAYS = "[?tensions_rising_recent_relation_cooldown_days|.0]"
-			}
+			set_country_flag = { flag = tensions_rising_recent_relation_actor days = @TENSIONS_RISING_RECENT_RELATION_COUNTRY_DAYS }
 		}
 		event_target:tensions_rising_second_actor = {
 			add_opinion_modifier = {
 				target = event_target:tensions_rising_first_actor
 				modifier = tensions_rising_permanent_alert
 			}
-			meta_effect = {
-				text = {
-					set_country_flag = {
-						flag = tensions_rising_recent_relation_actor
-						days = [DAYS]
-					}
-				}
-				DAYS = "[?tensions_rising_recent_relation_cooldown_days|.0]"
-			}
+			set_country_flag = { flag = tensions_rising_recent_relation_actor days = @TENSIONS_RISING_RECENT_RELATION_COUNTRY_DAYS }
 		}
-			country_event = { id = chaosx.nr8.21 days = constant:tensions_rising_opinion_duration_days.stage_4 }
-		}
+		country_event = { id = chaosx.nr8.21 days = constant:tensions_rising_opinion_duration_days.stage_4 }
+	}
 	else_if = {
 		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_3 } }
 		event_target:tensions_rising_first_actor = {
@@ -583,30 +586,14 @@ apply_tensions_rising_relation_modifier_to_targets = {
 				target = event_target:tensions_rising_second_actor
 				modifier = tensions_rising_border_alarm
 			}
-			meta_effect = {
-				text = {
-					set_country_flag = {
-						flag = tensions_rising_recent_relation_actor
-						days = [DAYS]
-					}
-				}
-				DAYS = "[?tensions_rising_recent_relation_cooldown_days|.0]"
-			}
+			set_country_flag = { flag = tensions_rising_recent_relation_actor days = @TENSIONS_RISING_RECENT_RELATION_COUNTRY_DAYS }
 		}
 		event_target:tensions_rising_second_actor = {
 			add_opinion_modifier = {
 				target = event_target:tensions_rising_first_actor
 				modifier = tensions_rising_border_alarm
 			}
-			meta_effect = {
-				text = {
-					set_country_flag = {
-						flag = tensions_rising_recent_relation_actor
-						days = [DAYS]
-					}
-				}
-				DAYS = "[?tensions_rising_recent_relation_cooldown_days|.0]"
-			}
+			set_country_flag = { flag = tensions_rising_recent_relation_actor days = @TENSIONS_RISING_RECENT_RELATION_COUNTRY_DAYS }
 		}
 		country_event = { id = chaosx.nr8.21 days = constant:tensions_rising_opinion_duration_days.stage_3 }
 	}
@@ -617,30 +604,14 @@ apply_tensions_rising_relation_modifier_to_targets = {
 				target = event_target:tensions_rising_second_actor
 				modifier = tensions_rising_mobilization_suspicion
 			}
-			meta_effect = {
-				text = {
-					set_country_flag = {
-						flag = tensions_rising_recent_relation_actor
-						days = [DAYS]
-					}
-				}
-				DAYS = "[?tensions_rising_recent_relation_cooldown_days|.0]"
-			}
+			set_country_flag = { flag = tensions_rising_recent_relation_actor days = @TENSIONS_RISING_RECENT_RELATION_COUNTRY_DAYS }
 		}
 		event_target:tensions_rising_second_actor = {
 			add_opinion_modifier = {
 				target = event_target:tensions_rising_first_actor
 				modifier = tensions_rising_mobilization_suspicion
 			}
-			meta_effect = {
-				text = {
-					set_country_flag = {
-						flag = tensions_rising_recent_relation_actor
-						days = [DAYS]
-					}
-				}
-				DAYS = "[?tensions_rising_recent_relation_cooldown_days|.0]"
-			}
+			set_country_flag = { flag = tensions_rising_recent_relation_actor days = @TENSIONS_RISING_RECENT_RELATION_COUNTRY_DAYS }
 		}
 		country_event = { id = chaosx.nr8.21 days = constant:tensions_rising_opinion_duration_days.stage_2 }
 	}
@@ -650,30 +621,14 @@ apply_tensions_rising_relation_modifier_to_targets = {
 				target = event_target:tensions_rising_second_actor
 				modifier = tensions_rising_leaked_cables
 			}
-			meta_effect = {
-				text = {
-					set_country_flag = {
-						flag = tensions_rising_recent_relation_actor
-						days = [DAYS]
-					}
-				}
-				DAYS = "[?tensions_rising_recent_relation_cooldown_days|.0]"
-			}
+			set_country_flag = { flag = tensions_rising_recent_relation_actor days = @TENSIONS_RISING_RECENT_RELATION_COUNTRY_DAYS }
 		}
 		event_target:tensions_rising_second_actor = {
 			add_opinion_modifier = {
 				target = event_target:tensions_rising_first_actor
 				modifier = tensions_rising_leaked_cables
 			}
-			meta_effect = {
-				text = {
-					set_country_flag = {
-						flag = tensions_rising_recent_relation_actor
-						days = [DAYS]
-					}
-				}
-				DAYS = "[?tensions_rising_recent_relation_cooldown_days|.0]"
-			}
+			set_country_flag = { flag = tensions_rising_recent_relation_actor days = @TENSIONS_RISING_RECENT_RELATION_COUNTRY_DAYS }
 		}
 		country_event = { id = chaosx.nr8.21 days = constant:tensions_rising_opinion_duration_days.stage_1 }
 	}
@@ -710,27 +665,20 @@ apply_tensions_rising_ai_posture = {
 }
 
 apply_tensions_rising_ai_posture_to_country = {
-	set_temp_variable = { tensions_rising_ai_posture_recent_days = constant:tensions_rising_ai_posture.stage_1_days }
 	if = {
 		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_4 } }
-		set_temp_variable = { tensions_rising_ai_posture_recent_days = constant:tensions_rising_ai_posture.stage_4_days }
+		set_country_flag = { flag = tensions_rising_ai_posture_recent days = @TENSIONS_RISING_AI_POSTURE_STAGE_4_DAYS }
 	}
 	else_if = {
 		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_3 } }
-		set_temp_variable = { tensions_rising_ai_posture_recent_days = constant:tensions_rising_ai_posture.stage_3_days }
+		set_country_flag = { flag = tensions_rising_ai_posture_recent days = @TENSIONS_RISING_AI_POSTURE_STAGE_3_DAYS }
 	}
 	else_if = {
 		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_2 } }
-		set_temp_variable = { tensions_rising_ai_posture_recent_days = constant:tensions_rising_ai_posture.stage_2_days }
+		set_country_flag = { flag = tensions_rising_ai_posture_recent days = @TENSIONS_RISING_AI_POSTURE_STAGE_2_DAYS }
 	}
-	meta_effect = {
-		text = {
-			set_country_flag = {
-				flag = tensions_rising_ai_posture_recent
-				days = [DAYS]
-			}
-		}
-		DAYS = "[?tensions_rising_ai_posture_recent_days|.0]"
+	else = {
+		set_country_flag = { flag = tensions_rising_ai_posture_recent days = @TENSIONS_RISING_AI_POSTURE_STAGE_1_DAYS }
 	}
 	if = {
 		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_4 } }
@@ -817,16 +765,49 @@ schedule_tensions_rising_followup = {
 			}
 		}
 		select_tensions_rising_followup_event = yes
-		meta_effect = {
-			text = {
-				country_event = {
-					id = chaosx.nr8.[FOLLOWUP_ID]
-					days = [FOLLOWUP_DELAY]
-				}
-			}
-			FOLLOWUP_ID = "[?tensions_rising_followup_id|.0]"
-			FOLLOWUP_DELAY = "[?tensions_rising_followup_delay|.0]"
-		}
+		schedule_selected_tensions_rising_followup = yes
+	}
+}
+
+schedule_selected_tensions_rising_followup = {
+	if = {
+		limit = { check_variable = { tensions_rising_followup_id = 12 } }
+		country_event = { id = chaosx.nr8.12 days = tensions_rising_followup_delay }
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_followup_id = 10 } }
+		country_event = { id = chaosx.nr8.10 days = tensions_rising_followup_delay }
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_followup_id = 9 } }
+		country_event = { id = chaosx.nr8.9 days = tensions_rising_followup_delay }
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_followup_id = 8 } }
+		country_event = { id = chaosx.nr8.8 days = tensions_rising_followup_delay }
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_followup_id = 7 } }
+		country_event = { id = chaosx.nr8.7 days = tensions_rising_followup_delay }
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_followup_id = 6 } }
+		country_event = { id = chaosx.nr8.6 days = tensions_rising_followup_delay }
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_followup_id = 5 } }
+		country_event = { id = chaosx.nr8.5 days = tensions_rising_followup_delay }
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_followup_id = 4 } }
+		country_event = { id = chaosx.nr8.4 days = tensions_rising_followup_delay }
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_followup_id = 3 } }
+		country_event = { id = chaosx.nr8.3 days = tensions_rising_followup_delay }
+	}
+	else = {
+		country_event = { id = chaosx.nr8.2 days = tensions_rising_followup_delay }
 	}
 }
 
@@ -918,16 +899,7 @@ update_tensions_rising_achievement_tracking = {
 			NOT = { has_country_flag = achievement_tensions_thin_wire_ready }
 			NOT = { has_country_flag = tensions_rising_thin_wire_watch }
 		}
-		set_temp_variable = { tensions_rising_thin_wire_flag_days = constant:tensions_rising_achievement.thin_wire_flag_days }
-		meta_effect = {
-			text = {
-				set_country_flag = {
-					flag = tensions_rising_thin_wire_watch
-					days = [DAYS]
-				}
-			}
-			DAYS = "[?tensions_rising_thin_wire_flag_days|.0]"
-		}
+		set_country_flag = { flag = tensions_rising_thin_wire_watch days = @TENSIONS_RISING_THIN_WIRE_FLAG_DAYS }
 		clr_country_flag = tensions_rising_thin_wire_broken
 		country_event = { id = chaosx.nr8.20 days = constant:tensions_rising_achievement.thin_wire_watch_days }
 	}
@@ -952,19 +924,7 @@ trigger_tensions_rising_stage_4_super_event = {
 		}
 		set_global_flag = tensions_rising_stage_4_super_event_seen
 		set_global_flag = achievement_tensions_red_line_ready
-		set_temp_variable = { tensions_rising_super_event_id = constant:tensions_rising_super_event.red_line_slot }
-		set_temp_variable = { tensions_rising_super_event_visible_days = constant:tensions_rising_super_event.visible_days }
-		meta_effect = {
-			text = {
-				set_global_flag = {
-					flag = super_event_visible
-					value = [SUPER_EVENT_ID]
-					days = [SUPER_EVENT_DAYS]
-				}
-			}
-			SUPER_EVENT_ID = "[?tensions_rising_super_event_id|.0]"
-			SUPER_EVENT_DAYS = "[?tensions_rising_super_event_visible_days|.0]"
-		}
+		set_global_flag = { flag = super_event_visible value = @TENSIONS_RISING_RED_LINE_SUPER_EVENT_SLOT days = @TENSIONS_RISING_RED_LINE_SUPER_EVENT_DAYS }
 		set_variable = { global.current_super_event_audio_id = constant:tensions_rising_super_event.red_line_slot }
 		if = {
 			limit = { is_ai = no }
