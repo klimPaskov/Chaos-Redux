@@ -262,10 +262,11 @@ When implementing any new mechanic, follow this checklist:
 12. Confirm that all decisions and event options or other effects have proper trigger tooltips and effect descriptions.
 13. Respect the repository style and naming rules so new content blends with existing Chaos Redux code.
 14. For systems that touch or are related to bio/chemical warfare, review any related docs, and verify integration across events, on_actions, decisions, contamination effects, scripted logic, etc.
-15. When the user reports an issue after new changes were made, assume the game has already been reloaded. Do not default to restart/reload advice. Do not ask for, request, or search for logs. If the user did not paste any error lines, treat it as having no error lines to use. Do not tell the user to run in-game validation. Assume they will always verify changes in a live session. Never mention old saves.
+15. When the user reports an issue after new changes were made, assume the game has already been reloaded. Do not default to restart/reload advice. Do not ask for, request, or search for logs. If the user did not paste any error lines, treat it as having no error lines to use. Do not tell the user to run in-game validation. Assume they will always verify changes in a live session and in a new save. Do not mention old saves.
 16. Fallbacks are never allowed and MUST ALWAYS be discussed with the user.
 17. When the user reports that something is wrong and you can't figure out what exactly, then add temporary debug code (for example: `log = "my debug log"`) that exposes the relevant runtime values needed to understand the issue, and remove every debug line you added once the issue is resolved.
-18. When updating content (for example reworking an event), write as if the feature has always existed. Do not use meta wording like “now it is,” “now it has been reworked,” “newly added,” or similar update-history phrasing.
+18. When an error is reported or discovered after your changes, treat it as caused by your current change set. Do not speculate that the project was already broken before your work.
+19. When updating content (for example reworking an event), write as if the feature has always existed. Do not use meta wording like “now it is,” “now it has been reworked,” “newly added,” or similar update-history phrasing.
 
 Follow these rules and your changes will be easier to review, safer to merge and more consistent with the rest of the project.
 If this checklist cannot be satisfied, stop and request more design input instead of guessing.
