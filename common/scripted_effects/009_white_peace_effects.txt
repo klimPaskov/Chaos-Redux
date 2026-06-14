@@ -1,0 +1,1220 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 009 WHITE PEACE EFFECTS
+# ============================================================================
+# On-demand runtime helpers for Event 9. These helpers calculate war pressure,
+# select safe pair event targets, cap event weight, execute settlements, and
+# record evolution stages without adding daily or weekly polling.
+# ============================================================================
+
+@WHITE_PEACE_RECENT_COUNTRY_DAYS = 180
+@WHITE_PEACE_RECENT_PAIR_DAYS = 360
+@WHITE_PEACE_RECENT_MAJOR_COUNTRY_DAYS = 540
+@WHITE_PEACE_RECENT_BROAD_DAYS = 720
+@WHITE_PEACE_NO_WINNER_WATCH_DAYS = 181
+@WHITE_PEACE_NO_WINNER_CHECK_DAYS = 180
+@WHITE_PEACE_LONG_WAR_MONTHS = 5
+
+# Random-list weight keys need load-time literals, so these mirror
+# `white_peace_branch_weight` script constants.
+@WHITE_PEACE_BRANCH_STAGE_1_SINGLE = 70
+@WHITE_PEACE_BRANCH_STAGE_1_MULTI = 30
+@WHITE_PEACE_BRANCH_STAGE_2_SINGLE = 60
+@WHITE_PEACE_BRANCH_STAGE_2_MULTI = 25
+@WHITE_PEACE_BRANCH_STAGE_2_MAJOR = 15
+@WHITE_PEACE_BRANCH_STAGE_3_SINGLE = 50
+@WHITE_PEACE_BRANCH_STAGE_3_MULTI = 25
+@WHITE_PEACE_BRANCH_STAGE_3_MAJOR = 15
+@WHITE_PEACE_BRANCH_STAGE_3_BROAD = 10
+
+reset_white_peace_runtime_context = {
+	set_variable = { global.white_peace_available = 0 }
+	set_variable = { global.white_peace_context_ready = 0 }
+	set_variable = { global.white_peace_active_war_count = 0 }
+	set_variable = { global.white_peace_safe_minor_pair_count = 0 }
+	set_variable = { global.white_peace_minor_only_war_count = 0 }
+	set_variable = { global.white_peace_major_candidate_count = 0 }
+	set_variable = { global.white_peace_major_locked_pair_count = 0 }
+	set_variable = { global.white_peace_protected_war_actor_count = 0 }
+	set_variable = { global.white_peace_recent_memory_actor_count = 0 }
+	set_variable = { global.white_peace_recent_pair_memory_count = 0 }
+	set_variable = { global.white_peace_environment_cap = 0 }
+	set_variable = { global.white_peace_effective_cap = 0 }
+	set_variable = { global.white_peace_effective_dynamic_cap = 0 }
+	set_variable = { global.white_peace_repeatable_decay_multiplier = 1 }
+	set_variable = { global.white_peace_skip_reason = constant:white_peace_skip_reason.no_active_war }
+	set_variable = { global.white_peace_stage = constant:white_peace_event_log.stage_base }
+	set_temp_variable = { white_peace_stage = constant:white_peace_event_log.stage_base }
+	set_temp_variable = { white_peace_pair_selected = 0 }
+	set_temp_variable = { white_peace_branch = constant:white_peace_branch.single_minor }
+	set_temp_variable = { white_peace_settlement_pair_cap = constant:white_peace_settlement_cap.base_pairs }
+}
+
+count_white_peace_minor_candidates = {
+	set_variable = { global.white_peace_raw_active_war_country_count = 0 }
+	set_variable = { global.white_peace_raw_safe_minor_pair_count = 0 }
+	set_variable = { global.white_peace_raw_minor_only_pair_count = 0 }
+	set_variable = { global.white_peace_protected_war_actor_count = 0 }
+	set_variable = { global.white_peace_recent_memory_actor_count = 0 }
+	set_variable = { global.white_peace_recent_pair_memory_count = 0 }
+
+	every_country = {
+		limit = {
+			has_war = yes
+			OR = {
+				is_special_chaos_country = yes
+				is_actual_nonhuman_country = yes
+				has_country_flag = white_peace_protected_country
+				has_country_flag = white_peace_protected_war_actor
+			}
+		}
+		add_to_variable = { global.white_peace_protected_war_actor_count = 1 }
+	}
+
+	every_country = {
+		limit = {
+			has_war = yes
+			OR = {
+				has_country_flag = recent_white_peace_country
+				has_country_flag = recent_major_white_peace_country
+			}
+		}
+		add_to_variable = { global.white_peace_recent_memory_actor_count = 1 }
+	}
+
+	every_country = {
+		limit = {
+			can_country_be_white_peace_target = yes
+			has_war = yes
+		}
+		every_enemy_country = {
+			limit = {
+				can_country_be_white_peace_target = yes
+				has_war_with = PREV
+				NOT = { tag = PREV }
+				NOT = { is_in_faction_with = PREV }
+				has_recent_white_peace_pair_with_prev = yes
+			}
+			add_to_variable = { global.white_peace_recent_pair_memory_count = 1 }
+		}
+	}
+
+	every_country = {
+		limit = {
+			has_war = yes
+			NOT = { is_special_chaos_country = yes }
+			NOT = { is_actual_nonhuman_country = yes }
+			NOT = { has_country_flag = white_peace_protected_country }
+			NOT = { has_country_flag = white_peace_protected_war_actor }
+		}
+		add_to_variable = { global.white_peace_raw_active_war_country_count = 1 }
+	}
+
+	every_country = {
+		limit = {
+			can_country_be_white_peace_target = yes
+			has_war = yes
+		}
+		every_enemy_country = {
+			limit = { can_minor_pair_receive_white_peace = yes }
+			add_to_variable = { global.white_peace_raw_safe_minor_pair_count = 1 }
+			if = {
+				limit = {
+					has_war_with_major = no
+					PREV = { has_war_with_major = no }
+				}
+				add_to_variable = { global.white_peace_raw_minor_only_pair_count = 1 }
+			}
+		}
+	}
+
+	set_temp_variable = { white_peace_count_proxy = global.white_peace_raw_active_war_country_count }
+	divide_temp_variable = { white_peace_count_proxy = 2 }
+	round_temp_variable = white_peace_count_proxy
+	if = {
+			limit = {
+				check_variable = { global.white_peace_raw_active_war_country_count > 0 }
+				check_variable = { white_peace_count_proxy < constant:white_peace_availability_min.active_wars }
+			}
+			set_temp_variable = { white_peace_count_proxy = constant:white_peace_availability_min.active_wars }
+		}
+	set_variable = { global.white_peace_active_war_count = white_peace_count_proxy }
+
+	set_temp_variable = { white_peace_count_proxy = global.white_peace_raw_safe_minor_pair_count }
+	divide_temp_variable = { white_peace_count_proxy = 2 }
+	round_temp_variable = white_peace_count_proxy
+	if = {
+			limit = {
+				check_variable = { global.white_peace_raw_safe_minor_pair_count > 0 }
+				check_variable = { white_peace_count_proxy < constant:white_peace_branch_min_candidate.single_minor_pairs }
+			}
+			set_temp_variable = { white_peace_count_proxy = constant:white_peace_branch_min_candidate.single_minor_pairs }
+		}
+	set_variable = { global.white_peace_safe_minor_pair_count = white_peace_count_proxy }
+
+	set_temp_variable = { white_peace_count_proxy = global.white_peace_raw_minor_only_pair_count }
+	divide_temp_variable = { white_peace_count_proxy = 2 }
+	round_temp_variable = white_peace_count_proxy
+	if = {
+			limit = {
+				check_variable = { global.white_peace_raw_minor_only_pair_count > 0 }
+				check_variable = { white_peace_count_proxy < constant:white_peace_branch_min_candidate.single_minor_pairs }
+			}
+			set_temp_variable = { white_peace_count_proxy = constant:white_peace_branch_min_candidate.single_minor_pairs }
+		}
+	set_variable = { global.white_peace_minor_only_war_count = white_peace_count_proxy }
+}
+
+determine_white_peace_stage = {
+	set_temp_variable = { white_peace_stage = constant:white_peace_event_log.stage_base }
+
+	if = {
+		limit = { has_global_flag = white_peace_stage_1_unlocked }
+		set_temp_variable = { white_peace_stage = constant:white_peace_event_log.stage_repeated_minor }
+	}
+	if = {
+		limit = { has_global_flag = white_peace_stage_2_unlocked }
+		set_temp_variable = { white_peace_stage = constant:white_peace_event_log.stage_major_country }
+	}
+	if = {
+		limit = { has_global_flag = white_peace_stage_3_unlocked }
+		set_temp_variable = { white_peace_stage = constant:white_peace_event_log.stage_broad_settlement }
+	}
+	if = {
+		limit = {
+			check_variable = { white_peace_stage < constant:white_peace_event_log.stage_repeated_minor }
+			check_variable = {
+				var = global.white_peace_active_war_count
+				value = constant:white_peace_stage_pressure.repeated_minor_war_count
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = global.white_peace_safe_minor_pair_count
+				value = constant:white_peace_stage_pressure.repeated_minor_pair_count
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { white_peace_stage = constant:white_peace_event_log.stage_repeated_minor }
+	}
+	if = {
+		limit = {
+			check_variable = { white_peace_stage < constant:white_peace_event_log.stage_major_country }
+			check_variable = {
+				var = global.white_peace_active_war_count
+				value = constant:white_peace_stage_pressure.major_war_count
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = global.white_peace_safe_minor_pair_count
+				value = constant:white_peace_stage_pressure.major_pair_count
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { white_peace_stage = constant:white_peace_event_log.stage_major_country }
+	}
+	if = {
+		limit = {
+			check_variable = { white_peace_stage < constant:white_peace_event_log.stage_broad_settlement }
+			check_variable = {
+				var = global.white_peace_active_war_count
+				value = constant:white_peace_stage_pressure.broad_war_count
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = global.white_peace_safe_minor_pair_count
+				value = constant:white_peace_stage_pressure.broad_pair_count
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { white_peace_stage = constant:white_peace_event_log.stage_broad_settlement }
+	}
+
+	set_variable = { global.white_peace_stage = white_peace_stage }
+}
+
+count_white_peace_major_candidates = {
+	set_variable = { global.white_peace_raw_major_candidate_count = 0 }
+	set_variable = { global.white_peace_raw_major_locked_pair_count = 0 }
+	set_variable = { global.white_peace_major_locked_pair_count = 0 }
+	if = {
+		limit = { check_variable = { white_peace_stage > constant:white_peace_event_log.stage_repeated_minor } }
+		every_country = {
+			limit = {
+				can_country_be_white_peace_target = yes
+				has_war = yes
+			}
+			every_enemy_country = {
+				limit = { can_major_pair_receive_white_peace = yes }
+				add_to_variable = { global.white_peace_raw_major_candidate_count = 1 }
+			}
+		}
+		set_temp_variable = { white_peace_count_proxy = global.white_peace_raw_major_candidate_count }
+		divide_temp_variable = { white_peace_count_proxy = 2 }
+		round_temp_variable = white_peace_count_proxy
+		if = {
+				limit = {
+					check_variable = { global.white_peace_raw_major_candidate_count > 0 }
+					check_variable = { white_peace_count_proxy < constant:white_peace_branch_min_candidate.major_pairs }
+				}
+				set_temp_variable = { white_peace_count_proxy = constant:white_peace_branch_min_candidate.major_pairs }
+		}
+		set_variable = { global.white_peace_major_candidate_count = white_peace_count_proxy }
+	}
+	else = {
+		every_country = {
+			limit = {
+				can_country_be_white_peace_target = yes
+				has_war = yes
+			}
+			every_enemy_country = {
+				limit = { can_major_pair_receive_white_peace_if_stage_unlocked = yes }
+				add_to_variable = { global.white_peace_raw_major_locked_pair_count = 1 }
+			}
+		}
+		set_temp_variable = { white_peace_count_proxy = global.white_peace_raw_major_locked_pair_count }
+		divide_temp_variable = { white_peace_count_proxy = 2 }
+		round_temp_variable = white_peace_count_proxy
+		if = {
+			limit = {
+				check_variable = { global.white_peace_raw_major_locked_pair_count > 0 }
+				check_variable = { white_peace_count_proxy < constant:white_peace_branch_min_candidate.major_pairs }
+			}
+			set_temp_variable = { white_peace_count_proxy = constant:white_peace_branch_min_candidate.major_pairs }
+		}
+		set_variable = { global.white_peace_major_locked_pair_count = white_peace_count_proxy }
+	}
+}
+
+calculate_white_peace_dynamic_cap = {
+	reset_white_peace_runtime_context = yes
+	count_white_peace_minor_candidates = yes
+	determine_white_peace_stage = yes
+	count_white_peace_major_candidates = yes
+
+	if = {
+		limit = {
+			check_variable = {
+				var = global.white_peace_active_war_count
+				value = constant:white_peace_availability_min.active_wars
+				compare = greater_than_or_equals
+			}
+			OR = {
+				check_variable = {
+					var = global.white_peace_safe_minor_pair_count
+					value = constant:white_peace_branch_min_candidate.single_minor_pairs
+					compare = greater_than_or_equals
+				}
+				check_variable = {
+					var = global.white_peace_major_candidate_count
+					value = constant:white_peace_branch_min_candidate.major_pairs
+					compare = greater_than_or_equals
+				}
+			}
+		}
+		set_variable = { global.white_peace_available = 1 }
+		set_variable = { global.white_peace_skip_reason = constant:white_peace_skip_reason.available }
+		set_temp_variable = { white_peace_environment_cap = constant:white_peace_weight.base_cap }
+
+		set_temp_variable = { white_peace_pressure_component = global.white_peace_active_war_count }
+		multiply_temp_variable = { white_peace_pressure_component = constant:white_peace_weight.active_war_value }
+		clamp_temp_variable = {
+			var = white_peace_pressure_component
+			min = 0
+			max = constant:white_peace_weight.active_war_cap
+		}
+		add_to_temp_variable = { white_peace_environment_cap = white_peace_pressure_component }
+
+		set_temp_variable = { white_peace_pressure_component = global.white_peace_safe_minor_pair_count }
+		multiply_temp_variable = { white_peace_pressure_component = constant:white_peace_weight.safe_minor_pair_value }
+		clamp_temp_variable = {
+			var = white_peace_pressure_component
+			min = 0
+			max = constant:white_peace_weight.safe_minor_pair_cap
+		}
+		add_to_temp_variable = { white_peace_environment_cap = white_peace_pressure_component }
+
+		set_temp_variable = { white_peace_pressure_component = global.white_peace_minor_only_war_count }
+		multiply_temp_variable = { white_peace_pressure_component = constant:white_peace_weight.minor_only_war_value }
+		clamp_temp_variable = {
+			var = white_peace_pressure_component
+			min = 0
+			max = constant:white_peace_weight.minor_only_war_cap
+		}
+		add_to_temp_variable = { white_peace_environment_cap = white_peace_pressure_component }
+
+		if = {
+			limit = {
+				check_variable = {
+					var = global.white_peace_active_war_count
+					value = constant:white_peace_stage_pressure.broad_war_count
+					compare = greater_than_or_equals
+				}
+			}
+			add_to_temp_variable = { white_peace_environment_cap = constant:white_peace_weight.clutter_bonus_12_wars }
+		}
+		else_if = {
+			limit = {
+				check_variable = {
+					var = global.white_peace_active_war_count
+					value = constant:white_peace_stage_pressure.major_war_count
+					compare = greater_than_or_equals
+				}
+			}
+			add_to_temp_variable = { white_peace_environment_cap = constant:white_peace_weight.clutter_bonus_8_wars }
+		}
+		else_if = {
+			limit = {
+				check_variable = {
+					var = global.white_peace_active_war_count
+					value = constant:white_peace_stage_pressure.repeated_minor_war_count
+					compare = greater_than_or_equals
+				}
+			}
+			add_to_temp_variable = { white_peace_environment_cap = constant:white_peace_weight.clutter_bonus_5_wars }
+		}
+
+		clamp_temp_variable = {
+			var = white_peace_environment_cap
+			min = constant:white_peace_weight.min_valid_cap
+			max = constant:white_peace_weight.max_environment_cap
+		}
+		set_variable = { global.white_peace_environment_cap = white_peace_environment_cap }
+
+		set_temp_variable = { white_peace_effective_cap = white_peace_environment_cap }
+		set_temp_variable = { white_peace_repeatable_decay_multiplier = 1 }
+		set_temp_variable = { white_peace_event_id = constant:white_peace_event_log.event_id }
+		if = {
+			limit = {
+				check_variable = { white_peace_event_id < global.event_max_caps^num }
+				check_variable = { global.default_event_weight > 0 }
+			}
+			set_temp_variable = { white_peace_repeatable_cap = global.event_max_caps^white_peace_event_id }
+			set_temp_variable = { white_peace_repeatable_decay_multiplier = white_peace_repeatable_cap }
+			divide_temp_variable = { white_peace_repeatable_decay_multiplier = global.default_event_weight }
+			clamp_temp_variable = {
+				var = white_peace_repeatable_decay_multiplier
+				min = 0
+				max = 1
+			}
+			multiply_temp_variable = { white_peace_effective_cap = white_peace_repeatable_decay_multiplier }
+		}
+		set_variable = { global.white_peace_repeatable_decay_multiplier = white_peace_repeatable_decay_multiplier }
+		if = {
+			limit = { check_variable = { white_peace_stage = constant:white_peace_event_log.stage_repeated_minor } }
+			multiply_temp_variable = { white_peace_effective_cap = constant:white_peace_stage_multiplier.repeated_minor }
+		}
+		else_if = {
+			limit = { check_variable = { white_peace_stage = constant:white_peace_event_log.stage_major_country } }
+			multiply_temp_variable = { white_peace_effective_cap = constant:white_peace_stage_multiplier.major_country }
+		}
+		else_if = {
+			limit = { check_variable = { white_peace_stage = constant:white_peace_event_log.stage_broad_settlement } }
+			multiply_temp_variable = { white_peace_effective_cap = constant:white_peace_stage_multiplier.broad_settlement }
+		}
+
+		if = {
+			limit = { has_global_flag = recent_broad_white_peace }
+			multiply_temp_variable = { white_peace_effective_cap = constant:white_peace_weight.recent_global_penalty }
+		}
+		round_temp_variable = white_peace_effective_cap
+		clamp_temp_variable = {
+			var = white_peace_effective_cap
+			min = constant:white_peace_weight.min_valid_cap
+			max = constant:white_peace_weight.max_environment_cap
+		}
+		set_variable = { global.white_peace_effective_cap = white_peace_effective_cap }
+		set_variable = { global.white_peace_effective_dynamic_cap = white_peace_effective_cap }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = global.white_peace_active_war_count
+				value = constant:white_peace_availability_min.active_wars
+				compare = greater_than_or_equals
+			}
+		}
+		set_variable = { global.white_peace_skip_reason = constant:white_peace_skip_reason.no_safe_pair }
+		if = {
+			limit = {
+				OR = {
+					check_variable = { global.white_peace_recent_memory_actor_count > 0 }
+					check_variable = { global.white_peace_recent_pair_memory_count > 0 }
+				}
+			}
+			set_variable = { global.white_peace_skip_reason = constant:white_peace_skip_reason.recent_memory }
+		}
+		else_if = {
+			limit = { check_variable = { global.white_peace_major_locked_pair_count > 0 } }
+			set_variable = { global.white_peace_skip_reason = constant:white_peace_skip_reason.major_locked }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { global.white_peace_protected_war_actor_count > 0 } }
+		set_variable = { global.white_peace_skip_reason = constant:white_peace_skip_reason.protected_conflicts }
+	}
+}
+
+select_white_peace_branch = {
+	set_temp_variable = { white_peace_branch = constant:white_peace_branch.single_minor }
+	set_temp_variable = { white_peace_settlement_pair_cap = constant:white_peace_settlement_cap.base_pairs }
+
+	if = {
+		limit = { check_variable = { white_peace_stage > constant:white_peace_event_log.stage_major_country } }
+		random_list = {
+			@WHITE_PEACE_BRANCH_STAGE_3_SINGLE = {
+				modifier = {
+					factor = 0
+					check_variable = {
+						var = global.white_peace_safe_minor_pair_count
+						value = constant:white_peace_branch_min_candidate.single_minor_pairs
+						compare = less_than
+					}
+				}
+				set_temp_variable = { white_peace_branch = constant:white_peace_branch.single_minor }
+			}
+			@WHITE_PEACE_BRANCH_STAGE_3_MULTI = {
+				modifier = {
+					factor = 0
+					check_variable = {
+						var = global.white_peace_safe_minor_pair_count
+						value = constant:white_peace_branch_min_candidate.multi_minor_pairs
+						compare = less_than
+					}
+				}
+				set_temp_variable = { white_peace_branch = constant:white_peace_branch.multi_minor }
+				set_temp_variable = { white_peace_settlement_pair_cap = constant:white_peace_settlement_cap.stage_3_pairs }
+			}
+			@WHITE_PEACE_BRANCH_STAGE_3_MAJOR = {
+				modifier = {
+					factor = 0
+					check_variable = {
+						var = global.white_peace_major_candidate_count
+						value = constant:white_peace_branch_min_candidate.major_pairs
+						compare = less_than
+					}
+				}
+				set_temp_variable = { white_peace_branch = constant:white_peace_branch.major_country }
+			}
+			@WHITE_PEACE_BRANCH_STAGE_3_BROAD = {
+				modifier = {
+					factor = 0
+					OR = {
+						check_variable = {
+							var = global.white_peace_safe_minor_pair_count
+							value = constant:white_peace_branch_min_candidate.broad_minor_pairs
+							compare = less_than
+						}
+						has_global_flag = recent_broad_white_peace
+					}
+				}
+				set_temp_variable = { white_peace_branch = constant:white_peace_branch.broad_settlement }
+				set_temp_variable = { white_peace_settlement_pair_cap = constant:white_peace_settlement_cap.stage_3_pairs }
+			}
+		}
+	}
+	else_if = {
+		limit = { check_variable = { white_peace_stage > constant:white_peace_event_log.stage_repeated_minor } }
+		random_list = {
+			@WHITE_PEACE_BRANCH_STAGE_2_SINGLE = {
+				modifier = {
+					factor = 0
+					check_variable = {
+						var = global.white_peace_safe_minor_pair_count
+						value = constant:white_peace_branch_min_candidate.single_minor_pairs
+						compare = less_than
+					}
+				}
+				set_temp_variable = { white_peace_branch = constant:white_peace_branch.single_minor }
+			}
+			@WHITE_PEACE_BRANCH_STAGE_2_MULTI = {
+				modifier = {
+					factor = 0
+					check_variable = {
+						var = global.white_peace_safe_minor_pair_count
+						value = constant:white_peace_branch_min_candidate.multi_minor_pairs
+						compare = less_than
+					}
+				}
+				set_temp_variable = { white_peace_branch = constant:white_peace_branch.multi_minor }
+				set_temp_variable = { white_peace_settlement_pair_cap = constant:white_peace_settlement_cap.stage_2_pairs }
+			}
+			@WHITE_PEACE_BRANCH_STAGE_2_MAJOR = {
+				modifier = {
+					factor = 0
+					check_variable = {
+						var = global.white_peace_major_candidate_count
+						value = constant:white_peace_branch_min_candidate.major_pairs
+						compare = less_than
+					}
+				}
+				set_temp_variable = { white_peace_branch = constant:white_peace_branch.major_country }
+			}
+		}
+	}
+	else_if = {
+		limit = { check_variable = { white_peace_stage > constant:white_peace_event_log.stage_base } }
+		random_list = {
+			@WHITE_PEACE_BRANCH_STAGE_1_SINGLE = { set_temp_variable = { white_peace_branch = constant:white_peace_branch.single_minor } }
+			@WHITE_PEACE_BRANCH_STAGE_1_MULTI = {
+				modifier = {
+					factor = 0
+					check_variable = {
+						var = global.white_peace_safe_minor_pair_count
+						value = constant:white_peace_branch_min_candidate.multi_minor_pairs
+						compare = less_than
+					}
+				}
+				set_temp_variable = { white_peace_branch = constant:white_peace_branch.multi_minor }
+				set_temp_variable = { white_peace_settlement_pair_cap = constant:white_peace_settlement_cap.stage_1_pairs }
+				if = {
+					limit = {
+						check_variable = {
+							var = global.white_peace_safe_minor_pair_count
+							value = constant:white_peace_branch_min_candidate.stage_1_high_pressure_pairs
+							compare = greater_than_or_equals
+						}
+					}
+					set_temp_variable = { white_peace_settlement_pair_cap = constant:white_peace_settlement_cap.stage_1_high_pressure_pairs }
+				}
+			}
+		}
+	}
+}
+
+score_white_peace_pair = {
+	set_temp_variable = { white_peace_pair_score = constant:white_peace_pair_score.base }
+
+	if = {
+		limit = { is_major = no PREV = { is_major = no } }
+		add_to_temp_variable = { white_peace_pair_score = constant:white_peace_pair_score.both_minor }
+	}
+	else = {
+		add_to_temp_variable = { white_peace_pair_score = constant:white_peace_pair_score.major_penalty }
+	}
+	if = {
+		limit = { has_war_with_major = no PREV = { has_war_with_major = no } }
+		add_to_temp_variable = { white_peace_pair_score = constant:white_peace_pair_score.no_major_war }
+	}
+	if = {
+		limit = {
+			war_length_with = {
+				tag = PREV
+				months > @WHITE_PEACE_LONG_WAR_MONTHS
+			}
+		}
+		add_to_temp_variable = { white_peace_pair_score = constant:white_peace_pair_score.long_war }
+	}
+	if = {
+		limit = { is_subject = no PREV = { is_subject = no } }
+		add_to_temp_variable = { white_peace_pair_score = constant:white_peace_pair_score.independent }
+	}
+	if = {
+		limit = { is_in_faction = no PREV = { is_in_faction = no } }
+		add_to_temp_variable = { white_peace_pair_score = constant:white_peace_pair_score.outside_factions }
+	}
+	if = {
+		limit = {
+			capital_scope = { is_controlled_by = PREV }
+			PREV = { capital_scope = { is_controlled_by = PREV } }
+		}
+		add_to_temp_variable = { white_peace_pair_score = constant:white_peace_pair_score.capitals_safe }
+	}
+	if = {
+		limit = { check_variable = { white_peace_pair_score < constant:white_peace_pair_score.minimum } }
+		set_temp_variable = { white_peace_pair_score = constant:white_peace_pair_score.minimum }
+	}
+}
+
+add_current_white_peace_primary_to_weighted_pool = {
+	set_temp_variable = { white_peace_primary_selection_weight = 0 }
+	every_enemy_country = {
+		limit = {
+			OR = {
+				AND = {
+					check_variable = { white_peace_select_major_pair > 0 }
+					can_major_pair_receive_white_peace = yes
+				}
+				AND = {
+					check_variable = { white_peace_select_major_pair < 1 }
+					can_minor_pair_receive_white_peace = yes
+				}
+			}
+		}
+		score_white_peace_pair = yes
+		add_to_temp_variable = { white_peace_primary_selection_weight = white_peace_pair_score }
+	}
+	round_temp_variable = white_peace_primary_selection_weight
+	clamp_temp_variable = {
+		var = white_peace_primary_selection_weight
+		min = 0
+	}
+	set_temp_variable = { white_peace_primary_pool_weight_remaining = white_peace_primary_selection_weight }
+	while_loop_effect = {
+		limit = { check_variable = { white_peace_primary_pool_weight_remaining > 0 } }
+		add_to_temp_array = { white_peace_primary_selection_pool = THIS }
+		add_to_temp_variable = { white_peace_primary_selection_pool_count = 1 }
+		subtract_from_temp_variable = { white_peace_primary_pool_weight_remaining = 1 }
+	}
+}
+
+select_weighted_white_peace_primary_candidate = {
+	clear_temp_array = white_peace_primary_selection_pool
+	set_temp_variable = { white_peace_primary_selection_pool_count = 0 }
+	set_temp_variable = { white_peace_weighted_primary_selected = 0 }
+	every_country = {
+		limit = {
+			can_country_be_white_peace_target = yes
+			OR = {
+				AND = {
+					check_variable = { white_peace_select_major_pair > 0 }
+					any_enemy_country = { can_major_pair_receive_white_peace = yes }
+				}
+				AND = {
+					check_variable = { white_peace_select_major_pair < 1 }
+					any_enemy_country = { can_minor_pair_receive_white_peace = yes }
+				}
+			}
+		}
+		add_current_white_peace_primary_to_weighted_pool = yes
+	}
+	if = {
+		limit = { check_variable = { white_peace_primary_selection_pool_count > 0 } }
+		random_scope_in_array = {
+			array = white_peace_primary_selection_pool
+			save_event_target_as = white_peace_primary
+			set_temp_variable = { white_peace_weighted_primary_selected = 1 }
+		}
+	}
+	clear_temp_array = white_peace_primary_selection_pool
+	set_temp_variable = { white_peace_primary_selection_pool_count = 0 }
+	set_temp_variable = { white_peace_primary_selection_weight = 0 }
+	set_temp_variable = { white_peace_primary_pool_weight_remaining = 0 }
+}
+
+add_current_white_peace_partner_to_weighted_pool = {
+	score_white_peace_pair = yes
+	set_temp_variable = { white_peace_partner_pool_weight_remaining = white_peace_pair_score }
+	round_temp_variable = white_peace_partner_pool_weight_remaining
+	clamp_temp_variable = {
+		var = white_peace_partner_pool_weight_remaining
+		min = 0
+	}
+	while_loop_effect = {
+		limit = { check_variable = { white_peace_partner_pool_weight_remaining > 0 } }
+		add_to_temp_array = { white_peace_partner_selection_pool = THIS }
+		add_to_temp_variable = { white_peace_partner_selection_pool_count = 1 }
+		subtract_from_temp_variable = { white_peace_partner_pool_weight_remaining = 1 }
+	}
+}
+
+select_weighted_white_peace_partner_for_current_primary = {
+	clear_temp_array = white_peace_partner_selection_pool
+	set_temp_variable = { white_peace_partner_selection_pool_count = 0 }
+	every_enemy_country = {
+		limit = {
+			OR = {
+				AND = {
+					check_variable = { white_peace_select_major_pair > 0 }
+					can_major_pair_receive_white_peace = yes
+				}
+				AND = {
+					check_variable = { white_peace_select_major_pair < 1 }
+					can_minor_pair_receive_white_peace = yes
+				}
+			}
+		}
+		add_current_white_peace_partner_to_weighted_pool = yes
+	}
+	if = {
+		limit = { check_variable = { white_peace_partner_selection_pool_count > 0 } }
+		random_scope_in_array = {
+			array = white_peace_partner_selection_pool
+			save_white_peace_pair_from_current_partner = yes
+		}
+	}
+	clear_temp_array = white_peace_partner_selection_pool
+	set_temp_variable = { white_peace_partner_selection_pool_count = 0 }
+	set_temp_variable = { white_peace_partner_pool_weight_remaining = 0 }
+}
+
+save_white_peace_pair_from_current_partner = {
+	save_event_target_as = white_peace_partner
+	score_white_peace_pair = yes
+	set_temp_variable = { white_peace_pair_selected = 1 }
+	set_variable = { global.white_peace_last_pair_score = white_peace_pair_score }
+}
+
+select_white_peace_primary_pair = {
+	set_temp_variable = { white_peace_pair_selected = 0 }
+	if = {
+		limit = {
+			check_variable = { white_peace_branch = constant:white_peace_branch.major_country }
+			check_variable = {
+				var = global.white_peace_major_candidate_count
+				value = constant:white_peace_branch_min_candidate.major_pairs
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { white_peace_select_major_pair = 1 }
+		select_weighted_white_peace_primary_candidate = yes
+		if = {
+			limit = { check_variable = { white_peace_weighted_primary_selected > 0 } }
+			event_target:white_peace_primary = {
+				select_weighted_white_peace_partner_for_current_primary = yes
+			}
+		}
+	}
+	if = {
+		limit = { check_variable = { white_peace_pair_selected < 1 } }
+		set_temp_variable = { white_peace_select_major_pair = 0 }
+		select_weighted_white_peace_primary_candidate = yes
+		if = {
+			limit = { check_variable = { white_peace_weighted_primary_selected > 0 } }
+			event_target:white_peace_primary = {
+				select_weighted_white_peace_partner_for_current_primary = yes
+			}
+		}
+	}
+}
+
+prepare_white_peace_runtime_context = {
+	calculate_white_peace_dynamic_cap = yes
+	if = {
+		limit = { check_variable = { global.white_peace_available > 0 } }
+		select_white_peace_branch = yes
+		select_white_peace_primary_pair = yes
+		if = {
+			limit = { check_variable = { white_peace_pair_selected > 0 } }
+			set_variable = { global.white_peace_context_ready = 1 }
+			set_variable = { global.white_peace_selected_stage = white_peace_stage }
+			set_variable = { global.white_peace_selected_branch = white_peace_branch }
+			set_variable = { global.white_peace_selected_pair_cap = white_peace_settlement_pair_cap }
+			set_variable = { global.white_peace_last_pair_score = white_peace_pair_score }
+			event_target:white_peace_primary = { save_event_target_as = event_cluster_actor }
+		}
+		else = {
+			set_variable = { global.white_peace_available = 0 }
+			set_variable = { global.white_peace_skip_reason = constant:white_peace_skip_reason.no_safe_pair }
+			set_variable = { global.white_peace_effective_cap = 0 }
+			set_variable = { global.white_peace_effective_dynamic_cap = 0 }
+		}
+	}
+}
+
+mark_recent_white_peace_pair = {
+	set_country_flag = {
+		flag = recent_white_peace_country
+		days = @WHITE_PEACE_RECENT_COUNTRY_DAYS
+	}
+	meta_effect = {
+		text = {
+			set_country_flag = {
+				flag = recent_white_peace_pair_[WHITE_PEACE_PARTNER_TAG]
+				days = @WHITE_PEACE_RECENT_PAIR_DAYS
+			}
+		}
+		WHITE_PEACE_PARTNER_TAG = "[white_peace_partner.GetTag]"
+	}
+	event_target:white_peace_partner = {
+		set_country_flag = {
+			flag = recent_white_peace_country
+			days = @WHITE_PEACE_RECENT_COUNTRY_DAYS
+		}
+		meta_effect = {
+			text = {
+				set_country_flag = {
+					flag = recent_white_peace_pair_[WHITE_PEACE_PRIMARY_TAG]
+					days = @WHITE_PEACE_RECENT_PAIR_DAYS
+				}
+			}
+			WHITE_PEACE_PRIMARY_TAG = "[white_peace_primary.GetTag]"
+		}
+	}
+	if = {
+		limit = {
+			OR = {
+				is_major = yes
+				event_target:white_peace_partner = { is_major = yes }
+			}
+		}
+		set_country_flag = {
+			flag = recent_major_white_peace_country
+			days = @WHITE_PEACE_RECENT_MAJOR_COUNTRY_DAYS
+		}
+		event_target:white_peace_partner = {
+			set_country_flag = {
+				flag = recent_major_white_peace_country
+				days = @WHITE_PEACE_RECENT_MAJOR_COUNTRY_DAYS
+			}
+		}
+	}
+	if = {
+		limit = { check_variable = { white_peace_branch = constant:white_peace_branch.broad_settlement } }
+		set_global_flag = {
+			flag = recent_broad_white_peace
+			days = @WHITE_PEACE_RECENT_BROAD_DAYS
+		}
+	}
+}
+
+apply_white_peace_pair = {
+	if = {
+		limit = {
+			has_event_target = white_peace_partner
+			event_target:white_peace_partner = { can_pair_receive_white_peace = yes }
+		}
+		set_temp_variable = { white_peace_pair_had_major = 0 }
+		set_temp_variable = { white_peace_pair_long_war = 0 }
+		if = {
+			limit = {
+				OR = {
+					is_major = yes
+					event_target:white_peace_partner = { is_major = yes }
+				}
+			}
+			set_temp_variable = { white_peace_pair_had_major = 1 }
+		}
+		if = {
+			limit = {
+				war_length_with = {
+					tag = event_target:white_peace_partner
+					months > @WHITE_PEACE_LONG_WAR_MONTHS
+				}
+			}
+			set_temp_variable = { white_peace_pair_long_war = 1 }
+		}
+		white_peace = {
+			tag = event_target:white_peace_partner
+			message = white_peace_status_quo_settlement
+		}
+		if = {
+			limit = { check_variable = { white_peace_pair_had_major > 0 } }
+			set_temp_variable = { white_peace_pair_chaos_delta = constant:white_peace_chaos_delta.major_country }
+		}
+		else = {
+			set_temp_variable = { white_peace_pair_chaos_delta = constant:white_peace_chaos_delta.single_minor }
+		}
+		add_to_variable = { global.white_peace_pending_chaos_delta = white_peace_pair_chaos_delta }
+		add_opinion_modifier = {
+			target = event_target:white_peace_partner
+			modifier = white_peace_status_quo_settlement
+		}
+		event_target:white_peace_partner = {
+			add_opinion_modifier = {
+				target = PREV
+				modifier = white_peace_status_quo_settlement
+			}
+		}
+		mark_recent_white_peace_pair = yes
+		add_to_variable = { global.white_peace_pairs_settled = 1 }
+		add_to_variable = { global.white_peace_total_pairs_settled = 1 }
+		if = {
+			limit = { check_variable = { white_peace_branch = constant:white_peace_branch.broad_settlement } }
+			add_to_variable = { global.white_peace_broad_conflicts_settled = 1 }
+		}
+		set_country_flag = {
+			flag = white_peace_no_winner_watch
+			days = @WHITE_PEACE_NO_WINNER_WATCH_DAYS
+		}
+		event_target:white_peace_partner = {
+			set_country_flag = {
+				flag = white_peace_no_winner_watch
+				days = @WHITE_PEACE_NO_WINNER_WATCH_DAYS
+			}
+		}
+		event_target:white_peace_partner = {
+			country_event = { id = chaosx.nr9.20 days = @WHITE_PEACE_NO_WINNER_CHECK_DAYS }
+		}
+		if = {
+			limit = {
+				is_ai = no
+				is_major = no
+				is_subject = no
+				is_in_faction = no
+				event_target:white_peace_partner = {
+					is_major = no
+					is_subject = no
+					is_in_faction = no
+				}
+				check_variable = { white_peace_pair_long_war > 0 }
+			}
+			set_country_flag = achievement_white_peace_status_quo_ante_ready
+		}
+		if = {
+			limit = {
+				event_target:white_peace_partner = { is_ai = no }
+				is_major = no
+				is_subject = no
+				is_in_faction = no
+				event_target:white_peace_partner = {
+					is_major = no
+					is_subject = no
+					is_in_faction = no
+				}
+				check_variable = { white_peace_pair_long_war > 0 }
+			}
+			event_target:white_peace_partner = { set_country_flag = achievement_white_peace_status_quo_ante_ready }
+		}
+		if = {
+			limit = { check_variable = { white_peace_pair_had_major > 0 } }
+			set_global_flag = white_peace_major_branch_fired
+			set_variable = { global.white_peace_last_major_involved = 1 }
+			if = {
+				limit = {
+					is_ai = no
+					is_major = yes
+					check_variable = { white_peace_pair_long_war > 0 }
+				}
+				set_country_flag = achievement_white_peace_silence_of_giants_ready
+			}
+			if = {
+				limit = {
+					event_target:white_peace_partner = {
+						is_ai = no
+						is_major = yes
+					}
+					check_variable = { white_peace_pair_long_war > 0 }
+				}
+				event_target:white_peace_partner = { set_country_flag = achievement_white_peace_silence_of_giants_ready }
+			}
+		}
+		else = {
+			set_variable = { global.white_peace_last_major_involved = 0 }
+			if = {
+				limit = { NOT = { has_global_flag = white_peace_major_branch_fired } }
+				add_to_variable = { global.white_peace_minor_pairs_before_major = 1 }
+				if = {
+					limit = {
+						check_variable = {
+							var = global.white_peace_minor_pairs_before_major
+							value = constant:white_peace_achievement.chain_minor_pairs_required
+							compare = greater_than_or_equals
+						}
+					}
+					set_global_flag = achievement_white_peace_chain_of_tables_ready
+				}
+			}
+		}
+	}
+}
+
+apply_white_peace_selected_pair = {
+	if = {
+		limit = {
+			has_event_target = white_peace_primary
+			has_event_target = white_peace_partner
+		}
+		event_target:white_peace_primary = {
+			apply_white_peace_pair = yes
+		}
+	}
+}
+
+select_next_white_peace_minor_pair = {
+	set_temp_variable = { white_peace_pair_selected = 0 }
+	set_temp_variable = { white_peace_select_major_pair = 0 }
+	select_weighted_white_peace_primary_candidate = yes
+	if = {
+		limit = { check_variable = { white_peace_weighted_primary_selected > 0 } }
+		event_target:white_peace_primary = {
+			select_weighted_white_peace_partner_for_current_primary = yes
+		}
+	}
+}
+
+apply_white_peace_current_context = {
+	set_variable = { global.white_peace_pairs_settled = 0 }
+	set_variable = { global.white_peace_broad_conflicts_settled = 0 }
+	set_variable = { global.white_peace_last_settled_pair_count = 0 }
+	set_variable = { global.white_peace_last_major_involved = 0 }
+	set_variable = { global.white_peace_pending_chaos_delta = 0 }
+	set_temp_variable = { white_peace_branch = global.white_peace_selected_branch }
+	set_temp_variable = { white_peace_stage = global.white_peace_selected_stage }
+	set_temp_variable = { white_peace_settlement_pair_cap = global.white_peace_selected_pair_cap }
+
+	set_global_flag = white_peace_suppress_standard_chaos_on_peace
+	apply_white_peace_selected_pair = yes
+
+	if = {
+		limit = {
+			check_variable = { global.white_peace_pairs_settled > 0 }
+			check_variable = { white_peace_branch = constant:white_peace_branch.major_country }
+		}
+		set_variable = { global.white_peace_last_major_involved = 1 }
+	}
+
+	if = {
+		limit = {
+			check_variable = { global.white_peace_pairs_settled > 0 }
+			OR = {
+				check_variable = { white_peace_branch = constant:white_peace_branch.multi_minor }
+				check_variable = { white_peace_branch = constant:white_peace_branch.broad_settlement }
+			}
+		}
+		set_temp_variable = { white_peace_stop_settlements = 0 }
+		while_loop_effect = {
+			limit = {
+				check_variable = { white_peace_stop_settlements < 1 }
+				check_variable = {
+					var = global.white_peace_pairs_settled
+					value = white_peace_settlement_pair_cap
+					compare = less_than
+				}
+			}
+			select_next_white_peace_minor_pair = yes
+			if = {
+				limit = { check_variable = { white_peace_pair_selected > 0 } }
+				set_temp_variable = { white_peace_pairs_before_loop = global.white_peace_pairs_settled }
+				apply_white_peace_selected_pair = yes
+				if = {
+					limit = {
+						check_variable = {
+							var = global.white_peace_pairs_settled
+							value = white_peace_pairs_before_loop
+							compare = equals
+						}
+					}
+					set_temp_variable = { white_peace_stop_settlements = 1 }
+				}
+			}
+			else = {
+				set_temp_variable = { white_peace_stop_settlements = 1 }
+			}
+		}
+	}
+	clr_global_flag = white_peace_suppress_standard_chaos_on_peace
+
+	set_variable = { global.white_peace_last_settled_pair_count = global.white_peace_pairs_settled }
+	if = {
+		limit = { check_variable = { global.white_peace_last_settled_pair_count > 0 } }
+		add_to_variable = { global.white_peace_total_firings = 1 }
+		if = {
+			limit = {
+				check_variable = {
+					var = global.white_peace_last_settled_pair_count
+					value = constant:white_peace_branch_min_candidate.multi_minor_pairs
+					compare = greater_than_or_equals
+				}
+			}
+			add_to_variable = { global.white_peace_multi_settlement_firings = 1 }
+		}
+		if = {
+			limit = {
+				check_variable = { white_peace_branch = constant:white_peace_branch.broad_settlement }
+				OR = {
+					check_variable = {
+						var = global.white_peace_broad_conflicts_settled
+						value = constant:white_peace_achievement.broad_conflicts_required
+						compare = greater_than_or_equals
+					}
+					check_variable = {
+						var = global.white_peace_last_settled_pair_count
+						value = constant:white_peace_achievement.broad_pairs_required
+						compare = greater_than_or_equals
+					}
+				}
+			}
+			set_global_flag = achievement_white_peace_the_circular_ready
+		}
+		apply_white_peace_pending_chaos_delta = yes
+		record_white_peace_evolution_if_needed = yes
+	}
+}
+
+apply_white_peace_pending_chaos_delta = {
+	if = {
+		limit = { check_variable = { global.white_peace_pending_chaos_delta < 0 } }
+		set_temp_variable = { chaos_change = global.white_peace_pending_chaos_delta }
+		if = {
+			limit = { check_variable = { white_peace_branch = constant:white_peace_branch.broad_settlement } }
+			clamp_temp_variable = {
+				var = chaos_change
+				min = constant:white_peace_chaos_delta.broad_cap
+				max = 0
+			}
+		}
+		else = {
+			clamp_temp_variable = {
+				var = chaos_change
+				min = constant:white_peace_chaos_delta.multi_minor_cap
+				max = 0
+			}
+		}
+		event_target:white_peace_primary = { save_event_target_as = chaos_history_actor }
+		add_chaos_meter_value = yes
+	}
+}
+
+record_white_peace_evolution_if_needed = {
+	if = {
+			limit = {
+				is_current_evolution_enabled = yes
+				check_variable = { white_peace_stage > constant:white_peace_event_log.stage_base }
+				OR = {
+				AND = {
+					check_variable = { white_peace_stage = constant:white_peace_event_log.stage_repeated_minor }
+					NOT = { has_global_flag = white_peace_stage_1_recorded }
+				}
+				AND = {
+					check_variable = { white_peace_stage = constant:white_peace_event_log.stage_major_country }
+					NOT = { has_global_flag = white_peace_stage_2_recorded }
+				}
+				AND = {
+					check_variable = { white_peace_stage = constant:white_peace_event_log.stage_broad_settlement }
+					NOT = { has_global_flag = white_peace_stage_3_recorded }
+				}
+			}
+		}
+		set_temp_variable = { events_log_evolution_event_id = constant:white_peace_event_log.event_id }
+		set_temp_variable = { events_log_evolution_type = constant:white_peace_event_log.evolution_type }
+		set_temp_variable = { events_log_evolution_stage = white_peace_stage }
+		set_temp_variable = { events_log_evolution_tier = white_peace_stage }
+		record_events_log_evolution_entry = yes
+		if = {
+			limit = { check_variable = { white_peace_stage = constant:white_peace_event_log.stage_repeated_minor } }
+			set_global_flag = white_peace_stage_1_recorded
+			set_global_flag = white_peace_stage_1_unlocked
+		}
+		else_if = {
+			limit = { check_variable = { white_peace_stage = constant:white_peace_event_log.stage_major_country } }
+			set_global_flag = white_peace_stage_2_recorded
+			set_global_flag = white_peace_stage_2_unlocked
+		}
+		else_if = {
+			limit = { check_variable = { white_peace_stage = constant:white_peace_event_log.stage_broad_settlement } }
+			set_global_flag = white_peace_stage_3_recorded
+			set_global_flag = white_peace_stage_3_unlocked
+		}
+	}
+}
+
+fire_white_peace_report_event = {
+	set_temp_variable = { white_peace_branch = global.white_peace_selected_branch }
+	if = {
+		limit = {
+			has_event_target = white_peace_primary
+			check_variable = { white_peace_branch = constant:white_peace_branch.single_minor }
+		}
+		event_target:white_peace_primary = { country_event = { id = chaosx.nr9.2 } }
+	}
+	else_if = {
+		limit = {
+			has_event_target = white_peace_primary
+			check_variable = { white_peace_branch = constant:white_peace_branch.multi_minor }
+		}
+		event_target:white_peace_primary = { country_event = { id = chaosx.nr9.3 } }
+	}
+	else_if = {
+		limit = {
+			has_event_target = white_peace_primary
+			check_variable = { white_peace_branch = constant:white_peace_branch.major_country }
+		}
+		event_target:white_peace_primary = { country_event = { id = chaosx.nr9.4 } }
+	}
+	else_if = {
+		limit = {
+			has_event_target = white_peace_primary
+			check_variable = { white_peace_branch = constant:white_peace_branch.broad_settlement }
+		}
+		event_target:white_peace_primary = { country_event = { id = chaosx.nr9.5 } }
+	}
+}

@@ -1,62 +1,128 @@
 add_namespace = chaosx.nr9
 
 ##############################################################################################################
-#    ##    ## ########      #######
-#    ###   ## ##     ##    ##     ##
-#    ####  ## ##     ##    ##     ##
-#    ## ## ## ########      ########
-#    ##  #### ##   ##             ##
-#    ##   ### ##    ##     ##     ##
-#    ##    ## ##     ##     #######
-##############################################################################################################
-#   #     #
-#   #  #  # #    # # ##### ######    #####  ######   ##    ####  ######
-#   #  #  # #    # #   #   #         #    # #       #  #  #    # #
-#   #  #  # ###### #   #   #####     #    # #####  #    # #      #####
-#   #  #  # #    # #   #   #         #####  #      ###### #      #
-#   #  #  # #    # #   #   #         #      #      #    # #    # #
-#    ## ##  #    # #   #   ######    #      ###### #    #  ####  ######
-
+# EVENT 009 - WHITE PEACE
 ##############################################################################################################
 
 country_event = {
-    id = chaosx.nr9.1
-    title = chaosx.nr9.1.t
+	id = chaosx.nr9.1
+	title = chaosx.nr9.1.t
 
-    hidden = yes
-    is_triggered_only = yes
+	hidden = yes
+	is_triggered_only = yes
 
-    immediate = {
-        random_country = {
-            limit = { any_country = { has_war_with = PREV } NOT = { original_tag = ZZZ } }
-            country_event = { id = chaosx.nr9.2 days = 1 }
-        }
-    }
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					check_variable = { global.white_peace_context_ready < 1 }
+					NOT = { has_event_target = white_peace_primary }
+					NOT = { has_event_target = white_peace_partner }
+				}
+			}
+			prepare_white_peace_runtime_context = yes
+		}
+		if = {
+			limit = {
+				check_variable = { global.white_peace_context_ready > 0 }
+				has_event_target = white_peace_primary
+				has_event_target = white_peace_partner
+			}
+			fire_white_peace_report_event = yes
+		}
+	}
 }
 
 ##############################################################################################################
 
 country_event = {
-    id = chaosx.nr9.2
-    title = chaosx.nr9.2.t
-    desc = chaosx.nr9.2.d
-    picture = GFX_report_event_generic_handshake
+	id = chaosx.nr9.2
+	title = chaosx.nr9.2.t
+	desc = chaosx.nr9.2.d
+	picture = GFX_report_event_009_white_peace
 
-    is_triggered_only = yes
+	is_triggered_only = yes
 
-    option = {
-        name = chaosx.nr9.2.a
-        ai_chance = {
-            factor = 0
-            modifier = {
-                surrender_progress > 0.5
-                add = 50
-            }
-        }
-        every_enemy_country = {
-            ROOT = {
-                white_peace = PREV
-            }
-        }
-    }
+	option = {
+		name = chaosx.nr9.2.a
+		custom_effect_tooltip = chaosx.nr9.2.tt
+		apply_white_peace_current_context = yes
+	}
+}
+
+##############################################################################################################
+
+country_event = {
+	id = chaosx.nr9.3
+	title = chaosx.nr9.3.t
+	desc = chaosx.nr9.3.d
+	picture = GFX_report_event_009_white_peace
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr9.3.a
+		custom_effect_tooltip = chaosx.nr9.3.tt
+		apply_white_peace_current_context = yes
+	}
+}
+
+##############################################################################################################
+
+country_event = {
+	id = chaosx.nr9.4
+	title = chaosx.nr9.4.t
+	desc = chaosx.nr9.4.d
+	picture = GFX_report_event_009_white_peace
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr9.4.a
+		custom_effect_tooltip = chaosx.nr9.4.tt
+		apply_white_peace_current_context = yes
+	}
+}
+
+##############################################################################################################
+
+country_event = {
+	id = chaosx.nr9.5
+	title = chaosx.nr9.5.t
+	desc = chaosx.nr9.5.d
+	picture = GFX_report_event_009_white_peace
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr9.5.a
+		custom_effect_tooltip = chaosx.nr9.5.tt
+		apply_white_peace_current_context = yes
+	}
+}
+
+##############################################################################################################
+
+country_event = {
+	id = chaosx.nr9.20
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_country_flag = white_peace_no_winner_watch
+				NOT = { has_capitulated = yes }
+				is_subject = no
+				FROM = {
+					exists = yes
+					has_country_flag = white_peace_no_winner_watch
+					NOT = { has_capitulated = yes }
+					is_subject = no
+				}
+			}
+			set_country_flag = achievement_white_peace_no_winner_ready
+			FROM = { set_country_flag = achievement_white_peace_no_winner_ready }
+		}
+	}
 }
