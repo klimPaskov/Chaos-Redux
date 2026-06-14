@@ -91,6 +91,9 @@ initialize_event_system = {
     set_variable = { global.default_event_weight = constant:event_system_defaults.event_weight }
     set_variable = { global.minor_event_recovery_rate = constant:event_system_defaults.recovery_rate }
     set_variable = { global.major_event_weight_per_minor = constant:event_system_defaults.major_event_weight_per_minor }
+    set_variable = { global.current_dynamic_major_weight_gain = 0 }
+    set_variable = { global.current_dynamic_major_active_major_count = 0 }
+    set_variable = { global.current_dynamic_major_active_non_major_count = 0 }
     set_variable = { global.reduce_cap_factor = constant:event_system_defaults.reduce_cap_factor }
 
     set_variable = { global.minor_events_since_major = 0 }
@@ -114,6 +117,7 @@ initialize_event_system = {
     initialize_all_events_array = yes
     count_total_events_plus_one = yes
     initialize_event_weights = yes
+    calculate_dynamic_major_weight_gain = yes
     initialize_crisis_rescue_registry = yes
     initialize_event_cluster_system = yes
 
@@ -444,41 +448,156 @@ get_event_cap = {
     }
 }
 
-# Update major event weights based on minor events fired
-update_major_event_weights = {
-    # Calculate new weight for major events
-    set_temp_variable = { major_weight = global.minor_events_since_major }
-    multiply_temp_variable = { major_weight = global.major_event_weight_per_minor }
-    set_variable = { global.current_major_event_weight = major_weight }
+# Check whether event_id is part of the current automatic random-event pool.
+evaluate_random_event_active_pool_candidate = {
+	# Input: temp variable event_id
+	# Output: temp variable event_active_pool_candidate_is_valid
+	set_temp_variable = { event_active_pool_candidate_is_valid = 1 }
+	get_event_type = yes
 
-    # Update all unfired major event weights
-    for_loop_effect = {
-        start = 0
-        end = global.major_events^num
-        value = i
-        set_temp_variable = { event_id = global.major_events^i }
-        if = {
-            limit = {
-                NOT = { is_in_array = { global.fired_events = event_id } }
-                NOT = {
-                    AND = {
-                        check_variable = { event_id = 91 }
-                        NOT = { has_global_flag = communism_spread_world_revolution_unlocked }
-                    }
-                }
-            }
-            set_temp_variable = { new_weight = major_weight }
-            set_event_weight = yes
-        }
-        else_if = {
-            limit = {
-                check_variable = { event_id = 91 }
-                NOT = { has_global_flag = communism_spread_world_revolution_unlocked }
-            }
-            set_temp_variable = { new_weight = 0 }
-            set_event_weight = yes
-        }
-    }
+	if = {
+		limit = {
+			OR = {
+				is_in_array = { global.disabled_events = event_id }
+				AND = {
+					check_variable = { event_id = 91 }
+					NOT = { has_global_flag = communism_spread_world_revolution_unlocked }
+				}
+				AND = {
+					check_variable = { event_id = 3 }
+					NOT = { holy_realm_has_valid_refuge_host = yes }
+				}
+				AND = {
+					check_variable = { event_id = 7 }
+					NOT = { any_country = { fury_can_be_selected = yes } }
+				}
+				AND = {
+					check_variable = { event_id = constant:tensions_rising_event_log.event_id }
+					NOT = { is_tensions_rising_automatic_event_available = yes }
+				}
+				AND = {
+					is_in_array = { global.fired_events = event_id }
+					NOT = { check_variable = { event_type = constant:event_system_event_type.repeatable } }
+				}
+			}
+		}
+		set_temp_variable = { event_active_pool_candidate_is_valid = 0 }
+	}
+}
+
+# Count current active random-pool entries used by dynamic major gain.
+count_dynamic_major_weight_pool_events = {
+	set_temp_variable = { dynamic_major_active_major_count = 0 }
+	set_temp_variable = { dynamic_major_active_non_major_count = 0 }
+
+	for_loop_effect = {
+		start = 0
+		end = global.major_events^num
+		value = i
+		set_temp_variable = { event_id = global.major_events^i }
+		evaluate_random_event_active_pool_candidate = yes
+		if = {
+			limit = { check_variable = { event_active_pool_candidate_is_valid > 0 } }
+			add_to_temp_variable = { dynamic_major_active_major_count = 1 }
+		}
+	}
+
+	for_loop_effect = {
+		start = 0
+		end = global.fire_once_events^num
+		value = i
+		set_temp_variable = { event_id = global.fire_once_events^i }
+		evaluate_random_event_active_pool_candidate = yes
+		if = {
+			limit = { check_variable = { event_active_pool_candidate_is_valid > 0 } }
+			add_to_temp_variable = { dynamic_major_active_non_major_count = 1 }
+		}
+	}
+
+	for_loop_effect = {
+		start = 0
+		end = global.repeatable_events^num
+		value = i
+		set_temp_variable = { event_id = global.repeatable_events^i }
+		evaluate_random_event_active_pool_candidate = yes
+		if = {
+			limit = { check_variable = { event_active_pool_candidate_is_valid > 0 } }
+			add_to_temp_variable = { dynamic_major_active_non_major_count = 1 }
+		}
+	}
+
+	set_variable = { global.current_dynamic_major_active_major_count = dynamic_major_active_major_count }
+	set_variable = { global.current_dynamic_major_active_non_major_count = dynamic_major_active_non_major_count }
+}
+
+calculate_dynamic_major_weight_gain = {
+	count_dynamic_major_weight_pool_events = yes
+	set_variable = { global.current_dynamic_major_weight_gain = 0 }
+
+	if = {
+		limit = { check_variable = { global.current_dynamic_major_active_major_count < 1 } }
+		set_variable = { global.current_major_event_weight = 0 }
+	}
+
+	if = {
+		limit = {
+			check_variable = { global.current_dynamic_major_active_major_count > 0 }
+			check_variable = { global.current_dynamic_major_active_non_major_count > 0 }
+		}
+		set_temp_variable = { dynamic_major_gain = global.major_event_weight_per_minor }
+		multiply_temp_variable = { dynamic_major_gain = global.current_dynamic_major_active_non_major_count }
+		divide_temp_variable = { dynamic_major_gain = global.current_dynamic_major_active_major_count }
+		multiply_temp_variable = { dynamic_major_gain = constant:event_system_dynamic_major_gain.baseline_major_events }
+		divide_temp_variable = { dynamic_major_gain = constant:event_system_dynamic_major_gain.baseline_non_major_events }
+		round_temp_variable = dynamic_major_gain
+		clamp_temp_variable = {
+			var = dynamic_major_gain
+			min = constant:settings_advanced_bounds.major_weight_per_minor.min
+			max = constant:settings_advanced_bounds.major_weight_per_minor.max
+		}
+		set_variable = { global.current_dynamic_major_weight_gain = dynamic_major_gain }
+	}
+}
+
+apply_dynamic_major_weight_gain_after_minor = {
+	calculate_dynamic_major_weight_gain = yes
+
+	if = {
+		limit = { check_variable = { global.current_dynamic_major_weight_gain > 0 } }
+		for_loop_effect = {
+			start = 0
+			end = global.major_events^num
+			value = i
+			set_temp_variable = { event_id = global.major_events^i }
+			evaluate_random_event_active_pool_candidate = yes
+			if = {
+				limit = { check_variable = { event_active_pool_candidate_is_valid > 0 } }
+				get_event_weight = yes
+				if = {
+					limit = { check_variable = { event_weight < 2 } }
+					set_temp_variable = { event_weight = 0 }
+				}
+				add_to_temp_variable = { event_weight = global.current_dynamic_major_weight_gain }
+				round_temp_variable = event_weight
+				set_temp_variable = { new_weight = event_weight }
+				set_event_weight = yes
+				set_variable = { global.current_major_event_weight = event_weight }
+			}
+			else_if = {
+				limit = {
+					check_variable = { event_id = 91 }
+					NOT = { has_global_flag = communism_spread_world_revolution_unlocked }
+				}
+				set_temp_variable = { new_weight = 0 }
+				set_event_weight = yes
+			}
+		}
+	}
+}
+
+# Apply dynamic major gain after a minor pacing event
+update_major_event_weights = {
+	apply_dynamic_major_weight_gain_after_minor = yes
 }
 
 # Update for repeatable event weights
@@ -547,6 +666,7 @@ on_major_event_global_pacing_update = {
 	reset_unfired_major_event_weights = yes
 	on_major_event_timer_update = yes
 	set_variable = { global.current_major_event_weight = 0 }
+	calculate_dynamic_major_weight_gain = yes
 }
 
 on_event_cluster_global_pacing_update = {
@@ -664,7 +784,7 @@ on_major_event_fired = {
     log_event_fired_summary = yes
 }
 
-# Reset all unfired major event weights to 0
+# Reset all unfired major event weights to the engine-safe inactive floor.
 reset_unfired_major_event_weights = {
     for_loop_effect = {
         start = 0
@@ -960,10 +1080,10 @@ log_event_system_debug = {
     count_unfired_major_events = yes
     count_unfired_fire_once_events = yes
     count_unfired_repeatable_events = yes
+    calculate_dynamic_major_weight_gain = yes
 
     # Calculate derived values
-    set_temp_variable = { current_major_weight = global.minor_events_since_major }
-    multiply_temp_variable = { current_major_weight = global.major_event_weight_per_minor }
+    set_temp_variable = { current_major_weight = global.current_major_event_weight }
     set_temp_variable = { total_unfired_events = unfired_major_events }
     add_to_temp_variable = { total_unfired_events = unfired_fire_once_events }
     add_to_temp_variable = { total_unfired_events = unfired_repeatable_events }
@@ -989,7 +1109,9 @@ log_event_system_debug = {
     # Major event weight information
     log = "MAJOR EVENT WEIGHTS:"
     log = "Minor events fired since last major: [?global.minor_events_since_major]"
-    log = "Current major event weight: [?current_major_weight]"
+    log = "Current accumulated major event weight: [?current_major_weight]"
+    log = "Current calculated major gain: [?global.current_dynamic_major_weight_gain]"
+    log = "Active pool counts: major=[?global.current_dynamic_major_active_major_count], non_major=[?global.current_dynamic_major_active_non_major_count]"
     log = "CHAOS_REDUX_SUBSECTION"
 
     # System configuration
@@ -997,7 +1119,7 @@ log_event_system_debug = {
     log = "Minor event weight: [?global.default_event_weight]"
     log = "Minor event recovery rate: [?global.minor_event_recovery_rate]"
     log = "Minor repeatable event cap reduction: [?global.reduce_cap_factor]"
-    log = "Major event weight per minor: [?global.major_event_weight_per_minor]"
+    log = "Configured baseline major gain: [?global.major_event_weight_per_minor]"
     log = "CHAOS_REDUX_SUBSECTION"
 
     # Dynamic timer system status

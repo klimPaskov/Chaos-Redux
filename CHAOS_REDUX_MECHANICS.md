@@ -138,7 +138,7 @@ The Holy Realm uses this rule directly: Tibet is the normal host; if Tibet no lo
 ### Major Events
 
 - **Initial State**: Weight starts at 0 (inactive)
-- **Activation**: Weight increases by 150 per minor event fired
+- **Activation**: Weight increases by the current dynamic major gain after each minor pacing event. The configured baseline is 150 at 90 active non-major events and 10 active major events.
 - **Firing Condition**: Compete with other events based on accumulated weight
 - **Weight After Firing**: Permanently set to 0 for the fired event and all unfired major events reset to 0 weight
 - **Purpose**: Events that have a major impact on the world right away
@@ -148,7 +148,7 @@ The Holy Realm uses this rule directly: Tibet is the normal host; if Tibet no lo
 | --- | --- | --- | --- | --- |
 | **Fire-Once** | `1000` | Fires once per campaign | None | Event is marked fired permanently and removed from future selection; still adds minor-event timer pressure |
 | **Repeatable** | `1000` | Can fire repeatedly | `+20` weight per month up to current cap | Weight cap is halved each firing; still adds minor-event timer pressure |
-| **Major** | `0` | Fires once per campaign | `+150` weight per minor event fired | Fired major resets major weights and resets timer acceleration state |
+| **Major** | `0` | Fires once per campaign | Current dynamic major gain per minor pacing event | Fired major resets major weights and resets timer acceleration state |
 
 ### Super Event Example
 
@@ -368,7 +368,7 @@ Any row in **History**, **Evolutions**, **Events**, or **Clusters** can be click
 
 Event clusters are linked groups of normal events. The random-event picker still selects one event first; if that event belongs to a cluster, the cluster can roll to fire the wider incident instead of only the selected event.
 
-Cluster firing counts as one global pacing event. Member events still apply their effects, log entries, repeatable cap changes, fire-once removal, fired history, and event details, but they do not each advance the event timer or major-event weights.
+Cluster firing counts as one global pacing event. Member events still apply their effects, log entries, repeatable cap changes, fire-once removal, fired history, and event details, but they do not each advance the event timer or apply the dynamic major-event gain.
 
 The settings UI has an Event Clusters view for selecting a cluster ID, checking availability, and manually triggering a cluster. Fired clusters appear in the event log **Clusters** tab with the cluster actor, tier, fired/skipped counts, and member reasons.
 
@@ -410,7 +410,7 @@ The settings UI has an Event Clusters view for selecting a cluster ID, checking 
 
 - **Recovery Rate**: 0-10000 weight recovery per month (default: 20)
 - **Cap Reduction Factor**: 0-100% weight cap reduction per firing (default: 50%)
-- **Major Event Weight**: 0-10000 weight per minor event (default: 150)
+- **Baseline Major Gain**: 0-10000 configured baseline gain (default: 150). At 90 active non-major events and 10 active major events, the current dynamic major gain equals this value.
 - **Timer Modifiers**: 0.1x-2.0x chaos tier multipliers
 
 <https://github.com/user-attachments/assets/cd4a3168-5f4f-47c8-96d0-e968a3007138>
@@ -451,7 +451,7 @@ Debug and monitoring are split between live UI inspection and optional log outpu
 ### Live Inspection
 
 - **Event Logs window**: opened with the settings log button or keyboard shortcuts, and organized into **Status**, **History**, **Evolutions**, **Events**, and **Clusters** tabs.
-- **Status tab**: shows current event-system counters and live tuning values, including current major weight, recovery rate, cap reduction, weight per minor event, default event weight, and timer modifier.
+- **Status tab**: shows current event-system counters and live tuning values, including accumulated major weight, current calculated major gain with its baseline, recovery rate, cap reduction, default event weight, and timer modifier.
 - **History tab**: records fired automatic events with event ID, type, date, actor context when available, and a clickable detail window.
 - **Evolutions tab**: records evolution milestones separately from normal event history, including tier, stage, type, and actor where the evolution belongs to a country.
 - **Events tab**: shows the current event catalogue with live weight, fired count, event type, unique/repeatable state, and enable/disable controls.
