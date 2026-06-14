@@ -6,6 +6,8 @@ Reference inspection completed:
 - `.agents/skills/chaos-redux-event-assets/assets/achievements/achievement.png`
 - `.agents/skills/chaos-redux-event-assets/assets/achievements/achievement_grey.png`
 - `.agents/skills/chaos-redux-event-assets/assets/achievements/achievement_not_eligible.png`
+- `.agents/skills/chaos-redux-event-assets/assets/report_event_images/report_event_soldiers_marching.png`
+- `.agents/skills/chaos-redux-event-assets/assets/report_event_images/report_event_soldiers_parade.png`
 - Additional Chaos Redux achievement examples in the same folder for framing, contrast, and readability checks.
 - Existing Chaos Redux report and news DDS dimensions and sprite wiring in `gfx/event_pictures/` and `interface/008_tensions_rising_event_images.gfx`.
 
@@ -17,8 +19,9 @@ Source mode:
 
 DDS conversion note:
 - Local conversion used `convert -define dds:compression=none`.
-- All final DDS files validate as `64x64`.
-- `file` reports a mix of `RGB888` and `ARGB8888` across the triplets; all exports remain valid uncompressed DDS outputs for the HOI4 achievement pipeline.
+- Event-image DDS outputs validate at their target sizes, including `210x176` for `report_event_tensions_rising`.
+- Achievement DDS triplets validate at `64x64`.
+- `file` reports a mix of `RGB888` and `ARGB8888` across the achievement triplets; all exports remain valid uncompressed DDS outputs for the HOI4 achievement pipeline.
 
 ## Assets
 
@@ -28,14 +31,16 @@ DDS conversion note:
 - Related event id: `008`
 - Related event slug: `tensions_rising`
 - Source mode: `$imagegen`
-- Source PNG A: `docs/assets/008_tensions_rising/source_png/report_event_tensions_rising_source_a.png`
-- Source PNG B: `docs/assets/008_tensions_rising/source_png/report_event_tensions_rising_source_b.png`
+- Prompt file: `docs/assets/008_tensions_rising/prompts/report_event_tensions_rising.txt`
+- Source PNG: `docs/assets/008_tensions_rising/source_png/report_event_tensions_rising_source.png`
 - Processed PNG: `docs/assets/008_tensions_rising/processed_png/report_event_tensions_rising.png`
 - Final DDS: `gfx/event_pictures/report_event_tensions_rising.dds`
 - Target size: `210x176`
 - Sprite name: `GFX_report_event_tensions_rising`
 - `.gfx` file: `interface/008_tensions_rising_event_images.gfx`
-- Notes: Diplomatic-cable pressure scene for the repeatable report event.
+- Style notes: Report-card treatment with black-and-white plus sepia toning, visible tilt, soft shadow, transparent corners, light paper border, and film grain.
+- Generation rationale: A unique fictional diplomatic-panic scene fits the event better than archive sourcing and avoids bland map-only or empty-desk compositions.
+- Notes: Crowded late-1930s embassy cable room with diplomats around a crisis map, stacked telegram slips, pinned border-incident photos, and harsh lamp lighting. No readable generated text, placeholders, flags, or modern devices.
 - Asset status: `complete`
 
 ### `news_event_tensions_red_line`
