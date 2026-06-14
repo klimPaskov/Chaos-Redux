@@ -15,7 +15,7 @@ The Event Logs window tracks fired automatic events in a dedicated popup and exp
 4. Opening `Evolutions` calls `rebuild_events_log_evolution_view`.
 5. Opening `Events` calls `rebuild_events_log_events_view`.
 6. Opening `Clusters` calls `rebuild_events_log_cluster_view`.
-7. Status tab shows current counters and controls plus a right-side live-values panel (`current major weight`, `recovery rate`, `cap reduction`, `weight per minor`, `default weight`, `timer modifier`).
+7. Status tab shows current counters and controls plus a right-side live-values panel (`accumulated major weight`, `current major gain` with baseline, `recovery rate`, `cap reduction`, `default weight`, `timer modifier`).
 
 ## History tab behavior
 - Filter options: `All`, `Major`, `Minor Repeatable`, `Minor Fire Once`.

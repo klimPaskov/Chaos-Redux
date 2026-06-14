@@ -16,7 +16,7 @@ The registered clusters are:
 3. `fire_event_by_temp_id` checks whether the selected event belongs to a cluster. The cluster roll only runs while `automatic_event_firing_context` is present.
 4. If the selected event has a cluster, the system checks cluster type, unlock tier, cooldown, member availability, and the chaos-scaled cluster roll.
 5. If the cluster fires, valid members are ordered by danger and placed into a country-scoped pending queue.
-6. The cluster applies global pacing once: repeatable and one-time clusters count as one minor event for timer compression and major-event weight growth, while major clusters count as one major event for timer and major-weight reset behavior.
+6. The cluster applies global pacing once: repeatable and one-time clusters count as one minor pacing event for timer compression and one dynamic major-gain application, while major clusters count as one major event for timer and major-weight reset behavior.
 7. The first queued member fires immediately through the shared cluster-member context, so its effects, history logging, fired state, fire-once removal, and own post-fire weight changes still apply without adding another timer or major-weight update.
 8. Later queued members fire from `chaosx.event_clusters.2` after tier-scaled random cooldowns with the same cluster-member context.
 9. If the cluster does not fire, the selected event fires normally.

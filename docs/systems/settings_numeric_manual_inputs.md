@@ -11,7 +11,7 @@ The following fields now support direct keyboard entry:
 - Chaos Meter preview value
 - Advanced Settings recovery rate
 - Advanced Settings cap reduction
-- Advanced Settings major event weight
+- Advanced Settings baseline major gain
 
 The Event ID box already used a separate manual-entry path and remains on that existing system.
 
@@ -36,7 +36,7 @@ The typed input is still staged in the same way as the arrow controls:
 - Chaos value is clamped between `0` and `1500`.
 - Recovery rate is clamped to the configured advanced bounds.
 - Cap reduction is entered as a whole-number percent and is converted back into the internal `0.0-1.0` factor.
-- Major event weight is clamped to the configured advanced bounds.
+- Baseline major gain is clamped to the configured advanced bounds. It feeds the dynamic major-gain formula, where the current gain equals the baseline at 90 active non-major events and 10 active major events.
 
 ## Interaction With Existing Systems
 
