@@ -36,22 +36,18 @@
 @TENSIONS_RISING_TIMER_PULSE_STAGE_4_CAP_DAYS = 315
 
 tensions_rising_prepare_random_event_fire = {
-	get_tensions_rising_stage = yes
 	if = {
 		limit = {
-			check_variable = { tensions_rising_stage < constant:tensions_rising_event_log.stage_1 }
-			NOT = { can_tensions_rising_baseline_fire = yes }
+			NOT = { is_tensions_rising_automatic_event_available = yes }
 		}
 		set_temp_variable = { event_single_fire_allowed = 0 }
 	}
 }
 
 evaluate_tensions_rising_random_candidate = {
-	get_tensions_rising_stage = yes
 	if = {
 		limit = {
-			check_variable = { tensions_rising_stage < constant:tensions_rising_event_log.stage_1 }
-			NOT = { can_tensions_rising_baseline_fire = yes }
+			NOT = { is_tensions_rising_automatic_event_available = yes }
 		}
 		set_temp_variable = { random_event_selection_candidate_is_valid = 0 }
 	}
@@ -191,22 +187,7 @@ apply_tensions_rising_distributed_world_tension = {
 }
 
 tensions_rising_sync_world_tension_tracker = {
-	set_variable = { global.current_world_tension = global.threat }
-	multiply_variable = { global.current_world_tension = 100 }
-	if = {
-		limit = { NOT = { has_variable = global.highest_world_tension_recorded } }
-		set_variable = { global.highest_world_tension_recorded = global.current_world_tension }
-	}
-	else_if = {
-		limit = {
-			check_variable = {
-				var = global.current_world_tension
-				value = global.highest_world_tension_recorded
-				compare = greater_than
-			}
-		}
-		set_variable = { global.highest_world_tension_recorded = global.current_world_tension }
-	}
+	chaos_meter_update_world_tension = yes
 }
 
 apply_tensions_rising_stage_world_tension = {

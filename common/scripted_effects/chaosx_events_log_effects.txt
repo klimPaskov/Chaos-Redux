@@ -3132,6 +3132,13 @@ rebuild_events_log_events_view = {
                 }
                 set_temp_variable = { events_log_events_live_weight = -1 }
             }
+            if = {
+                limit = {
+                    check_variable = { event_id = constant:tensions_rising_event_log.event_id }
+                    NOT = { is_tensions_rising_automatic_event_available = yes }
+                }
+                set_temp_variable = { events_log_events_live_weight = -1 }
+            }
 
             add_to_array = {
                 array = temp_events_log_events_source_event_id_entries
