@@ -15,7 +15,7 @@ Event 005 is a major Soviet crisis started through `chaosx.nr5.1` and visible ev
 - focus trees: `common/national_focus/005_soviet_collapse_*.txt`
 - localisation: `localisation/english/005_soviet_collapse*.yml`
 - country setup: `history/countries/*`
-- assets: `gfx/`, `interface/`, `music/`, `sound/`, and `docs/assets/005_soviet_union_collapse/`
+- assets: `gfx/`, `interface/`, `music/`, `sound/`, `docs/assets/005_soviet_union_collapse/`, and `docs/assets/005_soviet_collapse/`
 
 The main active systems are:
 
@@ -85,6 +85,8 @@ Event 005 registers two event-log evolution families:
 - High-Chaos Successor Mutation, type `constant:soviet_collapse_high_chaos_event_log.evolution_type`: records the first qualifying non-republic successor authority for its chaos tier. Branch IDs choose the actor-specific title and body, while the player-facing stage display comes from the logged tier: Stage 4 at Totalen Chaos and Stage 5 at World Collapse. Later high-chaos reports stay out of the evolution log.
 
 The event-details preview list for event ID `5` is registered in `events_log_rebuild_open_event_details_view`. Player-facing evolution body text must match the Event 005 row in `docs/spreadsheets/chaos_redux_events_catalog.xlsx` exactly after implementation facts are finalized. The current documentation should not be treated as proof that event-detail and spreadsheet wording are already aligned.
+
+Soviet Collapse evolution detail popups use the portrait-style details layout for both registered evolution families. Their portrait slot returns `GFX_soviet_collapse_evolution_portraits_animated`, a 66-frame loop assembled from the existing `gfx/leaders/005_soviet_collapse/*_leader.dds` portrait set. The static fallback is `GFX_soviet_collapse_evolution_portraits`, and both sprite aliases are registered in `interface/005_soviet_collapse_custom_icons.gfx`. The animation package, contact sheet, preview GIF, source-frame PNGs, processed-frame PNGs, and handoff notes live under `docs/assets/005_soviet_collapse/`.
 
 ## Legacy Doc Routing
 
