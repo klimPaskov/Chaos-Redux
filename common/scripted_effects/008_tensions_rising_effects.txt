@@ -7,6 +7,12 @@
 # super-event.
 # ============================================================================
 
+# These caps equal each packet divided by the minimum world-tension slice.
+@TENSIONS_RISING_WORLD_TENSION_10_MAX_RECIPIENTS = 100
+@TENSIONS_RISING_WORLD_TENSION_20_MAX_RECIPIENTS = 200
+@TENSIONS_RISING_WORLD_TENSION_50_MAX_RECIPIENTS = 500
+@TENSIONS_RISING_WORLD_TENSION_100_MAX_RECIPIENTS = 1000
+
 tensions_rising_prepare_random_event_fire = {
 	get_tensions_rising_stage = yes
 	if = {
@@ -87,47 +93,74 @@ apply_tensions_rising_distributed_world_tension = {
 
 	if = {
 		limit = { check_variable = { tensions_rising_world_tension_country_count > 0 } }
-		set_temp_variable = { tensions_rising_world_tension_max_recipients = tensions_rising_world_tension_packet }
-		divide_temp_variable = { tensions_rising_world_tension_max_recipients = constant:tensions_rising_world_tension_gain.minimum_country_slice }
-		round_temp_variable = tensions_rising_world_tension_max_recipients
-		set_temp_variable = { tensions_rising_world_tension_recipient_count = tensions_rising_world_tension_country_count }
 		if = {
 			limit = {
-				check_variable = {
-					var = tensions_rising_world_tension_recipient_count
-					value = tensions_rising_world_tension_max_recipients
-					compare = greater_than
+				check_variable = { tensions_rising_world_tension_packet = constant:tensions_rising_world_tension_gain.stage_4 }
+				check_variable = { tensions_rising_world_tension_country_count > @TENSIONS_RISING_WORLD_TENSION_100_MAX_RECIPIENTS }
+			}
+			every_country = {
+				limit = { is_tensions_rising_world_tension_source_country = yes }
+				random_select_amount = @TENSIONS_RISING_WORLD_TENSION_100_MAX_RECIPIENTS
+				add_named_threat = {
+					threat = constant:tensions_rising_world_tension_gain.minimum_country_slice
+					name = tensions_rising_global_panic_threat
 				}
 			}
-			set_temp_variable = { tensions_rising_world_tension_recipient_count = tensions_rising_world_tension_max_recipients }
 		}
-		if = {
-			limit = { check_variable = { tensions_rising_world_tension_recipient_count > 0 } }
-			set_temp_variable = { tensions_rising_world_tension_slice = tensions_rising_world_tension_packet }
-			divide_temp_variable = { tensions_rising_world_tension_slice = tensions_rising_world_tension_recipient_count }
-			if = {
-				limit = {
-					check_variable = {
-						var = tensions_rising_world_tension_slice
-						value = constant:tensions_rising_world_tension_gain.minimum_country_slice
-						compare = less_than
-					}
-				}
-				set_temp_variable = { tensions_rising_world_tension_slice = constant:tensions_rising_world_tension_gain.minimum_country_slice }
+		else_if = {
+			limit = {
+				check_variable = { tensions_rising_world_tension_packet = constant:tensions_rising_world_tension_gain.stage_3 }
+				check_variable = { tensions_rising_world_tension_country_count > @TENSIONS_RISING_WORLD_TENSION_50_MAX_RECIPIENTS }
 			}
-			meta_effect = {
-				text = {
-					every_country = {
-						limit = { is_tensions_rising_world_tension_source_country = yes }
-						random_select_amount = [RECIPIENT_COUNT]
-						add_named_threat = {
-							threat = [THREAT_SLICE]
-							name = tensions_rising_global_panic_threat
-						}
-					}
+			every_country = {
+				limit = { is_tensions_rising_world_tension_source_country = yes }
+				random_select_amount = @TENSIONS_RISING_WORLD_TENSION_50_MAX_RECIPIENTS
+				add_named_threat = {
+					threat = constant:tensions_rising_world_tension_gain.minimum_country_slice
+					name = tensions_rising_global_panic_threat
 				}
-				RECIPIENT_COUNT = "[?tensions_rising_world_tension_recipient_count|.0]"
-				THREAT_SLICE = "[?tensions_rising_world_tension_slice|.3]"
+			}
+		}
+		else_if = {
+			limit = {
+				check_variable = { tensions_rising_world_tension_packet = constant:tensions_rising_world_tension_gain.stage_2 }
+				check_variable = { tensions_rising_world_tension_country_count > @TENSIONS_RISING_WORLD_TENSION_20_MAX_RECIPIENTS }
+			}
+			every_country = {
+				limit = { is_tensions_rising_world_tension_source_country = yes }
+				random_select_amount = @TENSIONS_RISING_WORLD_TENSION_20_MAX_RECIPIENTS
+				add_named_threat = {
+					threat = constant:tensions_rising_world_tension_gain.minimum_country_slice
+					name = tensions_rising_global_panic_threat
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				OR = {
+					check_variable = { tensions_rising_world_tension_packet = constant:tensions_rising_world_tension_gain.baseline }
+					check_variable = { tensions_rising_world_tension_packet = constant:tensions_rising_world_tension_gain.stage_1 }
+				}
+				check_variable = { tensions_rising_world_tension_country_count > @TENSIONS_RISING_WORLD_TENSION_10_MAX_RECIPIENTS }
+			}
+			every_country = {
+				limit = { is_tensions_rising_world_tension_source_country = yes }
+				random_select_amount = @TENSIONS_RISING_WORLD_TENSION_10_MAX_RECIPIENTS
+				add_named_threat = {
+					threat = constant:tensions_rising_world_tension_gain.minimum_country_slice
+					name = tensions_rising_global_panic_threat
+				}
+			}
+		}
+		else = {
+			set_temp_variable = { tensions_rising_world_tension_slice = tensions_rising_world_tension_packet }
+			divide_temp_variable = { tensions_rising_world_tension_slice = tensions_rising_world_tension_country_count }
+			every_country = {
+				limit = { is_tensions_rising_world_tension_source_country = yes }
+				add_named_threat = {
+					threat = tensions_rising_world_tension_slice
+					name = tensions_rising_global_panic_threat
+				}
 			}
 		}
 	}
