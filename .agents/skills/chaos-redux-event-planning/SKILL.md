@@ -100,6 +100,44 @@ Chaos Redux does not need every event to read like a grounded military report. W
 
 Use map and territorial facts as consequences, not as the main flavour. The player should feel what has broken loose before reading a dry summary of which borders changed.
 
+
+### Event option humour, irony, and cultural remark standard
+
+Event option text matters. Do not let options become bland buttons such as `OK`, `Continue`, `Interesting`, or `We must respond` unless the plainness is intentional and stronger than a stylized line.
+
+Options should usually carry character. Use irony, sarcasm, deadpan humour, bitter understatement, cultural remarks, propaganda hypocrisy, bureaucratic absurdity, regional jokes, historical allusions, literary echoes, public rumours, or period-flavoured remarks when they fit the event.
+
+A good option line should react to the exact situation. It should reveal what the country, leader, regime, public, army, cult, committee, movement, or observer thinks about what just happened. The line can be funny, cruel, foolish, cynical, frightened, smug, desperate, or absurd, but it should not feel interchangeable with another event.
+
+Humour should fit the stakes. Minor chaotic events can use sharper jokes and visible sarcasm. Major disasters, massacres, atrocities, mass death, and real-world suffering should not become punchlines. In those cases, use grim irony, official euphemism, cynical propaganda, hypocrisy, or self-damning remarks instead of cheap comedy.
+
+Cultural remarks should feel real. They can draw from history, political slogans, religious language, regional stereotypes used carefully, old newspapers, literature, film, folk sayings, military idioms, propaganda phrasing, or famous public habits. If the remark depends on a real quote, source, person, song, film, or cultural reference, verify it or mark it as a direction for the proper research skill. Do not invent source claims.
+
+Event options should vary by route, actor, ideology, chaos tier, evolution, and campaign state when that would make the event feel more alive. A communist response, monarchist response, military junta response, religious response, absurd high-chaos response, and frightened democratic response should not all sound like the same neutral committee.
+
+Useful option styles include:
+
+- dry official denial
+- sarcastic acceptance
+- bitter joke
+- cultural allusion
+- period propaganda line
+- frightened understatement
+- arrogant boast
+- absurd administrative remark
+- local proverb or proverb-like phrase
+- grim punchline that condemns the speaker rather than the victims
+
+Example directions:
+
+- `The ministry assures us the smoke is patriotic.`
+- `A minor administrative inconvenience, if one ignores the screaming.`
+- `Someone tell the poets they were right again.`
+- `The old slogans suddenly need new punctuation.`
+- `History returns, badly dressed and overarmed.`
+
+Do not make every option loud. Some events need one cutting line and one plain practical line. Some need several route-specific jokes. Some need no joke because silence is stronger. The spec should state the intended option tone instead of leaving the implementation agent to write dry placeholders.
+
 ## 3.2 Depth standard
 
 The specification should be as deep as the event idea deserves.
@@ -889,6 +927,7 @@ A strong specification usually explores:
 - why the event matters
 - how the event first appears
 - what the player sees and chooses
+- what tone the event options use, including irony, sarcasm, cultural remarks, humour, or plain severity where appropriate
 - what consequences follow
 - how the situation can escalate
 - what rare variants can happen
@@ -1064,7 +1103,7 @@ Do not add a treaty/new world order after every contained or short-lived disaste
 
 ## 10. Writing style
 
-Write in a serious, direct, grounded HOI4 style.
+Write in a serious, direct, grounded HOI4 style. Serious does not mean sterile. Event descriptions can stay grounded while event options use irony, sarcasm, cultural remarks, and humour that fit the actor and stakes.
 
 Avoid:
 
@@ -1075,6 +1114,11 @@ Avoid:
 - implementation code
 - excessive technical detail
 - filler text that repeats obvious system behavior
+- displaying event effects in event details
+- long sentences without actually saying anything
+- short sentences that are dramatic and just make comprehension more confusing
+- bland event option text that reads like a placeholder button
+- meme spam that ignores the country, culture, event stakes, or period tone
 
 Mention implementation only where it matters for the design, such as super-event treatment, custom UI, AI behavior, documentation, assets, dynamic factors, focus tree structure, custom tags, or important system connections.
 
@@ -1239,8 +1283,6 @@ Achievement icons should be readable at 64x64 and have a clear completion theme.
 Flags should use clean symbols that remain readable at HOI4 flag sizes.
 
 Progression-state variants may include selected, dim, active, locked, completed, rejected, damaged, corrupted, urgent, meter-fill, and bar-fill states.
-
-Report-event image prompts should ask for Photoshop post-processing when Photoshop is available. Photoshop may also be mentioned for progression-state variants.
 
 ## 17. Super-event research handoff
 
@@ -1498,6 +1540,7 @@ The final response should include:
 - final zip package created with all spec files, prompt files, route diagrams if used, research notes, and matrices
 - focus tree files split into separate parts when the tree is too large for one file
 - decisions and rare variants mapped when they exist
+- event option tone mapped where event options exist, including irony, sarcasm, cultural remarks, humour, or deliberate plain severity
 - evolution entry paths mapped when evolutions exist, including active-event evolution, pre-fire evolved opening, or a clear reason only one path applies
 - decision and objective costs use varied resources, sacrifices, requirements, and risks instead of defaulting to political power or command power
 - achievements mapped with difficult conditions, icon directions, and tracking notes

@@ -370,13 +370,7 @@ Event clusters are linked groups of normal events. The random-event picker still
 
 Cluster firing counts as one global pacing event. Member events still apply their effects, log entries, repeatable cap changes, fire-once removal, fired history, and event details, but they do not each advance the event timer or major-event weights.
 
-Current cluster:
-
-- **Wars**: repeatable cluster, active from Rising Chaos, currently containing Event 4 Random War as a required member.
-
 The settings UI has an Event Clusters view for selecting a cluster ID, checking availability, and manually triggering a cluster. Fired clusters appear in the event log **Clusters** tab with the cluster actor, tier, fired/skipped counts, and member reasons.
-
-Detailed implementation notes live in `docs/systems/event_clusters.md`.
 
 ---
 

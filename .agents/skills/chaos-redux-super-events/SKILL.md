@@ -664,7 +664,7 @@ When a super-event represents a world-end scenario:
 - set the scenario-specific global flag
 - set the matching super-event visibility
 - stop or gate incompatible future systems and branches
-- make the event log, docs, and spreadsheet agree
+- make the docs and spreadsheet agree
 - choose quote and audio with finality in mind
 
 A world-end super-event should feel like an end-state, not a normal escalation.
