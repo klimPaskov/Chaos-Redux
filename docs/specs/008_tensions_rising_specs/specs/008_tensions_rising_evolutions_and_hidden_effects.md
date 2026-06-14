@@ -30,7 +30,7 @@ If Event 8 first fires at a high chaos tier, it should start at the highest allo
 | Relation pairs | none | 1–2 | 2–3 | 3–5 | 5–8 |
 | Delayed follow-up | none or very rare | low chance | moderate chance | high chance | very high chance |
 | Temporary country modifier | none | no, unless follow-up | possible | likely for selected majors | likely for selected majors/faction leaders |
-| Super-event | no | no | no | no | first firing only |
+| Super-event | no | no | no | no | no |
 
 ## Tension Pulse implementation behavior
 

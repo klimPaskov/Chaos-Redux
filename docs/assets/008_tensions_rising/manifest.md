@@ -40,7 +40,7 @@ DDS conversion note:
 
 ### `news_event_tensions_red_line`
 - Asset type: news event image
-- Intended in-game use: registered Event 008 news-event art; current hidden delayed reports use the report image
+- Intended in-game use: registered Event 008 news-event art; delayed report events use the report image
 - Related event id: `008`
 - Related event slug: `tensions_rising`
 - Source mode: `$imagegen`

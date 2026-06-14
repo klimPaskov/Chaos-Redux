@@ -305,7 +305,7 @@ The event is a minor repeatable, but it can still support achievements because t
 | `achievement_tensions_thin_wire` | The Thin Wire | visible | hard | survive 180 days at `100%` world tension after Stage III+ without entering a player war |
 | `achievement_tensions_only_headlines` | Only Headlines | hidden | very hard | see three Stage II+ Event 8 firings while the world has no active wars |
 | `achievement_tensions_insurance_market` | The Insurance Market Knows | visible | medium | trigger the neutral-port insurance follow-up while owning a convoy pool and staying out of war |
-| `achievement_tensions_one_denial` | One Denial Too Many | hidden | hard | have an approved existing diplomatic or war-adjacent follow-up event occur within 120 days after Event 8 relation damage |
+| `achievement_tensions_one_denial` | One Denial Too Many | hidden | hard | have a recently affected Event 8 relation actor enter a war relation within 120 days after Event 8 relation damage |
 | `achievement_tensions_blackout` | Diplomatic Blackout | visible | hard | have ten distinct Event 8 timed opinion modifiers active globally at once |
 
 Achievement implementation should be careful. The player should not unlock achievements just because Event 8 fires once.

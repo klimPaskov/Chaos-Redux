@@ -7,7 +7,7 @@ This is a design handoff for the scripted-system architecture pass. It is not fi
 | Helper | Scope | Inputs | Outputs | Side effects | Call sites |
 | --- | --- | --- | --- | --- | --- |
 | `apply_tensions_rising_event_effect` | global/root event context | current chaos tier, current world tension, event enable state | applies direct WT/chaos, dispatches hidden packages | calls timer pulse, relation pair selector, delayed report scheduler | Event 8 main option/immediate effect |
-| `get_tensions_rising_stage` | global | chaos value/tier and event flags | sets a temp or global stage variable for this firing | none | event effect and event detail rebuild |
+| `get_tensions_rising_stage` | global | current `chaos_tier` flag and event flags | sets a temp or global stage variable for this firing | none | event effect and event detail rebuild |
 | `record_tensions_rising_evolution_if_needed` | global | stage variable, enabled evolution state | evolution log entry when appropriate | sets stage recorded flags only when enabled | event effect before stage package |
 | `apply_tensions_rising_timer_pulse` | global | stage variable | active pulse strength and duration | replaces/extends capped pulse | event effect |
 | `select_tensions_rising_relation_pairs` | global with country loops/arrays as existing patterns allow | stage variable, valid countries | list or immediate pair calls | saves temporary pair targets if needed | event effect stage I+ |

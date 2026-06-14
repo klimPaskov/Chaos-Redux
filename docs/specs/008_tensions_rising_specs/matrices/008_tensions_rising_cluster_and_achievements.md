@@ -54,7 +54,7 @@ A Diplomatic Panic firing should read as one Event 8 diplomatic-panic incident i
 **Eligible player:** any country with a convoy pool or trade/naval relevance.  
 **Unlock:** Trigger the `Insurance Rates Jump in Neutral Ports` follow-up while owning at least a threshold convoy count and not being at war.  
 **Disqualifier:** player at war when the follow-up fires.  
-**Why it is interesting:** rewards a specific hidden follow-up and peaceful naval/trade posture.  
+**Why it is interesting:** rewards a specific delayed follow-up and peaceful naval/trade posture.
 **Icon direction:** marine insurance ledger, ship silhouette, red wax seal, no text.
 
 ### `achievement_tensions_one_denial`
@@ -63,9 +63,9 @@ A Diplomatic Panic firing should read as one Event 8 diplomatic-panic incident i
 **Visibility:** hidden  
 **Difficulty:** hard  
 **Eligible player:** any country.  
-**Unlock:** If an approved existing diplomatic or war-adjacent event hook exists, it fires within 120 days after Event 8 applies relation damage. Queue if no approved hook exists.
+**Unlock:** A recently affected Event 8 relation actor enters a war relation within 120 days after Event 8 applies relation damage.
 **Disqualifier:** none beyond invalid tracking, implementation should avoid false positives from unrelated history if possible.  
-**Why it is interesting:** rewards observing Event 8 feeding later tension through approved existing systems.
+**Why it is interesting:** rewards observing Event 8 feeding later tension through the existing war-relation hook without Event 8 creating the war.
 **Icon direction:** denied stamp over sealed cable, no readable generated text.
 
 ### `achievement_tensions_blackout`
