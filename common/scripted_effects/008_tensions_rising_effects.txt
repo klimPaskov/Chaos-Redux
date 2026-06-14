@@ -18,6 +18,22 @@
 @TENSIONS_RISING_AI_POSTURE_STAGE_3_DAYS = 100
 @TENSIONS_RISING_AI_POSTURE_STAGE_4_DAYS = 140
 @TENSIONS_RISING_THIN_WIRE_FLAG_DAYS = 181
+@TENSIONS_RISING_TIMER_PULSE_STAGE_1_MIN_DAYS = 45
+@TENSIONS_RISING_TIMER_PULSE_STAGE_1_MID_DAYS = 60
+@TENSIONS_RISING_TIMER_PULSE_STAGE_1_MAX_DAYS = 75
+@TENSIONS_RISING_TIMER_PULSE_STAGE_1_CAP_DAYS = 105
+@TENSIONS_RISING_TIMER_PULSE_STAGE_2_MIN_DAYS = 75
+@TENSIONS_RISING_TIMER_PULSE_STAGE_2_MID_DAYS = 98
+@TENSIONS_RISING_TIMER_PULSE_STAGE_2_MAX_DAYS = 120
+@TENSIONS_RISING_TIMER_PULSE_STAGE_2_CAP_DAYS = 165
+@TENSIONS_RISING_TIMER_PULSE_STAGE_3_MIN_DAYS = 120
+@TENSIONS_RISING_TIMER_PULSE_STAGE_3_MID_DAYS = 150
+@TENSIONS_RISING_TIMER_PULSE_STAGE_3_MAX_DAYS = 180
+@TENSIONS_RISING_TIMER_PULSE_STAGE_3_CAP_DAYS = 240
+@TENSIONS_RISING_TIMER_PULSE_STAGE_4_MIN_DAYS = 180
+@TENSIONS_RISING_TIMER_PULSE_STAGE_4_MID_DAYS = 210
+@TENSIONS_RISING_TIMER_PULSE_STAGE_4_MAX_DAYS = 240
+@TENSIONS_RISING_TIMER_PULSE_STAGE_4_CAP_DAYS = 315
 
 tensions_rising_prepare_random_event_fire = {
 	get_tensions_rising_stage = yes
@@ -45,41 +61,28 @@ get_tensions_rising_stage = {
 	set_temp_variable = { tensions_rising_stage = 0 }
 	if = {
 		limit = {
-			check_variable = {
-				var = global.chaos_meter_value
-				value = constant:chaos_meter_tier_range.tier_4.min
-				compare = greater_than_or_equals
+			OR = {
+				has_global_flag = { flag = chaos_tier value = 4 }
+				has_global_flag = { flag = chaos_tier value = 5 }
 			}
 		}
 		set_temp_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_4 }
 	}
 	else_if = {
 		limit = {
-			check_variable = {
-				var = global.chaos_meter_value
-				value = constant:chaos_meter_tier_range.tier_3.min
-				compare = greater_than_or_equals
-			}
+			has_global_flag = { flag = chaos_tier value = 3 }
 		}
 		set_temp_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_3 }
 	}
 	else_if = {
 		limit = {
-			check_variable = {
-				var = global.chaos_meter_value
-				value = constant:chaos_meter_tier_range.tier_2.min
-				compare = greater_than_or_equals
-			}
+			has_global_flag = { flag = chaos_tier value = 2 }
 		}
 		set_temp_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_2 }
 	}
 	else_if = {
 		limit = {
-			check_variable = {
-				var = global.chaos_meter_value
-				value = constant:chaos_meter_tier_range.tier_1.min
-				compare = greater_than_or_equals
-			}
+			has_global_flag = { flag = chaos_tier value = 1 }
 		}
 		set_temp_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_1 }
 	}
@@ -384,37 +387,97 @@ apply_tensions_rising_timer_pulse = {
 
 	if = {
 		limit = { check_variable = { tensions_rising_refresh_pulse_flag > 0 } }
-		if = {
-			limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_4 } }
-			set_global_flag = {
-				flag = tensions_rising_timer_pulse_active
-				value = constant:tensions_rising_event_log.stage_4
-				days = global.tensions_rising_timer_pulse_days
-			}
-		}
-		else_if = {
-			limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_3 } }
-			set_global_flag = {
-				flag = tensions_rising_timer_pulse_active
-				value = constant:tensions_rising_event_log.stage_3
-				days = global.tensions_rising_timer_pulse_days
-			}
-		}
-		else_if = {
-			limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_2 } }
-			set_global_flag = {
-				flag = tensions_rising_timer_pulse_active
-				value = constant:tensions_rising_event_log.stage_2
-				days = global.tensions_rising_timer_pulse_days
-			}
-		}
-		else = {
-			set_global_flag = {
-				flag = tensions_rising_timer_pulse_active
-				value = constant:tensions_rising_event_log.stage_1
-				days = global.tensions_rising_timer_pulse_days
-			}
-		}
+		refresh_tensions_rising_timer_pulse_active_flag = yes
+	}
+}
+
+refresh_tensions_rising_timer_pulse_active_flag = {
+	if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_4 } }
+		refresh_tensions_rising_timer_pulse_stage_4_flag = yes
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_3 } }
+		refresh_tensions_rising_timer_pulse_stage_3_flag = yes
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_2 } }
+		refresh_tensions_rising_timer_pulse_stage_2_flag = yes
+	}
+	else = {
+		refresh_tensions_rising_timer_pulse_stage_1_flag = yes
+	}
+}
+
+refresh_tensions_rising_timer_pulse_stage_4_flag = {
+	if = {
+		limit = { check_variable = { var = global.tensions_rising_timer_pulse_days value = @TENSIONS_RISING_TIMER_PULSE_STAGE_4_MAX_DAYS compare = greater_than } }
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_4 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_4_CAP_DAYS }
+	}
+	else_if = {
+		limit = { check_variable = { var = global.tensions_rising_timer_pulse_days value = @TENSIONS_RISING_TIMER_PULSE_STAGE_4_MID_DAYS compare = greater_than } }
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_4 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_4_MAX_DAYS }
+	}
+	else_if = {
+		limit = { check_variable = { var = global.tensions_rising_timer_pulse_days value = @TENSIONS_RISING_TIMER_PULSE_STAGE_4_MIN_DAYS compare = greater_than } }
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_4 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_4_MID_DAYS }
+	}
+	else = {
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_4 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_4_MIN_DAYS }
+	}
+}
+
+refresh_tensions_rising_timer_pulse_stage_3_flag = {
+	if = {
+		limit = { check_variable = { var = global.tensions_rising_timer_pulse_days value = @TENSIONS_RISING_TIMER_PULSE_STAGE_3_MAX_DAYS compare = greater_than } }
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_3 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_3_CAP_DAYS }
+	}
+	else_if = {
+		limit = { check_variable = { var = global.tensions_rising_timer_pulse_days value = @TENSIONS_RISING_TIMER_PULSE_STAGE_3_MID_DAYS compare = greater_than } }
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_3 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_3_MAX_DAYS }
+	}
+	else_if = {
+		limit = { check_variable = { var = global.tensions_rising_timer_pulse_days value = @TENSIONS_RISING_TIMER_PULSE_STAGE_3_MIN_DAYS compare = greater_than } }
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_3 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_3_MID_DAYS }
+	}
+	else = {
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_3 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_3_MIN_DAYS }
+	}
+}
+
+refresh_tensions_rising_timer_pulse_stage_2_flag = {
+	if = {
+		limit = { check_variable = { var = global.tensions_rising_timer_pulse_days value = @TENSIONS_RISING_TIMER_PULSE_STAGE_2_MAX_DAYS compare = greater_than } }
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_2 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_2_CAP_DAYS }
+	}
+	else_if = {
+		limit = { check_variable = { var = global.tensions_rising_timer_pulse_days value = @TENSIONS_RISING_TIMER_PULSE_STAGE_2_MID_DAYS compare = greater_than } }
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_2 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_2_MAX_DAYS }
+	}
+	else_if = {
+		limit = { check_variable = { var = global.tensions_rising_timer_pulse_days value = @TENSIONS_RISING_TIMER_PULSE_STAGE_2_MIN_DAYS compare = greater_than } }
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_2 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_2_MID_DAYS }
+	}
+	else = {
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_2 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_2_MIN_DAYS }
+	}
+}
+
+refresh_tensions_rising_timer_pulse_stage_1_flag = {
+	if = {
+		limit = { check_variable = { var = global.tensions_rising_timer_pulse_days value = @TENSIONS_RISING_TIMER_PULSE_STAGE_1_MAX_DAYS compare = greater_than } }
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_1 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_1_CAP_DAYS }
+	}
+	else_if = {
+		limit = { check_variable = { var = global.tensions_rising_timer_pulse_days value = @TENSIONS_RISING_TIMER_PULSE_STAGE_1_MID_DAYS compare = greater_than } }
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_1 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_1_MAX_DAYS }
+	}
+	else_if = {
+		limit = { check_variable = { var = global.tensions_rising_timer_pulse_days value = @TENSIONS_RISING_TIMER_PULSE_STAGE_1_MIN_DAYS compare = greater_than } }
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_1 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_1_MID_DAYS }
+	}
+	else = {
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_1 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_1_MIN_DAYS }
 	}
 }
 
@@ -966,6 +1029,17 @@ tensions_rising_on_war_relation_added = {
 			NOT = { has_global_flag = achievement_tensions_only_headlines_ready }
 		}
 		set_global_flag = tensions_rising_only_headlines_broken
+	}
+	if = {
+		limit = {
+			has_global_flag = tensions_rising_recent_relation_damage
+			NOT = { has_global_flag = achievement_tensions_one_denial_ready }
+			OR = {
+				ROOT = { has_country_flag = tensions_rising_recent_relation_actor }
+				FROM = { has_country_flag = tensions_rising_recent_relation_actor }
+			}
+		}
+		set_global_flag = achievement_tensions_one_denial_ready
 	}
 	if = {
 		limit = { ROOT = { has_country_flag = tensions_rising_thin_wire_watch } }

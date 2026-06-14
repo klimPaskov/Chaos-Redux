@@ -7,7 +7,7 @@ Event 008 Tensions Rising is a minor repeatable diplomatic-pressure event. In ca
 1. `chaosx.nr8.1` fires from the standard repeatable random-event pool. Event 8 remains registered in `global.repeatable_events`.
 2. `tensions_rising_prepare_random_event_fire` blocks only the calm-world baseline if world tension is already full. Evolved stages can still fire at full world tension.
 3. The main popup keeps its description to flavour text. The dynamic mechanical summary appears on the option tooltip, and the actual scripted effect runs inside that option's hidden effect block.
-4. `get_tensions_rising_stage` maps the current Chaos Meter value thresholds to Stage I-IV. Calm world stays at baseline stage `0`.
+4. `get_tensions_rising_stage` maps the current `chaos_tier` flag to Stage I-IV. Calm World stays at baseline stage `0`.
 5. Baseline firings distribute `+10` world tension across existing non-placeholder countries and update the global highest-world-tension tracker.
 6. Evolved firings record the current Diplomatic Fever milestone if it has not already been logged, distribute the staged world-tension packet, add the staged chaos packet, apply the temporary timer pulse, select timed relation-shock pairs, apply AI posture ideas, schedule one delayed report, and update achievement tracking.
 
@@ -19,13 +19,13 @@ Event 008 Tensions Rising is a minor repeatable diplomatic-pressure event. In ca
 | Stage I | Gathering Storm | `+10` | `+10` | light relation and timer pressure |
 | Stage II | Rising Chaos | `+20` | `+15` | broader relation shocks and delayed reports |
 | Stage III | Chaos Tier | `+50` | `+25` | heavy relation pressure and Thin Wire tracking |
-| Stage IV | Totalen Chaos | `+100` | `+50` | strongest indirect pressure |
+| Stage IV | Totalen Chaos+ | `+100` | `+50` | strongest indirect pressure |
 
 The world tension trigger uses HOI4's documented `0-1` `threat` scale. The full-tension gate is centralized as `constant:tensions_rising_gate.full_world_tension`. World-tension packets are distributed through `apply_tensions_rising_distributed_world_tension`; each selected existing non-placeholder country receives an equal named-threat slice. The recipient count is capped only when an all-country split would fall below `0.1` world-tension percentage points.
 
 ## Timer Pulse
 
-The evolved Tension Pulse uses `tensions_rising_timer_pulse_active`, `global.tensions_rising_timer_pulse_strength`, and `global.tensions_rising_timer_pulse_days`. Stronger stages replace weaker active pulses. Equal-stage repeats add only the stage extension amount to the duration budget and clamp it to the stage cap before refreshing the timed flag. The event timer reads the active strength in `calculate_next_timer_value` through `apply_tensions_rising_timer_pressure_to_next_timer`, so no new daily, weekly, or monthly global loop is introduced.
+The evolved Tension Pulse uses `tensions_rising_timer_pulse_active`, `global.tensions_rising_timer_pulse_strength`, and `global.tensions_rising_timer_pulse_days`. Stronger stages replace weaker active pulses. Equal-stage repeats add only the stage extension amount to the duration budget and clamp it to the stage cap before refreshing the timed flag. The timed flag is refreshed through parser-safe stage duration buckets while the stored duration budget remains capped. The event timer reads the active strength in `calculate_next_timer_value` through `apply_tensions_rising_timer_pressure_to_next_timer`, so no new daily, weekly, or monthly global loop is introduced.
 
 ## Diplomatic Shocks
 
@@ -40,7 +40,7 @@ The global active-opinion counter is decremented by the hidden expiry event `cha
 
 ## Delayed Reports
 
-Evolved firings can schedule one hidden delayed flavour report from `chaosx.nr8.2` through `chaosx.nr8.12`. These reports describe cable traffic, embassy side doors, calm-map denial, neutral insurance rates, rumours, staff cars, fleet silence, border lamps, and the final normal briefing. They do not recurse into the main event effect and do not create direct war goals.
+Evolved firings can schedule one delayed flavour report from `chaosx.nr8.2` through `chaosx.nr8.12`. The scheduling is hidden from the main option tooltip, but the delayed reports themselves are visible report popups when they fire. These reports describe cable traffic, embassy side doors, calm-map denial, neutral insurance rates, rumours, staff cars, fleet silence, border lamps, and the final normal briefing. They do not recurse into the main event effect and do not create direct war goals.
 
 ## AI Posture
 
@@ -70,7 +70,7 @@ Event 008 adds five achievements:
 - `achievement_tensions_thin_wire`: remain at peace through the Stage III+ full-world-tension watch.
 - `achievement_tensions_only_headlines`: see three Stage II+ Event 8 firings while the world has no active wars.
 - `achievement_tensions_insurance_market`: receive the insurance follow-up while at peace with at least `30` convoys.
-- `achievement_tensions_one_denial`: receive the denial follow-up during the active relation-damage window.
+- `achievement_tensions_one_denial`: have a recently affected Event 8 relation actor enter a war relation during the active relation-damage window.
 - `achievement_tensions_blackout`: have at least ten active Event 8 timed opinion modifiers at once.
 
 Achievement icons are generated final DDS triplets under `gfx/achievements/` and are registered in `interface/chaosx_achievements.gfx`.
@@ -78,7 +78,7 @@ Achievement icons are generated final DDS triplets under `gfx/achievements/` and
 ## Assets
 
 - Report image: `GFX_report_event_tensions_rising`, backed by `gfx/event_pictures/report_event_tensions_rising.dds`
-- News image: `GFX_news_event_tensions_red_line`, backed by `gfx/event_pictures/news_event_tensions_red_line.dds`, remains registered as an available news asset; hidden delayed report events use the report image.
+- News image: `GFX_news_event_tensions_red_line`, backed by `gfx/event_pictures/news_event_tensions_red_line.dds`, remains registered as an available news asset; delayed report events use the report image instead of a news image.
 - Achievement source, processed PNGs, contact sheet, and DDS manifest: `docs/assets/008_tensions_rising/`
 
 ## Boundary Rules
