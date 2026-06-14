@@ -2346,10 +2346,12 @@ soviet_collapse_spawn_one_breakaway_guard_unit_safe = {
 }
 
 soviet_collapse_spawn_breakaway_guard_unit_batch_safe = {
-    while_loop_effect = {
-        limit = {
-            check_variable = { var = soviet_collapse_breakaway_guard_unit_count value = 0 compare = greater_than }
-        }
+	round_temp_variable = soviet_collapse_breakaway_guard_unit_count
+	clamp_temp_variable = { var = soviet_collapse_breakaway_guard_unit_count min = 0 max = constant:soviet_collapse_breakaway_support.unit_spawn_loop_cap }
+	while_loop_effect = {
+		limit = {
+			check_variable = { var = soviet_collapse_breakaway_guard_unit_count value = 0 compare = greater_than }
+		}
         soviet_collapse_spawn_one_breakaway_guard_unit_safe = yes
         subtract_from_temp_variable = { soviet_collapse_breakaway_guard_unit_count = 1 }
     }
@@ -2422,10 +2424,12 @@ soviet_collapse_spawn_one_breakaway_field_brigade_unit_safe = {
 }
 
 soviet_collapse_spawn_breakaway_field_brigade_unit_batch_safe = {
-    while_loop_effect = {
-        limit = {
-            check_variable = { var = soviet_collapse_breakaway_field_unit_count value = 0 compare = greater_than }
-        }
+	round_temp_variable = soviet_collapse_breakaway_field_unit_count
+	clamp_temp_variable = { var = soviet_collapse_breakaway_field_unit_count min = 0 max = constant:soviet_collapse_breakaway_support.unit_spawn_loop_cap }
+	while_loop_effect = {
+		limit = {
+			check_variable = { var = soviet_collapse_breakaway_field_unit_count value = 0 compare = greater_than }
+		}
         soviet_collapse_spawn_one_breakaway_field_brigade_unit_safe = yes
         subtract_from_temp_variable = { soviet_collapse_breakaway_field_unit_count = 1 }
     }
@@ -2498,10 +2502,12 @@ soviet_collapse_spawn_one_breakaway_line_division_unit_safe = {
 }
 
 soviet_collapse_spawn_breakaway_line_division_unit_batch_safe = {
-    while_loop_effect = {
-        limit = {
-            check_variable = { var = soviet_collapse_breakaway_field_unit_count value = 0 compare = greater_than }
-        }
+	round_temp_variable = soviet_collapse_breakaway_field_unit_count
+	clamp_temp_variable = { var = soviet_collapse_breakaway_field_unit_count min = 0 max = constant:soviet_collapse_breakaway_support.unit_spawn_loop_cap }
+	while_loop_effect = {
+		limit = {
+			check_variable = { var = soviet_collapse_breakaway_field_unit_count value = 0 compare = greater_than }
+		}
         soviet_collapse_spawn_one_breakaway_line_division_unit_safe = yes
         subtract_from_temp_variable = { soviet_collapse_breakaway_field_unit_count = 1 }
     }
@@ -3630,24 +3636,35 @@ soviet_collapse_form_terminal_leagues = {
 }
 
 soviet_collapse_join_terminal_anti_soviet_war = {
-    save_event_target_as = soviet_collapse_terminal_war_actor
-    if = {
-        limit = {
-            SOV = { exists = yes }
-            NOT = { has_war_with = SOV }
-            can_declare_war_on = SOV
-        }
+	save_event_target_as = soviet_collapse_terminal_war_actor
+	if = {
+		limit = {
+			SOV = { exists = yes }
+			NOT = { tag = SOV }
+			is_in_faction_with = SOV
+			NOT = { is_faction_leader = yes }
+		}
+		leave_faction = yes
+	}
+	if = {
+		limit = {
+			SOV = { exists = yes }
+			NOT = { is_in_faction_with = SOV }
+			NOT = { has_war_with = SOV }
+			can_declare_war_on = SOV
+		}
         declare_war_on = {
             target = SOV
             type = annex_everything
         }
     }
     else_if = {
-        limit = {
-            SOV = { exists = yes }
-            NOT = { has_war_with = SOV }
-            any_country = {
-                exists = yes
+		limit = {
+			SOV = { exists = yes }
+			NOT = { is_in_faction_with = SOV }
+			NOT = { has_war_with = SOV }
+			any_country = {
+				exists = yes
                 NOT = { tag = SOV }
                 has_war_with = SOV
             }
@@ -3668,11 +3685,12 @@ soviet_collapse_join_terminal_anti_soviet_war = {
             }
         }
     }
-    else_if = {
-        limit = {
-            SOV = { exists = yes }
-            NOT = { has_war_with = SOV }
-        }
+	else_if = {
+		limit = {
+			SOV = { exists = yes }
+			NOT = { is_in_faction_with = SOV }
+			NOT = { has_war_with = SOV }
+		}
         SOV = {
             declare_war_on = {
                 target = event_target:soviet_collapse_terminal_war_actor
@@ -11814,20 +11832,31 @@ soviet_collapse_join_regional_faction_common = {
 }
 
 soviet_collapse_apply_regional_faction_soviet_pressure = {
-    if = {
-        limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
-        SOV = {
+	if = {
+		limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
+		SOV = {
             set_temp_variable = { soviet_collapse_breakaway_source_league_delta = constant:soviet_collapse_regional_faction.soviet_league_pressure }
             set_temp_variable = { soviet_collapse_breakaway_source_republic_delta = constant:soviet_collapse_regional_faction.soviet_republic_pressure }
             soviet_collapse_apply_breakaway_source_pressure_delta = yes
         }
-    }
+	}
+}
+
+soviet_collapse_prepare_local_faction_founder = {
+	if = {
+		limit = {
+			is_in_faction = yes
+			NOT = { is_faction_leader = yes }
+		}
+		leave_faction = yes
+	}
 }
 
 soviet_collapse_found_regional_faction_common = {
-    add_political_power = constant:soviet_collapse_regional_faction.found_political_power_spend
-    add_command_power = constant:soviet_collapse_regional_faction.found_command_power_spend
-    set_country_flag = soviet_collapse_regional_faction
+	soviet_collapse_prepare_local_faction_founder = yes
+	add_political_power = constant:soviet_collapse_regional_faction.found_political_power_spend
+	add_command_power = constant:soviet_collapse_regional_faction.found_command_power_spend
+	set_country_flag = soviet_collapse_regional_faction
     set_country_flag = soviet_collapse_regional_faction_founder
     set_variable = { soviet_collapse_regional_faction_cohesion = constant:soviet_collapse_regional_faction.found_cohesion }
     set_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.found_tension }
@@ -11841,9 +11870,10 @@ soviet_collapse_found_regional_faction_common = {
 }
 
 soviet_collapse_found_terminal_regional_faction_common = {
-    set_country_flag = soviet_collapse_regional_faction
-    set_country_flag = soviet_collapse_regional_faction_founder
-    set_variable = { soviet_collapse_regional_faction_cohesion = constant:soviet_collapse_regional_faction.found_cohesion }
+	soviet_collapse_prepare_local_faction_founder = yes
+	set_country_flag = soviet_collapse_regional_faction
+	set_country_flag = soviet_collapse_regional_faction_founder
+	set_variable = { soviet_collapse_regional_faction_cohesion = constant:soviet_collapse_regional_faction.found_cohesion }
     set_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.found_tension }
     soviet_collapse_join_regional_faction_common = yes
     if = {
@@ -11870,9 +11900,10 @@ soviet_collapse_join_central_asian_regional_faction = {
 }
 
 soviet_collapse_mark_central_asian_regional_faction_leader = {
-    set_country_flag = soviet_collapse_central_asian_league_founder
-    set_country_flag = soviet_collapse_central_asian_league_member
-    set_country_flag = soviet_collapse_regional_faction
+	soviet_collapse_prepare_local_faction_founder = yes
+	set_country_flag = soviet_collapse_central_asian_league_founder
+	set_country_flag = soviet_collapse_central_asian_league_member
+	set_country_flag = soviet_collapse_regional_faction
     set_country_flag = soviet_collapse_regional_faction_founder
     set_variable = { soviet_collapse_regional_faction_cohesion = constant:soviet_collapse_regional_faction.found_cohesion }
     set_variable = { soviet_collapse_regional_faction_tension = constant:soviet_collapse_regional_faction.found_tension }
@@ -11894,48 +11925,58 @@ soviet_collapse_repair_caucasus_regional_faction_leader_flags = {
 }
 
 soviet_collapse_invite_baltic_regional_partners = {
-    if = { limit = { LIT = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = LIT LIT = { soviet_collapse_join_baltic_regional_faction = yes } }
-    if = { limit = { LAT = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = LAT LAT = { soviet_collapse_join_baltic_regional_faction = yes } }
-    if = { limit = { EST = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = EST EST = { soviet_collapse_join_baltic_regional_faction = yes } }
+	save_event_target_as = soviet_collapse_baltic_league_actor
+	if = { limit = { LIT = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no NOT = { tag = event_target:soviet_collapse_baltic_league_actor } NOT = { has_war_with = event_target:soviet_collapse_baltic_league_actor } } } add_to_faction = LIT LIT = { soviet_collapse_join_baltic_regional_faction = yes } }
+	if = { limit = { LAT = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no NOT = { tag = event_target:soviet_collapse_baltic_league_actor } NOT = { has_war_with = event_target:soviet_collapse_baltic_league_actor } } } add_to_faction = LAT LAT = { soviet_collapse_join_baltic_regional_faction = yes } }
+	if = { limit = { EST = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no NOT = { tag = event_target:soviet_collapse_baltic_league_actor } NOT = { has_war_with = event_target:soviet_collapse_baltic_league_actor } } } add_to_faction = EST EST = { soviet_collapse_join_baltic_regional_faction = yes } }
 }
 
 soviet_collapse_invite_caucasus_regional_partners = {
-    every_country = {
-        limit = {
-            is_soviet_collapse_caucasus_league_ready_country = yes
-            NOT = { tag = ROOT }
-            is_in_faction = no
-        }
-        ROOT = { add_to_faction = PREV }
-        soviet_collapse_join_caucasus_regional_faction = yes
-    }
+	save_event_target_as = soviet_collapse_caucasus_league_actor
+	every_country = {
+		limit = {
+			is_soviet_collapse_caucasus_league_ready_country = yes
+			NOT = { tag = event_target:soviet_collapse_caucasus_league_actor }
+			is_in_faction = no
+			NOT = { has_war_with = event_target:soviet_collapse_caucasus_league_actor }
+		}
+		event_target:soviet_collapse_caucasus_league_actor = { add_to_faction = PREV }
+		soviet_collapse_join_caucasus_regional_faction = yes
+	}
 }
 
 soviet_collapse_invite_central_asian_regional_partners = {
-    every_country = {
-        limit = {
-            is_soviet_collapse_central_asian_league_ready_country = yes
-            NOT = { tag = ROOT }
-            is_in_faction = no
-        }
-        ROOT = { add_to_faction = PREV }
-        soviet_collapse_join_central_asian_regional_faction = yes
-    }
+	save_event_target_as = soviet_collapse_central_asian_league_actor
+	every_country = {
+		limit = {
+			is_soviet_collapse_central_asian_league_ready_country = yes
+			NOT = { tag = event_target:soviet_collapse_central_asian_league_actor }
+			is_in_faction = no
+			NOT = { has_war_with = event_target:soviet_collapse_central_asian_league_actor }
+		}
+		event_target:soviet_collapse_central_asian_league_actor = { add_to_faction = PREV }
+		soviet_collapse_join_central_asian_regional_faction = yes
+	}
 }
 
 soviet_collapse_join_existing_central_asian_league = {
-    every_country = {
-        limit = {
-            is_soviet_collapse_central_asia_league_region_tag = yes
-            is_soviet_collapse_central_asian_league_leader = yes
-            NOT = { tag = ROOT }
-            ROOT = { is_in_faction = no }
-        }
-        soviet_collapse_repair_central_asian_regional_faction_leader_flags = yes
-        add_to_faction = ROOT
-        ROOT = { soviet_collapse_join_central_asian_regional_faction = yes }
-        set_global_flag = soviet_collapse_central_asian_league_announced
-    }
+	save_event_target_as = soviet_collapse_central_asian_league_joiner
+	every_country = {
+		limit = {
+			is_soviet_collapse_central_asia_league_region_tag = yes
+			is_soviet_collapse_central_asian_league_leader = yes
+			NOT = { tag = event_target:soviet_collapse_central_asian_league_joiner }
+			NOT = { has_war_with = event_target:soviet_collapse_central_asian_league_joiner }
+			event_target:soviet_collapse_central_asian_league_joiner = { is_in_faction = no }
+		}
+		soviet_collapse_repair_central_asian_regional_faction_leader_flags = yes
+		save_event_target_as = soviet_collapse_central_asian_league_actor
+		event_target:soviet_collapse_central_asian_league_joiner = {
+			event_target:soviet_collapse_central_asian_league_actor = { add_to_faction = PREV }
+			soviet_collapse_join_central_asian_regional_faction = yes
+		}
+		set_global_flag = soviet_collapse_central_asian_league_announced
+	}
 }
 
 soviet_collapse_attach_terminal_central_asian_republics_to_existing_league = {
@@ -11953,18 +11994,23 @@ soviet_collapse_attach_terminal_central_asian_republics_to_existing_league = {
 }
 
 soviet_collapse_join_existing_caucasus_league = {
-    every_country = {
-        limit = {
-            is_soviet_collapse_caucasus_league_region_tag = yes
-            is_soviet_collapse_caucasus_league_leader = yes
-            NOT = { tag = ROOT }
-            ROOT = { is_in_faction = no }
-        }
-        soviet_collapse_repair_caucasus_regional_faction_leader_flags = yes
-        add_to_faction = ROOT
-        ROOT = { soviet_collapse_join_caucasus_regional_faction = yes }
-        set_global_flag = soviet_collapse_caucasus_league_announced
-    }
+	save_event_target_as = soviet_collapse_caucasus_league_joiner
+	every_country = {
+		limit = {
+			is_soviet_collapse_caucasus_league_region_tag = yes
+			is_soviet_collapse_caucasus_league_leader = yes
+			NOT = { tag = event_target:soviet_collapse_caucasus_league_joiner }
+			NOT = { has_war_with = event_target:soviet_collapse_caucasus_league_joiner }
+			event_target:soviet_collapse_caucasus_league_joiner = { is_in_faction = no }
+		}
+		soviet_collapse_repair_caucasus_regional_faction_leader_flags = yes
+		save_event_target_as = soviet_collapse_caucasus_league_actor
+		event_target:soviet_collapse_caucasus_league_joiner = {
+			event_target:soviet_collapse_caucasus_league_actor = { add_to_faction = PREV }
+			soviet_collapse_join_caucasus_regional_faction = yes
+		}
+		set_global_flag = soviet_collapse_caucasus_league_announced
+	}
 }
 
 soviet_collapse_found_or_join_steppe_federation = {
@@ -12392,64 +12438,29 @@ soviet_collapse_join_free_republics_league = {
 }
 
 soviet_collapse_invite_free_republics_league_partners = {
-    if = { limit = { UKR = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = UKR UKR = { soviet_collapse_join_free_republics_league = yes } }
-    if = { limit = { BLR = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = BLR BLR = { soviet_collapse_join_free_republics_league = yes } }
-    if = { limit = { KAZ = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = KAZ KAZ = { soviet_collapse_join_free_republics_league = yes } }
-    if = { limit = { LIT = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = LIT LIT = { soviet_collapse_join_free_republics_league = yes } }
-    if = { limit = { LAT = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = LAT LAT = { soviet_collapse_join_free_republics_league = yes } }
-    if = { limit = { EST = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = EST EST = { soviet_collapse_join_free_republics_league = yes } }
-    if = { limit = { GEO = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = GEO GEO = { soviet_collapse_join_free_republics_league = yes } }
-    if = { limit = { ARM = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = ARM ARM = { soviet_collapse_join_free_republics_league = yes } }
-    if = { limit = { AZR = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = AZR AZR = { soviet_collapse_join_free_republics_league = yes } }
-    if = { limit = { MOL = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = MOL MOL = { soviet_collapse_join_free_republics_league = yes } }
-    if = { limit = { UZB = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = UZB UZB = { soviet_collapse_join_free_republics_league = yes } }
-    if = { limit = { KYR = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = KYR KYR = { soviet_collapse_join_free_republics_league = yes } }
-    if = { limit = { TAJ = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = TAJ TAJ = { soviet_collapse_join_free_republics_league = yes } }
-    if = { limit = { TMS = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = TMS TMS = { soviet_collapse_join_free_republics_league = yes } }
-    if = { limit = { KAR = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = KAR KAR = { soviet_collapse_join_free_republics_league = yes } }
-    if = { limit = { KOM = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = KOM KOM = { soviet_collapse_join_free_republics_league = yes } }
-    if = { limit = { CRI = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = CRI CRI = { soviet_collapse_join_free_republics_league = yes } }
-    if = { limit = { TAT = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = TAT TAT = { soviet_collapse_join_free_republics_league = yes } }
-    if = { limit = { BSK = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = BSK BSK = { soviet_collapse_join_free_republics_league = yes } }
-    if = { limit = { FER = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = FER FER = { soviet_collapse_join_free_republics_league = yes } }
-    if = { limit = { YAK = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = YAK YAK = { soviet_collapse_join_free_republics_league = yes } }
-    if = { limit = { BYA = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = BYA BYA = { soviet_collapse_join_free_republics_league = yes } }
-    if = { limit = { TAN = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = TAN TAN = { soviet_collapse_join_free_republics_league = yes } }
-    if = { limit = { FEV = { exists = yes has_country_flag = soviet_collapse_high_chaos_successor is_in_faction = no } } add_to_faction = FEV FEV = { soviet_collapse_join_free_republics_league = yes } }
-    if = { limit = { SZA = { exists = yes has_country_flag = soviet_collapse_high_chaos_successor is_in_faction = no } } add_to_faction = SZA SZA = { soviet_collapse_join_free_republics_league = yes } }
-    if = { limit = { IUL = { exists = yes has_country_flag = soviet_collapse_high_chaos_successor is_in_faction = no } } add_to_faction = IUL IUL = { soviet_collapse_join_free_republics_league = yes } }
-    if = { limit = { UWD = { exists = yes has_country_flag = soviet_collapse_high_chaos_successor is_in_faction = no } } add_to_faction = UWD UWD = { soviet_collapse_join_free_republics_league = yes } }
-    if = { limit = { BAC = { exists = yes has_country_flag = soviet_collapse_high_chaos_successor is_in_faction = no } } add_to_faction = BAC BAC = { soviet_collapse_join_free_republics_league = yes } }
-    if = { limit = { KZR = { exists = yes has_country_flag = soviet_collapse_high_chaos_successor is_in_faction = no } } add_to_faction = KZR KZR = { soviet_collapse_join_free_republics_league = yes } }
-    if = { limit = { SOG = { exists = yes has_country_flag = soviet_collapse_high_chaos_successor is_in_faction = no } } add_to_faction = SOG SOG = { soviet_collapse_join_free_republics_league = yes } }
-    if = { limit = { KHW = { exists = yes has_country_flag = soviet_collapse_high_chaos_successor is_in_faction = no } } add_to_faction = KHW KHW = { soviet_collapse_join_free_republics_league = yes } }
-    if = { limit = { ALN = { exists = yes has_country_flag = soviet_collapse_high_chaos_successor is_in_faction = no } } add_to_faction = ALN ALN = { soviet_collapse_join_free_republics_league = yes } }
+	save_event_target_as = soviet_collapse_free_republics_league_actor
+	every_country = {
+		limit = {
+			is_soviet_collapse_free_republics_league_invite_candidate = yes
+			NOT = { tag = event_target:soviet_collapse_free_republics_league_actor }
+			NOT = { has_war_with = event_target:soviet_collapse_free_republics_league_actor }
+		}
+		event_target:soviet_collapse_free_republics_league_actor = { add_to_faction = PREV }
+		soviet_collapse_join_free_republics_league = yes
+	}
 }
 
 soviet_collapse_form_free_republics_league_from_ukraine = {
-    set_country_flag = soviet_collapse_free_republics_league_founder
-    set_country_flag = soviet_collapse_free_republics_league_member
-    if = {
-        limit = { is_in_faction = no }
-        create_faction = soviet_collapse_free_republics_league_faction
-    }
+	soviet_collapse_prepare_local_faction_founder = yes
+	set_country_flag = soviet_collapse_free_republics_league_founder
+	set_country_flag = soviet_collapse_free_republics_league_member
+	if = {
+		limit = { is_in_faction = no }
+		create_faction = soviet_collapse_free_republics_league_faction
+	}
+	soviet_collapse_invite_free_republics_league_partners = yes
 
-    if = { limit = { BLR = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = BLR BLR = { set_country_flag = soviet_collapse_free_republics_league_member add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_idea.league_large_gain } } }
-    if = { limit = { KAZ = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = KAZ KAZ = { set_country_flag = soviet_collapse_free_republics_league_member add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_idea.league_large_gain } } }
-    if = { limit = { LIT = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = LIT LIT = { set_country_flag = soviet_collapse_free_republics_league_member add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_idea.league_large_gain } } }
-    if = { limit = { LAT = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = LAT LAT = { set_country_flag = soviet_collapse_free_republics_league_member add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_idea.league_large_gain } } }
-    if = { limit = { EST = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = EST EST = { set_country_flag = soviet_collapse_free_republics_league_member add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_idea.league_large_gain } } }
-    if = { limit = { GEO = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = GEO GEO = { set_country_flag = soviet_collapse_free_republics_league_member add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_idea.league_large_gain } } }
-    if = { limit = { ARM = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = ARM ARM = { set_country_flag = soviet_collapse_free_republics_league_member add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_idea.league_large_gain } } }
-    if = { limit = { AZR = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = AZR AZR = { set_country_flag = soviet_collapse_free_republics_league_member add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_idea.league_large_gain } } }
-    if = { limit = { MOL = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = MOL MOL = { set_country_flag = soviet_collapse_free_republics_league_member add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_idea.league_large_gain } } }
-    if = { limit = { UZB = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = UZB UZB = { set_country_flag = soviet_collapse_free_republics_league_member add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_idea.league_large_gain } } }
-    if = { limit = { KYR = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = KYR KYR = { set_country_flag = soviet_collapse_free_republics_league_member add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_idea.league_large_gain } } }
-    if = { limit = { TAJ = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = TAJ TAJ = { set_country_flag = soviet_collapse_free_republics_league_member add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_idea.league_large_gain } } }
-    if = { limit = { TMS = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } add_to_faction = TMS TMS = { set_country_flag = soviet_collapse_free_republics_league_member add_to_variable = { soviet_collapse_league_support_strength = constant:soviet_collapse_republic_idea.league_large_gain } } }
-    soviet_collapse_invite_free_republics_league_partners = yes
-
-    soviet_collapse_apply_focus_league_preparation = yes
+	soviet_collapse_apply_focus_league_preparation = yes
     if = {
         limit = { SOV = { exists = yes is_soviet_collapse_active = yes } }
         SOV = {
@@ -12516,27 +12527,27 @@ soviet_collapse_form_terminal_free_republics_league = {
                     }
                 }
             }
-            if = { limit = { UKR = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } UKR = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
-            else_if = { limit = { BLR = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } BLR = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
-            else_if = { limit = { KAZ = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } KAZ = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
-            else_if = { limit = { MOL = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } MOL = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
-            else_if = { limit = { KAR = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } KAR = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
-            else_if = { limit = { KOM = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } KOM = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
-            else_if = { limit = { TAT = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } TAT = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
-            else_if = { limit = { BSK = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } BSK = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
-            else_if = { limit = { CRI = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } CRI = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
-            else_if = { limit = { FER = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } FER = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
-            else_if = { limit = { YAK = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } YAK = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
-            else_if = { limit = { BYA = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } BYA = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
-            else_if = { limit = { TAN = { exists = yes has_country_flag = soviet_collapse_breakaway is_in_faction = no } } TAN = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
-            else_if = { limit = { SZA = { exists = yes has_country_flag = soviet_collapse_high_chaos_successor is_in_faction = no } } SZA = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
-            else_if = { limit = { FEV = { exists = yes has_country_flag = soviet_collapse_high_chaos_successor is_in_faction = no } } FEV = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
-            else_if = { limit = { KZR = { exists = yes has_country_flag = soviet_collapse_high_chaos_successor is_in_faction = no } } KZR = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
-            else_if = { limit = { SOG = { exists = yes has_country_flag = soviet_collapse_high_chaos_successor is_in_faction = no } } SOG = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
-            else_if = { limit = { KHW = { exists = yes has_country_flag = soviet_collapse_high_chaos_successor is_in_faction = no } } KHW = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
-            else_if = { limit = { ALN = { exists = yes has_country_flag = soviet_collapse_high_chaos_successor is_in_faction = no } } ALN = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
-        }
-    }
+			if = { limit = { UKR = { is_soviet_collapse_free_republics_league_invite_candidate = yes } } UKR = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
+			else_if = { limit = { BLR = { is_soviet_collapse_free_republics_league_invite_candidate = yes } } BLR = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
+			else_if = { limit = { KAZ = { is_soviet_collapse_free_republics_league_invite_candidate = yes } } KAZ = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
+			else_if = { limit = { MOL = { is_soviet_collapse_free_republics_league_invite_candidate = yes } } MOL = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
+			else_if = { limit = { KAR = { is_soviet_collapse_free_republics_league_invite_candidate = yes } } KAR = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
+			else_if = { limit = { KOM = { is_soviet_collapse_free_republics_league_invite_candidate = yes } } KOM = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
+			else_if = { limit = { TAT = { is_soviet_collapse_free_republics_league_invite_candidate = yes } } TAT = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
+			else_if = { limit = { BSK = { is_soviet_collapse_free_republics_league_invite_candidate = yes } } BSK = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
+			else_if = { limit = { CRI = { is_soviet_collapse_free_republics_league_invite_candidate = yes } } CRI = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
+			else_if = { limit = { FER = { is_soviet_collapse_free_republics_league_invite_candidate = yes } } FER = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
+			else_if = { limit = { YAK = { is_soviet_collapse_free_republics_league_invite_candidate = yes } } YAK = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
+			else_if = { limit = { BYA = { is_soviet_collapse_free_republics_league_invite_candidate = yes } } BYA = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
+			else_if = { limit = { TAN = { is_soviet_collapse_free_republics_league_invite_candidate = yes } } TAN = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
+			else_if = { limit = { SZA = { is_soviet_collapse_free_republics_league_invite_candidate = yes } } SZA = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
+			else_if = { limit = { FEV = { is_soviet_collapse_free_republics_league_invite_candidate = yes } } FEV = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
+			else_if = { limit = { KZR = { is_soviet_collapse_free_republics_league_invite_candidate = yes } } KZR = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
+			else_if = { limit = { SOG = { is_soviet_collapse_free_republics_league_invite_candidate = yes } } SOG = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
+			else_if = { limit = { KHW = { is_soviet_collapse_free_republics_league_invite_candidate = yes } } KHW = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
+			else_if = { limit = { ALN = { is_soviet_collapse_free_republics_league_invite_candidate = yes } } ALN = { soviet_collapse_form_free_republics_league_from_ukraine = yes } }
+		}
+	}
     else_if = {
         limit = { has_global_flag = soviet_collapse_free_republics_league_announced }
         soviet_collapse_refresh_free_republics_league = yes
