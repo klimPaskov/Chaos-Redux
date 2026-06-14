@@ -1,0 +1,72 @@
+# Soviet Collapse Evolution Portrait Frame Plan
+
+Frame timing: 4 FPS. Each frame is one existing Soviet Collapse portrait DDS copied into `156x210` PNG form and placed into the horizontal sheet. The first frame is also the static fallback.
+
+| Frame | Tag | Source DDS | Source note |
+| --- | --- | --- | --- |
+| 000 | `ALA` | `gfx/leaders/005_soviet_collapse/ALA_leader.dds` | existing portrait source frame |
+| 001 | `ALN` | `gfx/leaders/005_soviet_collapse/ALN_leader.dds` | existing portrait source frame |
+| 002 | `ARD` | `gfx/leaders/005_soviet_collapse/ARD_leader.dds` | existing portrait source frame |
+| 003 | `ARM` | `gfx/leaders/005_soviet_collapse/ARM_leader.dds` | existing portrait source frame |
+| 004 | `AZR` | `gfx/leaders/005_soviet_collapse/AZR_leader.dds` | existing portrait source frame |
+| 005 | `BAC` | `gfx/leaders/005_soviet_collapse/BAC_leader.dds` | existing portrait source frame |
+| 006 | `BBH` | `gfx/leaders/005_soviet_collapse/BBH_leader.dds` | existing portrait source frame |
+| 007 | `BEC` | `gfx/leaders/005_soviet_collapse/BEC_leader.dds` | existing portrait source frame |
+| 008 | `BLR` | `gfx/leaders/005_soviet_collapse/BLR_leader.dds` | existing portrait source frame |
+| 009 | `BLT` | `gfx/leaders/005_soviet_collapse/BLT_leader.dds` | existing portrait source frame |
+| 010 | `BSC` | `gfx/leaders/005_soviet_collapse/BSC_leader.dds` | existing portrait source frame |
+| 011 | `BSK` | `gfx/leaders/005_soviet_collapse/BSK_leader.dds` | existing portrait source frame |
+| 012 | `BYA` | `gfx/leaders/005_soviet_collapse/BYA_leader.dds` | existing portrait source frame |
+| 013 | `CFR` | `gfx/leaders/005_soviet_collapse/CFR_leader.dds` | existing portrait source frame |
+| 014 | `COU` | `gfx/leaders/005_soviet_collapse/COU_leader.dds` | existing portrait source frame |
+| 015 | `CRI` | `gfx/leaders/005_soviet_collapse/CRI_leader.dds` | existing portrait source frame |
+| 016 | `DHC` | `gfx/leaders/005_soviet_collapse/DHC_leader.dds` | existing portrait source frame |
+| 017 | `DSC` | `gfx/leaders/005_soviet_collapse/DSC_leader.dds` | existing portrait source frame |
+| 018 | `EST` | `gfx/leaders/005_soviet_collapse/EST_leader.dds` | existing portrait source frame |
+| 019 | `FER` | `gfx/leaders/005_soviet_collapse/FER_leader.dds` | existing portrait source frame |
+| 020 | `FEV` | `gfx/leaders/005_soviet_collapse/FEV_leader.dds` | existing portrait source frame |
+| 021 | `FTH` | `gfx/leaders/005_soviet_collapse/FTH_leader.dds` | existing portrait source frame |
+| 022 | `GAC` | `gfx/leaders/005_soviet_collapse/GAC_leader.dds` | existing portrait source frame |
+| 023 | `GEO` | `gfx/leaders/005_soviet_collapse/GEO_leader.dds` | existing portrait source frame |
+| 024 | `ICD` | `gfx/leaders/005_soviet_collapse/ICD_leader.dds` | existing portrait source frame |
+| 025 | `ILU` | `gfx/leaders/005_soviet_collapse/ILU_leader.dds` | existing portrait source frame |
+| 026 | `IRA` | `gfx/leaders/005_soviet_collapse/IRA_leader.dds` | existing portrait source frame |
+| 027 | `IUL` | `gfx/leaders/005_soviet_collapse/IUL_leader.dds` | existing portrait source frame |
+| 028 | `KAR` | `gfx/leaders/005_soviet_collapse/KAR_leader.dds` | existing portrait source frame |
+| 029 | `KAZ` | `gfx/leaders/005_soviet_collapse/KAZ_leader.dds` | existing portrait source frame |
+| 030 | `KHC` | `gfx/leaders/005_soviet_collapse/KHC_leader.dds` | existing portrait source frame |
+| 031 | `KHW` | `gfx/leaders/005_soviet_collapse/KHW_leader.dds` | existing portrait source frame |
+| 032 | `KMB` | `gfx/leaders/005_soviet_collapse/KMB_leader.dds` | existing portrait source frame |
+| 033 | `KOM` | `gfx/leaders/005_soviet_collapse/KOM_leader.dds` | existing portrait source frame |
+| 034 | `KRS` | `gfx/leaders/005_soviet_collapse/KRS_leader.dds` | existing portrait source frame |
+| 035 | `KYR` | `gfx/leaders/005_soviet_collapse/KYR_leader.dds` | existing portrait source frame |
+| 036 | `KZR` | `gfx/leaders/005_soviet_collapse/KZR_leader.dds` | existing portrait source frame |
+| 037 | `LAT` | `gfx/leaders/005_soviet_collapse/LAT_leader.dds` | existing portrait source frame |
+| 038 | `LID` | `gfx/leaders/005_soviet_collapse/LID_leader.dds` | existing portrait source frame |
+| 039 | `LIT` | `gfx/leaders/005_soviet_collapse/LIT_leader.dds` | existing portrait source frame |
+| 040 | `MFR` | `gfx/leaders/005_soviet_collapse/MFR_leader.dds` | existing portrait source frame |
+| 041 | `MOL` | `gfx/leaders/005_soviet_collapse/MOL_leader.dds` | existing portrait source frame |
+| 042 | `MRC` | `gfx/leaders/005_soviet_collapse/MRC_leader.dds` | existing portrait source frame |
+| 043 | `NLC` | `gfx/leaders/005_soviet_collapse/NLC_leader.dds` | existing portrait source frame |
+| 044 | `NRF` | `gfx/leaders/005_soviet_collapse/NRF_leader.dds` | existing portrait source frame |
+| 045 | `OGB` | `gfx/leaders/005_soviet_collapse/OGB_leader.dds` | existing portrait source frame |
+| 046 | `PRA` | `gfx/leaders/005_soviet_collapse/PRA_leader.dds` | existing portrait source frame |
+| 047 | `RCD` | `gfx/leaders/005_soviet_collapse/RCD_leader.dds` | existing portrait source frame |
+| 048 | `RLD` | `gfx/leaders/005_soviet_collapse/RLD_leader.dds` | existing portrait source frame |
+| 049 | `RMC` | `gfx/leaders/005_soviet_collapse/RMC_leader.dds` | existing portrait source frame |
+| 050 | `SDZ` | `gfx/leaders/005_soviet_collapse/SDZ_leader.dds` | existing portrait source frame |
+| 051 | `SEP` | `gfx/leaders/005_soviet_collapse/SEP_leader.dds` | existing portrait source frame |
+| 052 | `SOG` | `gfx/leaders/005_soviet_collapse/SOG_leader.dds` | existing portrait source frame |
+| 053 | `SZA` | `gfx/leaders/005_soviet_collapse/SZA_leader.dds` | existing portrait source frame |
+| 054 | `TAJ` | `gfx/leaders/005_soviet_collapse/TAJ_leader.dds` | existing portrait source frame |
+| 055 | `TAN` | `gfx/leaders/005_soviet_collapse/TAN_leader.dds` | existing portrait source frame |
+| 056 | `TAT` | `gfx/leaders/005_soviet_collapse/TAT_leader.dds` | existing portrait source frame |
+| 057 | `TMS` | `gfx/leaders/005_soviet_collapse/TMS_leader.dds` | existing portrait source frame |
+| 058 | `TNC` | `gfx/leaders/005_soviet_collapse/TNC_leader.dds` | existing portrait source frame |
+| 059 | `TRS` | `gfx/leaders/005_soviet_collapse/TRS_leader.dds` | existing portrait source frame |
+| 060 | `TSC` | `gfx/leaders/005_soviet_collapse/TSC_leader.dds` | existing portrait source frame |
+| 061 | `UDC` | `gfx/leaders/005_soviet_collapse/UDC_leader.dds` | existing portrait source frame |
+| 062 | `UKR` | `gfx/leaders/005_soviet_collapse/UKR_leader.dds` | existing portrait source frame |
+| 063 | `UWD` | `gfx/leaders/005_soviet_collapse/UWD_leader.dds` | existing portrait source frame |
+| 064 | `UZB` | `gfx/leaders/005_soviet_collapse/UZB_leader.dds` | existing portrait source frame |
+| 065 | `YAK` | `gfx/leaders/005_soviet_collapse/YAK_leader.dds` | existing portrait source frame |
