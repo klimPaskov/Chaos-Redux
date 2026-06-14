@@ -13,6 +13,8 @@ The Fury country-leader flame overlay is registered in `interface/007_fury.gfx`:
 
 The scripted GUI container is in `interface/007_fury_leader_overlay.gui`, with visibility and parent-window binding in `common/scripted_guis/007_fury_scripted_guis.txt`. The diplomacy overlay uses `diplomacy_target_context` and `parent_window_token = selected_country_view_diplomacy`; both the overlay shell and `fury_diplomacy_leader_flame_overlay_visible` require the active diplomacy target to be a Fury actor. The overlay origin is `x = 20`, `y = 120`, `scale = 0.74`, aligned against the vanilla diplomacy `leader_portrait` reference inside `diplomacy_tab_top`.
 
+The same animated flame sprite is also reused in the event-log evolution details portrait frame as `events_log_evolution_details_fury_flame_overlay` in `interface/chaosx_events_log_popup.gui`. That surface keeps `GFX_portrait_unknown` as the base missing portrait, scales the flame overlay to `0.60`, and gates it through `has_events_log_selected_fury_evolution` in `common/scripted_guis/chaosx_scripted_gui_events_log.txt`.
+
 The final major-Fury super-event image is wired at `gfx/super_events/fury_becomes_a_state.dds`. Its generated source and processed PNG live under `docs/assets/007_fury/super_events/fury_becomes_a_state/`. Slot `59` already returns `GFX_super_event_fury_becomes_a_state`.
 
 The final world-end super-event image is wired at `gfx/super_events/super_event_world_in_fury.dds`. Its generated source and processed PNG live under `docs/assets/007_fury/super_events/world_in_fury/`. Slot `60` already returns `GFX_super_event_world_in_fury`.

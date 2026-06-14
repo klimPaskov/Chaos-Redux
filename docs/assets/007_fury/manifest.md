@@ -14,13 +14,14 @@
 | Anti-Fury category | `anti_fury_response_category` | final Fury-specific DDS | `gfx/interface/decisions/fury/decision_category_anti_fury.dds` |
 | Fury diplomacy country leader overlay | `GFX_fury_leader_flame_overlay_animated` | generated 8-frame flame loop | `gfx/interface/leader_frames/fury/fury_leader_flame_overlay_sheet.dds` |
 | Fury diplomacy country leader overlay fallback | `GFX_fury_leader_flame_overlay_static` | generated static fallback frame | `gfx/interface/leader_frames/fury/fury_leader_flame_overlay_static.dds` |
+| Fury evolution details portrait overlay | `events_log_evolution_details_fury_flame_overlay` | reuses `GFX_fury_leader_flame_overlay_animated` over `GFX_portrait_unknown` | `interface/chaosx_events_log_popup.gui` |
 | achievements | `achievement_fury_*` | final Fury-specific DDS triplets generated from Fury super-event art | `gfx/achievements/achievement_fury_*.dds` |
 
 ## Final Sprite Records
 
 Report, news, idea, decision, category, and key focus branch sprite aliases are registered in `interface/007_fury.gfx`. Report/news source and processed PNGs are documented in `docs/assets/007_fury/event_images/manifest.md`; UI icon source and processed PNGs are documented in `docs/assets/007_fury/ui_icons/manifest.md`.
 
-The Fury leader flame overlay sprite aliases are registered in `interface/007_fury.gfx`. Source frames, processed frames, sheet PNG, contact sheet, preview, and per-frame notes are documented in `docs/assets/007_fury/leader_flame_overlay/manifest.md`.
+The Fury leader flame overlay sprite aliases are registered in `interface/007_fury.gfx`. Source frames, processed frames, sheet PNG, contact sheet, preview, and per-frame notes are documented in `docs/assets/007_fury/leader_flame_overlay/manifest.md`. The event-log evolution details portrait frame reuses the animated overlay over vanilla's `GFX_portrait_unknown` missing portrait.
 
 Final achievement sprite aliases are already registered in `interface/chaosx_achievements.gfx`. Source and processed PNGs are documented in `docs/assets/007_fury/achievement_icons/manifest.md`.
 
