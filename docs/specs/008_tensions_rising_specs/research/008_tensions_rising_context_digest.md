@@ -7,11 +7,11 @@ This package was built from the user-provided Event 008 rework brief and the upl
 - Event ID: `8`
 - Event name: `Tensions Rising`
 - Type: Minor Repeatable
-- Baseline: `+10` world tension, only useful below `100%` world tension in Calm World
-- Evolution I: Gathering Storm, `+10 chaos`, `+10` world tension, can fire at `100%` WT
-- Evolution II: `+15 chaos`, `+20` world tension
-- Evolution III: `+25 chaos`, `+50` world tension
-- Evolution IV: `+50 chaos`, `+100` world tension
+- Baseline: `+100` world tension, only useful below `100%` world tension in Calm World
+- Evolution I: Gathering Storm, `+10 chaos`, `+100` world tension, can fire at `100%` WT
+- Evolution II: `+15 chaos`, `+200` world tension
+- Evolution III: `+25 chaos`, `+500` world tension
+- Evolution IV: `+50 chaos`, `+1000` world tension
 - Creative hidden effects requested: temporary auto-event timer boost, worsening relations between random countries, delayed news/flavour events
 - No world-end scenario
 

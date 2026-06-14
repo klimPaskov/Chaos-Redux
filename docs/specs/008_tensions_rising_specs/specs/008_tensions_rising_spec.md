@@ -13,7 +13,7 @@
 
 The reworked event keeps the user-provided core:
 
-- In Calm World, the event raises world tension by `+10` and should only fire while world tension is below `100%`.
+- In Calm World, the event raises world tension by `+100` and should only fire while world tension is below `100%`.
 - Once the first evolution is active, the event can fire even when world tension is already `100%`.
 - Later evolutions add direct chaos, larger world tension packets, temporary timer pressure, relation damage, and delayed follow-up reports.
 - The event never has a world-end scenario.
@@ -44,7 +44,7 @@ The baseline version fires only while the world remains below full tension.
 
 | Stage | World state | Fire condition | Direct effects | Hidden side effects |
 | --- | --- | --- | --- | --- |
-| Baseline | Calm World / no Event 8 evolution active | World tension below `100%` | `+10` world tension | None beyond normal Minor Repeatable event-system consequences |
+| Baseline | Calm World / no Event 8 evolution active | World tension below `100%` | `+100` world tension | None beyond normal Minor Repeatable event-system consequences |
 
 The baseline version should be clean and readable. Do not add relation damage or direct chaos at this level. It is the first crack in the glass, not the first shard.
 
@@ -64,10 +64,10 @@ The track has four stages, matching the user-provided progression:
 
 | Evolution stage | Working title | Minimum chaos tier | World tension effect | Chaos effect | Can fire at 100% world tension? | Hidden layer |
 | --- | --- | --- | --- | --- | --- | --- |
-| I | Cable Traffic Flood | Gathering Storm | `+10` | `+10` | Yes | light timer pulse, one or two diplomatic shocks, optional delayed report |
-| II | The Accusation Market | Rising Chaos | `+20` | `+15` | Yes | stronger timer pulse, multiple opinion shocks, temporary pressure spirits |
-| III | General Staffs Stop Sleeping | Chaos Tier | `+50` | `+25` | Yes | heavy timer pulse, war-plan fever, near-miss follow-ups |
-| IV | The Permanent Alert | Totalen Chaos | `+100` | `+50` | Yes | severe timer pulse, broad relation damage, delayed reports |
+| I | Cable Traffic Flood | Gathering Storm | `+100` | `+10` | Yes | light timer pulse, one or two diplomatic shocks, optional delayed report |
+| II | The Accusation Market | Rising Chaos | `+200` | `+15` | Yes | stronger timer pulse, multiple opinion shocks, temporary pressure spirits |
+| III | General Staffs Stop Sleeping | Chaos Tier | `+500` | `+25` | Yes | heavy timer pulse, war-plan fever, near-miss follow-ups |
+| IV | The Permanent Alert | Totalen Chaos | `+1000` | `+50` | Yes | severe timer pulse, broad relation damage, delayed reports |
 
 The evolution should be recorded when the stage becomes active or first manifests. Event detail text should preview the evolved behavior in broad terms, but it should not reveal the full random headline list or exact pair-selection math.
 
@@ -77,7 +77,7 @@ At Gathering Storm, public fear becomes self-reinforcing. The same event now add
 
 ### Direct effects
 
-- `+10` world tension.
+- `+100` world tension.
 - `+10` chaos.
 - Can fire at `100%` world tension.
 
@@ -103,7 +103,7 @@ At Rising Chaos, fear becomes a market. Every rumor is valuable to somebody: opp
 
 ### Direct effects
 
-- `+20` world tension.
+- `+200` world tension.
 - `+15` chaos.
 
 ### Hidden effects
@@ -129,7 +129,7 @@ At Chaos Tier, suspicion enters the armed services. The event should make the AI
 
 ### Direct effects
 
-- `+50` world tension.
+- `+500` world tension.
 - `+25` chaos.
 
 ### Hidden effects
@@ -155,7 +155,7 @@ At Totalen Chaos, tension is no longer a metric. It is the climate. This stage m
 
 ### Direct effects
 
-- `+100` world tension.
+- `+1000` world tension.
 - `+50` chaos.
 
 ### Hidden effects
