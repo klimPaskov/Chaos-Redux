@@ -14,7 +14,6 @@ This is a design handoff for the scripted-system architecture pass. It is not fi
 | `apply_tensions_rising_relation_pair` | country-to-country context | source country, target country, stage variable | timed opinion modifiers | optional pair cooldown flags | relation pair selector |
 | `schedule_tensions_rising_followup` | global/event context | stage variable, world tension, optional pair context | delayed report/news event | schedules one delayed subevent | event effect stage I+ |
 | `apply_tensions_rising_country_pressure` | selected country | stage variable, country score | temporary national modifier | war support/stability/AI posture effect | Stage II+ selector |
-| `trigger_tensions_rising_stage_4_super_event` | global | stage variable, super-event seen flag | super-event visibility/audio/image context | sets one-time seen flag | Stage IV first firing |
 
 ## Script constant groups
 
@@ -93,7 +92,6 @@ Recommended script constant category names:
 - `tensions_rising_stage_2_recorded`
 - `tensions_rising_stage_3_recorded`
 - `tensions_rising_stage_4_recorded`
-- `tensions_rising_stage_4_super_event_seen`
 
 ### Timed or expiring state
 
@@ -107,7 +105,6 @@ Recommended script constant category names:
 - Pulse state expires naturally or is read as inactive at zero strength.
 - Pair cooldowns expire.
 - Temporary national modifiers expire.
-- Scenario-only bypass flags are cleared at end of launch effect.
 - No global event target for a relation pair should persist beyond a single effect chain unless a delayed named follow-up genuinely requires it, if global targets are used, they must be cleared.
 
 ## Duration field caution
@@ -151,8 +148,9 @@ If a delayed report must name exact countries, schedule it from inside the same 
 
 ### Cluster system
 
-- Optional: register `Diplomatic Panic` as a new cluster only if implementing the cluster in this pass.
-- If not implementing, keep it as a spec-only proposal and do not add partial cluster rows.
+- If registering `Diplomatic Panic`, keep the current member note simple.
+- For now one member: Event 8 `Tensions Rising`, required, medium severity.
+- If not implementing, keep it as queued documentation.
 
 ## Validation notes for implementer
 
@@ -161,7 +159,7 @@ Task-specific checks after implementation should include:
 - Event ID 8 remains Minor Repeatable.
 - Baseline cannot auto-fire at WT 100 before Stage I.
 - Stage I+ can fire at WT 100.
-- Stage IV super-event is one-time and non-terminal.
+- Stage IV remains non-terminal and does not trigger a super-event.
 - No direct war goals, countries, focus trees, cores, or formables are created.
 - Timer pulse replacement/cap works under repeated firings.
 - Delayed reports do not recursively fire Event 8.

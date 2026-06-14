@@ -36,18 +36,11 @@ Do not make achievements unlock just because Event 8 fires once. These achieveme
 - Unlock when the `Insurance Rates Jump in Neutral Ports` follow-up fires while the player has a meaningful convoy pool and is not at war.
 - Icon: marine insurance ledger and ship silhouette, no text.
 
-### `achievement_tensions_red_line`  -  The Red Line Disappears
-
-- Visible.
-- Any player country.
-- Unlock when the first Event 8 Stage IV super-event is shown while no world-end scenario is active.
-- Icon: broken red cord across a dark embassy window.
-
 ### `achievement_tensions_one_denial`  -  One Denial Too Many
 
 - Hidden.
 - Any player country.
-- Unlock when Event 11 Secret Alliance or Event 4 Random War fires within 120 days after Event 8 applies relation damage.
+- Unlock only if an approved existing diplomatic or war-adjacent event hook exists and fires within 120 days after Event 8 applies relation damage. Queue this achievement if no approved hook exists.
 - Avoid false positives from unrelated old history.
 - Icon: denied stamp motif over sealed cable, no readable text.
 
@@ -60,7 +53,7 @@ Do not make achievements unlock just because Event 8 fires once. These achieveme
 
 ## Tracking notes
 
-- Add flags/variables for Stage III/IV reached, Stage IV super-event seen, relation-damage window, no-war windows, and active opinion modifier count as needed.
+- Add flags/variables for Stage III/IV reached, relation-damage window, no-war windows, and active opinion modifier count as needed.
 - If the achievement framework requires player-owned flags, mirror relevant global state into eligible player scope safely.
 - Asset work must produce 64x64 completed icons and any grey/not-eligible variants required by current patterns.
 - Update localisation and docs in the same implementation pass.

@@ -1,17 +1,17 @@
 # 008 Tensions Rising Asset Manifest
 
-Package scope: Event 008 `Tensions Rising` report art, news art, Stage IV super-event art, and achievement icon package.
+Package scope: Event 008 `Tensions Rising` report art, available news art, and active achievement icon package.
 
 Reference inspection completed:
 - `.agents/skills/chaos-redux-event-assets/assets/achievements/achievement.png`
 - `.agents/skills/chaos-redux-event-assets/assets/achievements/achievement_grey.png`
 - `.agents/skills/chaos-redux-event-assets/assets/achievements/achievement_not_eligible.png`
 - Additional Chaos Redux achievement examples in the same folder for framing, contrast, and readability checks.
-- Existing Chaos Redux report, news, and super-event DDS dimensions and sprite wiring in `gfx/event_pictures/`, `gfx/super_events/`, `interface/008_tensions_rising_event_images.gfx`, and `interface/chaosx_super_events.gfx`.
+- Existing Chaos Redux report and news DDS dimensions and sprite wiring in `gfx/event_pictures/` and `interface/008_tensions_rising_event_images.gfx`.
 
 Source mode:
 - `$imagegen` for generated completed-state source art.
-- `$imagegen` plus local processing for the report, news, and super-event images.
+- `$imagegen` plus local processing for the report and news images.
 - Local ImageMagick processing for exact event image dimensions, exact `64x64` achievement resize, tonal cleanup, grey variants, not-eligible red-cross variants, blackout window-count correction on the processed icon, and DDS conversion.
 - Sprite aliases are registered in `interface/chaosx_achievements.gfx` using `GFX_achievement_<achievement_id>`.
 
@@ -40,7 +40,7 @@ DDS conversion note:
 
 ### `news_event_tensions_red_line`
 - Asset type: news event image
-- Intended in-game use: Stage IV Red Line news surface
+- Intended in-game use: registered Event 008 news-event art; current hidden delayed reports use the report image
 - Related event id: `008`
 - Related event slug: `tensions_rising`
 - Source mode: `$imagegen`
@@ -51,23 +51,7 @@ DDS conversion note:
 - Target size: `397x153`
 - Sprite name: `GFX_news_event_tensions_red_line`
 - `.gfx` file: `interface/008_tensions_rising_event_images.gfx`
-- Notes: Quiet red-line crisis news image; no readable text.
-- Asset status: `complete`
-
-### `super_event_tensions_red_line`
-- Asset type: super-event image
-- Intended in-game use: one-time non-terminal Stage IV super-event `The Red Line Disappears`
-- Related event id: `008`
-- Related event slug: `tensions_rising`
-- Source mode: `$imagegen`
-- Source PNG A: `docs/assets/008_tensions_rising/source_png/super_event_tensions_red_line_source_a.png`
-- Source PNG B: `docs/assets/008_tensions_rising/source_png/super_event_tensions_red_line_source_b.png`
-- Processed PNG: `docs/assets/008_tensions_rising/processed_png/super_event_tensions_red_line.png`
-- Final DDS: `gfx/super_events/super_event_tensions_red_line.dds`
-- Target size: `457x328`
-- Sprite name: `GFX_super_event_tensions_red_line`
-- `.gfx` file: `interface/chaosx_super_events.gfx`
-- Notes: Ministry lights and severed diplomatic line motif for the non-terminal super-event.
+- Notes: Quiet diplomatic-pressure news image; no readable text.
 - Asset status: `complete`
 
 ### `achievement_tensions_thin_wire`
@@ -131,27 +115,6 @@ DDS conversion note:
 - `.gfx` file: `interface/chaosx_achievements.gfx`
 - Related achievement id: `achievement_tensions_insurance_market`
 - Notes: Marine insurance ledger, ship silhouette, and red wax seal. The seal uses a stylized anchor imprint but no readable text.
-- Asset status: `complete`
-
-### `achievement_tensions_red_line`
-- Asset type: achievement icon triplet
-- Intended in-game use: custom achievement `achievement_tensions_red_line`
-- Related event id: `008`
-- Related event slug: `tensions_rising`
-- Source mode: `$imagegen`
-- Prompt file: `docs/assets/008_tensions_rising/prompts/achievement_tensions_red_line.txt`
-- Source PNG: `docs/assets/008_tensions_rising/source_png/achievement_tensions_red_line_source.png`
-- Processed PNG: `docs/assets/008_tensions_rising/processed_png/achievement_tensions_red_line.png`
-- Processed PNG grey: `docs/assets/008_tensions_rising/processed_png/achievement_tensions_red_line_grey.png`
-- Processed PNG not eligible: `docs/assets/008_tensions_rising/processed_png/achievement_tensions_red_line_not_eligible.png`
-- Final DDS: `gfx/achievements/achievement_tensions_red_line.dds`
-- Final DDS grey: `gfx/achievements/achievement_tensions_red_line_grey.dds`
-- Final DDS not eligible: `gfx/achievements/achievement_tensions_red_line_not_eligible.dds`
-- Target size: `64x64`
-- Sprite name: `GFX_achievement_achievement_tensions_red_line`
-- `.gfx` file: `interface/chaosx_achievements.gfx`
-- Related achievement id: `achievement_tensions_red_line`
-- Notes: Broken red cord across a dark embassy window.
 - Asset status: `complete`
 
 ### `achievement_tensions_one_denial`

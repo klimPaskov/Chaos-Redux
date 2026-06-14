@@ -24,7 +24,6 @@ This package was built from the user-provided Event 008 rework brief and the upl
 - `chaos-redux-improvement-loop.md`
 - `chaos-redux-subagents.md`
 - `chaos-redux-event-assets.md`
-- `chaos-redux-super-events.md`
 - `hoi4-decisions-missions.md`
 - `hoi4-focus-trees.md`
 - subagent TOML files for scripted systems, assets, localisation, completion audit, spreadsheet worker, planner, and related roles
@@ -38,8 +37,8 @@ The uploaded catalog workbook still had Event 8 detail text equivalent to `Incre
 
 - Event 8 stays a global pressure event, not a country/focus/formable event.
 - The hidden side effects are concentrated in a capped `Tension Pulse`, timed relation damage, delayed reports, and temporary AI posture pressure.
-- Stage IV receives one optional/required-if-accepted non-terminal super-event because evolved minor events can deserve super-event treatment when they become globally significant.
-- A proposed `Diplomatic Panic` cluster is included as an implementation-ready expansion, but it can be queued if the implementation pass is constrained.
+- Stage IV remains a high-pressure non-terminal event-log/evolution state and does not receive a super-event.
+- `Diplomatic Panic` is kept as a small cluster note: for now one member, Event 8, with medium severity.
 - Achievements reward rare timing and deep-stage consequences, not merely seeing the popup once.
 
 ## Files created

@@ -3,8 +3,7 @@
 # ============================================================================
 # Main implementation for Event 8: staged world-tension/chaos packets, capped
 # timer pressure, timed diplomatic shocks, delayed reports, AI posture hooks,
-# achievement tracking, event-log evolution entries, and the first Stage IV
-# super-event.
+# achievement tracking, and event-log evolution entries.
 # ============================================================================
 
 # These caps equal each packet divided by the minimum world-tension slice.
@@ -19,8 +18,6 @@
 @TENSIONS_RISING_AI_POSTURE_STAGE_3_DAYS = 100
 @TENSIONS_RISING_AI_POSTURE_STAGE_4_DAYS = 140
 @TENSIONS_RISING_THIN_WIRE_FLAG_DAYS = 181
-@TENSIONS_RISING_RED_LINE_SUPER_EVENT_SLOT = 62
-@TENSIONS_RISING_RED_LINE_SUPER_EVENT_DAYS = 10
 
 tensions_rising_prepare_random_event_fire = {
 	get_tensions_rising_stage = yes
@@ -46,25 +43,21 @@ evaluate_tensions_rising_random_candidate = {
 
 get_tensions_rising_stage = {
 	set_temp_variable = { tensions_rising_stage = 0 }
+	get_current_chaos_tier_value = yes
 	if = {
-		limit = {
-			OR = {
-				has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_final }
-				has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_4 }
-			}
-		}
+		limit = { check_variable = { current_chaos_tier_value > constant:chaos_meter_tier_id.tier_3 } }
 		set_temp_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_4 }
 	}
 	else_if = {
-		limit = { has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_3 } }
+		limit = { check_variable = { current_chaos_tier_value = constant:chaos_meter_tier_id.tier_3 } }
 		set_temp_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_3 }
 	}
 	else_if = {
-		limit = { has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_2 } }
+		limit = { check_variable = { current_chaos_tier_value = constant:chaos_meter_tier_id.tier_2 } }
 		set_temp_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_2 }
 	}
 	else_if = {
-		limit = { has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_1 } }
+		limit = { check_variable = { current_chaos_tier_value = constant:chaos_meter_tier_id.tier_1 } }
 		set_temp_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_1 }
 	}
 }
@@ -86,10 +79,6 @@ apply_tensions_rising_event_effect = {
 		apply_tensions_rising_ai_posture = yes
 		schedule_tensions_rising_followup = yes
 		update_tensions_rising_achievement_tracking = yes
-		if = {
-			limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_4 } }
-			trigger_tensions_rising_stage_4_super_event = yes
-		}
 	}
 }
 
@@ -653,14 +642,25 @@ apply_tensions_rising_ai_posture = {
 
 	while_loop_effect = {
 		limit = { check_variable = { tensions_rising_ai_posture_remaining > 0 } }
-		random_country = {
+		if = {
 			limit = {
-				is_tensions_rising_ai_posture_candidate = yes
-				NOT = { has_country_flag = tensions_rising_ai_posture_recent }
+				any_country = {
+					is_tensions_rising_ai_posture_candidate = yes
+					NOT = { has_country_flag = tensions_rising_ai_posture_recent }
+				}
 			}
-			apply_tensions_rising_ai_posture_to_country = yes
+			random_country = {
+				limit = {
+					is_tensions_rising_ai_posture_candidate = yes
+					NOT = { has_country_flag = tensions_rising_ai_posture_recent }
+				}
+				apply_tensions_rising_ai_posture_to_country = yes
+			}
+			subtract_from_temp_variable = { tensions_rising_ai_posture_remaining = 1 }
 		}
-		subtract_from_variable = { tensions_rising_ai_posture_remaining = 1 }
+		else = {
+			set_temp_variable = { tensions_rising_ai_posture_remaining = 0 }
+		}
 	}
 }
 
@@ -913,24 +913,6 @@ update_tensions_rising_achievement_tracking = {
 			}
 		}
 		set_global_flag = achievement_tensions_blackout_ready
-	}
-}
-
-trigger_tensions_rising_stage_4_super_event = {
-	if = {
-		limit = {
-			NOT = { has_global_flag = tensions_rising_stage_4_super_event_seen }
-			NOT = { has_global_flag = world_end }
-		}
-		set_global_flag = tensions_rising_stage_4_super_event_seen
-		set_global_flag = achievement_tensions_red_line_ready
-		set_global_flag = { flag = super_event_visible value = @TENSIONS_RISING_RED_LINE_SUPER_EVENT_SLOT days = @TENSIONS_RISING_RED_LINE_SUPER_EVENT_DAYS }
-		set_variable = { global.current_super_event_audio_id = constant:tensions_rising_super_event.red_line_slot }
-		if = {
-			limit = { is_ai = no }
-			set_country_flag = achievement_tensions_red_line_ready
-			play_current_super_event_audio = yes
-		}
 	}
 }
 
