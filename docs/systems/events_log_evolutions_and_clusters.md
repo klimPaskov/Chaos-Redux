@@ -30,15 +30,16 @@ The zombie outbreak event has authored gameplay text in the event-details window
 10. Clicking any event row from either `History` or `Events` opens the same large movable detail window, centered on screen when opened.
 11. Clicking a cluster catalogue row opens current cluster details in the same large movable layout. Fired cluster rows appear in `History` and open the historical cluster details.
 12. Cluster rows and cluster details include an enable/disable checkbox. The cluster details window also has a manual trigger button.
-13. That shared event detail window shows runtime context when it exists:
+13. The footer bulk checkbox appears on Events and Clusters only. It toggles all events from the Events tab and all clusters from the Clusters tab.
+14. That shared event detail window shows runtime context when it exists:
    - fired-on date,
    - log number,
    - actor flag beside the title once the event has actually fired,
    - latest reached evolution stage.
-14. Event `2` (`Zombie Outbreak`) renders gameplay-useful description text in that detail window.
-15. Event `4` (`Random War`) renders War Contagion detail text and stage previews.
-16. If the selected event has logged or preview evolutions, the event detail window shows a clickable evolution list under the description text.
-17. Clicking a related evolution entry, or an entry from the `Evolutions` tab, opens the evolution detail popup with:
+15. Event `2` (`Zombie Outbreak`) renders gameplay-useful description text in that detail window.
+16. Event `4` (`Random War`) renders War Contagion detail text and stage previews.
+17. If the selected event has logged or preview evolutions, the event detail window shows a clickable evolution list under the description text.
+18. Clicking a related evolution entry, or an entry from the `Evolutions` tab, opens the evolution detail popup with:
 	   - evolution title and summary,
 	   - logged actor country link,
 	   - a portrait only when that evolution family has an authored portrait mapping for the selected stage,
@@ -56,7 +57,7 @@ Events tab supports:
 
 ## Clusters tab sorting and filtering
 Clusters tab supports:
-- Filter: `All`, `Available`, `Unavailable`
+- Filter: `All`, `Available`, `Unavailable`, `Enabled`, `Disabled`
 - Sort mode: `By Cluster ID`, `By Type`, `By Roll`, `By Fired`
 - Sort order: `Ascending`, `Descending`
 

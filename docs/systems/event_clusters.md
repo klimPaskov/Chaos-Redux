@@ -89,6 +89,7 @@ Cluster history is stored separately from normal event history:
 - Clicking a member row opens that member's normal event details.
 - The cluster details window sorts member rows by danger level from lower danger to higher danger.
 - Cluster rows and details include a checkbox that enables or disables automatic cluster firing. The trigger button in cluster details force-fires the selected cluster.
+- The Event Logs footer checkbox switches to cluster mode while the Clusters tab is active, enabling or disabling every registered cluster without changing individual event enablement.
 
 The cluster log records the cluster even though member events still appear in normal history. This lets the player see both the broad incident and each event's own fired/log state, while pacing remains attached to the cluster firing.
 
