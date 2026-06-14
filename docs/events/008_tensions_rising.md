@@ -7,7 +7,7 @@ Event 008 Tensions Rising is a minor repeatable diplomatic-pressure event. In ca
 1. `chaosx.nr8.1` fires from the standard repeatable random-event pool. Event 8 remains registered in `global.repeatable_events`.
 2. `tensions_rising_prepare_random_event_fire` blocks only the calm-world baseline if world tension is already full. Evolved stages can still fire at full world tension.
 3. The main popup keeps its description to flavour text. The dynamic mechanical summary appears on the option tooltip, and the actual scripted effect runs inside that option's hidden effect block.
-4. `get_tensions_rising_stage` maps the current Chaos Meter tier to Stage I-IV. Calm world stays at baseline stage `0`.
+4. `get_tensions_rising_stage` maps the current Chaos Meter value thresholds to Stage I-IV. Calm world stays at baseline stage `0`.
 5. Baseline firings distribute `+10` world tension across existing non-placeholder countries and update the global highest-world-tension tracker.
 6. Evolved firings record the current Diplomatic Fever milestone if it has not already been logged, distribute the staged world-tension packet, add the staged chaos packet, apply the temporary timer pulse, select timed relation-shock pairs, apply AI posture ideas, schedule one delayed report, and update achievement tracking.
 
