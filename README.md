@@ -34,4 +34,4 @@ List of all the existing and upcoming events: <https://docs.google.com/spreadshe
 
 ## Contributing
 
-Do you want to become a contributor? Read [CONTRIBUTING.md](CONTRIBUTING.md)
+Do you want to become a tester/contributor? Read [CONTRIBUTING.md](CONTRIBUTING.md)
