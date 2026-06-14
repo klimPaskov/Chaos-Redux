@@ -42,7 +42,7 @@ The zombie outbreak event has authored gameplay text in the event-details window
 18. Clicking a related evolution entry, or an entry from the `Evolutions` tab, opens the evolution detail popup with:
 	   - evolution title and summary,
 	   - logged actor country link,
-	   - a portrait only when that evolution family has an authored portrait mapping for the selected stage,
+	   - a portrait panel only when that evolution family has an authored portrait mapping or an intentional placeholder treatment for the selected stage,
 	   - stage-specific modifier breakdown for the zombie horde.
 
 Evolution rows use the specific stage title for that milestone, such as `Triangular Incident` or `Four Fronts`, and keep generic type labels only as fallback text.
@@ -145,9 +145,11 @@ Sprites currently used:
 - `GFX_portrait_THR_buddha_mandate_animated`
 - `GFX_portrait_THR_divine_sovereignty`
 - `GFX_portrait_THR_empty_seat_animated`
+- `GFX_portrait_unknown`
+- `GFX_fury_leader_flame_overlay_animated`
 
 New art required:
-- None for the current event/evolution detail implementation. Evolution details use the portrait layout only when `has_events_log_selected_evolution_authored_portrait` resolves true for the selected evolution type and stage; stages without an authored mapping keep the wide text body.
+- None for the current event/evolution detail implementation. Evolution details use the portrait layout only when `has_events_log_selected_evolution_authored_portrait` resolves true for the selected evolution type and stage. Fury deliberately uses vanilla's `GFX_portrait_unknown` missing portrait with the existing `GFX_fury_leader_flame_overlay_animated` overlay; stages without a portrait treatment keep the wide text body.
 
 If new art is required later:
 - Put textures in `gfx/interface/`.

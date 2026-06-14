@@ -178,10 +178,11 @@ Current wiring uses stable Fury-specific assets:
 - achievement icons: final filenames registered in `interface/chaosx_achievements.gfx`
 - Fury leader overlay: `GFX_fury_leader_flame_overlay_animated`, backed by an 8-frame looping sheet at `gfx/interface/leader_frames/fury/fury_leader_flame_overlay_sheet.dds`
 - Fury leader overlay static fallback: `GFX_fury_leader_flame_overlay_static`, backed by `gfx/interface/leader_frames/fury/fury_leader_flame_overlay_static.dds`
+- Fury evolution details portrait treatment: the event-log evolution details window uses vanilla's `GFX_portrait_unknown` missing portrait and overlays `GFX_fury_leader_flame_overlay_animated` for Fury evolution stages
 
 Final Fury art and audio use stable gameplay IDs. Report, news, and super-event images use street-level Fury outbreak imagery: rogue soldiers, civilians fleeing, smoke, burning streets, and sudden neighbor-war panic. They should not be replaced with map rooms, command desks, ledgers, route strings, globes, or war-office planning scenes.
 
-The leader overlay is a scripted GUI presentation layer, not a replacement country portrait. `common/scripted_guis/007_fury_scripted_guis.txt` gates the flame icon itself, so it appears only when the active diplomacy target is a Fury actor. `interface/007_fury_leader_overlay.gui` attaches the overlay to the vanilla diplomacy leader portrait position without editing vanilla GUI files.
+The leader overlay is a scripted GUI presentation layer, not a replacement country portrait. `common/scripted_guis/007_fury_scripted_guis.txt` gates the flame icon itself, so it appears only when the active diplomacy target is a Fury actor. `interface/007_fury_leader_overlay.gui` attaches the overlay to the vanilla diplomacy leader portrait position without editing vanilla GUI files. The event-log evolution details version uses the same animated sprite inside `interface/chaosx_events_log_popup.gui` and gates visibility through `has_events_log_selected_fury_evolution`.
 
 Fury idea tuning keeps the strongest light modifiers at 25%: `fury_compliance_drive` grants +25% compliance growth and +25% resistance decay, while Hardened Fury, Rival Doctrine, and Anti-Fury Supply Denial use 25% values for their formerly lighter 5% positive modifiers.
 
