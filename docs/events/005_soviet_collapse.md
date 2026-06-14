@@ -28,7 +28,7 @@ The main active systems are:
 - foreign patron decisions and dependency pressure
 - local league and Free Republics' League logic
 - Union Unmade terminal collapse
-- triggerable scenario launch: the Scenarios window can force standalone Soviet Collapse starts without inheriting unrelated live-crisis settings, release ordinary republics or ordinary plus high-chaos splinters by type, form local factions, start the anti-Soviet wars, and grant extra opening forces scaled by intensity, controlled states, civilian factories, and military factories; large and industrial republics receive stronger opening armies through state and factory multipliers
+- triggerable scenario launch: the Scenarios window can force standalone Soviet Collapse starts without inheriting unrelated live-crisis settings, release ordinary republics or ordinary plus high-chaos splinters by type, form local factions, start the anti-Soviet wars, and grant extra opening forces scaled by intensity, controlled states, civilian factories, and military factories; large and industrial republics receive stronger opening armies through state and factory multipliers; a neutral country that launches the scenario remains outside immediate external-corridor wars, while Moscow and republic launchers still follow the normal collapse actor logic
 - reconquest resolution: Moscow marks the crisis resolved after regaining control of every state held when the crisis began, which clears the crisis/terminal flags, removes active Soviet missions, hides breakaway and foreign intervention boards, and resets the crisis meters
 - runtime focus trees for ordinary republics and fixed focus trees for custom/high-chaos actors
 - super-event and report/news presentation surfaces
