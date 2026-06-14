@@ -55,9 +55,9 @@ Option: **No one sleeps through this.**
 
 ### Stage IV: The Permanent Alert
 
-> The world no longer waits for tension to rise. It lives inside it. Every capital has learned to deny the same thing at once, and every denial now sounds like an order.
+> The latest warnings become routine across foreign offices. Capitals compare denials, watch railway notices, and prepare contingency files while insisting the situation remains manageable.
 
-Option: **The line is gone.**
+Option: **Log the latest alerts.**
 
 ## Event details window
 
@@ -91,7 +91,7 @@ Evolution track name: **Diplomatic Fever**
 
 ### Stage IV event detail preview
 
-**The Permanent Alert**  -  The event reaches its final non-terminal form. It applies severe pressure, large diplomatic shocks, and can trigger a one-time super-event when first reached.
+**The Permanent Alert**  -  The event reaches its strongest non-terminal form. It applies severe pressure, large diplomatic shocks, and delayed reports without becoming a terminal branch.
 
 ## Evolution log titles
 
@@ -162,25 +162,9 @@ Tone: denial as proof.
 
 ### The Last Normal Briefing
 
-Tone: pre-super-event dread.
+Tone: the last ordinary briefing before extended alert routine.
 
 > The briefing began with ordinary phrasing. It ended with no questions, no jokes, and no one willing to call the day ordinary again.
-
-## Super-event text direction
-
-Working title: **The Red Line Disappears**
-
-Alternative title: **The Whole Map Holds Its Breath**
-
-Description should emphasize lights, offices, sealed cables, nervous staff, and the collapse of believable deniability. It should not claim that the world has ended.
-
-Button direction: short, grim, specific. Examples to research or refine:
-
-- **No one admits it first.**
-- **Every line moves now.**
-- **The lamps stay on.**
-
-Quote direction: real sourced quote about fear, war before declaration, peace as fragile, public denial, or the psychology of crisis. Do not invent a quote.
 
 ## Localisation key plan
 
@@ -200,7 +184,6 @@ Suggested keys only, final naming should match repo patterns.
 | evolution track name | `events_log_evolution_8_diplomatic_fever` |
 | follow-up titles | `chaosx.nr8.followup_telegram.t`, etc. |
 | opinion modifiers | `tensions_rising_leaked_cables`, etc. |
-| super-event | `super_event.<slot>.t`, `.d`, `.a`, `.q` after slot assignment |
 
 ## Spreadsheet/catalog note
 

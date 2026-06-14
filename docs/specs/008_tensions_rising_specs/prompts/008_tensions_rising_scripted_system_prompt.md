@@ -26,7 +26,7 @@ Non-negotiables:
 - No new global daily/weekly/monthly loop for Event 8.
 - No hardcoded magic numbers when script constants can own tuning.
 - No unsupported duration-token shortcuts, mirror file-scoped constants if needed.
-- Stage IV super-event is one-time and non-terminal.
+- Stage IV does not trigger a super-event and remains non-terminal.
 - Relation damage is timed and capped by pair cooldowns.
 - Timer pulse uses replacement/extension caps, never additive infinite stacking.
 - No direct war goals, countries, focus trees, cores, or formables.

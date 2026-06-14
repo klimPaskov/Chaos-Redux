@@ -46,7 +46,6 @@ Recommended global state:
 - `tensions_rising_stage_2_recorded`
 - `tensions_rising_stage_3_recorded`
 - `tensions_rising_stage_4_recorded`
-- `tensions_rising_stage_4_super_event_seen`
 
 If the timer system already has a generic temporary modifier framework, use it instead of introducing these exact names. The names above define the design intent, not a required syntax recipe.
 
@@ -157,25 +156,11 @@ Follow-up reports should be scheduled sparingly. The best model is one delayed f
 | Staff Cars After Midnight | high at III–IV | at least one major alive and not capitulated | temporary AI posture, not direct war |
 | Fleets Keep Radio Silence | medium at III–IV | naval majors or active sea zones relevant | possible naval panic modifier only if supported |
 | Border Lamps | high at III–IV | valid border-rival pair | relation hit or report only |
-| The Last Normal Briefing | one-time Stage IV | Stage IV first firing | super-event prelude or report if super-event disabled |
+| The Last Normal Briefing | one-time Stage IV | Stage IV first firing | report only |
 
-## Super-event: The Red Line Disappears
+## Stage IV presentation
 
-### Trigger
-
-First Stage IV Event 8 firing if:
-
-- Stage IV effects are enabled.
-- No terminal world-end state is active.
-- The Event 8 Stage IV super-event has not already been shown.
-
-### Consequence
-
-The super-event does not add more world tension or chaos beyond the Stage IV packet. Its purpose is presentation and event-log memory.
-
-### Follow-up after super-event
-
-After the super-event, later Stage IV firings should not replay it. They can still schedule ordinary reports.
+Stage IV stays inside the normal event popup, option tooltip, event log, evolution detail, achievements, and delayed-report surfaces. It does not trigger a super-event and does not create a world-end branch.
 
 ## Anti-exploit rules
 
