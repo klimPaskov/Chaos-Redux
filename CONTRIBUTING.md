@@ -2,7 +2,9 @@
 
 Hi there! I am thrilled that you'd like to contribute to this mod. Your help is essential for keeping it great.
 
-Your changes can range from translations, new features/events or bug fixes.
+Your contribution can range from testing the mod, presenting new features/events, reporting bugs, or translations.
+
+Watch my video to get started: <youtube video link>
 
 ## Setup and submitting a pull request
 
