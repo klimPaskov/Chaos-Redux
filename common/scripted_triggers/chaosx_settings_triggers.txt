@@ -54,6 +54,45 @@ has_events_log_selected_fury_evolution = {
 	}
 }
 
+has_events_log_selected_soviet_collapse_evolution = {
+	check_variable = {
+		var = events_log_selected_evolution_event_id
+		value = constant:soviet_collapse_event_log.event_id
+		compare = equals
+	}
+	OR = {
+		AND = {
+			check_variable = {
+				var = events_log_selected_evolution_type
+				value = constant:soviet_collapse_event_log.secession_evolution_type
+				compare = equals
+			}
+			check_variable = {
+				var = events_log_selected_evolution_stage
+				value = 0
+				compare = greater_than
+			}
+			check_variable = {
+				var = events_log_selected_evolution_stage
+				value = constant:soviet_collapse_event_log.world_collapse_stage
+				compare = less_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = {
+				var = events_log_selected_evolution_type
+				value = constant:soviet_collapse_high_chaos_event_log.evolution_type
+				compare = equals
+			}
+			check_variable = {
+				var = events_log_selected_evolution_stage
+				value = 0
+				compare = greater_than
+			}
+		}
+	}
+}
+
 chaosx_is_non_ai_crisis_pressure_active = {
 	is_ai = no
 	has_country_flag = chaosx_setting_non_ai_crisis_pressure_enabled
@@ -62,6 +101,7 @@ chaosx_is_non_ai_crisis_pressure_active = {
 has_events_log_selected_evolution_authored_portrait = {
 	OR = {
 		has_events_log_selected_fury_evolution = yes
+		has_events_log_selected_soviet_collapse_evolution = yes
 		AND = {
 			check_variable = {
 				var = events_log_selected_evolution_event_id

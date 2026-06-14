@@ -145,11 +145,12 @@ Sprites currently used:
 - `GFX_portrait_THR_buddha_mandate_animated`
 - `GFX_portrait_THR_divine_sovereignty`
 - `GFX_portrait_THR_empty_seat_animated`
+- `GFX_soviet_collapse_evolution_portraits_animated`
 - `GFX_portrait_unknown`
 - `GFX_fury_leader_flame_overlay_animated`
 
 New art required:
-- None for the current event/evolution detail implementation. Evolution details use the portrait layout only when `has_events_log_selected_evolution_authored_portrait` resolves true for the selected evolution type and stage. Fury deliberately uses vanilla's `GFX_portrait_unknown` missing portrait with the existing `GFX_fury_leader_flame_overlay_animated` overlay; stages without a portrait treatment keep the wide text body.
+- None for the current event/evolution detail implementation. Evolution details use the portrait layout only when `has_events_log_selected_evolution_authored_portrait` resolves true for the selected evolution type and stage. Fury deliberately uses vanilla's `GFX_portrait_unknown` missing portrait with the existing `GFX_fury_leader_flame_overlay_animated` overlay. Soviet Collapse secession and high-chaos evolution details use `GFX_soviet_collapse_evolution_portraits_animated`, a portrait-sized loop of the existing Soviet Collapse portrait set. Stages without a portrait treatment keep the wide text body.
 
 If new art is required later:
 - Put textures in `gfx/interface/`.
