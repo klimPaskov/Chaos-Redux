@@ -4369,6 +4369,15 @@ evaluate_random_event_selection_candidate = {
 						NOT = { any_country = { fury_can_be_selected = yes } }
 					}
 					AND = {
+						check_variable = { random_event_selection_candidate_id = constant:tensions_rising_event_log.event_id }
+						NOT = { has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_1 } }
+						NOT = { has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_2 } }
+						NOT = { has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_3 } }
+						NOT = { has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_4 } }
+						NOT = { has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_final } }
+						NOT = { can_tensions_rising_baseline_fire = yes }
+					}
+					AND = {
 					is_in_array = { global.fired_events = random_event_selection_candidate_id }
 					NOT = { is_in_array = { global.repeatable_events = random_event_selection_candidate_id } }
                 }
@@ -4589,6 +4598,11 @@ fire_event_by_temp_id_no_cluster = {
 	if = {
 		limit = { check_variable = { event_id = constant:fury_event_log.event_id } }
 		fury_prepare_random_event_fire = yes
+	}
+
+	if = {
+		limit = { check_variable = { event_id = constant:tensions_rising_event_log.event_id } }
+		tensions_rising_prepare_random_event_fire = yes
 	}
 
 	if = {
