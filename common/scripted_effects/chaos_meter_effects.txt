@@ -5059,24 +5059,27 @@ chaos_meter_on_war_relation_added = {
 
 chaos_meter_on_peace = {
     # on_peace has no FROM scope - THIS is the country that is no longer at war
-    if = {
-        limit = { is_major = yes }
-        save_event_target_as = chaos_history_actor
-        set_temp_variable = { chaos_change = constant:chaos_meter_delta.peace.major }
-        set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.peace.major }
-        set_temp_variable = { chaos_history_reason_custom = 1 }
-        log = "CHAOS METER: Major [THIS.GetName] made peace ([?chaos_change|=] chaos)"
-    }
-    else_if = {
-        limit = { is_subject = no }
-        save_event_target_as = chaos_history_actor
-        set_temp_variable = { chaos_change = constant:chaos_meter_delta.peace.minor }
-        set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.peace.minor }
-        set_temp_variable = { chaos_history_reason_custom = 1 }
-        log = "CHAOS METER: Minor [THIS.GetName] made peace ([?chaos_change|=] chaos)"
-    }
+	if = {
+		limit = { NOT = { has_global_flag = white_peace_suppress_standard_chaos_on_peace } }
+		if = {
+			limit = { is_major = yes }
+			save_event_target_as = chaos_history_actor
+			set_temp_variable = { chaos_change = constant:chaos_meter_delta.peace.major }
+			set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.peace.major }
+			set_temp_variable = { chaos_history_reason_custom = 1 }
+			log = "CHAOS METER: Major [THIS.GetName] made peace ([?chaos_change|=] chaos)"
+		}
+		else_if = {
+			limit = { is_subject = no }
+			save_event_target_as = chaos_history_actor
+			set_temp_variable = { chaos_change = constant:chaos_meter_delta.peace.minor }
+			set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.peace.minor }
+			set_temp_variable = { chaos_history_reason_custom = 1 }
+			log = "CHAOS METER: Minor [THIS.GetName] made peace ([?chaos_change|=] chaos)"
+		}
 
-    add_chaos_meter_value = yes
+		add_chaos_meter_value = yes
+	}
 }
 
 chaos_meter_on_annex = {

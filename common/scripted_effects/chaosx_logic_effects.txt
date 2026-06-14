@@ -409,13 +409,37 @@ get_event_weight = {
     # Input: temp variable event_id
     # Output: temp variable event_weight
     set_temp_variable = { event_weight = 0 }
-    if = {
-        limit = {
-            check_variable = { event_id > 0 }
-            check_variable = { event_id < global.event_weights^num }
-        }
-        set_temp_variable = { event_weight = global.event_weights^event_id }
-    }
+	if = {
+		limit = {
+			check_variable = { event_id > 0 }
+			check_variable = { event_id < global.event_weights^num }
+		}
+		set_temp_variable = { event_weight = global.event_weights^event_id }
+		if = {
+			limit = {
+				check_variable = {
+					var = event_id
+					value = constant:white_peace_event_log.event_id
+					compare = equals
+				}
+			}
+			calculate_white_peace_dynamic_cap = yes
+			if = {
+				limit = { check_variable = { global.white_peace_available < 1 } }
+				set_temp_variable = { event_weight = 0 }
+			}
+			else_if = {
+				limit = {
+					check_variable = {
+						var = event_weight
+						value = global.white_peace_effective_dynamic_cap
+						compare = greater_than
+					}
+				}
+				set_temp_variable = { event_weight = global.white_peace_effective_dynamic_cap }
+			}
+		}
+	}
 }
 
 # Set weight for a specific event ID
@@ -490,7 +514,14 @@ update_repeatable_event_weights = {
         value = i
 
         set_temp_variable = { event_id = global.repeatable_events^i }
-        get_event_weight = yes
+		set_temp_variable = { event_weight = 0 }
+		if = {
+			limit = {
+				check_variable = { event_id > 0 }
+				check_variable = { event_id < global.event_weights^num }
+			}
+			set_temp_variable = { event_weight = global.event_weights^event_id }
+		}
 
         # Get the current cap for this event
         set_temp_variable = { event_cap = global.default_event_weight } # Default fallback

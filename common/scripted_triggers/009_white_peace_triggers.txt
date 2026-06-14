@@ -1,0 +1,115 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 009 WHITE PEACE TRIGGERS
+# ============================================================================
+# Country and pair safety gates for Event 9. Pair triggers are evaluated in the
+# candidate partner scope with PREV as the proposed primary country.
+# ============================================================================
+
+can_country_be_white_peace_target = {
+	exists = yes
+	uses_normal_civilian_systems = yes
+	has_war = yes
+	num_of_controlled_states > 0
+	surrender_progress < 0.50
+	capital_scope = { is_controlled_by = PREV }
+	NOT = { has_capitulated = yes }
+	NOT = { has_civil_war = yes }
+	NOT = { is_subject = yes }
+	NOT = { is_in_faction = yes }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { has_country_flag = white_peace_protected_country }
+	NOT = { has_country_flag = white_peace_protected_war_actor }
+	NOT = { has_country_flag = recent_white_peace_country }
+	NOT = { has_country_flag = recent_major_white_peace_country }
+}
+
+has_recent_white_peace_pair_with_prev = {
+	meta_trigger = {
+		text = {
+			has_country_flag = recent_white_peace_pair_[WHITE_PEACE_PAIR_TAG]
+		}
+		WHITE_PEACE_PAIR_TAG = "[PREV.GetTag]"
+	}
+}
+
+can_country_be_white_peace_major_target = {
+	can_country_be_white_peace_target = yes
+	OR = {
+		check_variable = { white_peace_stage > constant:white_peace_event_log.stage_repeated_minor }
+		check_variable = { global.white_peace_stage > constant:white_peace_event_log.stage_repeated_minor }
+		has_global_flag = white_peace_stage_2_unlocked
+		has_global_flag = white_peace_stage_3_unlocked
+	}
+	NOT = { has_country_flag = recent_major_white_peace_country }
+}
+
+is_white_peace_minor_pair_for_prev = {
+	is_major = no
+	PREV = { is_major = no }
+}
+
+is_white_peace_major_pair_for_prev = {
+	OR = {
+		is_major = yes
+		PREV = { is_major = yes }
+	}
+}
+
+can_pair_receive_white_peace = {
+	can_country_be_white_peace_target = yes
+	PREV = { can_country_be_white_peace_target = yes }
+	has_war_with = PREV
+	NOT = { tag = PREV }
+	NOT = { is_in_faction_with = PREV }
+	NOT = { has_recent_white_peace_pair_with_prev = yes }
+	OR = {
+		is_white_peace_minor_pair_for_prev = yes
+		AND = {
+			is_white_peace_major_pair_for_prev = yes
+			can_country_be_white_peace_major_target = yes
+			PREV = { can_country_be_white_peace_major_target = yes }
+		}
+	}
+	capital_scope = { is_controlled_by = PREV }
+	PREV = {
+		capital_scope = { is_controlled_by = PREV }
+	}
+}
+
+can_minor_pair_receive_white_peace = {
+	can_pair_receive_white_peace = yes
+	is_white_peace_minor_pair_for_prev = yes
+}
+
+can_major_pair_receive_white_peace = {
+	can_pair_receive_white_peace = yes
+	is_white_peace_major_pair_for_prev = yes
+}
+
+can_major_pair_receive_white_peace_if_stage_unlocked = {
+	can_country_be_white_peace_target = yes
+	PREV = { can_country_be_white_peace_target = yes }
+	has_war_with = PREV
+	NOT = { tag = PREV }
+	NOT = { is_in_faction_with = PREV }
+	NOT = { has_recent_white_peace_pair_with_prev = yes }
+	is_white_peace_major_pair_for_prev = yes
+	capital_scope = { is_controlled_by = PREV }
+	PREV = {
+		capital_scope = { is_controlled_by = PREV }
+	}
+}
+
+is_white_peace_automatic_event_available = {
+	has_white_peace_available_pair = yes
+}
+
+has_white_peace_available_pair = {
+	any_country = {
+		can_country_be_white_peace_target = yes
+		any_enemy_country = {
+			can_pair_receive_white_peace = yes
+		}
+	}
+}

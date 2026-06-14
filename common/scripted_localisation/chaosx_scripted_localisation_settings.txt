@@ -464,6 +464,21 @@ defined_text = {
 		localization_key = chaosx.event_cluster.diplomatic_panic.name
 	}
 	text = {
+		trigger = {
+			check_variable = {
+				var = settings_selected_cluster_id
+				value = constant:event_cluster_id.peace
+				compare = equals
+			}
+			check_variable = {
+				var = settings_selected_cluster_valid
+				value = 0
+				compare = greater_than
+			}
+		}
+		localization_key = chaosx.event_cluster.peace.name
+	}
+	text = {
 		trigger = { always = yes }
 		localization_key = chaosx.event_cluster.invalid.name
 	}
@@ -662,6 +677,34 @@ defined_text = {
 }
 
 defined_text = {
+	name = GetWhitePeaceClusterUnavailableReason
+	text = {
+		trigger = { check_variable = { global.white_peace_skip_reason = constant:white_peace_skip_reason.protected_conflicts } }
+		localization_key = chaosx.event_cluster.availability.white_peace.protected_conflicts
+	}
+	text = {
+		trigger = { check_variable = { global.white_peace_skip_reason = constant:white_peace_skip_reason.recent_memory } }
+		localization_key = chaosx.event_cluster.availability.white_peace.recent_memory
+	}
+	text = {
+		trigger = { check_variable = { global.white_peace_skip_reason = constant:white_peace_skip_reason.major_locked } }
+		localization_key = chaosx.event_cluster.availability.white_peace.major_locked
+	}
+	text = {
+		trigger = { check_variable = { global.white_peace_skip_reason = constant:white_peace_skip_reason.no_safe_pair } }
+		localization_key = chaosx.event_cluster.availability.white_peace.no_safe_pair
+	}
+	text = {
+		trigger = { check_variable = { global.white_peace_skip_reason = constant:white_peace_skip_reason.no_active_war } }
+		localization_key = chaosx.event_cluster.availability.white_peace.no_active_war
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.event_cluster.availability.white_peace.no_safe_pair
+	}
+}
+
+defined_text = {
 	name = GetSettingsClusterStatus
 	text = {
 		trigger = {
@@ -712,6 +755,17 @@ defined_text = {
 			}
 		}
 		localization_key = chaosx.trigger_events.cluster_status.available
+	}
+	text = {
+		trigger = {
+			check_variable = { settings_selected_cluster_id = constant:event_cluster_id.peace }
+			check_variable = {
+				var = settings_selected_cluster_available
+				value = 1
+				compare = less_than
+			}
+		}
+		localization_key = "[GetWhitePeaceClusterUnavailableReason]"
 	}
 	text = {
 		trigger = { always = yes }

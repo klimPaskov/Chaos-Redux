@@ -4352,6 +4352,11 @@ evaluate_random_event_selection_candidate = {
     set_temp_variable = { random_event_selection_candidate_is_valid = 1 }
     clear_variable = random_event_selection_candidate_weight_scaled
 
+	if = {
+		limit = { check_variable = { random_event_selection_candidate_id = constant:white_peace_event_log.event_id } }
+		calculate_white_peace_dynamic_cap = yes
+	}
+
     if = {
         limit = {
             OR = {
@@ -4371,6 +4376,10 @@ evaluate_random_event_selection_candidate = {
 					AND = {
 						check_variable = { random_event_selection_candidate_id = constant:tensions_rising_event_log.event_id }
 						NOT = { is_tensions_rising_automatic_event_available = yes }
+					}
+					AND = {
+						check_variable = { random_event_selection_candidate_id = constant:white_peace_event_log.event_id }
+						NOT = { is_white_peace_automatic_event_available = yes }
 					}
 					AND = {
 					is_in_array = { global.fired_events = random_event_selection_candidate_id }
@@ -4407,7 +4416,9 @@ evaluate_random_event_selection_candidate = {
 
     if = {
         limit = { check_variable = { random_event_selection_candidate_is_valid = 1 } }
-        set_temp_variable = { random_event_selection_candidate_weight_scaled = global.event_weights^random_event_selection_candidate_id }
+        set_temp_variable = { event_id = random_event_selection_candidate_id }
+        get_event_weight = yes
+        set_temp_variable = { random_event_selection_candidate_weight_scaled = event_weight }
         multiply_temp_variable = { random_event_selection_candidate_weight_scaled = 100 }
         round_temp_variable = random_event_selection_candidate_weight_scaled
 
@@ -4598,6 +4609,15 @@ fire_event_by_temp_id_no_cluster = {
 	if = {
 		limit = { check_variable = { event_id = constant:tensions_rising_event_log.event_id } }
 		tensions_rising_prepare_random_event_fire = yes
+	}
+
+	if = {
+		limit = { check_variable = { event_id = constant:white_peace_event_log.event_id } }
+		prepare_white_peace_runtime_context = yes
+		if = {
+			limit = { check_variable = { global.white_peace_context_ready < 1 } }
+			set_temp_variable = { event_single_fire_allowed = 0 }
+		}
 	}
 
 	if = {
