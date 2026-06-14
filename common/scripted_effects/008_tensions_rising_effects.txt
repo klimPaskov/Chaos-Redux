@@ -43,21 +43,44 @@ evaluate_tensions_rising_random_candidate = {
 
 get_tensions_rising_stage = {
 	set_temp_variable = { tensions_rising_stage = 0 }
-	get_current_chaos_tier_value = yes
 	if = {
-		limit = { check_variable = { current_chaos_tier_value > constant:chaos_meter_tier_id.tier_3 } }
+		limit = {
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:chaos_meter_tier_range.tier_4.min
+				compare = greater_than_or_equals
+			}
+		}
 		set_temp_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_4 }
 	}
 	else_if = {
-		limit = { check_variable = { current_chaos_tier_value = constant:chaos_meter_tier_id.tier_3 } }
+		limit = {
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:chaos_meter_tier_range.tier_3.min
+				compare = greater_than_or_equals
+			}
+		}
 		set_temp_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_3 }
 	}
 	else_if = {
-		limit = { check_variable = { current_chaos_tier_value = constant:chaos_meter_tier_id.tier_2 } }
+		limit = {
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:chaos_meter_tier_range.tier_2.min
+				compare = greater_than_or_equals
+			}
+		}
 		set_temp_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_2 }
 	}
 	else_if = {
-		limit = { check_variable = { current_chaos_tier_value = constant:chaos_meter_tier_id.tier_1 } }
+		limit = {
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:chaos_meter_tier_range.tier_1.min
+				compare = greater_than_or_equals
+			}
+		}
 		set_temp_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_1 }
 	}
 }
