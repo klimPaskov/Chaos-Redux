@@ -40,7 +40,7 @@ Do not make achievements unlock just because Event 8 fires once. These achieveme
 
 - Hidden.
 - Any player country.
-- Unlock only if an approved existing diplomatic or war-adjacent event hook exists and fires within 120 days after Event 8 applies relation damage. Queue this achievement if no approved hook exists.
+- Unlock when a recently affected Event 8 relation actor enters a war relation within 120 days after Event 8 applies relation damage. Use the existing war-relation on-action; Event 8 must not create the war.
 - Avoid false positives from unrelated old history.
 - Icon: denied stamp motif over sealed cable, no readable text.
 
