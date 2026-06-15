@@ -1,6 +1,6 @@
 # Event 008: AI and System Behavior Matrix
 
-Event 008 should influence AI through temporary posture pressure and diplomatic state, not through forced wars.
+Event 008 should influence AI through temporary posture pressure and diplomatic state. It should not force normal war declarations, but high-stage follow-up incidents can rarely start safe non-transfer border wars.
 
 ## AI principle
 
@@ -12,7 +12,7 @@ AI behavior from this event should feel like governments reacting to an atmosphe
 | --- | --- | --- | --- | --- | --- |
 | Major powers | normal WT reaction | slight defensive posture | stronger guarantees/rearmament | heavy hostile preparation weights | permanent-alert pressure, still target-checked |
 | Faction leaders | normal | watch rivals | invite/guarantee more | pressure members and rivals | hostile bloc discipline, possible intra-faction distrust only if supported |
-| Border rivals | normal | small hostility | relation hit likely | near-miss candidates | repeated alarm possible with cooldown |
+| Border rivals | normal | small hostility | relation hit likely | near-miss or safe border-war candidates | repeated alarm possible with cooldown |
 | Naval powers | normal | no special change | insurance/shipping report possible | radio-silence follow-up possible | naval scare more likely |
 | Neutral countries | normal | cautious | shipping and press anxiety | seek guarantees or rearm | panic without automatic faction entry |
 | Minor countries | normal | mostly flavour | defensive alignment interest | higher guarantee request logic if supported | high fear, but no suicidal war |
@@ -36,7 +36,7 @@ The final implementation can use existing AI strategy files or direct decision w
 | Guarantees | small positive | medium positive | high positive | high positive | target must matter, no nonsensical guarantees |
 | Faction invitations | no direct change | small positive | medium positive | high positive | ideology/geography/faction rules respected |
 | Existing hostile decisions | no direct change | small positive | high positive | very high positive | valid targets only |
-| War declaration | no direct change | no direct forced war | no forced war | no forced war | war goals and normal AI checks still required |
+| War declaration | no direct change | no direct forced war | no forced war declarations; rare safe border wars allowed | no forced war declarations; safer border wars more likely | war goals and normal AI checks still required for normal wars |
 | Rearmament / mobilization | no direct change | medium | high | very high | no free units from Event 8 |
 | Secret-diplomacy systems | no direct change | medium if an approved existing hook exists | high if valid | high if valid | must respect the owning event requirements |
 | War-adjacent systems | no direct change | low indirect | medium indirect | high indirect | through approved existing tension or AI posture hooks |
@@ -44,17 +44,17 @@ The final implementation can use existing AI strategy files or direct decision w
 ## AI weights by world condition
 
 - If the country is already in a major war, Event 8 should mostly increase defensive and production posture rather than open new fronts.
-- If the country is at peace but bordered by rivals, relation damage and border follow-ups should carry more weight.
+- If the country is at peace but bordered by safe rivals, relation damage and high-stage border follow-ups should carry more weight.
 - If the country is naval/trade-heavy, shipping panic follow-ups make more sense than border panic.
 - If the country is a subject, avoid independent global postures unless the parent/overlord relationship is part of a valid panic story.
 - If world-end is active, Event 8 should not add new non-terminal AI pressure unless the terminal scenario explicitly allows normal events.
 
 ## AI exploit prevention
 
-- Do not let AI use a hidden Stage IV pressure to declare impossible or suicidal wars.
+- Do not let AI use hidden Stage IV pressure to declare impossible or suicidal wars. Border wars must stay non-transfer, cooldown-gated, and target-checked.
 - Do not let temporary relation damage lock allies into permanent hostility after the timed modifier expires.
 - Do not create hidden permanent AI strategy flags without cleanup.
 
 ## Human-player visibility
 
-The player should not see a raw AI modifier list. They should infer the AI shift from delayed reports, relation changes, guarantees, alliances, and event logs.
+The player should not see a raw AI modifier list. They should infer the AI shift from follow-up incidents, relation changes, guarantees, alliances, border clashes, and event logs.

@@ -29,7 +29,8 @@ Implement or cleanly plan:
 - relation-pair selection with timed opinion modifiers and cooldowns
 - delayed follow-up report/news events
 - optional `Diplomatic Panic` cluster if it can be fully registered and logged with the current member note: for now one member, Event 8, required, medium severity
-- AI posture pressure via valid existing routes only, no direct forced wars
+- AI posture pressure via valid existing routes only, no direct forced normal war declarations
+- Stage III+ follow-up incidents may start rare safe non-transfer border wars only through strict adjacent-pair checks and cooldowns
 
 ## Presentation
 
@@ -40,6 +41,6 @@ Implement or cleanly plan:
 
 ## Validation and completion
 
-Use task-specific validation, not boilerplate claims. Verify stage gating, WT=100 behavior, pulse replacement/cap, timed opinion cooldowns, delayed report non-recursion, event log/evolution details, and absence of super-event, world-end, or direct war-goal behavior.
+Use task-specific validation, not boilerplate claims. Verify stage gating, WT=100 behavior, pulse replacement/cap, timed opinion cooldowns, delayed incident non-recursion, border-war safety gates, event log/evolution details, and absence of super-event, world-end, or direct war-goal behavior.
 
 Before claiming completion, run a completion audit or equivalent review. Report files changed, systems touched, implemented vs queued pieces, asset status, spreadsheet status, validation evidence, and every simplification or blocker. Do not claim completion with missing localisation, unwired assets, skipped achievements, unlogged evolutions, or unreported queued cluster work.

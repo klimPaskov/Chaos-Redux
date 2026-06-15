@@ -15,7 +15,7 @@ The reworked event keeps the user-provided core:
 
 - In Calm World, the event raises world tension by `+100` and should only fire while world tension is below `100%`.
 - Once the first evolution is active, the event can fire even when world tension is already `100%`.
-- Later evolutions add direct chaos, larger world tension packets, temporary timer pressure, relation damage, and delayed follow-up reports.
+- Later evolutions add direct chaos, larger world tension packets, temporary timer pressure, relation damage, delayed follow-up incidents, and rare safe high-stage border wars.
 - The event never has a world-end scenario.
 
 The emotional center is not that a map changed. The emotional center is that every government begins acting as if a map is about to change.
@@ -64,10 +64,10 @@ The track has four stages, matching the user-provided progression:
 
 | Evolution stage | Working title | Minimum chaos tier | World tension effect | Chaos effect | Can fire at 100% world tension? | Hidden layer |
 | --- | --- | --- | --- | --- | --- | --- |
-| I | Cable Traffic Flood | Gathering Storm | `+100` | `+10` | Yes | light timer pulse, one or two diplomatic shocks, optional delayed report |
+| I | Cable Traffic Flood | Gathering Storm | `+100` | `+10` | Yes | light timer pulse, one or two diplomatic shocks, optional delayed incident |
 | II | The Accusation Market | Rising Chaos | `+200` | `+15` | Yes | stronger timer pulse, multiple opinion shocks, temporary pressure spirits |
 | III | General Staffs Stop Sleeping | Chaos Tier | `+500` | `+25` | Yes | heavy timer pulse, war-plan fever, near-miss follow-ups |
-| IV | The Permanent Alert | Totalen Chaos | `+1000` | `+50` | Yes | severe timer pulse, broad relation damage, delayed reports |
+| IV | The Permanent Alert | Totalen Chaos | `+1000` | `+50` | Yes | severe timer pulse, broad relation damage, delayed incidents, rare safe border clashes |
 
 The evolution should be recorded when the stage becomes active or first manifests. Event detail text should preview the evolved behavior in broad terms, but it should not reveal the full random headline list or exact pair-selection math.
 
@@ -85,13 +85,13 @@ At Gathering Storm, public fear becomes self-reinforcing. The same event now add
 
 - Apply a small temporary **Tension Pulse** to the automatic event pacing logic.
 - Apply one or two timed negative opinion modifiers between plausible diplomatic rivals.
-- Small chance of a delayed report event several days later.
+- Small chance of a delayed incident event several days later.
 
 ### Tone
 
 Stage I should feel like wires, clerks, desk lamps, and official denials. Nobody has crossed the line yet, but more countries are drawing lines.
 
-### Follow-up report candidates
+### Follow-up incident candidates
 
 - **The Telegram Nobody Signed**  -  a leaked diplomatic message is denied by every government named in it.
 - **Embassy Side Doors**  -  staff begin using side entrances and refusing public comment.
@@ -163,7 +163,7 @@ At Totalen Chaos, tension is no longer a metric. It is the climate. This stage m
 - Apply a severe Tension Pulse with a hard cap and replacement logic so repeated firings do not create an infinite acceleration exploit.
 - Apply five to eight relation shocks, with some weighted toward globally meaningful pairs.
 - Strong chance of delayed news follow-up.
-- Temporary AI strategy should treat the world as “permanent alert”: more hostile posture, more sensitivity to guarantees and rival alliances, higher interest in existing war-preparation decisions, but no forced war.
+- Temporary AI strategy should treat the world as “permanent alert”: more hostile posture, more sensitivity to guarantees and rival alliances, higher interest in existing war-preparation decisions, but no forced normal war declarations.
 
 ### Tone
 
@@ -257,16 +257,16 @@ Only one delayed follow-up should be scheduled from a single event firing unless
 
 | Follow-up | Best stage | Player-facing event type | Gameplay effect |
 | --- | --- | --- | --- |
-| The Telegram Nobody Signed | I–II | report event | mostly flavour, may identify no named country |
-| Embassy Side Doors | I–II | report event | small diplomatic flavour |
-| The Calm Map Says Nothing | I+ at 100% WT | report event | explains why the event still matters at max WT |
-| Insurance Rates Jump in Neutral Ports | II–III | news/report | can add tiny temporary convoy or trade anxiety only if already supported by existing systems |
-| The Rumour That Arrived Twice | II–III | report event | explains duplicate foreign accusations |
-| Staff Cars After Midnight | III–IV | report/news | may add temporary AI posture pressure |
-| Fleets Keep Radio Silence | III–IV | news | may increase naval-war-adjacent event weights if such hooks exist |
-| One Denial Too Many | II–IV | report event | may add an extra relation hit if the same pair is valid |
-| Border Lamps | III–IV | report event | points to border rivals without starting war |
-| The Last Normal Briefing | IV | report event | one-time Stage IV flavour report |
+| The Telegram Nobody Signed | I–II | incident event | small WT/chaos/opinion aftershock |
+| Embassy Side Doors | I–II | incident event | small WT/chaos/opinion aftershock plus AI posture pressure |
+| The Calm Map Says Nothing | I+ at 100% WT | incident event | explains why the event still matters at max WT and adds pressure |
+| Insurance Rates Jump in Neutral Ports | II–III | incident event | small pressure bundle and Insurance Market achievement hook |
+| The Rumour That Arrived Twice | II–III | incident event | duplicate foreign accusations with multiple opinion shocks |
+| Staff Cars After Midnight | III–IV | incident event | temporary AI posture and opinion pressure |
+| Fleets Keep Radio Silence | III–IV | incident event | temporary AI posture and opinion pressure |
+| One Denial Too Many | II–IV | incident event | heavier opinion pressure and possible high-stage border clash |
+| Border Lamps | III–IV | incident event | heavier opinion pressure and possible high-stage safe non-transfer border war |
+| The Last Normal Briefing | IV | incident event | strongest follow-up bundle and highest safe border-war chance |
 
 ## Cluster design
 
@@ -358,7 +358,7 @@ Event 8 should appear in:
 - event details catalogue
 - evolution detail previews
 - evolution history when each stage is recorded
-- delayed report/news history if those subevents are logged
+- delayed incident/news history if those subevents are logged
 - cluster history if `Diplomatic Panic` is implemented
 
 The event’s default actor is global. Evolution rows do not need a country actor unless a follow-up report intentionally names a pair. Avoid storing broad global event targets for relation pairs when regular event targets or generic reports are enough.
@@ -381,11 +381,12 @@ Recommended evolution detail summary:
 - Stage IV must not trigger a super-event or world-end branch.
 - Delayed reports should not recursively schedule more Event 8 firings.
 - The event must not create direct war goals.
+- High-stage border incidents may start non-transfer border wars only through safe adjacent-pair checks and cooldowns.
 - Any temporary AI war-plan pressure must use existing valid route and target checks.
 
 ## Open implementation decisions
 
 1. Whether to implement `Diplomatic Panic` immediately or leave it as a small queued note.
-2. Whether relation-pair delayed reports should name exact countries or remain generic. Generic is safer and easier to de-duplicate.
+2. Whether relation-pair follow-up incidents should name exact countries or remain generic. Generic is safer and easier to de-duplicate.
 3. Whether the timer pulse should modify daily decrement or next timer roll compression. The correct answer depends on the current event timer implementation.
 4. Whether the workbook should be updated in the same implementation pass or after localisation is final. The spreadsheet worker should use in-game localisation as source-of-truth.

@@ -137,35 +137,36 @@ Visible story:
 
 Effect direction:
 
-- small temporary trade/convoy anxiety if the repo already has a compatible modifier
-- otherwise flavour-only report with no direct modifier
+- small world-tension, chaos, and opinion aftershock
+- preserve the Insurance Market achievement hook for peaceful player countries with a large convoy reserve
 
-## Delayed report scheduling
+## Delayed incident scheduling
 
-Follow-up reports should be scheduled sparingly. The best model is one delayed follow-up per Event 8 firing, selected by weighted stage, world tension, active wars, navies, borders, and recent relation damage.
+Follow-up incidents should be scheduled sparingly. The best model is one delayed follow-up per Event 8 firing, selected by weighted stage, world tension, active wars, navies, borders, and recent relation damage. These incidents apply smaller real pressure bundles and must not recursively fire Event 8.
 
 ### Follow-up selection table
 
 | Follow-up | Stage weights | Extra conditions | Direct effect allowed |
 | --- | --- | --- | --- |
-| The Telegram Nobody Signed | high at I, medium at II | none | none |
-| Embassy Side Doors | high at I–II | at least two majors or faction leaders alive | none |
-| The Calm Map Says Nothing | high if WT already 100 | WT = 100 | none, maybe log detail |
-| Insurance Rates Jump in Neutral Ports | high at II–III | at least one major trading/convoy country exists | tiny trade/convoy anxiety only if existing modifier supports it |
-| The Rumour That Arrived Twice | high at II–III | no active world-end | possible extra small relation hit if safe |
-| Staff Cars After Midnight | high at III–IV | at least one major alive and not capitulated | temporary AI posture, not direct war |
-| Fleets Keep Radio Silence | medium at III–IV | naval majors or active sea zones relevant | possible naval panic modifier only if supported |
-| Border Lamps | high at III–IV | valid border-rival pair | relation hit or report only |
-| The Last Normal Briefing | one-time Stage IV | Stage IV first firing | report only |
+| The Telegram Nobody Signed | high at I, medium at II | none | small WT/chaos/opinion aftershock |
+| Embassy Side Doors | high at I–II | at least two majors or faction leaders alive | small WT/chaos/opinion aftershock plus AI posture pressure |
+| The Calm Map Says Nothing | high if WT already 100 | WT = 100 | small WT/chaos/opinion aftershock |
+| Insurance Rates Jump in Neutral Ports | high at II–III | at least one major trading/convoy country exists | small WT/chaos/opinion aftershock and achievement hook |
+| The Rumour That Arrived Twice | high at II–III | no active world-end | two extra opinion shocks if safe |
+| Staff Cars After Midnight | high at III–IV | at least one major alive and not capitulated | temporary AI posture and opinion pressure |
+| Fleets Keep Radio Silence | medium at III–IV | naval majors or active sea zones relevant | temporary AI posture and opinion pressure |
+| Border Lamps | high at III–IV | valid safe border-rival pair | heavier opinion damage and possible non-transfer border war |
+| The Last Normal Briefing | one-time Stage IV | Stage IV first firing | strongest incident bundle and highest safe border-war chance |
 
 ## Stage IV presentation
 
-Stage IV stays inside the normal event popup, option tooltip, event log, evolution detail, achievements, and delayed-report surfaces. It does not trigger a super-event and does not create a world-end branch.
+Stage IV stays inside the normal event popup, option tooltip, event log, evolution detail, achievements, and follow-up incident surfaces. It does not trigger a super-event and does not create a world-end branch.
 
 ## Anti-exploit rules
 
 - Do not let relation modifiers stack infinitely on the same pair.
 - Do not let timer pulse stack additively.
-- Do not let delayed reports schedule additional Event 8 firings.
+- Do not let delayed incidents schedule additional Event 8 firings.
 - Do not apply national spirits to countries that are invalid, dead, capitulated in a way that makes the modifier meaningless, or excluded by special-country logic.
 - Do not give war goals, cores, claims, or free units from Event 8.
+- Stage III+ border-war incidents must be non-transfer clashes, require safe independent adjacent rivals, and respect global/per-country cooldowns.

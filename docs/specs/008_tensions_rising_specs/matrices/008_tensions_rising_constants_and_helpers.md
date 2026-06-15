@@ -6,13 +6,15 @@ This is a design handoff for the scripted-system architecture pass. It is not fi
 
 | Helper | Scope | Inputs | Outputs | Side effects | Call sites |
 | --- | --- | --- | --- | --- | --- |
-| `apply_tensions_rising_event_effect` | global/root event context | current chaos tier, current world tension, event enable state | applies direct WT/chaos, dispatches hidden packages | calls timer pulse, relation pair selector, delayed report scheduler | Event 8 main option/immediate effect |
+| `apply_tensions_rising_event_effect` | global/root event context | current chaos tier, current world tension, event enable state | applies direct WT/chaos, dispatches hidden packages | calls timer pulse, relation pair selector, delayed incident scheduler | Event 8 main option/immediate effect |
 | `get_tensions_rising_stage` | global | current `chaos_tier` flag and event flags | sets a temp or global stage variable for this firing | none | event effect and event detail rebuild |
 | `record_tensions_rising_evolution_if_needed` | global | stage variable, enabled evolution state | evolution log entry when appropriate | sets stage recorded flags only when enabled | event effect before stage package |
 | `apply_tensions_rising_timer_pulse` | global | stage variable | active pulse strength and duration | replaces/extends capped pulse | event effect |
 | `select_tensions_rising_relation_pairs` | global with country loops/arrays as existing patterns allow | stage variable, valid countries | list or immediate pair calls | saves temporary pair targets if needed | event effect stage I+ |
 | `apply_tensions_rising_relation_pair` | country-to-country context | source country, target country, stage variable | timed opinion modifiers | optional pair cooldown flags | relation pair selector |
-| `schedule_tensions_rising_followup` | global/event context | stage variable, world tension, optional pair context | delayed report/news event | schedules one delayed subevent | event effect stage I+ |
+| `schedule_tensions_rising_followup` | global/event context | stage variable, world tension, optional pair context | delayed incident event | schedules one delayed subevent | event effect stage I+ |
+| `apply_tensions_rising_incident_*` | root event context | delayed incident id and current stage | smaller WT/chaos/opinion/posture bundle | does not recurse into Event 8 main effect | delayed incident events |
+| `try_tensions_rising_incident_border_war` | root event context | current stage, cooldown state, safe country/state candidates | optional non-transfer border war | applies pair opinion damage and result callbacks if a safe clash starts | Stage III+ border incidents |
 | `apply_tensions_rising_country_pressure` | selected country | stage variable, country score | temporary national modifier | war support/stability/AI posture effect | Stage II+ selector |
 
 ## Script constant groups
@@ -113,9 +115,9 @@ If timed flags reject script constants or variable tokens in the current engine 
 
 ## Event target plan
 
-Use regular event targets for short-lived pair or country contexts inside the current event chain. Prefer generic delayed reports that do not need exact pair names. This avoids multiple delayed follow-ups overwriting one global pair target.
+Use regular event targets for short-lived pair or country contexts inside the current event chain. Prefer generic delayed incidents that do not need exact pair names. This avoids multiple delayed follow-ups overwriting one global pair target.
 
-If a delayed report must name exact countries, schedule it from inside the same event chain with saved event targets that are carried safely into the delayed event. Do not use one global target for all pending reports.
+If a delayed incident must name exact countries, schedule it from inside the same event chain with saved event targets that are carried safely into the delayed event. Do not use one global target for all pending incidents.
 
 ## Integration points
 
@@ -161,7 +163,9 @@ Task-specific checks after implementation should include:
 - Stage I+ can fire at WT 100.
 - Stage IV remains non-terminal and does not trigger a super-event.
 - No direct war goals, countries, focus trees, cores, or formables are created.
+- Stage III+ border-war incidents only start non-transfer border wars when a safe adjacent owned-and-controlled state pair is found.
 - Timer pulse replacement/cap works under repeated firings.
-- Delayed reports do not recursively fire Event 8.
+- Delayed incidents do not recursively fire Event 8.
+- Border-war incidents respect global and per-country cooldowns and avoid active wars, civil wars, subjects, same-faction pairs, capitulated countries, and special nonhuman actors.
 - Relation modifiers are timed and do not stack endlessly on one pair.
 - Event log detail and evolution surfaces show the correct stage text.

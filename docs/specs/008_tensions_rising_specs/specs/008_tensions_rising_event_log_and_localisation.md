@@ -1,6 +1,6 @@
 # Event 008: Event Log, Localisation, and Text Direction
 
-This file describes the player-facing wording surfaces for Event 008. It does not contain final localisation YAML. It defines the intended text so the implementation and localisation pass can keep events, logs, details, evolutions, delayed reports, and the catalog aligned.
+This file describes the player-facing wording surfaces for Event 008. It does not contain final localisation YAML. It defines the intended text so the implementation and localisation pass can keep events, logs, details, evolutions, follow-up incidents, and the catalog aligned.
 
 ## Naming
 
@@ -67,7 +67,7 @@ Option: **Log the latest alerts.**
 
 ### Mechanics summary text
 
-> Higher stages can briefly quicken the rhythm of later incidents, sour relations between plausible rivals, and produce delayed reports about the panic spreading through embassies, markets, staff rooms, and border offices.
+> Higher stages can briefly quicken the rhythm of later incidents, sour relations between plausible rivals, and produce follow-up incidents about the panic spreading through embassies, markets, staff rooms, and border offices. At high chaos, safe border incidents can become non-transfer clashes.
 
 ### World-end line
 
@@ -91,7 +91,7 @@ Evolution track name: **Diplomatic Fever**
 
 ### Stage IV event detail preview
 
-**The Permanent Alert**  -  The event reaches its strongest non-terminal form. It applies severe pressure, large diplomatic shocks, and delayed reports without becoming a terminal branch.
+**The Permanent Alert**  -  The event reaches its strongest non-terminal form. It applies severe pressure, large diplomatic shocks, follow-up incidents, and rare safe border clashes without becoming a terminal branch.
 
 ## Evolution log titles
 
@@ -104,7 +104,7 @@ Evolution track name: **Diplomatic Fever**
 
 The stage title should appear in evolution catalogue, evolution history, and selected-event detail surfaces wherever the current event-log implementation supports stage text.
 
-## Delayed report text directions
+## Follow-up incident text directions
 
 ### The Telegram Nobody Signed
 
@@ -112,11 +112,15 @@ Tone: muted, bureaucratic, suspicious.
 
 > A message circulated through several foreign ministries today. Every government named in the document denied writing it. Several denied receiving it. None denied reading it.
 
+Effect direction: small world-tension, chaos, and opinion aftershock.
+
 ### Embassy Side Doors
 
 Tone: quiet public unease.
 
 > Reporters have noticed embassy staff abandoning front entrances in several capitals. Officials insist the change is procedural. The guards at the front gates have been doubled.
+
+Effect direction: small world-tension, chaos, opinion, and AI posture aftershock.
 
 ### The Calm Map Says Nothing
 
@@ -124,11 +128,15 @@ Tone: tension beyond measurement.
 
 > The public measures say the world can grow no more tense. The offices disagree. Clerks still copy new warnings, commanders still ask for clearer orders, newspapers still find darker words.
 
+Effect direction: small world-tension, chaos, and opinion aftershock.
+
 ### Insurance Rates Jump in Neutral Ports
 
 Tone: markets smell panic.
 
 > Neutral shipping firms have begun rewriting their rates before any government admits danger. It is often said that merchants hear war before diplomats name it.
+
+Effect direction: small world-tension, chaos, opinion aftershock, and Insurance Market achievement hook.
 
 ### The Rumour That Arrived Twice
 
@@ -136,11 +144,15 @@ Tone: impossible coincidence.
 
 > Two capitals received the same rumour through different channels, with the same phrasing, the same missing signature, and the same urgent warning. Both deny being the source.
 
+Effect direction: world-tension, chaos, and multiple opinion aftershocks.
+
 ### Staff Cars After Midnight
 
 Tone: military fatigue.
 
 > Staff cars were seen outside several ministries long after midnight. Official spokesmen said the meetings were routine. No one asked why routine now requires blackout curtains.
+
+Effect direction: world-tension, chaos, opinion, and AI posture pressure.
 
 ### Fleets Keep Radio Silence
 
@@ -148,11 +160,15 @@ Tone: naval near-miss.
 
 > A naval movement passed without public explanation today. Harbour offices confirmed nothing, denied nothing, and asked newspapers not to print ship names.
 
+Effect direction: world-tension, chaos, opinion, and AI posture pressure.
+
 ### Border Lamps
 
 Tone: frontier unease.
 
 > Lamps stayed lit along a quiet border through the night. Local commanders blamed weather, then training, then paperwork. None of the explanations satisfied anyone nearby.
+
+Effect direction: heavier opinion pressure and possible high-stage safe non-transfer border war.
 
 ### One Denial Too Many
 
@@ -160,11 +176,15 @@ Tone: denial as proof.
 
 > The third denial came faster than the first accusation. By the time it reached the morning papers, several foreign editors had decided speed was evidence enough.
 
+Effect direction: heavier opinion pressure and possible high-stage safe non-transfer border war.
+
 ### The Last Normal Briefing
 
 Tone: the last ordinary briefing before extended alert routine.
 
 > The briefing began with ordinary phrasing. It ended with no questions, no jokes, and no one willing to call the day ordinary again.
+
+Effect direction: strongest follow-up bundle and the highest high-stage safe border-war chance.
 
 ## Localisation key plan
 

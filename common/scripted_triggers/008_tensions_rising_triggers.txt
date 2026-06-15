@@ -74,3 +74,29 @@ is_tensions_rising_ai_posture_candidate = {
 		has_war = yes
 	}
 }
+
+is_tensions_rising_border_war_actor = {
+	is_tensions_rising_valid_diplomatic_country = yes
+	has_war = no
+	has_civil_war = no
+	has_border_war = no
+	num_divisions > constant:tensions_rising_incident_border_war.minimum_divisions
+	NOT = { has_country_flag = tensions_rising_recent_border_war_actor }
+	any_other_country = {
+		is_tensions_rising_border_war_target_for_prev = yes
+		is_neighbor_of = PREV
+	}
+}
+
+is_tensions_rising_border_war_target_for_prev = {
+	is_tensions_rising_valid_diplomatic_country = yes
+	has_war = no
+	has_civil_war = no
+	has_border_war = no
+	num_divisions > constant:tensions_rising_incident_border_war.minimum_divisions
+	NOT = { tag = PREV }
+	NOT = { has_war_with = PREV }
+	NOT = { is_subject_of = PREV }
+	NOT = { is_in_faction_with = PREV }
+	NOT = { has_country_flag = tensions_rising_recent_border_war_actor }
+}

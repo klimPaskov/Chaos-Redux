@@ -1,6 +1,6 @@
 # Event 008 Catalog Row Note
 
-The workbook `chaos_redux_events_catalog.xlsx` was inspected after implementation.
+The workbook `chaos_redux_events_catalog.xlsx` was inspected and updated after implementation.
 
 Current row finding:
 
@@ -8,7 +8,7 @@ Current row finding:
 | --- | --- |
 | ID | 8 |
 | Event Name | Tensions Rising |
-| Details | Value-neutral event-detail text describing world-tension pressure, timer pacing, timed opinion penalties, AI readiness ideas, delayed reports, and achievement tracking. |
+| Details | Value-neutral event-detail text describing world-tension pressure, timer pacing, timed opinion penalties, AI readiness ideas, delayed incidents, achievement tracking, and rare safe border wars. |
 | Type | Minor Repeatable |
 | Status | Implemented |
 
@@ -18,4 +18,4 @@ The source of truth sets the baseline to `+100` world tension with four evolved 
 
 Spreadsheet action:
 
-No workbook changes were needed for the `10x` tuning pass because the current Event 8 catalog row contains no stale numeric packet values.
+The workbook row was updated from the final in-game event-detail wording so it uses the delayed-incident terminology and includes the rare safe border-war pressure surface. The `Diplomatic Panic` cluster detail also notes rare safe non-transfer border wars.
