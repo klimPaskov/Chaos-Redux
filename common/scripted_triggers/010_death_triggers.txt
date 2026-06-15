@@ -1,0 +1,407 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 010 DEATH TRIGGERS
+# ============================================================================
+# Trigger helpers for Death country state, origin/spread targets, reveal gates,
+# world-end gates, and scenario launch validation.
+# ============================================================================
+
+is_death_country = {
+	OR = {
+		tag = DTH
+		original_tag = DTH
+		has_country_flag = death_country
+	}
+}
+
+death_country_exists = {
+	country_exists = DTH
+	DTH = { has_country_flag = death_country }
+}
+
+death_is_consumed_state = {
+	has_state_flag = death_consumed_state
+}
+
+death_state_has_any_divisions = {
+	any_state_division = { always = yes }
+}
+
+death_state_has_no_divisions = {
+	NOT = { death_state_has_any_divisions = yes }
+}
+
+death_state_has_non_death_divisions = {
+	any_state_division = {
+		NOT = { owner = { is_death_country = yes } }
+	}
+}
+
+death_state_has_no_non_death_divisions = {
+	NOT = { death_state_has_non_death_divisions = yes }
+}
+
+death_state_borders_active_wasteland = {
+	any_neighbor_state = {
+		has_state_flag = death_active_wasteland
+		is_controlled_by = DTH
+	}
+}
+
+death_is_valid_origin_state_preferred = {
+	is_island_state = yes
+	state_population_k > 0
+	check_variable = {
+		var = state_population_k
+		value = constant:death_population.origin_preferred_cap_k
+		compare = less_than
+	}
+	NOT = { is_capital = yes }
+	NOT = { death_is_consumed_state = yes }
+	NOT = { is_controlled_by = DTH }
+	death_state_has_no_divisions = yes
+}
+
+death_is_valid_origin_state_outer = {
+	is_island_state = yes
+	state_population_k > 0
+	check_variable = {
+		var = state_population_k
+		value = constant:death_population.origin_outer_cap_k
+		compare = less_than
+	}
+	NOT = { is_capital = yes }
+	NOT = { death_is_consumed_state = yes }
+	NOT = { is_controlled_by = DTH }
+	death_state_has_no_divisions = yes
+}
+
+death_is_valid_island_spread_target = {
+	is_island_state = yes
+	state_population_k > 0
+	check_variable = {
+		var = state_population_k
+		value = constant:death_population.island_spread_cap_k
+		compare = less_than
+	}
+	NOT = { is_capital = yes }
+	NOT = { death_is_consumed_state = yes }
+	NOT = { is_controlled_by = DTH }
+	death_state_has_no_divisions = yes
+}
+
+death_is_valid_island_spread_target_lowest_names = {
+	is_island_state = yes
+	state_population_k > 0
+	check_variable = {
+		var = state_population_k
+		value = constant:death_focus_reward.lowest_names_cap_k
+		compare = less_than
+	}
+	NOT = { is_capital = yes }
+	NOT = { death_is_consumed_state = yes }
+	NOT = { is_controlled_by = DTH }
+	death_state_has_no_divisions = yes
+}
+
+death_is_valid_mainland_reveal_target = {
+	is_island_state = no
+	is_coastal = yes
+	check_variable = {
+		var = state_population_k
+		value = constant:death_population.mainland_reveal_threshold_k
+		compare = greater_than
+	}
+	NOT = { death_is_consumed_state = yes }
+	NOT = { is_controlled_by = DTH }
+	death_state_has_no_divisions = yes
+}
+
+death_is_valid_wither_target = {
+	NOT = { death_is_consumed_state = yes }
+	NOT = { is_controlled_by = DTH }
+	NOT = { has_state_flag = death_quarantine_line }
+	death_state_has_no_non_death_divisions = yes
+	death_state_borders_active_wasteland = yes
+}
+
+death_is_valid_coastal_jump_target = {
+	is_coastal = yes
+	NOT = { is_capital = yes }
+	NOT = { death_is_consumed_state = yes }
+	NOT = { is_controlled_by = DTH }
+	OR = {
+		NOT = { has_state_flag = death_coastal_watch }
+		DTH = { has_country_flag = death_focus_no_ferry_returns }
+	}
+	NOT = { has_state_flag = death_quarantine_line }
+	death_state_has_no_divisions = yes
+}
+
+death_should_reveal_from_current_state = {
+	NOT = { has_global_flag = death_publicly_revealed }
+	is_island_state = no
+	check_variable = {
+		var = death_last_consumed_population_k
+		value = constant:death_population.mainland_reveal_threshold_k
+		compare = greater_than
+	}
+}
+
+death_can_attempt_coastal_jump = {
+	has_global_flag = death_publicly_revealed
+	NOT = { has_global_flag = death_defeated }
+	NOT = { has_global_flag = death_coastal_jump_cooldown }
+	OR = {
+		has_global_flag = death_world_end_started
+		DTH = { num_of_controlled_states < constant:death_spread.coastal_jump_contained_state_limit }
+	}
+}
+
+death_has_consumed_continent_europe = {
+	any_state = { is_on_continent = europe death_is_consumed_state = yes }
+	NOT = { any_state = { is_on_continent = europe state_population_k > 0 NOT = { death_is_consumed_state = yes } } }
+}
+
+death_has_consumed_continent_middle_east = {
+	any_state = { is_on_continent = middle_east death_is_consumed_state = yes }
+	NOT = { any_state = { is_on_continent = middle_east state_population_k > 0 NOT = { death_is_consumed_state = yes } } }
+}
+
+death_has_consumed_continent_asia = {
+	any_state = { is_on_continent = asia death_is_consumed_state = yes }
+	NOT = { any_state = { is_on_continent = asia state_population_k > 0 NOT = { death_is_consumed_state = yes } } }
+}
+
+death_has_consumed_continent_africa = {
+	any_state = { is_on_continent = africa death_is_consumed_state = yes }
+	NOT = { any_state = { is_on_continent = africa state_population_k > 0 NOT = { death_is_consumed_state = yes } } }
+}
+
+death_has_consumed_continent_australia = {
+	any_state = { is_on_continent = australia death_is_consumed_state = yes }
+	NOT = { any_state = { is_on_continent = australia state_population_k > 0 NOT = { death_is_consumed_state = yes } } }
+}
+
+death_has_consumed_continent_north_america = {
+	any_state = { is_on_continent = north_america death_is_consumed_state = yes }
+	NOT = { any_state = { is_on_continent = north_america state_population_k > 0 NOT = { death_is_consumed_state = yes } } }
+}
+
+death_has_consumed_continent_south_america = {
+	any_state = { is_on_continent = south_america death_is_consumed_state = yes }
+	NOT = { any_state = { is_on_continent = south_america state_population_k > 0 NOT = { death_is_consumed_state = yes } } }
+}
+
+death_has_consumed_any_continent = {
+	OR = {
+		death_has_consumed_continent_europe = yes
+		death_has_consumed_continent_middle_east = yes
+		death_has_consumed_continent_asia = yes
+		death_has_consumed_continent_africa = yes
+		death_has_consumed_continent_australia = yes
+		death_has_consumed_continent_north_america = yes
+		death_has_consumed_continent_south_america = yes
+	}
+}
+
+death_can_start_world_end = {
+	has_global_flag = death_publicly_revealed
+	NOT = { has_global_flag = death_world_end_started }
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:death_world_end.chaos_threshold
+		compare = greater_than
+	}
+	death_has_consumed_any_continent = yes
+}
+
+death_whole_world_consumed = {
+	has_global_flag = death_world_end_started
+	NOT = {
+		any_state = {
+			state_population_k > 0
+			NOT = { death_is_consumed_state = yes }
+		}
+	}
+}
+
+death_should_emit_defeat_super_event = {
+	has_global_flag = death_publicly_revealed
+	OR = {
+		has_global_flag = death_world_end_started
+		check_variable = {
+			var = global.death_consumed_population
+			value = constant:death_defeat_aftermath.consumed_population_threshold_k
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = global.death_mainland_consumed_states
+			value = constant:death_defeat_aftermath.mainland_state_threshold
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+death_missing_island_decisions_visible = {
+	NOT = { is_death_country = yes }
+	has_global_flag = death_active
+	NOT = { has_global_flag = death_defeated }
+	NOT = { has_global_flag = death_publicly_revealed }
+	OR = {
+		has_country_flag = death_received_missing_island_report
+		has_country_flag = death_received_second_missing_island_report
+	}
+}
+
+death_active_containment_decisions_visible = {
+	NOT = { is_death_country = yes }
+	NOT = { has_global_flag = death_defeated }
+	OR = {
+		has_global_flag = death_publicly_revealed
+		has_global_flag = death_world_end_started
+		AND = {
+			death_missing_island_decisions_visible = yes
+			death_has_coastal_watch_candidate = yes
+		}
+		any_controlled_state = { death_state_borders_active_wasteland = yes }
+		has_country_flag = death_living_compact_member
+		has_country_flag = death_living_compact_leader
+	}
+}
+
+death_aftermath_wasteland_decisions_visible = {
+	NOT = { is_death_country = yes }
+	has_global_flag = death_defeated
+	death_has_recaptured_wasteland_candidate = yes
+}
+
+death_containment_decisions_visible = {
+	OR = {
+		death_active_containment_decisions_visible = yes
+		death_aftermath_wasteland_decisions_visible = yes
+	}
+}
+
+death_is_living_compact_member = {
+	OR = {
+		has_country_flag = death_living_compact_member
+		has_country_flag = death_living_compact_leader
+	}
+}
+
+death_has_no_forbidden_oath = {
+	NOT = { has_country_flag = death_black_oath_taken }
+	NOT = { has_country_flag = death_herald_of_zol }
+}
+
+death_has_coastal_watch_candidate = {
+	any_controlled_state = {
+		is_coastal = yes
+		NOT = { death_is_consumed_state = yes }
+		NOT = { has_state_flag = death_coastal_watch }
+	}
+}
+
+death_has_quarantine_line_candidate = {
+	any_controlled_state = {
+		NOT = { death_is_consumed_state = yes }
+		NOT = { has_state_flag = death_quarantine_line }
+		death_state_borders_active_wasteland = yes
+	}
+}
+
+death_has_recaptured_wasteland_candidate = {
+	any_controlled_state = {
+		has_state_flag = death_recaptured_wasteland
+		NOT = { has_state_flag = death_dead_zone_outpost }
+	}
+}
+
+can_pay_death_survey_boat_cost = {
+	command_power > constant:death_decision_cost.survey_boat_cp_gate
+	has_fuel > constant:death_decision_cost.survey_boat_fuel_gate
+	has_equipment = { convoy > constant:death_decision_cost.survey_boat_convoy_gate }
+}
+
+can_pay_death_telegraph_cost = {
+	political_power > constant:death_decision_cost.telegraph_pp_gate
+	command_power > constant:death_decision_cost.telegraph_cp_gate
+}
+
+can_pay_death_quiet_quarantine_cost = {
+	command_power > constant:death_decision_cost.quiet_quarantine_cp_gate
+	has_fuel > constant:death_decision_cost.quiet_quarantine_fuel_gate
+	has_equipment = { convoy > constant:death_decision_cost.quiet_quarantine_convoy_gate }
+	has_equipment = { support_equipment > constant:death_decision_cost.quiet_quarantine_support_gate }
+}
+
+can_pay_death_recognize_war_cost = {
+	command_power > constant:death_decision_cost.recognize_cp_gate
+	has_war_support > constant:death_decision_cost.recognize_war_support_gate
+}
+
+can_pay_death_call_compact_cost = {
+	political_power > constant:death_decision_cost.call_compact_pp_gate
+	command_power > constant:death_decision_cost.call_compact_cp_gate
+}
+
+can_pay_death_join_compact_cost = {
+	political_power > constant:death_decision_cost.join_compact_pp_gate
+}
+
+can_pay_death_patrol_cost = {
+	command_power > constant:death_decision_cost.patrol_cp_gate
+	has_fuel > constant:death_decision_cost.patrol_fuel_gate
+	has_equipment = { convoy > constant:death_decision_cost.patrol_convoy_gate }
+	has_equipment = { train_equipment > constant:death_decision_cost.patrol_train_gate }
+	has_equipment = { support_equipment > constant:death_decision_cost.patrol_support_gate }
+}
+
+can_pay_death_wasteland_gear_cost = {
+	has_army_experience > constant:death_decision_cost.gear_army_xp_gate
+	has_fuel > constant:death_decision_cost.gear_fuel_gate
+	has_equipment = { support_equipment > constant:death_decision_cost.gear_support_gate }
+	has_equipment = { motorized_equipment > constant:death_decision_cost.gear_truck_gate }
+}
+
+can_pay_death_share_gear_cost = {
+	command_power > constant:death_decision_cost.share_gear_cp_gate
+	has_fuel > constant:death_decision_cost.share_gear_fuel_gate
+	has_equipment = { support_equipment > constant:death_decision_cost.share_gear_support_gate }
+	has_equipment = { motorized_equipment > constant:death_decision_cost.share_gear_truck_gate }
+}
+
+can_pay_death_quarantine_line_cost = {
+	command_power > constant:death_decision_cost.quarantine_cp_gate
+	has_equipment = { infantry_equipment > constant:death_decision_cost.quarantine_infantry_gate }
+	has_equipment = { support_equipment > constant:death_decision_cost.quarantine_support_gate }
+}
+
+can_pay_death_coastal_watch_cost = {
+	command_power > constant:death_decision_cost.coastal_watch_cp_gate
+	has_fuel > constant:death_decision_cost.coastal_watch_fuel_gate
+	has_equipment = { convoy > constant:death_decision_cost.coastal_watch_convoy_gate }
+	has_equipment = { train_equipment > constant:death_decision_cost.coastal_watch_train_gate }
+}
+
+can_pay_death_wasteland_survey_cost = {
+	has_army_experience > constant:death_decision_cost.wasteland_survey_army_xp_gate
+	has_equipment = { support_equipment > constant:death_decision_cost.wasteland_survey_support_gate }
+	has_equipment = { motorized_equipment > constant:death_decision_cost.wasteland_survey_truck_gate }
+}
+
+can_pay_death_dead_zone_outpost_cost = {
+	has_army_experience > constant:death_decision_cost.outpost_army_xp_gate
+	has_equipment = { support_equipment > constant:death_decision_cost.outpost_support_gate }
+	has_equipment = { motorized_equipment > constant:death_decision_cost.outpost_truck_gate }
+	has_equipment = { train_equipment > constant:death_decision_cost.outpost_train_gate }
+}
+
+can_pay_death_last_shores_response_cost = {
+	command_power > constant:death_decision_cost.last_shores_cp_gate
+	has_army_experience > constant:death_decision_cost.last_shores_army_xp_gate
+	has_fuel > constant:death_decision_cost.last_shores_fuel_gate
+	has_equipment = { convoy > constant:death_decision_cost.last_shores_convoy_gate }
+	has_equipment = { support_equipment > constant:death_decision_cost.last_shores_support_gate }
+	has_equipment = { motorized_equipment > constant:death_decision_cost.last_shores_truck_gate }
+}

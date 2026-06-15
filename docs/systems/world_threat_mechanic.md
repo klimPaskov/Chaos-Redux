@@ -17,6 +17,8 @@ Current registered source flags:
 - `world_threat_source_zombies`
 - `world_threat_source_holy_realm`
 - `world_threat_source_mengele`
+- `world_threat_source_fury`
+- `world_threat_source_death`
 
 Shared aggregate flag:
 
@@ -66,6 +68,10 @@ The Holy Realm source uses `holy_realm_refresh_world_threat_source` in `common/s
 
 The Mengele source uses `germany_mengele_refresh_world_threat` and the clone world-order launch effects in `common/scripted_effects/germany_mengele_effects.txt`. It is active while the Auschwitz Directorate civil war exists. If the Directorate later launches the clone world-end path, `world_threat_source_mengele` is set permanently for that world-end state.
 
+The Fury source uses `world_threat_source_fury` during its terminal world-end branch.
+
+The Death source uses `death_refresh_world_threat_source` in `common/scripted_effects/010_death_effects.txt`. It activates only after Death is publicly revealed by consuming a mainland state above the reveal population threshold, and clears when Death is defeated.
+
 That effect:
 
 1. recalculates total zombie strength
@@ -93,6 +99,8 @@ Shared triggers:
 - `has_world_threat_source_zombies`
 - `has_world_threat_source_holy_realm`
 - `has_world_threat_source_mengele`
+- `has_world_threat_source_fury`
+- `has_world_threat_source_death`
 
 Registered world-end flags under the Mengele source:
 
@@ -114,7 +122,7 @@ Everything should fold back into the same source-counted system.
 ## Limitations
 
 - The current zombie source is refreshed from the existing zombie runtime rather than a dedicated global state-control hook. In practice that is good enough for the active zombie system, but it is still tied to zombie runtime execution rather than a universal threat bus.
-- Zombies, the Holy Realm, the active Mengele laboratory-state civil war, and the Angelic Directorate clone world-end path are registered as source flags.
+- Zombies, the Holy Realm, Fury, Death, the active Mengele laboratory-state civil war, and the Angelic Directorate clone world-end path are registered as source flags.
 - `world_in_threat` is intentionally just a state flag. It does not itself enforce diplomacy or AI behavior. Other systems must explicitly read it.
 
 ## Files

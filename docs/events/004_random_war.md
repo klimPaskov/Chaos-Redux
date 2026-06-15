@@ -111,7 +111,7 @@ No new final art assets are required.
 
 Existing assets used:
 
-- Report event image: `GFX_report_event_war_or_peace`
+- Report event image: `GFX_report_event_random_war`
 - News image: vanilla `GFX_news_event_generic_chaco_war`
 - Target response idea images: existing `generic_wall_line` and `generic_infantry_bonus`
 

@@ -1,0 +1,69 @@
+add_namespace = chaosx.nr10
+
+##############################################################################################################
+# Event 010 - Death
+##############################################################################################################
+
+country_event = {
+	id = chaosx.nr10.1
+	title = chaosx.nr10.1.t
+
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = {
+			if = {
+				limit = {
+					NOT = { has_global_flag = death_active }
+					NOT = { has_global_flag = death_defeated }
+				}
+				death_launch_quiet_origin = yes
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr10.2
+	title = chaosx.nr10.2.t
+	desc = chaosx.nr10.2.d
+	picture = GFX_report_event_death_mail_boat
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr10.2.a
+		set_country_flag = death_received_missing_island_report
+		add_to_variable = { global.death_missing_reports_seen = 1 }
+		death_record_island_reports_evolution = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr10.3
+	title = chaosx.nr10.3.t
+	desc = chaosx.nr10.3.d
+	picture = GFX_report_event_death_lighthouse
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr10.3.a
+		set_country_flag = death_received_second_missing_island_report
+		add_to_variable = { global.death_missing_reports_seen = 1 }
+		death_record_island_reports_evolution = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr10.10
+	title = chaosx.nr10.10.t
+
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		death_run_spread_pulse = yes
+	}
+}

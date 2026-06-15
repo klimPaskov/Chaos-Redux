@@ -36,6 +36,10 @@ initialize_triggerable_scenarios_settings = {
 		set_variable = { triggerable_scenarios_fury_type = constant:fury_scenario_type.pact }
 	}
 	if = {
+		limit = { NOT = { has_variable = triggerable_scenarios_death_type } }
+		set_variable = { triggerable_scenarios_death_type = constant:death_scenario_type.quiet_origin }
+	}
+	if = {
 		limit = { NOT = { has_variable = triggerable_scenarios_sort_mode } }
 		set_variable = { triggerable_scenarios_sort_mode = constant:triggerable_scenario_sort_mode.id }
 	}
@@ -86,6 +90,14 @@ triggerable_scenarios_initialize_registry = {
 		array = global.triggerable_scenario_all_name_sort_values
 		value = constant:triggerable_scenario_sort_value.world_in_fury_name
 	}
+	add_to_array = {
+		array = global.triggerable_scenario_all_ids
+		value = constant:triggerable_scenario_id.death
+	}
+	add_to_array = {
+		array = global.triggerable_scenario_all_name_sort_values
+		value = constant:triggerable_scenario_sort_value.death_name
+	}
 }
 
 triggerable_scenarios_rebuild_view = {
@@ -107,6 +119,14 @@ triggerable_scenarios_rebuild_view = {
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.death
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.death_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
 			value = constant:triggerable_scenario_id.final_silence
 		}
 		add_to_array = {
@@ -177,6 +197,14 @@ triggerable_scenarios_rebuild_view = {
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.death
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.death_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
 			value = constant:triggerable_scenario_id.mengele_clones
 		}
 		add_to_array = {
@@ -188,6 +216,14 @@ triggerable_scenarios_rebuild_view = {
 		limit = {
 			check_variable = { triggerable_scenarios_sort_mode = constant:triggerable_scenario_sort_mode.id }
 			has_country_flag = triggerable_scenarios_sort_descending
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.death
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.death_name
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
@@ -270,6 +306,14 @@ triggerable_scenarios_rebuild_view = {
 		add_to_array = {
 			array = global.triggerable_scenario_view_name_sort_values
 			value = constant:triggerable_scenario_sort_value.world_in_fury_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.death
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.death_name
 		}
 	}
 }
@@ -339,6 +383,16 @@ select_triggerable_scenario_soviet_collapse = {
 select_triggerable_scenario_final_silence = {
 	initialize_triggerable_scenarios_settings = yes
 	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.final_silence }
+}
+
+select_triggerable_scenario_fury = {
+	initialize_triggerable_scenarios_settings = yes
+	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.world_in_fury }
+}
+
+select_triggerable_scenario_death = {
+	initialize_triggerable_scenarios_settings = yes
+	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.death }
 }
 
 set_triggerable_scenario_intensity_low = {
@@ -425,6 +479,14 @@ triggerable_scenario_type_previous = {
 			set_variable = { triggerable_scenarios_fury_type = constant:fury_scenario_type.hostile }
 		}
 	}
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.death } }
+		subtract_from_variable = { triggerable_scenarios_death_type = 1 }
+		if = {
+			limit = { check_variable = { triggerable_scenarios_death_type < constant:death_scenario_type.quiet_origin } }
+			set_variable = { triggerable_scenarios_death_type = constant:death_scenario_type.last_shores }
+		}
+	}
 	else = {
 		subtract_from_variable = { triggerable_scenarios_final_silence_type = 1 }
 		if = {
@@ -466,6 +528,14 @@ triggerable_scenario_type_next = {
 		if = {
 			limit = { check_variable = { triggerable_scenarios_fury_type > constant:fury_scenario_type.hostile } }
 			set_variable = { triggerable_scenarios_fury_type = constant:fury_scenario_type.pact }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.death } }
+		add_to_variable = { triggerable_scenarios_death_type = 1 }
+		if = {
+			limit = { check_variable = { triggerable_scenarios_death_type > constant:death_scenario_type.last_shores } }
+			set_variable = { triggerable_scenarios_death_type = constant:death_scenario_type.quiet_origin }
 		}
 	}
 	else = {
@@ -534,6 +604,16 @@ trigger_selected_chaosx_scenario = {
 			}
 		}
 		trigger_world_in_fury_scenario = yes
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = triggerable_scenario_launch_id
+				value = constant:triggerable_scenario_id.death
+				compare = equals
+			}
+		}
+		trigger_death_scenario = yes
 	}
 	if = {
 		limit = { has_country_flag = triggerable_scenario_preserved_event_timer }
@@ -1850,6 +1930,104 @@ trigger_final_silence_scenario = {
 	}
 	country_event = { id = chaosx.triggerable_scenarios.5 days = 1 }
 	clr_country_flag = holy_realm_triggerable_final_silence_thermonuclear
+}
+
+death_triggerable_apply_intensity_pressure = {
+	if = {
+		limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum } }
+		set_variable = { global.death_spread_pressure = constant:death_spread.mainland_pressure_threshold }
+		add_to_variable = { global.death_spread_pressure = constant:death_spread.mainland_pressure }
+	}
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.high } }
+		set_variable = { global.death_spread_pressure = constant:death_spread.mainland_pressure_threshold }
+	}
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.medium } }
+		set_variable = { global.death_spread_pressure = constant:death_spread.island_pressure }
+	}
+}
+
+death_triggerable_consume_extra_island = {
+	random_state = {
+		limit = { death_is_valid_island_spread_target = yes }
+		set_temp_variable = { death_consumption_context = constant:death_spread.island_pressure }
+		death_consume_current_state = yes
+		add_to_variable = { global.death_spread_pressure = constant:death_spread.island_pressure }
+	}
+}
+
+death_triggerable_spawn_passive_hosts = {
+	DTH = {
+		random_controlled_state = {
+			limit = { has_state_flag = death_active_wasteland }
+			death_spawn_passive_hosts_in_current_state = yes
+		}
+	}
+}
+
+death_triggerable_spawn_stronger_hosts = {
+	DTH = {
+		random_controlled_state = {
+			limit = { has_state_flag = death_active_wasteland }
+			death_spawn_stronger_hosts_in_current_state = yes
+		}
+		random_controlled_state = {
+			limit = { has_state_flag = death_active_wasteland }
+			death_spawn_stronger_hosts_in_current_state = yes
+		}
+	}
+}
+
+trigger_death_scenario = {
+	set_global_flag = death_triggerable_scenario_started
+	set_country_flag = death_triggerable_scenario_launcher
+	set_variable = { global.death_triggerable_scenario_intensity = triggerable_scenarios_intensity }
+	set_variable = { global.death_triggerable_scenario_type = triggerable_scenarios_death_type }
+	if = {
+		limit = { check_variable = { triggerable_scenarios_death_type = constant:death_scenario_type.quiet_origin } }
+		death_launch_quiet_origin = yes
+		death_triggerable_apply_intensity_pressure = yes
+	}
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_death_type = constant:death_scenario_type.island_pattern } }
+		death_launch_island_pattern = yes
+		death_triggerable_apply_intensity_pressure = yes
+		country_event = { id = chaosx.nr10.2 days = 1 }
+		if = { limit = { check_variable = { triggerable_scenarios_intensity > constant:triggerable_scenario_intensity.low } } death_triggerable_consume_extra_island = yes }
+		if = { limit = { check_variable = { triggerable_scenarios_intensity > constant:triggerable_scenario_intensity.low } } death_triggerable_consume_extra_island = yes }
+		if = { limit = { check_variable = { triggerable_scenarios_intensity > constant:triggerable_scenario_intensity.medium } } death_triggerable_consume_extra_island = yes }
+		if = { limit = { check_variable = { triggerable_scenarios_intensity > constant:triggerable_scenario_intensity.medium } } death_triggerable_consume_extra_island = yes }
+		if = { limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum } } death_triggerable_consume_extra_island = yes }
+		if = { limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum } } death_triggerable_consume_extra_island = yes }
+	}
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_death_type = constant:death_scenario_type.mainland_reveal } }
+		death_launch_mainland_reveal = yes
+		death_triggerable_apply_intensity_pressure = yes
+		if = { limit = { check_variable = { triggerable_scenarios_intensity > constant:triggerable_scenario_intensity.medium } } death_triggerable_spawn_passive_hosts = yes }
+		if = { limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum } } death_triggerable_spawn_stronger_hosts = yes }
+	}
+	else = {
+		if = {
+			limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.low } }
+			set_variable = { global.death_triggerable_last_shores_ghost_tier = 1 }
+		}
+		else_if = {
+			limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.medium } }
+			set_variable = { global.death_triggerable_last_shores_ghost_tier = 1 }
+		}
+		else_if = {
+			limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.high } }
+			set_variable = { global.death_triggerable_last_shores_ghost_tier = 2 }
+		}
+		else = {
+			set_variable = { global.death_triggerable_last_shores_ghost_tier = 3 }
+		}
+		death_launch_last_shores = yes
+	}
+	country_event = { id = chaosx.triggerable_scenarios.6 days = 1 }
+	death_cleanup_triggerable_scenario_context = yes
 }
 
 trigger_mengele_clone_army_scenario = {

@@ -39,6 +39,7 @@ Type controls cycle scenario-specific type variables:
 - Army of Clones: standard clone army or Aryan variant.
 - Soviet Collapse: ordinary republics or chaos republics.
 - Final Silence: nuclear or thermonuclear payload.
+- Death: quiet origin, island pattern, mainland reveal, or Last Shores.
 
 The trigger button opens a separate confirmation window. Confirming reads the stored selected scenario, type, and intensity at launch time. Scenario launches intentionally bypass the normal automatic firing prerequisites for their source events, including chaos thresholds, prior event-state gates, route prerequisites, and super-event history flags. The launch gate only keeps impossible or conflicting launches out, such as requiring the Soviet Union to exist for Soviet Collapse and preventing a second world-end branch while `world_end` is already active. The launch button uses the same gate for click enablement and buttonstate rendering, so impossible selections are disabled and visually greyed out before the confirmation window can open.
 
@@ -72,6 +73,16 @@ The Final Silence scenario starts the Event 003 terminal world-end branch immedi
 
 The nuclear type uses the normal Final Silence payload and removes `75%` of affected non-Realm state population. The thermonuclear type sets `world_end_final_silence_thermonuclear`, uses the thermonuclear super-event/audio ID, launches thermonuclear visual strikes, and removes `95%` of affected non-Realm state population while applying the stronger thermonuclear fallout values already defined by the Holy Realm system. Intensity does not change this scenario; it keeps the canonical four-wave Final Silence sequence intact.
 
+### SCN-005: The World in Fury
+
+The World in Fury scenario seeds dispersed Fury actors through the existing Fury scenario helper. The pact type organizes selected countries together, while the hostile type creates dispersed hostile actors. Intensity controls how many safe candidates are selected and how much opening pressure the actors receive.
+
+### SCN-006: Death
+
+The Death scenario starts Event 010 through the same shared state-consumption helpers used by live Death. Quiet Origin creates a remote hidden island origin with delayed missing-island reports. Island Pattern consumes additional islands and circulates missing-island reports. Mainland Reveal consumes one eligible coastal mainland state and immediately exposes Death as a world threat. Last Shores starts the Death world-end branch and creates coastal footholds on remaining continents.
+
+Intensity changes opening pressure and scenario host strength. Low keeps the footprint small, Medium shortens the route to pressure, High unlocks weak or stronger hosts in the relevant branches, and Maximum uses the most accelerated Death opening.
+
 ## Assets
 
 The scenario UI reuses existing Chaos Redux and vanilla UI assets:
@@ -84,6 +95,7 @@ The scenario UI reuses existing Chaos Redux and vanilla UI assets:
 - `yearslider_leftbutton`
 - `yearslider_rightbutton`
 - `GFX_report_event_holy_realm_final_silence`
+- `GFX_report_event_death_missing_island`
 - `GFX_super_event_final_silence`
 - `GFX_super_event_final_silence_terminal`
 

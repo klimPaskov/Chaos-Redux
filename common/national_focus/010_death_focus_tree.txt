@@ -1,0 +1,549 @@
+@death_focus_short = 5
+@death_focus_medium = 7
+@death_focus_long = 9
+
+# ============================================================================
+# CHAOS REDUX - EVENT 010 DEATH FOCUS TREE
+# ============================================================================
+# DTH-only fixed-purpose progression. The tree expresses the Shroud, Hunger,
+# Census, Coastal, Wasteland, Host, and Last Shores lanes without normal
+# politics, industry, diplomacy, or country-building filler.
+# ============================================================================
+
+focus_tree = {
+	id = death_focus_tree
+
+	country = {
+		factor = 0
+		modifier = {
+			add = 30
+			is_death_country = yes
+		}
+	}
+
+	default = no
+	continuous_focus_position = { x = 50 y = 1000 }
+	initial_show_position = { x = 10 y = 0 }
+
+	focus = {
+		id = death_the_first_silence_focus
+		icon = GFX_focus_death_the_first_silence
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 10
+		y = 0
+		cost = @death_focus_short
+		completion_reward = {
+			set_country_flag = death_focus_the_first_silence
+			death_record_origin_evolution = yes
+			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_reduction_small }
+			death_clamp_spread_pressure = yes
+		}
+		ai_will_do = { base = 40 }
+	}
+
+	focus = {
+		id = death_country_on_the_island
+		icon = GFX_focus_death_country_on_the_island
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 10
+		y = 1
+		cost = @death_focus_short
+		prerequisite = { focus = death_the_first_silence_focus }
+		completion_reward = {
+			set_country_flag = death_focus_country_on_the_island
+			death_setup_country = yes
+			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_small }
+		}
+		ai_will_do = { base = 36 }
+	}
+
+	focus = {
+		id = death_shroud_whispers
+		icon = GFX_focus_death_shroud_whispers
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 6
+		y = 2
+		cost = @death_focus_short
+		prerequisite = { focus = death_country_on_the_island }
+		completion_reward = {
+			set_country_flag = death_focus_shroud_whispers
+			set_global_flag = death_shroud_lane_started
+			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_reduction_small }
+			death_clamp_spread_pressure = yes
+		}
+		ai_will_do = {
+			base = 24
+			modifier = { factor = 2 NOT = { has_global_flag = death_publicly_revealed } }
+		}
+	}
+
+	focus = {
+		id = death_no_mail_before_spring
+		icon = GFX_focus_death_no_mail_before_spring
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 6
+		y = 3
+		cost = @death_focus_short
+		prerequisite = { focus = death_shroud_whispers }
+		completion_reward = {
+			set_country_flag = death_focus_no_mail_before_spring
+			set_global_flag = death_reports_delayed_by_shroud
+			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_reduction_medium }
+			death_clamp_spread_pressure = yes
+		}
+		ai_will_do = {
+			base = 20
+			modifier = { factor = 2 NOT = { has_global_flag = death_publicly_revealed } }
+		}
+	}
+
+	focus = {
+		id = death_weather_on_paper
+		icon = GFX_focus_death_weather_on_paper
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 6
+		y = 4
+		cost = @death_focus_short
+		prerequisite = { focus = death_no_mail_before_spring }
+		completion_reward = {
+			set_country_flag = death_focus_weather_on_paper
+			set_global_flag = death_reports_misclassified_by_shroud
+			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_reduction_small }
+			death_clamp_spread_pressure = yes
+		}
+		ai_will_do = {
+			base = 18
+			modifier = { factor = 0 has_global_flag = death_publicly_revealed }
+		}
+	}
+
+	focus = {
+		id = death_island_pattern
+		icon = GFX_focus_death_island_pattern
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 6
+		y = 5
+		cost = @death_focus_medium
+		prerequisite = { focus = death_weather_on_paper }
+		completion_reward = {
+			set_country_flag = death_focus_island_pattern
+			death_record_island_reports_evolution = yes
+			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_small }
+		}
+		ai_will_do = { base = 16 }
+	}
+
+	focus = {
+		id = death_hunger_shore
+		icon = GFX_focus_death_hunger_shore
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 10
+		y = 2
+		cost = @death_focus_short
+		prerequisite = { focus = death_country_on_the_island }
+		completion_reward = {
+			set_country_flag = death_focus_hunger_shore
+			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_medium }
+			death_record_island_reports_evolution = yes
+		}
+		ai_will_do = {
+			base = 24
+			modifier = { factor = 2 NOT = { has_global_flag = death_publicly_revealed } }
+		}
+	}
+
+	focus = {
+		id = death_lowest_names_first
+		icon = GFX_focus_death_lowest_names_first
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 10
+		y = 3
+		cost = @death_focus_short
+		prerequisite = { focus = death_hunger_shore }
+		completion_reward = {
+			set_country_flag = death_focus_lowest_names_first
+			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_small }
+		}
+		ai_will_do = {
+			base = 20
+			modifier = { factor = 2 NOT = { has_global_flag = death_publicly_revealed } }
+		}
+	}
+
+	focus = {
+		id = death_ports_without_voices
+		icon = GFX_focus_death_ports_without_voices
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 10
+		y = 4
+		cost = @death_focus_medium
+		prerequisite = { focus = death_lowest_names_first }
+		completion_reward = {
+			set_country_flag = death_focus_ports_without_voices
+			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_medium }
+		}
+		ai_will_do = { base = 18 }
+	}
+
+	focus = {
+		id = death_mainland_smell
+		icon = GFX_focus_death_mainland_smell
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 10
+		y = 5
+		cost = @death_focus_medium
+		prerequisite = { focus = death_ports_without_voices }
+		completion_reward = {
+			set_country_flag = death_focus_mainland_smell
+			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_large }
+			death_try_mainland_pressure_spread = yes
+		}
+		ai_will_do = { base = 16 }
+	}
+
+	focus = {
+		id = death_black_census_focus
+		icon = GFX_focus_death_black_census
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 14
+		y = 2
+		cost = @death_focus_short
+		prerequisite = { focus = death_country_on_the_island }
+		completion_reward = {
+			set_country_flag = death_focus_black_census
+			if = {
+				limit = { NOT = { has_idea = death_black_census } }
+				add_ideas = death_black_census
+			}
+			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_small }
+		}
+		ai_will_do = {
+			base = 22
+			modifier = { factor = 2 check_variable = { var = global.death_consumed_population value = 100 compare = greater_than } }
+		}
+	}
+
+	focus = {
+		id = death_no_graves_needed
+		icon = GFX_focus_death_no_graves_needed
+		search_filters = { FOCUS_FILTER_MANPOWER }
+		x = 14
+		y = 3
+		cost = @death_focus_short
+		prerequisite = { focus = death_black_census_focus }
+		completion_reward = {
+			set_country_flag = death_focus_no_graves_needed
+			add_manpower = constant:death_focus_reward.ghost_manpower_small
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:death_focus_reward.ghost_equipment_small }
+		}
+		ai_will_do = {
+			base = 18
+			modifier = { factor = 2 check_variable = { var = global.chaos_meter_value value = constant:death_ghosts.passive_threshold compare = greater_than_or_equals } }
+		}
+	}
+
+	focus = {
+		id = death_first_ghost_muster
+		icon = GFX_focus_death_first_ghost_muster
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_ARMY_XP }
+		x = 14
+		y = 4
+		cost = @death_focus_medium
+		prerequisite = { focus = death_no_graves_needed }
+		completion_reward = {
+			set_country_flag = death_focus_first_ghost_muster
+			add_manpower = constant:death_focus_reward.ghost_manpower_medium
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:death_focus_reward.ghost_equipment_medium }
+			if = {
+				limit = {
+					check_variable = {
+						var = global.chaos_meter_value
+						value = constant:death_ghosts.passive_threshold
+						compare = greater_than_or_equals
+					}
+				}
+				random_controlled_state = {
+					limit = { has_state_flag = death_active_wasteland }
+					death_spawn_passive_hosts_in_current_state = yes
+				}
+			}
+		}
+		ai_will_do = {
+			base = 18
+			modifier = { factor = 2 check_variable = { var = global.chaos_meter_value value = constant:death_ghosts.passive_threshold compare = greater_than_or_equals } }
+		}
+	}
+
+	focus = {
+		id = death_public_death_focus
+		icon = GFX_focus_death_public_death
+		search_filters = { FOCUS_FILTER_WAR_SUPPORT }
+		x = 10
+		y = 6
+		cost = @death_focus_short
+		prerequisite = { focus = death_island_pattern }
+		prerequisite = { focus = death_mainland_smell }
+		prerequisite = { focus = death_first_ghost_muster }
+		available = { has_global_flag = death_publicly_revealed }
+		completion_reward = {
+			set_country_flag = death_focus_public_death
+			if = {
+				limit = { has_idea = death_first_silence }
+				remove_ideas = death_first_silence
+			}
+			if = {
+				limit = { NOT = { has_idea = death_public_death } }
+				add_ideas = death_public_death
+			}
+			death_refresh_world_threat_source = yes
+			death_declare_war_on_neighbors = yes
+		}
+		ai_will_do = {
+			base = 30
+			modifier = { factor = 0 NOT = { has_global_flag = death_publicly_revealed } }
+		}
+	}
+
+	focus = {
+		id = death_tide_learns_roads
+		icon = GFX_focus_death_tide_learns_roads
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 6
+		y = 7
+		cost = @death_focus_medium
+		prerequisite = { focus = death_public_death_focus }
+		completion_reward = {
+			set_country_flag = death_focus_tide_learns_roads
+			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_small }
+			death_attempt_coastal_jump = yes
+		}
+		ai_will_do = {
+			base = 18
+			modifier = { factor = 2 DTH = { num_of_controlled_states < constant:death_spread.coastal_jump_contained_state_limit } }
+		}
+	}
+
+	focus = {
+		id = death_another_shoreline
+		icon = GFX_focus_death_another_shoreline
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 6
+		y = 8
+		cost = @death_focus_medium
+		prerequisite = { focus = death_tide_learns_roads }
+		completion_reward = {
+			set_country_flag = death_focus_another_shoreline
+			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_medium }
+			death_attempt_coastal_jump = yes
+		}
+		ai_will_do = { base = 16 }
+	}
+
+	focus = {
+		id = death_no_ferry_returns
+		icon = GFX_focus_death_no_ferry_returns
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 6
+		y = 9
+		cost = @death_focus_medium
+		prerequisite = { focus = death_another_shoreline }
+		completion_reward = {
+			set_country_flag = death_focus_no_ferry_returns
+			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_medium }
+			death_attempt_coastal_jump = yes
+		}
+		ai_will_do = { base = 14 }
+	}
+
+	focus = {
+		id = death_wasteland_roads
+		icon = GFX_focus_death_wasteland_roads
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_ARMY_XP }
+		x = 10
+		y = 7
+		cost = @death_focus_medium
+		prerequisite = { focus = death_public_death_focus }
+		completion_reward = {
+			set_country_flag = death_focus_wasteland_roads
+			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_medium }
+		}
+		ai_will_do = {
+			base = 18
+			modifier = { factor = 2 any_controlled_state = { has_state_flag = death_active_wasteland } }
+		}
+	}
+
+	focus = {
+		id = death_every_road_slows
+		icon = GFX_focus_death_every_road_slows
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 10
+		y = 8
+		cost = @death_focus_medium
+		prerequisite = { focus = death_wasteland_roads }
+		completion_reward = {
+			set_country_flag = death_focus_every_road_slows
+			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_small }
+			death_try_wither = yes
+		}
+		ai_will_do = { base = 16 }
+	}
+
+	focus = {
+		id = death_empty_supply
+		icon = GFX_focus_death_empty_supply
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 10
+		y = 9
+		cost = @death_focus_medium
+		prerequisite = { focus = death_every_road_slows }
+		completion_reward = {
+			set_country_flag = death_focus_empty_supply
+			every_controlled_state = {
+				limit = { has_state_flag = death_active_wasteland }
+				death_strip_current_state_buildings = yes
+			}
+		}
+		ai_will_do = { base = 14 }
+	}
+
+	focus = {
+		id = death_state_without_state
+		icon = GFX_focus_death_state_without_state
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 10
+		y = 10
+		cost = @death_focus_medium
+		prerequisite = { focus = death_empty_supply }
+		completion_reward = {
+			set_country_flag = death_focus_state_without_state
+			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_medium }
+			death_try_wither = yes
+		}
+		ai_will_do = { base = 14 }
+	}
+
+	focus = {
+		id = death_mourning_host
+		icon = GFX_focus_death_mourning_host
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_ARMY_XP }
+		x = 14
+		y = 7
+		cost = @death_focus_medium
+		prerequisite = { focus = death_public_death_focus }
+		completion_reward = {
+			set_country_flag = death_focus_mourning_host
+			add_manpower = constant:death_focus_reward.ghost_manpower_medium
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:death_focus_reward.ghost_equipment_medium }
+			death_spawn_ghost_hosts_for_current_tier = yes
+		}
+		ai_will_do = {
+			base = 18
+			modifier = { factor = 2 check_variable = { var = global.chaos_meter_value value = constant:death_ghosts.passive_threshold compare = greater_than_or_equals } }
+		}
+	}
+
+	focus = {
+		id = death_ruin_host
+		icon = GFX_focus_death_ruin_host
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_ARMY_XP }
+		x = 14
+		y = 8
+		cost = @death_focus_medium
+		prerequisite = { focus = death_mourning_host }
+		completion_reward = {
+			set_country_flag = death_focus_ruin_host
+			add_manpower = constant:death_focus_reward.ghost_manpower_large
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:death_focus_reward.ghost_equipment_large }
+			if = {
+				limit = {
+					check_variable = {
+						var = global.chaos_meter_value
+						value = constant:death_ghosts.stronger_threshold
+						compare = greater_than_or_equals
+					}
+				}
+				random_controlled_state = {
+					limit = { has_state_flag = death_active_wasteland }
+					death_spawn_stronger_hosts_in_current_state = yes
+				}
+			}
+		}
+		ai_will_do = {
+			base = 16
+			modifier = { factor = 2 check_variable = { var = global.chaos_meter_value value = constant:death_ghosts.stronger_threshold compare = greater_than_or_equals } }
+		}
+	}
+
+	focus = {
+		id = death_orders_without_breath
+		icon = GFX_focus_death_orders_without_breath
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_ARMY_XP }
+		x = 14
+		y = 9
+		cost = @death_focus_medium
+		prerequisite = { focus = death_ruin_host }
+		completion_reward = {
+			set_country_flag = death_focus_orders_without_breath
+			death_spawn_ghost_hosts_for_current_tier = yes
+			if = {
+				limit = { has_global_flag = death_world_end_started }
+				death_spawn_ghost_hosts_for_world_end = yes
+			}
+		}
+		ai_will_do = {
+			base = 14
+			modifier = { factor = 2 has_global_flag = death_world_end_started }
+		}
+	}
+
+	focus = {
+		id = death_last_shores_focus
+		icon = GFX_focus_death_last_shores
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_WAR_SUPPORT }
+		x = 10
+		y = 11
+		cost = @death_focus_long
+		prerequisite = { focus = death_no_ferry_returns }
+		prerequisite = { focus = death_state_without_state }
+		prerequisite = { focus = death_orders_without_breath }
+		available = {
+			OR = {
+				has_global_flag = death_world_end_started
+				death_can_start_world_end = yes
+			}
+		}
+		completion_reward = {
+			set_country_flag = death_focus_last_shores
+			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.world_end_pressure }
+			if = {
+				limit = { death_can_start_world_end = yes }
+				death_try_start_world_end = yes
+			}
+			else_if = {
+				limit = { has_global_flag = death_world_end_started }
+				death_create_world_end_footholds = yes
+			}
+		}
+		ai_will_do = {
+			base = 20
+			modifier = { factor = 3 death_can_start_world_end = yes }
+		}
+	}
+
+	focus = {
+		id = death_world_consumed_focus
+		icon = GFX_focus_death_world_consumed
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 10
+		y = 12
+		cost = @death_focus_long
+		prerequisite = { focus = death_last_shores_focus }
+		available = { death_whole_world_consumed = yes }
+		completion_reward = {
+			set_country_flag = death_focus_world_consumed
+			death_try_fire_whole_world_consumed = yes
+		}
+		ai_will_do = { base = 30 }
+	}
+}

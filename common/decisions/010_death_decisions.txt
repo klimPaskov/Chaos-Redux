@@ -1,0 +1,486 @@
+@death_telegraph_ai_pp_cost = 30
+@death_call_compact_ai_pp_cost = 75
+@death_join_compact_ai_pp_cost = 35
+@death_quarantine_hold_mission_days = 60
+
+# ============================================================================
+# CHAOS REDUX - EVENT 010 DEATH DECISIONS
+# ============================================================================
+# Pre-reveal report handling, Death containment, Living Compact coordination,
+# coastal watch, wasteland gear, and dead-zone outposts.
+# ============================================================================
+
+death_missing_island_category = {
+	death_send_survey_boat = {
+		icon = GFX_decision_death_survey_boat
+		visible = {
+			death_missing_island_decisions_visible = yes
+			NOT = { has_country_flag = death_discovered_before_name }
+		}
+		available = {
+			hidden_trigger = {
+				death_country_exists = yes
+				can_pay_death_survey_boat_cost = yes
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { can_pay_death_survey_boat_cost = yes } }
+		custom_cost_text = death_survey_boat_cost_text
+		days_re_enable = 42
+		complete_effect = {
+			custom_effect_tooltip = death_send_survey_boat_tt
+			hidden_effect = { death_decision_survey_boat_effect = yes }
+		}
+		ai_will_do = {
+			base = constant:death_decision_tuning.ai_low
+			modifier = { factor = 3 has_country_flag = death_received_second_missing_island_report }
+			modifier = { factor = 0 has_global_flag = death_publicly_revealed }
+		}
+	}
+
+	death_check_telegraph_office = {
+		icon = GFX_decision_death_black_book
+		visible = {
+			death_missing_island_decisions_visible = yes
+			NOT = { has_country_flag = death_checked_telegraph_office }
+		}
+		available = { hidden_trigger = { can_pay_death_telegraph_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { can_pay_death_telegraph_cost = yes } }
+		custom_cost_text = death_telegraph_cost_text
+		ai_hint_pp_cost = @death_telegraph_ai_pp_cost
+		days_re_enable = 35
+		complete_effect = {
+			custom_effect_tooltip = death_check_telegraph_office_tt
+			hidden_effect = { death_decision_check_telegraph_effect = yes }
+		}
+		ai_will_do = {
+			base = constant:death_decision_tuning.ai_medium
+			modifier = { factor = 2 has_country_flag = death_received_second_missing_island_report }
+		}
+	}
+
+	death_quiet_quarantine_notice = {
+		icon = GFX_decision_death_coastal_watch
+		visible = {
+			death_missing_island_decisions_visible = yes
+			NOT = { has_country_flag = death_quiet_quarantine_active }
+		}
+		available = { hidden_trigger = { can_pay_death_quiet_quarantine_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { can_pay_death_quiet_quarantine_cost = yes } }
+		custom_cost_text = death_quiet_quarantine_cost_text
+		days_re_enable = 70
+		complete_effect = {
+			custom_effect_tooltip = death_quiet_quarantine_notice_tt
+			hidden_effect = { death_decision_quiet_quarantine_effect = yes }
+		}
+		ai_will_do = {
+			base = constant:death_decision_tuning.ai_low
+			modifier = { factor = 2 has_country_flag = death_received_second_missing_island_report }
+		}
+	}
+
+	death_file_under_weather = {
+		icon = GFX_decision_death_black_book
+		visible = {
+			death_missing_island_decisions_visible = yes
+			NOT = { has_country_flag = death_ignored_missing_island_report }
+		}
+		available = { always = yes }
+		days_re_enable = 90
+		complete_effect = {
+			custom_effect_tooltip = death_file_under_weather_tt
+			hidden_effect = { death_decision_file_under_weather_effect = yes }
+		}
+		ai_will_do = {
+			base = constant:death_decision_tuning.ai_low
+			modifier = { factor = 0 has_country_flag = death_received_second_missing_island_report }
+		}
+	}
+}
+
+death_country_containment_category = {
+	death_recognize_death_war = {
+		icon = GFX_decision_death_quarantine_line
+		visible = {
+			has_global_flag = death_publicly_revealed
+			NOT = { has_global_flag = death_defeated }
+			death_country_exists = yes
+			NOT = { is_death_country = yes }
+			NOT = { has_war_with = DTH }
+		}
+		available = {
+			hidden_trigger = {
+				can_pay_death_recognize_war_cost = yes
+				OR = {
+					DTH = { can_declare_war_on = ROOT }
+					can_declare_war_on = DTH
+				}
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { can_pay_death_recognize_war_cost = yes } }
+		custom_cost_text = death_recognize_war_cost_text
+		days_re_enable = 21
+		complete_effect = {
+			custom_effect_tooltip = death_recognize_death_war_tt
+			hidden_effect = { death_decision_recognize_war_effect = yes }
+		}
+		ai_will_do = {
+			base = constant:death_decision_tuning.ai_high
+			modifier = { factor = 2 any_controlled_state = { death_state_borders_active_wasteland = yes } }
+		}
+	}
+
+	death_call_living_conference = {
+		icon = GFX_decision_death_living_compact
+		visible = {
+			has_global_flag = death_publicly_revealed
+			NOT = { has_global_flag = death_defeated }
+			NOT = { has_global_flag = death_living_compact_formed }
+			NOT = { is_death_country = yes }
+			OR = {
+				is_major = yes
+				has_war_with = DTH
+				any_controlled_state = { death_state_borders_active_wasteland = yes }
+			}
+		}
+		available = { hidden_trigger = { can_pay_death_call_compact_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { can_pay_death_call_compact_cost = yes } }
+		custom_cost_text = death_call_compact_cost_text
+		ai_hint_pp_cost = @death_call_compact_ai_pp_cost
+		days_re_enable = 120
+		complete_effect = {
+			custom_effect_tooltip = death_call_living_conference_tt
+			hidden_effect = { death_decision_call_compact_effect = yes }
+		}
+		ai_will_do = {
+			base = constant:death_decision_tuning.ai_medium
+			modifier = { factor = 2 is_major = yes }
+			modifier = { factor = 2 has_war_with = DTH }
+		}
+	}
+
+	death_join_living_compact = {
+		icon = GFX_decision_death_living_compact
+		visible = {
+			has_global_flag = death_living_compact_formed
+			NOT = { has_global_flag = death_defeated }
+			NOT = { is_death_country = yes }
+			NOT = { death_is_living_compact_member = yes }
+			OR = {
+				has_country_flag = death_living_compact_invited
+				is_major = yes
+				has_war_with = DTH
+				any_controlled_state = { death_state_borders_active_wasteland = yes }
+			}
+		}
+		available = { hidden_trigger = { can_pay_death_join_compact_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { can_pay_death_join_compact_cost = yes } }
+		custom_cost_text = death_join_compact_cost_text
+		ai_hint_pp_cost = @death_join_compact_ai_pp_cost
+		days_re_enable = 60
+		complete_effect = {
+			custom_effect_tooltip = death_join_living_compact_tt
+			hidden_effect = { death_decision_join_compact_effect = yes }
+		}
+		ai_will_do = {
+			base = constant:death_decision_tuning.ai_medium
+			modifier = { factor = 2 has_country_flag = death_living_compact_invited }
+		}
+	}
+
+	death_compact_war_declaration = {
+		icon = GFX_decision_death_quarantine_line
+		visible = {
+			has_global_flag = death_living_compact_formed
+			NOT = { has_global_flag = death_defeated }
+			has_country_flag = death_living_compact_leader
+			death_country_exists = yes
+			any_country = {
+				death_is_living_compact_member = yes
+				NOT = { has_war_with = DTH }
+				DTH = { can_declare_war_on = PREV }
+			}
+		}
+		available = {
+			death_country_exists = yes
+			hidden_trigger = { can_pay_death_recognize_war_cost = yes }
+		}
+		custom_cost_trigger = { hidden_trigger = { can_pay_death_recognize_war_cost = yes } }
+		custom_cost_text = death_recognize_war_cost_text
+		days_re_enable = 45
+		complete_effect = {
+			custom_effect_tooltip = death_compact_war_declaration_tt
+			hidden_effect = { death_decision_compact_war_declaration_effect = yes }
+		}
+		ai_will_do = { base = constant:death_decision_tuning.ai_high }
+	}
+
+	death_joint_coastal_patrol_plan = {
+		icon = GFX_decision_death_coastal_watch
+		visible = {
+			has_global_flag = death_publicly_revealed
+			NOT = { has_global_flag = death_defeated }
+			NOT = { is_death_country = yes }
+			OR = {
+				death_is_living_compact_member = yes
+				death_has_coastal_watch_candidate = yes
+			}
+		}
+		available = { hidden_trigger = { can_pay_death_patrol_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { can_pay_death_patrol_cost = yes } }
+		custom_cost_text = death_patrol_cost_text
+		days_re_enable = 70
+		complete_effect = {
+			custom_effect_tooltip = death_joint_coastal_patrol_plan_tt
+			hidden_effect = { death_decision_patrol_plan_effect = yes }
+		}
+		ai_will_do = {
+			base = constant:death_decision_tuning.ai_medium
+			modifier = { factor = 2 death_has_coastal_watch_candidate = yes }
+		}
+	}
+
+	death_authorize_wasteland_entry_gear = {
+		icon = GFX_decision_death_wasteland_gear
+		visible = {
+			has_global_flag = death_publicly_revealed
+			NOT = { has_global_flag = death_defeated }
+			NOT = { is_death_country = yes }
+			OR = {
+				has_war_with = DTH
+				death_has_recaptured_wasteland_candidate = yes
+				death_is_living_compact_member = yes
+			}
+		}
+		available = { hidden_trigger = { can_pay_death_wasteland_gear_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { can_pay_death_wasteland_gear_cost = yes } }
+		custom_cost_text = death_wasteland_gear_cost_text
+		days_re_enable = 90
+		complete_effect = {
+			custom_effect_tooltip = death_authorize_wasteland_entry_gear_tt
+			hidden_effect = { death_decision_wasteland_gear_effect = yes }
+		}
+		ai_will_do = {
+			base = constant:death_decision_tuning.ai_medium
+			modifier = { factor = 2 has_war_with = DTH }
+		}
+	}
+
+	death_share_wasteland_entry_gear = {
+		icon = GFX_decision_death_wasteland_gear
+		visible = {
+			death_is_living_compact_member = yes
+			has_country_flag = death_wasteland_entry_gear_active
+			NOT = { has_global_flag = death_defeated }
+			NOT = { is_death_country = yes }
+		}
+		available = { hidden_trigger = { can_pay_death_share_gear_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { can_pay_death_share_gear_cost = yes } }
+		custom_cost_text = death_share_gear_cost_text
+		days_re_enable = 120
+		complete_effect = {
+			custom_effect_tooltip = death_share_wasteland_entry_gear_tt
+			hidden_effect = { death_decision_share_gear_effect = yes }
+		}
+		ai_will_do = {
+			base = constant:death_decision_tuning.ai_low
+			modifier = { factor = 2 has_country_flag = death_living_compact_leader }
+		}
+	}
+
+	death_last_shores_response = {
+		icon = GFX_decision_death_dead_zone_outpost
+		visible = {
+			has_global_flag = death_world_end_started
+			NOT = { has_global_flag = death_defeated }
+			NOT = { is_death_country = yes }
+		}
+		available = { hidden_trigger = { can_pay_death_last_shores_response_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { can_pay_death_last_shores_response_cost = yes } }
+		custom_cost_text = death_last_shores_response_cost_text
+		days_re_enable = 120
+		complete_effect = {
+			custom_effect_tooltip = death_last_shores_response_tt
+			hidden_effect = { death_decision_last_shores_response_effect = yes }
+		}
+		ai_will_do = {
+			base = constant:death_decision_tuning.ai_high
+			modifier = { factor = 2 has_war_with = DTH }
+		}
+	}
+
+	death_strengthen_quarantine_line = {
+		icon = GFX_decision_death_quarantine_line
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			has_global_flag = death_publicly_revealed
+			NOT = { has_global_flag = death_defeated }
+			death_has_quarantine_line_candidate = yes
+		}
+		target_root_trigger = { death_has_quarantine_line_candidate = yes }
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				NOT = { death_is_consumed_state = yes }
+				NOT = { has_state_flag = death_quarantine_line }
+				death_state_borders_active_wasteland = yes
+			}
+		}
+		available = {
+			hidden_trigger = { can_pay_death_quarantine_line_cost = yes }
+			FROM = {
+				is_controlled_by = ROOT
+				NOT = { death_is_consumed_state = yes }
+				NOT = { has_state_flag = death_quarantine_line }
+				death_state_borders_active_wasteland = yes
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { can_pay_death_quarantine_line_cost = yes } }
+		custom_cost_text = death_quarantine_line_cost_text
+		days_re_enable = 14
+		complete_effect = {
+			custom_effect_tooltip = death_strengthen_quarantine_line_tt
+			FROM = { death_apply_quarantine_line_to_target = yes }
+		}
+		ai_will_do = { base = constant:death_decision_tuning.ai_high }
+	}
+
+	death_hold_quarantine_line_mission = {
+		icon = GFX_decision_death_quarantine_line
+		days_mission_timeout = @death_quarantine_hold_mission_days
+		is_good = no
+		fire_only_once = no
+		activation = {
+			has_country_flag = death_quarantine_hold_mission_active
+			NOT = { has_global_flag = death_defeated }
+			NOT = { is_death_country = yes }
+		}
+		available = {
+			NOT = {
+				any_controlled_state = {
+					has_state_flag = death_quarantine_line
+					death_state_borders_active_wasteland = yes
+				}
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				is_death_country = yes
+				has_global_flag = death_defeated
+				NOT = { has_country_flag = death_quarantine_hold_mission_active }
+			}
+		}
+		cancel_effect = { clr_country_flag = death_quarantine_hold_mission_active }
+		complete_effect = {
+			custom_effect_tooltip = death_hold_quarantine_line_failure_tt
+			hidden_effect = { death_quarantine_hold_failure = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = death_hold_quarantine_line_success_tt
+			hidden_effect = { death_quarantine_hold_success = yes }
+		}
+	}
+
+	death_keep_port_lit = {
+		icon = GFX_decision_death_coastal_watch
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			NOT = { has_global_flag = death_defeated }
+			OR = {
+				has_global_flag = death_publicly_revealed
+				death_missing_island_decisions_visible = yes
+			}
+			death_has_coastal_watch_candidate = yes
+		}
+		target_root_trigger = { death_has_coastal_watch_candidate = yes }
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				is_coastal = yes
+				NOT = { death_is_consumed_state = yes }
+				NOT = { has_state_flag = death_coastal_watch }
+			}
+		}
+		available = {
+			hidden_trigger = { can_pay_death_coastal_watch_cost = yes }
+			FROM = {
+				is_controlled_by = ROOT
+				is_coastal = yes
+				NOT = { death_is_consumed_state = yes }
+				NOT = { has_state_flag = death_coastal_watch }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { can_pay_death_coastal_watch_cost = yes } }
+		custom_cost_text = death_coastal_watch_cost_text
+		days_re_enable = 14
+		complete_effect = {
+			custom_effect_tooltip = death_keep_port_lit_tt
+			FROM = { death_apply_coastal_watch_to_target = yes }
+		}
+		ai_will_do = { base = constant:death_decision_tuning.ai_medium }
+	}
+
+	death_survey_the_wasteland = {
+		icon = GFX_decision_death_wasteland_gear
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = { death_has_recaptured_wasteland_candidate = yes }
+		target_root_trigger = { death_has_recaptured_wasteland_candidate = yes }
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				has_state_flag = death_recaptured_wasteland
+			}
+		}
+		available = {
+			hidden_trigger = { can_pay_death_wasteland_survey_cost = yes }
+			FROM = {
+				is_controlled_by = ROOT
+				has_state_flag = death_recaptured_wasteland
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { can_pay_death_wasteland_survey_cost = yes } }
+		custom_cost_text = death_wasteland_survey_cost_text
+		days_re_enable = 21
+		complete_effect = {
+			custom_effect_tooltip = death_survey_the_wasteland_tt
+			FROM = { death_apply_wasteland_survey_to_target = yes }
+		}
+		ai_will_do = { base = constant:death_decision_tuning.ai_low }
+	}
+
+	death_build_dead_zone_outpost = {
+		icon = GFX_decision_death_dead_zone_outpost
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = { death_has_recaptured_wasteland_candidate = yes }
+		target_root_trigger = { death_has_recaptured_wasteland_candidate = yes }
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				has_state_flag = death_recaptured_wasteland
+				NOT = { has_state_flag = death_dead_zone_outpost }
+			}
+		}
+		available = {
+			hidden_trigger = { can_pay_death_dead_zone_outpost_cost = yes }
+			FROM = {
+				is_controlled_by = ROOT
+				has_state_flag = death_recaptured_wasteland
+				NOT = { has_state_flag = death_dead_zone_outpost }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { can_pay_death_dead_zone_outpost_cost = yes } }
+		custom_cost_text = death_dead_zone_outpost_cost_text
+		days_re_enable = 35
+		complete_effect = {
+			custom_effect_tooltip = death_build_dead_zone_outpost_tt
+			FROM = { death_apply_dead_zone_outpost_to_target = yes }
+		}
+		ai_will_do = {
+			base = constant:death_decision_tuning.ai_medium
+			modifier = { factor = 2 has_global_flag = death_defeated }
+		}
+	}
+}

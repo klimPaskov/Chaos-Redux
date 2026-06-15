@@ -54,6 +54,17 @@ Three internal rarity groups are now represented in the achievement list order:
   - `cr_league_war_victory`
   - `cr_no_more_flags_needed`
   - `cr_capital_still_answers`
+- Event 010 Death
+  - `death_no_one_heard_the_first_boat`
+  - `death_not_on_my_continent`
+  - `death_the_names_do_not_come_back`
+  - `death_last_ferry`
+  - `death_counted_every_name`
+  - `death_black_tide_reversed`
+  - `death_no_witnesses`
+  - `death_before_the_name`
+  - `death_the_living_conference`
+  - `death_six_continents_one_color`
 
 HOI4 custom achievements do not expose a native tier field in the file format, so tiering is preserved through internal grouping, naming, and docs rather than a dedicated engine-side rarity value.
 
@@ -181,6 +192,36 @@ HOI4 custom achievements do not expose a native tier field in the file format, s
 - `cr_capital_still_answers`
   - As an Event 006 host, survive a severe release wave while still owning and controlling the capital.
 
+### Event 010 Death
+
+- `death_no_one_heard_the_first_boat`
+  - Send a survey boat before Death publicly reveals itself, enter the containment war, and keep forbidden oath routes closed.
+- `death_not_on_my_continent`
+  - Help defeat a publicly revealed Death crisis before it consumes too many mainland states.
+- `death_the_names_do_not_come_back`
+  - After Death is defeated, build enough dead-zone outposts while the consumed population threshold has been crossed.
+- `death_last_ferry`
+  - Prepare five coastal states with `Keep the Port Lit` before Death publicly reveals itself.
+- `death_counted_every_name`
+  - Preserve the records through the telegraph/census decision path and defeat Death before the Chaos ceiling is crossed.
+- `death_black_tide_reversed`
+  - Answer Last Shores and help retake every Death world-end foothold.
+- `death_no_witnesses`
+  - Reach the whole-world-consumed end state.
+- `death_before_the_name`
+  - Find and defeat Death before the public reveal super-event.
+- `death_the_living_conference`
+  - Form a strong Living Compact with enough members and cohesion before Death is defeated.
+- `death_six_continents_one_color`
+  - Force Death's Last Shores branch to place footholds across six continent groups.
+
+Queued but not active:
+
+- `death_friend_of_zol`
+  - Held until a full Black Oath/Herald route exists.
+- `death_book_burner`
+  - Held until a full Dark Methods route exists.
+
 ## Icons And GFX
 
 Place all achievement icons in:
@@ -283,6 +324,10 @@ Registered primary sprite aliases:
     - `gfx/achievements/cr_league_war_victory_not_eligible.dds`
 
 The zombie special-project achievement icon sets `21` through `28` also use the same three-file pattern and have explicit sprite aliases in `interface/chaosx_achievements.gfx`.
+
+Event 010 Death achievement icons use the same three-file pattern and are recorded in:
+
+- `docs/assets/010_death/generated_art_manifest.md`
 
 The non-Holy Realm achievement icon sets `00` through `28` have custom generated art, processed PNG previews, and DDS files recorded in:
 
