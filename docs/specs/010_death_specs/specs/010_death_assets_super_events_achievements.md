@@ -79,7 +79,7 @@ The implementation should not derive small icons by resizing focus icons. Each i
 | `death_coastal_risk_pulse_animated` | Risk icon | Shows high/critical coastal jump risk | Static fallback required. |
 | `death_wither_target_frame_animated` | State card frame | Active wither target | Thin animated edge. |
 | `death_compact_warning_animated` | Compact panel | Low cohesion | Subtle flicker. |
-| `death_zol_portrait_world_end_animated` | Leader or GUI portrait | World-end or Herald oath | Optional but recommended. |
+| `death_zol_portrait_world_end_animated` | Leader or GUI portrait | World-end or Herald oath | Implemented as static fallback plus registered eight-frame animated sprite. |
 
 Animations must follow the frame-animation workflow: source frames, processed frames, horizontal frame sheet, DDS, static fallback, preview GIF for review only, manifest, and `.gfx` handoff.
 
@@ -155,7 +155,7 @@ Each super-event below uses a functional role label only. The role label is for 
 
 ### Optional super-event role — Herald oath reveal
 
-Only use this if the Herald route is implemented deeply enough.
+This role is implemented because the Herald route is implemented.
 
 | Field | Direction |
 | --- | --- |
@@ -167,6 +167,7 @@ Only use this if the Herald route is implemented deeply enough.
 | Button or cultural remark requirement | Research a short line or allusion about signatures, names, bargains, betrayal, or state surrender. Do not use invented sample text. |
 | Quote requirement | Research and verify a quote about bargains, names, betrayal, vows, or death. |
 | Image | `super_event_death_black_oath` generated. |
+| Implemented package | Title `A Covenant with Death`; option `We are at agreement.`; quote from Isaiah 28:15 KJV, documented as public domain in `docs/super_events/010_death_super_event_black_oath_research.md`; audio uses the documented Moonlight Sonata source package. |
 
 ## Achievement plan
 
@@ -187,8 +188,9 @@ Achievement titles are not super-event titles and must not be reused as super-ev
 | `death_the_living_conference` | The Living Conference | Visible | Major or threatened leader | Form the containment compact with at least five members, keep cohesion above threshold, and defeat Death. | Use Black Oath or abandon compact. | Hard | Conference table with black empty chair. |
 | `death_book_burner` | Book Burner | Hidden | Necromancy user | Open the Black Book, use at least one bound-name decision, burn the book before exposure reaches high, then defeat Death. | Become Herald or let exposure reach maximum. | Hard | Burning black book with no visible letters. |
 | `death_six_continents_one_color` | Six Continents, One Color | Hidden | Death scenario / any observer if achievement system supports global failure | Witness or cause Last Shores world-end footholds on every continent. | Death defeated before world-end. | Extreme | Six small black coast shapes around a dark center. |
+| `death_black_apostolate` | Black Apostolate | Hidden | Herald route player | Become a Herald, keep Death alive into world-end, pay enough name debt, sacrifice enough states, and proclaim the Black Apostolate. | Break the oath or fail the hidden thresholds. | Extreme | Black institutional seal over a dead ledger. |
 
-Highest priority achievements for first implementation: `death_before_the_name`, `death_not_on_my_continent`, `death_the_names_do_not_come_back`, `death_black_tide_reversed`, `death_no_witnesses`.
+Highest priority achievements for first implementation: `death_before_the_name`, `death_not_on_my_continent`, `death_the_names_do_not_come_back`, `death_black_tide_reversed`, `death_no_witnesses`, `death_friend_of_zol`, `death_book_burner`, and `death_black_apostolate`.
 
 ## Event catalog row direction
 
@@ -258,7 +260,7 @@ The rework is not complete unless all of these are true:
 - Recaptured wastelands remain empty and strategically damaged.
 - Containment decisions use concrete costs, map objectives, active missions, and AI behavior.
 - The Living Containment Compact or equivalent coalition system exists after reveal.
-- Dark methods and Black Oath routes are either fully implemented or explicitly queued as unimplemented optional branches; they must not be half-visible placeholders.
+- Dark methods, Black Oath, Herald, and Black Apostolate routes are fully implemented or hidden behind their actual prerequisites; they must not be half-visible placeholders.
 - World-end requires both full continent consumption and Chaos above 1000.
 - World-end footholds appear on every remaining continent.
 - Whole-world consumed final super-event and achievement hooks exist.
@@ -274,5 +276,5 @@ The rework is not complete unless all of these are true:
 - Some state building or map-visual fields may not support direct deletion/visual effects; implementation must document exact supported representation.
 - The best way to apply ticking strength loss should be chosen from existing Chaos Redux helper patterns to avoid broad daily world scans.
 - The country tag `DTH` must be conflict-checked.
-- If the Black Atlas scripted GUI is too large for the first implementation pass, it should be queued explicitly and the decision category header must still show core values through scripted localisation.
+- The optional animated Zol portrait uses a real eight-frame source package, a static fallback, and registered `interface/chaosx_characters.gfx` sprite names; world-end leader gameplay uses the static fallback.
 - Super-event audio and quote research require dedicated research subagents before final wiring.

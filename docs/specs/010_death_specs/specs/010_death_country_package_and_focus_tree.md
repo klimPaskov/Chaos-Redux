@@ -40,7 +40,7 @@ Asset direction:
 - no readable text;
 - no gore;
 - static fallback required;
-- optional animated world-end portrait with faint eye/void/shroud changes from real generated frames, not a filter pulse.
+- world-end portrait package with a static leader fallback and a registered eight-frame animated sprite built from real generated frames, not a filter pulse.
 
 Zol should have a unique leader trait direction such as `God of Death`. The trait should not grant ordinary political bonuses. It should clarify that Death does not use industry, elections, or normal manpower.
 
@@ -320,7 +320,7 @@ Tradeoff: more divisions make Death more visible and easier for AI majors to pri
 
 ### World-end footholds and world consumed branch
 
-The world-end foothold branch requires the terminal conditions: continent consumed and Chaos above 1000. It creates foothold behavior and aggressive hosts.
+The world-end foothold branch requires the terminal conditions: continent consumed and Chaos above 1000. It creates one coastal foothold on every continent that does not already contain a Death-consumed state, immediately spawns local Last Shore hosts for real world-end starts, and then unlocks the aggressive host behavior. Triggerable scenario starts preserve their separate intensity-scaling host pass instead of double-spawning local foothold hosts.
 
 The final branch unlocks only when all eligible states are consumed. It should fire the final super-event and achievement. It is not a normal focus reward; it is a campaign ending. Exact final focus names should not be treated as super-event titles.
 
@@ -371,10 +371,10 @@ A country at war with Death can unlock dark anti-Death methods after:
 Identity changes:
 
 - no country rename by default;
-- national spirit such as `Black-Book Offices` or `Unauthorized Mourning Work`;
+- national spirits such as `death_black_book_offices`, `death_black_book_scandal`, or the active Black Oath/Black Apostolate spirits;
 - potential advisor/council unlocks;
 - high stability/war support/condemnation risks;
-- special bound-shade units that are useful against Death but politically dangerous.
+- special bound-shade units that are weak, capped, and politically dangerous.
 
 ### Herald of Zol
 
@@ -394,7 +394,7 @@ Effects:
 - country gains `death_herald_of_zol`;
 - leaves or breaks from containment compact;
 - gains temporary protection from Death target selection;
-- receives `Black Oath` decisions;
+- receives `Black Oath` and Herald decisions;
 - can feed states, prisoners, equipment, or names to Death for power;
 - suffers stability, legitimacy, and diplomatic collapse;
 - becomes hostile to containment countries;
@@ -403,8 +403,8 @@ Effects:
 Possible cosmetic identity:
 
 - `Herald of Zol` as a temporary cosmetic name, not a full formable tag by default;
-- blackened flag/cosmetic flag if assets allow;
-- leader keeps identity but gains a trait such as `Marked by Zol`.
+- blackened route flag and localisation through the Herald cosmetic tag;
+- leader keeps identity while the country carries the Black Oath national idea.
 
 This route must not turn Death into a friendly normal faction member. It is an evil bargain with a country that may still be eaten.
 
@@ -412,22 +412,20 @@ This route must not turn Death into a friendly normal faction member. It is an e
 
 Death itself should not form a larger country. Its final form is the whole map, not a formable title.
 
-The Herald route can include a formable-like cosmetic transformation, `The Black Apostolate`, only if the implementation has enough space to support it fully. It should be hidden and difficult:
+The Herald route includes a formable-like cosmetic transformation, `The Black Apostolate`. It is hidden and difficult:
 
 - player is a Herald of Zol;
 - controls a large number of wasteland states without being consumed;
 - keeps Death alive into world-end stage;
-- completes the `Last Name` oath chain;
+- accumulates enough name debt, black favor, and deliberately sacrificed wasteland states;
 - accepts permanent diplomatic isolation;
 - cannot restore normal population.
 
-If implemented, it needs:
+It uses:
 
 - cosmetic name and adjective;
 - flag variants;
-- leader trait or council portrait;
-- decisions and achievements;
-- AI block except extremely high chaos;
+- a national idea;
+- decisions and achievement hook;
+- AI block;
 - no free cores over living states unless those states have been consumed or deliberately sacrificed.
-
-If this route is not implemented in the first pass, it should remain a queued hidden-route plan, not a half-visible decision.

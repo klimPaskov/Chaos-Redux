@@ -135,9 +135,9 @@ These notes were the original `.gfx` handoff. Final wiring has been applied in t
   - Final static DDS path: `gfx/interface/death/black_atlas/death_coastal_risk_pulse_static.dds`
   - Final sheet DDS path: `gfx/interface/death/black_atlas/death_coastal_risk_pulse.dds`
   - Final sheet PNG path: `docs/assets/010_death/animations/death_coastal_risk_pulse/sheets/death_coastal_risk_pulse_sheet.png`
-  - Proposed static sprite name: `GFX_death_coastal_risk_pulse`
-  - Proposed animated sprite name: `GFX_death_coastal_risk_pulse_animated`
-  - Suggested `.gfx` file: `interface/010_death.gfx`
+  - Static sprite name: `GFX_death_coastal_risk_pulse_static`
+  - Animated sprite name: `GFX_death_coastal_risk_pulse`
+  - `.gfx` file: `interface/010_death.gfx`
   - Target frame size: `36x36`
   - Calculated sheet size: `288x36`
   - Frame count: `8`
@@ -150,9 +150,9 @@ These notes were the original `.gfx` handoff. Final wiring has been applied in t
   - Final static DDS path: `gfx/interface/death/black_atlas/death_wither_target_frame_static.dds`
   - Final sheet DDS path: `gfx/interface/death/black_atlas/death_wither_target_frame.dds`
   - Final sheet PNG path: `docs/assets/010_death/animations/death_wither_target_frame/sheets/death_wither_target_frame_sheet.png`
-  - Proposed static sprite name: `GFX_death_wither_target_frame`
-  - Proposed animated sprite name: `GFX_death_wither_target_frame_animated`
-  - Suggested `.gfx` file: `interface/010_death.gfx`
+  - Static sprite name: `GFX_death_wither_target_frame_static`
+  - Animated sprite name: `GFX_death_wither_target_frame`
+  - `.gfx` file: `interface/010_death.gfx`
   - Target frame size: `36x36`
   - Calculated sheet size: `288x36`
   - Frame count: `8`
@@ -165,9 +165,9 @@ These notes were the original `.gfx` handoff. Final wiring has been applied in t
   - Final static DDS path: `gfx/interface/death/black_atlas/death_compact_warning_pulse_static.dds`
   - Final sheet DDS path: `gfx/interface/death/black_atlas/death_compact_warning_pulse.dds`
   - Final sheet PNG path: `docs/assets/010_death/animations/death_compact_warning_pulse/sheets/death_compact_warning_pulse_sheet.png`
-  - Proposed static sprite name: `GFX_death_compact_warning_pulse`
-  - Proposed animated sprite name: `GFX_death_compact_warning_pulse_animated`
-  - Suggested `.gfx` file: `interface/010_death.gfx`
+  - Static sprite name: `GFX_death_compact_warning_pulse_static`
+  - Animated sprite name: `GFX_death_compact_warning_pulse`
+  - `.gfx` file: `interface/010_death.gfx`
   - Target frame size: `36x36`
   - Calculated sheet size: `288x36`
   - Frame count: `8`
@@ -176,11 +176,12 @@ These notes were the original `.gfx` handoff. Final wiring has been applied in t
   - `play_on_show`: `yes`
   - Use notes: decorative/state-driven compact warning pulse; static fallback is the dim seal state
 
-## Expanded focus lane placeholders
+## Expanded focus lane icons
 
 - The expanded Death focus tree is wired through `interface/010_death.gfx`.
-- These focus sprites have stable final ids and load-safe DDS files, but several are copied placeholders from the first Death icon package and should be replaced by bespoke lane art when available.
-- Replacement files should keep the current paths:
+- All active focus sprites have stable final ids, source PNGs, processed PNGs, and final DDS files.
+- Contact sheet: `docs/assets/010_death/contact_sheets/death_focus_icons_contact.png`
+- Final files:
   - `gfx/interface/goals/death/focus_death_the_first_silence.dds`
   - `gfx/interface/goals/death/focus_death_country_on_the_island.dds`
   - `gfx/interface/goals/death/focus_death_no_mail_before_spring.dds`
@@ -201,9 +202,44 @@ These notes were the original `.gfx` handoff. Final wiring has been applied in t
   - `gfx/interface/goals/death/focus_death_ruin_host.dds`
   - `gfx/interface/goals/death/focus_death_orders_without_breath.dds`
 
-## Blocked optional assets
+## Route achievement and idea icons
 
-- `leader_zol_world_end_animated`: no final sheet/static package produced; blocked on missing target surface, target size/package path, frame count, FPS, and the naming conflict between spec `death_zol_portrait_world_end_animated` and task `leader_zol_world_end_animated`
+- `GFX_achievement_death_friend_of_zol`
+  - Final paths: `gfx/achievements/death_friend_of_zol.dds`, `gfx/achievements/death_friend_of_zol_grey.dds`, `gfx/achievements/death_friend_of_zol_not_eligible.dds`
+  - `.gfx` file: `interface/chaosx_achievements.gfx`
+- `GFX_achievement_death_book_burner`
+  - Final paths: `gfx/achievements/death_book_burner.dds`, `gfx/achievements/death_book_burner_grey.dds`, `gfx/achievements/death_book_burner_not_eligible.dds`
+  - `.gfx` file: `interface/chaosx_achievements.gfx`
+- `GFX_achievement_death_black_apostolate`
+  - Final paths: `gfx/achievements/death_black_apostolate.dds`, `gfx/achievements/death_black_apostolate_grey.dds`, `gfx/achievements/death_black_apostolate_not_eligible.dds`
+  - `.gfx` file: `interface/chaosx_achievements.gfx`
+- `GFX_idea_death_black_book_offices`
+  - Final path: `gfx/interface/ideas/death/idea_black_book_offices.dds`
+  - `.gfx` file: `interface/chaosx_ideas.gfx`
+- `GFX_idea_death_black_oath`
+  - Final path: `gfx/interface/ideas/death/idea_black_oath.dds`
+  - `.gfx` file: `interface/chaosx_ideas.gfx`
+
+## Registered animated portrait
+
+- `leader_zol_world_end_animated`
+  - Final static DDS path: `gfx/leaders/010_death/portrait_DTH_zol_world_end.dds`
+  - Final sheet DDS path: `gfx/leaders/010_death/portrait_DTH_zol_world_end_animated.dds`
+  - Final sheet PNG path: `docs/assets/010_death/animations/portrait_DTH_zol_world_end/sheets/portrait_DTH_zol_world_end_sheet.png`
+  - Source frames: `docs/assets/010_death/source_png/portrait_DTH_zol_world_end_frame_00_source.png` through `docs/assets/010_death/source_png/portrait_DTH_zol_world_end_frame_07_source.png`
+  - Processed frames: `docs/assets/010_death/processed_png/portrait_DTH_zol_world_end_frame_00.png` through `docs/assets/010_death/processed_png/portrait_DTH_zol_world_end_frame_07.png`
+  - Contact/preview: `docs/assets/010_death/contact_sheets/portrait_DTH_zol_world_end_contact.png`, `docs/assets/010_death/previews/portrait_DTH_zol_world_end_preview.gif`
+  - Registered static sprite name: `GFX_portrait_DTH_zol_world_end`
+  - Registered animated sprite name: `GFX_portrait_DTH_zol_world_end_animated`
+  - `.gfx` file: `interface/chaosx_characters.gfx`
+  - Target frame size: `156x210`
+  - Calculated sheet size: `1248x210`
+  - Frame count: `8`
+  - Animation rate: `4 fps`
+  - Looping: `yes`
+  - `play_on_show`: `yes`
+  - Local precedent: mirrors the existing `frameAnimatedSpriteType` portrait pattern already used for `GFX_portrait_THR_buddha_mandate_animated` and `GFX_portrait_THR_empty_seat_animated`
+  - Use notes: static fallback uses frame `04` and is applied to Zol at world-end; portrait reads as nonhuman/ungendered and should keep institutional name `Zol`
 
 ## Export note
 

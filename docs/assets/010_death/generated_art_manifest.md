@@ -5,6 +5,7 @@ Event slug: `death`
 Source mode summary: generated non-icon art through official `image_gen`
 Contact sheet: `docs/assets/010_death/contact_sheets/death_processed_contact.png`
 Additional contact sheet: `docs/assets/010_death/contact_sheets/death_black_oath_routes_contact.png`
+Focus icon contact sheet: `docs/assets/010_death/contact_sheets/death_focus_icons_contact.png`
 
 ## Complete
 
@@ -279,6 +280,8 @@ Additional contact sheet: `docs/assets/010_death/contact_sheets/death_black_oath
   - `GFX_idea_death_public_death`
   - `GFX_idea_death_last_shores`
   - `GFX_idea_death_black_census`
+  - `GFX_idea_death_black_book_offices` -> `gfx/interface/ideas/death/idea_black_book_offices.dds`
+  - `GFX_idea_death_black_oath` -> `gfx/interface/ideas/death/idea_black_oath.dds`
 - Achievement sprite bases:
   - `death_no_one_heard_the_first_boat`
   - `death_not_on_my_continent`
@@ -290,22 +293,70 @@ Additional contact sheet: `docs/assets/010_death/contact_sheets/death_black_oath
   - `death_before_the_name`
   - `death_the_living_conference`
   - `death_six_continents_one_color`
+  - `death_friend_of_zol`
+  - `death_book_burner`
+  - `death_black_apostolate`
 - Asset status: `complete`
-- Notes: `death_friend_of_zol` and `death_book_burner` source/processed PNGs remain unwired because Black Oath and Dark Methods are queued rather than exposed. Expanded focus-lane icons added after the first icon package use copied Death focus placeholders under stable filenames; they are load-safe but queued for bespoke replacement art.
+- Notes: route achievements are active because Dark Methods, Black Oath, Herald of Zol, and Black Apostolate are implemented. All active Death focus sprites now have source PNGs, processed PNGs, and stable DDS files; accidental duplicated placeholder hashes were eliminated during the final asset pass.
 
-## Blocked
+### Route achievement and idea icon finals
+
+- `death_friend_of_zol`
+  - Source PNG: `docs/assets/010_death/source_png/achievement_death_friend_of_zol_source.png`
+  - Processed PNG: `docs/assets/010_death/processed_png/achievement_death_friend_of_zol.png`
+  - Final paths: `gfx/achievements/death_friend_of_zol.dds`, `gfx/achievements/death_friend_of_zol_grey.dds`, `gfx/achievements/death_friend_of_zol_not_eligible.dds`
+  - Target size: `64x64`
+  - Asset status: `complete`
+- `death_book_burner`
+  - Source PNG: `docs/assets/010_death/source_png/achievement_death_book_burner_source.png`
+  - Processed PNG: `docs/assets/010_death/processed_png/achievement_death_book_burner.png`
+  - Final paths: `gfx/achievements/death_book_burner.dds`, `gfx/achievements/death_book_burner_grey.dds`, `gfx/achievements/death_book_burner_not_eligible.dds`
+  - Target size: `64x64`
+  - Asset status: `complete`
+- `death_black_apostolate`
+  - Source PNG: `docs/assets/010_death/source_png/death_black_apostolate_flag_source.png`
+  - Processed PNG: `docs/assets/010_death/processed_png/achievement_death_black_apostolate.png`
+  - Final paths: `gfx/achievements/death_black_apostolate.dds`, `gfx/achievements/death_black_apostolate_grey.dds`, `gfx/achievements/death_black_apostolate_not_eligible.dds`
+  - Target size: `64x64`
+  - Asset status: `complete`
+- `death_black_book_offices`
+  - Source PNG: `docs/assets/010_death/source_png/decision_death_black_book_source.png`
+  - Processed PNG: `docs/assets/010_death/processed_png/idea_black_book_offices.png`
+  - Final path: `gfx/interface/ideas/death/idea_black_book_offices.dds`
+  - Target size: `64x64`
+  - Asset status: `complete`
+- `death_black_oath`
+  - Source PNG: `docs/assets/010_death/source_png/decision_death_black_oath_source.png`
+  - Processed PNG: `docs/assets/010_death/processed_png/idea_black_oath.png`
+  - Final path: `gfx/interface/ideas/death/idea_black_oath.dds`
+  - Target size: `64x64`
+  - Asset status: `complete`
+
+## Complete: Optional Animated Portrait
 
 ### `leader_zol_world_end_animated`
 
 - Asset type: animated leader portrait package
-- Intended in-game use: optional world-end animated Zol portrait
+- Intended in-game use: world-end Zol portrait replacement and registered animated portrait surface
 - Source mode: generated frame-by-frame
-- Target size: missing approved frame-count/package spec beyond broad optional request
-- Final path: not created
-- Sprite name: `GFX_portrait_DTH_zol_world_end` and `GFX_portrait_DTH_zol_world_end_animated` were reserved in concept only
-- Related gameplay use: optional world-end portrait replacement or overlay
-- Asset status: `blocked`
-- Notes: not attempted because the prompt did not provide a required target surface, `.gfx`/`.gui` destination, frame count, FPS, or approved briefing for a final animation package, and a transform-only mockup is forbidden
+- Source note: Zol is fictional/nonhuman and the world-end portrait state is an invented supernatural escalation, so generation was appropriate
+- Source frames: `docs/assets/010_death/source_png/portrait_DTH_zol_world_end_frame_00_source.png` through `docs/assets/010_death/source_png/portrait_DTH_zol_world_end_frame_07_source.png`
+- Processed frames: `docs/assets/010_death/processed_png/portrait_DTH_zol_world_end_frame_00.png` through `docs/assets/010_death/processed_png/portrait_DTH_zol_world_end_frame_07.png`
+- Static processed PNG: `docs/assets/010_death/processed_png/portrait_DTH_zol_world_end.png`
+- Sheet PNG: `docs/assets/010_death/animations/portrait_DTH_zol_world_end/sheets/portrait_DTH_zol_world_end_sheet.png`
+- Contact sheet: `docs/assets/010_death/contact_sheets/portrait_DTH_zol_world_end_contact.png`
+- Preview GIF: `docs/assets/010_death/previews/portrait_DTH_zol_world_end_preview.gif`
+- Final path: `gfx/leaders/010_death/portrait_DTH_zol_world_end_animated.dds`
+- Static fallback: `gfx/leaders/010_death/portrait_DTH_zol_world_end.dds`
+- Target size: `156x210`
+- Sheet size: `1248x210`
+- Frame count: `8`
+- Animation rate: `4 fps`
+- Sprite name: `GFX_portrait_DTH_zol_world_end` and `GFX_portrait_DTH_zol_world_end_animated`
+- `.gfx` file: `interface/chaosx_characters.gfx`
+- Related gameplay use: static world-end leader portrait fallback plus registered animated portrait return for Death world-end surfaces
+- Asset status: `complete`
+- Notes: apparent presentation remains nonhuman/ungendered; gameplay should keep institutional name `Zol`. Motion is driven by separate key-state renders showing crown growth, eclipse-halo rise/fall, and ash drift rather than a transform-only pulse.
 
 ## Complete: Death Black Atlas UI Package
 
@@ -365,7 +416,7 @@ Additional contact sheet: `docs/assets/010_death/contact_sheets/death_black_oath
 - Final path: `gfx/interface/death/black_atlas/death_coastal_risk_pulse.dds`
 - Static fallback: `gfx/interface/death/black_atlas/death_coastal_risk_pulse_static.dds`
 - Target size: `36x36` frames, `288x36` sheet
-- Sprite name: `GFX_death_coastal_risk_pulse`, `GFX_death_coastal_risk_pulse_animated`
+- Sprite name: `GFX_death_coastal_risk_pulse` for the animated sheet; `GFX_death_coastal_risk_pulse_static` for the static fallback
 - `.gfx` file: `interface/010_death.gfx`
 - Related gameplay use: small coastal-risk indicator
 - Asset status: `complete`
@@ -381,7 +432,7 @@ Additional contact sheet: `docs/assets/010_death/contact_sheets/death_black_oath
 - Final path: `gfx/interface/death/black_atlas/death_wither_target_frame.dds`
 - Static fallback: `gfx/interface/death/black_atlas/death_wither_target_frame_static.dds`
 - Target size: `36x36` frames, `288x36` sheet
-- Sprite name: `GFX_death_wither_target_frame`, `GFX_death_wither_target_frame_animated`
+- Sprite name: `GFX_death_wither_target_frame` for the animated sheet; `GFX_death_wither_target_frame_static` for the static fallback
 - `.gfx` file: `interface/010_death.gfx`
 - Related gameplay use: target-frame overlay
 - Asset status: `complete`
@@ -397,7 +448,7 @@ Additional contact sheet: `docs/assets/010_death/contact_sheets/death_black_oath
 - Final path: `gfx/interface/death/black_atlas/death_compact_warning_pulse.dds`
 - Static fallback: `gfx/interface/death/black_atlas/death_compact_warning_pulse_static.dds`
 - Target size: `36x36` frames, `288x36` sheet
-- Sprite name: `GFX_death_compact_warning_pulse`, `GFX_death_compact_warning_pulse_animated`
+- Sprite name: `GFX_death_compact_warning_pulse` for the animated sheet; `GFX_death_compact_warning_pulse_static` for the static fallback
 - `.gfx` file: `interface/010_death.gfx`
 - Related gameplay use: compact warning indicator
 - Asset status: `complete`

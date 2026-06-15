@@ -2,6 +2,8 @@
 
 Audit date: 2026-06-15
 
+Supersession note: this handoff predates the remaining-route implementation. Its old queued-route conclusions for Dark Methods and Black Oath are superseded by the completed living-country Dark Methods, Black Oath, Herald of Zol, Black Apostolate, and Black Atlas implementation.
+
 Scope: Event 010 `Death`, root `chaosx.nr10.1`, country `DTH`, no cluster, triggerable scenario `SCN-006`. Audited:
 
 - `common/decisions/categories/010_death_categories.txt`
@@ -112,7 +114,7 @@ No gameplay files were edited. This is an audit-only handoff.
 
 - `death_missing_island_category` is well-bounded to report recipients before public reveal. It hides after `death_publicly_revealed`.
 - `death_country_containment_category` is useful but too broad. It covers active war, compact coordination, pre-reveal coastal watch, world-end response, and recaptured wasteland aftermath in one category.
-- Dark Methods and Black Oath are correctly hidden/queued. `docs/events/010_death.md` and the source-processing notes explicitly state they are not exposed because their mechanics are not implemented.
+- Superseded by later implementation: Dark Methods and Black Oath are now exposed only through their completed living-country route prerequisites, not as half-visible placeholders.
 - After defeat, Death-specific active containment decisions need to close while recaptured-wasteland aftermath remains available.
 
 ## Mission Quality Notes
@@ -205,7 +207,7 @@ No gameplay, localisation, GUI, or asset files were edited.
 
 - Confirmed offline wiki and vanilla decision documentation requirements for decision visibility, targeted decisions, custom costs, missions, and AI weights.
 - Checked Death decision custom-cost keys against `localisation/english/010_death_l_english.yml`; all 14 are missing `_blocked` and `_tooltip` variants.
-- Checked the audited Death decision/effect/trigger/localisation files for unsupported `<=` / `>=`; none were found.
+- Checked the audited Death decision/effect/trigger/localisation files for unsupported comparison operators; none were found.
 - Searched the Death decision/effect/trigger files for mission-specific fields; no mission blocks were found.
 - Reviewed `common/on_actions/chaosx_on_actions.txt` for Death recapture hook coverage; `death_on_state_control_changed` is wired from `on_state_control_changed`.
 

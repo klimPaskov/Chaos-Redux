@@ -121,6 +121,8 @@ Compact failure states:
 
 This branch should be useful, frightening, and optional. It should never be the clean best answer.
 
+Implementation status: implemented as living-country containment decisions using `death_black_method_exposure`, `death_bound_names`, and `death_mourning_debt`. The route creates weak capped bound-shade hosts, exposes Black Book offices to scandal pressure, and can be closed through `Burn the Black Book`.
+
 Unlock conditions:
 
 - Death revealed;
@@ -151,6 +153,8 @@ AI should use dark methods only when desperate, authoritarian, high chaos, or on
 ### Black Oath: Joining Death
 
 The alternate join-Death path should be playable but dangerous. It is not a normal alliance with Death.
+
+Implementation status: implemented as the Herald route. `Whisper to Zol` prepares the route, `Take the Black Oath` applies the Herald of Zol cosmetic identity and Black Oath idea, Herald service decisions manipulate name debt/black favor/living disgust, and Black Apostolate is a hidden player-only culmination after world-end thresholds.
 
 Unlock conditions:
 
@@ -192,13 +196,13 @@ AI should almost never take the Black Oath. It may do so if:
 
 The path should be disabled for AI countries whose survival is essential to another active event unless a valid alternate exists.
 
-## Fighting decisions, not missions
+## Fighting decisions and narrow missions
 
-Death does not need a separate mission or timed-objective layer. The player response should be built from decisions that help countries fight, enter, delay, contain, and recapture Death states.
+The player response is built primarily from decisions that help countries fight, enter, delay, contain, and recapture Death states. A narrow timed mission is allowed for quarantine-line maintenance because it tests whether the player actually keeps a fortified line bordering Death rather than clicking a permanent defensive buff.
 
 The real map work remains normal HOI4 play: move divisions, hold coasts, occupy Death-controlled tiles, and keep supply open. Decisions should read those facts as availability requirements instead of creating separate objectives. For example, a decision can require supplied divisions in a border state, control of a recaptured wasteland, a nearby port, or a working supply connection. If the requirement is not met, the decision should be blocked with a clear tooltip.
 
-Use decisions with cooldowns, temporary state modifiers, target-state flags, and cleanup logic. Do not add goal-style missions, timed missions, or auto-completing objective cards for Death unless a later accepted spec explicitly asks for them.
+Use decisions with cooldowns, temporary state modifiers, target-state flags, narrow mission checks, and cleanup logic. Do not add broad goal-style mission stacks or auto-completing objective cards for Death unless a later accepted spec explicitly asks for them.
 
 ### Border fighting decisions
 
@@ -229,7 +233,7 @@ Use decisions with cooldowns, temporary state modifiers, target-state flags, and
 
 ## Custom UI: The Black Atlas
 
-The Death mechanic benefits from a custom UI or scripted GUI window after reveal. A normal decision category can show the basics. A Black Atlas window is optional and should be used only if the ordinary category summary becomes too crowded.
+Death uses a compact scripted GUI window after reveal. The Black Atlas summarizes the current stage, coastal risk, wither-line pressure, compact posture, and forbidden-route exposure without replacing normal map play.
 
 ### Entry point
 
@@ -252,7 +256,7 @@ The UI should not reveal exact hidden next targets before the player has earned 
 
 ### Animated presentation pass
 
-The Black Atlas should receive an animation planning pass because it represents a living supernatural map threat.
+The Black Atlas receives an animation pass because it represents a living supernatural map threat.
 
 Planned animated assets:
 
@@ -261,8 +265,8 @@ Planned animated assets:
 | `death_black_atlas_header_animated` | Visible after reveal. | Slow dark fog drift, generated frame-by-frame, static fallback. |
 | `death_coastal_risk_pulse_animated` | Shows when coastal jump risk is high/critical. | Warning pulse around coast icon; real source frames. |
 | `death_wither_target_frame_animated` | Active wither target. | Thin dark breathing border around target card. |
-| `death_compact_cohesion_warning_animated` | Compact cohesion low. | Subtle flicker, not noisy. |
-| `death_zol_portrait_world_end_animated` | World-end or Herald oath. | Void-lit Zol portrait frames; static fallback. |
+| `death_compact_warning_animated` | Compact cohesion low. | Subtle flicker, not noisy. |
+| `death_zol_portrait_world_end_animated` | World-end or Herald oath. | Void-lit Zol portrait frames; static fallback; registered in `interface/chaosx_characters.gfx`. |
 
 Animation should clarify state. If a surface becomes too busy, keep only the header and critical warning animation.
 

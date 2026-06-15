@@ -8,7 +8,7 @@ Scope: final read-only completion audit for Event 010 Death replacing the obsole
 
 Event 010 Death is broadly implemented and the old Spirit of War/Peace active surfaces appear removed, but at audit time the implementation should not be claimed fully complete yet. There were unresolved spec and accepted-plan gaps that were not merely optional future depth.
 
-Audit-time completion status: incomplete until the blockers below are patched, explicitly queued with reasons, or consciously rejected by the parent. See `Parent Resolution` for the parent-side fixes applied after this audit.
+Audit-time completion status: incomplete until the blockers below are patched, explicitly queued with reasons, or consciously rejected by the parent. The blocker and queue sections below are retained as audit history; `Parent Resolution` records the fixes applied after this audit, including the later route, Black Atlas, achievement, and world-end portrait implementation.
 
 ## Completed Surfaces
 
@@ -17,13 +17,13 @@ Audit-time completion status: incomplete until the blockers below are patched, e
 - Reveal/world-end/final branches: reveal uses `death_reveal_from_current_state`; world-end uses `death_can_start_world_end` and `death_try_start_world_end`; final world-consumed handling uses `death_whole_world_consumed` and super-event 65. The world-end trigger correctly checks consumed continent plus Chaos threshold in `common/scripted_triggers/010_death_triggers.txt:207`.
 - Country package: `DTH` is registered in `common/country_tags/chaosx_countries.txt`, Death has black country color in `common/countries/Death.txt`, Zol is defined in `common/characters/DTH.txt`, and `history/units/DTH_1936.txt` contains templates without deployed starting divisions.
 - Decisions and missions: public/compact decisions are gated after reveal and defeat, the compact war declaration is leader-only, custom cost localisation variants exist, pre-reveal decision text no longer names Death, quarantine-line hold is implemented as a timed mission, and post-defeat wasteland outposts count only after `death_defeated`.
-- Focus tree: `common/national_focus/010_death_focus_tree.txt` contains 26 focus nodes. `interface/010_death.gfx` registers the matching 26 base focus sprites plus shine variants. The tree has a fixed-purpose lane structure and keeps Dark Methods, Black Oath, Herald, and Black Apostolate routes out of active gameplay.
+- Focus tree: `common/national_focus/010_death_focus_tree.txt` contains 26 focus nodes. `interface/010_death.gfx` registers the matching 26 base focus sprites plus shine variants. The tree has a fixed-purpose lane structure and keeps Dark Methods, Black Oath, Herald, and Black Apostolate as living-country decisions rather than DTH focus ids.
 - Triggerable scenario: SCN id is `#006` in `localisation/english/chaosx_gui_l_english.yml:76`, and the scenario selection gate dispatches Death variants from `common/scripted_triggers/chaosx_triggerable_scenarios_triggers.txt:47`.
 - Super-events and audio: Death super-event ids 62-65 are wired through scripted localisation, `interface/chaosx_super_events.gfx`, `music/chaosx_super_event_music.asset`, `music/chaosx_super_event_music.txt`, and `sound/chaosx_sound.asset`. Audio files exist and `ffprobe` reports valid 44.1 kHz OGG streams for the four Death super-event tracks.
-- Achievements: active Death achievements are registered in `common/achievements/chaos_redux_achievements.txt`, documented in `docs/systems/custom_achievements.md`, localised in `localisation/english/chaosx_achievements_l_english.yml`, and wired in `interface/chaosx_achievements.gfx`. The queued Black Oath/Dark Methods achievement art is not wired.
-- Documentation: `docs/events/010_death.md`, asset manifests, super-event research docs, and the spreadsheet handoff describe the current implementation, SCN-006, queued route surfaces, and placeholder focus icon status.
+- Achievements: Death achievements, including Dark Methods, Black Oath, and Black Apostolate achievements, are registered in `common/achievements/chaos_redux_achievements.txt`, documented in `docs/systems/custom_achievements.md`, localised in `localisation/english/chaosx_achievements_l_english.yml`, and wired in `interface/chaosx_achievements.gfx`.
+- Documentation: `docs/events/010_death.md`, asset manifests, super-event research docs, and the spreadsheet handoff describe the current implementation, SCN-006, implemented route surfaces, and completed asset package.
 
-## Completion Blockers
+## Resolved Audit-Time Blockers
 
 1. Triggerable scenario launch context cleanup from the accepted scripted-system plan is missing.
    - Accepted plan evidence: `docs/plans/010_death_plans/subagent_handoffs/scripted_system_architect_handoff.md:148` says `trigger_death_scenario` should clear bypass context, and `:154` / `:227` specify `death_cleanup_triggerable_scenario_context`.
@@ -45,16 +45,16 @@ Audit-time completion status: incomplete until the blockers below are patched, e
    - Implementation evidence: `common/scripted_effects/010_death_effects.txt:97` adds 20,000 manpower and `:98` through `:101` adds 5,000 infantry equipment inside `death_setup_country`.
    - Impact: this may be an intentional implementation support pool for later host spawning, but it is not disclosed in the docs or queued as a spec deviation.
 
-## Acceptable Queued Or Hidden Work
+## Superseded Audit-Time Queue
 
-These are not completion blockers because the implementation keeps them hidden/unwired and the docs/plans explicitly queue them:
+These items were considered non-blocking at audit time only because they were then hidden/unwired. The later parent implementation resolved them instead of leaving them queued:
 
-- Dark Methods and Black Oath gameplay routes remain future work in `docs/events/010_death.md:58` and `:59`.
-- Herald of Zol and Black Apostolate route flags/art remain blocked until the routes exist, per `docs/assets/010_death/generated_art_manifest.md:258`.
-- Black Atlas scripted GUI assets are blocked for missing exact sizes, final paths, and target GUI surfaces in `docs/assets/010_death/generated_art_manifest.md:281`.
-- Optional animated Zol/world-end portrait package is blocked for missing approved frame/package/surface requirements in `docs/assets/010_death/generated_art_manifest.md:246`.
-- Expanded focus-lane icons use copied placeholder Death focus DDS files under stable filenames; this is explicitly documented as load-safe queued replacement work in `docs/assets/010_death/generated_art_manifest.md:242`.
-- `death_friend_of_zol` and `death_book_burner` processed achievement art remains unwired because Black Oath and Dark Methods are queued, also documented in `docs/assets/010_death/generated_art_manifest.md:242`.
+- Dark Methods and Black Oath gameplay routes are implemented as living-country decisions.
+- Herald of Zol and Black Apostolate route flags/art are implemented and wired.
+- Black Atlas scripted GUI assets are implemented with stable sizes, final paths, and target GUI surfaces.
+- The animated Zol/world-end portrait package is implemented as an eight-frame source-frame sheet with static fallback.
+- Expanded focus-lane icons have dedicated generated DDS files under stable filenames.
+- `death_friend_of_zol` and `death_book_burner` achievement art is wired because Black Oath and Dark Methods are implemented.
 
 ## Accepted Plans and Disposition
 
