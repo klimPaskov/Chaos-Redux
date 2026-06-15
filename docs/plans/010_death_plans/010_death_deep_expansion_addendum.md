@@ -2,6 +2,8 @@
 
 Plan-only handoff for parent review. Do not treat this file as implementation completion.
 
+Parent disposition: accepted for Event 010 source-spec expansion on 2026-06-15. The accepted mechanics, tone anchors, exploit guards, and implementation surfaces were promoted into `docs/specs/010_death_specs/`. This addendum remains in `docs/plans/010_death_plans/` as the improvement-loop handoff and research trace.
+
 This addendum expands `/docs/specs/010_death_specs/010 - Death.md` into an implementation-ready design layer. If accepted, the parent should fold the selected material into `docs/specs/010_death_specs/010 - Death.md` or split it into source spec parts under `docs/specs/010_death_specs/`.
 
 No prior Death addendum was found under `docs/plans/010_death_plans/` before this file was written.
