@@ -1959,23 +1959,14 @@ death_triggerable_consume_extra_island = {
 
 death_triggerable_spawn_passive_hosts = {
 	DTH = {
-		random_controlled_state = {
-			limit = { has_state_flag = death_active_wasteland }
-			death_spawn_passive_hosts_in_current_state = yes
-		}
+		death_try_spawn_passive_host_from_budget = yes
 	}
 }
 
 death_triggerable_spawn_stronger_hosts = {
 	DTH = {
-		random_controlled_state = {
-			limit = { has_state_flag = death_active_wasteland }
-			death_spawn_stronger_hosts_in_current_state = yes
-		}
-		random_controlled_state = {
-			limit = { has_state_flag = death_active_wasteland }
-			death_spawn_stronger_hosts_in_current_state = yes
-		}
+		death_try_spawn_stronger_host_from_budget = yes
+		death_try_spawn_stronger_host_from_budget = yes
 	}
 }
 
@@ -1984,6 +1975,10 @@ trigger_death_scenario = {
 	set_country_flag = death_triggerable_scenario_launcher
 	set_variable = { global.death_triggerable_scenario_intensity = triggerable_scenarios_intensity }
 	set_variable = { global.death_triggerable_scenario_type = triggerable_scenarios_death_type }
+	if = {
+		limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum } }
+		set_global_flag = death_maximum_manual_scenario_used
+	}
 	if = {
 		limit = { check_variable = { triggerable_scenarios_death_type = constant:death_scenario_type.quiet_origin } }
 		death_launch_quiet_origin = yes
