@@ -145,12 +145,12 @@ It falls from:
 - naval patrol and convoy-watch decisions;
 - temporary high-cost emergency measures.
 
-Spread should accelerate as Death eats more population, but the formula should have floors and caps so it is slow early and terrifying later. Suggested pacing bands:
+Spread should accelerate as Death eats more population, but the formula should have floors and caps so it is slow early and terrifying later. The hidden opening must not behave like a weekly expansion loop. A calm-world origin waits several months before the first follow-up island attempt, using a randomized four-to-six-month pulse band, then steps down through slower early bands before reaching the faster revealed and world-end schedules.
 
 | Situation | Spread feel |
 | --- | --- |
-| Origin only | Months of silence. |
-| Few small islands | Slow, missable, report delays longer than spread delays. |
+| Origin only | Four to six months of silence before the next hidden spread attempt. |
+| Few small islands | Slow, missable, with missing-island reports arriving as local delayed evidence rather than instant global notification. |
 | Several islands | Pattern emerges for attentive players. |
 | First mainland | Reveal; spread becomes a visible crisis. |
 | Millions consumed | Spread pulses become frequent. |
@@ -162,17 +162,18 @@ Spread should accelerate as Death eats more population, but the formula should h
 
 Before reveal, target selection prefers:
 
-1. island states with the lowest population;
-2. island states near Death's current islands or connected by nearby sea zones;
-3. islands without divisions;
-4. islands without major capitals, major industry, or heavy ports;
-5. islands owned by countries unlikely to notice immediately.
+1. island states near Death's current consumed islands;
+2. sub-100,000-population nearby islands with no divisions;
+3. if no nearby sub-100,000 island exists, any eligible sub-100,000 island;
+4. the broader low-population island pool only after the sub-100,000 pool cannot satisfy the attempt;
+5. islands without major capitals, major industry, or heavy ports;
+6. islands owned by countries unlikely to notice immediately.
 
 The target should not be chosen because it is dramatic. Death starts by eating the places the world ignores.
 
 ### Mainland target selection
 
-Death can attempt mainland consumption when it has enough island spread pressure or when a nearby coastal mainland state becomes eligible. The first mainland target should prefer:
+Death can attempt mainland consumption only after the island-report evolution has been recorded and enough island spread pressure has accumulated. This blocks first-month mainland reveals and forces the early event to remain an island pattern before the public crisis. The first mainland target should prefer:
 
 - nearby coastal states;
 - low-defense states;

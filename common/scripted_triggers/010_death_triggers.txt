@@ -1,5 +1,6 @@
 @death_origin_preferred_major_capital_distance = 1250
 @death_origin_outer_major_capital_distance = 750
+@death_nearby_island_distance = 750
 
 # ============================================================================
 # CHAOS REDUX - EVENT 010 DEATH TRIGGERS
@@ -150,6 +151,20 @@ death_is_valid_island_spread_target = {
 	death_state_has_no_divisions = yes
 }
 
+death_is_valid_early_island_spread_target = {
+	is_island_state = yes
+	state_population_k > 0
+	check_variable = {
+		var = state_population_k
+		value = constant:death_population.early_island_spread_cap_k
+		compare = less_than
+	}
+	NOT = { is_capital = yes }
+	NOT = { death_is_consumed_state = yes }
+	NOT = { is_controlled_by = DTH }
+	death_state_has_no_divisions = yes
+}
+
 death_is_valid_island_spread_target_lowest_names = {
 	is_island_state = yes
 	state_population_k > 0
@@ -162,6 +177,32 @@ death_is_valid_island_spread_target_lowest_names = {
 	NOT = { death_is_consumed_state = yes }
 	NOT = { is_controlled_by = DTH }
 	death_state_has_no_divisions = yes
+}
+
+death_is_near_active_wasteland = {
+	any_state = {
+		has_state_flag = death_active_wasteland
+		is_controlled_by = DTH
+		distance_to = {
+			target = PREV
+			value < @death_nearby_island_distance
+		}
+	}
+}
+
+death_is_valid_nearby_island_spread_target = {
+	death_is_valid_island_spread_target = yes
+	death_is_near_active_wasteland = yes
+}
+
+death_is_valid_nearby_early_island_spread_target = {
+	death_is_valid_early_island_spread_target = yes
+	death_is_near_active_wasteland = yes
+}
+
+death_is_valid_nearby_island_spread_target_lowest_names = {
+	death_is_valid_island_spread_target_lowest_names = yes
+	death_is_near_active_wasteland = yes
 }
 
 death_is_valid_mainland_reveal_target = {
