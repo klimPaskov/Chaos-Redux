@@ -14,17 +14,17 @@
 @WHITE_PEACE_NO_WINNER_CHECK_DAYS = 180
 @WHITE_PEACE_LONG_WAR_MONTHS = 5
 
-# Random-list weight keys need load-time literals, so these mirror
-# `white_peace_branch_weight` script constants.
-@WHITE_PEACE_BRANCH_STAGE_1_SINGLE = 70
-@WHITE_PEACE_BRANCH_STAGE_1_MULTI = 30
-@WHITE_PEACE_BRANCH_STAGE_2_SINGLE = 60
-@WHITE_PEACE_BRANCH_STAGE_2_MULTI = 25
-@WHITE_PEACE_BRANCH_STAGE_2_MAJOR = 15
-@WHITE_PEACE_BRANCH_STAGE_3_SINGLE = 50
-@WHITE_PEACE_BRANCH_STAGE_3_MULTI = 25
-@WHITE_PEACE_BRANCH_STAGE_3_MAJOR = 15
-@WHITE_PEACE_BRANCH_STAGE_3_BROAD = 10
+load_white_peace_branch_weight_variables = {
+	set_temp_variable = { white_peace_branch_weight_stage_1_single = constant:white_peace_branch_weight.stage_1_single }
+	set_temp_variable = { white_peace_branch_weight_stage_1_multi = constant:white_peace_branch_weight.stage_1_multi }
+	set_temp_variable = { white_peace_branch_weight_stage_2_single = constant:white_peace_branch_weight.stage_2_single }
+	set_temp_variable = { white_peace_branch_weight_stage_2_multi = constant:white_peace_branch_weight.stage_2_multi }
+	set_temp_variable = { white_peace_branch_weight_stage_2_major = constant:white_peace_branch_weight.stage_2_major }
+	set_temp_variable = { white_peace_branch_weight_stage_3_single = constant:white_peace_branch_weight.stage_3_single }
+	set_temp_variable = { white_peace_branch_weight_stage_3_multi = constant:white_peace_branch_weight.stage_3_multi }
+	set_temp_variable = { white_peace_branch_weight_stage_3_major = constant:white_peace_branch_weight.stage_3_major }
+	set_temp_variable = { white_peace_branch_weight_stage_3_broad = constant:white_peace_branch_weight.stage_3_broad }
+}
 
 reset_white_peace_runtime_context = {
 	set_variable = { global.white_peace_available = 0 }
@@ -456,11 +456,12 @@ calculate_white_peace_dynamic_cap = {
 select_white_peace_branch = {
 	set_temp_variable = { white_peace_branch = constant:white_peace_branch.single_minor }
 	set_temp_variable = { white_peace_settlement_pair_cap = constant:white_peace_settlement_cap.base_pairs }
+	load_white_peace_branch_weight_variables = yes
 
 	if = {
 		limit = { check_variable = { white_peace_stage > constant:white_peace_event_log.stage_major_country } }
 		random_list = {
-			@WHITE_PEACE_BRANCH_STAGE_3_SINGLE = {
+			white_peace_branch_weight_stage_3_single = {
 				modifier = {
 					factor = 0
 					check_variable = {
@@ -471,7 +472,7 @@ select_white_peace_branch = {
 				}
 				set_temp_variable = { white_peace_branch = constant:white_peace_branch.single_minor }
 			}
-			@WHITE_PEACE_BRANCH_STAGE_3_MULTI = {
+			white_peace_branch_weight_stage_3_multi = {
 				modifier = {
 					factor = 0
 					check_variable = {
@@ -483,7 +484,7 @@ select_white_peace_branch = {
 				set_temp_variable = { white_peace_branch = constant:white_peace_branch.multi_minor }
 				set_temp_variable = { white_peace_settlement_pair_cap = constant:white_peace_settlement_cap.stage_3_pairs }
 			}
-			@WHITE_PEACE_BRANCH_STAGE_3_MAJOR = {
+			white_peace_branch_weight_stage_3_major = {
 				modifier = {
 					factor = 0
 					check_variable = {
@@ -494,7 +495,7 @@ select_white_peace_branch = {
 				}
 				set_temp_variable = { white_peace_branch = constant:white_peace_branch.major_country }
 			}
-			@WHITE_PEACE_BRANCH_STAGE_3_BROAD = {
+			white_peace_branch_weight_stage_3_broad = {
 				modifier = {
 					factor = 0
 					OR = {
@@ -514,7 +515,7 @@ select_white_peace_branch = {
 	else_if = {
 		limit = { check_variable = { white_peace_stage > constant:white_peace_event_log.stage_repeated_minor } }
 		random_list = {
-			@WHITE_PEACE_BRANCH_STAGE_2_SINGLE = {
+			white_peace_branch_weight_stage_2_single = {
 				modifier = {
 					factor = 0
 					check_variable = {
@@ -525,7 +526,7 @@ select_white_peace_branch = {
 				}
 				set_temp_variable = { white_peace_branch = constant:white_peace_branch.single_minor }
 			}
-			@WHITE_PEACE_BRANCH_STAGE_2_MULTI = {
+			white_peace_branch_weight_stage_2_multi = {
 				modifier = {
 					factor = 0
 					check_variable = {
@@ -537,7 +538,7 @@ select_white_peace_branch = {
 				set_temp_variable = { white_peace_branch = constant:white_peace_branch.multi_minor }
 				set_temp_variable = { white_peace_settlement_pair_cap = constant:white_peace_settlement_cap.stage_2_pairs }
 			}
-			@WHITE_PEACE_BRANCH_STAGE_2_MAJOR = {
+			white_peace_branch_weight_stage_2_major = {
 				modifier = {
 					factor = 0
 					check_variable = {
@@ -553,8 +554,8 @@ select_white_peace_branch = {
 	else_if = {
 		limit = { check_variable = { white_peace_stage > constant:white_peace_event_log.stage_base } }
 		random_list = {
-			@WHITE_PEACE_BRANCH_STAGE_1_SINGLE = { set_temp_variable = { white_peace_branch = constant:white_peace_branch.single_minor } }
-			@WHITE_PEACE_BRANCH_STAGE_1_MULTI = {
+			white_peace_branch_weight_stage_1_single = { set_temp_variable = { white_peace_branch = constant:white_peace_branch.single_minor } }
+			white_peace_branch_weight_stage_1_multi = {
 				modifier = {
 					factor = 0
 					check_variable = {
