@@ -1,0 +1,13 @@
+Implement Event 010 Death from docs/specs/010_death_specs/. Death replaces obsolete Event 010 Spirit of War/Peace while preserving ID 10 and root chaosx.nr10.1.
+
+Read AGENTS.md, required offline Paradox wiki pages, relevant vanilla docs/examples, this spec package, and docs/plans/010_death_plans/010_death_deep_expansion_addendum.md before editing. Use chaos-redux-events, event-planning, event-assets, super-events, frame-animation if animating assets, hoi4-decisions-missions, hoi4-focus-trees, hoi4-mtth, chaos-redux-subagents, and xlsx for spreadsheet updates.
+
+Implement DTH, Death: black map color, leader Zol, fixed nonhuman/special chaos country. Death starts hidden on a valid low-pop remote island. If no valid origin exists, Event 010 must not fire; do not substitute a mainland start. Early clues are delayed local absence reports, not public Death reveals.
+
+Build actor-scoped scheduled spread, not whole-world daily/weekly polling. Death consumes low-pop islands first, then reveals on mainland/populous/major/player threshold. Reveal sets world_threat_source_death, refreshes world threat, fires super-event, unlocks decisions, logs event details/evolutions, and enables scripted wars/withering.
+
+Create script constants/MTTH tuning, scripted effects/triggers, dynamic state modifiers, Death focus tree, decisions/missions, Living Compact, forbidden route, ghost stages, defeat/world-end/world-consumed branches, super-events, achievements, assets/placeholders, docs, and spreadsheet row.
+
+State consumption must register civilian deaths through the Chaos Meter pipeline, delete/disable industry, set wasteland, core to DTH, apply Death modifiers, clear missions, increment counters, and check reveal/evolution/world-end. Do not use modify_state_population_by_percent as the main death helper.
+
+Remove old War/Peace content and loc, but keep GFX_report_event_war_or_peace while Event 004 uses it. Before completion run country, focus, decision/mission, localisation, and event-completion audits. No simplifications or fallbacks without explicit approval.
