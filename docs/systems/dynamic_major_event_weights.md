@@ -62,7 +62,7 @@ Major clusters use the major pacing path and reset major weights once for the cl
 
 ## UI And Localisation
 
-The Advanced Settings field is labelled as the baseline major gain. The Event Logs Status tab shows the accumulated major weight and the current calculated major gain with the baseline in parentheses. Welcome-screen text describes both the configured baseline and the live calculated gain.
+The Advanced Settings field is labelled as the baseline major gain. The Event Logs Status tab shows current calculated major gain and baseline major gain as separate lines, followed by accumulated major weight. Welcome-screen text describes both the configured baseline and the live calculated gain.
 
 UI variables:
 

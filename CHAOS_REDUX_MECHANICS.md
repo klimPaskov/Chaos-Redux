@@ -451,7 +451,7 @@ Debug and monitoring are split between live UI inspection and optional log outpu
 ### Live Inspection
 
 - **Event Logs window**: opened with the settings log button or keyboard shortcuts, and organized into **Status**, **History**, **Evolutions**, **Events**, and **Clusters** tabs.
-- **Status tab**: shows current event-system counters and live tuning values, including accumulated major weight, current calculated major gain with its baseline, recovery rate, cap reduction, default event weight, and timer modifier.
+- **Status tab**: shows current event-system counters and live tuning values, including current calculated major gain, baseline major gain, accumulated major weight, recovery rate, cap reduction, default event weight, and timer modifier.
 - **History tab**: records fired automatic events with event ID, type, date, actor context when available, and a clickable detail window.
 - **Evolutions tab**: records evolution milestones separately from normal event history, including tier, stage, type, and actor where the evolution belongs to a country.
 - **Events tab**: shows the current event catalogue with live weight, fired count, event type, unique/repeatable state, and enable/disable controls.
