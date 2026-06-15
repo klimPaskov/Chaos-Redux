@@ -338,8 +338,8 @@ Focus icon contact sheet: `docs/assets/010_death/contact_sheets/death_focus_icon
 
 - Asset type: animated leader portrait package
 - Intended in-game use: world-end Zol portrait replacement and registered animated portrait surface
-- Source mode: generated frame-by-frame
-- Source note: Zol is fictional/nonhuman and the world-end portrait state is an invented supernatural escalation, so generation was appropriate
+- Source mode: edited frame-by-frame from approved static portrait
+- Source note: user correction required a much subtler animation that preserves the existing static portrait almost exactly, so the frame set was rebuilt from the approved static fallback with only a restrained eye-glow pulse
 - Source frames: `docs/assets/010_death/source_png/portrait_DTH_zol_world_end_frame_00_source.png` through `docs/assets/010_death/source_png/portrait_DTH_zol_world_end_frame_07_source.png`
 - Processed frames: `docs/assets/010_death/processed_png/portrait_DTH_zol_world_end_frame_00.png` through `docs/assets/010_death/processed_png/portrait_DTH_zol_world_end_frame_07.png`
 - Static processed PNG: `docs/assets/010_death/processed_png/portrait_DTH_zol_world_end.png`
@@ -356,7 +356,7 @@ Focus icon contact sheet: `docs/assets/010_death/contact_sheets/death_focus_icon
 - `.gfx` file: `interface/chaosx_characters.gfx`
 - Related gameplay use: static world-end leader portrait fallback plus registered animated portrait return for Death world-end surfaces
 - Asset status: `complete`
-- Notes: apparent presentation remains nonhuman/ungendered; gameplay should keep institutional name `Zol`. Motion is driven by separate key-state renders showing crown growth, eclipse-halo rise/fall, and ash drift rather than a transform-only pulse.
+- Notes: apparent presentation remains nonhuman/ungendered; gameplay should keep institutional name `Zol`. Motion is eyes-glow-only. The static fallback DDS remains unchanged. Validation: processed frames are all `156x210`; final sheet and DDS are `1248x210`; preview GIF loops at 8 frames; identity drift check outside the eye mask is zero or effectively zero; no `.gfx` change is needed because frame count and rate remain unchanged.
 
 ## Complete: Death Black Atlas UI Package
 

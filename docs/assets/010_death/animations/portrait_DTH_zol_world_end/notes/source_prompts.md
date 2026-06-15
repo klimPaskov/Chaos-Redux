@@ -1,18 +1,25 @@
 # Zol World-End Portrait Source Prompt Notes
 
-Generation mode: official `image_gen`, eight individual portrait renders.
+Source mode: edit-derived frame set from the approved static fallback portrait.
 
-Shared prompt stem:
+Base source:
 
-> Fictional HOI4 leader portrait frame for Chaos Redux. Front-facing bust portrait of Zol, an unsettling nonhuman ruler of an all-black wasteland country. Matte-black hooded figure, face mostly an absence under layered black veils, only two narrow white eyes visible, black crown of thin dead spires above the hood. HOI4 portrait composition, centered bust, subdued painterly 1930s-1940s strategy-game portrait style, charcoal-gray smoky backdrop, no text, no watermark, no gore, no copyrighted character traits, no modern props.
+- `docs/assets/010_death/processed_png/portrait_DTH_zol_world_end.png`
+
+Editing rule:
+
+- Duplicate the static fallback portrait for every source frame.
+- Change only the eye-glow state.
+- Keep composition, silhouette, veil shape, crown, costume, background, and tonal balance fixed.
+- Do not add halo growth, ash drift, shroud motion, mouth movement, or whole-portrait flicker.
 
 Frame emphasis:
 
-- `00`: rest state, lowest eye glow, faint ash haze, minimal black crown silhouette
-- `01`: first stir, slightly stronger eye glow, faint pale haze behind the crown
-- `02`: gathering end, dim eclipse ring behind the head and heavier ash drift
-- `03`: advancing dominion, brighter eyes and more wind-torn shroud edges
-- `04`: world-end crest, strongest eye glow and stark eclipse halo
-- `05`: lingering crest, intense but softening glow with settling ash
-- `06`: ebbing aftermath, thinner halo and dimmer eyes
-- `07`: return to dread, low glow and almost no halo for the loop seam
+- `00`: faintest extra eye bloom
+- `01`: slight rise
+- `02`: low pulse
+- `03`: mid pulse
+- `04`: restrained peak
+- `05`: falling from peak
+- `06`: low fall
+- `07`: near-rest seam state

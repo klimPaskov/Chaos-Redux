@@ -239,7 +239,7 @@ These notes were the original `.gfx` handoff. Final wiring has been applied in t
   - Looping: `yes`
   - `play_on_show`: `yes`
   - Local precedent: mirrors the existing `frameAnimatedSpriteType` portrait pattern already used for `GFX_portrait_THR_buddha_mandate_animated` and `GFX_portrait_THR_empty_seat_animated`
-  - Use notes: static fallback uses frame `04` and is applied to Zol at world-end; portrait reads as nonhuman/ungendered and should keep institutional name `Zol`
+  - Use notes: static fallback remains the existing unchanged portrait and is applied to Zol at world-end; portrait reads as nonhuman/ungendered and should keep institutional name `Zol`; rebuilt animation is eyes-glow-only with no composition drift; validation confirmed all frames are `156x210`, the final sheet is `1248x210`, the preview loop stays subtle, and no parent `.gfx` update is needed because the registered 8-frame 4 FPS setup still matches the rebuilt sheet
 
 ## Export note
 
