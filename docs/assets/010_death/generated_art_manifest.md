@@ -4,6 +4,7 @@ Event id: `010`
 Event slug: `death`
 Source mode summary: generated non-icon art through official `image_gen`
 Contact sheet: `docs/assets/010_death/contact_sheets/death_processed_contact.png`
+Additional contact sheet: `docs/assets/010_death/contact_sheets/death_black_oath_routes_contact.png`
 
 ## Complete
 
@@ -176,6 +177,57 @@ Contact sheet: `docs/assets/010_death/contact_sheets/death_processed_contact.png
 - Asset status: `complete`
 - Notes: no readable text on papers or wall map
 
+### `herald_of_zol` flag set
+
+- Asset type: fictional cosmetic country flag set
+- Intended in-game use: Herald of Zol cosmetic identity
+- Source mode: generated
+- Source note: generated because Herald of Zol is a fictional alternate-history oath state and needed a distinct silhouette from the Death ring flag
+- Prompt note: charcoal-black cloth banner with a bone-white spear-and-oath emblem, restrained period cloth treatment, readable at flag sizes
+- Source PNG: `docs/assets/010_death/source_png/death_herald_of_zol_flag_source.png`
+- Processed PNG: `docs/assets/010_death/processed_png/death_herald_of_zol_flag.png`
+- Final path: `gfx/flags/death_herald_of_zol.tga`, `gfx/flags/medium/death_herald_of_zol.tga`, `gfx/flags/small/death_herald_of_zol.tga`
+- Target size: `82x52`, `41x26`, `10x7`
+- Sprite name: not applicable
+- `.gfx` file: not applicable
+- Related gameplay use: cosmetic Herald of Zol route flag
+- Asset status: `complete`
+- Notes: stable filename suggestion is `death_herald_of_zol`; emblem stays legible at small size and avoids the DTH broken-ring motif
+
+### `black_apostolate` flag set
+
+- Asset type: fictional cosmetic country flag set
+- Intended in-game use: Black Apostolate cosmetic identity
+- Source mode: generated
+- Source note: generated because the Black Apostolate is a hidden fictional route and needed a harsher institutional identity separate from both DTH and Herald visuals
+- Prompt note: pitch-black cloth banner with a bone-white apostolic obelisk and winged office-seal motif, readable at flag sizes
+- Source PNG: `docs/assets/010_death/source_png/death_black_apostolate_flag_source.png`
+- Processed PNG: `docs/assets/010_death/processed_png/death_black_apostolate_flag.png`
+- Final path: `gfx/flags/death_black_apostolate.tga`, `gfx/flags/medium/death_black_apostolate.tga`, `gfx/flags/small/death_black_apostolate.tga`
+- Target size: `82x52`, `41x26`, `10x7`
+- Sprite name: not applicable
+- `.gfx` file: not applicable
+- Related gameplay use: cosmetic Black Apostolate hidden-route flag
+- Asset status: `complete`
+- Notes: stable filename suggestion is `death_black_apostolate`; composition favors a stark central state-seal shape rather than another void emblem
+
+### `super_event_death_black_oath`
+
+- Asset type: super-event image
+- Intended in-game use: Herald oath reveal super-event
+- Source mode: generated
+- Source note: generated because the scene is a fictional alternate-history government oath tableau rather than a real archival event
+- Prompt note: 1936-1945 government chamber, officials around sealed oath table, looming void witness behind them, no readable text
+- Source PNG: `docs/assets/010_death/source_png/super_event_death_black_oath_source.png`
+- Processed PNG: `docs/assets/010_death/processed_png/super_event_death_black_oath.png`
+- Final path: `gfx/super_events/super_event_death_black_oath.dds`
+- Target size: `457x328`
+- Sprite name: `GFX_super_event_death_black_oath`
+- `.gfx` file: `interface/chaosx_super_events.gfx`
+- Related gameplay use: optional Herald oath reveal super-event
+- Asset status: `complete`
+- Notes: scene keeps the supernatural force present but restrained; composition remains readable in the HOI4 super-event crop
+
 ### Main-agent wired UI icon set
 
 - Asset type: decisions, focus icons, idea icons, and achievements
@@ -255,43 +307,101 @@ Contact sheet: `docs/assets/010_death/contact_sheets/death_processed_contact.png
 - Asset status: `blocked`
 - Notes: not attempted because the prompt did not provide a required target surface, `.gfx`/`.gui` destination, frame count, FPS, or approved briefing for a final animation package, and a transform-only mockup is forbidden
 
-### `herald_of_zol` and `black_apostolate` flag sets
-
-- Asset type: optional route flag sets
-- Intended in-game use: optional Herald/Black Apostolate route flags
-- Source mode: generated
-- Target size: `82x52`, `41x26`, `10x7`
-- Final path: not created
-- Sprite name: not applicable
-- Related gameplay use: only if those routes are implemented
-- Asset status: `blocked`
-- Notes: route implementation state was not provided in the prompt, so these were left out to avoid inventing unwired alternates
-
-### `super_event_death_black_oath`
-
-- Asset type: optional super-event image
-- Intended in-game use: Herald oath reveal super-event
-- Source mode: generated
-- Final path: not created
-- Sprite name: `GFX_super_event_death_black_oath`
-- Related gameplay use: only if Herald route is implemented deeply enough
-- Asset status: `blocked`
-- Notes: skipped for the same route-confirmation reason as the optional flag sets
+## Complete: Death Black Atlas UI Package
 
 ### `death_black_atlas_background`
-### `death_black_atlas_header_animated`
-### `death_coastal_risk_pulse_animated`
-### `death_wither_target_frame_animated`
-### `death_compact_warning_animated`
 
-- Asset type: Black Atlas scripted-GUI package
-- Intended in-game use: optional custom UI surfaces
+- Asset type: scripted-GUI background panel
+- Intended in-game use: Black Atlas main background
 - Source mode: generated
-- Final path: not created
-- Sprite name: concept only
-- Related gameplay use: Black Atlas scripted GUI if implemented
-- Asset status: `blocked`
-- Notes: the task did not provide exact target sizes, final DDS paths, target `.gfx`/`.gui` files, or animation briefs/frame counts, so these UI assets are missing required inputs under the subagent rules
+- Source note: generated because this is fictional UI art for an alternate-history atlas, not a historical scanned map
+- Source PNG: `docs/assets/010_death/source_png/death_black_atlas_background_source.png`
+- Processed PNG: `docs/assets/010_death/processed_png/death_black_atlas_background.png`
+- Final path: `gfx/interface/death/black_atlas/death_black_atlas_background.dds`
+- Target size: `520x236`
+- Sprite name: `GFX_death_black_atlas_background`
+- `.gfx` file: `interface/010_death.gfx`
+- Related gameplay use: Black Atlas panel background
+- Asset status: `complete`
+- Notes: black administrative sea-map atlas with pale registry lines and no readable text
+
+### `death_black_atlas_header`
+
+- Asset type: scripted-GUI header strip
+- Intended in-game use: Black Atlas static header fallback
+- Source mode: generated
+- Source PNG: `docs/assets/010_death/source_png/death_black_atlas_header_source.png`
+- Processed PNG: `docs/assets/010_death/processed_png/death_black_atlas_header.png`
+- Final path: `gfx/interface/death/black_atlas/death_black_atlas_header.dds`
+- Target size: `500x36`
+- Sprite name: `GFX_death_black_atlas_header`
+- `.gfx` file: `interface/010_death.gfx`
+- Related gameplay use: Black Atlas header fallback
+- Asset status: `complete`
+- Notes: central atlas notch stays readable at small height
+
+### `death_black_atlas_header_animated`
+
+- Asset type: scripted-GUI animated header sheet
+- Intended in-game use: Black Atlas animated header
+- Source mode: generated
+- Source PNG: `docs/assets/010_death/source_png/death_black_atlas_header_animated_source.png`
+- Processed PNG: `docs/assets/010_death/processed_png/death_black_atlas_header_static.png`
+- Final path: `gfx/interface/death/black_atlas/death_black_atlas_header_animated.dds`
+- Target size: `500x36` frames, `4000x36` sheet
+- Sprite name: `GFX_death_black_atlas_header_animated`
+- `.gfx` file: `interface/010_death.gfx`
+- Related gameplay use: Black Atlas animated header
+- Asset status: `complete`
+- Notes: `8` frames, `8 fps`, looping, source frames at `docs/assets/010_death/animations/death_black_atlas_header/source_frames/`, sheet PNG at `docs/assets/010_death/animations/death_black_atlas_header/sheets/death_black_atlas_header_sheet.png`
+
+### `death_coastal_risk_pulse`
+
+- Asset type: scripted-GUI animated warning mark
+- Intended in-game use: coastal-risk pulse
+- Source mode: generated
+- Source PNG: `docs/assets/010_death/source_png/death_coastal_risk_pulse_source.png`
+- Processed PNG: `docs/assets/010_death/processed_png/death_coastal_risk_pulse_static.png`
+- Final path: `gfx/interface/death/black_atlas/death_coastal_risk_pulse.dds`
+- Static fallback: `gfx/interface/death/black_atlas/death_coastal_risk_pulse_static.dds`
+- Target size: `36x36` frames, `288x36` sheet
+- Sprite name: `GFX_death_coastal_risk_pulse`, `GFX_death_coastal_risk_pulse_animated`
+- `.gfx` file: `interface/010_death.gfx`
+- Related gameplay use: small coastal-risk indicator
+- Asset status: `complete`
+- Notes: `8` frames, `8 fps`, looping, with source/processed frame package under `docs/assets/010_death/animations/death_coastal_risk_pulse/`
+
+### `death_wither_target_frame`
+
+- Asset type: scripted-GUI animated target frame
+- Intended in-game use: wither-target overlay
+- Source mode: generated
+- Source PNG: `docs/assets/010_death/source_png/death_wither_target_frame_source.png`
+- Processed PNG: `docs/assets/010_death/processed_png/death_wither_target_frame_static.png`
+- Final path: `gfx/interface/death/black_atlas/death_wither_target_frame.dds`
+- Static fallback: `gfx/interface/death/black_atlas/death_wither_target_frame_static.dds`
+- Target size: `36x36` frames, `288x36` sheet
+- Sprite name: `GFX_death_wither_target_frame`, `GFX_death_wither_target_frame_animated`
+- `.gfx` file: `interface/010_death.gfx`
+- Related gameplay use: target-frame overlay
+- Asset status: `complete`
+- Notes: `8` frames, `8 fps`, looping, with source/processed frame package under `docs/assets/010_death/animations/death_wither_target_frame/`
+
+### `death_compact_warning_pulse`
+
+- Asset type: scripted-GUI animated compact warning mark
+- Intended in-game use: compact warning pulse
+- Source mode: generated
+- Source PNG: `docs/assets/010_death/source_png/death_compact_warning_pulse_source.png`
+- Processed PNG: `docs/assets/010_death/processed_png/death_compact_warning_pulse_static.png`
+- Final path: `gfx/interface/death/black_atlas/death_compact_warning_pulse.dds`
+- Static fallback: `gfx/interface/death/black_atlas/death_compact_warning_pulse_static.dds`
+- Target size: `36x36` frames, `288x36` sheet
+- Sprite name: `GFX_death_compact_warning_pulse`, `GFX_death_compact_warning_pulse_animated`
+- `.gfx` file: `interface/010_death.gfx`
+- Related gameplay use: compact warning indicator
+- Asset status: `complete`
+- Notes: `8` frames, `8 fps`, looping, with source/processed frame package under `docs/assets/010_death/animations/death_compact_warning_pulse/`
 
 ## Workflow note
 

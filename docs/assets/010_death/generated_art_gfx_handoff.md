@@ -12,6 +12,22 @@ These notes were the original `.gfx` handoff. Final wiring has been applied in t
   - Gameplay use: default Death country flag
   - Use notes: no `.gfx` sprite needed; wire through normal country/cosmetic tag flag usage
 
+- `herald_of_zol`
+  - Final paths:
+    - `gfx/flags/death_herald_of_zol.tga`
+    - `gfx/flags/medium/death_herald_of_zol.tga`
+    - `gfx/flags/small/death_herald_of_zol.tga`
+  - Gameplay use: Herald of Zol cosmetic route flag
+  - Use notes: no `.gfx` sprite needed; stable filename suggestion is `death_herald_of_zol` unless the parent later decides to mirror a cosmetic-tag id exactly
+
+- `black_apostolate`
+  - Final paths:
+    - `gfx/flags/death_black_apostolate.tga`
+    - `gfx/flags/medium/death_black_apostolate.tga`
+    - `gfx/flags/small/death_black_apostolate.tga`
+  - Gameplay use: Black Apostolate cosmetic hidden-route flag
+  - Use notes: no `.gfx` sprite needed; stable filename suggestion is `death_black_apostolate` unless the parent later decides to mirror a cosmetic-tag id exactly
+
 ## Leader portrait
 
 - `leader_zol`
@@ -79,6 +95,87 @@ These notes were the original `.gfx` handoff. Final wiring has been applied in t
   - Final `.gfx` file: `interface/chaosx_super_events.gfx`
   - Related gameplay use: whole-world-consumed super-event
 
+- `super_event_death_black_oath`
+  - Final DDS path: `gfx/super_events/super_event_death_black_oath.dds`
+  - Sprite name: `GFX_super_event_death_black_oath`
+  - Final `.gfx` file: `interface/chaosx_super_events.gfx`
+  - Related gameplay use: Herald oath reveal super-event
+  - Use notes: composition is built around a central oath-table scene with restrained supernatural witness behind the officials; no readable text in the sealed document area
+
+## Death Black Atlas UI package
+
+- `death_black_atlas_background`
+  - Final DDS path: `gfx/interface/death/black_atlas/death_black_atlas_background.dds`
+  - Sprite name: `GFX_death_black_atlas_background`
+  - Suggested `.gfx` file: `interface/010_death.gfx`
+  - Related gameplay use: Black Atlas main background
+
+- `death_black_atlas_header`
+  - Final DDS path: `gfx/interface/death/black_atlas/death_black_atlas_header.dds`
+  - Sprite name: `GFX_death_black_atlas_header`
+  - Suggested `.gfx` file: `interface/010_death.gfx`
+  - Related gameplay use: Black Atlas static header fallback
+
+- `death_black_atlas_header_animated`
+  - Final static DDS path: `gfx/interface/death/black_atlas/death_black_atlas_header.dds`
+  - Final sheet DDS path: `gfx/interface/death/black_atlas/death_black_atlas_header_animated.dds`
+  - Final sheet PNG path: `docs/assets/010_death/animations/death_black_atlas_header/sheets/death_black_atlas_header_sheet.png`
+  - Proposed static sprite name: `GFX_death_black_atlas_header`
+  - Proposed animated sprite name: `GFX_death_black_atlas_header_animated`
+  - Suggested `.gfx` file: `interface/010_death.gfx`
+  - Target frame size: `500x36`
+  - Calculated sheet size: `4000x36`
+  - Frame count: `8`
+  - Animation rate: `8 fps`
+  - Looping: `yes`
+  - `play_on_show`: `yes`
+  - Use notes: decorative atlas registry swell; static fallback is safe for non-animated states
+
+- `death_coastal_risk_pulse`
+  - Final static DDS path: `gfx/interface/death/black_atlas/death_coastal_risk_pulse_static.dds`
+  - Final sheet DDS path: `gfx/interface/death/black_atlas/death_coastal_risk_pulse.dds`
+  - Final sheet PNG path: `docs/assets/010_death/animations/death_coastal_risk_pulse/sheets/death_coastal_risk_pulse_sheet.png`
+  - Proposed static sprite name: `GFX_death_coastal_risk_pulse`
+  - Proposed animated sprite name: `GFX_death_coastal_risk_pulse_animated`
+  - Suggested `.gfx` file: `interface/010_death.gfx`
+  - Target frame size: `36x36`
+  - Calculated sheet size: `288x36`
+  - Frame count: `8`
+  - Animation rate: `8 fps`
+  - Looping: `yes`
+  - `play_on_show`: `yes`
+  - Use notes: decorative/state-driven risk marker; static fallback is the lowest-risk ring state
+
+- `death_wither_target_frame`
+  - Final static DDS path: `gfx/interface/death/black_atlas/death_wither_target_frame_static.dds`
+  - Final sheet DDS path: `gfx/interface/death/black_atlas/death_wither_target_frame.dds`
+  - Final sheet PNG path: `docs/assets/010_death/animations/death_wither_target_frame/sheets/death_wither_target_frame_sheet.png`
+  - Proposed static sprite name: `GFX_death_wither_target_frame`
+  - Proposed animated sprite name: `GFX_death_wither_target_frame_animated`
+  - Suggested `.gfx` file: `interface/010_death.gfx`
+  - Target frame size: `36x36`
+  - Calculated sheet size: `288x36`
+  - Frame count: `8`
+  - Animation rate: `8 fps`
+  - Looping: `yes`
+  - `play_on_show`: `yes`
+  - Use notes: decorative/state-driven target frame; static fallback is the dormant bracket state
+
+- `death_compact_warning_pulse`
+  - Final static DDS path: `gfx/interface/death/black_atlas/death_compact_warning_pulse_static.dds`
+  - Final sheet DDS path: `gfx/interface/death/black_atlas/death_compact_warning_pulse.dds`
+  - Final sheet PNG path: `docs/assets/010_death/animations/death_compact_warning_pulse/sheets/death_compact_warning_pulse_sheet.png`
+  - Proposed static sprite name: `GFX_death_compact_warning_pulse`
+  - Proposed animated sprite name: `GFX_death_compact_warning_pulse_animated`
+  - Suggested `.gfx` file: `interface/010_death.gfx`
+  - Target frame size: `36x36`
+  - Calculated sheet size: `288x36`
+  - Frame count: `8`
+  - Animation rate: `8 fps`
+  - Looping: `yes`
+  - `play_on_show`: `yes`
+  - Use notes: decorative/state-driven compact warning pulse; static fallback is the dim seal state
+
 ## Expanded focus lane placeholders
 
 - The expanded Death focus tree is wired through `interface/010_death.gfx`.
@@ -106,9 +203,7 @@ These notes were the original `.gfx` handoff. Final wiring has been applied in t
 
 ## Blocked optional assets
 
-- `leader_zol_world_end_animated`: no final sheet/static package produced; missing approved animation brief inputs and target surface
-- `herald_of_zol`, `black_apostolate`, `super_event_death_black_oath`: route implementation not confirmed by prompt
-- `death_black_atlas_*`: missing exact target sizes, final paths, and target GUI surface/wiring
+- `leader_zol_world_end_animated`: no final sheet/static package produced; blocked on missing target surface, target size/package path, frame count, FPS, and the naming conflict between spec `death_zol_portrait_world_end_animated` and task `leader_zol_world_end_animated`
 
 ## Export note
 
