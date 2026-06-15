@@ -11,7 +11,7 @@ All selected direct text below is from public-domain scripture, public-domain li
 | Role label | Selected final title | Selected button / cultural remark | Selected quote |
 | --- | --- | --- | --- |
 | Mainland reveal | `His Name Was Death` | `For the living there is hope.` | `Men fear death, as children fear to go in the dark.` |
-| World-end | `No More Sea` | `The sea gave up the dead which were in it.` | `And we are here as on a darkling plain, / Swept with confused alarms of struggle and flight.` |
+| World-end | `No More Life` | `The sea gave up the dead which were in it.` | `And we are here as on a darkling plain, / Swept with confused alarms of struggle and flight.` |
 | Defeat aftermath | `The Unfinished Work` | `We will remember them.` | `It is for us the living, rather, to be dedicated here to the unfinished work.` |
 | Whole world consumed | `There Was No Man` | `The rest is silence.` | `Creation sleeps. 'Tis as the general pulse / Of life stood still, and nature made a pause.` |
 | Optional Herald oath reveal | `A Covenant with Death` | `We are at agreement.` | `We have made a covenant with death, and with hell are we at agreement.` |
@@ -61,8 +61,8 @@ This role is the first public naming of the crisis. `His Name Was Death` directl
 
 ### Selected package
 
-- Final title: `No More Sea`
-- Title source: Revelation 21:1, King James Version, 1611
+- Final title: `No More Life`
+- Title source: Original event-title wording, not a direct quotation
 - Button / cultural remark: `The sea gave up the dead which were in it.`
 - Button source: Revelation 20:13, King James Version, 1611
 - Main quote: `And we are here as on a darkling plain, / Swept with confused alarms of struggle and flight.`
@@ -72,17 +72,17 @@ This role is the first public naming of the crisis. `His Name Was Death` directl
 
 ### Why this fits
 
-The brief calls for a terminal, oceanic, global turn. `No More Sea` is short, shore-linked, and final. The button makes the maritime spread explicit. Arnold's lines fit the collapse of borders and order better than a purely apocalyptic scripture package; they read like governments and armies losing any stable world to defend.
+The brief calls for a terminal, oceanic, global turn. `No More Life` is short, final, and broader than the shore imagery alone. The button keeps the maritime spread explicit. Arnold's lines fit the collapse of borders and order better than a purely apocalyptic scripture package; they read like governments and armies losing any stable world to defend.
 
 ### Candidate comparison
 
 | Type | Candidate | Source | Year / period | Fit note | Recommendation |
 | --- | --- | --- | --- | --- | --- |
-| Title | `No More Sea` | Revelation 21:1, KJV | 1611 | Best shore/finality fit | Selected |
-| Title | `A Darkling Plain` | Arnold, `Dover Beach` | 1867 | Strong, but less coastal-final than `No More Sea` | Backup |
+| Title | `No More Life` | Original event-title wording | N/A | Best final world-end fit after title review | Selected |
+| Title | `A Darkling Plain` | Arnold, `Dover Beach` | 1867 | Strong, but less direct than `No More Life` | Backup |
 | Title | `The Ends of the Earth` | Biblical phrase, multiple books | Biblical | Broad and usable, but less distinctive | Backup |
 | Button | `The sea gave up the dead which were in it.` | Revelation 20:13, KJV | 1611 | Best fit for sea-borne disaster | Selected |
-| Button | `There was no more sea.` | Revelation 21:1, KJV | 1611 | Excellent, but too close to the selected title | Backup |
+| Button | `The former things are passed away.` | Revelation 21:4, KJV | 1611 | Excellent, but broader than the sea-borne disaster image | Backup |
 | Button | `Where ignorant armies clash by night.` | Arnold, `Dover Beach` | 1867 | Strong, but better as quote fragment than button | Backup |
 | Quote | `And we are here as on a darkling plain, / Swept with confused alarms of struggle and flight.` | Arnold, `Dover Beach` | 1867 | Best fit for global collapse and failing borders | Selected |
 | Quote | `There was silence in heaven about the space of half an hour.` | Revelation 8:1, KJV | 1611 | Good terminal silence line, but less oceanic | Backup |
@@ -91,6 +91,7 @@ The brief calls for a terminal, oceanic, global turn. `No More Sea` is short, sh
 ### Source links
 
 - Revelation 21:1 KJV: https://www.biblegateway.com/passage/?search=Revelation+21%3A1&version=KJV
+- Revelation 21:4 KJV: https://www.biblegateway.com/passage/?search=Revelation+21%3A4&version=KJV
 - Revelation 20:13 KJV: https://www.biblegateway.com/passage/?search=Revelation+20%3A13&version=KJV
 - Arnold, `Dover Beach`: https://www.gutenberg.org/files/54985/54985-h/54985-h.htm
 
@@ -154,7 +155,7 @@ This is the strongest package for the absolute terminal state. The title directl
 | --- | --- | --- | --- | --- | --- |
 | Title | `There Was No Man` | Jeremiah 4:25, KJV | 1611 | Best witness-absence fit | Selected |
 | Title | `The Rest Is Silence` | Shakespeare, *Hamlet* V.2 | c. 1600 | Strong, but better used as the final button | Backup |
-| Title | `No More Sea` | Revelation 21:1, KJV | 1611 | Excellent, but already stronger in the world-end role | Backup |
+| Title | `No More Life` | Original event-title wording | N/A | Excellent, but already stronger in the world-end role | Backup |
 | Button | `The rest is silence.` | Shakespeare, *Hamlet* V.2 | c. 1600 | Best final button in the set | Selected |
 | Button | `For the memory of them is forgotten.` | Ecclesiastes 9:5, KJV | 1611 | Excellent oblivion line, but heavier and less elegant as a button | Backup |
 | Button | `There was no man.` | Jeremiah 4:25, KJV | 1611 | Too repetitive with selected title | Backup |
@@ -216,7 +217,7 @@ Use these if tone shifts during implementation:
 | Role | Backup title | Backup button | Backup quote |
 | --- | --- | --- | --- |
 | Mainland reveal | `The King of Terrors` | `The living know that they shall die.` | `Never send to know for whom the bell tolls; it tolls for thee.` |
-| World-end | `A Darkling Plain` | `There was no more sea.` | `There was silence in heaven about the space of half an hour.` |
+| World-end | `A Darkling Plain` | `The former things are passed away.` | `There was silence in heaven about the space of half an hour.` |
 | Defeat aftermath | `We Will Remember Them` | `Lest we forget.` | `At the going down of the sun and in the morning / We will remember them.` |
 | Whole world consumed | `The Rest Is Silence` | `For the memory of them is forgotten.` | `I beheld, and, lo, there was no man...` |
 | Herald oath reveal | `Set to His Seal` | `Under falsehood have we hid ourselves.` | `Because ye have said, We have made a covenant with death...` |

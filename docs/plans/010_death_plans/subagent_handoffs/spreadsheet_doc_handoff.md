@@ -42,9 +42,9 @@ Event ID: `10`
   - `First Silence`
   - `Missing Island Reports`
   - `His Name Was Death`
-  - `No More Sea`
+  - `No More Life`
   - `There Was No Man`
-- `I11` changed to world-end wording aligned with the in-game `No More Sea` and final `There Was No Man` evolution-detail text.
+- `I11` changed to world-end wording aligned with the in-game `No More Life` and final `There Was No Man` evolution-detail text.
 
 ## Implementation Evidence For Status
 
