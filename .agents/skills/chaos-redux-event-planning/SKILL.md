@@ -9,6 +9,8 @@ Use this skill to design or expand events for the Hearts of Iron IV mod Chaos Re
 
 This skill creates event specifications. It does not implement code. Implementation belongs to `chaos-redux-events`. Visual asset generation and processing belongs to `chaos-redux-event-assets`. Animated sprite planning, frame-sheet requirements, animated portrait packages, and animation handoff details belong to `chaos-redux-frame-animation` when motion is needed. Super-event quote, remark, music, and presentation research belongs to `chaos-redux-super-events`.
 
+Important super-event boundary: this planning skill may define super-event role, trigger, tone, image direction, quote direction, cultural-remark direction, and audio mood. It must not invent final super-event titles, final button text, final cultural remarks, final quotes, source-like allusions, or final audio selections. Any source-dependent wording belongs to `chaos-redux-super-events` and must stay blocked until researched and documented. If a working label is needed for a row, filename, prompt, or diagram, mark it clearly as `role label, not final localisation`.
+
 ## 1. Required reading
 
 Before writing the event specification, use the following as the design baseline:
@@ -1082,6 +1084,23 @@ Do not fully research quotes, cultural remarks, or music inside this skill. Use 
 
 The event spec should provide enough direction for `chaos-redux-super-events` to find real quotes, meaningful cultural remarks, and suitable audio.
 
+### Super-event text boundary and research gate
+
+This skill is direction-only for super-event title text, `.a` button text, `.q` quote text, and any cultural reference. Do not write a final title, option, button line, quote, lyric fragment, slogan, proverb, scripture excerpt, literary allusion, or film, song, book, or game reference inside the event spec unless the exact wording has already been researched, sourced, and documented through the super-event skill or a provided source file.
+
+If research has not been done, use neutral research gates instead of lines that could be pasted into localisation:
+
+- `Reveal super-event title: research required`
+- `Button remark: research required`
+- `Main quote: research required`
+- `Cultural reference: research required`
+
+Do not include unresearched `possible line`, `sample title`, `placeholder quote`, or `temporary button text`. Implementation agents may treat those as final localisation.
+
+Describe the desired shape instead. For example, write `short title direction about public recognition of the threat, avoiding generic apocalypse wording`, not a finished title.
+
+Functional labels are allowed for spec structure, asset filenames, and prompt routing, but they must be neutral and explicitly non-final. Use labels such as `mainland reveal super-event`, `world-end super-event`, or `se_death_mainland_reveal`. Do not name assets, localisation keys, or prompt files after unresearched title concepts.
+
 ### Major-event defeat aftermath
 
 Some major events should also have a structured aftermath when the threat is beaten.
@@ -1295,11 +1314,11 @@ For each super-event, include:
 - super-event purpose
 - trigger moment
 - tone
-- title direction
+- title direction, not a final title unless researched and sourced
 - description direction
-- quote direction
-- cultural remark direction
-- audio mood
+- quote direction, not quote text unless researched and sourced
+- cultural remark direction, not final button text unless researched and sourced
+- audio mood, not a final track unless researched and licensed
 - image direction
 - whether it is a normal escalation, defeat moment, aftermath moment, or world-end moment
 - any special constraints from the event spec
@@ -1317,6 +1336,8 @@ The `chaos-redux-super-events` prompt should ask the agent to:
 Do not claim a quote, cultural reference, or audio track is usable without checking.
 
 If a license or attribution is unclear, mark it as uncertain.
+
+The super-event prompt must explicitly state that unresearched titles, button text, quotes, cultural remarks, slogans, lyric fragments, allusions, and audio choices are blockers. The implementation agent must not convert research directions, working labels, achievement names, asset names, or sample wording into final super-event localisation.
 
 ## Improvement-loop expansion specs
 
@@ -1439,7 +1460,9 @@ The prompt should cover all required visual assets, progression-state variants, 
 
 Create a super-event prompt for `chaos-redux-super-events` if the event has one or more super-events.
 
-The prompt should cover titles, descriptions, quotes, cultural remarks, audio research, image direction, source documentation, licensing notes, and coordination with asset work.
+The prompt should cover title research, description direction, quote research, cultural remark research, audio research, image direction, source documentation, licensing notes, and coordination with asset work.
+
+The prompt must not provide unresearched final titles, button text, quotes, slogans, lyric fragments, cultural references, or final audio choices. Use research gates and role labels instead. It must tell the super-event researcher to produce the final text package only after source checks, attribution checks, copyright checks, and license checks where relevant.
 
 ### Achievement prompt file
 
@@ -1466,6 +1489,7 @@ The prompt must tell the coding agent to:
 - follow `chaos-redux-events`
 - use `chaos-redux-event-assets` if visual assets are required
 - use `chaos-redux-super-events` if super-events are required
+- treat unresearched super-event titles, button text, quotes, cultural remarks, slogans, allusions, and audio choices as blockers, not as implementation-ready localisation
 - keep all Chaos Redux systems aligned
 - report anything that cannot be implemented cleanly
 - keep iterating until the full spec is implemented to its fullest extent
@@ -1492,6 +1516,7 @@ A good goal prompt should include:
 - the required skills or docs to follow
 - the top design non-negotiables
 - the requirement to create all required static and animated assets, static fallbacks, tags, starting divisions, reinforcement pathways, non-linear focus trees based on the mapped paths, focus filter tags, decisions, evolutions, achievements, and docs
+- the requirement to research and source final super-event titles, button text, quotes, cultural remarks, and audio through the proper super-event workflow when super-events exist
 - the requirement to provide a concrete completion report
 
 If the goal prompt is near 4000 characters, shorten it by pointing to files instead of repeating details.
@@ -1529,6 +1554,8 @@ The final response should include:
 - animated sprite and animated portrait needs mapped with static fallbacks, state logic, and `chaos-redux-frame-animation` handoff expectations when relevant
 - historical flags, real symbols, and real leader portraits marked for sourced asset work when relevant
 - super-event direction defined when needed
+- super-event text research gates used when final title, button text, quote, cultural remark, or audio has not been researched
+- no unresearched super-event title, button text, quote, cultural remark, slogan, lyric fragment, or allusion presented as final localisation
 - country package matrices created for new or modified countries when relevant
 - starting force and reinforcement pathway plans created for new or transformed fighting countries, including dynamic scaling, template families, unit sources, and later reinforcement routes
 - AI strategy matrix created for major events or country-creation events
@@ -1641,6 +1668,10 @@ Reject the draft if it has any of these problems:
 - missing asset coverage for country names, cosmetic identities, ideology flags, focus-route flags, leader changes, portraits, faction emblems, decisions, focuses, ideas, achievements, and UI where relevant
 - missing AI route matrix for major events, country-creation events, or foreign-influence systems
 - missing super-event handoff for required super-events
+- super-event title, button text, quote, cultural remark, slogan, lyric fragment, allusion, or audio choice written as final content without research and source documentation
+- placeholder, sample, or working super-event text that could be pasted into localisation
+- role labels, asset names, achievement titles, or prompt filenames reused as final super-event localisation without research
+- coding prompt or goal prompt that lets unresearched super-event text be implemented instead of treating it as blocked
 - goal prompt over 4000 characters
 - goal prompt that tries to contain the whole spec instead of pointing to files
 - missing final zip package containing all required spec files, prompt files, route diagrams if used, research notes, and matrices

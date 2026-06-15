@@ -4,7 +4,7 @@ Hi there! I am thrilled that you'd like to contribute to this mod. Your help is 
 
 Your contribution can range from testing the mod, presenting new features/events, reporting bugs, or translations.
 
-Watch my video to get started: <youtube video link>
+Watch my video to get started: <https://youtu.be/feD3BDelD_U>
 
 ## Setup and submitting a pull request
 
@@ -14,7 +14,7 @@ If you're unfamiliar with GitHub, you should watch this video: <https://www.yout
 
 This repo intentionally leaves the coding agent resources visible, so if you want to, you can fork the repo and contribute directly.
 
-Watch the tutorial videos: <tutorial videos playlist youtube link placeholder>
+Watch the tutorial videos: <https://www.youtube.com/watch?v=pH_VpBs0mIk&list=PLh6JmuEabQioc4V8IYGEsMtqiw-xemeX3>
 
 ## Contact
 
