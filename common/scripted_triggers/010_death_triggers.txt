@@ -239,6 +239,40 @@ death_is_valid_coastal_jump_target = {
 	death_state_has_no_divisions = yes
 }
 
+death_is_valid_world_end_foothold_target_strict = {
+	is_coastal = yes
+	NOT = { is_capital = yes }
+	NOT = { death_is_consumed_state = yes }
+	NOT = { is_controlled_by = DTH }
+	NOT = { has_state_flag = holy_realm_protected_state }
+	NOT = { has_state_flag = death_coastal_watch }
+	NOT = { has_state_flag = death_quarantine_line }
+	death_state_has_no_divisions = yes
+}
+
+death_is_valid_world_end_foothold_target_relaxed = {
+	is_coastal = yes
+	NOT = { is_capital = yes }
+	NOT = { death_is_consumed_state = yes }
+	NOT = { is_controlled_by = DTH }
+	NOT = { has_state_flag = holy_realm_protected_state }
+	death_state_has_no_divisions = yes
+}
+
+death_is_valid_world_end_foothold_target_defended = {
+	is_coastal = yes
+	NOT = { is_capital = yes }
+	NOT = { death_is_consumed_state = yes }
+	NOT = { is_controlled_by = DTH }
+	NOT = { has_state_flag = holy_realm_protected_state }
+}
+
+death_is_valid_world_end_foothold_target_last_resort = {
+	is_coastal = yes
+	NOT = { death_is_consumed_state = yes }
+	NOT = { is_controlled_by = DTH }
+}
+
 death_should_reveal_from_current_state = {
 	NOT = { has_global_flag = death_publicly_revealed }
 	is_island_state = no
@@ -394,6 +428,91 @@ death_is_living_compact_member = {
 death_has_no_forbidden_oath = {
 	NOT = { has_country_flag = death_black_oath_taken }
 	NOT = { has_country_flag = death_herald_of_zol }
+}
+
+death_country_continent_under_not_on_my_continent_limit = {
+	OR = {
+		AND = {
+			any_owned_state = { is_capital = yes is_on_continent = europe }
+			check_variable = {
+				var = global.death_mainland_consumed_states_europe
+				value = constant:death_decision_tuning.not_on_my_continent_mainland_limit
+				compare = less_than
+			}
+		}
+		AND = {
+			any_owned_state = { is_capital = yes is_on_continent = middle_east }
+			check_variable = {
+				var = global.death_mainland_consumed_states_middle_east
+				value = constant:death_decision_tuning.not_on_my_continent_mainland_limit
+				compare = less_than
+			}
+		}
+		AND = {
+			any_owned_state = { is_capital = yes is_on_continent = asia }
+			check_variable = {
+				var = global.death_mainland_consumed_states_asia
+				value = constant:death_decision_tuning.not_on_my_continent_mainland_limit
+				compare = less_than
+			}
+		}
+		AND = {
+			any_owned_state = { is_capital = yes is_on_continent = africa }
+			check_variable = {
+				var = global.death_mainland_consumed_states_africa
+				value = constant:death_decision_tuning.not_on_my_continent_mainland_limit
+				compare = less_than
+			}
+		}
+		AND = {
+			any_owned_state = { is_capital = yes is_on_continent = australia }
+			check_variable = {
+				var = global.death_mainland_consumed_states_australia
+				value = constant:death_decision_tuning.not_on_my_continent_mainland_limit
+				compare = less_than
+			}
+		}
+		AND = {
+			any_owned_state = { is_capital = yes is_on_continent = north_america }
+			check_variable = {
+				var = global.death_mainland_consumed_states_north_america
+				value = constant:death_decision_tuning.not_on_my_continent_mainland_limit
+				compare = less_than
+			}
+		}
+		AND = {
+			any_owned_state = { is_capital = yes is_on_continent = south_america }
+			check_variable = {
+				var = global.death_mainland_consumed_states_south_america
+				value = constant:death_decision_tuning.not_on_my_continent_mainland_limit
+				compare = less_than
+			}
+		}
+	}
+}
+
+death_state_is_last_ferry_threatened = {
+	is_coastal = yes
+	OR = {
+		is_island_state = yes
+		death_state_borders_active_wasteland = yes
+		has_global_flag = death_publicly_revealed
+		has_global_flag = death_world_end_started
+	}
+}
+
+death_counted_every_name_has_clean_methods = {
+	death_has_no_forbidden_oath = yes
+	NOT = { has_country_flag = death_black_book_exposed }
+	NOT = { has_country_flag = death_black_book_discredited }
+	OR = {
+		NOT = { has_variable = death_black_method_exposure }
+		check_variable = {
+			var = death_black_method_exposure
+			value = constant:death_decision_tuning.black_method_exposure_high
+			compare = less_than
+		}
+	}
 }
 
 death_dark_methods_visible = {
