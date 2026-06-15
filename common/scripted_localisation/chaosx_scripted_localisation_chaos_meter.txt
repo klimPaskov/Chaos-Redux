@@ -2304,6 +2304,23 @@ defined_text = {
 }
 
 defined_text = {
+	name = GetChaosMeterDeathsViewTooltipDeathConsumptionLine
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.chaos_meter_deaths_view_cause_death_consumption_entries^chaos_deaths_index
+				value = 0
+				compare = greater_than
+			}
+		}
+		localization_key = chaos_meter.window.deaths.entry.tooltip.line.death_consumption
+	}
+	text = {
+		localization_key = chaos_meter.window.deaths.entry.tooltip.line.none
+	}
+}
+
+defined_text = {
 	name = GetChaosMeterDeathsViewTooltipUnknownLine
 	text = {
 		trigger = {
@@ -2777,6 +2794,16 @@ defined_text = {
 			localization_key = chaos_meter.deaths.cause.zombie_outbreak_decay
 		}
 		text = {
+			trigger = {
+				check_variable = {
+					var = chaos_meter_deaths_selected_last_reason
+					value = constant:chaos_meter_deaths_reason.death_consumption
+					compare = equals
+				}
+			}
+			localization_key = chaos_meter.deaths.cause.death_consumption
+		}
+		text = {
 			localization_key = chaos_meter.deaths.cause.unknown
 		}
 }
@@ -2919,6 +2946,16 @@ defined_text = {
 				}
 			}
 			localization_key = chaos_meter.deaths.cause.zombie_outbreak_decay
+		}
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.chaos_meter_deaths_detail_reason_entries^chaos_deaths_detail_index
+					value = constant:chaos_meter_deaths_reason.death_consumption
+					compare = equals
+				}
+			}
+			localization_key = chaos_meter.deaths.cause.death_consumption
 		}
 		text = {
 			localization_key = chaos_meter.deaths.cause.unknown

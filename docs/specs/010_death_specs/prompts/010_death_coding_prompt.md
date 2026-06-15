@@ -42,7 +42,7 @@ Implement Event ID 10 as `Death`, fully replacing the obsolete `Spirit of War/Pe
 - Death mechanics/focus/progression tree or equivalent staged branch system preserving Shroud, Hunger, Census, Wasteland, Coastal, Host, Last Shores lanes.
 - Decisions/missions: Missing Island, Death Country, Living Containment Compact, Wasteland Outposts, World-End Emergency. Dark Methods and Black Oath must be fully implemented or explicitly queued/hidden, not half-visible.
 - Script constants and helper effects/triggers for tuning, target selection, consumption, state cleanup, wither progress, ghost spawn, coastal jump, defeat check, compact values, and UI values.
-- Triggerable scenario `SCN-010` with Quiet Origin, Island Pattern, Mainland Reveal, Last Shores types and four intensity stops.
+- Triggerable scenario `SCN-006` with Quiet Origin, Island Pattern, Mainland Reveal, Last Shores types and four intensity stops.
 - Assets and super-events per asset/super-event prompts. Register placeholder sprite definitions only if final asset production is queued, and report placeholders clearly.
 - Achievements per achievement prompt.
 - AI strategy for Death, neighbors, majors, compact, dark methods, and Heralds.
