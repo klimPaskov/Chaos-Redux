@@ -2,7 +2,7 @@
 
 Status: implemented by the parent agent after the focus-tree audit and improvement-loop addendum.
 
-This file records the implementation-ready minimum expansion that replaced the earlier loose follow-up. The parent implementation went beyond the 17-focus minimum and expanded `common/national_focus/010_death_focus_tree.txt` into a fixed-purpose 26-node Death lane tree with opening, Shroud, Hunger, Census, Public Death, Coastal, Wasteland, Host, Last Shores, and World Consumed branches. Dark Methods, Black Oath, Herald, Black Apostolate, Black Atlas, and optional animated surfaces remain hidden/queued.
+This file records the implementation-ready minimum expansion that replaced the earlier loose follow-up. The parent implementation went beyond the 17-focus minimum and expanded `common/national_focus/010_death_focus_tree.txt` into a fixed-purpose 26-node Death lane tree with opening, Shroud, Hunger, Census, Public Death, Coastal, Wasteland, Host, Last Shores, and World Consumed branches. The later remaining-route addendum has also been implemented: Dark Methods, Black Oath, Herald, Black Apostolate, Black Atlas, and the world-end Zol animated package are active behind their real prerequisites rather than hidden placeholders.
 
 Implemented follow-up evidence:
 
@@ -11,13 +11,15 @@ Implemented follow-up evidence:
 - `common/scripted_triggers/010_death_triggers.txt` adds the stricter low-pop island target helper and makes coastal watch no longer an absolute block after the `No Ferry Returns` focus.
 - `interface/010_death.gfx` registers base and `_shine` sprites for every Death focus.
 - `localisation/english/010_death_l_english.yml` contains title and description keys for every implemented focus.
-- `docs/events/010_death.md`, `docs/assets/010_death/generated_art_manifest.md`, and `docs/assets/010_death/generated_art_gfx_handoff.md` document the expanded focus tree and copied placeholder icon blockers.
+- `docs/events/010_death.md`, `docs/assets/010_death/generated_art_manifest.md`, and `docs/assets/010_death/generated_art_gfx_handoff.md` document the expanded focus tree and completed route/asset packages.
 
-## Verdict
+## Original Audit Verdict
 
-The current seven-focus DTH ladder is acceptable only as a fixed-purpose debug package if the parent explicitly queues or supersedes the source focus-tree architecture in `docs/specs/010_death_specs/specs/010_death_country_package_and_focus_tree.md`.
+Superseded by the parent implementation. The text below records the audit finding that existed before the 26-node lane tree and remaining-route implementation.
 
-Against the current accepted spec, it is materially incomplete. The spec says Death may be fixed-purpose, but still needs branch logic around shroud, hunger, census, coastal recovery, wasteland pressure, host behavior, and terminal hunger. It also says the implementation must not replace that branch logic with a single linear ladder unless the same logic exists in mechanics, AI, docs, and event-log detail. The current tree has the mechanics around it, but the focus surface itself does not yet express the lanes, and several focus rewards do not match their names.
+The earlier seven-focus DTH ladder was acceptable only as a fixed-purpose debug package if the parent explicitly queued or superseded the source focus-tree architecture in `docs/specs/010_death_specs/specs/010_death_country_package_and_focus_tree.md`.
+
+Against the accepted spec at audit time, that ladder was materially incomplete. The spec says Death may be fixed-purpose, but still needs branch logic around shroud, hunger, census, coastal recovery, wasteland pressure, host behavior, and terminal hunger. It also says the implementation must not replace that branch logic with a single linear ladder unless the same logic exists in mechanics, AI, docs, and event-log detail. The implemented tree now expresses those lanes and the related mechanics.
 
 Classification:
 
@@ -27,8 +29,8 @@ Classification:
 | `death_black_census_focus` does not add or upgrade `death_black_census` | Completion blocker | No, because the implemented focus title/description already promise this surface |
 | `death_wasteland_roads` does not change wither/wasteland behavior | Completion blocker | No, because the implemented focus title/description already promise this surface |
 | Focus AI is mostly flat and not stage-aware | Completion blocker for DTH as an AI-usable focus tree | No, because DTH can load and use the tree |
-| Dark Methods and Black Oath are hidden/queued | Future-depth improvement, not a blocker | Yes; keep hidden unless fully implemented |
-| Black Atlas GUI and animated Zol/world-end presentation | Future-depth improvement | Yes; current normal decision category can carry completion |
+| Dark Methods and Black Oath were outside this focus-only pass | Resolved by the remaining-route addendum implementation | No outstanding queue remains for these routes |
+| Black Atlas GUI and animated Zol/world-end presentation were outside this focus-only pass | Resolved by the remaining-route addendum and final asset pass | No outstanding queue remains for these surfaces |
 
 ## Smallest Real Expansion
 
@@ -55,7 +57,7 @@ If `cost = constant:...` is not accepted in focus files, keep file-scoped `@deat
 | `death_no_mail_before_spring` | New | Shroud | `x = 6 y = 3` | `death_shroud_whispers` | Calls `death_focus_apply_no_mail_before_spring`; extends report delay bands and reduces early investigation pressure |
 | `death_hunger_shore` | Existing | Hunger | `x = 10 y = 2` | `death_country_on_the_island` | Rework reward into `death_focus_apply_hunger_shore`; raises island pressure and unlocks stricter low-pop island target preference |
 | `death_lowest_names_first` | New | Hunger | `x = 10 y = 3` | `death_hunger_shore` | Calls `death_focus_apply_lowest_names_first`; makes `death_try_island_spread` try a stricter low-pop target pool before normal island spread |
-| `death_black_census_focus` | Existing | Census | `x = 14 y = 2` | `death_country_on_the_island`; available once `global.death_consumed_population >= constant:death_focus_gate.black_census_population_k` or Death is revealed | Calls `death_focus_apply_black_census`; adds `death_black_census`, sets census-scaling flag, improves ghost readiness but does not spawn free armies by itself |
+| `death_black_census_focus` | Existing | Census | `x = 14 y = 2` | `death_country_on_the_island`; available once `global.death_consumed_population` is at or above `constant:death_focus_gate.black_census_population_k` or Death is revealed | Calls `death_focus_apply_black_census`; adds `death_black_census`, sets census-scaling flag, improves ghost readiness but does not spawn free armies by itself |
 | `death_first_ghost_muster_focus` | New | Census / host bridge | `x = 16 y = 4` | `death_black_census_focus`; available at `constant:death_ghosts.passive_threshold` or higher | Calls `death_focus_apply_first_ghost_muster`; spawns one tier-appropriate host if a valid active wasteland exists and records the military stage. This is not required for Public Death below the 600 tier |
 | `death_public_death_focus` | New | Convergence | `x = 10 y = 5` | Requires the pre-reveal foundation: `death_no_mail_before_spring`, `death_lowest_names_first`, and `death_black_census_focus`; available only after `death_publicly_revealed` | Calls `death_focus_apply_public_death`; ensures `death_public_death` idea, world-threat refresh, neighbor-war refresh, and mainland reveal evolution are aligned |
 | `death_another_shoreline` | New | Coastal | `x = 6 y = 6` | `death_public_death_focus` | Calls `death_focus_apply_another_shoreline`; improves coastal-jump recovery and reduces revealed cooldown through a focus-specific cooldown constant |
@@ -237,17 +239,7 @@ Placeholder rule for implementation: register stable sprite ids and copy a thema
 
 ## Dark Methods And Black Oath Boundary
 
-Keep Dark Methods, Black Oath, Herald of Zol, and Black Apostolate fully hidden and queued.
-
-Do not add:
-
-- focus ids for Oath, Herald, Apostolate, necromancy, or black-book defender routes;
-- public focus descriptions that imply those routes exist;
-- decision visibility changes exposing `death_black_oath` or `death_black_book`;
-- super-event slots for Herald oath;
-- achievement hooks that require Herald or necromancy unless the full route is implemented.
-
-It is acceptable for registered icon sprites such as `GFX_decision_death_black_oath` and `GFX_decision_death_black_book` to remain as queued assets, but docs and completion reports must continue to say those routes are hidden/unimplemented.
+This focus-only plan kept Dark Methods, Black Oath, Herald of Zol, and Black Apostolate out of the DTH focus tree. The later remaining-route addendum implemented them as living-country decisions, ideas, cosmetic identities, achievements, and Black Atlas state instead. They still do not belong in DTH focus ids or public focus descriptions.
 
 ## Acceptance Criteria
 
@@ -263,17 +255,15 @@ The focus depth finding can close when all of these are true:
 - Host lane changes ghost spawn or AI aggression through helpers and constants without removing 600/800/world-end gates.
 - Each new focus has name/description localisation, base sprite, shine sprite, and appropriate search filters.
 - AI weights are stage-aware and cannot select impossible stage content.
-- Dark Methods and Black Oath remain hidden unless implemented as full routes.
+- Dark Methods and Black Oath are implemented as full living-country routes and remain outside the DTH focus tree.
 - `docs/events/010_death.md` and the country/focus-tree source spec are updated or annotated after implementation so the plan is no longer a loose unresolved addendum.
 
 ## Promotion Guidance
 
-Keep this file under `docs/plans/010_death_plans/` until the parent decides its disposition.
+This plan is implemented and retained as audit history. Current source-of-truth status lives in `docs/events/010_death.md` and the Event 010 specs.
 
-If accepted for implementation, promote the design into:
+The implemented design has been promoted into:
 
-- `docs/specs/010_death_specs/specs/010_death_country_package_and_focus_tree.md`, replacing the broad 23-node architecture with this 17-focus minimum or marking the 17-focus version as the first accepted implementation slice;
-- `docs/events/010_death.md`, replacing the current generic future-plan note about focus depth with the implemented focus route map;
-- the final completion report route-coverage table.
-
-If the parent accepts the current seven-focus ladder instead, do not promote this addendum as source design. Instead, update the source spec and event doc to say the lane expansion is queued future depth, then classify it as non-blocking for final review.
+- `docs/specs/010_death_specs/specs/010_death_country_package_and_focus_tree.md`, as the accepted fixed-purpose Death focus architecture;
+- `docs/events/010_death.md`, as the implemented focus route map;
+- the final completion report route-coverage evidence.

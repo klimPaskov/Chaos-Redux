@@ -3,6 +3,8 @@
 Audit date: 2026-06-15
 Scope: DTH Death country package only.
 
+Supersession note: this handoff predates the 26-node focus tree, remaining-route implementation, Black Atlas UI, Black Oath super-event, and final asset pass. Findings that describe a seven-focus tree or queued route assets are retained as audit history and superseded by the current Event 010 files.
+
 ## Changed Files
 
 - `history/countries/DTH - Death.txt`
@@ -79,7 +81,7 @@ After: `history/countries/DTH - Death.txt` registers `set_oob = "DTH_1936"` on l
 - Focus icon sprites exist in `interface/010_death.gfx`.
 - Starting ideas are defined, localised, and have sprite paths. The patched OOB now supports later focus/scripted host spawns by registering the templates at start.
 - Decision surfaces are outside this audit's requested file list, but references show Death decisions use `is_death_country` exclusions and `death_country_exists` gates.
-- Optional animated Zol/world-end UI assets, Black Atlas UI assets, and Black Oath/Herald art remain queued in `docs/events/010_death.md`; not a country-package blocker for the audited intent.
+- Animated Zol/world-end UI assets, Black Atlas UI assets, and Black Oath/Herald art were implemented in the parent final asset pass; they are no longer queued route blockers.
 
 ## Starting Military, Technology, Industry, Supply, And Production Issues
 

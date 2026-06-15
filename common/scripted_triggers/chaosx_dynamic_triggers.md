@@ -31,6 +31,7 @@ Current coverage includes:
 - countries with the Holy Realm active marker
 - Germany Mengele civil-war and post-coup state markers
 - active Fury actor countries
+- `DTH` / original `DTH` / countries with the Death country marker
 
 ## is_actual_nonhuman_country
 
@@ -43,3 +44,4 @@ Current coverage includes:
 - weaponized zombie outbreak countries
 - Wendigo outbreak flags or the Wendigo cosmetic tag
 - `ZIN`
+- `DTH` / original `DTH` / countries with the Death country marker

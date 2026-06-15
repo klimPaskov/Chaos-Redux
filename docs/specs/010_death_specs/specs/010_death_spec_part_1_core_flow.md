@@ -38,7 +38,7 @@ The danger becomes readable through repetition: more islands stop answering, sta
 
 ## Baseline campaign stages
 
-Baseline stages are not evolution log entries by themselves. They are the ordinary flow of the Death crisis. Evolution logs are reserved for mutation milestones described later.
+Baseline stages are the ordinary flow of the Death crisis. The implemented event log promotes the major baseline stages below into milestone evolution entries because Event 010 uses the event-log/evolution/detail window to explain a mostly hidden crisis after the fact. These entries are descriptive crisis milestones, not alternate mutation branches.
 
 ### Stage 0 — Hidden bootstrap
 
@@ -52,7 +52,7 @@ The first state consumption records the population loss internally and adds the 
 
 Death does almost nothing for a long time. It has no army and makes no declarations. It cannot attack by ordinary fronts. Its first spread pulses prefer tiny nearby island states with the lowest population and low strategic value.
 
-A delayed report event may fire 90 to 180 days after the origin. It should not be global unless the player owns the island, neighbors the sea zone, controls a nearby naval base, or has a relevant intelligence/observation hook. The report direction is:
+A delayed report event may fire 90 to 180 days after the origin. It should not be global unless the player owns the island, controls it, owns nearby coasts, controls a nearby naval base, or has a relevant intelligence/observation hook. The report direction is:
 
 - a radio silence;
 - a mail ship returning with nobody at the pier;
@@ -243,7 +243,7 @@ The details field should mention that the event replaces `Spirit of War/Peace` o
 
 Event log history should record the fire-once event as Death once it is known. Before reveal, reports can be logged under ambiguous labels if the event log supports hidden-stage text. After reveal, all logs should use `Death`.
 
-Evolution logs should record mutation milestones only, not ordinary stage movement. Stage 1 island origin, Stage 2 island spread, and Stage 3 mainland reveal are baseline flow. Evolution tracks are defined in the mechanics file.
+Evolution logs should record Death's promoted baseline milestones and any later mutation milestones as descriptive crisis history. Stage 1 island origin, Stage 2 island spread, and Stage 3 mainland reveal remain the baseline flow of the event, but Event 010 uses evolution entries for those milestones so the Event Details window can explain a hidden crisis after it becomes knowable. These entries are not alternate mutation branches.
 
 ## Cluster role
 

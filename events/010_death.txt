@@ -67,3 +67,52 @@ country_event = {
 		death_run_spread_pulse = yes
 	}
 }
+
+country_event = {
+	id = chaosx.nr10.20
+	title = chaosx.nr10.20.t
+	desc = chaosx.nr10.20.d
+	picture = GFX_report_event_death_census
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr10.20.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr10.21
+	title = chaosx.nr10.21.t
+	desc = chaosx.nr10.21.d
+	picture = GFX_report_event_death_census
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr10.21.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr10.24
+	title = chaosx.nr10.24.t
+
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = death_herald_of_zol
+		has_global_flag = death_world_end_started
+		NOT = { has_global_flag = death_defeated }
+		capital_scope = {
+			NOT = { death_is_consumed_state = yes }
+			NOT = { is_controlled_by = DTH }
+		}
+	}
+
+	immediate = {
+		set_country_flag = death_friend_of_zol_ready
+		clr_country_flag = death_friend_of_zol_check_scheduled
+	}
+}

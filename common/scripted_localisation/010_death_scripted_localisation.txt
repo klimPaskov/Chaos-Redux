@@ -1,0 +1,117 @@
+defined_text = {
+	name = GetDeathAtlasStage
+
+	text = {
+		trigger = { has_global_flag = death_world_end_started }
+		localization_key = death_black_atlas_stage_last_shores
+	}
+	text = {
+		trigger = { has_global_flag = death_publicly_revealed }
+		localization_key = death_black_atlas_stage_revealed
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = death_black_atlas_stage_unknown
+	}
+}
+
+defined_text = {
+	name = GetDeathAtlasCoastRisk
+
+	text = {
+		trigger = { has_global_flag = death_world_end_started }
+		localization_key = death_black_atlas_coast_world_end
+	}
+	text = {
+		trigger = { has_global_flag = death_coastal_jump_cooldown }
+		localization_key = death_black_atlas_coast_cooldown
+	}
+	text = {
+		trigger = {
+			death_country_exists = yes
+			DTH = { num_of_controlled_states < constant:death_spread.coastal_jump_contained_state_limit }
+		}
+		localization_key = death_black_atlas_coast_exposed
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = death_black_atlas_coast_watched
+	}
+}
+
+defined_text = {
+	name = GetDeathAtlasLineStatus
+
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.death_front_readiness
+				value = constant:death_decision_tuning.atlas_front_held_threshold
+				compare = greater_than_or_equals
+			}
+		}
+		localization_key = death_black_atlas_line_held
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.death_front_readiness
+				value = constant:death_decision_tuning.atlas_front_thin_threshold
+				compare = greater_than_or_equals
+			}
+		}
+		localization_key = death_black_atlas_line_thin
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = death_black_atlas_line_broken
+	}
+}
+
+defined_text = {
+	name = GetDeathAtlasCompactStatus
+
+	text = {
+		trigger = { NOT = { has_global_flag = death_living_compact_formed } }
+		localization_key = death_black_atlas_compact_absent
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.death_compact_cohesion
+				value = constant:death_decision_tuning.compact_cohesion_threshold
+				compare = greater_than_or_equals
+			}
+		}
+		localization_key = death_black_atlas_compact_coherent
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = death_black_atlas_compact_stressed
+	}
+}
+
+defined_text = {
+	name = GetDeathAtlasForbiddenStatus
+
+	text = {
+		trigger = { has_country_flag = death_black_apostolate }
+		localization_key = death_black_atlas_forbidden_apostolate
+	}
+	text = {
+		trigger = { has_country_flag = death_herald_of_zol }
+		localization_key = death_black_atlas_forbidden_herald
+	}
+	text = {
+		trigger = { death_black_book_is_open = yes }
+		localization_key = death_black_atlas_forbidden_book
+	}
+	text = {
+		trigger = { has_country_flag = death_black_book_burned }
+		localization_key = death_black_atlas_forbidden_burned
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = death_black_atlas_forbidden_none
+	}
+}

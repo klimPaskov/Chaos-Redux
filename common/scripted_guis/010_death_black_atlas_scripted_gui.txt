@@ -1,0 +1,34 @@
+scripted_gui = {
+	death_black_atlas_scripted_gui = {
+		context_type = decision_category
+		window_name = "death_black_atlas_container"
+
+		ai_enabled = { always = no }
+		visible = {
+			is_ai = no
+			has_country_flag = death_black_atlas_open
+			has_global_flag = death_publicly_revealed
+			NOT = { has_global_flag = death_defeated }
+		}
+
+		effects = {
+			death_black_atlas_close_button_click = {
+				clr_country_flag = death_black_atlas_open
+			}
+		}
+
+		triggers = {
+			death_black_atlas_close_button_click_enabled = { always = yes }
+			death_black_atlas_forbidden_values_visible = {
+				OR = {
+					has_country_flag = death_black_book_opened
+					has_country_flag = death_black_book_burned
+					has_country_flag = death_whispered_to_zol
+					has_country_flag = death_black_oath_taken
+					has_country_flag = death_herald_of_zol
+					has_country_flag = death_black_apostolate
+				}
+			}
+		}
+	}
+}

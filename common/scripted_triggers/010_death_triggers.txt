@@ -1,3 +1,6 @@
+@death_origin_preferred_major_capital_distance = 1250
+@death_origin_outer_major_capital_distance = 750
+
 # ============================================================================
 # CHAOS REDUX - EVENT 010 DEATH TRIGGERS
 # ============================================================================
@@ -47,6 +50,55 @@ death_state_borders_active_wasteland = {
 	}
 }
 
+death_origin_has_safe_owner_and_controller = {
+	OWNER = {
+		is_ai = yes
+		NOT = { is_major = yes }
+		NOT = { is_special_chaos_country = yes }
+	}
+	CONTROLLER = {
+		is_ai = yes
+		NOT = { is_major = yes }
+		NOT = { is_special_chaos_country = yes }
+	}
+}
+
+death_origin_is_remote_from_major_or_player_capitals_preferred = {
+	NOT = {
+		any_state = {
+			is_capital = yes
+			OR = {
+				OWNER = { is_major = yes }
+				OWNER = { is_ai = no }
+				CONTROLLER = { is_major = yes }
+				CONTROLLER = { is_ai = no }
+			}
+			distance_to = {
+				target = PREV
+				value < @death_origin_preferred_major_capital_distance
+			}
+		}
+	}
+}
+
+death_origin_is_remote_from_major_or_player_capitals_outer = {
+	NOT = {
+		any_state = {
+			is_capital = yes
+			OR = {
+				OWNER = { is_major = yes }
+				OWNER = { is_ai = no }
+				CONTROLLER = { is_major = yes }
+				CONTROLLER = { is_ai = no }
+			}
+			distance_to = {
+				target = PREV
+				value < @death_origin_outer_major_capital_distance
+			}
+		}
+	}
+}
+
 death_is_valid_origin_state_preferred = {
 	is_island_state = yes
 	state_population_k > 0
@@ -58,6 +110,12 @@ death_is_valid_origin_state_preferred = {
 	NOT = { is_capital = yes }
 	NOT = { death_is_consumed_state = yes }
 	NOT = { is_controlled_by = DTH }
+	death_origin_has_safe_owner_and_controller = yes
+	death_origin_is_remote_from_major_or_player_capitals_preferred = yes
+	NOT = { industrial_complex > 0 }
+	NOT = { arms_factory > 0 }
+	NOT = { dockyard > 0 }
+	NOT = { has_state_flag = holy_realm_protected_state }
 	death_state_has_no_divisions = yes
 }
 
@@ -72,6 +130,9 @@ death_is_valid_origin_state_outer = {
 	NOT = { is_capital = yes }
 	NOT = { death_is_consumed_state = yes }
 	NOT = { is_controlled_by = DTH }
+	death_origin_has_safe_owner_and_controller = yes
+	death_origin_is_remote_from_major_or_player_capitals_outer = yes
+	NOT = { has_state_flag = holy_realm_protected_state }
 	death_state_has_no_divisions = yes
 }
 
@@ -294,6 +355,50 @@ death_has_no_forbidden_oath = {
 	NOT = { has_country_flag = death_herald_of_zol }
 }
 
+death_dark_methods_visible = {
+	NOT = { is_death_country = yes }
+	death_country_exists = yes
+	has_global_flag = death_publicly_revealed
+	NOT = { has_global_flag = death_defeated }
+	NOT = { has_country_flag = death_herald_of_zol }
+	NOT = { has_country_flag = death_black_oath_taken }
+	OR = {
+		has_war_with = DTH
+		death_is_living_compact_member = yes
+		death_has_recaptured_wasteland_candidate = yes
+		has_global_flag = death_world_end_started
+	}
+}
+
+death_black_book_is_open = {
+	has_country_flag = death_black_book_opened
+	NOT = { has_country_flag = death_black_book_burned }
+	NOT = { has_country_flag = death_black_book_discredited }
+}
+
+death_black_oath_visible = {
+	NOT = { is_death_country = yes }
+	death_country_exists = yes
+	has_global_flag = death_publicly_revealed
+	NOT = { has_global_flag = death_defeated }
+	NOT = { has_country_flag = death_herald_of_zol }
+	NOT = { has_country_flag = death_black_oath_taken }
+	NOT = { has_country_flag = death_black_oath_broken }
+	OR = {
+		has_war_with = DTH
+		has_country_flag = death_black_book_exposed
+		has_global_flag = death_world_end_started
+		any_controlled_state = { death_state_borders_active_wasteland = yes }
+	}
+}
+
+death_herald_route_visible = {
+	NOT = { is_death_country = yes }
+	death_country_exists = yes
+	has_country_flag = death_herald_of_zol
+	NOT = { has_global_flag = death_defeated }
+}
+
 death_has_coastal_watch_candidate = {
 	any_controlled_state = {
 		is_coastal = yes
@@ -314,6 +419,51 @@ death_has_recaptured_wasteland_candidate = {
 	any_controlled_state = {
 		has_state_flag = death_recaptured_wasteland
 		NOT = { has_state_flag = death_dead_zone_outpost }
+	}
+}
+
+death_has_dead_port_candidate = {
+	any_controlled_state = {
+		is_coastal = yes
+		NOT = { is_capital = yes }
+		NOT = { death_is_consumed_state = yes }
+		NOT = { has_state_flag = death_herald_dead_port }
+	}
+}
+
+death_has_feed_border_candidate = {
+	any_controlled_state = {
+		NOT = { is_capital = yes }
+		NOT = { death_is_consumed_state = yes }
+		OR = {
+			death_state_borders_active_wasteland = yes
+			AND = {
+				has_global_flag = death_world_end_started
+				is_coastal = yes
+			}
+		}
+	}
+}
+
+death_black_apostolate_available = {
+	death_herald_route_visible = yes
+	has_global_flag = death_world_end_started
+	NOT = { has_country_flag = death_black_apostolate }
+	NOT = { death_is_living_compact_member = yes }
+	check_variable = {
+		var = death_black_favor
+		value = constant:death_decision_tuning.black_apostolate_favor_threshold
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = death_name_debt
+		value = constant:death_decision_tuning.black_apostolate_debt_threshold
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = death_herald_sacrificed_states
+		value = constant:death_decision_tuning.black_apostolate_wasteland_threshold
+		compare = greater_than_or_equals
 	}
 }
 
@@ -404,4 +554,65 @@ can_pay_death_last_shores_response_cost = {
 	has_equipment = { convoy > constant:death_decision_cost.last_shores_convoy_gate }
 	has_equipment = { support_equipment > constant:death_decision_cost.last_shores_support_gate }
 	has_equipment = { motorized_equipment > constant:death_decision_cost.last_shores_truck_gate }
+}
+
+can_pay_death_open_black_book_cost = {
+	political_power > constant:death_decision_cost.open_black_book_pp_gate
+	has_stability > constant:death_decision_cost.open_black_book_stability_gate
+}
+
+can_pay_death_bind_unburied_cost = {
+	has_army_experience > constant:death_decision_cost.bind_unburied_army_xp_gate
+	has_manpower > constant:death_decision_cost.bind_unburied_manpower_gate
+	has_equipment = { support_equipment > constant:death_decision_cost.bind_unburied_support_gate }
+}
+
+can_pay_death_interrogate_empty_road_cost = {
+	political_power > constant:death_decision_cost.interrogate_empty_road_pp_gate
+	command_power > constant:death_decision_cost.interrogate_empty_road_cp_gate
+}
+
+can_pay_death_seal_names_cost = {
+	political_power > constant:death_decision_cost.seal_names_pp_gate
+	has_equipment = { support_equipment > constant:death_decision_cost.seal_names_support_gate }
+}
+
+can_pay_death_burn_black_book_cost = {
+	political_power > constant:death_decision_cost.burn_black_book_pp_gate
+}
+
+can_pay_death_whisper_to_zol_cost = {
+	political_power > constant:death_decision_cost.whisper_to_zol_pp_gate
+	has_stability > constant:death_decision_cost.whisper_to_zol_stability_gate
+}
+
+can_pay_death_take_black_oath_cost = {
+	political_power > constant:death_decision_cost.take_black_oath_pp_gate
+	has_stability > constant:death_decision_cost.take_black_oath_stability_gate
+	has_war_support > constant:death_decision_cost.take_black_oath_war_support_gate
+}
+
+can_pay_death_offer_prison_census_cost = {
+	political_power > constant:death_decision_cost.offer_prison_census_pp_gate
+	has_stability > constant:death_decision_cost.offer_prison_census_stability_gate
+	has_manpower > constant:death_decision_cost.offer_prison_census_manpower_gate
+}
+
+can_pay_death_open_dead_port_cost = {
+	command_power > constant:death_decision_cost.open_dead_port_cp_gate
+	has_fuel > constant:death_decision_cost.open_dead_port_fuel_gate
+	has_equipment = { convoy > constant:death_decision_cost.open_dead_port_convoy_gate }
+}
+
+can_pay_death_feed_border_cost = {
+	command_power > constant:death_decision_cost.feed_border_cp_gate
+	political_power > constant:death_decision_cost.feed_border_pp_gate
+	has_stability > constant:death_decision_cost.feed_border_stability_gate
+	has_manpower > constant:death_decision_cost.feed_border_manpower_gate
+}
+
+can_pay_death_break_oath_cost = {
+	political_power > constant:death_decision_cost.break_oath_pp_gate
+	command_power > constant:death_decision_cost.break_oath_cp_gate
+	has_stability > constant:death_decision_cost.break_oath_stability_gate
 }

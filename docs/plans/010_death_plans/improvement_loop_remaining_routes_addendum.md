@@ -1,24 +1,26 @@
 # Event 010 Death Remaining Routes Addendum
 
-Status: open implementation addendum for the reopened Event 010 Death goal.
+Status: implemented and closed by the parent Event 010 Death implementation.
+
+Closure note: this plan is retained as design and audit history. The named route packages were implemented and promoted into `docs/events/010_death.md`, `docs/specs/010_death_specs/specs/010_death_decisions_ui_ai.md`, `docs/specs/010_death_specs/specs/010_death_country_package_and_focus_tree.md`, and `docs/specs/010_death_specs/specs/010_death_assets_super_events_achievements.md`.
 
 Scope: Dark Methods, Black Oath, Herald of Zol, Black Apostolate, Black Atlas UI, route achievements, asset and animation handoffs, and route connections that deepen the existing Death package without turning it into a second event.
 
 Do not treat this as a request for another broad Death focus-tree pass. The current fixed-purpose DTH focus tree is deep enough for Death itself. The remaining depth belongs on the living-country response layer and the forbidden-route layer.
 
-## Prior Queue Disposition
+## Implementation Disposition
 
-| Queued item | Disposition | Reason |
+| Item | Final disposition | Evidence |
 | --- | --- | --- |
-| Focus tree depth follow-up | Implemented by parent; fold into specs/docs | The active 26-node tree covers Shroud, Hunger, Census, Public Death, Coastal, Wasteland, Host, Last Shores, and World Consumed. Another DTH focus lane would add noise. |
-| Dark Methods | Implement now; fold into specs if accepted | Current files reserve icons and docs describe the route, but no decisions, helpers, AI, localisation, achievement state, or cleanup exist. |
-| Black Oath | Implement now; fold into specs if accepted | The route is referenced by achievement filters and design docs but is still only a blocker flag check. It should be a hard alternate response path, not a normal alliance system. |
-| Herald of Zol | Implement now as the Black Oath route state | This should be a country condition, cosmetic/flag package, diplomatic posture, and decision unlock. It should not become a separate tag or a full focus tree. |
-| Black Apostolate | Implement now as hidden Herald culmination | The country package spec already defines the no-bloat boundary: hidden, difficult, isolationist, no population restoration, no free living-state cores, no separate Death empire. |
-| Black Atlas UI | Implement now as a compact management surface | The existing decision layer is readable now, but Dark Methods and Black Oath add route values. A small Atlas prevents tooltip overload and gives queued assets a real target surface. |
-| Route achievements | Implement now | `death_friend_of_zol` and `death_book_burner` are already queued and unwired. Add one Apostolate achievement only if the Apostolate route is implemented. |
-| Optional animated Zol and Atlas animation | Implement as asset handoff and wire static fallbacks | Animation is valuable only where it marks a route threshold or UI warning. It must be frame-sheet animation with static fallback, not a transform-only mockup. |
-| Optional Herald/Black Oath super-event | Queue behind route implementation and research | The route should support a super-event role label, but this addendum must not invent final title, button, quote, or audio. |
+| Focus tree depth follow-up | Implemented and promoted | The active 26-node tree covers Shroud, Hunger, Census, Public Death, Coastal, Wasteland, Host, Last Shores, and World Consumed. |
+| Dark Methods | Implemented and promoted | Decisions, helpers, AI gating, localisation, achievement hooks, cleanup, and Black Atlas values are active. |
+| Black Oath | Implemented and promoted | The route is a hard alternate response path with Zol contact, oath-taking, Herald state, compact lockout, debt/favor, betrayal pressure, and cleanup. |
+| Herald of Zol | Implemented as the Black Oath route state | Cosmetic identity, flags, ideas, diplomacy posture, decision unlocks, and Death targeting exceptions are active. |
+| Black Apostolate | Implemented as hidden Herald culmination | The proclamation route, cosmetic identity, achievement state, route consequences, and no-restoration boundary are active. |
+| Black Atlas UI | Implemented | The scripted GUI summarizes Death and forbidden-route values while decisions remain the authoritative action surface. |
+| Route achievements | Implemented | `death_friend_of_zol`, `death_book_burner`, and `death_black_apostolate` are defined, localised, wired, and backed by DDS triplets. |
+| Optional animated Zol and Atlas animation | Implemented with static fallbacks | Animated packages use frame sheets, source frames, contact sheets, previews, manifest entries, and `.gfx`/`.gui` wiring. |
+| Optional Herald/Black Oath super-event | Implemented for Black Oath after research | Researched title/option/quote/audio/image documentation is recorded; the Apostolate remains a hidden route culmination without a separate final super-event requirement. |
 
 ## Design Boundary
 
@@ -382,7 +384,7 @@ Suggested displayed values:
 
 ## Asset And Animation Handoff
 
-Register sprites with stable names before requesting final art. Copy vanilla placeholders so the game has no missing sprites while art is pending.
+Final sprites were registered with stable names and backed by generated final assets or static fallbacks, so the game has no missing sprite dependencies for the implemented route package.
 
 Suggested paths and sprite names:
 
@@ -397,7 +399,7 @@ Suggested paths and sprite names:
 | Herald of Zol flag variant | `gfx/flags/cosmetic/herald_of_zol/` or project-standard cosmetic flag folder | project-standard cosmetic flag keys |
 | Black Apostolate flag variant | `gfx/flags/cosmetic/black_apostolate/` or project-standard cosmetic flag folder | project-standard cosmetic flag keys |
 | Zol animated portrait overlay | `gfx/leaders/DTH/zol_world_end_animated.dds` | `GFX_leader_zol_world_end_animated` |
-| Black Oath super-event image role | project-standard super-event image folder | role label only until researched |
+| Black Oath super-event image | `gfx/super_events/super_event_death_black_oath.dds` | `GFX_chaosx_super_event_66` |
 | Route achievement icon, Black Book | project-standard achievement icon folder | existing `death_book_burner` achievement sprite |
 | Route achievement icon, Herald | project-standard achievement icon folder | existing `death_friend_of_zol` achievement sprite |
 | Route achievement icon, Apostolate | project-standard achievement icon folder | `death_black_apostolate` achievement sprite if achievement is accepted |
@@ -429,7 +431,7 @@ Implement only the achievements that map directly to the remaining route work.
 
 `death_black_apostolate`
 
-- Add only if Black Apostolate is implemented.
+- Implemented because Black Apostolate is implemented.
 - Condition: player became Herald, completed the Last Name chain, proclaimed the Black Apostolate during Death world-end or Last Shores phase, controlled the configured dead-zone mandate count, kept the capital unconsumed, and survived the configured delay.
 - Disqualifiers: oath broken, Death defeated before proclamation, capital consumed, route cosmetic/idea cleanup missing.
 
@@ -437,12 +439,12 @@ Do not add a separate oathbreaker achievement in this pass. Breaking the oath is
 
 ## Super-Event Boundary
 
-This addendum supports these role labels only:
+This addendum supported these role labels:
 
 - Black Oath public reveal by a major or player-led country.
 - Black Apostolate proclamation during Last Shores/world-end pressure.
 
-Do not invent final title, button, quote, audio, or final super-event text in implementation. If the route is accepted, pass those role labels to the super-event text/audio workflow and update the relevant super-event docs after research.
+Do not invent final title, button, quote, audio, or final super-event text in implementation. The accepted Black Oath package was passed through the super-event text/audio workflow and the relevant super-event docs were updated after research.
 
 ## Validation Acceptance
 
@@ -460,13 +462,13 @@ The implementation should not be considered complete until these are true:
 - AI has explicit weights or hard blocks for every AI-visible route decision.
 - Docs under `docs/events/010_death.md` and `docs/specs/010_death_specs/` are updated after implementation.
 
-## Promotion Guidance
+## Promotion Closure
 
-Keep this file in `docs/plans/010_death_plans/` until the parent accepts or rejects each route package. If accepted:
+The parent accepted and implemented each route package. The design has been promoted into:
 
-- Fold Dark Methods, Black Oath, Herald, Black Atlas, and AI details into `docs/specs/010_death_specs/010_death_decisions_ui_ai.md`.
-- Fold Black Apostolate identity and route boundaries into `docs/specs/010_death_specs/010_death_country_package_and_focus_tree.md`.
-- Fold assets, animation, achievements, and super-event role labels into `docs/specs/010_death_specs/010_death_assets_super_events_achievements.md`.
-- Update `docs/events/010_death.md` after implementation to describe the final player-facing systems.
+- `docs/specs/010_death_specs/specs/010_death_decisions_ui_ai.md` for Dark Methods, Black Oath, Herald, Black Atlas, and AI details.
+- `docs/specs/010_death_specs/specs/010_death_country_package_and_focus_tree.md` for Black Apostolate identity and route boundaries.
+- `docs/specs/010_death_specs/specs/010_death_assets_super_events_achievements.md` for assets, animation, achievements, and the Black Oath super-event role.
+- `docs/events/010_death.md` for the final player-facing systems.
 
-If implementation rejects one of the named items as bloat, record the rejection and reason in this plan before closure. Given the current reopened goal, the recommended path is implementation, not rejection, for every named item above.
+No named route item was rejected as bloat. A further improvement-loop pass is not needed for this addendum.
