@@ -208,11 +208,11 @@ chaosx.events_log.total_fired: "Total fired: §Y[?global.total_events_fired|.0]�
 chaosx.events_log.minor_since_major: "Minor since major: §Y[?global.minor_events_since_major|.0]§!"
 chaosx.events_log.unique_left: "Unique events left: §Y[?global.unfired_total_events_count|.0]§!"
 chaosx.events_log.breakdown: "Left by type:\n- Major: §Y[?global.unfired_major_events_count|.0]§!\n- Fire once: §Y[?global.unfired_fire_once_events_count|.0]§!\n- Repeatable: §Y[?global.unfired_repeatable_events_count|.0]§!"
-chaosx.events_log.current_major_weight: "Current major event weight: §Y[?global.current_major_event_weight|.0]§!"
+chaosx.events_log.current_major_weight: "Accumulated major weight: §Y[?global.current_major_event_weight|.0]§!"
 chaosx.events_log.live.header: "§YLive Values§!"
 chaosx.events_log.live.recovery_rate: "Recovery rate: §Y[?global.minor_event_recovery_rate|.0]§!"
 chaosx.events_log.live.cap_reduction: "Cap reduction: §Y[?global.reduce_cap_factor|.0%]§!"
-chaosx.events_log.live.weight_per_minor: "Weight per minor: §Y[?global.major_event_weight_per_minor|.0]§!"
+chaosx.events_log.live.weight_per_minor: "Current major gain: §Y[?global.current_dynamic_major_weight_gain|.0]§! (baseline §Y[?global.major_event_weight_per_minor|.0]§!)"
 chaosx.events_log.live.default_weight: "Default weight: §Y[?global.default_event_weight|.0]§!"
 chaosx.events_log.live.timer_modifier: "Timer modifier: §Y[?global.chaos_timer_modifier|.2]§!"
 chaosx.events_log.hint: "This window tracks fired events and current event-system stats."
@@ -872,10 +872,10 @@ chaosx.advanced_settings.cap_reduction_value: "[?global.settings_cap_reduction|.
 chaosx.advanced_settings.cap_reduction.decrease.tt: "§YDecrease Cap Reduction Factor by [GetAdvancedIncrementValue]%§!\n\n§GClick Modifiers:§!\n §WLeft Click:§! -[GetAdvancedIncrementValue]%\n §WRight Click:§! Change increment mode\n\n§YControls the percentage reduction applied to event weights after firing§!"
 chaosx.advanced_settings.cap_reduction.increase.tt: "§YIncrease Cap Reduction Factor by [GetAdvancedIncrementValue]%§!\n\n§GClick Modifiers:§!\n §WLeft Click:§! +[GetAdvancedIncrementValue]%\n §WRight Click:§! Change increment mode\n\n§YControls the percentage reduction applied to event weights after firing§!"
 
-chaosx.advanced_settings.major_weight_label: "Major Event Weight:"
-chaosx.advanced_settings.major_weight_value.tt: "Click to type the major event weight. Press Enter to apply it and Del to clear the current typed value."
-chaosx.advanced_settings.major_weight.decrease.tt: "§YDecrease Major Event Weight Per Minor by [GetAdvancedIncrementValue]§!\n\n§GClick Modifiers:§!\n §WLeft Click:§! -[GetAdvancedIncrementValue]\n §WRight Click:§! Change increment mode\n\n§YControls how much weight per fired minor event is added to a major event§!"
-chaosx.advanced_settings.major_weight.increase.tt: "§YIncrease Major Event Weight Per Minor by [GetAdvancedIncrementValue]§!\n\n§GClick Modifiers:§!\n §WLeft Click:§! +[GetAdvancedIncrementValue]\n §WRight Click:§! Change increment mode\n\n§YControls how much weight per fired minor event is added to a major event§!"
+chaosx.advanced_settings.major_weight_label: "Baseline Major Gain:"
+chaosx.advanced_settings.major_weight_value.tt: "Click to type the baseline major gain. Press Enter to apply it and Del to clear the current typed value."
+chaosx.advanced_settings.major_weight.decrease.tt: "§YDecrease Baseline Major Gain by [GetAdvancedIncrementValue]§!\n\n§GClick Modifiers:§!\n §WLeft Click:§! -[GetAdvancedIncrementValue]\n §WRight Click:§! Change increment mode\n\n§YThis is the configured baseline at 90 active non-major events and 10 active major events. The current gain scales with the active pool.§!"
+chaosx.advanced_settings.major_weight.increase.tt: "§YIncrease Baseline Major Gain by [GetAdvancedIncrementValue]§!\n\n§GClick Modifiers:§!\n §WLeft Click:§! +[GetAdvancedIncrementValue]\n §WRight Click:§! Change increment mode\n\n§YThis is the configured baseline at 90 active non-major events and 10 active major events. The current gain scales with the active pool.§!"
 
 chaosx.advanced_settings.timer_modifier_label: "Timer Modifier:"
 chaosx.advanced_settings.timer_modifier.decrease.tt: "§YDecrease Timer Modifier by 0.1§!\n\n§GControls the base timer multiplier for all chaos tiers§!\n\n§YLower values make events fire more frequently§!"
@@ -894,7 +894,7 @@ chaosx.advanced_settings.reset.tt: "§YReset Advanced Settings§!\n\nResets all 
 chaosx.advanced_settings.current_values_header: "§YCurrent Active Values§!"
 chaosx.advanced_settings.current_recovery_rate: "Recovery Rate: §Y[GetActiveRecoveryRateValue]§!"
 chaosx.advanced_settings.current_cap_reduction: "Cap Reduction: §Y[?global.reduce_cap_factor|.0%]§!"
-chaosx.advanced_settings.current_major_weight: "Major Weight: §Y[GetActiveMajorWeightValue]§!"
+chaosx.advanced_settings.current_major_weight: "Current Major Gain: §Y[GetActiveMajorWeightValue]§!"
 
 # Main Menu
 chaosx_main_menu_about: "A B O U T"

@@ -16,6 +16,82 @@ Before adding new dynamic logic, check this file and reuse an existing effect if
 - [refresh_world_threat_state](#refresh_world_threat_state)
 - [grant_random_chaos_special_project_available_tech](#grant_random_chaos_special_project_available_tech)
 - [apply_crisis_rescue_event_weight_adjustments](#apply_crisis_rescue_event_weight_adjustments)
+- [evaluate_random_event_active_pool_candidate](#evaluate_random_event_active_pool_candidate)
+- [count_dynamic_major_weight_pool_events](#count_dynamic_major_weight_pool_events)
+- [calculate_dynamic_major_weight_gain](#calculate_dynamic_major_weight_gain)
+- [apply_dynamic_major_weight_gain_after_minor](#apply_dynamic_major_weight_gain_after_minor)
+
+## evaluate_random_event_active_pool_candidate
+
+This reusable event-system helper lives in `common/scripted_effects/chaosx_logic_effects.txt`. It checks whether a temp `event_id` is a current automatic random-pool entry before weight and UI filter checks are applied.
+
+Inputs: `event_id` temp variable.
+Output: `event_active_pool_candidate_is_valid` temp variable (`1` or `0`).
+
+It excludes disabled events, fired non-repeatable events, locked Event 91, unavailable Holy Realm, unavailable Fury, unavailable automatic Tensions Rising, and any other permanent-unavailable gates added to the helper. Repeatable events remain valid after firing as long as they stay in the pool.
+
+Example:
+
+```txt
+set_temp_variable = { event_id = global.all_events^i }
+evaluate_random_event_active_pool_candidate = yes
+if = {
+	limit = { check_variable = { event_active_pool_candidate_is_valid > 0 } }
+	# Candidate is in the current automatic random pool.
+}
+```
+
+## count_dynamic_major_weight_pool_events
+
+This event-system helper lives in `common/scripted_effects/chaosx_logic_effects.txt`. It counts active random-pool entries for the dynamic major-gain formula, using `evaluate_random_event_active_pool_candidate` so counting and random selection share the same non-weight eligibility gate.
+
+Inputs: `global.major_events`, `global.fire_once_events`, and `global.repeatable_events`.
+Outputs: `global.current_dynamic_major_active_major_count` and `global.current_dynamic_major_active_non_major_count`.
+Side effects: writes only the two global count variables and temp loop helpers.
+
+The helper counts active major entries separately from active non-major entries. Fire-once entries leave the count after firing; repeatable entries remain in the count when they are still active, even if their current weight is low.
+
+Example:
+
+```txt
+count_dynamic_major_weight_pool_events = yes
+```
+
+## calculate_dynamic_major_weight_gain
+
+This event-system helper lives in `common/scripted_effects/chaosx_logic_effects.txt`. It calculates the current per-minor major-event gain from the configured baseline and active pool composition:
+
+```text
+gain = global.major_event_weight_per_minor * active_non_major / active_major * baseline_major / baseline_non_major
+```
+
+Inputs: configured baseline in `global.major_event_weight_per_minor`; baseline constants in `event_system_dynamic_major_gain`; current pool arrays.
+Outputs: `global.current_dynamic_major_weight_gain`, `global.current_dynamic_major_active_major_count`, and `global.current_dynamic_major_active_non_major_count`.
+Defaults: if active major count or active non-major count is zero, the gain is set to `0` and no division is attempted.
+Side effects: refreshes active pool counts, rounds the result with `round_temp_variable`, and clamps it to `settings_advanced_bounds.major_weight_per_minor`.
+
+Example:
+
+```txt
+calculate_dynamic_major_weight_gain = yes
+log = "Current dynamic major gain: [?global.current_dynamic_major_weight_gain]"
+```
+
+## apply_dynamic_major_weight_gain_after_minor
+
+This event-system helper lives in `common/scripted_effects/chaosx_logic_effects.txt`. It is the pacing hook used after one minor global pacing event. It calls `calculate_dynamic_major_weight_gain`, skips if the calculated gain is `0`, and adds the current calculated gain to each active, unfired major event.
+
+Inputs: active pool arrays and current major event weights.
+Outputs: updated `global.event_weights` entries for active major events and `global.current_major_event_weight` for status display.
+Side effects: locked Event 91 is kept at weight `0`; reset major weights stored as `1` for engine safety are treated as `0` before gain is added.
+
+Example:
+
+```txt
+update_major_event_weights = {
+	apply_dynamic_major_weight_gain_after_minor = yes
+}
+```
 
 ## modify_value_based_on_chaos_tier
 
