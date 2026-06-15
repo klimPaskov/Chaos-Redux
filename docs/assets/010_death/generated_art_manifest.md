@@ -6,6 +6,16 @@ Source mode summary: generated non-icon art through official `image_gen`
 Contact sheet: `docs/assets/010_death/contact_sheets/death_processed_contact.png`
 Additional contact sheet: `docs/assets/010_death/contact_sheets/death_black_oath_routes_contact.png`
 Focus icon contact sheet: `docs/assets/010_death/contact_sheets/death_focus_icons_contact.png`
+Super-event audit contact sheet: `docs/assets/010_death/contact_sheets/death_super_events_contact.png`
+
+## Super-event audit
+
+- Audit date: `2026-06-15`
+- Audited active Death super-event image roles: `super_event_death_reveal`, `super_event_death_world_end`, `super_event_death_defeat_aftermath`, `super_event_death_world_consumed`, `super_event_death_black_oath`
+- Wiring basis: `interface/chaosx_super_events.gfx`, `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt`, `common/script_constants/010_death_constants.txt`, and `common/scripted_effects/010_death_effects.txt`
+- Audit result: all five active Death super-event images already have source PNG, processed PNG, and final DDS outputs at `457x328`
+- Route note: `Dark Methods` is a Death route surface, but no separate Dark Methods super-event image slot is currently wired in the active Death constants or super-event scripted localisation
+- Asset action: no super-event image required regeneration in this audit pass; existing art remained the selected final set
 
 ## Complete
 
@@ -297,7 +307,40 @@ Focus icon contact sheet: `docs/assets/010_death/contact_sheets/death_focus_icon
   - `death_book_burner`
   - `death_black_apostolate`
 - Asset status: `complete`
-- Notes: route achievements are active because Dark Methods, Black Oath, Herald of Zol, and Black Apostolate are implemented. All active Death focus sprites now have source PNGs, processed PNGs, and stable DDS files; accidental duplicated placeholder hashes were eliminated during the final asset pass.
+- Notes: route achievements are active because Dark Methods, Black Oath, Herald of Zol, and Black Apostolate are implemented. All active Death focus sprites now have source PNGs, processed PNGs, and stable DDS files; accidental duplicated placeholder hashes were eliminated during the final asset pass. The final Death focus set is a coherent HOI4 badge pass: every focus icon was rebuilt to `100x88` with transparent outer canvas, visible dark-metal or bronze badge framing, and a painted interior motif derived from the per-focus legacy source art rather than leaving any full-bleed square thumbnail in the final output.
+
+### `death_focus_icon_regeneration_pass`
+
+- Asset type: national focus icon family
+- Intended in-game use: all 26 Death country national focuses
+- Source mode: regenerated from existing per-focus Death focus artwork, then locally rebuilt into a coherent HOI4 medallion/badge presentation
+- Source PNG paths: `docs/assets/010_death/source_png/focus_death_*_source.png`
+- Frame source helpers: `docs/assets/010_death/source_png/overlay_focus_frame_ledger_source.png`, `docs/assets/010_death/source_png/overlay_focus_frame_round_source.png`, `docs/assets/010_death/source_png/overlay_focus_frame_shield_source.png`
+- Processed PNG paths: `docs/assets/010_death/processed_png/focus_death_*.png`
+- Final DDS paths: `gfx/interface/goals/death/focus_death_*.dds`
+- Target size: `100x88`
+- Sprite names: `GFX_focus_death_*` existing registered names preserved
+- `.gfx` file: `interface/010_death.gfx` existing registration preserved
+- Related gameplay use: Death national focus tree
+- Asset status: `complete`
+- Prompt/process note: this pass intentionally discarded the old square-thumbnail presentation. All 26 focuses now use transparent outer alpha, visible badge framing, and a central painted motif sized for HOI4 focus readability.
+- Contact sheet: `docs/assets/010_death/contact_sheets/death_focus_icons_contact.png`
+
+### `idea_public_death`
+
+- Asset type: idea icon
+- Intended in-game use: public recognition of Death as a world threat
+- Source mode: generated through official `image_gen`, then locally processed for transparent alpha and HOI4 idea-size readability
+- Source PNG: `docs/assets/010_death/source_png/idea_public_death_source.png`
+- Processed PNG: `docs/assets/010_death/processed_png/idea_public_death.png`
+- Auxiliary alpha/source helper: `docs/assets/010_death/processed_png/idea_public_death_alpha.png`
+- Final path: `gfx/interface/ideas/death/idea_public_death.dds`
+- Target size: `64x64`
+- Sprite name: `GFX_idea_death_public_death`
+- `.gfx` file: `interface/chaosx_ideas.gfx`
+- Related gameplay use: Death public-reveal national spirit
+- Asset status: `complete`
+- Notes: fully regenerated from scratch as a stark public notice sheet with a void-black official seal and dead-coast vignette, with transparent outer alpha. The final icon stands on its own and keeps no focus-icon dependency.
 
 ### Route achievement and idea icon finals
 

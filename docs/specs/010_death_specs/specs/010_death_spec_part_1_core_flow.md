@@ -253,6 +253,8 @@ Death has no event cluster. It is a solitary fire-once incident with its own int
 
 - Event ID 10 is `Death`
 - Death starts on a remote island and is not globally announced.
+- The hidden island stage spreads slowly, prioritizes nearby sub-100,000-population islands, and falls back to distant eligible islands only when no nearby target exists.
+- The mainland reveal path cannot open before the island-report evolution has happened and enough hidden island pressure exists.
 - Death has no starting units.
 - Every consumed state becomes a wasteland and its population is deleted.
 - Death must be defeated by occupying all of its tiles, not by ordinary surrender shortcuts.

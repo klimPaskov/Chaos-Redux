@@ -4,11 +4,13 @@ Event 010 is `Death`, a minor fire-once event rooted at `chaosx.nr10.1`. It has 
 
 ## Flow
 
-The hidden root event creates or reactivates Death, consumes one eligible island state, records Death in the event log, and schedules delayed missing-island reports for the former owner/controller and nearby coastal or naval observers. Those reports are indirect, arrive months after the origin, and open Missing Island decisions for recipient countries without revealing Death or Zol.
+The hidden root event creates or reactivates Death, consumes one eligible island state, records Death in the event log, and schedules delayed missing-island reports for the former owner/controller and nearby coastal or naval observers. Those reports are indirect, arrive months after each missing island, and open Missing Island decisions for recipient countries without revealing Death or Zol.
 
 All consumption paths call `death_consume_current_state` in `common/scripted_effects/010_death_effects.txt`. The shared effect records the previous population, removes population and state value, transfers owner/controller to Death, adds a Death core, applies active wasteland state effects, records civilian deaths when the deaths system is enabled, updates consumed-state counters, withers lingering divisions, and checks reveal, defeat, world-end, and whole-world-consumed gates.
 
-Death reveals itself only when it consumes a mainland coastal state above the configured population threshold. The reveal fires super-event `62`, makes Death a world threat source, declares war on neighboring countries, and enables containment decisions. After reveal, Death can wither neighboring states only when no non-Death divisions are present, and can attempt cooldown-limited coastal jumps when pushed back.
+Before reveal, Death is intentionally slow. Its first hidden pulses are randomized across four to six months, then shorten only after it has consumed enough states to move through the early spread bands. Hidden island spread prefers nearby sub-100,000-population islands first, falls back to any eligible sub-100,000 island only when no nearby one exists, and only then widens to the broader low-population island pool. Each hidden island consumption schedules the same delayed local report pass for the former owner/controller and nearby coastal observers.
+
+Death reveals itself only when it consumes a mainland coastal state above the configured population threshold, and the mainland route remains locked until the first island-report evolution has been recorded and enough island pressure has built up. The reveal fires super-event `62`, makes Death a world threat source, declares war on neighboring countries, and enables containment decisions. After reveal, Death can wither neighboring states only when no non-Death divisions are present, and can attempt cooldown-limited coastal jumps when pushed back.
 
 World-end starts only when Death has consumed a whole continent and Chaos is above the Death world-end threshold. This fires super-event `63`, swaps Zol to the world-end portrait, creates one coastal foothold on each continent that does not already contain Death, and unlocks the strongest host behavior. Real world-end footholds spawn local Last Shore hosts immediately; the triggerable scenario keeps its separate intensity-scaling host pass. If every populated state is consumed, super-event `65` fires.
 
@@ -26,7 +28,7 @@ Defeat is custom. Death is defeated only when it controls no states, not by ordi
 - Focus tree: `common/national_focus/010_death_focus_tree.txt`
 - Localisation: `localisation/english/010_death_l_english.yml` plus shared GUI, ideas, achievements, music, event-name, and scenario localisation files
 - Triggerable scenario: SCN-006 in the shared triggerable scenario files
-- Event log: Death actor mapping, event details, and five milestone evolutions in the shared event-log scripted effects/localisation
+- Event log: Death actor mapping, event details, and five milestone evolutions in the shared event-log scripted effects/localisation. Early Death evolution detail pages use the normal Zol portrait; Last Shores and whole-world-consumed detail pages use the subtle animated world-end Zol portrait.
 - Country identity: all DTH ideology and base flags use the black Death flag set; party localisation resolves to `The Last Office`
 
 ## Decisions And AI

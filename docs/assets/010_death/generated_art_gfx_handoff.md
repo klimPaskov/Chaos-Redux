@@ -71,6 +71,10 @@ These notes were the original `.gfx` handoff. Final wiring has been applied in t
 
 ## Super-events
 
+- Audit status: `2026-06-15` recheck confirmed exactly five active Death super-event image sprites are wired through `interface/chaosx_super_events.gfx` and `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt`, all with final DDS outputs at `457x328`
+- Audit note: no additional `Dark Methods` super-event image slot is currently registered; the optional fifth Death-specific route image remains `super_event_death_black_oath`
+- Review contact sheet: `docs/assets/010_death/contact_sheets/death_super_events_contact.png`
+
 - `super_event_death_reveal`
   - Final DDS path: `gfx/super_events/super_event_death_reveal.dds`
   - Sprite name: `GFX_super_event_death_reveal`
@@ -180,27 +184,35 @@ These notes were the original `.gfx` handoff. Final wiring has been applied in t
 
 - The expanded Death focus tree is wired through `interface/010_death.gfx`.
 - All active focus sprites have stable final ids, source PNGs, processed PNGs, and final DDS files.
+- The regenerated pass standardizes the entire Death focus family at `100x88` with transparent outer alpha and HOI4-style badge framing. Existing sprite names and texture paths remain valid, so no `.gfx` edit is required for this art pass.
 - Contact sheet: `docs/assets/010_death/contact_sheets/death_focus_icons_contact.png`
 - Final files:
   - `gfx/interface/goals/death/focus_death_the_first_silence.dds`
   - `gfx/interface/goals/death/focus_death_country_on_the_island.dds`
+  - `gfx/interface/goals/death/focus_death_shroud_whispers.dds`
   - `gfx/interface/goals/death/focus_death_no_mail_before_spring.dds`
   - `gfx/interface/goals/death/focus_death_weather_on_paper.dds`
   - `gfx/interface/goals/death/focus_death_island_pattern.dds`
+  - `gfx/interface/goals/death/focus_death_hunger_shore.dds`
   - `gfx/interface/goals/death/focus_death_lowest_names_first.dds`
   - `gfx/interface/goals/death/focus_death_ports_without_voices.dds`
   - `gfx/interface/goals/death/focus_death_mainland_smell.dds`
+  - `gfx/interface/goals/death/focus_death_black_census.dds`
   - `gfx/interface/goals/death/focus_death_no_graves_needed.dds`
   - `gfx/interface/goals/death/focus_death_first_ghost_muster.dds`
   - `gfx/interface/goals/death/focus_death_public_death.dds`
   - `gfx/interface/goals/death/focus_death_tide_learns_roads.dds`
   - `gfx/interface/goals/death/focus_death_another_shoreline.dds`
   - `gfx/interface/goals/death/focus_death_no_ferry_returns.dds`
+  - `gfx/interface/goals/death/focus_death_wasteland_roads.dds`
   - `gfx/interface/goals/death/focus_death_every_road_slows.dds`
   - `gfx/interface/goals/death/focus_death_empty_supply.dds`
   - `gfx/interface/goals/death/focus_death_state_without_state.dds`
+  - `gfx/interface/goals/death/focus_death_mourning_host.dds`
   - `gfx/interface/goals/death/focus_death_ruin_host.dds`
   - `gfx/interface/goals/death/focus_death_orders_without_breath.dds`
+  - `gfx/interface/goals/death/focus_death_last_shores.dds`
+  - `gfx/interface/goals/death/focus_death_world_consumed.dds`
 
 ## Route achievement and idea icons
 
@@ -219,6 +231,13 @@ These notes were the original `.gfx` handoff. Final wiring has been applied in t
 - `GFX_idea_death_black_oath`
   - Final path: `gfx/interface/ideas/death/idea_black_oath.dds`
   - `.gfx` file: `interface/chaosx_ideas.gfx`
+- `GFX_idea_death_public_death`
+  - Final path: `gfx/interface/ideas/death/idea_public_death.dds`
+  - Processed PNG: `docs/assets/010_death/processed_png/idea_public_death.png`
+  - Source PNG: `docs/assets/010_death/source_png/idea_public_death_source.png`
+  - Target size: `64x64`
+  - `.gfx` file: `interface/chaosx_ideas.gfx`
+  - Use notes: fully regenerated as an official public notice or bulletin sheet with a void-black seal and dead-coast public-recognition motif; existing registered path remains valid and no `.gfx` edit is required
 
 ## Registered animated portrait
 
