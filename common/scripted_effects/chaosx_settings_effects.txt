@@ -1845,6 +1845,7 @@ toggle_event_disabled = {
         else = {
             add_to_array = { global.disabled_events = settings_selected_event_id }
         }
+        calculate_dynamic_major_weight_gain = yes
     }
 
     if = {
@@ -1882,6 +1883,7 @@ toggle_event_disabled = {
 
 update_chaosx_help_live_values = {
     update_unfired_events_counts = yes
+    calculate_dynamic_major_weight_gain = yes
     update_timer_window_dynamic_range = yes
     update_settings_cluster_display = yes
 }
@@ -3934,10 +3936,10 @@ increase_cap_reduction = {
 }
 
 # ============================================================================
-# MAJOR WEIGHT PER MINOR MANAGEMENT
+# BASELINE MAJOR GAIN MANAGEMENT
 # ============================================================================
 
-# Decrease major weight per minor
+# Decrease staged baseline major gain
 decrease_major_weight_per_minor = {
     set_temp_variable = { new_value = global.settings_major_weight_per_minor }
     subtract_from_temp_variable = { new_value = settings_advanced_increment_mode }
@@ -3950,7 +3952,7 @@ decrease_major_weight_per_minor = {
     set_variable = { global.settings_major_weight_per_minor = new_value }
 }
 
-# Increase major weight per minor
+# Increase staged baseline major gain
 increase_major_weight_per_minor = {
     set_temp_variable = { new_value = global.settings_major_weight_per_minor }
     add_to_temp_variable = { new_value = settings_advanced_increment_mode }
@@ -4149,7 +4151,7 @@ increase_advanced_cap_reduction = {
     set_variable = { global.settings_cap_reduction = new_value }
 }
 
-# Major Weight Controls
+# Advanced baseline major gain controls
 decrease_advanced_major_weight = {
     reset_settings_numeric_manual_entry = yes
     set_temp_variable = { new_value = global.settings_major_weight_per_minor }
@@ -4201,8 +4203,9 @@ update_advanced_settings_values = {
     # Apply cap reduction
     set_variable = { global.reduce_cap_factor = global.settings_cap_reduction }
 
-    # Apply major weight per minor
+    # Apply baseline major gain
     set_variable = { global.major_event_weight_per_minor = global.settings_major_weight_per_minor }
+    calculate_dynamic_major_weight_gain = yes
 
     # Apply event weight if it exists in settings
     if = {
@@ -4351,42 +4354,11 @@ ensure_random_event_selection_filter = {
 evaluate_random_event_selection_candidate = {
     set_temp_variable = { random_event_selection_candidate_is_valid = 1 }
     clear_variable = random_event_selection_candidate_weight_scaled
-
-	if = {
-		limit = { check_variable = { random_event_selection_candidate_id = constant:white_peace_event_log.event_id } }
-		calculate_white_peace_dynamic_cap = yes
-	}
+    set_temp_variable = { event_id = random_event_selection_candidate_id }
+    evaluate_random_event_active_pool_candidate = yes
 
     if = {
-        limit = {
-            OR = {
-                is_in_array = { global.disabled_events = random_event_selection_candidate_id }
-				AND = {
-					check_variable = { random_event_selection_candidate_id = 91 }
-					NOT = { has_global_flag = communism_spread_world_revolution_unlocked }
-				}
-					AND = {
-						check_variable = { random_event_selection_candidate_id = 3 }
-						NOT = { holy_realm_has_valid_refuge_host = yes }
-					}
-					AND = {
-						check_variable = { random_event_selection_candidate_id = 7 }
-						NOT = { any_country = { fury_can_be_selected = yes } }
-					}
-					AND = {
-						check_variable = { random_event_selection_candidate_id = constant:tensions_rising_event_log.event_id }
-						NOT = { is_tensions_rising_automatic_event_available = yes }
-					}
-					AND = {
-						check_variable = { random_event_selection_candidate_id = constant:white_peace_event_log.event_id }
-						NOT = { is_white_peace_automatic_event_available = yes }
-					}
-					AND = {
-					is_in_array = { global.fired_events = random_event_selection_candidate_id }
-					NOT = { is_in_array = { global.repeatable_events = random_event_selection_candidate_id } }
-                }
-            }
-        }
+        limit = { check_variable = { event_active_pool_candidate_is_valid < 1 } }
         set_temp_variable = { random_event_selection_candidate_is_valid = 0 }
     }
 

@@ -68,7 +68,7 @@ Use existing Chaos Redux chaos tier logic where appropriate. Values can be tuned
 
 When a cluster fires, every member event inside the cluster should update its own fired state and post-fire availability as though that event had fired normally.
 
-The cluster itself, not each child member, should update global pacing. A fired cluster counts as one event for timer compression and major-event weight growth/reset behavior, no matter how many member events fire inside it.
+The cluster itself, not each child member, should update global pacing. A fired cluster counts as one event for timer compression and one dynamic major-gain application or major-weight reset, no matter how many member events fire inside it.
 
 Required behavior:
 
