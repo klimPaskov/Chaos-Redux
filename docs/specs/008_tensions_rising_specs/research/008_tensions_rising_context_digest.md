@@ -12,7 +12,7 @@ This package was built from the user-provided Event 008 rework brief and the upl
 - Evolution II: `+15 chaos`, `+200` world tension
 - Evolution III: `+25 chaos`, `+500` world tension
 - Evolution IV: `+50 chaos`, `+1000` world tension
-- Creative hidden effects requested: temporary auto-event timer boost, worsening relations between random countries, delayed news/flavour events
+- Creative hidden effects requested: temporary auto-event timer boost, worsening relations between random countries, delayed follow-up incidents, and high-stage border pressure
 - No world-end scenario
 
 ## Uploaded context read
@@ -36,7 +36,7 @@ The uploaded catalog workbook still had Event 8 detail text equivalent to `Incre
 ## Design choices made
 
 - Event 8 stays a global pressure event, not a country/focus/formable event.
-- The hidden side effects are concentrated in a capped `Tension Pulse`, timed relation damage, delayed reports, and temporary AI posture pressure.
+- The hidden side effects are concentrated in a capped `Tension Pulse`, timed relation damage, follow-up incidents, temporary AI posture pressure, and rare safe non-transfer border wars.
 - Stage IV remains a high-pressure non-terminal event-log/evolution state and does not receive a super-event.
 - `Diplomatic Panic` is kept as a small cluster note: for now one member, Event 8, with medium severity.
 - Achievements reward rare timing and deep-stage consequences, not merely seeing the popup once.

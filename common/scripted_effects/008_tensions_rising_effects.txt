@@ -2,7 +2,7 @@
 # CHAOS REDUX - EVENT 008 TENSIONS RISING EFFECTS
 # ============================================================================
 # Main implementation for Event 8: staged world-tension/chaos packets, capped
-# timer pressure, timed diplomatic shocks, delayed reports, AI posture hooks,
+# timer pressure, timed diplomatic shocks, delayed incidents, AI posture hooks,
 # achievement tracking, and event-log evolution entries.
 # ============================================================================
 
@@ -18,6 +18,12 @@
 @TENSIONS_RISING_AI_POSTURE_STAGE_3_DAYS = 100
 @TENSIONS_RISING_AI_POSTURE_STAGE_4_DAYS = 140
 @TENSIONS_RISING_THIN_WIRE_FLAG_DAYS = 181
+@TENSIONS_RISING_RECENT_BORDER_WAR_ACTOR_DAYS = 150
+@TENSIONS_RISING_BORDER_WAR_STAGE_3_COOLDOWN_DAYS = 90
+@TENSIONS_RISING_BORDER_WAR_STAGE_4_COOLDOWN_DAYS = 60
+@TENSIONS_RISING_BORDER_WAR_COMBAT_WIDTH = 80
+@TENSIONS_RISING_BORDER_WAR_MINIMUM_DURATION_DAYS = 14
+@TENSIONS_RISING_BORDER_WAR_NUM_PROVINCES = 4
 @TENSIONS_RISING_TIMER_PULSE_STAGE_1_MIN_DAYS = 45
 @TENSIONS_RISING_TIMER_PULSE_STAGE_1_MID_DAYS = 60
 @TENSIONS_RISING_TIMER_PULSE_STAGE_1_MAX_DAYS = 75
@@ -955,6 +961,335 @@ select_tensions_rising_followup_event = {
 	}
 }
 
+prepare_tensions_rising_incident_effect = {
+	get_tensions_rising_stage = yes
+	if = {
+		limit = { check_variable = { tensions_rising_stage < constant:tensions_rising_event_log.stage_1 } }
+		set_temp_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_1 }
+	}
+}
+
+apply_tensions_rising_incident_common_effect = {
+	prepare_tensions_rising_incident_effect = yes
+	apply_tensions_rising_incident_world_tension = yes
+	apply_tensions_rising_incident_chaos = yes
+	apply_tensions_rising_incident_relation_pairs = yes
+	update_tensions_rising_blackout_achievement_tracking = yes
+}
+
+apply_tensions_rising_incident_world_tension = {
+	if = {
+		limit = { check_variable = { tensions_rising_incident_world_tension_packet > 0 } }
+		set_temp_variable = { tensions_rising_world_tension_packet = tensions_rising_incident_world_tension_packet }
+		apply_tensions_rising_distributed_world_tension = yes
+		tensions_rising_sync_world_tension_tracker = yes
+	}
+}
+
+apply_tensions_rising_incident_chaos = {
+	if = {
+		limit = { check_variable = { tensions_rising_incident_chaos_change > 0 } }
+		set_temp_variable = { chaos_change = tensions_rising_incident_chaos_change }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.tensions_rising }
+		set_temp_variable = { chaos_history_reason_custom = 1 }
+		add_chaos_meter_value = yes
+	}
+}
+
+apply_tensions_rising_incident_relation_pairs = {
+	while_loop_effect = {
+		limit = { check_variable = { tensions_rising_incident_relation_pairs_remaining > 0 } }
+		apply_tensions_rising_relation_pair = yes
+		subtract_from_temp_variable = { tensions_rising_incident_relation_pairs_remaining = 1 }
+	}
+}
+
+apply_tensions_rising_incident_ai_posture = {
+	while_loop_effect = {
+		limit = { check_variable = { tensions_rising_incident_ai_posture_remaining > 0 } }
+		if = {
+			limit = {
+				any_country = {
+					is_tensions_rising_ai_posture_candidate = yes
+					NOT = { has_country_flag = tensions_rising_ai_posture_recent }
+				}
+			}
+			random_country = {
+				limit = {
+					is_tensions_rising_ai_posture_candidate = yes
+					NOT = { has_country_flag = tensions_rising_ai_posture_recent }
+				}
+				apply_tensions_rising_ai_posture_to_country = yes
+			}
+			subtract_from_temp_variable = { tensions_rising_incident_ai_posture_remaining = 1 }
+		}
+		else = {
+			set_temp_variable = { tensions_rising_incident_ai_posture_remaining = 0 }
+		}
+	}
+}
+
+apply_tensions_rising_incident_telegram = {
+	set_temp_variable = { tensions_rising_incident_world_tension_packet = constant:tensions_rising_incident_world_tension.telegram }
+	set_temp_variable = { tensions_rising_incident_chaos_change = constant:tensions_rising_incident_chaos.telegram }
+	set_temp_variable = { tensions_rising_incident_relation_pairs_remaining = constant:tensions_rising_incident_relation_pairs.telegram }
+	apply_tensions_rising_incident_common_effect = yes
+}
+
+apply_tensions_rising_incident_embassy = {
+	set_temp_variable = { tensions_rising_incident_world_tension_packet = constant:tensions_rising_incident_world_tension.embassy }
+	set_temp_variable = { tensions_rising_incident_chaos_change = constant:tensions_rising_incident_chaos.embassy }
+	set_temp_variable = { tensions_rising_incident_relation_pairs_remaining = constant:tensions_rising_incident_relation_pairs.embassy }
+	set_temp_variable = { tensions_rising_incident_ai_posture_remaining = constant:tensions_rising_incident_ai_posture.embassy }
+	apply_tensions_rising_incident_common_effect = yes
+	apply_tensions_rising_incident_ai_posture = yes
+}
+
+apply_tensions_rising_incident_calm_map = {
+	set_temp_variable = { tensions_rising_incident_world_tension_packet = constant:tensions_rising_incident_world_tension.calm_map }
+	set_temp_variable = { tensions_rising_incident_chaos_change = constant:tensions_rising_incident_chaos.calm_map }
+	set_temp_variable = { tensions_rising_incident_relation_pairs_remaining = constant:tensions_rising_incident_relation_pairs.calm_map }
+	apply_tensions_rising_incident_common_effect = yes
+}
+
+apply_tensions_rising_incident_insurance = {
+	set_temp_variable = { tensions_rising_incident_world_tension_packet = constant:tensions_rising_incident_world_tension.insurance }
+	set_temp_variable = { tensions_rising_incident_chaos_change = constant:tensions_rising_incident_chaos.insurance }
+	set_temp_variable = { tensions_rising_incident_relation_pairs_remaining = constant:tensions_rising_incident_relation_pairs.insurance }
+	apply_tensions_rising_incident_common_effect = yes
+	if = {
+		limit = {
+			is_ai = no
+			has_war = no
+			has_equipment = { convoy_1 > constant:tensions_rising_achievement.insurance_convoy_threshold }
+		}
+		set_country_flag = achievement_tensions_insurance_market_ready
+	}
+}
+
+apply_tensions_rising_incident_rumour = {
+	set_temp_variable = { tensions_rising_incident_world_tension_packet = constant:tensions_rising_incident_world_tension.rumour }
+	set_temp_variable = { tensions_rising_incident_chaos_change = constant:tensions_rising_incident_chaos.rumour }
+	set_temp_variable = { tensions_rising_incident_relation_pairs_remaining = constant:tensions_rising_incident_relation_pairs.rumour }
+	apply_tensions_rising_incident_common_effect = yes
+}
+
+apply_tensions_rising_incident_staff_cars = {
+	set_temp_variable = { tensions_rising_incident_world_tension_packet = constant:tensions_rising_incident_world_tension.staff_cars }
+	set_temp_variable = { tensions_rising_incident_chaos_change = constant:tensions_rising_incident_chaos.staff_cars }
+	set_temp_variable = { tensions_rising_incident_relation_pairs_remaining = constant:tensions_rising_incident_relation_pairs.staff_cars }
+	set_temp_variable = { tensions_rising_incident_ai_posture_remaining = constant:tensions_rising_incident_ai_posture.staff_cars }
+	apply_tensions_rising_incident_common_effect = yes
+	apply_tensions_rising_incident_ai_posture = yes
+}
+
+apply_tensions_rising_incident_fleets = {
+	set_temp_variable = { tensions_rising_incident_world_tension_packet = constant:tensions_rising_incident_world_tension.fleets }
+	set_temp_variable = { tensions_rising_incident_chaos_change = constant:tensions_rising_incident_chaos.fleets }
+	set_temp_variable = { tensions_rising_incident_relation_pairs_remaining = constant:tensions_rising_incident_relation_pairs.fleets }
+	set_temp_variable = { tensions_rising_incident_ai_posture_remaining = constant:tensions_rising_incident_ai_posture.fleets }
+	apply_tensions_rising_incident_common_effect = yes
+	apply_tensions_rising_incident_ai_posture = yes
+}
+
+apply_tensions_rising_incident_border_lamps = {
+	set_temp_variable = { tensions_rising_incident_world_tension_packet = constant:tensions_rising_incident_world_tension.border_lamps }
+	set_temp_variable = { tensions_rising_incident_chaos_change = constant:tensions_rising_incident_chaos.border_lamps }
+	set_temp_variable = { tensions_rising_incident_relation_pairs_remaining = constant:tensions_rising_incident_relation_pairs.border_lamps }
+	apply_tensions_rising_incident_common_effect = yes
+	try_tensions_rising_incident_border_war = yes
+}
+
+apply_tensions_rising_incident_denial = {
+	set_temp_variable = { tensions_rising_incident_world_tension_packet = constant:tensions_rising_incident_world_tension.denial }
+	set_temp_variable = { tensions_rising_incident_chaos_change = constant:tensions_rising_incident_chaos.denial }
+	set_temp_variable = { tensions_rising_incident_relation_pairs_remaining = constant:tensions_rising_incident_relation_pairs.denial }
+	apply_tensions_rising_incident_common_effect = yes
+	try_tensions_rising_incident_border_war = yes
+}
+
+apply_tensions_rising_incident_last_briefing = {
+	set_temp_variable = { tensions_rising_incident_world_tension_packet = constant:tensions_rising_incident_world_tension.last_briefing }
+	set_temp_variable = { tensions_rising_incident_chaos_change = constant:tensions_rising_incident_chaos.last_briefing }
+	set_temp_variable = { tensions_rising_incident_relation_pairs_remaining = constant:tensions_rising_incident_relation_pairs.last_briefing }
+	set_temp_variable = { tensions_rising_incident_ai_posture_remaining = constant:tensions_rising_incident_ai_posture.last_briefing }
+	apply_tensions_rising_incident_common_effect = yes
+	apply_tensions_rising_incident_ai_posture = yes
+	try_tensions_rising_last_briefing_border_war = yes
+}
+
+try_tensions_rising_last_briefing_border_war = {
+	set_temp_variable = { tensions_rising_border_war_stage_3_chance = constant:tensions_rising_incident_border_war.last_briefing_stage_3_chance }
+	set_temp_variable = { tensions_rising_border_war_stage_4_chance = constant:tensions_rising_incident_border_war.last_briefing_stage_4_chance }
+	run_tensions_rising_incident_border_war_roll = yes
+}
+
+try_tensions_rising_incident_border_war = {
+	set_temp_variable = { tensions_rising_border_war_stage_3_chance = constant:tensions_rising_incident_border_war.stage_3_chance }
+	set_temp_variable = { tensions_rising_border_war_stage_4_chance = constant:tensions_rising_incident_border_war.stage_4_chance }
+	run_tensions_rising_incident_border_war_roll = yes
+}
+
+run_tensions_rising_incident_border_war_roll = {
+	if = {
+		limit = {
+			check_variable = {
+				var = tensions_rising_stage
+				value = constant:tensions_rising_incident_border_war.min_stage
+				compare = greater_than_or_equals
+			}
+			NOT = { has_global_flag = tensions_rising_recent_border_war_incident }
+			any_country = { is_tensions_rising_border_war_actor = yes }
+		}
+		if = {
+			limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_4 } }
+			set_temp_variable = { tensions_rising_border_war_chance = tensions_rising_border_war_stage_4_chance }
+		}
+		else = {
+			set_temp_variable = { tensions_rising_border_war_chance = tensions_rising_border_war_stage_3_chance }
+		}
+		set_temp_variable_to_random = {
+			var = tensions_rising_border_war_roll
+			min = 1
+			max = 100
+			integer = yes
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = tensions_rising_border_war_roll
+					value = tensions_rising_border_war_chance
+					compare = less_than_or_equals
+				}
+			}
+			select_tensions_rising_border_war_pair = yes
+			try_start_tensions_rising_border_war_from_pair = yes
+		}
+	}
+}
+
+select_tensions_rising_border_war_pair = {
+	set_temp_variable = { tensions_rising_border_actor_found = 0 }
+	set_temp_variable = { tensions_rising_border_target_found = 0 }
+	random_country = {
+		limit = { is_tensions_rising_border_war_actor = yes }
+		save_event_target_as = tensions_rising_border_attacker
+		ROOT = { set_temp_variable = { tensions_rising_border_actor_found = 1 } }
+	}
+	if = {
+		limit = { check_variable = { tensions_rising_border_actor_found > 0 } }
+		event_target:tensions_rising_border_attacker = {
+			random_country = {
+				limit = {
+					is_tensions_rising_border_war_target_for_prev = yes
+					is_neighbor_of = PREV
+				}
+				save_event_target_as = tensions_rising_border_defender
+				ROOT = { set_temp_variable = { tensions_rising_border_target_found = 1 } }
+			}
+		}
+	}
+}
+
+try_start_tensions_rising_border_war_from_pair = {
+	if = {
+		limit = { check_variable = { tensions_rising_border_target_found > 0 } }
+		set_temp_variable = { tensions_rising_border_attacker_state_found = 0 }
+		set_temp_variable = { tensions_rising_border_defender_state_found = 0 }
+		event_target:tensions_rising_border_attacker = {
+			random_owned_controlled_state = {
+				limit = {
+					impassable = no
+					NOT = { has_border_war = yes }
+					any_neighbor_state = {
+						impassable = no
+						NOT = { has_border_war = yes }
+						is_owned_and_controlled_by = event_target:tensions_rising_border_defender
+					}
+				}
+				set_variable = { ROOT.tensions_rising_border_attacker_state = id }
+				ROOT = { set_temp_variable = { tensions_rising_border_attacker_state_found = 1 } }
+			}
+		}
+		if = {
+			limit = { check_variable = { tensions_rising_border_attacker_state_found > 0 } }
+			event_target:tensions_rising_border_defender = {
+				random_owned_controlled_state = {
+					limit = {
+						impassable = no
+						NOT = { has_border_war = yes }
+						any_neighbor_state = { state = var:ROOT.tensions_rising_border_attacker_state }
+					}
+					set_variable = { ROOT.tensions_rising_border_defender_state = id }
+					ROOT = { set_temp_variable = { tensions_rising_border_defender_state_found = 1 } }
+				}
+			}
+		}
+		if = {
+			limit = { check_variable = { tensions_rising_border_defender_state_found > 0 } }
+			start_border_war = {
+				change_state_after_war = no
+				combat_width = @TENSIONS_RISING_BORDER_WAR_COMBAT_WIDTH
+				minimum_duration_in_days = @TENSIONS_RISING_BORDER_WAR_MINIMUM_DURATION_DAYS
+				attacker = {
+					state = var:tensions_rising_border_attacker_state
+					num_provinces = @TENSIONS_RISING_BORDER_WAR_NUM_PROVINCES
+					on_win = chaosx.nr8.13
+					on_lose = chaosx.nr8.14
+					on_cancel = chaosx.nr8.15
+				}
+				defender = {
+					state = var:tensions_rising_border_defender_state
+					num_provinces = @TENSIONS_RISING_BORDER_WAR_NUM_PROVINCES
+					on_win = chaosx.nr8.13
+					on_lose = chaosx.nr8.14
+					on_cancel = chaosx.nr8.15
+				}
+			}
+			record_tensions_rising_border_war_started = yes
+		}
+		clear_variable = tensions_rising_border_attacker_state
+		clear_variable = tensions_rising_border_defender_state
+	}
+}
+
+record_tensions_rising_border_war_started = {
+	if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_4 } }
+		set_global_flag = { flag = tensions_rising_recent_border_war_incident days = @TENSIONS_RISING_BORDER_WAR_STAGE_4_COOLDOWN_DAYS }
+	}
+	else = {
+		set_global_flag = { flag = tensions_rising_recent_border_war_incident days = @TENSIONS_RISING_BORDER_WAR_STAGE_3_COOLDOWN_DAYS }
+	}
+	event_target:tensions_rising_border_attacker = {
+		set_country_flag = { flag = tensions_rising_recent_border_war_actor days = @TENSIONS_RISING_RECENT_BORDER_WAR_ACTOR_DAYS }
+		save_event_target_as = tensions_rising_first_actor
+	}
+	event_target:tensions_rising_border_defender = {
+		set_country_flag = { flag = tensions_rising_recent_border_war_actor days = @TENSIONS_RISING_RECENT_BORDER_WAR_ACTOR_DAYS }
+		save_event_target_as = tensions_rising_second_actor
+	}
+	apply_tensions_rising_relation_modifier_to_targets = yes
+	add_to_variable = { global.tensions_rising_relation_pair_count = 1 }
+	add_to_variable = { global.tensions_rising_active_opinion_modifiers = 2 }
+	set_global_flag = { flag = tensions_rising_recent_relation_damage days = @TENSIONS_RISING_RELATION_FOLLOWUP_WINDOW_DAYS }
+	update_tensions_rising_blackout_achievement_tracking = yes
+}
+
+apply_tensions_rising_border_war_win_effect = {
+	add_political_power = constant:tensions_rising_border_war_result.winner_political_power
+	add_war_support = constant:tensions_rising_border_war_result.winner_war_support
+}
+
+apply_tensions_rising_border_war_loss_effect = {
+	add_political_power = constant:tensions_rising_border_war_result.loser_political_power
+	add_stability = constant:tensions_rising_border_war_result.loser_stability
+}
+
+apply_tensions_rising_border_war_cancel_effect = {
+	add_stability = constant:tensions_rising_border_war_result.cancelled_stability
+}
+
 update_tensions_rising_achievement_tracking = {
 	if = {
 		limit = {
@@ -991,6 +1326,10 @@ update_tensions_rising_achievement_tracking = {
 		country_event = { id = chaosx.nr8.20 days = constant:tensions_rising_achievement.thin_wire_watch_days }
 	}
 
+	update_tensions_rising_blackout_achievement_tracking = yes
+}
+
+update_tensions_rising_blackout_achievement_tracking = {
 	if = {
 		limit = {
 			check_variable = {

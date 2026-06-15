@@ -1,6 +1,6 @@
 # Event 008: Tensions Rising
 
-Event 008 Tensions Rising is a minor repeatable diplomatic-pressure event. In calm campaigns it is a straightforward world-tension incident; once the Chaos Meter reaches evolved tiers, the same report becomes a staged diplomatic-pressure system with direct chaos gain, relation damage, timer pressure, delayed reports, AI posture pressure, achievements, and event-log evolution rows.
+Event 008 Tensions Rising is a minor repeatable diplomatic-pressure event. In calm campaigns it is a straightforward world-tension incident; once the Chaos Meter reaches evolved tiers, the same report becomes a staged diplomatic-pressure system with direct chaos gain, relation damage, timer pressure, follow-up incidents, AI posture pressure, rare high-stage border wars, achievements, and event-log evolution rows.
 
 ## Runtime Flow
 
@@ -9,7 +9,7 @@ Event 008 Tensions Rising is a minor repeatable diplomatic-pressure event. In ca
 3. The main popup keeps its description to flavour text. The actual scripted effect runs immediately inside the event's hidden immediate block, while the option only shows the dynamic mechanical summary tooltip.
 4. `get_tensions_rising_stage` maps the current `chaos_tier` flag to Stage I-IV. Calm World stays at baseline stage `0`.
 5. Baseline firings distribute `+100` world tension across existing non-placeholder countries and update the global highest-world-tension tracker.
-6. Evolved firings record the current Diplomatic Fever milestone if it has not already been logged, distribute the staged world-tension packet, add the staged chaos packet, apply the temporary timer pulse, select timed relation-shock pairs, apply AI posture ideas, schedule one delayed report, and update achievement tracking.
+6. Evolved firings record the current Diplomatic Fever milestone if it has not already been logged, distribute the staged world-tension packet, add the staged chaos packet, apply the temporary timer pulse, select timed relation-shock pairs, apply AI posture ideas, schedule one delayed follow-up incident, and update achievement tracking.
 
 ## Stage Values
 
@@ -17,9 +17,9 @@ Event 008 Tensions Rising is a minor repeatable diplomatic-pressure event. In ca
 | --- | --- | ---: | ---: | --- |
 | Baseline | Calm World | `+100` | `0` | blocked at full world tension |
 | Stage I | Gathering Storm | `+100` | `+10` | light relation and timer pressure |
-| Stage II | Rising Chaos | `+200` | `+15` | broader relation shocks and delayed reports |
-| Stage III | Chaos Tier | `+500` | `+25` | heavy relation pressure and Thin Wire tracking |
-| Stage IV | Totalen Chaos+ | `+1000` | `+50` | strongest indirect pressure |
+| Stage II | Rising Chaos | `+200` | `+15` | broader relation shocks and more follow-up incidents |
+| Stage III | Chaos Tier | `+500` | `+25` | heavy relation pressure, Thin Wire tracking, and rare border clashes |
+| Stage IV | Totalen Chaos+ | `+1000` | `+50` | strongest pressure and best border-clash odds |
 
 The world tension trigger uses HOI4's documented `0-1` `threat` scale. The full-tension gate is centralized as `constant:tensions_rising_gate.full_world_tension`. World-tension packets are distributed through `apply_tensions_rising_distributed_world_tension`; each selected existing non-placeholder country receives an equal named-threat slice. The recipient count is capped only when an all-country split would fall below `0.1` world-tension percentage points.
 
@@ -38,9 +38,18 @@ Stage I-IV firings select a small number of country pairs through `select_tensio
 
 The global active-opinion counter is decremented by the hidden expiry event `chaosx.nr8.21`, which supports the Diplomatic Blackout achievement without making the opinion modifiers permanent.
 
-## Delayed Reports
+## Follow-Up Incidents
 
-Evolved firings can schedule one delayed flavour report from `chaosx.nr8.2` through `chaosx.nr8.12`. The scheduling is hidden from the main option tooltip, but the delayed reports themselves are visible report popups when they fire. These reports describe cable traffic, embassy side doors, calm-map denial, neutral insurance rates, rumours, staff cars, fleet silence, border lamps, and the final normal briefing. They do not recurse into the main event effect and do not create direct war goals.
+Evolved firings can schedule one delayed follow-up incident from `chaosx.nr8.2` through `chaosx.nr8.12`. The scheduling is hidden from the main option tooltip, but the incidents themselves are visible report popups when they fire. Each incident recalculates the current Diplomatic Fever stage, treats a missing evolved stage as Stage I pressure, and applies a smaller mechanical aftershock without recursing into the main event effect.
+
+Incident effects are centralized in `common/scripted_effects/008_tensions_rising_effects.txt` and tuned through `common/script_constants/008_tensions_rising_constants.txt`:
+
+- Telegram, embassy, calm-map, insurance, rumour, staff-car, and fleet incidents add extra distributed world tension, small chaos packets, and timed opinion shocks.
+- Embassy, staff-car, fleet, and last-briefing incidents also push selected AI countries into short-lived readiness ideas.
+- Border Lamps, One Denial Too Many, and The Last Normal Briefing can attempt a true non-transfer `start_border_war` at Stage III+.
+- Insurance Rates Jump in Neutral Ports still owns the Insurance Market achievement hook for peaceful player countries with a large convoy reserve.
+
+Border-war attempts require independent, non-capitulated, non-zombie countries that are not subjects, not faction partners, not in active wars or civil wars, not already in border wars, not recent border-war actors, and able to field a small army. The helper then stores adjacent owned-and-controlled state IDs before starting a non-transfer clash. If no safe adjacent pair exists, the incident still applies its other world-tension, chaos, opinion, and posture effects.
 
 ## AI Posture
 
@@ -78,15 +87,15 @@ Achievement icons are generated final DDS triplets under `gfx/achievements/` and
 ## Assets
 
 - Report image: `GFX_report_event_tensions_rising`, backed by `gfx/event_pictures/report_event_tensions_rising.dds`
-- News image: `GFX_news_event_tensions_red_line`, backed by `gfx/event_pictures/news_event_tensions_red_line.dds`, remains registered as an available news asset; delayed report events use the report image instead of a news image.
+- News image: `GFX_news_event_tensions_red_line`, backed by `gfx/event_pictures/news_event_tensions_red_line.dds`, remains registered as an available news asset; follow-up incidents use the report image instead of a news image.
 - Achievement source, processed PNGs, contact sheet, and DDS manifest: `docs/assets/008_tensions_rising/`
 
 ## Boundary Rules
 
-Event 008 does not add direct war goals, declare wars, create countries, load focus trees, add cores, create formables, fire a super-event, or start a world-end scenario. Its pressure stays indirect: world tension, chaos, temporary timer compression, timed opinion damage, delayed reports, AI posture ideas, event-log milestones, cluster history, and achievements.
+Event 008 does not add direct war goals, declare wars, create countries, load focus trees, add cores, create formables, fire a super-event, or start a world-end scenario. Its pressure surfaces are world tension, chaos, temporary timer compression, timed opinion damage, follow-up incidents, AI posture ideas, event-log milestones, cluster history, achievements, and rare safe non-transfer border wars.
 
 ## Future Plans
 
-- Add pair-specific named follow-up reports only if the event-log UI later supports short-lived relation-pair references cleanly.
+- Add pair-specific named follow-up incidents only if the event-log UI later supports short-lived relation-pair references cleanly.
 - Consider adding a generic relation-pair helper if other event families need the same timed diplomatic-shock pattern.
 - Expand Diplomatic Panic with additional fully implemented diplomatic incidents only after they have their own localisation, event-log detail, and cooldown behavior.
