@@ -190,8 +190,8 @@ Gameplay runs with registered vanilla-derived idea sprites and event pictures in
 - emergency intervention: `GFX_decision_generic_protection`
 - national pressure: `GFX_idea_communist_state_control_pressure`
 - Level 1 state control: `GFX_idea_communist_agitation_zone`
-- Level 2 state control: `GFX_idea_communist_insurgent_stronghold`
-- Level 3 state control: `GFX_idea_communist_lockdown`
+- Level 2 state control: `GFX_idea_communist_agitation_zone`
+- Level 3 state control: `GFX_idea_communist_agitation_zone`
 - post-crackdown scars: `GFX_idea_communist_post_crackdown_scars`
 - worker ritual fear: `GFX_idea_communist_worker_ritual_fear`
 - emergency disruption: `GFX_idea_communist_emergency_disruption`
@@ -212,9 +212,7 @@ The Revolutionary Threat Meter uses these DDS assets in `gfx/interface/revolutio
 
 The idea sprites reference fitting vanilla DDS art directly, without copying those vanilla files into the Chaos Redux folder:
 
-- `GFX_idea_communist_agitation_zone`: `gfx/interface/ideas/generic_communism_drift_bonus.dds`
-- `GFX_idea_communist_insurgent_stronghold`: `gfx/interface/ideas/idea_MEN_communist_revolutionaries.dds`
-- `GFX_idea_communist_lockdown`: `gfx/interface/ideas/idea_generic_purge.dds`
+- `GFX_idea_communist_agitation_zone`: `gfx/interface/ideas/generic_communism_drift_bonus.dds`; used by all three state-control levels.
 - `GFX_idea_communist_state_control_pressure`: `gfx/interface/ideas/idea_generic_secret_police.dds`
 - `GFX_idea_communist_post_crackdown_scars`: `gfx/interface/ideas/idea_generic_army_problems.dds`
 - `GFX_idea_communist_worker_ritual_fear`: `gfx/interface/ideas/idea_generic_fascist_workers.dds`
