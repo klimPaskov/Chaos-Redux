@@ -330,18 +330,18 @@ Super-event audit contact sheet: `docs/assets/010_death/contact_sheets/death_sup
   - `death_book_burner`
   - `death_black_apostolate`
 - Asset status: `complete`
-- Notes: route achievements are active because Dark Methods, Black Oath, Herald of Zol, and Black Apostolate are implemented. All active Death focus sprites now have source PNGs, processed PNGs, and stable DDS files; accidental duplicated placeholder hashes were eliminated during the final asset pass. The final Death focus set is a coherent HOI4 badge pass: every focus icon was rebuilt to `100x88` with transparent outer canvas, visible dark-metal or bronze badge framing, and a painted interior motif derived from the per-focus legacy source art rather than leaving any full-bleed square thumbnail in the final output.
+- Notes: route achievements are active because Dark Methods, Black Oath, Herald of Zol, and Black Apostolate are implemented. All active Death focus sprites now have source PNGs, processed PNGs, and stable DDS files; accidental duplicated placeholder hashes were eliminated during the final asset pass. The final Death focus set is a coherent HOI4 badge pass: every focus icon was rebuilt to `94x86` with transparent outer canvas, visible dark-metal or bronze badge framing, and a painted interior motif matched to the focus subject rather than leaving any full-bleed square thumbnail in the final output.
 
 ### `death_focus_icon_regeneration_pass`
 
 - Asset type: national focus icon family
 - Intended in-game use: all 26 Death country national focuses
-- Source mode: regenerated from existing per-focus Death focus artwork, then locally rebuilt into a coherent HOI4 medallion/badge presentation
+- Source mode: regenerated in themed batches, then locally rebuilt into a coherent HOI4 medallion/badge presentation
 - Source PNG paths: `docs/assets/010_death/source_png/focus_death_*_source.png`
 - Frame source helpers: `docs/assets/010_death/source_png/overlay_focus_frame_ledger_source.png`, `docs/assets/010_death/source_png/overlay_focus_frame_round_source.png`, `docs/assets/010_death/source_png/overlay_focus_frame_shield_source.png`
 - Processed PNG paths: `docs/assets/010_death/processed_png/focus_death_*.png`
 - Final DDS paths: `gfx/interface/goals/death/focus_death_*.dds`
-- Target size: `100x88`
+- Target size: `94x86`
 - Sprite names: `GFX_focus_death_*` existing registered names preserved
 - `.gfx` file: `interface/010_death.gfx` existing registration preserved
 - Related gameplay use: Death national focus tree

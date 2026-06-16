@@ -44,7 +44,7 @@ Scope: accepted icon subagent output for the Death focus tree icon family
 - `focus_death_last_shores`
 - `focus_death_world_consumed`
 
-Final focus format: `100x88` DDS, `srgba`/ARGB8888, transparent outer alpha, existing `gfx/interface/goals/death/` paths preserved.
+Final focus format: `94x86` DDS, `srgba`/ARGB8888, transparent outer alpha, existing `gfx/interface/goals/death/` paths preserved.
 
 ## Source mode and processing notes
 
@@ -55,7 +55,7 @@ Final focus format: `100x88` DDS, `srgba`/ARGB8888, transparent outer alpha, exi
 ## Validation performed
 
 - Verified all 26 focus DDS files exist.
-- Verified every focus DDS is `100x88`.
+- Verified every focus DDS is `94x86`.
 - Verified all 26 focus source PNGs and processed PNGs exist.
 - Verified `docs/assets/010_death/contact_sheets/death_focus_icons_contact.png` exists and reflects the accepted regenerated badge set.
 - Verified no byte-identical duplicate focus DDS outputs.

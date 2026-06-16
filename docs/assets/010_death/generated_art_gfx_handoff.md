@@ -194,7 +194,7 @@ These notes were the original `.gfx` handoff. Final wiring has been applied in t
 
 - The expanded Death focus tree is wired through `interface/010_death.gfx`.
 - All active focus sprites have stable final ids, source PNGs, processed PNGs, and final DDS files.
-- The regenerated pass standardizes the entire Death focus family at `100x88` with transparent outer alpha and HOI4-style badge framing. Existing sprite names and texture paths remain valid, so no `.gfx` edit is required for this art pass.
+- The regenerated pass standardizes the entire Death focus family at `94x86` with transparent outer alpha and HOI4-style badge framing. Existing sprite names and texture paths remain valid, so no `.gfx` edit is required for this art pass.
 - Contact sheet: `docs/assets/010_death/contact_sheets/death_focus_icons_contact.png`
 - Final files:
   - `gfx/interface/goals/death/focus_death_the_first_silence.dds`

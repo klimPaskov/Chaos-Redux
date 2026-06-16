@@ -40,7 +40,7 @@ There is also a UI/detail uncertainty around pre-reveal Event Details previews: 
 | Evolution portrait format | Mostly complete by documentation/assets. Docs state normal Zol portrait before Last Shores and animated world-end Zol for later detail pages in `docs/events/010_death.md:31`; assets and `.gfx` include static and animated Zol packages. I did not run the UI to confirm the event-log portrait selector at runtime. |
 | Super-event text/audio/image | Complete for active slots. Five Death super-event image slots are wired in `interface/chaosx_super_events.gfx:72`; audio is wired in `music/chaosx_super_event_music.asset:1311`; files exist and are valid OGG/WAV by `file`. |
 | Achievements | Partial. Definitions and DDS triplets exist, but several unlock predicates are simplified. Details below. |
-| Assets | Mostly complete. All 26 focus icons exist at `100x88`; `idea_public_death` exists at `gfx/interface/ideas/death/idea_public_death.dds` and is wired by `interface/chaosx_ideas.gfx:187`; super-event and Black Atlas assets exist. No active asset blocker found. |
+| Assets | Mostly complete. All 26 focus icons exist at `94x86`; `idea_public_death` exists at `gfx/interface/ideas/death/idea_public_death.dds` and is wired by `interface/chaosx_ideas.gfx:187`; super-event and Black Atlas assets exist. No active asset blocker found. |
 | Documentation/spreadsheet | Mostly complete. `docs/events/010_death.md` is current; spreadsheet handoff records row 10 as implemented with SCN-006 present, but status should remain conditional until blockers are resolved or explicitly queued. |
 
 ## Blockers and simplified requirements
@@ -107,7 +107,7 @@ Task-specific static checks performed:
 - Confirmed Event 10 is fire-once and not listed in the major-event set in `common/scripted_effects/chaosx_logic_effects.txt`.
 - Confirmed DTH country history/OOB contains no placed starting divisions and no setup manpower/equipment grant.
 - Confirmed delayed report localisation does not name Death or Zol.
-- Confirmed 26 focus DDS files exist under `gfx/interface/goals/death/` and are `100x88` by `file`.
+- Confirmed 26 focus DDS files exist under `gfx/interface/goals/death/` and are `94x86` by `file`.
 - Confirmed `idea_public_death.dds` exists at `gfx/interface/ideas/death/idea_public_death.dds` and is `64x64`.
 - Confirmed active Death super-event DDS files are `457x328` and Death OGG/WAV files are readable by `file`.
 
