@@ -1,0 +1,251 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 013 NATURAL DISASTERS TRIGGERS
+# ============================================================================
+# Validation and phase helpers for Natural Disasters target states, eligible
+# countries, family-specific physical fit, warnings, recovery, and scenarios.
+# ============================================================================
+
+natural_disaster_can_affect_country = {
+	exists = yes
+	NOT = { has_capitulated = yes }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { has_global_flag = world_end }
+}
+
+natural_disaster_country_has_valid_target_state = {
+	natural_disaster_can_affect_country = yes
+	any_controlled_state = {
+		natural_disaster_is_valid_target_state = yes
+	}
+}
+
+natural_disaster_is_recent_family_target = {
+	OR = {
+		AND = {
+			check_variable = { natural_disaster_family = constant:natural_disaster_family.earthquake }
+			has_state_flag = natural_disaster_recent_earthquake
+		}
+		AND = {
+			check_variable = { natural_disaster_family = constant:natural_disaster_family.flood }
+			has_state_flag = natural_disaster_recent_flood
+		}
+		AND = {
+			check_variable = { natural_disaster_family = constant:natural_disaster_family.storm }
+			has_state_flag = natural_disaster_recent_storm
+		}
+		AND = {
+			check_variable = { natural_disaster_family = constant:natural_disaster_family.drought }
+			has_state_flag = natural_disaster_recent_drought
+		}
+		AND = {
+			check_variable = { natural_disaster_family = constant:natural_disaster_family.wildfire }
+			has_state_flag = natural_disaster_recent_wildfire
+		}
+		AND = {
+			check_variable = { natural_disaster_family = constant:natural_disaster_family.landslide }
+			has_state_flag = natural_disaster_recent_landslide
+		}
+		AND = {
+			check_variable = { natural_disaster_family = constant:natural_disaster_family.volcano }
+			has_state_flag = natural_disaster_recent_volcano
+		}
+		AND = {
+			check_variable = { natural_disaster_family = constant:natural_disaster_family.tsunami }
+			has_state_flag = natural_disaster_recent_tsunami
+		}
+		AND = {
+			check_variable = { natural_disaster_family = constant:natural_disaster_family.meteor }
+			has_state_flag = natural_disaster_recent_meteor
+		}
+	}
+}
+
+natural_disaster_state_has_meaningful_exposure = {
+	OR = {
+		state_population_k > constant:natural_disaster_target.meaningful_population_k
+		is_capital = yes
+		infrastructure > 0
+		arms_factory > 0
+		industrial_complex > 0
+		air_base > 0
+		supply_node > 0
+		rail_way > 0
+		naval_base > 0
+		dockyard > 0
+	}
+}
+
+natural_disaster_is_coastal_candidate_state = {
+	is_coastal = yes
+	OR = {
+		naval_base > 0
+		dockyard > 0
+		industrial_complex > 0
+		state_population_k > constant:natural_disaster_target.meaningful_population_k
+	}
+}
+
+natural_disaster_is_mountain_candidate_state = {
+	OR = {
+		has_terrain = mountain
+		has_terrain = hills
+	}
+	OR = {
+		infrastructure > 0
+		rail_way > 0
+		supply_node > 0
+		state_population_k > constant:natural_disaster_target.meaningful_population_k
+	}
+}
+
+natural_disaster_is_dry_candidate_state = {
+	OR = {
+		is_desert_state = yes
+		has_state_category = rural
+		has_state_category = pastoral
+		has_state_category = town
+	}
+	OR = {
+		state_population_k > constant:natural_disaster_target.meaningful_population_k
+		infrastructure > 0
+		rail_way > 0
+	}
+}
+
+natural_disaster_is_wildfire_candidate_state = {
+	OR = {
+		has_terrain = forest
+		has_terrain = jungle
+		is_desert_state = yes
+		has_state_category = rural
+		has_state_category = pastoral
+		industrial_complex > 0
+		arms_factory > 0
+	}
+}
+
+natural_disaster_is_volcanic_candidate_state = {
+	OR = {
+		AND = {
+			is_coastal = yes
+			OR = {
+				has_terrain = mountain
+				has_terrain = hills
+			}
+		}
+		has_state_flag = natural_disaster_volcanic_region
+	}
+	OR = {
+		state_population_k > constant:natural_disaster_target.minimum_population_k
+		infrastructure > 0
+		air_base > 0
+		naval_base > 0
+	}
+}
+
+natural_disaster_family_fits_current_state = {
+	OR = {
+		check_variable = { natural_disaster_family = constant:natural_disaster_family.earthquake }
+		AND = {
+			check_variable = { natural_disaster_family = constant:natural_disaster_family.flood }
+			OR = {
+				is_coastal = yes
+				infrastructure > 0
+				rail_way > 0
+				supply_node > 0
+			}
+		}
+		AND = {
+			check_variable = { natural_disaster_family = constant:natural_disaster_family.storm }
+			OR = {
+				is_coastal = yes
+				naval_base > 0
+				air_base > 0
+				infrastructure > 0
+			}
+		}
+		AND = {
+			check_variable = { natural_disaster_family = constant:natural_disaster_family.drought }
+			natural_disaster_is_dry_candidate_state = yes
+		}
+		AND = {
+			check_variable = { natural_disaster_family = constant:natural_disaster_family.wildfire }
+			natural_disaster_is_wildfire_candidate_state = yes
+		}
+		AND = {
+			check_variable = { natural_disaster_family = constant:natural_disaster_family.landslide }
+			natural_disaster_is_mountain_candidate_state = yes
+		}
+		AND = {
+			check_variable = { natural_disaster_family = constant:natural_disaster_family.volcano }
+			natural_disaster_is_volcanic_candidate_state = yes
+		}
+		AND = {
+			check_variable = { natural_disaster_family = constant:natural_disaster_family.tsunami }
+			natural_disaster_is_coastal_candidate_state = yes
+		}
+		AND = {
+			check_variable = { natural_disaster_family = constant:natural_disaster_family.meteor }
+			natural_disaster_state_has_meaningful_exposure = yes
+		}
+	}
+}
+
+natural_disaster_is_valid_target_state = {
+	CONTROLLER = { natural_disaster_can_affect_country = yes }
+	state_population_k > constant:natural_disaster_target.minimum_population_k
+	natural_disaster_state_has_meaningful_exposure = yes
+	NOT = { has_state_flag = natural_disaster_recent_target }
+	NOT = { natural_disaster_is_recent_family_target = yes }
+	natural_disaster_family_fits_current_state = yes
+}
+
+natural_disaster_is_valid_base_target_state = {
+	CONTROLLER = { natural_disaster_can_affect_country = yes }
+	state_population_k > constant:natural_disaster_target.minimum_population_k
+	natural_disaster_state_has_meaningful_exposure = yes
+	NOT = { has_state_flag = natural_disaster_recent_target }
+}
+
+natural_disaster_has_active_warning = {
+	has_country_flag = natural_disaster_warning_active
+	has_event_target = natural_disaster_current_target_state
+}
+
+natural_disaster_state_has_active_warning = {
+	has_state_flag = natural_disaster_warning_target
+}
+
+natural_disaster_state_has_active_aftermath = {
+	has_state_flag = natural_disaster_active_aftermath
+}
+
+natural_disaster_country_has_active_aftermath = {
+	any_controlled_state = {
+		natural_disaster_state_has_active_aftermath = yes
+	}
+}
+
+natural_disaster_country_should_show_response_office = {
+	OR = {
+		has_country_flag = natural_disaster_warning_active
+		has_country_flag = natural_disaster_response_visible
+		has_country_flag = natural_disaster_scenario_barrage_active
+		natural_disaster_country_has_active_aftermath = yes
+	}
+}
+
+natural_disaster_can_launch_manual_barrage = {
+	NOT = { has_global_flag = world_end }
+	any_country = {
+		natural_disaster_country_has_valid_target_state = yes
+	}
+}
+
+natural_disaster_selected_scenario_is_event_13 = {
+	check_variable = {
+		var = triggerable_scenarios_selected
+		value = constant:natural_disaster_event.id
+		compare = equals
+	}
+}
