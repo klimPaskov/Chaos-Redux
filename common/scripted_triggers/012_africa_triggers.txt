@@ -1,0 +1,240 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 AFRICA SCRIPTED TRIGGERS
+# ============================================================================
+# Foundational gates for Africa unifier selection, runtime context, paper-core
+# staging, Charter League membership, RSA branch state, dossier gates, and
+# World Is One terminal eligibility.
+# ============================================================================
+
+is_africa_valid_unifier_candidate = {
+	exists = yes
+	capital_scope = { is_on_continent = africa }
+	NOT = { has_capitulated = yes }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { has_country_flag = africa_unifier_active }
+	NOT = { has_country_flag = africa_continental_formable_complete }
+	NOT = { has_country_flag = africa_world_end_actor }
+	NOT = { has_country_flag = chaosx_broken_country }
+	OR = {
+		any_owned_state = { is_on_continent = africa }
+		any_controlled_state = { is_on_continent = africa }
+	}
+	OR = {
+		is_subject = no
+		has_country_flag = africa_subject_unifier_allowed
+		AND = {
+			is_subject = yes
+			has_war = yes
+			any_enemy_country = {
+				NOT = { capital_scope = { is_on_continent = africa } }
+			}
+		}
+	}
+}
+
+has_africa_valid_unifier_candidate = {
+	any_country = {
+		is_africa_valid_unifier_candidate = yes
+	}
+}
+
+is_africa_independent_unifier_candidate = {
+	is_africa_valid_unifier_candidate = yes
+	is_subject = no
+}
+
+is_africa_subject_liberation_unifier_candidate = {
+	is_africa_valid_unifier_candidate = yes
+	is_subject = yes
+	has_war = yes
+}
+
+is_africa_rsa_allies_unifier_candidate = {
+	tag = SAF
+	is_africa_valid_unifier_candidate = yes
+	ENG = {
+		exists = yes
+		is_in_faction_with = SAF
+	}
+}
+
+has_africa_runtime_context = {
+	has_global_flag = africa_runtime_context_ready
+	has_event_target = africa_unifier_country
+	check_variable = { global.africa_runtime_ready = constant:africa_runtime_state.ready }
+	event_target:africa_unifier_country = {
+		exists = yes
+		has_country_flag = africa_unifier_active
+	}
+}
+
+is_africa_runtime_unifier = {
+	has_africa_runtime_context = yes
+	has_country_flag = africa_unifier_active
+}
+
+is_africa_charter_league_candidate_for_prev = {
+	exists = yes
+	capital_scope = { is_on_continent = africa }
+	NOT = { has_capitulated = yes }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { has_country_flag = africa_charter_resistant_member }
+	NOT = { is_in_faction_with = PREV }
+	OR = {
+		is_subject = no
+		has_country_flag = africa_protected_liberation_authority
+		has_war = yes
+	}
+}
+
+is_africa_paper_claim_state = {
+	is_on_continent = africa
+	has_state_flag = africa_paper_claim
+}
+
+is_africa_integration_unlocked_state = {
+	is_africa_paper_claim_state = yes
+	has_state_flag = africa_integration_unlocked
+}
+
+can_africa_living_core_state_for_prev = {
+	is_africa_integration_unlocked_state = yes
+	is_controlled_by = PREV
+	is_owned_by = PREV
+	NOT = { is_core_of = PREV }
+}
+
+is_africa_rsa_civil_war_active = {
+	has_global_flag = africa_rsa_civil_war_active
+	check_variable = { global.africa_rsa_branch_state > constant:africa_rsa_branch.inactive }
+}
+
+is_africa_rsa_continental_side = {
+	has_country_flag = africa_rsa_continental_side
+	has_event_target = africa_rsa_continental_side
+}
+
+has_africa_authority_atlas_registered = {
+	has_global_flag = africa_authority_atlas_catalog_registered
+	check_variable = {
+		var = global.africa_authority_atlas_historical_dossier_count
+		value = constant:africa_authority_atlas.minimum_historical_dossiers
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = global.africa_authority_atlas_high_chaos_package_count
+		value = constant:africa_authority_atlas.minimum_high_chaos_packages
+		compare = greater_than_or_equals
+	}
+}
+
+can_africa_open_authority_atlas = {
+	has_country_flag = africa_unifier_active
+	check_variable = {
+		var = africa_archive_mandate
+		value = constant:africa_initial_value.archive_mandate
+		compare = greater_than_or_equals
+	}
+}
+
+is_africa_selected_dossier_historical = {
+	OR = {
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.kush_meroe }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.aksum }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.punic_harbor_ledger }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.numidia }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.garamantian_wells }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.manden_charter }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.songhai }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.jolof_wolof }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.futa }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.asante }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.oyo }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.benin_edo }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.dahomey }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.kanem_bornu }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.hausa_bakwai }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.wadai_baguirmi }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.funj_sennar }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.adal_harar }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.ajuran }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.swahili_coast }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.kilwa }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.kongo }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.ndongo_matamba }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.luba }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.lunda }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.buganda }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.bunyoro }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.great_zimbabwe }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.barotse }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.merina }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.comorian_sultanates }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.zulu_nguni }
+	}
+}
+
+is_africa_selected_high_chaos_package = {
+	OR = {
+		check_variable = { africa_selected_high_chaos_package_id = constant:africa_high_chaos_package_id.gorilla_highlands }
+		check_variable = { africa_selected_high_chaos_package_id = constant:africa_high_chaos_package_id.chimpanzee_marshes }
+		check_variable = { africa_selected_high_chaos_package_id = constant:africa_high_chaos_package_id.okapi_court }
+		check_variable = { africa_selected_high_chaos_package_id = constant:africa_high_chaos_package_id.crocodile_rivers }
+		check_variable = { africa_selected_high_chaos_package_id = constant:africa_high_chaos_package_id.baobab_senate }
+		check_variable = { africa_selected_high_chaos_package_id = constant:africa_high_chaos_package_id.termite_surveyors }
+		check_variable = { africa_selected_high_chaos_package_id = constant:africa_high_chaos_package_id.honeyguide_commons }
+		check_variable = { africa_selected_high_chaos_package_id = constant:africa_high_chaos_package_id.great_herds }
+		check_variable = { africa_selected_high_chaos_package_id = constant:africa_high_chaos_package_id.tidemark_dominion }
+		check_variable = { africa_selected_high_chaos_package_id = constant:africa_high_chaos_package_id.ananse_ledger }
+		check_variable = { africa_selected_high_chaos_package_id = constant:africa_high_chaos_package_id.orisha_vodun_nature_courts }
+	}
+}
+
+can_africa_unlock_bestiary_clause = {
+	has_country_flag = africa_unifier_active
+	OR = {
+		has_country_flag = africa_evolution_iii_unlocked
+		has_country_flag = africa_evolution_iv_unlocked
+	}
+	check_variable = {
+		var = africa_mythic_pressure
+		value = constant:africa_initial_value.mythic_pressure
+		compare = greater_than_or_equals
+	}
+}
+
+can_africa_record_evolution_i = {
+	has_africa_runtime_context = yes
+	NOT = { has_global_flag = africa_evolution_i_recorded }
+}
+
+can_africa_record_evolution_ii = {
+	has_africa_runtime_context = yes
+	NOT = { has_global_flag = africa_evolution_ii_recorded }
+}
+
+can_africa_record_evolution_iii = {
+	has_africa_runtime_context = yes
+	NOT = { has_global_flag = africa_evolution_iii_recorded }
+}
+
+can_africa_record_evolution_iv = {
+	has_africa_runtime_context = yes
+	NOT = { has_global_flag = africa_evolution_iv_recorded }
+}
+
+can_africa_start_world_is_one_gate = {
+	has_africa_runtime_context = yes
+	NOT = { has_global_flag = world_end }
+	has_global_flag = africa_is_one_complete
+	has_global_flag = africa_is_one_super_event_fired
+	has_global_flag = africa_continental_pole_ready
+	has_global_flag = all_continent_unifiers_world_end_ready
+	check_variable = {
+		var = global.africa_world_is_one_gate_state
+		value = constant:africa_world_is_one_gate.world_end_ready
+		compare = greater_than_or_equals
+	}
+}

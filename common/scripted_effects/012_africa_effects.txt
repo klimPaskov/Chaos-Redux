@@ -1,0 +1,476 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 AFRICA SCRIPTED EFFECTS
+# ============================================================================
+# Foundational reusable API for Event 012. This file deliberately does not wire
+# event blocks, decisions, focuses, localisation, tags, UI, GFX, or dispatcher
+# systems. Parent implementation should call these helpers from those surfaces.
+# ============================================================================
+
+africa_score_unifier_candidate_for_selection = {
+	set_temp_variable = { africa_unifier_selection_weight = 0 }
+	if = {
+		limit = { is_africa_valid_unifier_candidate = yes }
+		set_temp_variable = { africa_unifier_selection_weight = constant:africa_selection_weight.base }
+		if = {
+			limit = { is_africa_independent_unifier_candidate = yes }
+			add_to_temp_variable = { africa_unifier_selection_weight = constant:africa_selection_weight.independent_african_capital }
+		}
+		if = {
+			limit = { is_africa_subject_liberation_unifier_candidate = yes }
+			add_to_temp_variable = { africa_unifier_selection_weight = constant:africa_selection_weight.subject_liberation_story }
+		}
+		if = {
+			limit = {
+				has_war = yes
+				any_enemy_country = {
+					NOT = { capital_scope = { is_on_continent = africa } }
+				}
+			}
+			add_to_temp_variable = { africa_unifier_selection_weight = constant:africa_selection_weight.at_war_with_foreign_holder }
+		}
+		if = {
+			limit = { has_country_flag = independence_wave_breakaway }
+			add_to_temp_variable = { africa_unifier_selection_weight = constant:africa_selection_weight.recent_chaos_liberation_state }
+		}
+		if = {
+			limit = { is_africa_rsa_allies_unifier_candidate = yes }
+			add_to_temp_variable = { africa_unifier_selection_weight = constant:africa_selection_weight.rsa_allies_branch }
+		}
+		if = {
+			limit = { num_of_controlled_states < 3 }
+			add_to_temp_variable = { africa_unifier_selection_weight = constant:africa_selection_weight.small_country_bonus }
+		}
+	}
+}
+
+africa_select_random_unifier_candidate = {
+	set_variable = { global.africa_runtime_ready = constant:africa_runtime_state.not_ready }
+	if = {
+		limit = { has_africa_valid_unifier_candidate = yes }
+		random_country = {
+			limit = { is_africa_valid_unifier_candidate = yes }
+			africa_prepare_runtime_context_from_this = yes
+		}
+	}
+}
+
+africa_prepare_runtime_context_from_this = {
+	save_global_event_target_as = africa_unifier_country
+	set_variable = { global.africa_unifier_country = ROOT }
+	set_variable = { global.africa_unifier_country_id = ROOT.id }
+	set_variable = { global.africa_runtime_ready = constant:africa_runtime_state.ready }
+	set_global_flag = africa_runtime_context_ready
+	set_global_flag = event_012_africa_fired
+	set_country_flag = africa_unifier_active
+	africa_initialize_core_values = yes
+}
+
+africa_clear_runtime_context = {
+	if = {
+		limit = { has_event_target = africa_unifier_country }
+		event_target:africa_unifier_country = {
+			clr_country_flag = africa_unifier_active
+			clr_country_flag = africa_charter_league_leader
+			clr_country_flag = africa_rsa_continental_side
+			clr_country_flag = africa_rsa_loyalist_side
+		}
+		clear_global_event_target = africa_unifier_country
+	}
+	if = {
+		limit = { has_event_target = africa_rsa_continental_side }
+		clear_global_event_target = africa_rsa_continental_side
+	}
+	if = {
+		limit = { has_event_target = africa_rsa_loyalist_side }
+		clear_global_event_target = africa_rsa_loyalist_side
+	}
+	if = {
+		limit = { has_event_target = africa_rsa_union_origin }
+		event_target:africa_rsa_union_origin = {
+			clr_country_flag = africa_rsa_union_origin
+		}
+		clear_global_event_target = africa_rsa_union_origin
+	}
+	if = {
+		limit = { has_event_target = africa_charter_league_leader }
+		event_target:africa_charter_league_leader = {
+			clr_country_flag = africa_charter_league_leader
+		}
+		clear_global_event_target = africa_charter_league_leader
+	}
+	clear_variable = global.africa_unifier_country
+	clear_variable = global.africa_unifier_country_id
+	clear_variable = global.africa_rsa_branch_state
+	clear_variable = global.africa_world_is_one_gate_state
+	set_variable = { global.africa_runtime_ready = constant:africa_runtime_state.not_ready }
+	clr_global_flag = africa_runtime_context_ready
+	clr_global_flag = africa_rsa_civil_war_active
+}
+
+africa_initialize_core_values = {
+	set_variable = { africa_legitimacy = constant:africa_initial_value.legitimacy }
+	set_variable = { africa_authority = constant:africa_initial_value.authority }
+	set_variable = { africa_league_cohesion = constant:africa_initial_value.league_cohesion }
+	set_variable = { africa_liberation_momentum = constant:africa_initial_value.liberation_momentum }
+	set_variable = { africa_regional_trust = constant:africa_initial_value.regional_trust }
+	set_variable = { africa_colonial_alarm = constant:africa_initial_value.colonial_alarm }
+	set_variable = { africa_paper_core_burden = constant:africa_initial_value.paper_core_burden }
+	set_variable = { africa_covenant_pressure = constant:africa_initial_value.covenant_pressure }
+	set_variable = { africa_archive_mandate = constant:africa_initial_value.archive_mandate }
+	set_variable = { africa_old_seat_legitimacy = constant:africa_initial_value.old_seat_legitimacy }
+	set_variable = { africa_local_sovereignty = constant:africa_initial_value.local_sovereignty }
+	set_variable = { africa_restoration_debt = constant:africa_initial_value.restoration_debt }
+	set_variable = { africa_mythic_pressure = constant:africa_initial_value.mythic_pressure }
+	set_variable = { africa_nonhuman_sovereignty = constant:africa_initial_value.nonhuman_sovereignty }
+	set_variable = { africa_bestiary_alarm = constant:africa_initial_value.bestiary_alarm }
+	set_variable = { africa_habitat_trust = constant:africa_initial_value.habitat_trust }
+	set_variable = { africa_mythic_volatility = constant:africa_initial_value.mythic_volatility }
+}
+
+africa_clamp_core_values = {
+	set_temp_variable = { africa_value_minimum = constant:africa_value_bounds.minimum }
+	set_temp_variable = { africa_value_maximum = constant:africa_value_bounds.maximum }
+	if = { limit = { check_variable = { africa_legitimacy < africa_value_minimum } } set_variable = { africa_legitimacy = africa_value_minimum } }
+	if = { limit = { check_variable = { africa_authority < africa_value_minimum } } set_variable = { africa_authority = africa_value_minimum } }
+	if = { limit = { check_variable = { africa_league_cohesion < africa_value_minimum } } set_variable = { africa_league_cohesion = africa_value_minimum } }
+	if = { limit = { check_variable = { africa_liberation_momentum < africa_value_minimum } } set_variable = { africa_liberation_momentum = africa_value_minimum } }
+	if = { limit = { check_variable = { africa_regional_trust < africa_value_minimum } } set_variable = { africa_regional_trust = africa_value_minimum } }
+	if = { limit = { check_variable = { africa_colonial_alarm < africa_value_minimum } } set_variable = { africa_colonial_alarm = africa_value_minimum } }
+	if = { limit = { check_variable = { africa_paper_core_burden < africa_value_minimum } } set_variable = { africa_paper_core_burden = africa_value_minimum } }
+	if = { limit = { check_variable = { africa_covenant_pressure < africa_value_minimum } } set_variable = { africa_covenant_pressure = africa_value_minimum } }
+	if = { limit = { check_variable = { africa_archive_mandate < africa_value_minimum } } set_variable = { africa_archive_mandate = africa_value_minimum } }
+	if = { limit = { check_variable = { africa_old_seat_legitimacy < africa_value_minimum } } set_variable = { africa_old_seat_legitimacy = africa_value_minimum } }
+	if = { limit = { check_variable = { africa_local_sovereignty < africa_value_minimum } } set_variable = { africa_local_sovereignty = africa_value_minimum } }
+	if = { limit = { check_variable = { africa_restoration_debt < africa_value_minimum } } set_variable = { africa_restoration_debt = africa_value_minimum } }
+	if = { limit = { check_variable = { africa_mythic_pressure < africa_value_minimum } } set_variable = { africa_mythic_pressure = africa_value_minimum } }
+	if = { limit = { check_variable = { africa_nonhuman_sovereignty < africa_value_minimum } } set_variable = { africa_nonhuman_sovereignty = africa_value_minimum } }
+	if = { limit = { check_variable = { africa_bestiary_alarm < africa_value_minimum } } set_variable = { africa_bestiary_alarm = africa_value_minimum } }
+	if = { limit = { check_variable = { africa_habitat_trust < africa_value_minimum } } set_variable = { africa_habitat_trust = africa_value_minimum } }
+	if = { limit = { check_variable = { africa_mythic_volatility < africa_value_minimum } } set_variable = { africa_mythic_volatility = africa_value_minimum } }
+	if = { limit = { check_variable = { africa_legitimacy > africa_value_maximum } } set_variable = { africa_legitimacy = africa_value_maximum } }
+	if = { limit = { check_variable = { africa_authority > africa_value_maximum } } set_variable = { africa_authority = africa_value_maximum } }
+	if = { limit = { check_variable = { africa_league_cohesion > africa_value_maximum } } set_variable = { africa_league_cohesion = africa_value_maximum } }
+	if = { limit = { check_variable = { africa_liberation_momentum > africa_value_maximum } } set_variable = { africa_liberation_momentum = africa_value_maximum } }
+	if = { limit = { check_variable = { africa_regional_trust > africa_value_maximum } } set_variable = { africa_regional_trust = africa_value_maximum } }
+	if = { limit = { check_variable = { africa_colonial_alarm > africa_value_maximum } } set_variable = { africa_colonial_alarm = africa_value_maximum } }
+	if = { limit = { check_variable = { africa_paper_core_burden > africa_value_maximum } } set_variable = { africa_paper_core_burden = africa_value_maximum } }
+	if = { limit = { check_variable = { africa_covenant_pressure > africa_value_maximum } } set_variable = { africa_covenant_pressure = africa_value_maximum } }
+	if = { limit = { check_variable = { africa_archive_mandate > africa_value_maximum } } set_variable = { africa_archive_mandate = africa_value_maximum } }
+	if = { limit = { check_variable = { africa_old_seat_legitimacy > africa_value_maximum } } set_variable = { africa_old_seat_legitimacy = africa_value_maximum } }
+	if = { limit = { check_variable = { africa_local_sovereignty > africa_value_maximum } } set_variable = { africa_local_sovereignty = africa_value_maximum } }
+	if = { limit = { check_variable = { africa_restoration_debt > africa_value_maximum } } set_variable = { africa_restoration_debt = africa_value_maximum } }
+	if = { limit = { check_variable = { africa_mythic_pressure > africa_value_maximum } } set_variable = { africa_mythic_pressure = africa_value_maximum } }
+	if = { limit = { check_variable = { africa_nonhuman_sovereignty > africa_value_maximum } } set_variable = { africa_nonhuman_sovereignty = africa_value_maximum } }
+	if = { limit = { check_variable = { africa_bestiary_alarm > africa_value_maximum } } set_variable = { africa_bestiary_alarm = africa_value_maximum } }
+	if = { limit = { check_variable = { africa_habitat_trust > africa_value_maximum } } set_variable = { africa_habitat_trust = africa_value_maximum } }
+	if = { limit = { check_variable = { africa_mythic_volatility > africa_value_maximum } } set_variable = { africa_mythic_volatility = africa_value_maximum } }
+}
+
+africa_grant_continental_paper_claims = {
+	every_state = {
+		limit = { is_on_continent = africa }
+		if = {
+			limit = { NOT = { is_claimed_by = ROOT } }
+			add_claim_by = ROOT
+		}
+		set_state_flag = africa_paper_claim
+		set_variable = { africa_paper_core_stage = constant:africa_paper_core_stage.claim }
+	}
+	set_country_flag = africa_continental_paper_claims_seeded
+}
+
+africa_unlock_state_integration_from_from = {
+	FROM = {
+		if = {
+			limit = {
+				is_on_continent = africa
+				has_state_flag = africa_paper_claim
+			}
+			set_state_flag = africa_integration_unlocked
+			set_variable = { africa_paper_core_stage = constant:africa_paper_core_stage.integration_unlocked }
+		}
+	}
+}
+
+africa_mark_state_authority_tracked_from_from = {
+	FROM = {
+		if = {
+			limit = { is_africa_integration_unlocked_state = yes }
+			set_state_flag = africa_authority_tracked
+			set_variable = { africa_paper_core_stage = constant:africa_paper_core_stage.authority_tracked }
+		}
+	}
+}
+
+africa_complete_living_core_from_from = {
+	FROM = {
+		if = {
+			limit = { can_africa_living_core_state_for_prev = yes }
+			add_core_of = PREV
+			clr_state_flag = africa_integration_unlocked
+			clr_state_flag = africa_authority_tracked
+			set_state_flag = africa_living_core
+			set_variable = { africa_paper_core_stage = constant:africa_paper_core_stage.living_core }
+		}
+	}
+}
+
+africa_create_charter_league_from_template = {
+	if = {
+		limit = { is_in_faction = yes }
+		leave_faction = yes
+	}
+	set_rule = { can_create_factions = yes }
+	create_faction_from_template = {
+		template = faction_template_africa_charter_league
+		name = africa_charter_league
+		icon = GFX_faction_logo_generic_democratic
+	}
+	set_country_flag = africa_charter_league_leader
+	set_global_flag = africa_charter_league_created
+	save_global_event_target_as = africa_charter_league_leader
+}
+
+africa_add_from_to_charter_league = {
+	FROM = {
+		if = {
+			limit = { is_in_faction = yes }
+			leave_faction = yes
+		}
+		set_country_flag = africa_charter_observer
+		set_variable = { africa_charter_membership_state = constant:africa_charter_league.observer }
+	}
+	add_to_faction = FROM
+}
+
+africa_mark_from_as_protected_charter_member = {
+	FROM = {
+		clr_country_flag = africa_charter_observer
+		set_country_flag = africa_charter_protected_member
+		set_variable = { africa_charter_membership_state = constant:africa_charter_league.protected_member }
+	}
+}
+
+africa_mark_from_as_full_charter_member = {
+	FROM = {
+		clr_country_flag = africa_charter_observer
+		clr_country_flag = africa_charter_protected_member
+		set_country_flag = africa_charter_member
+		set_variable = { africa_charter_membership_state = constant:africa_charter_league.charter_member }
+	}
+}
+
+africa_mark_rsa_allies_branch_start = {
+	set_global_flag = africa_rsa_civil_war_active
+	set_variable = { global.africa_rsa_branch_state = constant:africa_rsa_branch.civil_war_marked }
+	save_global_event_target_as = africa_rsa_union_origin
+	set_country_flag = africa_rsa_union_origin
+}
+
+africa_mark_rsa_continental_side = {
+	save_global_event_target_as = africa_rsa_continental_side
+	set_country_flag = africa_rsa_continental_side
+	set_variable = { global.africa_rsa_branch_state = constant:africa_rsa_branch.continental_side_marked }
+}
+
+africa_mark_rsa_loyalist_side = {
+	save_global_event_target_as = africa_rsa_loyalist_side
+	set_country_flag = africa_rsa_loyalist_side
+	set_variable = { global.africa_rsa_branch_state = constant:africa_rsa_branch.loyalist_side_marked }
+}
+
+africa_mark_rsa_continental_victory = {
+	set_global_flag = africa_rsa_continental_victory
+	set_variable = { global.africa_rsa_branch_state = constant:africa_rsa_branch.continental_victory }
+	if = {
+		limit = { has_event_target = africa_rsa_continental_side }
+		event_target:africa_rsa_continental_side = {
+			africa_prepare_runtime_context_from_this = yes
+		}
+	}
+}
+
+africa_white_peace_allies_after_rsa_continental_victory = {
+	if = {
+		limit = {
+			has_event_target = africa_rsa_continental_side
+			ENG = { exists = yes }
+		}
+		ENG = {
+			every_country = {
+				limit = {
+					exists = yes
+					is_in_faction_with = ENG
+					has_war_with = event_target:africa_rsa_continental_side
+				}
+				event_target:africa_rsa_continental_side = {
+					white_peace = PREV
+				}
+			}
+		}
+		set_global_flag = africa_rsa_allied_peace_done
+		set_variable = { global.africa_rsa_branch_state = constant:africa_rsa_branch.allied_peace_done }
+	}
+}
+
+africa_register_authority_atlas_catalog = {
+	clear_array = global.africa_authority_atlas_dossier_ids
+	clear_array = global.africa_authority_atlas_high_chaos_package_ids
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.kush_meroe }
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.aksum }
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.punic_harbor_ledger }
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.numidia }
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.garamantian_wells }
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.manden_charter }
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.songhai }
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.jolof_wolof }
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.futa }
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.asante }
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.oyo }
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.benin_edo }
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.dahomey }
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.kanem_bornu }
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.hausa_bakwai }
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.wadai_baguirmi }
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.funj_sennar }
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.adal_harar }
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.ajuran }
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.swahili_coast }
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.kilwa }
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.kongo }
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.ndongo_matamba }
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.luba }
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.lunda }
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.buganda }
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.bunyoro }
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.great_zimbabwe }
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.barotse }
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.merina }
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.comorian_sultanates }
+	add_to_array = { array = global.africa_authority_atlas_dossier_ids value = constant:africa_dossier_id.zulu_nguni }
+	add_to_array = { array = global.africa_authority_atlas_high_chaos_package_ids value = constant:africa_high_chaos_package_id.gorilla_highlands }
+	add_to_array = { array = global.africa_authority_atlas_high_chaos_package_ids value = constant:africa_high_chaos_package_id.chimpanzee_marshes }
+	add_to_array = { array = global.africa_authority_atlas_high_chaos_package_ids value = constant:africa_high_chaos_package_id.okapi_court }
+	add_to_array = { array = global.africa_authority_atlas_high_chaos_package_ids value = constant:africa_high_chaos_package_id.crocodile_rivers }
+	add_to_array = { array = global.africa_authority_atlas_high_chaos_package_ids value = constant:africa_high_chaos_package_id.baobab_senate }
+	add_to_array = { array = global.africa_authority_atlas_high_chaos_package_ids value = constant:africa_high_chaos_package_id.termite_surveyors }
+	add_to_array = { array = global.africa_authority_atlas_high_chaos_package_ids value = constant:africa_high_chaos_package_id.honeyguide_commons }
+	add_to_array = { array = global.africa_authority_atlas_high_chaos_package_ids value = constant:africa_high_chaos_package_id.great_herds }
+	add_to_array = { array = global.africa_authority_atlas_high_chaos_package_ids value = constant:africa_high_chaos_package_id.tidemark_dominion }
+	add_to_array = { array = global.africa_authority_atlas_high_chaos_package_ids value = constant:africa_high_chaos_package_id.ananse_ledger }
+	add_to_array = { array = global.africa_authority_atlas_high_chaos_package_ids value = constant:africa_high_chaos_package_id.orisha_vodun_nature_courts }
+	set_variable = { global.africa_authority_atlas_historical_dossier_count = constant:africa_authority_atlas.historical_dossier_count }
+	set_variable = { global.africa_authority_atlas_high_chaos_package_count = constant:africa_authority_atlas.high_chaos_package_count }
+	set_global_flag = africa_authority_atlas_catalog_registered
+}
+
+africa_mark_selected_dossier_opened = {
+	if = {
+		limit = { is_africa_selected_dossier_historical = yes }
+		add_to_array = { array = africa_opened_dossier_ids value = africa_selected_dossier_id }
+		meta_effect = {
+			text = {
+				set_country_flag = africa_dossier_[DOSSIER_ID]_opened
+			}
+			DOSSIER_ID = "[?africa_selected_dossier_id|.0]"
+		}
+		set_country_flag = africa_has_opened_dossier
+	}
+}
+
+africa_mark_selected_high_chaos_package_unlocked = {
+	if = {
+		limit = { is_africa_selected_high_chaos_package = yes }
+		add_to_array = { array = africa_unlocked_high_chaos_package_ids value = africa_selected_high_chaos_package_id }
+		meta_effect = {
+			text = {
+				set_country_flag = africa_high_chaos_package_[PACKAGE_ID]_unlocked
+			}
+			PACKAGE_ID = "[?africa_selected_high_chaos_package_id|.0]"
+		}
+		set_country_flag = africa_has_high_chaos_package
+	}
+}
+
+africa_prepare_evolution_log_context = {
+	set_temp_variable = { events_log_evolution_event_id = constant:africa_event_log.event_id }
+	set_temp_variable = { events_log_evolution_type = constant:africa_event_log.evolution_type }
+	set_temp_variable = { events_log_evolution_tier = events_log_evolution_stage }
+	if = {
+		limit = { has_africa_runtime_context = yes }
+		event_target:africa_unifier_country = {
+			save_event_target_as = events_log_evolution_actor
+		}
+		set_temp_variable = { events_log_evolution_has_actor = 1 }
+	}
+}
+
+africa_record_evolution_i_if_needed = {
+	set_temp_variable = { events_log_evolution_stage = constant:africa_event_log.evolution_i }
+	africa_prepare_evolution_log_context = yes
+	if = {
+		limit = {
+			can_africa_record_evolution_i = yes
+			is_current_evolution_enabled = yes
+		}
+		record_events_log_evolution_entry = yes
+		set_global_flag = africa_evolution_i_recorded
+		event_target:africa_unifier_country = { set_country_flag = africa_evolution_i_unlocked }
+	}
+}
+
+africa_record_evolution_ii_if_needed = {
+	set_temp_variable = { events_log_evolution_stage = constant:africa_event_log.evolution_ii }
+	africa_prepare_evolution_log_context = yes
+	if = {
+		limit = {
+			can_africa_record_evolution_ii = yes
+			is_current_evolution_enabled = yes
+		}
+		record_events_log_evolution_entry = yes
+		set_global_flag = africa_evolution_ii_recorded
+		event_target:africa_unifier_country = { set_country_flag = africa_evolution_ii_unlocked }
+	}
+}
+
+africa_record_evolution_iii_if_needed = {
+	set_temp_variable = { events_log_evolution_stage = constant:africa_event_log.evolution_iii }
+	africa_prepare_evolution_log_context = yes
+	if = {
+		limit = {
+			can_africa_record_evolution_iii = yes
+			is_current_evolution_enabled = yes
+		}
+		record_events_log_evolution_entry = yes
+		set_global_flag = africa_evolution_iii_recorded
+		event_target:africa_unifier_country = { set_country_flag = africa_evolution_iii_unlocked }
+	}
+}
+
+africa_record_evolution_iv_if_needed = {
+	set_temp_variable = { events_log_evolution_stage = constant:africa_event_log.evolution_iv }
+	africa_prepare_evolution_log_context = yes
+	if = {
+		limit = {
+			can_africa_record_evolution_iv = yes
+			is_current_evolution_enabled = yes
+		}
+		record_events_log_evolution_entry = yes
+		set_global_flag = africa_evolution_iv_recorded
+		event_target:africa_unifier_country = { set_country_flag = africa_evolution_iv_unlocked }
+	}
+}
+
+africa_mark_world_is_one_gate_ready = {
+	if = {
+		limit = { can_africa_start_world_is_one_gate = yes }
+		set_variable = { global.africa_world_is_one_gate_state = constant:africa_world_is_one_gate.terminal_started }
+		set_global_flag = africa_world_is_one_gate_ready
+		set_temp_variable = { events_log_evolution_stage = constant:africa_event_log.world_is_one_gate }
+		africa_prepare_evolution_log_context = yes
+		if = {
+			limit = { is_current_evolution_enabled = yes }
+			record_events_log_evolution_entry = yes
+		}
+	}
+}
