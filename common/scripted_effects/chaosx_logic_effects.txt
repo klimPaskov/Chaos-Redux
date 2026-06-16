@@ -115,6 +115,7 @@ initialize_event_system = {
 
     initialize_event_categories = yes
     initialize_all_events_array = yes
+    initialize_default_disabled_events_for_rework_queue = yes
     count_total_events_plus_one = yes
     initialize_event_weights = yes
     calculate_dynamic_major_weight_gain = yes
@@ -263,6 +264,22 @@ initialize_all_events_array = {
         value = i
         add_to_array = { global.all_events = global.repeatable_events^i }
     }
+}
+
+initialize_default_disabled_events_for_rework_queue = {
+	for_loop_effect = {
+		start = 0
+		end = global.all_events^num
+		value = i
+		set_temp_variable = { event_id = global.all_events^i }
+		if = {
+			limit = {
+				NOT = { event_log_event_is_reworked_default_enabled = yes }
+				NOT = { is_in_array = { global.disabled_events = event_id } }
+			}
+			add_to_array = { global.disabled_events = event_id }
+		}
+	}
 }
 
 # Initialize event weights and caps arrays
