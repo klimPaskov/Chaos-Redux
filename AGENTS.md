@@ -114,7 +114,7 @@ Clausewitz script is picky. Follow these rules strictly.
 5. Try to use loops when they improve clarity and avoid repetition.
 6. Use flags for true or false state, not numeric variables that only ever take 0 or 1.
 7. Move repeated logic into `scripted_effects` or `scripted_triggers`.
-8. `on_weekly`, `on_daily`, `on_monthly` and similar on actions iterate over all countries by default unless a narrower scope is explicitly required. But these on actions can slow down the game.
+8. `on_weekly`, `on_daily`, `on_monthly` and similar on actions iterate over all countries by default unless a narrower scope is explicitly required. `on_daily_TAG` are allowed.
    - Only use these types of on actions (which iterate through every country by default) when I explicitly ask for it.
    - If you believe a whole world iteration is required, stop and ask for permission. Do not implement it until permission is granted.
 9. Constants `@MY_CONSTANT` cannot cross file boundaries. They are file scoped.
