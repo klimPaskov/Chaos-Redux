@@ -67,6 +67,15 @@ natural_disaster_prepare_launch_context = {
 	set_temp_variable = { natural_disaster_phase = constant:natural_disaster_phase.impact }
 }
 
+natural_disaster_prepare_random_event_context = {
+	natural_disaster_prepare_launch_context = yes
+	natural_disaster_select_target_state = yes
+	if = {
+		limit = { has_event_target = natural_disaster_current_target_state }
+		natural_disaster_roll_warning_chance = yes
+	}
+}
+
 natural_disaster_select_stage = {
 	set_temp_variable = { natural_disaster_stage = constant:natural_disaster_event.stage_baseline }
 	if = {
@@ -349,6 +358,18 @@ natural_disaster_apply_impact_to_current_state = {
 	natural_disaster_apply_family_building_damage = yes
 	natural_disaster_apply_population_loss = yes
 	natural_disaster_setup_recovery_context = yes
+}
+
+natural_disaster_apply_current_impact = {
+	if = {
+		limit = { has_event_target = natural_disaster_current_target_state }
+		event_target:natural_disaster_current_target_state = {
+			natural_disaster_apply_impact_to_current_state = yes
+		}
+	}
+	else = {
+		set_country_flag = natural_disaster_target_selection_failed
+	}
 }
 
 natural_disaster_set_damage_profile = {
@@ -717,6 +738,10 @@ natural_disaster_record_evolution_if_needed = {
 	}
 }
 
+natural_disaster_record_evolution_stage = {
+	natural_disaster_record_evolution_if_needed = yes
+}
+
 natural_disaster_prepare_scenario_barrage = {
 	set_global_flag = natural_disaster_manual_barrage_running
 	set_country_flag = natural_disaster_scenario_barrage_active
@@ -757,6 +782,10 @@ natural_disaster_prepare_scenario_barrage = {
 		set_temp_variable = { natural_disaster_severity = constant:natural_disaster_scenario_barrage.medium_severity }
 	}
 	natural_disaster_select_scenario_family = yes
+}
+
+trigger_natural_disaster_barrage_scenario = {
+	natural_disaster_prepare_scenario_barrage = yes
 }
 
 natural_disaster_select_scenario_family = {
