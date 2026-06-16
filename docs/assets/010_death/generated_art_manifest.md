@@ -3,7 +3,8 @@
 Event id: `010`
 Event slug: `death`
 Source mode summary: generated non-icon art through official `image_gen`
-Contact sheet: `docs/assets/010_death/contact_sheets/death_processed_contact.png`
+Contact sheet: `docs/assets/010_death/contact_sheets/death_report_event_images_contact.png`
+Legacy mixed contact sheet: `docs/assets/010_death/contact_sheets/death_processed_contact.png`
 Additional contact sheet: `docs/assets/010_death/contact_sheets/death_black_oath_routes_contact.png`
 Focus icon contact sheet: `docs/assets/010_death/contact_sheets/death_focus_icons_contact.png`
 Super-event audit contact sheet: `docs/assets/010_death/contact_sheets/death_super_events_contact.png`
@@ -52,12 +53,30 @@ Super-event audit contact sheet: `docs/assets/010_death/contact_sheets/death_sup
 - Asset status: `complete`
 - Notes: apparent presentation is nonhuman/ungendered; gameplay should keep institutional name `Zol` rather than use a human random-name pool
 
+### `report_event_death_missing_island`
+
+- Asset type: report event image
+- Intended in-game use: Death missing-island shoreline report
+- Source mode: generated
+- Source note: fictional period-documentary scene; generation was appropriate because the event needs a unique impossible shoreline rather than a real archive location
+- Prompt note: black surf swallowing an empty island quay and village, coastline visibly wrong, no people, no text
+- Source PNG: `docs/assets/010_death/source_png/report_event_death_missing_island_source.png`
+- Processed PNG: `docs/assets/010_death/processed_png/report_event_death_missing_island.png`
+- Final path: `gfx/event_pictures/report_event_death_missing_island.dds`
+- Target size: `210x176`
+- Sprite name: `GFX_report_event_death_missing_island`
+- `.gfx` file: `interface/chaosx_pictures.gfx`
+- Related gameplay use: impossible shoreline / vanished island report card
+- Asset status: `complete`
+- Notes: regenerated for stronger storm contrast and a visibly wrong coastline; report-card treatment applied locally
+
 ### `report_event_death_mail_boat`
 
 - Asset type: report event image
 - Intended in-game use: early Death report event picture
 - Source mode: generated
 - Source note: fictional period-documentary scene; no archival source exists for this alternate-history island report
+- Prompt note: abandoned mail launch drifting back into a blackened harbor, lit cabin, visible sacks, no crew, no text
 - Source PNG: `docs/assets/010_death/source_png/report_event_death_mail_boat_source.png`
 - Processed PNG: `docs/assets/010_death/processed_png/report_event_death_mail_boat.png`
 - Final path: `gfx/event_pictures/report_event_death_mail_boat.dds`
@@ -66,13 +85,15 @@ Super-event audit contact sheet: `docs/assets/010_death/contact_sheets/death_sup
 - `.gfx` file: `interface/chaosx_pictures.gfx`
 - Related gameplay use: empty pier/mail boat report card
 - Asset status: `complete`
-- Notes: report-card treatment applied locally
+- Notes: regenerated for stronger harbor mood and clearer crew absence; report-card treatment applied locally
 
 ### `report_event_death_lighthouse`
 
 - Asset type: report event image
 - Intended in-game use: Death lighthouse report
 - Source mode: generated
+- Source note: fictional period-documentary lighthouse scene; generation was appropriate because the event needs an impossible shoreline swallow rather than a specific archive photograph
+- Prompt note: lighthouse beam cutting across a dead sea and swallowed shoreline under storm cloud, no readable text
 - Source PNG: `docs/assets/010_death/source_png/report_event_death_lighthouse_source.png`
 - Processed PNG: `docs/assets/010_death/processed_png/report_event_death_lighthouse.png`
 - Final path: `gfx/event_pictures/report_event_death_lighthouse.dds`
@@ -81,13 +102,15 @@ Super-event audit contact sheet: `docs/assets/010_death/contact_sheets/death_sup
 - `.gfx` file: `interface/chaosx_pictures.gfx`
 - Related gameplay use: lighthouse/empty settlement report card
 - Asset status: `complete`
-- Notes: report-card treatment applied locally
+- Notes: regenerated for stronger beam contrast and dead shoreline silhouette; report-card treatment applied locally
 
 ### `report_event_death_census`
 
 - Asset type: report event image
 - Intended in-game use: Death census-office report
 - Source mode: generated
+- Source note: fictional period-documentary records-office scene; no real archival photo exists for the alternate-history missing-records incident
+- Prompt note: officials confronting shattered records shelves and blank files, no readable text, no gore
 - Source PNG: `docs/assets/010_death/source_png/report_event_death_census_source.png`
 - Processed PNG: `docs/assets/010_death/processed_png/report_event_death_census.png`
 - Final path: `gfx/event_pictures/report_event_death_census.dds`
@@ -96,7 +119,7 @@ Super-event audit contact sheet: `docs/assets/010_death/contact_sheets/death_sup
 - `.gfx` file: `interface/chaosx_pictures.gfx`
 - Related gameplay use: abandoned census office report card
 - Asset status: `complete`
-- Notes: source kept free of readable text before local treatment
+- Notes: regenerated for stronger human reaction and wrecked-records staging; source kept free of readable text before local treatment
 
 ### `news_event_death_mainland_reveal`
 

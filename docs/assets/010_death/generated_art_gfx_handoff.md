@@ -39,23 +39,33 @@ These notes were the original `.gfx` handoff. Final wiring has been applied in t
 
 ## Event pictures
 
+- `report_event_death_missing_island`
+  - Final DDS path: `gfx/event_pictures/report_event_death_missing_island.dds`
+  - Sprite name: `GFX_report_event_death_missing_island`
+  - Final `.gfx` file: `interface/chaosx_pictures.gfx`
+  - Related gameplay use: impossible shoreline / vanished island report image
+  - Use notes: regenerated with a wrong-reading coastline and black surf so the absence reads immediately at HOI4 report size
+
 - `report_event_death_mail_boat`
   - Final DDS path: `gfx/event_pictures/report_event_death_mail_boat.dds`
   - Sprite name: `GFX_report_event_death_mail_boat`
   - Final `.gfx` file: `interface/chaosx_pictures.gfx`
   - Related gameplay use: empty pier/mail boat report image
+  - Use notes: regenerated with visible mail sacks, lit cabin, and no crew so the harbor reads as recently abandoned rather than merely quiet
 
 - `report_event_death_lighthouse`
   - Final DDS path: `gfx/event_pictures/report_event_death_lighthouse.dds`
   - Sprite name: `GFX_report_event_death_lighthouse`
   - Final `.gfx` file: `interface/chaosx_pictures.gfx`
   - Related gameplay use: lighthouse/empty settlement report image
+  - Use notes: regenerated with a stronger beam and swallowed shoreline silhouette for better report-card readability
 
 - `report_event_death_census`
   - Final DDS path: `gfx/event_pictures/report_event_death_census.dds`
   - Sprite name: `GFX_report_event_death_census`
   - Final `.gfx` file: `interface/chaosx_pictures.gfx`
   - Related gameplay use: abandoned census office report image
+  - Use notes: regenerated with shocked officials and wrecked record storage while keeping all papers unreadable
 
 - `news_event_death_mainland_reveal`
   - Final DDS path: `gfx/event_pictures/news_event_death_mainland_reveal.dds`
