@@ -65,6 +65,19 @@ Three internal rarity groups are now represented in the achievement list order:
   - `death_before_the_name`
   - `death_the_living_conference`
   - `death_six_continents_one_color`
+- Event 013 Natural Disasters
+  - `ACH_ND_RING_THE_BELL`
+  - `ACH_ND_ENGINEERS_OF_THE_RUBBLE`
+  - `ACH_ND_THE_TRAINS_ARRIVED`
+  - `ACH_ND_NO_PORT_LEFT_BEHIND`
+  - `ACH_ND_GRAIN_AGAINST_THE_DUST`
+  - `ACH_ND_ASH_ON_THE_RUNWAY`
+  - `ACH_ND_SKY_ARTILLERY_SURVIVOR`
+  - `ACH_ND_THE_SEA_WALKED_BACK`
+  - `ACH_ND_NOT_ONE_MORE_AFTERSHOCK`
+  - `ACH_ND_DISASTER_LEDGER_CLOSED`
+  - `ACH_ND_NO_WORLD_END_REQUIRED`
+  - `ACH_ND_STILL_STANDING_IN_FOUR_SEASONS`
 
 HOI4 custom achievements do not expose a native tier field in the file format, so tiering is preserved through internal grouping, naming, and docs rather than a dedicated engine-side rarity value.
 
@@ -221,6 +234,33 @@ Queued but not active:
   - Held until a full Black Oath/Herald route exists.
 - `death_book_burner`
   - Held until a full Dark Methods route exists.
+
+### Event 013 Natural Disasters
+
+- `ACH_ND_RING_THE_BELL`
+  - Complete mitigation decisions before impact for at least five Natural Disasters warnings, including at least one water-family warning.
+- `ACH_ND_ENGINEERS_OF_THE_RUBBLE`
+  - Fully recover repeated earthquake or landslide aftermaths without failing a disaster recovery mission.
+- `ACH_ND_THE_TRAINS_ARRIVED`
+  - Use relief train or railway repair responses across enough affected states, keep transport/supply proof intact, and avoid recovery mission failure.
+- `ACH_ND_NO_PORT_LEFT_BEHIND`
+  - Recover repeated storm, tsunami, or port-disaster aftermaths with port response work, no shoreline mission failure, and no affected-port control loss.
+- `ACH_ND_GRAIN_AGAINST_THE_DUST`
+  - Recover repeated drought aftermaths without failing the dry-belt mission.
+- `ACH_ND_ASH_ON_THE_RUNWAY`
+  - Recover repeated volcanic or meteor airfield aftermaths while avoiding ash-clearance failure.
+- `ACH_ND_SKY_ARTILLERY_SURVIVOR`
+  - In Evolution IV, survive and recover a meteor shower that marks multiple states while keeping the capital free of meteor scars.
+- `ACH_ND_THE_SEA_WALKED_BACK`
+  - Mitigate a seismic warning and recover the tsunami or coastal aftermath that follows with ports restored and civilian loss below the high threshold.
+- `ACH_ND_NOT_ONE_MORE_AFTERSHOCK`
+  - During Evolution III, complete chained aftermath recoveries before any chained aftermath escalates.
+- `ACH_ND_DISASTER_LEDGER_CLOSED`
+  - Launch Disaster Barrage at High or Maximum intensity and close all active aftermaths.
+- `ACH_ND_NO_WORLD_END_REQUIRED`
+  - Experience Evolution IV abnormal disaster pressure and recover affected core states without a world-end scenario while the Chaos Meter remains below the terminal threshold.
+- `ACH_ND_STILL_STANDING_IN_FOUR_SEASONS`
+  - Recover from earth, water, heat, and ash/sky disaster families in one campaign; manual Disaster Barrage recoveries can count for only one family.
 
 ## Icons And GFX
 

@@ -41,6 +41,13 @@ initialize_event_system = {
     clear_array = global.events_log_history_minor_since_major_entries
     clear_array = global.events_log_history_unique_left_entries
     clear_array = global.events_log_history_total_fired_entries
+    clear_array = global.events_log_history_natural_disaster_state_entries
+    clear_array = global.events_log_history_natural_disaster_family_entries
+    clear_array = global.events_log_history_natural_disaster_severity_entries
+    clear_array = global.events_log_history_natural_disaster_warning_entries
+    clear_array = global.events_log_history_natural_disaster_recovery_entries
+    clear_array = global.events_log_history_natural_disaster_chain_entries
+    clear_array = global.events_log_history_natural_disaster_scenario_entries
     clear_array = global.events_log_view_sequence_entries
     clear_array = global.events_log_view_date_entries
     clear_array = global.events_log_view_event_id_entries
@@ -49,6 +56,13 @@ initialize_event_system = {
     clear_array = global.events_log_view_has_actor_entries
     clear_array = global.events_log_view_cluster_id_entries
     clear_array = global.events_log_view_cluster_sequence_entries
+    clear_array = global.events_log_view_natural_disaster_state_entries
+    clear_array = global.events_log_view_natural_disaster_family_entries
+    clear_array = global.events_log_view_natural_disaster_severity_entries
+    clear_array = global.events_log_view_natural_disaster_warning_entries
+    clear_array = global.events_log_view_natural_disaster_recovery_entries
+    clear_array = global.events_log_view_natural_disaster_chain_entries
+    clear_array = global.events_log_view_natural_disaster_scenario_entries
     clear_array = global.events_log_events_view_fired_entries
     clear_array = global.events_log_events_view_enabled_entries
     clear_array = global.events_log_events_view_unique_entries
@@ -215,7 +229,6 @@ initialize_event_categories = {
     add_to_array = { global.repeatable_events = 41 }  # DISEASE IN DIVISIONS
     add_to_array = { global.repeatable_events = 42 }  # EQUIPMENT FROM HEAVENS
     add_to_array = { global.repeatable_events = 43 }  # MASSIVE FLOOD
-    add_to_array = { global.repeatable_events = 46 }  # EARTH EARTHQUAKE
     add_to_array = { global.repeatable_events = 47 }  # BOOM!
     add_to_array = { global.repeatable_events = 50 }  # GREAT EMBARGO
     add_to_array = { global.repeatable_events = 52 }  # INTELLIGENCE LEAK
@@ -519,6 +532,10 @@ evaluate_random_event_active_pool_candidate = {
 				AND = {
 					check_variable = { event_id = constant:white_peace_event_log.event_id }
 					NOT = { is_white_peace_automatic_event_available = yes }
+				}
+				AND = {
+					check_variable = { event_id = constant:natural_disaster_event.id }
+					NOT = { any_country = { natural_disaster_country_has_valid_target_state = yes } }
 				}
 				AND = {
 					is_in_array = { global.fired_events = event_id }

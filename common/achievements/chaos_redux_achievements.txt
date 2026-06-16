@@ -2155,3 +2155,171 @@ death_black_apostolate = {
 	}
 	hidden = yes
 }
+
+#############################
+# EVENT 013 - NATURAL DISASTERS ACHIEVEMENTS
+#############################
+
+ACH_ND_RING_THE_BELL = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_ND_RING_THE_BELL_tooltip
+			is_ai = no
+			check_variable = { var = natural_disaster_warning_mitigation_count value = constant:achievement_threshold.natural_disaster.warning_mitigations compare = greater_than_or_equals }
+			has_country_flag = natural_disaster_water_warning_mitigated
+			NOT = { has_country_flag = natural_disaster_unmitigated_warning_seen }
+		}
+	}
+}
+
+ACH_ND_ENGINEERS_OF_THE_RUBBLE = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_ND_ENGINEERS_OF_THE_RUBBLE_tooltip
+			is_ai = no
+			check_variable = { var = natural_disaster_earth_landslide_recovery_count value = constant:achievement_threshold.natural_disaster.earth_landslide_recoveries compare = greater_than_or_equals }
+			NOT = { has_country_flag = natural_disaster_recovery_mission_failed }
+			NOT = { check_variable = { var = natural_disaster_engineer_scenario_max_recovery_count value = constant:achievement_threshold.natural_disaster.earth_landslide_recoveries compare = greater_than_or_equals } }
+		}
+	}
+}
+
+ACH_ND_THE_TRAINS_ARRIVED = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_ND_THE_TRAINS_ARRIVED_tooltip
+			is_ai = no
+			check_variable = { var = natural_disaster_rail_response_recovery_count value = constant:achievement_threshold.natural_disaster.rail_response_recoveries compare = greater_than_or_equals }
+			NOT = { has_country_flag = natural_disaster_rail_mission_failed }
+			NOT = { has_country_flag = natural_disaster_recovery_mission_failed }
+		}
+	}
+}
+
+ACH_ND_NO_PORT_LEFT_BEHIND = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_ND_NO_PORT_LEFT_BEHIND_tooltip
+			is_ai = no
+			check_variable = { var = natural_disaster_port_recovery_count value = constant:achievement_threshold.natural_disaster.port_recoveries compare = greater_than_or_equals }
+			NOT = { has_country_flag = natural_disaster_recovery_mission_failed }
+			NOT = { has_country_flag = natural_disaster_port_mission_failed }
+			NOT = { has_country_flag = natural_disaster_port_control_lost }
+		}
+	}
+}
+
+ACH_ND_GRAIN_AGAINST_THE_DUST = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_ND_GRAIN_AGAINST_THE_DUST_tooltip
+			is_ai = no
+			check_variable = { var = natural_disaster_drought_recovery_count value = constant:achievement_threshold.natural_disaster.drought_recoveries compare = greater_than_or_equals }
+			NOT = { has_country_flag = natural_disaster_drought_chain_failed }
+		}
+	}
+}
+
+ACH_ND_ASH_ON_THE_RUNWAY = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_ND_ASH_ON_THE_RUNWAY_tooltip
+			is_ai = no
+			check_variable = { var = natural_disaster_ash_airfield_recovery_count value = constant:achievement_threshold.natural_disaster.ash_airfield_recoveries compare = greater_than_or_equals }
+			NOT = { has_country_flag = natural_disaster_ash_clearance_failed }
+		}
+	}
+	hidden = yes
+}
+
+ACH_ND_SKY_ARTILLERY_SURVIVOR = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_ND_SKY_ARTILLERY_SURVIVOR_tooltip
+			is_ai = no
+			check_variable = { var = natural_disaster_meteor_shower_hit_count value = constant:achievement_threshold.natural_disaster.meteor_shower_hits compare = greater_than_or_equals }
+			check_variable = { var = natural_disaster_meteor_shower_recovery_count value = natural_disaster_meteor_shower_hit_count compare = greater_than_or_equals }
+			NOT = { has_country_flag = natural_disaster_meteor_shower_capital_hit }
+		}
+	}
+	hidden = yes
+}
+
+ACH_ND_THE_SEA_WALKED_BACK = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_ND_THE_SEA_WALKED_BACK_tooltip
+			is_ai = no
+			has_country_flag = natural_disaster_sea_walked_back_ready
+			NOT = { has_country_flag = natural_disaster_unmitigated_warning_seen }
+			NOT = { has_country_flag = natural_disaster_port_control_lost }
+			NOT = { has_country_flag = natural_disaster_port_mission_failed }
+		}
+	}
+	hidden = yes
+}
+
+ACH_ND_NOT_ONE_MORE_AFTERSHOCK = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_ND_NOT_ONE_MORE_AFTERSHOCK_tooltip
+			is_ai = no
+			check_variable = { var = natural_disaster_chained_recovery_count value = constant:achievement_threshold.natural_disaster.chained_recoveries compare = greater_than_or_equals }
+			NOT = { has_country_flag = natural_disaster_chained_aftermath_escalated }
+		}
+	}
+}
+
+ACH_ND_DISASTER_LEDGER_CLOSED = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_ND_DISASTER_LEDGER_CLOSED_tooltip
+			is_ai = no
+			has_country_flag = natural_disaster_disaster_ledger_closed_ready
+		}
+	}
+	hidden = yes
+}
+
+ACH_ND_NO_WORLD_END_REQUIRED = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_ND_NO_WORLD_END_REQUIRED_tooltip
+			is_ai = no
+			has_global_flag = natural_disaster_abnormal_disaster_age_without_world_end
+			has_country_flag = natural_disaster_no_world_end_required_ready
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:chaos_meter_tier_range.tier_final.min
+				compare = less_than
+			}
+			NOT = { has_global_flag = world_end }
+		}
+	}
+	hidden = yes
+}
+
+ACH_ND_STILL_STANDING_IN_FOUR_SEASONS = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_ND_STILL_STANDING_IN_FOUR_SEASONS_tooltip
+			is_ai = no
+			has_country_flag = natural_disaster_four_seasons_earth
+			has_country_flag = natural_disaster_four_seasons_water
+			has_country_flag = natural_disaster_four_seasons_heat
+			has_country_flag = natural_disaster_four_seasons_ash
+		}
+	}
+}
