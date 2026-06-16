@@ -19998,11 +19998,7 @@ soviet_collapse_complete_northern_revenant_endgame = {
 soviet_collapse_record_high_chaos_successor_evolution = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
-    set_temp_variable = { events_log_evolution_tier = constant:soviet_collapse_high_chaos_event_log.totalen_tier }
-    if = {
-        limit = { has_global_flag = { flag = chaos_tier value = 5 } }
-        set_temp_variable = { events_log_evolution_tier = constant:soviet_collapse_high_chaos_event_log.world_collapse_tier }
-    }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = { can_soviet_collapse_record_high_chaos_evolution_this_tier = yes }
         save_event_target_as = events_log_evolution_actor
@@ -20016,6 +20012,14 @@ soviet_collapse_record_high_chaos_successor_evolution = {
             set_global_flag = soviet_collapse_high_chaos_evolution_tier_4_recorded
         }
     }
+}
+
+soviet_collapse_prepare_high_chaos_evolution_tier = {
+	set_temp_variable = { events_log_evolution_tier = constant:soviet_collapse_high_chaos_event_log.totalen_tier }
+	if = {
+		limit = { has_global_flag = { flag = chaos_tier value = 5 } }
+		set_temp_variable = { events_log_evolution_tier = constant:soviet_collapse_high_chaos_event_log.world_collapse_tier }
+	}
 }
 
 soviet_collapse_setup_cfr_successor = {
@@ -21012,6 +21016,7 @@ soviet_collapse_spawn_cfr_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.civilian_factory_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -21043,6 +21048,7 @@ soviet_collapse_spawn_mfr_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.military_factory_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -21073,6 +21079,7 @@ soviet_collapse_spawn_krs_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.kronstadt_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -21100,6 +21107,7 @@ soviet_collapse_spawn_fth_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.free_territory_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -21139,6 +21147,7 @@ soviet_collapse_spawn_bbh_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.black_banner_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -21190,6 +21199,7 @@ soviet_collapse_spawn_bsc_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.basmachi_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -21249,6 +21259,7 @@ soviet_collapse_spawn_rmc_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.red_martyrs_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -21279,6 +21290,7 @@ soviet_collapse_spawn_dsc_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.dead_soldiers_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -21309,6 +21321,7 @@ soviet_collapse_spawn_uwr_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.unconventional_warfare_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -21335,6 +21348,7 @@ soviet_collapse_spawn_kmb_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.kuznetsk_mining_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -21363,6 +21377,7 @@ soviet_collapse_spawn_tnc_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.turkestan_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -21402,6 +21417,7 @@ soviet_collapse_spawn_ala_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.alash_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -21444,6 +21460,7 @@ soviet_collapse_spawn_udc_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.union_defense_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -21478,6 +21495,7 @@ soviet_collapse_spawn_sdz_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.security_directorate_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -21508,6 +21526,7 @@ soviet_collapse_spawn_gac_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.green_army_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -21538,6 +21557,7 @@ soviet_collapse_spawn_dhc_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.don_host_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -21568,6 +21588,7 @@ soviet_collapse_spawn_khc_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.kuban_host_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -21599,6 +21620,7 @@ soviet_collapse_spawn_fev_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.far_eastern_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -21630,6 +21652,7 @@ soviet_collapse_spawn_sza_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.siberian_zemstvo_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -21660,6 +21683,7 @@ soviet_collapse_spawn_uwd_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.ural_workers_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -21690,6 +21714,7 @@ soviet_collapse_spawn_mrc_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.mountain_republic_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -21760,6 +21785,7 @@ soviet_collapse_spawn_iul_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.idel_ural_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -21790,6 +21816,7 @@ soviet_collapse_spawn_ogb_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.old_great_bulgaria_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -21844,6 +21871,7 @@ soviet_collapse_spawn_kzr_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.khazar_toll_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -21894,6 +21922,7 @@ soviet_collapse_spawn_sog_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.sogdian_city_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -21933,6 +21962,7 @@ soviet_collapse_spawn_khw_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.khwarazmian_oasis_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -21987,6 +22017,7 @@ soviet_collapse_spawn_aln_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.alan_pass_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -22057,6 +22088,7 @@ soviet_collapse_spawn_bac_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.birobidzhan_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -22088,6 +22120,7 @@ soviet_collapse_spawn_pra_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.pale_railway_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -22118,6 +22151,7 @@ soviet_collapse_spawn_tsc_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.tunguska_star_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -22149,6 +22183,7 @@ soviet_collapse_spawn_icd_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.iron_commissariat_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -22180,6 +22215,7 @@ soviet_collapse_spawn_ard_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.arctic_directorate_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -22229,6 +22265,7 @@ soviet_collapse_spawn_nrf_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.northern_revenant_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
@@ -22269,6 +22306,7 @@ soviet_collapse_spawn_nlc_if_enabled = {
     set_temp_variable = { events_log_evolution_event_id = constant:soviet_collapse_high_chaos_event_log.event_id }
     set_temp_variable = { events_log_evolution_type = constant:soviet_collapse_high_chaos_event_log.evolution_type }
     set_temp_variable = { events_log_evolution_stage = constant:soviet_collapse_high_chaos_event_log.northern_lights_stage }
+    soviet_collapse_prepare_high_chaos_evolution_tier = yes
     if = {
         limit = {
             OR = {
