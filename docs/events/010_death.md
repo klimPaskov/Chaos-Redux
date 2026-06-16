@@ -29,7 +29,7 @@ Defeat is custom. Death is defeated only when it controls no states, not by ordi
 - Focus tree: `common/national_focus/010_death_focus_tree.txt`
 - Localisation: `localisation/english/010_death_l_english.yml` plus shared GUI, ideas, achievements, music, event-name, and scenario localisation files
 - Triggerable scenario: SCN-006 in the shared triggerable scenario files
-- Event log: Death actor mapping, event details, and four milestone evolutions in the shared event-log scripted effects/localisation. `The First Silence` is baseline setup, not an evolution entry. The Event Details preview lists the four actual Death milestone entries so the catalog matches the crisis path even before every milestone has fired. Early Death evolution detail pages use the normal Zol portrait; Last Shores and whole-world-consumed detail pages use the subtle animated world-end Zol portrait.
+- Event log: Death actor mapping, event details, and four milestone evolutions in the shared event-log scripted effects/localisation. `The First Silence` is baseline setup, not an evolution entry. Before public reporting, the Event Details preview exposes only the indirect Missing Island Reports milestone; after `death_world_reported`, it also exposes the mainland reveal, Last Shores, and whole-world-consumed milestones. Early Death evolution detail pages use the normal Zol portrait; Last Shores and whole-world-consumed detail pages use the subtle animated world-end Zol portrait.
 - Country identity: all DTH ideology and base flags use the black Death flag set; party localisation resolves to `The Last Office`
 
 ## Decisions And AI
