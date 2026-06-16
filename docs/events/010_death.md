@@ -24,7 +24,7 @@ Defeat is custom. Death is defeated only when it controls no states, not by ordi
 - Triggers: `common/scripted_triggers/010_death_triggers.txt`
 - State modifiers: `common/dynamic_modifiers/010_death_state_modifiers.txt`
 - Decisions: `common/decisions/categories/010_death_categories.txt`, `common/decisions/010_death_decisions.txt`
-- Country package: `common/country_tags/chaosx_countries.txt`, `common/countries/Death.txt`, `common/characters/DTH.txt`, `history/countries/DTH - Death.txt`, `history/units/DTH_1936.txt`
+- Country package: `common/country_tags/chaosx_countries.txt`, `common/countries/Death.txt`, `common/characters/DTH.txt`, `common/names/chaosx_custom_country_names.txt`, `history/countries/DTH - Death.txt`, `history/units/DTH_1936.txt`
 - Focus tree: `common/national_focus/010_death_focus_tree.txt`
 - Localisation: `localisation/english/010_death_l_english.yml` plus shared GUI, ideas, achievements, music, event-name, and scenario localisation files
 - Triggerable scenario: SCN-006 in the shared triggerable scenario files
