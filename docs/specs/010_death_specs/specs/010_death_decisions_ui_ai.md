@@ -233,7 +233,7 @@ Use decisions with cooldowns, temporary state modifiers, target-state flags, nar
 
 ## Custom UI: The Black Atlas
 
-Death uses a compact scripted GUI window after reveal. The Black Atlas summarizes the current stage, coastal risk, wither-line pressure, compact posture, and forbidden-route exposure without replacing normal map play.
+Death uses a compact scripted GUI window after reveal. The Black Atlas summarizes the current stage, consumed population, coastal risk, wither-line pressure, compact posture, and forbidden-route exposure without replacing normal map play. It is a transient decision-category dashboard: it does not include a separate close button or standalone decorative status icons, and consumed population is displayed in `K`, `M`, or `B` bands.
 
 ### Entry point
 
@@ -263,9 +263,6 @@ Planned animated assets:
 | Asset | State logic | Direction |
 | --- | --- | --- |
 | `death_black_atlas_header_animated` | Visible after reveal. | Slow dark fog drift, generated frame-by-frame, static fallback. |
-| `death_coastal_risk_pulse_animated` | Shows when coastal jump risk is high/critical. | Warning pulse around coast icon; real source frames. |
-| `death_wither_target_frame_animated` | Active wither target. | Thin dark breathing border around target card. |
-| `death_compact_warning_animated` | Compact cohesion low. | Subtle flicker, not noisy. |
 | `death_zol_portrait_world_end_animated` | World-end or Herald oath. | Void-lit Zol portrait frames; static fallback; registered in `interface/chaosx_characters.gfx`. |
 
 Animation should clarify state. If a surface becomes too busy, keep only the header and critical warning animation.
@@ -279,7 +276,7 @@ Animation should clarify state. If a surface becomes too busy, keep only the hea
 | Hidden origin | Do nothing visible; no wars; no units. |
 | Hidden island spread | Consume low-pop islands by scripted pulses. |
 | Reports ignored | Slightly increase spread pressure. |
-| Revealed mainland | Declare war on neighbors; wither unguarded states; remain passive militarily until ghosts. |
+| Revealed mainland | Declare war on direct-threat neighbors, wither unguarded states, and remain passive militarily until ghosts. Wider neighbor wars wait for late-stage strength or world-end. |
 | 600 ghost tier | Spawn weak ghosts; hold lines; no offensives. |
 | 800 ghost tier | More ghosts; local counterattack if defenders are weak; use coastal jumps after setbacks. |
 | World-end | Aggressive attacks, foothold expansion, intensified withering. |

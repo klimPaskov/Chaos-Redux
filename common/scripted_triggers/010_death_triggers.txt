@@ -51,6 +51,12 @@ death_state_borders_active_wasteland = {
 	}
 }
 
+death_should_have_border_wither_state = {
+	NOT = { death_is_consumed_state = yes }
+	NOT = { is_controlled_by = DTH }
+	death_state_borders_active_wasteland = yes
+}
+
 death_has_active_presence_on_continent_europe = {
 	any_state = {
 		is_on_continent = europe
@@ -283,6 +289,11 @@ death_is_valid_nearby_island_spread_target_lowest_names = {
 }
 
 death_is_valid_mainland_reveal_target = {
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:chaos_meter_tier_range.tier_3.min
+		compare = greater_than_or_equals
+	}
 	is_island_state = no
 	is_coastal = yes
 	check_variable = {
@@ -795,7 +806,6 @@ can_pay_death_last_shores_response_cost = {
 
 can_pay_death_open_black_book_cost = {
 	has_political_power > constant:death_decision_cost.open_black_book_pp_gate
-	has_stability > constant:death_decision_cost.open_black_book_stability_gate
 }
 
 can_pay_death_bind_unburied_cost = {
@@ -820,18 +830,15 @@ can_pay_death_burn_black_book_cost = {
 
 can_pay_death_whisper_to_zol_cost = {
 	has_political_power > constant:death_decision_cost.whisper_to_zol_pp_gate
-	has_stability > constant:death_decision_cost.whisper_to_zol_stability_gate
 }
 
 can_pay_death_take_black_oath_cost = {
 	has_political_power > constant:death_decision_cost.take_black_oath_pp_gate
-	has_stability > constant:death_decision_cost.take_black_oath_stability_gate
 	has_war_support > constant:death_decision_cost.take_black_oath_war_support_gate
 }
 
 can_pay_death_offer_prison_census_cost = {
 	has_political_power > constant:death_decision_cost.offer_prison_census_pp_gate
-	has_stability > constant:death_decision_cost.offer_prison_census_stability_gate
 	has_manpower > constant:death_decision_cost.offer_prison_census_manpower_gate
 }
 
@@ -844,12 +851,10 @@ can_pay_death_open_dead_port_cost = {
 can_pay_death_feed_border_cost = {
 	command_power > constant:death_decision_cost.feed_border_cp_gate
 	has_political_power > constant:death_decision_cost.feed_border_pp_gate
-	has_stability > constant:death_decision_cost.feed_border_stability_gate
 	has_manpower > constant:death_decision_cost.feed_border_manpower_gate
 }
 
 can_pay_death_break_oath_cost = {
 	has_political_power > constant:death_decision_cost.break_oath_pp_gate
 	command_power > constant:death_decision_cost.break_oath_cp_gate
-	has_stability > constant:death_decision_cost.break_oath_stability_gate
 }

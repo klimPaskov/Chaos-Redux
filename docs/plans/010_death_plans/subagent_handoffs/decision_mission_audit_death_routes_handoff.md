@@ -2,6 +2,8 @@
 
 Audit date: 2026-06-15
 
+Supersession note: the current Black Atlas implementation is a transient timed dashboard opened from the decision category. It no longer uses a separate GUI close control or standalone decorative status icons.
+
 Scope audited: Missing Island, containment, Living Compact, wasteland/outpost work, Dark Methods, Black Oath/Herald, Black Apostolate, and Black Atlas decision/GUI surfaces.
 
 Allowed patch files only:
@@ -56,7 +58,6 @@ Decisions and mission:
 Scripted GUI and GUI:
 
 - `death_black_atlas_scripted_gui`
-- `death_black_atlas_close_button`
 - `death_black_atlas_forbidden_values`
 
 Localisation:
@@ -135,7 +136,7 @@ Localisation:
 - `death_missing_island_category` remains correctly pre-reveal and report-recipient scoped.
 - `death_country_containment_category` now better separates living response from Herald/Black Oath state through decision visibility locks.
 - The same category still contains active containment, compact, Dark Methods, Herald, Apostolate, Atlas, and aftermath/outpost actions. The current route locks keep it safer, but a parent cleanup may still want subcategory-level lifecycle helpers.
-- Black Atlas lifecycle remains flag-opened and defeat-gated. The GUI close button now gives the player immediate cleanup of the open flag.
+- Black Atlas lifecycle remains timed flag-opened and defeat-gated. The current dashboard has no separate GUI close control.
 
 ## Mission Quality Notes
 
@@ -168,7 +169,7 @@ No additional Death missions were found in the scoped decision file. The remaini
 
 ## Cleanup And Exploit-Risk Notes
 
-- Atlas close now clears `death_black_atlas_open`.
+- Atlas display is handled by the timed open flag rather than a separate close control.
 - Heralds are locally blocked from living containment decisions audited in this pass.
 - Manpower farming risk from advertised-but-unpaid manpower costs is reduced for Bound Unburied and Prison Census.
 - Remaining exploit risk: Feed Border's immediate custom cost should be strengthened in constants/effects, outside this patch's allowed scope.
@@ -182,7 +183,6 @@ No additional Death missions were found in the scoped decision file. The remaini
   - `interface/010_death_black_atlas.gui`
   - `localisation/english/010_death_l_english.yml`
 - Verified GUI element/effect names align:
-  - `death_black_atlas_close_button` -> `death_black_atlas_close_button_click`
   - `death_black_atlas_forbidden_values` -> `death_black_atlas_forbidden_values_visible`
 - Verified the new Atlas localisation key is referenced and defined.
 - Verified no active `Spirit of War` / `Spirit of Peace` strings appear in the scoped decision, scripted GUI, interface, or Death localisation files.

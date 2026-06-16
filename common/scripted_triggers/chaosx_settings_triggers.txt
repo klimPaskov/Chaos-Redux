@@ -37,6 +37,58 @@ has_disabled_current_evolution = {
 
 is_current_evolution_enabled = {
     NOT = { has_disabled_current_evolution = yes }
+	has_reached_current_evolution_tier = yes
+}
+
+has_reached_current_evolution_tier = {
+	OR = {
+		NOT = { has_variable = events_log_evolution_tier }
+		check_variable = {
+			var = events_log_evolution_tier
+			value = 1
+			compare = less_than
+		}
+		AND = {
+			check_variable = { var = events_log_evolution_tier value = 1 compare = equals }
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:chaos_meter_tier_range.tier_1.min
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = events_log_evolution_tier value = 2 compare = equals }
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:chaos_meter_tier_range.tier_2.min
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = events_log_evolution_tier value = 3 compare = equals }
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:chaos_meter_tier_range.tier_3.min
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = events_log_evolution_tier value = 4 compare = equals }
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:chaos_meter_tier_range.tier_4.min
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = events_log_evolution_tier value = 5 compare = equals }
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:chaos_meter_tier_range.tier_final.min
+				compare = greater_than_or_equals
+			}
+		}
+	}
 }
 
 has_events_log_selected_fury_evolution = {
@@ -196,7 +248,7 @@ has_events_log_selected_evolution_authored_portrait = {
 			}
 			check_variable = {
 				var = events_log_selected_evolution_stage
-				value = 0
+				value = 1
 				compare = greater_than
 			}
 			check_variable = {

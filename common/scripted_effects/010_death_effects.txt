@@ -41,6 +41,16 @@
 # reveal behavior stay aligned.
 # ============================================================================
 
+death_refresh_consumed_population_display_variables = {
+	set_temp_variable = { death_population_display_million_threshold_k = constant:death_population.display_million_threshold_k }
+	set_temp_variable = { death_population_display_billion_threshold_k = constant:death_population.display_billion_threshold_k }
+	set_variable = { global.death_consumed_population_display_k = global.death_consumed_population }
+	set_variable = { global.death_consumed_population_display_m = global.death_consumed_population }
+	divide_variable = { global.death_consumed_population_display_m = death_population_display_million_threshold_k }
+	set_variable = { global.death_consumed_population_display_b = global.death_consumed_population }
+	divide_variable = { global.death_consumed_population_display_b = death_population_display_billion_threshold_k }
+}
+
 death_initialize_global_state = {
 	if = {
 		limit = { NOT = { has_variable = global.death_consumed_states } }
@@ -50,6 +60,7 @@ death_initialize_global_state = {
 		limit = { NOT = { has_variable = global.death_consumed_population } }
 		set_variable = { global.death_consumed_population = 0 }
 	}
+	death_refresh_consumed_population_display_variables = yes
 	if = {
 		limit = { NOT = { has_variable = global.death_mainland_consumed_states } }
 		set_variable = { global.death_mainland_consumed_states = 0 }
@@ -436,6 +447,59 @@ death_wither_divisions_in_current_state = {
 	}
 }
 
+death_wither_border_divisions_in_current_state = {
+	damage_units = {
+		state = THIS
+		limit = { NOT = { is_death_country = yes } }
+		org_damage = 0.08
+		str_damage = 0.015
+		ratio = yes
+		army = yes
+		navy = no
+	}
+}
+
+death_apply_border_wither_state = {
+	if = {
+		limit = { NOT = { has_dynamic_modifier = { modifier = death_border_wither_state } } }
+		add_dynamic_modifier = { modifier = death_border_wither_state }
+	}
+	force_update_dynamic_modifier = yes
+}
+
+death_remove_border_wither_state = {
+	if = {
+		limit = { has_dynamic_modifier = { modifier = death_border_wither_state } }
+		remove_dynamic_modifier = { modifier = death_border_wither_state }
+	}
+	force_update_dynamic_modifier = yes
+}
+
+death_refresh_border_wither_status = {
+	if = {
+		limit = { death_should_have_border_wither_state = yes }
+		death_apply_border_wither_state = yes
+	}
+	else = {
+		death_remove_border_wither_state = yes
+	}
+}
+
+death_refresh_border_wither_from_current_state = {
+	death_refresh_border_wither_status = yes
+	every_neighbor_state = {
+		death_refresh_border_wither_status = yes
+	}
+}
+
+death_apply_border_wither_to_active_wasteland_neighbors = {
+	every_neighbor_state = {
+		limit = { death_should_have_border_wither_state = yes }
+		death_apply_border_wither_state = yes
+		death_wither_border_divisions_in_current_state = yes
+	}
+}
+
 death_pan_to_current_state_for_players = {
 	every_country = {
 		limit = { is_ai = no }
@@ -468,6 +532,13 @@ death_wither_units_in_active_wastelands = {
 	}
 }
 
+death_wither_units_in_border_wither_states = {
+	every_controlled_state = {
+		limit = { has_state_flag = death_active_wasteland }
+		death_apply_border_wither_to_active_wasteland_neighbors = yes
+	}
+}
+
 death_apply_active_wasteland_state = {
 	set_state_flag = death_consumed_state
 	set_state_flag = death_active_wasteland
@@ -478,6 +549,7 @@ death_apply_active_wasteland_state = {
 	}
 	add_dynamic_modifier = { modifier = death_active_wasteland_state }
 	force_update_dynamic_modifier = yes
+	death_refresh_border_wither_from_current_state = yes
 }
 
 death_apply_recaptured_wasteland_state = {
@@ -489,6 +561,7 @@ death_apply_recaptured_wasteland_state = {
 	}
 	add_dynamic_modifier = { modifier = death_recaptured_wasteland_state }
 	force_update_dynamic_modifier = yes
+	death_refresh_border_wither_from_current_state = yes
 }
 
 death_consume_current_state = {
@@ -526,6 +599,7 @@ death_consume_current_state = {
 		death_apply_active_wasteland_state = yes
 		add_to_variable = { global.death_consumed_states = 1 }
 		add_to_variable = { global.death_consumed_population = death_last_consumed_population_k }
+		death_refresh_consumed_population_display_variables = yes
 		DTH = {
 			death_setup_country = yes
 			set_capital = {
@@ -672,6 +746,17 @@ death_declare_war_on_neighbors = {
 			exists = yes
 			NOT = { is_death_country = yes }
 			NOT = { has_war_with = DTH }
+			OR = {
+				any_controlled_state = { death_state_borders_active_wasteland = yes }
+				has_global_flag = death_world_end_started
+				DTH = {
+					check_variable = {
+						var = global.death_consumed_states
+						value = constant:death_spread.late_consumed_state_gate
+						compare = greater_than_or_equals
+					}
+				}
+			}
 			DTH = { can_declare_war_on = PREV }
 		}
 		DTH = {
@@ -725,56 +810,63 @@ death_record_evolution_stage = {
 	set_temp_variable = { events_log_evolution_type = constant:death_event.evolution_type }
 	set_temp_variable = { events_log_evolution_stage = death_evolution_stage_to_record }
 	set_temp_variable = { events_log_evolution_tier = death_evolution_tier_to_record }
-	record_events_log_evolution_entry = yes
-}
-
-death_record_origin_evolution = {
+	set_temp_variable = { death_evolution_stage_recorded = 0 }
 	if = {
-		limit = { NOT = { has_global_flag = death_evolution_origin_recorded } }
-		set_global_flag = death_evolution_origin_recorded
-		set_temp_variable = { death_evolution_stage_to_record = constant:death_event.stage_origin }
-		set_temp_variable = { death_evolution_tier_to_record = constant:chaos_meter_tier_id.tier_1 }
-		death_record_evolution_stage = yes
+		limit = { is_current_evolution_enabled = yes }
+		record_events_log_evolution_entry = yes
+		set_temp_variable = { death_evolution_stage_recorded = 1 }
 	}
 }
 
 death_record_island_reports_evolution = {
 	if = {
 		limit = { NOT = { has_global_flag = death_evolution_island_reports_recorded } }
-		set_global_flag = death_evolution_island_reports_recorded
 		set_temp_variable = { death_evolution_stage_to_record = constant:death_event.stage_island_reports }
 		set_temp_variable = { death_evolution_tier_to_record = constant:chaos_meter_tier_id.tier_2 }
 		death_record_evolution_stage = yes
+		if = {
+			limit = { check_variable = { death_evolution_stage_recorded > 0 } }
+			set_global_flag = death_evolution_island_reports_recorded
+		}
 	}
 }
 
 death_record_mainland_reveal_evolution = {
 	if = {
 		limit = { NOT = { has_global_flag = death_evolution_mainland_reveal_recorded } }
-		set_global_flag = death_evolution_mainland_reveal_recorded
 		set_temp_variable = { death_evolution_stage_to_record = constant:death_event.stage_mainland_reveal }
 		set_temp_variable = { death_evolution_tier_to_record = constant:chaos_meter_tier_id.tier_3 }
 		death_record_evolution_stage = yes
+		if = {
+			limit = { check_variable = { death_evolution_stage_recorded > 0 } }
+			set_global_flag = death_evolution_mainland_reveal_recorded
+		}
 	}
 }
 
 death_record_last_shores_evolution = {
 	if = {
 		limit = { NOT = { has_global_flag = death_evolution_last_shores_recorded } }
-		set_global_flag = death_evolution_last_shores_recorded
 		set_temp_variable = { death_evolution_stage_to_record = constant:death_event.stage_last_shores }
-		set_temp_variable = { death_evolution_tier_to_record = constant:chaos_meter_tier_id.tier_4 }
+		set_temp_variable = { death_evolution_tier_to_record = constant:chaos_meter_tier_id.tier_final }
 		death_record_evolution_stage = yes
+		if = {
+			limit = { check_variable = { death_evolution_stage_recorded > 0 } }
+			set_global_flag = death_evolution_last_shores_recorded
+		}
 	}
 }
 
 death_record_world_consumed_evolution = {
 	if = {
 		limit = { NOT = { has_global_flag = death_evolution_world_consumed_recorded } }
-		set_global_flag = death_evolution_world_consumed_recorded
 		set_temp_variable = { death_evolution_stage_to_record = constant:death_event.stage_world_consumed }
 		set_temp_variable = { death_evolution_tier_to_record = constant:chaos_meter_tier_id.tier_final }
 		death_record_evolution_stage = yes
+		if = {
+			limit = { check_variable = { death_evolution_stage_recorded > 0 } }
+			set_global_flag = death_evolution_world_consumed_recorded
+		}
 	}
 }
 
@@ -2025,6 +2117,11 @@ death_try_mainland_pressure_spread = {
 		limit = {
 			has_global_flag = death_evolution_island_reports_recorded
 			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:chaos_meter_tier_range.tier_3.min
+				compare = greater_than_or_equals
+			}
+			check_variable = {
 				var = global.death_consumed_states
 				value = constant:death_spread.mainland_consumed_state_gate
 				compare = greater_than_or_equals
@@ -2604,6 +2701,7 @@ death_run_daily_public_pressure = {
 		if = {
 			limit = { NOT = { has_global_flag = death_defeated } }
 			death_wither_units_in_active_wastelands = yes
+			death_wither_units_in_border_wither_states = yes
 			death_absorb_unopposed_neighbors_from_active_wasteland = yes
 			death_refresh_world_threat_source = yes
 		}
@@ -2641,7 +2739,6 @@ death_launch_quiet_origin = {
 			death_schedule_missing_island_reports_for_current_state = yes
 			death_consume_current_state = yes
 		}
-		death_record_origin_evolution = yes
 		DTH = {
 			death_schedule_next_spread_pulse = yes
 		}
