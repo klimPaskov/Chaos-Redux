@@ -152,6 +152,8 @@ Before changing evolution log display, identify the exact surface and keep the c
 
 When adding evolution row metadata, reuse the arrays for that row surface: main rows read the `global.events_log_evolution_view_*` arrays rebuilt by `rebuild_events_log_evolution_view`, while selected-history rows read the `global.events_log_history_detail_evolution_*` arrays rebuilt by `events_log_rebuild_history_details_view`. The required row metadata is sequence, date, source event, type/name, tier, stage, actor, and enabled state. If the user reports row alignment, patch `interface/chaosx_events_log_popup.gui` row sizes, button bounds, and text widths for the affected surface in the same change.
 
+Event-log defaults must keep unreworked events disabled by default. An event that is still waiting for a rework should stay out of the reworked-event default enable allowlist so startup seeds it into `global.disabled_events` and it appears unchecked. When an event is reworked and ready for normal selection and log use, add its ID back to that allowlist in the same change as the event registration and log wiring.
+
 ## World-end scenarios
 
 A world-end scenario is a terminal branch that changes the campaign into a resolved or end-state condition, not just a large disaster or strong major event. World-end scenario is chosen based on the world state. World-end scenario can only be triggered when the chaos value is over 1000.
