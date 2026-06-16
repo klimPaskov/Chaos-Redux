@@ -275,27 +275,153 @@ death_declare_war_on_current_state_owner = {
 }
 
 death_strip_current_state_buildings = {
-	remove_building = { type = industrial_complex level = 999 }
-	remove_building = { type = arms_factory level = 999 }
-	remove_building = { type = dockyard level = 999 }
-	remove_building = { type = infrastructure level = 999 }
-	remove_building = { type = supply_node level = 999 }
-	remove_building = { type = rail_way level = 999 }
-	remove_building = { type = naval_base level = 999 }
-	remove_building = { type = air_base level = 999 }
-	remove_building = { type = bunker level = 999 }
-	remove_building = { type = coastal_bunker level = 999 }
-	remove_building = { type = anti_air_building level = 999 }
-	remove_building = { type = synthetic_refinery level = 999 }
-	remove_building = { type = fuel_silo level = 999 }
-	remove_building = { type = radar_station level = 999 }
-	remove_building = { type = rocket_site level = 999 }
-	remove_building = { type = nuclear_reactor level = 999 }
-	remove_building = { type = nuclear_reactor_heavy_water level = 999 }
-	remove_building = { type = commercial_nuclear_reactor level = 999 }
-	remove_building = { type = nuclear_facility level = 999 }
-	remove_building = { type = air_facility level = 999 }
-	remove_building = { type = land_facility level = 999 }
+	while_loop_effect = {
+		limit = { industrial_complex > 0 }
+		remove_building = {
+			type = industrial_complex
+			level = 1
+		}
+	}
+	while_loop_effect = {
+		limit = { arms_factory > 0 }
+		remove_building = {
+			type = arms_factory
+			level = 1
+		}
+	}
+	while_loop_effect = {
+		limit = { dockyard > 0 }
+		remove_building = {
+			type = dockyard
+			level = 1
+		}
+	}
+	while_loop_effect = {
+		limit = { infrastructure > 0 }
+		remove_building = {
+			type = infrastructure
+			level = 1
+		}
+	}
+	while_loop_effect = {
+		limit = { supply_node > 0 }
+		remove_building = {
+			type = supply_node
+			level = 1
+		}
+	}
+	while_loop_effect = {
+		limit = { rail_way > 0 }
+		remove_building = {
+			type = rail_way
+			level = 1
+		}
+	}
+	while_loop_effect = {
+		limit = { naval_base > 0 }
+		remove_building = {
+			type = naval_base
+			level = 1
+		}
+	}
+	while_loop_effect = {
+		limit = { air_base > 0 }
+		remove_building = {
+			type = air_base
+			level = 1
+		}
+	}
+	while_loop_effect = {
+		limit = { bunker > 0 }
+		remove_building = {
+			type = bunker
+			level = 1
+		}
+	}
+	while_loop_effect = {
+		limit = { coastal_bunker > 0 }
+		remove_building = {
+			type = coastal_bunker
+			level = 1
+		}
+	}
+	while_loop_effect = {
+		limit = { anti_air_building > 0 }
+		remove_building = {
+			type = anti_air_building
+			level = 1
+		}
+	}
+	while_loop_effect = {
+		limit = { synthetic_refinery > 0 }
+		remove_building = {
+			type = synthetic_refinery
+			level = 1
+		}
+	}
+	while_loop_effect = {
+		limit = { fuel_silo > 0 }
+		remove_building = {
+			type = fuel_silo
+			level = 1
+		}
+	}
+	while_loop_effect = {
+		limit = { radar_station > 0 }
+		remove_building = {
+			type = radar_station
+			level = 1
+		}
+	}
+	while_loop_effect = {
+		limit = { rocket_site > 0 }
+		remove_building = {
+			type = rocket_site
+			level = 1
+		}
+	}
+	while_loop_effect = {
+		limit = { nuclear_reactor > 0 }
+		remove_building = {
+			type = nuclear_reactor
+			level = 1
+		}
+	}
+	while_loop_effect = {
+		limit = { nuclear_reactor_heavy_water > 0 }
+		remove_building = {
+			type = nuclear_reactor_heavy_water
+			level = 1
+		}
+	}
+	while_loop_effect = {
+		limit = { commercial_nuclear_reactor > 0 }
+		remove_building = {
+			type = commercial_nuclear_reactor
+			level = 1
+		}
+	}
+	while_loop_effect = {
+		limit = { nuclear_facility > 0 }
+		remove_building = {
+			type = nuclear_facility
+			level = 1
+		}
+	}
+	while_loop_effect = {
+		limit = { air_facility > 0 }
+		remove_building = {
+			type = air_facility
+			level = 1
+		}
+	}
+	while_loop_effect = {
+		limit = { land_facility > 0 }
+		remove_building = {
+			type = land_facility
+			level = 1
+		}
+	}
 }
 
 death_wither_divisions_in_current_state = {
@@ -313,7 +439,10 @@ death_apply_active_wasteland_state = {
 	set_state_flag = death_consumed_state
 	set_state_flag = death_active_wasteland
 	clr_state_flag = death_recaptured_wasteland
-	remove_dynamic_modifier = { modifier = death_recaptured_wasteland_state }
+	if = {
+		limit = { has_dynamic_modifier = { modifier = death_recaptured_wasteland_state } }
+		remove_dynamic_modifier = { modifier = death_recaptured_wasteland_state }
+	}
 	add_dynamic_modifier = { modifier = death_active_wasteland_state }
 	force_update_dynamic_modifier = yes
 }
@@ -321,7 +450,10 @@ death_apply_active_wasteland_state = {
 death_apply_recaptured_wasteland_state = {
 	clr_state_flag = death_active_wasteland
 	set_state_flag = death_recaptured_wasteland
-	remove_dynamic_modifier = { modifier = death_active_wasteland_state }
+	if = {
+		limit = { has_dynamic_modifier = { modifier = death_active_wasteland_state } }
+		remove_dynamic_modifier = { modifier = death_active_wasteland_state }
+	}
 	add_dynamic_modifier = { modifier = death_recaptured_wasteland_state }
 	force_update_dynamic_modifier = yes
 }
@@ -975,7 +1107,10 @@ death_cleanup_herald_status = {
 	every_controlled_state = {
 		limit = { has_state_flag = death_herald_dead_port }
 		clr_state_flag = death_herald_dead_port
-		remove_dynamic_modifier = { modifier = death_herald_dead_port_state }
+		if = {
+			limit = { has_dynamic_modifier = { modifier = death_herald_dead_port_state } }
+			remove_dynamic_modifier = { modifier = death_herald_dead_port_state }
+		}
 		force_update_dynamic_modifier = yes
 	}
 }
