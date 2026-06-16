@@ -1,0 +1,842 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 013 NATURAL DISASTERS EFFECTS
+# ============================================================================
+# Reusable helper layer for Natural Disasters launch context, family/stage
+# selection, state target selection, warnings, impacts, recovery pressure,
+# evolution logging, manual barrage setup, and cleanup.
+# ============================================================================
+
+@NATURAL_DISASTER_WARNING_DAYS = 45
+@NATURAL_DISASTER_RECENT_TARGET_DAYS = 90
+@NATURAL_DISASTER_RECENT_FAMILY_DAYS = 180
+@NATURAL_DISASTER_AFTERMATH_LOCAL_DAYS = 90
+@NATURAL_DISASTER_AFTERMATH_SERIOUS_DAYS = 120
+@NATURAL_DISASTER_AFTERMATH_REGIONAL_DAYS = 150
+@NATURAL_DISASTER_AFTERMATH_CASCADING_DAYS = 180
+@NATURAL_DISASTER_AFTERMATH_ABNORMAL_DAYS = 210
+@NATURAL_DISASTER_AFTERMATH_SCENARIO_MAXIMUM_DAYS = 240
+@NATURAL_DISASTER_REBUILDING_DAYS = 60
+@NATURAL_DISASTER_WEIGHT_EARTHQUAKE = 12
+@NATURAL_DISASTER_WEIGHT_FLOOD = 12
+@NATURAL_DISASTER_WEIGHT_STORM = 12
+@NATURAL_DISASTER_WEIGHT_DROUGHT = 9
+@NATURAL_DISASTER_WEIGHT_WILDFIRE = 7
+@NATURAL_DISASTER_WEIGHT_LANDSLIDE = 7
+@NATURAL_DISASTER_WEIGHT_VOLCANO = 3
+@NATURAL_DISASTER_WEIGHT_TSUNAMI = 2
+@NATURAL_DISASTER_WEIGHT_METEOR = 1
+
+natural_disaster_prepare_launch_context = {
+	natural_disaster_select_stage = yes
+	if = {
+		limit = { NOT = { has_variable = natural_disaster_severity } }
+		set_temp_variable = { natural_disaster_severity = constant:natural_disaster_severity.local }
+	}
+	if = {
+		limit = {
+			check_variable = { natural_disaster_stage = constant:natural_disaster_event.stage_varied_local }
+			check_variable = { natural_disaster_severity < constant:natural_disaster_severity.serious }
+		}
+		set_temp_variable = { natural_disaster_severity = constant:natural_disaster_severity.serious }
+	}
+	if = {
+		limit = {
+			check_variable = { natural_disaster_stage = constant:natural_disaster_event.stage_regional_systems }
+			check_variable = { natural_disaster_severity < constant:natural_disaster_severity.regional }
+		}
+		set_temp_variable = { natural_disaster_severity = constant:natural_disaster_severity.regional }
+	}
+	if = {
+		limit = {
+			check_variable = { natural_disaster_stage = constant:natural_disaster_event.stage_chained_aftermaths }
+			check_variable = { natural_disaster_severity < constant:natural_disaster_severity.cascading }
+		}
+		set_temp_variable = { natural_disaster_severity = constant:natural_disaster_severity.cascading }
+	}
+	if = {
+		limit = {
+			check_variable = { natural_disaster_stage = constant:natural_disaster_event.stage_abnormal_age }
+			check_variable = { natural_disaster_severity < constant:natural_disaster_severity.abnormal }
+		}
+		set_temp_variable = { natural_disaster_severity = constant:natural_disaster_severity.abnormal }
+	}
+	if = {
+		limit = { NOT = { has_variable = natural_disaster_family } }
+		natural_disaster_select_family_for_stage = yes
+	}
+	set_temp_variable = { natural_disaster_phase = constant:natural_disaster_phase.impact }
+}
+
+natural_disaster_select_stage = {
+	set_temp_variable = { natural_disaster_stage = constant:natural_disaster_event.stage_baseline }
+	if = {
+		limit = {
+			OR = {
+				has_global_flag = { flag = chaos_tier value = 4 }
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+		}
+		set_temp_variable = { natural_disaster_stage = constant:natural_disaster_event.stage_abnormal_age }
+	}
+	else_if = {
+		limit = { has_global_flag = { flag = chaos_tier value = 3 } }
+		set_temp_variable = { natural_disaster_stage = constant:natural_disaster_event.stage_chained_aftermaths }
+	}
+	else_if = {
+		limit = { has_global_flag = { flag = chaos_tier value = 2 } }
+		set_temp_variable = { natural_disaster_stage = constant:natural_disaster_event.stage_regional_systems }
+	}
+	else_if = {
+		limit = { has_global_flag = { flag = chaos_tier value = 1 } }
+		set_temp_variable = { natural_disaster_stage = constant:natural_disaster_event.stage_varied_local }
+	}
+}
+
+natural_disaster_select_family_for_stage = {
+	random_list = {
+		@NATURAL_DISASTER_WEIGHT_EARTHQUAKE = {
+			modifier = {
+				factor = 0
+				NOT = { any_controlled_state = { natural_disaster_is_valid_base_target_state = yes } }
+			}
+			set_temp_variable = { natural_disaster_family = constant:natural_disaster_family.earthquake }
+		}
+		@NATURAL_DISASTER_WEIGHT_FLOOD = {
+			modifier = {
+				factor = 0
+				NOT = {
+					any_controlled_state = {
+						OR = {
+							is_coastal = yes
+							infrastructure > 0
+							rail_way > 0
+							supply_node > 0
+						}
+					}
+				}
+			}
+			set_temp_variable = { natural_disaster_family = constant:natural_disaster_family.flood }
+		}
+		@NATURAL_DISASTER_WEIGHT_STORM = {
+			modifier = {
+				factor = 0
+				NOT = {
+					any_controlled_state = {
+						OR = {
+							is_coastal = yes
+							naval_base > 0
+							air_base > 0
+							infrastructure > 0
+						}
+					}
+				}
+			}
+			set_temp_variable = { natural_disaster_family = constant:natural_disaster_family.storm }
+		}
+		@NATURAL_DISASTER_WEIGHT_DROUGHT = {
+			modifier = {
+				factor = 0
+				NOT = { any_controlled_state = { natural_disaster_is_dry_candidate_state = yes } }
+			}
+			set_temp_variable = { natural_disaster_family = constant:natural_disaster_family.drought }
+		}
+		@NATURAL_DISASTER_WEIGHT_WILDFIRE = {
+			modifier = {
+				factor = 0
+				check_variable = { natural_disaster_stage < constant:natural_disaster_event.stage_varied_local }
+			}
+			modifier = {
+				factor = 0
+				NOT = { any_controlled_state = { natural_disaster_is_wildfire_candidate_state = yes } }
+			}
+			set_temp_variable = { natural_disaster_family = constant:natural_disaster_family.wildfire }
+		}
+		@NATURAL_DISASTER_WEIGHT_LANDSLIDE = {
+			modifier = {
+				factor = 0
+				NOT = { any_controlled_state = { natural_disaster_is_mountain_candidate_state = yes } }
+			}
+			set_temp_variable = { natural_disaster_family = constant:natural_disaster_family.landslide }
+		}
+		@NATURAL_DISASTER_WEIGHT_VOLCANO = {
+			modifier = {
+				factor = 0
+				NOT = { any_controlled_state = { natural_disaster_is_volcanic_candidate_state = yes } }
+			}
+			set_temp_variable = { natural_disaster_family = constant:natural_disaster_family.volcano }
+		}
+		@NATURAL_DISASTER_WEIGHT_TSUNAMI = {
+			modifier = {
+				factor = 0
+				check_variable = { natural_disaster_stage < constant:natural_disaster_event.stage_chained_aftermaths }
+			}
+			modifier = {
+				factor = 0
+				NOT = { any_controlled_state = { natural_disaster_is_coastal_candidate_state = yes } }
+			}
+			set_temp_variable = { natural_disaster_family = constant:natural_disaster_family.tsunami }
+		}
+		@NATURAL_DISASTER_WEIGHT_METEOR = {
+			modifier = {
+				factor = 0
+				check_variable = { natural_disaster_stage < constant:natural_disaster_event.stage_abnormal_age }
+			}
+			set_temp_variable = { natural_disaster_family = constant:natural_disaster_family.meteor }
+		}
+	}
+}
+
+natural_disaster_select_target_state = {
+	clr_country_flag = natural_disaster_target_selection_failed
+	random_owned_controlled_state = {
+		limit = { natural_disaster_is_valid_target_state = yes }
+		save_event_target_as = natural_disaster_current_target_state
+		CONTROLLER = { save_event_target_as = natural_disaster_current_controller }
+		natural_disaster_score_current_state = yes
+	}
+	if = {
+		limit = { NOT = { has_event_target = natural_disaster_current_target_state } }
+		set_country_flag = natural_disaster_target_selection_failed
+	}
+}
+
+natural_disaster_score_current_state = {
+	set_temp_variable = { natural_disaster_target_score = 0 }
+	if = {
+		limit = { state_population_k > constant:natural_disaster_target.large_population_k }
+		add_to_temp_variable = { natural_disaster_target_score = constant:natural_disaster_target.capital_score }
+	}
+	if = {
+		limit = { is_capital = yes }
+		add_to_temp_variable = { natural_disaster_target_score = constant:natural_disaster_target.capital_score }
+	}
+	if = {
+		limit = {
+			OR = {
+				industrial_complex > 0
+				arms_factory > 0
+				dockyard > 0
+			}
+		}
+		add_to_temp_variable = { natural_disaster_target_score = constant:natural_disaster_target.industrial_building_score }
+	}
+	if = {
+		limit = { infrastructure > 0 }
+		add_to_temp_variable = { natural_disaster_target_score = constant:natural_disaster_target.infrastructure_score }
+	}
+	if = {
+		limit = { rail_way > 0 }
+		add_to_temp_variable = { natural_disaster_target_score = constant:natural_disaster_target.rail_score }
+	}
+	if = {
+		limit = { supply_node > 0 }
+		add_to_temp_variable = { natural_disaster_target_score = constant:natural_disaster_target.supply_score }
+	}
+	if = {
+		limit = { naval_base > 0 }
+		add_to_temp_variable = { natural_disaster_target_score = constant:natural_disaster_target.port_score }
+	}
+	if = {
+		limit = { is_coastal = yes }
+		add_to_temp_variable = { natural_disaster_target_score = constant:natural_disaster_target.coastal_score }
+	}
+	if = {
+		limit = {
+			OR = {
+				has_terrain = mountain
+				has_terrain = hills
+			}
+		}
+		add_to_temp_variable = { natural_disaster_target_score = constant:natural_disaster_target.mountain_score }
+	}
+	if = {
+		limit = {
+			OR = {
+				is_desert_state = yes
+				has_state_category = rural
+				has_state_category = pastoral
+			}
+		}
+		add_to_temp_variable = { natural_disaster_target_score = constant:natural_disaster_target.dry_state_score }
+	}
+	set_variable = { natural_disaster_last_target_score = natural_disaster_target_score }
+}
+
+natural_disaster_setup_warning = {
+	set_temp_variable = { natural_disaster_phase = constant:natural_disaster_phase.warning }
+	if = {
+		limit = { has_event_target = natural_disaster_current_target_state }
+		set_country_flag = { flag = natural_disaster_warning_active days = @NATURAL_DISASTER_WARNING_DAYS }
+		event_target:natural_disaster_current_target_state = {
+			set_state_flag = { flag = natural_disaster_warning_target days = @NATURAL_DISASTER_WARNING_DAYS }
+			set_variable = { natural_disaster_warning_family = natural_disaster_family }
+			set_variable = { natural_disaster_warning_severity = natural_disaster_severity }
+			CONTROLLER = { save_event_target_as = natural_disaster_current_controller }
+		}
+		set_variable = { natural_disaster_current_family = natural_disaster_family }
+		set_variable = { natural_disaster_current_severity = natural_disaster_severity }
+		set_variable = { natural_disaster_current_phase = natural_disaster_phase }
+	}
+}
+
+natural_disaster_roll_warning_chance = {
+	set_temp_variable = { natural_disaster_warning_chance = constant:natural_disaster_warning.baseline_chance }
+	if = {
+		limit = { check_variable = { natural_disaster_family = constant:natural_disaster_family.earthquake } }
+		set_temp_variable = { natural_disaster_warning_chance = constant:natural_disaster_warning.earthquake_chance }
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_family = constant:natural_disaster_family.flood } }
+		set_temp_variable = { natural_disaster_warning_chance = constant:natural_disaster_warning.flood_chance }
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_family = constant:natural_disaster_family.storm } }
+		set_temp_variable = { natural_disaster_warning_chance = constant:natural_disaster_warning.storm_chance }
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_family = constant:natural_disaster_family.drought } }
+		set_temp_variable = { natural_disaster_warning_chance = constant:natural_disaster_warning.drought_chance }
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_family = constant:natural_disaster_family.wildfire } }
+		set_temp_variable = { natural_disaster_warning_chance = constant:natural_disaster_warning.wildfire_chance }
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_family = constant:natural_disaster_family.landslide } }
+		set_temp_variable = { natural_disaster_warning_chance = constant:natural_disaster_warning.landslide_chance }
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_family = constant:natural_disaster_family.volcano } }
+		set_temp_variable = { natural_disaster_warning_chance = constant:natural_disaster_warning.volcano_chance }
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_family = constant:natural_disaster_family.tsunami } }
+		set_temp_variable = { natural_disaster_warning_chance = constant:natural_disaster_warning.tsunami_chance }
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_family = constant:natural_disaster_family.meteor } }
+		set_temp_variable = { natural_disaster_warning_chance = constant:natural_disaster_warning.meteor_chance }
+	}
+	set_temp_variable_to_random = {
+		var = natural_disaster_warning_roll
+		min = constant:natural_disaster_warning.roll_min
+		max = constant:natural_disaster_warning.roll_max
+	}
+	set_temp_variable = { natural_disaster_should_warn = 0 }
+	if = {
+		limit = {
+			check_variable = {
+				var = natural_disaster_warning_roll
+				value = natural_disaster_warning_chance
+				compare = less_than_or_equals
+			}
+		}
+		set_temp_variable = { natural_disaster_should_warn = 1 }
+	}
+}
+
+natural_disaster_apply_impact_to_current_state = {
+	if = {
+		limit = { NOT = { has_variable = natural_disaster_severity } }
+		set_temp_variable = { natural_disaster_severity = constant:natural_disaster_severity.local }
+	}
+	natural_disaster_set_damage_profile = yes
+	if = {
+		limit = { has_state_flag = natural_disaster_prepared_warning }
+		multiply_temp_variable = { natural_disaster_damage_amount = constant:natural_disaster_warning.prepared_damage_multiplier }
+		multiply_temp_variable = { natural_disaster_population_loss_per_k = constant:natural_disaster_population_loss_per_k.prepared_multiplier }
+	}
+	natural_disaster_apply_family_building_damage = yes
+	natural_disaster_apply_population_loss = yes
+	natural_disaster_setup_recovery_context = yes
+}
+
+natural_disaster_set_damage_profile = {
+	set_temp_variable = { natural_disaster_damage_amount = constant:natural_disaster_impact_damage.local }
+	set_temp_variable = { natural_disaster_population_loss_per_k = constant:natural_disaster_population_loss_per_k.local }
+	if = {
+		limit = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.serious } }
+		set_temp_variable = { natural_disaster_damage_amount = constant:natural_disaster_impact_damage.serious }
+		set_temp_variable = { natural_disaster_population_loss_per_k = constant:natural_disaster_population_loss_per_k.serious }
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.regional } }
+		set_temp_variable = { natural_disaster_damage_amount = constant:natural_disaster_impact_damage.regional }
+		set_temp_variable = { natural_disaster_population_loss_per_k = constant:natural_disaster_population_loss_per_k.regional }
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.cascading } }
+		set_temp_variable = { natural_disaster_damage_amount = constant:natural_disaster_impact_damage.cascading }
+		set_temp_variable = { natural_disaster_population_loss_per_k = constant:natural_disaster_population_loss_per_k.cascading }
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.abnormal } }
+		set_temp_variable = { natural_disaster_damage_amount = constant:natural_disaster_impact_damage.abnormal }
+		set_temp_variable = { natural_disaster_population_loss_per_k = constant:natural_disaster_population_loss_per_k.abnormal }
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.scenario_maximum } }
+		set_temp_variable = { natural_disaster_damage_amount = constant:natural_disaster_impact_damage.scenario_maximum }
+		set_temp_variable = { natural_disaster_population_loss_per_k = constant:natural_disaster_population_loss_per_k.scenario_maximum }
+	}
+}
+
+natural_disaster_apply_population_loss = {
+	set_temp_variable = { natural_disaster_population_loss = state_population_k }
+	multiply_temp_variable = { natural_disaster_population_loss = natural_disaster_population_loss_per_k }
+	round_temp_variable = natural_disaster_population_loss
+	add_manpower = natural_disaster_population_loss
+	set_variable = { natural_disaster_last_population_delta = natural_disaster_population_loss }
+}
+
+natural_disaster_damage_selected_building_type = {
+	meta_effect = {
+		text = {
+			damage_building = {
+				type = [ND_BUILDING_TYPE]
+				damage = [ND_DAMAGE]
+			}
+		}
+		ND_BUILDING_TYPE = "[?natural_disaster_building_type.GetTokenKey]"
+		ND_DAMAGE = "[?natural_disaster_damage_amount]"
+	}
+}
+
+natural_disaster_apply_family_building_damage = {
+	if = {
+		limit = {
+			OR = {
+				check_variable = { natural_disaster_family = constant:natural_disaster_family.earthquake }
+				check_variable = { natural_disaster_family = constant:natural_disaster_family.meteor }
+			}
+		}
+		natural_disaster_damage_earthquake_profile = yes
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_family = constant:natural_disaster_family.flood } }
+		natural_disaster_damage_flood_profile = yes
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_family = constant:natural_disaster_family.storm } }
+		natural_disaster_damage_storm_profile = yes
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_family = constant:natural_disaster_family.drought } }
+		natural_disaster_damage_drought_profile = yes
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_family = constant:natural_disaster_family.wildfire } }
+		natural_disaster_damage_wildfire_profile = yes
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_family = constant:natural_disaster_family.landslide } }
+		natural_disaster_damage_landslide_profile = yes
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_family = constant:natural_disaster_family.volcano } }
+		natural_disaster_damage_volcano_profile = yes
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_family = constant:natural_disaster_family.tsunami } }
+		natural_disaster_damage_tsunami_profile = yes
+	}
+	else = {
+		natural_disaster_damage_earthquake_profile = yes
+	}
+}
+
+natural_disaster_damage_earthquake_profile = {
+	if = { limit = { infrastructure > 0 } set_temp_variable = { natural_disaster_building_type = token:infrastructure } natural_disaster_damage_selected_building_type = yes }
+	if = { limit = { industrial_complex > 0 } set_temp_variable = { natural_disaster_building_type = token:industrial_complex } natural_disaster_damage_selected_building_type = yes }
+	if = { limit = { arms_factory > 0 } set_temp_variable = { natural_disaster_building_type = token:arms_factory } natural_disaster_damage_selected_building_type = yes }
+	if = { limit = { rail_way > 0 } set_temp_variable = { natural_disaster_building_type = token:rail_way } natural_disaster_damage_selected_building_type = yes }
+	if = { limit = { supply_node > 0 } set_temp_variable = { natural_disaster_building_type = token:supply_node } natural_disaster_damage_selected_building_type = yes }
+}
+
+natural_disaster_damage_flood_profile = {
+	if = { limit = { infrastructure > 0 } set_temp_variable = { natural_disaster_building_type = token:infrastructure } natural_disaster_damage_selected_building_type = yes }
+	if = { limit = { rail_way > 0 } set_temp_variable = { natural_disaster_building_type = token:rail_way } natural_disaster_damage_selected_building_type = yes }
+	if = { limit = { supply_node > 0 } set_temp_variable = { natural_disaster_building_type = token:supply_node } natural_disaster_damage_selected_building_type = yes }
+	if = { limit = { industrial_complex > 0 } set_temp_variable = { natural_disaster_building_type = token:industrial_complex } natural_disaster_damage_selected_building_type = yes }
+	if = { limit = { naval_base > 0 } set_temp_variable = { natural_disaster_building_type = token:naval_base } natural_disaster_damage_selected_building_type = yes }
+}
+
+natural_disaster_damage_storm_profile = {
+	if = { limit = { infrastructure > 0 } set_temp_variable = { natural_disaster_building_type = token:infrastructure } natural_disaster_damage_selected_building_type = yes }
+	if = { limit = { naval_base > 0 } set_temp_variable = { natural_disaster_building_type = token:naval_base } natural_disaster_damage_selected_building_type = yes }
+	if = { limit = { dockyard > 0 } set_temp_variable = { natural_disaster_building_type = token:dockyard } natural_disaster_damage_selected_building_type = yes }
+	if = { limit = { air_base > 0 } set_temp_variable = { natural_disaster_building_type = token:air_base } natural_disaster_damage_selected_building_type = yes }
+	if = { limit = { supply_node > 0 } set_temp_variable = { natural_disaster_building_type = token:supply_node } natural_disaster_damage_selected_building_type = yes }
+}
+
+natural_disaster_damage_drought_profile = {
+	if = { limit = { infrastructure > 0 } set_temp_variable = { natural_disaster_building_type = token:infrastructure } natural_disaster_damage_selected_building_type = yes }
+	if = { limit = { rail_way > 0 } set_temp_variable = { natural_disaster_building_type = token:rail_way } natural_disaster_damage_selected_building_type = yes }
+}
+
+natural_disaster_damage_wildfire_profile = {
+	if = { limit = { infrastructure > 0 } set_temp_variable = { natural_disaster_building_type = token:infrastructure } natural_disaster_damage_selected_building_type = yes }
+	if = { limit = { industrial_complex > 0 } set_temp_variable = { natural_disaster_building_type = token:industrial_complex } natural_disaster_damage_selected_building_type = yes }
+	if = { limit = { arms_factory > 0 } set_temp_variable = { natural_disaster_building_type = token:arms_factory } natural_disaster_damage_selected_building_type = yes }
+	if = { limit = { rail_way > 0 } set_temp_variable = { natural_disaster_building_type = token:rail_way } natural_disaster_damage_selected_building_type = yes }
+}
+
+natural_disaster_damage_landslide_profile = {
+	if = { limit = { infrastructure > 0 } set_temp_variable = { natural_disaster_building_type = token:infrastructure } natural_disaster_damage_selected_building_type = yes }
+	if = { limit = { rail_way > 0 } set_temp_variable = { natural_disaster_building_type = token:rail_way } natural_disaster_damage_selected_building_type = yes }
+	if = { limit = { supply_node > 0 } set_temp_variable = { natural_disaster_building_type = token:supply_node } natural_disaster_damage_selected_building_type = yes }
+}
+
+natural_disaster_damage_volcano_profile = {
+	if = { limit = { infrastructure > 0 } set_temp_variable = { natural_disaster_building_type = token:infrastructure } natural_disaster_damage_selected_building_type = yes }
+	if = { limit = { air_base > 0 } set_temp_variable = { natural_disaster_building_type = token:air_base } natural_disaster_damage_selected_building_type = yes }
+	if = { limit = { supply_node > 0 } set_temp_variable = { natural_disaster_building_type = token:supply_node } natural_disaster_damage_selected_building_type = yes }
+	if = { limit = { industrial_complex > 0 } set_temp_variable = { natural_disaster_building_type = token:industrial_complex } natural_disaster_damage_selected_building_type = yes }
+	if = { limit = { naval_base > 0 } set_temp_variable = { natural_disaster_building_type = token:naval_base } natural_disaster_damage_selected_building_type = yes }
+}
+
+natural_disaster_damage_tsunami_profile = {
+	if = { limit = { infrastructure > 0 } set_temp_variable = { natural_disaster_building_type = token:infrastructure } natural_disaster_damage_selected_building_type = yes }
+	if = { limit = { naval_base > 0 } set_temp_variable = { natural_disaster_building_type = token:naval_base } natural_disaster_damage_selected_building_type = yes }
+	if = { limit = { dockyard > 0 } set_temp_variable = { natural_disaster_building_type = token:dockyard } natural_disaster_damage_selected_building_type = yes }
+	if = { limit = { industrial_complex > 0 } set_temp_variable = { natural_disaster_building_type = token:industrial_complex } natural_disaster_damage_selected_building_type = yes }
+	if = { limit = { rail_way > 0 } set_temp_variable = { natural_disaster_building_type = token:rail_way } natural_disaster_damage_selected_building_type = yes }
+}
+
+natural_disaster_setup_recovery_context = {
+	set_state_flag = { flag = natural_disaster_recent_target days = @NATURAL_DISASTER_RECENT_TARGET_DAYS }
+	set_state_flag = { flag = natural_disaster_active_aftermath days = @NATURAL_DISASTER_AFTERMATH_LOCAL_DAYS }
+	if = {
+		limit = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.serious } }
+		set_state_flag = { flag = natural_disaster_active_aftermath days = @NATURAL_DISASTER_AFTERMATH_SERIOUS_DAYS }
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.regional } }
+		set_state_flag = { flag = natural_disaster_active_aftermath days = @NATURAL_DISASTER_AFTERMATH_REGIONAL_DAYS }
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.cascading } }
+		set_state_flag = { flag = natural_disaster_active_aftermath days = @NATURAL_DISASTER_AFTERMATH_CASCADING_DAYS }
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.abnormal } }
+		set_state_flag = { flag = natural_disaster_active_aftermath days = @NATURAL_DISASTER_AFTERMATH_ABNORMAL_DAYS }
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.scenario_maximum } }
+		set_state_flag = { flag = natural_disaster_active_aftermath days = @NATURAL_DISASTER_AFTERMATH_SCENARIO_MAXIMUM_DAYS }
+	}
+	natural_disaster_set_family_aftermath_flags = yes
+	set_variable = { natural_disaster_state_family = natural_disaster_family }
+	set_variable = { natural_disaster_state_severity = natural_disaster_severity }
+	set_variable = { natural_disaster_state_phase = constant:natural_disaster_phase.recovery }
+	set_variable = { natural_disaster_recovery_progress = 0 }
+	CONTROLLER = {
+		set_country_flag = natural_disaster_response_visible
+		set_variable = { natural_disaster_current_family = natural_disaster_family }
+		set_variable = { natural_disaster_current_severity = natural_disaster_severity }
+		set_variable = { natural_disaster_current_phase = constant:natural_disaster_phase.recovery }
+		natural_disaster_calculate_recovery_costs = yes
+		natural_disaster_refresh_recovery_pressure = yes
+	}
+}
+
+natural_disaster_set_family_aftermath_flags = {
+	if = {
+		limit = { check_variable = { natural_disaster_family = constant:natural_disaster_family.earthquake } }
+		set_state_flag = { flag = natural_disaster_recent_earthquake days = @NATURAL_DISASTER_RECENT_FAMILY_DAYS }
+		set_state_flag = recent_earthquake_damage
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_family = constant:natural_disaster_family.flood } }
+		set_state_flag = { flag = natural_disaster_recent_flood days = @NATURAL_DISASTER_RECENT_FAMILY_DAYS }
+		set_state_flag = flooded_transport_belt
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_family = constant:natural_disaster_family.storm } }
+		set_state_flag = { flag = natural_disaster_recent_storm days = @NATURAL_DISASTER_RECENT_FAMILY_DAYS }
+		set_state_flag = storm_wreckage
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_family = constant:natural_disaster_family.drought } }
+		set_state_flag = { flag = natural_disaster_recent_drought days = @NATURAL_DISASTER_RECENT_FAMILY_DAYS }
+		set_state_flag = crop_failure_pressure
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_family = constant:natural_disaster_family.wildfire } }
+		set_state_flag = { flag = natural_disaster_recent_wildfire days = @NATURAL_DISASTER_RECENT_FAMILY_DAYS }
+		set_state_flag = burned_districts
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_family = constant:natural_disaster_family.landslide } }
+		set_state_flag = { flag = natural_disaster_recent_landslide days = @NATURAL_DISASTER_RECENT_FAMILY_DAYS }
+		set_state_flag = unstable_mountain_passes
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_family = constant:natural_disaster_family.volcano } }
+		set_state_flag = { flag = natural_disaster_recent_volcano days = @NATURAL_DISASTER_RECENT_FAMILY_DAYS }
+		set_state_flag = volcanic_ashfall
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_family = constant:natural_disaster_family.tsunami } }
+		set_state_flag = { flag = natural_disaster_recent_tsunami days = @NATURAL_DISASTER_RECENT_FAMILY_DAYS }
+		set_state_flag = tsunami_scoured_coast
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_family = constant:natural_disaster_family.meteor } }
+		set_state_flag = { flag = natural_disaster_recent_meteor days = @NATURAL_DISASTER_RECENT_FAMILY_DAYS }
+		set_state_flag = meteor_scars
+	}
+}
+
+natural_disaster_calculate_recovery_costs = {
+	set_temp_variable = { natural_disaster_cost_severity = natural_disaster_severity }
+	set_variable = { natural_disaster_recovery_support_equipment_cost = natural_disaster_cost_severity }
+	multiply_variable = { natural_disaster_recovery_support_equipment_cost = constant:natural_disaster_recovery_cost.support_equipment_per_severity }
+	add_to_variable = { natural_disaster_recovery_support_equipment_cost = constant:natural_disaster_recovery_cost.support_equipment_base }
+	set_variable = { natural_disaster_recovery_truck_cost = natural_disaster_cost_severity }
+	multiply_variable = { natural_disaster_recovery_truck_cost = constant:natural_disaster_recovery_cost.truck_per_severity }
+	add_to_variable = { natural_disaster_recovery_truck_cost = constant:natural_disaster_recovery_cost.truck_base }
+	set_variable = { natural_disaster_recovery_train_cost = natural_disaster_cost_severity }
+	multiply_variable = { natural_disaster_recovery_train_cost = constant:natural_disaster_recovery_cost.train_per_severity }
+	add_to_variable = { natural_disaster_recovery_train_cost = constant:natural_disaster_recovery_cost.train_base }
+	set_variable = { natural_disaster_recovery_convoy_cost = natural_disaster_cost_severity }
+	multiply_variable = { natural_disaster_recovery_convoy_cost = constant:natural_disaster_recovery_cost.convoy_per_severity }
+	add_to_variable = { natural_disaster_recovery_convoy_cost = constant:natural_disaster_recovery_cost.convoy_base }
+	set_variable = { natural_disaster_recovery_fuel_cost = natural_disaster_cost_severity }
+	multiply_variable = { natural_disaster_recovery_fuel_cost = constant:natural_disaster_recovery_cost.fuel_per_severity }
+	add_to_variable = { natural_disaster_recovery_fuel_cost = constant:natural_disaster_recovery_cost.fuel_base }
+	set_variable = { natural_disaster_recovery_manpower_cost = natural_disaster_cost_severity }
+	multiply_variable = { natural_disaster_recovery_manpower_cost = constant:natural_disaster_recovery_cost.manpower_per_severity }
+	add_to_variable = { natural_disaster_recovery_manpower_cost = constant:natural_disaster_recovery_cost.manpower_base }
+	set_variable = { natural_disaster_recovery_command_power_cost = natural_disaster_cost_severity }
+	multiply_variable = { natural_disaster_recovery_command_power_cost = constant:natural_disaster_recovery_cost.command_power_per_severity }
+	add_to_variable = { natural_disaster_recovery_command_power_cost = constant:natural_disaster_recovery_cost.command_power_base }
+	set_variable = { natural_disaster_recovery_army_xp_cost = natural_disaster_cost_severity }
+	multiply_variable = { natural_disaster_recovery_army_xp_cost = constant:natural_disaster_recovery_cost.army_xp_per_severity }
+	add_to_variable = { natural_disaster_recovery_army_xp_cost = constant:natural_disaster_recovery_cost.army_xp_base }
+	set_variable = { natural_disaster_recovery_stability_risk = natural_disaster_cost_severity }
+	multiply_variable = { natural_disaster_recovery_stability_risk = constant:natural_disaster_recovery_cost.stability_risk_per_severity }
+	add_to_variable = { natural_disaster_recovery_stability_risk = constant:natural_disaster_recovery_cost.stability_risk_base }
+	set_variable = { natural_disaster_recovery_war_support_risk = natural_disaster_cost_severity }
+	multiply_variable = { natural_disaster_recovery_war_support_risk = constant:natural_disaster_recovery_cost.war_support_risk_per_severity }
+	add_to_variable = { natural_disaster_recovery_war_support_risk = constant:natural_disaster_recovery_cost.war_support_risk_base }
+}
+
+natural_disaster_apply_recovery_progress = {
+	if = {
+		limit = { NOT = { has_variable = natural_disaster_recovery_progress_gain } }
+		set_temp_variable = { natural_disaster_recovery_progress_gain = constant:natural_disaster_recovery_cost.recovery_progress_emergency }
+	}
+	add_to_variable = { natural_disaster_recovery_progress = natural_disaster_recovery_progress_gain }
+	if = {
+		limit = {
+			check_variable = {
+				var = natural_disaster_recovery_progress
+				value = constant:natural_disaster_recovery_cost.recovery_progress_full
+				compare = greater_than_or_equals
+			}
+		}
+		set_state_flag = { flag = rebuilding_underway days = @NATURAL_DISASTER_REBUILDING_DAYS }
+		natural_disaster_cleanup_current_state_context = yes
+	}
+}
+
+natural_disaster_refresh_recovery_pressure = {
+	set_temp_variable = { natural_disaster_pressure_active = 0 }
+	set_temp_variable = { natural_disaster_pressure_worst = 0 }
+	every_controlled_state = {
+		limit = { natural_disaster_state_has_active_aftermath = yes }
+		add_to_temp_variable = { natural_disaster_pressure_active = 1 }
+		if = {
+			limit = { check_variable = { natural_disaster_state_severity > natural_disaster_pressure_worst } }
+			set_temp_variable = { natural_disaster_pressure_worst = natural_disaster_state_severity }
+		}
+	}
+	set_variable = { natural_disaster_active_aftermath_count = natural_disaster_pressure_active }
+	set_variable = { natural_disaster_worst_active_severity = natural_disaster_pressure_worst }
+	if = {
+		limit = { check_variable = { natural_disaster_pressure_active > 0 } }
+		set_country_flag = natural_disaster_response_visible
+	}
+	else = {
+		clr_country_flag = natural_disaster_response_visible
+	}
+}
+
+natural_disaster_record_evolution_if_needed = {
+	set_temp_variable = { events_log_evolution_event_id = constant:natural_disaster_event.id }
+	set_temp_variable = { events_log_evolution_type = constant:natural_disaster_event.evolution_type }
+	set_temp_variable = { events_log_evolution_stage = natural_disaster_stage }
+	set_temp_variable = { events_log_evolution_tier = natural_disaster_stage }
+	if = {
+		limit = {
+			is_current_evolution_enabled = yes
+			check_variable = { natural_disaster_stage > constant:natural_disaster_event.stage_baseline }
+			OR = {
+				AND = {
+					check_variable = { natural_disaster_stage = constant:natural_disaster_event.stage_varied_local }
+					NOT = { has_global_flag = natural_disaster_evolution_1_recorded }
+				}
+				AND = {
+					check_variable = { natural_disaster_stage = constant:natural_disaster_event.stage_regional_systems }
+					NOT = { has_global_flag = natural_disaster_evolution_2_recorded }
+				}
+				AND = {
+					check_variable = { natural_disaster_stage = constant:natural_disaster_event.stage_chained_aftermaths }
+					NOT = { has_global_flag = natural_disaster_evolution_3_recorded }
+				}
+				AND = {
+					check_variable = { natural_disaster_stage = constant:natural_disaster_event.stage_abnormal_age }
+					NOT = { has_global_flag = natural_disaster_evolution_4_recorded }
+				}
+			}
+		}
+		if = {
+			limit = { has_event_target = natural_disaster_current_controller }
+			event_target:natural_disaster_current_controller = { save_event_target_as = events_log_evolution_actor }
+			set_temp_variable = { events_log_evolution_has_actor = 1 }
+		}
+		record_events_log_evolution_entry = yes
+		if = {
+			limit = { check_variable = { natural_disaster_stage = constant:natural_disaster_event.stage_varied_local } }
+			set_global_flag = natural_disaster_evolution_1_recorded
+		}
+		else_if = {
+			limit = { check_variable = { natural_disaster_stage = constant:natural_disaster_event.stage_regional_systems } }
+			set_global_flag = natural_disaster_evolution_2_recorded
+		}
+		else_if = {
+			limit = { check_variable = { natural_disaster_stage = constant:natural_disaster_event.stage_chained_aftermaths } }
+			set_global_flag = natural_disaster_evolution_3_recorded
+		}
+		else_if = {
+			limit = { check_variable = { natural_disaster_stage = constant:natural_disaster_event.stage_abnormal_age } }
+			set_global_flag = natural_disaster_evolution_4_recorded
+		}
+	}
+}
+
+natural_disaster_prepare_scenario_barrage = {
+	set_global_flag = natural_disaster_manual_barrage_running
+	set_country_flag = natural_disaster_scenario_barrage_active
+	set_temp_variable = { natural_disaster_phase = constant:natural_disaster_phase.scenario }
+	if = {
+		limit = { has_variable = triggerable_scenarios_natural_disaster_type }
+		set_temp_variable = { natural_disaster_scenario_type = triggerable_scenarios_natural_disaster_type }
+	}
+	else = {
+		set_temp_variable = { natural_disaster_scenario_type = constant:natural_disaster_scenario_type.mixed_barrage }
+	}
+	if = {
+		limit = { has_variable = triggerable_scenarios_intensity }
+		set_temp_variable = { natural_disaster_scenario_intensity = triggerable_scenarios_intensity }
+	}
+	else = {
+		set_temp_variable = { natural_disaster_scenario_intensity = constant:triggerable_scenario_intensity.medium }
+	}
+	set_variable = { global.natural_disaster_scenario_type = natural_disaster_scenario_type }
+	set_variable = { global.natural_disaster_scenario_intensity = natural_disaster_scenario_intensity }
+	if = {
+		limit = { check_variable = { natural_disaster_scenario_intensity = constant:triggerable_scenario_intensity.low } }
+		set_variable = { global.natural_disaster_scenario_remaining_incidents = constant:natural_disaster_scenario_barrage.low_incidents }
+		set_temp_variable = { natural_disaster_severity = constant:natural_disaster_scenario_barrage.low_severity }
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_scenario_intensity = constant:triggerable_scenario_intensity.high } }
+		set_variable = { global.natural_disaster_scenario_remaining_incidents = constant:natural_disaster_scenario_barrage.high_incidents }
+		set_temp_variable = { natural_disaster_severity = constant:natural_disaster_scenario_barrage.high_severity }
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_scenario_intensity = constant:triggerable_scenario_intensity.maximum } }
+		set_variable = { global.natural_disaster_scenario_remaining_incidents = constant:natural_disaster_scenario_barrage.maximum_incidents }
+		set_temp_variable = { natural_disaster_severity = constant:natural_disaster_scenario_barrage.maximum_severity }
+	}
+	else = {
+		set_variable = { global.natural_disaster_scenario_remaining_incidents = constant:natural_disaster_scenario_barrage.medium_incidents }
+		set_temp_variable = { natural_disaster_severity = constant:natural_disaster_scenario_barrage.medium_severity }
+	}
+	natural_disaster_select_scenario_family = yes
+}
+
+natural_disaster_select_scenario_family = {
+	if = {
+		limit = { check_variable = { natural_disaster_scenario_type = constant:natural_disaster_scenario_type.earthquake_wave } }
+		set_temp_variable = { natural_disaster_family = constant:natural_disaster_family.earthquake }
+		set_temp_variable = { natural_disaster_stage = constant:natural_disaster_event.stage_abnormal_age }
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_scenario_type = constant:natural_disaster_scenario_type.coastal_hyperstorm } }
+		set_temp_variable = { natural_disaster_family = constant:natural_disaster_family.storm }
+		set_temp_variable = { natural_disaster_stage = constant:natural_disaster_event.stage_abnormal_age }
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_scenario_type = constant:natural_disaster_scenario_type.volcanic_eruption } }
+		set_temp_variable = { natural_disaster_family = constant:natural_disaster_family.volcano }
+		set_temp_variable = { natural_disaster_stage = constant:natural_disaster_event.stage_abnormal_age }
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_scenario_type = constant:natural_disaster_scenario_type.meteor_shower } }
+		set_temp_variable = { natural_disaster_family = constant:natural_disaster_family.meteor }
+		set_temp_variable = { natural_disaster_stage = constant:natural_disaster_event.stage_abnormal_age }
+	}
+	else = {
+		natural_disaster_select_stage = yes
+		natural_disaster_select_family_for_stage = yes
+	}
+}
+
+natural_disaster_cleanup_current_state_context = {
+	clr_state_flag = natural_disaster_warning_target
+	clr_state_flag = natural_disaster_prepared_warning
+	clr_state_flag = natural_disaster_active_aftermath
+	clr_state_flag = recent_earthquake_damage
+	clr_state_flag = flooded_transport_belt
+	clr_state_flag = crop_failure_pressure
+	clr_state_flag = storm_wreckage
+	clr_state_flag = burned_districts
+	clr_state_flag = unstable_mountain_passes
+	clr_state_flag = volcanic_ashfall
+	clr_state_flag = tsunami_scoured_coast
+	clr_state_flag = meteor_scars
+	clear_variable = natural_disaster_warning_family
+	clear_variable = natural_disaster_warning_severity
+	clear_variable = natural_disaster_state_family
+	clear_variable = natural_disaster_state_severity
+	clear_variable = natural_disaster_state_phase
+	clear_variable = natural_disaster_recovery_progress
+	clear_variable = natural_disaster_last_population_delta
+	CONTROLLER = {
+		clr_country_flag = natural_disaster_warning_active
+		natural_disaster_refresh_recovery_pressure = yes
+	}
+}
+
+natural_disaster_cleanup_country_context = {
+	clr_country_flag = natural_disaster_warning_active
+	clr_country_flag = natural_disaster_response_visible
+	clr_country_flag = natural_disaster_scenario_barrage_active
+	clr_country_flag = natural_disaster_target_selection_failed
+	clear_variable = natural_disaster_current_family
+	clear_variable = natural_disaster_current_severity
+	clear_variable = natural_disaster_current_phase
+	clear_variable = natural_disaster_active_aftermath_count
+	clear_variable = natural_disaster_worst_active_severity
+	clear_variable = natural_disaster_recovery_support_equipment_cost
+	clear_variable = natural_disaster_recovery_truck_cost
+	clear_variable = natural_disaster_recovery_train_cost
+	clear_variable = natural_disaster_recovery_convoy_cost
+	clear_variable = natural_disaster_recovery_fuel_cost
+	clear_variable = natural_disaster_recovery_manpower_cost
+	clear_variable = natural_disaster_recovery_command_power_cost
+	clear_variable = natural_disaster_recovery_army_xp_cost
+	clear_variable = natural_disaster_recovery_stability_risk
+	clear_variable = natural_disaster_recovery_war_support_risk
+}
+
+natural_disaster_cleanup_scenario_barrage = {
+	clr_global_flag = natural_disaster_manual_barrage_running
+	clear_variable = global.natural_disaster_scenario_type
+	clear_variable = global.natural_disaster_scenario_intensity
+	clear_variable = global.natural_disaster_scenario_remaining_incidents
+}
