@@ -21,12 +21,12 @@ The earlier audit findings around ghost-host budgets, world-end foothold targeti
 | Ghost hosts | Complete by static inspection. `death_prepare_ghost_host_budget` builds a shared budget from consumed states, consumed population, and world-end footholds; passive, stronger, and world-end spawn helpers spend from that budget and enforce per-tier caps. Natural pulses, focus rewards, footholds, and SCN-006 use the budgeted helpers. |
 | World-end footholds | Complete by static inspection. Last Shores uses per-continent active Death-presence guards and staged target filters: strict, relaxed, defended, then last-resort coastal targets. Foothold creation declares war on the previous owner/controller before consumption and records the foothold. |
 | Achievement predicates | Complete by static inspection. `death_not_on_my_continent`, `death_last_ferry`, `death_counted_every_name`, and `death_black_tide_reversed` use per-continent counters, actual prepared-state consumption credit, compact/census participation before 800-tier hosts, Black Book exposure disqualification, and surviving-Herald disqualification. |
-| Event Details preview | Current script exposes only the Missing Island Reports preview before `death_world_reported`; the mainland reveal, Last Shores, and whole-world-consumed previews are gated behind `death_world_reported`. |
+| Event Details preview | Current script lists the four Death milestone evolutions in the Event Details catalog. Actual Death evolution records remain gated by their stage flags and required Chaos tier in the Death record helpers. |
 | Assets | Complete for the active Death focus icon package. All 26 focus PNG/DDS files are `94x86`, and the regenerated contact sheets/handoffs are present. `idea_public_death`, super-event, Black Atlas, portrait, and report image packages are wired in their existing surfaces. |
 
 ## Runtime Validation Needs
 
-- Validate Event Details before and after `death_world_reported` in-game to confirm the scripted preview gate renders as intended.
+- Validate Event Details in-game to confirm the four Death catalog rows render and scroll correctly while actual history rows remain stage-gated.
 - Validate SCN-006 Last Shores/world-end footholds in a runtime scenario where Death previously consumed and then lost a state on a continent.
 - Validate achievement unlock/disqualifier timing in a live run, especially Last Ferry and Black Tide Reversed.
 
