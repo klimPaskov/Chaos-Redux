@@ -40,6 +40,7 @@ Type controls cycle scenario-specific type variables:
 - Soviet Collapse: ordinary republics or chaos republics.
 - Final Silence: nuclear or thermonuclear payload.
 - Death: quiet origin, island pattern, mainland reveal, or Last Shores.
+- Disaster Barrage: Random Barrage, Geological Crisis, Weather Crisis, Skyfall Crisis, or Full Catalogue.
 
 The trigger button opens a separate confirmation window. Confirming reads the stored selected scenario, type, and intensity at launch time. Scenario launches intentionally bypass the normal automatic firing prerequisites for their source events, including chaos thresholds, prior event-state gates, route prerequisites, and super-event history flags. The launch gate only keeps impossible or conflicting launches out, such as requiring the Soviet Union to exist for Soviet Collapse and preventing a second world-end branch while `world_end` is already active. The launch button uses the same gate for click enablement and buttonstate rendering, so impossible selections are disabled and visually greyed out before the confirmation window can open.
 
@@ -82,6 +83,14 @@ The World in Fury scenario seeds dispersed Fury actors through the existing Fury
 The Death scenario starts Event 010 through the same shared state-consumption helpers used by live Death. Quiet Origin creates a remote hidden island origin with delayed missing-island reports. Island Pattern consumes additional islands and circulates missing-island reports. Mainland Reveal consumes one eligible coastal mainland state and immediately exposes Death as a world threat. Last Shores starts the Death world-end branch and creates coastal footholds on remaining continents.
 
 Intensity changes opening pressure and scenario host strength. Low keeps the footprint small, Medium shortens the route to pressure, High unlocks weak or stronger hosts in the relevant branches, and Maximum uses the most accelerated Death opening.
+
+### SCN-007: Disaster Barrage
+
+The Disaster Barrage scenario launches Event 013 Natural Disasters through the same target, family, warning, impact, aftermath, and cleanup helpers used by live random disaster incidents. It does not require a prior Natural Disasters history entry and does not start a world-end scenario.
+
+Random Barrage rolls eligible families at the selected intensity. Geological Crisis weights earthquakes with possible landslide, volcanic, and tsunami outcomes where the target country's terrain supports them. Weather Crisis weights storm and flood pressure with drought, wildfire, and tsunami outcomes where terrain supports them. Skyfall Crisis forces meteor-family incidents without forcing Evolution IV at Low or Medium intensity. Full Catalogue attempts each implemented family across the first catalogue slots where the selected country can support that family, then fills the remaining incidents from the selected intensity.
+
+Intensity changes incident count, stage budget, and severity. Low creates 3-5 baseline local incidents, Medium creates 6-9 local or regional incidents, High creates 10-14 chained incidents with one possible abnormal variant, and Maximum creates 16-24 incidents with Evolution IV variants enabled. High and Maximum are eligible for the Disaster Ledger Closed achievement only if all active aftermaths are recovered before scenario cleanup.
 
 ## Assets
 
