@@ -1148,6 +1148,10 @@ apply_white_peace_pending_chaos_delta = {
 }
 
 record_white_peace_evolution_if_needed = {
+	set_temp_variable = { events_log_evolution_event_id = constant:white_peace_event_log.event_id }
+	set_temp_variable = { events_log_evolution_type = constant:white_peace_event_log.evolution_type }
+	set_temp_variable = { events_log_evolution_stage = white_peace_stage }
+	set_temp_variable = { events_log_evolution_tier = white_peace_stage }
 	if = {
 			limit = {
 				is_current_evolution_enabled = yes
@@ -1167,10 +1171,6 @@ record_white_peace_evolution_if_needed = {
 				}
 			}
 		}
-		set_temp_variable = { events_log_evolution_event_id = constant:white_peace_event_log.event_id }
-		set_temp_variable = { events_log_evolution_type = constant:white_peace_event_log.evolution_type }
-		set_temp_variable = { events_log_evolution_stage = white_peace_stage }
-		set_temp_variable = { events_log_evolution_tier = white_peace_stage }
 		record_events_log_evolution_entry = yes
 		if = {
 			limit = { check_variable = { white_peace_stage = constant:white_peace_event_log.stage_repeated_minor } }

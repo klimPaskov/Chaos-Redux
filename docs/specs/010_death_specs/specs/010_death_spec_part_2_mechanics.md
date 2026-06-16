@@ -173,7 +173,7 @@ The target should not be chosen because it is dramatic. Death starts by eating t
 
 ### Mainland target selection
 
-Death can attempt mainland consumption only after the island-report evolution has been recorded and enough island spread pressure has accumulated. This blocks first-month mainland reveals and forces the early event to remain an island pattern before the public crisis. The first mainland target should prefer:
+Death can attempt mainland consumption only after the island-report evolution has been recorded, the required chaos tier has been reached, and enough island spread pressure has accumulated. This blocks first-month mainland reveals and forces the early event to remain an island pattern before the public crisis. The first mainland target should prefer:
 
 - nearby coastal states;
 - low-defense states;
@@ -196,7 +196,7 @@ A wither target:
 - must belong to a country Death is at war with or will automatically declare war on;
 - should be weighted toward lower population early and higher strategic effect later.
 
-If a target state gains non-Death divisions, wither progress pauses or decays. The player should learn that physically holding the line matters.
+If a target state gains non-Death divisions, consumption progress pauses or decays. The player should learn that physically holding the line matters, but border troops should not be able to sit indefinitely without cost: a weaker border-withering state modifier and narrow daily unit damage continue while the state borders an active Death wasteland.
 
 If wither progress reaches completion, the target state is consumed by the shared consumption effect.
 
@@ -303,7 +303,7 @@ Death should feel almost impossible to stop once it reaches this level, but not 
 
 ## Evolution tracks
 
-Each chaos tier can have only one Death evolution stage. Evolutions are mutation milestones layered on top of the baseline crisis.
+Each chaos tier can have only one Death evolution stage. Evolutions are mutation milestones layered on top of the baseline crisis, not instant tier unlocks. They are recorded only after the required chaos tier and the corresponding focus, report, consumption, or world-end action have happened.
 
 ### Evolution I — Empty Shoreline Whispers
 
@@ -311,7 +311,7 @@ Each chaos tier can have only one Death evolution stage. Evolutions are mutation
 | --- | --- |
 | Chaos band | Gathering Storm, around 200+ |
 | Type | Recognition/tempo mutation |
-| Active-event entry | Delayed reports become more frequent and island spread pressure rises. |
+| Active-event entry | Delayed reports become more frequent and island spread pressure rises; the log entry occurs only when a report or later island-spread action actually records the pattern. |
 | Pre-fire evolved opening | Death starts with a shorter first-report delay and a slightly stronger island target pool. |
 | Player-facing content | More missing-island report variants; investigation decisions become more useful. |
 | Log title direction | `Empty Shoreline Whispers` |

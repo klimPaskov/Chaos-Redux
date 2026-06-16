@@ -38,7 +38,7 @@ The danger becomes readable through repetition: more islands stop answering, sta
 
 ## Baseline campaign stages
 
-Baseline stages are the ordinary flow of the Death crisis. The implemented event log promotes the major baseline stages below into milestone evolution entries because Event 010 uses the event-log/evolution/detail window to explain a mostly hidden crisis after the fact. These entries are descriptive crisis milestones, not alternate mutation branches.
+Baseline stages are the ordinary flow of the Death crisis. The First Silence and origin consumption are setup, not evolution entries. The event log records later milestone evolutions only after their required chaos tier and their actual in-world action have happened, so the event-log/evolution/detail window can explain a hidden crisis after the fact without pretending every baseline step is an evolution.
 
 ### Stage 0 — Hidden bootstrap
 
@@ -243,7 +243,7 @@ The details field should mention that the event replaces `Spirit of War/Peace` o
 
 Event log history should record the fire-once event as Death once it is known. Before reveal, reports can be logged under ambiguous labels if the event log supports hidden-stage text. After reveal, all logs should use `Death`.
 
-Evolution logs should record Death's promoted baseline milestones and any later mutation milestones as descriptive crisis history. Stage 1 island origin, Stage 2 island spread, and Stage 3 mainland reveal remain the baseline flow of the event, but Event 010 uses evolution entries for those milestones so the Event Details window can explain a hidden crisis after it becomes knowable. These entries are not alternate mutation branches.
+Evolution logs should record Death's milestone mutations as descriptive crisis history. Island-report recognition, mainland reveal, Last Shores, and whole-world consumption are evolution/detail entries only after the required chaos tier has been reached and the corresponding report, consumption, or world-end action has happened. The quiet origin and `The First Silence` remain baseline setup and should not be logged as evolutions.
 
 ## Cluster role
 
@@ -254,7 +254,7 @@ Death has no event cluster. It is a solitary fire-once incident with its own int
 - Event ID 10 is `Death`
 - Death starts on a remote island and is not globally announced.
 - The hidden island stage spreads slowly, prioritizes nearby sub-100,000-population islands, and falls back to distant eligible islands only when no nearby target exists.
-- The mainland reveal path cannot open before the island-report evolution has happened and enough hidden island pressure exists.
+- The mainland reveal path cannot open before the island-report evolution has happened, the required chaos tier has been reached, and enough hidden island pressure exists.
 - Death has no starting units.
 - Every consumed state becomes a wasteland and its population is deleted.
 - Death must be defeated by occupying all of its tiles, not by ordinary surrender shortcuts.
