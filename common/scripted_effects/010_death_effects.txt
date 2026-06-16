@@ -13,8 +13,8 @@
 @death_pulse_late_min_days = 45
 @death_pulse_late_mid_days = 60
 @death_pulse_late_max_days = 75
-@death_revealed_pulse_days = 42
-@death_world_end_pulse_days = 21
+@death_revealed_pulse_days = 14
+@death_world_end_pulse_days = 7
 @death_super_event_visible_days = 12
 @death_coastal_jump_cooldown_days = 84
 @death_revealed_coastal_jump_cooldown_days = 63
@@ -427,11 +427,44 @@ death_strip_current_state_buildings = {
 death_wither_divisions_in_current_state = {
 	damage_units = {
 		state = THIS
+		limit = { NOT = { is_death_country = yes } }
 		org_damage = 0.80
 		str_damage = 0.35
 		ratio = yes
 		army = yes
 		navy = no
+	}
+}
+
+death_pan_to_current_state_for_players = {
+	every_country = {
+		limit = { is_ai = no }
+		goto_state = PREV
+	}
+}
+
+death_absorb_unopposed_neighbors_from_current_state = {
+	every_neighbor_state = {
+		limit = { death_is_valid_wither_target = yes }
+		set_temp_variable = { death_consumption_context = constant:death_spread.wither_state_progress_gain }
+		death_consume_current_state = yes
+	}
+}
+
+death_absorb_unopposed_neighbors_from_active_wasteland = {
+	every_controlled_state = {
+		limit = {
+			has_state_flag = death_active_wasteland
+			is_island_state = no
+		}
+		death_absorb_unopposed_neighbors_from_current_state = yes
+	}
+}
+
+death_wither_units_in_active_wastelands = {
+	every_controlled_state = {
+		limit = { has_state_flag = death_active_wasteland }
+		death_wither_divisions_in_current_state = yes
 	}
 }
 
@@ -477,6 +510,15 @@ death_consume_current_state = {
 		if = {
 			limit = { NOT = { has_state_category = wasteland } }
 			set_state_category = wasteland
+		}
+		if = {
+			limit = {
+				OR = {
+					has_global_flag = death_publicly_revealed
+					death_should_reveal_from_current_state = yes
+				}
+			}
+			death_declare_war_on_current_state_owner = yes
 		}
 		transfer_state_to = DTH
 		add_core_of = DTH
@@ -527,6 +569,12 @@ death_consume_current_state = {
 			limit = { death_should_reveal_from_current_state = yes }
 			death_reveal_from_current_state = yes
 		}
+		if = {
+			limit = { has_global_flag = death_publicly_revealed }
+			DTH = {
+				death_declare_war_on_neighbors = yes
+			}
+		}
 		death_try_start_world_end = yes
 		death_try_fire_whole_world_consumed = yes
 	}
@@ -545,6 +593,8 @@ death_reveal_from_current_state = {
 	save_global_event_target_as = death_current_reveal_state
 	death_record_mainland_reveal_evolution = yes
 	death_mark_reveal_achievements = yes
+	death_pan_to_current_state_for_players = yes
+	death_absorb_unopposed_neighbors_from_current_state = yes
 	DTH = {
 		set_major = yes
 		remove_ideas = death_first_silence
@@ -1882,6 +1932,7 @@ death_run_spread_pulse = {
 			else_if = {
 				limit = { has_global_flag = death_publicly_revealed }
 				death_spawn_ghost_hosts_for_current_tier = yes
+				death_absorb_unopposed_neighbors_from_active_wasteland = yes
 				death_try_wither = yes
 				death_attempt_coastal_jump = yes
 			}
@@ -2538,6 +2589,23 @@ death_try_fire_whole_world_consumed = {
 		DTH = {
 			set_country_flag = death_consumed_everything
 			death_emit_world_consumed_super_event = yes
+		}
+	}
+}
+
+death_run_daily_public_pressure = {
+	if = {
+		limit = {
+			is_death_country = yes
+			has_global_flag = death_publicly_revealed
+			NOT = { has_global_flag = death_defeated }
+		}
+		death_check_defeat = yes
+		if = {
+			limit = { NOT = { has_global_flag = death_defeated } }
+			death_wither_units_in_active_wastelands = yes
+			death_absorb_unopposed_neighbors_from_active_wasteland = yes
+			death_refresh_world_threat_source = yes
 		}
 	}
 }

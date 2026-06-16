@@ -141,7 +141,7 @@ Super-event audit contact sheet: `docs/assets/010_death/contact_sheets/death_sup
 - `.gfx` file: `interface/chaosx_super_events.gfx`
 - Related gameplay use: super-event role 1 mainland reveal
 - Asset status: `complete`
-- Notes: central composition kept readable for HOI4 super-event framing
+- Notes: central composition kept readable for HOI4 super-event framing; final DDS is converted from the processed Death reveal PNG at the registered gameplay path
 
 ### `super_event_death_world_end`
 
