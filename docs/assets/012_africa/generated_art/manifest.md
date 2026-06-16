@@ -27,6 +27,7 @@ Because the parent prompt did not provide final gameplay asset folders, all DDS 
 | `super_event_012_africa_unification_candidate` | super-event candidate | `converted` | `457x328` | Africa unification / Charter League super-event still | `dds/super_event_012_africa_unification_candidate_processed.dds` | `gfx/event_pictures/super_events/super_event_012_africa_unification.dds` |
 | `super_event_012_rsa_peace_candidate` | super-event candidate | `converted` | `457x328` | RSA peace super-event still | `dds/super_event_012_rsa_peace_candidate_processed.dds` | `gfx/event_pictures/super_events/super_event_012_rsa_peace.dds` |
 | `super_event_012_continent_sponsor_candidate` | super-event candidate | `converted` | `457x328` | continent sponsor super-event still | `dds/super_event_012_continent_sponsor_candidate_processed.dds` | `gfx/event_pictures/super_events/super_event_012_continent_sponsor.dds` |
+| `super_event_012_dynamic_cross_continent_union` | super-event candidate | `converted` | `457x328` | dynamic cross-continent union super-event still | `dds/super_event_012_dynamic_cross_continent_union_processed.dds` | `gfx/event_pictures/super_events/super_event_012_dynamic_cross_continent_union.dds` |
 | `super_event_012_world_is_one_gate_candidate` | super-event candidate | `converted` | `457x328` | World Is One gate super-event still | `dds/super_event_012_world_is_one_gate_candidate_processed.dds` | `gfx/event_pictures/super_events/super_event_012_world_is_one_gate.dds` |
 | `super_event_012_archive_bestiary_candidate` | super-event candidate | `converted` | `457x328` | Archive / Bestiary role super-event still | `dds/super_event_012_archive_bestiary_candidate_processed.dds` | `gfx/event_pictures/super_events/super_event_012_archive_bestiary.dds` |
 
@@ -44,6 +45,7 @@ Because the parent prompt did not provide final gameplay asset folders, all DDS 
 - `super_event_012_africa_unification_candidate`: monumental map of Africa raised above a continental crowd.
 - `super_event_012_rsa_peace_candidate`: opposing columns lowering arms under one peace standard at a rail junction.
 - `super_event_012_continent_sponsor_candidate`: external-industrial patronage symbolized by a giant continental arch and harbor-city buildout.
+- `super_event_012_dynamic_cross_continent_union`: harbor-backed treaty chamber where African and non-African delegates press separate continental charters into one legal instrument beneath African Charter and transcontinental congress standards.
 - `super_event_012_world_is_one_gate_candidate`: luminous gate above an Africa-shaped stone platform and period observatory crowd.
 - `super_event_012_archive_bestiary_candidate`: glowing ledger among empty crowns, bestiary cabinets, and living nonhuman witnesses.
 
@@ -53,6 +55,7 @@ Because the parent prompt did not provide final gameplay asset folders, all DDS 
 - Processed PNGs: `processed_png/`
 - DDS artifacts: `dds/`
 - Contact sheets: `contact_sheets/012_africa_source_sheet.png`, `contact_sheets/012_africa_processed_sheet.png`
+- Asset-specific review sheet: `contact_sheets/super_event_012_dynamic_cross_continent_union_variants.png`
 
 ## Missing coverage and blockers
 

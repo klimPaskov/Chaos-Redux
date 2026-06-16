@@ -32,6 +32,11 @@ The parent prompt did not provide pre-registered sprite names or confirmed gamep
   Proposed sprite: `GFX_super_event_012_continent_sponsor`
   Intended reference: continent sponsor super-event slot
 
+- Final DDS: `gfx/event_pictures/super_events/super_event_012_dynamic_cross_continent_union.dds`
+  Proposed sprite: `GFX_super_event_012_dynamic_cross_continent_union`
+  Intended reference: dynamic cross-continent union super-event slot
+  Use note: pair with the actual formed union name in localisation and keep it one step below the terminal `World Is One` presentation.
+
 - Final DDS: `gfx/event_pictures/super_events/super_event_012_world_is_one_gate.dds`
   Proposed sprite: `GFX_super_event_012_world_is_one_gate`
   Intended reference: terminal World Is One gate super-event slot
