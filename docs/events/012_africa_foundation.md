@@ -169,7 +169,7 @@ The Scramble route registers outside powers that still own or control African te
 - Charter diplomacy and member-side requests, departures, and resistance wars;
 - Federal Charter votes, regional autonomy statutes, and High Court arbitration against selected Charter members or regional authorities;
 - liberation preparation, border columns, rail-belt objectives, and targeted front-state objectives;
-- paper-claim surveys, authority-tracked rail work, and living-core integration;
+- paper-claim surveys, authority-tracked rail work, Integration Temperature Board reviews, and living-core integration;
 - diaspora return offices, return settlements, officer schools, and Pan-Atlantic congress work;
 - selected-dossier survey missions, local office, old-seat guard, and guarded settlement;
 - high-chaos Bestiary unlock, habitat, omen, warning, binding, actor-specific package decisions, and non-actor package operations;
