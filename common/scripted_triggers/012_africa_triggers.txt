@@ -588,6 +588,48 @@ can_africa_settle_selected_dossier = {
 	NOT = { has_africa_selected_dossier_settlement = yes }
 }
 
+can_africa_pay_selected_dossier_survey_cost = {
+	is_africa_selected_dossier_historical = yes
+	has_equipment = { support_equipment > constant:africa_force.dossier_survey_support_equipment }
+	OR = {
+		AND = {
+			is_africa_selected_dossier_profile_nile_red_sea = yes
+			has_equipment = { convoy_1 > constant:africa_force.dossier_survey_nile_red_sea_convoys }
+			command_power > constant:africa_decision.dossier_survey_command_power_gate
+		}
+		AND = {
+			is_africa_selected_dossier_profile_maghreb_desert = yes
+			has_equipment = { infantry_equipment > constant:africa_force.dossier_survey_maghreb_infantry_equipment }
+		}
+		AND = {
+			is_africa_selected_dossier_profile_sahel_charter = yes
+			has_equipment = { motorized_equipment > constant:africa_force.dossier_survey_sahel_motorized_equipment }
+			has_army_experience > constant:africa_decision.dossier_survey_army_xp_gate
+		}
+		AND = {
+			is_africa_selected_dossier_profile_western_crowns = yes
+			has_equipment = { infantry_equipment > constant:africa_force.dossier_survey_western_crowns_infantry_equipment }
+		}
+		AND = {
+			is_africa_selected_dossier_profile_central_river = yes
+			has_equipment = { convoy_1 > constant:africa_force.dossier_survey_central_river_convoys }
+		}
+		AND = {
+			is_africa_selected_dossier_profile_great_lakes = yes
+			has_equipment = { convoy_1 > constant:africa_force.dossier_survey_great_lakes_convoys }
+		}
+		AND = {
+			is_africa_selected_dossier_profile_indian_ocean = yes
+			has_equipment = { convoy_1 > constant:africa_force.dossier_survey_indian_ocean_convoys }
+		}
+		AND = {
+			is_africa_selected_dossier_profile_southern_stone = yes
+			has_equipment = { train_equipment > constant:africa_force.dossier_survey_southern_stone_trains }
+			command_power > constant:africa_decision.dossier_survey_command_power_gate
+		}
+	}
+}
+
 is_africa_selected_high_chaos_package = {
 	OR = {
 		check_variable = { africa_selected_high_chaos_package_id = constant:africa_high_chaos_package_id.gorilla_highlands }
@@ -635,7 +677,7 @@ can_africa_use_gui_start_dossier = {
 	NOT = { has_country_flag = africa_selected_dossier_survey_mission_active }
 	NOT = { has_country_flag = africa_archive_guard_mission_active }
 	NOT = { has_country_flag = africa_gui_dossier_action_recent }
-	has_equipment = { support_equipment > constant:africa_force.dossier_survey_support_equipment }
+	can_africa_pay_selected_dossier_survey_cost = yes
 	has_political_power > constant:africa_decision.dossier_cost
 }
 
