@@ -4215,6 +4215,63 @@ africa_clear_selected_dossier_survey_active = {
 	clr_country_flag = africa_selected_dossier_survey_mission_active
 }
 
+africa_pay_selected_dossier_survey_cost = {
+	set_temp_variable = { africa_dossier_survey_support_cost = constant:africa_force.dossier_survey_support_equipment }
+	multiply_temp_variable = { africa_dossier_survey_support_cost = -1 }
+	add_equipment_to_stockpile = { type = support_equipment amount = africa_dossier_survey_support_cost }
+	if = {
+		limit = { is_africa_selected_dossier_profile_nile_red_sea = yes }
+		set_temp_variable = { africa_dossier_survey_convoy_cost = constant:africa_force.dossier_survey_nile_red_sea_convoys }
+		multiply_temp_variable = { africa_dossier_survey_convoy_cost = -1 }
+		add_equipment_to_stockpile = { type = convoy_1 amount = africa_dossier_survey_convoy_cost }
+		add_command_power = constant:africa_decision.dossier_survey_command_power_spend
+	}
+	else_if = {
+		limit = { is_africa_selected_dossier_profile_maghreb_desert = yes }
+		set_temp_variable = { africa_dossier_survey_infantry_cost = constant:africa_force.dossier_survey_maghreb_infantry_equipment }
+		multiply_temp_variable = { africa_dossier_survey_infantry_cost = -1 }
+		add_equipment_to_stockpile = { type = infantry_equipment amount = africa_dossier_survey_infantry_cost }
+	}
+	else_if = {
+		limit = { is_africa_selected_dossier_profile_sahel_charter = yes }
+		set_temp_variable = { africa_dossier_survey_motorized_cost = constant:africa_force.dossier_survey_sahel_motorized_equipment }
+		multiply_temp_variable = { africa_dossier_survey_motorized_cost = -1 }
+		add_equipment_to_stockpile = { type = motorized_equipment_1 amount = africa_dossier_survey_motorized_cost }
+		army_experience = constant:africa_decision.dossier_survey_army_xp_spend
+	}
+	else_if = {
+		limit = { is_africa_selected_dossier_profile_western_crowns = yes }
+		set_temp_variable = { africa_dossier_survey_infantry_cost = constant:africa_force.dossier_survey_western_crowns_infantry_equipment }
+		multiply_temp_variable = { africa_dossier_survey_infantry_cost = -1 }
+		add_equipment_to_stockpile = { type = infantry_equipment amount = africa_dossier_survey_infantry_cost }
+	}
+	else_if = {
+		limit = { is_africa_selected_dossier_profile_central_river = yes }
+		set_temp_variable = { africa_dossier_survey_convoy_cost = constant:africa_force.dossier_survey_central_river_convoys }
+		multiply_temp_variable = { africa_dossier_survey_convoy_cost = -1 }
+		add_equipment_to_stockpile = { type = convoy_1 amount = africa_dossier_survey_convoy_cost }
+	}
+	else_if = {
+		limit = { is_africa_selected_dossier_profile_great_lakes = yes }
+		set_temp_variable = { africa_dossier_survey_convoy_cost = constant:africa_force.dossier_survey_great_lakes_convoys }
+		multiply_temp_variable = { africa_dossier_survey_convoy_cost = -1 }
+		add_equipment_to_stockpile = { type = convoy_1 amount = africa_dossier_survey_convoy_cost }
+	}
+	else_if = {
+		limit = { is_africa_selected_dossier_profile_indian_ocean = yes }
+		set_temp_variable = { africa_dossier_survey_convoy_cost = constant:africa_force.dossier_survey_indian_ocean_convoys }
+		multiply_temp_variable = { africa_dossier_survey_convoy_cost = -1 }
+		add_equipment_to_stockpile = { type = convoy_1 amount = africa_dossier_survey_convoy_cost }
+	}
+	else_if = {
+		limit = { is_africa_selected_dossier_profile_southern_stone = yes }
+		set_temp_variable = { africa_dossier_survey_train_cost = constant:africa_force.dossier_survey_southern_stone_trains }
+		multiply_temp_variable = { africa_dossier_survey_train_cost = -1 }
+		add_equipment_to_stockpile = { type = train_equipment_1 amount = africa_dossier_survey_train_cost }
+		add_command_power = constant:africa_decision.dossier_survey_command_power_spend
+	}
+}
+
 africa_apply_selected_dossier_profile_opened_effects = {
 	if = {
 		limit = { is_africa_selected_dossier_profile_nile_red_sea = yes }

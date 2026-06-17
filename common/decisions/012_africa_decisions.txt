@@ -1559,6 +1559,7 @@ africa_authority_atlas_category = {
 				tooltip = africa_open_next_historical_dossier_req_tt
 				can_africa_open_authority_atlas = yes
 				has_country_flag = africa_dossier_selection_office_open
+				is_africa_selected_dossier_historical = yes
 				NOT = { has_country_flag = africa_all_historical_dossiers_opened }
 				NOT = { has_africa_selected_dossier_opened = yes }
 				NOT = { has_country_flag = africa_selected_dossier_survey_mission_active }
@@ -1568,15 +1569,13 @@ africa_authority_atlas_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_open_next_historical_dossier_cost_tt
-				has_equipment = { support_equipment > constant:africa_force.dossier_survey_support_equipment }
+				can_africa_pay_selected_dossier_survey_cost = yes
 			}
 		}
 		custom_cost_text = africa_open_next_historical_dossier_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_open_next_historical_dossier_effect_tt
-			set_temp_variable = { africa_dossier_survey_support_cost = constant:africa_force.dossier_survey_support_equipment }
-			multiply_temp_variable = { africa_dossier_survey_support_cost = -1 }
-			add_equipment_to_stockpile = { type = support_equipment amount = africa_dossier_survey_support_cost }
+			africa_pay_selected_dossier_survey_cost = yes
 			africa_open_next_historical_dossier = yes
 			africa_clamp_core_values = yes
 		}
