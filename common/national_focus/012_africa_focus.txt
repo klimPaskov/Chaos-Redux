@@ -1,0 +1,2084 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 AFRICA FOCUS TREE
+# ============================================================================
+# Africa is One focus surface. Route locks, convergence, and post-unification
+# world-order sequencing are kept here; decisions consume the flags set here.
+# ============================================================================
+
+focus_tree = {
+	id = africa_is_one_focus_tree
+	country = {
+		factor = 0
+		modifier = {
+			add = 10
+			has_country_flag = africa_is_one_started
+		}
+	}
+	default = no
+	continuous_focus_position = { x = 52 y = 1600 }
+
+	focus = {
+		id = AFR_the_charter_mandate
+		icon = GFX_goal_africa_charter_league_emblem
+		x = 18
+		y = 0
+		cost = 8
+		available = { has_country_flag = africa_is_one_started }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			add_to_variable = { africa_legitimacy = constant:africa_value_delta.charter_opened_legitimacy }
+			add_to_variable = { africa_authority = constant:africa_value_delta.charter_opened_authority }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_focus_charter_mandate_complete
+		}
+		ai_will_do = { factor = constant:africa_ai.strong }
+	}
+
+	focus = {
+		id = AFR_continental_congress
+		icon = GFX_goal_africa_political_congress
+		prerequisite = { focus = AFR_the_charter_mandate }
+		x = 14
+		y = 1
+		cost = 8
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			add_to_variable = { africa_legitimacy = constant:africa_value_delta.charter_join_legitimacy }
+			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.charter_join_cohesion }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_political_congress_route_open
+		}
+		ai_will_do = { factor = constant:africa_ai.preferred }
+	}
+
+	focus = {
+		id = AFR_liberation_war_office
+		icon = GFX_goal_africa_liberation_war_office
+		prerequisite = { focus = AFR_the_charter_mandate }
+		x = 18
+		y = 1
+		cost = 8
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		completion_reward = {
+			add_ideas = africa_liberation_war_office_spirit
+			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.liberation_office_momentum }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_liberation_war_office_open
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_authority_atlas
+		icon = GFX_goal_africa_authority_atlas
+		prerequisite = { focus = AFR_the_charter_mandate }
+		x = 22
+		y = 1
+		cost = 8
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			add_ideas = africa_authority_atlas_spirit
+			add_to_variable = { africa_archive_mandate = constant:africa_value_delta.archive_opened_mandate }
+			africa_register_authority_atlas_catalog = yes
+			africa_clamp_core_values = yes
+			set_country_flag = africa_authority_atlas_open
+			africa_record_evolution_ii_if_needed = yes
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_rsa_congress_underground
+		icon = GFX_goal_africa_political_congress
+		prerequisite = { focus = AFR_the_charter_mandate }
+		x = 56
+		y = 1
+		cost = 6
+		available = { has_country_flag = africa_rsa_continental_side }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		completion_reward = {
+			add_to_variable = { africa_legitimacy = constant:africa_value_delta.diaspora_return_legitimacy }
+			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.rsa_civil_war_momentum }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_rsa_congress_underground_open
+		}
+		ai_will_do = { factor = constant:africa_ai.strong }
+	}
+
+	focus = {
+		id = AFR_rsa_mine_and_port_strikes
+		icon = GFX_goal_africa_liberation_war_office
+		prerequisite = { focus = AFR_rsa_congress_underground }
+		x = 54
+		y = 2
+		cost = 6
+		available = { has_country_flag = africa_rsa_continental_side }
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_WAR_SUPPORT }
+		completion_reward = {
+			add_war_support = constant:africa_focus_reward.rsa_mine_port_war_support
+			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.rsa_civil_war_momentum }
+			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.charter_resist_alarm }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_rsa_mine_port_strikes_open
+		}
+		ai_will_do = { factor = constant:africa_ai.strong }
+	}
+
+	focus = {
+		id = AFR_rsa_defecting_units
+		icon = GFX_goal_africa_military_forces
+		prerequisite = { focus = AFR_rsa_congress_underground }
+		x = 58
+		y = 2
+		cost = 6
+		available = { has_country_flag = africa_rsa_continental_side }
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		completion_reward = {
+			add_manpower = constant:africa_focus_reward.rsa_defectors_manpower
+			add_equipment_to_stockpile = {
+				type = infantry_equipment
+				amount = constant:africa_focus_reward.rsa_defectors_infantry_equipment
+				producer = ROOT
+			}
+			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.rsa_civil_war_momentum }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_rsa_defecting_units_open
+		}
+		ai_will_do = { factor = constant:africa_ai.strong }
+	}
+
+	focus = {
+		id = AFR_rsa_allied_pressure
+		icon = GFX_goal_africa_charter_league_diplomacy
+		prerequisite = { focus = AFR_rsa_congress_underground }
+		x = 62
+		y = 2
+		cost = 6
+		available = { has_country_flag = africa_rsa_continental_side }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			add_to_variable = { africa_legitimacy = constant:africa_value_delta.sponsor_recognition }
+			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.charter_join_cohesion }
+			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.charter_resist_alarm }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_rsa_allied_pressure_open
+		}
+		ai_will_do = { factor = constant:africa_ai.strong }
+	}
+
+	focus = {
+		id = AFR_rsa_pretoria_test
+		icon = GFX_goal_africa_scramble_for_africa
+		prerequisite = { focus = AFR_rsa_mine_and_port_strikes }
+		prerequisite = { focus = AFR_rsa_defecting_units }
+		x = 56
+		y = 3
+		cost = 8
+		available = {
+			has_country_flag = africa_rsa_continental_side
+			has_global_flag = africa_rsa_civil_war_active
+		}
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		completion_reward = {
+			army_experience = constant:africa_focus_reward.rsa_pretoria_test_army_experience
+			add_to_variable = { africa_authority = constant:africa_value_delta.integration_authority }
+			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.rsa_civil_war_momentum }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_rsa_pretoria_test_open
+		}
+		ai_will_do = { factor = constant:africa_ai.strong }
+	}
+
+	focus = {
+		id = AFR_rsa_victory_settlement
+		icon = GFX_goal_africa_world_order_route
+		prerequisite = { focus = AFR_rsa_pretoria_test }
+		prerequisite = { focus = AFR_rsa_allied_pressure }
+		x = 58
+		y = 4
+		cost = 8
+		available = {
+			has_country_flag = africa_rsa_continental_side
+			has_global_flag = africa_rsa_continental_victory
+		}
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			add_to_variable = { africa_legitimacy = constant:africa_value_delta.sponsor_recognition }
+			add_to_variable = { africa_authority = constant:africa_value_delta.integration_authority }
+			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.charter_join_cohesion }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_rsa_victory_settlement_ready
+		}
+		ai_will_do = { factor = constant:africa_ai.strong }
+	}
+
+	focus = {
+		id = AFR_industrial_convergence
+		icon = GFX_goal_africa_industry_logistics
+		prerequisite = { focus = AFR_continental_congress }
+		x = 10
+		y = 2
+		cost = 8
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		completion_reward = {
+			random_owned_controlled_state = {
+				limit = { is_on_continent = africa }
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_industrial_convergence_open
+		}
+	}
+
+	focus = {
+		id = AFR_regional_authority_charters
+		icon = GFX_goal_africa_regional_integration
+		prerequisite = { focus = AFR_continental_congress }
+		x = 14
+		y = 2
+		cost = 8
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			add_to_variable = { africa_authority = constant:africa_value_delta.integration_authority }
+			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
+			africa_spawn_regional_authorities_from_controlled_seats = yes
+			africa_refresh_integration_target_states = yes
+			africa_clamp_core_values = yes
+			set_country_flag = africa_regional_authorities_open
+		}
+	}
+
+	focus = {
+		id = AFR_charter_courts
+		icon = GFX_goal_africa_charter_league_diplomacy
+		prerequisite = { focus = AFR_continental_congress }
+		x = 18
+		y = 2
+		cost = 8
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			add_to_variable = { africa_legitimacy = constant:africa_value_delta.charter_join_legitimacy }
+			add_to_variable = { africa_local_sovereignty = constant:africa_value_delta.charter_resist_sovereignty }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_charter_courts_open
+		}
+	}
+
+	focus = {
+		id = AFR_archive_of_old_seats
+		icon = GFX_goal_africa_archive_old_seats
+		prerequisite = { focus = AFR_authority_atlas }
+		x = 22
+		y = 2
+		cost = 8
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			add_to_variable = { africa_archive_mandate = constant:africa_value_delta.archive_opened_mandate }
+			add_to_variable = { africa_old_seat_legitimacy = constant:africa_value_delta.dossier_opened_old_seat }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_archive_old_seats_open
+			africa_emit_old_seats_super_event = yes
+		}
+	}
+
+	focus = {
+		id = AFR_authority_register
+		icon = GFX_goal_africa_authority_atlas
+		prerequisite = { focus = AFR_archive_of_old_seats }
+		x = 22
+		y = 3
+		cost = 8
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			add_to_variable = { africa_archive_mandate = constant:africa_value_delta.archive_opened_mandate }
+			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_authority_register_open
+		}
+		ai_will_do = { factor = constant:africa_ai.preferred }
+	}
+
+	focus = {
+		id = AFR_dossier_selection_office
+		icon = GFX_goal_africa_archive_old_seats
+		prerequisite = { focus = AFR_authority_register }
+		x = 20
+		y = 4
+		cost = 8
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			set_country_flag = africa_dossier_selection_office_open
+			add_to_variable = { africa_archive_mandate = constant:africa_value_delta.dossier_opened_old_seat }
+			africa_select_next_unopened_dossier = yes
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = { factor = constant:africa_ai.preferred }
+	}
+
+	focus = {
+		id = AFR_integration_temperature_board
+		icon = GFX_goal_generic_forceful_treaty
+		prerequisite = { focus = AFR_authority_register }
+		x = 23
+		y = 4
+		cost = 8
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			set_country_flag = africa_integration_temperature_board_open
+			add_to_variable = { africa_authority = constant:africa_value_delta.integration_authority }
+			add_to_variable = { africa_local_sovereignty = constant:africa_value_delta.charter_resist_sovereignty }
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_old_seat_mission_calendar
+		icon = GFX_goal_generic_construct_infrastructure
+		prerequisite = { focus = AFR_authority_register }
+		x = 24
+		y = 4
+		cost = 8
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		completion_reward = {
+			set_country_flag = africa_old_seat_mission_calendar_open
+			add_to_variable = { africa_old_seat_legitimacy = constant:africa_value_delta.dossier_opened_old_seat }
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_local_sovereignty_hearings
+		icon = GFX_goal_generic_improve_relations
+		prerequisite = { focus = AFR_integration_temperature_board }
+		x = 22
+		y = 5
+		cost = 8
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			set_country_flag = africa_local_sovereignty_hearings_open
+			add_to_variable = { africa_local_sovereignty = constant:africa_value_delta.charter_resist_sovereignty }
+			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_nile_stelae_and_red_sea_gates
+		icon = GFX_goal_generic_construct_infrastructure
+		prerequisite = { focus = AFR_dossier_selection_office }
+		x = 26
+		y = 4
+		cost = 8
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
+		completion_reward = {
+			set_country_flag = africa_dossier_lane_north_open
+			add_to_variable = { africa_archive_mandate = constant:africa_value_delta.dossier_opened_old_seat }
+			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
+			africa_clamp_core_values = yes
+		}
+	}
+
+	focus = {
+		id = AFR_cataract_registers
+		icon = GFX_focus_research2
+		prerequisite = { focus = AFR_nile_stelae_and_red_sea_gates }
+		x = 25
+		y = 5
+		cost = 8
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		completion_reward = {
+			set_country_flag = africa_dossier_kush_meroe_priority
+			set_country_flag = africa_dossier_aksum_priority
+			add_to_variable = { africa_old_seat_legitimacy = constant:africa_value_delta.dossier_opened_old_seat }
+			africa_clamp_core_values = yes
+		}
+	}
+
+	focus = {
+		id = AFR_horn_well_laws
+		icon = GFX_goal_generic_construct_infrastructure
+		prerequisite = { focus = AFR_nile_stelae_and_red_sea_gates }
+		x = 27
+		y = 5
+		cost = 8
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
+		completion_reward = {
+			set_country_flag = africa_dossier_horn_well_laws_open
+			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
+			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.liberation_office_momentum }
+			africa_clamp_core_values = yes
+		}
+	}
+
+	focus = {
+		id = AFR_western_rivers_and_crowns
+		icon = GFX_goal_generic_propaganda
+		prerequisite = { focus = AFR_dossier_selection_office }
+		x = 30
+		y = 4
+		cost = 8
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			set_country_flag = africa_dossier_lane_west_open
+			add_to_variable = { africa_old_seat_legitimacy = constant:africa_value_delta.dossier_opened_old_seat }
+			add_to_variable = { africa_local_sovereignty = constant:africa_value_delta.charter_resist_sovereignty }
+			africa_clamp_core_values = yes
+		}
+	}
+
+	focus = {
+		id = AFR_sahel_lake_chad_ledger
+		icon = GFX_goal_generic_construct_infrastructure
+		prerequisite = { focus = AFR_western_rivers_and_crowns }
+		x = 29
+		y = 5
+		cost = 8
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
+		completion_reward = {
+			set_country_flag = africa_dossier_sahel_ledger_open
+			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.liberation_office_momentum }
+			africa_clamp_core_values = yes
+		}
+	}
+
+	focus = {
+		id = AFR_gold_forest_stools
+		icon = GFX_goal_generic_political_pressure
+		prerequisite = { focus = AFR_western_rivers_and_crowns }
+		x = 31
+		y = 5
+		cost = 8
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			set_country_flag = africa_dossier_gold_forest_open
+			add_to_variable = { africa_old_seat_legitimacy = constant:africa_value_delta.dossier_opened_old_seat }
+			add_to_variable = { africa_restoration_debt = constant:africa_value_delta.covenant_pressure }
+			africa_clamp_core_values = yes
+		}
+	}
+
+	focus = {
+		id = AFR_kongo_memory_rings
+		icon = GFX_focus_research
+		prerequisite = { focus = AFR_dossier_selection_office }
+		x = 34
+		y = 4
+		cost = 8
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			set_country_flag = africa_dossier_lane_central_open
+			add_to_variable = { africa_old_seat_legitimacy = constant:africa_value_delta.dossier_opened_old_seat }
+			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
+			africa_clamp_core_values = yes
+		}
+	}
+
+	focus = {
+		id = AFR_copperbelt_title_roads
+		icon = GFX_goal_generic_construct_infrastructure
+		prerequisite = { focus = AFR_kongo_memory_rings }
+		x = 33
+		y = 5
+		cost = 8
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH }
+		completion_reward = {
+			random_owned_controlled_state = {
+				limit = { is_on_continent = africa }
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			set_country_flag = africa_dossier_copperbelt_roads_open
+		}
+	}
+
+	focus = {
+		id = AFR_forest_court_settlements
+		icon = GFX_goal_generic_improve_relations
+		prerequisite = { focus = AFR_kongo_memory_rings }
+		x = 35
+		y = 5
+		cost = 8
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			set_country_flag = africa_dossier_forest_court_open
+			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
+			add_to_variable = { africa_habitat_trust = constant:africa_value_delta.high_chaos_nonhuman_sovereignty }
+			africa_clamp_core_values = yes
+		}
+	}
+
+	focus = {
+		id = AFR_swahili_monsoon_ledgers
+		icon = GFX_goal_generic_navy_doctrines_tactics
+		prerequisite = { focus = AFR_dossier_selection_office }
+		x = 38
+		y = 4
+		cost = 8
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_RESEARCH }
+		completion_reward = {
+			set_country_flag = africa_dossier_lane_indian_ocean_open
+			navy_experience = constant:africa_focus_reward.swahili_monsoon_navy_experience
+			add_to_variable = { africa_archive_mandate = constant:africa_value_delta.dossier_opened_old_seat }
+			africa_clamp_core_values = yes
+		}
+	}
+
+	focus = {
+		id = AFR_island_diwan_office
+		icon = GFX_goal_generic_construct_naval_dockyard
+		prerequisite = { focus = AFR_swahili_monsoon_ledgers }
+		x = 37
+		y = 5
+		cost = 8
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_INDUSTRY }
+		completion_reward = {
+			add_equipment_to_stockpile = {
+				type = convoy_1
+				amount = constant:africa_focus_reward.island_diwan_convoys
+				producer = ROOT
+			}
+			set_country_flag = africa_dossier_island_diwan_open
+		}
+	}
+
+	focus = {
+		id = AFR_coralline_port_charters
+		icon = GFX_goal_generic_construct_naval_dockyard
+		prerequisite = { focus = AFR_swahili_monsoon_ledgers }
+		x = 39
+		y = 5
+		cost = 8
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_INDUSTRY }
+		completion_reward = {
+			random_owned_controlled_state = {
+				limit = { is_on_continent = africa }
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = dockyard level = 1 instant_build = yes }
+			}
+			set_country_flag = africa_dossier_coralline_ports_open
+		}
+	}
+
+	focus = {
+		id = AFR_lake_kingdom_hearings
+		icon = GFX_goal_generic_improve_relations
+		prerequisite = { focus = AFR_dossier_selection_office }
+		x = 42
+		y = 4
+		cost = 8
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			set_country_flag = africa_dossier_lane_great_lakes_open
+			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
+			add_to_variable = { africa_local_sovereignty = constant:africa_value_delta.charter_resist_sovereignty }
+			africa_clamp_core_values = yes
+		}
+	}
+
+	focus = {
+		id = AFR_kabaka_and_omukama_arbitration
+		icon = GFX_goal_generic_forceful_treaty
+		prerequisite = { focus = AFR_lake_kingdom_hearings }
+		x = 42
+		y = 5
+		cost = 8
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			set_country_flag = africa_dossier_lake_arbitration_open
+			add_to_variable = { africa_old_seat_legitimacy = constant:africa_value_delta.dossier_opened_old_seat }
+			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
+			africa_clamp_core_values = yes
+		}
+	}
+
+	focus = {
+		id = AFR_stone_city_registers
+		icon = GFX_goal_generic_construct_civ_factory
+		prerequisite = { focus = AFR_dossier_selection_office }
+		x = 46
+		y = 4
+		cost = 8
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
+		completion_reward = {
+			set_country_flag = africa_dossier_lane_southern_open
+			add_to_variable = { africa_old_seat_legitimacy = constant:africa_value_delta.dossier_opened_old_seat }
+			africa_clamp_core_values = yes
+		}
+	}
+
+	focus = {
+		id = AFR_floodplain_calendar_office
+		icon = GFX_goal_generic_construct_infrastructure
+		prerequisite = { focus = AFR_stone_city_registers }
+		x = 45
+		y = 5
+		cost = 8
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH }
+		completion_reward = {
+			set_country_flag = africa_dossier_floodplain_calendar_open
+			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
+			africa_clamp_core_values = yes
+		}
+	}
+
+	focus = {
+		id = AFR_red_earth_rova_files
+		icon = GFX_focus_research2
+		prerequisite = { focus = AFR_stone_city_registers }
+		x = 47
+		y = 5
+		cost = 8
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			set_country_flag = africa_dossier_rova_files_open
+			add_to_variable = { africa_old_seat_legitimacy = constant:africa_value_delta.dossier_opened_old_seat }
+			add_to_variable = { africa_archive_mandate = constant:africa_value_delta.dossier_opened_old_seat }
+			africa_clamp_core_values = yes
+		}
+	}
+
+	focus = {
+		id = AFR_lake_and_rail_agreements
+		icon = GFX_goal_generic_construct_infrastructure
+		prerequisite = { focus = AFR_industrial_convergence }
+		x = 8
+		y = 3
+		cost = 8
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		completion_reward = {
+			every_owned_state = {
+				limit = { is_on_continent = africa is_controlled_by = ROOT }
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_lake_rail_agreements_complete
+		}
+	}
+
+	focus = {
+		id = AFR_mandate_foundries
+		icon = GFX_goal_generic_construct_mil_factory
+		prerequisite = { focus = AFR_industrial_convergence }
+		x = 12
+		y = 3
+		cost = 8
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		completion_reward = {
+			random_owned_controlled_state = {
+				limit = { is_on_continent = africa }
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+			}
+			set_country_flag = africa_mandate_foundries_complete
+		}
+	}
+
+	focus = {
+		id = AFR_return_offices
+		icon = GFX_goal_africa_charter_league_diplomacy
+		prerequisite = { focus = AFR_lake_and_rail_agreements }
+		x = 2
+		y = 8
+		cost = 8
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		completion_reward = {
+			set_country_flag = africa_diaspora_return_offices_open
+			add_to_variable = { africa_legitimacy = constant:africa_value_delta.diaspora_return_legitimacy }
+			add_to_variable = { africa_local_sovereignty = constant:africa_value_delta.charter_resist_sovereignty }
+			add_to_variable = { africa_restoration_debt = constant:africa_value_delta.diaspora_return_pressure }
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_afro_american_delegations
+		icon = GFX_goal_africa_political_congress
+		prerequisite = { focus = AFR_return_offices }
+		x = 0
+		y = 9
+		cost = 8
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			add_to_variable = { africa_legitimacy = constant:africa_value_delta.diaspora_return_legitimacy }
+			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.liberation_office_momentum }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_afro_american_delegations_open
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_caribbean_atlantic_networks
+		icon = GFX_goal_generic_construct_naval_dockyard
+		prerequisite = { focus = AFR_return_offices }
+		x = 4
+		y = 9
+		cost = 8
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_INDUSTRY }
+		completion_reward = {
+			navy_experience = constant:africa_focus_reward.swahili_monsoon_navy_experience
+			add_equipment_to_stockpile = {
+				type = convoy_1
+				amount = constant:africa_focus_reward.diaspora_atlantic_convoys
+				producer = ROOT
+			}
+			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.charter_join_cohesion }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_caribbean_atlantic_networks_open
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_exile_professors_engineers
+		icon = GFX_focus_research2
+		prerequisite = { focus = AFR_afro_american_delegations focus = AFR_caribbean_atlantic_networks }
+		x = 2
+		y = 10
+		cost = 8
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
+		completion_reward = {
+			random_owned_controlled_state = {
+				limit = { is_on_continent = africa }
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+			add_stability = constant:africa_focus_reward.diaspora_professors_stability
+			add_to_variable = { africa_legitimacy = constant:africa_value_delta.diaspora_return_legitimacy }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_exile_professors_engineers_open
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_returnee_settlement_councils
+		icon = GFX_goal_generic_construct_civ_factory
+		prerequisite = { focus = AFR_afro_american_delegations focus = AFR_caribbean_atlantic_networks }
+		x = 6
+		y = 10
+		cost = 8
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			random_owned_controlled_state = {
+				limit = { is_on_continent = africa }
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
+			add_to_variable = { africa_restoration_debt = constant:africa_value_delta.integration_burden_relief }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_returnee_settlement_councils_open
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_citizenship_without_erasure
+		icon = GFX_goal_generic_improve_relations
+		prerequisite = { focus = AFR_returnee_settlement_councils }
+		x = 6
+		y = 11
+		cost = 8
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			add_to_variable = { africa_legitimacy = constant:africa_value_delta.diaspora_return_legitimacy }
+			add_to_variable = { africa_local_sovereignty = constant:africa_value_delta.charter_resist_sovereignty }
+			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_citizenship_without_erasure_open
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_diaspora_guard_cadres
+		icon = GFX_goal_africa_military_forces
+		prerequisite = { focus = AFR_caribbean_atlantic_networks }
+		prerequisite = { focus = AFR_citizenship_without_erasure }
+		x = 2
+		y = 11
+		cost = 8
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		completion_reward = {
+			army_experience = constant:africa_focus_reward.diaspora_guard_army_experience
+			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.liberation_office_momentum }
+			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.charter_join_cohesion }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_diaspora_guard_cadres_open
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_pan_atlantic_congress
+		icon = GFX_goal_africa_sponsor_paths
+		prerequisite = { focus = AFR_exile_professors_engineers }
+		prerequisite = { focus = AFR_diaspora_guard_cadres }
+		x = 4
+		y = 12
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_NAVY_XP }
+		completion_reward = {
+			set_cosmetic_tag = AFR_PAN_ATLANTIC
+			add_to_variable = { africa_legitimacy = constant:africa_value_delta.sponsor_recognition }
+			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.charter_join_cohesion }
+			add_to_variable = { africa_authority = constant:africa_value_delta.integration_authority }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_pan_atlantic_congress_ready
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_charter_general_staff
+		icon = GFX_goal_generic_army_doctrines
+		prerequisite = { focus = AFR_liberation_war_office }
+		x = 16
+		y = 3
+		cost = 8
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		completion_reward = {
+			army_experience = constant:africa_focus_reward.charter_general_staff_army_experience
+			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.liberation_office_momentum }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_charter_general_staff_open
+		}
+	}
+
+	focus = {
+		id = AFR_liberation_columns
+		icon = GFX_goal_generic_allies_build_infantry
+		prerequisite = { focus = AFR_liberation_war_office }
+		x = 20
+		y = 3
+		cost = 8
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		completion_reward = {
+			add_manpower = constant:africa_focus_reward.liberation_columns_manpower
+			add_equipment_to_stockpile = {
+				type = infantry_equipment
+				amount = constant:africa_focus_reward.liberation_columns_infantry_equipment
+				producer = ROOT
+			}
+			set_country_flag = africa_liberation_columns_ready
+		}
+	}
+
+	focus = {
+		id = AFR_dossier_kush_to_kilwa
+		icon = GFX_focus_research
+		prerequisite = { focus = AFR_archive_of_old_seats }
+		x = 24
+		y = 3
+		cost = 8
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		completion_reward = {
+			add_to_variable = { africa_old_seat_legitimacy = constant:africa_value_delta.dossier_opened_old_seat }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_dossier_band_northeast_open
+		}
+	}
+
+	focus = {
+		id = AFR_dossier_manden_to_benin
+		icon = GFX_focus_research
+		prerequisite = { focus = AFR_archive_of_old_seats }
+		x = 28
+		y = 3
+		cost = 8
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		completion_reward = {
+			add_to_variable = { africa_old_seat_legitimacy = constant:africa_value_delta.dossier_opened_old_seat }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_dossier_band_west_open
+		}
+	}
+
+	focus = {
+		id = AFR_dossier_kongo_to_merina
+		icon = GFX_focus_research
+		prerequisite = { focus = AFR_archive_of_old_seats }
+		x = 32
+		y = 3
+		cost = 8
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		completion_reward = {
+			add_to_variable = { africa_old_seat_legitimacy = constant:africa_value_delta.dossier_opened_old_seat }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_dossier_band_south_open
+		}
+	}
+
+	focus = {
+		id = AFR_scramble_reverse_claims
+		icon = GFX_goal_africa_scramble_for_africa
+		prerequisite = { focus = AFR_regional_authority_charters }
+		prerequisite = { focus = AFR_charter_general_staff }
+		x = 14
+		y = 4
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		completion_reward = {
+			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.charter_resist_alarm }
+			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.liberation_office_momentum }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_scramble_reverse_claims_open
+			africa_emit_scramble_reaction_super_event = yes
+		}
+	}
+
+	focus = {
+		id = AFR_federal_charter_path
+		icon = GFX_goal_africa_charter_league_emblem
+		prerequisite = { focus = AFR_charter_courts }
+		x = 18
+		y = 4
+		cost = 10
+		mutually_exclusive = { focus = AFR_sovereign_seats_path }
+		mutually_exclusive = { focus = AFR_peoples_liberation_front }
+		mutually_exclusive = { focus = AFR_general_staff_above_parliament }
+		mutually_exclusive = { focus = AFR_crown_congress }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			set_cosmetic_tag = AFR_FEDERAL_CHARTER
+			add_ideas = africa_federal_charter_spirit
+			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.charter_join_cohesion }
+			add_to_variable = { africa_authority = constant:africa_value_delta.integration_authority }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_route_federal_charter
+		}
+		ai_will_do = {
+			factor = constant:africa_ai.preferred
+			modifier = { factor = constant:africa_ai.preferred has_government = democratic }
+			modifier = { factor = constant:africa_ai.normal has_war = yes }
+		}
+	}
+
+	focus = {
+		id = AFR_charter_assembly_votes
+		icon = GFX_goal_africa_political_congress
+		prerequisite = { focus = AFR_federal_charter_path }
+		x = 16
+		y = 5
+		cost = 8
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.member_confidence_cohesion }
+			add_to_variable = { africa_regional_trust = constant:africa_value_delta.member_confidence_trust }
+			add_to_variable = { africa_local_sovereignty = constant:africa_value_delta.charter_resist_sovereignty }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_charter_assembly_votes_open
+		}
+		ai_will_do = {
+			factor = constant:africa_ai.preferred
+			modifier = { factor = constant:africa_ai.preferred has_government = democratic }
+			modifier = { factor = constant:africa_ai.low has_war = yes }
+		}
+	}
+
+	focus = {
+		id = AFR_regional_autonomy_statutes
+		icon = GFX_goal_africa_regional_integration
+		prerequisite = { focus = AFR_federal_charter_path }
+		prerequisite = { focus = AFR_regional_authority_charters }
+		x = 20
+		y = 5
+		cost = 8
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
+			add_to_variable = { africa_local_sovereignty = constant:africa_value_delta.charter_resist_sovereignty }
+			add_to_variable = { africa_paper_core_burden = constant:africa_value_delta.integration_burden_relief }
+			africa_refresh_integration_target_states = yes
+			africa_clamp_core_values = yes
+			set_country_flag = africa_regional_autonomy_statutes_open
+		}
+		ai_will_do = {
+			factor = constant:africa_ai.preferred
+			modifier = { factor = constant:africa_ai.preferred check_variable = { africa_regional_trust > constant:africa_decision.cohesion_gate } }
+		}
+	}
+
+	focus = {
+		id = AFR_federal_high_court
+		icon = GFX_goal_africa_charter_league_diplomacy
+		prerequisite = { focus = AFR_charter_assembly_votes }
+		prerequisite = { focus = AFR_regional_autonomy_statutes }
+		x = 17
+		y = 6
+		cost = 8
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			add_to_variable = { africa_legitimacy = constant:africa_value_delta.charter_join_legitimacy }
+			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.charter_join_cohesion }
+			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.scramble_treaty_alarm_relief }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_federal_high_court_open
+		}
+		ai_will_do = { factor = constant:africa_ai.preferred }
+	}
+
+	focus = {
+		id = AFR_continental_citizenship
+		icon = GFX_goal_africa_charter_league_emblem
+		prerequisite = { focus = AFR_federal_high_court }
+		x = 18
+		y = 7
+		cost = 8
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			add_to_variable = { africa_legitimacy = constant:africa_value_delta.diaspora_return_legitimacy }
+			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
+			if = {
+				limit = { has_completed_focus = AFR_citizenship_without_erasure }
+				add_to_variable = { africa_league_cohesion = constant:africa_value_delta.charter_join_cohesion }
+				set_country_flag = africa_federal_citizenship_diaspora_aligned
+			}
+			africa_clamp_core_values = yes
+			set_country_flag = africa_continental_citizenship_open
+		}
+		ai_will_do = {
+			factor = constant:africa_ai.normal
+			modifier = { factor = constant:africa_ai.preferred has_completed_focus = AFR_citizenship_without_erasure }
+		}
+	}
+
+	focus = {
+		id = AFR_congress_of_capitals
+		icon = GFX_goal_africa_world_order_route
+		prerequisite = { focus = AFR_continental_citizenship }
+		x = 17
+		y = 8
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.charter_join_cohesion }
+			add_to_variable = { africa_authority = constant:africa_value_delta.integration_authority }
+			add_to_variable = { africa_paper_core_burden = constant:africa_value_delta.integration_burden_relief }
+			africa_refresh_charter_candidate_pool = yes
+			africa_refresh_integration_target_states = yes
+			if = {
+				limit = {
+					NOT = { has_country_flag = africa_regional_integration_mission_active }
+					NOT = { has_country_flag = africa_regional_integration_mission_success }
+				}
+				set_country_flag = africa_regional_integration_mission_active
+			}
+			africa_clamp_core_values = yes
+			set_country_flag = africa_congress_of_capitals_ready
+			set_country_flag = africa_federal_congress_capitals_ready
+		}
+		ai_will_do = { factor = constant:africa_ai.preferred }
+	}
+
+	focus = {
+		id = AFR_sovereign_seats_path
+		icon = GFX_goal_generic_political_pressure
+		prerequisite = { focus = AFR_charter_courts }
+		x = 22
+		y = 4
+		cost = 10
+		mutually_exclusive = { focus = AFR_federal_charter_path }
+		mutually_exclusive = { focus = AFR_peoples_liberation_front }
+		mutually_exclusive = { focus = AFR_general_staff_above_parliament }
+		mutually_exclusive = { focus = AFR_crown_congress }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			set_cosmetic_tag = AFR_SOVEREIGN_SEATS
+			add_to_variable = { africa_local_sovereignty = constant:africa_value_delta.charter_resist_sovereignty }
+			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_route_sovereign_seats
+		}
+	}
+
+	focus = {
+		id = AFR_peoples_liberation_front
+		icon = GFX_goal_africa_liberation_war_office
+		prerequisite = { focus = AFR_charter_courts }
+		x = 4
+		y = 4
+		cost = 10
+		mutually_exclusive = { focus = AFR_federal_charter_path }
+		mutually_exclusive = { focus = AFR_sovereign_seats_path }
+		mutually_exclusive = { focus = AFR_general_staff_above_parliament }
+		mutually_exclusive = { focus = AFR_crown_congress }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		completion_reward = {
+			set_cosmetic_tag = AFR_PEOPLES_LIBERATION
+			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.peoples_front_momentum }
+			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.peoples_front_alarm }
+			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.general_staff_cohesion_cost }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_route_peoples_liberation_front
+		}
+		ai_will_do = {
+			factor = constant:africa_ai.normal
+			modifier = { factor = constant:africa_ai.preferred has_government = communism }
+			modifier = { factor = constant:africa_ai.preferred has_war = yes }
+		}
+	}
+
+	focus = {
+		id = AFR_port_unions_and_mine_cells
+		icon = GFX_goal_africa_industry_logistics
+		prerequisite = { focus = AFR_peoples_liberation_front }
+		x = 2
+		y = 5
+		cost = 8
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_WAR_SUPPORT }
+		completion_reward = {
+			random_owned_controlled_state = {
+				limit = { is_on_continent = africa }
+				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+			}
+			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.liberation_office_momentum }
+			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.charter_resist_alarm }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_port_unions_mine_cells_open
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_exile_radios
+		icon = GFX_goal_generic_propaganda
+		prerequisite = { focus = AFR_peoples_liberation_front }
+		x = 6
+		y = 5
+		cost = 8
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			add_to_variable = { africa_legitimacy = constant:africa_value_delta.diaspora_return_legitimacy }
+			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.liberation_office_momentum }
+			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.charter_resist_alarm }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_exile_radios_open
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_people_continental_army
+		icon = GFX_goal_africa_military_forces
+		prerequisite = { focus = AFR_port_unions_and_mine_cells }
+		prerequisite = { focus = AFR_exile_radios }
+		x = 4
+		y = 6
+		cost = 10
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		completion_reward = {
+			army_experience = constant:africa_focus_reward.peoples_front_army_experience
+			add_manpower = constant:africa_focus_reward.people_continental_army_manpower
+			add_equipment_to_stockpile = {
+				type = infantry_equipment
+				amount = constant:africa_focus_reward.people_continental_army_infantry_equipment
+				producer = ROOT
+			}
+			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.peoples_front_momentum }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_people_continental_army_ready
+			set_country_flag = africa_liberation_operation_ready
+		}
+		ai_will_do = { factor = constant:africa_ai.preferred }
+	}
+
+	focus = {
+		id = AFR_general_staff_above_parliament
+		icon = GFX_goal_africa_military_forces
+		prerequisite = { focus = AFR_charter_courts }
+		x = 8
+		y = 4
+		cost = 10
+		mutually_exclusive = { focus = AFR_federal_charter_path }
+		mutually_exclusive = { focus = AFR_sovereign_seats_path }
+		mutually_exclusive = { focus = AFR_peoples_liberation_front }
+		mutually_exclusive = { focus = AFR_crown_congress }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		completion_reward = {
+			set_cosmetic_tag = AFR_CONTINENTAL_COMMAND
+			add_to_variable = { africa_authority = constant:africa_value_delta.general_staff_authority }
+			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.general_staff_cohesion_cost }
+			add_to_variable = { africa_regional_trust = constant:africa_value_delta.crown_congress_authority_cost }
+			army_experience = constant:africa_focus_reward.general_staff_army_experience
+			africa_clamp_core_values = yes
+			set_country_flag = africa_route_continental_general_staff
+		}
+		ai_will_do = {
+			factor = constant:africa_ai.normal
+			modifier = { factor = constant:africa_ai.preferred has_government = fascism }
+			modifier = { factor = constant:africa_ai.preferred has_war = yes }
+		}
+	}
+
+	focus = {
+		id = AFR_railway_war_offices
+		icon = GFX_goal_generic_construct_infrastructure
+		prerequisite = { focus = AFR_general_staff_above_parliament }
+		x = 8
+		y = 5
+		cost = 8
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		completion_reward = {
+			every_owned_state = {
+				limit = { is_on_continent = africa is_controlled_by = ROOT }
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			add_to_variable = { africa_authority = constant:africa_value_delta.integration_authority }
+			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.liberation_office_momentum }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_railway_war_offices_open
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_askari_veteran_bureaus
+		icon = GFX_goal_africa_military_forces
+		prerequisite = { focus = AFR_general_staff_above_parliament }
+		x = 10
+		y = 5
+		cost = 8
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		completion_reward = {
+			add_manpower = constant:africa_focus_reward.askari_veteran_manpower
+			add_equipment_to_stockpile = {
+				type = support_equipment
+				amount = constant:africa_focus_reward.askari_veteran_support_equipment
+				producer = ROOT
+			}
+			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.liberation_office_momentum }
+			add_to_variable = { africa_regional_trust = constant:africa_value_delta.crown_congress_authority_cost }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_askari_veteran_bureaus_open
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_continental_war_plan
+		icon = GFX_goal_africa_scramble_for_africa
+		prerequisite = { focus = AFR_railway_war_offices }
+		prerequisite = { focus = AFR_askari_veteran_bureaus }
+		x = 9
+		y = 6
+		cost = 10
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		completion_reward = {
+			army_experience = constant:africa_focus_reward.continental_war_plan_army_experience
+			add_to_variable = { africa_authority = constant:africa_value_delta.general_staff_authority }
+			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.charter_resist_alarm }
+			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.peoples_front_momentum }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_continental_war_plan_ready
+			set_country_flag = africa_scramble_counter_dockets_open
+		}
+		ai_will_do = { factor = constant:africa_ai.preferred }
+	}
+
+	focus = {
+		id = AFR_crown_congress
+		icon = GFX_goal_africa_archive_old_seats
+		prerequisite = { focus = AFR_charter_courts }
+		x = 50
+		y = 4
+		cost = 10
+		mutually_exclusive = { focus = AFR_federal_charter_path }
+		mutually_exclusive = { focus = AFR_sovereign_seats_path }
+		mutually_exclusive = { focus = AFR_peoples_liberation_front }
+		mutually_exclusive = { focus = AFR_general_staff_above_parliament }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			set_cosmetic_tag = AFR_CROWN_CONGRESS
+			add_to_variable = { africa_legitimacy = constant:africa_value_delta.crown_congress_legitimacy }
+			add_to_variable = { africa_old_seat_legitimacy = constant:africa_value_delta.dossier_opened_old_seat }
+			add_to_variable = { africa_authority = constant:africa_value_delta.crown_congress_authority_cost }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_route_crown_congress
+		}
+		ai_will_do = {
+			factor = constant:africa_ai.normal
+			modifier = { factor = constant:africa_ai.preferred has_government = neutrality }
+		}
+	}
+
+	focus = {
+		id = AFR_regalia_verification_chambers
+		icon = GFX_goal_africa_authority_atlas
+		prerequisite = { focus = AFR_crown_congress }
+		x = 48
+		y = 5
+		cost = 8
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			add_to_variable = { africa_archive_mandate = constant:africa_value_delta.archive_opened_mandate }
+			add_to_variable = { africa_old_seat_legitimacy = constant:africa_value_delta.dossier_opened_old_seat }
+			add_to_variable = { africa_restoration_debt = constant:africa_value_delta.integration_burden_relief }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_regalia_verification_chambers_open
+			africa_emit_counterfeit_crowns_super_event = yes
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_crown_without_one_crown
+		icon = GFX_goal_generic_improve_relations
+		prerequisite = { focus = AFR_crown_congress }
+		x = 52
+		y = 5
+		cost = 8
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			add_to_variable = { africa_local_sovereignty = constant:africa_value_delta.charter_resist_sovereignty }
+			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_crown_without_one_crown_open
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_royal_roads_and_drums
+		icon = GFX_goal_generic_construct_infrastructure
+		prerequisite = { focus = AFR_regalia_verification_chambers focus = AFR_crown_without_one_crown }
+		x = 50
+		y = 6
+		cost = 8
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			random_owned_controlled_state = {
+				limit = { is_on_continent = africa }
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			add_stability = constant:africa_focus_reward.crown_congress_stability
+			add_war_support = constant:africa_focus_reward.crown_roads_war_support
+			add_to_variable = { africa_old_seat_legitimacy = constant:africa_value_delta.dossier_opened_old_seat }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_royal_roads_drums_open
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_crowns_beneath_the_charter
+		icon = GFX_goal_africa_charter_league_emblem
+		prerequisite = { focus = AFR_regalia_verification_chambers }
+		prerequisite = { focus = AFR_crown_without_one_crown }
+		prerequisite = { focus = AFR_royal_roads_and_drums }
+		x = 50
+		y = 7
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			add_to_variable = { africa_legitimacy = constant:africa_value_delta.crown_congress_legitimacy }
+			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.charter_join_cohesion }
+			add_to_variable = { africa_local_sovereignty = constant:africa_value_delta.charter_resist_sovereignty }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_crowns_beneath_charter_ready
+		}
+		ai_will_do = { factor = constant:africa_ai.preferred }
+	}
+
+	focus = {
+		id = AFR_high_chaos_door
+		icon = GFX_goal_africa_high_chaos_bestiary
+		prerequisite = { focus = AFR_dossier_kush_to_kilwa }
+		prerequisite = { focus = AFR_dossier_manden_to_benin }
+		prerequisite = { focus = AFR_dossier_kongo_to_merina }
+		x = 31
+		y = 4
+		cost = 10
+		available = {
+			check_variable = {
+				var = africa_archive_mandate
+				value = constant:africa_decision.high_chaos_gate
+				compare = greater_than_or_equals
+			}
+		}
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_RESEARCH }
+		completion_reward = {
+			set_cosmetic_tag = AFR_ARCHIVE_MANDATE
+			add_ideas = africa_high_chaos_bestiary_spirit
+			add_to_variable = { africa_mythic_pressure = constant:africa_value_delta.high_chaos_mythic_pressure }
+			add_to_variable = { africa_nonhuman_sovereignty = constant:africa_value_delta.high_chaos_nonhuman_sovereignty }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_high_chaos_route_open
+		}
+	}
+
+	focus = {
+		id = AFR_integrated_regions
+		icon = GFX_goal_generic_construct_infrastructure
+		prerequisite = { focus = AFR_congress_of_capitals focus = AFR_people_continental_army focus = AFR_continental_war_plan }
+		x = 16
+		y = 9
+		cost = 10
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			add_to_variable = { africa_paper_core_burden = constant:africa_value_delta.integration_burden_relief }
+			add_to_variable = { africa_authority = constant:africa_value_delta.integration_authority }
+			africa_refresh_integration_target_states = yes
+			africa_clamp_core_values = yes
+			set_country_flag = africa_integrated_regions_open
+		}
+	}
+
+	focus = {
+		id = AFR_autonomous_regions
+		icon = GFX_goal_generic_improve_relations
+		prerequisite = { focus = AFR_sovereign_seats_path focus = AFR_crowns_beneath_the_charter }
+		x = 24
+		y = 5
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			add_to_variable = { africa_local_sovereignty = constant:africa_value_delta.charter_resist_sovereignty }
+			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_autonomous_regions_open
+		}
+	}
+
+	focus = {
+		id = AFR_respect_the_old_seats
+		icon = GFX_goal_africa_archive_old_seats
+		prerequisite = { focus = AFR_local_sovereignty_hearings }
+		x = 18
+		y = 6
+		cost = 10
+		mutually_exclusive = { focus = AFR_seal_them_under_one_archive }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			set_country_flag = africa_settlement_respect_old_seats
+			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
+			add_to_variable = { africa_old_seat_legitimacy = constant:africa_value_delta.dossier_opened_old_seat }
+			add_to_variable = { africa_paper_core_burden = constant:africa_value_delta.covenant_pressure }
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_documents_before_consent
+		icon = GFX_goal_africa_authority_atlas
+		prerequisite = { focus = AFR_local_sovereignty_hearings }
+		x = 22
+		y = 6
+		cost = 10
+		mutually_exclusive = { focus = AFR_seal_them_under_one_archive }
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			set_country_flag = africa_settlement_documents_before_consent
+			add_to_variable = { africa_archive_mandate = constant:africa_value_delta.archive_opened_mandate }
+			add_to_variable = { africa_restoration_debt = constant:africa_value_delta.covenant_pressure }
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_seal_them_under_one_archive
+		icon = GFX_goal_generic_forceful_treaty
+		prerequisite = { focus = AFR_local_sovereignty_hearings }
+		x = 26
+		y = 6
+		cost = 10
+		mutually_exclusive = { focus = AFR_respect_the_old_seats }
+		mutually_exclusive = { focus = AFR_documents_before_consent }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			set_country_flag = africa_settlement_direct_archive_seal
+			add_to_variable = { africa_authority = constant:africa_value_delta.integration_authority }
+			add_to_variable = { africa_paper_core_burden = constant:africa_value_delta.integration_burden_relief }
+			add_to_variable = { africa_restoration_debt = constant:africa_value_delta.covenant_pressure }
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = { factor = constant:africa_ai.low }
+	}
+
+	focus = {
+		id = AFR_the_league_must_not_become_a_museum
+		icon = GFX_goal_generic_national_unity
+		prerequisite = { focus = AFR_respect_the_old_seats focus = AFR_documents_before_consent }
+		x = 20
+		y = 7
+		cost = 8
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			set_country_flag = africa_anti_museum_drift_open
+			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.charter_join_cohesion }
+			add_to_variable = { africa_authority = constant:africa_value_delta.integration_authority }
+			africa_clamp_core_values = yes
+		}
+	}
+
+	focus = {
+		id = AFR_the_museum_must_not_become_a_prison
+		icon = GFX_goal_generic_improve_relations
+		prerequisite = { focus = AFR_seal_them_under_one_archive focus = AFR_documents_before_consent }
+		x = 24
+		y = 7
+		cost = 8
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			set_country_flag = africa_anti_prison_drift_open
+			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
+			add_to_variable = { africa_restoration_debt = constant:africa_value_delta.integration_burden_relief }
+			africa_clamp_core_values = yes
+		}
+	}
+
+	focus = {
+		id = AFR_guard_the_old_capitals
+		icon = GFX_goal_africa_military_forces
+		prerequisite = { focus = AFR_old_seat_mission_calendar }
+		x = 12
+		y = 6
+		cost = 8
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		completion_reward = {
+			set_country_flag = africa_old_capital_guard_missions_open
+			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.liberation_office_momentum }
+			add_to_variable = { africa_old_seat_legitimacy = constant:africa_value_delta.dossier_opened_old_seat }
+			africa_clamp_core_values = yes
+		}
+	}
+
+	focus = {
+		id = AFR_charter_roads_to_the_seats
+		icon = GFX_goal_generic_construct_infrastructure
+		prerequisite = { focus = AFR_guard_the_old_capitals }
+		x = 10
+		y = 7
+		cost = 8
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		completion_reward = {
+			every_owned_state = {
+				limit = { is_on_continent = africa is_controlled_by = ROOT }
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			set_country_flag = africa_charter_roads_to_old_seats_open
+		}
+	}
+
+	focus = {
+		id = AFR_regional_guard_schools
+		icon = GFX_goal_generic_army_doctrines
+		prerequisite = { focus = AFR_guard_the_old_capitals }
+		x = 14
+		y = 7
+		cost = 8
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		completion_reward = {
+			army_experience = constant:africa_focus_reward.regional_guard_schools_army_experience
+			set_country_flag = africa_regional_guard_schools_open
+			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.liberation_office_momentum }
+			africa_clamp_core_values = yes
+		}
+	}
+
+	focus = {
+		id = AFR_foreign_holder_case_files
+		icon = GFX_goal_africa_scramble_for_africa
+		prerequisite = { focus = AFR_scramble_reverse_claims }
+		x = 12
+		y = 8
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		completion_reward = {
+			set_country_flag = africa_foreign_holder_case_files_open
+			africa_refresh_external_colonial_holder_pool = yes
+			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.charter_resist_alarm }
+			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.liberation_office_momentum }
+			africa_clamp_core_values = yes
+		}
+	}
+
+	focus = {
+		id = AFR_scramble_counter_dockets
+		icon = GFX_goal_africa_scramble_for_africa
+		prerequisite = { focus = AFR_foreign_holder_case_files }
+		x = 12
+		y = 9
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		completion_reward = {
+			set_country_flag = africa_scramble_counter_dockets_open
+			africa_refresh_external_colonial_holder_pool = yes
+			if = {
+				limit = {
+					check_variable = {
+						var = africa_scramble_external_holder_count
+						value = constant:africa_mission_goal.scramble_treaty_minimum_holders
+						compare = greater_than_or_equals
+					}
+					NOT = { has_country_flag = africa_scramble_treaty_mission_success }
+				}
+				set_country_flag = africa_scramble_treaty_mission_active
+			}
+			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.charter_resist_alarm }
+			add_to_variable = { africa_authority = constant:africa_value_delta.integration_authority }
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_continental_register
+		icon = GFX_goal_africa_world_order_route
+		prerequisite = { focus = AFR_the_league_must_not_become_a_museum focus = AFR_the_museum_must_not_become_a_prison }
+		x = 22
+		y = 8
+		cost = 12
+		available = { has_africa_continental_register_dossier_coverage = yes }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			set_country_flag = africa_continental_register_ready
+			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.charter_join_cohesion }
+			add_to_variable = { africa_authority = constant:africa_value_delta.integration_authority }
+			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = { factor = constant:africa_ai.preferred }
+	}
+
+	focus = {
+		id = AFR_forest_parliament
+		icon = GFX_goal_africa_high_chaos_bestiary
+		prerequisite = { focus = AFR_high_chaos_door }
+		x = 28
+		y = 5
+		cost = 10
+		mutually_exclusive = { focus = AFR_archive_bestiary_clause }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			add_to_variable = { africa_habitat_trust = constant:africa_value_delta.high_chaos_nonhuman_sovereignty }
+			add_to_variable = { africa_bestiary_alarm = constant:africa_value_delta.bestiary_alarm }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_route_forest_parliament
+		}
+	}
+
+	focus = {
+		id = AFR_archive_bestiary_clause
+		icon = GFX_goal_africa_high_chaos_bestiary
+		prerequisite = { focus = AFR_high_chaos_door }
+		x = 32
+		y = 5
+		cost = 10
+		mutually_exclusive = { focus = AFR_forest_parliament }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_RESEARCH }
+		completion_reward = {
+			add_to_variable = { africa_bestiary_alarm = constant:africa_value_delta.bestiary_alarm }
+			add_to_variable = { africa_mythic_volatility = constant:africa_value_delta.high_chaos_mythic_pressure }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_route_archive_bestiary
+		}
+	}
+
+	focus = {
+		id = AFR_no_seats_for_caricature
+		icon = GFX_goal_generic_forceful_treaty
+		prerequisite = { focus = AFR_high_chaos_door }
+		x = 30
+		y = 6
+		cost = 8
+		available = { has_country_flag = africa_high_chaos_route_open }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			set_country_flag = africa_no_caricature_clause_open
+			add_to_variable = { africa_habitat_trust = constant:africa_value_delta.high_chaos_nonhuman_sovereignty }
+			add_to_variable = { africa_bestiary_alarm = constant:africa_value_delta.bestiary_alarm }
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_first_nonhuman_envoys
+		icon = GFX_goal_africa_high_chaos_bestiary
+		prerequisite = { focus = AFR_no_seats_for_caricature }
+		x = 28
+		y = 7
+		cost = 10
+		available = { has_country_flag = africa_minimum_historical_dossiers_ready }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			set_country_flag = africa_first_nonhuman_envoys_open
+			add_to_variable = { africa_nonhuman_sovereignty = constant:africa_value_delta.high_chaos_nonhuman_sovereignty }
+			add_to_variable = { africa_mythic_pressure = constant:africa_value_delta.high_chaos_mythic_pressure }
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = { factor = constant:africa_ai.low }
+	}
+
+	focus = {
+		id = AFR_habitat_trust_board
+		icon = GFX_goal_generic_construct_infrastructure
+		prerequisite = { focus = AFR_first_nonhuman_envoys }
+		x = 26
+		y = 8
+		cost = 8
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			set_country_flag = africa_habitat_trust_board_open
+			add_to_variable = { africa_habitat_trust = constant:africa_value_delta.high_chaos_nonhuman_sovereignty }
+			add_to_variable = { africa_bestiary_alarm = constant:africa_value_delta.integration_burden_relief }
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_omen_reliability_office
+		icon = GFX_focus_research
+		prerequisite = { focus = AFR_first_nonhuman_envoys }
+		x = 30
+		y = 8
+		cost = 8
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			set_country_flag = africa_omen_reliability_office_open
+			add_to_variable = { africa_archive_mandate = constant:africa_value_delta.dossier_opened_old_seat }
+			add_to_variable = { africa_mythic_volatility = constant:africa_value_delta.integration_burden_relief }
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_treaty_of_teeth_and_roots
+		icon = GFX_goal_generic_forceful_treaty
+		prerequisite = { focus = AFR_habitat_trust_board }
+		prerequisite = { focus = AFR_omen_reliability_office }
+		x = 28
+		y = 9
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			set_country_flag = africa_treaty_teeth_roots_open
+			add_to_variable = { africa_nonhuman_sovereignty = constant:africa_value_delta.high_chaos_nonhuman_sovereignty }
+			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.charter_join_cohesion }
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = { factor = constant:africa_ai.low }
+	}
+
+	focus = {
+		id = AFR_court_of_thunder_and_tides
+		icon = GFX_goal_africa_high_chaos_bestiary
+		prerequisite = { focus = AFR_treaty_of_teeth_and_roots }
+		x = 26
+		y = 10
+		cost = 10
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			set_country_flag = africa_court_thunder_tides_open
+			add_to_variable = { africa_mythic_pressure = constant:africa_value_delta.high_chaos_mythic_pressure }
+			add_to_variable = { africa_habitat_trust = constant:africa_value_delta.high_chaos_nonhuman_sovereignty }
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = { factor = constant:africa_ai.low }
+	}
+
+	focus = {
+		id = AFR_spider_at_the_signature_table
+		icon = GFX_goal_africa_high_chaos_bestiary
+		prerequisite = { focus = AFR_treaty_of_teeth_and_roots }
+		x = 30
+		y = 10
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_RESEARCH }
+		completion_reward = {
+			set_country_flag = africa_spider_signature_table_open
+			add_to_variable = { africa_archive_mandate = constant:africa_value_delta.dossier_opened_old_seat }
+			add_to_variable = { africa_bestiary_alarm = constant:africa_value_delta.integration_burden_relief }
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = { factor = constant:africa_ai.low }
+	}
+
+	focus = {
+		id = AFR_world_root_mandate
+		icon = GFX_goal_africa_world_order_route
+		prerequisite = { focus = AFR_court_of_thunder_and_tides }
+		prerequisite = { focus = AFR_spider_at_the_signature_table }
+		x = 28
+		y = 11
+		cost = 12
+		available = { has_country_flag = africa_minimum_high_chaos_packages_ready }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			set_cosmetic_tag = AFR_WORLD_ROOT
+			set_country_flag = africa_world_root_mandate_open
+			add_to_variable = { africa_nonhuman_sovereignty = constant:africa_value_delta.high_chaos_nonhuman_sovereignty }
+			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.charter_join_cohesion }
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = { factor = constant:africa_ai.low }
+	}
+
+	focus = {
+		id = AFR_continent_sponsor_office
+		icon = GFX_goal_africa_sponsor_paths
+		prerequisite = { focus = AFR_integrated_regions focus = AFR_autonomous_regions }
+		prerequisite = { focus = AFR_continental_register }
+		x = 20
+		y = 10
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			add_to_variable = { africa_legitimacy = constant:africa_value_delta.sponsor_recognition }
+			add_to_variable = { africa_authority = constant:africa_value_delta.sponsor_recognition }
+			africa_clamp_core_values = yes
+			set_country_flag = africa_continent_sponsor_office_open
+		}
+	}
+
+	focus = {
+		id = AFR_africa_is_one
+		icon = GFX_goal_africa_world_order_route
+		prerequisite = { focus = AFR_continent_sponsor_office }
+		prerequisite = { focus = AFR_continental_register }
+		prerequisite = { focus = AFR_world_root_mandate }
+		prerequisite = { focus = AFR_forest_parliament focus = AFR_archive_bestiary_clause }
+		x = 24
+		y = 12
+		cost = 12
+		allow_branch = {
+			OR = {
+				has_country_flag = africa_route_forest_parliament
+				has_country_flag = africa_route_archive_bestiary
+			}
+		}
+		available = {
+			has_country_flag = africa_continental_register_ready
+			has_country_flag = africa_world_root_mandate_open
+			has_country_flag = africa_continent_sponsor_ready
+			has_africa_continental_register_dossier_coverage = yes
+			has_country_flag = africa_minimum_high_chaos_packages_ready
+			check_variable = {
+				var = africa_regional_authority_count
+				value = constant:africa_world_is_one_requirement.regional_authorities
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = africa_living_core_count
+				value = constant:africa_world_is_one_requirement.living_cores
+				compare = greater_than_or_equals
+			}
+		}
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		completion_reward = {
+			set_global_flag = africa_is_one_complete
+			set_global_flag = africa_continental_pole_ready
+			set_country_flag = africa_continental_formable_complete
+			set_variable = { global.africa_world_is_one_gate_state = constant:africa_world_is_one_gate.world_end_ready }
+			add_to_variable = { africa_authority = constant:africa_value_delta.world_order_authority }
+			africa_clamp_core_values = yes
+			africa_emit_africa_is_one_super_event = yes
+			africa_record_evolution_iv_if_needed = yes
+		}
+		ai_will_do = { factor = constant:africa_ai.strong }
+	}
+
+	focus = {
+		id = AFR_continental_export_office
+		icon = GFX_goal_africa_sponsor_paths
+		prerequisite = { focus = AFR_africa_is_one }
+		x = 24
+		y = 13
+		cost = 10
+		available = {
+			has_global_flag = africa_is_one_complete
+			has_country_flag = africa_continent_sponsor_ready
+		}
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		completion_reward = {
+			set_country_flag = africa_continental_export_office_open
+			add_to_variable = { africa_legitimacy = constant:africa_value_delta.cross_continent_recognition }
+			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.external_unifier_south_atlantic_cohesion }
+			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.external_unifier_proof_alarm }
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = { factor = constant:africa_ai.preferred }
+	}
+
+	focus = {
+		id = AFR_middle_east_charter_staff
+		icon = GFX_goal_africa_charter_league_diplomacy
+		prerequisite = { focus = AFR_continental_export_office }
+		x = 18
+		y = 14
+		cost = 8
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_NAVY_XP }
+		completion_reward = {
+			set_country_flag = africa_middle_east_charter_staff_open
+			add_to_variable = { africa_legitimacy = constant:africa_value_delta.external_unifier_middle_east_recognition }
+			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.external_unifier_proof_alarm }
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_asia_charter_liaison_columns
+		icon = GFX_goal_africa_sponsor_paths
+		prerequisite = { focus = AFR_continental_export_office }
+		x = 22
+		y = 14
+		cost = 8
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		completion_reward = {
+			set_country_flag = africa_asia_charter_staff_open
+			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.external_unifier_asia_momentum }
+			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.external_unifier_proof_alarm }
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = { factor = constant:africa_ai.low }
+	}
+
+	focus = {
+		id = AFR_europe_charter_observers
+		icon = GFX_goal_africa_world_order_route
+		prerequisite = { focus = AFR_continental_export_office }
+		x = 26
+		y = 14
+		cost = 8
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		completion_reward = {
+			set_country_flag = africa_europe_charter_staff_open
+			add_to_variable = { africa_authority = constant:africa_value_delta.external_unifier_europe_authority }
+			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.cross_continent_union_alarm }
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = { factor = constant:africa_ai.low }
+	}
+
+	focus = {
+		id = AFR_south_atlantic_return_mandate
+		icon = GFX_goal_africa_charter_league_diplomacy
+		prerequisite = { focus = AFR_continental_export_office }
+		x = 30
+		y = 14
+		cost = 8
+		available = { has_country_flag = africa_pan_atlantic_congress_held }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_NAVY_XP }
+		completion_reward = {
+			set_country_flag = africa_south_atlantic_charter_staff_open
+			add_to_variable = { africa_legitimacy = constant:africa_value_delta.external_unifier_middle_east_recognition }
+			add_to_variable = { africa_restoration_debt = constant:africa_value_delta.cross_continent_overreach }
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_congress_of_continents
+		icon = GFX_goal_africa_world_order_route
+		prerequisite = { focus = AFR_middle_east_charter_staff }
+		prerequisite = { focus = AFR_asia_charter_liaison_columns }
+		prerequisite = { focus = AFR_europe_charter_observers }
+		prerequisite = { focus = AFR_south_atlantic_return_mandate }
+		x = 24
+		y = 15
+		cost = 10
+		available = {
+			has_country_flag = africa_sponsored_middle_east_charter
+			has_country_flag = africa_sponsored_asia_charter
+			has_country_flag = africa_sponsored_europe_charter
+			has_country_flag = africa_sponsored_south_atlantic_charter
+		}
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			set_country_flag = africa_congress_of_continents_focus_open
+			add_to_variable = { africa_authority = constant:africa_value_delta.cross_continent_union_authority }
+			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.cross_continent_union_cohesion }
+			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.cross_continent_overreach }
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_unifier_proof_ledger
+		icon = GFX_goal_africa_archive_old_seats
+		prerequisite = { focus = AFR_congress_of_continents }
+		x = 24
+		y = 16
+		cost = 10
+		available = { has_country_flag = africa_dynamic_cross_continent_union_complete }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_RESEARCH }
+		completion_reward = {
+			set_country_flag = africa_unifier_proof_ledger_open
+			add_to_variable = { africa_authority = constant:africa_value_delta.external_unifier_proof_ready_authority }
+			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.external_unifier_proof_ready_cohesion }
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_last_borders_are_administrative
+		icon = GFX_goal_africa_world_order_route
+		prerequisite = { focus = AFR_unifier_proof_ledger }
+		x = 24
+		y = 17
+		cost = 10
+		available = { has_africa_external_continent_unifier_proofs_ready = yes }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		completion_reward = {
+			set_country_flag = africa_last_borders_are_administrative_open
+			add_to_variable = { africa_authority = constant:africa_value_delta.continent_unifier_certification_authority }
+			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.continent_unifier_certification_alarm }
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_one_charter_above_nations
+		icon = GFX_goal_africa_charter_league_emblem
+		prerequisite = { focus = AFR_last_borders_are_administrative }
+		x = 24
+		y = 18
+		cost = 10
+		available = { has_country_flag = africa_continent_unifiers_certified_for_world_is_one }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			set_country_flag = africa_one_charter_above_nations_open
+			add_to_variable = { africa_authority = constant:africa_value_delta.world_order_authority }
+			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.continent_unifier_certification_cohesion }
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = { factor = constant:africa_ai.normal }
+	}
+
+	focus = {
+		id = AFR_the_world_is_one
+		icon = GFX_goal_africa_world_order_route
+		prerequisite = { focus = AFR_one_charter_above_nations }
+		x = 24
+		y = 19
+		cost = 14
+		available = { can_africa_start_world_is_one_gate = yes }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		completion_reward = {
+			africa_mark_world_is_one_gate_ready = yes
+		}
+		ai_will_do = {
+			factor = constant:africa_ai.low
+			modifier = {
+				factor = constant:africa_ai.strong
+				can_africa_start_world_is_one_gate = yes
+			}
+		}
+	}
+}

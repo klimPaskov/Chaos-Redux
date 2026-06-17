@@ -244,11 +244,11 @@ Not every role label must become a super-event if implementation scope requires 
 
 ## Triggerable scenario
 
-Event 012 should have a triggerable scenario entry after implementation, because it is a large formable sandbox.
+Event 012 has a triggerable scenario entry because it is a large formable sandbox.
 
-Working scenario ID: `SCN-012` if available.
+Implemented scenario ID: `SCN-012`.
 
-Scenario name direction: `Africa` or `Africa Is One` depending on UI convention.
+Scenario name: `Africa Is One`.
 
 Scenario types:
 
@@ -270,6 +270,8 @@ Intensity slider:
 | Maximum | Evolved opening, multiple regional authorities, high-chaos options if selected, severe colonial response. |
 
 Scenario gates should block only impossible launches, not normal chaos/evolution prerequisites. The scenario directly creates instant chaos and setup according to controls.
+
+Implementation note: the shared scenario window blocks SCN-012 if Event 012 has already fired or a world-end branch is active. Non-RSA types use the weighted unifier selector and create the West African Congress host only if no valid African-capital country exists. The RSA type is only available when South Africa exists, is a valid candidate, and is in the Allies with England. The Continental Pole type opens Africa Is One, Second Scramble, and continent-sponsor testing surfaces, but it does not start The World Is One and does not bypass the World Is One certification decision.
 
 ## World-end scenario — The World Is One
 
@@ -303,9 +305,10 @@ The route should vary by political path:
 
 1. **Congress of Continents.** Invite or pressure continent unifiers.
 2. **Unification Accession.** Integrate each unifier by federation, revolution, command, crown, or covenant.
-3. **Refusal crisis.** Remaining major powers refuse and receive ultimatum or war.
-4. **Last Borders mission.** Timed objective to hold major continental capitals, sea gates, and supply routes.
-5. **The World Is One.** Terminal event fires; set `world_end`; stop incompatible event systems.
+3. **External proof verification.** Verify Middle East, Asia, Europe, and South Atlantic unifier proofs through the cross-continent sponsor ledger after the matching continent systems expose their own world-end-ready mandates.
+4. **Refusal crisis.** Remaining major powers refuse and receive ultimatum or war.
+5. **Last Borders mission.** Timed objective to hold major continental capitals, sea gates, and supply routes.
+6. **The World Is One.** Terminal event fires; set `world_end`; stop incompatible event systems.
 
 ### Failure states
 

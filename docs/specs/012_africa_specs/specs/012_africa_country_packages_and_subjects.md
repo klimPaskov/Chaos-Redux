@@ -105,7 +105,7 @@ All regional authorities should:
 - Be able to resist if abused, especially under military/forced integration routes.
 - Use regional localisation and asset direction.
 
-### West African Congress Authority (`WAC`, placeholder)
+### West Africa (`WAC`, placeholder)
 
 **Identity:** port unions, Pan-African congress politics, Gold Coast/Lagos/Dakar/Bamako networks, Ghana-Mali-Songhai historical memory.
 
@@ -119,7 +119,7 @@ All regional authorities should:
 
 **Assets:** flag based on fictional congress seal, not a fake historical flag; sourced symbols only if using real attested motifs; generated council portrait.
 
-### Sahel Caravan Authority (`SAH`, placeholder)
+### Sahel (`SAH`, placeholder)
 
 **Identity:** desert roads, caravan networks, oasis towns, Sahelian cavalry/motor columns, trans-Saharan logistics.
 
@@ -133,7 +133,7 @@ All regional authorities should:
 
 **Assets:** fictional desert road seal, decision icons for oasis/convoy/rail.
 
-### Maghreb Coastal Congress (`MAG`, placeholder)
+### Maghreb Coast (`MAG`, placeholder)
 
 **Identity:** Mediterranean ports, Sahara gateway, anti-colonial diplomacy, Arab-African identity balance.
 
@@ -147,7 +147,7 @@ All regional authorities should:
 
 **Assets:** fictional congress flag; historical symbols must be sourced if used.
 
-### Nile-Horn League (`NAH`, placeholder)
+### Nile-Horn (`NHR`, placeholder)
 
 **Identity:** Nile corridor, Horn of Africa, Aksum/Kush/Ethiopian highland legitimacy, Red Sea.
 
@@ -161,7 +161,7 @@ All regional authorities should:
 
 **Assets:** if using real Ethiopian or Coptic/Islamic symbols, source carefully; fictional league seal otherwise.
 
-### East African Railway Congress (`EAC`, placeholder)
+### East African Railways (`EAC`, placeholder)
 
 **Identity:** railways, ports, askari/veteran memories, Indian Ocean trade, anti-colonial campaigns.
 
@@ -175,7 +175,7 @@ All regional authorities should:
 
 **Assets:** rail/port focus icons and faction emblem.
 
-### Great Lakes Council (`GLC`, placeholder)
+### Great Lakes (`GLK`, placeholder)
 
 **Identity:** lake networks, inland kingdoms/republics, manpower and food, regional diplomacy.
 
@@ -189,7 +189,7 @@ All regional authorities should:
 
 **Assets:** lake-and-sun council seal, generated council portrait.
 
-### Congo Basin Charter (`CBC`, placeholder)
+### Congo Basin (`CBC`, placeholder)
 
 **Identity:** Congo river system, rainforest logistics, minerals, rubber, resource sovereignty, high-chaos nature entry.
 
@@ -203,7 +203,7 @@ All regional authorities should:
 
 **Assets:** river/forest seal, possible high-chaos animated forest pact emblem.
 
-### Zambezi-Stone Cities Authority (`ZSC`, placeholder)
+### Zambezi-Stone Cities (`ZSC`, placeholder)
 
 **Identity:** Great Zimbabwe/Mutapa/Maravi echoes, copper/coal/rail, southern interior.
 
@@ -217,7 +217,7 @@ All regional authorities should:
 
 **Assets:** stone-wall emblem, mining/resource icons.
 
-### South African Liberation Congress (`SLC`, placeholder)
+### South African Liberation (`SLC`, placeholder)
 
 **Identity:** anti-apartheid and labour politics, mines, ports, RSA civil-war aftermath.
 
@@ -231,7 +231,7 @@ All regional authorities should:
 
 **Assets:** generated liberation congress flag; real movement symbols require sourcing and permissions if used.
 
-### Indian Ocean Congress (`IOC`, placeholder)
+### Indian Ocean (`IOC`, placeholder)
 
 **Identity:** Madagascar, Comoros, Mauritius, Seychelles, Indian Ocean routes.
 
@@ -374,7 +374,7 @@ The subject layer is expanded by `012_africa_niche_polities_and_subjects.md` and
 
 New human legacy authorities include, at minimum, Jolof-Wolof, Mossi, Songhai, Oyo, Benin, Dahomey, Asante, Kongo, Luba, Lunda, Kush-Meroe, Aksum, Ajuran, Swahili Coast, Buganda, Stone Cities/Great Zimbabwe, Barotse Floodplain, and Merina Rova. Additional second-priority authorities include Hausa, Bornu, Baguirmi-Wadai, Futa, Segu-Bambara, Ndongo-Matamba, Loango, Kuba, Makuria-Alodia, Sennar, Adal-Harar, Bunyoro, Great Lakes Highlands, Nyamwezi, Maravi, Sakalava/Betsimisaraka, Comorian Passage, Nama-Herero-Damara, Khoe-San Tracks, and Zulu-Nguni military colleges.
 
-High-chaos nonhuman and supernatural actors are added only through the Green Covenant/Impossible Congress lane and require explicit nonhuman/supernatural treatment. Gorilla Nation, Chimpanzee Assembly, Bonobo Kinship Congress, Great Herd Compact, Crocodile Rivers, Hyena Radio Dominion, Termite Citadel Engineers, Baobab Senate, Locust Customhouse, Giraffe Signal Towers, Okapi Secret State, Orisha Court, Ananse Web, Mami Wata Tidemark, and Bird of the Walls must not be presented as human African countries. They are Covenant actors with separate mechanics, assets, AI, and classification.
+High-chaos nonhuman and supernatural actors are added only through the Green Covenant/Impossible Congress lane and require explicit nonhuman/supernatural treatment. Gorilla Nation, Chimpanzee Assembly, Bonobo Kinship Congress, Great Herds, Crocodile Rivers, Hyena Radio Dominion, Termite Citadels, Baobab Roots, Locust Customhouse, Giraffe Signal Towers, Okapi Forest, Orisha/Vodun Wilds, Ananse Web, Mami Wata Tidemark, and Bird of the Walls must not be presented as human African countries. They are Covenant actors with separate mechanics, assets, AI, and classification.
 
 ## Niche polity restoration layer
 
@@ -412,19 +412,23 @@ High-chaos nonhuman and supernatural actors are now broader than the initial for
 | Gorilla Highlands Council | Evolution III | Explicit nonhuman forest council. | Institutional leader, actual-nonhuman classification, forest autonomy mechanics. |
 | Chimpanzee Marshes | Evolution III | Nonhuman marsh/forest caucus. | Sabotage/intelligence route; no human names or caricature tone. |
 | Bonobo Glasshouse Court | Evolution III | Nonhuman collective court. | De-escalation and panic-diplomacy mechanics; no sexualized writing. |
-| Okapi Court | Evolution III | Elusive courier and forest law office. | Observer subject by default; rare full country only if forest route dominates. |
+| Okapi Forest | Evolution III | Elusive courier and forest law office. | Observer subject by default; rare full country only if forest route dominates. |
 | Crocodile Rivers | Evolution III | River toll and ferry-law board. | River crossing/port mechanics with accident risk. |
-| Baobab Senate | Evolution III/IV | Impossible tree parliament. | War-veto and legitimacy mechanics; cannot be annexed normally. |
+| Baobab Roots | Evolution III/IV | Impossible tree parliament. | War-veto and legitimacy mechanics; cannot be annexed normally. |
 | Termite Surveyor Republic | Evolution III/IV | Nonhuman construction/sabotage engineers. | Rail/supply construction and fort sabotage; eats output if neglected. |
-| Honeyguide Commons | Evolution III | Scout and guide network. | Recon and depot discovery; fragile habitat dependency. |
+| Honeyguide Routes | Evolution III | Scout and guide network. | Recon and depot discovery; fragile habitat dependency. |
 | Lion Arbitration Circuit | Evolution III/IV | Predator court as coercive tribunal. | Fear arbitration and surrender pressure; raises Bestiary Alarm. |
 | Great Forest Federation | Evolution IV | Federation of forest nonhuman delegations. | Major high-chaos subject/faction or breakaway. |
-| Great Herds Subject | Evolution IV | Elephant/savanna political force. | Heavy auxiliaries, supply routes, anti-ivory clauses. |
+| Great Herds | Evolution IV | Elephant/savanna political force. | Heavy auxiliaries, supply routes, anti-ivory clauses. |
 | Dust Senate | Evolution IV | Desert/mirage legal body. | Well law, sandstorm disasters, mirage-road missions. |
-| Tidemark Dominion | Evolution IV | River/sea supernatural compact. | Convoy miracles, port flooding, naval pressure. |
+| Tidemark | Evolution IV | River/sea supernatural compact. | Convoy miracles, port flooding, naval pressure. |
 | Masks That Vote | Evolution IV | Supernatural court masks as legal witnesses. | Forgery exposure and legitimacy trials. |
 
 These actors must stay mechanically and textually separated from historical human polities. They are absurd Chaos Redux entities, not alternate labels for living peoples.
+
+Current implementation note: Event 012 registers 11 explicit Bestiary actor tags with direct public display identities. The original actor tags are `GHP` Gorilla Highlands, `BBS` Baobab Roots, `TDM` Tidemark, `ANW` Ananse Web, `OVN` Orisha/Vodun Wilds, and `CRR` Crocodile Rivers; the expanded actor tags are `CTL` Chimpanzee Telegraph, `OKP` Okapi Forest, `TRM` Termite Citadels, `HGD` Honeyguide Routes, and `GHC` Great Herds. They have country/history files, ideology and party localisation, nonhuman/special classification, seat-state transfer hooks, setup-package effects, focus-tree access, AI posture coverage, generated flag/portrait assets, actor-target decisions from the unifier decision layer, and local consequence events for the expanded actor decisions.
+
+Current implementation note: `africa_generate_created_country_role_staff` gives every created regional authority and Bestiary actor one generated role advisor when its setup package applies. The advisor names are functional staff/court/body labels, not invented historical human personnel; nonhuman and supernatural actors receive explicit fictional/nonhuman staff wrappers. The roles use vanilla slots and traits: political advisors for organisers/builders/omen keepers, high command for route and forest logistics, army chiefs for muster/river/herd command, navy chiefs for maritime actors, and theorists for survey/signal roles. This covers the first advisor surface, while broader bespoke advisor pools remain future country-package depth.
 
 ## Archive of Old Seats package and formable addendum
 

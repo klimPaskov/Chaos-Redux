@@ -8,7 +8,10 @@ The registered clusters are:
 
 - **Wars** (`constant:event_cluster_id.wars = 1`): sudden wars and armed conflicts between countries, where local disputes, opportunistic attacks, and border shocks can turn into a wider chain of fighting.
 - **Liberations** (`constant:event_cluster_id.liberations = 2`): independence waves, subject breakaways, imperial ruptures, republican secessions, and disorder that creates new states.
+- **Diplomatic Panic** (`constant:event_cluster_id.diplomatic_panic = 3`): pressure spikes, ministry reactions, and relation shocks without direct new war goals.
+- **Peace** (`constant:event_cluster_id.peace = 4`): settlements, ceasefires, exhaustion, negotiations, and related de-escalation shocks.
 - **Natural Disasters** (`constant:event_cluster_id.natural_disasters = 5`): grouped disaster incident chains.
+- **Formables** (`constant:event_cluster_id.formables = 6`): regional or continental formable shocks with long integration mandates.
 
 ## Runtime Flow
 
@@ -34,14 +37,23 @@ Important constants:
 
 - `event_cluster_id.wars = 1`
 - `event_cluster_id.liberations = 2`
+- `event_cluster_id.diplomatic_panic = 3`
+- `event_cluster_id.peace = 4`
 - `event_cluster_id.natural_disasters = 5`
+- `event_cluster_id.formables = 6`
 - `event_cluster_type.one_time`, `event_cluster_type.repeatable`, and `event_cluster_type.major` define how the cluster applies global pacing.
 - `event_cluster_wars.unlock_tier = 1`
 - `event_cluster_wars.cooldown_days = 120`
 - `event_cluster_liberations.unlock_tier = 0`
 - `event_cluster_liberations.cooldown_days = 90`
+- `event_cluster_diplomatic_panic.unlock_tier = 0`
+- `event_cluster_diplomatic_panic.cooldown_days = 120`
+- `event_cluster_peace.unlock_tier = 0`
+- `event_cluster_peace.cooldown_days = 120`
 - `event_cluster_natural_disasters.unlock_tier = 0`
 - `event_cluster_natural_disasters.cooldown_days = 90`
+- `event_cluster_formables.unlock_tier = 0`
+- `event_cluster_formables.cooldown_days = 120`
 - `event_cluster_roll.minimum` and `event_cluster_roll.maximum` define the shared percentile roll range
 - `event_cluster_roll_chance_default.*` defines tier-based cluster roll chance
 - `event_cluster_member_participation.*` defines member participation chance
@@ -59,7 +71,10 @@ Current membership:
 | Wars | Event 4, Random War | High | Required member when selected or manually queued |
 | Liberations | Event 6, Independence Wave | Medium | Optional member |
 | Liberations | Event 5, Soviet Union Collapse | Severe | Optional member, fire-once, gated by Soviet crisis eligibility |
+| Diplomatic Panic | Event 8, Tensions Rising | Medium | Required member when selected or manually queued |
+| Peace | Event 9, White Peace | Low | Required member when selected or manually queued |
 | Natural Disasters | Event 13, Natural Disasters | Low | Required member when selected or manually queued |
+| Formables | Event 12, Africa | Severe | Required member when selected or manually queued, gated by valid African-capital unifier selection |
 
 ## Member Order And Cooldown
 
@@ -137,4 +152,5 @@ If a future cluster needs a dedicated icon, define the sprite in an `interface/.
 
 - Add more Wars members, such as border incidents, faction breakups, and regional war chains.
 - Add more Liberations members for subject breakaways, occupation collapses, and regional independence chains.
+- Add more Formables members as other continental or regional unifier events are reworked.
 - Add non-war clusters for economy and anomalies.

@@ -44,6 +44,10 @@ initialize_triggerable_scenarios_settings = {
 		set_variable = { triggerable_scenarios_disaster_type = constant:triggerable_scenario_disaster_type.random_barrage }
 	}
 	if = {
+		limit = { NOT = { has_variable = triggerable_scenarios_africa_type } }
+		set_variable = { triggerable_scenarios_africa_type = constant:triggerable_scenario_africa_type.standard_unifier }
+	}
+	if = {
 		limit = { NOT = { has_variable = triggerable_scenarios_sort_mode } }
 		set_variable = { triggerable_scenarios_sort_mode = constant:triggerable_scenario_sort_mode.id }
 	}
@@ -110,6 +114,14 @@ triggerable_scenarios_initialize_registry = {
 		array = global.triggerable_scenario_all_name_sort_values
 		value = constant:triggerable_scenario_sort_value.natural_disasters_name
 	}
+	add_to_array = {
+		array = global.triggerable_scenario_all_ids
+		value = constant:triggerable_scenario_id.africa_is_one
+	}
+	add_to_array = {
+		array = global.triggerable_scenario_all_name_sort_values
+		value = constant:triggerable_scenario_sort_value.africa_is_one_name
+	}
 }
 
 triggerable_scenarios_rebuild_view = {
@@ -123,6 +135,14 @@ triggerable_scenarios_rebuild_view = {
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.africa_is_one
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.africa_is_one_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
 			value = constant:triggerable_scenario_id.mengele_clones
 		}
 		add_to_array = {
@@ -239,11 +259,27 @@ triggerable_scenarios_rebuild_view = {
 			array = global.triggerable_scenario_view_name_sort_values
 			value = constant:triggerable_scenario_sort_value.mengele_clones_name
 		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.africa_is_one
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.africa_is_one_name
+		}
 	}
 	else_if = {
 		limit = {
 			check_variable = { triggerable_scenarios_sort_mode = constant:triggerable_scenario_sort_mode.id }
 			has_country_flag = triggerable_scenarios_sort_descending
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.africa_is_one
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.africa_is_one_name
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
@@ -358,6 +394,14 @@ triggerable_scenarios_rebuild_view = {
 		add_to_array = {
 			array = global.triggerable_scenario_view_name_sort_values
 			value = constant:triggerable_scenario_sort_value.natural_disasters_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.africa_is_one
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.africa_is_one_name
 		}
 	}
 }
@@ -442,6 +486,11 @@ select_triggerable_scenario_death = {
 select_triggerable_scenario_disaster_barrage = {
 	initialize_triggerable_scenarios_settings = yes
 	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.disaster_barrage }
+}
+
+select_triggerable_scenario_africa = {
+	initialize_triggerable_scenarios_settings = yes
+	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.africa_is_one }
 }
 
 set_triggerable_scenario_intensity_low = {
@@ -545,6 +594,14 @@ triggerable_scenario_type_previous = {
 		}
 	}
 	else_if = {
+		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.africa_is_one } }
+		subtract_from_variable = { triggerable_scenarios_africa_type = 1 }
+		if = {
+			limit = { check_variable = { triggerable_scenarios_africa_type < constant:triggerable_scenario_africa_type.standard_unifier } }
+			set_variable = { triggerable_scenarios_africa_type = constant:triggerable_scenario_africa_type.continental_pole }
+		}
+	}
+	else_if = {
 		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.final_silence } }
 		subtract_from_variable = { triggerable_scenarios_final_silence_type = 1 }
 		if = {
@@ -602,6 +659,14 @@ triggerable_scenario_type_next = {
 		if = {
 			limit = { check_variable = { triggerable_scenarios_disaster_type > constant:triggerable_scenario_disaster_type.full_catalogue } }
 			set_variable = { triggerable_scenarios_disaster_type = constant:triggerable_scenario_disaster_type.random_barrage }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.africa_is_one } }
+		add_to_variable = { triggerable_scenarios_africa_type = 1 }
+		if = {
+			limit = { check_variable = { triggerable_scenarios_africa_type > constant:triggerable_scenario_africa_type.continental_pole } }
+			set_variable = { triggerable_scenarios_africa_type = constant:triggerable_scenario_africa_type.standard_unifier }
 		}
 	}
 	else_if = {
@@ -692,12 +757,27 @@ trigger_selected_chaosx_scenario = {
 		}
 		trigger_natural_disaster_barrage_scenario = yes
 	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = triggerable_scenario_launch_id
+				value = constant:triggerable_scenario_id.africa_is_one
+				compare = equals
+			}
+		}
+		trigger_africa_is_one_scenario = yes
+	}
 	if = {
 		limit = { has_country_flag = triggerable_scenario_preserved_event_timer }
 		set_variable = { event_timer_days = triggerable_scenario_preserved_event_timer_days }
 		clear_variable = triggerable_scenario_preserved_event_timer_days
 		clr_country_flag = triggerable_scenario_preserved_event_timer
 	}
+}
+
+trigger_africa_is_one_scenario = {
+	africa_triggerable_scenario_launch_selected = yes
+	country_event = { id = chaosx.triggerable_scenarios.8 days = 1 }
 }
 
 triggerable_scenario_prepare_zombie_scale = {

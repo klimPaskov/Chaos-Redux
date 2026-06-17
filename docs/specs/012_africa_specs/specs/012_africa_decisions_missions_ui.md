@@ -65,6 +65,10 @@ Decision families:
 | Anti-puppet clause | Demand a member refuses external puppet pressure. | Political power, legitimacy, relations; high risk if foreign patron strong. | Blocks foreign influence or starts diplomatic crisis. |
 | Expel infiltrators | Counter foreign-backed faction in member state. | Intelligence exposure, command power, support equipment. | Lowers foreign influence; can hurt trust if heavy-handed. |
 
+Current implementation note: full members and protected members use separate aid target arrays through `africa_send_league_aid` and `africa_send_protected_league_aid`. Both start `africa_member_confidence_mission` when aid is sent to a Charter-side country that is already at war and no other confidence mission is active. The mission stores that member as the active target; success requires the target to stay in the Charter relationship, avoid capitulation, and finish the war before the deadline. Failure raises Colonial Alarm and lowers League Cohesion. Higher-commitment aid corridors are split into `africa_open_member_aid_corridor` and `africa_open_protected_aid_corridor`; they spend command power, support equipment, convoys, and trains, grant the target manpower and logistics stockpiles, set one active target cap, and resolve through `africa_aid_corridor_mission`. Bestiary-warning defiance now calls `africa_apply_bestiary_warning_defiance_package_pressure`, so unlocked high-chaos systems add route-specific value pressure instead of only the generic defiance penalty. The sponsor layer now uses `africa_continent_sponsor_readiness_mission` before `AFR_africa_is_one`, then requires four route-specific external proof decisions after the dynamic cross-continent union. Those proof decisions require matching external continent world-end readiness flags before World Is One certification can set the shared readiness flag.
+
+Current GUI implementation note: `africa_continental_congress_scripted_gui` is attached to `africa_continental_congress_category` and has click handlers for Congress, Register, Dossier, Sponsor, Seats, and Terms buttons. The panel includes live regional-seat and Bestiary-seat cards, spends PP/resources, calls existing Event 012 helpers, and sets timed recent-action flags for exploit protection. It also wires the Charter banner, Authority Atlas seal, and Bestiary warning seal as static fallback sprites with route-gated animated overlays. This resolves the display-only state for core actions and adds first visible card and animation surfaces, but it does not yet implement full region/member/dossier card lists or per-target GUI selection.
+
 ### Category 3 — Liberation War Office
 
 This category handles anti-colonial war and external holders of African states.
@@ -79,6 +83,8 @@ Decision families:
 | Sabotage colonial logistics | Route-specific sabotage against ports, rail, depots. | Intelligence exposure, local support, equipment. | Weakens holder; raises alarm. |
 | Recognize liberated authority | Create regional authority in liberated states. | Legitimacy, support equipment, local support. | Subject/faction authority appears; lowers paper-core burden. |
 | Postwar settlement | Decide fate of conquered African states. | Authority, Trust, compliance, resistance, route. | Direct integration, regional authority, protectorate, federation, or occupation. |
+
+Current implementation note: the Liberation War Office has operation prep, border columns, rail-belt preparation, external-holder case refreshes, Scramble treaty settlement, and a state-targeted front-objective decision. `africa_secure_liberation_objective_state` targets controlled African front states through map mode, spends support equipment, manpower, and command power, improves infrastructure, raises Liberation Momentum and Regional Trust, and records the secured state. `africa_liberation_front_deadline_mission` now requires border columns, rail-belt offices, and the configured number of secured front states while the Charter is at war. Mission cancel, success, and timeout all call `africa_clear_liberation_objective_progress`, so retrying the mission cannot reuse old secured-state flags or objective counts.
 
 ### Category 4 — Regional Integration
 
@@ -105,6 +111,8 @@ Mission types:
 | Regional Congress Vote | Requires Legitimacy and low resistance. | 90 days. | Peaceful integration/federation. | Resistant-member flag or autonomy demand. |
 | Garrison Without Breaking It | Place divisions but avoid harsh crackdown. | 120 days. | Resistance down without trust collapse. | Military route may succeed but trust falls. |
 | Build the First Continental Road | Infrastructure/rail construction in region. | 180–365 days. | Industry and integration boost. | Cost overrun; Paper-Core Burden temporarily up. |
+
+Current implementation note: the Authority Atlas uses `africa_selected_dossier_survey_mission` as the first timed old-seat survey objective. `africa_open_next_historical_dossier` funds the survey and consumes support equipment; the mission opens and surveys the selected dossier only if its representative old-seat state remains secured. Failure raises Restoration Debt and Local Sovereignty pressure and leaves the dossier available for a retry. The active dossier belongs to one of eight visible profiles: Nile/Red Sea, Maghreb/desert, Sahel charter, western crowns, central river, Great Lakes, Indian Ocean, and southern stone seats. Survey success, local office work, old-seat guards, observer settlement, and direct Archive settlement apply profile-specific value movement while preserving the selected-dossier flow; settlement requires the selected dossier to have both its own local office and old-seat guard. Direct Archive settlements also start `africa_direct_archive_seal_mission`, which requires Legitimacy, Old-Seat Legitimacy, and Restoration Debt to stay inside the proof thresholds. Success proves the seal and relieves debt; failure exposes a counterfeit-claim crisis, raises Colonial Alarm, and uses the Counterfeit Crowns super-event surface. The category header uses `GetAfricaSelectedDossierSeatName` so no selected dossier shows a clear fallback rather than an empty state label.
 
 ### Category 5 — Diaspora Return Offices
 
@@ -260,6 +268,7 @@ Cleanup must clear:
 - Colonial ultimatum targets if target loses African holdings.
 - Diaspora return route targets if port access is lost.
 - High-chaos nonhuman pact targets if actor dies or route is abandoned.
+- Actor-side Bestiary action flags when the package layer is reset or reseeded.
 - Scramble crisis decisions after Scramble victory/defeat.
 - World-end path decisions when world_end flag is set.
 
@@ -311,6 +320,8 @@ At Evolution III/IV, Green Covenant actors unlock a warning loop:
 3. Target can comply, pay cost, retreat, or ignore.
 4. If Omen Reliability is high, ignored warnings can trigger floods, lightning, forest ambushes, locust supply collapse, termite subsidence, or port storms.
 5. False or overused warnings reduce Omen Reliability and Human Legitimacy.
+
+Current implementation note: `africa_verify_omen_reliability` now commissions `africa_omen_reliability_review_mission` instead of immediately setting verified warnings. The mission checks live Habitat Trust, Bestiary Alarm, and Mythic Volatility thresholds; success sets `africa_omen_reliability_verified`, while failure raises Bestiary Alarm, Mythic Volatility, and Covenant Pressure and keeps Bestiary warnings locked until another review succeeds. The high-chaos decision header shows the current omen review status. All 11 Bestiary packages now map to explicit actor tags for spawn/setup/classification: the original six plus `CTL`, `OKP`, `TRM`, `HGD`, and `GHC`. The expanded actors have generated flags and portraits, their one-time package-operation decisions, and actor-target decisions for Chimpanzee Telegraph relays, Okapi shadow dossiers, Termite Citadel engineers, Honeyguide aid routes, and Great Herds relief columns. Those five actor-target decisions also fire local consequence events `chaosx.nr12.40` through `chaosx.nr12.44` using the targeted actor as a carried event target.
 
 This loop should have AI equivalents and strict safeguards so it cannot become a free damage button.
 

@@ -4601,6 +4601,14 @@ fire_event_by_temp_id_no_cluster = {
 		}
 	}
 
+	if = {
+		limit = { check_variable = { event_id = constant:africa_event_log.event_id } }
+		africa_select_random_unifier_candidate = yes
+		if = {
+			limit = { check_variable = { global.africa_runtime_ready < constant:africa_runtime_state.ready } }
+			set_temp_variable = { event_single_fire_allowed = 0 }
+		}
+	}
 
 	if = {
 		limit = {
