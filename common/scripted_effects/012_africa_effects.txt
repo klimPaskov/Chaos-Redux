@@ -5122,9 +5122,9 @@ africa_refresh_external_continent_unifier_proofs = {
 	}
 }
 
-africa_register_middle_east_unifier_proof = {
+africa_start_middle_east_unifier_proof = {
 	if = {
-		limit = { NOT = { has_country_flag = africa_middle_east_unifier_proof_verified } }
+		limit = { can_africa_start_middle_east_unifier_proof = yes }
 		set_temp_variable = { africa_middle_east_proof_convoy_cost = constant:africa_force.middle_east_proof_convoys }
 		multiply_temp_variable = { africa_middle_east_proof_convoy_cost = -1 }
 		set_temp_variable = { africa_middle_east_proof_train_cost = constant:africa_force.middle_east_proof_trains }
@@ -5135,16 +5135,41 @@ africa_register_middle_east_unifier_proof = {
 		add_equipment_to_stockpile = { type = train_equipment_1 amount = africa_middle_east_proof_train_cost }
 		add_equipment_to_stockpile = { type = support_equipment amount = africa_middle_east_proof_support_cost }
 		add_command_power = constant:africa_decision.external_unifier_proof_command_power_spend
+		set_country_flag = africa_middle_east_unifier_proof_active
+		clr_country_flag = africa_middle_east_unifier_proof_failed
+	}
+}
+
+africa_fail_middle_east_unifier_proof = {
+	if = {
+		limit = {
+			has_country_flag = africa_middle_east_unifier_proof_active
+			NOT = { has_country_flag = africa_middle_east_unifier_proof_verified }
+		}
+		add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.external_unifier_proof_failure_alarm }
+		add_to_variable = { africa_restoration_debt = constant:africa_value_delta.external_unifier_proof_failure_debt }
+		add_to_variable = { africa_legitimacy = constant:africa_value_delta.external_unifier_proof_failure_legitimacy }
+		set_country_flag = africa_middle_east_unifier_proof_failed
+		africa_clamp_core_values = yes
+	}
+	clr_country_flag = africa_middle_east_unifier_proof_active
+}
+
+africa_register_middle_east_unifier_proof = {
+	if = {
+		limit = { NOT = { has_country_flag = africa_middle_east_unifier_proof_verified } }
 		add_to_variable = { africa_legitimacy = constant:africa_value_delta.external_unifier_middle_east_recognition }
 		set_country_flag = africa_middle_east_unifier_proof_verified
+		clr_country_flag = africa_middle_east_unifier_proof_active
+		clr_country_flag = africa_middle_east_unifier_proof_failed
 		africa_clamp_core_values = yes
 		africa_refresh_external_continent_unifier_proofs = yes
 	}
 }
 
-africa_register_asia_unifier_proof = {
+africa_start_asia_unifier_proof = {
 	if = {
-		limit = { NOT = { has_country_flag = africa_asia_unifier_proof_verified } }
+		limit = { can_africa_start_asia_unifier_proof = yes }
 		set_temp_variable = { africa_asia_proof_convoy_cost = constant:africa_force.asia_proof_convoys }
 		multiply_temp_variable = { africa_asia_proof_convoy_cost = -1 }
 		set_temp_variable = { africa_asia_proof_infantry_cost = constant:africa_force.asia_proof_infantry_equipment }
@@ -5155,16 +5180,41 @@ africa_register_asia_unifier_proof = {
 		add_equipment_to_stockpile = { type = infantry_equipment amount = africa_asia_proof_infantry_cost }
 		add_equipment_to_stockpile = { type = support_equipment amount = africa_asia_proof_support_cost }
 		add_command_power = constant:africa_decision.external_unifier_proof_command_power_spend
+		set_country_flag = africa_asia_unifier_proof_active
+		clr_country_flag = africa_asia_unifier_proof_failed
+	}
+}
+
+africa_fail_asia_unifier_proof = {
+	if = {
+		limit = {
+			has_country_flag = africa_asia_unifier_proof_active
+			NOT = { has_country_flag = africa_asia_unifier_proof_verified }
+		}
+		add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.external_unifier_proof_failure_alarm }
+		add_to_variable = { africa_restoration_debt = constant:africa_value_delta.external_unifier_proof_failure_debt }
+		add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.external_unifier_proof_failure_momentum }
+		set_country_flag = africa_asia_unifier_proof_failed
+		africa_clamp_core_values = yes
+	}
+	clr_country_flag = africa_asia_unifier_proof_active
+}
+
+africa_register_asia_unifier_proof = {
+	if = {
+		limit = { NOT = { has_country_flag = africa_asia_unifier_proof_verified } }
 		add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.external_unifier_asia_momentum }
 		set_country_flag = africa_asia_unifier_proof_verified
+		clr_country_flag = africa_asia_unifier_proof_active
+		clr_country_flag = africa_asia_unifier_proof_failed
 		africa_clamp_core_values = yes
 		africa_refresh_external_continent_unifier_proofs = yes
 	}
 }
 
-africa_register_europe_unifier_proof = {
+africa_start_europe_unifier_proof = {
 	if = {
-		limit = { NOT = { has_country_flag = africa_europe_unifier_proof_verified } }
+		limit = { can_africa_start_europe_unifier_proof = yes }
 		set_temp_variable = { africa_europe_proof_infantry_cost = constant:africa_force.europe_proof_infantry_equipment }
 		multiply_temp_variable = { africa_europe_proof_infantry_cost = -1 }
 		set_temp_variable = { africa_europe_proof_support_cost = constant:africa_force.europe_proof_support_equipment }
@@ -5174,17 +5224,42 @@ africa_register_europe_unifier_proof = {
 		add_manpower = constant:africa_force.europe_proof_manpower_spend
 		add_command_power = constant:africa_decision.europe_unifier_proof_command_power_spend
 		army_experience = constant:africa_decision.europe_unifier_proof_army_xp_spend
+		set_country_flag = africa_europe_unifier_proof_active
+		clr_country_flag = africa_europe_unifier_proof_failed
+	}
+}
+
+africa_fail_europe_unifier_proof = {
+	if = {
+		limit = {
+			has_country_flag = africa_europe_unifier_proof_active
+			NOT = { has_country_flag = africa_europe_unifier_proof_verified }
+		}
+		add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.external_unifier_proof_failure_alarm }
+		add_to_variable = { africa_restoration_debt = constant:africa_value_delta.external_unifier_proof_failure_debt }
+		add_to_variable = { africa_authority = constant:africa_value_delta.external_unifier_proof_failure_authority }
+		set_country_flag = africa_europe_unifier_proof_failed
+		africa_clamp_core_values = yes
+	}
+	clr_country_flag = africa_europe_unifier_proof_active
+}
+
+africa_register_europe_unifier_proof = {
+	if = {
+		limit = { NOT = { has_country_flag = africa_europe_unifier_proof_verified } }
 		add_to_variable = { africa_authority = constant:africa_value_delta.external_unifier_europe_authority }
 		add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.external_unifier_proof_alarm }
 		set_country_flag = africa_europe_unifier_proof_verified
+		clr_country_flag = africa_europe_unifier_proof_active
+		clr_country_flag = africa_europe_unifier_proof_failed
 		africa_clamp_core_values = yes
 		africa_refresh_external_continent_unifier_proofs = yes
 	}
 }
 
-africa_register_south_atlantic_unifier_proof = {
+africa_start_south_atlantic_unifier_proof = {
 	if = {
-		limit = { NOT = { has_country_flag = africa_south_atlantic_unifier_proof_verified } }
+		limit = { can_africa_start_south_atlantic_unifier_proof = yes }
 		set_temp_variable = { africa_south_atlantic_proof_convoy_cost = constant:africa_force.south_atlantic_proof_convoys }
 		multiply_temp_variable = { africa_south_atlantic_proof_convoy_cost = -1 }
 		set_temp_variable = { africa_south_atlantic_proof_support_cost = constant:africa_force.south_atlantic_proof_support_equipment }
@@ -5192,8 +5267,33 @@ africa_register_south_atlantic_unifier_proof = {
 		add_equipment_to_stockpile = { type = convoy_1 amount = africa_south_atlantic_proof_convoy_cost }
 		add_equipment_to_stockpile = { type = support_equipment amount = africa_south_atlantic_proof_support_cost }
 		add_command_power = constant:africa_decision.external_unifier_proof_command_power_spend
+		set_country_flag = africa_south_atlantic_unifier_proof_active
+		clr_country_flag = africa_south_atlantic_unifier_proof_failed
+	}
+}
+
+africa_fail_south_atlantic_unifier_proof = {
+	if = {
+		limit = {
+			has_country_flag = africa_south_atlantic_unifier_proof_active
+			NOT = { has_country_flag = africa_south_atlantic_unifier_proof_verified }
+		}
+		add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.external_unifier_proof_failure_alarm }
+		add_to_variable = { africa_restoration_debt = constant:africa_value_delta.external_unifier_proof_failure_debt }
+		add_to_variable = { africa_league_cohesion = constant:africa_value_delta.external_unifier_proof_failure_cohesion }
+		set_country_flag = africa_south_atlantic_unifier_proof_failed
+		africa_clamp_core_values = yes
+	}
+	clr_country_flag = africa_south_atlantic_unifier_proof_active
+}
+
+africa_register_south_atlantic_unifier_proof = {
+	if = {
+		limit = { NOT = { has_country_flag = africa_south_atlantic_unifier_proof_verified } }
 		add_to_variable = { africa_league_cohesion = constant:africa_value_delta.external_unifier_south_atlantic_cohesion }
 		set_country_flag = africa_south_atlantic_unifier_proof_verified
+		clr_country_flag = africa_south_atlantic_unifier_proof_active
+		clr_country_flag = africa_south_atlantic_unifier_proof_failed
 		africa_clamp_core_values = yes
 		africa_refresh_external_continent_unifier_proofs = yes
 	}
