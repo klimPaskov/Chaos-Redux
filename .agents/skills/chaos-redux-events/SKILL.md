@@ -67,6 +67,8 @@ When implementing starting or route ideas, wire their lifecycle. Negative, mixed
 
 Mechanic variables must be visible somewhere meaningful, such as decision category text, scripted localisation, national spirit tooltip, scripted GUI, progress meter, or focus tooltip. Keep cause and effect readable. Values should be changed by the mapped decisions, focuses, missions, events, wars, state control, AI actions, and foreign influence. Use consistent localisation colours for important mechanic values and breakdowns.
 
+Player-facing event, decision, focus, and Event Details text must describe in-world consequences rather than meta reward routes. Do not advertise that a choice opens, grants, counts toward, or completes an achievement path; keep achievement conditions in achievement UI/docs and use ordinary in-world consequence text elsewhere. For ambiguous report-stage incidents, describe the concrete records, observations, and actions instead of directly labeling the incident as a danger signal or its opposite. So, when something is a warning, don't explicitly say that it is a warning/that it is not a warning.
+
 Large decision systems must hide obsolete or irrelevant actions. Use phases, active caps, target pools, route locks, thresholds, emergency visibility, regional grouping, cooldowns, or cleanup flags. The category should show current playable actions, not every possible debug action.
 
 If the spec defines achievements, implement the full achievement surface: tracking flags or variables, unlock triggers, disqualifiers, localisation, icons, docs, and any route or formable hooks. Do not convert hard achievements into automatic unlocks.
