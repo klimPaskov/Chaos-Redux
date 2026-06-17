@@ -1823,6 +1823,7 @@ focus_tree = {
 			add_to_variable = { africa_nonhuman_sovereignty = constant:africa_value_delta.high_chaos_nonhuman_sovereignty }
 			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.charter_join_cohesion }
 			africa_clamp_core_values = yes
+			africa_record_evolution_iv_if_needed = yes
 		}
 		ai_will_do = { factor = constant:africa_ai.low }
 	}
@@ -1847,25 +1848,14 @@ focus_tree = {
 	focus = {
 		id = AFR_africa_is_one
 		icon = GFX_goal_africa_world_order_route
-		prerequisite = { focus = AFR_continent_sponsor_office }
+		prerequisite = { focus = AFR_integrated_regions focus = AFR_autonomous_regions }
 		prerequisite = { focus = AFR_continental_register }
-		prerequisite = { focus = AFR_world_root_mandate }
-		prerequisite = { focus = AFR_forest_parliament focus = AFR_archive_bestiary_clause }
 		x = 24
 		y = 12
 		cost = 12
-		allow_branch = {
-			OR = {
-				has_country_flag = africa_route_forest_parliament
-				has_country_flag = africa_route_archive_bestiary
-			}
-		}
 		available = {
 			has_country_flag = africa_continental_register_ready
-			has_country_flag = africa_world_root_mandate_open
-			has_country_flag = africa_continent_sponsor_ready
 			has_africa_continental_register_dossier_coverage = yes
-			has_country_flag = africa_minimum_high_chaos_packages_ready
 			check_variable = {
 				var = africa_regional_authority_count
 				value = constant:africa_world_is_one_requirement.regional_authorities
@@ -1886,7 +1876,6 @@ focus_tree = {
 			add_to_variable = { africa_authority = constant:africa_value_delta.world_order_authority }
 			africa_clamp_core_values = yes
 			africa_emit_africa_is_one_super_event = yes
-			africa_record_evolution_iv_if_needed = yes
 		}
 		ai_will_do = { factor = constant:africa_ai.strong }
 	}
@@ -1900,6 +1889,7 @@ focus_tree = {
 		cost = 10
 		available = {
 			has_global_flag = africa_is_one_complete
+			has_country_flag = africa_continent_sponsor_office_open
 			has_country_flag = africa_continent_sponsor_ready
 		}
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
