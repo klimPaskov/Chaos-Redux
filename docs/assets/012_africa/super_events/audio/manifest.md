@@ -2,7 +2,7 @@
 
 Updated: `2026-06-17`
 
-Scope: second-pass packaged audio only. This manifest records the preserved source downloads, final `44.1 kHz` `.ogg` exports, licensing position, conversion commands, and role status for the finalized package.
+Scope: second-pass packaged audio and live wiring. This manifest records the preserved source downloads, final `44.1 kHz` `.ogg` exports, licensing position, conversion commands, and role status for the finalized package.
 
 ## Finalized roles
 
@@ -240,7 +240,7 @@ ffmpeg -y -i docs/assets/012_africa/super_events/audio/source/gounod_grand_march
 
 ### `africa_forest_parliament_reveal`
 
-- Status: finalized
+- Status: finalized and wired in slot `76`
 - Suggested sound definition id: `super_event_africa_forest_parliament`
 - Suggested super-event use: Forest Parliament reveal / human-nonhuman congress recognition
 - Title: `Valse triste`
@@ -269,7 +269,7 @@ ffmpeg -y -i docs/assets/012_africa/super_events/audio/source/judith_bokor_valse
 
 ### `africa_world_root_mandate`
 
-- Status: finalized
+- Status: finalized and wired in slot `77`
 - Suggested sound definition id: `super_event_africa_world_root`
 - Suggested super-event use: World Root Mandate / Green Covenant world-root order proclamation
 - Title: `Veni Sancte Spiritus`
@@ -298,7 +298,7 @@ ffmpeg -y -i docs/assets/012_africa/super_events/audio/source/veni_sancte_spirit
 
 ### `africa_parliament_of_root_and_fang_escalation`
 
-- Status: finalized
+- Status: finalized and wired in slot `78`
 - Suggested sound definition id: `super_event_africa_root_and_fang`
 - Suggested super-event use: Bestiary / root-and-fang escalation
 - Title: `Danse Macabre`
@@ -327,7 +327,7 @@ ffmpeg -y -i docs/assets/012_africa/super_events/audio/source/philadelphia_symph
 
 ### `africa_archive_world_union_terminal`
 
-- Status: finalized
+- Status: finalized and wired in slot `79`
 - Suggested sound definition id: `super_event_africa_archive_world`
 - Suggested super-event use: archive-world union terminal / old-seats world-order end-state
 - Title: `Dies irae`

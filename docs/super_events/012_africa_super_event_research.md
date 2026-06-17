@@ -137,7 +137,7 @@ This section supersedes the exploratory role notes below for the six roles reque
 
 ## Top-level recommendations
 
-These are the strongest current text packages by role. The six accepted roles in the final-source-ready section have been wired as final localisation; the remaining roles are recommendations until their image, slot, gameplay trigger, and route presentation are accepted. The 2026-06-17 variant pass packaged audio candidates for Forest Parliament, World Root, Root and Fang, and archive-world, but those files are not wired into sound/music definitions or super-event slots.
+These are the strongest current text packages by role. The accepted roles in the final-source-ready section have been wired as final localisation. The 2026-06-17 variant pass also promoted Forest Parliament, World Root Mandate, Parliament of Root and Fang, and Archive World into slots `76-79` with image, audio, music, sound, scripted-localisation, and gameplay trigger wiring. `africa_world_is_one_root_variant_terminal` remains blocked as a distinct terminal role.
 
 | Role | Recommended title direction | Recommended quote | Recommended button / remark | Confidence |
 | --- | --- | --- | --- | --- |

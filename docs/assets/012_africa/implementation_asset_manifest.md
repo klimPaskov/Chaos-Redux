@@ -19,7 +19,7 @@ This manifest records which Event 012 Africa assets are wired into gameplay/inte
 
 ## Super-Event Images and Audio
 
-Eight super-event roles have registered images, final text localisation, music-mode OGG audio, and sound-mode WAV audio.
+Twelve super-event roles have registered images, final text localisation, music-mode OGG audio, and sound-mode WAV audio.
 
 | Sprite | DDS path | Source |
 | --- | --- | --- |
@@ -29,6 +29,10 @@ Eight super-event roles have registered images, final text localisation, music-m
 | `GFX_super_event_012_rsa_peace` | `gfx/super_events/super_event_012_rsa_peace.dds` | `docs/assets/012_africa/generated_art/processed_png/super_event_012_rsa_peace_candidate_processed.png` |
 | `GFX_super_event_012_dynamic_cross_continent_union` | `gfx/super_events/super_event_012_dynamic_cross_continent_union.dds` | `docs/assets/012_africa/generated_art/processed_png/super_event_012_dynamic_cross_continent_union_processed.png` |
 | `GFX_super_event_012_world_is_one_gate` | `gfx/super_events/super_event_012_world_is_one_gate.dds` | `docs/assets/012_africa/generated_art/processed_png/super_event_012_world_is_one_gate_candidate_processed.png` |
+| `GFX_super_event_012_forest_parliament` | `gfx/super_events/super_event_012_forest_parliament.dds` | `docs/assets/012_africa/super_events/variant_images_batch_forest_root/processed_png/super_event_012_forest_parliament_processed.png` |
+| `GFX_super_event_012_world_root_mandate` | `gfx/super_events/super_event_012_world_root_mandate.dds` | `docs/assets/012_africa/super_events/variant_images_batch_forest_root/processed_png/super_event_012_world_root_mandate_processed.png` |
+| `GFX_super_event_012_root_and_fang` | `gfx/super_events/super_event_012_root_and_fang.dds` | `docs/assets/012_africa/super_events/variant_images_batch_root_archive/processed_png/super_event_012_root_and_fang_processed.png` |
+| `GFX_super_event_012_archive_world` | `gfx/super_events/super_event_012_archive_world.dds` | `docs/assets/012_africa/super_events/variant_images_batch_root_archive/processed_png/super_event_012_archive_world_processed.png` |
 
 Final wired audio:
 
@@ -42,17 +46,19 @@ Final wired audio:
 | `africa_continent_sponsor` | `music/super_event_africa_continent_sponsor.ogg` | `sound/chaosx_super_event_africa_continent_sponsor.wav` | `73` |
 | `africa_rsa_allies_peace` | `music/super_event_africa_rsa_allies_peace.ogg` | `sound/chaosx_super_event_africa_rsa_allies_peace.wav` | `74` |
 | `africa_dynamic_cross_continent_union` | `music/super_event_africa_dynamic_cross_continent_union.ogg` | `sound/chaosx_super_event_africa_dynamic_cross_continent_union.wav` | `75` |
+| `africa_forest_parliament_reveal` | `music/super_event_africa_forest_parliament.ogg` | `sound/chaosx_super_event_africa_forest_parliament.wav` | `76` |
+| `africa_world_root_mandate` | `music/super_event_africa_world_root.ogg` | `sound/chaosx_super_event_africa_world_root.wav` | `77` |
+| `africa_parliament_of_root_and_fang_escalation` | `music/super_event_africa_root_and_fang.ogg` | `sound/chaosx_super_event_africa_root_and_fang.wav` | `78` |
+| `africa_archive_world_union_terminal` | `music/super_event_africa_archive_world.ogg` | `sound/chaosx_super_event_africa_archive_world.wav` | `79` |
 
 The final source, licensing, hashes, and conversion notes remain in `docs/assets/012_africa/super_events/audio/manifest.md`.
 
-Variant audio package not wired:
+Variant trigger notes:
 
-| Role | Final OGG | Source / status |
-| --- | --- | --- |
-| Forest Parliament reveal | `docs/assets/012_africa/super_events/audio/final/super_event_africa_forest_parliament.ogg` | Packaged handoff asset only; no music/sound definition, slot, image, or gameplay callsite |
-| World Root Mandate | `docs/assets/012_africa/super_events/audio/final/super_event_africa_world_root.ogg` | Packaged handoff asset only; no music/sound definition, slot, image, or gameplay callsite |
-| Parliament of Root and Fang | `docs/assets/012_africa/super_events/audio/final/super_event_africa_root_and_fang.ogg` | Packaged handoff asset only; no music/sound definition, slot, image, or gameplay callsite |
-| Archive-world terminal | `docs/assets/012_africa/super_events/audio/final/super_event_africa_archive_world.ogg` | Packaged handoff asset only; no music/sound definition, slot, image, or gameplay callsite |
+- slot `76` fires from `AFR_forest_parliament`;
+- slot `77` fires from `AFR_world_root_mandate`;
+- slot `78` fires from `AFR_treaty_of_teeth_and_roots`;
+- slot `79` is an Archive-Bestiary route presentation variant of the existing terminal `AFR_the_world_is_one` gate and does not bypass the World Is One prerequisites.
 
 `africa_world_is_one_root_variant_terminal` remains blocked in `docs/assets/012_africa/super_events/audio/manifest.md` until the design distinguishes a separate root-terminal role from explicit reuse of an accepted terminal package.
 
