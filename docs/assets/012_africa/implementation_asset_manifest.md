@@ -109,6 +109,15 @@ Batch 2 achievement icons are live for:
 
 Each has normal, `_grey`, and `_not_eligible` DDS variants in `gfx/achievements/` plus source/processed PNGs and contact sheets under `docs/assets/012_africa/achievement_icons_batch_2/`.
 
+Archive/Bestiary batch 3 achievement icons are live for:
+
+- `ACH_AFR_NO_COUNTERFEIT_CROWNS`
+- `ACH_AFR_THE_FOREST_SIGNED_BACK`
+- `ACH_AFR_BAOBAB_FILIBUSTER`
+- `ACH_AFR_OLD_SEATS_NEW_UNION`
+
+Each has normal, `_grey`, and `_not_eligible` DDS variants in `gfx/achievements/` plus source/processed PNGs, DDS copies, and contact sheets under `docs/assets/012_africa/achievement_icons_archive_bestiary_batch_3/`.
+
 ## Animated Assets
 
 Frame sources and contact sheets live under `docs/assets/012_africa/icons_animation/frames/` and `docs/assets/012_africa/icons_animation/previews/`.
