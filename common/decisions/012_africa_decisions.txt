@@ -1312,6 +1312,41 @@ africa_regional_integration_category = {
 		ai_will_do = { base = constant:africa_ai.normal }
 	}
 
+	africa_review_integration_temperature = {
+		icon = GFX_decision_generic_political_discourse
+		cost = constant:africa_decision.integration_temperature_review_cost
+		days_re_enable = constant:africa_decision_days.integration_temperature_review
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = africa_review_integration_temperature_req_tt
+				is_africa_runtime_unifier = yes
+				has_country_flag = africa_integration_temperature_board_open
+				NOT = { has_global_flag = africa_is_one_complete }
+			}
+		}
+		custom_cost_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_review_integration_temperature_cost_tt
+				command_power > constant:africa_decision.integration_temperature_review_command_power_gate
+				has_equipment = { support_equipment > constant:africa_force.integration_temperature_review_support_equipment }
+			}
+		}
+		custom_cost_text = africa_review_integration_temperature_cost_tt
+		complete_effect = {
+			custom_effect_tooltip = africa_review_integration_temperature_effect_tt
+			add_command_power = constant:africa_decision.integration_temperature_review_command_power_spend
+			set_temp_variable = { africa_integration_temperature_support_cost = constant:africa_force.integration_temperature_review_support_equipment }
+			multiply_temp_variable = { africa_integration_temperature_support_cost = -1 }
+			add_equipment_to_stockpile = { type = support_equipment amount = africa_integration_temperature_support_cost }
+			add_to_variable = { africa_authority = constant:africa_value_delta.integration_authority }
+			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
+			add_to_variable = { africa_paper_core_burden = constant:africa_value_delta.integration_burden_relief }
+			add_to_variable = { africa_local_sovereignty = constant:africa_value_delta.charter_resist_sovereignty }
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = { base = constant:africa_ai.normal }
+	}
+
 	africa_regional_integration_deadline_mission = {
 		icon = GFX_decision_generic_construction
 		days_mission_timeout = @africa_regional_integration_mission_days
