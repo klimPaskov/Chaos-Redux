@@ -861,18 +861,17 @@ Second-pass audio packaging completed on `2026-06-16`.
 
 ### Remaining audio blockers
 
-- No remaining audio blockers for the eight accepted Event 012 super-event roles.
-- Variant audio packages exist for Forest Parliament, World Root, Root and Fang, and archive-world under `docs/assets/012_africa/super_events/audio/final/`, with source/licensing notes in `docs/assets/012_africa/super_events/audio/manifest.md`.
-- Those variant packages remain handoff assets only. They are not registered in music or sound definitions, do not have accepted dedicated super-event slots, and do not have final gameplay callsites.
+- No remaining audio blockers for the twelve accepted Event 012 super-event roles.
+- Forest Parliament, World Root, Root and Fang, and Archive World variant packages are final-wired under slots `76-79`; their live audio is registered in `music/chaosx_super_event_music.asset`, `music/chaosx_super_event_music.txt`, and `sound/chaosx_sound.asset`, with source/licensing notes in `docs/assets/012_africa/super_events/audio/manifest.md`.
 - `africa_world_is_one_root_variant_terminal` remains blocked because the current design does not define whether it is a third distinct terminal super-event or an explicit presentation variant allowed to share an accepted terminal cue.
 - Preserved non-final evaluation source: `docs/assets/012_africa/super_events/audio/source/beethoven_symphony_7_allegretto_john_michel.ogg`
 - Reason for non-final status: legally usable `CC BY-SA 3.0`, but the solo-cello recording contains long low-energy gaps and was not strong enough as a packaged in-game final without a heavier re-edit pass.
 - Full source, hash, and conversion details are recorded in `docs/assets/012_africa/super_events/audio/manifest.md`.
 
-- **Final localisation status.** Slots `68` through `75` are final-wired in `localisation/english/012_african_union_l_english.yml` and `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt`. RSA peace and dynamic cross-continent union now have final text, art, music, sound, emit helpers, and gameplay callsites. Bestiary, Forest Parliament, World Root, and optional alternate roles remain recommendations until their dedicated slots, complete media packages, and gameplay triggers are accepted.
+- **Final localisation status.** Slots `68` through `79` are final-wired in `localisation/english/012_african_union_l_english.yml` and `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt`. RSA peace, dynamic cross-continent union, Forest Parliament, World Root, Root and Fang, and Archive World have final text, art, music, sound, emit helpers, and gameplay callsites. `africa_world_is_one_root_variant_terminal` is the remaining design-blocked alternate terminal role.
 - **Nkrumah transcript caution.** The 1957 independence line is extremely famous and stable, but the accessible transcript I verified is a secondary transcript page rather than an official Ghana state archive. I rate it medium-high, not absolute.
 - **Comte attribution caution.** The archive-terminal Comte line is strong but presently rests on public-domain secondary witnesses. If the main agent wants maximum-proof sourcing, use the Shakespeare backup instead.
-- **Bestiary button caution.** `The animals have papers.` is effective but not a real quotation and can tip too comic if paired with solemn art. Keep it blocked until the main agent chooses final presentation tone.
+- **Bestiary button note.** `The animals have papers.` remains preserved above as a non-final tonal candidate only. The live Bestiary/Forest Parliament presentation uses sourced Job 12 wording instead.
 - **Do not use unsourced “African proverb” material.** I did not find a proverb candidate with primary-text reliability strong enough for finals in this pass.
 - **Keep human material human.** Historical African polities should keep political, archival, and anti-colonial language; nonhuman / covenant roles should be explicitly labeled as impossible, nonhuman, or supernatural routes.
 
