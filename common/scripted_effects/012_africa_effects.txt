@@ -610,6 +610,7 @@ africa_clear_runtime_context = {
 		limit = { has_event_target = africa_bestiary_warning_state }
 		clear_global_event_target = africa_bestiary_warning_state
 	}
+	africa_clear_liberation_objective_operation = yes
 	africa_clear_regional_state_operation = yes
 	clear_array = global.africa_charter_candidate_countries
 	clear_array = global.africa_charter_member_countries
@@ -669,6 +670,7 @@ africa_clear_runtime_context = {
 				has_state_flag = africa_bestiary_warning_state_complied
 				has_state_flag = africa_bestiary_warning_state_ignored
 				has_state_flag = africa_liberation_objective_secured
+				has_state_flag = africa_liberation_objective_operation_target
 				has_state_flag = africa_paper_claim_survey_operation_target
 				has_state_flag = africa_living_core_operation_target
 				has_state_flag = africa_integration_rail_operation_target
@@ -678,6 +680,7 @@ africa_clear_runtime_context = {
 		clr_state_flag = africa_bestiary_warning_state_complied
 		clr_state_flag = africa_bestiary_warning_state_ignored
 		clr_state_flag = africa_liberation_objective_secured
+		clr_state_flag = africa_liberation_objective_operation_target
 		clr_state_flag = africa_paper_claim_survey_operation_target
 		clr_state_flag = africa_living_core_operation_target
 		clr_state_flag = africa_integration_rail_operation_target
@@ -3962,12 +3965,86 @@ africa_mark_rsa_continental_victory = {
 	}
 }
 
+africa_clear_liberation_objective_operation = {
+	if = {
+		limit = { has_event_target = africa_liberation_objective_operation_state }
+		event_target:africa_liberation_objective_operation_state = {
+			clr_state_flag = africa_liberation_objective_operation_target
+		}
+		clear_global_event_target = africa_liberation_objective_operation_state
+	}
+	clr_country_flag = africa_liberation_objective_operation_active
+}
+
+africa_start_liberation_objective_operation_from_from = {
+	if = {
+		limit = {
+			can_africa_start_liberation_objective_operation = yes
+			FROM = { africa_can_secure_liberation_objective_for_root = yes }
+		}
+		set_temp_variable = { africa_liberation_objective_support_cost = constant:africa_force.liberation_objective_support_equipment }
+		multiply_temp_variable = { africa_liberation_objective_support_cost = -1 }
+		add_equipment_to_stockpile = { type = support_equipment amount = africa_liberation_objective_support_cost }
+		add_manpower = constant:africa_force.liberation_objective_manpower_spend
+		add_command_power = constant:africa_decision.liberation_objective_command_power_spend
+		FROM = {
+			set_state_flag = africa_liberation_objective_operation_target
+			save_global_event_target_as = africa_liberation_objective_operation_state
+		}
+		set_country_flag = africa_liberation_objective_operation_active
+	}
+}
+
+africa_complete_liberation_objective_operation = {
+	if = {
+		limit = { can_africa_keep_liberation_objective_operation_active = yes }
+		event_target:africa_liberation_objective_operation_state = {
+			set_state_flag = africa_liberation_objective_secured
+			add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+		}
+		add_to_variable = { africa_liberation_objective_state_count = 1 }
+		add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.liberation_objective_momentum }
+		add_to_variable = { africa_regional_trust = constant:africa_value_delta.liberation_objective_trust }
+		add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.liberation_objective_alarm }
+		africa_clamp_core_values = yes
+		if = {
+			limit = {
+				check_variable = {
+					var = africa_liberation_objective_state_count
+					value = constant:africa_mission_goal.liberation_objective_states
+					compare = greater_than_or_equals
+				}
+			}
+			set_country_flag = africa_liberation_objective_states_ready
+		}
+	}
+	africa_clear_liberation_objective_operation = yes
+}
+
+africa_fail_liberation_objective_operation = {
+	if = {
+		limit = { has_country_flag = africa_liberation_objective_operation_active }
+		add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.liberation_objective_failure_momentum }
+		add_to_variable = { africa_league_cohesion = constant:africa_value_delta.liberation_objective_failure_cohesion }
+		add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.liberation_objective_failure_alarm }
+		africa_clamp_core_values = yes
+	}
+	africa_clear_liberation_objective_operation = yes
+}
+
 africa_clear_liberation_objective_progress = {
 	clr_country_flag = africa_liberation_objective_states_ready
 	set_variable = { africa_liberation_objective_state_count = 0 }
+	africa_clear_liberation_objective_operation = yes
 	every_state = {
-		limit = { has_state_flag = africa_liberation_objective_secured }
+		limit = {
+			OR = {
+				has_state_flag = africa_liberation_objective_secured
+				has_state_flag = africa_liberation_objective_operation_target
+			}
+		}
 		clr_state_flag = africa_liberation_objective_secured
+		clr_state_flag = africa_liberation_objective_operation_target
 	}
 }
 

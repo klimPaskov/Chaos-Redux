@@ -965,18 +965,14 @@ africa_liberation_war_office_category = {
 		target_root_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_secure_liberation_objective_state_root_req_tt
-				is_africa_runtime_unifier = yes
-				has_country_flag = africa_liberation_front_mission_active
-				has_war = yes
-				check_variable = {
-					var = africa_liberation_objective_state_count
-					value = constant:africa_mission_goal.liberation_objective_states
-					compare = less_than
-				}
+				can_africa_start_liberation_objective_operation = yes
 			}
 		}
 		target_trigger = {
-			FROM = { africa_can_secure_liberation_objective_for_root = yes }
+			FROM = {
+				africa_can_secure_liberation_objective_for_root = yes
+				NOT = { has_state_flag = africa_liberation_objective_operation_target }
+			}
 		}
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
@@ -988,35 +984,26 @@ africa_liberation_war_office_category = {
 		}
 		custom_cost_text = africa_secure_liberation_objective_state_cost_tt
 		complete_effect = {
+			custom_effect_tooltip = africa_secure_liberation_objective_state_start_tt
+			africa_start_liberation_objective_operation_from_from = yes
+		}
+		cancel_trigger = {
+			NOT = { can_africa_keep_liberation_objective_operation_active = yes }
+		}
+		cancel_effect = {
+			custom_effect_tooltip = africa_liberation_objective_operation_failure_tt
+			africa_fail_liberation_objective_operation = yes
+		}
+		remove_effect = {
 			custom_effect_tooltip = africa_secure_liberation_objective_state_effect_tt
-			set_temp_variable = { africa_liberation_objective_support_cost = constant:africa_force.liberation_objective_support_equipment }
-			multiply_temp_variable = { africa_liberation_objective_support_cost = -1 }
-			add_equipment_to_stockpile = { type = support_equipment amount = africa_liberation_objective_support_cost }
-			add_manpower = constant:africa_force.liberation_objective_manpower_spend
-			add_command_power = constant:africa_decision.liberation_objective_command_power_spend
-			FROM = {
-				set_state_flag = africa_liberation_objective_secured
-				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
-			}
-			add_to_variable = { africa_liberation_objective_state_count = 1 }
-			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.liberation_objective_momentum }
-			add_to_variable = { africa_regional_trust = constant:africa_value_delta.liberation_objective_trust }
-			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.liberation_objective_alarm }
-			africa_clamp_core_values = yes
-			if = {
-				limit = {
-					check_variable = {
-						var = africa_liberation_objective_state_count
-						value = constant:africa_mission_goal.liberation_objective_states
-						compare = greater_than_or_equals
-					}
-				}
-				set_country_flag = africa_liberation_objective_states_ready
-			}
+			africa_complete_liberation_objective_operation = yes
 		}
 		ai_will_do = {
 			base = constant:africa_ai.normal
 			modifier = { factor = constant:africa_ai.preferred has_war = yes }
+			modifier = { factor = constant:africa_ai.preferred FROM = { owner = { is_africa_external_colonial_holder_for_root = yes } } }
+			modifier = { factor = constant:africa_ai.preferred FROM = { controller = { has_country_flag = africa_regional_authority_subject } } }
+			modifier = { factor = constant:africa_ai.preferred FROM = { controller = { has_country_flag = africa_charter_member } } }
 		}
 	}
 

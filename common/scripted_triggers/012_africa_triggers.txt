@@ -213,6 +213,35 @@ africa_can_secure_liberation_objective_for_root = {
 	}
 }
 
+can_africa_start_liberation_objective_operation = {
+	is_africa_runtime_unifier = yes
+	has_country_flag = africa_liberation_front_mission_active
+	has_war = yes
+	NOT = { has_country_flag = africa_liberation_objective_operation_active }
+	check_variable = {
+		var = africa_liberation_objective_state_count
+		value = constant:africa_mission_goal.liberation_objective_states
+		compare = less_than
+	}
+}
+
+can_africa_keep_liberation_objective_operation_active = {
+	is_africa_runtime_unifier = yes
+	has_country_flag = africa_liberation_front_mission_active
+	has_country_flag = africa_liberation_objective_operation_active
+	has_war = yes
+	has_event_target = africa_liberation_objective_operation_state
+	check_variable = {
+		var = africa_liberation_objective_state_count
+		value = constant:africa_mission_goal.liberation_objective_states
+		compare = less_than
+	}
+	event_target:africa_liberation_objective_operation_state = {
+		has_state_flag = africa_liberation_objective_operation_target
+		africa_can_secure_liberation_objective_for_root = yes
+	}
+}
+
 is_africa_regional_authority_seat_state = {
 	OR = {
 		state = @africa_wac_seat_state
