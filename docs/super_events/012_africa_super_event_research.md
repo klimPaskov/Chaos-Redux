@@ -1,14 +1,14 @@
 # Event 012 Africa Super-Event Text Research
 
-Updated: 2026-06-16
+Updated: 2026-06-17
 
 ## Scope
 
 - Event ID: `012`
 - Event slug: `africa`
 - This note covers super-event text research only: title direction, main-quote candidates, button/cultural-remark candidates, provenance, confidence, and blockers.
-- Audio, image, localisation implementation, slot wiring, and gameplay files remain out of scope for this pass.
-- Role labels from the spec are treated as working labels, not final localisation.
+- This note began as text research. Current implementation status is recorded where the text package has since been accepted and wired.
+- Role labels from the spec are treated as working labels unless a role is explicitly marked as final-wired below.
 
 ## Method and guardrails
 
@@ -17,9 +17,127 @@ Updated: 2026-06-16
 - Modern or still-copyrighted political lines are kept short and flagged.
 - I did not treat quote-book copy, proverb aggregators, or unsourced social-media repetition as acceptable evidence.
 
+## Final-source-ready package for requested roles
+
+This section supersedes the exploratory role notes below for the six roles requested in the `2026-06-16` final-text pass.
+
+### `africa_is_one_unification`
+
+- Status: final text package ready
+- Final title candidate: `Africa Is One`
+- Final quote candidate: `Divided we are weak; united, Africa could become one of the greatest forces for good in the world.`
+- Speaker / source: Kwame Nkrumah, *I Speak of Freedom* (1961)
+- Source URL: https://www.marxists.org/subject/africa/nkrumah/1961/speak-freedom.htm
+- Button text: `Unite now or perish.`
+- Button source note: Kwame Nkrumah, Addis Ababa / `Towards African Unity` proposal text (1963)
+- Button source URL: https://www.marxists.org/subject/africa/nkrumah/1963/nkrumah-towards-african-unity.pdf
+- Confidence: high
+- Copyright / source note: modern political writing; both direct quotations are short enough to use safely with attribution
+- Safe to wire into localisation: yes
+- Fit note: the title is the cleanest public proclamation line in the spec, while the Nkrumah pair gives the event both continental triumph and urgency rather than dynastic conquest
+- Backup:
+  - Quote: `The forces that unite us are intrinsic and greater than the superimposed influences that keep us apart.`
+  - Source URL: https://www.marxists.org/subject/africa/nkrumah/1963/africa-must-unite.pdf
+  - Button: `For the sake of the trusting millions.`
+
+### `africa_scramble_reaction`
+
+- Status: final text package ready
+- Final title candidate: `The Second Scramble`
+- Final quote candidate: `They make a desert, and they call it peace.`
+- Speaker / source: Tacitus, *Agricola* 30-31, in Arthur Murphy translation
+- Source URL: https://www.gutenberg.org/files/7524/7524-h/7524-h.htm
+- Button text: `All its manifestations.`
+- Button source note: Bandung Asian-African Conference Final Communique (1955), anti-colonial clause
+- Button source URL: https://www.aalco.int/Basicdocuments/FINAL%20COMMUNIQU%C3%89%20OF%20THE%20ASIAN-AFRICAN%20CONFERENCE.pdf
+- Confidence: high
+- Copyright / source note: Tacitus is public domain; Bandung communique is an official conference document
+- Safe to wire into localisation: yes
+- Fit note: this package makes the crisis accusatory and hypocritical, which matches the role better than triumphalist reversal language
+- Backup:
+  - Quote: `To eradicate all forms of colonialism from Africa`
+  - Source: OAU Charter, Article II
+  - Source URL: https://au.int/sites/default/files/treaties/7759-file-oau_charter_1963.pdf
+  - Button: `They call it peace.`
+
+### `africa_old_seats_reveal`
+
+- Status: final text package ready
+- Final title candidate: `The Archive of Old Seats`
+- Final quote candidate: `To be unacquainted with what has passed in the world, before we came into it ourselves, is to be always children.`
+- Speaker / source: Cicero, *Brutus* / *History of Famous Orators*
+- Source URL: https://www.gutenberg.org/cache/epub/9776/pg9776-images.html
+- Button text: `What’s past is prologue.`
+- Button source note: William Shakespeare, *The Tempest*, Act II, Scene I
+- Button source URL: https://www.gutenberg.org/files/23042/23042-h/23042-h.htm
+- Confidence: high
+- Copyright / source note: public domain
+- Safe to wire into localisation: yes
+- Fit note: this is the strongest archive-state package in the file because it frames restored precedent and memory as constitutional force instead of nostalgic flavor
+- Backup:
+  - Quote: `What’s past is prologue.`
+  - Source URL: https://www.gutenberg.org/files/23042/23042-h/23042-h.htm
+  - Button: `Open the archive.`
+
+### `africa_counterfeit_crowns`
+
+- Status: final text package ready
+- Final title candidate: `Counterfeit Crowns`
+- Final quote candidate: `Now does he feel his title / Hang loose about him, like a giant’s robe / Upon a dwarfish thief.`
+- Speaker / source: William Shakespeare, *Macbeth*, Act V, Scene II
+- Source URL: https://www.gutenberg.org/files/1533/1533-h/1533-h.htm
+- Button text: `Borrowed robes.`
+- Button source note: short fragment from the same Shakespeare passage
+- Button source URL: https://www.gutenberg.org/files/1533/1533-h/1533-h.htm
+- Confidence: high
+- Copyright / source note: public domain
+- Safe to wire into localisation: yes
+- Fit note: the line is almost exact to the route fantasy of exposed false regalia and collapsing borrowed legitimacy
+- Backup:
+  - Quote: `What’s past is prologue.`
+  - Source URL: https://www.gutenberg.org/files/23042/23042-h/23042-h.htm
+  - Button: `The robes slip.`
+
+### `africa_world_is_one_terminal`
+
+- Status: final text package ready
+- Final title candidate: `The World Is One`
+- Final quote candidate: `the only way in which it can be permanently ended is by a world-federation.`
+- Speaker / source: Bertrand Russell, *Why Men Fight* (1917)
+- Source URL: https://www.gutenberg.org/files/55610/55610-h/55610-h.htm
+- Button text: `Universal law.`
+- Button source note: Alfred, Lord Tennyson, `Locksley Hall`, fragment from `lapt in universal law`
+- Button source URL: https://www.gutenberg.org/files/8601/8601-h/8601-h.htm
+- Confidence: high
+- Copyright / source note: public domain
+- Safe to wire into localisation: yes
+- Fit note: the package reads as terminal and ideological rather than utopian, which is the right tone for this world-end gate
+- Backup:
+  - Quote: `One God, one law, one element, / And one far-off divine event, / To which the whole creation moves.`
+  - Source URL: https://www.gutenberg.org/cache/epub/70950/pg70950-images.html
+  - Button: `One far-off divine event.`
+
+### `africa_continent_sponsor`
+
+- Status: final text package ready and wired
+- Final title candidate: `The Continental Pole`
+- Final quote candidate: `there would be no meaning to the national independence of Ghana unless it was linked with the total liberation of the African continent.`
+- Speaker / source: Kwame Nkrumah, retrospective wording in *Africa Must Unite* (1963) describing the 1957 independence position
+- Source URL: https://www.marxists.org/subject/africa/nkrumah/1963/africa-must-unite.pdf
+- Button text: `The lesson travels.`
+- Button source note: original wording, not a quotation
+- Confidence: medium-high on the quote wording, high on final audio licensing
+- Copyright / source note: modern political writing; short direct quotation only
+- Safe to wire into localisation: yes
+- Audio package: `docs/assets/012_africa/super_events/audio/final/super_event_africa_continent_sponsor.ogg`, sourced from John Philip Sousa's `The Thunderer`, United States Marine Band 2017 recording, public domain composition and U.S. federal government public domain performance
+- Backup:
+  - Quote: `Our independence is meaningless unless it is linked up with the total liberation of the African continent.`
+  - Source note: famous 1957 line, but I did not verify it in a primary state transcript in this pass
+  - Button: `Africa teaches the lesson.`
+
 ## Top-level recommendations
 
-These are the strongest current text packages by role. They are recommendations, not yet final localisation keys.
+These are the strongest current text packages by role. The six accepted roles in the final-source-ready section have been wired as final localisation; the remaining roles are recommendations until their image, slot, gameplay trigger, and route presentation are accepted. The 2026-06-17 variant pass packaged audio candidates for Forest Parliament, World Root, Root and Fang, and archive-world, but those files are not wired into sound/music definitions or super-event slots.
 
 | Role | Recommended title direction | Recommended quote | Recommended button / remark | Confidence |
 | --- | --- | --- | --- | --- |
@@ -724,7 +842,34 @@ The archive has stopped being a registry and become a planetary sovereign princi
 
 ## Blockers and caution notes
 
-- **No final localisation keys yet.** The research is strong enough to support final loc drafting for several roles, but the title layer still depends on route tone and presentation art.
+## Audio package update
+
+Second-pass audio packaging completed on `2026-06-16`.
+
+### Finalized packaged roles
+
+| Role label | Final file | Source title | License | Final duration | Notes |
+| --- | --- | --- | --- | --- | --- |
+| `africa_is_one_unification` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_unification.ogg` | `South African national anthem` | U.S. federal government public domain / free of known restrictions | `120s` | United States Navy Band recording |
+| `africa_scramble_reaction` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_scramble.ogg` | `Mars, the Bringer of War` | U.S. federal government performance; composition public domain | `118s` | United States Air Force Band recording |
+| `africa_old_seats_reveal` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_old_seats.ogg` | `First Suite in E-flat for Military Band, III. March` | public domain on Commons | `112s` | United States Marine Band recording |
+| `africa_counterfeit_crowns` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_counterfeit_crowns.ogg` | `Egmont Overture, Op. 84` | `CC0 1.0` | `118s` | Czech National Symphony Orchestra / Musopen Commons mirror |
+| `africa_world_is_one_terminal` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_world_is_one.ogg` | `Funeral March in C minor, Op. posth. 72 no. 2` | `CC0 1.0` | `120s` | Aya Higuchi / Musopen Commons mirror |
+| `africa_continent_sponsor` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_continent_sponsor.ogg` | `The Thunderer` | public domain composition and U.S. federal government public domain performance | `120s` | United States Marine Band 2017 recording |
+| `africa_rsa_allies_peace` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_rsa_allies_peace.ogg` | `Intermezzo from Goyescas` | public domain composition and U.S. Marine Band public-domain performance | `116s` | United States Marine Band recording |
+| `africa_dynamic_cross_continent_union` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_dynamic_cross_continent_union.ogg` | `Grand March from La reine de Saba` | public domain composition and U.S. Marine Band public-domain performance | `118s` | United States Marine Band recording |
+
+### Remaining audio blockers
+
+- No remaining audio blockers for the eight accepted Event 012 super-event roles.
+- Variant audio packages exist for Forest Parliament, World Root, Root and Fang, and archive-world under `docs/assets/012_africa/super_events/audio/final/`, with source/licensing notes in `docs/assets/012_africa/super_events/audio/manifest.md`.
+- Those variant packages remain handoff assets only. They are not registered in music or sound definitions, do not have accepted dedicated super-event slots, and do not have final gameplay callsites.
+- `africa_world_is_one_root_variant_terminal` remains blocked because the current design does not define whether it is a third distinct terminal super-event or an explicit presentation variant allowed to share an accepted terminal cue.
+- Preserved non-final evaluation source: `docs/assets/012_africa/super_events/audio/source/beethoven_symphony_7_allegretto_john_michel.ogg`
+- Reason for non-final status: legally usable `CC BY-SA 3.0`, but the solo-cello recording contains long low-energy gaps and was not strong enough as a packaged in-game final without a heavier re-edit pass.
+- Full source, hash, and conversion details are recorded in `docs/assets/012_africa/super_events/audio/manifest.md`.
+
+- **Final localisation status.** Slots `68` through `75` are final-wired in `localisation/english/012_african_union_l_english.yml` and `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt`. RSA peace and dynamic cross-continent union now have final text, art, music, sound, emit helpers, and gameplay callsites. Bestiary, Forest Parliament, World Root, and optional alternate roles remain recommendations until their dedicated slots, complete media packages, and gameplay triggers are accepted.
 - **Nkrumah transcript caution.** The 1957 independence line is extremely famous and stable, but the accessible transcript I verified is a secondary transcript page rather than an official Ghana state archive. I rate it medium-high, not absolute.
 - **Comte attribution caution.** The archive-terminal Comte line is strong but presently rests on public-domain secondary witnesses. If the main agent wants maximum-proof sourcing, use the Shakespeare backup instead.
 - **Bestiary button caution.** `The animals have papers.` is effective but not a real quotation and can tip too comic if paired with solemn art. Keep it blocked until the main agent chooses final presentation tone.

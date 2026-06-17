@@ -1,6 +1,6 @@
 # Event 012 Africa Super-Event Audio Manifest
 
-Updated: `2026-06-16`
+Updated: `2026-06-17`
 
 Scope: second-pass packaged audio only. This manifest records the preserved source downloads, final `44.1 kHz` `.ogg` exports, licensing position, conversion commands, and role status for the finalized package.
 
@@ -237,6 +237,132 @@ ffmpeg -y -i docs/assets/012_africa/super_events/audio/source/gounod_grand_march
 - Editing and conversion steps: removed `0.564s` of opening silence, trimmed to `118s`, applied a `3s` fade-out, preserved stereo, and re-encoded to `44.1 kHz` Vorbis
 - Suitability: formal, processional, and congress-scale rather than apocalyptic; it reads as a chartered transcontinental union rather than the terminal `World Is One` end-state
 - Uncertainty: the source title's Queen of Sheba framing is more regionally resonant for Africa-Middle East outcomes than for every possible dynamic union, but the music itself remains broad enough for a federation/congress role
+
+### `africa_forest_parliament_reveal`
+
+- Status: finalized
+- Suggested sound definition id: `super_event_africa_forest_parliament`
+- Suggested super-event use: Forest Parliament reveal / human-nonhuman congress recognition
+- Title: `Valse triste`
+- Creator / composer: Jean Sibelius
+- Performer / recording source: Judith Bokor cello recording, 1925 issue mirrored on Commons from Archive.org
+- Source URL: `https://commons.wikimedia.org/wiki/File:Judith_Bokor_plays_Valse_triste_by_Sibelius.flac`
+- License: Commons marks the file public domain / free of known restrictions, with U.S. pre-1931 publication status and public-domain-origin notes
+- License confidence: medium-high
+- Duration:
+  - source: `262.131066s`
+  - final: `118.000000s`
+- Attribution text if required: none required
+- Original downloaded source path: `docs/assets/012_africa/super_events/audio/source/judith_bokor_valse_triste_sibelius.flac`
+- Source SHA-256: `2c9b272fc8d81e6de1ce374805fe9897d069967ed7572d0df0fc646c9408d2e7`
+- Final path: `docs/assets/012_africa/super_events/audio/final/super_event_africa_forest_parliament.ogg`
+- Final SHA-256: `85b20ebbf91f8d150c5aa4338e010cf67391ac3af3a274098d0098ce74bce728`
+- Conversion command:
+
+```bash
+ffmpeg -y -i docs/assets/012_africa/super_events/audio/source/judith_bokor_valse_triste_sibelius.flac -af "atrim=start=0:duration=118,asetpts=N/SR/TB,afade=t=out:st=114:d=4" -ar 44100 -ac 2 -c:a libvorbis -q:a 5 docs/assets/012_africa/super_events/audio/final/super_event_africa_forest_parliament.ogg
+```
+
+- Editing and conversion steps: kept the opening intact, trimmed to `118s`, duplicated mono into stereo, applied a `4s` fade-out, and exported to `44.1 kHz` Vorbis
+- Suitability: mournful, ceremonial, and uncanny enough for a congress that should feel solemn rather than comedic
+- Uncertainty: this is a 1925 cello performance with audible period texture; that helps the haunted tone, but it is less clean than the U.S. band sources used for the base package
+
+### `africa_world_root_mandate`
+
+- Status: finalized
+- Suggested sound definition id: `super_event_africa_world_root`
+- Suggested super-event use: World Root Mandate / Green Covenant world-root order proclamation
+- Title: `Veni Sancte Spiritus`
+- Creator / composer: Gregorian chant, traditional liturgical melody
+- Performer / recording source: Membeth recording uploaded to Commons as own work
+- Source URL: `https://commons.wikimedia.org/wiki/File:Veni.sancte.spiritus.ogg`
+- License: uploader dedicated the recording to the public domain on Commons
+- License confidence: high
+- Duration:
+  - source: `157.280635s`
+  - final: `120.000000s`
+- Attribution text if required: none required
+- Original downloaded source path: `docs/assets/012_africa/super_events/audio/source/veni_sancte_spiritus_membeth.ogg`
+- Source SHA-256: `22aeb5b96f243dd2e416053d1fe59d74d143f49903028af79720f807ba8a0799`
+- Final path: `docs/assets/012_africa/super_events/audio/final/super_event_africa_world_root.ogg`
+- Final SHA-256: `c8502dc4df97c0ba3aee525f5e3072f251ecf5104a5c44b18fc3920069c665ad`
+- Conversion command:
+
+```bash
+ffmpeg -y -i docs/assets/012_africa/super_events/audio/source/veni_sancte_spiritus_membeth.ogg -af "atrim=start=0:duration=120,asetpts=N/SR/TB,afade=t=out:st=116:d=4" -ar 44100 -ac 2 -c:a libvorbis -q:a 5 docs/assets/012_africa/super_events/audio/final/super_event_africa_world_root.ogg
+```
+
+- Editing and conversion steps: kept the opening invocation, trimmed to `120s`, applied a `4s` fade-out, and re-encoded to `44.1 kHz` Vorbis
+- Suitability: ritual, sacral, and collective rather than martial, which fits a Green Covenant mandate better than another march
+- Uncertainty: the explicit Christian liturgical source is a tonal fit but not a setting-specific text fit; replace rather than silently reuse another packaged track if the parent wants a less ecclesiastical world-root sound
+
+### `africa_parliament_of_root_and_fang_escalation`
+
+- Status: finalized
+- Suggested sound definition id: `super_event_africa_root_and_fang`
+- Suggested super-event use: Bestiary / root-and-fang escalation
+- Title: `Danse Macabre`
+- Creator / composer: Camille Saint-Saens
+- Performer / recording source: Philadelphia Symphony Orchestra under Leopold Stokowski, 1925 recording mirrored on Commons from Archive.org
+- Source URL: `https://commons.wikimedia.org/wiki/File:PhiladelphiaSymphonyOrchestra-DanseMacabre.ogg`
+- License: Commons marks the sound recording public domain in the U.S. because it was published before January 1, 1926
+- License confidence: medium-high
+- Duration:
+  - source: `419.082449s`
+  - final: `118.000000s`
+- Attribution text if required: none required
+- Original downloaded source path: `docs/assets/012_africa/super_events/audio/source/philadelphia_symphony_danse_macabre_1925.ogg`
+- Source SHA-256: `5da52fa63c374fa3744886548aa74786128cdd4760b976194b22f22f30c69820`
+- Final path: `docs/assets/012_africa/super_events/audio/final/super_event_africa_root_and_fang.ogg`
+- Final SHA-256: `d00ab500434169b749acda380a60a454e67713cf01b0dd841f1990a28dbc4d98`
+- Conversion command:
+
+```bash
+ffmpeg -y -i docs/assets/012_africa/super_events/audio/source/philadelphia_symphony_danse_macabre_1925.ogg -af "atrim=start=0:duration=118,asetpts=N/SR/TB,afade=t=out:st=114:d=4" -ar 44100 -ac 2 -c:a libvorbis -q:a 5 docs/assets/012_africa/super_events/audio/final/super_event_africa_root_and_fang.ogg
+```
+
+- Editing and conversion steps: kept the threatening opening, trimmed to `118s`, applied a `4s` fade-out, and exported to `44.1 kHz` Vorbis
+- Suitability: the strongest uncanny-escalation cue in this pass; it reads as dangerous pageantry rather than generic war panic
+- Uncertainty: the title association is overtly macabre, so this should stay reserved for the Bestiary escalation role and not be spread across softer forest variants
+
+### `africa_archive_world_union_terminal`
+
+- Status: finalized
+- Suggested sound definition id: `super_event_africa_archive_world`
+- Suggested super-event use: archive-world union terminal / old-seats world-order end-state
+- Title: `Dies irae`
+- Creator / composer: Gregorian chant, traditional liturgical melody
+- Performer / recording source: Membeth recording uploaded to Commons as own work
+- Source URL: `https://commons.wikimedia.org/wiki/File:Dies.irae.ogg`
+- License: uploader dedicated the recording to the public domain on Commons
+- License confidence: high
+- Duration:
+  - source: `434.000952s`
+  - final: `120.000000s`
+- Attribution text if required: none required
+- Original downloaded source path: `docs/assets/012_africa/super_events/audio/source/dies_irae_membeth.ogg`
+- Source SHA-256: `a94c57586d3215a4ecb67a5eb9701b387be39bef2f53abaae3b2214a2e9472e6`
+- Final path: `docs/assets/012_africa/super_events/audio/final/super_event_africa_archive_world.ogg`
+- Final SHA-256: `0d34f1eff9d932a8fd6ccf6e719b468d009fd440416e1d6cc40632ba0b1de44c`
+- Conversion command:
+
+```bash
+ffmpeg -y -i docs/assets/012_africa/super_events/audio/source/dies_irae_membeth.ogg -af "atrim=start=0:duration=120,asetpts=N/SR/TB,afade=t=out:st=116:d=4" -ar 44100 -ac 2 -c:a libvorbis -q:a 5 docs/assets/012_africa/super_events/audio/final/super_event_africa_archive_world.ogg
+```
+
+- Editing and conversion steps: kept the opening intact, trimmed to `120s`, applied a `4s` fade-out, and re-encoded to `44.1 kHz` Vorbis
+- Suitability: this is the clearest archive-terminal cue found in this pass, with a stronger judgment/finality tone than the already-packaged base `World Is One` branch
+- Uncertainty: because Event 012 already has a non-archive terminal package, this should remain tied to the archive-world variant only unless the parent explicitly consolidates terminal branches
+
+## Remaining variant blocker
+
+### `africa_world_is_one_root_variant_terminal`
+
+- Status: blocked
+- Blocker: this pass produced two distinct terminal-grade packages already on disk, `super_event_africa_world_is_one.ogg` for the base terminal branch and `super_event_africa_archive_world.ogg` for the archive-world terminal. Current docs do not clearly define whether the root variant should be a third distinct terminal audio role or whether it should collapse into one of those terminal packages.
+- Action: do not silently reuse either terminal cue. Keep the role blocked until the parent decides whether the root variant is:
+  - a separate terminal super-event needing its own unique final track; or
+  - a presentation variant that is allowed to share an existing terminal package explicitly.
 
 ## Rejected / preserved evaluation source
 
