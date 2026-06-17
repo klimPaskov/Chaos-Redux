@@ -169,7 +169,7 @@ The Scramble route registers outside powers that still own or control African te
 - Charter diplomacy and member-side requests, departures, and resistance wars;
 - Federal Charter votes, regional autonomy statutes, and High Court arbitration against selected Charter members or regional authorities;
 - liberation preparation, border columns, rail-belt objectives, and targeted front-state objectives;
-- paper-claim surveys, authority-tracked rail work, Integration Temperature Board reviews, and living-core integration;
+- paper-claim surveys, authority-tracked rail work, Integration Temperature Board reviews, and living-core integration. The three state-target integration actions now share a one-at-a-time active operation target, expose the selected state in the regional integration header, spend manpower or equipment when the operation starts, resolve through the timed decision's completion effect, and add small Paper-Core/Trust/Alarm pressure if the selected state stops qualifying before completion;
 - diaspora return offices, return settlements, officer schools, and Pan-Atlantic congress work;
 - selected-dossier survey missions, local office, old-seat guard, and guarded settlement;
 - high-chaos Bestiary unlock, habitat, omen, warning, binding, actor-specific package decisions, and non-actor package operations;

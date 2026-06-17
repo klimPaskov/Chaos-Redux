@@ -610,6 +610,7 @@ africa_clear_runtime_context = {
 		limit = { has_event_target = africa_bestiary_warning_state }
 		clear_global_event_target = africa_bestiary_warning_state
 	}
+	africa_clear_regional_state_operation = yes
 	clear_array = global.africa_charter_candidate_countries
 	clear_array = global.africa_charter_member_countries
 	clear_array = global.africa_charter_protected_countries
@@ -668,12 +669,18 @@ africa_clear_runtime_context = {
 				has_state_flag = africa_bestiary_warning_state_complied
 				has_state_flag = africa_bestiary_warning_state_ignored
 				has_state_flag = africa_liberation_objective_secured
+				has_state_flag = africa_paper_claim_survey_operation_target
+				has_state_flag = africa_living_core_operation_target
+				has_state_flag = africa_integration_rail_operation_target
 			}
 		}
 		clr_state_flag = africa_bestiary_warning_state_target
 		clr_state_flag = africa_bestiary_warning_state_complied
 		clr_state_flag = africa_bestiary_warning_state_ignored
 		clr_state_flag = africa_liberation_objective_secured
+		clr_state_flag = africa_paper_claim_survey_operation_target
+		clr_state_flag = africa_living_core_operation_target
+		clr_state_flag = africa_integration_rail_operation_target
 	}
 	clear_variable = global.africa_unifier_country_id
 	clear_variable = global.africa_rsa_branch_state
@@ -3573,6 +3580,237 @@ africa_complete_living_core_from_from = {
 			set_variable = { africa_paper_core_stage = constant:africa_paper_core_stage.living_core }
 		}
 	}
+}
+
+africa_clear_regional_state_operation = {
+	if = {
+		limit = { has_event_target = africa_regional_integration_operation_state }
+		event_target:africa_regional_integration_operation_state = {
+			clr_state_flag = africa_paper_claim_survey_operation_target
+			clr_state_flag = africa_living_core_operation_target
+			clr_state_flag = africa_integration_rail_operation_target
+		}
+		clear_global_event_target = africa_regional_integration_operation_state
+	}
+	clr_country_flag = africa_regional_state_operation_active
+	clr_country_flag = africa_paper_claim_survey_operation_active
+	clr_country_flag = africa_living_core_operation_active
+	clr_country_flag = africa_integration_rail_operation_active
+}
+
+africa_apply_regional_state_operation_failure_pressure = {
+	add_to_variable = { africa_paper_core_burden = constant:africa_value_delta.regional_state_operation_failure_burden }
+	add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_state_operation_failure_trust }
+	add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.regional_state_operation_failure_alarm }
+	africa_clamp_core_values = yes
+}
+
+africa_start_paper_claim_survey_operation_from_from = {
+	if = {
+		limit = {
+			can_africa_start_paper_claim_survey_operation = yes
+			FROM = {
+				is_africa_paper_claim_state = yes
+				NOT = { has_state_flag = africa_integration_unlocked }
+			}
+		}
+		FROM = {
+			set_state_flag = africa_paper_claim_survey_operation_target
+			save_global_event_target_as = africa_regional_integration_operation_state
+		}
+		set_country_flag = africa_regional_state_operation_active
+		set_country_flag = africa_paper_claim_survey_operation_active
+	}
+}
+
+africa_complete_paper_claim_survey_operation = {
+	if = {
+		limit = { can_africa_keep_paper_claim_survey_operation_active = yes }
+		event_target:africa_regional_integration_operation_state = {
+			set_state_flag = africa_integration_unlocked
+			set_variable = { africa_paper_core_stage = constant:africa_paper_core_stage.integration_unlocked }
+		}
+		add_to_variable = { africa_authority = constant:africa_value_delta.integration_authority }
+		africa_refresh_integration_target_states = yes
+		africa_clamp_core_values = yes
+	}
+	africa_clear_regional_state_operation = yes
+}
+
+africa_fail_paper_claim_survey_operation = {
+	if = {
+		limit = { has_country_flag = africa_paper_claim_survey_operation_active }
+		africa_apply_regional_state_operation_failure_pressure = yes
+	}
+	africa_clear_regional_state_operation = yes
+}
+
+africa_start_living_core_operation_from_from = {
+	if = {
+		limit = {
+			can_africa_start_living_core_operation = yes
+			FROM = { can_africa_living_core_state_for_prev = yes }
+		}
+		add_manpower = constant:africa_force.integration_manpower_spend
+		FROM = {
+			set_state_flag = africa_living_core_operation_target
+			save_global_event_target_as = africa_regional_integration_operation_state
+		}
+		set_country_flag = africa_regional_state_operation_active
+		set_country_flag = africa_living_core_operation_active
+	}
+}
+
+africa_complete_living_core_operation = {
+	if = {
+		limit = { can_africa_keep_living_core_operation_active = yes }
+		add_to_variable = { africa_living_core_count = 1 }
+		event_target:africa_regional_integration_operation_state = {
+			add_core_of = ROOT
+			clr_state_flag = africa_integration_unlocked
+			clr_state_flag = africa_authority_tracked
+			set_state_flag = africa_living_core
+			set_variable = { africa_paper_core_stage = constant:africa_paper_core_stage.living_core }
+		}
+		add_to_variable = { africa_paper_core_burden = constant:africa_value_delta.integration_burden_relief }
+		add_to_variable = { africa_authority = constant:africa_value_delta.integration_authority }
+		africa_refresh_integration_target_states = yes
+		africa_clamp_core_values = yes
+		if = {
+			limit = {
+				NOT = { has_country_flag = africa_regional_integration_mission_active }
+				NOT = { has_country_flag = africa_regional_integration_mission_success }
+			}
+			set_country_flag = africa_regional_integration_mission_active
+		}
+	}
+	africa_clear_regional_state_operation = yes
+}
+
+africa_fail_living_core_operation = {
+	if = {
+		limit = { has_country_flag = africa_living_core_operation_active }
+		africa_apply_regional_state_operation_failure_pressure = yes
+	}
+	africa_clear_regional_state_operation = yes
+}
+
+africa_start_integration_rail_operation_from_from = {
+	if = {
+		limit = {
+			can_africa_start_integration_rail_operation = yes
+			FROM = {
+				africa_can_secure_integration_rail_for_root = yes
+				NOT = { has_state_flag = africa_authority_tracked }
+			}
+		}
+		set_temp_variable = { africa_integration_rail_support_cost = constant:africa_force.integration_rail_support_equipment }
+		multiply_temp_variable = { africa_integration_rail_support_cost = -1 }
+		add_equipment_to_stockpile = { type = support_equipment amount = africa_integration_rail_support_cost }
+		FROM = {
+			set_state_flag = africa_integration_rail_operation_target
+			save_global_event_target_as = africa_regional_integration_operation_state
+		}
+		set_country_flag = africa_regional_state_operation_active
+		set_country_flag = africa_integration_rail_operation_active
+	}
+}
+
+africa_complete_integration_rail_operation = {
+	if = {
+		limit = { can_africa_keep_integration_rail_operation_active = yes }
+		add_to_variable = { africa_authority_tracked_state_count = 1 }
+		event_target:africa_regional_integration_operation_state = {
+			set_state_flag = africa_authority_tracked
+			set_variable = { africa_paper_core_stage = constant:africa_paper_core_stage.authority_tracked }
+			add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+		}
+		if = {
+			limit = {
+				event_target:africa_regional_integration_operation_state = {
+					OR = {
+						state = @africa_mag_seat_state
+						state = @africa_nhr_seat_state
+					}
+				}
+				NOT = { has_country_flag = africa_integration_rail_region_north_secured }
+			}
+			add_to_variable = { africa_integration_rail_region_count = 1 }
+			set_country_flag = africa_integration_rail_region_north_secured
+		}
+		if = {
+			limit = {
+				event_target:africa_regional_integration_operation_state = {
+					OR = {
+						state = @africa_wac_seat_state
+						state = @africa_sah_seat_state
+					}
+				}
+				NOT = { has_country_flag = africa_integration_rail_region_west_secured }
+			}
+			add_to_variable = { africa_integration_rail_region_count = 1 }
+			set_country_flag = africa_integration_rail_region_west_secured
+		}
+		if = {
+			limit = {
+				event_target:africa_regional_integration_operation_state = { state = @africa_cbc_seat_state }
+				NOT = { has_country_flag = africa_integration_rail_region_central_secured }
+			}
+			add_to_variable = { africa_integration_rail_region_count = 1 }
+			set_country_flag = africa_integration_rail_region_central_secured
+		}
+		if = {
+			limit = {
+				event_target:africa_regional_integration_operation_state = { state = @africa_glk_seat_state }
+				NOT = { has_country_flag = africa_integration_rail_region_great_lakes_secured }
+			}
+			add_to_variable = { africa_integration_rail_region_count = 1 }
+			set_country_flag = africa_integration_rail_region_great_lakes_secured
+		}
+		if = {
+			limit = {
+				event_target:africa_regional_integration_operation_state = {
+					OR = {
+						state = @africa_eac_seat_state
+						state = @africa_ioc_seat_state
+					}
+				}
+				NOT = { has_country_flag = africa_integration_rail_region_indian_ocean_secured }
+			}
+			add_to_variable = { africa_integration_rail_region_count = 1 }
+			set_country_flag = africa_integration_rail_region_indian_ocean_secured
+		}
+		if = {
+			limit = {
+				event_target:africa_regional_integration_operation_state = {
+					OR = {
+						state = @africa_zsc_seat_state
+						state = @africa_slc_seat_state
+					}
+				}
+				NOT = { has_country_flag = africa_integration_rail_region_southern_secured }
+			}
+			add_to_variable = { africa_integration_rail_region_count = 1 }
+			set_country_flag = africa_integration_rail_region_southern_secured
+		}
+		if = {
+			limit = { event_target:africa_regional_integration_operation_state = { is_africa_regional_authority_seat_state = yes } }
+			set_country_flag = africa_has_secured_regional_rail_seat
+			event_target:africa_regional_integration_operation_state = { set_state_flag = africa_regional_authority_rail_secured }
+		}
+		add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
+		add_to_variable = { africa_paper_core_burden = constant:africa_value_delta.integration_burden_relief }
+		africa_clamp_core_values = yes
+	}
+	africa_clear_regional_state_operation = yes
+}
+
+africa_fail_integration_rail_operation = {
+	if = {
+		limit = { has_country_flag = africa_integration_rail_operation_active }
+		africa_apply_regional_state_operation_failure_pressure = yes
+	}
+	africa_clear_regional_state_operation = yes
 }
 
 africa_create_charter_league_from_template = {
