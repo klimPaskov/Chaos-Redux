@@ -6,11 +6,11 @@ Scope completed: fictional ideology variant flag package for the five bestiary t
 
 Tags covered:
 
-- `CTL` = Chimpanzee Telegraph League
-- `OKP` = Okapi Court
-- `TRM` = Termite Citadel Engineers
-- `HGD` = Honeyguide Commons
-- `GHC` = Great Herds Compact
+- `CTL` = Chimpanzee Telegraph
+- `OKP` = Okapi Forest
+- `TRM` = Termite Citadels
+- `HGD` = Honeyguide Routes
+- `GHC` = Great Herds
 
 Ideology suffixes created for every tag:
 

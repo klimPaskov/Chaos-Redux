@@ -1,0 +1,1100 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 AFRICA AI STRATEGIES
+# ============================================================================
+# Broad AI posture for the Africa unifier, Charter regional authorities, and
+# explicit high-chaos Bestiary actors. Focus and decision weights still choose
+# the exact action sequence.
+# ============================================================================
+
+@AFRICA_AI_UNIFIER_DEFENSE = 90
+@AFRICA_AI_UNIFIER_RESTRAINT = 80
+@AFRICA_AI_UNIFIER_INFANTRY = 35
+@AFRICA_AI_UNIFIER_SUPPORT = 25
+@AFRICA_AI_UNIFIER_FACTORY = 30
+@AFRICA_AI_AUTHORITY_DEFENSE = 75
+@AFRICA_AI_AUTHORITY_RESTRAINT = 120
+@AFRICA_AI_AUTHORITY_INFANTRY = 30
+@AFRICA_AI_AUTHORITY_SUPPORT = 20
+@AFRICA_AI_BESTIARY_DEFENSE = 95
+@AFRICA_AI_BESTIARY_RESTRAINT = 70
+@AFRICA_AI_BESTIARY_INFANTRY = 35
+@AFRICA_AI_RAIL_INFRA = 30
+@AFRICA_AI_ROUTE_ATTACK = 45
+@AFRICA_AI_ROUTE_RESTRAINT = 85
+@AFRICA_AI_DIASPORA_NAVY = 20
+@AFRICA_AI_WORLD_ORDER_NAVY = 35
+@AFRICA_AI_WORLD_ORDER_CONVOY = 40
+@AFRICA_AI_WORLD_ORDER_SUPPORT = 35
+@AFRICA_AI_WORLD_ORDER_RESTRAINT = 95
+@AFRICA_AI_REGIONAL_NAVAL = 28
+@AFRICA_AI_REGIONAL_INDUSTRY = 35
+@AFRICA_AI_REGIONAL_INTERIOR_SUPPLY = 40
+@AFRICA_AI_BESTIARY_HABITAT = 45
+@AFRICA_AI_BESTIARY_RIVER_COAST = 30
+@AFRICA_AI_BESTIARY_WEB_SUPPORT = 45
+@AFRICA_AI_BESTIARY_SIGNAL = 42
+@AFRICA_AI_BESTIARY_CITADEL = 38
+@AFRICA_AI_BESTIARY_HERD_SUPPLY = 42
+
+africa_unifier_charter_consolidation = {
+	allowed = { always = yes }
+	enable = { has_country_flag = africa_unifier_active }
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		id = infantry
+		value = @AFRICA_AI_UNIFIER_DEFENSE
+	}
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @AFRICA_AI_UNIFIER_RESTRAINT
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @AFRICA_AI_UNIFIER_INFANTRY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_UNIFIER_SUPPORT
+	}
+	ai_strategy = {
+		type = build_building
+		id = industrial_complex
+		value = @AFRICA_AI_UNIFIER_FACTORY
+	}
+}
+
+africa_unifier_liberation_war_posture = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_unifier_active
+		OR = {
+			has_country_flag = africa_liberation_war_office_open
+			has_country_flag = africa_scramble_reverse_claims_open
+			has_war = yes
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		id = infantry
+		value = @AFRICA_AI_BESTIARY_DEFENSE
+	}
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = -15
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @AFRICA_AI_UNIFIER_INFANTRY
+	}
+	ai_strategy = {
+		type = build_building
+		id = arms_factory
+		value = @AFRICA_AI_UNIFIER_FACTORY
+	}
+}
+
+africa_unifier_people_liberation_front = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_unifier_active
+		OR = {
+			has_country_flag = africa_route_peoples_liberation_front
+			has_country_flag = africa_people_continental_army_ready
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		id = infantry
+		value = @AFRICA_AI_BESTIARY_DEFENSE
+	}
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = -25
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @AFRICA_AI_ROUTE_ATTACK
+	}
+	ai_strategy = {
+		type = build_building
+		id = arms_factory
+		value = @AFRICA_AI_UNIFIER_FACTORY
+	}
+}
+
+africa_unifier_continental_general_staff = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_unifier_active
+		OR = {
+			has_country_flag = africa_route_continental_general_staff
+			has_country_flag = africa_continental_war_plan_ready
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		id = infantry
+		value = @AFRICA_AI_BESTIARY_DEFENSE
+	}
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = -35
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @AFRICA_AI_ROUTE_ATTACK
+	}
+	ai_strategy = {
+		type = build_building
+		id = arms_factory
+		value = @AFRICA_AI_UNIFIER_FACTORY
+	}
+}
+
+africa_unifier_crown_congress = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_unifier_active
+		OR = {
+			has_country_flag = africa_route_crown_congress
+			has_country_flag = africa_crowns_beneath_charter_ready
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @AFRICA_AI_ROUTE_RESTRAINT
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_RAIL_INFRA
+	}
+	ai_strategy = {
+		type = build_building
+		id = industrial_complex
+		value = @AFRICA_AI_UNIFIER_FACTORY
+	}
+}
+
+africa_unifier_diaspora_return = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_unifier_active
+		OR = {
+			has_country_flag = africa_diaspora_return_offices_open
+			has_country_flag = africa_pan_atlantic_congress_ready
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @AFRICA_AI_ROUTE_RESTRAINT
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_UNIFIER_SUPPORT
+	}
+	ai_strategy = {
+		type = build_building
+		id = dockyard
+		value = @AFRICA_AI_DIASPORA_NAVY
+	}
+}
+
+africa_unifier_world_order_sponsor = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_unifier_active
+		OR = {
+			has_country_flag = africa_continent_sponsor_office_open
+			has_country_flag = africa_continent_sponsor_ready
+			has_country_flag = africa_continental_export_office_open
+			has_country_flag = africa_middle_east_charter_staff_open
+			has_country_flag = africa_asia_charter_staff_open
+			has_country_flag = africa_europe_charter_staff_open
+			has_country_flag = africa_south_atlantic_charter_staff_open
+			has_country_flag = africa_sponsored_middle_east_charter
+			has_country_flag = africa_sponsored_asia_charter
+			has_country_flag = africa_sponsored_europe_charter
+			has_country_flag = africa_sponsored_south_atlantic_charter
+			has_country_flag = africa_congress_of_continents_focus_open
+			has_country_flag = africa_dynamic_cross_continent_union_complete
+			has_country_flag = africa_unifier_proof_ledger_open
+			has_country_flag = africa_external_continent_unifier_proofs_ready
+			has_country_flag = africa_last_borders_are_administrative_open
+			has_country_flag = africa_continent_unifiers_certified_for_world_is_one
+			has_country_flag = africa_one_charter_above_nations_open
+			has_country_flag = africa_world_is_one_gate_prepared
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @AFRICA_AI_WORLD_ORDER_RESTRAINT
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = convoy
+		value = @AFRICA_AI_WORLD_ORDER_CONVOY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_WORLD_ORDER_SUPPORT
+	}
+	ai_strategy = {
+		type = build_building
+		id = dockyard
+		value = @AFRICA_AI_WORLD_ORDER_NAVY
+	}
+}
+
+africa_unifier_rsa_continental_emergency = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_rsa_continental_side
+		has_global_flag = africa_rsa_civil_war_active
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		id = infantry
+		value = @AFRICA_AI_BESTIARY_DEFENSE
+	}
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = -20
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @AFRICA_AI_ROUTE_ATTACK
+	}
+}
+
+africa_regional_authority_survival = {
+	allowed = { always = yes }
+	enable = { has_country_flag = africa_regional_authority_subject }
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		id = infantry
+		value = @AFRICA_AI_AUTHORITY_DEFENSE
+	}
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @AFRICA_AI_AUTHORITY_RESTRAINT
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @AFRICA_AI_AUTHORITY_INFANTRY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_AUTHORITY_SUPPORT
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_RAIL_INFRA
+	}
+}
+
+africa_regional_authority_west_sahel_mobility = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_regional_authority_subject
+		OR = {
+			tag = WAC
+			tag = SAH
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		id = infantry
+		value = @AFRICA_AI_AUTHORITY_DEFENSE
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @AFRICA_AI_ROUTE_ATTACK
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_REGIONAL_INTERIOR_SUPPLY
+	}
+}
+
+africa_regional_authority_coastal_rail_network = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_regional_authority_subject
+		OR = {
+			tag = MAG
+			tag = EAC
+			tag = IOC
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_AUTHORITY_SUPPORT
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_REGIONAL_INTERIOR_SUPPLY
+	}
+	ai_strategy = {
+		type = build_building
+		id = dockyard
+		value = @AFRICA_AI_REGIONAL_NAVAL
+	}
+}
+
+africa_regional_authority_interior_guard = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_regional_authority_subject
+		OR = {
+			tag = NHR
+			tag = GLK
+			tag = CBC
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		id = infantry
+		value = @AFRICA_AI_AUTHORITY_DEFENSE
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_AUTHORITY_SUPPORT
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_REGIONAL_INTERIOR_SUPPLY
+	}
+}
+
+africa_regional_authority_southern_industry = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_regional_authority_subject
+		OR = {
+			tag = ZSC
+			tag = SLC
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_building
+		id = industrial_complex
+		value = @AFRICA_AI_REGIONAL_INDUSTRY
+	}
+	ai_strategy = {
+		type = build_building
+		id = arms_factory
+		value = @AFRICA_AI_REGIONAL_INDUSTRY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @AFRICA_AI_AUTHORITY_INFANTRY
+	}
+}
+
+africa_high_chaos_actor_survival = {
+	allowed = { always = yes }
+	enable = { has_country_flag = africa_high_chaos_actor }
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		id = infantry
+		value = @AFRICA_AI_BESTIARY_DEFENSE
+	}
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @AFRICA_AI_BESTIARY_RESTRAINT
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @AFRICA_AI_BESTIARY_INFANTRY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_AUTHORITY_SUPPORT
+	}
+}
+
+africa_bestiary_forest_covenant_posture = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_high_chaos_actor
+		OR = {
+			tag = GHP
+			tag = BBS
+			tag = OVN
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @AFRICA_AI_BESTIARY_RESTRAINT
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_BESTIARY_HABITAT
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_BESTIARY_WEB_SUPPORT
+	}
+}
+
+africa_bestiary_river_coast_posture = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_high_chaos_actor
+		OR = {
+			tag = CRR
+			tag = TDM
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_BESTIARY_HABITAT
+	}
+	ai_strategy = {
+		type = build_building
+		id = dockyard
+		value = @AFRICA_AI_BESTIARY_RIVER_COAST
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_AUTHORITY_SUPPORT
+	}
+}
+
+africa_bestiary_ananse_web_posture = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_high_chaos_actor
+		tag = ANW
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @AFRICA_AI_ROUTE_RESTRAINT
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_BESTIARY_WEB_SUPPORT
+	}
+	ai_strategy = {
+		type = build_building
+		id = industrial_complex
+		value = @AFRICA_AI_REGIONAL_INDUSTRY
+	}
+}
+
+africa_bestiary_signal_court_posture = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_high_chaos_actor
+		OR = {
+			tag = CTL
+			tag = OKP
+			tag = HGD
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @AFRICA_AI_ROUTE_RESTRAINT
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_BESTIARY_SIGNAL
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_BESTIARY_WEB_SUPPORT
+	}
+}
+
+africa_bestiary_citadel_engineer_posture = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_high_chaos_actor
+		tag = TRM
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @AFRICA_AI_BESTIARY_RESTRAINT
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_BESTIARY_CITADEL
+	}
+	ai_strategy = {
+		type = build_building
+		id = industrial_complex
+		value = @AFRICA_AI_REGIONAL_INDUSTRY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_BESTIARY_WEB_SUPPORT
+	}
+}
+
+africa_bestiary_great_herds_posture = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_high_chaos_actor
+		tag = GHC
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		id = infantry
+		value = @AFRICA_AI_BESTIARY_DEFENSE
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_BESTIARY_HERD_SUPPLY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @AFRICA_AI_ROUTE_ATTACK
+	}
+}
+
+africa_regional_authority_wac_port_union = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_regional_authority_subject
+		tag = WAC
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_REGIONAL_INTERIOR_SUPPLY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_AUTHORITY_SUPPORT
+	}
+	ai_strategy = {
+		type = build_building
+		id = industrial_complex
+		value = @AFRICA_AI_REGIONAL_INDUSTRY
+	}
+}
+
+africa_regional_authority_sah_oasis_routes = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_regional_authority_subject
+		tag = SAH
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		id = infantry
+		value = @AFRICA_AI_AUTHORITY_DEFENSE
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_REGIONAL_INTERIOR_SUPPLY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @AFRICA_AI_ROUTE_ATTACK
+	}
+}
+
+africa_regional_authority_mag_harbor_compact = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_regional_authority_subject
+		tag = MAG
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_building
+		id = dockyard
+		value = @AFRICA_AI_REGIONAL_NAVAL
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = convoy
+		value = @AFRICA_AI_WORLD_ORDER_CONVOY
+	}
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @AFRICA_AI_AUTHORITY_RESTRAINT
+	}
+}
+
+africa_regional_authority_nhr_highland_survey = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_regional_authority_subject
+		tag = NHR
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		id = infantry
+		value = @AFRICA_AI_AUTHORITY_DEFENSE
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_REGIONAL_INTERIOR_SUPPLY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_WORLD_ORDER_SUPPORT
+	}
+}
+
+africa_regional_authority_eac_railway_board = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_regional_authority_subject
+		tag = EAC
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_REGIONAL_INTERIOR_SUPPLY
+	}
+	ai_strategy = {
+		type = build_building
+		id = industrial_complex
+		value = @AFRICA_AI_REGIONAL_INDUSTRY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_AUTHORITY_SUPPORT
+	}
+}
+
+africa_regional_authority_glk_lake_muster = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_regional_authority_subject
+		tag = GLK
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		id = infantry
+		value = @AFRICA_AI_AUTHORITY_DEFENSE
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @AFRICA_AI_AUTHORITY_INFANTRY
+	}
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @AFRICA_AI_AUTHORITY_RESTRAINT
+	}
+}
+
+africa_regional_authority_cbc_river_quartermasters = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_regional_authority_subject
+		tag = CBC
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_REGIONAL_INTERIOR_SUPPLY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_WORLD_ORDER_SUPPORT
+	}
+	ai_strategy = {
+		type = build_army
+		id = infantry
+		value = @AFRICA_AI_AUTHORITY_DEFENSE
+	}
+}
+
+africa_regional_authority_zsc_stone_city_yards = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_regional_authority_subject
+		tag = ZSC
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_building
+		id = industrial_complex
+		value = @AFRICA_AI_REGIONAL_INDUSTRY
+	}
+	ai_strategy = {
+		type = build_building
+		id = arms_factory
+		value = @AFRICA_AI_REGIONAL_INDUSTRY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @AFRICA_AI_AUTHORITY_INFANTRY
+	}
+}
+
+africa_regional_authority_slc_mine_port_liberation = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_regional_authority_subject
+		tag = SLC
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		id = infantry
+		value = @AFRICA_AI_BESTIARY_DEFENSE
+	}
+	ai_strategy = {
+		type = build_building
+		id = arms_factory
+		value = @AFRICA_AI_REGIONAL_INDUSTRY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @AFRICA_AI_ROUTE_ATTACK
+	}
+}
+
+africa_regional_authority_ioc_monsoon_passages = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_regional_authority_subject
+		tag = IOC
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_building
+		id = dockyard
+		value = @AFRICA_AI_WORLD_ORDER_NAVY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = convoy
+		value = @AFRICA_AI_WORLD_ORDER_CONVOY
+	}
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @AFRICA_AI_ROUTE_RESTRAINT
+	}
+}
+
+africa_bestiary_ghp_sanctuary_watch = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_high_chaos_actor
+		tag = GHP
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		id = infantry
+		value = @AFRICA_AI_BESTIARY_DEFENSE
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_BESTIARY_HABITAT
+	}
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @AFRICA_AI_BESTIARY_RESTRAINT
+	}
+}
+
+africa_bestiary_bbs_memory_speakers = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_high_chaos_actor
+		tag = BBS
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @AFRICA_AI_WORLD_ORDER_RESTRAINT
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_BESTIARY_WEB_SUPPORT
+	}
+	ai_strategy = {
+		type = build_building
+		id = industrial_complex
+		value = @AFRICA_AI_REGIONAL_INDUSTRY
+	}
+}
+
+africa_bestiary_tdm_tidemark_harbors = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_high_chaos_actor
+		tag = TDM
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_building
+		id = dockyard
+		value = @AFRICA_AI_BESTIARY_RIVER_COAST
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = convoy
+		value = @AFRICA_AI_WORLD_ORDER_CONVOY
+	}
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @AFRICA_AI_ROUTE_RESTRAINT
+	}
+}
+
+africa_bestiary_anw_counterfeit_threads = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_high_chaos_actor
+		tag = ANW
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		id = infantry
+		value = @AFRICA_AI_BESTIARY_DEFENSE
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_BESTIARY_WEB_SUPPORT
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_BESTIARY_SIGNAL
+	}
+}
+
+africa_bestiary_ovn_omen_groves = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_high_chaos_actor
+		tag = OVN
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @AFRICA_AI_BESTIARY_RESTRAINT
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_BESTIARY_HABITAT
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_AUTHORITY_SUPPORT
+	}
+}
+
+africa_bestiary_crr_ferry_toll_law = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_high_chaos_actor
+		tag = CRR
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		id = infantry
+		value = @AFRICA_AI_BESTIARY_DEFENSE
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_BESTIARY_HABITAT
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @AFRICA_AI_ROUTE_ATTACK
+	}
+}
+
+africa_bestiary_ctl_canopy_relays = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_high_chaos_actor
+		tag = CTL
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		id = infantry
+		value = @AFRICA_AI_BESTIARY_DEFENSE
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_BESTIARY_SIGNAL
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_BESTIARY_SIGNAL
+	}
+}
+
+africa_bestiary_okp_shadow_paths = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_high_chaos_actor
+		tag = OKP
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @AFRICA_AI_ROUTE_RESTRAINT
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_BESTIARY_WEB_SUPPORT
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_BESTIARY_HABITAT
+	}
+}
+
+africa_bestiary_trm_citadel_surveyors = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_high_chaos_actor
+		tag = TRM
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_BESTIARY_CITADEL
+	}
+	ai_strategy = {
+		type = build_building
+		id = industrial_complex
+		value = @AFRICA_AI_REGIONAL_INDUSTRY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_BESTIARY_WEB_SUPPORT
+	}
+}
+
+africa_bestiary_hgd_route_hives = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_high_chaos_actor
+		tag = HGD
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_BESTIARY_SIGNAL
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = convoy
+		value = @AFRICA_AI_WORLD_ORDER_CONVOY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_BESTIARY_WEB_SUPPORT
+	}
+}
+
+africa_bestiary_ghc_migration_corridors = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_high_chaos_actor
+		tag = GHC
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		id = infantry
+		value = @AFRICA_AI_BESTIARY_DEFENSE
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_BESTIARY_HERD_SUPPLY
+	}
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @AFRICA_AI_BESTIARY_RESTRAINT
+	}
+}
