@@ -233,6 +233,66 @@ africa_can_secure_integration_rail_for_root = {
 	is_controlled_by_root_or_loyal_charter_actor = yes
 }
 
+has_africa_regional_state_operation_active = {
+	OR = {
+		has_country_flag = africa_regional_state_operation_active
+		has_country_flag = africa_paper_claim_survey_operation_active
+		has_country_flag = africa_living_core_operation_active
+		has_country_flag = africa_integration_rail_operation_active
+	}
+	has_event_target = africa_regional_integration_operation_state
+}
+
+can_africa_start_paper_claim_survey_operation = {
+	is_africa_runtime_unifier = yes
+	NOT = { has_africa_regional_state_operation_active = yes }
+}
+
+can_africa_keep_paper_claim_survey_operation_active = {
+	is_africa_runtime_unifier = yes
+	has_country_flag = africa_paper_claim_survey_operation_active
+	has_event_target = africa_regional_integration_operation_state
+	event_target:africa_regional_integration_operation_state = {
+		is_africa_paper_claim_state = yes
+		NOT = { has_state_flag = africa_integration_unlocked }
+	}
+}
+
+can_africa_start_living_core_operation = {
+	is_africa_runtime_unifier = yes
+	check_variable = {
+		var = africa_authority
+		value = constant:africa_decision.living_core_authority_gate
+		compare = greater_than_or_equals
+	}
+	NOT = { has_africa_regional_state_operation_active = yes }
+}
+
+can_africa_keep_living_core_operation_active = {
+	is_africa_runtime_unifier = yes
+	has_country_flag = africa_living_core_operation_active
+	has_event_target = africa_regional_integration_operation_state
+	event_target:africa_regional_integration_operation_state = {
+		can_africa_living_core_state_for_prev = yes
+	}
+}
+
+can_africa_start_integration_rail_operation = {
+	is_africa_runtime_unifier = yes
+	has_country_flag = africa_lake_rail_agreements_complete
+	NOT = { has_africa_regional_state_operation_active = yes }
+}
+
+can_africa_keep_integration_rail_operation_active = {
+	is_africa_runtime_unifier = yes
+	has_country_flag = africa_integration_rail_operation_active
+	has_event_target = africa_regional_integration_operation_state
+	event_target:africa_regional_integration_operation_state = {
+		africa_can_secure_integration_rail_for_root = yes
+		NOT = { has_state_flag = africa_authority_tracked }
+	}
+}
+
 is_africa_high_chaos_habitat_seat_state = {
 	OR = {
 		state = @africa_ghp_seat_state

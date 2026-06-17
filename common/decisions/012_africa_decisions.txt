@@ -1197,25 +1197,34 @@ africa_regional_integration_category = {
 		state_target = africa
 		on_map_mode = map_and_decisions_view
 		cost = constant:africa_decision.state_survey_cost
-		days_re_enable = constant:africa_decision_days.state_survey
+		days_remove = constant:africa_decision_days.state_survey
 		target_root_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_survey_paper_claim_state_root_req_tt
-				is_africa_runtime_unifier = yes
+				can_africa_start_paper_claim_survey_operation = yes
 			}
 		}
 		target_trigger = {
 			FROM = {
 				is_africa_paper_claim_state = yes
 				NOT = { has_state_flag = africa_integration_unlocked }
+				NOT = { has_state_flag = africa_paper_claim_survey_operation_target }
 			}
 		}
 		complete_effect = {
+			custom_effect_tooltip = africa_survey_paper_claim_state_start_tt
+			africa_start_paper_claim_survey_operation_from_from = yes
+		}
+		cancel_trigger = {
+			NOT = { can_africa_keep_paper_claim_survey_operation_active = yes }
+		}
+		cancel_effect = {
+			custom_effect_tooltip = africa_regional_state_operation_failure_tt
+			africa_fail_paper_claim_survey_operation = yes
+		}
+		remove_effect = {
 			custom_effect_tooltip = africa_survey_paper_claim_state_effect_tt
-			africa_unlock_state_integration_from_from = yes
-			add_to_variable = { africa_authority = constant:africa_value_delta.integration_authority }
-			africa_refresh_integration_target_states = yes
-			africa_clamp_core_values = yes
+			africa_complete_paper_claim_survey_operation = yes
 		}
 		ai_will_do = { base = constant:africa_ai.normal }
 	}
@@ -1225,21 +1234,17 @@ africa_regional_integration_category = {
 		state_target = africa
 		on_map_mode = map_and_decisions_view
 		cost = constant:africa_decision.state_integration_cost
-		days_re_enable = constant:africa_decision_days.state_integration
+		days_remove = constant:africa_decision_days.state_integration
 		target_root_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_complete_living_core_state_root_req_tt
-				is_africa_runtime_unifier = yes
-				check_variable = {
-					var = africa_authority
-					value = constant:africa_decision.living_core_authority_gate
-					compare = greater_than_or_equals
-				}
+				can_africa_start_living_core_operation = yes
 			}
 		}
 		target_trigger = {
 			FROM = {
 				can_africa_living_core_state_for_prev = yes
+				NOT = { has_state_flag = africa_living_core_operation_target }
 			}
 		}
 		custom_cost_trigger = {
@@ -1250,20 +1255,19 @@ africa_regional_integration_category = {
 		}
 		custom_cost_text = africa_complete_living_core_state_cost_tt
 		complete_effect = {
+			custom_effect_tooltip = africa_complete_living_core_state_start_tt
+			africa_start_living_core_operation_from_from = yes
+		}
+		cancel_trigger = {
+			NOT = { can_africa_keep_living_core_operation_active = yes }
+		}
+		cancel_effect = {
+			custom_effect_tooltip = africa_regional_state_operation_failure_tt
+			africa_fail_living_core_operation = yes
+		}
+		remove_effect = {
 			custom_effect_tooltip = africa_complete_living_core_state_effect_tt
-			add_manpower = constant:africa_force.integration_manpower_spend
-			africa_complete_living_core_from_from = yes
-			add_to_variable = { africa_paper_core_burden = constant:africa_value_delta.integration_burden_relief }
-			add_to_variable = { africa_authority = constant:africa_value_delta.integration_authority }
-			africa_refresh_integration_target_states = yes
-			africa_clamp_core_values = yes
-			if = {
-				limit = {
-					NOT = { has_country_flag = africa_regional_integration_mission_active }
-					NOT = { has_country_flag = africa_regional_integration_mission_success }
-				}
-				set_country_flag = africa_regional_integration_mission_active
-			}
+			africa_complete_living_core_operation = yes
 		}
 		ai_will_do = { base = constant:africa_ai.preferred }
 	}
@@ -1277,8 +1281,7 @@ africa_regional_integration_category = {
 		target_root_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_secure_integration_rail_belt_root_req_tt
-				is_africa_runtime_unifier = yes
-				has_country_flag = africa_lake_rail_agreements_complete
+				can_africa_start_integration_rail_operation = yes
 			}
 		}
 		target_trigger = {
@@ -1286,6 +1289,7 @@ africa_regional_integration_category = {
 				is_africa_integration_unlocked_state = yes
 				africa_can_secure_integration_rail_for_root = yes
 				NOT = { has_state_flag = africa_authority_tracked }
+				NOT = { has_state_flag = africa_integration_rail_operation_target }
 			}
 		}
 		custom_cost_trigger = {
@@ -1296,18 +1300,19 @@ africa_regional_integration_category = {
 		}
 		custom_cost_text = africa_secure_integration_rail_belt_cost_tt
 		complete_effect = {
+			custom_effect_tooltip = africa_secure_integration_rail_belt_start_tt
+			africa_start_integration_rail_operation_from_from = yes
+		}
+		cancel_trigger = {
+			NOT = { can_africa_keep_integration_rail_operation_active = yes }
+		}
+		cancel_effect = {
+			custom_effect_tooltip = africa_regional_state_operation_failure_tt
+			africa_fail_integration_rail_operation = yes
+		}
+		remove_effect = {
 			custom_effect_tooltip = africa_secure_integration_rail_belt_effect_tt
-			set_temp_variable = { africa_integration_rail_support_cost = constant:africa_force.integration_rail_support_equipment }
-			multiply_temp_variable = { africa_integration_rail_support_cost = -1 }
-			add_equipment_to_stockpile = { type = support_equipment amount = africa_integration_rail_support_cost }
-			africa_mark_state_authority_tracked_from_from = yes
-			africa_mark_regional_rail_region_from_from = yes
-			FROM = {
-				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
-			}
-			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
-			add_to_variable = { africa_paper_core_burden = constant:africa_value_delta.integration_burden_relief }
-			africa_clamp_core_values = yes
+			africa_complete_integration_rail_operation = yes
 		}
 		ai_will_do = { base = constant:africa_ai.normal }
 	}
