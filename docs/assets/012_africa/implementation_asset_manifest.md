@@ -131,6 +131,37 @@ Archive/Bestiary batch 3 achievement icons are live for:
 
 Each has normal, `_grey`, and `_not_eligible` DDS variants in `gfx/achievements/` plus source/processed PNGs, DDS copies, and contact sheets under `docs/assets/012_africa/achievement_icons_archive_bestiary_batch_3/`.
 
+Prompt-completion achievement icon batches 4-6 are live for:
+
+- `ACH_AFR_THE_ALLIES_SIGN`
+- `ACH_AFR_ELEPHANTS_REMEMBER`
+- `ACH_AFR_ANANSE_WROTE_THE_ORDERS`
+- `ACH_AFR_TIDE_TOOK_THE_PORT`
+- `ACH_AFR_FOREST_GUARDIAN_PACT`
+- `ACH_AFR_BIGGER_CARAVAN`
+- `ACH_AFR_NOT_A_MAP_COLOUR`
+- `ACH_AFR_CONGRESS_OVER_COMMAND`
+- `ACH_AFR_COMMAND_OVER_CONGRESS`
+- `ACH_AFR_OLD_THRONES_VOTE`
+- `ACH_AFR_EVERY_CAPITAL_HEARD_THE_DRUM`
+- `ACH_AFR_WORLD_SCHOOL`
+- `ACH_AFR_AFRO_ASIAN_VECTOR`
+- `ACH_AFR_AFRO_EURASIAN_QUESTION`
+- `ACH_AFR_WORLD_IS_ONE`
+- `ACH_AFR_NO_FALSE_BEASTS`
+- `ACH_AFR_FOREST_VOTES_NO`
+- `ACH_AFR_NO_IVORY_TREASURY`
+- `ACH_AFR_TREATY_WITH_TEETH`
+- `ACH_AFR_WORLD_HAS_ROOTS`
+- `ACH_AFR_SMALL_THRONES_SIT_TOGETHER`
+- `ACH_AFR_NO_MAP_CAN_HOLD_THIS`
+- `ACH_AFR_WALKING_WALLS`
+- `ACH_AFR_ARCHIVE_UNBROKEN`
+- `ACH_AFR_CORAL_ADMIRALTY`
+- `ACH_AFR_KUOMBOKA_ARMY`
+
+Each has normal, `_grey`, and `_not_eligible` DDS variants in `gfx/achievements/`, sprite registrations in `interface/chaosx_achievements.gfx`, and source/processed PNGs, DDS copies, contact sheets, and manifests under `docs/assets/012_africa/achievement_icons_prompt_completion_batch_4/`, `docs/assets/012_africa/achievement_icons_prompt_completion_batch_5/`, and `docs/assets/012_africa/achievement_icons_prompt_completion_batch_6/`.
+
 ## Animated Assets
 
 Frame sources and contact sheets live under `docs/assets/012_africa/icons_animation/frames/` and `docs/assets/012_africa/icons_animation/previews/`.
