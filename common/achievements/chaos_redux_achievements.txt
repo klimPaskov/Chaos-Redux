@@ -7,6 +7,10 @@
 
 unique_id = chaos_redux_achievements
 
+@africa_rsa_transvaal_state = 275
+@africa_rsa_cape_state = 681
+@africa_rsa_natal_state = 719
+
 #############################
 # LEGENDARY
 #############################
@@ -2151,6 +2155,413 @@ death_black_apostolate = {
 		custom_override_tooltip = {
 			tooltip = death_black_apostolate_tooltip
 			has_country_flag = death_black_apostolate_ready
+		}
+	}
+	hidden = yes
+}
+
+#############################
+# EVENT 012 - AFRICA ACHIEVEMENTS
+#############################
+
+ACH_AFR_CHARTER_WITH_TEETH = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_AFR_CHARTER_WITH_TEETH_tooltip
+			is_ai = no
+			has_country_flag = africa_unifier_active
+			has_global_flag = africa_charter_league_created
+			check_variable = { var = africa_regional_authority_count value = constant:achievement_threshold.africa.regional_authorities compare = greater_than_or_equals }
+		}
+	}
+}
+
+ACH_AFR_CHARTER_WITHOUT_CHAINS = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_AFR_CHARTER_WITHOUT_CHAINS_tooltip
+			is_ai = no
+			has_country_flag = africa_unifier_active
+			has_country_flag = africa_route_federal_charter
+			has_country_flag = africa_integrated_regions_open
+			check_variable = { var = africa_voluntary_charter_member_count value = constant:achievement_threshold.africa.voluntary_charter_members compare = greater_than_or_equals }
+			NOT = { has_country_flag = africa_forced_integration_war_disqualifier }
+			NOT = { has_country_flag = africa_bestiary_nature_courts_covenant }
+		}
+	}
+}
+
+ACH_AFR_ARCHIVE_OF_OLD_SEATS = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_AFR_ARCHIVE_OF_OLD_SEATS_tooltip
+			is_ai = no
+			has_country_flag = africa_unifier_active
+			check_variable = { var = africa_dossier_observer_settlement_count value = constant:achievement_threshold.africa.peaceful_dossier_settlements compare = greater_than_or_equals }
+			check_variable = { var = africa_dossier_macro_region_count value = constant:achievement_threshold.africa.dossier_macro_regions compare = greater_than_or_equals }
+			check_variable = { var = africa_dossier_direct_archive_settlement_count value = constant:achievement_threshold.africa.direct_archive_settlement_disqualifier compare = less_than }
+		}
+	}
+}
+
+ACH_AFR_NO_COUNTERFEIT_CROWNS = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_AFR_NO_COUNTERFEIT_CROWNS_tooltip
+			is_ai = no
+			has_country_flag = africa_unifier_active
+			has_global_flag = africa_is_one_complete
+			has_country_flag = africa_archive_old_seats_open
+			has_country_flag = africa_settlement_respect_old_seats
+			has_country_flag = africa_anti_museum_drift_open
+			has_country_flag = africa_archive_guard_mission_success
+			check_variable = { var = africa_old_seat_legitimacy value = constant:achievement_threshold.africa.old_seat_legitimacy_high compare = greater_than_or_equals }
+			check_variable = { var = africa_dossier_direct_archive_settlement_count value = constant:achievement_threshold.africa.direct_archive_settlement_disqualifier compare = less_than }
+			NOT = { has_country_flag = africa_direct_archive_seal_exposed }
+			NOT = { has_country_flag = africa_direct_archive_seal_mission_failed }
+			NOT = { has_global_flag = africa_counterfeit_crowns_super_event_fired }
+		}
+	}
+}
+
+ACH_AFR_BESTIARY_HAS_A_SEAT = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_AFR_BESTIARY_HAS_A_SEAT_tooltip
+			is_ai = no
+			has_country_flag = africa_unifier_active
+			check_variable = { var = africa_unlocked_high_chaos_package_count value = constant:achievement_threshold.africa.high_chaos_packages compare = greater_than_or_equals }
+			check_variable = { var = africa_high_chaos_actor_count value = constant:achievement_threshold.africa.high_chaos_packages compare = greater_than_or_equals }
+			check_variable = { var = africa_bestiary_habitat_seat_count value = constant:africa_mission_goal.bestiary_secured_habitats compare = greater_than_or_equals }
+			check_variable = { var = africa_bestiary_package_action_count value = constant:africa_mission_goal.bestiary_package_actions compare = greater_than_or_equals }
+			has_country_flag = africa_minimum_high_chaos_packages_ready
+			has_country_flag = africa_bestiary_containment_mission_success
+			any_other_country = {
+				has_country_flag = africa_high_chaos_actor
+				OR = {
+					has_country_flag = africa_gorilla_highlands_forest_guard_called
+					has_country_flag = africa_crocodile_river_crossings_held
+					has_country_flag = africa_baobab_memory_arbitration_convened
+					has_country_flag = africa_tidemark_convoy_watch_kept
+					has_country_flag = africa_ananse_counterfeit_treaties_audited
+					has_country_flag = africa_orisha_vodun_nature_court_called
+					has_country_flag = africa_chimpanzee_telegraph_relays_tasked
+					has_country_flag = africa_okapi_shadow_dossiers_requested
+					has_country_flag = africa_termite_citadel_engineers_commissioned
+					has_country_flag = africa_honeyguide_commons_aid_routes_open
+					has_country_flag = africa_great_herds_relief_columns_mustered
+				}
+			}
+		}
+	}
+}
+
+ACH_AFR_THE_FOREST_SIGNED_BACK = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_AFR_THE_FOREST_SIGNED_BACK_tooltip
+			is_ai = no
+			has_country_flag = africa_unifier_active
+			has_global_flag = africa_is_one_complete
+			has_country_flag = africa_bestiary_habitat_terms_negotiated
+			has_country_flag = africa_bestiary_containment_mission_success
+			has_country_flag = africa_bestiary_gorilla_highlands_guard
+			has_country_flag = africa_bestiary_chimpanzee_marshes_scouts
+			has_country_flag = africa_bestiary_okapi_court_observers
+			check_variable = { var = africa_bestiary_habitat_seat_count value = constant:achievement_threshold.africa.forest_delegations compare = greater_than_or_equals }
+			check_variable = { var = africa_high_chaos_actor_count value = constant:achievement_threshold.africa.forest_delegations compare = greater_than_or_equals }
+			GHP = {
+				exists = yes
+				has_country_flag = africa_high_chaos_actor
+				has_country_flag = africa_bestiary_actor_bound_to_charter
+				has_country_flag = africa_gorilla_highlands_forest_guard_called
+			}
+			CTL = {
+				exists = yes
+				has_country_flag = africa_high_chaos_actor
+				has_country_flag = africa_bestiary_actor_bound_to_charter
+				has_country_flag = africa_chimpanzee_telegraph_relays_tasked
+			}
+			OKP = {
+				exists = yes
+				has_country_flag = africa_high_chaos_actor
+				has_country_flag = africa_bestiary_actor_bound_to_charter
+				has_country_flag = africa_okapi_shadow_dossiers_requested
+			}
+			NOT = { has_country_flag = africa_settlement_direct_archive_seal }
+			NOT = { has_country_flag = africa_direct_archive_seal_exposed }
+			NOT = { has_global_flag = africa_counterfeit_crowns_super_event_fired }
+		}
+	}
+	hidden = yes
+}
+
+ACH_AFR_NOT_PAPER_ANYMORE = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_AFR_NOT_PAPER_ANYMORE_tooltip
+			is_ai = no
+			has_country_flag = africa_unifier_active
+			check_variable = { var = africa_living_core_count value = constant:achievement_threshold.africa.living_cores compare = greater_than_or_equals }
+		}
+	}
+}
+
+ACH_AFR_NO_SECOND_SCRAMBLE = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_AFR_NO_SECOND_SCRAMBLE_tooltip
+			is_ai = no
+			has_country_flag = africa_unifier_active
+			has_global_flag = africa_scramble_super_event_fired
+			has_country_flag = africa_scramble_counter_dockets_open
+			has_country_flag = africa_scramble_treaty_mission_success
+			has_country_flag = africa_scramble_all_external_holders_settled
+			has_country_flag = africa_continental_register_ready
+			check_variable = { var = africa_scramble_external_holder_count value = constant:africa_mission_goal.scramble_treaty_minimum_holders compare = greater_than_or_equals }
+			capital_scope = { is_controlled_by = ROOT }
+			NOT = { has_global_flag = world_end_africa_world_is_one }
+		}
+	}
+}
+
+ACH_AFR_PAPER_TO_LIVING = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_AFR_PAPER_TO_LIVING_tooltip
+			is_ai = no
+			has_country_flag = africa_unifier_active
+			has_country_flag = africa_regional_integration_mission_success
+			check_variable = { var = africa_living_core_count value = constant:achievement_threshold.africa.living_cores compare = greater_than_or_equals }
+			check_variable = { var = africa_paper_core_burden value = constant:achievement_threshold.africa.paper_core_burden_safe_ceiling compare = less_than }
+		}
+	}
+}
+
+ACH_AFR_ONE_BUT_NOT_ALONE = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_AFR_ONE_BUT_NOT_ALONE_tooltip
+			is_ai = no
+			has_country_flag = africa_unifier_active
+			has_global_flag = africa_is_one_complete
+			has_country_flag = africa_autonomous_regions_open
+			has_country_flag = africa_continental_register_ready
+			check_variable = { var = africa_regional_authority_count value = constant:achievement_threshold.africa.loyal_authorities compare = greater_than_or_equals }
+		}
+	}
+}
+
+ACH_AFR_ALLIES_MADE_PEACE = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_AFR_ALLIES_MADE_PEACE_tooltip
+			is_ai = no
+			has_country_flag = africa_unifier_active
+			has_global_flag = africa_rsa_allies_branch_started
+			has_global_flag = africa_rsa_continental_victory
+			has_global_flag = africa_rsa_allied_peace_done
+		}
+	}
+	hidden = yes
+}
+
+ACH_AFR_RSA_THE_UNION_BREAKS = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_AFR_RSA_THE_UNION_BREAKS_tooltip
+			is_ai = no
+			has_country_flag = africa_rsa_continental_side
+			has_country_flag = africa_rsa_pretoria_mission_success
+			has_global_flag = africa_rsa_allies_branch_started
+			has_global_flag = africa_rsa_continental_victory
+			has_global_flag = africa_rsa_allied_peace_done
+			controls_state = @africa_rsa_transvaal_state
+			controls_state = @africa_rsa_cape_state
+			controls_state = @africa_rsa_natal_state
+		}
+	}
+}
+
+ACH_AFR_RETURN_PASSAGES = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_AFR_RETURN_PASSAGES_tooltip
+			is_ai = no
+			has_country_flag = africa_unifier_active
+			has_country_flag = africa_return_cadres_invited
+			has_country_flag = africa_return_settlement_built
+			has_country_flag = africa_diaspora_officer_schools_ready
+			has_country_flag = africa_pan_atlantic_congress_held
+		}
+	}
+}
+
+ACH_AFR_KILWA_TO_KUSH_LEDGER = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_AFR_KILWA_TO_KUSH_LEDGER_tooltip
+			is_ai = no
+			has_country_flag = africa_unifier_active
+			has_country_flag = africa_archive_guard_mission_success
+			has_country_flag = africa_dossier_101_settled
+			has_country_flag = africa_dossier_102_settled
+			OR = {
+				has_country_flag = africa_dossier_120_settled
+				has_country_flag = africa_dossier_121_settled
+			}
+			has_country_flag = africa_dossier_128_settled
+		}
+	}
+}
+
+ACH_AFR_BAOBAB_FILIBUSTER = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_AFR_BAOBAB_FILIBUSTER_tooltip
+			is_ai = no
+			has_country_flag = africa_unifier_active
+			has_global_flag = africa_is_one_complete
+			has_country_flag = africa_bestiary_baobab_senate_records
+			has_country_flag = africa_bestiary_containment_mission_success
+			BBS = {
+				exists = yes
+				has_country_flag = africa_high_chaos_actor
+				has_country_flag = africa_bestiary_actor_bound_to_charter
+				has_country_flag = africa_baobab_memory_arbitration_convened
+				NOT = { has_capitulated = yes }
+			}
+			NOT = { has_country_flag = africa_direct_archive_seal_exposed }
+			NOT = { has_global_flag = africa_counterfeit_crowns_super_event_fired }
+		}
+	}
+	hidden = yes
+}
+
+ACH_AFR_OLD_SEATS_NEW_UNION = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_AFR_OLD_SEATS_NEW_UNION_tooltip
+			is_ai = no
+			has_country_flag = africa_unifier_active
+			has_global_flag = africa_is_one_complete
+			has_country_flag = africa_archive_old_seats_open
+			has_country_flag = africa_settlement_respect_old_seats
+			has_country_flag = africa_anti_museum_drift_open
+			has_country_flag = africa_continental_register_ready
+			has_country_flag = africa_dynamic_cross_continent_union_complete
+			check_variable = { var = africa_old_seat_legitimacy value = constant:achievement_threshold.africa.old_seat_legitimacy_high compare = greater_than_or_equals }
+			check_variable = { var = africa_dossier_observer_settlement_count value = constant:achievement_threshold.africa.peaceful_dossier_settlements compare = greater_than_or_equals }
+			check_variable = { var = africa_dossier_macro_region_count value = constant:achievement_threshold.africa.dossier_macro_regions compare = greater_than_or_equals }
+			check_variable = { var = africa_dossier_direct_archive_settlement_count value = constant:achievement_threshold.africa.direct_archive_settlement_disqualifier compare = less_than }
+			NOT = { has_country_flag = africa_settlement_direct_archive_seal }
+			NOT = { has_country_flag = africa_direct_archive_seal_exposed }
+			NOT = { has_global_flag = africa_counterfeit_crowns_super_event_fired }
+		}
+	}
+	hidden = yes
+}
+
+ACH_AFR_CHARTER_HAS_TOO_MANY_SIGNATURES = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_AFR_CHARTER_HAS_TOO_MANY_SIGNATURES_tooltip
+			is_ai = no
+			has_country_flag = africa_unifier_active
+				has_global_flag = world_end_africa_world_is_one
+				has_global_flag = africa_world_is_one_gate_ready
+				has_global_flag = all_continent_unifiers_world_end_ready
+				has_global_flag = middle_east_continent_unifier_world_end_ready
+				has_global_flag = asia_continent_unifier_world_end_ready
+				has_global_flag = europe_continent_unifier_world_end_ready
+				has_global_flag = south_atlantic_continent_unifier_world_end_ready
+				has_country_flag = africa_continent_unifiers_certified_for_world_is_one
+				has_country_flag = africa_external_continent_unifier_proofs_ready
+			has_country_flag = africa_minimum_historical_dossiers_ready
+			has_country_flag = africa_all_high_chaos_packages_unlocked
+			has_country_flag = africa_bestiary_gorilla_highlands_guard
+			has_country_flag = africa_bestiary_chimpanzee_marshes_scouts
+			has_country_flag = africa_bestiary_okapi_court_observers
+			has_country_flag = africa_bestiary_crocodile_rivers_toll
+			has_country_flag = africa_bestiary_baobab_senate_records
+			has_country_flag = africa_bestiary_termite_surveyors_repair_crews
+			has_country_flag = africa_bestiary_honeyguide_commons_routes
+			has_country_flag = africa_bestiary_great_herd_migration_compact
+			has_country_flag = africa_bestiary_tidemark_dominion_tides
+			has_country_flag = africa_bestiary_ananse_ledger_counterfeit_watch
+			has_country_flag = africa_bestiary_nature_courts_covenant
+		}
+	}
+	hidden = yes
+}
+
+ACH_AFR_CONTINENTS_HAVE_A_CONGRESS = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_AFR_CONTINENTS_HAVE_A_CONGRESS_tooltip
+			is_ai = no
+			has_country_flag = africa_unifier_active
+			has_country_flag = africa_sponsored_middle_east_charter
+			has_country_flag = africa_sponsored_asia_charter
+				has_country_flag = africa_sponsored_europe_charter
+					has_country_flag = africa_sponsored_south_atlantic_charter
+					has_country_flag = africa_dynamic_cross_continent_union_complete
+					has_global_flag = middle_east_continent_unifier_world_end_ready
+					has_global_flag = asia_continent_unifier_world_end_ready
+					has_global_flag = europe_continent_unifier_world_end_ready
+					has_global_flag = south_atlantic_continent_unifier_world_end_ready
+					has_country_flag = africa_external_continent_unifier_proofs_ready
+					has_global_flag = africa_dynamic_cross_continent_union_super_event_fired
+				NOT = { has_global_flag = world_end_africa_world_is_one }
+		}
+	}
+	hidden = yes
+}
+
+ACH_AFR_WORLD_IS_ONE_ONLY_AFTER_AFRICA = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_AFR_WORLD_IS_ONE_ONLY_AFTER_AFRICA_tooltip
+			is_ai = no
+			has_country_flag = africa_unifier_active
+			has_global_flag = world_end
+			has_global_flag = world_end_africa_world_is_one
+			has_global_flag = africa_world_is_one_gate_ready
+			has_global_flag = { flag = chaos_tier value = 5 }
+					has_global_flag = all_continent_unifiers_world_end_ready
+					has_global_flag = middle_east_continent_unifier_world_end_ready
+					has_global_flag = asia_continent_unifier_world_end_ready
+					has_global_flag = europe_continent_unifier_world_end_ready
+					has_global_flag = south_atlantic_continent_unifier_world_end_ready
+					has_global_flag = africa_is_one_complete
+					has_country_flag = africa_continent_unifiers_certified_for_world_is_one
+				has_country_flag = africa_external_continent_unifier_proofs_ready
+				has_country_flag = africa_sponsored_middle_east_charter
+			has_country_flag = africa_sponsored_asia_charter
+			has_country_flag = africa_sponsored_europe_charter
+			has_country_flag = africa_sponsored_south_atlantic_charter
+			has_country_flag = africa_dynamic_cross_continent_union_complete
+			has_country_flag = africa_minimum_historical_dossiers_ready
+			has_country_flag = africa_minimum_high_chaos_packages_ready
 		}
 	}
 	hidden = yes

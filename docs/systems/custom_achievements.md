@@ -65,6 +65,26 @@ Three internal rarity groups are now represented in the achievement list order:
   - `death_before_the_name`
   - `death_the_living_conference`
   - `death_six_continents_one_color`
+- Event 012 Africa
+  - `ACH_AFR_CHARTER_WITH_TEETH`
+  - `ACH_AFR_CHARTER_WITHOUT_CHAINS`
+  - `ACH_AFR_ARCHIVE_OF_OLD_SEATS`
+  - `ACH_AFR_NO_COUNTERFEIT_CROWNS`
+  - `ACH_AFR_BESTIARY_HAS_A_SEAT`
+  - `ACH_AFR_THE_FOREST_SIGNED_BACK`
+  - `ACH_AFR_NOT_PAPER_ANYMORE`
+  - `ACH_AFR_NO_SECOND_SCRAMBLE`
+  - `ACH_AFR_PAPER_TO_LIVING`
+  - `ACH_AFR_ONE_BUT_NOT_ALONE`
+  - `ACH_AFR_ALLIES_MADE_PEACE`
+  - `ACH_AFR_RSA_THE_UNION_BREAKS`
+  - `ACH_AFR_RETURN_PASSAGES`
+  - `ACH_AFR_KILWA_TO_KUSH_LEDGER`
+  - `ACH_AFR_BAOBAB_FILIBUSTER`
+  - `ACH_AFR_OLD_SEATS_NEW_UNION`
+  - `ACH_AFR_CHARTER_HAS_TOO_MANY_SIGNATURES`
+  - `ACH_AFR_CONTINENTS_HAVE_A_CONGRESS`
+  - `ACH_AFR_WORLD_IS_ONE_ONLY_AFTER_AFRICA`
 - Event 013 Natural Disasters
   - `ACH_ND_RING_THE_BELL`
   - `ACH_ND_ENGINEERS_OF_THE_RUBBLE`
@@ -234,6 +254,47 @@ Queued but not active:
   - Held until a full Black Oath/Herald route exists.
 - `death_book_burner`
   - Held until a full Dark Methods route exists.
+
+### Event 012 Africa
+
+- `ACH_AFR_CHARTER_WITH_TEETH`
+  - As Africa, create the Charter League and bind at least six regional authority subjects.
+- `ACH_AFR_CHARTER_WITHOUT_CHAINS`
+  - As Africa, take the Federal Charter route, open Integrated Regions, keep at least six unique African-capital countries as full Charter members, and avoid Charter resistance wars or the Nature Courts covenant outcome.
+- `ACH_AFR_ARCHIVE_OF_OLD_SEATS`
+  - As Africa, peacefully settle at least twelve historical Authority Atlas dossiers across five macro-regions without direct Archive settlement.
+- `ACH_AFR_NO_COUNTERFEIT_CROWNS`
+  - As Africa, complete Africa Is One through the respectful Archive route, complete the Archive guard mission, reach at least 48 Old-Seat Legitimacy, and avoid direct Archive settlement or any counterfeit crown exposure.
+- `ACH_AFR_BESTIARY_HAS_A_SEAT`
+  - As Africa, unlock at least six high-chaos packages, create six explicit Bestiary actors, secure the required Bestiary habitat seats, complete the required Bestiary actions, complete the Bestiary containment mission, and perform at least one explicit actor action.
+- `ACH_AFR_THE_FOREST_SIGNED_BACK` (hidden)
+  - As Africa, complete Africa Is One after recognizing Gorilla Highlands, Chimpanzee Telegraph, and Okapi Forest, binding all three actors to the Charter, securing habitat seats, and completing their actor actions without direct Archive settlement or counterfeit exposure.
+- `ACH_AFR_NOT_PAPER_ANYMORE`
+  - As Africa, complete at least twelve living-core integrations.
+- `ACH_AFR_NO_SECOND_SCRAMBLE`
+  - As Africa, trigger the Scramble super-event, open counter-dockets, settle every registered outside holder through the Scramble treaty mission, complete the Continental Register, and still control the capital before World Is One begins.
+- `ACH_AFR_PAPER_TO_LIVING`
+  - As Africa, complete the regional integration mission, reach twelve living cores, and keep Paper-Core Burden below the safe ceiling.
+- `ACH_AFR_ONE_BUT_NOT_ALONE`
+  - As Africa, complete Africa Is One through the autonomous regions route with the Continental Register and at least five regional authorities.
+- `ACH_AFR_ALLIES_MADE_PEACE`
+  - As the RSA continental side, win the RSA civil war and force Allied countries still at war with the Charter side to make peace.
+- `ACH_AFR_RSA_THE_UNION_BREAKS`
+  - As the RSA continental side, complete the Pretoria Deadline, win the civil war, force Allied peace, and control Transvaal, Cape, and Natal.
+- `ACH_AFR_RETURN_PASSAGES`
+  - As Africa, invite return cadres, build a return settlement, form diaspora officer schools, and hold the Pan-Atlantic Congress.
+- `ACH_AFR_KILWA_TO_KUSH_LEDGER`
+  - As Africa, complete the Archive guard mission and settle the Kush/Meroe, Aksum, Kilwa or Swahili Coast, and Great Zimbabwe dossier chain.
+- `ACH_AFR_BAOBAB_FILIBUSTER` (hidden)
+  - As Africa, complete Africa Is One after recognizing the Baobab Senate, binding it to the Charter, completing Bestiary containment, convening Baobab memory arbitration, and keeping the Baobab Senate intact without counterfeit exposure.
+- `ACH_AFR_OLD_SEATS_NEW_UNION` (hidden)
+  - As Africa, proclaim a dynamic cross-continent union while the respectful Archive route, Continental Register, at least 48 Old-Seat Legitimacy, and peaceful macro-regional dossier settlements remain intact without direct Archive settlement or counterfeit exposure.
+- `ACH_AFR_CHARTER_HAS_TOO_MANY_SIGNATURES`
+  - As Africa, enter World Is One with certified continent-unifier readiness, the historical dossier threshold, all Bestiary packages unlocked, and key impossible signatory outcomes recognized.
+- `ACH_AFR_CONTINENTS_HAVE_A_CONGRESS`
+  - As Africa, prepare the Middle East, Asia, Europe, and South Atlantic charter sponsorship routes, then proclaim a dynamic cross-continent union before World Is One begins.
+- `ACH_AFR_WORLD_IS_ONE_ONLY_AFTER_AFRICA`
+  - As Africa, prepare the World Is One gate in Totalen Chaos after Africa is complete, all four sponsor charters and the dynamic cross-continent union are certified, regional authority and living-core thresholds are met, and the required historical dossier and Bestiary thresholds are reached.
 
 ### Event 013 Natural Disasters
 

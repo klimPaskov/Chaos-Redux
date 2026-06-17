@@ -79,13 +79,13 @@ Add these achievement designs:
 
 Implement the additional Archive/Bestiary achievements listed below and in this prompt:
 
-- `chaosx_afr_archive_of_old_seats`
-- `chaosx_afr_no_counterfeit_crowns`
-- `chaosx_afr_the_forest_signed_back`
-- `chaosx_afr_baobab_filibuster`
-- `chaosx_afr_kilwa_to_kush_ledger`
-- `chaosx_afr_old_seats_new_union`
-- `chaosx_afr_charter_has_too_many_signatures`
+- `ACH_AFR_ARCHIVE_OF_OLD_SEATS`
+- `ACH_AFR_NO_COUNTERFEIT_CROWNS`
+- `ACH_AFR_THE_FOREST_SIGNED_BACK`
+- `ACH_AFR_BAOBAB_FILIBUSTER`
+- `ACH_AFR_KILWA_TO_KUSH_LEDGER`
+- `ACH_AFR_OLD_SEATS_NEW_UNION`
+- `ACH_AFR_CHARTER_HAS_TOO_MANY_SIGNATURES`
 
 Add tracking flags/variables for peaceful dossier maturation, forgery disqualifiers, nonhuman loyalty, monument/state retention, old-seat chamber status, and World Is One + impossible-signatory conditions. Achievement icons are part of the asset prompt.
 
@@ -95,10 +95,10 @@ Add tracking flags/variables for peaceful dossier maturation, forgery disqualifi
 
 | ID | Title | Difficulty | Visibility | Unlock direction | Disqualifiers | Icon direction |
 | --- | --- | --- | --- | --- | --- | --- |
-| `chaosx_afr_archive_of_old_seats` | Archive of Old Seats | Hard | Visible | As Africa unifier, peacefully mature at least 12 historical dossiers across at least 5 macro-regions before full African unification. | Using Counterfeit Crown route or direct-rule settlement on more than a small threshold. | Open archive cabinet with continent-shaped seals. |
-| `chaosx_afr_no_counterfeit_crowns` | No Counterfeit Crowns | Very hard | Visible | Fully unify Africa while completing the Archive route without any forgery exposure and with high old-seat legitimacy. | Any forged lineage/scandal flag. | Clean seal beside broken false crown. |
-| `chaosx_afr_the_forest_signed_back` | The Forest Signed Back | Hard | Hidden | Recognize at least three nonhuman forest delegations and keep them loyal through unification. | Predatory Museum route or habitat-extraction crisis. | Forest council seal with nonhuman silhouettes. |
-| `chaosx_afr_baobab_filibuster` | Baobab Filibuster | Medium-hard | Hidden | Let the Baobab Senate block a continental war, then resolve the dispute peacefully and still complete unification. | Suppressing or annexing the Baobab Senate. | Ancient tree over a parliamentary desk. |
-| `chaosx_afr_kilwa_to_kush_ledger` | Kilwa to Kush Ledger | Hard | Visible | Mature Kilwa/Swahili, Great Zimbabwe, Aksum, and Kush/Meroe dossier chains in the same run. | Losing any required monument/port state after settlement. | Coral port, stone enclosure, stela, and pyramid in one ledger. |
-| `chaosx_afr_old_seats_new_union` | Old Seats, New Union | Very hard | Hidden | Form a cross-continent union while keeping a federation/old-seat chamber active and stable. | Dissolving the Archive or forcing all old seats into direct rule. | Continental union seal surrounded by small old-seat emblems. |
-| `chaosx_afr_charter_has_too_many_signatures` | The Charter Has Too Many Signatures | Extreme | Secret | Reach the World Is One branch with human old seats, nonhuman delegations, and at least one supernatural court still recognized. | Any Bestiary purge or nature-court collapse. | Overcrowded treaty page with human, animal, and impossible marks. |
+| `ACH_AFR_ARCHIVE_OF_OLD_SEATS` | Archive of Old Seats | Hard | Visible | As Africa unifier, peacefully settle at least 12 historical dossiers across at least 5 macro-regions before full African unification. | Any direct Archive settlement. | Open archive cabinet with continent-shaped seals. |
+| `ACH_AFR_NO_COUNTERFEIT_CROWNS` | No Counterfeit Crowns | Very hard | Visible | Fully unify Africa through the respectful Archive route, complete the Archive guard mission, and keep Old-Seat Legitimacy at least 48. | Any direct Archive settlement, failed direct Archive seal, exposed forged lineage, or Counterfeit Crowns super-event. | Clean seal beside broken false crown. |
+| `ACH_AFR_THE_FOREST_SIGNED_BACK` | The Forest Signed Back | Hard | Hidden | Recognize Gorilla Highlands, Chimpanzee Telegraph, and Okapi Forest, bind all three actors to the Charter, secure at least three Bestiary habitat seats, complete their actor actions, and keep them loyal through unification. | Direct Archive settlement or counterfeit exposure. | Forest council seal with nonhuman silhouettes. |
+| `ACH_AFR_BAOBAB_FILIBUSTER` | Baobab Filibuster | Medium-hard | Hidden | Recognize the Baobab Senate, bind it to the Charter, complete Bestiary containment, convene Baobab memory arbitration, keep the Baobab Senate intact, and still complete unification. | Baobab Senate capitulation or counterfeit exposure. | Ancient tree over a parliamentary desk. |
+| `ACH_AFR_KILWA_TO_KUSH_LEDGER` | Kilwa to Kush Ledger | Hard | Visible | Complete the Archive guard mission and settle the Kush/Meroe, Aksum, Kilwa or Swahili Coast, and Great Zimbabwe dossier chain in the same run. | Missing any required dossier settlement. | Coral port, stone enclosure, stela, and pyramid in one ledger. |
+| `ACH_AFR_OLD_SEATS_NEW_UNION` | Old Seats, New Union | Very hard | Hidden | Proclaim a dynamic cross-continent union while the respectful Archive route, Continental Register, Old-Seat Legitimacy at least 48, and peaceful macro-regional dossier settlements remain intact. | Direct Archive settlement, forced central seal route, or counterfeit exposure. | Continental union seal surrounded by small old-seat emblems. |
+| `ACH_AFR_CHARTER_HAS_TOO_MANY_SIGNATURES` | The Charter Has Too Many Signatures | Extreme | Secret | Reach the World Is One branch with human old seats, all Bestiary package outcomes, nonhuman delegations, and at least one supernatural court still recognized. | Missing continent-unifier certification, historical dossier threshold, or any Bestiary package outcome. | Overcrowded treaty page with human, animal, and impossible marks. |
