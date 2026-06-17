@@ -4836,8 +4836,15 @@ africa_emit_counterfeit_crowns_super_event = {
 africa_emit_world_is_one_terminal_super_event = {
 	if = {
 		limit = { NOT = { has_global_flag = africa_world_is_one_terminal_super_event_fired } }
-		set_global_flag = { flag = super_event_visible days = @africa_super_event_visible_days value = constant:africa_super_event.world_is_one_terminal }
-		set_variable = { global.current_super_event_audio_id = constant:africa_super_event.world_is_one_terminal }
+		if = {
+			limit = { has_country_flag = africa_route_archive_bestiary }
+			set_global_flag = { flag = super_event_visible days = @africa_super_event_visible_days value = constant:africa_super_event.archive_world_terminal }
+			set_variable = { global.current_super_event_audio_id = constant:africa_super_event.archive_world_terminal }
+		}
+		else = {
+			set_global_flag = { flag = super_event_visible days = @africa_super_event_visible_days value = constant:africa_super_event.world_is_one_terminal }
+			set_variable = { global.current_super_event_audio_id = constant:africa_super_event.world_is_one_terminal }
+		}
 		set_global_flag = africa_world_is_one_terminal_super_event_fired
 		every_country = {
 			limit = { is_ai = no }
@@ -4878,6 +4885,45 @@ africa_emit_dynamic_cross_continent_union_super_event = {
 		set_global_flag = { flag = super_event_visible days = @africa_super_event_visible_days value = constant:africa_super_event.dynamic_cross_continent_union }
 		set_variable = { global.current_super_event_audio_id = constant:africa_super_event.dynamic_cross_continent_union }
 		set_global_flag = africa_dynamic_cross_continent_union_super_event_fired
+		every_country = {
+			limit = { is_ai = no }
+			play_current_super_event_audio = yes
+		}
+	}
+}
+
+africa_emit_forest_parliament_super_event = {
+	if = {
+		limit = { NOT = { has_global_flag = africa_forest_parliament_super_event_fired } }
+		set_global_flag = { flag = super_event_visible days = @africa_super_event_visible_days value = constant:africa_super_event.forest_parliament }
+		set_variable = { global.current_super_event_audio_id = constant:africa_super_event.forest_parliament }
+		set_global_flag = africa_forest_parliament_super_event_fired
+		every_country = {
+			limit = { is_ai = no }
+			play_current_super_event_audio = yes
+		}
+	}
+}
+
+africa_emit_world_root_mandate_super_event = {
+	if = {
+		limit = { NOT = { has_global_flag = africa_world_root_mandate_super_event_fired } }
+		set_global_flag = { flag = super_event_visible days = @africa_super_event_visible_days value = constant:africa_super_event.world_root_mandate }
+		set_variable = { global.current_super_event_audio_id = constant:africa_super_event.world_root_mandate }
+		set_global_flag = africa_world_root_mandate_super_event_fired
+		every_country = {
+			limit = { is_ai = no }
+			play_current_super_event_audio = yes
+		}
+	}
+}
+
+africa_emit_root_and_fang_super_event = {
+	if = {
+		limit = { NOT = { has_global_flag = africa_root_and_fang_super_event_fired } }
+		set_global_flag = { flag = super_event_visible days = @africa_super_event_visible_days value = constant:africa_super_event.root_and_fang }
+		set_variable = { global.current_super_event_audio_id = constant:africa_super_event.root_and_fang }
+		set_global_flag = africa_root_and_fang_super_event_fired
 		every_country = {
 			limit = { is_ai = no }
 			play_current_super_event_audio = yes
