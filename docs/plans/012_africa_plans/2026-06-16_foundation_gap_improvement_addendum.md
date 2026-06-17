@@ -19,6 +19,8 @@ Keep this file in `docs/plans/012_africa_plans/` until the parent accepts the tr
 - `docs/specs/012_africa_specs/matrices/012_africa_ai_strategy_matrix.md`
 - `docs/specs/012_africa_specs/matrices/012_africa_asset_matrix.md`
 
+Parent implementation status, 2026-06-17: the selected-dossier survey portion of this addendum has been accepted into implementation. `africa_open_next_historical_dossier` now starts `africa_selected_dossier_survey_mission`; mission success opens and surveys the active dossier, while failure raises Restoration Debt and Local Sovereignty pressure and leaves the dossier retryable. The broader addendum remains unresolved for package-specific historical dossier missions, deeper settlement forks, local resistance events, and richer per-package AI.
+
 ## Current Foundation Gap
 
 The first foundation tranche has useful scaffolding:
@@ -208,7 +210,7 @@ Every package needs:
 | `tidemark_dominion` | Explicit supernatural water-court, separate from real coastal communities. | Indian Ocean storms/tide warnings, convoy protection, island diplomacy. | 65 PP, convoys, Bestiary Alarm below threshold. Failure causes port disruption mission. | Existing TDM country/flag files appear present in worktree; must be reviewed. |
 | `ananse_ledger` | Explicit mythic/supernatural trickster ledger, not a human group. | Counterfeit detection, spy/cipher bonus, forgery crisis interception. | 60 PP, agency/intelligence gate if DLC-safe, Archive Mandate gate. Failure causes forged dossier scandal. | Existing ANW country/flag files appear present in worktree; must be reviewed. |
 
-Defer `orisha_vodun_nature_courts`, `honeyguide_commons`, and `great_herds` until the 8-package tranche is implemented unless the main agent already has complete assets and country packages for them. They are valid catalog entries, but adding all 11 at once risks another layer of thin queue content.
+Follow-up status: the later country-package tranche implemented explicit actor surfaces for `chimpanzee_marshes`, `okapi_court`, `termite_surveyors`, `honeyguide_commons`, and `great_herds`; `orisha_vodun_nature_courts` already has an explicit actor package. The expanded actors also have package-specific target actions and local action-report events. Remaining Bestiary depth work belongs in disaster events, settlement hooks, and longer package-specific consequence chains, not in deferring these catalog entries.
 
 ## Decision and Mission Families To Replace Thin Decisions
 
