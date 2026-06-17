@@ -83,7 +83,9 @@ The older `docs/assets/012_africa/icons_animation/static/` focus and idea output
 
 - `docs/assets/012_africa/icons_animation/manifest.md`
 - `docs/assets/012_africa/icons_animation/gfx_handoff.md`
+- `docs/assets/012_africa/achievement_icons_foundation_batch_1/manifest.md`
 - `docs/assets/012_africa/achievement_icons_batch_2/manifest.md`
+- `docs/plans/012_africa_plans/subagent_handoffs/2026-06-17_achievement_icons_foundation_batch_1_handoff.md`
 - `docs/plans/012_africa_plans/subagent_handoffs/2026-06-16_achievement_icons_batch_2_handoff.md`
 
 Wired destinations:
@@ -94,6 +96,17 @@ Wired destinations:
 - Achievement icons: `gfx/achievements/ACH_AFR_*.dds`
 
 The achievement placeholders for Event 012 were replaced with themed generated icons and generated grey / not-eligible variants.
+
+Foundation achievement icons are live for:
+
+- `ACH_AFR_CHARTER_WITH_TEETH`
+- `ACH_AFR_ARCHIVE_OF_OLD_SEATS`
+- `ACH_AFR_BESTIARY_HAS_A_SEAT`
+- `ACH_AFR_NOT_PAPER_ANYMORE`
+- `ACH_AFR_ALLIES_MADE_PEACE`
+- `ACH_AFR_WORLD_IS_ONE_ONLY_AFTER_AFRICA`
+
+Each has normal, `_grey`, and `_not_eligible` DDS variants in `gfx/achievements/` plus source/processed PNGs, DDS copies, and contact sheets under `docs/assets/012_africa/achievement_icons_foundation_batch_1/`.
 
 Batch 2 achievement icons are live for:
 
