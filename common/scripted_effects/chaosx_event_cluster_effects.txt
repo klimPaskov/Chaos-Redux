@@ -17,6 +17,7 @@
 @event_cluster_diplomatic_panic_cooldown_days = 120
 @event_cluster_peace_cooldown_days = 120
 @event_cluster_natural_disasters_cooldown_days = 90
+@event_cluster_formables_cooldown_days = 120
 
 initialize_event_cluster_system = {
     clear_array = global.event_clusters
@@ -113,6 +114,15 @@ initialize_event_cluster_definitions = {
 	add_to_array = {
 		array = global.event_cluster_unlock_tier_entries
 		value = constant:event_cluster_natural_disasters.unlock_tier
+	}
+	add_to_array = { global.event_clusters = constant:event_cluster_id.formables }
+	add_to_array = {
+		array = global.event_cluster_type_entries
+		value = constant:event_cluster_type.repeatable
+	}
+	add_to_array = {
+		array = global.event_cluster_unlock_tier_entries
+		value = constant:event_cluster_formables.unlock_tier
 	}
 }
 
@@ -331,6 +341,16 @@ event_belongs_to_cluster = {
 		}
 		set_temp_variable = { event_cluster_candidate_id = constant:event_cluster_id.natural_disasters }
 	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = event_id
+				value = 12
+				compare = equals
+			}
+		}
+		set_temp_variable = { event_cluster_candidate_id = constant:event_cluster_id.formables }
+	}
 }
 
 load_event_cluster_members = {
@@ -421,6 +441,20 @@ load_event_cluster_members = {
 		add_to_array = { array = temp_event_cluster_member_chance_entries value = constant:event_cluster_member_participation.natural_disasters }
 		add_to_array = { array = temp_event_cluster_member_min_tier_entries value = constant:chaos_meter_tier_id.tier_0 }
 		add_to_array = { array = temp_event_cluster_member_danger_entries value = constant:event_cluster_member_danger.low }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = event_cluster_id
+				value = constant:event_cluster_id.formables
+				compare = equals
+			}
+		}
+		add_to_array = { array = temp_event_cluster_member_event_id_entries value = 12 }
+		add_to_array = { array = temp_event_cluster_member_role_entries value = constant:event_cluster_member_role.required }
+		add_to_array = { array = temp_event_cluster_member_chance_entries value = constant:event_cluster_member_participation.africa }
+		add_to_array = { array = temp_event_cluster_member_min_tier_entries value = constant:chaos_meter_tier_id.tier_0 }
+		add_to_array = { array = temp_event_cluster_member_danger_entries value = constant:event_cluster_member_danger.severe }
 	}
 }
 
@@ -547,6 +581,16 @@ can_event_cluster_fire = {
 							compare = equals
 						}
 						has_global_flag = event_cluster_natural_disasters_cooldown
+					}
+				}
+				NOT = {
+					AND = {
+						check_variable = {
+							var = event_cluster_id
+							value = constant:event_cluster_id.formables
+							compare = equals
+						}
+						has_global_flag = event_cluster_formables_cooldown
 					}
 				}
                 NOT = { is_in_array = { global.disabled_event_clusters = event_cluster_id } }
@@ -1166,6 +1210,16 @@ mark_event_cluster_fired_state = {
 			}
 		}
 		set_global_flag = { flag = event_cluster_natural_disasters_cooldown days = @event_cluster_natural_disasters_cooldown_days }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = event_cluster_id
+				value = constant:event_cluster_id.formables
+				compare = equals
+			}
+		}
+		set_global_flag = { flag = event_cluster_formables_cooldown days = @event_cluster_formables_cooldown_days }
 	}
 }
 

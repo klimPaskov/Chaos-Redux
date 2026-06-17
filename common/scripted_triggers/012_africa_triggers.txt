@@ -6,6 +6,28 @@
 # World Is One terminal eligibility.
 # ============================================================================
 
+@africa_wac_seat_state = 558
+@africa_sah_seat_state = 556
+@africa_mag_seat_state = 459
+@africa_nhr_seat_state = 271
+@africa_eac_seat_state = 546
+@africa_glk_seat_state = 548
+@africa_cbc_seat_state = 295
+@africa_zsc_seat_state = 771
+@africa_slc_seat_state = 275
+@africa_ioc_seat_state = 543
+@africa_ghp_seat_state = 768
+@africa_bbs_seat_state = 778
+@africa_tdm_seat_state = 905
+@africa_anw_seat_state = 779
+@africa_ovn_seat_state = 773
+@africa_crr_seat_state = 772
+@africa_ctl_seat_state = 718
+@africa_okp_seat_state = 890
+@africa_trm_seat_state = 889
+@africa_hgd_seat_state = 903
+@africa_ghc_seat_state = 904
+
 is_africa_valid_unifier_candidate = {
 	exists = yes
 	capital_scope = { is_on_continent = africa }
@@ -106,6 +128,198 @@ can_africa_living_core_state_for_prev = {
 	NOT = { is_core_of = PREV }
 }
 
+is_africa_external_colonial_holder_for_prev = {
+	exists = yes
+	capital_scope = { NOT = { is_on_continent = africa } }
+	NOT = { has_capitulated = yes }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { has_country_flag = africa_charter_member }
+	NOT = { has_country_flag = africa_charter_protected_member }
+	NOT = { has_country_flag = africa_regional_authority_subject }
+	NOT = { has_country_flag = africa_high_chaos_actor }
+	OR = {
+		any_owned_state = { is_on_continent = africa }
+		any_controlled_state = { is_on_continent = africa }
+	}
+	NOT = { is_in_faction_with = PREV }
+}
+
+is_africa_external_colonial_holder_for_root = {
+	exists = yes
+	capital_scope = { NOT = { is_on_continent = africa } }
+	NOT = { has_capitulated = yes }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { has_country_flag = africa_charter_member }
+	NOT = { has_country_flag = africa_charter_protected_member }
+	NOT = { has_country_flag = africa_regional_authority_subject }
+	NOT = { has_country_flag = africa_high_chaos_actor }
+	OR = {
+		any_owned_state = { is_on_continent = africa }
+		any_controlled_state = { is_on_continent = africa }
+	}
+	NOT = { is_in_faction_with = ROOT }
+}
+
+is_africa_external_holder_state_for_root = {
+	is_on_continent = africa
+	OR = {
+		owner = {
+			has_country_flag = africa_scramble_external_holder_registered
+			NOT = { has_country_flag = africa_scramble_treaty_settled }
+			NOT = { has_country_flag = africa_bestiary_warning_state_target }
+			is_africa_external_colonial_holder_for_root = yes
+		}
+		controller = {
+			has_country_flag = africa_scramble_external_holder_registered
+			NOT = { has_country_flag = africa_scramble_treaty_settled }
+			NOT = { has_country_flag = africa_bestiary_warning_state_target }
+			is_africa_external_colonial_holder_for_root = yes
+		}
+	}
+}
+
+is_controlled_by_root_or_loyal_charter_actor = {
+	OR = {
+		is_controlled_by = ROOT
+		controller = {
+			is_in_faction_with = ROOT
+			OR = {
+				has_country_flag = africa_regional_authority_subject
+				has_country_flag = africa_charter_member
+				has_country_flag = africa_charter_protected_member
+				has_country_flag = africa_high_chaos_actor
+			}
+		}
+	}
+}
+
+africa_can_secure_liberation_objective_for_root = {
+	is_on_continent = africa
+	is_controlled_by_root_or_loyal_charter_actor = yes
+	NOT = { has_state_flag = africa_liberation_objective_secured }
+	OR = {
+		NOT = { is_core_of = ROOT }
+		owner = { is_africa_external_colonial_holder_for_root = yes }
+		controller = {
+			OR = {
+				has_country_flag = africa_regional_authority_subject
+				has_country_flag = africa_charter_member
+				has_country_flag = africa_charter_protected_member
+				has_country_flag = africa_high_chaos_actor
+			}
+		}
+	}
+}
+
+is_africa_regional_authority_seat_state = {
+	OR = {
+		state = @africa_wac_seat_state
+		state = @africa_sah_seat_state
+		state = @africa_mag_seat_state
+		state = @africa_nhr_seat_state
+		state = @africa_eac_seat_state
+		state = @africa_glk_seat_state
+		state = @africa_cbc_seat_state
+		state = @africa_zsc_seat_state
+		state = @africa_slc_seat_state
+		state = @africa_ioc_seat_state
+	}
+}
+
+africa_can_secure_integration_rail_for_root = {
+	is_africa_integration_unlocked_state = yes
+	is_controlled_by_root_or_loyal_charter_actor = yes
+}
+
+is_africa_high_chaos_habitat_seat_state = {
+	OR = {
+		state = @africa_ghp_seat_state
+		state = @africa_bbs_seat_state
+		state = @africa_tdm_seat_state
+		state = @africa_anw_seat_state
+		state = @africa_ovn_seat_state
+		state = @africa_crr_seat_state
+		state = @africa_ctl_seat_state
+		state = @africa_okp_seat_state
+		state = @africa_trm_seat_state
+		state = @africa_hgd_seat_state
+		state = @africa_ghc_seat_state
+	}
+}
+
+africa_can_secure_high_chaos_habitat_for_root = {
+	is_africa_high_chaos_habitat_seat_state = yes
+	is_controlled_by_root_or_loyal_charter_actor = yes
+}
+
+has_africa_unlocked_high_chaos_habitat_for_from = {
+	OR = {
+		AND = {
+			has_country_flag = africa_high_chaos_package_201_unlocked
+			FROM = { state = @africa_ghp_seat_state }
+		}
+		AND = {
+			has_country_flag = africa_high_chaos_package_202_unlocked
+			FROM = { state = @africa_ctl_seat_state }
+		}
+		AND = {
+			has_country_flag = africa_high_chaos_package_203_unlocked
+			FROM = { state = @africa_okp_seat_state }
+		}
+		AND = {
+			has_country_flag = africa_high_chaos_package_204_unlocked
+			FROM = { state = @africa_crr_seat_state }
+		}
+		AND = {
+			has_country_flag = africa_high_chaos_package_205_unlocked
+			FROM = { state = @africa_bbs_seat_state }
+		}
+		AND = {
+			has_country_flag = africa_high_chaos_package_206_unlocked
+			FROM = { state = @africa_trm_seat_state }
+		}
+		AND = {
+			has_country_flag = africa_high_chaos_package_207_unlocked
+			FROM = { state = @africa_hgd_seat_state }
+		}
+		AND = {
+			has_country_flag = africa_high_chaos_package_208_unlocked
+			FROM = { state = @africa_ghc_seat_state }
+		}
+		AND = {
+			has_country_flag = africa_high_chaos_package_209_unlocked
+			FROM = { state = @africa_tdm_seat_state }
+		}
+		AND = {
+			has_country_flag = africa_high_chaos_package_210_unlocked
+			FROM = { state = @africa_anw_seat_state }
+		}
+		AND = {
+			has_country_flag = africa_high_chaos_package_211_unlocked
+			FROM = { state = @africa_ovn_seat_state }
+		}
+	}
+}
+
+africa_can_transfer_seat_state_to_high_chaos = {
+	OR = {
+		is_owned_by = ROOT
+		owner = {
+			has_country_flag = africa_regional_authority_subject
+			is_in_faction_with = ROOT
+		}
+	}
+	OR = {
+		is_controlled_by = ROOT
+		controller = {
+			has_country_flag = africa_regional_authority_subject
+			is_in_faction_with = ROOT
+		}
+	}
+}
+
 is_africa_rsa_civil_war_active = {
 	has_global_flag = africa_rsa_civil_war_active
 	check_variable = { global.africa_rsa_branch_state > constant:africa_rsa_branch.inactive }
@@ -134,8 +348,62 @@ can_africa_open_authority_atlas = {
 	has_country_flag = africa_unifier_active
 	check_variable = {
 		var = africa_archive_mandate
-		value = constant:africa_initial_value.archive_mandate
+		value = constant:africa_decision.archive_gate
 		compare = greater_than_or_equals
+	}
+}
+
+has_africa_continental_register_dossier_coverage = {
+	has_country_flag = africa_minimum_historical_dossiers_ready
+	check_variable = {
+		var = africa_dossier_macro_region_count
+		value = constant:africa_authority_atlas.minimum_historical_macro_regions
+		compare = greater_than_or_equals
+	}
+}
+
+controls_africa_selected_dossier_seat_state = {
+	is_africa_selected_dossier_historical = yes
+	has_variable = africa_selected_dossier_seat_state
+	var:africa_selected_dossier_seat_state = {
+		OR = {
+			is_controlled_by = ROOT
+			controller = {
+				is_in_faction_with = ROOT
+				OR = {
+					has_country_flag = africa_regional_authority_subject
+					has_country_flag = africa_charter_member
+					has_country_flag = africa_charter_protected_member
+				}
+			}
+		}
+	}
+}
+
+has_africa_archive_guard_mission_dossier_work_ready = {
+	has_variable = africa_archive_guard_mission_dossier_id
+	has_variable = africa_archive_guard_mission_seat_state
+	meta_trigger = {
+		text = {
+			has_country_flag = africa_dossier_[DOSSIER_ID]_local_office
+			has_country_flag = africa_dossier_[DOSSIER_ID]_guarded
+			has_country_flag = africa_dossier_[DOSSIER_ID]_settled
+		}
+		DOSSIER_ID = "[?africa_archive_guard_mission_dossier_id|.0]"
+	}
+	var:africa_archive_guard_mission_seat_state = {
+		OR = {
+			is_controlled_by = ROOT
+			controller = {
+				is_in_faction_with = ROOT
+				OR = {
+					has_country_flag = africa_regional_authority_subject
+					has_country_flag = africa_charter_member
+					has_country_flag = africa_charter_protected_member
+					has_country_flag = africa_high_chaos_actor
+				}
+			}
+		}
 	}
 }
 
@@ -176,6 +444,150 @@ is_africa_selected_dossier_historical = {
 	}
 }
 
+is_africa_selected_dossier_profile_nile_red_sea = {
+	OR = {
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.kush_meroe }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.aksum }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.funj_sennar }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.adal_harar }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.ajuran }
+	}
+}
+
+is_africa_selected_dossier_profile_maghreb_desert = {
+	OR = {
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.punic_harbor_ledger }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.numidia }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.garamantian_wells }
+	}
+}
+
+is_africa_selected_dossier_profile_sahel_charter = {
+	OR = {
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.manden_charter }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.songhai }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.futa }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.kanem_bornu }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.hausa_bakwai }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.wadai_baguirmi }
+	}
+}
+
+is_africa_selected_dossier_profile_western_crowns = {
+	OR = {
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.jolof_wolof }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.asante }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.oyo }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.benin_edo }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.dahomey }
+	}
+}
+
+is_africa_selected_dossier_profile_central_river = {
+	OR = {
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.kongo }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.ndongo_matamba }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.luba }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.lunda }
+	}
+}
+
+is_africa_selected_dossier_profile_great_lakes = {
+	OR = {
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.buganda }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.bunyoro }
+	}
+}
+
+is_africa_selected_dossier_profile_indian_ocean = {
+	OR = {
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.swahili_coast }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.kilwa }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.merina }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.comorian_sultanates }
+	}
+}
+
+is_africa_selected_dossier_profile_southern_stone = {
+	OR = {
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.great_zimbabwe }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.barotse }
+		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.zulu_nguni }
+	}
+}
+
+has_africa_selected_dossier_opened = {
+	is_africa_selected_dossier_historical = yes
+	meta_trigger = {
+		text = {
+			has_country_flag = africa_dossier_[DOSSIER_ID]_opened
+		}
+		DOSSIER_ID = "[?africa_selected_dossier_id|.0]"
+	}
+}
+
+has_africa_selected_dossier_surveyed = {
+	is_africa_selected_dossier_historical = yes
+	meta_trigger = {
+		text = {
+			has_country_flag = africa_dossier_[DOSSIER_ID]_surveyed
+		}
+		DOSSIER_ID = "[?africa_selected_dossier_id|.0]"
+	}
+}
+
+has_africa_selected_dossier_local_office = {
+	is_africa_selected_dossier_historical = yes
+	meta_trigger = {
+		text = {
+			has_country_flag = africa_dossier_[DOSSIER_ID]_local_office
+		}
+		DOSSIER_ID = "[?africa_selected_dossier_id|.0]"
+	}
+}
+
+has_africa_selected_dossier_guard = {
+	is_africa_selected_dossier_historical = yes
+	meta_trigger = {
+		text = {
+			has_country_flag = africa_dossier_[DOSSIER_ID]_guarded
+		}
+		DOSSIER_ID = "[?africa_selected_dossier_id|.0]"
+	}
+}
+
+has_africa_selected_dossier_settlement = {
+	is_africa_selected_dossier_historical = yes
+	meta_trigger = {
+		text = {
+			has_country_flag = africa_dossier_[DOSSIER_ID]_settled
+		}
+		DOSSIER_ID = "[?africa_selected_dossier_id|.0]"
+	}
+}
+
+can_africa_build_selected_dossier_local_office = {
+	has_africa_selected_dossier_opened = yes
+	has_africa_selected_dossier_surveyed = yes
+	controls_africa_selected_dossier_seat_state = yes
+	NOT = { has_africa_selected_dossier_local_office = yes }
+	NOT = { has_africa_selected_dossier_settlement = yes }
+}
+
+can_africa_raise_selected_dossier_guard = {
+	has_africa_selected_dossier_local_office = yes
+	controls_africa_selected_dossier_seat_state = yes
+	NOT = { has_africa_selected_dossier_guard = yes }
+	NOT = { has_africa_selected_dossier_settlement = yes }
+}
+
+can_africa_settle_selected_dossier = {
+	has_africa_selected_dossier_local_office = yes
+	has_africa_selected_dossier_guard = yes
+	controls_africa_selected_dossier_seat_state = yes
+	NOT = { has_africa_selected_dossier_settlement = yes }
+}
+
 is_africa_selected_high_chaos_package = {
 	OR = {
 		check_variable = { africa_selected_high_chaos_package_id = constant:africa_high_chaos_package_id.gorilla_highlands }
@@ -194,15 +606,67 @@ is_africa_selected_high_chaos_package = {
 
 can_africa_unlock_bestiary_clause = {
 	has_country_flag = africa_unifier_active
-	OR = {
-		has_country_flag = africa_evolution_iii_unlocked
-		has_country_flag = africa_evolution_iv_unlocked
-	}
+	has_country_flag = africa_no_caricature_clause_open
+	has_country_flag = africa_minimum_historical_dossiers_ready
 	check_variable = {
 		var = africa_mythic_pressure
-		value = constant:africa_initial_value.mythic_pressure
+		value = constant:africa_decision.high_chaos_gate
 		compare = greater_than_or_equals
 	}
+}
+
+can_africa_use_gui_congress_session = {
+	is_africa_runtime_unifier = yes
+	NOT = { has_country_flag = africa_gui_congress_session_recent }
+	has_political_power > constant:africa_decision.congress_cost
+}
+
+can_africa_use_gui_refresh_register = {
+	is_africa_runtime_unifier = yes
+	NOT = { has_country_flag = africa_gui_refresh_register_recent }
+	has_political_power > constant:africa_decision.observer_cost
+}
+
+can_africa_use_gui_start_dossier = {
+	can_africa_open_authority_atlas = yes
+	has_country_flag = africa_dossier_selection_office_open
+	NOT = { has_country_flag = africa_all_historical_dossiers_opened }
+	NOT = { has_africa_selected_dossier_opened = yes }
+	NOT = { has_country_flag = africa_selected_dossier_survey_mission_active }
+	NOT = { has_country_flag = africa_archive_guard_mission_active }
+	NOT = { has_country_flag = africa_gui_dossier_action_recent }
+	has_equipment = { support_equipment > constant:africa_force.dossier_survey_support_equipment }
+	has_political_power > constant:africa_decision.dossier_cost
+}
+
+can_africa_use_gui_authority_seats = {
+	is_africa_runtime_unifier = yes
+	has_country_flag = africa_regional_authorities_open
+	NOT = { has_country_flag = africa_gui_authority_seats_recent }
+	has_political_power > constant:africa_decision.observer_cost
+	any_controlled_state = { is_africa_regional_authority_seat_state = yes }
+}
+
+can_africa_use_gui_bestiary_terms = {
+	is_africa_runtime_unifier = yes
+	has_country_flag = africa_habitat_trust_board_open
+	NOT = { has_country_flag = africa_bestiary_habitat_terms_negotiated }
+	NOT = { has_country_flag = africa_gui_bestiary_terms_recent }
+	has_political_power > constant:africa_decision.high_chaos_package_cost
+}
+
+can_africa_use_gui_sponsor_readiness = {
+	is_africa_runtime_unifier = yes
+	has_country_flag = africa_continent_sponsor_office_open
+	has_country_flag = africa_world_root_mandate_open
+	NOT = { has_country_flag = africa_continent_sponsor_ready }
+	NOT = { has_country_flag = africa_continent_sponsor_readiness_mission_active }
+	NOT = { has_country_flag = africa_gui_sponsor_readiness_recent }
+	NOT = { has_global_flag = world_end }
+	has_equipment = { convoy_1 > constant:africa_force.sponsor_readiness_convoys }
+	has_equipment = { support_equipment > constant:africa_force.sponsor_readiness_support_equipment }
+	command_power > constant:africa_decision.sponsor_readiness_command_power_gate
+	has_political_power > constant:africa_decision.sponsor_mission_cost
 }
 
 can_africa_record_evolution_i = {
@@ -225,16 +689,123 @@ can_africa_record_evolution_iv = {
 	NOT = { has_global_flag = africa_evolution_iv_recorded }
 }
 
-can_africa_start_world_is_one_gate = {
+has_africa_external_continent_unifier_proofs_ready = {
+	has_africa_runtime_context = yes
+	has_africa_required_external_continent_unifier_world_end_flags = yes
+	event_target:africa_unifier_country = {
+		has_country_flag = africa_external_continent_unifier_proofs_ready
+		has_country_flag = africa_middle_east_unifier_proof_verified
+		has_country_flag = africa_asia_unifier_proof_verified
+		has_country_flag = africa_europe_unifier_proof_verified
+		has_country_flag = africa_south_atlantic_unifier_proof_verified
+		check_variable = {
+			var = africa_external_continent_unifier_proof_count
+			value = constant:africa_world_is_one_requirement.external_continent_unifier_proofs
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+has_africa_required_external_continent_unifier_world_end_flags = {
+	has_global_flag = middle_east_continent_unifier_world_end_ready
+	has_global_flag = asia_continent_unifier_world_end_ready
+	has_global_flag = europe_continent_unifier_world_end_ready
+	has_global_flag = south_atlantic_continent_unifier_world_end_ready
+}
+
+can_africa_certify_continent_unifiers_for_world_is_one = {
 	has_africa_runtime_context = yes
 	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = world_end_disabled }
+	has_global_flag = { flag = chaos_tier value = 5 }
 	has_global_flag = africa_is_one_complete
 	has_global_flag = africa_is_one_super_event_fired
 	has_global_flag = africa_continental_pole_ready
-	has_global_flag = all_continent_unifiers_world_end_ready
+	has_africa_required_external_continent_unifier_world_end_flags = yes
+	has_africa_external_continent_unifier_proofs_ready = yes
 	check_variable = {
 		var = global.africa_world_is_one_gate_state
 		value = constant:africa_world_is_one_gate.world_end_ready
 		compare = greater_than_or_equals
+	}
+	event_target:africa_unifier_country = {
+		has_country_flag = africa_continent_sponsor_ready
+		has_country_flag = africa_sponsored_middle_east_charter
+		has_country_flag = africa_sponsored_asia_charter
+		has_country_flag = africa_sponsored_europe_charter
+		has_country_flag = africa_sponsored_south_atlantic_charter
+		has_country_flag = africa_dynamic_cross_continent_union_complete
+		has_country_flag = africa_last_borders_are_administrative_open
+		has_africa_continental_register_dossier_coverage = yes
+		has_country_flag = africa_minimum_high_chaos_packages_ready
+		has_country_flag = africa_bestiary_containment_mission_success
+		NOT = { has_country_flag = africa_continent_unifiers_certified_for_world_is_one }
+		check_variable = {
+			var = africa_regional_authority_count
+			value = constant:africa_world_is_one_requirement.regional_authorities
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = africa_living_core_count
+			value = constant:africa_world_is_one_requirement.living_cores
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = africa_bestiary_package_action_count
+			value = constant:africa_mission_goal.bestiary_package_actions
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+can_africa_prepare_world_is_one_gate = {
+	has_africa_runtime_context = yes
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = world_end_disabled }
+	has_global_flag = { flag = chaos_tier value = 5 }
+	has_global_flag = africa_is_one_complete
+	has_global_flag = africa_is_one_super_event_fired
+	has_global_flag = africa_continental_pole_ready
+	has_global_flag = all_continent_unifiers_world_end_ready
+	has_africa_external_continent_unifier_proofs_ready = yes
+	event_target:africa_unifier_country = {
+		has_country_flag = africa_continent_sponsor_ready
+		has_country_flag = africa_continent_unifiers_certified_for_world_is_one
+		has_country_flag = africa_one_charter_above_nations_open
+		has_country_flag = africa_sponsored_middle_east_charter
+		has_country_flag = africa_sponsored_asia_charter
+		has_country_flag = africa_sponsored_europe_charter
+		has_country_flag = africa_sponsored_south_atlantic_charter
+		has_country_flag = africa_dynamic_cross_continent_union_complete
+		has_africa_continental_register_dossier_coverage = yes
+		has_country_flag = africa_minimum_high_chaos_packages_ready
+		has_country_flag = africa_bestiary_containment_mission_success
+		check_variable = {
+			var = africa_regional_authority_count
+			value = constant:africa_world_is_one_requirement.regional_authorities
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = africa_living_core_count
+			value = constant:africa_world_is_one_requirement.living_cores
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = africa_bestiary_package_action_count
+			value = constant:africa_mission_goal.bestiary_package_actions
+			compare = greater_than_or_equals
+		}
+	}
+	check_variable = {
+		var = global.africa_world_is_one_gate_state
+		value = constant:africa_world_is_one_gate.world_end_ready
+		compare = greater_than_or_equals
+	}
+}
+
+can_africa_start_world_is_one_gate = {
+	can_africa_prepare_world_is_one_gate = yes
+	event_target:africa_unifier_country = {
+		has_country_flag = africa_world_is_one_gate_prepared
 	}
 }

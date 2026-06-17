@@ -79,6 +79,28 @@ triggerable_scenario_can_launch_selected = {
 			}
 			natural_disaster_can_launch_manual_barrage = yes
 		}
+		AND = {
+			check_variable = {
+				var = triggerable_scenarios_selected
+				value = constant:triggerable_scenario_id.africa_is_one
+			}
+			NOT = { has_global_flag = world_end }
+			NOT = { has_global_flag = event_012_africa_fired }
+			OR = {
+				AND = {
+					check_variable = { triggerable_scenarios_africa_type = constant:triggerable_scenario_africa_type.rsa_civil_war }
+					SAF = { is_africa_rsa_allies_unifier_candidate = yes }
+				}
+				AND = {
+					NOT = { check_variable = { triggerable_scenarios_africa_type = constant:triggerable_scenario_africa_type.rsa_civil_war } }
+					OR = {
+						has_africa_valid_unifier_candidate = yes
+						WAC = { exists = no }
+						WAC = { is_africa_valid_unifier_candidate = yes }
+					}
+				}
+			}
+		}
 	}
 }
 

@@ -41,6 +41,7 @@ Type controls cycle scenario-specific type variables:
 - Final Silence: nuclear or thermonuclear payload.
 - Death: quiet origin, island pattern, mainland reveal, or Last Shores.
 - Disaster Barrage: Random Barrage, Geological Crisis, Weather Crisis, Skyfall Crisis, or Full Catalogue.
+- Africa Is One: Standard Unifier, RSA Civil War, Liberation League, High-Chaos Covenant, or Continental Pole.
 
 The trigger button opens a separate confirmation window. Confirming reads the stored selected scenario, type, and intensity at launch time. Scenario launches intentionally bypass the normal automatic firing prerequisites for their source events, including chaos thresholds, prior event-state gates, route prerequisites, and super-event history flags. The launch gate only keeps impossible or conflicting launches out, such as requiring the Soviet Union to exist for Soviet Collapse and preventing a second world-end branch while `world_end` is already active. The launch button uses the same gate for click enablement and buttonstate rendering, so impossible selections are disabled and visually greyed out before the confirmation window can open.
 
@@ -92,6 +93,16 @@ Random Barrage rolls eligible families at the selected intensity. Geological Cri
 
 Intensity changes incident count, stage budget, and severity. Low creates 3-5 baseline local incidents, Medium creates 6-9 local or regional incidents, High creates 10-14 chained incidents with one possible abnormal variant, and Maximum creates 16-24 incidents with Evolution IV variants enabled. High and Maximum are eligible for the Disaster Ledger Closed achievement only if all active aftermaths are recovered before scenario cleanup.
 
+### SCN-012: Africa Is One
+
+The Africa Is One scenario launches Event 012 through the same runtime context, unifier selection, Charter League, paper-core, focus-tree, decision, regional-authority, dossier, and high-chaos helper stack used by the live Africa event. The normal type selects a valid African-capital country through the weighted unifier pool; if no valid African-capital country exists, the scenario creates the West African Congress from its registered seat and uses it as the host. The scenario is blocked if Event 012 has already fired or if another world-end branch is active.
+
+The RSA Civil War type is available only when South Africa exists, is a valid Africa candidate, and is in the Allies with England. It calls the same RSA civil-war branch used by the live event, so a continental victory still triggers the Allied peace rule.
+
+The Liberation League type opens the Liberation War Office, starts the liberation mission state, registers external colonial holders, and declares one opening anti-colonial war when a valid outside holder exists. The High-Chaos Covenant type opens the Authority Atlas, sets a Bestiary route preview, and unlocks one or more high-chaos packages based on intensity. The Continental Pole type starts a post-unification testing surface with Africa Is One, the Second Scramble, and continent-sponsor decisions open, but it does not set the terminal World Is One flag and does not bypass the World Is One certification decision.
+
+Intensity changes the opening stockpile, manpower, colonial alarm, and authority seeding. Low gives a narrow logistics package. Medium uses the standard package. High adds stronger forces and one regional authority. Maximum adds multiple regional authorities and the strongest opening pressure.
+
 ## Assets
 
 The scenario UI reuses existing Chaos Redux and vanilla UI assets:
@@ -105,6 +116,7 @@ The scenario UI reuses existing Chaos Redux and vanilla UI assets:
 - `yearslider_rightbutton`
 - `GFX_report_event_holy_realm_final_silence`
 - `GFX_report_event_death_missing_island`
+- `GFX_report_event_012_charter_league_africa_is_one`
 - `GFX_super_event_final_silence`
 - `GFX_super_event_final_silence_terminal`
 
