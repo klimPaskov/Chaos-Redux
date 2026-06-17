@@ -69,7 +69,8 @@ DDS validation:
 Parent review follow-up:
 
 - `idea_africa_high_chaos_actor` and `idea_africa_rsa_continental_emergency` were re-centered and reconverted after parent validation found nonzero alpha on the outer DDS border.
-- The checker, dark, and goal-family comparison proof sheets were rebuilt after that correction.
+- A later strict rim scan found tiny bright pixels adjacent to transparency on several idea icons. All nine idea processed PNGs received edge-only pale-rim cleanup, all nine final DDS files were reconverted, and the checker, dark, alpha, and goal-family comparison proof sheets were rebuilt after that correction.
+- Final DDS validation found `0` non-transparent outer-border pixels and `0` bright or near-white rim pixels adjacent to transparency across all nine idea icons.
 
 ## Blocked assets
 

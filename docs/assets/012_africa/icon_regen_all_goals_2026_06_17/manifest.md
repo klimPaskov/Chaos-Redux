@@ -9,6 +9,7 @@
 - Source mode: existing generated source artwork from prior built-in `imagegen` batches, reprocessed into a unified transparent-alpha package
 - Reference folder inspected: `.agents/skills/chaos-redux-event-assets/assets/focuses`
 - Idea separation: no idea icons were touched, copied, resized, or derived from this package
+- Parent halo cleanup: after subagent audit, five goal icons received an edge-only pale-rim cleanup and were reconverted from their processed PNGs: `goal_africa_charter_league_diplomacy`, `goal_africa_high_chaos_bestiary`, `goal_africa_scramble_for_africa`, `goal_africa_sponsor_paths`, and `goal_africa_world_order_route`
 - Status: `complete`
 
 ## Assets
@@ -154,4 +155,5 @@
 - Every final DDS is `94x86`
 - Every final DDS reads as `srgba`
 - Every final DDS has fully transparent corners and a fully transparent outer border
+- Final rim scan found `0` bright or near-white pixels adjacent to transparent pixels across all 13 final goal DDS files
 - No idea icon assets were touched during this package

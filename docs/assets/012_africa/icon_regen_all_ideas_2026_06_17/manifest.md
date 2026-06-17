@@ -17,6 +17,7 @@
   - `contact_sheets/idea_vs_goal_comparison.png`
 - DDS conversion used: `convert -define dds:compression=none`
 - Parent review correction: `idea_africa_high_chaos_actor` and `idea_africa_rsa_continental_emergency` were re-centered from their processed transparent PNGs after the parent validation found nonzero alpha on the outer DDS border. Their final DDS files and proof sheets were regenerated after that correction.
+- Parent halo cleanup: all nine processed idea PNGs received an edge-only pale-rim cleanup after a stricter final scan found tiny bright pixels adjacent to transparency. The final DDS files, alpha proof PNGs, checker/dark proof sheets, and idea-vs-goal comparison sheet were rebuilt after that correction.
 
 ## Assets
 
