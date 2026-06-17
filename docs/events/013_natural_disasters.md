@@ -121,7 +121,7 @@ Event report and news images are registered in `interface/013_natural_disasters.
 
 Decision sprites are registered in `interface/013_natural_disasters.gfx` and live under `gfx/interface/decisions/natural_disasters/`. State-modifier idea sprites are registered in the same `.gfx` file and live under `gfx/interface/ideas/natural_disasters/`. Achievement icons live under `gfx/achievements/` and use the achievement ID as the filename stem with `_grey` and `_not_eligible` variants.
 
-Super-event `67` uses `GFX_super_event_natural_disasters_abnormal_disaster_age`, music `super_event_natural_disasters_abnormal_disaster_age.ogg`, and sound asset `chaosx_super_event_natural_disasters_abnormal_disaster_age_track`. Text research selected `The Unquiet Earth`, the Bacon quote, and the Hamlet button line; audio research selected the public-domain Beethoven storm excerpt package.
+Super-event `67` uses `GFX_super_event_natural_disasters_abnormal_disaster_age`, music `super_event_natural_disasters_abnormal_disaster_age.ogg`, and sound asset `chaosx_super_event_67_track`. Text research selected `The Unquiet Earth`, the Bacon quote, and the Hamlet button line; audio research selected the public-domain Beethoven storm excerpt package.
 
 Asset details and source files:
 

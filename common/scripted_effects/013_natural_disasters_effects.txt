@@ -18,16 +18,6 @@
 @NATURAL_DISASTER_REBUILDING_DAYS = 60
 @NATURAL_DISASTER_PENDING_IMPACT_DAYS = 60
 @NATURAL_DISASTER_SUPER_EVENT_VISIBLE_DAYS = 12
-@NATURAL_DISASTER_WEIGHT_EARTHQUAKE = 12
-@NATURAL_DISASTER_WEIGHT_FLOOD = 12
-@NATURAL_DISASTER_WEIGHT_STORM = 12
-@NATURAL_DISASTER_WEIGHT_DROUGHT = 9
-@NATURAL_DISASTER_WEIGHT_WILDFIRE = 7
-@NATURAL_DISASTER_WEIGHT_LANDSLIDE = 7
-@NATURAL_DISASTER_WEIGHT_VOLCANO = 3
-@NATURAL_DISASTER_WEIGHT_TSUNAMI = 2
-@NATURAL_DISASTER_WEIGHT_METEOR = 1
-
 natural_disaster_prepare_launch_context = {
 	natural_disaster_select_stage = yes
 	if = {
@@ -115,15 +105,17 @@ natural_disaster_select_stage = {
 }
 
 natural_disaster_select_family_for_stage = {
+	# random_list branch labels must be literal parser keys. Keep these mirrored
+	# with natural_disaster_family_weight.* in 013_natural_disasters_constants.txt.
 	random_list = {
-		@NATURAL_DISASTER_WEIGHT_EARTHQUAKE = {
+		12 = {
 			modifier = {
 				factor = 0
 				NOT = { any_controlled_state = { natural_disaster_is_valid_base_target_state = yes } }
 			}
 			set_temp_variable = { natural_disaster_family = constant:natural_disaster_family.earthquake }
 		}
-		@NATURAL_DISASTER_WEIGHT_FLOOD = {
+		12 = {
 			modifier = {
 				factor = 0
 				NOT = {
@@ -139,7 +131,7 @@ natural_disaster_select_family_for_stage = {
 			}
 			set_temp_variable = { natural_disaster_family = constant:natural_disaster_family.flood }
 		}
-		@NATURAL_DISASTER_WEIGHT_STORM = {
+		12 = {
 			modifier = {
 				factor = 0
 				NOT = {
@@ -155,14 +147,14 @@ natural_disaster_select_family_for_stage = {
 			}
 			set_temp_variable = { natural_disaster_family = constant:natural_disaster_family.storm }
 		}
-		@NATURAL_DISASTER_WEIGHT_DROUGHT = {
+		9 = {
 			modifier = {
 				factor = 0
 				NOT = { any_controlled_state = { natural_disaster_is_dry_candidate_state = yes } }
 			}
 			set_temp_variable = { natural_disaster_family = constant:natural_disaster_family.drought }
 		}
-		@NATURAL_DISASTER_WEIGHT_WILDFIRE = {
+		7 = {
 			modifier = {
 				factor = 0
 				check_variable = { natural_disaster_stage < constant:natural_disaster_event.stage_varied_local }
@@ -173,21 +165,21 @@ natural_disaster_select_family_for_stage = {
 			}
 			set_temp_variable = { natural_disaster_family = constant:natural_disaster_family.wildfire }
 		}
-		@NATURAL_DISASTER_WEIGHT_LANDSLIDE = {
+		7 = {
 			modifier = {
 				factor = 0
 				NOT = { any_controlled_state = { natural_disaster_is_mountain_candidate_state = yes } }
 			}
 			set_temp_variable = { natural_disaster_family = constant:natural_disaster_family.landslide }
 		}
-		@NATURAL_DISASTER_WEIGHT_VOLCANO = {
+		3 = {
 			modifier = {
 				factor = 0
 				NOT = { any_controlled_state = { natural_disaster_is_volcanic_candidate_state = yes } }
 			}
 			set_temp_variable = { natural_disaster_family = constant:natural_disaster_family.volcano }
 		}
-		@NATURAL_DISASTER_WEIGHT_TSUNAMI = {
+		2 = {
 			modifier = {
 				factor = 0
 				check_variable = { natural_disaster_stage < constant:natural_disaster_event.stage_chained_aftermaths }
@@ -198,7 +190,7 @@ natural_disaster_select_family_for_stage = {
 			}
 			set_temp_variable = { natural_disaster_family = constant:natural_disaster_family.tsunami }
 		}
-		@NATURAL_DISASTER_WEIGHT_METEOR = {
+		1 = {
 			modifier = {
 				factor = 0
 				check_variable = { natural_disaster_stage < constant:natural_disaster_event.stage_abnormal_age }
