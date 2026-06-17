@@ -4,6 +4,10 @@ Date: 2026-06-16
 Scope: source package only inside `docs/assets/012_africa/icons_animation/`
 Naming status: all sprite names, DDS paths, and `.gfx` file names below are proposed values because no parent-provided names were supplied.
 
+## Parent wiring update, 2026-06-17
+
+The main implementation copied the three static fallback DDS files into `gfx/interface/animated/012_africa/`, registered them in `interface/012_africa.gfx`, and placed them under animated overlays in `interface/012_africa_scripted_gui.gui`. The final wired animated sprite names are `GFX_africa_authority_atlas_seal_loop`, `GFX_africa_charter_league_banner_pulse`, and `GFX_africa_bestiary_warning_loop`; the fallback sprite names are `GFX_africa_authority_atlas_seal_static`, `GFX_africa_charter_league_banner_static`, and `GFX_africa_bestiary_warning_static`.
+
 ## Proposed `.gfx` split
 
 - `interface/012_africa_icons.gfx`
@@ -83,6 +87,5 @@ All animated sets have:
 
 ## Exact missing blockers
 
-- No `.gfx` file was edited in this task. Every sprite name and target `.gfx` file above is a proposed handoff value only.
-- No `.gui`, focus, idea, decision, event, or localisation file was touched in this task by instruction.
+- Original subagent pass did not edit `.gfx`, `.gui`, focus, idea, decision, event, or localisation files. The parent follow-up above wires the three animated Congress-panel packages and their static fallbacks.
 - The generated Charter League banner loop has mild silhouette drift between frames because each frame is a separate source image. It is package-complete, but should receive human review before final in-game wiring if strict emblem lock is required.

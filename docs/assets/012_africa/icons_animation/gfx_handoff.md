@@ -1,6 +1,21 @@
 # Event 012 Africa GFX Handoff
 
-All names in this file are proposed because no parent-provided sprite names or texture paths were supplied.
+All names in this file were proposed because no parent-provided sprite names or texture paths were supplied.
+
+## Parent wiring update, 2026-06-17
+
+The main implementation wires the three animated packages through `interface/012_africa.gfx` and `interface/012_africa_scripted_gui.gui`.
+
+- Animated sprites:
+  - `GFX_africa_authority_atlas_seal_loop`
+  - `GFX_africa_charter_league_banner_pulse`
+  - `GFX_africa_bestiary_warning_loop`
+- Static fallbacks:
+  - `GFX_africa_authority_atlas_seal_static` -> `gfx/interface/animated/012_africa/authority_atlas_seal_loop_fallback_128x128.dds`
+  - `GFX_africa_charter_league_banner_static` -> `gfx/interface/animated/012_africa/charter_league_banner_pulse_fallback_160x96.dds`
+  - `GFX_africa_bestiary_warning_static` -> `gfx/interface/animated/012_africa/bestiary_warning_loop_fallback_96x96.dds`
+
+The Continental Congress panel shows fallback sprites underneath route-gated animated overlays for the Charter banner, Authority Atlas seal, and Bestiary warning seal.
 
 ## Suggested static texture wiring
 

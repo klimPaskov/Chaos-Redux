@@ -180,7 +180,7 @@ Converted portrait DDS files:
 - `gfx/leaders/012_africa/leader_012_africa_okp_okapi_court.dds`
 - `gfx/leaders/012_africa/leader_012_africa_trm_termite_citadel_engineers.dds`
 - `gfx/leaders/012_africa/leader_012_africa_hgd_honeyguide_commons.dds`
-- `gfx/leaders/012_africa/leader_012_africa_ghc_great_herds_compact.dds`
+- `gfx/leaders/012_africa/leader_012_africa_ghc_great_herds.dds`
 
 Status:
 
