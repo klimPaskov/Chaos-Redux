@@ -1683,7 +1683,7 @@ africa_authority_atlas_category = {
 
 	africa_charter_local_dossier_office = {
 		icon = GFX_decision_generic_political_discourse
-		cost = constant:africa_decision.old_seat_mission_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.old_seat_mission
 		available = {
 			custom_trigger_tooltip = {
@@ -1693,8 +1693,22 @@ africa_authority_atlas_category = {
 				can_africa_build_selected_dossier_local_office = yes
 			}
 		}
+		custom_cost_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_charter_local_dossier_office_cost_tt
+				has_political_power > constant:africa_decision.old_seat_mission_cost
+				has_equipment = { support_equipment > constant:africa_force.dossier_protection_support_equipment }
+				has_manpower > constant:africa_force.integration_manpower_gate
+			}
+		}
+		custom_cost_text = africa_charter_local_dossier_office_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_charter_local_dossier_office_effect_tt
+			add_political_power = constant:africa_decision.old_seat_mission_cost_spend
+			set_temp_variable = { africa_dossier_office_support_cost = constant:africa_force.dossier_protection_support_equipment }
+			multiply_temp_variable = { africa_dossier_office_support_cost = -1 }
+			add_equipment_to_stockpile = { type = support_equipment amount = africa_dossier_office_support_cost }
+			add_manpower = constant:africa_force.integration_manpower_spend
 			africa_mark_selected_dossier_local_office = yes
 			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
 			add_to_variable = { africa_local_sovereignty = constant:africa_value_delta.charter_resist_sovereignty }
@@ -1744,7 +1758,7 @@ africa_authority_atlas_category = {
 
 	africa_settle_selected_dossier_observer = {
 		icon = GFX_decision_generic_improve_relations
-		cost = constant:africa_decision.old_seat_mission_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.old_seat_mission
 		available = {
 			custom_trigger_tooltip = {
@@ -1753,8 +1767,20 @@ africa_authority_atlas_category = {
 				can_africa_settle_selected_dossier = yes
 			}
 		}
+		custom_cost_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_settle_selected_dossier_observer_cost_tt
+				has_political_power > constant:africa_decision.old_seat_mission_cost
+				has_equipment = { support_equipment > constant:africa_force.dossier_protection_support_equipment }
+			}
+		}
+		custom_cost_text = africa_settle_selected_dossier_observer_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_settle_selected_dossier_observer_effect_tt
+			add_political_power = constant:africa_decision.old_seat_mission_cost_spend
+			set_temp_variable = { africa_dossier_observer_support_cost = constant:africa_force.dossier_protection_support_equipment }
+			multiply_temp_variable = { africa_dossier_observer_support_cost = -1 }
+			add_equipment_to_stockpile = { type = support_equipment amount = africa_dossier_observer_support_cost }
 			africa_mark_selected_dossier_observer_settled = yes
 			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
 			add_to_variable = { africa_old_seat_legitimacy = constant:africa_value_delta.dossier_opened_old_seat }
@@ -1766,7 +1792,7 @@ africa_authority_atlas_category = {
 
 	africa_settle_selected_dossier_direct_archive = {
 		icon = GFX_decision_generic_demand_territory
-		cost = constant:africa_decision.old_seat_mission_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.old_seat_mission
 		available = {
 			custom_trigger_tooltip = {
@@ -1781,8 +1807,22 @@ africa_authority_atlas_category = {
 				}
 			}
 		}
+		custom_cost_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_settle_selected_dossier_direct_archive_cost_tt
+				has_political_power > constant:africa_decision.old_seat_mission_cost
+				has_equipment = { support_equipment > constant:africa_force.dossier_protection_support_equipment }
+				command_power > constant:africa_decision.dossier_survey_command_power_gate
+			}
+		}
+		custom_cost_text = africa_settle_selected_dossier_direct_archive_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_settle_selected_dossier_direct_archive_effect_tt
+			add_political_power = constant:africa_decision.old_seat_mission_cost_spend
+			set_temp_variable = { africa_dossier_archive_support_cost = constant:africa_force.dossier_protection_support_equipment }
+			multiply_temp_variable = { africa_dossier_archive_support_cost = -1 }
+			add_equipment_to_stockpile = { type = support_equipment amount = africa_dossier_archive_support_cost }
+			add_command_power = constant:africa_decision.dossier_survey_command_power_spend
 			africa_mark_selected_dossier_direct_archive_settled = yes
 			add_to_variable = { africa_authority = constant:africa_value_delta.integration_authority }
 			add_to_variable = { africa_restoration_debt = constant:africa_value_delta.covenant_pressure }
@@ -2792,6 +2832,252 @@ africa_high_chaos_category = {
 				has_country_flag = africa_world_root_mandate_open
 				has_country_flag = africa_europe_charter_staff_open
 				NOT = { has_country_flag = africa_sponsored_europe_charter }
+			}
+		}
+	}
+
+	africa_invoke_bonobo_kinship_gentle_veto = {
+		icon = GFX_decision_generic_improve_relations
+		target_array = global.africa_charter_member_countries
+		cost = 0
+		days_remove = constant:africa_decision_days.bestiary_actor_operation
+		target_root_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_invoke_bonobo_kinship_gentle_veto_root_req_tt
+				is_africa_runtime_unifier = yes
+				has_country_flag = africa_bestiary_bonobo_kinship_congress_veto
+			}
+		}
+		target_trigger = {
+			FROM = {
+				tag = BON
+				has_country_flag = africa_high_chaos_actor
+				NOT = { has_country_flag = africa_bonobo_gentle_veto_used }
+			}
+		}
+		custom_cost_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_bestiary_bonobo_veto_cost_tt
+				has_political_power > constant:africa_decision.bestiary_actor_operation_cost
+				has_equipment = { support_equipment > constant:africa_force.bestiary_actor_support_equipment }
+				command_power > constant:africa_decision.bestiary_actor_command_power_gate
+			}
+		}
+		custom_cost_text = africa_bestiary_bonobo_veto_cost_tt
+		complete_effect = {
+			custom_effect_tooltip = africa_invoke_bonobo_kinship_gentle_veto_effect_tt
+			add_political_power = constant:africa_decision.bestiary_actor_operation_cost_spend
+			set_temp_variable = { africa_bestiary_actor_support_cost = constant:africa_force.bestiary_actor_support_equipment }
+			multiply_temp_variable = { africa_bestiary_actor_support_cost = -1 }
+			add_equipment_to_stockpile = { type = support_equipment amount = africa_bestiary_actor_support_cost }
+			add_command_power = constant:africa_decision.bestiary_actor_command_power_spend
+			FROM = {
+				save_event_target_as = africa_bestiary_actor_target
+				set_country_flag = africa_bonobo_gentle_veto_used
+				add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_force.bestiary_actor_support_equipment producer = ROOT }
+			}
+			set_country_flag = africa_has_bestiary_package_action
+			add_to_variable = { africa_bestiary_package_action_count = 1 }
+			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.bestiary_actor_league_cohesion }
+			add_to_variable = { africa_habitat_trust = constant:africa_value_delta.bestiary_actor_habitat_trust }
+			add_to_variable = { africa_bestiary_alarm = constant:africa_value_delta.bestiary_actor_alarm_relief }
+			add_to_variable = { africa_covenant_pressure = constant:africa_value_delta.bestiary_actor_covenant_pressure_relief }
+			africa_clamp_core_values = yes
+			country_event = { id = chaosx.nr12.45 }
+		}
+		ai_will_do = {
+			base = constant:africa_ai.normal
+			modifier = {
+				factor = constant:africa_ai.strong
+				check_variable = { africa_league_cohesion < constant:achievement_threshold.africa.league_cohesion_safe }
+			}
+		}
+	}
+
+	africa_broadcast_hyena_radio_misdirection = {
+		icon = GFX_decision_generic_political_discourse
+		target_array = global.africa_charter_member_countries
+		cost = 0
+		days_remove = constant:africa_decision_days.bestiary_actor_operation
+		target_root_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_broadcast_hyena_radio_misdirection_root_req_tt
+				is_africa_runtime_unifier = yes
+				has_country_flag = africa_bestiary_hyena_radio_dominion_broadcasts
+			}
+		}
+		target_trigger = {
+			FROM = {
+				tag = HYR
+				has_country_flag = africa_high_chaos_actor
+				NOT = { has_country_flag = africa_hyena_radio_misdirections_broadcast }
+			}
+		}
+		custom_cost_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_bestiary_hyena_radio_cost_tt
+				has_political_power > constant:africa_decision.bestiary_actor_operation_cost
+				has_equipment = { infantry_equipment > constant:africa_force.bestiary_package_infantry_equipment }
+				has_equipment = { support_equipment > constant:africa_force.bestiary_package_support_equipment }
+				command_power > constant:africa_decision.bestiary_actor_command_power_gate
+			}
+		}
+		custom_cost_text = africa_bestiary_hyena_radio_cost_tt
+		complete_effect = {
+			custom_effect_tooltip = africa_broadcast_hyena_radio_misdirection_effect_tt
+			add_political_power = constant:africa_decision.bestiary_actor_operation_cost_spend
+			set_temp_variable = { africa_bestiary_package_infantry_cost = constant:africa_force.bestiary_package_infantry_equipment }
+			multiply_temp_variable = { africa_bestiary_package_infantry_cost = -1 }
+			set_temp_variable = { africa_bestiary_package_support_cost = constant:africa_force.bestiary_package_support_equipment }
+			multiply_temp_variable = { africa_bestiary_package_support_cost = -1 }
+			add_equipment_to_stockpile = { type = infantry_equipment amount = africa_bestiary_package_infantry_cost }
+			add_equipment_to_stockpile = { type = support_equipment amount = africa_bestiary_package_support_cost }
+			add_command_power = constant:africa_decision.bestiary_actor_command_power_spend
+			FROM = {
+				save_event_target_as = africa_bestiary_actor_target
+				set_country_flag = africa_hyena_radio_misdirections_broadcast
+				add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_force.bestiary_package_infantry_equipment producer = ROOT }
+				add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_force.bestiary_package_support_equipment producer = ROOT }
+				africa_create_high_chaos_guard_reinforcement_divisions = yes
+			}
+			set_variable = { africa_hyena_radio_misdirection_count = constant:achievement_threshold.africa.hyena_misdirections }
+			set_country_flag = africa_has_bestiary_package_action
+			add_to_variable = { africa_bestiary_package_action_count = 1 }
+			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.bestiary_package_liberation }
+			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.scramble_treaty_alarm_relief }
+			add_to_variable = { africa_bestiary_alarm = constant:africa_value_delta.bestiary_actor_alarm }
+			add_to_variable = { africa_covenant_pressure = constant:africa_value_delta.bestiary_actor_covenant_pressure }
+			africa_clamp_core_values = yes
+			country_event = { id = chaosx.nr12.46 }
+		}
+		ai_will_do = {
+			base = constant:africa_ai.low
+			modifier = {
+				factor = constant:africa_ai.strong
+				has_country_flag = africa_scramble_counter_dockets_open
+				NOT = { has_country_flag = africa_scramble_treaty_mission_success }
+			}
+		}
+	}
+
+	africa_confirm_bird_of_the_walls_warning = {
+		icon = GFX_decision_generic_research
+		target_array = global.africa_charter_member_countries
+		cost = 0
+		days_remove = constant:africa_decision_days.bestiary_actor_operation
+		target_root_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_confirm_bird_of_the_walls_warning_root_req_tt
+				is_africa_runtime_unifier = yes
+				has_country_flag = africa_bestiary_bird_of_the_walls_omens
+				has_country_flag = africa_omen_reliability_verified
+				has_country_flag = africa_bestiary_warning_network
+			}
+		}
+		target_trigger = {
+			FROM = {
+				tag = BIR
+				has_country_flag = africa_high_chaos_actor
+				NOT = { has_country_flag = africa_bird_of_the_walls_omen_confirmed }
+			}
+		}
+		custom_cost_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_bestiary_bird_wall_cost_tt
+				has_political_power > constant:africa_decision.bestiary_actor_operation_cost
+				has_equipment = { support_equipment > constant:africa_force.bestiary_actor_support_equipment }
+				command_power > constant:africa_decision.bestiary_actor_command_power_gate
+			}
+		}
+		custom_cost_text = africa_bestiary_bird_wall_cost_tt
+		complete_effect = {
+			custom_effect_tooltip = africa_confirm_bird_of_the_walls_warning_effect_tt
+			add_political_power = constant:africa_decision.bestiary_actor_operation_cost_spend
+			set_temp_variable = { africa_bestiary_actor_support_cost = constant:africa_force.bestiary_actor_support_equipment }
+			multiply_temp_variable = { africa_bestiary_actor_support_cost = -1 }
+			add_equipment_to_stockpile = { type = support_equipment amount = africa_bestiary_actor_support_cost }
+			add_command_power = constant:africa_decision.bestiary_actor_command_power_spend
+			FROM = {
+				save_event_target_as = africa_bestiary_actor_target
+				set_country_flag = africa_bird_of_the_walls_omen_confirmed
+				add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_force.bestiary_actor_support_equipment producer = ROOT }
+			}
+			set_country_flag = africa_has_bestiary_package_action
+			add_to_variable = { africa_bestiary_package_action_count = 1 }
+			add_to_variable = { africa_archive_mandate = constant:africa_value_delta.bestiary_actor_archive_mandate }
+			add_to_variable = { africa_bestiary_alarm = constant:africa_value_delta.bestiary_actor_alarm_relief }
+			add_to_variable = { africa_mythic_volatility = constant:africa_value_delta.bestiary_actor_volatility_relief }
+			africa_clamp_core_values = yes
+			country_event = { id = chaosx.nr12.47 }
+		}
+		ai_will_do = { base = constant:africa_ai.normal }
+	}
+
+	africa_field_sao_terracotta_line = {
+		icon = GFX_decision_generic_construction
+		target_array = global.africa_charter_member_countries
+		cost = 0
+		days_remove = constant:africa_decision_days.bestiary_actor_operation
+		target_root_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_field_sao_terracotta_line_root_req_tt
+				is_africa_runtime_unifier = yes
+				has_country_flag = africa_bestiary_sao_terracotta_host_guard
+			}
+		}
+		target_trigger = {
+			FROM = {
+				tag = SAO
+				has_country_flag = africa_high_chaos_actor
+				NOT = { has_country_flag = africa_sao_terracotta_line_fielded }
+			}
+		}
+		custom_cost_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_bestiary_sao_terracotta_cost_tt
+				has_political_power > constant:africa_decision.bestiary_actor_operation_cost
+				has_equipment = { infantry_equipment > constant:africa_force.bestiary_actor_infantry_equipment }
+				has_equipment = { support_equipment > constant:africa_force.bestiary_actor_support_equipment }
+				has_manpower > constant:africa_force.bestiary_actor_manpower_gate
+				has_army_experience > constant:africa_decision.bestiary_actor_army_xp_gate
+			}
+		}
+		custom_cost_text = africa_bestiary_sao_terracotta_cost_tt
+		complete_effect = {
+			custom_effect_tooltip = africa_field_sao_terracotta_line_effect_tt
+			add_political_power = constant:africa_decision.bestiary_actor_operation_cost_spend
+			set_temp_variable = { africa_bestiary_actor_infantry_cost = constant:africa_force.bestiary_actor_infantry_equipment }
+			multiply_temp_variable = { africa_bestiary_actor_infantry_cost = -1 }
+			set_temp_variable = { africa_bestiary_actor_support_cost = constant:africa_force.bestiary_actor_support_equipment }
+			multiply_temp_variable = { africa_bestiary_actor_support_cost = -1 }
+			add_equipment_to_stockpile = { type = infantry_equipment amount = africa_bestiary_actor_infantry_cost }
+			add_equipment_to_stockpile = { type = support_equipment amount = africa_bestiary_actor_support_cost }
+			add_manpower = constant:africa_force.bestiary_actor_manpower_spend
+			army_experience = constant:africa_decision.bestiary_actor_army_xp_spend
+			FROM = {
+				save_event_target_as = africa_bestiary_actor_target
+				set_country_flag = africa_sao_terracotta_line_fielded
+				add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_force.bestiary_actor_infantry_equipment producer = ROOT }
+				add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_force.bestiary_actor_support_equipment producer = ROOT }
+				capital_scope = {
+					add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+					add_building_construction = { type = bunker level = 1 instant_build = yes }
+				}
+				africa_create_high_chaos_guard_reinforcement_divisions = yes
+			}
+			set_country_flag = africa_has_bestiary_package_action
+			add_to_variable = { africa_bestiary_package_action_count = 1 }
+			add_to_variable = { africa_authority = constant:africa_value_delta.bestiary_actor_authority }
+			add_to_variable = { africa_old_seat_legitimacy = constant:africa_value_delta.bestiary_actor_old_seat }
+			add_to_variable = { africa_mythic_volatility = constant:africa_value_delta.bestiary_package_volatility }
+			africa_clamp_core_values = yes
+			country_event = { id = chaosx.nr12.48 }
+		}
+		ai_will_do = {
+			base = constant:africa_ai.low
+			modifier = {
+				factor = constant:africa_ai.strong
+				has_country_flag = africa_scramble_counter_dockets_open
 			}
 		}
 	}
