@@ -1977,6 +1977,118 @@ africa_authority_atlas_category = {
 		}
 	}
 
+	africa_mediate_dossier_resistance_watch = {
+		icon = GFX_decision_generic_improve_relations
+		cost = 0
+		days_remove = constant:africa_decision_days.dossier_resistance_intervention
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = africa_mediate_dossier_resistance_watch_req_tt
+				can_africa_mediate_dossier_resistance_watch = yes
+			}
+		}
+		custom_cost_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_mediate_dossier_resistance_watch_cost_tt
+				has_political_power > constant:africa_decision.dossier_resistance_intervention_cost
+				has_equipment = { support_equipment > constant:africa_force.dossier_resistance_mediation_support_equipment }
+				has_manpower > constant:africa_force.dossier_resistance_mediation_manpower_gate
+				can_africa_pay_dossier_resistance_profile_logistics_cost = yes
+			}
+		}
+		custom_cost_text = africa_mediate_dossier_resistance_watch_cost_tt
+		complete_effect = {
+			custom_effect_tooltip = africa_mediate_dossier_resistance_watch_start_tt
+			africa_start_dossier_resistance_mediation = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = africa_mediate_dossier_resistance_watch_effect_tt
+			if = {
+				limit = {
+					has_country_flag = africa_dossier_resistance_watch_active
+					has_country_flag = africa_dossier_resistance_mediation_active
+					has_africa_dossier_resistance_watch_context = yes
+					controls_africa_archive_resistance_seat_state = yes
+				}
+				africa_mediate_dossier_resistance_watch = yes
+			}
+			else_if = {
+				limit = {
+					has_country_flag = africa_dossier_resistance_watch_active
+					has_country_flag = africa_dossier_resistance_mediation_active
+				}
+				africa_fail_dossier_resistance_watch = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:africa_ai.normal
+			modifier = { factor = constant:africa_ai.strong has_country_flag = africa_route_federal_charter }
+			modifier = { factor = constant:africa_ai.strong has_country_flag = africa_route_sovereign_seats }
+			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_route_crown_congress }
+			modifier = { factor = constant:africa_ai.preferred is_africa_archive_resistance_profile_western_crowns = yes }
+			modifier = { factor = constant:africa_ai.preferred is_africa_archive_resistance_profile_central_river = yes }
+			modifier = { factor = constant:africa_ai.preferred is_africa_archive_resistance_profile_great_lakes = yes }
+			modifier = { factor = constant:africa_ai.low has_country_flag = africa_route_continental_general_staff }
+		}
+	}
+
+	africa_enforce_dossier_resistance_watch = {
+		icon = GFX_decision_generic_prepare_civil_war
+		cost = 0
+		days_remove = constant:africa_decision_days.dossier_resistance_intervention
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = africa_enforce_dossier_resistance_watch_req_tt
+				can_africa_enforce_dossier_resistance_watch = yes
+			}
+		}
+		custom_cost_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_enforce_dossier_resistance_watch_cost_tt
+				has_political_power > constant:africa_decision.dossier_resistance_intervention_cost
+				has_equipment = { infantry_equipment > constant:africa_force.dossier_resistance_enforcement_infantry_equipment }
+				has_equipment = { support_equipment > constant:africa_force.dossier_resistance_enforcement_support_equipment }
+				has_manpower > constant:africa_force.dossier_resistance_enforcement_manpower_gate
+				command_power > constant:africa_decision.dossier_resistance_enforcement_command_power_gate
+				can_africa_pay_dossier_resistance_profile_logistics_cost = yes
+			}
+		}
+		custom_cost_text = africa_enforce_dossier_resistance_watch_cost_tt
+		complete_effect = {
+			custom_effect_tooltip = africa_enforce_dossier_resistance_watch_start_tt
+			africa_start_dossier_resistance_enforcement = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = africa_enforce_dossier_resistance_watch_effect_tt
+			if = {
+				limit = {
+					has_country_flag = africa_dossier_resistance_watch_active
+					has_country_flag = africa_dossier_resistance_enforcement_active
+					has_africa_dossier_resistance_watch_context = yes
+					controls_africa_archive_resistance_seat_state = yes
+				}
+				africa_enforce_dossier_resistance_watch = yes
+			}
+			else_if = {
+				limit = {
+					has_country_flag = africa_dossier_resistance_watch_active
+					has_country_flag = africa_dossier_resistance_enforcement_active
+				}
+				africa_fail_dossier_resistance_watch = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:africa_ai.low
+			modifier = { factor = constant:africa_ai.strong has_country_flag = africa_route_continental_general_staff }
+			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_settlement_direct_archive_seal }
+			modifier = { factor = constant:africa_ai.preferred is_africa_archive_resistance_profile_nile_red_sea = yes }
+			modifier = { factor = constant:africa_ai.preferred is_africa_archive_resistance_profile_maghreb_desert = yes }
+			modifier = { factor = constant:africa_ai.preferred is_africa_archive_resistance_profile_southern_stone = yes }
+			modifier = { factor = constant:africa_ai.very_low has_country_flag = africa_route_federal_charter }
+			modifier = { factor = constant:africa_ai.very_low has_country_flag = africa_route_sovereign_seats }
+		}
+	}
+
 	africa_dossier_resistance_watch_mission = {
 		icon = GFX_decision_generic_political_discourse
 		days_mission_timeout = @africa_dossier_resistance_watch_days
