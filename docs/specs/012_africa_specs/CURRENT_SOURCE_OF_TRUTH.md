@@ -71,6 +71,15 @@ This closes the actor-package, portrait/flag, achievement-icon, and prompt-named
 
 The root-terminal World Is One super-event disposition is an intentional hybrid. The World Root terminal branch shares base slot `72` text and image presentation (`The World Is One`) and uses distinct root-terminal audio id `80`. Archive remains the distinct terminal presentation variant where implemented through slot `79`.
 
+Later June 18 parent tranches close additional bounded gaps:
+
+- `c37da58d` regenerates the Event 012 Africa goal and idea icons without white backgrounds. Goal icons remain goal-sized DDS files, while idea icons are distinct 64x64 designs rather than downscaled goal art. The live DDS files are under `gfx/interface/goals/012_africa/` and `gfx/interface/ideas/012_africa/`, with source packages and manifests under `docs/assets/012_africa/`.
+- `c13fe459` makes the high-chaos Bestiary focus branch hidden until `AFR_high_chaos_door` reveals it through `africa_high_chaos_branch_revealed` and `mark_focus_tree_layout_dirty`.
+- `94857ce3` gives the Continental Congress Seats and Bestiary Terms GUI actions the same concrete support-equipment, manpower, and command-power requirements as their decision equivalents, using shared helpers so the GUI and normal decision paths cannot diverge.
+- The current dossier-AI tranche adds Authority Atlas lifecycle and eight-profile historical dossier AI to `common/ai_strategy/012_africa.txt`, and weights the Authority Atlas dossier decisions by route/profile in `common/decisions/012_africa_decisions.txt`.
+
+These tranches reduce the active blocker list, but they do not close Event 012. Remaining known blockers still include deeper package-specific historical dossier missions, richer settlement forks, local resistance event chains, fuller Continental Congress presentation families, targeted scenario validation, and final super-event sourcing/audio blockers where the research handoffs still require it.
+
 ## Cleanup note
 
 Earlier correction-only name-protocol files and matrices have been removed from the current handoff. Their useful content is folded into the normal country-package, prompt, and acceptance surfaces above.

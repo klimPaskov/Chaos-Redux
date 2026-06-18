@@ -35,6 +35,15 @@
 @AFRICA_AI_BESTIARY_SIGNAL = 42
 @AFRICA_AI_BESTIARY_CITADEL = 38
 @AFRICA_AI_BESTIARY_HERD_SUPPLY = 42
+@AFRICA_AI_DOSSIER_SURVEY_RESTRAINT = 70
+@AFRICA_AI_DOSSIER_GUARD_RESTRAINT = 55
+@AFRICA_AI_DOSSIER_SUPPORT = 32
+@AFRICA_AI_DOSSIER_CONVOY = 36
+@AFRICA_AI_DOSSIER_MOTORIZED = 30
+@AFRICA_AI_DOSSIER_INFANTRY = 34
+@AFRICA_AI_DOSSIER_ARCHIVE = 40
+@AFRICA_AI_DOSSIER_OBSERVER = 45
+@AFRICA_AI_DOSSIER_DIRECT = 42
 
 africa_unifier_charter_consolidation = {
 	allowed = { always = yes }
@@ -337,6 +346,311 @@ africa_unifier_world_order_sponsor = {
 		type = build_building
 		id = dockyard
 		value = @AFRICA_AI_WORLD_ORDER_NAVY
+	}
+}
+
+africa_unifier_authority_atlas_active_survey = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_unifier_active
+		has_country_flag = africa_authority_atlas_open
+		OR = {
+			has_country_flag = africa_selected_dossier_survey_mission_active
+			has_country_flag = africa_archive_guard_mission_active
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @AFRICA_AI_DOSSIER_SURVEY_RESTRAINT
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_DOSSIER_SUPPORT
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_DOSSIER_ARCHIVE
+	}
+}
+
+africa_unifier_authority_atlas_observer_watch = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_unifier_active
+		has_country_flag = africa_dossier_resistance_watch_active
+		has_country_flag = africa_dossier_resistance_watch_observer
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @AFRICA_AI_WORLD_ORDER_RESTRAINT
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_DOSSIER_OBSERVER
+	}
+	ai_strategy = {
+		type = build_building
+		id = industrial_complex
+		value = @AFRICA_AI_REGIONAL_INDUSTRY
+	}
+}
+
+africa_unifier_authority_atlas_direct_watch = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_unifier_active
+		OR = {
+			has_country_flag = africa_direct_archive_seal_mission_active
+			AND = {
+				has_country_flag = africa_dossier_resistance_watch_active
+				has_country_flag = africa_dossier_resistance_watch_direct_archive
+			}
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @AFRICA_AI_DOSSIER_GUARD_RESTRAINT
+	}
+	ai_strategy = {
+		type = build_army
+		id = infantry
+		value = @AFRICA_AI_BESTIARY_DEFENSE
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @AFRICA_AI_DOSSIER_DIRECT
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_DOSSIER_SUPPORT
+	}
+}
+
+africa_unifier_dossier_profile_nile_red_sea = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_unifier_active
+		has_country_flag = africa_authority_atlas_open
+		OR = {
+			is_africa_selected_dossier_profile_nile_red_sea = yes
+			has_country_flag = africa_dossier_profile_nile_red_sea_opened
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = equipment_production_factor
+		id = convoy
+		value = @AFRICA_AI_DOSSIER_CONVOY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_DOSSIER_SUPPORT
+	}
+	ai_strategy = {
+		type = build_building
+		id = dockyard
+		value = @AFRICA_AI_REGIONAL_NAVAL
+	}
+}
+
+africa_unifier_dossier_profile_maghreb_desert = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_unifier_active
+		has_country_flag = africa_authority_atlas_open
+		OR = {
+			is_africa_selected_dossier_profile_maghreb_desert = yes
+			has_country_flag = africa_dossier_profile_maghreb_desert_opened
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @AFRICA_AI_DOSSIER_SURVEY_RESTRAINT
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @AFRICA_AI_DOSSIER_INFANTRY
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_REGIONAL_INTERIOR_SUPPLY
+	}
+}
+
+africa_unifier_dossier_profile_sahel_charter = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_unifier_active
+		has_country_flag = africa_authority_atlas_open
+		OR = {
+			is_africa_selected_dossier_profile_sahel_charter = yes
+			has_country_flag = africa_dossier_profile_sahel_charter_opened
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = equipment_production_factor
+		id = motorized
+		value = @AFRICA_AI_DOSSIER_MOTORIZED
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @AFRICA_AI_DOSSIER_INFANTRY
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_REGIONAL_INTERIOR_SUPPLY
+	}
+}
+
+africa_unifier_dossier_profile_western_crowns = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_unifier_active
+		has_country_flag = africa_authority_atlas_open
+		OR = {
+			is_africa_selected_dossier_profile_western_crowns = yes
+			has_country_flag = africa_dossier_profile_western_crowns_opened
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @AFRICA_AI_DOSSIER_SURVEY_RESTRAINT
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_DOSSIER_OBSERVER
+	}
+	ai_strategy = {
+		type = build_building
+		id = industrial_complex
+		value = @AFRICA_AI_REGIONAL_INDUSTRY
+	}
+}
+
+africa_unifier_dossier_profile_central_river = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_unifier_active
+		has_country_flag = africa_authority_atlas_open
+		OR = {
+			is_africa_selected_dossier_profile_central_river = yes
+			has_country_flag = africa_dossier_profile_central_river_opened
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = equipment_production_factor
+		id = convoy
+		value = @AFRICA_AI_DOSSIER_CONVOY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_DOSSIER_OBSERVER
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_BESTIARY_HABITAT
+	}
+}
+
+africa_unifier_dossier_profile_great_lakes = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_unifier_active
+		has_country_flag = africa_authority_atlas_open
+		OR = {
+			is_africa_selected_dossier_profile_great_lakes = yes
+			has_country_flag = africa_dossier_profile_great_lakes_opened
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @AFRICA_AI_DOSSIER_SURVEY_RESTRAINT
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_DOSSIER_OBSERVER
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_REGIONAL_INTERIOR_SUPPLY
+	}
+}
+
+africa_unifier_dossier_profile_indian_ocean = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_unifier_active
+		has_country_flag = africa_authority_atlas_open
+		OR = {
+			is_africa_selected_dossier_profile_indian_ocean = yes
+			has_country_flag = africa_dossier_profile_indian_ocean_opened
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = equipment_production_factor
+		id = convoy
+		value = @AFRICA_AI_WORLD_ORDER_CONVOY
+	}
+	ai_strategy = {
+		type = build_building
+		id = dockyard
+		value = @AFRICA_AI_WORLD_ORDER_NAVY
+	}
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @AFRICA_AI_ROUTE_RESTRAINT
+	}
+}
+
+africa_unifier_dossier_profile_southern_stone = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_unifier_active
+		has_country_flag = africa_authority_atlas_open
+		OR = {
+			is_africa_selected_dossier_profile_southern_stone = yes
+			has_country_flag = africa_dossier_profile_southern_stone_opened
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_REGIONAL_INTERIOR_SUPPLY
+	}
+	ai_strategy = {
+		type = build_building
+		id = arms_factory
+		value = @AFRICA_AI_REGIONAL_INDUSTRY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @AFRICA_AI_DOSSIER_INFANTRY
 	}
 }
 
