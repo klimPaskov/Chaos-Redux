@@ -612,6 +612,7 @@ africa_clear_runtime_context = {
 	}
 	africa_clear_liberation_objective_operation = yes
 	africa_clear_regional_state_operation = yes
+	africa_clear_return_settlement_operation = yes
 	clear_array = global.africa_charter_candidate_countries
 	clear_array = global.africa_charter_member_countries
 	clear_array = global.africa_charter_protected_countries
@@ -674,6 +675,7 @@ africa_clear_runtime_context = {
 				has_state_flag = africa_paper_claim_survey_operation_target
 				has_state_flag = africa_living_core_operation_target
 				has_state_flag = africa_integration_rail_operation_target
+				has_state_flag = africa_return_settlement_operation_target
 			}
 		}
 		clr_state_flag = africa_bestiary_warning_state_target
@@ -684,6 +686,7 @@ africa_clear_runtime_context = {
 		clr_state_flag = africa_paper_claim_survey_operation_target
 		clr_state_flag = africa_living_core_operation_target
 		clr_state_flag = africa_integration_rail_operation_target
+		clr_state_flag = africa_return_settlement_operation_target
 	}
 	clear_variable = global.africa_unifier_country_id
 	clear_variable = global.africa_rsa_branch_state
@@ -3814,6 +3817,64 @@ africa_fail_integration_rail_operation = {
 		africa_apply_regional_state_operation_failure_pressure = yes
 	}
 	africa_clear_regional_state_operation = yes
+}
+
+africa_clear_return_settlement_operation = {
+	if = {
+		limit = { has_event_target = africa_return_settlement_operation_state }
+		event_target:africa_return_settlement_operation_state = {
+			clr_state_flag = africa_return_settlement_operation_target
+		}
+		clear_global_event_target = africa_return_settlement_operation_state
+	}
+	clr_country_flag = africa_return_settlement_operation_active
+}
+
+africa_start_return_settlement_operation_from_from = {
+	if = {
+		limit = {
+			can_africa_start_return_settlement_operation = yes
+			FROM = {
+				is_on_continent = africa
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+				NOT = { has_state_flag = africa_return_settlement_built }
+			}
+		}
+		add_manpower = constant:africa_force.diaspora_settlement_manpower_spend
+		FROM = {
+			set_state_flag = africa_return_settlement_operation_target
+			save_global_event_target_as = africa_return_settlement_operation_state
+		}
+		set_country_flag = africa_return_settlement_operation_active
+	}
+}
+
+africa_complete_return_settlement_operation = {
+	if = {
+		limit = { can_africa_keep_return_settlement_operation_active = yes }
+		event_target:africa_return_settlement_operation_state = {
+			set_state_flag = africa_return_settlement_built
+			add_extra_state_shared_building_slots = 1
+			add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+		}
+		add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
+		add_to_variable = { africa_restoration_debt = constant:africa_value_delta.integration_burden_relief }
+		africa_clamp_core_values = yes
+		set_country_flag = africa_return_settlement_built
+	}
+	africa_clear_return_settlement_operation = yes
+}
+
+africa_fail_return_settlement_operation = {
+	if = {
+		limit = { has_country_flag = africa_return_settlement_operation_active }
+		add_to_variable = { africa_restoration_debt = constant:africa_value_delta.diaspora_settlement_failure_debt }
+		add_to_variable = { africa_regional_trust = constant:africa_value_delta.diaspora_settlement_failure_trust }
+		add_to_variable = { africa_legitimacy = constant:africa_value_delta.diaspora_settlement_failure_legitimacy }
+		africa_clamp_core_values = yes
+	}
+	africa_clear_return_settlement_operation = yes
 }
 
 africa_create_charter_league_from_template = {
