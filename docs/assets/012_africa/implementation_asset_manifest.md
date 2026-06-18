@@ -232,6 +232,36 @@ Status:
 - `BBS`, `TDM`, `ANW`, `OVN`, `CRR`, `CTL`, `OKP`, `TRM`, `HGD`, and `GHC` no longer need generic human portraits as an asset-source gap.
 - Parent wiring is complete for `.gfx` sprite registration and `history/countries/` leader portrait references.
 
+## Regional Authority Portraits
+
+The ten human regional authority tags now use distinct generated institutional leader portraits and direct institutional leader names. These are separate from the high-chaos actor portraits and are not scaled versions of focus or idea icons.
+
+Package:
+
+- `docs/assets/012_africa/regional_authority_portraits/manifest.md`
+- `docs/assets/012_africa/regional_authority_portraits/gfx_handoff.md`
+- `docs/assets/012_africa/regional_authority_portraits/contact_sheets/regional_authority_portraits_contact_sheet.png`
+- `docs/assets/012_africa/regional_authority_portraits/contact_sheets/regional_authority_portraits_live_dds_contact_sheet.png`
+- `docs/plans/012_africa_plans/subagent_handoffs/2026-06-18_012_africa_regional_authority_portraits_handoff.md`
+
+Converted portrait DDS files:
+
+- `gfx/leaders/012_africa/leader_012_africa_wac_west_african_congress.dds`
+- `gfx/leaders/012_africa/leader_012_africa_sah_sahel_caravan.dds`
+- `gfx/leaders/012_africa/leader_012_africa_mag_maghreb_coast.dds`
+- `gfx/leaders/012_africa/leader_012_africa_nhr_nile_horn_league.dds`
+- `gfx/leaders/012_africa/leader_012_africa_eac_east_african_railway_congress.dds`
+- `gfx/leaders/012_africa/leader_012_africa_glk_great_lakes_council.dds`
+- `gfx/leaders/012_africa/leader_012_africa_cbc_congo_basin_charter.dds`
+- `gfx/leaders/012_africa/leader_012_africa_zsc_zambezi_stone_cities.dds`
+- `gfx/leaders/012_africa/leader_012_africa_slc_south_african_liberation_congress.dds`
+- `gfx/leaders/012_africa/leader_012_africa_ioc_indian_ocean_congress.dds`
+
+Status:
+
+- `WAC`, `SAH`, `MAG`, `NHR`, `EAC`, `GLK`, `CBC`, `ZSC`, `SLC`, and `IOC` no longer reference `GFX_portrait_generic_africa`.
+- Parent wiring is complete for `.gfx` sprite registration and `history/countries/` leader portrait references.
+
 ## Country Flags
 
 The created Event 012 country tags now have generated symbolic flag families under `gfx/flags/`. These are final generated flags for the created Event 012 tags, not attested historical flags for dossier polities.
