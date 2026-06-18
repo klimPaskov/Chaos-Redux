@@ -628,6 +628,7 @@ can_africa_complete_dossier_resistance_watch = {
 	has_country_flag = africa_dossier_resistance_watch_active
 	has_africa_dossier_resistance_watch_context = yes
 	controls_africa_archive_resistance_seat_state = yes
+	NOT = { has_country_flag = africa_dossier_resistance_intervention_active }
 	OR = {
 		AND = {
 			has_country_flag = africa_dossier_resistance_watch_observer
@@ -656,6 +657,73 @@ can_africa_complete_dossier_resistance_watch = {
 			}
 		}
 	}
+}
+
+can_africa_pay_dossier_resistance_profile_logistics_cost = {
+	has_africa_dossier_resistance_watch_context = yes
+	OR = {
+		AND = {
+			is_africa_archive_resistance_profile_nile_red_sea = yes
+			has_equipment = { convoy_1 > constant:africa_force.dossier_survey_nile_red_sea_convoys }
+		}
+		AND = {
+			is_africa_archive_resistance_profile_maghreb_desert = yes
+			has_equipment = { infantry_equipment > constant:africa_force.dossier_survey_maghreb_infantry_equipment }
+		}
+		AND = {
+			is_africa_archive_resistance_profile_sahel_charter = yes
+			has_equipment = { motorized_equipment > constant:africa_force.dossier_survey_sahel_motorized_equipment }
+			has_army_experience > constant:africa_decision.dossier_survey_army_xp_gate
+		}
+		AND = {
+			is_africa_archive_resistance_profile_western_crowns = yes
+			has_equipment = { infantry_equipment > constant:africa_force.dossier_survey_western_crowns_infantry_equipment }
+		}
+		AND = {
+			is_africa_archive_resistance_profile_central_river = yes
+			has_equipment = { convoy_1 > constant:africa_force.dossier_survey_central_river_convoys }
+		}
+		AND = {
+			is_africa_archive_resistance_profile_great_lakes = yes
+			has_equipment = { convoy_1 > constant:africa_force.dossier_survey_great_lakes_convoys }
+		}
+		AND = {
+			is_africa_archive_resistance_profile_indian_ocean = yes
+			has_equipment = { convoy_1 > constant:africa_force.dossier_survey_indian_ocean_convoys }
+		}
+		AND = {
+			is_africa_archive_resistance_profile_southern_stone = yes
+			has_equipment = { train_equipment > constant:africa_force.dossier_survey_southern_stone_trains }
+		}
+	}
+}
+
+can_africa_mediate_dossier_resistance_watch = {
+	is_africa_runtime_unifier = yes
+	has_country_flag = africa_dossier_resistance_watch_active
+	has_country_flag = africa_dossier_resistance_watch_observer
+	has_africa_dossier_resistance_watch_context = yes
+	controls_africa_archive_resistance_seat_state = yes
+	NOT = { has_country_flag = africa_dossier_resistance_intervention_active }
+	has_political_power > constant:africa_decision.dossier_resistance_intervention_cost
+	has_equipment = { support_equipment > constant:africa_force.dossier_resistance_mediation_support_equipment }
+	has_manpower > constant:africa_force.dossier_resistance_mediation_manpower_gate
+	can_africa_pay_dossier_resistance_profile_logistics_cost = yes
+}
+
+can_africa_enforce_dossier_resistance_watch = {
+	is_africa_runtime_unifier = yes
+	has_country_flag = africa_dossier_resistance_watch_active
+	has_country_flag = africa_dossier_resistance_watch_direct_archive
+	has_africa_dossier_resistance_watch_context = yes
+	controls_africa_archive_resistance_seat_state = yes
+	NOT = { has_country_flag = africa_dossier_resistance_intervention_active }
+	has_political_power > constant:africa_decision.dossier_resistance_intervention_cost
+	has_equipment = { infantry_equipment > constant:africa_force.dossier_resistance_enforcement_infantry_equipment }
+	has_equipment = { support_equipment > constant:africa_force.dossier_resistance_enforcement_support_equipment }
+	has_manpower > constant:africa_force.dossier_resistance_enforcement_manpower_gate
+	command_power > constant:africa_decision.dossier_resistance_enforcement_command_power_gate
+	can_africa_pay_dossier_resistance_profile_logistics_cost = yes
 }
 
 is_africa_selected_dossier_historical = {
@@ -767,6 +835,78 @@ is_africa_selected_dossier_profile_southern_stone = {
 	}
 }
 
+is_africa_archive_resistance_profile_nile_red_sea = {
+	OR = {
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.kush_meroe }
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.aksum }
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.funj_sennar }
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.adal_harar }
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.ajuran }
+	}
+}
+
+is_africa_archive_resistance_profile_maghreb_desert = {
+	OR = {
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.punic_harbor_ledger }
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.numidia }
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.garamantian_wells }
+	}
+}
+
+is_africa_archive_resistance_profile_sahel_charter = {
+	OR = {
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.manden_charter }
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.songhai }
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.futa }
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.kanem_bornu }
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.hausa_bakwai }
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.wadai_baguirmi }
+	}
+}
+
+is_africa_archive_resistance_profile_western_crowns = {
+	OR = {
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.jolof_wolof }
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.asante }
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.oyo }
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.benin_edo }
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.dahomey }
+	}
+}
+
+is_africa_archive_resistance_profile_central_river = {
+	OR = {
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.kongo }
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.ndongo_matamba }
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.luba }
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.lunda }
+	}
+}
+
+is_africa_archive_resistance_profile_great_lakes = {
+	OR = {
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.buganda }
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.bunyoro }
+	}
+}
+
+is_africa_archive_resistance_profile_indian_ocean = {
+	OR = {
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.swahili_coast }
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.kilwa }
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.merina }
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.comorian_sultanates }
+	}
+}
+
+is_africa_archive_resistance_profile_southern_stone = {
+	OR = {
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.great_zimbabwe }
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.barotse }
+		check_variable = { africa_archive_resistance_dossier_id = constant:africa_dossier_id.zulu_nguni }
+	}
+}
+
 has_africa_selected_dossier_opened = {
 	is_africa_selected_dossier_historical = yes
 	meta_trigger = {
@@ -837,6 +977,7 @@ can_africa_settle_selected_dossier = {
 	has_africa_selected_dossier_guard = yes
 	controls_africa_selected_dossier_seat_state = yes
 	NOT = { has_africa_selected_dossier_settlement = yes }
+	NOT = { has_country_flag = africa_dossier_resistance_watch_active }
 }
 
 can_africa_pay_selected_dossier_survey_cost = {
