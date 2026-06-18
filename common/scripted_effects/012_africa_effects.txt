@@ -714,6 +714,8 @@ africa_clear_runtime_context = {
 	clear_variable = africa_selected_dossier_seat_state
 	clear_variable = africa_archive_guard_mission_dossier_id
 	clear_variable = africa_archive_guard_mission_seat_state
+	clear_variable = africa_archive_resistance_dossier_id
+	clear_variable = africa_archive_resistance_seat_state
 	clear_variable = africa_selected_high_chaos_package_id
 	clear_variable = africa_opened_dossier_count
 	clear_variable = africa_unlocked_high_chaos_package_count
@@ -742,6 +744,11 @@ africa_clear_runtime_context = {
 	clr_country_flag = africa_all_high_chaos_packages_unlocked
 	clr_country_flag = africa_minimum_historical_dossiers_ready
 	clr_country_flag = africa_minimum_high_chaos_packages_ready
+	clr_country_flag = africa_dossier_resistance_watch_active
+	clr_country_flag = africa_dossier_resistance_watch_observer
+	clr_country_flag = africa_dossier_resistance_watch_direct_archive
+	clr_country_flag = africa_dossier_resistance_watch_success
+	clr_country_flag = africa_dossier_resistance_watch_failed
 	set_variable = { global.africa_runtime_ready = constant:africa_runtime_state.not_ready }
 	clr_global_flag = africa_runtime_context_ready
 	clr_global_flag = africa_rsa_civil_war_active
@@ -3665,6 +3672,9 @@ africa_establish_union_start = {
 	clr_country_flag = africa_archive_guard_mission_active
 	clear_variable = africa_archive_guard_mission_dossier_id
 	clear_variable = africa_archive_guard_mission_seat_state
+	africa_clear_dossier_resistance_watch_context = yes
+	clr_country_flag = africa_dossier_resistance_watch_success
+	clr_country_flag = africa_dossier_resistance_watch_failed
 	clr_country_flag = africa_liberation_objective_states_ready
 	clr_country_flag = africa_forced_integration_war_disqualifier
 	clr_country_flag = africa_continent_sponsor_ready
@@ -4752,6 +4762,10 @@ africa_register_authority_atlas_catalog = {
 	set_variable = { global.africa_direct_archive_seal_legitimacy_gate = constant:africa_decision.direct_archive_seal_legitimacy_gate }
 	set_variable = { global.africa_direct_archive_seal_old_seat_gate = constant:africa_decision.direct_archive_seal_old_seat_gate }
 	set_variable = { global.africa_direct_archive_seal_restoration_debt_cap = constant:africa_decision.direct_archive_seal_restoration_debt_cap }
+	set_variable = { global.africa_dossier_resistance_observer_trust_gate = constant:africa_decision.dossier_resistance_observer_trust_gate }
+	set_variable = { global.africa_dossier_resistance_observer_cohesion_gate = constant:africa_decision.dossier_resistance_observer_cohesion_gate }
+	set_variable = { global.africa_dossier_resistance_direct_authority_gate = constant:africa_decision.dossier_resistance_direct_authority_gate }
+	set_variable = { global.africa_dossier_resistance_direct_restoration_debt_cap = constant:africa_decision.dossier_resistance_direct_restoration_debt_cap }
 	set_variable = { global.africa_omen_habitat_trust_gate = constant:africa_decision.omen_habitat_trust_gate }
 	set_variable = { global.africa_omen_bestiary_alarm_cap = constant:africa_decision.omen_bestiary_alarm_cap }
 	set_variable = { global.africa_omen_mythic_volatility_cap = constant:africa_decision.omen_mythic_volatility_cap }
@@ -4789,6 +4803,9 @@ africa_clear_authority_atlas_progress_flags = {
 				clr_country_flag = africa_dossier_[DOSSIER_ID]_local_office
 				clr_country_flag = africa_dossier_[DOSSIER_ID]_guarded
 				clr_country_flag = africa_dossier_[DOSSIER_ID]_settled
+				clr_country_flag = africa_dossier_[DOSSIER_ID]_resistance_watch_active
+				clr_country_flag = africa_dossier_[DOSSIER_ID]_resistance_calm
+				clr_country_flag = africa_dossier_[DOSSIER_ID]_resistance_failed
 			}
 			DOSSIER_ID = "[?africa_clear_dossier_id|.0]"
 		}
@@ -4821,6 +4838,9 @@ africa_clear_authority_atlas_progress_flags = {
 	clr_country_flag = africa_direct_archive_seal_mission_failed
 	clr_country_flag = africa_direct_archive_seal_proven
 	clr_country_flag = africa_direct_archive_seal_exposed
+	africa_clear_dossier_resistance_watch_context = yes
+	clr_country_flag = africa_dossier_resistance_watch_success
+	clr_country_flag = africa_dossier_resistance_watch_failed
 	clr_country_flag = africa_has_local_dossier_office
 	clr_country_flag = africa_has_guarded_dossier
 	clr_country_flag = africa_has_settled_dossier
@@ -5486,6 +5506,7 @@ africa_mark_selected_dossier_observer_settled = {
 		set_country_flag = africa_has_observer_dossier_settlement
 		africa_mark_selected_dossier_settled = yes
 		africa_apply_selected_dossier_observer_profile_effects = yes
+		africa_start_dossier_resistance_watch_for_selected_observer_settlement = yes
 	}
 }
 
@@ -5499,6 +5520,7 @@ africa_mark_selected_dossier_direct_archive_settled = {
 		set_country_flag = africa_has_direct_archive_dossier_settlement
 		africa_mark_selected_dossier_settled = yes
 		africa_apply_selected_dossier_direct_archive_profile_effects = yes
+		africa_start_dossier_resistance_watch_for_selected_direct_archive_settlement = yes
 	}
 }
 
@@ -5532,6 +5554,142 @@ africa_start_archive_guard_mission_for_selected_dossier = {
 		clr_country_flag = africa_archive_guard_mission_success
 		clr_country_flag = africa_archive_guard_mission_failed
 	}
+}
+
+africa_start_dossier_resistance_watch_for_selected_observer_settlement = {
+	if = {
+		limit = {
+			is_africa_selected_dossier_historical = yes
+			has_variable = africa_selected_dossier_seat_state
+			NOT = { has_country_flag = africa_dossier_resistance_watch_active }
+			NOT = { has_variable = africa_archive_resistance_dossier_id }
+		}
+		set_variable = { africa_archive_resistance_dossier_id = africa_selected_dossier_id }
+		set_variable = { africa_archive_resistance_seat_state = africa_selected_dossier_seat_state }
+		set_country_flag = africa_dossier_resistance_watch_active
+		set_country_flag = africa_dossier_resistance_watch_observer
+		clr_country_flag = africa_dossier_resistance_watch_direct_archive
+		clr_country_flag = africa_dossier_resistance_watch_success
+		clr_country_flag = africa_dossier_resistance_watch_failed
+		meta_effect = {
+			text = {
+				set_country_flag = africa_dossier_[DOSSIER_ID]_resistance_watch_active
+			}
+			DOSSIER_ID = "[?africa_archive_resistance_dossier_id|.0]"
+		}
+	}
+}
+
+africa_start_dossier_resistance_watch_for_selected_direct_archive_settlement = {
+	if = {
+		limit = {
+			is_africa_selected_dossier_historical = yes
+			has_variable = africa_selected_dossier_seat_state
+			NOT = { has_country_flag = africa_dossier_resistance_watch_active }
+			NOT = { has_variable = africa_archive_resistance_dossier_id }
+		}
+		set_variable = { africa_archive_resistance_dossier_id = africa_selected_dossier_id }
+		set_variable = { africa_archive_resistance_seat_state = africa_selected_dossier_seat_state }
+		set_country_flag = africa_dossier_resistance_watch_active
+		set_country_flag = africa_dossier_resistance_watch_direct_archive
+		clr_country_flag = africa_dossier_resistance_watch_observer
+		clr_country_flag = africa_dossier_resistance_watch_success
+		clr_country_flag = africa_dossier_resistance_watch_failed
+		meta_effect = {
+			text = {
+				set_country_flag = africa_dossier_[DOSSIER_ID]_resistance_watch_active
+			}
+			DOSSIER_ID = "[?africa_archive_resistance_dossier_id|.0]"
+		}
+	}
+}
+
+africa_clear_dossier_resistance_watch_context = {
+	if = {
+		limit = { has_variable = africa_archive_resistance_dossier_id }
+		meta_effect = {
+			text = {
+				clr_country_flag = africa_dossier_[DOSSIER_ID]_resistance_watch_active
+			}
+			DOSSIER_ID = "[?africa_archive_resistance_dossier_id|.0]"
+		}
+	}
+	clr_country_flag = africa_dossier_resistance_watch_active
+	clr_country_flag = africa_dossier_resistance_watch_observer
+	clr_country_flag = africa_dossier_resistance_watch_direct_archive
+	clear_variable = africa_archive_resistance_dossier_id
+	clear_variable = africa_archive_resistance_seat_state
+}
+
+africa_record_dossier_resistance_watch_success_flag = {
+	if = {
+		limit = { has_variable = africa_archive_resistance_dossier_id }
+		meta_effect = {
+			text = {
+				set_country_flag = africa_dossier_[DOSSIER_ID]_resistance_calm
+				clr_country_flag = africa_dossier_[DOSSIER_ID]_resistance_failed
+				clr_country_flag = africa_dossier_[DOSSIER_ID]_resistance_watch_active
+			}
+			DOSSIER_ID = "[?africa_archive_resistance_dossier_id|.0]"
+		}
+	}
+}
+
+africa_record_dossier_resistance_watch_failure_flag = {
+	if = {
+		limit = { has_variable = africa_archive_resistance_dossier_id }
+		meta_effect = {
+			text = {
+				set_country_flag = africa_dossier_[DOSSIER_ID]_resistance_failed
+				clr_country_flag = africa_dossier_[DOSSIER_ID]_resistance_calm
+				clr_country_flag = africa_dossier_[DOSSIER_ID]_resistance_watch_active
+			}
+			DOSSIER_ID = "[?africa_archive_resistance_dossier_id|.0]"
+		}
+	}
+}
+
+africa_complete_dossier_resistance_watch = {
+	africa_record_dossier_resistance_watch_success_flag = yes
+	set_country_flag = africa_dossier_resistance_watch_success
+	clr_country_flag = africa_dossier_resistance_watch_failed
+	clr_country_flag = africa_dossier_resistance_watch_active
+	if = {
+		limit = { has_country_flag = africa_dossier_resistance_watch_observer }
+		add_to_variable = { africa_regional_trust = constant:africa_value_delta.dossier_resistance_observer_success_trust }
+		add_to_variable = { africa_league_cohesion = constant:africa_value_delta.dossier_resistance_observer_success_cohesion }
+		add_to_variable = { africa_restoration_debt = constant:africa_value_delta.dossier_resistance_observer_success_debt_relief }
+	}
+	else_if = {
+		limit = { has_country_flag = africa_dossier_resistance_watch_direct_archive }
+		add_to_variable = { africa_authority = constant:africa_value_delta.dossier_resistance_direct_success_authority }
+		add_to_variable = { africa_restoration_debt = constant:africa_value_delta.dossier_resistance_direct_success_debt_relief }
+		add_to_variable = { africa_paper_core_burden = constant:africa_value_delta.dossier_resistance_direct_success_burden_relief }
+	}
+	africa_clamp_core_values = yes
+	country_event = { id = chaosx.nr12.49 }
+}
+
+africa_fail_dossier_resistance_watch = {
+	africa_record_dossier_resistance_watch_failure_flag = yes
+	set_country_flag = africa_dossier_resistance_watch_failed
+	clr_country_flag = africa_dossier_resistance_watch_success
+	clr_country_flag = africa_dossier_resistance_watch_active
+	if = {
+		limit = { has_country_flag = africa_dossier_resistance_watch_observer }
+		add_to_variable = { africa_regional_trust = constant:africa_value_delta.dossier_resistance_observer_failure_trust }
+		add_to_variable = { africa_league_cohesion = constant:africa_value_delta.dossier_resistance_observer_failure_cohesion }
+	}
+	else_if = {
+		limit = { has_country_flag = africa_dossier_resistance_watch_direct_archive }
+		add_to_variable = { africa_legitimacy = constant:africa_value_delta.dossier_resistance_direct_failure_legitimacy }
+		add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.dossier_resistance_direct_failure_alarm }
+	}
+	add_to_variable = { africa_local_sovereignty = constant:africa_value_delta.dossier_resistance_failure_sovereignty }
+	add_to_variable = { africa_restoration_debt = constant:africa_value_delta.dossier_resistance_failure_debt }
+	add_to_variable = { africa_paper_core_burden = constant:africa_value_delta.mission_failure_burden }
+	africa_clamp_core_values = yes
+	country_event = { id = chaosx.nr12.50 }
 }
 
 africa_start_omen_reliability_review = {

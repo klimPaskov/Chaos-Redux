@@ -1,6 +1,6 @@
 # Event 012 Africa — Current Source of Truth Map
 
-Updated: 2026-06-15
+Updated: 2026-06-18
 
 ## Current accepted design
 
@@ -50,6 +50,26 @@ Keep those strings untranslated in player-facing English and keep raw strings ou
 - The Archive of Old Seats and Authority Atlas add niche historical authorities, restoration offices, specialist schools, and high-chaos absurd actors without turning human polities into caricatures.
 - Nonhuman/supernatural routes are explicit fictional/high-chaos actors and use shared nonhuman classification when implemented.
 - Final super-event titles, quotes, button remarks, cultural references, and audio stay research-gated.
+
+## June 18 implementation disposition
+
+Parent commit `9858db02` closes the previously queued high-chaos actor package gap for:
+
+- `BON` Bonobo Kinship Congress
+- `HYR` Hyena Radio Dominion
+- `BIR` Bird of the Walls
+- `SAO` Sao Terracotta Host
+
+The current documentation evidence for that closure is:
+
+- `docs/plans/012_africa_plans/subagent_handoffs/2026-06-18_012_africa_missing_high_chaos_actor_parent_handoff.md`
+- `docs/assets/012_africa/missing_high_chaos_actor_assets/manifest.md`
+- `docs/assets/012_africa/implementation_asset_manifest.md`
+- `docs/events/012_africa_foundation.md`
+
+This closes the actor-package, portrait/flag, achievement-icon, and prompt-named achievement queue for those four tags. It does not close the broader Event 012 completion blockers around accepted foundation-addendum depth, Continental Congress presentation depth, country-package depth, UI/animation proof, balance proof, or targeted scenario validation.
+
+The root-terminal World Is One super-event disposition is an intentional hybrid. The World Root terminal branch shares base slot `72` text and image presentation (`The World Is One`) and uses distinct root-terminal audio id `80`. Archive remains the distinct terminal presentation variant where implemented through slot `79`.
 
 ## Cleanup note
 
