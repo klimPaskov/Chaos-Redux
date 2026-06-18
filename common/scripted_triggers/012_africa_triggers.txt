@@ -594,6 +594,70 @@ has_africa_archive_guard_mission_dossier_work_ready = {
 	}
 }
 
+has_africa_dossier_resistance_watch_context = {
+	has_variable = africa_archive_resistance_dossier_id
+	has_variable = africa_archive_resistance_seat_state
+	meta_trigger = {
+		text = {
+			has_country_flag = africa_dossier_[DOSSIER_ID]_settled
+		}
+		DOSSIER_ID = "[?africa_archive_resistance_dossier_id|.0]"
+	}
+}
+
+controls_africa_archive_resistance_seat_state = {
+	has_africa_dossier_resistance_watch_context = yes
+	var:africa_archive_resistance_seat_state = {
+		OR = {
+			is_controlled_by = ROOT
+			controller = {
+				is_in_faction_with = ROOT
+				OR = {
+					has_country_flag = africa_regional_authority_subject
+					has_country_flag = africa_charter_member
+					has_country_flag = africa_charter_protected_member
+					has_country_flag = africa_high_chaos_actor
+				}
+			}
+		}
+	}
+}
+
+can_africa_complete_dossier_resistance_watch = {
+	is_africa_runtime_unifier = yes
+	has_country_flag = africa_dossier_resistance_watch_active
+	has_africa_dossier_resistance_watch_context = yes
+	controls_africa_archive_resistance_seat_state = yes
+	OR = {
+		AND = {
+			has_country_flag = africa_dossier_resistance_watch_observer
+			check_variable = {
+				var = africa_regional_trust
+				value = constant:africa_decision.dossier_resistance_observer_trust_gate
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = africa_league_cohesion
+				value = constant:africa_decision.dossier_resistance_observer_cohesion_gate
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			has_country_flag = africa_dossier_resistance_watch_direct_archive
+			check_variable = {
+				var = africa_authority
+				value = constant:africa_decision.dossier_resistance_direct_authority_gate
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = africa_restoration_debt
+				value = constant:africa_decision.dossier_resistance_direct_restoration_debt_cap
+				compare = less_than
+			}
+		}
+	}
+}
+
 is_africa_selected_dossier_historical = {
 	OR = {
 		check_variable = { africa_selected_dossier_id = constant:africa_dossier_id.kush_meroe }

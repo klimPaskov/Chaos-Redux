@@ -4,6 +4,10 @@ Date: 2026-06-18
 Subagent scope: super-event text research only
 Status: recommendation ready
 
+## Post-parent disposition update
+
+The parent accepted this handoff for text and image presentation: `africa_world_is_one_root_variant_terminal` shares base slot `72` (`The World Is One`). The final disposition pairs that shared slot `72` text/image presentation with distinct root-terminal audio id `80`. Archive remains distinct where implemented through slot `79`.
+
 ## Recommendation
 
 `africa_world_is_one_root_variant_terminal` should **not** become a distinct final super-event role.

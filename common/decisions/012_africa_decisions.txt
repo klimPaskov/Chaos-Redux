@@ -13,6 +13,7 @@
 @africa_archive_guard_mission_days = 180
 @africa_dossier_survey_mission_days = 120
 @africa_direct_archive_seal_mission_days = 120
+@africa_dossier_resistance_watch_days = 150
 @africa_bestiary_containment_mission_days = 420
 @africa_omen_reliability_mission_days = 120
 @africa_scramble_treaty_mission_days = 240
@@ -1939,6 +1940,37 @@ africa_authority_atlas_category = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_archive_guard_mission_failed
 			africa_clear_archive_guard_mission_context = yes
+		}
+	}
+
+	africa_dossier_resistance_watch_mission = {
+		icon = GFX_decision_generic_political_discourse
+		days_mission_timeout = @africa_dossier_resistance_watch_days
+		is_good = no
+		fire_only_once = no
+		activation = { has_country_flag = africa_dossier_resistance_watch_active }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = africa_dossier_resistance_watch_available_tt
+				can_africa_complete_dossier_resistance_watch = yes
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { has_country_flag = africa_dossier_resistance_watch_active }
+				has_global_flag = africa_is_one_complete
+			}
+		}
+		cancel_effect = {
+			africa_clear_dossier_resistance_watch_context = yes
+		}
+		complete_effect = {
+			custom_effect_tooltip = africa_dossier_resistance_watch_success_tt
+			africa_complete_dossier_resistance_watch = yes
+		}
+		timeout_effect = {
+			custom_effect_tooltip = africa_dossier_resistance_watch_failure_tt
+			africa_fail_dossier_resistance_watch = yes
 		}
 	}
 }

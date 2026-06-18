@@ -4,6 +4,10 @@ Date: `2026-06-18`
 
 Scope: resolved the outstanding audio blocker for `africa_world_is_one_root_variant_terminal` without editing gameplay, localisation, event, GUI, scripted localisation, sound definition, or music definition files.
 
+## Post-parent disposition update
+
+The parent accepted this handoff for audio only: the World Root terminal branch uses distinct root-terminal audio id `80`. It does not create a separate visual/text super-event role. The matching text/image disposition remains shared base slot `72` (`The World Is One`), while Archive remains distinct where implemented through slot `79`.
+
 ## Files changed
 
 - `docs/assets/012_africa/super_events/audio/source/siegfrieds_funeral_march_and_finale_us_marine_band.ogg`
@@ -61,4 +65,4 @@ ffmpeg -y -ss 240 -t 120 -i docs/assets/012_africa/super_events/audio/source/sie
 ## Remaining blockers
 
 - None on licensing, sourcing, or conversion.
-- Parent still needs to decide whether to wire this new id as a new terminal role or explicitly override that decision and document reuse instead. This pass recommends the new distinct cue.
+- The presentation/wiring decision is closed by the parent disposition above: distinct root-terminal audio id `80`, shared slot `72` text/image, Archive distinct in slot `79`.
