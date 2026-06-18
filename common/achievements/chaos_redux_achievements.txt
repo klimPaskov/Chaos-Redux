@@ -2507,6 +2507,10 @@ ACH_AFR_CHARTER_HAS_TOO_MANY_SIGNATURES = {
 			has_country_flag = africa_bestiary_tidemark_dominion_tides
 			has_country_flag = africa_bestiary_ananse_ledger_counterfeit_watch
 			has_country_flag = africa_bestiary_nature_courts_covenant
+			has_country_flag = africa_bestiary_bonobo_kinship_congress_veto
+			has_country_flag = africa_bestiary_hyena_radio_dominion_broadcasts
+			has_country_flag = africa_bestiary_bird_of_the_walls_omens
+			has_country_flag = africa_bestiary_sao_terracotta_host_guard
 		}
 	}
 	hidden = yes
@@ -2933,6 +2937,96 @@ ACH_AFR_TREATY_WITH_TEETH = {
 			has_country_flag = africa_tidemark_convoy_watch_kept
 			has_country_flag = africa_scramble_treaty_mission_success
 			check_variable = { var = africa_bestiary_warning_compliance_count value = constant:achievement_threshold.africa.warning_compliances compare = greater_than_or_equals }
+		}
+	}
+	hidden = yes
+}
+
+ACH_AFR_WHO_GAVE_THEM_A_MICROPHONE = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_AFR_WHO_GAVE_THEM_A_MICROPHONE_tooltip
+			is_ai = no
+			has_country_flag = africa_unifier_active
+			has_country_flag = africa_bestiary_hyena_radio_dominion_broadcasts
+			has_country_flag = africa_scramble_treaty_mission_success
+			check_variable = { var = africa_hyena_radio_misdirection_count value = constant:achievement_threshold.africa.hyena_misdirections compare = greater_than_or_equals }
+			check_variable = { var = africa_league_cohesion value = constant:achievement_threshold.africa.league_cohesion_safe compare = greater_than_or_equals }
+			HYR = {
+				exists = yes
+				has_country_flag = africa_hyena_radio_misdirections_broadcast
+				NOT = { has_capitulated = yes }
+			}
+			NOT = { has_country_flag = africa_bestiary_warning_overused }
+			NOT = { has_country_flag = africa_bestiary_containment_mission_failed }
+		}
+	}
+	hidden = yes
+}
+
+ACH_AFR_GENTLE_VETO = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_AFR_GENTLE_VETO_tooltip
+			is_ai = no
+			has_country_flag = africa_unifier_active
+			has_country_flag = africa_bestiary_bonobo_kinship_congress_veto
+			check_variable = { var = africa_league_cohesion value = constant:achievement_threshold.africa.league_cohesion_safe compare = greater_than_or_equals }
+			BON = {
+				exists = yes
+				has_country_flag = africa_bonobo_gentle_veto_used
+				NOT = { has_capitulated = yes }
+			}
+			NOT = { has_country_flag = africa_forced_integration_war_disqualifier }
+			NOT = { has_country_flag = africa_bestiary_containment_mission_failed }
+		}
+	}
+	hidden = yes
+}
+
+ACH_AFR_BIRD_WAS_RIGHT = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_AFR_BIRD_WAS_RIGHT_tooltip
+			is_ai = no
+			has_country_flag = africa_unifier_active
+			has_country_flag = africa_bestiary_bird_of_the_walls_omens
+			has_country_flag = africa_omen_reliability_verified
+			has_country_flag = africa_bestiary_warning_network
+			has_country_flag = africa_scramble_treaty_mission_success
+			check_variable = { var = africa_bestiary_warning_compliance_count value = constant:achievement_threshold.africa.warning_compliances compare = greater_than_or_equals }
+			BIR = {
+				exists = yes
+				has_country_flag = africa_bird_of_the_walls_omen_confirmed
+				NOT = { has_capitulated = yes }
+			}
+			NOT = { has_country_flag = africa_bestiary_warning_overused }
+			NOT = { has_country_flag = africa_bestiary_containment_mission_failed }
+		}
+	}
+	hidden = yes
+}
+
+ACH_AFRICA_TERRACOTTA_LINE = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = ACH_AFRICA_TERRACOTTA_LINE_tooltip
+			is_ai = no
+			has_country_flag = africa_unifier_active
+			has_country_flag = africa_bestiary_sao_terracotta_host_guard
+			has_country_flag = africa_scramble_treaty_mission_success
+			check_variable = { var = africa_old_seat_legitimacy value = constant:achievement_threshold.africa.old_seat_legitimacy_high compare = greater_than_or_equals }
+			SAO = {
+				exists = yes
+				has_country_flag = africa_sao_terracotta_line_fielded
+				NOT = { has_capitulated = yes }
+			}
+			NOT = { has_country_flag = africa_bestiary_containment_mission_failed }
+			NOT = { has_country_flag = africa_archive_guard_mission_failed }
 		}
 	}
 	hidden = yes

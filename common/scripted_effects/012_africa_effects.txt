@@ -46,6 +46,10 @@
 @africa_trm_seat_state = 889
 @africa_hgd_seat_state = 903
 @africa_ghc_seat_state = 904
+@africa_bon_seat_state = 295
+@africa_hyr_seat_state = 781
+@africa_bir_seat_state = 771
+@africa_sao_seat_state = 774
 @africa_super_event_visible_days = 12
 
 africa_score_unifier_candidate_for_selection = {
@@ -561,6 +565,10 @@ africa_clear_runtime_context = {
 			clr_country_flag = africa_omen_reliability_verified
 			clr_country_flag = africa_bestiary_warning_active
 			clr_country_flag = africa_bestiary_warning_overused
+			clr_country_flag = africa_bestiary_bonobo_kinship_congress_veto
+			clr_country_flag = africa_bestiary_hyena_radio_dominion_broadcasts
+			clr_country_flag = africa_bestiary_bird_of_the_walls_omens
+			clr_country_flag = africa_bestiary_sao_terracotta_host_guard
 			clr_country_flag = africa_rsa_pretoria_mission_active
 			clr_country_flag = africa_rsa_pretoria_mission_success
 			clr_country_flag = africa_rsa_pretoria_mission_failed
@@ -642,12 +650,16 @@ africa_clear_runtime_context = {
 					has_country_flag = africa_federal_high_court_case_settled
 					has_country_flag = africa_chimpanzee_telegraph_relays_tasked
 					has_country_flag = africa_okapi_shadow_dossiers_requested
-					has_country_flag = africa_termite_citadel_engineers_commissioned
-					has_country_flag = africa_honeyguide_commons_aid_routes_open
-					has_country_flag = africa_great_herds_relief_columns_mustered
-				}
+				has_country_flag = africa_termite_citadel_engineers_commissioned
+				has_country_flag = africa_honeyguide_commons_aid_routes_open
+				has_country_flag = africa_great_herds_relief_columns_mustered
+				has_country_flag = africa_bonobo_gentle_veto_used
+				has_country_flag = africa_hyena_radio_misdirections_broadcast
+				has_country_flag = africa_bird_of_the_walls_omen_confirmed
+				has_country_flag = africa_sao_terracotta_line_fielded
 			}
-			clr_country_flag = africa_scramble_external_holder_registered
+		}
+		clr_country_flag = africa_scramble_external_holder_registered
 		clr_country_flag = africa_scramble_treaty_settled
 		clr_country_flag = africa_bestiary_warning_target
 		clr_country_flag = africa_bestiary_warning_state_target
@@ -720,6 +732,7 @@ africa_clear_runtime_context = {
 	clear_variable = africa_bestiary_warning_count
 	clear_variable = africa_bestiary_warning_compliance_count
 	clear_variable = africa_bestiary_warning_defiance_count
+	clear_variable = africa_hyena_radio_misdirection_count
 	clear_variable = africa_dossier_survey_count
 	clear_variable = africa_dossier_local_office_count
 	clear_variable = africa_dossier_guard_count
@@ -893,6 +906,10 @@ africa_apply_bestiary_warning_defiance_package_pressure = {
 				has_country_flag = africa_bestiary_tidemark_dominion_tides
 				has_country_flag = africa_bestiary_ananse_ledger_counterfeit_watch
 				has_country_flag = africa_bestiary_nature_courts_covenant
+				has_country_flag = africa_bestiary_bonobo_kinship_congress_veto
+				has_country_flag = africa_bestiary_hyena_radio_dominion_broadcasts
+				has_country_flag = africa_bestiary_bird_of_the_walls_omens
+				has_country_flag = africa_bestiary_sao_terracotta_host_guard
 			}
 		}
 		custom_effect_tooltip = africa_bestiary_warning_package_defiance_effect_tt
@@ -951,6 +968,26 @@ africa_apply_bestiary_warning_defiance_package_pressure = {
 		limit = { has_country_flag = africa_bestiary_nature_courts_covenant }
 		add_to_variable = { africa_habitat_trust = constant:africa_value_delta.bestiary_warning_defiance_route_loss }
 		add_to_variable = { africa_covenant_pressure = constant:africa_value_delta.bestiary_warning_defiance_route_major_pressure }
+	}
+	if = {
+		limit = { has_country_flag = africa_bestiary_bonobo_kinship_congress_veto }
+		add_to_variable = { africa_league_cohesion = constant:africa_value_delta.bestiary_warning_defiance_route_loss }
+		add_to_variable = { africa_habitat_trust = constant:africa_value_delta.bestiary_warning_defiance_route_loss }
+	}
+	if = {
+		limit = { has_country_flag = africa_bestiary_hyena_radio_dominion_broadcasts }
+		add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.bestiary_warning_defiance_route_loss }
+		add_to_variable = { africa_covenant_pressure = constant:africa_value_delta.bestiary_warning_defiance_route_major_pressure }
+	}
+	if = {
+		limit = { has_country_flag = africa_bestiary_bird_of_the_walls_omens }
+		add_to_variable = { africa_archive_mandate = constant:africa_value_delta.bestiary_warning_defiance_route_loss }
+		add_to_variable = { africa_mythic_volatility = constant:africa_value_delta.bestiary_warning_defiance_route_pressure }
+	}
+	if = {
+		limit = { has_country_flag = africa_bestiary_sao_terracotta_host_guard }
+		add_to_variable = { africa_old_seat_legitimacy = constant:africa_value_delta.bestiary_warning_defiance_route_loss }
+		add_to_variable = { africa_mythic_volatility = constant:africa_value_delta.bestiary_warning_defiance_route_major_pressure }
 	}
 	africa_clamp_core_values = yes
 }
@@ -1285,6 +1322,10 @@ africa_remove_created_country_role_spirits = {
 	remove_ideas = africa_termite_citadel_engineers_seat
 	remove_ideas = africa_honeyguide_commons_seat
 	remove_ideas = africa_great_herds_compact_seat
+	remove_ideas = africa_bonobo_kinship_congress_seat
+	remove_ideas = africa_hyena_radio_dominion_seat
+	remove_ideas = africa_bird_of_the_walls_seat
+	remove_ideas = africa_sao_terracotta_host_seat
 }
 
 africa_created_country_add_infantry_production = {
@@ -1352,6 +1393,8 @@ africa_apply_created_country_production_package = {
 					tag = OVN
 					tag = CTL
 					tag = GHC
+					tag = HYR
+					tag = SAO
 				}
 			}
 			africa_created_country_add_infantry_production = yes
@@ -1701,6 +1744,63 @@ africa_generate_created_country_role_staff = {
 			}
 		}
 		if = {
+			limit = { tag = BON }
+			generate_character = {
+				token_base = africa_staff_bon_kinship_envoys
+				name = "Kinship Envoys"
+				advisor = {
+					idea_token = role_staff
+					slot = political_advisor
+					cost = @africa_created_country_role_advisor_cost
+					allowed = { tag = BON }
+					traits = { smooth_talking_charmer }
+				}
+			}
+		}
+		if = {
+			limit = { tag = HYR }
+			generate_character = {
+				token_base = africa_staff_hyr_radio_editors
+				name = "Radio Night Editors"
+				advisor = {
+					idea_token = role_staff
+					slot = theorist
+					ledger = army
+					cost = @africa_created_country_role_advisor_cost
+					allowed = { tag = HYR }
+					traits = { military_theorist }
+				}
+			}
+		}
+		if = {
+			limit = { tag = BIR }
+			generate_character = {
+				token_base = africa_staff_bir_wall_omen_readers
+				name = "Wall Omen Readers"
+				advisor = {
+					idea_token = role_staff
+					slot = political_advisor
+					cost = @africa_created_country_role_advisor_cost
+					allowed = { tag = BIR }
+					traits = { quartermaster_general }
+				}
+			}
+		}
+		if = {
+			limit = { tag = SAO }
+			generate_character = {
+				token_base = africa_staff_sao_kiln_wardens
+				name = "Terracotta Kiln Wardens"
+				advisor = {
+					idea_token = role_staff
+					slot = political_advisor
+					cost = @africa_created_country_role_advisor_cost
+					allowed = { tag = SAO }
+					traits = { armaments_organizer }
+				}
+			}
+		}
+		if = {
 			limit = { tag = WAC }
 			generate_character = {
 				token_base = africa_staff_wac_lagos_guard_captains
@@ -2001,6 +2101,65 @@ africa_generate_created_country_role_staff = {
 					cost = @africa_created_country_role_advisor_cost
 					allowed = { tag = GHC }
 					traits = { army_cavalry_2 }
+				}
+			}
+		}
+		if = {
+			limit = { tag = BON }
+			generate_character = {
+				token_base = africa_staff_bon_boundary_mediators
+				name = "Boundary Mediators"
+				advisor = {
+					idea_token = support_staff
+					slot = political_advisor
+					cost = @africa_created_country_role_advisor_cost
+					allowed = { tag = BON }
+					traits = { smooth_talking_charmer }
+				}
+			}
+		}
+		if = {
+			limit = { tag = HYR }
+			generate_character = {
+				token_base = africa_staff_hyr_signal_theorists
+				name = "Signal Theorists"
+				advisor = {
+					idea_token = support_staff
+					slot = theorist
+					ledger = army
+					cost = @africa_created_country_role_advisor_cost
+					allowed = { tag = HYR }
+					traits = { military_theorist }
+				}
+			}
+		}
+		if = {
+			limit = { tag = BIR }
+			generate_character = {
+				token_base = africa_staff_bir_warning_cartographers
+				name = "Warning Cartographers"
+				advisor = {
+					idea_token = support_staff
+					slot = high_command
+					ledger = army
+					cost = @africa_created_country_role_advisor_cost
+					allowed = { tag = BIR }
+					traits = { army_logistics_2 }
+				}
+			}
+		}
+		if = {
+			limit = { tag = SAO }
+			generate_character = {
+				token_base = africa_staff_sao_line_captains
+				name = "Terracotta Line Captains"
+				advisor = {
+					idea_token = support_staff
+					slot = high_command
+					ledger = army
+					cost = @africa_created_country_role_advisor_cost
+					allowed = { tag = SAO }
+					traits = { army_entrenchment_2 }
 				}
 			}
 		}
@@ -2464,6 +2623,70 @@ africa_generate_created_country_command_staff = {
 				}
 			}
 		}
+		if = {
+			limit = { tag = BON }
+			generate_character = {
+				token_base = africa_command_bon_kinship_wardens
+				name = "Kinship Boundary Wardens"
+				portraits = { army = { large = GFX_portrait_012_africa_bonobo_kinship_congress small = GFX_portrait_012_africa_bonobo_kinship_congress } }
+				corps_commander = {
+					traits = { defensive_doctrine organizer }
+					skill = 2
+					attack_skill = 1
+					defense_skill = 3
+					planning_skill = 2
+					logistics_skill = 3
+				}
+			}
+		}
+		if = {
+			limit = { tag = HYR }
+			generate_character = {
+				token_base = africa_command_hyr_night_broadcasts
+				name = "Night Broadcast Captains"
+				portraits = { army = { large = GFX_portrait_012_africa_hyena_radio_dominion small = GFX_portrait_012_africa_hyena_radio_dominion } }
+				corps_commander = {
+					traits = { trickster organizer }
+					skill = 2
+					attack_skill = 2
+					defense_skill = 1
+					planning_skill = 3
+					logistics_skill = 2
+				}
+			}
+		}
+		if = {
+			limit = { tag = BIR }
+			generate_character = {
+				token_base = africa_command_bir_wall_omens
+				name = "Wall Omen Watchers"
+				portraits = { army = { large = GFX_portrait_012_africa_bird_of_the_walls small = GFX_portrait_012_africa_bird_of_the_walls } }
+				corps_commander = {
+					traits = { trickster logistics_wizard }
+					skill = 2
+					attack_skill = 1
+					defense_skill = 2
+					planning_skill = 3
+					logistics_skill = 4
+				}
+			}
+		}
+		if = {
+			limit = { tag = SAO }
+			generate_character = {
+				token_base = africa_command_sao_terracotta_line
+				name = "Terracotta Line Captains"
+				portraits = { army = { large = GFX_portrait_012_africa_sao_terracotta_host small = GFX_portrait_012_africa_sao_terracotta_host } }
+				corps_commander = {
+					traits = { defensive_doctrine engineer_officer }
+					skill = 2
+					attack_skill = 1
+					defense_skill = 3
+					planning_skill = 2
+					logistics_skill = 3
+				}
+			}
+		}
 	}
 }
 
@@ -2749,6 +2972,63 @@ africa_apply_created_country_setup_package = {
 				africa_clamp_core_values = yes
 			}
 		}
+		if = {
+			limit = { tag = BON }
+			set_country_flag = africa_role_bonobo_kinship_congress
+			add_ideas = africa_bonobo_kinship_congress_seat
+			add_command_power = constant:africa_force.created_bon_command_power
+			add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_force.created_bon_support_equipment producer = ROOT }
+			ROOT = {
+				add_to_variable = { africa_habitat_trust = constant:africa_value_delta.bestiary_actor_habitat_trust }
+				add_to_variable = { africa_league_cohesion = constant:africa_value_delta.bestiary_actor_league_cohesion }
+				add_to_variable = { africa_bestiary_alarm = constant:africa_value_delta.bestiary_actor_alarm_relief }
+				africa_clamp_core_values = yes
+			}
+		}
+		if = {
+			limit = { tag = HYR }
+			set_country_flag = africa_role_hyena_radio_dominion
+			add_ideas = africa_hyena_radio_dominion_seat
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_force.created_hyr_infantry_equipment producer = ROOT }
+			add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_force.created_hyr_support_equipment producer = ROOT }
+			ROOT = {
+				add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.bestiary_package_liberation }
+				add_to_variable = { africa_bestiary_alarm = constant:africa_value_delta.bestiary_actor_alarm }
+				add_to_variable = { africa_covenant_pressure = constant:africa_value_delta.bestiary_actor_covenant_pressure }
+				africa_clamp_core_values = yes
+			}
+		}
+		if = {
+			limit = { tag = BIR }
+			set_country_flag = africa_role_bird_of_the_walls
+			add_ideas = africa_bird_of_the_walls_seat
+			add_command_power = constant:africa_force.created_bir_command_power
+			add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_force.created_bir_support_equipment producer = ROOT }
+			ROOT = {
+				add_to_variable = { africa_archive_mandate = constant:africa_value_delta.bestiary_actor_archive_mandate }
+				add_to_variable = { africa_bestiary_alarm = constant:africa_value_delta.bestiary_actor_alarm_relief }
+				add_to_variable = { africa_mythic_volatility = constant:africa_value_delta.bestiary_package_volatility_relief }
+				africa_clamp_core_values = yes
+			}
+		}
+		if = {
+			limit = { tag = SAO }
+			set_country_flag = africa_role_sao_terracotta_host
+			add_ideas = africa_sao_terracotta_host_seat
+			add_manpower = constant:africa_force.created_sao_manpower
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_force.created_sao_infantry_equipment producer = ROOT }
+			add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_force.created_sao_support_equipment producer = ROOT }
+			capital_scope = {
+				add_building_construction = { type = infrastructure level = @africa_created_country_capital_infrastructure instant_build = yes }
+				add_building_construction = { type = bunker level = @africa_created_country_capital_factory instant_build = yes }
+			}
+			ROOT = {
+				add_to_variable = { africa_authority = constant:africa_value_delta.bestiary_actor_authority }
+				add_to_variable = { africa_old_seat_legitimacy = constant:africa_value_delta.bestiary_actor_old_seat }
+				add_to_variable = { africa_mythic_volatility = constant:africa_value_delta.bestiary_package_volatility }
+				africa_clamp_core_values = yes
+			}
+		}
 	}
 }
 
@@ -2968,6 +3248,30 @@ africa_bind_high_chaos_actors = {
 		if = { limit = { NOT = { is_in_faction_with = GHC } } add_to_faction = GHC }
 		set_autonomy = { target = GHC autonomy_state = autonomy_puppet freedom_level = 0.45 end_wars = no }
 	}
+	if = {
+		limit = { BON = { exists = yes } }
+		BON = { africa_setup_high_chaos_actor = yes }
+		if = { limit = { NOT = { is_in_faction_with = BON } } add_to_faction = BON }
+		set_autonomy = { target = BON autonomy_state = autonomy_puppet freedom_level = 0.45 end_wars = no }
+	}
+	if = {
+		limit = { HYR = { exists = yes } }
+		HYR = { africa_setup_high_chaos_actor = yes }
+		if = { limit = { NOT = { is_in_faction_with = HYR } } add_to_faction = HYR }
+		set_autonomy = { target = HYR autonomy_state = autonomy_puppet freedom_level = 0.45 end_wars = no }
+	}
+	if = {
+		limit = { BIR = { exists = yes } }
+		BIR = { africa_setup_high_chaos_actor = yes }
+		if = { limit = { NOT = { is_in_faction_with = BIR } } add_to_faction = BIR }
+		set_autonomy = { target = BIR autonomy_state = autonomy_puppet freedom_level = 0.45 end_wars = no }
+	}
+	if = {
+		limit = { SAO = { exists = yes } }
+		SAO = { africa_setup_high_chaos_actor = yes }
+		if = { limit = { NOT = { is_in_faction_with = SAO } } add_to_faction = SAO }
+		set_autonomy = { target = SAO autonomy_state = autonomy_puppet freedom_level = 0.45 end_wars = no }
+	}
 }
 
 africa_spawn_regional_authorities_from_controlled_seats = {
@@ -3117,6 +3421,38 @@ africa_spawn_high_chaos_actor_for_selected_package = {
 			transfer_state_to = OVN
 		}
 	}
+	if = {
+		limit = { check_variable = { africa_selected_high_chaos_package_id = constant:africa_high_chaos_package_id.bonobo_kinship_congress } }
+		every_state = {
+			limit = { state = @africa_bon_seat_state africa_can_transfer_seat_state_to_high_chaos = yes BON = { exists = no } }
+			add_core_of = BON
+			transfer_state_to = BON
+		}
+	}
+	if = {
+		limit = { check_variable = { africa_selected_high_chaos_package_id = constant:africa_high_chaos_package_id.hyena_radio_dominion } }
+		every_state = {
+			limit = { state = @africa_hyr_seat_state africa_can_transfer_seat_state_to_high_chaos = yes HYR = { exists = no } }
+			add_core_of = HYR
+			transfer_state_to = HYR
+		}
+	}
+	if = {
+		limit = { check_variable = { africa_selected_high_chaos_package_id = constant:africa_high_chaos_package_id.bird_of_the_walls } }
+		every_state = {
+			limit = { state = @africa_bir_seat_state africa_can_transfer_seat_state_to_high_chaos = yes BIR = { exists = no } }
+			add_core_of = BIR
+			transfer_state_to = BIR
+		}
+	}
+	if = {
+		limit = { check_variable = { africa_selected_high_chaos_package_id = constant:africa_high_chaos_package_id.sao_terracotta_host } }
+		every_state = {
+			limit = { state = @africa_sao_seat_state africa_can_transfer_seat_state_to_high_chaos = yes SAO = { exists = no } }
+			add_core_of = SAO
+			transfer_state_to = SAO
+		}
+	}
 	africa_bind_high_chaos_actors = yes
 }
 
@@ -3187,6 +3523,34 @@ africa_apply_selected_high_chaos_package_outcome = {
 		add_to_variable = { africa_habitat_trust = constant:africa_value_delta.bestiary_nature_habitat_trust }
 		add_to_variable = { africa_covenant_pressure = constant:africa_value_delta.bestiary_nature_covenant_relief }
 	}
+	if = {
+		limit = { check_variable = { africa_selected_high_chaos_package_id = constant:africa_high_chaos_package_id.bonobo_kinship_congress } }
+		set_country_flag = africa_bestiary_bonobo_kinship_congress_veto
+		add_to_variable = { africa_habitat_trust = constant:africa_value_delta.bestiary_actor_habitat_trust }
+		add_to_variable = { africa_league_cohesion = constant:africa_value_delta.bestiary_actor_league_cohesion }
+		add_to_variable = { africa_bestiary_alarm = constant:africa_value_delta.bestiary_actor_alarm_relief }
+	}
+	if = {
+		limit = { check_variable = { africa_selected_high_chaos_package_id = constant:africa_high_chaos_package_id.hyena_radio_dominion } }
+		set_country_flag = africa_bestiary_hyena_radio_dominion_broadcasts
+		add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.bestiary_package_liberation }
+		add_to_variable = { africa_bestiary_alarm = constant:africa_value_delta.bestiary_actor_alarm }
+		add_to_variable = { africa_covenant_pressure = constant:africa_value_delta.bestiary_actor_covenant_pressure }
+	}
+	if = {
+		limit = { check_variable = { africa_selected_high_chaos_package_id = constant:africa_high_chaos_package_id.bird_of_the_walls } }
+		set_country_flag = africa_bestiary_bird_of_the_walls_omens
+		add_to_variable = { africa_archive_mandate = constant:africa_value_delta.bestiary_actor_archive_mandate }
+		add_to_variable = { africa_bestiary_alarm = constant:africa_value_delta.bestiary_actor_alarm_relief }
+		add_to_variable = { africa_mythic_volatility = constant:africa_value_delta.bestiary_package_volatility_relief }
+	}
+	if = {
+		limit = { check_variable = { africa_selected_high_chaos_package_id = constant:africa_high_chaos_package_id.sao_terracotta_host } }
+		set_country_flag = africa_bestiary_sao_terracotta_host_guard
+		add_to_variable = { africa_authority = constant:africa_value_delta.bestiary_actor_authority }
+		add_to_variable = { africa_old_seat_legitimacy = constant:africa_value_delta.bestiary_actor_old_seat }
+		add_to_variable = { africa_mythic_volatility = constant:africa_value_delta.bestiary_package_volatility }
+	}
 }
 
 africa_invite_charter_candidates = {
@@ -3227,6 +3591,10 @@ africa_establish_union_start = {
 					has_country_flag = africa_termite_citadel_engineers_commissioned
 					has_country_flag = africa_honeyguide_commons_aid_routes_open
 					has_country_flag = africa_great_herds_relief_columns_mustered
+					has_country_flag = africa_bonobo_gentle_veto_used
+					has_country_flag = africa_hyena_radio_misdirections_broadcast
+					has_country_flag = africa_bird_of_the_walls_omen_confirmed
+					has_country_flag = africa_sao_terracotta_line_fielded
 				}
 			}
 			clr_country_flag = africa_scramble_external_holder_registered
@@ -3281,6 +3649,7 @@ africa_establish_union_start = {
 	set_variable = { africa_bestiary_warning_count = 0 }
 	set_variable = { africa_bestiary_warning_compliance_count = 0 }
 	set_variable = { africa_bestiary_warning_defiance_count = 0 }
+	set_variable = { africa_hyena_radio_misdirection_count = 0 }
 	set_variable = { africa_dossier_survey_count = 0 }
 	set_variable = { africa_dossier_local_office_count = 0 }
 	set_variable = { africa_dossier_guard_count = 0 }
@@ -4366,6 +4735,10 @@ africa_register_authority_atlas_catalog = {
 	add_to_array = { array = global.africa_authority_atlas_high_chaos_package_ids value = constant:africa_high_chaos_package_id.termite_surveyors }
 	add_to_array = { array = global.africa_authority_atlas_high_chaos_package_ids value = constant:africa_high_chaos_package_id.honeyguide_commons }
 	add_to_array = { array = global.africa_authority_atlas_high_chaos_package_ids value = constant:africa_high_chaos_package_id.great_herds }
+	add_to_array = { array = global.africa_authority_atlas_high_chaos_package_ids value = constant:africa_high_chaos_package_id.bonobo_kinship_congress }
+	add_to_array = { array = global.africa_authority_atlas_high_chaos_package_ids value = constant:africa_high_chaos_package_id.hyena_radio_dominion }
+	add_to_array = { array = global.africa_authority_atlas_high_chaos_package_ids value = constant:africa_high_chaos_package_id.bird_of_the_walls }
+	add_to_array = { array = global.africa_authority_atlas_high_chaos_package_ids value = constant:africa_high_chaos_package_id.sao_terracotta_host }
 	set_variable = { global.africa_authority_atlas_historical_dossier_count = constant:africa_authority_atlas.historical_dossier_count }
 	set_variable = { global.africa_authority_atlas_high_chaos_package_count = constant:africa_authority_atlas.high_chaos_package_count }
 	set_variable = { global.africa_authority_atlas_minimum_historical_dossiers = constant:africa_authority_atlas.minimum_historical_dossiers }
@@ -4394,6 +4767,10 @@ africa_clear_bestiary_actor_action_flags = {
 	clr_country_flag = africa_termite_citadel_engineers_commissioned
 	clr_country_flag = africa_honeyguide_commons_aid_routes_open
 	clr_country_flag = africa_great_herds_relief_columns_mustered
+	clr_country_flag = africa_bonobo_gentle_veto_used
+	clr_country_flag = africa_hyena_radio_misdirections_broadcast
+	clr_country_flag = africa_bird_of_the_walls_omen_confirmed
+	clr_country_flag = africa_sao_terracotta_line_fielded
 }
 
 africa_clear_authority_atlas_progress_flags = {
@@ -4483,6 +4860,15 @@ africa_clear_authority_atlas_progress_flags = {
 	clr_country_flag = africa_termite_citadel_treaty_signed
 	clr_country_flag = africa_honeyguide_route_commons_open
 	clr_country_flag = africa_great_herds_migration_corridor_marked
+	clr_country_flag = africa_bonobo_kinship_arbitration_open
+	clr_country_flag = africa_hyena_radio_scramble_misdirections_open
+	clr_country_flag = africa_bird_wall_warning_line_open
+	clr_country_flag = africa_sao_terracotta_guard_line_open
+	clr_country_flag = africa_bestiary_bonobo_kinship_congress_veto
+	clr_country_flag = africa_bestiary_hyena_radio_dominion_broadcasts
+	clr_country_flag = africa_bestiary_bird_of_the_walls_omens
+	clr_country_flag = africa_bestiary_sao_terracotta_host_guard
+	clear_variable = africa_hyena_radio_misdirection_count
 	africa_clear_bestiary_state_operation = yes
 	for_each_scope_loop = {
 		array = global.africa_charter_member_countries

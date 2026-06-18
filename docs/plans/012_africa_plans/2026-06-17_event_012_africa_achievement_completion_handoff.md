@@ -1,5 +1,7 @@
 # Event 012 Africa Achievement Completion Handoff
 
+Parent follow-up, `2026-06-18`: the queued Hyena Radio Dominion, Bonobo Kinship Congress, Bird of the Walls, and Sao Terracotta Host rows were implemented through their exact actor packages, decisions, achievements, and assets. See `docs/plans/012_africa_plans/subagent_handoffs/2026-06-18_012_africa_missing_high_chaos_actor_parent_handoff.md` and `docs/assets/012_africa/missing_high_chaos_actor_assets/manifest.md`.
+
 ## Scope
 
 Parent implementation pass after the completion auditor flagged achievement-prompt coverage as incomplete or undispositioned.

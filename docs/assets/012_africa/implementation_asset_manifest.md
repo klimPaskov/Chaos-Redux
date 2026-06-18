@@ -176,6 +176,15 @@ Prompt-completion achievement icon batches 4-6 are live for:
 
 Each has normal, `_grey`, and `_not_eligible` DDS variants in `gfx/achievements/`, sprite registrations in `interface/chaosx_achievements.gfx`, and source/processed PNGs, DDS copies, contact sheets, and manifests under `docs/assets/012_africa/achievement_icons_prompt_completion_batch_4/`, `docs/assets/012_africa/achievement_icons_prompt_completion_batch_5/`, and `docs/assets/012_africa/achievement_icons_prompt_completion_batch_6/`.
 
+The missing high-chaos actor achievement package is live for:
+
+- `ACH_AFR_WHO_GAVE_THEM_A_MICROPHONE`
+- `ACH_AFR_GENTLE_VETO`
+- `ACH_AFR_BIRD_WAS_RIGHT`
+- `ACH_AFRICA_TERRACOTTA_LINE`
+
+Each has normal, `_grey`, and `_not_eligible` DDS variants in `gfx/achievements/`, sprite registrations in `interface/chaosx_achievements.gfx`, and source/processed PNGs, DDS copies, contact sheets, and manifest notes under `docs/assets/012_africa/missing_high_chaos_actor_assets/`.
+
 ## Animated Assets
 
 Frame sources and contact sheets live under `docs/assets/012_africa/icons_animation/frames/` and `docs/assets/012_africa/icons_animation/previews/`.
@@ -205,14 +214,16 @@ It reuses the existing `GFX_goal_africa_political_congress` icon and displays li
 
 ## High-Chaos Identity Portraits
 
-The nonhuman / supernatural Event 012 portrait gap is covered for the live 11 Bestiary actor tags. `GHP` reuses the existing Independence Wave gorilla chair portrait. The first generated identity package covers `BBS`, `TDM`, `ANW`, `OVN`, and `CRR`; the expanded Bestiary actor package covers `CTL`, `OKP`, `TRM`, `HGD`, and `GHC`. All generated portraits are converted, registered in `interface/012_africa.gfx`, and referenced by the corresponding country history files.
+The nonhuman / supernatural Event 012 portrait gap is covered for the live 15 Bestiary actor tags. `GHP` reuses the existing Independence Wave gorilla chair portrait. The first generated identity package covers `BBS`, `TDM`, `ANW`, `OVN`, and `CRR`; the expanded Bestiary actor package covers `CTL`, `OKP`, `TRM`, `HGD`, and `GHC`; the missing high-chaos actor package covers `BON`, `HYR`, `BIR`, and `SAO`. All generated portraits are converted, registered in `interface/012_africa.gfx`, and referenced by the corresponding country history files.
 
 Package:
 
 - `docs/assets/012_africa/high_chaos_identity/manifest.md`
 - `docs/assets/012_africa/high_chaos_identity/gfx_handoff.md`
 - `docs/assets/012_africa/bestiary_actor_assets/`
+- `docs/assets/012_africa/missing_high_chaos_actor_assets/`
 - `docs/plans/012_africa_plans/subagent_handoffs/2026-06-17_012_africa_bestiary_actor_assets_handoff.md`
+- `docs/plans/012_africa_plans/subagent_handoffs/2026-06-18_012_africa_missing_high_chaos_actor_parent_handoff.md`
 
 Converted portrait DDS files:
 
@@ -226,6 +237,10 @@ Converted portrait DDS files:
 - `gfx/leaders/012_africa/leader_012_africa_trm_termite_citadel_engineers.dds`
 - `gfx/leaders/012_africa/leader_012_africa_hgd_honeyguide_commons.dds`
 - `gfx/leaders/012_africa/leader_012_africa_ghc_great_herds.dds`
+- `gfx/leaders/012_africa/leader_012_africa_bonobo_kinship_congress.dds`
+- `gfx/leaders/012_africa/leader_012_africa_hyena_radio_dominion.dds`
+- `gfx/leaders/012_africa/leader_012_africa_bird_of_the_walls.dds`
+- `gfx/leaders/012_africa/leader_012_africa_sao_terracotta_host.dds`
 
 Status:
 
