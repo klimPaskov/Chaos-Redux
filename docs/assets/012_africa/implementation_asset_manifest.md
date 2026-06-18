@@ -24,7 +24,9 @@ Twelve super-event presentation roles have registered images and final text loca
 | Sprite | DDS path | Source |
 | --- | --- | --- |
 | `GFX_super_event_012_africa_unification` | `gfx/super_events/super_event_012_africa_unification.dds` | `docs/assets/012_africa/generated_art/processed_png/super_event_012_africa_unification_candidate_processed.png` |
+| `GFX_super_event_012_scramble_for_africa` | `gfx/event_pictures/012_africa/news_event_012_scramble_for_africa_reversal.dds` | `docs/assets/012_africa/generated_art/processed_png/news_event_012_scramble_for_africa_reversal_processed.png` |
 | `GFX_super_event_012_archive_bestiary` | `gfx/super_events/super_event_012_archive_bestiary.dds` | `docs/assets/012_africa/generated_art/processed_png/super_event_012_archive_bestiary_candidate_processed.png` |
+| `GFX_super_event_012_counterfeit_crowns` | `gfx/super_events/super_event_012_counterfeit_crowns.dds` | `docs/assets/012_africa/super_events/counterfeit_crowns_image/processed_png/super_event_012_counterfeit_crowns_processed.png` |
 | `GFX_super_event_012_continent_sponsor` | `gfx/super_events/super_event_012_continent_sponsor.dds` | `docs/assets/012_africa/generated_art/processed_png/super_event_012_continent_sponsor_candidate_processed.png` |
 | `GFX_super_event_012_rsa_peace` | `gfx/super_events/super_event_012_rsa_peace.dds` | `docs/assets/012_africa/generated_art/processed_png/super_event_012_rsa_peace_candidate_processed.png` |
 | `GFX_super_event_012_dynamic_cross_continent_union` | `gfx/super_events/super_event_012_dynamic_cross_continent_union.dds` | `docs/assets/012_africa/generated_art/processed_png/super_event_012_dynamic_cross_continent_union_processed.png` |

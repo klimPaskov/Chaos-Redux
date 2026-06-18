@@ -374,7 +374,7 @@ The subject layer is expanded by `012_africa_niche_polities_and_subjects.md` and
 
 New human legacy authorities include, at minimum, Jolof-Wolof, Mossi, Songhai, Oyo, Benin, Dahomey, Asante, Kongo, Luba, Lunda, Kush-Meroe, Aksum, Ajuran, Swahili Coast, Buganda, Stone Cities/Great Zimbabwe, Barotse Floodplain, and Merina Rova. Additional second-priority authorities include Hausa, Bornu, Baguirmi-Wadai, Futa, Segu-Bambara, Ndongo-Matamba, Loango, Kuba, Makuria-Alodia, Sennar, Adal-Harar, Bunyoro, Great Lakes Highlands, Nyamwezi, Maravi, Sakalava/Betsimisaraka, Comorian Passage, Nama-Herero-Damara, Khoe-San Tracks, and Zulu-Nguni military colleges.
 
-High-chaos nonhuman and supernatural actors are added only through the Green Covenant/Impossible Congress lane and require explicit nonhuman/supernatural treatment. Gorilla Nation, Chimpanzee Assembly, Bonobo Kinship Congress, Great Herds, Crocodile Rivers, Hyena Radio Dominion, Termite Citadels, Baobab Roots, Locust Customhouse, Giraffe Signal Towers, Okapi Forest, Orisha/Vodun Wilds, Ananse Web, Mami Wata Tidemark, and Bird of the Walls must not be presented as human African countries. They are Covenant actors with separate mechanics, assets, AI, and classification.
+High-chaos nonhuman and supernatural actors are added only through the Green Covenant/Impossible Congress lane and require explicit nonhuman/supernatural treatment. Gorilla Nation, Chimpanzee Assembly, Bonobo Kinship Congress, Great Herds, Crocodile Rivers, Hyena Radio Dominion, Termite Citadel Engineers, Baobab Senate, Locust Customhouse, Giraffe Signal Towers, Okapi Court, Orisha/Vodun Nature Courts, Ananse Web, Mami Wata Tidemark, and Bird of the Walls must not be presented as human African countries. They are Covenant actors with separate mechanics, assets, AI, and classification.
 
 ## Niche polity restoration layer
 
@@ -412,11 +412,11 @@ High-chaos nonhuman and supernatural actors are now broader than the initial for
 | Gorilla Highlands Council | Evolution III | Explicit nonhuman forest council. | Institutional leader, actual-nonhuman classification, forest autonomy mechanics. |
 | Chimpanzee Marshes | Evolution III | Nonhuman marsh/forest caucus. | Sabotage/intelligence route; no human names or caricature tone. |
 | Bonobo Glasshouse Court | Evolution III | Nonhuman collective court. | De-escalation and panic-diplomacy mechanics; no sexualized writing. |
-| Okapi Forest | Evolution III | Elusive courier and forest law office. | Observer subject by default; rare full country only if forest route dominates. |
+| Okapi Court | Evolution III | Elusive courier and forest law office. | Observer subject by default; rare full country only if forest route dominates. |
 | Crocodile Rivers | Evolution III | River toll and ferry-law board. | River crossing/port mechanics with accident risk. |
-| Baobab Roots | Evolution III/IV | Impossible tree parliament. | War-veto and legitimacy mechanics; cannot be annexed normally. |
+| Baobab Senate | Evolution III/IV | Impossible tree parliament. | War-veto and legitimacy mechanics; cannot be annexed normally. |
 | Termite Surveyor Republic | Evolution III/IV | Nonhuman construction/sabotage engineers. | Rail/supply construction and fort sabotage; eats output if neglected. |
-| Honeyguide Routes | Evolution III | Scout and guide network. | Recon and depot discovery; fragile habitat dependency. |
+| Honeyguide Commons | Evolution III | Scout and guide network. | Recon and depot discovery; fragile habitat dependency. |
 | Lion Arbitration Circuit | Evolution III/IV | Predator court as coercive tribunal. | Fear arbitration and surrender pressure; raises Bestiary Alarm. |
 | Great Forest Federation | Evolution IV | Federation of forest nonhuman delegations. | Major high-chaos subject/faction or breakaway. |
 | Great Herds | Evolution IV | Elephant/savanna political force. | Heavy auxiliaries, supply routes, anti-ivory clauses. |
@@ -426,7 +426,7 @@ High-chaos nonhuman and supernatural actors are now broader than the initial for
 
 These actors must stay mechanically and textually separated from historical human polities. They are absurd Chaos Redux entities, not alternate labels for living peoples.
 
-Current implementation note: Event 012 registers 11 explicit Bestiary actor tags with direct public display identities. The original actor tags are `GHP` Gorilla Highlands, `BBS` Baobab Roots, `TDM` Tidemark, `ANW` Ananse Web, `OVN` Orisha/Vodun Wilds, and `CRR` Crocodile Rivers; the expanded actor tags are `CTL` Chimpanzee Telegraph, `OKP` Okapi Forest, `TRM` Termite Citadels, `HGD` Honeyguide Routes, and `GHC` Great Herds. They have country/history files, ideology and party localisation, nonhuman/special classification, seat-state transfer hooks, setup-package effects, focus-tree access, AI posture coverage, generated flag/portrait assets, actor-target decisions from the unifier decision layer, and local consequence events for the expanded actor decisions.
+Current implementation note: Event 012 registers 11 explicit Bestiary actor tags with direct public display identities. The original actor tags are `GHP` Gorilla Highlands, `BBS` Baobab Senate, `TDM` Tidemark Dominion, `ANW` Ananse Web, `OVN` Orisha/Vodun Nature Courts, and `CRR` Crocodile Rivers; the expanded actor tags are `CTL` Chimpanzee Telegraph League, `OKP` Okapi Court, `TRM` Termite Citadel Engineers, `HGD` Honeyguide Commons, and `GHC` Great Herds. They have country/history files, ideology and party localisation, nonhuman/special classification, seat-state transfer hooks, setup-package effects, focus-tree access, AI posture coverage, generated flag/portrait assets, actor-target decisions from the unifier decision layer, and local consequence events for the expanded actor decisions.
 
 Current implementation note: `africa_generate_created_country_role_staff` gives every created regional authority and Bestiary actor one generated role advisor when its setup package applies. The advisor names are functional staff/court/body labels, not invented historical human personnel; nonhuman and supernatural actors receive explicit fictional/nonhuman staff wrappers. The roles use vanilla slots and traits: political advisors for organisers/builders/omen keepers, high command for route and forest logistics, army chiefs for muster/river/herd command, navy chiefs for maritime actors, and theorists for survey/signal roles. This covers the first advisor surface, while broader bespoke advisor pools remain future country-package depth.
 
