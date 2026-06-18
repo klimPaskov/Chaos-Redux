@@ -87,6 +87,16 @@ Final combined checker review sheets:
 - `docs/assets/012_africa/icon_regen_final_review/contact_sheets/final_goal_icons_checker.png`
 - `docs/assets/012_africa/icon_regen_final_review/contact_sheets/final_idea_icons_checker.png`
 
+Event 012 focus filter sprites are registered in `interface/012_africa.gfx`. The live 27x27 DDS files are derived from the regenerated Event 012 goal icons and have processed PNG sources under `docs/assets/012_africa/focus_filter_icons/processed_png/`.
+
+| Filter sprite | DDS path | Source |
+| --- | --- | --- |
+| `GFX_FOCUS_FILTER_AFR_CHARTER` | `gfx/interface/focusview/filter/012_africa/filter_africa_charter.dds` | `docs/assets/012_africa/focus_filter_icons/processed_png/filter_africa_charter.png` |
+| `GFX_FOCUS_FILTER_AFR_AUTHORITY_ATLAS` | `gfx/interface/focusview/filter/012_africa/filter_africa_authority_atlas.dds` | `docs/assets/012_africa/focus_filter_icons/processed_png/filter_africa_authority_atlas.png` |
+| `GFX_FOCUS_FILTER_AFR_SCRAMBLE` | `gfx/interface/focusview/filter/012_africa/filter_africa_scramble.dds` | `docs/assets/012_africa/focus_filter_icons/processed_png/filter_africa_scramble.png` |
+| `GFX_FOCUS_FILTER_AFR_BESTIARY` | `gfx/interface/focusview/filter/012_africa/filter_africa_bestiary.dds` | `docs/assets/012_africa/focus_filter_icons/processed_png/filter_africa_bestiary.png` |
+| `GFX_FOCUS_FILTER_AFR_WORLD_ORDER` | `gfx/interface/focusview/filter/012_africa/filter_africa_world_order.dds` | `docs/assets/012_africa/focus_filter_icons/processed_png/filter_africa_world_order.png` |
+
 The older `docs/assets/012_africa/icons_animation/static/` focus and idea outputs are superseded by the regenerated packages above. The `icons_animation` package is still retained for decision-category icon source notes and animated UI seal source material, documented in:
 
 - `docs/assets/012_africa/icons_animation/manifest.md`
