@@ -66,22 +66,22 @@ Variant trigger notes:
 
 ## Focus, Idea, Decision, and Achievement Icons
 
-Current focus and idea icons were reprocessed on 2026-06-18 to remove the reported white background / white matte issue. The live DDS filenames and `interface/012_africa.gfx` sprite names did not change. Focus/goal icons and idea/national-spirit icons are maintained as separate asset families; idea icons are distinct 64x64 spirit icons and are not smaller goal icons.
+Current focus and idea icons were reprocessed again on 2026-06-18 in a v2 pass to remove the reported white background / white matte issue and hidden RGB bleed risks. The live DDS filenames and `interface/012_africa.gfx` sprite names did not change. Focus/goal icons and idea/national-spirit icons are maintained as separate asset families; idea icons are distinct 64x64 spirit icons and are not smaller goal icons.
 
 Current focus/goal icon source package:
 
-- `docs/assets/012_africa/icon_regen_goal_icons_no_white_bg_2026_06_18/`
+- `docs/assets/012_africa/icon_regen_goal_icons_no_white_bg_v2_2026_06_18/`
 
 Current idea/national-spirit icon source package:
 
-- `docs/assets/012_africa/icon_regen_idea_icons_distinct_no_white_bg_2026_06_18/`
+- `docs/assets/012_africa/icon_regen_idea_icons_distinct_no_white_bg_v2_2026_06_18/`
 
-Final combined checker review sheets:
+Final v2 checker review sheets:
 
-- `docs/assets/012_africa/icon_regen_final_review/contact_sheets/final_goal_icons_checker_2026_06_18.png`
-- `docs/assets/012_africa/icon_regen_final_review/contact_sheets/final_idea_icons_checker_2026_06_18.png`
-- `docs/assets/012_africa/icon_regen_final_review/contact_sheets/final_goal_icons_dark_2026_06_18.png`
-- `docs/assets/012_africa/icon_regen_final_review/contact_sheets/final_idea_icons_dark_2026_06_18.png`
+- `docs/assets/012_africa/icon_regen_goal_icons_no_white_bg_v2_2026_06_18/contact_sheets/goal_icons_v2_checker_contact.png`
+- `docs/assets/012_africa/icon_regen_goal_icons_no_white_bg_v2_2026_06_18/contact_sheets/goal_icons_v2_live_dds_checker_contact.png`
+- `docs/assets/012_africa/icon_regen_idea_icons_distinct_no_white_bg_v2_2026_06_18/contact_sheets/idea_icons_v2_checker_contact.png`
+- `docs/assets/012_africa/icon_regen_idea_icons_distinct_no_white_bg_v2_2026_06_18/contact_sheets/idea_icons_v2_live_dds_checker_contact.png`
 
 Event 012 focus filter sprites are registered in `interface/012_africa.gfx`. The live 27x27 DDS files are derived from the regenerated Event 012 goal icons and have processed PNG sources under `docs/assets/012_africa/focus_filter_icons/processed_png/`.
 
