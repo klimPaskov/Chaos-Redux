@@ -1442,9 +1442,7 @@ africa_diaspora_return_category = {
 		target_root_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_build_return_settlement_root_req_tt
-				is_africa_runtime_unifier = yes
-				has_country_flag = africa_returnee_settlement_councils_open
-				has_country_flag = africa_return_cadres_invited
+				can_africa_start_return_settlement_operation = yes
 			}
 		}
 		target_trigger = {
@@ -1453,6 +1451,7 @@ africa_diaspora_return_category = {
 				is_owned_by = ROOT
 				is_controlled_by = ROOT
 				NOT = { has_state_flag = africa_return_settlement_built }
+				NOT = { has_state_flag = africa_return_settlement_operation_target }
 			}
 		}
 		custom_cost_trigger = {
@@ -1463,17 +1462,19 @@ africa_diaspora_return_category = {
 		}
 		custom_cost_text = africa_build_return_settlement_cost_tt
 		complete_effect = {
+			custom_effect_tooltip = africa_build_return_settlement_start_tt
+			africa_start_return_settlement_operation_from_from = yes
+		}
+		cancel_trigger = {
+			NOT = { can_africa_keep_return_settlement_operation_active = yes }
+		}
+		cancel_effect = {
+			custom_effect_tooltip = africa_return_settlement_operation_failure_tt
+			africa_fail_return_settlement_operation = yes
+		}
+		remove_effect = {
 			custom_effect_tooltip = africa_build_return_settlement_effect_tt
-			add_manpower = constant:africa_force.diaspora_settlement_manpower_spend
-			FROM = {
-				set_state_flag = africa_return_settlement_built
-				add_extra_state_shared_building_slots = 1
-				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
-			}
-			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
-			add_to_variable = { africa_restoration_debt = constant:africa_value_delta.integration_burden_relief }
-			africa_clamp_core_values = yes
-			set_country_flag = africa_return_settlement_built
+			africa_complete_return_settlement_operation = yes
 		}
 		ai_will_do = { base = constant:africa_ai.normal }
 	}

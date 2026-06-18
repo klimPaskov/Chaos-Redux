@@ -322,6 +322,26 @@ can_africa_keep_integration_rail_operation_active = {
 	}
 }
 
+can_africa_start_return_settlement_operation = {
+	is_africa_runtime_unifier = yes
+	has_country_flag = africa_returnee_settlement_councils_open
+	has_country_flag = africa_return_cadres_invited
+	NOT = { has_country_flag = africa_return_settlement_operation_active }
+}
+
+can_africa_keep_return_settlement_operation_active = {
+	is_africa_runtime_unifier = yes
+	has_country_flag = africa_return_settlement_operation_active
+	has_event_target = africa_return_settlement_operation_state
+	event_target:africa_return_settlement_operation_state = {
+		has_state_flag = africa_return_settlement_operation_target
+		is_on_continent = africa
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+		NOT = { has_state_flag = africa_return_settlement_built }
+	}
+}
+
 is_africa_high_chaos_habitat_seat_state = {
 	OR = {
 		state = @africa_ghp_seat_state
