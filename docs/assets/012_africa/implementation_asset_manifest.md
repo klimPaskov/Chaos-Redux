@@ -1,6 +1,6 @@
 # Event 012 Africa Implementation Asset Manifest
 
-Updated: 2026-06-17
+Updated: 2026-06-18
 
 This manifest records which Event 012 Africa assets are wired into gameplay/interface files and which asset surfaces remain blocked.
 
@@ -19,7 +19,7 @@ This manifest records which Event 012 Africa assets are wired into gameplay/inte
 
 ## Super-Event Images and Audio
 
-Twelve super-event roles have registered images, final text localisation, music-mode OGG audio, and sound-mode WAV audio.
+Twelve super-event presentation roles have registered images and final text localisation. Thirteen Event 012 audio roles have music-mode OGG audio and sound-mode WAV audio; the World Root terminal cue is audio-only and reuses the shared slot `72` World Is One presentation.
 
 | Sprite | DDS path | Source |
 | --- | --- | --- |
@@ -50,6 +50,7 @@ Final wired audio:
 | `africa_world_root_mandate` | `music/super_event_africa_world_root.ogg` | `sound/chaosx_super_event_africa_world_root.wav` | `77` |
 | `africa_parliament_of_root_and_fang_escalation` | `music/super_event_africa_root_and_fang.ogg` | `sound/chaosx_super_event_africa_root_and_fang.wav` | `78` |
 | `africa_archive_world_union_terminal` | `music/super_event_africa_archive_world.ogg` | `sound/chaosx_super_event_africa_archive_world.wav` | `79` |
+| `africa_world_is_one_root_variant_terminal` | `music/super_event_africa_world_is_one_root_terminal.ogg` | `sound/chaosx_super_event_africa_world_is_one_root_terminal.wav` | `80` audio id, visible slot `72` |
 
 The final source, licensing, hashes, and conversion notes remain in `docs/assets/012_africa/super_events/audio/manifest.md`.
 
@@ -59,8 +60,7 @@ Variant trigger notes:
 - slot `77` fires from `AFR_world_root_mandate`;
 - slot `78` fires from `AFR_treaty_of_teeth_and_roots`;
 - slot `79` is an Archive-Bestiary route presentation variant of the existing terminal `AFR_the_world_is_one` gate and does not bypass the World Is One prerequisites.
-
-`africa_world_is_one_root_variant_terminal` remains blocked in `docs/assets/012_africa/super_events/audio/manifest.md` until the design distinguishes a separate root-terminal role from explicit reuse of an accepted terminal package.
+- audio id `80` is selected by `africa_emit_world_is_one_terminal_super_event` when the World Root route reaches the shared terminal `AFR_the_world_is_one` gate; it does not create a separate presentation slot or bypass the World Is One prerequisites.
 
 ## Focus, Idea, Decision, and Achievement Icons
 

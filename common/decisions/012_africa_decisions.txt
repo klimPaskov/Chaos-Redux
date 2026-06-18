@@ -106,28 +106,35 @@ africa_charter_league_diplomacy_category = {
 	africa_send_league_aid = {
 		icon = GFX_decision_generic_prepare_civil_war
 		target_array = global.africa_charter_member_countries
-		cost = constant:africa_decision.league_aid_cost
+		cost = 0
 		days_re_enable = constant:africa_decision_days.league_aid
 		target_root_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_send_league_aid_root_req_tt
 				is_africa_runtime_unifier = yes
 				has_country_flag = africa_charter_general_staff_open
+				NOT = { has_country_flag = africa_member_confidence_mission_active }
 			}
 		}
 		target_trigger = {
-			FROM = {
-				exists = yes
-				NOT = { tag = ROOT }
-				OR = {
-					has_country_flag = africa_charter_member
-					has_country_flag = africa_charter_protected_member
+			custom_trigger_tooltip = {
+				tooltip = africa_send_league_aid_target_req_tt
+				FROM = {
+					exists = yes
+					NOT = { tag = ROOT }
+					has_war = yes
+					NOT = { has_capitulated = yes }
+					OR = {
+						has_country_flag = africa_charter_member
+						has_country_flag = africa_charter_protected_member
+					}
 				}
 			}
 		}
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_send_league_aid_cost_tt
+				has_political_power > constant:africa_decision.league_aid_cost
 				has_equipment = { infantry_equipment > constant:africa_force.league_aid_infantry_equipment }
 				has_equipment = { support_equipment > constant:africa_force.league_aid_support_equipment }
 			}
@@ -135,6 +142,7 @@ africa_charter_league_diplomacy_category = {
 		custom_cost_text = africa_send_league_aid_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_send_league_aid_effect_tt
+			add_political_power = constant:africa_decision.league_aid_cost_spend
 			africa_transfer_league_aid_to_from = yes
 		}
 		ai_will_do = { base = constant:africa_ai.normal }
@@ -143,25 +151,32 @@ africa_charter_league_diplomacy_category = {
 	africa_send_protected_league_aid = {
 		icon = GFX_decision_generic_prepare_civil_war
 		target_array = global.africa_charter_protected_countries
-		cost = constant:africa_decision.league_aid_cost
+		cost = 0
 		days_re_enable = constant:africa_decision_days.league_aid
 		target_root_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_send_league_aid_root_req_tt
 				is_africa_runtime_unifier = yes
 				has_country_flag = africa_charter_general_staff_open
+				NOT = { has_country_flag = africa_member_confidence_mission_active }
 			}
 		}
 		target_trigger = {
-			FROM = {
-				exists = yes
-				NOT = { tag = ROOT }
-				has_country_flag = africa_charter_protected_member
+			custom_trigger_tooltip = {
+				tooltip = africa_send_league_aid_target_req_tt
+				FROM = {
+					exists = yes
+					NOT = { tag = ROOT }
+					has_war = yes
+					NOT = { has_capitulated = yes }
+					has_country_flag = africa_charter_protected_member
+				}
 			}
 		}
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_send_league_aid_cost_tt
+				has_political_power > constant:africa_decision.league_aid_cost
 				has_equipment = { infantry_equipment > constant:africa_force.league_aid_infantry_equipment }
 				has_equipment = { support_equipment > constant:africa_force.league_aid_support_equipment }
 			}
@@ -169,6 +184,7 @@ africa_charter_league_diplomacy_category = {
 		custom_cost_text = africa_send_league_aid_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_send_league_aid_effect_tt
+			add_political_power = constant:africa_decision.league_aid_cost_spend
 			africa_transfer_league_aid_to_from = yes
 		}
 		ai_will_do = {
@@ -180,7 +196,7 @@ africa_charter_league_diplomacy_category = {
 	africa_open_member_aid_corridor = {
 		icon = GFX_decision_generic_construction
 		target_array = global.africa_charter_member_countries
-		cost = constant:africa_decision.aid_corridor_cost
+		cost = 0
 		days_re_enable = constant:africa_decision_days.aid_corridor
 		target_root_trigger = {
 			custom_trigger_tooltip = {
@@ -209,6 +225,7 @@ africa_charter_league_diplomacy_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_open_aid_corridor_cost_tt
+				has_political_power > constant:africa_decision.aid_corridor_cost
 				command_power > constant:africa_decision.aid_corridor_command_power_gate
 				has_equipment = { support_equipment > constant:africa_force.aid_corridor_support_equipment }
 				has_equipment = { convoy > constant:africa_force.aid_corridor_convoys }
@@ -218,6 +235,7 @@ africa_charter_league_diplomacy_category = {
 		custom_cost_text = africa_open_aid_corridor_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_open_aid_corridor_effect_tt
+			add_political_power = constant:africa_decision.aid_corridor_cost_spend
 			africa_open_aid_corridor_to_from = yes
 		}
 		ai_will_do = { base = constant:africa_ai.normal }
@@ -226,7 +244,7 @@ africa_charter_league_diplomacy_category = {
 	africa_open_protected_aid_corridor = {
 		icon = GFX_decision_generic_construction
 		target_array = global.africa_charter_protected_countries
-		cost = constant:africa_decision.aid_corridor_cost
+		cost = 0
 		days_re_enable = constant:africa_decision_days.aid_corridor
 		target_root_trigger = {
 			custom_trigger_tooltip = {
@@ -251,6 +269,7 @@ africa_charter_league_diplomacy_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_open_aid_corridor_cost_tt
+				has_political_power > constant:africa_decision.aid_corridor_cost
 				command_power > constant:africa_decision.aid_corridor_command_power_gate
 				has_equipment = { support_equipment > constant:africa_force.aid_corridor_support_equipment }
 				has_equipment = { convoy > constant:africa_force.aid_corridor_convoys }
@@ -260,6 +279,7 @@ africa_charter_league_diplomacy_category = {
 		custom_cost_text = africa_open_aid_corridor_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_open_aid_corridor_effect_tt
+			add_political_power = constant:africa_decision.aid_corridor_cost_spend
 			africa_open_aid_corridor_to_from = yes
 		}
 		ai_will_do = { base = constant:africa_ai.preferred }
@@ -458,7 +478,7 @@ africa_charter_league_diplomacy_category = {
 	africa_hold_federal_member_vote = {
 		icon = GFX_decision_generic_political_discourse
 		target_array = global.africa_charter_member_countries
-		cost = constant:africa_decision.charter_influence_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.charter_influence
 		target_root_trigger = {
 			custom_trigger_tooltip = {
@@ -484,12 +504,14 @@ africa_charter_league_diplomacy_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_hold_federal_member_vote_cost_tt
+				has_political_power > constant:africa_decision.charter_influence_cost
 				has_equipment = { support_equipment > constant:africa_force.dossier_survey_support_equipment }
 			}
 		}
 		custom_cost_text = africa_hold_federal_member_vote_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_hold_federal_member_vote_effect_tt
+			add_political_power = constant:africa_decision.charter_influence_cost_spend
 			set_temp_variable = { africa_federal_vote_support_cost = constant:africa_force.dossier_survey_support_equipment }
 			multiply_temp_variable = { africa_federal_vote_support_cost = -1 }
 			add_equipment_to_stockpile = { type = support_equipment amount = africa_federal_vote_support_cost }
@@ -509,7 +531,7 @@ africa_charter_league_diplomacy_category = {
 	africa_ratify_regional_autonomy_statute = {
 		icon = GFX_decision_generic_political_discourse
 		target_array = global.africa_charter_member_countries
-		cost = constant:africa_decision.charter_integration_docket_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.charter_integration_docket
 		target_root_trigger = {
 			custom_trigger_tooltip = {
@@ -533,12 +555,14 @@ africa_charter_league_diplomacy_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_ratify_regional_autonomy_statute_cost_tt
+				has_political_power > constant:africa_decision.charter_integration_docket_cost
 				has_manpower > constant:africa_force.integration_manpower_gate
 			}
 		}
 		custom_cost_text = africa_ratify_regional_autonomy_statute_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_ratify_regional_autonomy_statute_effect_tt
+			add_political_power = constant:africa_decision.charter_integration_docket_cost_spend
 			add_manpower = constant:africa_force.integration_manpower_spend
 			FROM = { set_country_flag = africa_regional_autonomy_statute_ratified }
 			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
@@ -555,7 +579,7 @@ africa_charter_league_diplomacy_category = {
 	africa_arbitrate_federal_high_court_case = {
 		icon = GFX_decision_generic_political_discourse
 		target_array = global.africa_charter_member_countries
-		cost = constant:africa_decision.observer_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.congress_session
 		target_root_trigger = {
 			custom_trigger_tooltip = {
@@ -581,12 +605,14 @@ africa_charter_league_diplomacy_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_arbitrate_federal_high_court_case_cost_tt
+				has_political_power > constant:africa_decision.observer_cost
 				has_equipment = { support_equipment > constant:africa_force.dossier_protection_support_equipment }
 			}
 		}
 		custom_cost_text = africa_arbitrate_federal_high_court_case_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_arbitrate_federal_high_court_case_effect_tt
+			add_political_power = constant:africa_decision.observer_cost_spend
 			set_temp_variable = { africa_federal_court_support_cost = constant:africa_force.dossier_protection_support_equipment }
 			multiply_temp_variable = { africa_federal_court_support_cost = -1 }
 			add_equipment_to_stockpile = { type = support_equipment amount = africa_federal_court_support_cost }
@@ -663,11 +689,15 @@ africa_charter_member_category = {
 				}
 				NOT = { has_country_flag = africa_charter_former_member }
 				NOT = { has_country_flag = africa_charter_resistant_member }
+				NOT = { has_country_flag = africa_member_confidence_target }
+				has_war = yes
+				NOT = { has_capitulated = yes }
 				has_event_target = africa_charter_league_leader
 				NOT = { has_war_with = event_target:africa_charter_league_leader }
 				event_target:africa_charter_league_leader = {
 					exists = yes
 					has_country_flag = africa_charter_league_leader
+					NOT = { has_country_flag = africa_member_confidence_mission_active }
 					has_equipment = { infantry_equipment > constant:africa_force.league_aid_infantry_equipment }
 				}
 			}
@@ -684,6 +714,12 @@ africa_charter_member_category = {
 			add_manpower = constant:africa_force.league_aid_manpower
 			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_force.league_aid_infantry_equipment }
 			set_country_flag = africa_member_received_league_aid
+			set_country_flag = africa_member_confidence_target
+			save_global_event_target_as = africa_member_confidence_target
+			event_target:africa_charter_league_leader = {
+				set_country_flag = africa_member_confidence_mission_active
+				clr_country_flag = africa_member_confidence_mission_failed
+			}
 		}
 		ai_will_do = { base = constant:africa_ai.normal }
 	}
@@ -832,7 +868,7 @@ africa_liberation_war_office_category = {
 
 	africa_prepare_liberation_operation = {
 		icon = GFX_decision_generic_prepare_civil_war
-		cost = constant:africa_decision.liberation_operation_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.liberation_operation
 		available = {
 			custom_trigger_tooltip = {
@@ -845,6 +881,7 @@ africa_liberation_war_office_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_prepare_liberation_operation_cost_tt
+				has_political_power > constant:africa_decision.liberation_operation_cost
 				has_equipment = { infantry_equipment > constant:africa_force.liberation_equipment_gate }
 				has_manpower > constant:africa_force.liberation_manpower_gate
 			}
@@ -852,6 +889,7 @@ africa_liberation_war_office_category = {
 		custom_cost_text = africa_prepare_liberation_operation_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_prepare_liberation_operation_effect_tt
+			add_political_power = constant:africa_decision.liberation_operation_cost_spend
 			set_temp_variable = { africa_liberation_equipment_cost = constant:africa_force.liberation_equipment_gate }
 			multiply_temp_variable = { africa_liberation_equipment_cost = -1 }
 			add_equipment_to_stockpile = { type = infantry_equipment amount = africa_liberation_equipment_cost }
@@ -872,7 +910,7 @@ africa_liberation_war_office_category = {
 
 	africa_raise_border_liberation_columns = {
 		icon = GFX_decision_generic_prepare_civil_war
-		cost = constant:africa_decision.liberation_column_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.liberation_column
 		available = {
 			custom_trigger_tooltip = {
@@ -888,6 +926,7 @@ africa_liberation_war_office_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_raise_border_liberation_columns_cost_tt
+				has_political_power > constant:africa_decision.liberation_column_cost
 				has_equipment = { infantry_equipment > constant:africa_force.liberation_column_infantry_equipment }
 				has_equipment = { support_equipment > constant:africa_force.liberation_column_support_equipment }
 				has_manpower > constant:africa_force.liberation_column_manpower_gate
@@ -896,6 +935,7 @@ africa_liberation_war_office_category = {
 		custom_cost_text = africa_raise_border_liberation_columns_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_raise_border_liberation_columns_effect_tt
+			add_political_power = constant:africa_decision.liberation_column_cost_spend
 			set_temp_variable = { africa_liberation_column_infantry_cost = constant:africa_force.liberation_column_infantry_equipment }
 			multiply_temp_variable = { africa_liberation_column_infantry_cost = -1 }
 			set_temp_variable = { africa_liberation_column_support_cost = constant:africa_force.liberation_column_support_equipment }
@@ -918,7 +958,7 @@ africa_liberation_war_office_category = {
 
 	africa_secure_liberation_rail_belt = {
 		icon = GFX_decision_generic_construction
-		cost = constant:africa_decision.integration_rail_belt_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.integration_rail_belt
 		available = {
 			custom_trigger_tooltip = {
@@ -934,12 +974,14 @@ africa_liberation_war_office_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_secure_liberation_rail_belt_cost_tt
+				has_political_power > constant:africa_decision.integration_rail_belt_cost
 				has_equipment = { support_equipment > constant:africa_force.integration_rail_support_equipment }
 			}
 		}
 		custom_cost_text = africa_secure_liberation_rail_belt_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_secure_liberation_rail_belt_effect_tt
+			add_political_power = constant:africa_decision.integration_rail_belt_cost_spend
 			set_temp_variable = { africa_integration_rail_support_cost = constant:africa_force.integration_rail_support_equipment }
 			multiply_temp_variable = { africa_integration_rail_support_cost = -1 }
 			add_equipment_to_stockpile = { type = support_equipment amount = africa_integration_rail_support_cost }
@@ -960,7 +1002,7 @@ africa_liberation_war_office_category = {
 		icon = GFX_decision_generic_construction
 		state_target = africa
 		on_map_mode = map_and_decisions_view
-		cost = constant:africa_decision.liberation_objective_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.liberation_objective
 		target_root_trigger = {
 			custom_trigger_tooltip = {
@@ -977,6 +1019,7 @@ africa_liberation_war_office_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_secure_liberation_objective_state_cost_tt
+				has_political_power > constant:africa_decision.liberation_objective_cost
 				has_equipment = { support_equipment > constant:africa_force.liberation_objective_support_equipment }
 				has_manpower > constant:africa_force.liberation_objective_manpower_gate
 				command_power > constant:africa_decision.liberation_objective_command_power_gate
@@ -985,6 +1028,7 @@ africa_liberation_war_office_category = {
 		custom_cost_text = africa_secure_liberation_objective_state_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_secure_liberation_objective_state_start_tt
+			add_political_power = constant:africa_decision.liberation_objective_cost_spend
 			africa_start_liberation_objective_operation_from_from = yes
 		}
 		cancel_trigger = {
@@ -1085,7 +1129,7 @@ africa_liberation_war_office_category = {
 	africa_press_scramble_treaty_settlement = {
 		icon = GFX_decision_generic_forceful_treaty
 		target_array = global.africa_external_colonial_holder_countries
-		cost = constant:africa_decision.scramble_treaty_settlement_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.scramble_treaty_settlement
 		target_root_trigger = {
 			custom_trigger_tooltip = {
@@ -1105,6 +1149,7 @@ africa_liberation_war_office_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_press_scramble_treaty_settlement_cost_tt
+				has_political_power > constant:africa_decision.scramble_treaty_settlement_cost
 				has_equipment = { convoy_1 > constant:africa_force.scramble_treaty_convoys }
 				has_equipment = { support_equipment > constant:africa_force.scramble_treaty_support_equipment }
 				has_manpower > constant:africa_force.scramble_treaty_manpower_gate
@@ -1114,6 +1159,7 @@ africa_liberation_war_office_category = {
 		custom_cost_text = africa_press_scramble_treaty_settlement_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_press_scramble_treaty_settlement_effect_tt
+			add_political_power = constant:africa_decision.scramble_treaty_settlement_cost_spend
 			set_temp_variable = { africa_scramble_treaty_convoy_cost = constant:africa_force.scramble_treaty_convoys }
 			multiply_temp_variable = { africa_scramble_treaty_convoy_cost = -1 }
 			set_temp_variable = { africa_scramble_treaty_support_cost = constant:africa_force.scramble_treaty_support_equipment }
@@ -1220,7 +1266,7 @@ africa_regional_integration_category = {
 		icon = GFX_decision_generic_construction
 		state_target = africa
 		on_map_mode = map_and_decisions_view
-		cost = constant:africa_decision.state_integration_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.state_integration
 		target_root_trigger = {
 			custom_trigger_tooltip = {
@@ -1237,12 +1283,14 @@ africa_regional_integration_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_complete_living_core_state_cost_tt
+				has_political_power > constant:africa_decision.state_integration_cost
 				has_manpower > constant:africa_force.integration_manpower_gate
 			}
 		}
 		custom_cost_text = africa_complete_living_core_state_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_complete_living_core_state_start_tt
+			add_political_power = constant:africa_decision.state_integration_cost_spend
 			africa_start_living_core_operation_from_from = yes
 		}
 		cancel_trigger = {
@@ -1263,7 +1311,7 @@ africa_regional_integration_category = {
 		icon = GFX_decision_generic_construction
 		state_target = africa
 		on_map_mode = map_and_decisions_view
-		cost = constant:africa_decision.integration_rail_belt_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.integration_rail_belt
 		target_root_trigger = {
 			custom_trigger_tooltip = {
@@ -1282,12 +1330,14 @@ africa_regional_integration_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_secure_integration_rail_belt_cost_tt
+				has_political_power > constant:africa_decision.integration_rail_belt_cost
 				has_equipment = { support_equipment > constant:africa_force.integration_rail_support_equipment }
 			}
 		}
 		custom_cost_text = africa_secure_integration_rail_belt_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_secure_integration_rail_belt_start_tt
+			add_political_power = constant:africa_decision.integration_rail_belt_cost_spend
 			africa_start_integration_rail_operation_from_from = yes
 		}
 		cancel_trigger = {
@@ -1306,7 +1356,7 @@ africa_regional_integration_category = {
 
 	africa_review_integration_temperature = {
 		icon = GFX_decision_generic_political_discourse
-		cost = constant:africa_decision.integration_temperature_review_cost
+		cost = 0
 		days_re_enable = constant:africa_decision_days.integration_temperature_review
 		available = {
 			custom_trigger_tooltip = {
@@ -1319,6 +1369,7 @@ africa_regional_integration_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_review_integration_temperature_cost_tt
+				has_political_power > constant:africa_decision.integration_temperature_review_cost
 				command_power > constant:africa_decision.integration_temperature_review_command_power_gate
 				has_equipment = { support_equipment > constant:africa_force.integration_temperature_review_support_equipment }
 			}
@@ -1326,6 +1377,7 @@ africa_regional_integration_category = {
 		custom_cost_text = africa_review_integration_temperature_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_review_integration_temperature_effect_tt
+			add_political_power = constant:africa_decision.integration_temperature_review_cost_spend
 			add_command_power = constant:africa_decision.integration_temperature_review_command_power_spend
 			set_temp_variable = { africa_integration_temperature_support_cost = constant:africa_force.integration_temperature_review_support_equipment }
 			multiply_temp_variable = { africa_integration_temperature_support_cost = -1 }
@@ -1400,7 +1452,7 @@ africa_diaspora_return_category = {
 
 	africa_invite_return_cadres = {
 		icon = GFX_decision_generic_political_discourse
-		cost = constant:africa_decision.diaspora_invitation_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.diaspora_invitation
 		available = {
 			custom_trigger_tooltip = {
@@ -1412,6 +1464,7 @@ africa_diaspora_return_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_invite_return_cadres_cost_tt
+				has_political_power > constant:africa_decision.diaspora_invitation_cost
 				has_equipment = { convoy_1 > constant:africa_force.diaspora_invitation_convoys }
 				has_equipment = { support_equipment > constant:africa_force.diaspora_invitation_support_equipment }
 			}
@@ -1419,6 +1472,7 @@ africa_diaspora_return_category = {
 		custom_cost_text = africa_invite_return_cadres_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_invite_return_cadres_effect_tt
+			add_political_power = constant:africa_decision.diaspora_invitation_cost_spend
 			set_temp_variable = { africa_diaspora_invitation_convoy_cost = constant:africa_force.diaspora_invitation_convoys }
 			multiply_temp_variable = { africa_diaspora_invitation_convoy_cost = -1 }
 			set_temp_variable = { africa_diaspora_invitation_support_cost = constant:africa_force.diaspora_invitation_support_equipment }
@@ -1437,7 +1491,7 @@ africa_diaspora_return_category = {
 		icon = GFX_decision_generic_construction
 		state_target = africa
 		on_map_mode = map_and_decisions_view
-		cost = constant:africa_decision.diaspora_settlement_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.diaspora_settlement
 		target_root_trigger = {
 			custom_trigger_tooltip = {
@@ -1457,12 +1511,14 @@ africa_diaspora_return_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_build_return_settlement_cost_tt
+				has_political_power > constant:africa_decision.diaspora_settlement_cost
 				has_manpower > constant:africa_force.diaspora_settlement_manpower_gate
 			}
 		}
 		custom_cost_text = africa_build_return_settlement_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_build_return_settlement_start_tt
+			add_political_power = constant:africa_decision.diaspora_settlement_cost_spend
 			africa_start_return_settlement_operation_from_from = yes
 		}
 		cancel_trigger = {
@@ -1481,7 +1537,7 @@ africa_diaspora_return_category = {
 
 	africa_form_diaspora_officer_schools = {
 		icon = GFX_decision_generic_prepare_civil_war
-		cost = constant:africa_decision.diaspora_officer_school_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.diaspora_officer_school
 		available = {
 			custom_trigger_tooltip = {
@@ -1495,12 +1551,14 @@ africa_diaspora_return_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_form_diaspora_officer_schools_cost_tt
+				has_political_power > constant:africa_decision.diaspora_officer_school_cost
 				has_equipment = { support_equipment > constant:africa_force.diaspora_officer_support_equipment }
 			}
 		}
 		custom_cost_text = africa_form_diaspora_officer_schools_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_form_diaspora_officer_schools_effect_tt
+			add_political_power = constant:africa_decision.diaspora_officer_school_cost_spend
 			set_temp_variable = { africa_diaspora_officer_support_cost = constant:africa_force.diaspora_officer_support_equipment }
 			multiply_temp_variable = { africa_diaspora_officer_support_cost = -1 }
 			add_equipment_to_stockpile = { type = support_equipment amount = africa_diaspora_officer_support_cost }
@@ -1545,7 +1603,7 @@ africa_authority_atlas_category = {
 
 	africa_open_next_historical_dossier = {
 		icon = GFX_decision_generic_research
-		cost = constant:africa_decision.dossier_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.dossier_review
 		available = {
 			custom_trigger_tooltip = {
@@ -1562,12 +1620,14 @@ africa_authority_atlas_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_open_next_historical_dossier_cost_tt
+				has_political_power > constant:africa_decision.dossier_cost
 				can_africa_pay_selected_dossier_survey_cost = yes
 			}
 		}
 		custom_cost_text = africa_open_next_historical_dossier_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_open_next_historical_dossier_effect_tt
+			add_political_power = constant:africa_decision.dossier_cost_spend
 			africa_pay_selected_dossier_survey_cost = yes
 			africa_open_next_historical_dossier = yes
 			africa_clamp_core_values = yes
@@ -1645,7 +1705,7 @@ africa_authority_atlas_category = {
 
 	africa_raise_old_seat_guard = {
 		icon = GFX_decision_generic_prepare_civil_war
-		cost = constant:africa_decision.old_seat_mission_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.old_seat_mission
 		available = {
 			custom_trigger_tooltip = {
@@ -1658,6 +1718,7 @@ africa_authority_atlas_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_raise_old_seat_guard_cost_tt
+				has_political_power > constant:africa_decision.old_seat_mission_cost
 				has_equipment = { infantry_equipment > constant:africa_force.dossier_guard_infantry_equipment }
 				has_equipment = { support_equipment > constant:africa_force.dossier_guard_support_equipment }
 				has_manpower > constant:africa_force.dossier_guard_manpower_gate
@@ -1666,6 +1727,7 @@ africa_authority_atlas_category = {
 		custom_cost_text = africa_raise_old_seat_guard_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_raise_old_seat_guard_effect_tt
+			add_political_power = constant:africa_decision.old_seat_mission_cost_spend
 			set_temp_variable = { africa_dossier_guard_infantry_cost = constant:africa_force.dossier_guard_infantry_equipment }
 			multiply_temp_variable = { africa_dossier_guard_infantry_cost = -1 }
 			set_temp_variable = { africa_dossier_guard_support_cost = constant:africa_force.dossier_guard_support_equipment }
@@ -1848,7 +1910,7 @@ africa_high_chaos_category = {
 
 	africa_unlock_bestiary_package = {
 		icon = GFX_decision_generic_ignite_civil_war
-		cost = constant:africa_decision.high_chaos_package_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.high_chaos_package
 		available = {
 			custom_trigger_tooltip = {
@@ -1866,12 +1928,14 @@ africa_high_chaos_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_unlock_bestiary_package_cost_tt
+				has_political_power > constant:africa_decision.high_chaos_package_cost
 				has_equipment = { support_equipment > constant:africa_force.bestiary_mission_support_equipment }
 			}
 		}
 		custom_cost_text = africa_unlock_bestiary_package_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_unlock_bestiary_package_effect_tt
+			add_political_power = constant:africa_decision.high_chaos_package_cost_spend
 			set_temp_variable = { africa_bestiary_support_cost = constant:africa_force.bestiary_mission_support_equipment }
 			multiply_temp_variable = { africa_bestiary_support_cost = -1 }
 			add_equipment_to_stockpile = { type = support_equipment amount = africa_bestiary_support_cost }
@@ -1920,7 +1984,7 @@ africa_high_chaos_category = {
 		icon = GFX_decision_generic_construction
 		state_target = africa
 		on_map_mode = map_and_decisions_view
-		cost = constant:africa_decision.bestiary_habitat_seat_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.bestiary_habitat_seat
 		target_root_trigger = {
 			custom_trigger_tooltip = {
@@ -1939,12 +2003,14 @@ africa_high_chaos_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_secure_bestiary_habitat_seat_cost_tt
+				has_political_power > constant:africa_decision.bestiary_habitat_seat_cost
 				has_equipment = { support_equipment > constant:africa_force.bestiary_habitat_support_equipment }
 			}
 		}
 		custom_cost_text = africa_secure_bestiary_habitat_seat_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_secure_bestiary_habitat_seat_start_tt
+			add_political_power = constant:africa_decision.bestiary_habitat_seat_cost_spend
 			africa_start_bestiary_habitat_operation_from_from = yes
 		}
 		cancel_trigger = {
@@ -2044,7 +2110,7 @@ africa_high_chaos_category = {
 	africa_issue_bestiary_warning_to_holder = {
 		icon = GFX_decision_generic_demand_territory
 		target_array = global.africa_external_colonial_holder_countries
-		cost = constant:africa_decision.bestiary_warning_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.bestiary_warning
 		target_root_trigger = {
 			custom_trigger_tooltip = {
@@ -2069,6 +2135,7 @@ africa_high_chaos_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_bestiary_warning_cost_tt
+				has_political_power > constant:africa_decision.bestiary_warning_cost
 				has_equipment = { support_equipment > constant:africa_force.bestiary_warning_support_equipment }
 				command_power > constant:africa_decision.bestiary_warning_command_power_gate
 			}
@@ -2076,6 +2143,7 @@ africa_high_chaos_category = {
 		custom_cost_text = africa_bestiary_warning_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_issue_bestiary_warning_to_holder_effect_tt
+			add_political_power = constant:africa_decision.bestiary_warning_cost_spend
 			africa_pay_bestiary_warning_cost = yes
 			africa_record_bestiary_warning_issue = yes
 			FROM = {
@@ -2096,7 +2164,7 @@ africa_high_chaos_category = {
 		icon = GFX_decision_generic_demand_territory
 		state_target = africa
 		on_map_mode = map_and_decisions_view
-		cost = constant:africa_decision.bestiary_warning_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.bestiary_warning
 		target_root_trigger = {
 			custom_trigger_tooltip = {
@@ -2119,6 +2187,7 @@ africa_high_chaos_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_bestiary_warning_cost_tt
+				has_political_power > constant:africa_decision.bestiary_warning_cost
 				has_equipment = { support_equipment > constant:africa_force.bestiary_warning_support_equipment }
 				command_power > constant:africa_decision.bestiary_warning_command_power_gate
 			}
@@ -2126,6 +2195,7 @@ africa_high_chaos_category = {
 		custom_cost_text = africa_bestiary_warning_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_issue_bestiary_warning_to_state_holder_effect_tt
+			add_political_power = constant:africa_decision.bestiary_warning_cost_spend
 			africa_pay_bestiary_warning_cost = yes
 			africa_record_bestiary_warning_issue = yes
 			FROM = {
@@ -2171,9 +2241,9 @@ africa_high_chaos_category = {
 		}
 	}
 
-		africa_bind_bestiary_actor_to_charter = {
-			icon = GFX_decision_generic_ignite_civil_war
-			target_array = global.africa_charter_member_countries
+	africa_bind_bestiary_actor_to_charter = {
+		icon = GFX_decision_generic_ignite_civil_war
+		target_array = global.africa_charter_member_countries
 		cost = constant:africa_decision.high_chaos_package_cost
 		days_remove = constant:africa_decision_days.high_chaos_package
 		target_root_trigger = {
@@ -2196,246 +2266,256 @@ africa_high_chaos_category = {
 			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.charter_join_cohesion }
 			add_to_variable = { africa_covenant_pressure = constant:africa_value_delta.covenant_pressure }
 			africa_clamp_core_values = yes
-			}
-			ai_will_do = { base = constant:africa_ai.low }
 		}
+		ai_will_do = { base = constant:africa_ai.low }
+	}
 
-		africa_open_chimpanzee_marsh_scout_lines = {
-			icon = GFX_decision_generic_prepare_civil_war
-			cost = constant:africa_decision.bestiary_package_operation_cost
-			days_remove = constant:africa_decision_days.bestiary_package_operation
-			available = {
-				custom_trigger_tooltip = {
-					tooltip = africa_open_chimpanzee_marsh_scout_lines_req_tt
-					is_africa_runtime_unifier = yes
-					has_country_flag = africa_bestiary_chimpanzee_marshes_scouts
-					NOT = { has_country_flag = africa_chimpanzee_marsh_scout_lines_open }
-				}
-			}
-			custom_cost_trigger = {
-				custom_trigger_tooltip = {
-					tooltip = africa_bestiary_chimpanzee_scout_cost_tt
-					has_equipment = { infantry_equipment > constant:africa_force.bestiary_package_infantry_equipment }
-					has_equipment = { support_equipment > constant:africa_force.bestiary_package_support_equipment }
-					has_manpower > constant:africa_force.bestiary_package_manpower_gate
-				}
-			}
-			custom_cost_text = africa_bestiary_chimpanzee_scout_cost_tt
-			complete_effect = {
-				custom_effect_tooltip = africa_open_chimpanzee_marsh_scout_lines_effect_tt
-				set_temp_variable = { africa_bestiary_package_infantry_cost = constant:africa_force.bestiary_package_infantry_equipment }
-				multiply_temp_variable = { africa_bestiary_package_infantry_cost = -1 }
-				set_temp_variable = { africa_bestiary_package_support_cost = constant:africa_force.bestiary_package_support_equipment }
-				multiply_temp_variable = { africa_bestiary_package_support_cost = -1 }
-				add_equipment_to_stockpile = { type = infantry_equipment amount = africa_bestiary_package_infantry_cost }
-				add_equipment_to_stockpile = { type = support_equipment amount = africa_bestiary_package_support_cost }
-				add_manpower = constant:africa_force.bestiary_package_manpower_spend
-				set_country_flag = africa_chimpanzee_marsh_scout_lines_open
-				set_country_flag = africa_has_bestiary_package_action
-				add_to_variable = { africa_bestiary_package_action_count = 1 }
-				add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.bestiary_package_liberation }
-				add_to_variable = { africa_habitat_trust = constant:africa_value_delta.bestiary_package_habitat_trust }
-				add_to_variable = { africa_bestiary_alarm = constant:africa_value_delta.bestiary_package_alarm_relief }
-				africa_clamp_core_values = yes
-			}
-			ai_will_do = {
-				base = constant:africa_ai.normal
-				modifier = {
-					factor = constant:africa_ai.strong
-					has_global_flag = africa_is_one_complete
-					has_country_flag = africa_continent_sponsor_ready
-					has_country_flag = africa_middle_east_charter_staff_open
-					NOT = { has_country_flag = africa_sponsored_middle_east_charter }
-				}
+	africa_open_chimpanzee_marsh_scout_lines = {
+		icon = GFX_decision_generic_prepare_civil_war
+		cost = 0
+		days_remove = constant:africa_decision_days.bestiary_package_operation
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = africa_open_chimpanzee_marsh_scout_lines_req_tt
+				is_africa_runtime_unifier = yes
+				has_country_flag = africa_bestiary_chimpanzee_marshes_scouts
+				NOT = { has_country_flag = africa_chimpanzee_marsh_scout_lines_open }
 			}
 		}
+		custom_cost_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_bestiary_chimpanzee_scout_cost_tt
+				has_political_power > constant:africa_decision.bestiary_package_operation_cost
+				has_equipment = { infantry_equipment > constant:africa_force.bestiary_package_infantry_equipment }
+				has_equipment = { support_equipment > constant:africa_force.bestiary_package_support_equipment }
+				has_manpower > constant:africa_force.bestiary_package_manpower_gate
+			}
+		}
+		custom_cost_text = africa_bestiary_chimpanzee_scout_cost_tt
+		complete_effect = {
+			custom_effect_tooltip = africa_open_chimpanzee_marsh_scout_lines_effect_tt
+			add_political_power = constant:africa_decision.bestiary_package_operation_cost_spend
+			set_temp_variable = { africa_bestiary_package_infantry_cost = constant:africa_force.bestiary_package_infantry_equipment }
+			multiply_temp_variable = { africa_bestiary_package_infantry_cost = -1 }
+			set_temp_variable = { africa_bestiary_package_support_cost = constant:africa_force.bestiary_package_support_equipment }
+			multiply_temp_variable = { africa_bestiary_package_support_cost = -1 }
+			add_equipment_to_stockpile = { type = infantry_equipment amount = africa_bestiary_package_infantry_cost }
+			add_equipment_to_stockpile = { type = support_equipment amount = africa_bestiary_package_support_cost }
+			add_manpower = constant:africa_force.bestiary_package_manpower_spend
+			set_country_flag = africa_chimpanzee_marsh_scout_lines_open
+			set_country_flag = africa_has_bestiary_package_action
+			add_to_variable = { africa_bestiary_package_action_count = 1 }
+			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.bestiary_package_liberation }
+			add_to_variable = { africa_habitat_trust = constant:africa_value_delta.bestiary_package_habitat_trust }
+			add_to_variable = { africa_bestiary_alarm = constant:africa_value_delta.bestiary_package_alarm_relief }
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = {
+			base = constant:africa_ai.normal
+			modifier = {
+				factor = constant:africa_ai.strong
+				has_global_flag = africa_is_one_complete
+				has_country_flag = africa_continent_sponsor_ready
+				has_country_flag = africa_middle_east_charter_staff_open
+				NOT = { has_country_flag = africa_sponsored_middle_east_charter }
+			}
+		}
+	}
 
-		africa_seat_okapi_court_observers = {
-			icon = GFX_decision_generic_research
-			cost = constant:africa_decision.bestiary_package_operation_cost
-			days_remove = constant:africa_decision_days.bestiary_package_operation
-			available = {
-				custom_trigger_tooltip = {
-					tooltip = africa_seat_okapi_court_observers_req_tt
-					is_africa_runtime_unifier = yes
-					has_country_flag = africa_bestiary_okapi_court_observers
-					NOT = { has_country_flag = africa_okapi_court_observers_seated }
-					check_variable = {
-						var = africa_bestiary_alarm
-						value = constant:africa_decision.bestiary_okapi_alarm_gate
-						compare = less_than
-					}
+	africa_seat_okapi_court_observers = {
+		icon = GFX_decision_generic_research
+		cost = 0
+		days_remove = constant:africa_decision_days.bestiary_package_operation
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = africa_seat_okapi_court_observers_req_tt
+				is_africa_runtime_unifier = yes
+				has_country_flag = africa_bestiary_okapi_court_observers
+				NOT = { has_country_flag = africa_okapi_court_observers_seated }
+				check_variable = {
+					var = africa_bestiary_alarm
+					value = constant:africa_decision.bestiary_okapi_alarm_gate
+					compare = less_than
 				}
 			}
-			custom_cost_trigger = {
-				custom_trigger_tooltip = {
-					tooltip = africa_bestiary_okapi_observer_cost_tt
-					has_equipment = { support_equipment > constant:africa_force.bestiary_package_support_equipment }
-					command_power > constant:africa_decision.bestiary_package_command_power_gate
-				}
-			}
-			custom_cost_text = africa_bestiary_okapi_observer_cost_tt
-			complete_effect = {
-				custom_effect_tooltip = africa_seat_okapi_court_observers_effect_tt
-				set_temp_variable = { africa_bestiary_package_support_cost = constant:africa_force.bestiary_package_support_equipment }
-				multiply_temp_variable = { africa_bestiary_package_support_cost = -1 }
-				add_equipment_to_stockpile = { type = support_equipment amount = africa_bestiary_package_support_cost }
-				add_command_power = constant:africa_decision.bestiary_package_command_power_spend
-				set_country_flag = africa_okapi_court_observers_seated
-				set_country_flag = africa_has_bestiary_package_action
-				add_to_variable = { africa_bestiary_package_action_count = 1 }
-				add_to_variable = { africa_regional_trust = constant:africa_value_delta.bestiary_package_regional_trust }
-				add_to_variable = { africa_archive_mandate = constant:africa_value_delta.bestiary_package_archive_mandate }
-				add_to_variable = { africa_bestiary_alarm = constant:africa_value_delta.bestiary_package_alarm_relief }
-				add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.scramble_treaty_alarm_relief }
-				africa_clamp_core_values = yes
-			}
-			ai_will_do = { base = constant:africa_ai.normal }
 		}
+		custom_cost_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_bestiary_okapi_observer_cost_tt
+				has_political_power > constant:africa_decision.bestiary_package_operation_cost
+				has_equipment = { support_equipment > constant:africa_force.bestiary_package_support_equipment }
+				command_power > constant:africa_decision.bestiary_package_command_power_gate
+			}
+		}
+		custom_cost_text = africa_bestiary_okapi_observer_cost_tt
+		complete_effect = {
+			custom_effect_tooltip = africa_seat_okapi_court_observers_effect_tt
+			add_political_power = constant:africa_decision.bestiary_package_operation_cost_spend
+			set_temp_variable = { africa_bestiary_package_support_cost = constant:africa_force.bestiary_package_support_equipment }
+			multiply_temp_variable = { africa_bestiary_package_support_cost = -1 }
+			add_equipment_to_stockpile = { type = support_equipment amount = africa_bestiary_package_support_cost }
+			add_command_power = constant:africa_decision.bestiary_package_command_power_spend
+			set_country_flag = africa_okapi_court_observers_seated
+			set_country_flag = africa_has_bestiary_package_action
+			add_to_variable = { africa_bestiary_package_action_count = 1 }
+			add_to_variable = { africa_regional_trust = constant:africa_value_delta.bestiary_package_regional_trust }
+			add_to_variable = { africa_archive_mandate = constant:africa_value_delta.bestiary_package_archive_mandate }
+			add_to_variable = { africa_bestiary_alarm = constant:africa_value_delta.bestiary_package_alarm_relief }
+			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.scramble_treaty_alarm_relief }
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = { base = constant:africa_ai.normal }
+	}
 
-		africa_sign_termite_citadel_treaty = {
-			icon = GFX_decision_generic_construction
-			state_target = africa
-			on_map_mode = map_and_decisions_view
-			cost = constant:africa_decision.bestiary_package_operation_cost
-			days_remove = constant:africa_decision_days.bestiary_package_operation
-			target_root_trigger = {
-				custom_trigger_tooltip = {
-					tooltip = africa_sign_termite_citadel_treaty_root_req_tt
-					can_africa_start_termite_citadel_operation = yes
-				}
+	africa_sign_termite_citadel_treaty = {
+		icon = GFX_decision_generic_construction
+		state_target = africa
+		on_map_mode = map_and_decisions_view
+		cost = 0
+		days_remove = constant:africa_decision_days.bestiary_package_operation
+		target_root_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_sign_termite_citadel_treaty_root_req_tt
+				can_africa_start_termite_citadel_operation = yes
 			}
-			target_trigger = {
-				FROM = {
-					is_controlled_by_root_or_loyal_charter_actor = yes
-					NOT = { has_state_flag = africa_termite_citadel_surveyed }
-					NOT = { has_state_flag = africa_termite_citadel_operation_target }
-				}
-			}
-			custom_cost_trigger = {
-				custom_trigger_tooltip = {
-					tooltip = africa_bestiary_termite_citadel_cost_tt
-					has_equipment = { support_equipment > constant:africa_force.bestiary_package_support_equipment }
-					has_army_experience > constant:africa_decision.bestiary_package_army_xp_gate
-				}
-			}
-			custom_cost_text = africa_bestiary_termite_citadel_cost_tt
-			complete_effect = {
-				custom_effect_tooltip = africa_sign_termite_citadel_treaty_start_tt
-				africa_start_termite_citadel_operation_from_from = yes
-			}
-			cancel_trigger = {
-				NOT = { can_africa_keep_termite_citadel_operation_active = yes }
-			}
-			cancel_effect = {
-				custom_effect_tooltip = africa_bestiary_state_operation_failure_tt
-				africa_fail_bestiary_state_operation = yes
-			}
-			remove_effect = {
-				custom_effect_tooltip = africa_sign_termite_citadel_treaty_effect_tt
-				africa_complete_termite_citadel_operation = yes
-			}
-			ai_will_do = { base = constant:africa_ai.normal }
 		}
+		target_trigger = {
+			FROM = {
+				is_controlled_by_root_or_loyal_charter_actor = yes
+				NOT = { has_state_flag = africa_termite_citadel_surveyed }
+				NOT = { has_state_flag = africa_termite_citadel_operation_target }
+			}
+		}
+		custom_cost_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_bestiary_termite_citadel_cost_tt
+				has_political_power > constant:africa_decision.bestiary_package_operation_cost
+				has_equipment = { support_equipment > constant:africa_force.bestiary_package_support_equipment }
+				has_army_experience > constant:africa_decision.bestiary_package_army_xp_gate
+			}
+		}
+		custom_cost_text = africa_bestiary_termite_citadel_cost_tt
+		complete_effect = {
+			custom_effect_tooltip = africa_sign_termite_citadel_treaty_start_tt
+			add_political_power = constant:africa_decision.bestiary_package_operation_cost_spend
+			africa_start_termite_citadel_operation_from_from = yes
+		}
+		cancel_trigger = {
+			NOT = { can_africa_keep_termite_citadel_operation_active = yes }
+		}
+		cancel_effect = {
+			custom_effect_tooltip = africa_bestiary_state_operation_failure_tt
+			africa_fail_bestiary_state_operation = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = africa_sign_termite_citadel_treaty_effect_tt
+			africa_complete_termite_citadel_operation = yes
+		}
+		ai_will_do = { base = constant:africa_ai.normal }
+	}
 
-		africa_open_honeyguide_route_commons = {
-			icon = GFX_decision_generic_political_discourse
-			cost = constant:africa_decision.bestiary_package_operation_cost
-			days_remove = constant:africa_decision_days.bestiary_package_operation
-			available = {
-				custom_trigger_tooltip = {
-					tooltip = africa_open_honeyguide_route_commons_req_tt
-					is_africa_runtime_unifier = yes
-					has_country_flag = africa_bestiary_honeyguide_commons_routes
-					NOT = { has_country_flag = africa_honeyguide_route_commons_open }
-				}
+	africa_open_honeyguide_route_commons = {
+		icon = GFX_decision_generic_political_discourse
+		cost = 0
+		days_remove = constant:africa_decision_days.bestiary_package_operation
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = africa_open_honeyguide_route_commons_req_tt
+				is_africa_runtime_unifier = yes
+				has_country_flag = africa_bestiary_honeyguide_commons_routes
+				NOT = { has_country_flag = africa_honeyguide_route_commons_open }
 			}
-			custom_cost_trigger = {
-				custom_trigger_tooltip = {
-					tooltip = africa_bestiary_honeyguide_routes_cost_tt
-					has_equipment = { convoy_1 > constant:africa_force.bestiary_package_convoys }
-					has_equipment = { support_equipment > constant:africa_force.bestiary_package_support_equipment }
-				}
-			}
-			custom_cost_text = africa_bestiary_honeyguide_routes_cost_tt
-			complete_effect = {
-				custom_effect_tooltip = africa_open_honeyguide_route_commons_effect_tt
-				set_temp_variable = { africa_bestiary_package_convoy_cost = constant:africa_force.bestiary_package_convoys }
-				multiply_temp_variable = { africa_bestiary_package_convoy_cost = -1 }
-				set_temp_variable = { africa_bestiary_package_support_cost = constant:africa_force.bestiary_package_support_equipment }
-				multiply_temp_variable = { africa_bestiary_package_support_cost = -1 }
-				add_equipment_to_stockpile = { type = convoy_1 amount = africa_bestiary_package_convoy_cost }
-				add_equipment_to_stockpile = { type = support_equipment amount = africa_bestiary_package_support_cost }
-				set_country_flag = africa_honeyguide_route_commons_open
-				set_country_flag = africa_has_bestiary_package_action
-				add_to_variable = { africa_bestiary_package_action_count = 1 }
-				add_to_variable = { africa_league_cohesion = constant:africa_value_delta.bestiary_actor_league_cohesion }
-				add_to_variable = { africa_archive_mandate = constant:africa_value_delta.bestiary_package_archive_mandate }
-				add_to_variable = { africa_habitat_trust = constant:africa_value_delta.bestiary_package_habitat_trust }
-				add_to_variable = { africa_covenant_pressure = constant:africa_value_delta.bestiary_package_covenant_relief }
-				africa_clamp_core_values = yes
-			}
-			ai_will_do = { base = constant:africa_ai.normal }
 		}
+		custom_cost_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_bestiary_honeyguide_routes_cost_tt
+				has_political_power > constant:africa_decision.bestiary_package_operation_cost
+				has_equipment = { convoy_1 > constant:africa_force.bestiary_package_convoys }
+				has_equipment = { support_equipment > constant:africa_force.bestiary_package_support_equipment }
+			}
+		}
+		custom_cost_text = africa_bestiary_honeyguide_routes_cost_tt
+		complete_effect = {
+			custom_effect_tooltip = africa_open_honeyguide_route_commons_effect_tt
+			add_political_power = constant:africa_decision.bestiary_package_operation_cost_spend
+			set_temp_variable = { africa_bestiary_package_convoy_cost = constant:africa_force.bestiary_package_convoys }
+			multiply_temp_variable = { africa_bestiary_package_convoy_cost = -1 }
+			set_temp_variable = { africa_bestiary_package_support_cost = constant:africa_force.bestiary_package_support_equipment }
+			multiply_temp_variable = { africa_bestiary_package_support_cost = -1 }
+			add_equipment_to_stockpile = { type = convoy_1 amount = africa_bestiary_package_convoy_cost }
+			add_equipment_to_stockpile = { type = support_equipment amount = africa_bestiary_package_support_cost }
+			set_country_flag = africa_honeyguide_route_commons_open
+			set_country_flag = africa_has_bestiary_package_action
+			add_to_variable = { africa_bestiary_package_action_count = 1 }
+			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.bestiary_actor_league_cohesion }
+			add_to_variable = { africa_archive_mandate = constant:africa_value_delta.bestiary_package_archive_mandate }
+			add_to_variable = { africa_habitat_trust = constant:africa_value_delta.bestiary_package_habitat_trust }
+			add_to_variable = { africa_covenant_pressure = constant:africa_value_delta.bestiary_package_covenant_relief }
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = { base = constant:africa_ai.normal }
+	}
 
-		africa_mark_great_herds_migration_corridor = {
-			icon = GFX_decision_generic_construction
-			state_target = africa
-			on_map_mode = map_and_decisions_view
-			cost = constant:africa_decision.bestiary_package_operation_cost
-			days_remove = constant:africa_decision_days.bestiary_package_operation
-			target_root_trigger = {
-				custom_trigger_tooltip = {
-					tooltip = africa_mark_great_herds_migration_corridor_root_req_tt
-					can_africa_start_great_herds_corridor_operation = yes
-				}
-			}
-			target_trigger = {
-				FROM = {
-					is_controlled_by_root_or_loyal_charter_actor = yes
-					NOT = { has_state_flag = africa_great_herds_migration_corridor }
-					NOT = { has_state_flag = africa_great_herds_corridor_operation_target }
-				}
-			}
-			custom_cost_trigger = {
-				custom_trigger_tooltip = {
-					tooltip = africa_bestiary_great_herds_corridor_cost_tt
-					has_equipment = { support_equipment > constant:africa_force.bestiary_package_support_equipment }
-					has_manpower > constant:africa_force.bestiary_package_manpower_gate
-				}
-			}
-			custom_cost_text = africa_bestiary_great_herds_corridor_cost_tt
-			complete_effect = {
-				custom_effect_tooltip = africa_mark_great_herds_migration_corridor_start_tt
-				africa_start_great_herds_corridor_operation_from_from = yes
-			}
-			cancel_trigger = {
-				NOT = { can_africa_keep_great_herds_corridor_operation_active = yes }
-			}
-			cancel_effect = {
-				custom_effect_tooltip = africa_bestiary_state_operation_failure_tt
-				africa_fail_bestiary_state_operation = yes
-			}
-			remove_effect = {
-				custom_effect_tooltip = africa_mark_great_herds_migration_corridor_effect_tt
-				africa_complete_great_herds_corridor_operation = yes
-			}
-			ai_will_do = {
-				base = constant:africa_ai.low
-				modifier = {
-					factor = constant:africa_ai.strong
-					has_global_flag = africa_is_one_complete
-					has_country_flag = africa_continent_sponsor_ready
-					has_country_flag = africa_asia_charter_staff_open
-					NOT = { has_country_flag = africa_sponsored_asia_charter }
-				}
+	africa_mark_great_herds_migration_corridor = {
+		icon = GFX_decision_generic_construction
+		state_target = africa
+		on_map_mode = map_and_decisions_view
+		cost = 0
+		days_remove = constant:africa_decision_days.bestiary_package_operation
+		target_root_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_mark_great_herds_migration_corridor_root_req_tt
+				can_africa_start_great_herds_corridor_operation = yes
 			}
 		}
+		target_trigger = {
+			FROM = {
+				is_controlled_by_root_or_loyal_charter_actor = yes
+				NOT = { has_state_flag = africa_great_herds_migration_corridor }
+				NOT = { has_state_flag = africa_great_herds_corridor_operation_target }
+			}
+		}
+		custom_cost_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_bestiary_great_herds_corridor_cost_tt
+				has_political_power > constant:africa_decision.bestiary_package_operation_cost
+				has_equipment = { support_equipment > constant:africa_force.bestiary_package_support_equipment }
+				has_manpower > constant:africa_force.bestiary_package_manpower_gate
+			}
+		}
+		custom_cost_text = africa_bestiary_great_herds_corridor_cost_tt
+		complete_effect = {
+			custom_effect_tooltip = africa_mark_great_herds_migration_corridor_start_tt
+			add_political_power = constant:africa_decision.bestiary_package_operation_cost_spend
+			africa_start_great_herds_corridor_operation_from_from = yes
+		}
+		cancel_trigger = {
+			NOT = { can_africa_keep_great_herds_corridor_operation_active = yes }
+		}
+		cancel_effect = {
+			custom_effect_tooltip = africa_bestiary_state_operation_failure_tt
+			africa_fail_bestiary_state_operation = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = africa_mark_great_herds_migration_corridor_effect_tt
+			africa_complete_great_herds_corridor_operation = yes
+		}
+		ai_will_do = {
+			base = constant:africa_ai.low
+			modifier = {
+				factor = constant:africa_ai.strong
+				has_global_flag = africa_is_one_complete
+				has_country_flag = africa_continent_sponsor_ready
+				has_country_flag = africa_asia_charter_staff_open
+				NOT = { has_country_flag = africa_sponsored_asia_charter }
+			}
+		}
+	}
 
 	africa_task_chimpanzee_telegraph_relays = {
 		icon = GFX_decision_generic_prepare_civil_war
 		target_array = global.africa_charter_member_countries
-		cost = constant:africa_decision.bestiary_actor_operation_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.bestiary_actor_operation
 		target_root_trigger = {
 			custom_trigger_tooltip = {
@@ -2454,6 +2534,7 @@ africa_high_chaos_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_bestiary_chimpanzee_scout_cost_tt
+				has_political_power > constant:africa_decision.bestiary_actor_operation_cost
 				has_equipment = { infantry_equipment > constant:africa_force.bestiary_package_infantry_equipment }
 				has_equipment = { support_equipment > constant:africa_force.bestiary_package_support_equipment }
 				has_manpower > constant:africa_force.bestiary_package_manpower_gate
@@ -2462,6 +2543,7 @@ africa_high_chaos_category = {
 		custom_cost_text = africa_bestiary_chimpanzee_scout_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_task_chimpanzee_telegraph_relays_effect_tt
+			add_political_power = constant:africa_decision.bestiary_actor_operation_cost_spend
 			set_temp_variable = { africa_bestiary_package_infantry_cost = constant:africa_force.bestiary_package_infantry_equipment }
 			multiply_temp_variable = { africa_bestiary_package_infantry_cost = -1 }
 			set_temp_variable = { africa_bestiary_package_support_cost = constant:africa_force.bestiary_package_support_equipment }
@@ -2491,7 +2573,7 @@ africa_high_chaos_category = {
 	africa_request_okapi_court_shadow_dossiers = {
 		icon = GFX_decision_generic_research
 		target_array = global.africa_charter_member_countries
-		cost = constant:africa_decision.bestiary_actor_operation_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.bestiary_actor_operation
 		target_root_trigger = {
 			custom_trigger_tooltip = {
@@ -2510,6 +2592,7 @@ africa_high_chaos_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_bestiary_okapi_observer_cost_tt
+				has_political_power > constant:africa_decision.bestiary_actor_operation_cost
 				has_equipment = { support_equipment > constant:africa_force.bestiary_package_support_equipment }
 				command_power > constant:africa_decision.bestiary_package_command_power_gate
 			}
@@ -2517,6 +2600,7 @@ africa_high_chaos_category = {
 		custom_cost_text = africa_bestiary_okapi_observer_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_request_okapi_court_shadow_dossiers_effect_tt
+			add_political_power = constant:africa_decision.bestiary_actor_operation_cost_spend
 			set_temp_variable = { africa_bestiary_package_support_cost = constant:africa_force.bestiary_package_support_equipment }
 			multiply_temp_variable = { africa_bestiary_package_support_cost = -1 }
 			add_equipment_to_stockpile = { type = support_equipment amount = africa_bestiary_package_support_cost }
@@ -2541,7 +2625,7 @@ africa_high_chaos_category = {
 	africa_commission_termite_citadel_engineers = {
 		icon = GFX_decision_generic_construction
 		target_array = global.africa_charter_member_countries
-		cost = constant:africa_decision.bestiary_actor_operation_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.bestiary_actor_operation
 		target_root_trigger = {
 			custom_trigger_tooltip = {
@@ -2560,6 +2644,7 @@ africa_high_chaos_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_bestiary_termite_citadel_cost_tt
+				has_political_power > constant:africa_decision.bestiary_actor_operation_cost
 				has_equipment = { support_equipment > constant:africa_force.bestiary_package_support_equipment }
 				has_army_experience > constant:africa_decision.bestiary_package_army_xp_gate
 			}
@@ -2567,6 +2652,7 @@ africa_high_chaos_category = {
 		custom_cost_text = africa_bestiary_termite_citadel_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_commission_termite_citadel_engineers_effect_tt
+			add_political_power = constant:africa_decision.bestiary_actor_operation_cost_spend
 			set_temp_variable = { africa_bestiary_package_support_cost = constant:africa_force.bestiary_package_support_equipment }
 			multiply_temp_variable = { africa_bestiary_package_support_cost = -1 }
 			add_equipment_to_stockpile = { type = support_equipment amount = africa_bestiary_package_support_cost }
@@ -2594,7 +2680,7 @@ africa_high_chaos_category = {
 	africa_open_honeyguide_commons_aid_routes = {
 		icon = GFX_decision_generic_political_discourse
 		target_array = global.africa_charter_member_countries
-		cost = constant:africa_decision.bestiary_actor_operation_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.bestiary_actor_operation
 		target_root_trigger = {
 			custom_trigger_tooltip = {
@@ -2613,6 +2699,7 @@ africa_high_chaos_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_bestiary_honeyguide_routes_cost_tt
+				has_political_power > constant:africa_decision.bestiary_actor_operation_cost
 				has_equipment = { convoy_1 > constant:africa_force.bestiary_package_convoys }
 				has_equipment = { support_equipment > constant:africa_force.bestiary_package_support_equipment }
 			}
@@ -2620,6 +2707,7 @@ africa_high_chaos_category = {
 		custom_cost_text = africa_bestiary_honeyguide_routes_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_open_honeyguide_commons_aid_routes_effect_tt
+			add_political_power = constant:africa_decision.bestiary_actor_operation_cost_spend
 			set_temp_variable = { africa_bestiary_package_convoy_cost = constant:africa_force.bestiary_package_convoys }
 			multiply_temp_variable = { africa_bestiary_package_convoy_cost = -1 }
 			set_temp_variable = { africa_bestiary_package_support_cost = constant:africa_force.bestiary_package_support_equipment }
@@ -2647,7 +2735,7 @@ africa_high_chaos_category = {
 	africa_muster_great_herds_relief_columns = {
 		icon = GFX_decision_generic_prepare_civil_war
 		target_array = global.africa_charter_member_countries
-		cost = constant:africa_decision.bestiary_actor_operation_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.bestiary_actor_operation
 		target_root_trigger = {
 			custom_trigger_tooltip = {
@@ -2666,6 +2754,7 @@ africa_high_chaos_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_bestiary_great_herds_corridor_cost_tt
+				has_political_power > constant:africa_decision.bestiary_actor_operation_cost
 				has_equipment = { support_equipment > constant:africa_force.bestiary_package_support_equipment }
 				has_manpower > constant:africa_force.bestiary_package_manpower_gate
 			}
@@ -2673,6 +2762,7 @@ africa_high_chaos_category = {
 		custom_cost_text = africa_bestiary_great_herds_corridor_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_muster_great_herds_relief_columns_effect_tt
+			add_political_power = constant:africa_decision.bestiary_actor_operation_cost_spend
 			set_temp_variable = { africa_bestiary_package_support_cost = constant:africa_force.bestiary_package_support_equipment }
 			multiply_temp_variable = { africa_bestiary_package_support_cost = -1 }
 			add_equipment_to_stockpile = { type = support_equipment amount = africa_bestiary_package_support_cost }
@@ -2693,23 +2783,23 @@ africa_high_chaos_category = {
 			africa_clamp_core_values = yes
 			country_event = { id = chaosx.nr12.44 }
 		}
-			ai_will_do = {
-				base = constant:africa_ai.low
-				modifier = {
-					factor = constant:africa_ai.strong
-					has_global_flag = africa_is_one_complete
-					has_country_flag = africa_continent_sponsor_ready
-					has_country_flag = africa_world_root_mandate_open
-					has_country_flag = africa_europe_charter_staff_open
-					NOT = { has_country_flag = africa_sponsored_europe_charter }
-				}
+		ai_will_do = {
+			base = constant:africa_ai.low
+			modifier = {
+				factor = constant:africa_ai.strong
+				has_global_flag = africa_is_one_complete
+				has_country_flag = africa_continent_sponsor_ready
+				has_country_flag = africa_world_root_mandate_open
+				has_country_flag = africa_europe_charter_staff_open
+				NOT = { has_country_flag = africa_sponsored_europe_charter }
 			}
+		}
 	}
 
-		africa_call_gorilla_highlands_forest_guard = {
-			icon = GFX_decision_generic_prepare_civil_war
-			target_array = global.africa_charter_member_countries
-		cost = constant:africa_decision.bestiary_actor_operation_cost
+	africa_call_gorilla_highlands_forest_guard = {
+		icon = GFX_decision_generic_prepare_civil_war
+		target_array = global.africa_charter_member_countries
+		cost = 0
 		days_remove = constant:africa_decision_days.bestiary_actor_operation
 		target_root_trigger = {
 			custom_trigger_tooltip = {
@@ -2728,6 +2818,7 @@ africa_high_chaos_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_bestiary_forest_guard_cost_tt
+				has_political_power > constant:africa_decision.bestiary_actor_operation_cost
 				has_equipment = { infantry_equipment > constant:africa_force.bestiary_actor_infantry_equipment }
 				has_equipment = { support_equipment > constant:africa_force.bestiary_actor_support_equipment }
 				has_manpower > constant:africa_force.bestiary_actor_manpower_gate
@@ -2736,6 +2827,7 @@ africa_high_chaos_category = {
 		custom_cost_text = africa_bestiary_forest_guard_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_call_gorilla_highlands_forest_guard_effect_tt
+			add_political_power = constant:africa_decision.bestiary_actor_operation_cost_spend
 			set_temp_variable = { africa_bestiary_actor_infantry_cost = constant:africa_force.bestiary_actor_infantry_equipment }
 			multiply_temp_variable = { africa_bestiary_actor_infantry_cost = -1 }
 			set_temp_variable = { africa_bestiary_actor_support_cost = constant:africa_force.bestiary_actor_support_equipment }
@@ -2743,36 +2835,36 @@ africa_high_chaos_category = {
 			add_equipment_to_stockpile = { type = infantry_equipment amount = africa_bestiary_actor_infantry_cost }
 			add_equipment_to_stockpile = { type = support_equipment amount = africa_bestiary_actor_support_cost }
 			add_manpower = constant:africa_force.bestiary_actor_manpower_spend
-				FROM = {
-					set_country_flag = africa_gorilla_highlands_forest_guard_called
-					add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_force.bestiary_actor_infantry_equipment producer = ROOT }
-					add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_force.bestiary_actor_support_equipment producer = ROOT }
-					africa_create_high_chaos_guard_reinforcement_divisions = yes
-				}
-				set_country_flag = africa_has_bestiary_package_action
-				add_to_variable = { africa_bestiary_package_action_count = 1 }
-				add_to_variable = { africa_habitat_trust = constant:africa_value_delta.bestiary_actor_habitat_trust }
-				add_to_variable = { africa_league_cohesion = constant:africa_value_delta.bestiary_actor_league_cohesion }
+			FROM = {
+				set_country_flag = africa_gorilla_highlands_forest_guard_called
+				add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_force.bestiary_actor_infantry_equipment producer = ROOT }
+				add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_force.bestiary_actor_support_equipment producer = ROOT }
+				africa_create_high_chaos_guard_reinforcement_divisions = yes
+			}
+			set_country_flag = africa_has_bestiary_package_action
+			add_to_variable = { africa_bestiary_package_action_count = 1 }
+			add_to_variable = { africa_habitat_trust = constant:africa_value_delta.bestiary_actor_habitat_trust }
+			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.bestiary_actor_league_cohesion }
 			add_to_variable = { africa_bestiary_alarm = constant:africa_value_delta.bestiary_actor_alarm_relief }
 			africa_clamp_core_values = yes
 		}
-			ai_will_do = {
-				base = constant:africa_ai.normal
-				modifier = {
-					factor = constant:africa_ai.strong
-					has_global_flag = africa_is_one_complete
-					has_country_flag = africa_continent_sponsor_ready
-					has_country_flag = africa_pan_atlantic_congress_held
-					has_country_flag = africa_south_atlantic_charter_staff_open
-					NOT = { has_country_flag = africa_sponsored_south_atlantic_charter }
-				}
+		ai_will_do = {
+			base = constant:africa_ai.normal
+			modifier = {
+				factor = constant:africa_ai.strong
+				has_global_flag = africa_is_one_complete
+				has_country_flag = africa_continent_sponsor_ready
+				has_country_flag = africa_pan_atlantic_congress_held
+				has_country_flag = africa_south_atlantic_charter_staff_open
+				NOT = { has_country_flag = africa_sponsored_south_atlantic_charter }
 			}
+		}
 	}
 
 	africa_ask_crocodile_rivers_to_hold_crossings = {
 		icon = GFX_decision_category_africa_high_chaos_bestiary
 		target_array = global.africa_charter_member_countries
-		cost = constant:africa_decision.bestiary_actor_operation_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.bestiary_actor_operation
 		target_root_trigger = {
 			custom_trigger_tooltip = {
@@ -2791,6 +2883,7 @@ africa_high_chaos_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_bestiary_river_crossing_cost_tt
+				has_political_power > constant:africa_decision.bestiary_actor_operation_cost
 				has_equipment = { convoy_1 > constant:africa_force.bestiary_actor_convoys }
 				has_equipment = { support_equipment > constant:africa_force.bestiary_actor_support_equipment }
 				command_power > constant:africa_decision.bestiary_actor_command_power_gate
@@ -2799,6 +2892,7 @@ africa_high_chaos_category = {
 		custom_cost_text = africa_bestiary_river_crossing_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_ask_crocodile_rivers_to_hold_crossings_effect_tt
+			add_political_power = constant:africa_decision.bestiary_actor_operation_cost_spend
 			set_temp_variable = { africa_bestiary_actor_convoy_cost = constant:africa_force.bestiary_actor_convoys }
 			multiply_temp_variable = { africa_bestiary_actor_convoy_cost = -1 }
 			set_temp_variable = { africa_bestiary_actor_support_cost = constant:africa_force.bestiary_actor_support_equipment }
@@ -2831,7 +2925,7 @@ africa_high_chaos_category = {
 	africa_convene_baobab_memory_arbitration = {
 		icon = GFX_decision_generic_political_discourse
 		target_array = global.africa_charter_member_countries
-		cost = constant:africa_decision.bestiary_actor_operation_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.bestiary_actor_operation
 		target_root_trigger = {
 			custom_trigger_tooltip = {
@@ -2850,6 +2944,7 @@ africa_high_chaos_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_bestiary_archive_arbitration_cost_tt
+				has_political_power > constant:africa_decision.bestiary_actor_operation_cost
 				has_equipment = { support_equipment > constant:africa_force.bestiary_actor_support_equipment }
 				has_army_experience > constant:africa_decision.bestiary_actor_army_xp_gate
 			}
@@ -2857,6 +2952,7 @@ africa_high_chaos_category = {
 		custom_cost_text = africa_bestiary_archive_arbitration_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_convene_baobab_memory_arbitration_effect_tt
+			add_political_power = constant:africa_decision.bestiary_actor_operation_cost_spend
 			set_temp_variable = { africa_bestiary_actor_support_cost = constant:africa_force.bestiary_actor_support_equipment }
 			multiply_temp_variable = { africa_bestiary_actor_support_cost = -1 }
 				add_equipment_to_stockpile = { type = support_equipment amount = africa_bestiary_actor_support_cost }
@@ -2876,7 +2972,7 @@ africa_high_chaos_category = {
 	africa_keep_tidemark_convoy_watch = {
 		icon = GFX_decision_category_africa_high_chaos_bestiary
 		target_array = global.africa_charter_member_countries
-		cost = constant:africa_decision.bestiary_actor_operation_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.bestiary_actor_operation
 		target_root_trigger = {
 			custom_trigger_tooltip = {
@@ -2895,6 +2991,7 @@ africa_high_chaos_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_bestiary_tidemark_convoy_cost_tt
+				has_political_power > constant:africa_decision.bestiary_actor_operation_cost
 				has_equipment = { convoy_1 > constant:africa_force.bestiary_actor_convoys }
 				has_equipment = { support_equipment > constant:africa_force.bestiary_actor_support_equipment }
 			}
@@ -2902,6 +2999,7 @@ africa_high_chaos_category = {
 		custom_cost_text = africa_bestiary_tidemark_convoy_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_keep_tidemark_convoy_watch_effect_tt
+			add_political_power = constant:africa_decision.bestiary_actor_operation_cost_spend
 			set_temp_variable = { africa_bestiary_actor_convoy_cost = constant:africa_force.bestiary_actor_convoys }
 			multiply_temp_variable = { africa_bestiary_actor_convoy_cost = -1 }
 			set_temp_variable = { africa_bestiary_actor_support_cost = constant:africa_force.bestiary_actor_support_equipment }
@@ -2922,7 +3020,7 @@ africa_high_chaos_category = {
 	africa_audit_ananse_counterfeit_treaties = {
 		icon = GFX_decision_generic_political_discourse
 		target_array = global.africa_charter_member_countries
-		cost = constant:africa_decision.bestiary_actor_operation_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.bestiary_actor_operation
 		target_root_trigger = {
 			custom_trigger_tooltip = {
@@ -2941,6 +3039,7 @@ africa_high_chaos_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_bestiary_ananse_audit_cost_tt
+				has_political_power > constant:africa_decision.bestiary_actor_operation_cost
 				has_equipment = { support_equipment > constant:africa_force.bestiary_actor_support_equipment }
 				command_power > constant:africa_decision.bestiary_actor_command_power_gate
 			}
@@ -2948,6 +3047,7 @@ africa_high_chaos_category = {
 		custom_cost_text = africa_bestiary_ananse_audit_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_audit_ananse_counterfeit_treaties_effect_tt
+			add_political_power = constant:africa_decision.bestiary_actor_operation_cost_spend
 			set_temp_variable = { africa_bestiary_actor_support_cost = constant:africa_force.bestiary_actor_support_equipment }
 			multiply_temp_variable = { africa_bestiary_actor_support_cost = -1 }
 				add_equipment_to_stockpile = { type = support_equipment amount = africa_bestiary_actor_support_cost }
@@ -2966,7 +3066,7 @@ africa_high_chaos_category = {
 	africa_call_orisha_vodun_nature_court = {
 		icon = GFX_decision_generic_political_discourse
 		target_array = global.africa_charter_member_countries
-		cost = constant:africa_decision.bestiary_actor_operation_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.bestiary_actor_operation
 		target_root_trigger = {
 			custom_trigger_tooltip = {
@@ -2985,6 +3085,7 @@ africa_high_chaos_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_bestiary_nature_court_cost_tt
+				has_political_power > constant:africa_decision.bestiary_actor_operation_cost
 				has_equipment = { support_equipment > constant:africa_force.bestiary_actor_support_equipment }
 				command_power > constant:africa_decision.bestiary_actor_command_power_gate
 			}
@@ -2992,6 +3093,7 @@ africa_high_chaos_category = {
 		custom_cost_text = africa_bestiary_nature_court_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_call_orisha_vodun_nature_court_effect_tt
+			add_political_power = constant:africa_decision.bestiary_actor_operation_cost_spend
 			set_temp_variable = { africa_bestiary_actor_support_cost = constant:africa_force.bestiary_actor_support_equipment }
 			multiply_temp_variable = { africa_bestiary_actor_support_cost = -1 }
 				add_equipment_to_stockpile = { type = support_equipment amount = africa_bestiary_actor_support_cost }
@@ -3073,7 +3175,7 @@ africa_continent_sponsor_category = {
 
 	africa_prepare_continent_sponsor_mission = {
 		icon = GFX_decision_generic_political_discourse
-		cost = constant:africa_decision.sponsor_mission_cost
+		cost = 0
 		days_re_enable = constant:africa_decision_days.sponsor_readiness
 		available = {
 			custom_trigger_tooltip = {
@@ -3089,6 +3191,7 @@ africa_continent_sponsor_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_prepare_continent_sponsor_mission_cost_tt
+				has_political_power > constant:africa_decision.sponsor_mission_cost
 				has_equipment = { convoy_1 > constant:africa_force.sponsor_readiness_convoys }
 				has_equipment = { support_equipment > constant:africa_force.sponsor_readiness_support_equipment }
 				command_power > constant:africa_decision.sponsor_readiness_command_power_gate
@@ -3097,6 +3200,7 @@ africa_continent_sponsor_category = {
 		custom_cost_text = africa_prepare_continent_sponsor_mission_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_prepare_continent_sponsor_mission_effect_tt
+			add_political_power = constant:africa_decision.sponsor_mission_cost_spend
 			africa_start_continent_sponsor_readiness_mission = yes
 		}
 		ai_will_do = { base = constant:africa_ai.normal }
@@ -3160,31 +3264,33 @@ africa_continent_sponsor_category = {
 
 	africa_sponsor_middle_east_charter = {
 		icon = GFX_decision_generic_political_discourse
-		cost = constant:africa_decision.cross_continent_charter_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.cross_continent_charter
 		available = {
-				custom_trigger_tooltip = {
-					tooltip = africa_sponsor_middle_east_charter_req_tt
-					is_africa_runtime_unifier = yes
-					has_global_flag = africa_is_one_complete
-					has_country_flag = africa_continent_sponsor_ready
-					has_country_flag = africa_middle_east_charter_staff_open
-					NOT = { has_global_flag = world_end }
-					NOT = { has_country_flag = africa_sponsored_middle_east_charter }
-				}
+			custom_trigger_tooltip = {
+				tooltip = africa_sponsor_middle_east_charter_req_tt
+				is_africa_runtime_unifier = yes
+				has_global_flag = africa_is_one_complete
+				has_country_flag = africa_continent_sponsor_ready
+				has_country_flag = africa_middle_east_charter_staff_open
+				NOT = { has_global_flag = world_end }
+				NOT = { has_country_flag = africa_sponsored_middle_east_charter }
 			}
-			custom_cost_trigger = {
-				custom_trigger_tooltip = {
-					tooltip = africa_sponsor_middle_east_charter_cost_tt
-					has_equipment = { convoy_1 > constant:africa_force.middle_east_charter_convoys }
-					has_equipment = { support_equipment > constant:africa_force.middle_east_charter_support_equipment }
-					has_manpower > constant:africa_force.middle_east_charter_manpower_gate
+		}
+		custom_cost_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_sponsor_middle_east_charter_cost_tt
+				has_political_power > constant:africa_decision.cross_continent_charter_cost
+				has_equipment = { convoy_1 > constant:africa_force.middle_east_charter_convoys }
+				has_equipment = { support_equipment > constant:africa_force.middle_east_charter_support_equipment }
+				has_manpower > constant:africa_force.middle_east_charter_manpower_gate
 				command_power > constant:africa_decision.sponsor_command_power_gate
 			}
 		}
 		custom_cost_text = africa_sponsor_middle_east_charter_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_sponsor_middle_east_charter_effect_tt
+			add_political_power = constant:africa_decision.cross_continent_charter_cost_spend
 			set_temp_variable = { africa_middle_east_charter_convoy_cost = constant:africa_force.middle_east_charter_convoys }
 			multiply_temp_variable = { africa_middle_east_charter_convoy_cost = -1 }
 			set_temp_variable = { africa_middle_east_charter_support_cost = constant:africa_force.middle_east_charter_support_equipment }
@@ -3195,42 +3301,43 @@ africa_continent_sponsor_category = {
 			add_command_power = constant:africa_decision.sponsor_command_power_spend
 			add_to_variable = { africa_legitimacy = constant:africa_value_delta.cross_continent_recognition }
 			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.cross_continent_overreach }
-				africa_clamp_core_values = yes
-				set_country_flag = africa_sponsored_middle_east_charter
-			}
-			ai_will_do = {
-				base = constant:africa_ai.normal
-				modifier = {
-					factor = constant:africa_ai.strong
-					has_global_flag = africa_is_one_complete
-					has_country_flag = africa_continent_sponsor_ready
-					has_country_flag = africa_middle_east_charter_staff_open
-					NOT = { has_country_flag = africa_sponsored_middle_east_charter }
-				}
+			africa_clamp_core_values = yes
+			set_country_flag = africa_sponsored_middle_east_charter
+		}
+		ai_will_do = {
+			base = constant:africa_ai.normal
+			modifier = {
+				factor = constant:africa_ai.strong
+				has_global_flag = africa_is_one_complete
+				has_country_flag = africa_continent_sponsor_ready
+				has_country_flag = africa_middle_east_charter_staff_open
+				NOT = { has_country_flag = africa_sponsored_middle_east_charter }
 			}
 		}
+	}
 
 	africa_sponsor_asia_charter = {
 		icon = GFX_decision_generic_political_discourse
-		cost = constant:africa_decision.cross_continent_charter_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.cross_continent_charter
 		available = {
-				custom_trigger_tooltip = {
-					tooltip = africa_sponsor_asia_charter_req_tt
-					is_africa_runtime_unifier = yes
-					has_global_flag = africa_is_one_complete
-					has_country_flag = africa_continent_sponsor_ready
-					has_country_flag = africa_asia_charter_staff_open
-					NOT = { has_global_flag = world_end }
-					NOT = { has_country_flag = africa_sponsored_asia_charter }
-				}
+			custom_trigger_tooltip = {
+				tooltip = africa_sponsor_asia_charter_req_tt
+				is_africa_runtime_unifier = yes
+				has_global_flag = africa_is_one_complete
+				has_country_flag = africa_continent_sponsor_ready
+				has_country_flag = africa_asia_charter_staff_open
+				NOT = { has_global_flag = world_end }
+				NOT = { has_country_flag = africa_sponsored_asia_charter }
 			}
-			custom_cost_trigger = {
-				custom_trigger_tooltip = {
-					tooltip = africa_sponsor_asia_charter_cost_tt
-					has_equipment = { convoy_1 > constant:africa_force.asia_charter_convoys }
-					has_equipment = { infantry_equipment > constant:africa_force.asia_charter_infantry_equipment }
-					has_equipment = { support_equipment > constant:africa_force.asia_charter_support_equipment }
+		}
+		custom_cost_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_sponsor_asia_charter_cost_tt
+				has_political_power > constant:africa_decision.cross_continent_charter_cost
+				has_equipment = { convoy_1 > constant:africa_force.asia_charter_convoys }
+				has_equipment = { infantry_equipment > constant:africa_force.asia_charter_infantry_equipment }
+				has_equipment = { support_equipment > constant:africa_force.asia_charter_support_equipment }
 				has_manpower > constant:africa_force.asia_charter_manpower_gate
 				command_power > constant:africa_decision.sponsor_command_power_gate
 			}
@@ -3238,6 +3345,7 @@ africa_continent_sponsor_category = {
 		custom_cost_text = africa_sponsor_asia_charter_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_sponsor_asia_charter_effect_tt
+			add_political_power = constant:africa_decision.cross_continent_charter_cost_spend
 			set_temp_variable = { africa_asia_charter_convoy_cost = constant:africa_force.asia_charter_convoys }
 			multiply_temp_variable = { africa_asia_charter_convoy_cost = -1 }
 			set_temp_variable = { africa_asia_charter_infantry_cost = constant:africa_force.asia_charter_infantry_equipment }
@@ -3251,49 +3359,51 @@ africa_continent_sponsor_category = {
 			add_command_power = constant:africa_decision.sponsor_command_power_spend
 			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.cross_continent_recognition }
 			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.cross_continent_overreach }
-				africa_clamp_core_values = yes
-				set_country_flag = africa_sponsored_asia_charter
-			}
-			ai_will_do = {
-				base = constant:africa_ai.low
-				modifier = {
-					factor = constant:africa_ai.strong
-					has_global_flag = africa_is_one_complete
-					has_country_flag = africa_continent_sponsor_ready
-					has_country_flag = africa_asia_charter_staff_open
-					NOT = { has_country_flag = africa_sponsored_asia_charter }
-				}
+			africa_clamp_core_values = yes
+			set_country_flag = africa_sponsored_asia_charter
+		}
+		ai_will_do = {
+			base = constant:africa_ai.low
+			modifier = {
+				factor = constant:africa_ai.strong
+				has_global_flag = africa_is_one_complete
+				has_country_flag = africa_continent_sponsor_ready
+				has_country_flag = africa_asia_charter_staff_open
+				NOT = { has_country_flag = africa_sponsored_asia_charter }
 			}
 		}
+	}
 
 	africa_sponsor_europe_charter = {
 		icon = GFX_decision_generic_political_discourse
-		cost = constant:africa_decision.cross_continent_charter_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.cross_continent_charter
 		available = {
-				custom_trigger_tooltip = {
-					tooltip = africa_sponsor_europe_charter_req_tt
-					is_africa_runtime_unifier = yes
-					has_global_flag = africa_is_one_complete
-					has_country_flag = africa_continent_sponsor_ready
-					has_country_flag = africa_world_root_mandate_open
-					has_country_flag = africa_europe_charter_staff_open
-					NOT = { has_global_flag = world_end }
-					NOT = { has_country_flag = africa_sponsored_europe_charter }
-				}
+			custom_trigger_tooltip = {
+				tooltip = africa_sponsor_europe_charter_req_tt
+				is_africa_runtime_unifier = yes
+				has_global_flag = africa_is_one_complete
+				has_country_flag = africa_continent_sponsor_ready
+				has_country_flag = africa_world_root_mandate_open
+				has_country_flag = africa_europe_charter_staff_open
+				NOT = { has_global_flag = world_end }
+				NOT = { has_country_flag = africa_sponsored_europe_charter }
 			}
-			custom_cost_trigger = {
-				custom_trigger_tooltip = {
-					tooltip = africa_sponsor_europe_charter_cost_tt
-					has_equipment = { infantry_equipment > constant:africa_force.europe_charter_infantry_equipment }
-					has_equipment = { support_equipment > constant:africa_force.europe_charter_support_equipment }
-					has_manpower > constant:africa_force.europe_charter_manpower_gate
+		}
+		custom_cost_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_sponsor_europe_charter_cost_tt
+				has_political_power > constant:africa_decision.cross_continent_charter_cost
+				has_equipment = { infantry_equipment > constant:africa_force.europe_charter_infantry_equipment }
+				has_equipment = { support_equipment > constant:africa_force.europe_charter_support_equipment }
+				has_manpower > constant:africa_force.europe_charter_manpower_gate
 				command_power > constant:africa_decision.europe_sponsor_command_power_gate
 			}
 		}
 		custom_cost_text = africa_sponsor_europe_charter_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_sponsor_europe_charter_effect_tt
+			add_political_power = constant:africa_decision.cross_continent_charter_cost_spend
 			set_temp_variable = { africa_europe_charter_infantry_cost = constant:africa_force.europe_charter_infantry_equipment }
 			multiply_temp_variable = { africa_europe_charter_infantry_cost = -1 }
 			set_temp_variable = { africa_europe_charter_support_cost = constant:africa_force.europe_charter_support_equipment }
@@ -3304,50 +3414,52 @@ africa_continent_sponsor_category = {
 			add_command_power = constant:africa_decision.europe_sponsor_command_power_spend
 			add_to_variable = { africa_authority = constant:africa_value_delta.cross_continent_recognition }
 			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.cross_continent_union_alarm }
-				africa_clamp_core_values = yes
-				set_country_flag = africa_sponsored_europe_charter
-			}
-			ai_will_do = {
-				base = constant:africa_ai.low
-				modifier = {
-					factor = constant:africa_ai.strong
-					has_global_flag = africa_is_one_complete
-					has_country_flag = africa_continent_sponsor_ready
-					has_country_flag = africa_world_root_mandate_open
-					has_country_flag = africa_europe_charter_staff_open
-					NOT = { has_country_flag = africa_sponsored_europe_charter }
-				}
+			africa_clamp_core_values = yes
+			set_country_flag = africa_sponsored_europe_charter
+		}
+		ai_will_do = {
+			base = constant:africa_ai.low
+			modifier = {
+				factor = constant:africa_ai.strong
+				has_global_flag = africa_is_one_complete
+				has_country_flag = africa_continent_sponsor_ready
+				has_country_flag = africa_world_root_mandate_open
+				has_country_flag = africa_europe_charter_staff_open
+				NOT = { has_country_flag = africa_sponsored_europe_charter }
 			}
 		}
+	}
 
 	africa_sponsor_south_atlantic_charter = {
 		icon = GFX_decision_generic_political_discourse
-		cost = constant:africa_decision.cross_continent_charter_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.cross_continent_charter
 		available = {
-				custom_trigger_tooltip = {
-					tooltip = africa_sponsor_south_atlantic_charter_req_tt
-					is_africa_runtime_unifier = yes
-					has_global_flag = africa_is_one_complete
-					has_country_flag = africa_continent_sponsor_ready
-					has_country_flag = africa_pan_atlantic_congress_held
-					has_country_flag = africa_south_atlantic_charter_staff_open
-					NOT = { has_global_flag = world_end }
-					NOT = { has_country_flag = africa_sponsored_south_atlantic_charter }
-				}
+			custom_trigger_tooltip = {
+				tooltip = africa_sponsor_south_atlantic_charter_req_tt
+				is_africa_runtime_unifier = yes
+				has_global_flag = africa_is_one_complete
+				has_country_flag = africa_continent_sponsor_ready
+				has_country_flag = africa_pan_atlantic_congress_held
+				has_country_flag = africa_south_atlantic_charter_staff_open
+				NOT = { has_global_flag = world_end }
+				NOT = { has_country_flag = africa_sponsored_south_atlantic_charter }
 			}
-			custom_cost_trigger = {
-				custom_trigger_tooltip = {
-					tooltip = africa_sponsor_south_atlantic_charter_cost_tt
-					has_equipment = { convoy_1 > constant:africa_force.south_atlantic_charter_convoys }
-					has_equipment = { support_equipment > constant:africa_force.south_atlantic_charter_support_equipment }
-					has_manpower > constant:africa_force.south_atlantic_charter_manpower_gate
+		}
+		custom_cost_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_sponsor_south_atlantic_charter_cost_tt
+				has_political_power > constant:africa_decision.cross_continent_charter_cost
+				has_equipment = { convoy_1 > constant:africa_force.south_atlantic_charter_convoys }
+				has_equipment = { support_equipment > constant:africa_force.south_atlantic_charter_support_equipment }
+				has_manpower > constant:africa_force.south_atlantic_charter_manpower_gate
 				command_power > constant:africa_decision.sponsor_command_power_gate
 			}
 		}
 		custom_cost_text = africa_sponsor_south_atlantic_charter_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_sponsor_south_atlantic_charter_effect_tt
+			add_political_power = constant:africa_decision.cross_continent_charter_cost_spend
 			set_temp_variable = { africa_south_atlantic_charter_convoy_cost = constant:africa_force.south_atlantic_charter_convoys }
 			multiply_temp_variable = { africa_south_atlantic_charter_convoy_cost = -1 }
 			set_temp_variable = { africa_south_atlantic_charter_support_cost = constant:africa_force.south_atlantic_charter_support_equipment }
@@ -3358,48 +3470,49 @@ africa_continent_sponsor_category = {
 			add_command_power = constant:africa_decision.sponsor_command_power_spend
 			add_to_variable = { africa_legitimacy = constant:africa_value_delta.cross_continent_recognition }
 			add_to_variable = { africa_restoration_debt = constant:africa_value_delta.cross_continent_overreach }
-				africa_clamp_core_values = yes
-				set_country_flag = africa_sponsored_south_atlantic_charter
-			}
-			ai_will_do = {
-				base = constant:africa_ai.normal
-				modifier = {
-					factor = constant:africa_ai.strong
-					has_global_flag = africa_is_one_complete
-					has_country_flag = africa_continent_sponsor_ready
-					has_country_flag = africa_pan_atlantic_congress_held
-					has_country_flag = africa_south_atlantic_charter_staff_open
-					NOT = { has_country_flag = africa_sponsored_south_atlantic_charter }
-				}
+			africa_clamp_core_values = yes
+			set_country_flag = africa_sponsored_south_atlantic_charter
+		}
+		ai_will_do = {
+			base = constant:africa_ai.normal
+			modifier = {
+				factor = constant:africa_ai.strong
+				has_global_flag = africa_is_one_complete
+				has_country_flag = africa_continent_sponsor_ready
+				has_country_flag = africa_pan_atlantic_congress_held
+				has_country_flag = africa_south_atlantic_charter_staff_open
+				NOT = { has_country_flag = africa_sponsored_south_atlantic_charter }
 			}
 		}
+	}
 
 	africa_proclaim_dynamic_cross_continent_union = {
 		icon = GFX_decision_generic_political_discourse
-		cost = constant:africa_decision.dynamic_union_congress_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.dynamic_union_congress
 		available = {
-				custom_trigger_tooltip = {
-					tooltip = africa_proclaim_dynamic_cross_continent_union_req_tt
-					is_africa_runtime_unifier = yes
-					has_global_flag = africa_is_one_complete
-					has_country_flag = africa_continent_sponsor_ready
-					has_country_flag = africa_world_root_mandate_open
-					has_country_flag = africa_congress_of_continents_focus_open
-					has_country_flag = africa_sponsored_middle_east_charter
-					has_country_flag = africa_sponsored_asia_charter
-					has_country_flag = africa_sponsored_europe_charter
-					has_country_flag = africa_sponsored_south_atlantic_charter
-					NOT = { has_global_flag = world_end }
-					NOT = { has_country_flag = africa_dynamic_cross_continent_union_complete }
-				}
+			custom_trigger_tooltip = {
+				tooltip = africa_proclaim_dynamic_cross_continent_union_req_tt
+				is_africa_runtime_unifier = yes
+				has_global_flag = africa_is_one_complete
+				has_country_flag = africa_continent_sponsor_ready
+				has_country_flag = africa_world_root_mandate_open
+				has_country_flag = africa_congress_of_continents_focus_open
+				has_country_flag = africa_sponsored_middle_east_charter
+				has_country_flag = africa_sponsored_asia_charter
+				has_country_flag = africa_sponsored_europe_charter
+				has_country_flag = africa_sponsored_south_atlantic_charter
+				NOT = { has_global_flag = world_end }
+				NOT = { has_country_flag = africa_dynamic_cross_continent_union_complete }
 			}
-			custom_cost_trigger = {
-				custom_trigger_tooltip = {
-					tooltip = africa_proclaim_dynamic_cross_continent_union_cost_tt
-					has_equipment = { convoy_1 > constant:africa_force.dynamic_union_convoys }
-					has_equipment = { infantry_equipment > constant:africa_force.dynamic_union_infantry_equipment }
-					has_equipment = { support_equipment > constant:africa_force.dynamic_union_support_equipment }
+		}
+		custom_cost_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_proclaim_dynamic_cross_continent_union_cost_tt
+				has_political_power > constant:africa_decision.dynamic_union_congress_cost
+				has_equipment = { convoy_1 > constant:africa_force.dynamic_union_convoys }
+				has_equipment = { infantry_equipment > constant:africa_force.dynamic_union_infantry_equipment }
+				has_equipment = { support_equipment > constant:africa_force.dynamic_union_support_equipment }
 				has_manpower > constant:africa_force.dynamic_union_manpower_gate
 				command_power > constant:africa_decision.dynamic_union_command_power_gate
 				has_army_experience > constant:africa_decision.dynamic_union_army_xp_gate
@@ -3408,6 +3521,7 @@ africa_continent_sponsor_category = {
 		custom_cost_text = africa_proclaim_dynamic_cross_continent_union_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_proclaim_dynamic_cross_continent_union_effect_tt
+			add_political_power = constant:africa_decision.dynamic_union_congress_cost_spend
 			set_temp_variable = { africa_dynamic_union_convoy_cost = constant:africa_force.dynamic_union_convoys }
 			multiply_temp_variable = { africa_dynamic_union_convoy_cost = -1 }
 			set_temp_variable = { africa_dynamic_union_infantry_cost = constant:africa_force.dynamic_union_infantry_equipment }
@@ -3419,26 +3533,26 @@ africa_continent_sponsor_category = {
 			add_equipment_to_stockpile = { type = support_equipment amount = africa_dynamic_union_support_cost }
 			add_manpower = constant:africa_force.dynamic_union_manpower_spend
 			add_command_power = constant:africa_decision.dynamic_union_command_power_spend
-				army_experience = constant:africa_decision.dynamic_union_army_xp_spend
-				africa_apply_dynamic_cross_continent_union_identity = yes
-			}
-			ai_will_do = {
-				base = constant:africa_ai.low
-				modifier = {
-					factor = constant:africa_ai.strong
-					has_country_flag = africa_congress_of_continents_focus_open
-					has_country_flag = africa_sponsored_middle_east_charter
-					has_country_flag = africa_sponsored_asia_charter
-					has_country_flag = africa_sponsored_europe_charter
-					has_country_flag = africa_sponsored_south_atlantic_charter
-					NOT = { has_country_flag = africa_dynamic_cross_continent_union_complete }
-				}
+			army_experience = constant:africa_decision.dynamic_union_army_xp_spend
+			africa_apply_dynamic_cross_continent_union_identity = yes
+		}
+		ai_will_do = {
+			base = constant:africa_ai.low
+			modifier = {
+				factor = constant:africa_ai.strong
+				has_country_flag = africa_congress_of_continents_focus_open
+				has_country_flag = africa_sponsored_middle_east_charter
+				has_country_flag = africa_sponsored_asia_charter
+				has_country_flag = africa_sponsored_europe_charter
+				has_country_flag = africa_sponsored_south_atlantic_charter
+				NOT = { has_country_flag = africa_dynamic_cross_continent_union_complete }
 			}
 		}
+	}
 
 	africa_verify_middle_east_unifier_proof = {
 		icon = GFX_decision_generic_political_discourse
-		cost = constant:africa_decision.external_unifier_proof_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.external_unifier_proof
 		available = {
 			custom_trigger_tooltip = {
@@ -3449,6 +3563,7 @@ africa_continent_sponsor_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_verify_middle_east_unifier_proof_cost_tt
+				has_political_power > constant:africa_decision.external_unifier_proof_cost
 				has_equipment = { convoy_1 > constant:africa_force.middle_east_proof_convoys }
 				has_equipment = { train_equipment > constant:africa_force.middle_east_proof_trains }
 				has_equipment = { support_equipment > constant:africa_force.middle_east_proof_support_equipment }
@@ -3458,6 +3573,7 @@ africa_continent_sponsor_category = {
 		custom_cost_text = africa_verify_middle_east_unifier_proof_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_start_middle_east_unifier_proof_effect_tt
+			add_political_power = constant:africa_decision.external_unifier_proof_cost_spend
 			africa_start_middle_east_unifier_proof = yes
 		}
 		cancel_trigger = {
@@ -3482,7 +3598,7 @@ africa_continent_sponsor_category = {
 
 	africa_verify_asia_unifier_proof = {
 		icon = GFX_decision_generic_political_discourse
-		cost = constant:africa_decision.external_unifier_proof_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.external_unifier_proof
 		available = {
 			custom_trigger_tooltip = {
@@ -3493,6 +3609,7 @@ africa_continent_sponsor_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_verify_asia_unifier_proof_cost_tt
+				has_political_power > constant:africa_decision.external_unifier_proof_cost
 				has_equipment = { convoy_1 > constant:africa_force.asia_proof_convoys }
 				has_equipment = { infantry_equipment > constant:africa_force.asia_proof_infantry_equipment }
 				has_equipment = { support_equipment > constant:africa_force.asia_proof_support_equipment }
@@ -3502,6 +3619,7 @@ africa_continent_sponsor_category = {
 		custom_cost_text = africa_verify_asia_unifier_proof_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_start_asia_unifier_proof_effect_tt
+			add_political_power = constant:africa_decision.external_unifier_proof_cost_spend
 			africa_start_asia_unifier_proof = yes
 		}
 		cancel_trigger = {
@@ -3526,7 +3644,7 @@ africa_continent_sponsor_category = {
 
 	africa_verify_europe_unifier_proof = {
 		icon = GFX_decision_generic_political_discourse
-		cost = constant:africa_decision.external_unifier_proof_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.external_unifier_proof
 		available = {
 			custom_trigger_tooltip = {
@@ -3537,6 +3655,7 @@ africa_continent_sponsor_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_verify_europe_unifier_proof_cost_tt
+				has_political_power > constant:africa_decision.external_unifier_proof_cost
 				has_equipment = { infantry_equipment > constant:africa_force.europe_proof_infantry_equipment }
 				has_equipment = { support_equipment > constant:africa_force.europe_proof_support_equipment }
 				has_manpower > constant:africa_force.europe_proof_manpower_gate
@@ -3547,6 +3666,7 @@ africa_continent_sponsor_category = {
 		custom_cost_text = africa_verify_europe_unifier_proof_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_start_europe_unifier_proof_effect_tt
+			add_political_power = constant:africa_decision.external_unifier_proof_cost_spend
 			africa_start_europe_unifier_proof = yes
 		}
 		cancel_trigger = {
@@ -3571,7 +3691,7 @@ africa_continent_sponsor_category = {
 
 	africa_verify_south_atlantic_unifier_proof = {
 		icon = GFX_decision_generic_political_discourse
-		cost = constant:africa_decision.external_unifier_proof_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.external_unifier_proof
 		available = {
 			custom_trigger_tooltip = {
@@ -3582,6 +3702,7 @@ africa_continent_sponsor_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_verify_south_atlantic_unifier_proof_cost_tt
+				has_political_power > constant:africa_decision.external_unifier_proof_cost
 				has_equipment = { convoy_1 > constant:africa_force.south_atlantic_proof_convoys }
 				has_equipment = { support_equipment > constant:africa_force.south_atlantic_proof_support_equipment }
 				command_power > constant:africa_decision.external_unifier_proof_command_power_gate
@@ -3590,6 +3711,7 @@ africa_continent_sponsor_category = {
 		custom_cost_text = africa_verify_south_atlantic_unifier_proof_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_start_south_atlantic_unifier_proof_effect_tt
+			add_political_power = constant:africa_decision.external_unifier_proof_cost_spend
 			africa_start_south_atlantic_unifier_proof = yes
 		}
 		cancel_trigger = {
@@ -3614,7 +3736,7 @@ africa_continent_sponsor_category = {
 
 	africa_certify_continent_unifiers_for_world_is_one = {
 		icon = GFX_decision_generic_political_discourse
-		cost = constant:africa_decision.continent_unifier_certification_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.continent_unifier_certification
 		available = {
 			custom_trigger_tooltip = {
@@ -3625,6 +3747,7 @@ africa_continent_sponsor_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_certify_continent_unifiers_for_world_is_one_cost_tt
+				has_political_power > constant:africa_decision.continent_unifier_certification_cost
 				has_equipment = { convoy_1 > constant:africa_force.continent_unifier_certification_convoys }
 				has_equipment = { support_equipment > constant:africa_force.continent_unifier_certification_support_equipment }
 				command_power > constant:africa_decision.continent_unifier_certification_command_power_gate
@@ -3636,12 +3759,14 @@ africa_continent_sponsor_category = {
 			if = {
 				limit = {
 					can_africa_certify_continent_unifiers_for_world_is_one = yes
+					has_political_power > constant:africa_decision.continent_unifier_certification_cost
 					has_equipment = { convoy_1 > constant:africa_force.continent_unifier_certification_convoys }
 					has_equipment = { support_equipment > constant:africa_force.continent_unifier_certification_support_equipment }
 					command_power > constant:africa_decision.continent_unifier_certification_command_power_gate
 					has_army_experience > constant:africa_decision.continent_unifier_certification_army_xp_gate
 				}
 				custom_effect_tooltip = africa_certify_continent_unifiers_for_world_is_one_effect_tt
+				add_political_power = constant:africa_decision.continent_unifier_certification_cost_spend
 				set_temp_variable = { africa_continent_unifier_certification_convoy_cost = constant:africa_force.continent_unifier_certification_convoys }
 				multiply_temp_variable = { africa_continent_unifier_certification_convoy_cost = -1 }
 				set_temp_variable = { africa_continent_unifier_certification_support_cost = constant:africa_force.continent_unifier_certification_support_equipment }
@@ -3651,44 +3776,44 @@ africa_continent_sponsor_category = {
 				add_command_power = constant:africa_decision.continent_unifier_certification_command_power_spend
 				army_experience = constant:africa_decision.continent_unifier_certification_army_xp_spend
 				africa_certify_continent_unifiers_for_world_is_one = yes
-				}
-			}
-			ai_will_do = {
-				base = constant:africa_ai.low
-				modifier = {
-					factor = constant:africa_ai.strong
-					can_africa_certify_continent_unifiers_for_world_is_one = yes
-				}
 			}
 		}
+		ai_will_do = {
+			base = constant:africa_ai.low
+			modifier = {
+				factor = constant:africa_ai.strong
+				can_africa_certify_continent_unifiers_for_world_is_one = yes
+			}
+		}
+	}
 
 	africa_prepare_world_is_one_gate = {
 		icon = GFX_decision_generic_political_discourse
 		cost = constant:africa_decision.sponsor_mission_cost
 		days_remove = constant:africa_decision_days.sponsor_mission
 		available = {
-				custom_trigger_tooltip = {
-					tooltip = africa_prepare_world_is_one_gate_req_tt
-					can_africa_prepare_world_is_one_gate = yes
-					NOT = { has_country_flag = africa_world_is_one_gate_prepared }
-				}
-			}
-			complete_effect = {
-				custom_effect_tooltip = africa_prepare_world_is_one_gate_effect_tt
-				set_country_flag = africa_world_is_one_gate_prepared
-				add_to_variable = { africa_authority = constant:africa_value_delta.world_order_authority }
-				add_to_variable = { africa_league_cohesion = constant:africa_value_delta.continent_unifier_certification_cohesion }
-				africa_clamp_core_values = yes
-			}
-			ai_will_do = {
-				base = constant:africa_ai.normal
-				modifier = {
-					factor = constant:africa_ai.strong
-					can_africa_prepare_world_is_one_gate = yes
-					NOT = { has_country_flag = africa_world_is_one_gate_prepared }
-				}
+			custom_trigger_tooltip = {
+				tooltip = africa_prepare_world_is_one_gate_req_tt
+				can_africa_prepare_world_is_one_gate = yes
+				NOT = { has_country_flag = africa_world_is_one_gate_prepared }
 			}
 		}
+		complete_effect = {
+			custom_effect_tooltip = africa_prepare_world_is_one_gate_effect_tt
+			set_country_flag = africa_world_is_one_gate_prepared
+			add_to_variable = { africa_authority = constant:africa_value_delta.world_order_authority }
+			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.continent_unifier_certification_cohesion }
+			africa_clamp_core_values = yes
+		}
+		ai_will_do = {
+			base = constant:africa_ai.normal
+			modifier = {
+				factor = constant:africa_ai.strong
+				can_africa_prepare_world_is_one_gate = yes
+				NOT = { has_country_flag = africa_world_is_one_gate_prepared }
+			}
+		}
+	}
 }
 
 africa_rsa_civil_war_emergency_category = {
@@ -3701,7 +3826,7 @@ africa_rsa_civil_war_emergency_category = {
 
 	africa_rsa_secure_charter_supply = {
 		icon = GFX_decision_generic_prepare_civil_war
-		cost = constant:africa_decision.rsa_emergency_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.rsa_emergency
 		available = {
 			custom_trigger_tooltip = {
@@ -3713,6 +3838,7 @@ africa_rsa_civil_war_emergency_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_rsa_secure_charter_supply_cost_tt
+				has_political_power > constant:africa_decision.rsa_emergency_cost
 				has_equipment = { support_equipment > constant:africa_force.league_aid_support_equipment }
 				has_equipment = { train_equipment > constant:africa_force.aid_corridor_trains }
 			}
@@ -3720,6 +3846,7 @@ africa_rsa_civil_war_emergency_category = {
 		custom_cost_text = africa_rsa_secure_charter_supply_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_rsa_secure_charter_supply_effect_tt
+			add_political_power = constant:africa_decision.rsa_emergency_cost_spend
 			set_temp_variable = { africa_rsa_supply_support_cost = constant:africa_force.league_aid_support_equipment }
 			multiply_temp_variable = { africa_rsa_supply_support_cost = -1 }
 			set_temp_variable = { africa_rsa_supply_train_cost = constant:africa_force.aid_corridor_trains }
@@ -3735,7 +3862,7 @@ africa_rsa_civil_war_emergency_category = {
 
 	africa_rsa_hold_mine_port_belt = {
 		icon = GFX_decision_generic_prepare_civil_war
-		cost = constant:africa_decision.rsa_objective_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.rsa_objective
 		available = {
 			custom_trigger_tooltip = {
@@ -3755,6 +3882,7 @@ africa_rsa_civil_war_emergency_category = {
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_rsa_hold_mine_port_belt_cost_tt
+				has_political_power > constant:africa_decision.rsa_objective_cost
 				has_equipment = { infantry_equipment > constant:africa_force.rsa_objective_infantry_equipment }
 				has_manpower > constant:africa_force.rsa_objective_manpower_gate
 			}
@@ -3762,6 +3890,7 @@ africa_rsa_civil_war_emergency_category = {
 		custom_cost_text = africa_rsa_hold_mine_port_belt_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = africa_rsa_hold_mine_port_belt_effect_tt
+			add_political_power = constant:africa_decision.rsa_objective_cost_spend
 			set_temp_variable = { africa_rsa_objective_infantry_cost = constant:africa_force.rsa_objective_infantry_equipment }
 			multiply_temp_variable = { africa_rsa_objective_infantry_cost = -1 }
 			add_equipment_to_stockpile = { type = infantry_equipment amount = africa_rsa_objective_infantry_cost }
