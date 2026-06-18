@@ -137,7 +137,7 @@ This section supersedes the exploratory role notes below for the six roles reque
 
 ## Top-level recommendations
 
-These are the strongest current text packages by role. The accepted roles in the final-source-ready section have been wired as final localisation. The 2026-06-17 variant pass also promoted Forest Parliament, World Root Mandate, Parliament of Root and Fang, and Archive World into slots `76-79` with image, audio, music, sound, scripted-localisation, and gameplay trigger wiring. `africa_world_is_one_root_variant_terminal` remains blocked as a distinct terminal role.
+These are the strongest current text packages by role. The accepted roles in the final-source-ready section have been wired as final localisation. The 2026-06-17 variant pass also promoted Forest Parliament, World Root Mandate, Parliament of Root and Fang, and Archive World into slots `76-79` with image, audio, music, sound, scripted-localisation, and gameplay trigger wiring. `africa_world_is_one_root_variant_terminal` shares slot `72` text and visual presentation and uses dedicated audio id `80`.
 
 | Role | Recommended title direction | Recommended quote | Recommended button / remark | Confidence |
 | --- | --- | --- | --- | --- |
@@ -861,14 +861,14 @@ Second-pass audio packaging completed on `2026-06-16`.
 
 ### Remaining audio blockers
 
-- No remaining audio blockers for the twelve accepted Event 012 super-event roles.
+- No remaining audio blockers for the thirteen accepted Event 012 super-event roles.
 - Forest Parliament, World Root, Root and Fang, and Archive World variant packages are final-wired under slots `76-79`; their live audio is registered in `music/chaosx_super_event_music.asset`, `music/chaosx_super_event_music.txt`, and `sound/chaosx_sound.asset`, with source/licensing notes in `docs/assets/012_africa/super_events/audio/manifest.md`.
-- `africa_world_is_one_root_variant_terminal` remains blocked because the current design does not define whether it is a third distinct terminal super-event or an explicit presentation variant allowed to share an accepted terminal cue.
+- `africa_world_is_one_root_variant_terminal` uses shared slot `72` World Is One text and visual presentation, with a distinct audio handoff package in `docs/assets/012_africa/super_events/audio/final/super_event_africa_world_is_one_root_terminal.ogg`. The cue is sourced from Richard Wagner's `Siegfried's Funeral March and Finale` as performed by the United States Marine Band and is documented in the audio manifest.
 - Preserved non-final evaluation source: `docs/assets/012_africa/super_events/audio/source/beethoven_symphony_7_allegretto_john_michel.ogg`
 - Reason for non-final status: legally usable `CC BY-SA 3.0`, but the solo-cello recording contains long low-energy gaps and was not strong enough as a packaged in-game final without a heavier re-edit pass.
 - Full source, hash, and conversion details are recorded in `docs/assets/012_africa/super_events/audio/manifest.md`.
 
-- **Final localisation status.** Slots `68` through `79` are final-wired in `localisation/english/012_african_union_l_english.yml` and `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt`. RSA peace, dynamic cross-continent union, Forest Parliament, World Root, Root and Fang, and Archive World have final text, art, music, sound, emit helpers, and gameplay callsites. `africa_world_is_one_root_variant_terminal` is the remaining design-blocked alternate terminal role.
+- **Final localisation status.** Slots `68` through `79` are final-wired in `localisation/english/012_african_union_l_english.yml` and `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt`. RSA peace, dynamic cross-continent union, Forest Parliament, World Root, Root and Fang, and Archive World have final text, art, music, sound, emit helpers, and gameplay callsites. `africa_world_is_one_root_variant_terminal` shares slot `72` text and visual localisation and uses dedicated audio id `80`.
 - **Nkrumah transcript caution.** The 1957 independence line is extremely famous and stable, but the accessible transcript I verified is a secondary transcript page rather than an official Ghana state archive. I rate it medium-high, not absolute.
 - **Comte attribution caution.** The archive-terminal Comte line is strong but presently rests on public-domain secondary witnesses. If the main agent wants maximum-proof sourcing, use the Shakespeare backup instead.
 - **Bestiary button note.** `The animals have papers.` remains preserved above as a non-final tonal candidate only. The live Bestiary/Forest Parliament presentation uses sourced Job 12 wording instead.

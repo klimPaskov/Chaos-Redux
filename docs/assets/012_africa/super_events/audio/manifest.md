@@ -354,15 +354,39 @@ ffmpeg -y -i docs/assets/012_africa/super_events/audio/source/dies_irae_membeth.
 - Suitability: this is the clearest archive-terminal cue found in this pass, with a stronger judgment/finality tone than the already-packaged base `World Is One` branch
 - Uncertainty: because Event 012 already has a non-archive terminal package, this should remain tied to the archive-world variant only unless the parent explicitly consolidates terminal branches
 
-## Remaining variant blocker
+## Root terminal resolution
 
 ### `africa_world_is_one_root_variant_terminal`
 
-- Status: blocked
-- Blocker: this pass produced two distinct terminal-grade packages already on disk, `super_event_africa_world_is_one.ogg` for the base terminal branch and `super_event_africa_archive_world.ogg` for the archive-world terminal. Current docs do not clearly define whether the root variant should be a third distinct terminal audio role or whether it should collapse into one of those terminal packages.
-- Action: do not silently reuse either terminal cue. Keep the role blocked until the parent decides whether the root variant is:
-  - a separate terminal super-event needing its own unique final track; or
-  - a presentation variant that is allowed to share an existing terminal package explicitly.
+- Status: finalized for audio research handoff
+- Live audio id: `80`
+- Live asset stem: `super_event_africa_world_is_one_root_terminal`
+- Super-event use: root-variant terminal / World Is One branch after Green Covenant or root-order escalation has become the world-ending frame
+- Title: `Siegfried's Funeral March and Finale` from *Gotterdammerung*
+- Creator / composer: Richard Wagner
+- Performer / recording source: United States Marine Band, recorded December 8-11, 1981, transcription credits on Commons page to Howard Bowlin and John Bourgeois
+- Source URL: `https://commons.wikimedia.org/wiki/File:Siegfrieds_funeral_march_and_finale.ogg`
+- License: U.S. federal government public domain performance on Commons; composition public domain
+- License confidence: high
+- Duration:
+  - source: `629.603265s`
+  - final: `120.000000s`
+- Attribution text if required: none required
+- Original downloaded source path: `docs/assets/012_africa/super_events/audio/source/siegfrieds_funeral_march_and_finale_us_marine_band.ogg`
+- Source SHA-256: `68124de4da401be0e07b2e2d637347e1a981b5cafa6ead74b5cd43f6becc6e41`
+- Final path: `docs/assets/012_africa/super_events/audio/final/super_event_africa_world_is_one_root_terminal.ogg`
+- Final SHA-256: `5f130776eb076abd275687cb104951874ef45c734553f14a6845d791e304bc31`
+- Conversion command:
+
+```bash
+ffmpeg -y -ss 240 -t 120 -i docs/assets/012_africa/super_events/audio/source/siegfrieds_funeral_march_and_finale_us_marine_band.ogg -af "asetpts=N/SR/TB,afade=t=out:st=116:d=4" -ar 44100 -ac 2 -c:a libvorbis -q:a 5 docs/assets/012_africa/super_events/audio/final/super_event_africa_world_is_one_root_terminal.ogg
+```
+
+- Editing and conversion steps: preserved the original Commons download, took the strongest terminal-grade two-minute stretch from `240s` to `360s`, kept the built-in rise and massed orchestral weight, applied a `4s` fade-out, and exported to `44.1 kHz` Vorbis
+- Suitability: this reads as terminal and catastrophic without duplicating either existing end-state package. It is materially broader and more world-ending than the base Chopin terminal while avoiding the explicitly liturgical archive-world identity of `Dies irae`.
+- Implementation: slot `72` remains the shared terminal text and visual presentation, while World Root terminal runs use audio id `80` through `global.current_super_event_audio_id`.
+- Recommendation: keep this as a distinct root-terminal cue rather than reusing `super_event_africa_world_is_one.ogg`. The role already has separate root-order staging in the Event 012 package, and the new cue preserves that distinction cleanly in audio.
+- Remaining blocker: none on sourceability, licensing, gameplay wiring, or music/sound definition wiring.
 
 ## Rejected / preserved evaluation source
 
