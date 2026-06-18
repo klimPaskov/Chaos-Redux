@@ -77,8 +77,9 @@ Later June 18 parent tranches close additional bounded gaps:
 - `c13fe459` makes the high-chaos Bestiary focus branch hidden until `AFR_high_chaos_door` reveals it through `africa_high_chaos_branch_revealed` and `mark_focus_tree_layout_dirty`.
 - `94857ce3` gives the Continental Congress Seats and Bestiary Terms GUI actions the same concrete support-equipment, manpower, and command-power requirements as their decision equivalents, using shared helpers so the GUI and normal decision paths cannot diverge.
 - The current dossier-AI tranche adds Authority Atlas lifecycle and eight-profile historical dossier AI to `common/ai_strategy/012_africa.txt`, and weights the Authority Atlas dossier decisions by route/profile in `common/decisions/012_africa_decisions.txt`.
+- The current dossier-settlement tranche adds once-only value-only settlement outcomes for every historical dossier ID through `africa_apply_selected_dossier_specific_settlement_effects`, visible through `GetAfricaSelectedDossierSettlementSummary` in the Authority Atlas header.
 
-These tranches reduce the active blocker list, but they do not close Event 012. Remaining known blockers still include deeper package-specific historical dossier missions, richer settlement forks, local resistance event chains, fuller Continental Congress presentation families, targeted scenario validation, and final super-event sourcing/audio blockers where the research handoffs still require it.
+These tranches reduce the active blocker list, but they do not close Event 012. Remaining known blockers still include deeper package-specific historical dossier missions beyond settlement value movement, richer settlement forks, local resistance event chains, fuller Continental Congress presentation families, targeted scenario validation, and final super-event sourcing/audio blockers where the research handoffs still require it.
 
 ## Cleanup note
 
