@@ -363,6 +363,60 @@ africa_can_secure_high_chaos_habitat_for_root = {
 	is_controlled_by_root_or_loyal_charter_actor = yes
 }
 
+can_africa_start_bestiary_habitat_operation = {
+	is_africa_runtime_unifier = yes
+	has_country_flag = africa_habitat_trust_board_open
+	has_country_flag = africa_has_high_chaos_package
+	NOT = { has_country_flag = africa_bestiary_state_operation_active }
+}
+
+can_africa_keep_bestiary_habitat_operation_active = {
+	is_africa_runtime_unifier = yes
+	has_country_flag = africa_bestiary_habitat_operation_active
+	has_event_target = africa_bestiary_state_operation_state
+	event_target:africa_bestiary_state_operation_state = {
+		has_state_flag = africa_bestiary_habitat_operation_target
+		africa_can_secure_high_chaos_habitat_for_root = yes
+		NOT = { has_state_flag = africa_bestiary_habitat_secured }
+	}
+}
+
+can_africa_start_termite_citadel_operation = {
+	is_africa_runtime_unifier = yes
+	has_country_flag = africa_bestiary_termite_surveyors_repair_crews
+	NOT = { has_country_flag = africa_termite_citadel_treaty_signed }
+	NOT = { has_country_flag = africa_bestiary_state_operation_active }
+}
+
+can_africa_keep_termite_citadel_operation_active = {
+	is_africa_runtime_unifier = yes
+	has_country_flag = africa_termite_citadel_operation_active
+	has_event_target = africa_bestiary_state_operation_state
+	event_target:africa_bestiary_state_operation_state = {
+		has_state_flag = africa_termite_citadel_operation_target
+		is_controlled_by_root_or_loyal_charter_actor = yes
+		NOT = { has_state_flag = africa_termite_citadel_surveyed }
+	}
+}
+
+can_africa_start_great_herds_corridor_operation = {
+	is_africa_runtime_unifier = yes
+	has_country_flag = africa_bestiary_great_herd_migration_compact
+	NOT = { has_country_flag = africa_great_herds_migration_corridor_marked }
+	NOT = { has_country_flag = africa_bestiary_state_operation_active }
+}
+
+can_africa_keep_great_herds_corridor_operation_active = {
+	is_africa_runtime_unifier = yes
+	has_country_flag = africa_great_herds_corridor_operation_active
+	has_event_target = africa_bestiary_state_operation_state
+	event_target:africa_bestiary_state_operation_state = {
+		has_state_flag = africa_great_herds_corridor_operation_target
+		is_controlled_by_root_or_loyal_charter_actor = yes
+		NOT = { has_state_flag = africa_great_herds_migration_corridor }
+	}
+}
+
 has_africa_unlocked_high_chaos_habitat_for_from = {
 	OR = {
 		AND = {
