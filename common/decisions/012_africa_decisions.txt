@@ -1925,9 +1925,7 @@ africa_high_chaos_category = {
 		target_root_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_secure_bestiary_habitat_seat_root_req_tt
-				is_africa_runtime_unifier = yes
-				has_country_flag = africa_habitat_trust_board_open
-				has_country_flag = africa_has_high_chaos_package
+				can_africa_start_bestiary_habitat_operation = yes
 			}
 		}
 		target_trigger = {
@@ -1935,6 +1933,7 @@ africa_high_chaos_category = {
 			FROM = {
 				africa_can_secure_high_chaos_habitat_for_root = yes
 				NOT = { has_state_flag = africa_bestiary_habitat_secured }
+				NOT = { has_state_flag = africa_bestiary_habitat_operation_target }
 			}
 		}
 		custom_cost_trigger = {
@@ -1945,15 +1944,19 @@ africa_high_chaos_category = {
 		}
 		custom_cost_text = africa_secure_bestiary_habitat_seat_cost_tt
 		complete_effect = {
+			custom_effect_tooltip = africa_secure_bestiary_habitat_seat_start_tt
+			africa_start_bestiary_habitat_operation_from_from = yes
+		}
+		cancel_trigger = {
+			NOT = { can_africa_keep_bestiary_habitat_operation_active = yes }
+		}
+		cancel_effect = {
+			custom_effect_tooltip = africa_bestiary_state_operation_failure_tt
+			africa_fail_bestiary_state_operation = yes
+		}
+		remove_effect = {
 			custom_effect_tooltip = africa_secure_bestiary_habitat_seat_effect_tt
-			set_temp_variable = { africa_bestiary_habitat_support_cost = constant:africa_force.bestiary_habitat_support_equipment }
-			multiply_temp_variable = { africa_bestiary_habitat_support_cost = -1 }
-			add_equipment_to_stockpile = { type = support_equipment amount = africa_bestiary_habitat_support_cost }
-			africa_mark_high_chaos_habitat_state_from_from = yes
-			add_to_variable = { africa_habitat_trust = constant:africa_value_delta.high_chaos_nonhuman_sovereignty }
-			add_to_variable = { africa_bestiary_alarm = constant:africa_value_delta.integration_burden_relief }
-			add_to_variable = { africa_covenant_pressure = constant:africa_value_delta.covenant_pressure_relief }
-			africa_clamp_core_values = yes
+			africa_complete_bestiary_habitat_operation = yes
 		}
 		ai_will_do = { base = constant:africa_ai.normal }
 	}
@@ -2299,15 +2302,14 @@ africa_high_chaos_category = {
 			target_root_trigger = {
 				custom_trigger_tooltip = {
 					tooltip = africa_sign_termite_citadel_treaty_root_req_tt
-					is_africa_runtime_unifier = yes
-					has_country_flag = africa_bestiary_termite_surveyors_repair_crews
-					NOT = { has_country_flag = africa_termite_citadel_treaty_signed }
+					can_africa_start_termite_citadel_operation = yes
 				}
 			}
 			target_trigger = {
 				FROM = {
 					is_controlled_by_root_or_loyal_charter_actor = yes
 					NOT = { has_state_flag = africa_termite_citadel_surveyed }
+					NOT = { has_state_flag = africa_termite_citadel_operation_target }
 				}
 			}
 			custom_cost_trigger = {
@@ -2319,25 +2321,19 @@ africa_high_chaos_category = {
 			}
 			custom_cost_text = africa_bestiary_termite_citadel_cost_tt
 			complete_effect = {
+				custom_effect_tooltip = africa_sign_termite_citadel_treaty_start_tt
+				africa_start_termite_citadel_operation_from_from = yes
+			}
+			cancel_trigger = {
+				NOT = { can_africa_keep_termite_citadel_operation_active = yes }
+			}
+			cancel_effect = {
+				custom_effect_tooltip = africa_bestiary_state_operation_failure_tt
+				africa_fail_bestiary_state_operation = yes
+			}
+			remove_effect = {
 				custom_effect_tooltip = africa_sign_termite_citadel_treaty_effect_tt
-				set_temp_variable = { africa_bestiary_package_support_cost = constant:africa_force.bestiary_package_support_equipment }
-				multiply_temp_variable = { africa_bestiary_package_support_cost = -1 }
-				add_equipment_to_stockpile = { type = support_equipment amount = africa_bestiary_package_support_cost }
-				army_experience = constant:africa_decision.bestiary_package_army_xp_spend
-				FROM = {
-					set_state_flag = africa_termite_citadel_surveyed
-					add_building_construction = { type = infrastructure level = 1 instant_build = yes }
-				}
-				if = {
-					limit = { NOT = { has_country_flag = africa_termite_citadel_treaty_signed } }
-					add_to_variable = { africa_bestiary_package_action_count = 1 }
-				}
-				set_country_flag = africa_termite_citadel_treaty_signed
-				set_country_flag = africa_has_bestiary_package_action
-				add_to_variable = { africa_authority = constant:africa_value_delta.bestiary_package_authority }
-				add_to_variable = { africa_paper_core_burden = constant:africa_value_delta.integration_burden_relief }
-				add_to_variable = { africa_mythic_volatility = constant:africa_value_delta.bestiary_package_volatility_relief }
-				africa_clamp_core_values = yes
+				africa_complete_termite_citadel_operation = yes
 			}
 			ai_will_do = { base = constant:africa_ai.normal }
 		}
@@ -2391,15 +2387,14 @@ africa_high_chaos_category = {
 			target_root_trigger = {
 				custom_trigger_tooltip = {
 					tooltip = africa_mark_great_herds_migration_corridor_root_req_tt
-					is_africa_runtime_unifier = yes
-					has_country_flag = africa_bestiary_great_herd_migration_compact
-					NOT = { has_country_flag = africa_great_herds_migration_corridor_marked }
+					can_africa_start_great_herds_corridor_operation = yes
 				}
 			}
 			target_trigger = {
 				FROM = {
 					is_controlled_by_root_or_loyal_charter_actor = yes
 					NOT = { has_state_flag = africa_great_herds_migration_corridor }
+					NOT = { has_state_flag = africa_great_herds_corridor_operation_target }
 				}
 			}
 			custom_cost_trigger = {
@@ -2411,25 +2406,19 @@ africa_high_chaos_category = {
 			}
 			custom_cost_text = africa_bestiary_great_herds_corridor_cost_tt
 			complete_effect = {
+				custom_effect_tooltip = africa_mark_great_herds_migration_corridor_start_tt
+				africa_start_great_herds_corridor_operation_from_from = yes
+			}
+			cancel_trigger = {
+				NOT = { can_africa_keep_great_herds_corridor_operation_active = yes }
+			}
+			cancel_effect = {
+				custom_effect_tooltip = africa_bestiary_state_operation_failure_tt
+				africa_fail_bestiary_state_operation = yes
+			}
+			remove_effect = {
 				custom_effect_tooltip = africa_mark_great_herds_migration_corridor_effect_tt
-				set_temp_variable = { africa_bestiary_package_support_cost = constant:africa_force.bestiary_package_support_equipment }
-				multiply_temp_variable = { africa_bestiary_package_support_cost = -1 }
-				add_equipment_to_stockpile = { type = support_equipment amount = africa_bestiary_package_support_cost }
-				add_manpower = constant:africa_force.bestiary_package_manpower_spend
-				FROM = {
-					set_state_flag = africa_great_herds_migration_corridor
-					add_building_construction = { type = infrastructure level = 1 instant_build = yes }
-				}
-				if = {
-					limit = { NOT = { has_country_flag = africa_great_herds_migration_corridor_marked } }
-					add_to_variable = { africa_bestiary_package_action_count = 1 }
-				}
-				set_country_flag = africa_great_herds_migration_corridor_marked
-				set_country_flag = africa_has_bestiary_package_action
-				add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.bestiary_package_liberation }
-				add_to_variable = { africa_habitat_trust = constant:africa_value_delta.bestiary_package_habitat_trust }
-				add_to_variable = { africa_mythic_volatility = constant:africa_value_delta.bestiary_package_volatility }
-				africa_clamp_core_values = yes
+				africa_complete_great_herds_corridor_operation = yes
 			}
 			ai_will_do = {
 				base = constant:africa_ai.low

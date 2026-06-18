@@ -613,6 +613,7 @@ africa_clear_runtime_context = {
 	africa_clear_liberation_objective_operation = yes
 	africa_clear_regional_state_operation = yes
 	africa_clear_return_settlement_operation = yes
+	africa_clear_bestiary_state_operation = yes
 	clear_array = global.africa_charter_candidate_countries
 	clear_array = global.africa_charter_member_countries
 	clear_array = global.africa_charter_protected_countries
@@ -676,6 +677,9 @@ africa_clear_runtime_context = {
 				has_state_flag = africa_living_core_operation_target
 				has_state_flag = africa_integration_rail_operation_target
 				has_state_flag = africa_return_settlement_operation_target
+				has_state_flag = africa_bestiary_habitat_operation_target
+				has_state_flag = africa_termite_citadel_operation_target
+				has_state_flag = africa_great_herds_corridor_operation_target
 			}
 		}
 		clr_state_flag = africa_bestiary_warning_state_target
@@ -687,6 +691,9 @@ africa_clear_runtime_context = {
 		clr_state_flag = africa_living_core_operation_target
 		clr_state_flag = africa_integration_rail_operation_target
 		clr_state_flag = africa_return_settlement_operation_target
+		clr_state_flag = africa_bestiary_habitat_operation_target
+		clr_state_flag = africa_termite_citadel_operation_target
+		clr_state_flag = africa_great_herds_corridor_operation_target
 	}
 	clear_variable = global.africa_unifier_country_id
 	clear_variable = global.africa_rsa_branch_state
@@ -3877,6 +3884,181 @@ africa_fail_return_settlement_operation = {
 	africa_clear_return_settlement_operation = yes
 }
 
+africa_clear_bestiary_state_operation = {
+	if = {
+		limit = { has_event_target = africa_bestiary_state_operation_state }
+		event_target:africa_bestiary_state_operation_state = {
+			clr_state_flag = africa_bestiary_habitat_operation_target
+			clr_state_flag = africa_termite_citadel_operation_target
+			clr_state_flag = africa_great_herds_corridor_operation_target
+		}
+		clear_global_event_target = africa_bestiary_state_operation_state
+	}
+	clr_country_flag = africa_bestiary_state_operation_active
+	clr_country_flag = africa_bestiary_habitat_operation_active
+	clr_country_flag = africa_termite_citadel_operation_active
+	clr_country_flag = africa_great_herds_corridor_operation_active
+}
+
+africa_start_bestiary_habitat_operation_from_from = {
+	if = {
+		limit = {
+			can_africa_start_bestiary_habitat_operation = yes
+			has_africa_unlocked_high_chaos_habitat_for_from = yes
+			FROM = {
+				africa_can_secure_high_chaos_habitat_for_root = yes
+				NOT = { has_state_flag = africa_bestiary_habitat_secured }
+			}
+		}
+		set_temp_variable = { africa_bestiary_habitat_support_cost = constant:africa_force.bestiary_habitat_support_equipment }
+		multiply_temp_variable = { africa_bestiary_habitat_support_cost = -1 }
+		add_equipment_to_stockpile = { type = support_equipment amount = africa_bestiary_habitat_support_cost }
+		FROM = {
+			set_state_flag = africa_bestiary_habitat_operation_target
+			save_global_event_target_as = africa_bestiary_state_operation_state
+		}
+		set_country_flag = africa_bestiary_state_operation_active
+		set_country_flag = africa_bestiary_habitat_operation_active
+	}
+}
+
+africa_complete_bestiary_habitat_operation = {
+	if = {
+		limit = { can_africa_keep_bestiary_habitat_operation_active = yes }
+		if = {
+			limit = {
+				event_target:africa_bestiary_state_operation_state = {
+					is_africa_high_chaos_habitat_seat_state = yes
+					NOT = { has_state_flag = africa_bestiary_habitat_secured }
+				}
+			}
+			add_to_variable = { africa_bestiary_habitat_seat_count = 1 }
+			set_country_flag = africa_has_secured_bestiary_habitat
+		}
+		event_target:africa_bestiary_state_operation_state = {
+			set_state_flag = africa_bestiary_habitat_secured
+			add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+		}
+		add_to_variable = { africa_habitat_trust = constant:africa_value_delta.high_chaos_nonhuman_sovereignty }
+		add_to_variable = { africa_bestiary_alarm = constant:africa_value_delta.integration_burden_relief }
+		add_to_variable = { africa_covenant_pressure = constant:africa_value_delta.covenant_pressure_relief }
+		africa_clamp_core_values = yes
+	}
+	africa_clear_bestiary_state_operation = yes
+}
+
+africa_start_termite_citadel_operation_from_from = {
+	if = {
+		limit = {
+			can_africa_start_termite_citadel_operation = yes
+			FROM = {
+				is_controlled_by_root_or_loyal_charter_actor = yes
+				NOT = { has_state_flag = africa_termite_citadel_surveyed }
+			}
+		}
+		set_temp_variable = { africa_bestiary_package_support_cost = constant:africa_force.bestiary_package_support_equipment }
+		multiply_temp_variable = { africa_bestiary_package_support_cost = -1 }
+		add_equipment_to_stockpile = { type = support_equipment amount = africa_bestiary_package_support_cost }
+		army_experience = constant:africa_decision.bestiary_package_army_xp_spend
+		FROM = {
+			set_state_flag = africa_termite_citadel_operation_target
+			save_global_event_target_as = africa_bestiary_state_operation_state
+		}
+		set_country_flag = africa_bestiary_state_operation_active
+		set_country_flag = africa_termite_citadel_operation_active
+	}
+}
+
+africa_complete_termite_citadel_operation = {
+	if = {
+		limit = { can_africa_keep_termite_citadel_operation_active = yes }
+		event_target:africa_bestiary_state_operation_state = {
+			set_state_flag = africa_termite_citadel_surveyed
+			add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+		}
+		if = {
+			limit = { NOT = { has_country_flag = africa_termite_citadel_treaty_signed } }
+			add_to_variable = { africa_bestiary_package_action_count = 1 }
+		}
+		set_country_flag = africa_termite_citadel_treaty_signed
+		set_country_flag = africa_has_bestiary_package_action
+		add_to_variable = { africa_authority = constant:africa_value_delta.bestiary_package_authority }
+		add_to_variable = { africa_paper_core_burden = constant:africa_value_delta.integration_burden_relief }
+		add_to_variable = { africa_mythic_volatility = constant:africa_value_delta.bestiary_package_volatility_relief }
+		africa_clamp_core_values = yes
+	}
+	africa_clear_bestiary_state_operation = yes
+}
+
+africa_start_great_herds_corridor_operation_from_from = {
+	if = {
+		limit = {
+			can_africa_start_great_herds_corridor_operation = yes
+			FROM = {
+				is_controlled_by_root_or_loyal_charter_actor = yes
+				NOT = { has_state_flag = africa_great_herds_migration_corridor }
+			}
+		}
+		set_temp_variable = { africa_bestiary_package_support_cost = constant:africa_force.bestiary_package_support_equipment }
+		multiply_temp_variable = { africa_bestiary_package_support_cost = -1 }
+		add_equipment_to_stockpile = { type = support_equipment amount = africa_bestiary_package_support_cost }
+		add_manpower = constant:africa_force.bestiary_package_manpower_spend
+		FROM = {
+			set_state_flag = africa_great_herds_corridor_operation_target
+			save_global_event_target_as = africa_bestiary_state_operation_state
+		}
+		set_country_flag = africa_bestiary_state_operation_active
+		set_country_flag = africa_great_herds_corridor_operation_active
+	}
+}
+
+africa_complete_great_herds_corridor_operation = {
+	if = {
+		limit = { can_africa_keep_great_herds_corridor_operation_active = yes }
+		event_target:africa_bestiary_state_operation_state = {
+			set_state_flag = africa_great_herds_migration_corridor
+			add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+		}
+		if = {
+			limit = { NOT = { has_country_flag = africa_great_herds_migration_corridor_marked } }
+			add_to_variable = { africa_bestiary_package_action_count = 1 }
+		}
+		set_country_flag = africa_great_herds_migration_corridor_marked
+		set_country_flag = africa_has_bestiary_package_action
+		add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.bestiary_package_liberation }
+		add_to_variable = { africa_habitat_trust = constant:africa_value_delta.bestiary_package_habitat_trust }
+		add_to_variable = { africa_mythic_volatility = constant:africa_value_delta.bestiary_package_volatility }
+		africa_clamp_core_values = yes
+	}
+	africa_clear_bestiary_state_operation = yes
+}
+
+africa_fail_bestiary_state_operation = {
+	if = {
+		limit = { has_country_flag = africa_bestiary_habitat_operation_active }
+		add_to_variable = { africa_habitat_trust = constant:africa_value_delta.bestiary_state_failure_habitat_trust }
+		add_to_variable = { africa_bestiary_alarm = constant:africa_value_delta.bestiary_state_failure_alarm }
+		add_to_variable = { africa_covenant_pressure = constant:africa_value_delta.bestiary_state_failure_covenant }
+	}
+	if = {
+		limit = { has_country_flag = africa_termite_citadel_operation_active }
+		add_to_variable = { africa_authority = constant:africa_value_delta.bestiary_state_failure_authority }
+		add_to_variable = { africa_paper_core_burden = constant:africa_value_delta.bestiary_state_failure_burden }
+		add_to_variable = { africa_mythic_volatility = constant:africa_value_delta.bestiary_state_failure_volatility }
+	}
+	if = {
+		limit = { has_country_flag = africa_great_herds_corridor_operation_active }
+		add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.bestiary_state_failure_momentum }
+		add_to_variable = { africa_habitat_trust = constant:africa_value_delta.bestiary_state_failure_habitat_trust }
+		add_to_variable = { africa_mythic_volatility = constant:africa_value_delta.bestiary_state_failure_volatility }
+	}
+	if = {
+		limit = { has_country_flag = africa_bestiary_state_operation_active }
+		africa_clamp_core_values = yes
+	}
+	africa_clear_bestiary_state_operation = yes
+}
+
 africa_create_charter_league_from_template = {
 	if = {
 		limit = { is_in_faction = yes }
@@ -4301,6 +4483,7 @@ africa_clear_authority_atlas_progress_flags = {
 	clr_country_flag = africa_termite_citadel_treaty_signed
 	clr_country_flag = africa_honeyguide_route_commons_open
 	clr_country_flag = africa_great_herds_migration_corridor_marked
+	africa_clear_bestiary_state_operation = yes
 	for_each_scope_loop = {
 		array = global.africa_charter_member_countries
 		if = {
