@@ -126,6 +126,38 @@ defined_text = {
 }
 
 defined_text = {
+	name = GetAfricaSelectedDossierSurveyStatus
+	text = { trigger = { has_country_flag = africa_selected_dossier_survey_mission_active } localization_key = africa_dossier_survey_status.active }
+	text = { trigger = { has_country_flag = africa_selected_dossier_survey_mission_failed } localization_key = africa_dossier_survey_status.failed }
+	text = {
+		trigger = {
+			OR = {
+				has_country_flag = africa_selected_dossier_survey_mission_success
+				has_africa_selected_dossier_opened = yes
+			}
+		}
+		localization_key = africa_dossier_survey_status.opened
+	}
+	text = { trigger = { always = yes } localization_key = africa_dossier_survey_status.none }
+}
+
+defined_text = {
+	name = GetAfricaArchiveGuardMissionStatus
+	text = { trigger = { has_country_flag = africa_archive_guard_mission_active } localization_key = africa_archive_guard_status.active }
+	text = { trigger = { has_country_flag = africa_archive_guard_mission_failed } localization_key = africa_archive_guard_status.failed }
+	text = { trigger = { has_country_flag = africa_archive_guard_mission_success } localization_key = africa_archive_guard_status.secured }
+	text = { trigger = { always = yes } localization_key = africa_archive_guard_status.none }
+}
+
+defined_text = {
+	name = GetAfricaBestiaryWarningStatus
+	text = { trigger = { has_country_flag = africa_bestiary_warning_overused } localization_key = africa_bestiary_warning_status.overused }
+	text = { trigger = { has_country_flag = africa_bestiary_warning_active } localization_key = africa_bestiary_warning_status.active }
+	text = { trigger = { check_variable = { var = africa_bestiary_warning_count value = 0 compare = greater_than } } localization_key = africa_bestiary_warning_status.issued }
+	text = { trigger = { always = yes } localization_key = africa_bestiary_warning_status.none }
+}
+
+defined_text = {
 	name = GetAfricaSelectedHighChaosPackageName
 	text = { trigger = { check_variable = { var = africa_selected_high_chaos_package_id value = constant:africa_high_chaos_package_id.gorilla_highlands compare = equals } } localization_key = africa_high_chaos_package.gorilla_highlands }
 	text = { trigger = { check_variable = { var = africa_selected_high_chaos_package_id value = constant:africa_high_chaos_package_id.chimpanzee_marshes compare = equals } } localization_key = africa_high_chaos_package.chimpanzee_marshes }
