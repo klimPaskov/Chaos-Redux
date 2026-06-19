@@ -168,7 +168,7 @@ The post-unification sponsor/world-order branch now continues past `AFR_africa_i
 
 The Scramble route registers outside powers that still own or control African territory when Foreign-Holder Case Files or Scramble Counter-Dockets are opened. The pool uses a fixed registered holder count, while the target array refreshes unsettled holders and counts holders that have actually lost their African holdings as settled. `africa_press_scramble_treaty_settlement` spends convoys, support equipment, manpower, and command power against a selected outside holder; `africa_issue_bestiary_warning_to_holder` uses the high-chaos warning network to force a response event from an unsettled holder and can settle that holder on compliance; `africa_issue_bestiary_warning_to_state_holder` targets an African map state owned or controlled by a registered holder and records state compliance or defiance without closing the holder docket; `africa_scramble_treaty_deadline_mission` requires every registered holder to be settled while the African capital remains controlled. `ACH_AFR_NO_SECOND_SCRAMBLE` keys on this mission success instead of only the focus flags.
 
-`common/scripted_guis/012_africa_scripted_gui.txt` and `interface/012_africa_scripted_gui.gui` add a Continental Congress decision-category panel for the active Africa unifier. The panel surfaces the core mandate values, regional authority count, living-core count, dossier progress, Bestiary progress, World Gate status, active dossier, active dossier seat, dossier profile, survey and guard mission status, active Bestiary case, regional operation status, liberation objective status, return settlement status, Bestiary operation status, regional seat card values, Bestiary seat card values, and warning-docket state from live variables.
+`common/scripted_guis/012_africa_scripted_gui.txt` and `interface/012_africa_scripted_gui.gui` add a Continental Congress decision-category panel for the active Africa unifier. The panel surfaces the core mandate values, regional authority count, living-core count, dossier progress, Bestiary progress, World Gate status, active dossier, active dossier seat, dossier profile, survey and guard mission status, selected historical case type/status, all three reusable historical case slots, active Bestiary case, regional operation status, liberation objective status, return settlement status, Bestiary operation status, regional seat card values, Bestiary seat card values, local resistance watch state, and old-seat arbitration status from live variables.
 
 `common/decisions/012_africa_decisions.txt` provides the active gameplay layer for:
 
@@ -248,7 +248,7 @@ The Event 012 achievement set is wired through `common/achievements/chaos_redux_
 
 The prompt rows for Hyena Radio Dominion / `africa_who_gave_them_a_microphone`, Bonobo Kinship Congress / `africa_gentle_veto`, Bird of the Walls / `africa_bird_was_right`, and the Sao Terracotta Host / `ACH_AFRICA_TERRACOTTA_LINE` are implemented through their exact actor packages rather than unrelated replacement flags.
 
-Eight super-event roles are wired into the shared super-event framework with scripted localisation, music-mode tracks, and sound-mode tracks:
+Twelve super-event presentation roles are wired into the shared super-event framework with scripted localisation, music-mode tracks, and sound-mode tracks. A thirteenth Event 012 audio id is used for the World Root terminal cue while sharing the visible slot `72` World Is One text and image:
 
 - slot `68`: `Africa Is One`
 - slot `69`: `The Second Scramble`
@@ -258,6 +258,11 @@ Eight super-event roles are wired into the shared super-event framework with scr
 - slot `73`: `The Continental Pole`
 - slot `74`: `The Continental Settlement`
 - slot `75`: dynamic cross-continent union title from `[GetAfricaDynamicCrossContinentUnionName]`
+- slot `76`: `The Forest Parliament`
+- slot `77`: `The World Root Mandate`
+- slot `78`: `Parliament of Root and Fang`
+- slot `79`: `The Archive of the World`
+- audio id `80`: World Root terminal audio variant for shared visible slot `72`
 
 ## Evolution Logging
 
@@ -278,9 +283,9 @@ Each helper sets `events_log_evolution_event_id`, `events_log_evolution_type`, `
 
 ## Known Integration Requirements
 
-- The eight final Event 012 super-event roles are packaged and wired.
+- The twelve final Event 012 super-event presentation roles are packaged and wired, with audio id `80` reserved for the World Root terminal shared-presentation variant.
 - Variant packages are wired for Forest Parliament, World Root, Root and Fang, and Archive World. Slots `76-78` fire from the high-chaos route focuses, while slot `79` is an Archive-Bestiary route presentation variant of the existing terminal World Is One gate and does not bypass the terminal prerequisite chain. The World Root terminal branch keeps the shared slot `72` World Is One text and visual presentation, but uses a dedicated sourced root-terminal audio cue through audio id `80`.
-- Created Event 012 country flags are generated symbolic final flag families for all 21 created tags. The five expanded Bestiary actor flag/portrait families are documented in `docs/plans/012_africa_plans/subagent_handoffs/2026-06-17_012_africa_bestiary_actor_assets_handoff.md`. Historical symbol/flag rows in `docs/assets/012_africa/source_research/manifest.md` remain separate dossier research and several are low-confidence or not downloaded.
+- Created Event 012 country flags are generated symbolic final flag families for all 25 created tags. The original regional/high-chaos flag package covers the first 21 created tags, while the later missing-actor package covers `BON`, `HYR`, `BIR`, and `SAO`; historical symbol/flag rows in `docs/assets/012_africa/source_research/manifest.md` remain separate dossier research and several are low-confidence or not downloaded.
 - Dynamic cross-continent cosmetic identities have generated symbolic flag families, country localisation, cosmetic tags, decision routes, and a dedicated super-event slot.
 - Generated art and icon package handoffs exist and selected assets are wired into live game folders. Remaining visual blockers are tracked in `docs/assets/012_africa/implementation_asset_manifest.md`.
 - Spreadsheet alignment should be performed after implementation facts and audit fixes settle.
