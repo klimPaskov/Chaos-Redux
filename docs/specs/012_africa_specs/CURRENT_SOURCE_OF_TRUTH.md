@@ -49,7 +49,7 @@ Keep those strings untranslated in player-facing English and keep raw strings ou
 - RSA in the Allies uses the civil-war branch and Allied peace-out rule.
 - The Archive of Old Seats and Authority Atlas add niche historical authorities, restoration offices, specialist schools, and high-chaos absurd actors without turning human polities into caricatures.
 - Nonhuman/supernatural routes are explicit fictional/high-chaos actors and use shared nonhuman classification when implemented.
-- Final super-event titles, quotes, button remarks, cultural references, and audio stay research-gated.
+- Additional unreleased Event 012 presentation roles still stay research-gated. The accepted live Africa super-event package is sourced and final-wired for visible slots `68-79` plus root-terminal audio id `80`; the `2026-06-19` sponsor-file hash drift audit was closed by normalizing the live `music/` cue from the archived final `.ogg`.
 
 ## June 18 implementation disposition
 
@@ -88,7 +88,7 @@ Later June 18 parent tranches close additional bounded gaps:
 - The high-chaos companion parity tranche gives `BON`, `HYR`, `BIR`, and `SAO` separate pre-World Witness route focuses and tag-specific capstones inside `africa_high_chaos_actor_focus_tree`: Bonobo kinship-boundary pacts and a gentle veto court, Hyena/Bird signal-omen work leading to Hyena night broadcasts or verified wall warnings, and Sao terracotta-citadel terms leading to the Terracotta Line. These focuses move the same visible Africa value set as the rest of the Bestiary layer and keep the last four actors from relying on another actor's branch.
 - The current triggerable-scenario validation tranche makes the Continental Pole scenario a usable late-route validation launch. It opens the sponsor staff, cross-continent charter, proof-ledger, one-charter, and route logistics gates that the late sponsor/proof decisions actually require; high intensity fills the dossier, regional-authority, living-core, and high-chaos validation counters; maximum intensity adds the external continent-ready hooks and Totalen Chaos tier needed to test the certification route. It still does not set proof-verified flags, `all_continent_unifiers_world_end_ready`, `africa_world_is_one_gate_prepared`, `world_end_africa_world_is_one`, or terminal World Is One flags.
 
-These tranches reduce the active blocker list, but they do not close Event 012. Remaining known blockers still include deeper country-package/route-specific consequences beyond the current dossier slot families, live scenario validation, and any super-event sourcing/audio blockers not already closed by the accepted research handoffs. The high-chaos capstone parity gap for `BON`, `HYR`, `BIR`, and `SAO` is closed by their kinship-boundary, signal-omen, terracotta-citadel, and tag-specific capstone focuses.
+These tranches reduce the active blocker list, but they do not close Event 012. Remaining known blockers still include deeper country-package/route-specific consequences beyond the current dossier slot families and live scenario validation. The accepted Africa super-event package is blocker-free for the live slots: visible slots `68-79` and the root-terminal hybrid using shared slot `72` text/image plus dedicated audio id `80` are sourced, wired, documented, and file-reconciled. The high-chaos capstone parity gap for `BON`, `HYR`, `BIR`, and `SAO` is closed by their kinship-boundary, signal-omen, terracotta-citadel, and tag-specific capstone focuses.
 
 ## Cleanup note
 

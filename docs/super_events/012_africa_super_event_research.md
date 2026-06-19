@@ -1,6 +1,6 @@
 # Event 012 Africa Super-Event Text Research
 
-Updated: 2026-06-17
+Updated: 2026-06-19
 
 ## Scope
 
@@ -9,6 +9,12 @@ Updated: 2026-06-17
 - This note covers super-event text research only: title direction, main-quote candidates, button/cultural-remark candidates, provenance, confidence, and blockers.
 - This note began as text research. Current implementation status is recorded where the text package has since been accepted and wired.
 - Role labels from the spec are treated as working labels unless a role is explicitly marked as final-wired below.
+
+## 2026-06-19 audit conclusion
+
+- Live visible slots `68-79` are fully wired in localisation and scripted-localisation, and their sourced text package is no longer a blocker.
+- The root-terminal World Root hybrid is documented consistently: it intentionally shares visible slot `72` text and image (`The World Is One`) while using distinct audio id `80`.
+- Remaining caution notes in this file now apply to non-final backup candidates or archival research context, not to the accepted live slot package. The `2026-06-19` audio audit sponsor-file hash drift was reconciled by normalizing the live `music/` cue from the archived final `.ogg`.
 
 ## Method and guardrails
 
@@ -409,9 +415,10 @@ Africa is no longer merely unified. It starts exporting cadres, arms, and contin
    - Confidence: High
    - Fit: good if the sponsor path is militant anti-colonial rather than solidarist
 
-**Blocked item**
+**Audit note**
 
-- I did not find a better short public-domain line for transcontinental anti-colonial export than the Nkrumah / Bandung pair. This role is still somewhat dependent on mid-20th-century copyrighted political speech unless the main agent prefers a less specific original title-button package.
+- This older caution no longer blocks the live slot package. The accepted wired quote for slot `73` uses the sourced *Africa Must Unite* wording, not the weaker 1957-transcript-dependent backup line.
+- The 1957 `Our independence is meaningless...` wording remains usable only as a documented backup with medium-high confidence unless a stronger primary state transcript is added later.
 
 ### 5. Dynamic cross-continent union formation
 
@@ -864,11 +871,13 @@ Second-pass audio packaging completed on `2026-06-16`.
 - No remaining audio blockers for the thirteen accepted Event 012 super-event roles.
 - Forest Parliament, World Root, Root and Fang, and Archive World variant packages are final-wired under slots `76-79`; their live audio is registered in `music/chaosx_super_event_music.asset`, `music/chaosx_super_event_music.txt`, and `sound/chaosx_sound.asset`, with source/licensing notes in `docs/assets/012_africa/super_events/audio/manifest.md`.
 - `africa_world_is_one_root_variant_terminal` uses the intentional hybrid disposition: shared slot `72` World Is One text and visual presentation, with a distinct audio handoff package in `docs/assets/012_africa/super_events/audio/final/super_event_africa_world_is_one_root_terminal.ogg`. The cue is sourced from Richard Wagner's `Siegfried's Funeral March and Finale` as performed by the United States Marine Band and is documented in the audio manifest.
+- `africa_continent_sponsor` is fully wired, license-clean, and file-reconciled. The `2026-06-19` audio audit found container-level hash drift between the archived final and live `music/` copy; the parent normalized `music/super_event_africa_continent_sponsor.ogg` from the archived final and updated the manifest so both paths share SHA-256 `c1b7ee2991b4ad4fbd89a1d546d0cd7c63d99ec1bbcdd6b375aac9d6347b81b4`.
 - Preserved non-final evaluation source: `docs/assets/012_africa/super_events/audio/source/beethoven_symphony_7_allegretto_john_michel.ogg`
 - Reason for non-final status: legally usable `CC BY-SA 3.0`, but the solo-cello recording contains long low-energy gaps and was not strong enough as a packaged in-game final without a heavier re-edit pass.
 - Full source, hash, and conversion details are recorded in `docs/assets/012_africa/super_events/audio/manifest.md`.
 
 - **Final localisation status.** Slots `68` through `79` are final-wired in `localisation/english/012_african_union_l_english.yml` and `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt`. RSA peace, dynamic cross-continent union, Forest Parliament, World Root, Root and Fang, and Archive World have final text, art, music, sound, emit helpers, and gameplay callsites. `africa_world_is_one_root_variant_terminal` shares slot `72` text and visual localisation and uses dedicated audio id `80`.
+- **Final audit result.** No remaining source-license, definition, track-list-row, root-terminal-hybrid, or sponsor-file integrity blocker remains for the accepted live Event 012 package. The visible slot package `68-79` and root-terminal audio id `80` are sourced, documented, and wired.
 - **Nkrumah transcript caution.** The 1957 independence line is extremely famous and stable, but the accessible transcript I verified is a secondary transcript page rather than an official Ghana state archive. I rate it medium-high, not absolute.
 - **Comte attribution caution.** The archive-terminal Comte line is strong but presently rests on public-domain secondary witnesses. If the main agent wants maximum-proof sourcing, use the Shakespeare backup instead.
 - **Bestiary button note.** `The animals have papers.` remains preserved above as a non-final tonal candidate only. The live Bestiary/Forest Parliament presentation uses sourced Job 12 wording instead.
