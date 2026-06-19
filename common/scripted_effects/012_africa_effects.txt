@@ -393,16 +393,88 @@ africa_apply_triggerable_continental_pole_opening = {
 	set_country_flag = africa_continent_sponsor_office_open
 	set_country_flag = africa_continent_sponsor_ready
 	set_country_flag = africa_scramble_counter_dockets_open
+	set_country_flag = africa_continental_export_office_open
+	set_country_flag = africa_middle_east_charter_staff_open
+	set_country_flag = africa_asia_charter_staff_open
+	set_country_flag = africa_europe_charter_staff_open
+	set_country_flag = africa_pan_atlantic_congress_held
+	set_country_flag = africa_south_atlantic_charter_staff_open
+	set_country_flag = africa_congress_of_continents_focus_open
+	set_country_flag = africa_unifier_proof_ledger_open
+	set_country_flag = africa_last_borders_are_administrative_open
+	set_country_flag = africa_one_charter_above_nations_open
 	set_global_flag = africa_is_one_complete
 	set_global_flag = africa_continental_pole_ready
 	set_variable = { global.africa_world_is_one_gate_state = constant:africa_world_is_one_gate.world_end_ready }
 	add_to_variable = { africa_legitimacy = constant:africa_triggerable_scenario_value_delta.continental_pole_legitimacy }
 	add_to_variable = { africa_authority = constant:africa_triggerable_scenario_value_delta.continental_pole_authority }
 	add_to_variable = { africa_colonial_alarm = constant:africa_triggerable_scenario_value_delta.continental_pole_alarm }
+	africa_apply_triggerable_continental_pole_validation_logistics = yes
+	if = {
+		limit = {
+			check_variable = {
+				var = global.africa_triggerable_scenario_intensity
+				value = constant:triggerable_scenario_intensity.high
+				compare = greater_than_or_equals
+			}
+		}
+		africa_apply_triggerable_continental_pole_validation_gates = yes
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = global.africa_triggerable_scenario_intensity
+				value = constant:triggerable_scenario_intensity.maximum
+				compare = equals
+			}
+		}
+		africa_apply_triggerable_continental_pole_external_mandate_hooks = yes
+	}
 	africa_emit_africa_is_one_super_event = yes
 	africa_emit_scramble_reaction_super_event = yes
 	africa_refresh_external_colonial_holder_pool = yes
 	africa_clamp_core_values = yes
+}
+
+africa_apply_triggerable_continental_pole_validation_logistics = {
+	add_political_power = constant:africa_triggerable_scenario_force.continental_pole_validation_political_power
+	add_manpower = constant:africa_triggerable_scenario_force.continental_pole_validation_manpower
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_triggerable_scenario_force.continental_pole_validation_infantry_equipment producer = ROOT }
+	add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_triggerable_scenario_force.continental_pole_validation_support_equipment producer = ROOT }
+	add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_triggerable_scenario_force.continental_pole_validation_convoys producer = ROOT }
+	add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:africa_triggerable_scenario_force.continental_pole_validation_trains producer = ROOT }
+	add_command_power = constant:africa_triggerable_scenario_force.continental_pole_validation_command_power
+	army_experience = constant:africa_triggerable_scenario_force.continental_pole_validation_army_experience
+}
+
+africa_apply_triggerable_continental_pole_validation_gates = {
+	set_country_flag = africa_continental_register_ready
+	set_country_flag = africa_minimum_historical_dossiers_ready
+	set_country_flag = africa_historical_dossier_cases_ready
+	set_country_flag = africa_minimum_high_chaos_packages_ready
+	set_country_flag = africa_bestiary_containment_mission_success
+	set_country_flag = africa_bestiary_habitat_terms_negotiated
+	set_country_flag = africa_omen_reliability_verified
+	set_country_flag = africa_has_bestiary_package_action
+	set_global_flag = africa_authority_atlas_catalog_registered
+	set_variable = { africa_regional_authority_count = constant:africa_world_is_one_requirement.regional_authorities }
+	set_variable = { africa_living_core_count = constant:africa_world_is_one_requirement.living_cores }
+	set_variable = { africa_opened_dossier_count = constant:africa_authority_atlas.minimum_historical_dossiers }
+	set_variable = { africa_dossier_macro_region_count = constant:africa_authority_atlas.minimum_historical_macro_regions }
+	set_variable = { africa_historical_dossier_case_success_count = constant:africa_mission_goal.historical_dossier_cases }
+	set_variable = { africa_unlocked_high_chaos_package_count = constant:africa_authority_atlas.minimum_high_chaos_packages }
+	set_variable = { africa_bestiary_habitat_seat_count = constant:africa_mission_goal.bestiary_secured_habitats }
+	set_variable = { africa_bestiary_package_action_count = constant:africa_mission_goal.bestiary_package_actions }
+	set_variable = { global.africa_authority_atlas_historical_dossier_count = constant:africa_authority_atlas.minimum_historical_dossiers }
+	set_variable = { global.africa_authority_atlas_high_chaos_package_count = constant:africa_authority_atlas.minimum_high_chaos_packages }
+}
+
+africa_apply_triggerable_continental_pole_external_mandate_hooks = {
+	set_global_flag = { flag = chaos_tier value = 5 }
+	set_global_flag = middle_east_continent_unifier_world_end_ready
+	set_global_flag = asia_continent_unifier_world_end_ready
+	set_global_flag = europe_continent_unifier_world_end_ready
+	set_global_flag = south_atlantic_continent_unifier_world_end_ready
 }
 
 africa_triggerable_scenario_seed_first_authority = {
