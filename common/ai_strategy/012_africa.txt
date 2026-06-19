@@ -37,6 +37,7 @@
 @AFRICA_AI_BESTIARY_HERD_SUPPLY = 42
 @AFRICA_AI_DOSSIER_SURVEY_RESTRAINT = 70
 @AFRICA_AI_DOSSIER_GUARD_RESTRAINT = 55
+@AFRICA_AI_DOSSIER_CASE_RESTRAINT = 65
 @AFRICA_AI_DOSSIER_SUPPORT = 32
 @AFRICA_AI_DOSSIER_CONVOY = 36
 @AFRICA_AI_DOSSIER_MOTORIZED = 30
@@ -373,6 +374,44 @@ africa_unifier_authority_atlas_active_survey = {
 		type = equipment_production_factor
 		id = support
 		value = @AFRICA_AI_DOSSIER_SUPPORT
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_DOSSIER_ARCHIVE
+	}
+}
+
+africa_unifier_authority_atlas_active_case = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_unifier_active
+		has_country_flag = africa_authority_atlas_open
+		OR = {
+			has_country_flag = africa_historical_dossier_slot_1_active
+			has_country_flag = africa_historical_dossier_slot_2_active
+			has_country_flag = africa_historical_dossier_slot_3_active
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @AFRICA_AI_DOSSIER_CASE_RESTRAINT
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_DOSSIER_SUPPORT
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @AFRICA_AI_DOSSIER_INFANTRY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = motorized
+		value = @AFRICA_AI_DOSSIER_MOTORIZED
 	}
 	ai_strategy = {
 		type = build_building
