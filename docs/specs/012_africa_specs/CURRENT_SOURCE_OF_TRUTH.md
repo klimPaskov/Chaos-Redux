@@ -1,6 +1,6 @@
 # Event 012 Africa — Current Source of Truth Map
 
-Updated: 2026-06-18
+Updated: 2026-06-19
 
 ## Current accepted design
 
@@ -81,6 +81,7 @@ Later June 18 parent tranches close additional bounded gaps:
 - The current dossier-resistance tranche turns post-settlement resistance watches into active gameplay: observer, protected-seat, and rejected-claim settlements can commit timed Congress mediation, regional-office and direct Archive settlements can commit timed enforcement, each path pays concrete non-PP resources plus dossier-profile logistics, uses the stored resistance dossier/seat context after the selected dossier advances, blocks further settlements while the one active watch is unresolved, and produces profile-specific value movement plus visible local reports that name the intervention method.
 - The earlier settlement-fork tranche expanded the dossier settlement split beyond observer seats with protected seats, regional authority offices, and direct Archive seals. Protected seats require trust/authority and spend rifles, support equipment, and manpower before using the mediation watch; regional offices require authority/cohesion and spend support equipment, trains, and manpower before using the enforcement watch. The Authority Atlas header exposes those counters beside the rejected-claim counter, and watch success/failure moves distinct values for each settlement mode.
 - The current rejected-claim tranche adds the fifth accepted Authority Atlas settlement fork: `Reject Counterfeit Claim`. It opens from documents-before-consent, the Authority Register, an exposed direct Archive seal, or Ananse counterfeit-watch access; spends political power, support equipment, manpower, command power, and army experience; applies its own profile movement; tracks a rejected-counterfeit settlement counter; and starts a stored rejected-claim resistance watch that can resolve through Congress mediation or fail into Archive Mandate/Colonial Alarm pressure.
+- The current old-seat arbitration tranche adds the second-stage Authority Atlas rivalry calendar. Six once-only rivalry pairs or clusters can open after their relevant historical dossiers are settled: Great Lakes, Central River, Western Crowns, Red Sea, Monsoon Rova, and Sahel Caravan. The convene decision spends political power, support equipment, manpower, command power, and army experience, stores the active pair and old-seat state, and starts a one-at-a-time mission. Success requires the stored seat to stay secured plus pair-specific visible value gates; failure keeps the pair retryable while raising sovereignty/debt pressure. The Authority Atlas header exposes active status, active case, and the settled-pair counter.
 
 These tranches reduce the active blocker list, but they do not close Event 012. Remaining known blockers still include deeper package-specific historical dossier missions beyond settlement and resistance value movement, fuller Continental Congress presentation families, targeted scenario validation, and final super-event sourcing/audio blockers where the research handoffs still require it.
 
