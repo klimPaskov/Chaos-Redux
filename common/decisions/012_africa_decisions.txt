@@ -14,6 +14,7 @@
 @africa_dossier_survey_mission_days = 120
 @africa_direct_archive_seal_mission_days = 120
 @africa_dossier_resistance_watch_days = 150
+@africa_old_seat_arbitration_mission_days = 120
 @africa_bestiary_containment_mission_days = 420
 @africa_omen_reliability_mission_days = 120
 @africa_scramble_treaty_mission_days = 240
@@ -2128,6 +2129,71 @@ africa_authority_atlas_category = {
 			set_country_flag = africa_archive_guard_mission_failed
 			africa_clear_archive_guard_mission_context = yes
 		}
+	}
+
+	africa_convene_old_seat_arbitration = {
+		icon = GFX_decision_generic_political_discourse
+		cost = 0
+		days_re_enable = constant:africa_decision_days.old_seat_arbitration
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = africa_convene_old_seat_arbitration_req_tt
+				can_africa_start_old_seat_arbitration = yes
+			}
+		}
+		custom_cost_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_convene_old_seat_arbitration_cost_tt
+				has_political_power > constant:africa_decision.old_seat_arbitration_cost
+				has_equipment = { support_equipment > constant:africa_force.old_seat_arbitration_support_equipment }
+				has_manpower > constant:africa_force.old_seat_arbitration_manpower_gate
+				command_power > constant:africa_decision.old_seat_arbitration_command_power_gate
+				has_army_experience > constant:africa_decision.old_seat_arbitration_army_xp_gate
+			}
+		}
+		custom_cost_text = africa_convene_old_seat_arbitration_cost_tt
+		complete_effect = {
+			custom_effect_tooltip = africa_convene_old_seat_arbitration_start_tt
+			africa_start_old_seat_arbitration = yes
+		}
+		ai_will_do = {
+			base = constant:africa_ai.normal
+			modifier = { factor = constant:africa_ai.strong has_country_flag = africa_route_federal_charter }
+			modifier = { factor = constant:africa_ai.strong has_country_flag = africa_settlement_respect_old_seats }
+			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_federal_high_court_open }
+			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_dossier_lake_arbitration_open }
+			modifier = { factor = constant:africa_ai.low has_country_flag = africa_settlement_direct_archive_seal }
+		}
+	}
+
+	africa_old_seat_arbitration_mission = {
+		icon = GFX_decision_generic_political_discourse
+		days_mission_timeout = @africa_old_seat_arbitration_mission_days
+		is_good = no
+		fire_only_once = no
+		activation = { has_country_flag = africa_old_seat_arbitration_active }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = africa_old_seat_arbitration_available_tt
+				can_africa_complete_old_seat_arbitration = yes
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { has_country_flag = africa_old_seat_arbitration_active }
+				has_global_flag = africa_is_one_complete
+			}
+		}
+		cancel_effect = { africa_clear_old_seat_arbitration_context = yes }
+		complete_effect = {
+			custom_effect_tooltip = africa_old_seat_arbitration_success_tt
+			africa_complete_old_seat_arbitration = yes
+		}
+		timeout_effect = {
+			custom_effect_tooltip = africa_old_seat_arbitration_failure_tt
+			africa_fail_old_seat_arbitration = yes
+		}
+		ai_will_do = { base = constant:africa_ai.normal }
 	}
 
 	africa_mediate_dossier_resistance_watch = {
