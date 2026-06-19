@@ -682,6 +682,24 @@ can_africa_complete_dossier_resistance_watch = {
 				compare = greater_than_or_equals
 			}
 		}
+		AND = {
+			has_country_flag = africa_dossier_resistance_watch_rejected_counterfeit
+			check_variable = {
+				var = africa_archive_mandate
+				value = constant:africa_decision.dossier_resistance_rejected_archive_gate
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = africa_old_seat_legitimacy
+				value = constant:africa_decision.dossier_resistance_rejected_old_seat_gate
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = africa_restoration_debt
+				value = constant:africa_decision.dossier_resistance_rejected_restoration_debt_cap
+				compare = less_than
+			}
+		}
 	}
 }
 
@@ -730,6 +748,7 @@ can_africa_mediate_dossier_resistance_watch = {
 	OR = {
 		has_country_flag = africa_dossier_resistance_watch_observer
 		has_country_flag = africa_dossier_resistance_watch_protected
+		has_country_flag = africa_dossier_resistance_watch_rejected_counterfeit
 	}
 	has_africa_dossier_resistance_watch_context = yes
 	controls_africa_archive_resistance_seat_state = yes
@@ -1046,6 +1065,26 @@ can_africa_settle_selected_dossier_regional_office = {
 	check_variable = {
 		var = africa_league_cohesion
 		value = constant:africa_decision.dossier_resistance_regional_cohesion_gate
+		compare = greater_than_or_equals
+	}
+}
+
+can_africa_settle_selected_dossier_reject_counterfeit = {
+	can_africa_settle_selected_dossier = yes
+	OR = {
+		has_country_flag = africa_settlement_documents_before_consent
+		has_country_flag = africa_authority_register_open
+		has_country_flag = africa_direct_archive_seal_exposed
+		has_country_flag = africa_bestiary_ananse_ledger_counterfeit_watch
+	}
+	check_variable = {
+		var = africa_archive_mandate
+		value = constant:africa_decision.dossier_resistance_rejected_archive_gate
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = africa_old_seat_legitimacy
+		value = constant:africa_decision.dossier_resistance_rejected_old_seat_gate
 		compare = greater_than_or_equals
 	}
 }
