@@ -1,6 +1,6 @@
 # Event 012 Africa Super-Event Audio Manifest
 
-Updated: `2026-06-17`
+Updated: `2026-06-19`
 
 Scope: second-pass packaged audio and live wiring. This manifest records the preserved source downloads, final `44.1 kHz` `.ogg` exports, licensing position, conversion commands, and role status for the finalized package.
 
@@ -169,7 +169,9 @@ ffmpeg -y -i docs/assets/012_africa/super_events/audio/source/chopin_funeral_mar
 - Original downloaded source path: `docs/assets/012_africa/super_events/audio/source/sousa_the_thunderer_us_marine_band_2017.ogg`
 - Source SHA-256: `9a67bcf71a67705d3a5f98b24783e2bdb2a3f2534cd981d18f0f636658146f23`
 - Final path: `docs/assets/012_africa/super_events/audio/final/super_event_africa_continent_sponsor.ogg`
-- Final SHA-256: `77ee7af6039b942348e0c2d92a9ffa68c90cd0e2351d222660f8b4e48c63fcfe`
+- Final SHA-256: `c1b7ee2991b4ad4fbd89a1d546d0cd7c63d99ec1bbcdd6b375aac9d6347b81b4`
+- Live music copy path: `music/super_event_africa_continent_sponsor.ogg`
+- Live music SHA-256: `c1b7ee2991b4ad4fbd89a1d546d0cd7c63d99ec1bbcdd6b375aac9d6347b81b4`
 - Conversion command:
 
 ```bash
@@ -179,6 +181,7 @@ ffmpeg -y -i docs/assets/012_africa/super_events/audio/source/sousa_the_thundere
 - Editing and conversion steps: kept the energetic opening march, trimmed to `120s`, applied a `3s` fade-out, preserved stereo, re-encoded at `44.1 kHz`
 - Suitability: assertive and export-facing without sounding like a world-end cue; the public-domain military-band recording fits a doctrine being carried abroad
 - Uncertainty: the cue is not African-sourced. It is used for the sponsor/export role because the licensing and musical role fit are stronger than the rejected cello candidate.
+- Reconciliation note: the `2026-06-19` audio audit found that the archived final `.ogg` and the live `music/` copy decoded to matching PCM but had different container hashes. The parent normalized the live `music/` file from the archived final, and both now share the final SHA-256 above.
 
 ### `africa_rsa_allies_peace`
 
