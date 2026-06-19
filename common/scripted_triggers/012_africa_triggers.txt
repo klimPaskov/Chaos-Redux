@@ -27,9 +27,9 @@
 @africa_trm_seat_state = 889
 @africa_hgd_seat_state = 903
 @africa_ghc_seat_state = 904
-@africa_bon_seat_state = 295
+@africa_bon_seat_state = 888
 @africa_hyr_seat_state = 781
-@africa_bir_seat_state = 771
+@africa_bir_seat_state = 770
 @africa_sao_seat_state = 774
 
 is_africa_valid_unifier_candidate = {
@@ -1732,6 +1732,59 @@ can_africa_settle_selected_dossier_reject_counterfeit = {
 		value = constant:africa_decision.dossier_resistance_rejected_old_seat_gate
 		compare = greater_than_or_equals
 	}
+}
+
+has_africa_forgery_museum_crisis_context = {
+	has_country_flag = africa_forgery_museum_crisis_active
+	has_variable = africa_forgery_museum_crisis_dossier_id
+	has_variable = africa_forgery_museum_crisis_seat_state
+}
+
+controls_africa_forgery_museum_crisis_seat_state = {
+	has_africa_forgery_museum_crisis_context = yes
+	var:africa_forgery_museum_crisis_seat_state = {
+		OR = {
+			is_controlled_by = ROOT
+			controller = {
+				is_in_faction_with = ROOT
+				OR = {
+					has_country_flag = africa_regional_authority_subject
+					has_country_flag = africa_charter_member
+					has_country_flag = africa_charter_protected_member
+					has_country_flag = africa_high_chaos_actor
+				}
+			}
+		}
+	}
+}
+
+can_africa_complete_forgery_museum_crisis = {
+	is_africa_runtime_unifier = yes
+	has_africa_forgery_museum_crisis_context = yes
+	controls_africa_forgery_museum_crisis_seat_state = yes
+	check_variable = {
+		var = africa_archive_mandate
+		value = constant:africa_decision.forgery_museum_crisis_archive_gate
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = africa_old_seat_legitimacy
+		value = constant:africa_decision.forgery_museum_crisis_old_seat_gate
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = africa_restoration_debt
+		value = constant:africa_decision.forgery_museum_crisis_restoration_debt_cap
+		compare = less_than
+	}
+}
+
+can_africa_pay_forgery_museum_crisis_cost = {
+	has_political_power > constant:africa_decision.forgery_museum_crisis_cost
+	has_equipment = { support_equipment > constant:africa_force.forgery_museum_crisis_support_equipment }
+	has_manpower > constant:africa_force.forgery_museum_crisis_manpower_gate
+	command_power > constant:africa_decision.forgery_museum_crisis_command_power_gate
+	has_army_experience > constant:africa_decision.forgery_museum_crisis_army_xp_gate
 }
 
 can_africa_pay_selected_dossier_survey_cost = {

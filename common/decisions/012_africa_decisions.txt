@@ -13,6 +13,7 @@
 @africa_archive_guard_mission_days = 180
 @africa_dossier_survey_mission_days = 120
 @africa_direct_archive_seal_mission_days = 120
+@africa_forgery_museum_crisis_days = 90
 @africa_dossier_resistance_watch_days = 150
 @africa_old_seat_arbitration_mission_days = 120
 @africa_historical_dossier_site_mission_days = 120
@@ -2472,6 +2473,8 @@ africa_authority_atlas_category = {
 			clr_country_flag = africa_direct_archive_seal_exposed
 			clr_country_flag = africa_direct_archive_seal_mission_failed
 			clr_country_flag = africa_direct_archive_seal_mission_active
+			clear_variable = africa_direct_archive_seal_dossier_id
+			clear_variable = africa_direct_archive_seal_seat_state
 			africa_clamp_core_values = yes
 		}
 		timeout_effect = {
@@ -2485,8 +2488,92 @@ africa_authority_atlas_category = {
 			clr_country_flag = africa_direct_archive_seal_proven
 			clr_country_flag = africa_direct_archive_seal_mission_success
 			clr_country_flag = africa_direct_archive_seal_mission_active
+			africa_start_forgery_museum_crisis_from_direct_archive = yes
+			clear_variable = africa_direct_archive_seal_dossier_id
+			clear_variable = africa_direct_archive_seal_seat_state
 			africa_emit_counterfeit_crowns_super_event = yes
 			africa_clamp_core_values = yes
+		}
+	}
+
+	africa_forgery_museum_crisis_mission = {
+		icon = GFX_decision_generic_research
+		days_mission_timeout = @africa_forgery_museum_crisis_days
+		is_good = no
+		fire_only_once = no
+		activation = { has_country_flag = africa_forgery_museum_crisis_active }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = africa_forgery_museum_crisis_deadline_tt
+				always = no
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { has_country_flag = africa_forgery_museum_crisis_active }
+				has_global_flag = africa_is_one_complete
+			}
+		}
+		cancel_effect = { africa_clear_forgery_museum_crisis_context = yes }
+		timeout_effect = {
+			custom_effect_tooltip = africa_forgery_museum_crisis_failure_tt
+			africa_fail_forgery_museum_crisis = yes
+		}
+	}
+
+	africa_expose_forged_archive_case = {
+		icon = GFX_decision_generic_research
+		cost = 0
+		days_remove = constant:africa_decision_days.dossier_resistance_intervention
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = africa_expose_forged_archive_case_req_tt
+				can_africa_complete_forgery_museum_crisis = yes
+				NOT = { has_country_flag = africa_forgery_museum_crisis_intervention_active }
+			}
+		}
+		custom_cost_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_forgery_museum_crisis_cost_tt
+				can_africa_pay_forgery_museum_crisis_cost = yes
+			}
+		}
+		custom_cost_text = africa_forgery_museum_crisis_cost_tt
+		complete_effect = {
+			custom_effect_tooltip = africa_expose_forged_archive_case_start_tt
+			africa_start_forgery_museum_crisis_investigation = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { has_country_flag = africa_forgery_museum_crisis_active }
+				has_global_flag = africa_is_one_complete
+			}
+		}
+		cancel_effect = { clr_country_flag = africa_forgery_museum_crisis_intervention_active }
+		remove_effect = {
+			custom_effect_tooltip = africa_expose_forged_archive_case_effect_tt
+			if = {
+				limit = {
+					has_country_flag = africa_forgery_museum_crisis_active
+					has_country_flag = africa_forgery_museum_crisis_intervention_active
+					can_africa_complete_forgery_museum_crisis = yes
+				}
+				africa_complete_forgery_museum_crisis = yes
+			}
+			else_if = {
+				limit = {
+					has_country_flag = africa_forgery_museum_crisis_active
+					has_country_flag = africa_forgery_museum_crisis_intervention_active
+				}
+				africa_fail_forgery_museum_crisis = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:africa_ai.normal
+			modifier = { factor = constant:africa_ai.strong has_country_flag = africa_bestiary_ananse_ledger_counterfeit_watch }
+			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_direct_archive_seal_exposed }
+			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_settlement_documents_before_consent }
+			modifier = { factor = constant:africa_ai.low has_war = yes }
 		}
 	}
 
