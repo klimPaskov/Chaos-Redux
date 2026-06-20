@@ -26,6 +26,12 @@ Supporting surfaces:
 - `focus_graphs/` for architecture sketches.
 - `prompts/` for implementation, asset, achievement, super-event, decision/mission, and `/goal` handoff prompts.
 
+## Foundation addendum disposition
+
+The older working plan `docs/plans/012_africa_plans/2026-06-16_foundation_gap_improvement_addendum.md` is dispositioned by `docs/plans/012_africa_plans/2026-06-20_foundation_addendum_disposition.md`. Treat that ledger as the current map for which foundation items were implemented/folded, superseded/modified, queued/still open, or rejected/held.
+
+This disposition resolves the stale-plan bookkeeping problem only. It is not an Event 012 completion claim. Remaining known blockers include targeted scenario validation, live GUI/animation proof, stale plan cleanup, weak historical old-seat source assets, deeper host and created-country route consequences, AI/balance/exploit validation, spreadsheet/catalog alignment, and final proof that the World Is One terminal path only opens after all continental-unifier prerequisites.
+
 ## Country naming style
 
 Country and cosmetic names use direct polity names. Avoid generic political attachments in country names: no `Compact`, `Office`, `Bureau`, `Board`, `Commission`, `Registry`, `Mission`, `College`, `Guard`, or `Authority` as the public country name unless it is a real intended state form. `Kingdom`, `Sultanate`, `Republic`, `Federation`, `Confederation`, `Union`, `Empire`, and similar direct state forms are fine when they fit the route. Ideology-specific names are encouraged where they make the tag feel alive.
