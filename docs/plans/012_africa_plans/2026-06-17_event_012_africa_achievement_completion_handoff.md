@@ -50,16 +50,16 @@ Existing Event 012 achievements remained intact. The pass added prompt-completio
 
 These entries use existing Event 012 route flags, mission-success flags, Bestiary action flags, dynamic union identity flags, continent-unifier proof flags, and live variables. They do not unlock on Event 012 fire alone.
 
-## Queued achievement designs
+## Later Closed Achievement Designs
 
-The following prompt/spec rows remain queued because their exact actor packages do not exist in the implemented Event 012 surface:
+The following prompt/spec rows were queued when this handoff was first written because their exact actor packages did not yet exist in the implemented Event 012 surface. They are closed by the later high-chaos actor package and achievement tranches recorded in the parent follow-up above:
 
 - Hyena Radio Dominion / `africa_who_gave_them_a_microphone`
 - Bonobo Kinship Congress / `africa_gentle_veto`
 - Bird of the Walls / `africa_bird_was_right`
 - Sao Terracotta Host / `ACH_AFRICA_TERRACOTTA_LINE`
 
-These should be implemented only after the corresponding actor/country packages, flags, route decisions, and assets exist. They were not faked through unrelated Bestiary actors.
+They were implemented through the corresponding actor/country packages, flags, route decisions, achievements, and assets, rather than through unrelated Bestiary actors.
 
 ## Validation notes
 

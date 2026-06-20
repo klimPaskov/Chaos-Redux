@@ -112,6 +112,8 @@ These tranches reduce the active blocker list, but they do not close Event 012. 
 
 - Earlier v5 icon-package source claims are superseded by the v3 goal-icon and v6 idea-icon packages in `docs/assets/012_africa/implementation_asset_manifest.md`.
 - `docs/plans/012_africa_plans/subagent_handoffs/2026-06-20_012_africa_post_package_completion_audit_handoff.md` is superseded only where it says the regional-authority package expansion was dirty, WAC/SAH/IOC-only, or not closed. Its broader completion blockers remain current.
+- `docs/plans/012_africa_plans/2026-06-17_event_012_africa_achievement_completion_handoff.md` should be read with its later-closed achievement section: the Hyena Radio Dominion, Bonobo Kinship Congress, Bird of the Walls, and Sao Terracotta Host achievement rows are no longer queued.
+- `docs/plans/012_africa_plans/subagent_handoffs/2026-06-20_012_africa_created_actor_static_country_package_audit_handoff.md` records static country-package coverage for all 25 created Event 012 actors and found no missing tag/history/OOB/portrait/flag/localisation/focus/AI surface. It does not close the broader route-depth or live-validation blockers.
 - `docs/plans/012_africa_plans/subagent_handoffs/2026-06-20_012_africa_completion_gap_audit_handoff.md` remains current for the non-completion verdict and the larger validation/depth blockers, but its icon-package and regional-package evidence should be read through this current-source update.
 
 ## Cleanup note

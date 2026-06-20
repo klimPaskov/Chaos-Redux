@@ -6,6 +6,8 @@ Scope: read-only completion audit after parent commits `6f840ab7`, `1b6b5bd5`, `
 
 This audit wrote only this documentation handoff. It did not edit gameplay, localisation, GUI, GFX, asset, spreadsheet, Event 010, or Event 070 files. No commit was made.
 
+Parent follow-up, 2026-06-20: later committed tranches supersede the regional-package and dirty-work observations in this handoff. All ten regional authority package decisions are live and audited, same-tick target revalidation and custom-cost hover localisation are present, the package-action gate helper is valid, and the static created-actor country-package audit found no missing tag/history/OOB/portrait/flag/localisation/focus/AI surface for the 25 created actors. The broader non-completion verdict remains current for live scenario proof, GUI render proof, AI/balance/exploit validation, historical source asset confidence, spreadsheet status, and World Is One live proof.
+
 ## Instructions Applied
 
 - Read and applied `AGENTS.md`.
@@ -30,7 +32,7 @@ The current worktree also contains uncommitted Event 012 regional-package follow
 | RSA Allies branch | Partial/unvalidated | Static coverage exists in the scenario matrix for RSA Civil War, but it still requires live confirmation of the continental side, emergency decisions, civil-war outcome, and Allied peace branch (`2026-06-20_targeted_scenario_validation_matrix.md:15`). |
 | Focus tree and route coverage | Partial pass | The event has broad route and companion-tree coverage, but accepted criteria require a large interacting tree with route locks, varied rewards, AI, and route coverage proof (`012_africa_acceptance_criteria.md:15` through `:24`). Existing audits continue to classify shared companion trees as a bounded simplification rather than full bespoke country-package depth. |
 | Decisions, missions, and GUI | Partial/unvalidated | The acceptance criteria require real costs, map objectives, value visibility, phased categories, regional cards/meters/targets/warnings/clickable actions, and AI equivalents (`012_africa_acceptance_criteria.md:26` through `:34`). The source-of-truth records many systems, but no live exploit pass proves retry, cleanup, repeated clicks, AI equivalent paths, or final cost balance. |
-| Regional authority package actions | In progress, not closed | Committed source-of-truth says WAC/SAH/IOC are the first live package actions (`CURRENT_SOURCE_OF_TRUTH.md:100`). The country-package spec now overstates the surface by saying all ten actions are live (`docs/specs/012_africa_specs/specs/012_africa_country_packages_and_subjects.md:441`). Current dirty work expands toward MAG/NHR/EAC/GLK/CBC/ZSC/SLC helpers and decisions, raises `regional_package_actions` to 10 (`common/script_constants/012_africa_constants.txt:1226` through `:1229`), and adds helper effects for report events `chaosx.nr12.58` through `.64` (`common/scripted_effects/012_africa_effects.txt:1686` through `:1869`). Those new rows are not completed proof: localisation/report events were not found in the checked committed surfaces, and the dirty decision nesting around `common/decisions/012_africa_decisions.txt:909` needs review before it is considered safe. |
+| Regional authority package actions | Superseded by later pass | Later committed evidence supersedes this row's in-progress verdict: all ten package actions are live, audited, localised, revalidated at target click time, and counted toward the configured gate. Treat the remaining package risk as live validation and balance proof, not missing all-ten static implementation. |
 | Country packages | Partial pass | The country package audit says all 25 created tags have static tag/history/OOB/localisation/focus/AI coverage, but also says shared regional/high-chaos companion trees and selected-host long-form branches remain future country-package depth. The source spec says deeper route-specific events and bespoke long-form host branches remain future depth (`012_africa_country_packages_and_subjects.md:439` in the current file; also summarized in `CURRENT_SOURCE_OF_TRUTH.md:103`). |
 | High-chaos actors | Partial pass | The earlier BON/HYR/BIR/SAO package/capstone gap is closed in the source-of-truth (`CURRENT_SOURCE_OF_TRUTH.md:62` through `:76`, `:95`, `:103`). Remaining Bestiary depth is not those four actors, but disaster-warning/counterplay, longer consequence chains, AI/balance validation, and asset/presentation proof. |
 | Evolutions and World Is One | Static pass, live proof missing | Scenario setup intentionally does not set proof-verified, certified, prepared-gate, `world_end`, or terminal World Is One flags (`2026-06-20_targeted_scenario_validation_matrix.md:20`, `:26`, `:30`). This is good non-bypass scaffolding, but not live proof that the normal chain can reach the terminal state without dead ends. |
@@ -44,7 +46,7 @@ The current worktree also contains uncommitted Event 012 regional-package follow
 
 1. Live targeted scenario validation is still missing. The new matrix is static/script coverage and explicitly says it does not replace in-game scenario testing (`2026-06-20_targeted_scenario_validation_matrix.md:5` through `:7`, `:34`). This blocks full completion because the acceptance criteria require targeted scenario tests (`012_africa_acceptance_criteria.md:83` through `:89`).
 
-2. Regional authority package depth is mid-tranche. The committed source-of-truth covers WAC/SAH/IOC only (`CURRENT_SOURCE_OF_TRUTH.md:100`), while the country-package spec already claims all ten regional actions are live (`012_africa_country_packages_and_subjects.md:441`). The current dirty follow-up starts the remaining seven authorities, but the in-progress counter now expects 10 actions (`common/script_constants/012_africa_constants.txt:1226` through `:1229`) while completion evidence for decisions, localisation, report events, docs, scenario proof, and clean nesting is not yet present.
+2. Regional authority package depth was mid-tranche at the time of this audit. Later committed evidence supersedes that static gap: all ten regional package actions are live and audited. Live scenario proof and balance/exploit validation remain open.
 
 3. Country-package depth remains shared and bounded. Static coverage for tags is broad, but the system still leans on shared regional/high-chaos companion trees, shared setup packages, and one origin-profile/case layer. This is a conscious simplification relative to full bespoke host routes, minister rosters, country-specific naval/air branches, and long-form route chains.
 
@@ -63,7 +65,7 @@ The current worktree also contains uncommitted Event 012 regional-package follow
 | `2026-06-20_targeted_scenario_validation_matrix.md` | Static/script scenario coverage now exists. Live proof remains queued for all eight scenarios and exploit checks. |
 | `2026-06-20_012_africa_scenario_validation_decision_audit_handoff.md` | Earlier high-risk static issues were narrowed by parent follow-up, especially one-or-more dynamic union gating and Ally Under Attack holder gating. It remains evidence that live validation is still required. |
 | `2026-06-20_012_africa_country_package_depth_audit_handoff.md` | Current for broad static country-package coverage. It also records remaining shared-tree/shared-setup simplifications and no live balance proof. |
-| `2026-06-20_012_africa_regional_package_decision_audit_handoff.md` | Partly superseded by parent local fixes for WAC/SAH/IOC localisation/counter/convoy issues, but not closed for the broader 10-authority package. The parent's current uncommitted expansion needs its own handoff and validation before closure. |
+| `2026-06-20_012_africa_regional_package_decision_audit_handoff.md` | Superseded where it treats the regional package surface as WAC/SAH/IOC-only or not closed for all ten authorities. Its early findings remain useful only as historical context for the fixes that were later committed and audited. |
 | Super-event text/audio/image handoffs | Closed for accepted live visible slots `68-79` and root-terminal audio id `80`. Do not re-open unless new super-event variants are accepted. |
 | Spreadsheet handoffs | Workbook structure/status update complete, but Event 012 row remains `Needs Testing`. Do not mark implemented until validation/cross-surface wording proof exists. |
 
@@ -83,12 +85,12 @@ Missing:
 - Exploit-loop proof for dossier retry/slot recall, settlement watches, forged-file investigation, old-seat arbitration retries, Bestiary actions, regional package actions, repeated GUI clicks, RSA treaty, living-core conversion, and sponsor/proof certification.
 - Balance proof that weak/small unifiers are hard but viable and do not receive free-army/equipment farming.
 - Screenshot or live readability proof for the Continental Congress GUI and animated states.
-- Validation that the dirty regional-package expansion compiles structurally, exposes all 10 actions, localises report events, and keeps the required counter reachable.
+- Live validation that the committed all-ten regional package surface remains reachable under scenario pressure, exposes each action at the right time, and keeps the required counter honest.
 
 ## Remaining Blockers
 
 1. Live targeted scenario proof is still queued.
-2. The regional authority package expansion is not closed. Current dirty work raises the target to 10 package actions and starts helper/effect work, but it is not yet validated or fully documented.
+2. Regional authority package live validation remains open. The all-ten static implementation is closed by later commits, but scenario proof, balance, exploit, and cleanup validation are still required.
 3. Country-package depth remains partially shared rather than fully bespoke.
 4. Historical old-seat source assets remain mixed-confidence and not fully pulled/processed.
 5. GUI/animation proof remains incomplete.
@@ -98,12 +100,11 @@ Missing:
 
 ## Priority Next Tranches
 
-1. Finish the active regional-authority package follow-up before broader audits: complete MAG/NHR/EAC/GLK/CBC/ZSC/SLC decisions, report events, localisation, docs, AI weights, cleanup flags, and a handoff; then validate that all 10 required package actions can be reached. Until then, either downgrade the country-package spec's all-ten-live claim or mark it as parent-in-progress.
-2. Run the eight targeted scenario validations and record results against the existing matrix. Keep Continental Pole classified as late-route scaffolding, not proof of normal full integration.
-3. Run exploit and cleanup checks for the highest-risk loops: regional package actions, historical dossier slot recall, settlement watches, forged-file investigation, old-seat arbitration, Bestiary warnings/actions, GUI clicks, sponsor proofs, and World Is One certification.
-4. Decide whether the current Continental Congress panel is accepted as the equivalent to the prompt's regional-card/meter design. If yes, document that decision and run screenshot/live readability proof. If no, queue a GUI follow-up.
-5. Resolve Priority A historical source assets or explicitly queue approved neutral archive placeholders for rows that remain low-confidence or not downloaded.
-6. Update the spreadsheet only after validation has implementation facts to mirror.
+1. Run the eight targeted scenario validations and record results against the existing matrix. Keep Continental Pole classified as late-route scaffolding, not proof of normal full integration.
+2. Run exploit and cleanup checks for the highest-risk loops: regional package actions, historical dossier slot recall, settlement watches, forged-file investigation, old-seat arbitration, Bestiary warnings/actions, GUI clicks, sponsor proofs, and World Is One certification.
+3. Decide whether the current Continental Congress panel is accepted as the equivalent to the prompt's regional-card/meter design. If yes, document that decision and run screenshot/live readability proof. If no, queue a GUI follow-up.
+4. Resolve Priority A historical source assets or explicitly queue approved neutral archive placeholders for rows that remain low-confidence or not downloaded.
+5. Update the spreadsheet only after validation has implementation facts to mirror.
 
 ## Improvement Planner Recommendation
 
