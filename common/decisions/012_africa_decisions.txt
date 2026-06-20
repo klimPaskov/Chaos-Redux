@@ -5632,7 +5632,7 @@ africa_continent_sponsor_category = {
 
 	africa_prepare_world_is_one_gate = {
 		icon = GFX_decision_generic_political_discourse
-		cost = constant:africa_decision.sponsor_mission_cost
+		cost = 0
 		days_remove = constant:africa_decision_days.sponsor_mission
 		available = {
 			custom_trigger_tooltip = {
@@ -5641,12 +5641,51 @@ africa_continent_sponsor_category = {
 				NOT = { has_country_flag = africa_world_is_one_gate_prepared }
 			}
 		}
+		custom_cost_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_prepare_world_is_one_gate_cost_tt
+				has_political_power > constant:africa_decision.world_is_one_gate_cost
+				has_equipment = { convoy_1 > constant:africa_force.world_is_one_gate_convoys }
+				has_equipment = { train_equipment > constant:africa_force.world_is_one_gate_trains }
+				has_equipment = { support_equipment > constant:africa_force.world_is_one_gate_support_equipment }
+				has_manpower > constant:africa_force.world_is_one_gate_manpower_gate
+				command_power > constant:africa_decision.world_is_one_gate_command_power_gate
+				has_army_experience > constant:africa_decision.world_is_one_gate_army_xp_gate
+			}
+		}
+		custom_cost_text = africa_prepare_world_is_one_gate_cost_tt
 		complete_effect = {
-			custom_effect_tooltip = africa_prepare_world_is_one_gate_effect_tt
-			set_country_flag = africa_world_is_one_gate_prepared
-			add_to_variable = { africa_authority = constant:africa_value_delta.world_order_authority }
-			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.continent_unifier_certification_cohesion }
-			africa_clamp_core_values = yes
+			if = {
+				limit = {
+					can_africa_prepare_world_is_one_gate = yes
+					NOT = { has_country_flag = africa_world_is_one_gate_prepared }
+					has_political_power > constant:africa_decision.world_is_one_gate_cost
+					has_equipment = { convoy_1 > constant:africa_force.world_is_one_gate_convoys }
+					has_equipment = { train_equipment > constant:africa_force.world_is_one_gate_trains }
+					has_equipment = { support_equipment > constant:africa_force.world_is_one_gate_support_equipment }
+					has_manpower > constant:africa_force.world_is_one_gate_manpower_gate
+					command_power > constant:africa_decision.world_is_one_gate_command_power_gate
+					has_army_experience > constant:africa_decision.world_is_one_gate_army_xp_gate
+				}
+				custom_effect_tooltip = africa_prepare_world_is_one_gate_effect_tt
+				add_political_power = constant:africa_decision.world_is_one_gate_cost_spend
+				set_temp_variable = { africa_world_is_one_gate_convoy_cost = constant:africa_force.world_is_one_gate_convoys }
+				multiply_temp_variable = { africa_world_is_one_gate_convoy_cost = -1 }
+				set_temp_variable = { africa_world_is_one_gate_train_cost = constant:africa_force.world_is_one_gate_trains }
+				multiply_temp_variable = { africa_world_is_one_gate_train_cost = -1 }
+				set_temp_variable = { africa_world_is_one_gate_support_cost = constant:africa_force.world_is_one_gate_support_equipment }
+				multiply_temp_variable = { africa_world_is_one_gate_support_cost = -1 }
+				add_equipment_to_stockpile = { type = convoy_1 amount = africa_world_is_one_gate_convoy_cost }
+				add_equipment_to_stockpile = { type = train_equipment_1 amount = africa_world_is_one_gate_train_cost }
+				add_equipment_to_stockpile = { type = support_equipment amount = africa_world_is_one_gate_support_cost }
+				add_manpower = constant:africa_force.world_is_one_gate_manpower_spend
+				add_command_power = constant:africa_decision.world_is_one_gate_command_power_spend
+				army_experience = constant:africa_decision.world_is_one_gate_army_xp_spend
+				set_country_flag = africa_world_is_one_gate_prepared
+				add_to_variable = { africa_authority = constant:africa_value_delta.world_order_authority }
+				add_to_variable = { africa_league_cohesion = constant:africa_value_delta.continent_unifier_certification_cohesion }
+				africa_clamp_core_values = yes
+			}
 		}
 		ai_will_do = {
 			base = constant:africa_ai.normal
