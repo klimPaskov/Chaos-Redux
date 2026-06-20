@@ -884,6 +884,9 @@ africa_clear_unifier_origin_package = {
 	clr_country_flag = africa_origin_profile_congo_forest
 	clr_country_flag = africa_origin_profile_indian_ocean
 	clr_country_flag = africa_origin_profile_generic_congress
+	clr_country_flag = africa_origin_mandate_case_active
+	clr_country_flag = africa_origin_mandate_case_success
+	clr_country_flag = africa_origin_mandate_case_failed
 	clear_variable = africa_unifier_origin_profile
 	remove_ideas = africa_origin_highland_legacy_spirit
 	remove_ideas = africa_origin_atlantic_return_spirit
@@ -1057,6 +1060,116 @@ africa_apply_unifier_origin_general_congress = {
 	add_to_variable = { africa_legitimacy = constant:africa_unifier_origin_delta.generic_legitimacy }
 	add_to_variable = { africa_league_cohesion = constant:africa_unifier_origin_delta.generic_cohesion }
 	add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_unifier_origin_force.generic_support_equipment producer = ROOT }
+}
+
+africa_spend_origin_mandate_case_cost = {
+	add_political_power = constant:africa_decision.origin_mandate_case_cost_spend
+	set_temp_variable = { africa_origin_mandate_support_cost = constant:africa_force.origin_mandate_support_equipment }
+	multiply_temp_variable = { africa_origin_mandate_support_cost = -1 }
+	add_equipment_to_stockpile = { type = support_equipment amount = africa_origin_mandate_support_cost }
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = africa_origin_profile_highland
+				has_country_flag = africa_origin_profile_rsa_union
+				has_country_flag = africa_origin_profile_west_atlantic
+				has_country_flag = africa_origin_profile_generic_congress
+			}
+		}
+		set_temp_variable = { africa_origin_mandate_infantry_cost = constant:africa_force.origin_mandate_infantry_equipment }
+		multiply_temp_variable = { africa_origin_mandate_infantry_cost = -1 }
+		add_equipment_to_stockpile = { type = infantry_equipment amount = africa_origin_mandate_infantry_cost }
+		add_manpower = constant:africa_force.origin_mandate_manpower_spend
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_country_flag = africa_origin_profile_atlantic_return
+				has_country_flag = africa_origin_profile_indian_ocean
+			}
+		}
+		set_temp_variable = { africa_origin_mandate_convoy_cost = constant:africa_force.origin_mandate_convoys }
+		multiply_temp_variable = { africa_origin_mandate_convoy_cost = -1 }
+		add_equipment_to_stockpile = { type = convoy_1 amount = africa_origin_mandate_convoy_cost }
+		add_command_power = constant:africa_decision.origin_mandate_case_command_power_spend
+	}
+	else_if = {
+		limit = { has_country_flag = africa_origin_profile_nile_red_sea }
+		set_temp_variable = { africa_origin_mandate_train_cost = constant:africa_force.origin_mandate_trains }
+		multiply_temp_variable = { africa_origin_mandate_train_cost = -1 }
+		add_equipment_to_stockpile = { type = train_equipment_1 amount = africa_origin_mandate_train_cost }
+		add_command_power = constant:africa_decision.origin_mandate_case_command_power_spend
+	}
+	else_if = {
+		limit = { has_country_flag = africa_origin_profile_congo_forest }
+		set_temp_variable = { africa_origin_mandate_motorized_cost = constant:africa_force.origin_mandate_motorized }
+		multiply_temp_variable = { africa_origin_mandate_motorized_cost = -1 }
+		add_equipment_to_stockpile = { type = motorized_equipment_1 amount = africa_origin_mandate_motorized_cost }
+		army_experience = constant:africa_decision.origin_mandate_case_army_xp_spend
+	}
+}
+
+africa_apply_origin_mandate_case_success = {
+	if = {
+		limit = { has_country_flag = africa_origin_profile_highland }
+		add_to_variable = { africa_authority = constant:africa_value_delta.origin_mandate_highland_authority }
+		add_to_variable = { africa_old_seat_legitimacy = constant:africa_value_delta.origin_mandate_highland_old_seat }
+	}
+	else_if = {
+		limit = { has_country_flag = africa_origin_profile_atlantic_return }
+		add_to_variable = { africa_legitimacy = constant:africa_value_delta.origin_mandate_atlantic_legitimacy }
+		add_to_variable = { africa_regional_trust = constant:africa_value_delta.origin_mandate_atlantic_trust }
+		add_to_variable = { africa_restoration_debt = constant:africa_value_delta.origin_mandate_atlantic_debt_relief }
+	}
+	else_if = {
+		limit = { has_country_flag = africa_origin_profile_rsa_union }
+		add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.origin_mandate_rsa_momentum }
+		add_to_variable = { africa_league_cohesion = constant:africa_value_delta.origin_mandate_rsa_cohesion }
+		add_to_variable = { africa_authority = constant:africa_value_delta.origin_mandate_rsa_authority }
+	}
+	else_if = {
+		limit = { has_country_flag = africa_origin_profile_nile_red_sea }
+		add_to_variable = { africa_archive_mandate = constant:africa_value_delta.origin_mandate_nile_archive }
+		add_to_variable = { africa_old_seat_legitimacy = constant:africa_value_delta.origin_mandate_nile_old_seat }
+		add_to_variable = { africa_authority = constant:africa_value_delta.origin_mandate_nile_authority }
+	}
+	else_if = {
+		limit = { has_country_flag = africa_origin_profile_west_atlantic }
+		add_to_variable = { africa_league_cohesion = constant:africa_value_delta.origin_mandate_west_cohesion }
+		add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.origin_mandate_west_momentum }
+		add_to_variable = { africa_legitimacy = constant:africa_value_delta.origin_mandate_west_legitimacy }
+	}
+	else_if = {
+		limit = { has_country_flag = africa_origin_profile_congo_forest }
+		add_to_variable = { africa_regional_trust = constant:africa_value_delta.origin_mandate_congo_trust }
+		add_to_variable = { africa_habitat_trust = constant:africa_value_delta.origin_mandate_congo_habitat }
+		add_to_variable = { africa_mythic_pressure = constant:africa_value_delta.origin_mandate_congo_mythic }
+	}
+	else_if = {
+		limit = { has_country_flag = africa_origin_profile_indian_ocean }
+		add_to_variable = { africa_legitimacy = constant:africa_value_delta.origin_mandate_indian_legitimacy }
+		add_to_variable = { africa_league_cohesion = constant:africa_value_delta.origin_mandate_indian_cohesion }
+		add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.origin_mandate_indian_alarm_relief }
+	}
+	else = {
+		add_to_variable = { africa_legitimacy = constant:africa_value_delta.origin_mandate_generic_legitimacy }
+		add_to_variable = { africa_authority = constant:africa_value_delta.origin_mandate_generic_authority }
+		add_to_variable = { africa_league_cohesion = constant:africa_value_delta.origin_mandate_generic_cohesion }
+	}
+	africa_clamp_core_values = yes
+	set_country_flag = africa_origin_mandate_case_success
+	clr_country_flag = africa_origin_mandate_case_failed
+	clr_country_flag = africa_origin_mandate_case_active
+}
+
+africa_apply_origin_mandate_case_failure = {
+	add_to_variable = { africa_legitimacy = constant:africa_value_delta.origin_mandate_failure_legitimacy }
+	add_to_variable = { africa_authority = constant:africa_value_delta.origin_mandate_failure_authority }
+	add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.origin_mandate_failure_alarm }
+	add_to_variable = { africa_restoration_debt = constant:africa_value_delta.origin_mandate_failure_debt }
+	africa_clamp_core_values = yes
+	set_country_flag = africa_origin_mandate_case_failed
+	clr_country_flag = africa_origin_mandate_case_active
 }
 
 africa_clamp_core_values = {
@@ -5088,6 +5201,28 @@ africa_register_authority_atlas_catalog = {
 	set_variable = { global.africa_world_is_one_required_external_continent_unifier_proofs = constant:africa_world_is_one_requirement.external_continent_unifier_proofs }
 	set_variable = { global.africa_mission_required_regional_rail_regions = constant:africa_mission_goal.regional_rail_regions }
 	set_variable = { global.africa_mission_required_liberation_objective_states = constant:africa_mission_goal.liberation_objective_states }
+	set_variable = { global.africa_origin_mandate_highland_authority_gate = constant:africa_decision.origin_mandate_highland_authority_gate }
+	set_variable = { global.africa_origin_mandate_highland_old_seat_gate = constant:africa_decision.origin_mandate_highland_old_seat_gate }
+	set_variable = { global.africa_origin_mandate_atlantic_legitimacy_gate = constant:africa_decision.origin_mandate_atlantic_legitimacy_gate }
+	set_variable = { global.africa_origin_mandate_atlantic_trust_gate = constant:africa_decision.origin_mandate_atlantic_trust_gate }
+	set_variable = { global.africa_origin_mandate_atlantic_debt_cap = constant:africa_decision.origin_mandate_atlantic_debt_cap }
+	set_variable = { global.africa_origin_mandate_rsa_momentum_gate = constant:africa_decision.origin_mandate_rsa_momentum_gate }
+	set_variable = { global.africa_origin_mandate_rsa_authority_gate = constant:africa_decision.origin_mandate_rsa_authority_gate }
+	set_variable = { global.africa_origin_mandate_rsa_alarm_cap = constant:africa_decision.origin_mandate_rsa_alarm_cap }
+	set_variable = { global.africa_origin_mandate_nile_archive_gate = constant:africa_decision.origin_mandate_nile_archive_gate }
+	set_variable = { global.africa_origin_mandate_nile_old_seat_gate = constant:africa_decision.origin_mandate_nile_old_seat_gate }
+	set_variable = { global.africa_origin_mandate_nile_authority_gate = constant:africa_decision.origin_mandate_nile_authority_gate }
+	set_variable = { global.africa_origin_mandate_west_cohesion_gate = constant:africa_decision.origin_mandate_west_cohesion_gate }
+	set_variable = { global.africa_origin_mandate_west_momentum_gate = constant:africa_decision.origin_mandate_west_momentum_gate }
+	set_variable = { global.africa_origin_mandate_west_legitimacy_gate = constant:africa_decision.origin_mandate_west_legitimacy_gate }
+	set_variable = { global.africa_origin_mandate_congo_trust_gate = constant:africa_decision.origin_mandate_congo_trust_gate }
+	set_variable = { global.africa_origin_mandate_congo_habitat_gate = constant:africa_decision.origin_mandate_congo_habitat_gate }
+	set_variable = { global.africa_origin_mandate_congo_mythic_cap = constant:africa_decision.origin_mandate_congo_mythic_cap }
+	set_variable = { global.africa_origin_mandate_indian_legitimacy_gate = constant:africa_decision.origin_mandate_indian_legitimacy_gate }
+	set_variable = { global.africa_origin_mandate_indian_cohesion_gate = constant:africa_decision.origin_mandate_indian_cohesion_gate }
+	set_variable = { global.africa_origin_mandate_indian_alarm_cap = constant:africa_decision.origin_mandate_indian_alarm_cap }
+	set_variable = { global.africa_origin_mandate_generic_legitimacy_gate = constant:africa_decision.origin_mandate_generic_legitimacy_gate }
+	set_variable = { global.africa_origin_mandate_generic_authority_gate = constant:africa_decision.origin_mandate_generic_authority_gate }
 	set_variable = { global.africa_direct_archive_seal_legitimacy_gate = constant:africa_decision.direct_archive_seal_legitimacy_gate }
 	set_variable = { global.africa_direct_archive_seal_old_seat_gate = constant:africa_decision.direct_archive_seal_old_seat_gate }
 	set_variable = { global.africa_direct_archive_seal_restoration_debt_cap = constant:africa_decision.direct_archive_seal_restoration_debt_cap }

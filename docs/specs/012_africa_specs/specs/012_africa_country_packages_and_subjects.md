@@ -48,6 +48,12 @@ Use the strings only in player-facing localisation or scripted localisation. Int
 | Small unifier | Minor one-state African country | Absurdity and underdog fantasy. | High paper-core burden, strong focus/decision help, dynamic unit package must scale enough to survive. |
 | Subject or protectorate | African subject with capital in Africa | Anti-patron crisis, hidden independence networks. | Starts with patron pressure and liberation route; may need breakaway event before full tree. |
 
+### Implemented selected-unifier origin layer
+
+The live implementation classifies the selected host into Highland Legacy, Atlantic Return Route, Union Rupture, Nile Sea Gate, Western Congress Ports, Congo River-Forest Mandate, Indian Ocean Gate, or General Congress Mandate. Each profile receives a distinct opening spirit, mapped value movement, a small logistics grant, AI posture coverage, and visible Continental Congress localisation.
+
+The same profile then drives an active origin mandate case after the Charter Mandate focus. The Continental Congress decision spends political power, support equipment, and profile-specific logistics before starting a 120-day mission. The mission checks capital control and profile-specific value gates: highland profiles use Authority and Old-Seat Legitimacy; Atlantic Return profiles use Legitimacy, Regional Trust, and Restoration Debt discipline; RSA uses Liberation Momentum, Authority, and Colonial Alarm discipline; Nile/Red Sea uses Archive Mandate, Old-Seat Legitimacy, and Authority; West Atlantic uses League Cohesion, Liberation Momentum, and Legitimacy; Congo/forest uses Regional Trust, Habitat Trust, and a Mythic Pressure cap; Indian Ocean uses Legitimacy, League Cohesion, and Colonial Alarm discipline; the general profile uses Legitimacy and Authority. Success gives another profile-specific value shift and files the case, while failure damages Legitimacy and Authority and raises Colonial Alarm and Restoration Debt before the case can be retried.
+
 ## Dynamic starting forces
 
 The selected unifier is expected to fight. It must not receive a flat generic army.
