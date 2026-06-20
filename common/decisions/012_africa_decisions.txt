@@ -22,6 +22,8 @@
 @africa_historical_dossier_case_ai_pp_cost = 30
 @africa_origin_mandate_case_ai_pp_cost = 30
 @africa_origin_mandate_case_mission_days = 120
+@africa_regional_authority_mandate_ai_pp_cost = 35
+@africa_regional_authority_mandate_mission_days = 150
 @africa_bestiary_containment_mission_days = 420
 @africa_omen_reliability_mission_days = 120
 @africa_scramble_treaty_mission_days = 240
@@ -728,6 +730,77 @@ africa_charter_league_diplomacy_category = {
 			africa_clamp_core_values = yes
 		}
 		ai_will_do = { base = constant:africa_ai.normal }
+	}
+
+	africa_commission_regional_authority_mandate = {
+		icon = GFX_decision_generic_construction
+		target_array = global.africa_charter_member_countries
+		cost = 0
+		days_re_enable = constant:africa_decision_days.regional_authority_mandate
+		target_root_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_commission_regional_authority_mandate_root_req_tt
+				can_africa_start_regional_authority_mandate = yes
+			}
+		}
+		target_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_commission_regional_authority_mandate_target_req_tt
+				FROM = { can_africa_target_regional_authority_mandate_for_root = yes }
+			}
+		}
+		custom_cost_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_commission_regional_authority_mandate_cost_tt
+				has_political_power > constant:africa_decision.regional_authority_mandate_cost
+				command_power > constant:africa_decision.regional_authority_mandate_command_power_gate
+				has_equipment = { infantry_equipment > constant:africa_force.regional_authority_mandate_infantry_equipment }
+				has_equipment = { support_equipment > constant:africa_force.regional_authority_mandate_support_equipment }
+				has_manpower > constant:africa_force.regional_authority_mandate_manpower_gate
+			}
+		}
+		custom_cost_text = africa_commission_regional_authority_mandate_cost_tt
+		ai_hint_pp_cost = @africa_regional_authority_mandate_ai_pp_cost
+		complete_effect = {
+			custom_effect_tooltip = africa_commission_regional_authority_mandate_start_tt
+			africa_start_regional_authority_mandate_for_from = yes
+		}
+		ai_will_do = {
+			base = constant:africa_ai.normal
+			modifier = { factor = constant:africa_ai.preferred FROM = { has_country_flag = africa_authority_future_settled } }
+			modifier = { factor = constant:africa_ai.preferred FROM = { is_africa_regional_authority_mandate_complete_for_root = yes } }
+		}
+	}
+
+	africa_regional_authority_mandate_mission = {
+		icon = GFX_decision_generic_construction
+		days_mission_timeout = @africa_regional_authority_mandate_mission_days
+		is_good = no
+		fire_only_once = no
+		activation = { has_country_flag = africa_regional_authority_mandate_active }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = africa_regional_authority_mandate_mission_available_tt
+				can_africa_complete_regional_authority_mandate = yes
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { has_country_flag = africa_regional_authority_mandate_active }
+				has_global_flag = africa_is_one_complete
+				NOT = { has_event_target = africa_regional_authority_mandate_target }
+			}
+		}
+		cancel_effect = { africa_clear_regional_authority_mandate_context = yes }
+		complete_effect = {
+			custom_effect_tooltip = africa_regional_authority_mandate_mission_success_tt
+			africa_apply_regional_authority_mandate_success = yes
+		}
+		timeout_effect = {
+			custom_effect_tooltip = africa_regional_authority_mandate_mission_failure_tt
+			africa_apply_regional_authority_mandate_failure = yes
+		}
+		ai_will_do = { base = constant:africa_ai.preferred }
 	}
 }
 
