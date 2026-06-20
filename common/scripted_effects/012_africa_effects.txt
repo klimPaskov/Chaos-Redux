@@ -156,6 +156,7 @@ africa_prepare_runtime_context_from_this = {
 	set_global_flag = event_012_africa_fired
 	set_country_flag = africa_unifier_active
 	africa_initialize_core_values = yes
+	africa_apply_unifier_origin_package = yes
 }
 
 africa_triggerable_scenario_launch_selected = {
@@ -548,6 +549,7 @@ africa_clear_runtime_context = {
 			clr_country_flag = africa_charter_league_leader
 			clr_country_flag = africa_rsa_continental_side
 			clr_country_flag = africa_rsa_loyalist_side
+			africa_clear_unifier_origin_package = yes
 			clr_country_flag = africa_liberation_front_mission_active
 			clr_country_flag = africa_liberation_front_mission_success
 			clr_country_flag = africa_liberation_front_mission_failed
@@ -871,6 +873,190 @@ africa_initialize_core_values = {
 	set_variable = { africa_habitat_trust = constant:africa_initial_value.habitat_trust }
 	set_variable = { africa_mythic_volatility = constant:africa_initial_value.mythic_volatility }
 	set_variable = { africa_external_continent_unifier_proof_count = 0 }
+}
+
+africa_clear_unifier_origin_package = {
+	clr_country_flag = africa_origin_profile_highland
+	clr_country_flag = africa_origin_profile_atlantic_return
+	clr_country_flag = africa_origin_profile_rsa_union
+	clr_country_flag = africa_origin_profile_nile_red_sea
+	clr_country_flag = africa_origin_profile_west_atlantic
+	clr_country_flag = africa_origin_profile_congo_forest
+	clr_country_flag = africa_origin_profile_indian_ocean
+	clr_country_flag = africa_origin_profile_generic_congress
+	clear_variable = africa_unifier_origin_profile
+	remove_ideas = africa_origin_highland_legacy_spirit
+	remove_ideas = africa_origin_atlantic_return_spirit
+	remove_ideas = africa_origin_rsa_union_rupture_spirit
+	remove_ideas = africa_origin_nile_sea_gate_spirit
+	remove_ideas = africa_origin_western_congress_ports_spirit
+	remove_ideas = africa_origin_congo_river_forest_spirit
+	remove_ideas = africa_origin_indian_ocean_gate_spirit
+	remove_ideas = africa_origin_general_congress_spirit
+}
+
+africa_apply_unifier_origin_package = {
+	africa_clear_unifier_origin_package = yes
+	if = {
+		limit = { tag = ETH }
+		africa_apply_unifier_origin_highland = yes
+	}
+	else_if = {
+		limit = { tag = LIB }
+		africa_apply_unifier_origin_atlantic_return = yes
+	}
+	else_if = {
+		limit = { tag = SAF }
+		africa_apply_unifier_origin_rsa_union = yes
+	}
+	else_if = {
+		limit = {
+			OR = {
+				tag = EGY
+				tag = SUD
+				tag = ERI
+				tag = DJI
+				tag = SOM
+			}
+		}
+		africa_apply_unifier_origin_nile_red_sea = yes
+	}
+	else_if = {
+		limit = {
+			OR = {
+				tag = WAC
+				tag = GHA
+				tag = MLI
+				tag = SEN
+				tag = NGA
+				tag = GNA
+				tag = VOL
+				tag = DAH
+				tag = IVO
+				tag = SIE
+				tag = GAM
+				tag = TOG
+				tag = NGR
+			}
+		}
+		africa_apply_unifier_origin_west_atlantic = yes
+	}
+	else_if = {
+		limit = {
+			OR = {
+				tag = CBC
+				tag = COG
+				tag = ANG
+				tag = CMR
+				tag = EQG
+				tag = GAB
+			}
+		}
+		africa_apply_unifier_origin_congo_forest = yes
+	}
+	else_if = {
+		limit = {
+			OR = {
+				tag = IOC
+				tag = MAD
+				tag = MZB
+				tag = KEN
+				tag = TZN
+			}
+		}
+		africa_apply_unifier_origin_indian_ocean = yes
+	}
+	else = {
+		africa_apply_unifier_origin_general_congress = yes
+	}
+	africa_clamp_core_values = yes
+}
+
+africa_apply_unifier_origin_highland = {
+	set_country_flag = africa_origin_profile_highland
+	set_variable = { africa_unifier_origin_profile = constant:africa_unifier_origin_profile.highland }
+	add_ideas = africa_origin_highland_legacy_spirit
+	add_to_variable = { africa_authority = constant:africa_unifier_origin_delta.highland_authority }
+	add_to_variable = { africa_old_seat_legitimacy = constant:africa_unifier_origin_delta.highland_old_seat }
+	add_to_variable = { africa_colonial_alarm = constant:africa_unifier_origin_delta.highland_alarm }
+	add_manpower = constant:africa_unifier_origin_force.highland_manpower
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_unifier_origin_force.highland_infantry_equipment producer = ROOT }
+}
+
+africa_apply_unifier_origin_atlantic_return = {
+	set_country_flag = africa_origin_profile_atlantic_return
+	set_variable = { africa_unifier_origin_profile = constant:africa_unifier_origin_profile.atlantic_return }
+	add_ideas = africa_origin_atlantic_return_spirit
+	add_to_variable = { africa_legitimacy = constant:africa_unifier_origin_delta.atlantic_legitimacy }
+	add_to_variable = { africa_regional_trust = constant:africa_unifier_origin_delta.atlantic_trust }
+	add_to_variable = { africa_restoration_debt = constant:africa_unifier_origin_delta.atlantic_debt }
+	add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_unifier_origin_force.atlantic_convoys producer = ROOT }
+	add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_unifier_origin_force.atlantic_support_equipment producer = ROOT }
+}
+
+africa_apply_unifier_origin_rsa_union = {
+	set_country_flag = africa_origin_profile_rsa_union
+	set_variable = { africa_unifier_origin_profile = constant:africa_unifier_origin_profile.rsa_union }
+	add_ideas = africa_origin_rsa_union_rupture_spirit
+	add_to_variable = { africa_authority = constant:africa_unifier_origin_delta.rsa_authority }
+	add_to_variable = { africa_liberation_momentum = constant:africa_unifier_origin_delta.rsa_momentum }
+	add_to_variable = { africa_colonial_alarm = constant:africa_unifier_origin_delta.rsa_alarm }
+	add_to_variable = { africa_league_cohesion = constant:africa_unifier_origin_delta.rsa_cohesion }
+	add_manpower = constant:africa_unifier_origin_force.rsa_manpower
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_unifier_origin_force.rsa_infantry_equipment producer = ROOT }
+}
+
+africa_apply_unifier_origin_nile_red_sea = {
+	set_country_flag = africa_origin_profile_nile_red_sea
+	set_variable = { africa_unifier_origin_profile = constant:africa_unifier_origin_profile.nile_red_sea }
+	add_ideas = africa_origin_nile_sea_gate_spirit
+	add_to_variable = { africa_archive_mandate = constant:africa_unifier_origin_delta.nile_archive }
+	add_to_variable = { africa_old_seat_legitimacy = constant:africa_unifier_origin_delta.nile_old_seat }
+	add_to_variable = { africa_authority = constant:africa_unifier_origin_delta.nile_authority }
+	add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:africa_unifier_origin_force.nile_trains producer = ROOT }
+	add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_unifier_origin_force.nile_support_equipment producer = ROOT }
+}
+
+africa_apply_unifier_origin_west_atlantic = {
+	set_country_flag = africa_origin_profile_west_atlantic
+	set_variable = { africa_unifier_origin_profile = constant:africa_unifier_origin_profile.west_atlantic }
+	add_ideas = africa_origin_western_congress_ports_spirit
+	add_to_variable = { africa_league_cohesion = constant:africa_unifier_origin_delta.west_cohesion }
+	add_to_variable = { africa_liberation_momentum = constant:africa_unifier_origin_delta.west_momentum }
+	add_to_variable = { africa_legitimacy = constant:africa_unifier_origin_delta.west_legitimacy }
+	add_manpower = constant:africa_unifier_origin_force.west_manpower
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_unifier_origin_force.west_infantry_equipment producer = ROOT }
+}
+
+africa_apply_unifier_origin_congo_forest = {
+	set_country_flag = africa_origin_profile_congo_forest
+	set_variable = { africa_unifier_origin_profile = constant:africa_unifier_origin_profile.congo_forest }
+	add_ideas = africa_origin_congo_river_forest_spirit
+	add_to_variable = { africa_regional_trust = constant:africa_unifier_origin_delta.congo_trust }
+	add_to_variable = { africa_habitat_trust = constant:africa_unifier_origin_delta.congo_habitat }
+	add_to_variable = { africa_mythic_pressure = constant:africa_unifier_origin_delta.congo_mythic }
+	add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_unifier_origin_force.congo_support_equipment producer = ROOT }
+	add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:africa_unifier_origin_force.congo_motorized_equipment producer = ROOT }
+}
+
+africa_apply_unifier_origin_indian_ocean = {
+	set_country_flag = africa_origin_profile_indian_ocean
+	set_variable = { africa_unifier_origin_profile = constant:africa_unifier_origin_profile.indian_ocean }
+	add_ideas = africa_origin_indian_ocean_gate_spirit
+	add_to_variable = { africa_legitimacy = constant:africa_unifier_origin_delta.indian_legitimacy }
+	add_to_variable = { africa_league_cohesion = constant:africa_unifier_origin_delta.indian_cohesion }
+	add_to_variable = { africa_colonial_alarm = constant:africa_unifier_origin_delta.indian_alarm_relief }
+	add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_unifier_origin_force.indian_convoys producer = ROOT }
+	add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_unifier_origin_force.indian_support_equipment producer = ROOT }
+}
+
+africa_apply_unifier_origin_general_congress = {
+	set_country_flag = africa_origin_profile_generic_congress
+	set_variable = { africa_unifier_origin_profile = constant:africa_unifier_origin_profile.generic }
+	add_ideas = africa_origin_general_congress_spirit
+	add_to_variable = { africa_legitimacy = constant:africa_unifier_origin_delta.generic_legitimacy }
+	add_to_variable = { africa_league_cohesion = constant:africa_unifier_origin_delta.generic_cohesion }
+	add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_unifier_origin_force.generic_support_equipment producer = ROOT }
 }
 
 africa_clamp_core_values = {
