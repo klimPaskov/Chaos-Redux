@@ -378,6 +378,57 @@ is_africa_regional_authority_seat_state = {
 	}
 }
 
+is_africa_regional_authority_mandate_complete_for_root = {
+	exists = yes
+	has_country_flag = africa_regional_authority_subject
+	NOT = { has_capitulated = yes }
+	NOT = { has_war_with = ROOT }
+	capital_scope = { is_controlled_by = THIS }
+	OR = {
+		has_country_flag = africa_authority_wac_port_union
+		has_country_flag = africa_authority_sah_oasis_routes
+		has_country_flag = africa_authority_mag_harbor_compact
+		has_country_flag = africa_authority_nhr_highland_survey
+		has_country_flag = africa_authority_eac_railway_board
+		has_country_flag = africa_authority_glk_lake_muster
+		has_country_flag = africa_authority_cbc_river_quartermasters
+		has_country_flag = africa_authority_zsc_stone_city_yards
+		has_country_flag = africa_authority_slc_mine_port_liberation
+		has_country_flag = africa_authority_ioc_monsoon_passages
+	}
+}
+
+can_africa_target_regional_authority_mandate_for_root = {
+	exists = yes
+	has_country_flag = africa_regional_authority_subject
+	has_country_flag = africa_authority_seat_confirmed
+	NOT = { has_country_flag = africa_regional_authority_mandate_success }
+	NOT = { has_country_flag = africa_regional_authority_mandate_target }
+	NOT = { has_country_flag = africa_charter_former_member }
+	NOT = { has_country_flag = africa_charter_resistant_member }
+	NOT = { has_capitulated = yes }
+	NOT = { has_war_with = ROOT }
+	capital_scope = { is_controlled_by = THIS }
+}
+
+can_africa_start_regional_authority_mandate = {
+	is_africa_runtime_unifier = yes
+	has_country_flag = africa_regional_authorities_open
+	NOT = { has_country_flag = africa_regional_authority_mandate_active }
+	NOT = { has_global_flag = africa_is_one_complete }
+	check_variable = { africa_regional_authority_count > 0 }
+}
+
+can_africa_complete_regional_authority_mandate = {
+	is_africa_runtime_unifier = yes
+	has_country_flag = africa_regional_authority_mandate_active
+	has_event_target = africa_regional_authority_mandate_target
+	event_target:africa_regional_authority_mandate_target = {
+		has_country_flag = africa_regional_authority_mandate_target
+		is_africa_regional_authority_mandate_complete_for_root = yes
+	}
+}
+
 africa_can_secure_integration_rail_for_root = {
 	is_africa_integration_unlocked_state = yes
 	is_controlled_by_root_or_loyal_charter_actor = yes

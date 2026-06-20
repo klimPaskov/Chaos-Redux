@@ -114,6 +114,7 @@ The decision layer now exposes leader-side and member-side Charter gameplay:
 - send aid to full members or protected members through their separate target arrays only while the target is at war and not capitulated, with a one-active-at-a-time member confidence mission opened for the aided target;
 - influence member cohesion and regional trust;
 - docket regional authorities for integration;
+- commission a one-active-at-a-time regional authority mandate against a selected confirmed authority subject. The mandate spends political power, command power, manpower, infantry equipment, and support equipment up front, transfers the committed forces to the authority, and starts a 150-day mission. Success requires the selected authority to remain loyal, avoid capitulation or war against the Charter leader, keep its capital controlled, and complete its own tag capstone focus. Success increments the visible authority-mandate count and applies role-specific consequences: West/Sahel authorities add Liberation Momentum and Cohesion plus motorized logistics, coastal authorities add Cohesion and reduce Paper-Core Burden plus convoy/train stores, interior authorities add Authority and Trust plus support staff, and southern authorities add Liberation Momentum and Authority plus local arms capacity. Failure lowers Regional Trust while raising Colonial Alarm and Paper-Core Burden, then leaves the authority retryable after the commission decision returns;
 - allow members to request aid during their own wars, leave the Charter, or raise a resistance war. Member-requested aid also opens the same confidence deadline on the Charter leader so the manpower/equipment transfer cannot be farmed without a live war objective.
 
 ## RSA Branch
@@ -192,6 +193,7 @@ The Scramble route registers outside powers that still own or control African te
 
 - continental congress and register refreshes;
 - Charter diplomacy and member-side requests, departures, and resistance wars;
+- regional authority mandate commissions, which tie created authority subject capstones back into a visible leader-side deadline rather than leaving those actors as passive one-time setups;
 - Federal Charter votes, regional autonomy statutes, and High Court arbitration against selected Charter members or regional authorities;
 - liberation preparation, border columns, rail-belt objectives, and targeted front-state objectives;
 - paper-claim surveys, authority-tracked rail work, Integration Temperature Board reviews, and living-core integration. The three state-target integration actions now share a one-at-a-time active operation target, expose the selected state in the regional integration header, spend manpower or equipment when the operation starts, resolve through the timed decision's completion effect, and add small Paper-Core/Trust/Alarm pressure if the selected state stops qualifying before completion;
