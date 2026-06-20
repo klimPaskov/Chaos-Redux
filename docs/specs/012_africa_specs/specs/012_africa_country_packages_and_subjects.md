@@ -438,6 +438,8 @@ Current implementation note: `africa_generate_created_country_role_staff` gives 
 
 Current implementation note: the selected unifier now receives one opening origin profile through `africa_apply_unifier_origin_package`. Registered hosts map to Highland Legacy (`ETH`), Atlantic Return Route (`LIB`), Union Rupture (`SAF`), Nile Sea Gate (`EGY`, `SUD`, `ERI`, `DJI`, `SOM`), Western Congress Ports (`WAC`, `GHA`, `MLI`, `SEN`, `NGA`, `GNA`, `VOL`, `DAH`, `IVO`, `SIE`, `GAM`, `TOG`, `NGR`), Congo River-Forest Mandate (`CBC`, `COG`, `ANG`, `CMR`, `EQG`, `GAB`), Indian Ocean Gate (`IOC`, `MAD`, `MZB`, `KEN`, `TZN`), or General Congress Mandate for other valid hosts. Each profile has a visible spirit, live Congress header label, value movement, logistics grant, cleanup path, and AI posture. This closes the first opening identity pass for selected hosts, while deeper route-specific events and bespoke long-form host branches remain future country-package depth.
 
+Current implementation note: `WAC`, `SAH`, and `IOC` have the first tag-specific regional authority package actions after a successful mandate. WAC can convene a port congress, SAH can open caravan columns, and IOC can secure sea lanes. These actions spend concrete resources, transfer material or forces to the target authority, move visible Event 012 values, record one-time target flags, increment `africa_regional_package_action_count`, and fire visible consequence events `chaosx.nr12.55` through `chaosx.nr12.57`. They are a regional-authority depth layer, not a replacement for the shared companion focus tree or for future bespoke branches on the remaining regional authorities.
+
 ## Archive of Old Seats package and formable addendum
 
 ## Archive of Old Seats package integration

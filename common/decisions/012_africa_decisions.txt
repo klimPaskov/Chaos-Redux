@@ -23,6 +23,7 @@
 @africa_origin_mandate_case_ai_pp_cost = 30
 @africa_origin_mandate_case_mission_days = 120
 @africa_regional_authority_mandate_ai_pp_cost = 35
+@africa_regional_package_action_ai_pp_cost = 25
 @africa_regional_authority_mandate_mission_days = 150
 @africa_bestiary_containment_mission_days = 420
 @africa_omen_reliability_mission_days = 120
@@ -301,7 +302,7 @@ africa_charter_league_diplomacy_category = {
 				has_political_power > constant:africa_decision.aid_corridor_cost
 				command_power > constant:africa_decision.aid_corridor_command_power_gate
 				has_equipment = { support_equipment > constant:africa_force.aid_corridor_support_equipment }
-				has_equipment = { convoy > constant:africa_force.aid_corridor_convoys }
+				has_equipment = { convoy_1 > constant:africa_force.aid_corridor_convoys }
 				has_equipment = { train_equipment > constant:africa_force.aid_corridor_trains }
 			}
 		}
@@ -345,7 +346,7 @@ africa_charter_league_diplomacy_category = {
 				has_political_power > constant:africa_decision.aid_corridor_cost
 				command_power > constant:africa_decision.aid_corridor_command_power_gate
 				has_equipment = { support_equipment > constant:africa_force.aid_corridor_support_equipment }
-				has_equipment = { convoy > constant:africa_force.aid_corridor_convoys }
+				has_equipment = { convoy_1 > constant:africa_force.aid_corridor_convoys }
 				has_equipment = { train_equipment > constant:africa_force.aid_corridor_trains }
 			}
 		}
@@ -769,6 +770,138 @@ africa_charter_league_diplomacy_category = {
 			base = constant:africa_ai.normal
 			modifier = { factor = constant:africa_ai.preferred FROM = { has_country_flag = africa_authority_future_settled } }
 			modifier = { factor = constant:africa_ai.preferred FROM = { is_africa_regional_authority_mandate_complete_for_root = yes } }
+		}
+	}
+
+	africa_convene_wac_port_congress = {
+		icon = GFX_decision_generic_political_discourse
+		target_array = global.africa_charter_member_countries
+		cost = 0
+		days_re_enable = constant:africa_decision_days.regional_authority_mandate
+		target_root_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_convene_wac_port_congress_root_req_tt
+				is_africa_runtime_unifier = yes
+				has_country_flag = africa_regional_authorities_open
+			}
+		}
+		target_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_convene_wac_port_congress_target_req_tt
+				FROM = {
+					tag = WAC
+					can_africa_target_regional_package_action_for_root = yes
+					NOT = { has_country_flag = africa_wac_port_congress_convened }
+				}
+			}
+		}
+		custom_cost_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_regional_package_wac_cost_tt
+				has_political_power > constant:africa_decision.regional_package_action_cost
+				has_equipment = { support_equipment > constant:africa_force.regional_package_support_equipment }
+				has_equipment = { convoy_1 > constant:africa_force.regional_package_convoys }
+			}
+		}
+		custom_cost_text = africa_regional_package_wac_cost_tt
+		ai_hint_pp_cost = @africa_regional_package_action_ai_pp_cost
+		complete_effect = {
+			custom_effect_tooltip = africa_convene_wac_port_congress_effect_tt
+			africa_convene_wac_port_congress_from = yes
+		}
+		ai_will_do = {
+			base = constant:africa_ai.normal
+			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_origin_profile_west_atlantic }
+			modifier = { factor = constant:africa_ai.preferred check_variable = { africa_league_cohesion < constant:achievement_threshold.africa.league_cohesion_safe } }
+		}
+	}
+
+	africa_open_sah_caravan_columns = {
+		icon = GFX_decision_generic_prepare_civil_war
+		target_array = global.africa_charter_member_countries
+		cost = 0
+		days_re_enable = constant:africa_decision_days.regional_authority_mandate
+		target_root_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_open_sah_caravan_columns_root_req_tt
+				is_africa_runtime_unifier = yes
+				has_country_flag = africa_regional_authorities_open
+			}
+		}
+		target_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_open_sah_caravan_columns_target_req_tt
+				FROM = {
+					tag = SAH
+					can_africa_target_regional_package_action_for_root = yes
+					NOT = { has_country_flag = africa_sah_caravan_columns_opened }
+				}
+			}
+		}
+		custom_cost_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_regional_package_sah_cost_tt
+				has_political_power > constant:africa_decision.regional_package_action_cost
+				command_power > constant:africa_decision.regional_package_action_command_power_gate
+				has_equipment = { infantry_equipment > constant:africa_force.regional_package_infantry_equipment }
+				has_equipment = { motorized_equipment > constant:africa_force.regional_package_motorized_equipment }
+				has_manpower > constant:africa_force.regional_package_manpower_gate
+			}
+		}
+		custom_cost_text = africa_regional_package_sah_cost_tt
+		ai_hint_pp_cost = @africa_regional_package_action_ai_pp_cost
+		complete_effect = {
+			custom_effect_tooltip = africa_open_sah_caravan_columns_effect_tt
+			africa_open_sah_caravan_columns_from = yes
+		}
+		ai_will_do = {
+			base = constant:africa_ai.normal
+			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_liberation_war_office_open }
+			modifier = { factor = constant:africa_ai.preferred check_variable = { africa_paper_core_burden > constant:africa_decision.integration_burden_gate } }
+		}
+	}
+
+	africa_secure_ioc_sea_lanes = {
+		icon = GFX_decision_generic_construction
+		target_array = global.africa_charter_member_countries
+		cost = 0
+		days_re_enable = constant:africa_decision_days.regional_authority_mandate
+		target_root_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_secure_ioc_sea_lanes_root_req_tt
+				is_africa_runtime_unifier = yes
+				has_country_flag = africa_regional_authorities_open
+			}
+		}
+		target_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_secure_ioc_sea_lanes_target_req_tt
+				FROM = {
+					tag = IOC
+					can_africa_target_regional_package_action_for_root = yes
+					NOT = { has_country_flag = africa_ioc_sea_lanes_secured }
+				}
+			}
+		}
+		custom_cost_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_regional_package_ioc_cost_tt
+				has_political_power > constant:africa_decision.regional_package_action_cost
+				command_power > constant:africa_decision.regional_package_action_command_power_gate
+				has_equipment = { support_equipment > constant:africa_force.regional_package_support_equipment }
+				has_equipment = { convoy_1 > constant:africa_force.regional_package_convoys }
+			}
+		}
+		custom_cost_text = africa_regional_package_ioc_cost_tt
+		ai_hint_pp_cost = @africa_regional_package_action_ai_pp_cost
+		complete_effect = {
+			custom_effect_tooltip = africa_secure_ioc_sea_lanes_effect_tt
+			africa_secure_ioc_sea_lanes_from = yes
+		}
+		ai_will_do = {
+			base = constant:africa_ai.normal
+			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_origin_profile_indian_ocean }
+			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_continent_sponsor_ready }
 		}
 	}
 
