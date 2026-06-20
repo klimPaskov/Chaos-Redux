@@ -4,6 +4,8 @@ Date: 2026-06-16
 
 Scope: planning only. This addendum does not edit gameplay, localisation, assets, or spreadsheets.
 
+Disposition status, 2026-06-20: this addendum is retained as planning history, but it is no longer one undifferentiated unresolved blocker. Use `docs/plans/012_africa_plans/2026-06-20_foundation_addendum_disposition.md` for the accepted implemented/folded, superseded/modified, queued/still-open, and rejected/held status map. That ledger does not claim Event 012 completion.
+
 ## Planning Status
 
 No earlier Event 012 improvement-loop addendum was found under `docs/plans/012_africa_plans/`. The existing handoffs cover source research, super-event text research, and audio research, so this addendum is not stacking a second unresolved design layer for the same gap.
