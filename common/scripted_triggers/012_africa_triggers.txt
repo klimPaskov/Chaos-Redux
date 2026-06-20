@@ -283,6 +283,20 @@ is_africa_external_colonial_holder_for_root = {
 	NOT = { is_in_faction_with = ROOT }
 }
 
+has_africa_any_external_colonial_holder = {
+	any_country = {
+		exists = yes
+		capital_scope = { NOT = { is_on_continent = africa } }
+		NOT = { has_capitulated = yes }
+		NOT = { is_special_chaos_country = yes }
+		NOT = { is_actual_nonhuman_country = yes }
+		OR = {
+			any_owned_state = { is_on_continent = africa }
+			any_controlled_state = { is_on_continent = africa }
+		}
+	}
+}
+
 is_africa_external_holder_state_for_root = {
 	is_on_continent = africa
 	OR = {
@@ -2128,6 +2142,15 @@ has_africa_required_external_continent_unifier_world_end_flags = {
 	has_global_flag = asia_continent_unifier_world_end_ready
 	has_global_flag = europe_continent_unifier_world_end_ready
 	has_global_flag = south_atlantic_continent_unifier_world_end_ready
+}
+
+has_africa_any_sponsored_cross_continent_charter = {
+	OR = {
+		has_country_flag = africa_sponsored_middle_east_charter
+		has_country_flag = africa_sponsored_asia_charter
+		has_country_flag = africa_sponsored_europe_charter
+		has_country_flag = africa_sponsored_south_atlantic_charter
+	}
 }
 
 has_africa_middle_east_unifier_proof_route_ready = {
