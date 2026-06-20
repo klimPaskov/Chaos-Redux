@@ -436,6 +436,14 @@ can_africa_target_regional_package_action_for_root = {
 	capital_scope = { is_controlled_by = THIS }
 }
 
+has_africa_required_regional_package_actions = {
+	check_variable = {
+		var = africa_regional_package_action_count
+		value = constant:africa_mission_goal.regional_package_actions
+		compare = greater_than_or_equals
+	}
+}
+
 can_africa_start_regional_authority_mandate = {
 	is_africa_runtime_unifier = yes
 	has_country_flag = africa_regional_authorities_open
@@ -2273,16 +2281,17 @@ can_africa_certify_continent_unifiers_for_world_is_one = {
 		has_country_flag = africa_sponsored_south_atlantic_charter
 		has_country_flag = africa_dynamic_cross_continent_union_complete
 		has_country_flag = africa_last_borders_are_administrative_open
-		has_africa_continental_register_dossier_coverage = yes
-		has_country_flag = africa_historical_dossier_cases_ready
-		has_country_flag = africa_minimum_high_chaos_packages_ready
-		has_country_flag = africa_bestiary_containment_mission_success
-		NOT = { has_country_flag = africa_continent_unifiers_certified_for_world_is_one }
-		check_variable = {
-			var = africa_regional_authority_count
-			value = constant:africa_world_is_one_requirement.regional_authorities
-			compare = greater_than_or_equals
-		}
+			has_africa_continental_register_dossier_coverage = yes
+			has_country_flag = africa_historical_dossier_cases_ready
+			has_country_flag = africa_minimum_high_chaos_packages_ready
+			has_country_flag = africa_bestiary_containment_mission_success
+			NOT = { has_country_flag = africa_continent_unifiers_certified_for_world_is_one }
+			has_africa_required_regional_package_actions = yes
+			check_variable = {
+				var = africa_regional_authority_count
+				value = constant:africa_world_is_one_requirement.regional_authorities
+				compare = greater_than_or_equals
+			}
 		check_variable = {
 			var = africa_living_core_count
 			value = constant:africa_world_is_one_requirement.living_cores
@@ -2313,17 +2322,18 @@ can_africa_prepare_world_is_one_gate = {
 		has_country_flag = africa_sponsored_middle_east_charter
 		has_country_flag = africa_sponsored_asia_charter
 		has_country_flag = africa_sponsored_europe_charter
-		has_country_flag = africa_sponsored_south_atlantic_charter
-		has_country_flag = africa_dynamic_cross_continent_union_complete
-		has_africa_continental_register_dossier_coverage = yes
-		has_country_flag = africa_historical_dossier_cases_ready
-		has_country_flag = africa_minimum_high_chaos_packages_ready
-		has_country_flag = africa_bestiary_containment_mission_success
-		check_variable = {
-			var = africa_regional_authority_count
-			value = constant:africa_world_is_one_requirement.regional_authorities
-			compare = greater_than_or_equals
-		}
+			has_country_flag = africa_sponsored_south_atlantic_charter
+			has_country_flag = africa_dynamic_cross_continent_union_complete
+			has_africa_continental_register_dossier_coverage = yes
+			has_country_flag = africa_historical_dossier_cases_ready
+			has_country_flag = africa_minimum_high_chaos_packages_ready
+			has_country_flag = africa_bestiary_containment_mission_success
+			has_africa_required_regional_package_actions = yes
+			check_variable = {
+				var = africa_regional_authority_count
+				value = constant:africa_world_is_one_requirement.regional_authorities
+				compare = greater_than_or_equals
+			}
 		check_variable = {
 			var = africa_living_core_count
 			value = constant:africa_world_is_one_requirement.living_cores
