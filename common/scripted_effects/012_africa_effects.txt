@@ -957,8 +957,15 @@ africa_clear_runtime_context = {
 				has_country_flag = africa_regional_authority_mandate_southern_success
 				has_country_flag = africa_wac_port_congress_convened
 				has_country_flag = africa_sah_caravan_columns_opened
-					has_country_flag = africa_ioc_sea_lanes_secured
-					has_country_flag = africa_aid_corridor_broken
+				has_country_flag = africa_ioc_sea_lanes_secured
+				has_country_flag = africa_mag_harbor_dockets_reopened
+				has_country_flag = africa_nhr_highland_warrants_charted
+				has_country_flag = africa_eac_railway_timetable_locked
+				has_country_flag = africa_glk_lake_guards_mustered
+				has_country_flag = africa_cbc_river_quartermasters_armed
+				has_country_flag = africa_zsc_stone_city_yards_opened
+				has_country_flag = africa_slc_mine_port_belt_secured
+				has_country_flag = africa_aid_corridor_broken
 					has_country_flag = africa_federal_member_vote_recorded
 					has_country_flag = africa_regional_autonomy_statute_ratified
 					has_country_flag = africa_federal_high_court_case_settled
@@ -996,8 +1003,15 @@ africa_clear_runtime_context = {
 		clr_country_flag = africa_regional_authority_mandate_southern_success
 		clr_country_flag = africa_wac_port_congress_convened
 		clr_country_flag = africa_sah_caravan_columns_opened
-			clr_country_flag = africa_ioc_sea_lanes_secured
-			clr_country_flag = africa_aid_corridor_broken
+		clr_country_flag = africa_ioc_sea_lanes_secured
+		clr_country_flag = africa_mag_harbor_dockets_reopened
+		clr_country_flag = africa_nhr_highland_warrants_charted
+		clr_country_flag = africa_eac_railway_timetable_locked
+		clr_country_flag = africa_glk_lake_guards_mustered
+		clr_country_flag = africa_cbc_river_quartermasters_armed
+		clr_country_flag = africa_zsc_stone_city_yards_opened
+		clr_country_flag = africa_slc_mine_port_belt_secured
+		clr_country_flag = africa_aid_corridor_broken
 			clr_country_flag = africa_federal_member_vote_recorded
 			clr_country_flag = africa_regional_autonomy_statute_ratified
 			clr_country_flag = africa_federal_high_court_case_settled
@@ -1667,6 +1681,192 @@ africa_secure_ioc_sea_lanes_from = {
 	add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.regional_package_ioc_alarm_relief }
 	africa_clamp_core_values = yes
 	country_event = { id = chaosx.nr12.57 }
+}
+
+africa_reopen_mag_harbor_dockets_from = {
+	add_political_power = constant:africa_decision.regional_package_action_cost_spend
+	add_command_power = constant:africa_decision.regional_package_action_command_power_spend
+	set_temp_variable = { africa_regional_package_convoy_cost = constant:africa_force.regional_package_convoys }
+	multiply_temp_variable = { africa_regional_package_convoy_cost = -1 }
+	set_temp_variable = { africa_regional_package_train_cost = constant:africa_force.regional_package_trains }
+	multiply_temp_variable = { africa_regional_package_train_cost = -1 }
+	add_equipment_to_stockpile = { type = convoy_1 amount = africa_regional_package_convoy_cost }
+	add_equipment_to_stockpile = { type = train_equipment_1 amount = africa_regional_package_train_cost }
+	FROM = {
+		save_event_target_as = africa_regional_package_target
+		set_country_flag = africa_mag_harbor_dockets_reopened
+		add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_force.regional_package_convoys producer = ROOT }
+		add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:africa_force.regional_package_trains producer = ROOT }
+		random_owned_controlled_state = {
+			limit = { is_on_continent = africa }
+			add_building_construction = { type = dockyard level = 1 instant_build = yes }
+		}
+	}
+	set_country_flag = africa_has_regional_package_action
+	add_to_variable = { africa_regional_package_action_count = 1 }
+	add_to_variable = { africa_league_cohesion = constant:africa_value_delta.regional_package_mag_cohesion }
+	add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.regional_package_mag_alarm_relief }
+	add_to_variable = { africa_paper_core_burden = constant:africa_value_delta.regional_package_mag_burden_relief }
+	africa_clamp_core_values = yes
+	country_event = { id = chaosx.nr12.58 }
+}
+
+africa_chart_nhr_highland_warrants_from = {
+	add_political_power = constant:africa_decision.regional_package_action_cost_spend
+	army_experience = constant:africa_decision.regional_package_action_army_xp_spend
+	set_temp_variable = { africa_regional_package_support_cost = constant:africa_force.regional_package_support_equipment }
+	multiply_temp_variable = { africa_regional_package_support_cost = -1 }
+	add_equipment_to_stockpile = { type = support_equipment amount = africa_regional_package_support_cost }
+	FROM = {
+		save_event_target_as = africa_regional_package_target
+		set_country_flag = africa_nhr_highland_warrants_charted
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_force.regional_package_support_equipment producer = ROOT }
+		random_owned_controlled_state = {
+			limit = { is_on_continent = africa }
+			add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+		}
+	}
+	set_country_flag = africa_has_regional_package_action
+	add_to_variable = { africa_regional_package_action_count = 1 }
+	add_to_variable = { africa_archive_mandate = constant:africa_value_delta.regional_package_nhr_archive }
+	add_to_variable = { africa_authority = constant:africa_value_delta.regional_package_nhr_authority }
+	add_to_variable = { africa_restoration_debt = constant:africa_value_delta.regional_package_nhr_debt_relief }
+	africa_clamp_core_values = yes
+	country_event = { id = chaosx.nr12.59 }
+}
+
+africa_lock_eac_railway_timetable_from = {
+	add_political_power = constant:africa_decision.regional_package_action_cost_spend
+	add_command_power = constant:africa_decision.regional_package_action_command_power_spend
+	set_temp_variable = { africa_regional_package_support_cost = constant:africa_force.regional_package_support_equipment }
+	multiply_temp_variable = { africa_regional_package_support_cost = -1 }
+	set_temp_variable = { africa_regional_package_train_cost = constant:africa_force.regional_package_trains }
+	multiply_temp_variable = { africa_regional_package_train_cost = -1 }
+	add_equipment_to_stockpile = { type = support_equipment amount = africa_regional_package_support_cost }
+	add_equipment_to_stockpile = { type = train_equipment_1 amount = africa_regional_package_train_cost }
+	FROM = {
+		save_event_target_as = africa_regional_package_target
+		set_country_flag = africa_eac_railway_timetable_locked
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_force.regional_package_support_equipment producer = ROOT }
+		add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:africa_force.regional_package_trains producer = ROOT }
+		random_owned_controlled_state = {
+			limit = { is_on_continent = africa }
+			add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+		}
+	}
+	set_country_flag = africa_has_regional_package_action
+	add_to_variable = { africa_regional_package_action_count = 1 }
+	add_to_variable = { africa_authority = constant:africa_value_delta.regional_package_eac_authority }
+	add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_package_eac_trust }
+	add_to_variable = { africa_paper_core_burden = constant:africa_value_delta.regional_package_eac_burden_relief }
+	africa_clamp_core_values = yes
+	country_event = { id = chaosx.nr12.60 }
+}
+
+africa_muster_glk_lake_guards_from = {
+	add_political_power = constant:africa_decision.regional_package_action_cost_spend
+	set_temp_variable = { africa_regional_package_infantry_cost = constant:africa_force.regional_package_infantry_equipment }
+	multiply_temp_variable = { africa_regional_package_infantry_cost = -1 }
+	add_equipment_to_stockpile = { type = infantry_equipment amount = africa_regional_package_infantry_cost }
+	add_manpower = constant:africa_force.regional_package_manpower_spend
+	FROM = {
+		save_event_target_as = africa_regional_package_target
+		set_country_flag = africa_glk_lake_guards_mustered
+		add_manpower = constant:africa_force.regional_package_manpower_transfer
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_force.regional_package_infantry_equipment producer = ROOT }
+		africa_create_authority_guard_reinforcement_divisions = yes
+	}
+	set_country_flag = africa_has_regional_package_action
+	add_to_variable = { africa_regional_package_action_count = 1 }
+	add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_package_glk_trust }
+	add_to_variable = { africa_league_cohesion = constant:africa_value_delta.regional_package_glk_cohesion }
+	add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.regional_package_glk_alarm_relief }
+	africa_clamp_core_values = yes
+	country_event = { id = chaosx.nr12.61 }
+}
+
+africa_arm_cbc_river_quartermasters_from = {
+	add_political_power = constant:africa_decision.regional_package_action_cost_spend
+	set_temp_variable = { africa_regional_package_support_cost = constant:africa_force.regional_package_support_equipment }
+	multiply_temp_variable = { africa_regional_package_support_cost = -1 }
+	set_temp_variable = { africa_regional_package_convoy_cost = constant:africa_force.regional_package_convoys }
+	multiply_temp_variable = { africa_regional_package_convoy_cost = -1 }
+	add_equipment_to_stockpile = { type = support_equipment amount = africa_regional_package_support_cost }
+	add_equipment_to_stockpile = { type = convoy_1 amount = africa_regional_package_convoy_cost }
+	add_manpower = constant:africa_force.regional_package_manpower_spend
+	FROM = {
+		save_event_target_as = africa_regional_package_target
+		set_country_flag = africa_cbc_river_quartermasters_armed
+		add_manpower = constant:africa_force.regional_package_manpower_transfer
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_force.regional_package_support_equipment producer = ROOT }
+		add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_force.regional_package_convoys producer = ROOT }
+		random_owned_controlled_state = {
+			limit = { is_on_continent = africa }
+			add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+		}
+	}
+	set_country_flag = africa_has_regional_package_action
+	add_to_variable = { africa_regional_package_action_count = 1 }
+	add_to_variable = { africa_authority = constant:africa_value_delta.regional_package_cbc_authority }
+	add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_package_cbc_trust }
+	add_to_variable = { africa_paper_core_burden = constant:africa_value_delta.regional_package_cbc_burden_relief }
+	africa_clamp_core_values = yes
+	country_event = { id = chaosx.nr12.62 }
+}
+
+africa_open_zsc_stone_city_yards_from = {
+	add_political_power = constant:africa_decision.regional_package_action_cost_spend
+	army_experience = constant:africa_decision.regional_package_action_army_xp_spend
+	set_temp_variable = { africa_regional_package_support_cost = constant:africa_force.regional_package_support_equipment }
+	multiply_temp_variable = { africa_regional_package_support_cost = -1 }
+	set_temp_variable = { africa_regional_package_infantry_cost = constant:africa_force.regional_package_infantry_equipment }
+	multiply_temp_variable = { africa_regional_package_infantry_cost = -1 }
+	add_equipment_to_stockpile = { type = support_equipment amount = africa_regional_package_support_cost }
+	add_equipment_to_stockpile = { type = infantry_equipment amount = africa_regional_package_infantry_cost }
+	FROM = {
+		save_event_target_as = africa_regional_package_target
+		set_country_flag = africa_zsc_stone_city_yards_opened
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_force.regional_package_support_equipment producer = ROOT }
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_force.regional_package_infantry_equipment producer = ROOT }
+		random_owned_controlled_state = {
+			limit = { is_on_continent = africa }
+			add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+		}
+	}
+	set_country_flag = africa_has_regional_package_action
+	add_to_variable = { africa_regional_package_action_count = 1 }
+	add_to_variable = { africa_old_seat_legitimacy = constant:africa_value_delta.regional_package_zsc_old_seat }
+	add_to_variable = { africa_authority = constant:africa_value_delta.regional_package_zsc_authority }
+	add_to_variable = { africa_restoration_debt = constant:africa_value_delta.regional_package_zsc_debt_relief }
+	africa_clamp_core_values = yes
+	country_event = { id = chaosx.nr12.63 }
+}
+
+africa_secure_slc_mine_port_belt_from = {
+	add_political_power = constant:africa_decision.regional_package_action_cost_spend
+	add_command_power = constant:africa_decision.regional_package_action_command_power_spend
+	set_temp_variable = { africa_regional_package_infantry_cost = constant:africa_force.regional_package_infantry_equipment }
+	multiply_temp_variable = { africa_regional_package_infantry_cost = -1 }
+	add_equipment_to_stockpile = { type = infantry_equipment amount = africa_regional_package_infantry_cost }
+	add_manpower = constant:africa_force.regional_package_manpower_spend
+	FROM = {
+		save_event_target_as = africa_regional_package_target
+		set_country_flag = africa_slc_mine_port_belt_secured
+		add_manpower = constant:africa_force.regional_package_manpower_transfer
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_force.regional_package_infantry_equipment producer = ROOT }
+		africa_create_authority_guard_reinforcement_divisions = yes
+		random_owned_controlled_state = {
+			limit = { is_on_continent = africa }
+			add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+		}
+	}
+	set_country_flag = africa_has_regional_package_action
+	add_to_variable = { africa_regional_package_action_count = 1 }
+	add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.regional_package_slc_momentum }
+	add_to_variable = { africa_authority = constant:africa_value_delta.regional_package_slc_authority }
+	add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.regional_package_slc_alarm }
+	africa_clamp_core_values = yes
+	country_event = { id = chaosx.nr12.64 }
 }
 
 africa_clamp_core_values = {
