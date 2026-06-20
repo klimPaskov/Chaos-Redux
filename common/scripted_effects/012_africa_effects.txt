@@ -470,12 +470,16 @@ africa_apply_triggerable_ally_under_attack_opening = {
 	africa_refresh_external_colonial_holder_pool = yes
 	if = {
 		limit = { has_event_target = africa_triggerable_scenario_ally }
+		event_target:africa_triggerable_scenario_ally = {
+			set_country_flag = africa_triggerable_scenario_ally
+		}
 		random_country = {
 			limit = {
 				is_africa_external_colonial_holder_for_prev = yes
 				NOT = { has_war_with = event_target:africa_triggerable_scenario_ally }
 			}
-			save_event_target_as = africa_triggerable_scenario_holder
+			save_global_event_target_as = africa_triggerable_scenario_holder
+			set_country_flag = africa_triggerable_scenario_holder
 		}
 	}
 	if = {
@@ -497,6 +501,13 @@ africa_apply_triggerable_ally_under_attack_opening = {
 			}
 		}
 	}
+	if = {
+		limit = {
+			has_event_target = africa_triggerable_scenario_ally
+			NOT = { has_event_target = africa_triggerable_scenario_holder }
+		}
+		set_country_flag = africa_triggerable_scenario_ally_no_holder_found
+	}
 	africa_clamp_core_values = yes
 }
 
@@ -509,7 +520,7 @@ africa_triggerable_scenario_save_first_authority_ally = {
 				has_country_flag = africa_charter_member
 			}
 		}
-		WAC = { save_event_target_as = africa_triggerable_scenario_ally }
+		WAC = { save_global_event_target_as = africa_triggerable_scenario_ally }
 	}
 	else_if = {
 		limit = {
@@ -519,7 +530,7 @@ africa_triggerable_scenario_save_first_authority_ally = {
 				has_country_flag = africa_charter_member
 			}
 		}
-		SAH = { save_event_target_as = africa_triggerable_scenario_ally }
+		SAH = { save_global_event_target_as = africa_triggerable_scenario_ally }
 	}
 }
 
@@ -718,6 +729,19 @@ africa_clear_runtime_context = {
 			clr_country_flag = africa_charter_league_leader
 			clr_country_flag = africa_rsa_continental_side
 			clr_country_flag = africa_rsa_loyalist_side
+			clr_country_flag = africa_triggerable_scenario_actor
+			clr_country_flag = africa_triggerable_scenario_rsa_civil_war
+			clr_country_flag = africa_triggerable_scenario_standard_unifier
+			clr_country_flag = africa_triggerable_scenario_fragile_unifier
+			clr_country_flag = africa_triggerable_scenario_fragile_small_host
+			clr_country_flag = africa_triggerable_scenario_fragile_wac_fallback
+			clr_country_flag = africa_triggerable_scenario_fragile_weighted_fallback
+			clr_country_flag = africa_triggerable_scenario_created_host
+			clr_country_flag = africa_triggerable_scenario_liberation_league
+			clr_country_flag = africa_triggerable_scenario_ally_under_attack
+			clr_country_flag = africa_triggerable_scenario_ally_no_holder_found
+			clr_country_flag = africa_triggerable_scenario_high_chaos_covenant
+			clr_country_flag = africa_triggerable_scenario_continental_pole
 			africa_clear_unifier_origin_package = yes
 			clr_country_flag = africa_liberation_front_mission_active
 			clr_country_flag = africa_liberation_front_mission_success
@@ -844,6 +868,20 @@ africa_clear_runtime_context = {
 		clear_global_event_target = africa_rsa_loyalist_side
 	}
 	if = {
+		limit = { has_event_target = africa_triggerable_scenario_ally }
+		event_target:africa_triggerable_scenario_ally = {
+			clr_country_flag = africa_triggerable_scenario_ally
+		}
+		clear_global_event_target = africa_triggerable_scenario_ally
+	}
+	if = {
+		limit = { has_event_target = africa_triggerable_scenario_holder }
+		event_target:africa_triggerable_scenario_holder = {
+			clr_country_flag = africa_triggerable_scenario_holder
+		}
+		clear_global_event_target = africa_triggerable_scenario_holder
+	}
+	if = {
 		limit = { has_event_target = africa_rsa_union_origin }
 		event_target:africa_rsa_union_origin = {
 			clr_country_flag = africa_rsa_union_origin
@@ -898,6 +936,8 @@ africa_clear_runtime_context = {
 			OR = {
 				has_country_flag = africa_scramble_external_holder_registered
 				has_country_flag = africa_scramble_treaty_settled
+				has_country_flag = africa_triggerable_scenario_ally
+				has_country_flag = africa_triggerable_scenario_holder
 				has_country_flag = africa_bestiary_warning_target
 				has_country_flag = africa_bestiary_warning_state_target
 				has_country_flag = africa_bestiary_warning_complied
@@ -932,6 +972,8 @@ africa_clear_runtime_context = {
 		}
 		clr_country_flag = africa_scramble_external_holder_registered
 		clr_country_flag = africa_scramble_treaty_settled
+		clr_country_flag = africa_triggerable_scenario_ally
+		clr_country_flag = africa_triggerable_scenario_holder
 		clr_country_flag = africa_bestiary_warning_target
 		clr_country_flag = africa_bestiary_warning_state_target
 		clr_country_flag = africa_bestiary_warning_complied
@@ -1045,6 +1087,14 @@ africa_clear_runtime_context = {
 	set_variable = { global.africa_runtime_ready = constant:africa_runtime_state.not_ready }
 	clr_global_flag = africa_runtime_context_ready
 	clr_global_flag = africa_rsa_civil_war_active
+	clr_global_flag = africa_triggerable_scenario_started
+	clr_global_flag = africa_triggerable_scenario_rsa_civil_war
+	clr_global_flag = africa_triggerable_scenario_fragile_small_host_selected
+	clr_global_flag = africa_triggerable_scenario_fragile_wac_fallback
+	clr_global_flag = africa_triggerable_scenario_fragile_weighted_fallback
+	clr_global_flag = africa_no_valid_unifier_candidate
+	clear_variable = global.africa_triggerable_scenario_type
+	clear_variable = global.africa_triggerable_scenario_intensity
 }
 
 africa_initialize_core_values = {
