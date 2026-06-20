@@ -20,6 +20,8 @@
 @africa_historical_dossier_route_mission_days = 110
 @africa_historical_dossier_hearing_mission_days = 100
 @africa_historical_dossier_case_ai_pp_cost = 30
+@africa_origin_mandate_case_ai_pp_cost = 30
+@africa_origin_mandate_case_mission_days = 120
 @africa_bestiary_containment_mission_days = 420
 @africa_omen_reliability_mission_days = 120
 @africa_scramble_treaty_mission_days = 240
@@ -71,6 +73,68 @@ africa_continental_congress_category = {
 			africa_refresh_integration_target_states = yes
 		}
 		ai_will_do = { base = constant:africa_ai.normal }
+	}
+
+	africa_open_origin_mandate_case = {
+		icon = GFX_decision_generic_political_discourse
+		cost = 0
+		days_re_enable = constant:africa_decision_days.origin_mandate_case
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = africa_open_origin_mandate_case_req_tt
+				can_africa_start_origin_mandate_case = yes
+			}
+		}
+		custom_cost_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = africa_open_origin_mandate_case_cost_tt
+				can_africa_pay_origin_mandate_case_cost = yes
+			}
+		}
+		custom_cost_text = africa_open_origin_mandate_case_cost_tt
+		ai_hint_pp_cost = @africa_origin_mandate_case_ai_pp_cost
+		complete_effect = {
+			custom_effect_tooltip = africa_open_origin_mandate_case_effect_tt
+			africa_spend_origin_mandate_case_cost = yes
+			set_country_flag = africa_origin_mandate_case_active
+			clr_country_flag = africa_origin_mandate_case_failed
+		}
+		ai_will_do = {
+			base = constant:africa_ai.normal
+			modifier = { factor = constant:africa_ai.preferred can_africa_satisfy_origin_mandate_case_requirements = yes }
+			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_origin_profile_rsa_union }
+			modifier = { factor = constant:africa_ai.low has_war = yes NOT = { has_country_flag = africa_origin_profile_rsa_union } }
+		}
+	}
+
+	africa_origin_mandate_case_mission = {
+		icon = GFX_decision_generic_political_discourse
+		days_mission_timeout = @africa_origin_mandate_case_mission_days
+		is_good = no
+		fire_only_once = no
+		activation = { has_country_flag = africa_origin_mandate_case_active }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = africa_origin_mandate_case_mission_available_tt
+				can_africa_complete_origin_mandate_case = yes
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { has_country_flag = africa_origin_mandate_case_active }
+				has_global_flag = africa_is_one_complete
+			}
+		}
+		cancel_effect = { clr_country_flag = africa_origin_mandate_case_active }
+		complete_effect = {
+			custom_effect_tooltip = africa_origin_mandate_case_mission_success_tt
+			africa_apply_origin_mandate_case_success = yes
+		}
+		timeout_effect = {
+			custom_effect_tooltip = africa_origin_mandate_case_mission_failure_tt
+			africa_apply_origin_mandate_case_failure = yes
+		}
+		ai_will_do = { base = constant:africa_ai.preferred }
 	}
 }
 

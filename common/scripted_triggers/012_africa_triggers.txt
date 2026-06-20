@@ -100,6 +100,123 @@ is_africa_runtime_unifier = {
 	has_country_flag = africa_unifier_active
 }
 
+has_africa_unifier_origin_profile = {
+	OR = {
+		has_country_flag = africa_origin_profile_highland
+		has_country_flag = africa_origin_profile_atlantic_return
+		has_country_flag = africa_origin_profile_rsa_union
+		has_country_flag = africa_origin_profile_nile_red_sea
+		has_country_flag = africa_origin_profile_west_atlantic
+		has_country_flag = africa_origin_profile_congo_forest
+		has_country_flag = africa_origin_profile_indian_ocean
+		has_country_flag = africa_origin_profile_generic_congress
+	}
+}
+
+can_africa_pay_origin_mandate_case_cost = {
+	has_political_power > constant:africa_decision.origin_mandate_case_cost
+	has_equipment = { support_equipment > constant:africa_force.origin_mandate_support_equipment }
+	OR = {
+		AND = {
+			OR = {
+				has_country_flag = africa_origin_profile_highland
+				has_country_flag = africa_origin_profile_rsa_union
+				has_country_flag = africa_origin_profile_west_atlantic
+				has_country_flag = africa_origin_profile_generic_congress
+			}
+			has_equipment = { infantry_equipment > constant:africa_force.origin_mandate_infantry_equipment }
+			has_manpower > constant:africa_force.origin_mandate_manpower_gate
+		}
+		AND = {
+			OR = {
+				has_country_flag = africa_origin_profile_atlantic_return
+				has_country_flag = africa_origin_profile_indian_ocean
+			}
+			has_equipment = { convoy_1 > constant:africa_force.origin_mandate_convoys }
+			command_power > constant:africa_decision.origin_mandate_case_command_power_gate
+		}
+		AND = {
+			has_country_flag = africa_origin_profile_nile_red_sea
+			has_equipment = { train_equipment > constant:africa_force.origin_mandate_trains }
+			command_power > constant:africa_decision.origin_mandate_case_command_power_gate
+		}
+		AND = {
+			has_country_flag = africa_origin_profile_congo_forest
+			has_equipment = { motorized_equipment > constant:africa_force.origin_mandate_motorized }
+			has_army_experience > constant:africa_decision.origin_mandate_case_army_xp_gate
+		}
+	}
+}
+
+can_africa_start_origin_mandate_case = {
+	is_africa_runtime_unifier = yes
+	has_country_flag = africa_focus_charter_mandate_complete
+	has_africa_unifier_origin_profile = yes
+	NOT = { has_country_flag = africa_origin_mandate_case_active }
+	NOT = { has_country_flag = africa_origin_mandate_case_success }
+	NOT = { has_global_flag = africa_is_one_complete }
+	can_africa_pay_origin_mandate_case_cost = yes
+}
+
+can_africa_satisfy_origin_mandate_case_requirements = {
+	is_africa_runtime_unifier = yes
+	NOT = { has_capitulated = yes }
+	capital_scope = { is_controlled_by = ROOT }
+	OR = {
+		AND = {
+			has_country_flag = africa_origin_profile_highland
+			check_variable = { var = africa_authority value = constant:africa_decision.origin_mandate_highland_authority_gate compare = greater_than_or_equals }
+			check_variable = { var = africa_old_seat_legitimacy value = constant:africa_decision.origin_mandate_highland_old_seat_gate compare = greater_than_or_equals }
+		}
+		AND = {
+			has_country_flag = africa_origin_profile_atlantic_return
+			check_variable = { var = africa_legitimacy value = constant:africa_decision.origin_mandate_atlantic_legitimacy_gate compare = greater_than_or_equals }
+			check_variable = { var = africa_regional_trust value = constant:africa_decision.origin_mandate_atlantic_trust_gate compare = greater_than_or_equals }
+			check_variable = { var = africa_restoration_debt value = constant:africa_decision.origin_mandate_atlantic_debt_cap compare = less_than }
+		}
+		AND = {
+			has_country_flag = africa_origin_profile_rsa_union
+			check_variable = { var = africa_liberation_momentum value = constant:africa_decision.origin_mandate_rsa_momentum_gate compare = greater_than_or_equals }
+			check_variable = { var = africa_authority value = constant:africa_decision.origin_mandate_rsa_authority_gate compare = greater_than_or_equals }
+			check_variable = { var = africa_colonial_alarm value = constant:africa_decision.origin_mandate_rsa_alarm_cap compare = less_than }
+		}
+		AND = {
+			has_country_flag = africa_origin_profile_nile_red_sea
+			check_variable = { var = africa_archive_mandate value = constant:africa_decision.origin_mandate_nile_archive_gate compare = greater_than_or_equals }
+			check_variable = { var = africa_old_seat_legitimacy value = constant:africa_decision.origin_mandate_nile_old_seat_gate compare = greater_than_or_equals }
+			check_variable = { var = africa_authority value = constant:africa_decision.origin_mandate_nile_authority_gate compare = greater_than_or_equals }
+		}
+		AND = {
+			has_country_flag = africa_origin_profile_west_atlantic
+			check_variable = { var = africa_league_cohesion value = constant:africa_decision.origin_mandate_west_cohesion_gate compare = greater_than_or_equals }
+			check_variable = { var = africa_liberation_momentum value = constant:africa_decision.origin_mandate_west_momentum_gate compare = greater_than_or_equals }
+			check_variable = { var = africa_legitimacy value = constant:africa_decision.origin_mandate_west_legitimacy_gate compare = greater_than_or_equals }
+		}
+		AND = {
+			has_country_flag = africa_origin_profile_congo_forest
+			check_variable = { var = africa_regional_trust value = constant:africa_decision.origin_mandate_congo_trust_gate compare = greater_than_or_equals }
+			check_variable = { var = africa_habitat_trust value = constant:africa_decision.origin_mandate_congo_habitat_gate compare = greater_than_or_equals }
+			check_variable = { var = africa_mythic_pressure value = constant:africa_decision.origin_mandate_congo_mythic_cap compare = less_than }
+		}
+		AND = {
+			has_country_flag = africa_origin_profile_indian_ocean
+			check_variable = { var = africa_legitimacy value = constant:africa_decision.origin_mandate_indian_legitimacy_gate compare = greater_than_or_equals }
+			check_variable = { var = africa_league_cohesion value = constant:africa_decision.origin_mandate_indian_cohesion_gate compare = greater_than_or_equals }
+			check_variable = { var = africa_colonial_alarm value = constant:africa_decision.origin_mandate_indian_alarm_cap compare = less_than }
+		}
+		AND = {
+			has_country_flag = africa_origin_profile_generic_congress
+			check_variable = { var = africa_legitimacy value = constant:africa_decision.origin_mandate_generic_legitimacy_gate compare = greater_than_or_equals }
+			check_variable = { var = africa_authority value = constant:africa_decision.origin_mandate_generic_authority_gate compare = greater_than_or_equals }
+		}
+	}
+}
+
+can_africa_complete_origin_mandate_case = {
+	has_country_flag = africa_origin_mandate_case_active
+	can_africa_satisfy_origin_mandate_case_requirements = yes
+}
+
 is_africa_charter_league_candidate_for_prev = {
 	exists = yes
 	capital_scope = { is_on_continent = africa }
