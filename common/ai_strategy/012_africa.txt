@@ -51,6 +51,22 @@
 @AFRICA_AI_DOSSIER_ARBITRATION = 41
 @AFRICA_AI_DOSSIER_TRAIN = 18
 @AFRICA_AI_DOSSIER_FORENSICS = 38
+@AFRICA_AI_ORIGIN_HIGHLAND_INFRA = 28
+@AFRICA_AI_ORIGIN_HIGHLAND_INFANTRY = 18
+@AFRICA_AI_ORIGIN_ATLANTIC_CONVOY = 28
+@AFRICA_AI_ORIGIN_ATLANTIC_DOCKYARD = 20
+@AFRICA_AI_ORIGIN_RSA_INFANTRY = 30
+@AFRICA_AI_ORIGIN_RSA_ATTACK = 30
+@AFRICA_AI_ORIGIN_RSA_RESTRAINT = -20
+@AFRICA_AI_ORIGIN_NILE_TRAIN = 18
+@AFRICA_AI_ORIGIN_NILE_SUPPORT = 22
+@AFRICA_AI_ORIGIN_WEST_INFANTRY = 26
+@AFRICA_AI_ORIGIN_WEST_FACTORY = 22
+@AFRICA_AI_ORIGIN_CONGO_MOTORIZED = 20
+@AFRICA_AI_ORIGIN_CONGO_HABITAT = 26
+@AFRICA_AI_ORIGIN_INDIAN_CONVOY = 32
+@AFRICA_AI_ORIGIN_INDIAN_NAVAL = 24
+@AFRICA_AI_ORIGIN_GENERIC_SUPPORT = 16
 
 africa_unifier_charter_consolidation = {
 	allowed = { always = yes }
@@ -79,6 +95,157 @@ africa_unifier_charter_consolidation = {
 		type = build_building
 		id = industrial_complex
 		value = @AFRICA_AI_UNIFIER_FACTORY
+	}
+}
+
+africa_unifier_origin_highland = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_unifier_active
+		has_country_flag = africa_origin_profile_highland
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_ORIGIN_HIGHLAND_INFRA
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @AFRICA_AI_ORIGIN_HIGHLAND_INFANTRY
+	}
+}
+
+africa_unifier_origin_atlantic_return = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_unifier_active
+		has_country_flag = africa_origin_profile_atlantic_return
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = equipment_production_factor
+		id = convoy
+		value = @AFRICA_AI_ORIGIN_ATLANTIC_CONVOY
+	}
+	ai_strategy = {
+		type = build_building
+		id = dockyard
+		value = @AFRICA_AI_ORIGIN_ATLANTIC_DOCKYARD
+	}
+}
+
+africa_unifier_origin_rsa_union = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_unifier_active
+		has_country_flag = africa_origin_profile_rsa_union
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		id = infantry
+		value = @AFRICA_AI_ORIGIN_RSA_ATTACK
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @AFRICA_AI_ORIGIN_RSA_INFANTRY
+	}
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @AFRICA_AI_ORIGIN_RSA_RESTRAINT
+	}
+}
+
+africa_unifier_origin_nile_red_sea = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_unifier_active
+		has_country_flag = africa_origin_profile_nile_red_sea
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = equipment_production_factor
+		id = train
+		value = @AFRICA_AI_ORIGIN_NILE_TRAIN
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_ORIGIN_NILE_SUPPORT
+	}
+}
+
+africa_unifier_origin_west_atlantic = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_unifier_active
+		has_country_flag = africa_origin_profile_west_atlantic
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @AFRICA_AI_ORIGIN_WEST_INFANTRY
+	}
+	ai_strategy = {
+		type = build_building
+		id = industrial_complex
+		value = @AFRICA_AI_ORIGIN_WEST_FACTORY
+	}
+}
+
+africa_unifier_origin_congo_forest = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_unifier_active
+		has_country_flag = africa_origin_profile_congo_forest
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = equipment_production_factor
+		id = motorized
+		value = @AFRICA_AI_ORIGIN_CONGO_MOTORIZED
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @AFRICA_AI_ORIGIN_CONGO_HABITAT
+	}
+}
+
+africa_unifier_origin_indian_ocean = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_unifier_active
+		has_country_flag = africa_origin_profile_indian_ocean
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = equipment_production_factor
+		id = convoy
+		value = @AFRICA_AI_ORIGIN_INDIAN_CONVOY
+	}
+	ai_strategy = {
+		type = build_building
+		id = dockyard
+		value = @AFRICA_AI_ORIGIN_INDIAN_NAVAL
+	}
+}
+
+africa_unifier_origin_general_congress = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = africa_unifier_active
+		has_country_flag = africa_origin_profile_generic_congress
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @AFRICA_AI_ORIGIN_GENERIC_SUPPORT
 	}
 }
 
