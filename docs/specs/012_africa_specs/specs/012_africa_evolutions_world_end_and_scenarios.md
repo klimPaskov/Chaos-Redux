@@ -256,6 +256,8 @@ Scenario types:
 | --- | --- |
 | Standard Unifier | Selects or creates a valid African-capital unifier and starts baseline. |
 | RSA Civil War | Forces RSA branch if RSA exists; if RSA is not in Allies, scenario wrapper may add temporary Allies state or mark unavailable depending on scenario rule. |
+| Fragile Unifier | Selects a small African-capital unifier where possible, otherwise seeds the West African Congress fallback, and starts with weaker authority and higher restoration strain. |
+| Ally Under Attack | Starts with a Charter League authority under outside attack so aid, corridor, defensive, and liberation responses can be validated immediately. |
 | Liberation League | Starts with one or more African countries at war with colonial holders and Africa as protector. |
 | High-Chaos Covenant | Starts evolved with Green Covenant route preview and weird actors enabled. |
 | Continental Pole | Starts after Africa Is One for testing Second Scramble and sponsor routes. |

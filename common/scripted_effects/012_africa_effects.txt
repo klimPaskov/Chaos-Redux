@@ -183,7 +183,15 @@ africa_triggerable_scenario_launch_selected = {
 		}
 	}
 	else = {
-		africa_select_random_unifier_candidate = yes
+		if = {
+			limit = {
+				check_variable = { triggerable_scenarios_africa_type = constant:triggerable_scenario_africa_type.fragile_unifier }
+			}
+			africa_select_fragile_unifier_candidate = yes
+		}
+		else = {
+			africa_select_random_unifier_candidate = yes
+		}
 		if = {
 			limit = { NOT = { has_africa_runtime_context = yes } }
 			africa_triggerable_scenario_seed_wac_host = yes
@@ -196,6 +204,69 @@ africa_triggerable_scenario_launch_selected = {
 			}
 		}
 	}
+}
+
+africa_select_fragile_unifier_candidate = {
+	set_variable = { global.africa_runtime_ready = constant:africa_runtime_state.not_ready }
+	clr_global_flag = africa_no_valid_unifier_candidate
+	clr_global_flag = africa_triggerable_scenario_fragile_small_host_selected
+	clr_global_flag = africa_triggerable_scenario_fragile_wac_fallback
+	clr_global_flag = africa_triggerable_scenario_fragile_weighted_fallback
+	set_temp_variable = { africa_fragile_unifier_selected = 0 }
+	random_country = {
+		limit = {
+			is_africa_valid_unifier_candidate = yes
+			num_of_controlled_states < constant:africa_triggerable_scenario_validation.fragile_controlled_state_threshold
+		}
+		save_event_target_as = africa_fragile_unifier_candidate
+		set_temp_variable = { africa_fragile_unifier_selected = 1 }
+	}
+	if = {
+		limit = { check_variable = { africa_fragile_unifier_selected > 0 } }
+		event_target:africa_fragile_unifier_candidate = {
+			africa_prepare_runtime_context_from_this = yes
+			set_country_flag = africa_triggerable_scenario_fragile_small_host
+		}
+		set_global_flag = africa_triggerable_scenario_fragile_small_host_selected
+	}
+	else_if = {
+		limit = {
+			WAC = { exists = no }
+		}
+		africa_triggerable_scenario_seed_wac_host = yes
+		set_global_flag = africa_triggerable_scenario_fragile_wac_fallback
+		if = {
+			limit = { has_africa_runtime_context = yes }
+			event_target:africa_unifier_country = {
+				set_country_flag = africa_triggerable_scenario_fragile_wac_fallback
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			WAC = { is_africa_valid_unifier_candidate = yes }
+		}
+		WAC = {
+			africa_prepare_runtime_context_from_this = yes
+			set_country_flag = africa_triggerable_scenario_fragile_wac_fallback
+		}
+		set_global_flag = africa_triggerable_scenario_fragile_wac_fallback
+	}
+	else_if = {
+		limit = { has_africa_valid_unifier_candidate = yes }
+		africa_select_weighted_unifier_candidate = yes
+		set_global_flag = africa_triggerable_scenario_fragile_weighted_fallback
+		if = {
+			limit = { has_africa_runtime_context = yes }
+			event_target:africa_unifier_country = {
+				set_country_flag = africa_triggerable_scenario_fragile_weighted_fallback
+			}
+		}
+	}
+	else = {
+		set_global_flag = africa_no_valid_unifier_candidate
+	}
+	set_temp_variable = { africa_fragile_unifier_selected = 0 }
 }
 
 africa_triggerable_scenario_seed_wac_host = {
@@ -239,11 +310,31 @@ africa_apply_triggerable_scenario_setup = {
 		limit = {
 			check_variable = {
 				var = global.africa_triggerable_scenario_type
+				value = constant:triggerable_scenario_africa_type.fragile_unifier
+				compare = equals
+			}
+		}
+		africa_apply_triggerable_fragile_unifier_opening = yes
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = global.africa_triggerable_scenario_type
 				value = constant:triggerable_scenario_africa_type.liberation_league
 				compare = equals
 			}
 		}
 		africa_apply_triggerable_liberation_league_opening = yes
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = global.africa_triggerable_scenario_type
+				value = constant:triggerable_scenario_africa_type.ally_under_attack
+				compare = equals
+			}
+		}
+		africa_apply_triggerable_ally_under_attack_opening = yes
 	}
 	if = {
 		limit = {
@@ -328,6 +419,15 @@ africa_apply_triggerable_scenario_starting_forces = {
 	africa_clamp_core_values = yes
 }
 
+africa_apply_triggerable_fragile_unifier_opening = {
+	set_country_flag = africa_triggerable_scenario_fragile_unifier
+	add_to_variable = { africa_legitimacy = constant:africa_triggerable_scenario_value_delta.fragile_legitimacy }
+	add_to_variable = { africa_authority = constant:africa_triggerable_scenario_value_delta.fragile_authority }
+	add_to_variable = { africa_regional_trust = constant:africa_triggerable_scenario_value_delta.fragile_trust }
+	add_to_variable = { africa_restoration_debt = constant:africa_triggerable_scenario_value_delta.fragile_debt }
+	africa_clamp_core_values = yes
+}
+
 africa_apply_triggerable_liberation_league_opening = {
 	set_country_flag = africa_triggerable_scenario_liberation_league
 	set_country_flag = africa_liberation_war_office_open
@@ -352,6 +452,75 @@ africa_apply_triggerable_liberation_league_opening = {
 		}
 	}
 	africa_clamp_core_values = yes
+}
+
+africa_apply_triggerable_ally_under_attack_opening = {
+	set_country_flag = africa_triggerable_scenario_ally_under_attack
+	set_country_flag = africa_focus_charter_mandate_complete
+	set_country_flag = africa_charter_general_staff_open
+	set_country_flag = africa_liberation_war_office_open
+	set_country_flag = africa_liberation_front_mission_active
+	set_country_flag = africa_liberation_front_columns_ready
+	add_to_variable = { africa_liberation_momentum = constant:africa_triggerable_scenario_value_delta.ally_momentum }
+	add_to_variable = { africa_league_cohesion = constant:africa_triggerable_scenario_value_delta.ally_cohesion }
+	add_to_variable = { africa_colonial_alarm = constant:africa_triggerable_scenario_value_delta.ally_alarm }
+	africa_triggerable_scenario_seed_first_authority = yes
+	africa_triggerable_scenario_save_first_authority_ally = yes
+	africa_refresh_charter_candidate_pool = yes
+	africa_refresh_external_colonial_holder_pool = yes
+	if = {
+		limit = { has_event_target = africa_triggerable_scenario_ally }
+		random_country = {
+			limit = {
+				is_africa_external_colonial_holder_for_prev = yes
+				NOT = { has_war_with = event_target:africa_triggerable_scenario_ally }
+			}
+			save_event_target_as = africa_triggerable_scenario_holder
+		}
+	}
+	if = {
+		limit = {
+			has_event_target = africa_triggerable_scenario_ally
+			has_event_target = africa_triggerable_scenario_holder
+		}
+		event_target:africa_triggerable_scenario_holder = {
+			declare_war_on = {
+				target = event_target:africa_triggerable_scenario_ally
+				type = annex_everything
+			}
+		}
+		if = {
+			limit = { NOT = { has_war_with = event_target:africa_triggerable_scenario_holder } }
+			declare_war_on = {
+				target = event_target:africa_triggerable_scenario_holder
+				type = annex_everything
+			}
+		}
+	}
+	africa_clamp_core_values = yes
+}
+
+africa_triggerable_scenario_save_first_authority_ally = {
+	if = {
+		limit = {
+			NOT = { tag = WAC }
+			WAC = {
+				exists = yes
+				has_country_flag = africa_charter_member
+			}
+		}
+		WAC = { save_event_target_as = africa_triggerable_scenario_ally }
+	}
+	else_if = {
+		limit = {
+			NOT = { tag = SAH }
+			SAH = {
+				exists = yes
+				has_country_flag = africa_charter_member
+			}
+		}
+		SAH = { save_event_target_as = africa_triggerable_scenario_ally }
+	}
 }
 
 africa_apply_triggerable_high_chaos_opening = {

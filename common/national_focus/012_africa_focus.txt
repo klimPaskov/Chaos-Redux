@@ -2208,18 +2208,17 @@ focus_tree = {
 	focus = {
 		id = AFR_congress_of_continents
 		icon = GFX_goal_africa_world_order_route
-		prerequisite = { focus = AFR_middle_east_charter_staff }
-		prerequisite = { focus = AFR_asia_charter_liaison_columns }
-		prerequisite = { focus = AFR_europe_charter_observers }
-		prerequisite = { focus = AFR_south_atlantic_return_mandate }
+		prerequisite = {
+			focus = AFR_middle_east_charter_staff
+			focus = AFR_asia_charter_liaison_columns
+			focus = AFR_europe_charter_observers
+			focus = AFR_south_atlantic_return_mandate
+		}
 		x = 24
 		y = 15
 		cost = 10
 		available = {
-			has_country_flag = africa_sponsored_middle_east_charter
-			has_country_flag = africa_sponsored_asia_charter
-			has_country_flag = africa_sponsored_europe_charter
-			has_country_flag = africa_sponsored_south_atlantic_charter
+			has_africa_any_sponsored_cross_continent_charter = yes
 		}
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_WORLD_ORDER }
 		completion_reward = {
@@ -2229,7 +2228,13 @@ focus_tree = {
 			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.cross_continent_overreach }
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = {
+			factor = constant:africa_ai.normal
+			modifier = {
+				factor = constant:africa_ai.strong
+				has_africa_any_sponsored_cross_continent_charter = yes
+			}
+		}
 	}
 
 	focus = {
