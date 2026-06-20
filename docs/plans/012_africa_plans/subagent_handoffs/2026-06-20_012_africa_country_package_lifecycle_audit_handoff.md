@@ -68,7 +68,7 @@ Bounded audit of Event 012 created and transformed actors around `africa_apply_c
 ### Missing Or Stale Country Package Surfaces
 
 - No missing tag/history/OOB/focus/idea surface found in this bounded pass.
-- `africa_charter_membership_state` has no separate `former_member` constant; Charter leave currently records `constant:africa_charter_league.resistant_member` while also setting `africa_charter_former_member`. This predates the patch and may deserve a broader membership-state cleanup, but it is outside this narrow role-identity fix.
+- Parent follow-up closed the membership-state residual after this audit: `africa_charter_league.former_member` now exists and Charter leave records that state while resistance remains separate.
 
 ### Map And State Setup Issues
 
@@ -120,5 +120,5 @@ After:
 
 ## Remaining Risks
 
-- The membership-state variable has no distinct former-member constant. If the parent wants cleaner status localisation or scripted GUI state later, add a small constant/localisation follow-up rather than overloading `resistant_member`.
+- Membership-state overload was closed by parent follow-up: peaceful exit now uses a distinct former-member constant rather than overloading `resistant_member`.
 - Existing tags and shared trees should still receive a later full country-package completion audit before Event 012 is claimed complete.
