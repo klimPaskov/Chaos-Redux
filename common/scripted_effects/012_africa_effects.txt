@@ -5683,16 +5683,20 @@ africa_open_aid_corridor_to_from = {
 }
 
 africa_start_continent_sponsor_readiness_mission = {
-	set_temp_variable = { africa_sponsor_readiness_convoy_cost = constant:africa_force.sponsor_readiness_convoys }
-	multiply_temp_variable = { africa_sponsor_readiness_convoy_cost = -1 }
-	set_temp_variable = { africa_sponsor_readiness_support_cost = constant:africa_force.sponsor_readiness_support_equipment }
-	multiply_temp_variable = { africa_sponsor_readiness_support_cost = -1 }
-	add_equipment_to_stockpile = { type = convoy_1 amount = africa_sponsor_readiness_convoy_cost }
-	add_equipment_to_stockpile = { type = support_equipment amount = africa_sponsor_readiness_support_cost }
-	add_command_power = constant:africa_decision.sponsor_readiness_command_power_spend
-	set_country_flag = africa_continent_sponsor_readiness_mission_active
-	clr_country_flag = africa_continent_sponsor_readiness_mission_success
-	clr_country_flag = africa_continent_sponsor_readiness_mission_failed
+	if = {
+		limit = { can_africa_start_continent_sponsor_readiness_mission = yes }
+		add_political_power = constant:africa_decision.sponsor_mission_cost_spend
+		set_temp_variable = { africa_sponsor_readiness_convoy_cost = constant:africa_force.sponsor_readiness_convoys }
+		multiply_temp_variable = { africa_sponsor_readiness_convoy_cost = -1 }
+		set_temp_variable = { africa_sponsor_readiness_support_cost = constant:africa_force.sponsor_readiness_support_equipment }
+		multiply_temp_variable = { africa_sponsor_readiness_support_cost = -1 }
+		add_equipment_to_stockpile = { type = convoy_1 amount = africa_sponsor_readiness_convoy_cost }
+		add_equipment_to_stockpile = { type = support_equipment amount = africa_sponsor_readiness_support_cost }
+		add_command_power = constant:africa_decision.sponsor_readiness_command_power_spend
+		set_country_flag = africa_continent_sponsor_readiness_mission_active
+		clr_country_flag = africa_continent_sponsor_readiness_mission_success
+		clr_country_flag = africa_continent_sponsor_readiness_mission_failed
+	}
 }
 
 africa_mark_rsa_allies_branch_start = {
@@ -9332,7 +9336,10 @@ africa_fail_middle_east_unifier_proof = {
 
 africa_register_middle_east_unifier_proof = {
 	if = {
-		limit = { NOT = { has_country_flag = africa_middle_east_unifier_proof_verified } }
+		limit = {
+			can_africa_keep_middle_east_unifier_proof_active = yes
+			NOT = { has_country_flag = africa_middle_east_unifier_proof_verified }
+		}
 		add_to_variable = { africa_legitimacy = constant:africa_value_delta.external_unifier_middle_east_recognition }
 		set_country_flag = africa_middle_east_unifier_proof_verified
 		clr_country_flag = africa_middle_east_unifier_proof_active
@@ -9381,7 +9388,10 @@ africa_fail_asia_unifier_proof = {
 
 africa_register_asia_unifier_proof = {
 	if = {
-		limit = { NOT = { has_country_flag = africa_asia_unifier_proof_verified } }
+		limit = {
+			can_africa_keep_asia_unifier_proof_active = yes
+			NOT = { has_country_flag = africa_asia_unifier_proof_verified }
+		}
 		add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.external_unifier_asia_momentum }
 		set_country_flag = africa_asia_unifier_proof_verified
 		clr_country_flag = africa_asia_unifier_proof_active
@@ -9429,7 +9439,10 @@ africa_fail_europe_unifier_proof = {
 
 africa_register_europe_unifier_proof = {
 	if = {
-		limit = { NOT = { has_country_flag = africa_europe_unifier_proof_verified } }
+		limit = {
+			can_africa_keep_europe_unifier_proof_active = yes
+			NOT = { has_country_flag = africa_europe_unifier_proof_verified }
+		}
 		add_to_variable = { africa_authority = constant:africa_value_delta.external_unifier_europe_authority }
 		add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.external_unifier_proof_alarm }
 		set_country_flag = africa_europe_unifier_proof_verified
@@ -9476,7 +9489,10 @@ africa_fail_south_atlantic_unifier_proof = {
 
 africa_register_south_atlantic_unifier_proof = {
 	if = {
-		limit = { NOT = { has_country_flag = africa_south_atlantic_unifier_proof_verified } }
+		limit = {
+			can_africa_keep_south_atlantic_unifier_proof_active = yes
+			NOT = { has_country_flag = africa_south_atlantic_unifier_proof_verified }
+		}
 		add_to_variable = { africa_league_cohesion = constant:africa_value_delta.external_unifier_south_atlantic_cohesion }
 		set_country_flag = africa_south_atlantic_unifier_proof_verified
 		clr_country_flag = africa_south_atlantic_unifier_proof_active
