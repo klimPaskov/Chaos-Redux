@@ -232,6 +232,127 @@ is_africa_charter_league_candidate_for_prev = {
 	}
 }
 
+is_africa_current_charter_side_country_for_root = {
+	exists = yes
+	NOT = { tag = ROOT }
+	OR = {
+		has_country_flag = africa_charter_member
+		has_country_flag = africa_charter_protected_member
+		has_country_flag = africa_regional_authority_subject
+	}
+	NOT = { has_country_flag = africa_charter_former_member }
+	NOT = { has_country_flag = africa_charter_resistant_member }
+	NOT = { has_capitulated = yes }
+	NOT = { has_war_with = ROOT }
+}
+
+can_africa_pay_charter_member_influence_cost = {
+	has_political_power > constant:africa_decision.charter_influence_cost
+	command_power > constant:africa_decision.charter_influence_command_power_gate
+	has_equipment = { support_equipment > constant:africa_force.dossier_survey_support_equipment }
+}
+
+can_africa_target_charter_member_influence_for_root = {
+	is_africa_current_charter_side_country_for_root = yes
+	NOT = { has_country_flag = africa_charter_member_influence_active }
+	NOT = { has_country_flag = africa_charter_member_influence_recorded }
+}
+
+can_africa_keep_charter_member_influence_for_root = {
+	is_africa_current_charter_side_country_for_root = yes
+	has_country_flag = africa_charter_member_influence_active
+	NOT = { has_country_flag = africa_charter_member_influence_recorded }
+}
+
+can_africa_start_charter_member_influence_for_from = {
+	is_africa_runtime_unifier = yes
+	has_country_flag = africa_charter_courts_open
+	check_variable = {
+		var = africa_regional_trust
+		value = constant:africa_decision.charter_influence_trust_gate
+		compare = greater_than_or_equals
+	}
+	FROM = { can_africa_target_charter_member_influence_for_root = yes }
+}
+
+can_africa_keep_charter_member_influence_for_from = {
+	is_africa_runtime_unifier = yes
+	has_country_flag = africa_charter_courts_open
+	check_variable = {
+		var = africa_regional_trust
+		value = constant:africa_decision.charter_influence_trust_gate
+		compare = greater_than_or_equals
+	}
+	FROM = { can_africa_keep_charter_member_influence_for_root = yes }
+}
+
+can_africa_pay_authority_integration_docket_cost = {
+	has_political_power > constant:africa_decision.charter_integration_docket_cost
+	command_power > constant:africa_decision.regional_authority_mandate_command_power_gate
+	has_equipment = { support_equipment > constant:africa_force.authority_seat_support_equipment }
+	has_manpower > constant:africa_force.authority_seat_manpower_gate
+}
+
+can_africa_target_authority_integration_docket_for_root = {
+	exists = yes
+	NOT = { tag = ROOT }
+	has_country_flag = africa_regional_authority_subject
+	has_country_flag = africa_regional_authority_mandate_success
+	NOT = { has_country_flag = africa_authority_integration_docket_active }
+	NOT = { has_country_flag = africa_authority_integration_docketed }
+	NOT = { has_country_flag = africa_charter_former_member }
+	NOT = { has_country_flag = africa_charter_resistant_member }
+	NOT = { has_capitulated = yes }
+	NOT = { has_war_with = ROOT }
+	capital_scope = { is_controlled_by = THIS }
+}
+
+can_africa_keep_authority_integration_docket_for_root = {
+	exists = yes
+	NOT = { tag = ROOT }
+	has_country_flag = africa_regional_authority_subject
+	has_country_flag = africa_regional_authority_mandate_success
+	has_country_flag = africa_authority_integration_docket_active
+	NOT = { has_country_flag = africa_authority_integration_docketed }
+	NOT = { has_country_flag = africa_charter_former_member }
+	NOT = { has_country_flag = africa_charter_resistant_member }
+	NOT = { has_capitulated = yes }
+	NOT = { has_war_with = ROOT }
+	capital_scope = { is_controlled_by = THIS }
+}
+
+can_africa_start_authority_integration_docket_for_from = {
+	is_africa_runtime_unifier = yes
+	has_country_flag = africa_integrated_regions_open
+	check_variable = {
+		var = africa_authority
+		value = constant:africa_decision.integration_authority_gate
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = africa_regional_trust
+		value = constant:africa_decision.charter_integration_trust_gate
+		compare = greater_than_or_equals
+	}
+	FROM = { can_africa_target_authority_integration_docket_for_root = yes }
+}
+
+can_africa_keep_authority_integration_docket_for_from = {
+	is_africa_runtime_unifier = yes
+	has_country_flag = africa_integrated_regions_open
+	check_variable = {
+		var = africa_authority
+		value = constant:africa_decision.integration_authority_gate
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = africa_regional_trust
+		value = constant:africa_decision.charter_integration_trust_gate
+		compare = greater_than_or_equals
+	}
+	FROM = { can_africa_keep_authority_integration_docket_for_root = yes }
+}
+
 is_africa_paper_claim_state = {
 	is_on_continent = africa
 	has_state_flag = africa_paper_claim

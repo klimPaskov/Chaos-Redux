@@ -517,47 +517,53 @@ africa_charter_league_diplomacy_category = {
 				tooltip = africa_influence_charter_member_root_req_tt
 				is_africa_runtime_unifier = yes
 				has_country_flag = africa_charter_courts_open
+				check_variable = {
+					var = africa_regional_trust
+					value = constant:africa_decision.charter_influence_trust_gate
+					compare = greater_than_or_equals
+				}
 			}
 		}
 		target_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_influence_charter_member_target_req_tt
-				FROM = {
-					exists = yes
-					NOT = { tag = ROOT }
-					OR = {
-						has_country_flag = africa_charter_member
-						has_country_flag = africa_charter_protected_member
-						has_country_flag = africa_regional_authority_subject
-					}
-					NOT = { has_country_flag = africa_charter_member_influence_recorded }
-				}
+				FROM = { can_africa_target_charter_member_influence_for_root = yes }
 			}
 		}
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_influence_charter_member_cost_tt
-				has_political_power > constant:africa_decision.charter_influence_cost
-				has_equipment = { support_equipment > constant:africa_force.dossier_survey_support_equipment }
+				can_africa_pay_charter_member_influence_cost = yes
 			}
 		}
 		custom_cost_text = africa_influence_charter_member_cost_tt
 		complete_effect = {
-			custom_effect_tooltip = africa_influence_charter_member_effect_tt
-			add_political_power = constant:africa_decision.charter_influence_cost_spend
-			set_temp_variable = { africa_charter_influence_support_cost = constant:africa_force.dossier_survey_support_equipment }
-			multiply_temp_variable = { africa_charter_influence_support_cost = -1 }
-			add_equipment_to_stockpile = { type = support_equipment amount = africa_charter_influence_support_cost }
-			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.charter_join_cohesion }
-			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
-			FROM = {
-				set_country_flag = africa_charter_member_influence_recorded
-				add_opinion_modifier = {
-					target = ROOT
-					modifier = positive
+			if = {
+				limit = {
+					can_africa_start_charter_member_influence_for_from = yes
+					can_africa_pay_charter_member_influence_cost = yes
 				}
+				custom_effect_tooltip = africa_influence_charter_member_start_tt
+				africa_start_charter_member_influence_for_from = yes
 			}
-			africa_clamp_core_values = yes
+		}
+		cancel_trigger = {
+			NOT = { can_africa_keep_charter_member_influence_for_from = yes }
+		}
+		cancel_effect = {
+			custom_effect_tooltip = africa_influence_charter_member_failure_tt
+			africa_fail_charter_member_influence_for_from = yes
+		}
+		remove_effect = {
+			if = {
+				limit = { can_africa_keep_charter_member_influence_for_from = yes }
+				custom_effect_tooltip = africa_influence_charter_member_effect_tt
+				africa_complete_charter_member_influence_for_from = yes
+			}
+			else = {
+				custom_effect_tooltip = africa_influence_charter_member_failure_tt
+				africa_fail_charter_member_influence_for_from = yes
+			}
 		}
 		ai_will_do = { base = @africa_ai_normal }
 	}
@@ -635,6 +641,7 @@ africa_charter_league_diplomacy_category = {
 					NOT = { tag = ROOT }
 					has_country_flag = africa_regional_authority_subject
 					NOT = { has_country_flag = africa_regional_autonomy_statute_ratified }
+					NOT = { has_country_flag = africa_authority_integration_docket_active }
 					NOT = { has_country_flag = africa_authority_integration_docketed }
 				}
 			}
@@ -727,40 +734,53 @@ africa_charter_league_diplomacy_category = {
 					value = constant:africa_decision.integration_authority_gate
 					compare = greater_than_or_equals
 				}
+				check_variable = {
+					var = africa_regional_trust
+					value = constant:africa_decision.charter_integration_trust_gate
+					compare = greater_than_or_equals
+				}
 			}
 		}
 		target_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_docket_authority_integration_target_req_tt
-				FROM = {
-					exists = yes
-					has_country_flag = africa_regional_authority_subject
-					NOT = { has_country_flag = africa_authority_integration_docketed }
-				}
+				FROM = { can_africa_target_authority_integration_docket_for_root = yes }
 			}
 		}
 		custom_cost_trigger = {
 			custom_trigger_tooltip = {
 				tooltip = africa_docket_authority_integration_cost_tt
-				has_political_power > constant:africa_decision.charter_integration_docket_cost
-				has_equipment = { support_equipment > constant:africa_force.authority_seat_support_equipment }
-				has_manpower > constant:africa_force.authority_seat_manpower_gate
-				command_power > constant:africa_decision.regional_authority_mandate_command_power_gate
+				can_africa_pay_authority_integration_docket_cost = yes
 			}
 		}
 		custom_cost_text = africa_docket_authority_integration_cost_tt
 		complete_effect = {
-			custom_effect_tooltip = africa_docket_authority_integration_effect_tt
-			add_political_power = constant:africa_decision.charter_integration_docket_cost_spend
-			set_temp_variable = { africa_authority_docket_support_cost = constant:africa_force.authority_seat_support_equipment }
-			multiply_temp_variable = { africa_authority_docket_support_cost = -1 }
-			add_equipment_to_stockpile = { type = support_equipment amount = africa_authority_docket_support_cost }
-			add_manpower = constant:africa_force.integration_manpower_spend
-			add_command_power = constant:africa_decision.regional_authority_mandate_command_power_spend
-			FROM = { set_country_flag = africa_authority_integration_docketed }
-			add_to_variable = { africa_authority = constant:africa_value_delta.integration_authority }
-			add_to_variable = { africa_paper_core_burden = constant:africa_value_delta.integration_burden_relief }
-			africa_clamp_core_values = yes
+			if = {
+				limit = {
+					can_africa_start_authority_integration_docket_for_from = yes
+					can_africa_pay_authority_integration_docket_cost = yes
+				}
+				custom_effect_tooltip = africa_docket_authority_integration_start_tt
+				africa_start_authority_integration_docket_for_from = yes
+			}
+		}
+		cancel_trigger = {
+			NOT = { can_africa_keep_authority_integration_docket_for_from = yes }
+		}
+		cancel_effect = {
+			custom_effect_tooltip = africa_docket_authority_integration_failure_tt
+			africa_fail_authority_integration_docket_for_from = yes
+		}
+		remove_effect = {
+			if = {
+				limit = { can_africa_keep_authority_integration_docket_for_from = yes }
+				custom_effect_tooltip = africa_docket_authority_integration_effect_tt
+				africa_complete_authority_integration_docket_for_from = yes
+			}
+			else = {
+				custom_effect_tooltip = africa_docket_authority_integration_failure_tt
+				africa_fail_authority_integration_docket_for_from = yes
+			}
 		}
 		ai_will_do = { base = @africa_ai_normal }
 	}
@@ -1429,6 +1449,7 @@ africa_charter_member_category = {
 					has_country_flag = africa_regional_authority_subject
 					has_country_flag = africa_bestiary_actor_bound_to_charter
 				}
+				NOT = { has_country_flag = africa_authority_integration_docket_active }
 				NOT = { has_country_flag = africa_authority_integration_docketed }
 				NOT = { has_country_flag = africa_charter_former_member }
 				NOT = { has_country_flag = africa_charter_resistant_member }
@@ -1474,6 +1495,7 @@ africa_charter_member_category = {
 		ai_will_do = {
 			base = @africa_ai_low
 			modifier = { factor = @africa_ai_preferred has_country_flag = africa_authority_prefers_protectorate }
+			modifier = { factor = @africa_ai_very_low has_country_flag = africa_authority_integration_docket_active }
 			modifier = { factor = @africa_ai_very_low has_country_flag = africa_authority_integration_docketed }
 		}
 	}
@@ -1489,6 +1511,7 @@ africa_charter_member_category = {
 				OR = {
 					has_country_flag = africa_charter_former_member
 					has_country_flag = africa_charter_resistant_member
+					has_country_flag = africa_authority_integration_docket_active
 					has_country_flag = africa_authority_integration_docketed
 				}
 				NOT = { has_country_flag = africa_charter_resistance_war_prepared }
