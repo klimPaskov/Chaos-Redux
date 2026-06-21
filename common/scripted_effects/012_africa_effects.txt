@@ -1277,9 +1277,14 @@ africa_clear_runtime_context = {
 				has_country_flag = africa_zsc_stone_city_yards_opened
 				has_country_flag = africa_slc_mine_port_belt_secured
 				has_country_flag = africa_aid_corridor_broken
+					has_country_flag = africa_charter_member_influence_active
+					has_country_flag = africa_charter_member_influence_failed
 					has_country_flag = africa_charter_member_influence_recorded
 					has_country_flag = africa_federal_member_vote_recorded
 					has_country_flag = africa_regional_autonomy_statute_ratified
+					has_country_flag = africa_authority_integration_docket_active
+					has_country_flag = africa_authority_integration_docket_failed
+					has_country_flag = africa_authority_integration_docketed
 					has_country_flag = africa_federal_high_court_case_settled
 					has_country_flag = africa_chimpanzee_telegraph_relays_tasked
 					has_country_flag = africa_okapi_shadow_dossiers_requested
@@ -1333,9 +1338,14 @@ africa_clear_runtime_context = {
 		clr_country_flag = africa_zsc_stone_city_yards_opened
 		clr_country_flag = africa_slc_mine_port_belt_secured
 		clr_country_flag = africa_aid_corridor_broken
+			clr_country_flag = africa_charter_member_influence_active
+			clr_country_flag = africa_charter_member_influence_failed
 			clr_country_flag = africa_charter_member_influence_recorded
 			clr_country_flag = africa_federal_member_vote_recorded
 			clr_country_flag = africa_regional_autonomy_statute_ratified
+			clr_country_flag = africa_authority_integration_docket_active
+			clr_country_flag = africa_authority_integration_docket_failed
+			clr_country_flag = africa_authority_integration_docketed
 			clr_country_flag = africa_federal_high_court_case_settled
 			africa_clear_bestiary_actor_action_flags = yes
 		}
@@ -5021,7 +5031,12 @@ africa_establish_union_start = {
 				has_country_flag = africa_member_confidence_target
 				has_country_flag = africa_member_confidence_kept
 					has_country_flag = africa_member_confidence_broken
+					has_country_flag = africa_charter_member_influence_active
+					has_country_flag = africa_charter_member_influence_failed
 					has_country_flag = africa_charter_member_influence_recorded
+					has_country_flag = africa_authority_integration_docket_active
+					has_country_flag = africa_authority_integration_docket_failed
+					has_country_flag = africa_authority_integration_docketed
 					has_country_flag = africa_federal_member_vote_recorded
 					has_country_flag = africa_regional_autonomy_statute_ratified
 					has_country_flag = africa_federal_high_court_case_settled
@@ -5045,7 +5060,12 @@ africa_establish_union_start = {
 		clr_country_flag = africa_member_confidence_target
 		clr_country_flag = africa_member_confidence_kept
 			clr_country_flag = africa_member_confidence_broken
+			clr_country_flag = africa_charter_member_influence_active
+			clr_country_flag = africa_charter_member_influence_failed
 			clr_country_flag = africa_charter_member_influence_recorded
+			clr_country_flag = africa_authority_integration_docket_active
+			clr_country_flag = africa_authority_integration_docket_failed
+			clr_country_flag = africa_authority_integration_docketed
 			clr_country_flag = africa_federal_member_vote_recorded
 			clr_country_flag = africa_regional_autonomy_statute_ratified
 			clr_country_flag = africa_federal_high_court_case_settled
@@ -5974,6 +5994,87 @@ africa_transfer_league_aid_to_from = {
 		}
 	}
 	add_to_variable = { africa_league_cohesion = constant:africa_value_delta.charter_join_cohesion }
+	africa_clamp_core_values = yes
+}
+
+africa_pay_charter_member_influence_cost = {
+	add_political_power = constant:africa_decision.charter_influence_cost_spend
+	add_command_power = constant:africa_decision.charter_influence_command_power_spend
+	set_temp_variable = { africa_charter_influence_support_cost = constant:africa_force.dossier_survey_support_equipment }
+	multiply_temp_variable = { africa_charter_influence_support_cost = -1 }
+	add_equipment_to_stockpile = { type = support_equipment amount = africa_charter_influence_support_cost }
+}
+
+africa_start_charter_member_influence_for_from = {
+	africa_pay_charter_member_influence_cost = yes
+	FROM = {
+		set_country_flag = africa_charter_member_influence_active
+		clr_country_flag = africa_charter_member_influence_failed
+	}
+}
+
+africa_complete_charter_member_influence_for_from = {
+	FROM = {
+		clr_country_flag = africa_charter_member_influence_active
+		clr_country_flag = africa_charter_member_influence_failed
+		set_country_flag = africa_charter_member_influence_recorded
+		add_opinion_modifier = {
+			target = ROOT
+			modifier = positive
+		}
+	}
+	add_to_variable = { africa_league_cohesion = constant:africa_value_delta.charter_join_cohesion }
+	add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
+	africa_clamp_core_values = yes
+}
+
+africa_fail_charter_member_influence_for_from = {
+	FROM = {
+		clr_country_flag = africa_charter_member_influence_active
+		set_country_flag = africa_charter_member_influence_failed
+	}
+	add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.member_confidence_failure_alarm }
+	add_to_variable = { africa_league_cohesion = constant:africa_value_delta.member_confidence_failure_cohesion }
+	africa_clamp_core_values = yes
+}
+
+africa_pay_authority_integration_docket_cost = {
+	add_political_power = constant:africa_decision.charter_integration_docket_cost_spend
+	set_temp_variable = { africa_authority_docket_support_cost = constant:africa_force.authority_seat_support_equipment }
+	multiply_temp_variable = { africa_authority_docket_support_cost = -1 }
+	add_equipment_to_stockpile = { type = support_equipment amount = africa_authority_docket_support_cost }
+	add_manpower = constant:africa_force.integration_manpower_spend
+	add_command_power = constant:africa_decision.regional_authority_mandate_command_power_spend
+}
+
+africa_start_authority_integration_docket_for_from = {
+	africa_pay_authority_integration_docket_cost = yes
+	FROM = {
+		set_country_flag = africa_authority_integration_docket_active
+		clr_country_flag = africa_authority_integration_docket_failed
+	}
+}
+
+africa_complete_authority_integration_docket_for_from = {
+	FROM = {
+		clr_country_flag = africa_authority_integration_docket_active
+		clr_country_flag = africa_authority_integration_docket_failed
+		set_country_flag = africa_authority_integration_docketed
+	}
+	add_to_variable = { africa_authority = constant:africa_value_delta.integration_authority }
+	add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
+	add_to_variable = { africa_paper_core_burden = constant:africa_value_delta.integration_burden_relief }
+	africa_clamp_core_values = yes
+}
+
+africa_fail_authority_integration_docket_for_from = {
+	FROM = {
+		clr_country_flag = africa_authority_integration_docket_active
+		set_country_flag = africa_authority_integration_docket_failed
+	}
+	add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_mandate_failure_trust }
+	add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.regional_authority_mandate_failure_alarm }
+	add_to_variable = { africa_paper_core_burden = constant:africa_value_delta.regional_authority_mandate_failure_burden }
 	africa_clamp_core_values = yes
 }
 
