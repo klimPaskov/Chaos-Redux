@@ -1,5 +1,7 @@
 # Event 010 Death Focus Icon Regeneration Manifest
 
+> Superseded: this package rebuilt prior live DDS art to remove matte artifacts. The live Death focus icons were later replaced by fresh generated source artwork in `docs/assets/010_death/focus_icon_fresh_regen_2026_06_21/`.
+
 - Related event id: `010`
 - Related event slug: `death`
 - Asset type: focus icons

@@ -1,5 +1,7 @@
 # Event 010 Death Focus Icon GFX Handoff
 
+> Superseded: this handoff described a cleanup of prior live DDS art. The current live Death focus icon replacements are documented in `docs/assets/010_death/focus_icon_fresh_regen_2026_06_21/gfx_handoff.md`.
+
 No `.gfx` edits are required. The existing registrations in `interface/010_death.gfx` already point at the stable live DDS paths under `gfx/interface/goals/death/`.
 
 | Sprite | Live DDS | Size | Existing `.gfx` file | Notes |
