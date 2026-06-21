@@ -26,3 +26,5 @@
 | `kaz_soviet_collapse_tajik_pass_agreements` | `0` | `0` |
 | `kaz_soviet_collapse_turkmen_rail_desert_talks` | `0` | `0` |
 | `kaz_soviet_collapse_uzbek_supply_delegates` | `0` | `0` |
+
+Parent review update: a second visual pass found thin pale crop-guide line components still visible on the checker contact sheet. The affected processed PNGs were scrubbed again, the package and live DDS files were regenerated from the corrected PNGs, and the follow-up line-component scan recorded `0` remaining long thin edge guide-line components across the batch.
