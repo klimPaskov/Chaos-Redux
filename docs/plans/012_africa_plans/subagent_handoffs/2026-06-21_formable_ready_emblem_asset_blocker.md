@@ -1,5 +1,7 @@
 # Event 012 Formable Ready Emblem Asset Blocker
 
+Supersession note: this blocker was accurate when written, but it is no longer current. A later package under `docs/assets/012_africa/congress_prompt_animations_batch_3_2026_06_21/animations/africa_formable_ready_emblem_animated/` created the source frames, processed frames, sheet/static PNGs, preview, contact sheet, manifest, `.gfx` handoff, and final DDS files. The sprites are now registered in `interface/012_africa.gfx` and placed in `interface/012_africa_scripted_gui.gui`. Live render/playback proof remains part of the broader Continental Congress GUI validation queue.
+
 ## Scope
 
 - Requested package: `africa_formable_ready_emblem_animated`
@@ -8,19 +10,19 @@
   - `gfx/interface/animated/012_africa/formable_ready_prompt_static_64x64.dds`
   - `gfx/interface/animated/012_africa/formable_ready_prompt_sheet_512x64.dds`
 
-## Status
+## Historical Status At Time Of Writing
 
 The replacement `chaosx_icon_artist` subagent for this package was spawned with `fork_context=false` and a bounded prompt requiring source frames, processed frames, sheet PNG, static fallback, preview GIF, contact sheet, manifest, `gfx_handoff.md`, and final DDS files only if the package was complete.
 
 The subagent did not return a completed package or a blocker handoff before shutdown, and no valid `africa_formable_ready_emblem_animated` files were created in the worktree.
 
-## Evidence
+## Historical Evidence At Time Of Writing
 
 - `docs/assets/012_africa/congress_prompt_animations_batch_2_2026_06_21/animations/` currently contains the completed `africa_charter_seal_animated` package only.
 - `gfx/interface/animated/012_africa/` contains no `formable_ready_prompt_static_64x64.dds` or `formable_ready_prompt_sheet_512x64.dds`.
 - The prompt-named formable-ready sprites are not registered in `interface/012_africa.gfx` and not placed in `interface/012_africa_scripted_gui.gui`.
 
-## Required Follow-Up
+## Historical Required Follow-Up
 
 Acceptance requires a new completed asset package with:
 
@@ -33,4 +35,4 @@ Acceptance requires a new completed asset package with:
 - Registration of `GFX_africa_formable_ready_emblem` and `GFX_africa_formable_ready_emblem_animated`.
 - GUI placement tied to the existing World Is One gate/readiness triggers, followed by live render/playback proof.
 
-No placeholder or fallback DDS was created for this missing package.
+No placeholder or fallback DDS was created for this missing package at the time this blocker was written. The later package supersedes this follow-up list except for live render/playback proof.
