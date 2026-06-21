@@ -27,7 +27,7 @@ The older manual scenario profiles are no longer `SCN-008` type options. They re
 | African ally under attack | No longer a manual scenario type. Charter aid, member confidence, protected-member aid, and external-holder defense remain decision-system validation targets. | Live aid/corridor/member-confidence proof under a real member war and cleanup after victory or capitulation. |
 | High-chaos Green Covenant | No longer a manual scenario type. High-chaos Bestiary and Authority Atlas routes remain normal-route validation targets. | Live Bestiary package unlocks, nonhuman classification, package actions, containment, warnings, and no human-polity recast. |
 | Full Africa unification / Continental Pole | Folded into the strong `Africa Is One` scenario opening for manual launch, but not proof of normal integration mechanics. | Live normal integration proof for state control, living cores, regional authorities, resistance cleanup, and Africa Is One route completion. |
-| Cross-continent union | No longer a manual scenario type. The scenario may seed terminal support through `World Is One`, but dynamic union and sponsor routes remain normal-route validation targets. | Live sponsor charters, dynamic union naming, proof missions, route-specific costs, and stale proof-failure behavior. |
+| Cross-continent union | No longer a manual scenario type. The scenario may seed terminal support through `World Is One`, but dynamic union and sponsor routes remain normal-route validation targets. | Live sponsor charters, dynamic union naming, proof audits, route-specific costs, and stale proof-failure behavior. |
 | World Is One gate | Split into direct manual terminal setup for `SCN-008 World Is One` and strict normal-route gate proof. | Validate manual direct terminal behavior separately from ordinary proof/certification/preparation/final-focus sequencing. |
 
 ## Normal-Route World Is One Gate
@@ -36,7 +36,7 @@ The ordinary focus/decision path must still prove all continent-unifier prerequi
 
 | Gate | Static status | Evidence | Required live proof |
 | --- | --- | --- | --- |
-| External proof routes | Static coverage present, live proof pending | `has_africa_*_unifier_proof_route_ready`; route-specific proof decisions and missions; proof flags for Middle East, Asia, Europe, and South Atlantic. | Complete each proof mission and verify costs, active flags, success/failure, and no stale timer increments the proof ledger after route invalidation. |
+| External proof routes | Static coverage present, live proof pending | `has_africa_*_unifier_proof_route_ready`; route-specific timed proof decisions; proof flags for Middle East, Asia, Europe, and South Atlantic. | Complete each timed proof audit and verify costs, active flags, success/failure, and no stale timer increments the proof ledger after route invalidation. |
 | Certification | Static gate strong, live proof pending | `can_africa_certify_continent_unifiers_for_world_is_one` requires chaos tier 5, Africa Is One, super-event fired, continental pole, external readiness, proof readiness, register/dossier/case/high-chaos/regional package/living-core/Bestiary requirements. | Confirm certification is blocked until every listed prerequisite is present and does not self-certify from manual scenario state during ordinary play. |
 | Gate preparation | Static gate strong, live proof pending | `can_africa_prepare_world_is_one_gate`; `africa_prepare_world_is_one_gate` spends political power, convoys, trains, support equipment, manpower, command power, and army experience before setting the prepared marker. | Confirm the preparation decision revalidates costs and prerequisites at click time and fails closed if any route requirement drops. |
 | Final focus | Static gate strong, live proof pending | `AFR_the_world_is_one` is available only through `can_africa_start_world_is_one_gate` and calls `africa_mark_world_is_one_gate_ready`. | Confirm terminal flags are absent before `AFR_the_world_is_one`, then present only after the focus completes in the ordinary route. |
@@ -58,5 +58,5 @@ Static/script reconciliation for current `SCN-008` is now aligned with the two l
 
 - `Africa Is One` at Low, Medium, High, and Maximum intensity.
 - `World Is One` at Low, Medium, High, and Maximum intensity.
-- Separate ordinary-route World Is One proof through sponsor charters, proof missions, certification, preparation, and `AFR_the_world_is_one`.
+- Separate ordinary-route World Is One proof through sponsor charters, proof audits, certification, preparation, and `AFR_the_world_is_one`.
 - Scenario-pressure checks for living cores, dossier/case/retry slots, resistance watches, Bestiary actions, sponsor proofs, RSA peace, GUI buttons, AI posture, and stale targets.
