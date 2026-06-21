@@ -205,6 +205,8 @@ The sprites are registered as `frameAnimatedSpriteType` in `interface/012_africa
 - `GFX_africa_charter_league_banner_static`: `gfx/interface/animated/012_africa/charter_league_banner_pulse_fallback_160x96.dds`
 - `GFX_africa_bestiary_warning_static`: `gfx/interface/animated/012_africa/bestiary_warning_loop_fallback_96x96.dds`
 
+Status note: this three-sprite visual strip is useful and wired, but it is not accepted as the full prompt-equivalent Continental Congress GUI/animation package. The asset prompt still queues the prompt-named families `africa_charter_seal_animated`, `africa_cohesion_warning_border_animated`, `africa_green_covenant_seal_animated`, and `africa_formable_ready_emblem_animated`, plus their static fallbacks and the broader background/header/meter/card/warning/seal/formable UI families, unless a later handoff proves an explicit parent-approved equivalence. Current disposition: `docs/plans/012_africa_plans/2026-06-21_continental_congress_gui_animation_gap_handoff.md`.
+
 ## Scripted GUI
 
 The live Continental Congress decision-category panel is wired through:
@@ -213,6 +215,8 @@ The live Continental Congress decision-category panel is wired through:
 - `interface/012_africa_scripted_gui.gui`
 
 It reuses the existing `GFX_goal_africa_political_congress` icon and displays live mandate values, World Is One prerequisite counters, active dossier, and active Bestiary case. The panel now includes a visual strip with the Charter banner, Authority Atlas seal, and Bestiary warning seal. Static fallback sprites remain visible under route-gated animated overlays, and the scripted GUI hides Archive/Bestiary seals until the related systems are open.
+
+This static/scripted wiring evidence does not replace live in-game render/readability proof for the panel or animated playback.
 
 ## High-Chaos Identity Portraits
 
