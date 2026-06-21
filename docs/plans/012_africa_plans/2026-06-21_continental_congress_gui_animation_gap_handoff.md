@@ -6,6 +6,8 @@ Scope: documentation-only reconciliation for the Continental Congress scripted G
 
 This handoff does not claim live render proof, Event 012 completion, or prompt-equivalent asset completion. It records the current evidence and queues the missing prompt-named GUI/static/animated asset families.
 
+Post-handoff update: the prompt-named cohesion-warning border, Green Covenant seal, and formable-ready emblem packages were later generated, registered in `interface/012_africa.gfx`, placed in `interface/012_africa_scripted_gui.gui`, given scripted-GUI visibility hooks, and recorded in `docs/assets/012_africa/implementation_asset_manifest.md`. This document remains current for the broader GUI/static/animation queue and live proof, but its queued rows for those prompt-named animation packages are superseded by the later wiring.
+
 ## Source-of-Truth Map
 
 | Surface | Current source |
@@ -49,31 +51,31 @@ The asset prompt still queues the following Continental Congress UI families unl
 | Meter frames and fills | Queue Legitimacy, Authority, Cohesion, Momentum, Regional Trust, Colonial Alarm, Paper-Core Burden, and Covenant Pressure meter frame/fill families with GUI state proof. |
 | Regional authority cards | Queue neutral, protected, integrating, rebellious, and integrated card states with GUI placement and live state proof. |
 | Selected target frame | Queue selected region/member/dossier target frame or documented accepted equivalent with live state proof. |
-| Cohesion/rebellion warning border | Queue static fallback plus prompt-named animation package below. |
+| Cohesion/rebellion warning border | Prompt-named animation and static fallback are superseded by later wiring; broader state proof and live screenshot proof remain queued. |
 | Charter seal states | Queue locked, available, active, and formed states unless mapped by explicit evidence to current sprites. |
-| Green Covenant seal states | Queue hidden, revealed, active, and critical states unless mapped by explicit evidence to current sprites. |
-| Formable progress emblem | Queue incomplete, ready, and formed states unless mapped by explicit evidence to current sprites. |
-| Static fallbacks | Queue static fallback DDS and manifest row for every animated prompt element. |
+| Green Covenant seal states | Prompt-named animation and static fallback are superseded by later wiring; hidden/revealed/active/critical state proof remains queued unless mapped by later evidence. |
+| Formable progress emblem | Prompt-named ready animation and static fallback are superseded by later wiring; incomplete/ready/formed state proof remains queued unless mapped by later evidence. |
+| Static fallbacks | Static fallbacks are wired for the four prompt-named animation packages; broader panel-family fallbacks remain queued where no explicit mapping exists. |
 
 ## Queued Missing Prompt-Named Animated Packages
 
 | Prompt animation | Prompt expectation | Current evidence | Disposition |
 | --- | --- | --- | --- |
 | `africa_charter_seal_animated` | 64x64 or current GUI size, 8-12 real frames, slow glow/float, static fallback `GFX_africa_charter_seal` | Implemented as 8 real generated frames with processed transparent PNGs, `GFX_africa_charter_seal_animated`, static fallback `GFX_africa_charter_seal`, final DDS files, manifest, and GUI placement in the Continental Congress strip. | Resolved for this prompt-named seal package. Live playback proof remains part of the broader GUI proof item. |
-| `africa_cohesion_warning_border_animated` | Target GUI card size, 6-10 real frames, warning pulse, static fallback | No matching sprite name found in current checked docs/GFX. Current warning strip is `GFX_africa_bestiary_warning_loop`, 4 frames, 96x96 seal/icon. | Queued. Do not mark complete from the Bestiary warning icon alone. |
-| `africa_green_covenant_seal_animated` | 64x64 or UI size, 10-16 real frames, storm/river/tree glow, static fallback | No matching sprite name found in current checked docs/GFX. Current strip has no prompt-named Green Covenant seal animation. | Queued. |
-| `africa_formable_ready_emblem_animated` | Target UI emblem size, 8-12 real frames, availability glow, static fallback | No matching sprite name found in current checked docs/GFX. Current strip has no prompt-named formable-ready emblem animation. A replacement `chaosx_icon_artist` subagent was spawned with `fork_context=false`, but was shut down while still running and produced no usable source frames or DDS files. | Blocked/queued. See `docs/plans/012_africa_plans/subagent_handoffs/2026-06-21_formable_ready_emblem_asset_blocker.md`. |
+| `africa_cohesion_warning_border_animated` | Target GUI card size, 6-10 real frames, warning pulse, static fallback | Later package evidence registers `GFX_africa_cohesion_warning_border_animated` and `GFX_africa_cohesion_warning_border`, with 8 frames and final DDS files, and places both around the warning docket card. | Superseded by later implementation for this prompt-named package. Live playback proof remains part of the broader GUI proof item. |
+| `africa_green_covenant_seal_animated` | 64x64 or UI size, 10-16 real frames, storm/river/tree glow, static fallback | Later package evidence registers `GFX_africa_green_covenant_seal_animated` and `GFX_africa_green_covenant_seal`, with 12 frames and final DDS files, and places both in the Continental Congress visual strip. | Superseded by later implementation for this prompt-named package. Live playback proof remains part of the broader GUI proof item. |
+| `africa_formable_ready_emblem_animated` | Target UI emblem size, 8-12 real frames, availability glow, static fallback | Later package evidence registers `GFX_africa_formable_ready_emblem_animated` and `GFX_africa_formable_ready_emblem`, with 8 frames and final DDS files, and places both in the Continental Congress visual strip. | Superseded by later implementation for this prompt-named package. Live playback proof remains part of the broader GUI proof item. |
 
-For each queued animation, acceptance requires source frames, processed frames, sheet PNG, sheet DDS, static fallback DDS, preview GIF for review only, contact sheet, manifest entry, `.gfx` handoff, final sprite registration, GUI placement or explicit non-GUI use path, and live render/playback evidence.
+For any future queued animation, acceptance requires source frames, processed frames, sheet PNG, sheet DDS, static fallback DDS, preview GIF for review only, contact sheet, manifest entry, `.gfx` handoff, final sprite registration, GUI placement or explicit non-GUI use path, and live render/playback evidence.
 
 ## Unresolved Plan and Handoff Disposition Table
 
 | File | Disposition |
 | --- | --- |
 | `docs/specs/012_africa_specs/prompts/012_africa_asset_prompt.md` | Current accepted asset requirement source. Leave unchanged. |
-| `docs/assets/012_africa/implementation_asset_manifest.md` | Current live asset manifest. Patched to distinguish the useful three-sprite visual strip from the missing prompt-named package. |
-| `docs/specs/012_africa_specs/CURRENT_SOURCE_OF_TRUTH.md` | Current status ledger. Patched to point to this handoff and state that prompt-equivalent GUI/animation remains queued. |
-| `docs/plans/012_africa_plans/2026-06-20_foundation_addendum_disposition.md` | Patched so the GUI/animation row no longer reads as a mere undecided equivalence question; the missing prompt-named families are queued unless explicitly accepted later with evidence. |
+| `docs/assets/012_africa/implementation_asset_manifest.md` | Current live asset manifest. Later patched to record the four prompt-named animation packages as wired with static fallbacks, while keeping broader GUI families and live proof open. |
+| `docs/specs/012_africa_specs/CURRENT_SOURCE_OF_TRUTH.md` | Current status ledger. Later patched to state that the prompt-named animation packages are wired but prompt-equivalent GUI coverage and live proof remain open. |
+| `docs/plans/012_africa_plans/2026-06-20_foundation_addendum_disposition.md` | Later patched so the GUI/animation row distinguishes wired prompt-named animations from broader panel-family and live-proof blockers. |
 | `2026-06-20_012_africa_gui_animation_static_wiring_audit_handoff.md` | Leave unchanged. It is valid static wiring evidence for the current strip, not prompt-equivalent completion. |
 | `2026-06-16_012_africa_completion_audit_handoff.md` | Leave unchanged. Its named-animation gap remains useful evidence, though many unrelated findings are stale after later tranches. |
 | `2026-06-18_012_africa_gui_selected_target_cards_parent_handoff.md` | Leave unchanged. It improves selected-target readability but explicitly does not implement full scrollable region/member/dossier card lists or live screenshot validation. |
@@ -82,7 +84,7 @@ For each queued animation, acceptance requires source frames, processed frames, 
 
 | Files | Evidence | Resolution |
 | --- | --- | --- |
-| `012_africa_asset_prompt.md` vs `implementation_asset_manifest.md` | The prompt requires background/header/meters/regional cards/warning border/seal states/formable emblem plus four named animations with 6-16-ish frame expectations. The manifest lists three wired 4-frame strip animations with different names and roles. | Resolved in docs by treating the current strip as partial and queuing the prompt-named families. |
+| `012_africa_asset_prompt.md` vs `implementation_asset_manifest.md` | The prompt requires background/header/meters/regional cards/warning border/seal states/formable emblem plus four named animations with 6-16-ish frame expectations. The current manifest now records the four prompt-named animations as wired, while broader static/state families still require mapping or explicit equivalence. | Resolved for prompt-named animations; broader prompt-equivalence and live-proof blockers remain. |
 | `CURRENT_SOURCE_OF_TRUTH.md` vs prompt status | The source-of-truth says the remaining UI blocker is live render/animation proof, which could be read as saying the prompt-named package itself is otherwise complete. | Resolved in docs by adding an explicit prompt-equivalence gap statement and pointer to this handoff. |
 | `foundation_addendum_disposition.md` recommendation vs parent-observed evidence | The ledger asked the parent to decide whether the current fixed panel is accepted as equivalent. The checked files do not prove prompt-equivalent GUI/static/animated coverage. | Resolved in docs by defaulting to queued follow-up unless a later parent decision and evidence accepts a narrower equivalent. |
 
@@ -95,14 +97,14 @@ For each queued animation, acceptance requires source frames, processed frames, 
 ## Stale Prompt or Stale Instruction List
 
 - Any instruction or handoff that treats the current Charter/Authority/Bestiary visual strip as closing the full asset prompt is stale unless it names the four prompt animations and provides implementation, manifest, and live render evidence.
-- Any instruction that reduces the remaining GUI/animation blocker to live render proof only is incomplete; live proof is still required, but prompt-named GUI/static/animated asset families also remain queued.
+- Any instruction that reduces the remaining GUI/animation blocker to live render proof only is incomplete; live proof is still required, and broader panel/state families still need explicit mapping or acceptance.
 - The asset prompt itself is not stale for this surface. It remains the accepted requirement source until the parent explicitly revises it.
 
 ## Acceptance Evidence Needed To Close
 
 To close this gap later, the parent needs one of two evidence paths:
 
-1. Full prompt implementation evidence: prompt-named static and animated families exist, are registered, are placed or otherwise used by the Continental Congress UI, have manifest rows, and have live render/playback proof.
+1. Full prompt implementation evidence: prompt-named static and animated families exist, are registered, are placed or otherwise used by the Continental Congress UI, have manifest rows, and have live render/playback proof. The four prompt-named animation families now meet every part except live render/playback proof.
 2. Explicit parent-approved equivalence decision: a later documentation file states which current or replacement sprites intentionally satisfy each prompt family, why the narrower design is accepted, which prompt items are rejected or out of scope, and what live proof validates the accepted design.
 
 Neither path exists in the checked files.
@@ -119,8 +121,8 @@ Files changed by this documentation reconciliation:
 Disposition changes:
 
 - Promoted: none.
-- Implemented: none.
-- Queued: prompt-named Continental Congress GUI/static/animated asset families listed above.
+- Implemented after this handoff: prompt-named Charter seal, cohesion-warning border, Green Covenant seal, and formable-ready emblem animation packages, with static fallbacks and GUI placement.
+- Queued: broader Continental Congress GUI/static/state families and live render/playback proof.
 - Rejected: none.
 - Superseded: broad readings of the current three-sprite strip as prompt-equivalent completion.
 - Left unchanged: asset prompt requirements, static wiring audit, older completion-audit evidence.
