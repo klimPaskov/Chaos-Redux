@@ -66,7 +66,7 @@ These items remain queued and should be reported as open until a later implement
 | Open item | Reason it remains open |
 | --- | --- |
 | Targeted scenario validation matrix | The completion audit found no current eight-scenario validation matrix for ordinary unifier, weak/small unifier, RSA in Allies, African ally under attack, high-chaos Green Covenant, full Africa unification, cross-continent union, and World Is One gate. |
-| GUI and animation live proof | Continental Congress presentation exists and has improved, but the audit found no screenshot/live readability proof for all prompt-level GUI and animated-state expectations. |
+| GUI/static/animation prompt coverage and live proof | Continental Congress presentation exists and has improved, but the current Charter/Authority/Bestiary visual strip is not accepted as full prompt-equivalent coverage for the background, header, meter, regional-card, warning-border, seal-state, formable-emblem, and four prompt-named animation families. `docs/plans/012_africa_plans/2026-06-21_continental_congress_gui_animation_gap_handoff.md` is the current queue. Live screenshot/readability/playback proof also remains required after those families are implemented or explicitly accepted as equivalent. |
 | Plan/doc stale cleanup | The plan folder still contains stale or partially superseded handoff claims. The parent should reconcile source-of-truth and plan disposition after reviewing this ledger. |
 | Historical old-seat source assets where weak | Historical dossier flags, symbols, and some portrait/source rows remain weak, low-confidence, or not downloaded. Neutral Archive UI remains a queue item unless the parent explicitly approves it for a specific row. |
 | Deeper host/country-package route depth | Selected-unifier origin cases, regional-authority mandates, current dossier slot families, and created-actor role packages reduce the gap but do not close deeper bespoke host routes, created-authority consequence chains, advisor/event hooks, reinforcement paths, or long-form country-package routes. |
@@ -111,7 +111,7 @@ These items should not be started as part of resolving the older foundation adde
 ## Recommended Parent Decisions
 
 - Accept or revise this ledger, then update `docs/specs/012_africa_specs/CURRENT_SOURCE_OF_TRUTH.md` to point to the accepted disposition.
-- Decide whether the current fixed Continental Congress panel is an accepted equivalent to the older prompt's regional-card/meter wording, or require a GUI follow-up pass.
+- Decide whether to explicitly accept a narrower Continental Congress panel as equivalent to the older prompt's regional-card/meter/static/animation wording. Until that decision has written evidence and live render proof, the prompt-named GUI/static/animated families remain queued by `2026-06-21_continental_congress_gui_animation_gap_handoff.md`.
 - Decide which historical old-seat source-asset rows should receive source-research priority and which, if any, may use neutral Archive placeholders.
 - Keep spreadsheet/catalog status at `Needs Testing` until targeted scenario validation is recorded.
 
