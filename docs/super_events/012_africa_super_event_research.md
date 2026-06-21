@@ -135,7 +135,7 @@ This section supersedes the exploratory role notes below for the six roles reque
 - Confidence: medium-high on the quote wording, high on final audio licensing
 - Copyright / source note: modern political writing; short direct quotation only
 - Safe to wire into localisation: yes
-- Audio package: `docs/assets/012_africa/super_events/audio/final/super_event_africa_continent_sponsor.ogg`, sourced from John Philip Sousa's `The Thunderer`, United States Marine Band 2017 recording, public domain composition and U.S. federal government public domain performance
+- Audio package: `docs/assets/012_africa/super_events/audio/final/super_event_africa_continent_sponsor.ogg`, sourced from the `Bawa Dance libtheora` Ghana live-performance recording on Wikimedia Commons, `CC BY-SA 4.0`
 - Backup:
   - Quote: `Our independence is meaningless unless it is linked up with the total liberation of the African continent.`
   - Source note: famous 1957 line, but I did not verify it in a primary state transcript in this pass
@@ -851,27 +851,32 @@ The archive has stopped being a registry and become a planetary sovereign princi
 
 ## Audio package update
 
-Second-pass audio packaging completed on `2026-06-16`.
+African-source audio packaging was promoted live on `2026-06-21`, replacing the previous Europe-heavy anthem/classical/military package.
 
 ### Finalized packaged roles
 
 | Role label | Final file | Source title | License | Final duration | Notes |
 | --- | --- | --- | --- | --- | --- |
-| `africa_is_one_unification` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_unification.ogg` | `South African national anthem` | U.S. federal government public domain / free of known restrictions | `120s` | United States Navy Band recording |
-| `africa_scramble_reaction` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_scramble.ogg` | `Mars, the Bringer of War` | U.S. federal government performance; composition public domain | `118s` | United States Air Force Band recording |
-| `africa_old_seats_reveal` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_old_seats.ogg` | `First Suite in E-flat for Military Band, III. March` | public domain on Commons | `112s` | United States Marine Band recording |
-| `africa_counterfeit_crowns` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_counterfeit_crowns.ogg` | `Egmont Overture, Op. 84` | `CC0 1.0` | `118s` | Czech National Symphony Orchestra / Musopen Commons mirror |
-| `africa_world_is_one_terminal` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_world_is_one.ogg` | `Funeral March in C minor, Op. posth. 72 no. 2` | `CC0 1.0` | `120s` | Aya Higuchi / Musopen Commons mirror |
-| `africa_continent_sponsor` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_continent_sponsor.ogg` | `The Thunderer` | public domain composition and U.S. federal government public domain performance | `120s` | United States Marine Band 2017 recording |
-| `africa_rsa_allies_peace` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_rsa_allies_peace.ogg` | `Intermezzo from Goyescas` | public domain composition and U.S. Marine Band public-domain performance | `116s` | United States Marine Band recording |
-| `africa_dynamic_cross_continent_union` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_dynamic_cross_continent_union.ogg` | `Grand March from La reine de Saba` | public domain composition and U.S. Marine Band public-domain performance | `118s` | United States Marine Band recording |
+| `africa_is_one_unification` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_unification.ogg` | `Rush Peace dance concert 1 libtheora` | `CC BY-SA 4.0` | `120s` | Ghana peace-dance performance |
+| `africa_scramble_reaction` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_scramble.ogg` | `Kagoma Drummer` | `CC BY-SA 4.0` | `118s` | Kaduna State, Nigeria village drummer |
+| `africa_old_seats_reveal` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_old_seats.ogg` | `Traditional Sounds - Igbo Language - Nsukka - Enugu State - Nigeria` | `CC BY-SA 4.0` | `112s` | Igbo traditional sounds |
+| `africa_counterfeit_crowns` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_counterfeit_crowns.ogg` | `Rush Peace dance concert 2 libtheora` | `CC BY-SA 4.0` | `118s` | Ghana peace-dance performance |
+| `africa_world_is_one_terminal` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_world_is_one.ogg` | `Ghana Dancers Group` | `CC BY-SA 4.0` | `120s` | Ghana battle-dance group performance |
+| `africa_continent_sponsor` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_continent_sponsor.ogg` | `Bawa Dance libtheora` | `CC BY-SA 4.0` | `120s` | Ghana Bawa dance |
+| `africa_rsa_allies_peace` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_rsa_allies_peace.ogg` | `Mapoch.- Playing music in Ndebele Village` | `CC BY-SA 4.0` | `116s` | South African Ndebele village performance |
+| `africa_dynamic_cross_continent_union` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_dynamic_cross_continent_union.ogg` | `Rush Peace dance concert 1 libtheora` | `CC BY-SA 4.0` | `118s` | Distinct Ghana source excerpt |
+| `africa_forest_parliament_reveal` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_forest_parliament.ogg` | `Southern Ndebele music video` | `CC BY-SA 4.0` | `118s` | Southern Ndebele group performance |
+| `africa_world_root_mandate` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_world_root.ogg` | `Traditional Adowa dance form and music performance` | `CC BY-SA 2.0 Generic` | `120s` | Ghana Adowa dance/music |
+| `africa_parliament_of_root_and_fang_escalation` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_root_and_fang.ogg` | `Live Band at a Traditional Marriage - Igbo Tribe - Imo State - Nigeria` | `CC BY-SA 4.0` | `117.8s` | Igbo live-band performance |
+| `africa_archive_world_union_terminal` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_archive_world.ogg` | `Rush Peace dance concert 1 libtheora` | `CC BY-SA 4.0` | `120s` | Distinct filtered Ghana source excerpt |
+| `africa_world_is_one_root_variant_terminal` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_world_is_one_root_terminal.ogg` | `Traditional Sounds - Igbo Language - Nsukka - Enugu State - Nigeria` | `CC BY-SA 4.0` | `120s` | Alternate terminal Igbo traditional-sounds cut |
 
 ### Remaining audio blockers
 
-- No remaining audio blockers for the thirteen accepted Event 012 super-event roles.
-- Forest Parliament, World Root, Root and Fang, and Archive World variant packages are final-wired under slots `76-79`; their live audio is registered in `music/chaosx_super_event_music.asset`, `music/chaosx_super_event_music.txt`, and `sound/chaosx_sound.asset`, with source/licensing notes in `docs/assets/012_africa/super_events/audio/manifest.md`.
-- `africa_world_is_one_root_variant_terminal` uses the intentional hybrid disposition: shared slot `72` World Is One text and visual presentation, with a distinct audio handoff package in `docs/assets/012_africa/super_events/audio/final/super_event_africa_world_is_one_root_terminal.ogg`. The cue is sourced from Richard Wagner's `Siegfried's Funeral March and Finale` as performed by the United States Marine Band and is documented in the audio manifest.
-- `africa_continent_sponsor` is fully wired, license-clean, and file-reconciled. The `2026-06-19` audio audit found container-level hash drift between the archived final and live `music/` copy; the parent normalized `music/super_event_africa_continent_sponsor.ogg` from the archived final and updated the manifest so both paths share SHA-256 `c1b7ee2991b4ad4fbd89a1d546d0cd7c63d99ec1bbcdd6b375aac9d6347b81b4`.
+- No remaining legality or wiring blockers for the thirteen accepted Event 012 super-event roles.
+- Forest Parliament, World Root, Root and Fang, and Archive World variant packages remain final-wired under slots `76-79`; their live audio is registered in `music/chaosx_super_event_music.asset`, `music/chaosx_super_event_music.txt`, and `sound/chaosx_sound.asset`, with source/licensing notes in `docs/assets/012_africa/super_events/audio/manifest.md`.
+- `africa_world_is_one_root_variant_terminal` uses the intentional hybrid disposition: shared slot `72` World Is One text and visual presentation, with a distinct audio handoff package in `docs/assets/012_africa/super_events/audio/final/super_event_africa_world_is_one_root_terminal.ogg`.
+- The accepted compromise is source diversity, not legality: `Rush Peace dance concert 1 libtheora` and `Traditional Sounds - Igbo Language - Nsukka - Enugu State - Nigeria` each support multiple slots through distinct excerpts and edits after additional Wikimedia binary downloads began returning `HTTP 429`.
 - Preserved non-final evaluation source: `docs/assets/012_africa/super_events/audio/source/beethoven_symphony_7_allegretto_john_michel.ogg`
 - Reason for non-final status: legally usable `CC BY-SA 3.0`, but the solo-cello recording contains long low-energy gaps and was not strong enough as a packaged in-game final without a heavier re-edit pass.
 - Full source, hash, and conversion details are recorded in `docs/assets/012_africa/super_events/audio/manifest.md`.
