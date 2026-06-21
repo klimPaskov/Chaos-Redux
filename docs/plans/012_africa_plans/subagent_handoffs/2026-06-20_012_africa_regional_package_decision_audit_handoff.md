@@ -4,6 +4,8 @@ Date: 2026-06-20
 Role: Chaos Redux decision and mission subagent
 Scope: bounded Event 012 Africa follow-up audit for regional authority decision/effect surfaces and the WAC/SAH/IOC tag-specific package-action patch shape.
 
+Parent follow-up, 2026-06-21: the package-action presentation finding is closed. `africa_charter_league_diplomacy_category_desc` exposes `africa_regional_package_action_count` against `global.africa_mission_required_regional_package_actions`, and the Continental Congress regional seats card now exposes the same package-action counter beside authority mandates and rail regions. Remaining findings in this handoff should be read against later localisation and cost-gate patches.
+
 ## Instructions Applied
 
 - Read `AGENTS.md`.
