@@ -5982,12 +5982,9 @@ africa_clear_bestiary_actor_action_flags = {
 }
 
 africa_clear_authority_atlas_progress_flags = {
-	set_temp_variable = { africa_clear_dossier_index = 0 }
-	while_loop_effect = {
-		limit = {
-			check_variable = { africa_clear_dossier_index < global.africa_authority_atlas_dossier_ids^num }
-		}
-		set_temp_variable = { africa_clear_dossier_id = global.africa_authority_atlas_dossier_ids^africa_clear_dossier_index }
+	for_each_loop = {
+		array = global.africa_authority_atlas_dossier_ids
+		value = africa_clear_dossier_id
 		meta_effect = {
 			text = {
 				clr_country_flag = africa_dossier_[DOSSIER_ID]_opened
@@ -6014,21 +6011,16 @@ africa_clear_authority_atlas_progress_flags = {
 			}
 			DOSSIER_ID = "[?africa_clear_dossier_id|.0]"
 		}
-		add_to_temp_variable = { africa_clear_dossier_index = 1 }
 	}
-	set_temp_variable = { africa_clear_high_chaos_index = 0 }
-	while_loop_effect = {
-		limit = {
-			check_variable = { africa_clear_high_chaos_index < global.africa_authority_atlas_high_chaos_package_ids^num }
-		}
-		set_temp_variable = { africa_clear_high_chaos_id = global.africa_authority_atlas_high_chaos_package_ids^africa_clear_high_chaos_index }
+	for_each_loop = {
+		array = global.africa_authority_atlas_high_chaos_package_ids
+		value = africa_clear_high_chaos_id
 		meta_effect = {
 			text = {
 				clr_country_flag = africa_high_chaos_package_[PACKAGE_ID]_unlocked
 			}
 			PACKAGE_ID = "[?africa_clear_high_chaos_id|.0]"
 		}
-		add_to_temp_variable = { africa_clear_high_chaos_index = 1 }
 	}
 	clr_country_flag = africa_has_opened_dossier
 	clr_country_flag = africa_has_surveyed_dossier
@@ -6315,14 +6307,11 @@ africa_set_selected_dossier_seat_state = {
 africa_select_next_unopened_dossier = {
 	clear_variable = africa_selected_dossier_id
 	clear_variable = africa_selected_dossier_seat_state
-	set_temp_variable = { africa_dossier_scan_index = 0 }
 	set_temp_variable = { africa_dossier_found = 0 }
-	while_loop_effect = {
-		limit = {
-			check_variable = { africa_dossier_scan_index < global.africa_authority_atlas_dossier_ids^num }
-			check_variable = { africa_dossier_found < 1 }
-		}
-		set_temp_variable = { africa_candidate_dossier_id = global.africa_authority_atlas_dossier_ids^africa_dossier_scan_index }
+	for_each_loop = {
+		array = global.africa_authority_atlas_dossier_ids
+		value = africa_candidate_dossier_id
+		break = africa_dossier_found
 		if = {
 			limit = {
 				NOT = { is_in_array = { array = africa_opened_dossier_ids value = africa_candidate_dossier_id } }
@@ -6330,7 +6319,6 @@ africa_select_next_unopened_dossier = {
 			set_variable = { africa_selected_dossier_id = africa_candidate_dossier_id }
 			set_temp_variable = { africa_dossier_found = 1 }
 		}
-		add_to_temp_variable = { africa_dossier_scan_index = 1 }
 	}
 	if = {
 		limit = { check_variable = { africa_dossier_found < 1 } }
@@ -6343,14 +6331,11 @@ africa_select_next_unopened_dossier = {
 
 africa_select_next_locked_high_chaos_package = {
 	clear_variable = africa_selected_high_chaos_package_id
-	set_temp_variable = { africa_high_chaos_scan_index = 0 }
 	set_temp_variable = { africa_high_chaos_found = 0 }
-	while_loop_effect = {
-		limit = {
-			check_variable = { africa_high_chaos_scan_index < global.africa_authority_atlas_high_chaos_package_ids^num }
-			check_variable = { africa_high_chaos_found < 1 }
-		}
-		set_temp_variable = { africa_candidate_high_chaos_package_id = global.africa_authority_atlas_high_chaos_package_ids^africa_high_chaos_scan_index }
+	for_each_loop = {
+		array = global.africa_authority_atlas_high_chaos_package_ids
+		value = africa_candidate_high_chaos_package_id
+		break = africa_high_chaos_found
 		if = {
 			limit = {
 				NOT = { is_in_array = { array = africa_unlocked_high_chaos_package_ids value = africa_candidate_high_chaos_package_id } }
@@ -6358,7 +6343,6 @@ africa_select_next_locked_high_chaos_package = {
 			set_variable = { africa_selected_high_chaos_package_id = africa_candidate_high_chaos_package_id }
 			set_temp_variable = { africa_high_chaos_found = 1 }
 		}
-		add_to_temp_variable = { africa_high_chaos_scan_index = 1 }
 	}
 	if = {
 		limit = { check_variable = { africa_high_chaos_found < 1 } }

@@ -33,6 +33,11 @@
 @africa_rsa_transvaal_state = 275
 @africa_rsa_cape_state = 681
 @africa_rsa_natal_state = 719
+@africa_ai_very_low = 0.1
+@africa_ai_low = 0.35
+@africa_ai_normal = 1
+@africa_ai_preferred = 1.5
+@africa_ai_strong = 2.25
 
 africa_continental_congress_category = {
 	africa_convene_continental_congress = {
@@ -52,7 +57,7 @@ africa_continental_congress_category = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_congress_session_complete
 		}
-		ai_will_do = { base = constant:africa_ai.preferred }
+		ai_will_do = { base = @africa_ai_preferred }
 	}
 
 	africa_publish_charter_register = {
@@ -70,7 +75,7 @@ africa_continental_congress_category = {
 			africa_refresh_charter_candidate_pool = yes
 			africa_refresh_integration_target_states = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_open_origin_mandate_case = {
@@ -98,10 +103,10 @@ africa_continental_congress_category = {
 			clr_country_flag = africa_origin_mandate_case_failed
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred can_africa_satisfy_origin_mandate_case_requirements = yes }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_origin_profile_rsa_union }
-			modifier = { factor = constant:africa_ai.low has_war = yes NOT = { has_country_flag = africa_origin_profile_rsa_union } }
+			base = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred can_africa_satisfy_origin_mandate_case_requirements = yes }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_origin_profile_rsa_union }
+			modifier = { factor = @africa_ai_low has_war = yes NOT = { has_country_flag = africa_origin_profile_rsa_union } }
 		}
 	}
 
@@ -132,7 +137,7 @@ africa_continental_congress_category = {
 			custom_effect_tooltip = africa_origin_mandate_case_mission_failure_tt
 			africa_apply_origin_mandate_case_failure = yes
 		}
-		ai_will_do = { base = constant:africa_ai.preferred }
+		ai_will_do = { base = @africa_ai_preferred }
 	}
 }
 
@@ -162,9 +167,9 @@ africa_charter_league_diplomacy_category = {
 			FROM = { country_event = { id = chaosx.nr12.3 days = 1 } }
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred FROM = { capital_scope = { is_on_continent = africa } } }
-			modifier = { factor = constant:africa_ai.low FROM = { is_major = yes } }
+			base = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred FROM = { capital_scope = { is_on_continent = africa } } }
+			modifier = { factor = @africa_ai_low FROM = { is_major = yes } }
 		}
 	}
 
@@ -210,7 +215,7 @@ africa_charter_league_diplomacy_category = {
 			add_political_power = constant:africa_decision.league_aid_cost_spend
 			africa_transfer_league_aid_to_from = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_send_protected_league_aid = {
@@ -253,8 +258,8 @@ africa_charter_league_diplomacy_category = {
 			africa_transfer_league_aid_to_from = yes
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred FROM = { has_war = yes } }
+			base = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred FROM = { has_war = yes } }
 		}
 	}
 
@@ -303,7 +308,7 @@ africa_charter_league_diplomacy_category = {
 			add_political_power = constant:africa_decision.aid_corridor_cost_spend
 			africa_open_aid_corridor_to_from = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_open_protected_aid_corridor = {
@@ -347,7 +352,7 @@ africa_charter_league_diplomacy_category = {
 			add_political_power = constant:africa_decision.aid_corridor_cost_spend
 			africa_open_aid_corridor_to_from = yes
 		}
-		ai_will_do = { base = constant:africa_ai.preferred }
+		ai_will_do = { base = @africa_ai_preferred }
 	}
 
 	africa_member_confidence_mission = {
@@ -537,7 +542,7 @@ africa_charter_league_diplomacy_category = {
 			}
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_hold_federal_member_vote = {
@@ -587,9 +592,9 @@ africa_charter_league_diplomacy_category = {
 			africa_clamp_core_values = yes
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred FROM = { is_major = yes } }
-			modifier = { factor = constant:africa_ai.preferred FROM = { has_country_flag = africa_regional_authority_subject } }
+			base = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred FROM = { is_major = yes } }
+			modifier = { factor = @africa_ai_preferred FROM = { has_country_flag = africa_regional_authority_subject } }
 		}
 	}
 
@@ -636,8 +641,8 @@ africa_charter_league_diplomacy_category = {
 			africa_clamp_core_values = yes
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred FROM = { has_country_flag = africa_regional_authority_subject } }
+			base = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred FROM = { has_country_flag = africa_regional_authority_subject } }
 		}
 	}
 
@@ -687,7 +692,7 @@ africa_charter_league_diplomacy_category = {
 			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.scramble_treaty_alarm_relief }
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_docket_authority_integration = {
@@ -721,7 +726,7 @@ africa_charter_league_diplomacy_category = {
 			add_to_variable = { africa_paper_core_burden = constant:africa_value_delta.integration_burden_relief }
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_commission_regional_authority_mandate = {
@@ -758,9 +763,9 @@ africa_charter_league_diplomacy_category = {
 			africa_start_regional_authority_mandate_for_from = yes
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred FROM = { has_country_flag = africa_authority_future_settled } }
-			modifier = { factor = constant:africa_ai.preferred FROM = { is_africa_regional_authority_mandate_complete_for_root = yes } }
+			base = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred FROM = { has_country_flag = africa_authority_future_settled } }
+			modifier = { factor = @africa_ai_preferred FROM = { is_africa_regional_authority_mandate_complete_for_root = yes } }
 		}
 	}
 
@@ -810,9 +815,9 @@ africa_charter_league_diplomacy_category = {
 			africa_convene_wac_port_congress_from = yes
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_origin_profile_west_atlantic }
-			modifier = { factor = constant:africa_ai.preferred check_variable = { africa_league_cohesion < constant:achievement_threshold.africa.league_cohesion_safe } }
+			base = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_origin_profile_west_atlantic }
+			modifier = { factor = @africa_ai_preferred check_variable = { africa_league_cohesion < constant:achievement_threshold.africa.league_cohesion_safe } }
 		}
 	}
 
@@ -864,9 +869,9 @@ africa_charter_league_diplomacy_category = {
 			africa_open_sah_caravan_columns_from = yes
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_liberation_war_office_open }
-			modifier = { factor = constant:africa_ai.preferred check_variable = { africa_paper_core_burden > constant:africa_decision.integration_burden_gate } }
+			base = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_liberation_war_office_open }
+			modifier = { factor = @africa_ai_preferred check_variable = { africa_paper_core_burden > constant:africa_decision.integration_burden_gate } }
 		}
 	}
 
@@ -917,9 +922,9 @@ africa_charter_league_diplomacy_category = {
 			africa_secure_ioc_sea_lanes_from = yes
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_origin_profile_indian_ocean }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_continent_sponsor_ready }
+			base = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_origin_profile_indian_ocean }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_continent_sponsor_ready }
 		}
 	}
 
@@ -970,9 +975,9 @@ africa_charter_league_diplomacy_category = {
 			africa_reopen_mag_harbor_dockets_from = yes
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_dossier_lane_north_open }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_scramble_counter_dockets_open }
+			base = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_dossier_lane_north_open }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_scramble_counter_dockets_open }
 		}
 	}
 
@@ -1022,9 +1027,9 @@ africa_charter_league_diplomacy_category = {
 			africa_chart_nhr_highland_warrants_from = yes
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_authority_atlas_open }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_dossier_lane_north_open }
+			base = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_authority_atlas_open }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_dossier_lane_north_open }
 		}
 	}
 
@@ -1075,9 +1080,9 @@ africa_charter_league_diplomacy_category = {
 			africa_lock_eac_railway_timetable_from = yes
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_integration_temperature_board_open }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_dossier_lane_indian_ocean_open }
+			base = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_integration_temperature_board_open }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_dossier_lane_indian_ocean_open }
 		}
 	}
 
@@ -1127,9 +1132,9 @@ africa_charter_league_diplomacy_category = {
 			africa_muster_glk_lake_guards_from = yes
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_route_federal_charter }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_dossier_lane_great_lakes_open }
+			base = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_route_federal_charter }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_dossier_lane_great_lakes_open }
 		}
 	}
 
@@ -1180,9 +1185,9 @@ africa_charter_league_diplomacy_category = {
 			africa_arm_cbc_river_quartermasters_from = yes
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_origin_profile_congo_forest }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_dossier_lane_central_open }
+			base = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_origin_profile_congo_forest }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_dossier_lane_central_open }
 		}
 	}
 
@@ -1233,9 +1238,9 @@ africa_charter_league_diplomacy_category = {
 			africa_open_zsc_stone_city_yards_from = yes
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_route_crown_congress }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_dossier_lane_southern_open }
+			base = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_route_crown_congress }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_dossier_lane_southern_open }
 		}
 	}
 
@@ -1286,9 +1291,9 @@ africa_charter_league_diplomacy_category = {
 			africa_secure_slc_mine_port_belt_from = yes
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_liberation_war_office_open }
-			modifier = { factor = constant:africa_ai.preferred has_global_flag = africa_rsa_civil_war_active }
+			base = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_liberation_war_office_open }
+			modifier = { factor = @africa_ai_preferred has_global_flag = africa_rsa_civil_war_active }
 		}
 	}
 
@@ -1320,7 +1325,7 @@ africa_charter_league_diplomacy_category = {
 			custom_effect_tooltip = africa_regional_authority_mandate_mission_failure_tt
 			africa_apply_regional_authority_mandate_failure = yes
 		}
-		ai_will_do = { base = constant:africa_ai.preferred }
+		ai_will_do = { base = @africa_ai_preferred }
 	}
 }
 
@@ -1371,7 +1376,7 @@ africa_charter_member_category = {
 				clr_country_flag = africa_member_confidence_mission_failed
 			}
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_member_petition_to_leave_charter = {
@@ -1423,9 +1428,9 @@ africa_charter_member_category = {
 			}
 		}
 		ai_will_do = {
-			base = constant:africa_ai.low
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_authority_prefers_protectorate }
-			modifier = { factor = constant:africa_ai.very_low has_country_flag = africa_authority_integration_docketed }
+			base = @africa_ai_low
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_authority_prefers_protectorate }
+			modifier = { factor = @africa_ai_very_low has_country_flag = africa_authority_integration_docketed }
 		}
 	}
 
@@ -1496,9 +1501,9 @@ africa_charter_member_category = {
 			}
 		}
 		ai_will_do = {
-			base = constant:africa_ai.very_low
-			modifier = { factor = constant:africa_ai.normal has_country_flag = africa_authority_integration_docketed }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_charter_former_member }
+			base = @africa_ai_very_low
+			modifier = { factor = @africa_ai_normal has_country_flag = africa_authority_integration_docketed }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_charter_former_member }
 		}
 	}
 }
@@ -1543,7 +1548,7 @@ africa_liberation_war_office_category = {
 			}
 			set_country_flag = africa_liberation_operation_ready
 		}
-		ai_will_do = { base = constant:africa_ai.low }
+		ai_will_do = { base = @africa_ai_low }
 	}
 
 	africa_raise_border_liberation_columns = {
@@ -1589,8 +1594,8 @@ africa_liberation_war_office_category = {
 			set_country_flag = africa_border_liberation_columns_raised
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_war = yes }
+			base = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_war = yes }
 		}
 	}
 
@@ -1633,7 +1638,7 @@ africa_liberation_war_office_category = {
 			set_country_flag = africa_liberation_front_rail_ready
 			set_country_flag = africa_liberation_rail_belt_secured
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_secure_liberation_objective_state = {
@@ -1681,11 +1686,11 @@ africa_liberation_war_office_category = {
 			africa_complete_liberation_objective_operation = yes
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_war = yes }
-			modifier = { factor = constant:africa_ai.preferred FROM = { owner = { is_africa_external_colonial_holder_for_root = yes } } }
-			modifier = { factor = constant:africa_ai.preferred FROM = { controller = { has_country_flag = africa_regional_authority_subject } } }
-			modifier = { factor = constant:africa_ai.preferred FROM = { controller = { has_country_flag = africa_charter_member } } }
+			base = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_war = yes }
+			modifier = { factor = @africa_ai_preferred FROM = { owner = { is_africa_external_colonial_holder_for_root = yes } } }
+			modifier = { factor = @africa_ai_preferred FROM = { controller = { has_country_flag = africa_regional_authority_subject } } }
+			modifier = { factor = @africa_ai_preferred FROM = { controller = { has_country_flag = africa_charter_member } } }
 		}
 	}
 
@@ -1761,7 +1766,7 @@ africa_liberation_war_office_category = {
 			custom_effect_tooltip = africa_update_scramble_case_files_effect_tt
 			africa_refresh_external_colonial_holder_pool = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_press_scramble_treaty_settlement = {
@@ -1813,7 +1818,7 @@ africa_liberation_war_office_category = {
 			africa_clamp_core_values = yes
 			africa_refresh_external_colonial_holder_pool = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_scramble_treaty_deadline_mission = {
@@ -1893,7 +1898,7 @@ africa_regional_integration_category = {
 			custom_effect_tooltip = africa_survey_paper_claim_state_effect_tt
 			africa_complete_paper_claim_survey_operation = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_complete_living_core_state = {
@@ -1938,7 +1943,7 @@ africa_regional_integration_category = {
 			custom_effect_tooltip = africa_complete_living_core_state_effect_tt
 			africa_complete_living_core_operation = yes
 		}
-		ai_will_do = { base = constant:africa_ai.preferred }
+		ai_will_do = { base = @africa_ai_preferred }
 	}
 
 	africa_secure_integration_rail_belt = {
@@ -1985,7 +1990,7 @@ africa_regional_integration_category = {
 			custom_effect_tooltip = africa_secure_integration_rail_belt_effect_tt
 			africa_complete_integration_rail_operation = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_review_integration_temperature = {
@@ -2022,7 +2027,7 @@ africa_regional_integration_category = {
 			add_to_variable = { africa_local_sovereignty = constant:africa_value_delta.charter_resist_sovereignty }
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_regional_integration_deadline_mission = {
@@ -2114,7 +2119,7 @@ africa_diaspora_return_category = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_return_cadres_invited
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_build_return_settlement = {
@@ -2162,7 +2167,7 @@ africa_diaspora_return_category = {
 			custom_effect_tooltip = africa_build_return_settlement_effect_tt
 			africa_complete_return_settlement_operation = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_form_diaspora_officer_schools = {
@@ -2198,7 +2203,7 @@ africa_diaspora_return_category = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_diaspora_officer_schools_ready
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_hold_pan_atlantic_congress = {
@@ -2222,7 +2227,7 @@ africa_diaspora_return_category = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_pan_atlantic_congress_held
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 }
 
@@ -2259,9 +2264,9 @@ africa_authority_atlas_category = {
 			africa_clamp_core_values = yes
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_authority_register_open }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_old_seat_mission_calendar_open }
+			base = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_authority_register_open }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_old_seat_mission_calendar_open }
 		}
 	}
 
@@ -2308,7 +2313,7 @@ africa_authority_atlas_category = {
 			africa_clear_selected_dossier_survey_active = yes
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_charter_local_dossier_office = {
@@ -2345,12 +2350,12 @@ africa_authority_atlas_category = {
 			africa_clamp_core_values = yes
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_route_federal_charter }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_route_sovereign_seats }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_route_crown_congress }
-			modifier = { factor = constant:africa_ai.preferred is_africa_selected_dossier_profile_western_crowns = yes }
-			modifier = { factor = constant:africa_ai.preferred is_africa_selected_dossier_profile_great_lakes = yes }
+			base = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_route_federal_charter }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_route_sovereign_seats }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_route_crown_congress }
+			modifier = { factor = @africa_ai_preferred is_africa_selected_dossier_profile_western_crowns = yes }
+			modifier = { factor = @africa_ai_preferred is_africa_selected_dossier_profile_great_lakes = yes }
 		}
 	}
 
@@ -2391,13 +2396,13 @@ africa_authority_atlas_category = {
 			africa_clamp_core_values = yes
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_war = yes }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_route_peoples_liberation_front }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_route_continental_general_staff }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_settlement_direct_archive_seal }
-			modifier = { factor = constant:africa_ai.preferred is_africa_selected_dossier_profile_maghreb_desert = yes }
-			modifier = { factor = constant:africa_ai.preferred is_africa_selected_dossier_profile_southern_stone = yes }
+			base = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_war = yes }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_route_peoples_liberation_front }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_route_continental_general_staff }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_settlement_direct_archive_seal }
+			modifier = { factor = @africa_ai_preferred is_africa_selected_dossier_profile_maghreb_desert = yes }
+			modifier = { factor = @africa_ai_preferred is_africa_selected_dossier_profile_southern_stone = yes }
 		}
 	}
 
@@ -2425,13 +2430,13 @@ africa_authority_atlas_category = {
 			africa_start_selected_historical_dossier_case_mission = yes
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred is_africa_selected_dossier_case_type_site = yes }
-			modifier = { factor = constant:africa_ai.preferred is_africa_selected_dossier_case_type_route = yes }
-			modifier = { factor = constant:africa_ai.preferred is_africa_selected_dossier_case_type_hearing = yes }
-			modifier = { factor = constant:africa_ai.low has_country_flag = africa_historical_dossier_slot_1_active }
-			modifier = { factor = constant:africa_ai.low has_country_flag = africa_historical_dossier_slot_2_active }
-			modifier = { factor = constant:africa_ai.low has_country_flag = africa_historical_dossier_slot_3_active }
+			base = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred is_africa_selected_dossier_case_type_site = yes }
+			modifier = { factor = @africa_ai_preferred is_africa_selected_dossier_case_type_route = yes }
+			modifier = { factor = @africa_ai_preferred is_africa_selected_dossier_case_type_hearing = yes }
+			modifier = { factor = @africa_ai_low has_country_flag = africa_historical_dossier_slot_1_active }
+			modifier = { factor = @africa_ai_low has_country_flag = africa_historical_dossier_slot_2_active }
+			modifier = { factor = @africa_ai_low has_country_flag = africa_historical_dossier_slot_3_active }
 		}
 	}
 
@@ -2454,7 +2459,7 @@ africa_authority_atlas_category = {
 			custom_effect_tooltip = africa_recall_historical_dossier_case_slot_1_effect_tt
 			africa_select_historical_dossier_case_slot_1_record = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_recall_historical_dossier_case_slot_2 = {
@@ -2476,7 +2481,7 @@ africa_authority_atlas_category = {
 			custom_effect_tooltip = africa_recall_historical_dossier_case_slot_2_effect_tt
 			africa_select_historical_dossier_case_slot_2_record = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_recall_historical_dossier_case_slot_3 = {
@@ -2498,7 +2503,7 @@ africa_authority_atlas_category = {
 			custom_effect_tooltip = africa_recall_historical_dossier_case_slot_3_effect_tt
 			africa_select_historical_dossier_case_slot_3_record = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_historical_dossier_site_slot_1_mission = {
@@ -2531,7 +2536,7 @@ africa_authority_atlas_category = {
 			custom_effect_tooltip = africa_historical_dossier_site_slot_1_failure_tt
 			africa_fail_historical_dossier_case_slot_1 = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_historical_dossier_route_slot_1_mission = {
@@ -2564,7 +2569,7 @@ africa_authority_atlas_category = {
 			custom_effect_tooltip = africa_historical_dossier_route_slot_1_failure_tt
 			africa_fail_historical_dossier_case_slot_1 = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_historical_dossier_hearing_slot_1_mission = {
@@ -2597,7 +2602,7 @@ africa_authority_atlas_category = {
 			custom_effect_tooltip = africa_historical_dossier_hearing_slot_1_failure_tt
 			africa_fail_historical_dossier_case_slot_1 = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_historical_dossier_site_slot_2_mission = {
@@ -2630,7 +2635,7 @@ africa_authority_atlas_category = {
 			custom_effect_tooltip = africa_historical_dossier_site_slot_2_failure_tt
 			africa_fail_historical_dossier_case_slot_2 = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_historical_dossier_route_slot_2_mission = {
@@ -2663,7 +2668,7 @@ africa_authority_atlas_category = {
 			custom_effect_tooltip = africa_historical_dossier_route_slot_2_failure_tt
 			africa_fail_historical_dossier_case_slot_2 = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_historical_dossier_hearing_slot_2_mission = {
@@ -2696,7 +2701,7 @@ africa_authority_atlas_category = {
 			custom_effect_tooltip = africa_historical_dossier_hearing_slot_2_failure_tt
 			africa_fail_historical_dossier_case_slot_2 = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_historical_dossier_site_slot_3_mission = {
@@ -2729,7 +2734,7 @@ africa_authority_atlas_category = {
 			custom_effect_tooltip = africa_historical_dossier_site_slot_3_failure_tt
 			africa_fail_historical_dossier_case_slot_3 = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_historical_dossier_route_slot_3_mission = {
@@ -2762,7 +2767,7 @@ africa_authority_atlas_category = {
 			custom_effect_tooltip = africa_historical_dossier_route_slot_3_failure_tt
 			africa_fail_historical_dossier_case_slot_3 = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_historical_dossier_hearing_slot_3_mission = {
@@ -2795,7 +2800,7 @@ africa_authority_atlas_category = {
 			custom_effect_tooltip = africa_historical_dossier_hearing_slot_3_failure_tt
 			africa_fail_historical_dossier_case_slot_3 = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_settle_selected_dossier_observer = {
@@ -2830,14 +2835,14 @@ africa_authority_atlas_category = {
 			africa_clamp_core_values = yes
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.strong has_country_flag = africa_route_federal_charter }
-			modifier = { factor = constant:africa_ai.strong has_country_flag = africa_route_sovereign_seats }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_route_crown_congress }
-			modifier = { factor = constant:africa_ai.preferred is_africa_selected_dossier_profile_central_river = yes }
-			modifier = { factor = constant:africa_ai.preferred is_africa_selected_dossier_profile_great_lakes = yes }
-			modifier = { factor = constant:africa_ai.preferred is_africa_selected_dossier_profile_indian_ocean = yes }
-			modifier = { factor = constant:africa_ai.low has_country_flag = africa_settlement_direct_archive_seal }
+			base = @africa_ai_normal
+			modifier = { factor = @africa_ai_strong has_country_flag = africa_route_federal_charter }
+			modifier = { factor = @africa_ai_strong has_country_flag = africa_route_sovereign_seats }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_route_crown_congress }
+			modifier = { factor = @africa_ai_preferred is_africa_selected_dossier_profile_central_river = yes }
+			modifier = { factor = @africa_ai_preferred is_africa_selected_dossier_profile_great_lakes = yes }
+			modifier = { factor = @africa_ai_preferred is_africa_selected_dossier_profile_indian_ocean = yes }
+			modifier = { factor = @africa_ai_low has_country_flag = africa_settlement_direct_archive_seal }
 		}
 	}
 
@@ -2880,15 +2885,15 @@ africa_authority_atlas_category = {
 			africa_clamp_core_values = yes
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.strong has_country_flag = africa_settlement_respect_old_seats }
-			modifier = { factor = constant:africa_ai.strong has_country_flag = africa_route_federal_charter }
-			modifier = { factor = constant:africa_ai.strong has_country_flag = africa_route_sovereign_seats }
-			modifier = { factor = constant:africa_ai.preferred is_africa_selected_dossier_profile_western_crowns = yes }
-			modifier = { factor = constant:africa_ai.preferred is_africa_selected_dossier_profile_great_lakes = yes }
-			modifier = { factor = constant:africa_ai.preferred is_africa_selected_dossier_profile_central_river = yes }
-			modifier = { factor = constant:africa_ai.preferred is_africa_selected_dossier_profile_indian_ocean = yes }
-			modifier = { factor = constant:africa_ai.low has_country_flag = africa_settlement_direct_archive_seal }
+			base = @africa_ai_normal
+			modifier = { factor = @africa_ai_strong has_country_flag = africa_settlement_respect_old_seats }
+			modifier = { factor = @africa_ai_strong has_country_flag = africa_route_federal_charter }
+			modifier = { factor = @africa_ai_strong has_country_flag = africa_route_sovereign_seats }
+			modifier = { factor = @africa_ai_preferred is_africa_selected_dossier_profile_western_crowns = yes }
+			modifier = { factor = @africa_ai_preferred is_africa_selected_dossier_profile_great_lakes = yes }
+			modifier = { factor = @africa_ai_preferred is_africa_selected_dossier_profile_central_river = yes }
+			modifier = { factor = @africa_ai_preferred is_africa_selected_dossier_profile_indian_ocean = yes }
+			modifier = { factor = @africa_ai_low has_country_flag = africa_settlement_direct_archive_seal }
 		}
 	}
 
@@ -2931,15 +2936,15 @@ africa_authority_atlas_category = {
 			africa_clamp_core_values = yes
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.strong has_country_flag = africa_regional_authorities_open }
-			modifier = { factor = constant:africa_ai.strong has_country_flag = africa_authority_register_open }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_settlement_documents_before_consent }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_route_federal_charter }
-			modifier = { factor = constant:africa_ai.preferred is_africa_selected_dossier_profile_nile_red_sea = yes }
-			modifier = { factor = constant:africa_ai.preferred is_africa_selected_dossier_profile_sahel_charter = yes }
-			modifier = { factor = constant:africa_ai.preferred is_africa_selected_dossier_profile_central_river = yes }
-			modifier = { factor = constant:africa_ai.very_low has_country_flag = africa_route_sovereign_seats }
+			base = @africa_ai_normal
+			modifier = { factor = @africa_ai_strong has_country_flag = africa_regional_authorities_open }
+			modifier = { factor = @africa_ai_strong has_country_flag = africa_authority_register_open }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_settlement_documents_before_consent }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_route_federal_charter }
+			modifier = { factor = @africa_ai_preferred is_africa_selected_dossier_profile_nile_red_sea = yes }
+			modifier = { factor = @africa_ai_preferred is_africa_selected_dossier_profile_sahel_charter = yes }
+			modifier = { factor = @africa_ai_preferred is_africa_selected_dossier_profile_central_river = yes }
+			modifier = { factor = @africa_ai_very_low has_country_flag = africa_route_sovereign_seats }
 		}
 	}
 
@@ -2982,15 +2987,15 @@ africa_authority_atlas_category = {
 			africa_clamp_core_values = yes
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.strong has_country_flag = africa_settlement_documents_before_consent }
-			modifier = { factor = constant:africa_ai.strong has_country_flag = africa_bestiary_ananse_ledger_counterfeit_watch }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_direct_archive_seal_exposed }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_authority_register_open }
-			modifier = { factor = constant:africa_ai.preferred is_africa_selected_dossier_profile_western_crowns = yes }
-			modifier = { factor = constant:africa_ai.preferred is_africa_selected_dossier_profile_maghreb_desert = yes }
-			modifier = { factor = constant:africa_ai.preferred is_africa_selected_dossier_profile_central_river = yes }
-			modifier = { factor = constant:africa_ai.low has_country_flag = africa_settlement_respect_old_seats }
+			base = @africa_ai_normal
+			modifier = { factor = @africa_ai_strong has_country_flag = africa_settlement_documents_before_consent }
+			modifier = { factor = @africa_ai_strong has_country_flag = africa_bestiary_ananse_ledger_counterfeit_watch }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_direct_archive_seal_exposed }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_authority_register_open }
+			modifier = { factor = @africa_ai_preferred is_africa_selected_dossier_profile_western_crowns = yes }
+			modifier = { factor = @africa_ai_preferred is_africa_selected_dossier_profile_maghreb_desert = yes }
+			modifier = { factor = @africa_ai_preferred is_africa_selected_dossier_profile_central_river = yes }
+			modifier = { factor = @africa_ai_low has_country_flag = africa_settlement_respect_old_seats }
 		}
 	}
 
@@ -3036,14 +3041,14 @@ africa_authority_atlas_category = {
 			africa_clamp_core_values = yes
 		}
 		ai_will_do = {
-			base = constant:africa_ai.low
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_settlement_direct_archive_seal }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_route_continental_general_staff }
-			modifier = { factor = constant:africa_ai.preferred is_africa_selected_dossier_profile_nile_red_sea = yes }
-			modifier = { factor = constant:africa_ai.preferred is_africa_selected_dossier_profile_maghreb_desert = yes }
-			modifier = { factor = constant:africa_ai.preferred is_africa_selected_dossier_profile_southern_stone = yes }
-			modifier = { factor = constant:africa_ai.very_low has_country_flag = africa_route_federal_charter }
-			modifier = { factor = constant:africa_ai.very_low has_country_flag = africa_route_sovereign_seats }
+			base = @africa_ai_low
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_settlement_direct_archive_seal }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_route_continental_general_staff }
+			modifier = { factor = @africa_ai_preferred is_africa_selected_dossier_profile_nile_red_sea = yes }
+			modifier = { factor = @africa_ai_preferred is_africa_selected_dossier_profile_maghreb_desert = yes }
+			modifier = { factor = @africa_ai_preferred is_africa_selected_dossier_profile_southern_stone = yes }
+			modifier = { factor = @africa_ai_very_low has_country_flag = africa_route_federal_charter }
+			modifier = { factor = @africa_ai_very_low has_country_flag = africa_route_sovereign_seats }
 		}
 	}
 
@@ -3188,11 +3193,11 @@ africa_authority_atlas_category = {
 			}
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.strong has_country_flag = africa_bestiary_ananse_ledger_counterfeit_watch }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_direct_archive_seal_exposed }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_settlement_documents_before_consent }
-			modifier = { factor = constant:africa_ai.low has_war = yes }
+			base = @africa_ai_normal
+			modifier = { factor = @africa_ai_strong has_country_flag = africa_bestiary_ananse_ledger_counterfeit_watch }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_direct_archive_seal_exposed }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_settlement_documents_before_consent }
+			modifier = { factor = @africa_ai_low has_war = yes }
 		}
 	}
 
@@ -3264,12 +3269,12 @@ africa_authority_atlas_category = {
 			africa_start_old_seat_arbitration = yes
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.strong has_country_flag = africa_route_federal_charter }
-			modifier = { factor = constant:africa_ai.strong has_country_flag = africa_settlement_respect_old_seats }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_federal_high_court_open }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_dossier_lake_arbitration_open }
-			modifier = { factor = constant:africa_ai.low has_country_flag = africa_settlement_direct_archive_seal }
+			base = @africa_ai_normal
+			modifier = { factor = @africa_ai_strong has_country_flag = africa_route_federal_charter }
+			modifier = { factor = @africa_ai_strong has_country_flag = africa_settlement_respect_old_seats }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_federal_high_court_open }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_dossier_lake_arbitration_open }
+			modifier = { factor = @africa_ai_low has_country_flag = africa_settlement_direct_archive_seal }
 		}
 	}
 
@@ -3300,7 +3305,7 @@ africa_authority_atlas_category = {
 			custom_effect_tooltip = africa_old_seat_arbitration_failure_tt
 			africa_fail_old_seat_arbitration = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_mediate_dossier_resistance_watch = {
@@ -3347,14 +3352,14 @@ africa_authority_atlas_category = {
 			}
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.strong has_country_flag = africa_route_federal_charter }
-			modifier = { factor = constant:africa_ai.strong has_country_flag = africa_route_sovereign_seats }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_route_crown_congress }
-			modifier = { factor = constant:africa_ai.preferred is_africa_archive_resistance_profile_western_crowns = yes }
-			modifier = { factor = constant:africa_ai.preferred is_africa_archive_resistance_profile_central_river = yes }
-			modifier = { factor = constant:africa_ai.preferred is_africa_archive_resistance_profile_great_lakes = yes }
-			modifier = { factor = constant:africa_ai.low has_country_flag = africa_route_continental_general_staff }
+			base = @africa_ai_normal
+			modifier = { factor = @africa_ai_strong has_country_flag = africa_route_federal_charter }
+			modifier = { factor = @africa_ai_strong has_country_flag = africa_route_sovereign_seats }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_route_crown_congress }
+			modifier = { factor = @africa_ai_preferred is_africa_archive_resistance_profile_western_crowns = yes }
+			modifier = { factor = @africa_ai_preferred is_africa_archive_resistance_profile_central_river = yes }
+			modifier = { factor = @africa_ai_preferred is_africa_archive_resistance_profile_great_lakes = yes }
+			modifier = { factor = @africa_ai_low has_country_flag = africa_route_continental_general_staff }
 		}
 	}
 
@@ -3404,14 +3409,14 @@ africa_authority_atlas_category = {
 			}
 		}
 		ai_will_do = {
-			base = constant:africa_ai.low
-			modifier = { factor = constant:africa_ai.strong has_country_flag = africa_route_continental_general_staff }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_settlement_direct_archive_seal }
-			modifier = { factor = constant:africa_ai.preferred is_africa_archive_resistance_profile_nile_red_sea = yes }
-			modifier = { factor = constant:africa_ai.preferred is_africa_archive_resistance_profile_maghreb_desert = yes }
-			modifier = { factor = constant:africa_ai.preferred is_africa_archive_resistance_profile_southern_stone = yes }
-			modifier = { factor = constant:africa_ai.very_low has_country_flag = africa_route_federal_charter }
-			modifier = { factor = constant:africa_ai.very_low has_country_flag = africa_route_sovereign_seats }
+			base = @africa_ai_low
+			modifier = { factor = @africa_ai_strong has_country_flag = africa_route_continental_general_staff }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_settlement_direct_archive_seal }
+			modifier = { factor = @africa_ai_preferred is_africa_archive_resistance_profile_nile_red_sea = yes }
+			modifier = { factor = @africa_ai_preferred is_africa_archive_resistance_profile_maghreb_desert = yes }
+			modifier = { factor = @africa_ai_preferred is_africa_archive_resistance_profile_southern_stone = yes }
+			modifier = { factor = @africa_ai_very_low has_country_flag = africa_route_federal_charter }
+			modifier = { factor = @africa_ai_very_low has_country_flag = africa_route_sovereign_seats }
 		}
 	}
 
@@ -3494,7 +3499,7 @@ africa_high_chaos_category = {
 				clr_country_flag = africa_bestiary_containment_mission_failed
 			}
 		}
-		ai_will_do = { base = constant:africa_ai.low }
+		ai_will_do = { base = @africa_ai_low }
 	}
 
 	africa_negotiate_bestiary_habitat_terms = {
@@ -3528,7 +3533,7 @@ africa_high_chaos_category = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_bestiary_habitat_terms_negotiated
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_secure_bestiary_habitat_seat = {
@@ -3575,7 +3580,7 @@ africa_high_chaos_category = {
 			custom_effect_tooltip = africa_secure_bestiary_habitat_seat_effect_tt
 			africa_complete_bestiary_habitat_operation = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_verify_omen_reliability = {
@@ -3595,7 +3600,7 @@ africa_high_chaos_category = {
 			custom_effect_tooltip = africa_verify_omen_reliability_effect_tt
 			africa_start_omen_reliability_review = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_omen_reliability_review_mission = {
@@ -3703,9 +3708,9 @@ africa_high_chaos_category = {
 			}
 		}
 		ai_will_do = {
-			base = constant:africa_ai.low
+			base = @africa_ai_low
 			modifier = {
-				factor = constant:africa_ai.preferred
+				factor = @africa_ai_preferred
 				check_variable = { africa_colonial_alarm > constant:africa_decision.integration_authority_gate }
 			}
 		}
@@ -3784,9 +3789,9 @@ africa_high_chaos_category = {
 			}
 		}
 		ai_will_do = {
-			base = constant:africa_ai.low
+			base = @africa_ai_low
 			modifier = {
-				factor = constant:africa_ai.preferred
+				factor = @africa_ai_preferred
 				check_variable = { africa_mythic_volatility < constant:africa_decision.integration_authority_gate }
 			}
 		}
@@ -3818,7 +3823,7 @@ africa_high_chaos_category = {
 			add_to_variable = { africa_covenant_pressure = constant:africa_value_delta.covenant_pressure }
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { base = constant:africa_ai.low }
+		ai_will_do = { base = @africa_ai_low }
 	}
 
 	africa_open_chimpanzee_marsh_scout_lines = {
@@ -3862,9 +3867,9 @@ africa_high_chaos_category = {
 			africa_clamp_core_values = yes
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
+			base = @africa_ai_normal
 			modifier = {
-				factor = constant:africa_ai.strong
+				factor = @africa_ai_strong
 				has_global_flag = africa_is_one_complete
 				has_country_flag = africa_continent_sponsor_ready
 				has_country_flag = africa_middle_east_charter_staff_open
@@ -3915,7 +3920,7 @@ africa_high_chaos_category = {
 			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.scramble_treaty_alarm_relief }
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_sign_termite_citadel_treaty = {
@@ -3962,7 +3967,7 @@ africa_high_chaos_category = {
 			custom_effect_tooltip = africa_sign_termite_citadel_treaty_effect_tt
 			africa_complete_termite_citadel_operation = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_open_honeyguide_route_commons = {
@@ -4004,7 +4009,7 @@ africa_high_chaos_category = {
 			add_to_variable = { africa_covenant_pressure = constant:africa_value_delta.bestiary_package_covenant_relief }
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_mark_great_herds_migration_corridor = {
@@ -4052,9 +4057,9 @@ africa_high_chaos_category = {
 			africa_complete_great_herds_corridor_operation = yes
 		}
 		ai_will_do = {
-			base = constant:africa_ai.low
+			base = @africa_ai_low
 			modifier = {
-				factor = constant:africa_ai.strong
+				factor = @africa_ai_strong
 				has_global_flag = africa_is_one_complete
 				has_country_flag = africa_continent_sponsor_ready
 				has_country_flag = africa_asia_charter_staff_open
@@ -4118,7 +4123,7 @@ africa_high_chaos_category = {
 			africa_clamp_core_values = yes
 			country_event = { id = chaosx.nr12.40 }
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_request_okapi_court_shadow_dossiers = {
@@ -4170,7 +4175,7 @@ africa_high_chaos_category = {
 			africa_clamp_core_values = yes
 			country_event = { id = chaosx.nr12.41 }
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_commission_termite_citadel_engineers = {
@@ -4225,7 +4230,7 @@ africa_high_chaos_category = {
 			africa_clamp_core_values = yes
 			country_event = { id = chaosx.nr12.42 }
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_open_honeyguide_commons_aid_routes = {
@@ -4280,7 +4285,7 @@ africa_high_chaos_category = {
 			africa_clamp_core_values = yes
 			country_event = { id = chaosx.nr12.43 }
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_muster_great_herds_relief_columns = {
@@ -4335,9 +4340,9 @@ africa_high_chaos_category = {
 			country_event = { id = chaosx.nr12.44 }
 		}
 		ai_will_do = {
-			base = constant:africa_ai.low
+			base = @africa_ai_low
 			modifier = {
-				factor = constant:africa_ai.strong
+				factor = @africa_ai_strong
 				has_global_flag = africa_is_one_complete
 				has_country_flag = africa_continent_sponsor_ready
 				has_country_flag = africa_world_root_mandate_open
@@ -4397,9 +4402,9 @@ africa_high_chaos_category = {
 			country_event = { id = chaosx.nr12.45 }
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
+			base = @africa_ai_normal
 			modifier = {
-				factor = constant:africa_ai.strong
+				factor = @africa_ai_strong
 				check_variable = { africa_league_cohesion < constant:achievement_threshold.africa.league_cohesion_safe }
 			}
 		}
@@ -4462,9 +4467,9 @@ africa_high_chaos_category = {
 			country_event = { id = chaosx.nr12.46 }
 		}
 		ai_will_do = {
-			base = constant:africa_ai.low
+			base = @africa_ai_low
 			modifier = {
-				factor = constant:africa_ai.strong
+				factor = @africa_ai_strong
 				has_country_flag = africa_scramble_counter_dockets_open
 				NOT = { has_country_flag = africa_scramble_treaty_mission_success }
 			}
@@ -4521,7 +4526,7 @@ africa_high_chaos_category = {
 			africa_clamp_core_values = yes
 			country_event = { id = chaosx.nr12.47 }
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_field_sao_terracotta_line = {
@@ -4585,9 +4590,9 @@ africa_high_chaos_category = {
 			country_event = { id = chaosx.nr12.48 }
 		}
 		ai_will_do = {
-			base = constant:africa_ai.low
+			base = @africa_ai_low
 			modifier = {
-				factor = constant:africa_ai.strong
+				factor = @africa_ai_strong
 				has_country_flag = africa_scramble_counter_dockets_open
 			}
 		}
@@ -4646,9 +4651,9 @@ africa_high_chaos_category = {
 			africa_clamp_core_values = yes
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
+			base = @africa_ai_normal
 			modifier = {
-				factor = constant:africa_ai.strong
+				factor = @africa_ai_strong
 				has_global_flag = africa_is_one_complete
 				has_country_flag = africa_continent_sponsor_ready
 				has_country_flag = africa_pan_atlantic_congress_held
@@ -4706,9 +4711,9 @@ africa_high_chaos_category = {
 			africa_clamp_core_values = yes
 		}
 			ai_will_do = {
-				base = constant:africa_ai.low
+				base = @africa_ai_low
 				modifier = {
-					factor = constant:africa_ai.strong
+					factor = @africa_ai_strong
 					has_country_flag = africa_congress_of_continents_focus_open
 					has_country_flag = africa_sponsored_middle_east_charter
 					has_country_flag = africa_sponsored_asia_charter
@@ -4763,7 +4768,7 @@ africa_high_chaos_category = {
 			add_to_variable = { africa_restoration_debt = constant:africa_value_delta.integration_burden_relief }
 			africa_clamp_core_values = yes
 		}
-			ai_will_do = { base = constant:africa_ai.normal }
+			ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_keep_tidemark_convoy_watch = {
@@ -4811,7 +4816,7 @@ africa_high_chaos_category = {
 			add_to_variable = { africa_covenant_pressure = constant:africa_value_delta.bestiary_actor_covenant_pressure_relief }
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_audit_ananse_counterfeit_treaties = {
@@ -4857,7 +4862,7 @@ africa_high_chaos_category = {
 			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.scramble_treaty_alarm_relief }
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_call_orisha_vodun_nature_court = {
@@ -4904,7 +4909,7 @@ africa_high_chaos_category = {
 			add_to_variable = { africa_bestiary_alarm = constant:africa_value_delta.bestiary_actor_alarm }
 			africa_clamp_core_values = yes
 		}
-			ai_will_do = { base = constant:africa_ai.low }
+			ai_will_do = { base = @africa_ai_low }
 	}
 
 	africa_bestiary_containment_deadline_mission = {
@@ -4998,7 +5003,7 @@ africa_continent_sponsor_category = {
 				africa_start_continent_sponsor_readiness_mission = yes
 			}
 		}
-		ai_will_do = { base = constant:africa_ai.normal }
+		ai_will_do = { base = @africa_ai_normal }
 	}
 
 	africa_continent_sponsor_readiness_mission = {
@@ -5098,9 +5103,9 @@ africa_continent_sponsor_category = {
 			}
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
+			base = @africa_ai_normal
 			modifier = {
-				factor = constant:africa_ai.strong
+				factor = @africa_ai_strong
 				can_africa_sponsor_middle_east_charter = yes
 			}
 		}
@@ -5149,9 +5154,9 @@ africa_continent_sponsor_category = {
 			}
 		}
 		ai_will_do = {
-			base = constant:africa_ai.low
+			base = @africa_ai_low
 			modifier = {
-				factor = constant:africa_ai.strong
+				factor = @africa_ai_strong
 				can_africa_sponsor_asia_charter = yes
 			}
 		}
@@ -5197,9 +5202,9 @@ africa_continent_sponsor_category = {
 			}
 		}
 		ai_will_do = {
-			base = constant:africa_ai.low
+			base = @africa_ai_low
 			modifier = {
-				factor = constant:africa_ai.strong
+				factor = @africa_ai_strong
 				can_africa_sponsor_europe_charter = yes
 			}
 		}
@@ -5245,9 +5250,9 @@ africa_continent_sponsor_category = {
 			}
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
+			base = @africa_ai_normal
 			modifier = {
-				factor = constant:africa_ai.strong
+				factor = @africa_ai_strong
 				can_africa_sponsor_south_atlantic_charter = yes
 			}
 		}
@@ -5294,9 +5299,9 @@ africa_continent_sponsor_category = {
 			}
 		}
 		ai_will_do = {
-			base = constant:africa_ai.low
+			base = @africa_ai_low
 			modifier = {
-				factor = constant:africa_ai.strong
+				factor = @africa_ai_strong
 				can_africa_proclaim_dynamic_cross_continent_union = yes
 			}
 		}
@@ -5348,9 +5353,9 @@ africa_continent_sponsor_category = {
 			}
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
+			base = @africa_ai_normal
 			modifier = {
-				factor = constant:africa_ai.strong
+				factor = @africa_ai_strong
 				has_africa_middle_east_unifier_proof_route_ready = yes
 			}
 		}
@@ -5402,9 +5407,9 @@ africa_continent_sponsor_category = {
 			}
 		}
 		ai_will_do = {
-			base = constant:africa_ai.low
+			base = @africa_ai_low
 			modifier = {
-				factor = constant:africa_ai.strong
+				factor = @africa_ai_strong
 				has_africa_asia_unifier_proof_route_ready = yes
 			}
 		}
@@ -5456,9 +5461,9 @@ africa_continent_sponsor_category = {
 			}
 		}
 		ai_will_do = {
-			base = constant:africa_ai.low
+			base = @africa_ai_low
 			modifier = {
-				factor = constant:africa_ai.strong
+				factor = @africa_ai_strong
 				has_africa_europe_unifier_proof_route_ready = yes
 			}
 		}
@@ -5510,9 +5515,9 @@ africa_continent_sponsor_category = {
 			}
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
+			base = @africa_ai_normal
 			modifier = {
-				factor = constant:africa_ai.strong
+				factor = @africa_ai_strong
 				has_africa_south_atlantic_unifier_proof_route_ready = yes
 			}
 		}
@@ -5563,9 +5568,9 @@ africa_continent_sponsor_category = {
 			}
 		}
 		ai_will_do = {
-			base = constant:africa_ai.low
+			base = @africa_ai_low
 			modifier = {
-				factor = constant:africa_ai.strong
+				factor = @africa_ai_strong
 				can_africa_certify_continent_unifiers_for_world_is_one = yes
 			}
 		}
@@ -5629,9 +5634,9 @@ africa_continent_sponsor_category = {
 			}
 		}
 		ai_will_do = {
-			base = constant:africa_ai.normal
+			base = @africa_ai_normal
 			modifier = {
-				factor = constant:africa_ai.strong
+				factor = @africa_ai_strong
 				can_africa_prepare_world_is_one_gate = yes
 				NOT = { has_country_flag = africa_world_is_one_gate_prepared }
 			}
@@ -5673,7 +5678,7 @@ africa_rsa_civil_war_emergency_category = {
 			add_war_support = constant:africa_force.rsa_supply_war_support
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { base = constant:africa_ai.strong }
+		ai_will_do = { base = @africa_ai_strong }
 	}
 
 	africa_rsa_hold_mine_port_belt = {
@@ -5716,7 +5721,7 @@ africa_rsa_civil_war_emergency_category = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_rsa_mine_port_belt_held
 		}
-		ai_will_do = { base = constant:africa_ai.strong }
+		ai_will_do = { base = @africa_ai_strong }
 	}
 
 	africa_rsa_force_allied_negotiators = {
@@ -5743,7 +5748,7 @@ africa_rsa_civil_war_emergency_category = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_rsa_allied_negotiators_forced
 		}
-		ai_will_do = { base = constant:africa_ai.strong }
+		ai_will_do = { base = @africa_ai_strong }
 	}
 
 	africa_rsa_prepare_victory_settlement = {
@@ -5766,7 +5771,7 @@ africa_rsa_civil_war_emergency_category = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_rsa_victory_settlement_ready
 		}
-		ai_will_do = { base = constant:africa_ai.strong }
+		ai_will_do = { base = @africa_ai_strong }
 	}
 
 	africa_rsa_pretoria_deadline_mission = {
