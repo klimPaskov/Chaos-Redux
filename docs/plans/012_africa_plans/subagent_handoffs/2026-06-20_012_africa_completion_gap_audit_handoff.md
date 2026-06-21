@@ -6,6 +6,8 @@ Scope: read-only completion audit for Event 012 Africa against `docs/specs/012_a
 
 This audit did not edit gameplay, localisation, assets, spreadsheets, or existing documentation. This handoff is the only file written.
 
+Parent reconciliation note, 2026-06-21: the scenario-specific findings in this audit predate the `SCN-008` two-type reconciliation. Treat references to `SCN-012`, Continental Pole as a manual scenario type, or the eight-profile manual matrix as historical. The active scenario matrix is `docs/plans/012_africa_plans/2026-06-20_targeted_scenario_validation_matrix.md`, and the active spreadsheet handoff is `docs/plans/012_africa_plans/2026-06-21_event_012_scn008_spreadsheet_alignment_handoff.md`.
+
 ## Instructions and references applied
 
 - Read and applied `AGENTS.md`.

@@ -8,6 +8,8 @@ This audit wrote only this documentation handoff. It did not edit gameplay, loca
 
 Parent follow-up, 2026-06-20: later committed tranches supersede the regional-package and dirty-work observations in this handoff. All ten regional authority package decisions are live and audited, same-tick target revalidation and custom-cost hover localisation are present, the package-action gate helper is valid, and the static created-actor country-package audit found no missing tag/history/OOB/portrait/flag/localisation/focus/AI surface for the 25 created actors. The broader non-completion verdict remains current for live scenario proof, GUI render proof, AI/balance/exploit validation, historical source asset confidence, spreadsheet status, and World Is One live proof.
 
+Parent reconciliation note, 2026-06-21: the triggerable-scenario rows below predate the `SCN-008` two-type scenario update and spreadsheet reconciliation. Read `SCN-012`, eight manual profiles, and Continental Pole manual-scenario wording as historical audit context only. The active matrix now treats `Africa Is One` and `World Is One` as the only manual types and leaves the retired profiles as normal-route validation topics.
+
 ## Instructions Applied
 
 - Read and applied `AGENTS.md`.

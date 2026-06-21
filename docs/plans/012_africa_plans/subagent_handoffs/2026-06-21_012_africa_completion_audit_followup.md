@@ -6,6 +6,8 @@ Scope: read-only follow-up audit for Event 012 Africa against `docs/specs/012_af
 
 No gameplay, localisation, asset, spreadsheet, staging, or commit work was performed. This report is the only file written.
 
+Parent reconciliation note, 2026-06-21: later parent work replaced the stale eight-profile manual scenario reading with the current `SCN-008` two-type matrix. `docs/plans/012_africa_plans/2026-06-20_targeted_scenario_validation_matrix.md` now records only `Africa Is One` and `World Is One` as manual scenario types, maps the retired profiles to normal-route validation topics, and keeps live proof open. The completion verdict below remains valid, but any SCN-012 or eight-profile wording in this handoff is historical.
+
 ## Instructions and References Applied
 
 - Read and applied `AGENTS.md`.
