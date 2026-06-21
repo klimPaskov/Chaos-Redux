@@ -50,6 +50,10 @@
 @africa_hyr_seat_state = 781
 @africa_bir_seat_state = 770
 @africa_sao_seat_state = 774
+@africa_triggerable_middle_east_unifier_seat_state = 49
+@africa_triggerable_asia_unifier_seat_state = 1035
+@africa_triggerable_europe_unifier_seat_state = 64
+@africa_triggerable_south_atlantic_unifier_seat_state = 500
 @africa_super_event_visible_days = 12
 
 africa_score_unifier_candidate_for_selection = {
@@ -670,6 +674,7 @@ africa_start_triggerable_unifying_wars = {
 africa_spawn_triggerable_external_continent_unifiers = {
 	set_variable = { global.africa_triggerable_scenario_external_unifier_count = 0 }
 	africa_apply_triggerable_continental_pole_external_mandate_hooks = yes
+	africa_ensure_triggerable_world_is_one_external_unifier_seats = yes
 	if = {
 		limit = { TUR = { exists = yes } }
 		TUR = { africa_mark_triggerable_middle_east_unifier = yes }
@@ -736,6 +741,77 @@ africa_spawn_triggerable_external_continent_unifiers = {
 	}
 }
 
+africa_ensure_triggerable_world_is_one_external_unifier_seats = {
+	if = {
+		limit = {
+			NOT = {
+				OR = {
+					TUR = { exists = yes }
+					PER = { exists = yes }
+					IRQ = { exists = yes }
+					SAU = { exists = yes }
+				}
+			}
+		}
+		every_state = {
+			limit = { state = @africa_triggerable_middle_east_unifier_seat_state }
+			add_core_of = TUR
+			transfer_state_to = TUR
+		}
+	}
+	if = {
+		limit = {
+			NOT = {
+				OR = {
+					CHI = { exists = yes }
+					JAP = { exists = yes }
+					RAJ = { exists = yes }
+					SIA = { exists = yes }
+				}
+			}
+		}
+		every_state = {
+			limit = { state = @africa_triggerable_asia_unifier_seat_state }
+			add_core_of = CHI
+			transfer_state_to = CHI
+		}
+	}
+	if = {
+		limit = {
+			NOT = {
+				OR = {
+					GER = { exists = yes }
+					FRA = { exists = yes }
+					ITA = { exists = yes }
+					SOV = { exists = yes }
+					ENG = { exists = yes }
+				}
+			}
+		}
+		every_state = {
+			limit = { state = @africa_triggerable_europe_unifier_seat_state }
+			add_core_of = GER
+			transfer_state_to = GER
+		}
+	}
+	if = {
+		limit = {
+			NOT = {
+				OR = {
+					BRA = { exists = yes }
+					ARG = { exists = yes }
+					CHL = { exists = yes }
+				}
+			}
+		}
+		every_state = {
+			limit = { state = @africa_triggerable_south_atlantic_unifier_seat_state }
+			add_core_of = BRA
+			transfer_state_to = BRA
+		}
+	}
+}
+
 africa_mark_triggerable_middle_east_unifier = {
 	set_country_flag = africa_triggerable_scenario_external_continent_unifier
 	set_country_flag = africa_triggerable_scenario_middle_east_unifier
@@ -770,12 +846,14 @@ africa_apply_triggerable_external_unifier_scaled_support = {
 		set_temp_variable = { africa_external_unifier_infantry_equipment = constant:africa_triggerable_scenario_force.external_unifier_medium_infantry_equipment }
 		set_temp_variable = { africa_external_unifier_support_equipment = constant:africa_triggerable_scenario_force.external_unifier_medium_support_equipment }
 		set_temp_variable = { africa_external_unifier_convoys = constant:africa_triggerable_scenario_force.external_unifier_medium_convoys }
+		set_temp_variable = { africa_external_unifier_divisions = constant:africa_triggerable_scenario_force.external_unifier_medium_divisions }
 		if = {
 			limit = { check_variable = { global.africa_triggerable_scenario_intensity = constant:triggerable_scenario_intensity.low } }
 			set_temp_variable = { africa_external_unifier_manpower = constant:africa_triggerable_scenario_force.external_unifier_low_manpower }
 			set_temp_variable = { africa_external_unifier_infantry_equipment = constant:africa_triggerable_scenario_force.external_unifier_low_infantry_equipment }
 			set_temp_variable = { africa_external_unifier_support_equipment = constant:africa_triggerable_scenario_force.external_unifier_low_support_equipment }
 			set_temp_variable = { africa_external_unifier_convoys = constant:africa_triggerable_scenario_force.external_unifier_low_convoys }
+			set_temp_variable = { africa_external_unifier_divisions = constant:africa_triggerable_scenario_force.external_unifier_low_divisions }
 		}
 		else_if = {
 			limit = { check_variable = { global.africa_triggerable_scenario_intensity = constant:triggerable_scenario_intensity.high } }
@@ -783,6 +861,7 @@ africa_apply_triggerable_external_unifier_scaled_support = {
 			set_temp_variable = { africa_external_unifier_infantry_equipment = constant:africa_triggerable_scenario_force.external_unifier_high_infantry_equipment }
 			set_temp_variable = { africa_external_unifier_support_equipment = constant:africa_triggerable_scenario_force.external_unifier_high_support_equipment }
 			set_temp_variable = { africa_external_unifier_convoys = constant:africa_triggerable_scenario_force.external_unifier_high_convoys }
+			set_temp_variable = { africa_external_unifier_divisions = constant:africa_triggerable_scenario_force.external_unifier_high_divisions }
 		}
 		else_if = {
 			limit = { check_variable = { global.africa_triggerable_scenario_intensity = constant:triggerable_scenario_intensity.maximum } }
@@ -790,11 +869,57 @@ africa_apply_triggerable_external_unifier_scaled_support = {
 			set_temp_variable = { africa_external_unifier_infantry_equipment = constant:africa_triggerable_scenario_force.external_unifier_maximum_infantry_equipment }
 			set_temp_variable = { africa_external_unifier_support_equipment = constant:africa_triggerable_scenario_force.external_unifier_maximum_support_equipment }
 			set_temp_variable = { africa_external_unifier_convoys = constant:africa_triggerable_scenario_force.external_unifier_maximum_convoys }
+			set_temp_variable = { africa_external_unifier_divisions = constant:africa_triggerable_scenario_force.external_unifier_maximum_divisions }
 		}
 		add_manpower = var:africa_external_unifier_manpower
 		add_equipment_to_stockpile = { type = infantry_equipment amount = africa_external_unifier_infantry_equipment producer = ROOT }
 		add_equipment_to_stockpile = { type = support_equipment amount = africa_external_unifier_support_equipment producer = ROOT }
 		add_equipment_to_stockpile = { type = convoy_1 amount = africa_external_unifier_convoys producer = ROOT }
+		round_temp_variable = africa_external_unifier_divisions
+		africa_create_triggerable_external_unifier_guard_template = yes
+		capital_scope = {
+			meta_effect = {
+				text = {
+					create_unit = {
+						division = "name = \"Continental Unifier Guard\" division_template = \"Continental Unifier Guard\" start_experience_factor = 0.35 start_equipment_factor = 1 start_manpower_factor = 1"
+						owner = PREV
+						count = [COUNT]
+						allow_spawning_on_enemy_provs = yes
+					}
+				}
+				COUNT = "[?africa_external_unifier_divisions|.0]"
+			}
+		}
+	}
+}
+
+africa_create_triggerable_external_unifier_guard_template = {
+	if = {
+		limit = { NOT = { has_country_flag = africa_triggerable_scenario_external_unifier_template_created } }
+		set_country_flag = africa_triggerable_scenario_external_unifier_template_created
+		division_template = {
+			name = "Continental Unifier Guard"
+			is_locked = yes
+			force_allow_recruiting = yes
+			division_cap = 48
+			priority = 2
+			template_counter = 4
+			regiments = {
+				infantry = { x = 0 y = 0 }
+				infantry = { x = 0 y = 1 }
+				infantry = { x = 0 y = 2 }
+				infantry = { x = 1 y = 0 }
+				infantry = { x = 1 y = 1 }
+				infantry = { x = 1 y = 2 }
+				infantry = { x = 2 y = 0 }
+				infantry = { x = 2 y = 1 }
+				artillery_brigade = { x = 3 y = 0 }
+			}
+			support = {
+				engineer = { x = 0 y = 0 }
+				recon = { x = 0 y = 1 }
+			}
+		}
 	}
 }
 

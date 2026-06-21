@@ -99,9 +99,9 @@ The Africa Is One scenario can launch even if Event 012 has already fired or ano
 
 The scenario has only two types. `Africa Is One` immediately forms a strong Africa, opens the Charter League, paper claims, regional authority, Authority Atlas, sponsor, proof-ledger, and post-unification surfaces, seeds regional authorities even at Low intensity, and starts unification wars against remaining African-capital candidates and outside holders of African land.
 
-`World Is One` starts from the same strong opening, sets the Middle East, Asia, Europe, and South Atlantic readiness hooks, marks supported scenario continent-unifier actors with intensity-scaled logistics, verifies the proof/certification markers, applies the Congress of Continents identity, starts terminal wars, and sets the Africa World Is One terminal flags through the scenario helper.
+`World Is One` starts from the same strong opening, sets the Middle East, Asia, Europe, and South Atlantic readiness hooks, ensures each external region has at least one scenario continent-unifier actor when no candidate exists, marks supported scenario continent-unifier actors with intensity-scaled logistics and Continental Unifier Guard divisions, verifies the proof/certification markers, applies the Congress of Continents identity, starts terminal wars, and sets the Africa World Is One terminal flags through the scenario helper.
 
-Intensity changes the opening stockpile, manpower, colonial alarm, authority seeding, and World Is One external actor support. Low still forms strong Africa and starts wars. Medium increases logistics. High adds stronger forces and high external actor support. Maximum adds the largest opening pressure, Totalen Chaos readiness, multiple regional authorities, and the largest external-unifier support package.
+Intensity changes the opening stockpile, manpower, colonial alarm, authority seeding, and World Is One external actor support. Low still forms strong Africa, starts wars, and gives each supported external actor a small guard force. Medium increases logistics and guard divisions. High adds stronger forces and high external actor support. Maximum adds the largest opening pressure, Totalen Chaos readiness, multiple regional authorities, and the largest external-unifier support package.
 
 ## Assets
 
