@@ -11,11 +11,18 @@
 @africa_ai_strong = 2.25
 
 search_filter_prios = {
-	FOCUS_FILTER_AFR_CHARTER = 150
-	FOCUS_FILTER_AFR_AUTHORITY_ATLAS = 151
-	FOCUS_FILTER_AFR_SCRAMBLE = 152
-	FOCUS_FILTER_AFR_BESTIARY = 153
-	FOCUS_FILTER_AFR_WORLD_ORDER = 154
+	FOCUS_FILTER_AFR_STATEBUILDING = 150
+	FOCUS_FILTER_AFR_POLITICAL = 151
+	FOCUS_FILTER_AFR_LIBERATION = 152
+	FOCUS_FILTER_AFR_CHARTER_LEAGUE = 153
+	FOCUS_FILTER_AFR_INTEGRATION = 154
+	FOCUS_FILTER_AFR_AUTHORITY_ATLAS = 155
+	FOCUS_FILTER_AFR_INDUSTRY = 156
+	FOCUS_FILTER_AFR_MILITARY = 157
+	FOCUS_FILTER_AFR_DIASPORA = 158
+	FOCUS_FILTER_AFR_HIGH_CHAOS = 159
+	FOCUS_FILTER_AFR_POST_UNIFICATION = 160
+	FOCUS_FILTER_AFR_WORLD_ORDER = 161
 }
 
 focus_tree = {
@@ -37,7 +44,7 @@ focus_tree = {
 		y = 0
 		cost = 8
 		available = { has_country_flag = africa_is_one_started }
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_CHARTER }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_STATEBUILDING FOCUS_FILTER_AFR_CHARTER_LEAGUE }
 		completion_reward = {
 			add_to_variable = { africa_legitimacy = constant:africa_value_delta.charter_opened_legitimacy }
 			add_to_variable = { africa_authority = constant:africa_value_delta.charter_opened_authority }
@@ -54,7 +61,7 @@ focus_tree = {
 		x = 14
 		y = 1
 		cost = 8
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_CHARTER }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_STATEBUILDING FOCUS_FILTER_AFR_POLITICAL FOCUS_FILTER_AFR_CHARTER_LEAGUE }
 		completion_reward = {
 			add_to_variable = { africa_legitimacy = constant:africa_value_delta.charter_join_legitimacy }
 			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.charter_join_cohesion }
@@ -71,7 +78,7 @@ focus_tree = {
 		x = 18
 		y = 1
 		cost = 8
-		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_SCRAMBLE }
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_LIBERATION FOCUS_FILTER_AFR_MILITARY }
 		completion_reward = {
 			add_ideas = africa_liberation_war_office_spirit
 			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.liberation_office_momentum }
@@ -88,7 +95,7 @@ focus_tree = {
 		x = 22
 		y = 1
 		cost = 8
-		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_AUTHORITY_ATLAS FOCUS_FILTER_AFR_INTEGRATION }
 		completion_reward = {
 			add_ideas = africa_authority_atlas_spirit
 			add_to_variable = { africa_archive_mandate = constant:africa_value_delta.archive_opened_mandate }
@@ -108,7 +115,7 @@ focus_tree = {
 		y = 1
 		cost = 6
 		available = { has_country_flag = africa_rsa_continental_side }
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_SCRAMBLE }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_LIBERATION FOCUS_FILTER_AFR_POLITICAL }
 		completion_reward = {
 			add_to_variable = { africa_legitimacy = constant:africa_value_delta.diaspora_return_legitimacy }
 			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.rsa_civil_war_momentum }
@@ -126,7 +133,7 @@ focus_tree = {
 		y = 2
 		cost = 6
 		available = { has_country_flag = africa_rsa_continental_side }
-		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_SCRAMBLE }
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_LIBERATION FOCUS_FILTER_AFR_INDUSTRY }
 		completion_reward = {
 			add_war_support = constant:africa_focus_reward.rsa_mine_port_war_support
 			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.rsa_civil_war_momentum }
@@ -145,7 +152,7 @@ focus_tree = {
 		y = 2
 		cost = 6
 		available = { has_country_flag = africa_rsa_continental_side }
-		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_SCRAMBLE }
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_LIBERATION FOCUS_FILTER_AFR_MILITARY }
 		completion_reward = {
 			add_manpower = constant:africa_focus_reward.rsa_defectors_manpower
 			add_equipment_to_stockpile = {
@@ -168,7 +175,7 @@ focus_tree = {
 		y = 2
 		cost = 6
 		available = { has_country_flag = africa_rsa_continental_side }
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_SCRAMBLE }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_CHARTER_LEAGUE FOCUS_FILTER_AFR_LIBERATION }
 		completion_reward = {
 			add_to_variable = { africa_legitimacy = constant:africa_value_delta.sponsor_recognition }
 			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.charter_join_cohesion }
@@ -191,7 +198,7 @@ focus_tree = {
 			has_country_flag = africa_rsa_continental_side
 			has_global_flag = africa_rsa_civil_war_active
 		}
-		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_SCRAMBLE }
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_LIBERATION FOCUS_FILTER_AFR_MILITARY }
 		completion_reward = {
 			army_experience = constant:africa_focus_reward.rsa_pretoria_test_army_experience
 			add_to_variable = { africa_authority = constant:africa_value_delta.integration_authority }
@@ -214,7 +221,7 @@ focus_tree = {
 			has_country_flag = africa_rsa_continental_side
 			has_global_flag = africa_rsa_continental_victory
 		}
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_SCRAMBLE }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_LIBERATION FOCUS_FILTER_AFR_CHARTER_LEAGUE }
 		completion_reward = {
 			add_to_variable = { africa_legitimacy = constant:africa_value_delta.sponsor_recognition }
 			add_to_variable = { africa_authority = constant:africa_value_delta.integration_authority }
@@ -232,7 +239,7 @@ focus_tree = {
 		x = 10
 		y = 2
 		cost = 8
-		search_filters = { FOCUS_FILTER_INDUSTRY }
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_AFR_INDUSTRY }
 		ai_will_do = {
 			factor = @africa_ai_normal
 			modifier = { factor = @africa_ai_preferred has_war = no }
@@ -256,7 +263,7 @@ focus_tree = {
 		x = 14
 		y = 2
 		cost = 8
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_CHARTER }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_INTEGRATION FOCUS_FILTER_AFR_CHARTER_LEAGUE }
 		ai_will_do = {
 			factor = @africa_ai_preferred
 			modifier = { factor = @africa_ai_preferred has_country_flag = africa_industrial_convergence_open }
@@ -278,7 +285,7 @@ focus_tree = {
 		x = 18
 		y = 2
 		cost = 8
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_CHARTER }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_CHARTER_LEAGUE FOCUS_FILTER_AFR_INTEGRATION }
 		ai_will_do = {
 			factor = @africa_ai_preferred
 			modifier = { factor = @africa_ai_preferred has_country_flag = africa_regional_authorities_open }
@@ -353,7 +360,7 @@ focus_tree = {
 		x = 23
 		y = 4
 		cost = 8
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_CHARTER }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_INTEGRATION }
 		completion_reward = {
 			set_country_flag = africa_integration_temperature_board_open
 			add_to_variable = { africa_authority = constant:africa_value_delta.integration_authority }
@@ -370,7 +377,7 @@ focus_tree = {
 		x = 24
 		y = 4
 		cost = 8
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY FOCUS_FILTER_AFR_AUTHORITY_ATLAS FOCUS_FILTER_AFR_INTEGRATION }
 		completion_reward = {
 			set_country_flag = africa_old_seat_mission_calendar_open
 			add_to_variable = { africa_old_seat_legitimacy = constant:africa_value_delta.dossier_opened_old_seat }
@@ -387,7 +394,7 @@ focus_tree = {
 		x = 22
 		y = 5
 		cost = 8
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_CHARTER }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_INTEGRATION FOCUS_FILTER_AFR_CHARTER_LEAGUE }
 		completion_reward = {
 			set_country_flag = africa_local_sovereignty_hearings_open
 			add_to_variable = { africa_local_sovereignty = constant:africa_value_delta.charter_resist_sovereignty }
@@ -547,7 +554,7 @@ focus_tree = {
 		x = 33
 		y = 5
 		cost = 8
-		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH FOCUS_FILTER_AFR_AUTHORITY_ATLAS FOCUS_FILTER_AFR_INDUSTRY }
 		ai_will_do = {
 			factor = @africa_ai_normal
 			modifier = { factor = @africa_ai_preferred has_country_flag = africa_dossier_lane_central_open }
@@ -568,7 +575,7 @@ focus_tree = {
 		x = 35
 		y = 5
 		cost = 8
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_AUTHORITY_ATLAS FOCUS_FILTER_AFR_BESTIARY }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_AUTHORITY_ATLAS FOCUS_FILTER_AFR_HIGH_CHAOS }
 		ai_will_do = {
 			factor = @africa_ai_normal
 			modifier = { factor = @africa_ai_preferred has_country_flag = africa_dossier_lane_central_open }
@@ -632,7 +639,7 @@ focus_tree = {
 		x = 39
 		y = 5
 		cost = 8
-		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_INDUSTRY FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_INDUSTRY FOCUS_FILTER_AFR_AUTHORITY_ATLAS FOCUS_FILTER_AFR_CHARTER_LEAGUE }
 		ai_will_do = {
 			factor = @africa_ai_normal
 			modifier = { factor = @africa_ai_preferred has_country_flag = africa_dossier_lane_indian_ocean_open }
@@ -675,7 +682,7 @@ focus_tree = {
 		x = 42
 		y = 5
 		cost = 8
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_AUTHORITY_ATLAS FOCUS_FILTER_AFR_INTEGRATION }
 		ai_will_do = {
 			factor = @africa_ai_normal
 			modifier = { factor = @africa_ai_preferred has_country_flag = africa_dossier_lane_great_lakes_open }
@@ -754,7 +761,7 @@ focus_tree = {
 		x = 8
 		y = 3
 		cost = 8
-		search_filters = { FOCUS_FILTER_INDUSTRY }
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_AFR_INDUSTRY }
 		ai_will_do = {
 			factor = @africa_ai_normal
 			modifier = { factor = @africa_ai_preferred has_country_flag = africa_industrial_convergence_open }
@@ -778,7 +785,7 @@ focus_tree = {
 		x = 12
 		y = 3
 		cost = 8
-		search_filters = { FOCUS_FILTER_INDUSTRY }
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_AFR_INDUSTRY FOCUS_FILTER_AFR_MILITARY }
 		ai_will_do = {
 			factor = @africa_ai_normal
 			modifier = { factor = @africa_ai_preferred has_country_flag = africa_industrial_convergence_open }
@@ -801,7 +808,7 @@ focus_tree = {
 		x = 2
 		y = 8
 		cost = 8
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY FOCUS_FILTER_AFR_DIASPORA }
 		completion_reward = {
 			set_country_flag = africa_diaspora_return_offices_open
 			add_to_variable = { africa_legitimacy = constant:africa_value_delta.diaspora_return_legitimacy }
@@ -819,7 +826,7 @@ focus_tree = {
 		x = 0
 		y = 9
 		cost = 8
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_DIASPORA }
 		completion_reward = {
 			add_to_variable = { africa_legitimacy = constant:africa_value_delta.diaspora_return_legitimacy }
 			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.liberation_office_momentum }
@@ -836,7 +843,7 @@ focus_tree = {
 		x = 4
 		y = 9
 		cost = 8
-		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_INDUSTRY }
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_INDUSTRY FOCUS_FILTER_AFR_DIASPORA }
 		completion_reward = {
 			navy_experience = constant:africa_focus_reward.swahili_monsoon_navy_experience
 			add_equipment_to_stockpile = {
@@ -858,7 +865,7 @@ focus_tree = {
 		x = 2
 		y = 10
 		cost = 8
-		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY FOCUS_FILTER_AFR_DIASPORA }
 		completion_reward = {
 			random_owned_controlled_state = {
 				limit = { is_on_continent = africa }
@@ -880,7 +887,7 @@ focus_tree = {
 		x = 6
 		y = 10
 		cost = 8
-		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_DIASPORA FOCUS_FILTER_AFR_INTEGRATION }
 		completion_reward = {
 			random_owned_controlled_state = {
 				limit = { is_on_continent = africa }
@@ -901,7 +908,7 @@ focus_tree = {
 		x = 6
 		y = 11
 		cost = 8
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_DIASPORA FOCUS_FILTER_AFR_CHARTER_LEAGUE }
 		completion_reward = {
 			add_to_variable = { africa_legitimacy = constant:africa_value_delta.diaspora_return_legitimacy }
 			add_to_variable = { africa_local_sovereignty = constant:africa_value_delta.charter_resist_sovereignty }
@@ -920,7 +927,7 @@ focus_tree = {
 		x = 2
 		y = 11
 		cost = 8
-		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_DIASPORA FOCUS_FILTER_AFR_MILITARY }
 		completion_reward = {
 			army_experience = constant:africa_focus_reward.diaspora_guard_army_experience
 			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.liberation_office_momentum }
@@ -939,7 +946,7 @@ focus_tree = {
 		x = 4
 		y = 12
 		cost = 10
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_NAVY_XP }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_NAVY_XP FOCUS_FILTER_AFR_DIASPORA FOCUS_FILTER_AFR_CHARTER_LEAGUE }
 		completion_reward = {
 			set_cosmetic_tag = AFR_PAN_ATLANTIC
 			add_to_variable = { africa_legitimacy = constant:africa_value_delta.sponsor_recognition }
@@ -958,7 +965,7 @@ focus_tree = {
 		x = 16
 		y = 3
 		cost = 8
-		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_AFR_SCRAMBLE }
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_AFR_MILITARY FOCUS_FILTER_AFR_LIBERATION }
 		ai_will_do = {
 			factor = @africa_ai_normal
 			modifier = { factor = @africa_ai_preferred has_war = yes }
@@ -979,7 +986,7 @@ focus_tree = {
 		x = 20
 		y = 3
 		cost = 8
-		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_SCRAMBLE }
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_LIBERATION FOCUS_FILTER_AFR_MILITARY }
 		ai_will_do = {
 			factor = @africa_ai_normal
 			modifier = { factor = @africa_ai_preferred has_war = yes }
@@ -1063,7 +1070,7 @@ focus_tree = {
 		x = 14
 		y = 4
 		cost = 10
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_SCRAMBLE }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_LIBERATION }
 		ai_will_do = {
 			factor = @africa_ai_normal
 			modifier = { factor = @africa_ai_preferred has_country_flag = africa_regional_authorities_open }
@@ -1090,7 +1097,7 @@ focus_tree = {
 		mutually_exclusive = { focus = AFR_peoples_liberation_front }
 		mutually_exclusive = { focus = AFR_general_staff_above_parliament }
 		mutually_exclusive = { focus = AFR_crown_congress }
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_CHARTER }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_POLITICAL FOCUS_FILTER_AFR_CHARTER_LEAGUE }
 		completion_reward = {
 			set_cosmetic_tag = AFR_FEDERAL_CHARTER
 			add_ideas = africa_federal_charter_spirit
@@ -1113,7 +1120,7 @@ focus_tree = {
 		x = 16
 		y = 5
 		cost = 8
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_CHARTER }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_CHARTER_LEAGUE }
 		completion_reward = {
 			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.member_confidence_cohesion }
 			add_to_variable = { africa_regional_trust = constant:africa_value_delta.member_confidence_trust }
@@ -1136,7 +1143,7 @@ focus_tree = {
 		x = 20
 		y = 5
 		cost = 8
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_CHARTER }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_INTEGRATION FOCUS_FILTER_AFR_CHARTER_LEAGUE }
 		completion_reward = {
 			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
 			add_to_variable = { africa_local_sovereignty = constant:africa_value_delta.charter_resist_sovereignty }
@@ -1159,7 +1166,7 @@ focus_tree = {
 		x = 17
 		y = 6
 		cost = 8
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_CHARTER }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_CHARTER_LEAGUE FOCUS_FILTER_AFR_INTEGRATION }
 		completion_reward = {
 			add_to_variable = { africa_legitimacy = constant:africa_value_delta.charter_join_legitimacy }
 			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.charter_join_cohesion }
@@ -1177,7 +1184,7 @@ focus_tree = {
 		x = 18
 		y = 7
 		cost = 8
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_CHARTER }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_DIASPORA FOCUS_FILTER_AFR_CHARTER_LEAGUE }
 		completion_reward = {
 			add_to_variable = { africa_legitimacy = constant:africa_value_delta.diaspora_return_legitimacy }
 			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
@@ -1202,7 +1209,7 @@ focus_tree = {
 		x = 17
 		y = 8
 		cost = 10
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_CHARTER }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_POLITICAL FOCUS_FILTER_AFR_CHARTER_LEAGUE }
 		completion_reward = {
 			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.charter_join_cohesion }
 			add_to_variable = { africa_authority = constant:africa_value_delta.integration_authority }
@@ -1234,7 +1241,7 @@ focus_tree = {
 		mutually_exclusive = { focus = AFR_peoples_liberation_front }
 		mutually_exclusive = { focus = AFR_general_staff_above_parliament }
 		mutually_exclusive = { focus = AFR_crown_congress }
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_CHARTER }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_POLITICAL FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
 		ai_will_do = {
 			factor = @africa_ai_normal
 			modifier = { factor = @africa_ai_preferred has_government = neutrality }
@@ -1261,7 +1268,7 @@ focus_tree = {
 		mutually_exclusive = { focus = AFR_sovereign_seats_path }
 		mutually_exclusive = { focus = AFR_general_staff_above_parliament }
 		mutually_exclusive = { focus = AFR_crown_congress }
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_CHARTER FOCUS_FILTER_AFR_SCRAMBLE }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_POLITICAL FOCUS_FILTER_AFR_LIBERATION }
 		completion_reward = {
 			set_cosmetic_tag = AFR_PEOPLES_LIBERATION
 			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.peoples_front_momentum }
@@ -1284,7 +1291,7 @@ focus_tree = {
 		x = 2
 		y = 5
 		cost = 8
-		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_SCRAMBLE }
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_LIBERATION FOCUS_FILTER_AFR_INDUSTRY }
 		completion_reward = {
 			random_owned_controlled_state = {
 				limit = { is_on_continent = africa }
@@ -1305,7 +1312,7 @@ focus_tree = {
 		x = 6
 		y = 5
 		cost = 8
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_SCRAMBLE }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_LIBERATION FOCUS_FILTER_AFR_CHARTER_LEAGUE }
 		completion_reward = {
 			add_to_variable = { africa_legitimacy = constant:africa_value_delta.diaspora_return_legitimacy }
 			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.liberation_office_momentum }
@@ -1324,7 +1331,7 @@ focus_tree = {
 		x = 4
 		y = 6
 		cost = 10
-		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_SCRAMBLE }
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_LIBERATION FOCUS_FILTER_AFR_MILITARY }
 		completion_reward = {
 			army_experience = constant:africa_focus_reward.peoples_front_army_experience
 			add_manpower = constant:africa_focus_reward.people_continental_army_manpower
@@ -1352,7 +1359,7 @@ focus_tree = {
 		mutually_exclusive = { focus = AFR_sovereign_seats_path }
 		mutually_exclusive = { focus = AFR_peoples_liberation_front }
 		mutually_exclusive = { focus = AFR_crown_congress }
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP FOCUS_FILTER_AFR_SCRAMBLE }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP FOCUS_FILTER_AFR_POLITICAL FOCUS_FILTER_AFR_MILITARY }
 		completion_reward = {
 			set_cosmetic_tag = AFR_CONTINENTAL_COMMAND
 			add_to_variable = { africa_authority = constant:africa_value_delta.general_staff_authority }
@@ -1376,7 +1383,7 @@ focus_tree = {
 		x = 8
 		y = 5
 		cost = 8
-		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP FOCUS_FILTER_AFR_SCRAMBLE }
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP FOCUS_FILTER_AFR_MILITARY FOCUS_FILTER_AFR_INDUSTRY }
 		completion_reward = {
 			every_owned_state = {
 				limit = { is_on_continent = africa is_controlled_by = ROOT }
@@ -1397,7 +1404,7 @@ focus_tree = {
 		x = 10
 		y = 5
 		cost = 8
-		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_SCRAMBLE }
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_MILITARY }
 		completion_reward = {
 			add_manpower = constant:africa_focus_reward.askari_veteran_manpower
 			add_equipment_to_stockpile = {
@@ -1421,7 +1428,7 @@ focus_tree = {
 		x = 9
 		y = 6
 		cost = 10
-		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_SCRAMBLE }
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_MILITARY FOCUS_FILTER_AFR_LIBERATION }
 		completion_reward = {
 			army_experience = constant:africa_focus_reward.continental_war_plan_army_experience
 			add_to_variable = { africa_authority = constant:africa_value_delta.general_staff_authority }
@@ -1445,7 +1452,7 @@ focus_tree = {
 		mutually_exclusive = { focus = AFR_sovereign_seats_path }
 		mutually_exclusive = { focus = AFR_peoples_liberation_front }
 		mutually_exclusive = { focus = AFR_general_staff_above_parliament }
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_CHARTER FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_POLITICAL FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
 		completion_reward = {
 			set_cosmetic_tag = AFR_CROWN_CONGRESS
 			add_to_variable = { africa_legitimacy = constant:africa_value_delta.crown_congress_legitimacy }
@@ -1486,7 +1493,7 @@ focus_tree = {
 		x = 52
 		y = 5
 		cost = 8
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_POLITICAL FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
 		completion_reward = {
 			add_to_variable = { africa_local_sovereignty = constant:africa_value_delta.charter_resist_sovereignty }
 			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
@@ -1503,7 +1510,7 @@ focus_tree = {
 		x = 50
 		y = 6
 		cost = 8
-		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_AUTHORITY_ATLAS FOCUS_FILTER_AFR_INDUSTRY }
 		completion_reward = {
 			random_owned_controlled_state = {
 				limit = { is_on_continent = africa }
@@ -1527,7 +1534,7 @@ focus_tree = {
 		x = 50
 		y = 7
 		cost = 10
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_AUTHORITY_ATLAS FOCUS_FILTER_AFR_CHARTER_LEAGUE }
 		completion_reward = {
 			add_to_variable = { africa_legitimacy = constant:africa_value_delta.crown_congress_legitimacy }
 			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.charter_join_cohesion }
@@ -1554,7 +1561,7 @@ focus_tree = {
 				compare = greater_than_or_equals
 			}
 		}
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_RESEARCH FOCUS_FILTER_AFR_BESTIARY }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_RESEARCH FOCUS_FILTER_AFR_HIGH_CHAOS }
 		ai_will_do = {
 			factor = @africa_ai_low
 			modifier = { factor = @africa_ai_preferred has_country_flag = africa_minimum_historical_dossiers_ready }
@@ -1582,7 +1589,7 @@ focus_tree = {
 		x = 16
 		y = 9
 		cost = 10
-		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_CHARTER }
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_INTEGRATION }
 		ai_will_do = {
 			factor = @africa_ai_preferred
 			modifier = { factor = @africa_ai_preferred has_country_flag = africa_route_federal_charter }
@@ -1605,7 +1612,7 @@ focus_tree = {
 		x = 24
 		y = 5
 		cost = 10
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_CHARTER }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_INTEGRATION FOCUS_FILTER_AFR_CHARTER_LEAGUE }
 		ai_will_do = {
 			factor = @africa_ai_preferred
 			modifier = { factor = @africa_ai_preferred has_country_flag = africa_route_sovereign_seats }
@@ -1629,7 +1636,7 @@ focus_tree = {
 		cost = 10
 		mutually_exclusive = { focus = AFR_seal_them_under_one_archive }
 		mutually_exclusive = { focus = AFR_documents_before_consent }
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_CHARTER FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_INTEGRATION FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
 		completion_reward = {
 			set_country_flag = africa_settlement_respect_old_seats
 			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
@@ -1649,7 +1656,7 @@ focus_tree = {
 		cost = 10
 		mutually_exclusive = { focus = AFR_seal_them_under_one_archive }
 		mutually_exclusive = { focus = AFR_respect_the_old_seats }
-		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_CHARTER FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_INTEGRATION FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
 		completion_reward = {
 			set_country_flag = africa_settlement_documents_before_consent
 			add_to_variable = { africa_archive_mandate = constant:africa_value_delta.archive_opened_mandate }
@@ -1668,7 +1675,7 @@ focus_tree = {
 		cost = 10
 		mutually_exclusive = { focus = AFR_respect_the_old_seats }
 		mutually_exclusive = { focus = AFR_documents_before_consent }
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_CHARTER FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_INTEGRATION FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
 		completion_reward = {
 			set_country_flag = africa_settlement_direct_archive_seal
 			add_to_variable = { africa_authority = constant:africa_value_delta.integration_authority }
@@ -1686,7 +1693,7 @@ focus_tree = {
 		x = 20
 		y = 7
 		cost = 8
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_CHARTER }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_CHARTER_LEAGUE FOCUS_FILTER_AFR_INTEGRATION }
 		ai_will_do = {
 			factor = @africa_ai_normal
 			modifier = { factor = @africa_ai_preferred has_country_flag = africa_settlement_respect_old_seats }
@@ -1708,7 +1715,7 @@ focus_tree = {
 		x = 24
 		y = 7
 		cost = 8
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_CHARTER }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_AUTHORITY_ATLAS FOCUS_FILTER_AFR_INTEGRATION }
 		ai_will_do = {
 			factor = @africa_ai_normal
 			modifier = { factor = @africa_ai_preferred has_country_flag = africa_settlement_direct_archive_seal }
@@ -1730,7 +1737,7 @@ focus_tree = {
 		x = 12
 		y = 6
 		cost = 8
-		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_AUTHORITY_ATLAS FOCUS_FILTER_AFR_SCRAMBLE }
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_AUTHORITY_ATLAS FOCUS_FILTER_AFR_MILITARY }
 		ai_will_do = {
 			factor = @africa_ai_normal
 			modifier = { factor = @africa_ai_preferred has_country_flag = africa_old_seat_mission_calendar_open }
@@ -1752,7 +1759,7 @@ focus_tree = {
 		x = 10
 		y = 7
 		cost = 8
-		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_AFR_AUTHORITY_ATLAS FOCUS_FILTER_AFR_INDUSTRY }
 		ai_will_do = {
 			factor = @africa_ai_normal
 			modifier = { factor = @africa_ai_preferred has_country_flag = africa_old_capital_guard_missions_open }
@@ -1775,7 +1782,7 @@ focus_tree = {
 		x = 14
 		y = 7
 		cost = 8
-		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_AFR_AUTHORITY_ATLAS FOCUS_FILTER_AFR_MILITARY }
 		ai_will_do = {
 			factor = @africa_ai_normal
 			modifier = { factor = @africa_ai_preferred has_country_flag = africa_old_capital_guard_missions_open }
@@ -1797,7 +1804,7 @@ focus_tree = {
 		x = 12
 		y = 8
 		cost = 10
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_SCRAMBLE }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_LIBERATION }
 		ai_will_do = {
 			factor = @africa_ai_normal
 			modifier = { factor = @africa_ai_preferred has_country_flag = africa_scramble_reverse_claims_open }
@@ -1819,7 +1826,7 @@ focus_tree = {
 		x = 12
 		y = 9
 		cost = 10
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_SCRAMBLE }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_LIBERATION FOCUS_FILTER_AFR_CHARTER_LEAGUE }
 		completion_reward = {
 			set_country_flag = africa_scramble_counter_dockets_open
 			africa_refresh_external_colonial_holder_pool = yes
@@ -1849,7 +1856,7 @@ focus_tree = {
 		y = 8
 		cost = 12
 		available = { has_africa_continental_register_dossier_coverage = yes }
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_CHARTER FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_INTEGRATION FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
 		completion_reward = {
 			set_country_flag = africa_continental_register_ready
 			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.charter_join_cohesion }
@@ -1869,7 +1876,7 @@ focus_tree = {
 		cost = 10
 		allow_branch = { has_country_flag = africa_high_chaos_branch_revealed }
 		mutually_exclusive = { focus = AFR_archive_bestiary_clause }
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_BESTIARY }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_HIGH_CHAOS }
 		ai_will_do = {
 			factor = @africa_ai_low
 			modifier = { factor = @africa_ai_preferred has_country_flag = africa_high_chaos_route_open }
@@ -1893,7 +1900,7 @@ focus_tree = {
 		cost = 10
 		allow_branch = { has_country_flag = africa_high_chaos_branch_revealed }
 		mutually_exclusive = { focus = AFR_forest_parliament }
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_RESEARCH FOCUS_FILTER_AFR_BESTIARY }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_RESEARCH FOCUS_FILTER_AFR_HIGH_CHAOS FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
 		ai_will_do = {
 			factor = @africa_ai_low
 			modifier = { factor = @africa_ai_preferred has_country_flag = africa_high_chaos_route_open }
@@ -1916,7 +1923,7 @@ focus_tree = {
 		cost = 8
 		allow_branch = { has_country_flag = africa_high_chaos_branch_revealed }
 		available = { has_country_flag = africa_high_chaos_route_open }
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_BESTIARY }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_HIGH_CHAOS }
 		completion_reward = {
 			set_country_flag = africa_no_caricature_clause_open
 			add_to_variable = { africa_habitat_trust = constant:africa_value_delta.high_chaos_nonhuman_sovereignty }
@@ -1935,7 +1942,7 @@ focus_tree = {
 		cost = 10
 		allow_branch = { has_country_flag = africa_high_chaos_branch_revealed }
 		available = { has_country_flag = africa_minimum_historical_dossiers_ready }
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_BESTIARY }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_HIGH_CHAOS FOCUS_FILTER_AFR_CHARTER_LEAGUE }
 		completion_reward = {
 			set_country_flag = africa_first_nonhuman_envoys_open
 			add_to_variable = { africa_nonhuman_sovereignty = constant:africa_value_delta.high_chaos_nonhuman_sovereignty }
@@ -1953,7 +1960,7 @@ focus_tree = {
 		y = 8
 		cost = 8
 		allow_branch = { has_country_flag = africa_high_chaos_branch_revealed }
-		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_BESTIARY }
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_HIGH_CHAOS FOCUS_FILTER_AFR_INTEGRATION }
 		completion_reward = {
 			set_country_flag = africa_habitat_trust_board_open
 			add_to_variable = { africa_habitat_trust = constant:africa_value_delta.high_chaos_nonhuman_sovereignty }
@@ -1971,7 +1978,7 @@ focus_tree = {
 		y = 8
 		cost = 8
 		allow_branch = { has_country_flag = africa_high_chaos_branch_revealed }
-		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_BESTIARY }
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_HIGH_CHAOS }
 		completion_reward = {
 			set_country_flag = africa_omen_reliability_office_open
 			add_to_variable = { africa_archive_mandate = constant:africa_value_delta.dossier_opened_old_seat }
@@ -1990,7 +1997,7 @@ focus_tree = {
 		y = 9
 		cost = 10
 		allow_branch = { has_country_flag = africa_high_chaos_branch_revealed }
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_BESTIARY }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_HIGH_CHAOS FOCUS_FILTER_AFR_CHARTER_LEAGUE }
 		completion_reward = {
 			set_country_flag = africa_treaty_teeth_roots_open
 			add_to_variable = { africa_nonhuman_sovereignty = constant:africa_value_delta.high_chaos_nonhuman_sovereignty }
@@ -2009,7 +2016,7 @@ focus_tree = {
 		y = 10
 		cost = 10
 		allow_branch = { has_country_flag = africa_high_chaos_branch_revealed }
-		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_BESTIARY }
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_HIGH_CHAOS }
 		completion_reward = {
 			set_country_flag = africa_court_thunder_tides_open
 			add_to_variable = { africa_mythic_pressure = constant:africa_value_delta.high_chaos_mythic_pressure }
@@ -2027,7 +2034,7 @@ focus_tree = {
 		y = 10
 		cost = 10
 		allow_branch = { has_country_flag = africa_high_chaos_branch_revealed }
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_RESEARCH FOCUS_FILTER_AFR_BESTIARY }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_RESEARCH FOCUS_FILTER_AFR_HIGH_CHAOS FOCUS_FILTER_AFR_CHARTER_LEAGUE }
 		completion_reward = {
 			set_country_flag = africa_spider_signature_table_open
 			add_to_variable = { africa_archive_mandate = constant:africa_value_delta.dossier_opened_old_seat }
@@ -2047,7 +2054,7 @@ focus_tree = {
 		cost = 12
 		allow_branch = { has_country_flag = africa_high_chaos_branch_revealed }
 		available = { has_country_flag = africa_minimum_high_chaos_packages_ready }
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_BESTIARY FOCUS_FILTER_AFR_WORLD_ORDER }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_HIGH_CHAOS FOCUS_FILTER_AFR_WORLD_ORDER }
 		completion_reward = {
 			set_cosmetic_tag = AFR_WORLD_ROOT
 			set_country_flag = africa_world_root_mandate_open
@@ -2068,7 +2075,7 @@ focus_tree = {
 		x = 20
 		y = 10
 		cost = 10
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_WORLD_ORDER }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_POST_UNIFICATION FOCUS_FILTER_AFR_WORLD_ORDER }
 		ai_will_do = {
 			factor = @africa_ai_preferred
 			modifier = { factor = @africa_ai_strong has_country_flag = africa_continental_register_ready }
@@ -2105,7 +2112,7 @@ focus_tree = {
 				compare = greater_than_or_equals
 			}
 		}
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_CHARTER FOCUS_FILTER_AFR_WORLD_ORDER }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_POST_UNIFICATION FOCUS_FILTER_AFR_CHARTER_LEAGUE }
 		completion_reward = {
 			set_global_flag = africa_is_one_complete
 			set_global_flag = africa_continental_pole_ready
@@ -2130,7 +2137,7 @@ focus_tree = {
 			has_country_flag = africa_continent_sponsor_office_open
 			has_country_flag = africa_continent_sponsor_ready
 		}
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY FOCUS_FILTER_AFR_WORLD_ORDER }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY FOCUS_FILTER_AFR_POST_UNIFICATION }
 		completion_reward = {
 			set_country_flag = africa_continental_export_office_open
 			add_to_variable = { africa_legitimacy = constant:africa_value_delta.cross_continent_recognition }
@@ -2148,7 +2155,7 @@ focus_tree = {
 		x = 18
 		y = 14
 		cost = 8
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_NAVY_XP FOCUS_FILTER_AFR_WORLD_ORDER }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_NAVY_XP FOCUS_FILTER_AFR_POST_UNIFICATION FOCUS_FILTER_AFR_CHARTER_LEAGUE }
 		completion_reward = {
 			set_country_flag = africa_middle_east_charter_staff_open
 			add_to_variable = { africa_legitimacy = constant:africa_value_delta.external_unifier_middle_east_recognition }
@@ -2165,7 +2172,7 @@ focus_tree = {
 		x = 22
 		y = 14
 		cost = 8
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY FOCUS_FILTER_AFR_WORLD_ORDER }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY FOCUS_FILTER_AFR_POST_UNIFICATION }
 		completion_reward = {
 			set_country_flag = africa_asia_charter_staff_open
 			add_to_variable = { africa_liberation_momentum = constant:africa_value_delta.external_unifier_asia_momentum }
@@ -2182,7 +2189,7 @@ focus_tree = {
 		x = 26
 		y = 14
 		cost = 8
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_WORLD_ORDER }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_POST_UNIFICATION FOCUS_FILTER_AFR_CHARTER_LEAGUE }
 		completion_reward = {
 			set_country_flag = africa_europe_charter_staff_open
 			add_to_variable = { africa_authority = constant:africa_value_delta.external_unifier_europe_authority }
@@ -2200,7 +2207,7 @@ focus_tree = {
 		y = 14
 		cost = 8
 		available = { has_country_flag = africa_pan_atlantic_congress_held }
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_NAVY_XP FOCUS_FILTER_AFR_WORLD_ORDER }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_NAVY_XP FOCUS_FILTER_AFR_POST_UNIFICATION FOCUS_FILTER_AFR_DIASPORA }
 		completion_reward = {
 			set_country_flag = africa_south_atlantic_charter_staff_open
 			add_to_variable = { africa_legitimacy = constant:africa_value_delta.external_unifier_middle_east_recognition }
@@ -2225,7 +2232,7 @@ focus_tree = {
 		available = {
 			has_africa_any_sponsored_cross_continent_charter = yes
 		}
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_WORLD_ORDER }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_POST_UNIFICATION FOCUS_FILTER_AFR_WORLD_ORDER }
 		completion_reward = {
 			set_country_flag = africa_congress_of_continents_focus_open
 			add_to_variable = { africa_authority = constant:africa_value_delta.cross_continent_union_authority }
@@ -2250,7 +2257,7 @@ focus_tree = {
 		y = 16
 		cost = 10
 		available = { has_country_flag = africa_dynamic_cross_continent_union_complete }
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_RESEARCH FOCUS_FILTER_AFR_WORLD_ORDER }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_RESEARCH FOCUS_FILTER_AFR_POST_UNIFICATION FOCUS_FILTER_AFR_WORLD_ORDER }
 		completion_reward = {
 			set_country_flag = africa_unifier_proof_ledger_open
 			add_to_variable = { africa_authority = constant:africa_value_delta.external_unifier_proof_ready_authority }
@@ -2286,7 +2293,7 @@ focus_tree = {
 		y = 18
 		cost = 10
 		available = { has_country_flag = africa_continent_unifiers_certified_for_world_is_one }
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_WORLD_ORDER }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_WORLD_ORDER FOCUS_FILTER_AFR_CHARTER_LEAGUE }
 		completion_reward = {
 			set_country_flag = africa_one_charter_above_nations_open
 			add_to_variable = { africa_authority = constant:africa_value_delta.world_order_authority }
