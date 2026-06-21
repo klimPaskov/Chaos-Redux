@@ -857,7 +857,7 @@ African-source audio packaging was promoted live on `2026-06-21`, replacing the 
 
 | Role label | Final file | Source title | License | Final duration | Notes |
 | --- | --- | --- | --- | --- | --- |
-| `africa_is_one_unification` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_unification.ogg` | `Rush Peace dance concert 1 libtheora` | `CC BY-SA 4.0` | `120s` | Ghana peace-dance performance |
+| `africa_is_one_unification` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_unification.ogg` | `Bawadance` | `CC BY-SA 4.0` | `94.9s` | Traditional Bawa dance music from Ghana's Upper West Region, Wikimedia Commons recording by Bayelharriet |
 | `africa_scramble_reaction` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_scramble.ogg` | `Kagoma Drummer` | `CC BY-SA 4.0` | `118s` | Kaduna State, Nigeria village drummer |
 | `africa_old_seats_reveal` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_old_seats.ogg` | `Traditional Sounds - Igbo Language - Nsukka - Enugu State - Nigeria` | `CC BY-SA 4.0` | `112s` | Igbo traditional sounds |
 | `africa_counterfeit_crowns` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_counterfeit_crowns.ogg` | `Rush Peace dance concert 2 libtheora` | `CC BY-SA 4.0` | `118s` | Ghana peace-dance performance |
@@ -876,7 +876,7 @@ African-source audio packaging was promoted live on `2026-06-21`, replacing the 
 - No remaining legality or wiring blockers for the thirteen accepted Event 012 super-event roles.
 - Forest Parliament, World Root, Root and Fang, and Archive World variant packages remain final-wired under slots `76-79`; their live audio is registered in `music/chaosx_super_event_music.asset`, `music/chaosx_super_event_music.txt`, and `sound/chaosx_sound.asset`, with source/licensing notes in `docs/assets/012_africa/super_events/audio/manifest.md`.
 - `africa_world_is_one_root_variant_terminal` uses the intentional hybrid disposition: shared slot `72` World Is One text and visual presentation, with a distinct audio handoff package in `docs/assets/012_africa/super_events/audio/final/super_event_africa_world_is_one_root_terminal.ogg`.
-- The accepted compromise is source diversity, not legality: `Rush Peace dance concert 1 libtheora` and `Traditional Sounds - Igbo Language - Nsukka - Enugu State - Nigeria` each support multiple slots through distinct excerpts and edits after additional Wikimedia binary downloads began returning `HTTP 429`.
+- The accepted compromise is source diversity, not legality: `Rush Peace dance concert 1 libtheora` now supports slots `75` and `79`, and `Traditional Sounds - Igbo Language - Nsukka - Enugu State - Nigeria` supports slots `70` and `80`, through distinct excerpts and edits after additional Wikimedia binary downloads began returning `HTTP 429`. Slot `68` was refreshed separately with `Bawadance`.
 - Preserved non-final evaluation source: `docs/assets/012_africa/super_events/audio/source/beethoven_symphony_7_allegretto_john_michel.ogg`
 - Reason for non-final status: legally usable `CC BY-SA 3.0`, but the solo-cello recording contains long low-energy gaps and was not strong enough as a packaged in-game final without a heavier re-edit pass.
 - Full source, hash, and conversion details are recorded in `docs/assets/012_africa/super_events/audio/manifest.md`.

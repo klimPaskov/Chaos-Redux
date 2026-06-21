@@ -10,12 +10,13 @@ Detailed source pages, license evidence, transformation notes, source hashes, fi
 
 - `docs/assets/012_africa/audio/2026-06-21_africa_direction_refresh/manifest.md`
 - `docs/assets/012_africa/audio/2026-06-21_africa_direction_refresh/handoff.md`
+- `docs/assets/012_africa/audio_research/2026-06-21_africa_is_one_refresh/manifest.md`
 
 ## Live Slot Package
 
 | Role label | Slot / audio id | Final file | Current source title | License | Duration |
 | --- | --- | --- | --- | --- | --- |
-| `africa_is_one_unification` | `68` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_unification.ogg` | `Rush Peace dance concert 1 libtheora` | `CC BY-SA 4.0` | `120s` |
+| `africa_is_one_unification` | `68` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_unification.ogg` | `Bawadance` | `CC BY-SA 4.0` | `94.9s` |
 | `africa_scramble_reaction` | `69` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_scramble.ogg` | `Kagoma Drummer` | `CC BY-SA 4.0` | `118s` |
 | `africa_old_seats_reveal` | `70` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_old_seats.ogg` | `Traditional Sounds - Igbo Language - Nsukka - Enugu State - Nigeria` | `CC BY-SA 4.0` | `112s` |
 | `africa_counterfeit_crowns` | `71` | `docs/assets/012_africa/super_events/audio/final/super_event_africa_counterfeit_crowns.ogg` | `Rush Peace dance concert 2 libtheora` | `CC BY-SA 4.0` | `118s` |
@@ -37,9 +38,9 @@ Each live `music/` file matches the corresponding canonical `docs/assets/012_afr
 
 ## Caveats
 
-Wikimedia began rate-limiting additional binary downloads during the source pass, so this package keeps full slot coverage by reusing two source families in different excerpts and edits:
+Wikimedia began rate-limiting additional binary downloads during the first source pass, so the package keeps full slot coverage by reusing two source families in different excerpts and edits. Slot `68` was later refreshed with `Bawadance`, reducing the reuse footprint:
 
-- `Rush Peace dance concert 1 libtheora` supports slots `68`, `75`, and `79`.
+- `Rush Peace dance concert 1 libtheora` supports slots `75` and `79`.
 - `Traditional Sounds - Igbo Language - Nsukka - Enugu State - Nigeria` supports slots `70` and `80`.
 
 This is an accepted source-diversity compromise for the immediate correction away from the rejected European direction, not a placeholder asset. A later polish pass can replace one or two reused cues if additional African archival recordings are sourced cleanly.
