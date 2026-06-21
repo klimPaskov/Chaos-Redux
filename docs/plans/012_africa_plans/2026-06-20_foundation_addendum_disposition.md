@@ -25,7 +25,7 @@ Relevant audit evidence:
 
 - `docs/plans/012_africa_plans/subagent_handoffs/2026-06-20_012_africa_completion_gap_audit_handoff.md`
 
-The source-of-truth file records many later implementation tranches that reduce the addendum blocker list, while the completion audit records that scenario validation, country-package depth, GUI proof, asset proof, AI/balance proof, and spreadsheet/catalog alignment remain incomplete.
+The source-of-truth file records many later implementation tranches that reduce the addendum blocker list, while the completion audit records that live scenario validation, country-package depth, GUI proof, asset proof, AI/balance proof, and final spreadsheet/catalog status remain incomplete.
 
 ## Implemented/Folded
 
@@ -43,8 +43,8 @@ These items from the 2026-06-16 addendum are no longer broad unresolved blockers
 | High-chaos catalog safety and actor packages | Implemented/folded in parts. The source-of-truth records high-chaos actor packages and later capstone parity for `BON`, `HYR`, `BIR`, and `SAO`, plus earlier created actor packages for several Bestiary rows. Remaining Bestiary depth belongs to disaster events, settlement hooks, and longer consequence chains rather than keeping the catalog unresolved. |
 | Created country role packages | Implemented/folded in bounded form. The completion audit records broad created-tag coverage from a country-package sidecar, and the source-of-truth records selected-unifier origin packages and created regional authority mandate play. This closes the "only tag/flag" foundation complaint for the current tranche, but not all route-specific depth. |
 | Regional authority mandate cycle | Implemented/folded. Regional authority subjects can be commissioned through a mandate mission with resource transfer, success/failure checks, visible counters, and role-specific outcomes. |
-| Icon v5 asset packages | Implemented/folded for the current focus/goal and idea/national-spirit icon surfaces. The source-of-truth marks the v5 icon packages as the current live icon source and supersedes earlier no-white-background icon passes. |
-| Triggerable scenario validation scaffolding | Implemented/folded as scaffolding only. The Continental Pole triggerable scenario was expanded to open late-route validation gates at high and maximum intensity. It is not a completed scenario validation report. |
+| Icon asset packages | Implemented/folded for the current focus/goal and idea/national-spirit icon surfaces. The source-of-truth marks the v6 goal-icon and v7 idea-icon packages as the current live icon sources and supersedes earlier no-white-background icon passes. |
+| Triggerable scenario validation scaffolding | Implemented/folded as the current `SCN-008` two-type manual scenario. `Africa Is One` opens a strong continental setup and `World Is One` is a direct manual terminal setup. It is not a completed live validation report. |
 
 ## Superseded/Modified
 
@@ -65,14 +65,14 @@ These items remain queued and should be reported as open until a later implement
 
 | Open item | Reason it remains open |
 | --- | --- |
-| Targeted scenario validation matrix | The completion audit found no current eight-scenario validation matrix for ordinary unifier, weak/small unifier, RSA in Allies, African ally under attack, high-chaos Green Covenant, full Africa unification, cross-continent union, and World Is One gate. |
+| Targeted scenario validation matrix | The matrix now reflects the current `SCN-008` two-type scenario and separates retired manual profiles from normal-route validation topics. Live proof remains queued for both manual types across intensity levels and for the separate ordinary World Is One proof chain. |
 | GUI/static/animation prompt coverage and live proof | Continental Congress presentation exists and has improved, and the prompt-named charter seal, cohesion-warning border, Green Covenant seal, and formable-ready emblem animations are wired with static fallbacks. The broader Charter/Authority/Bestiary visual strip is still not accepted as full prompt-equivalent coverage for the background, header, meter, regional-card, and wider state families. `docs/plans/012_africa_plans/2026-06-21_continental_congress_gui_animation_gap_handoff.md` remains the current queue, superseded for the prompt-named animation package rows wired after that document. Live screenshot/readability/playback proof also remains required after those families are implemented or explicitly accepted as equivalent. |
 | Plan/doc stale cleanup | The plan folder still contains stale or partially superseded handoff claims. The parent should reconcile source-of-truth and plan disposition after reviewing this ledger. |
 | Historical old-seat source assets where weak | Historical dossier flags, symbols, and some portrait/source rows remain weak, low-confidence, or not downloaded. Neutral Archive UI remains a queue item unless the parent explicitly approves it for a specific row. |
 | Deeper host/country-package route depth | Selected-unifier origin cases, regional-authority mandates, current dossier slot families, and created-actor role packages reduce the gap but do not close deeper bespoke host routes, created-authority consequence chains, advisor/event hooks, reinforcement paths, or long-form country-package routes. |
 | AI, balance, and exploit validation | Static AI and weighting surfaces exist, but no current report proves route-specific AI, decision costs, repeated GUI clicks, dossier retry, settlement watches, Bestiary actions, RSA treaty, living-core conversion, or sponsor proofs under scenario pressure. |
-| Spreadsheet/catalog alignment | The spreadsheet handoff intentionally left Event 012 as `Needs Testing`. Catalog/spreadsheet completion should wait for validation and final wording alignment. |
-| World Is One terminal proof | Scenario scaffolding opens validation gates, but source-of-truth explicitly says the triggerable scenario does not set the proof-verified flags, all-continent world-end readiness, gate-prepared flag, or terminal World Is One flags. |
+| Spreadsheet/catalog alignment | SCN-008 wording is aligned in the workbook and handoff, while the main Event 012 row intentionally remains `Needs Testing`. Catalog/spreadsheet completion should wait for live validation and final status alignment. |
+| World Is One terminal proof | The manual `SCN-008 World Is One` type directly sets terminal state through scenario-only helpers. The ordinary route still needs live proof that proof missions, certification, gate preparation, and `AFR_the_world_is_one` are required before terminal flags appear. |
 
 ## Rejected/Not Pursuing Now
 
@@ -94,11 +94,11 @@ These items should not be started as part of resolving the older foundation adde
 | `2026-06-16_foundation_gap_improvement_addendum.md` | Dispositioned by this ledger. Partly implemented/folded, partly modified/superseded, partly queued, and partly rejected/held. No longer one undifferentiated broad blocker. |
 | `2026-06-20_012_africa_completion_gap_audit_handoff.md` | Remains current evidence that Event 012 is not completion-ready. Its recommendation for a plan disposition tranche is addressed by this ledger only; validation and implementation blockers remain open. |
 | Earlier high-chaos capstone-missing handoff claims | Superseded where the current source-of-truth records high-chaos capstone parity for `BON`, `HYR`, `BIR`, and `SAO`. |
-| Spreadsheet alignment handoff | Still open as `Needs Testing` until scenario validation and catalog alignment are completed. |
+| Spreadsheet alignment handoff | Older SCN-012 wording is superseded by `2026-06-21_event_012_scn008_spreadsheet_alignment_handoff.md`; the main event status remains `Needs Testing` until live validation is recorded. |
 
 ## Duplicate or Superseded Document List
 
-- Older icon-regeneration notes are superseded by the current v5 icon package evidence in the source-of-truth map.
+- Older icon-regeneration notes are superseded by the current v6 goal-icon and v7 idea-icon package evidence in the source-of-truth map.
 - Earlier high-chaos capstone-missing notes are superseded where the current source-of-truth records the later parity tranche.
 - The 2026-06-16 addendum remains the canonical older foundation addendum, but this ledger supersedes reading it as one unresolved blocker.
 
@@ -113,7 +113,7 @@ These items should not be started as part of resolving the older foundation adde
 - Accept or revise this ledger, then update `docs/specs/012_africa_specs/CURRENT_SOURCE_OF_TRUTH.md` to point to the accepted disposition.
 - Decide whether to explicitly accept a narrower Continental Congress panel as equivalent to the older prompt's regional-card/meter/static/animation wording. Until that decision has written evidence and live render proof, the remaining broader GUI/static families stay queued by `2026-06-21_continental_congress_gui_animation_gap_handoff.md`; the charter seal, cohesion-warning border, Green Covenant seal, and formable-ready emblem animation packages are now wired in the interface.
 - Decide which historical old-seat source-asset rows should receive source-research priority and which, if any, may use neutral Archive placeholders.
-- Keep spreadsheet/catalog status at `Needs Testing` until targeted scenario validation is recorded.
+- Keep spreadsheet/catalog main status at `Needs Testing` until targeted SCN-008 and ordinary World Is One validation is recorded.
 
 ## Validation Notes
 
