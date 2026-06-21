@@ -2105,18 +2105,22 @@ can_africa_use_gui_bestiary_terms = {
 	command_power > constant:africa_decision.bestiary_terms_command_power_gate
 }
 
-can_africa_use_gui_sponsor_readiness = {
+can_africa_start_continent_sponsor_readiness_mission = {
 	is_africa_runtime_unifier = yes
 	has_country_flag = africa_continent_sponsor_office_open
 	has_global_flag = africa_is_one_complete
 	NOT = { has_country_flag = africa_continent_sponsor_ready }
 	NOT = { has_country_flag = africa_continent_sponsor_readiness_mission_active }
-	NOT = { has_country_flag = africa_gui_sponsor_readiness_recent }
 	NOT = { has_global_flag = world_end }
 	has_equipment = { convoy_1 > constant:africa_force.sponsor_readiness_convoys }
 	has_equipment = { support_equipment > constant:africa_force.sponsor_readiness_support_equipment }
 	command_power > constant:africa_decision.sponsor_readiness_command_power_gate
 	has_political_power > constant:africa_decision.sponsor_mission_cost
+}
+
+can_africa_use_gui_sponsor_readiness = {
+	can_africa_start_continent_sponsor_readiness_mission = yes
+	NOT = { has_country_flag = africa_gui_sponsor_readiness_recent }
 }
 
 can_africa_record_evolution_i = {
