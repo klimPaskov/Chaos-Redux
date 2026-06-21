@@ -54,7 +54,7 @@ Final wired audio:
 | `africa_archive_world_union_terminal` | `music/super_event_africa_archive_world.ogg` | `sound/chaosx_super_event_africa_archive_world.wav` | `79` |
 | `africa_world_is_one_root_variant_terminal` | `music/super_event_africa_world_is_one_root_terminal.ogg` | `sound/chaosx_super_event_africa_world_is_one_root_terminal.wav` | `80` audio id, visible slot `72` |
 
-The final source, licensing, hashes, and conversion notes remain in `docs/assets/012_africa/super_events/audio/manifest.md`.
+The final source, licensing, hashes, and conversion notes remain in `docs/assets/012_africa/super_events/audio/manifest.md`. The live audio direction was refreshed on `2026-06-21`; slots `68-80` now use African-source live-performance recordings, with detailed package evidence in `docs/assets/012_africa/audio/2026-06-21_africa_direction_refresh/`.
 
 Variant trigger notes:
 
