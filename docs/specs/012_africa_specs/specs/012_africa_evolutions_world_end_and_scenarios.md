@@ -255,20 +255,20 @@ Scenario types:
 | Type | Description |
 | --- | --- |
 | Africa Is One | Selects or creates a valid African-capital unifier, immediately forms a strong Africa, opens the Charter League, regional authority, Authority Atlas, sponsor, proof-ledger, and post-unification systems, and starts unification wars. |
-| World Is One | Starts from the strong Africa opening, spawns supported external continent-unifier actors, verifies the proof/certification chain, applies the Congress of Continents identity, and triggers the terminal World Is One scenario. |
+| World Is One | Starts from the strong Africa opening, guarantees supported external continent-unifier actors for Middle East, Asia, Europe, and South Atlantic if no live candidate exists, verifies the proof/certification chain, applies the Congress of Continents identity, and triggers the terminal World Is One scenario. |
 
 Intensity slider:
 
 | Intensity | Setup |
 | --- | --- |
-| Low | Strong Africa, regional authority seeding, continental unification wars, low scenario alarm, and limited external-continent actor support for World Is One. |
-| Medium | Strong Africa with larger logistics and medium external-continent actor support for World Is One. |
-| High | Stronger Africa forces, sharper colonial reaction, regional authority seeding, and high external-continent actor support for World Is One. |
-| Maximum | Maximum Africa logistics, severe opening pressure, Totalen Chaos readiness, multiple regional authorities, and the largest external-continent actor support package for World Is One. |
+| Low | Strong Africa, regional authority seeding, continental unification wars, low scenario alarm, and limited external-continent actor stockpiles and guard divisions for World Is One. |
+| Medium | Strong Africa with larger logistics and medium external-continent actor stockpiles and guard divisions for World Is One. |
+| High | Stronger Africa forces, sharper colonial reaction, regional authority seeding, and high external-continent actor stockpiles and guard divisions for World Is One. |
+| Maximum | Maximum Africa logistics, severe opening pressure, Totalen Chaos readiness, multiple regional authorities, and the largest external-continent actor stockpile and guard package for World Is One. |
 
 Scenario gates should block only impossible launches, not normal chaos/evolution prerequisites. The scenario directly creates instant chaos and setup according to controls.
 
-Implementation note: the shared scenario window allows SCN-008 even if Event 012 has already fired or a world-end branch is active. The selector uses only `Africa Is One` and `World Is One`; the RSA scenario type is not part of this manual scenario. Both types use the weighted unifier selector and create the West African Congress host only if no valid African-capital country exists. `Africa Is One` starts continental wars immediately. `World Is One` seats the external continent-unifier readiness/proof/certification chain and starts the terminal branch through a scenario-only terminal helper.
+Implementation note: the shared scenario window allows SCN-008 even if Event 012 has already fired or a world-end branch is active. The selector uses only `Africa Is One` and `World Is One`; the RSA scenario type is not part of this manual scenario. Both types use the weighted unifier selector and create the West African Congress host only if no valid African-capital country exists. `Africa Is One` starts continental wars immediately. `World Is One` seats the external continent-unifier readiness/proof/certification chain, creates a default external region actor where a region has no live candidate, gives supported actors intensity-scaled stockpiles and Continental Unifier Guard divisions, and starts the terminal branch through a scenario-only terminal helper.
 
 ## World-end scenario — The World Is One
 
