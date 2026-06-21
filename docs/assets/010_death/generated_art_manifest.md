@@ -11,7 +11,7 @@ Super-event audit contact sheet: `docs/assets/010_death/contact_sheets/death_sup
 
 ## Current icon override package
 
-The active Death focus and achievement icons listed in `docs/assets/010_death/death_icon_scratch_regen_2026_06_21/manifest.md` supersede the earlier focus white-artifact repair package and the Death portion of the consolidated achievement-regeneration package. Those icons were regenerated from fresh source artwork, not modified from existing Death icon files.
+The active Death focus and achievement icons listed in `docs/assets/010_death/death_icon_scratch_regen_2026_06_21/manifest.md` are the only accepted completion package for the user-reported Death icon correction. Those icons were regenerated from fresh source artwork, not modified from existing Death icon files. Earlier repair or intermediate focus-only packages were removed from tracked asset docs because they are not valid completion evidence for the scratch-regeneration requirement.
 
 ## Super-event audit
 

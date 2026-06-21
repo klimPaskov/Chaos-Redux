@@ -11,15 +11,15 @@ Changed files: this handoff only.
 
 ## Death focus icons
 
-Status: `pending fresh-package audit`
+Status: `superseded by Death scratch package`
 
-Per updated instruction, I did not treat the current live Death icons or `docs/assets/010_death/focus_icon_regen_white_artifact_2026_06_21/` as satisfying the request.
+This handoff was written before the accepted Death scratch package was finalized. The current source of truth is `docs/assets/010_death/death_icon_scratch_regen_2026_06_21/manifest.md`.
 
 Current QA stance:
 
-- Do not pass the live 8 Death focus icons yet.
-- Do not use the excluded white-artifact regen package as completion evidence.
-- No new fresh package was present under `docs/assets/010_death/` during this audit beyond the older/excluded regeneration folders, so there was nothing new to approve.
+- The excluded modified-art packages are not completion evidence.
+- The accepted follow-up package records fresh source PNGs, processed PNGs, package DDS files, live DDS files, and validation for the eight user-reported Death focus icons and all Death achievement triplets.
+- Use `docs/plans/010_death_plans/subagent_handoffs/2026_06_21_death_icon_scratch_regen_handoff.md` and the scratch package manifest for Death icon completion evidence.
 
 ## Achievement DDS triplets
 

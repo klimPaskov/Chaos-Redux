@@ -65,5 +65,5 @@ Each achievement family has these live files:
 
 ## Notes
 
-- This package supersedes the earlier Death focus white-artifact repair package and the Death portion of the consolidated achievement regeneration package.
+- This package is the sole accepted Death icon handoff for the user-reported scratch-regeneration correction. Earlier repair or intermediate focus-only packages were removed from tracked asset docs and must not be used as completion evidence.
 - No sprite names, localisation keys, achievement ids, focus ids, or texture paths changed.
