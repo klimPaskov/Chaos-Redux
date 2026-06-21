@@ -1,5 +1,7 @@
 ## Scope
 
+Supersession note, 2026-06-21: the SCN-012 references below are historical evidence from the first spreadsheet pass. The current workbook row and current scenario documentation use `SCN-008` with only `Africa Is One` and `World Is One` manual types. Use `docs/plans/012_africa_plans/2026-06-21_event_012_scn008_spreadsheet_alignment_handoff.md` for the active spreadsheet/catalog alignment state.
+
 - Workbook: `docs/spreadsheets/chaos_redux_events_catalog.xlsx`
 - Sheet: `Main Sheet`
 - Row: `13`
