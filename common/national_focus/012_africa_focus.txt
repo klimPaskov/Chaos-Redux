@@ -5,6 +5,11 @@
 # world-order sequencing are kept here; decisions consume the flags set here.
 # ============================================================================
 
+@africa_ai_normal = 1
+@africa_ai_low = 0.35
+@africa_ai_preferred = 1.5
+@africa_ai_strong = 2.25
+
 search_filter_prios = {
 	FOCUS_FILTER_AFR_CHARTER = 150
 	FOCUS_FILTER_AFR_AUTHORITY_ATLAS = 151
@@ -39,7 +44,7 @@ focus_tree = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_focus_charter_mandate_complete
 		}
-		ai_will_do = { factor = constant:africa_ai.strong }
+		ai_will_do = { factor = @africa_ai_strong }
 	}
 
 	focus = {
@@ -56,7 +61,7 @@ focus_tree = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_political_congress_route_open
 		}
-		ai_will_do = { factor = constant:africa_ai.preferred }
+		ai_will_do = { factor = @africa_ai_preferred }
 	}
 
 	focus = {
@@ -73,7 +78,7 @@ focus_tree = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_liberation_war_office_open
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = { factor = @africa_ai_normal }
 	}
 
 	focus = {
@@ -92,7 +97,7 @@ focus_tree = {
 			set_country_flag = africa_authority_atlas_open
 			africa_record_evolution_ii_if_needed = yes
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = { factor = @africa_ai_normal }
 	}
 
 	focus = {
@@ -110,7 +115,7 @@ focus_tree = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_rsa_congress_underground_open
 		}
-		ai_will_do = { factor = constant:africa_ai.strong }
+		ai_will_do = { factor = @africa_ai_strong }
 	}
 
 	focus = {
@@ -129,7 +134,7 @@ focus_tree = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_rsa_mine_port_strikes_open
 		}
-		ai_will_do = { factor = constant:africa_ai.strong }
+		ai_will_do = { factor = @africa_ai_strong }
 	}
 
 	focus = {
@@ -152,7 +157,7 @@ focus_tree = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_rsa_defecting_units_open
 		}
-		ai_will_do = { factor = constant:africa_ai.strong }
+		ai_will_do = { factor = @africa_ai_strong }
 	}
 
 	focus = {
@@ -171,7 +176,7 @@ focus_tree = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_rsa_allied_pressure_open
 		}
-		ai_will_do = { factor = constant:africa_ai.strong }
+		ai_will_do = { factor = @africa_ai_strong }
 	}
 
 	focus = {
@@ -194,7 +199,7 @@ focus_tree = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_rsa_pretoria_test_open
 		}
-		ai_will_do = { factor = constant:africa_ai.strong }
+		ai_will_do = { factor = @africa_ai_strong }
 	}
 
 	focus = {
@@ -217,7 +222,7 @@ focus_tree = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_rsa_victory_settlement_ready
 		}
-		ai_will_do = { factor = constant:africa_ai.strong }
+		ai_will_do = { factor = @africa_ai_strong }
 	}
 
 	focus = {
@@ -229,8 +234,8 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_INDUSTRY }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_war = no }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_war = no }
 		}
 		completion_reward = {
 			random_owned_controlled_state = {
@@ -253,8 +258,8 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_CHARTER }
 		ai_will_do = {
-			factor = constant:africa_ai.preferred
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_industrial_convergence_open }
+			factor = @africa_ai_preferred
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_industrial_convergence_open }
 		}
 		completion_reward = {
 			add_to_variable = { africa_authority = constant:africa_value_delta.integration_authority }
@@ -275,8 +280,8 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_CHARTER }
 		ai_will_do = {
-			factor = constant:africa_ai.preferred
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_regional_authorities_open }
+			factor = @africa_ai_preferred
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_regional_authorities_open }
 		}
 		completion_reward = {
 			add_to_variable = { africa_legitimacy = constant:africa_value_delta.charter_join_legitimacy }
@@ -295,8 +300,8 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
 		ai_will_do = {
-			factor = constant:africa_ai.preferred
-			modifier = { factor = constant:africa_ai.strong has_country_flag = africa_authority_atlas_open }
+			factor = @africa_ai_preferred
+			modifier = { factor = @africa_ai_strong has_country_flag = africa_authority_atlas_open }
 		}
 		completion_reward = {
 			add_to_variable = { africa_archive_mandate = constant:africa_value_delta.archive_opened_mandate }
@@ -321,7 +326,7 @@ focus_tree = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_authority_register_open
 		}
-		ai_will_do = { factor = constant:africa_ai.preferred }
+		ai_will_do = { factor = @africa_ai_preferred }
 	}
 
 	focus = {
@@ -338,7 +343,7 @@ focus_tree = {
 			africa_select_next_unopened_dossier = yes
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { factor = constant:africa_ai.preferred }
+		ai_will_do = { factor = @africa_ai_preferred }
 	}
 
 	focus = {
@@ -355,7 +360,7 @@ focus_tree = {
 			add_to_variable = { africa_local_sovereignty = constant:africa_value_delta.charter_resist_sovereignty }
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = { factor = @africa_ai_normal }
 	}
 
 	focus = {
@@ -372,7 +377,7 @@ focus_tree = {
 			africa_refresh_historical_dossier_mission_count = yes
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = { factor = @africa_ai_normal }
 	}
 
 	focus = {
@@ -389,7 +394,7 @@ focus_tree = {
 			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = { factor = @africa_ai_normal }
 	}
 
 	focus = {
@@ -401,9 +406,9 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_dossier_selection_office_open }
-			modifier = { factor = constant:africa_ai.low has_war = yes }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_dossier_selection_office_open }
+			modifier = { factor = @africa_ai_low has_war = yes }
 		}
 		completion_reward = {
 			set_country_flag = africa_dossier_lane_north_open
@@ -422,8 +427,8 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_dossier_lane_north_open }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_dossier_lane_north_open }
 		}
 		completion_reward = {
 			set_country_flag = africa_dossier_kush_meroe_priority
@@ -442,8 +447,8 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_dossier_lane_north_open }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_dossier_lane_north_open }
 		}
 		completion_reward = {
 			set_country_flag = africa_dossier_horn_well_laws_open
@@ -462,9 +467,9 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_dossier_selection_office_open }
-			modifier = { factor = constant:africa_ai.preferred check_variable = { africa_local_sovereignty > constant:africa_decision.cohesion_gate } }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_dossier_selection_office_open }
+			modifier = { factor = @africa_ai_preferred check_variable = { africa_local_sovereignty > constant:africa_decision.cohesion_gate } }
 		}
 		completion_reward = {
 			set_country_flag = africa_dossier_lane_west_open
@@ -483,8 +488,8 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_dossier_lane_west_open }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_dossier_lane_west_open }
 		}
 		completion_reward = {
 			set_country_flag = africa_dossier_sahel_ledger_open
@@ -502,9 +507,9 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_dossier_lane_west_open }
-			modifier = { factor = constant:africa_ai.low has_war = yes }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_dossier_lane_west_open }
+			modifier = { factor = @africa_ai_low has_war = yes }
 		}
 		completion_reward = {
 			set_country_flag = africa_dossier_gold_forest_open
@@ -523,9 +528,9 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_dossier_selection_office_open }
-			modifier = { factor = constant:africa_ai.preferred check_variable = { africa_regional_trust > constant:africa_decision.cohesion_gate } }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_dossier_selection_office_open }
+			modifier = { factor = @africa_ai_preferred check_variable = { africa_regional_trust > constant:africa_decision.cohesion_gate } }
 		}
 		completion_reward = {
 			set_country_flag = africa_dossier_lane_central_open
@@ -544,8 +549,8 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_dossier_lane_central_open }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_dossier_lane_central_open }
 		}
 		completion_reward = {
 			random_owned_controlled_state = {
@@ -565,9 +570,9 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_AUTHORITY_ATLAS FOCUS_FILTER_AFR_BESTIARY }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_dossier_lane_central_open }
-			modifier = { factor = constant:africa_ai.preferred check_variable = { africa_habitat_trust > constant:africa_decision.cohesion_gate } }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_dossier_lane_central_open }
+			modifier = { factor = @africa_ai_preferred check_variable = { africa_habitat_trust > constant:africa_decision.cohesion_gate } }
 		}
 		completion_reward = {
 			set_country_flag = africa_dossier_forest_court_open
@@ -586,9 +591,9 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_RESEARCH FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_dossier_selection_office_open }
-			modifier = { factor = constant:africa_ai.preferred has_war = no }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_dossier_selection_office_open }
+			modifier = { factor = @africa_ai_preferred has_war = no }
 		}
 		completion_reward = {
 			set_country_flag = africa_dossier_lane_indian_ocean_open
@@ -607,8 +612,8 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_INDUSTRY FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_dossier_lane_indian_ocean_open }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_dossier_lane_indian_ocean_open }
 		}
 		completion_reward = {
 			add_equipment_to_stockpile = {
@@ -629,8 +634,8 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_INDUSTRY FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_dossier_lane_indian_ocean_open }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_dossier_lane_indian_ocean_open }
 		}
 		completion_reward = {
 			random_owned_controlled_state = {
@@ -651,9 +656,9 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_dossier_selection_office_open }
-			modifier = { factor = constant:africa_ai.preferred check_variable = { africa_regional_trust > constant:africa_decision.cohesion_gate } }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_dossier_selection_office_open }
+			modifier = { factor = @africa_ai_preferred check_variable = { africa_regional_trust > constant:africa_decision.cohesion_gate } }
 		}
 		completion_reward = {
 			set_country_flag = africa_dossier_lane_great_lakes_open
@@ -672,8 +677,8 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_dossier_lane_great_lakes_open }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_dossier_lane_great_lakes_open }
 		}
 		completion_reward = {
 			set_country_flag = africa_dossier_lake_arbitration_open
@@ -692,8 +697,8 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_dossier_selection_office_open }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_dossier_selection_office_open }
 		}
 		completion_reward = {
 			set_country_flag = africa_dossier_lane_southern_open
@@ -711,8 +716,8 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_dossier_lane_southern_open }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_dossier_lane_southern_open }
 		}
 		completion_reward = {
 			set_country_flag = africa_dossier_floodplain_calendar_open
@@ -730,9 +735,9 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_dossier_lane_southern_open }
-			modifier = { factor = constant:africa_ai.preferred check_variable = { africa_archive_mandate > constant:africa_decision.cohesion_gate } }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_dossier_lane_southern_open }
+			modifier = { factor = @africa_ai_preferred check_variable = { africa_archive_mandate > constant:africa_decision.cohesion_gate } }
 		}
 		completion_reward = {
 			set_country_flag = africa_dossier_rova_files_open
@@ -751,9 +756,9 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_INDUSTRY }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_industrial_convergence_open }
-			modifier = { factor = constant:africa_ai.preferred has_war = no }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_industrial_convergence_open }
+			modifier = { factor = @africa_ai_preferred has_war = no }
 		}
 		completion_reward = {
 			every_owned_state = {
@@ -775,9 +780,9 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_INDUSTRY }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_industrial_convergence_open }
-			modifier = { factor = constant:africa_ai.preferred has_war = yes }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_industrial_convergence_open }
+			modifier = { factor = @africa_ai_preferred has_war = yes }
 		}
 		completion_reward = {
 			random_owned_controlled_state = {
@@ -804,7 +809,7 @@ focus_tree = {
 			add_to_variable = { africa_restoration_debt = constant:africa_value_delta.diaspora_return_pressure }
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = { factor = @africa_ai_normal }
 	}
 
 	focus = {
@@ -821,7 +826,7 @@ focus_tree = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_afro_american_delegations_open
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = { factor = @africa_ai_normal }
 	}
 
 	focus = {
@@ -843,7 +848,7 @@ focus_tree = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_caribbean_atlantic_networks_open
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = { factor = @africa_ai_normal }
 	}
 
 	focus = {
@@ -865,7 +870,7 @@ focus_tree = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_exile_professors_engineers_open
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = { factor = @africa_ai_normal }
 	}
 
 	focus = {
@@ -886,7 +891,7 @@ focus_tree = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_returnee_settlement_councils_open
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = { factor = @africa_ai_normal }
 	}
 
 	focus = {
@@ -904,7 +909,7 @@ focus_tree = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_citizenship_without_erasure_open
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = { factor = @africa_ai_normal }
 	}
 
 	focus = {
@@ -923,7 +928,7 @@ focus_tree = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_diaspora_guard_cadres_open
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = { factor = @africa_ai_normal }
 	}
 
 	focus = {
@@ -943,7 +948,7 @@ focus_tree = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_pan_atlantic_congress_ready
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = { factor = @africa_ai_normal }
 	}
 
 	focus = {
@@ -955,9 +960,9 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_AFR_SCRAMBLE }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_war = yes }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_liberation_columns_ready }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_war = yes }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_liberation_columns_ready }
 		}
 		completion_reward = {
 			army_experience = constant:africa_focus_reward.charter_general_staff_army_experience
@@ -976,9 +981,9 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_SCRAMBLE }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_war = yes }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_charter_general_staff_open }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_war = yes }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_charter_general_staff_open }
 		}
 		completion_reward = {
 			add_manpower = constant:africa_focus_reward.liberation_columns_manpower
@@ -1000,8 +1005,8 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_archive_old_seats_open }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_archive_old_seats_open }
 		}
 		completion_reward = {
 			add_to_variable = { africa_old_seat_legitimacy = constant:africa_value_delta.dossier_opened_old_seat }
@@ -1019,9 +1024,9 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_archive_old_seats_open }
-			modifier = { factor = constant:africa_ai.preferred check_variable = { africa_local_sovereignty > constant:africa_decision.cohesion_gate } }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_archive_old_seats_open }
+			modifier = { factor = @africa_ai_preferred check_variable = { africa_local_sovereignty > constant:africa_decision.cohesion_gate } }
 		}
 		completion_reward = {
 			add_to_variable = { africa_old_seat_legitimacy = constant:africa_value_delta.dossier_opened_old_seat }
@@ -1039,9 +1044,9 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_archive_old_seats_open }
-			modifier = { factor = constant:africa_ai.preferred check_variable = { africa_regional_trust > constant:africa_decision.cohesion_gate } }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_archive_old_seats_open }
+			modifier = { factor = @africa_ai_preferred check_variable = { africa_regional_trust > constant:africa_decision.cohesion_gate } }
 		}
 		completion_reward = {
 			add_to_variable = { africa_old_seat_legitimacy = constant:africa_value_delta.dossier_opened_old_seat }
@@ -1060,10 +1065,10 @@ focus_tree = {
 		cost = 10
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_SCRAMBLE }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_regional_authorities_open }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_charter_general_staff_open }
-			modifier = { factor = constant:africa_ai.strong has_war = yes }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_regional_authorities_open }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_charter_general_staff_open }
+			modifier = { factor = @africa_ai_strong has_war = yes }
 		}
 		completion_reward = {
 			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.charter_resist_alarm }
@@ -1095,9 +1100,9 @@ focus_tree = {
 			set_country_flag = africa_route_federal_charter
 		}
 		ai_will_do = {
-			factor = constant:africa_ai.preferred
-			modifier = { factor = constant:africa_ai.preferred has_government = democratic }
-			modifier = { factor = constant:africa_ai.normal has_war = yes }
+			factor = @africa_ai_preferred
+			modifier = { factor = @africa_ai_preferred has_government = democratic }
+			modifier = { factor = @africa_ai_normal has_war = yes }
 		}
 	}
 
@@ -1117,9 +1122,9 @@ focus_tree = {
 			set_country_flag = africa_charter_assembly_votes_open
 		}
 		ai_will_do = {
-			factor = constant:africa_ai.preferred
-			modifier = { factor = constant:africa_ai.preferred has_government = democratic }
-			modifier = { factor = constant:africa_ai.low has_war = yes }
+			factor = @africa_ai_preferred
+			modifier = { factor = @africa_ai_preferred has_government = democratic }
+			modifier = { factor = @africa_ai_low has_war = yes }
 		}
 	}
 
@@ -1141,8 +1146,8 @@ focus_tree = {
 			set_country_flag = africa_regional_autonomy_statutes_open
 		}
 		ai_will_do = {
-			factor = constant:africa_ai.preferred
-			modifier = { factor = constant:africa_ai.preferred check_variable = { africa_regional_trust > constant:africa_decision.cohesion_gate } }
+			factor = @africa_ai_preferred
+			modifier = { factor = @africa_ai_preferred check_variable = { africa_regional_trust > constant:africa_decision.cohesion_gate } }
 		}
 	}
 
@@ -1162,7 +1167,7 @@ focus_tree = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_federal_high_court_open
 		}
-		ai_will_do = { factor = constant:africa_ai.preferred }
+		ai_will_do = { factor = @africa_ai_preferred }
 	}
 
 	focus = {
@@ -1185,8 +1190,8 @@ focus_tree = {
 			set_country_flag = africa_continental_citizenship_open
 		}
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_completed_focus = AFR_citizenship_without_erasure }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_completed_focus = AFR_citizenship_without_erasure }
 		}
 	}
 
@@ -1215,7 +1220,7 @@ focus_tree = {
 			set_country_flag = africa_congress_of_capitals_ready
 			set_country_flag = africa_federal_congress_capitals_ready
 		}
-		ai_will_do = { factor = constant:africa_ai.preferred }
+		ai_will_do = { factor = @africa_ai_preferred }
 	}
 
 	focus = {
@@ -1231,10 +1236,10 @@ focus_tree = {
 		mutually_exclusive = { focus = AFR_crown_congress }
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_CHARTER }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_government = neutrality }
-			modifier = { factor = constant:africa_ai.preferred check_variable = { africa_local_sovereignty > constant:africa_decision.cohesion_gate } }
-			modifier = { factor = constant:africa_ai.low has_war = yes }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_government = neutrality }
+			modifier = { factor = @africa_ai_preferred check_variable = { africa_local_sovereignty > constant:africa_decision.cohesion_gate } }
+			modifier = { factor = @africa_ai_low has_war = yes }
 		}
 		completion_reward = {
 			set_cosmetic_tag = AFR_SOVEREIGN_SEATS
@@ -1266,9 +1271,9 @@ focus_tree = {
 			set_country_flag = africa_route_peoples_liberation_front
 		}
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_government = communism }
-			modifier = { factor = constant:africa_ai.preferred has_war = yes }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_government = communism }
+			modifier = { factor = @africa_ai_preferred has_war = yes }
 		}
 	}
 
@@ -1290,7 +1295,7 @@ focus_tree = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_port_unions_mine_cells_open
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = { factor = @africa_ai_normal }
 	}
 
 	focus = {
@@ -1308,7 +1313,7 @@ focus_tree = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_exile_radios_open
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = { factor = @africa_ai_normal }
 	}
 
 	focus = {
@@ -1333,7 +1338,7 @@ focus_tree = {
 			set_country_flag = africa_people_continental_army_ready
 			set_country_flag = africa_liberation_operation_ready
 		}
-		ai_will_do = { factor = constant:africa_ai.preferred }
+		ai_will_do = { factor = @africa_ai_preferred }
 	}
 
 	focus = {
@@ -1358,9 +1363,9 @@ focus_tree = {
 			set_country_flag = africa_route_continental_general_staff
 		}
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_government = fascism }
-			modifier = { factor = constant:africa_ai.preferred has_war = yes }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_government = fascism }
+			modifier = { factor = @africa_ai_preferred has_war = yes }
 		}
 	}
 
@@ -1382,7 +1387,7 @@ focus_tree = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_railway_war_offices_open
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = { factor = @africa_ai_normal }
 	}
 
 	focus = {
@@ -1405,7 +1410,7 @@ focus_tree = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_askari_veteran_bureaus_open
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = { factor = @africa_ai_normal }
 	}
 
 	focus = {
@@ -1426,7 +1431,7 @@ focus_tree = {
 			set_country_flag = africa_continental_war_plan_ready
 			set_country_flag = africa_scramble_counter_dockets_open
 		}
-		ai_will_do = { factor = constant:africa_ai.preferred }
+		ai_will_do = { factor = @africa_ai_preferred }
 	}
 
 	focus = {
@@ -1450,8 +1455,8 @@ focus_tree = {
 			set_country_flag = africa_route_crown_congress
 		}
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_government = neutrality }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_government = neutrality }
 		}
 	}
 
@@ -1471,7 +1476,7 @@ focus_tree = {
 			set_country_flag = africa_regalia_verification_chambers_open
 			africa_emit_counterfeit_crowns_super_event = yes
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = { factor = @africa_ai_normal }
 	}
 
 	focus = {
@@ -1488,7 +1493,7 @@ focus_tree = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_crown_without_one_crown_open
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = { factor = @africa_ai_normal }
 	}
 
 	focus = {
@@ -1510,7 +1515,7 @@ focus_tree = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_royal_roads_drums_open
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = { factor = @africa_ai_normal }
 	}
 
 	focus = {
@@ -1530,7 +1535,7 @@ focus_tree = {
 			africa_clamp_core_values = yes
 			set_country_flag = africa_crowns_beneath_charter_ready
 		}
-		ai_will_do = { factor = constant:africa_ai.preferred }
+		ai_will_do = { factor = @africa_ai_preferred }
 	}
 
 	focus = {
@@ -1551,10 +1556,10 @@ focus_tree = {
 		}
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_RESEARCH FOCUS_FILTER_AFR_BESTIARY }
 		ai_will_do = {
-			factor = constant:africa_ai.low
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_minimum_historical_dossiers_ready }
-			modifier = { factor = constant:africa_ai.preferred check_variable = { africa_archive_mandate > constant:africa_decision.high_chaos_gate } }
-			modifier = { factor = constant:africa_ai.low has_war = yes }
+			factor = @africa_ai_low
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_minimum_historical_dossiers_ready }
+			modifier = { factor = @africa_ai_preferred check_variable = { africa_archive_mandate > constant:africa_decision.high_chaos_gate } }
+			modifier = { factor = @africa_ai_low has_war = yes }
 		}
 		completion_reward = {
 			set_cosmetic_tag = AFR_ARCHIVE_MANDATE
@@ -1579,10 +1584,10 @@ focus_tree = {
 		cost = 10
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_CHARTER }
 		ai_will_do = {
-			factor = constant:africa_ai.preferred
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_route_federal_charter }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_route_peoples_liberation_front }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_route_continental_general_staff }
+			factor = @africa_ai_preferred
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_route_federal_charter }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_route_peoples_liberation_front }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_route_continental_general_staff }
 		}
 		completion_reward = {
 			add_to_variable = { africa_paper_core_burden = constant:africa_value_delta.integration_burden_relief }
@@ -1602,10 +1607,10 @@ focus_tree = {
 		cost = 10
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_CHARTER }
 		ai_will_do = {
-			factor = constant:africa_ai.preferred
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_route_sovereign_seats }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_route_crown_congress }
-			modifier = { factor = constant:africa_ai.low has_war = yes }
+			factor = @africa_ai_preferred
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_route_sovereign_seats }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_route_crown_congress }
+			modifier = { factor = @africa_ai_low has_war = yes }
 		}
 		completion_reward = {
 			add_to_variable = { africa_local_sovereignty = constant:africa_value_delta.charter_resist_sovereignty }
@@ -1632,7 +1637,7 @@ focus_tree = {
 			add_to_variable = { africa_paper_core_burden = constant:africa_value_delta.covenant_pressure }
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = { factor = @africa_ai_normal }
 	}
 
 	focus = {
@@ -1651,7 +1656,7 @@ focus_tree = {
 			add_to_variable = { africa_restoration_debt = constant:africa_value_delta.covenant_pressure }
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = { factor = @africa_ai_normal }
 	}
 
 	focus = {
@@ -1671,7 +1676,7 @@ focus_tree = {
 			add_to_variable = { africa_restoration_debt = constant:africa_value_delta.covenant_pressure }
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { factor = constant:africa_ai.low }
+		ai_will_do = { factor = @africa_ai_low }
 	}
 
 	focus = {
@@ -1683,10 +1688,10 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_CHARTER }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_settlement_respect_old_seats }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_settlement_documents_before_consent }
-			modifier = { factor = constant:africa_ai.preferred check_variable = { africa_league_cohesion > constant:africa_decision.cohesion_gate } }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_settlement_respect_old_seats }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_settlement_documents_before_consent }
+			modifier = { factor = @africa_ai_preferred check_variable = { africa_league_cohesion > constant:africa_decision.cohesion_gate } }
 		}
 		completion_reward = {
 			set_country_flag = africa_anti_museum_drift_open
@@ -1705,10 +1710,10 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_AFR_CHARTER }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_settlement_direct_archive_seal }
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_settlement_documents_before_consent }
-			modifier = { factor = constant:africa_ai.preferred check_variable = { africa_regional_trust > constant:africa_decision.cohesion_gate } }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_settlement_direct_archive_seal }
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_settlement_documents_before_consent }
+			modifier = { factor = @africa_ai_preferred check_variable = { africa_regional_trust > constant:africa_decision.cohesion_gate } }
 		}
 		completion_reward = {
 			set_country_flag = africa_anti_prison_drift_open
@@ -1727,9 +1732,9 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_AUTHORITY_ATLAS FOCUS_FILTER_AFR_SCRAMBLE }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_old_seat_mission_calendar_open }
-			modifier = { factor = constant:africa_ai.preferred has_war = yes }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_old_seat_mission_calendar_open }
+			modifier = { factor = @africa_ai_preferred has_war = yes }
 		}
 		completion_reward = {
 			set_country_flag = africa_old_capital_guard_missions_open
@@ -1749,9 +1754,9 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_old_capital_guard_missions_open }
-			modifier = { factor = constant:africa_ai.preferred has_war = no }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_old_capital_guard_missions_open }
+			modifier = { factor = @africa_ai_preferred has_war = no }
 		}
 		completion_reward = {
 			every_owned_state = {
@@ -1772,9 +1777,9 @@ focus_tree = {
 		cost = 8
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_AFR_AUTHORITY_ATLAS }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_old_capital_guard_missions_open }
-			modifier = { factor = constant:africa_ai.preferred has_war = yes }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_old_capital_guard_missions_open }
+			modifier = { factor = @africa_ai_preferred has_war = yes }
 		}
 		completion_reward = {
 			army_experience = constant:africa_focus_reward.regional_guard_schools_army_experience
@@ -1794,9 +1799,9 @@ focus_tree = {
 		cost = 10
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_AFR_SCRAMBLE }
 		ai_will_do = {
-			factor = constant:africa_ai.normal
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_scramble_reverse_claims_open }
-			modifier = { factor = constant:africa_ai.strong has_war = yes }
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_scramble_reverse_claims_open }
+			modifier = { factor = @africa_ai_strong has_war = yes }
 		}
 		completion_reward = {
 			set_country_flag = africa_foreign_holder_case_files_open
@@ -1833,7 +1838,7 @@ focus_tree = {
 			add_to_variable = { africa_authority = constant:africa_value_delta.integration_authority }
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = { factor = @africa_ai_normal }
 	}
 
 	focus = {
@@ -1852,7 +1857,7 @@ focus_tree = {
 			add_to_variable = { africa_regional_trust = constant:africa_value_delta.regional_authority_trust }
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { factor = constant:africa_ai.preferred }
+		ai_will_do = { factor = @africa_ai_preferred }
 	}
 
 	focus = {
@@ -1866,9 +1871,9 @@ focus_tree = {
 		mutually_exclusive = { focus = AFR_archive_bestiary_clause }
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_BESTIARY }
 		ai_will_do = {
-			factor = constant:africa_ai.low
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_high_chaos_route_open }
-			modifier = { factor = constant:africa_ai.preferred check_variable = { africa_habitat_trust > constant:africa_decision.cohesion_gate } }
+			factor = @africa_ai_low
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_high_chaos_route_open }
+			modifier = { factor = @africa_ai_preferred check_variable = { africa_habitat_trust > constant:africa_decision.cohesion_gate } }
 		}
 		completion_reward = {
 			add_to_variable = { africa_habitat_trust = constant:africa_value_delta.high_chaos_nonhuman_sovereignty }
@@ -1890,9 +1895,9 @@ focus_tree = {
 		mutually_exclusive = { focus = AFR_forest_parliament }
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_RESEARCH FOCUS_FILTER_AFR_BESTIARY }
 		ai_will_do = {
-			factor = constant:africa_ai.low
-			modifier = { factor = constant:africa_ai.preferred has_country_flag = africa_high_chaos_route_open }
-			modifier = { factor = constant:africa_ai.preferred check_variable = { africa_archive_mandate > constant:africa_decision.high_chaos_gate } }
+			factor = @africa_ai_low
+			modifier = { factor = @africa_ai_preferred has_country_flag = africa_high_chaos_route_open }
+			modifier = { factor = @africa_ai_preferred check_variable = { africa_archive_mandate > constant:africa_decision.high_chaos_gate } }
 		}
 		completion_reward = {
 			add_to_variable = { africa_bestiary_alarm = constant:africa_value_delta.bestiary_alarm }
@@ -1918,7 +1923,7 @@ focus_tree = {
 			add_to_variable = { africa_bestiary_alarm = constant:africa_value_delta.bestiary_alarm }
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = { factor = @africa_ai_normal }
 	}
 
 	focus = {
@@ -1937,7 +1942,7 @@ focus_tree = {
 			add_to_variable = { africa_mythic_pressure = constant:africa_value_delta.high_chaos_mythic_pressure }
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { factor = constant:africa_ai.low }
+		ai_will_do = { factor = @africa_ai_low }
 	}
 
 	focus = {
@@ -1955,7 +1960,7 @@ focus_tree = {
 			add_to_variable = { africa_bestiary_alarm = constant:africa_value_delta.integration_burden_relief }
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = { factor = @africa_ai_normal }
 	}
 
 	focus = {
@@ -1973,7 +1978,7 @@ focus_tree = {
 			add_to_variable = { africa_mythic_volatility = constant:africa_value_delta.integration_burden_relief }
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = { factor = @africa_ai_normal }
 	}
 
 	focus = {
@@ -1993,7 +1998,7 @@ focus_tree = {
 			africa_clamp_core_values = yes
 			africa_emit_root_and_fang_super_event = yes
 		}
-		ai_will_do = { factor = constant:africa_ai.low }
+		ai_will_do = { factor = @africa_ai_low }
 	}
 
 	focus = {
@@ -2011,7 +2016,7 @@ focus_tree = {
 			add_to_variable = { africa_habitat_trust = constant:africa_value_delta.high_chaos_nonhuman_sovereignty }
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { factor = constant:africa_ai.low }
+		ai_will_do = { factor = @africa_ai_low }
 	}
 
 	focus = {
@@ -2029,7 +2034,7 @@ focus_tree = {
 			add_to_variable = { africa_bestiary_alarm = constant:africa_value_delta.integration_burden_relief }
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { factor = constant:africa_ai.low }
+		ai_will_do = { factor = @africa_ai_low }
 	}
 
 	focus = {
@@ -2052,7 +2057,7 @@ focus_tree = {
 			africa_record_evolution_iv_if_needed = yes
 			africa_emit_world_root_mandate_super_event = yes
 		}
-		ai_will_do = { factor = constant:africa_ai.low }
+		ai_will_do = { factor = @africa_ai_low }
 	}
 
 	focus = {
@@ -2065,9 +2070,9 @@ focus_tree = {
 		cost = 10
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_AFR_WORLD_ORDER }
 		ai_will_do = {
-			factor = constant:africa_ai.preferred
-			modifier = { factor = constant:africa_ai.strong has_country_flag = africa_continental_register_ready }
-			modifier = { factor = constant:africa_ai.preferred check_variable = { africa_legitimacy > constant:africa_decision.cohesion_gate } }
+			factor = @africa_ai_preferred
+			modifier = { factor = @africa_ai_strong has_country_flag = africa_continental_register_ready }
+			modifier = { factor = @africa_ai_preferred check_variable = { africa_legitimacy > constant:africa_decision.cohesion_gate } }
 		}
 		completion_reward = {
 			add_to_variable = { africa_legitimacy = constant:africa_value_delta.sponsor_recognition }
@@ -2110,7 +2115,7 @@ focus_tree = {
 			africa_clamp_core_values = yes
 			africa_emit_africa_is_one_super_event = yes
 		}
-		ai_will_do = { factor = constant:africa_ai.strong }
+		ai_will_do = { factor = @africa_ai_strong }
 	}
 
 	focus = {
@@ -2133,7 +2138,7 @@ focus_tree = {
 			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.external_unifier_proof_alarm }
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { factor = constant:africa_ai.preferred }
+		ai_will_do = { factor = @africa_ai_preferred }
 	}
 
 	focus = {
@@ -2150,7 +2155,7 @@ focus_tree = {
 			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.external_unifier_proof_alarm }
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = { factor = @africa_ai_normal }
 	}
 
 	focus = {
@@ -2167,7 +2172,7 @@ focus_tree = {
 			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.external_unifier_proof_alarm }
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { factor = constant:africa_ai.low }
+		ai_will_do = { factor = @africa_ai_low }
 	}
 
 	focus = {
@@ -2184,7 +2189,7 @@ focus_tree = {
 			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.cross_continent_union_alarm }
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { factor = constant:africa_ai.low }
+		ai_will_do = { factor = @africa_ai_low }
 	}
 
 	focus = {
@@ -2202,7 +2207,7 @@ focus_tree = {
 			add_to_variable = { africa_restoration_debt = constant:africa_value_delta.cross_continent_overreach }
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = { factor = @africa_ai_normal }
 	}
 
 	focus = {
@@ -2229,9 +2234,9 @@ focus_tree = {
 			africa_clamp_core_values = yes
 		}
 		ai_will_do = {
-			factor = constant:africa_ai.normal
+			factor = @africa_ai_normal
 			modifier = {
-				factor = constant:africa_ai.strong
+				factor = @africa_ai_strong
 				has_africa_any_sponsored_cross_continent_charter = yes
 			}
 		}
@@ -2252,7 +2257,7 @@ focus_tree = {
 			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.external_unifier_proof_ready_cohesion }
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = { factor = @africa_ai_normal }
 	}
 
 	focus = {
@@ -2270,7 +2275,7 @@ focus_tree = {
 			add_to_variable = { africa_colonial_alarm = constant:africa_value_delta.continent_unifier_certification_alarm }
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = { factor = @africa_ai_normal }
 	}
 
 	focus = {
@@ -2288,7 +2293,7 @@ focus_tree = {
 			add_to_variable = { africa_league_cohesion = constant:africa_value_delta.continent_unifier_certification_cohesion }
 			africa_clamp_core_values = yes
 		}
-		ai_will_do = { factor = constant:africa_ai.normal }
+		ai_will_do = { factor = @africa_ai_normal }
 	}
 
 	focus = {
@@ -2304,9 +2309,9 @@ focus_tree = {
 			africa_mark_world_is_one_gate_ready = yes
 		}
 		ai_will_do = {
-			factor = constant:africa_ai.low
+			factor = @africa_ai_low
 			modifier = {
-				factor = constant:africa_ai.strong
+				factor = @africa_ai_strong
 				can_africa_start_world_is_one_gate = yes
 			}
 		}
