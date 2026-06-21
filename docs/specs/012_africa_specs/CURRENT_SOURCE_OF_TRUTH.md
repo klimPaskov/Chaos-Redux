@@ -1,6 +1,6 @@
 # Event 012 Africa — Current Source of Truth Map
 
-Updated: 2026-06-20
+Updated: 2026-06-21
 
 ## Current accepted design
 
@@ -79,8 +79,8 @@ The root-terminal World Is One super-event disposition is an intentional hybrid.
 
 Later June 18 parent tranches close additional bounded gaps:
 
-- `c37da58d` regenerates the Event 012 Africa goal and idea icons without white backgrounds. Goal icons remain goal-sized DDS files, while idea icons are distinct 64x64 designs rather than downscaled goal art. The live DDS files are under `gfx/interface/goals/012_africa/` and `gfx/interface/ideas/012_africa/`, with source packages and manifests under `docs/assets/012_africa/`.
-- The current live icon source packages are the 2026-06-20 v3 goal-icon package and v6 idea-icon package: `docs/assets/012_africa/icon_regen_goal_icons_no_white_bg_v3_2026_06_20/` and `docs/assets/012_africa/icon_regen_idea_icons_distinct_no_white_bg_v6_2026_06_20/`. They supersede the earlier v5 icon-package notes; `docs/assets/012_africa/implementation_asset_manifest.md` is current for the live package paths, checker contact sheets, and alpha metrics. The `.gfx` sprite names and live texture paths remain unchanged.
+- `063e2354` regenerates the Event 012 Africa goal and idea icons without white backgrounds. Goal icons remain goal-sized DDS files, while idea icons are distinct 64x64 designs rather than downscaled goal art. The live DDS files are under `gfx/interface/goals/012_africa/` and `gfx/interface/ideas/012_africa/`, with source packages and manifests under `docs/assets/012_africa/`.
+- The current live icon source packages are the 2026-06-21 v6 goal-icon package and v7 idea-icon package: `docs/assets/012_africa/icon_regen_goal_icons_no_white_bg_v6_2026_06_21/` and `docs/assets/012_africa/icon_regen_idea_icons_distinct_no_white_bg_v7_2026_06_20/`. They supersede the earlier v3/v6 icon-package notes; `docs/assets/012_africa/implementation_asset_manifest.md` is current for the live package paths, checker contact sheets, and validation summaries. The `.gfx` sprite names and live texture paths remain unchanged.
 - `c13fe459` makes the high-chaos Bestiary focus branch hidden until `AFR_high_chaos_door` reveals it through `africa_high_chaos_branch_revealed` and `mark_focus_tree_layout_dirty`.
 - `94857ce3` gives the Continental Congress Seats and Bestiary Terms GUI actions the same concrete support-equipment, manpower, and command-power requirements as their decision equivalents, using shared helpers so the GUI and normal decision paths cannot diverge.
 - The current dossier-AI tranche adds Authority Atlas lifecycle and eight-profile historical dossier AI to `common/ai_strategy/012_africa.txt`, and weights the Authority Atlas dossier decisions by route/profile in `common/decisions/012_africa_decisions.txt`.
@@ -112,7 +112,7 @@ These tranches reduce the active blocker list, but they do not close Event 012. 
 
 ## June 20 stale-note disposition
 
-- Earlier v5 icon-package source claims are superseded by the v3 goal-icon and v6 idea-icon packages in `docs/assets/012_africa/implementation_asset_manifest.md`.
+- Earlier v3/v6 icon-package source claims are superseded by the v6 goal-icon and v7 idea-icon packages in `docs/assets/012_africa/implementation_asset_manifest.md`.
 - `docs/plans/012_africa_plans/subagent_handoffs/2026-06-20_012_africa_post_package_completion_audit_handoff.md` is superseded only where it says the regional-authority package expansion was dirty, WAC/SAH/IOC-only, or not closed. Its broader completion blockers remain current.
 - `docs/plans/012_africa_plans/2026-06-17_event_012_africa_achievement_completion_handoff.md` should be read with its later-closed achievement section: the Hyena Radio Dominion, Bonobo Kinship Congress, Bird of the Walls, and Sao Terracotta Host achievement rows are no longer queued.
 - `docs/plans/012_africa_plans/subagent_handoffs/2026-06-20_012_africa_created_actor_static_country_package_audit_handoff.md` records static country-package coverage for all 25 created Event 012 actors and found no missing tag/history/OOB/portrait/flag/localisation/focus/AI surface. It does not close the broader route-depth or live-validation blockers.
