@@ -2,6 +2,10 @@
 
 Date: `2026-06-21`
 
+Supersession note:
+
+- The Death achievement families in this consolidated package were superseded by `docs/assets/010_death/death_icon_scratch_regen_2026_06_21/`, because the Death icons required fresh source artwork rather than reused or modified package output. The Africa, Natural Disasters, and generic achievement notes in this file remain historical for their own batches.
+
 Scope:
 
 - Regenerated only the listed achievement icon families.

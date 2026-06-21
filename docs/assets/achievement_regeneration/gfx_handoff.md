@@ -2,6 +2,10 @@
 
 Date: `2026-06-21`
 
+Supersession note:
+
+- Death achievement DDS families listed below were regenerated again from fresh source artwork in `docs/assets/010_death/death_icon_scratch_regen_2026_06_21/`. Existing live filenames and `.gfx` references remain unchanged.
+
 Scope:
 
 - Replaced only the live achievement DDS families named in the task.

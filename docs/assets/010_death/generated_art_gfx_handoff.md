@@ -2,6 +2,8 @@
 
 These notes were the original `.gfx` handoff. Final wiring has been applied in the implementation files listed below.
 
+Current Death focus and achievement icon DDS files are documented in `docs/assets/010_death/death_icon_scratch_regen_2026_06_21/gfx_handoff.md`. That package preserves existing sprite names and texture paths while replacing the live DDS files with scratch-generated source art.
+
 ## Country flags
 
 - `DTH`

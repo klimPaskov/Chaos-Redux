@@ -9,6 +9,10 @@ Additional contact sheet: `docs/assets/010_death/contact_sheets/death_black_oath
 Focus icon contact sheet: `docs/assets/010_death/contact_sheets/death_focus_icons_contact.png`
 Super-event audit contact sheet: `docs/assets/010_death/contact_sheets/death_super_events_contact.png`
 
+## Current icon override package
+
+The active Death focus and achievement icons listed in `docs/assets/010_death/death_icon_scratch_regen_2026_06_21/manifest.md` supersede the earlier focus white-artifact repair package and the Death portion of the consolidated achievement-regeneration package. Those icons were regenerated from fresh source artwork, not modified from existing Death icon files.
+
 ## Super-event audit
 
 - Audit date: `2026-06-15`
