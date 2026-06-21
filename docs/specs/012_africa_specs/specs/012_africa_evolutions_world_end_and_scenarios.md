@@ -246,7 +246,7 @@ Not every role label must become a super-event if implementation scope requires 
 
 Event 012 has a triggerable scenario entry because it is a large formable sandbox.
 
-Implemented scenario ID: `SCN-012`.
+Implemented scenario ID: `SCN-008`.
 
 Scenario name: `Africa Is One`.
 
@@ -254,26 +254,21 @@ Scenario types:
 
 | Type | Description |
 | --- | --- |
-| Standard Unifier | Selects or creates a valid African-capital unifier and starts baseline. |
-| RSA Civil War | Forces RSA branch if RSA exists; if RSA is not in Allies, scenario wrapper may add temporary Allies state or mark unavailable depending on scenario rule. |
-| Fragile Unifier | Selects a small African-capital unifier where possible, otherwise seeds the West African Congress fallback, and starts with weaker authority and higher restoration strain. |
-| Ally Under Attack | Starts with a Charter League authority under outside attack so aid, corridor, defensive, and liberation responses can be validated immediately. |
-| Liberation League | Starts with one or more African countries at war with colonial holders and Africa as protector. |
-| High-Chaos Covenant | Starts evolved with Green Covenant route preview and weird actors enabled. |
-| Continental Pole | Starts after Africa Is One for testing Second Scramble and sponsor routes. |
+| Africa Is One | Selects or creates a valid African-capital unifier, immediately forms a strong Africa, opens the Charter League, regional authority, Authority Atlas, sponsor, proof-ledger, and post-unification systems, and starts unification wars. |
+| World Is One | Starts from the strong Africa opening, spawns supported external continent-unifier actors, verifies the proof/certification chain, applies the Congress of Continents identity, and triggers the terminal World Is One scenario. |
 
 Intensity slider:
 
 | Intensity | Setup |
 | --- | --- |
-| Low | Small unifier, limited units, one region survey, low alarm. |
-| Medium | Normal baseline, two regional opportunities, moderate alarm. |
-| High | Stronger starting package, one regional authority, active colonial war, higher alarm. |
-| Maximum | Evolved opening, multiple regional authorities, high-chaos options if selected, severe colonial response. |
+| Low | Strong Africa, regional authority seeding, continental unification wars, low scenario alarm, and limited external-continent actor support for World Is One. |
+| Medium | Strong Africa with larger logistics and medium external-continent actor support for World Is One. |
+| High | Stronger Africa forces, sharper colonial reaction, regional authority seeding, and high external-continent actor support for World Is One. |
+| Maximum | Maximum Africa logistics, severe opening pressure, Totalen Chaos readiness, multiple regional authorities, and the largest external-continent actor support package for World Is One. |
 
 Scenario gates should block only impossible launches, not normal chaos/evolution prerequisites. The scenario directly creates instant chaos and setup according to controls.
 
-Implementation note: the shared scenario window blocks SCN-012 if Event 012 has already fired or a world-end branch is active. Non-RSA types use the weighted unifier selector and create the West African Congress host only if no valid African-capital country exists. The RSA type is only available when South Africa exists, is a valid candidate, and is in the Allies with England. The Continental Pole type opens Africa Is One, Second Scramble, and continent-sponsor testing surfaces, but it does not start The World Is One and does not bypass the World Is One certification decision.
+Implementation note: the shared scenario window allows SCN-008 even if Event 012 has already fired or a world-end branch is active. The selector uses only `Africa Is One` and `World Is One`; the RSA scenario type is not part of this manual scenario. Both types use the weighted unifier selector and create the West African Congress host only if no valid African-capital country exists. `Africa Is One` starts continental wars immediately. `World Is One` seats the external continent-unifier readiness/proof/certification chain and starts the terminal branch through a scenario-only terminal helper.
 
 ## World-end scenario — The World Is One
 
