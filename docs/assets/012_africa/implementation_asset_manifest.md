@@ -197,15 +197,19 @@ Wired frame sheets:
 | --- | --- | --- | --- |
 | `GFX_africa_authority_atlas_seal_loop` | `gfx/interface/animated/012_africa/authority_atlas_seal_loop_sheet.dds` | 4 | `docs/assets/012_africa/icons_animation/previews/authority_atlas_seal_loop_sheet.png` |
 | `GFX_africa_charter_league_banner_pulse` | `gfx/interface/animated/012_africa/charter_league_banner_pulse_sheet.dds` | 4 | `docs/assets/012_africa/icons_animation/previews/charter_league_banner_pulse_sheet.png` |
+| `GFX_africa_charter_seal_animated` | `gfx/interface/animated/012_africa/charter_seal_prompt_sheet_512x64.dds` | 8 | `docs/assets/012_africa/congress_prompt_animations_batch_2_2026_06_21/animations/africa_charter_seal_animated/africa_charter_seal_animated_contact_sheet.png` |
 | `GFX_africa_bestiary_warning_loop` | `gfx/interface/animated/012_africa/bestiary_warning_loop_sheet.dds` | 4 | `docs/assets/012_africa/icons_animation/previews/bestiary_warning_loop_sheet.png` |
 
 The sprites are registered as `frameAnimatedSpriteType` in `interface/012_africa.gfx`. Static fallback sprites are also registered and copied into the final animated asset folder:
 
 - `GFX_africa_authority_atlas_seal_static`: `gfx/interface/animated/012_africa/authority_atlas_seal_loop_fallback_128x128.dds`
 - `GFX_africa_charter_league_banner_static`: `gfx/interface/animated/012_africa/charter_league_banner_pulse_fallback_160x96.dds`
+- `GFX_africa_charter_seal`: `gfx/interface/animated/012_africa/charter_seal_prompt_static_64x64.dds`
 - `GFX_africa_bestiary_warning_static`: `gfx/interface/animated/012_africa/bestiary_warning_loop_fallback_96x96.dds`
 
-Status note: this three-sprite visual strip is useful and wired, but it is not accepted as the full prompt-equivalent Continental Congress GUI/animation package. The asset prompt still queues the prompt-named families `africa_charter_seal_animated`, `africa_cohesion_warning_border_animated`, `africa_green_covenant_seal_animated`, and `africa_formable_ready_emblem_animated`, plus their static fallbacks and the broader background/header/meter/card/warning/seal/formable UI families, unless a later handoff proves an explicit parent-approved equivalence. Current disposition: `docs/plans/012_africa_plans/2026-06-21_continental_congress_gui_animation_gap_handoff.md`.
+Status note: the prompt-named `africa_charter_seal_animated` package is live and wired with a static fallback. The rest of the visual strip remains useful and wired, but it is not accepted as the full prompt-equivalent Continental Congress GUI/animation package. The asset prompt still queues `africa_cohesion_warning_border_animated`, `africa_green_covenant_seal_animated`, and `africa_formable_ready_emblem_animated`, plus their static fallbacks and the broader background/header/meter/card/warning/seal/formable UI families, unless a later handoff proves an explicit parent-approved equivalence. Current disposition: `docs/plans/012_africa_plans/2026-06-21_continental_congress_gui_animation_gap_handoff.md`.
+
+Specific blocker: `africa_formable_ready_emblem_animated` was re-delegated to an icon subagent, but the subagent was shut down while still running and produced no valid source frames or final DDS files. The blocker is recorded in `docs/plans/012_africa_plans/subagent_handoffs/2026-06-21_formable_ready_emblem_asset_blocker.md`.
 
 ## Scripted GUI
 
