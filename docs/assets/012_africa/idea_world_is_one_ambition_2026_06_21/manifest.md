@@ -26,11 +26,11 @@
 - Checker/contact sheet path: `docs/assets/012_africa/idea_world_is_one_ambition_2026_06_21/contact_sheets/idea_africa_world_is_one_ambition_checker_sheet.png`
 - Final DDS path: `gfx/interface/ideas/012_africa/idea_africa_world_is_one_ambition.dds`
 - Target size: `64x64`
-- Sprite name: `GFX_idea_africa_world_is_one_ambition` proposed
-- Suggested `.gfx` file: `interface/012_africa_ideas.gfx` proposed
+- Sprite name: `GFX_idea_africa_world_is_one_ambition`
+- Wired `.gfx` file: `interface/012_africa.gfx`
 - Related idea or spirit id: `idea_africa_world_is_one_ambition`
 - Notes: central Africa seal with interlocking world loops; selected for compact readability at 64x64 over the other generated variants
-- Asset status: `complete`
+- Asset status: `wired`
 
 ## Validation
 

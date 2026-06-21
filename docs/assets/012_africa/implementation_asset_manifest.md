@@ -75,6 +75,7 @@ Current focus/goal icon source package:
 Current idea/national-spirit icon source package:
 
 - `docs/assets/012_africa/icon_regen_idea_icons_distinct_no_white_bg_v7_2026_06_20/`
+- `docs/assets/012_africa/idea_world_is_one_ambition_2026_06_21/` for the distinct late World Is One ambition idea icon.
 
 Final checker review sheets:
 
@@ -110,6 +111,8 @@ Wired destinations:
 - Idea icons: `gfx/interface/ideas/012_africa/`
 - Decision category icons: `gfx/interface/decisions/012_africa/`
 - Achievement icons: `gfx/achievements/ACH_AFR_*.dds`
+
+The late World Is One ambition icon is registered as `GFX_idea_africa_world_is_one_ambition` in `interface/012_africa.gfx` and uses `gfx/interface/ideas/012_africa/idea_africa_world_is_one_ambition.dds`. Its source PNG, processed PNG, checker sheet, prompt, and validation record are in `docs/assets/012_africa/idea_world_is_one_ambition_2026_06_21/`.
 
 The achievement placeholders for Event 012 were replaced with themed generated icons and generated grey / not-eligible variants.
 
