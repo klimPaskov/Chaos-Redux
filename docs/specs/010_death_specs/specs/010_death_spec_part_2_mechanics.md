@@ -173,7 +173,7 @@ The target should not be chosen because it is dramatic. Death starts by eating t
 
 ### Mainland target selection
 
-Death can attempt mainland consumption only after the island-report evolution has been recorded, the required chaos tier has been reached, and enough island spread pressure has accumulated. This blocks first-month mainland reveals and forces the early event to remain an island pattern before the public crisis. The first mainland target should prefer:
+Death can attempt mainland consumption only after the Island Pattern evolution has been recorded through delayed evolution pacing, the required chaos tier has been reached, and enough island spread pressure has accumulated. This blocks first-month mainland reveals and forces the early event to remain an island pattern before the public crisis. The first mainland target should prefer:
 
 - nearby coastal states;
 - low-defense states;

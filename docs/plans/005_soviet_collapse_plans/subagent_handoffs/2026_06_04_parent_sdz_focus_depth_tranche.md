@@ -86,7 +86,6 @@ Ran:
 - `rg -n "<=|>=" common/national_focus/005_soviet_collapse_custom_splinters.txt localisation/english/005_soviet_collapse_custom_countries_l_english.yml`
 - Brace balance check on `common/national_focus/005_soviet_collapse_custom_splinters.txt`: balance `0`, minimum balance `0`.
 - BOM check on `localisation/english/005_soviet_collapse_custom_countries_l_english.yml`: `efbbbf`.
-- `git status --short -- gfx/flags interface/flags`: still shows only pre-existing untracked `gfx/flags/ZUL.tga`, `gfx/flags/medium/ZUL.tga`, and `gfx/flags/small/ZUL.tga`.
 
 ## Remaining Risks
 

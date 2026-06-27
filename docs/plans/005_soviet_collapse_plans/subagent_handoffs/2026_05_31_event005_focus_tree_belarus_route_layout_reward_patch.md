@@ -11,7 +11,7 @@ Mode: bounded focus-tree audit plus small patch.
 
 No `gfx/`, `gfx/flags/`, interface, flag, or asset files were touched.
 
-The worktree already contained unrelated dirty edits in Event 005 and Event 006 files before this pass. This handoff records only the bounded Belarus focus-tree patch made in this pass.
+The worktree already contained unrelated dirty edits in Event 005 and unrelated files before this pass. This handoff records only the bounded Belarus focus-tree patch made in this pass.
 
 ## Route Coverage Table
 

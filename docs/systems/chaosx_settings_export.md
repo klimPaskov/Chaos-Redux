@@ -13,4 +13,4 @@ The export does not write country identities, selected country tags, or per-coun
 
 The export does not include event-history status such as fired counts, unique counts, actor history, dates, or status-log totals.
 
-The export builds runtime row arrays and expands them through recursive scripted localisation so event, cluster, and evolution rows come from the live registries instead of static row lists. Event rows sort by event ID, cluster rows sort by cluster ID, and evolution rows sort by event ID, type, then stage. The Independence Wave main evolution keeps its internal event-log type, but the export token normalizes that type to the Event 6 id so the config row stays compact.
+The export builds runtime row arrays and expands them through recursive scripted localisation so event, cluster, and evolution rows come from the live registries instead of static row lists. Event rows sort by event ID, cluster rows sort by cluster ID, and evolution rows sort by event ID, type, then stage.

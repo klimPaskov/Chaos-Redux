@@ -49,7 +49,7 @@ After:
 
 No localisation keys or icon ids changed.
 
-No commit was created. The worktree was already dirty across Event 005 and Event 006 files, including the touched focus file, so a commit would mix this audit patch with preexisting uncommitted work.
+No commit was created. The worktree was already dirty across Event 005 and unrelated files files, including the touched focus file, so a commit would mix this audit patch with preexisting uncommitted work.
 
 Validation run:
 

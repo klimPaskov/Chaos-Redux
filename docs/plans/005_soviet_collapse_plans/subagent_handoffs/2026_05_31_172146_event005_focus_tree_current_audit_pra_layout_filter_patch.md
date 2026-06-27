@@ -180,5 +180,5 @@ Continuous focus panel risk:
 ## Remaining Route Risks
 
 - The focus implementation is much cleaner than earlier audits, but final completion is still not supportable: broad route depth, helper opacity, repeated icons, and layout pathlines remain.
-- The current worktree has many pre-existing Event 005 and Event 006 changes, including visual asset changes outside this pass. This handoff only proves that this pass did not add or edit `gfx/flags` or visual asset files.
+- The current worktree has many pre-existing Event 005 and unrelated changes, including visual asset changes outside this pass. This handoff only proves that this pass did not add or edit `gfx/flags` or visual asset files.
 - Existing broader plan still applies: `docs/plans/005_soviet_collapse_plans/2026_05_29_soviet_collapse_focus_tree_redesign_followup_plan.md`.

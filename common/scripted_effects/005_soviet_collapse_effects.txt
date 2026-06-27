@@ -4627,27 +4627,24 @@ soviet_collapse_record_secession_evolution_milestones = {
 }
 
 soviet_collapse_setup_breakaway_country = {
+    soviet_collapse_ensure_emergency_equipment_variants = yes
+    soviet_collapse_ensure_republic_country_component_variables = yes
     if = {
-        limit = { NOT = { has_country_flag = chaosx_release_origin_independence_wave } }
-        soviet_collapse_ensure_emergency_equipment_variants = yes
-        soviet_collapse_ensure_republic_country_component_variables = yes
-        if = {
-            limit = { NOT = { has_country_flag = soviet_collapse_breakaway } }
-            soviet_collapse_apply_breakaway_setup_package = yes
-        }
-        if = {
-            limit = {
-                NOT = { has_country_flag = soviet_collapse_regional_focus_tree_loaded }
-                NOT = { has_country_flag = soviet_collapse_high_chaos_successor }
-                OR = {
-                    is_soviet_collapse_base_republic_tag = yes
-                    is_soviet_collapse_internal_republic_focus_tree_tag = yes
-                    tag = MOL
-                }
+        limit = { NOT = { has_country_flag = soviet_collapse_breakaway } }
+        soviet_collapse_apply_breakaway_setup_package = yes
+    }
+    if = {
+        limit = {
+            NOT = { has_country_flag = soviet_collapse_regional_focus_tree_loaded }
+            NOT = { has_country_flag = soviet_collapse_high_chaos_successor }
+            OR = {
+                is_soviet_collapse_base_republic_tag = yes
+                is_soviet_collapse_internal_republic_focus_tree_tag = yes
+                tag = MOL
             }
-            soviet_collapse_load_event_created_focus_tree = yes
-            set_country_flag = soviet_collapse_regional_focus_tree_loaded
         }
+        soviet_collapse_load_event_created_focus_tree = yes
+        set_country_flag = soviet_collapse_regional_focus_tree_loaded
     }
 }
 
@@ -9064,7 +9061,6 @@ soviet_collapse_apply_ukr_outside_old_map_settlement = {
 soviet_collapse_load_event_created_focus_tree = {
     if = {
         limit = {
-            NOT = { has_country_flag = chaosx_release_origin_independence_wave }
             NOT = { has_country_flag = soviet_collapse_regional_focus_tree_loaded }
         }
         soviet_collapse_ensure_emergency_equipment_variants = yes

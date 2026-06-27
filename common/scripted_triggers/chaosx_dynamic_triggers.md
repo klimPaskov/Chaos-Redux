@@ -32,10 +32,6 @@ Current coverage includes:
 - Germany Mengele civil-war and post-coup state markers
 - active Fury actor countries
 - `DTH` / original `DTH` / countries with the Death country marker
-- Event 012 explicit high-chaos actors: `GHP`, `BBS`, `TDM`, `ANW`, `OVN`, `CRR`, `CTL`, `OKP`, `TRM`, `HGD`, `GHC`, `BON`, `HYR`, `BIR`, and `SAO`
-- Event 012 regional authority subjects: `WAC`, `SAH`, `MAG`, `NHR`, `EAC`, `GLK`, `CBC`, `ZSC`, `SLC`, and `IOC`
-- countries marked with the Event 012 high-chaos actor flag
-- countries marked with the Event 012 regional authority subject flag
 
 ## is_actual_nonhuman_country
 
@@ -49,5 +45,3 @@ Current coverage includes:
 - Wendigo outbreak flags or the Wendigo cosmetic tag
 - `ZIN`
 - `DTH` / original `DTH` / countries with the Death country marker
-- Event 012 explicit fictional/supernatural nonhuman actors: `GHP`, `BBS`, `TDM`, `ANW`, `OVN`, `CRR`, `CTL`, `OKP`, `TRM`, `HGD`, `GHC`, `BON`, `HYR`, `BIR`, and `SAO`
-- countries marked with the Event 012 high-chaos nonhuman flag

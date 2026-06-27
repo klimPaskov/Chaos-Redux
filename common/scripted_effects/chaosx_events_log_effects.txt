@@ -172,24 +172,6 @@ events_log_set_default_actor_for_current_event = {
 		set_temp_variable = { events_log_default_has_actor = 1 }
 	}
 	else_if = {
-		limit = {
-			check_variable = { event_id = constant:natural_disaster_event.id }
-			has_event_target = natural_disaster_current_controller
-			event_target:natural_disaster_current_controller = { exists = yes }
-		}
-		event_target:natural_disaster_current_controller = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
-		set_temp_variable = { events_log_default_has_actor = 1 }
-	}
-	else_if = {
-		limit = {
-			check_variable = { event_id = constant:africa_event_log.event_id }
-			has_event_target = africa_unifier_country
-			event_target:africa_unifier_country = { exists = yes }
-		}
-		event_target:africa_unifier_country = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
-		set_temp_variable = { events_log_default_has_actor = 1 }
-	}
-	else_if = {
         limit = { check_variable = { event_id = 23 } }
         SOV = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
         set_temp_variable = { events_log_default_has_actor = 1 }
@@ -320,42 +302,6 @@ record_events_log_history_entry = {
         value = global.total_events_fired
         index = 0
     }
-    add_to_array = {
-        array = global.events_log_history_natural_disaster_state_entries
-        value = 0
-        index = 0
-    }
-    add_to_array = {
-        array = global.events_log_history_natural_disaster_family_entries
-        value = 0
-        index = 0
-    }
-    add_to_array = {
-        array = global.events_log_history_natural_disaster_severity_entries
-        value = 0
-        index = 0
-    }
-    add_to_array = {
-        array = global.events_log_history_natural_disaster_warning_entries
-        value = 0
-        index = 0
-    }
-    add_to_array = {
-        array = global.events_log_history_natural_disaster_recovery_entries
-        value = 0
-        index = 0
-    }
-    add_to_array = {
-        array = global.events_log_history_natural_disaster_chain_entries
-        value = 0
-        index = 0
-    }
-    add_to_array = {
-        array = global.events_log_history_natural_disaster_scenario_entries
-        value = 0
-        index = 0
-    }
-
     every_country = {
         limit = {
             is_ai = no
@@ -830,7 +776,6 @@ events_log_append_history_detail_evolution_source_row = {
 
 events_log_rebuild_history_details_view = {
     events_log_repair_holy_realm_evolution_tiers = yes
-    events_log_repair_independence_wave_evolution_tiers = yes
     sanitize_events_log_evolution_actor_entries = yes
     clear_array = global.events_log_history_detail_evolution_sequence_entries
     clear_array = global.events_log_history_detail_evolution_date_entries
@@ -875,65 +820,6 @@ events_log_rebuild_history_details_view = {
         }
 
 		if = {
-			limit = {
-				check_variable = {
-					var = events_log_history_selected_event_id
-					value = constant:independence_wave_event_log.event_id
-					compare = equals
-				}
-			}
-			set_temp_variable = { events_log_history_detail_independence_stage = constant:independence_wave_event_log.gathering_storm_stage }
-			while_loop_effect = {
-				limit = {
-					check_variable = {
-						var = events_log_history_detail_independence_stage
-						value = constant:independence_wave_event_log.world_collapse_stage
-						compare = less_than_or_equals
-					}
-				}
-				set_temp_variable = { events_log_history_detail_evolution_index = 0 }
-				while_loop_effect = {
-					limit = {
-						check_variable = {
-							var = events_log_history_detail_evolution_index
-							value = global.events_log_evolution_sequence_entries^num
-							compare = less_than
-						}
-					}
-					if = {
-						limit = {
-							check_variable = { var = global.events_log_evolution_event_id_entries^events_log_history_detail_evolution_index value = events_log_history_selected_event_id compare = equals }
-							check_variable = { var = global.events_log_evolution_type_entries^events_log_history_detail_evolution_index value = constant:independence_wave_event_log.evolution_type compare = equals }
-							check_variable = { var = global.events_log_evolution_stage_entries^events_log_history_detail_evolution_index value = events_log_history_detail_independence_stage compare = equals }
-						}
-						events_log_append_history_detail_evolution_source_row = yes
-					}
-					add_to_temp_variable = { events_log_history_detail_evolution_index = 1 }
-				}
-				add_to_temp_variable = { events_log_history_detail_independence_stage = 1 }
-			}
-			set_temp_variable = { events_log_history_detail_evolution_index = 0 }
-			while_loop_effect = {
-				limit = {
-					check_variable = {
-						var = events_log_history_detail_evolution_index
-						value = global.events_log_evolution_sequence_entries^num
-						compare = less_than
-					}
-				}
-				if = {
-					limit = {
-						check_variable = { var = global.events_log_evolution_event_id_entries^events_log_history_detail_evolution_index value = events_log_history_selected_event_id compare = equals }
-						NOT = {
-							check_variable = { var = global.events_log_evolution_type_entries^events_log_history_detail_evolution_index value = constant:independence_wave_event_log.evolution_type compare = equals }
-						}
-					}
-					events_log_append_history_detail_evolution_source_row = yes
-				}
-				add_to_temp_variable = { events_log_history_detail_evolution_index = 1 }
-			}
-		}
-		else_if = {
 			limit = {
 				check_variable = {
 					var = events_log_history_selected_event_id
@@ -1037,7 +923,6 @@ events_log_open_selected_history_related_evolution_detail = {
 
 events_log_rebuild_open_event_details_view = {
     events_log_repair_holy_realm_evolution_tiers = yes
-    events_log_repair_independence_wave_evolution_tiers = yes
     sanitize_events_log_history_actor_entries = yes
     clear_array = global.events_log_open_event_detail_type_entries
     clear_array = global.events_log_open_event_detail_fired_entries
@@ -1384,36 +1269,6 @@ events_log_rebuild_open_event_details_view = {
 			events_log_add_event_detail_evolution_preview = yes
 	        }
 
-        if = {
-            limit = {
-                check_variable = {
-                    var = event_id
-                    value = constant:independence_wave_event_log.event_id
-                    compare = equals
-                }
-            }
-            set_temp_variable = { events_log_event_detail_preview_type = constant:independence_wave_event_log.evolution_type }
-            set_temp_variable = { events_log_event_detail_preview_tier = constant:chaos_meter_tier_id.tier_1 }
-            set_temp_variable = { events_log_event_detail_preview_stage = constant:independence_wave_event_log.gathering_storm_stage }
-            events_log_add_event_detail_evolution_preview = yes
-            set_temp_variable = { events_log_event_detail_preview_type = constant:independence_wave_event_log.evolution_type }
-            set_temp_variable = { events_log_event_detail_preview_tier = constant:chaos_meter_tier_id.tier_2 }
-            set_temp_variable = { events_log_event_detail_preview_stage = constant:independence_wave_event_log.rising_chaos_stage }
-            events_log_add_event_detail_evolution_preview = yes
-            set_temp_variable = { events_log_event_detail_preview_type = constant:independence_wave_event_log.evolution_type }
-            set_temp_variable = { events_log_event_detail_preview_tier = constant:chaos_meter_tier_id.tier_3 }
-            set_temp_variable = { events_log_event_detail_preview_stage = constant:independence_wave_event_log.chaos_tier_stage }
-            events_log_add_event_detail_evolution_preview = yes
-            set_temp_variable = { events_log_event_detail_preview_type = constant:independence_wave_event_log.evolution_type }
-            set_temp_variable = { events_log_event_detail_preview_tier = constant:chaos_meter_tier_id.tier_4 }
-            set_temp_variable = { events_log_event_detail_preview_stage = constant:independence_wave_event_log.impossible_statehood_stage }
-            events_log_add_event_detail_evolution_preview = yes
-            set_temp_variable = { events_log_event_detail_preview_type = constant:independence_wave_event_log.evolution_type }
-            set_temp_variable = { events_log_event_detail_preview_tier = constant:chaos_meter_tier_id.tier_final }
-            set_temp_variable = { events_log_event_detail_preview_stage = constant:independence_wave_event_log.world_collapse_stage }
-            events_log_add_event_detail_evolution_preview = yes
-        }
-
 		if = {
 			limit = {
 				check_variable = {
@@ -1727,84 +1582,6 @@ events_log_repair_holy_realm_evolution_tiers = {
 	}
 }
 
-events_log_repair_independence_wave_evolution_tiers = {
-    set_temp_variable = { events_log_iw_repair_index = 0 }
-    while_loop_effect = {
-        limit = {
-            check_variable = {
-                var = events_log_iw_repair_index
-                value = global.events_log_evolution_stage_entries^num
-                compare = less_than
-            }
-        }
-        if = {
-            limit = {
-                check_variable = {
-                    var = global.events_log_evolution_event_id_entries^events_log_iw_repair_index
-                    value = constant:independence_wave_event_log.event_id
-                    compare = equals
-                }
-                check_variable = {
-                    var = global.events_log_evolution_type_entries^events_log_iw_repair_index
-                    value = constant:independence_wave_event_log.evolution_type
-                    compare = equals
-                }
-            }
-            if = {
-                limit = {
-                    check_variable = {
-                        var = global.events_log_evolution_stage_entries^events_log_iw_repair_index
-                        value = constant:independence_wave_event_log.gathering_storm_stage
-                        compare = equals
-                    }
-                }
-                set_variable = { global.events_log_evolution_tier_entries^events_log_iw_repair_index = constant:chaos_meter_tier_id.tier_1 }
-            }
-            if = {
-                limit = {
-                    check_variable = {
-                        var = global.events_log_evolution_stage_entries^events_log_iw_repair_index
-                        value = constant:independence_wave_event_log.rising_chaos_stage
-                        compare = equals
-                    }
-                }
-                set_variable = { global.events_log_evolution_tier_entries^events_log_iw_repair_index = constant:chaos_meter_tier_id.tier_2 }
-            }
-            if = {
-                limit = {
-                    check_variable = {
-                        var = global.events_log_evolution_stage_entries^events_log_iw_repair_index
-                        value = constant:independence_wave_event_log.chaos_tier_stage
-                        compare = equals
-                    }
-                }
-                set_variable = { global.events_log_evolution_tier_entries^events_log_iw_repair_index = constant:chaos_meter_tier_id.tier_3 }
-            }
-            if = {
-                limit = {
-                    check_variable = {
-                        var = global.events_log_evolution_stage_entries^events_log_iw_repair_index
-                        value = constant:independence_wave_event_log.impossible_statehood_stage
-                        compare = equals
-                    }
-                }
-                set_variable = { global.events_log_evolution_tier_entries^events_log_iw_repair_index = constant:chaos_meter_tier_id.tier_4 }
-            }
-            if = {
-                limit = {
-                    check_variable = {
-                        var = global.events_log_evolution_stage_entries^events_log_iw_repair_index
-                        value = constant:independence_wave_event_log.world_collapse_stage
-                        compare = equals
-                    }
-                }
-                set_variable = { global.events_log_evolution_tier_entries^events_log_iw_repair_index = constant:chaos_meter_tier_id.tier_final }
-            }
-        }
-        add_to_temp_variable = { events_log_iw_repair_index = 1 }
-    }
-}
-
 events_log_set_selected_evolution_display_values = {
     set_variable = { events_log_selected_evolution_has_portrait = 0 }
     clear_variable = events_log_selected_zombie_supply_consumption_factor
@@ -2069,34 +1846,6 @@ events_log_append_view_row_from_source = {
         array = global.events_log_view_cluster_type_entries
         value = 0
     }
-    add_to_array = {
-        array = global.events_log_view_natural_disaster_state_entries
-        value = global.events_log_history_natural_disaster_state_entries^events_log_source_index
-    }
-    add_to_array = {
-        array = global.events_log_view_natural_disaster_family_entries
-        value = global.events_log_history_natural_disaster_family_entries^events_log_source_index
-    }
-    add_to_array = {
-        array = global.events_log_view_natural_disaster_severity_entries
-        value = global.events_log_history_natural_disaster_severity_entries^events_log_source_index
-    }
-    add_to_array = {
-        array = global.events_log_view_natural_disaster_warning_entries
-        value = global.events_log_history_natural_disaster_warning_entries^events_log_source_index
-    }
-    add_to_array = {
-        array = global.events_log_view_natural_disaster_recovery_entries
-        value = global.events_log_history_natural_disaster_recovery_entries^events_log_source_index
-    }
-    add_to_array = {
-        array = global.events_log_view_natural_disaster_chain_entries
-        value = global.events_log_history_natural_disaster_chain_entries^events_log_source_index
-    }
-    add_to_array = {
-        array = global.events_log_view_natural_disaster_scenario_entries
-        value = global.events_log_history_natural_disaster_scenario_entries^events_log_source_index
-    }
 }
 
 events_log_append_cluster_history_row_from_source = {
@@ -2135,34 +1884,6 @@ events_log_append_cluster_history_row_from_source = {
     add_to_array = {
         array = global.events_log_view_cluster_type_entries
         value = global.events_log_cluster_type_entries^events_log_cluster_history_source_index
-    }
-    add_to_array = {
-        array = global.events_log_view_natural_disaster_state_entries
-        value = 0
-    }
-    add_to_array = {
-        array = global.events_log_view_natural_disaster_family_entries
-        value = 0
-    }
-    add_to_array = {
-        array = global.events_log_view_natural_disaster_severity_entries
-        value = 0
-    }
-    add_to_array = {
-        array = global.events_log_view_natural_disaster_warning_entries
-        value = 0
-    }
-    add_to_array = {
-        array = global.events_log_view_natural_disaster_recovery_entries
-        value = 0
-    }
-    add_to_array = {
-        array = global.events_log_view_natural_disaster_chain_entries
-        value = 0
-    }
-    add_to_array = {
-        array = global.events_log_view_natural_disaster_scenario_entries
-        value = 0
     }
 }
 
@@ -2384,13 +2105,6 @@ rebuild_events_log_history_view = {
     clear_array = global.events_log_view_cluster_id_entries
     clear_array = global.events_log_view_cluster_sequence_entries
     clear_array = global.events_log_view_cluster_type_entries
-    clear_array = global.events_log_view_natural_disaster_state_entries
-    clear_array = global.events_log_view_natural_disaster_family_entries
-    clear_array = global.events_log_view_natural_disaster_severity_entries
-    clear_array = global.events_log_view_natural_disaster_warning_entries
-    clear_array = global.events_log_view_natural_disaster_recovery_entries
-    clear_array = global.events_log_view_natural_disaster_chain_entries
-    clear_array = global.events_log_view_natural_disaster_scenario_entries
 
     set_temp_variable = { events_log_source_count = global.events_log_history_event_id_entries^num }
 
@@ -2795,7 +2509,6 @@ events_log_evolution_append_rows_by_actor_sort = {
 
 rebuild_events_log_evolution_view = {
     events_log_repair_holy_realm_evolution_tiers = yes
-    events_log_repair_independence_wave_evolution_tiers = yes
     sanitize_events_log_evolution_actor_entries = yes
 
     if = {

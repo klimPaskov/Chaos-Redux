@@ -456,7 +456,7 @@ Suggested connections:
 | System | Interaction |
 | --- | --- |
 | Random War | Fury belongs to Wars cluster and should not duplicate a Random War on the same target in the same short window |
-| Independence Wave | newly released tiny countries can become Fury later if they meet eligibility and cooldown rules |
+| Other release events | newly released tiny countries can become Fury later if they meet eligibility and cooldown rules |
 | Soviet Collapse | breakaway republics can become Fury only if they are AI, small, and not protected by special collapse logic |
 | Holy Realm | Holy Realm and similar special tags should be excluded unless a future route explicitly allows it |
 | Zombie or non-human countries | excluded from Fury selection and ordinary target selection if their systems require special handling |

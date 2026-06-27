@@ -713,22 +713,41 @@ death_record_evolution_stage = {
 	}
 }
 
-death_record_island_reports_evolution = {
+death_record_island_pattern_evolution = {
 	if = {
-		limit = { NOT = { has_global_flag = death_evolution_island_reports_recorded } }
-		set_temp_variable = { death_evolution_stage_to_record = constant:death_event.stage_island_reports }
+		limit = {
+			NOT = { has_global_flag = death_evolution_island_pattern_recorded }
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:chaos_meter_tier_range.tier_2.min
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = global.death_consumed_states
+				value = constant:death_spread.mainland_consumed_state_gate
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { death_evolution_stage_to_record = constant:death_event.stage_island_pattern }
 		set_temp_variable = { death_evolution_tier_to_record = constant:chaos_meter_tier_id.tier_2 }
 		death_record_evolution_stage = yes
 		if = {
 			limit = { check_variable = { death_evolution_stage_recorded > 0 } }
-			set_global_flag = death_evolution_island_reports_recorded
+			set_global_flag = death_evolution_island_pattern_recorded
 		}
 	}
 }
 
 death_record_mainland_reveal_evolution = {
 	if = {
-		limit = { NOT = { has_global_flag = death_evolution_mainland_reveal_recorded } }
+		limit = {
+			NOT = { has_global_flag = death_evolution_mainland_reveal_recorded }
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:chaos_meter_tier_range.tier_3.min
+				compare = greater_than_or_equals
+			}
+		}
 		set_temp_variable = { death_evolution_stage_to_record = constant:death_event.stage_mainland_reveal }
 		set_temp_variable = { death_evolution_tier_to_record = constant:chaos_meter_tier_id.tier_3 }
 		death_record_evolution_stage = yes
@@ -741,7 +760,15 @@ death_record_mainland_reveal_evolution = {
 
 death_record_last_shores_evolution = {
 	if = {
-		limit = { NOT = { has_global_flag = death_evolution_last_shores_recorded } }
+		limit = {
+			NOT = { has_global_flag = death_evolution_last_shores_recorded }
+			has_global_flag = death_world_end_started
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:death_world_end.chaos_threshold
+				compare = greater_than
+			}
+		}
 		set_temp_variable = { death_evolution_stage_to_record = constant:death_event.stage_last_shores }
 		set_temp_variable = { death_evolution_tier_to_record = constant:chaos_meter_tier_id.tier_final }
 		death_record_evolution_stage = yes
@@ -754,7 +781,11 @@ death_record_last_shores_evolution = {
 
 death_record_world_consumed_evolution = {
 	if = {
-		limit = { NOT = { has_global_flag = death_evolution_world_consumed_recorded } }
+		limit = {
+			NOT = { has_global_flag = death_evolution_world_consumed_recorded }
+			has_global_flag = death_world_end_started
+			has_global_flag = death_whole_world_consumed_event_fired
+		}
 		set_temp_variable = { death_evolution_stage_to_record = constant:death_event.stage_world_consumed }
 		set_temp_variable = { death_evolution_tier_to_record = constant:chaos_meter_tier_id.tier_final }
 		death_record_evolution_stage = yes
@@ -829,7 +860,6 @@ death_pay_coastal_watch_cost = {
 	add_command_power = constant:death_decision_cost.coastal_watch_cp_spend
 	add_fuel = constant:death_decision_cost.coastal_watch_fuel_spend
 	add_equipment_to_stockpile = { type = convoy_1 amount = constant:death_decision_cost.coastal_watch_convoy_spend }
-	add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:death_decision_cost.coastal_watch_train_spend }
 }
 
 death_pay_wasteland_survey_cost = {
@@ -1924,8 +1954,9 @@ death_run_spread_pulse = {
 				death_attempt_coastal_jump = yes
 			}
 			else = {
-				death_try_island_spread = yes
 				death_try_mainland_pressure_spread = yes
+				death_try_island_spread = yes
+				death_record_island_pattern_evolution = yes
 			}
 			death_schedule_next_spread_pulse = yes
 		}
@@ -1943,7 +1974,6 @@ death_try_island_spread = {
 			death_schedule_missing_island_reports_for_current_state = yes
 			set_temp_variable = { death_consumption_context = constant:death_spread.island_pressure }
 			death_consume_current_state = yes
-			death_record_island_reports_evolution = yes
 			add_to_variable = { global.death_spread_pressure = constant:death_spread.island_pressure }
 		}
 	}
@@ -1954,7 +1984,6 @@ death_try_island_spread = {
 			death_schedule_missing_island_reports_for_current_state = yes
 			set_temp_variable = { death_consumption_context = constant:death_spread.island_pressure }
 			death_consume_current_state = yes
-			death_record_island_reports_evolution = yes
 			add_to_variable = { global.death_spread_pressure = constant:death_spread.island_pressure }
 		}
 	}
@@ -1968,7 +1997,6 @@ death_try_island_spread = {
 			death_schedule_missing_island_reports_for_current_state = yes
 			set_temp_variable = { death_consumption_context = constant:death_spread.island_pressure }
 			death_consume_current_state = yes
-			death_record_island_reports_evolution = yes
 			add_to_variable = { global.death_spread_pressure = constant:death_spread.island_pressure }
 		}
 	}
@@ -1979,7 +2007,6 @@ death_try_island_spread = {
 			death_schedule_missing_island_reports_for_current_state = yes
 			set_temp_variable = { death_consumption_context = constant:death_spread.island_pressure }
 			death_consume_current_state = yes
-			death_record_island_reports_evolution = yes
 			add_to_variable = { global.death_spread_pressure = constant:death_spread.island_pressure }
 		}
 	}
@@ -1990,7 +2017,6 @@ death_try_island_spread = {
 			death_schedule_missing_island_reports_for_current_state = yes
 			set_temp_variable = { death_consumption_context = constant:death_spread.island_pressure }
 			death_consume_current_state = yes
-			death_record_island_reports_evolution = yes
 			add_to_variable = { global.death_spread_pressure = constant:death_spread.island_pressure }
 		}
 	}
@@ -2001,7 +2027,6 @@ death_try_island_spread = {
 			death_schedule_missing_island_reports_for_current_state = yes
 			set_temp_variable = { death_consumption_context = constant:death_spread.island_pressure }
 			death_consume_current_state = yes
-			death_record_island_reports_evolution = yes
 			add_to_variable = { global.death_spread_pressure = constant:death_spread.island_pressure }
 		}
 	}
@@ -2010,7 +2035,7 @@ death_try_island_spread = {
 death_try_mainland_pressure_spread = {
 	if = {
 		limit = {
-			has_global_flag = death_evolution_island_reports_recorded
+			has_global_flag = death_evolution_island_pattern_recorded
 			check_variable = {
 				var = global.chaos_meter_value
 				value = constant:chaos_meter_tier_range.tier_3.min
@@ -2645,12 +2670,12 @@ death_launch_island_pattern = {
 	random_state = {
 		limit = { death_is_valid_island_spread_target = yes }
 		death_consume_current_state = yes
-		death_record_island_reports_evolution = yes
+		death_record_island_pattern_evolution = yes
 	}
 	random_state = {
 		limit = { death_is_valid_island_spread_target = yes }
 		death_consume_current_state = yes
-		death_record_island_reports_evolution = yes
+		death_record_island_pattern_evolution = yes
 	}
 }
 

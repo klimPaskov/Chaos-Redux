@@ -40,10 +40,9 @@ Type controls cycle scenario-specific type variables:
 - Soviet Collapse: ordinary republics or chaos republics.
 - Final Silence: nuclear or thermonuclear payload.
 - Death: quiet origin, island pattern, mainland reveal, or Last Shores.
-- Disaster Barrage: Random Barrage, Geological Crisis, Weather Crisis, Skyfall Crisis, or Full Catalogue.
-- Africa Is One: Africa Is One or World Is One.
+- Reserved placeholders: fixed Reserved display with neutral placeholder launch events.
 
-The trigger button opens a separate confirmation window. Confirming reads the stored selected scenario, type, and intensity at launch time. Scenario launches intentionally bypass the normal automatic firing prerequisites for their source events, including chaos thresholds, prior event-state gates, route prerequisites, and super-event history flags. The launch gate only keeps impossible or conflicting launches out, such as requiring the Soviet Union to exist for Soviet Collapse and preventing most second world-end branches while `world_end` is already active. SCN-008 is an explicit exception: Africa can launch after Event 012 has already fired or during another world-end branch because its manual World Is One type is a direct terminal scenario. The launch button uses the same gate for click enablement and buttonstate rendering, so impossible selections are disabled and visually greyed out before the confirmation window can open.
+The trigger button opens a separate confirmation window. Confirming reads the stored selected scenario, type, and intensity at launch time. Scenario launches intentionally bypass the normal automatic firing prerequisites for their source events, including chaos thresholds, prior event-state gates, route prerequisites, and super-event history flags. The launch gate only keeps impossible or conflicting launches out, such as requiring the Soviet Union to exist for Soviet Collapse and preventing most second world-end branches while `world_end` is already active. The launch button uses the same gate for click enablement and buttonstate rendering, so impossible selections are disabled and visually greyed out before the confirmation window can open.
 
 ## Current Scenarios
 
@@ -87,21 +86,11 @@ Intensity changes opening pressure and scenario host strength. Low keeps the foo
 
 ### SCN-007: Disaster Barrage
 
-The Disaster Barrage scenario launches Event 013 Natural Disasters through the same target, family, warning, impact, aftermath, and cleanup helpers used by live random disaster incidents. It does not require a prior Natural Disasters history entry and does not start a world-end scenario.
-
-Random Barrage rolls eligible families at the selected intensity. Geological Crisis weights earthquakes with possible landslide, volcanic, and tsunami outcomes where the target country's terrain supports them. Weather Crisis weights storm and flood pressure with drought, wildfire, and tsunami outcomes where terrain supports them. Skyfall Crisis forces meteor-family incidents without forcing Evolution IV at Low or Medium intensity. Full Catalogue attempts each implemented family across the first catalogue slots where the selected country can support that family, then fills the remaining incidents from the selected intensity.
-
-Intensity changes incident count, stage budget, and severity. Low creates 3-5 baseline local incidents, Medium creates 6-9 local or regional incidents, High creates 10-14 chained incidents with one possible abnormal variant, and Maximum creates 16-24 incidents with Evolution IV variants enabled. High and Maximum are eligible for the Disaster Ledger Closed achievement only if all active aftermaths are recovered before scenario cleanup.
+Reserved manual scenario placeholder for Event 013. It remains listed in the manual scenario window and launches only a neutral placeholder event until the source event is reworked.
 
 ### SCN-008: Africa Is One
 
-The Africa Is One scenario can launch even if Event 012 has already fired or another world-end branch is active. It uses the existing runtime context, unifier selection, Charter League, paper-core, focus-tree, decision, regional-authority, dossier, and high-chaos helper stack, but it immediately escalates the map instead of simply firing the entry event. If no valid African-capital country exists, the scenario creates the West African Congress from its registered seat and uses it as the host.
-
-The scenario has only two types. `Africa Is One` immediately forms a strong Africa, opens the Charter League, paper claims, regional authority, Authority Atlas, sponsor, proof-ledger, and post-unification surfaces, seeds regional authorities even at Low intensity, and starts unification wars against remaining African-capital candidates and outside holders of African land.
-
-`World Is One` starts from the same strong opening, sets the Middle East, Asia, Europe, and South Atlantic readiness hooks, ensures each external region has at least one scenario continent-unifier actor when no candidate exists, marks supported scenario continent-unifier actors with intensity-scaled logistics and Continental Unifier Guard divisions, verifies the proof/certification markers, applies the Congress of Continents identity, starts terminal wars, and sets the Africa World Is One terminal flags through the scenario helper.
-
-Intensity changes the opening stockpile, manpower, colonial alarm, authority seeding, and World Is One external actor support. Low still forms strong Africa, starts wars, and gives each supported external actor a small guard force. Medium increases logistics and guard divisions. High adds stronger forces and high external actor support. Maximum adds the largest opening pressure, Totalen Chaos readiness, multiple regional authorities, and the largest external-unifier support package.
+Reserved manual scenario placeholder for Event 012. It remains listed in the manual scenario window and launches only a neutral placeholder event until the source event is reworked.
 
 ## Assets
 
@@ -116,7 +105,6 @@ The scenario UI reuses existing Chaos Redux and vanilla UI assets:
 - `yearslider_rightbutton`
 - `GFX_report_event_holy_realm_final_silence`
 - `GFX_report_event_death_missing_island`
-- `GFX_report_event_012_charter_league_africa_is_one`
 - `GFX_super_event_final_silence`
 - `GFX_super_event_final_silence_terminal`
 

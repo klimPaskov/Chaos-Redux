@@ -9,7 +9,7 @@ The Soviet Union begins to lose obedience before it loses territory. The first s
 
 The first wave creates a serious crisis even for a strong Soviet Union, but a stable calm Soviet Union must not instantly reach terminal collapse. The danger comes from a living system: authority, command obedience, foreign intervention, breakaway confidence, rail control, depots, old movements, and chaos.
 
-The event belongs to the Liberations cluster as its severe political fracture event. It should interact with Independence Wave as a related but distinct cluster member. Soviet Collapse does not reuse Soviet Collapse outcomes from other events unless the source spec explicitly connects them.
+The event belongs to the Liberations cluster as its severe political fracture event. Soviet Collapse does not reuse Soviet Collapse outcomes from other events unless the source spec explicitly connects them.
 
 ## Baseline stages are not evolutions
 

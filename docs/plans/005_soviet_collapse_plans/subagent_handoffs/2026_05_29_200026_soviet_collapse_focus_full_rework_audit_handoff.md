@@ -321,7 +321,7 @@ Audit checks performed:
 Skipped validation:
 
 - No HOI4 runtime load or focus UI screenshot was run. This was an audit-only subagent task with no gameplay patch.
-- No validator script was run against the whole dirty repository because unrelated Event 006 and Event 005 files are already modified in the working tree. This handoff avoids changing those files.
+- No validator script was run against the whole dirty repository because unrelated Event 005 and unrelated files are already modified in the working tree. This handoff avoids changing those files.
 
 ## Remaining route risks
 
