@@ -10,7 +10,6 @@ Files changed:
 
 - `docs/assets/010_death/generated_art_manifest.md`
 - `docs/assets/010_death/death_icon_scratch_regen_2026_06_21/gfx_handoff.md`
-- `docs/plans/012_africa_plans/subagent_handoffs/2026-06-21_012_africa_asset_qa_handoff.md`
 - Removed tracked superseded folders:
   - `docs/assets/010_death/focus_icon_regen_white_artifact_2026_06_21/`
   - `docs/assets/010_death/focus_icon_fresh_regen_2026_06_21/`
@@ -33,4 +32,4 @@ Validation evidence:
 Remaining issues:
 
 - None for the Death icon provenance correction.
-- This handoff does not cover unrelated Event 012 Africa icon/audio work or Soviet Collapse icon QA.
+- This handoff does not cover unrelated Soviet Collapse icon QA.

@@ -83,7 +83,6 @@ BSC now ties the affected focuses to concrete existing mechanics:
 - `rg -n "<=|>=" common/national_focus/005_soviet_collapse_custom_splinters.txt localisation/english/005_soviet_collapse_custom_countries_l_english.yml`: no matches.
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt` brace balance: 0, minimum balance 0.
 - `localisation/english/005_soviet_collapse_custom_countries_l_english.yml` BOM: `efbbbf`.
-- `git status --short -- gfx/flags interface/flags`: only pre-existing untracked `ZUL` flag files were present.
 
 ## Remaining Gaps
 

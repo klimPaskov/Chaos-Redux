@@ -69,7 +69,7 @@ Key coverage confirmed:
 - Focus tree key `death_focus_tree` and all focus title/desc keys in `common/national_focus/010_death_focus_tree.txt`.
 - Death ideas in `common/ideas/chaosx_ideas.txt`.
 - Death achievements in `common/achievements/chaos_redux_achievements.txt`.
-- Super-event keys `super_event.62` through `super_event.65` title/quote/button/description.
+- Super-event keys `chaosx_super_event.62` through `chaosx_super_event.65` title/quote/button/description.
 - Music display keys `chaosx_super_event_62_*` through `chaosx_super_event_65_*`.
 
 Expected non-issues:
@@ -186,10 +186,10 @@ Risk:
 
 Confirmed present and final-looking:
 
-- `super_event.62`: `His Name Was Death`
-- `super_event.63`: `No More Life`
-- `super_event.64`: `The Unfinished Work`
-- `super_event.65`: `There Was No Man`
+- `chaosx_super_event.62`: `His Name Was Death`
+- `chaosx_super_event.63`: `No More Life`
+- `chaosx_super_event.64`: `The Unfinished Work`
+- `chaosx_super_event.65`: `There Was No Man`
 
 Scripted dispatch and music display keys exist for all four super-event slots.
 

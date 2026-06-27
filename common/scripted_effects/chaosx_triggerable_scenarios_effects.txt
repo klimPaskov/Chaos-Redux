@@ -40,14 +40,6 @@ initialize_triggerable_scenarios_settings = {
 		set_variable = { triggerable_scenarios_death_type = constant:death_scenario_type.quiet_origin }
 	}
 	if = {
-		limit = { NOT = { has_variable = triggerable_scenarios_disaster_type } }
-		set_variable = { triggerable_scenarios_disaster_type = constant:triggerable_scenario_disaster_type.random_barrage }
-	}
-	if = {
-		limit = { NOT = { has_variable = triggerable_scenarios_africa_type } }
-		set_variable = { triggerable_scenarios_africa_type = constant:triggerable_scenario_africa_type.africa_is_one }
-	}
-	if = {
 		limit = { NOT = { has_variable = triggerable_scenarios_sort_mode } }
 		set_variable = { triggerable_scenarios_sort_mode = constant:triggerable_scenario_sort_mode.id }
 	}
@@ -586,22 +578,6 @@ triggerable_scenario_type_previous = {
 		}
 	}
 	else_if = {
-		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.disaster_barrage } }
-		subtract_from_variable = { triggerable_scenarios_disaster_type = 1 }
-		if = {
-			limit = { check_variable = { triggerable_scenarios_disaster_type < constant:triggerable_scenario_disaster_type.random_barrage } }
-			set_variable = { triggerable_scenarios_disaster_type = constant:triggerable_scenario_disaster_type.full_catalogue }
-		}
-	}
-	else_if = {
-		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.africa_is_one } }
-		subtract_from_variable = { triggerable_scenarios_africa_type = 1 }
-		if = {
-			limit = { check_variable = { triggerable_scenarios_africa_type < constant:triggerable_scenario_africa_type.africa_is_one } }
-			set_variable = { triggerable_scenarios_africa_type = constant:triggerable_scenario_africa_type.world_is_one }
-		}
-	}
-	else_if = {
 		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.final_silence } }
 		subtract_from_variable = { triggerable_scenarios_final_silence_type = 1 }
 		if = {
@@ -651,22 +627,6 @@ triggerable_scenario_type_next = {
 		if = {
 			limit = { check_variable = { triggerable_scenarios_death_type > constant:death_scenario_type.last_shores } }
 			set_variable = { triggerable_scenarios_death_type = constant:death_scenario_type.quiet_origin }
-		}
-	}
-	else_if = {
-		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.disaster_barrage } }
-		add_to_variable = { triggerable_scenarios_disaster_type = 1 }
-		if = {
-			limit = { check_variable = { triggerable_scenarios_disaster_type > constant:triggerable_scenario_disaster_type.full_catalogue } }
-			set_variable = { triggerable_scenarios_disaster_type = constant:triggerable_scenario_disaster_type.random_barrage }
-		}
-	}
-	else_if = {
-		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.africa_is_one } }
-		add_to_variable = { triggerable_scenarios_africa_type = 1 }
-		if = {
-			limit = { check_variable = { triggerable_scenarios_africa_type > constant:triggerable_scenario_africa_type.world_is_one } }
-			set_variable = { triggerable_scenarios_africa_type = constant:triggerable_scenario_africa_type.africa_is_one }
 		}
 	}
 	else_if = {
@@ -755,7 +715,7 @@ trigger_selected_chaosx_scenario = {
 				compare = equals
 			}
 		}
-		trigger_natural_disaster_barrage_scenario = yes
+		country_event = { id = chaosx.triggerable_scenarios.7 days = 1 }
 	}
 	else_if = {
 		limit = {
@@ -765,7 +725,7 @@ trigger_selected_chaosx_scenario = {
 				compare = equals
 			}
 		}
-		trigger_africa_is_one_scenario = yes
+		country_event = { id = chaosx.triggerable_scenarios.8 days = 1 }
 	}
 	if = {
 		limit = { has_country_flag = triggerable_scenario_preserved_event_timer }
@@ -773,11 +733,6 @@ trigger_selected_chaosx_scenario = {
 		clear_variable = triggerable_scenario_preserved_event_timer_days
 		clr_country_flag = triggerable_scenario_preserved_event_timer
 	}
-}
-
-trigger_africa_is_one_scenario = {
-	africa_triggerable_scenario_launch_selected = yes
-	country_event = { id = chaosx.triggerable_scenarios.8 days = 1 }
 }
 
 triggerable_scenario_prepare_zombie_scale = {

@@ -17,7 +17,7 @@ Read-only context used:
 
 Required references read before inspection/editing: `AGENTS.md`, `hoi4-focus-trees`, `chaos-redux-events`, `hoi4-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`, the required offline wiki pages including National focus/Decision/Event/Idea/AI/Localisation/Effect/Triggers/Scopes/Data structures/Modifiers/On actions, vanilla documentation under `~/projects/Hearts of Iron IV/documentation/`, vanilla decision documentation, and vanilla `common/national_focus/soviet.txt`.
 
-No web access was used. No gfx, flags, Event 006 files, decisions, scripted effects, triggers, or localisation were edited.
+No web access was used. No gfx, flags, unrelated event files, decisions, scripted effects, triggers, or localisation were edited.
 
 ## Changed Files
 
@@ -26,7 +26,7 @@ No web access was used. No gfx, flags, Event 006 files, decisions, scripted effe
 | `common/national_focus/005_soviet_collapse_factory_successors.txt` | Added one missing `unlock_decision_tooltip` for an existing OGB decision already gated by the same focus flag. |
 | `docs/plans/005_soviet_collapse_plans/subagent_handoffs/2026_05_30_ogb_focus_decision_tooltip_audit_handoff.md` | This handoff. |
 
-The worktree was already dirty in the three scoped focus files and many unrelated Event 005/Event 006 files. This handoff claims only the OGB tooltip line and this markdown file.
+The worktree was already dirty in the three scoped focus files and many unrelated Event 005 and unrelated files. This handoff claims only the OGB tooltip line and this markdown file.
 
 ## Changed Focus IDs
 
@@ -152,7 +152,7 @@ Skipped validation:
 
 - No in-game load, screenshot, or external HOI4 parser run.
 - No localisation encoding rewrite; no localisation file changed.
-- No commit made because the parent worktree is already dirty across Event 005 and Event 006 files, including preexisting changes in the scoped focus files.
+- No commit made because the parent worktree is already dirty across Event 005 and unrelated files files, including preexisting changes in the scoped focus files.
 
 ## Remaining Route Risks
 

@@ -206,7 +206,7 @@ Skipped validation:
 - No in-game load test.
 - No screenshot/pathline validation.
 - No scripted helper patch validation, because scripted effects are outside this subagent's edit boundary and parent is patching them.
-- No commit created because the worktree was already dirty with parent work across Event 005 and Event 006.
+- No commit created because the worktree was already dirty with parent work across Event 005 and unrelated files.
 
 ## Remaining Route Risks
 

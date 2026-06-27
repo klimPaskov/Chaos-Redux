@@ -129,7 +129,7 @@ Commands run from `/home/klim/projects/chaos_redux`:
 Skipped validation:
 
 - No in-game load or screenshot validation was run in this subagent environment.
-- No commit was created because the repository already contains a large dirty parent worktree across Event 005 and Event 006. This handoff isolates the subagent's touched id and validation instead of bundling unrelated parent changes.
+- No commit was created because the repository already contains a large dirty parent worktree across Event 005 and unrelated files. This handoff isolates the subagent's touched id and validation instead of bundling unrelated parent changes.
 
 ## Remaining Route Risks
 

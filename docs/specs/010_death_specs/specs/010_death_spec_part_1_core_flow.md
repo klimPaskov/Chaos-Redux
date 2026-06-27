@@ -32,7 +32,7 @@ Death is not a normal country with ambitions, claims, ideology, industry, diplom
 
 The event works because the player is allowed to miss it.
 
-The first island does not open with a warning, super-event, global news item, world-threat flag, coalition decision, or obvious scripted GUI. The map has changed, but the event system does not tell the world what that means. Months later, small reports mention that nobody has heard from the island. The reports should sound like a bad telegraph line, a storm, a failed census, a quarantine rumour, or a shipping-office mistake. They should not say that a country called Death exists, that Zol rules it, or that the island has been consumed.
+The first island does not open with a proclamation, super-event, global news item, world-threat flag, coalition decision, or obvious scripted GUI. The map has changed, but the event system does not tell the world what that means. Months later, small reports mention that nobody has heard from the island. The reports should sound like a bad telegraph line, a storm, a failed census, a quarantine rumour, or a shipping-office mistake. They should not say that a country called Death exists, that Zol rules it, or that the island has been consumed.
 
 The danger becomes readable through repetition: more islands stop answering, state populations disappear, and the black country keeps acquiring useless territory. The true reveal happens only after the pattern reaches a mainland population centre large enough that governments cannot dismiss it.
 
@@ -111,7 +111,7 @@ The world-end state is not just a stronger evolution. It is a terminal campaign 
 
 ### Stage 5 — World consumed
 
-When Death controls or has consumed every eligible world state, a final super-event fires and the Death completion achievement can unlock for the relevant player state.
+When Death controls or has consumed every eligible world state, a final super-event fires and the Death completion tracking can resolve for the relevant player state.
 
 The final stage should not be written as a normal victory parade. There is no audience. The tone is silence, record failure, and the absence of witnesses. If a human player reaches this as a Herald of Zol or through a Death-controlled scenario, the achievement can still record it, but the final event text should emphasize that survival through allegiance is not normal survival.
 
@@ -243,7 +243,7 @@ The details field should mention that the event replaces `Spirit of War/Peace` o
 
 Event log history should record the fire-once event as Death once it is known. Before reveal, reports can be logged under ambiguous labels if the event log supports hidden-stage text. After reveal, all logs should use `Death`.
 
-Evolution logs should record Death's milestone mutations as descriptive crisis history. Island-report recognition, mainland reveal, Last Shores, and whole-world consumption are evolution/detail entries only after the required chaos tier has been reached and the corresponding report, consumption, or world-end action has happened. The quiet origin and `The First Silence` remain baseline setup and should not be logged as evolutions.
+Evolution logs should record Death's milestone mutations as descriptive crisis history. The Island Pattern, mainland reveal, Last Shores, and whole-world consumption are evolution/detail entries only after the required chaos tier has been reached and the corresponding spread, consumption, or world-end action has happened. The quiet origin, delayed local reports, and `The First Silence` remain baseline setup and should not be logged as evolutions.
 
 ## Cluster role
 
@@ -254,7 +254,7 @@ Death has no event cluster. It is a solitary fire-once incident with its own int
 - Event ID 10 is `Death`
 - Death starts on a remote island and is not globally announced.
 - The hidden island stage spreads slowly, prioritizes nearby sub-100,000-population islands, and falls back to distant eligible islands only when no nearby target exists.
-- The mainland reveal path cannot open before the island-report evolution has happened, the required chaos tier has been reached, and enough hidden island pressure exists.
+- The mainland reveal path cannot open before the Island Pattern evolution has happened through delayed evolution pacing, the required chaos tier has been reached, and enough hidden island pressure exists.
 - Death has no starting units.
 - Every consumed state becomes a wasteland and its population is deleted.
 - Death must be defeated by occupying all of its tiles, not by ordinary surrender shortcuts.

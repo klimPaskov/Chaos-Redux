@@ -850,16 +850,6 @@ export_chaosx_settings_config_to_log = {
 
 			set_temp_variable = { event_id = global.all_events^settings_export_evolution_event_index }
 			set_temp_variable = { settings_export_evolution_type = global.events_log_event_detail_evolution_type_entries^settings_export_evolution_index }
-			if = {
-				limit = {
-					check_variable = {
-						var = settings_export_evolution_type
-						value = constant:independence_wave_event_log.evolution_type
-						compare = equals
-					}
-				}
-				set_temp_variable = { settings_export_evolution_type = constant:independence_wave_event_log.event_id }
-			}
 			set_temp_variable = { settings_export_evolution_stage = global.events_log_event_detail_evolution_stage_entries^settings_export_evolution_index }
 			set_temp_variable = { settings_export_evolution_enabled = global.events_log_event_detail_evolution_enabled_entries^settings_export_evolution_index }
 			add_to_array = {
@@ -4582,16 +4572,6 @@ fire_event_by_temp_id_no_cluster = {
 		limit = { check_variable = { event_id = constant:tensions_rising_event_log.event_id } }
 		tensions_rising_prepare_random_event_fire = yes
 	}
-
-	if = {
-		limit = { check_variable = { event_id = constant:natural_disaster_event.id } }
-		natural_disaster_prepare_random_event_fire = yes
-		if = {
-			limit = { NOT = { has_event_target = natural_disaster_random_event_actor } }
-			set_temp_variable = { event_single_fire_allowed = 0 }
-		}
-	}
-
 	if = {
 		limit = { check_variable = { event_id = constant:white_peace_event_log.event_id } }
 		prepare_white_peace_runtime_context = yes
@@ -4601,16 +4581,7 @@ fire_event_by_temp_id_no_cluster = {
 		}
 	}
 
-	if = {
-		limit = { check_variable = { event_id = constant:africa_event_log.event_id } }
-		africa_select_random_unifier_candidate = yes
 		if = {
-			limit = { check_variable = { global.africa_runtime_ready < constant:africa_runtime_state.ready } }
-			set_temp_variable = { event_single_fire_allowed = 0 }
-		}
-	}
-
-	if = {
 		limit = {
 			check_variable = {
 				var = event_single_fire_allowed

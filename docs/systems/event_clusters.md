@@ -10,8 +10,8 @@ The registered clusters are:
 - **Liberations** (`constant:event_cluster_id.liberations = 2`): independence waves, subject breakaways, imperial ruptures, republican secessions, and disorder that creates new states.
 - **Diplomatic Panic** (`constant:event_cluster_id.diplomatic_panic = 3`): pressure spikes, ministry reactions, and relation shocks without direct new war goals.
 - **Peace** (`constant:event_cluster_id.peace = 4`): settlements, ceasefires, exhaustion, negotiations, and related de-escalation shocks.
-- **Natural Disasters** (`constant:event_cluster_id.natural_disasters = 5`): grouped disaster incident chains.
-- **Formables** (`constant:event_cluster_id.formables = 6`): regional or continental formable shocks with long integration mandates.
+- **Natural Disasters** (`constant:event_cluster_id.natural_disasters = 5`): reserved Event 13 placeholder cluster.
+- **Formables** (`constant:event_cluster_id.formables = 6`): reserved cluster for future formable-event work.
 
 ## Runtime Flow
 
@@ -69,12 +69,12 @@ Current membership:
 | Cluster | Member | Danger | Participation |
 | --- | --- | --- | --- |
 | Wars | Event 4, Random War | High | Required member when selected or manually queued |
-| Liberations | Event 6, Independence Wave | Medium | Optional member |
+| Liberations | Event 6, Independence Wave | Low | Auto-disabled placeholder member |
 | Liberations | Event 5, Soviet Union Collapse | Severe | Optional member, fire-once, gated by Soviet crisis eligibility |
 | Diplomatic Panic | Event 8, Tensions Rising | Medium | Required member when selected or manually queued |
 | Peace | Event 9, White Peace | Low | Required member when selected or manually queued |
-| Natural Disasters | Event 13, Natural Disasters | Low | Required member when selected or manually queued |
-| Formables | Event 12, Africa | Severe | Required member when selected or manually queued, gated by valid African-capital unifier selection |
+| Natural Disasters | Event 13, Natural Disasters | Low | Reserved placeholder member |
+| Formables | Event 12, Africa Is One | Low | Reserved placeholder member |
 
 ## Member Order And Cooldown
 
