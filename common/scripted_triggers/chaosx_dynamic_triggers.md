@@ -11,13 +11,8 @@ Before adding new dynamic trigger logic, check this file and reuse an existing t
 - [is_desert_state](#is_desert_state)
 - [is_special_chaos_country](#is_special_chaos_country)
 - [is_actual_nonhuman_country](#is_actual_nonhuman_country)
-- [uses_normal_civilian_systems](#uses_normal_civilian_systems)
 
 ## is_desert_state
-
-State-scope trigger. Returns true for states currently treated as desert territory by shared random-event helpers.
-
-Current usage includes Event 026's industry-to-desert logic. The trigger remains shared because future events can reuse the same desert-state set without duplicating the state list.
 
 ## is_special_chaos_country
 
@@ -50,9 +45,3 @@ Current coverage includes:
 - Wendigo outbreak flags or the Wendigo cosmetic tag
 - `ZIN`
 - `DTH` / original `DTH` / countries with the Death country marker
-
-## uses_normal_civilian_systems
-
-Country-scope trigger. Returns true for countries that are not classified as actual nonhuman actors by `is_actual_nonhuman_country`.
-
-Use this when a system should still affect strange or special countries that have civilian societies, while excluding countries such as zombies, ZIN, Wendigo outbreaks, and Death.

@@ -13,7 +13,6 @@ Before adding new dynamic logic, check this file and reuse an existing effect if
 - [damage_buildings_in_random_states](#damage_buildings_in_random_states)
 - [modify_state_population_by_percent](#modify_state_population_by_percent)
 - [get_random_sea_region](#get_random_sea_region)
-- [clear_special_chaos_country_civilian_effects](#clear_special_chaos_country_civilian_effects)
 - [refresh_world_threat_state](#refresh_world_threat_state)
 - [grant_random_chaos_special_project_available_tech](#grant_random_chaos_special_project_available_tech)
 - [apply_crisis_rescue_event_weight_adjustments](#apply_crisis_rescue_event_weight_adjustments)
@@ -188,15 +187,15 @@ damage_buildings_in_random_states = yes
 
 ## modify_state_population_by_percent
 
-This is a focused state-scope utility for population-to-manpower delta. It converts `state_population_percent` into per-thousand scale, applies fallback behavior when value is too low, computes `pop_loss` from `state_population_k`, then applies it with `add_manpower`.
+TODO: needs integration with the deaths system
+
+This is a focused state-scope utility for population-to-manpower delta. It converts `state_population_percent` into per-thousand scale, applies fallback behavior when value is too low, computes `pop_loss` from `state_population_k`, then applies it with `add_manpower`. It also logs the computed value for debugging.
 
 Use this when you already have a state scope and only need the population math, without the building-damage pipeline from `damage_buildings_in_random_states`.
 
 Input: `state_population_percent` (optional; decimal fraction like `-0.001`).  
-Fallback behavior: defaults to `-0.001` effective result when unset or too low.
-Output/result: manpower change on the current state scope.
-
-Integration note: this helper is retained as a future hook for state population effects that do not need building damage. It is currently not wired into the deaths tracker.
+Fallback behavior: defaults to `-0.001` effective result when unset/too low.  
+Output/result: manpower change on the current state scope and a debug log line.
 
 Example:
 
@@ -227,28 +226,6 @@ meta_effect = {
   add_mines = { region = [SEA_REGION] amount = 1000 }
  }
  SEA_REGION = "[?global.rand_sea_region|.0]"
-}
-```
-
-## clear_special_chaos_country_civilian_effects
-
-This country-scope effect removes transient normal-civilian effects from special chaos actors during the shared weekly cleanup pass. It is called from `common/on_actions/chaosx_on_actions.txt` only for countries that pass `is_special_chaos_country`.
-
-Current cleanup:
-
-- clears `mass_panic`
-- removes the `galaxies_mix` idea
-
-Input: none.
-Output/result: removes unsupported civilian effects from the current country.
-Side effects: clears or removes only the listed current-country effects. The shared weekly on-action caller gates it behind `is_special_chaos_country`.
-
-Example:
-
-```txt
-if = {
-	limit = { is_special_chaos_country = yes }
-	clear_special_chaos_country_civilian_effects = yes
 }
 ```
 

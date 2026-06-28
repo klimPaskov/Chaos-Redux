@@ -28,7 +28,7 @@ Shared bookkeeping variable:
 
 - `global.world_threat_source_count`
 
-Note: This mechanic currently provides shared state and source triggers. It does not enforce diplomacy or AI behavior on its own.
+Note: Currently this mechanic is a placeholder and doesn't actually do anything. Its real effects will be added later.
 
 ## How it works
 
@@ -62,7 +62,7 @@ Current flow:
 
 This keeps the high-level flag generic and future-proof.
 
-### 3. Threat Source Examples
+### 3. Zombies Example
 
 The zombie source uses `refresh_zombie_world_threat_source` in `common/scripted_effects/002_zombie_outbreak_effects.txt`.
 
@@ -74,7 +74,7 @@ The Fury source uses `world_threat_source_fury` during its terminal world-end br
 
 The Death source uses `death_refresh_world_threat_source` in `common/scripted_effects/010_death_effects.txt`. It activates only after Death is publicly revealed by consuming a mainland state above the reveal population threshold, and clears when Death is defeated.
 
-The zombie refresh effect, for example:
+That effect:
 
 1. recalculates total zombie strength
 2. recalculates continent presence
@@ -132,10 +132,6 @@ Everything should fold back into the same source-counted system.
 - `common/scripted_effects/chaosx_dynamic_effects.txt`
 - `common/scripted_effects/chaosx_dynamic_effects.md`
 - `common/scripted_effects/002_zombie_outbreak_effects.txt`
-- `common/scripted_effects/003_holy_realm_effects.txt`
-- `common/scripted_effects/007_fury_effects.txt`
-- `common/scripted_effects/010_death_effects.txt`
-- `common/scripted_effects/germany_mengele_effects.txt`
 - `common/scripted_triggers/chaosx_world_threat_triggers.txt`
 - `common/on_actions/chaosx_on_actions.txt`
 - `common/decisions/chaosx_anti_zombie_league_decisions.txt`
