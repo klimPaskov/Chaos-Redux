@@ -2327,6 +2327,7 @@ create_communist_emergency_uprising = {
 			}
 			set_country_flag = communist_rebel_state
 			set_country_flag = communist_state_control_rebel
+			save_event_target_as = communist_rebel_country
 			create_communist_rebel_templates = yes
 			set_temp_variable = { communist_rebel_manpower_gain = constant:communism_spread_rebels.base_manpower }
 			ROOT = {
@@ -2343,8 +2344,9 @@ create_communist_emergency_uprising = {
 			ROOT = {
 				every_controlled_state = {
 					limit = { has_state_flag = communist_uprising_convert }
-					transfer_state_to = PREV.PREV
-					PREV.PREV = {
+					save_event_target_as = communist_rebel_capital_state
+					transfer_state_to = event_target:communist_rebel_country
+					event_target:communist_rebel_country = {
 						if = {
 							limit = {
 								NOT = {
@@ -2352,7 +2354,7 @@ create_communist_emergency_uprising = {
 								}
 							}
 							set_capital = {
-								state = PREV
+								state = event_target:communist_rebel_capital_state
 								remember_old_capital = no
 							}
 						}
@@ -2416,12 +2418,14 @@ create_communist_local_breakaway = {
 			set_country_flag = communist_rebel_state
 			set_country_flag = communist_state_control_rebel
 			set_country_flag = communist_local_breakaway_rebel
+			save_event_target_as = communist_rebel_country
 			create_communist_rebel_templates = yes
 			add_manpower = 12000
 			ROOT = {
 				event_target:communist_evolution_state = {
-					transfer_state_to = PREV.PREV
-					PREV.PREV = {
+					save_event_target_as = communist_rebel_capital_state
+					transfer_state_to = event_target:communist_rebel_country
+					event_target:communist_rebel_country = {
 						if = {
 							limit = {
 								NOT = {
@@ -2429,7 +2433,7 @@ create_communist_local_breakaway = {
 								}
 							}
 							set_capital = {
-								state = PREV
+								state = event_target:communist_rebel_capital_state
 								remember_old_capital = no
 							}
 						}
