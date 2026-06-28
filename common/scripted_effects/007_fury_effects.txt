@@ -811,6 +811,23 @@ fury_declare_on_rival_actor = {
 	}
 }
 
+fury_fire_us_monroe_response_for_south_american_conquest = {
+	save_event_target_as = fury_monroe_response_actor
+	if = {
+		limit = {
+			is_fury_actor = yes
+			capital_scope = { is_on_continent = south_america }
+			USA = {
+				exists = yes
+				NOT = { has_capitulated = yes }
+				NOT = { has_war_with = event_target:fury_monroe_response_actor }
+				can_declare_war_on = event_target:fury_monroe_response_actor
+			}
+		}
+		USA = { country_event = { id = chaosx.nr7.60 } }
+	}
+}
+
 fury_on_capitulation = {
 	# ROOT is the capitulated country, FROM is the winner.
 	if = {
@@ -842,6 +859,7 @@ fury_on_capitulation = {
 				}
 				country_event = { id = chaosx.nr7.30 hours = 1 }
 			}
+			fury_fire_us_monroe_response_for_south_american_conquest = yes
 			if = {
 				limit = { fury_actor_can_continue = yes }
 				country_event = { id = chaosx.nr7.10 days = 2 }
