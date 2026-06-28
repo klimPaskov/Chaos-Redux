@@ -49,28 +49,11 @@ triggerable_scenario_can_launch_selected = {
 				var = triggerable_scenarios_selected
 				value = constant:triggerable_scenario_id.death
 			}
+			NOT = { has_global_flag = world_end }
 			NOT = { has_global_flag = death_active }
 			NOT = { has_global_flag = death_defeated }
-			OR = {
-				AND = {
-					check_variable = { triggerable_scenarios_death_type = constant:death_scenario_type.quiet_origin }
-					any_state = { death_is_valid_origin_state_outer = yes }
-				}
-				AND = {
-					check_variable = { triggerable_scenarios_death_type = constant:death_scenario_type.island_pattern }
-					any_state = { death_is_valid_origin_state_outer = yes }
-					any_state = { death_is_valid_island_spread_target = yes }
-				}
-				AND = {
-					check_variable = { triggerable_scenarios_death_type = constant:death_scenario_type.mainland_reveal }
-					any_state = { death_is_valid_mainland_reveal_target = yes }
-				}
-				AND = {
-					check_variable = { triggerable_scenarios_death_type = constant:death_scenario_type.last_shores }
-					NOT = { has_global_flag = world_end }
-					any_state = { death_is_valid_coastal_jump_target = yes }
-				}
-			}
+			any_state = { death_is_valid_origin_state_outer = yes }
+			any_state = { death_is_valid_triggerable_mainland_reveal_target = yes }
 		}
 		check_variable = {
 			var = triggerable_scenarios_selected

@@ -67,8 +67,6 @@ When implementing starting or route ideas, wire their lifecycle. Negative, mixed
 
 Mechanic variables must be visible somewhere meaningful, such as decision category text, scripted localisation, national spirit tooltip, scripted GUI, progress meter, or focus tooltip. Keep cause and effect readable. Values should be changed by the mapped decisions, focuses, missions, events, wars, state control, AI actions, and foreign influence. Use consistent localisation colours for important mechanic values and breakdowns.
 
-Player-facing event, decision, focus, and Event Details text must describe in-world consequences rather than meta reward routes. Do not advertise that a choice opens, grants, counts toward, or completes an achievement path; keep achievement conditions in achievement UI/docs and use ordinary in-world consequence text elsewhere. For ambiguous report-stage incidents, describe the concrete records, observations, and actions instead of directly labeling the incident as a danger signal or its opposite. So, when something is a warning, don't explicitly say that it is a warning/that it is not a warning.
-
 Large decision systems must hide obsolete or irrelevant actions. Use phases, active caps, target pools, route locks, thresholds, emergency visibility, regional grouping, cooldowns, or cleanup flags. The category should show current playable actions, not every possible debug action.
 
 If the spec defines achievements, implement the full achievement surface: tracking flags or variables, unlock triggers, disqualifiers, localisation, icons, docs, and any route or formable hooks. Do not convert hard achievements into automatic unlocks.
@@ -545,42 +543,13 @@ Rules:
 - keep evolution and world-end columns aligned with the real chain structure
 - do not put baseline progression stages into evolution columns unless they are actual mutation tracks
 
-## Event presentation workflow
-
-Use this when the user asks for event slides, a showcase deck, or presentation updates.
-
-Required tools and order:
-
-1. `pptx`
-2. `theme-factory`
-3. `canvas-design`
-4. LaTeX rendering when formulas or gameplay math need to be shown clearly
-
-Visual standard:
-
-- minimalistic
-- stark
-- propaganda-poster energy
-- 1984-inspired restraint
-- strong contrast
-- deliberate negative space
-- bold composition
-- no generic corporate deck styling
-
-Rules:
-
-- every slide gets original event-specific art
-- evolutions should visibly mutate the event, not merely show the next ordinary stage
-- terminal branches should get heavier final-slide treatment
-- keep deck path and asset folder stable unless the user asks otherwise
-
-Preferred deck path:
-
-- `docs/presentations/chaos_redux_events.pptx`
-
 ### Extra rules to follow
 
 Event Details text must never display mechanical effects. The Event Details window, spreadsheet `Details` field, and player-facing detail summaries should describe the situation and premise, not list rewards, penalties, modifiers, variable changes, or script effects. If an event is meant to apply gameplay effects immediately regardless of which option the player chooses, place the real effects in the event `immediate` block inside a `hidden_effect`. The option should not reapply those effects. The option may show the immediate result only through a custom tooltip for cosmetic clarity, so the player sees the consequence without turning Event Details into an effects list.
+
+Player-facing event, decision, focus, and Event Details text must describe in-world consequences rather than meta reward routes. Do not advertise that a choice opens, grants, counts toward, or completes an achievement path; keep achievement conditions in achievement UI/docs and use ordinary in-world consequence text elsewhere. For ambiguous report-stage incidents, describe the concrete records, observations, and actions instead of directly labeling the incident as a danger signal or its opposite. So, when something is a warning, don't explicitly say that it is a warning/that it is not a warning.
+
+Visible dynamic values often display decimal places unless their localisation formatter says otherwise. If a value is conceptually an integer, show it as an integer with `|0` formatting or an equivalent scripted-localisation helper. Only show decimal places when the value genuinely needs fractional precision, such as ratios, percentages, fractional costs, or progress values where the fraction changes player decisions.
 
 If the event creates or manages non-standard countries, account for that in shared classification triggers. Any event-created or event-managed chaos country must be registered in `is_special_chaos_country` in `common/scripted_triggers/chaosx_dynamic_triggers.txt` and documented in `common/scripted_triggers/chaosx_dynamic_triggers.md`. If that chaos country is actually nonhuman rather than merely unusual, supernatural, extremist, or scenario-specific, also register it in `is_actual_nonhuman_country` and update the same documentation. Do not create event-specific duplicate classifiers such as `is_<event>_chaos_enemy`, `is_<event>_special_country`, or per-event nonhuman triggers when the shared triggers can express the category. Events interact with each other, so systems that usually affect normal countries, such as black plague, mass panic, civilian migration, or ideology spread, should exclude zombie, alien, and other nonhuman countries through the shared triggers instead of one-off checks.
 

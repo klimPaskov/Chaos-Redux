@@ -33,6 +33,7 @@ focus_tree = {
 		y = 0
 		cost = @death_focus_short
 		completion_reward = {
+			custom_effect_tooltip = death_the_first_silence_focus_tt
 			set_country_flag = death_focus_the_first_silence
 			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_reduction_small }
 			death_clamp_spread_pressure = yes
@@ -49,6 +50,7 @@ focus_tree = {
 		cost = @death_focus_short
 		prerequisite = { focus = death_the_first_silence_focus }
 		completion_reward = {
+			custom_effect_tooltip = death_country_on_the_island_tt
 			set_country_flag = death_focus_country_on_the_island
 			death_setup_country = yes
 			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_small }
@@ -64,7 +66,14 @@ focus_tree = {
 		y = 2
 		cost = @death_focus_short
 		prerequisite = { focus = death_country_on_the_island }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = death_shroud_focus_available_tt
+				death_can_use_shroud_focuses = yes
+			}
+		}
 		completion_reward = {
+			custom_effect_tooltip = death_shroud_whispers_tt
 			set_country_flag = death_focus_shroud_whispers
 			set_global_flag = death_shroud_lane_started
 			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_reduction_small }
@@ -84,7 +93,14 @@ focus_tree = {
 		y = 3
 		cost = @death_focus_short
 		prerequisite = { focus = death_shroud_whispers }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = death_shroud_focus_available_tt
+				death_can_use_shroud_focuses = yes
+			}
+		}
 		completion_reward = {
+			custom_effect_tooltip = death_no_mail_before_spring_tt
 			set_country_flag = death_focus_no_mail_before_spring
 			set_global_flag = death_reports_delayed_by_shroud
 			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_reduction_medium }
@@ -104,7 +120,14 @@ focus_tree = {
 		y = 4
 		cost = @death_focus_short
 		prerequisite = { focus = death_no_mail_before_spring }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = death_shroud_focus_available_tt
+				death_can_use_shroud_focuses = yes
+			}
+		}
 		completion_reward = {
+			custom_effect_tooltip = death_weather_on_paper_tt
 			set_country_flag = death_focus_weather_on_paper
 			set_global_flag = death_reports_misclassified_by_shroud
 			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_reduction_small }
@@ -124,9 +147,16 @@ focus_tree = {
 		y = 5
 		cost = @death_focus_medium
 		prerequisite = { focus = death_weather_on_paper }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = death_shroud_focus_available_tt
+				death_can_use_shroud_focuses = yes
+			}
+		}
 		completion_reward = {
+			custom_effect_tooltip = death_island_pattern_tt
 			set_country_flag = death_focus_island_pattern
-			death_record_island_pattern_evolution = yes
+			death_try_island_spread = yes
 			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_small }
 		}
 		ai_will_do = { base = 16 }
@@ -140,10 +170,12 @@ focus_tree = {
 		y = 2
 		cost = @death_focus_short
 		prerequisite = { focus = death_country_on_the_island }
+		available = { has_global_flag = death_evolution_second_shore_recorded }
 		completion_reward = {
+			custom_effect_tooltip = death_hunger_shore_tt
 			set_country_flag = death_focus_hunger_shore
 			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_medium }
-			death_record_island_pattern_evolution = yes
+			death_try_island_spread = yes
 		}
 		ai_will_do = {
 			base = 24
@@ -160,6 +192,7 @@ focus_tree = {
 		cost = @death_focus_short
 		prerequisite = { focus = death_hunger_shore }
 		completion_reward = {
+			custom_effect_tooltip = death_lowest_names_first_tt
 			set_country_flag = death_focus_lowest_names_first
 			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_small }
 		}
@@ -178,6 +211,7 @@ focus_tree = {
 		cost = @death_focus_medium
 		prerequisite = { focus = death_lowest_names_first }
 		completion_reward = {
+			custom_effect_tooltip = death_ports_without_voices_tt
 			set_country_flag = death_focus_ports_without_voices
 			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_medium }
 		}
@@ -192,12 +226,24 @@ focus_tree = {
 		y = 5
 		cost = @death_focus_medium
 		prerequisite = { focus = death_ports_without_voices }
+		available = {
+			OR = {
+				has_global_flag = death_evolution_mainland_hunger_recorded
+				death_can_bypass_mainland_hunger_from_war = yes
+			}
+		}
 		completion_reward = {
+			custom_effect_tooltip = death_mainland_smell_tt
 			set_country_flag = death_focus_mainland_smell
+			death_record_mainland_hunger_evolution_from_war_bypass = yes
 			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_large }
 			death_try_mainland_pressure_spread = yes
+			death_try_mainland_pressure_spread_from_war = yes
 		}
-		ai_will_do = { base = 16 }
+		ai_will_do = {
+			base = 16
+			modifier = { factor = 3 death_can_bypass_mainland_hunger_from_war = yes }
+		}
 	}
 
 	focus = {
@@ -208,7 +254,9 @@ focus_tree = {
 		y = 2
 		cost = @death_focus_short
 		prerequisite = { focus = death_country_on_the_island }
+		available = { has_global_flag = death_evolution_second_shore_recorded }
 		completion_reward = {
+			custom_effect_tooltip = death_black_census_focus_tt
 			set_country_flag = death_focus_black_census
 			if = {
 				limit = { NOT = { has_idea = death_black_census } }
@@ -231,6 +279,7 @@ focus_tree = {
 		cost = @death_focus_short
 		prerequisite = { focus = death_black_census_focus }
 		completion_reward = {
+			custom_effect_tooltip = death_no_graves_needed_tt
 			set_country_flag = death_focus_no_graves_needed
 		}
 		ai_will_do = {
@@ -247,7 +296,9 @@ focus_tree = {
 		y = 4
 		cost = @death_focus_medium
 		prerequisite = { focus = death_no_graves_needed }
+		available = { has_global_flag = death_evolution_weak_ghost_hosts_recorded }
 		completion_reward = {
+			custom_effect_tooltip = death_first_ghost_muster_tt
 			set_country_flag = death_focus_first_ghost_muster
 			death_spawn_ghost_hosts_for_current_tier = yes
 		}
@@ -264,11 +315,10 @@ focus_tree = {
 		x = 10
 		y = 6
 		cost = @death_focus_short
-		prerequisite = { focus = death_island_pattern }
 		prerequisite = { focus = death_mainland_smell }
-		prerequisite = { focus = death_first_ghost_muster }
 		available = { has_global_flag = death_publicly_revealed }
 		completion_reward = {
+			custom_effect_tooltip = death_public_death_focus_tt
 			set_country_flag = death_focus_public_death
 			if = {
 				limit = { has_idea = death_first_silence }
@@ -296,6 +346,7 @@ focus_tree = {
 		cost = @death_focus_medium
 		prerequisite = { focus = death_public_death_focus }
 		completion_reward = {
+			custom_effect_tooltip = death_tide_learns_roads_tt
 			set_country_flag = death_focus_tide_learns_roads
 			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_small }
 			death_attempt_coastal_jump = yes
@@ -315,6 +366,7 @@ focus_tree = {
 		cost = @death_focus_medium
 		prerequisite = { focus = death_tide_learns_roads }
 		completion_reward = {
+			custom_effect_tooltip = death_another_shoreline_tt
 			set_country_flag = death_focus_another_shoreline
 			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_medium }
 			death_attempt_coastal_jump = yes
@@ -331,6 +383,7 @@ focus_tree = {
 		cost = @death_focus_medium
 		prerequisite = { focus = death_another_shoreline }
 		completion_reward = {
+			custom_effect_tooltip = death_no_ferry_returns_tt
 			set_country_flag = death_focus_no_ferry_returns
 			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_medium }
 			death_attempt_coastal_jump = yes
@@ -347,6 +400,7 @@ focus_tree = {
 		cost = @death_focus_medium
 		prerequisite = { focus = death_public_death_focus }
 		completion_reward = {
+			custom_effect_tooltip = death_wasteland_roads_tt
 			set_country_flag = death_focus_wasteland_roads
 			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_medium }
 		}
@@ -365,6 +419,7 @@ focus_tree = {
 		cost = @death_focus_medium
 		prerequisite = { focus = death_wasteland_roads }
 		completion_reward = {
+			custom_effect_tooltip = death_every_road_slows_tt
 			set_country_flag = death_focus_every_road_slows
 			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_small }
 			death_try_wither = yes
@@ -381,6 +436,7 @@ focus_tree = {
 		cost = @death_focus_medium
 		prerequisite = { focus = death_every_road_slows }
 		completion_reward = {
+			custom_effect_tooltip = death_empty_supply_tt
 			set_country_flag = death_focus_empty_supply
 			every_controlled_state = {
 				limit = { has_state_flag = death_active_wasteland }
@@ -399,6 +455,7 @@ focus_tree = {
 		cost = @death_focus_medium
 		prerequisite = { focus = death_empty_supply }
 		completion_reward = {
+			custom_effect_tooltip = death_state_without_state_tt
 			set_country_flag = death_focus_state_without_state
 			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.pressure_medium }
 			death_try_wither = yes
@@ -414,7 +471,9 @@ focus_tree = {
 		y = 7
 		cost = @death_focus_medium
 		prerequisite = { focus = death_public_death_focus }
+		available = { has_global_flag = death_evolution_weak_ghost_hosts_recorded }
 		completion_reward = {
+			custom_effect_tooltip = death_mourning_host_tt
 			set_country_flag = death_focus_mourning_host
 			death_spawn_ghost_hosts_for_current_tier = yes
 		}
@@ -432,7 +491,14 @@ focus_tree = {
 		y = 8
 		cost = @death_focus_medium
 		prerequisite = { focus = death_mourning_host }
+		available = {
+			OR = {
+				has_global_flag = death_evolution_hollow_ghost_hosts_recorded
+				has_global_flag = death_world_end_started
+			}
+		}
 		completion_reward = {
+			custom_effect_tooltip = death_ruin_host_tt
 			set_country_flag = death_focus_ruin_host
 			death_spawn_ghost_hosts_for_current_tier = yes
 		}
@@ -450,7 +516,14 @@ focus_tree = {
 		y = 9
 		cost = @death_focus_medium
 		prerequisite = { focus = death_ruin_host }
+		available = {
+			OR = {
+				has_global_flag = death_evolution_hollow_ghost_hosts_recorded
+				has_global_flag = death_world_end_started
+			}
+		}
 		completion_reward = {
+			custom_effect_tooltip = death_orders_without_breath_tt
 			set_country_flag = death_focus_orders_without_breath
 			death_spawn_ghost_hosts_for_current_tier = yes
 			if = {
@@ -481,6 +554,7 @@ focus_tree = {
 			}
 		}
 		completion_reward = {
+			custom_effect_tooltip = death_last_shores_focus_tt
 			set_country_flag = death_focus_last_shores
 			add_to_variable = { global.death_spread_pressure = constant:death_focus_reward.world_end_pressure }
 			if = {
@@ -508,6 +582,7 @@ focus_tree = {
 		prerequisite = { focus = death_last_shores_focus }
 		available = { death_whole_world_consumed = yes }
 		completion_reward = {
+			custom_effect_tooltip = death_world_consumed_focus_tt
 			set_country_flag = death_focus_world_consumed
 			death_try_fire_whole_world_consumed = yes
 		}

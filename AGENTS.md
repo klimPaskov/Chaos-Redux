@@ -63,7 +63,7 @@ If vanilla examples are insufficient or unclear, you are allowed to inspect well
 
 ### Repo Skills
 
-Use repo skills as required implementation guidance, not as optional notes.
+Use repo skills as required implementation guidance.
 
 - Use `chaos-redux-events` for Chaos Redux event implementation, event logs, evolutions, event details, documentation, and spreadsheet alignment.
 - Use `chaos-redux-event-assets` when an event needs visual assets, icons, flags, portraits, UI art, report images, news images, achievement icons, final DDS files, asset manifests, or sprite handoff notes.
@@ -231,8 +231,7 @@ Localisation and UI must always be kept in sync with gameplay changes.
    - Keep key names consistent and readable. No unnecessary prefixes.
 6. Icons and UI assets:
    - Define icons in `interface/...` and keep naming stable.
-   - When something needs icons, define them in a correct `.gfx` file. I will provide the sprites myself, you just have to tell me what folder to put them in and with what name.
-   - Copy placeholder sprites from vanilla files that match the new gfx definition, so later I can replace them with real sprites easily and that the game would run without complaining about missing sprites.
+   - When something needs icons, define them in a correct `.gfx` file.
    - Register new UI assets before requesting art so filenames do not need to change later.
 
 ## 3. Writing Style
@@ -242,36 +241,22 @@ These rules apply to every Chaos Redux prose surface. This includes event text, 
 1. Never use the em dash or semicolons in sentences.
 2. Absolutely avoid dialectical hedging. Do not frame sentences as thesis, antithesis, synthesis.
    - Dialectical hedging examples:
-     - `The invasion is not merely a border crisis, but a crisis of identity.`
-     - `The regime is not only losing the war, it is losing itself.`
      - `This is not just a strike. This is a warning.`
      - `The cult is not fighting for land, but for meaning.`
      - `The disaster is both a local tragedy and a global sign.`
-     - `The government is neither dead nor alive, but something worse.`
      - `The army did not collapse. It transformed.`
      - `This is less a rebellion than a confession.`
      - `The question is not whether order can return, but what kind of order will survive.`
-     - `What looks like defeat is actually a new form of power.`
    - Thesis, antithesis, synthesis examples:
      - `The army claims the province is secure. Refugees say it is already lost. The truth lies between them.`
      - `Some call the new state liberation. Others call it occupation. In reality, it is both.`
      - `The priests call it a miracle. The generals call it a weapon. History will call it both.`
-     - `The committee promises order. The opposition sees tyranny. The new system contains both impulses.`
-     - `The papers call it a victory. The hospitals call it a defeat. The country has become both at once.`
-     - `The rebels ask for justice. The regime asks for peace. The settlement gives neither and both.`
 3. Avoid AI-style explanatory templates. Do not write lines that sound prebuilt or reusable across any event.
 4. Absolutely avoid staccato sentences. Do not split one simple thought into a chain of tiny lines for artificial weight or dramatic effect. Use complete, readable sentences with enough context to be clear.
    - Staccato examples:
-     - `The radios died. The roads emptied. The city listened.`
      - `No orders. No mercy. No dawn.`
-     - `The border fell. Then the capital. Then the government.`
-     - `They marched. They burned. They vanished.`
-     - `A knock at the door. A list on the table. A train in the dark.`
      - `The guns stopped. The screaming did not.`
      - `First hunger. Then anger. Then flags.`
-     - `No king. No cabinet. No law.`
-     - `Ash in the streets. Smoke over the port. Silence at noon.`
-     - `One order. One shot. One missing officer.`
      - `The gate opened. The crowd moved. The guards ran.`
 5. Absolutely avoid empty dramatic filler. Do not lean on vague intensity words when concrete detail would do the work.
 6. Do not paste instruction text, task labels, prompt fragments, or process notes into in-game text, specs, docs, localisation, spreadsheet fields, or reports.
@@ -309,6 +294,7 @@ When implementing any new mechanic, follow this checklist:
 17. When the user reports that something is wrong and you can't figure out what exactly, then add temporary debug code (for example: `log = "my debug log"`) that exposes the relevant runtime values needed to understand the issue, and remove every debug line you added once the issue is resolved.
 18. When an error is reported or discovered after your changes, treat it as caused by your current change set. Do not speculate that the project was already broken before your work.
 19. When updating content (for example reworking an event), write as if the feature has always existed. Do not use meta wording like “now it is,” “now it has been reworked,” “newly added,” or similar update-history phrasing.
+20. Respect the writing style.
 
 Follow these rules and your changes will be easier to review, safer to merge and more consistent with the rest of the project.
 If this checklist cannot be satisfied, stop and request more design input instead of guessing.
@@ -412,4 +398,4 @@ The commit must only include changes related to that plan. Before committing, re
 
 Use a clear commit message that describes what was implemented.
 
-Do not commit broken, unrelated, or half-finished work. If the goal cannot be completed cleanly, report the blocker instead of creating a misleading commit.
+Do not commit broken, unrelated, or half-finished work. If the plan cannot be completed cleanly, report the blocker instead of creating a misleading commit.

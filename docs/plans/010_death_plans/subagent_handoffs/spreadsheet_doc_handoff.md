@@ -16,10 +16,10 @@ Workbook updated in place:
 - Cluster ID remains blank.
 - Member Severity remains blank.
 - Status remains `Implemented`.
-- `SCN-006 Death` already existed and already included:
-  - Type Options: `Quiet Origin, Island Pattern, Mainland Reveal, Last Shores`
-  - Intensity Scaling: `Low/Medium/High/Maximum ...`
-- No scenario-table edits were needed.
+- `SCN-006 Death` has since been superseded by the Instant Outbreak rework.
+- Type Options now uses `Instant Outbreak`.
+- Intensity Scaling now describes starting territory and ghost-host counts only.
+- Scenario-table edits were made in the current rework.
 
 ## Changed Cells
 
@@ -38,13 +38,13 @@ Event ID: `10`
 ## Cell Update Summary
 
 - `C11` changed from a compressed paraphrase to the exact current event-detail body from `chaosx.events_log.window.event_details.death`.
-- `D11` through `H11` changed from shorter paraphrases to title-plus-body wording aligned with the current in-game evolution-detail text:
-  - `First Silence`
-  - `Missing Island Reports`
-  - `His Name Was Death`
-  - `No More Life`
-  - `There Was No Man`
-- `I11` changed to world-end wording aligned with the in-game `No More Life` and final `There Was No Man` evolution-detail text.
+- `D11` through `H11` now describe the current milestone evolutions:
+  - `Gathering Storm`
+  - `Rising Chaos`
+  - `First Hosts`
+  - `Hollow Hosts`
+  - `World End`
+- `I11` now keeps world-end and whole-world-consumed text out of the normal evolution columns.
 
 ## Implementation Evidence For Status
 

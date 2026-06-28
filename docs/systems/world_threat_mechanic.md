@@ -28,6 +28,8 @@ Shared bookkeeping variable:
 
 - `global.world_threat_source_count`
 
+Note: Currently this mechanic is a placeholder and doesn't actually do anything. Its real effects will be added later.
+
 ## How it works
 
 ### 1. Threat sources
@@ -133,13 +135,3 @@ Everything should fold back into the same source-counted system.
 - `common/scripted_triggers/chaosx_world_threat_triggers.txt`
 - `common/on_actions/chaosx_on_actions.txt`
 - `common/decisions/chaosx_anti_zombie_league_decisions.txt`
-
-## Icon Wiring
-
-No new icons or audio are required for the current framework.
-
-## Future Plans
-
-- Add event-log or debug visibility for active world-threat sources if multi-threat overlap becomes common.
-- Add a shared opinion or AI utility layer that threat-aware systems can reuse instead of each one re-implementing "cooperate more under threat".
-- If multiple threat systems become very state-driven, move refresh calls onto a more centralized event-driven hook rather than per-threat runtime loops.

@@ -172,8 +172,8 @@ libreoffice --headless --convert-to xlsx --outdir /tmp/chaosx_catalog_validate_0
 Manual scenario checks to document after patching:
 
 - Natural Event 010 creates `DTH`, consumes a remote origin, and does not show the public reveal immediately.
-- `SCN-006` Quiet Origin, Island Pattern, Mainland Reveal, and Last Shores each launch from the scenario window without requiring chaos/date/prerequisite gates.
-- Mainland Reveal sets `world_threat_source_death`, refreshes `world_in_threat`, logs the correct event details, and fires the reveal super-event once.
+- `SCN-006` has since been superseded by one Instant Outbreak type. It launches without chaos, date, report, or evolution gates.
+- Instant Outbreak consumes a hidden island origin, intensity-scaled extra islands, at least one mainland reveal state, and intensity-scaled starting hosts. It sets the normal public reveal through shared consumption without starting world-end.
 - Consumed state population is removed, deaths are visible in the deaths UI with a Death cause, and chaos contribution follows the intended 10:1 rate.
 - Recapture changes active wasteland to recaptured wasteland and does not leave stale wither targets.
 - Death defeat clears world-threat state, stops pulse events, and does not leave active `DTH` ghosts or global event targets.

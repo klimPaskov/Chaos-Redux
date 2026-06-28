@@ -74,9 +74,3 @@ Current slot assignment:
 
 - Strip sprite `19`: `deaths_state_map_mode`
 - Strip sprite `20`: `contaminated_states_map_mode`
-
-## Future extensions
-
-- Add a strategic-region contamination map mode if air contamination and fallout should also be shown at theater scale.
-- Split the deaths heat map into civilian-only and total-deaths variants if military losses later get reliable state attribution.
-- Add optional decision integration that opens these map modes directly for cleanup, quarantine, or relief actions.

@@ -51,9 +51,3 @@ No new art assets are required for this feature.
 - Existing box sprites remain in `gfx/interface/`
 - Existing sprite wiring remains in `interface/chaosx.gfx`
 - Hidden keyboard shortcut buttons reuse existing box sprites and do not need dedicated art
-
-## Future Plans
-
-- Replace the hidden shortcut-button approach with native editable fields if HOI4 ever exposes moddable scripted callbacks for custom `editBoxType` elements.
-- Add optional visual focus styling so the currently active manual-entry field is more obvious.
-- Extend typed entry to any future advanced settings fields if they are surfaced in the UI.

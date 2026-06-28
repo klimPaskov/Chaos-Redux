@@ -25,10 +25,8 @@ Audit-time completion status: incomplete until the blockers below are patched, e
 
 ## Resolved Audit-Time Blockers
 
-1. Triggerable scenario launch context cleanup from the accepted scripted-system plan is missing.
-   - Accepted plan evidence: `docs/plans/010_death_plans/subagent_handoffs/scripted_system_architect_handoff.md:148` says `trigger_death_scenario` should clear bypass context, and `:154` / `:227` specify `death_cleanup_triggerable_scenario_context`.
-   - Implementation evidence: `common/scripted_effects/chaosx_triggerable_scenarios_effects.txt:1982` sets `death_triggerable_scenario_started`, `death_triggerable_scenario_launcher`, `global.death_triggerable_scenario_intensity`, and `global.death_triggerable_scenario_type`. No cleanup helper or cleanup call was found. Only the Last Shores ghost-tier variable is cleared by Death-specific code.
-   - Impact: accepted plan disposition is unresolved, and stale launcher/global context can remain after SCN-006 launch.
+1. Triggerable scenario launch context cleanup from the accepted scripted-system plan was missing at audit time.
+   - Parent resolution: `death_cleanup_triggerable_scenario_context` now clears the Death scenario bypass context after SCN-006 finishes. The current SCN-006 path uses one Instant Outbreak type and no longer has a Last Shores scenario type or ghost-tier shortcut.
 
 2. Defeat aftermath super-event 64 is less gated than the source spec requires.
    - Spec evidence: `docs/specs/010_death_specs/specs/010_death_spec_part_1_core_flow.md:210` says the defeat aftermath super-event should fire only after reveal and after a large population/crisis threshold, such as more than 10 million consumed population, a mainland foothold, or a world-end attempt.

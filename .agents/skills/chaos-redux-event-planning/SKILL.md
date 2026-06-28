@@ -777,7 +777,7 @@ For every new country, and every existing country that is meaningfully changed, 
 - spawn, release, transformation, or takeover conditions
 - core territory, claimed territory, disputed territory, and fallback territory
 - history file needs and starting setup
-- country name and cosmetic names
+- public country name and cosmetic names, following the country naming rules below
 - ideology-specific names
 - focus-tree route names
 - faction names and possible faction cosmetic names
@@ -799,11 +799,34 @@ Do not treat a custom country as complete because it has a tag and one flag. A s
 
 Political identity should be dynamic when the content supports it. Focus routes, ideology changes, coups, faction victories, foreign puppeting, religious transformations, high-chaos mutations, monarchist restorations, military takeovers, revolutionary councils, or world-order paths should be able to change the country name, flag, ruling party, leader, leader portrait, leader trait, cosmetic tag, national spirits, available decisions, and available recruitment systems when appropriate.
 
-When planning alternate governments, do not use only generic ideology labels. Design specific in-world names, such as named councils, committees, directorates, juntas, congresses, restoration authorities, cult offices, leagues, syndicates, ministries, synods, communes, or military commands. These names should fit the country story, region, history, route, and ideological language.
+### Country naming rules
+
+Country names must be direct public country names that remain readable on the map.
+
+Do not build public country names from internal political attachments. Avoid names that use terms such as `Military Office`, `Compact`, `Bureau`, `Authority`, `Mission`, `Board`, or similar administrative labels as the country name. These terms can exist as mechanics, focus groups, advisors, decisions, councils, ministries, internal institutions, route labels, or faction mechanics when they fit. They should not be the public name printed on the map.
+
+Ideology-specific country names are allowed when they fit the route. Sultanate, Kingdom, Empire, Republic, Union, Commune, Federation, and similar public state forms are valid when they match the ideology, historical claim, route, or formable identity.
+
+Prefer names built from the country, people, dynasty, region, or formable identity, then add a simple public state form only when it improves clarity. Style examples include:
+
+- `Asante`
+- `Kingdom of Asante`
+- `Asante Republic`
+- `Sultanate of Kilwa`
+- `Kongo`
+- `Kongo Commune`
+
+Do not overload country names with political office language. The political office, emergency cabinet, military committee, colonial mission, compact council, bureau, authority, or board can be a mechanic or institution inside the country package. The map name should stay short and readable.
+
+Names may depend on ideology, route, leader, formable status, puppet status, or high-chaos transformation. Even then, the public name should remain a country name, not an agency name.
+
+For alternate governments, design internal bodies and party names separately from public country names. A route can have named councils, committees, directorates, juntas, congresses, restoration offices, cult offices, leagues, syndicates, ministries, synods, communes, or military commands. Those institution names should fit the country story, region, history, route, and ideological language without replacing the public country name.
 
 ## Formable nations and formation routes
 
 When an event creates, transforms, releases, or empowers countries, check whether formable nations should be part of the design. A formable is a meaningful country identity that appears after a country satisfies territorial, political, event, focus, or hidden-route requirements. Do not treat formables as only a cosmetic rename.
+
+Formable public names must follow the country naming rules above. The formation decision, congress, authority structure, charter, settlement, or council can have its own institutional name, but the formed map name should stay a direct country or formable name.
 
 A formable design should define:
 
@@ -1199,9 +1222,27 @@ Think through the event as far as the idea can reasonably go. If the event has m
 
 Large events should be written across multiple parts instead of being rushed into one response.
 
-Each part should be complete enough to be useful on its own. Stop at a clean point and state what section should continue next.
+Each part should be complete enough to be useful on its own. Stop at a clean section boundary or a clean subsection boundary when possible. If the response must stop in the middle of a large design surface, stop after a complete paragraph, table, or list item instead of cutting a thought in half.
 
-Do not summarize later sections just because the current response is getting long. Continue in the next part instead.
+Do not summarize later sections just because the current response is getting long. Continue in the next part instead. Use the available response space for real specification content. Do not hold back important design material for a shorter answer.
+
+When a large event specification cannot fit into one response, end the current part with a temporary continuation prompt for the next iteration. This continuation prompt is not part of the final specification, not part of the downloadable package, and not part of any event docs. It is only a working handoff that the user can paste back so the next response continues from the exact stopping point.
+
+The continuation prompt should be concise but precise. It should include:
+
+- the event id, event name, and current part number when known
+- the exact section and subsection where the previous part stopped
+- the last completed heading or table
+- the next heading, table, route, country package, decision family, asset group, or prompt package to write
+- any constraints that must continue to apply, including direction-only localisation, country naming rules, asset source rules, and the user's core event idea
+- a reminder to continue with full-depth design and not summarize missing sections
+- a reminder to avoid repeating already completed sections except for short context needed to continue cleanly
+
+Use a clear temporary heading such as `Temporary continuation prompt, not part of the spec`. Keep it outside the saved spec content. In the final compiled package, remove all temporary continuation prompts and only keep the complete specification, asset prompt, implementation prompt, and any other requested final files.
+
+If several iterations are needed, each part should write a new continuation prompt that reflects the new stopping point. Do not reuse an older continuation prompt after the design has moved forward.
+
+When the final part is complete, do not write a continuation prompt. Instead, provide the final package or completion summary and make clear that the specification has reached the planned end.
 
 For major events, the final combined specification may be extremely long. That is acceptable. A 10,000 line, 50,000 line, or 100,000+ line specification is valid if the event truly needs that much design detail. Do not compress focus trees, rare variants, or decision webs into summaries just to keep the file short.
 
@@ -1742,5 +1783,3 @@ Reject the draft if it has any of these problems:
 - obvious system plumbing repeated as design
 
 The spec should be ambitious, detailed, researched, and usable. Do not stop at a conservative minimum when the idea supports more.
-
-

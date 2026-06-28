@@ -1,4 +1,4 @@
-# Event 010 — Death: Core Spec and Campaign Flow
+# Event 010 - Death: Core Spec and Campaign Flow
 
 ## Replacement mandate
 
@@ -21,7 +21,7 @@ The implementation must remove the old concept from every active surface: event 
 | First location | Random remote low-population ocean island state |
 | First impression | Silent, inactive, peaceful, easy to ignore |
 | Initial units | None |
-| First public knowledge | Delayed missing-island reports, not a reveal of Death |
+| First public knowledge | Delayed marine-office packets, not a reveal of Death |
 | True reveal | First consumed mainland state with more than 100,000 population |
 | Terminal branch | Death consumes a full continent while Chaos is above 1000 |
 | Final branch | Death consumes all eligible world states |
@@ -40,7 +40,7 @@ The danger becomes readable through repetition: more islands stop answering, sta
 
 Baseline stages are the ordinary flow of the Death crisis. The First Silence and origin consumption are setup, not evolution entries. The event log records later milestone evolutions only after their required chaos tier and their actual in-world action have happened, so the event-log/evolution/detail window can explain a hidden crisis after the fact without pretending every baseline step is an evolution.
 
-### Stage 0 — Hidden bootstrap
+### Stage 0 - Hidden bootstrap
 
 A hidden event creates or activates Death on one eligible remote island state. The old owner silently loses control of that state. Death owns and controls it, cores it, and the state becomes a Death wasteland immediately.
 
@@ -48,21 +48,21 @@ No popup fires. No super-event fires. No world threat flag is set. No coalition 
 
 The first state consumption records the population loss internally and adds the lost population to the Death consumed-population variable. If the shared civilian deaths system is enabled, it also records civilian deaths through the shared death tracker. If that system is disabled, Death still tracks consumed population for its own spread scaling.
 
-### Stage 1 — Quiet island origin
+### Stage 1 - Quiet island origin
 
 Death does almost nothing for a long time. It has no army and makes no declarations. It cannot attack by ordinary fronts. Its first spread pulses prefer tiny nearby island states with the lowest population and low strategic value.
 
 A delayed report event may fire 90 to 180 days after the origin. It should not be global unless the player owns the island, controls it, owns nearby coasts, controls a nearby naval base, or has a relevant intelligence/observation hook. The report direction is:
 
-- a radio silence;
-- a mail ship returning with nobody at the pier;
-- a colonial office missing a census return;
-- fishing crews avoiding the place;
+- a radio silence.
+- a mail ship returning with nobody at the pier.
+- a colonial office missing a census return.
+- fishing crews avoiding the place.
 - rumours of a storm even though the weather records do not agree.
 
 The report should offer small reactions such as sending a survey boat, waiting for the next mail ship, or filing it as a local matter. It must not reveal Death or Zol.
 
-### Stage 2 — Island spread
+### Stage 2 - Island spread
 
 Death consumes other islands. It still does not announce itself. It should continue selecting low-population island targets first. The player can miss the pattern unless they watch the map, own affected islands, or respond to delayed reports.
 
@@ -70,7 +70,7 @@ Repeated island reports become slightly more disturbing but still indirect. The 
 
 Death remains militarily weak in this stage. It has no divisions and cannot be defeated through a conventional frontline unless a country discovers it, declares war, and occupies its tiles.
 
-### Stage 3 — Mainland reveal
+### Stage 3 - Mainland reveal
 
 The reveal triggers when Death consumes a mainland state with more than 100,000 population. A nearby coastal state on a continent is the intended target. The threshold refers to the population of the state at the moment of consumption before it is set to zero.
 
@@ -78,7 +78,6 @@ The reveal fires a super-event. The world now recognizes that this is not an ord
 
 After reveal:
 
-- Death becomes a world threat source.
 - Death automatically declares war on any country that controls a neighboring state.
 - Countries can use public containment decisions.
 - Death can wither neighboring states if it controls at least one mainland state.
@@ -88,28 +87,28 @@ After reveal:
 
 The reveal should feel like the moment the world finally gives the black shape on the map a name.
 
-### Stage 4 — Continental threat and world-end opening
+### Stage 4 - Continental threat and world-end opening
 
 The terminal branch begins only when both conditions are true:
 
-1. Death has consumed every eligible inhabited state on one continent; and
+1. Death has consumed every eligible inhabited state on one continent and
 2. Chaos is above 1000.
 
-If Death consumes a continent before Chaos passes 1000, the crisis enters a severe non-terminal `Black Continent` state and waits. If Chaos passes 1000 before a continent is fully consumed, the event remains a major world threat but does not start its world-end branch yet.
+If Death consumes a continent before Chaos passes 1000, the crisis enters a severe non-terminal `Black Continent` state, becomes a world threat source, and waits. If Chaos passes 1000 before a continent is fully consumed, the event remains a major crisis but does not become a world threat source or start its world-end branch yet.
 
 When both conditions are true, Death becomes a world-end scenario:
 
-- automatic random event firing should be frozen or gated as required by the world-end system;
-- a world-end super-event fires;
-- a random coastal foothold is created on every remaining continent that does not already contain Death;
-- Death spawns ghost divisions in those footholds;
-- Death shifts from passive border pressure to aggressive expansion;
-- withering intensifies and no longer waits as long between pulses;
+- automatic random event firing should be frozen or gated as required by the world-end system.
+- a world-end super-event fires.
+- a random coastal foothold is created on every remaining continent that does not already contain Death.
+- Death spawns ghost divisions in those footholds.
+- Death shifts from passive border pressure to aggressive expansion.
+- withering intensifies and no longer waits as long between pulses.
 - all containment decisions move into emergency mode.
 
 The world-end state is not just a stronger evolution. It is a terminal campaign branch.
 
-### Stage 5 — World consumed
+### Stage 5 - World consumed
 
 When Death controls or has consumed every eligible world state, a final super-event fires and the Death completion tracking can resolve for the relevant player state.
 
@@ -123,15 +122,15 @@ The origin target should be selected from ordered island eligibility tiers. The 
 
 A valid preferred origin state:
 
-- is an island state with no land adjacency to another state;
-- is coastal;
-- has low population, normally below 75,000;
-- is not a national capital;
-- is not owned by a major;
-- is not the player capital;
-- has little or no industry;
-- is not already a wasteland, outbreak core, terminal scenario state, or other special chaos-country seat;
-- is not currently occupied by a non-owner army;
+- is an island state with no land adjacency to another state.
+- is coastal.
+- has low population, normally below 75,000.
+- is not a national capital.
+- is not owned by a major.
+- is not the player capital.
+- has little or no industry.
+- is not already a wasteland, outbreak core, terminal scenario state, or other special chaos-country seat.
+- is not currently occupied by a non-owner army.
 - is not a scripted state that another active event requires.
 
 ### Secondary origin tier
@@ -142,10 +141,10 @@ If the preferred tier has no candidates, the secondary tier may allow remote isl
 
 Within the valid origin pool, bias toward:
 
-- lower population;
-- lower industrial value;
-- farther distance from major capitals;
-- island states with few ports and low supply;
+- lower population.
+- lower industrial value.
+- farther distance from major capitals.
+- island states with few ports and low supply.
 - states in the middle of oceans rather than dense archipelagos beside major home islands.
 
 The event should not always choose the same famous island. The point is that a place nobody is watching stops answering.
@@ -168,10 +167,10 @@ Suggested titles:
 
 Suggested option tone:
 
-- dry official uncertainty;
-- mild annoyance;
-- uneasy maritime superstition;
-- colonial bureaucracy pretending nothing serious happened;
+- dry official uncertainty.
+- mild annoyance.
+- uneasy maritime superstition.
+- colonial bureaucracy pretending nothing serious happened.
 - no direct apocalyptic language.
 
 Example option directions:
@@ -187,7 +186,7 @@ Do not prewrite the title, button text, cultural remark, or quote in this spec. 
 
 Title research direction: find a short reveal title that names or exposes the crisis without making the moment sound like the final apocalypse.
 
-Description direction: a mainland coastal state has emptied; the black country on the map is no longer a remote anomaly; governments now understand that ordinary quarantine, diplomacy, and colonial inquiry cannot explain the silence.
+Description direction: a mainland coastal state has emptied. The black country on the map is no longer a remote anomaly. Governments now understand that ordinary quarantine, diplomacy, and colonial inquiry cannot explain the silence.
 
 Button or cultural remark research direction: find a short researched line or allusion that reacts to diplomatic helplessness, official disbelief, counting the living, or the failure of ordinary treaty language. Do not use an invented sample line.
 
@@ -243,7 +242,7 @@ The details field should mention that the event replaces `Spirit of War/Peace` o
 
 Event log history should record the fire-once event as Death once it is known. Before reveal, reports can be logged under ambiguous labels if the event log supports hidden-stage text. After reveal, all logs should use `Death`.
 
-Evolution logs should record Death's milestone mutations as descriptive crisis history. The Island Pattern, mainland reveal, Last Shores, and whole-world consumption are evolution/detail entries only after the required chaos tier has been reached and the corresponding spread, consumption, or world-end action has happened. The quiet origin, delayed local reports, and `The First Silence` remain baseline setup and should not be logged as evolutions.
+Evolution logs should record Death's milestone mutations as descriptive crisis history. Second Shore records the first true island-spread unlock after baseline silence. Mainland Hunger records the mainland-route unlock after enough hidden island pressure exists. First Hosts and Hollow Hosts record the two ghost-division milestones around the 600 and 800 tiers. World End records the terminal host and aggression state after the world-end condition starts. The quiet origin, delayed local reports, first mainland reveal, and whole-world consumed finale remain baseline setup or terminal event history and should not be logged as normal evolutions.
 
 ## Cluster role
 
@@ -253,8 +252,9 @@ Death has no event cluster. It is a solitary fire-once incident with its own int
 
 - Event ID 10 is `Death`
 - Death starts on a remote island and is not globally announced.
+- Baseline Death consumes one small island and idles until Second Shore and an island-spread focus unlock further hidden spread.
 - The hidden island stage spreads slowly, prioritizes nearby sub-100,000-population islands, and falls back to distant eligible islands only when no nearby target exists.
-- The mainland reveal path cannot open before the Island Pattern evolution has happened through delayed evolution pacing, the required chaos tier has been reached, and enough hidden island pressure exists.
+- The mainland reveal path cannot open naturally before Mainland Hunger, the mainland focus, and enough hidden island pressure exist. A living war can only bypass this after Second Shore.
 - Death has no starting units.
 - Every consumed state becomes a wasteland and its population is deleted.
 - Death must be defeated by occupying all of its tiles, not by ordinary surrender shortcuts.

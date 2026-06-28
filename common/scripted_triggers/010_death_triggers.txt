@@ -288,12 +288,250 @@ death_is_valid_nearby_island_spread_target_lowest_names = {
 	death_is_near_active_wasteland = yes
 }
 
+death_has_consumed_more_than_one_island = {
+	check_variable = {
+		var = global.death_consumed_island_states
+		value = constant:death_spread.aggressive_war_island_gate
+		compare = greater_than
+	}
+}
+
+death_can_spread_to_islands = {
+	death_country_exists = yes
+	has_global_flag = death_evolution_second_shore_recorded
+	DTH = {
+		OR = {
+			has_country_flag = death_focus_hunger_shore
+			has_country_flag = death_focus_lowest_names_first
+			has_country_flag = death_focus_ports_without_voices
+			has_country_flag = death_focus_island_pattern
+		}
+	}
+}
+
+death_can_push_mainland_reveal = {
+	death_country_exists = yes
+	has_global_flag = death_evolution_mainland_hunger_recorded
+	DTH = { has_country_flag = death_focus_mainland_smell }
+}
+
+death_can_bypass_mainland_hunger_from_war = {
+	death_country_exists = yes
+	has_global_flag = death_evolution_second_shore_recorded
+	has_global_flag = death_living_declared_war
+	NOT = { has_global_flag = death_publicly_revealed }
+	NOT = { has_global_flag = death_defeated }
+	DTH = { has_war = yes }
+}
+
+death_can_use_shroud_focuses = {
+	death_country_exists = yes
+	NOT = { has_war = yes }
+	NOT = { has_global_flag = death_living_declared_war }
+	NOT = { has_global_flag = death_publicly_revealed }
+	NOT = { has_global_flag = death_defeated }
+	NOT = {
+		check_variable = {
+			var = global.chaos_meter_value
+			value = constant:chaos_meter_tier_range.tier_2.min
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+death_internal_decisions_visible = {
+	is_death_country = yes
+	death_country_exists = yes
+	has_global_flag = death_active
+	NOT = { has_global_flag = death_defeated }
+	NOT = { has_country_flag = death_neutralized_subject }
+}
+
+death_has_valid_island_spread_target = {
+	OR = {
+		any_state = { death_is_valid_nearby_island_spread_target_lowest_names = yes }
+		any_state = { death_is_valid_nearby_early_island_spread_target = yes }
+		any_state = { death_is_valid_island_spread_target_lowest_names = yes }
+		any_state = { death_is_valid_early_island_spread_target = yes }
+		any_state = { death_is_valid_nearby_island_spread_target = yes }
+		any_state = { death_is_valid_island_spread_target = yes }
+	}
+}
+
+death_can_use_mainland_pressure_standard_decision = {
+	death_can_push_mainland_reveal = yes
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:chaos_meter_tier_range.tier_2.min
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = global.death_consumed_states
+		value = constant:death_spread.mainland_consumed_state_gate
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = global.death_spread_pressure
+		value = constant:death_spread.mainland_pressure_threshold
+		compare = greater_than_or_equals
+	}
+	any_state = { death_is_valid_mainland_reveal_target = yes }
+}
+
+death_can_use_mainland_pressure_war_decision = {
+	death_can_push_mainland_reveal = yes
+	death_can_bypass_mainland_hunger_from_war = yes
+	any_state = { death_is_valid_triggerable_mainland_reveal_target = yes }
+}
+
+death_can_use_mainland_pressure_decision = {
+	OR = {
+		death_can_use_mainland_pressure_standard_decision = yes
+		death_can_use_mainland_pressure_war_decision = yes
+	}
+}
+
+death_ai_should_press_mainland_from_ledger = {
+	death_internal_decisions_visible = yes
+	death_can_use_mainland_pressure_decision = yes
+	can_pay_death_mainland_spread_souls = yes
+}
+
+death_ai_should_hold_host_souls_for_mainland_ledger = {
+	death_internal_decisions_visible = yes
+	NOT = { has_global_flag = death_publicly_revealed }
+	OR = {
+		death_can_use_mainland_pressure_decision = yes
+		AND = {
+			death_can_push_mainland_reveal = yes
+			OR = {
+				any_state = { death_is_valid_mainland_reveal_target = yes }
+				any_state = { death_is_valid_triggerable_mainland_reveal_target = yes }
+			}
+		}
+	}
+}
+
+death_ai_should_raise_hosts_from_ledger = {
+	death_internal_decisions_visible = yes
+	any_controlled_state = { death_is_valid_ghost_host_spawn_state = yes }
+	NOT = { death_ai_should_hold_host_souls_for_mainland_ledger = yes }
+}
+
+can_pay_death_island_spread_souls = {
+	check_variable = {
+		var = global.death_soul_power_available
+		value = global.death_island_spread_soul_cost
+		compare = greater_than_or_equals
+	}
+}
+
+can_pay_death_mainland_spread_souls = {
+	check_variable = {
+		var = global.death_soul_power_available
+		value = constant:death_soul_power.mainland_spread_cost
+		compare = greater_than_or_equals
+	}
+}
+
+can_pay_death_passive_host_souls = {
+	check_variable = {
+		var = global.death_soul_power_available
+		value = constant:death_ghosts.passive_host_budget_cost
+		compare = greater_than_or_equals
+	}
+}
+
+can_pay_death_stronger_host_souls = {
+	check_variable = {
+		var = global.death_soul_power_available
+		value = constant:death_ghosts.stronger_host_budget_cost
+		compare = greater_than_or_equals
+	}
+}
+
+can_pay_death_world_end_host_souls = {
+	check_variable = {
+		var = global.death_soul_power_available
+		value = constant:death_ghosts.world_end_host_budget_cost
+		compare = greater_than_or_equals
+	}
+}
+
+death_can_raise_passive_host_decision = {
+	death_internal_decisions_visible = yes
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:death_ghosts.passive_threshold
+		compare = greater_than_or_equals
+	}
+	NOT = {
+		check_variable = {
+			var = global.chaos_meter_value
+			value = constant:death_ghosts.stronger_threshold
+			compare = greater_than_or_equals
+		}
+	}
+	any_controlled_state = { death_is_valid_ghost_host_spawn_state = yes }
+	check_variable = {
+		var = global.death_passive_hosts_spawned
+		value = constant:death_ghosts.passive_host_global_cap
+		compare = less_than
+	}
+}
+
+death_can_raise_hollow_host_decision = {
+	death_internal_decisions_visible = yes
+	NOT = { has_global_flag = death_world_end_started }
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:death_ghosts.stronger_threshold
+		compare = greater_than_or_equals
+	}
+	any_controlled_state = { death_is_valid_ghost_host_spawn_state = yes }
+	check_variable = {
+		var = global.death_stronger_hosts_spawned
+		value = constant:death_ghosts.stronger_host_global_cap
+		compare = less_than
+	}
+}
+
+death_can_raise_last_shore_host_decision = {
+	death_internal_decisions_visible = yes
+	has_global_flag = death_world_end_started
+	any_controlled_state = { death_is_valid_ghost_host_spawn_state = yes }
+	check_variable = {
+		var = global.death_world_end_hosts_spawned
+		value = constant:death_ghosts.world_end_host_global_cap
+		compare = less_than
+	}
+}
+
+death_is_valid_ghost_host_spawn_state = {
+	is_controlled_by = DTH
+	has_state_flag = death_active_wasteland
+	impassable = no
+}
+
 death_is_valid_mainland_reveal_target = {
 	check_variable = {
 		var = global.chaos_meter_value
-		value = constant:chaos_meter_tier_range.tier_3.min
+		value = constant:chaos_meter_tier_range.tier_2.min
 		compare = greater_than_or_equals
 	}
+	is_island_state = no
+	is_coastal = yes
+	check_variable = {
+		var = state_population_k
+		value = constant:death_population.mainland_reveal_threshold_k
+		compare = greater_than
+	}
+	NOT = { death_is_consumed_state = yes }
+	NOT = { is_controlled_by = DTH }
+	death_state_has_no_divisions = yes
+}
+
+death_is_valid_triggerable_mainland_reveal_target = {
 	is_island_state = no
 	is_coastal = yes
 	check_variable = {
@@ -477,19 +715,106 @@ death_missing_island_decisions_visible = {
 	}
 }
 
-death_active_containment_decisions_visible = {
+death_country_has_coastal_state = {
+	any_controlled_state = { is_coastal = yes }
+}
+
+death_country_is_directly_threatened_by_death = {
+	any_controlled_state = { death_state_borders_active_wasteland = yes }
+}
+
+death_country_has_recognized_death_threat = {
+	OR = {
+		has_war_with = DTH
+		death_country_is_directly_threatened_by_death = yes
+		death_is_living_compact_member = yes
+		has_country_flag = death_living_compact_invited
+		has_country_flag = death_discovered_before_name
+		has_country_flag = death_containment_war_declaration_attempted
+		has_country_flag = death_recognized_death_war
+		has_country_flag = death_received_second_missing_island_report
+	}
+}
+
+death_country_has_death_response_access = {
+	OR = {
+		has_war_with = DTH
+		death_country_is_directly_threatened_by_death = yes
+		death_is_living_compact_member = yes
+		AND = {
+			death_country_has_coastal_state = yes
+			death_country_has_recognized_death_threat = yes
+		}
+	}
+}
+
+death_country_can_be_pulled_into_death_war = {
+	exists = yes
+	death_country_exists = yes
 	NOT = { is_death_country = yes }
 	NOT = { has_global_flag = death_defeated }
+	NOT = { has_war_with = DTH }
 	OR = {
-		has_global_flag = death_publicly_revealed
-		has_global_flag = death_world_end_started
+		death_country_is_directly_threatened_by_death = yes
+		AND = {
+			death_country_has_coastal_state = yes
+			death_country_has_recognized_death_threat = yes
+		}
+	}
+}
+
+death_country_can_choose_death_war = {
+	death_country_can_be_pulled_into_death_war = yes
+	death_has_no_forbidden_oath = yes
+}
+
+death_country_can_call_living_compact = {
+	death_has_no_forbidden_oath = yes
+	death_country_has_death_response_access = yes
+}
+
+death_country_can_join_living_compact = {
+	death_has_no_forbidden_oath = yes
+	OR = {
+		death_country_has_death_response_access = yes
+		AND = {
+			has_country_flag = death_living_compact_invited
+			death_country_has_coastal_state = yes
+		}
+	}
+}
+
+death_country_can_receive_living_compact_invite = {
+	exists = yes
+	NOT = { is_death_country = yes }
+	NOT = { has_global_flag = death_defeated }
+	NOT = { death_is_living_compact_member = yes }
+	death_has_no_forbidden_oath = yes
+	OR = {
+		has_war_with = DTH
+		death_country_is_directly_threatened_by_death = yes
+		AND = {
+			death_country_has_coastal_state = yes
+			death_country_has_recognized_death_threat = yes
+		}
+	}
+}
+
+death_active_containment_decisions_visible = {
+	NOT = { is_death_country = yes }
+	death_country_exists = yes
+	NOT = { has_global_flag = death_defeated }
+	OR = {
+		has_war_with = DTH
+		death_is_living_compact_member = yes
 		AND = {
 			death_missing_island_decisions_visible = yes
 			death_has_coastal_watch_candidate = yes
 		}
-		any_controlled_state = { death_state_borders_active_wasteland = yes }
-		has_country_flag = death_living_compact_member
-		has_country_flag = death_living_compact_leader
+		AND = {
+			has_global_flag = death_publicly_revealed
+			death_country_has_death_response_access = yes
+		}
 	}
 }
 

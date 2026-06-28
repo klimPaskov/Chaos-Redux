@@ -69,7 +69,7 @@ Recommended file surfaces:
 
 | Helper | Scope | Inputs | Outputs | Side effects | Call sites |
 | --- | --- | --- | --- | --- | --- |
-| `death_select_origin_state` | Any scope | Scenario/type temps may bias target | `event_target:death_selected_state`; temp `death_origin_selection_tier` | One-time `random_state` search only; no daily scan | Entry event, Quiet Origin SCN-006 |
+| `death_select_origin_state` | Any scope | Scenario/type temps may bias target | `event_target:death_selected_state`; temp `death_origin_selection_tier` | One-time `random_state` search only; no daily scan | Entry event, Instant Outbreak SCN-006 |
 | `death_consume_current_state` | State scope | `event_target:death_country_actor` or static `DTH`; temp `death_consumption_context`; optional `death_skip_public_effects` | Temp `death_last_consumed_population`; global counters updated | Records pre-consumption population, Death deaths, zeroes population, strips infrastructure/industry, transfers owner/controller/core to `DTH`, applies active wasteland modifier, sets `death_consumed_state` and `death_active_wasteland`, updates arrays, spread pressure, reveal/world-end checks | All origin, island spread, mainland reveal, wither completion, coastal jump, world-end foothold, SCN-006 launch paths |
 | `death_register_consumed_population_deaths` | State scope before population removal | Temp `death_last_consumed_population`; reason constant | Death counters and chaos meter deaths ledger | Calls `chaos_meter_register_deaths` with `chaos_deaths_is_civilian = 1`, `chaos_deaths_apply_state_pop = 1`, `chaos_deaths_target_country = OWNER`; Death should add `chaos_meter_deaths_reason.death_consumption` and a 0.10 chaos weight | Inside `death_consume_current_state` |
 | `death_strip_current_state_buildings` | State scope | Optional severity temp | none | Removes or damages `industrial_complex`, `arms_factory`, `dockyard`, `synthetic_refinery`, `fuel_silo`, `air_base`, `anti_air_building`, `radar_station`, forts, naval base, rail, supply node, infrastructure according to constants | Inside `death_consume_current_state`; optional harsher world-end branch |
@@ -89,19 +89,19 @@ Recommended file surfaces:
 | `death_clear_wither_on_current_state` | State scope | none | none | Clears `death_wither_target` and progress variable | Recapture, invalidation, consumption, defeat cleanup |
 | `death_start_coastal_jump_cooldown` | Any scope | Temp cooldown duration or phase | `global.death_coastal_jump_cooldown` | Sets numeric cooldown from constants | Successful coastal jump |
 | `death_reduce_coastal_jump_cooldown_for_pulse` | Any scope | Pulse interval temp | `global.death_coastal_jump_cooldown` | Subtracts pulse interval on scheduled Death pulse; clamps at zero | Hidden Death pulse |
-| `death_attempt_coastal_jump` | `DTH` country scope | Current phase, cooldown, target filters | Optional `event_target:death_coastal_jump_target` | Consumes one valid coastal target, starts cooldown, logs if revealed | Hidden spread pulse, after Death loses mainland foothold, SCN-006 Last Shores |
+| `death_attempt_coastal_jump` | `DTH` country scope | Current phase, cooldown, target filters | Optional `event_target:death_coastal_jump_target` | Consumes one valid coastal target, starts cooldown, logs if revealed | Hidden spread pulse and after Death loses mainland foothold |
 
 ### Ghosts, Defeat, and World Threat
 
 | Helper | Scope | Inputs | Outputs | Side effects | Call sites |
 | --- | --- | --- | --- | --- | --- |
 | `death_calculate_ghost_spawn_count` | `DTH` country scope | Temp `death_ghost_tier`; Death consumed population/states; scenario intensity | Temp `death_ghost_spawn_count` | Applies floors/caps/ratio ladder from constants | Ghost refresh pulse, world-end start, SCN-006 setup |
-| `death_spawn_ghost_hosts_in_current_state` | State scope | Temp count, tier/template selector | Units spawned | Uses `create_unit` for `DTH`; static branches or meta effect for template names if needed | Ghost refresh, world-end footholds, SCN-006 Mainland Reveal/Last Shores |
+| `death_spawn_ghost_hosts_in_current_state` | State scope | Temp count, tier/template selector | Units spawned | Uses `create_unit` for `DTH`; static branches or meta effect for template names if needed | Ghost refresh, world-end footholds, SCN-006 Instant Outbreak |
 | `death_spawn_ghost_hosts_for_tier` | `DTH` country scope | Tier and cap temps | none | Distributes hosts across active Death states or foothold states; respects total cap | Ghost refresh pulse, world-end start, SCN-006 |
 | `death_refresh_defeat_state` | Any scope, preferably after relevant state event | none | Temp or global defeat marker | If `DTH` has no controlled states or every controlled state is occupied by enemies, calls cleanup once | `on_state_control_changed`, `on_capitulation`, after consumption/jump, after failed spread pulse |
 | `death_refresh_world_threat_source` | Any scope | Reveal/world-end/Death active state | `world_threat_source_death` flag | Sets or clears Death threat source, then calls `refresh_world_threat_state` | Reveal, world-end, defeat cleanup, recovery |
 | `death_try_start_world_end` | Any scope | Chaos value, continent-consumed facts | Starts world-end if eligible | Sets `world_end`/Death flags, creates footholds, upgrades ghosts, refreshes world threat | After each consumption once mainland spread is active |
-| `death_create_world_end_footholds` | Any scope | Target continent constants and selection tiers | Foothold states consumed | Creates footholds on remaining continents; avoids duplicate continent footholds | World-end start, SCN-006 Last Shores |
+| `death_create_world_end_footholds` | Any scope | Target continent constants and selection tiers | Foothold states consumed | Creates footholds on remaining continents; avoids duplicate continent footholds | World-end start |
 
 ### Trigger Helpers
 
@@ -111,11 +111,11 @@ Recommended file surfaces:
 | `death_country_exists` | Any | none | `DTH` exists and is marked active | Scenario eligibility, entry guards |
 | `death_is_valid_origin_state_preferred` | State | Population and geography constants | Remote low-pop ocean island, unprotected, not invalid for country creation | Origin selection |
 | `death_is_valid_origin_state_fallback` | State | Broader population/geography constants | Acceptable fallback origin if preferred pool is empty | Origin selection only; report if used |
-| `death_is_valid_island_spread_target` | State | Death not publicly revealed or early phase | Valid island target, not already consumed, low population/defense | Island spread pulses, SCN-006 Island Pattern |
-| `death_is_valid_mainland_reveal_target` | State | Reveal threshold constant | Mainland state above reveal threshold, valid owner/controller, not consumed | Reveal target selection, SCN-006 Mainland Reveal |
+| `death_is_valid_island_spread_target` | State | Death not publicly revealed or early phase | Valid island target, not already consumed, low population/defense | Island spread pulses, SCN-006 Instant Outbreak |
+| `death_is_valid_mainland_reveal_target` | State | Reveal threshold constant | Mainland state above reveal threshold, valid owner/controller, not consumed | Reveal target selection, SCN-006 Instant Outbreak |
 | `death_is_valid_wither_target` | State | Death actor exists; adjacent-state trigger support validated | Neighbor of active Death mainland state, not consumed, not protected, not blocked by defenders, belongs to or is at war with a valid victim | Wither target selection |
 | `death_wither_target_has_blocking_defenders` | State | Exact division trigger scope must be validated | Non-Death enemy divisions are present in the target state | Wither pause/decay |
-| `death_is_valid_coastal_jump_target` | State | Cooldown already checked | Coastal, low defense/no divisions, not protected, valid continent preference | Coastal jumps and SCN-006 Last Shores |
+| `death_is_valid_coastal_jump_target` | State | Cooldown already checked | Coastal, low defense/no divisions, not protected, valid continent preference | Coastal jumps |
 | `death_can_attempt_coastal_jump` | Any | Cooldown variable and phase flags | Cooldown is zero and Death is revealed or in allowed high-chaos scenario phase | Spread pulse/coastal recovery |
 | `death_is_defeated` | Any or `DTH` | `DTH` exists | Death controls no states, or all controlled states are enemy-occupied per final implementation | Defeat refresh |
 | `death_should_be_world_threat_source` | Any | Reveal/world-end and active-state flags | Death is revealed or terminal and still controls at least one state | Threat refresh |
@@ -132,11 +132,8 @@ Add to `common/script_constants/chaosx_triggerable_scenarios_constants.txt`:
 - `triggerable_scenario_id.death = 6`
 - `triggerable_scenario_sort.death_id = 6`
 - `triggerable_scenario_sort.death_name = <chosen alphabetical slot>`
-- `triggerable_scenario_death_type.quiet_origin = 1`
-- `triggerable_scenario_death_type.island_pattern = 2`
-- `triggerable_scenario_death_type.mainland_reveal = 3`
-- `triggerable_scenario_death_type.last_shores = 4`
-- `triggerable_scenario_death_scale.*` for per-intensity setup counts, pressure, reveal delay, ghost tier, coastal cooldown override, and world-end foothold count
+- `triggerable_scenario_death_type.instant_outbreak = 1`
+- `triggerable_scenario_death_scale.*` for per-intensity island counts, mainland reveal counts, and starting ghost host counts
 
 Avoid renumbering existing scenario IDs. If name sorting is meant to remain alphabetical, update only sort values and rebuild view logic, not visible IDs.
 
@@ -145,12 +142,12 @@ Avoid renumbering existing scenario IDs. If name sorting is meant to remain alph
 | Helper | Scope | Inputs | Outputs | Side effects | Call sites |
 | --- | --- | --- | --- | --- | --- |
 | `select_triggerable_scenario_death` | Player/settings country | none | `global.triggerable_scenario_selected_id = 6` | Rebuilds scenario detail view | Scenario row click in settings GUI |
-| `trigger_death_scenario` | Player/settings country | `triggerable_scenarios_death_type`, global intensity | Dispatches selected Death scenario branch | Sets temporary launch flags, creates `DTH` if needed, preserves normal event timer, fires `chaosx.triggerable_scenarios.6`, clears bypass context | `trigger_selected_chaosx_scenario` Death branch |
-| `death_prepare_triggerable_scenario_scale` | Player/settings country or global root | Intensity and Death type | Temps/globals for island count, pressure, report delay, ghost tier, world-end toggle | Centralizes all scenario tuning | `trigger_death_scenario` |
-| `death_launch_scenario_quiet_origin` | Global/event root | Scale temps | Origin consumed silently | Uses normal origin helper; schedules hidden report/spread; no public reveal unless later conditions occur | SCN-006 Quiet Origin |
-| `death_launch_scenario_island_pattern` | Global/event root | Island count and pressure temps | Multiple islands consumed | Uses repeated bounded state selection; may set stronger early pressure; still no broad scan | SCN-006 Island Pattern |
-| `death_launch_scenario_mainland_reveal` | Global/event root | Reveal target and ghost tier temps | Mainland state consumed and public reveal fired | Calls normal reveal, threat refresh, containment hooks, optional initial ghosts | SCN-006 Mainland Reveal |
-| `death_launch_scenario_last_shores` | Global/event root | World-end scale temps | World-end footholds and aggressive ghosts | Sets Death terminal flags if no incompatible world-end conflict; creates remaining-continent footholds; refreshes threat | SCN-006 Last Shores |
+| `trigger_death_scenario` | Player/settings country | Global intensity | Dispatches Instant Outbreak | Sets temporary launch flags, creates `DTH` if needed, preserves normal event timer, fires `chaosx.triggerable_scenarios.6`, clears bypass context | `trigger_selected_chaosx_scenario` Death branch |
+| `death_launch_instant_outbreak` | Global/event root | Intensity temps | Origin, extra islands, and mainland reveal states consumed | Uses normal origin and consumption helpers, skips missing-island reports for the instant setup, schedules normal Death pulses afterward | SCN-006 Instant Outbreak |
+| `death_triggerable_consume_extra_island` | Global/event root | Intensity-selected repeat count | One valid island consumed | Uses the shared consumption helper without shortcut chaos or evolution changes | SCN-006 Instant Outbreak |
+| `death_triggerable_consume_mainland_state` | Global/event root | Intensity-selected repeat count | One valid mainland reveal state consumed | Uses the shared consumption helper and public reveal flow without natural evolution gates | SCN-006 Instant Outbreak |
+| `death_triggerable_spawn_passive_hosts` | Player/settings country | Scenario intensity | One weak starting host created | Directly creates the scenario host and charges Death host counters afterward | Low and Medium SCN-006 |
+| `death_triggerable_spawn_stronger_hosts` | Player/settings country | Scenario intensity | Two stronger starting hosts created | Directly creates scenario hosts and charges Death host counters afterward | High and Maximum SCN-006 |
 | `death_cleanup_triggerable_scenario_context` | Any | none | none | Clears launch bypass flags, scenario temp variables, and any global event targets used only by launch | End of `trigger_death_scenario` and fail paths |
 
 ### Triggerable Scenario Call-Site Checklist
@@ -159,12 +156,12 @@ Avoid renumbering existing scenario IDs. If name sorting is meant to remain alph
 - Register Death in `triggerable_scenarios_initialize_registry`.
 - Include Death in `triggerable_scenarios_rebuild_view` sort passes.
 - Add `select_triggerable_scenario_death`.
-- Add Death branches to `triggerable_scenario_type_previous` and `triggerable_scenario_type_next`, cycling 1 through 4.
+- Add Death branches to `triggerable_scenario_type_previous` and `triggerable_scenario_type_next`, keeping the single Instant Outbreak type selected.
 - Add Death branch to `trigger_selected_chaosx_scenario`.
 - Add Death branch to `triggerable_scenario_can_launch_selected`.
 - Add scripted localisation for Death ID, name, type, type effect, type impact, intensity impact, and blocked reasons.
 - Add `chaosx.triggerable_scenarios.6` confirmation/result event.
-- Add settings export/import scalar for `triggerable_scenarios_death_type` if the scenario settings export is expected to preserve scenario type.
+- Add settings export/import scalar for `triggerable_scenarios_death_type` only if the scenario settings export is expected to preserve the single Instant Outbreak type explicitly.
 
 ## Constants and Tuning Plan
 

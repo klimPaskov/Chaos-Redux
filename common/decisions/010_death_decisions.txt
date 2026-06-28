@@ -13,6 +13,154 @@
 # coastal watch, wasteland gear, and dead-zone outposts.
 # ============================================================================
 
+death_black_ledger_category = {
+	death_consume_another_island = {
+		icon = GFX_decision_death_survey_boat
+		visible = {
+			death_internal_decisions_visible = yes
+			death_can_spread_to_islands = yes
+		}
+		available = {
+			death_has_valid_island_spread_target = yes
+			hidden_trigger = { can_pay_death_island_spread_souls = yes }
+		}
+		custom_cost_trigger = { hidden_trigger = { can_pay_death_island_spread_souls = yes } }
+		custom_cost_text = death_island_spread_soul_cost_text
+		days_re_enable = 28
+		complete_effect = {
+			custom_effect_tooltip = death_consume_another_island_tt
+			hidden_effect = { death_decision_spread_to_island_effect = yes }
+		}
+		ai_will_do = {
+			base = constant:death_decision_tuning.ai_high
+			modifier = { factor = 0 death_ai_should_press_mainland_from_ledger = yes }
+			modifier = { factor = 0 has_global_flag = death_world_end_started }
+			modifier = {
+				factor = constant:death_decision_tuning.ai_ledger_hidden_island_factor
+				NOT = { has_global_flag = death_publicly_revealed }
+			}
+			modifier = {
+				factor = constant:death_decision_tuning.ai_ledger_public_island_factor
+				has_global_flag = death_publicly_revealed
+			}
+		}
+	}
+
+	death_press_to_mainland = {
+		icon = GFX_decision_death_quarantine_line
+		visible = {
+			death_internal_decisions_visible = yes
+			DTH = { has_country_flag = death_focus_mainland_smell }
+		}
+		available = {
+			death_can_use_mainland_pressure_decision = yes
+			hidden_trigger = { can_pay_death_mainland_spread_souls = yes }
+		}
+		custom_cost_trigger = { hidden_trigger = { can_pay_death_mainland_spread_souls = yes } }
+		custom_cost_text = death_mainland_spread_soul_cost_text
+		days_re_enable = 45
+		complete_effect = {
+			custom_effect_tooltip = death_press_to_mainland_tt
+			hidden_effect = { death_decision_press_to_mainland_effect = yes }
+		}
+		ai_will_do = {
+			base = constant:death_decision_tuning.ai_high
+			modifier = {
+				factor = constant:death_decision_tuning.ai_ledger_mainland_unrevealed_factor
+				NOT = { has_global_flag = death_publicly_revealed }
+			}
+			modifier = {
+				factor = constant:death_decision_tuning.ai_ledger_mainland_public_factor
+				has_global_flag = death_publicly_revealed
+			}
+			modifier = {
+				factor = constant:death_decision_tuning.ai_ledger_mainland_war_factor
+				death_can_use_mainland_pressure_war_decision = yes
+			}
+		}
+	}
+
+	death_raise_passive_hosts = {
+		icon = GFX_decision_death_black_book
+		visible = { death_can_raise_passive_host_decision = yes }
+		available = { hidden_trigger = { can_pay_death_passive_host_souls = yes } }
+		custom_cost_trigger = { hidden_trigger = { can_pay_death_passive_host_souls = yes } }
+		custom_cost_text = death_passive_host_soul_cost_text
+		days_re_enable = 21
+		complete_effect = {
+			custom_effect_tooltip = death_raise_passive_hosts_tt
+			hidden_effect = { death_decision_raise_passive_host_effect = yes }
+		}
+		ai_will_do = {
+			base = constant:death_decision_tuning.ai_high
+			modifier = {
+				factor = 0
+				NOT = { death_ai_should_raise_hosts_from_ledger = yes }
+			}
+			modifier = {
+				factor = constant:death_decision_tuning.ai_ledger_host_public_factor
+				has_global_flag = death_publicly_revealed
+			}
+			modifier = {
+				factor = constant:death_decision_tuning.ai_ledger_host_war_factor
+				has_war = yes
+			}
+		}
+	}
+
+	death_raise_hollow_hosts = {
+		icon = GFX_decision_death_black_book
+		visible = { death_can_raise_hollow_host_decision = yes }
+		available = { hidden_trigger = { can_pay_death_stronger_host_souls = yes } }
+		custom_cost_trigger = { hidden_trigger = { can_pay_death_stronger_host_souls = yes } }
+		custom_cost_text = death_hollow_host_soul_cost_text
+		days_re_enable = 18
+		complete_effect = {
+			custom_effect_tooltip = death_raise_hollow_hosts_tt
+			hidden_effect = { death_decision_raise_hollow_host_effect = yes }
+		}
+		ai_will_do = {
+			base = constant:death_decision_tuning.ai_high
+			modifier = {
+				factor = 0
+				NOT = { death_ai_should_raise_hosts_from_ledger = yes }
+			}
+			modifier = {
+				factor = constant:death_decision_tuning.ai_ledger_host_public_factor
+				has_global_flag = death_publicly_revealed
+			}
+			modifier = {
+				factor = constant:death_decision_tuning.ai_ledger_host_war_factor
+				has_war = yes
+			}
+		}
+	}
+
+	death_raise_last_shore_hosts = {
+		icon = GFX_decision_death_black_oath
+		visible = { death_can_raise_last_shore_host_decision = yes }
+		available = { hidden_trigger = { can_pay_death_world_end_host_souls = yes } }
+		custom_cost_trigger = { hidden_trigger = { can_pay_death_world_end_host_souls = yes } }
+		custom_cost_text = death_last_shore_host_soul_cost_text
+		days_re_enable = 12
+		complete_effect = {
+			custom_effect_tooltip = death_raise_last_shore_hosts_tt
+			hidden_effect = { death_decision_raise_last_shore_host_effect = yes }
+		}
+		ai_will_do = {
+			base = constant:death_decision_tuning.ai_high
+			modifier = {
+				factor = constant:death_decision_tuning.ai_ledger_host_world_end_factor
+				has_global_flag = death_world_end_started
+			}
+			modifier = {
+				factor = constant:death_decision_tuning.ai_ledger_host_war_factor
+				has_war = yes
+			}
+		}
+	}
+}
+
 death_missing_island_category = {
 	death_send_survey_boat = {
 		icon = GFX_decision_death_survey_boat
@@ -35,6 +183,7 @@ death_missing_island_category = {
 		}
 		ai_will_do = {
 			base = constant:death_decision_tuning.ai_low
+			modifier = { factor = 0 NOT = { death_has_consumed_more_than_one_island = yes } }
 			modifier = { factor = 3 has_country_flag = death_received_second_missing_island_report }
 			modifier = { factor = 0 has_global_flag = death_publicly_revealed }
 		}
@@ -105,11 +254,7 @@ death_country_containment_category = {
 		icon = GFX_decision_death_quarantine_line
 		visible = {
 			has_global_flag = death_publicly_revealed
-			NOT = { has_global_flag = death_defeated }
-			death_country_exists = yes
-			NOT = { is_death_country = yes }
-			death_has_no_forbidden_oath = yes
-			NOT = { has_war_with = DTH }
+			death_country_can_choose_death_war = yes
 		}
 		available = {
 			hidden_trigger = {
@@ -129,6 +274,7 @@ death_country_containment_category = {
 		}
 		ai_will_do = {
 			base = constant:death_decision_tuning.ai_high
+			modifier = { factor = 0 NOT = { death_has_consumed_more_than_one_island = yes } }
 			modifier = { factor = 2 any_controlled_state = { death_state_borders_active_wasteland = yes } }
 		}
 	}
@@ -140,12 +286,7 @@ death_country_containment_category = {
 			NOT = { has_global_flag = death_defeated }
 			NOT = { has_global_flag = death_living_compact_formed }
 			NOT = { is_death_country = yes }
-			death_has_no_forbidden_oath = yes
-			OR = {
-				is_major = yes
-				has_war_with = DTH
-				any_controlled_state = { death_state_borders_active_wasteland = yes }
-			}
+			death_country_can_call_living_compact = yes
 		}
 		available = { hidden_trigger = { can_pay_death_call_compact_cost = yes } }
 		custom_cost_trigger = { hidden_trigger = { can_pay_death_call_compact_cost = yes } }
@@ -169,14 +310,8 @@ death_country_containment_category = {
 			has_global_flag = death_living_compact_formed
 			NOT = { has_global_flag = death_defeated }
 			NOT = { is_death_country = yes }
-			death_has_no_forbidden_oath = yes
 			NOT = { death_is_living_compact_member = yes }
-			OR = {
-				has_country_flag = death_living_compact_invited
-				is_major = yes
-				has_war_with = DTH
-				any_controlled_state = { death_state_borders_active_wasteland = yes }
-			}
+			death_country_can_join_living_compact = yes
 		}
 		available = { hidden_trigger = { can_pay_death_join_compact_cost = yes } }
 		custom_cost_trigger = { hidden_trigger = { can_pay_death_join_compact_cost = yes } }
@@ -203,7 +338,7 @@ death_country_containment_category = {
 			death_country_exists = yes
 			any_country = {
 				death_is_living_compact_member = yes
-				NOT = { has_war_with = DTH }
+				death_country_can_be_pulled_into_death_war = yes
 				DTH = { can_declare_war_on = PREV }
 			}
 		}
@@ -218,7 +353,10 @@ death_country_containment_category = {
 			custom_effect_tooltip = death_compact_war_declaration_tt
 			hidden_effect = { death_decision_compact_war_declaration_effect = yes }
 		}
-		ai_will_do = { base = constant:death_decision_tuning.ai_high }
+		ai_will_do = {
+			base = constant:death_decision_tuning.ai_high
+			modifier = { factor = 0 NOT = { death_has_consumed_more_than_one_island = yes } }
+		}
 	}
 
 	death_joint_coastal_patrol_plan = {
