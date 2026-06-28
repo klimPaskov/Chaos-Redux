@@ -235,6 +235,8 @@ When a Fury actor defeats its target, the settlement should:
 
 If the defeated target is in a larger war or has complicated faction ties, Fury should get a clean occupation reward without breaking unrelated player wars. The settlement must avoid stealing player-occupied land.
 
+If a South American Fury actor capitulates a South American target, the Fury settlement should annex that target immediately from `on_capitulation`. This keeps regional intervention or Monroe Doctrine white-peace handling from undoing the Fury conquest before the weekly target loop can react.
+
 ## First-conquest news event
 
 A news event should fire when any Fury country defeats its first neighbor.

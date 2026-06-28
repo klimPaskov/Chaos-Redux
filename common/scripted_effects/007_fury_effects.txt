@@ -811,6 +811,45 @@ fury_declare_on_rival_actor = {
 	}
 }
 
+fury_on_capitulation = {
+	# ROOT is the capitulated country, FROM is the winner.
+	if = {
+		limit = {
+			exists = yes
+			has_capitulated = yes
+			NOT = { is_fury_actor = yes }
+			capital_scope = { is_on_continent = south_america }
+			FROM = {
+				exists = yes
+				is_fury_actor = yes
+				has_war_with = ROOT
+				capital_scope = { is_on_continent = south_america }
+			}
+		}
+		save_event_target_as = fury_south_american_capitulated_target
+		FROM = {
+			annex_country = {
+				target = event_target:fury_south_american_capitulated_target
+				transfer_troops = no
+			}
+			clr_country_flag = fury_has_current_target
+			clear_variable = fury_current_target
+			fury_update_occupation_pressure = yes
+			if = {
+				limit = {
+					NOT = { has_country_flag = fury_first_conquest_recorded }
+					num_of_controlled_states > 1
+				}
+				country_event = { id = chaosx.nr7.30 hours = 1 }
+			}
+			if = {
+				limit = { fury_actor_can_continue = yes }
+				country_event = { id = chaosx.nr7.10 days = 2 }
+			}
+		}
+	}
+}
+
 fury_track_player_containment_links = {
 	every_country = {
 		limit = {
