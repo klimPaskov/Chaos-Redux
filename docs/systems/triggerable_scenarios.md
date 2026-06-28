@@ -40,7 +40,7 @@ Type controls cycle scenario-specific type variables:
 - Soviet Collapse: ordinary republics or chaos republics.
 - Final Silence: nuclear or thermonuclear payload.
 - Death: Instant Outbreak only.
-- Reserved scenario slots: fixed Reserved display with neutral notices.
+- Reserved placeholders: fixed Reserved display with neutral placeholder launch events.
 
 The trigger button opens a separate confirmation window. Confirming reads the stored selected scenario, type, and intensity at launch time. Scenario launches intentionally bypass the normal automatic firing prerequisites for their source events, including chaos thresholds, prior event-state gates, route prerequisites, and super-event history flags. The launch gate only keeps impossible or conflicting launches out, such as requiring the Soviet Union to exist for Soviet Collapse and preventing most second world-end branches while `world_end` is already active. The launch button uses the same gate for click enablement and buttonstate rendering, so impossible selections are disabled and visually greyed out before the confirmation window can open.
 
@@ -86,8 +86,8 @@ Intensity controls the starting footprint and starting ghost hosts. Low creates 
 
 ### SCN-007: Disaster Barrage
 
-Reserved manual scenario slot for Event 013. It remains listed in the manual scenario window and launches only a neutral notice.
+Reserved manual scenario placeholder for Event 013. It remains listed in the manual scenario window and launches only a neutral placeholder event until the source event is reworked.
 
 ### SCN-008: Africa Is One
 
-Reserved manual scenario slot for Event 012. It remains listed in the manual scenario window and launches only a neutral notice.
+Reserved manual scenario placeholder for Event 012. It remains listed in the manual scenario window and launches only a neutral placeholder event until the source event is reworked.
