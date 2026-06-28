@@ -200,6 +200,40 @@ country_event = {
     }
 }
 
+country_event = {
+	id = chaosx.nr7.60
+	title = chaosx.nr7.60.t
+	desc = chaosx.nr7.60.d
+	picture = GFX_report_event_fury_war_office
+	is_triggered_only = yes
+
+	trigger = {
+		tag = USA
+		has_event_target = fury_monroe_response_actor
+		event_target:fury_monroe_response_actor = {
+			exists = yes
+			is_fury_actor = yes
+			capital_scope = { is_on_continent = south_america }
+		}
+		NOT = { has_war_with = event_target:fury_monroe_response_actor }
+		can_declare_war_on = event_target:fury_monroe_response_actor
+	}
+
+	option = {
+		name = chaosx.nr7.60.a
+		ai_chance = { base = 999 }
+		declare_war_on = {
+			target = event_target:fury_monroe_response_actor
+			type = annex_everything
+		}
+	}
+
+	option = {
+		name = chaosx.nr7.60.b
+		ai_chance = { base = 1 }
+	}
+}
+
 news_event = {
     id = chaosx.news.7007
     title = chaosx.news.7007.t
