@@ -8,6 +8,7 @@ Event 007 Fury is a repeatable Wars-cluster event that transforms safe AI minors
 2. The selected country receives `fury_national_fury`, the shared `fury_focus_tree`, starting Fury variables, the base support-equipment and engineer-company unlocks required by the Fury Column template, starting units, equipment, a hidden finite reinforcement reserve, and a self-scheduled weekly event loop.
 3. `chaosx.nr7.10` scores every valid neighboring target, prefers weak isolated neighbors, penalizes faction-backed or major targets, saves the best target, and declares an annexation war.
 4. `chaosx.nr7.20` runs only on active Fury actors every seven days. Each weekly tick draws one division from the actor's finite reinforcement reserve while any reserve remains, updates Momentum and Overextension, checks whether the current war has ended, and queues another target scan when appropriate.
+   South American Fury actors also resolve South American target capitulations through `fury_on_capitulation`, which annexes the defeated target immediately before regional white-peace handling can unwind the Fury war.
 5. `chaosx.nr7.30` records the first conquest and fires `chaosx.news.7007`.
 6. Fury cleanup clears the actor state if the country capitulates or loses controlled territory.
 
