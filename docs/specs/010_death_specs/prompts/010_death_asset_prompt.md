@@ -1,4 +1,4 @@
-# Asset Prompt — Event 010 Death
+# Asset Prompt: Event 010 Death
 
 Create the final visual asset package for Event 010 `Death` according to the specs in `docs/specs/010_death_specs/specs/`.
 
@@ -35,12 +35,12 @@ Use generated art for fictional, symbolic, supernatural, and alternate-history a
 - `super_event_death_reveal`, 457x328, generated: black coastline, empty mainland settlement, official observers dwarfed by absence.
 - `super_event_death_world_end`, 457x328, generated: black tide/shoreline world-end image.
 - `super_event_death_defeat_aftermath`, 457x328, generated: soldiers or surveyors in dead land, victory without restoration.
-- `super_event_death_world_consumed`, 457x328, generated: empty radio room/map table, no operators, no readable text.
+- `super_event_death_world_consumed`, 457x328, generated: ruined coastal capital consumed by a vast black tide, dramatic exterior end-state, no office, no map table, no readable text.
 - Optional `super_event_death_black_oath`, 457x328, generated if Herald route implemented.
 
 ## Required icons
 
-Create each icon type as its own asset; do not resize focus icons into ideas or decisions.
+Create each icon type as its own asset. Do not resize focus icons into ideas or decisions.
 
 Ideas/national spirits 64x64:
 
@@ -82,7 +82,7 @@ Create completed achievement icons for every achievement in `010_death_achieveme
 If the Black Atlas scripted GUI is implemented, create:
 
 - `death_black_atlas_background` static panel.
-- `death_black_atlas_header_animated` plus static fallback; slow dark fog/shroud frames.
+- `death_black_atlas_header_animated` plus static fallback. Slow dark fog/shroud frames.
 - `death_coastal_risk_pulse_animated` plus static fallback.
 - `death_wither_target_frame_animated` plus static fallback.
 - `death_compact_warning_animated` plus static fallback.

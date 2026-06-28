@@ -1,16 +1,16 @@
-# Event 010 — Death: Assets, Super-Events, Achievements, Scenarios, and Acceptance
+# Event 010 - Death: Assets, Super-Events, Achievements, Scenarios, and Acceptance
 
 ## Visual identity
 
 Death's visual language should be simple and severe:
 
-- black map color;
-- empty shorelines;
-- abandoned harbors;
-- fog or storm over dead ground;
-- official paper records with no names;
-- maps that look wrong because a place is present but no longer inhabited;
-- Zol as a face-like absence rather than a monster;
+- black map color.
+- empty shorelines.
+- abandoned harbors.
+- fog or storm over dead ground.
+- official paper records with no names.
+- maps that look wrong because a place is present but no longer inhabited.
+- Zol as a face-like absence rather than a monster.
 - ghost divisions as thin, low-contrast military silhouettes, not fantasy undead hordes.
 
 Avoid gore, skull spam, horror-comedy, modern cinematic color grading, and readable generated text. The event works best when it is quiet.
@@ -23,7 +23,7 @@ Avoid gore, skull spam, horror-comedy, modern cinematic color grading, and reada
 | --- | --- | --- | --- |
 | `DTH` flag set | Flag normal/medium/small | Generated fictional or hand-authored from generated source | Almost black cloth/void flag, no readable emblem, no text. |
 | Zol leader portrait | Leader portrait 156x210 | Generated fictional/nonhuman | Black figure, void-lit face (bright white light from eyes glowing), period-compatible painterly treatment. Subtle eyes glow animation |
-| Zol world-end portrait | Animated leader portrait plus static fallback | Generated frame-by-frame | Subtle void/shroud motion; real frames, not filter pulse. |
+| Zol world-end portrait | Animated leader portrait plus static fallback | Generated frame-by-frame | Subtle void/shroud motion. Real frames, not filter pulse. |
 | Herald of Zol cosmetic flag | Optional route flag | Generated fictional | Black oath motif distinct from Death's own flag. |
 | Black Apostolate flag | Optional hidden route flag | Generated fictional | If hidden route implemented, separate from DTH flag. |
 
@@ -35,7 +35,7 @@ Avoid gore, skull spam, horror-comedy, modern cinematic color grading, and reada
 | `report_event_death_lighthouse` | Report image 210x176 | Generated period-documentary | Lighthouse burning over empty island settlement. |
 | `report_event_death_census` | Report image 210x176 | Generated period-documentary | Census office, papers, empty chairs, no readable text. |
 | `news_event_death_mainland_reveal` | News image 397x153 black and white | Generated period-news | Mainland coastal town or road emptied, black horizon. |
-| `news_event_death_defeated` | News image 397x153 black and white | Generated period-news | Troops entering empty blackened town; no triumphal crowds. |
+| `news_event_death_defeated` | News image 397x153 black and white | Generated period-news | Troops entering empty blackened town. No triumphal crowds. |
 
 Generated report images still need report-card treatment. Generated news images must be black and white.
 
@@ -44,10 +44,10 @@ Generated report images still need report-card treatment. Generated news images 
 | Super-event | Image asset | Source mode | Direction |
 | --- | --- | --- | --- |
 | Mainland reveal | `super_event_death_reveal` | Generated | Black coastline, empty mainland settlement, official observers dwarfed by absence. |
-| World-end | `super_event_death_world_end` | Generated | Several distant coasts or one symbolic shore with black tide; terminal mood. |
-| Defeat aftermath | `super_event_death_defeat_aftermath` | Generated | Soldiers or surveyors in dead empty land; victory without restoration. |
-| Whole world consumed | `super_event_death_world_consumed` | Generated symbolic/documentary | Empty map table or final radio room with no operators; no readable text. |
-| Herald oath optional | `super_event_death_black_oath` | Generated | Government officials before a dark sealed document; not modern occult neon. |
+| World-end | `super_event_death_world_end` | Generated | Several distant coasts or one symbolic shore with black tide. Terminal mood. |
+| Defeat aftermath | `super_event_death_defeat_aftermath` | Generated | Soldiers or surveyors in dead empty land. Victory without restoration. |
+| Whole world consumed | `super_event_death_world_consumed` | Generated symbolic/documentary | Ruined coastal capital consumed by a vast black tide. Dramatic exterior end-state, no office, no map table, no readable text. |
+| Herald oath optional | `super_event_death_black_oath` | Generated | Government officials before a dark sealed document. Not modern occult neon. |
 
 ### Icons
 
@@ -75,7 +75,7 @@ The implementation should not derive small icons by resizing focus icons. Each i
 | Asset | Target | State logic | Notes |
 | --- | --- | --- | --- |
 | `death_black_atlas_background` | Scripted GUI/window | Static after reveal | Dark map-board panel, readable UI space. |
-| `death_black_atlas_header_animated` | Header strip | Visible after reveal; stronger at world-end | Frame-sheet, slow fog/shroud drift. |
+| `death_black_atlas_header_animated` | Header strip | Visible after reveal. Stronger at world-end | Frame-sheet, slow fog/shroud drift. |
 | `death_coastal_risk_pulse_animated` | Risk icon | Shows high/critical coastal jump risk | Static fallback required. |
 | `death_wither_target_frame_animated` | State card frame | Active wither target | Thin animated edge. |
 | `death_compact_warning_animated` | Compact panel | Low cohesion | Subtle flicker. |
@@ -89,7 +89,7 @@ Super-event title text, button text, cultural remarks, and quotes are not select
 
 Each super-event below uses a functional role label only. The role label is for planning and asset routing, not a final title. The final title, button text, cultural remark, and quote must come from `docs/super_events/010_death_super_event_research.md` after source-backed research.
 
-### Super-event role 1 — Mainland reveal
+### Super-event role 1 - Mainland reveal
 
 | Field | Direction |
 | --- | --- |
@@ -97,15 +97,15 @@ Each super-event below uses a functional role label only. The role label is for 
 | Trigger | Death consumes first mainland state with more than 100,000 population. |
 | Role | First reveal. |
 | Tone | Blunt public recognition, not yet final apocalypse. |
-| Title requirement | Research a short reveal title; do not use an unresearched working title. |
+| Title requirement | Research a short reveal title. Do not use an unresearched working title. |
 | Description direction | A mainland coastal state has emptied. The old island reports are reinterpreted. The black country is now a named crisis. |
 | Button or cultural remark requirement | Research a short line or allusion about diplomatic helplessness, counting the living, official disbelief, or failed treaty language. Do not use invented sample text. |
 | Quote requirement | Research and verify a quote about death, silence, discovery, fear, naming, or inevitability. Prefer public-domain literature, scripture, philosophy, or historical source. |
-| Audio direction | Sparse, grim, 1-2 minute public-domain or clearly licensed track; not a drone/test tone. |
+| Audio direction | Sparse, grim, 1-2 minute public-domain or clearly licensed track. Not a drone/test tone. |
 | Image | `super_event_death_reveal` generated. |
-| Follow-up | Unlock Death Country decisions, Compact, world-threat flag. |
+| Follow-up | Unlock Death Country decisions and Compact. World-threat flag waits for continent consumption. |
 
-### Super-event role 2 — World-end
+### Super-event role 2 - World-end
 
 | Field | Direction |
 | --- | --- |
@@ -114,21 +114,21 @@ Each super-event below uses a functional role label only. The role label is for 
 | Role | World-end scenario. |
 | Tone | Terminal, oceanic, global. |
 | Title requirement | Research a short terminal title tied to coasts, final borders, silence, or Death crossing continents. Do not use an unresearched working title. |
-| Description direction | One continent is gone from the living world; new black footholds appear on every remaining continent. |
+| Description direction | One continent is gone from the living world. New black footholds appear on every remaining continent. |
 | Button or cultural remark requirement | Research a short line or allusion about every shore becoming exposed, the sea carrying disaster, or the last safe border failing. Do not use invented sample text. |
 | Quote requirement | Research and verify a quote about finality, judgment, silence, shores, collapse, or the end of order. |
 | Audio direction | Finality, slow dread, unique final track. |
 | Image | `super_event_death_world_end` generated. |
 | Follow-up | Set world-end flag, create footholds, spawn world-end hosts, freeze normal event firing. |
 
-### Super-event role 3 — Defeat aftermath
+### Super-event role 3 - Defeat aftermath
 
 | Field | Direction |
 | --- | --- |
 | Functional role label | Defeat aftermath |
 | Trigger | Death defeated after public reveal and after consuming a large crisis threshold. |
 | Role | Defeat aftermath. |
-| Tone | Costly victory; no restoration of the dead. |
+| Tone | Costly victory. No restoration of the dead. |
 | Title requirement | Research a short aftermath title about survival, empty land, memory, or victory that cannot restore the dead. Do not use an unresearched working title. |
 | Description direction | Death is removed from the map, but wastelands stay empty. Countries argue over memory, rebuilding, and blame. |
 | Button or cultural remark requirement | Research a short line or allusion about grief, memorial records, the limits of victory, or the names of the dead. Do not use invented sample text. |
@@ -137,7 +137,7 @@ Each super-event below uses a functional role label only. The role label is for 
 | Image | `super_event_death_defeat_aftermath` generated. |
 | Follow-up | Cleanup compact, open reconstruction decisions, mark Death defeated. |
 
-### Super-event role 4 — Whole world consumed
+### Super-event role 4 - Whole world consumed
 
 | Field | Direction |
 | --- | --- |
@@ -151,9 +151,9 @@ Each super-event below uses a functional role label only. The role label is for 
 | Quote requirement | Research and verify a quote about silence, oblivion, lastness, witness, or the failure of records. |
 | Audio direction | Very sparse final track, unique and documented. |
 | Image | `super_event_death_world_consumed` generated. |
-| Follow-up | Achievement hooks; terminal state. |
+| Follow-up | Achievement hooks. Terminal state. |
 
-### Optional super-event role — Herald oath reveal
+### Optional super-event role - Herald oath reveal
 
 This role is implemented because the Herald route is implemented.
 
@@ -167,7 +167,7 @@ This role is implemented because the Herald route is implemented.
 | Button or cultural remark requirement | Research a short line or allusion about signatures, names, bargains, betrayal, or state surrender. Do not use invented sample text. |
 | Quote requirement | Research and verify a quote about bargains, names, betrayal, vows, or death. |
 | Image | `super_event_death_black_oath` generated. |
-| Implemented package | Title `A Covenant with Death`; option `We are at agreement.`; quote from Isaiah 28:15 KJV, documented as public domain in `docs/super_events/010_death_super_event_black_oath_research.md`; audio uses the documented Moonlight Sonata source package. |
+| Implemented package | Title `A Covenant with Death`. Option `We are at agreement.` Quote from Isaiah 28:15 KJV, documented as public domain in `docs/super_events/010_death_super_event_black_oath_research.md`. Audio uses the documented Moonlight Sonata source package. |
 
 ## Achievement plan
 
@@ -176,18 +176,18 @@ Achievement titles are not super-event titles and must not be reused as super-ev
 
 | ID | Title | Visibility | Eligible player | Conditions | Disqualifiers | Difficulty | Icon direction |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `death_no_one_heard_the_first_boat` | No One Heard the First Boat | Hidden | Any country receiving early island reports | Discover Death and declare war before mainland reveal. | Death reveals itself first. | Hard | Small boat beside black empty pier. |
-| `death_not_on_my_continent` | Not on My Continent | Visible | Any continental country neighboring or near Death | Defeat Death after reveal before it consumes three mainland states on your continent. | Use Black Oath. | Medium-hard | Coastline barricade against black map edge. |
+| `death_no_one_heard_the_first_boat` | No One Heard the First Boat | Hidden | Any country receiving early island reports | Find Death and declare war before a mainland coast names it. | Death is named from a mainland coast first. | Hard | Small boat beside black empty pier. |
+| `death_not_on_my_continent` | Not on My Continent | Visible | Any continental country neighboring or near Death | Defeat Death after it is named, before it consumes three mainland states on your continent. | Use Black Oath. | Medium-hard | Coastline barricade against black map edge. |
 | `death_the_names_do_not_come_back` | The Names Do Not Come Back | Visible | Any country | Defeat Death after it consumed at least 10 million population, then complete three wasteland outpost projects. | Restore through forbidden Herald path. | Hard | Blank census book and candle. |
-| `death_last_ferry` | The Last Ferry | Visible | Island/coastal country | Evacuate at least five threatened island/coastal states before Death consumes them, then survive the reveal. | Become Herald. | Hard | Ferry silhouette leaving black shore. |
-| `death_counted_every_name` | Counted Every Name | Hidden | Compact leader or major | Use census/compact decisions to delay ghost tier, then defeat Death before 800-tier ghosts appear. | Black methods above low exposure. | Very hard | Ledger with empty columns, no readable text. |
+| `death_last_ferry` | The Last Ferry | Visible | Island/coastal country | Evacuate at least five threatened island/coastal states before Death consumes them, then survive until the black country is named. | Become Herald. | Hard | Ferry silhouette leaving black shore. |
+| `death_counted_every_name` | Counted Every Name | Hidden | Compact leader or major | Use census and compact work to defeat Death before the Hollow Hosts gather. | Black methods above low exposure. | Very hard | Ledger with empty columns, no readable text. |
 | `death_black_tide_reversed` | Black Tide Reversed | Visible | Any country in world-end scenario | After Last Shores fires, recapture every Death foothold outside the first consumed continent and defeat Death. | Any Herald state survives as Herald. | Extreme | Black tide pulled back from multiple coasts. |
 | `death_friend_of_zol` | Friend of Zol | Hidden | Any country eligible for Black Oath | Become Herald of Zol, survive until Death reaches world-end, and keep your capital unconsumed for one year. | Break the Oath. | Very hard | Black oath seal with living crown. |
 | `death_no_witnesses` | No Witnesses | Hidden/rare | Death scenario player or Herald route if supported | Death consumes all eligible world states. | Death defeated. | Extreme | Empty radio room or black globe. |
-| `death_before_the_name` | Before the Name | Hidden | Any country | Defeat Death before the public reveal super-event fires. | Trigger reveal or use manual maximum scenario. | Very hard | Covered map label with black stain. |
+| `death_before_the_name` | Before the Name | Hidden | Any country | Defeat Death before a mainland coast gives it a public name. | Trigger naming or use manual maximum scenario. | Very hard | Covered map label with black stain. |
 | `death_the_living_conference` | The Living Conference | Visible | Major or threatened leader | Form the containment compact with at least five members, keep cohesion above threshold, and defeat Death. | Use Black Oath or abandon compact. | Hard | Conference table with black empty chair. |
 | `death_book_burner` | Book Burner | Hidden | Necromancy user | Open the Black Book, use at least one bound-name decision, burn the book before exposure reaches high, then defeat Death. | Become Herald or let exposure reach maximum. | Hard | Burning black book with no visible letters. |
-| `death_six_continents_one_color` | Six Continents, One Color | Hidden | Death scenario / any observer if achievement system supports global failure | Witness or cause Last Shores world-end footholds on every continent. | Death defeated before world-end. | Extreme | Six small black coast shapes around a dark center. |
+| `death_six_continents_one_color` | Six Continents, One Color | Hidden | Death scenario / any observer if achievement system supports global failure | Witness or cause Last Shores footholds on every continent. | Death defeated before world-end. | Extreme | Six small black coast shapes around a dark center. |
 | `death_black_apostolate` | Black Apostolate | Hidden | Herald route player | Become a Herald, keep Death alive into world-end, pay enough name debt, sacrifice enough states, and proclaim the Black Apostolate. | Break the oath or fail the hidden thresholds. | Extreme | Black institutional seal over a dead ledger. |
 
 Highest priority achievements for first implementation: `death_before_the_name`, `death_not_on_my_continent`, `death_the_names_do_not_come_back`, `death_black_tide_reversed`, `death_no_witnesses`, `death_friend_of_zol`, `death_book_burner`, and `death_black_apostolate`.
@@ -202,11 +202,11 @@ Suggested player-facing details field:
 
 Suggested evolution fields:
 
-- `Gathering Storm: Empty Shoreline Whispers makes missing-island reports more frequent without revealing Death.`
-- `Rising Chaos: The Inland Smell brings Death closer to mainland coasts and shortens the hidden island-only phase.`
-- `Chaos Tier: First Ghost Muster unlocks weak passive ghost hosts if Death has consumed enough population.`
-- `Totalen Chaos: Black Tide Recovery strengthens ghosts and lets Death return to coasts after setbacks.`
-- `World Collapse: the terminal branch becomes available; if a continent is consumed while Chaos is above 1000, Death opens footholds on every continent.`
+- `Second Shore: Death begins slow island spread once the focus path is open.`
+- `Mainland Hunger: Death presses islands faster and opens the mainland reveal path.`
+- `First Hosts: weak passive ghost hosts appear if Death has consumed enough population.`
+- `Hollow Hosts: ghost hosts become more numerous and stronger, but remain weaker than infantry.`
+- `World End: the terminal branch becomes available. If a continent is consumed while Chaos is above 1000, Death opens footholds on every continent.`
 
 Suggested world-end field:
 
@@ -222,23 +222,23 @@ Create or update a canonical event doc after implementation:
 
 The doc should cover:
 
-1. what Death is;
-2. replacement of Spirit of War/Peace;
-3. event map and subevents;
-4. origin selection;
-5. state consumption and wasteland effects;
-6. hidden reports;
-7. reveal super-event;
-8. spread, withering, coastal jumps;
-9. ghost divisions;
-10. containment decisions and compact;
-11. necromancy and Herald paths;
-12. world-end branch;
-13. defeat aftermath;
-14. assets and sprite expectations;
-15. AI behavior;
-16. triggerable scenario;
-17. limitations or unsupported visual fields.
+1. What Death is.
+2. Replacement of Spirit of War/Peace.
+3. Event map and subevents.
+4. Origin selection.
+5. State consumption and wasteland effects.
+6. Hidden reports.
+7. Reveal super-event.
+8. Spread, withering, coastal jumps.
+9. Ghost divisions.
+10. Containment decisions and compact.
+11. Necromancy and Herald paths.
+12. World-end branch.
+13. Defeat aftermath.
+14. Assets and sprite expectations.
+15. AI behavior.
+16. Triggerable scenario.
+17. Limitations or unsupported visual fields.
 
 ## Implementation acceptance criteria
 
@@ -260,7 +260,7 @@ The rework is not complete unless all of these are true:
 - Recaptured wastelands remain empty and strategically damaged.
 - Containment decisions use concrete costs, map objectives, active missions, and AI behavior.
 - The Living Containment Compact or equivalent coalition system exists after reveal.
-- Dark methods, Black Oath, Herald, and Black Apostolate routes are fully implemented or hidden behind their actual prerequisites; they must not be half-visible placeholders.
+- Dark methods, Black Oath, Herald, and Black Apostolate routes are fully implemented or hidden behind their actual prerequisites. They must not be half-visible placeholders.
 - World-end requires both full continent consumption and Chaos above 1000.
 - World-end footholds appear on every remaining continent.
 - Whole-world consumed final super-event and achievement hooks exist.
@@ -273,8 +273,8 @@ The rework is not complete unless all of these are true:
 ## Known uncertainties to resolve during implementation
 
 - Exact island-state filters depend on available state metadata and existing state-group helpers.
-- Some state building or map-visual fields may not support direct deletion/visual effects; implementation must document exact supported representation.
+- Some state building or map-visual fields may not support direct deletion/visual effects. Implementation must document exact supported representation.
 - The best way to apply ticking strength loss should be chosen from existing Chaos Redux helper patterns to avoid broad daily world scans.
 - The country tag `DTH` must be conflict-checked.
-- The optional animated Zol portrait uses a real eight-frame source package, a static fallback, and registered `interface/chaosx_characters.gfx` sprite names; world-end leader gameplay uses the static fallback.
+- The optional animated Zol portrait uses a real eight-frame source package, a static fallback, and registered `interface/chaosx_characters.gfx` sprite names. World-end leader gameplay uses the static fallback.
 - Super-event audio and quote research require dedicated research subagents before final wiring.

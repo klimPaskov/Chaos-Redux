@@ -39,7 +39,7 @@ Type controls cycle scenario-specific type variables:
 - Army of Clones: standard clone army or Aryan variant.
 - Soviet Collapse: ordinary republics or chaos republics.
 - Final Silence: nuclear or thermonuclear payload.
-- Death: quiet origin, island pattern, mainland reveal, or Last Shores.
+- Death: Instant Outbreak only.
 - Reserved placeholders: fixed Reserved display with neutral placeholder launch events.
 
 The trigger button opens a separate confirmation window. Confirming reads the stored selected scenario, type, and intensity at launch time. Scenario launches intentionally bypass the normal automatic firing prerequisites for their source events, including chaos thresholds, prior event-state gates, route prerequisites, and super-event history flags. The launch gate only keeps impossible or conflicting launches out, such as requiring the Soviet Union to exist for Soviet Collapse and preventing most second world-end branches while `world_end` is already active. The launch button uses the same gate for click enablement and buttonstate rendering, so impossible selections are disabled and visually greyed out before the confirmation window can open.
@@ -56,7 +56,7 @@ Intensity changes outbreak count, initial affected states, spawned divisions, an
 
 ### SCN-002: Army of Clones
 
-The Army of Clones scenario creates a hostile artificial army in Eastern Europe and the western Soviet borderlands. The standard version creates the baseline army; the Aryan variant adds stronger formations, more equipment, higher experience, and more aggressive pressure.
+The Army of Clones scenario creates a hostile artificial army in Eastern Europe and the western Soviet borderlands. The standard version creates the baseline army. The Aryan variant adds stronger formations, more equipment, higher experience, and more aggressive pressure.
 
 Intensity changes starting territory, division count, army experience, equipment stockpiles, and pressure on neighboring countries. The manual scenario uses the shared clone division spawn helper so the scenario army and later clone-wave decisions use the same protected `Clone Shock Division` template.
 
@@ -72,7 +72,7 @@ Intensity adds an extra one-time army package after all breakaways exist. Each b
 
 The Final Silence scenario starts the Event 003 terminal world-end branch immediately from the current player country. The launcher becomes the surviving Realm-side authority for the strike sequence, sets `world_end` and `world_end_final_silence`, displays the matching Final Silence super event, locks global air contamination at `100%`, sends witness popups to other countries, applies the first strike wave, and schedules the existing follow-up wave event until the world-end branch completes. The shared wave logic queues visible `launch_nuke` effects for every state in the world while lethal population and wasteland processing remains on the non-Realm target states.
 
-The nuclear type uses the normal Final Silence payload and removes `75%` of affected non-Realm state population. The thermonuclear type sets `world_end_final_silence_thermonuclear`, uses the thermonuclear super-event/audio ID, launches thermonuclear visual strikes, and removes `95%` of affected non-Realm state population while applying the stronger thermonuclear fallout values already defined by the Holy Realm system. Intensity does not change this scenario; it keeps the canonical four-wave Final Silence sequence intact.
+The nuclear type uses the normal Final Silence payload and removes `75%` of affected non-Realm state population. The thermonuclear type sets `world_end_final_silence_thermonuclear`, uses the thermonuclear super-event/audio ID, launches thermonuclear visual strikes, and removes `95%` of affected non-Realm state population while applying the stronger thermonuclear fallout values already defined by the Holy Realm system. Intensity does not change this scenario. It keeps the canonical four-wave Final Silence sequence intact.
 
 ### SCN-005: The World in Fury
 
@@ -80,9 +80,9 @@ The World in Fury scenario seeds dispersed Fury actors through the existing Fury
 
 ### SCN-006: Death
 
-The Death scenario starts Event 010 through the same shared state-consumption helpers used by live Death. Quiet Origin creates a remote hidden island origin with delayed missing-island reports. Island Pattern consumes additional islands and circulates missing-island reports. Mainland Reveal consumes one eligible coastal mainland state and immediately exposes Death as a world threat. Last Shores starts the Death world-end branch and creates coastal footholds on remaining continents.
+The Death scenario starts Event 010 through the same shared state-consumption helpers used by live Death, but it has only one setup type: Instant Outbreak. It consumes a hidden island origin, intensity-scaled extra islands, and at least one mainland reveal state immediately. This bypass does not set the Chaos Meter, record natural evolution stages by shortcut, or start the Death world-end branch.
 
-Intensity changes opening pressure and scenario host strength. Low keeps the footprint small, Medium shortens the route to pressure, High unlocks weak or stronger hosts in the relevant branches, and Maximum uses the most accelerated Death opening.
+Intensity controls the starting footprint and starting ghost hosts. Low creates one weak passive host, Medium creates two weak passive hosts, High creates two stronger hosts, and Maximum creates four stronger hosts. After launch, Death escalates through the same natural pulses, deaths, focus gates, evolution records, and world-end requirements as a normal Death crisis.
 
 ### SCN-007: Disaster Barrage
 
@@ -91,27 +91,3 @@ Reserved manual scenario placeholder for Event 013. It remains listed in the man
 ### SCN-008: Africa Is One
 
 Reserved manual scenario placeholder for Event 012. It remains listed in the manual scenario window and launches only a neutral placeholder event until the source event is reworked.
-
-## Assets
-
-The scenario UI reuses existing Chaos Redux and vanilla UI assets:
-
-- `GFX_tiled_window`
-- `GFX_tiled_plain_bg`
-- `GFX_chaosx_chaos_meter_entry`
-- `GFX_custom_setting_slider_bg`
-- `GFX_scroll_drager`
-- `yearslider_leftbutton`
-- `yearslider_rightbutton`
-- `GFX_report_event_holy_realm_final_silence`
-- `GFX_report_event_death_missing_island`
-- `GFX_super_event_final_silence`
-- `GFX_super_event_final_silence_terminal`
-
-No dedicated scenario art is required for this pass. Future custom entry icons can be added as stable scenario-specific sprites in `interface/chaosx.gfx`.
-
-## Future Plans
-
-- Add per-scenario entry icons once final art exists.
-- Add filters if the scenario registry grows beyond a short list.
-- Add scenario-specific confirmation dialogs for very destructive launches.

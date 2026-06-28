@@ -2002,6 +2002,28 @@ events_log_cluster_append_detail_member_from_source = {
     }
 }
 
+event_cluster_get_member_danger_from_loaded_members = {
+	set_temp_variable = { event_cluster_member_known_danger = 0 }
+	set_temp_variable = { event_cluster_member_danger_lookup_index = 0 }
+	while_loop_effect = {
+		limit = {
+			check_variable = { event_cluster_member_known_danger < 1 }
+			check_variable = { event_cluster_member_danger_lookup_index < temp_event_cluster_member_event_id_entries^num }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = temp_event_cluster_member_event_id_entries^event_cluster_member_danger_lookup_index
+					value = event_cluster_member_event_id
+					compare = equals
+				}
+			}
+			set_temp_variable = { event_cluster_member_known_danger = temp_event_cluster_member_danger_entries^event_cluster_member_danger_lookup_index }
+		}
+		add_to_temp_variable = { event_cluster_member_danger_lookup_index = 1 }
+	}
+}
+
 events_log_cluster_sort_detail_members_by_danger = {
     clear_array = global.events_log_cluster_detail_member_event_id_entries
     clear_array = global.events_log_cluster_detail_member_status_entries
@@ -2073,28 +2095,36 @@ events_log_rebuild_selected_cluster_details_view = {
     clear_array = temp_events_log_cluster_detail_source_status_entries
     clear_array = temp_events_log_cluster_detail_source_danger_entries
 
-    if = {
-        limit = { check_variable = { events_log_selected_cluster_sequence > 0 } }
-        for_loop_effect = {
-            start = 0
-            end = global.events_log_cluster_member_cluster_sequence_entries^num
-            value = i
+	if = {
+		limit = { check_variable = { events_log_selected_cluster_sequence > 0 } }
+		set_temp_variable = { event_cluster_id = events_log_selected_cluster_id }
+		load_event_cluster_members = yes
+		for_loop_effect = {
+			start = 0
+			end = global.events_log_cluster_member_cluster_sequence_entries^num
+			value = i
 
-            if = {
-                limit = {
-                    check_variable = {
-                        var = global.events_log_cluster_member_cluster_sequence_entries^i
-                        value = events_log_selected_cluster_sequence
-                        compare = equals
-                    }
-                }
-                set_temp_variable = { events_log_cluster_detail_source_event_id = global.events_log_cluster_member_event_id_entries^i }
-                set_temp_variable = { events_log_cluster_detail_source_status = global.events_log_cluster_member_status_entries^i }
-                set_temp_variable = { events_log_cluster_detail_source_danger = global.events_log_cluster_member_danger_entries^i }
-                events_log_cluster_append_detail_member_source = yes
-            }
-        }
-    }
+			if = {
+				limit = {
+					check_variable = {
+						var = global.events_log_cluster_member_cluster_sequence_entries^i
+						value = events_log_selected_cluster_sequence
+						compare = equals
+					}
+				}
+				set_temp_variable = { events_log_cluster_detail_source_event_id = global.events_log_cluster_member_event_id_entries^i }
+				set_temp_variable = { events_log_cluster_detail_source_status = global.events_log_cluster_member_status_entries^i }
+				set_temp_variable = { events_log_cluster_detail_source_danger = global.events_log_cluster_member_danger_entries^i }
+				if = {
+					limit = { check_variable = { events_log_cluster_detail_source_danger < 1 } }
+					set_temp_variable = { event_cluster_member_event_id = events_log_cluster_detail_source_event_id }
+					event_cluster_get_member_danger_from_loaded_members = yes
+					set_temp_variable = { events_log_cluster_detail_source_danger = event_cluster_member_known_danger }
+				}
+				events_log_cluster_append_detail_member_source = yes
+			}
+		}
+	}
     else_if = {
         limit = { check_variable = { events_log_selected_cluster_id > 0 } }
         set_temp_variable = { event_cluster_id = events_log_selected_cluster_id }

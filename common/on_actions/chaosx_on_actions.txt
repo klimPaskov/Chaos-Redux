@@ -32,14 +32,23 @@ on_actions = {
 			}
 		}
 
-		on_daily_DTH = {
-			effect = {
-				death_run_daily_public_pressure = yes
+	on_daily_DTH = {
+		effect = {
+			death_run_daily_public_pressure = yes
+		}
+	}
+
+	on_puppet = {
+		effect = {
+			if = {
+				limit = { original_tag = DTH }
+				death_on_puppet = yes
 			}
 		}
+	}
 
-		on_startup = {
-			effect = {
+			on_startup = {
+				effect = {
 			every_country = {
 				initialize_smallpox_vaccination_protection = yes
 			}
@@ -161,6 +170,20 @@ on_actions = {
 	on_war_relation_added = {
 		effect = {
 			tensions_rising_on_war_relation_added = yes
+			if = {
+				limit = {
+					NOT = { is_death_country = yes }
+					FROM = { original_tag = DTH }
+				}
+				death_mark_living_war_pressure = yes
+			}
+			if = {
+				limit = {
+					original_tag = DTH
+					FROM = { NOT = { is_death_country = yes } }
+				}
+				death_mark_living_war_pressure = yes
+			}
 			if = {
 				limit = {
 					OR = {
@@ -879,6 +902,10 @@ on_actions = {
 
 	on_capitulation = {
 		effect = {
+			if = {
+				limit = { original_tag = DTH }
+				death_on_capitulation = yes
+			}
 			# ZZZ
 			if = { limit = { original_tag = ZZZ }
 

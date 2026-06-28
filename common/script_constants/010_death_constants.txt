@@ -13,10 +13,11 @@ death_event = {
 
 	id = 10
 	evolution_type = 10
-	stage_island_pattern = 2
-	stage_mainland_reveal = 3
-	stage_last_shores = 4
-	stage_world_consumed = 5
+	stage_second_shore = 2
+	stage_mainland_hunger = 3
+	stage_weak_ghost_hosts = 4
+	stage_hollow_ghost_hosts = 5
+	stage_world_end = 6
 }
 
 death_super_event = {
@@ -81,6 +82,7 @@ death_spread = {
 	world_end_coastal_jump_cooldown_days = 21
 	mainland_pressure_threshold = 9
 	coastal_jump_contained_state_limit = 3
+	aggressive_war_island_gate = 1
 	wither_state_progress_gain = 1
 	wither_state_completion = 3
 	origin_pressure = 1
@@ -100,12 +102,12 @@ death_ghosts = {
 	passive_spawn_count = 1
 	stronger_spawn_count = 2
 	world_end_spawn_count = 4
-	infantry_equipment_per_passive = 320
-	infantry_equipment_per_stronger = 650
-	infantry_equipment_per_world_end = 1100
-	manpower_per_passive = 500
-	manpower_per_stronger = 900
-	manpower_per_world_end = 1200
+	infantry_equipment_per_passive = 4
+	infantry_equipment_per_stronger = 6
+	infantry_equipment_per_world_end = 9
+	manpower_per_passive = 4
+	manpower_per_stronger = 6
+	manpower_per_world_end = 9
 	host_budget_population_point_k = 250
 	world_end_foothold_budget_points = 2
 	total_host_budget_cap = 120
@@ -115,6 +117,17 @@ death_ghosts = {
 	passive_host_global_cap = 10
 	stronger_host_global_cap = 24
 	world_end_host_global_cap = 96
+}
+
+death_soul_power = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	island_spread_cost = 1
+	island_spread_cost_step = 1
+	mainland_spread_cost = 4
 }
 
 death_world_end = {
@@ -144,10 +157,7 @@ death_scenario_type = {
 		data = int
 	}
 
-	quiet_origin = 1
-	island_pattern = 2
-	mainland_reveal = 3
-	last_shores = 4
+	instant_outbreak = 1
 }
 
 death_decision_cost = {
@@ -321,8 +331,9 @@ death_decision_tuning = {
 	survey_boat_pressure_reduction = -2
 	telegraph_pressure_reduction = -1
 	quiet_quarantine_pressure_reduction = -2
-	file_weather_pressure = 2
-	patrol_network_gain = 2
+		file_weather_pressure = 2
+		living_war_pressure_gain = 1
+		patrol_network_gain = 2
 	coastal_watch_network_gain = 1
 	quarantine_front_readiness_gain = 1
 	gear_front_readiness_gain = 2
@@ -369,6 +380,14 @@ death_decision_tuning = {
 	ai_low = 2
 	ai_medium = 5
 	ai_high = 10
+	ai_ledger_hidden_island_factor = 3
+	ai_ledger_public_island_factor = 0.5
+	ai_ledger_mainland_unrevealed_factor = 5
+	ai_ledger_mainland_public_factor = 2
+	ai_ledger_mainland_war_factor = 4
+	ai_ledger_host_public_factor = 2
+	ai_ledger_host_war_factor = 3
+	ai_ledger_host_world_end_factor = 5
 }
 
 death_focus_reward = {

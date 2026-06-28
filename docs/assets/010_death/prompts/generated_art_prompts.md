@@ -14,7 +14,7 @@ Tool: official `image_gen`
 - `super_event_death_reveal`: period-documentary mainland reveal scene, observers dwarfed by empty coastal settlement and black shoreline.
 - `super_event_death_world_end`: period-documentary black tide crossing a desolate shore, terminal oceanic mood, no fantasy creature styling.
 - `super_event_death_defeat_aftermath`: period-documentary aftermath scene, soldiers and surveyors in dead land, victory without restoration.
-- `super_event_death_world_consumed`: period-documentary empty radio/map room, no operators, no readable text, terminal record-failure mood.
+- `super_event_death_world_consumed`: period-documentary ruined coastal capital overtaken by a vast black tide, tiny foreground witnesses for scale, no office, no map table, no readable text.
 - `super_event_death_black_oath`: 1936-1945 government chamber oath tableau, officials around a sealed black document, looming void witness behind them, no readable text, restrained supernatural presence.
 
 ### Local processing notes

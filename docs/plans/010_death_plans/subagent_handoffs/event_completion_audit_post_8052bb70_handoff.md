@@ -20,7 +20,7 @@ Commit `8052bb70` resolves the prior host-budget, strict world-end target-filter
 | World-end owner/controller war declaration | Resolved by static inspection | `death_declare_war_on_current_state_owner` saves owner/controller event targets and declares war when possible at `common/scripted_effects/010_death_effects.txt:247`; foothold creation calls it before consumption at `common/scripted_effects/010_death_effects.txt:2236`. |
 | Achievement predicates named in prior blocker | Resolved by static inspection | Defeat marking now uses capital-continent mainland counters, Last Ferry consumption credit, Counted Every Name cleanliness/coordination/pre-800 gates, and Black Tide foothold/Herald checks in `common/scripted_effects/010_death_effects.txt:1516`; helper triggers are at `common/scripted_triggers/010_death_triggers.txt:433` and `common/scripted_triggers/010_death_triggers.txt:504`; tooltip text matches at `localisation/english/chaosx_achievements_l_english.yml:413`. |
 | Event Details late preview gate | Resolved by static inspection | Mainland reveal, Last Shores, and world-consumed previews are gated behind `death_world_reported` at `common/scripted_effects/chaosx_events_log_effects.txt:1450`. |
-| SCN-006 cleanup and budgeted host behavior | Resolved by static inspection; runtime validation still missing | `trigger_death_scenario` sets scenario context, routes host spawns through budgeted helpers, launches Last Shores with `death_launch_last_shores`, and clears scenario context at `common/scripted_effects/chaosx_triggerable_scenarios_effects.txt:1973`. |
+| SCN-006 cleanup and budgeted host behavior | Superseded by the current Death evolution/scenario rework | `trigger_death_scenario` now uses one Instant Outbreak type, consumes intensity-scaled islands and mainland reveal states, creates intensity-scaled starting hosts directly, charges the host counters afterward, and clears scenario context. It no longer launches Last Shores from the triggerable scenario path. |
 | DTH country history convoys | Resolved | `history/countries/DTH - Death.txt:1` through `history/countries/DTH - Death.txt:24` has no `set_convoys`. |
 | Active obsolete Spirit of War/Peace surfaces | Resolved in active files checked | Targeted search across `events`, `common`, `localisation`, `interface`, `history`, `docs/events`, and `docs/assets` found no active `Spirit of War`, `Spirit of Peace`, `spirit_of_war`, or `spirit_of_peace` hits. Remaining mentions are in specs/prompts/audit history, not active player-facing surfaces. |
 
@@ -67,7 +67,7 @@ Performed:
 
 Not performed:
 
-- No in-game runtime validation of SCN-006 Last Shores, world-end foothold creation after recapture, or Event Details rendering.
+- No in-game runtime validation of SCN-006 Instant Outbreak, world-end foothold creation after recapture, or Event Details rendering.
 - No full parser/load validation in the HOI4 engine. Static syntax/precedent review did not reveal a new engine-risk blocker in the changed budget, declaration, or SCN-006 logic.
 
 ## Asset And Documentation Gaps

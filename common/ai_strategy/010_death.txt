@@ -1,0 +1,53 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 010 DEATH AI STRATEGY
+# ============================================================================
+# DTH should hold with weak ghost hosts before world-end and execute attacks
+# only after the terminal Death branch begins.
+# ============================================================================
+
+death_public_passive_fronts = {
+	allowed = { original_tag = DTH }
+	enable = {
+		has_global_flag = death_publicly_revealed
+		NOT = { has_global_flag = death_world_end_started }
+		has_war = yes
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = front_control
+		state_trigger = {
+			is_controlled_by = DTH
+			has_state_flag = death_active_wasteland
+		}
+		ratio = 0
+		priority = 100
+		ordertype = front
+		execution_type = careful
+		execute_order = no
+		manual_attack = no
+	}
+}
+
+death_world_end_aggressive_fronts = {
+	allowed = { original_tag = DTH }
+	enable = {
+		has_global_flag = death_world_end_started
+		has_war = yes
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = front_control
+		state_trigger = {
+			is_controlled_by = DTH
+			has_state_flag = death_active_wasteland
+		}
+		ratio = 0
+		priority = 100
+		ordertype = front
+		execution_type = rush
+		execute_order = yes
+		manual_attack = yes
+	}
+}

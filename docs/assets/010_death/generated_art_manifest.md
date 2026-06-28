@@ -8,6 +8,7 @@ Legacy mixed contact sheet: `docs/assets/010_death/contact_sheets/death_processe
 Additional contact sheet: `docs/assets/010_death/contact_sheets/death_black_oath_routes_contact.png`
 Focus icon contact sheet: `docs/assets/010_death/contact_sheets/death_focus_icons_contact.png`
 Super-event audit contact sheet: `docs/assets/010_death/contact_sheets/death_super_events_contact.png`
+Final DDS super-event alignment check: `docs/assets/010_death/contact_sheets/death_super_events_final_alignment_check.png`
 
 ## Current icon override package
 
@@ -16,11 +17,13 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 ## Super-event audit
 
 - Audit date: `2026-06-15`
+- Final DDS alignment check: `2026-06-28`
 - Audited active Death super-event image roles: `super_event_death_reveal`, `super_event_death_world_end`, `super_event_death_defeat_aftermath`, `super_event_death_world_consumed`, `super_event_death_black_oath`
 - Wiring basis: `interface/chaosx_super_events.gfx`, `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt`, `common/script_constants/010_death_constants.txt`, and `common/scripted_effects/010_death_effects.txt`
-- Audit result: all five active Death super-event images already have source PNG, processed PNG, and final DDS outputs at `457x328`
+- Audit result: all five active Death super-event images have source PNG, processed PNG, and final DDS outputs at `457x328`
+- Final DDS result: all five final DDS files visually align with the accepted Death super-event set. `super_event_death_world_end.dds` and `super_event_death_world_consumed.dds` were reconverted from their accepted processed PNGs after the final DDS check found stale placeholder textures at the live gameplay paths
 - Route note: `Dark Methods` is a Death route surface, but no separate Dark Methods super-event image slot is currently wired in the active Death constants or super-event scripted localisation
-- Asset action: no super-event image required regeneration in this audit pass; existing art remained the selected final set
+- Asset action: no source image regeneration was required. The final DDS outputs now match the selected processed art set
 
 ## Complete
 
@@ -38,7 +41,7 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 - `.gfx` file: not applicable
 - Related gameplay use: country flag for `DTH`
 - Asset status: `complete`
-- Notes: TGA sizes verified with `file`; final base and ideology flags use the same black variant at each size.
+- Notes: TGA sizes verified with `file`. Final base and ideology flags use the same black variant at each size.
 
 ### `leader_zol`
 
@@ -55,14 +58,14 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 - `.gfx` file: `interface/chaosx_characters.gfx`
 - Related gameplay use: Zol leader portrait for DTH
 - Asset status: `complete`
-- Notes: apparent presentation is nonhuman/ungendered; gameplay should keep institutional name `Zol` rather than use a human random-name pool
+- Notes: apparent presentation is nonhuman/ungendered. Gameplay should keep institutional name `Zol` rather than use a human random-name pool
 
 ### `report_event_death_missing_island`
 
 - Asset type: report event image
-- Intended in-game use: Death missing-island shoreline report
+- Intended in-game use: Death maritime errata shoreline report
 - Source mode: generated
-- Source note: fictional period-documentary scene; generation was appropriate because the event needs a unique impossible shoreline rather than a real archive location
+- Source note: fictional period-documentary scene. Generation was appropriate because the event needs a unique impossible shoreline rather than a real archive location
 - Prompt note: black surf swallowing an empty island quay and village, coastline visibly wrong, no people, no text
 - Source PNG: `docs/assets/010_death/source_png/report_event_death_missing_island_source.png`
 - Processed PNG: `docs/assets/010_death/processed_png/report_event_death_missing_island.png`
@@ -72,14 +75,14 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 - `.gfx` file: `interface/chaosx_pictures.gfx`
 - Related gameplay use: impossible shoreline / vanished island report card
 - Asset status: `complete`
-- Notes: regenerated for stronger storm contrast and a visibly wrong coastline; report-card treatment applied locally
+- Notes: regenerated for stronger storm contrast and a visibly wrong coastline. Report-card treatment applied locally
 
 ### `report_event_death_mail_boat`
 
 - Asset type: report event image
 - Intended in-game use: early Death report event picture
 - Source mode: generated
-- Source note: fictional period-documentary scene; no archival source exists for this alternate-history island report
+- Source note: fictional period-documentary scene. No archival source exists for this alternate-history island report
 - Prompt note: abandoned mail launch drifting back into a blackened harbor, lit cabin, visible sacks, no crew, no text
 - Source PNG: `docs/assets/010_death/source_png/report_event_death_mail_boat_source.png`
 - Processed PNG: `docs/assets/010_death/processed_png/report_event_death_mail_boat.png`
@@ -89,14 +92,14 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 - `.gfx` file: `interface/chaosx_pictures.gfx`
 - Related gameplay use: empty pier/mail boat report card
 - Asset status: `complete`
-- Notes: regenerated for stronger harbor mood and clearer crew absence; report-card treatment applied locally
+- Notes: regenerated for stronger harbor mood and clearer crew absence. Report-card treatment applied locally
 
 ### `report_event_death_lighthouse`
 
 - Asset type: report event image
 - Intended in-game use: Death lighthouse report
 - Source mode: generated
-- Source note: fictional period-documentary lighthouse scene; generation was appropriate because the event needs an impossible shoreline swallow rather than a specific archive photograph
+- Source note: fictional period-documentary lighthouse scene. Generation was appropriate because the event needs an impossible shoreline swallow rather than a specific archive photograph
 - Prompt note: lighthouse beam cutting across a dead sea and swallowed shoreline under storm cloud, no readable text
 - Source PNG: `docs/assets/010_death/source_png/report_event_death_lighthouse_source.png`
 - Processed PNG: `docs/assets/010_death/processed_png/report_event_death_lighthouse.png`
@@ -106,14 +109,14 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 - `.gfx` file: `interface/chaosx_pictures.gfx`
 - Related gameplay use: lighthouse/empty settlement report card
 - Asset status: `complete`
-- Notes: regenerated for stronger beam contrast and dead shoreline silhouette; report-card treatment applied locally
+- Notes: regenerated for stronger beam contrast and dead shoreline silhouette. Report-card treatment applied locally
 
 ### `report_event_death_census`
 
 - Asset type: report event image
 - Intended in-game use: Death census-office report
 - Source mode: generated
-- Source note: fictional period-documentary records-office scene; no real archival photo exists for the alternate-history missing-records incident
+- Source note: fictional period-documentary records-office scene. No real archival photo exists for the alternate-history missing-records incident
 - Prompt note: officials confronting shattered records shelves and blank files, no readable text, no gore
 - Source PNG: `docs/assets/010_death/source_png/report_event_death_census_source.png`
 - Processed PNG: `docs/assets/010_death/processed_png/report_event_death_census.png`
@@ -123,7 +126,7 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 - `.gfx` file: `interface/chaosx_pictures.gfx`
 - Related gameplay use: abandoned census office report card
 - Asset status: `complete`
-- Notes: regenerated for stronger human reaction and wrecked-records staging; source kept free of readable text before local treatment
+- Notes: regenerated for stronger human reaction and wrecked-records staging. Source kept free of readable text before local treatment
 
 ### `news_event_death_mainland_reveal`
 
@@ -168,7 +171,7 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 - `.gfx` file: `interface/chaosx_super_events.gfx`
 - Related gameplay use: super-event role 1 mainland reveal
 - Asset status: `complete`
-- Notes: central composition kept readable for HOI4 super-event framing; final DDS is converted from the processed Death reveal PNG at the registered gameplay path
+- Notes: central composition kept readable for HOI4 super-event framing. Final DDS is converted from the processed Death reveal PNG at the registered gameplay path
 
 ### `super_event_death_world_end`
 
@@ -205,6 +208,8 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 - Asset type: super-event image
 - Intended in-game use: Death whole-world-consumed super-event
 - Source mode: generated
+- Source note: regenerated on 2026-06-28 because the prior office/map-room scene was too quiet for the whole-world-consumed role
+- Prompt note: ruined 1936-1945 coastal capital seen from above, vast supernatural black tide swallowing the last city and harbor, tiny foreground witnesses for scale, no office, no map table, no readable text
 - Source PNG: `docs/assets/010_death/source_png/super_event_death_world_consumed_source.png`
 - Processed PNG: `docs/assets/010_death/processed_png/super_event_death_world_consumed.png`
 - Final path: `gfx/super_events/super_event_death_world_consumed.dds`
@@ -213,7 +218,7 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 - `.gfx` file: `interface/chaosx_super_events.gfx`
 - Related gameplay use: super-event role 4 whole world consumed
 - Asset status: `complete`
-- Notes: no readable text on papers or wall map
+- Notes: dramatic exterior end-state composition. The black tide and ruined coast are the subject, while foreground figures only provide scale
 
 ### `herald_of_zol` flag set
 
@@ -230,7 +235,7 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 - `.gfx` file: not applicable
 - Related gameplay use: cosmetic Herald of Zol route flag
 - Asset status: `complete`
-- Notes: stable filename suggestion is `death_herald_of_zol`; emblem stays legible at small size and avoids the DTH broken-ring motif
+- Notes: stable filename suggestion is `death_herald_of_zol`. Emblem stays legible at small size and avoids the DTH broken-ring motif. TGA orientation was corrected on 2026-06-28 across normal, medium, and small outputs, with the expected non-top-origin flag header preserved.
 
 ### `black_apostolate` flag set
 
@@ -247,7 +252,7 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 - `.gfx` file: not applicable
 - Related gameplay use: cosmetic Black Apostolate hidden-route flag
 - Asset status: `complete`
-- Notes: stable filename suggestion is `death_black_apostolate`; composition favors a stark central state-seal shape rather than another void emblem
+- Notes: stable filename suggestion is `death_black_apostolate`. Composition favors a stark central state-seal shape rather than another void emblem. TGA orientation was corrected on 2026-06-28 across normal, medium, and small outputs, with the expected non-top-origin flag header preserved.
 
 ### `super_event_death_black_oath`
 
@@ -264,7 +269,7 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 - `.gfx` file: `interface/chaosx_super_events.gfx`
 - Related gameplay use: optional Herald oath reveal super-event
 - Asset status: `complete`
-- Notes: scene keeps the supernatural force present but restrained; composition remains readable in the HOI4 super-event crop
+- Notes: scene keeps the supernatural force present but restrained. Composition remains readable in the HOI4 super-event crop
 
 ### Main-agent wired UI icon set
 
@@ -334,7 +339,7 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
   - `death_book_burner`
   - `death_black_apostolate`
 - Asset status: `complete`
-- Notes: route achievements are active because Dark Methods, Black Oath, Herald of Zol, and Black Apostolate are implemented. All active Death focus sprites now have source PNGs, processed PNGs, and stable DDS files; accidental duplicated placeholder hashes were eliminated during the final asset pass. The final Death focus set is a coherent HOI4 badge pass: every focus icon was rebuilt to `94x86` with transparent outer canvas, visible dark-metal or bronze badge framing, and a painted interior motif matched to the focus subject rather than leaving any full-bleed square thumbnail in the final output.
+- Notes: route achievements are active because Dark Methods, Black Oath, Herald of Zol, and Black Apostolate are implemented. All active Death focus sprites now have source PNGs, processed PNGs, and stable DDS files. Accidental duplicated placeholder hashes were eliminated during the final asset pass. The final Death focus set is a coherent HOI4 badge pass: every focus icon was rebuilt to `94x86` with transparent outer canvas, visible dark-metal or bronze badge framing, and a painted interior motif matched to the focus subject rather than leaving any full-bleed square thumbnail in the final output.
 
 ### `death_focus_icon_regeneration_pass`
 
@@ -352,6 +357,7 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 - Asset status: `complete`
 - Prompt/process note: this pass intentionally discarded the old square-thumbnail presentation. All 26 focuses now use transparent outer alpha, visible badge framing, and a central painted motif sized for HOI4 focus readability.
 - Contact sheet: `docs/assets/010_death/contact_sheets/death_focus_icons_contact.png`
+- Requested regeneration, 2026-06-28: `focus_death_state_without_state`, `focus_death_world_consumed`, `focus_death_empty_supply`, `focus_death_every_road_slows`, `focus_death_last_shores`, `focus_death_mourning_host`, `focus_death_orders_without_breath`, and `focus_death_ruin_host` were regenerated from new source art. Package manifest: `docs/assets/010_death/focus_icon_regen_2026_06_28/manifest.md`. Contact sheet: `docs/assets/010_death/contact_sheets/death_focus_icons_requested_regen_2026_06_28.png`.
 
 ### `idea_public_death`
 
@@ -426,7 +432,7 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 - `.gfx` file: `interface/chaosx_characters.gfx`
 - Related gameplay use: static world-end leader portrait fallback plus registered animated portrait return for Death world-end surfaces
 - Asset status: `complete`
-- Notes: apparent presentation remains nonhuman/ungendered; gameplay should keep institutional name `Zol`. Motion is eyes-glow-only. The static fallback DDS remains unchanged. Validation: processed frames are all `156x210`; final sheet and DDS are `1248x210`; preview GIF loops at 8 frames; identity drift check outside the eye mask is zero or effectively zero; no `.gfx` change is needed because frame count and rate remain unchanged.
+- Notes: apparent presentation remains nonhuman/ungendered. Gameplay should keep institutional name `Zol`. Motion is eyes-glow-only. The static fallback DDS remains unchanged. Validation: processed frames are all `156x210`. Final sheet and DDS are `1248x210`. Preview GIF loops at 8 frames. Identity drift check outside the eye mask is zero or effectively zero. No `.gfx` change is needed because frame count and rate remain unchanged.
 
 ## Complete: Death Black Atlas UI Package
 
@@ -486,7 +492,7 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 - Final path: `gfx/interface/death/black_atlas/death_coastal_risk_pulse.dds`
 - Static fallback: `gfx/interface/death/black_atlas/death_coastal_risk_pulse_static.dds`
 - Target size: `36x36` frames, `288x36` sheet
-- Sprite name: `GFX_death_coastal_risk_pulse` for the animated sheet; `GFX_death_coastal_risk_pulse_static` for the static fallback
+- Sprite name: `GFX_death_coastal_risk_pulse` for the animated sheet. `GFX_death_coastal_risk_pulse_static` for the static fallback
 - `.gfx` file: `interface/010_death.gfx`
 - Related gameplay use: small coastal-risk indicator
 - Asset status: `complete`
@@ -502,7 +508,7 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 - Final path: `gfx/interface/death/black_atlas/death_wither_target_frame.dds`
 - Static fallback: `gfx/interface/death/black_atlas/death_wither_target_frame_static.dds`
 - Target size: `36x36` frames, `288x36` sheet
-- Sprite name: `GFX_death_wither_target_frame` for the animated sheet; `GFX_death_wither_target_frame_static` for the static fallback
+- Sprite name: `GFX_death_wither_target_frame` for the animated sheet. `GFX_death_wither_target_frame_static` for the static fallback
 - `.gfx` file: `interface/010_death.gfx`
 - Related gameplay use: target-frame overlay
 - Asset status: `complete`
@@ -518,7 +524,7 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 - Final path: `gfx/interface/death/black_atlas/death_compact_warning_pulse.dds`
 - Static fallback: `gfx/interface/death/black_atlas/death_compact_warning_pulse_static.dds`
 - Target size: `36x36` frames, `288x36` sheet
-- Sprite name: `GFX_death_compact_warning_pulse` for the animated sheet; `GFX_death_compact_warning_pulse_static` for the static fallback
+- Sprite name: `GFX_death_compact_warning_pulse` for the animated sheet. `GFX_death_compact_warning_pulse_static` for the static fallback
 - `.gfx` file: `interface/010_death.gfx`
 - Related gameplay use: compact warning indicator
 - Asset status: `complete`
