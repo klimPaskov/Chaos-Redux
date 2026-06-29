@@ -26,13 +26,13 @@ Hard asset constraint followed: no flag assets, `.tga` files, `gfx/flags`, or fl
   - `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`
   - plus AGENTS-required core pages for Modifiers, Scopes, On actions, Event modding, Decision modding, Idea modding, and AI modding.
 - Vanilla docs consulted:
-  - `/home/klim/projects/Hearts of Iron IV/documentation/effects_documentation.md`
-  - `/home/klim/projects/Hearts of Iron IV/documentation/triggers_documentation.md`
-  - `/home/klim/projects/Hearts of Iron IV/documentation/script_concept_documentation.md`
-  - `/home/klim/projects/Hearts of Iron IV/documentation/modifiers_documentation.md`
+  - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`
+  - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md`
+  - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md`
+  - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/modifiers_documentation.md`
 - Vanilla focus precedents checked:
-  - `/home/klim/projects/Hearts of Iron IV/common/national_focus/soviet.txt`
-  - `/home/klim/projects/Hearts of Iron IV/common/national_focus/mexico.txt`
+  - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt`
+  - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/mexico.txt`
 - Event005 design context checked:
   - `docs/events/005_soviet_collapse.md`
   - `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_5_focus_trees.md`
@@ -370,9 +370,9 @@ sed -n '1,140p' 'paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md'
 sed -n '1,140p' 'paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md'
 sed -n '1,160p' 'paradox_wiki/Idea modding - Hearts of Iron 4 Wiki.md'
 sed -n '1,180p' 'paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md'
-rg -n "national_focus|load_focus_tree|mark_focus_tree_layout_dirty|focus = \\{|ai_will_do|script constants|script_constants" '/home/klim/projects/Hearts of Iron IV/documentation/effects_documentation.md' '/home/klim/projects/Hearts of Iron IV/documentation/triggers_documentation.md' '/home/klim/projects/Hearts of Iron IV/documentation/script_concept_documentation.md' '/home/klim/projects/Hearts of Iron IV/documentation/modifiers_documentation.md'
-sed -n '1,160p' '/home/klim/projects/Hearts of Iron IV/common/national_focus/soviet.txt'
-sed -n '6300,6460p' '/home/klim/projects/Hearts of Iron IV/common/national_focus/mexico.txt'
+rg -n "national_focus|load_focus_tree|mark_focus_tree_layout_dirty|focus = \\{|ai_will_do|script constants|script_constants" 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md' 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md' 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md' 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/modifiers_documentation.md'
+sed -n '1,160p' 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt'
+sed -n '6300,6460p' 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/mexico.txt'
 wc -l common/national_focus/005_soviet_collapse_republics.txt common/national_focus/005_soviet_collapse_custom_splinters.txt common/national_focus/005_soviet_collapse_factory_successors.txt common/national_focus/005_soviet_collapse_ancient_restorations.txt
 python3 - <<'PY'
 # Parsed the four scoped focus files for focus_tree ids, focus ids, completion_reward helper usage, duplicates, ai_will_do presence, prerequisites, mutual exclusions, and resolved relative coordinates.

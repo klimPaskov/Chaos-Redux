@@ -18,7 +18,7 @@ References used before patching:
 - `.agents/skills/chaos-redux-improvement-loop/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - offline wiki core pages plus `National focus modding - Hearts of Iron 4 Wiki.md`
-- vanilla docs/examples in `~/projects/Hearts of Iron IV/documentation` and `~/projects/Hearts of Iron IV/common/national_focus`
+- vanilla docs/examples in `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation` and `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus`
 
 ## High-priority findings first
 

@@ -34,7 +34,7 @@ Generation:
 File placement:
 
 ```bash
-cp /mnt/c/Users/klimp/.codex/generated_images/019ec53e-13db-75e0-98ab-2aaf6476d609/ig_0ae66a8424763cfa016a2e66e695688191a3e077fdedae6459.png docs/assets/008_tensions_rising/source_png/report_event_tensions_rising_source.png
+cp C:/Users/klimp/.codex/generated_images/019ec53e-13db-75e0-98ab-2aaf6476d609/ig_0ae66a8424763cfa016a2e66e695688191a3e077fdedae6459.png docs/assets/008_tensions_rising/source_png/report_event_tensions_rising_source.png
 ```
 
 Report-card processing:

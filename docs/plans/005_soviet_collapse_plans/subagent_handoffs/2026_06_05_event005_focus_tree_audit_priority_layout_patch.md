@@ -17,7 +17,7 @@ References consulted before focus edits:
 
 - Offline Paradox wiki core pages: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding.
 - Offline Paradox wiki National focus modding page.
-- Vanilla documentation: `~/projects/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`.
+- Vanilla documentation: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`.
 - Vanilla focus precedent: `baltic_shared.txt`, `poland.txt`, `soviet.txt`.
 - Repo skills: `hoi4-focus-trees`, `chaos-redux-events`.
 

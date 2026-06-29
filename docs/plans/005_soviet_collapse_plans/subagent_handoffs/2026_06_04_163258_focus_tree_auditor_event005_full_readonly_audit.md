@@ -31,10 +31,10 @@ Offline Paradox wiki snapshot:
 
 Vanilla docs/examples:
 
-- `~/projects/Hearts of Iron IV/documentation/effects_documentation.md`
-- `~/projects/Hearts of Iron IV/documentation/triggers_documentation.md`
-- `~/projects/Hearts of Iron IV/documentation/modifiers_documentation.md`
-- `~/projects/Hearts of Iron IV/documentation/script_concept_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/modifiers_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md`
 - Vanilla focus files sampled: `common/national_focus/soviet.txt`, `poland.txt`, `uk.txt`
 
 Event005 specs/plans inspected:
@@ -330,7 +330,7 @@ rg --files paradox_wiki | rg '((National focus|Focus|Effects|Triggers|Localisati
 sed -n '1,220p' 'paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md'
 sed -n '220,520p' 'paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md'
 sed -n '1,120p' 'paradox_wiki/Effect - Hearts of Iron 4 Wiki.md'
-rg -n 'focus|national_focus|mutually_exclusive|prerequisite|allow_branch|ai_will_do|path' ~/projects/Hearts\\ of\\ Iron\\ IV/documentation/*.md
+rg -n 'focus|national_focus|mutually_exclusive|prerequisite|allow_branch|ai_will_do|path' 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation'
 rg -n '\\b(add_ideas|remove_ideas|swap_ideas|add_timed_idea|modify_ideas|add_dynamic_modifier|remove_dynamic_modifier)\\b' common/national_focus/005_soviet_collapse_*.txt common/scripted_effects common/ideas/005_soviet_collapse_ideas.txt
 python3 - <<'PY'
 # read-only corrected Clausewitz focus parser for counts, reward patterns, and coordinate/pathline heuristics

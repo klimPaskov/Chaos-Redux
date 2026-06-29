@@ -34,9 +34,9 @@ Offline Paradox wiki pages opened before inspecting target files:
 
 Vanilla references consulted:
 
-- `~/projects/Hearts of Iron IV/documentation/effects_documentation.md`
-- `~/projects/Hearts of Iron IV/documentation/triggers_documentation.md`
-- `~/projects/Hearts of Iron IV/common/national_focus/soviet.txt`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt`
 
 Relevant reference implications:
 
@@ -482,13 +482,13 @@ Risk:
 Commands and checks run:
 
 - `rg --files paradox_wiki -g '*National focus*' -g '*Data structures*' -g '*Triggers*' -g '*Effects*' -g '*Modifiers*' -g '*Localisation*' -g '*Scopes*' -g '*Decision modding*' -g '*Idea modding*' -g '*AI modding*'`
-- `sed -n '1,220p' /home/klim/projects/chaos_redux/.agents/skills/hoi4-focus-trees/SKILL.md`
-- `sed -n '1,220p' /home/klim/projects/chaos_redux/.agents/skills/chaos-redux-subagents/SKILL.md`
+- `sed -n '1,220p' C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/hoi4-focus-trees/SKILL.md`
+- `sed -n '1,220p' C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-subagents/SKILL.md`
 - `sed -n` reads of all required offline wiki pages listed above.
-- `rg --files '/home/klim/projects/Hearts of Iron IV/documentation' -g '*focus*' -g '*effects*' -g '*triggers*' -g '*script*'`
+- `rg --files 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation' -g '*focus*' -g '*effects*' -g '*triggers*' -g '*script*'`
 - `rg -n` checks in `effects_documentation.md` for `add_ideas`, `swap_ideas`, `load_focus_tree`, `create_wargoal`, `add_state_claim`, `add_state_core`, `add_ai_strategy`, construction, unit, decision, and politics effects.
 - `rg -n` checks in `triggers_documentation.md` for `has_completed_focus`, focus tree, idea, government, war, and state-control triggers.
-- `sed -n '1,220p' '/home/klim/projects/Hearts of Iron IV/common/national_focus/soviet.txt'`
+- `sed -n '1,220p' 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt'`
 - `rg -n` broad scan of focus rewards, ids, tree ids, mutexes, coordinates, direct ideas, war goals, claims, cores, AI strategies, unit spawns, and decision unlocks in all four audited focus files.
 - `rg -n` broad scan of related scripted effects and ideas for helper-mediated idea/reward spam.
 - `wc -l` on the four audited focus files plus related effects/ideas files.

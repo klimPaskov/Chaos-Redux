@@ -250,7 +250,7 @@ Read and consulted:
 - `.agents/skills/chaos-redux-improvement-loop/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - Offline wiki pages: National focus modding, Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding.
-- Vanilla docs and examples: `~/projects/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`, `script_concept_documentation.md`, and vanilla `common/national_focus/soviet.txt`, `generic.txt`, `baltic_shared.txt` search examples.
+- Vanilla docs and examples: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`, `script_concept_documentation.md`, and vanilla `common/national_focus/soviet.txt`, `generic.txt`, `baltic_shared.txt` search examples.
 
 Static validation:
 

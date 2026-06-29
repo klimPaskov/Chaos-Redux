@@ -23,7 +23,7 @@ Hard constraint honored: no `gfx/`, `flags/`, sprites, images, or `.gfx` files w
 - `.agents/skills/chaos-redux-improvement-loop/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - Offline wiki: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, AI focuses, National focus modding.
-- Vanilla docs: `~/projects/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`, plus `~/projects/Hearts of Iron IV/common/ai_strategy/_documentation.md`.
+- Vanilla docs: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`, plus `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/ai_strategy/_documentation.md`.
 - Vanilla focus precedents: `soviet.txt`, `baltic_shared.txt`, `italy.txt` for prerequisite, mutual exclusion, branch layout, and AI examples.
 - Source design: `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_5_focus_trees.md`.
 

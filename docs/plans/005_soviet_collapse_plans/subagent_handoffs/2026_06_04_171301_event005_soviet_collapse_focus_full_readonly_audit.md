@@ -38,9 +38,9 @@ Required offline wiki pages:
 
 Vanilla references:
 
-- `/home/klim/projects/Hearts of Iron IV/documentation/effects_documentation.md`
-- Vanilla focus examples in `/home/klim/projects/Hearts of Iron IV/common/national_focus/soviet.txt`
-- Vanilla focus examples in `/home/klim/projects/Hearts of Iron IV/common/national_focus/estonia.txt`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`
+- Vanilla focus examples in `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt`
+- Vanilla focus examples in `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/estonia.txt`
 
 ## Idea Spam Audit
 

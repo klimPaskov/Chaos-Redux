@@ -18,10 +18,10 @@ No flag file contents were inspected or edited. The only flag-related operation 
 - `.agents/skills/chaos-redux-events/SKILL.md`
 - Offline wiki snapshot pages for national focus modding, data structures, triggers, effects, modifiers, localisation, scopes, on actions, event modding, decision modding, idea modding, and AI modding.
 - Vanilla documentation:
-  - `/home/klim/projects/Hearts of Iron IV/documentation/effects_documentation.md`
-  - `/home/klim/projects/Hearts of Iron IV/documentation/script_concept_documentation.md`
-  - `/home/klim/projects/Hearts of Iron IV/documentation/triggers_documentation.md`
-  - `/home/klim/projects/Hearts of Iron IV/documentation/modifiers_documentation.md`
+  - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`
+  - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md`
+  - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md`
+  - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/modifiers_documentation.md`
 - Vanilla focus precedents in `common/national_focus/estonia.txt` and `common/national_focus/germany.txt` showing `custom_effect_tooltip` plus `hidden_effect` reward cleanup.
 
 ## Changed Files

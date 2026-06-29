@@ -27,10 +27,10 @@ Task: current-state audit of Event005 Soviet Collapse focus trees after the late
   - `paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md`
   - `paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md`
 - Vanilla docs / precedent:
-  - `~/projects/Hearts of Iron IV/documentation/effects_documentation.md`
-  - `~/projects/Hearts of Iron IV/documentation/triggers_documentation.md`
-  - `~/projects/Hearts of Iron IV/documentation/script_concept_documentation.md`
-  - `~/projects/Hearts of Iron IV/common/national_focus/generic.txt`
+  - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`
+  - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md`
+  - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md`
+  - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/generic.txt`
 - Repo skills:
   - `hoi4-focus-trees`
   - `chaos-redux-subagents`

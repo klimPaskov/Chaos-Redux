@@ -57,12 +57,12 @@ Required offline wiki snapshot pages:
 
 Vanilla references:
 
-- `/home/klim/projects/Hearts of Iron IV/documentation/effects_documentation.md`
-- `/home/klim/projects/Hearts of Iron IV/documentation/triggers_documentation.md`
-- `/home/klim/projects/Hearts of Iron IV/documentation/script_concept_documentation.md`
-- `/home/klim/projects/Hearts of Iron IV/common/national_focus/generic.txt`
-- `/home/klim/projects/Hearts of Iron IV/common/national_focus/china_nationalist.txt`
-- `/home/klim/projects/Hearts of Iron IV/common/national_focus/uruguay.txt`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/generic.txt`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/china_nationalist.txt`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/uruguay.txt`
 
 Relevant reference conclusions:
 
@@ -72,12 +72,12 @@ Relevant reference conclusions:
 
 ## Commands And Checks Run
 
-- `sed -n '1,220p' /home/klim/projects/chaos_redux/.agents/skills/hoi4-focus-trees/SKILL.md`
-- `sed -n '1,220p' /home/klim/projects/chaos_redux/.agents/skills/chaos-redux-subagents/SKILL.md`
+- `sed -n '1,220p' C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/hoi4-focus-trees/SKILL.md`
+- `sed -n '1,220p' C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-subagents/SKILL.md`
 - `rg --files paradox_wiki | rg 'Data structures|Triggers|Effects|Modifiers|Localisation|Scopes|On actions|Event modding|Decision modding|Idea modding|AI modding|National focus'`
-- `rg --files '/home/klim/projects/Hearts of Iron IV/documentation' | rg -i 'focus|national|trigger|effect|localisation|ai|script'`
-- `find '/home/klim/projects/Hearts of Iron IV' -iname '*focus*documentation*' -o -iname '*national*focus*' | head -80`
-- `sed -n '3290,3325p' '/home/klim/projects/Hearts of Iron IV/documentation/effects_documentation.md' && sed -n '4620,4645p' '/home/klim/projects/Hearts of Iron IV/documentation/effects_documentation.md'`
+- `rg --files 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation' | rg -i 'focus|national|trigger|effect|localisation|ai|script'`
+- `find 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV' -iname '*focus*documentation*' -o -iname '*national*focus*' | head -80`
+- `sed -n '3290,3325p' 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md' && sed -n '4620,4645p' 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md'`
 - `sed -n '120,260p' 'paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md'`
 - One-off Python parser over the four bounded focus files and matching Event005 localisation files. Checks performed:
   - parsed `focus_tree` and `focus` blocks

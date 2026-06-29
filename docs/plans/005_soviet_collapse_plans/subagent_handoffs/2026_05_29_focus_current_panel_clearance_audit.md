@@ -17,7 +17,7 @@ Scope:
 - `.agents/skills/chaos-redux-improvement-loop/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - Offline wiki snapshot: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding.
-- Vanilla docs/examples: `effects_documentation.md`, `triggers_documentation.md`, `script_concept_documentation.md`, `common/script_constants/documentation.md`, and vanilla focus examples in `~/projects/Hearts of Iron IV/common/national_focus/`.
+- Vanilla docs/examples: `effects_documentation.md`, `triggers_documentation.md`, `script_concept_documentation.md`, `common/script_constants/documentation.md`, and vanilla focus examples in `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/`.
 
 ## Patch Summary
 

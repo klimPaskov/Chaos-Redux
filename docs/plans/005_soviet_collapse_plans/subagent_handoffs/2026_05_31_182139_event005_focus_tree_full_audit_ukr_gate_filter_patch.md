@@ -58,7 +58,7 @@ Commands/checks run:
 	- `paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md`
 	- `paradox_wiki/AI focuses - Hearts of Iron 4 Wiki.md`
 - Read vanilla documentation and precedents:
-	- `~/projects/Hearts of Iron IV/documentation/effects_documentation.md`
+	- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`
 	- vanilla focus files including `common/national_focus/baltic_shared.txt`, `common/national_focus/soviet.txt`, and `common/national_focus/uk.txt`
 - Parsed 1698 focus blocks across the four scoped files.
 - Checked duplicate direct `add_ideas` rewards inside one focus: none found.

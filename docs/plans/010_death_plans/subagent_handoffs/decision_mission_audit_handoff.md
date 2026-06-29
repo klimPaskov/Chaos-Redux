@@ -25,9 +25,9 @@ No gameplay files were edited. This is an audit-only handoff.
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - Offline wiki pages in `paradox_wiki/`: Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding.
 - Vanilla docs and precedents:
-  - `~/projects/Hearts of Iron IV/common/decisions/_documentation.md`
-  - `~/projects/Hearts of Iron IV/documentation/effects_documentation.md`
-  - `~/projects/Hearts of Iron IV/documentation/triggers_documentation.md`
+  - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/decisions/_documentation.md`
+  - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`
+  - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md`
   - Vanilla decision examples for custom costs, state-targeted decisions, missions, and AI weights.
 
 ## Issue List

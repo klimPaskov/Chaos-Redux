@@ -14,7 +14,7 @@ Mode: read-only audit. No focus files, gfx, flags, localisation, or gameplay fil
 
 Repo guidance and skill:
 - `AGENTS.md`
-- `hoi4-focus-trees` skill: `/home/klim/projects/chaos_redux/.agents/skills/hoi4-focus-trees/SKILL.md`
+- `hoi4-focus-trees` skill: `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/hoi4-focus-trees/SKILL.md`
 
 Offline Paradox wiki snapshot:
 - `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`
@@ -31,11 +31,11 @@ Offline Paradox wiki snapshot:
 - `paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md`
 
 Vanilla references:
-- `/home/klim/projects/Hearts of Iron IV/documentation/effects_documentation.md`
-- `/home/klim/projects/Hearts of Iron IV/documentation/triggers_documentation.md`
-- `/home/klim/projects/Hearts of Iron IV/common/national_focus/soviet.txt`
-- `/home/klim/projects/Hearts of Iron IV/common/national_focus/baltic_shared.txt`
-- `/home/klim/projects/Hearts of Iron IV/common/national_focus/generic.txt`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/baltic_shared.txt`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/generic.txt`
 
 Current Event 005 source specs spot-checked:
 - `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_5_focus_trees.md`
@@ -281,7 +281,7 @@ Patch recommendation:
 
 Reference and discovery commands:
 ```bash
-sed -n '1,220p' /home/klim/projects/chaos_redux/.agents/skills/hoi4-focus-trees/SKILL.md
+sed -n '1,220p' C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/hoi4-focus-trees/SKILL.md
 sed -n '1,220p' AGENTS.md
 sed -n '1,180p' "paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md"
 sed -n '1,120p' "paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md"
@@ -295,8 +295,8 @@ sed -n '1,120p' "paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md"
 sed -n '1,120p' "paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md"
 sed -n '1,120p' "paradox_wiki/Idea modding - Hearts of Iron 4 Wiki.md"
 sed -n '1,120p' "paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md"
-rg -n "add_ideas|create_wargoal|unlock_decision_tooltip|complete_tooltip|custom_effect_tooltip" "/home/klim/projects/Hearts of Iron IV/documentation/effects_documentation.md"
-rg -n "focus_tree|prerequisite|mutually_exclusive|relative_position_id|continuous_focus_position" "/home/klim/projects/Hearts of Iron IV/common/national_focus/soviet.txt" "/home/klim/projects/Hearts of Iron IV/common/national_focus/baltic_shared.txt" "/home/klim/projects/Hearts of Iron IV/common/national_focus/generic.txt"
+rg -n "add_ideas|create_wargoal|unlock_decision_tooltip|complete_tooltip|custom_effect_tooltip" "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md"
+rg -n "focus_tree|prerequisite|mutually_exclusive|relative_position_id|continuous_focus_position" "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt" "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/baltic_shared.txt" "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/generic.txt"
 ```
 
 Audit commands:

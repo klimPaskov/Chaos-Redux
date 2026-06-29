@@ -21,7 +21,7 @@ No gameplay patch was made in this pass. The remaining failures are broad route 
 - `.agents/skills/chaos-redux-improvement-loop/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - Offline wiki pages consulted: Data structures, Triggers, Effect/Effects reference, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding.
-- Vanilla documentation consulted: `~/projects/Hearts of Iron IV/documentation/effects_documentation.md`, `~/projects/Hearts of Iron IV/documentation/triggers_documentation.md`, `~/projects/Hearts of Iron IV/documentation/modifiers_documentation.md`, `~/projects/Hearts of Iron IV/documentation/script_concept_documentation.md`.
+- Vanilla documentation consulted: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`, `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md`, `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/modifiers_documentation.md`, `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md`.
 - Event source docs consulted: `docs/events/005_soviet_collapse.md`, `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_5_focus_trees.md`, `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_6_countries_splinters_restorations.md`.
 
 ## Current Audit Totals

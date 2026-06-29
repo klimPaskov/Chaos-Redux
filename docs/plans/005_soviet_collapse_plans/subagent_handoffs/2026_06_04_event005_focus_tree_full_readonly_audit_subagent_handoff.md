@@ -133,9 +133,9 @@ Decision categories exist for generic breakaways, regional factions, and several
 
 - `rg --files paradox_wiki | rg 'Data structures|Triggers|Effects|Modifiers|Localisation|Scopes|On actions|Event modding|Decision modding|Idea modding|AI modding|National focus'`
 - `sed -n` reads of required offline wiki pages: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding.
-- `sed -n` reads of vanilla docs: `/home/klim/projects/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`.
-- `rg -n "focus_tree =|search_filters|continuous_focus_position|mutually_exclusive|ai_will_do|completion_reward" "/home/klim/projects/Hearts of Iron IV/common/national_focus" -g "*.txt" | head -n 160`
-- `sed -n '1,220p' "/home/klim/projects/Hearts of Iron IV/common/national_focus/uruguay.txt"`
+- `sed -n` reads of vanilla docs: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`.
+- `rg -n "focus_tree =|search_filters|continuous_focus_position|mutually_exclusive|ai_will_do|completion_reward" "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus" -g "*.txt" | head -n 160`
+- `sed -n '1,220p' "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/uruguay.txt"`
 - `rg --files common/national_focus | rg '^common/national_focus/005_soviet_collapse.*\\.txt$'`
 - `wc -l common/national_focus/005_soviet_collapse*.txt`
 - Parser pass for tree counts, focus counts, helper calls, direct idea ops, filter mismatch candidates, layout duplicates.

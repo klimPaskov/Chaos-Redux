@@ -20,7 +20,7 @@ This pass made one high-confidence local patch. It does not complete the request
 - `.agents/skills/chaos-redux-improvement-loop/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - Offline wiki pages: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding.
-- Vanilla references: `~/projects/Hearts of Iron IV/documentation/effects_documentation.md`, `~/projects/Hearts of Iron IV/documentation/triggers_documentation.md`, and focus precedents in `~/projects/Hearts of Iron IV/common/national_focus/soviet.txt` and `latvia.txt`.
+- Vanilla references: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`, `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md`, and focus precedents in `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt` and `latvia.txt`.
 
 ## Changed Files
 

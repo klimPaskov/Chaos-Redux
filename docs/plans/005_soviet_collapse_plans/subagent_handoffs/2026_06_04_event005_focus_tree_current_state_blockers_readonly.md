@@ -23,8 +23,8 @@ Required references consulted before inspecting the Chaos Redux focus files:
 - `AGENTS.md`
 - Offline Paradox wiki core pages: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding
 - Offline Paradox wiki `National focus modding - Hearts of Iron 4 Wiki.md`
-- Vanilla documentation in `~/projects/Hearts of Iron IV/documentation/`, including effects, triggers, modifiers, localisation objects, and script concepts
-- Vanilla focus files list and focus syntax precedent in `~/projects/Hearts of Iron IV/common/national_focus/`
+- Vanilla documentation in `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/`, including effects, triggers, modifiers, localisation objects, and script concepts
+- Vanilla focus files list and focus syntax precedent in `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/`
 
 Critical invariant honored: **DO NOT TOUCH FLAGS.** I did not edit `gfx/flags`, `.tga`, flag sprites, flag `.gfx`, or visual flag assets. No patches were made to gameplay or asset files in this audit.
 

@@ -6,7 +6,7 @@ Scope: Event005 Soviet Collapse focus trees only.
 
 ## References consulted
 
-- Repo instructions: `/home/klim/projects/chaos_redux/AGENTS.md`
+- Repo instructions: `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/AGENTS.md`
 - Repo skill: `hoi4-focus-trees`
 - Related repo skill opened for focus-decision connections: `hoi4-decisions-missions`
 - Offline Paradox wiki snapshot pages:
@@ -23,14 +23,14 @@ Scope: Event005 Soviet Collapse focus trees only.
   - `AI modding - Hearts of Iron 4 Wiki.md`
   - `National focus modding - Hearts of Iron 4 Wiki.md`
 - Vanilla documentation:
-  - `/home/klim/projects/Hearts of Iron IV/documentation/effects_documentation.md`
-  - `/home/klim/projects/Hearts of Iron IV/documentation/triggers_documentation.md`
-  - `/home/klim/projects/Hearts of Iron IV/documentation/modifiers_documentation.md`
-  - `/home/klim/projects/Hearts of Iron IV/documentation/script_concept_documentation.md`
-  - `/home/klim/projects/Hearts of Iron IV/documentation/script_collection_input.md`
-  - `/home/klim/projects/Hearts of Iron IV/documentation/script_collection_operator.md`
+  - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`
+  - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md`
+  - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/modifiers_documentation.md`
+  - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md`
+  - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_collection_input.md`
+  - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_collection_operator.md`
 - Vanilla precedent inspected:
-  - `/home/klim/projects/Hearts of Iron IV/common/national_focus/generic.txt`
+  - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/generic.txt`
 
 Relevant syntax points used during the audit:
 

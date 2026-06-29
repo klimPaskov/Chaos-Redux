@@ -13,7 +13,7 @@ Required guidance consulted:
 - Skills: `hoi4-focus-trees`, `chaos-redux-events`, `hoi4-decisions-missions`
 - Offline wiki: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding
 - Vanilla docs: `effects_documentation.md`, `triggers_documentation.md`, `script_concept_documentation.md`
-- Vanilla precedents: `~/projects/Hearts of Iron IV/common/national_focus/soviet.txt`, vanilla decisions under `~/projects/Hearts of Iron IV/common/decisions`
+- Vanilla precedents: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt`, vanilla decisions under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/decisions`
 
 Vanilla precedent supports the main audit standard: route mutexes should be readable, decision unlocks should be obvious when focus rewards expose new actions, and idea add/remove/swap operations are player-facing reward noise unless hidden and lifecycle-safe.
 
@@ -166,7 +166,7 @@ Commands/scripts run:
 - Python brace parser over all four Event005 focus files to count focus trees, focus blocks, reward operations, helper calls, branch keyword counts, mutex structures, and focus-set flags
 - `rg -n` on helper definitions and high-risk focus snippets
 - Decision scan over `common/decisions/005_soviet_collapse*.txt`
-- Vanilla precedent scans in `~/projects/Hearts of Iron IV/common/national_focus/soviet.txt` and `~/projects/Hearts of Iron IV/common/decisions`
+- Vanilla precedent scans in `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt` and `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/decisions`
 
 Limitations:
 

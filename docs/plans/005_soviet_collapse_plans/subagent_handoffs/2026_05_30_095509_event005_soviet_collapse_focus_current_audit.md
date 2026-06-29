@@ -168,7 +168,7 @@ Remaining gaps:
 
 ## Validation Run
 
-Run from `/home/klim/projects/chaos_redux` after writing this handoff:
+Run from `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux` after writing this handoff:
 
 | Check | Result |
 | --- | --- |

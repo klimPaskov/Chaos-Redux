@@ -76,8 +76,8 @@ Read required references before editing:
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - `paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md`
 - Required core wiki pages from `paradox_wiki/`
-- Vanilla focus examples from `~/projects/Hearts of Iron IV/common/national_focus/`
-- Vanilla docs in `~/projects/Hearts of Iron IV/documentation/effects_documentation.md` and `triggers_documentation.md`
+- Vanilla focus examples from `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/`
+- Vanilla docs in `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md` and `triggers_documentation.md`
 
 Validation command:
 

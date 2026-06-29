@@ -40,10 +40,10 @@ Web access:
 Use HOI4 vanilla as the main example set.
 
 - The vanilla game directory is available at  
-  `~/projects/Hearts of Iron IV/`
+  `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/`
 
 - Vanilla Hearts of Iron IV includes official documentation files (often in markdown).
-  - The folder `~/projects/Hearts of Iron IV/documentation` contains markdown documentation files that **must be read**.
+  - The folder `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation` contains markdown documentation files that **must be read**.
   - Vanilla game files may also include documentation files in other folders. These documentation files **must be consulted when they exist** for the systems you touch.
   - Treat vanilla documentation as more authoritative, more complete, and more up to date than the Paradox wiki.
   - The Paradox wiki must still be consulted in parallel. Both sources are required.
@@ -57,9 +57,9 @@ If Chaos Redux already has a pattern for the same thing, follow that over vanill
 
 If vanilla examples are insufficient or unclear, you are allowed to inspect well known large mods for additional reference.
 
-- Kaiserreich (1521695605) is approved as a reference mod for structure, patterns, and edge case handling.
+- Kaiserreich (1521695605) is approved as a reference mod for structure, patterns, and edge case handling. Its Windows workshop path is `C:/Program Files (x86)/Steam/steamapps/workshop/content/394360/1521695605`.
 - You may read Kaiserreich files to understand how similar systems are implemented when vanilla does not provide a clear or complete example.
-- You may read other mod files as well (for example Kaiserredux 2076426030), if you don't find what you are looking for inside Kaiserreich.
+- You may read other mod files as well (for example Kaiserredux 2076426030 at `C:/Program Files (x86)/Steam/steamapps/workshop/content/394360/2076426030`), if you don't find what you are looking for inside Kaiserreich.
 
 ### Repo Skills
 
@@ -121,8 +121,8 @@ Clausewitz script is picky. Follow these rules strictly.
    - Prefer HOI4 `script_constants` for shared tuning values. They are global (available across script files), improve readability, and have no runtime cost (they are injected on load).
    - Script constants are the preferred tuning source, but not every effect field parses `constant:` tokens. For duration fields that reject constants, such as `days =` inside timed flags, assign the constant to a normal or temporary variable first and pass that variable to `days =`.
    - Required vanilla docs:
-     - `~/projects/Hearts of Iron IV/documentation/script_concept_documentation.md` (Script Constants section)
-     - `~/projects/Hearts of Iron IV/common/script_constants/documentation.md` (schema + examples)
+     - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md` (Script Constants section)
+     - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/script_constants/documentation.md` (schema + examples)
    - Where to put them:
      - `common/script_constants/` only.
      - Create multiple files by subsystem (chemical warfare, events, settings, etc).
@@ -134,8 +134,8 @@ Clausewitz script is picky. Follow these rules strictly.
 10. Use event targets (`event_target:`) to persist a scope pointer across blocks/events when variables/scopes alone are insufficient.
     - Required references:
     - `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md` (Event targets section)
-    - `~/projects/Hearts of Iron IV/documentation/effects_documentation.md` (`save_event_target_as`, `save_global_event_target_as`, `clear_global_event_target`, `clear_global_event_targets`)
-    - `~/projects/Hearts of Iron IV/documentation/triggers_documentation.md` (`has_event_target`)
+    - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md` (`save_event_target_as`, `save_global_event_target_as`, `clear_global_event_target`, `clear_global_event_targets`)
+    - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md` (`has_event_target`)
     - Prefer regular event targets (`save_event_target_as`) for short-lived chains, they automatically clear when the originating effect chain ends (but do carry into events fired from that chain).
     - Use global event targets (`save_global_event_target_as`) only when you need persistence beyond a single chain/system, they do not auto-clear and must be cleaned up (e.g. `clear_global_event_target = my_target`).
     - Use them as scopes/targets with `event_target:my_target`.
@@ -276,7 +276,7 @@ Unnecessary prefixes make code harder to read and maintain. Keep names clean.
 When implementing any new mechanic, follow this checklist:
 
 1. First open the required Paradox wiki pages from `paradox_wiki/` (section 0). Keep Data Structures, Triggers, Effects, Modifiers, and Localisation in front of you while you work.
-2. In addition to the Paradox wiki, inspect vanilla files in `~/projects/Hearts of Iron IV/` and read all the necessary documentation, particularly in `~/projects/Hearts of Iron IV/documentation`.
+2. In addition to the Paradox wiki, inspect vanilla files in `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/` and read all the necessary documentation, particularly in `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation`.
 3. Create a new markdown file in `docs/` for the mechanic you've added. Describe what it does, how it works step by step and how it interacts with existing systems. Add a section for future plans and your own suggestions on how the mechanic could be extended or made deeper.
 4. In that docs file, list all icons needed for the new features. Write where the sprites should live, which `gfx` file should reference them and what icon names are used in code and localisation, so the wiring rules from this file are also clear inside the docs file.
 5. Plan variables and flags so that values are dynamic and centralised.

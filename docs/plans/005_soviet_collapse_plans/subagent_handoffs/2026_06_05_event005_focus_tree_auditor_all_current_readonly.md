@@ -33,11 +33,11 @@ Consulted required offline wiki snapshot pages before reading Chaos Redux files:
 
 Consulted vanilla docs and references:
 
-- `~/projects/Hearts of Iron IV/documentation/effects_documentation.md`
-- `~/projects/Hearts of Iron IV/documentation/triggers_documentation.md`
-- `~/projects/Hearts of Iron IV/documentation/modifiers_documentation.md`
-- `~/projects/Hearts of Iron IV/documentation/script_concept_documentation.md`
-- Vanilla focus files under `~/projects/Hearts of Iron IV/common/national_focus/`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/modifiers_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md`
+- Vanilla focus files under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/`
 
 Key syntax/reference reminders used in this audit:
 
@@ -314,11 +314,11 @@ Priority:
 Reference/documentation checks:
 
 ```bash
-sed -n '1,220p' /home/klim/projects/chaos_redux/.agents/skills/hoi4-focus-trees/SKILL.md
-sed -n '1,220p' /home/klim/projects/chaos_redux/.agents/skills/hoi4-decisions-missions/SKILL.md
+sed -n '1,220p' C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/hoi4-focus-trees/SKILL.md
+sed -n '1,220p' C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/hoi4-decisions-missions/SKILL.md
 rg --files paradox_wiki | rg 'Data structures|Triggers|Effects|Modifiers|Localisation|Scopes|On actions|Event modding|Decision modding|Idea modding|AI modding|National focus|Focus'
-rg --files '/home/klim/projects/Hearts of Iron IV/documentation' | rg -i 'focus|trigger|effect|localisation|modifier|ai|script|decision|event|idea'
-rg --files '/home/klim/projects/Hearts of Iron IV/common/national_focus' | head -40
+rg --files 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation' | rg -i 'focus|trigger|effect|localisation|modifier|ai|script|decision|event|idea'
+rg --files 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus' | head -40
 ```
 
 Focus inventory and mechanical scans:

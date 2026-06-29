@@ -18,10 +18,10 @@ No files under `gfx/flags/` or `interface/flags/` were opened or edited. Flags w
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - Offline wiki: `National focus modding`, `Data structures`, `Triggers`, `Effect`, `Localisation`, `Modifiers`, `Scopes`, `On actions`, `Event modding`, `Decision modding`, `Idea modding`, `AI modding`
 - Vanilla docs:
-  - `~/projects/Hearts of Iron IV/documentation/effects_documentation.md`
-  - `~/projects/Hearts of Iron IV/documentation/triggers_documentation.md`
+  - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`
+  - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md`
 - Vanilla precedent sampled:
-  - `~/projects/Hearts of Iron IV/common/national_focus/soviet.txt`
+  - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt`
 - Event 005 design/context:
   - `docs/events/005_soviet_collapse.md`
   - `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_5_focus_trees.md`

@@ -127,7 +127,7 @@ Supersession note: this handoff predates the parent final asset pass and final r
 
 ## Validation run
 
-- `rg -n '^DTH\\s*=|\\bDTH\\b' '/home/klim/projects/Hearts of Iron IV/common/country_tags' common/country_tags` found `DTH` only in Chaos Redux.
+- `rg -n '^DTH\\s*=|\\bDTH\\b' 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/country_tags' common/country_tags` found `DTH` only in Chaos Redux.
 - `file` verified DTH and route flags at `82x52`, `41x26`, and `10x7`, and verified Zol portrait as `156x210` DDS.
 - A targeted check over `set_cosmetic_tag` usages in `010_death_effects.txt` confirmed `death_herald_of_zol` and `death_black_apostolate` are now defined in `common/countries/cosmetic.txt`.
 - `rg` over scoped active files found no active `Spirit of War/Peace` or `spirit_of_war` / `spirit_of_peace` references.

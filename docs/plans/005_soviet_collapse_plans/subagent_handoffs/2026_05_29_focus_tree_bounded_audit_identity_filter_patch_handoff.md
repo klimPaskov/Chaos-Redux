@@ -14,8 +14,8 @@ Subagent scope: focus-tree audit and bounded small patches for the Soviet Collap
 - `.agents/skills/chaos-redux-improvement-loop/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - Offline wiki snapshot pages: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding, AI focuses.
-- Vanilla documentation read from `~/projects/Hearts of Iron IV/documentation/`: effects, triggers, modifiers, localisation objects, localisation formatters, script concepts, dynamic variables.
-- Vanilla focus precedent inspected: `~/projects/Hearts of Iron IV/common/national_focus/generic.txt`.
+- Vanilla documentation read from `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/`: effects, triggers, modifiers, localisation objects, localisation formatters, script concepts, dynamic variables.
+- Vanilla focus precedent inspected: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/generic.txt`.
 
 ## Files Changed
 

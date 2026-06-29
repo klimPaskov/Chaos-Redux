@@ -9,12 +9,12 @@ Use `chaos-redux-event-assets` for all static assets. Use `chaos-redux-frame-ani
 
 Inspect the relevant reference folders before producing any asset.
 
-- Ideas: `~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/ideas`
-- News event images: `~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/news_event_images`
-- Report event images: `~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/report_event_images`
-- Super-event images: `~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/super_event_images`
-- Decisions: `~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/decisions`
-- Achievements: `~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/achievements`
+- Ideas: `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/ideas`
+- News event images: `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/news_event_images`
+- Report event images: `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/report_event_images`
+- Super-event images: `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/super_event_images`
+- Decisions: `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/decisions`
+- Achievements: `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/achievements`
 
 All asset names below are stable working filenames and sprite directions, not final localisation.
 
