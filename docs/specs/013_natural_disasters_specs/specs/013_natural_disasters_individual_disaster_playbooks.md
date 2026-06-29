@@ -12,7 +12,7 @@ state_current_population times final_dynamic_loss_rate = civilian_deaths_for_tha
 
 The final dynamic loss rate is built from disaster family, severity, evolution, warning success, preparedness, local supply, infrastructure, state density, war state, terrain, building concentration, and unresolved aftermath. Dense states produce much higher absolute deaths than sparse states under the same rate. Great disasters can produce millions of deaths when they hit dense states, several neighboring dense states, or a dense region followed by famine, exposure, ashfall, floodwater disease, or refugee collapse.
 
-Every large disaster that directly hits a country opens a disaster specific decision category for that country. The generic Natural Disaster Recovery office is only the overview and small local incident surface. Big disasters must not all share one generic recovery list.
+Every large disaster that directly hits a country opens a disaster specific decision category for that country. The generic Natural Disaster Recovery overview is only the small local incident surface. Big disasters must not all share one generic recovery list.
 
 ## Category scale tiers
 
@@ -140,7 +140,7 @@ Debris fields, downed power and radio lines, damaged airfields, flash flood pock
 
 ### Country hit category
 
-Working category label: Severe Storm Office.
+Working category label: Severe Storm Response Board.
 
 Visible values: storm line severity, airfield damage, debris clearance, flash flood risk, crop damage.
 
@@ -434,7 +434,7 @@ Ashfall, lahar path, roof collapse risk, grounded aircraft, poisoned water, crop
 
 ### Country hit category
 
-Working category label: Volcanic Crisis Office.
+Working category label: Volcanic Crisis Board.
 
 Visible values: eruption stage, ash cloud spread, lahar risk, airfield closure, water safety, evacuation route.
 
@@ -560,7 +560,7 @@ Water table collapse, crop failure, livestock death, ration queues, refugee pres
 
 ### Country hit category
 
-Working category label: Drought and Famine Office.
+Working category label: Drought and Famine Board.
 
 Visible values: water reserve, crop survival, ration strain, famine pressure, refugee outflow, wildfire risk.
 
@@ -602,7 +602,7 @@ Heat shelter pressure, water rationing, power grid strain, rail buckling, urban 
 
 ### Country hit category
 
-Working category label: Heat Emergency Office.
+Working category label: Heat Emergency Board.
 
 Visible values: heat stress, water reserve, shelter capacity, grid strain, wildfire risk, active Event 51 non stacking guard.
 
@@ -686,7 +686,7 @@ Airfield burial, dust clogged engines, visibility collapse, water contamination,
 
 ### Country hit category
 
-Working category label: Dust Emergency Office.
+Working category label: Dust Emergency Board.
 
 Visible values: visibility, airfield closure, water safety, convoy route, dust belt movement, engine damage.
 
@@ -728,7 +728,7 @@ Buried rail pass, dammed river, isolated valley, blocked tunnel, unstable slope,
 
 ### Country hit category
 
-Working category label: Landslide Rescue Office.
+Working category label: Landslide Rescue Board.
 
 Visible values: buried rail, isolated settlements, slope instability, river blockage, rescue access.
 

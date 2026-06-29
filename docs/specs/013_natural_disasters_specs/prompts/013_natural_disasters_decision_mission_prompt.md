@@ -4,7 +4,7 @@ Use `hoi4-decisions-missions`, `chaos-redux-events`, and the Event 13 spec. Afte
 
 ## Core correction
 
-Do not implement Natural Disasters as one generic recovery category. The generic Natural Disaster Recovery office is an overview and small local incident hub. Every big disaster that directly hits a country must open a family specific decision category with its own values, decisions, missions, AI, costs, tooltips, icons, and cleanup.
+Do not implement Natural Disasters as one generic recovery category. The generic Natural Disaster Recovery overview is a small local incident hub. Every big disaster that directly hits a country must open a family specific decision category with its own values, decisions, missions, AI, costs, tooltips, icons, and cleanup.
 
 Follow:
 
@@ -18,21 +18,21 @@ Implement these working category surfaces or equivalent final ids that preserve 
 
 - Flood Relief Authority
 - Cyclone Emergency Command
-- Severe Storm Office
+- Severe Storm Response Board
 - Hail Damage Board when regional hail damage matters
 - Wind Damage Control when extreme wind is serious
 - Storm Corridor Command
 - Seismic Emergency Authority
 - Great Rupture Command
 - Tsunami Coastal Command
-- Volcanic Crisis Office
+- Volcanic Crisis Board
 - Massive Eruption Command
 - Firefront Command
-- Drought and Famine Office
-- Heat Emergency Office
+- Drought and Famine Board
+- Heat Emergency Board
 - Winter Emergency Directorate
-- Dust Emergency Office
-- Landslide Rescue Office
+- Dust Emergency Board
+- Landslide Rescue Board
 - Slope Collapse Response
 - Skyfall Emergency Bureau
 - Meteor Storm Command

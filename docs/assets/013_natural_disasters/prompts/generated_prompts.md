@@ -1,38 +1,36 @@
 # Event 013 Natural Disasters Generated Prompt Log
 
-## Category sheets
+## Decision Icons
 
-### `nd_category_sheet_a_source`
-- Flood relief authority, cyclone emergency command, severe storm office, storm corridor command, tsunami coastal command, recovery overview.
-- Direction: 1930s-1940s disaster-administration miniature emblems, 3x2 grid, chroma-key background, strong silhouette, HOI4 readability.
+Decision icons were generated as individual `image_gen` assets, then chroma-keyed or alpha-cleaned for `32x32` decision DDS output. They are not resized focus icons.
 
-### `nd_category_sheet_b_source`
-- Seismic emergency authority, great rupture command, volcanic crisis office, massive eruption command, firefront command, landslide rescue office.
-- Direction: wartime civil-defense seals, ash and rubble palette, strong contrast, chroma-key background.
+- `decision_nd_evacuate_shelter_source`: shelter sign, evacuation arrows, field bedding, compact HOI4 decision icon, no text.
+- `decision_nd_rescue_columns_source`: rescue trucks and stretcher column, compact HOI4 decision icon, no text.
+- `decision_nd_field_hospitals_source`: medical tent, stretcher, lamp, compact HOI4 decision icon, no text.
+- `decision_nd_repair_rail_source`: damaged rail, wrench, bridge timber, compact HOI4 decision icon, no text.
+- `decision_nd_restore_supply_source`: crates, depot marker, supply truck, compact HOI4 decision icon, no text.
+- `decision_nd_clear_debris_source`: shovel, rubble, broken masonry, compact HOI4 decision icon, no text.
+- `decision_nd_rebuild_ports_source`: pier crane, mooring post, repair planks, compact HOI4 decision icon, no text.
+- `decision_nd_firefighting_source`: firebreak tools, hose, smoke glow, compact HOI4 decision icon, no text.
+- `decision_nd_water_rationing_source`: water tins, ration token, hand pump, compact HOI4 decision icon, no text.
+- `decision_nd_heat_shelters_source`: shaded shelter, water station, heat shimmer, compact HOI4 decision icon, no text.
+- `decision_nd_winter_convoys_source`: snow convoy, fuel drum, rail lantern, compact HOI4 decision icon, no text.
+- `decision_nd_dust_masks_source`: respirator masks, dust goggles, covered crate, compact HOI4 decision icon, no text.
+- `decision_nd_seismology_teams_source`: seismograph drum, cracked ground marker, field case, compact HOI4 decision icon, no text.
+- `decision_nd_lava_diversion_source`: lava trench, sandbags, engineer tools, compact HOI4 decision icon, no text.
+- `decision_nd_meteor_crater_cordon_source`: crater cordon, warning stakes, observer kit, compact HOI4 decision icon, no text.
+- `decision_nd_international_relief_source`: relief crates, rail stamp, convoy papers, compact HOI4 decision icon, no text.
+- `decision_nd_barrage_launch_controls_source`: control levers, disaster-map markers, warning lamp, compact HOI4 decision icon, no text.
 
-### `nd_category_sheet_c_source`
-- Drought and famine office, heat emergency office, winter emergency directorate, dust emergency office, slope collapse response.
-- Direction: harsh climate emergency administration emblems, 3x2 grid with one empty cell.
+## Decision Category Icons
 
-### `nd_category_sheet_d_source`
-- Skyfall emergency bureau, meteor storm command, famine and displacement commission, hail damage board, wind damage control.
-- Direction: grounded abnormal-disaster administration emblems, 3x2 grid with one empty cell.
+Decision category icons were generated through `image_gen` as family-specific disaster emblems on chroma-key backgrounds. The current processed icons remove chroma green and use non-square `53x40` canvases for category button art. They are separate from category pictures.
 
-## Decision sheets
+## Decision Category Pictures
 
-### `nd_decision_sheet_a_source`
-- Evacuate and shelter, rescue columns, field hospitals, repair rail, restore supply, clear debris.
-- Direction: compact decision-icon objects, no medal frame, transparent-ready chroma-key source, readable at `32x32`.
+Decision category pictures use existing generated Event 13 report-image sources. The processed outputs are report-card-style `114x101` category pictures, wired through `picture = GFX_decision_cat_picture_nd_*` in the decision category definitions.
 
-### `nd_decision_sheet_b_source`
-- Rebuild ports, firefighting, water rationing, heat shelters, winter convoys, dust masks.
-- Direction: compact decision-icon objects, no medal frame, transparent-ready chroma-key source, readable at `32x32`.
-
-### `nd_decision_sheet_c_source`
-- Seismology teams, lava diversion, meteor crater cordon, international relief, barrage launch controls.
-- Direction: compact decision-icon objects, no medal frame, transparent-ready chroma-key source, readable at `32x32`.
-
-## Achievement sheets
+## Achievement Sheets
 
 ### `nd_achievement_sheet_a_source`
 - Prepared capital, no deaths sequence, tame the barrage, firebreak master.
@@ -42,7 +40,7 @@
 - Aftershock control, skyfall survivor, global relief, no world end.
 - Direction: painted HOI4 achievement art with integrated bronze laurel frame, `2x2` grid.
 
-## Animation sheets
+## Animation Sheets
 
 ### `natural_disaster_warning_pulse_source_sheet`
 - Eight-frame `4x2` warning pulse sequence.

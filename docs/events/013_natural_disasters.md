@@ -1,12 +1,12 @@
 # Event 013 - Natural Disasters
 
-Event 013 is `Natural Disasters`, a minor repeatable event rooted at `chaosx.nr13.1`. It has no world-end branch. It uses one visible Event 13 entry to start a delayed disaster sequence, then runs warning, impact, aftermath, and recovery reports through triggered subevents that do not write new random-event history rows.
+Event 013 is `Natural Disasters`, a minor repeatable event rooted at `chaosx.nr13.1`. It has no world-end branch. It uses one hidden Event 13 entry to start a delayed disaster sequence, then runs warning, impact, aftermath, and recovery reports through triggered subevents that do not write new random-event history rows.
 
 Event 13 follows `docs/specs/013_natural_disasters_specs/` as the source package. It has no Evolution III super-event package, so no super-event quote, title, remark, image, or audio package belongs to this event.
 
 ## Flow
 
-The visible entry event records the sequence context, chooses the evolution stage, determines how many incidents are planned, and schedules the first incident report. The hidden scheduler `chaosx.nr13.10` prepares the next family, scores owned states for the current family, selects the strongest valid target, and rolls whether the incident has usable warning. Warned incidents fire the state warning event, open the family response category, and schedule the impact. Missed-warning incidents skip the warning event and fire the impact after a short delay. The impact event applies building damage, state disruption, percentage-based population loss, civilian-death logging, aftermath flags, family objective state, and any regional follow-up. When all planned incidents are complete, `chaosx.nr13.30` cleans sequence context and may send one throttled family-routed news item for severe, deadly, abnormal, or scenario-scale sequences.
+The hidden entry event records the sequence context, chooses the evolution stage, determines how many incidents are planned, and schedules the first incident report without showing a preparation popup. The hidden scheduler `chaosx.nr13.10` prepares the next family, scores owned states for the current family, selects the strongest valid target, and rolls whether the incident has usable warning. Warned incidents fire the state warning event, open the family response category, and schedule the impact. Missed-warning incidents skip the warning event and fire the impact after a short delay. The impact event applies building damage, state disruption, percentage-based population loss, civilian-death logging, aftermath flags, family objective state, and any regional follow-up. When all planned incidents are complete, `chaosx.nr13.30` cleans sequence context and may send one throttled family-routed news item for severe, deadly, abnormal, or scenario-scale sequences.
 
 Baseline sequences use two incidents with 5 to 10 day spacing. Larger evolved sequences use more reports and shorter spacing through constants in `common/script_constants/013_natural_disasters_constants.txt`. The cluster queue also uses delayed member spacing. If a Natural Disasters cluster member comes due while another Event 13 sequence is active, the cluster waits and retries the same member instead of advancing past it.
 
@@ -121,6 +121,8 @@ Report and news sprites:
 
 Decision category sprites:
 
+These ids include older internal category names where needed for save/script stability. Their localisation and icon art use response boards, authorities, commands, and commissions. The category button icons are non-square `53x40` assets, and the larger left-side category images are separate `114x101` report pictures.
+
 - `GFX_decision_category_nd_recovery_overview`
 - `GFX_decision_category_nd_flood`
 - `GFX_decision_category_nd_cyclone`
@@ -144,18 +146,50 @@ Decision category sprites:
 - `GFX_decision_category_nd_meteor_storm`
 - `GFX_decision_category_nd_famine`
 
+Decision category picture sprites:
+
+- `GFX_decision_cat_picture_nd_recovery_overview`
+- `GFX_decision_cat_picture_nd_flood`
+- `GFX_decision_cat_picture_nd_cyclone`
+- `GFX_decision_cat_picture_nd_severe_storm`
+- `GFX_decision_cat_picture_nd_hail`
+- `GFX_decision_cat_picture_nd_wind`
+- `GFX_decision_cat_picture_nd_corridor`
+- `GFX_decision_cat_picture_nd_earthquake`
+- `GFX_decision_cat_picture_nd_rupture`
+- `GFX_decision_cat_picture_nd_tsunami`
+- `GFX_decision_cat_picture_nd_volcano`
+- `GFX_decision_cat_picture_nd_massive_eruption`
+- `GFX_decision_cat_picture_nd_firefront`
+- `GFX_decision_cat_picture_nd_drought`
+- `GFX_decision_cat_picture_nd_heat`
+- `GFX_decision_cat_picture_nd_winter`
+- `GFX_decision_cat_picture_nd_dust`
+- `GFX_decision_cat_picture_nd_landslide`
+- `GFX_decision_cat_picture_nd_slope`
+- `GFX_decision_cat_picture_nd_skyfall`
+- `GFX_decision_cat_picture_nd_meteor_storm`
+- `GFX_decision_cat_picture_nd_famine`
+
 Decision sprites:
 
-- `GFX_decision_nd_evacuation`
-- `GFX_decision_nd_engineers`
-- `GFX_decision_nd_relief`
-- `GFX_decision_nd_shelter`
-- `GFX_decision_nd_mission`
 - `GFX_decision_nd_barrage_launch_controls`
 - `GFX_decision_nd_firefighting`
 - `GFX_decision_nd_rebuild_ports`
 - `GFX_decision_nd_seismology_teams`
 - `GFX_decision_nd_meteor_crater_cordon`
+- `GFX_decision_nd_clear_debris`
+- `GFX_decision_nd_dust_masks`
+- `GFX_decision_nd_evacuate_shelter`
+- `GFX_decision_nd_field_hospitals`
+- `GFX_decision_nd_heat_shelters`
+- `GFX_decision_nd_international_relief`
+- `GFX_decision_nd_lava_diversion`
+- `GFX_decision_nd_repair_rail`
+- `GFX_decision_nd_rescue_columns`
+- `GFX_decision_nd_restore_supply`
+- `GFX_decision_nd_water_rationing`
+- `GFX_decision_nd_winter_convoys`
 
 Animated sprites and static fallbacks:
 

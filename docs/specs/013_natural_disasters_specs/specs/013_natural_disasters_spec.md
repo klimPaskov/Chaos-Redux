@@ -7,7 +7,7 @@ All labels in this file are working labels and are not final player-facing local
 
 ## Playable promise
 
-Natural Disasters should feel like a living disaster office that repeatedly interrupts the world with believable local catastrophe, then escalates into regional crisis and abnormal high-chaos disaster seasons. It should not feel like a single popup that removes a few factories. One Event 13 firing creates one logged incident sequence. That sequence can contain several delayed impacts, warnings, recovery tasks, and aftermaths.
+Natural Disasters should feel like a chain of credible disaster reports that repeatedly interrupts the world with believable local catastrophe, then escalates into regional crisis and abnormal high-chaos disaster seasons. It should not feel like a single popup that removes a few factories. One Event 13 firing creates one logged incident sequence. That sequence can contain several delayed impacts, warnings, recovery tasks, and aftermaths.
 
 The event is low severity in the cluster because most individual sequences are local, but the repeatable nature makes it dangerous across a campaign. Its importance comes from accumulation, disruption, and timing. A country at peace can absorb a storm. A country fighting for its capital can lose a rail line, a port, or enough population to matter.
 
@@ -40,7 +40,7 @@ The earlier catalogue level family list is not sufficient by itself. Implementat
 
 - `013_natural_disasters_external_event_boundary.md` defines the non reuse contract for Event 51 Heat Wave, Event 99 Sandstorm, Event 28 Asteroid Incoming, Event 43 Massive Flood, Event 46 Unknown Placeholder, Event 47 BOOM, and any separate Meteor Shower placeholder that exists in the repository. These entries are not valid logic sources for Event 13.
 - `013_natural_disasters_individual_disaster_playbooks.md` defines the individual disaster playbooks. Each family has its own target logic, sequence shape, effect identity, aftermaths, death model, warning response, AI behaviour, category needs, and asset direction.
-- `013_natural_disasters_big_disaster_decision_categories.md` defines the disaster specific country hit categories. The generic recovery office is only an overview and small incident hub. Serious, regional, catastrophic, and abnormal disasters must open the matching family category for the hit country.
+- `013_natural_disasters_big_disaster_decision_categories.md` defines the disaster specific country hit categories. The generic recovery overview is only a small incident hub. Serious, regional, catastrophic, and abnormal disasters must open the matching family category for the hit country.
 - `013_natural_disasters_big_disaster_category_matrix.md` is the quick acceptance matrix for category coverage.
 
 Big disasters must be big and unique. Do not implement floods, earthquakes, tsunamis, volcanoes, meteor showers, heat domes, sandstorms, wildfire fronts, drought famine chains, and moving storm corridors as the same generic effect with different text. Each needs distinct state targeting, distinct damage profile, distinct aftermath, distinct decisions, distinct missions, distinct AI priorities, and distinct visual direction.
@@ -57,7 +57,7 @@ One sequence has five conceptual layers.
 | Aftermath | The country receives local or regional aftermath markers. | Aftermaths can include damaged rails, blocked ports, displaced population, water stress, ashfall, fire fronts, crater fields, contaminated water, or aftershock pressure. |
 | Recovery | The country receives a limited set of decisions and missions. | Recovery can prevent chained consequences. Failed recovery can produce famine, refugees, local instability, further deaths, and renewed infrastructure damage. |
 
-The sequence should be delayed, not instant. A baseline Event 13 firing should usually schedule two or three subdisaster reports across about 5 to 10 days. Larger evolved sequences use more subevents with shorter spacing, because a wider disaster season should feel like reports arriving from several offices at once.
+The sequence should be delayed, not instant. A baseline Event 13 firing should usually schedule two or three subdisaster reports across about 5 to 10 days. Larger evolved sequences use more subevents with shorter spacing, because a wider disaster season should feel like reports arriving from observatories, rail desks, port authorities, local governments, and relief stations at once.
 
 ## Delay model
 
@@ -212,7 +212,7 @@ Warning types by family should include these directions.
 
 Preparedness should scale with country capacity. A major can do more, but it may also have more high-value targets. A small country may have fewer options but can receive foreign relief earlier.
 
-## Disaster office and recovery category
+## Disaster Reports and Recovery Category
 
 Evolution II should unlock the core recovery mechanic, but the baseline can already show limited recovery when a country is hit. The generic recovery category should be an overview and small incident hub only.
 
@@ -224,7 +224,7 @@ The overview should show current active disaster count, worst active aftermath, 
 
 | Phase | Visibility | Content |
 | --- | --- | --- |
-| Quiet | Hidden or compact if no active aftermath exists. | May show a preparedness office only after the event has fired or after a focus or global setting unlocks it. |
+| Quiet | Hidden or compact if no active aftermath exists. | May show a preparedness ledger only after the event has fired or after a focus or global setting unlocks it. |
 | Warning | Visible during warnings. | Evacuate, reinforce, close ports, prepare hospitals, secure rail, stockpile water, observe skies. |
 | Impact | Visible briefly after impact. | Rescue, clear roads, deploy field hospitals, reopen ports, ground aircraft, protect supply. |
 | Recovery | Visible while state modifiers and aftermath variables remain. | Timed missions and repeatable decisions with escalating costs. |
@@ -338,7 +338,7 @@ If Event 13 has not fired yet and the world is already at a higher chaos tier, t
 
 ## Evolution I, Varied Local Disasters
 
-Evolution I changes the event from a small set of local hazards into a broad catalogue. The event remains low to medium severity. It still feels like disaster offices processing different reports, rather than the whole world breaking.
+Evolution I changes the event from a small set of local hazards into a broad catalogue. The event remains low to medium severity. It still feels like observatories, transport boards, local authorities, and relief stations processing different reports, rather than the whole world breaking.
 
 ### New behavior
 

@@ -46,7 +46,7 @@ The header should include these elements.
 - Next follow-up risk if visible.
 - Foreign relief state if available.
 
-If no disaster is active, the category should hide or show only a compact preparedness office if that office has already been unlocked.
+If no disaster is active, the category should hide or show only a compact preparedness ledger if that ledger has already been unlocked.
 
 ### Action filtering
 

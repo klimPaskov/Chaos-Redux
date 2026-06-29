@@ -5,7 +5,7 @@ This file defines text direction and catalog alignment for Event 13 Natural Disa
 
 ## General text direction
 
-Natural Disasters text should read like reports from emergency offices, observatories, railway bureaus, port authorities, local governors, field hospitals, and foreign relief desks. It should identify the affected area clearly. It should not sound like a generic map change.
+Natural Disasters text should read like reports from observatories, railway bureaus, port authorities, local governors, field hospitals, and foreign relief desks. It should identify the affected area clearly. It should not sound like a generic map change.
 
 Use dynamic text for:
 
@@ -26,11 +26,11 @@ Do not expose hidden weights, exact variable names, raw building damage formulas
 | --- | --- | --- |
 | Sequence opener | First report in an Event 13 sequence. | Name the affected area and the public report. Explain what kind of disaster began and whether warnings are uncertain or already late. |
 | Warning popup | Warning exists before impact. | Give the country a short response window. Make the warning specific to family, such as coastal wave, fire weather, seismic tremor, flood stage, blizzard, dust wall, or skywatch report. |
-| Impact popup | Player or major directly hit, or newsworthy threshold passed. | State what happened to the area and what public offices can confirm. Mention visible damage and local suffering without listing numeric effects. |
+| Impact popup | Player or major directly hit, or newsworthy threshold passed. | State what happened to the area and what local authorities can confirm. Mention visible damage and local suffering without listing numeric effects. |
 | Aftermath popup | Recovery chain begins. | Show the concrete aftermath, such as broken rail, blocked port, displaced people, contaminated wells, ash cleanup, crater fields, or aftershock inspections. |
 | Recovery success popup | Mission or major recovery closes. | Show that transport, shelters, water, port, or inspections stabilized the area. Avoid triumphal tone when deaths were high. |
 | Recovery failure popup | Mission failure creates follow-up. | Show what collapsed, spread, or was left unresolved. The text should make failure readable without mocking the affected people. |
-| Regional system news | Evolution II threshold. | Present the disaster as a regional response problem, with multiple offices and border effects. Do not list every affected state if many are hit. |
+| Regional system news | Evolution II threshold. | Present the disaster as a regional response problem, with multiple local boards and border effects. Do not list every affected state if many are hit. |
 | Abnormal disaster news | Evolution III threshold. | Present conflicting reports and observations. The public should understand the disaster is outside normal categories, but the text should not claim a world end. |
 
 ## Option tone direction
@@ -59,7 +59,7 @@ Do not use raw trigger text for state requirements. Use named regions or dynamic
 
 ## GUI text direction
 
-The Disaster Operations Map should use clear short labels. It can show technical-looking emergency office language, but it should not show raw variables.
+The Disaster Operations Map should use clear short labels. It can show technical operations language, but it should not show raw variables.
 
 Required dynamic summaries:
 

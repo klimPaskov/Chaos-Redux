@@ -1,15 +1,50 @@
-# Event 013 Natural Disasters report and news art manifest
+# Event 013 Natural Disasters art manifest
 
 Event id: `013`
 Event slug: `natural_disasters`
 Source mode summary: generated non-icon event art through official `image_gen`
-Scope note: this manifest covers only the report/news artwork created in this pass. The same package folder already contains icon, category, and animation assets from other contributors and they were not edited or replaced here.
+Scope note: this manifest covers Event 13 report, news, decision-category picture, and corrected decision-category icon assets.
 Prompt record: `docs/assets/013_natural_disasters/prompts/generated_event_art_prompts.md`
 Report contact sheet: `docs/assets/013_natural_disasters/contact_sheets/013_natural_disasters_report_contact_sheet.png`
 News contact sheet: `docs/assets/013_natural_disasters/contact_sheets/013_natural_disasters_news_contact_sheet.png`
+Decision category picture contact sheet: `docs/assets/013_natural_disasters/contact_sheets/natural_disaster_category_pictures_contact.png`
+Decision category icon contact sheet: `docs/assets/013_natural_disasters/contact_sheets/natural_disaster_category_icons_contact.png`
 Validation note: `docs/assets/013_natural_disasters/notes/report_news_validation.md`
 
 ## Complete
+
+### Decision category picture derivatives
+
+These are the large left-side decision-category pictures. They are derived from the generated report-image sources and resized to vanilla `114x101` category-picture canvases.
+
+| Asset | Source report | Source PNG | Processed PNG | Final DDS path | Sprite name | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| `decision_cat_picture_nd_recovery_overview` | `report_event_nd_barrage` | `docs/assets/013_natural_disasters/source_png/decision_cat_picture_nd_recovery_overview_source.png` | `docs/assets/013_natural_disasters/processed_png/decision_cat_picture_nd_recovery_overview.png` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_recovery_overview.dds` | `GFX_decision_cat_picture_nd_recovery_overview` | `complete` |
+| `decision_cat_picture_nd_flood` | `report_event_nd_flood` | `docs/assets/013_natural_disasters/source_png/decision_cat_picture_nd_flood_source.png` | `docs/assets/013_natural_disasters/processed_png/decision_cat_picture_nd_flood.png` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_flood.dds` | `GFX_decision_cat_picture_nd_flood` | `complete` |
+| `decision_cat_picture_nd_cyclone` | `report_event_nd_storm` | `docs/assets/013_natural_disasters/source_png/decision_cat_picture_nd_cyclone_source.png` | `docs/assets/013_natural_disasters/processed_png/decision_cat_picture_nd_cyclone.png` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_cyclone.dds` | `GFX_decision_cat_picture_nd_cyclone` | `complete` |
+| `decision_cat_picture_nd_severe_storm` | `report_event_nd_storm` | `docs/assets/013_natural_disasters/source_png/decision_cat_picture_nd_severe_storm_source.png` | `docs/assets/013_natural_disasters/processed_png/decision_cat_picture_nd_severe_storm.png` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_severe_storm.dds` | `GFX_decision_cat_picture_nd_severe_storm` | `complete` |
+| `decision_cat_picture_nd_hail` | `report_event_nd_storm` | `docs/assets/013_natural_disasters/source_png/decision_cat_picture_nd_hail_source.png` | `docs/assets/013_natural_disasters/processed_png/decision_cat_picture_nd_hail.png` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_hail.dds` | `GFX_decision_cat_picture_nd_hail` | `complete` |
+| `decision_cat_picture_nd_wind` | `report_event_nd_storm` | `docs/assets/013_natural_disasters/source_png/decision_cat_picture_nd_wind_source.png` | `docs/assets/013_natural_disasters/processed_png/decision_cat_picture_nd_wind.png` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_wind.dds` | `GFX_decision_cat_picture_nd_wind` | `complete` |
+| `decision_cat_picture_nd_corridor` | `report_event_nd_moving_corridor` | `docs/assets/013_natural_disasters/source_png/decision_cat_picture_nd_corridor_source.png` | `docs/assets/013_natural_disasters/processed_png/decision_cat_picture_nd_corridor.png` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_corridor.dds` | `GFX_decision_cat_picture_nd_corridor` | `complete` |
+| `decision_cat_picture_nd_earthquake` | `report_event_nd_earthquake` | `docs/assets/013_natural_disasters/source_png/decision_cat_picture_nd_earthquake_source.png` | `docs/assets/013_natural_disasters/processed_png/decision_cat_picture_nd_earthquake.png` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_earthquake.dds` | `GFX_decision_cat_picture_nd_earthquake` | `complete` |
+| `decision_cat_picture_nd_rupture` | `report_event_nd_rupture_wave` | `docs/assets/013_natural_disasters/source_png/decision_cat_picture_nd_rupture_source.png` | `docs/assets/013_natural_disasters/processed_png/decision_cat_picture_nd_rupture.png` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_rupture.dds` | `GFX_decision_cat_picture_nd_rupture` | `complete` |
+| `decision_cat_picture_nd_tsunami` | `report_event_nd_tsunami` | `docs/assets/013_natural_disasters/source_png/decision_cat_picture_nd_tsunami_source.png` | `docs/assets/013_natural_disasters/processed_png/decision_cat_picture_nd_tsunami.png` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_tsunami.dds` | `GFX_decision_cat_picture_nd_tsunami` | `complete` |
+| `decision_cat_picture_nd_volcano` | `report_event_nd_volcano` | `docs/assets/013_natural_disasters/source_png/decision_cat_picture_nd_volcano_source.png` | `docs/assets/013_natural_disasters/processed_png/decision_cat_picture_nd_volcano.png` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_volcano.dds` | `GFX_decision_cat_picture_nd_volcano` | `complete` |
+| `decision_cat_picture_nd_massive_eruption` | `report_event_nd_volcano` | `docs/assets/013_natural_disasters/source_png/decision_cat_picture_nd_massive_eruption_source.png` | `docs/assets/013_natural_disasters/processed_png/decision_cat_picture_nd_massive_eruption.png` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_massive_eruption.dds` | `GFX_decision_cat_picture_nd_massive_eruption` | `complete` |
+| `decision_cat_picture_nd_firefront` | `report_event_nd_wildfire` | `docs/assets/013_natural_disasters/source_png/decision_cat_picture_nd_firefront_source.png` | `docs/assets/013_natural_disasters/processed_png/decision_cat_picture_nd_firefront.png` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_firefront.dds` | `GFX_decision_cat_picture_nd_firefront` | `complete` |
+| `decision_cat_picture_nd_drought` | `report_event_nd_drought_famine` | `docs/assets/013_natural_disasters/source_png/decision_cat_picture_nd_drought_source.png` | `docs/assets/013_natural_disasters/processed_png/decision_cat_picture_nd_drought.png` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_drought.dds` | `GFX_decision_cat_picture_nd_drought` | `complete` |
+| `decision_cat_picture_nd_heat` | `report_event_nd_drought_famine` | `docs/assets/013_natural_disasters/source_png/decision_cat_picture_nd_heat_source.png` | `docs/assets/013_natural_disasters/processed_png/decision_cat_picture_nd_heat.png` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_heat.dds` | `GFX_decision_cat_picture_nd_heat` | `complete` |
+| `decision_cat_picture_nd_winter` | `report_event_nd_winter` | `docs/assets/013_natural_disasters/source_png/decision_cat_picture_nd_winter_source.png` | `docs/assets/013_natural_disasters/processed_png/decision_cat_picture_nd_winter.png` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_winter.dds` | `GFX_decision_cat_picture_nd_winter` | `complete` |
+| `decision_cat_picture_nd_dust` | `report_event_nd_dust_sandstorm` | `docs/assets/013_natural_disasters/source_png/decision_cat_picture_nd_dust_source.png` | `docs/assets/013_natural_disasters/processed_png/decision_cat_picture_nd_dust.png` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_dust.dds` | `GFX_decision_cat_picture_nd_dust` | `complete` |
+| `decision_cat_picture_nd_landslide` | `report_event_nd_landslide` | `docs/assets/013_natural_disasters/source_png/decision_cat_picture_nd_landslide_source.png` | `docs/assets/013_natural_disasters/processed_png/decision_cat_picture_nd_landslide.png` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_landslide.dds` | `GFX_decision_cat_picture_nd_landslide` | `complete` |
+| `decision_cat_picture_nd_slope` | `report_event_nd_landslide` | `docs/assets/013_natural_disasters/source_png/decision_cat_picture_nd_slope_source.png` | `docs/assets/013_natural_disasters/processed_png/decision_cat_picture_nd_slope.png` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_slope.dds` | `GFX_decision_cat_picture_nd_slope` | `complete` |
+| `decision_cat_picture_nd_skyfall` | `report_event_nd_skyfall` | `docs/assets/013_natural_disasters/source_png/decision_cat_picture_nd_skyfall_source.png` | `docs/assets/013_natural_disasters/processed_png/decision_cat_picture_nd_skyfall.png` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_skyfall.dds` | `GFX_decision_cat_picture_nd_skyfall` | `complete` |
+| `decision_cat_picture_nd_meteor_storm` | `report_event_nd_skyfall` | `docs/assets/013_natural_disasters/source_png/decision_cat_picture_nd_meteor_storm_source.png` | `docs/assets/013_natural_disasters/processed_png/decision_cat_picture_nd_meteor_storm.png` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_meteor_storm.dds` | `GFX_decision_cat_picture_nd_meteor_storm` | `complete` |
+| `decision_cat_picture_nd_famine` | `report_event_nd_drought_famine` | `docs/assets/013_natural_disasters/source_png/decision_cat_picture_nd_famine_source.png` | `docs/assets/013_natural_disasters/processed_png/decision_cat_picture_nd_famine.png` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_famine.dds` | `GFX_decision_cat_picture_nd_famine` | `complete` |
+
+### Decision category icon correction
+
+The `GFX_decision_category_nd_*` category button icons were reprocessed from generated imagegen sources into non-square `53x40` DDS canvases. Chroma green was removed before resizing, and the icons remain separate from the `114x101` category pictures.
 
 ### `report_event_nd_flood`
 

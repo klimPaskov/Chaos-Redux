@@ -4,7 +4,7 @@ All labels in this file are working labels and are not final localisation.
 
 ## Design change from the earlier package
 
-The earlier package overused one generic recovery category. That is not enough. The generic Natural Disaster Recovery office remains as the overview, small local incident surface, and routing hub. Every big disaster that hits a country must open its own disaster specific decision category for that country.
+The earlier package overused one generic recovery category. That is not enough. The generic Natural Disaster Recovery overview remains as the small local incident surface and routing hub. Every big disaster that hits a country must open its own disaster specific decision category for that country.
 
 A country can have more than one active disaster category if it is hit by multiple big disasters. To avoid clutter, each category must hide when no active warning, impact, aftermath, or recovery marker from that family remains. The overview category should show which family categories are active and which state or region each category is handling.
 
@@ -138,7 +138,7 @@ Forecast confidence, landfall timer, surge risk, evacuation capacity, port closu
 Storm surge deaths increase. Port remains closed. Island famine pressure starts. Refugees move inland.
 
 
-## Severe Storm Office
+## Severe Storm Response Board
 
 ### Values
 
@@ -329,7 +329,7 @@ Wave arrival estimate, evacuation readiness, harbor wreckage, island isolation, 
 
 Mass deaths, island famine, port closure, refugee pressure, coastal economy damage.
 
-## Volcanic Crisis Office
+## Volcanic Crisis Board
 
 ### Values
 
@@ -413,7 +413,7 @@ Fire spread chance, wind support, water access, evacuation progress, smoke press
 
 Fire spreads, industry burns, smoke deaths, refugee pressure, supply penalty.
 
-## Drought and Famine Office
+## Drought and Famine Board
 
 ### Values
 
@@ -442,7 +442,7 @@ Water reserve, crop survival, ration strain, famine pressure, refugee outflow, w
 
 Famine deaths, refugee pressure, wildfire risk, sandstorm risk, local unrest.
 
-## Heat Emergency Office
+## Heat Emergency Board
 
 ### Values
 
@@ -498,7 +498,7 @@ Fuel reserve, shelter heat, rail switch status, stranded population, mountain pa
 
 Exposure deaths, rail collapse, front supply crisis, refugee death pressure.
 
-## Dust Emergency Office
+## Dust Emergency Board
 
 ### Values
 
@@ -526,7 +526,7 @@ Visibility, airfield closure, water safety, convoy route, dust belt movement, en
 
 Airbase damage, engine damage, supply collapse, water crisis, refugee deaths.
 
-## Landslide Rescue Office and Slope Collapse Response
+## Landslide Rescue Board and Slope Collapse Response
 
 ### Values
 

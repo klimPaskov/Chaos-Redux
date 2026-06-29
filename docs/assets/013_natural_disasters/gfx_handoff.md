@@ -1,8 +1,8 @@
-# Event 013 Natural Disasters report and news art handoff
+# Event 013 Natural Disasters art handoff
 
-Suggested `.gfx` file: `interface/chaosx_pictures.gfx`
+Active `.gfx` file: `interface/013_natural_disasters.gfx`
 
-All sprite names below assume direct event-picture registration.
+All sprite names below are wired through Event 13 gameplay files.
 
 ## Report event pictures
 
@@ -85,3 +85,36 @@ All sprite names below assume direct event-picture registration.
   - Final DDS path: `gfx/event_pictures/013_natural_disasters/news_event_nd_disaster_barrage.dds`
   - Proposed sprite name: `GFX_news_event_nd_disaster_barrage`
   - Use notes: crowded junction and stacked hazards make this the right capstone news image.
+
+## Decision category pictures
+
+These are the large left-side decision-category pictures. They are not decision icons. They use report-image sources resized to vanilla `114x101` category-picture canvases.
+
+| Sprite | Final DDS path |
+| --- | --- |
+| `GFX_decision_cat_picture_nd_recovery_overview` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_recovery_overview.dds` |
+| `GFX_decision_cat_picture_nd_flood` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_flood.dds` |
+| `GFX_decision_cat_picture_nd_cyclone` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_cyclone.dds` |
+| `GFX_decision_cat_picture_nd_severe_storm` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_severe_storm.dds` |
+| `GFX_decision_cat_picture_nd_hail` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_hail.dds` |
+| `GFX_decision_cat_picture_nd_wind` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_wind.dds` |
+| `GFX_decision_cat_picture_nd_corridor` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_corridor.dds` |
+| `GFX_decision_cat_picture_nd_earthquake` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_earthquake.dds` |
+| `GFX_decision_cat_picture_nd_rupture` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_rupture.dds` |
+| `GFX_decision_cat_picture_nd_tsunami` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_tsunami.dds` |
+| `GFX_decision_cat_picture_nd_volcano` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_volcano.dds` |
+| `GFX_decision_cat_picture_nd_massive_eruption` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_massive_eruption.dds` |
+| `GFX_decision_cat_picture_nd_firefront` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_firefront.dds` |
+| `GFX_decision_cat_picture_nd_drought` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_drought.dds` |
+| `GFX_decision_cat_picture_nd_heat` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_heat.dds` |
+| `GFX_decision_cat_picture_nd_winter` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_winter.dds` |
+| `GFX_decision_cat_picture_nd_dust` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_dust.dds` |
+| `GFX_decision_cat_picture_nd_landslide` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_landslide.dds` |
+| `GFX_decision_cat_picture_nd_slope` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_slope.dds` |
+| `GFX_decision_cat_picture_nd_skyfall` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_skyfall.dds` |
+| `GFX_decision_cat_picture_nd_meteor_storm` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_meteor_storm.dds` |
+| `GFX_decision_cat_picture_nd_famine` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_famine.dds` |
+
+## Decision category icons
+
+The `GFX_decision_category_nd_*` sprites remain category button icons. Their final canvases are non-square `53x40` DDS files, separate from the `114x101` category pictures above.
