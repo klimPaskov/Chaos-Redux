@@ -121,7 +121,7 @@ Compact failure states:
 
 This branch should be useful, frightening, and optional. It should never be the clean best answer.
 
-Implementation status: implemented as living-country containment decisions using `death_black_method_exposure`, `death_bound_names`, and `death_mourning_debt`. The route creates weak capped bound-shade hosts, exposes Black Book offices to scandal pressure, and can be closed through `Burn the Black Book`.
+Implementation status: implemented as living-country containment decisions using `death_black_method_exposure`, `death_bound_names`, and `death_mourning_debt`. The route creates weak capped bound-shade hosts, exposes Black Book offices to scandal pressure, and can be closed for free if the country has only opened the book. After a forbidden method has been used, the route is closed through `Burn the Black Book`.
 
 Unlock conditions:
 
@@ -344,7 +344,7 @@ World-end text: terminal, spare, no melodramatic filler.
 
 - No decision should allow infinite free units.
 - Bound-shade and Last Watch units need real costs and caps.
-- Coastal watch should reduce risk, not permanently block Death everywhere.
+- Coastal watch should reduce risk, not permanently block Death everywhere. Strong watch-network coverage can intercept an ordinary low-pressure coastal jump once by spending network strength, while high pressure, No Ferry Returns, and world-end pressure bypass that interception.
 - Evacuation should save some future deaths but create refugee/political costs.
 - Purification projects should not restore population.
 - Heralds should not become immune to Death forever.

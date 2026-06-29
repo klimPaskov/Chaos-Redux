@@ -2,7 +2,7 @@
 @death_call_compact_ai_pp_cost = 75
 @death_join_compact_ai_pp_cost = 35
 @death_black_book_ai_pp_cost = 60
-@death_whisper_ai_pp_cost = 50
+@death_whisper_ai_pp_cost = 10
 @death_black_oath_ai_pp_cost = 100
 @death_quarantine_hold_mission_days = 90
 @death_ledger_island_re_enable_days = 14
@@ -417,6 +417,50 @@ death_country_containment_category = {
 		}
 	}
 
+	death_hide_port_lit_decisions = {
+		icon = GFX_decision_death_coastal_watch
+		visible = {
+			is_ai = no
+			NOT = { has_country_flag = death_port_lit_decisions_hidden }
+			NOT = { has_global_flag = death_defeated }
+			OR = {
+				has_global_flag = death_publicly_revealed
+				death_missing_island_decisions_visible = yes
+			}
+			death_has_no_forbidden_oath = yes
+			death_has_coastal_watch_candidate = yes
+		}
+		available = { always = yes }
+		cost = 0
+		complete_effect = {
+			custom_effect_tooltip = death_hide_port_lit_decisions_tt
+			set_country_flag = death_port_lit_decisions_hidden
+		}
+		ai_will_do = { base = 0 }
+	}
+
+	death_show_port_lit_decisions = {
+		icon = GFX_decision_death_coastal_watch
+		visible = {
+			is_ai = no
+			has_country_flag = death_port_lit_decisions_hidden
+			NOT = { has_global_flag = death_defeated }
+			OR = {
+				has_global_flag = death_publicly_revealed
+				death_missing_island_decisions_visible = yes
+			}
+			death_has_no_forbidden_oath = yes
+			death_has_coastal_watch_candidate = yes
+		}
+		available = { always = yes }
+		cost = 0
+		complete_effect = {
+			custom_effect_tooltip = death_show_port_lit_decisions_tt
+			clr_country_flag = death_port_lit_decisions_hidden
+		}
+		ai_will_do = { base = 0 }
+	}
+
 	death_open_black_atlas = {
 		icon = GFX_decision_death_black_book
 		visible = {
@@ -592,6 +636,10 @@ death_country_containment_category = {
 			}
 			death_has_no_forbidden_oath = yes
 			death_has_coastal_watch_candidate = yes
+			OR = {
+				is_ai = yes
+				NOT = { has_country_flag = death_port_lit_decisions_hidden }
+			}
 		}
 		target_root_trigger = { death_has_coastal_watch_candidate = yes }
 		target_trigger = {
@@ -784,11 +832,29 @@ death_country_containment_category = {
 		}
 	}
 
+	death_close_black_book = {
+		icon = GFX_decision_death_black_book
+		visible = {
+			death_black_book_is_open = yes
+			NOT = { has_country_flag = death_herald_of_zol }
+			NOT = { death_black_book_has_taken_method = yes }
+		}
+		available = { always = yes }
+		cost = 0
+		days_re_enable = 35
+		complete_effect = {
+			custom_effect_tooltip = death_close_black_book_tt
+			hidden_effect = { death_decision_burn_black_book_effect = yes }
+		}
+		ai_will_do = { base = 0 }
+	}
+
 	death_burn_black_book = {
 		icon = GFX_decision_death_black_book
 		visible = {
 			death_black_book_is_open = yes
 			NOT = { has_country_flag = death_herald_of_zol }
+			death_black_book_has_taken_method = yes
 		}
 		available = { hidden_trigger = { can_pay_death_burn_black_book_cost = yes } }
 		custom_cost_trigger = { hidden_trigger = { can_pay_death_burn_black_book_cost = yes } }

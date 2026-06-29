@@ -13,4 +13,4 @@
 - Sprite name: `GFX_motorized_texticon`
 - `.gfx` file: `interface/chaosx_texticons.gfx`
 - Asset status: `complete`
-- Notes: The truck was trimmed, fitted to the texticon canvas, brightened for dark UI backgrounds, and registered as an override for the vanilla role-icon sprite.
+- Notes: The vanilla truck icon was resized onto a transparent 35x35 texticon canvas without additional colour filters and registered as an override for the vanilla role-icon sprite.

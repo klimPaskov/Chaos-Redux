@@ -53,6 +53,10 @@ death_refresh_consumed_population_display_variables = {
 	divide_variable = { global.death_consumed_population_display_b = death_population_display_billion_threshold_k }
 }
 
+death_clamp_watch_network = {
+	clamp_variable = { var = global.death_watch_network min = 0 }
+}
+
 death_initialize_global_state = {
 	if = {
 		limit = { NOT = { has_variable = global.death_consumed_states } }
@@ -79,6 +83,9 @@ death_initialize_global_state = {
 		limit = { NOT = { has_variable = global.death_watch_network } }
 		set_variable = { global.death_watch_network = 0 }
 	}
+	set_variable = { global.death_watch_network_strong_threshold_display = constant:death_decision_tuning.watch_network_strong_threshold }
+	set_variable = { global.death_watch_network_intercept_spend_display = constant:death_decision_tuning.watch_network_intercept_cost }
+	multiply_variable = { var = global.death_watch_network_intercept_spend_display value = -1 }
 	if = {
 		limit = { NOT = { has_variable = global.death_front_readiness } }
 		set_variable = { global.death_front_readiness = 0 }
@@ -1142,7 +1149,10 @@ death_pay_seal_names_cost = {
 }
 
 death_pay_burn_black_book_cost = {
-	add_political_power = constant:death_decision_cost.burn_black_book_pp_spend
+	if = {
+		limit = { death_black_book_has_taken_method = yes }
+		add_political_power = constant:death_decision_cost.burn_black_book_pp_spend
+	}
 }
 
 death_pay_whisper_to_zol_cost = {
@@ -2509,11 +2519,19 @@ death_start_coastal_jump_cooldown = {
 death_attempt_coastal_jump = {
 	if = {
 		limit = { death_can_attempt_coastal_jump = yes }
-		random_state = {
-			limit = { death_is_valid_coastal_jump_target = yes }
-			death_consume_current_state = yes
-			set_state_flag = death_coastal_jump_state
+		if = {
+			limit = { death_watch_network_can_intercept_coastal_jump = yes }
+			add_to_variable = { global.death_watch_network = constant:death_decision_tuning.watch_network_intercept_cost }
+			death_clamp_watch_network = yes
 			death_start_coastal_jump_cooldown = yes
+		}
+		else = {
+			random_state = {
+				limit = { death_is_valid_coastal_jump_target = yes }
+				death_consume_current_state = yes
+				set_state_flag = death_coastal_jump_state
+				death_start_coastal_jump_cooldown = yes
+			}
 		}
 	}
 }
