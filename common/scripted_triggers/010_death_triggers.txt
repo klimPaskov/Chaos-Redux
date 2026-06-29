@@ -358,6 +358,38 @@ death_has_valid_island_spread_target = {
 	}
 }
 
+death_spread_pressure_is_high = {
+	check_variable = {
+		var = global.death_spread_pressure
+		value = constant:death_spread.pressure_high_threshold
+		compare = greater_than_or_equals
+	}
+}
+
+death_spread_pressure_is_extreme = {
+	check_variable = {
+		var = global.death_spread_pressure
+		value = constant:death_spread.pressure_extreme_threshold
+		compare = greater_than_or_equals
+	}
+}
+
+death_spread_pressure_allows_coastal_jump = {
+	check_variable = {
+		var = global.death_spread_pressure
+		value = constant:death_spread.pressure_coastal_jump_threshold
+		compare = greater_than_or_equals
+	}
+}
+
+death_island_spread_soul_cost_is_cheap = {
+	check_variable = {
+		var = global.death_island_spread_soul_cost
+		value = constant:death_soul_power.island_spread_cheap_cost_limit
+		compare = less_than
+	}
+}
+
 death_can_use_mainland_pressure_standard_decision = {
 	death_can_push_mainland_reveal = yes
 	check_variable = {
@@ -395,11 +427,26 @@ death_ai_should_press_mainland_from_ledger = {
 	death_internal_decisions_visible = yes
 	death_can_use_mainland_pressure_decision = yes
 	can_pay_death_mainland_spread_souls = yes
+	NOT = {
+		AND = {
+			death_has_valid_island_spread_target = yes
+			can_pay_death_island_spread_souls = yes
+			death_island_spread_soul_cost_is_cheap = yes
+			NOT = { has_global_flag = death_publicly_revealed }
+		}
+	}
 }
 
 death_ai_should_hold_host_souls_for_mainland_ledger = {
 	death_internal_decisions_visible = yes
 	NOT = { has_global_flag = death_publicly_revealed }
+	NOT = {
+		AND = {
+			death_has_valid_island_spread_target = yes
+			can_pay_death_island_spread_souls = yes
+			death_island_spread_soul_cost_is_cheap = yes
+		}
+	}
 	OR = {
 		death_can_use_mainland_pressure_decision = yes
 		AND = {
@@ -416,6 +463,18 @@ death_ai_should_raise_hosts_from_ledger = {
 	death_internal_decisions_visible = yes
 	any_controlled_state = { death_is_valid_ghost_host_spawn_state = yes }
 	NOT = { death_ai_should_hold_host_souls_for_mainland_ledger = yes }
+	OR = {
+		has_global_flag = death_publicly_revealed
+		DTH = { has_war = yes }
+		has_global_flag = death_world_end_started
+		NOT = {
+			AND = {
+				death_has_valid_island_spread_target = yes
+				can_pay_death_island_spread_souls = yes
+				death_island_spread_soul_cost_is_cheap = yes
+			}
+		}
+	}
 }
 
 can_pay_death_island_spread_souls = {
@@ -429,7 +488,7 @@ can_pay_death_island_spread_souls = {
 can_pay_death_mainland_spread_souls = {
 	check_variable = {
 		var = global.death_soul_power_available
-		value = constant:death_soul_power.mainland_spread_cost
+		value = global.death_mainland_spread_soul_cost
 		compare = greater_than_or_equals
 	}
 }
@@ -437,7 +496,7 @@ can_pay_death_mainland_spread_souls = {
 can_pay_death_passive_host_souls = {
 	check_variable = {
 		var = global.death_soul_power_available
-		value = constant:death_ghosts.passive_host_budget_cost
+		value = global.death_passive_host_soul_cost
 		compare = greater_than_or_equals
 	}
 }
@@ -445,7 +504,7 @@ can_pay_death_passive_host_souls = {
 can_pay_death_stronger_host_souls = {
 	check_variable = {
 		var = global.death_soul_power_available
-		value = constant:death_ghosts.stronger_host_budget_cost
+		value = global.death_stronger_host_soul_cost
 		compare = greater_than_or_equals
 	}
 }
@@ -453,7 +512,7 @@ can_pay_death_stronger_host_souls = {
 can_pay_death_world_end_host_souls = {
 	check_variable = {
 		var = global.death_soul_power_available
-		value = constant:death_ghosts.world_end_host_budget_cost
+		value = global.death_world_end_host_soul_cost
 		compare = greater_than_or_equals
 	}
 }
@@ -473,11 +532,6 @@ death_can_raise_passive_host_decision = {
 		}
 	}
 	any_controlled_state = { death_is_valid_ghost_host_spawn_state = yes }
-	check_variable = {
-		var = global.death_passive_hosts_spawned
-		value = constant:death_ghosts.passive_host_global_cap
-		compare = less_than
-	}
 }
 
 death_can_raise_hollow_host_decision = {
@@ -489,22 +543,12 @@ death_can_raise_hollow_host_decision = {
 		compare = greater_than_or_equals
 	}
 	any_controlled_state = { death_is_valid_ghost_host_spawn_state = yes }
-	check_variable = {
-		var = global.death_stronger_hosts_spawned
-		value = constant:death_ghosts.stronger_host_global_cap
-		compare = less_than
-	}
 }
 
 death_can_raise_last_shore_host_decision = {
 	death_internal_decisions_visible = yes
 	has_global_flag = death_world_end_started
 	any_controlled_state = { death_is_valid_ghost_host_spawn_state = yes }
-	check_variable = {
-		var = global.death_world_end_hosts_spawned
-		value = constant:death_ghosts.world_end_host_global_cap
-		compare = less_than
-	}
 }
 
 death_is_valid_ghost_host_spawn_state = {
@@ -616,6 +660,7 @@ death_can_attempt_coastal_jump = {
 	OR = {
 		has_global_flag = death_world_end_started
 		DTH = { num_of_controlled_states < constant:death_spread.coastal_jump_contained_state_limit }
+		death_spread_pressure_allows_coastal_jump = yes
 	}
 }
 
