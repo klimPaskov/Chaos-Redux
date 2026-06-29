@@ -390,8 +390,25 @@ death_watch_network_is_strong = {
 	}
 }
 
+death_watch_network_is_at_max = {
+	check_variable = {
+		var = global.death_watch_network
+		value = constant:death_decision_tuning.watch_network_max_strength
+		compare = greater_than_or_equals
+	}
+}
+
+death_watch_network_allows_death_jump = {
+	OR = {
+		has_global_flag = death_world_end_started
+		DTH = { has_country_flag = death_focus_no_ferry_returns }
+		NOT = { death_watch_network_is_at_max = yes }
+	}
+}
+
 death_watch_network_can_intercept_coastal_jump = {
 	death_watch_network_is_strong = yes
+	NOT = { death_watch_network_is_at_max = yes }
 	NOT = { has_global_flag = death_world_end_started }
 	NOT = { death_spread_pressure_is_high = yes }
 	DTH = {
@@ -434,11 +451,16 @@ death_can_use_mainland_pressure_war_decision = {
 	any_state = { death_is_valid_triggerable_mainland_reveal_target = yes }
 }
 
-death_can_use_mainland_pressure_decision = {
+death_has_mainland_pressure_route = {
 	OR = {
 		death_can_use_mainland_pressure_standard_decision = yes
 		death_can_use_mainland_pressure_war_decision = yes
 	}
+}
+
+death_can_use_mainland_pressure_decision = {
+	death_watch_network_allows_death_jump = yes
+	death_has_mainland_pressure_route = yes
 }
 
 death_ai_should_press_mainland_from_ledger = {
@@ -620,6 +642,7 @@ death_is_valid_coastal_jump_target = {
 	NOT = { death_is_consumed_state = yes }
 	NOT = { is_controlled_by = DTH }
 	OR = {
+		has_global_flag = death_world_end_started
 		NOT = { has_state_flag = death_coastal_watch }
 		DTH = { has_country_flag = death_focus_no_ferry_returns }
 	}
@@ -675,6 +698,7 @@ death_can_attempt_coastal_jump = {
 	has_global_flag = death_publicly_revealed
 	NOT = { has_global_flag = death_defeated }
 	NOT = { has_global_flag = death_coastal_jump_cooldown }
+	death_watch_network_allows_death_jump = yes
 	OR = {
 		has_global_flag = death_world_end_started
 		DTH = { num_of_controlled_states < constant:death_spread.coastal_jump_contained_state_limit }
