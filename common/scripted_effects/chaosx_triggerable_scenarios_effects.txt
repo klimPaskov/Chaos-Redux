@@ -40,6 +40,10 @@ initialize_triggerable_scenarios_settings = {
 		set_variable = { triggerable_scenarios_death_type = constant:death_scenario_type.instant_outbreak }
 	}
 	if = {
+		limit = { NOT = { has_variable = triggerable_scenarios_disaster_barrage_type } }
+		set_variable = { triggerable_scenarios_disaster_barrage_type = constant:triggerable_scenario_disaster_barrage_type.random_barrage }
+	}
+	if = {
 		limit = { NOT = { has_variable = triggerable_scenarios_sort_mode } }
 		set_variable = { triggerable_scenarios_sort_mode = constant:triggerable_scenario_sort_mode.id }
 	}
@@ -574,6 +578,14 @@ triggerable_scenario_type_previous = {
 		set_variable = { triggerable_scenarios_death_type = constant:death_scenario_type.instant_outbreak }
 	}
 	else_if = {
+		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.disaster_barrage } }
+		subtract_from_variable = { triggerable_scenarios_disaster_barrage_type = 1 }
+		if = {
+			limit = { check_variable = { triggerable_scenarios_disaster_barrage_type < constant:triggerable_scenario_disaster_barrage_type.random_barrage } }
+			set_variable = { triggerable_scenarios_disaster_barrage_type = constant:triggerable_scenario_disaster_barrage_type.full_catalogue }
+		}
+	}
+	else_if = {
 		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.final_silence } }
 		subtract_from_variable = { triggerable_scenarios_final_silence_type = 1 }
 		if = {
@@ -620,6 +632,14 @@ triggerable_scenario_type_next = {
 	else_if = {
 		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.death } }
 		set_variable = { triggerable_scenarios_death_type = constant:death_scenario_type.instant_outbreak }
+	}
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.disaster_barrage } }
+		add_to_variable = { triggerable_scenarios_disaster_barrage_type = 1 }
+		if = {
+			limit = { check_variable = { triggerable_scenarios_disaster_barrage_type > constant:triggerable_scenario_disaster_barrage_type.full_catalogue } }
+			set_variable = { triggerable_scenarios_disaster_barrage_type = constant:triggerable_scenario_disaster_barrage_type.random_barrage }
+		}
 	}
 	else_if = {
 		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.final_silence } }
@@ -707,7 +727,7 @@ trigger_selected_chaosx_scenario = {
 				compare = equals
 			}
 		}
-		country_event = { id = chaosx.triggerable_scenarios.7 days = 1 }
+		natural_disasters_trigger_disaster_barrage_scenario = yes
 	}
 	else_if = {
 		limit = {

@@ -1,21 +1,522 @@
 add_namespace = chaosx.nr13
 
 # ============================================================================
-# CHAOS REDUX - EVENT 013 PLACEHOLDER
+# CHAOS REDUX - EVENT 013 NATURAL DISASTERS
 # ============================================================================
-# Reserved neutral entrypoint for future Event 013 work.
-# This placeholder is unavailable and has no gameplay effects.
+# Minor repeatable disaster sequence. The visible entry event is the only random
+# event row. Hidden scheduler events and state reports belong to that sequence.
 # ============================================================================
 
 country_event = {
 	id = chaosx.nr13.1
 	title = chaosx.nr13.1.t
 	desc = chaosx.nr13.1.d
-	picture = GFX_report_event_generic_ruins
+	picture = GFX_report_event_nd_barrage
 	is_triggered_only = yes
-	trigger = { always = no }
+
+	trigger = {
+		OR = {
+			has_country_flag = natural_disasters_disaster_barrage_launch
+			AND = {
+				NOT = { natural_disasters_has_active_sequence = yes }
+				NOT = { has_country_flag = natural_disasters_normal_controller_flush_active }
+				any_owned_state = { natural_disasters_state_can_receive_impact = yes }
+			}
+		}
+	}
+
+	immediate = {
+		hidden_effect = {
+			natural_disasters_start_sequence = yes
+		}
+	}
 
 	option = {
 		name = chaosx.nr13.1.a
+		custom_effect_tooltip = chaosx.nr13.1.tt
+		hidden_effect = {
+			natural_disasters_schedule_first_warning_report = yes
+		}
+		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr13.10
+	title = chaosx.nr13.10.t
+	is_triggered_only = yes
+	hidden = yes
+
+	trigger = {
+		natural_disasters_has_active_sequence = yes
+		NOT = { has_country_flag = natural_disasters_manual_scenario_override }
+		NOT = { has_country_flag = natural_disasters_normal_controller_flush_active }
+	}
+
+	immediate = {
+		hidden_effect = {
+			if = {
+				limit = { has_country_flag = natural_disasters_chain_active }
+				country_event = { id = chaosx.nr13.10 days = constant:natural_disasters_chain.controller_delay_days }
+			}
+			else = {
+				natural_disasters_prepare_next_incident = yes
+				if = {
+					limit = {
+						check_variable = { natural_disasters_current_incident_has_target > 0 }
+						check_variable = { natural_disasters_current_incident_has_warning > 0 }
+					}
+					every_owned_state = {
+						limit = { has_state_flag = natural_disaster_current_target }
+						state_event = { id = chaosx.nr13.11 }
+					}
+				}
+				else_if = {
+					limit = { check_variable = { natural_disasters_current_incident_has_target > 0 } }
+					every_owned_state = {
+						limit = { has_state_flag = natural_disaster_current_target }
+						state_event = { id = chaosx.nr13.21 days = constant:natural_disasters_warning.missed_warning_days }
+					}
+				}
+				else_if = {
+					limit = {
+						check_variable = {
+							var = natural_disasters_sequence_incidents_completed
+							value = natural_disasters_sequence_incidents_planned
+							compare = less_than
+						}
+					}
+					natural_disasters_schedule_next_warning_report = yes
+				}
+				else = {
+					natural_disasters_schedule_sequence_finish = yes
+				}
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr13.50
+	title = chaosx.nr13.10.t
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		always = no
+	}
+}
+
+state_event = {
+	id = chaosx.nr13.11
+	title = chaosx.nr13.11.t
+	desc = chaosx.nr13.11.d
+	picture = GFX_report_event_nd_storm
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			natural_disasters_state_matches_active_manual_sequence = yes
+			OWNER = {
+				natural_disasters_has_active_sequence = yes
+				NOT = { has_country_flag = natural_disasters_manual_scenario_override }
+				NOT = { has_country_flag = natural_disasters_normal_controller_flush_active }
+			}
+		}
+	}
+
+	immediate = {
+		hidden_effect = {
+			natural_disasters_open_warning_window = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr13.11.a
+		custom_effect_tooltip = chaosx.nr13.11.tt
+		state_event = { id = chaosx.nr13.21 days = constant:natural_disasters_warning.immediate_days }
+		ai_chance = { base = 100 }
+	}
+}
+
+state_event = {
+	id = chaosx.nr13.21
+	title = chaosx.nr13.21.t
+	desc = chaosx.nr13.21.d
+	picture = GFX_report_event_nd_barrage
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			natural_disasters_state_matches_active_manual_sequence = yes
+			OWNER = {
+				natural_disasters_has_active_sequence = yes
+				NOT = { has_country_flag = natural_disasters_manual_scenario_override }
+				NOT = { has_country_flag = natural_disasters_normal_controller_flush_active }
+			}
+		}
+	}
+
+	immediate = {
+		hidden_effect = {
+			OWNER = {
+				natural_disasters_apply_current_target_impact = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr13.21.a
+		custom_effect_tooltip = chaosx.nr13.21.tt
+		OWNER = {
+			if = {
+				limit = {
+					check_variable = {
+						var = natural_disasters_sequence_incidents_completed
+						value = natural_disasters_sequence_incidents_planned
+						compare = less_than
+					}
+				}
+				natural_disasters_schedule_next_warning_report = yes
+			}
+			else = {
+				natural_disasters_schedule_sequence_finish = yes
+			}
+		}
+		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr13.30
+	title = chaosx.nr13.30.t
+	desc = chaosx.nr13.30.d
+	picture = GFX_report_event_nd_flood
+	is_triggered_only = yes
+
+	trigger = {
+		natural_disasters_has_active_sequence = yes
+		NOT = { has_country_flag = natural_disasters_manual_scenario_override }
+		NOT = { has_country_flag = natural_disasters_normal_controller_flush_active }
+	}
+
+	immediate = {
+		hidden_effect = {
+			if = {
+				limit = {
+					check_variable = { natural_disasters_sequence_incidents_planned > 1 }
+					check_variable = { natural_disasters_sequence_estimated_deaths < 1 }
+					has_country_flag = natural_disasters_country_hit
+					NOT = { has_country_flag = achievement_nd_no_deaths_sequence_missed_warning }
+					NOT = { has_country_flag = natural_disasters_objective_failed }
+				}
+				set_country_flag = natural_disasters_no_deaths_sequence_cleanup_watch
+				set_country_flag = achievement_nd_no_deaths_sequence_multi_incident
+			}
+			if = {
+				limit = {
+					has_country_flag = natural_disasters_scenario_maximum_intensity
+					check_variable = {
+						var = natural_disasters_sequence_incidents_planned
+						value = constant:natural_disasters_sequence.scenario_maximum_incidents
+						compare = greater_than_or_equals
+					}
+					check_variable = {
+						var = natural_disasters_sequence_incidents_completed
+						value = constant:natural_disasters_achievement.maximum_barrage_incident_floor
+						compare = greater_than_or_equals
+					}
+					NOT = { has_global_flag = world_end }
+				}
+				set_country_flag = natural_disasters_maximum_barrage_cleanup_watch
+				set_country_flag = achievement_nd_barrage_maximum_completed
+			}
+			if = {
+				limit = {
+					check_variable = {
+						var = natural_disasters_sequence_evolution_stage
+						value = constant:natural_disasters_evolution.abnormal_age
+						compare = equals
+					}
+					has_country_flag = natural_disasters_country_hit
+					NOT = { has_global_flag = world_end }
+				}
+				set_country_flag = natural_disasters_abnormal_sequence_cleanup_watch
+				set_country_flag = achievement_nd_abnormal_sequence_completed
+			}
+			natural_disasters_maybe_send_sequence_news = yes
+			natural_disasters_cleanup_sequence_context = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr13.30.a
+		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr13.55
+	title = chaosx.nr13.30.t
+	desc = chaosx.nr13.30.d
+	picture = GFX_report_event_nd_flood
+	is_triggered_only = yes
+
+	trigger = {
+		always = no
+	}
+}
+
+country_event = {
+	id = chaosx.nr13.40
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		natural_disasters_has_active_sequence = yes
+		NOT = { has_country_flag = natural_disasters_manual_scenario_override }
+		NOT = { has_country_flag = natural_disasters_normal_controller_flush_active }
+	}
+
+	immediate = {
+		hidden_effect = {
+			natural_disasters_continue_active_chain_controller = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr13.41
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		natural_disasters_has_active_sequence = yes
+		NOT = { has_country_flag = natural_disasters_manual_scenario_override }
+		NOT = { has_country_flag = natural_disasters_normal_controller_flush_active }
+	}
+
+	immediate = {
+		hidden_effect = {
+			natural_disasters_prepare_delayed_tsunami_warning = yes
+		}
+	}
+}
+
+state_event = {
+	id = chaosx.nr13.42
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		OWNER = {
+			natural_disasters_has_active_sequence = yes
+			NOT = { has_country_flag = natural_disasters_manual_scenario_override }
+			NOT = { has_country_flag = natural_disasters_normal_controller_flush_active }
+		}
+	}
+
+	immediate = {
+		hidden_effect = {
+			OWNER = {
+				natural_disasters_apply_delayed_tsunami_impact = yes
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr13.43
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		natural_disasters_has_active_sequence = yes
+		NOT = { has_country_flag = natural_disasters_manual_scenario_override }
+		NOT = { has_country_flag = natural_disasters_normal_controller_flush_active }
+	}
+
+	immediate = {
+		hidden_effect = {
+			natural_disasters_continue_storm_corridor_chain = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr13.44
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		natural_disasters_has_active_sequence = yes
+		NOT = { has_country_flag = natural_disasters_manual_scenario_override }
+		NOT = { has_country_flag = natural_disasters_normal_controller_flush_active }
+	}
+
+	immediate = {
+		hidden_effect = {
+			natural_disasters_continue_meteor_cluster_chain = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr13.45
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		natural_disasters_has_active_sequence = yes
+		NOT = { has_country_flag = natural_disasters_manual_scenario_override }
+		NOT = { has_country_flag = natural_disasters_normal_controller_flush_active }
+	}
+
+	immediate = {
+		hidden_effect = {
+			natural_disasters_continue_eruption_ashfall_chain = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr13.60
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		always = no
+	}
+}
+
+country_event = {
+	id = chaosx.nr13.61
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		always = no
+	}
+}
+
+state_event = {
+	id = chaosx.nr13.62
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		natural_disasters_state_matches_active_manual_sequence = yes
+	}
+
+	immediate = {
+		hidden_effect = {
+			OWNER = {
+				natural_disasters_apply_delayed_tsunami_impact = yes
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr13.63
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		always = no
+	}
+}
+
+country_event = {
+	id = chaosx.nr13.64
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		always = no
+	}
+}
+
+country_event = {
+	id = chaosx.nr13.65
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		always = no
+	}
+}
+
+# State-scoped manual controller tokens. The state stores the launching country and exact sequence id.
+
+state_event = {
+	id = chaosx.nr13.51
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		natural_disasters_state_matches_manual_controller_sequence = yes
+	}
+
+	immediate = {
+		hidden_effect = {
+			var:natural_disaster_manual_controller_country = {
+				natural_disasters_run_manual_scheduler_controller = yes
+			}
+		}
+	}
+}
+
+state_event = {
+	id = chaosx.nr13.56
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		natural_disasters_state_matches_manual_controller_sequence = yes
+	}
+
+	immediate = {
+		hidden_effect = {
+			var:natural_disaster_manual_controller_country = {
+				natural_disasters_run_sequence_finish = yes
+			}
+		}
+	}
+}
+
+state_event = {
+	id = chaosx.nr13.66
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		natural_disasters_state_matches_manual_controller_sequence = yes
+	}
+
+	immediate = {
+		hidden_effect = {
+			var:natural_disaster_manual_controller_country = {
+				natural_disasters_continue_active_chain_controller = yes
+			}
+		}
+	}
+}
+
+state_event = {
+	id = chaosx.nr13.67
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		natural_disasters_state_matches_manual_controller_sequence = yes
+	}
+
+	immediate = {
+		hidden_effect = {
+			var:natural_disaster_manual_controller_country = {
+				natural_disasters_prepare_delayed_tsunami_warning = yes
+			}
+		}
 	}
 }

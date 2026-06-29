@@ -86,7 +86,11 @@ Intensity controls the starting footprint and starting ghost hosts. Low creates 
 
 ### SCN-007: Disaster Barrage
 
-Reserved manual scenario placeholder for Event 013. It remains listed in the manual scenario window and launches only a neutral placeholder event until the source event is reworked.
+The Disaster Barrage scenario launches Event 013 directly from the selected country. It bypasses ordinary chaos and evolution prerequisites for the manual scenario only, then uses the same Natural Disasters sequence controller, warning logic, dynamic population-loss math, family categories, recovery missions, and aftermath cleanup as a live Event 13 firing.
+
+The scenario type control chooses the family emphasis. Random Barrage can draw from the full eligible pool, Geological Crisis favors earthquake, rupture, landslide, volcanic, tsunami, and meteor families, Weather Crisis favors flood, cyclone, severe storm, corridor storm, wildfire, drought, heat, winter, and dust families, Skyfall Crisis pushes meteor and skyfall families, and Full Catalogue keeps the broad pool open.
+
+Intensity controls sequence size, delay compression, and abnormal access. Low intensity starts a varied local season, Medium starts regional disaster systems, High opens severe chained behavior, and Maximum can combine meteor showers, rupture waves, massive eruption pressure, delayed tsunami, and storm corridor movement in one season. Disaster Barrage never creates an Event 13 world-end branch.
 
 ### SCN-008: Africa Is One
 

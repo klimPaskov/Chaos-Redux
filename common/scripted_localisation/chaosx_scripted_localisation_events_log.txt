@@ -3580,6 +3580,16 @@ defined_text = {
 			trigger = {
 				check_variable = {
 					var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index
+					value = constant:natural_disasters_event_log.evolution_type
+					compare = equals
+				}
+			}
+			localization_key = chaosx.events_log.evolution.type.natural_disasters
+		}
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index
 					value = constant:soviet_collapse_event_log.secession_evolution_type
 					compare = equals
 				}
@@ -3907,6 +3917,12 @@ defined_text = {
 			}
 			localization_key = "[GetEventsLogEventDetailDeathEvolutionTitle]"
 		}
+		text = {
+			trigger = {
+				check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:natural_disasters_event_log.evolution_type compare = equals }
+			}
+			localization_key = "[GetEventsLogEventDetailNaturalDisastersEvolutionTitle]"
+		}
 
 		text = {
 			trigger = {
@@ -3988,12 +4004,18 @@ defined_text = {
 			}
 			localization_key = "[GetEventsLogEventDetailWhitePeaceEvolutionBody]"
 		}
-		text = {
-			trigger = {
-				check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:death_event.evolution_type compare = equals }
-			}
-			localization_key = "[GetEventsLogEventDetailDeathEvolutionBody]"
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:death_event.evolution_type compare = equals }
 		}
+		localization_key = "[GetEventsLogEventDetailDeathEvolutionBody]"
+	}
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:natural_disasters_event_log.evolution_type compare = equals }
+		}
+		localization_key = "[GetEventsLogEventDetailNaturalDisastersEvolutionBody]"
+	}
 
 	text = {
 		trigger = {
@@ -4567,6 +4589,10 @@ defined_text = {
 		trigger = { check_variable = { var = event_id value = constant:death_event.id compare = equals } }
 		localization_key = chaosx.events_log.window.event_details.death
 	}
+	text = {
+		trigger = { check_variable = { var = event_id value = constant:natural_disasters_event_log.event_id compare = equals } }
+		localization_key = chaosx.events_log.window.event_details.natural_disasters
+	}
 
 	text = {
 		trigger = { always = yes }
@@ -4651,14 +4677,20 @@ defined_text = {
 			}
 			localization_key = "[GetEventsLogSelectedWhitePeaceEvolutionTitle]"
 		}
-		text = {
-			trigger = {
-				check_variable = { events_log_selected_evolution_type = constant:death_event.evolution_type }
+			text = {
+				trigger = {
+					check_variable = { events_log_selected_evolution_type = constant:death_event.evolution_type }
+				}
+				localization_key = "[GetEventsLogSelectedDeathEvolutionTitle]"
 			}
-			localization_key = "[GetEventsLogSelectedDeathEvolutionTitle]"
-		}
+			text = {
+				trigger = {
+					check_variable = { events_log_selected_evolution_type = constant:natural_disasters_event_log.evolution_type }
+				}
+				localization_key = "[GetEventsLogSelectedNaturalDisastersEvolutionTitle]"
+			}
 
-		text = {
+			text = {
 			trigger = {
 				check_variable = { events_log_selected_evolution_type = constant:soviet_collapse_event_log.secession_evolution_type }
 				check_variable = { events_log_selected_evolution_stage = constant:soviet_collapse_event_log.first_wave_stage }
@@ -4878,14 +4910,20 @@ defined_text = {
 			}
 			localization_key = "[GetEventsLogSelectedWhitePeaceEvolutionBody]"
 		}
-		text = {
-			trigger = {
-				check_variable = { events_log_selected_evolution_type = constant:death_event.evolution_type }
+			text = {
+				trigger = {
+					check_variable = { events_log_selected_evolution_type = constant:death_event.evolution_type }
+				}
+				localization_key = "[GetEventsLogSelectedDeathEvolutionBody]"
 			}
-			localization_key = "[GetEventsLogSelectedDeathEvolutionBody]"
-		}
+			text = {
+				trigger = {
+					check_variable = { events_log_selected_evolution_type = constant:natural_disasters_event_log.evolution_type }
+				}
+				localization_key = "[GetEventsLogSelectedNaturalDisastersEvolutionBody]"
+			}
 
-		text = {
+			text = {
 			trigger = {
 				check_variable = { events_log_selected_evolution_type = constant:soviet_collapse_event_log.secession_evolution_type }
 			}
@@ -9616,4 +9654,36 @@ defined_text = {
 		trigger = { always = yes }
 		localization_key = chaosx.events_log.cluster.member.danger.unknown
 	}
+}
+
+defined_text = {
+	name = GetEventsLogSelectedNaturalDisastersEvolutionTitle
+	text = { trigger = { check_variable = { events_log_selected_evolution_stage = constant:natural_disasters_event_log.stage_varied_local } } localization_key = chaosx.events_log.window.evolution_details.natural_disasters.title.stage_1 }
+	text = { trigger = { check_variable = { events_log_selected_evolution_stage = constant:natural_disasters_event_log.stage_regional_systems } } localization_key = chaosx.events_log.window.evolution_details.natural_disasters.title.stage_2 }
+	text = { trigger = { check_variable = { events_log_selected_evolution_stage = constant:natural_disasters_event_log.stage_abnormal_age } } localization_key = chaosx.events_log.window.evolution_details.natural_disasters.title.stage_3 }
+	text = { trigger = { always = yes } localization_key = chaosx.events_log.evolution.type.natural_disasters }
+}
+
+defined_text = {
+	name = GetEventsLogEventDetailNaturalDisastersEvolutionTitle
+	text = { trigger = { check_variable = { var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index value = constant:natural_disasters_event_log.stage_varied_local compare = equals } } localization_key = chaosx.events_log.window.evolution_details.natural_disasters.title.stage_1 }
+	text = { trigger = { check_variable = { var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index value = constant:natural_disasters_event_log.stage_regional_systems compare = equals } } localization_key = chaosx.events_log.window.evolution_details.natural_disasters.title.stage_2 }
+	text = { trigger = { check_variable = { var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index value = constant:natural_disasters_event_log.stage_abnormal_age compare = equals } } localization_key = chaosx.events_log.window.evolution_details.natural_disasters.title.stage_3 }
+	text = { trigger = { always = yes } localization_key = chaosx.events_log.evolution.type.natural_disasters }
+}
+
+defined_text = {
+	name = GetEventsLogSelectedNaturalDisastersEvolutionBody
+	text = { trigger = { check_variable = { events_log_selected_evolution_stage = constant:natural_disasters_event_log.stage_varied_local } } localization_key = chaosx.events_log.window.evolution_details.natural_disasters.body.stage_1 }
+	text = { trigger = { check_variable = { events_log_selected_evolution_stage = constant:natural_disasters_event_log.stage_regional_systems } } localization_key = chaosx.events_log.window.evolution_details.natural_disasters.body.stage_2 }
+	text = { trigger = { check_variable = { events_log_selected_evolution_stage = constant:natural_disasters_event_log.stage_abnormal_age } } localization_key = chaosx.events_log.window.evolution_details.natural_disasters.body.stage_3 }
+	text = { trigger = { always = yes } localization_key = chaosx.events_log.window.evolution_details.natural_disasters.body.event_detail }
+}
+
+defined_text = {
+	name = GetEventsLogEventDetailNaturalDisastersEvolutionBody
+	text = { trigger = { check_variable = { var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index value = constant:natural_disasters_event_log.stage_varied_local compare = equals } } localization_key = chaosx.events_log.window.evolution_details.natural_disasters.body.stage_1 }
+	text = { trigger = { check_variable = { var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index value = constant:natural_disasters_event_log.stage_regional_systems compare = equals } } localization_key = chaosx.events_log.window.evolution_details.natural_disasters.body.stage_2 }
+	text = { trigger = { check_variable = { var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index value = constant:natural_disasters_event_log.stage_abnormal_age compare = equals } } localization_key = chaosx.events_log.window.evolution_details.natural_disasters.body.stage_3 }
+	text = { trigger = { always = yes } localization_key = chaosx.events_log.window.evolution_details.natural_disasters.body.event_detail }
 }

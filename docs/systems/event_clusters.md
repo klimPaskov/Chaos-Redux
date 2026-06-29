@@ -10,7 +10,7 @@ The registered clusters are:
 - **Liberations** (`constant:event_cluster_id.liberations = 2`): independence waves, subject breakaways, imperial ruptures, republican secessions, and disorder that creates new states.
 - **Diplomatic Panic** (`constant:event_cluster_id.diplomatic_panic = 3`): pressure spikes, ministry reactions, and relation shocks without direct new war goals.
 - **Peace** (`constant:event_cluster_id.peace = 4`): settlements, ceasefires, exhaustion, negotiations, and related de-escalation shocks.
-- **Natural Disasters** (`constant:event_cluster_id.natural_disasters = 5`): reserved Event 13 placeholder cluster.
+- **Natural Disasters** (`constant:event_cluster_id.natural_disasters = 5`): repeatable Event 13 disaster seasons, with local, regional, and abnormal member slots that all route through the Natural Disasters sequence controller.
 - **Formables** (`constant:event_cluster_id.formables = 6`): reserved cluster for future formable-event work.
 
 ## Runtime Flow
@@ -73,7 +73,9 @@ Current membership:
 | Liberations | Event 5, Soviet Union Collapse | Severe | Optional member, fire-once, gated by Soviet crisis eligibility |
 | Diplomatic Panic | Event 8, Tensions Rising | Medium | Required member when selected or manually queued |
 | Peace | Event 9, White Peace | Low | Required member when selected or manually queued |
-| Natural Disasters | Event 13, Natural Disasters | Low | Reserved placeholder member |
+| Natural Disasters | Event 13, Natural Disasters local season | Low | Required member when selected or manually queued |
+| Natural Disasters | Event 13, Natural Disasters regional season | Medium | Optional member, queued when regional disaster systems are available |
+| Natural Disasters | Event 13, Natural Disasters abnormal season | High | Optional member, queued when abnormal disaster age behavior is available |
 | Formables | Event 12, Africa Is One | Low | Reserved placeholder member |
 
 ## Member Order And Cooldown
@@ -123,9 +125,15 @@ The settings window has an Event Clusters view under Trigger Events. It lets the
 
 The manual trigger button is always clickable in the Event Clusters view. Manual triggering bypasses tier, cooldown, disabled-state, and member availability checks. The result line reports whether the selected cluster fired, is unknown, or failed because runtime setup could not build the required scopes.
 
+## Natural Disasters Cluster Behavior
+
+Natural Disasters uses multiple conceptual Event 13 slots rather than separate event ids. The local slot starts a compact sequence of ordinary and varied local incidents. The regional slot raises Event 13 into a multi-state system with shorter delays, regional family pressure, and chained aftermaths. The abnormal slot permits the abnormal family pool, including meteor, rupture, massive eruption, delayed tsunami, and moving storm corridor behavior.
+
+Each Event 13 member sequence records one Event 13 history row. Delayed warning reports, impact reports, and subdisaster follow-ups inside that sequence do not create extra random-event history rows. If a cluster member becomes due while the same country still has an active Event 13 sequence, the cluster layer retries that member later instead of stacking a second season on top of the first.
+
 ## Icons And Assets
 
-No new final art assets are required for the current implementation.
+Natural Disasters uses its own report, news, decision, achievement, static warning, and animated indicator assets. The active recovery strip is defined outside the shared event cluster UI and appears from the Event 13 decision category surface.
 
 Existing assets used:
 
