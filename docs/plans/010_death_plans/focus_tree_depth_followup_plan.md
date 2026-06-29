@@ -111,7 +111,7 @@ Add these to `common/script_constants/010_death_constants.txt`:
 | `death_focus_ai.post_host` | 45 | AI Host lane |
 | `death_focus_ai.terminal` | 100 | AI Last Shores / terminal focus |
 
-Existing `death_focus_reward.pressure_small`, `pressure_medium`, `ghost_equipment_small`, `ghost_manpower_small`, and `world_end_pressure` can remain, but the new helper names should make each lane's role explicit.
+Existing `death_focus_reward.pressure_small`, `pressure_medium`, and `world_end_pressure` can remain, but the new helper names should make each lane's role explicit. Ghost host support should use the `death_ghosts` and `death_soul_power` tables instead of focus reward equipment or manpower constants.
 
 ### New helper effects
 

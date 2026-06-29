@@ -85,9 +85,9 @@ Death-controlled wastelands should apply:
 - no local manpower.
 - no resistance against Death.
 - a dark/fog/storm visual state if possible.
-- a ticking wither effect against non-Death divisions that remain too long.
+- a ticking wither effect against living divisions that remain too long.
 
-The movement penalty should be absurd enough to make crossing Death territory feel like marching through a dead storm. The intent is not a small debuff. Divisions can still occupy tiles to defeat Death, but they should need preparation, supply support, and time.
+The movement penalty should be absurd enough to make crossing Death territory feel like marching through a dead storm. The intent is not a small debuff. Divisions can still occupy tiles to defeat Death, but they should need preparation, supply support, and time. Death units do not suffer the controller-side wasteland penalties in active Death states.
 
 ### While a non-Death country controls a recaptured wasteland
 
@@ -119,6 +119,8 @@ Design direction:
 | World-end | Wither loss becomes a major reason to use containment preparation instead of charging blindly. |
 
 The wither pulse should check for protection from relevant containment decisions, special equipment, route flags, and temporary operations. Protection should reduce the damage, not remove all danger.
+
+Death country units are excluded from direct wither damage. Countries marked as actual nonhuman countries take a reduced version of direct active-wasteland and border-wither damage by default.
 
 ## Spread mechanics
 
@@ -273,7 +275,7 @@ Suggested template families:
 | 800 tier | `Mourning Host` / `Ashen Line` | Still weaker than infantry, more numerous. |
 | World-end | `Ruin Host` / `Black Infantry` | Comparable to infantry and aggressive. |
 
-Ghost units should not need normal manpower or equipment. They are spawned by consumed population and event stage, not recruited through industry. Each ghost battalion uses one dummy manpower and one dummy infantry equipment only because the engine expects non-empty unit requirements. They should still be limited by formulas so Death does not generate infinite divisions from tiny islands.
+Ghost units should not need normal manpower or equipment. They are spawned by consumed population and event stage, not recruited through industry. Each ghost battalion uses one dummy manpower and one dummy infantry equipment only because the engine expects non-empty unit requirements. They should still be limited by formulas so Death does not generate infinite divisions from tiny islands. Their templates are locked, nonrecruitable, and use the skull division counter.
 
 ### 600-tier evolution
 
