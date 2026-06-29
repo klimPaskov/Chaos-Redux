@@ -5,6 +5,11 @@
 @death_whisper_ai_pp_cost = 50
 @death_black_oath_ai_pp_cost = 100
 @death_quarantine_hold_mission_days = 90
+@death_ledger_island_re_enable_days = 14
+@death_ledger_mainland_re_enable_days = 30
+@death_ledger_passive_host_re_enable_days = 10
+@death_ledger_hollow_host_re_enable_days = 8
+@death_ledger_last_shore_host_re_enable_days = 5
 
 # ============================================================================
 # CHAOS REDUX - EVENT 010 DEATH DECISIONS
@@ -26,7 +31,7 @@ death_black_ledger_category = {
 		}
 		custom_cost_trigger = { hidden_trigger = { can_pay_death_island_spread_souls = yes } }
 		custom_cost_text = death_island_spread_soul_cost_text
-		days_re_enable = 28
+		days_re_enable = @death_ledger_island_re_enable_days
 		complete_effect = {
 			custom_effect_tooltip = death_consume_another_island_tt
 			hidden_effect = { death_decision_spread_to_island_effect = yes }
@@ -35,6 +40,14 @@ death_black_ledger_category = {
 			base = constant:death_decision_tuning.ai_high
 			modifier = { factor = 0 death_ai_should_press_mainland_from_ledger = yes }
 			modifier = { factor = 0 has_global_flag = death_world_end_started }
+			modifier = {
+				factor = constant:death_decision_tuning.ai_ledger_cheap_island_factor
+				death_island_spread_soul_cost_is_cheap = yes
+			}
+			modifier = {
+				factor = constant:death_decision_tuning.ai_ledger_expensive_island_factor
+				NOT = { death_island_spread_soul_cost_is_cheap = yes }
+			}
 			modifier = {
 				factor = constant:death_decision_tuning.ai_ledger_hidden_island_factor
 				NOT = { has_global_flag = death_publicly_revealed }
@@ -58,13 +71,20 @@ death_black_ledger_category = {
 		}
 		custom_cost_trigger = { hidden_trigger = { can_pay_death_mainland_spread_souls = yes } }
 		custom_cost_text = death_mainland_spread_soul_cost_text
-		days_re_enable = 45
+		days_re_enable = @death_ledger_mainland_re_enable_days
 		complete_effect = {
 			custom_effect_tooltip = death_press_to_mainland_tt
 			hidden_effect = { death_decision_press_to_mainland_effect = yes }
 		}
 		ai_will_do = {
 			base = constant:death_decision_tuning.ai_high
+			modifier = {
+				factor = 0
+				NOT = { has_global_flag = death_publicly_revealed }
+				death_has_valid_island_spread_target = yes
+				can_pay_death_island_spread_souls = yes
+				death_island_spread_soul_cost_is_cheap = yes
+			}
 			modifier = {
 				factor = constant:death_decision_tuning.ai_ledger_mainland_unrevealed_factor
 				NOT = { has_global_flag = death_publicly_revealed }
@@ -86,7 +106,7 @@ death_black_ledger_category = {
 		available = { hidden_trigger = { can_pay_death_passive_host_souls = yes } }
 		custom_cost_trigger = { hidden_trigger = { can_pay_death_passive_host_souls = yes } }
 		custom_cost_text = death_passive_host_soul_cost_text
-		days_re_enable = 21
+		days_re_enable = @death_ledger_passive_host_re_enable_days
 		complete_effect = {
 			custom_effect_tooltip = death_raise_passive_hosts_tt
 			hidden_effect = { death_decision_raise_passive_host_effect = yes }
@@ -96,6 +116,10 @@ death_black_ledger_category = {
 			modifier = {
 				factor = 0
 				NOT = { death_ai_should_raise_hosts_from_ledger = yes }
+			}
+			modifier = {
+				factor = constant:death_decision_tuning.ai_ledger_host_growth_factor
+				death_ai_should_raise_hosts_from_ledger = yes
 			}
 			modifier = {
 				factor = constant:death_decision_tuning.ai_ledger_host_public_factor
@@ -114,7 +138,7 @@ death_black_ledger_category = {
 		available = { hidden_trigger = { can_pay_death_stronger_host_souls = yes } }
 		custom_cost_trigger = { hidden_trigger = { can_pay_death_stronger_host_souls = yes } }
 		custom_cost_text = death_hollow_host_soul_cost_text
-		days_re_enable = 18
+		days_re_enable = @death_ledger_hollow_host_re_enable_days
 		complete_effect = {
 			custom_effect_tooltip = death_raise_hollow_hosts_tt
 			hidden_effect = { death_decision_raise_hollow_host_effect = yes }
@@ -124,6 +148,10 @@ death_black_ledger_category = {
 			modifier = {
 				factor = 0
 				NOT = { death_ai_should_raise_hosts_from_ledger = yes }
+			}
+			modifier = {
+				factor = constant:death_decision_tuning.ai_ledger_host_growth_factor
+				death_ai_should_raise_hosts_from_ledger = yes
 			}
 			modifier = {
 				factor = constant:death_decision_tuning.ai_ledger_host_public_factor
@@ -142,13 +170,17 @@ death_black_ledger_category = {
 		available = { hidden_trigger = { can_pay_death_world_end_host_souls = yes } }
 		custom_cost_trigger = { hidden_trigger = { can_pay_death_world_end_host_souls = yes } }
 		custom_cost_text = death_last_shore_host_soul_cost_text
-		days_re_enable = 12
+		days_re_enable = @death_ledger_last_shore_host_re_enable_days
 		complete_effect = {
 			custom_effect_tooltip = death_raise_last_shore_hosts_tt
 			hidden_effect = { death_decision_raise_last_shore_host_effect = yes }
 		}
 		ai_will_do = {
 			base = constant:death_decision_tuning.ai_high
+			modifier = {
+				factor = constant:death_decision_tuning.ai_ledger_host_growth_factor
+				death_ai_should_raise_hosts_from_ledger = yes
+			}
 			modifier = {
 				factor = constant:death_decision_tuning.ai_ledger_host_world_end_factor
 				has_global_flag = death_world_end_started

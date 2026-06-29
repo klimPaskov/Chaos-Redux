@@ -20,6 +20,8 @@
 @death_revealed_coastal_jump_cooldown_days = 63
 @death_world_end_coastal_jump_cooldown_days = 21
 @death_focused_coastal_jump_cooldown_days = 42
+@death_high_pressure_coastal_jump_cooldown_days = 42
+@death_extreme_pressure_coastal_jump_cooldown_days = 28
 @death_quiet_quarantine_days = 90
 @death_quarantine_line_days = 120
 @death_coastal_watch_days = 120
@@ -160,6 +162,14 @@ death_initialize_ghost_host_tracking = {
 		set_variable = { global.death_island_spread_soul_spends = 0 }
 	}
 	if = {
+		limit = { NOT = { has_variable = global.death_mainland_spread_soul_spends } }
+		set_variable = { global.death_mainland_spread_soul_spends = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = global.death_host_soul_spends } }
+		set_variable = { global.death_host_soul_spends = 0 }
+	}
+	if = {
 		limit = { NOT = { has_variable = global.death_soul_power_population_budget } }
 		set_variable = { global.death_soul_power_population_budget = 0 }
 	}
@@ -189,33 +199,39 @@ death_refresh_soul_power_display_variables = {
 		multiply_temp_variable = { death_soul_power_foothold_budget = constant:death_ghosts.world_end_foothold_budget_points }
 		add_to_temp_variable = { death_soul_power_total = death_soul_power_foothold_budget }
 	}
-	clamp_temp_variable = {
-		var = death_soul_power_total
-		min = 0
-		max = constant:death_ghosts.total_host_budget_cap
-	}
 	set_variable = { global.death_soul_power_total = death_soul_power_total }
+	clamp_variable = { var = global.death_soul_power_total min = 0 }
 	set_variable = { global.death_soul_power_available = global.death_soul_power_total }
 	subtract_from_variable = { global.death_soul_power_available = global.death_soul_power_spent }
-	clamp_variable = { var = global.death_soul_power_available min = 0 max = constant:death_ghosts.total_host_budget_cap }
+	clamp_variable = { var = global.death_soul_power_available min = 0 }
 	set_variable = { global.death_soul_power_available_display_integer = global.death_soul_power_available }
 	round_variable = global.death_soul_power_available_display_integer
 	set_variable = { global.death_soul_power_spent_display_integer = global.death_soul_power_spent }
 	round_variable = global.death_soul_power_spent_display_integer
 	set_variable = { global.death_soul_power_total_display_integer = global.death_soul_power_total }
 	round_variable = global.death_soul_power_total_display_integer
-	set_variable = { global.death_soul_power_cap_display = constant:death_ghosts.total_host_budget_cap }
 	set_variable = { global.death_soul_power_population_step_k = constant:death_ghosts.host_budget_population_point_k }
 	set_variable = { global.death_world_end_foothold_soul_points = constant:death_ghosts.world_end_foothold_budget_points }
 	set_variable = { global.death_mainland_pressure_threshold_display = constant:death_spread.mainland_pressure_threshold }
+	set_variable = { global.death_high_pressure_threshold_display = constant:death_spread.pressure_high_threshold }
+	set_variable = { global.death_extreme_pressure_threshold_display = constant:death_spread.pressure_extreme_threshold }
+	set_variable = { global.death_coastal_jump_pressure_threshold_display = constant:death_spread.pressure_coastal_jump_threshold }
 	set_variable = { global.death_island_spread_soul_cost = constant:death_soul_power.island_spread_cost }
 	set_temp_variable = { death_island_spread_soul_cost_increase = global.death_island_spread_soul_spends }
 	multiply_temp_variable = { death_island_spread_soul_cost_increase = constant:death_soul_power.island_spread_cost_step }
 	add_to_variable = { global.death_island_spread_soul_cost = death_island_spread_soul_cost_increase }
 	set_variable = { global.death_mainland_spread_soul_cost = constant:death_soul_power.mainland_spread_cost }
+	set_temp_variable = { death_mainland_spread_soul_cost_increase = global.death_mainland_spread_soul_spends }
+	multiply_temp_variable = { death_mainland_spread_soul_cost_increase = constant:death_soul_power.mainland_spread_cost_step }
+	add_to_variable = { global.death_mainland_spread_soul_cost = death_mainland_spread_soul_cost_increase }
+	set_temp_variable = { death_host_soul_cost_increase = global.death_host_soul_spends }
+	multiply_temp_variable = { death_host_soul_cost_increase = constant:death_soul_power.host_cost_step }
 	set_variable = { global.death_passive_host_soul_cost = constant:death_ghosts.passive_host_budget_cost }
+	add_to_variable = { global.death_passive_host_soul_cost = death_host_soul_cost_increase }
 	set_variable = { global.death_stronger_host_soul_cost = constant:death_ghosts.stronger_host_budget_cost }
+	add_to_variable = { global.death_stronger_host_soul_cost = death_host_soul_cost_increase }
 	set_variable = { global.death_world_end_host_soul_cost = constant:death_ghosts.world_end_host_budget_cost }
+	add_to_variable = { global.death_world_end_host_soul_cost = death_host_soul_cost_increase }
 	set_variable = { global.death_ghost_host_budget_spent = global.death_soul_power_spent }
 }
 
@@ -1592,8 +1608,8 @@ death_decision_press_to_mainland_effect = {
 			death_can_use_mainland_pressure_decision = yes
 			can_pay_death_mainland_spread_souls = yes
 		}
-		set_temp_variable = { death_soul_power_to_spend = constant:death_soul_power.mainland_spread_cost }
-		death_spend_soul_power = yes
+		set_temp_variable = { death_soul_power_to_spend = global.death_mainland_spread_soul_cost }
+		set_temp_variable = { death_mainland_spread_succeeded = 0 }
 		if = {
 			limit = { death_can_use_mainland_pressure_standard_decision = yes }
 			death_try_mainland_pressure_spread = yes
@@ -1601,6 +1617,17 @@ death_decision_press_to_mainland_effect = {
 		else_if = {
 			limit = { death_can_use_mainland_pressure_war_decision = yes }
 			death_try_mainland_pressure_spread_from_war = yes
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = death_mainland_spread_succeeded
+					value = 0
+					compare = greater_than
+				}
+			}
+			death_spend_soul_power = yes
+			add_to_variable = { global.death_mainland_spread_soul_spends = 1 }
 		}
 		death_refresh_soul_power_display_variables = yes
 	}
@@ -2330,6 +2357,7 @@ death_try_island_spread = {
 }
 
 death_try_mainland_pressure_spread = {
+	set_temp_variable = { death_mainland_spread_succeeded = 0 }
 	if = {
 		limit = {
 			death_can_push_mainland_reveal = yes
@@ -2353,12 +2381,14 @@ death_try_mainland_pressure_spread = {
 			limit = { death_is_valid_mainland_reveal_target = yes }
 			set_temp_variable = { death_consumption_context = constant:death_spread.mainland_pressure }
 			death_consume_current_state = yes
+			set_temp_variable = { death_mainland_spread_succeeded = 1 }
 			add_to_variable = { global.death_spread_pressure = constant:death_spread.mainland_pressure }
 		}
 	}
 }
 
 death_try_mainland_pressure_spread_from_war = {
+	set_temp_variable = { death_mainland_spread_succeeded = 0 }
 	if = {
 		limit = {
 			death_can_push_mainland_reveal = yes
@@ -2372,6 +2402,7 @@ death_try_mainland_pressure_spread_from_war = {
 			limit = { death_is_valid_triggerable_mainland_reveal_target = yes }
 			set_temp_variable = { death_consumption_context = constant:death_spread.mainland_pressure }
 			death_consume_current_state = yes
+			set_temp_variable = { death_mainland_spread_succeeded = 1 }
 			add_to_variable = { global.death_spread_pressure = constant:death_spread.mainland_pressure }
 		}
 	}
@@ -2385,6 +2416,14 @@ death_try_wither = {
 			set_variable = { death_wither_progress = 0 }
 		}
 		add_to_variable = { death_wither_progress = constant:death_spread.wither_state_progress_gain }
+		if = {
+			limit = { death_spread_pressure_is_high = yes }
+			add_to_variable = { death_wither_progress = constant:death_spread.wither_state_high_pressure_bonus }
+		}
+		if = {
+			limit = { death_spread_pressure_is_extreme = yes }
+			add_to_variable = { death_wither_progress = constant:death_spread.wither_state_extreme_pressure_bonus }
+		}
 		if = {
 			limit = { DTH = { has_country_flag = death_focus_every_road_slows } }
 			add_to_variable = { death_wither_progress = constant:death_focus_reward.wither_progress_bonus }
@@ -2413,6 +2452,14 @@ death_start_coastal_jump_cooldown = {
 	if = {
 		limit = { has_global_flag = death_world_end_started }
 		set_global_flag = { flag = death_coastal_jump_cooldown days = @death_world_end_coastal_jump_cooldown_days }
+	}
+	else_if = {
+		limit = { death_spread_pressure_is_extreme = yes }
+		set_global_flag = { flag = death_coastal_jump_cooldown days = @death_extreme_pressure_coastal_jump_cooldown_days }
+	}
+	else_if = {
+		limit = { death_spread_pressure_is_high = yes }
+		set_global_flag = { flag = death_coastal_jump_cooldown days = @death_high_pressure_coastal_jump_cooldown_days }
 	}
 	else_if = {
 		limit = {
@@ -2506,57 +2553,46 @@ death_spawn_world_end_hosts_in_current_state = {
 
 death_prepare_ghost_host_budget = {
 	death_refresh_soul_power_display_variables = yes
-	set_temp_variable = { death_ghost_host_budget = global.death_soul_power_total }
 }
 
 death_try_spawn_passive_host_in_current_state_from_budget = {
 	death_prepare_ghost_host_budget = yes
-	set_temp_variable = { death_next_host_budget_spend = global.death_ghost_host_budget_spent }
-	add_to_temp_variable = { death_next_host_budget_spend = constant:death_ghosts.passive_host_budget_cost }
 	if = {
 		limit = {
 			death_is_valid_ghost_host_spawn_state = yes
 			check_variable = {
-				var = global.death_passive_hosts_spawned
-				value = constant:death_ghosts.passive_host_global_cap
-				compare = less_than
-			}
-			check_variable = {
-				var = death_ghost_host_budget
-				value = death_next_host_budget_spend
+				var = global.death_soul_power_available
+				value = global.death_passive_host_soul_cost
 				compare = greater_than_or_equals
 			}
 		}
 		death_spawn_passive_hosts_in_current_state = yes
 		add_to_variable = { global.death_passive_hosts_spawned = 1 }
-		set_temp_variable = { death_soul_power_to_spend = constant:death_ghosts.passive_host_budget_cost }
+		set_temp_variable = { death_soul_power_to_spend = global.death_passive_host_soul_cost }
 		death_spend_soul_power = yes
+		add_to_variable = { global.death_host_soul_spends = 1 }
+		death_refresh_soul_power_display_variables = yes
 		set_global_flag = death_600_tier_hosts_appeared
 	}
 }
 
 death_try_spawn_stronger_host_in_current_state_from_budget = {
 	death_prepare_ghost_host_budget = yes
-	set_temp_variable = { death_next_host_budget_spend = global.death_ghost_host_budget_spent }
-	add_to_temp_variable = { death_next_host_budget_spend = constant:death_ghosts.stronger_host_budget_cost }
 	if = {
 		limit = {
 			death_is_valid_ghost_host_spawn_state = yes
 			check_variable = {
-				var = global.death_stronger_hosts_spawned
-				value = constant:death_ghosts.stronger_host_global_cap
-				compare = less_than
-			}
-			check_variable = {
-				var = death_ghost_host_budget
-				value = death_next_host_budget_spend
+				var = global.death_soul_power_available
+				value = global.death_stronger_host_soul_cost
 				compare = greater_than_or_equals
 			}
 		}
 		death_spawn_stronger_hosts_in_current_state = yes
 		add_to_variable = { global.death_stronger_hosts_spawned = 1 }
-		set_temp_variable = { death_soul_power_to_spend = constant:death_ghosts.stronger_host_budget_cost }
+		set_temp_variable = { death_soul_power_to_spend = global.death_stronger_host_soul_cost }
 		death_spend_soul_power = yes
+		add_to_variable = { global.death_host_soul_spends = 1 }
+		death_refresh_soul_power_display_variables = yes
 		set_global_flag = death_600_tier_hosts_appeared
 		set_global_flag = death_800_tier_hosts_appeared
 	}
@@ -2564,26 +2600,21 @@ death_try_spawn_stronger_host_in_current_state_from_budget = {
 
 death_try_spawn_world_end_host_in_current_state_from_budget = {
 	death_prepare_ghost_host_budget = yes
-	set_temp_variable = { death_next_host_budget_spend = global.death_ghost_host_budget_spent }
-	add_to_temp_variable = { death_next_host_budget_spend = constant:death_ghosts.world_end_host_budget_cost }
 	if = {
 		limit = {
 			death_is_valid_ghost_host_spawn_state = yes
 			check_variable = {
-				var = global.death_world_end_hosts_spawned
-				value = constant:death_ghosts.world_end_host_global_cap
-				compare = less_than
-			}
-			check_variable = {
-				var = death_ghost_host_budget
-				value = death_next_host_budget_spend
+				var = global.death_soul_power_available
+				value = global.death_world_end_host_soul_cost
 				compare = greater_than_or_equals
 			}
 		}
 		death_spawn_world_end_hosts_in_current_state = yes
 		add_to_variable = { global.death_world_end_hosts_spawned = 1 }
-		set_temp_variable = { death_soul_power_to_spend = constant:death_ghosts.world_end_host_budget_cost }
+		set_temp_variable = { death_soul_power_to_spend = global.death_world_end_host_soul_cost }
 		death_spend_soul_power = yes
+		add_to_variable = { global.death_host_soul_spends = 1 }
+		death_refresh_soul_power_display_variables = yes
 		set_global_flag = death_600_tier_hosts_appeared
 		set_global_flag = death_800_tier_hosts_appeared
 	}

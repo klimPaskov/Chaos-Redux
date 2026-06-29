@@ -271,9 +271,9 @@ Animation should clarify state. If a surface becomes too busy, keep only the hea
 
 The Black Ledger is visible only to active Death. It is not a living-country intelligence tool. It shows Death's own counters and available actions: consumed states, island count, mainland count, consumed population, spread pressure, generated soul power, available soul power, spent soul power, host counts, island-spread status, mainland-route status, and ghost-host status.
 
-Black Ledger decisions do not spend political power. They spend soul power, which is generated from consumed states, consumed population, and last-shore footholds after world end begins. The category can offer island consumption after Second Shore and an island-spread focus, mainland pressure after Mainland Smell when normal pressure or the living-war bypass allows it, and one host-raising decision for the current ghost stage. Host and spread decisions use the same soul-power budget so manual expansion competes with army growth. Forced island consumption starts at the base island-spread cost, then each successful Black Ledger island consumption raises the next forced island cost by one soul power.
+Black Ledger decisions do not spend political power. They spend soul power, which is generated from consumed states, consumed population, and last-shore footholds after world end begins. Soul power has no storage cap. The category can offer island consumption after Second Shore and an island-spread focus, mainland pressure after Mainland Smell when normal pressure or the living-war bypass allows it, and one host-raising decision for the current ghost stage. Host and spread decisions use the same soul-power budget so manual expansion competes with army growth. Forced island consumption starts at the base island-spread cost, then each successful Black Ledger island consumption raises the next forced island cost by one soul power. Successful Black Ledger mainland consumption raises the next forced mainland cost by two soul power. Each ghost host raised increases later host costs by 0.25 soul power.
 
-The same category must be navigable by AI because Death is usually AI-controlled. AI Death should use island spread while it is still building the island pattern and pressure, prioritize the mainland decision as soon as that route is valid and affordable, and raise the available host tier when it has a valid spawnable wasteland. It should avoid spending pre-reveal souls on hosts only when those souls are needed for a pending mainland press.
+The same category must be navigable by AI because Death is usually AI-controlled. AI Death should use island spread while it is still cheap, while it is still building the island pattern and pressure, and while valid empty islands remain. It should prioritize the mainland decision once the route is valid and cheap islands are no longer the better pre-reveal spend, then raise the available host tier when it has a valid spawnable wasteland. It should avoid spending pre-reveal souls on hosts only when those souls are needed for a pending mainland press.
 
 ## AI strategy matrix
 
@@ -282,12 +282,12 @@ The same category must be navigable by AI because Death is usually AI-controlled
 | Situation | Behavior |
 | --- | --- |
 | Hidden origin | Do nothing visible. No wars or units. |
-| Hidden island spread | Consume low-pop islands by scripted pulses and Black Ledger island decisions. Living AI does not choose war decisions while Death has consumed only one island. |
+| Hidden island spread | Consume low-pop empty islands by scripted pulses and cheap Black Ledger island decisions. Living AI does not choose war decisions while Death has consumed only one island. |
 | Reports ignored | Slightly increase spread pressure. |
-| Mainland route ready | Spend soul power on the Black Ledger mainland decision before raising hosts. |
+| Mainland route ready | Spend soul power on the Black Ledger mainland decision before raising hosts unless cheap empty islands are still the better pre-reveal spend. |
 | Revealed mainland | Declare war on direct-threat neighbors, wither unguarded states, use Black Ledger mainland or island actions when valid, and remain passive militarily until ghosts. Wider neighbor wars wait for late-stage strength or world-end. |
-| 600 ghost tier | Raise weak ghosts through the Black Ledger when a valid wasteland can spawn them and Death is not saving for the mainland route. Hold lines and avoid offensives. |
-| 800 ghost tier | Raise stronger ghosts through the Black Ledger, use coastal jumps after setbacks, and keep normal attacks restrained before world-end. |
+| 600 ghost tier | Raise weak ghosts through the Black Ledger when a valid wasteland can spawn them and Death is not saving for the mainland route or cheap island spread. Hold lines and avoid offensives. |
+| 800 ghost tier | Raise stronger ghosts through the Black Ledger, use pressure-driven coastal jumps after setbacks, and keep normal attacks restrained before world-end. |
 | World-end | Aggressive attacks, foothold expansion, intensified withering, and repeated Last-Shore host spending from the Black Ledger. |
 | Near defeat | Attempt coastal jump if cooldown and stage allow. No fake capitulation. |
 
