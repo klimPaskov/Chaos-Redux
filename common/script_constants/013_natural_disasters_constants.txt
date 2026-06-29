@@ -53,6 +53,57 @@ natural_disasters_evolution = {
 	abnormal_age = 3
 }
 
+natural_disasters_event_log = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	event_id = 13
+	evolution_type = 13
+	stage_varied_local = 1
+	stage_regional_systems = 2
+	stage_abnormal_age = 3
+	tier_varied_local = 1
+	tier_regional_systems = 2
+	tier_abnormal_age = 4
+}
+
+natural_disasters_scenario_type = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	random_barrage = 1
+	geological_crisis = 2
+	weather_crisis = 3
+	skyfall_crisis = 4
+	full_catalogue = 5
+}
+
+natural_disasters_objective_type = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	rail_belt = 1
+	port_reopen = 2
+	shelter_belt = 3
+	aftershock_inspection = 4
+	ash_clearance = 5
+	firebreak = 6
+	water_and_food = 7
+	airfield_clearance = 8
+	pass_rescue = 9
+	crater_cordon = 10
+	corridor_forecast = 11
+	relief_bridge = 12
+	harvest_airfield = 13
+	fuel_line = 14
+}
+
 natural_disasters_sequence = {
 	schema = {
 		any_key = yes
@@ -70,6 +121,34 @@ natural_disasters_sequence = {
 	scenario_medium_incidents = 7
 	scenario_high_incidents = 12
 	scenario_maximum_incidents = 20
+}
+
+natural_disasters_manual_slot = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	max_slots = 16
+	slot_01 = 1
+	slot_02 = 2
+	slot_03 = 3
+	slot_04 = 4
+	slot_05 = 5
+	slot_06 = 6
+	slot_07 = 7
+	slot_08 = 8
+	slot_09 = 9
+	slot_10 = 10
+	slot_11 = 11
+	slot_12 = 12
+	slot_13 = 13
+	slot_14 = 14
+	slot_15 = 15
+	slot_16 = 16
+	normal_controller_flush_days = 45
+	controller_busy_days = 45
+	target_busy_days = 5
 }
 
 natural_disasters_delay = {
@@ -90,6 +169,126 @@ natural_disasters_delay = {
 	abnormal_max = 4
 	scenario_maximum_min = 1
 	scenario_maximum_max = 3
+}
+
+natural_disasters_warning = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	immediate_days = 1
+	missed_warning_days = 1
+	active_days = 14
+	baseline_success = 78
+	baseline_failure = 22
+	regional_success = 62
+	regional_failure = 38
+	abnormal_success = 45
+	abnormal_failure = 55
+	sudden_success = 32
+	sudden_failure = 68
+}
+
+natural_disasters_warning_score = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	long_warning_base = 72
+	short_warning_base = 56
+	unreliable_warning_base = 34
+	chain_guaranteed_base = 96
+	min_roll = 1
+	max_roll = 100
+	peace_bonus = 8
+	war_penalty = -12
+	stability_bonus = 8
+	low_stability_penalty = -10
+	full_control_bonus = 8
+	contested_control_penalty = -18
+	high_infrastructure_bonus = 10
+	low_infrastructure_penalty = -12
+	radar_bonus = 12
+	airbase_bonus = 8
+	observatory_network_bonus = 6
+	coastal_station_bonus = 8
+	preparedness_action_bonus = 6
+	active_aftermath_penalty = -10
+	regional_penalty = -8
+	abnormal_penalty = -18
+	maximum_barrage_penalty = -16
+}
+
+natural_disasters_warning_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	stable_country = 0.55
+	unstable_country = 0.35
+}
+
+natural_disasters_chain_type = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	delayed_tsunami = 1
+	moving_storm_corridor = 2
+	meteor_cluster = 3
+	massive_rupture_wave = 4
+	massive_eruption_ashfall = 5
+}
+
+natural_disasters_chain = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	controller_delay_days = 1
+	initial_stage = 0
+	single_followup = 1
+	first_recorded_impact = 1
+	delayed_tsunami_warning_days = 1
+	delayed_tsunami_impact_days = 1
+	storm_corridor_ticks = 3
+	meteor_cluster_min_impacts = 2
+	meteor_cluster_max_impacts = 4
+	meteor_command_threshold = 3
+	rupture_wave_min_impacts = 1
+	rupture_wave_max_impacts = 3
+	eruption_followup_min_impacts = 1
+	eruption_followup_max_impacts = 2
+	secondary_severity_reduction = 1
+}
+
+natural_disasters_news = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	major_cooldown_days = 30
+	abnormal_cooldown_days = 60
+	family_cooldown_days = 120
+	abnormal_family_cooldown_days = 180
+	sequence_report_min_incidents = 4
+	severe_death_threshold = 50000
+	abnormal_death_threshold = 150000
+}
+
+natural_disasters_achievement = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	maximum_barrage_incident_floor = 4
 }
 
 natural_disasters_death_rate_base = {
@@ -163,6 +362,68 @@ natural_disasters_preparedness_multiplier = {
 	partial_evacuation = 0.68
 	full_evacuation = 0.48
 	failed_recovery = 1.35
+	missed_warning = 1.12
+}
+
+natural_disasters_recovery = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	evacuation_progress = 22
+	engineers_progress = 24
+	corridor_progress = 18
+	shelter_progress = 20
+	mission_success_progress = 35
+	mission_failure_aftermath_mult = 1.35
+	warning_preparedness_mult = 0.68
+	evacuation_preparedness_mult = 0.48
+	global_relief_goal = 5
+	global_relief_family_goal = 3
+}
+
+natural_disasters_decision_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	support_equipment = 120
+	support_equipment_spend = -120
+	infantry_equipment = 450
+	infantry_equipment_spend = -450
+	motorized_equipment = 80
+	motorized_equipment_spend = -80
+	train_equipment = 6
+	train_equipment_spend = -6
+	convoy = 20
+	convoy_spend = -20
+	fuel = 600
+	fuel_spend = -600
+	command_power_gate = 12
+	command_power = -12
+	army_xp_gate = 8
+	army_xp = -8
+	air_xp_gate = 8
+	air_xp = -8
+	navy_xp_gate = 8
+	navy_xp = -8
+	manpower_gate = 3500
+	manpower = -3500
+	stability_gate = 0.02
+	stability = -0.01
+	war_support_gate = 0.02
+	war_support = -0.01
+	mission_days = 120
+	mission_days_fast = 95
+	mission_days_short = 105
+	mission_days_standard = 120
+	mission_days_coastal = 135
+	mission_days_heavy = 150
+	mission_days_regional = 180
+	quick_action_cooldown_days = 30
+	major_action_cooldown_days = 45
 }
 
 natural_disasters_state_modifier_duration = {
@@ -192,6 +453,29 @@ natural_disasters_followup_weight = {
 	recovery_success_reduction = -16
 	recent_same_state_penalty = -24
 	manual_barrage_bonus = 18
+}
+
+natural_disasters_target_score = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	base = 10
+	population_divisor = 100
+	dense_state = 32
+	low_infrastructure = 14
+	capital = 12
+	coastal = 30
+	seismic = 30
+	volcanic = 34
+	fire_risk = 30
+	arid = 30
+	cold = 26
+	slope = 28
+	skyfall_dense = 22
+	active_aftermath = 20
+	maximum_barrage = 20
 }
 
 natural_disasters_family_modifier = {

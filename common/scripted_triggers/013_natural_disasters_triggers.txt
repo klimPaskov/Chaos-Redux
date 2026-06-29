@@ -11,12 +11,54 @@ natural_disasters_has_active_sequence = {
 	has_variable = natural_disasters_sequence_id
 }
 
+natural_disasters_state_matches_active_manual_sequence = {
+	has_state_flag = natural_disaster_manual_scenario_state
+	has_variable = natural_disaster_manual_sequence_id
+	has_variable = natural_disaster_manual_sequence_slot
+	OWNER = {
+		has_country_flag = natural_disasters_manual_scenario_override
+		has_variable = natural_disasters_sequence_id
+		has_variable = natural_disasters_manual_sequence_slot
+	}
+	check_variable = {
+		var = natural_disaster_manual_sequence_id
+		value = OWNER.natural_disasters_sequence_id
+		compare = equals
+	}
+	check_variable = {
+		var = natural_disaster_manual_sequence_slot
+		value = OWNER.natural_disasters_manual_sequence_slot
+		compare = equals
+	}
+}
+
+natural_disasters_state_matches_manual_controller_sequence = {
+	has_state_flag = natural_disaster_manual_controller_state
+	has_variable = natural_disaster_manual_controller_country
+	has_variable = natural_disaster_manual_sequence_id
+	var:natural_disaster_manual_controller_country = {
+		has_country_flag = natural_disasters_manual_scenario_override
+		has_variable = natural_disasters_sequence_id
+		check_variable = {
+			var = natural_disasters_sequence_id
+			value = PREV.natural_disaster_manual_sequence_id
+			compare = equals
+		}
+	}
+}
+
 natural_disasters_state_has_active_aftermath = {
 	has_state_flag = natural_disaster_aftermath_active
 }
 
 natural_disasters_state_can_receive_impact = {
 	check_variable = { state_population_k > 0 }
+	NOT = {
+		AND = {
+			has_state_flag = natural_disaster_manual_target_busy
+			OWNER = { has_country_flag = natural_disasters_manual_scenario_override }
+		}
+	}
 	OR = {
 		infrastructure > 0
 		rail_way > 0
@@ -31,6 +73,8 @@ natural_disasters_state_can_receive_impact = {
 
 natural_disasters_state_is_coastal_or_port = {
 	OR = {
+		is_coastal = yes
+		is_island_state = yes
 		naval_base > 0
 		dockyard > 0
 		has_state_flag = natural_disaster_coastal_candidate
@@ -59,6 +103,8 @@ natural_disasters_state_is_mountain_or_slope = {
 natural_disasters_state_is_arid_or_desert = {
 	OR = {
 		has_terrain = desert
+		infrastructure < 3
+		check_variable = { state_population_k > 1000 }
 		has_state_flag = natural_disaster_arid_candidate
 		has_state_flag = natural_disaster_drought_aftermath
 		has_state_flag = natural_disaster_heat_aftermath
@@ -68,6 +114,7 @@ natural_disasters_state_is_arid_or_desert = {
 natural_disasters_state_is_forest_or_fire_risk = {
 	OR = {
 		has_terrain = forest
+		has_terrain = hills
 		has_state_flag = natural_disaster_forest_candidate
 		has_state_flag = natural_disaster_drought_aftermath
 		has_state_flag = natural_disaster_heat_aftermath
@@ -79,6 +126,8 @@ natural_disasters_state_is_cold_or_winter_risk = {
 		has_state_flag = natural_disaster_cold_candidate
 		has_state_flag = natural_disaster_winter_aftermath
 		has_terrain = mountain
+		has_terrain = hills
+		infrastructure < 3
 	}
 }
 
@@ -86,6 +135,9 @@ natural_disasters_state_is_volcanic_candidate = {
 	OR = {
 		has_state_flag = natural_disaster_volcanic_candidate
 		has_state_flag = natural_disaster_abnormal_volcanic_candidate
+		has_terrain = mountain
+		is_island_state = yes
+		natural_disasters_state_is_coastal_or_port = yes
 	}
 }
 
@@ -95,6 +147,8 @@ natural_disasters_state_can_receive_flood = {
 		has_state_flag = natural_disaster_river_candidate
 		has_state_flag = natural_disaster_lowland_candidate
 		natural_disasters_state_is_coastal_or_port = yes
+		natural_disasters_state_is_dense_or_built_up = yes
+		infrastructure < 4
 	}
 }
 
@@ -141,4 +195,128 @@ natural_disasters_state_can_receive_landslide = {
 natural_disasters_state_can_receive_skyfall = {
 	natural_disasters_state_can_receive_impact = yes
 	NOT = { has_state_flag = natural_disaster_recent_skyfall_impact }
+}
+
+natural_disasters_state_matches_current_family_target = {
+	OR = {
+		AND = {
+			ROOT = { check_variable = { natural_disasters_current_family_id = constant:natural_disasters_family.flood } }
+			natural_disasters_state_can_receive_flood = yes
+		}
+		AND = {
+			ROOT = {
+				OR = {
+					check_variable = { natural_disasters_current_family_id = constant:natural_disasters_family.cyclone_storm }
+					check_variable = { natural_disasters_current_family_id = constant:natural_disasters_family.tsunami }
+				}
+			}
+			natural_disasters_state_can_receive_cyclone_or_tsunami = yes
+		}
+		AND = {
+			ROOT = {
+				OR = {
+					check_variable = { natural_disasters_current_family_id = constant:natural_disasters_family.earthquake }
+					check_variable = { natural_disasters_current_family_id = constant:natural_disasters_family.rupture }
+				}
+			}
+			natural_disasters_state_can_receive_seismic = yes
+		}
+		AND = {
+			ROOT = {
+				OR = {
+					check_variable = { natural_disasters_current_family_id = constant:natural_disasters_family.volcano }
+					check_variable = { natural_disasters_current_family_id = constant:natural_disasters_family.massive_eruption }
+				}
+			}
+			natural_disasters_state_can_receive_volcano = yes
+		}
+		AND = {
+			ROOT = { check_variable = { natural_disasters_current_family_id = constant:natural_disasters_family.wildfire } }
+			natural_disasters_state_can_receive_wildfire = yes
+		}
+		AND = {
+			ROOT = {
+				OR = {
+					check_variable = { natural_disasters_current_family_id = constant:natural_disasters_family.drought_famine }
+					check_variable = { natural_disasters_current_family_id = constant:natural_disasters_family.heat }
+					check_variable = { natural_disasters_current_family_id = constant:natural_disasters_family.dust_sandstorm }
+				}
+			}
+			natural_disasters_state_can_receive_drought_heat_or_dust = yes
+		}
+		AND = {
+			ROOT = { check_variable = { natural_disasters_current_family_id = constant:natural_disasters_family.winter } }
+			natural_disasters_state_can_receive_winter = yes
+		}
+		AND = {
+			ROOT = { check_variable = { natural_disasters_current_family_id = constant:natural_disasters_family.landslide_slope_collapse } }
+			natural_disasters_state_can_receive_landslide = yes
+		}
+		AND = {
+			ROOT = { check_variable = { natural_disasters_current_family_id = constant:natural_disasters_family.skyfall_meteor } }
+			natural_disasters_state_can_receive_skyfall = yes
+		}
+		AND = {
+			ROOT = { check_variable = { natural_disasters_current_family_id = constant:natural_disasters_family.corridor_storm } }
+			natural_disasters_state_can_receive_impact = yes
+		}
+	}
+}
+
+natural_disasters_state_matches_recovery_target_family = {
+	OR = {
+		NOT = { ROOT = { has_variable = natural_disasters_recovery_target_family_id } }
+		check_variable = { natural_disaster_active_family = ROOT.natural_disasters_recovery_target_family_id }
+	}
+}
+
+natural_disasters_state_matches_warning_target_family = {
+	OR = {
+		NOT = { ROOT = { has_variable = natural_disasters_recovery_target_family_id } }
+		check_variable = { natural_disaster_family_id = ROOT.natural_disasters_recovery_target_family_id }
+	}
+}
+
+natural_disasters_has_warning_for_target_family = {
+	any_owned_state = {
+		has_state_flag = natural_disaster_warning_active
+		natural_disasters_state_matches_warning_target_family = yes
+	}
+}
+
+natural_disasters_has_aftermath_for_target_family = {
+	any_owned_state = {
+		natural_disasters_state_has_active_aftermath = yes
+		natural_disasters_state_matches_recovery_target_family = yes
+	}
+}
+
+can_pay_natural_disasters_evacuation_cost = {
+	has_equipment = { train_equipment > constant:natural_disasters_decision_cost.train_equipment }
+	has_equipment = { motorized_equipment > constant:natural_disasters_decision_cost.motorized_equipment }
+	has_fuel > constant:natural_disasters_decision_cost.fuel
+	has_manpower > constant:natural_disasters_decision_cost.manpower_gate
+	has_stability > constant:natural_disasters_decision_cost.stability_gate
+}
+
+can_pay_natural_disasters_engineers_cost = {
+	command_power > constant:natural_disasters_decision_cost.command_power_gate
+	has_army_experience > constant:natural_disasters_decision_cost.army_xp_gate
+	has_equipment = { support_equipment > constant:natural_disasters_decision_cost.support_equipment }
+}
+
+can_pay_natural_disasters_relief_cost = {
+	has_fuel > constant:natural_disasters_decision_cost.fuel
+	OR = {
+		has_equipment = { train_equipment > constant:natural_disasters_decision_cost.train_equipment }
+		has_equipment = { convoy > constant:natural_disasters_decision_cost.convoy }
+	}
+	has_equipment = { support_equipment > constant:natural_disasters_decision_cost.support_equipment }
+}
+
+can_pay_natural_disasters_shelter_cost = {
+	has_equipment = { support_equipment > constant:natural_disasters_decision_cost.support_equipment }
+	has_equipment = { infantry_equipment > constant:natural_disasters_decision_cost.infantry_equipment }
+	has_manpower > constant:natural_disasters_decision_cost.manpower_gate
+	has_war_support > constant:natural_disasters_decision_cost.war_support_gate
 }

@@ -441,6 +441,31 @@ load_event_cluster_members = {
 		add_to_array = { array = temp_event_cluster_member_chance_entries value = constant:event_cluster_member_participation.natural_disasters }
 		add_to_array = { array = temp_event_cluster_member_min_tier_entries value = constant:chaos_meter_tier_id.tier_0 }
 		add_to_array = { array = temp_event_cluster_member_danger_entries value = constant:event_cluster_member_danger.low }
+		add_to_array = { array = temp_event_cluster_member_event_id_entries value = 13 }
+		add_to_array = { array = temp_event_cluster_member_role_entries value = constant:event_cluster_member_role.optional }
+		add_to_array = { array = temp_event_cluster_member_chance_entries value = constant:event_cluster_member_participation.high }
+		add_to_array = { array = temp_event_cluster_member_min_tier_entries value = constant:chaos_meter_tier_id.tier_0 }
+		add_to_array = { array = temp_event_cluster_member_danger_entries value = constant:event_cluster_member_danger.low }
+		add_to_array = { array = temp_event_cluster_member_event_id_entries value = 13 }
+		add_to_array = { array = temp_event_cluster_member_role_entries value = constant:event_cluster_member_role.optional }
+		add_to_array = { array = temp_event_cluster_member_chance_entries value = constant:event_cluster_member_participation.medium }
+		add_to_array = { array = temp_event_cluster_member_min_tier_entries value = constant:chaos_meter_tier_id.tier_1 }
+		add_to_array = { array = temp_event_cluster_member_danger_entries value = constant:event_cluster_member_danger.medium }
+		add_to_array = { array = temp_event_cluster_member_event_id_entries value = 13 }
+		add_to_array = { array = temp_event_cluster_member_role_entries value = constant:event_cluster_member_role.optional }
+		add_to_array = { array = temp_event_cluster_member_chance_entries value = constant:event_cluster_member_participation.medium }
+		add_to_array = { array = temp_event_cluster_member_min_tier_entries value = constant:chaos_meter_tier_id.tier_1 }
+		add_to_array = { array = temp_event_cluster_member_danger_entries value = constant:event_cluster_member_danger.medium }
+		add_to_array = { array = temp_event_cluster_member_event_id_entries value = 13 }
+		add_to_array = { array = temp_event_cluster_member_role_entries value = constant:event_cluster_member_role.optional }
+		add_to_array = { array = temp_event_cluster_member_chance_entries value = constant:event_cluster_member_participation.medium }
+		add_to_array = { array = temp_event_cluster_member_min_tier_entries value = constant:chaos_meter_tier_id.tier_2 }
+		add_to_array = { array = temp_event_cluster_member_danger_entries value = constant:event_cluster_member_danger.high }
+		add_to_array = { array = temp_event_cluster_member_event_id_entries value = 13 }
+		add_to_array = { array = temp_event_cluster_member_role_entries value = constant:event_cluster_member_role.optional }
+		add_to_array = { array = temp_event_cluster_member_chance_entries value = constant:event_cluster_member_participation.low }
+		add_to_array = { array = temp_event_cluster_member_min_tier_entries value = constant:chaos_meter_tier_id.tier_4 }
+		add_to_array = { array = temp_event_cluster_member_danger_entries value = constant:event_cluster_member_danger.severe }
 	}
 	else_if = {
 		limit = {
@@ -1004,6 +1029,7 @@ event_cluster_schedule_next_pending_member = {
 event_cluster_clear_pending_member_queue = {
     clear_array = event_cluster_pending_member_event_id_entries
     set_variable = { event_cluster_pending_member_index = 0 }
+    clear_variable = event_cluster_current_member_sequence
     clr_country_flag = event_cluster_pending_members_active
     clr_country_flag = event_cluster_member_fire_context
 }
@@ -1015,44 +1041,55 @@ fire_event_cluster_member_by_temp_id = {
 }
 
 event_cluster_fire_next_pending_member = {
-    if = {
-        limit = { NOT = { has_variable = event_cluster_pending_member_index } }
-        set_variable = { event_cluster_pending_member_index = 0 }
-    }
+	if = {
+		limit = { NOT = { has_variable = event_cluster_pending_member_index } }
+		set_variable = { event_cluster_pending_member_index = 0 }
+	}
 
-    if = {
-        limit = {
-            has_country_flag = event_cluster_pending_members_active
-            check_variable = {
-                var = event_cluster_pending_member_index
-                value = event_cluster_pending_member_event_id_entries^num
-                compare = less_than
-            }
-        }
-        set_temp_variable = { event_id = event_cluster_pending_member_event_id_entries^event_cluster_pending_member_index }
-        add_to_variable = { event_cluster_pending_member_index = 1 }
-        if = {
-            limit = { check_variable = { event_id > 0 } }
-            fire_event_cluster_member_by_temp_id = yes
-        }
+	if = {
+		limit = {
+			has_country_flag = event_cluster_pending_members_active
+			check_variable = {
+				var = event_cluster_pending_member_index
+				value = event_cluster_pending_member_event_id_entries^num
+				compare = less_than
+			}
+		}
+		set_temp_variable = { event_id = event_cluster_pending_member_event_id_entries^event_cluster_pending_member_index }
+		if = {
+			limit = {
+				check_variable = { event_id = 13 }
+				natural_disasters_has_active_sequence = yes
+			}
+			event_cluster_schedule_next_pending_member = yes
+		}
+		else = {
+			set_variable = { event_cluster_current_member_sequence = event_cluster_pending_member_index }
+			add_to_variable = { event_cluster_current_member_sequence = 1 }
+			add_to_variable = { event_cluster_pending_member_index = 1 }
+			if = {
+				limit = { check_variable = { event_id > 0 } }
+				fire_event_cluster_member_by_temp_id = yes
+			}
 
-        if = {
-            limit = {
-                check_variable = {
-                    var = event_cluster_pending_member_index
-                    value = event_cluster_pending_member_event_id_entries^num
-                    compare = less_than
-                }
-            }
-            event_cluster_schedule_next_pending_member = yes
-        }
-        else = {
-            event_cluster_clear_pending_member_queue = yes
-        }
-    }
-    else = {
-        event_cluster_clear_pending_member_queue = yes
-    }
+			if = {
+				limit = {
+					check_variable = {
+						var = event_cluster_pending_member_index
+						value = event_cluster_pending_member_event_id_entries^num
+						compare = less_than
+					}
+				}
+				event_cluster_schedule_next_pending_member = yes
+			}
+			else = {
+				event_cluster_clear_pending_member_queue = yes
+			}
+		}
+	}
+	else = {
+		event_cluster_clear_pending_member_queue = yes
+	}
 }
 
 event_cluster_queue_ordered_fired_members = {
