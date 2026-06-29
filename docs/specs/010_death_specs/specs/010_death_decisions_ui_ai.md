@@ -94,7 +94,7 @@ Compact values:
 | Value | Meaning | What changes it |
 | --- | --- | --- |
 | `compact_cohesion` | Willingness of countries to cooperate against Death. | Success/failure in containment, ideology tension, casualties, Death spread. |
-| `watch_network` | Coastal detection and patrol coverage. | Coastal watch decisions, naval bases, convoys, fuel, AI contributions. |
+| `watch_network` | Coastal detection and patrol coverage. Each point raises Death's forced island and mainland jump soul costs. A strong network can delay low-pressure coastal jumps. At maximum strength, sea jumps are blocked unless Death has No Ferry Returns or world end has begun. | Coastal watch decisions, naval bases, convoys, fuel, AI contributions. |
 | `front_readiness` | Ability to occupy Death without withering away. | Wasteland gear, divisions, supply lines, engineer projects. |
 | `public_panic` | Political pressure from Death reports. | Consumed population, reveal events, failed defenses, evacuation failures. |
 
@@ -105,7 +105,7 @@ Compact decisions:
 | `Call the Living Conference` | Major/threatened country, Death revealed, at least two eligible invitees. | Creates compact framework or strengthens existing compact. |
 | `Share Wasteland Entry Gear` | Support equipment, trucks, fuel, and compact membership. | Gives target member temporary attrition/strength-loss reduction. |
 | `Open Military Access Corridors` | Relations/compact cohesion. | Members grant access for anti-Death operations where safe. |
-| `Joint Coastal Patrol Plan` | Convoys/fuel/naval capacity from members. | Raises watch network, slows coastal jumps. |
+| `Joint Coastal Patrol Plan` | Convoys/fuel/naval capacity from members. | Raises watch network, increases Death's forced sea-jump costs, and can delay or block coastal jumps at high network strength. |
 | `Compact War Declaration` | Compact cohesion and threat threshold. | Pulls willing members into war against Death. Refuses unwilling members with events. |
 | `Emergency Refugee Shipping` | Convoys, stability, consumer goods burden. | Evacuates population from likely coastal or island targets, causing domestic costs. |
 
@@ -113,7 +113,7 @@ Compact failure states:
 
 - low cohesion causes members to refuse war entry.
 - high public panic increases stability costs.
-- poor watch network increases coastal jump chance.
+- poor watch network leaves Death's sea jumps cheap and harder to delay.
 - failed front readiness makes offensives bleed strength.
 - ideological rivals can accuse each other of using Death for propaganda.
 

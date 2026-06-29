@@ -54,7 +54,26 @@ death_refresh_consumed_population_display_variables = {
 }
 
 death_clamp_watch_network = {
-	clamp_variable = { var = global.death_watch_network min = 0 }
+	clamp_variable = { var = global.death_watch_network min = 0 max = constant:death_decision_tuning.watch_network_max_strength }
+}
+
+death_refresh_watch_network_display_variables = {
+	if = {
+		limit = { NOT = { has_variable = global.death_watch_network } }
+		set_variable = { global.death_watch_network = 0 }
+	}
+	death_clamp_watch_network = yes
+	set_variable = { global.death_watch_network_strong_threshold_display = constant:death_decision_tuning.watch_network_strong_threshold }
+	set_variable = { global.death_watch_network_max_display = constant:death_decision_tuning.watch_network_max_strength }
+	set_variable = { global.death_watch_network_intercept_spend_display = constant:death_decision_tuning.watch_network_intercept_cost }
+	multiply_variable = { var = global.death_watch_network_intercept_spend_display value = -1 }
+	set_variable = { global.death_watch_network_cost_step_percent_display = constant:death_soul_power.watch_network_cost_step_percent }
+	multiply_variable = { global.death_watch_network_cost_step_percent_display = 100 }
+	round_variable = global.death_watch_network_cost_step_percent_display
+	set_variable = { global.death_watch_network_jump_cost_percent_display = global.death_watch_network }
+	multiply_variable = { global.death_watch_network_jump_cost_percent_display = constant:death_soul_power.watch_network_cost_step_percent }
+	multiply_variable = { global.death_watch_network_jump_cost_percent_display = 100 }
+	round_variable = global.death_watch_network_jump_cost_percent_display
 }
 
 death_initialize_global_state = {
@@ -83,9 +102,7 @@ death_initialize_global_state = {
 		limit = { NOT = { has_variable = global.death_watch_network } }
 		set_variable = { global.death_watch_network = 0 }
 	}
-	set_variable = { global.death_watch_network_strong_threshold_display = constant:death_decision_tuning.watch_network_strong_threshold }
-	set_variable = { global.death_watch_network_intercept_spend_display = constant:death_decision_tuning.watch_network_intercept_cost }
-	multiply_variable = { var = global.death_watch_network_intercept_spend_display value = -1 }
+	death_refresh_watch_network_display_variables = yes
 	if = {
 		limit = { NOT = { has_variable = global.death_front_readiness } }
 		set_variable = { global.death_front_readiness = 0 }
@@ -219,18 +236,24 @@ death_refresh_soul_power_display_variables = {
 	round_variable = global.death_soul_power_total_display_integer
 	set_variable = { global.death_soul_power_population_step_k = constant:death_ghosts.host_budget_population_point_k }
 	set_variable = { global.death_world_end_foothold_soul_points = constant:death_ghosts.world_end_foothold_budget_points }
+	death_refresh_watch_network_display_variables = yes
 	set_variable = { global.death_mainland_pressure_threshold_display = constant:death_spread.mainland_pressure_threshold }
 	set_variable = { global.death_high_pressure_threshold_display = constant:death_spread.pressure_high_threshold }
 	set_variable = { global.death_extreme_pressure_threshold_display = constant:death_spread.pressure_extreme_threshold }
 	set_variable = { global.death_coastal_jump_pressure_threshold_display = constant:death_spread.pressure_coastal_jump_threshold }
+	set_temp_variable = { death_watch_network_jump_cost_multiplier = global.death_watch_network }
+	multiply_temp_variable = { death_watch_network_jump_cost_multiplier = constant:death_soul_power.watch_network_cost_step_percent }
+	add_to_temp_variable = { death_watch_network_jump_cost_multiplier = 1 }
 	set_variable = { global.death_island_spread_soul_cost = constant:death_soul_power.island_spread_cost }
 	set_temp_variable = { death_island_spread_soul_cost_increase = global.death_island_spread_soul_spends }
 	multiply_temp_variable = { death_island_spread_soul_cost_increase = constant:death_soul_power.island_spread_cost_step }
 	add_to_variable = { global.death_island_spread_soul_cost = death_island_spread_soul_cost_increase }
+	multiply_variable = { global.death_island_spread_soul_cost = death_watch_network_jump_cost_multiplier }
 	set_variable = { global.death_mainland_spread_soul_cost = constant:death_soul_power.mainland_spread_cost }
 	set_temp_variable = { death_mainland_spread_soul_cost_increase = global.death_mainland_spread_soul_spends }
 	multiply_temp_variable = { death_mainland_spread_soul_cost_increase = constant:death_soul_power.mainland_spread_cost_step }
 	add_to_variable = { global.death_mainland_spread_soul_cost = death_mainland_spread_soul_cost_increase }
+	multiply_variable = { global.death_mainland_spread_soul_cost = death_watch_network_jump_cost_multiplier }
 	set_temp_variable = { death_host_soul_cost_increase = global.death_host_soul_spends }
 	multiply_temp_variable = { death_host_soul_cost_increase = constant:death_soul_power.host_cost_step }
 	set_variable = { global.death_passive_host_soul_cost = constant:death_ghosts.passive_host_budget_cost }
@@ -1615,6 +1638,7 @@ death_decision_spread_to_island_effect = {
 	if = {
 		limit = {
 			death_can_spread_to_islands = yes
+			death_watch_network_allows_death_jump = yes
 			death_has_valid_island_spread_target = yes
 			can_pay_death_island_spread_souls = yes
 		}
@@ -1801,6 +1825,7 @@ death_decision_patrol_plan_effect = {
 	death_pay_patrol_cost = yes
 	set_country_flag = { flag = death_joint_coastal_patrol_active days = @death_patrol_days }
 	add_to_variable = { global.death_watch_network = constant:death_decision_tuning.patrol_network_gain }
+	death_refresh_soul_power_display_variables = yes
 	add_to_variable = { global.death_spread_pressure = constant:death_decision_tuning.quiet_quarantine_pressure_reduction }
 	death_clamp_spread_pressure = yes
 }
@@ -1856,6 +1881,7 @@ death_decision_interrogate_empty_road_effect = {
 	set_country_flag = death_interrogated_empty_road
 	add_to_variable = { death_black_method_exposure = constant:death_decision_tuning.interrogate_empty_road_exposure }
 	add_to_variable = { global.death_watch_network = constant:death_decision_tuning.interrogate_empty_road_watch_gain }
+	death_refresh_soul_power_display_variables = yes
 	add_to_variable = { global.death_spread_pressure = constant:death_decision_tuning.quiet_quarantine_pressure_reduction }
 	death_clamp_spread_pressure = yes
 	death_check_black_method_exposure = yes
@@ -1953,6 +1979,7 @@ death_apply_coastal_watch_to_target = {
 	force_update_dynamic_modifier = yes
 	ROOT = {
 		add_to_variable = { global.death_watch_network = constant:death_decision_tuning.coastal_watch_network_gain }
+		death_refresh_soul_power_display_variables = yes
 	}
 	if = {
 		limit = { death_state_is_last_ferry_threatened = yes }
@@ -2522,7 +2549,7 @@ death_attempt_coastal_jump = {
 		if = {
 			limit = { death_watch_network_can_intercept_coastal_jump = yes }
 			add_to_variable = { global.death_watch_network = constant:death_decision_tuning.watch_network_intercept_cost }
-			death_clamp_watch_network = yes
+			death_refresh_soul_power_display_variables = yes
 			death_start_coastal_jump_cooldown = yes
 		}
 		else = {
