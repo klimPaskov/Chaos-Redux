@@ -83,11 +83,13 @@ News images are 397 by 153 and black and white.
 
 ## Super-event image
 
-Only needed if the implementation uses the optional non-terminal Evolution III super-event.
+Needed for the non-terminal Evolution III super-events.
 
 | Asset slug | Source mode | Use | Scene direction |
 | --- | --- | --- | --- |
-| super_event_abnormal_disaster_age | Generated super-event image | First true abnormal disaster season. | Strong central composition of a 1930s to 1940s city, port, or observatory under unnatural skyfall and storm pressure. It must feel like a hostile natural era, not a world-end title card. No readable text. |
+| super_event_nd_great_rupture | Generated super-event image | First massive rupture wave. | Strong central composition of a 1930s to 1940s city or rail district split by a rupture front, with bridges, tunnels, and rescue crews visible. It must feel catastrophic without becoming a world-end title card. No readable text. |
+| super_event_nd_massive_eruption | Generated super-event image | First massive volcanic regional crisis. | Strong central composition of a 1930s to 1940s port, airfield, or town under ashfall and eruption pressure. It must show transport and civilian stakes, not only a distant mountain. No readable text. |
+| super_event_nd_skyfall | Generated super-event image | First meteor cluster or skyfall sequence. | Strong central composition of a 1930s to 1940s city, observatory, or rail yard under meteor streaks, crater fields, and emergency response. It must be non-terminal and avoid extinction imagery. No readable text. |
 
 ## Scripted GUI static assets
 

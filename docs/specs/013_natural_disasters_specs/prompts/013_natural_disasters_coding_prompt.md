@@ -2,7 +2,7 @@
 
 Implement Event 13 Natural Disasters according to the source spec package under `docs/specs/013_natural_disasters_specs/`.
 
-Read and follow `AGENTS.md`, `chaos-redux-events`, `hoi4-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-frame-animation`, `chaos-redux-super-events` if the optional super-event is implemented, `chaos-redux-subagents`, and the relevant offline HOI4 wiki and vanilla documentation before editing.
+Read and follow `AGENTS.md`, `chaos-redux-events`, `hoi4-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-frame-animation`, `chaos-redux-super-events`, `chaos-redux-subagents`, and the relevant offline HOI4 wiki and vanilla documentation before editing.
 
 ## Source files to follow
 

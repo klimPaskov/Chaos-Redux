@@ -1,23 +1,23 @@
 
 # Super-event prompt for Event 013 Natural Disasters
 
-Use `chaos-redux-super-events` for research and presentation. Use `chaosx_super_event_text_researcher` for quotes, button remarks, and cultural references. Use `chaosx_super_event_audio_researcher` for licensed or public domain audio. Use `chaosx_generated_event_art` for the image if the optional super-event is implemented.
+Use `chaos-redux-super-events` for research and presentation. Use `chaosx_super_event_text_researcher` for quotes, button remarks, and cultural references. Use `chaosx_super_event_audio_researcher` for licensed or public domain audio. Use `chaosx_generated_event_art` for the images when super-events are implemented.
 
-This event has no world-end scenario. The super-event, if implemented, is non-terminal and should mark the first true Evolution III abnormal disaster season.
+This event has no world-end scenario. Its super-events are non-terminal and mark the first huge Evolution III abnormal disaster families.
 
 ## Super-event role
 
-Working role label, not final localisation: `first abnormal disaster season`.
+Working role labels, not final localisation: `first great rupture wave`, `first massive eruption`, and `first meteor cluster`.
 
-The moment deserves super-event treatment only when Event 13 first crosses from ordinary and regional disasters into abnormal high-chaos disaster behavior. Suitable triggers include first meteor shower, first massive earthquake-wave, first massive volcanic regional crisis, first moving storm corridor, or first maximum manual barrage with abnormal access.
+The moments deserve super-event treatment only when Event 13 first crosses into one of the largest abnormal high-chaos disaster families. Required triggers are the first meteor shower or cluster, the first massive earthquake-wave, and the first massive volcanic regional crisis. Moving storm corridors and maximum manual barrages can remain normal news unless a later spec expands them.
 
-The super-event should not fire for every abnormal disaster. It should fire once per campaign or once per enabled super-event stage, according to the final implementation pattern.
+The super-events should not fire for every abnormal disaster. Each family-specific broadcast should fire once per campaign, and delayed follow-up impacts inside the same chain should not fire more broadcasts.
 
 ## Tone direction
 
 The tone should be grave, observational, and uneasy. The world is not ending, but governments are realizing that ordinary disaster categories no longer explain what they are seeing. Avoid generic apocalypse wording. Avoid direct claims that nature is sentient. Keep public uncertainty.
 
-The description should explain that disasters once treated as separate emergencies are being observed as part of a wider pattern. It should mention the kind of abnormal trigger that fired when possible through dynamic text, such as skyfall, massive seismic wave, volcanic ash crisis, delayed tsunami chain, or moving storm corridor.
+The description should explain the specific abnormal disaster that fired. It should mention concrete consequences such as crater fields, rupture damage, ashfall, grounded aircraft, broken ports, rail cuts, shelter overload, delayed tsunami risk, or follow-up impacts.
 
 ## Research gates
 
@@ -49,4 +49,4 @@ The super-event researcher should write a research note under:
 
 `docs/super_events/013_natural_disasters_super_event_research.md`
 
-The note should include quote candidates, selected quote, button remark candidates, selected remark, audio candidates, selected track, image direction, source URLs, license notes, final audio path if produced, and any blockers.
+The note should include quote candidates, selected quotes, button remark candidates, selected remarks, audio candidates, selected tracks, image directions, source URLs, license notes, final audio paths if produced, and any blockers.
