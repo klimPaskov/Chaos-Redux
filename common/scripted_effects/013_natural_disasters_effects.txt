@@ -1,0 +1,1028 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 013 NATURAL DISASTERS EFFECTS
+# ============================================================================
+# Helper runtime for Natural Disasters. These helpers prepare sequence context,
+# family profiles, per-state percentage death calculations, building damage,
+# state disruption modifiers, delayed-subdisaster context, and cleanup. They are
+# intentionally not wired to events or decisions in this patch.
+# ============================================================================
+
+natural_disasters_initialize_sequence_context = {
+	if = {
+		limit = { NOT = { has_variable = global.natural_disasters_sequence_counter } }
+		set_variable = { global.natural_disasters_sequence_counter = 0 }
+	}
+	add_to_variable = { global.natural_disasters_sequence_counter = 1 }
+	set_variable = { natural_disasters_sequence_id = global.natural_disasters_sequence_counter }
+	set_country_flag = natural_disasters_sequence_active
+
+	if = {
+		limit = { NOT = { has_variable = natural_disasters_sequence_evolution_stage } }
+		set_variable = { natural_disasters_sequence_evolution_stage = constant:natural_disasters_evolution.baseline }
+	}
+	if = {
+		limit = { NOT = { has_variable = natural_disasters_sequence_incidents_planned } }
+		natural_disasters_set_sequence_incident_count_from_context = yes
+	}
+	set_variable = { natural_disasters_sequence_incidents_completed = 0 }
+	set_variable = { natural_disasters_sequence_estimated_deaths = 0 }
+	natural_disasters_prepare_delay_band = yes
+}
+
+natural_disasters_set_sequence_incident_count_from_context = {
+	set_variable = { natural_disasters_sequence_incidents_planned = constant:natural_disasters_sequence.baseline_incidents }
+
+	if = {
+		limit = {
+			check_variable = {
+				var = natural_disasters_sequence_evolution_stage
+				value = constant:natural_disasters_evolution.varied_local
+				compare = equals
+			}
+		}
+		set_variable = { natural_disasters_sequence_incidents_planned = constant:natural_disasters_sequence.varied_local_incidents }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = natural_disasters_sequence_evolution_stage
+				value = constant:natural_disasters_evolution.regional_systems
+				compare = equals
+			}
+		}
+		set_variable = { natural_disasters_sequence_incidents_planned = constant:natural_disasters_sequence.regional_incidents }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = natural_disasters_sequence_evolution_stage
+				value = constant:natural_disasters_evolution.abnormal_age
+				compare = equals
+			}
+		}
+		set_variable = { natural_disasters_sequence_incidents_planned = constant:natural_disasters_sequence.abnormal_incidents }
+	}
+
+	if = {
+		limit = { has_country_flag = natural_disasters_cluster_local_slot }
+		set_variable = { natural_disasters_sequence_incidents_planned = constant:natural_disasters_sequence.cluster_local_incidents }
+	}
+	if = {
+		limit = { has_country_flag = natural_disasters_cluster_regional_slot }
+		set_variable = { natural_disasters_sequence_incidents_planned = constant:natural_disasters_sequence.cluster_regional_incidents }
+	}
+	if = {
+		limit = { has_country_flag = natural_disasters_cluster_abnormal_slot }
+		set_variable = { natural_disasters_sequence_incidents_planned = constant:natural_disasters_sequence.cluster_abnormal_incidents }
+	}
+	if = {
+		limit = { has_country_flag = natural_disasters_scenario_low_intensity }
+		set_variable = { natural_disasters_sequence_incidents_planned = constant:natural_disasters_sequence.scenario_low_incidents }
+	}
+	if = {
+		limit = { has_country_flag = natural_disasters_scenario_medium_intensity }
+		set_variable = { natural_disasters_sequence_incidents_planned = constant:natural_disasters_sequence.scenario_medium_incidents }
+	}
+	if = {
+		limit = { has_country_flag = natural_disasters_scenario_high_intensity }
+		set_variable = { natural_disasters_sequence_incidents_planned = constant:natural_disasters_sequence.scenario_high_incidents }
+	}
+	if = {
+		limit = { has_country_flag = natural_disasters_scenario_maximum_intensity }
+		set_variable = { natural_disasters_sequence_incidents_planned = constant:natural_disasters_sequence.scenario_maximum_incidents }
+	}
+}
+
+natural_disasters_prepare_delay_band = {
+	set_variable = { natural_disasters_delay_min_days = constant:natural_disasters_delay.two_min }
+	set_variable = { natural_disasters_delay_max_days = constant:natural_disasters_delay.two_max }
+
+	if = {
+		limit = { check_variable = { natural_disasters_sequence_incidents_planned < 2 } }
+		set_variable = { natural_disasters_delay_min_days = constant:natural_disasters_delay.single_min }
+		set_variable = { natural_disasters_delay_max_days = constant:natural_disasters_delay.single_max }
+	}
+	else_if = {
+		limit = { check_variable = { natural_disasters_sequence_incidents_planned < 3 } }
+		set_variable = { natural_disasters_delay_min_days = constant:natural_disasters_delay.two_min }
+		set_variable = { natural_disasters_delay_max_days = constant:natural_disasters_delay.two_max }
+	}
+	else_if = {
+		limit = { check_variable = { natural_disasters_sequence_incidents_planned < 4 } }
+		set_variable = { natural_disasters_delay_min_days = constant:natural_disasters_delay.three_min }
+		set_variable = { natural_disasters_delay_max_days = constant:natural_disasters_delay.three_max }
+	}
+	else_if = {
+		limit = { check_variable = { natural_disasters_sequence_incidents_planned < 7 } }
+		set_variable = { natural_disasters_delay_min_days = constant:natural_disasters_delay.regional_min }
+		set_variable = { natural_disasters_delay_max_days = constant:natural_disasters_delay.regional_max }
+	}
+	else = {
+		set_variable = { natural_disasters_delay_min_days = constant:natural_disasters_delay.abnormal_min }
+		set_variable = { natural_disasters_delay_max_days = constant:natural_disasters_delay.abnormal_max }
+	}
+
+	if = {
+		limit = { has_country_flag = natural_disasters_scenario_maximum_intensity }
+		set_variable = { natural_disasters_delay_min_days = constant:natural_disasters_delay.scenario_maximum_min }
+		set_variable = { natural_disasters_delay_max_days = constant:natural_disasters_delay.scenario_maximum_max }
+	}
+}
+
+natural_disasters_mark_delayed_subdisaster_queued = {
+	add_to_variable = { natural_disasters_sequence_incidents_completed = 1 }
+	set_country_flag = natural_disasters_subdisaster_queued
+	natural_disasters_prepare_delay_band = yes
+}
+
+natural_disasters_open_warning_window = {
+	set_state_flag = natural_disaster_warning_active
+	set_state_flag = natural_disaster_warning_pending_impact
+	set_variable = { natural_disaster_warning_started_day = global.num_days }
+	set_variable = { natural_disaster_warning_duration_days = constant:natural_disasters_state_modifier_duration.warning }
+	set_variable = { natural_disaster_warning_local_supplies = -0.05 }
+	set_variable = { natural_disaster_warning_production_speed_buildings_factor = -0.03 }
+	add_dynamic_modifier = { modifier = natural_disaster_warning_disruption days = natural_disaster_warning_duration_days }
+	force_update_dynamic_modifier = yes
+	OWNER = { set_country_flag = natural_disasters_warning_active }
+}
+
+natural_disasters_set_profile_defaults = {
+	set_temp_variable = { natural_disaster_family_id = constant:natural_disasters_family.flood }
+	set_temp_variable = { natural_disaster_base_loss_rate = constant:natural_disasters_death_rate_base.flood }
+	set_temp_variable = { natural_disaster_infrastructure_damage = constant:natural_disasters_family_damage.flood.infrastructure }
+	set_temp_variable = { natural_disaster_rail_damage = constant:natural_disasters_family_damage.flood.rail }
+	set_temp_variable = { natural_disaster_supply_node_damage = constant:natural_disasters_family_damage.flood.supply_node }
+	set_temp_variable = { natural_disaster_civilian_factory_damage = constant:natural_disasters_family_damage.flood.civilian_factory }
+	set_temp_variable = { natural_disaster_military_factory_damage = constant:natural_disasters_family_damage.flood.military_factory }
+	set_temp_variable = { natural_disaster_dockyard_damage = constant:natural_disasters_family_damage.flood.dockyard }
+	set_temp_variable = { natural_disaster_naval_base_damage = constant:natural_disasters_family_damage.flood.naval_base }
+	set_temp_variable = { natural_disaster_air_base_damage = constant:natural_disasters_family_damage.flood.air_base }
+	set_temp_variable = { natural_disaster_defenses_damage = constant:natural_disasters_family_damage.flood.defenses }
+	set_temp_variable = { natural_disaster_radar_damage = constant:natural_disasters_family_damage.flood.radar }
+	set_temp_variable = { natural_disaster_local_supplies = constant:natural_disasters_family_modifier.flood.supply }
+	set_temp_variable = { natural_disaster_production_speed_buildings_factor = constant:natural_disasters_family_modifier.flood.production }
+	set_temp_variable = { natural_disaster_army_speed_factor_for_controller = constant:natural_disasters_family_modifier.flood.speed }
+	set_temp_variable = { natural_disaster_attrition_for_controller = constant:natural_disasters_family_modifier.flood.attrition }
+}
+
+natural_disasters_set_profile_flood = {
+	natural_disasters_set_profile_defaults = yes
+}
+
+natural_disasters_set_profile_cyclone_storm = {
+	natural_disasters_set_profile_defaults = yes
+	set_temp_variable = { natural_disaster_family_id = constant:natural_disasters_family.cyclone_storm }
+	set_temp_variable = { natural_disaster_base_loss_rate = constant:natural_disasters_death_rate_base.cyclone_storm }
+	set_temp_variable = { natural_disaster_infrastructure_damage = constant:natural_disasters_family_damage.cyclone_storm.infrastructure }
+	set_temp_variable = { natural_disaster_rail_damage = constant:natural_disasters_family_damage.cyclone_storm.rail }
+	set_temp_variable = { natural_disaster_supply_node_damage = constant:natural_disasters_family_damage.cyclone_storm.supply_node }
+	set_temp_variable = { natural_disaster_civilian_factory_damage = constant:natural_disasters_family_damage.cyclone_storm.civilian_factory }
+	set_temp_variable = { natural_disaster_military_factory_damage = constant:natural_disasters_family_damage.cyclone_storm.military_factory }
+	set_temp_variable = { natural_disaster_dockyard_damage = constant:natural_disasters_family_damage.cyclone_storm.dockyard }
+	set_temp_variable = { natural_disaster_naval_base_damage = constant:natural_disasters_family_damage.cyclone_storm.naval_base }
+	set_temp_variable = { natural_disaster_air_base_damage = constant:natural_disasters_family_damage.cyclone_storm.air_base }
+	set_temp_variable = { natural_disaster_defenses_damage = constant:natural_disasters_family_damage.cyclone_storm.defenses }
+	set_temp_variable = { natural_disaster_radar_damage = constant:natural_disasters_family_damage.cyclone_storm.radar }
+	set_temp_variable = { natural_disaster_local_supplies = constant:natural_disasters_family_modifier.cyclone_storm.supply }
+	set_temp_variable = { natural_disaster_production_speed_buildings_factor = constant:natural_disasters_family_modifier.cyclone_storm.production }
+	set_temp_variable = { natural_disaster_army_speed_factor_for_controller = constant:natural_disasters_family_modifier.cyclone_storm.speed }
+	set_temp_variable = { natural_disaster_attrition_for_controller = constant:natural_disasters_family_modifier.cyclone_storm.attrition }
+}
+
+natural_disasters_set_profile_severe_storm = {
+	natural_disasters_set_profile_cyclone_storm = yes
+	set_temp_variable = { natural_disaster_family_id = constant:natural_disasters_family.severe_storm }
+	set_temp_variable = { natural_disaster_base_loss_rate = constant:natural_disasters_death_rate_base.severe_storm }
+	set_temp_variable = { natural_disaster_infrastructure_damage = constant:natural_disasters_family_damage.severe_storm.infrastructure }
+	set_temp_variable = { natural_disaster_rail_damage = constant:natural_disasters_family_damage.severe_storm.rail }
+	set_temp_variable = { natural_disaster_supply_node_damage = constant:natural_disasters_family_damage.severe_storm.supply_node }
+	set_temp_variable = { natural_disaster_civilian_factory_damage = constant:natural_disasters_family_damage.severe_storm.civilian_factory }
+	set_temp_variable = { natural_disaster_military_factory_damage = constant:natural_disasters_family_damage.severe_storm.military_factory }
+	set_temp_variable = { natural_disaster_dockyard_damage = constant:natural_disasters_family_damage.severe_storm.dockyard }
+	set_temp_variable = { natural_disaster_naval_base_damage = constant:natural_disasters_family_damage.severe_storm.naval_base }
+	set_temp_variable = { natural_disaster_air_base_damage = constant:natural_disasters_family_damage.severe_storm.air_base }
+	set_temp_variable = { natural_disaster_defenses_damage = constant:natural_disasters_family_damage.severe_storm.defenses }
+	set_temp_variable = { natural_disaster_radar_damage = constant:natural_disasters_family_damage.severe_storm.radar }
+	set_temp_variable = { natural_disaster_local_supplies = constant:natural_disasters_family_modifier.severe_storm.supply }
+	set_temp_variable = { natural_disaster_production_speed_buildings_factor = constant:natural_disasters_family_modifier.severe_storm.production }
+	set_temp_variable = { natural_disaster_army_speed_factor_for_controller = constant:natural_disasters_family_modifier.severe_storm.speed }
+	set_temp_variable = { natural_disaster_attrition_for_controller = constant:natural_disasters_family_modifier.severe_storm.attrition }
+}
+
+natural_disasters_set_profile_corridor_storm = {
+	natural_disasters_set_profile_severe_storm = yes
+	set_temp_variable = { natural_disaster_family_id = constant:natural_disasters_family.corridor_storm }
+	set_temp_variable = { natural_disaster_base_loss_rate = constant:natural_disasters_death_rate_base.corridor_storm }
+	set_temp_variable = { natural_disaster_infrastructure_damage = constant:natural_disasters_family_damage.corridor_storm.infrastructure }
+	set_temp_variable = { natural_disaster_rail_damage = constant:natural_disasters_family_damage.corridor_storm.rail }
+	set_temp_variable = { natural_disaster_supply_node_damage = constant:natural_disasters_family_damage.corridor_storm.supply_node }
+	set_temp_variable = { natural_disaster_civilian_factory_damage = constant:natural_disasters_family_damage.corridor_storm.civilian_factory }
+	set_temp_variable = { natural_disaster_military_factory_damage = constant:natural_disasters_family_damage.corridor_storm.military_factory }
+	set_temp_variable = { natural_disaster_dockyard_damage = constant:natural_disasters_family_damage.corridor_storm.dockyard }
+	set_temp_variable = { natural_disaster_naval_base_damage = constant:natural_disasters_family_damage.corridor_storm.naval_base }
+	set_temp_variable = { natural_disaster_air_base_damage = constant:natural_disasters_family_damage.corridor_storm.air_base }
+	set_temp_variable = { natural_disaster_defenses_damage = constant:natural_disasters_family_damage.corridor_storm.defenses }
+	set_temp_variable = { natural_disaster_radar_damage = constant:natural_disasters_family_damage.corridor_storm.radar }
+	set_temp_variable = { natural_disaster_local_supplies = constant:natural_disasters_family_modifier.corridor_storm.supply }
+	set_temp_variable = { natural_disaster_production_speed_buildings_factor = constant:natural_disasters_family_modifier.corridor_storm.production }
+	set_temp_variable = { natural_disaster_army_speed_factor_for_controller = constant:natural_disasters_family_modifier.corridor_storm.speed }
+	set_temp_variable = { natural_disaster_attrition_for_controller = constant:natural_disasters_family_modifier.corridor_storm.attrition }
+}
+
+natural_disasters_set_profile_earthquake = {
+	natural_disasters_set_profile_defaults = yes
+	set_temp_variable = { natural_disaster_family_id = constant:natural_disasters_family.earthquake }
+	set_temp_variable = { natural_disaster_base_loss_rate = constant:natural_disasters_death_rate_base.earthquake }
+	set_temp_variable = { natural_disaster_infrastructure_damage = constant:natural_disasters_family_damage.earthquake.infrastructure }
+	set_temp_variable = { natural_disaster_rail_damage = constant:natural_disasters_family_damage.earthquake.rail }
+	set_temp_variable = { natural_disaster_supply_node_damage = constant:natural_disasters_family_damage.earthquake.supply_node }
+	set_temp_variable = { natural_disaster_civilian_factory_damage = constant:natural_disasters_family_damage.earthquake.civilian_factory }
+	set_temp_variable = { natural_disaster_military_factory_damage = constant:natural_disasters_family_damage.earthquake.military_factory }
+	set_temp_variable = { natural_disaster_dockyard_damage = constant:natural_disasters_family_damage.earthquake.dockyard }
+	set_temp_variable = { natural_disaster_naval_base_damage = constant:natural_disasters_family_damage.earthquake.naval_base }
+	set_temp_variable = { natural_disaster_air_base_damage = constant:natural_disasters_family_damage.earthquake.air_base }
+	set_temp_variable = { natural_disaster_defenses_damage = constant:natural_disasters_family_damage.earthquake.defenses }
+	set_temp_variable = { natural_disaster_radar_damage = constant:natural_disasters_family_damage.earthquake.radar }
+	set_temp_variable = { natural_disaster_local_supplies = constant:natural_disasters_family_modifier.earthquake.supply }
+	set_temp_variable = { natural_disaster_production_speed_buildings_factor = constant:natural_disasters_family_modifier.earthquake.production }
+	set_temp_variable = { natural_disaster_army_speed_factor_for_controller = constant:natural_disasters_family_modifier.earthquake.speed }
+	set_temp_variable = { natural_disaster_attrition_for_controller = constant:natural_disasters_family_modifier.earthquake.attrition }
+}
+
+natural_disasters_set_profile_rupture = {
+	natural_disasters_set_profile_earthquake = yes
+	set_temp_variable = { natural_disaster_family_id = constant:natural_disasters_family.rupture }
+	set_temp_variable = { natural_disaster_base_loss_rate = constant:natural_disasters_death_rate_base.rupture }
+	set_temp_variable = { natural_disaster_infrastructure_damage = constant:natural_disasters_family_damage.rupture.infrastructure }
+	set_temp_variable = { natural_disaster_rail_damage = constant:natural_disasters_family_damage.rupture.rail }
+	set_temp_variable = { natural_disaster_supply_node_damage = constant:natural_disasters_family_damage.rupture.supply_node }
+	set_temp_variable = { natural_disaster_civilian_factory_damage = constant:natural_disasters_family_damage.rupture.civilian_factory }
+	set_temp_variable = { natural_disaster_military_factory_damage = constant:natural_disasters_family_damage.rupture.military_factory }
+	set_temp_variable = { natural_disaster_dockyard_damage = constant:natural_disasters_family_damage.rupture.dockyard }
+	set_temp_variable = { natural_disaster_naval_base_damage = constant:natural_disasters_family_damage.rupture.naval_base }
+	set_temp_variable = { natural_disaster_air_base_damage = constant:natural_disasters_family_damage.rupture.air_base }
+	set_temp_variable = { natural_disaster_defenses_damage = constant:natural_disasters_family_damage.rupture.defenses }
+	set_temp_variable = { natural_disaster_radar_damage = constant:natural_disasters_family_damage.rupture.radar }
+	set_temp_variable = { natural_disaster_local_supplies = constant:natural_disasters_family_modifier.rupture.supply }
+	set_temp_variable = { natural_disaster_production_speed_buildings_factor = constant:natural_disasters_family_modifier.rupture.production }
+	set_temp_variable = { natural_disaster_army_speed_factor_for_controller = constant:natural_disasters_family_modifier.rupture.speed }
+	set_temp_variable = { natural_disaster_attrition_for_controller = constant:natural_disasters_family_modifier.rupture.attrition }
+}
+
+natural_disasters_set_profile_tsunami = {
+	natural_disasters_set_profile_cyclone_storm = yes
+	set_temp_variable = { natural_disaster_family_id = constant:natural_disasters_family.tsunami }
+	set_temp_variable = { natural_disaster_base_loss_rate = constant:natural_disasters_death_rate_base.tsunami }
+	set_temp_variable = { natural_disaster_infrastructure_damage = constant:natural_disasters_family_damage.tsunami.infrastructure }
+	set_temp_variable = { natural_disaster_rail_damage = constant:natural_disasters_family_damage.tsunami.rail }
+	set_temp_variable = { natural_disaster_supply_node_damage = constant:natural_disasters_family_damage.tsunami.supply_node }
+	set_temp_variable = { natural_disaster_civilian_factory_damage = constant:natural_disasters_family_damage.tsunami.civilian_factory }
+	set_temp_variable = { natural_disaster_military_factory_damage = constant:natural_disasters_family_damage.tsunami.military_factory }
+	set_temp_variable = { natural_disaster_dockyard_damage = constant:natural_disasters_family_damage.tsunami.dockyard }
+	set_temp_variable = { natural_disaster_naval_base_damage = constant:natural_disasters_family_damage.tsunami.naval_base }
+	set_temp_variable = { natural_disaster_air_base_damage = constant:natural_disasters_family_damage.tsunami.air_base }
+	set_temp_variable = { natural_disaster_defenses_damage = constant:natural_disasters_family_damage.tsunami.defenses }
+	set_temp_variable = { natural_disaster_radar_damage = constant:natural_disasters_family_damage.tsunami.radar }
+	set_temp_variable = { natural_disaster_local_supplies = constant:natural_disasters_family_modifier.tsunami.supply }
+	set_temp_variable = { natural_disaster_production_speed_buildings_factor = constant:natural_disasters_family_modifier.tsunami.production }
+	set_temp_variable = { natural_disaster_army_speed_factor_for_controller = constant:natural_disasters_family_modifier.tsunami.speed }
+	set_temp_variable = { natural_disaster_attrition_for_controller = constant:natural_disasters_family_modifier.tsunami.attrition }
+}
+
+natural_disasters_set_profile_volcano = {
+	natural_disasters_set_profile_defaults = yes
+	set_temp_variable = { natural_disaster_family_id = constant:natural_disasters_family.volcano }
+	set_temp_variable = { natural_disaster_base_loss_rate = constant:natural_disasters_death_rate_base.volcano }
+	set_temp_variable = { natural_disaster_infrastructure_damage = constant:natural_disasters_family_damage.volcano.infrastructure }
+	set_temp_variable = { natural_disaster_rail_damage = constant:natural_disasters_family_damage.volcano.rail }
+	set_temp_variable = { natural_disaster_supply_node_damage = constant:natural_disasters_family_damage.volcano.supply_node }
+	set_temp_variable = { natural_disaster_civilian_factory_damage = constant:natural_disasters_family_damage.volcano.civilian_factory }
+	set_temp_variable = { natural_disaster_military_factory_damage = constant:natural_disasters_family_damage.volcano.military_factory }
+	set_temp_variable = { natural_disaster_dockyard_damage = constant:natural_disasters_family_damage.volcano.dockyard }
+	set_temp_variable = { natural_disaster_naval_base_damage = constant:natural_disasters_family_damage.volcano.naval_base }
+	set_temp_variable = { natural_disaster_air_base_damage = constant:natural_disasters_family_damage.volcano.air_base }
+	set_temp_variable = { natural_disaster_defenses_damage = constant:natural_disasters_family_damage.volcano.defenses }
+	set_temp_variable = { natural_disaster_radar_damage = constant:natural_disasters_family_damage.volcano.radar }
+	set_temp_variable = { natural_disaster_local_supplies = constant:natural_disasters_family_modifier.volcano.supply }
+	set_temp_variable = { natural_disaster_production_speed_buildings_factor = constant:natural_disasters_family_modifier.volcano.production }
+	set_temp_variable = { natural_disaster_army_speed_factor_for_controller = constant:natural_disasters_family_modifier.volcano.speed }
+	set_temp_variable = { natural_disaster_attrition_for_controller = constant:natural_disasters_family_modifier.volcano.attrition }
+}
+
+natural_disasters_set_profile_massive_eruption = {
+	natural_disasters_set_profile_volcano = yes
+	set_temp_variable = { natural_disaster_family_id = constant:natural_disasters_family.massive_eruption }
+	set_temp_variable = { natural_disaster_base_loss_rate = constant:natural_disasters_death_rate_base.massive_eruption }
+	set_temp_variable = { natural_disaster_infrastructure_damage = constant:natural_disasters_family_damage.massive_eruption.infrastructure }
+	set_temp_variable = { natural_disaster_rail_damage = constant:natural_disasters_family_damage.massive_eruption.rail }
+	set_temp_variable = { natural_disaster_supply_node_damage = constant:natural_disasters_family_damage.massive_eruption.supply_node }
+	set_temp_variable = { natural_disaster_civilian_factory_damage = constant:natural_disasters_family_damage.massive_eruption.civilian_factory }
+	set_temp_variable = { natural_disaster_military_factory_damage = constant:natural_disasters_family_damage.massive_eruption.military_factory }
+	set_temp_variable = { natural_disaster_dockyard_damage = constant:natural_disasters_family_damage.massive_eruption.dockyard }
+	set_temp_variable = { natural_disaster_naval_base_damage = constant:natural_disasters_family_damage.massive_eruption.naval_base }
+	set_temp_variable = { natural_disaster_air_base_damage = constant:natural_disasters_family_damage.massive_eruption.air_base }
+	set_temp_variable = { natural_disaster_defenses_damage = constant:natural_disasters_family_damage.massive_eruption.defenses }
+	set_temp_variable = { natural_disaster_radar_damage = constant:natural_disasters_family_damage.massive_eruption.radar }
+	set_temp_variable = { natural_disaster_local_supplies = constant:natural_disasters_family_modifier.massive_eruption.supply }
+	set_temp_variable = { natural_disaster_production_speed_buildings_factor = constant:natural_disasters_family_modifier.massive_eruption.production }
+	set_temp_variable = { natural_disaster_army_speed_factor_for_controller = constant:natural_disasters_family_modifier.massive_eruption.speed }
+	set_temp_variable = { natural_disaster_attrition_for_controller = constant:natural_disasters_family_modifier.massive_eruption.attrition }
+}
+
+natural_disasters_set_profile_wildfire = {
+	natural_disasters_set_profile_defaults = yes
+	set_temp_variable = { natural_disaster_family_id = constant:natural_disasters_family.wildfire }
+	set_temp_variable = { natural_disaster_base_loss_rate = constant:natural_disasters_death_rate_base.wildfire }
+	set_temp_variable = { natural_disaster_infrastructure_damage = constant:natural_disasters_family_damage.wildfire.infrastructure }
+	set_temp_variable = { natural_disaster_rail_damage = constant:natural_disasters_family_damage.wildfire.rail }
+	set_temp_variable = { natural_disaster_supply_node_damage = constant:natural_disasters_family_damage.wildfire.supply_node }
+	set_temp_variable = { natural_disaster_civilian_factory_damage = constant:natural_disasters_family_damage.wildfire.civilian_factory }
+	set_temp_variable = { natural_disaster_military_factory_damage = constant:natural_disasters_family_damage.wildfire.military_factory }
+	set_temp_variable = { natural_disaster_dockyard_damage = constant:natural_disasters_family_damage.wildfire.dockyard }
+	set_temp_variable = { natural_disaster_naval_base_damage = constant:natural_disasters_family_damage.wildfire.naval_base }
+	set_temp_variable = { natural_disaster_air_base_damage = constant:natural_disasters_family_damage.wildfire.air_base }
+	set_temp_variable = { natural_disaster_defenses_damage = constant:natural_disasters_family_damage.wildfire.defenses }
+	set_temp_variable = { natural_disaster_radar_damage = constant:natural_disasters_family_damage.wildfire.radar }
+	set_temp_variable = { natural_disaster_local_supplies = constant:natural_disasters_family_modifier.wildfire.supply }
+	set_temp_variable = { natural_disaster_production_speed_buildings_factor = constant:natural_disasters_family_modifier.wildfire.production }
+	set_temp_variable = { natural_disaster_army_speed_factor_for_controller = constant:natural_disasters_family_modifier.wildfire.speed }
+	set_temp_variable = { natural_disaster_attrition_for_controller = constant:natural_disasters_family_modifier.wildfire.attrition }
+}
+
+natural_disasters_set_profile_drought_famine = {
+	natural_disasters_set_profile_defaults = yes
+	set_temp_variable = { natural_disaster_family_id = constant:natural_disasters_family.drought_famine }
+	set_temp_variable = { natural_disaster_base_loss_rate = constant:natural_disasters_death_rate_base.drought_famine }
+	set_temp_variable = { natural_disaster_infrastructure_damage = constant:natural_disasters_family_damage.drought_famine.infrastructure }
+	set_temp_variable = { natural_disaster_rail_damage = constant:natural_disasters_family_damage.drought_famine.rail }
+	set_temp_variable = { natural_disaster_supply_node_damage = constant:natural_disasters_family_damage.drought_famine.supply_node }
+	set_temp_variable = { natural_disaster_civilian_factory_damage = constant:natural_disasters_family_damage.drought_famine.civilian_factory }
+	set_temp_variable = { natural_disaster_military_factory_damage = constant:natural_disasters_family_damage.drought_famine.military_factory }
+	set_temp_variable = { natural_disaster_dockyard_damage = constant:natural_disasters_family_damage.drought_famine.dockyard }
+	set_temp_variable = { natural_disaster_naval_base_damage = constant:natural_disasters_family_damage.drought_famine.naval_base }
+	set_temp_variable = { natural_disaster_air_base_damage = constant:natural_disasters_family_damage.drought_famine.air_base }
+	set_temp_variable = { natural_disaster_defenses_damage = constant:natural_disasters_family_damage.drought_famine.defenses }
+	set_temp_variable = { natural_disaster_radar_damage = constant:natural_disasters_family_damage.drought_famine.radar }
+	set_temp_variable = { natural_disaster_local_supplies = constant:natural_disasters_family_modifier.drought_famine.supply }
+	set_temp_variable = { natural_disaster_production_speed_buildings_factor = constant:natural_disasters_family_modifier.drought_famine.production }
+	set_temp_variable = { natural_disaster_army_speed_factor_for_controller = constant:natural_disasters_family_modifier.drought_famine.speed }
+	set_temp_variable = { natural_disaster_attrition_for_controller = constant:natural_disasters_family_modifier.drought_famine.attrition }
+}
+
+natural_disasters_set_profile_heat = {
+	natural_disasters_set_profile_drought_famine = yes
+	set_temp_variable = { natural_disaster_family_id = constant:natural_disasters_family.heat }
+	set_temp_variable = { natural_disaster_base_loss_rate = constant:natural_disasters_death_rate_base.heat }
+	set_temp_variable = { natural_disaster_infrastructure_damage = constant:natural_disasters_family_damage.heat.infrastructure }
+	set_temp_variable = { natural_disaster_rail_damage = constant:natural_disasters_family_damage.heat.rail }
+	set_temp_variable = { natural_disaster_supply_node_damage = constant:natural_disasters_family_damage.heat.supply_node }
+	set_temp_variable = { natural_disaster_civilian_factory_damage = constant:natural_disasters_family_damage.heat.civilian_factory }
+	set_temp_variable = { natural_disaster_military_factory_damage = constant:natural_disasters_family_damage.heat.military_factory }
+	set_temp_variable = { natural_disaster_dockyard_damage = constant:natural_disasters_family_damage.heat.dockyard }
+	set_temp_variable = { natural_disaster_naval_base_damage = constant:natural_disasters_family_damage.heat.naval_base }
+	set_temp_variable = { natural_disaster_air_base_damage = constant:natural_disasters_family_damage.heat.air_base }
+	set_temp_variable = { natural_disaster_defenses_damage = constant:natural_disasters_family_damage.heat.defenses }
+	set_temp_variable = { natural_disaster_radar_damage = constant:natural_disasters_family_damage.heat.radar }
+	set_temp_variable = { natural_disaster_local_supplies = constant:natural_disasters_family_modifier.heat.supply }
+	set_temp_variable = { natural_disaster_production_speed_buildings_factor = constant:natural_disasters_family_modifier.heat.production }
+	set_temp_variable = { natural_disaster_army_speed_factor_for_controller = constant:natural_disasters_family_modifier.heat.speed }
+	set_temp_variable = { natural_disaster_attrition_for_controller = constant:natural_disasters_family_modifier.heat.attrition }
+}
+
+natural_disasters_set_profile_winter = {
+	natural_disasters_set_profile_defaults = yes
+	set_temp_variable = { natural_disaster_family_id = constant:natural_disasters_family.winter }
+	set_temp_variable = { natural_disaster_base_loss_rate = constant:natural_disasters_death_rate_base.winter }
+	set_temp_variable = { natural_disaster_infrastructure_damage = constant:natural_disasters_family_damage.winter.infrastructure }
+	set_temp_variable = { natural_disaster_rail_damage = constant:natural_disasters_family_damage.winter.rail }
+	set_temp_variable = { natural_disaster_supply_node_damage = constant:natural_disasters_family_damage.winter.supply_node }
+	set_temp_variable = { natural_disaster_civilian_factory_damage = constant:natural_disasters_family_damage.winter.civilian_factory }
+	set_temp_variable = { natural_disaster_military_factory_damage = constant:natural_disasters_family_damage.winter.military_factory }
+	set_temp_variable = { natural_disaster_dockyard_damage = constant:natural_disasters_family_damage.winter.dockyard }
+	set_temp_variable = { natural_disaster_naval_base_damage = constant:natural_disasters_family_damage.winter.naval_base }
+	set_temp_variable = { natural_disaster_air_base_damage = constant:natural_disasters_family_damage.winter.air_base }
+	set_temp_variable = { natural_disaster_defenses_damage = constant:natural_disasters_family_damage.winter.defenses }
+	set_temp_variable = { natural_disaster_radar_damage = constant:natural_disasters_family_damage.winter.radar }
+	set_temp_variable = { natural_disaster_local_supplies = constant:natural_disasters_family_modifier.winter.supply }
+	set_temp_variable = { natural_disaster_production_speed_buildings_factor = constant:natural_disasters_family_modifier.winter.production }
+	set_temp_variable = { natural_disaster_army_speed_factor_for_controller = constant:natural_disasters_family_modifier.winter.speed }
+	set_temp_variable = { natural_disaster_attrition_for_controller = constant:natural_disasters_family_modifier.winter.attrition }
+}
+
+natural_disasters_set_profile_dust_sandstorm = {
+	natural_disasters_set_profile_drought_famine = yes
+	set_temp_variable = { natural_disaster_family_id = constant:natural_disasters_family.dust_sandstorm }
+	set_temp_variable = { natural_disaster_base_loss_rate = constant:natural_disasters_death_rate_base.dust_sandstorm }
+	set_temp_variable = { natural_disaster_infrastructure_damage = constant:natural_disasters_family_damage.dust_sandstorm.infrastructure }
+	set_temp_variable = { natural_disaster_rail_damage = constant:natural_disasters_family_damage.dust_sandstorm.rail }
+	set_temp_variable = { natural_disaster_supply_node_damage = constant:natural_disasters_family_damage.dust_sandstorm.supply_node }
+	set_temp_variable = { natural_disaster_civilian_factory_damage = constant:natural_disasters_family_damage.dust_sandstorm.civilian_factory }
+	set_temp_variable = { natural_disaster_military_factory_damage = constant:natural_disasters_family_damage.dust_sandstorm.military_factory }
+	set_temp_variable = { natural_disaster_dockyard_damage = constant:natural_disasters_family_damage.dust_sandstorm.dockyard }
+	set_temp_variable = { natural_disaster_naval_base_damage = constant:natural_disasters_family_damage.dust_sandstorm.naval_base }
+	set_temp_variable = { natural_disaster_air_base_damage = constant:natural_disasters_family_damage.dust_sandstorm.air_base }
+	set_temp_variable = { natural_disaster_defenses_damage = constant:natural_disasters_family_damage.dust_sandstorm.defenses }
+	set_temp_variable = { natural_disaster_radar_damage = constant:natural_disasters_family_damage.dust_sandstorm.radar }
+	set_temp_variable = { natural_disaster_local_supplies = constant:natural_disasters_family_modifier.dust_sandstorm.supply }
+	set_temp_variable = { natural_disaster_production_speed_buildings_factor = constant:natural_disasters_family_modifier.dust_sandstorm.production }
+	set_temp_variable = { natural_disaster_army_speed_factor_for_controller = constant:natural_disasters_family_modifier.dust_sandstorm.speed }
+	set_temp_variable = { natural_disaster_attrition_for_controller = constant:natural_disasters_family_modifier.dust_sandstorm.attrition }
+}
+
+natural_disasters_set_profile_landslide_slope_collapse = {
+	natural_disasters_set_profile_defaults = yes
+	set_temp_variable = { natural_disaster_family_id = constant:natural_disasters_family.landslide_slope_collapse }
+	set_temp_variable = { natural_disaster_base_loss_rate = constant:natural_disasters_death_rate_base.landslide_slope_collapse }
+	set_temp_variable = { natural_disaster_infrastructure_damage = constant:natural_disasters_family_damage.landslide_slope_collapse.infrastructure }
+	set_temp_variable = { natural_disaster_rail_damage = constant:natural_disasters_family_damage.landslide_slope_collapse.rail }
+	set_temp_variable = { natural_disaster_supply_node_damage = constant:natural_disasters_family_damage.landslide_slope_collapse.supply_node }
+	set_temp_variable = { natural_disaster_civilian_factory_damage = constant:natural_disasters_family_damage.landslide_slope_collapse.civilian_factory }
+	set_temp_variable = { natural_disaster_military_factory_damage = constant:natural_disasters_family_damage.landslide_slope_collapse.military_factory }
+	set_temp_variable = { natural_disaster_dockyard_damage = constant:natural_disasters_family_damage.landslide_slope_collapse.dockyard }
+	set_temp_variable = { natural_disaster_naval_base_damage = constant:natural_disasters_family_damage.landslide_slope_collapse.naval_base }
+	set_temp_variable = { natural_disaster_air_base_damage = constant:natural_disasters_family_damage.landslide_slope_collapse.air_base }
+	set_temp_variable = { natural_disaster_defenses_damage = constant:natural_disasters_family_damage.landslide_slope_collapse.defenses }
+	set_temp_variable = { natural_disaster_radar_damage = constant:natural_disasters_family_damage.landslide_slope_collapse.radar }
+	set_temp_variable = { natural_disaster_local_supplies = constant:natural_disasters_family_modifier.landslide_slope_collapse.supply }
+	set_temp_variable = { natural_disaster_production_speed_buildings_factor = constant:natural_disasters_family_modifier.landslide_slope_collapse.production }
+	set_temp_variable = { natural_disaster_army_speed_factor_for_controller = constant:natural_disasters_family_modifier.landslide_slope_collapse.speed }
+	set_temp_variable = { natural_disaster_attrition_for_controller = constant:natural_disasters_family_modifier.landslide_slope_collapse.attrition }
+}
+
+natural_disasters_set_profile_skyfall_meteor = {
+	natural_disasters_set_profile_defaults = yes
+	set_temp_variable = { natural_disaster_family_id = constant:natural_disasters_family.skyfall_meteor }
+	set_temp_variable = { natural_disaster_base_loss_rate = constant:natural_disasters_death_rate_base.skyfall_meteor }
+	set_temp_variable = { natural_disaster_infrastructure_damage = constant:natural_disasters_family_damage.skyfall_meteor.infrastructure }
+	set_temp_variable = { natural_disaster_rail_damage = constant:natural_disasters_family_damage.skyfall_meteor.rail }
+	set_temp_variable = { natural_disaster_supply_node_damage = constant:natural_disasters_family_damage.skyfall_meteor.supply_node }
+	set_temp_variable = { natural_disaster_civilian_factory_damage = constant:natural_disasters_family_damage.skyfall_meteor.civilian_factory }
+	set_temp_variable = { natural_disaster_military_factory_damage = constant:natural_disasters_family_damage.skyfall_meteor.military_factory }
+	set_temp_variable = { natural_disaster_dockyard_damage = constant:natural_disasters_family_damage.skyfall_meteor.dockyard }
+	set_temp_variable = { natural_disaster_naval_base_damage = constant:natural_disasters_family_damage.skyfall_meteor.naval_base }
+	set_temp_variable = { natural_disaster_air_base_damage = constant:natural_disasters_family_damage.skyfall_meteor.air_base }
+	set_temp_variable = { natural_disaster_defenses_damage = constant:natural_disasters_family_damage.skyfall_meteor.defenses }
+	set_temp_variable = { natural_disaster_radar_damage = constant:natural_disasters_family_damage.skyfall_meteor.radar }
+	set_temp_variable = { natural_disaster_local_supplies = constant:natural_disasters_family_modifier.skyfall_meteor.supply }
+	set_temp_variable = { natural_disaster_production_speed_buildings_factor = constant:natural_disasters_family_modifier.skyfall_meteor.production }
+	set_temp_variable = { natural_disaster_army_speed_factor_for_controller = constant:natural_disasters_family_modifier.skyfall_meteor.speed }
+	set_temp_variable = { natural_disaster_attrition_for_controller = constant:natural_disasters_family_modifier.skyfall_meteor.attrition }
+}
+
+natural_disasters_prepare_loss_rate = {
+	if = {
+		limit = { NOT = { has_variable = natural_disaster_severity_id } }
+		set_temp_variable = { natural_disaster_severity_id = constant:natural_disasters_severity.moderate }
+	}
+	if = {
+		limit = { NOT = { has_variable = natural_disaster_evolution_stage } }
+		set_temp_variable = { natural_disaster_evolution_stage = constant:natural_disasters_evolution.baseline }
+	}
+	if = {
+		limit = { NOT = { has_variable = natural_disaster_preparedness_mult } }
+		set_temp_variable = { natural_disaster_preparedness_mult = constant:natural_disasters_preparedness_multiplier.none }
+	}
+	if = {
+		limit = { NOT = { has_variable = natural_disaster_aftermath_mult } }
+		set_temp_variable = { natural_disaster_aftermath_mult = 1 }
+	}
+
+	set_temp_variable = { natural_disaster_loss_rate_ceiling = constant:natural_disasters_death_rate_ceiling.moderate }
+	set_temp_variable = { natural_disaster_severity_mult = constant:natural_disasters_severity_multiplier.moderate }
+
+	if = {
+		limit = {
+			check_variable = {
+				var = natural_disaster_severity_id
+				value = constant:natural_disasters_severity.light
+				compare = equals
+			}
+		}
+		set_temp_variable = { natural_disaster_loss_rate_ceiling = constant:natural_disasters_death_rate_ceiling.light }
+		set_temp_variable = { natural_disaster_severity_mult = constant:natural_disasters_severity_multiplier.light }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = natural_disaster_severity_id
+				value = constant:natural_disasters_severity.severe
+				compare = equals
+			}
+		}
+		set_temp_variable = { natural_disaster_loss_rate_ceiling = constant:natural_disasters_death_rate_ceiling.severe }
+		set_temp_variable = { natural_disaster_severity_mult = constant:natural_disasters_severity_multiplier.severe }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = natural_disaster_severity_id
+				value = constant:natural_disasters_severity.extreme
+				compare = equals
+			}
+		}
+		set_temp_variable = { natural_disaster_loss_rate_ceiling = constant:natural_disasters_death_rate_ceiling.extreme }
+		set_temp_variable = { natural_disaster_severity_mult = constant:natural_disasters_severity_multiplier.extreme }
+	}
+
+	set_temp_variable = { natural_disaster_evolution_mult = constant:natural_disasters_evolution_multiplier.baseline }
+	if = {
+		limit = {
+			check_variable = {
+				var = natural_disaster_evolution_stage
+				value = constant:natural_disasters_evolution.varied_local
+				compare = equals
+			}
+		}
+		set_temp_variable = { natural_disaster_evolution_mult = constant:natural_disasters_evolution_multiplier.varied_local }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = natural_disaster_evolution_stage
+				value = constant:natural_disasters_evolution.regional_systems
+				compare = equals
+			}
+		}
+		set_temp_variable = { natural_disaster_evolution_mult = constant:natural_disasters_evolution_multiplier.regional_systems }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = natural_disaster_evolution_stage
+				value = constant:natural_disasters_evolution.abnormal_age
+				compare = equals
+			}
+		}
+		set_temp_variable = { natural_disaster_evolution_mult = constant:natural_disasters_evolution_multiplier.abnormal_age }
+	}
+
+	set_temp_variable = { natural_disaster_final_loss_rate = natural_disaster_base_loss_rate }
+	multiply_temp_variable = { natural_disaster_final_loss_rate = natural_disaster_severity_mult }
+	multiply_temp_variable = { natural_disaster_final_loss_rate = natural_disaster_evolution_mult }
+	multiply_temp_variable = { natural_disaster_final_loss_rate = natural_disaster_preparedness_mult }
+	multiply_temp_variable = { natural_disaster_final_loss_rate = natural_disaster_aftermath_mult }
+	clamp_temp_variable = {
+		var = natural_disaster_final_loss_rate
+		min = 0
+		max = natural_disaster_loss_rate_ceiling
+	}
+}
+
+natural_disasters_register_state_population_loss = {
+	set_variable = { natural_disaster_last_impact_loss_rate = natural_disaster_final_loss_rate }
+	set_variable = { natural_disaster_last_impact_estimated_deaths = state_population_k }
+	multiply_variable = { natural_disaster_last_impact_estimated_deaths = 1000 }
+	multiply_variable = { natural_disaster_last_impact_estimated_deaths = natural_disaster_final_loss_rate }
+	round_variable = natural_disaster_last_impact_estimated_deaths
+
+	if = {
+		limit = {
+			has_variable = natural_disasters_death_reason
+			check_variable = { natural_disasters_death_reason > 0 }
+		}
+		set_temp_variable = { chaos_deaths_change = state_population_k }
+		multiply_temp_variable = { chaos_deaths_change = 1000 }
+		multiply_temp_variable = { chaos_deaths_change = natural_disaster_final_loss_rate }
+		round_temp_variable = chaos_deaths_change
+		set_temp_variable = { chaos_deaths_is_civilian = 1 }
+		set_temp_variable = { chaos_deaths_apply_state_pop = 1 }
+		set_temp_variable = { chaos_deaths_target_country = OWNER }
+		set_temp_variable = { chaos_deaths_has_target_country = 1 }
+		set_temp_variable = { chaos_deaths_reason = natural_disasters_death_reason }
+		chaos_meter_register_deaths = yes
+		set_variable = { natural_disaster_last_registered_deaths = chaos_deaths_change }
+		set_temp_variable = { chaos_deaths_is_civilian = 0 }
+		set_temp_variable = { chaos_deaths_apply_state_pop = 0 }
+		set_temp_variable = { chaos_deaths_reason = 0 }
+	}
+	else = {
+		set_state_flag = natural_disaster_death_reason_pending
+		set_variable = { natural_disaster_last_registered_deaths = 0 }
+	}
+}
+
+natural_disasters_apply_building_damage_profile = {
+	if = {
+		limit = { check_variable = { natural_disaster_infrastructure_damage > 0 } }
+		meta_effect = {
+			text = { damage_building = { type = infrastructure damage = [DAMAGE] } }
+			DAMAGE = "[?natural_disaster_infrastructure_damage]"
+		}
+	}
+	if = {
+		limit = { check_variable = { natural_disaster_rail_damage > 0 } }
+		meta_effect = {
+			text = { damage_building = { type = rail_way damage = [DAMAGE] } }
+			DAMAGE = "[?natural_disaster_rail_damage]"
+		}
+	}
+	if = {
+		limit = { check_variable = { natural_disaster_supply_node_damage > 0 } }
+		meta_effect = {
+			text = { damage_building = { type = supply_node damage = [DAMAGE] } }
+			DAMAGE = "[?natural_disaster_supply_node_damage]"
+		}
+	}
+	if = {
+		limit = { check_variable = { natural_disaster_civilian_factory_damage > 0 } }
+		meta_effect = {
+			text = { damage_building = { type = industrial_complex damage = [DAMAGE] } }
+			DAMAGE = "[?natural_disaster_civilian_factory_damage]"
+		}
+	}
+	if = {
+		limit = { check_variable = { natural_disaster_military_factory_damage > 0 } }
+		meta_effect = {
+			text = { damage_building = { type = arms_factory damage = [DAMAGE] } }
+			DAMAGE = "[?natural_disaster_military_factory_damage]"
+		}
+	}
+	if = {
+		limit = { check_variable = { natural_disaster_dockyard_damage > 0 } }
+		meta_effect = {
+			text = { damage_building = { type = dockyard damage = [DAMAGE] } }
+			DAMAGE = "[?natural_disaster_dockyard_damage]"
+		}
+	}
+	if = {
+		limit = { check_variable = { natural_disaster_naval_base_damage > 0 } }
+		meta_effect = {
+			text = { damage_building = { type = naval_base damage = [DAMAGE] } }
+			DAMAGE = "[?natural_disaster_naval_base_damage]"
+		}
+	}
+	if = {
+		limit = { check_variable = { natural_disaster_air_base_damage > 0 } }
+		meta_effect = {
+			text = { damage_building = { type = air_base damage = [DAMAGE] } }
+			DAMAGE = "[?natural_disaster_air_base_damage]"
+		}
+	}
+	if = {
+		limit = { check_variable = { natural_disaster_defenses_damage > 0 } }
+		meta_effect = {
+			text = {
+				damage_building = { type = bunker damage = [DAMAGE] }
+				damage_building = { type = coastal_bunker damage = [DAMAGE] }
+			}
+			DAMAGE = "[?natural_disaster_defenses_damage]"
+		}
+	}
+	if = {
+		limit = { check_variable = { natural_disaster_radar_damage > 0 } }
+		meta_effect = {
+			text = {
+				damage_building = { type = radar_station damage = [DAMAGE] }
+				damage_building = { type = anti_air_building damage = [DAMAGE] }
+			}
+			DAMAGE = "[?natural_disaster_radar_damage]"
+		}
+	}
+}
+
+natural_disasters_apply_state_modifier_profile = {
+	set_variable = { natural_disaster_state_local_supplies = natural_disaster_local_supplies }
+	set_variable = { natural_disaster_state_production_speed_buildings_factor = natural_disaster_production_speed_buildings_factor }
+	set_variable = { natural_disaster_state_army_speed_factor_for_controller = natural_disaster_army_speed_factor_for_controller }
+	set_variable = { natural_disaster_state_attrition_for_controller = natural_disaster_attrition_for_controller }
+	set_variable = { natural_disaster_modifier_days_left = constant:natural_disasters_state_modifier_duration.moderate }
+	if = {
+		limit = {
+			check_variable = {
+				var = natural_disaster_severity_id
+				value = constant:natural_disasters_severity.light
+				compare = equals
+			}
+		}
+		set_variable = { natural_disaster_modifier_days_left = constant:natural_disasters_state_modifier_duration.light }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = natural_disaster_severity_id
+				value = constant:natural_disasters_severity.severe
+				compare = equals
+			}
+		}
+		set_variable = { natural_disaster_modifier_days_left = constant:natural_disasters_state_modifier_duration.severe }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = natural_disaster_severity_id
+				value = constant:natural_disasters_severity.extreme
+				compare = equals
+			}
+		}
+		set_variable = { natural_disaster_modifier_days_left = constant:natural_disasters_state_modifier_duration.extreme }
+	}
+	set_state_flag = natural_disaster_aftermath_active
+	add_dynamic_modifier = { modifier = natural_disaster_state_disruption days = natural_disaster_modifier_days_left }
+	force_update_dynamic_modifier = yes
+}
+
+natural_disasters_mark_family_aftermath = {
+	set_variable = { natural_disaster_active_family = natural_disaster_family_id }
+	set_variable = { natural_disaster_active_severity = natural_disaster_severity_id }
+	set_variable = { natural_disaster_aftermath_started_day = global.num_days }
+	if = {
+		limit = {
+			OR = {
+				check_variable = {
+					var = natural_disaster_family_id
+					value = constant:natural_disasters_family.flood
+					compare = equals
+				}
+				check_variable = {
+					var = natural_disaster_family_id
+					value = constant:natural_disasters_family.tsunami
+					compare = equals
+				}
+			}
+		}
+		set_state_flag = natural_disaster_floodwater_aftermath
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = {
+					var = natural_disaster_family_id
+					value = constant:natural_disasters_family.earthquake
+					compare = equals
+				}
+				check_variable = {
+					var = natural_disaster_family_id
+					value = constant:natural_disasters_family.rupture
+					compare = equals
+				}
+			}
+		}
+		set_state_flag = natural_disaster_aftershock_watch
+		add_dynamic_modifier = { modifier = natural_disaster_aftershock_watch days = constant:natural_disasters_state_modifier_duration.aftershock }
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = {
+					var = natural_disaster_family_id
+					value = constant:natural_disasters_family.volcano
+					compare = equals
+				}
+				check_variable = {
+					var = natural_disaster_family_id
+					value = constant:natural_disasters_family.massive_eruption
+					compare = equals
+				}
+			}
+		}
+		set_state_flag = natural_disaster_ashfall_aftermath
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = natural_disaster_family_id
+				value = constant:natural_disasters_family.wildfire
+				compare = equals
+			}
+		}
+		set_state_flag = natural_disaster_firefront_aftermath
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = natural_disaster_family_id
+				value = constant:natural_disasters_family.drought_famine
+				compare = equals
+			}
+		}
+		set_state_flag = natural_disaster_drought_aftermath
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = natural_disaster_family_id
+				value = constant:natural_disasters_family.heat
+				compare = equals
+			}
+		}
+		set_state_flag = natural_disaster_heat_aftermath
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = natural_disaster_family_id
+				value = constant:natural_disasters_family.winter
+				compare = equals
+			}
+		}
+		set_state_flag = natural_disaster_winter_aftermath
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = natural_disaster_family_id
+				value = constant:natural_disasters_family.dust_sandstorm
+				compare = equals
+			}
+		}
+		set_state_flag = natural_disaster_dust_aftermath
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = natural_disaster_family_id
+				value = constant:natural_disasters_family.landslide_slope_collapse
+				compare = equals
+			}
+		}
+		set_state_flag = natural_disaster_slope_collapse_aftermath
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = natural_disaster_family_id
+				value = constant:natural_disasters_family.skyfall_meteor
+				compare = equals
+			}
+		}
+		set_state_flag = natural_disaster_recent_skyfall_impact
+		set_state_flag = natural_disaster_crater_aftermath
+	}
+	OWNER = {
+		set_country_flag = natural_disasters_country_hit
+		add_to_variable = { natural_disasters_active_aftermath_count = 1 }
+	}
+}
+
+natural_disasters_apply_state_disaster_impact = {
+	natural_disasters_prepare_loss_rate = yes
+	natural_disasters_apply_building_damage_profile = yes
+	natural_disasters_apply_state_modifier_profile = yes
+	natural_disasters_register_state_population_loss = yes
+	natural_disasters_mark_family_aftermath = yes
+	clr_state_flag = natural_disaster_warning_pending_impact
+}
+
+natural_disasters_apply_flood_impact = {
+	natural_disasters_set_profile_flood = yes
+	natural_disasters_apply_state_disaster_impact = yes
+}
+
+natural_disasters_apply_cyclone_storm_impact = {
+	natural_disasters_set_profile_cyclone_storm = yes
+	natural_disasters_apply_state_disaster_impact = yes
+}
+
+natural_disasters_apply_severe_storm_impact = {
+	natural_disasters_set_profile_severe_storm = yes
+	natural_disasters_apply_state_disaster_impact = yes
+}
+
+natural_disasters_apply_corridor_storm_impact = {
+	natural_disasters_set_profile_corridor_storm = yes
+	natural_disasters_apply_state_disaster_impact = yes
+}
+
+natural_disasters_apply_earthquake_impact = {
+	natural_disasters_set_profile_earthquake = yes
+	natural_disasters_apply_state_disaster_impact = yes
+}
+
+natural_disasters_apply_rupture_impact = {
+	natural_disasters_set_profile_rupture = yes
+	natural_disasters_apply_state_disaster_impact = yes
+}
+
+natural_disasters_apply_tsunami_impact = {
+	natural_disasters_set_profile_tsunami = yes
+	natural_disasters_apply_state_disaster_impact = yes
+}
+
+natural_disasters_apply_volcano_impact = {
+	natural_disasters_set_profile_volcano = yes
+	natural_disasters_apply_state_disaster_impact = yes
+}
+
+natural_disasters_apply_massive_eruption_impact = {
+	natural_disasters_set_profile_massive_eruption = yes
+	natural_disasters_apply_state_disaster_impact = yes
+}
+
+natural_disasters_apply_wildfire_impact = {
+	natural_disasters_set_profile_wildfire = yes
+	natural_disasters_apply_state_disaster_impact = yes
+}
+
+natural_disasters_apply_drought_famine_impact = {
+	natural_disasters_set_profile_drought_famine = yes
+	natural_disasters_apply_state_disaster_impact = yes
+}
+
+natural_disasters_apply_heat_impact = {
+	natural_disasters_set_profile_heat = yes
+	natural_disasters_apply_state_disaster_impact = yes
+}
+
+natural_disasters_apply_winter_impact = {
+	natural_disasters_set_profile_winter = yes
+	natural_disasters_apply_state_disaster_impact = yes
+}
+
+natural_disasters_apply_dust_sandstorm_impact = {
+	natural_disasters_set_profile_dust_sandstorm = yes
+	natural_disasters_apply_state_disaster_impact = yes
+}
+
+natural_disasters_apply_landslide_slope_collapse_impact = {
+	natural_disasters_set_profile_landslide_slope_collapse = yes
+	natural_disasters_apply_state_disaster_impact = yes
+}
+
+natural_disasters_apply_skyfall_meteor_impact = {
+	natural_disasters_set_profile_skyfall_meteor = yes
+	natural_disasters_apply_state_disaster_impact = yes
+}
+
+natural_disasters_advance_recovery_progress = {
+	if = {
+		limit = { NOT = { has_variable = natural_disaster_recovery_progress } }
+		set_variable = { natural_disaster_recovery_progress = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = natural_disaster_recovery_progress_add } }
+		set_temp_variable = { natural_disaster_recovery_progress_add = 1 }
+	}
+	add_to_variable = { natural_disaster_recovery_progress = natural_disaster_recovery_progress_add }
+	if = {
+		limit = {
+			check_variable = {
+				var = natural_disaster_recovery_progress
+				value = 100
+				compare = greater_than_or_equals
+			}
+		}
+		natural_disasters_cleanup_state_aftermath = yes
+	}
+}
+
+natural_disasters_cleanup_state_aftermath = {
+	clr_state_flag = natural_disaster_aftermath_active
+	clr_state_flag = natural_disaster_warning_active
+	clr_state_flag = natural_disaster_warning_pending_impact
+	clr_state_flag = natural_disaster_death_reason_pending
+	clr_state_flag = natural_disaster_floodwater_aftermath
+	clr_state_flag = natural_disaster_aftershock_watch
+	clr_state_flag = natural_disaster_ashfall_aftermath
+	clr_state_flag = natural_disaster_firefront_aftermath
+	clr_state_flag = natural_disaster_drought_aftermath
+	clr_state_flag = natural_disaster_heat_aftermath
+	clr_state_flag = natural_disaster_winter_aftermath
+	clr_state_flag = natural_disaster_dust_aftermath
+	clr_state_flag = natural_disaster_slope_collapse_aftermath
+	clr_state_flag = natural_disaster_crater_aftermath
+	clr_state_flag = natural_disaster_recent_skyfall_impact
+	remove_dynamic_modifier = { modifier = natural_disaster_state_disruption }
+	remove_dynamic_modifier = { modifier = natural_disaster_warning_disruption }
+	remove_dynamic_modifier = { modifier = natural_disaster_aftershock_watch }
+	clear_variable = natural_disaster_active_family
+	clear_variable = natural_disaster_active_severity
+	clear_variable = natural_disaster_aftermath_started_day
+	clear_variable = natural_disaster_recovery_progress
+	clear_variable = natural_disaster_last_impact_loss_rate
+	clear_variable = natural_disaster_last_impact_estimated_deaths
+	clear_variable = natural_disaster_last_registered_deaths
+	clear_variable = natural_disaster_modifier_days_left
+	clear_variable = natural_disaster_state_local_supplies
+	clear_variable = natural_disaster_state_production_speed_buildings_factor
+	clear_variable = natural_disaster_state_army_speed_factor_for_controller
+	clear_variable = natural_disaster_state_attrition_for_controller
+	clear_variable = natural_disaster_warning_started_day
+	clear_variable = natural_disaster_warning_duration_days
+	clear_variable = natural_disaster_warning_local_supplies
+	clear_variable = natural_disaster_warning_production_speed_buildings_factor
+	force_update_dynamic_modifier = yes
+}
+
+natural_disasters_cleanup_sequence_context = {
+	clr_country_flag = natural_disasters_sequence_active
+	clr_country_flag = natural_disasters_subdisaster_queued
+	clr_country_flag = natural_disasters_warning_active
+	clr_country_flag = natural_disasters_country_hit
+	clr_country_flag = natural_disasters_cluster_local_slot
+	clr_country_flag = natural_disasters_cluster_regional_slot
+	clr_country_flag = natural_disasters_cluster_abnormal_slot
+	clr_country_flag = natural_disasters_scenario_low_intensity
+	clr_country_flag = natural_disasters_scenario_medium_intensity
+	clr_country_flag = natural_disasters_scenario_high_intensity
+	clr_country_flag = natural_disasters_scenario_maximum_intensity
+	clear_variable = natural_disasters_sequence_id
+	clear_variable = natural_disasters_sequence_evolution_stage
+	clear_variable = natural_disasters_sequence_incidents_planned
+	clear_variable = natural_disasters_sequence_incidents_completed
+	clear_variable = natural_disasters_sequence_estimated_deaths
+	clear_variable = natural_disasters_delay_min_days
+	clear_variable = natural_disasters_delay_max_days
+	clear_variable = natural_disasters_active_aftermath_count
+	clear_variable = natural_disasters_death_reason
+}

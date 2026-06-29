@@ -1,0 +1,301 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 013 NATURAL DISASTERS CONSTANTS
+# ============================================================================
+# Shared helper tuning for Natural Disasters sequence setup, disaster family
+# profiles, dynamic death-rate math, state disruption, warnings, and cleanup.
+# ============================================================================
+
+natural_disasters_family = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	flood = 1
+	cyclone_storm = 2
+	severe_storm = 3
+	corridor_storm = 4
+	earthquake = 5
+	rupture = 6
+	tsunami = 7
+	volcano = 8
+	massive_eruption = 9
+	wildfire = 10
+	drought_famine = 11
+	heat = 12
+	winter = 13
+	dust_sandstorm = 14
+	landslide_slope_collapse = 15
+	skyfall_meteor = 16
+}
+
+natural_disasters_severity = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	light = 1
+	moderate = 2
+	severe = 3
+	extreme = 4
+}
+
+natural_disasters_evolution = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	baseline = 0
+	varied_local = 1
+	regional_systems = 2
+	abnormal_age = 3
+}
+
+natural_disasters_sequence = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	baseline_incidents = 2
+	varied_local_incidents = 4
+	regional_incidents = 6
+	abnormal_incidents = 8
+	cluster_local_incidents = 2
+	cluster_regional_incidents = 5
+	cluster_abnormal_incidents = 7
+	scenario_low_incidents = 4
+	scenario_medium_incidents = 7
+	scenario_high_incidents = 12
+	scenario_maximum_incidents = 20
+}
+
+natural_disasters_delay = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	single_min = 0
+	single_max = 0
+	two_min = 5
+	two_max = 10
+	three_min = 4
+	three_max = 8
+	regional_min = 2
+	regional_max = 6
+	abnormal_min = 1
+	abnormal_max = 4
+	scenario_maximum_min = 1
+	scenario_maximum_max = 3
+}
+
+natural_disasters_death_rate_base = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	flood = 0.00090
+	cyclone_storm = 0.00150
+	severe_storm = 0.00045
+	corridor_storm = 0.00380
+	earthquake = 0.00250
+	rupture = 0.00600
+	tsunami = 0.00550
+	volcano = 0.00200
+	massive_eruption = 0.00650
+	wildfire = 0.00110
+	drought_famine = 0.00035
+	heat = 0.00080
+	winter = 0.00075
+	dust_sandstorm = 0.00018
+	landslide_slope_collapse = 0.00160
+	skyfall_meteor = 0.00450
+}
+
+natural_disasters_severity_multiplier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	light = 0.55
+	moderate = 1.00
+	severe = 2.20
+	extreme = 4.00
+}
+
+natural_disasters_evolution_multiplier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	baseline = 1.00
+	varied_local = 1.18
+	regional_systems = 1.55
+	abnormal_age = 2.25
+}
+
+natural_disasters_death_rate_ceiling = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	light = 0.00300
+	moderate = 0.01500
+	severe = 0.08000
+	extreme = 0.30000
+}
+
+natural_disasters_preparedness_multiplier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	none = 1.00
+	warning = 0.82
+	partial_evacuation = 0.68
+	full_evacuation = 0.48
+	failed_recovery = 1.35
+}
+
+natural_disasters_state_modifier_duration = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	light = 45
+	moderate = 90
+	severe = 150
+	extreme = 240
+	warning = 14
+	aftershock = 120
+	aftermath = 180
+}
+
+natural_disasters_followup_weight = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	base = 10
+	unresolved_aftermath = 25
+	warning_success_reduction = -8
+	recovery_success_reduction = -16
+	recent_same_state_penalty = -24
+	manual_barrage_bonus = 18
+}
+
+natural_disasters_family_modifier = {
+	schema = {
+		any_key = yes
+		data = {
+			{
+				key = supply
+				data = fixed_point
+			}
+			{
+				key = production
+				data = fixed_point
+			}
+			{
+				key = speed
+				data = fixed_point
+			}
+			{
+				key = attrition
+				data = fixed_point
+			}
+		}
+	}
+
+	flood = { supply = -0.35 production = -0.12 speed = -0.25 attrition = 0.04 }
+	cyclone_storm = { supply = -0.42 production = -0.16 speed = -0.28 attrition = 0.05 }
+	severe_storm = { supply = -0.22 production = -0.08 speed = -0.18 attrition = 0.03 }
+	corridor_storm = { supply = -0.55 production = -0.24 speed = -0.40 attrition = 0.08 }
+	earthquake = { supply = -0.45 production = -0.24 speed = -0.30 attrition = 0.06 }
+	rupture = { supply = -0.65 production = -0.35 speed = -0.48 attrition = 0.10 }
+	tsunami = { supply = -0.55 production = -0.25 speed = -0.35 attrition = 0.08 }
+	volcano = { supply = -0.38 production = -0.20 speed = -0.24 attrition = 0.07 }
+	massive_eruption = { supply = -0.65 production = -0.36 speed = -0.42 attrition = 0.14 }
+	wildfire = { supply = -0.32 production = -0.18 speed = -0.24 attrition = 0.08 }
+	drought_famine = { supply = -0.30 production = -0.10 speed = -0.10 attrition = 0.03 }
+	heat = { supply = -0.24 production = -0.12 speed = -0.08 attrition = 0.04 }
+	winter = { supply = -0.40 production = -0.08 speed = -0.32 attrition = 0.08 }
+	dust_sandstorm = { supply = -0.36 production = -0.06 speed = -0.34 attrition = 0.07 }
+	landslide_slope_collapse = { supply = -0.48 production = -0.14 speed = -0.36 attrition = 0.06 }
+	skyfall_meteor = { supply = -0.50 production = -0.28 speed = -0.30 attrition = 0.09 }
+}
+
+natural_disasters_family_damage = {
+	schema = {
+		any_key = yes
+		data = {
+			{
+				key = infrastructure
+				data = fixed_point
+			}
+			{
+				key = rail
+				data = fixed_point
+			}
+			{
+				key = supply_node
+				data = fixed_point
+			}
+			{
+				key = civilian_factory
+				data = fixed_point
+			}
+			{
+				key = military_factory
+				data = fixed_point
+			}
+			{
+				key = dockyard
+				data = fixed_point
+			}
+			{
+				key = naval_base
+				data = fixed_point
+			}
+			{
+				key = air_base
+				data = fixed_point
+			}
+			{
+				key = defenses
+				data = fixed_point
+			}
+			{
+				key = radar
+				data = fixed_point
+			}
+		}
+	}
+
+	flood = { infrastructure = 1.40 rail = 1.10 supply_node = 0.80 civilian_factory = 0.80 military_factory = 0.25 dockyard = 0.60 naval_base = 0.70 air_base = 0.20 defenses = 0.10 radar = 0.10 }
+	cyclone_storm = { infrastructure = 1.60 rail = 0.80 supply_node = 0.70 civilian_factory = 0.85 military_factory = 0.45 dockyard = 1.00 naval_base = 1.20 air_base = 1.00 defenses = 0.40 radar = 0.50 }
+	severe_storm = { infrastructure = 0.80 rail = 0.45 supply_node = 0.25 civilian_factory = 0.35 military_factory = 0.20 dockyard = 0.20 naval_base = 0.20 air_base = 0.80 defenses = 0.25 radar = 0.55 }
+	corridor_storm = { infrastructure = 2.00 rail = 1.50 supply_node = 1.00 civilian_factory = 1.20 military_factory = 1.00 dockyard = 0.40 naval_base = 0.40 air_base = 1.20 defenses = 0.60 radar = 0.75 }
+	earthquake = { infrastructure = 2.00 rail = 1.50 supply_node = 1.10 civilian_factory = 1.35 military_factory = 1.10 dockyard = 0.45 naval_base = 0.55 air_base = 0.45 defenses = 0.80 radar = 0.35 }
+	rupture = { infrastructure = 2.80 rail = 2.20 supply_node = 1.80 civilian_factory = 1.75 military_factory = 1.45 dockyard = 0.90 naval_base = 1.00 air_base = 0.80 defenses = 1.10 radar = 0.55 }
+	tsunami = { infrastructure = 2.20 rail = 1.20 supply_node = 0.90 civilian_factory = 1.20 military_factory = 0.50 dockyard = 1.70 naval_base = 2.00 air_base = 0.35 defenses = 1.00 radar = 0.20 }
+	volcano = { infrastructure = 1.50 rail = 0.90 supply_node = 0.60 civilian_factory = 0.90 military_factory = 0.40 dockyard = 0.25 naval_base = 0.30 air_base = 1.10 defenses = 0.25 radar = 0.30 }
+	massive_eruption = { infrastructure = 2.80 rail = 1.80 supply_node = 1.30 civilian_factory = 1.60 military_factory = 0.80 dockyard = 0.60 naval_base = 0.80 air_base = 2.20 defenses = 0.45 radar = 0.70 }
+	wildfire = { infrastructure = 1.20 rail = 0.70 supply_node = 0.35 civilian_factory = 0.80 military_factory = 0.35 dockyard = 0.05 naval_base = 0.05 air_base = 0.40 defenses = 0.05 radar = 0.20 }
+	drought_famine = { infrastructure = 0.35 rail = 0.15 supply_node = 0.10 civilian_factory = 0.10 military_factory = 0.00 dockyard = 0.00 naval_base = 0.00 air_base = 0.05 defenses = 0.00 radar = 0.00 }
+	heat = { infrastructure = 0.45 rail = 0.30 supply_node = 0.10 civilian_factory = 0.15 military_factory = 0.05 dockyard = 0.00 naval_base = 0.00 air_base = 0.05 defenses = 0.00 radar = 0.00 }
+	winter = { infrastructure = 1.00 rail = 1.20 supply_node = 0.55 civilian_factory = 0.15 military_factory = 0.05 dockyard = 0.10 naval_base = 0.20 air_base = 0.30 defenses = 0.05 radar = 0.05 }
+	dust_sandstorm = { infrastructure = 0.65 rail = 0.45 supply_node = 0.25 civilian_factory = 0.05 military_factory = 0.00 dockyard = 0.00 naval_base = 0.00 air_base = 1.10 defenses = 0.05 radar = 0.25 }
+	landslide_slope_collapse = { infrastructure = 1.60 rail = 1.60 supply_node = 1.10 civilian_factory = 0.50 military_factory = 0.25 dockyard = 0.00 naval_base = 0.00 air_base = 0.10 defenses = 0.60 radar = 0.10 }
+	skyfall_meteor = { infrastructure = 2.00 rail = 1.20 supply_node = 0.90 civilian_factory = 1.30 military_factory = 1.10 dockyard = 0.35 naval_base = 0.35 air_base = 1.10 defenses = 0.45 radar = 0.80 }
+}
