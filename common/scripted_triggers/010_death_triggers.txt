@@ -382,6 +382,24 @@ death_spread_pressure_allows_coastal_jump = {
 	}
 }
 
+death_watch_network_is_strong = {
+	check_variable = {
+		var = global.death_watch_network
+		value = constant:death_decision_tuning.watch_network_strong_threshold
+		compare = greater_than_or_equals
+	}
+}
+
+death_watch_network_can_intercept_coastal_jump = {
+	death_watch_network_is_strong = yes
+	NOT = { has_global_flag = death_world_end_started }
+	NOT = { death_spread_pressure_is_high = yes }
+	DTH = {
+		NOT = { has_country_flag = death_focus_no_ferry_returns }
+	}
+	any_state = { death_is_valid_coastal_jump_target = yes }
+}
+
 death_island_spread_soul_cost_is_cheap = {
 	check_variable = {
 		var = global.death_island_spread_soul_cost
@@ -992,6 +1010,14 @@ death_black_book_is_open = {
 	has_country_flag = death_black_book_opened
 	NOT = { has_country_flag = death_black_book_burned }
 	NOT = { has_country_flag = death_black_book_discredited }
+}
+
+death_black_book_has_taken_method = {
+	OR = {
+		has_country_flag = death_bound_unburied_used
+		has_country_flag = death_interrogated_empty_road
+		has_country_flag = death_sealed_names_in_iron
+	}
 }
 
 death_black_oath_visible = {
