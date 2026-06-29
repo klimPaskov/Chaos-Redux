@@ -1,0 +1,144 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 013 NATURAL DISASTERS TRIGGERS
+# ============================================================================
+# Narrow trigger helpers for Event 13 helper call sites. These do not iterate the
+# world by themselves. Parent event, decision, cluster, or scenario code chooses
+# the country and state scopes before calling them.
+# ============================================================================
+
+natural_disasters_has_active_sequence = {
+	has_country_flag = natural_disasters_sequence_active
+	has_variable = natural_disasters_sequence_id
+}
+
+natural_disasters_state_has_active_aftermath = {
+	has_state_flag = natural_disaster_aftermath_active
+}
+
+natural_disasters_state_can_receive_impact = {
+	check_variable = { state_population_k > 0 }
+	OR = {
+		infrastructure > 0
+		rail_way > 0
+		supply_node > 0
+		industrial_complex > 0
+		arms_factory > 0
+		dockyard > 0
+		naval_base > 0
+		air_base > 0
+	}
+}
+
+natural_disasters_state_is_coastal_or_port = {
+	OR = {
+		naval_base > 0
+		dockyard > 0
+		has_state_flag = natural_disaster_coastal_candidate
+	}
+}
+
+natural_disasters_state_is_dense_or_built_up = {
+	OR = {
+		has_state_category = metropolis
+		has_state_category = megalopolis
+		has_state_category = city
+		industrial_complex > 2
+		arms_factory > 2
+		check_variable = { state_population_k > 1000 }
+	}
+}
+
+natural_disasters_state_is_mountain_or_slope = {
+	OR = {
+		has_terrain = mountain
+		has_terrain = hills
+		has_state_flag = natural_disaster_slope_candidate
+	}
+}
+
+natural_disasters_state_is_arid_or_desert = {
+	OR = {
+		has_terrain = desert
+		has_state_flag = natural_disaster_arid_candidate
+		has_state_flag = natural_disaster_drought_aftermath
+		has_state_flag = natural_disaster_heat_aftermath
+	}
+}
+
+natural_disasters_state_is_forest_or_fire_risk = {
+	OR = {
+		has_terrain = forest
+		has_state_flag = natural_disaster_forest_candidate
+		has_state_flag = natural_disaster_drought_aftermath
+		has_state_flag = natural_disaster_heat_aftermath
+	}
+}
+
+natural_disasters_state_is_cold_or_winter_risk = {
+	OR = {
+		has_state_flag = natural_disaster_cold_candidate
+		has_state_flag = natural_disaster_winter_aftermath
+		has_terrain = mountain
+	}
+}
+
+natural_disasters_state_is_volcanic_candidate = {
+	OR = {
+		has_state_flag = natural_disaster_volcanic_candidate
+		has_state_flag = natural_disaster_abnormal_volcanic_candidate
+	}
+}
+
+natural_disasters_state_can_receive_flood = {
+	natural_disasters_state_can_receive_impact = yes
+	OR = {
+		has_state_flag = natural_disaster_river_candidate
+		has_state_flag = natural_disaster_lowland_candidate
+		natural_disasters_state_is_coastal_or_port = yes
+	}
+}
+
+natural_disasters_state_can_receive_cyclone_or_tsunami = {
+	natural_disasters_state_can_receive_impact = yes
+	natural_disasters_state_is_coastal_or_port = yes
+}
+
+natural_disasters_state_can_receive_seismic = {
+	natural_disasters_state_can_receive_impact = yes
+	OR = {
+		natural_disasters_state_is_dense_or_built_up = yes
+		natural_disasters_state_is_mountain_or_slope = yes
+		natural_disasters_state_is_volcanic_candidate = yes
+		has_state_flag = natural_disaster_fault_candidate
+	}
+}
+
+natural_disasters_state_can_receive_volcano = {
+	natural_disasters_state_can_receive_impact = yes
+	natural_disasters_state_is_volcanic_candidate = yes
+}
+
+natural_disasters_state_can_receive_wildfire = {
+	natural_disasters_state_can_receive_impact = yes
+	natural_disasters_state_is_forest_or_fire_risk = yes
+}
+
+natural_disasters_state_can_receive_drought_heat_or_dust = {
+	natural_disasters_state_can_receive_impact = yes
+	natural_disasters_state_is_arid_or_desert = yes
+}
+
+natural_disasters_state_can_receive_winter = {
+	natural_disasters_state_can_receive_impact = yes
+	natural_disasters_state_is_cold_or_winter_risk = yes
+}
+
+natural_disasters_state_can_receive_landslide = {
+	natural_disasters_state_can_receive_impact = yes
+	natural_disasters_state_is_mountain_or_slope = yes
+}
+
+natural_disasters_state_can_receive_skyfall = {
+	natural_disasters_state_can_receive_impact = yes
+	NOT = { has_state_flag = natural_disaster_recent_skyfall_impact }
+}
