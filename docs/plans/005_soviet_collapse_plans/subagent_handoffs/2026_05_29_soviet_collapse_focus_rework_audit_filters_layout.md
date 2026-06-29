@@ -20,7 +20,7 @@ The audit target is a full rework standard for all Soviet Collapse focus trees i
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - Offline Paradox wiki: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding.
 - Vanilla docs: `effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`.
-- Vanilla focus precedent scan: national focus syntax, `ai_will_do`, rewards, prerequisites, and mutual exclusions under `~/projects/Hearts of Iron IV/common/national_focus/`.
+- Vanilla focus precedent scan: national focus syntax, `ai_will_do`, rewards, prerequisites, and mutual exclusions under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/`.
 
 ## Files Changed
 

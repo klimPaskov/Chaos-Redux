@@ -15,7 +15,7 @@ Read-only context used:
 - Event 005 localisation and docs
 - Existing Event 005 focus handoffs under this folder
 
-Required references read before inspection/editing: `AGENTS.md`, `hoi4-focus-trees`, `chaos-redux-events`, `hoi4-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`, the required offline wiki pages including National focus/Decision/Event/Idea/AI/Localisation/Effect/Triggers/Scopes/Data structures/Modifiers/On actions, vanilla documentation under `~/projects/Hearts of Iron IV/documentation/`, vanilla decision documentation, and vanilla `common/national_focus/soviet.txt`.
+Required references read before inspection/editing: `AGENTS.md`, `hoi4-focus-trees`, `chaos-redux-events`, `hoi4-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`, the required offline wiki pages including National focus/Decision/Event/Idea/AI/Localisation/Effect/Triggers/Scopes/Data structures/Modifiers/On actions, vanilla documentation under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/`, vanilla decision documentation, and vanilla `common/national_focus/soviet.txt`.
 
 No web access was used. No gfx, flags, unrelated event files, decisions, scripted effects, triggers, or localisation were edited.
 

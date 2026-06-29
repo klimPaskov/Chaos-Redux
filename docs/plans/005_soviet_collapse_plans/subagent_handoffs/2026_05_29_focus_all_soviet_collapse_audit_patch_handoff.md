@@ -21,7 +21,7 @@ No commit was created.
 - `.agents/skills/chaos-redux-improvement-loop/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - Offline wiki: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding.
-- Vanilla docs and examples: `~/projects/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`, plus vanilla national focus examples for prerequisites, filters, and `ai_will_do`.
+- Vanilla docs and examples: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`, plus vanilla national focus examples for prerequisites, filters, and `ai_will_do`.
 
 ## Files changed
 

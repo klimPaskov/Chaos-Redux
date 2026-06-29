@@ -18,7 +18,7 @@ Required references consulted:
 - `.agents/skills/hoi4-focus-trees/SKILL.md`
 - Offline wiki snapshot: Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding.
 - Vanilla docs: effects, triggers, modifiers, script concepts.
-- Vanilla precedent: `~/projects/Hearts of Iron IV/common/national_focus/soviet.txt`.
+- Vanilla precedent: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt`.
 
 ## 1. Add-Idea Spam Or Repeated Same-Idea Touchpoints
 

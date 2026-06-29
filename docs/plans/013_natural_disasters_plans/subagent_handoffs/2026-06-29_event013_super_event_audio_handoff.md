@@ -22,8 +22,8 @@ Scope: three non-terminal Evolution III abnormal-outcome super-events only. Exis
 - Duration: `1:48` prepared cut from a `9:00.897` source.
 - Why it fits: the opening has the right bulletin-like gravity and controlled surge for a fault-belt rupture rolling into regional panic without implying world-end finality.
 - Attribution text: not required by `CC0`, courtesy credit to Musopen and the Czech National Symphony Orchestra is still recommended.
-- Original downloaded source path: [beethoven_egmont_overture_musopen_cc0.ogg](/home/klim/projects/chaos_redux/docs/assets/013_natural_disasters/audio_research/source/beethoven_egmont_overture_musopen_cc0.ogg)
-- Final OGG path: [event013_great_rupture_wave_candidate.ogg](/home/klim/projects/chaos_redux/docs/assets/013_natural_disasters/audio_research/processed/event013_great_rupture_wave_candidate.ogg)
+- Original downloaded source path: [beethoven_egmont_overture_musopen_cc0.ogg](C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/docs/assets/013_natural_disasters/audio_research/source/beethoven_egmont_overture_musopen_cc0.ogg)
+- Final OGG path: [event013_great_rupture_wave_candidate.ogg](C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/docs/assets/013_natural_disasters/audio_research/processed/event013_great_rupture_wave_candidate.ogg)
 - Suggested sound definition id: `chaosx_super_event_67_track`
 - Suggested super-event use: `Great Rupture Wave`
 
@@ -47,8 +47,8 @@ Scope: three non-terminal Evolution III abnormal-outcome super-events only. Exis
 - Duration: `1:52` prepared cut from a `7:00` source.
 - Why it fits: the tread-like opening sounds like expanding ash pressure, transport shutdown, and an abnormal eruption season settling over a region instead of a single blast finishing the story.
 - Attribution text: not legally required for the public-domain source, courtesy credit still recommended.
-- Original downloaded source path: [holst_saturn_1923_pd.ogg](/home/klim/projects/chaos_redux/docs/assets/013_natural_disasters/audio_research/source/holst_saturn_1923_pd.ogg)
-- Final OGG path: [event013_massive_eruption_candidate.ogg](/home/klim/projects/chaos_redux/docs/assets/013_natural_disasters/audio_research/processed/event013_massive_eruption_candidate.ogg)
+- Original downloaded source path: [holst_saturn_1923_pd.ogg](C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/docs/assets/013_natural_disasters/audio_research/source/holst_saturn_1923_pd.ogg)
+- Final OGG path: [event013_massive_eruption_candidate.ogg](C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/docs/assets/013_natural_disasters/audio_research/processed/event013_massive_eruption_candidate.ogg)
 - Suggested sound definition id: `chaosx_super_event_68_track`
 - Suggested super-event use: `Massive Eruption`
 
@@ -72,8 +72,8 @@ Scope: three non-terminal Evolution III abnormal-outcome super-events only. Exis
 - Duration: `1:44` prepared cut from a `5:32.04` source.
 - Why it fits: it keeps the mood observational and uncanny. The cue sounds like astronomers, sirens, and governments trying to describe a sky that no longer behaves normally, which is the right role for Event 13 Skyfall.
 - Attribution text: not legally required for the public-domain source, courtesy credit still recommended.
-- Original downloaded source path: [holst_neptune_1923_pd.ogg](/home/klim/projects/chaos_redux/docs/assets/013_natural_disasters/audio_research/source/holst_neptune_1923_pd.ogg)
-- Final OGG path: [event013_skyfall_candidate.ogg](/home/klim/projects/chaos_redux/docs/assets/013_natural_disasters/audio_research/processed/event013_skyfall_candidate.ogg)
+- Original downloaded source path: [holst_neptune_1923_pd.ogg](C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/docs/assets/013_natural_disasters/audio_research/source/holst_neptune_1923_pd.ogg)
+- Final OGG path: [event013_skyfall_candidate.ogg](C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/docs/assets/013_natural_disasters/audio_research/processed/event013_skyfall_candidate.ogg)
 - Suggested sound definition id: `chaosx_super_event_69_track`
 - Suggested super-event use: `Meteor Showers / Skyfall`
 

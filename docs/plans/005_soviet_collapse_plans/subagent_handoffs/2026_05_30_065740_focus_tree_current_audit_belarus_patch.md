@@ -11,7 +11,7 @@ Audited the requested focus files:
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt`
 - `common/national_focus/005_soviet_collapse_factory_successors.txt`
 
-Read before inspection/editing: `AGENTS.md`, `hoi4-focus-trees`, `hoi4-decisions-missions`, `chaos-redux-events`, `chaos-redux-subagents`, `chaos-redux-improvement-loop`, required offline wiki pages including National focus/Decision/Event/Idea/AI/Localisation/Effects/Triggers/Scopes/Data structures/Modifiers/On actions, vanilla documentation under `~/projects/Hearts of Iron IV/documentation/`, and vanilla focus precedents under `~/projects/Hearts of Iron IV/common/national_focus/`.
+Read before inspection/editing: `AGENTS.md`, `hoi4-focus-trees`, `hoi4-decisions-missions`, `chaos-redux-events`, `chaos-redux-subagents`, `chaos-redux-improvement-loop`, required offline wiki pages including National focus/Decision/Event/Idea/AI/Localisation/Effects/Triggers/Scopes/Data structures/Modifiers/On actions, vanilla documentation under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/`, and vanilla focus precedents under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/`.
 
 The worktree was already dirty in the scoped Event 005 files. This handoff claims only the one focus coordinate patch listed below plus the audit evidence.
 

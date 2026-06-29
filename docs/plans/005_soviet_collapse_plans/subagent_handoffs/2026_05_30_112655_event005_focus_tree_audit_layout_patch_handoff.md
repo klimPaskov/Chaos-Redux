@@ -114,7 +114,7 @@ High-priority repeated icon clusters:
 
 ## Validation Run
 
-Commands run from `/home/klim/projects/chaos_redux`:
+Commands run from `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux`:
 
 - Brace depth and duplicate id audit over `common/national_focus/005_soviet_collapse_*.txt`
   - Result: all four files ended at brace depth 0; duplicate ids: 0.

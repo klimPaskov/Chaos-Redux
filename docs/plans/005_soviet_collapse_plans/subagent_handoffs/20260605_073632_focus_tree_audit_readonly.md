@@ -14,8 +14,8 @@ Mode: read-only audit. No gameplay, localisation, gfx, flag, or docs files were 
 Required references consulted before inspection:
 - Repo skill: `hoi4-focus-trees`
 - Offline wiki snapshot: National focus modding, Data structures, Trigger, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding.
-- Vanilla docs: `~/projects/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`.
-- Vanilla precedent: `~/projects/Hearts of Iron IV/common/national_focus/soviet.txt`.
+- Vanilla docs: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`.
+- Vanilla precedent: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt`.
 
 ## Executive blockers
 
@@ -157,15 +157,15 @@ Priority conversion targets:
 
 ## Validation and audit commands used
 
-- `sed -n '1,220p' /home/klim/projects/chaos_redux/.agents/skills/hoi4-focus-trees/SKILL.md`
+- `sed -n '1,220p' C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/hoi4-focus-trees/SKILL.md`
 - `rg --files paradox_wiki | rg 'Data structures|Triggers|Effects|Modifiers|Localisation|Scopes|On actions|Event modding|Decision modding|Idea modding|AI modding|National focus'`
 - `sed -n '1,220p' 'paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md'`
 - `sed -n '1,180p' 'paradox_wiki/Effect - Hearts of Iron 4 Wiki.md'`
 - Core wiki smoke-read loop for Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding.
-- `sed -n '1,220p' '/home/klim/projects/Hearts of Iron IV/documentation/effects_documentation.md'`
-- `sed -n '1,180p' '/home/klim/projects/Hearts of Iron IV/documentation/triggers_documentation.md'`
-- `sed -n '1,180p' '/home/klim/projects/Hearts of Iron IV/documentation/modifiers_documentation.md'`
-- `sed -n '1,220p' '/home/klim/projects/Hearts of Iron IV/common/national_focus/soviet.txt'`
+- `sed -n '1,220p' 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md'`
+- `sed -n '1,180p' 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md'`
+- `sed -n '1,180p' 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/modifiers_documentation.md'`
+- `sed -n '1,220p' 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt'`
 - `wc -l common/national_focus/005_soviet_collapse_republics.txt common/national_focus/005_soviet_collapse_custom_splinters.txt common/national_focus/005_soviet_collapse_factory_successors.txt common/national_focus/005_soviet_collapse_ancient_restorations.txt`
 - `rg -n "add_ideas|add_timed_idea|swap_ideas|remove_ideas" common/national_focus/005_soviet_collapse_republics.txt common/national_focus/005_soviet_collapse_custom_splinters.txt common/national_focus/005_soviet_collapse_factory_successors.txt common/national_focus/005_soviet_collapse_ancient_restorations.txt`
 - `rg -n "add_ideas|add_timed_idea|swap_ideas|remove_ideas" common/scripted_effects/005_soviet_collapse_effects.txt common/ideas/005* common/ideas/*soviet*`

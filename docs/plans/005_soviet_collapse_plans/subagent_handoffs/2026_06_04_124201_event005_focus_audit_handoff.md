@@ -43,14 +43,14 @@ Offline Paradox wiki pages consulted before Event005 inspection:
 
 Vanilla documentation and precedents consulted:
 
-- `~/projects/Hearts of Iron IV/documentation/effects_documentation.md`
-- `~/projects/Hearts of Iron IV/documentation/triggers_documentation.md`
-- `~/projects/Hearts of Iron IV/documentation/script_concept_documentation.md`
-- `~/projects/Hearts of Iron IV/common/script_constants/documentation.md`
-- `~/projects/Hearts of Iron IV/common/decisions/_documentation.md`
-- `~/projects/Hearts of Iron IV/common/ai_strategy/_documentation.md`
-- `~/projects/Hearts of Iron IV/common/national_focus/estonia.txt`
-- `~/projects/Hearts of Iron IV/common/national_focus/generic.txt`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/script_constants/documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/decisions/_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/ai_strategy/_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/estonia.txt`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/generic.txt`
 
 ## Changed Files
 

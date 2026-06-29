@@ -24,8 +24,8 @@ Before editing decisions or missions, read:
   - Modifiers
   - Scopes
   - Data structures
-- vanilla decision files from `~/projects/Hearts of Iron IV/`
-- vanilla documentation in `~/projects/Hearts of Iron IV/documentation`
+- vanilla decision files from `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/`
+- vanilla documentation in `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation`
 - existing Chaos Redux decision categories and scripted effects that do similar work
 
 Do not rely on memory when syntax or UI behavior is documented.

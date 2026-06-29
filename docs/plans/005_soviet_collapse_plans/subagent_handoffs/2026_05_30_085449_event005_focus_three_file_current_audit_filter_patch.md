@@ -30,8 +30,8 @@ Constraints honored:
 - `.agents/skills/chaos-redux-improvement-loop/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - Offline wiki: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding.
-- Vanilla docs: `~/projects/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`, and `script_concept_documentation.md`.
-- Vanilla focus precedent: `~/projects/Hearts of Iron IV/common/national_focus/generic.txt` for prerequisites, mutual exclusions, filters, completion rewards, and AI blocks.
+- Vanilla docs: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`, and `script_concept_documentation.md`.
+- Vanilla focus precedent: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/generic.txt` for prerequisites, mutual exclusions, filters, completion rewards, and AI blocks.
 
 ## Audit Coverage
 

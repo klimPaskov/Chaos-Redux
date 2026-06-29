@@ -18,7 +18,7 @@ Files inspected:
 - `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_6_countries_splinters_restorations.md`
 - `docs/plans/005_soviet_collapse_plans/2026_05_31_parent_focus_release_analysis.md`
 - `docs/plans/005_soviet_collapse_plans/2026_05_29_soviet_collapse_focus_tree_redesign_followup_plan.md`
-- Vanilla precedent: `/home/klim/projects/Hearts of Iron IV/common/national_focus/soviet.txt`
+- Vanilla precedent: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt`
 
 Required references opened before editing:
 
@@ -34,10 +34,10 @@ Required references opened before editing:
 - `paradox_wiki/Idea modding - Hearts of Iron 4 Wiki.md`
 - `paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md`
 - `paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md`
-- `/home/klim/projects/Hearts of Iron IV/documentation/effects_documentation.md`
-- `/home/klim/projects/Hearts of Iron IV/documentation/triggers_documentation.md`
-- `/home/klim/projects/Hearts of Iron IV/documentation/modifiers_documentation.md`
-- `/home/klim/projects/Hearts of Iron IV/documentation/script_concept_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/modifiers_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md`
 
 Skills used:
 

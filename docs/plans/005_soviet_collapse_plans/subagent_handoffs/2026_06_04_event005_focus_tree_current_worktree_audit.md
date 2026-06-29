@@ -9,8 +9,8 @@ No gameplay files were patched. No files under `gfx/flags` or `interface/flags` 
 ## References Consulted
 
 - Offline wiki snapshot: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding.
-- Vanilla docs: `~/projects/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`.
-- Vanilla focus examples: `~/projects/Hearts of Iron IV/common/national_focus/soviet.txt`, `baltic_shared.txt`.
+- Vanilla docs: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`.
+- Vanilla focus examples: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt`, `baltic_shared.txt`.
 - Repo skill: `hoi4-focus-trees`.
 
 ## Files Audited

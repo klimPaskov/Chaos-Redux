@@ -9,7 +9,7 @@ Scope: current Event005 Soviet Collapse focus trees only. No gfx, flags, interfa
 - Repo skill: `.agents/skills/hoi4-focus-trees/SKILL.md`
 - Repo skill: `.agents/skills/hoi4-decisions-missions/SKILL.md` for focus-to-decision integration checks
 - Offline wiki snapshot pages opened: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding
-- Vanilla references opened: `~/projects/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`, and `common/national_focus/soviet.txt`
+- Vanilla references opened: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`, and `common/national_focus/soviet.txt`
 
 ## Files Inspected
 

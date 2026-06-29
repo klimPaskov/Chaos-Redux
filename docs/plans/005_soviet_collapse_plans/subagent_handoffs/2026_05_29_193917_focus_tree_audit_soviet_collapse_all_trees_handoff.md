@@ -23,7 +23,7 @@ Required references consulted before focus inspection:
 - `.agents/skills/chaos-redux-improvement-loop/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - Offline wiki: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding.
-- Vanilla docs/examples: `~/projects/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`, `common/script_constants/documentation.md`, `common/ai_strategy/_documentation.md`, `common/decisions/_documentation.md`, and focus examples from `soviet.txt` and `baltic_shared.txt`.
+- Vanilla docs/examples: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`, `common/script_constants/documentation.md`, `common/ai_strategy/_documentation.md`, `common/decisions/_documentation.md`, and focus examples from `soviet.txt` and `baltic_shared.txt`.
 
 No gameplay patch was made. The focus files are dirty and the issues are mostly broad route design, reward architecture, AI strategy, and layout cleanup rather than one isolated safe fix.
 

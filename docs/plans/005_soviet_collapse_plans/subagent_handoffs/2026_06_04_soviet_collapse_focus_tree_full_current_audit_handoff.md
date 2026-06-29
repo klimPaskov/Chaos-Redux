@@ -35,15 +35,15 @@ Offline Paradox wiki pages consulted before opening Chaos Redux gameplay files:
 
 Vanilla documentation and precedents consulted:
 
-- `~/projects/Hearts of Iron IV/documentation/effects_documentation.md`
-- `~/projects/Hearts of Iron IV/documentation/triggers_documentation.md`
-- `~/projects/Hearts of Iron IV/documentation/modifiers_documentation.md`
-- `~/projects/Hearts of Iron IV/documentation/script_concept_documentation.md`
-- `~/projects/Hearts of Iron IV/common/script_constants/documentation.md`
-- `~/projects/Hearts of Iron IV/common/focus_inlay_windows/documentation.md`
-- `~/projects/Hearts of Iron IV/common/national_focus/soviet.txt`
-- `~/projects/Hearts of Iron IV/common/national_focus/poland.txt`
-- `~/projects/Hearts of Iron IV/common/national_focus/generic.txt`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/modifiers_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/script_constants/documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/focus_inlay_windows/documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/poland.txt`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/generic.txt`
 
 Repo skills used:
 

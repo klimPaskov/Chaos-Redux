@@ -177,13 +177,13 @@ wc -l common/national_focus/005_soviet_collapse_ancient_restorations.txt common/
 Result: 42,159 total lines across the four focus files.
 
 ```bash
-rg -n "load_focus_tree|mark_focus_tree_layout_dirty|complete_national_focus|unlock_decision|activate_mission|available =|completion_reward|add_ideas|swap_ideas|remove_ideas|ai_will_do|search_filters|mutually_exclusive|prerequisite|relative_position_id" "/home/klim/projects/Hearts of Iron IV/documentation/effects_documentation.md" "/home/klim/projects/Hearts of Iron IV/documentation/triggers_documentation.md"
+rg -n "load_focus_tree|mark_focus_tree_layout_dirty|complete_national_focus|unlock_decision|activate_mission|available =|completion_reward|add_ideas|swap_ideas|remove_ideas|ai_will_do|search_filters|mutually_exclusive|prerequisite|relative_position_id" "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md" "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md"
 ```
 
 Result: confirmed vanilla docs entries for focus loading, decision tooltips, idea effects, and related effects/triggers.
 
 ```bash
-rg -n "unlock_decision|activate_mission|completion_reward|search_filters|mutually_exclusive|prerequisite|relative_position_id|ai_will_do|allow_branch|bypass|add_ideas|swap_ideas|remove_ideas" "/home/klim/projects/Hearts of Iron IV/common/national_focus/soviet.txt" "/home/klim/projects/Hearts of Iron IV/common/national_focus/finland.txt" "/home/klim/projects/Hearts of Iron IV/common/national_focus/generic.txt"
+rg -n "unlock_decision|activate_mission|completion_reward|search_filters|mutually_exclusive|prerequisite|relative_position_id|ai_will_do|allow_branch|bypass|add_ideas|swap_ideas|remove_ideas" "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt" "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/finland.txt" "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/generic.txt"
 ```
 
 Result: sampled vanilla focus syntax, reward, filter, AI, prerequisite, and relative-position precedent.

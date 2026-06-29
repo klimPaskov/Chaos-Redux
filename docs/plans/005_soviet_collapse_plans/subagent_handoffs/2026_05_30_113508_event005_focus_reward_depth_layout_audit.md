@@ -28,7 +28,7 @@ References consulted:
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - Offline wiki pages: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding.
 - Vanilla docs: `effects_documentation.md`, `triggers_documentation.md`, `script_concept_documentation.md`, `modifiers_documentation.md`.
-- Vanilla focus precedent was sampled from `~/projects/Hearts of Iron IV/common/national_focus`.
+- Vanilla focus precedent was sampled from `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus`.
 - Event source spec: `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_5_focus_trees.md`.
 - Current focus redesign plan: `docs/plans/005_soviet_collapse_plans/2026_05_29_soviet_collapse_focus_tree_redesign_followup_plan.md`.
 
@@ -184,7 +184,7 @@ Route behavior before and after:
 
 ## Validation Run
 
-Commands were run from `/home/klim/projects/chaos_redux` by mechanical parser/grep over `common/national_focus/005_soviet_collapse_*.txt` plus localisation/interface lookups.
+Commands were run from `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux` by mechanical parser/grep over `common/national_focus/005_soviet_collapse_*.txt` plus localisation/interface lookups.
 
 Results:
 

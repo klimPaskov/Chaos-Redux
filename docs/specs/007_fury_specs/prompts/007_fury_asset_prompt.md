@@ -28,14 +28,14 @@ Use real sourced imagery only if the implementation later chooses a real histori
 
 Inspect these before work:
 
-- `~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/ideas`
-- `~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/focuses`
-- `~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/decisions`
-- `~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/news_event_images`
-- `~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/report_event_images`
-- `~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/super_event_images`
-- `~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/achievements`
-- `~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/flags`
+- `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/ideas`
+- `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/focuses`
+- `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/decisions`
+- `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/news_event_images`
+- `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/report_event_images`
+- `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/super_event_images`
+- `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/achievements`
+- `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/flags`
 
 ## Idea and national spirit icons, 64x64
 

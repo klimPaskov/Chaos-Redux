@@ -18,8 +18,8 @@ No gameplay, localisation, asset, flag, or gfx files were edited. This handoff i
 
 - Skills: `.agents/skills/hoi4-focus-trees/SKILL.md`, `.agents/skills/chaos-redux-events/SKILL.md`
 - Offline wiki: National focus modding, Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, AI modding, On actions, Event modding, Decision modding, Idea modding
-- Vanilla docs: `~/projects/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`
-- Vanilla precedent: `~/projects/Hearts of Iron IV/common/national_focus/poland.txt`
+- Vanilla docs: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`
+- Vanilla precedent: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/poland.txt`
 
 Key reference points used:
 

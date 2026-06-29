@@ -21,8 +21,8 @@ Skills and references used:
 - `hoi4-focus-trees`
 - `chaos-redux-subagents`
 - Offline wiki pages consulted before auditing the focus files: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding.
-- Vanilla documentation consulted from `~/projects/Hearts of Iron IV/documentation/`: effects, triggers, modifiers, script concepts, localisation objects, localisation formatters.
-- Vanilla focus precedents inspected from `~/projects/Hearts of Iron IV/common/national_focus/`, especially `soviet.txt` and other major-tree focus files for focus shape, filters, prerequisites, and AI precedent.
+- Vanilla documentation consulted from `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/`: effects, triggers, modifiers, script concepts, localisation objects, localisation formatters.
+- Vanilla focus precedents inspected from `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/`, especially `soviet.txt` and other major-tree focus files for focus shape, filters, prerequisites, and AI precedent.
 
 ## Files Changed
 

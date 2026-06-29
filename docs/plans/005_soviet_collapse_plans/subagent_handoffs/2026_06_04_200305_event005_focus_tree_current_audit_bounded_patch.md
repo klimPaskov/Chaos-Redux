@@ -27,7 +27,7 @@ No `gfx/flags` or flag sprite files were touched or inspected.
 - Repo instructions: `AGENTS.md`.
 - Offline wiki: National focus modding, Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding.
 - Vanilla docs: `effects_documentation.md`, `triggers_documentation.md`, `script_concept_documentation.md`, `common/decisions/_documentation.md`, `common/ai_strategy/_documentation.md`.
-- Vanilla precedent: `~/projects/Hearts of Iron IV/common/national_focus/generic.txt`.
+- Vanilla precedent: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/generic.txt`.
 
 ## Files Changed
 

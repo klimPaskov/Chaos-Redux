@@ -23,7 +23,7 @@ Required offline Paradox wiki pages were consulted before implementation-file in
 - Country creation, State modding, Map modding, Achievement modding, National focus modding
 - Interface modding, Scripted GUI modding, Graphical asset modding, Unit modding, Division modding
 
-Relevant vanilla documentation and examples were consulted under `/home/klim/projects/Hearts of Iron IV/`, especially script constants, effects, triggers, scripted localisation, dynamic variables, scripted GUI, state control-change on actions, `create_unit`, state transfer, building removal/damage, event targets, arrays, and meta effects/triggers.
+Relevant vanilla documentation and examples were consulted under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/`, especially script constants, effects, triggers, scripted localisation, dynamic variables, scripted GUI, state control-change on actions, `create_unit`, state transfer, building removal/damage, event targets, arrays, and meta effects/triggers.
 
 ## Design Boundary
 

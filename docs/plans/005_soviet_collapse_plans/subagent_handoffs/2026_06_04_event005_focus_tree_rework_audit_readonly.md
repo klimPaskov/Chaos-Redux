@@ -16,11 +16,11 @@ Required local references read before audit:
 - `paradox_wiki/Idea modding - Hearts of Iron 4 Wiki.md`
 - `paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md`
 - `paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md`
-- `~/projects/Hearts of Iron IV/documentation/effects_documentation.md`
-- `~/projects/Hearts of Iron IV/documentation/triggers_documentation.md`
-- `~/projects/Hearts of Iron IV/documentation/modifiers_documentation.md`
-- `~/projects/Hearts of Iron IV/documentation/script_concept_documentation.md`
-- Vanilla focus precedent: `~/projects/Hearts of Iron IV/common/national_focus/generic.txt`, `~/projects/Hearts of Iron IV/common/national_focus/soviet.txt`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/modifiers_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md`
+- Vanilla focus precedent: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/generic.txt`, `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt`
 
 ## Files Audited
 
@@ -134,14 +134,14 @@ No web access was used.
 
 Commands run:
 
-- `sed -n '1,220p' /home/klim/projects/chaos_redux/.agents/skills/hoi4-focus-trees/SKILL.md`
+- `sed -n '1,220p' C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/hoi4-focus-trees/SKILL.md`
 - `sed -n '1,220p' 'paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md'`
 - `sed -n '1,80p'` over the required core wiki pages listed above.
-- `sed -n '1,180p' '/home/klim/projects/Hearts of Iron IV/documentation/effects_documentation.md'`
-- `sed -n '1,160p' '/home/klim/projects/Hearts of Iron IV/documentation/triggers_documentation.md'`
-- `sed -n '1,140p' '/home/klim/projects/Hearts of Iron IV/documentation/modifiers_documentation.md'`
-- `sed -n '1,180p' '/home/klim/projects/Hearts of Iron IV/documentation/script_concept_documentation.md'`
-- `rg -n "mutually_exclusive|relative_position_id|prerequisite|ai_will_do|completion_reward|add_ideas|add_timed_idea|load_focus_tree" '/home/klim/projects/Hearts of Iron IV/common/national_focus/generic.txt' '/home/klim/projects/Hearts of Iron IV/common/national_focus/soviet.txt'`
+- `sed -n '1,180p' 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md'`
+- `sed -n '1,160p' 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md'`
+- `sed -n '1,140p' 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/modifiers_documentation.md'`
+- `sed -n '1,180p' 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md'`
+- `rg -n "mutually_exclusive|relative_position_id|prerequisite|ai_will_do|completion_reward|add_ideas|add_timed_idea|load_focus_tree" 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/generic.txt' 'C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt'`
 - `find common/national_focus -maxdepth 1 -type f -name '005_soviet_collapse*.txt' -print | sort`
 - `rg -n "add_ideas|add_timed_idea|swap_ideas|remove_ideas|custom_effect_tooltip|hidden_effect|tooltip =|soviet_collapse_apply|soviet_collapse_unlock|soviet_collapse_.*focus" common/scripted_effects/005_soviet_collapse_effects.txt common/national_focus/005_soviet_collapse*.txt`
 - Read-only Python parser over the four focus files and `common/scripted_effects/005_soviet_collapse_effects.txt` to count focuses, focus trees, helper stacks, duplicate ideas, stockpile spam, tooltip spam, and pathline hits.

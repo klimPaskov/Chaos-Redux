@@ -16,7 +16,7 @@ User scope: audit all Event 005 focus files, apply only small safe focus reward 
 - `.agents/skills/chaos-redux-event-assets/SKILL.md`
 - Offline wiki: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding
 - Vanilla docs: `effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`
-- Vanilla precedent: `~/projects/Hearts of Iron IV/common/national_focus/soviet.txt`
+- Vanilla precedent: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt`
 - Event 005 source spec: `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_5_focus_trees.md`
 - Current broad follow-up plan: `docs/plans/005_soviet_collapse_plans/2026_05_29_soviet_collapse_focus_tree_redesign_followup_plan.md`
 - Recent handoff context: `docs/plans/005_soviet_collapse_plans/subagent_handoffs/2026_05_30_120242_event005_focus_tree_idea_layout_audit_mfr_patch.md`

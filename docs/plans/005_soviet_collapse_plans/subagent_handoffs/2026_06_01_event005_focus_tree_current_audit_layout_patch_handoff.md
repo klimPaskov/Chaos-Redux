@@ -22,7 +22,7 @@ Required references and skills used:
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - Offline wiki pages opened: Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding.
 - Vanilla documentation opened: `effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`.
-- Vanilla precedent checked: `~/projects/Hearts of Iron IV/common/national_focus/soviet.txt`, with additional focus mutual-exclusion pattern checks in `baltic_shared.txt`.
+- Vanilla precedent checked: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt`, with additional focus mutual-exclusion pattern checks in `baltic_shared.txt`.
 
 Worktree note: the four Event005 focus files and many handoff docs were already dirty or untracked before this audit. The only gameplay patch made by this pass is the five y-coordinate changes listed below.
 

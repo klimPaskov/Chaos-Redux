@@ -13,7 +13,7 @@ Scope: `common/national_focus/005_soviet_collapse_republics.txt`, `common/nation
 - `.agents/skills/chaos-redux-improvement-loop/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - Offline wiki: Data structures, Triggers, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding. `Effects - Hearts of Iron 4 Wiki.md` was not present under that exact title; vanilla `effects_documentation.md` was used for effect references.
-- Vanilla references: `~/projects/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`, and `common/national_focus/generic.txt`.
+- Vanilla references: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`, and `common/national_focus/generic.txt`.
 - Event source docs: `docs/events/005_soviet_collapse.md`, `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_5_focus_trees.md`, and existing plan `docs/plans/005_soviet_collapse_plans/2026_05_29_soviet_collapse_focus_tree_redesign_followup_plan.md`.
 
 ## Current-State Audit Summary

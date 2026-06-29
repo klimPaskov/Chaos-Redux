@@ -17,9 +17,9 @@ Required local references consulted before focus-file edits:
 
 - Offline wiki: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding.
 - Vanilla docs: `effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`.
-- Vanilla precedent: `~/projects/Hearts of Iron IV/common/national_focus/soviet.txt`.
+- Vanilla precedent: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt`.
 - Repo rules: `AGENTS.md`.
-- Skill: `/home/klim/projects/chaos_redux/.agents/skills/hoi4-focus-trees/SKILL.md`.
+- Skill: `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/hoi4-focus-trees/SKILL.md`.
 
 Key engine points used: prerequisite blocks are OR inside one block and AND across blocks; focus pathlines are safest when prerequisites are above children; `ai_will_do` uses MTTH-style scoring; search filters are per-focus UI filter tags.
 

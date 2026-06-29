@@ -9,7 +9,7 @@ Scope: all Soviet Collapse focus trees in `common/national_focus/005_soviet_coll
 - Repo instructions: `AGENTS.md`
 - Skill: `.agents/skills/hoi4-focus-trees/SKILL.md`
 - Offline wiki snapshot: Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding
-- Vanilla docs: `~/projects/Hearts of Iron IV/documentation/script_concept_documentation.md`, `effects_documentation.md`, `triggers_documentation.md`
+- Vanilla docs: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md`, `effects_documentation.md`, `triggers_documentation.md`
 - Vanilla focus precedents: `common/national_focus/soviet.txt`, `china_warlord.txt`, `italy.txt`
 - Event005 design docs: `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_5_focus_trees.md`, `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_6_countries_splinters_restorations.md`, `docs/events/005_soviet_collapse.md`
 

@@ -46,11 +46,11 @@ Offline Paradox wiki snapshot:
 
 Vanilla references:
 
-- `~/projects/Hearts of Iron IV/documentation/script_concept_documentation.md`
-- `~/projects/Hearts of Iron IV/documentation/effects_documentation.md`
-- `~/projects/Hearts of Iron IV/documentation/triggers_documentation.md`
-- `~/projects/Hearts of Iron IV/documentation/modifiers_documentation.md`
-- `~/projects/Hearts of Iron IV/common/national_focus/generic.txt`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/modifiers_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/generic.txt`
 - Vanilla Finland focus-tree snippets for `ai_will_do`, `search_filters`, mutually exclusive branches, and prerequisite structure.
 
 ## Files Audited

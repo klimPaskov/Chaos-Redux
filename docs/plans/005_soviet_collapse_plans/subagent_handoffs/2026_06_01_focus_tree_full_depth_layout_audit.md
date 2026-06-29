@@ -34,13 +34,13 @@ Offline Paradox wiki pages consulted before inspecting/editing focus files:
 
 Vanilla documentation/examples consulted:
 
-- `~/projects/Hearts of Iron IV/documentation/effects_documentation.md`
-- `~/projects/Hearts of Iron IV/documentation/triggers_documentation.md`
-- `~/projects/Hearts of Iron IV/documentation/modifiers_documentation.md`
-- `~/projects/Hearts of Iron IV/documentation/script_concept_documentation.md`
-- `~/projects/Hearts of Iron IV/common/decisions/_documentation.md`
-- `~/projects/Hearts of Iron IV/common/ai_strategy/_documentation.md`
-- `~/projects/Hearts of Iron IV/common/focus_inlay_windows/documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/modifiers_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/decisions/_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/ai_strategy/_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/focus_inlay_windows/documentation.md`
 - Vanilla focus precedents from `common/national_focus/generic.txt`, `common/national_focus/finland.txt`, and `common/national_focus/spain.txt`
 
 Event005 design references consulted:

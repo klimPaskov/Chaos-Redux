@@ -1283,15 +1283,15 @@ When a spec or asset prompt asks for generated or sourced assets, tell the asset
 Use Linux project paths:
 
 ```text
-~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/ideas
-~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/news_event_images
-~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/report_event_images
-~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/super_event_images
-~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/tech_icons
-~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/achievements
-~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/decisions
-~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/flags
-~/projects/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/focuses
+C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/ideas
+C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/news_event_images
+C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/report_event_images
+C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/super_event_images
+C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/tech_icons
+C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/achievements
+C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/decisions
+C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/flags
+C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/focuses
 ```
 
 Reference mapping:

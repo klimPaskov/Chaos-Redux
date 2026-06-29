@@ -20,8 +20,8 @@ Reference inspection:
 
 - `.agents/skills/chaos-redux-event-assets/assets/focuses/`
 - `.agents/skills/chaos-redux-event-assets/assets/achievements/`
-- `~/projects/Hearts of Iron IV/gfx/interface/goals/`
-- `~/projects/Hearts of Iron IV/gfx/achievements/`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/interface/goals/`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/achievements/`
 
 Contact sheets:
 

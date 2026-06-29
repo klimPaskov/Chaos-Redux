@@ -70,8 +70,8 @@ Read and follow:
 - `.agents/skills/chaos-redux-event-assets/SKILL.md` only when asset references or `.gfx` wiring need cleanup
 - `.agents/skills/chaos-redux-super-events/SKILL.md` when super-event wiring, text, audio, image references, or docs are affected
 - relevant offline Paradox wiki pages in `paradox_wiki/`
-- relevant vanilla documentation in `~/projects/Hearts of Iron IV/documentation`
-- relevant vanilla examples under `~/projects/Hearts of Iron IV/`
+- relevant vanilla documentation in `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation`
+- relevant vanilla examples under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/`
 
 Inspect existing reusable helper and tuning files before creating new helpers:
 

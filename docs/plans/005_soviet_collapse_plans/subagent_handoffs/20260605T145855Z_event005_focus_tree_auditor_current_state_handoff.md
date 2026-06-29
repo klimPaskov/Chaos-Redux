@@ -25,10 +25,10 @@ Required references read before opening/editing focus files:
 - `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md`
 - `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`
 - `paradox_wiki/Localisation - Hearts of Iron 4 Wiki.md`
-- `/home/klim/projects/Hearts of Iron IV/documentation/effects_documentation.md`
-- `/home/klim/projects/Hearts of Iron IV/documentation/triggers_documentation.md`
-- `/home/klim/projects/Hearts of Iron IV/common/focus_inlay_windows/documentation.md`
-- Vanilla focus precedent: `/home/klim/projects/Hearts of Iron IV/common/national_focus/china_nationalist.txt`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md`
+- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/focus_inlay_windows/documentation.md`
+- Vanilla focus precedent: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/china_nationalist.txt`
 
 ## Files changed
 

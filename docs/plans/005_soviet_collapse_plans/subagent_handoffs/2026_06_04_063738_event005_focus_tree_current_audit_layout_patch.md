@@ -21,8 +21,8 @@ Required references consulted before patching:
 - `.agents/skills/hoi4-focus-trees/SKILL.md`
 - `paradox_wiki/National focus modding - Hearts of Iron 4 Wiki.md`
 - Required core offline wiki pages listed in `AGENTS.md`
-- Vanilla docs under `~/projects/Hearts of Iron IV/documentation`, including `effects_documentation.md`, `triggers_documentation.md`, and `script_concept_documentation.md`
-- Vanilla focus precedent from `~/projects/Hearts of Iron IV/common/national_focus/uruguay.txt`
+- Vanilla docs under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation`, including `effects_documentation.md`, `triggers_documentation.md`, and `script_concept_documentation.md`
+- Vanilla focus precedent from `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/uruguay.txt`
 
 ## Files Changed
 

@@ -234,7 +234,7 @@ Remaining unlock gaps:
 Commands/checks run:
 - Read required repo instructions and focus/event/decision/assets/improvement/subagent skills.
 - Read offline wiki core pages and National Focus Modding page.
-- Read vanilla documentation from `~/projects/Hearts of Iron IV/documentation`.
+- Read vanilla documentation from `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation`.
 - Parsed all four focus files.
 - Brace balance: all four focus files ended at depth 0 with no negative depth.
 - Duplicate focus id scan: 0 duplicates across 1,698 focus ids.
