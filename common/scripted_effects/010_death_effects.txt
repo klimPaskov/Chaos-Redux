@@ -488,9 +488,21 @@ death_strip_current_state_buildings = {
 death_wither_divisions_in_current_state = {
 	damage_units = {
 		state = THIS
-		limit = { NOT = { is_death_country = yes } }
-		org_damage = 0.80
-		str_damage = 0.35
+		limit = { uses_normal_civilian_systems = yes }
+		org_damage = constant:death_wither_damage.active_living_org
+		str_damage = constant:death_wither_damage.active_living_strength
+		ratio = yes
+		army = yes
+		navy = no
+	}
+	damage_units = {
+		state = THIS
+		limit = {
+			is_actual_nonhuman_country = yes
+			NOT = { is_death_country = yes }
+		}
+		org_damage = constant:death_wither_damage.active_nonhuman_org
+		str_damage = constant:death_wither_damage.active_nonhuman_strength
 		ratio = yes
 		army = yes
 		navy = no
@@ -500,9 +512,21 @@ death_wither_divisions_in_current_state = {
 death_wither_border_divisions_in_current_state = {
 	damage_units = {
 		state = THIS
-		limit = { NOT = { is_death_country = yes } }
-		org_damage = 0.08
-		str_damage = 0.015
+		limit = { uses_normal_civilian_systems = yes }
+		org_damage = constant:death_wither_damage.border_living_org
+		str_damage = constant:death_wither_damage.border_living_strength
+		ratio = yes
+		army = yes
+		navy = no
+	}
+	damage_units = {
+		state = THIS
+		limit = {
+			is_actual_nonhuman_country = yes
+			NOT = { is_death_country = yes }
+		}
+		org_damage = constant:death_wither_damage.border_nonhuman_org
+		str_damage = constant:death_wither_damage.border_nonhuman_strength
 		ratio = yes
 		army = yes
 		navy = no
@@ -2497,18 +2521,20 @@ death_attempt_coastal_jump = {
 death_spawn_passive_hosts_in_current_state = {
 	if = {
 		limit = { death_is_valid_ghost_host_spawn_state = yes }
-		DTH = {
-			add_manpower = constant:death_ghosts.manpower_per_passive
-			add_equipment_to_stockpile = {
-				type = infantry_equipment
-				amount = constant:death_ghosts.infantry_equipment_per_passive
+		hidden_effect = {
+			DTH = {
+				add_manpower = constant:death_ghosts.manpower_per_passive
+				add_equipment_to_stockpile = {
+					type = infantry_equipment
+					amount = constant:death_ghosts.infantry_equipment_per_passive
+				}
 			}
-		}
-		create_unit = {
-			division = "name = \"Silent Host\" division_template = \"Death Passive Host\" start_experience_factor = 0.05 start_equipment_factor = 1 start_manpower_factor = 1"
-			owner = DTH
-			count = 1
-			allow_spawning_on_enemy_provs = yes
+			create_unit = {
+				division = "name = \"Silent Host\" division_template = \"Death Passive Host\" start_experience_factor = 0.05 start_equipment_factor = 1 start_manpower_factor = 1"
+				owner = DTH
+				count = 1
+				allow_spawning_on_enemy_provs = yes
+			}
 		}
 	}
 }
@@ -2516,18 +2542,20 @@ death_spawn_passive_hosts_in_current_state = {
 death_spawn_stronger_hosts_in_current_state = {
 	if = {
 		limit = { death_is_valid_ghost_host_spawn_state = yes }
-		DTH = {
-			add_manpower = constant:death_ghosts.manpower_per_stronger
-			add_equipment_to_stockpile = {
-				type = infantry_equipment
-				amount = constant:death_ghosts.infantry_equipment_per_stronger
+		hidden_effect = {
+			DTH = {
+				add_manpower = constant:death_ghosts.manpower_per_stronger
+				add_equipment_to_stockpile = {
+					type = infantry_equipment
+					amount = constant:death_ghosts.infantry_equipment_per_stronger
+				}
 			}
-		}
-		create_unit = {
-			division = "name = \"Hollow Host\" division_template = \"Death Hollow Host\" start_experience_factor = 0.15 start_equipment_factor = 1 start_manpower_factor = 1"
-			owner = DTH
-			count = 1
-			allow_spawning_on_enemy_provs = yes
+			create_unit = {
+				division = "name = \"Hollow Host\" division_template = \"Death Hollow Host\" start_experience_factor = 0.15 start_equipment_factor = 1 start_manpower_factor = 1"
+				owner = DTH
+				count = 1
+				allow_spawning_on_enemy_provs = yes
+			}
 		}
 	}
 }
@@ -2535,18 +2563,20 @@ death_spawn_stronger_hosts_in_current_state = {
 death_spawn_world_end_hosts_in_current_state = {
 	if = {
 		limit = { death_is_valid_ghost_host_spawn_state = yes }
-		DTH = {
-			add_manpower = constant:death_ghosts.manpower_per_world_end
-			add_equipment_to_stockpile = {
-				type = infantry_equipment
-				amount = constant:death_ghosts.infantry_equipment_per_world_end
+		hidden_effect = {
+			DTH = {
+				add_manpower = constant:death_ghosts.manpower_per_world_end
+				add_equipment_to_stockpile = {
+					type = infantry_equipment
+					amount = constant:death_ghosts.infantry_equipment_per_world_end
+				}
 			}
-		}
-		create_unit = {
-			division = "name = \"Last Shore Host\" division_template = \"Death Last Shore Host\" start_experience_factor = 0.35 start_equipment_factor = 1 start_manpower_factor = 1"
-			owner = DTH
-			count = 1
-			allow_spawning_on_enemy_provs = yes
+			create_unit = {
+				division = "name = \"Last Shore Host\" division_template = \"Death Last Shore Host\" start_experience_factor = 0.35 start_equipment_factor = 1 start_manpower_factor = 1"
+				owner = DTH
+				count = 1
+				allow_spawning_on_enemy_provs = yes
+			}
 		}
 	}
 }
