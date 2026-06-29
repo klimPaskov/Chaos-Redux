@@ -7,6 +7,47 @@
 # offices, scenario launches, and cleanup.
 # ============================================================================
 
+@natural_disasters_super_event_visible_days = 12
+
+natural_disasters_show_great_rupture_super_event = {
+	if = {
+		limit = { NOT = { has_global_flag = natural_disasters_super_event_great_rupture_seen } }
+		set_global_flag = natural_disasters_super_event_great_rupture_seen
+		set_global_flag = { flag = super_event_visible days = @natural_disasters_super_event_visible_days value = 67 }
+		set_variable = { global.current_super_event_audio_id = constant:natural_disasters_super_event.great_rupture }
+		every_country = {
+			limit = { is_ai = no }
+			play_current_super_event_audio = yes
+		}
+	}
+}
+
+natural_disasters_show_massive_eruption_super_event = {
+	if = {
+		limit = { NOT = { has_global_flag = natural_disasters_super_event_massive_eruption_seen } }
+		set_global_flag = natural_disasters_super_event_massive_eruption_seen
+		set_global_flag = { flag = super_event_visible days = @natural_disasters_super_event_visible_days value = 68 }
+		set_variable = { global.current_super_event_audio_id = constant:natural_disasters_super_event.massive_eruption }
+		every_country = {
+			limit = { is_ai = no }
+			play_current_super_event_audio = yes
+		}
+	}
+}
+
+natural_disasters_show_skyfall_super_event = {
+	if = {
+		limit = { NOT = { has_global_flag = natural_disasters_super_event_skyfall_seen } }
+		set_global_flag = natural_disasters_super_event_skyfall_seen
+		set_global_flag = { flag = super_event_visible days = @natural_disasters_super_event_visible_days value = 69 }
+		set_variable = { global.current_super_event_audio_id = constant:natural_disasters_super_event.skyfall }
+		every_country = {
+			limit = { is_ai = no }
+			play_current_super_event_audio = yes
+		}
+	}
+}
+
 natural_disasters_initialize_sequence_context = {
 	if = {
 		limit = { NOT = { has_variable = global.natural_disasters_sequence_counter } }
@@ -2768,6 +2809,7 @@ natural_disasters_start_meteor_cluster_chain_from_state = {
 		set_variable = { natural_disasters_chain_warning_quality = constant:natural_disasters_warning_score.unreliable_warning_base }
 		set_variable = { natural_disasters_chain_anchor_state_score = PREV.state_population_k }
 		set_country_flag = nd_cat_meteor_storm_command_active
+		natural_disasters_show_skyfall_super_event = yes
 		natural_disasters_schedule_chain_controller_meteor = yes
 	}
 }
@@ -2792,6 +2834,7 @@ natural_disasters_start_rupture_wave_chain_from_state = {
 			limit = { PREV = { natural_disasters_state_is_coastal_or_port = yes } }
 			set_country_flag = natural_disasters_pending_tsunami_chain
 		}
+		natural_disasters_show_great_rupture_super_event = yes
 		natural_disasters_schedule_chain_controller_rupture = yes
 	}
 }
@@ -2817,6 +2860,7 @@ natural_disasters_start_massive_eruption_chain_from_state = {
 			limit = { PREV = { natural_disasters_state_is_coastal_or_port = yes } }
 			set_country_flag = natural_disasters_pending_tsunami_chain
 		}
+		natural_disasters_show_massive_eruption_super_event = yes
 		natural_disasters_schedule_chain_controller_eruption = yes
 	}
 }

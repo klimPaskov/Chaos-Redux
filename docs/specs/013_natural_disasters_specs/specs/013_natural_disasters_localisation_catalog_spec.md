@@ -16,7 +16,7 @@ Use dynamic text for:
 - warning state,
 - recovery state,
 - refugee or aftermath state,
-- first abnormal disaster family when the Evolution III super-event fires.
+- first great rupture wave, massive eruption, and meteor cluster when their Evolution III super-events fire.
 
 Do not expose hidden weights, exact variable names, raw building damage formulas, or achievement conditions in ordinary event text.
 

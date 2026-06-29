@@ -2,7 +2,7 @@
 
 Event 013 is `Natural Disasters`, a minor repeatable event rooted at `chaosx.nr13.1`. It has no world-end branch. It uses one hidden Event 13 entry to start a delayed disaster sequence, then runs warning, impact, aftermath, and recovery reports through triggered subevents that do not write new random-event history rows.
 
-Event 13 follows `docs/specs/013_natural_disasters_specs/` as the source package. It has no Evolution III super-event package, so no super-event quote, title, remark, image, or audio package belongs to this event.
+Event 13 follows `docs/specs/013_natural_disasters_specs/` as the source package. It has three non-terminal Evolution III super-events for the largest abnormal disaster families: `The Great Rupture` in slot `67`, `The Mountain Unsealed` in slot `68`, and `Stones from Heaven` in slot `69`. These broadcasts mark catastrophic disaster escalation and do not create a world-end branch.
 
 ## Flow
 
@@ -76,6 +76,16 @@ SCN-007 is `Disaster Barrage`. It is launchable directly from the scenario contr
 
 News uses the last affected state as context. It requires a scenario-scale sequence, abnormal sequence, severe or extreme final hit, or large recorded civilian death report, then checks the global Event 13 news cooldown and a family-specific cooldown before firing the matching family news item.
 
+## Super-Events
+
+The largest abnormal disasters use the shared super-event radio stack.
+
+- `natural_disasters_start_rupture_wave_chain_from_state` can fire `The Great Rupture` once per campaign.
+- `natural_disasters_start_massive_eruption_chain_from_state` can fire `The Mountain Unsealed` once per campaign.
+- `natural_disasters_start_meteor_cluster_chain_from_state` can fire `Stones from Heaven` once per campaign.
+
+Delayed follow-up impacts inside those chains do not fire more super-events and do not create extra random-event history rows. The research, quote, image, and audio package is recorded in `docs/super_events/013_natural_disasters_super_event_research.md`.
+
 ## Gameplay Surfaces
 
 - Event script: `events/013_natural_disasters.txt`
@@ -91,6 +101,7 @@ News uses the last affected state as context. It requires a scenario-scale seque
 - Scripted GUI: `common/scripted_guis/013_natural_disasters_scripted_guis.txt`, `interface/013_natural_disasters.gui`
 - Player localisation: `localisation/english/013_natural_disasters_l_english.yml`
 - Assets: `interface/013_natural_disasters.gfx`, `gfx/event_pictures/013_natural_disasters/`, `gfx/interface/decisions/natural_disasters/`, `gfx/interface/animated/natural_disasters/`, and `gfx/achievements/`
+- Super-event assets: `interface/chaosx_super_events.gfx`, `gfx/super_events/super_event_nd_great_rupture.dds`, `gfx/super_events/super_event_nd_massive_eruption.dds`, `gfx/super_events/super_event_nd_skyfall.dds`, `music/super_event_natural_disasters_*.ogg`, and `sound/chaosx_super_event_natural_disasters_*.wav`
 - Shared integration: Chaos Meter deaths cause, event log detail pages, event cluster detail pages, triggerable scenario controls, and achievement localisation.
 
 ## Assets
@@ -118,6 +129,12 @@ Report and news sprites:
 - `GFX_news_event_nd_great_rupture`
 - `GFX_news_event_nd_massive_eruption`
 - `GFX_news_event_nd_meteor_showers`
+
+Super-event radio sprites:
+
+- `GFX_super_event_nd_great_rupture`
+- `GFX_super_event_nd_massive_eruption`
+- `GFX_super_event_nd_skyfall`
 
 Decision category sprites:
 

@@ -4,6 +4,26 @@ Active `.gfx` file: `interface/013_natural_disasters.gfx`
 
 All sprite names below are wired through Event 13 gameplay files.
 
+## Super-event radio images
+
+These use the shared super-event radio frame and are wired through `interface/chaosx_super_events.gfx`, not `interface/013_natural_disasters.gfx`.
+
+- `GFX_super_event_nd_great_rupture`
+  - Final DDS path: `gfx/super_events/super_event_nd_great_rupture.dds`
+  - Package DDS path: `docs/assets/013_natural_disasters/dds/super_event_nd_great_rupture.dds`
+  - Super-event slot: `67`
+  - Use notes: fault split, broken rail, collapsed crossing, and dense urban damage fit the abnormal great-rupture chain.
+- `GFX_super_event_nd_massive_eruption`
+  - Final DDS path: `gfx/super_events/super_event_nd_massive_eruption.dds`
+  - Package DDS path: `docs/assets/013_natural_disasters/dds/super_event_nd_massive_eruption.dds`
+  - Super-event slot: `68`
+  - Use notes: ash plume, airfield closure, port disruption, and evacuee movement fit the abnormal massive eruption chain.
+- `GFX_super_event_nd_skyfall`
+  - Final DDS path: `gfx/super_events/super_event_nd_skyfall.dds`
+  - Package DDS path: `docs/assets/013_natural_disasters/dds/super_event_nd_skyfall.dds`
+  - Super-event slot: `69`
+  - Use notes: meteor streaks, crater field, rail yard, observatory, and urban fires fit the abnormal meteor cluster chain.
+
 ## Report event pictures
 
 - `report_event_nd_flood`

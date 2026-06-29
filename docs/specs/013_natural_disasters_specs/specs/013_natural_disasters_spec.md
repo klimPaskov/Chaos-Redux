@@ -334,7 +334,7 @@ If Event 13 has not fired yet and the world is already at a higher chaos tier, t
 
 - Evolution I pre-fire opening uses the expanded family set and a larger sequence.
 - Evolution II pre-fire opening can start with a regional disaster system and immediately show the recovery category.
-- Evolution III pre-fire opening can open with one abnormal family, but only if chaos and weighting make that appropriate. The first abnormal opening should be newsworthy and should use the super-event gate only once.
+- Evolution III pre-fire opening can open with one abnormal family, but only if chaos and weighting make that appropriate. The first great rupture wave, first massive eruption, and first meteor cluster can each use a family-specific non-terminal super-event gate once per campaign.
 
 ## Evolution I, Varied Local Disasters
 
@@ -401,7 +401,7 @@ Evolution III escalates the event into high-chaos disasters that appear impossib
 - Raises damage ceilings and dynamic death-rate ceilings for severe variants. These ceilings cap percentages, not absolute victims.
 - Allows several states to take building damage in one abnormal incident.
 - Creates stronger recovery missions and longer aftermaths.
-- May fire a super-event once for the first true abnormal disaster season, but not for every later abnormal disaster.
+- May fire a family-specific non-terminal super-event once each for the first great rupture wave, first massive eruption, and first meteor cluster. Later delayed impacts and later repeats should not fire additional super-events.
 
 ### Earth Earthquake integration
 
@@ -578,7 +578,7 @@ The rework is complete only when all listed surfaces are aligned.
 | Manual scenario | Disaster Barrage scenario launches directly, reads type and intensity controls, and bypasses normal prerequisites only during setup. |
 | GUI | Disaster map or category presentation shows active warnings, impacts, aftermaths, and abnormal corridors when relevant. |
 | Assets | Decision icons, category icon, idea icons, report or news images, GUI assets, animated assets, and static fallbacks are produced or explicitly blocked. |
-| Super-event | First Evolution III abnormal disaster season can fire a non-terminal super-event if implemented, with research-gated text and licensed audio. |
+| Super-event | First great rupture wave, first massive eruption, and first meteor cluster can each fire a non-terminal super-event with research-gated text, generated radio art, and licensed or public domain audio. |
 | Docs | Event doc, event details, cluster details, scenario details, and spreadsheet rows match the implemented in-game wording. |
 | Validation | Completion audit verifies no log spam, no world-end branch, no placeholder active disaster events, no missing localisation, no missing assets, and no recovery exploit loops. |
 

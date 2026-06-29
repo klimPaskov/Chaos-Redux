@@ -29,8 +29,15 @@ Source mode summary: generated period-documentary disaster scenes were appropria
 - `news_event_nd_massive_eruption`: 1936-1945 black and white press photograph, massive volcanic eruption dominating a port town and bay, towering ash plume, ashfall over rooftops, harbor evacuation and grounded ships, wide horizontal newspaper composition, strong contrast, no readable text, no modern objects.
 - `news_event_nd_disaster_barrage`: 1936-1945 black and white press photograph, disaster barrage broadcast scene over one hard-hit region, emergency crews and refugees at a damaged rail junction while floodwater, distant wildfire smoke, and storm debris mark multiple simultaneous disasters, wide newspaper banner composition, readable central subject, no readable text, no modern objects.
 
+## Super-event radio image prompts
+
+- `super_event_nd_great_rupture`: 1936-1945 period documentary super-event radio image, catastrophic earthquake rupture through a dense wartime city and rail district, long ground split, collapsed bridge spans, broken rail lines, rescue crews and civilians in period clothing, black and white press realism, strong central composition, no readable text, no modern objects.
+- `super_event_nd_massive_eruption`: 1936-1945 period documentary super-event radio image, massive volcanic eruption over a port city and airfield, towering ash column, ashfall across grounded aircraft, trucks, harbor, and evacuees, black and white press realism, strong central composition, no readable text, no modern objects.
+- `super_event_nd_skyfall`: 1936-1945 period documentary super-event radio image, meteor shower over a night city, rail yard, and observatory, bright descending streaks, crater field, urban fires, rescue crews and civilians in period clothing, black and white press realism, strong central composition, no readable text, no modern objects.
+
 ## Local processing notes
 
 - Report images were processed with `.agents/skills/chaos-redux-event-assets/tools/process_report_event_image.py` to apply the house report-card treatment.
 - News images were cover-cropped to `397x153`, converted to black and white, and normalized to stronger press-photo contrast.
+- Super-event radio images were cover-cropped to `457x328`, converted to black and white, normalized, and exported as uncompressed DDS.
 - DDS export used `convert -define dds:compression=none`.
