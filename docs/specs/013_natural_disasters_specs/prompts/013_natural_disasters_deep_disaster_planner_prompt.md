@@ -14,7 +14,7 @@ Non negotiables:
 - Existing unreworked Heat Wave, Sandstorm, Asteroid Incoming, Meteor Shower, Massive Flood, BOOM, and seismic placeholder events are not logic sources.
 - Deaths are dynamic percentages of current state population, never fixed amounts.
 - Big disasters need family specific categories.
-- A shallow generic recovery office is insufficient.
+- A shallow generic recovery overview is insufficient.
 - Each disaster family needs target logic, effects, aftermath, AI, recovery, cleanup, and validation.
 
 Deliver an implementation ready handoff or audit. Do not replace the source spec with vague suggestions.

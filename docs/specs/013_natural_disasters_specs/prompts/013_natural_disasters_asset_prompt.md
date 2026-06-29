@@ -24,7 +24,7 @@ Target sizes follow the asset skill. Decision icons are 32 by 32. Idea and natio
 
 | Asset slug | Type | Source mode | Use | Visual direction |
 | --- | --- | --- | --- | --- |
-| decision_category_natural_disaster_recovery | Decision category icon | Generated icon | Natural Disaster Recovery category. | Emergency office seal with storm, cracked ground, and rescue mark. No text. |
+| decision_category_natural_disaster_recovery | Decision category icon | Generated icon | Natural Disaster Recovery category. | Recovery overview emblem with storm, cracked ground, and rescue mark. No text. |
 | decision_evacuate_disaster_zone | Decision icon | Generated icon | Evacuation decision. | Train and shelter silhouette, readable at small size. |
 | decision_rescue_engineers | Decision icon | Generated icon | Rescue engineers. | Helmet, bridge, wrench, or rescue beam. |
 | decision_open_relief_corridor | Decision icon | Generated icon | Foreign relief. | Convoy or train corridor with aid crate. |
@@ -50,7 +50,7 @@ Target sizes follow the asset skill. Decision icons are 32 by 32. Idea and natio
 | idea_disaster_fire_front | State modifier icon | Generated icon | Wildfire spread. | Fire line over trees or hills. |
 | idea_disaster_crater_fields | State modifier icon | Generated icon | Meteor aftermath. | Crater and rail damage. |
 | idea_disaster_refugee_pressure | State modifier icon | Generated icon | Displaced people and shelter strain. | Tents and route marker. |
-| idea_disaster_recovery_office | National spirit or category icon | Generated icon | Country-level recovery office if used. | Ledger, radio, rescue helmet, and map. |
+| idea_disaster_recovery_overview | National spirit or category icon | Generated icon | Country-level recovery overview if used. | Ledger, radio, rescue helmet, and map. |
 
 ## Report event images
 
@@ -143,25 +143,25 @@ Do not wire assets in the asset subagent. The main implementation agent owns `.g
 
 ## V3 big disaster category asset expansion
 
-The asset pass must no longer treat the recovery interface as one generic office. Big disaster categories need their own category icon or category header motif, with static and animated variants where the UI state benefits from motion.
+The asset pass must no longer treat the recovery interface as one generic overview. Big disaster categories need their own category icon, category picture, or header motif, with static and animated variants where the UI state benefits from motion.
 
 Required category icon or header motifs:
 
 - Flood Relief Authority: broken levee, rescue boat, flooded rail.
 - Cyclone Emergency Command: storm spiral, port light, evacuation route.
-- Severe Storm Office: lightning over airfield or rail yard.
+- Severe Storm Response Board: lightning over airfield or rail yard.
 - Storm Corridor Command: animated moving storm marker and forecast path.
 - Seismic Emergency Authority: cracked bridge, rescue lamp, rubble.
 - Great Rupture Command: animated seismic wave and cracked region marker.
 - Tsunami Coastal Command: wave over harbor and high ground marker.
-- Volcanic Crisis Office: ash cloud, lahar valley, volcano silhouette.
+- Volcanic Crisis Board: ash cloud, lahar valley, volcano silhouette.
 - Massive Eruption Command: animated ash cloud and eruption pulse.
 - Firefront Command: fire line, smoke, rail bridge.
-- Drought and Famine Office: cracked reservoir, grain ration, dry field.
-- Heat Emergency Office: heat shelter, water reserve, grid strain.
+- Drought and Famine Board: cracked reservoir, grain ration, dry field.
+- Heat Emergency Board: heat shelter, water reserve, grid strain.
 - Winter Emergency Directorate: frozen rail switch, fuel reserve, shelter.
-- Dust Emergency Office: dust wall over airfield, filter mask, well marker.
-- Landslide Rescue Office: buried rail pass, unstable slope.
+- Dust Emergency Board: dust wall over airfield, filter mask, well marker.
+- Landslide Rescue Board: buried rail pass, unstable slope.
 - Slope Collapse Response: mine collapse, rockfall tunnel.
 - Skyfall Emergency Bureau: meteor streak, shelter, cratered rail.
 - Meteor Storm Command: crater cluster, national shelter, airspace closure.

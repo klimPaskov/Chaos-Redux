@@ -40,9 +40,9 @@ Read and follow `AGENTS.md`, `chaos-redux-events`, `hoi4-decisions-missions`, `c
 
 ## Big disaster category requirement
 
-Do not implement one generic recovery list for every major disaster. The generic Natural Disaster Recovery office is the overview and small incident hub. Every serious, regional, catastrophic, and abnormal disaster that directly hits a country opens its family category from `013_natural_disasters_big_disaster_decision_categories.md`.
+Do not implement one generic recovery list for every major disaster. The generic Natural Disaster Recovery overview is the small incident hub. Every serious, regional, catastrophic, and abnormal disaster that directly hits a country opens its family category from `013_natural_disasters_big_disaster_decision_categories.md`.
 
-Required family categories include Flood Relief Authority, Cyclone Emergency Command, Severe Storm Office, Storm Corridor Command, Seismic Emergency Authority, Great Rupture Command, Tsunami Coastal Command, Volcanic Crisis Office, Massive Eruption Command, Firefront Command, Drought and Famine Office, Heat Emergency Office, Winter Emergency Directorate, Dust Emergency Office, Landslide Rescue Office, Slope Collapse Response, Skyfall Emergency Bureau, Meteor Storm Command, and Famine and Displacement Commission.
+Required family categories include Flood Relief Authority, Cyclone Emergency Command, Severe Storm Response Board, Storm Corridor Command, Seismic Emergency Authority, Great Rupture Command, Tsunami Coastal Command, Volcanic Crisis Board, Massive Eruption Command, Firefront Command, Drought and Famine Board, Heat Emergency Board, Winter Emergency Directorate, Dust Emergency Board, Landslide Rescue Board, Slope Collapse Response, Skyfall Emergency Bureau, Meteor Storm Command, and Famine and Displacement Commission.
 
 Each category needs visible values, decision families, missions, non political costs, AI use, localisation, icons, cleanup, and category hiding when the disaster ends. Categories must be curated, with active caps and phase filters.
 
