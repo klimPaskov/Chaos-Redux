@@ -78,6 +78,8 @@ Avoid obvious lines such as:
 
 Those are baseline system responsibilities. Include technical notes only when they prevent a likely mistake, explain non-obvious behavior, or define a unique rule for this event. Otherwise, its just noise.
 
+Do not create negative capability notes for absent event surfaces. If an event does not have a world-end scenario, do not mention world-end scenarios. If an event does not have a manual triggerable scenario, do not mention triggerable scenarios. Do not write sections, bullets, event-detail notes, spreadsheet-facing summaries, implementation prompts, or player-facing text that say `no world-end scenario`, `does not have a world-end scenario`, `no manual triggerable scenario`, `does not have a triggerable scenario`, or similar absence wording. Omit the surface completely unless it actually exists or the user explicitly asks for an explanation of why it is absent.
+
 ### Tone and presentation direction standard
 
 For every player-facing text surface, the planning spec should define the writing direction and leave finished wording to implementation. This includes event titles, event descriptions, report text, news text, focus text, decision text, option text, achievement text, super-event setup, GUI labels, route flavour, event-detail text, and spreadsheet-facing summaries.
@@ -95,17 +97,11 @@ Give the coding agent clear direction for:
 
 Do not provide pasteable localisation. Do not include `sample line`, `possible line`, `placeholder text`, `temporary title`, or exact draft wording that could be copied into localisation. When a structural label is needed for a file, row, route, branch, asset, or prompt, mark it as a working label, not final localisation.
 
-Text direction should avoid bland map-summary framing.
+Text direction should avoid bland map-summary framing and generic communications clichés. Do not make the emotional center of an event a changed map, a line of advance, a staff-table scene, a failed broadcast, or another stock image of crisis administration.
 
-Avoid making the core tone of an event revolve around:
+When planning player-facing warning, threat, suspicious-report, and escalation text, do not instruct the coding agent to say that something is a warning, that something is not a warning, that a threat is coming, or that a danger signal has appeared. The text should show the pattern through partial information: fearful witnesses, rumours, anomalies, mysterious powers seen, etc
 
-- borders shifting
-- the map changing
-- a region being redrawn
-- a front moving across a map
-- commanders looking at a table
-
-Those facts can appear when they matter, but they should be consequences or context. The direction should identify the country, movement, leader, cult, army, force, plague, machine, ritual, disaster, or strange condition that drives the event.
+A report can make the player uneasy without naming the unease. Use mystery, information gaps, fear, institutional caution, rumours, and uncertain public interpretation. The player should infer that something may be wrong from the content and consequences, not from a label.
 
 When a concept benefits from mystery, fantasy, surrealism, myth, occult signs, prophecy, impossible resolve, strange energy, or unclear public rumours, state that direction clearly without drafting the final prose.
 
@@ -993,17 +989,13 @@ Leave out connections that feel artificial.
 
 Dangerous systems should not reveal themselves too early.
 
-Avoid blunt labels such as:
+Player-facing escalation text must not label itself as a warning, a non-warning, a threat, a danger signal, or a world-ending risk. Do not tell the coding agent to write text that announces what the player is supposed to infer. Do not frame an event-detail entry, report, news item, tooltip, decision category, focus description, super-event direction, or spreadsheet-facing summary around that direct label.
 
-- Warnings
-- Danger
-- Threat
-- World Ending Risk
-- any direct UI label that tells the player too plainly what is coming
+Use mysterious information, fear, and uncertainty instead. Early information should feel incomplete because people cannot yet explain what is happening.
 
-Early information should feel incomplete. Use uncertainty, conflicting reports, rumours, cautious diplomatic language, intelligence disagreements, unexplained incidents, and unclear public reactions.
+Do not build mystery from bureaucratic document motifs, archive-style secrecy, diplomatic evasions, or paperwork drama. Avoid staged timing contrasts that pair one observation with a later reveal or with denial by an authority. Describe the observed fear and uncertainty directly.
 
-The player should understand deeper danger through patterns and consequences over time.
+The player should understand deeper danger through patterns and consequences over time. It should not explain that the content is a warning or reassure the player that it is not one.
 
 ## 7. Depth and hidden connections
 
@@ -1153,6 +1145,7 @@ Avoid:
 - long sentences without actually saying anything
 - short staccato sentences that are dramatic and just make comprehension more confusing
 - option direction that would lead to bland placeholder buttons
+- absence notes for systems that are not present, such as saying an event has no world-end scenario or no manual triggerable scenario
 
 Mention implementation only where it matters for the design, such as super-event treatment, custom UI, AI behavior, documentation, assets, dynamic factors, focus tree structure, custom tags, or important system connections.
 
@@ -1166,41 +1159,41 @@ Important super-event boundary: this planning skill may define super-event role,
 
 1. Never use the em dash or semicolons in sentences.
 2. Absolutely avoid dialectical hedging. Do not frame sentences as thesis, antithesis, synthesis.
-   - Dialectical hedging examples:
-     - `The invasion is not merely a border crisis, but a crisis of identity.`
-     - `The regime is not only losing the war, it is losing itself.`
-     - `This is not just a strike. This is a warning.`
-     - `The cult is not fighting for land, but for meaning.`
-     - `The disaster is both a local tragedy and a global sign.`
-     - `The government is neither dead nor alive, but something worse.`
-     - `The army did not collapse. It transformed.`
-     - `This is less a rebellion than a confession.`
-     - `The question is not whether order can return, but what kind of order will survive.`
-     - `What looks like defeat is actually a new form of power.`
-   - Thesis, antithesis, synthesis examples:
-     - `The army claims the province is secure. Refugees say it is already lost. The truth lies between them.`
-     - `Some call the new state liberation. Others call it occupation. In reality, it is both.`
-     - `The priests call it a miracle. The generals call it a weapon. History will call it both.`
-     - `The committee promises order. The opposition sees tyranny. The new system contains both impulses.`
-     - `The papers call it a victory. The hospitals call it a defeat. The country has become both at once.`
-     - `The rebels ask for justice. The regime asks for peace. The settlement gives neither and both.`
+  - Dialectical hedging examples:
+    - `The invasion is not merely a border crisis, but a crisis of identity.`
+    - `The regime is not only losing the war, it is losing itself.`
+    - `This is not just a strike. This is a warning.`
+    - `The cult is not fighting for land, but for meaning.`
+    - `The disaster is both a local tragedy and a global sign.`
+    - `The government is neither dead nor alive, but something worse.`
+    - `The army did not collapse. It transformed.`
+    - `This is less a rebellion than a confession.`
+    - `The question is not whether order can return, but what kind of order will survive.`
+    - `What looks like defeat is actually a new form of power.`
+  - Thesis, antithesis, synthesis examples:
+    - `The army claims the province is secure. Refugees say it is already lost. The truth lies between them.`
+    - `Some call the new state liberation. Others call it occupation. In reality, it is both.`
+    - `The priests call it a miracle. The generals call it a weapon. History will call it both.`
+    - `The committee promises order. The opposition sees tyranny. The new system contains both impulses.`
+    - `The papers call it a victory. The hospitals call it a defeat. The country has become both at once.`
+    - `The rebels ask for justice. The regime asks for peace. The settlement gives neither and both.`
 3. Avoid AI-style explanatory templates. Do not write lines that sound prebuilt or reusable across any event.
 4. Absolutely avoid staccato sentences. Do not split one simple thought into a chain of tiny lines for artificial weight or dramatic effect. Use complete, readable sentences with enough context to be clear.
-   - Staccato examples:
-     - `The radios died. The roads emptied. The city listened.`
-     - `No orders. No mercy. No dawn.`
-     - `The border fell. Then the capital. Then the government.`
-     - `They marched. They burned. They vanished.`
-     - `A knock at the door. A list on the table. A train in the dark.`
-     - `The guns stopped. The screaming did not.`
-     - `First hunger. Then anger. Then flags.`
-     - `No king. No cabinet. No law.`
-     - `Ash in the streets. Smoke over the port. Silence at noon.`
-     - `One order. One shot. One missing officer.`
-     - `The gate opened. The crowd moved. The guards ran.`
+  - Staccato examples:
+    - `The radios died. The roads emptied. The city listened.`
+    - `No orders. No mercy. No dawn.`
+    - `The border fell. Then the capital. Then the government.`
+    - `They marched. They burned. They vanished.`
+    - `A knock at the door. A list on the table. A train in the dark.`
+    - `The guns stopped. The screaming did not.`
+    - `First hunger. Then anger. Then flags.`
+    - `No king. No cabinet. No law.`
+    - `Ash in the streets. Smoke over the port. Silence at noon.`
+    - `One order. One shot. One missing officer.`
+    - `The gate opened. The crowd moved. The guards ran.`
 5. Absolutely avoid empty dramatic filler. Do not lean on vague intensity words when concrete detail would do the work.
 6. Do not paste instruction text, task labels, prompt fragments, or process notes into in-game text, specs, docs, localisation, spreadsheet fields, or reports.
-   - For example, when I say: `Do not reveal the hidden mechanics here.`, don't write `This path purposely doesn't reveal the hidden mechanics`
+  - For example, when I say: `Do not reveal the hidden mechanics here.`, don't write `This path purposely doesn't reveal the hidden mechanics`
 
 ## 11. Specification shape
 
@@ -1211,6 +1204,8 @@ Choose the structure that best fits the event idea.
 The specification should still be easy for a coding agent to use. Use clear headings, explain the logic in a natural order, and make sure important design decisions are not buried.
 
 For major events, split the spec into parts if needed. Do not compress deep design just to fit one file.
+
+Only include sections for surfaces that exist or that need design. If a world-end scenario, manual triggerable scenario, super-event, focus tree, custom country, achievement set, or asset family is absent, omit that section instead of writing that it is absent. Because negative notes create noise and can mislead later agents into thinking the absence is a designed feature.
 
 ## 12. Depth and continuation
 

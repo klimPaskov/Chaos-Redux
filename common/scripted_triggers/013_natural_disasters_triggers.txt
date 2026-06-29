@@ -94,30 +94,45 @@ natural_disasters_state_is_dense_or_built_up = {
 
 natural_disasters_state_is_mountain_or_slope = {
 	OR = {
-		has_terrain = mountain
-		has_terrain = hills
 		has_state_flag = natural_disaster_slope_candidate
+		has_state_flag = natural_disaster_fault_candidate
+		has_state_flag = natural_disaster_volcanic_candidate
+		has_state_category = pastoral
+		has_state_category = rural
+		AND = {
+			infrastructure < 3
+			rail_way > 0
+		}
 	}
 }
 
 natural_disasters_state_is_arid_or_desert = {
 	OR = {
-		has_terrain = desert
-		infrastructure < 3
-		check_variable = { state_population_k > 1000 }
 		has_state_flag = natural_disaster_arid_candidate
 		has_state_flag = natural_disaster_drought_aftermath
 		has_state_flag = natural_disaster_heat_aftermath
+		AND = {
+			infrastructure < 3
+			NOT = { is_coastal = yes }
+		}
+		AND = {
+			infrastructure < 4
+			check_variable = { state_population_k < 750 }
+		}
 	}
 }
 
 natural_disasters_state_is_forest_or_fire_risk = {
 	OR = {
-		has_terrain = forest
-		has_terrain = hills
 		has_state_flag = natural_disaster_forest_candidate
 		has_state_flag = natural_disaster_drought_aftermath
 		has_state_flag = natural_disaster_heat_aftermath
+		has_state_category = pastoral
+		has_state_category = rural
+		AND = {
+			infrastructure < 4
+			check_variable = { state_population_k < 1000 }
+		}
 	}
 }
 
@@ -125,9 +140,8 @@ natural_disasters_state_is_cold_or_winter_risk = {
 	OR = {
 		has_state_flag = natural_disaster_cold_candidate
 		has_state_flag = natural_disaster_winter_aftermath
-		has_terrain = mountain
-		has_terrain = hills
 		infrastructure < 3
+		natural_disasters_state_is_mountain_or_slope = yes
 	}
 }
 
@@ -135,7 +149,7 @@ natural_disasters_state_is_volcanic_candidate = {
 	OR = {
 		has_state_flag = natural_disaster_volcanic_candidate
 		has_state_flag = natural_disaster_abnormal_volcanic_candidate
-		has_terrain = mountain
+		natural_disasters_state_is_mountain_or_slope = yes
 		is_island_state = yes
 		natural_disasters_state_is_coastal_or_port = yes
 	}
