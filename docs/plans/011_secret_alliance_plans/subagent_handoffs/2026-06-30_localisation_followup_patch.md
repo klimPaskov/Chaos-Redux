@@ -45,7 +45,7 @@ Audited Event 011 Secret Alliance localisation, scripted localisation, Event Det
 
 - Super-event quote: previously used only the second sentence of the researched Thucydides excerpt. Now uses the researched full excerpt and attribution from `docs/super_events/011_secret_alliance_super_event_research.md`.
 - Event Details and evolution details: previously named hidden-member war or war-caused reveal triggers directly. Now describe the same public collapse in in-world terms without exposing trigger phrasing.
-- Music labels: previously showed the working label `Secret Alliance Reveal`. The parent integration later moved Event 011 from the conflicting super-event slot `11` to slot `28`; Event 011 now shows the sourced track title `La Puerta Del Vino` across all slot `28` volume variants.
+- Music labels: slot `28` shows the sourced track title `La Puerta Del Vino` across all volume variants. The unused `Secret Alliance Reveal` title remains outside player-facing text.
 - Achievement localisation: several descriptions and tooltips were much weaker than the actual predicates in `common/achievements/chaos_redux_achievements.txt`. They now describe founding-member exposure, founding-member removal, low-turnout war reveal, border reprisal before exposure, friendly-government rally plus survival, minor target victory against a patron-backed pact, founding-member cleanup, clean evidence reveal, and war-case victory with no core-state loss.
 
 ## Missing key list

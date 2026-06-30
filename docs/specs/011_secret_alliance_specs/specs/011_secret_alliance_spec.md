@@ -4,7 +4,7 @@
 
 Event 011 starts as a quiet diplomatic conspiracy against the country that receives the event. Three eligible countries create a hidden anti-target pact. They are not at war with the target when chosen, and the selection strongly favors independent minor countries outside any faction. The pact is not a faction at first. It exists as a hidden compact, an intelligence network, a diplomatic promise, and a set of coordinated covert actions.
 
-The public name after reveal is dynamic: `Anti-[target country] Pact`. The hidden internal working label is `secret_alliance`. The implementation should keep all visible player text anchored on the target country's current public name and adjective where the surface supports it.
+The public name after reveal is dynamic: `Anti-[target country] Pact`. The implementation uses `secret_alliance` as its internal script stem. Visible player text should stay anchored on the target country's current public name and adjective where the surface supports it.
 
 The playable promise is that the player slowly learns that ordinary diplomatic friction is becoming coordinated pressure. The player should notice patterns before the conspiracy is fully known. Early incidents should feel plausible on their own. Later incidents should make the pattern harder to dismiss, then the decision category gives the player ways to investigate, harden the country, negotiate, and prepare for war.
 

@@ -1,6 +1,6 @@
 # Event 011 - Secret Alliance
 
-Event 011 is `Secret Alliance`, a minor fire-once event rooted at `chaosx.nr11.1`. It creates a hidden compact against one target country, grows through three evolution stages, and can become a public `Anti-[target country] Pact`. The event never opens as a public war pact first. It starts with diplomatic coldness, three eligible minor founders, and a hidden investigation state for the target.
+Event 011 is `Secret Alliance`, a minor fire-once event rooted at `chaosx.nr11.1`. Secret Alliance begins with foreign coldness around one target country. Couriers change routes, embassy language starts to match, and minor governments learn how private distance can become shared pressure. As the pattern grows, the room gains more chairs, a larger sponsor, and a public `Anti-[target country] Pact`. War with a hidden member can tear the deniable phase open and turn the compact into a named coalition.
 
 ## Flow
 

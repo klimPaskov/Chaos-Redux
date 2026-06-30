@@ -37,7 +37,7 @@
 - Before: Event Details and evolution bodies listed hidden mechanic behavior and decision surfaces directly.
 - After: They describe the visible diplomatic pattern, public pact, patron escalation, and war reveal in-world.
 - Before: `secret_alliance_alone_against_room_tooltip` used a literal working-style pact phrase.
-- After: It refers to the public Secret Alliance pact forming against the player without exposing a raw working label.
+- After: It refers to the public Secret Alliance pact forming against the player without exposing a raw internal key.
 - Before: `docs/events/011_secret_alliance.md` listed an older compact report sprite key, while the event and GFX registry use `GFX_report_event_secret_alliance_meeting`.
 - After: The doc asset list matches the implemented sprite.
 
@@ -48,7 +48,7 @@
 - Checked BOM status for the named Event 011 localisation files. Result: `011_anti_player_pact_l_english.yml`, `chaosx_achievements_l_english.yml`, `chaosx_event_names_l_english.yml`, and `chaosx_music_l_english.yml` are UTF-8 with BOM.
 - Checked named localisation files for odd unescaped quote counts. Result: no odd quote counts found.
 - Checked Event 011 scripted localisation and named dependent scripted-localisation files for brace balance. Result: balanced.
-- Searched Event 011 touched text for stale working labels, the stale compact sprite, the wrong scripted-localisation spelling, `.0` variable formatting, the stale motorized icon, update-history wording, em dashes, and semicolons. Result: no matches after patch.
+- Searched Event 011 touched text for stale internal labels, the stale compact sprite, the wrong scripted-localisation spelling, `.0` variable formatting, the stale motorized icon, update-history wording, em dashes, and semicolons. Result: no matches after patch.
 
 ## Skipped Validation
 

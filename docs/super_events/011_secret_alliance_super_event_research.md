@@ -28,7 +28,7 @@ This note covers text research only. It does not propose localisation edits, eve
 - `The Hidden Compact`
 - `Encirclement, Confirmed`
 
-Implementation note: if the faction itself is named `Anti-[Target Country] Pact`, the cleanest final localisation is to use that exact dynamic name as the super-event title as well, without adding `The`.
+Wiring note: if the faction itself is named `Anti-[Target Country] Pact`, use that exact dynamic name as the super-event title, without adding `The`.
 
 ## Main Quote Research
 
@@ -50,7 +50,7 @@ Implementation note: if the faction itself is named `Anti-[Target Country] Pact`
 - It sounds diplomatic and historical rather than mystical or melodramatic.
 - It supports a reveal that can tip directly into open war.
 
-### Exact wording recommendation for final localisation
+### Recommended Wording
 
 - Quote text:
   `The real cause I consider to be the one which was formally most kept out of sight. The growth of the power of Athens, and the alarm which this inspired in Lacedaemon, made war inevitable.`
@@ -112,7 +112,7 @@ Implementation note: if the faction itself is named `Anti-[Target Country] Pact`
 - It avoids melodrama and cheap comedy.
 - It avoids copyright risk entirely because it is an original line, not a borrowed quote.
 
-### Exact wording recommendation for final localisation
+### Recommended Wording
 
 - Button text:
   `The understanding is now public.`

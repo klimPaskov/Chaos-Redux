@@ -993,7 +993,7 @@ Player-facing escalation text must not label itself as a warning, a non-warning,
 
 Use mysterious information, fear, and uncertainty instead. Early information should feel incomplete because people cannot yet explain what is happening.
 
-Do not build mystery from bureaucratic document motifs, archive-style secrecy, diplomatic evasions, or paperwork drama. Avoid staged timing contrasts that pair one observation with a later reveal or with denial by an authority. Describe the observed fear and uncertainty directly.
+Do not build mystery from bureaucratic document motifs, archive-style secrecy, diplomatic evasions, or paperwork drama. Avoid staged contrast formulas that make tension from one side saying or seeing something while an official body denies, delays, softens, avoids, or reacts to it. Avoid timing formulas that make one observation happen before an official admission, public reaction, government response, or wider consequence. Describe the observed fear and uncertainty directly.
 
 The player should understand deeper danger through patterns and consequences over time. It should not explain that the content is a warning or reassure the player that it is not one.
 
@@ -1191,8 +1191,9 @@ Important super-event boundary: this planning skill may define super-event role,
     - `Ash in the streets. Smoke over the port. Silence at noon.`
     - `One order. One shot. One missing officer.`
     - `The gate opened. The crowd moved. The guards ran.`
-5. Absolutely avoid empty dramatic filler. Do not lean on vague intensity words when concrete detail would do the work.
-6. Do not paste instruction text, task labels, prompt fragments, or process notes into in-game text, specs, docs, localisation, spreadsheet fields, or reports.
+5. Avoid staged contrast formulas. Do not write sentences or paired clauses built as `claim X while officials Y`, `reports say X while authorities Y`, `people do X before governments Y`, `X happens before Y admits it`, or similar. Do not manufacture tension by contrasting unofficial fear with official denial, silence, delay, admission, or reaction. Write the observed fear, behaviour, rumours, anomalies, and consequences directly.
+6. Absolutely avoid empty dramatic filler. Do not lean on vague intensity words when concrete detail would do the work.
+7. Do not paste instruction text, task labels, prompt fragments, or process notes into in-game text, specs, docs, localisation, spreadsheet fields, or reports.
   - For example, when I say: `Do not reveal the hidden mechanics here.`, don't write `This path purposely doesn't reveal the hidden mechanics`
 
 ## 11. Specification shape

@@ -2,7 +2,7 @@
 
 Built-in generation mode: `image_gen`
 
-Parent correction note: the earlier animation frame drafts for `radio pulse`, `thread glow`, `seal crack`, and `border warning` were discarded after review because they did not meet the frame-source requirement. The final assets use imagegen source sheets cut into exact frames, with static fallbacks and horizontal DDS sheets.
+Final generation note: `radio pulse`, `thread glow`, `seal crack`, and `border warning` use imagegen source sheets cut into exact frames, with static fallbacks and horizontal DDS sheets.
 
 ## Radio pulse
 
