@@ -21,7 +21,7 @@ This log records the inputs inspected before the package was written.
 
 ## Spreadsheet inspection
 
-The active workbook in `/mnt/data/chaos_redux_events_catalog.xlsx` was inspected with the spreadsheet skill and `artifact_tool`. The Event 13 row in the active workbook has Natural Disasters as a Minor Repeatable event, Cluster ID 5, Low member severity, and To Be Reworked status, with empty detail and evolution fields. The scenario table has SCN-007 present but blank in the active workbook, so the package recommends using it for Disaster Barrage if still free during implementation.
+The active workbook in `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/docs/spreadsheets/chaos_redux_events_catalog.xlsx` was inspected with the spreadsheet skill and `artifact_tool`. The Event 13 row in the active workbook has Natural Disasters as a Minor Repeatable event, Cluster ID 5, Low member severity, and To Be Reworked status, with empty detail and evolution fields. The scenario table has SCN-007 present but blank in the active workbook, so the package recommends using it for Disaster Barrage if still free during implementation.
 
 The file search index also contained older or alternate workbook snapshots where Event 13 and Disaster Barrage had draft text. The user-provided brief and the active workbook were treated as source truth for this package.
 

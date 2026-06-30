@@ -60,4 +60,4 @@ Added asset package:
 
 - Current Fury gameplay focus DDS files were not used as source art.
 - Fury idea icons were not used as source art.
-- The chroma-key helper required Pillow, so a temporary venv was created at `/tmp/fury_focus_venv` to complete alpha cleanup. This did not change repo files.
+- The chroma-key helper required Pillow, so a temporary venv was created at `C:/Users/klimp/AppData/Local/Temp/fury_focus_venv` to complete alpha cleanup. This did not change repo files.

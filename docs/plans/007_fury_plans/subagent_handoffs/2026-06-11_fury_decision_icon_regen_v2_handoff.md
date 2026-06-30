@@ -66,4 +66,4 @@ Added asset package:
 
 - Existing Fury decision DDS files were replaced but were not used as source art.
 - Existing Fury focus, goal, and idea icons were not used as source art.
-- The chroma-key helper required `Pillow`, so a temporary venv was created at `/tmp/fury_decision_icons_venv` to complete alpha cleanup. This did not change repo files.
+- The chroma-key helper required `Pillow`, so a temporary venv was created at `C:/Users/klimp/AppData/Local/Temp/fury_decision_icons_venv` to complete alpha cleanup. This did not change repo files.
