@@ -1,25 +1,33 @@
-# Event 011 Secret Alliance Research Notes
+# Research Notes: Event 011 Secret Alliance
 
-This note records historical design inspiration. It is not final localisation.
+These notes provide design inspiration only. They are not final player-facing localisation.
 
-## Interwar pact diplomacy
+## Historical anchors considered
 
-The Anti-Comintern Pact is useful inspiration for a public anti-target compact because it began as an ideological and diplomatic alignment against a named enemy, with Germany and Japan in 1936 and later Italian adherence. A United States diplomatic document from 1937 described an Italo-German-Japanese anti-communist triangle and noted that the German-Japanese pact of November 1936 affected Japanese-Soviet relations. Source: https://history.state.gov/historicaldocuments/frus1937v01/d620
+| Source | Relevant fact | Design use |
+| --- | --- | --- |
+| 1914-1918 Online, Alliance System 1914 | By 1912 the Triple Alliance and Triple Entente were established features of international relations and publicly debated | Supports the transition from hidden alignment to public bloc pressure |
+| 1914-1918 Online, Treaty of London 1915 | The Treaty of London was a secret agreement signed on 26 April 1915 by Italy, Great Britain, France, and Russia, promising territorial rewards for Italy joining the Entente | Inspires secret recruitment, territorial promises, and later bitterness when promises surface |
+| Office of the Historian, FRUS 1939, Anti-Comintern Pact document | Diplomatic reporting references a secret clause connected to the Anti-Comintern Pact and Japanese fears of being double-crossed | Inspires secret clauses, patron suspicion, and defection or betrayal risks |
+| Office of the Historian, Pearl Harbor milestone | Japan signed the Tripartite Pact with Germany and Italy on 27 September 1940, linking conflicts in Europe and Asia | Inspires late-stage public formalization that turns separate pressure into a wider strategic bloc |
+| Office of the Historian, FRUS Anti-Comintern papers | US diplomatic summaries discuss a triangle combination under the Anti-Comintern banner | Inspires an ideological public cover that can hide deeper commitments |
 
-The Locarno Treaties are useful as a contrast. They show how formal guarantees, arbitration, press-covered diplomacy, and later breakdown of diplomatic confidence can become a visible public order. Swiss Federal Department of Foreign Affairs notes that seven countries negotiated the 1925 Locarno Pact and that the Rhineland Pact centered on Germany accepting western borders and peaceful dispute resolution. Source: https://www.eda.admin.ch/en/the-locarno-treaties-stabilising-peace-in-europe-in-the-aftermath-of-the-first-world-war
+## Source URLs
 
-The National WWII Museum account of Locarno notes that seven countries sent delegations, lists the treaty set, and emphasizes that Germany did not make comparable commitments for eastern frontiers. That asymmetry is useful for Secret Alliance because public treaties can leave hidden danger in the unprotected side of diplomacy. Source: https://www.nationalww2museum.org/war/articles/spirit-locarno
+- https://encyclopedia.1914-1918-online.net/article/alliance-system-1914/
+- https://encyclopedia.1914-1918-online.net/article/london-treaty-of-1915/
+- https://history.state.gov/historicaldocuments/frus1939v01/d364
+- https://history.state.gov/milestones/1937-1945/pearl-harbor
+- https://history.state.gov/historicaldocuments/frus1931-41v02/papers
 
-## Covert action and sabotage
+## Design conclusions
 
-The CIA discussion of the OSS Simple Sabotage Field Manual is useful for low-grade sabotage design. It describes training ordinary citizens to disrupt telephones, managers, workers, transportation, and morale rather than only dramatic attacks. Source: https://www.cia.gov/stories/story/the-art-of-simple-sabotage/
+Secret Alliance should not be a copy of one historical alliance. The useful design pattern is the movement from private commitments to public alignment. Secret clauses, promises to recruits, fear of the target, ideological cover, and later betrayal all produce gameplay material.
 
-The United Kingdom National Archives collection description for the Special Operations Executive frames SOE records around sabotage, subversion, and assistance to resistance during the Second World War. That supports the event's covert networks, couriers, and deniable activity. Source: https://discovery.nationalarchives.gov.uk/details/r/C153
+The pact should therefore support:
 
-## Design translations
-
-- Public pact reveal should feel like interwar pact diplomacy becoming visible, not like an instant monster reveal.
-- Hidden compact incidents should use mundane but harmful sabotage first, then more violent operations at Evolution II.
-- The player should have counterplay through evidence, diplomats, defectors, border posture, and preparedness.
-- Major patron entry should make the compact more dangerous but also easier to expose.
-- Public faction formation should have a stronger presentation threshold because it changes the campaign's diplomatic map.
+1. Private recruitment before public commitment.
+2. Members with different motives and different defection risk.
+3. A major patron that can fund the pact without immediately showing its hand.
+4. A reveal moment where the hidden compact becomes a visible coalition.
+5. Diplomatic counterplay based on evidence rather than only military strength.
