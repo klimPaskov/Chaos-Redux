@@ -101,15 +101,15 @@ Supersession note: this handoff predates the parent final asset pass and final r
 - Death ideas are present and localized.
 - Patched issue: defeat cleanup no longer leaves or adds active Death lifecycle ideas after defeat.
 - Resolved parent-side: `death_friend_of_zol`, `death_book_burner`, and `death_black_apostolate` achievement `.gfx` entries point to present DDS files:
-  - `gfx/achievements/death_friend_of_zol.dds`
-  - `gfx/achievements/death_friend_of_zol_grey.dds`
-  - `gfx/achievements/death_friend_of_zol_not_eligible.dds`
-  - `gfx/achievements/death_book_burner.dds`
-  - `gfx/achievements/death_book_burner_grey.dds`
-  - `gfx/achievements/death_book_burner_not_eligible.dds`
-  - `gfx/achievements/death_black_apostolate.dds`
-  - `gfx/achievements/death_black_apostolate_grey.dds`
-  - `gfx/achievements/death_black_apostolate_not_eligible.dds`
+  - `gfx/achievements/010_death_friend_of_zol.dds`
+  - `gfx/achievements/010_death_friend_of_zol_grey.dds`
+  - `gfx/achievements/010_death_friend_of_zol_not_eligible.dds`
+  - `gfx/achievements/010_death_book_burner.dds`
+  - `gfx/achievements/010_death_book_burner_grey.dds`
+  - `gfx/achievements/010_death_book_burner_not_eligible.dds`
+  - `gfx/achievements/010_death_black_apostolate.dds`
+  - `gfx/achievements/010_death_black_apostolate_grey.dds`
+  - `gfx/achievements/010_death_black_apostolate_not_eligible.dds`
 
 ## Starting military, technology, industry, supply, and production issues
 

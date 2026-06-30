@@ -42,41 +42,41 @@ Current Death focus and achievement icon DDS files are documented in `docs/asset
 ## Event pictures
 
 - `report_event_death_missing_island`
-  - Final DDS path: `gfx/event_pictures/report_event_death_missing_island.dds`
+  - Final DDS path: `gfx/event_pictures/010_death/report_event_death_missing_island.dds`
   - Sprite name: `GFX_report_event_death_missing_island`
   - Final `.gfx` file: `interface/chaosx_pictures.gfx`
   - Related gameplay use: impossible shoreline / vanished island report image
   - Use notes: regenerated with a wrong-reading coastline and black surf so the absence reads immediately at HOI4 report size
 
 - `report_event_death_mail_boat`
-  - Final DDS path: `gfx/event_pictures/report_event_death_mail_boat.dds`
+  - Final DDS path: `gfx/event_pictures/010_death/report_event_death_mail_boat.dds`
   - Sprite name: `GFX_report_event_death_mail_boat`
   - Final `.gfx` file: `interface/chaosx_pictures.gfx`
   - Related gameplay use: empty pier/mail boat report image
   - Use notes: regenerated with visible mail sacks, lit cabin, and no crew so the harbor reads as recently abandoned rather than merely quiet
 
 - `report_event_death_lighthouse`
-  - Final DDS path: `gfx/event_pictures/report_event_death_lighthouse.dds`
+  - Final DDS path: `gfx/event_pictures/010_death/report_event_death_lighthouse.dds`
   - Sprite name: `GFX_report_event_death_lighthouse`
   - Final `.gfx` file: `interface/chaosx_pictures.gfx`
   - Related gameplay use: lighthouse/empty settlement report image
   - Use notes: regenerated with a stronger beam and swallowed shoreline silhouette for better report-card readability
 
 - `report_event_death_census`
-  - Final DDS path: `gfx/event_pictures/report_event_death_census.dds`
+  - Final DDS path: `gfx/event_pictures/010_death/report_event_death_census.dds`
   - Sprite name: `GFX_report_event_death_census`
   - Final `.gfx` file: `interface/chaosx_pictures.gfx`
   - Related gameplay use: abandoned census office report image
   - Use notes: regenerated with shocked officials and wrecked record storage while keeping all papers unreadable
 
 - `news_event_death_mainland_reveal`
-  - Final DDS path: `gfx/event_pictures/news_event_death_mainland_reveal.dds`
+  - Final DDS path: `gfx/event_pictures/010_death/news_event_death_mainland_reveal.dds`
   - Sprite name: `GFX_news_event_death_mainland_reveal`
   - Final `.gfx` file: `interface/chaosx_pictures.gfx`
   - Related gameplay use: public mainland reveal news image
 
 - `news_event_death_defeated`
-  - Final DDS path: `gfx/event_pictures/news_event_death_defeated.dds`
+  - Final DDS path: `gfx/event_pictures/010_death/news_event_death_defeated.dds`
   - Sprite name: `GFX_news_event_death_defeated`
   - Final `.gfx` file: `interface/chaosx_pictures.gfx`
   - Related gameplay use: defeat aftermath news image
@@ -88,31 +88,31 @@ Current Death focus and achievement icon DDS files are documented in `docs/asset
 - Review contact sheet: `docs/assets/010_death/contact_sheets/death_super_events_contact.png`
 
 - `super_event_death_reveal`
-  - Final DDS path: `gfx/super_events/super_event_death_reveal.dds`
+  - Final DDS path: `gfx/super_events/010_death/super_event_death_reveal.dds`
   - Sprite name: `GFX_super_event_death_reveal`
   - Final `.gfx` file: `interface/chaosx_super_events.gfx`
   - Related gameplay use: mainland reveal super-event
 
 - `super_event_death_world_end`
-  - Final DDS path: `gfx/super_events/super_event_death_world_end.dds`
+  - Final DDS path: `gfx/super_events/010_death/super_event_death_world_end.dds`
   - Sprite name: `GFX_super_event_death_world_end`
   - Final `.gfx` file: `interface/chaosx_super_events.gfx`
   - Related gameplay use: world-end super-event
 
 - `super_event_death_defeat_aftermath`
-  - Final DDS path: `gfx/super_events/super_event_death_defeat_aftermath.dds`
+  - Final DDS path: `gfx/super_events/010_death/super_event_death_defeat_aftermath.dds`
   - Sprite name: `GFX_super_event_death_defeat`
   - Final `.gfx` file: `interface/chaosx_super_events.gfx`
   - Related gameplay use: defeat aftermath super-event
 
 - `super_event_death_world_consumed`
-  - Final DDS path: `gfx/super_events/super_event_death_world_consumed.dds`
+  - Final DDS path: `gfx/super_events/010_death/super_event_death_world_consumed.dds`
   - Sprite name: `GFX_super_event_death_world_consumed`
   - Final `.gfx` file: `interface/chaosx_super_events.gfx`
   - Related gameplay use: whole-world-consumed super-event
 
 - `super_event_death_black_oath`
-  - Final DDS path: `gfx/super_events/super_event_death_black_oath.dds`
+  - Final DDS path: `gfx/super_events/010_death/super_event_death_black_oath.dds`
   - Sprite name: `GFX_super_event_death_black_oath`
   - Final `.gfx` file: `interface/chaosx_super_events.gfx`
   - Related gameplay use: Herald oath reveal super-event
@@ -199,52 +199,52 @@ Current Death focus and achievement icon DDS files are documented in `docs/asset
 - The regenerated pass standardizes the entire Death focus family at `94x86` with transparent outer alpha and HOI4-style badge framing. Existing sprite names and texture paths remain valid, so no `.gfx` edit is required for this art pass.
 - Contact sheet: `docs/assets/010_death/contact_sheets/death_focus_icons_contact.png`
 - Final files:
-  - `gfx/interface/goals/death/focus_death_the_first_silence.dds`
-  - `gfx/interface/goals/death/focus_death_country_on_the_island.dds`
-  - `gfx/interface/goals/death/focus_death_shroud_whispers.dds`
-  - `gfx/interface/goals/death/focus_death_no_mail_before_spring.dds`
-  - `gfx/interface/goals/death/focus_death_weather_on_paper.dds`
-  - `gfx/interface/goals/death/focus_death_island_pattern.dds`
-  - `gfx/interface/goals/death/focus_death_hunger_shore.dds`
-  - `gfx/interface/goals/death/focus_death_lowest_names_first.dds`
-  - `gfx/interface/goals/death/focus_death_ports_without_voices.dds`
-  - `gfx/interface/goals/death/focus_death_mainland_smell.dds`
-  - `gfx/interface/goals/death/focus_death_black_census.dds`
-  - `gfx/interface/goals/death/focus_death_no_graves_needed.dds`
-  - `gfx/interface/goals/death/focus_death_first_ghost_muster.dds`
-  - `gfx/interface/goals/death/focus_death_public_death.dds`
-  - `gfx/interface/goals/death/focus_death_tide_learns_roads.dds`
-  - `gfx/interface/goals/death/focus_death_another_shoreline.dds`
-  - `gfx/interface/goals/death/focus_death_no_ferry_returns.dds`
-  - `gfx/interface/goals/death/focus_death_wasteland_roads.dds`
-  - `gfx/interface/goals/death/focus_death_every_road_slows.dds`
-  - `gfx/interface/goals/death/focus_death_empty_supply.dds`
-  - `gfx/interface/goals/death/focus_death_state_without_state.dds`
-  - `gfx/interface/goals/death/focus_death_mourning_host.dds`
-  - `gfx/interface/goals/death/focus_death_ruin_host.dds`
-  - `gfx/interface/goals/death/focus_death_orders_without_breath.dds`
-  - `gfx/interface/goals/death/focus_death_last_shores.dds`
-  - `gfx/interface/goals/death/focus_death_world_consumed.dds`
+  - `gfx/interface/goals/010_death/focus_death_the_first_silence.dds`
+  - `gfx/interface/goals/010_death/focus_death_country_on_the_island.dds`
+  - `gfx/interface/goals/010_death/focus_death_shroud_whispers.dds`
+  - `gfx/interface/goals/010_death/focus_death_no_mail_before_spring.dds`
+  - `gfx/interface/goals/010_death/focus_death_weather_on_paper.dds`
+  - `gfx/interface/goals/010_death/focus_death_island_pattern.dds`
+  - `gfx/interface/goals/010_death/focus_death_hunger_shore.dds`
+  - `gfx/interface/goals/010_death/focus_death_lowest_names_first.dds`
+  - `gfx/interface/goals/010_death/focus_death_ports_without_voices.dds`
+  - `gfx/interface/goals/010_death/focus_death_mainland_smell.dds`
+  - `gfx/interface/goals/010_death/focus_death_black_census.dds`
+  - `gfx/interface/goals/010_death/focus_death_no_graves_needed.dds`
+  - `gfx/interface/goals/010_death/focus_death_first_ghost_muster.dds`
+  - `gfx/interface/goals/010_death/focus_death_public_death.dds`
+  - `gfx/interface/goals/010_death/focus_death_tide_learns_roads.dds`
+  - `gfx/interface/goals/010_death/focus_death_another_shoreline.dds`
+  - `gfx/interface/goals/010_death/focus_death_no_ferry_returns.dds`
+  - `gfx/interface/goals/010_death/focus_death_wasteland_roads.dds`
+  - `gfx/interface/goals/010_death/focus_death_every_road_slows.dds`
+  - `gfx/interface/goals/010_death/focus_death_empty_supply.dds`
+  - `gfx/interface/goals/010_death/focus_death_state_without_state.dds`
+  - `gfx/interface/goals/010_death/focus_death_mourning_host.dds`
+  - `gfx/interface/goals/010_death/focus_death_ruin_host.dds`
+  - `gfx/interface/goals/010_death/focus_death_orders_without_breath.dds`
+  - `gfx/interface/goals/010_death/focus_death_last_shores.dds`
+  - `gfx/interface/goals/010_death/focus_death_world_consumed.dds`
 
 ## Route achievement and idea icons
 
-- `GFX_achievement_death_friend_of_zol`
-  - Final paths: `gfx/achievements/death_friend_of_zol.dds`, `gfx/achievements/death_friend_of_zol_grey.dds`, `gfx/achievements/death_friend_of_zol_not_eligible.dds`
+- `GFX_achievement_010_death_friend_of_zol`
+  - Final paths: `gfx/achievements/010_death_friend_of_zol.dds`, `gfx/achievements/010_death_friend_of_zol_grey.dds`, `gfx/achievements/010_death_friend_of_zol_not_eligible.dds`
   - `.gfx` file: `interface/chaosx_achievements.gfx`
-- `GFX_achievement_death_book_burner`
-  - Final paths: `gfx/achievements/death_book_burner.dds`, `gfx/achievements/death_book_burner_grey.dds`, `gfx/achievements/death_book_burner_not_eligible.dds`
+- `GFX_achievement_010_death_book_burner`
+  - Final paths: `gfx/achievements/010_death_book_burner.dds`, `gfx/achievements/010_death_book_burner_grey.dds`, `gfx/achievements/010_death_book_burner_not_eligible.dds`
   - `.gfx` file: `interface/chaosx_achievements.gfx`
-- `GFX_achievement_death_black_apostolate`
-  - Final paths: `gfx/achievements/death_black_apostolate.dds`, `gfx/achievements/death_black_apostolate_grey.dds`, `gfx/achievements/death_black_apostolate_not_eligible.dds`
+- `GFX_achievement_010_death_black_apostolate`
+  - Final paths: `gfx/achievements/010_death_black_apostolate.dds`, `gfx/achievements/010_death_black_apostolate_grey.dds`, `gfx/achievements/010_death_black_apostolate_not_eligible.dds`
   - `.gfx` file: `interface/chaosx_achievements.gfx`
 - `GFX_idea_death_black_book_offices`
-  - Final path: `gfx/interface/ideas/death/idea_black_book_offices.dds`
+  - Final path: `gfx/interface/ideas/010_death/idea_black_book_offices.dds`
   - `.gfx` file: `interface/chaosx_ideas.gfx`
 - `GFX_idea_death_black_oath`
-  - Final path: `gfx/interface/ideas/death/idea_black_oath.dds`
+  - Final path: `gfx/interface/ideas/010_death/idea_black_oath.dds`
   - `.gfx` file: `interface/chaosx_ideas.gfx`
 - `GFX_idea_death_public_death`
-  - Final path: `gfx/interface/ideas/death/idea_public_death.dds`
+  - Final path: `gfx/interface/ideas/010_death/idea_public_death.dds`
   - Processed PNG: `docs/assets/010_death/processed_png/idea_public_death.png`
   - Source PNG: `docs/assets/010_death/source_png/idea_public_death_source.png`
   - Target size: `64x64`

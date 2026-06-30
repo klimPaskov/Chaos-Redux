@@ -69,7 +69,7 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 - Prompt note: black surf swallowing an empty island quay and village, coastline visibly wrong, no people, no text
 - Source PNG: `docs/assets/010_death/source_png/report_event_death_missing_island_source.png`
 - Processed PNG: `docs/assets/010_death/processed_png/report_event_death_missing_island.png`
-- Final path: `gfx/event_pictures/report_event_death_missing_island.dds`
+- Final path: `gfx/event_pictures/010_death/report_event_death_missing_island.dds`
 - Target size: `210x176`
 - Sprite name: `GFX_report_event_death_missing_island`
 - `.gfx` file: `interface/chaosx_pictures.gfx`
@@ -86,7 +86,7 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 - Prompt note: abandoned mail launch drifting back into a blackened harbor, lit cabin, visible sacks, no crew, no text
 - Source PNG: `docs/assets/010_death/source_png/report_event_death_mail_boat_source.png`
 - Processed PNG: `docs/assets/010_death/processed_png/report_event_death_mail_boat.png`
-- Final path: `gfx/event_pictures/report_event_death_mail_boat.dds`
+- Final path: `gfx/event_pictures/010_death/report_event_death_mail_boat.dds`
 - Target size: `210x176`
 - Sprite name: `GFX_report_event_death_mail_boat`
 - `.gfx` file: `interface/chaosx_pictures.gfx`
@@ -103,7 +103,7 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 - Prompt note: lighthouse beam cutting across a dead sea and swallowed shoreline under storm cloud, no readable text
 - Source PNG: `docs/assets/010_death/source_png/report_event_death_lighthouse_source.png`
 - Processed PNG: `docs/assets/010_death/processed_png/report_event_death_lighthouse.png`
-- Final path: `gfx/event_pictures/report_event_death_lighthouse.dds`
+- Final path: `gfx/event_pictures/010_death/report_event_death_lighthouse.dds`
 - Target size: `210x176`
 - Sprite name: `GFX_report_event_death_lighthouse`
 - `.gfx` file: `interface/chaosx_pictures.gfx`
@@ -120,7 +120,7 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 - Prompt note: officials confronting shattered records shelves and blank files, no readable text, no gore
 - Source PNG: `docs/assets/010_death/source_png/report_event_death_census_source.png`
 - Processed PNG: `docs/assets/010_death/processed_png/report_event_death_census.png`
-- Final path: `gfx/event_pictures/report_event_death_census.dds`
+- Final path: `gfx/event_pictures/010_death/report_event_death_census.dds`
 - Target size: `210x176`
 - Sprite name: `GFX_report_event_death_census`
 - `.gfx` file: `interface/chaosx_pictures.gfx`
@@ -135,7 +135,7 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 - Source mode: generated
 - Source PNG: `docs/assets/010_death/source_png/news_event_death_mainland_reveal_source.png`
 - Processed PNG: `docs/assets/010_death/processed_png/news_event_death_mainland_reveal.png`
-- Final path: `gfx/event_pictures/news_event_death_mainland_reveal.dds`
+- Final path: `gfx/event_pictures/010_death/news_event_death_mainland_reveal.dds`
 - Target size: `397x153`
 - Sprite name: `GFX_news_event_death_mainland_reveal`
 - `.gfx` file: `interface/chaosx_pictures.gfx`
@@ -150,7 +150,7 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 - Source mode: generated
 - Source PNG: `docs/assets/010_death/source_png/news_event_death_defeated_source.png`
 - Processed PNG: `docs/assets/010_death/processed_png/news_event_death_defeated.png`
-- Final path: `gfx/event_pictures/news_event_death_defeated.dds`
+- Final path: `gfx/event_pictures/010_death/news_event_death_defeated.dds`
 - Target size: `397x153`
 - Sprite name: `GFX_news_event_death_defeated`
 - `.gfx` file: `interface/chaosx_pictures.gfx`
@@ -165,7 +165,7 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 - Source mode: generated
 - Source PNG: `docs/assets/010_death/source_png/super_event_death_reveal_source.png`
 - Processed PNG: `docs/assets/010_death/processed_png/super_event_death_reveal.png`
-- Final path: `gfx/super_events/super_event_death_reveal.dds`
+- Final path: `gfx/super_events/010_death/super_event_death_reveal.dds`
 - Target size: `457x328`
 - Sprite name: `GFX_super_event_death_reveal`
 - `.gfx` file: `interface/chaosx_super_events.gfx`
@@ -180,7 +180,7 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 - Source mode: generated
 - Source PNG: `docs/assets/010_death/source_png/super_event_death_world_end_source.png`
 - Processed PNG: `docs/assets/010_death/processed_png/super_event_death_world_end.png`
-- Final path: `gfx/super_events/super_event_death_world_end.dds`
+- Final path: `gfx/super_events/010_death/super_event_death_world_end.dds`
 - Target size: `457x328`
 - Sprite name: `GFX_super_event_death_world_end`
 - `.gfx` file: `interface/chaosx_super_events.gfx`
@@ -195,7 +195,7 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 - Source mode: generated
 - Source PNG: `docs/assets/010_death/source_png/super_event_death_defeat_aftermath_source.png`
 - Processed PNG: `docs/assets/010_death/processed_png/super_event_death_defeat_aftermath.png`
-- Final path: `gfx/super_events/super_event_death_defeat_aftermath.dds`
+- Final path: `gfx/super_events/010_death/super_event_death_defeat_aftermath.dds`
 - Target size: `457x328`
 - Sprite name: `GFX_super_event_death_defeat`
 - `.gfx` file: `interface/chaosx_super_events.gfx`
@@ -212,7 +212,7 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 - Prompt note: ruined 1936-1945 coastal capital seen from above, vast supernatural black tide swallowing the last city and harbor, tiny foreground witnesses for scale, no office, no map table, no readable text
 - Source PNG: `docs/assets/010_death/source_png/super_event_death_world_consumed_source.png`
 - Processed PNG: `docs/assets/010_death/processed_png/super_event_death_world_consumed.png`
-- Final path: `gfx/super_events/super_event_death_world_consumed.dds`
+- Final path: `gfx/super_events/010_death/super_event_death_world_consumed.dds`
 - Target size: `457x328`
 - Sprite name: `GFX_super_event_death_world_consumed`
 - `.gfx` file: `interface/chaosx_super_events.gfx`
@@ -263,7 +263,7 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 - Prompt note: 1936-1945 government chamber, officials around sealed oath table, looming void witness behind them, no readable text
 - Source PNG: `docs/assets/010_death/source_png/super_event_death_black_oath_source.png`
 - Processed PNG: `docs/assets/010_death/processed_png/super_event_death_black_oath.png`
-- Final path: `gfx/super_events/super_event_death_black_oath.dds`
+- Final path: `gfx/super_events/010_death/super_event_death_black_oath.dds`
 - Target size: `457x328`
 - Sprite name: `GFX_super_event_death_black_oath`
 - `.gfx` file: `interface/chaosx_super_events.gfx`
@@ -280,15 +280,15 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
   - `interface/chaosx_ideas.gfx`
   - `interface/chaosx_achievements.gfx`
 - Decision sprites:
-  - `GFX_decision_category_death_country` -> `gfx/interface/decisions/death/decision_category_death_country.dds`
-  - `GFX_decision_death_survey_boat` -> `gfx/interface/decisions/death/decision_death_survey_boat.dds`
-  - `GFX_decision_death_living_compact` -> `gfx/interface/decisions/death/decision_death_living_compact.dds`
-  - `GFX_decision_death_quarantine_line` -> `gfx/interface/decisions/death/decision_death_quarantine_line.dds`
-  - `GFX_decision_death_coastal_watch` -> `gfx/interface/decisions/death/decision_death_coastal_watch.dds`
-  - `GFX_decision_death_wasteland_gear` -> `gfx/interface/decisions/death/decision_death_wasteland_gear.dds`
-  - `GFX_decision_death_dead_zone_outpost` -> `gfx/interface/decisions/death/decision_death_dead_zone_outpost.dds`
-  - `GFX_decision_death_black_book` -> `gfx/interface/decisions/death/decision_death_black_book.dds`
-  - `GFX_decision_death_black_oath` -> `gfx/interface/decisions/death/decision_death_black_oath.dds`
+  - `GFX_decision_category_death_country` -> `gfx/interface/decisions/010_death/decision_category_death_country.dds`
+  - `GFX_decision_death_survey_boat` -> `gfx/interface/decisions/010_death/decision_death_survey_boat.dds`
+  - `GFX_decision_death_living_compact` -> `gfx/interface/decisions/010_death/decision_death_living_compact.dds`
+  - `GFX_decision_death_quarantine_line` -> `gfx/interface/decisions/010_death/decision_death_quarantine_line.dds`
+  - `GFX_decision_death_coastal_watch` -> `gfx/interface/decisions/010_death/decision_death_coastal_watch.dds`
+  - `GFX_decision_death_wasteland_gear` -> `gfx/interface/decisions/010_death/decision_death_wasteland_gear.dds`
+  - `GFX_decision_death_dead_zone_outpost` -> `gfx/interface/decisions/010_death/decision_death_dead_zone_outpost.dds`
+  - `GFX_decision_death_black_book` -> `gfx/interface/decisions/010_death/decision_death_black_book.dds`
+  - `GFX_decision_death_black_oath` -> `gfx/interface/decisions/010_death/decision_death_black_oath.dds`
 - Focus sprites:
   - `GFX_focus_death_the_first_silence`
   - `GFX_focus_death_country_on_the_island`
@@ -322,8 +322,8 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
   - `GFX_idea_death_public_death`
   - `GFX_idea_death_last_shores`
   - `GFX_idea_death_black_census`
-  - `GFX_idea_death_black_book_offices` -> `gfx/interface/ideas/death/idea_black_book_offices.dds`
-  - `GFX_idea_death_black_oath` -> `gfx/interface/ideas/death/idea_black_oath.dds`
+  - `GFX_idea_death_black_book_offices` -> `gfx/interface/ideas/010_death/idea_black_book_offices.dds`
+  - `GFX_idea_death_black_oath` -> `gfx/interface/ideas/010_death/idea_black_oath.dds`
 - Achievement sprite bases:
   - `death_no_one_heard_the_first_boat`
   - `death_not_on_my_continent`
@@ -349,7 +349,7 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 - Source PNG paths: `docs/assets/010_death/source_png/focus_death_*_source.png`
 - Frame source helpers: `docs/assets/010_death/source_png/overlay_focus_frame_ledger_source.png`, `docs/assets/010_death/source_png/overlay_focus_frame_round_source.png`, `docs/assets/010_death/source_png/overlay_focus_frame_shield_source.png`
 - Processed PNG paths: `docs/assets/010_death/processed_png/focus_death_*.png`
-- Final DDS paths: `gfx/interface/goals/death/focus_death_*.dds`
+- Final DDS paths: `gfx/interface/goals/010_death/focus_death_*.dds`
 - Target size: `94x86`
 - Sprite names: `GFX_focus_death_*` existing registered names preserved
 - `.gfx` file: `interface/010_death.gfx` existing registration preserved
@@ -367,7 +367,7 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 - Source PNG: `docs/assets/010_death/source_png/idea_public_death_source.png`
 - Processed PNG: `docs/assets/010_death/processed_png/idea_public_death.png`
 - Auxiliary alpha/source helper: `docs/assets/010_death/processed_png/idea_public_death_alpha.png`
-- Final path: `gfx/interface/ideas/death/idea_public_death.dds`
+- Final path: `gfx/interface/ideas/010_death/idea_public_death.dds`
 - Target size: `64x64`
 - Sprite name: `GFX_idea_death_public_death`
 - `.gfx` file: `interface/chaosx_ideas.gfx`
@@ -380,31 +380,31 @@ The active Death focus and achievement icons listed in `docs/assets/010_death/de
 - `death_friend_of_zol`
   - Source PNG: `docs/assets/010_death/source_png/achievement_death_friend_of_zol_source.png`
   - Processed PNG: `docs/assets/010_death/processed_png/achievement_death_friend_of_zol.png`
-  - Final paths: `gfx/achievements/death_friend_of_zol.dds`, `gfx/achievements/death_friend_of_zol_grey.dds`, `gfx/achievements/death_friend_of_zol_not_eligible.dds`
+  - Final paths: `gfx/achievements/010_death_friend_of_zol.dds`, `gfx/achievements/010_death_friend_of_zol_grey.dds`, `gfx/achievements/010_death_friend_of_zol_not_eligible.dds`
   - Target size: `64x64`
   - Asset status: `complete`
 - `death_book_burner`
   - Source PNG: `docs/assets/010_death/source_png/achievement_death_book_burner_source.png`
   - Processed PNG: `docs/assets/010_death/processed_png/achievement_death_book_burner.png`
-  - Final paths: `gfx/achievements/death_book_burner.dds`, `gfx/achievements/death_book_burner_grey.dds`, `gfx/achievements/death_book_burner_not_eligible.dds`
+  - Final paths: `gfx/achievements/010_death_book_burner.dds`, `gfx/achievements/010_death_book_burner_grey.dds`, `gfx/achievements/010_death_book_burner_not_eligible.dds`
   - Target size: `64x64`
   - Asset status: `complete`
 - `death_black_apostolate`
   - Source PNG: `docs/assets/010_death/source_png/death_black_apostolate_flag_source.png`
   - Processed PNG: `docs/assets/010_death/processed_png/achievement_death_black_apostolate.png`
-  - Final paths: `gfx/achievements/death_black_apostolate.dds`, `gfx/achievements/death_black_apostolate_grey.dds`, `gfx/achievements/death_black_apostolate_not_eligible.dds`
+  - Final paths: `gfx/achievements/010_death_black_apostolate.dds`, `gfx/achievements/010_death_black_apostolate_grey.dds`, `gfx/achievements/010_death_black_apostolate_not_eligible.dds`
   - Target size: `64x64`
   - Asset status: `complete`
 - `death_black_book_offices`
   - Source PNG: `docs/assets/010_death/source_png/decision_death_black_book_source.png`
   - Processed PNG: `docs/assets/010_death/processed_png/idea_black_book_offices.png`
-  - Final path: `gfx/interface/ideas/death/idea_black_book_offices.dds`
+  - Final path: `gfx/interface/ideas/010_death/idea_black_book_offices.dds`
   - Target size: `64x64`
   - Asset status: `complete`
 - `death_black_oath`
   - Source PNG: `docs/assets/010_death/source_png/decision_death_black_oath_source.png`
   - Processed PNG: `docs/assets/010_death/processed_png/idea_black_oath.png`
-  - Final path: `gfx/interface/ideas/death/idea_black_oath.dds`
+  - Final path: `gfx/interface/ideas/010_death/idea_black_oath.dds`
   - Target size: `64x64`
   - Asset status: `complete`
 

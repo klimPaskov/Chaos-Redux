@@ -8,17 +8,17 @@ Scope: Fury idea and national-spirit icons only.
 
 Replaced final DDS assets:
 
-- `gfx/interface/ideas/fury/idea_fury_national_fury.dds`
-- `gfx/interface/ideas/fury/idea_fury_hardened_fury.dds`
-- `gfx/interface/ideas/fury/idea_fury_overextension.dds`
-- `gfx/interface/ideas/fury/idea_fury_compliance_drive.dds`
-- `gfx/interface/ideas/fury/idea_fury_pact_command.dds`
-- `gfx/interface/ideas/fury/idea_fury_rival_doctrine.dds`
-- `gfx/interface/ideas/fury/idea_fury_world_in_fury.dds`
-- `gfx/interface/ideas/fury/idea_anti_fury_border_watch.dds`
-- `gfx/interface/ideas/fury/idea_anti_fury_emergency_aid.dds`
-- `gfx/interface/ideas/fury/idea_anti_fury_staff_talks.dds`
-- `gfx/interface/ideas/fury/idea_anti_fury_supply_denial.dds`
+- `gfx/interface/ideas/007_fury/idea_fury_national_fury.dds`
+- `gfx/interface/ideas/007_fury/idea_fury_hardened_fury.dds`
+- `gfx/interface/ideas/007_fury/idea_fury_overextension.dds`
+- `gfx/interface/ideas/007_fury/idea_fury_compliance_drive.dds`
+- `gfx/interface/ideas/007_fury/idea_fury_pact_command.dds`
+- `gfx/interface/ideas/007_fury/idea_fury_rival_doctrine.dds`
+- `gfx/interface/ideas/007_fury/idea_fury_world_in_fury.dds`
+- `gfx/interface/ideas/007_fury/idea_anti_fury_border_watch.dds`
+- `gfx/interface/ideas/007_fury/idea_anti_fury_emergency_aid.dds`
+- `gfx/interface/ideas/007_fury/idea_anti_fury_staff_talks.dds`
+- `gfx/interface/ideas/007_fury/idea_anti_fury_supply_denial.dds`
 
 Added asset package files:
 

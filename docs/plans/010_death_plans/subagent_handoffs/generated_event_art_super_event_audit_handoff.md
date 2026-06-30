@@ -55,11 +55,11 @@ Scope: audit Death super-event image assets and produce missing final art only i
   - `docs/assets/010_death/processed_png/super_event_death_world_consumed.png`
   - `docs/assets/010_death/processed_png/super_event_death_black_oath.png`
 - Verified final DDS presence and target size `457x328`:
-  - `gfx/super_events/super_event_death_reveal.dds`
-  - `gfx/super_events/super_event_death_world_end.dds`
-  - `gfx/super_events/super_event_death_defeat_aftermath.dds`
-  - `gfx/super_events/super_event_death_world_consumed.dds`
-  - `gfx/super_events/super_event_death_black_oath.dds`
+  - `gfx/super_events/010_death/super_event_death_reveal.dds`
+  - `gfx/super_events/010_death/super_event_death_world_end.dds`
+  - `gfx/super_events/010_death/super_event_death_defeat_aftermath.dds`
+  - `gfx/super_events/010_death/super_event_death_world_consumed.dds`
+  - `gfx/super_events/010_death/super_event_death_black_oath.dds`
 
 ## Validation run
 

@@ -195,7 +195,7 @@ Scripted dispatch and music display keys exist for all four super-event slots.
 
 Asset/text naming note:
 
-- Slot 64 image scripted localisation uses `GFX_super_event_death_defeat`, and the sprite points to `gfx/super_events/super_event_death_defeat_aftermath.dds`. Text/audio/music use the "defeat aftermath" meaning. This is functionally wired, but the sprite name is less explicit than the asset/audio names.
+- Slot 64 image scripted localisation uses `GFX_super_event_death_defeat`, and the sprite points to `gfx/super_events/010_death/super_event_death_defeat_aftermath.dds`. Text/audio/music use the "defeat aftermath" meaning. This is functionally wired, but the sprite name is less explicit than the asset/audio names.
 
 Uncertainty:
 

@@ -5,7 +5,7 @@ Scope: accepted icon subagent output for the Death focus tree icon family
 
 ## Files changed
 
-- `gfx/interface/goals/death/focus_death_*.dds`
+- `gfx/interface/goals/010_death/focus_death_*.dds`
 - `docs/assets/010_death/source_png/focus_death_*_source.png`
 - `docs/assets/010_death/processed_png/focus_death_*.png`
 - `docs/assets/010_death/source_png/overlay_focus_frame_ledger_source.png`
@@ -44,7 +44,7 @@ Scope: accepted icon subagent output for the Death focus tree icon family
 - `focus_death_last_shores`
 - `focus_death_world_consumed`
 
-Final focus format: `94x86` DDS, `srgba`/ARGB8888, transparent outer alpha, existing `gfx/interface/goals/death/` paths preserved.
+Final focus format: `94x86` DDS, `srgba`/ARGB8888, transparent outer alpha, existing `gfx/interface/goals/010_death/` paths preserved.
 
 ## Source mode and processing notes
 

@@ -14,14 +14,14 @@ Subagent use:
 
 Files changed:
 
-- `gfx/interface/goals/death/focus_death_empty_supply.dds`
-- `gfx/interface/goals/death/focus_death_every_road_slows.dds`
-- `gfx/interface/goals/death/focus_death_last_shores.dds`
-- `gfx/interface/goals/death/focus_death_mourning_host.dds`
-- `gfx/interface/goals/death/focus_death_orders_without_breath.dds`
-- `gfx/interface/goals/death/focus_death_ruin_host.dds`
-- `gfx/interface/goals/death/focus_death_state_without_state.dds`
-- `gfx/interface/goals/death/focus_death_world_consumed.dds`
+- `gfx/interface/goals/010_death/focus_death_empty_supply.dds`
+- `gfx/interface/goals/010_death/focus_death_every_road_slows.dds`
+- `gfx/interface/goals/010_death/focus_death_last_shores.dds`
+- `gfx/interface/goals/010_death/focus_death_mourning_host.dds`
+- `gfx/interface/goals/010_death/focus_death_orders_without_breath.dds`
+- `gfx/interface/goals/010_death/focus_death_ruin_host.dds`
+- `gfx/interface/goals/010_death/focus_death_state_without_state.dds`
+- `gfx/interface/goals/010_death/focus_death_world_consumed.dds`
 - `gfx/achievements/death_*` completed, `_grey`, and `_not_eligible` DDS families for all thirteen Death achievements
 - `docs/assets/010_death/death_icon_scratch_regen_2026_06_21/`
 - `docs/assets/010_death/generated_art_manifest.md`

@@ -15,36 +15,36 @@
 
 ### Final DDS replacements
 
-- `gfx/achievements/achievement_fury_firebreak.dds`
-- `gfx/achievements/achievement_fury_firebreak_grey.dds`
-- `gfx/achievements/achievement_fury_firebreak_not_eligible.dds`
-- `gfx/achievements/achievement_fury_fuse_cut.dds`
-- `gfx/achievements/achievement_fury_fuse_cut_grey.dds`
-- `gfx/achievements/achievement_fury_fuse_cut_not_eligible.dds`
-- `gfx/achievements/achievement_fury_last_neighbor.dds`
-- `gfx/achievements/achievement_fury_last_neighbor_grey.dds`
-- `gfx/achievements/achievement_fury_last_neighbor_not_eligible.dds`
-- `gfx/achievements/achievement_fury_major_without_faction.dds`
-- `gfx/achievements/achievement_fury_major_without_faction_grey.dds`
-- `gfx/achievements/achievement_fury_major_without_faction_not_eligible.dds`
-- `gfx/achievements/achievement_fury_no_cores.dds`
-- `gfx/achievements/achievement_fury_no_cores_grey.dds`
-- `gfx/achievements/achievement_fury_no_cores_not_eligible.dds`
-- `gfx/achievements/achievement_fury_no_minor_major.dds`
-- `gfx/achievements/achievement_fury_no_minor_major_grey.dds`
-- `gfx/achievements/achievement_fury_no_minor_major_not_eligible.dds`
-- `gfx/achievements/achievement_fury_pact_breaker.dds`
-- `gfx/achievements/achievement_fury_pact_breaker_grey.dds`
-- `gfx/achievements/achievement_fury_pact_breaker_not_eligible.dds`
-- `gfx/achievements/achievement_fury_rivals_burn.dds`
-- `gfx/achievements/achievement_fury_rivals_burn_grey.dds`
-- `gfx/achievements/achievement_fury_rivals_burn_not_eligible.dds`
-- `gfx/achievements/achievement_fury_ten_fires.dds`
-- `gfx/achievements/achievement_fury_ten_fires_grey.dds`
-- `gfx/achievements/achievement_fury_ten_fires_not_eligible.dds`
-- `gfx/achievements/achievement_fury_world_without_fury.dds`
-- `gfx/achievements/achievement_fury_world_without_fury_grey.dds`
-- `gfx/achievements/achievement_fury_world_without_fury_not_eligible.dds`
+- `gfx/achievements/007_fury_firebreak.dds`
+- `gfx/achievements/007_fury_firebreak_grey.dds`
+- `gfx/achievements/007_fury_firebreak_not_eligible.dds`
+- `gfx/achievements/007_fury_fuse_cut.dds`
+- `gfx/achievements/007_fury_fuse_cut_grey.dds`
+- `gfx/achievements/007_fury_fuse_cut_not_eligible.dds`
+- `gfx/achievements/007_fury_last_neighbor.dds`
+- `gfx/achievements/007_fury_last_neighbor_grey.dds`
+- `gfx/achievements/007_fury_last_neighbor_not_eligible.dds`
+- `gfx/achievements/007_fury_major_without_faction.dds`
+- `gfx/achievements/007_fury_major_without_faction_grey.dds`
+- `gfx/achievements/007_fury_major_without_faction_not_eligible.dds`
+- `gfx/achievements/007_fury_no_cores.dds`
+- `gfx/achievements/007_fury_no_cores_grey.dds`
+- `gfx/achievements/007_fury_no_cores_not_eligible.dds`
+- `gfx/achievements/007_fury_no_minor_major.dds`
+- `gfx/achievements/007_fury_no_minor_major_grey.dds`
+- `gfx/achievements/007_fury_no_minor_major_not_eligible.dds`
+- `gfx/achievements/007_fury_pact_breaker.dds`
+- `gfx/achievements/007_fury_pact_breaker_grey.dds`
+- `gfx/achievements/007_fury_pact_breaker_not_eligible.dds`
+- `gfx/achievements/007_fury_rivals_burn.dds`
+- `gfx/achievements/007_fury_rivals_burn_grey.dds`
+- `gfx/achievements/007_fury_rivals_burn_not_eligible.dds`
+- `gfx/achievements/007_fury_ten_fires.dds`
+- `gfx/achievements/007_fury_ten_fires_grey.dds`
+- `gfx/achievements/007_fury_ten_fires_not_eligible.dds`
+- `gfx/achievements/007_fury_world_without_fury.dds`
+- `gfx/achievements/007_fury_world_without_fury_grey.dds`
+- `gfx/achievements/007_fury_world_without_fury_not_eligible.dds`
 
 ### Asset package files
 

@@ -262,20 +262,20 @@ Technology icon:
 - Token: `GFX_zombie_disease_bomb_delivery_systems_medium`
 
 Super-event art:
-- File: `gfx/super_events/super_event_wendigo.dds`
+- File: `gfx/super_events/002_zombie_outbreak/super_event_wendigo.dds`
 - GFX definition: `interface/chaosx_super_events.gfx`
 - Token: `GFX_super_event_wendigo`
 
 Weaponized zombie leader portraits:
 - Files:
-  - `gfx/leaders/ZZZ/portrait_ZZZ_weaponized_infected.dds`
-  - `gfx/leaders/ZZZ/portrait_ZZZ_weaponized_rabid.dds`
-  - `gfx/leaders/ZZZ/portrait_ZZZ_weaponized_parasitic.dds`
-  - `gfx/leaders/ZZZ/portrait_ZZZ_weaponized_mutant.dds`
-  - `gfx/leaders/ZZZ/portrait_ZZZ_weaponized_undead.dds`
-  - `gfx/leaders/ZZZ/portrait_ZZZ_weaponized_necrotic.dds`
-  - `gfx/leaders/ZZZ/portrait_ZZZ_weaponized_demonic.dds`
-  - `gfx/leaders/ZZZ/portrait_ZZZ_weaponized_wendigo.dds`
+  - `gfx/leaders/002_zombie_outbreak/portrait_ZZZ_weaponized_infected.dds`
+  - `gfx/leaders/002_zombie_outbreak/portrait_ZZZ_weaponized_rabid.dds`
+  - `gfx/leaders/002_zombie_outbreak/portrait_ZZZ_weaponized_parasitic.dds`
+  - `gfx/leaders/002_zombie_outbreak/portrait_ZZZ_weaponized_mutant.dds`
+  - `gfx/leaders/002_zombie_outbreak/portrait_ZZZ_weaponized_undead.dds`
+  - `gfx/leaders/002_zombie_outbreak/portrait_ZZZ_weaponized_necrotic.dds`
+  - `gfx/leaders/002_zombie_outbreak/portrait_ZZZ_weaponized_demonic.dds`
+  - `gfx/leaders/002_zombie_outbreak/portrait_ZZZ_weaponized_wendigo.dds`
 - GFX definition: `interface/chaosx_characters.gfx`
 - Tokens:
   - `GFX_portrait_ZZZ_weaponized_infected`

@@ -224,16 +224,16 @@ New focus sprites in `interface/010_death.gfx` with matching `_shine` entries:
 
 | Sprite id | DDS path |
 | --- | --- |
-| `GFX_focus_death_first_silence` | `gfx/interface/goals/death/focus_death_first_silence.dds` |
-| `GFX_focus_death_country_on_the_island` | `gfx/interface/goals/death/focus_death_country_on_the_island.dds` |
-| `GFX_focus_death_no_mail_before_spring` | `gfx/interface/goals/death/focus_death_no_mail_before_spring.dds` |
-| `GFX_focus_death_lowest_names_first` | `gfx/interface/goals/death/focus_death_lowest_names_first.dds` |
-| `GFX_focus_death_first_ghost_muster` | `gfx/interface/goals/death/focus_death_first_ghost_muster.dds` |
-| `GFX_focus_death_public_death` | `gfx/interface/goals/death/focus_death_public_death.dds` |
-| `GFX_focus_death_another_shoreline` | `gfx/interface/goals/death/focus_death_another_shoreline.dds` |
-| `GFX_focus_death_no_ferry_returns` | `gfx/interface/goals/death/focus_death_no_ferry_returns.dds` |
-| `GFX_focus_death_every_road_slows` | `gfx/interface/goals/death/focus_death_every_road_slows.dds` |
-| `GFX_focus_death_orders_without_breath` | `gfx/interface/goals/death/focus_death_orders_without_breath.dds` |
+| `GFX_focus_death_first_silence` | `gfx/interface/goals/010_death/focus_death_first_silence.dds` |
+| `GFX_focus_death_country_on_the_island` | `gfx/interface/goals/010_death/focus_death_country_on_the_island.dds` |
+| `GFX_focus_death_no_mail_before_spring` | `gfx/interface/goals/010_death/focus_death_no_mail_before_spring.dds` |
+| `GFX_focus_death_lowest_names_first` | `gfx/interface/goals/010_death/focus_death_lowest_names_first.dds` |
+| `GFX_focus_death_first_ghost_muster` | `gfx/interface/goals/010_death/focus_death_first_ghost_muster.dds` |
+| `GFX_focus_death_public_death` | `gfx/interface/goals/010_death/focus_death_public_death.dds` |
+| `GFX_focus_death_another_shoreline` | `gfx/interface/goals/010_death/focus_death_another_shoreline.dds` |
+| `GFX_focus_death_no_ferry_returns` | `gfx/interface/goals/010_death/focus_death_no_ferry_returns.dds` |
+| `GFX_focus_death_every_road_slows` | `gfx/interface/goals/010_death/focus_death_every_road_slows.dds` |
+| `GFX_focus_death_orders_without_breath` | `gfx/interface/goals/010_death/focus_death_orders_without_breath.dds` |
 
 Placeholder rule for implementation: register stable sprite ids and copy a thematically close existing Death or vanilla focus DDS as a temporary placeholder only if the art package is not ready. Report placeholders explicitly. Do not rename sprite ids later.
 

@@ -64,7 +64,7 @@ Current placeholder wiring:
   `gfx/interface/military_raids/map_icons/raid_type_icon_zombie_cure_strike.dds`
   Referenced by `interface/chaosx_raids.gfx` as `GFX_raid_type_icon_zombie_cure_strike`.
 - State modifier icon:
-  `gfx/interface/ideas/idea_zombie_decontamination.dds`
+  `gfx/interface/ideas/002_zombie_outbreak/idea_zombie_decontamination.dds`
   Referenced by `interface/chaosx_ideas.gfx` as `GFX_idea_zombie_decontamination`.
 - Raid equipment icon:
   `gfx/interface/technologies/zombie_cure_bomb_equipment.dds`

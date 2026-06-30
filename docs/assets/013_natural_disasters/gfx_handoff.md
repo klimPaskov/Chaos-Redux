@@ -9,17 +9,17 @@ All sprite names below are wired through Event 13 gameplay files.
 These use the shared super-event radio frame and are wired through `interface/chaosx_super_events.gfx`, not `interface/013_natural_disasters.gfx`.
 
 - `GFX_super_event_nd_great_rupture`
-  - Final DDS path: `gfx/super_events/super_event_nd_great_rupture.dds`
+  - Final DDS path: `gfx/super_events/013_natural_disasters/super_event_nd_great_rupture.dds`
   - Package DDS path: `docs/assets/013_natural_disasters/dds/super_event_nd_great_rupture.dds`
   - Super-event slot: `67`
   - Use notes: fault split, broken rail, collapsed crossing, and dense urban damage fit the abnormal great-rupture chain.
 - `GFX_super_event_nd_massive_eruption`
-  - Final DDS path: `gfx/super_events/super_event_nd_massive_eruption.dds`
+  - Final DDS path: `gfx/super_events/013_natural_disasters/super_event_nd_massive_eruption.dds`
   - Package DDS path: `docs/assets/013_natural_disasters/dds/super_event_nd_massive_eruption.dds`
   - Super-event slot: `68`
   - Use notes: ash plume, airfield closure, port disruption, and evacuee movement fit the abnormal massive eruption chain.
 - `GFX_super_event_nd_skyfall`
-  - Final DDS path: `gfx/super_events/super_event_nd_skyfall.dds`
+  - Final DDS path: `gfx/super_events/013_natural_disasters/super_event_nd_skyfall.dds`
   - Package DDS path: `docs/assets/013_natural_disasters/dds/super_event_nd_skyfall.dds`
   - Super-event slot: `69`
   - Use notes: meteor streaks, crater field, rail yard, observatory, and urban fires fit the abnormal meteor cluster chain.
@@ -112,28 +112,28 @@ These are the large left-side decision-category pictures. They are not decision 
 
 | Sprite | Final DDS path |
 | --- | --- |
-| `GFX_decision_cat_picture_nd_recovery_overview` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_recovery_overview.dds` |
-| `GFX_decision_cat_picture_nd_flood` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_flood.dds` |
-| `GFX_decision_cat_picture_nd_cyclone` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_cyclone.dds` |
-| `GFX_decision_cat_picture_nd_severe_storm` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_severe_storm.dds` |
-| `GFX_decision_cat_picture_nd_hail` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_hail.dds` |
-| `GFX_decision_cat_picture_nd_wind` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_wind.dds` |
-| `GFX_decision_cat_picture_nd_corridor` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_corridor.dds` |
-| `GFX_decision_cat_picture_nd_earthquake` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_earthquake.dds` |
-| `GFX_decision_cat_picture_nd_rupture` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_rupture.dds` |
-| `GFX_decision_cat_picture_nd_tsunami` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_tsunami.dds` |
-| `GFX_decision_cat_picture_nd_volcano` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_volcano.dds` |
-| `GFX_decision_cat_picture_nd_massive_eruption` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_massive_eruption.dds` |
-| `GFX_decision_cat_picture_nd_firefront` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_firefront.dds` |
-| `GFX_decision_cat_picture_nd_drought` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_drought.dds` |
-| `GFX_decision_cat_picture_nd_heat` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_heat.dds` |
-| `GFX_decision_cat_picture_nd_winter` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_winter.dds` |
-| `GFX_decision_cat_picture_nd_dust` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_dust.dds` |
-| `GFX_decision_cat_picture_nd_landslide` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_landslide.dds` |
-| `GFX_decision_cat_picture_nd_slope` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_slope.dds` |
-| `GFX_decision_cat_picture_nd_skyfall` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_skyfall.dds` |
-| `GFX_decision_cat_picture_nd_meteor_storm` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_meteor_storm.dds` |
-| `GFX_decision_cat_picture_nd_famine` | `gfx/interface/decisions/natural_disasters/decision_cat_picture_nd_famine.dds` |
+| `GFX_decision_cat_picture_nd_recovery_overview` | `gfx/interface/decisions/013_natural_disasters/decision_cat_picture_nd_recovery_overview.dds` |
+| `GFX_decision_cat_picture_nd_flood` | `gfx/interface/decisions/013_natural_disasters/decision_cat_picture_nd_flood.dds` |
+| `GFX_decision_cat_picture_nd_cyclone` | `gfx/interface/decisions/013_natural_disasters/decision_cat_picture_nd_cyclone.dds` |
+| `GFX_decision_cat_picture_nd_severe_storm` | `gfx/interface/decisions/013_natural_disasters/decision_cat_picture_nd_severe_storm.dds` |
+| `GFX_decision_cat_picture_nd_hail` | `gfx/interface/decisions/013_natural_disasters/decision_cat_picture_nd_hail.dds` |
+| `GFX_decision_cat_picture_nd_wind` | `gfx/interface/decisions/013_natural_disasters/decision_cat_picture_nd_wind.dds` |
+| `GFX_decision_cat_picture_nd_corridor` | `gfx/interface/decisions/013_natural_disasters/decision_cat_picture_nd_corridor.dds` |
+| `GFX_decision_cat_picture_nd_earthquake` | `gfx/interface/decisions/013_natural_disasters/decision_cat_picture_nd_earthquake.dds` |
+| `GFX_decision_cat_picture_nd_rupture` | `gfx/interface/decisions/013_natural_disasters/decision_cat_picture_nd_rupture.dds` |
+| `GFX_decision_cat_picture_nd_tsunami` | `gfx/interface/decisions/013_natural_disasters/decision_cat_picture_nd_tsunami.dds` |
+| `GFX_decision_cat_picture_nd_volcano` | `gfx/interface/decisions/013_natural_disasters/decision_cat_picture_nd_volcano.dds` |
+| `GFX_decision_cat_picture_nd_massive_eruption` | `gfx/interface/decisions/013_natural_disasters/decision_cat_picture_nd_massive_eruption.dds` |
+| `GFX_decision_cat_picture_nd_firefront` | `gfx/interface/decisions/013_natural_disasters/decision_cat_picture_nd_firefront.dds` |
+| `GFX_decision_cat_picture_nd_drought` | `gfx/interface/decisions/013_natural_disasters/decision_cat_picture_nd_drought.dds` |
+| `GFX_decision_cat_picture_nd_heat` | `gfx/interface/decisions/013_natural_disasters/decision_cat_picture_nd_heat.dds` |
+| `GFX_decision_cat_picture_nd_winter` | `gfx/interface/decisions/013_natural_disasters/decision_cat_picture_nd_winter.dds` |
+| `GFX_decision_cat_picture_nd_dust` | `gfx/interface/decisions/013_natural_disasters/decision_cat_picture_nd_dust.dds` |
+| `GFX_decision_cat_picture_nd_landslide` | `gfx/interface/decisions/013_natural_disasters/decision_cat_picture_nd_landslide.dds` |
+| `GFX_decision_cat_picture_nd_slope` | `gfx/interface/decisions/013_natural_disasters/decision_cat_picture_nd_slope.dds` |
+| `GFX_decision_cat_picture_nd_skyfall` | `gfx/interface/decisions/013_natural_disasters/decision_cat_picture_nd_skyfall.dds` |
+| `GFX_decision_cat_picture_nd_meteor_storm` | `gfx/interface/decisions/013_natural_disasters/decision_cat_picture_nd_meteor_storm.dds` |
+| `GFX_decision_cat_picture_nd_famine` | `gfx/interface/decisions/013_natural_disasters/decision_cat_picture_nd_famine.dds` |
 
 ## Decision category icons
 

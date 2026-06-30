@@ -42,7 +42,7 @@
 - `Powers of the Awakened` is wired to new slot 61 via `music/super_event_powers_of_the_awakened.ogg` and `sound/chaosx_super_event_powers_of_the_awakened.wav`.
 - Non-terminal `The Final Silence` is wired to slot 8 via `music/super_event_final_silence.ogg` and `sound/chaosx_super_event_final_silence.wav`.
 - Terminal `The Final Silence` is wired to slot 9 via `music/super_event_final_silence_thermonuclear.ogg` and `sound/chaosx_super_event_final_silence_thermonuclear.wav`.
-- `gfx/super_events/super_event_powers_of_the_awakened.dds` now uses bespoke generated monochrome battlefield art. Source, prompt, processed PNG, and image manifest are under `docs/assets/003_holy_realm_buddhahood/super_event_images/`.
+- `gfx/super_events/003_holy_realm/super_event_powers_of_the_awakened.dds` now uses bespoke generated monochrome battlefield art. Source, prompt, processed PNG, and image manifest are under `docs/assets/003_holy_realm_buddhahood/super_event_images/`.
 
 ## Main risk
 

@@ -100,8 +100,8 @@ Delayed follow-up impacts inside those chains do not fire more super-events and 
 - Scripted localisation: `common/scripted_localisation/013_natural_disasters_scripted_localisation.txt`
 - Scripted GUI: `common/scripted_guis/013_natural_disasters_scripted_guis.txt`, `interface/013_natural_disasters.gui`
 - Player localisation: `localisation/english/013_natural_disasters_l_english.yml`
-- Assets: `interface/013_natural_disasters.gfx`, `gfx/event_pictures/013_natural_disasters/`, `gfx/interface/decisions/natural_disasters/`, `gfx/interface/animated/natural_disasters/`, and `gfx/achievements/`
-- Super-event assets: `interface/chaosx_super_events.gfx`, `gfx/super_events/super_event_nd_great_rupture.dds`, `gfx/super_events/super_event_nd_massive_eruption.dds`, `gfx/super_events/super_event_nd_skyfall.dds`, `music/super_event_natural_disasters_*.ogg`, and `sound/chaosx_super_event_natural_disasters_*.wav`
+- Assets: `interface/013_natural_disasters.gfx`, `gfx/event_pictures/013_natural_disasters/`, `gfx/interface/decisions/013_natural_disasters/`, `gfx/interface/animated/013_natural_disasters/`, and `gfx/achievements/`
+- Super-event assets: `interface/chaosx_super_events.gfx`, `gfx/super_events/013_natural_disasters/super_event_nd_great_rupture.dds`, `gfx/super_events/013_natural_disasters/super_event_nd_massive_eruption.dds`, `gfx/super_events/013_natural_disasters/super_event_nd_skyfall.dds`, `music/super_event_natural_disasters_*.ogg`, and `sound/chaosx_super_event_natural_disasters_*.wav`
 - Shared integration: Chaos Meter deaths cause, event log detail pages, event cluster detail pages, triggerable scenario controls, and achievement localisation.
 
 ## Assets
@@ -220,14 +220,14 @@ The active decision-category indicator uses these animated sprites through `natu
 
 Achievement sprites:
 
-- `GFX_achievement_achievement_nd_prepared_capital`
-- `GFX_achievement_achievement_nd_no_deaths_sequence`
-- `GFX_achievement_achievement_nd_tame_the_barrage`
-- `GFX_achievement_achievement_nd_firebreak_master`
-- `GFX_achievement_achievement_nd_aftershock_control`
-- `GFX_achievement_achievement_nd_skyfall_survivor`
-- `GFX_achievement_achievement_nd_global_relief`
-- `GFX_achievement_achievement_nd_no_world_end`
+- `GFX_achievement_013_natural_disasters_prepared_capital`
+- `GFX_achievement_013_natural_disasters_no_deaths_sequence`
+- `GFX_achievement_013_natural_disasters_tame_the_barrage`
+- `GFX_achievement_013_natural_disasters_firebreak_master`
+- `GFX_achievement_013_natural_disasters_aftershock_control`
+- `GFX_achievement_013_natural_disasters_skyfall_survivor`
+- `GFX_achievement_013_natural_disasters_global_relief`
+- `GFX_achievement_013_natural_disasters_no_world_end`
 
 ## Achievements
 

@@ -39,13 +39,13 @@ No new art is required. The category uses the existing weaponized zombie portrai
 
 The source files live in:
 
-- `gfx/leaders/ZZZ/portrait_ZZZ_weaponized_infected.dds`
-- `gfx/leaders/ZZZ/portrait_ZZZ_weaponized_rabid.dds`
-- `gfx/leaders/ZZZ/portrait_ZZZ_weaponized_parasitic.dds`
-- `gfx/leaders/ZZZ/portrait_ZZZ_weaponized_mutant.dds`
-- `gfx/leaders/ZZZ/portrait_ZZZ_weaponized_undead.dds`
-- `gfx/leaders/ZZZ/portrait_ZZZ_weaponized_necrotic.dds`
-- `gfx/leaders/ZZZ/portrait_ZZZ_weaponized_demonic.dds`
+- `gfx/leaders/002_zombie_outbreak/portrait_ZZZ_weaponized_infected.dds`
+- `gfx/leaders/002_zombie_outbreak/portrait_ZZZ_weaponized_rabid.dds`
+- `gfx/leaders/002_zombie_outbreak/portrait_ZZZ_weaponized_parasitic.dds`
+- `gfx/leaders/002_zombie_outbreak/portrait_ZZZ_weaponized_mutant.dds`
+- `gfx/leaders/002_zombie_outbreak/portrait_ZZZ_weaponized_undead.dds`
+- `gfx/leaders/002_zombie_outbreak/portrait_ZZZ_weaponized_necrotic.dds`
+- `gfx/leaders/002_zombie_outbreak/portrait_ZZZ_weaponized_demonic.dds`
 
 ## Future Plans
 

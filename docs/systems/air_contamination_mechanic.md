@@ -138,7 +138,7 @@ It sets:
 
 - Add sprite definition in: `interface/chaosx_super_events.gfx`
 - Sprite name used in code: `GFX_super_event_fallout`
-- Expected texture path: `gfx/super_events/super_event_fallout.dds`
+- Expected texture path: `gfx/super_events/002_zombie_outbreak/super_event_fallout.dds`
 
 ### Existing sprite reused
 

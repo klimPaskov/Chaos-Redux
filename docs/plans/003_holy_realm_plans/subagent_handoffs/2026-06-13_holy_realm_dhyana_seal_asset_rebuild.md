@@ -37,8 +37,8 @@ Rebuilt the Dhyana seal decision icon as painterly shrine-medallion art and expa
 - `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_dhyana_seal/previews/holy_realm_dhyana_seal_preview.gif`
 - `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_dhyana_seal/previews/holy_realm_dhyana_seal_contact.png`
 - `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_dhyana_seal/notes/holy_realm_dhyana_seal_source_grid.png`
-- `gfx/interface/decisions/holy_realm/dhyana_seal/holy_realm_dhyana_seal.dds`
-- `gfx/interface/decisions/holy_realm/dhyana_seal/holy_realm_dhyana_seal_animated.dds`
+- `gfx/interface/decisions/003_holy_realm/dhyana_seal/holy_realm_dhyana_seal.dds`
+- `gfx/interface/decisions/003_holy_realm/dhyana_seal/holy_realm_dhyana_seal_animated.dds`
 - `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_dhyana_seal/brief.md`
 - `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_dhyana_seal/frame_plan.md`
 - `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_dhyana_seal/notes/source_prompts.md`
@@ -47,8 +47,8 @@ Rebuilt the Dhyana seal decision icon as painterly shrine-medallion art and expa
 
 ## Validation
 
-- Static fallback DDS exists at `gfx/interface/decisions/holy_realm/dhyana_seal/holy_realm_dhyana_seal.dds` with `96x96` dimensions.
-- Animated sheet DDS exists at `gfx/interface/decisions/holy_realm/dhyana_seal/holy_realm_dhyana_seal_animated.dds` with `1152x96` dimensions.
+- Static fallback DDS exists at `gfx/interface/decisions/003_holy_realm/dhyana_seal/holy_realm_dhyana_seal.dds` with `96x96` dimensions.
+- Animated sheet DDS exists at `gfx/interface/decisions/003_holy_realm/dhyana_seal/holy_realm_dhyana_seal_animated.dds` with `1152x96` dimensions.
 - The rebuilt loop has `12` processed `96x96` frames, a review GIF, and a contact sheet.
 - The new art direction replaces the old geometry-heavy medallion with painterly shrine-relief lotus art.
 

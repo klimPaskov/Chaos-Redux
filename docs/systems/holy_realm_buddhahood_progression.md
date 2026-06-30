@@ -162,7 +162,7 @@ Super-event presentation uses these wired slots:
 - `The Final Silence` terminal: slot 9, `GFX_super_event_final_silence_terminal`, `music/super_event_final_silence_thermonuclear.ogg`, `sound/chaosx_super_event_final_silence_thermonuclear.wav`.
 - `Powers of the Awakened`: slot 61, `GFX_super_event_powers_of_the_awakened`, `music/super_event_powers_of_the_awakened.ogg`, `sound/chaosx_super_event_powers_of_the_awakened.wav`.
 
-The `Powers of the Awakened` super-event uses bespoke generated monochrome battlefield art at `gfx/super_events/super_event_powers_of_the_awakened.dds`. Source, prompt, processed PNG, and handoff notes live under `docs/assets/003_holy_realm_buddhahood/super_event_images/`.
+The `Powers of the Awakened` super-event uses bespoke generated monochrome battlefield art at `gfx/super_events/003_holy_realm/super_event_powers_of_the_awakened.dds`. Source, prompt, processed PNG, and handoff notes live under `docs/assets/003_holy_realm_buddhahood/super_event_images/`.
 
 The event-log evolution pane tracks four authored Buddhahood evolutions rather than the ordinary stage ladder:
 
@@ -175,11 +175,11 @@ Baseline states such as Mountain Refuge, Bodhisattva, Arhat Administration, Budd
 
 The audio source and rights record is in `docs/assets/003_holy_realm_buddhahood/audio_research/holy_realm_buddhahood_super_event_audio_research.md`. The `Powers of the Awakened` recording is CC BY 3.0 and requires attribution; the other current Holy Realm Buddhahood super-event recordings are CC0.
 
-The Buddhahood achievement icon package is tracked under `docs/assets/003_holy_realm_buddhahood/achievement_icons/`, with package notes in `docs/assets/003_holy_realm_buddhahood/manifest.md` and `.gfx` handoff details in `docs/assets/003_holy_realm_buddhahood/gfx_handoff.md`. The final completed, grey, and not-eligible DDS triplets live in `gfx/achievements/holy_realm_*.dds` and are registered in `interface/chaosx_achievements.gfx`.
+The Buddhahood achievement icon package is tracked under `docs/assets/003_holy_realm_buddhahood/achievement_icons/`, with package notes in `docs/assets/003_holy_realm_buddhahood/manifest.md` and `.gfx` handoff details in `docs/assets/003_holy_realm_buddhahood/gfx_handoff.md`. The final completed, grey, and not-eligible DDS triplets live in `gfx/achievements/003_holy_realm_*.dds` and are registered in `interface/chaosx_achievements.gfx`.
 
 The new decision category reuses `GFX_decision_category_holy_mandala`; the new decisions use existing generic decision icons. Future bespoke art should use:
 
-- Folder: `gfx/interface/decisions/holy_realm/`
+- Folder: `gfx/interface/decisions/003_holy_realm/`
 - GFX file: `interface/003_holy_realm.gfx`
 - Suggested icon names:
   - `GFX_decision_holy_realm_concentration_vow`

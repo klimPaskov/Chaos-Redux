@@ -399,7 +399,7 @@ Suggested paths and sprite names:
 | Herald of Zol flag variant | `gfx/flags/cosmetic/herald_of_zol/` or project-standard cosmetic flag folder | project-standard cosmetic flag keys |
 | Black Apostolate flag variant | `gfx/flags/cosmetic/black_apostolate/` or project-standard cosmetic flag folder | project-standard cosmetic flag keys |
 | Zol animated portrait overlay | `gfx/leaders/DTH/zol_world_end_animated.dds` | `GFX_leader_zol_world_end_animated` |
-| Black Oath super-event image | `gfx/super_events/super_event_death_black_oath.dds` | `GFX_chaosx_super_event_66` |
+| Black Oath super-event image | `gfx/super_events/010_death/super_event_death_black_oath.dds` | `GFX_chaosx_super_event_66` |
 | Route achievement icon, Black Book | project-standard achievement icon folder | existing `death_book_burner` achievement sprite |
 | Route achievement icon, Herald | project-standard achievement icon folder | existing `death_friend_of_zol` achievement sprite |
 | Route achievement icon, Apostolate | project-standard achievement icon folder | `death_black_apostolate` achievement sprite if achievement is accepted |

@@ -86,8 +86,8 @@ Achievement icons are generated final DDS triplets under `gfx/achievements/` and
 
 ## Assets
 
-- Report image: `GFX_report_event_tensions_rising`, backed by `gfx/event_pictures/report_event_tensions_rising.dds`
-- News image: `GFX_news_event_tensions_red_line`, backed by `gfx/event_pictures/news_event_tensions_red_line.dds`, remains registered as an available news asset; follow-up incidents use the report image instead of a news image.
+- Report image: `GFX_report_event_tensions_rising`, backed by `gfx/event_pictures/008_tensions_rising/report_event_tensions_rising.dds`
+- News image: `GFX_news_event_tensions_red_line`, backed by `gfx/event_pictures/008_tensions_rising/news_event_tensions_red_line.dds`, remains registered as an available news asset; follow-up incidents use the report image instead of a news image.
 - Achievement source, processed PNGs, contact sheet, and DDS manifest: `docs/assets/008_tensions_rising/`
 
 ## Boundary Rules

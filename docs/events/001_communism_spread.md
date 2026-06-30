@@ -218,7 +218,7 @@ The idea sprites reference fitting vanilla DDS art directly, without copying tho
 - `GFX_idea_communist_worker_ritual_fear`: `gfx/interface/ideas/idea_generic_fascist_workers.dds`
 - `GFX_idea_communist_emergency_disruption`: `gfx/interface/ideas/FRA_factory_strikes.dds`
 
-Unique event pictures should replace the placeholder DDS files in `gfx/event_pictures/communism_spread/`. Keep the existing filenames and GFX names:
+Unique event pictures should replace the placeholder DDS files in `gfx/event_pictures/001_communism_spread/`. Keep the existing filenames and GFX names:
 
 - `GFX_report_event_communist_insurgency_start`: `communist_insurgency_start.dds`; depict red pamphlets, organizers, or a strike crowd as the first visible outbreak of the crisis.
 - `GFX_report_event_communist_industry_sabotage`: `communist_industry_sabotage.dds`; depict factory machinery, rail depots, damaged warehouses, or workers disrupting production.

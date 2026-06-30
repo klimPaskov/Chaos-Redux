@@ -5,7 +5,7 @@ Scope: accepted icon subagent output for the fully regenerated `idea_public_deat
 
 ## Files changed
 
-- `gfx/interface/ideas/death/idea_public_death.dds`
+- `gfx/interface/ideas/010_death/idea_public_death.dds`
 - `docs/assets/010_death/source_png/idea_public_death_source.png`
 - `docs/assets/010_death/processed_png/idea_public_death.png`
 - `docs/assets/010_death/processed_png/idea_public_death_alpha.png`
@@ -14,7 +14,7 @@ Scope: accepted icon subagent output for the fully regenerated `idea_public_deat
 
 ## Asset and final dimensions
 
-- `idea_public_death` final format: `64x64` DDS, `srgba`/ARGB8888, transparent outer alpha, existing `gfx/interface/ideas/death/idea_public_death.dds` path preserved.
+- `idea_public_death` final format: `64x64` DDS, `srgba`/ARGB8888, transparent outer alpha, existing `gfx/interface/ideas/010_death/idea_public_death.dds` path preserved.
 
 ## Source mode and processing notes
 

@@ -8,14 +8,14 @@ Scope: replace only the eight Fury focus goal DDS files and add the requested as
 
 Replaced final DDS assets:
 
-- `gfx/interface/goals/fury/goal_fury_war_office.dds`
-- `gfx/interface/goals/fury/goal_fury_target_files.dds`
-- `gfx/interface/goals/fury/goal_fury_depots.dds`
-- `gfx/interface/goals/fury/goal_fury_occupation_registers.dds`
-- `gfx/interface/goals/fury/goal_fury_pact.dds`
-- `gfx/interface/goals/fury/goal_fury_rivalry.dds`
-- `gfx/interface/goals/fury/goal_fury_all_borders.dds`
-- `gfx/interface/goals/fury/goal_fury_world_end.dds`
+- `gfx/interface/goals/007_fury/goal_fury_war_office.dds`
+- `gfx/interface/goals/007_fury/goal_fury_target_files.dds`
+- `gfx/interface/goals/007_fury/goal_fury_depots.dds`
+- `gfx/interface/goals/007_fury/goal_fury_occupation_registers.dds`
+- `gfx/interface/goals/007_fury/goal_fury_pact.dds`
+- `gfx/interface/goals/007_fury/goal_fury_rivalry.dds`
+- `gfx/interface/goals/007_fury/goal_fury_all_borders.dds`
+- `gfx/interface/goals/007_fury/goal_fury_world_end.dds`
 
 Added asset package:
 

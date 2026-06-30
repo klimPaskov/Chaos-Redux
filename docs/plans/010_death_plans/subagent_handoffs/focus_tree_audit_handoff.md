@@ -42,7 +42,7 @@ Audit-time finding, now resolved: the then-implemented tree was a compact seven-
 | `death_last_shores_focus` | `GFX_focus_death_last_shores` | Present | Added | Present | Fixed |
 | `death_world_consumed_focus` | `GFX_focus_death_world_consumed` | Present | Added | Present | Fixed |
 
-Sprite definitions are in `interface/010_death.gfx:12-25`. DDS files exist under `gfx/interface/goals/death/`.
+Sprite definitions are in `interface/010_death.gfx:12-25`. DDS files exist under `gfx/interface/goals/010_death/`.
 
 ## Localisation And Reward Mismatches
 

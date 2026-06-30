@@ -47,9 +47,9 @@ All images are generated period-documentary black-and-white radio art. The final
 
 | Slot | Source PNG | Processed PNG | Final DDS | Sprite |
 | --- | --- | --- | --- | --- |
-| `67` | `docs/assets/013_natural_disasters/source_png/super_event_nd_great_rupture_source.png` | `docs/assets/013_natural_disasters/processed_png/super_event_nd_great_rupture.png` | `gfx/super_events/super_event_nd_great_rupture.dds` | `GFX_super_event_nd_great_rupture` |
-| `68` | `docs/assets/013_natural_disasters/source_png/super_event_nd_massive_eruption_source.png` | `docs/assets/013_natural_disasters/processed_png/super_event_nd_massive_eruption.png` | `gfx/super_events/super_event_nd_massive_eruption.dds` | `GFX_super_event_nd_massive_eruption` |
-| `69` | `docs/assets/013_natural_disasters/source_png/super_event_nd_skyfall_source.png` | `docs/assets/013_natural_disasters/processed_png/super_event_nd_skyfall.png` | `gfx/super_events/super_event_nd_skyfall.dds` | `GFX_super_event_nd_skyfall` |
+| `67` | `docs/assets/013_natural_disasters/source_png/super_event_nd_great_rupture_source.png` | `docs/assets/013_natural_disasters/processed_png/super_event_nd_great_rupture.png` | `gfx/super_events/013_natural_disasters/super_event_nd_great_rupture.dds` | `GFX_super_event_nd_great_rupture` |
+| `68` | `docs/assets/013_natural_disasters/source_png/super_event_nd_massive_eruption_source.png` | `docs/assets/013_natural_disasters/processed_png/super_event_nd_massive_eruption.png` | `gfx/super_events/013_natural_disasters/super_event_nd_massive_eruption.dds` | `GFX_super_event_nd_massive_eruption` |
+| `69` | `docs/assets/013_natural_disasters/source_png/super_event_nd_skyfall_source.png` | `docs/assets/013_natural_disasters/processed_png/super_event_nd_skyfall.png` | `gfx/super_events/013_natural_disasters/super_event_nd_skyfall.dds` | `GFX_super_event_nd_skyfall` |
 
 The generated prompts are recorded in `docs/assets/013_natural_disasters/prompts/generated_event_art_prompts.md`.
 

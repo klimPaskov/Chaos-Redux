@@ -25,7 +25,7 @@ Each rebuilt package now has:
 - a `6720x420` horizontal sheet PNG under `sheets/`
 - a preview GIF and 4x4 contact sheet under `previews/`
 - a refreshed `4x4` source grid under `notes/`
-- a final `6720x420` DDS under `gfx/interface/decisions/holy_realm/mandala_states/`
+- a final `6720x420` DDS under `gfx/interface/decisions/003_holy_realm/mandala_states/`
 
 ## Wiring
 

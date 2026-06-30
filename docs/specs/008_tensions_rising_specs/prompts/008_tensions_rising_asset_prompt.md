@@ -26,7 +26,7 @@ Avoid generic war-room map tables as the main subject. Maps can appear as second
 - Target: 210x176
 - Source mode: generated staged-documentary preferred, sourced period diplomatic/press image acceptable only if license and era fit are clear
 - Direction: 1936–1945 documentary-style diplomatic office, night desk lamp, cable sheets, sealed dispatch bag, no readable text, no modern props
-- Final path direction: `gfx/event_pictures/report_event_tensions_rising.dds` or current repo pattern
+- Final path direction: `gfx/event_pictures/008_tensions_rising/report_event_tensions_rising.dds` or current repo pattern
 - Suggested sprite: `GFX_report_event_tensions_rising`
 
 ### News event image

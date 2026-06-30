@@ -111,13 +111,13 @@ Most focus-tree nodes use vanilla focus icons directly, and standard clone army 
 
 The clone world-order branch adds dedicated final assets:
 
-- `GFX_focus_mengele_numbered_world` -> `gfx/interface/goals/focus_mengele_numbered_world.dds`
-- `GFX_decision_mengele_hidden_clone_network` -> `gfx/interface/decisions/decision_mengele_hidden_clone_network.dds`
-- `GFX_idea_mengele_clone_world_order` -> `gfx/interface/ideas/idea_mengele_clone_world_order.dds`
-- `GFX_idea_mengele_clone_client_state` -> `gfx/interface/ideas/idea_mengele_clone_client_state.dds`
-- `GFX_idea_mengele_artificial_army_crisis` -> `gfx/interface/ideas/idea_mengele_artificial_army_crisis.dds`
+- `GFX_focus_mengele_numbered_world` -> `gfx/interface/goals/germany_mengele/focus_mengele_numbered_world.dds`
+- `GFX_decision_mengele_hidden_clone_network` -> `gfx/interface/decisions/germany_mengele/decision_mengele_hidden_clone_network.dds`
+- `GFX_idea_mengele_clone_world_order` -> `gfx/interface/ideas/germany_mengele/idea_mengele_clone_world_order.dds`
+- `GFX_idea_mengele_clone_client_state` -> `gfx/interface/ideas/germany_mengele/idea_mengele_clone_client_state.dds`
+- `GFX_idea_mengele_artificial_army_crisis` -> `gfx/interface/ideas/germany_mengele/idea_mengele_artificial_army_crisis.dds`
 - `GFX_sp_mengele_cloning` -> `gfx/interface/special_project/project_icons/sp_mengele_cloning.dds`
-- `GFX_super_event_angelic_world_order` -> `gfx/super_events/super_event_angelic_world_order.dds`
+- `GFX_super_event_angelic_world_order` -> `gfx/super_events/003_holy_realm/super_event_angelic_world_order.dds`
 
 The world-order package is documented in `docs/assets/mengele_clone_world_order/manifest.md`; the artificial army crisis icon is documented in `docs/assets/mengele_artificial_army_crisis/manifest.md`; the cloning special-project icon is documented in `docs/assets/mengele_cloning_special_project/manifest.md`.
 
