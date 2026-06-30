@@ -835,5 +835,3 @@ A focus tree task is complete only when:
 If a tree uses a fallback tree where the spec requires a bespoke tree, report it as a simplification.
 
 If no simplifications were made, say so and provide evidence.
-
-

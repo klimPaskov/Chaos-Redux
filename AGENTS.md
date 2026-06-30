@@ -59,7 +59,6 @@ If vanilla examples are insufficient or unclear, you are allowed to inspect well
 
 - Kaiserreich (1521695605) is approved as a reference mod for structure, patterns, and edge case handling. Its Windows workshop path is `C:/Program Files (x86)/Steam/steamapps/workshop/content/394360/1521695605`.
 - You may read Kaiserreich files to understand how similar systems are implemented when vanilla does not provide a clear or complete example.
-- You may read other mod files as well (for example Kaiserredux 2076426030 at `C:/Program Files (x86)/Steam/steamapps/workshop/content/394360/2076426030`), if you don't find what you are looking for inside Kaiserreich.
 
 ### Repo Skills
 
