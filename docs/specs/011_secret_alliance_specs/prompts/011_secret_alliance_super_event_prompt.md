@@ -1,68 +1,41 @@
-# Super-event prompt for Event 011 Secret Alliance
+# Event 011 Secret Alliance Super-event Research Prompt
 
-Use `chaos-redux-super-events`, `chaosx_super_event_text_researcher`, `chaosx_super_event_audio_researcher`, and `chaos-redux-event-assets` for this research package. Do not edit localisation, event script, GFX, GUI, sound definitions, or spreadsheet files.
+Use this prompt with the Chaos Redux super-event workflow and the narrow text and audio research subagents.
 
 ## Super-event role
 
-The super-event marks the public reveal of the hidden pact when the compact becomes the visible `Anti-[target country] Pact` faction. It should fire only when the reveal has campaign weight, such as:
+Working role label: `secret_alliance_public_reveal_super_event`
 
-- A major patron is involved.
-- The pact has grown beyond the founders.
-- The reveal is caused by war and multiple members join.
-- Evolution III reaches the public compact stage.
+The super-event marks the moment when the hidden compact becomes a public Anti-[target country] Pact and the campaign understands that the earlier incidents were coordinated. It should fire only when the reveal has campaign weight, such as public compact formation with a major patron, a forced reveal from war, or a public faction with enough members to feel larger than a normal popup.
 
-A small evidence reveal against only three weak minors can use normal report or news treatment instead.
+## Trigger direction
 
-## Presentation direction
+The implementation agent should wire the super-event after the reveal helper has created the public faction and before the player begins the next phase of public response. It should not fire for every small clue or every private exposure attempt.
 
-- Role: reveal and public faction formation.
-- Tone: cold diplomatic menace, coordinated betrayal, sudden clarity after a long pattern.
-- Player feeling: the player finally sees the system that has been touching their rails, factories, embassies, and borders.
-- Information shown: the pact is real, its public structure now exists, and member countries have chosen open opposition.
-- Information withheld: exact hidden thresholds, unrevealed pre-history, and future war timing unless the war has already started.
+## Title direction
 
-## Research gates
+Research required. The title should be short, political, and specific to public compact revelation. Avoid generic apocalypse wording and avoid a title that sounds like an ordinary war declaration.
 
-Do not write final title text, button text, quote text, lyric fragments, slogans, or cultural references without research and source documentation.
+## Description direction
 
-Required research outputs:
-
-- Title recommendation with source-free direction or a sourced historical or literary allusion if used.
-- Main quote from a real source, verified and attributed.
-- Button remark or short cultural reference, verified if source-dependent.
-- Audio candidate with license, creator, source, duration, and final `.ogg` handoff.
-- Backup quote and remark options.
-- Source confidence and copyright notes.
-
-## Quote direction
-
-Find quotes about conspiracy becoming public, hidden enemies, alliances formed through fear, secret counsel, or the danger of false security. Prefer public domain literature, political writing, diplomatic memoirs, speeches, or philosophy. Avoid invented quote-site material.
+The description should explain that several governments have publicly moved into a coordinated anti-target pact after a period of strange incidents. It should preserve some uncertainty about the earliest operations if the player did not expose everything. If the reveal came from a war conversion, it should emphasize sudden alignment and immediate military consequences.
 
 ## Button remark direction
 
-The button should be short and cold. It can use diplomatic understatement, bitter irony, or a brief public-domain literary allusion. Avoid cheap comedy because this reveal can follow sabotage, assassination, and war.
+Research required. The remark can be grim, diplomatic, or coldly ironic. Possible research directions include interwar diplomatic phrases, anti-pact slogans, pact language, or a short cultural allusion about open enemies after hidden plots. Do not use an unresearched lyric, film line, book line, proverb, or slogan.
+
+## Main quote direction
+
+Research required. Look for a real quote about secret diplomacy, alliances, encirclement, conspiracy becoming public, or the danger of hidden commitments. Prefer public domain political writing, diplomatic memoirs, speeches, or literature. Verify wording and attribution. Avoid invented quote-site material.
+
+## Audio mood
+
+Research required. The track should sound like a public diplomatic crisis and military mobilization, not horror ambience. Prefer public domain or clearly licensed orchestral, march, or tense period-compatible music between one and three minutes. It must have documented composition and recording rights.
 
 ## Image direction
 
-Coordinate with the asset prompt for a generated super-event image:
+Use the asset prompt entry `super_event_secret_alliance_public_reveal`. The image should be generated unless the asset researcher finds a legally usable archival image that fits a generic pact reveal without naming real participants incorrectly.
 
-- 457x328.
-- Fictional period diplomatic hall or conference room.
-- Several delegations visible, faces partly obscured.
-- A central treaty table or map surface without readable text.
-- The target country should be implied by composition or lighting, not named in generated text.
-- No modern props, modern flags, readable signatures, or real leaders.
+## Research output requirements
 
-## Audio direction
-
-Find a real licensed or public domain track with a restrained diplomatic crisis mood. The track should feel ominous and controlled rather than apocalyptic. Prefer one to two minutes after trimming. Document title, creator, performer or recording source, URL, license, source file, final `.ogg`, suggested audio ID, and use.
-
-## Suggested internal keys
-
-Internal keys for implementation:
-
-- Super-event role key: `secret_alliance_public_reveal`.
-- Suggested audio ID pattern: `chaosx_super_event_secret_alliance_reveal`.
-- Suggested image sprite: `GFX_super_event_secret_alliance_reveal`.
-
-Implementation must wire the final researched package through the existing settings-aware super-event playback pattern.
+The super-event research note should include considered quote candidates, selected quote, selected button remark, source URLs, attribution confidence, copyright risk, audio candidates, selected audio, license notes, image handoff, and implementation notes. Treat all unresearched title, button, quote, cultural remark, and audio choices as blockers.
