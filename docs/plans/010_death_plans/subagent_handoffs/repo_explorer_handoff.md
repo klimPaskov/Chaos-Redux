@@ -166,7 +166,7 @@ For spreadsheet validation after the final workbook edit, use the `xlsx` skill i
 
 ```bash
 unzip -t docs/spreadsheets/chaos_redux_events_catalog.xlsx
-libreoffice --headless --convert-to xlsx --outdir /tmp/chaosx_catalog_validate_010 docs/spreadsheets/chaos_redux_events_catalog.xlsx
+libreoffice --headless --convert-to xlsx --outdir C:/Users/klimp/AppData/Local/Temp/chaosx_catalog_validate_010 docs/spreadsheets/chaos_redux_events_catalog.xlsx
 ```
 
 Manual scenario checks to document after patching:

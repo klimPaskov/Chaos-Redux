@@ -63,7 +63,7 @@ convert docs/assets/008_tensions_rising/processed_png/report_event_tensions_risi
 Contact sheet rebuild:
 
 ```bash
-montage /tmp/008_cs_selected.png /tmp/008_cs_final.png /tmp/008_cs_alt1.png /tmp/008_cs_alt2.png \
+montage C:/Users/klimp/AppData/Local/Temp/008_cs_selected.png C:/Users/klimp/AppData/Local/Temp/008_cs_final.png C:/Users/klimp/AppData/Local/Temp/008_cs_alt1.png C:/Users/klimp/AppData/Local/Temp/008_cs_alt2.png \
   -tile 2x2 -geometry +18+18 -background '#151515' \
   docs/assets/008_tensions_rising/contact_sheet/008_tensions_rising_alternatives.png
 ```
