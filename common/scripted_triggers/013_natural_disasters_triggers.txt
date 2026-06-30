@@ -51,6 +51,14 @@ natural_disasters_state_has_active_aftermath = {
 	has_state_flag = natural_disaster_aftermath_active
 }
 
+natural_disasters_country_has_active_decision_surface = {
+	OR = {
+		any_owned_state = { has_state_flag = natural_disaster_warning_active }
+		any_owned_state = { has_state_flag = natural_disaster_warning_pending_impact }
+		any_owned_state = { natural_disasters_state_has_active_aftermath = yes }
+	}
+}
+
 natural_disasters_state_can_receive_impact = {
 	check_variable = { state_population_k > 0 }
 	NOT = {
