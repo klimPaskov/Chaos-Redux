@@ -99,30 +99,16 @@ Use this folder form:
 <event_id>_<event_slug>
 ```
 
-Examples:
-
-- `gfx/event_pictures/013_natural_disasters/`
-- `gfx/super_events/003_holy_realm/`
-- `gfx/interface/ideas/005_soviet_collapse/`
-- `gfx/interface/goals/010_death/`
-- `gfx/interface/decisions/080_airship/`
-- `gfx/interface/animated/013_natural_disasters/`
-- `gfx/interface/leader_frames/007_fury/`
-- `gfx/interface/factions/faction_logos/005_soviet_collapse/`
-- `gfx/leaders/003_holy_realm/`
-
 Do not leave new event assets loose in category roots such as `gfx/event_pictures/`, `gfx/super_events/`, `gfx/interface/ideas/`, `gfx/interface/goals/`, `gfx/interface/decisions/`, or `gfx/leaders/` unless that root placement is an engine-facing lookup requirement.
 
 Root-only and engine-convention exceptions:
 
 - `gfx/achievements/` must keep achievement DDS files directly in the root. Achievement filenames must match the achievement ids, so event-owned achievement ids and triplet filenames should use `<event_id>_<event_slug>_<achievement_name>{,_grey,_not_eligible}.dds`.
-- `gfx/loadingscreens/` should stay root-only unless the engine setup explicitly registers subfolder files. Use event-scoped or system-scoped filenames such as `003_holy_realm_the_holy_realm.dds` or `chemical_warfare_gasmasks.dds`.
 - `gfx/flags/`, `gfx/flags/medium/`, and `gfx/flags/small/` must keep HOI4 tag/ideology filenames. Do not put flags into event folders; use cosmetic tags or route-specific tag filenames when an event needs transformed flags.
 
-Shared or non-event systems may use a clear shared/system folder such as `shared`, `germany_mengele`, or another established subsystem name. Do not force shared assets into an event folder just to avoid a root directory.
+Shared or non-event systems may use a clear shared/system folder. Do not force shared assets into an event folder just to avoid a root directory.
 
 When moving or adding an asset, update every `.gfx`, `.gui`, event, idea, decision, focus, localisation, and documentation reference that names the old path or sprite. Keep sprite names stable unless the engine-facing identifier itself has to change, as with achievement ids.
-
 
 ## 3. Asset source rules
 
