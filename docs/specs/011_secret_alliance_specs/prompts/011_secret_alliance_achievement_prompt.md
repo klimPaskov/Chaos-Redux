@@ -2,7 +2,7 @@
 
 Use the event spec files as source design. Implement achievements only after the gameplay mechanics, decisions, reveal routes, public faction state, and member tracking flags exist. Do not make any achievement unlock just because Event 011 fired.
 
-All titles below are working labels, not final localisation. Write final title and description text during implementation from the direction.
+The list below gives achievement directions. Write polished title and description text from each direction.
 
 ## Achievement list
 

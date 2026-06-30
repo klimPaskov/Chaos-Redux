@@ -34,7 +34,7 @@ Do not provide fallbacks, shortcuts, placeholder assets, or simplified mechanics
 
 ## Text and research gates
 
-The spec gives direction only. Write final player-facing localisation during implementation. Do not paste working labels as final text. Source-dependent super-event titles, button text, quote, cultural remark, and audio are blockers until researched by the super-event workflow.
+The spec gives direction. Write polished player-facing localisation from it. Keep internal keys out of visible text. Source-dependent super-event titles, button text, quote, cultural remark, and audio are blockers until researched by the super-event workflow.
 
 ## Required audits before completion
 

@@ -334,7 +334,7 @@ Founder selection should copy the 007 Fury and 009 White Peace weighted-pool sha
 8. Register the founder, mark it as selected for this pass, and repeat until the founder count is three.
 9. Revalidate all founders before committing the compact.
 
-The no-war-with-target rule must exist in both the candidate trigger and the final post-selection commit check:
+The no-war-with-target rule must exist in the candidate trigger and the final post-selection commit check:
 
 - `can_be_secret_alliance_founder_for_prev_target` includes `NOT = { has_war_with = PREV }`.
 - `secret_alliance_select_founders_for_current_target` aborts and calls `secret_alliance_reset_runtime_context` if any selected founder entered war with the target before `secret_alliance_apply_foundation`.
@@ -343,7 +343,7 @@ Baseline selection should reject majors outright unless the spec is later change
 
 ## Immediate reveal design
 
-Use `on_war_relation_added`, not only `on_declare_war`, because the specs require all war paths to reveal the pact. HOI4 docs identify `on_war_relation_added` as firing whenever two countries end up at war, with ROOT as attacker and FROM as defender.
+Use `on_war_relation_added` because the specs require all war paths to reveal the pact. HOI4 docs identify `on_war_relation_added` as firing whenever two countries end up at war, with ROOT as attacker and FROM as defender.
 
 Integration point:
 

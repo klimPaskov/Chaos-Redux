@@ -108,8 +108,8 @@ Recommended state flags:
 
 Use those helpers to update the existing mission readiness triggers:
 
-- `secret_alliance_guard_capital_network_ready` should require the capital network objective states to be controlled by the target and defended by a real local state objective, not only total division count. The capital state must always be part of the target set.
-- `secret_alliance_industrial_belt_ready` should require control and defense of selected high-value industrial states. Prefer the target's states with military factories; if the country is too small, allow the capital industrial state as the fallback.
+- `secret_alliance_guard_capital_network_ready` should require the capital network objective states to be controlled by the target and defended by a real local state objective, rather than total division count by itself. The capital state must always be part of the target set.
+- `secret_alliance_industrial_belt_ready` should require control and defense of selected high-value industrial states. Prefer the target's states with military factories. If the country is too small, allow the capital industrial state as the fallback.
 - `secret_alliance_foreign_route_watched` should become route based. If a neighboring hidden or exposed member exists, mark border or rail-route states toward that member. If no land route exists but the target has ports, mark a port route. If neither exists, keep the existing train and sealed-courier requirements as the fallback and record that fallback in docs.
 - `secret_alliance_patron_hand_exposed` should remain route based rather than state based. It should require at least two evidence-route proofs, such as `secret_alliance_foreign_route_success_seen`, `secret_alliance_controlled_leak_used`, `secret_alliance_counter_pact_ready`, or a completed friendly-government rally route. Do not require arbitrary border states for a distant patron.
 - `secret_alliance_public_border_held` should require public crisis border objective states when a public member borders the target. If no public member borders the target, use the existing fuel, preparedness, and public crisis plan checks as the documented fallback.
@@ -206,7 +206,7 @@ Acceptance criteria:
 - The Dossier Board no longer displays a permanent 75 percent fill for all meters.
 - Exactly one fill tier is visible per meter at a time.
 - The visual tier changes when the underlying value crosses the relevant threshold.
-- No new art or animation request is made; use the already registered fill sprites.
+- No new art or animation request is made. Use the already registered fill sprites.
 - Existing animated danger accents continue to use the current visibility triggers.
 
 ## 3. Public pact lifecycle cleanup and invalid public leader handling
@@ -250,7 +250,7 @@ Required behavior:
 Call sites:
 
 - `secret_alliance_refresh_lifecycle`, after `secret_alliance_cleanup_invalid_members` and before public-pact defeat/closure checks.
-- A targeted on-action hook if the parent already has a safe public lifecycle hook available, such as capitulation or faction leadership changes. Keep it gated by `secret_alliance_active` or `secret_alliance_public_revealed`; do not add an ungated world scan.
+- A targeted on-action hook if the parent already has a safe public lifecycle hook available, such as capitulation or faction leadership changes. Keep it gated by `secret_alliance_active` or `secret_alliance_public_revealed`. Do not add an ungated world scan.
 
 Acceptance criteria:
 
@@ -283,7 +283,7 @@ The remaining work is validation, not design expansion.
 Parent validation checklist:
 
 - Scan every Event 011 decision with `custom_cost_trigger` and confirm the matching complete effect actually pays the same resource family.
-- Confirm every `custom_cost_text` key and `_blocked` key exists after any final localisation edits.
+- Confirm every `custom_cost_text` key and `_blocked` key exists after any text edits.
 - Confirm command power costs stay within the decision guidance cap of 60 command power.
 - Confirm no AI-only path can click `launch_preemptive_strike`, `limited_border_reprisal`, `face_saving_exit`, `seal_courier_pass`, or public disbandment when the required member, public leader, target, evidence, or war-case state is invalid.
 - Confirm AI does not take manpower/fuel/equipment decisions when the cost trigger fails.

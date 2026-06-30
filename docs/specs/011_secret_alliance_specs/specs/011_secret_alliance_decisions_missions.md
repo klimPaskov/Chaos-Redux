@@ -166,7 +166,7 @@ Major action families should not rely on political power alone. Use:
 - Civilian factory burden for ministry work, concessions, and industrial security.
 - Tied-down divisions in states for guard missions.
 - Relations and trade concessions for diplomatic exits.
-- Evidence and preparedness values as requirements, not only as outputs.
+- Evidence and preparedness values as requirements as well as outputs.
 
 Costs should scale with country size and target importance. A small country should face a painful but possible burden. A large country should pay more and cover more state targets.
 

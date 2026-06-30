@@ -17,4 +17,4 @@ This package expands Event 011 into a full source design for a hidden anti-playe
 - `handoffs/011_secret_alliance_subagent_routing.md` maps the provided project subagent definitions to the implementation pass.
 - `inspection/011_secret_alliance_source_reading_manifest.md` records the source files read for this planning pass.
 
-All text in the spec is direction and design unless it explicitly says it is an internal working label. Player-facing localisation should be written during implementation from these directions.
+Spec prose defines direction and design. Player-facing localisation should draw from these directions and use polished in-world wording.

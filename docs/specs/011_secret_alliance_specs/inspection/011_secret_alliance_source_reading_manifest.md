@@ -52,5 +52,5 @@ The user prompt provides the authoritative design brief for Event 011. The catal
 - Source specs belong under `docs/specs/011_secret_alliance_specs/`.
 - Prompt files are separate from the spec files.
 - The final deliverable is a zip package containing specs, prompts, matrices, research notes, handoffs, and route sketches.
-- Player-facing text remains direction-only. Implementation must write final localisation from the direction.
+- Player-facing text remains design direction. Implementation should use polished wording drawn from it.
 - Dynamic values, reusable scripted helpers, proper event log handling, asset coverage, decision depth, AI behavior, and completion audits are treated as acceptance criteria.

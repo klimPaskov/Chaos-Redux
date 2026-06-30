@@ -38,14 +38,14 @@ Repo note: no Chaos Redux `AGENTS.md` was found in the repository or immediate p
 ## Validation Performed
 
 - Brace count on `common/scripted_effects/011_secret_alliance_effects.txt`: `opens=1058 closes=1058 balanced=True`.
-- Custom cost localisation coverage scan: 23 unique `custom_cost_text` keys in `common/decisions/011_secret_alliance_decisions.txt`; 0 missing base or `_blocked` keys in `localisation/english/011_anti_player_pact_l_english.yml`.
+- Custom cost localisation coverage scan: 23 unique `custom_cost_text` keys in `common/decisions/011_secret_alliance_decisions.txt`. No base or `_blocked` keys are missing in `localisation/english/011_anti_player_pact_l_english.yml`.
 - Direct scans confirmed:
-  - founder count gating via `secret_alliance_has_three_founder_candidates`;
-  - founders/minor invites/patrons block war with target through `NOT = { has_war_with = ROOT }`;
-  - war relation on-action calls `secret_alliance_on_war_relation_added`;
-  - reveal path calls `secret_alliance_call_public_members_to_target_war`;
-  - mission timers use the varied constants 90, 120, 105, 150, and 120 days;
-  - dossier category attaches `scripted_gui = secret_alliance_dossier_board_scripted_gui`;
+  - founder count gating via `secret_alliance_has_three_founder_candidates`
+  - founders, minor invites, and patrons block war with target through `NOT = { has_war_with = ROOT }`
+  - war relation on-action calls `secret_alliance_on_war_relation_added`
+  - reveal path calls `secret_alliance_call_public_members_to_target_war`
+  - mission timers use the varied constants 90, 120, 105, 150, and 120 days
+  - dossier category attaches `scripted_gui = secret_alliance_dossier_board_scripted_gui`
   - decision costs use custom cost triggers and AI weights across the decision surface.
 
 Skipped: in-game HOI4 load validation. This session did not launch the game parser/runtime.
@@ -74,11 +74,11 @@ Skipped: in-game HOI4 load validation. This session did not launch the game pars
 
 ## Mission Quality Notes
 
-- `guard_capital_network_mission`: owner target; category dossier; region capital network abstract; 90 days; success via `secret_alliance_guard_capital_network_success`; failure via `secret_alliance_guard_capital_network_failure`; duplicate risk low due active mission flags; requirement is total divisions plus prior hardening/vetting flag.
-- `secure_industrial_belt_mission`: owner target; category dossier; region industrial belt abstract; 120 days; success/failure effect pair present; duplicate risk low; requirement is military factories, total divisions, and hardening/sabotage flags.
-- `keep_foreign_route_watched_mission`: owner target; category dossier; region foreign route abstract; 105 days; success/failure effect pair present; duplicate risk low; requirement is trains plus courier/sabotage/infiltration state.
-- `expose_patron_hand_mission`: owner target; category counterplay; region patron/diplomatic network; 150 days; success/failure effect pair present; duplicate risk low; requirement needs high evidence, patron, and a supporting counterplay/route/leak flag.
-- `hold_border_public_crisis_mission`: owner target; category counterplay; region public border crisis abstract; 120 days; success/failure effect pair present; duplicate risk low; requirement is total divisions plus fuel/prep/border flags.
+- `guard_capital_network_mission`: owner target, dossier category, capital network region, and 90 day duration. Success uses `secret_alliance_guard_capital_network_success`, failure uses `secret_alliance_guard_capital_network_failure`, and duplicate risk is low because active mission flags gate repeats. The requirement is total divisions plus a prior hardening or vetting flag.
+- `secure_industrial_belt_mission`: owner target, dossier category, industrial belt region, and 120 day duration. The success and failure effect pair is present, duplicate risk is low, and the requirement is military factories, total divisions, and hardening or sabotage flags.
+- `keep_foreign_route_watched_mission`: owner target, dossier category, foreign route region, and 105 day duration. The success and failure effect pair is present, duplicate risk is low, and the requirement is trains plus courier, sabotage, or infiltration state.
+- `expose_patron_hand_mission`: owner target, counterplay category, patron network region, and 150 day duration. The success and failure effect pair is present, duplicate risk is low, and the requirement needs high evidence, a patron, and a supporting counterplay, route, or leak flag.
+- `hold_border_public_crisis_mission`: owner target, counterplay category, public border crisis region, and 120 day duration. The success and failure effect pair is present, duplicate risk is low, and the requirement is total divisions plus fuel, preparation, or border flags.
 
 ## Cost And Requirement Clarity
 

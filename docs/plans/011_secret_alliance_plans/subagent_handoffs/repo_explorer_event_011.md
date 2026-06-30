@@ -71,7 +71,7 @@ Event 002 Zombie Outbreak and Event 003 Holy Realm show the preferred faction-te
 2. Add foundational constants, triggers, and effects: candidate validity, candidate scoring, member arrays/flags, target variables, cleanup, reveal idempotence, public faction creation, member war-call validity, and event-log evolution helpers.
 3. Update shared event pool gating in `chaosx_logic_effects.txt` so Event 011 is unavailable unless three valid founding minors exist.
 4. Replace root event behavior with hidden compact creation and scheduled evolutions. Do not keep the current immediate war/faction behavior.
-5. Add `on_war_relation_added` reveal routing through a centralized Event 011 helper that handles ROOT/FROM in both directions and prevents duplicate reveal/war calls.
+5. Add `on_war_relation_added` reveal routing through a centralized Event 011 helper that checks ROOT/FROM attacker and defender cases and prevents duplicate reveal/war calls.
 6. Add decisions, missions, category, and Dossier Board or equivalent scripted GUI after core variables and helpers are stable.
 7. Add AI strategy and decision AI weights after all validity triggers exist.
 8. Add event-log actor/default branch, Event Details rows, evolution text, scripted localisation, and user-facing localisation.
@@ -97,7 +97,7 @@ Confirmed blockers:
 Risks:
 - Current Event 011 immediately declares wars and creates a raw faction. Leaving any of that path in place will violate the hidden compact requirement.
 - Candidate selection must guarantee exactly three valid minor founders and exclude target, subjects, countries at war with target, special chaos countries, nonhuman countries, dead countries, and temporary diplomacy-invalid countries.
-- `on_war_relation_added` exposes ROOT/FROM as attacker/defender, not target/member. The reveal helper must check both directions and be idempotent.
+- `on_war_relation_added` exposes ROOT/FROM as attacker/defender, not target/member. The reveal helper must check attacker and defender cases and be idempotent.
 - War-caused reveal should only call valid public members into the target war, do not blindly add hidden, dead, subject, same-faction, or already-at-war countries.
 - Dynamic public faction naming is a design risk. Static faction localisation may not preserve a per-target `Anti-[target country] Pact` name in all UI contexts, so parent should test whether `create_faction_from_template` name localisation can carry the target cleanly.
 - Event log history may be recorded by shared fire-once bookkeeping before event `immediate` state is fully built. Because ROOT is the target this is probably workable, but Event 011 still needs an explicit default actor branch and evolution helpers.

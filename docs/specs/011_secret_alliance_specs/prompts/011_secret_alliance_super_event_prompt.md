@@ -59,7 +59,7 @@ Find a real licensed or public domain track with a restrained diplomatic crisis 
 
 ## Suggested internal keys
 
-Working labels, not final localisation:
+Internal keys for implementation:
 
 - Super-event role key: `secret_alliance_public_reveal`.
 - Suggested audio ID pattern: `chaosx_super_event_secret_alliance_reveal`.
