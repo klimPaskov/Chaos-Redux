@@ -66,7 +66,7 @@ Do not put sections such as:
 - `Existing implementation audit`
 - `Generic trigger safeguards`
 
-The final response may mention that the repo and spreadsheet were inspected. The downloadable spec should be player-facing design and implementation-relevant event design.
+The final response may mention that the repo and spreadsheet were inspected. The spec should be player-facing design and implementation-relevant event design.
 
 Avoid obvious lines such as:
 
@@ -1467,7 +1467,7 @@ Use `docs/plans/<event_id>_<event_slug>_plans/` for subagent plans, improvement 
 
 ## 18. Output rules
 
-The event specification itself should be created as one or more downloadable Markdown files.
+The event specification itself should be created as Markdown files.
 
 Full event specification output belongs under `docs/specs/<event_id>_<event_slug>_specs/`. This is the source-of-truth design folder for the event spec pack.
 
@@ -1481,15 +1481,11 @@ Do not put the asset prompt, super-event prompt, coding-agent prompt, or goal pr
 
 Keep planning files readable as design handoffs, not implementation blueprints. Prefer route purpose, player-facing behavior, balance intent, asset direction, AI intent, and acceptance criteria. Avoid long technical tables, exact constant lists, full scripted-effect recipes, exhaustive file inventories, parser-level implementation notes, and detailed code wiring unless the user explicitly asks for a technical blueprint.
 
-For multi-part specs, create sequential files:
+Create sequential files:
 
-- `event_name_spec_part_1.md`
-- `event_name_spec_part_2.md`
-- `event_name_spec_part_3.md`
-- `event_name_focus_tree_country_or_tag_part_1.md` when a focus tree is too large for the main spec
-- `event_name_focus_tree_country_or_tag_part_2.md` and later files as needed
-
-Continuation files should continue directly from the previous part so they can be combined later without cleanup.
+- `<event_id>_<event_slug>_spec_part_1_core.md`
+- `<event_id>_<event_slug>_spec_part_2_<theme>.md`
+- `<event_id>_<event_slug>_spec_part_3_<theme>.md`
 
 Do not repeat earlier sections unless needed for clarity.
 
@@ -1511,7 +1507,7 @@ The zip should include, when relevant:
 - research notes or bibliography files
 - any country package matrices, AI matrices, decision maps, or acceptance criteria files created separately
 
-Do not make the user collect many loose files manually. Individual file links may still be provided for convenience, but the main deliverable should be a single zip package.
+Do not make the user collect many loose files manually. The main deliverable should be a single zip package.
 
 Use a clear package name such as:
 
@@ -1532,7 +1528,7 @@ The extracted zip should be placed in `docs/specs/<event_id>_<event_slug>_specs/
 
 ## 19. Final prompt files
 
-Only after the full specification is complete, create separate downloadable prompt files outside the spec file.
+Only after the full specification is complete, create separate prompt files outside the spec file and include them in the final zip package.
 
 Required prompt files:
 
@@ -1543,7 +1539,7 @@ Required prompt files:
 - `event_name_coding_prompt.md`
 - `event_name_goal_prompt.md`
 
-The final answer should link all of those files and provide the goal prompt in a copy-pasteable code block.
+The final answer should point to the final zip package as the deliverable and briefly summarize what the package contains.
 
 ### Asset prompt file
 
@@ -1637,11 +1633,6 @@ Before finishing a major event spec, ask:
 The final response should include:
 
 - spec file created
-- asset prompt file created if assets are needed
-- super-event prompt file created if super-events are needed
-- achievement prompt file created
-- coding prompt file created
-- goal prompt file created
 - spreadsheet row used when applicable
 - repo context inspected
 - event cluster role defined when relevant
@@ -1673,8 +1664,6 @@ The final response should include:
 - uncertainties or blockers
 - idea, spirit, decision, mission, and focus effects are strong enough to matter and not only conservative small modifiers
 - downloadable link to the final zip package
-- downloadable links to individual created files when helpful
-- copy-pasteable `/goal` prompt under 4000 characters
 
 ## 21. Cleanup and quality gate
 

@@ -1,50 +1,29 @@
-# Coding prompt for Event 011 Secret Alliance
+# Event 011 Secret Alliance Coding Prompt
 
-Implement Event 011 according to the full source spec package:
+Implement Event 011 Secret Alliance according to the source spec pack under `docs/specs/011_secret_alliance_specs/`.
 
-`docs/specs/011_secret_alliance_specs/`
+Read and follow AGENTS.md, chaos-redux-events, hoi4-decisions-missions, chaos-redux-event-assets, chaos-redux-frame-animation for animated UI pieces, chaos-redux-super-events for the public reveal super-event, chaos-redux-improvement-loop, and chaos-redux-subagents.
 
-Read and follow `AGENTS.md`, `chaos-redux-events`, `chaos-redux-event-planning`, `hoi4-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-frame-animation`, `chaos-redux-super-events`, `chaos-redux-subagents`, and the relevant subagent handoff in this package.
+Implement the full hidden compact system:
 
-## Required implementation scope
+- Fire-once root event `chaosx.nr11.1` for the current player target.
+- Select three valid founding countries that are not at war with the target, preferring factionless minors.
+- Store convenor, purse holder, and knife hand roles.
+- Track dynamic secrecy, cohesion, aggression, war readiness, suspicion, evidence, preparedness, identified members, and member commitment.
+- Add baseline incidents, Evolution I minor recruitment, Evolution II dossier and sabotage, and Evolution III public compact behavior.
+- Keep ordinary baseline progress separate from evolution log entries.
+- Add the dossier decision category with selected-target flow, dynamic costs, timed missions, target cleanup, and AI equivalents.
+- Implement player routes for counterintelligence, hardening, exposure, splitter diplomacy, border handling, and war preparation.
+- Implement the instant reveal rule when any pact member goes to war with the target. Create the Anti-[target] Pact, add all valid members, and call them into war.
+- Implement public compact war timer, ultimatums, member splitting, defection, border war isolation, pact defeat, pact collapse, and pact victory outcomes.
+- Implement achievement tracking from the achievement prompt.
+- Implement super-event research and wiring for the public compact reveal when its trigger conditions are met. Treat unresearched title, button remark, quote, cultural reference, and audio as blockers.
+- Create and wire required assets from the asset prompt, including static fallbacks and frame-sheet animations.
+- Update event log, event details, evolution details, docs, and spreadsheet-facing wording from final localisation.
+- Do not paste working labels as final localisation.
+- Do not use fallback trees, placeholder assets, or hardcoded scattered values.
+- Keep the event outside cluster registration unless a later accepted spec changes that.
 
-- Event root `chaosx.nr11.1` and follow-up events.
-- Hidden pact state for three founding minor members.
-- Candidate scoring and eligibility checks.
-- Evolution I, II, and III active-event paths.
-- Pre-fire evolved openings for Evolution II and III as defined in the spec.
-- Hidden invitation behavior.
-- Major patron behavior.
-- Immediate reveal when any hidden member enters war with the target.
-- Public faction named `Anti-[target country] Pact` after reveal.
-- War calls for valid public members when reveal is war-caused.
-- Decision category and missions from the decision spec.
-- Dossier Board scripted GUI if the implementation pass accepts the UI plan.
-- Static and animated asset package handoff and final wiring.
-- Conditional reveal super-event package when reveal meets the campaign weight gate.
-- Achievement tracking and icons.
-- Event log, Event Details, history, evolution entries, docs, and spreadsheet alignment.
-- AI behavior for members, patron, target response, and neutral reactions.
+Use patch-capable subagents from the subagent prompt file when their surfaces are implemented. Every subagent patch needs a handoff under `docs/plans/011_secret_alliance_plans/subagent_handoffs/`.
 
-## Implementation rules
-
-Use dynamic values and shared helpers. Avoid scattered magic numbers. Centralize tuning in script constants where supported. Use event targets carefully and clean persistent global targets. Use reusable scripted effects and triggers for candidate scoring, member iteration, reveal logic, member cleanup, and decision availability. Write dynamic localisation for values that the player sees.
-
-Do not provide fallbacks, shortcuts, placeholder assets, or simplified mechanics without reporting them and getting approval. Do not claim completion until all mapped systems and audits are done.
-
-## Text and research gates
-
-The spec gives direction. Write polished player-facing localisation from it. Keep internal keys out of visible text. Source-dependent super-event titles, button text, quote, cultural remark, and audio are blockers until researched by the super-event workflow.
-
-## Required audits before completion
-
-- `chaosx_scripted_system_architect` for helper and constants design.
-- `chaosx_decision_mission_auditor` after decisions and missions.
-- `chaosx_localisation_auditor` after visible text exists.
-- `chaosx_event_completion_auditor` before claiming complete.
-- Asset subagents for generated icons, UI assets, event images, and animation packages.
-- Super-event text and audio subagents if the reveal super-event is implemented.
-
-## Completion report
-
-Report changed files, mechanics implemented, event log and evolution wiring, decision and mission behavior, AI behavior, assets, super-event state, achievements, spreadsheet row status, validation scenarios, simplifications, and blockers.
+Do not claim completion until the implemented files satisfy the spec, assets are real and documented, localisation exists, AI behavior works, and meaningful target-specific validation has been performed. Report any simplification, omission, or blocker clearly.

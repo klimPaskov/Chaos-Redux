@@ -1,20 +1,29 @@
-# Event 011 Secret Alliance specification package
+# Event 011 Secret Alliance Planning Package
 
-This package expands Event 011 into a full source design for a hidden anti-player diplomatic and covert operations system.
+This package is the source specification pack for Event 011 Secret Alliance.
 
-## Package structure
+## Main files
 
-- `specs/011_secret_alliance_spec.md` is the core source specification.
-- `specs/011_secret_alliance_mechanics.md` defines pact selection, stage values, reveal rules, escalation, and cleanup.
-- `specs/011_secret_alliance_decisions_missions.md` defines the player response category, missions, border operations, costs, and action families.
-- `specs/011_secret_alliance_ai_balance_localisation.md` defines AI behavior, balance guardrails, effect strength, and text direction.
-- `matrices/011_secret_alliance_decision_map.md` contains decision and mission mapping.
-- `matrices/011_secret_alliance_ai_matrix.md` contains actor behavior mapping.
-- `matrices/011_secret_alliance_asset_matrix.md` contains asset coverage.
-- `focus_graphs/011_secret_alliance_progression_map.md` contains a route sketch for event progression.
-- `research/011_secret_alliance_research_notes.md` records historical inspiration sources.
-- `prompts/` contains implementation, asset, achievement, super-event, decision and mission, and goal prompts.
-- `handoffs/011_secret_alliance_subagent_routing.md` maps the provided project subagent definitions to the implementation pass.
-- `inspection/011_secret_alliance_source_reading_manifest.md` records the source files read for this planning pass.
+| File | Purpose |
+| --- | --- |
+| specs/011_secret_alliance_spec_part_1.md | Core event design, phases, values, reveal rules, outcomes |
+| specs/011_secret_alliance_decision_and_mission_map.md | Dossier category, decisions, missions, costs, cleanup |
+| specs/011_secret_alliance_scripted_system_design.md | Helpers, variables, flags, event targets, constants, cleanup |
+| specs/011_secret_alliance_event_log_and_evolution_plan.md | Event chain roles, evolution log plan, event detail direction |
+| specs/011_secret_alliance_localisation_and_text_direction.md | Localisation and text direction handoff |
+| specs/011_secret_alliance_member_country_effects.md | Member country packages, temporary ideas, focus and diplomacy integration |
+| specs/011_secret_alliance_balance_and_validation_plan.md | Balance anchors, exploit checks, validation scenarios, acceptance criteria |
+| matrices/011_secret_alliance_ai_and_targeting_matrix.md | Candidate scoring, AI roles, war and cleanup behavior |
+| prompts/011_secret_alliance_asset_prompt.md | Visual asset and animation handoff |
+| prompts/011_secret_alliance_super_event_prompt.md | Public reveal super-event research handoff |
+| prompts/011_secret_alliance_achievement_prompt.md | Achievement design and tracking handoff |
+| prompts/011_secret_alliance_decision_mission_prompt.md | Decision implementation prompt |
+| prompts/011_secret_alliance_subagent_prompts.md | Subagent routing prompts |
+| prompts/011_secret_alliance_coding_prompt.md | Full implementation prompt |
+| prompts/011_secret_alliance_goal_prompt.md | Copyable goal prompt under 4000 characters |
+| research/011_secret_alliance_research_notes.md | Historical inspiration sources and design translations |
+| source_reading_manifest.md | Uploaded file reading manifest and Event 011 catalog row summary |
 
-Spec prose defines direction and design. Player-facing localisation should draw from these directions and use polished in-world wording.
+## Package status
+
+This package is a planning artifact. It does not implement gameplay files, localisation, assets, audio, or spreadsheet updates. The implementation agent should treat the prompts as handoffs and should not claim completion until the repo satisfies the spec.
