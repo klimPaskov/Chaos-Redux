@@ -63,7 +63,7 @@ Registered sprites:
 - `GFX_portrait_DTH_zol`, `GFX_portrait_DTH_zol_world_end`, and `GFX_portrait_DTH_zol_world_end_animated` in `interface/chaosx_characters.gfx`, files under `gfx/leaders/010_death/`
 - `GFX_report_event_death_mail_boat`, `GFX_report_event_death_lighthouse`, `GFX_report_event_death_census`, `GFX_news_event_death_mainland_reveal`, `GFX_news_event_death_defeated` in `interface/chaosx_pictures.gfx`
 - `GFX_super_event_death_reveal`, `GFX_super_event_death_world_end`, `GFX_super_event_death_defeat`, `GFX_super_event_death_world_consumed` in `interface/chaosx_super_events.gfx`
-- `GFX_super_event_death_black_oath` in `interface/chaosx_super_events.gfx`, file `gfx/super_events/super_event_death_black_oath.dds`
+- `GFX_super_event_death_black_oath` in `interface/chaosx_super_events.gfx`, file `gfx/super_events/010_death/super_event_death_black_oath.dds`
 - Black Atlas sprites and frame-sheet definitions in `interface/010_death.gfx`, used by `interface/010_death_black_atlas.gui`
 - Decision, focus, and idea sprites in `interface/010_death.gfx` and `interface/chaosx_ideas.gfx`
 - Achievement sprites in `interface/chaosx_achievements.gfx`

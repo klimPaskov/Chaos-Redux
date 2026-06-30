@@ -59,7 +59,7 @@ Coal golems are slow infantry-format battalions with tank-like armor, piercing, 
 
 ## Assets
 
-The current idea icon reuses `gfx/interface/ideas/soviet_collapse/005_uwd_custom_splinter_idea.dds` through `GFX_idea_kmb_subsoil_quota_state`.
+The current idea icon reuses `gfx/interface/ideas/005_soviet_collapse/005_uwd_custom_splinter_idea.dds` through `GFX_idea_kmb_subsoil_quota_state`.
 
 The KMB leader portrait is a generated miner portrait:
 

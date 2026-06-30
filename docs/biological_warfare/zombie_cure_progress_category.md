@@ -77,17 +77,17 @@ Sprite names used by the category:
 
 The category currently expects these files:
 
-- `gfx/interface/decisions/zombie_cure/zombie_cure_0.dds`
-- `gfx/interface/decisions/zombie_cure/zombie_cure_10.dds`
-- `gfx/interface/decisions/zombie_cure/zombie_cure_20.dds`
-- `gfx/interface/decisions/zombie_cure/zombie_cure_30.dds`
-- `gfx/interface/decisions/zombie_cure/zombie_cure_40.dds`
-- `gfx/interface/decisions/zombie_cure/zombie_cure_50.dds`
-- `gfx/interface/decisions/zombie_cure/zombie_cure_60.dds`
-- `gfx/interface/decisions/zombie_cure/zombie_cure_70.dds`
-- `gfx/interface/decisions/zombie_cure/zombie_cure_80.dds`
-- `gfx/interface/decisions/zombie_cure/zombie_cure_90.dds`
-- `gfx/interface/decisions/zombie_cure/zombie_cure_100.dds`
+- `gfx/interface/decisions/002_zombie_outbreak/zombie_cure/zombie_cure_0.dds`
+- `gfx/interface/decisions/002_zombie_outbreak/zombie_cure/zombie_cure_10.dds`
+- `gfx/interface/decisions/002_zombie_outbreak/zombie_cure/zombie_cure_20.dds`
+- `gfx/interface/decisions/002_zombie_outbreak/zombie_cure/zombie_cure_30.dds`
+- `gfx/interface/decisions/002_zombie_outbreak/zombie_cure/zombie_cure_40.dds`
+- `gfx/interface/decisions/002_zombie_outbreak/zombie_cure/zombie_cure_50.dds`
+- `gfx/interface/decisions/002_zombie_outbreak/zombie_cure/zombie_cure_60.dds`
+- `gfx/interface/decisions/002_zombie_outbreak/zombie_cure/zombie_cure_70.dds`
+- `gfx/interface/decisions/002_zombie_outbreak/zombie_cure/zombie_cure_80.dds`
+- `gfx/interface/decisions/002_zombie_outbreak/zombie_cure/zombie_cure_90.dds`
+- `gfx/interface/decisions/002_zombie_outbreak/zombie_cure/zombie_cure_100.dds`
 
 ## First Activation Achievement
 

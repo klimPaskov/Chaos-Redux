@@ -21,14 +21,14 @@ Scope: regenerate only the assigned 8 Death national focus icons as new HOI4-sty
 - `docs/assets/010_death/processed_png/focus_death_another_shoreline.png`
 - `docs/assets/010_death/processed_png/focus_death_no_ferry_returns.png`
 - `docs/assets/010_death/processed_png/focus_death_wasteland_roads.png`
-- `gfx/interface/goals/death/focus_death_black_census.dds`
-- `gfx/interface/goals/death/focus_death_no_graves_needed.dds`
-- `gfx/interface/goals/death/focus_death_first_ghost_muster.dds`
-- `gfx/interface/goals/death/focus_death_public_death.dds`
-- `gfx/interface/goals/death/focus_death_tide_learns_roads.dds`
-- `gfx/interface/goals/death/focus_death_another_shoreline.dds`
-- `gfx/interface/goals/death/focus_death_no_ferry_returns.dds`
-- `gfx/interface/goals/death/focus_death_wasteland_roads.dds`
+- `gfx/interface/goals/010_death/focus_death_black_census.dds`
+- `gfx/interface/goals/010_death/focus_death_no_graves_needed.dds`
+- `gfx/interface/goals/010_death/focus_death_first_ghost_muster.dds`
+- `gfx/interface/goals/010_death/focus_death_public_death.dds`
+- `gfx/interface/goals/010_death/focus_death_tide_learns_roads.dds`
+- `gfx/interface/goals/010_death/focus_death_another_shoreline.dds`
+- `gfx/interface/goals/010_death/focus_death_no_ferry_returns.dds`
+- `gfx/interface/goals/010_death/focus_death_wasteland_roads.dds`
 - `docs/assets/010_death/contact_sheets/death_focus_icons_batch_2026_06_16_regen.png`
 
 ## Asset notes

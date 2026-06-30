@@ -8,15 +8,15 @@ Scope: replace only the two Fury decision-category DDS files and seven Fury deci
 
 Replaced final DDS assets:
 
-- `gfx/interface/decisions/fury/decision_category_fury_war_office.dds`
-- `gfx/interface/decisions/fury/decision_category_anti_fury.dds`
-- `gfx/interface/decisions/fury/decision_fury_target.dds`
-- `gfx/interface/decisions/fury/decision_fury_depots.dds`
-- `gfx/interface/decisions/fury/decision_fury_settlement.dds`
-- `gfx/interface/decisions/fury/decision_fury_coring.dds`
-- `gfx/interface/decisions/fury/decision_fury_terminal_reserves.dds`
-- `gfx/interface/decisions/fury/decision_fury_terminal_fronts.dds`
-- `gfx/interface/decisions/fury/decision_anti_fury_response.dds`
+- `gfx/interface/decisions/007_fury/decision_category_fury_war_office.dds`
+- `gfx/interface/decisions/007_fury/decision_category_anti_fury.dds`
+- `gfx/interface/decisions/007_fury/decision_fury_target.dds`
+- `gfx/interface/decisions/007_fury/decision_fury_depots.dds`
+- `gfx/interface/decisions/007_fury/decision_fury_settlement.dds`
+- `gfx/interface/decisions/007_fury/decision_fury_coring.dds`
+- `gfx/interface/decisions/007_fury/decision_fury_terminal_reserves.dds`
+- `gfx/interface/decisions/007_fury/decision_fury_terminal_fronts.dds`
+- `gfx/interface/decisions/007_fury/decision_anti_fury_response.dds`
 
 Added asset package:
 

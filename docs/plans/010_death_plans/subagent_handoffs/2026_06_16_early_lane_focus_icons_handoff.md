@@ -30,16 +30,16 @@ Scope: regenerate only the assigned 10 early-lane Death national focus icons as 
 - `docs/assets/010_death/processed_png/focus_death_lowest_names_first.png`
 - `docs/assets/010_death/processed_png/focus_death_ports_without_voices.png`
 - `docs/assets/010_death/processed_png/focus_death_mainland_smell.png`
-- `gfx/interface/goals/death/focus_death_the_first_silence.dds`
-- `gfx/interface/goals/death/focus_death_country_on_the_island.dds`
-- `gfx/interface/goals/death/focus_death_shroud_whispers.dds`
-- `gfx/interface/goals/death/focus_death_no_mail_before_spring.dds`
-- `gfx/interface/goals/death/focus_death_weather_on_paper.dds`
-- `gfx/interface/goals/death/focus_death_island_pattern.dds`
-- `gfx/interface/goals/death/focus_death_hunger_shore.dds`
-- `gfx/interface/goals/death/focus_death_lowest_names_first.dds`
-- `gfx/interface/goals/death/focus_death_ports_without_voices.dds`
-- `gfx/interface/goals/death/focus_death_mainland_smell.dds`
+- `gfx/interface/goals/010_death/focus_death_the_first_silence.dds`
+- `gfx/interface/goals/010_death/focus_death_country_on_the_island.dds`
+- `gfx/interface/goals/010_death/focus_death_shroud_whispers.dds`
+- `gfx/interface/goals/010_death/focus_death_no_mail_before_spring.dds`
+- `gfx/interface/goals/010_death/focus_death_weather_on_paper.dds`
+- `gfx/interface/goals/010_death/focus_death_island_pattern.dds`
+- `gfx/interface/goals/010_death/focus_death_hunger_shore.dds`
+- `gfx/interface/goals/010_death/focus_death_lowest_names_first.dds`
+- `gfx/interface/goals/010_death/focus_death_ports_without_voices.dds`
+- `gfx/interface/goals/010_death/focus_death_mainland_smell.dds`
 - `docs/assets/010_death/contact_sheets/death_focus_icons_early_lane_contact.png`
 
 ## Subject summary

@@ -15,19 +15,19 @@
 - `docs/assets/010_death/processed_png/report_event_death_lighthouse.png`
 - `docs/assets/010_death/processed_png/report_event_death_census.png`
 - `docs/assets/010_death/contact_sheets/death_report_event_images_contact.png`
-- `gfx/event_pictures/report_event_death_missing_island.dds`
-- `gfx/event_pictures/report_event_death_mail_boat.dds`
-- `gfx/event_pictures/report_event_death_lighthouse.dds`
-- `gfx/event_pictures/report_event_death_census.dds`
+- `gfx/event_pictures/010_death/report_event_death_missing_island.dds`
+- `gfx/event_pictures/010_death/report_event_death_mail_boat.dds`
+- `gfx/event_pictures/010_death/report_event_death_lighthouse.dds`
+- `gfx/event_pictures/010_death/report_event_death_census.dds`
 - `docs/assets/010_death/generated_art_manifest.md`
 - `docs/assets/010_death/generated_art_gfx_handoff.md`
 
 ## Stable ids and paths preserved
 
-- `report_event_death_missing_island` -> `gfx/event_pictures/report_event_death_missing_island.dds` -> `GFX_report_event_death_missing_island`
-- `report_event_death_mail_boat` -> `gfx/event_pictures/report_event_death_mail_boat.dds` -> `GFX_report_event_death_mail_boat`
-- `report_event_death_lighthouse` -> `gfx/event_pictures/report_event_death_lighthouse.dds` -> `GFX_report_event_death_lighthouse`
-- `report_event_death_census` -> `gfx/event_pictures/report_event_death_census.dds` -> `GFX_report_event_death_census`
+- `report_event_death_missing_island` -> `gfx/event_pictures/010_death/report_event_death_missing_island.dds` -> `GFX_report_event_death_missing_island`
+- `report_event_death_mail_boat` -> `gfx/event_pictures/010_death/report_event_death_mail_boat.dds` -> `GFX_report_event_death_mail_boat`
+- `report_event_death_lighthouse` -> `gfx/event_pictures/010_death/report_event_death_lighthouse.dds` -> `GFX_report_event_death_lighthouse`
+- `report_event_death_census` -> `gfx/event_pictures/010_death/report_event_death_census.dds` -> `GFX_report_event_death_census`
 
 ## Quality notes
 

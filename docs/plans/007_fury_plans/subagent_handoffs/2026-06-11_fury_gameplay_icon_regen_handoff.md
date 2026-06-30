@@ -8,34 +8,34 @@ Scope: Fury focus, idea, decision, and decision-category icons only.
 
 Replaced final DDS assets:
 
-- `gfx/interface/goals/fury/goal_fury_war_office.dds`
-- `gfx/interface/goals/fury/goal_fury_target_files.dds`
-- `gfx/interface/goals/fury/goal_fury_depots.dds`
-- `gfx/interface/goals/fury/goal_fury_occupation_registers.dds`
-- `gfx/interface/goals/fury/goal_fury_pact.dds`
-- `gfx/interface/goals/fury/goal_fury_rivalry.dds`
-- `gfx/interface/goals/fury/goal_fury_all_borders.dds`
-- `gfx/interface/goals/fury/goal_fury_world_end.dds`
-- `gfx/interface/ideas/fury/idea_fury_national_fury.dds`
-- `gfx/interface/ideas/fury/idea_fury_hardened_fury.dds`
-- `gfx/interface/ideas/fury/idea_fury_overextension.dds`
-- `gfx/interface/ideas/fury/idea_fury_compliance_drive.dds`
-- `gfx/interface/ideas/fury/idea_fury_pact_command.dds`
-- `gfx/interface/ideas/fury/idea_fury_rival_doctrine.dds`
-- `gfx/interface/ideas/fury/idea_fury_world_in_fury.dds`
-- `gfx/interface/ideas/fury/idea_anti_fury_border_watch.dds`
-- `gfx/interface/ideas/fury/idea_anti_fury_emergency_aid.dds`
-- `gfx/interface/ideas/fury/idea_anti_fury_staff_talks.dds`
-- `gfx/interface/ideas/fury/idea_anti_fury_supply_denial.dds`
-- `gfx/interface/decisions/fury/decision_category_fury_war_office.dds`
-- `gfx/interface/decisions/fury/decision_category_anti_fury.dds`
-- `gfx/interface/decisions/fury/decision_fury_target.dds`
-- `gfx/interface/decisions/fury/decision_fury_depots.dds`
-- `gfx/interface/decisions/fury/decision_fury_settlement.dds`
-- `gfx/interface/decisions/fury/decision_fury_coring.dds`
-- `gfx/interface/decisions/fury/decision_fury_terminal_reserves.dds`
-- `gfx/interface/decisions/fury/decision_fury_terminal_fronts.dds`
-- `gfx/interface/decisions/fury/decision_anti_fury_response.dds`
+- `gfx/interface/goals/007_fury/goal_fury_war_office.dds`
+- `gfx/interface/goals/007_fury/goal_fury_target_files.dds`
+- `gfx/interface/goals/007_fury/goal_fury_depots.dds`
+- `gfx/interface/goals/007_fury/goal_fury_occupation_registers.dds`
+- `gfx/interface/goals/007_fury/goal_fury_pact.dds`
+- `gfx/interface/goals/007_fury/goal_fury_rivalry.dds`
+- `gfx/interface/goals/007_fury/goal_fury_all_borders.dds`
+- `gfx/interface/goals/007_fury/goal_fury_world_end.dds`
+- `gfx/interface/ideas/007_fury/idea_fury_national_fury.dds`
+- `gfx/interface/ideas/007_fury/idea_fury_hardened_fury.dds`
+- `gfx/interface/ideas/007_fury/idea_fury_overextension.dds`
+- `gfx/interface/ideas/007_fury/idea_fury_compliance_drive.dds`
+- `gfx/interface/ideas/007_fury/idea_fury_pact_command.dds`
+- `gfx/interface/ideas/007_fury/idea_fury_rival_doctrine.dds`
+- `gfx/interface/ideas/007_fury/idea_fury_world_in_fury.dds`
+- `gfx/interface/ideas/007_fury/idea_anti_fury_border_watch.dds`
+- `gfx/interface/ideas/007_fury/idea_anti_fury_emergency_aid.dds`
+- `gfx/interface/ideas/007_fury/idea_anti_fury_staff_talks.dds`
+- `gfx/interface/ideas/007_fury/idea_anti_fury_supply_denial.dds`
+- `gfx/interface/decisions/007_fury/decision_category_fury_war_office.dds`
+- `gfx/interface/decisions/007_fury/decision_category_anti_fury.dds`
+- `gfx/interface/decisions/007_fury/decision_fury_target.dds`
+- `gfx/interface/decisions/007_fury/decision_fury_depots.dds`
+- `gfx/interface/decisions/007_fury/decision_fury_settlement.dds`
+- `gfx/interface/decisions/007_fury/decision_fury_coring.dds`
+- `gfx/interface/decisions/007_fury/decision_fury_terminal_reserves.dds`
+- `gfx/interface/decisions/007_fury/decision_fury_terminal_fronts.dds`
+- `gfx/interface/decisions/007_fury/decision_anti_fury_response.dds`
 
 Added asset documentation package:
 

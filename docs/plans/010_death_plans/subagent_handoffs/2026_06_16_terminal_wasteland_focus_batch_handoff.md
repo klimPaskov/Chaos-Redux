@@ -21,7 +21,7 @@ For each of the eight focus ids above:
 
 - source PNG: `docs/assets/010_death/source_png/<focus_id>_source.png`
 - processed PNG: `docs/assets/010_death/processed_png/<focus_id>.png`
-- final DDS: `gfx/interface/goals/death/<focus_id>.dds`
+- final DDS: `gfx/interface/goals/010_death/<focus_id>.dds`
 
 Batch outputs added:
 

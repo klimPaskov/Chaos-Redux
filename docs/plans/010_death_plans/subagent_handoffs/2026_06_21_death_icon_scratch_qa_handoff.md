@@ -5,7 +5,7 @@ Date: `2026-06-21`
 Scope:
 
 - Read-only QA of the active Death scratch icon package at `docs/assets/010_death/death_icon_scratch_regen_2026_06_21/`
-- Verification of the eight live Death focus DDS files in `gfx/interface/goals/death/`
+- Verification of the eight live Death focus DDS files in `gfx/interface/goals/010_death/`
 - Verification of all live Death achievement DDS triplets in `gfx/achievements/`
 - Documentation-source-of-truth check for stale references to earlier modified or intermediate icon packages
 - No gameplay, `.gfx`, localisation, event, focus, decision, or live DDS edits
@@ -20,7 +20,7 @@ Files changed:
   - Focus icons: `8` source PNGs, `8` processed PNGs, `8` package DDS files
   - Achievement icons: `13` source PNGs, `39` processed PNGs, `39` package DDS files
 - Byte-for-byte DDS comparison is clean:
-  - All eight live focus DDS files in `gfx/interface/goals/death/` exactly match the corresponding package DDS files in `docs/assets/010_death/death_icon_scratch_regen_2026_06_21/dds/`
+  - All eight live focus DDS files in `gfx/interface/goals/010_death/` exactly match the corresponding package DDS files in `docs/assets/010_death/death_icon_scratch_regen_2026_06_21/dds/`
   - All thirty-nine live `death_*` achievement DDS files in `gfx/achievements/` exactly match the corresponding package DDS files in `docs/assets/010_death/death_icon_scratch_regen_2026_06_21/dds/`
 - Decoded live DDS checks confirm the expected presentation:
   - All eight live focus DDS files decode to `94x86` RGBA with transparent corner pixels

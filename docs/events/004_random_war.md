@@ -117,7 +117,7 @@ Existing assets used:
 
 If a dedicated report image is added later, use:
 
-- DDS path: `gfx/event_pictures/report_event_random_war.dds`
+- DDS path: `gfx/event_pictures/004_random_war/report_event_random_war.dds`
 - Sprite name: `GFX_report_event_random_war`
 - GFX file: `interface/chaosx_pictures.gfx`
 

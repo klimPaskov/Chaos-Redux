@@ -85,7 +85,7 @@ All unlock tracking is set only inside Event 009 settlement helpers or the delay
 
 ## Assets
 
-- Report image: `GFX_report_event_009_white_peace`, backed by `gfx/event_pictures/report_event_009_white_peace.dds`, registered in `interface/009_white_peace_event_images.gfx`.
+- Report image: `GFX_report_event_009_white_peace`, backed by `gfx/event_pictures/009_white_peace/report_event_009_white_peace.dds`, registered in `interface/009_white_peace_event_images.gfx`.
 - Achievement icons: completed, grey, and not-eligible triplets for all five Event 009 achievements under `gfx/achievements/`, registered in `interface/chaosx_achievements.gfx`.
 - Asset source, processed PNGs, prompts, contact sheets, and handoff notes: `docs/assets/009_white_peace/`.
 

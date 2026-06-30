@@ -245,7 +245,7 @@ Super-event slot `13` is reserved for this world end.
 Image sprite:
 
 - `GFX_super_event_angelic_world_order`
-- `gfx/super_events/super_event_angelic_world_order.dds`
+- `gfx/super_events/003_holy_realm/super_event_angelic_world_order.dds`
 
 Quote:
 
@@ -264,11 +264,11 @@ Required generated assets:
 
 - Directorate flag source, processed PNG preview, and HOI4 TGA sizes
 - clone client flag copies
-- `gfx/interface/ideas/idea_mengele_clone_world_order.dds`
-- `gfx/interface/ideas/idea_mengele_clone_client_state.dds`
-- `gfx/interface/decisions/decision_mengele_hidden_clone_network.dds`
-- `gfx/interface/goals/focus_mengele_numbered_world.dds`
-- `gfx/super_events/super_event_angelic_world_order.dds`
+- `gfx/interface/ideas/germany_mengele/idea_mengele_clone_world_order.dds`
+- `gfx/interface/ideas/germany_mengele/idea_mengele_clone_client_state.dds`
+- `gfx/interface/decisions/germany_mengele/decision_mengele_hidden_clone_network.dds`
+- `gfx/interface/goals/germany_mengele/focus_mengele_numbered_world.dds`
+- `gfx/super_events/003_holy_realm/super_event_angelic_world_order.dds`
 
 All generated assets must be recorded in `docs/assets/chaos_redux_asset_manifest.md`.
 

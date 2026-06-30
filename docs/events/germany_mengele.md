@@ -242,13 +242,13 @@ Registered event picture:
 
 - `GFX_report_event_tibet`
 - referenced in `interface/chaosx_pictures.gfx`
-- uses existing `gfx/event_pictures/report_event_lhasa.dds`
+- uses existing `gfx/event_pictures/003_holy_realm/report_event_lhasa.dds`
 
 Registered super-event image:
 
 - `GFX_super_event_angel_directorate`
 - referenced in `interface/chaosx_super_events.gfx`
-- file path: `gfx/super_events/super_event_angel_directorate.dds`
+- file path: `gfx/super_events/003_holy_realm/super_event_angel_directorate.dds`
 
 The super-event image is registered under the final filename and currently contains the default super-event art so the game has no missing sprite. Replace that DDS with final art under the same filename.
 
@@ -273,12 +273,12 @@ Clone world-order assets:
 - `mengele_clone_army` flags in `gfx/flags/`, `gfx/flags/medium/`, and `gfx/flags/small/`, with ideology-suffixed copies.
 - `germany_mengele_angelic_directorate` flags in `gfx/flags/`, `gfx/flags/medium/`, and `gfx/flags/small/`, with ideology-suffixed copies.
 - `mengele_clone_client_regime` flags in `gfx/flags/`, `gfx/flags/medium/`, and `gfx/flags/small/`, with ideology-suffixed copies.
-- `GFX_idea_mengele_clone_world_order` in `gfx/interface/ideas/idea_mengele_clone_world_order.dds`
-- `GFX_idea_mengele_clone_client_state` in `gfx/interface/ideas/idea_mengele_clone_client_state.dds`
-- `GFX_idea_mengele_artificial_army_crisis` in `gfx/interface/ideas/idea_mengele_artificial_army_crisis.dds`
-- `GFX_decision_mengele_hidden_clone_network` in `gfx/interface/decisions/decision_mengele_hidden_clone_network.dds`
-- `GFX_focus_mengele_numbered_world` in `gfx/interface/goals/focus_mengele_numbered_world.dds`
-- `GFX_super_event_angelic_world_order` in `gfx/super_events/super_event_angelic_world_order.dds`
+- `GFX_idea_mengele_clone_world_order` in `gfx/interface/ideas/germany_mengele/idea_mengele_clone_world_order.dds`
+- `GFX_idea_mengele_clone_client_state` in `gfx/interface/ideas/germany_mengele/idea_mengele_clone_client_state.dds`
+- `GFX_idea_mengele_artificial_army_crisis` in `gfx/interface/ideas/germany_mengele/idea_mengele_artificial_army_crisis.dds`
+- `GFX_decision_mengele_hidden_clone_network` in `gfx/interface/decisions/germany_mengele/decision_mengele_hidden_clone_network.dds`
+- `GFX_focus_mengele_numbered_world` in `gfx/interface/goals/germany_mengele/focus_mengele_numbered_world.dds`
+- `GFX_super_event_angelic_world_order` in `gfx/super_events/003_holy_realm/super_event_angelic_world_order.dds`
 - Asset manifest: `docs/assets/mengele_clone_world_order/manifest.md`
 - Artificial Army Crisis icon manifest: `docs/assets/mengele_artificial_army_crisis/manifest.md`
 

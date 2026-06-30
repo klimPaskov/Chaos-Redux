@@ -13,7 +13,7 @@ Regenerated the Event 008 `Tensions Rising` report event image package only. No 
 - `docs/assets/008_tensions_rising/processed_png/report_event_tensions_rising.png`
 - `docs/assets/008_tensions_rising/contact_sheet/008_tensions_rising_alternatives.png`
 - `docs/assets/008_tensions_rising/manifest.md`
-- `gfx/event_pictures/report_event_tensions_rising.dds`
+- `gfx/event_pictures/008_tensions_rising/report_event_tensions_rising.dds`
 
 ## Source Mode
 
@@ -57,7 +57,7 @@ DDS conversion:
 ```bash
 convert docs/assets/008_tensions_rising/processed_png/report_event_tensions_rising.png \
   -define dds:compression=none \
-  gfx/event_pictures/report_event_tensions_rising.dds
+  gfx/event_pictures/008_tensions_rising/report_event_tensions_rising.dds
 ```
 
 Contact sheet rebuild:
@@ -71,7 +71,7 @@ montage C:/Users/klimp/AppData/Local/Temp/008_cs_selected.png C:/Users/klimp/App
 ## Validation Evidence
 
 - `identify` confirms `docs/assets/008_tensions_rising/processed_png/report_event_tensions_rising.png` is `210x176`.
-- `identify` confirms `gfx/event_pictures/report_event_tensions_rising.dds` is `210x176`.
+- `identify` confirms `gfx/event_pictures/008_tensions_rising/report_event_tensions_rising.dds` is `210x176`.
 - `identify` reports both processed PNG and DDS as alpha-capable (`srgba`).
 - Corner-pixel check on the processed PNG returned:
   `corner00=srgba(0,0,0,0) corner209=srgba(0,0,0,0) corner0175=srgba(0,0,0,0) corner209175=srgba(0,0,0,0)`

@@ -171,14 +171,14 @@ Current wiring uses stable Fury-specific assets:
 - report event: `GFX_report_event_fury_war_office`
 - news event: `GFX_news_event_fury_first_conquest`
 - super-event slot: `59`
-- super-event image: `GFX_super_event_fury_becomes_a_state`, backed by generated final art at `gfx/super_events/fury_becomes_a_state.dds`
+- super-event image: `GFX_super_event_fury_becomes_a_state`, backed by generated final art at `gfx/super_events/007_fury/fury_becomes_a_state.dds`
 - major Fury super-event audio: ID `59`, `music/fury_becomes_a_state.ogg`, `sound/chaosx_super_event_fury_becomes_a_state.wav`
 - world-end super-event slot: `60`
-- world-end super-event image: `GFX_super_event_world_in_fury`, backed by generated final art at `gfx/super_events/super_event_world_in_fury.dds`
+- world-end super-event image: `GFX_super_event_world_in_fury`, backed by generated final art at `gfx/super_events/007_fury/super_event_world_in_fury.dds`
 - world-end super-event audio: ID `60`, `music/super_event_world_in_fury.ogg`, `sound/chaosx_super_event_world_in_fury.wav`
 - achievement icons: final filenames registered in `interface/chaosx_achievements.gfx`
-- Fury leader overlay: `GFX_fury_leader_flame_overlay_animated`, backed by an 8-frame looping sheet at `gfx/interface/leader_frames/fury/fury_leader_flame_overlay_sheet.dds`
-- Fury leader overlay static fallback: `GFX_fury_leader_flame_overlay_static`, backed by `gfx/interface/leader_frames/fury/fury_leader_flame_overlay_static.dds`
+- Fury leader overlay: `GFX_fury_leader_flame_overlay_animated`, backed by an 8-frame looping sheet at `gfx/interface/leader_frames/007_fury/fury_leader_flame_overlay_sheet.dds`
+- Fury leader overlay static fallback: `GFX_fury_leader_flame_overlay_static`, backed by `gfx/interface/leader_frames/007_fury/fury_leader_flame_overlay_static.dds`
 - Fury evolution details portrait treatment: the event-log evolution details window uses vanilla's `GFX_portrait_unknown` missing portrait and overlays `GFX_fury_leader_flame_overlay_animated` for Fury evolution stages
 
 Final Fury art and audio use stable gameplay IDs. Report, news, and super-event images use street-level Fury outbreak imagery: rogue soldiers, civilians fleeing, smoke, burning streets, and sudden neighbor-war panic. They should not be replaced with map rooms, command desks, ledgers, route strings, globes, or war-office planning scenes.
@@ -189,23 +189,23 @@ Fury idea tuning keeps the strongest light modifiers at 25%: `fury_compliance_dr
 
 Recommended final asset paths:
 
-- `gfx/event_pictures/fury/fury_war_office.dds`
-- `gfx/event_pictures/fury/fury_first_conquest.dds`
-- `gfx/interface/ideas/fury/idea_fury_national_fury.dds`
-- `gfx/interface/ideas/fury/idea_fury_hardened_fury.dds`
-- `gfx/interface/decisions/fury/decision_category_fury_war_office.dds`
-- `gfx/interface/decisions/fury/decision_fury_target.dds`
-- `gfx/interface/goals/fury/goal_fury_war_office.dds`
-- `gfx/event_pictures/fury/fury_first_conquest.dds`
-- `gfx/super_events/fury_becomes_a_state.dds`
-- `gfx/super_events/super_event_world_in_fury.dds`
+- `gfx/event_pictures/007_fury/fury_war_office.dds`
+- `gfx/event_pictures/007_fury/fury_first_conquest.dds`
+- `gfx/interface/ideas/007_fury/idea_fury_national_fury.dds`
+- `gfx/interface/ideas/007_fury/idea_fury_hardened_fury.dds`
+- `gfx/interface/decisions/007_fury/decision_category_fury_war_office.dds`
+- `gfx/interface/decisions/007_fury/decision_fury_target.dds`
+- `gfx/interface/goals/007_fury/goal_fury_war_office.dds`
+- `gfx/event_pictures/007_fury/fury_first_conquest.dds`
+- `gfx/super_events/007_fury/fury_becomes_a_state.dds`
+- `gfx/super_events/007_fury/super_event_world_in_fury.dds`
 - `music/fury_becomes_a_state.ogg`
 - `sound/chaosx_super_event_fury_becomes_a_state.wav`
 - `music/super_event_world_in_fury.ogg`
 - `sound/chaosx_super_event_world_in_fury.wav`
-- `gfx/interface/leader_frames/fury/fury_leader_flame_overlay_sheet.dds`
-- `gfx/interface/leader_frames/fury/fury_leader_flame_overlay_static.dds`
-- `gfx/achievements/achievement_fury_*`
+- `gfx/interface/leader_frames/007_fury/fury_leader_flame_overlay_sheet.dds`
+- `gfx/interface/leader_frames/007_fury/fury_leader_flame_overlay_static.dds`
+- `gfx/achievements/007_fury_*`
 
 ## Validation Notes
 

@@ -223,7 +223,7 @@ Holy Realm achievements are registered in `common/achievements/chaos_redux_achie
 
 Holy Realm-specific sprite names are registered in `interface/003_holy_realm.gfx`, `interface/chaosx_achievements.gfx`, and `interface/chaosx_super_events.gfx`. Report-event, focus, idea, decision category, achievement, and super-event files use their normal Chaos Redux folders.
 
-Leader stage portrait aliases are registered in `interface/chaosx_characters.gfx`. The static fallback portrait DDS files live in `gfx/leaders/THR/`, with source/processed review files and contact sheet under `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/`. Country leader portrait effects use the static aliases. The Buddha Mandate stage also has the animated sprite `GFX_portrait_THR_buddha_mandate_animated` backed by `gfx/leaders/THR/portrait_THR_buddha_mandate_animated.dds`, and the Empty Seat aftermath has `GFX_portrait_THR_empty_seat_animated` backed by `gfx/leaders/THR/portrait_THR_empty_seat_animated.dds` for event-log and UI presentation surfaces.
+Leader stage portrait aliases are registered in `interface/chaosx_characters.gfx`. The static fallback portrait DDS files live in `gfx/leaders/003_holy_realm/`, with source/processed review files and contact sheet under `docs/assets/003_holy_realm_buddhahood/leader_portrait_static_fallbacks/`. Country leader portrait effects use the static aliases. The Buddha Mandate stage also has the animated sprite `GFX_portrait_THR_buddha_mandate_animated` backed by `gfx/leaders/003_holy_realm/portrait_THR_buddha_mandate_animated.dds`, and the Empty Seat aftermath has `GFX_portrait_THR_empty_seat_animated` backed by `gfx/leaders/003_holy_realm/portrait_THR_empty_seat_animated.dds` for event-log and UI presentation surfaces.
 
 The Holy Mandala scripted GUI is intentionally compact and attached only to the decision category. It does not replace the focus tree, the balance-of-power screen, or the Bodhisattva mission category.
 
@@ -267,28 +267,28 @@ The remaining Holy Realm focuses use vanilla/generic icons where no custom repla
 
 Decision category icons:
 
-- `GFX_decision_category_holy_mandala`: `gfx/interface/decisions/holy_realm/decision_category_holy_mandala.dds`
-- `GFX_decision_category_final_ledger`: `gfx/interface/decisions/holy_realm/decision_category_final_ledger.dds`
+- `GFX_decision_category_holy_mandala`: `gfx/interface/decisions/003_holy_realm/decision_category_holy_mandala.dds`
+- `GFX_decision_category_final_ledger`: `gfx/interface/decisions/003_holy_realm/decision_category_final_ledger.dds`
 - `GFX_decision_category_holy_doctrine_balance`: vanilla `gfx/interface/decisions/decision_category_generic_political_actions.dds`
-- `GFX_holy_realm_mandala_meditation_animated`: `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_meditation_animated.dds`
-- `GFX_holy_realm_mandala_awakened_animated`: `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_awakened_animated.dds`
-- `GFX_holy_realm_mandala_final_silence_animated`: `gfx/interface/decisions/holy_realm/mandala_states/holy_realm_mandala_final_silence_animated.dds`
-- `GFX_decision_holy_realm_dhyana_seal`: `gfx/interface/decisions/holy_realm/dhyana_seal/holy_realm_dhyana_seal.dds`
-- `GFX_decision_holy_realm_dhyana_seal_animated`: `gfx/interface/decisions/holy_realm/dhyana_seal/holy_realm_dhyana_seal_animated.dds`
+- `GFX_holy_realm_mandala_meditation_animated`: `gfx/interface/decisions/003_holy_realm/mandala_states/holy_realm_mandala_meditation_animated.dds`
+- `GFX_holy_realm_mandala_awakened_animated`: `gfx/interface/decisions/003_holy_realm/mandala_states/holy_realm_mandala_awakened_animated.dds`
+- `GFX_holy_realm_mandala_final_silence_animated`: `gfx/interface/decisions/003_holy_realm/mandala_states/holy_realm_mandala_final_silence_animated.dds`
+- `GFX_decision_holy_realm_dhyana_seal`: `gfx/interface/decisions/003_holy_realm/dhyana_seal/holy_realm_dhyana_seal.dds`
+- `GFX_decision_holy_realm_dhyana_seal_animated`: `gfx/interface/decisions/003_holy_realm/dhyana_seal/holy_realm_dhyana_seal_animated.dds`
 - vanilla `GFX_decision_category_generic_political_actions` for Letters of Peace and Authority
 - vanilla `GFX_faction_logo_generic_democratic` for the Mandala of Nations faction logo until custom faction art exists
 
 Custom Buddha power and teaching decision icons:
 
-- `GFX_decision_holy_realm_power_one_becomes_many`: `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_one_becomes_many.dds`
-- `GFX_decision_holy_realm_power_passing_through_walls`: `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_passing_through_walls.dds`
-- `GFX_decision_holy_realm_power_walking_on_water`: `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_walking_on_water.dds`
-- `GFX_decision_holy_realm_power_lotus_bridge`: `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_lotus_bridge.dds`
-- `GFX_decision_holy_realm_power_vanishing_from_sight`: `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_vanishing_from_sight.dds`
-- `GFX_decision_holy_realm_power_seated_in_sky`: `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_seated_in_sky.dds`
-- `GFX_decision_holy_realm_power_touching_sun_moon`: `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_touching_sun_moon.dds`
-- `GFX_decision_holy_realm_power_extinction_defilements`: `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_power_extinction_defilements.dds`
-- `GFX_decision_holy_realm_dharma_teaching`: `gfx/interface/decisions/holy_realm/powers/decision_holy_realm_dharma_teaching.dds`
+- `GFX_decision_holy_realm_power_one_becomes_many`: `gfx/interface/decisions/003_holy_realm/powers/decision_holy_realm_power_one_becomes_many.dds`
+- `GFX_decision_holy_realm_power_passing_through_walls`: `gfx/interface/decisions/003_holy_realm/powers/decision_holy_realm_power_passing_through_walls.dds`
+- `GFX_decision_holy_realm_power_walking_on_water`: `gfx/interface/decisions/003_holy_realm/powers/decision_holy_realm_power_walking_on_water.dds`
+- `GFX_decision_holy_realm_power_lotus_bridge`: `gfx/interface/decisions/003_holy_realm/powers/decision_holy_realm_power_lotus_bridge.dds`
+- `GFX_decision_holy_realm_power_vanishing_from_sight`: `gfx/interface/decisions/003_holy_realm/powers/decision_holy_realm_power_vanishing_from_sight.dds`
+- `GFX_decision_holy_realm_power_seated_in_sky`: `gfx/interface/decisions/003_holy_realm/powers/decision_holy_realm_power_seated_in_sky.dds`
+- `GFX_decision_holy_realm_power_touching_sun_moon`: `gfx/interface/decisions/003_holy_realm/powers/decision_holy_realm_power_touching_sun_moon.dds`
+- `GFX_decision_holy_realm_power_extinction_defilements`: `gfx/interface/decisions/003_holy_realm/powers/decision_holy_realm_power_extinction_defilements.dds`
+- `GFX_decision_holy_realm_dharma_teaching`: `gfx/interface/decisions/003_holy_realm/powers/decision_holy_realm_dharma_teaching.dds`
 
 Balance of power icons:
 
@@ -312,12 +312,12 @@ Decision icons:
 
 Leader portraits:
 
-- Stage portraits are registered in `interface/chaosx_characters.gfx` and stored under `gfx/leaders/THR/`.
+- Stage portraits are registered in `interface/chaosx_characters.gfx` and stored under `gfx/leaders/003_holy_realm/`.
 - `GFX_portrait_THR_buddha_mandate` is the country leader portrait for Buddhahood and Buddha Mandate; `GFX_portrait_THR_buddha_mandate_animated` is used on animated presentation surfaces.
 - `GFX_portrait_THR_empty_seat` is the country leader portrait for the Empty Seat aftermath; `GFX_portrait_THR_empty_seat_animated` is used on animated presentation surfaces.
-- `GFX_portrait_THR_false_buddha` uses `gfx/leaders/THR/portrait_THR_false_buddha.dds` while the False Buddha Schism is active and remains on the absorbed-shadow route.
+- `GFX_portrait_THR_false_buddha` uses `gfx/leaders/003_holy_realm/portrait_THR_false_buddha.dds` while the False Buddha Schism is active and remains on the absorbed-shadow route.
 
-Idea icons use a separate folder and sprite set, not focus icons. Placeholder DDS files are registered under `gfx/interface/ideas/holy_realm/` until final custom idea art is provided:
+Idea icons use a separate folder and sprite set, not focus icons. Placeholder DDS files are registered under `gfx/interface/ideas/003_holy_realm/` until final custom idea art is provided:
 
 - `GFX_idea_holy_realm_refuge`
 - `GFX_idea_holy_realm_bodhisattva`
@@ -374,25 +374,25 @@ Each achievement uses completed, grey, and not-eligible DDS files in `gfx/achiev
 
 Super-event art:
 
-- `gfx/super_events/super_event_the_buddha_mandate.dds`
+- `gfx/super_events/003_holy_realm/super_event_the_buddha_mandate.dds`
   - referenced as `GFX_super_event_buddha_mandate`
   - registered in `interface/chaosx_super_events.gfx`
-- `gfx/super_events/super_event_the_final_silence.dds`
+- `gfx/super_events/003_holy_realm/super_event_the_final_silence.dds`
   - referenced as `GFX_super_event_final_silence`
   - registered in `interface/chaosx_super_events.gfx`
-- `gfx/super_events/super_event_the_final_silence.dds`
+- `gfx/super_events/003_holy_realm/super_event_the_final_silence.dds`
   - referenced as `GFX_super_event_final_silence_terminal`
   - registered in `interface/chaosx_super_events.gfx`; currently shares the terminal Final Silence texture
-- `gfx/super_events/super_event_the_mandala_breaks.dds`
+- `gfx/super_events/003_holy_realm/super_event_the_mandala_breaks.dds`
   - referenced as `GFX_super_event_mandala_breaks`
   - registered in `interface/chaosx_super_events.gfx`
-- `gfx/super_events/super_event_divine_sovereignty.dds`
+- `gfx/super_events/003_holy_realm/super_event_divine_sovereignty.dds`
   - referenced as `GFX_super_event_divine_sovereignty`
   - registered in `interface/chaosx_super_events.gfx`; fires when Divine Sovereignty is accepted under high crisis, high Final Silence Pressure, or prior coercive doctrine
-- `gfx/super_events/super_event_mandala_of_nations.dds`
+- `gfx/super_events/003_holy_realm/super_event_mandala_of_nations.dds`
   - referenced as `GFX_super_event_mandala_of_nations`
   - registered in `interface/chaosx_super_events.gfx`; fires when the Mandala of Nations is formed
-- `gfx/super_events/super_event_powers_of_the_awakened.dds`
+- `gfx/super_events/003_holy_realm/super_event_powers_of_the_awakened.dds`
   - referenced as `GFX_super_event_powers_of_the_awakened`
   - registered in `interface/chaosx_super_events.gfx`; fires when anti-chaos Buddha powers are first demonstrated
 
@@ -419,7 +419,7 @@ Super-event audio:
 - Powers of the Awakened, audio ID `61`:
   - music file: `music/super_event_powers_of_the_awakened.ogg`
   - sound definition: `chaosx_super_event_powers_of_the_awakened_track`
-  - image: `gfx/super_events/super_event_powers_of_the_awakened.dds`
+  - image: `gfx/super_events/003_holy_realm/super_event_powers_of_the_awakened.dds`
 - Audio sources, licenses, durations, and conversion notes are recorded in `docs/super_events/super_event_audio_packages.md`.
 
 Holy Mandala and Final Silence Ledger gameplay values remain in the country, event log, focuses, decisions, and localisation. The live scripted GUI surface is `holy_realm_mandala_category_scripted_gui` attached to `holy_realm_mandala_category`; it uses `holy_realm_mandala_category_container` in `interface/chaosx_decisions.gui` to display the current mandala state, core Buddhahood counters, route text, and clickable tab flags inside the decision category.

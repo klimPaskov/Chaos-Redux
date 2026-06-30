@@ -703,7 +703,7 @@ Current coastal breakout tuning:
 
 This is the air-contamination collapse world-end event in the same namespace. It is not a zombie outbreak event, but it shares the same super-event numbering block and therefore belongs in this namespace-level documentation.
 
-The fallout super-event uses image sprite `GFX_super_event_fallout`, DDS file `gfx/super_events/super_event_fallout.dds`, audio ID `4`, music file `music/super_event_fallout.ogg`, and sound definition `chaosx_super_event_fallout_track`. The image source and conversion notes are recorded in `docs/assets/fallout_super_event/manifest.md`. Audio source, license, duration, and conversion notes are recorded in `docs/super_events/super_event_audio_packages.md`.
+The fallout super-event uses image sprite `GFX_super_event_fallout`, DDS file `gfx/super_events/002_zombie_outbreak/super_event_fallout.dds`, audio ID `4`, music file `music/super_event_fallout.ogg`, and sound definition `chaosx_super_event_fallout_track`. The image source and conversion notes are recorded in `docs/assets/fallout_super_event/manifest.md`. Audio source, license, duration, and conversion notes are recorded in `docs/super_events/super_event_audio_packages.md`.
 
 #### `chaosx.nr2.11`: Wendigo ascendancy
 
@@ -980,16 +980,16 @@ Sprite definitions live in `interface/chaosx_super_events.gfx`.
 
 Required zombie final-defeat asset:
 
-- file: `gfx/super_events/super_event_zombie_defeat.dds`
+- file: `gfx/super_events/002_zombie_outbreak/super_event_zombie_defeat.dds`
 - sprite: `GFX_super_event_zombie_defeat`
 - wired in: `interface/chaosx_super_events.gfx`
 
 Existing outbreak-related assets already used by the system:
 
-- `gfx/super_events/super_event_zombies.dds`
-- `gfx/super_events/super_event_azl.dds`
-- `gfx/super_events/super_event_zombie_apocalypse.dds`
-- `gfx/super_events/super_event_fallout.dds`
+- `gfx/super_events/002_zombie_outbreak/super_event_zombies.dds`
+- `gfx/super_events/002_zombie_outbreak/super_event_azl.dds`
+- `gfx/super_events/002_zombie_outbreak/super_event_zombie_apocalypse.dds`
+- `gfx/super_events/002_zombie_outbreak/super_event_fallout.dds`
 
 Audio assets:
 
