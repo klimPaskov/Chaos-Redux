@@ -20,7 +20,7 @@ Before writing the event specification, use the following as the design baseline
 - `chaos-redux-super-events` when the event needs a super-event
 - `hoi4-focus-trees` or the current focus-tree skill when the event needs focus trees
 - `hoi4-decisions-missions` when the event needs decisions, missions, timed objectives, influence actions, or decision-driven mechanics
-- provided event spreadsheet rows
+- provided event spreadsheet rows (don't use Python to read the spreadsheet, read the .csv files directly)
 - provided existing event docs
 - provided Chaos Redux mechanics docs
 
@@ -1420,6 +1420,16 @@ When `chaos-redux-improvement-loop` produces an expansion addendum, treat it as 
 
 An improvement-derived spec can be shaped freely. It does not need to copy the section order of this skill. It should still make the design concrete. A useful addendum explains the playable promise, the route or mechanic that feels shallow, the deeper player loop, the choices that change outcomes, the AI behavior, the visual and localisation needs, and the surfaces that must align.
 
+### Mandatory near-completion improvement-loop pass
+
+Every implementation prompt and goal prompt produced by this skill must require a final `chaosx_improvement_loop_planner` pass using the subagent defined by `chaosx_improvement_loop_planner.toml` when the implementation goal is nearing completion, before the implementation agent claims completion. This is mandatory for every event implementation, rework, country package, major mechanic, focus tree, decision system, scripted GUI system, super-event package, visual progression package, or other spec-driven goal created from this skill.
+
+The near-completion planner pass must be spawned with `fork_context=false`. The parent prompt must explicitly include the current spec paths, accepted plans, implemented surfaces, known simplifications, blocked items, subagent handoffs, and the rule that the planner must either produce a concrete expansion addendum or a closure handoff. The planner must not patch gameplay files.
+
+If the planner produces an expansion addendum, the implementation agent may not claim completion until the addendum has been implemented, folded into the relevant source spec, explicitly queued with a reason, or rejected with a reason. If the planner produces a closure handoff, the implementation agent must treat it as evidence for finalization, not as completion by itself. Final completion still belongs to the main implementation agent after audits, docs, localisation, assets, spreadsheet fields, and validation are aligned.
+
+Do not skip this pass because the implementation appears complete. The point is to catch shallow mechanics, missing links, weak AI, thin country packages, static visuals, disconnected focus or decision content, unresolved addenda, and bloat before the goal is closed.
+
 ## General localisation handoff
 
 When a spec includes text-bearing content, give a localisation handoff, not final copy.
@@ -1486,6 +1496,7 @@ Create sequential files:
 - `<event_id>_<event_slug>_spec_part_1_core.md`
 - `<event_id>_<event_slug>_spec_part_2_<theme>.md`
 - `<event_id>_<event_slug>_spec_part_3_<theme>.md`
+- and more as needed
 
 Do not repeat earlier sections unless needed for clarity.
 
@@ -1585,6 +1596,9 @@ The prompt must tell the coding agent to:
 - keep all Chaos Redux systems aligned
 - report anything that cannot be implemented cleanly
 - keep iterating until the full spec is implemented to its fullest extent
+- run a mandatory near-completion `chaosx_improvement_loop_planner` pass using `chaosx_improvement_loop_planner.toml` before claiming completion, using `fork_context=false` and explicit context
+- implement, promote, queue with reason, or reject with reason any planner addendum before claiming completion
+- treat a planner closure handoff as finalization evidence, not as completion by itself
 - avoid fallbacks, simplifications, temporary versions, and good-enough approximations
 - not claim completion until the implemented files satisfy the spec
 
@@ -1596,7 +1610,7 @@ The goal prompt must be less than 4000 characters.
 
 The goal prompt should not contain the whole spec or all long instructions. It should point to the spec files and the other prompt files, then state the most important pass or fail requirements.
 
-The goal prompt must tell the implementation agent to keep iterating until the goal is accomplished to its fullest extent. It must also say not to claim completion until the implemented files satisfy the spec.
+The goal prompt must tell the implementation agent to keep iterating until the goal is accomplished to its fullest extent. It must also require a mandatory near-completion `chaosx_improvement_loop_planner` pass using `chaosx_improvement_loop_planner.toml` before any completion claim. It must say that any planner addendum must be implemented, promoted, queued with reason, or rejected with reason before completion can be claimed. It must also say not to claim completion until the implemented files satisfy the spec.
 
 A good goal prompt should include:
 
@@ -1609,6 +1623,8 @@ A good goal prompt should include:
 - the top design non-negotiables
 - the requirement to create all required static and animated assets, static fallbacks, tags, starting divisions, reinforcement pathways, non-linear focus trees based on the mapped paths, focus filter tags, decisions, evolutions, achievements, and docs
 - the requirement to research and source final super-event titles, button text, quotes, cultural remarks, and audio through the proper super-event workflow when super-events exist
+- the requirement to run `chaosx_improvement_loop_planner` from `chaosx_improvement_loop_planner.toml` when the goal is nearing completion, before any completion claim
+- the requirement to resolve any planner addendum by implementing it, promoting it, queuing it with a reason, or rejecting it with a reason
 - the requirement to provide a concrete completion report
 
 If the goal prompt is near 4000 characters, shorten it by pointing to files instead of repeating details.
@@ -1627,6 +1643,7 @@ Before finishing a major event spec, ask:
 - If a major surface stays static, does the spec explain why motion would add clutter instead of clarity?
 - Does the asset prompt include all static and animated UI pieces, frame-sheet needs, sprite names, state logic, and fallbacks?
 - Does the goal prompt tell the implementation agent to verify formables, UI windows, animated sprites, frame-sheet handoffs, and fallbacks?
+- Does the goal prompt require a mandatory near-completion `chaosx_improvement_loop_planner` pass using `chaosx_improvement_loop_planner.toml` before the implementation agent can claim completion?
 
 ## 20. Final response checklist
 
@@ -1653,6 +1670,7 @@ The final response should include:
 - every major focus tree includes focus reward diversity and an idea audit when ideas or national spirits are used
 - focus rewards include varied buildings, factories, military, industry, diplomacy, decisions, missions, identities, and mechanics where appropriate, not mostly new ideas
 - final zip package created with all spec files, prompt files, route diagrams if used, research notes, and matrices
+- coding prompt and goal prompt require a mandatory near-completion `chaosx_improvement_loop_planner` pass using `chaosx_improvement_loop_planner.toml`
 - focus tree files split into separate parts when the tree is too large for one file
 - decisions and rare variants mapped when they exist
 - event option tone mapped where event options exist, including irony, sarcasm, cultural remarks, humour, or deliberate plain severity
@@ -1762,6 +1780,8 @@ Reject the draft if it has any of these problems:
 - coding prompt or goal prompt that lets unresearched super-event text be implemented instead of treating it as blocked
 - goal prompt over 4000 characters
 - goal prompt that tries to contain the whole spec instead of pointing to files
+- coding prompt or goal prompt missing the mandatory near-completion `chaosx_improvement_loop_planner` pass using `chaosx_improvement_loop_planner.toml`
+- coding prompt or goal prompt allowing completion without resolving the planner addendum or closure handoff
 - missing final zip package containing all required spec files, prompt files, route diagrams if used, research notes, and matrices
 - admin audit sections inside the spec
 - major event ideas or spirits whose main effect is a tiny modifier with no meaningful strategic role
