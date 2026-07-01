@@ -46,15 +46,6 @@ Three internal rarity groups are now represented in the achievement list order:
   - `death_before_the_name`
   - `death_the_living_conference`
   - `death_six_continents_one_color`
-- Event 011 Secret Alliance
-  - `sa_every_thread_named`
-  - `sa_paper_collapse`
-  - `sa_turn_the_knife`
-  - `sa_prepared_for_every_border`
-  - `sa_small_country_large_shadow`
-  - `sa_ten_signatures`
-  - `sa_bad_evidence_backfire`
-  - `sa_no_factory_lost`
 
 HOI4 custom achievements do not expose a native tier field in the file format, so tiering is preserved through internal grouping, naming, and docs rather than a dedicated engine-side rarity value.
 
@@ -172,22 +163,3 @@ Queued but not active:
   - Held until a full Black Oath/Herald route exists.
 - `death_book_burner`
   - Held until a full Dark Methods route exists.
-
-### Event 011 Secret Alliance
-
-- `sa_every_thread_named`
-  - Expose every active core compact member before public reveal or war-trigger reveal.
-- `sa_paper_collapse`
-  - Force the hidden compact to dissolve through evidence and pressure without triggering the reveal war.
-- `sa_turn_the_knife`
-  - Convince a compact participant to defect, then use the defector trail to expose another member.
-- `sa_prepared_for_every_border`
-  - Identify enough neighboring compact members, cover an exposed compact-facing border with fielded divisions, and keep high preparedness without failing the border deadline before the crisis resolves.
-- `sa_small_country_large_shadow`
-  - As a minor target, survive or end a revealed compact backed by a major patron without joining a major faction.
-- `sa_ten_signatures`
-  - Resolve or defeat a compact that reached ten core or known members without target capitulation.
-- `sa_bad_evidence_backfire`
-  - Recover after a failed public-dossier attempt strengthens the compact.
-- `sa_no_factory_lost`
-  - Complete the chain after Evolution II without target capitulation or successful major industrial sabotage.
