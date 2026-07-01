@@ -35,7 +35,7 @@ Primary script and data files:
 - `common/ai_strategy/ZZZ.txt`
 - `common/ai_strategy/anti_zombie_league.txt`
 - `common/ai_templates/templates_ZZZ.txt`
-- `common/ideas/chaosx_ideas.txt`
+- `common/ideas/002_zombie_ideas.txt`
 - `common/technology_sharing/chaosx_tech_sharing.txt`
 - `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt`
 - `interface/chaosx_super_events.gfx`

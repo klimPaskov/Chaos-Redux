@@ -314,6 +314,7 @@ Core files to check:
 - `events/<ID>_my_event.txt`
 - `common/on_actions/chaosx_on_actions_system.txt`
 - `common/on_actions/<event_id>_<event_slug>_on_actions.txt` for event-owned runtime hooks
+- `common/ideas/<event_id>_<event_slug>_ideas.txt` for event-owned national spirits, hidden ideas, and other idea categories
 - `common/scripted_effects/chaosx_logic_effects.txt`
 - `common/scripted_effects/chaosx_events_log_effects.txt`
 - `localisation/english/chaosx_event_names_l_english.yml`
@@ -337,7 +338,7 @@ Frequently-needed companion files:
 - `common/scripted_effects/*.txt`
 - `common/decisions/*.txt`
 - `common/decisions/categories/*.txt`
-- `common/ideas/*.txt`
+- `common/ideas/*.txt`, with `common/ideas/chaosx_ideas.txt` reserved for shared or legacy root-only ideas that cannot safely belong to one event
 - `common/ai_strategy/*.txt`
 - `common/ai_templates/*.txt`
 - and possibly more. Some events can truly touch all systems.
