@@ -1,16 +1,30 @@
 # Event 015 final improvement-loop depth audit addendum
 
+## Implementation resolution
+
+Status: accepted and implemented in the Event 015 workset.
+
+- Mission-objective pass: implemented through objective-ready triggers for harvest rotation, household guard, boundary arbitration, marked district survey, League aid corridor, and renunciation vote.
+- Needful Land arbitration: implemented as `mission_utopia_boundary_arbitration`; the decision starts a timed mission and only successful mission resolution adds a claim. It does not grant a core.
+- Marked Bounds district survey: implemented as `mission_utopia_marked_district_survey`; the decision starts a timed survey and only successful mission resolution adds a risky claim.
+- League confidence: implemented as auxiliary ledger value `utopia_league_confidence`, visible in the ledger footer and used by League target gating, AI focus weighting, League identity, aid outcomes, and the League achievement.
+- Route unit families: implemented as Household Guard, Storehouse Engineers, Craft Militias, Harbor Watch, Surveyor Columns, and League Cadres with centralized caps and state/network scaling.
+- Late cosmetic identity: implemented through `common/countries/cosmetic.txt`, cosmetic localisation, generated flag asset triplets, and late focus/League identity effects.
+- Documentation/spec alignment: promoted into `docs/events/015_utopia_manifesto.md` and the source specs under `docs/specs/015_utopia_manifesto_specs/`.
+
+Completion-report verification is tracked through the specialist audit handoffs in this folder rather than through a new design addendum.
+
 ## Audit verdict
 
 Event 015 is broadly deep enough in its core surfaces. It is not a shallow event shell: the current implementation has a full replacement tree, a ledger category, dynamic ledger variables, targeted decisions, Needful Land and integration hooks, AI weights, achievements, assets, and two late super-events.
 
-The remaining depth risk is narrower: several late or event-adjacent systems are present but thinner than the source specs promised. These should be treated as a queued final polish/blocker package before the event is called complete, unless the parent explicitly rejects them as out of scope.
+The closure package below has been implemented in the Event 015 workset. This document is retained as a trace of the accepted improvement-loop addendum rather than an open blocker list.
 
-This addendum should stay in `docs/plans/015_utopia_manifesto_plans/` until accepted. If accepted, promote the chosen changes into:
+Accepted implementation facts were promoted into:
 
 - `docs/specs/015_utopia_manifesto_specs/specs/015_utopia_manifesto_spec_part_3_decisions_mechanics.md`
 - `docs/specs/015_utopia_manifesto_specs/specs/015_utopia_manifesto_spec_part_4_ai_assets_acceptance.md`
-- `docs/events/015_utopia_manifesto.md` after implementation matches the final behavior
+- `docs/events/015_utopia_manifesto.md`
 
 ## Prior addenda and handoff status
 
@@ -22,8 +36,13 @@ Existing handoffs in this plans folder are specialist handoffs, not design adden
 - `subagent_handoffs/2026-07-01_super_event_text_research.md`
 - `subagent_handoffs/2026-07-01_super_event_audio_research.md`
 - `subagent_handoffs/2026-07-01_decision_mission_audit.md`
+- `subagent_handoffs/2026-07-01_decision_mission_followup_audit.md`
+- `subagent_handoffs/2026-07-01_focus_tree_audit_patch_handoff.md`
+- `subagent_handoffs/2026-07-01_country_package_adjacent_audit.md`
+- `subagent_handoffs/2026-07-01_focus_icon_regeneration.md`
+- `subagent_handoffs/2026-07-01_decision_idea_icon_regeneration.md`
 
-The decision/mission audit remains unresolved and is the main reason this final audit is not a closure handoff.
+The decision/mission audit findings were addressed by the follow-up decision mission patch and parent arbitration/ledger patches.
 
 ## Evidence of sufficient depth
 
@@ -39,39 +58,38 @@ The current implementation already satisfies the main event promise:
 - New Utopia and Marked Bounds super-events have sourced quote/audio handoffs and runtime music/sound wiring.
 - `docs/events/015_utopia_manifesto.md` documents the implemented event, ledger, focus routes, decisions, integration, units, assets, and super-events.
 
-## Remaining depth gaps
+## Implemented closure package
 
 ### 1. Missions need map-objective consequences
 
-Current risk: the mission layer is mostly timed ledger resolution. The source spec asks the player to hold ports, maintain supply, protect storehouses, complete harvest rotation, send aid, arbitrate claims, and administer local districts.
+Resolution: timed missions now resolve through timeout handlers and objective-ready triggers that check concrete map, resource, ledger, and target conditions before applying success effects.
 
-Implement a small mission-objective pass rather than a large new mission system.
+Implemented as a small mission-objective pass rather than a large new mission system.
 
-Required mission upgrades:
+Implemented mission upgrades:
 
 | Mission | Add objective pressure | Success | Failure |
 | --- | --- | --- | --- |
-| `mission_utopia_harvest_rotation` | require peace or no occupation of core states, enough trains/support equipment, and no severe low-supply state if feasible | Need down, Surplus or Vocation Balance up | Need up, Consent down, delay rural rotation repeat |
-| `mission_utopia_household_guard` | require active defensive posture: at war, threatened, or enough divisions in controlled core states | Consent up if defensive and Overreach safe | Foreign Suspicion up if used without threat |
-| `mission_utopia_league_aid_corridor` | require target still exists, no war with root, route or sea access where possible, and required convoys/trains/support equipment still available | target receives aid, root gains member/confidence progress | root loses Surplus/Consent or gains Suspicion, target flag clears |
+| `mission_utopia_harvest_rotation` | ledger open, trains/support reserves still available, core states controlled, Need below crisis, and Vocation Balance holding | Need down, Surplus up, Vocation Balance up | Need up and Consent down |
+| `mission_utopia_household_guard` | ledger open, Overreach safe, and a real defensive pressure such as war, armed borders, or nearby conflict | Consent up if defensive and Overreach safe | Foreign Suspicion up if used without threat |
+| `mission_utopia_league_aid_corridor` | target still valid, no war with root, Surplus stable, League Confidence not low, and required convoys/trains/support equipment still available | target receives aid, root gains member/confidence progress | Foreign Suspicion up and League Confidence down |
 | `mission_utopia_renunciation_vote` | require Consent stable and Overreach not high at timeout | clear Marked Bounds active flag and ready renunciation achievement | Overreach up and Marked Bounds pressure remains |
 
-Do not add many popup follow-ups. Use decision tooltips and ledger changes unless the event text already has a specific moment to show.
+The implementation uses decision tooltips and ledger changes rather than popup follow-ups.
 
 ### 2. Needful Land arbitration should not be instant
 
-Current risk: arbitration immediately creates a Needful Land claim. That weakens the event's core ethical tension because proof, consent, and administration are supposed to matter before ownership.
+Resolution: arbitration starts `mission_utopia_boundary_arbitration`, stores its target country and state in per-country arrays, and resolves only at timeout. A valid state can become a compensated settlement or guarantee-backed charter; refusal or invalid conditions add no claim and can call outside guarantees when Suspicion or hardline pressure is high.
 
-Add one explicit arbitration mission.
-
-Proposed surface:
+Implemented surface:
 
 - Decision id: keep `decision_utopia_boundary_arbitration`.
 - New mission id: `mission_utopia_boundary_arbitration`.
 - Active flag: `utopia_manifesto_boundary_arbitration_active`.
 - Target state flag: `utopia_manifesto_boundary_arbitration_state`.
-- Optional target country flag: `utopia_manifesto_boundary_arbitration_target`.
-- Duration: 120 to 180 days through `constant:utopia_manifesto_duration.boundary_arbitration_days` if the effect field accepts it, otherwise a file constant with the existing duration style.
+- Target country storage: `utopia_manifesto_boundary_arbitration_targets`.
+- Target state storage: `utopia_manifesto_boundary_arbitration_states`.
+- Duration: `@utopia_arbitration_days` in the decision file, currently 150 days.
 
 Start requirements:
 
@@ -84,32 +102,35 @@ Start requirements:
 
 Success checks at timeout:
 
-- root still controls or can legally administer the state, or the target accepted arbitration through relationship status.
-- Overreach is not high unless Marked Bounds is active.
-- Foreign Suspicion is below danger or observers/no-secret-empire mitigations are present.
-- local household or storehouse work exists if the state is already occupied.
+- Need remains proven.
+- the stored state remains target-owned and target-controlled, is not already claimed, and is not a ROOT core.
+- the target still exists, uses normal civilian systems, is not capitulated, and is not at war with ROOT.
+- Overreach is safe unless `utopia_no_secret_empire` mitigates it.
+- Foreign Suspicion is below danger unless commonwealth observers or no-secret-empire mitigations are present.
 
 Success effects:
 
-- add claim or unlock integration project, not instant core.
-- set a visible state flag marking the claim as arbitrated.
-- reduce Need slightly and increase Foreign Suspicion slightly.
-- for peaceful success, add toward `achievement_utopia_need_not_greed_ready` progress if no offensive-war disqualifier is set.
+- add a witnessed claim, not an instant core.
+- set visible state flags for arbitrated claims and the specific settlement outcome.
+- compensated settlements spend Surplus and improve Consent.
+- guarantee-backed charters create a real guarantee from the manifesto country to the target, raise League Confidence, and lower Foreign Suspicion.
+- successful arbitration lowers Need and adds League Confidence while still making a small foreign-suspicion mark.
 
 Failure effects:
 
 - no core.
-- if peaceful route: refund part of the claim pressure through Consent or Need relief, but do not create land.
-- if Marked Bounds: allow a harsher follow-up decision, with Overreach and Foreign Suspicion costs.
-- set a cooldown so the same target is not spammed.
+- no claim.
+- target countries record a public refusal and receive the refusal opinion modifier.
+- high Suspicion, high Overreach, or Marked Bounds pressure can draw an outside major guarantee to the target.
+- Need, Foreign Suspicion, and Overreach rise while League Confidence falls.
 
 ### 3. League behavior needs a visible confidence layer, not a faction rewrite
 
-Current risk: the League exists as a focus, idea, target flags, member count, and aid mission. That is playable, but it can read like a counter rather than a league.
+Resolution: the League has visible `utopia_league_confidence`, friend and member counts, aid-corridor target storage, aid resolution, achievement gates, AI weights, and ledger GUI readouts.
 
-Do not implement a full faction or separate international organization. That would add bloat and conflict with the event's minor-country premise.
+No full faction or separate international organization was added; that would add bloat and conflict with the event's minor-country premise.
 
-Add a small confidence/cohesion layer:
+Implemented confidence/cohesion layer:
 
 - Variable: `utopia_manifesto_league_confidence`.
 - Display: ledger GUI right or footer line when `utopia_manifesto_league_of_need` is active.
@@ -120,15 +141,15 @@ Add a small confidence/cohesion layer:
 
 AI behavior:
 
-- AI should start League aid only when Surplus is stable, convoys/trains/support equipment are available, and Foreign Suspicion is not high.
-- AI should pause League aid when Need is high and Surplus is low.
-- AI should not pursue League confidence if Marked Bounds is active unless the hardline route explicitly absorbs the diplomatic cost.
+- AI starts League aid only when Surplus is stable, convoys/trains/support equipment are available, Foreign Suspicion is not high, and League Confidence is not low.
+- AI weights pause League and diplomacy pressure when Need, Surplus, or Suspicion makes the route unsafe.
+- Marked Bounds AI absorbs more diplomatic cost through its own route flags and harsher claim path.
 
 ### 4. Unit families should cover route identity without becoming a unit pack
 
-Current implementation has two concrete dynamic unit families: Household Guard and Storehouse Engineers. That is enough for a base military identity but not enough for the Guild, League, and Marked Bounds branches promised in the spec.
+Resolution: dynamic unit helpers cover Household Guard, Storehouse Engineers, Craft Militias, Harbor Watch, Surveyor Columns, and League Cadres, with centralized caps and state/network scaling.
 
-Add only three additional small helpers. Do not implement every brainstormed unit family.
+Implemented focused helper families without turning the event into a broad unit pack.
 
 #### Craft Militias
 
@@ -139,21 +160,14 @@ Unlocks:
 - `utopia_workshop_councils` or `utopia_guild_charter`.
 - Decision can reuse existing vocation/apprenticeship costs.
 
-Costs:
-
-- infantry equipment
-- support equipment
-- Vocation Balance or Consent pressure if spammed
-
 Effects:
 
-- spawn one small light infantry or militia-style division batch, capped by controlled states and batch count.
-- improve defense or production recovery through an idea if the parent prefers no new template.
+- spawn one small infantry-based militia batch from focus rewards, capped by controlled states and batch count.
+- scale upward when Vocation Balance is stable.
 
 AI:
 
-- use when threatened, low division count, or Guild route selected.
-- avoid if equipment is scarce or Consent is low.
+- focus AI favors these through Guild and workshop route weights rather than a separate repeatable decision.
 
 #### Surveyor Columns
 
@@ -163,22 +177,16 @@ Unlocks:
 
 - `utopia_mark_needed_districts`, `utopia_boundary_posts`, or `utopia_needful_land_commission`.
 
-Costs:
-
-- army XP
-- trucks or cavalry/infantry equipment
-- Overreach and Foreign Suspicion risk
-
 Effects:
 
-- spawn one support/occupation division or apply a temporary state administration modifier.
-- improve integration speed only for states already marked by Needful Land.
-- never grant instant claims or cores.
+- spawn one support/occupation division batch from Needful Land and Marked Bounds focus rewards.
+- add capability without granting instant claims or cores.
+- Marked Bounds route effects carry Overreach and Foreign Suspicion risk elsewhere in the branch.
 
 AI:
 
-- only Marked Bounds AI uses aggressively.
-- peaceful AI uses only when an active integration state has resistance or low compliance.
+- Marked Bounds focus AI uses these more aggressively.
+- peaceful routes encounter them through Needful Land/integration focuses rather than broad repeatable spam.
 
 #### League Volunteer Cadres
 
@@ -188,29 +196,22 @@ Unlocks:
 
 - `utopia_league_of_need` and at least one successful aid corridor or recognized friend.
 
-Costs:
-
-- support equipment
-- convoys or trains
-- Surplus
-- League confidence
-
 Effects:
 
-- small capped defensive unit or equipment/manpower aid from member network.
-- if the root is not at war, prefer equipment and planning bonuses over units.
+- small capped defensive unit batch from League focus rewards, scaled by friend and League member counts.
+- League aid missions separately spend convoys, trains, support equipment, Surplus, and confidence pressure.
 
 AI:
 
-- use only in defensive war, low division count, or when a League member is threatened and root has stable Surplus.
+- focus and decision AI use the League route only when Surplus, confidence, and diplomatic safety are stable enough.
 
 Do not add Hired Companies in this pass. More's mercenary material is useful historical contrast, but adding mercenary gameplay now would create a second dark-war economy beside Marked Bounds.
 
 ### 5. Late identity needs cosmetic closure
 
-Current risk: late outcomes have focuses, spirits, and super-events, but the implementation appears not to apply cosmetic tags, fictional flags, or map-name changes. The spec reserved this surface for New Utopia, League leadership, and Marked Bounds.
+Resolution: late outcomes apply cosmetic tags and fictional generated flag packages while keeping the original country tag and leader.
 
-Add the smallest viable cosmetic identity package:
+Implemented cosmetic identity package:
 
 | Identity | Trigger | Effect |
 | --- | --- | --- |
@@ -259,17 +260,12 @@ These would increase bloat more than depth.
 
 ## Acceptance criteria for this addendum
 
-The addendum is resolved when one of the following is true:
+The addendum is resolved by the implemented option: the parent implemented the scoped mission, arbitration, League confidence, route-unit, ledger-GUI, and cosmetic identity closure package and updated docs/spec alignment.
 
-1. The parent implements the scoped mission, arbitration, League confidence, route-unit, and cosmetic identity closure package and updates docs/specs.
-2. The parent explicitly rejects one or more sections with a reason, then updates docs so the remaining implementation is not claiming those rejected surfaces.
-3. The parent queues part of the package with a reason, leaving this plan open as a known blocker for final completion.
+Closure evidence:
 
-Implementation should be considered complete only after:
-
-- the decision/mission audit findings are addressed or rejected.
-- the ledger GUI either gains route/project/League state readout or the display-only limitation is explicitly accepted and documented.
-- route unit gaps are implemented or rejected as bloat.
-- late cosmetic identity is implemented or rejected as bloat.
-- docs/events and source specs match the accepted implementation.
-
+- decision/mission audit findings were addressed by the follow-up audit patch and parent mission patches.
+- the ledger GUI has route, geography, pressure, active project, League, and scripted action buttons.
+- route unit gaps are covered by the focused helper families listed above.
+- late cosmetic identity is implemented with generated flag packages and ideology-specific runtime variants.
+- `docs/events/015_utopia_manifesto.md`, asset manifests, and source specs match the accepted implementation.

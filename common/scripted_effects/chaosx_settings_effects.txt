@@ -4580,6 +4580,19 @@ fire_event_by_temp_id_no_cluster = {
 			set_temp_variable = { event_single_fire_allowed = 0 }
 		}
 	}
+	if = {
+		limit = { check_variable = { event_id = 15 } }
+		utopia_manifesto_prepare_random_event_fire = yes
+		if = {
+			limit = {
+				OR = {
+					check_variable = { utopia_manifesto_context_ready < 1 }
+					NOT = { has_event_target = utopia_manifesto_latest_actor }
+				}
+			}
+			set_temp_variable = { event_single_fire_allowed = 0 }
+		}
+	}
 
 		if = {
 		limit = {
@@ -4594,6 +4607,15 @@ fire_event_by_temp_id_no_cluster = {
 		if = {
 			limit = { check_variable = { event_fire_record_id = 4 } }
 			random_war_fire_current_context = yes
+		}
+		else_if = {
+			limit = {
+				check_variable = { event_fire_record_id = 15 }
+				has_event_target = utopia_manifesto_latest_actor
+			}
+			event_target:utopia_manifesto_latest_actor = {
+				country_event = { id = chaosx.nr15.1 }
+			}
 		}
 		else = {
 			meta_effect = {

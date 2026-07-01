@@ -1,0 +1,465 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 015 UTOPIA MANIFESTO SCRIPT CONSTANTS
+# ============================================================================
+# Shared tuning for Utopia Manifesto targeting, ledger bands, decision costs,
+# integration gates, AI route weights, and limited unit-family scaffolding.
+# ============================================================================
+
+utopia_manifesto_event_log = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	event_id = 15
+	event_type = 3
+	evolution_type = 15
+	new_utopia_super_event_id = 151
+	marked_bounds_super_event_id = 152
+}
+
+utopia_manifesto_target_gate = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	max_total_factories = 45
+	max_military_factories = 25
+	max_naval_factories = 18
+	max_controlled_states = 18
+	max_divisions = 70
+	min_controlled_states = 1
+	dead_on_arrival_state_floor = 0
+}
+
+utopia_manifesto_target_weight = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	base = 3
+	player_bonus = 18
+	one_state_bonus = 6
+	two_state_bonus = 5
+	three_state_bonus = 4
+	small_factory_bonus = 4
+	light_subject_bonus = 1
+	independent_bonus = 2
+	coastal_bonus = 2
+	island_bonus = 2
+	landlocked_floor_bonus = 1
+	at_war_penalty = 4
+	low_stability_penalty = 2
+	subject_at_war_penalty = 3
+	strong_state_penalty = 4
+	strong_factory_penalty = 5
+	min = 1
+	max = 36
+}
+
+utopia_manifesto_target_threshold = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	one_state_max = 2
+	two_state_max = 3
+	three_state_max = 4
+	small_factory_max = 12
+	strong_state_penalty_min = 10
+	strong_factory_penalty_min = 30
+	initial_surplus_factory_step_1 = 10
+	initial_surplus_factory_step_2 = 20
+}
+
+utopia_manifesto_stability_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	low = 0.35
+	high = 0.65
+}
+
+utopia_manifesto_ledger_bounds = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	min = 0
+	max = 100
+	low = 25
+	mid = 50
+	high = 75
+	crisis = 90
+}
+
+utopia_manifesto_ledger_default = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	need = 35
+	consent = 52
+	surplus = 35
+	overreach = 5
+	vocation_balance = 48
+	foreign_suspicion = 20
+	league_confidence = 35
+	agriculture_share = 20
+	useful_arts_share = 20
+	learning_share = 20
+	civic_service_share = 20
+	defense_share = 20
+}
+
+utopia_manifesto_ledger_delta = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	small = 3
+	medium = 7
+	large = 12
+	crisis = 18
+	war_need = 8
+	subject_need = 6
+	low_stability_need = 5
+	low_stability_consent_loss = 6
+	high_stability_consent = 5
+	coastal_surplus = 3
+	landlocked_need = 3
+	factory_surplus_step = 1
+	military_suspicion = 4
+}
+
+utopia_manifesto_route = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	unresolved = 0
+	living_humanism = 1
+	common_store_state = 2
+	island_discipline = 3
+	guild_commonwealth = 4
+	marked_bounds = 5
+	new_utopia = 6
+}
+
+utopia_manifesto_geography = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	unset = 0
+	coastal = 1
+	island = 2
+	landlocked = 3
+	subject = 4
+}
+
+utopia_manifesto_decision_cost = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	census_command_power = 15
+	census_command_power_spend = -15
+	census_support_equipment = 40
+	census_support_equipment_spend = -40
+	storehouse_support_equipment = 80
+	storehouse_support_equipment_spend = -80
+	storehouse_trains = 2
+	storehouse_trains_spend = -2
+	storehouse_convoys = 8
+	storehouse_convoys_spend = -8
+	vocation_apprenticeship_support = 55
+	vocation_apprenticeship_support_spend = -55
+	urgent_service_manpower = 600
+	urgent_service_manpower_spend = -600
+	rural_rotation_trains = 1
+	rural_rotation_trains_spend = -1
+	rural_rotation_support = 45
+	rural_rotation_support_spend = -45
+	household_guard_infantry_equipment = 450
+	household_guard_infantry_equipment_spend = -450
+	household_guard_manpower = 1200
+	household_guard_manpower_spend = -1200
+	household_guard_army_xp = 8
+	household_guard_army_xp_spend = -8
+	engineer_support_equipment = 120
+	engineer_support_equipment_spend = -120
+	engineer_motorized = 40
+	engineer_motorized_spend = -40
+	engineer_army_xp = 10
+	engineer_army_xp_spend = -10
+	integration_infantry_equipment = 350
+	integration_infantry_equipment_spend = -350
+	integration_support_equipment = 100
+	integration_support_equipment_spend = -100
+	integration_manpower = 800
+	integration_manpower_spend = -800
+	arbitration_trains = 2
+	arbitration_trains_spend = -2
+	arbitration_command_power = 20
+	arbitration_command_power_spend = -20
+	boundary_wardens_infantry_equipment = 320
+	boundary_wardens_infantry_equipment_spend = -320
+	boundary_wardens_army_xp = 12
+	boundary_wardens_army_xp_spend = -12
+	aid_convoys = 12
+	aid_convoys_spend = -12
+	aid_support_equipment = 80
+	aid_support_equipment_spend = -80
+	magistrates_support_equipment = 60
+	magistrates_support_equipment_spend = -60
+	league_aid_convoys = 18
+	league_aid_convoys_spend = -18
+	league_aid_trains = 2
+	league_aid_trains_spend = -2
+	league_aid_support_equipment = 120
+	league_aid_support_equipment_spend = -120
+}
+
+utopia_manifesto_decision_fixed = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	reject_manifesto_stability = 0.02
+	open_stores_stability_requirement = 0.02
+	open_stores_stability_cost = -0.02
+	urgent_service_stability_cost = -0.03
+	just_cause_war_support_requirement = 0.25
+	just_cause_war_support_cost = -0.02
+	boundary_arbitration_stability_cost = -0.01
+	marked_bounds_stability_requirement = 0.04
+	marked_bounds_stability_cost = -0.04
+	renunciation_vote_stability_cost = -0.03
+	aid_war_support_requirement = 0.01
+	aid_war_support_cost = -0.01
+}
+
+utopia_manifesto_focus_cost = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	short = 5
+	medium = 7
+	long = 9
+}
+
+utopia_manifesto_focus_reward = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	ledger_small = 3
+	ledger_medium = 7
+	ledger_large = 12
+	manpower_small = 500
+	manpower_medium = 1200
+	manpower_large = 2500
+	infantry_equipment_small = 200
+	infantry_equipment_medium = 500
+	infantry_equipment_large = 900
+	support_equipment_small = 40
+	support_equipment_medium = 90
+	support_equipment_large = 160
+	train_small = 1
+	train_medium = 3
+	convoy_small = 5
+	convoy_medium = 15
+	motorized_small = 25
+	motorized_medium = 70
+	army_xp_small = 8
+	army_xp_medium = 16
+	army_xp_large = 28
+	navy_xp_small = 6
+	air_xp_small = 6
+	command_power_small = 10
+	command_power_medium = 20
+	threat_small = 1
+	threat_medium = 3
+}
+
+utopia_manifesto_focus_reward_fixed = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	stability_small = 0.02
+	stability_medium = 0.04
+	stability_large = 0.06
+	war_support_small = 0.02
+	war_support_medium = 0.04
+	consumer_goods_relief = -0.02
+}
+
+utopia_manifesto_duration = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	census_days = 70
+	storehouse_days = 140
+	harvest_min_days = 90
+	harvest_max_days = 140
+	arbitration_days = 150
+	integration_days = 180
+	guard_mission_days = 120
+	renunciation_vote_days = 120
+	relationship_cooldown_days = 120
+	storehouse_build_days = 150
+	harvest_rotation_days = 110
+	local_households_days = 180
+	league_aid_days = 150
+	storehouse_audit_cooldown_days = 60
+}
+
+utopia_manifesto_integration = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	needful_land_need_gate = 50
+	needful_land_strong_need_gate = 75
+	marked_bounds_need_gate = 65
+	peaceful_consent_gate = 60
+	peaceful_surplus_gate = 55
+	safe_overreach_max = 35
+	hardline_overreach_gate = 60
+	foreign_suspicion_danger = 60
+	resistance_safe = 35
+	compliance_store_gate = 35
+	compliance_core_gate = 60
+	storehouse_compliance_gain = 2
+	storehouse_resistance_loss = -1
+	local_households_compliance_gain = 5
+	local_households_resistance_loss = -3
+	integration_local_store_compliance_gain = 2
+	integration_council_resistance_loss = -2
+	forced_settlement_resistance_gain = 4
+	active_storehouse_project_cap_early = 2
+	active_storehouse_project_cap_late = 4
+	active_integration_project_cap = 2
+}
+
+utopia_manifesto_ai_route_weight = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	base = 10
+	living_humanism_democratic = 18
+	common_store_communist = 18
+	common_store_subject = 12
+	island_discipline_neutral = 16
+	island_discipline_fascist = 14
+	guild_commonwealth_communist = 16
+	marked_bounds_base = 1
+	marked_bounds_high_need = 8
+	marked_bounds_high_chaos = 8
+	marked_bounds_authoritarian = 6
+	league_surplus_bonus = 8
+	avoid_marked_bounds_low_consent = 20
+	focus_score_bonus = 6
+	marked_focus_score_bonus = 5
+}
+
+utopia_manifesto_relationship_status = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	observed = 1
+	neighbor = 2
+	friend = 3
+	league_member = 4
+}
+
+utopia_manifesto_unit = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	household_guard_base = 1
+	household_guard_war_bonus = 1
+	household_guard_state_divisor = 4
+	household_guard_batch_cap = 4
+	household_guard_max_per_call = 3
+	storehouse_engineer_base = 1
+	storehouse_engineer_surplus_bonus = 1
+	storehouse_engineer_state_divisor = 6
+	storehouse_engineer_batch_cap = 3
+	storehouse_engineer_max_per_call = 2
+	craft_militia_base = 1
+	craft_militia_vocation_bonus = 1
+	craft_militia_state_divisor = 5
+	craft_militia_batch_cap = 3
+	craft_militia_max_per_call = 2
+	harbor_watch_base = 1
+	harbor_watch_coastal_bonus = 1
+	harbor_watch_state_divisor = 5
+	harbor_watch_batch_cap = 3
+	harbor_watch_max_per_call = 2
+	ring_watch_base = 1
+	ring_watch_landlocked_bonus = 1
+	ring_watch_state_divisor = 5
+	ring_watch_batch_cap = 3
+	ring_watch_max_per_call = 2
+	surveyor_column_base = 1
+	surveyor_column_marked_bonus = 1
+	surveyor_column_state_divisor = 5
+	surveyor_column_batch_cap = 3
+	surveyor_column_max_per_call = 2
+	league_cadre_base = 1
+	league_cadre_member_divisor = 3
+	league_cadre_batch_cap = 3
+	league_cadre_max_per_call = 2
+}
+
+utopia_manifesto_achievement = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	new_utopia_consent_gate = 75
+	new_utopia_surplus_gate = 75
+	new_utopia_vocation_gate = 65
+	new_utopia_overreach_max = 25
+	peaceful_land_states = 3
+	friend_count = 5
+	aid_friend_count = 5
+	storehouses_abroad_count = 10
+	league_members = 5
+	league_confidence_gate = 55
+	marked_bounds_integrated_states = 2
+	all_arts_gate = 55
+	paper_recovery_consent_gate = 60
+	paper_recovery_surplus_gate = 60
+	urgent_service_warning_uses = 3
+}

@@ -44,6 +44,7 @@
 - Values change through focuses, decisions, missions, wars, state control, and foreign action.
 - Values unlock, block, or modify content.
 - Script constants or documented tuning hold thresholds and caps.
+- Any auxiliary League confidence value is visible and gates League behavior without replacing the six required core values.
 
 ## Decisions and missions
 
@@ -100,4 +101,3 @@ Before claiming completion, run or spawn:
 - spreadsheet worker after final in-game wording exists
 
 The final completion report must list simplifications, blockers, and skipped meaningful validation. If none exist, it must say so and provide evidence.
-

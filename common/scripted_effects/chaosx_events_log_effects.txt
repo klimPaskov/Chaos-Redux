@@ -148,6 +148,14 @@ events_log_set_default_actor_for_current_event = {
 	}
 	else_if = {
 		limit = {
+			check_variable = { event_id = 15 }
+			has_event_target = utopia_manifesto_latest_actor
+		}
+		event_target:utopia_manifesto_latest_actor = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		set_temp_variable = { events_log_default_has_actor = 1 }
+	}
+	else_if = {
+		limit = {
 			check_variable = { event_id = 13 }
 			has_event_target = natural_disasters_latest_actor
 		}
@@ -3073,6 +3081,13 @@ rebuild_events_log_events_view = {
                 }
                 set_temp_variable = { events_log_events_live_weight = -1 }
             }
+			if = {
+				limit = {
+					check_variable = { event_id = 15 }
+					NOT = { utopia_manifesto_has_valid_target_available = yes }
+				}
+				set_temp_variable = { events_log_events_live_weight = -1 }
+			}
             if = {
                 limit = {
                     check_variable = { event_id = constant:tensions_rising_event_log.event_id }

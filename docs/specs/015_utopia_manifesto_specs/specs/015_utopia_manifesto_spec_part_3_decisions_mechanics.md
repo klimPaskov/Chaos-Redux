@@ -691,12 +691,12 @@ The League should be a late mechanic.
 
 ### League values
 
-If implemented, the League uses:
+The implemented lightweight League uses:
 
-- Cohesion
-- Shared Stores
-- Member Confidence
-- Sponsor Pressure or Foreign Suspicion
+- Friend count and League member count, tracked through scoped country arrays.
+- League Confidence, shown as an auxiliary ledger readout.
+- Surplus and Foreign Suspicion as the safety gates for aid corridors.
+- Existing Overreach and Marked Bounds flags as disqualifiers for peaceful League achievements.
 
 ### League actions
 
@@ -758,10 +758,10 @@ The GUI should not replace decisions. It should make decisions readable and call
 | Area | Content | Notes |
 | --- | --- | --- |
 | Header | country name, interpretation route, geography mode | dynamic localisation |
-| Main meters | Need, Consent, Surplus, Overreach, Suspicion | coloured values and trend arrows |
+| Main meters | Need, Consent, Surplus, Overreach, Vocation Balance, Suspicion | coloured values and trend arrows |
 | Vocation wheel or row | five vocation shares and shortage warning | no exact pie needed if GUI limits make bars easier |
 | Project cards | active storehouse, integration, arbitration, defense missions | show timer and target state or country |
-| Neighbor list | Observed, Neighbor, Friend, League Member targets | show only selected or top priority targets |
+| Neighbor list | Observed, Neighbor, Friend, League Member targets, plus League Confidence | show only selected or top priority targets |
 | Action buttons | open matching decisions or perform GUI action equivalent | all buttons need costs and blocked tooltips |
 | Warning panel | high Need, high Overreach, foreign backlash, vocation shortage | animated warning if assets exist |
 
@@ -817,9 +817,9 @@ Do not animate every focus icon. Ordinary focus icons, idea icons, and decision 
 | Harvest Rotation | Utopian country | Ledger | rural or supply-poor core state | keep rail or supply connection, pay trains or manpower | 90 to 140 days | Need falls, Surplus rises | Need rises, Consent falls | only one per region at a time |
 | Storehouse Build | Utopian country | Ledger | core, owned, or occupied state | factories, support equipment, access | 120 to 180 days | local store, integration progress | damaged store, higher cost | active cap of 2 early, 4 late |
 | Household Guard | Utopian country | Ledger or defense | capital and border states | supplied divisions placed or equipment paid | 90 to 120 days | defensive unit or modifier | Need and Suspicion rise | one active defensive region |
-| Boundary Arbitration | Utopian country and target | Needful Land | neighboring country or state | relations, Need proof, compensation | 120 to 180 days | settlement or status | claim escalation or target guarantee | one target at a time for humans |
+| Boundary Arbitration | Utopian country and target | Needful Land | neighboring country or state | relations, Need proof, trains, command power, target still safe | 120 to 180 days | claim after successful arbitration, not a core | no claim, Need and Suspicion pressure | one target at a time for humans |
 | Local Households | Utopian country | Integration | occupied state | compliance, storehouse, low resistance | 150 to 220 days | core progress | resistance and overreach | state flag blocks repeats |
-| League Aid Corridor | Utopian country | Diplomacy | Friend or League target | convoys, equipment, access | 120 to 180 days | Friend confidence, Surplus use | lost aid and suspicion | target cooldown |
+| League Aid Corridor | Utopian country | Diplomacy | Friend or League target | convoys, trains, support equipment, target still valid | 120 to 180 days | aid delivery, member progress, League Confidence | lost aid, suspicion, confidence loss | target cooldown |
 | Renunciation Vote | Utopian country | Marked Bounds | home politics | high Consent, low war pressure | 120 days | Overreach reduction | hardliner pressure | one-time or long cooldown |
 
 ## Cost model
@@ -916,4 +916,3 @@ Use follow-up popups sparingly. Good follow-up moments:
 - reform exit from Marked Bounds
 
 These follow-ups should avoid listing modifiers. They should describe public consequences and route meaning.
-

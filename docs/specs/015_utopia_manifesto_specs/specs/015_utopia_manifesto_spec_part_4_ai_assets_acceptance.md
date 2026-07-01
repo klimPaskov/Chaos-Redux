@@ -143,10 +143,10 @@ Requirements:
 
 Effects:
 
-- faction or coalition with cohesion mechanic
+- lightweight League member tracking, not a full faction rewrite
 - shared aid and defense decisions
-- League member confidence
-- super-event if major enough
+- League Confidence as a visible auxiliary ledger value
+- cosmetic public identity once member count and confidence are strong enough
 
 ### Marked Bounds State
 
@@ -187,9 +187,10 @@ The event does not spawn a new country at acceptance, but it does create a new m
 | Harbor Watch | coastal or island branch | sailors, port guards, fishermen | infantry equipment, convoys, port states | coastal defense |
 | Inland Ring Guards | landlocked branch | railway guards and pass detachments | trains, infantry equipment, supply hubs | rail and pass defense |
 | Craft Militias | Guild route | factory and guild volunteers | infantry equipment, support equipment, Vocation Balance | flexible defense or light infantry |
-| Hired Companies | Treasury Abroad focus | foreign mercenaries | Treasury variable, convoys, equipment, Suspicion cost | temporary expeditionary force |
 | League Volunteer Cadres | League branch | member volunteers and instructors | Friend or League members, equipment, command capacity | allied reinforcement |
 | Surveyor Columns | Needful Land or Marked Bounds | boundary surveyors and guards | army XP, trucks or cavalry equipment, Overreach risk | border and occupation support |
+
+The implemented route-unit scope uses Household Guard, Storehouse Engineers, Harbor Watch, Craft Militias, Surveyor Columns, and League Volunteer Cadres. It intentionally omits a hired-company subsystem. More's mercenary passages remain thematic contrast for defensive war and Marked Bounds, but adding a second mercenary economy would bloat Event 015 beyond the accepted minor-country route.
 
 ### Dynamic scaling
 
@@ -241,6 +242,7 @@ The event needs a visual package because it replaces a country's tree and adds a
 | Decision icons | 20 to 35 | generated icons | storehouse, census, vocation, arbitration, integration, aid, defense, League, Marked Bounds |
 | Decision category icon | 1 to 2 | generated icon | Utopian Ledger and optional League board |
 | Achievement icons | 10 to 12 completed icons plus variants | generated icons | root achievement DDS exception during implementation |
+| Cosmetic flags | 3 to 4 identities | generated flags | New Utopia, Necessary Commonwealth, League of Need, Marked Bounds State |
 | Scripted GUI panel | 1 background, meter frames, warning frames, action buttons | generated or UI art | state-driven presentation |
 | Animated seals | 4 to 5 | generated frame sets through animation skill | static fallbacks required |
 | Flags | 3 to 6 identity sets with normal, medium, small sizes | generated fictional flags | original country flags stay unchanged early |
@@ -404,6 +406,7 @@ The event is not complete until:
 - decisions use concrete costs and objectives beyond political power
 - occupation and integration do not grant instant free cores
 - Need claims are gated and safe for AI
+- League Confidence is visible enough to explain League gating and achievements
 - Vocation Accord creates choices and shortages
 - route-specific AI exists
 - assets are planned, created, converted, and wired before final completion
@@ -419,4 +422,3 @@ The event is not complete until:
 - HOI4 does not model food directly, so agriculture and common stores must use infrastructure, supply, consumer goods, factories, convoys, trains, equipment, manpower, and state modifiers.
 - If the scripted GUI window proves too heavy for first implementation, the decision category header must still show all values clearly. That would be a simplification and must be reported before claiming completion.
 - Late super-events require real quote, cultural remark, and audio research before localisation and audio wiring.
-

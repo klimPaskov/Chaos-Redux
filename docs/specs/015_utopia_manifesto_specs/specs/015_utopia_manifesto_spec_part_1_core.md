@@ -235,7 +235,7 @@ The Utopian Ledger is the heart of the event. It makes the manifesto playable by
 | Vocation Balance | 0 to 100 | how well job choice matches public need | honoring petitions while meeting core needs | too many citizens in one vocation, forced assignments, war mobilization | production bonuses, research bonuses, shortages, assignment crisis |
 | Foreign Suspicion | 0 to 100 | how threatening the experiment looks outside | claims, radical route, League growth, sabotage, mercenaries | observers, aid, defensive behavior, low overreach | guarantees against the target, diplomatic missions, rival coalitions |
 
-All values should be dynamic. They should move through focuses, decisions, missions, wars, occupation, state control, and foreign relations.
+All six core values should be dynamic. They should move through focuses, decisions, missions, wars, occupation, state control, and foreign relations. League Confidence is an auxiliary ledger readout, not a seventh core value; it exists to make Friend, aid, League-member, League-achievement, and public League-identity behavior legible.
 
 ### Value colour direction
 
@@ -247,12 +247,14 @@ Use consistent colours across scripted localisation and tooltips:
 - Overreach: red
 - Vocation Balance: light purple or teal
 - Foreign Suspicion: orange
+- League Confidence: civic green, brass, or another secondary diplomatic accent if shown near the footer
 
 ### Display surface
 
 The values should appear in the decision category header and in a scripted GUI window called by a category button when implemented. The window should be useful, not decorative. It should show:
 
 - the six values
+- League Confidence after the League path is relevant, or as a compact footer readout
 - current interpretation route
 - current vocation distribution
 - active land claims and integration projects
@@ -415,4 +417,3 @@ Implementation should update:
 - optional super-event assets and audio package if late route super-events are implemented
 - docs/events/015_utopia_manifesto.md
 - event catalog workbook after final in-game text exists
-
