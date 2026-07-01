@@ -277,6 +277,8 @@ For every generated icon, follow the `$imagegen` skill's transparent image workf
 
 The final icon should have transparent unused canvas, no fake checker or matte pixels, no transparent holes inside the painted subject, a slight black outline, a subtle drop shadow, and a centered subject that remains readable at final size.
 
+Generated icon packages must keep visible `$imagegen` source evidence: save the source atlas or source PNGs, record the prompt and source mode in the manifest, process to real transparent backgrounds, and include a contact sheet that shows final alignment, dimensions, transparency, and absence of white matte or opaque square backgrounds. Do not mark a generated icon complete if the final art is a primitive local drawing, a resized unrelated icon, or a locally assembled shape substitute instead of imagegen or sourced artwork.
+
 ## 5.2 Icon type separation rules
 
 Focus icons, idea icons, national spirit icons, officer corps spirit icons, decision icons, decision category icons, achievement icons, and tech icons are separate asset types.
