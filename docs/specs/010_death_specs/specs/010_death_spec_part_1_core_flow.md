@@ -246,7 +246,7 @@ Evolution logs should record Death's milestone mutations as descriptive crisis h
 
 ## Cluster role
 
-Death has no event cluster. It is a solitary fire-once incident with its own internal escalation. It should not be added to Wars, Natural Disasters, Various Anomalies, or any other cluster unless a future accepted spec explicitly creates a Death-related cluster.
+Death has no event cluster. It is a solitary fire-once incident with its own internal escalation. It should not be added to Wars, Various Anomalies, or any other cluster unless a future accepted spec explicitly creates a Death-related cluster.
 
 ## Non-negotiables
 
