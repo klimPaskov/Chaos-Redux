@@ -4580,6 +4580,10 @@ fire_event_by_temp_id_no_cluster = {
 			set_temp_variable = { event_single_fire_allowed = 0 }
 		}
 	}
+	if = {
+		limit = { check_variable = { event_id = constant:secret_alliance_event_log.event_id } }
+		secret_alliance_prepare_random_event_fire = yes
+	}
 
 		if = {
 		limit = {
@@ -4594,6 +4598,14 @@ fire_event_by_temp_id_no_cluster = {
 		if = {
 			limit = { check_variable = { event_fire_record_id = 4 } }
 			random_war_fire_current_context = yes
+		}
+		else_if = {
+			limit = { check_variable = { event_fire_record_id = constant:secret_alliance_event_log.event_id } }
+			event_target:secret_alliance_pending_target = {
+				country_event = {
+					id = chaosx.nr11.1
+				}
+			}
 		}
 		else = {
 			meta_effect = {

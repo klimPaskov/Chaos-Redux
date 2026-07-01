@@ -2,7 +2,7 @@
 
 Event id: `011`  
 Event slug: `secret_alliance`  
-Scope: decision category icon, decision icons, idea icons, achievement icons, and three small animated sprite packages.
+Scope: report images, news image, scripted GUI art, decision category icon, decision icons, idea icons, achievement icons, and three small animated sprite packages.
 
 Source mode summary:
 - Transparent icons: generated with built-in `image_gen`, flat `#00ff00` chroma-key background, local alpha cleanup through `remove_chroma_key.py`.
@@ -14,6 +14,31 @@ Build helper:
 
 Prompt log:
 - `docs/assets/011_secret_alliance/prompts/generated_prompts.md`
+- `docs/assets/011_secret_alliance/prompts/generated_event_art_prompts.md`
+
+## Event pictures
+
+| Asset | Source PNG | Processed PNG | Final DDS | Sprite | Size | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| `report_event_011_secret_alliance_courier` | `docs/assets/011_secret_alliance/source_png/report_event_011_secret_alliance_courier_source.png` | `docs/assets/011_secret_alliance/processed_png/report_event_011_secret_alliance_courier.png` | `gfx/event_pictures/011_secret_alliance/report_event_011_secret_alliance_courier.dds` | `GFX_report_event_011_secret_alliance_courier` | `210x176` | `complete` |
+| `report_event_011_secret_alliance_sabotage` | `docs/assets/011_secret_alliance/source_png/report_event_011_secret_alliance_sabotage_source.png` | `docs/assets/011_secret_alliance/processed_png/report_event_011_secret_alliance_sabotage.png` | `gfx/event_pictures/011_secret_alliance/report_event_011_secret_alliance_sabotage.dds` | `GFX_report_event_011_secret_alliance_sabotage` | `210x176` | `complete` |
+| `report_event_011_secret_alliance_defector` | `docs/assets/011_secret_alliance/source_png/report_event_011_secret_alliance_defector_source.png` | `docs/assets/011_secret_alliance/processed_png/report_event_011_secret_alliance_defector.png` | `gfx/event_pictures/011_secret_alliance/report_event_011_secret_alliance_defector.dds` | `GFX_report_event_011_secret_alliance_defector` | `210x176` | `complete` |
+| `news_event_011_secret_alliance_reveal` | `docs/assets/011_secret_alliance/source_png/news_event_011_secret_alliance_reveal_source.png` | `docs/assets/011_secret_alliance/processed_png/news_event_011_secret_alliance_reveal.png` | `gfx/event_pictures/011_secret_alliance/news_event_011_secret_alliance_reveal.dds` | `GFX_news_event_011_secret_alliance_reveal` | `397x153` | `complete` |
+
+## Scripted GUI art
+
+| Asset | Source PNG | Processed PNG | Final DDS | Sprite | Size | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| `secret_alliance_pact_emblem` | `docs/assets/011_secret_alliance/source_png/secret_alliance_pact_emblem_source.png` | `docs/assets/011_secret_alliance/processed_png/secret_alliance_pact_emblem.png` | `gfx/interface/011_secret_alliance/secret_alliance_pact_emblem.dds` | `GFX_secret_alliance_pact_emblem` | `256x256` | `complete` |
+| `secret_alliance_board_bg` | `docs/assets/011_secret_alliance/source_png/secret_alliance_board_bg_source.png` | `docs/assets/011_secret_alliance/processed_png/secret_alliance_board_bg.png` | `gfx/interface/011_secret_alliance/secret_alliance_board_bg.dds` | `GFX_secret_alliance_board_bg` | `1024x768` | `complete` |
+| `secret_alliance_suspect_card_frame` | derived UI element | `docs/assets/011_secret_alliance/processed_png/secret_alliance_suspect_card_frame.png` | `gfx/interface/011_secret_alliance/secret_alliance_suspect_card_frame.dds` | `GFX_secret_alliance_suspect_card_frame` | `220x300` | `complete` |
+| `secret_alliance_suspect_card_selected` | derived UI element | `docs/assets/011_secret_alliance/processed_png/secret_alliance_suspect_card_selected.png` | `gfx/interface/011_secret_alliance/secret_alliance_suspect_card_selected.dds` | `GFX_secret_alliance_suspect_card_selected` | `220x300` | `complete` |
+| `secret_alliance_suspect_card_dim` | derived UI element | `docs/assets/011_secret_alliance/processed_png/secret_alliance_suspect_card_dim.png` | `gfx/interface/011_secret_alliance/secret_alliance_suspect_card_dim.dds` | `GFX_secret_alliance_suspect_card_dim` | `220x300` | `complete` |
+| `secret_alliance_suspect_card_locked` | derived UI element | `docs/assets/011_secret_alliance/processed_png/secret_alliance_suspect_card_locked.png` | `gfx/interface/011_secret_alliance/secret_alliance_suspect_card_locked.dds` | `GFX_secret_alliance_suspect_card_locked` | `220x300` | `complete` |
+| `secret_alliance_evidence_meter_frame` | derived UI element | `docs/assets/011_secret_alliance/processed_png/secret_alliance_evidence_meter_frame.png` | `gfx/interface/011_secret_alliance/secret_alliance_evidence_meter_frame.dds` | `GFX_secret_alliance_evidence_meter_frame` | `360x56` | `complete` |
+| `secret_alliance_evidence_meter_fill_low` | derived UI element | `docs/assets/011_secret_alliance/processed_png/secret_alliance_evidence_meter_fill_low.png` | `gfx/interface/011_secret_alliance/secret_alliance_evidence_meter_fill_low.dds` | `GFX_secret_alliance_evidence_meter_fill_low` | `360x56` | `complete` |
+| `secret_alliance_evidence_meter_fill_mid` | derived UI element | `docs/assets/011_secret_alliance/processed_png/secret_alliance_evidence_meter_fill_mid.png` | `gfx/interface/011_secret_alliance/secret_alliance_evidence_meter_fill_mid.dds` | `GFX_secret_alliance_evidence_meter_fill_mid` | `360x56` | `complete` |
+| `secret_alliance_evidence_meter_fill_high` | derived UI element | `docs/assets/011_secret_alliance/processed_png/secret_alliance_evidence_meter_fill_high.png` | `gfx/interface/011_secret_alliance/secret_alliance_evidence_meter_fill_high.dds` | `GFX_secret_alliance_evidence_meter_fill_high` | `360x56` | `complete` |
 
 ## Decision category and decision icons
 
@@ -35,6 +60,16 @@ Prompt log:
 | `idea_secret_alliance_prepared_network` | `docs/assets/011_secret_alliance/source_png/idea_secret_alliance_prepared_network_source.png` | `docs/assets/011_secret_alliance/processed_png/idea_secret_alliance_prepared_network.png` | `gfx/interface/ideas/011_secret_alliance/idea_secret_alliance_prepared_network.dds` | `GFX_idea_secret_alliance_prepared_network` | `64x64` | `complete` |
 | `idea_secret_alliance_exposed_member` | `docs/assets/011_secret_alliance/source_png/idea_secret_alliance_exposed_member_source.png` | `docs/assets/011_secret_alliance/processed_png/idea_secret_alliance_exposed_member.png` | `gfx/interface/ideas/011_secret_alliance/idea_secret_alliance_exposed_member.dds` | `GFX_idea_secret_alliance_exposed_member` | `64x64` | `complete` |
 | `idea_secret_alliance_patron_shield` | `docs/assets/011_secret_alliance/source_png/idea_secret_alliance_patron_shield_source.png` | `docs/assets/011_secret_alliance/processed_png/idea_secret_alliance_patron_shield.png` | `gfx/interface/ideas/011_secret_alliance/idea_secret_alliance_patron_shield.dds` | `GFX_idea_secret_alliance_patron_shield` | `64x64` | `complete` |
+
+Script-facing idea aliases registered in `interface/011_secret_alliance.gfx` reuse these completed art families:
+- `GFX_idea_secret_alliance_unexplained_friction`
+- `GFX_idea_secret_alliance_counter_pact_bureau`
+- `GFX_idea_secret_alliance_prepared_security_network`
+- `GFX_idea_secret_alliance_compromised_ministries`
+- `GFX_idea_secret_alliance_hidden_compact_discipline`
+- `GFX_idea_secret_alliance_exposed_pact_government`
+- `GFX_idea_secret_alliance_revealed_compact`
+- `GFX_idea_secret_alliance_public_war_command`
 
 ## Achievement icons
 
@@ -63,6 +98,11 @@ Review contacts:
 - `docs/assets/011_secret_alliance/contact_sheets/secret_alliance_icons_contact.png`
 - `docs/assets/011_secret_alliance/contact_sheets/secret_alliance_achievements_contact.png`
 - `docs/assets/011_secret_alliance/contact_sheets/secret_alliance_animation_statics_contact.png`
+- `docs/assets/011_secret_alliance/contact_sheets/011_secret_alliance_event_art_contact_sheet.png`
+- `docs/assets/011_secret_alliance/contact_sheets/011_secret_alliance_ui_contact_sheet.png`
 
-Uncertainty:
-- `secret_alliance_evidence_meter_highlight` was kept as a centered small emblem/highlight marker because no exact meter overlay geometry was provided in the parent handoff. The sprite name is stable; the parent can either use it directly as a compact highlight or crop/anchor it inside the final GUI surface.
+Usage note:
+- `secret_alliance_evidence_meter_highlight` is registered as a compact highlight marker for the decision category or a future scripted GUI meter. Its static fallback and animated sheet are both present and share the same stable sprite stem.
+
+Wiring note:
+- `interface/011_secret_alliance.gfx` registers every final Event 011 sprite, including operation-specific decision aliases that resolve to the five generated decision icon families requested in the asset prompt.
