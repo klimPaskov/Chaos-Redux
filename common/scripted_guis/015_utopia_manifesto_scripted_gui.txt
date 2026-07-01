@@ -1,0 +1,79 @@
+scripted_gui = {
+	utopia_manifesto_ledger_scripted_gui = {
+		context_type = decision_category
+		window_name = "utopia_manifesto_ledger_container"
+
+		ai_enabled = { always = no }
+		visible = {
+			is_ai = no
+			utopia_manifesto_has_ledger = yes
+		}
+
+		effects = {
+			utopia_ledger_refresh_button_click = {
+				utopia_manifesto_refresh_ledger = yes
+			}
+			utopia_ledger_petitions_button_click = {
+				utopia_manifesto_apply_petitions_decision = yes
+			}
+			utopia_ledger_audit_button_click = {
+				utopia_manifesto_apply_storehouse_audit_decision = yes
+			}
+			utopia_ledger_renounce_button_click = {
+				utopia_manifesto_start_renunciation_vote_mission = yes
+			}
+		}
+
+		triggers = {
+			utopia_ledger_new_utopia_seal_visible = {
+				has_country_flag = utopia_manifesto_new_utopia_identity
+			}
+			utopia_ledger_marked_bounds_seal_visible = {
+				has_country_flag = utopia_manifesto_marked_bounds_state_identity
+			}
+			utopia_ledger_storehouse_fill_visible = {
+				OR = {
+					has_completed_focus = utopia_store_network
+					has_completed_focus = utopia_local_storehouses
+					has_country_flag = utopia_manifesto_route_common_store_state
+				}
+			}
+			utopia_ledger_overreach_warning_visible = {
+				OR = {
+					utopia_manifesto_overreach_high = yes
+					utopia_manifesto_foreign_suspicion_high = yes
+					utopia_manifesto_is_marked_bounds = yes
+					has_country_flag = utopia_manifesto_marked_bounds_state_identity
+				}
+			}
+			utopia_ledger_refresh_button_click_enabled = {
+				utopia_manifesto_has_ledger = yes
+			}
+			utopia_ledger_petitions_button_visible = {
+				has_completed_focus = utopia_consent_assemblies
+			}
+			utopia_ledger_petitions_button_click_enabled = {
+				utopia_manifesto_has_ledger = yes
+				has_completed_focus = utopia_consent_assemblies
+				NOT = { has_country_flag = utopia_manifesto_petitions_recent }
+			}
+			utopia_ledger_audit_button_visible = {
+				has_completed_focus = utopia_account_surplus
+			}
+			utopia_ledger_audit_button_click_enabled = {
+				utopia_manifesto_has_ledger = yes
+				has_completed_focus = utopia_account_surplus
+				NOT = { has_country_flag = utopia_manifesto_storehouse_audit_recent }
+			}
+			utopia_ledger_renounce_button_visible = {
+				has_completed_focus = utopia_renounce_the_idle_clause
+			}
+			utopia_ledger_renounce_button_click_enabled = {
+				utopia_manifesto_has_ledger = yes
+				has_completed_focus = utopia_renounce_the_idle_clause
+				NOT = { has_country_flag = utopia_manifesto_renunciation_vote_active }
+				utopia_manifesto_can_pay_renunciation_vote = yes
+			}
+		}
+	}
+}

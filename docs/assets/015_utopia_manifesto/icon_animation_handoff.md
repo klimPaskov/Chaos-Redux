@@ -1,110 +1,110 @@
 # Event 015 icon and animation handoff
 
-Suggested `.gfx` target file: `interface/015_utopia_manifesto.gfx`
+Runtime sprite registry: `interface/015_utopia_manifesto.gfx`
 
-## Completed static sprites
+## Static Icon Packages
 
-### Idea sprites
+All Event 015 runtime icon families have final DDS files, source PNGs, processed PNG previews, DDS staging copies, contact sheets, and subagent handoffs.
 
-All completed idea icons use the stable sprite pattern `GFX_<idea_id>` and final DDS files under `gfx/interface/ideas/015_utopia_manifesto/`.
+### Focus Icons
 
-- `GFX_idea_utopia_found_manifesto`
-- `GFX_idea_utopia_unproven_common_stores`
-- `GFX_idea_utopia_common_store_network`
-- `GFX_idea_utopia_vocation_confusion`
-- `GFX_idea_utopia_vocation_accord`
-- `GFX_idea_utopia_compulsory_assignments`
-- `GFX_idea_utopia_empty_stores`
-- `GFX_idea_utopia_household_councils`
-- `GFX_idea_utopia_storekeeper_commission`
-- `GFX_idea_utopia_guild_congress`
-- `GFX_idea_utopia_civic_wardens`
-- `GFX_idea_utopia_marked_bounds_doctrine`
-- `GFX_idea_utopia_utopian_league`
-- `GFX_idea_utopia_foreign_laughter`
-- `GFX_idea_utopia_feared_doctrine`
+- Runtime folder: `gfx/interface/goals/015_utopia_manifesto/`
+- Runtime size: `94x86`
+- Source proof: `docs/assets/015_utopia_manifesto/source_png/focus_atlas_*_imagegen_atlas.png`
+- Contact sheets:
+  - `docs/assets/015_utopia_manifesto/contact_sheets/focus_regenerated_imagegen_contact_01.png`
+  - `docs/assets/015_utopia_manifesto/contact_sheets/focus_regenerated_imagegen_contact_02.png`
+  - `docs/assets/015_utopia_manifesto/contact_sheets/focus_regenerated_imagegen_contact_03.png`
+  - `docs/assets/015_utopia_manifesto/contact_sheets/focus_regenerated_imagegen_contact_04.png`
+  - `docs/assets/015_utopia_manifesto/contact_sheets/focus_regenerated_imagegen_contact_all.png`
+- Handoff: `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/2026-07-01_focus_icon_regeneration.md`
+- Validation: 109 runtime `goal_utopia_*` DDS files exist, are `94x86`, and have transparent unused corners.
 
-### Decision sprites
+### Decision, Category, and Idea Icons
 
-All completed decision icons use `GFX_<decision_id>` and final DDS files under `gfx/interface/decisions/015_utopia_manifesto/`.
+- Decision/category runtime folder: `gfx/interface/decisions/015_utopia_manifesto/`
+- Idea runtime folder: `gfx/interface/ideas/015_utopia_manifesto/`
+- Decision/category runtime size: `32x32`
+- Idea runtime size: `64x64`
+- Source proof:
+  - `docs/assets/015_utopia_manifesto/source_png/decision_idea_regenerated_imagegen_decision_atlas_source.png`
+  - `docs/assets/015_utopia_manifesto/source_png/decision_idea_regenerated_imagegen_idea_atlas_01_source.png`
+  - `docs/assets/015_utopia_manifesto/source_png/decision_idea_regenerated_imagegen_idea_atlas_02_source.png`
+- Contact sheets:
+  - `docs/assets/015_utopia_manifesto/contact_sheets/decision_idea_regenerated_imagegen_contact_decisions.png`
+  - `docs/assets/015_utopia_manifesto/contact_sheets/decision_idea_regenerated_imagegen_contact_ideas.png`
+- Handoff: `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/2026-07-01_decision_idea_icon_regeneration.md`
+- Validation: 25 runtime decision/category DDS files are `32x32`; 31 runtime idea DDS files are `64x64`; the regenerated icons have transparent unused corners and no obvious white square backgrounds.
 
-- `GFX_decision_utopia_household_census`
-- `GFX_decision_utopia_common_storehouse`
-- `GFX_decision_utopia_storehouse_audit`
-- `GFX_decision_utopia_open_stores`
-- `GFX_decision_utopia_collect_petitions`
-- `GFX_decision_utopia_fund_apprenticeships`
-- `GFX_decision_utopia_urgent_service`
-- `GFX_decision_utopia_rural_rotation`
-- `GFX_decision_utopia_household_guard`
-- `GFX_decision_utopia_guard_shore`
+### Achievement Icons
 
-### Proposed focus sprites
+- Runtime folder: `gfx/achievements/`
+- Runtime size: `64x64`
+- Stems covered:
+  - `015_utopia_new_utopia`
+  - `015_utopia_need_not_greed`
+  - `015_utopia_friends_without_treaties`
+  - `015_utopia_six_hour_country`
+  - `015_utopia_no_bloody_glory`
+  - `015_utopia_inland_island`
+  - `015_utopia_storehouses_abroad`
+  - `015_utopia_league_of_need`
+  - `015_utopia_marked_bounds_survivor`
+  - `015_utopia_all_useful_arts`
+  - `015_utopia_renounced_bounds`
+  - `015_utopia_paper_no_more`
+- Variants: base, `_grey`, and `_not_eligible`
+- Contact sheet: `docs/assets/015_utopia_manifesto/contact_sheets/achievements_regenerated_imagegen_contact.png`
+- Handoff: `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/2026-07-01_achievement_icon_regeneration.md`
+- Validation: all 36 runtime achievement DDS files exist, are `64x64`, and have no obvious white square backgrounds.
 
-These names are proposed because final focus ids were not supplied by the parent handoff. All DDS files live under `gfx/interface/goals/015_utopia_manifesto/`.
+### Cosmetic Flags
 
-- `GFX_goal_utopia_found_manuscript`
-- `GFX_goal_utopia_translate_old_hand`
-- `GFX_goal_utopia_first_household_census`
-- `GFX_goal_utopia_public_reading`
-- `GFX_goal_utopia_storehouse_trial`
-- `GFX_goal_utopia_useful_arts_register`
-- `GFX_goal_utopia_question_of_boundaries`
-- `GFX_goal_utopia_country_that_can_be_read`
-- `GFX_goal_utopia_readers_assembly`
-- `GFX_goal_utopia_storekeeper_opening`
+- Runtime folders:
+  - `gfx/flags/`
+  - `gfx/flags/medium/`
+  - `gfx/flags/small/`
+- Cosmetic tags:
+  - `utopia_new_utopia`
+  - `utopia_necessary_commonwealth`
+  - `utopia_league_of_need`
+  - `utopia_marked_bounds_state`
+- Runtime sizes: `82x52`, `41x26`, and `10x7`
+- Ideology variants: each cosmetic tag has `democratic`, `communism`, `fascism`, and `neutrality` copies in all three runtime flag folders.
+- Source proof: `docs/assets/015_utopia_manifesto/source_png/flag_utopia_*_source.png`
+- Contact sheet: `docs/assets/015_utopia_manifesto/contact_sheets/utopia_cosmetic_flags_imagegen_contact.png`
+- Handoff: `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/2026-07-01_cosmetic_flag_asset_handoff.md`
+- Validation: final TGAs match the existing HOI4 flag convention, remain readable by color and silhouette at small size, and include ideology variants so cosmetic tags replace arbitrary accepting-country flags consistently.
 
-## Completed animated sprite
+## Animated GUI Pieces
 
-- Static fallback sprite: `GFX_utopia_ledger_seal`
-  - Final DDS path: `gfx/interface/utopia_manifesto/utopia_ledger_seal_static.dds`
-- Animated sprite: `GFX_utopia_ledger_seal_animated`
-  - Final DDS path: `gfx/interface/utopia_manifesto/utopia_ledger_seal_sheet.dds`
-  - Frame count: `8`
-  - Frame size: `64x64`
-  - Sheet size: `512x64`
-  - Animation rate: `8`
-  - Looping: `yes`
-  - `play_on_show`: `yes`
-  - Preview GIF: `docs/assets/015_utopia_manifesto/animations/utopia_ledger_seal/previews/utopia_ledger_seal_preview.gif`
-  - Contact sheet: `docs/assets/015_utopia_manifesto/animations/utopia_ledger_seal/previews/utopia_ledger_seal_contact.png`
+All animated GUI pieces are built from discrete generated source frames, not transform-only movement of a single still. Each animated asset has source frames, processed frames, a sheet PNG, a final DDS sheet, a static fallback DDS, and a contact sheet or GIF preview under `docs/assets/015_utopia_manifesto/animations/`.
 
-Suggested `.gfx` snippet:
+The full `gfx/interface/utopia_manifesto/` runtime family was regenerated from actual imagegen source art on 2026-07-01 after the earlier UI pieces were rejected as visually weak. The regenerated package covers the three Ledger panels, all five animated sheets, and all five static fallbacks. Source proof lives in `docs/assets/015_utopia_manifesto/source_png/utopia_*_source.png` and `docs/assets/015_utopia_manifesto/source_png/utopia_*_sheet_source.png`; review proof lives in `docs/assets/015_utopia_manifesto/contact_sheets/utopia_runtime_panels_regenerated_contact.png` and each animation's `previews/` folder.
 
-```txt
-spriteTypes = {
-	spriteType = {
-		name = "GFX_utopia_ledger_seal"
-		texturefile = "gfx/interface/utopia_manifesto/utopia_ledger_seal_static.dds"
-	}
+| Asset | Static sprite | Animated sprite | Frame count | Frame size | Sheet size | Runtime use |
+| --- | --- | --- | --- | --- | --- | --- |
+| Ledger seal | `GFX_utopia_ledger_seal_static` | `GFX_utopia_ledger_seal_animated` | 8 | `64x64` | `512x64` | wired in `interface/015_utopia_manifesto_ledger.gui` |
+| Overreach warning | `GFX_utopia_overreach_warning_static` | `GFX_utopia_overreach_warning_animated` | 8 | `64x64` | `512x64` | visible in the Ledger under high Overreach, high Suspicion, Marked Bounds pressure, or Marked Bounds State identity |
+| Storehouse fill | `GFX_utopia_storehouse_fill_static` | `GFX_utopia_storehouse_fill_animated` | 8 | `64x16` | `512x16` | visible in the Ledger once store network, local storehouse, or Common Store State route exists |
+| New Utopia seal | `GFX_utopia_new_utopia_seal_static` | `GFX_utopia_new_utopia_seal_animated` | 10 | `96x96` | `960x96` | visible in the Ledger after `utopia_manifesto_new_utopia_identity` |
+| Marked Bounds seal | `GFX_utopia_marked_bounds_seal_static` | `GFX_utopia_marked_bounds_seal_animated` | 10 | `96x96` | `960x96` | visible in the Ledger after `utopia_manifesto_marked_bounds_state_identity` |
 
-	frameAnimatedSpriteType = {
-		name = "GFX_utopia_ledger_seal_animated"
-		texturefile = "gfx/interface/utopia_manifesto/utopia_ledger_seal_sheet.dds"
-		noOfFrames = 8
-		animation_rate_fps = 8
-		looping = yes
-		play_on_show = yes
-	}
-}
-```
+Panel regeneration:
 
-## Unfinished required deliverables
+- `GFX_utopia_ledger_background_panel` -> `gfx/interface/utopia_manifesto/utopia_ledger_background_panel.dds` (`700x500`)
+- `GFX_utopia_ledger_header_plate` -> `gfx/interface/utopia_manifesto/utopia_ledger_header_plate.dds` (`700x96`)
+- `GFX_utopia_ledger_warning_panel` -> `gfx/interface/utopia_manifesto/utopia_ledger_warning_panel.dds` (`320x128`)
 
-- Decision category icons are not generated yet.
-- The remaining thirteen decision icons from the parent brief are not generated yet.
-- The focus pack only covers ten proposed opening icons and is not yet broad enough for the final full tree.
-- No achievement icons or their grey and not-eligible DDS triplets exist yet.
-- Four requested animated assets are still missing:
-  `utopia_overreach_warning`
-  `utopia_storehouse_fill`
-  `utopia_new_utopia_seal`
-  `utopia_marked_bounds_seal`
+Runtime visibility triggers:
 
-## Validation
+- `utopia_ledger_new_utopia_seal_visible`
+- `utopia_ledger_marked_bounds_seal_visible`
+- `utopia_ledger_storehouse_fill_visible`
+- `utopia_ledger_overreach_warning_visible`
 
-- Completed idea icons were exported at `64x64`.
-- Completed decision icons were exported at `32x32`.
-- Completed focus icons were exported at `94x86`.
-- `utopia_ledger_seal_static.dds` is `64x64`.
-- `utopia_ledger_seal_sheet.dds` is `512x64`, matching `8` frames at `64x64`.
+## Runtime Coverage
+
+- Every `GFX_goal_utopia_*`, `GFX_decision_utopia_*`, `GFX_decision_category_utopia_*`, `GFX_idea_utopia_*`, Event 015 achievement sprite, Event 015 GUI sprite, report image, news image, and super-event image has a registered sprite or valid HOI4 flag path.
+- Static fallbacks exist for every animated GUI piece.
+- No icon family is marked complete from placeholder-only art.

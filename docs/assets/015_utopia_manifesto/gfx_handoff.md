@@ -28,21 +28,47 @@
 
 - Final DDS path: `gfx/interface/utopia_manifesto/utopia_ledger_background_panel.dds`
 - Proposed sprite name: `GFX_utopia_ledger_background_panel`
-- Suggested `.gfx` file: `interface/chaosx_utopia_manifesto.gfx`
+- Runtime `.gfx` file: `interface/015_utopia_manifesto.gfx`
 - Related use: base decorative background for the Utopian Ledger scripted GUI
 
 - Final DDS path: `gfx/interface/utopia_manifesto/utopia_ledger_header_plate.dds`
 - Proposed sprite name: `GFX_utopia_ledger_header_plate`
-- Suggested `.gfx` file: `interface/chaosx_utopia_manifesto.gfx`
+- Runtime `.gfx` file: `interface/015_utopia_manifesto.gfx`
 - Related use: static top plate for the Utopian Ledger scripted GUI
 
 - Final DDS path: `gfx/interface/utopia_manifesto/utopia_ledger_warning_panel.dds`
 - Proposed sprite name: `GFX_utopia_ledger_warning_panel`
-- Suggested `.gfx` file: `interface/chaosx_utopia_manifesto.gfx`
+- Runtime `.gfx` file: `interface/015_utopia_manifesto.gfx`
 - Related use: warning-state panel for Overreach or Marked Bounds copy blocks
 
-## Notes
+- Final DDS path: `gfx/interface/utopia_manifesto/utopia_ledger_seal_sheet.dds`
+- Runtime sprite name: `GFX_utopia_ledger_seal_animated`
+- Runtime `.gfx` file: `interface/015_utopia_manifesto.gfx`
+- Related use: animated Ledger seal in `interface/015_utopia_manifesto_ledger.gui`
 
-- The three GUI DDS files are safe static decorative art only. They do not imply any scripted-GUI coordinates, slicing, button states, or animated overlays.
-- `utopia_ledger_header_plate` and `utopia_ledger_warning_panel` intentionally share the same generated tableau source as `utopia_ledger_background_panel`.
-- No `.gfx` edits were made in this sidecar task.
+- Final DDS path: `gfx/interface/utopia_manifesto/utopia_overreach_warning_sheet.dds`
+- Runtime sprite name: `GFX_utopia_overreach_warning_animated`
+- Runtime `.gfx` file: `interface/015_utopia_manifesto.gfx`
+- Related use: animated warning icon visible under high Overreach, high Suspicion, Marked Bounds pressure, or Marked Bounds State identity
+
+- Final DDS path: `gfx/interface/utopia_manifesto/utopia_storehouse_fill_sheet.dds`
+- Runtime sprite name: `GFX_utopia_storehouse_fill_animated`
+- Runtime `.gfx` file: `interface/015_utopia_manifesto.gfx`
+- Related use: animated storehouse meter visible after store-network, local-storehouse, or Common Store State progress
+
+- Final DDS path: `gfx/interface/utopia_manifesto/utopia_new_utopia_seal_sheet.dds`
+- Runtime sprite name: `GFX_utopia_new_utopia_seal_animated`
+- Runtime `.gfx` file: `interface/015_utopia_manifesto.gfx`
+- Related use: animated late New Utopia identity seal visible in the Ledger header
+
+- Final DDS path: `gfx/interface/utopia_manifesto/utopia_marked_bounds_seal_sheet.dds`
+- Runtime sprite name: `GFX_utopia_marked_bounds_seal_animated`
+- Runtime `.gfx` file: `interface/015_utopia_manifesto.gfx`
+- Related use: animated late Marked Bounds State identity seal visible in the Ledger header
+
+## Implementation notes
+
+- Runtime registration now lives in `interface/015_utopia_manifesto.gfx`.
+- The event pictures, super-event pictures, focus icons, decision icons, idea icons, achievement icons, static GUI art, and animated GUI sheets are all registered through that Event 015 sprite file.
+- The Utopian Ledger GUI uses `interface/015_utopia_manifesto_ledger.gui` and `common/scripted_guis/015_utopia_manifesto_scripted_gui.txt`.
+- The full `gfx/interface/utopia_manifesto/` runtime family was regenerated from imagegen source art on 2026-07-01. Static fallbacks exist beside every animated sheet, and live scripted GUI visibility triggers are wired for all five animated sprites.
