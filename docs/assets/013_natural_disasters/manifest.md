@@ -87,7 +87,7 @@ The `GFX_decision_nd_*` response decision icons were regenerated as transparent 
 
 ### Idea icon regeneration
 
-The visible country-level disaster-pressure ideas use dedicated `64x64` national-spirit icons. They do not replace the state dynamic modifiers that carry disaster damage and recovery.
+The visible country-level disaster-pressure ideas use dedicated `64x64` national-spirit icons. They do not replace the state dynamic modifiers that carry disaster damage and recovery. The current set was regenerated as transparent compact spirit silhouettes without circular medallion frames, badge rims, coin borders, or opaque square backdrops.
 
 | Asset | Final DDS path | Sprite name | Status |
 | --- | --- | --- | --- |

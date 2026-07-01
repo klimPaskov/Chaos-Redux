@@ -150,6 +150,8 @@ The `GFX_decision_category_nd_*` sprites remain category button icons. Their fin
 
 These sprites back the country-level natural-disaster pressure ideas. The ideas are visible national-pressure summaries; per-state dynamic modifiers remain the primary disaster damage and recovery mechanic.
 
+The current DDS files were regenerated as compact transparent national-spirit silhouettes without circular medallion frames, badge rims, coin borders, or opaque square backdrops. Sprite names and paths remain unchanged.
+
 | Sprite | Final DDS path |
 | --- | --- |
 | `GFX_idea_013_disaster_aftermath` | `gfx/interface/ideas/013_natural_disasters/idea_013_disaster_aftermath.dds` |

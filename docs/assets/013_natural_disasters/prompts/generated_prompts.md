@@ -1,5 +1,15 @@
 # Event 013 Natural Disasters Generated Prompt Log
 
+## Idea Icons
+
+The country-level disaster-pressure idea icons were regenerated as dedicated `64x64` national-spirit assets. They use transparent canvases after chroma-key cleanup and are not circular medallions, decision icons, focus icons, or resized category art.
+
+- `idea_013_disaster_aftermath_source`: shattered masonry, cracked ground, broken roof beams, smoke-dusted rubble, compact HOI4 national-spirit icon, no text, no frame, no circular badge.
+- `idea_013_refugee_pressure_source`: displaced civilians with bundles and a handcart near damaged shelter canvas, compact HOI4 national-spirit icon, no text, no frame, no circular badge.
+- `idea_013_famine_pressure_source`: empty ration bowl, cracked spoon, torn ration card, dry wheat stalks, compact HOI4 national-spirit icon, no text, no frame, no circular badge.
+- `idea_013_broken_infrastructure_source`: twisted railway track, broken bridge plank, snapped telegraph pole, cracked road slab, compact HOI4 national-spirit icon, no text, no frame, no circular badge.
+- `idea_013_disaster_recovery_mobilization_source`: crossed engineer shovel and stretcher pole, rolled blueprint, supply crate, emergency armband, compact HOI4 national-spirit icon, no text, no frame, no circular badge.
+
 ## Decision Icons
 
 Decision icons were generated as individual `image_gen` assets, then chroma-keyed or alpha-cleaned for `32x32` decision DDS output. They are not resized focus icons.
