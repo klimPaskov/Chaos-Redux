@@ -1,30 +1,17 @@
-/goal Implement Chaos Redux Event 011 Secret Alliance to its fullest extent.
+/goal Implement Event 011 Secret Alliance to the fullest extent using the planning package at docs/specs/011_secret_alliance_specs/ or the imported package contents:
+- specs/011_secret_alliance_spec_part_1_core.md
+- specs/011_secret_alliance_spec_part_2_evolutions_and_reveal.md
+- specs/011_secret_alliance_spec_part_3_decisions_missions_ui.md
+- specs/011_secret_alliance_spec_part_4_systems_ai_assets_achievements.md
+- prompts/secret_alliance_coding_prompt.md
+- prompts/secret_alliance_asset_prompt.md
+- prompts/secret_alliance_super_event_prompt.md
+- prompts/secret_alliance_achievement_prompt.md
+- prompts/secret_alliance_decision_mission_prompt.md
+- matrices/*
 
-Use the source package at `docs/specs/011_secret_alliance_specs/`:
-- `specs/011_secret_alliance_spec_part_1_core.md`
-- `specs/011_secret_alliance_spec_part_2_evolutions_and_reveal.md`
-- `specs/011_secret_alliance_spec_part_3_counter_pact_decisions.md`
-- `specs/011_secret_alliance_spec_part_4_ai_assets_achievements.md`
-- `matrices/011_secret_alliance_runtime_flow.md`
-- `matrices/011_secret_alliance_decision_map.md`
-- `matrices/011_secret_alliance_ai_matrix.md`
-- `matrices/011_secret_alliance_tuning_matrix.md`
-- `prompts/secret_alliance_coding_prompt.md`
-- `prompts/secret_alliance_asset_prompt.md`
-- `prompts/secret_alliance_achievement_prompt.md`
-- `prompts/secret_alliance_decision_mission_prompt.md`
+Follow AGENTS.md plus chaos-redux-events, hoi4-decisions-missions, chaos-redux-event-assets, chaos-redux-frame-animation, chaos-redux-super-events, chaos-redux-subagents, and chaos-redux-improvement-loop. Inspect the actual repo, offline Paradox wiki, vanilla HOI4 docs, and existing Chaos Redux patterns before editing.
 
-Follow AGENTS.md, chaos-redux-events, hoi4-decisions-missions, chaos-redux-event-assets, chaos-redux-frame-animation, chaos-redux-improvement-loop, and chaos-redux-subagents.
+Pass or fail requirements: keep Event 011 as Minor Fire-Once, select exactly three valid non-war founders or mark unavailable, prefer factionless minors, track roles and values, support member invitations, implement Baseline, Evo I, Evo II, Evo III, active evolutions and pre-fire openings, open counterplay at Evo II, create public pact crisis at Evo III, trigger reveal when any member wars the target, form Anti-[target] Pact and join all live members to war, implement evidence, counter-readiness, secrecy, cohesion, readiness, member confidence, decisions, missions, AI, cleanup, event logs, event details, docs, achievements, assets, animated UI assets with fallbacks, and reveal super-event with researched text and licensed audio.
 
-Pass or fail requirements:
-1. Hidden Anti-[target] compact starts with three valid minor members and no public faction at start.
-2. Core members are not at war with the target at hidden formation. If any core member goes to war with the target, reveal the pact, form the public faction or coalition, and join all valid core members against the target immediately.
-3. Evolution I, II, and III match the spec, including active-event changes and pre-fire evolved openings.
-4. Evolution II opens the counter-pact decision system with evidence, preparedness, dynamic costs, missions, diplomacy, border options, and AI equivalents.
-5. Evolution III unlocks public confrontation, war options, possible second major, and a final crisis window.
-6. Implement all mapped operations, ideas, AI behavior, assets, animated fallbacks, achievements, event logs, event details, docs, and spreadsheet alignment.
-7. Do not expose hidden members or future mechanics through localisation.
-8. Avoid fallbacks, placeholder assets, generic AI weights, store-like PP buttons, and unreported simplifications.
-9. Run focused audits, including decision, localisation, asset, AI, reveal, cleanup, and completion checks.
-
-Keep iterating until the implementation satisfies the spec. Do not claim completion until the files, assets, docs, spreadsheet, audits, and meaningful validation prove it.
+Use subagents from the routing handoff. Do not use fallbacks, placeholders, or smaller substitutes without explicit approval. Do not paste planning text into localisation. Do not claim completion until the implementation satisfies the spec and final audits report no unresolved blockers. Provide a concrete completion report with files changed, validation, subagent handoffs, simplifications, and remaining risks.
