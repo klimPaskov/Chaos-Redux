@@ -90,6 +90,8 @@ These use the shared super-event radio frame and are wired through `interface/ch
 
 ## News event pictures
 
+Meaningful individual-hit news events `chaosx.nr13.305` through `chaosx.nr13.317` reuse the existing `GFX_report_event_nd_*` disaster-family sprites so the broadcast image follows the family that struck. The dedicated `GFX_news_event_nd_*` sprites remain for abnormal broadcasts and the SCN-007 barrage.
+
 - `news_event_nd_regional_floods`
   - Final DDS path: `gfx/event_pictures/013_natural_disasters/news_event_nd_regional_floods.dds`
   - Proposed sprite name: `GFX_news_event_nd_regional_floods`

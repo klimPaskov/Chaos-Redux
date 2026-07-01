@@ -9,7 +9,7 @@
 # - Direct disaster calls, SCN-007, and event clusters share this controller.
 # ============================================================================
 
-# `damage_building` rejects script constants in `damage =`, so these mirror
+# Some effects and duration fields reject `constant:` tokens, so these mirror
 # `common/script_constants/013_natural_disasters_constants.txt`.
 @natural_disaster_damage_light_infrastructure = 0.45
 @natural_disaster_damage_standard_infrastructure = 0.80
@@ -30,6 +30,7 @@
 @natural_disaster_damage_fuel_silo = 0.70
 @natural_disaster_damage_railway = 0.85
 @natural_disaster_damage_supply_node = 0.70
+@natural_disaster_news_cooldown_days = 21
 
 natural_disasters_clear_slot_1_targets = {
 	if = {
@@ -2387,30 +2388,136 @@ natural_disasters_should_schedule_report = {
 	}
 }
 
-natural_disasters_schedule_global_news_digest = {
+natural_disasters_schedule_specific_news = {
 	if = {
 		limit = {
+			check_variable = { natural_disaster_should_news > 0 }
 			NOT = { has_global_flag = natural_disaster_news_recent }
 			NOT = { check_variable = { natural_disaster_current_report_policy = constant:natural_disaster_report_policy.quiet } }
 		}
+		save_global_event_target_as = natural_disaster_news_state
 		natural_disasters_set_news_recent_global_flag = yes
-		OWNER = { news_event = { id = chaosx.nr13.305 days = 1 } }
+		natural_disasters_fire_specific_news_event = yes
 	}
 }
 
 natural_disasters_set_news_recent_global_flag = {
-	set_temp_variable = { natural_disaster_news_cooldown_days = constant:natural_disaster_event.news_cooldown_days }
-	set_global_flag = { flag = natural_disaster_news_recent days = natural_disaster_news_cooldown_days }
+	set_global_flag = { flag = natural_disaster_news_recent days = @natural_disaster_news_cooldown_days }
 }
 
 natural_disasters_set_report_recent_country_flag = {
-	set_temp_variable = { natural_disaster_news_cooldown_days = constant:natural_disaster_event.news_cooldown_days }
-	set_country_flag = { flag = natural_disaster_report_recent days = natural_disaster_news_cooldown_days }
+	set_country_flag = { flag = natural_disaster_report_recent days = @natural_disaster_news_cooldown_days }
+}
+
+natural_disasters_fire_specific_news_event = {
+	if = {
+		limit = {
+			OR = {
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.earthquake }
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.sinkhole }
+			}
+		}
+		OWNER = { news_event = { id = chaosx.nr13.305 days = 1 } }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.flood }
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.glacial_outburst }
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.limnic_eruption }
+			}
+		}
+		OWNER = { news_event = { id = chaosx.nr13.306 days = 1 } }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.tropical_cyclone }
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.thunderstorm }
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.hailstorm }
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.extreme_wind }
+			}
+		}
+		OWNER = { news_event = { id = chaosx.nr13.307 days = 1 } }
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.wildfire } }
+		OWNER = { news_event = { id = chaosx.nr13.308 days = 1 } }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.drought }
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.heat_wave }
+			}
+		}
+		OWNER = { news_event = { id = chaosx.nr13.309 days = 1 } }
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.dust_storm } }
+		OWNER = { news_event = { id = chaosx.nr13.310 days = 1 } }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.blizzard }
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.cold_wave }
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.avalanche }
+			}
+		}
+		OWNER = { news_event = { id = chaosx.nr13.311 days = 1 } }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.dry_mass_movement }
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.wet_mass_movement }
+			}
+		}
+		OWNER = { news_event = { id = chaosx.nr13.312 days = 1 } }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.volcanic_eruption }
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.massive_eruption }
+			}
+		}
+		OWNER = { news_event = { id = chaosx.nr13.313 days = 1 } }
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.tsunami } }
+		OWNER = { news_event = { id = chaosx.nr13.314 days = 1 } }
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.meteor_shower } }
+		OWNER = { news_event = { id = chaosx.nr13.315 days = 1 } }
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.storm_corridor } }
+		OWNER = { news_event = { id = chaosx.nr13.316 days = 1 } }
+	}
+	else_if = {
+		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.global_rupture } }
+		OWNER = { news_event = { id = chaosx.nr13.317 days = 1 } }
+	}
+	else = {
+		OWNER = { news_event = { id = chaosx.nr13.305 days = 1 } }
+	}
 }
 
 natural_disasters_schedule_report = {
-	natural_disasters_schedule_global_news_digest = yes
 	natural_disasters_should_schedule_report = yes
+	set_temp_variable = { natural_disaster_should_news = natural_disaster_should_report }
+	if = {
+		limit = { check_variable = { natural_disaster_current_pulse < 2 } }
+		set_temp_variable = { natural_disaster_should_news = 1 }
+	}
+	if = {
+		limit = { check_variable = { natural_disaster_current_report_policy = constant:natural_disaster_report_policy.news_only } }
+		set_temp_variable = { natural_disaster_should_news = 1 }
+	}
+	natural_disasters_schedule_specific_news = yes
 	if = {
 		limit = { check_variable = { natural_disaster_should_report > 0 } }
 		set_temp_variable_to_random = {

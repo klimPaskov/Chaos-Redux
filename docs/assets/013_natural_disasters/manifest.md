@@ -366,6 +366,8 @@ All Event 013 scripted-GUI animation packages were regenerated from per-frame so
 
 ### `news_event_nd_regional_floods`
 
+Family-specific meaningful-hit news events reuse the report-event picture set for their matching disaster groups. The dedicated news images in this section remain assigned to abnormal broadcasts and the SCN-007 barrage.
+
 - Asset type: news event image
 - Intended in-game use: throttled regional flood broadcast
 - Source mode: generated
