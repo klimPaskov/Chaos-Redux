@@ -1,8 +1,8 @@
 # ============================================================================
 # CHAOS REDUX - HOLY REALM ON ACTIONS
 # ============================================================================
-# Hooks Holy Realm capitulation settlements into the generic capitulation on
-# action without adding a new daily or monthly country iteration.
+# Hooks Holy Realm runtime behavior into generic on_actions without adding new
+# daily or monthly country iterations beyond the existing event pulse.
 # ============================================================================
 
 @HOLY_REALM_CAPITAL_SANCTUARY_RECENT_FALL_DAYS = 180
@@ -34,6 +34,20 @@ on_actions = {
 					set_country_flag = holy_realm_lotus_bridge_capital_fell
 				}
 				FROM = { clr_country_flag = holy_realm_lotus_bridge_protected_target }
+			}
+		}
+	}
+
+	on_join_faction = {
+		effect = {
+			if = {
+				limit = {
+					FROM = {
+						has_country_flag = holy_realm_mandala_of_nations_leader
+						is_faction_leader = yes
+					}
+				}
+				holy_realm_mandala_of_nations_member_joined = yes
 			}
 		}
 	}
@@ -75,6 +89,35 @@ on_actions = {
 				event_target:holy_realm_mandala_of_nations_leader = {
 					holy_realm_refresh_sangha_of_nations_status = yes
 				}
+			}
+			if = {
+				limit = { has_country_flag = holy_realm_mandala_peace_vow_locked }
+				if = {
+					limit = {
+						FROM = { has_country_flag = holy_realm_mandala_of_nations_leader }
+					}
+					save_event_target_as = holy_realm_compact_departing_country
+					FROM = {
+						country_event = { id = chaosx.nr3.130 }
+						holy_realm_refresh_mandala_of_nations_faction = yes
+						holy_realm_refresh_sangha_of_nations_status = yes
+					}
+				}
+				holy_realm_clear_mandala_peace_vow = yes
+			}
+		}
+	}
+
+	on_daily = {
+		effect = {
+			if = {
+				limit = {
+					is_holy_realm_country = yes
+					has_power_balance = {
+						id = holy_realm_final_doctrine_balance
+					}
+				}
+				holy_realm_daily_doctrine_balance_pulse = yes
 			}
 		}
 	}

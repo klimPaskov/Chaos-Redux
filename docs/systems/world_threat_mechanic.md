@@ -133,5 +133,5 @@ Everything should fold back into the same source-counted system.
 - `common/scripted_effects/chaosx_dynamic_effects.md`
 - `common/scripted_effects/002_zombie_outbreak_effects.txt`
 - `common/scripted_triggers/chaosx_world_threat_triggers.txt`
-- `common/on_actions/chaosx_on_actions.txt`
+- `common/on_actions/002_zombie_outbreak_on_actions.txt`
 - `common/decisions/chaosx_anti_zombie_league_decisions.txt`

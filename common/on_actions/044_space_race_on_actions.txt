@@ -1,0 +1,94 @@
+# ============================================================================
+# CHAOS REDUX - SPACE RACE ON ACTIONS
+# ============================================================================
+
+on_actions = {
+	# Space Race
+	on_daily = { # Checks for every country separately!
+		effect = {
+			if = { limit = { has_global_flag = space_race OR = { is_major = yes is_ai = no } }
+				set_variable = { space_race_points = 0 }
+
+				# Radars
+				if = { limit = { has_tech = radio }
+					add_to_variable = { space_race_points = 1 }
+				}
+				if = { limit = { has_tech = radio_detection }
+					add_to_variable = { space_race_points = 2 }
+				}
+				# if = { limit = { has_tech = decimetric_radar }
+				# add_to_variable = { space_race_points = 2 }
+				# }
+				# if = { limit = { has_tech = improved_decimetric_radar }
+				# add_to_variable = { space_race_points = 3 }
+				# }
+				# if = { limit = { has_tech = centimetric_radar }
+				# add_to_variable = { space_race_points = 4 }
+				# }
+				# if = { limit = { has_tech = improved_centimetric_radar }
+				# add_to_variable = { space_race_points = 5 }
+				# }
+				# if = { limit = { has_tech = advanced_centimetric_radar }
+				# add_to_variable = { space_race_points = 10 }
+				# }
+
+				# Computing
+				if = { limit = { has_tech = mechanical_computing }
+					add_to_variable = { space_race_points = 1 }
+				}
+				if = { limit = { has_tech = computing_machine }
+					add_to_variable = { space_race_points = 3 }
+				}
+				if = { limit = { has_tech = improved_computing_machine }
+					add_to_variable = { space_race_points = 5 }
+				}
+				if = { limit = { has_tech = advanced_computing_machine }
+					add_to_variable = { space_race_points = 10 }
+				}
+
+				# Fire control
+				if = { limit = { has_tech = basic_fire_control_system }
+					add_to_variable = { space_race_points = 2 }
+				}
+				if = { limit = { has_tech = improved_fire_control_system }
+					add_to_variable = { space_race_points = 3 }
+				}
+				if = { limit = { has_tech = advanced_fire_control_system }
+					add_to_variable = { space_race_points = 5 }
+				}
+
+				# Rockets
+				if = { limit = { has_tech = experimental_rockets }
+					add_to_variable = { space_race_points = 4 }
+				}
+				if = { limit = { has_tech = rocket_engines }
+					add_to_variable = { space_race_points = 5 }
+				}
+				if = { limit = { has_tech = improved_rocket_engines }
+					add_to_variable = { space_race_points = 15 }
+				}
+				if = { limit = { has_tech = advanced_rocket_engines }
+					add_to_variable = { space_race_points = 20 }
+				}
+
+				hidden_effect = {
+					add_to_array = { global.space_race_array = space_race_points }
+					find_highest_in_array = { # might be affecting performance slightly. Anyways, computers are fast
+						array = global.space_race_array
+						value = temp_most_space_race_points
+					}
+					set_variable = { global.most_space_race_points = temp_most_space_race_points } # All values are considered within last country check only
+					if = { limit = { check_variable = { space_race_points = global.most_space_race_points } }
+						set_variable = { global.leading_space_race_country = THIS.id }
+						add_ideas = leading_space_race
+					} else = {
+						every_country = {
+							limit = { OR = { is_major = yes is_ai = no } NOT = { tag = global.leading_space_race_country } }
+							remove_ideas = leading_space_race
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -313,6 +313,7 @@ Core files to check:
 
 - `events/<ID>_my_event.txt`
 - `common/on_actions/chaosx_on_actions_system.txt`
+- `common/on_actions/<event_id>_<event_slug>_on_actions.txt` for event-owned runtime hooks
 - `common/scripted_effects/chaosx_logic_effects.txt`
 - `common/scripted_effects/chaosx_events_log_effects.txt`
 - `localisation/english/chaosx_event_names_l_english.yml`
@@ -322,7 +323,7 @@ Core files to check:
 
 Frequently-needed companion files:
 
-- `common/on_actions/chaosx_on_actions.txt`
+- `common/on_actions/chaosx_on_actions.txt` only for shared hooks that do not belong to one event
 - `common/scripted_effects/chaosx_settings_effects.txt`
 - `common/scripted_guis/chaosx_scripted_gui_events_log.txt`
 - `common/scripted_guis/chaosx_scripted_gui_settings.txt`

@@ -120,7 +120,7 @@ The rebel country receives a pool of templates covering worker militias, red gua
 - `common/scripted_localisation/chaosx_scripted_localisation.txt`: dashboard sprite, threat status, and state-control level text
 - `interface/chaosx_decisions.gui`: dashboard layout above the communism decisions
 - `interface/001_communism_spread.gfx`: communism idea sprites, threat meter sprites, and communism event-picture sprite names
-- `common/on_actions/chaosx_on_actions.txt`: removed the obsolete monthly communism updater
+- `common/on_actions/001_communism_spread_on_actions.txt`: state-control transfer and annex cleanup hooks; the obsolete monthly communism updater remains removed
 - `events/091_the_great_revolution.txt`: uses communist-controlled states as the World Revolution territorial basis, then cleans up state-control flags
 - Event log and GUI localisation now describe the new system and show locked World Revolution weight as red `N/A`
 

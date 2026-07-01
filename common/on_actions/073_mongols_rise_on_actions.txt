@@ -1,0 +1,31 @@
+# ============================================================================
+# CHAOS REDUX - MONGOLS RISE ON ACTIONS
+# ============================================================================
+
+on_actions = {
+	on_monthly_MON = {
+		effect = {
+			if = { limit = { has_idea = legacy_of_khan }
+				every_neighbor_country = {
+					limit = { NOT = { ROOT = { has_wargoal_against = PREV } } any_owned_state = { OR = { is_on_continent = europe is_on_continent = asia is_on_continent = middle_east } } }
+					MON = {
+						create_wargoal = {
+							type = annex_everything
+							target = PREV
+						}
+					}
+				}
+			}
+			if = { limit = { has_template = "Glorious Genghis Khan's Cavalry" }
+				capital_scope = {
+					create_unit = {
+						division = "name = \"Glorious Genghis Khan's Cavalry\" division_template = \"Glorious Genghis Khan's Cavalry\" start_experience_factor = 0.3"
+						count = 2
+						owner = MON
+					}
+				}
+			}
+		}
+
+	}
+}

@@ -172,7 +172,7 @@ Dead necrotic and demonic zombie outcomes also no longer resolve into obedient c
 - The Wendigo super event now also uses its own dedicated sound asset on the super-event sound-output path: `sound/chaosx_super_event_wendigo.wav`.
 - A necrotic or extra-scientific zombie profile with a dead or transformed life state and at least four extreme mutation picks now guarantees the catastrophic Wendigo completion failure if no other Wendigo already exists in the campaign.
 - Zombies marked `zombies-only` can only target zombie-controlled states and can earn the `Fight Fire With Fire` achievement.
-- Independent weaponized outbreaks are excluded from the base zombie auto-merge rules in `common/on_actions/chaosx_on_actions.txt`.
+- Independent weaponized outbreaks are excluded from the base zombie auto-merge rules in `common/on_actions/002_zombie_outbreak_on_actions.txt`.
 - Creator-friendly zombies store their protected creator in outbreak-local diplomacy state and can later lose that protection through an unannounced field-control failure event.
 - Weaponized outbreak leader names are now type-based (`Undead Horde`, `Necrotic Horde`, `Demonic Zombie Horde`, etc.) rather than behavior-profile titles.
 
@@ -224,7 +224,7 @@ Field tests now prefer the most remote practical target states:
 - `common/ideas/zombie_weaponized_ideas.txt`
 - `common/technologies/zombie_special_project_technologies.txt`
 - `events/zombie_weaponized_special_projects.txt`
-- `common/on_actions/chaosx_on_actions.txt`
+- `common/on_actions/002_zombie_outbreak_on_actions.txt`
 - `common/scripted_localisation/zombie_weaponized_scripted_localisation.txt`
 - `common/units/zombies.txt`
 - `history/units/ZZZ_weaponized_1936.txt`

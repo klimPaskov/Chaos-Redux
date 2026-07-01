@@ -1,0 +1,330 @@
+# ============================================================================
+# CHAOS REDUX - AIRSHIP ON ACTIONS
+# ============================================================================
+
+on_actions = {
+	# Airship
+	on_daily = {
+		effect = {
+			if = { limit = { has_global_flag = airship NOT = { tag = USA } }
+				# execute the chance every day for every country
+				if = { limit = { has_country_flag = airship_country }
+					log = "Value of 'as_crash_chance' in [ROOT.GetName]: [?as_crash_chance|.0]"
+					random = {
+						chance = as_crash_chance
+						log = "Value of 'as_crash_chance' during the crash in [ROOT.GetName]: [?as_crash_chance|.0]"
+						# crash effects
+						clr_global_flag = airship
+						every_country = {
+							limit = { OR = { has_country_flag = airship_country has_country_flag = airship_above } }
+							clr_country_flag = airship_country
+							clr_country_flag = airship_above
+						}
+						random_owned_state = {
+							limit = { is_in_airship_region = yes }
+							ROOT = {
+								launch_nuke = {
+									state = PREV
+									controller = ROOT
+									use_nuke = no
+								}
+							}
+							every_country = {
+								limit = { is_ai = no }
+								goto_state = PREV
+							}
+							damage_building = {
+								type = infrastructure
+								damage = 2
+							}damage_building = {
+								type = industrial_complex
+								damage = 0.75
+							}damage_building = {
+								type = arms_factory
+								damage = 0.75
+							}
+							add_manpower = -5000
+						}
+						country_event = { id = chaosx.nr80.4 }
+					}
+				}
+				clear_variable = as_crash_chance
+				subtract_from_variable = { as_crash_chance = as_decrease }
+				add_to_variable = { as_crash_chance = as_increase }
+				# if = { limit = { has_country_flag = airship_country } log = "Value of 'as_crash_chance' in [ROOT.GetName] after decreases and increases: [?as_crash_chance|.0]" }
+
+				## chance modifiers:
+				# check opinion status
+				if = { limit = { has_opinion = { target = USA value = -9 } }
+					set_temp_variable = { as_opinion_usa = opinion@USA }
+					divide_temp_variable = { as_opinion_usa = -10 }
+					round_temp_variable = as_opinion_usa
+					add_to_variable = { as_crash_chance = as_opinion_usa }
+					if = { limit = { has_country_flag = airship_country } log = "Value of 'as_crash_chance' in [ROOT.GetName] after checking relations: [?as_crash_chance|.0]" }
+				}
+
+				# check if there is resistance in the region
+				every_controlled_state = {
+					limit = { resistance > 0 is_in_airship_region = yes }
+					add_to_variable = { ROOT.as_crash_chance = 1 }
+				}every_controlled_state = {
+					limit = { resistance > 9 is_in_airship_region = yes }
+					add_to_variable = { ROOT.as_crash_chance = 1 }
+				}every_controlled_state = {
+					limit = { resistance > 19 is_in_airship_region = yes }
+					add_to_variable = { ROOT.as_crash_chance = 1 }
+				}every_controlled_state = {
+					limit = { resistance > 29 is_in_airship_region = yes }
+					add_to_variable = { ROOT.as_crash_chance = 1 }
+				}every_controlled_state = {
+					limit = { resistance > 39 is_in_airship_region = yes }
+					add_to_variable = { ROOT.as_crash_chance = 1 }
+				}every_controlled_state = {
+					limit = { resistance > 49 is_in_airship_region = yes }
+					add_to_variable = { ROOT.as_crash_chance = 1 }
+				}every_controlled_state = {
+					limit = { resistance > 59 is_in_airship_region = yes }
+					add_to_variable = { ROOT.as_crash_chance = 1 }
+				}
+				# if = { limit = { has_country_flag = airship_country } log = "Value of 'as_crash_chance' in [ROOT.GetName] after resistance checks: [?as_crash_chance|.0]" }
+
+				# use state flags for more options
+
+				# check political status whether to increase the chance
+				set_temp_variable = { as_stability = 1 }
+				subtract_from_temp_variable = { as_stability = stability }
+				multiply_temp_variable = { as_stability = 5 } # 10 maybe too harsh?
+				round_temp_variable = as_stability
+				add_to_variable = { as_crash_chance = as_stability }
+				# if = { limit = { has_country_flag = airship_country } log = "Value of 'as_crash_chance' in [ROOT.GetName] after stability check: [?as_crash_chance|.0]" }
+
+				# check acid rain (hint: weather)
+				if = { limit = { any_owned_state = { is_in_airship_region = yes has_dynamic_modifier = { modifier = acid_clouds_state }	} }
+					add_to_variable = { as_crash_chance = 2 }
+				}
+				if = { limit = { any_owned_state = { is_in_airship_region = yes has_dynamic_modifier = { modifier = acid_rain_state } } }
+					add_to_variable = { as_crash_chance = 5 }
+				}
+				# if = { limit = { has_country_flag = airship_country } log = "Value of 'as_crash_chance' in [ROOT.GetName] after acid rain check: [?as_crash_chance|.0]" }
+
+				# check if there is war in the region
+				if = { limit = { has_war = yes any_owned_state = { is_in_airship_region = yes } }
+					for_each_loop = {
+						array = global.airship_regions
+						value = region_id
+						meta_effect = {
+							text = {
+								if = {
+									limit = {
+										OR = {
+											num_planes_stationed_in_regions = {
+												value > 0
+												regions = { [REGION_ID] }
+											}
+											any_enemy_country = {
+												num_planes_stationed_in_regions = {
+													value > 0
+													regions = { [REGION_ID] }
+												}
+											}
+										}
+									}
+									add_to_variable = { as_crash_chance = 1 }
+								}
+								if = {
+									limit = {
+										OR = {
+											num_planes_stationed_in_regions = {
+												value > 49
+												regions = { [REGION_ID] }
+											}
+											any_enemy_country = {
+												num_planes_stationed_in_regions = {
+													value > 49
+													regions = { [REGION_ID] }
+												}
+											}
+										}
+									}
+									add_to_variable = { as_crash_chance = 1 } # in total 2 will be incremented to the chance
+								}if = {
+									limit = {
+										OR = {
+											num_planes_stationed_in_regions = {
+												value > 99
+												regions = { [REGION_ID] }
+											}
+											any_enemy_country = {
+												num_planes_stationed_in_regions = {
+													value > 99
+													regions = { [REGION_ID] }
+												}
+											}
+										}
+									}
+									add_to_variable = { as_crash_chance = 1 } #
+								}if = {
+									limit = {
+										OR = {
+											num_planes_stationed_in_regions = {
+												value > 199
+												regions = { [REGION_ID] }
+											}
+											any_enemy_country = {
+												num_planes_stationed_in_regions = {
+													value > 199
+													regions = { [REGION_ID] }
+												}
+											}
+										}
+									}
+									add_to_variable = { as_crash_chance = 2 }
+								}if = {
+									limit = {
+										OR = {
+											num_planes_stationed_in_regions = {
+												value > 299
+												regions = { [REGION_ID] }
+											}
+											any_enemy_country = {
+												num_planes_stationed_in_regions = {
+													value > 299
+													regions = { [REGION_ID] }
+												}
+											}
+										}
+									}
+									add_to_variable = { as_crash_chance = 2 }
+								}if = {
+									limit = {
+										OR = {
+											num_planes_stationed_in_regions = {
+												value > 399
+												regions = { [REGION_ID] }
+											}
+											any_enemy_country = {
+												num_planes_stationed_in_regions = {
+													value > 399
+													regions = { [REGION_ID] }
+												}
+											}
+										}
+									}
+									add_to_variable = { as_crash_chance = 3 }
+								}if = {
+									limit = {
+										OR = {
+											num_planes_stationed_in_regions = {
+												value > 499
+												regions = { [REGION_ID] }
+											}
+											any_enemy_country = {
+												num_planes_stationed_in_regions = {
+													value > 499
+													regions = { [REGION_ID] }
+												}
+											}
+										}
+									}
+									add_to_variable = { as_crash_chance = 3 }
+								}if = {
+									limit = {
+										OR = {
+											num_planes_stationed_in_regions = {
+												value > 599
+												regions = { [REGION_ID] }
+											}
+											any_enemy_country = {
+												num_planes_stationed_in_regions = {
+													value > 599
+													regions = { [REGION_ID] }
+												}
+											}
+										}
+									}
+									add_to_variable = { as_crash_chance = 4 }
+								}if = {
+									limit = {
+										OR = {
+											num_planes_stationed_in_regions = {
+												value > 699
+												regions = { [REGION_ID] }
+											}
+											any_enemy_country = {
+												num_planes_stationed_in_regions = {
+													value > 699
+													regions = { [REGION_ID] }
+												}
+											}
+										}
+									}
+									add_to_variable = { as_crash_chance = 4 }
+								}if = {
+									limit = {
+										OR = {
+											num_planes_stationed_in_regions = {
+												value > 799
+												regions = { [REGION_ID] }
+											}
+											any_enemy_country = {
+												num_planes_stationed_in_regions = {
+													value > 799
+													regions = { [REGION_ID] }
+												}
+											}
+										}
+									}
+									add_to_variable = { as_crash_chance = 5 }
+								}if = {
+									limit = {
+										OR = {
+											num_planes_stationed_in_regions = {
+												value > 899
+												regions = { [REGION_ID] }
+											}
+											any_enemy_country = {
+												num_planes_stationed_in_regions = {
+													value > 899
+													regions = { [REGION_ID] }
+												}
+											}
+										}
+									}
+									add_to_variable = { as_crash_chance = 5 }
+								}
+								if = {
+									limit = {
+										OR = {
+											num_planes_stationed_in_regions = {
+												value > 999 # probable in late game
+												regions = { [REGION_ID] }
+											}
+											any_enemy_country = {
+												num_planes_stationed_in_regions = {
+													value > 999
+													regions = { [REGION_ID] }
+												}
+											}
+										}
+									}
+									add_to_variable = { as_crash_chance = 6 } # capped here, 37% in total
+								}
+							}
+							REGION_ID = "[?region_id|.0]"
+						}
+					}
+					# if = { limit = { has_country_flag = airship_country } log = "Value of 'as_crash_chance' in [ROOT.GetName] after deployed planes in region check: [?as_crash_chance|.0]" }
+					every_owned_state = {
+						limit = { is_in_airship_region = yes }
+						every_state_division = {
+							limit = { division_has_battalion_in_template = anti_air }
+							add_to_variable = { ROOT.as_crash_chance = 1 }
+						}
+
+					}
+					# if = { limit = { has_country_flag = airship_country } log = "Value of 'as_crash_chance' in [ROOT.GetName] after anti-air battalions check: [?as_crash_chance|.0]" }
+				}
+			}
+		}
+	}
+}

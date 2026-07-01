@@ -1,0 +1,53 @@
+# ============================================================================
+# CHAOS REDUX - ZIN ON ACTIONS
+# ============================================================================
+
+on_actions = {
+	# Devastation from the gods of ZIN
+	on_daily_ZIN = {
+		effect = {
+			if = { limit = { ZIN = { has_capitulated = yes } }
+				remove_ideas = punishment_from_gods
+			}
+			if = { limit = { ZIN = { has_war = yes } }
+				create_unit = {
+					division = "name = \"Servants of the Gods\" division_template = \"Guardians of ZIN\" start_experience_factor = 0.1"
+					count = 2
+					owner = ZIN
+				}
+				create_unit = {
+					division = "name = \"Spawn of the Gods\" division_template = \"Cavalry of ZIN\" start_experience_factor = 0.1"
+					count = 1
+					owner = ZIN
+				}
+				every_other_country = {
+					limit = { has_war_with = ZIN }
+					if = { limit = { NOT = { has_idea = punishment_from_gods } }
+						add_ideas = punishment_from_gods
+					}
+					hidden_effect = {
+						random_owned_state = {
+							ZIN = {
+								launch_nuke = {
+									state = PREV
+									controller = PREV.PREV
+									use_nuke = no
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	on_monthly_ZIN = {
+		effect = {
+			if = { limit = { ZIN = { has_war = yes } }
+				every_other_country = {
+					limit = { has_war_with = ZIN }
+					country_event = { id = chaosx.nr68.3 }
+				}
+			}
+		}
+	}
+}
