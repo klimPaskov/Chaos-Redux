@@ -26,7 +26,7 @@ It covers:
 Primary script and data files:
 
 - `events/chaosx_events.txt`
-- `common/on_actions/chaosx_on_actions.txt`
+- `common/on_actions/002_zombie_outbreak_on_actions.txt`
 - `common/scripted_effects/chaosx_effects.txt`
 - `common/scripted_triggers/chaosx_scripted_triggers.txt`
 - `common/script_constants/zombie_constants.txt`
@@ -137,7 +137,7 @@ This event is the only true root outbreak event. Everything else in the chain ei
 
 ### 2. Daily zombie behavior: `on_daily`
 
-The active zombie system is driven every day from `common/on_actions/chaosx_on_actions.txt`.
+The active zombie system is driven every day from `common/on_actions/002_zombie_outbreak_on_actions.txt`.
 
 When the scope country is `ZZZ` and the outbreak is active:
 

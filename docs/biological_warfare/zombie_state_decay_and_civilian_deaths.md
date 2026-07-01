@@ -97,7 +97,7 @@ That means they:
 - `common/script_constants/chaos_meter_constants.txt`
 - `common/scripted_effects/002_zombie_outbreak_effects.txt`
 - `common/scripted_effects/chaos_meter_effects.txt`
-- `common/on_actions/chaosx_on_actions.txt`
+- `common/on_actions/002_zombie_outbreak_on_actions.txt`
 
 ## Icon Wiring
 

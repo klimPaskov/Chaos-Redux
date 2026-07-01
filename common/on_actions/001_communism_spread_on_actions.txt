@@ -1,0 +1,33 @@
+# ============================================================================
+# CHAOS REDUX - COMMUNISM SPREAD ON ACTIONS
+# ============================================================================
+
+on_actions = {
+	on_state_control_changed = {
+		effect = {
+				if = {
+					limit = {
+						has_global_flag = communism_spread
+						FROM.FROM = { has_state_flag = communist_controlled_state }
+					}
+					ROOT = {
+						adopt_communism_spread_controlled_state_front = yes
+					}
+				}
+		}
+	}
+
+	on_annex = {
+		effect = {
+			if = {
+				limit = { has_global_flag = communism_spread }
+				if = {
+					limit = { ROOT = { has_country_flag = fighting_communist_rebels } FROM = { has_country_flag = communist_rebel_state } }
+					clr_country_flag = fighting_communist_rebels
+					clr_country_flag = communist_rebel_state
+				}
+
+			}
+		}
+	}
+}

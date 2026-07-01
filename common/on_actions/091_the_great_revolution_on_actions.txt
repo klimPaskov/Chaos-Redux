@@ -1,0 +1,41 @@
+# ============================================================================
+# CHAOS REDUX - THE GREAT REVOLUTION ON ACTIONS
+# ============================================================================
+
+on_actions = {
+	on_capitulation = {
+		effect = {
+			# REV
+			if = { limit = { country_exists = REV }
+				if = { limit = { FROM = { tag = REV } }
+					every_core_state = {
+						add_core_of = FROM
+					}
+				}
+			}
+		}
+	}
+
+	on_uncapitulation = {
+		effect = {
+			if = { limit = { country_exists = REV }
+				if = { limit = { ROOT = { has_war_with = REV } }
+					every_core_state = {
+						remove_core_of = REV
+					}
+				}
+			}
+		}
+	}
+	on_monthly_REV = {
+		effect = {
+			if = { limit = { country_exists = REV }
+				if = { limit = { all_country = { has_government = communism } }
+					every_other_country = {
+						country_event = { id = chaosx.nr93.1 }
+					}
+				}
+			}
+		}
+	}
+}
