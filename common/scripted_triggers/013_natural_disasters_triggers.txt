@@ -5,6 +5,14 @@
 # response-decision resource gates for the Natural Disasters season controller.
 # ============================================================================
 
+@natural_disaster_population_sparse_target = 50
+@natural_disaster_population_low_target = 100
+@natural_disaster_population_settled_target = 250
+@natural_disaster_population_dense_target = 500
+@natural_disaster_strategic_profile_minor = 5
+@natural_disaster_strategic_profile_major = 10
+@natural_disaster_strategic_profile_extreme = 15
+
 natural_disaster_state_can_take_disaster = {
 	OWNER = { exists = yes }
 	CONTROLLER = { exists = yes }
@@ -112,13 +120,24 @@ natural_disaster_country_has_active_sequence = {
 	}
 }
 
+natural_disaster_state_strategic_profile_minor = {
+	state_and_terrain_strategic_value > @natural_disaster_strategic_profile_minor
+}
+
+natural_disaster_state_strategic_profile_major = {
+	state_and_terrain_strategic_value > @natural_disaster_strategic_profile_major
+}
+
+natural_disaster_state_strategic_profile_extreme = {
+	state_and_terrain_strategic_value > @natural_disaster_strategic_profile_extreme
+}
+
 natural_disaster_target_earthquake = {
 	natural_disaster_state_can_take_disaster = yes
 	OR = {
-		has_terrain = mountain
-		has_terrain = hills
+		natural_disaster_state_strategic_profile_major = yes
 		is_capital = yes
-		state_population_k > 500
+		state_population_k > @natural_disaster_population_dense_target
 	}
 }
 
@@ -126,8 +145,10 @@ natural_disaster_target_flood = {
 	natural_disaster_state_can_take_disaster = yes
 	OR = {
 		is_coastal = yes
-		has_terrain = marsh
-		has_terrain = jungle
+		AND = {
+			state_population_k > @natural_disaster_population_settled_target
+			NOT = { natural_disaster_state_strategic_profile_extreme = yes }
+		}
 	}
 }
 
@@ -139,19 +160,17 @@ natural_disaster_target_tropical_cyclone = {
 natural_disaster_target_thunderstorm = {
 	natural_disaster_state_can_take_disaster = yes
 	OR = {
-		has_terrain = plains
-		has_terrain = forest
-		has_terrain = hills
+		natural_disaster_state_strategic_profile_minor = yes
 		is_capital = yes
+		state_population_k > @natural_disaster_population_settled_target
 	}
 }
 
 natural_disaster_target_hailstorm = {
 	natural_disaster_state_can_take_disaster = yes
 	OR = {
-		has_terrain = plains
-		has_terrain = hills
-		has_terrain = forest
+		natural_disaster_state_strategic_profile_minor = yes
+		state_population_k > @natural_disaster_population_settled_target
 	}
 }
 
@@ -159,45 +178,46 @@ natural_disaster_target_extreme_wind = {
 	natural_disaster_state_can_take_disaster = yes
 	OR = {
 		is_coastal = yes
-		has_terrain = plains
-		has_terrain = desert
-		state_population_k > 250
+		natural_disaster_state_strategic_profile_minor = yes
+		state_population_k > @natural_disaster_population_settled_target
 	}
 }
 
 natural_disaster_target_wildfire = {
 	natural_disaster_state_can_take_disaster = yes
 	OR = {
-		has_terrain = forest
-		has_terrain = jungle
-		has_terrain = plains
-		has_terrain = hills
+		natural_disaster_state_strategic_profile_minor = yes
+		AND = {
+			NOT = { is_coastal = yes }
+			state_population_k > @natural_disaster_population_settled_target
+		}
 	}
 }
 
 natural_disaster_target_drought = {
 	natural_disaster_state_can_take_disaster = yes
 	OR = {
-		has_terrain = desert
-		has_terrain = plains
-		has_terrain = hills
+		AND = {
+			natural_disaster_state_strategic_profile_minor = yes
+			NOT = { is_coastal = yes }
+		}
+		state_population_k > @natural_disaster_population_settled_target
 	}
 }
 
 natural_disaster_target_dust_storm = {
 	natural_disaster_state_can_take_disaster = yes
-	OR = {
-		has_terrain = desert
-		has_terrain = plains
+	AND = {
+		natural_disaster_state_strategic_profile_minor = yes
+		NOT = { is_coastal = yes }
 	}
 }
 
 natural_disaster_target_blizzard = {
 	natural_disaster_state_can_take_disaster = yes
 	OR = {
-		has_terrain = mountain
-		has_terrain = hills
-		has_terrain = forest
+		natural_disaster_state_strategic_profile_major = yes
+		state_population_k > @natural_disaster_population_settled_target
 	}
 }
 
@@ -206,47 +226,41 @@ natural_disaster_target_heat_wave = {
 	OWNER = { NOT = { has_idea = heat_wave } }
 	CONTROLLER = { NOT = { has_idea = heat_wave } }
 	OR = {
-		has_terrain = desert
-		has_terrain = plains
-		has_terrain = urban
-		state_population_k > 500
+		natural_disaster_state_strategic_profile_minor = yes
+		is_capital = yes
+		state_population_k > @natural_disaster_population_dense_target
 	}
 }
 
 natural_disaster_target_cold_wave = {
 	natural_disaster_state_can_take_disaster = yes
 	OR = {
-		has_terrain = mountain
-		has_terrain = forest
-		has_terrain = plains
-		state_population_k > 500
+		natural_disaster_state_strategic_profile_major = yes
+		state_population_k > @natural_disaster_population_dense_target
 	}
 }
 
 natural_disaster_target_dry_mass_movement = {
 	natural_disaster_state_can_take_disaster = yes
-	OR = {
-		has_terrain = mountain
-		has_terrain = hills
-		has_terrain = desert
+	AND = {
+		natural_disaster_state_strategic_profile_major = yes
+		NOT = { is_coastal = yes }
 	}
 }
 
 natural_disaster_target_wet_mass_movement = {
 	natural_disaster_state_can_take_disaster = yes
 	OR = {
-		has_terrain = mountain
-		has_terrain = hills
-		has_terrain = jungle
-		has_terrain = marsh
+		natural_disaster_state_strategic_profile_major = yes
+		is_coastal = yes
+		state_population_k > @natural_disaster_population_settled_target
 	}
 }
 
 natural_disaster_target_volcanic_eruption = {
 	natural_disaster_state_can_take_disaster = yes
 	OR = {
-		has_terrain = mountain
-		has_terrain = hills
+		natural_disaster_state_strategic_profile_major = yes
 		is_coastal = yes
 	}
 }
@@ -259,81 +273,76 @@ natural_disaster_target_tsunami = {
 natural_disaster_target_avalanche = {
 	natural_disaster_state_can_take_disaster = yes
 	OR = {
-		has_terrain = mountain
-		has_terrain = hills
+		natural_disaster_state_strategic_profile_major = yes
+		state_population_k > @natural_disaster_population_settled_target
 	}
 }
 
 natural_disaster_target_glacial_outburst = {
 	natural_disaster_state_can_take_disaster = yes
-	state_population_k > 50
+	state_population_k > @natural_disaster_population_sparse_target
 	OR = {
-		has_terrain = mountain
-		has_terrain = hills
+		natural_disaster_state_strategic_profile_major = yes
+		is_coastal = yes
 	}
 }
 
 natural_disaster_target_sinkhole = {
 	natural_disaster_state_can_take_disaster = yes
 	OR = {
-		has_terrain = plains
-		has_terrain = urban
-		state_population_k > 500
+		natural_disaster_state_strategic_profile_minor = yes
+		is_capital = yes
+		state_population_k > @natural_disaster_population_dense_target
 	}
 }
 
 natural_disaster_target_limnic_eruption = {
 	natural_disaster_state_can_take_disaster = yes
 	OR = {
-		has_terrain = mountain
-		has_terrain = marsh
-		has_terrain = jungle
+		natural_disaster_state_strategic_profile_major = yes
+		is_coastal = yes
+		state_population_k > @natural_disaster_population_settled_target
 	}
 }
 
 natural_disaster_target_meteor_shower = {
 	natural_disaster_state_can_take_disaster = yes
 	OR = {
-		has_terrain = plains
-		has_terrain = desert
-		has_terrain = urban
-		state_population_k > 250
+		natural_disaster_state_strategic_profile_minor = yes
+		is_capital = yes
+		state_population_k > @natural_disaster_population_settled_target
 	}
 }
 
 natural_disaster_target_global_rupture = {
 	natural_disaster_state_can_take_disaster = yes
 	OR = {
-		has_terrain = mountain
-		has_terrain = hills
-		has_terrain = urban
-		state_population_k > 500
+		natural_disaster_state_strategic_profile_major = yes
+		is_capital = yes
+		state_population_k > @natural_disaster_population_dense_target
 	}
 }
 
 natural_disaster_target_massive_eruption = {
 	natural_disaster_state_can_take_disaster = yes
-	state_population_k > 100
+	state_population_k > @natural_disaster_population_low_target
 	OR = {
-		has_terrain = mountain
-		has_terrain = hills
+		natural_disaster_state_strategic_profile_major = yes
 		is_coastal = yes
 	}
 }
 
 natural_disaster_target_abnormal = {
 	natural_disaster_state_can_take_disaster = yes
-	state_population_k > 100
+	state_population_k > @natural_disaster_population_low_target
 }
 
 natural_disaster_target_storm_corridor = {
 	natural_disaster_state_can_take_disaster = yes
 	OR = {
 		is_coastal = yes
-		has_terrain = plains
-		has_terrain = desert
-		has_terrain = forest
-		state_population_k > 500
+		natural_disaster_state_strategic_profile_minor = yes
+		state_population_k > @natural_disaster_population_dense_target
 	}
 }
 
