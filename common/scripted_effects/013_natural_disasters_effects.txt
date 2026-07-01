@@ -143,20 +143,21 @@ natural_disasters_select_profile_for_current_chaos = {
 		limit = { NOT = { has_variable = natural_disasters_start_profile } }
 		set_temp_variable = { natural_disasters_start_profile = constant:natural_disaster_sequence_profile.baseline }
 		if = {
-			limit = {
-				OR = {
-					has_global_flag = { flag = chaos_tier value = 2 }
-					has_global_flag = { flag = chaos_tier value = 3 }
-				}
-			}
+			limit = { has_global_flag = { flag = chaos_tier value = 1 } }
 			set_temp_variable = { natural_disasters_start_profile = constant:natural_disaster_sequence_profile.evolution_1 }
 		}
 		if = {
-			limit = { has_global_flag = { flag = chaos_tier value = 4 } }
+			limit = { has_global_flag = { flag = chaos_tier value = 2 } }
 			set_temp_variable = { natural_disasters_start_profile = constant:natural_disaster_sequence_profile.evolution_2 }
 		}
 		if = {
-			limit = { has_global_flag = { flag = chaos_tier value = 5 } }
+			limit = {
+				OR = {
+					has_global_flag = { flag = chaos_tier value = 3 }
+					has_global_flag = { flag = chaos_tier value = 4 }
+					has_global_flag = { flag = chaos_tier value = 5 }
+				}
+			}
 			set_temp_variable = { natural_disasters_start_profile = constant:natural_disaster_sequence_profile.evolution_3 }
 		}
 	}
