@@ -33,7 +33,7 @@ If your task touches some other system, for example for gui, open Interface Modd
 
 Web access:
 
-- For general web research, use your default web search tool. If that fails, then use the fallback `ddg-search` MCP server.
+- For general web research, use your default web search tool.
 
 ### Vanilla References
 
