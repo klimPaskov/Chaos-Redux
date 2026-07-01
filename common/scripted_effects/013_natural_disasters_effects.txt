@@ -1806,6 +1806,132 @@ natural_disasters_record_deaths = {
 	chaos_meter_register_state_civilian_deaths_percent = yes
 }
 
+natural_disasters_remove_country_ideas = {
+	if = { limit = { has_idea = natural_disaster_aftermath_idea } remove_ideas = natural_disaster_aftermath_idea }
+	if = { limit = { has_idea = natural_disaster_refugee_pressure_idea } remove_ideas = natural_disaster_refugee_pressure_idea }
+	if = { limit = { has_idea = natural_disaster_famine_pressure_idea } remove_ideas = natural_disaster_famine_pressure_idea }
+	if = { limit = { has_idea = natural_disaster_broken_infrastructure_idea } remove_ideas = natural_disaster_broken_infrastructure_idea }
+	if = { limit = { has_idea = natural_disaster_recovery_mobilization_idea } remove_ideas = natural_disaster_recovery_mobilization_idea }
+}
+
+natural_disasters_refresh_country_ideas = {
+	if = {
+		limit = { NOT = { natural_disaster_response_visible = yes } }
+		natural_disasters_remove_country_ideas = yes
+	}
+	if = {
+		limit = {
+			natural_disaster_response_visible = yes
+			NOT = { has_idea = natural_disaster_aftermath_idea }
+		}
+		add_ideas = natural_disaster_aftermath_idea
+	}
+	if = {
+		limit = {
+			natural_disaster_response_visible = yes
+			any_controlled_state = {
+				natural_disaster_state_has_open_aftermath = yes
+				OR = {
+					has_state_flag = natural_disaster_family_flood
+					has_state_flag = natural_disaster_family_tropical_cyclone
+					has_state_flag = natural_disaster_family_wildfire
+					has_state_flag = natural_disaster_family_tsunami
+					has_state_flag = natural_disaster_family_limnic_eruption
+					has_state_flag = natural_disaster_family_meteor_shower
+					has_state_flag = natural_disaster_family_global_rupture
+					has_state_flag = natural_disaster_family_massive_eruption
+					has_state_flag = natural_disaster_family_storm_corridor
+				}
+			}
+			NOT = { has_idea = natural_disaster_refugee_pressure_idea }
+		}
+		add_ideas = natural_disaster_refugee_pressure_idea
+	}
+	else_if = {
+		limit = { has_idea = natural_disaster_refugee_pressure_idea }
+		remove_ideas = natural_disaster_refugee_pressure_idea
+	}
+	if = {
+		limit = {
+			natural_disaster_response_visible = yes
+			any_controlled_state = {
+				natural_disaster_state_has_open_aftermath = yes
+				OR = {
+					has_state_flag = natural_disaster_family_flood
+					has_state_flag = natural_disaster_family_drought
+					has_state_flag = natural_disaster_family_heat_wave
+					has_state_flag = natural_disaster_family_cold_wave
+					has_state_flag = natural_disaster_family_blizzard
+					has_state_flag = natural_disaster_family_dust_storm
+					has_state_flag = natural_disaster_family_volcanic_eruption
+					has_state_flag = natural_disaster_family_massive_eruption
+					has_state_flag = natural_disaster_family_limnic_eruption
+				}
+			}
+			NOT = { has_idea = natural_disaster_famine_pressure_idea }
+		}
+		add_ideas = natural_disaster_famine_pressure_idea
+	}
+	else_if = {
+		limit = { has_idea = natural_disaster_famine_pressure_idea }
+		remove_ideas = natural_disaster_famine_pressure_idea
+	}
+	if = {
+		limit = {
+			natural_disaster_response_visible = yes
+			any_controlled_state = {
+				natural_disaster_state_has_open_aftermath = yes
+				OR = {
+					has_state_flag = natural_disaster_family_earthquake
+					has_state_flag = natural_disaster_family_tropical_cyclone
+					has_state_flag = natural_disaster_family_extreme_wind
+					has_state_flag = natural_disaster_family_tsunami
+					has_state_flag = natural_disaster_family_dry_mass_movement
+					has_state_flag = natural_disaster_family_wet_mass_movement
+					has_state_flag = natural_disaster_family_avalanche
+					has_state_flag = natural_disaster_family_glacial_outburst
+					has_state_flag = natural_disaster_family_sinkhole
+					has_state_flag = natural_disaster_family_global_rupture
+					has_state_flag = natural_disaster_family_massive_eruption
+					has_state_flag = natural_disaster_family_storm_corridor
+				}
+			}
+			NOT = { has_idea = natural_disaster_broken_infrastructure_idea }
+		}
+		add_ideas = natural_disaster_broken_infrastructure_idea
+	}
+	else_if = {
+		limit = { has_idea = natural_disaster_broken_infrastructure_idea }
+		remove_ideas = natural_disaster_broken_infrastructure_idea
+	}
+	if = {
+		limit = {
+			natural_disaster_response_visible = yes
+			OR = {
+				has_country_flag = natural_disaster_stabilization_mission_active
+				has_country_flag = natural_disaster_reconstruction_mission_active
+				any_controlled_state = {
+					OR = {
+						has_state_flag = natural_disaster_rescue_teams_deployed
+						has_state_flag = natural_disaster_routes_cleared
+						has_state_flag = natural_disaster_supply_lifelines_restored
+						has_state_flag = natural_disaster_food_water_secured
+						has_state_flag = natural_disaster_firebreaks_cut
+						has_state_flag = natural_disaster_ash_dust_routes_clear
+						has_state_flag = natural_disaster_evacuation_complete
+					}
+				}
+			}
+			NOT = { has_idea = natural_disaster_recovery_mobilization_idea }
+		}
+		add_ideas = natural_disaster_recovery_mobilization_idea
+	}
+	else_if = {
+		limit = { has_idea = natural_disaster_recovery_mobilization_idea }
+		remove_ideas = natural_disaster_recovery_mobilization_idea
+	}
+}
+
 natural_disasters_open_recovery = {
 	set_state_flag = { flag = natural_disaster_aftermath_active days = constant:natural_disaster_aftermath.response_visibility_days }
 	set_variable = { natural_disaster_recovery_pressure = constant:natural_disaster_aftermath.recovery_pressure_standard }
@@ -1853,8 +1979,11 @@ natural_disasters_open_recovery = {
 			set_country_flag = natural_disaster_stabilization_mission_active
 			set_country_flag = natural_disaster_reconstruction_mission_active
 			set_variable = { natural_disaster_latest_family = natural_disaster_current_family }
+			set_variable = { natural_disaster_latest_profile = natural_disaster_current_profile }
 			set_variable = { natural_disaster_latest_sequence_slot = natural_disaster_sequence_slot }
 			add_to_variable = { natural_disaster_open_recovery_states = 1 }
+			natural_disasters_refresh_country_ideas = yes
+			country_event = { id = chaosx.nr13.401 days = constant:natural_disaster_aftermath.response_visibility_days }
 	}
 }
 
@@ -1990,7 +2119,13 @@ natural_disasters_mark_storm_corridor_path_state = {
 	set_state_flag = { flag = natural_disaster_corridor_path_state days = constant:natural_disaster_delay.corridor_warning_days }
 	set_state_flag = { flag = natural_disaster_corridor_warning days = constant:natural_disaster_delay.corridor_warning_days }
 	add_dynamic_modifier = { modifier = natural_disaster_storm_corridor_warning_state days = constant:natural_disaster_delay.corridor_warning_days }
-	OWNER = { set_country_flag = { flag = natural_disaster_response_visible days = constant:natural_disaster_aftermath.response_visibility_days } }
+	OWNER = {
+		set_country_flag = { flag = natural_disaster_response_visible days = constant:natural_disaster_aftermath.response_visibility_days }
+		set_variable = { natural_disaster_latest_family = constant:natural_disaster_family.storm_corridor }
+		set_variable = { natural_disaster_latest_profile = constant:natural_disaster_sequence_profile.evolution_3 }
+		natural_disasters_refresh_country_ideas = yes
+		country_event = { id = chaosx.nr13.401 days = constant:natural_disaster_aftermath.response_visibility_days }
+	}
 }
 
 natural_disasters_mark_storm_corridor_path = {
@@ -2158,7 +2293,13 @@ natural_disasters_apply_profile_spillover = {
 				limit = { check_variable = { natural_disaster_current_recovery_allowed > 0 } }
 				set_state_flag = { flag = natural_disaster_aftermath_active days = constant:natural_disaster_aftermath.response_visibility_days }
 				add_dynamic_modifier = { modifier = natural_disaster_recovery_mobilized_state days = constant:natural_disaster_aftermath.normal_days }
-				OWNER = { set_country_flag = { flag = natural_disaster_response_visible days = constant:natural_disaster_aftermath.response_visibility_days } }
+				OWNER = {
+					set_country_flag = { flag = natural_disaster_response_visible days = constant:natural_disaster_aftermath.response_visibility_days }
+					set_variable = { natural_disaster_latest_family = natural_disaster_current_family }
+					set_variable = { natural_disaster_latest_profile = natural_disaster_current_profile }
+					natural_disasters_refresh_country_ideas = yes
+					country_event = { id = chaosx.nr13.401 days = constant:natural_disaster_aftermath.response_visibility_days }
+				}
 			}
 		}
 	}
@@ -2415,6 +2556,7 @@ natural_disasters_reduce_recovery_pressure = {
 			natural_disasters_maybe_complete_recovery_achievements = yes
 		}
 	}
+	OWNER = { natural_disasters_refresh_country_ideas = yes }
 }
 
 natural_disasters_decision_rescue_current_state = {
@@ -2505,6 +2647,7 @@ natural_disasters_stabilization_success = {
 	clr_country_flag = natural_disaster_stabilization_mission_active
 	add_stability = constant:natural_disaster_decision_effect.stabilization_success_stability
 	natural_disasters_maybe_complete_recovery_achievements = yes
+	natural_disasters_refresh_country_ideas = yes
 }
 
 natural_disasters_stabilization_failure = {
@@ -2512,18 +2655,21 @@ natural_disasters_stabilization_failure = {
 	add_stability = constant:natural_disaster_decision_effect.stabilization_failure_stability
 	add_war_support = constant:natural_disaster_decision_effect.stabilization_failure_war_support
 	natural_disasters_disqualify_recovery_achievements = yes
+	natural_disasters_refresh_country_ideas = yes
 }
 
 natural_disasters_reconstruction_success = {
 	clr_country_flag = natural_disaster_reconstruction_mission_active
 	add_stability = constant:natural_disaster_decision_effect.reconstruction_success_stability
 	natural_disasters_maybe_complete_recovery_achievements = yes
+	natural_disasters_refresh_country_ideas = yes
 }
 
 natural_disasters_reconstruction_failure = {
 	clr_country_flag = natural_disaster_reconstruction_mission_active
 	add_stability = constant:natural_disaster_decision_effect.reconstruction_failure_stability
 	natural_disasters_disqualify_recovery_achievements = yes
+	natural_disasters_refresh_country_ideas = yes
 }
 
 natural_disasters_call_direct_family = {

@@ -2,13 +2,15 @@
 
 Event id: `013`
 Event slug: `natural_disasters`
-Source mode summary: generated non-icon event art through official `image_gen`
-Scope note: this manifest covers Event 13 report, news, decision-category picture, and corrected decision-category icon assets.
+Source mode summary: generated event art, generated icons, and regenerated frame-animation source art through official `image_gen`
+Scope note: this manifest covers Event 13 report, news, decision-category picture, decision icon, decision-category icon, idea icon, and animated scripted-GUI assets.
 Prompt record: `docs/assets/013_natural_disasters/prompts/generated_event_art_prompts.md`
 Report contact sheet: `docs/assets/013_natural_disasters/contact_sheets/013_natural_disasters_report_contact_sheet.png`
 News contact sheet: `docs/assets/013_natural_disasters/contact_sheets/013_natural_disasters_news_contact_sheet.png`
 Decision category picture contact sheet: `docs/assets/013_natural_disasters/contact_sheets/natural_disaster_category_pictures_contact.png`
 Decision category icon contact sheet: `docs/assets/013_natural_disasters/contact_sheets/natural_disaster_category_icons_contact.png`
+Decision icon contact sheet: `docs/assets/013_natural_disasters/contact_sheets/natural_disaster_decision_icons_contact.png`
+Idea icon contact sheet: `docs/assets/013_natural_disasters/contact_sheets/natural_disaster_idea_icons_contact.png`
 Validation note: `docs/assets/013_natural_disasters/notes/report_news_validation.md`
 
 ## Complete
@@ -33,7 +35,7 @@ These are 457x328 super-event radio images wired through `interface/chaosx_super
 
 ### Decision category picture derivatives
 
-These are the large left-side decision-category pictures. They are derived from the generated report-image sources and resized to vanilla `114x101` category-picture canvases.
+These are the large left-side decision-category pictures. They use generated family-specific disaster scene sources resized to vanilla `114x101` category-picture canvases. The completed source-art pass is documented in `docs/plans/013_natural_disasters_plans/subagent_handoffs/2026-07-01_event013_category_picture_source_art_handoff.md`.
 
 | Asset | Source report | Source PNG | Processed PNG | Final DDS path | Sprite name | Status |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -62,7 +64,52 @@ These are the large left-side decision-category pictures. They are derived from 
 
 ### Decision category icon correction
 
-The `GFX_decision_category_nd_*` category button icons were reprocessed from generated imagegen sources into non-square `53x40` DDS canvases. Chroma green was removed before resizing, and the icons remain separate from the `114x101` category pictures.
+The `GFX_decision_category_nd_*` category button icons were regenerated and processed into non-square `53x40` DDS canvases. Chroma green was removed before resizing, and the icons remain separate from the `114x101` category pictures.
+
+- Asset count: 22 category button icons
+- Live DDS folder: `gfx/interface/decisions/013_natural_disasters/`
+- Package DDS folder: `docs/assets/013_natural_disasters/dds/`
+- Source PNG folder: `docs/assets/013_natural_disasters/source_png/`
+- Processed PNG folder: `docs/assets/013_natural_disasters/processed_png/`
+- Contact sheet: `docs/assets/013_natural_disasters/contact_sheets/natural_disaster_category_icons_contact.png`
+
+### Decision icon regeneration
+
+The `GFX_decision_nd_*` response decision icons were regenerated as transparent `32x32` decision-symbol assets rather than resized focus or category art.
+
+- Asset count: 17 decision icons
+- Live DDS folder: `gfx/interface/decisions/013_natural_disasters/`
+- Package DDS folder: `docs/assets/013_natural_disasters/dds/`
+- Source PNG folder: `docs/assets/013_natural_disasters/source_png/`
+- Processed PNG folder: `docs/assets/013_natural_disasters/processed_png/`
+- Contact sheet: `docs/assets/013_natural_disasters/contact_sheets/natural_disaster_decision_icons_contact.png`
+- Handoff: `docs/plans/013_natural_disasters_plans/subagent_handoffs/icon_asset_regeneration_2026_07_01.md`
+
+### Idea icon regeneration
+
+The visible country-level disaster-pressure ideas use dedicated `64x64` national-spirit icons. They do not replace the state dynamic modifiers that carry disaster damage and recovery.
+
+| Asset | Final DDS path | Sprite name | Status |
+| --- | --- | --- | --- |
+| `idea_013_disaster_aftermath` | `gfx/interface/ideas/013_natural_disasters/idea_013_disaster_aftermath.dds` | `GFX_idea_013_disaster_aftermath` | `complete` |
+| `idea_013_refugee_pressure` | `gfx/interface/ideas/013_natural_disasters/idea_013_refugee_pressure.dds` | `GFX_idea_013_refugee_pressure` | `complete` |
+| `idea_013_famine_pressure` | `gfx/interface/ideas/013_natural_disasters/idea_013_famine_pressure.dds` | `GFX_idea_013_famine_pressure` | `complete` |
+| `idea_013_broken_infrastructure` | `gfx/interface/ideas/013_natural_disasters/idea_013_broken_infrastructure.dds` | `GFX_idea_013_broken_infrastructure` | `complete` |
+| `idea_013_disaster_recovery_mobilization` | `gfx/interface/ideas/013_natural_disasters/idea_013_disaster_recovery_mobilization.dds` | `GFX_idea_013_disaster_recovery_mobilization` | `complete` |
+
+Contact sheet: `docs/assets/013_natural_disasters/contact_sheets/natural_disaster_idea_icons_contact.png`
+
+### Animated scripted-GUI alpha cleanup
+
+All Event 013 scripted-GUI animation packages were regenerated from per-frame source art with clean transparency. Each package has 8 source frames, 8 processed frames, a `288x36` frame sheet, a `36x36` static fallback, DDS copies under both the package folder and live `gfx/interface/animated/013_natural_disasters/`, a GIF preview, and a contact sheet.
+
+| Asset | Frame sheet | Static fallback | Handoff |
+| --- | --- | --- | --- |
+| `natural_disaster_warning_pulse` | `gfx/interface/animated/013_natural_disasters/natural_disaster_warning_pulse_sheet.dds` | `gfx/interface/animated/013_natural_disasters/natural_disaster_warning_pulse_static.dds` | `docs/plans/013_natural_disasters_plans/subagent_handoffs/2026-07-01_event013_animation_alpha_cleanup_handoff.md` |
+| `natural_disaster_storm_corridor_track` | `gfx/interface/animated/013_natural_disasters/natural_disaster_storm_corridor_track_sheet.dds` | `gfx/interface/animated/013_natural_disasters/natural_disaster_storm_corridor_track_static.dds` | `docs/plans/013_natural_disasters_plans/subagent_handoffs/2026-07-01_event013_animation_alpha_cleanup_handoff.md` |
+| `natural_disaster_tsunami_countdown` | `gfx/interface/animated/013_natural_disasters/natural_disaster_tsunami_countdown_sheet.dds` | `gfx/interface/animated/013_natural_disasters/natural_disaster_tsunami_countdown_static.dds` | `docs/plans/013_natural_disasters_plans/subagent_handoffs/2026-07-01_event013_animation_alpha_cleanup_handoff.md` |
+| `natural_disaster_eruption_ashfall` | `gfx/interface/animated/013_natural_disasters/natural_disaster_eruption_ashfall_sheet.dds` | `gfx/interface/animated/013_natural_disasters/natural_disaster_eruption_ashfall_static.dds` | `docs/plans/013_natural_disasters_plans/subagent_handoffs/2026-07-01_event013_animation_alpha_cleanup_handoff.md` |
+| `natural_disaster_skyfall_alarm` | `gfx/interface/animated/013_natural_disasters/natural_disaster_skyfall_alarm_sheet.dds` | `gfx/interface/animated/013_natural_disasters/natural_disaster_skyfall_alarm_static.dds` | `docs/plans/013_natural_disasters_plans/subagent_handoffs/2026-07-01_event013_animation_alpha_cleanup_handoff.md` |
 
 ### `report_event_nd_flood`
 

@@ -113,7 +113,9 @@ These use the shared super-event radio frame and are wired through `interface/ch
 
 ## Decision category pictures
 
-These are the large left-side decision-category pictures. They are not decision icons. They use report-image sources resized to vanilla `114x101` category-picture canvases.
+These are the large left-side decision-category pictures. They are not decision icons. They use generated family-specific disaster scene sources resized to vanilla `114x101` category-picture canvases. Source-art completion is documented in `docs/plans/013_natural_disasters_plans/subagent_handoffs/2026-07-01_event013_category_picture_source_art_handoff.md`.
+
+`natural_disaster_response_recovery_overview` keeps `GFX_decision_cat_picture_nd_recovery_overview` as its static category picture. `interface/013_natural_disasters.gui` also overlays the same picture family through scripted GUI elements named `natural_disaster_category_picture_*`, so the left side of the category reflects the most recent open disaster family without changing the static decision-category definition.
 
 | Sprite | Final DDS path |
 | --- | --- |
@@ -143,3 +145,15 @@ These are the large left-side decision-category pictures. They are not decision 
 ## Decision category icons
 
 The `GFX_decision_category_nd_*` sprites remain category button icons. Their final canvases are non-square `53x40` DDS files, separate from the `114x101` category pictures above.
+
+## Idea icons
+
+These sprites back the country-level natural-disaster pressure ideas. The ideas are visible national-pressure summaries; per-state dynamic modifiers remain the primary disaster damage and recovery mechanic.
+
+| Sprite | Final DDS path |
+| --- | --- |
+| `GFX_idea_013_disaster_aftermath` | `gfx/interface/ideas/013_natural_disasters/idea_013_disaster_aftermath.dds` |
+| `GFX_idea_013_refugee_pressure` | `gfx/interface/ideas/013_natural_disasters/idea_013_refugee_pressure.dds` |
+| `GFX_idea_013_famine_pressure` | `gfx/interface/ideas/013_natural_disasters/idea_013_famine_pressure.dds` |
+| `GFX_idea_013_broken_infrastructure` | `gfx/interface/ideas/013_natural_disasters/idea_013_broken_infrastructure.dds` |
+| `GFX_idea_013_disaster_recovery_mobilization` | `gfx/interface/ideas/013_natural_disasters/idea_013_disaster_recovery_mobilization.dds` |
