@@ -30,7 +30,7 @@ Building damage is applied directly to affected states with family-specific buil
 
 - `chaosx.nr13.201` through `chaosx.nr13.208` are delayed visible reports tied to sequence slots.
 - `chaosx.nr13.301` through `chaosx.nr13.304` are high-level news or scenario broadcasts.
-- `chaosx.nr13.305` is the throttled global season bulletin, so countries outside the affected region still learn that a disaster season is unfolding.
+- `chaosx.nr13.305` through `chaosx.nr13.317` are throttled major news broadcasts for meaningful individual disaster hits, with the affected state saved as `natural_disaster_news_state` so unaffected countries still learn which disaster struck where.
 - Event Log integration uses `constant:natural_disaster_event.id` and `natural_disasters_latest_actor`.
 - Evolution previews for stages I-III are registered in the Event Log detail view.
 - Individual pulses are deliberately not logged as separate event rows.
