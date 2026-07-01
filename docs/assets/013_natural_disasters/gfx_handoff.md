@@ -23,6 +23,11 @@ These use the shared super-event radio frame and are wired through `interface/ch
   - Package DDS path: `docs/assets/013_natural_disasters/dds/super_event_nd_skyfall.dds`
   - Super-event slot: `69`
   - Use notes: meteor streaks, crater field, rail yard, observatory, and urban fires fit the abnormal meteor cluster chain.
+- `GFX_super_event_nd_storm_corridor`
+  - Final DDS path: `gfx/super_events/013_natural_disasters/super_event_nd_storm_corridor.dds`
+  - Package DDS path: `docs/assets/013_natural_disasters/dds/super_event_nd_storm_corridor.dds`
+  - Super-event slot: `70`
+  - Use notes: mapped storm front, damaged rail corridor, and period response crews support the moving-path hazard reveal.
 
 ## Report event pictures
 

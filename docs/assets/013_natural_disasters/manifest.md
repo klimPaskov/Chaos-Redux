@@ -22,12 +22,14 @@ These are 457x328 super-event radio images wired through `interface/chaosx_super
 | `super_event_nd_great_rupture` | `67` | `docs/assets/013_natural_disasters/source_png/super_event_nd_great_rupture_source.png` | `docs/assets/013_natural_disasters/processed_png/super_event_nd_great_rupture.png` | `gfx/super_events/013_natural_disasters/super_event_nd_great_rupture.dds` | `GFX_super_event_nd_great_rupture` | `complete` |
 | `super_event_nd_massive_eruption` | `68` | `docs/assets/013_natural_disasters/source_png/super_event_nd_massive_eruption_source.png` | `docs/assets/013_natural_disasters/processed_png/super_event_nd_massive_eruption.png` | `gfx/super_events/013_natural_disasters/super_event_nd_massive_eruption.dds` | `GFX_super_event_nd_massive_eruption` | `complete` |
 | `super_event_nd_skyfall` | `69` | `docs/assets/013_natural_disasters/source_png/super_event_nd_skyfall_source.png` | `docs/assets/013_natural_disasters/processed_png/super_event_nd_skyfall.png` | `gfx/super_events/013_natural_disasters/super_event_nd_skyfall.dds` | `GFX_super_event_nd_skyfall` | `complete` |
+| `super_event_nd_storm_corridor` | `70` | `docs/assets/013_natural_disasters/source_png/super_event_nd_storm_corridor_source.png` | `docs/assets/013_natural_disasters/processed_png/super_event_nd_storm_corridor.png` | `gfx/super_events/013_natural_disasters/super_event_nd_storm_corridor.dds` | `GFX_super_event_nd_storm_corridor` | `complete` |
 
 | Super-event slot | Music file | Sound file | Source handoff | Status |
 | --- | --- | --- | --- | --- |
 | `67` | `music/super_event_natural_disasters_great_rupture.ogg` | `sound/chaosx_super_event_natural_disasters_great_rupture.wav` | `docs/plans/013_natural_disasters_plans/subagent_handoffs/2026-06-29_event013_super_event_audio_handoff.md` | `complete` |
 | `68` | `music/super_event_natural_disasters_massive_eruption.ogg` | `sound/chaosx_super_event_natural_disasters_massive_eruption.wav` | `docs/plans/013_natural_disasters_plans/subagent_handoffs/2026-06-29_event013_super_event_audio_handoff.md` | `complete` |
 | `69` | `music/super_event_natural_disasters_skyfall.ogg` | `sound/chaosx_super_event_natural_disasters_skyfall.wav` | `docs/plans/013_natural_disasters_plans/subagent_handoffs/2026-06-29_event013_super_event_audio_handoff.md` | `complete` |
+| `70` | `music/super_event_natural_disasters_storm_corridor.ogg` | `sound/chaosx_super_event_natural_disasters_storm_corridor.wav` | `docs/assets/013_natural_disasters/audio_research/processed/event013_moving_storm_corridor_candidate.ogg` | `complete` |
 
 ### Decision category picture derivatives
 
