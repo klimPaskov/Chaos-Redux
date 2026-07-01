@@ -1,16 +1,23 @@
-# Achievement Prompt: Event 011 Secret Alliance
+# Achievement Prompt for Event 011 Secret Alliance
 
-Implement the planned achievements from `specs/011_secret_alliance_spec_part_4_ai_assets_achievements.md`. Titles and descriptions must be final player-facing text written during implementation. The working labels below are not final localisation.
+Implement and asset-wire the achievement set from `matrices/011_secret_alliance_achievement_matrix.md`.
 
-| Achievement id | Working label | Tracking notes | Icon direction |
-| --- | --- | --- | --- |
-| `sa_every_thread_named` | Every Thread Named | Track active core members at reveal window, require all exposed before public or war-trigger reveal | Pinned evidence board converging on hidden seal |
-| `sa_paper_collapse` | Paper Collapse | Track diplomatic dissolution before faction war and block if target starts preemptive war | Cracked treaty seal and falling papers |
-| `sa_turn_the_knife` | Turn the Knife | Track member or associate defection, then require their evidence to expose another member | Broken handshake with hidden dagger silhouette |
-| `sa_prepared_for_every_border` | Prepared for Every Border | Track exposed neighbor border coverage and failed border missions | Fortified border under pact shadow |
-| `sa_small_country_large_shadow` | Small Country, Large Shadow | Target must start minor and defeat or force surrender of revealed pact with major patron | Small flag under larger shadows |
-| `sa_ten_signatures` | Ten Signatures | Track maximum core or revealed member count at 10 or more, then require defeat, dissolution, or split | Ten wax seals around cracked center |
-| `sa_bad_evidence_backfire` | Bad Evidence Backfire | Track failed public accusation, later true exposure, and no capitulation | Burned dossier with intact page |
-| `sa_no_factory_lost` | Unbroken Workshops | Track Evolution II start and any major industrial sabotage success | Factory behind locked evidence case |
+Rules:
 
-Use `chaos-redux-event-assets` for completed, grey, and not-eligible 64x64 achievement icons. Do not unlock achievements from event firing alone.
+- Do not grant achievements for simply firing Event 011.
+- Every achievement needs tracking flags or variables, disqualifiers, localisation, icon path, and documentation.
+- Achievement titles and descriptions must be final in-world wording written during implementation. Working labels in the matrix are not final localisation.
+- Achievement icons must follow `chaos-redux-event-assets` and use 64x64 completed icons with required variants.
+
+Planned achievements:
+
+1. `secret_alliance_empty_chair`: expose and dissolve before any target-member war.
+2. `secret_alliance_all_names`: identify every live member before public reveal.
+3. `secret_alliance_three_knocks`: neutralize all three founders within the defined time window.
+4. `secret_alliance_lone_target`: as a minor target, defeat a large patroned pact.
+5. `secret_alliance_counter_protocol`: strike first at Evolution III with high counter-readiness and win quickly.
+6. `secret_alliance_wrong_room`: use false leak success, then win without declaring first.
+7. `secret_alliance_no_patrons`: block all major patrons and dissolve or defeat the pact.
+8. `secret_alliance_paid_in_promises`: expose conflicting promises and force two exits.
+
+Run achievement implementation checks before completion and report any missing icons or tracking blockers.

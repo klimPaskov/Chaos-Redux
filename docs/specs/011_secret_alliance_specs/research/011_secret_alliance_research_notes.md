@@ -1,33 +1,71 @@
-# Research Notes: Event 011 Secret Alliance
+# Event 011 Secret Alliance Research Notes
 
-These notes provide design inspiration only. They are not final player-facing localisation.
+These notes are inspiration for game design. They are not final localisation, not final super-event text, and not final quote selection.
 
-## Historical anchors considered
+## Why secret diplomacy fits the event
 
-| Source | Relevant fact | Design use |
-| --- | --- | --- |
-| 1914-1918 Online, Alliance System 1914 | By 1912 the Triple Alliance and Triple Entente were established features of international relations and publicly debated | Supports the transition from hidden alignment to public bloc pressure |
-| 1914-1918 Online, Treaty of London 1915 | The Treaty of London was a secret agreement signed on 26 April 1915 by Italy, Great Britain, France, and Russia, promising territorial rewards for Italy joining the Entente | Inspires secret recruitment, territorial promises, and later bitterness when promises surface |
-| Office of the Historian, FRUS 1939, Anti-Comintern Pact document | Diplomatic reporting references a secret clause connected to the Anti-Comintern Pact and Japanese fears of being double-crossed | Inspires secret clauses, patron suspicion, and defection or betrayal risks |
-| Office of the Historian, Pearl Harbor milestone | Japan signed the Tripartite Pact with Germany and Italy on 27 September 1940, linking conflicts in Europe and Asia | Inspires late-stage public formalization that turns separate pressure into a wider strategic bloc |
-| Office of the Historian, FRUS Anti-Comintern papers | US diplomatic summaries discuss a triangle combination under the Anti-Comintern banner | Inspires an ideological public cover that can hide deeper commitments |
+The event is about a small coalition that exists before it is publicly legible. Historical secret diplomacy gives the mechanic its shape: private promises can recruit neutral states, hidden clauses can turn a limited agreement into a military trigger, and later exposure can cause more political damage than the original agreement.
 
-## Source URLs
+## Historical anchors
 
-- https://encyclopedia.1914-1918-online.net/article/alliance-system-1914/
-- https://encyclopedia.1914-1918-online.net/article/london-treaty-of-1915/
-- https://history.state.gov/historicaldocuments/frus1939v01/d364
-- https://history.state.gov/milestones/1937-1945/pearl-harbor
-- https://history.state.gov/historicaldocuments/frus1931-41v02/papers
+### Anti-Comintern Pact
 
-## Design conclusions
+The German-Japanese Anti-Comintern agreement of 25 November 1936 and its supplementary protocol are useful design anchors for a public ideological posture with a sharper security meaning behind it. The pact gives this event a model for staged growth, a hidden anti-target orientation, and later public alignment. Useful source paths for the implementation research handoff:
 
-Secret Alliance should not be a copy of one historical alliance. The useful design pattern is the movement from private commitments to public alignment. Secret clauses, promises to recruits, fear of the target, ideological cover, and later betrayal all produce gameplay material.
+- Office of the Historian FRUS document on the 1936 agreement and supplementary protocol: https://history.state.gov/historicaldocuments/frus1931-41v02/d92
+- Yale Avalon Project text for the Anti-Comintern Pact: https://avalon.law.yale.edu/wwii/tri1.asp
+- National WWII Museum overview of Axis alignment and the Anti-Comintern Pact: https://www.nationalww2museum.org/war/articles/axis-powers-world-war-ii
+- USHMM Axis Powers overview, including Anti-Comintern Pact and Pact of Steel context: https://encyclopedia.ushmm.org/content/en/article/axis-powers-in-world-war-ii
 
-The pact should therefore support:
+Design use:
 
-1. Private recruitment before public commitment.
-2. Members with different motives and different defection risk.
-3. A major patron that can fund the pact without immediately showing its hand.
-4. A reveal moment where the hidden compact becomes a visible coalition.
-5. Diplomatic counterplay based on evidence rather than only military strength.
+- The secret pact should begin with ideological or security language that looks plausible, not with an obvious public declaration against the player.
+- The hidden protocol should drive military trigger logic. Once a member and the target are at war, the hidden promise becomes public and the whole pact moves.
+- Italy joining later suggests a clean model for new members entering after founding.
+
+### Treaty of London, 1915
+
+The Treaty of London was a secret agreement that helped bring Italy into World War I through territorial promises. It is a useful model for recruitment promises, hidden bargaining, and later diplomatic backlash when a private deal becomes known.
+
+- 1914-1918 Online encyclopedia entry: https://encyclopedia.1914-1918-online.net/article/london-treaty-of-1915/
+- Library of Congress map blog on the secret Treaty of London: https://blogs.loc.gov/maps/2016/05/the-secret-treaty-of-london/
+- Internet Archive scan of the published 1920 agreement: https://archive.org/details/agreementbetween00franrich
+
+Design use:
+
+- Pact members can be recruited through promised cores, claims, guarantees, industrial concessions, or future partition claims.
+- Pact invitations should be more likely when a candidate fears the player, has a claim dispute, or can be promised a reward after the player is weakened.
+- If the player exposes the pact, member promises can become liabilities that reduce pact cohesion.
+
+### Molotov-Ribbentrop Pact secret protocol
+
+The 1939 Nazi-Soviet nonaggression pact with secret protocol is a strong anchor for a public agreement that hides territorial logic. The event should not copy the historical atrocity or ideology, but the structural lesson matters.
+
+- Office of the Historian document mentioning the Russo-German secret agreement: https://history.state.gov/historicaldocuments/frus1947v03/d409
+- USHMM article on the German-Soviet Pact: https://encyclopedia.ushmm.org/content/en/article/german-soviet-pact
+
+Design use:
+
+- The player should not immediately see the real scope of the pact.
+- Later evidence can reveal target lists, state claims, and spheres of pressure.
+- Public exposure should produce more than opinion loss. It should change war timing, membership, and AI confidence.
+
+### Wilson and open covenants
+
+Woodrow Wilson's first Fourteen Points principle is a useful super-event quote direction because it directly rejects private international understandings. The implementation team should still run the super-event text researcher before using any line.
+
+- National Archives transcript: https://www.archives.gov/milestone-documents/president-woodrow-wilsons-14-points
+- Office of the Historian overview: https://history.state.gov/milestones/1914-1920/fourteen-points
+
+Design use:
+
+- The super-event quote direction can explore the moral language of open diplomacy against the pact's hidden machinery.
+- If the text researcher selects Wilson, it should use an exact sourced excerpt and document source confidence.
+
+## Design choices supported by the research
+
+1. The pact should have a visible pretext and a hidden military protocol.
+2. Member recruitment should be transactional, not random only.
+3. The reveal should damage legitimacy, pull members into a formal faction, and create war pressure.
+4. The player should be able to exploit promises, rivalries, and exposed clauses.
+5. Secret diplomacy should be a living mechanic with secrecy, evidence, readiness, cohesion, and member confidence rather than a single hidden flag.

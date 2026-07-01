@@ -1,16 +1,28 @@
-# Decision and Mission Prompt: Event 011 Secret Alliance
+# Decision and Mission Prompt for Event 011 Secret Alliance
 
-Use `hoi4-decisions-missions` and the decision map in `matrices/011_secret_alliance_decision_map.md`.
+Use `hoi4-decisions-missions` and route follow-up audit to `chaosx_decision_mission_auditor`.
 
-Build the Counter Pact Operations category so decisions represent real actions. Avoid a political power store. Use dynamic costs based on target size, industry, agency capacity, war state, supply, border geography, equipment, faction state, suspicion, evidence, preparedness, and pact pressure.
+Implement the Counter-Conspiracy Dossier category and optional Dossier Board scripted GUI from the spec.
 
 Required decision families:
 
-1. Investigation: courier routes, cipher traffic, safehouse raids, procurement tracing, interrogation chains.
-2. Internal security: rail offices, industrial districts, officer protection, port and cable hardening.
-3. Diplomacy and split operations: private demarche, off-ramp guarantees, neutral conference, partial dossier, defector protection.
-4. Military readiness: contingency plans, border watch, capital command lines, reserve depots, allied observers.
-5. Neighbor confrontation: border search, frontier closure, border war, inspectors.
-6. Public confrontation: demand dissolution, publish dossier, preemptive strike, emergency alliance consultation.
+- investigations
+- protection and hardening
+- diplomacy and fracture
+- border watch missions
+- exposure actions
+- pact crisis actions
+- wartime fracture actions
 
-Timed missions should use named states or clear dynamic named regions. Goal-style missions should auto-complete when the player has done the work. Mission failure must change pact readiness, hostility, evidence, preparedness, or member commitment. Add AI equivalents and cleanup for invalid targets, reveal, annexation, peace, and member defection.
+Non-negotiables:
+
+- decisions should represent concrete national action
+- do not make a political power store
+- use varied costs: XP, equipment, trains, trucks, support equipment, civilian burden, stability, war support, relations, intel exposure, unit placement, route control, and timed objectives
+- missions must have success, failure, partial-success where useful, and cleanup
+- border actions must require real neighboring members or suspects
+- AI must have equivalents and safe target validation
+- hidden member data must not leak through tooltips or raw triggers
+- obsolete decisions must hide or clean up after reveal, war, settlement, annexation, or pact collapse
+
+Use `matrices/011_secret_alliance_decision_map.md` as the main decision map.

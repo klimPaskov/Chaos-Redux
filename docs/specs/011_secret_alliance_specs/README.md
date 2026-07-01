@@ -1,12 +1,14 @@
 # Event 011 Secret Alliance Planning Package
 
-This folder is the source-spec package for Event 011 Secret Alliance.
+This package expands Event 011 Secret Alliance into a full source spec pack for Chaos Redux planning handoff.
 
-## Contents
+Internal structure:
 
-- `specs/`: Four design specification parts.
-- `matrices/`: Decision, AI, runtime, and tuning matrices.
-- `prompts/`: Implementation, asset, achievement, decision, and subagent prompts.
-- `research/`: Historical inspiration notes and source read receipt.
+- `specs/` contains the multi-part event specification.
+- `prompts/` contains implementation and specialist prompts.
+- `matrices/` contains decision, AI, asset, achievement, and acceptance tables.
+- `research/` contains historical inspiration notes and source-reading constraints.
+- `subagent_handoffs/` contains routing notes for project subagents.
+- `catalog/` contains the catalog update handoff for the spreadsheet worker.
 
-The user-provided concept is preserved: a hidden anti-target compact begins with three eligible countries, expands through evolutions, becomes more aggressive, and reveals into a public hostile faction when a member enters war with the target.
+The package is design-only. It does not implement scripts, localisation, art, audio, or spreadsheets.
