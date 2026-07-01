@@ -40,7 +40,7 @@ Grant is attempted from combat-use paths only:
   - Added active-idea support profile multiplier and surprise grant calls.
 - `common/scripted_effects/chemical_ability_effects.txt`
   - Added active-idea `1.5x` multiplier to both preview and final cylinder bonus functions.
-- `common/ideas/chaosx_ideas.txt`
+- `common/ideas/cbw_ideas.txt`
   - Added `chemical_first_use_surprise_idea`.
 - `localisation/english/chaosx_ideas_l_english.yml`
   - Added name/description localisation for `chemical_first_use_surprise_idea`.
