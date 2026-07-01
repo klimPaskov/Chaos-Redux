@@ -1,10 +1,11 @@
 add_namespace = chaosx.nr99
 
 # ============================================================================
-# CHAOS REDUX - EVENT 099 DESERT STORM BRIDGE
+# CHAOS REDUX - EVENT 099 RESERVED SANDSTORM BRIDGE
 # ============================================================================
-# Event 99 is a harmless bridge for stale manual calls. Sandstorm gameplay routes
-# through Event 13 so impacts, deaths, decisions, and logs stay unified.
+# Event 99 remains as a harmless target for stale manual calls. This namespace
+# intentionally does not start any gameplay until a replacement sandstorm
+# implementation exists.
 # ============================================================================
 
 country_event = {
@@ -13,37 +14,16 @@ country_event = {
 	hidden = yes
 	is_triggered_only = yes
 
-	trigger = {
-		NOT = { natural_disasters_has_active_sequence = yes }
-		any_owned_state = { natural_disasters_state_can_receive_drought_heat_or_dust = yes }
-	}
-
 	immediate = {
-		hidden_effect = {
-			set_country_flag = natural_disasters_force_sandstorm_sequence
-			country_event = { id = chaosx.nr13.1 days = 1 }
-		}
 	}
 }
 
 country_event = {
 	id = chaosx.nr99.2
 	title = chaosx.nr99.2.t
-	desc = chaosx.nr99.2.d
-	picture = GFX_report_event_nd_dust_sandstorm
+	hidden = yes
 	is_triggered_only = yes
 
-	trigger = {
-		NOT = { natural_disasters_has_active_sequence = yes }
-		any_owned_state = { natural_disasters_state_can_receive_drought_heat_or_dust = yes }
-	}
-
-	option = {
-		name = chaosx.nr99.2.a
-		hidden_effect = {
-			set_country_flag = natural_disasters_force_sandstorm_sequence
-			country_event = { id = chaosx.nr13.1 days = 1 }
-		}
-		ai_chance = { base = 100 }
+	immediate = {
 	}
 }

@@ -15,6 +15,6 @@
 - Target size: `60x12`
 - Sprite name: `GFX_motorized_equipment_text_icon`
 - `.gfx` file: `interface/chaosx_texticons.gfx`
-- Localisation keys: Event 13 Natural Disasters costs and Event 10 Death response costs
+- Localisation keys: shared equipment-cost text, including Event 10 Death response costs
 - Asset status: `complete`
 - Notes: Uses the vanilla truck texticon art directly under a Chaos Redux sprite alias so cost text resolves through a mod-local sprite and DDS.
