@@ -244,10 +244,7 @@ def write_bgra_dds(output_path: Path, width: int, height: int, bgra_data: bytes)
 
     pitch = width * 4
     header = struct.pack(
-        "<4sIIIIIII11I"
-        "IIIII"
-        "IIIII"
-        "IIIII",
+        "<4s31I",
         b"DDS ",
         124,
         DDSD_CAPS | DDSD_HEIGHT | DDSD_WIDTH | DDSD_PIXELFORMAT | DDSD_PITCH,
