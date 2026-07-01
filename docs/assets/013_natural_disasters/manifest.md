@@ -87,7 +87,7 @@ The `GFX_decision_nd_*` response decision icons were regenerated as transparent 
 
 ### Idea icon regeneration
 
-The visible country-level disaster-pressure ideas use dedicated `64x64` national-spirit icons. They do not replace the state dynamic modifiers that carry disaster damage and recovery. The current set was regenerated as transparent compact spirit silhouettes without circular medallion frames, badge rims, coin borders, or opaque square backdrops.
+The visible country-level disaster-pressure ideas use dedicated `64x64` national-spirit icons. They do not replace the state dynamic modifiers that carry disaster damage and recovery. The current set was regenerated from fresh official `image_gen` source art as transparent compact spirit silhouettes without circular medallion frames, badge rims, coin borders, opaque square backdrops, or the previous purple alpha/matte.
 
 | Asset | Final DDS path | Sprite name | Status |
 | --- | --- | --- | --- |
@@ -98,6 +98,7 @@ The visible country-level disaster-pressure ideas use dedicated `64x64` national
 | `idea_013_disaster_recovery_mobilization` | `gfx/interface/ideas/013_natural_disasters/idea_013_disaster_recovery_mobilization.dds` | `GFX_idea_013_disaster_recovery_mobilization` | `complete` |
 
 Contact sheet: `docs/assets/013_natural_disasters/contact_sheets/natural_disaster_idea_icons_contact.png`
+Validation: processed PNGs, package DDS copies, and live DDS files are `64x64` with alpha, transparent corners, and zero visible green, magenta, or purple key pixels.
 
 ### Animated scripted-GUI alpha cleanup
 
