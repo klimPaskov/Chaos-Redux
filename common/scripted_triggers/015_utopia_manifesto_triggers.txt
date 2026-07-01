@@ -145,6 +145,14 @@ utopia_manifesto_vocation_balance_low = {
 	}
 }
 
+utopia_manifesto_vocation_stable = {
+	check_variable = {
+		var = utopia_vocation_balance
+		value = constant:utopia_manifesto_ledger_bounds.mid
+		compare = greater_than_or_equals
+	}
+}
+
 utopia_manifesto_vocation_low = {
 	utopia_manifesto_vocation_balance_low = yes
 }
@@ -475,7 +483,8 @@ utopia_manifesto_guard_mission_objective_ready = {
 }
 
 utopia_manifesto_needful_neighbor_has_candidate_state = {
-	any_owned_controlled_state = {
+	any_owned_state = {
+		is_controlled_by = PREV
 		NOT = { is_core_of = ROOT }
 		NOT = { has_state_flag = utopia_manifesto_needful_land_claimed }
 		NOT = { has_state_flag = utopia_manifesto_boundary_arbitration_state }
