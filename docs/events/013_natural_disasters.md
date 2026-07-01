@@ -50,6 +50,8 @@ Building damage is applied directly to affected states with family-specific buil
 
 Costs spend command power, manpower, fuel, trains, convoys, infantry equipment, motorized equipment, and support equipment directly. There is no political-power store. Stabilization and reconstruction missions watch whether all recovery states are cleared before timeout; success gives small stability recovery, while failure applies stability or war-support pressure and disqualifies the relevant recovery achievements.
 
+State dynamic modifiers remain the center of disaster damage and recovery. Country ideas add a visible national-pressure layer while response state is open: `natural_disaster_aftermath_idea`, `natural_disaster_refugee_pressure_idea`, `natural_disaster_famine_pressure_idea`, `natural_disaster_broken_infrastructure_idea`, and `natural_disaster_recovery_mobilization_idea`. `natural_disasters_refresh_country_ideas` refreshes the idea set when recovery opens, missions resolve or cancel, recovery pressure drops, and the delayed cleanup event `chaosx.nr13.401` fires after the response window.
+
 ## Scripted GUI and Animated Assets
 
 `common/scripted_guis/013_natural_disasters_scripted_gui.txt` and `interface/013_natural_disasters.gui` expose abnormal disaster warning state. Moving storm corridors mark an impact state plus neighboring path states with `natural_disaster_corridor_path_state` and `natural_disaster_corridor_warning`, allowing predicted-path evacuation before a follow-up wind hit resolves near the same regional seed. The GUI uses animated sprites from `interface/013_natural_disasters.gfx`:
@@ -61,6 +63,8 @@ Costs spend command power, manpower, fuel, trains, convoys, infantry equipment, 
 - `GFX_natural_disaster_skyfall_alarm`
 
 Source frames, sheets, contact sheets, static fallbacks, and previews are tracked under `docs/assets/013_natural_disasters/animations/`.
+
+The same scripted GUI container also displays a cosmetic left-side disaster picture. The static decision category keeps `GFX_decision_cat_picture_nd_recovery_overview`; the scripted GUI overlays one of the `GFX_decision_cat_picture_nd_*` disaster-family pictures when `natural_disaster_latest_family` points at the most recent open recovery family. Meteor showers use the meteor-storm picture during SCN-007 and the skyfall picture otherwise.
 
 ## Super-Events and Audio
 
@@ -139,7 +143,7 @@ Icon DDS triplets live in `gfx/achievements/` and are registered in `interface/c
 
 Event 013 art is wired through:
 
-- `interface/013_natural_disasters.gfx` for reports, news, decisions, category pictures, and animated GUI sprites.
+- `interface/013_natural_disasters.gfx` for reports, news, decisions, category pictures, idea icons, and animated GUI sprites.
 - `interface/chaosx_super_events.gfx` for super-event images.
 - `interface/chaosx_achievements.gfx` for achievement icon aliases.
 

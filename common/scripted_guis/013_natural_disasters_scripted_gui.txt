@@ -10,7 +10,7 @@ scripted_gui = {
 		}
 
 		triggers = {
-			natural_disaster_gui_warning_visible = {
+			natural_disaster_warning_pulse_visible = {
 				any_controlled_state = {
 					OR = {
 						has_state_flag = natural_disaster_corridor_warning
@@ -20,7 +20,7 @@ scripted_gui = {
 					}
 				}
 			}
-			natural_disaster_gui_corridor_visible = {
+			natural_disaster_corridor_track_visible = {
 				any_controlled_state = {
 					OR = {
 						has_state_flag = natural_disaster_corridor_warning
@@ -29,7 +29,7 @@ scripted_gui = {
 					}
 				}
 			}
-			natural_disaster_gui_tsunami_visible = {
+			natural_disaster_tsunami_countdown_visible = {
 				any_controlled_state = {
 					OR = {
 						has_state_flag = natural_disaster_tsunami_warning
@@ -37,7 +37,7 @@ scripted_gui = {
 					}
 				}
 			}
-			natural_disaster_gui_ashfall_visible = {
+			natural_disaster_ashfall_visible = {
 				any_controlled_state = {
 					OR = {
 						has_state_flag = natural_disaster_family_volcanic_eruption
@@ -45,10 +45,91 @@ scripted_gui = {
 					}
 				}
 			}
-			natural_disaster_gui_skyfall_visible = {
+			natural_disaster_skyfall_alarm_visible = {
 				any_controlled_state = {
 					has_state_flag = natural_disaster_family_meteor_shower
 				}
+			}
+			natural_disaster_category_picture_recovery_overview_visible = {
+				OR = {
+					NOT = { has_variable = natural_disaster_latest_family }
+					check_variable = { natural_disaster_latest_family < 1 }
+				}
+			}
+			natural_disaster_category_picture_flood_visible = {
+				check_variable = { natural_disaster_latest_family = constant:natural_disaster_family.flood }
+			}
+			natural_disaster_category_picture_cyclone_visible = {
+				check_variable = { natural_disaster_latest_family = constant:natural_disaster_family.tropical_cyclone }
+			}
+			natural_disaster_category_picture_severe_storm_visible = {
+				check_variable = { natural_disaster_latest_family = constant:natural_disaster_family.thunderstorm }
+			}
+			natural_disaster_category_picture_hail_visible = {
+				check_variable = { natural_disaster_latest_family = constant:natural_disaster_family.hailstorm }
+			}
+			natural_disaster_category_picture_wind_visible = {
+				check_variable = { natural_disaster_latest_family = constant:natural_disaster_family.extreme_wind }
+			}
+			natural_disaster_category_picture_corridor_visible = {
+				check_variable = { natural_disaster_latest_family = constant:natural_disaster_family.storm_corridor }
+			}
+			natural_disaster_category_picture_earthquake_visible = {
+				check_variable = { natural_disaster_latest_family = constant:natural_disaster_family.earthquake }
+			}
+			natural_disaster_category_picture_rupture_visible = {
+				check_variable = { natural_disaster_latest_family = constant:natural_disaster_family.global_rupture }
+			}
+			natural_disaster_category_picture_tsunami_visible = {
+				check_variable = { natural_disaster_latest_family = constant:natural_disaster_family.tsunami }
+			}
+			natural_disaster_category_picture_volcano_visible = {
+				check_variable = { natural_disaster_latest_family = constant:natural_disaster_family.volcanic_eruption }
+			}
+			natural_disaster_category_picture_massive_eruption_visible = {
+				check_variable = { natural_disaster_latest_family = constant:natural_disaster_family.massive_eruption }
+			}
+			natural_disaster_category_picture_firefront_visible = {
+				check_variable = { natural_disaster_latest_family = constant:natural_disaster_family.wildfire }
+			}
+			natural_disaster_category_picture_drought_visible = {
+				check_variable = { natural_disaster_latest_family = constant:natural_disaster_family.drought }
+			}
+			natural_disaster_category_picture_heat_visible = {
+				check_variable = { natural_disaster_latest_family = constant:natural_disaster_family.heat_wave }
+			}
+			natural_disaster_category_picture_winter_visible = {
+				OR = {
+					check_variable = { natural_disaster_latest_family = constant:natural_disaster_family.blizzard }
+					check_variable = { natural_disaster_latest_family = constant:natural_disaster_family.cold_wave }
+				}
+			}
+			natural_disaster_category_picture_dust_visible = {
+				check_variable = { natural_disaster_latest_family = constant:natural_disaster_family.dust_storm }
+			}
+			natural_disaster_category_picture_landslide_visible = {
+				OR = {
+					check_variable = { natural_disaster_latest_family = constant:natural_disaster_family.dry_mass_movement }
+					check_variable = { natural_disaster_latest_family = constant:natural_disaster_family.sinkhole }
+				}
+			}
+			natural_disaster_category_picture_slope_visible = {
+				OR = {
+					check_variable = { natural_disaster_latest_family = constant:natural_disaster_family.wet_mass_movement }
+					check_variable = { natural_disaster_latest_family = constant:natural_disaster_family.avalanche }
+					check_variable = { natural_disaster_latest_family = constant:natural_disaster_family.glacial_outburst }
+				}
+			}
+			natural_disaster_category_picture_skyfall_visible = {
+				check_variable = { natural_disaster_latest_family = constant:natural_disaster_family.meteor_shower }
+				NOT = { check_variable = { natural_disaster_latest_profile = constant:natural_disaster_sequence_profile.scenario_barrage } }
+			}
+			natural_disaster_category_picture_meteor_storm_visible = {
+				check_variable = { natural_disaster_latest_family = constant:natural_disaster_family.meteor_shower }
+				check_variable = { natural_disaster_latest_profile = constant:natural_disaster_sequence_profile.scenario_barrage }
+			}
+			natural_disaster_category_picture_famine_visible = {
+				check_variable = { natural_disaster_latest_family = constant:natural_disaster_family.limnic_eruption }
 			}
 		}
 	}
