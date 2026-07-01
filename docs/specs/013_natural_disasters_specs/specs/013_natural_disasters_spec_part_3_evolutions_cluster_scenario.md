@@ -10,6 +10,8 @@ Baseline should use a curated family pool. It should include earthquakes, floods
 
 Baseline report policy is generous. A country hit by a disaster gets a delayed report one to two days after the pulse when the hit is meaningful. A season with multiple pulses can create multiple reports, but the implementation should avoid repeating nearly identical report events in the same country.
 
+Evolution unlock order follows the global Chaos Meter tiers: Evolution I unlocks at Gathering Storm, Evolution II unlocks at Rising Chaos, and Evolution III unlocks at Chaos Tier. Totalen Chaos and World Collapse keep Evolution III access active.
+
 ## Evolution I, diversified disaster seasons
 
 Evolution I makes disasters more varied and makes several regions suffer within the same season. It does not make every effect massively stronger. The main change is breadth, variety, and pacing.
@@ -84,7 +86,7 @@ News throttling:
 
 Evolution III shifts the event from normal natural disasters into abnormal high-chaos disasters. This does not create a terminal branch. It creates severe, strange, region-breaking, and world-affecting disaster families that can receive super-event treatment.
 
-Evolution III should unlock at high chaos and should be rare enough to feel special. It can occur as an active-event evolution for future Event 013 seasons and as a pre-fire evolved opening where the first Natural Disasters event in a high-chaos world starts with abnormal access.
+Evolution III should unlock at Chaos Tier and should be rare enough to feel special. It can occur as an active-event evolution for future Event 013 seasons and as a pre-fire evolved opening where the first Natural Disasters event in a Chaos Tier or worse world starts with abnormal access.
 
 ### Meteor shower abnormal family
 
