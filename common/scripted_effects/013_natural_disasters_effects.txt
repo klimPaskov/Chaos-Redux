@@ -9,6 +9,28 @@
 # - Direct disaster calls, SCN-007, and event clusters share this controller.
 # ============================================================================
 
+# `damage_building` rejects script constants in `damage =`, so these mirror
+# `common/script_constants/013_natural_disasters_constants.txt`.
+@natural_disaster_damage_light_infrastructure = 0.45
+@natural_disaster_damage_standard_infrastructure = 0.80
+@natural_disaster_damage_heavy_infrastructure = 1.35
+@natural_disaster_damage_severe_infrastructure = 2.00
+@natural_disaster_damage_light_factory = 0.30
+@natural_disaster_damage_standard_factory = 0.55
+@natural_disaster_damage_heavy_factory = 0.90
+@natural_disaster_damage_severe_factory = 1.40
+@natural_disaster_damage_light_military = 0.25
+@natural_disaster_damage_standard_military = 0.50
+@natural_disaster_damage_heavy_military = 0.80
+@natural_disaster_damage_naval_base = 1.10
+@natural_disaster_damage_air_base = 0.80
+@natural_disaster_damage_radar = 0.70
+@natural_disaster_damage_anti_air = 0.45
+@natural_disaster_damage_synthetic_refinery = 0.75
+@natural_disaster_damage_fuel_silo = 0.70
+@natural_disaster_damage_railway = 0.85
+@natural_disaster_damage_supply_node = 0.70
+
 natural_disasters_initialize_global_state = {
 	if = {
 		limit = { NOT = { has_variable = global.natural_disaster_sequences_started } }
@@ -1575,147 +1597,147 @@ natural_disasters_mark_family_state_flags = {
 natural_disasters_apply_state_damage_profile = {
 	if = {
 		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.earthquake } }
-		damage_building = { type = infrastructure damage = constant:natural_disaster_damage.severe_infrastructure }
-		damage_building = { type = industrial_complex damage = constant:natural_disaster_damage.heavy_factory }
-		damage_building = { type = arms_factory damage = constant:natural_disaster_damage.standard_military }
-		damage_building = { type = rail_way damage = constant:natural_disaster_damage.railway }
+		damage_building = { type = infrastructure damage = @natural_disaster_damage_severe_infrastructure }
+		damage_building = { type = industrial_complex damage = @natural_disaster_damage_heavy_factory }
+		damage_building = { type = arms_factory damage = @natural_disaster_damage_standard_military }
+		damage_building = { type = rail_way damage = @natural_disaster_damage_railway }
 		add_dynamic_modifier = { modifier = natural_disaster_earthquake_aftermath_state days = constant:natural_disaster_aftermath.severe_days }
 	}
 	else_if = {
 		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.flood } }
-		damage_building = { type = infrastructure damage = constant:natural_disaster_damage.heavy_infrastructure }
-		damage_building = { type = industrial_complex damage = constant:natural_disaster_damage.standard_factory }
-		damage_building = { type = supply_node damage = constant:natural_disaster_damage.supply_node }
+		damage_building = { type = infrastructure damage = @natural_disaster_damage_heavy_infrastructure }
+		damage_building = { type = industrial_complex damage = @natural_disaster_damage_standard_factory }
+		damage_building = { type = supply_node damage = @natural_disaster_damage_supply_node }
 		add_dynamic_modifier = { modifier = natural_disaster_flood_aftermath_state days = constant:natural_disaster_aftermath.normal_days }
 	}
 	else_if = {
 		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.tropical_cyclone } }
-		damage_building = { type = infrastructure damage = constant:natural_disaster_damage.heavy_infrastructure }
-		damage_building = { type = naval_base damage = constant:natural_disaster_damage.naval_base }
-		damage_building = { type = air_base damage = constant:natural_disaster_damage.air_base }
-		damage_building = { type = dockyard damage = constant:natural_disaster_damage.standard_factory }
+		damage_building = { type = infrastructure damage = @natural_disaster_damage_heavy_infrastructure }
+		damage_building = { type = naval_base damage = @natural_disaster_damage_naval_base }
+		damage_building = { type = air_base damage = @natural_disaster_damage_air_base }
+		damage_building = { type = dockyard damage = @natural_disaster_damage_standard_factory }
 		add_dynamic_modifier = { modifier = natural_disaster_cyclone_aftermath_state days = constant:natural_disaster_aftermath.severe_days }
 	}
 	else_if = {
 		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.thunderstorm } }
-		damage_building = { type = infrastructure damage = constant:natural_disaster_damage.light_infrastructure }
-		damage_building = { type = air_base damage = constant:natural_disaster_damage.light_factory }
-		damage_building = { type = radar_station damage = constant:natural_disaster_damage.radar }
+		damage_building = { type = infrastructure damage = @natural_disaster_damage_light_infrastructure }
+		damage_building = { type = air_base damage = @natural_disaster_damage_light_factory }
+		damage_building = { type = radar_station damage = @natural_disaster_damage_radar }
 		add_dynamic_modifier = { modifier = natural_disaster_thunderstorm_aftermath_state days = constant:natural_disaster_aftermath.normal_days }
 	}
 	else_if = {
 		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.hailstorm } }
-		damage_building = { type = infrastructure damage = constant:natural_disaster_damage.light_infrastructure }
-		damage_building = { type = industrial_complex damage = constant:natural_disaster_damage.light_factory }
+		damage_building = { type = infrastructure damage = @natural_disaster_damage_light_infrastructure }
+		damage_building = { type = industrial_complex damage = @natural_disaster_damage_light_factory }
 		add_dynamic_modifier = { modifier = natural_disaster_hailstorm_aftermath_state days = constant:natural_disaster_aftermath.normal_days }
 	}
 	else_if = {
 		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.extreme_wind } }
-		damage_building = { type = infrastructure damage = constant:natural_disaster_damage.standard_infrastructure }
-		damage_building = { type = air_base damage = constant:natural_disaster_damage.air_base }
-		damage_building = { type = anti_air_building damage = constant:natural_disaster_damage.anti_air }
+		damage_building = { type = infrastructure damage = @natural_disaster_damage_standard_infrastructure }
+		damage_building = { type = air_base damage = @natural_disaster_damage_air_base }
+		damage_building = { type = anti_air_building damage = @natural_disaster_damage_anti_air }
 		add_dynamic_modifier = { modifier = natural_disaster_wind_aftermath_state days = constant:natural_disaster_aftermath.normal_days }
 	}
 	else_if = {
 		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.wildfire } }
-		damage_building = { type = infrastructure damage = constant:natural_disaster_damage.standard_infrastructure }
-		damage_building = { type = industrial_complex damage = constant:natural_disaster_damage.standard_factory }
-		damage_building = { type = synthetic_refinery damage = constant:natural_disaster_damage.synthetic_refinery }
+		damage_building = { type = infrastructure damage = @natural_disaster_damage_standard_infrastructure }
+		damage_building = { type = industrial_complex damage = @natural_disaster_damage_standard_factory }
+		damage_building = { type = synthetic_refinery damage = @natural_disaster_damage_synthetic_refinery }
 		add_dynamic_modifier = { modifier = natural_disaster_wildfire_aftermath_state days = constant:natural_disaster_aftermath.severe_days }
 	}
 	else_if = {
 		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.drought } }
-		damage_building = { type = infrastructure damage = constant:natural_disaster_damage.light_infrastructure }
-		damage_building = { type = fuel_silo damage = constant:natural_disaster_damage.fuel_silo }
+		damage_building = { type = infrastructure damage = @natural_disaster_damage_light_infrastructure }
+		damage_building = { type = fuel_silo damage = @natural_disaster_damage_fuel_silo }
 		add_dynamic_modifier = { modifier = natural_disaster_drought_aftermath_state days = constant:natural_disaster_aftermath.severe_days }
 	}
 	else_if = {
 		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.dust_storm } }
-		damage_building = { type = infrastructure damage = constant:natural_disaster_damage.standard_infrastructure }
-		damage_building = { type = air_base damage = constant:natural_disaster_damage.air_base }
-		damage_building = { type = radar_station damage = constant:natural_disaster_damage.radar }
+		damage_building = { type = infrastructure damage = @natural_disaster_damage_standard_infrastructure }
+		damage_building = { type = air_base damage = @natural_disaster_damage_air_base }
+		damage_building = { type = radar_station damage = @natural_disaster_damage_radar }
 		add_dynamic_modifier = { modifier = natural_disaster_dust_aftermath_state days = constant:natural_disaster_aftermath.normal_days }
 	}
 	else_if = {
 		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.blizzard } }
-		damage_building = { type = infrastructure damage = constant:natural_disaster_damage.standard_infrastructure }
-		damage_building = { type = rail_way damage = constant:natural_disaster_damage.railway }
-		damage_building = { type = supply_node damage = constant:natural_disaster_damage.supply_node }
+		damage_building = { type = infrastructure damage = @natural_disaster_damage_standard_infrastructure }
+		damage_building = { type = rail_way damage = @natural_disaster_damage_railway }
+		damage_building = { type = supply_node damage = @natural_disaster_damage_supply_node }
 		add_dynamic_modifier = { modifier = natural_disaster_blizzard_aftermath_state days = constant:natural_disaster_aftermath.normal_days }
 	}
 	else_if = {
 		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.heat_wave } }
-		damage_building = { type = infrastructure damage = constant:natural_disaster_damage.light_infrastructure }
-		damage_building = { type = industrial_complex damage = constant:natural_disaster_damage.light_factory }
+		damage_building = { type = infrastructure damage = @natural_disaster_damage_light_infrastructure }
+		damage_building = { type = industrial_complex damage = @natural_disaster_damage_light_factory }
 		add_dynamic_modifier = { modifier = natural_disaster_heat_aftermath_state days = constant:natural_disaster_aftermath.normal_days }
 	}
 	else_if = {
 		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.cold_wave } }
-		damage_building = { type = infrastructure damage = constant:natural_disaster_damage.light_infrastructure }
-		damage_building = { type = rail_way damage = constant:natural_disaster_damage.light_factory }
+		damage_building = { type = infrastructure damage = @natural_disaster_damage_light_infrastructure }
+		damage_building = { type = rail_way damage = @natural_disaster_damage_light_factory }
 		add_dynamic_modifier = { modifier = natural_disaster_cold_aftermath_state days = constant:natural_disaster_aftermath.normal_days }
 	}
 	else_if = {
 		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.dry_mass_movement } }
-		damage_building = { type = infrastructure damage = constant:natural_disaster_damage.heavy_infrastructure }
-		damage_building = { type = rail_way damage = constant:natural_disaster_damage.railway }
+		damage_building = { type = infrastructure damage = @natural_disaster_damage_heavy_infrastructure }
+		damage_building = { type = rail_way damage = @natural_disaster_damage_railway }
 		add_dynamic_modifier = { modifier = natural_disaster_landslide_aftermath_state days = constant:natural_disaster_aftermath.normal_days }
 	}
 	else_if = {
 		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.wet_mass_movement } }
-		damage_building = { type = infrastructure damage = constant:natural_disaster_damage.heavy_infrastructure }
-		damage_building = { type = supply_node damage = constant:natural_disaster_damage.supply_node }
-		damage_building = { type = rail_way damage = constant:natural_disaster_damage.railway }
+		damage_building = { type = infrastructure damage = @natural_disaster_damage_heavy_infrastructure }
+		damage_building = { type = supply_node damage = @natural_disaster_damage_supply_node }
+		damage_building = { type = rail_way damage = @natural_disaster_damage_railway }
 		add_dynamic_modifier = { modifier = natural_disaster_mudslide_aftermath_state days = constant:natural_disaster_aftermath.normal_days }
 	}
 	else_if = {
 		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.avalanche } }
-		damage_building = { type = infrastructure damage = constant:natural_disaster_damage.standard_infrastructure }
-		damage_building = { type = rail_way damage = constant:natural_disaster_damage.railway }
-		damage_building = { type = supply_node damage = constant:natural_disaster_damage.supply_node }
+		damage_building = { type = infrastructure damage = @natural_disaster_damage_standard_infrastructure }
+		damage_building = { type = rail_way damage = @natural_disaster_damage_railway }
+		damage_building = { type = supply_node damage = @natural_disaster_damage_supply_node }
 		add_dynamic_modifier = { modifier = natural_disaster_avalanche_aftermath_state days = constant:natural_disaster_aftermath.normal_days }
 	}
 	else_if = {
 		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.glacial_outburst } }
-		damage_building = { type = infrastructure damage = constant:natural_disaster_damage.heavy_infrastructure }
-		damage_building = { type = supply_node damage = constant:natural_disaster_damage.supply_node }
-		damage_building = { type = industrial_complex damage = constant:natural_disaster_damage.light_factory }
+		damage_building = { type = infrastructure damage = @natural_disaster_damage_heavy_infrastructure }
+		damage_building = { type = supply_node damage = @natural_disaster_damage_supply_node }
+		damage_building = { type = industrial_complex damage = @natural_disaster_damage_light_factory }
 		add_dynamic_modifier = { modifier = natural_disaster_glacial_outburst_aftermath_state days = constant:natural_disaster_aftermath.normal_days }
 	}
 	else_if = {
 		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.sinkhole } }
-		damage_building = { type = infrastructure damage = constant:natural_disaster_damage.standard_infrastructure }
-		damage_building = { type = industrial_complex damage = constant:natural_disaster_damage.standard_factory }
-		damage_building = { type = arms_factory damage = constant:natural_disaster_damage.light_military }
+		damage_building = { type = infrastructure damage = @natural_disaster_damage_standard_infrastructure }
+		damage_building = { type = industrial_complex damage = @natural_disaster_damage_standard_factory }
+		damage_building = { type = arms_factory damage = @natural_disaster_damage_light_military }
 		add_dynamic_modifier = { modifier = natural_disaster_sinkhole_aftermath_state days = constant:natural_disaster_aftermath.normal_days }
 	}
 	else_if = {
 		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.volcanic_eruption } }
-		damage_building = { type = infrastructure damage = constant:natural_disaster_damage.heavy_infrastructure }
-		damage_building = { type = air_base damage = constant:natural_disaster_damage.air_base }
-		damage_building = { type = industrial_complex damage = constant:natural_disaster_damage.heavy_factory }
+		damage_building = { type = infrastructure damage = @natural_disaster_damage_heavy_infrastructure }
+		damage_building = { type = air_base damage = @natural_disaster_damage_air_base }
+		damage_building = { type = industrial_complex damage = @natural_disaster_damage_heavy_factory }
 		add_dynamic_modifier = { modifier = natural_disaster_ashfall_aftermath_state days = constant:natural_disaster_aftermath.severe_days }
 	}
 	else_if = {
 		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.tsunami } }
-		damage_building = { type = infrastructure damage = constant:natural_disaster_damage.severe_infrastructure }
-		damage_building = { type = naval_base damage = constant:natural_disaster_damage.naval_base }
-		damage_building = { type = dockyard damage = constant:natural_disaster_damage.heavy_factory }
-		damage_building = { type = supply_node damage = constant:natural_disaster_damage.supply_node }
+		damage_building = { type = infrastructure damage = @natural_disaster_damage_severe_infrastructure }
+		damage_building = { type = naval_base damage = @natural_disaster_damage_naval_base }
+		damage_building = { type = dockyard damage = @natural_disaster_damage_heavy_factory }
+		damage_building = { type = supply_node damage = @natural_disaster_damage_supply_node }
 		add_dynamic_modifier = { modifier = natural_disaster_tsunami_aftermath_state days = constant:natural_disaster_aftermath.severe_days }
 	}
 	else_if = {
 		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.limnic_eruption } }
-		damage_building = { type = infrastructure damage = constant:natural_disaster_damage.standard_infrastructure }
-		damage_building = { type = industrial_complex damage = constant:natural_disaster_damage.standard_factory }
+		damage_building = { type = infrastructure damage = @natural_disaster_damage_standard_infrastructure }
+		damage_building = { type = industrial_complex damage = @natural_disaster_damage_standard_factory }
 		add_dynamic_modifier = { modifier = natural_disaster_limnic_aftermath_state days = constant:natural_disaster_aftermath.severe_days }
 	}
 	else_if = {
 		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.meteor_shower } }
-		damage_building = { type = infrastructure damage = constant:natural_disaster_damage.severe_infrastructure }
-		damage_building = { type = industrial_complex damage = constant:natural_disaster_damage.severe_factory }
-		damage_building = { type = arms_factory damage = constant:natural_disaster_damage.heavy_military }
-		damage_building = { type = air_base damage = constant:natural_disaster_damage.air_base }
+		damage_building = { type = infrastructure damage = @natural_disaster_damage_severe_infrastructure }
+		damage_building = { type = industrial_complex damage = @natural_disaster_damage_severe_factory }
+		damage_building = { type = arms_factory damage = @natural_disaster_damage_heavy_military }
+		damage_building = { type = air_base damage = @natural_disaster_damage_air_base }
 		add_dynamic_modifier = { modifier = natural_disaster_skyfall_aftermath_state days = constant:natural_disaster_aftermath.abnormal_days }
 		if = {
 			limit = { check_variable = { natural_disaster_current_super_event_allowed > 0 } }
@@ -1724,11 +1746,11 @@ natural_disasters_apply_state_damage_profile = {
 	}
 	else_if = {
 		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.global_rupture } }
-		damage_building = { type = infrastructure damage = constant:natural_disaster_damage.severe_infrastructure }
-		damage_building = { type = industrial_complex damage = constant:natural_disaster_damage.severe_factory }
-		damage_building = { type = arms_factory damage = constant:natural_disaster_damage.heavy_military }
-		damage_building = { type = rail_way damage = constant:natural_disaster_damage.railway }
-		damage_building = { type = supply_node damage = constant:natural_disaster_damage.supply_node }
+		damage_building = { type = infrastructure damage = @natural_disaster_damage_severe_infrastructure }
+		damage_building = { type = industrial_complex damage = @natural_disaster_damage_severe_factory }
+		damage_building = { type = arms_factory damage = @natural_disaster_damage_heavy_military }
+		damage_building = { type = rail_way damage = @natural_disaster_damage_railway }
+		damage_building = { type = supply_node damage = @natural_disaster_damage_supply_node }
 		add_dynamic_modifier = { modifier = natural_disaster_global_rupture_aftermath_state days = constant:natural_disaster_aftermath.abnormal_days }
 		if = {
 			limit = { check_variable = { natural_disaster_current_super_event_allowed > 0 } }
@@ -1737,10 +1759,10 @@ natural_disasters_apply_state_damage_profile = {
 	}
 	else_if = {
 		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.massive_eruption } }
-		damage_building = { type = infrastructure damage = constant:natural_disaster_damage.severe_infrastructure }
-		damage_building = { type = air_base damage = constant:natural_disaster_damage.air_base }
-		damage_building = { type = industrial_complex damage = constant:natural_disaster_damage.severe_factory }
-		damage_building = { type = synthetic_refinery damage = constant:natural_disaster_damage.synthetic_refinery }
+		damage_building = { type = infrastructure damage = @natural_disaster_damage_severe_infrastructure }
+		damage_building = { type = air_base damage = @natural_disaster_damage_air_base }
+		damage_building = { type = industrial_complex damage = @natural_disaster_damage_severe_factory }
+		damage_building = { type = synthetic_refinery damage = @natural_disaster_damage_synthetic_refinery }
 		add_dynamic_modifier = { modifier = natural_disaster_massive_eruption_aftermath_state days = constant:natural_disaster_aftermath.abnormal_days }
 		if = {
 			limit = { check_variable = { natural_disaster_current_super_event_allowed > 0 } }
@@ -1748,10 +1770,10 @@ natural_disasters_apply_state_damage_profile = {
 		}
 	}
 	else = {
-		damage_building = { type = infrastructure damage = constant:natural_disaster_damage.severe_infrastructure }
-		damage_building = { type = air_base damage = constant:natural_disaster_damage.air_base }
-		damage_building = { type = naval_base damage = constant:natural_disaster_damage.naval_base }
-		damage_building = { type = rail_way damage = constant:natural_disaster_damage.railway }
+		damage_building = { type = infrastructure damage = @natural_disaster_damage_severe_infrastructure }
+		damage_building = { type = air_base damage = @natural_disaster_damage_air_base }
+		damage_building = { type = naval_base damage = @natural_disaster_damage_naval_base }
+		damage_building = { type = rail_way damage = @natural_disaster_damage_railway }
 		add_dynamic_modifier = { modifier = natural_disaster_storm_corridor_aftermath_state days = constant:natural_disaster_aftermath.abnormal_days }
 		if = {
 			limit = { check_variable = { natural_disaster_current_super_event_allowed > 0 } }
@@ -2275,8 +2297,8 @@ natural_disasters_apply_profile_spillover = {
 		random_neighbor_state = {
 			limit = { natural_disaster_state_can_take_disaster = yes }
 			set_state_flag = { flag = natural_disaster_recently_hit days = constant:natural_disaster_event.target_recent_days }
-			damage_building = { type = infrastructure damage = constant:natural_disaster_damage.standard_infrastructure }
-			damage_building = { type = industrial_complex damage = constant:natural_disaster_damage.light_factory }
+			damage_building = { type = infrastructure damage = @natural_disaster_damage_standard_infrastructure }
+			damage_building = { type = industrial_complex damage = @natural_disaster_damage_light_factory }
 			if = {
 				limit = { check_variable = { natural_disaster_current_deaths_allowed > 0 } }
 				set_temp_variable = { chaos_state_deaths_percent = constant:natural_disaster_deaths.flood }
