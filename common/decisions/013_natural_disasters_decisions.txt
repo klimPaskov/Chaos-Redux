@@ -1,0 +1,346 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 013 NATURAL DISASTERS DECISIONS
+# ============================================================================
+# Concrete-cost response actions, reconstruction work, and timed recovery
+# missions. Costs spend command power, manpower, fuel, trains, convoys,
+# infantry equipment, motorized equipment, and support equipment directly.
+# ============================================================================
+
+natural_disaster_response_category = {
+	natural_disaster_deploy_rescue_columns = {
+		icon = GFX_decision_nd_rescue_teams
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = { natural_disaster_response_visible = yes }
+		target_root_trigger = { natural_disaster_response_visible = yes }
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				natural_disaster_state_needs_general_response = yes
+			}
+		}
+		available = {
+			hidden_trigger = { can_pay_natural_disaster_rescue_cost = yes }
+			FROM = {
+				is_controlled_by = ROOT
+				natural_disaster_state_needs_general_response = yes
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { can_pay_natural_disaster_rescue_cost = yes } }
+		custom_cost_text = natural_disaster_rescue_cost_text
+		days_re_enable = constant:natural_disaster_decision_days.reenable_short
+		highlight_states = {
+			highlight_states_trigger = { natural_disaster_state_needs_general_response = yes }
+			highlight_color_before_active = 2
+			highlight_color_while_active = 1
+		}
+		complete_effect = {
+			custom_effect_tooltip = natural_disaster_deploy_rescue_columns_tt
+			FROM = { natural_disasters_decision_rescue_current_state = yes }
+		}
+		ai_will_do = {
+			base = constant:natural_disaster_decision_ai.high
+			modifier = { factor = constant:natural_disaster_decision_ai.capital_factor FROM = { is_capital = yes } }
+			modifier = { factor = constant:natural_disaster_decision_ai.abnormal_factor FROM = { has_state_flag = natural_disaster_abnormal_aftermath } }
+			modifier = { factor = constant:natural_disaster_decision_ai.war_factor has_war = yes }
+			modifier = { factor = constant:natural_disaster_decision_ai.player_factor is_ai = no }
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { state_population_k > 500 } }
+		}
+	}
+
+	natural_disaster_clear_blocked_routes = {
+		icon = GFX_decision_nd_rebuild_routes
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = { natural_disaster_response_visible = yes }
+		target_root_trigger = { natural_disaster_response_visible = yes }
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				natural_disaster_state_has_open_aftermath = yes
+			}
+		}
+		available = {
+			hidden_trigger = { can_pay_natural_disaster_clear_routes_cost = yes }
+			FROM = {
+				is_controlled_by = ROOT
+				natural_disaster_state_has_open_aftermath = yes
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { can_pay_natural_disaster_clear_routes_cost = yes } }
+		custom_cost_text = natural_disaster_clear_routes_cost_text
+		days_re_enable = constant:natural_disaster_decision_days.reenable_short
+		highlight_states = {
+			highlight_states_trigger = { natural_disaster_state_has_open_aftermath = yes }
+			highlight_color_before_active = 2
+			highlight_color_while_active = 1
+		}
+		complete_effect = {
+			custom_effect_tooltip = natural_disaster_clear_blocked_routes_tt
+			FROM = { natural_disasters_decision_clear_routes_current_state = yes }
+		}
+		ai_will_do = {
+			base = constant:natural_disaster_decision_ai.medium
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { check_variable = { natural_disaster_recovery_pressure > 1 } } }
+			modifier = { factor = constant:natural_disaster_decision_ai.capital_factor FROM = { is_capital = yes } }
+			modifier = { factor = constant:natural_disaster_decision_ai.war_factor has_war = yes }
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_earthquake } }
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_dry_mass_movement } }
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_wet_mass_movement } }
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_avalanche } }
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_sinkhole } }
+		}
+	}
+
+	natural_disaster_restore_supply_lifelines = {
+		icon = GFX_decision_nd_restore_supply
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = { natural_disaster_response_visible = yes }
+		target_root_trigger = { natural_disaster_response_visible = yes }
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				natural_disaster_state_has_open_aftermath = yes
+			}
+		}
+		available = {
+			hidden_trigger = { can_pay_natural_disaster_restore_supply_cost = yes }
+			FROM = {
+				is_controlled_by = ROOT
+				natural_disaster_state_has_open_aftermath = yes
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { can_pay_natural_disaster_restore_supply_cost = yes } }
+		custom_cost_text = natural_disaster_restore_supply_cost_text
+		days_re_enable = constant:natural_disaster_decision_days.reenable_short
+		complete_effect = {
+			custom_effect_tooltip = natural_disaster_restore_supply_lifelines_tt
+			FROM = { natural_disasters_decision_restore_supply_current_state = yes }
+		}
+		ai_will_do = {
+			base = constant:natural_disaster_decision_ai.high
+			modifier = { factor = constant:natural_disaster_decision_ai.war_factor has_war = yes }
+			modifier = { factor = constant:natural_disaster_decision_ai.capital_factor FROM = { is_capital = yes } }
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_flood } }
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_blizzard } }
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_global_rupture } }
+		}
+	}
+
+	natural_disaster_reopen_ports_and_airfields = {
+		icon = GFX_decision_nd_reopen_ports
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = { natural_disaster_response_visible = yes }
+		target_root_trigger = { natural_disaster_response_visible = yes }
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				natural_disaster_state_needs_port_or_airfield_work = yes
+			}
+		}
+		available = {
+			hidden_trigger = { can_pay_natural_disaster_port_airfield_cost = yes }
+			FROM = {
+				is_controlled_by = ROOT
+				natural_disaster_state_needs_port_or_airfield_work = yes
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { can_pay_natural_disaster_port_airfield_cost = yes } }
+		custom_cost_text = natural_disaster_port_airfield_cost_text
+		days_re_enable = constant:natural_disaster_decision_days.reenable_medium
+		complete_effect = {
+			custom_effect_tooltip = natural_disaster_reopen_ports_and_airfields_tt
+			FROM = { natural_disasters_decision_reopen_ports_current_state = yes }
+		}
+		ai_will_do = {
+			base = constant:natural_disaster_decision_ai.medium
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { is_coastal = yes } }
+			modifier = { factor = constant:natural_disaster_decision_ai.war_factor has_war = yes }
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_tropical_cyclone } }
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_tsunami } }
+			modifier = { factor = constant:natural_disaster_decision_ai.abnormal_factor FROM = { has_state_flag = natural_disaster_family_storm_corridor } }
+		}
+	}
+
+	natural_disaster_import_food_and_water = {
+		icon = GFX_decision_nd_water_relief
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = { natural_disaster_response_visible = yes }
+		target_root_trigger = { natural_disaster_response_visible = yes }
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				natural_disaster_state_needs_food_water_relief = yes
+			}
+		}
+		available = {
+			hidden_trigger = { can_pay_natural_disaster_food_water_cost = yes }
+			FROM = {
+				is_controlled_by = ROOT
+				natural_disaster_state_needs_food_water_relief = yes
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { can_pay_natural_disaster_food_water_cost = yes } }
+		custom_cost_text = natural_disaster_food_water_cost_text
+		days_re_enable = constant:natural_disaster_decision_days.reenable_short
+		complete_effect = {
+			custom_effect_tooltip = natural_disaster_import_food_and_water_tt
+			FROM = { natural_disasters_decision_food_water_current_state = yes }
+		}
+		ai_will_do = {
+			base = constant:natural_disaster_decision_ai.high
+			modifier = { factor = constant:natural_disaster_decision_ai.capital_factor FROM = { is_capital = yes } }
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_drought } }
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_heat_wave } }
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_cold_wave } }
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_limnic_eruption } }
+		}
+	}
+
+	natural_disaster_cut_firebreaks = {
+		icon = GFX_decision_nd_firebreaks
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = { natural_disaster_response_visible = yes }
+		target_root_trigger = { natural_disaster_response_visible = yes }
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				natural_disaster_state_needs_firebreaks = yes
+			}
+		}
+		available = {
+			hidden_trigger = { can_pay_natural_disaster_firebreak_cost = yes }
+			FROM = {
+				is_controlled_by = ROOT
+				natural_disaster_state_needs_firebreaks = yes
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { can_pay_natural_disaster_firebreak_cost = yes } }
+		custom_cost_text = natural_disaster_firebreak_cost_text
+		days_re_enable = constant:natural_disaster_decision_days.reenable_short
+		complete_effect = {
+			custom_effect_tooltip = natural_disaster_cut_firebreaks_tt
+			FROM = { natural_disasters_decision_firebreak_current_state = yes }
+		}
+		ai_will_do = {
+			base = constant:natural_disaster_decision_ai.high
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_wildfire } }
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_drought } }
+			modifier = { factor = constant:natural_disaster_decision_ai.capital_factor FROM = { is_capital = yes } }
+		}
+	}
+
+	natural_disaster_clear_ash_and_dust = {
+		icon = GFX_decision_nd_ash_dust_clearance
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = { natural_disaster_response_visible = yes }
+		target_root_trigger = { natural_disaster_response_visible = yes }
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				natural_disaster_state_needs_ash_or_dust_clearance = yes
+			}
+		}
+		available = {
+			hidden_trigger = { can_pay_natural_disaster_ash_dust_cost = yes }
+			FROM = {
+				is_controlled_by = ROOT
+				natural_disaster_state_needs_ash_or_dust_clearance = yes
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { can_pay_natural_disaster_ash_dust_cost = yes } }
+		custom_cost_text = natural_disaster_ash_dust_cost_text
+		days_re_enable = constant:natural_disaster_decision_days.reenable_short
+		complete_effect = {
+			custom_effect_tooltip = natural_disaster_clear_ash_and_dust_tt
+			FROM = { natural_disasters_decision_ash_dust_current_state = yes }
+		}
+		ai_will_do = {
+			base = constant:natural_disaster_decision_ai.medium
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_dust_storm } }
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_volcanic_eruption } }
+			modifier = { factor = constant:natural_disaster_decision_ai.abnormal_factor FROM = { has_state_flag = natural_disaster_family_massive_eruption } }
+			modifier = { factor = constant:natural_disaster_decision_ai.abnormal_factor FROM = { has_state_flag = natural_disaster_family_meteor_shower } }
+		}
+	}
+
+	natural_disaster_evacuate_predicted_path = {
+		icon = GFX_decision_nd_evacuation
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = { natural_disaster_response_visible = yes }
+		target_root_trigger = { natural_disaster_response_visible = yes }
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				natural_disaster_state_needs_evacuation = yes
+			}
+		}
+		available = {
+			hidden_trigger = { can_pay_natural_disaster_evacuation_cost = yes }
+			FROM = {
+				is_controlled_by = ROOT
+				natural_disaster_state_needs_evacuation = yes
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { can_pay_natural_disaster_evacuation_cost = yes } }
+		custom_cost_text = natural_disaster_evacuation_cost_text
+		days_re_enable = constant:natural_disaster_decision_days.reenable_medium
+		complete_effect = {
+			custom_effect_tooltip = natural_disaster_evacuate_predicted_path_tt
+			FROM = { natural_disasters_decision_evacuation_current_state = yes }
+		}
+		ai_will_do = {
+			base = constant:natural_disaster_decision_ai.urgent
+			modifier = { factor = constant:natural_disaster_decision_ai.abnormal_factor FROM = { has_state_flag = natural_disaster_abnormal_aftermath } }
+			modifier = { factor = constant:natural_disaster_decision_ai.capital_factor FROM = { is_capital = yes } }
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_corridor_path_state } }
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_tsunami_warning } }
+		}
+	}
+
+	natural_disaster_stabilization_mission = {
+		icon = GFX_decision_nd_rescue_teams
+		days_mission_timeout = constant:natural_disaster_delay.recovery_mission_days
+		is_good = no
+		fire_only_once = no
+		activation = { has_country_flag = natural_disaster_stabilization_mission_active }
+		visible = { has_country_flag = natural_disaster_stabilization_mission_active }
+		available = { NOT = { natural_disaster_country_has_recovery_state = yes } }
+		cancel_trigger = { NOT = { has_country_flag = natural_disaster_stabilization_mission_active } }
+		cancel_effect = { clr_country_flag = natural_disaster_stabilization_mission_active }
+		complete_effect = {
+			custom_effect_tooltip = natural_disaster_stabilization_mission_success_tt
+			hidden_effect = { natural_disasters_stabilization_success = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = natural_disaster_stabilization_mission_failure_tt
+			hidden_effect = { natural_disasters_stabilization_failure = yes }
+		}
+	}
+
+	natural_disaster_reconstruction_mission = {
+		icon = GFX_decision_category_nd_recovery_overview
+		days_mission_timeout = constant:natural_disaster_delay.reconstruction_mission_days
+		is_good = no
+		fire_only_once = no
+		activation = { has_country_flag = natural_disaster_reconstruction_mission_active }
+		visible = { has_country_flag = natural_disaster_reconstruction_mission_active }
+		available = { NOT = { natural_disaster_country_has_recovery_state = yes } }
+		cancel_trigger = { NOT = { has_country_flag = natural_disaster_reconstruction_mission_active } }
+		cancel_effect = { clr_country_flag = natural_disaster_reconstruction_mission_active }
+		complete_effect = {
+			custom_effect_tooltip = natural_disaster_reconstruction_mission_success_tt
+			hidden_effect = { natural_disasters_reconstruction_success = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = natural_disaster_reconstruction_mission_failure_tt
+			hidden_effect = { natural_disasters_reconstruction_failure = yes }
+		}
+	}
+}

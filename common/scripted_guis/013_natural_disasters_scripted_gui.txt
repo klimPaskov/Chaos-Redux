@@ -1,0 +1,55 @@
+scripted_gui = {
+	natural_disaster_response_scripted_gui = {
+		context_type = decision_category
+		window_name = "natural_disaster_response_container"
+
+		ai_enabled = { always = no }
+		visible = {
+			is_ai = no
+			natural_disaster_response_visible = yes
+		}
+
+		triggers = {
+			natural_disaster_gui_warning_visible = {
+				any_controlled_state = {
+					OR = {
+						has_state_flag = natural_disaster_corridor_warning
+						has_state_flag = natural_disaster_corridor_path_state
+						has_state_flag = natural_disaster_tsunami_warning
+						has_state_flag = natural_disaster_abnormal_aftermath
+					}
+				}
+			}
+			natural_disaster_gui_corridor_visible = {
+				any_controlled_state = {
+					OR = {
+						has_state_flag = natural_disaster_corridor_warning
+						has_state_flag = natural_disaster_corridor_path_state
+						has_state_flag = natural_disaster_family_storm_corridor
+					}
+				}
+			}
+			natural_disaster_gui_tsunami_visible = {
+				any_controlled_state = {
+					OR = {
+						has_state_flag = natural_disaster_tsunami_warning
+						has_state_flag = natural_disaster_family_tsunami
+					}
+				}
+			}
+			natural_disaster_gui_ashfall_visible = {
+				any_controlled_state = {
+					OR = {
+						has_state_flag = natural_disaster_family_volcanic_eruption
+						has_state_flag = natural_disaster_family_massive_eruption
+					}
+				}
+			}
+			natural_disaster_gui_skyfall_visible = {
+				any_controlled_state = {
+					has_state_flag = natural_disaster_family_meteor_shower
+				}
+			}
+		}
+	}
+}

@@ -46,6 +46,15 @@ Three internal rarity groups are now represented in the achievement list order:
   - `death_before_the_name`
   - `death_the_living_conference`
   - `death_six_continents_one_color`
+- Event 013 Natural Disasters
+  - `013_natural_disasters_global_relief`
+  - `013_natural_disasters_aftershock_control`
+  - `013_natural_disasters_prepared_capital`
+  - `013_natural_disasters_no_world_end`
+  - `013_natural_disasters_skyfall_survivor`
+  - `013_natural_disasters_firebreak_master`
+  - `013_natural_disasters_no_deaths_sequence`
+  - `013_natural_disasters_tame_the_barrage`
 
 HOI4 custom achievements do not expose a native tier field in the file format, so tiering is preserved through internal grouping, naming, and docs rather than a dedicated engine-side rarity value.
 
@@ -66,6 +75,7 @@ HOI4 custom achievements do not expose a native tier field in the file format, s
      - Set when global contamination reaches `10%` or higher before January 1, 1945.
    - `achievement_used_chemical_ability`
      - Set when a chemical cylinder ability is used.
+   - Event 013 sets country flags from disaster hit, recovery decision, mission success, and Disaster Barrage hooks. The achievement file reads only final `achievement_nd_*_ready` flags.
 5. Achievement art is wired in two layers:
    - HOI4 mod achievement UI looks for icon files in `gfx/achievements/`.
    - `interface/chaosx_achievements.gfx` adds stable sprite aliases for the primary icon of each achievement for any future custom UI use.
@@ -156,6 +166,25 @@ HOI4 custom achievements do not expose a native tier field in the file format, s
   - Form a strong Living Compact with enough members and cohesion before Death is defeated.
 - `death_six_continents_one_color`
   - Force Death's Last Shores branch to place footholds across six continent groups.
+
+### Event 013 Natural Disasters
+
+- `013_natural_disasters_global_relief`
+  - Recover all active disaster aftermath, avoid failed disaster recovery missions, and keep control of the capital after the delayed season ends.
+- `013_natural_disasters_aftershock_control`
+  - Survive an earthquake-chain disaster, then restore supply and reopen port or airfield access before recovery fails.
+- `013_natural_disasters_prepared_capital`
+  - Hidden. Use the predicted-path evacuation response on three moving storm corridor states.
+- `013_natural_disasters_no_world_end`
+  - Clear ash and stabilize food/water after a massive eruption without failed recovery missions.
+- `013_natural_disasters_skyfall_survivor`
+  - Hidden. Recover local infrastructure after a meteor shower by clearing routes and restoring supply or ash clearance.
+- `013_natural_disasters_firebreak_master`
+  - Complete three firebreak responses against wildfire, drought, or heat-driven aftermath.
+- `013_natural_disasters_no_deaths_sequence`
+  - Recover from a wartime sand or dust storm by restoring supply and clearing dust in the affected state.
+- `013_natural_disasters_tame_the_barrage`
+  - Hidden. Complete a maximum Disaster Barrage with abnormal disasters active and clear all owned disaster aftermath.
 
 Queued but not active:
 

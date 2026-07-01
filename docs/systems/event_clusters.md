@@ -10,6 +10,7 @@ The registered clusters are:
 - **Liberations** (`constant:event_cluster_id.liberations = 2`): independence waves, subject breakaways, imperial ruptures, republican secessions, and disorder that creates new states.
 - **Diplomatic Panic** (`constant:event_cluster_id.diplomatic_panic = 3`): pressure spikes, ministry reactions, and relation shocks without direct new war goals.
 - **Peace** (`constant:event_cluster_id.peace = 4`): settlements, ceasefires, exhaustion, negotiations, and related de-escalation shocks.
+- **Natural Disasters** (`constant:event_cluster_id.natural_disasters = 5`): repeatable disaster-season clusters where several delayed Event 013 members can queue in one cluster.
 - **Formables** (`constant:event_cluster_id.formables = 6`): reserved cluster for future formable-event work.
 
 ## Runtime Flow
@@ -38,6 +39,7 @@ Important constants:
 - `event_cluster_id.liberations = 2`
 - `event_cluster_id.diplomatic_panic = 3`
 - `event_cluster_id.peace = 4`
+- `event_cluster_id.natural_disasters = 5`
 - `event_cluster_id.formables = 6`
 - `event_cluster_type.one_time`, `event_cluster_type.repeatable`, and `event_cluster_type.major` define how the cluster applies global pacing.
 - `event_cluster_wars.unlock_tier = 1`
@@ -48,6 +50,8 @@ Important constants:
 - `event_cluster_diplomatic_panic.cooldown_days = 120`
 - `event_cluster_peace.unlock_tier = 0`
 - `event_cluster_peace.cooldown_days = 120`
+- `event_cluster_natural_disasters.unlock_tier = 0`
+- `event_cluster_natural_disasters.cooldown_days = 90`
 - `event_cluster_formables.unlock_tier = 0`
 - `event_cluster_formables.cooldown_days = 120`
 - `event_cluster_roll.minimum` and `event_cluster_roll.maximum` define the shared percentile roll range
@@ -69,6 +73,9 @@ Current membership:
 | Liberations | Event 5, Soviet Union Collapse | Severe | Optional member, fire-once, gated by Soviet crisis eligibility |
 | Diplomatic Panic | Event 8, Tensions Rising | Medium | Required member when selected or manually queued |
 | Peace | Event 9, White Peace | Low | Required member when selected or manually queued |
+| Natural Disasters | Event 13, Natural Disasters | Medium | Required opening season when selected or manually queued |
+| Natural Disasters | Event 13, Natural Disasters | Medium | Optional follow-up season unlocked at Gathering Storm |
+| Natural Disasters | Event 13, Natural Disasters | High | Optional escalation season unlocked at Rising Chaos |
 | Formables | Event 12, Africa Is One | Low | Reserved placeholder member |
 
 ## Member Order And Cooldown
