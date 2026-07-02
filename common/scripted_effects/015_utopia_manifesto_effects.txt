@@ -9,6 +9,7 @@
 @utopia_super_event_visible_days = 30
 @utopia_storehouse_audit_cooldown_days = 60
 @utopia_petitions_cooldown_days = 70
+@utopia_marked_bounds_final_threat = 25
 
 utopia_manifesto_prepare_random_event_fire = {
 	set_temp_variable = { utopia_manifesto_context_ready = 0 }
@@ -401,6 +402,153 @@ utopia_manifesto_apply_league_identity = {
 utopia_manifesto_apply_marked_bounds_state_identity = {
 	set_country_flag = utopia_manifesto_marked_bounds_state_identity
 	set_cosmetic_tag = utopia_marked_bounds_state
+}
+
+utopia_manifesto_apply_absurd_store_bounty = {
+	add_manpower = constant:utopia_manifesto_focus_reward.manpower_absurd
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:utopia_manifesto_focus_reward.infantry_equipment_absurd }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:utopia_manifesto_focus_reward.support_equipment_absurd }
+	add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:utopia_manifesto_focus_reward.train_absurd }
+	add_equipment_to_stockpile = { type = convoy_1 amount = constant:utopia_manifesto_focus_reward.convoy_absurd }
+	add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:utopia_manifesto_focus_reward.motorized_absurd }
+	army_experience = constant:utopia_manifesto_focus_reward.army_xp_absurd
+	navy_experience = constant:utopia_manifesto_focus_reward.navy_xp_absurd
+	air_experience = constant:utopia_manifesto_focus_reward.air_xp_absurd
+	add_command_power = constant:utopia_manifesto_focus_reward.command_power_absurd
+	random_owned_controlled_state = {
+		limit = { is_controlled_by = ROOT }
+		add_extra_state_shared_building_slots = 4
+		add_building_construction = { type = infrastructure level = 3 instant_build = yes }
+		add_building_construction = { type = industrial_complex level = 3 instant_build = yes }
+		add_building_construction = { type = arms_factory level = 2 instant_build = yes }
+	}
+	if = {
+		limit = { utopia_manifesto_country_has_coast = yes }
+		random_owned_controlled_state = {
+			limit = { is_coastal = yes is_controlled_by = ROOT }
+			add_building_construction = { type = naval_base level = 3 instant_build = yes }
+			add_building_construction = { type = coastal_bunker level = 2 instant_build = yes }
+		}
+	}
+}
+
+utopia_manifesto_apply_paper_utopia_recovery_rewards = {
+	add_stability = constant:utopia_manifesto_focus_reward_fixed.stability_medium
+	add_manpower = constant:utopia_manifesto_focus_reward.manpower_large
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:utopia_manifesto_focus_reward.infantry_equipment_large }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:utopia_manifesto_focus_reward.support_equipment_large }
+	set_temp_variable = { utopia_manifesto_ledger_delta = constant:utopia_manifesto_focus_reward.ledger_large }
+	utopia_manifesto_add_consent = yes
+	set_temp_variable = { utopia_manifesto_ledger_delta = constant:utopia_manifesto_focus_reward.ledger_large }
+	utopia_manifesto_add_surplus = yes
+	set_temp_variable = { utopia_manifesto_ledger_delta = constant:utopia_manifesto_focus_reward.ledger_medium }
+	multiply_temp_variable = { utopia_manifesto_ledger_delta = -1 }
+	utopia_manifesto_add_need = yes
+	set_temp_variable = { utopia_manifesto_ledger_delta = constant:utopia_manifesto_focus_reward.ledger_medium }
+	multiply_temp_variable = { utopia_manifesto_ledger_delta = -1 }
+	utopia_manifesto_add_overreach = yes
+}
+
+utopia_manifesto_apply_new_utopia_capstone_rewards = {
+	add_stability = constant:utopia_manifesto_focus_reward_fixed.stability_absurd
+	add_war_support = constant:utopia_manifesto_focus_reward_fixed.war_support_large
+	utopia_manifesto_apply_absurd_store_bounty = yes
+	add_tech_bonus = { name = utopia_new_utopia_industry_surge bonus = 1.5 uses = 4 category = industry }
+	add_tech_bonus = { name = utopia_new_utopia_electronic_ledgers bonus = 1.0 uses = 2 category = electronics }
+	set_temp_variable = { utopia_manifesto_ledger_delta = constant:utopia_manifesto_focus_reward.ledger_large }
+	utopia_manifesto_add_consent = yes
+	set_temp_variable = { utopia_manifesto_ledger_delta = constant:utopia_manifesto_focus_reward.ledger_large }
+	utopia_manifesto_add_surplus = yes
+	set_temp_variable = { utopia_manifesto_ledger_delta = constant:utopia_manifesto_focus_reward.ledger_medium }
+	utopia_manifesto_add_vocation_balance = yes
+	set_temp_variable = { utopia_manifesto_ledger_delta = constant:utopia_manifesto_focus_reward.ledger_large }
+	multiply_temp_variable = { utopia_manifesto_ledger_delta = -1 }
+	utopia_manifesto_add_overreach = yes
+	set_temp_variable = { utopia_manifesto_ledger_delta = constant:utopia_manifesto_focus_reward.ledger_medium }
+	multiply_temp_variable = { utopia_manifesto_ledger_delta = -1 }
+	utopia_manifesto_add_foreign_suspicion = yes
+}
+
+utopia_manifesto_apply_necessary_commonwealth_capstone_rewards = {
+	add_stability = constant:utopia_manifesto_focus_reward_fixed.stability_large
+	add_war_support = constant:utopia_manifesto_focus_reward_fixed.war_support_absurd
+	utopia_manifesto_apply_absurd_store_bounty = yes
+	add_tech_bonus = { name = utopia_necessary_commonwealth_doctrine bonus = 1.0 uses = 3 category = land_doctrine }
+	utopia_manifesto_spawn_household_guard = yes
+	utopia_manifesto_spawn_storehouse_engineers = yes
+	utopia_manifesto_spawn_surveyor_columns = yes
+	set_temp_variable = { utopia_manifesto_ledger_delta = constant:utopia_manifesto_focus_reward.ledger_medium }
+	utopia_manifesto_add_consent = yes
+	set_temp_variable = { utopia_manifesto_ledger_delta = constant:utopia_manifesto_focus_reward.ledger_large }
+	utopia_manifesto_add_overreach = yes
+	set_temp_variable = { utopia_manifesto_ledger_delta = constant:utopia_manifesto_focus_reward.ledger_large }
+	utopia_manifesto_add_foreign_suspicion = yes
+}
+
+utopia_manifesto_apply_marked_bounds_state_capstone_rewards = {
+	add_stability = constant:utopia_manifesto_focus_reward_fixed.stability_large
+	add_war_support = constant:utopia_manifesto_focus_reward_fixed.war_support_absurd
+	utopia_manifesto_apply_absurd_store_bounty = yes
+	add_named_threat = { threat = @utopia_marked_bounds_final_threat name = utopia_marked_bounds_state_threat }
+	add_tech_bonus = { name = utopia_marked_bounds_total_mobilization bonus = 1.0 uses = 3 category = land_doctrine }
+	utopia_manifesto_spawn_household_guard = yes
+	utopia_manifesto_spawn_storehouse_engineers = yes
+	utopia_manifesto_spawn_craft_militia = yes
+	utopia_manifesto_spawn_surveyor_columns = yes
+	set_temp_variable = { utopia_manifesto_ledger_delta = constant:utopia_manifesto_focus_reward.ledger_large }
+	utopia_manifesto_add_overreach = yes
+	set_temp_variable = { utopia_manifesto_ledger_delta = constant:utopia_manifesto_focus_reward.ledger_large }
+	utopia_manifesto_add_foreign_suspicion = yes
+	set_temp_variable = { utopia_manifesto_ledger_delta = constant:utopia_manifesto_focus_reward.ledger_large }
+	multiply_temp_variable = { utopia_manifesto_ledger_delta = -1 }
+	utopia_manifesto_add_league_confidence = yes
+}
+
+utopia_manifesto_apply_final_survival_rewards = {
+	add_stability = constant:utopia_manifesto_focus_reward_fixed.stability_absurd
+	add_war_support = constant:utopia_manifesto_focus_reward_fixed.war_support_absurd
+	utopia_manifesto_apply_absurd_store_bounty = yes
+	add_tech_bonus = { name = utopia_manifesto_survives_industry bonus = 1.5 uses = 4 category = industry }
+	add_tech_bonus = { name = utopia_manifesto_survives_land_doctrine bonus = 1.0 uses = 3 category = land_doctrine }
+	add_tech_bonus = { name = utopia_manifesto_survives_electronics bonus = 1.0 uses = 2 category = electronics }
+	if = {
+		limit = { has_country_flag = utopia_manifesto_new_utopia_identity }
+		set_temp_variable = { utopia_manifesto_ledger_delta = constant:utopia_manifesto_focus_reward.ledger_large }
+		utopia_manifesto_add_consent = yes
+		set_temp_variable = { utopia_manifesto_ledger_delta = constant:utopia_manifesto_focus_reward.ledger_large }
+		utopia_manifesto_add_surplus = yes
+		set_temp_variable = { utopia_manifesto_ledger_delta = constant:utopia_manifesto_focus_reward.ledger_large }
+		utopia_manifesto_add_vocation_balance = yes
+	}
+	if = {
+		limit = { has_country_flag = utopia_manifesto_necessary_commonwealth_identity }
+		utopia_manifesto_spawn_household_guard = yes
+		utopia_manifesto_spawn_storehouse_engineers = yes
+		set_temp_variable = { utopia_manifesto_ledger_delta = constant:utopia_manifesto_focus_reward.ledger_medium }
+		utopia_manifesto_add_overreach = yes
+	}
+	if = {
+		limit = { has_country_flag = utopia_manifesto_marked_bounds_state_identity }
+		utopia_manifesto_spawn_household_guard = yes
+		utopia_manifesto_spawn_storehouse_engineers = yes
+		utopia_manifesto_spawn_surveyor_columns = yes
+		add_named_threat = { threat = @utopia_marked_bounds_final_threat name = utopia_marked_bounds_state_threat }
+		set_temp_variable = { utopia_manifesto_ledger_delta = constant:utopia_manifesto_focus_reward.ledger_large }
+		utopia_manifesto_add_overreach = yes
+		set_temp_variable = { utopia_manifesto_ledger_delta = constant:utopia_manifesto_focus_reward.ledger_large }
+		utopia_manifesto_add_foreign_suspicion = yes
+	}
+	if = {
+		limit = { has_country_flag = utopia_manifesto_paper_utopia_outcome }
+		set_temp_variable = { utopia_manifesto_ledger_delta = constant:utopia_manifesto_focus_reward.ledger_large }
+		utopia_manifesto_add_consent = yes
+		set_temp_variable = { utopia_manifesto_ledger_delta = constant:utopia_manifesto_focus_reward.ledger_large }
+		utopia_manifesto_add_surplus = yes
+		set_temp_variable = { utopia_manifesto_ledger_delta = constant:utopia_manifesto_focus_reward.ledger_large }
+		multiply_temp_variable = { utopia_manifesto_ledger_delta = -1 }
+		utopia_manifesto_add_need = yes
+	}
+	utopia_manifesto_maybe_check_achievements = yes
 }
 
 utopia_manifesto_maybe_apply_league_identity = {
