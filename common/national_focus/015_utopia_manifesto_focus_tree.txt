@@ -8,7 +8,7 @@
 @utopia_focus_short = 5
 @utopia_focus_medium = 7
 @utopia_focus_long = 9
-@utopia_threat_medium = 3
+@utopia_threat_medium = 12
 
 focus_tree = {
 	id = utopia_manifesto_tree
@@ -2008,8 +2008,7 @@ focus_tree = {
 			set_country_flag = achievement_utopia_paper_no_more_candidate
 			set_country_flag = utopia_manifesto_paper_utopia_outcome
 			add_ideas = utopia_manifesto_paper_utopia
-			set_temp_variable = { utopia_manifesto_ledger_delta = constant:utopia_manifesto_focus_reward.ledger_medium }
-			utopia_manifesto_add_consent = yes
+			utopia_manifesto_apply_paper_utopia_recovery_rewards = yes
 		}
 		ai_will_do = {
 			base = 6
@@ -2042,6 +2041,7 @@ focus_tree = {
 			utopia_manifesto_apply_new_utopia_identity = yes
 			set_country_flag = achievement_utopia_new_utopia_candidate
 			add_ideas = utopia_manifesto_new_utopia
+			utopia_manifesto_apply_new_utopia_capstone_rewards = yes
 			utopia_manifesto_emit_new_utopia_super_event = yes
 		}
 		ai_will_do = {
@@ -2072,8 +2072,7 @@ focus_tree = {
 			set_country_flag = utopia_manifesto_necessary_commonwealth_outcome
 			utopia_manifesto_apply_necessary_commonwealth_identity = yes
 			add_ideas = utopia_manifesto_necessary_commonwealth
-			set_temp_variable = { utopia_manifesto_ledger_delta = constant:utopia_manifesto_focus_reward.ledger_medium }
-			utopia_manifesto_add_foreign_suspicion = yes
+			utopia_manifesto_apply_necessary_commonwealth_capstone_rewards = yes
 		}
 		ai_will_do = { base = 6 }
 	}
@@ -2093,6 +2092,7 @@ focus_tree = {
 		completion_reward = {
 			set_country_flag = utopia_manifesto_marked_bounds_state_outcome
 			utopia_manifesto_apply_marked_bounds_state_identity = yes
+			utopia_manifesto_apply_marked_bounds_state_capstone_rewards = yes
 			utopia_manifesto_emit_marked_bounds_super_event = yes
 		}
 		ai_will_do = { base = 4 }
@@ -2108,7 +2108,13 @@ focus_tree = {
 		prerequisite = { focus = utopia_paper_utopia focus = utopia_new_utopia focus = utopia_necessary_commonwealth focus = utopia_marked_bounds_state }
 		completion_reward = {
 			set_country_flag = utopia_manifesto_late_proclamation_done
-			add_stability = constant:utopia_manifesto_focus_reward_fixed.stability_medium
+			add_stability = constant:utopia_manifesto_focus_reward_fixed.stability_large
+			add_war_support = constant:utopia_manifesto_focus_reward_fixed.war_support_large
+			add_manpower = constant:utopia_manifesto_focus_reward.manpower_large
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:utopia_manifesto_focus_reward.infantry_equipment_large }
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:utopia_manifesto_focus_reward.support_equipment_large }
+			add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:utopia_manifesto_focus_reward.train_medium }
+			add_equipment_to_stockpile = { type = convoy_1 amount = constant:utopia_manifesto_focus_reward.convoy_medium }
 			utopia_manifesto_refresh_ledger = yes
 		}
 		ai_will_do = {
@@ -2130,9 +2136,7 @@ focus_tree = {
 		prerequisite = { focus = utopia_proclaim_the_common_store }
 		completion_reward = {
 			set_country_flag = utopia_manifesto_survives
-			add_stability = constant:utopia_manifesto_focus_reward_fixed.stability_large
-			set_temp_variable = { utopia_manifesto_ledger_delta = constant:utopia_manifesto_focus_reward.ledger_medium }
-			utopia_manifesto_add_consent = yes
+			utopia_manifesto_apply_final_survival_rewards = yes
 		}
 		ai_will_do = {
 			base = 6

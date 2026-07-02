@@ -61,6 +61,8 @@ Implemented branches:
 - Hidden Marked Bounds: revealed only when Need, Overreach, or chaos pressure justifies it; includes idle-soil survey, hard maps, boundary posts, guarded settlement, necessary-war table, wardens, bounds state, and no idle acre.
 - Late proclamation outcomes: Paper Utopia, New Utopia, Necessary Commonwealth, Marked Bounds State, Proclaim the Common Store, and The Manifesto Survives.
 
+Reward tuning is intentionally forceful. Ordinary focus rewards use large ledger swings, equipment bundles, manpower, XP, trains, convoys, trucks, and state construction so a successful minor becomes visibly stronger. Negative routes are also forceful: failed stores, confused vocation, foreign ridicule, Paper Utopia, Marked Bounds, and hardline proclamations carry large economic, diplomatic, resistance, or Suspicion costs. Late outcome focuses call scripted capstone packages that give absurd state-building rewards while preserving route identity and, for hardline paths, equally visible Overreach, Suspicion, threat, and resistance pressure.
+
 ## Decisions and Missions
 
 Decision code lives in `common/decisions/015_utopia_manifesto_decisions.txt`.
