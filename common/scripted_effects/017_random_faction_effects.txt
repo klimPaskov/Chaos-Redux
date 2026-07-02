@@ -1,0 +1,1283 @@
+@random_faction_recent_alignment_days = 365
+@random_faction_selection_cooldown_days = 365
+@random_faction_alignment_shock_days = 150
+@random_faction_border_pressure_days = 270
+@random_faction_bloc_polarization_days = 240
+@random_faction_neutrality_exhaustion_days = 180
+@random_faction_liaison_mission_days = 180
+@random_faction_observer_window_days = 180
+@random_faction_achievement_year_days = 365
+@random_faction_achievement_frontier_days = 180
+@random_faction_evo1_followup_min_days = 7
+@random_faction_evo1_followup_random_days = 14
+@random_faction_evo2_pressure_min_days = 10
+@random_faction_evo2_pressure_random_days = 20
+@random_faction_evo3_cascade_min_days = 10
+@random_faction_evo3_cascade_random_days = 21
+@random_faction_corridor_days = 90
+@random_faction_regional_fallback_targets = 3
+
+# ============================================================================
+# CHAOS REDUX - EVENT 017 RANDOM FACTION EFFECTS
+# ============================================================================
+# Runtime context, dynamic faction option collection, forced faction join,
+# regional pressure, evolutions, Bloc Pressure decisions, achievements, and
+# scoped cleanup for the Random Faction event.
+# ============================================================================
+
+random_faction_clamp_current_country_values = {
+	if = { limit = { NOT = { has_variable = random_faction_pressure_score } } set_variable = { random_faction_pressure_score = 0 } }
+	if = { limit = { NOT = { has_variable = random_faction_neutrality_resilience } } set_variable = { random_faction_neutrality_resilience = constant:random_faction_pressure_value.neutrality_resilience } }
+	clamp_variable = { var = random_faction_pressure_score min = constant:random_faction_pressure_value.resilience_floor max = constant:random_faction_pressure_value.resilience_ceiling }
+	clamp_variable = { var = random_faction_neutrality_resilience min = constant:random_faction_pressure_value.resilience_floor max = constant:random_faction_pressure_value.resilience_ceiling }
+}
+
+random_faction_prepare_candidate_weight = {
+	set_temp_variable = { random_faction_candidate_weight = constant:random_faction_selection_weight.base }
+	if = { limit = { NOT = { is_major = yes } } add_to_temp_variable = { random_faction_candidate_weight = constant:random_faction_selection_weight.minor_bonus } }
+	if = { limit = { any_neighbor_country = { is_in_faction = yes } } add_to_temp_variable = { random_faction_candidate_weight = constant:random_faction_selection_weight.bordering_faction_bonus } }
+	if = { limit = { has_war = yes } add_to_temp_variable = { random_faction_candidate_weight = constant:random_faction_selection_weight.war_adjacent_bonus } }
+	if = { limit = { has_stability < constant:random_faction_resistance_threshold.low_stability } add_to_temp_variable = { random_faction_candidate_weight = constant:random_faction_selection_weight.low_stability_bonus } }
+	if = { limit = { has_war_support < constant:random_faction_resistance_threshold.low_war_support } add_to_temp_variable = { random_faction_candidate_weight = constant:random_faction_selection_weight.low_war_support_bonus } }
+	if = { limit = { has_country_flag = random_faction_under_pressure } subtract_from_temp_variable = { random_faction_candidate_weight = constant:random_faction_selection_weight.pressure_repeat_penalty } }
+	if = { limit = { has_country_flag = random_faction_selection_cooldown } subtract_from_temp_variable = { random_faction_candidate_weight = constant:random_faction_selection_weight.cooldown_penalty } }
+	round_temp_variable = random_faction_candidate_weight
+	clamp_temp_variable = {
+		var = random_faction_candidate_weight
+		min = constant:random_faction_selection_weight.min
+		max = constant:random_faction_selection_weight.max
+	}
+}
+
+random_faction_add_current_country_to_target_pool = {
+	random_faction_prepare_candidate_weight = yes
+	set_temp_variable = { random_faction_candidate_weight_remaining = random_faction_candidate_weight }
+	while_loop_effect = {
+		limit = { check_variable = { random_faction_candidate_weight_remaining > 0 } }
+		add_to_temp_array = { random_faction_target_pool = THIS }
+		ROOT = { add_to_temp_variable = { random_faction_target_pool_count = 1 } }
+		subtract_from_temp_variable = { random_faction_candidate_weight_remaining = 1 }
+	}
+	set_temp_variable = { random_faction_candidate_weight = 0 }
+	set_temp_variable = { random_faction_candidate_weight_remaining = 0 }
+}
+
+random_faction_prepare_runtime_context = {
+	random_faction_refresh_runtime_arrays = yes
+	set_temp_variable = { random_faction_context_ready = 0 }
+	clear_temp_array = random_faction_target_pool
+	set_temp_variable = { random_faction_target_pool_count = 0 }
+	every_country = {
+		limit = {
+			OR = {
+				is_random_faction_eligible_country = yes
+				AND = {
+					has_global_flag = random_faction_evolution_ii_unlocked
+					is_random_faction_wartime_candidate = yes
+				}
+			}
+		}
+		random_faction_add_current_country_to_target_pool = yes
+	}
+	if = {
+		limit = { check_variable = { random_faction_target_pool_count > 0 } }
+		random_scope_in_array = {
+			array = random_faction_target_pool
+			limit = {
+				OR = {
+					is_random_faction_eligible_country = yes
+					AND = {
+						has_global_flag = random_faction_evolution_ii_unlocked
+						is_random_faction_wartime_candidate = yes
+					}
+				}
+			}
+			save_event_target_as = random_faction_target_country
+		}
+	}
+	clear_temp_array = random_faction_target_pool
+	if = {
+		limit = {
+			has_event_target = random_faction_target_country
+			event_target:random_faction_target_country = {
+				OR = {
+					is_random_faction_eligible_country = yes
+					AND = {
+						has_global_flag = random_faction_evolution_ii_unlocked
+						is_random_faction_wartime_candidate = yes
+					}
+				}
+			}
+		}
+		event_target:random_faction_target_country = {
+			random_faction_collect_faction_options = yes
+			if = {
+				limit = { check_variable = { random_faction_option_count > 0 } }
+				ROOT = { set_temp_variable = { random_faction_context_ready = 1 } }
+			}
+		}
+	}
+}
+
+random_faction_add_current_leader_to_option_pool = {
+	set_temp_variable = { random_faction_leader_weight = constant:random_faction_ai_weight.medium }
+	if = { limit = { any_country = { is_in_faction_with = PREV is_neighbor_of = ROOT } } add_to_temp_variable = { random_faction_leader_weight = constant:random_faction_ai_weight.high } }
+	if = { limit = { has_war = yes } add_to_temp_variable = { random_faction_leader_weight = constant:random_faction_ai_weight.low } }
+	clamp_temp_variable = { var = random_faction_leader_weight min = constant:random_faction_ai_weight.low max = constant:random_faction_ai_weight.urgent }
+	while_loop_effect = {
+		limit = { check_variable = { random_faction_leader_weight > 0 } }
+		add_to_temp_array = { random_faction_option_pool = THIS }
+		ROOT = { add_to_temp_variable = { random_faction_option_pool_count = 1 } }
+		subtract_from_temp_variable = { random_faction_leader_weight = 1 }
+	}
+}
+
+random_faction_collect_faction_options = {
+	set_variable = { random_faction_option_count = 0 }
+	set_temp_variable = { random_faction_option_pool_count = 0 }
+	clear_temp_array = random_faction_option_pool
+	clear_temp_array = random_faction_selected_options
+	if = {
+		limit = {
+			OR = {
+				is_random_faction_eligible_country = yes
+				AND = {
+					has_global_flag = random_faction_evolution_ii_unlocked
+					is_random_faction_wartime_candidate = yes
+				}
+			}
+		}
+		every_country = {
+			limit = { random_faction_is_valid_faction_leader_for_root_target = yes }
+			random_faction_add_current_leader_to_option_pool = yes
+		}
+	}
+	if = {
+		limit = { check_variable = { random_faction_option_pool_count > 0 } }
+		random_scope_in_array = {
+			array = random_faction_option_pool
+			limit = { random_faction_is_valid_faction_leader_for_root_target = yes }
+			save_event_target_as = random_faction_option_1_leader
+			add_to_temp_array = { random_faction_selected_options = THIS }
+			ROOT = { add_to_variable = { random_faction_option_count = 1 } }
+		}
+	}
+	if = {
+		limit = { check_variable = { random_faction_option_count > 0 } }
+		random_scope_in_array = {
+			array = random_faction_option_pool
+			limit = {
+				random_faction_is_valid_faction_leader_for_root_target = yes
+				NOT = { is_in_array = { array = random_faction_selected_options value = THIS } }
+			}
+			save_event_target_as = random_faction_option_2_leader
+			add_to_temp_array = { random_faction_selected_options = THIS }
+			ROOT = { add_to_variable = { random_faction_option_count = 1 } }
+		}
+	}
+	if = {
+		limit = { check_variable = { random_faction_option_count > 1 } }
+		random_scope_in_array = {
+			array = random_faction_option_pool
+			limit = {
+				random_faction_is_valid_faction_leader_for_root_target = yes
+				NOT = { is_in_array = { array = random_faction_selected_options value = THIS } }
+			}
+			save_event_target_as = random_faction_option_3_leader
+			add_to_temp_array = { random_faction_selected_options = THIS }
+			ROOT = { add_to_variable = { random_faction_option_count = 1 } }
+		}
+	}
+	if = {
+		limit = { check_variable = { random_faction_option_count > 2 } }
+		random_scope_in_array = {
+			array = random_faction_option_pool
+			limit = {
+				random_faction_is_valid_faction_leader_for_root_target = yes
+				NOT = { is_in_array = { array = random_faction_selected_options value = THIS } }
+			}
+			save_event_target_as = random_faction_option_4_leader
+			add_to_temp_array = { random_faction_selected_options = THIS }
+			ROOT = { add_to_variable = { random_faction_option_count = 1 } }
+		}
+	}
+	if = {
+		limit = { check_variable = { random_faction_option_count > 3 } }
+		set_country_flag = random_faction_four_doors_choice
+	}
+	clear_temp_array = random_faction_selected_options
+	clear_temp_array = random_faction_option_pool
+	set_temp_variable = { random_faction_option_pool_count = 0 }
+}
+
+random_faction_entry_route_current_country = {
+	if = {
+		limit = {
+			OR = {
+				is_random_faction_eligible_country = yes
+				AND = {
+					has_global_flag = random_faction_evolution_ii_unlocked
+					is_random_faction_wartime_candidate = yes
+				}
+			}
+		}
+		save_event_target_as = random_faction_target_country
+		random_faction_collect_faction_options = yes
+		if = {
+			limit = { check_variable = { random_faction_option_count > 0 } }
+			if = {
+				limit = { is_ai = no }
+				country_event = { id = chaosx.nr17.10 }
+			}
+			else = {
+				country_event = { id = chaosx.nr17.20 }
+			}
+		}
+	}
+	else = {
+		random_faction_prepare_runtime_context = yes
+		if = {
+			limit = {
+				check_variable = { random_faction_context_ready > 0 }
+				has_event_target = random_faction_target_country
+			}
+			event_target:random_faction_target_country = {
+				country_event = { id = chaosx.nr17.1 }
+			}
+		}
+	}
+}
+
+random_faction_choose_option_1_and_join = {
+	if = { limit = { random_faction_option_1_valid = yes } event_target:random_faction_option_1_leader = { save_event_target_as = random_faction_selected_leader } }
+	random_faction_join_selected_faction = yes
+}
+
+random_faction_choose_option_2_and_join = {
+	if = { limit = { random_faction_option_2_valid = yes } event_target:random_faction_option_2_leader = { save_event_target_as = random_faction_selected_leader } }
+	random_faction_join_selected_faction = yes
+}
+
+random_faction_choose_option_3_and_join = {
+	if = { limit = { random_faction_option_3_valid = yes } event_target:random_faction_option_3_leader = { save_event_target_as = random_faction_selected_leader } }
+	random_faction_join_selected_faction = yes
+}
+
+random_faction_choose_option_4_and_join = {
+	if = { limit = { random_faction_option_4_valid = yes } event_target:random_faction_option_4_leader = { save_event_target_as = random_faction_selected_leader } }
+	random_faction_join_selected_faction = yes
+}
+
+random_faction_reopen_dead_faction_file = {
+	random_faction_collect_faction_options = yes
+	if = {
+		limit = { random_faction_has_saved_valid_option = yes }
+		if = {
+			limit = { is_ai = no }
+			country_event = { id = chaosx.nr17.10 }
+		}
+		else = {
+			country_event = { id = chaosx.nr17.20 }
+		}
+	}
+	else = {
+		random_faction_clear_current_country_pressure = yes
+	}
+}
+
+random_faction_join_selected_faction = {
+	if = {
+		limit = {
+			has_event_target = random_faction_selected_leader
+			event_target:random_faction_selected_leader = { can_random_faction_join_faction = yes }
+		}
+		event_target:random_faction_selected_leader = {
+			add_to_faction = ROOT
+		}
+		set_country_flag = { flag = random_faction_recent_alignment days = @random_faction_recent_alignment_days }
+		set_country_flag = { flag = random_faction_selection_cooldown days = @random_faction_selection_cooldown_days }
+		add_timed_idea = { idea = random_faction_alignment_shock days = @random_faction_alignment_shock_days }
+		set_variable = { random_faction_pressure_score = constant:random_faction_pressure_value.alignment_shock }
+		set_variable = { random_faction_neutrality_resilience = constant:random_faction_pressure_value.neutrality_resilience }
+		if = { limit = { NOT = { is_in_array = { array = global.random_faction_aligned_minors value = THIS } } } add_to_array = { array = global.random_faction_aligned_minors value = THIS } }
+		if = { limit = { NOT = { is_in_array = { array = global.random_faction_pressure_targets value = THIS } } } add_to_array = { array = global.random_faction_pressure_targets value = THIS } }
+		event_target:random_faction_selected_leader = {
+			if = { limit = { NOT = { is_in_array = { array = global.random_faction_faction_leaders value = THIS } } } add_to_array = { array = global.random_faction_faction_leaders value = THIS } }
+			country_event = { id = chaosx.nr17.40 }
+		}
+		random_faction_apply_regional_pressure = yes
+		random_faction_check_evolution_unlocks = yes
+		random_faction_check_join_achievements = yes
+		news_event = { id = chaosx.news.4 days = 2 }
+	}
+}
+
+random_faction_add_current_country_to_region_bucket = {
+	ROOT = {
+		if = {
+			limit = { NOT = { is_in_array = { array = random_faction_current_region_targets value = PREV } } }
+			add_to_array = { array = random_faction_current_region_targets value = PREV }
+		}
+	}
+	set_country_flag = { flag = random_faction_regional_bucket_target days = @random_faction_border_pressure_days }
+}
+
+random_faction_apply_pressure_to_current_region_target = {
+	if = {
+		limit = { is_random_faction_pressure_neighbor = yes }
+		set_country_flag = { flag = random_faction_under_pressure days = @random_faction_border_pressure_days }
+		set_country_flag = { flag = random_faction_pressure_cooldown days = @random_faction_border_pressure_days }
+		add_timed_idea = { idea = random_faction_border_pressure days = @random_faction_border_pressure_days }
+		if = { limit = { NOT = { has_variable = random_faction_pressure_score } } set_variable = { random_faction_pressure_score = 0 } }
+		if = { limit = { NOT = { has_variable = random_faction_neutrality_resilience } } set_variable = { random_faction_neutrality_resilience = constant:random_faction_pressure_value.neutrality_resilience } }
+		add_to_variable = { random_faction_pressure_score = constant:random_faction_pressure_value.neighbor_pressure }
+		add_to_variable = { global.random_faction_pressure_count = 1 }
+		random_faction_clamp_current_country_values = yes
+		if = { limit = { NOT = { is_in_array = { array = global.random_faction_pressured_neutrals value = THIS } } } add_to_array = { array = global.random_faction_pressured_neutrals value = THIS } }
+		if = { limit = { NOT = { is_in_array = { array = global.random_faction_pressure_targets value = THIS } } } add_to_array = { array = global.random_faction_pressure_targets value = THIS } }
+		random_faction_add_current_country_to_region_bucket = yes
+	}
+}
+
+random_faction_apply_wartime_pressure_to_current_region_target = {
+	if = {
+		limit = {
+			is_random_faction_wartime_candidate = yes
+			NOT = { has_country_flag = random_faction_under_pressure }
+		}
+		set_country_flag = { flag = random_faction_under_pressure days = @random_faction_border_pressure_days }
+		set_country_flag = { flag = random_faction_pressure_cooldown days = @random_faction_border_pressure_days }
+		add_timed_idea = { idea = random_faction_bloc_polarization days = @random_faction_bloc_polarization_days }
+		if = { limit = { NOT = { has_variable = random_faction_pressure_score } } set_variable = { random_faction_pressure_score = 0 } }
+		if = { limit = { NOT = { has_variable = random_faction_neutrality_resilience } } set_variable = { random_faction_neutrality_resilience = constant:random_faction_pressure_value.neutrality_resilience } }
+		add_to_variable = { random_faction_pressure_score = constant:random_faction_pressure_value.bloc_polarization }
+		random_faction_clamp_current_country_values = yes
+		if = { limit = { NOT = { is_in_array = { array = global.random_faction_pressure_targets value = THIS } } } add_to_array = { array = global.random_faction_pressure_targets value = THIS } }
+		random_faction_add_current_country_to_region_bucket = yes
+	}
+}
+
+random_faction_build_region_bucket_if_empty = {
+	if = {
+		limit = {
+			NOT = {
+				any_of_scopes = {
+					array = random_faction_current_region_targets
+					random_faction_country_base_valid = yes
+				}
+			}
+		}
+		every_neighbor_country = {
+			limit = { is_random_faction_pressure_neighbor = yes }
+			random_faction_add_current_country_to_region_bucket = yes
+		}
+	}
+	if = {
+		limit = {
+			NOT = {
+				any_of_scopes = {
+					array = random_faction_current_region_targets
+					random_faction_country_base_valid = yes
+				}
+			}
+		}
+		every_country = {
+			random_select_amount = @random_faction_regional_fallback_targets
+			limit = {
+				is_random_faction_pressure_neighbor = yes
+				NOT = { tag = ROOT }
+				is_on_same_continent_as = ROOT
+				OR = {
+					AND = {
+						has_event_target = random_faction_selected_leader
+						any_neighbor_country = { is_in_faction_with = event_target:random_faction_selected_leader }
+					}
+					AND = {
+						any_controlled_state = { is_coastal = yes }
+						ROOT = { any_controlled_state = { is_coastal = yes } }
+					}
+				}
+			}
+			random_faction_add_current_country_to_region_bucket = yes
+		}
+	}
+}
+
+random_faction_apply_regional_pressure = {
+	add_to_variable = { global.random_faction_fire_count = 1 }
+	clear_array = random_faction_current_region_targets
+	every_neighbor_country = {
+		limit = { is_random_faction_pressure_neighbor = yes }
+		random_faction_apply_pressure_to_current_region_target = yes
+	}
+	if = {
+		limit = {
+			NOT = {
+				any_of_scopes = {
+					array = random_faction_current_region_targets
+					random_faction_country_base_valid = yes
+				}
+			}
+		}
+		every_country = {
+			random_select_amount = @random_faction_regional_fallback_targets
+			limit = {
+				is_random_faction_pressure_neighbor = yes
+				NOT = { tag = ROOT }
+				is_on_same_continent_as = ROOT
+				AND = {
+					any_controlled_state = { is_coastal = yes }
+					ROOT = { any_controlled_state = { is_coastal = yes } }
+				}
+			}
+			random_faction_apply_pressure_to_current_region_target = yes
+		}
+	}
+	if = {
+		limit = {
+			has_global_flag = random_faction_evolution_i_unlocked
+			any_of_scopes = {
+				array = random_faction_current_region_targets
+				random_faction_pressured_neutral_decisions_visible = yes
+			}
+		}
+		random_scope_in_array = {
+			array = random_faction_current_region_targets
+			limit = { random_faction_pressured_neutral_decisions_visible = yes }
+			country_event = { id = chaosx.nr17.30 days = @random_faction_evo1_followup_min_days random_days = @random_faction_evo1_followup_random_days }
+		}
+	}
+	if = {
+		limit = { has_global_flag = random_faction_evolution_ii_unlocked }
+		country_event = { id = chaosx.nr17.60 days = @random_faction_evo2_pressure_min_days random_days = @random_faction_evo2_pressure_random_days }
+	}
+	if = {
+		limit = { has_global_flag = random_faction_evolution_iii_unlocked }
+		country_event = { id = chaosx.nr17.70 days = @random_faction_evo3_cascade_min_days random_days = @random_faction_evo3_cascade_random_days }
+	}
+}
+
+random_faction_prepare_pressure_choice = {
+	if = {
+		limit = { random_faction_pressured_neutral_decisions_visible = yes }
+		random_faction_collect_faction_options = yes
+	}
+}
+
+random_faction_pressure_copy_bloc = {
+	if = { limit = { random_faction_option_1_valid = yes } event_target:random_faction_option_1_leader = { save_event_target_as = random_faction_selected_leader } }
+	random_faction_join_selected_faction = yes
+}
+
+random_faction_pressure_counter_align = {
+	if = { limit = { random_faction_option_2_valid = yes } event_target:random_faction_option_2_leader = { save_event_target_as = random_faction_selected_leader } }
+	if = { limit = { NOT = { has_event_target = random_faction_selected_leader } } random_faction_pressure_resist_alignment = yes }
+	else = { random_faction_join_selected_faction = yes }
+}
+
+random_faction_pressure_resist_alignment = {
+	set_country_flag = { flag = random_faction_resisted_alignment days = @random_faction_recent_alignment_days }
+	set_country_flag = { flag = random_faction_selection_cooldown days = @random_faction_selection_cooldown_days }
+	add_timed_idea = { idea = random_faction_neutrality_exhaustion days = @random_faction_neutrality_exhaustion_days }
+	if = { limit = { NOT = { has_variable = random_faction_neutrality_resilience } } set_variable = { random_faction_neutrality_resilience = constant:random_faction_pressure_value.neutrality_resilience } }
+	subtract_from_variable = { random_faction_neutrality_resilience = constant:random_faction_pressure_value.neutrality_exhaustion }
+	random_faction_clamp_current_country_values = yes
+	random_faction_check_evolution_unlocks = yes
+}
+
+random_faction_dispatch_current_country_choice = {
+	if = {
+		limit = { is_ai = no }
+		country_event = { id = chaosx.nr17.10 }
+	}
+	else = {
+		country_event = { id = chaosx.nr17.20 }
+	}
+}
+
+random_faction_run_evo1_regional_bloc_race = {
+	if = {
+		limit = { has_global_flag = random_faction_evolution_i_unlocked }
+		if = {
+			limit = { random_faction_pressured_neutral_decisions_visible = yes }
+			random_faction_prepare_pressure_choice = yes
+			if = {
+				limit = { is_ai = no }
+				country_event = { id = chaosx.nr17.30 }
+			}
+			else = {
+				random_list = {
+					35 = { random_faction_pressure_copy_bloc = yes }
+					25 = { random_faction_pressure_counter_align = yes }
+					40 = { random_faction_pressure_resist_alignment = yes }
+				}
+			}
+		}
+		else = {
+			random_faction_build_region_bucket_if_empty = yes
+			random_scope_in_array = {
+				array = random_faction_current_region_targets
+				limit = { random_faction_pressured_neutral_decisions_visible = yes }
+				country_event = { id = chaosx.nr17.30 }
+			}
+		}
+	}
+}
+
+random_faction_run_evo2_pressure = {
+	if = {
+		limit = { has_global_flag = random_faction_evolution_ii_unlocked }
+		random_faction_build_region_bucket_if_empty = yes
+		if = {
+			limit = {
+				any_of_scopes = {
+					array = random_faction_current_region_targets
+					is_random_faction_wartime_candidate = yes
+					NOT = { has_country_flag = random_faction_under_pressure }
+				}
+			}
+			for_each_scope_loop = {
+				array = random_faction_current_region_targets
+				random_faction_apply_wartime_pressure_to_current_region_target = yes
+			}
+		}
+		else = {
+			every_neighbor_country = {
+				limit = {
+					is_random_faction_wartime_candidate = yes
+					NOT = { has_country_flag = random_faction_under_pressure }
+				}
+				random_faction_apply_wartime_pressure_to_current_region_target = yes
+			}
+		}
+	}
+}
+
+random_faction_run_evo3_cascade = {
+	if = {
+		limit = {
+			has_global_flag = random_faction_evolution_iii_unlocked
+			NOT = { has_country_flag = random_faction_evo3_cascade_lock }
+		}
+		random_faction_build_region_bucket_if_empty = yes
+		set_country_flag = { flag = random_faction_evo3_cascade_lock days = @random_faction_evo3_cascade_random_days }
+		set_variable = { global.random_faction_evo3_cascade_count = 0 }
+		while_loop_effect = {
+			limit = { random_faction_region_can_cascade = yes }
+			random_scope_in_array = {
+				array = random_faction_current_region_targets
+				limit = {
+					is_random_faction_pressure_neighbor = yes
+					NOT = { has_country_flag = random_faction_evo3_handled }
+				}
+				set_country_flag = { flag = random_faction_evo3_handled days = @random_faction_selection_cooldown_days }
+				add_to_variable = { global.random_faction_evo3_cascade_count = 1 }
+				if = {
+					limit = {
+						check_variable = {
+							var = global.random_faction_evo3_cascade_count
+							value = constant:random_faction_requirement.evo3_min_followups
+							compare = less_than_or_equals
+						}
+					}
+					random_faction_dispatch_current_country_choice = yes
+				}
+				else = {
+					random_list = {
+						35 = { random_faction_dispatch_current_country_choice = yes }
+						65 = { random_faction_pressure_resist_alignment = yes }
+					}
+				}
+			}
+		}
+		if = {
+			limit = { random_faction_current_region_has_neutral_survivor = yes }
+			set_global_flag = random_faction_not_everyone_candidate
+			set_country_flag = { flag = random_faction_not_everyone_region_candidate days = @random_faction_achievement_frontier_days }
+			country_event = { id = chaosx.nr17.86 days = @random_faction_achievement_frontier_days }
+		}
+	}
+}
+
+random_faction_record_current_evolution = {
+	set_temp_variable = { events_log_evolution_event_id = constant:random_faction_event.id }
+	set_temp_variable = { events_log_evolution_type = constant:random_faction_event.evolution_type }
+	set_temp_variable = { events_log_evolution_has_actor = 0 }
+	if = {
+		limit = {
+			has_event_target = random_faction_target_country
+			event_target:random_faction_target_country = { exists = yes }
+		}
+		event_target:random_faction_target_country = { save_event_target_as = events_log_evolution_actor }
+		set_temp_variable = { events_log_evolution_has_actor = 1 }
+	}
+	if = { limit = { is_current_evolution_enabled = yes } record_events_log_evolution_entry = yes }
+}
+
+random_faction_check_evolution_unlocks = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = random_faction_evolution_i_unlocked }
+			check_variable = { var = global.random_faction_fire_count value = 2 compare = greater_than_or_equals }
+		}
+		set_temp_variable = { events_log_evolution_stage = constant:random_faction_evolution_stage.regional_bloc_race }
+		set_temp_variable = { events_log_evolution_tier = constant:chaos_meter_tier_id.tier_1 }
+		if = {
+			limit = { is_current_evolution_enabled = yes }
+			set_global_flag = random_faction_evolution_i_unlocked
+			random_faction_record_current_evolution = yes
+			country_event = { id = chaosx.nr17.50 days = @random_faction_evo1_followup_min_days random_days = @random_faction_evo1_followup_random_days }
+		}
+	}
+	if = {
+		limit = {
+			has_global_flag = random_faction_evolution_i_unlocked
+			NOT = { has_global_flag = random_faction_evolution_ii_unlocked }
+			OR = {
+				has_war = yes
+				any_neighbor_country = { has_war = yes }
+			}
+		}
+		set_temp_variable = { events_log_evolution_stage = constant:random_faction_evolution_stage.pressured_neutrality }
+		set_temp_variable = { events_log_evolution_tier = constant:chaos_meter_tier_id.tier_2 }
+		if = {
+			limit = { is_current_evolution_enabled = yes }
+			set_global_flag = random_faction_evolution_ii_unlocked
+			random_faction_record_current_evolution = yes
+			country_event = { id = chaosx.nr17.60 days = @random_faction_evo2_pressure_min_days random_days = @random_faction_evo2_pressure_random_days }
+		}
+	}
+	if = {
+		limit = {
+			has_global_flag = random_faction_evolution_ii_unlocked
+			NOT = { has_global_flag = random_faction_evolution_iii_unlocked }
+			check_variable = { var = global.random_faction_pressure_count value = 3 compare = greater_than_or_equals }
+		}
+		set_temp_variable = { events_log_evolution_stage = constant:random_faction_evolution_stage.neutrality_collapse }
+		set_temp_variable = { events_log_evolution_tier = constant:chaos_meter_tier_id.tier_3 }
+		if = {
+			limit = { is_current_evolution_enabled = yes }
+			set_global_flag = random_faction_evolution_iii_unlocked
+			random_faction_record_current_evolution = yes
+			country_event = { id = chaosx.nr17.70 days = @random_faction_evo3_cascade_min_days random_days = @random_faction_evo3_cascade_random_days }
+		}
+	}
+}
+
+random_faction_pay_pp_cost = {
+	multiply_temp_variable = { random_faction_current_cost = -1 }
+	add_political_power = random_faction_current_cost
+	set_temp_variable = { random_faction_current_cost = 0 }
+}
+
+random_faction_pay_cp_cost = {
+	multiply_temp_variable = { random_faction_current_cost = -1 }
+	add_command_power = random_faction_current_cost
+	set_temp_variable = { random_faction_current_cost = 0 }
+}
+
+random_faction_pay_equipment_cost = {
+	multiply_temp_variable = { random_faction_equipment_cost = -1 }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = random_faction_equipment_cost }
+	set_temp_variable = { random_faction_equipment_cost = 0 }
+}
+
+random_faction_pay_infantry_equipment_cost = {
+	multiply_temp_variable = { random_faction_equipment_cost = -1 }
+	add_equipment_to_stockpile = { type = infantry_equipment_1 amount = random_faction_equipment_cost }
+	set_temp_variable = { random_faction_equipment_cost = 0 }
+}
+
+random_faction_pay_convoy_cost = {
+	multiply_temp_variable = { random_faction_equipment_cost = -1 }
+	add_equipment_to_stockpile = { type = convoy_1 amount = random_faction_equipment_cost }
+	set_temp_variable = { random_faction_equipment_cost = 0 }
+}
+
+random_faction_decision_stabilize_alignment = {
+	set_temp_variable = { random_faction_current_cost = constant:random_faction_decision_cost.pp_medium }
+	random_faction_pay_pp_cost = yes
+	set_temp_variable = { random_faction_equipment_cost = constant:random_faction_decision_cost.support_equipment_low }
+	random_faction_pay_equipment_cost = yes
+	set_country_flag = random_faction_alignment_stabilized
+	remove_ideas = random_faction_alignment_shock
+	add_stability = constant:random_faction_decision_fixed_reward.stability_medium
+	add_to_variable = { random_faction_neutrality_resilience = constant:random_faction_pressure_value.council_resilience }
+	random_faction_clamp_current_country_values = yes
+}
+
+random_faction_decision_request_liaison = {
+	set_temp_variable = { random_faction_current_cost = constant:random_faction_decision_cost.command_power_low }
+	random_faction_pay_cp_cost = yes
+	set_temp_variable = { random_faction_equipment_cost = constant:random_faction_decision_cost.support_equipment_low }
+	random_faction_pay_equipment_cost = yes
+	set_country_flag = { flag = random_faction_requested_liaison days = @random_faction_liaison_mission_days }
+	add_timed_idea = { idea = random_faction_liaison_mission days = @random_faction_liaison_mission_days }
+	if = {
+		limit = { FROM = { exists = yes } }
+		FROM = {
+			save_event_target_as = random_faction_supported_leader
+			if = {
+				limit = {
+					is_random_faction_allowed_faction_leader = yes
+					NOT = { has_war_with = ROOT }
+					ROOT = {
+						random_faction_country_base_valid = yes
+						NOT = { is_subject = yes }
+					}
+					NOT = { is_in_array = { array = random_faction_supported_minor_targets value = ROOT } }
+				}
+				add_to_array = { array = random_faction_supported_minor_targets value = ROOT }
+			}
+			random_faction_refresh_supported_minor_count = yes
+			random_faction_check_liaison_achievement = yes
+		}
+	}
+}
+
+random_faction_decision_quiet_opposition = {
+	set_temp_variable = { random_faction_current_cost = constant:random_faction_decision_cost.pp_low }
+	random_faction_pay_pp_cost = yes
+	set_temp_variable = { random_faction_equipment_cost = constant:random_faction_decision_cost.infantry_equipment_medium }
+	random_faction_pay_infantry_equipment_cost = yes
+	set_country_flag = random_faction_opposition_quieted
+	remove_ideas = random_faction_alignment_shock
+	add_stability = constant:random_faction_decision_fixed_cost.stability_low
+	if = {
+		limit = { has_war = yes }
+		add_war_support = constant:random_faction_decision_fixed_cost.war_support_low
+	}
+}
+
+random_faction_decision_convene_neutrality_council = {
+	set_temp_variable = { random_faction_current_cost = constant:random_faction_decision_cost.pp_medium }
+	random_faction_pay_pp_cost = yes
+	set_temp_variable = { random_faction_current_cost = constant:random_faction_decision_cost.command_power_low }
+	random_faction_pay_cp_cost = yes
+	add_stability = constant:random_faction_decision_fixed_cost.stability_low
+	set_country_flag = random_faction_neutrality_council_convened
+	set_country_flag = random_faction_border_posts_active
+	activate_mission = random_faction_reinforce_border_posts
+	add_to_variable = { random_faction_neutrality_resilience = constant:random_faction_pressure_value.council_resilience }
+	random_faction_clamp_current_country_values = yes
+}
+
+random_faction_cancel_border_posts_mission = {
+	clr_country_flag = random_faction_border_posts_active
+}
+
+random_faction_border_posts_success = {
+	clr_country_flag = random_faction_border_posts_active
+	set_country_flag = random_faction_border_posts_held
+	add_to_variable = { random_faction_neutrality_resilience = constant:random_faction_pressure_value.border_posts_resilience }
+	add_stability = constant:random_faction_decision_fixed_reward.stability_low
+	random_faction_clamp_current_country_values = yes
+	random_faction_check_hold_the_line_achievement = yes
+}
+
+random_faction_border_posts_failure = {
+	clr_country_flag = random_faction_border_posts_active
+	add_timed_idea = { idea = random_faction_neutrality_exhaustion days = @random_faction_neutrality_exhaustion_days }
+	add_to_variable = { random_faction_pressure_score = constant:random_faction_pressure_value.neutrality_exhaustion }
+	random_faction_clamp_current_country_values = yes
+}
+
+random_faction_decision_invite_observers = {
+	set_temp_variable = { random_faction_current_cost = constant:random_faction_decision_cost.command_power_low }
+	random_faction_pay_cp_cost = yes
+	set_temp_variable = { random_faction_equipment_cost = constant:random_faction_decision_cost.convoy_low }
+	random_faction_pay_convoy_cost = yes
+	set_country_flag = { flag = random_faction_invited_observers days = @random_faction_observer_window_days }
+	add_to_variable = { random_faction_neutrality_resilience = constant:random_faction_pressure_value.observers_resilience }
+	add_war_support = constant:random_faction_decision_fixed_reward.war_support_low
+	random_faction_clamp_current_country_values = yes
+}
+
+random_faction_decision_publish_neutrality = {
+	set_temp_variable = { random_faction_current_cost = constant:random_faction_decision_cost.pp_low }
+	random_faction_pay_pp_cost = yes
+	add_stability = constant:random_faction_decision_fixed_cost.stability_low
+	set_country_flag = random_faction_neutrality_published
+	add_to_variable = { random_faction_neutrality_resilience = constant:random_faction_pressure_value.neutrality_press_resilience }
+	random_faction_clamp_current_country_values = yes
+}
+
+random_faction_decision_offer_staff_mission = {
+	set_temp_variable = { random_faction_current_cost = constant:random_faction_decision_cost.command_power_medium }
+	random_faction_pay_cp_cost = yes
+	set_temp_variable = { random_faction_equipment_cost = constant:random_faction_decision_cost.support_equipment_medium }
+	random_faction_pay_equipment_cost = yes
+	if = {
+		limit = { FROM = { exists = yes } }
+		FROM = {
+			add_timed_idea = { idea = random_faction_liaison_mission days = @random_faction_liaison_mission_days }
+			ROOT = {
+				if = {
+					limit = { NOT = { is_in_array = { array = random_faction_supported_minor_targets value = PREV } } }
+					add_to_array = { array = random_faction_supported_minor_targets value = PREV }
+				}
+			}
+		}
+	}
+	random_faction_refresh_supported_minor_count = yes
+	random_faction_check_liaison_achievement = yes
+}
+
+random_faction_decision_radio_networks = {
+	set_temp_variable = { random_faction_current_cost = constant:random_faction_decision_cost.pp_low }
+	random_faction_pay_pp_cost = yes
+	set_temp_variable = { random_faction_equipment_cost = constant:random_faction_decision_cost.support_equipment_medium }
+	random_faction_pay_equipment_cost = yes
+	set_country_flag = { flag = random_faction_radio_networks_active days = @random_faction_bloc_polarization_days }
+	every_country = {
+		limit = { random_faction_valid_leader_action_target_for_root = yes }
+		add_to_variable = { random_faction_pressure_score = constant:random_faction_pressure_value.radio_network_pressure }
+		add_timed_idea = { idea = random_faction_bloc_polarization days = @random_faction_bloc_polarization_days }
+		random_faction_clamp_current_country_values = yes
+		ROOT = {
+			if = {
+				limit = { NOT = { is_in_array = { array = random_faction_supported_minor_targets value = PREV } } }
+				add_to_array = { array = random_faction_supported_minor_targets value = PREV }
+			}
+		}
+	}
+	random_faction_refresh_supported_minor_count = yes
+	random_faction_check_liaison_achievement = yes
+}
+
+random_faction_decision_guarantee_corridor = {
+	set_temp_variable = { random_faction_current_cost = constant:random_faction_decision_cost.command_power_low }
+	random_faction_pay_cp_cost = yes
+	set_temp_variable = { random_faction_equipment_cost = constant:random_faction_decision_cost.infantry_equipment_medium }
+	random_faction_pay_infantry_equipment_cost = yes
+	set_temp_variable = { random_faction_equipment_cost = constant:random_faction_decision_cost.convoy_low }
+	random_faction_pay_convoy_cost = yes
+	set_country_flag = random_faction_corridor_mission_active
+	activate_mission = random_faction_guarantee_corridor_mission
+	clear_array = random_faction_corridor_targets
+	if = {
+		limit = { FROM = { exists = yes } }
+		FROM = {
+			set_country_flag = { flag = random_faction_corridor_guaranteed days = @random_faction_corridor_days }
+			ROOT = {
+				add_to_array = {
+					array = random_faction_corridor_targets
+					value = PREV
+				}
+			}
+		}
+	}
+}
+
+random_faction_cancel_corridor_mission = {
+	clr_country_flag = random_faction_corridor_mission_active
+	clear_array = random_faction_corridor_targets
+}
+
+random_faction_corridor_success = {
+	clr_country_flag = random_faction_corridor_mission_active
+	add_command_power = constant:random_faction_decision_cost.command_power_reward_small
+	for_each_scope_loop = {
+		array = random_faction_corridor_targets
+		limit = {
+			has_country_flag = random_faction_corridor_guaranteed
+			random_faction_country_base_valid = yes
+		}
+		subtract_from_variable = { random_faction_pressure_score = constant:random_faction_pressure_value.staff_mission_support }
+		add_to_variable = { random_faction_neutrality_resilience = constant:random_faction_pressure_value.observers_resilience }
+		random_faction_clamp_current_country_values = yes
+	}
+	clear_array = random_faction_corridor_targets
+}
+
+random_faction_corridor_failure = {
+	clr_country_flag = random_faction_corridor_mission_active
+	add_stability = constant:random_faction_decision_fixed_cost.stability_low
+	for_each_scope_loop = {
+		array = random_faction_corridor_targets
+		limit = {
+			has_country_flag = random_faction_corridor_guaranteed
+			random_faction_country_base_valid = yes
+		}
+		add_to_variable = { random_faction_pressure_score = constant:random_faction_pressure_value.commitment_pressure }
+		random_faction_clamp_current_country_values = yes
+	}
+	clear_array = random_faction_corridor_targets
+}
+
+random_faction_decision_demand_commitment = {
+	set_temp_variable = { random_faction_current_cost = constant:random_faction_decision_cost.pp_high }
+	random_faction_pay_pp_cost = yes
+	set_temp_variable = { random_faction_current_cost = constant:random_faction_decision_cost.command_power_medium }
+	random_faction_pay_cp_cost = yes
+	if = {
+		limit = { FROM = { random_faction_valid_commitment_target_for_root = yes } }
+		FROM = {
+			set_country_flag = random_faction_commitment_demanded
+			add_to_variable = { random_faction_pressure_score = constant:random_faction_pressure_value.commitment_pressure }
+			random_faction_clamp_current_country_values = yes
+			if = {
+				limit = {
+					check_variable = {
+						var = random_faction_pressure_score
+						value = constant:random_faction_pressure_value.collapse_threshold
+						compare = greater_than_or_equals
+					}
+				}
+				random_faction_dispatch_current_country_choice = yes
+			}
+		}
+	}
+}
+
+random_faction_leader_staff_mission_from_event = {
+	if = { limit = { NOT = { is_in_array = { array = global.random_faction_faction_leaders value = THIS } } } add_to_array = { array = global.random_faction_faction_leaders value = THIS } }
+	add_command_power = constant:random_faction_decision_cost.command_power_reward_small
+	if = {
+		limit = {
+			has_event_target = random_faction_target_country
+			event_target:random_faction_target_country = {
+				random_faction_country_base_valid = yes
+				NOT = { is_subject = yes }
+				NOT = { has_war_with = ROOT }
+			}
+		}
+		event_target:random_faction_target_country = {
+			ROOT = {
+				if = {
+					limit = { NOT = { is_in_array = { array = random_faction_supported_minor_targets value = PREV } } }
+					add_to_array = { array = random_faction_supported_minor_targets value = PREV }
+				}
+			}
+		}
+		random_faction_refresh_supported_minor_count = yes
+		random_faction_check_liaison_achievement = yes
+	}
+}
+
+random_faction_leader_radio_network_from_event = {
+	if = { limit = { NOT = { is_in_array = { array = global.random_faction_faction_leaders value = THIS } } } add_to_array = { array = global.random_faction_faction_leaders value = THIS } }
+	set_country_flag = { flag = random_faction_radio_networks_active days = @random_faction_bloc_polarization_days }
+	if = {
+		limit = {
+			has_event_target = random_faction_target_country
+			event_target:random_faction_target_country = {
+				random_faction_country_base_valid = yes
+				NOT = { is_subject = yes }
+				NOT = { has_war_with = ROOT }
+			}
+		}
+		event_target:random_faction_target_country = {
+			ROOT = {
+				if = {
+					limit = { NOT = { is_in_array = { array = random_faction_supported_minor_targets value = PREV } } }
+					add_to_array = { array = random_faction_supported_minor_targets value = PREV }
+				}
+			}
+		}
+		random_faction_refresh_supported_minor_count = yes
+		random_faction_check_liaison_achievement = yes
+	}
+}
+
+random_faction_clear_current_country_pressure_state = {
+	remove_ideas = random_faction_alignment_shock
+	remove_ideas = random_faction_border_pressure
+	remove_ideas = random_faction_bloc_polarization
+	remove_ideas = random_faction_neutrality_exhaustion
+	remove_ideas = random_faction_liaison_mission
+	clr_country_flag = random_faction_under_pressure
+	clr_country_flag = random_faction_border_posts_active
+	clr_country_flag = random_faction_corridor_mission_active
+	clr_country_flag = random_faction_commitment_demanded
+	clr_country_flag = random_faction_regional_bucket_target
+	clr_country_flag = random_faction_not_everyone_region_candidate
+	clr_country_flag = random_faction_frontier_commitment_candidate
+	clr_country_flag = random_faction_hold_the_line_candidate
+	if = { limit = { has_active_mission = random_faction_reinforce_border_posts } remove_mission = random_faction_reinforce_border_posts }
+	if = { limit = { has_active_mission = random_faction_guarantee_corridor_mission } remove_mission = random_faction_guarantee_corridor_mission }
+	clear_array = random_faction_corridor_targets
+	clear_array = random_faction_current_region_targets
+}
+
+random_faction_clear_current_leader_pressure_state = {
+	clr_country_flag = random_faction_corridor_mission_active
+	clr_country_flag = random_faction_radio_networks_active
+	clr_country_flag = random_faction_liaison_web_candidate
+	if = { limit = { has_active_mission = random_faction_guarantee_corridor_mission } remove_mission = random_faction_guarantee_corridor_mission }
+	clear_array = random_faction_corridor_targets
+	clear_array = random_faction_supported_minor_targets
+	clear_array = random_faction_liaison_web_candidate_targets
+	set_variable = { random_faction_supported_minors = 0 }
+}
+
+random_faction_clear_current_country_pressure = {
+	random_faction_clear_current_country_pressure_state = yes
+	if = { limit = { is_in_array = { array = global.random_faction_pressured_neutrals value = THIS } } remove_from_array = { array = global.random_faction_pressured_neutrals value = THIS } }
+	if = { limit = { is_in_array = { array = global.random_faction_pressure_targets value = THIS } } remove_from_array = { array = global.random_faction_pressure_targets value = THIS } }
+	if = { limit = { is_in_array = { array = global.random_faction_aligned_minors value = THIS } } remove_from_array = { array = global.random_faction_aligned_minors value = THIS } }
+}
+
+random_faction_refresh_runtime_arrays = {
+	clear_temp_array = random_faction_live_leaders
+	for_each_scope_loop = {
+		array = global.random_faction_faction_leaders
+		if = {
+			limit = { is_random_faction_allowed_faction_leader = yes }
+			random_faction_refresh_supported_minor_count = yes
+			add_to_temp_array = { random_faction_live_leaders = THIS }
+		}
+		else = { random_faction_clear_current_leader_pressure_state = yes }
+	}
+	resize_array = { global.random_faction_faction_leaders = 0 }
+	for_each_scope_loop = {
+		array = random_faction_live_leaders
+		add_to_array = { array = global.random_faction_faction_leaders value = THIS }
+	}
+	clear_temp_array = random_faction_live_leaders
+
+	clear_temp_array = random_faction_live_pressure_targets
+	for_each_scope_loop = {
+		array = global.random_faction_pressure_targets
+		if = {
+			limit = {
+				random_faction_country_base_valid = yes
+				OR = {
+					random_faction_has_active_pressure = yes
+					has_country_flag = random_faction_recent_alignment
+					is_in_faction = yes
+				}
+			}
+			add_to_temp_array = { random_faction_live_pressure_targets = THIS }
+		}
+		else = { random_faction_clear_current_country_pressure_state = yes }
+	}
+	resize_array = { global.random_faction_pressure_targets = 0 }
+	for_each_scope_loop = {
+		array = random_faction_live_pressure_targets
+		add_to_array = { array = global.random_faction_pressure_targets value = THIS }
+	}
+	clear_temp_array = random_faction_live_pressure_targets
+}
+
+random_faction_cleanup_after_country_lifecycle_change = {
+	if = {
+		limit = {
+			OR = {
+				random_faction_has_active_pressure = yes
+				has_country_flag = random_faction_recent_alignment
+				has_country_flag = random_faction_regional_bucket_target
+				is_in_array = { array = global.random_faction_pressure_targets value = THIS }
+				is_in_array = { array = global.random_faction_pressured_neutrals value = THIS }
+				is_in_array = { array = global.random_faction_aligned_minors value = THIS }
+			}
+		}
+		random_faction_clear_current_country_pressure = yes
+	}
+	if = {
+		limit = { is_in_array = { array = global.random_faction_faction_leaders value = THIS } }
+		random_faction_clear_current_leader_pressure_state = yes
+	}
+	random_faction_refresh_runtime_arrays = yes
+}
+
+random_faction_cleanup_after_world_end = {
+	for_each_scope_loop = {
+		array = global.random_faction_pressure_targets
+		random_faction_clear_current_country_pressure_state = yes
+	}
+	for_each_scope_loop = {
+		array = global.random_faction_aligned_minors
+		random_faction_clear_current_country_pressure_state = yes
+	}
+	for_each_scope_loop = {
+		array = global.random_faction_pressured_neutrals
+		random_faction_clear_current_country_pressure_state = yes
+	}
+	for_each_scope_loop = {
+		array = global.random_faction_faction_leaders
+		random_faction_clear_current_leader_pressure_state = yes
+	}
+	resize_array = { global.random_faction_pressure_targets = 0 }
+	resize_array = { global.random_faction_aligned_minors = 0 }
+	resize_array = { global.random_faction_pressured_neutrals = 0 }
+	resize_array = { global.random_faction_faction_leaders = 0 }
+}
+
+random_faction_refresh_supported_minor_count = {
+	save_event_target_as = random_faction_supported_leader
+	set_variable = { random_faction_supported_minors = 0 }
+	clear_temp_array = random_faction_live_supported_minor_targets
+	for_each_scope_loop = {
+		array = random_faction_supported_minor_targets
+		if = {
+			limit = {
+				random_faction_country_base_valid = yes
+				NOT = { is_subject = yes }
+				NOT = { has_capitulated = yes }
+				event_target:random_faction_supported_leader = {
+					is_random_faction_allowed_faction_leader = yes
+					NOT = { has_war_with = PREV }
+				}
+			}
+			event_target:random_faction_supported_leader = {
+				if = {
+					limit = { NOT = { is_in_array = { array = random_faction_live_supported_minor_targets value = PREV } } }
+					add_to_temp_array = { random_faction_live_supported_minor_targets = PREV }
+				}
+				add_to_variable = { random_faction_supported_minors = 1 }
+			}
+		}
+	}
+	resize_array = { random_faction_supported_minor_targets = 0 }
+	for_each_scope_loop = {
+		array = random_faction_live_supported_minor_targets
+		add_to_array = { array = random_faction_supported_minor_targets value = THIS }
+	}
+	clear_temp_array = random_faction_live_supported_minor_targets
+}
+
+random_faction_start_liaison_web_candidate = {
+	random_faction_refresh_supported_minor_count = yes
+	if = {
+		limit = {
+			NOT = { has_country_flag = random_faction_achievement_liaison_web }
+			NOT = { has_country_flag = random_faction_liaison_web_candidate }
+			check_variable = {
+				var = random_faction_supported_minors
+				value = constant:random_faction_requirement.liaison_web_targets
+				compare = greater_than_or_equals
+			}
+		}
+		clear_array = random_faction_liaison_web_candidate_targets
+		for_each_scope_loop = {
+			array = random_faction_supported_minor_targets
+			add_to_array = { array = random_faction_liaison_web_candidate_targets value = THIS }
+		}
+		set_country_flag = { flag = random_faction_liaison_web_candidate days = @random_faction_liaison_mission_days }
+		country_event = { id = chaosx.nr17.83 days = @random_faction_liaison_mission_days }
+	}
+}
+
+random_faction_check_liaison_web_candidate_achievement = {
+	if = {
+		limit = {
+			has_country_flag = random_faction_liaison_web_candidate
+			NOT = { has_country_flag = random_faction_achievement_liaison_web }
+		}
+		save_event_target_as = random_faction_supported_leader
+		set_temp_variable = { random_faction_liaison_web_candidate_count = 0 }
+		for_each_scope_loop = {
+			array = random_faction_liaison_web_candidate_targets
+			if = {
+				limit = {
+					random_faction_country_base_valid = yes
+					NOT = { is_subject = yes }
+					NOT = { has_capitulated = yes }
+					event_target:random_faction_supported_leader = {
+						is_random_faction_allowed_faction_leader = yes
+						NOT = { has_war_with = PREV }
+					}
+				}
+				ROOT = { add_to_temp_variable = { random_faction_liaison_web_candidate_count = 1 } }
+			}
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = random_faction_liaison_web_candidate_count
+					value = constant:random_faction_requirement.liaison_web_targets
+					compare = greater_than_or_equals
+				}
+			}
+			set_country_flag = random_faction_achievement_liaison_web
+		}
+		clr_country_flag = random_faction_liaison_web_candidate
+		clear_array = random_faction_liaison_web_candidate_targets
+		set_temp_variable = { random_faction_liaison_web_candidate_count = 0 }
+	}
+}
+
+random_faction_check_join_achievements = {
+	if = {
+		limit = { has_country_flag = random_faction_four_doors_choice }
+		set_country_flag = { flag = random_faction_four_doors_candidate days = @random_faction_achievement_year_days }
+		country_event = { id = chaosx.nr17.81 days = @random_faction_achievement_year_days }
+	}
+	if = {
+		limit = {
+			has_global_flag = random_faction_evolution_ii_unlocked
+			OR = {
+				has_war = yes
+				random_faction_has_active_pressure = yes
+				any_neighbor_country = { has_war = yes }
+			}
+		}
+		set_country_flag = { flag = random_faction_frontier_commitment_candidate days = @random_faction_achievement_frontier_days }
+		country_event = { id = chaosx.nr17.84 days = @random_faction_achievement_frontier_days }
+	}
+	random_faction_check_crowded_border_achievement = yes
+}
+
+random_faction_check_hold_the_line_achievement = {
+	if = {
+		limit = {
+			has_global_flag = random_faction_evolution_i_unlocked
+			has_country_flag = random_faction_neutrality_council_convened
+			has_country_flag = random_faction_border_posts_held
+			NOT = { is_in_faction = yes }
+			NOT = { is_subject = yes }
+			NOT = { has_capitulated = yes }
+		}
+		set_country_flag = { flag = random_faction_hold_the_line_candidate days = @random_faction_achievement_year_days }
+		country_event = { id = chaosx.nr17.82 days = @random_faction_achievement_year_days }
+	}
+}
+
+random_faction_check_crowded_border_achievement = {
+	every_country = {
+		limit = {
+			NOT = { is_in_faction = yes }
+			NOT = { is_major = yes }
+			any_neighbor_country = { is_in_faction = yes }
+		}
+		save_event_target_as = random_faction_crowded_border_candidate
+		set_temp_variable = { random_faction_neighbor_faction_count = 0 }
+		every_country = {
+			limit = {
+				is_random_faction_allowed_faction_leader = yes
+				any_country = {
+					is_in_faction_with = PREV
+					is_neighbor_of = event_target:random_faction_crowded_border_candidate
+				}
+			}
+			add_to_temp_variable = { random_faction_neighbor_faction_count = 1 }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = random_faction_neighbor_faction_count
+					value = constant:random_faction_requirement.crowded_border_factions
+					compare = greater_than_or_equals
+				}
+			}
+			set_country_flag = random_faction_achievement_crowded_border
+			set_global_flag = random_faction_achievement_crowded_border
+		}
+	}
+}
+
+random_faction_check_liaison_achievement = {
+	random_faction_start_liaison_web_candidate = yes
+}
+
+random_faction_check_not_everyone_achievement = {
+	if = {
+		limit = {
+			has_global_flag = random_faction_not_everyone_candidate
+			has_country_flag = random_faction_not_everyone_region_candidate
+			random_faction_current_region_has_neutral_survivor = yes
+		}
+		set_global_flag = random_faction_achievement_not_everyone
+	}
+}

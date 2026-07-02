@@ -1,0 +1,74 @@
+# ============================================================================
+# CHAOS REDUX - RANDOM FACTION ON ACTIONS
+# ============================================================================
+# Hooks Event 17 into vanilla faction lifecycle callbacks without adding broad
+# daily, weekly, or monthly country iterations.
+# ============================================================================
+
+on_actions = {
+	on_leave_faction = {
+		effect = {
+			if = {
+				limit = { has_country_flag = random_faction_four_doors_candidate }
+				clr_country_flag = random_faction_four_doors_candidate
+				set_country_flag = random_faction_four_doors_broken
+			}
+			random_faction_cleanup_after_country_lifecycle_change = yes
+			if = { limit = { FROM = { exists = yes } } FROM = { random_faction_cleanup_after_country_lifecycle_change = yes } }
+		}
+	}
+
+	on_capitulation = {
+		effect = {
+			random_faction_cleanup_after_country_lifecycle_change = yes
+			if = { limit = { FROM = { exists = yes } } FROM = { random_faction_cleanup_after_country_lifecycle_change = yes } }
+		}
+	}
+
+	on_uncapitulation = {
+		effect = {
+			random_faction_cleanup_after_country_lifecycle_change = yes
+		}
+	}
+
+	on_puppet = {
+		effect = {
+			random_faction_cleanup_after_country_lifecycle_change = yes
+			if = { limit = { FROM = { exists = yes } } FROM = { random_faction_cleanup_after_country_lifecycle_change = yes } }
+		}
+	}
+
+	on_release_as_puppet = {
+		effect = {
+			random_faction_cleanup_after_country_lifecycle_change = yes
+			if = { limit = { FROM = { exists = yes } } FROM = { random_faction_cleanup_after_country_lifecycle_change = yes } }
+		}
+	}
+
+	on_subject_free = {
+		effect = {
+			random_faction_cleanup_after_country_lifecycle_change = yes
+			if = { limit = { FROM = { exists = yes } } FROM = { random_faction_cleanup_after_country_lifecycle_change = yes } }
+		}
+	}
+
+	on_subject_annexed = {
+		effect = {
+			random_faction_cleanup_after_country_lifecycle_change = yes
+			if = { limit = { FROM = { exists = yes } } FROM = { random_faction_cleanup_after_country_lifecycle_change = yes } }
+		}
+	}
+
+	on_annex = {
+		effect = {
+			random_faction_cleanup_after_country_lifecycle_change = yes
+			if = { limit = { FROM = { exists = yes } } FROM = { random_faction_cleanup_after_country_lifecycle_change = yes } }
+		}
+	}
+
+	on_government_change = {
+		effect = {
+			random_faction_cleanup_after_country_lifecycle_change = yes
+		}
+	}
+}

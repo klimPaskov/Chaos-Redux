@@ -196,7 +196,7 @@ initialize_event_categories = {
     add_to_array = { global.repeatable_events = 8 }   # +WORLD TENSION
     add_to_array = { global.repeatable_events = 9 }   # WHITE PEACE
     add_to_array = { global.repeatable_events = 13 }  # NATURAL DISASTERS
-    add_to_array = { global.repeatable_events = 17 }  # JOIN FACTION
+    add_to_array = { global.repeatable_events = 17 }  # RANDOM FACTION
     add_to_array = { global.repeatable_events = 18 }  # RAND RESOURCE
     add_to_array = { global.repeatable_events = 19 }  # INF SPAWN
     add_to_array = { global.repeatable_events = 21 }  # RAND CW
@@ -525,6 +525,10 @@ evaluate_random_event_active_pool_candidate = {
 				AND = {
 					check_variable = { event_id = constant:secret_alliance_event.id }
 					NOT = { secret_alliance_has_valid_target_available = yes }
+				}
+				AND = {
+					check_variable = { event_id = constant:random_faction_event.id }
+					NOT = { random_faction_has_dispatchable_context = yes }
 				}
 				AND = {
 					check_variable = { event_id = constant:cannibalism_event_log.event_id }
