@@ -41,7 +41,7 @@ The decisions are state-targeted and only appear for Japan while it is at war wi
 No new icon assets are required for this iteration.
 
 - Decision icon currently uses: `GFX_decision_generic_operation`
-- File using the icon: `common/decisions/chaosx_japan_chemical_campaign_decisions.txt`
+- File using the icon: `common/decisions/japan_chemical_campaign_decisions.txt`
 - Localisation keys are in: `localisation/english/chaosx_decisions_l_english.yml`
 
 If custom art is added later, place sprite definitions in a dedicated decision `.gfx` file under `interface/` and replace decision `icon` tokens accordingly.

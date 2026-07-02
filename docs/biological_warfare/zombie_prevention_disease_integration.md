@@ -54,7 +54,7 @@ This is handled by:
 
 The prevention decisions in:
 
-- `common/decisions/chaosx_zzz_cure_decisions.txt`
+- `common/decisions/002_zombie_outbreak_decisions.txt`
 
 now call the country refresh effect when they are enacted or revoked.
 

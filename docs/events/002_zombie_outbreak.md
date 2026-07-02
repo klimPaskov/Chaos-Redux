@@ -30,8 +30,8 @@ Primary script and data files:
 - `common/scripted_effects/chaosx_effects.txt`
 - `common/scripted_triggers/chaosx_scripted_triggers.txt`
 - `common/script_constants/zombie_constants.txt`
-- `common/decisions/chaosx_anti_zombie_league_decisions.txt`
-- `common/decisions/categories/chaosx_decisions_categories.txt`
+- `common/decisions/002_zombie_outbreak_decisions.txt`
+- `common/decisions/categories/002_zombie_outbreak_categories.txt`
 - `common/ai_strategy/ZZZ.txt`
 - `common/ai_strategy/anti_zombie_league.txt`
 - `common/ai_templates/templates_ZZZ.txt`
@@ -350,7 +350,7 @@ AI acceptance weighs:
 
 #### Manual formation
 
-The standard formation path still comes from `common/decisions/chaosx_anti_zombie_league_decisions.txt`.
+The standard formation path still comes from `common/decisions/002_zombie_outbreak_decisions.txt`.
 
 Current behavior:
 
