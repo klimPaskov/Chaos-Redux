@@ -103,7 +103,7 @@ Do not leave new event assets loose in category roots such as `gfx/event_picture
 
 Root-only and engine-convention exceptions:
 
-- `gfx/achievements/` must keep achievement DDS files directly in the root. Achievement filenames must match the achievement ids, so event-owned achievement ids and triplet filenames should use `<event_id>_<event_slug>_<achievement_name>{,_grey,_not_eligible}.dds`.
+- `gfx/achievements/` must keep achievement DDS files directly in the root. Do not create `gfx/achievements/<event_id>_<event_slug>/` subfolders unless a new engine behavior has been verified locally. Achievement filenames must match the full achievement ids from `common/achievements/`, so event-owned achievement ids and triplet filenames should use `<event_id>_<event_slug>_<achievement_name>{,_grey,_not_eligible}.dds` or the exact established id if it includes an ordinal.
 - `gfx/flags/`, `gfx/flags/medium/`, and `gfx/flags/small/` must keep HOI4 tag/ideology filenames. Do not put flags into event folders; use cosmetic tags or route-specific tag filenames when an event needs transformed flags.
 
 Shared or non-event systems may use a clear shared/system folder. Do not force shared assets into an event folder just to avoid a root directory.
@@ -723,15 +723,15 @@ Target size:
 
 Use an `achievement_` prefix for source or intermediate art when it helps distinguish the asset type.
 
-For Chaos Redux final files, achievements are a root-only exception. Put completed, grey, and not-eligible DDS files directly under `gfx/achievements/`, and name them after the achievement id:
+For Chaos Redux final files, achievements are a root-only exception. Put completed, grey, and not-eligible DDS files directly under `gfx/achievements/`, and name them after the exact achievement id registered in `common/achievements/`:
 
 ```text
-gfx/achievements/<event_id>_<event_slug>_<achievement_name>.dds
-gfx/achievements/<event_id>_<event_slug>_<achievement_name>_grey.dds
-gfx/achievements/<event_id>_<event_slug>_<achievement_name>_not_eligible.dds
+gfx/achievements/<achievement_id>.dds
+gfx/achievements/<achievement_id>_grey.dds
+gfx/achievements/<achievement_id>_not_eligible.dds
 ```
 
-When renaming or adding achievement ids, update `common/achievements/`, `localisation/english/chaosx_achievements_l_english.yml`, `interface/chaosx_achievements.gfx`, and any docs or manifests that list the final DDS paths. Do not move achievement DDS files into event subfolders unless an engine change has been verified locally.
+When renaming or adding achievement ids, update `common/achievements/`, `localisation/english/chaosx_achievements_l_english.yml`, `interface/chaosx_achievements.gfx`, the three DDS variants in `gfx/achievements/`, and any docs or manifests that list the final DDS paths. If the achievement registry owns a single `unique_id`, keep it as one root-level registry file and group event-owned achievements by event section inside the file instead of splitting it into per-event achievement files.
 
 Inspect `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/achievements` before generating or processing achievement icons.
 

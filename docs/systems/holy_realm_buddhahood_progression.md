@@ -136,7 +136,7 @@ The Holy Mandala decision GUI reuses `holy_realm_mandala_category_scripted_gui` 
 - Chaos and Final Silence Pressure
 - clickable Refuge, Arhats, Diplomacy, Doctrine, and Ledger tabs for contextual route text
 
-The panel is attached to `holy_realm_mandala_category` through the decision-category scripted GUI path. Its interface container is `holy_realm_mandala_category_container` in `interface/chaosx_decisions.gui`; its scripted behavior is in `common/scripted_guis/chaosx_scripted_guis.txt`. A separate full-screen replacement panel can deepen presentation later, but the required live Mandala panel surface is the current decision-category GUI.
+The panel is attached to `holy_realm_mandala_category` through the decision-category scripted GUI path. Its interface container is `holy_realm_mandala_category_container` in `interface/chaosx_decisions.gui`; its scripted behavior is in `common/scripted_guis/003_holy_realm_scripted_guis.txt`. A separate full-screen replacement panel can deepen presentation later, but the required live Mandala panel surface is the current decision-category GUI.
 
 The Mandala states are registered in `interface/003_holy_realm.gfx`:
 

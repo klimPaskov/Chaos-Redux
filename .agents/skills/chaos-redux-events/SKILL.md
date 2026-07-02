@@ -315,6 +315,9 @@ Core files to check:
 - `common/on_actions/chaosx_on_actions_system.txt`
 - `common/on_actions/<event_id>_<event_slug>_on_actions.txt` for event-owned runtime hooks
 - `common/ideas/<event_id>_<event_slug>_ideas.txt` for event-owned national spirits, hidden ideas, and other idea categories
+- `common/scripted_guis/<event_id>_<event_slug>_scripted_guis.txt` for event-owned scripted GUI bindings
+- `common/opinion_modifiers/<event_id>_<event_slug>_opinion_modifiers.txt` for event-owned opinion modifiers
+- `common/dynamic_modifiers/<event_id>_<event_slug>_dynamic_modifiers.txt` for event-owned dynamic modifiers
 - `common/scripted_effects/chaosx_logic_effects.txt`
 - `common/scripted_effects/chaosx_events_log_effects.txt`
 - `localisation/english/chaosx_event_names_l_english.yml`
@@ -339,6 +342,7 @@ Frequently-needed companion files:
 - `common/decisions/*.txt`
 - `common/decisions/categories/*.txt`
 - `common/ideas/*.txt`, with `common/ideas/chaosx_ideas.txt` reserved for shared or legacy root-only ideas that cannot safely belong to one event
+- `common/achievements/chaos_redux_achievements.txt` for the single root-only Chaos Redux achievement registry. Keep event achievements grouped by event section inside this file instead of creating per-event achievement files with new `unique_id`s
 - `common/ai_strategy/*.txt`
 - `common/ai_templates/*.txt`
 - and possibly more. Some events can truly touch all systems.
