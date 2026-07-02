@@ -723,6 +723,16 @@ defined_text = {
 			text = {
 				trigger = {
 					check_variable = {
+						var = global.events_log_evolution_view_type_entries^events_log_evolution_index
+						value = constant:random_faction_event.evolution_type
+						compare = equals
+					}
+				}
+				localization_key = chaosx.events_log.evolution.type.random_faction
+			}
+			text = {
+				trigger = {
+					check_variable = {
 					var = global.events_log_evolution_view_type_entries^events_log_evolution_index
 					value = constant:soviet_collapse_event_log.secession_evolution_type
 					compare = equals
@@ -2992,6 +3002,16 @@ defined_text = {
 			trigger = {
 				check_variable = {
 					var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index
+					value = constant:random_faction_event.evolution_type
+					compare = equals
+				}
+			}
+			localization_key = chaosx.events_log.evolution.type.random_faction
+		}
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index
 					value = constant:soviet_collapse_event_log.secession_evolution_type
 					compare = equals
 				}
@@ -3736,6 +3756,16 @@ defined_text = {
 			trigger = {
 				check_variable = {
 					var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index
+					value = constant:random_faction_event.evolution_type
+					compare = equals
+				}
+			}
+			localization_key = chaosx.events_log.evolution.type.random_faction
+		}
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index
 					value = constant:soviet_collapse_event_log.secession_evolution_type
 					compare = equals
 				}
@@ -4083,6 +4113,12 @@ defined_text = {
 		}
 		text = {
 			trigger = {
+				check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:random_faction_event.evolution_type compare = equals }
+			}
+			localization_key = "[GetEventsLogEventDetailRandomFactionEvolutionTitle]"
+		}
+		text = {
+			trigger = {
 				check_variable = {
 					var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index
 					value = constant:soviet_collapse_event_log.secession_evolution_type
@@ -4184,6 +4220,12 @@ defined_text = {
 			check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:secret_alliance_event.evolution_type compare = equals }
 		}
 		localization_key = "[GetEventsLogEventDetailSecretAllianceEvolutionBody]"
+	}
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:random_faction_event.evolution_type compare = equals }
+		}
+		localization_key = "[GetEventsLogEventDetailRandomFactionEvolutionBody]"
 	}
 	text = {
 		trigger = {
@@ -4770,6 +4812,10 @@ defined_text = {
 		localization_key = chaosx.events_log.window.event_details.secret_alliance
 	}
 	text = {
+		trigger = { check_variable = { var = event_id value = constant:random_faction_event.id compare = equals } }
+		localization_key = chaosx.events_log.window.event_details.random_faction
+	}
+	text = {
 		trigger = { check_variable = { var = event_id value = 15 compare = equals } }
 		localization_key = chaosx.events_log.window.event_details.utopia_manifesto
 	}
@@ -4880,6 +4926,12 @@ defined_text = {
 					check_variable = { events_log_selected_evolution_type = constant:secret_alliance_event.evolution_type }
 				}
 				localization_key = "[GetEventsLogSelectedSecretAllianceEvolutionTitle]"
+			}
+			text = {
+				trigger = {
+					check_variable = { events_log_selected_evolution_type = constant:random_faction_event.evolution_type }
+				}
+				localization_key = "[GetEventsLogSelectedRandomFactionEvolutionTitle]"
 			}
 			text = {
 			trigger = {
@@ -5126,6 +5178,12 @@ defined_text = {
 				localization_key = "[GetEventsLogSelectedSecretAllianceEvolutionBody]"
 			}
 			text = {
+				trigger = {
+					check_variable = { events_log_selected_evolution_type = constant:random_faction_event.evolution_type }
+				}
+				localization_key = "[GetEventsLogSelectedRandomFactionEvolutionBody]"
+			}
+			text = {
 			trigger = {
 				check_variable = { events_log_selected_evolution_type = constant:soviet_collapse_event_log.secession_evolution_type }
 			}
@@ -5308,6 +5366,86 @@ defined_text = {
 	text = {
 		trigger = { always = yes }
 		localization_key = chaosx.events_log.window.evolution_details.secret_alliance.body.event_detail
+	}
+}
+
+defined_text = {
+	name = GetEventsLogSelectedRandomFactionEvolutionTitle
+	text = {
+		trigger = { check_variable = { events_log_selected_evolution_stage = constant:random_faction_evolution_stage.regional_bloc_race } }
+		localization_key = chaosx.events_log.window.evolution_details.random_faction.title.stage_1
+	}
+	text = {
+		trigger = { check_variable = { events_log_selected_evolution_stage = constant:random_faction_evolution_stage.pressured_neutrality } }
+		localization_key = chaosx.events_log.window.evolution_details.random_faction.title.stage_2
+	}
+	text = {
+		trigger = { check_variable = { events_log_selected_evolution_stage = constant:random_faction_evolution_stage.neutrality_collapse } }
+		localization_key = chaosx.events_log.window.evolution_details.random_faction.title.stage_3
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.window.evolution_details.random_faction.title.event_detail
+	}
+}
+
+defined_text = {
+	name = GetEventsLogSelectedRandomFactionEvolutionBody
+	text = {
+		trigger = { check_variable = { events_log_selected_evolution_stage = constant:random_faction_evolution_stage.regional_bloc_race } }
+		localization_key = chaosx.events_log.window.evolution_details.random_faction.body.stage_1
+	}
+	text = {
+		trigger = { check_variable = { events_log_selected_evolution_stage = constant:random_faction_evolution_stage.pressured_neutrality } }
+		localization_key = chaosx.events_log.window.evolution_details.random_faction.body.stage_2
+	}
+	text = {
+		trigger = { check_variable = { events_log_selected_evolution_stage = constant:random_faction_evolution_stage.neutrality_collapse } }
+		localization_key = chaosx.events_log.window.evolution_details.random_faction.body.stage_3
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.window.evolution_details.random_faction.body.event_detail
+	}
+}
+
+defined_text = {
+	name = GetEventsLogEventDetailRandomFactionEvolutionTitle
+	text = {
+		trigger = { check_variable = { var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index value = constant:random_faction_evolution_stage.regional_bloc_race compare = equals } }
+		localization_key = chaosx.events_log.window.evolution_details.random_faction.title.stage_1
+	}
+	text = {
+		trigger = { check_variable = { var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index value = constant:random_faction_evolution_stage.pressured_neutrality compare = equals } }
+		localization_key = chaosx.events_log.window.evolution_details.random_faction.title.stage_2
+	}
+	text = {
+		trigger = { check_variable = { var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index value = constant:random_faction_evolution_stage.neutrality_collapse compare = equals } }
+		localization_key = chaosx.events_log.window.evolution_details.random_faction.title.stage_3
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.window.evolution_details.random_faction.title.event_detail
+	}
+}
+
+defined_text = {
+	name = GetEventsLogEventDetailRandomFactionEvolutionBody
+	text = {
+		trigger = { check_variable = { var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index value = constant:random_faction_evolution_stage.regional_bloc_race compare = equals } }
+		localization_key = chaosx.events_log.window.evolution_details.random_faction.body.stage_1
+	}
+	text = {
+		trigger = { check_variable = { var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index value = constant:random_faction_evolution_stage.pressured_neutrality compare = equals } }
+		localization_key = chaosx.events_log.window.evolution_details.random_faction.body.stage_2
+	}
+	text = {
+		trigger = { check_variable = { var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index value = constant:random_faction_evolution_stage.neutrality_collapse compare = equals } }
+		localization_key = chaosx.events_log.window.evolution_details.random_faction.body.stage_3
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.window.evolution_details.random_faction.body.event_detail
 	}
 }
 
