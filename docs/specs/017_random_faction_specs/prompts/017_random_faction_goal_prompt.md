@@ -1,0 +1,7 @@
+/goal Implement Event 17 `Random faction` from `docs/specs/017_random_faction_specs/`. Use the spec files in `specs/`, matrices in `matrices/`, and prompts in `prompts/`.
+
+Required skills and docs: `AGENTS.md`, `chaos-redux-events`, `chaos-redux-event-planning`, `chaos-redux-subagents`, `hoi4-decisions-missions`, `chaos-redux-event-assets`, and `chaos-redux-frame-animation`. Read relevant offline HOI4 wiki and vanilla documentation before editing script.
+
+Pass or fail requirements: dynamic eligible minor selection, valid existing faction discovery, player receives one to four faction options when selected and cannot decline, AI uses the same option targets, no Axis or Comintern hardcode, baseline join plus alignment shock and regional pressure, Evolution I regional bloc race, Evolution II pressured neutrality and wartime eligibility, Evolution III capped neutrality collapse, Bloc Pressure decisions and timed missions with concrete costs, full AI behavior, cleanup for invalid countries and dead faction leaders, event log, detail, evolution log, cluster, docs, achievements, assets, and spreadsheet alignment.
+
+Use project subagents with `fork_context=false` where appropriate. Do not use fallbacks or simplifications. Keep iterating until the implementation satisfies the spec to its fullest extent. Do not claim completion until all visible surfaces, AI paths, validation notes, docs, assets, and catalog wording are complete and any blocker is reported clearly.
