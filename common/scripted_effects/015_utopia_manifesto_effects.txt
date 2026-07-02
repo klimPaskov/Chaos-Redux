@@ -28,7 +28,7 @@ utopia_manifesto_select_target = {
 	set_temp_variable = { utopia_manifesto_target_pool_count = 0 }
 	set_temp_variable = { utopia_manifesto_target_selected = 0 }
 	if = {
-		limit = { utopia_manifesto_has_valid_target_available = yes }
+		limit = { utopia_manifesto_has_dispatchable_target_available = yes }
 		every_country = {
 			limit = {
 				OR = {
@@ -980,7 +980,13 @@ utopia_manifesto_prepare_craft_militia_spawn_count = {
 	round_temp_variable = utopia_manifesto_state_scaled_units
 	add_to_temp_variable = { utopia_manifesto_unit_spawn_count = utopia_manifesto_state_scaled_units }
 	if = {
-		limit = { utopia_manifesto_vocation_stable = yes }
+		limit = {
+			check_variable = {
+				var = utopia_vocation_balance
+				value = constant:utopia_manifesto_ledger_bounds.mid
+				compare = greater_than_or_equals
+			}
+		}
 		add_to_temp_variable = { utopia_manifesto_unit_spawn_count = constant:utopia_manifesto_unit.craft_militia_vocation_bonus }
 	}
 	round_temp_variable = utopia_manifesto_unit_spawn_count

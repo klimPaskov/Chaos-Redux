@@ -14,6 +14,7 @@ Target eligibility is defined in `common/scripted_triggers/015_utopia_manifesto_
 - Strong states are blocked by total factories, military factories, naval factories, controlled states, and division count.
 - Player countries are eligible if they pass the same safety gates.
 - AI countries are additionally screened so subject-at-war and player-enemy cases do not force the route into unsafe wars.
+- The event log uses the hard-valid target check for `N/A`, while automatic firing uses the stricter dispatchable-target check so valid player/minor availability is visible without spending the timer on unsafe AI contexts.
 
 Event selection and event-log `N/A` behavior are wired through `chaosx_logic_effects.txt`, `chaosx_settings_effects.txt`, and `chaosx_events_log_effects.txt`.
 
