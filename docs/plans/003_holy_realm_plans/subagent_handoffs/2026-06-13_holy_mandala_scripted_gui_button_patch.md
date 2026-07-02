@@ -8,7 +8,7 @@ Audited and patched the Holy Realm Mandala decision-category scripted GUI button
 
 ## Files Changed
 
-- `common/scripted_guis/chaosx_scripted_guis.txt`
+- `common/scripted_guis/003_holy_realm_scripted_guis.txt`
 
 No focus, asset, localisation, decision, or unrelated files were edited.
 

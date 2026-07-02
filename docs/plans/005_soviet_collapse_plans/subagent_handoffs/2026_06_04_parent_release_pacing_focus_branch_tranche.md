@@ -18,7 +18,7 @@ Date: 2026-06-04
 - `common/national_focus/005_soviet_collapse_republics.txt`
 - `common/national_focus/005_soviet_collapse_factory_successors.txt`
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt`
-- `common/opinion_modifiers/chaosx_opinion_modifiers.txt`
+- `common/opinion_modifiers/005_soviet_collapse_opinion_modifiers.txt`
 - `localisation/english/005_soviet_collapse_custom_countries_l_english.yml`
 
 ## Behavior

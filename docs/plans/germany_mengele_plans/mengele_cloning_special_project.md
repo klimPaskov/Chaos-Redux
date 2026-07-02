@@ -37,7 +37,7 @@ The project is registered in:
 - `common/scripted_effects/germany_mengele_effects.txt`
 - `events/germany_mengele.txt`
 
-The dynamic manpower modifier is defined in `common/dynamic_modifiers/chaosx_dynamic_modifiers.txt`.
+The dynamic manpower modifier is defined in `common/dynamic_modifiers/germany_mengele_dynamic_modifiers.txt`.
 
 ## Assets
 

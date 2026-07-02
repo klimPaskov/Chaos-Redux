@@ -4,63 +4,15 @@ This mechanic adds Chaos Redux custom achievements using HOI4's mod achievement 
 
 ## What It Adds
 
-Three internal rarity groups are now represented in the achievement list order:
+The achievement registry is root-only because it owns the single `chaos_redux_achievements` unique id. Inside that registry, achievements are grouped by global or event section, and each engine-facing achievement id is also the root DDS filename stem and localisation key stem.
 
-- Legendary
-  - `00_calm_before_the_storm_achievement`
-  - `01_world_collapse_ahead_of_schedule_achievement`
-  - `02_full_spectrum_terror_achievement`
-  - `03_poisoned_skies_achievement`
-  - `04_a_billion_dead_achievement`
-- Common
-  - `10_maximum_chaos_achievement`
-  - `11_gas_gas_gas_achievement`
-  - `12_tainted_air_achievement`
-  - `13_hundred_million_dead_achievement`
-  - `14_ten_percent_ceiling_achievement`
-  - `15_global_pariah_achievement`
-- Epic
-  - `20_end_of_the_living_achievement`
-  - `21_weaponize_the_end_achievement`
-  - `22_fight_fire_with_fire_achievement`
-  - `23_we_made_a_cure_then_made_it_worse_achievement`
-  - `24_containment_was_temporary_achievement`
-  - `25_only_obeys_us_achievement`
-  - `26_a_friend_to_mankind_achievement`
-  - `27_the_wendigo_rises_achievement`
-  - `28_the_cure_is_real_achievement`
-  - `29_the_lamps_remain_lit_achievement`
-  - `30_mandala_of_nations_achievement`
-  - `31_mountain_circle_by_vow_achievement`
-  - `32_mandate_without_a_sword_achievement`
-  - `33_register_without_edges_achievement`
-  - `34_empty_mandala_achievement`
-- Event 010 Death
-  - `death_no_one_heard_the_first_boat`
-  - `death_not_on_my_continent`
-  - `death_the_names_do_not_come_back`
-  - `death_last_ferry`
-  - `death_counted_every_name`
-  - `death_black_tide_reversed`
-  - `death_no_witnesses`
-  - `death_before_the_name`
-  - `death_the_living_conference`
-  - `death_six_continents_one_color`
-- Event 013 Natural Disasters
-  - `013_natural_disasters_global_relief`
-  - `013_natural_disasters_aftershock_control`
-  - `013_natural_disasters_prepared_capital`
-  - `013_natural_disasters_no_world_end`
-  - `013_natural_disasters_skyfall_survivor`
-  - `013_natural_disasters_firebreak_master`
-  - `013_natural_disasters_no_deaths_sequence`
-  - `013_natural_disasters_tame_the_barrage`
+Event-owned ids use the event prefix form, for example `010_death_no_witnesses` and `013_natural_disasters_global_relief`. Global Chaos Redux ids use the shared prefix form, for example `000_chaos_redux_10_maximum_chaos`.
 
 HOI4 custom achievements do not expose a native tier field in the file format, so tiering is preserved through internal grouping, naming, and docs rather than a dedicated engine-side rarity value.
 
 ## How It Works
 
-1. `common/achievements/chaos_redux_achievements.txt` registers the mod achievement set with `unique_id = chaos_redux_achievements`.
+1. `common/achievements/chaos_redux_achievements.txt` registers the mod achievement set with `unique_id = chaos_redux_achievements`. Keep this registry root-only so the mod remains one achievement set, and organize event achievements inside it by event section.
 2. All achievements are available for any player country.
 3. Most conditions read directly from existing system state:
    - `global.chaos_meter_value`
@@ -84,88 +36,94 @@ HOI4 custom achievements do not expose a native tier field in the file format, s
 
 ### Legendary
 
-- `00_calm_before_the_storm_achievement`
+- `000_chaos_redux_00_calm_before_the_storm`
   - Keep the chaos meter below `Gathering Storm` until January 1, 1940.
-- `01_world_collapse_ahead_of_schedule_achievement`
+- `000_chaos_redux_01_world_collapse_ahead_of_schedule`
   - Reach `1000+` chaos before January 1, 1940.
-- `02_full_spectrum_terror_achievement`
+- `000_chaos_redux_02_full_spectrum_terror`
   - Research every biowarfare and chemical-warfare tech that is manually available from the start of a normal campaign.
   - Excludes special-project-locked techs (`anthrax/plague/tularemia/smallpox bomb delivery`, `sarin`, `soman`) and hidden doctrine unlock techs.
-- `03_poisoned_skies_achievement`
+- `000_chaos_redux_03_poisoned_skies`
   - Reach `100%` global contamination.
-- `04_a_billion_dead_achievement`
+- `000_chaos_redux_04_a_billion_dead`
   - Reach `1,000,000,000` total global deaths.
 
 ### Common
 
-- `10_maximum_chaos_achievement`
+- `000_chaos_redux_10_maximum_chaos`
   - Reach `1000+` chaos.
-- `11_gas_gas_gas_achievement`
+- `000_chaos_redux_11_gas_gas_gas`
   - Use a chemical cylinder ability for the first time.
-- `12_tainted_air_achievement`
+- `000_chaos_redux_12_tainted_air`
   - Reach `25%` global contamination.
-- `13_hundred_million_dead_achievement`
+- `000_chaos_redux_13_hundred_million_dead`
   - Reach `100,000,000` total global deaths.
-- `14_ten_percent_ceiling_achievement`
+- `000_chaos_redux_14_ten_percent_ceiling`
   - Keep global contamination below `10%` until January 1, 1945.
-- `15_global_pariah_achievement`
+- `000_chaos_redux_15_global_pariah`
   - Reach `100+` international condemnation on the player country.
 
 ### Epic
 
-- `20_end_of_the_living_achievement`
+- `002_zombie_outbreak_20_end_of_the_living`
   - Trigger the zombie apocalypse world-end scenario (`world_end_zombies`).
-- `21_weaponize_the_end_achievement`
+- `002_zombie_outbreak_21_weaponize_the_end`
   - Complete a weaponized zombie project.
-- `22_fight_fire_with_fire_achievement`
+- `002_zombie_outbreak_22_fight_fire_with_fire`
   - Create a weaponized zombie strain that can fight hostile outbreaks.
-- `23_we_made_a_cure_then_made_it_worse_achievement`
+- `002_zombie_outbreak_23_we_made_a_cure_then_made_it_worse`
   - Resolve the final strain into a cure-adapted variant.
-- `24_containment_was_temporary_achievement`
+- `002_zombie_outbreak_24_containment_was_temporary`
   - Resolve the final strain into a containment-breach variant.
-- `25_only_obeys_us_achievement`
+- `002_zombie_outbreak_25_only_obeys_us`
   - Resolve the final strain into a controlled-loyalty variant.
-- `26_a_friend_to_mankind_achievement`
+- `002_zombie_outbreak_26_a_friend_to_mankind`
   - Resolve the final strain into a purifier or semi-sapient variant.
-- `27_the_wendigo_rises_achievement`
+- `002_zombie_outbreak_27_the_wendigo_rises`
   - Trigger the Wendigo super event.
-- `28_the_cure_is_real_achievement`
+- `002_zombie_outbreak_28_the_cure_is_real`
   - Be the country that triggers the first zombie-cure activation.
-- `29_the_lamps_remain_lit_achievement`
+- `003_holy_realm_29_the_lamps_remain_lit`
   - As the Holy Realm, complete `THR_vow_against_annihilation`, renounce Final Silence, and keep Chaos below `600`.
-- `30_mandala_of_nations_achievement`
+- `003_holy_realm_30_mandala_of_nations`
   - As the Holy Realm, lead the Mandala of Nations and complete the three kindness acts.
-- `31_mountain_circle_by_vow_achievement`
+- `003_holy_realm_31_mountain_circle_by_vow`
   - As the Holy Realm, unify the Himalayan circle peacefully and receive `holy_realm_himalayan_unity`.
-- `32_mandate_without_a_sword_achievement`
+- `003_holy_realm_32_mandate_without_a_sword`
   - As the Holy Realm, reach the Buddha Mandate with Compassion Drift below `1` and without arming Final Silence.
-- `33_register_without_edges_achievement`
+- `003_holy_realm_33_register_without_edges`
   - As the Holy Realm, complete Northern Indian and Eastern Mandala staged integration, then unlock `The World Is Asked to Kneel`.
-- `34_empty_mandala_achievement`
+- `003_holy_realm_34_empty_mandala`
   - As the Holy Realm, complete the Final Silence world-end scenario.
 
 ### Event 010 Death
 
-- `death_no_one_heard_the_first_boat`
+- `010_death_no_one_heard_the_first_boat`
   - Send a survey boat before Death publicly reveals itself, enter the containment war, and keep forbidden oath routes closed.
-- `death_not_on_my_continent`
+- `010_death_not_on_my_continent`
   - Help defeat a publicly revealed Death crisis before it consumes too many mainland states.
-- `death_the_names_do_not_come_back`
+- `010_death_the_names_do_not_come_back`
   - After Death is defeated, build enough dead-zone outposts while the consumed population threshold has been crossed.
-- `death_last_ferry`
+- `010_death_last_ferry`
   - Prepare five coastal states with `Keep the Port Lit` before Death publicly reveals itself.
-- `death_counted_every_name`
+- `010_death_counted_every_name`
   - Preserve the records through the telegraph/census decision path and defeat Death before the Chaos ceiling is crossed.
-- `death_black_tide_reversed`
+- `010_death_black_tide_reversed`
   - Answer Last Shores and help retake every Death world-end foothold.
-- `death_no_witnesses`
+- `010_death_no_witnesses`
   - Reach the whole-world-consumed end state.
-- `death_before_the_name`
+- `010_death_before_the_name`
   - Find and defeat Death before the public reveal super-event.
-- `death_the_living_conference`
+- `010_death_the_living_conference`
   - Form a strong Living Compact with enough members and cohesion before Death is defeated.
-- `death_six_continents_one_color`
+- `010_death_six_continents_one_color`
   - Force Death's Last Shores branch to place footholds across six continent groups.
+- `010_death_friend_of_zol`
+  - Take the Black Oath, remain a Herald into Last Shores, and keep the capital outside Death's control for one year.
+- `010_death_book_burner`
+  - Open the Black Book, bind a name, burn the book before scandal breaks, avoid the Black Oath, and defeat Death.
+- `010_death_black_apostolate`
+  - As a Herald, serve Zol through sacrifices and favor during Last Shores, then proclaim the Black Apostolate.
 
 ### Event 013 Natural Disasters
 
@@ -185,10 +143,3 @@ HOI4 custom achievements do not expose a native tier field in the file format, s
   - Recover from a wartime sand or dust storm by restoring supply and clearing dust in the affected state.
 - `013_natural_disasters_tame_the_barrage`
   - Hidden. Complete a maximum Disaster Barrage with abnormal disasters active and clear all owned disaster aftermath.
-
-Queued but not active:
-
-- `death_friend_of_zol`
-  - Held until a full Black Oath/Herald route exists.
-- `death_book_burner`
-  - Held until a full Dark Methods route exists.

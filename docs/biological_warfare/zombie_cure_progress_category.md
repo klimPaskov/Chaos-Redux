@@ -43,7 +43,7 @@ The category is assigned in:
 
 The category uses a decision-category scripted GUI instead of unsupported triggered icon syntax:
 
-- `common/scripted_guis/chaosx_scripted_guis.txt`
+- `common/scripted_guis/002_zombie_outbreak_scripted_guis.txt`
 - `interface/chaosx_decisions.gui`
 - `common/scripted_localisation/chaosx_scripted_localisation.txt`
 
@@ -109,7 +109,7 @@ The shared activation logic:
 
 - `common/decisions/categories/chaosx_decisions_categories.txt`
 - `common/decisions/chaosx_zzz_cure_decisions.txt`
-- `common/scripted_guis/chaosx_scripted_guis.txt`
+- `common/scripted_guis/002_zombie_outbreak_scripted_guis.txt`
 - `common/scripted_localisation/chaosx_scripted_localisation.txt`
 - `common/scripted_effects/002_zombie_outbreak_effects.txt`
 - `common/achievements/chaos_redux_achievements.txt`
