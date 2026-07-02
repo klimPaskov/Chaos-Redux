@@ -339,8 +339,9 @@ Frequently-needed companion files:
 - `common/script_constants/*.txt`
 - `common/scripted_triggers/*.txt`
 - `common/scripted_effects/*.txt`
-- `common/decisions/*.txt`
-- `common/decisions/categories/*.txt`
+- `common/decisions/<event_id>_<event_slug>_decisions.txt` for event-owned decisions. Keep all decision categories owned by the same event in that event file unless a verified engine constraint requires root-only or separate placement
+- `common/decisions/categories/<event_id>_<event_slug>_categories.txt` for event-owned decision category definitions
+- shared or cross-event decision systems under `common/decisions/` and `common/decisions/categories/` with clear subsystem filenames, without fake event ids or unnecessary `chaosx_` prefixes. `common/decisions/chaosx_decisions.txt` and `common/decisions/categories/chaosx_decisions_categories.txt` are reserved for shared or legacy root-only hooks
 - `common/ideas/*.txt`, with `common/ideas/chaosx_ideas.txt` reserved for shared or legacy root-only ideas that cannot safely belong to one event
 - `common/achievements/chaos_redux_achievements.txt` for the single root-only Chaos Redux achievement registry. Keep event achievements grouped by event section inside this file instead of creating per-event achievement files with new `unique_id`s
 - `common/ai_strategy/*.txt`

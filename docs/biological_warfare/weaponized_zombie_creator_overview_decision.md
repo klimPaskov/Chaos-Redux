@@ -20,7 +20,7 @@ The category is read-only and appears from the completed creator country itself,
 
 ## Category Files
 
-- Category definitions: `common/decisions/categories/chaosx_weaponized_zombie_creator_overview_categories.txt`
+- Category definitions: `common/decisions/categories/002_zombie_outbreak_categories.txt`
 - Localisation: `localisation/english/chaosx_decisions_l_english.yml`
 
 The implementation uses one internal category per final zombie type because HOI4 decision-category `picture` fields are static sprite references. The player still sees one category name and one overview at a time.

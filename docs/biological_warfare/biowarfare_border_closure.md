@@ -93,7 +93,7 @@ If custom art is desired later:
 - Suggested sprite names:
   - `GFX_decision_close_bio_border`
   - `GFX_decision_reopen_bio_border`
-- Then replace icon keys in `common/decisions/chaosx_disease_containment_decisions.txt`.
+- Then replace icon keys in `common/decisions/biowarfare_disease_containment_decisions.txt`.
 
 ## Future Extensions
 

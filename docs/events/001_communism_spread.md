@@ -115,7 +115,7 @@ The rebel country receives a pool of templates covering worker militias, red gua
 - `common/scripted_triggers/001_communism_spread_triggers.txt`: reusable state-control availability triggers
 - `common/dynamic_modifiers/001_communism_spread_dynamic_modifiers.txt`: national pressure, three state control levels, crackdown scars, worker ritual fear, and emergency disruption
 - `common/ideas/001_communist_insurgency_ideas.txt`: simplified `communism_spread_idea`
-- `common/decisions/chaosx_communism_fight_decisions.txt`: national counter-agitation, one state-targeted local intervention per controlled state, and emergency intervention
+- `common/decisions/001_communism_spread_decisions.txt`: national counter-agitation, one state-targeted local intervention per controlled state, and emergency intervention
 - `common/scripted_guis/001_communism_spread_scripted_guis.txt`: decision-category dashboard registration
 - `common/scripted_localisation/chaosx_scripted_localisation.txt`: dashboard sprite, threat status, and state-control level text
 - `interface/chaosx_decisions.gui`: dashboard layout above the communism decisions

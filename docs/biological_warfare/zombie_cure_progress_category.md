@@ -39,7 +39,7 @@ The category also shows a live text panel beside the bottle, covering:
 
 The category is assigned in:
 
-- `common/decisions/categories/chaosx_decisions_categories.txt`
+- `common/decisions/categories/002_zombie_outbreak_categories.txt`
 
 The category uses a decision-category scripted GUI instead of unsupported triggered icon syntax:
 
@@ -107,8 +107,8 @@ The shared activation logic:
 
 ## Files
 
-- `common/decisions/categories/chaosx_decisions_categories.txt`
-- `common/decisions/chaosx_zzz_cure_decisions.txt`
+- `common/decisions/categories/002_zombie_outbreak_categories.txt`
+- `common/decisions/002_zombie_outbreak_decisions.txt`
 - `common/scripted_guis/002_zombie_outbreak_scripted_guis.txt`
 - `common/scripted_localisation/chaosx_scripted_localisation.txt`
 - `common/scripted_effects/002_zombie_outbreak_effects.txt`
