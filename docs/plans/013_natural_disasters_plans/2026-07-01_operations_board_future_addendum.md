@@ -1,11 +1,15 @@
 # Event 013 post-completion addendum: Disaster Operations Board
 
 Date: 2026-07-01
-Status: Future enhancement, not a current-tranche completion blocker unless the parent decides the full scripted-GUI board from the source spec is still a non-negotiable acceptance item.
+Status: Accepted and implemented in the current tranche as a compact four-slot decision-category operations board. Optional relief-liaison and lane-header expansion remains future-only.
+
+## Implementation note
+
+The implemented board lives in `common/scripted_guis/013_natural_disasters_scripted_gui.txt`, `interface/013_natural_disasters.gui`, `common/scripted_effects/013_natural_disasters_effects.txt`, and `common/scripted_triggers/013_natural_disasters_triggers.txt`. It opens from the Event 013 response category, refreshes four priority slots from controlled aftermath and warning states, stores the selected state through cleared global event targets, shows family/phase/risk/action text through scripted localisation, and routes rescue, route clearance, supply restoration, and evacuation buttons through the same concrete-cost scripted effects used by the recovery decisions. It does not add per-disaster Event Log entries or AI dependency on the GUI.
 
 ## Scan result
 
-Event 013 is deep enough that another disaster-family, evolution, super-event, or recovery-mechanic pass would add bloat. The remaining useful depth gap is presentation and command clarity: the implemented scripted GUI is a compact decision-category strip that shows abnormal warning animations and the latest family picture, while the source spec describes a richer disaster map or operations board showing active hazards, predicted paths, affected states, danger level, and response actions.
+Event 013 is deep enough that another disaster-family, evolution, super-event, or recovery-mechanic pass would add bloat. The useful depth gap was presentation and command clarity: the scripted GUI needed to show active hazards, predicted paths, affected states, danger level, and response actions rather than only abnormal warning animations and the latest family picture.
 
 This is not a missing recovery mechanic. Recovery decisions, missions, AI priorities, warning flags, moving corridor state, building damage, deaths-system losses, SCN-007, clusters, news, and super-event surfaces already exist. The issue is that the player reads those systems through regular decisions and a compact warning panel rather than a full operations board.
 
@@ -14,7 +18,7 @@ This is not a missing recovery mechanic. Recovery decisions, missions, AI priori
 - `docs/plans/013_natural_disasters_plans/2026-07-01_completion_audit_resolution.md` records the previous broad audit resolution and appears folded into the current implementation/documentation.
 - Event 013 category-picture and animation handoffs indicate their asset scopes were completed or superseded by later parent validation.
 - No unresolved broad design addendum for an operations board was found in `docs/plans/013_natural_disasters_plans/`.
-- A separate scripted API audit handoff still notes that `natural_disaster_news_state` is a single shared global news target. That is an implementation risk to resolve or consciously accept during final cleanup, not a design-expansion request.
+- The scripted API audit risk around `natural_disaster_news_state` was resolved by carrying the affected state as a regular event target into immediate human-country news delivery instead of storing one shared delayed global news target.
 
 ## Research anchors
 
@@ -123,6 +127,4 @@ No new super-event art or audio is justified for this addendum.
 
 ## Promotion guidance
 
-Keep this file in `docs/plans/013_natural_disasters_plans/` until accepted. If accepted, promote the design into `docs/specs/013_natural_disasters_specs/specs/013_natural_disasters_spec_part_5_text_gui_documentation.md` as a post-completion GUI extension and summarize it in `docs/events/013_natural_disasters.md` under future extensions.
-
-If the parent closes Event 013 without this enhancement, record it as a future enhancement or accepted simplification against the original full-GUI ambition, not as a missing disaster mechanic.
+Keep this file in `docs/plans/013_natural_disasters_plans/` as the implementation note for the current compact board and as the future queue for optional relief-liaison or lane-header expansion. The implemented board is summarized in `docs/events/013_natural_disasters.md`.

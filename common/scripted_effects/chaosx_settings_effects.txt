@@ -4581,6 +4581,19 @@ fire_event_by_temp_id_no_cluster = {
 		}
 	}
 	if = {
+		limit = { check_variable = { event_id = constant:cannibalism_event_log.event_id } }
+		cannibalism_prepare_random_event_fire = yes
+		if = {
+			limit = {
+				OR = {
+					check_variable = { cannibalism_context_ready < 1 }
+					NOT = { has_event_target = cannibalism_origin_country }
+				}
+			}
+			set_temp_variable = { event_single_fire_allowed = 0 }
+		}
+	}
+	if = {
 		limit = { check_variable = { event_id = 15 } }
 		utopia_manifesto_prepare_random_event_fire = yes
 		if = {
@@ -4593,8 +4606,21 @@ fire_event_by_temp_id_no_cluster = {
 			set_temp_variable = { event_single_fire_allowed = 0 }
 		}
 	}
-
+	if = {
+		limit = { check_variable = { event_id = constant:secret_alliance_event.id } }
+		secret_alliance_initialize_pact = yes
 		if = {
+			limit = {
+				OR = {
+					check_variable = { secret_alliance_context_ready < 1 }
+					NOT = { has_event_target = secret_alliance_target }
+				}
+			}
+			set_temp_variable = { event_single_fire_allowed = 0 }
+		}
+	}
+
+	if = {
 		limit = {
 			check_variable = {
 				var = event_single_fire_allowed
@@ -4615,6 +4641,26 @@ fire_event_by_temp_id_no_cluster = {
 			}
 			event_target:utopia_manifesto_latest_actor = {
 				country_event = { id = chaosx.nr15.1 }
+			}
+		}
+		else_if = {
+			limit = {
+				check_variable = { event_fire_record_id = constant:cannibalism_event_log.event_id }
+				has_event_target = cannibalism_origin_country
+			}
+			event_target:cannibalism_origin_country = {
+				set_country_flag = cannibalism_event_dispatch_context
+				country_event = { id = chaosx.nr14.2 }
+			}
+		}
+		else_if = {
+			limit = {
+				check_variable = { event_fire_record_id = constant:secret_alliance_event.id }
+				has_event_target = secret_alliance_target
+			}
+			event_target:secret_alliance_target = {
+				set_country_flag = secret_alliance_event_dispatch_context
+				country_event = { id = chaosx.nr11.1 }
 			}
 		}
 		else = {

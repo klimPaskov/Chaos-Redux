@@ -1,0 +1,803 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 014 CANNIBALISM CBL FOCUS TREE
+# ============================================================================
+# Focus tree for the Cannibal Commune emergent tag. The tree covers origin
+# consolidation, command structure, supply predation, route-specific military
+# growth, pact or solitary Last Table paths, Hannibal hooks, and the gated
+# world-end route.
+# ============================================================================
+
+@cannibalism_focus_short = 5
+@cannibalism_focus_medium = 7
+@cannibalism_focus_long = 9
+
+focus_tree = {
+	id = cannibalism_commune_focus_tree
+
+	country = {
+		factor = 0
+		modifier = {
+			add = 20
+			is_cannibal_commune_country = yes
+		}
+	}
+
+	default = no
+	continuous_focus_position = { x = 56 y = 1900 }
+	initial_show_position = { x = 12 y = 0 }
+
+	focus = {
+		id = cbl_first_table
+		icon = GFX_goal_cannibalism_first_table
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 12
+		y = 0
+		cost = @cannibalism_focus_short
+		completion_reward = {
+			set_country_flag = cannibalism_cbl_first_table_opened
+			add_stability = constant:cannibalism_focus_reward.stability_small
+			add_war_support = constant:cannibalism_focus_reward.war_support_small
+			add_to_variable = { global.cannibalism_network_strength = constant:cannibalism_focus_reward.network_small }
+			cannibalism_refresh_world_threat_source = yes
+		}
+		ai_will_do = { base = constant:cannibalism_ai_weight.urgent }
+	}
+
+	focus = {
+		id = cbl_seal_the_origin_state
+		icon = GFX_goal_cannibalism_origin_state
+		search_filters = { FOCUS_FILTER_DEFENSE FOCUS_FILTER_STABILITY }
+		x = 9
+		y = 1
+		cost = @cannibalism_focus_short
+		prerequisite = { focus = cbl_first_table }
+		completion_reward = {
+			add_stability = constant:cannibalism_focus_reward.stability_medium
+			random_owned_controlled_state = {
+				limit = { is_controlled_by = ROOT }
+				add_dynamic_modifier = { modifier = cannibalism_hunting_ground_state }
+				add_building_construction = { type = bunker level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = { base = constant:cannibalism_ai_weight.urgent }
+	}
+
+	focus = {
+		id = cbl_night_larder_columns
+		icon = GFX_goal_cannibalism_larder_columns
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_ARMY_XP }
+		x = 15
+		y = 1
+		cost = @cannibalism_focus_short
+		prerequisite = { focus = cbl_first_table }
+		completion_reward = {
+			add_manpower = constant:cannibalism_focus_reward.manpower_small
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:cannibalism_focus_reward.infantry_small }
+			cannibalism_spawn_commune_reinforcement_forces = yes
+		}
+		ai_will_do = { base = constant:cannibalism_ai_weight.urgent }
+	}
+
+	focus = {
+		id = cbl_black_kitchens
+		icon = GFX_goal_cannibalism_black_kitchens
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_MANPOWER }
+		x = 12
+		y = 2
+		cost = @cannibalism_focus_medium
+		prerequisite = { focus = cbl_seal_the_origin_state }
+		prerequisite = { focus = cbl_night_larder_columns }
+		completion_reward = {
+			add_stability = constant:cannibalism_focus_reward.stability_loss
+			add_war_support = constant:cannibalism_focus_reward.war_support_small
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:cannibalism_focus_reward.support_medium }
+			random_owned_controlled_state = {
+				limit = { is_controlled_by = ROOT }
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+			}
+			add_to_variable = { global.cannibalism_network_strength = constant:cannibalism_focus_reward.network_medium }
+			add_to_variable = { global.cannibalism_cult_nodes = constant:cannibalism_focus_reward.cult_node }
+			cannibalism_refresh_world_threat_source = yes
+		}
+		ai_will_do = { base = constant:cannibalism_ai_weight.standard }
+	}
+
+	focus = {
+		id = cbl_council_of_knives
+		icon = GFX_goal_cannibalism_council_knives
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 6
+		y = 3
+		cost = @cannibalism_focus_medium
+		prerequisite = { focus = cbl_black_kitchens }
+		mutually_exclusive = { focus = cbl_warlord_kitchen }
+		mutually_exclusive = { focus = cbl_hannibal_discipline }
+		completion_reward = { cannibalism_cbl_council_of_knives = yes }
+		ai_will_do = {
+			base = constant:cannibalism_ai_weight.cautious
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor has_stability < 0.35 }
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor NOT = { has_war = yes } }
+		}
+	}
+
+	focus = {
+		id = cbl_warlord_kitchen
+		icon = GFX_goal_cannibalism_warlord_kitchen
+		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_ARMY_XP }
+		x = 12
+		y = 3
+		cost = @cannibalism_focus_medium
+		prerequisite = { focus = cbl_black_kitchens }
+		mutually_exclusive = { focus = cbl_council_of_knives }
+		mutually_exclusive = { focus = cbl_hannibal_discipline }
+		completion_reward = { cannibalism_cbl_warlord_kitchen = yes }
+		ai_will_do = {
+			base = constant:cannibalism_ai_weight.standard
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor has_war = yes }
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor has_war_support > 0.5 }
+		}
+	}
+
+	focus = {
+		id = cbl_hannibal_discipline
+		icon = GFX_goal_cannibalism_hannibal_discipline
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		x = 18
+		y = 3
+		cost = @cannibalism_focus_medium
+		prerequisite = { focus = cbl_black_kitchens }
+		mutually_exclusive = { focus = cbl_council_of_knives }
+		mutually_exclusive = { focus = cbl_warlord_kitchen }
+		available = { cannibalism_hannibal_or_unifier_exists = yes }
+		completion_reward = { cannibalism_cbl_hannibal_discipline = yes }
+		ai_will_do = {
+			base = constant:cannibalism_ai_weight.low
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor cannibalism_hannibal_or_unifier_exists = yes }
+			modifier = { factor = constant:cannibalism_ai_weight.crisis_factor has_global_flag = cannibalism_evolution_global_table_recorded }
+		}
+	}
+
+	focus = {
+		id = cbl_captured_depot_inventory
+		icon = GFX_goal_cannibalism_depot_inventory
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_MANPOWER }
+		x = 4
+		y = 4
+		cost = @cannibalism_focus_medium
+		prerequisite = { focus = cbl_council_of_knives focus = cbl_warlord_kitchen focus = cbl_hannibal_discipline }
+		completion_reward = {
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:cannibalism_focus_reward.infantry_medium }
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:cannibalism_focus_reward.support_small }
+			add_command_power = constant:cannibalism_focus_reward.command_power_small
+		}
+		ai_will_do = { base = constant:cannibalism_ai_weight.standard }
+	}
+
+	focus = {
+		id = cbl_field_kitchen_conversions
+		icon = GFX_goal_cannibalism_field_kitchen_conversions
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_DEFENSE }
+		x = 8
+		y = 4
+		cost = @cannibalism_focus_medium
+		prerequisite = { focus = cbl_council_of_knives focus = cbl_warlord_kitchen focus = cbl_hannibal_discipline }
+		completion_reward = {
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:cannibalism_focus_reward.support_medium }
+			add_ideas = cannibalism_scavenger_logistics
+			random_owned_controlled_state = {
+				limit = { is_controlled_by = ROOT }
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = { base = constant:cannibalism_ai_weight.standard }
+	}
+
+	focus = {
+		id = cbl_prisoner_ledger_administration
+		icon = GFX_goal_cannibalism_prisoner_ledger
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 12
+		y = 4
+		cost = @cannibalism_focus_medium
+		prerequisite = { focus = cbl_council_of_knives focus = cbl_warlord_kitchen focus = cbl_hannibal_discipline }
+		completion_reward = {
+			add_stability = constant:cannibalism_focus_reward.stability_small
+			add_manpower = constant:cannibalism_focus_reward.manpower_medium
+			add_to_variable = { global.cannibalism_deaths_recorded = constant:cannibalism_country_package.reinforcement_manpower }
+		}
+		ai_will_do = { base = constant:cannibalism_ai_weight.standard }
+	}
+
+	focus = {
+		id = cbl_hunger_column_organization
+		icon = GFX_goal_cannibalism_hunger_columns
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		x = 16
+		y = 4
+		cost = @cannibalism_focus_medium
+		prerequisite = { focus = cbl_council_of_knives focus = cbl_warlord_kitchen focus = cbl_hannibal_discipline }
+		completion_reward = {
+			army_experience = constant:cannibalism_focus_reward.army_xp_medium
+			add_command_power = constant:cannibalism_focus_reward.command_power_small
+			cannibalism_spawn_commune_reinforcement_forces = yes
+		}
+		ai_will_do = { base = constant:cannibalism_ai_weight.urgent }
+	}
+
+	focus = {
+		id = cbl_commune_ration_codes
+		icon = GFX_goal_cannibalism_ration_codes
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_POLITICAL }
+		x = 12
+		y = 5
+		cost = @cannibalism_focus_medium
+		prerequisite = { focus = cbl_prisoner_ledger_administration }
+		completion_reward = {
+			add_stability = constant:cannibalism_focus_reward.stability_small
+			add_manpower = constant:cannibalism_focus_reward.manpower_medium
+			add_to_variable = { global.cannibalism_deaths_recorded = constant:cannibalism_country_package.reinforcement_manpower }
+			set_country_flag = cannibalism_cbl_ration_codes
+		}
+		ai_will_do = { base = constant:cannibalism_ai_weight.standard }
+	}
+
+	focus = {
+		id = cbl_scavenger_party_mobility
+		icon = GFX_goal_cannibalism_scavenger_parties
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		x = 18
+		y = 5
+		cost = @cannibalism_focus_medium
+		prerequisite = { focus = cbl_hunger_column_organization }
+		completion_reward = {
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:cannibalism_focus_reward.infantry_small }
+			cannibalism_spawn_scavenger_party_forces = yes
+		}
+		ai_will_do = { base = constant:cannibalism_ai_weight.standard }
+	}
+
+	focus = {
+		id = cbl_butcher_pack_shock_doctrine
+		icon = GFX_goal_cannibalism_butcher_packs
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		x = 16
+		y = 6
+		cost = @cannibalism_focus_medium
+		prerequisite = { focus = cbl_scavenger_party_mobility }
+		completion_reward = {
+			army_experience = constant:cannibalism_focus_reward.army_xp_small
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:cannibalism_focus_reward.infantry_medium }
+			cannibalism_spawn_butcher_pack_forces = yes
+		}
+		ai_will_do = { base = constant:cannibalism_ai_weight.standard }
+	}
+
+	focus = {
+		id = cbl_prison_processions
+		icon = GFX_goal_cannibalism_prison_processions
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_STABILITY }
+		x = 20
+		y = 6
+		cost = @cannibalism_focus_medium
+		prerequisite = { focus = cbl_scavenger_party_mobility }
+		completion_reward = {
+			add_manpower = constant:cannibalism_focus_reward.manpower_large
+			add_war_support = constant:cannibalism_focus_reward.war_support_small
+			cannibalism_spawn_prison_procession_forces = yes
+			add_to_variable = { global.cannibalism_deaths_recorded = constant:cannibalism_country_package.reinforcement_manpower }
+		}
+		ai_will_do = { base = constant:cannibalism_ai_weight.standard }
+	}
+
+	focus = {
+		id = cbl_hannibal_cadres
+		icon = GFX_goal_cannibalism_hannibal_cadres
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_POLITICAL }
+		x = 18
+		y = 7
+		cost = @cannibalism_focus_long
+		prerequisite = { focus = cbl_butcher_pack_shock_doctrine }
+		prerequisite = { focus = cbl_prison_processions }
+		available = { cannibalism_hannibal_or_unifier_exists = yes }
+		completion_reward = {
+			set_country_flag = cannibalism_hannibal_linked
+			cannibalism_spawn_hannibal_cadre_forces = yes
+			add_to_variable = { global.cannibalism_network_strength = constant:cannibalism_focus_reward.network_large }
+			cannibalism_emit_network_super_event_if_unlocked = yes
+			cannibalism_refresh_world_threat_source = yes
+		}
+		ai_will_do = {
+			base = constant:cannibalism_ai_weight.low
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor cannibalism_hannibal_or_unifier_exists = yes }
+			modifier = { factor = constant:cannibalism_ai_weight.crisis_factor has_global_flag = cannibalism_evolution_global_table_recorded }
+		}
+	}
+
+	focus = {
+		id = cbl_silent_anchorages
+		icon = GFX_goal_cannibalism_island_anchorages
+		search_filters = { FOCUS_FILTER_NAVY FOCUS_FILTER_INDUSTRY }
+		x = 0
+		y = 5
+		cost = @cannibalism_focus_medium
+		prerequisite = { focus = cbl_captured_depot_inventory }
+		available = { cannibalism_cbl_is_island_origin = yes }
+		completion_reward = {
+			add_equipment_to_stockpile = { type = convoy_1 amount = constant:cannibalism_focus_reward.convoy_medium }
+			add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:cannibalism_focus_reward.train_small }
+			random_owned_controlled_state = {
+				limit = {
+					is_controlled_by = ROOT
+					is_coastal = yes
+				}
+				add_building_construction = { type = naval_base level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = constant:cannibalism_ai_weight.standard
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor cannibalism_cbl_is_island_origin = yes }
+		}
+	}
+
+	focus = {
+		id = cbl_convoy_ambush_plans
+		icon = GFX_goal_cannibalism_convoy_ambush
+		search_filters = { FOCUS_FILTER_NAVY FOCUS_FILTER_WAR_SUPPORT }
+		x = 2
+		y = 6
+		cost = @cannibalism_focus_medium
+		prerequisite = { focus = cbl_silent_anchorages focus = cbl_coastal_port_lists }
+		available = { cannibalism_cbl_is_coastal_origin = yes }
+		completion_reward = {
+			add_equipment_to_stockpile = { type = convoy_1 amount = constant:cannibalism_focus_reward.convoy_medium }
+			add_fuel = constant:cannibalism_focus_reward.fuel_medium
+			add_to_variable = { global.cannibalism_network_strength = constant:cannibalism_focus_reward.network_small }
+		}
+		ai_will_do = {
+			base = constant:cannibalism_ai_weight.standard
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor cannibalism_cbl_is_coastal_origin = yes }
+		}
+	}
+
+	focus = {
+		id = cbl_coastal_port_lists
+		icon = GFX_goal_cannibalism_coastal_port_lists
+		search_filters = { FOCUS_FILTER_NAVY FOCUS_FILTER_INDUSTRY }
+		x = 4
+		y = 5
+		cost = @cannibalism_focus_medium
+		prerequisite = { focus = cbl_captured_depot_inventory }
+		available = { cannibalism_cbl_is_coastal_origin = yes }
+		completion_reward = {
+			add_equipment_to_stockpile = { type = convoy_1 amount = constant:cannibalism_focus_reward.convoy_small }
+			add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:cannibalism_focus_reward.train_medium }
+			random_owned_controlled_state = {
+				limit = {
+					is_controlled_by = ROOT
+					is_coastal = yes
+				}
+				add_building_construction = { type = naval_base level = 1 instant_build = yes }
+			}
+			add_to_variable = { global.cannibalism_network_strength = constant:cannibalism_focus_reward.network_small }
+		}
+		ai_will_do = {
+			base = constant:cannibalism_ai_weight.standard
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor cannibalism_cbl_is_coastal_origin = yes }
+		}
+	}
+
+	focus = {
+		id = cbl_prison_road_route
+		icon = GFX_goal_cannibalism_prison_roads
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		x = 6
+		y = 5
+		cost = @cannibalism_focus_medium
+		prerequisite = { focus = cbl_captured_depot_inventory }
+		available = { cannibalism_cbl_is_inland_origin = yes }
+		completion_reward = {
+			add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:cannibalism_focus_reward.train_medium }
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:cannibalism_focus_reward.infantry_small }
+			random_owned_controlled_state = {
+				limit = { is_controlled_by = ROOT }
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+		}
+		ai_will_do = {
+			base = constant:cannibalism_ai_weight.standard
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor cannibalism_cbl_is_inland_origin = yes }
+		}
+	}
+
+	focus = {
+		id = cbl_rail_corridor_hunts
+		icon = GFX_goal_cannibalism_rail_corridors
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_WAR_SUPPORT }
+		x = 6
+		y = 6
+		cost = @cannibalism_focus_medium
+		prerequisite = { focus = cbl_prison_road_route focus = cbl_coastal_port_lists }
+		completion_reward = {
+			add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:cannibalism_focus_reward.train_medium }
+			army_experience = constant:cannibalism_focus_reward.army_xp_small
+			cannibalism_cbl_mark_neighbor_hunting_claim = yes
+		}
+		ai_will_do = {
+			base = constant:cannibalism_ai_weight.standard
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor cannibalism_cbl_has_neighbor_target = yes }
+		}
+	}
+
+	focus = {
+		id = cbl_mainland_hunting_corridors
+		icon = GFX_goal_cannibalism_mainland_corridors
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_WAR_SUPPORT }
+		x = 4
+		y = 7
+		cost = @cannibalism_focus_long
+		prerequisite = { focus = cbl_convoy_ambush_plans focus = cbl_rail_corridor_hunts }
+		completion_reward = {
+			add_war_support = constant:cannibalism_focus_reward.war_support_small
+			cannibalism_cbl_apply_hunting_ground_to_controlled_state = yes
+			cannibalism_cbl_mark_neighbor_hunting_claim = yes
+			add_to_variable = { global.cannibalism_network_strength = constant:cannibalism_focus_reward.network_medium }
+			cannibalism_refresh_world_threat_source = yes
+		}
+		ai_will_do = {
+			base = constant:cannibalism_ai_weight.standard
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor cannibalism_cbl_has_available_hunting_ground_state = yes }
+		}
+	}
+
+	focus = {
+		id = cbl_no_public_feasts
+		icon = GFX_goal_cannibalism_empty_larder
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_POLITICAL }
+		x = 10
+		y = 6
+		cost = @cannibalism_focus_long
+		prerequisite = { focus = cbl_commune_ration_codes }
+		mutually_exclusive = { focus = cbl_hunting_ground_doctrine }
+		completion_reward = {
+			set_country_flag = cannibalism_empty_larder_route
+			drop_cosmetic_tag = yes
+			add_stability = constant:cannibalism_focus_reward.stability_medium
+			add_war_support = constant:cannibalism_focus_reward.war_support_loss
+			subtract_from_variable = { global.cannibalism_network_strength = constant:cannibalism_focus_reward.network_small }
+			cannibalism_refresh_world_threat_source = yes
+		}
+		ai_will_do = {
+			base = constant:cannibalism_ai_weight.cautious
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor has_stability < 0.45 }
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor NOT = { has_war = yes } }
+		}
+	}
+
+	focus = {
+		id = cbl_hunting_ground_doctrine
+		icon = GFX_goal_cannibalism_hunting_ground
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_WAR_SUPPORT }
+		x = 14
+		y = 6
+		cost = @cannibalism_focus_long
+		prerequisite = { focus = cbl_commune_ration_codes }
+		mutually_exclusive = { focus = cbl_no_public_feasts }
+		completion_reward = {
+			set_country_flag = cannibalism_hunting_ground_route
+			add_stability = constant:cannibalism_focus_reward.stability_loss
+			add_war_support = constant:cannibalism_focus_reward.war_support_small
+			add_to_variable = { global.cannibalism_network_strength = constant:cannibalism_focus_reward.network_large }
+			add_to_variable = { global.cannibalism_cult_nodes = constant:cannibalism_focus_reward.cult_node }
+			cannibalism_cbl_apply_hunting_ground_to_controlled_state = yes
+			cannibalism_refresh_world_threat_source = yes
+		}
+		ai_will_do = {
+			base = constant:cannibalism_ai_weight.standard
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor has_war = yes }
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor cannibalism_cbl_has_available_hunting_ground_state = yes }
+		}
+	}
+
+	focus = {
+		id = cbl_restrained_consumption_registers
+		icon = GFX_goal_cannibalism_restrained_registers
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_DEFENSE }
+		x = 8
+		y = 7
+		cost = @cannibalism_focus_medium
+		prerequisite = { focus = cbl_no_public_feasts }
+		completion_reward = {
+			add_stability = constant:cannibalism_focus_reward.stability_medium
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:cannibalism_focus_reward.support_medium }
+			cannibalism_cbl_apply_hunting_ground_to_controlled_state = yes
+		}
+		ai_will_do = {
+			base = constant:cannibalism_ai_weight.cautious
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor has_stability > 0.45 }
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor has_country_flag = cannibalism_empty_larder_route }
+		}
+	}
+
+	focus = {
+		id = cbl_runaway_consumption_accounts
+		icon = GFX_goal_cannibalism_runaway_accounts
+		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_ANNEXATION }
+		x = 16
+		y = 7
+		cost = @cannibalism_focus_medium
+		prerequisite = { focus = cbl_hunting_ground_doctrine }
+		completion_reward = {
+			add_war_support = constant:cannibalism_focus_reward.war_support_small
+			add_to_variable = { global.cannibalism_network_strength = constant:cannibalism_focus_reward.network_medium }
+			add_to_variable = { global.cannibalism_deaths_recorded = constant:cannibalism_country_package.region_consumption_deaths }
+			cannibalism_cbl_apply_hunting_ground_to_controlled_state = yes
+		}
+		ai_will_do = {
+			base = constant:cannibalism_ai_weight.standard
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor has_war = yes }
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor has_country_flag = cannibalism_hunting_ground_route }
+		}
+	}
+
+	focus = {
+		id = cbl_empty_larder_war_discipline
+		icon = GFX_goal_cannibalism_restrained_war
+		search_filters = { FOCUS_FILTER_DEFENSE FOCUS_FILTER_STABILITY }
+		x = 6
+		y = 8
+		cost = @cannibalism_focus_long
+		prerequisite = { focus = cbl_restrained_consumption_registers }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbl_empty_larder_war_discipline_available_tt
+				hidden_trigger = {
+					has_war = yes
+					any_enemy_country = {
+						is_major = yes
+						has_capitulated = yes
+					}
+				}
+			}
+		}
+		completion_reward = {
+			set_country_flag = cannibalism_empty_larder_achieved
+			add_stability = constant:cannibalism_focus_reward.stability_medium
+			add_war_support = constant:cannibalism_focus_reward.war_support_small
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:cannibalism_focus_reward.support_small }
+		}
+		ai_will_do = {
+			base = constant:cannibalism_ai_weight.cautious
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor has_war = yes }
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor has_stability > 0.45 }
+		}
+	}
+
+	focus = {
+		id = cbl_couriers_between_tables
+		icon = GFX_goal_cannibalism_couriers
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 12
+		y = 8
+		cost = @cannibalism_focus_medium
+		prerequisite = { focus = cbl_restrained_consumption_registers focus = cbl_runaway_consumption_accounts }
+		completion_reward = {
+			set_country_flag = cannibalism_cbl_courier_network
+			add_command_power = constant:cannibalism_focus_reward.command_power_small
+			add_to_variable = { global.cannibalism_network_strength = constant:cannibalism_focus_reward.network_medium }
+			cannibalism_try_record_global_table = yes
+			cannibalism_refresh_world_threat_source = yes
+		}
+		ai_will_do = {
+			base = constant:cannibalism_ai_weight.urgent
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor has_global_flag = cannibalism_evolution_global_table_recorded }
+		}
+	}
+
+	focus = {
+		id = cbl_cannibal_pact_compact
+		icon = GFX_goal_cannibalism_pact_compact
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 16
+		y = 9
+		cost = @cannibalism_focus_medium
+		prerequisite = { focus = cbl_couriers_between_tables }
+		mutually_exclusive = { focus = cbl_refuse_the_wider_pact }
+		completion_reward = {
+			set_country_flag = cannibalism_cannibal_pact_route
+			set_country_flag = cannibalism_pact_couriers_unlocked
+			add_ideas = cannibalism_cbl_pact_couriers
+			add_command_power = constant:cannibalism_focus_reward.command_power_medium
+			add_to_variable = { global.cannibalism_network_strength = constant:cannibalism_focus_reward.network_large }
+			cannibalism_try_record_global_table = yes
+			cannibalism_refresh_world_threat_source = yes
+		}
+		ai_will_do = {
+			base = constant:cannibalism_ai_weight.standard
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor has_global_flag = cannibalism_evolution_global_table_recorded }
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor cannibalism_hannibal_or_unifier_exists = yes }
+		}
+	}
+
+	focus = {
+		id = cbl_refuse_the_wider_pact
+		icon = GFX_goal_cannibalism_table_for_one
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ANNEXATION }
+		x = 8
+		y = 9
+		cost = @cannibalism_focus_medium
+		prerequisite = { focus = cbl_couriers_between_tables }
+		mutually_exclusive = { focus = cbl_cannibal_pact_compact }
+		completion_reward = {
+			set_country_flag = cannibalism_table_for_one_route
+			set_country_flag = cannibalism_solitary_raids_unlocked
+			add_ideas = cannibalism_cbl_solitary_rampage
+			army_experience = constant:cannibalism_focus_reward.army_xp_small
+			add_war_support = constant:cannibalism_focus_reward.war_support_small
+		}
+		ai_will_do = {
+			base = constant:cannibalism_ai_weight.cautious
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor has_war = yes }
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor cannibalism_cbl_has_neighbor_target = yes }
+		}
+	}
+
+	focus = {
+		id = cbl_listen_for_hannibal
+		icon = GFX_goal_cannibalism_hannibal_hook
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 18
+		y = 10
+		cost = @cannibalism_focus_medium
+		prerequisite = { focus = cbl_cannibal_pact_compact }
+		available = { cannibalism_hannibal_or_unifier_exists = yes }
+		completion_reward = {
+			set_country_flag = cannibalism_hannibal_linked
+			add_to_variable = { global.cannibalism_network_strength = constant:cannibalism_focus_reward.network_large }
+			cannibalism_emit_network_super_event_if_unlocked = yes
+			cannibalism_refresh_world_threat_source = yes
+		}
+		ai_will_do = {
+			base = constant:cannibalism_ai_weight.low
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor cannibalism_hannibal_or_unifier_exists = yes }
+			modifier = { factor = constant:cannibalism_ai_weight.crisis_factor has_global_flag = cannibalism_evolution_global_table_recorded }
+		}
+	}
+
+	focus = {
+		id = cbl_last_table_preparations
+		icon = GFX_goal_cannibalism_last_table_preparations
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_WAR_SUPPORT }
+		x = 6
+		y = 10
+		cost = @cannibalism_focus_medium
+		prerequisite = { focus = cbl_refuse_the_wider_pact }
+		completion_reward = {
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:cannibalism_focus_reward.infantry_large }
+			add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:cannibalism_focus_reward.train_medium }
+			add_command_power = constant:cannibalism_focus_reward.command_power_medium
+			cannibalism_cbl_apply_hunting_ground_to_controlled_state = yes
+		}
+		ai_will_do = {
+			base = constant:cannibalism_ai_weight.standard
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor has_country_flag = cannibalism_table_for_one_route }
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor cannibalism_cbl_has_available_hunting_ground_state = yes }
+		}
+	}
+
+	focus = {
+		id = cbl_map_the_final_larder
+		icon = GFX_goal_cannibalism_map_larder
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
+		x = 8
+		y = 11
+		cost = @cannibalism_focus_medium
+		prerequisite = { focus = cbl_last_table_preparations }
+		completion_reward = {
+			set_country_flag = cannibalism_last_table_preparation_unlocked
+			add_equipment_to_stockpile = { type = convoy_1 amount = constant:cannibalism_focus_reward.convoy_medium }
+			add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:cannibalism_focus_reward.train_medium }
+			add_fuel = constant:cannibalism_focus_reward.fuel_medium
+		}
+		ai_will_do = {
+			base = constant:cannibalism_ai_weight.urgent
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor has_country_flag = cannibalism_table_for_one_route }
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor cannibalism_cbl_has_map_projection = yes }
+		}
+	}
+
+	focus = {
+		id = cbl_proclaim_the_last_table
+		icon = GFX_goal_cannibalism_last_table
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_WAR_SUPPORT }
+		x = 8
+		y = 12
+		cost = @cannibalism_focus_long
+		prerequisite = { focus = cbl_map_the_final_larder }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbl_proclaim_the_last_table_available_tt
+				hidden_trigger = {
+					has_country_flag = cannibalism_last_table_map_validated
+					check_variable = {
+						var = global.cannibalism_communes_created
+						value = constant:cannibalism_world_end.min_communes
+						compare = greater_than_or_equals
+					}
+				}
+			}
+		}
+		completion_reward = {
+			set_cosmetic_tag = CBL_LAST_TABLE
+			set_country_flag = cannibalism_last_table_formed
+			set_country_flag = cannibalism_later_unifier_country
+			if = {
+				limit = {
+					has_country_flag = cannibalism_table_for_one_route
+					has_country_flag = cannibalism_solitary_rival_table_broken
+				}
+				set_country_flag = cannibalism_table_for_one_achieved
+			}
+			set_global_flag = cannibalism_later_unifier_accepted
+			add_ideas = cannibalism_last_table_discipline
+			add_to_variable = { global.cannibalism_network_strength = constant:cannibalism_focus_reward.network_large }
+			cannibalism_emit_network_super_event_if_unlocked = yes
+			cannibalism_refresh_world_threat_source = yes
+		}
+		ai_will_do = {
+			base = constant:cannibalism_ai_weight.standard
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor has_country_flag = cannibalism_table_for_one_route }
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor has_global_flag = cannibalism_later_unifier_accepted }
+		}
+	}
+
+	focus = {
+		id = cbl_controlled_region_projects
+		icon = GFX_goal_cannibalism_region_projects
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_INDUSTRY }
+		x = 6
+		y = 13
+		cost = @cannibalism_focus_medium
+		prerequisite = { focus = cbl_proclaim_the_last_table }
+		completion_reward = {
+			set_country_flag = cannibalism_controlled_region_projects_unlocked
+			add_command_power = constant:cannibalism_focus_reward.command_power_small
+			cannibalism_cbl_apply_hunting_ground_to_controlled_state = yes
+			add_to_variable = { global.cannibalism_network_strength = constant:cannibalism_focus_reward.network_medium }
+			cannibalism_refresh_world_threat_source = yes
+		}
+		ai_will_do = {
+			base = constant:cannibalism_ai_weight.standard
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor has_country_flag = cannibalism_controlled_region_projects_unlocked }
+			modifier = { factor = constant:cannibalism_ai_weight.high_factor cannibalism_cbl_has_available_hunting_ground_state = yes }
+		}
+	}
+
+	focus = {
+		id = cbl_world_as_larder_gate
+		icon = GFX_goal_cannibalism_world_larder
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
+		x = 14
+		y = 14
+		cost = @cannibalism_focus_long
+		prerequisite = { focus = cbl_listen_for_hannibal }
+		prerequisite = { focus = cbl_proclaim_the_last_table }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbl_world_as_larder_gate_available_tt
+				hidden_trigger = { cannibalism_world_end_route_available = yes }
+			}
+		}
+		completion_reward = {
+			cannibalism_try_world_end_route = yes
+		}
+		ai_will_do = {
+			base = constant:cannibalism_ai_weight.none
+			modifier = {
+				factor = constant:cannibalism_ai_weight.crisis
+				cannibalism_world_end_route_available = yes
+			}
+		}
+	}
+}

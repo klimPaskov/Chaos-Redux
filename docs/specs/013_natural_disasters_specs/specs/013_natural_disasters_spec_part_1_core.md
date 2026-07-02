@@ -157,7 +157,7 @@ The recovery loop should have three layers.
 2. Stabilization missions, used across the next one to four months. They require holding or repairing named railways, ports, supply hubs, depots, or affected states.
 3. Reconstruction projects, used after the immediate danger. They rebuild industry, infrastructure, ports, airfields, farms, resources, and public order.
 
-Costs should vary by family and country size. Use manpower, infantry equipment, support equipment, trucks, trains, convoys, fuel, command power, army XP, civilian factory burden, construction speed penalties, stability, war support, and local unit presence. Political power can appear for bureaucracy, foreign aid, and public order, but it should not be the default cost.
+Costs should vary by family and country size. Use manpower, infantry equipment, support equipment, trucks, trains, convoys, fuel, command power, army XP, civilian factory burden, construction speed penalties, stability, war support, and local unit presence. Political power is not used as the disaster-response store; response work should spend concrete resources and resolve through decisions or missions.
 
 Recovery should create visible differences. A country that reacts quickly should reduce deaths, shorten state modifiers, prevent famine or refugee pressure, protect factories, and avoid some follow-up disasters. A country that ignores the aftermath can face longer supply penalties, delayed deaths, migration pressure, local unrest, lower stability, and stronger future target weight.
 
@@ -195,7 +195,7 @@ The Sun Moves Away event can interact with cold-wave and blizzard family eligibi
 
 Final localisation should describe what happened, where it happened, what people can see, and what the country can do next. It should not list script effects in Event Details. It should not say that the event was reworked, that a hidden system exists, or that a report is a warning. It should avoid generic apocalypse phrasing.
 
-Option tone can vary by context. Minor local disasters can use restrained dark irony or regional public frustration. Severe disasters should stay grounded. The option text can be official, practical, grim, or exhausted, but it should not cheapen mass death.
+Option tone can vary by context. Minor local disasters can use restrained dark irony or regional public frustration. Severe disasters should stay grounded. The option text can be practical, grim, or exhausted, but it should not cheapen mass death.
 
 Dynamic text should include affected state or region names, affected country, disaster family, and broad aftermath class. In global evolutions, digest text should name only the most meaningful disasters and avoid long lists.
 

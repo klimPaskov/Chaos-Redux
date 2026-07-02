@@ -1,0 +1,290 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 014 CANNIBALISM AI STRATEGIES
+# ============================================================================
+# CBL survives first, raids weak borders/ports when reinforced, and only moves
+# toward world-end aggression when the Hannibal/unifier gate is open.
+# ============================================================================
+
+@cannibalism_ai_build_army = 100
+@cannibalism_ai_build_infantry = 80
+@cannibalism_ai_raid_ports = -30
+@cannibalism_ai_avoid_suicide_wars = 140
+@cannibalism_ai_world_end_aggression = -100
+@cannibalism_ai_coastal_raids = -60
+@cannibalism_ai_solitary_raids = -90
+@cannibalism_ai_pact_patience = 120
+@cannibalism_ai_last_table_patience = 180
+@cannibalism_ai_outbreak_build_army = 70
+@cannibalism_ai_outbreak_infantry_production = 45
+@cannibalism_ai_outbreak_support_production = 55
+@cannibalism_ai_outbreak_train_production = 35
+@cannibalism_ai_outbreak_convoy_production = 30
+@cannibalism_ai_outbreak_supply_building = 50
+@cannibalism_ai_outbreak_transport_surge = 65
+@cannibalism_ai_outbreak_crisis_containment = 120
+
+cannibalism_outbreak_logistics_response = {
+	allowed = { always = yes }
+	enable = {
+		cannibalism_country_has_outbreak = yes
+		NOT = { is_cannibal_commune_country = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @cannibalism_ai_outbreak_build_army
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @cannibalism_ai_outbreak_infantry_production
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @cannibalism_ai_outbreak_support_production
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = train
+		value = @cannibalism_ai_outbreak_train_production
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = convoy
+		value = @cannibalism_ai_outbreak_convoy_production
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @cannibalism_ai_outbreak_supply_building
+	}
+}
+
+cannibalism_outbreak_transport_surge = {
+	allowed = { always = yes }
+	enable = {
+		cannibalism_country_has_outbreak = yes
+		NOT = { is_cannibal_commune_country = yes }
+		OR = {
+			has_country_flag = cannibalism_guard_ration_rail_active
+			has_country_flag = cannibalism_prison_kitchen_active
+			has_country_flag = cannibalism_island_inspection_active
+			has_country_flag = cannibalism_evacuation_active
+			cannibalism_country_is_in_island_stage = yes
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = equipment_production_factor
+		id = train
+		value = @cannibalism_ai_outbreak_transport_surge
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = convoy
+		value = @cannibalism_ai_outbreak_transport_surge
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @cannibalism_ai_outbreak_supply_building
+	}
+	ai_strategy = {
+		type = build_building
+		id = naval_base
+		value = @cannibalism_ai_outbreak_supply_building
+	}
+}
+
+cannibalism_outbreak_crisis_containment = {
+	allowed = { always = yes }
+	enable = {
+		cannibalism_country_has_outbreak = yes
+		NOT = { is_cannibal_commune_country = yes }
+		OR = {
+			check_variable = {
+				var = cannibalism_hunger
+				value = constant:cannibalism_meter.high
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = cannibalism_cult
+				value = constant:cannibalism_meter.high
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = cannibalism_spread
+				value = constant:cannibalism_meter.high
+				compare = greater_than_or_equals
+			}
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @cannibalism_ai_outbreak_crisis_containment
+	}
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @cannibalism_ai_outbreak_crisis_containment
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @cannibalism_ai_outbreak_infantry_production
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @cannibalism_ai_outbreak_support_production
+	}
+}
+
+cannibalism_commune_hold_origin = {
+	allowed = { always = yes }
+	enable = {
+		is_cannibal_commune_country = yes
+		NOT = { has_global_flag = cannibalism_evolution_global_table_recorded }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @cannibalism_ai_build_army
+	}
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @cannibalism_ai_avoid_suicide_wars
+	}
+}
+
+cannibalism_commune_hunt_supply_lines = {
+	allowed = { always = yes }
+	enable = {
+		is_cannibal_commune_country = yes
+		has_war = yes
+		num_divisions > constant:cannibalism_field_requirement.supplied_divisions
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @cannibalism_ai_build_army
+	}
+	ai_strategy = {
+		type = build_building
+		id = arms_factory
+		value = @cannibalism_ai_build_infantry
+	}
+}
+
+cannibalism_commune_seek_other_tables = {
+	allowed = { always = yes }
+	enable = {
+		is_cannibal_commune_country = yes
+		has_global_flag = cannibalism_evolution_silent_islands_recorded
+		check_variable = {
+			var = global.cannibalism_network_strength
+			value = constant:cannibalism_meter.mid
+			compare = greater_than_or_equals
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @cannibalism_ai_raid_ports
+	}
+}
+
+cannibalism_commune_coastal_raiders = {
+	allowed = { always = yes }
+	enable = {
+		is_cannibal_commune_country = yes
+		cannibalism_cbl_is_coastal_origin = yes
+		OR = {
+			has_country_flag = cannibalism_cbl_courier_network
+			has_country_flag = cannibalism_hunting_ground_route
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @cannibalism_ai_coastal_raids
+	}
+	ai_strategy = {
+		type = build_building
+		id = naval_base
+		value = @cannibalism_ai_build_infantry
+	}
+}
+
+cannibalism_commune_pact_patience = {
+	allowed = { always = yes }
+	enable = {
+		is_cannibal_commune_country = yes
+		has_country_flag = cannibalism_cannibal_pact_route
+		NOT = { has_country_flag = cannibalism_hannibal_linked }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @cannibalism_ai_pact_patience
+	}
+	ai_strategy = {
+		type = build_army
+		value = @cannibalism_ai_build_army
+	}
+}
+
+cannibalism_commune_solitary_raiders = {
+	allowed = { always = yes }
+	enable = {
+		is_cannibal_commune_country = yes
+		has_country_flag = cannibalism_table_for_one_route
+		has_country_flag = cannibalism_solitary_raids_unlocked
+		NOT = { has_country_flag = cannibalism_last_table_map_validated }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @cannibalism_ai_solitary_raids
+	}
+	ai_strategy = {
+		type = build_army
+		value = @cannibalism_ai_build_army
+	}
+}
+
+cannibalism_commune_last_table_preparation = {
+	allowed = { always = yes }
+	enable = {
+		is_cannibal_commune_country = yes
+		has_country_flag = cannibalism_last_table_preparation_unlocked
+		NOT = { has_country_flag = cannibalism_last_table_map_validated }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @cannibalism_ai_last_table_patience
+	}
+	ai_strategy = {
+		type = build_army
+		value = @cannibalism_ai_build_army
+	}
+}
+
+cannibalism_commune_world_end_pressure = {
+	allowed = { always = yes }
+	enable = {
+		is_cannibal_commune_country = yes
+		cannibalism_world_end_route_available = yes
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @cannibalism_ai_world_end_aggression
+	}
+	ai_strategy = {
+		type = build_army
+		value = @cannibalism_ai_build_army
+	}
+}

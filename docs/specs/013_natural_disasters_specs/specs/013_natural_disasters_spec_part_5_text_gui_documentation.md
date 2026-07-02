@@ -33,17 +33,17 @@ Final text should be concise, concrete, and area-specific. It should not use fin
 
 | Family | Report viewpoint | Visible facts final text should mention | Avoid |
 | --- | --- | --- | --- |
-| Earthquake | Local survivors, rail offices, city rescue crews | affected state or region, collapsed roads or rail, damaged city districts, aftershock uncertainty | announcing hidden rupture values or generic apocalypse language |
+| Earthquake | Local survivors, rail crews, city rescue teams | affected state or region, collapsed roads or rail, damaged city districts, aftershock uncertainty | announcing hidden rupture values or generic apocalypse language |
 | Flood | Flooded towns, river crossings, relief stations | river or lowland area, blocked roads, displaced people, contaminated water risk | calling it a warning or listing exact modifiers |
 | Tropical cyclone | Coastal reports and port authorities | landfall, port damage, inland flooding, evacuation needs | repeating every small affected state in a global season |
 | Thunderstorm | Local stations and airfield crews | severe storm, lightning, airfield or road disruption, flash-flood possibility | treating it as trivial flavor |
 | Hailstorm | Rural districts and airfield crews | crop damage, shattered roofs, damaged aircraft or livestock where relevant | comedy that dismisses suffering |
 | Extreme wind | Transport and shelter reports | roads blocked, buildings damaged, wind path uncertainty | replacing the event with a tornado movie tone |
 | Wildfire | Evacuation crews and forest towns | advancing fire, smoke, closed roads, threatened settlements | modern climate-policy essay tone |
-| Drought | Local authorities, farms, supply offices | dry wells, failing crops, water distribution, fire risk | instant building-destruction wording |
+| Drought | Local crews, farms, supply columns | dry wells, failing crops, water distribution, fire risk | instant building-destruction wording |
 | Sand and dust storm | Frontline and transport reports | low visibility, buried rails, airfields closed, supply disruption | copying old Event 099 text directly |
 | Blizzard | Rail and shelter reports | blocked passes, frozen tracks, exposure deaths, troop supply | making it only a winter combat modifier |
-| Heat wave | Hospitals, water offices, labor districts | heat exposure, water distribution, strained work, wildfire or drought risk | stacking wording with Event 051 |
+| Heat wave | Hospitals, water crews, labor districts | heat exposure, water distribution, strained work, wildfire or drought risk | stacking wording with Event 051 |
 | Cold wave | Shelter and rail reports | freezing exposure, fuel need, rail freeze, supply disruption | treating it as the Sun Moves Away event |
 | Mass movement | Valley and rail reports | landslide, blocked pass, buried road or rail, isolated settlements | using the same text for wet and dry variants |
 | Volcanic eruption | Evacuation and ash reports | ash, slope danger, airfield closure, water damage, lahar or tsunami risk | final title-like super-event phrasing for ordinary eruptions |

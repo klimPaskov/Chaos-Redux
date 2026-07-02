@@ -20,6 +20,11 @@ Before adding new dynamic logic, check this file and reuse an existing effect if
 - [count_dynamic_major_weight_pool_events](#count_dynamic_major_weight_pool_events)
 - [calculate_dynamic_major_weight_gain](#calculate_dynamic_major_weight_gain)
 - [apply_dynamic_major_weight_gain_after_minor](#apply_dynamic_major_weight_gain_after_minor)
+- [Event 013 Natural Disasters API](#event-013-natural-disasters-api)
+
+## Event 013 Natural Disasters API
+
+Event 013 exposes reusable delayed-season and immediate no-log disaster helpers in `common/scripted_effects/013_natural_disasters_effects.txt`. Use the sidecar documentation in `common/scripted_effects/013_natural_disasters_effects.md` for supported inputs, target event targets, helper names, outputs, and examples.
 
 ## evaluate_random_event_active_pool_candidate
 
@@ -240,6 +245,7 @@ Use this whenever a threat-specific system changes whether its own source flag s
 - `world_threat_source_mengele`
 - `world_threat_source_fury`
 - `world_threat_source_death`
+- `world_threat_source_cannibalism`
 
 Future threats should follow the same pattern:
 

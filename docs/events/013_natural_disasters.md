@@ -24,17 +24,19 @@ Each family has a matching target trigger in `common/scripted_triggers/013_natur
 
 ## Deaths and Damage
 
-Building damage is applied directly to affected states with family-specific building types and damage constants. Population loss is routed through `chaos_meter_register_state_civilian_deaths_percent` using `constant:chaos_meter_deaths_reason.natural_disaster`, so Event 013 uses the shared Deaths system rather than a cosmetic variable. Prepared response flags from rescue, route clearance, supply, food/water, firebreak, ash/dust, and evacuation decisions reduce death percentages for later follow-up or warning-state hits.
+Building damage is applied directly to affected states with family-specific building types and damage constants. State buildings check for undamaged building levels before damage, while province buildings use vanilla-style building count guards before the damage call. Population loss is routed through `chaos_meter_register_state_civilian_deaths_percent` using `constant:chaos_meter_deaths_reason.natural_disaster`, so Event 013 uses the shared Deaths system rather than a cosmetic variable. Prepared response flags from rescue, route clearance, supply, food/water, firebreak, ash/dust, and evacuation decisions reduce death percentages for later follow-up or warning-state hits.
 
 ## Reports, News, and Event Log
 
 - `chaosx.nr13.201` through `chaosx.nr13.208` are delayed visible reports tied to sequence slots.
+- `chaosx.nr13.209` is the isolated direct-call report used by immediate no-log disaster calls.
 - `chaosx.nr13.301` through `chaosx.nr13.304` are high-level news or scenario broadcasts.
-- `chaosx.nr13.305` through `chaosx.nr13.317` are throttled major news broadcasts for meaningful individual disaster hits, with the affected state saved as `natural_disaster_news_state` so unaffected countries still learn which disaster struck where.
+- `chaosx.nr13.305` through `chaosx.nr13.328` are throttled major news broadcasts for meaningful individual disaster hits. Each disaster family has a unique headline event, button remark, and `GFX_news_event_nd_*` news image. The affected state is carried as the regular event target `natural_disaster_news_state` into the immediate headline delivery for all human countries, so unaffected players still learn which disaster struck where without sharing a delayed global news target.
 - Event Log integration uses `constant:natural_disaster_event.id` and `natural_disasters_latest_actor`.
 - Evolution previews for stages I-III are registered in the Event Log detail view.
 - Individual pulses are deliberately not logged as separate event rows.
 - Report scheduling uses `natural_disaster_report_policy`: direct calls normally report, baseline and Evolution I report early or important hits, and Evolution II/III plus SCN-007 throttle reports to first, player-relevant, major, capital, severe, or abnormal hits.
+- The first meaningful disaster-specific news item is allowed through even if a scenario or abnormal headline has just set the global news cooldown. After that first specific disaster headline, `natural_disaster_news_recent` throttles later family news.
 
 ## Recovery Decisions and Missions
 
@@ -49,7 +51,9 @@ Building damage is applied directly to affected states with family-specific buil
 - clear ash and dust
 - evacuate the predicted path
 
-Costs spend command power, manpower, fuel, trains, convoys, infantry equipment, motorized equipment, and support equipment directly. There is no political-power store. Stabilization and reconstruction missions watch whether all recovery states are cleared before timeout; success gives small stability recovery, while failure applies stability or war-support pressure and disqualifies the relevant recovery achievements.
+Costs spend command power, manpower, fuel, trains, convoys, infantry equipment, motorized equipment, and support equipment directly. There is no political-power store. The category remains visible while response is active, even if a state-targeted decision is temporarily unavailable, and the stabilization and reconstruction missions are explicitly activated when recovery opens so the player receives a decision alert. Stabilization and reconstruction missions watch whether all recovery states are cleared before timeout; success gives small stability recovery, while failure applies stability or war-support pressure and disqualifies the relevant recovery achievements.
+
+AI response priority is stored per affected state in `natural_disaster_ai_recovery_priority`. It starts from recovery pressure and increases for capitals, dense population, strategically valuable states, abnormal aftermath, coastal tsunami/cyclone/eruption threats, and wartime supply-route families. Decision `ai_will_do` blocks prefer high and critical states, suppress low-value states while a critical disaster remains open, and weight supply, port, food, firebreak, and evacuation actions toward the families where those responses matter.
 
 State dynamic modifiers remain the center of disaster damage and recovery. Country ideas add a visible national-pressure layer while response state is open: `natural_disaster_aftermath_idea`, `natural_disaster_refugee_pressure_idea`, `natural_disaster_famine_pressure_idea`, `natural_disaster_broken_infrastructure_idea`, and `natural_disaster_recovery_mobilization_idea`. `natural_disasters_refresh_country_ideas` refreshes the idea set when recovery opens, missions resolve or cancel, recovery pressure drops, and the delayed cleanup event `chaosx.nr13.401` fires after the response window.
 
@@ -67,6 +71,8 @@ Source frames, sheets, contact sheets, static fallbacks, and previews are tracke
 
 The same scripted GUI container also displays a cosmetic left-side disaster picture. The static decision category keeps `GFX_decision_cat_picture_nd_recovery_overview`; the scripted GUI overlays one of the `GFX_decision_cat_picture_nd_*` disaster-family pictures when `natural_disaster_latest_family` points at the most recent open recovery family. Meteor showers use the meteor-storm picture during SCN-007 and the skyfall picture otherwise.
 
+The `Operations` button opens a compact four-slot disaster operations board inside the response category. `natural_disasters_refresh_operations_board` fills the slots from controlled states with active aftermath, tsunami warnings, moving corridor warnings, abnormal aftermath, or corridor path flags. Slots prefer critical AI-priority states, then high-priority states, then any active warning or aftermath state. Selecting a slot shows state name, family, phase, risk band, and likely response, and the board buttons call the same scripted triggers/effects as the concrete recovery decisions for rescue, route clearance, supply restoration, and evacuation. Closing the board or clearing all recovery state removes the global event targets used by the panel.
+
 ## Super-Events and Audio
 
 Evolution III abnormal thresholds set `global.current_super_event_audio_id` and `super_event_visible` for four super-event slots:
@@ -80,10 +86,12 @@ Music-mode and sound-effect-mode audio are registered in `music/chaosx_super_eve
 
 ## Public API
 
-Other systems can call Event 013 without duplicating disaster logic. Public request knobs are temp variables or event targets consumed by `natural_disasters_start_sequence` and persisted into the allocated slot:
+Other systems can call Event 013 without duplicating disaster logic. The public season controller allocates a delayed slot; the immediate helpers resolve one individual disaster at once and do not create Event Log rows or borrow sequence slots.
+
+Delayed-slot helpers consume temp variables or event targets through `natural_disasters_start_sequence` and persist them into the allocated slot:
 
 - `natural_disasters_start_sequence = yes` starts a normal season from the current scope.
-- `natural_disasters_call_direct_family = yes` starts a direct one-family disaster. Set `natural_disasters_start_family` first to force the family.
+- `natural_disasters_call_direct_family = yes` starts a delayed one-pulse direct sequence. It is useful when another system wants the same delayed report cadence as Event 013 while still avoiding extra Event Log rows.
 - `natural_disasters_call_targeted_state_family = yes` requires `natural_disasters_direct_target_state` to be saved as an event target and resolves only if that state is valid for the requested family.
 - `natural_disasters_call_targeted_country_family = yes` requires `natural_disasters_direct_target_country` to be saved as an event target and chooses a valid controlled state in that country.
 - `natural_disasters_call_regional_family = yes` uses `natural_disasters_direct_target_state` as a regional seed and chooses a valid neighboring state, falling back only to the seed if the seed itself is valid.
@@ -91,6 +99,14 @@ Other systems can call Event 013 without duplicating disaster logic. Public requ
 - `natural_disasters_call_direct_sandstorm = yes` preserves old sandstorm call sites while routing them into Event 013.
 - `natural_disasters_start_disaster_barrage = yes` launches the SCN-007 sequence profile.
 - `natural_disasters_start_total` can force pulse count; `natural_disasters_start_delay_min` and `natural_disasters_start_delay_max` can force delay bounds; `natural_disasters_start_report_policy` accepts `auto`, `quiet`, `first_only`, `important`, `always`, or `news_only`; `natural_disasters_start_recovery_allowed`, `natural_disasters_start_deaths_allowed`, and `natural_disasters_start_super_event_allowed` gate those subsystems for callers that own their own follow-up handling.
+
+Immediate no-log helpers use the same request knobs, family target triggers, damage, Deaths-system population loss, recovery hooks, reports, and news policy, but set `natural_disaster_sequence_slot = 9` internally. Slot 9 is never cleaned up as a season slot and never schedules the slot follow-up chain, so it cannot overwrite an active delayed season. The result flag is `natural_disaster_direct_call_success`. Direct reports use one pending report target, so additional immediate calls suppress their own report while that report is waiting instead of overwriting it.
+
+- `natural_disasters_call_immediate_family = yes` resolves a forced or default family against the requested target mode immediately.
+- `natural_disasters_call_immediate_targeted_state_family = yes` requires `natural_disasters_direct_target_state`.
+- `natural_disasters_call_immediate_targeted_country_family = yes` requires `natural_disasters_direct_target_country`.
+- `natural_disasters_call_immediate_regional_family = yes` uses `natural_disasters_direct_target_state` as a regional seed.
+- `natural_disasters_call_immediate_world_family = yes` selects a valid world target.
 
 Examples:
 
@@ -107,6 +123,16 @@ random_controlled_state = {
 set_temp_variable = { natural_disasters_start_family = constant:natural_disaster_family.tsunami }
 set_temp_variable = { natural_disasters_start_report_policy = constant:natural_disaster_report_policy.important }
 natural_disasters_call_targeted_state_family = yes
+```
+
+```hoi4
+random_controlled_state = {
+	limit = { natural_disaster_target_flood = yes }
+	save_event_target_as = natural_disasters_direct_target_state
+}
+set_temp_variable = { natural_disasters_start_family = constant:natural_disaster_family.flood }
+set_temp_variable = { natural_disasters_start_report_policy = constant:natural_disaster_report_policy.always }
+natural_disasters_call_immediate_targeted_state_family = yes
 ```
 
 ```hoi4
@@ -132,7 +158,7 @@ Event 013 registers eight achievements in `common/achievements/chaos_redux_achie
 - Against the Season: clear all active recovery after a season without recovery failure and keep capital control.
 - Faultline Accountant: survive an earthquake-chain response with supply and port/airfield recovery.
 - Eye of the Road: use predicted-path evacuation on three storm corridor states.
-- Ash Winter Bureau: stabilize food/water and clear ash after a massive eruption.
+- Ash Winter Watch: stabilize food/water and clear ash after a massive eruption.
 - Skyfall Drill: recover local infrastructure after a meteor shower.
 - Ring of Firebreaks: complete three firebreak responses.
 - Dust Has No Master: restore supply and clear dust during a wartime dust storm.

@@ -9,6 +9,15 @@ The researched quote and button-text packages are wired to Event 013 localisatio
 - Selected references are public-domain scripture, public-domain literature, or historical/public-domain scientific writing.
 - No modern copyrighted lyric, film, game, or novel line is selected in this handoff.
 - Audio status: super-event slots 67-70 are wired through `music/chaosx_super_event_music.asset`, `music/chaosx_super_event_music.txt`, and `sound/chaosx_sound.asset`.
+- Audio source packages are documented in `docs/super_events/super_event_audio_packages.md` and tracked in the Event 013 asset manifest:
+
+| Slot | Runtime cue | Source package | License |
+| --- | --- | --- | --- |
+| `67` | `music/super_event_natural_disasters_great_rupture.ogg` | Holst, `The Planets: Saturn`, 1923 Columbia recording | Public domain pre-1926 U.S. sound recording; composition public domain |
+| `68` | `music/super_event_natural_disasters_massive_eruption.ogg` | Beethoven, `Egmont Overture`, Czech National Symphony Orchestra / Musopen | CC0 recording; composition public domain |
+| `69` | `music/super_event_natural_disasters_skyfall.ogg` | Holst, `The Planets: Neptune`, 1923 Columbia recording | Public domain pre-1926 U.S. sound recording; composition public domain |
+| `70` | `music/super_event_natural_disasters_storm_corridor.ogg` | Holst, `The Planets: Uranus`, U.S. Air Force Heritage of America Band | Public domain U.S. federal government recording; composition public domain |
+
 - Remaining research caveat: the selected meteor quote is verified through a secondary transcription of Denison Olmsted's 1834 article, not a directly browsable primary scan in this pass. Wording confidence is still reasonably high because the transcription cites page numbers.
 
 ## 1. Meteor shower

@@ -2,6 +2,20 @@
 
 This file records external quote sources used by Chaos Redux super-events when the source matters for completion proof.
 
+## Secret Alliance
+
+### The Pact Made Public
+
+- Super-event ID: `111`
+- Localisation key: `chaosx_super_event.111.q`
+- Quote in game: "No treaty of peace shall be regarded as valid, if made with the secret reservation of material for a future war."
+- Attribution: Immanuel Kant, `Perpetual Peace`, Preliminary Article I.
+- Verification source: <https://www.gutenberg.org/files/50922/50922-h/50922-h.htm> records the public-domain English translation used for the line.
+- Button remark: "Openly arrived at."
+- Button source: Woodrow Wilson, Fourteen Points speech, Point I. <https://www.archives.gov/milestone-documents/president-woodrow-wilsons-14-points>
+- Attribution confidence: High for authorship and work; medium-high for exact English wording because the Kant line is translated.
+- Use note: Keep this package for the public Anti-[target] Pact reveal. The Kant quote frames secret war material, while the Wilson fragment works as short diplomatic irony.
+
 ## Fury
 
 ### Fury Becomes a State / The World in Fury
