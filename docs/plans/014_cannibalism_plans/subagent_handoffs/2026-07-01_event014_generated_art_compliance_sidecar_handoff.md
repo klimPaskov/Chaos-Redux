@@ -47,12 +47,12 @@ Processed PNG previews:
 
 Final DDS/TGA files:
 
-- `gfx/event_pictures/chaos_redux/014_cannibalism/report_event_cannibalism.dds`
-- `gfx/event_pictures/chaos_redux/014_cannibalism/news_cannibalism.dds`
-- `gfx/event_pictures/chaos_redux/014_cannibalism/report_event_cannibalism_ritual.dds`
-- `gfx/event_pictures/chaos_redux/014_cannibalism/report_event_cannibalism_islands.dds`
-- `gfx/event_pictures/chaos_redux/014_cannibalism/super_event_cannibalism_network.dds`
-- `gfx/event_pictures/chaos_redux/014_cannibalism/report_event_cannibalism_hannibal_hook.dds`
+- `gfx/event_pictures/014_cannibalism/report_event_cannibalism.dds`
+- `gfx/event_pictures/014_cannibalism/news_cannibalism.dds`
+- `gfx/event_pictures/014_cannibalism/report_event_cannibalism_ritual.dds`
+- `gfx/event_pictures/014_cannibalism/report_event_cannibalism_islands.dds`
+- `gfx/super_events/014_cannibalism/super_event_cannibalism_network.dds`
+- `gfx/event_pictures/014_cannibalism/report_event_cannibalism_hannibal_hook.dds`
 - `gfx/leaders/CBL/leader_CBL_warlord.dds`
 - `gfx/leaders/CBL/CBL_table_council.dds`
 - `gfx/flags/CBL.tga`
@@ -77,19 +77,19 @@ Existing `interface/014_cannibalism.gfx` currently points Event 014 art at older
 
 Suggested parent wiring in `interface/014_cannibalism.gfx`:
 
-- Keep `GFX_report_event_cannibalism`; change texturefile to `gfx/event_pictures/chaos_redux/014_cannibalism/report_event_cannibalism.dds`.
-- Keep `GFX_news_cannibalism`; change texturefile to `gfx/event_pictures/chaos_redux/014_cannibalism/news_cannibalism.dds`.
-- Keep `GFX_report_event_cannibalism_ritual`; change texturefile to `gfx/event_pictures/chaos_redux/014_cannibalism/report_event_cannibalism_ritual.dds`.
-- Keep `GFX_report_event_cannibalism_islands`; change texturefile to `gfx/event_pictures/chaos_redux/014_cannibalism/report_event_cannibalism_islands.dds`.
-- Keep `GFX_super_event_cannibalism_network`; either change texturefile to `gfx/event_pictures/chaos_redux/014_cannibalism/super_event_cannibalism_network.dds` or move/copy the DDS to the existing wired super-event folder if the parent wants to preserve `gfx/super_events/014_cannibalism/super_event_cannibalism_network.dds`.
-- Add or wire proposed `GFX_report_event_cannibalism_hannibal_hook` to `gfx/event_pictures/chaos_redux/014_cannibalism/report_event_cannibalism_hannibal_hook.dds` if the Hannibal/unifier hook receives a visible event surface.
+- Keep `GFX_report_event_cannibalism`; change texturefile to `gfx/event_pictures/014_cannibalism/report_event_cannibalism.dds`.
+- Keep `GFX_news_cannibalism`; change texturefile to `gfx/event_pictures/014_cannibalism/news_cannibalism.dds`.
+- Keep `GFX_report_event_cannibalism_ritual`; change texturefile to `gfx/event_pictures/014_cannibalism/report_event_cannibalism_ritual.dds`.
+- Keep `GFX_report_event_cannibalism_islands`; change texturefile to `gfx/event_pictures/014_cannibalism/report_event_cannibalism_islands.dds`.
+- Keep `GFX_super_event_cannibalism_network`; set texturefile to `gfx/super_events/014_cannibalism/super_event_cannibalism_network.dds`.
+- Add or wire proposed `GFX_report_event_cannibalism_hannibal_hook` to `gfx/event_pictures/014_cannibalism/report_event_cannibalism_hannibal_hook.dds` if the Hannibal/unifier hook receives a visible event surface.
 - Add or wire proposed `GFX_portrait_CBL_warlord` to `gfx/leaders/CBL/leader_CBL_warlord.dds` if CBL uses the one-person fictional leader portrait. This portrait is male-presenting; gameplay should use male leader metadata and a male small random name pool, not a generic office title and not female metadata.
 - Keep `GFX_portrait_CBL_table_council`; change texturefile to `gfx/leaders/CBL/CBL_table_council.dds` if the institutional council remains the active CBL portrait. This is a collective institutional portrait, so gameplay should use an institutional name rather than a personal random-name pool.
 - CBL base flag files were updated at `gfx/flags/CBL.tga`, `gfx/flags/medium/CBL.tga`, and `gfx/flags/small/CBL.tga`. Ideology variants and `CBL_LAST_TABLE` flags were not changed by this sidecar.
 
 ## Uncertain Fit And Parent Follow-Up
 
-- The owned write scope did not include `gfx/super_events/014_cannibalism/`, so the generated super-event DDS is complete but placed under the owned `gfx/event_pictures/chaos_redux/014_cannibalism/` folder. Parent must either wire the super-event sprite to that path or move/copy it into the existing super-event folder in a parent-owned pass.
+- The parent asset-organization pass placed the generated super-event DDS under `gfx/super_events/014_cannibalism/` and wired `GFX_super_event_cannibalism_network` to that path.
 - The source prompt for the Hannibal/unifier hook avoids a final Hannibal likeness and uses a back-turned unknown commander. This matches the current blocker that Hannibal-specific identity is not finalized.
 - Only the CBL base flag was regenerated into final TGA files. CBL ideology variants and Last Table cosmetic flags remain outside this sidecar unless the parent grants or requests that specific asset pass.
 
