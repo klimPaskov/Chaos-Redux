@@ -100,6 +100,134 @@ natural_disaster_country_has_recovery_state = {
 	any_controlled_state = { natural_disaster_state_has_open_aftermath = yes }
 }
 
+natural_disaster_state_ai_priority_high = {
+	check_variable = {
+		var = natural_disaster_ai_recovery_priority
+		value = constant:natural_disaster_ai_priority.high
+		compare = greater_than_or_equals
+	}
+}
+
+natural_disaster_state_ai_priority_critical = {
+	check_variable = {
+		var = natural_disaster_ai_recovery_priority
+		value = constant:natural_disaster_ai_priority.critical
+		compare = greater_than_or_equals
+	}
+}
+
+natural_disaster_state_ai_priority_low = {
+	check_variable = {
+		var = natural_disaster_ai_recovery_priority
+		value = constant:natural_disaster_ai_priority.medium
+		compare = less_than
+	}
+}
+
+natural_disaster_country_has_critical_response_state = {
+	any_controlled_state = {
+		natural_disaster_state_has_open_aftermath = yes
+		natural_disaster_state_ai_priority_critical = yes
+	}
+}
+
+natural_disaster_state_is_low_priority_while_critical_exists = {
+	natural_disaster_state_ai_priority_low = yes
+	CONTROLLER = { natural_disaster_country_has_critical_response_state = yes }
+}
+
+natural_disaster_state_board_candidate = {
+	OR = {
+		natural_disaster_state_has_open_aftermath = yes
+		has_state_flag = natural_disaster_corridor_warning
+		has_state_flag = natural_disaster_corridor_path_state
+		has_state_flag = natural_disaster_tsunami_warning
+		has_state_flag = natural_disaster_abnormal_aftermath
+	}
+}
+
+natural_disaster_state_board_critical_candidate = {
+	natural_disaster_state_board_candidate = yes
+	OR = {
+		natural_disaster_state_ai_priority_critical = yes
+		has_state_flag = natural_disaster_abnormal_aftermath
+		has_state_flag = natural_disaster_corridor_warning
+		has_state_flag = natural_disaster_corridor_path_state
+		has_state_flag = natural_disaster_tsunami_warning
+		is_capital = yes
+	}
+}
+
+natural_disaster_state_board_high_candidate = {
+	natural_disaster_state_board_candidate = yes
+	OR = {
+		natural_disaster_state_ai_priority_high = yes
+		state_population_k > @natural_disaster_population_dense_target
+		natural_disaster_state_strategic_profile_major = yes
+	}
+}
+
+natural_disaster_board_has_slot_1 = {
+	has_country_flag = natural_disaster_board_slot_1_state_set
+	has_event_target = natural_disaster_board_slot_1_state
+}
+
+natural_disaster_board_has_slot_2 = {
+	has_country_flag = natural_disaster_board_slot_2_state_set
+	has_event_target = natural_disaster_board_slot_2_state
+}
+
+natural_disaster_board_has_slot_3 = {
+	has_country_flag = natural_disaster_board_slot_3_state_set
+	has_event_target = natural_disaster_board_slot_3_state
+}
+
+natural_disaster_board_has_slot_4 = {
+	has_country_flag = natural_disaster_board_slot_4_state_set
+	has_event_target = natural_disaster_board_slot_4_state
+}
+
+natural_disaster_board_has_selected_state = {
+	has_country_flag = natural_disaster_board_selected_state_set
+	has_event_target = natural_disaster_board_selected_state
+}
+
+natural_disaster_board_selected_can_rescue = {
+	natural_disaster_board_has_selected_state = yes
+	can_pay_natural_disaster_rescue_cost = yes
+	event_target:natural_disaster_board_selected_state = {
+		is_controlled_by = ROOT
+		natural_disaster_state_needs_general_response = yes
+	}
+}
+
+natural_disaster_board_selected_can_clear_routes = {
+	natural_disaster_board_has_selected_state = yes
+	can_pay_natural_disaster_clear_routes_cost = yes
+	event_target:natural_disaster_board_selected_state = {
+		is_controlled_by = ROOT
+		natural_disaster_state_has_open_aftermath = yes
+	}
+}
+
+natural_disaster_board_selected_can_restore_supply = {
+	natural_disaster_board_has_selected_state = yes
+	can_pay_natural_disaster_restore_supply_cost = yes
+	event_target:natural_disaster_board_selected_state = {
+		is_controlled_by = ROOT
+		natural_disaster_state_has_open_aftermath = yes
+	}
+}
+
+natural_disaster_board_selected_can_evacuate = {
+	natural_disaster_board_has_selected_state = yes
+	can_pay_natural_disaster_evacuation_cost = yes
+	event_target:natural_disaster_board_selected_state = {
+		is_controlled_by = ROOT
+		natural_disaster_state_needs_evacuation = yes
+	}
+}
+
 natural_disaster_response_visible = {
 	OR = {
 		has_country_flag = natural_disaster_response_visible

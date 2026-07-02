@@ -33,7 +33,7 @@ Category purpose:
 
 Every major decision family needs at least one meaningful non-political cost or requirement. Use support equipment, infantry equipment, trucks, trains, convoys, fuel, manpower, command power, army XP, civilian factory burden, construction capacity, port access, rail control, state control, supplied divisions, stability tradeoffs, war support tradeoffs, or foreign route access.
 
-Use political power only when the action is administrative, diplomatic, or public-order focused. Command power must stay conservative.
+Do not use political power as the disaster-response store. Administrative, diplomatic, or public-order focused responses should still spend concrete resources, mission time, command attention, equipment, manpower, stability, or war support where appropriate. Command power must stay conservative.
 
 ## Mission rules
 

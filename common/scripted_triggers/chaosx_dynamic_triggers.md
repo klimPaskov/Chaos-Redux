@@ -32,6 +32,7 @@ Current coverage includes:
 - Germany Mengele civil-war and post-coup state markers
 - active Fury actor countries
 - `DTH` / original `DTH` / countries with the Death country marker
+- `CBL` / original `CBL` / countries with the Cannibal Commune marker
 
 ## is_actual_nonhuman_country
 

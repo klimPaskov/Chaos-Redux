@@ -6,6 +6,8 @@
 # infantry equipment, motorized equipment, and support equipment directly.
 # ============================================================================
 
+@natural_disaster_population_dense_target = 500
+
 natural_disaster_response_category = {
 	natural_disaster_deploy_rescue_columns = {
 		icon = GFX_decision_nd_rescue_teams
@@ -30,7 +32,10 @@ natural_disaster_response_category = {
 		custom_cost_text = natural_disaster_rescue_cost_text
 		days_re_enable = constant:natural_disaster_decision_days.reenable_short
 		highlight_states = {
-			highlight_states_trigger = { natural_disaster_state_needs_general_response = yes }
+			highlight_states_trigger = {
+				is_controlled_by = ROOT
+				natural_disaster_state_needs_general_response = yes
+			}
 			highlight_color_before_active = 2
 			highlight_color_while_active = 1
 		}
@@ -40,11 +45,14 @@ natural_disaster_response_category = {
 		}
 		ai_will_do = {
 			base = constant:natural_disaster_decision_ai.high
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { natural_disaster_state_ai_priority_high = yes } }
+			modifier = { factor = constant:natural_disaster_decision_ai.abnormal_factor FROM = { natural_disaster_state_ai_priority_critical = yes } }
+			modifier = { factor = constant:natural_disaster_decision_ai.low_value_suppression FROM = { natural_disaster_state_is_low_priority_while_critical_exists = yes } }
 			modifier = { factor = constant:natural_disaster_decision_ai.capital_factor FROM = { is_capital = yes } }
 			modifier = { factor = constant:natural_disaster_decision_ai.abnormal_factor FROM = { has_state_flag = natural_disaster_abnormal_aftermath } }
 			modifier = { factor = constant:natural_disaster_decision_ai.war_factor has_war = yes }
 			modifier = { factor = constant:natural_disaster_decision_ai.player_factor is_ai = no }
-			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { state_population_k > 500 } }
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { state_population_k > @natural_disaster_population_dense_target } }
 		}
 	}
 
@@ -71,7 +79,10 @@ natural_disaster_response_category = {
 		custom_cost_text = natural_disaster_clear_routes_cost_text
 		days_re_enable = constant:natural_disaster_decision_days.reenable_short
 		highlight_states = {
-			highlight_states_trigger = { natural_disaster_state_has_open_aftermath = yes }
+			highlight_states_trigger = {
+				is_controlled_by = ROOT
+				natural_disaster_state_has_open_aftermath = yes
+			}
 			highlight_color_before_active = 2
 			highlight_color_while_active = 1
 		}
@@ -81,9 +92,12 @@ natural_disaster_response_category = {
 		}
 		ai_will_do = {
 			base = constant:natural_disaster_decision_ai.medium
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { natural_disaster_state_ai_priority_high = yes } }
+			modifier = { factor = constant:natural_disaster_decision_ai.abnormal_factor FROM = { natural_disaster_state_ai_priority_critical = yes } }
+			modifier = { factor = constant:natural_disaster_decision_ai.low_value_suppression FROM = { natural_disaster_state_is_low_priority_while_critical_exists = yes } }
 			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { check_variable = { natural_disaster_recovery_pressure > 1 } } }
 			modifier = { factor = constant:natural_disaster_decision_ai.capital_factor FROM = { is_capital = yes } }
-			modifier = { factor = constant:natural_disaster_decision_ai.war_factor has_war = yes }
+			modifier = { factor = constant:natural_disaster_decision_ai.war_supply_factor has_war = yes }
 			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_earthquake } }
 			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_dry_mass_movement } }
 			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_wet_mass_movement } }
@@ -120,7 +134,10 @@ natural_disaster_response_category = {
 		}
 		ai_will_do = {
 			base = constant:natural_disaster_decision_ai.high
-			modifier = { factor = constant:natural_disaster_decision_ai.war_factor has_war = yes }
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { natural_disaster_state_ai_priority_high = yes } }
+			modifier = { factor = constant:natural_disaster_decision_ai.abnormal_factor FROM = { natural_disaster_state_ai_priority_critical = yes } }
+			modifier = { factor = constant:natural_disaster_decision_ai.low_value_suppression FROM = { natural_disaster_state_is_low_priority_while_critical_exists = yes } }
+			modifier = { factor = constant:natural_disaster_decision_ai.war_supply_factor has_war = yes }
 			modifier = { factor = constant:natural_disaster_decision_ai.capital_factor FROM = { is_capital = yes } }
 			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_flood } }
 			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_blizzard } }
@@ -156,7 +173,11 @@ natural_disaster_response_category = {
 		}
 		ai_will_do = {
 			base = constant:natural_disaster_decision_ai.medium
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { natural_disaster_state_ai_priority_high = yes } }
+			modifier = { factor = constant:natural_disaster_decision_ai.abnormal_factor FROM = { natural_disaster_state_ai_priority_critical = yes } }
+			modifier = { factor = constant:natural_disaster_decision_ai.low_value_suppression FROM = { natural_disaster_state_is_low_priority_while_critical_exists = yes } }
 			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { is_coastal = yes } }
+			modifier = { factor = constant:natural_disaster_decision_ai.naval_route_factor FROM = { is_coastal = yes } }
 			modifier = { factor = constant:natural_disaster_decision_ai.war_factor has_war = yes }
 			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_tropical_cyclone } }
 			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_tsunami } }
@@ -192,7 +213,11 @@ natural_disaster_response_category = {
 		}
 		ai_will_do = {
 			base = constant:natural_disaster_decision_ai.high
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { natural_disaster_state_ai_priority_high = yes } }
+			modifier = { factor = constant:natural_disaster_decision_ai.abnormal_factor FROM = { natural_disaster_state_ai_priority_critical = yes } }
+			modifier = { factor = constant:natural_disaster_decision_ai.low_value_suppression FROM = { natural_disaster_state_is_low_priority_while_critical_exists = yes } }
 			modifier = { factor = constant:natural_disaster_decision_ai.capital_factor FROM = { is_capital = yes } }
+			modifier = { factor = constant:natural_disaster_decision_ai.food_security_factor FROM = { state_population_k > @natural_disaster_population_dense_target } }
 			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_drought } }
 			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_heat_wave } }
 			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_cold_wave } }
@@ -228,8 +253,12 @@ natural_disaster_response_category = {
 		}
 		ai_will_do = {
 			base = constant:natural_disaster_decision_ai.high
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { natural_disaster_state_ai_priority_high = yes } }
+			modifier = { factor = constant:natural_disaster_decision_ai.abnormal_factor FROM = { natural_disaster_state_ai_priority_critical = yes } }
+			modifier = { factor = constant:natural_disaster_decision_ai.low_value_suppression FROM = { natural_disaster_state_is_low_priority_while_critical_exists = yes } }
 			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_wildfire } }
 			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_drought } }
+			modifier = { factor = constant:natural_disaster_decision_ai.fire_industry_factor FROM = { natural_disaster_state_strategic_profile_major = yes } }
 			modifier = { factor = constant:natural_disaster_decision_ai.capital_factor FROM = { is_capital = yes } }
 		}
 	}
@@ -262,6 +291,9 @@ natural_disaster_response_category = {
 		}
 		ai_will_do = {
 			base = constant:natural_disaster_decision_ai.medium
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { natural_disaster_state_ai_priority_high = yes } }
+			modifier = { factor = constant:natural_disaster_decision_ai.abnormal_factor FROM = { natural_disaster_state_ai_priority_critical = yes } }
+			modifier = { factor = constant:natural_disaster_decision_ai.low_value_suppression FROM = { natural_disaster_state_is_low_priority_while_critical_exists = yes } }
 			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_dust_storm } }
 			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_family_volcanic_eruption } }
 			modifier = { factor = constant:natural_disaster_decision_ai.abnormal_factor FROM = { has_state_flag = natural_disaster_family_massive_eruption } }
@@ -297,6 +329,9 @@ natural_disaster_response_category = {
 		}
 		ai_will_do = {
 			base = constant:natural_disaster_decision_ai.urgent
+			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { natural_disaster_state_ai_priority_high = yes } }
+			modifier = { factor = constant:natural_disaster_decision_ai.abnormal_factor FROM = { natural_disaster_state_ai_priority_critical = yes } }
+			modifier = { factor = constant:natural_disaster_decision_ai.low_value_suppression FROM = { natural_disaster_state_is_low_priority_while_critical_exists = yes } }
 			modifier = { factor = constant:natural_disaster_decision_ai.abnormal_factor FROM = { has_state_flag = natural_disaster_abnormal_aftermath } }
 			modifier = { factor = constant:natural_disaster_decision_ai.capital_factor FROM = { is_capital = yes } }
 			modifier = { factor = constant:natural_disaster_decision_ai.severe_factor FROM = { has_state_flag = natural_disaster_corridor_path_state } }

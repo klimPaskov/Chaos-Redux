@@ -12,9 +12,9 @@ Use this as a completion proof checklist after implementation.
 - Player decision category opens at Evolution II or equivalent suspicion state.
 - Decisions use varied resource costs and real objectives.
 - Border missions require real state, border, or route conditions.
-- Public exposure can weaken or reveal the pact without forcing instant war unless readiness says so.
+- Public exposure can weaken or reveal the pact and open public crisis decisions without forcing instant war, faction formation, or the reveal super-event.
 - Any war between target and member triggers formal reveal.
-- Formal reveal creates the Anti-[target country] Pact and joins live members to war.
+- Formal reveal through target-member war or final counter-ultimatum pressure forms or reuses the Anti-[target country] Pact path and joins live members to war.
 - Super-event package is final, researched, sourced, wired, and documented.
 - Static and animated assets have final DDS outputs and manifests.
 - Event log, event detail, docs, and spreadsheet handoff align.

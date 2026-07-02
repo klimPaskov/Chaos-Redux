@@ -19,7 +19,7 @@ This is a design handoff for `chaosx_scripted_system_architect`. Names are propo
 | `secret_alliance_check_evolution_unlocks` | target country | chaos and pact state | evolution flags | records evolution entries if enabled | timed pact controller |
 | `secret_alliance_reveal_pact_publicly` | target country | reveal cause | public reveal state | exposes members, opens crisis phase | exposure decision and self-reveal |
 | `secret_alliance_reveal_pact_by_war` | target country | member enemy | formal faction and war joins | fires super-event, changes ideas | any member-target war check |
-| `secret_alliance_form_anti_target_faction` | pact leader | target and members | faction | creates dynamic name and invitations | war reveal and final ultimatum |
+| `secret_alliance_form_anti_target_faction` | pact leader | target and members | faction | creates dynamic name and invitations | war reveal and final counter-ultimatum |
 | `secret_alliance_member_leave_pact` | member country | reason | exit flag, cleanup | removes ideas, roles, target flags | diplomacy, defeat, cleanup |
 | `secret_alliance_collapse_pact_if_invalid` | target country | member count and war state | collapse or continue | cleanup and aftermath | refresh helper and peace events |
 

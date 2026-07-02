@@ -53,8 +53,8 @@ Final DDS/TGA files:
 - `gfx/event_pictures/014_cannibalism/report_event_cannibalism_islands.dds`
 - `gfx/super_events/014_cannibalism/super_event_cannibalism_network.dds`
 - `gfx/event_pictures/014_cannibalism/report_event_cannibalism_hannibal_hook.dds`
-- `gfx/leaders/CBL/leader_CBL_warlord.dds`
-- `gfx/leaders/CBL/CBL_table_council.dds`
+- `gfx/leaders/014_cannibalism/leader_CBL_warlord.dds`
+- `gfx/leaders/014_cannibalism/CBL_table_council.dds`
 - `gfx/flags/CBL.tga`
 - `gfx/flags/medium/CBL.tga`
 - `gfx/flags/small/CBL.tga`
@@ -83,8 +83,8 @@ Suggested parent wiring in `interface/014_cannibalism.gfx`:
 - Keep `GFX_report_event_cannibalism_islands`; change texturefile to `gfx/event_pictures/014_cannibalism/report_event_cannibalism_islands.dds`.
 - Keep `GFX_super_event_cannibalism_network`; set texturefile to `gfx/super_events/014_cannibalism/super_event_cannibalism_network.dds`.
 - Add or wire proposed `GFX_report_event_cannibalism_hannibal_hook` to `gfx/event_pictures/014_cannibalism/report_event_cannibalism_hannibal_hook.dds` if the Hannibal/unifier hook receives a visible event surface.
-- Add or wire proposed `GFX_portrait_CBL_warlord` to `gfx/leaders/CBL/leader_CBL_warlord.dds` if CBL uses the one-person fictional leader portrait. This portrait is male-presenting; gameplay should use male leader metadata and a male small random name pool, not a generic office title and not female metadata.
-- Keep `GFX_portrait_CBL_table_council`; change texturefile to `gfx/leaders/CBL/CBL_table_council.dds` if the institutional council remains the active CBL portrait. This is a collective institutional portrait, so gameplay should use an institutional name rather than a personal random-name pool.
+- Add or wire proposed `GFX_portrait_CBL_warlord` to `gfx/leaders/014_cannibalism/leader_CBL_warlord.dds` if CBL uses the one-person fictional leader portrait. This portrait is male-presenting; gameplay should use male leader metadata and a male small random name pool, not a generic office title and not female metadata.
+- Keep `GFX_portrait_CBL_table_council`; use `gfx/leaders/014_cannibalism/CBL_table_council.dds` if the institutional council remains the active CBL portrait. This is a collective institutional portrait, so gameplay should use an institutional name rather than a personal random-name pool.
 - CBL base flag files were updated at `gfx/flags/CBL.tga`, `gfx/flags/medium/CBL.tga`, and `gfx/flags/small/CBL.tga`. Ideology variants and `CBL_LAST_TABLE` flags were not changed by this sidecar.
 
 ## Uncertain Fit And Parent Follow-Up

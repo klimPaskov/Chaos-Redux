@@ -41,7 +41,8 @@ Type controls cycle scenario-specific type variables:
 - Final Silence: nuclear or thermonuclear payload.
 - Death: Instant Outbreak only.
 - Disaster Barrage: mixed barrage, skyfall opening, global rupture opening, massive eruption opening, or storm corridor opening.
-- Reserved placeholders: fixed Reserved display with neutral placeholder launch events.
+- Cannibalism: War Horror Opening, Cult Seeds, Silent Islands, Cannibal Commune, or Hannibal Network.
+- Reserved placeholder: fixed Reserved display with neutral placeholder launch event.
 
 The trigger button opens a separate confirmation window. Confirming reads the stored selected scenario, type, and intensity at launch time. Scenario launches intentionally bypass the normal automatic firing prerequisites for their source events, including chaos thresholds, prior event-state gates, route prerequisites, and super-event history flags. The launch gate only keeps impossible or conflicting launches out, such as requiring the Soviet Union to exist for Soviet Collapse and preventing most second world-end branches while `world_end` is already active. The launch button uses the same gate for click enablement and buttonstate rendering, so impossible selections are disabled and visually greyed out before the confirmation window can open.
 
@@ -89,8 +90,24 @@ Intensity controls the starting footprint and starting ghost hosts. Low creates 
 
 The Disaster Barrage scenario launches Event 013 Natural Disasters through the same delayed sequence controller used by live disaster seasons. It does not create separate Event Log entries for individual disasters. The selected type can leave the opening mixed or force the first pulse to meteor shower, global rupture, massive eruption, or moving storm corridor before the rest of the barrage continues through the Event 013 family picker.
 
-Intensity controls the number of delayed pulses inside the barrage: Low schedules six to eight pulses, Medium nine to twelve, High thirteen to fifteen, and Maximum sixteen to eighteen. The sequence still uses Event 013 targeting, building damage, Deaths-system population loss, recovery decisions, throttled news, and abnormal super-event thresholds.
+Intensity controls the number and cadence of delayed pulses inside the barrage: Low schedules two to four pulses with four-to-seven-day cadence, Medium five to eight with two-to-five-day cadence, High eight to fourteen with one-to-four-day cadence, and Maximum twelve to twenty with one-to-three-day cadence. The sequence still uses Event 013 targeting, building damage, Deaths-system population loss, recovery decisions, throttled news, and abnormal super-event thresholds.
 
 ### SCN-008: Africa Is One
 
 Reserved manual scenario placeholder for Event 012. It remains listed in the manual scenario window and launches only a neutral placeholder event until the source event is reworked.
+
+### SCN-009: Cannibalism
+
+The Cannibalism scenario launches Event 014 through the same outbreak, evolution, commune-country, super-event, and Hannibal hook helpers used by the live event. The launch suppresses the normal fire-once Event 014 entry so a manually launched cannibalism crisis does not later duplicate itself through automatic event pacing.
+
+The War Horror Opening type sends the original Event 014 report to a valid war-country target. That country chooses the normal discipline, logistics, or secrecy opening and can still defeat the outbreak through early containment.
+
+Cult Seeds starts ritual hunger pressure in one or more valid countries. Each country receives its own outbreak state and containment mission, so spread countries must fight their own local crisis instead of sharing a global pass/fail state.
+
+Silent Islands starts the crisis near the Evolution II island stage. It requires a coastal valid origin and uses the existing silent-island evolution recorder, garrison state pressure, island super-event, and local response logic.
+
+Cannibal Commune forces one target past containment and calls the Event 014 commune-country creation helper. This creates or reinforces the `CBL` tag package, including the focus tree, identity, starting forces, reinforcement path, wars, and cleanup-compatible flags defined by Event 014.
+
+Hannibal Network raises the crisis to the global cult-network stage, creates or reinforces the commune if a valid origin exists, and links `CBL` to Hannibal or a later accepted unifier. This type is disabled unless `hannibal_exists`, `cannibalism_later_unifier_accepted`, `cannibalism_hannibal_proxy_unifier`, or the explicit test flag `cannibalism_triggerable_hannibal_network_test_bypass` is present. If the test flag is used, the scenario records `cannibalism_triggerable_hannibal_network_used_bypass` and lets the ordinary Hannibal hook checks pass only while the scenario launch context is active; it does not leave a permanent unifier flag behind.
+
+Intensity controls how many extra outbreak countries are seeded for the advanced types and how much cult, spread, network strength, cult-node pressure, and death toll are applied at launch. The Hannibal Network type raises the network to the existing Event 014 Hannibal-ready thresholds, but it still does not start the world-end branch directly; Event 014's world-end route remains gated behind the existing chaos threshold and the ordinary Cannibalism world-end trigger.

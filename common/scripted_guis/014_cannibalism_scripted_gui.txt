@@ -1,0 +1,68 @@
+scripted_gui = {
+	cannibalism_frontline_hunger_scripted_gui = {
+		context_type = decision_category
+		window_name = "cannibalism_frontline_hunger_container"
+
+		ai_enabled = { always = no }
+		visible = {
+			is_ai = no
+			cannibalism_response_visible = yes
+		}
+
+		triggers = {
+			cannibalism_frontline_hunger_seal_visible = {
+				OR = {
+					has_country_flag = cannibalism_outbreak_active
+					has_country_flag = cannibalism_containment_mission_active
+					has_country_flag = cannibalism_guard_ration_rail_active
+					has_country_flag = cannibalism_hospital_audit_active
+				}
+			}
+			cannibalism_cult_pressure_warning_visible = {
+				OR = {
+					has_global_flag = cannibalism_evolution_ritual_hunger_recorded
+					has_country_flag = cannibalism_ritual_cell_active
+					has_country_flag = cannibalism_mainland_copying_active
+					has_country_flag = cannibalism_terror_units_active
+					has_country_flag = cannibalism_exploitation_route
+				}
+			}
+			cannibalism_island_signal_card_visible = {
+				OR = {
+					has_global_flag = cannibalism_evolution_silent_islands_recorded
+					has_country_flag = cannibalism_island_inspection_active
+					has_country_flag = cannibalism_evacuation_active
+					any_controlled_state = {
+						OR = {
+							has_state_flag = cannibalism_island_inspection_target_@ROOT
+							has_state_flag = cannibalism_commune
+						}
+					}
+				}
+			}
+			cannibalism_hannibal_resonance_seal_visible = {
+				OR = {
+					has_global_flag = cannibalism_hannibal_hooks_armed
+					has_global_flag = cannibalism_hannibal_connection_revealed
+					has_country_flag = cannibalism_hannibal_linked
+					check_variable = { cannibalism_hannibal_resonance > 0 }
+				}
+			}
+			cannibalism_council_portrait_overlay_visible = {
+				OR = {
+					has_country_flag = cannibalism_commune_country
+					has_country_flag = cannibalism_cannibal_pact_route
+					has_country_flag = cannibalism_last_table_formed
+					has_country_flag = cannibalism_cbl_first_table_opened
+				}
+			}
+			cannibalism_world_end_progress_border_visible = {
+				OR = {
+					has_global_flag = cannibalism_world_end_started
+					has_global_flag = cannibalism_evolution_global_table_recorded
+					cannibalism_world_end_route_available = yes
+				}
+			}
+		}
+	}
+}

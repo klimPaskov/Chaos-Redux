@@ -23,6 +23,22 @@ This note covers the text package for the formal public reveal of the Anti-[targ
 - Button source URL: https://www.archives.gov/milestone-documents/president-woodrow-wilsons-14-points
 - Button license/status note: public-domain U.S. government speech text
 
+## Audio package
+
+- Selected cue: `Egmont Overture, Op. 84`
+- Composer: Ludwig van Beethoven
+- Performer / recording source: Czech National Symphony Orchestra
+- Source URL: https://commons.wikimedia.org/wiki/File:Beethoven_EgmontOvertureOp.84_LudwigVanBeethoven-EgmontOvertureOp.84.ogg
+- Source file: `docs/super_events/source_audio/011_secret_alliance/beethoven_egmont_overture_source.ogg`
+- Runtime music file: `music/super_event_secret_alliance_reveal.ogg`
+- Runtime archival copy: `music/super_events/011_secret_alliance/011_secret_alliance_egmont_overture.ogg`
+- Runtime sound-channel file: `sound/chaosx_super_event_secret_alliance_reveal.wav`
+- License/status note: CC0 1.0 recording on Wikimedia Commons; underlying composition public domain
+- Runtime duration: 1:56
+- Format note: final runtime files are 44.1 kHz stereo conversions from the same licensed source package
+
+`Egmont Overture` fits the reveal as political pressure becoming open confrontation: solemn, public, and martial without implying world-ending catastrophe. The cue is attached to formal pact reveal and war-alignment moments rather than ordinary evidence accumulation.
+
 ## Why this fits
 
 - `The Pact Made Public` is short, cold, and specific to the exact reveal: a hidden anti-target alignment crossing into formal public existence.

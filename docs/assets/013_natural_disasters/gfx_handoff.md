@@ -90,7 +90,34 @@ These use the shared super-event radio frame and are wired through `interface/ch
 
 ## News event pictures
 
-Meaningful individual-hit news events `chaosx.nr13.305` through `chaosx.nr13.317` reuse the existing `GFX_report_event_nd_*` disaster-family sprites so the broadcast image follows the family that struck. The dedicated `GFX_news_event_nd_*` sprites remain for abnormal broadcasts and the SCN-007 barrage.
+Meaningful individual-hit news events `chaosx.nr13.305` through `chaosx.nr13.328` use dedicated `397x153` black-and-white news sprites. They are separate from report-event pictures and are wired in `interface/013_natural_disasters.gfx`.
+
+Specific family headline sprites:
+
+- `GFX_news_event_nd_earthquake` -> `gfx/event_pictures/013_natural_disasters/news_event_nd_earthquake.dds`
+- `GFX_news_event_nd_flood` -> `gfx/event_pictures/013_natural_disasters/news_event_nd_flood.dds`
+- `GFX_news_event_nd_tropical_cyclone` -> `gfx/event_pictures/013_natural_disasters/news_event_nd_tropical_cyclone.dds`
+- `GFX_news_event_nd_thunderstorm` -> `gfx/event_pictures/013_natural_disasters/news_event_nd_thunderstorm.dds`
+- `GFX_news_event_nd_hailstorm` -> `gfx/event_pictures/013_natural_disasters/news_event_nd_hailstorm.dds`
+- `GFX_news_event_nd_extreme_wind` -> `gfx/event_pictures/013_natural_disasters/news_event_nd_extreme_wind.dds`
+- `GFX_news_event_nd_wildfire` -> `gfx/event_pictures/013_natural_disasters/news_event_nd_wildfire.dds`
+- `GFX_news_event_nd_drought` -> `gfx/event_pictures/013_natural_disasters/news_event_nd_drought.dds`
+- `GFX_news_event_nd_dust_storm` -> `gfx/event_pictures/013_natural_disasters/news_event_nd_dust_storm.dds`
+- `GFX_news_event_nd_blizzard` -> `gfx/event_pictures/013_natural_disasters/news_event_nd_blizzard.dds`
+- `GFX_news_event_nd_heat_wave` -> `gfx/event_pictures/013_natural_disasters/news_event_nd_heat_wave.dds`
+- `GFX_news_event_nd_cold_wave` -> `gfx/event_pictures/013_natural_disasters/news_event_nd_cold_wave.dds`
+- `GFX_news_event_nd_dry_mass_movement` -> `gfx/event_pictures/013_natural_disasters/news_event_nd_dry_mass_movement.dds`
+- `GFX_news_event_nd_wet_mass_movement` -> `gfx/event_pictures/013_natural_disasters/news_event_nd_wet_mass_movement.dds`
+- `GFX_news_event_nd_volcanic_eruption` -> `gfx/event_pictures/013_natural_disasters/news_event_nd_volcanic_eruption.dds`
+- `GFX_news_event_nd_tsunami` -> `gfx/event_pictures/013_natural_disasters/news_event_nd_tsunami.dds`
+- `GFX_news_event_nd_avalanche` -> `gfx/event_pictures/013_natural_disasters/news_event_nd_avalanche.dds`
+- `GFX_news_event_nd_glacial_outburst` -> `gfx/event_pictures/013_natural_disasters/news_event_nd_glacial_outburst.dds`
+- `GFX_news_event_nd_sinkhole` -> `gfx/event_pictures/013_natural_disasters/news_event_nd_sinkhole.dds`
+- `GFX_news_event_nd_limnic_eruption` -> `gfx/event_pictures/013_natural_disasters/news_event_nd_limnic_eruption.dds`
+- `GFX_news_event_nd_meteor_shower` -> `gfx/event_pictures/013_natural_disasters/news_event_nd_meteor_shower.dds`
+- `GFX_news_event_nd_global_rupture` -> `gfx/event_pictures/013_natural_disasters/news_event_nd_global_rupture.dds`
+- `GFX_news_event_nd_massive_eruption_specific` -> `gfx/event_pictures/013_natural_disasters/news_event_nd_massive_eruption_specific.dds`
+- `GFX_news_event_nd_storm_corridor` -> `gfx/event_pictures/013_natural_disasters/news_event_nd_storm_corridor.dds`
 
 - `news_event_nd_regional_floods`
   - Final DDS path: `gfx/event_pictures/013_natural_disasters/news_event_nd_regional_floods.dds`

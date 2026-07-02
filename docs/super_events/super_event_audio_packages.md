@@ -190,6 +190,89 @@ This file records restored, sourced, and converted super-event audio assets used
 - Duration: 30.071 seconds.
 - Notes: sourced replacement for the prior generated cue. Attribution required: Ven. Chan Master Hsuan Hua, `Shurangama Dharani Chant` excerpt, via Wikimedia Commons / Internet Archive, licensed CC BY-SA 3.0.
 
+## Secret Alliance
+
+### The Pact Made Public
+
+- Super-event ID: `111`
+- Music file: `music/super_event_secret_alliance_reveal.ogg`
+- Sound-channel file: `sound/chaosx_super_event_secret_alliance_reveal.wav`
+- Sound definition: `chaosx_super_event_secret_alliance_reveal_track`
+- Source title: `Egmont Overture, Op. 84`
+- Composer / creator: Ludwig van Beethoven.
+- Performer / recording: Czech National Symphony Orchestra.
+- Source URL: <https://commons.wikimedia.org/wiki/File:Beethoven_EgmontOvertureOp.84_LudwigVanBeethoven-EgmontOvertureOp.84.ogg>
+- Source file: `docs/super_events/source_audio/011_secret_alliance/beethoven_egmont_overture_source.ogg`
+- License: CC0 1.0 Universal Public Domain Dedication; underlying composition public domain.
+- Duration: final reveal cue rendered from the researched source with fade and format conversion for music and sound channels.
+- Conversion notes: OGG and WAV are rendered from the same licensed source package; the runtime OGG is also preserved under `music/super_events/011_secret_alliance/011_secret_alliance_egmont_overture.ogg`.
+
+## Natural Disasters
+
+### Foundations Out of Course
+
+- Super-event ID: `67`
+- Music file: `music/super_event_natural_disasters_great_rupture.ogg`
+- Sound-channel file: `sound/chaosx_super_event_natural_disasters_great_rupture.wav`
+- Sound definition: `chaosx_super_event_natural_disasters_great_rupture_track`
+- Source title: `The Planets, Op. 32: V. Saturn, the Bringer of Old Age`
+- Composer / creator: Gustav Holst.
+- Performer / recording: Gustav Holst conducting the London Symphony Orchestra, Columbia Records 1923 recording.
+- Source URL: <https://commons.wikimedia.org/wiki/File:Holst_-_Saturn.ogg>
+- Source file: `docs/assets/013_natural_disasters/audio_research/source/holst_saturn_1923_pd.ogg`
+- Processed candidate: `docs/assets/013_natural_disasters/audio_research/processed/event013_great_rupture_wave_candidate.ogg`
+- License: public domain pre-1926 U.S. sound recording; underlying composition public domain.
+- Duration: 1:48 final cue.
+- Conversion notes: rendered from the researched source package with fade and format conversion for music and sound channels.
+
+### Everything Is Ashes
+
+- Super-event ID: `68`
+- Music file: `music/super_event_natural_disasters_massive_eruption.ogg`
+- Sound-channel file: `sound/chaosx_super_event_natural_disasters_massive_eruption.wav`
+- Sound definition: `chaosx_super_event_natural_disasters_massive_eruption_track`
+- Source title: `Egmont Overture, Op. 84`
+- Composer / creator: Ludwig van Beethoven.
+- Performer / recording: Czech National Symphony Orchestra, Musopen recording hosted on Wikimedia Commons.
+- Source URL: <https://commons.wikimedia.org/wiki/File:Beethoven_EgmontOvertureOp.84_LudwigVanBeethoven-EgmontOvertureOp.84.ogg>
+- Source file: `docs/assets/013_natural_disasters/audio_research/source/beethoven_egmont_overture_musopen_cc0.ogg`
+- Processed candidate: `docs/assets/013_natural_disasters/audio_research/processed/event013_massive_eruption_candidate.ogg`
+- License: CC0 1.0 Universal Public Domain Dedication; underlying composition public domain.
+- Duration: 1:52 final cue.
+- Conversion notes: rendered from the researched source package with fade and format conversion for music and sound channels.
+
+### The Falling Stars
+
+- Super-event ID: `69`
+- Music file: `music/super_event_natural_disasters_skyfall.ogg`
+- Sound-channel file: `sound/chaosx_super_event_natural_disasters_skyfall.wav`
+- Sound definition: `chaosx_super_event_natural_disasters_skyfall_track`
+- Source title: `The Planets, Op. 32: VII. Neptune, the Mystic`
+- Composer / creator: Gustav Holst.
+- Performer / recording: Gustav Holst conducting the London Symphony Orchestra, Columbia Records 1923 recording.
+- Source URL: <https://commons.wikimedia.org/wiki/File:Holst_-_Neptune.ogg>
+- Source file: `docs/assets/013_natural_disasters/audio_research/source/holst_neptune_1923_pd.ogg`
+- Processed candidate: `docs/assets/013_natural_disasters/audio_research/processed/event013_skyfall_candidate.ogg`
+- License: public domain pre-1926 U.S. sound recording; underlying composition public domain.
+- Duration: 1:44 final cue.
+- Conversion notes: rendered from the researched source package with fade and format conversion for music and sound channels.
+
+### In the Whirlwind
+
+- Super-event ID: `70`
+- Music file: `music/super_event_natural_disasters_storm_corridor.ogg`
+- Sound-channel file: `sound/chaosx_super_event_natural_disasters_storm_corridor.wav`
+- Sound definition: `chaosx_super_event_natural_disasters_storm_corridor_track`
+- Source title: `The Planets, Op. 32: VI. Uranus, the Magician`
+- Composer / creator: Gustav Holst.
+- Performer / recording: United States Air Force Heritage of America Band.
+- Source URL: <https://commons.wikimedia.org/wiki/File:Holst-_uranus.ogg>
+- Source file: `docs/assets/013_natural_disasters/audio_research/source/holst_uranus_usaf_pd.ogg`
+- Processed candidate: `docs/assets/013_natural_disasters/audio_research/processed/event013_moving_storm_corridor_candidate.ogg`
+- License: public domain U.S. federal government recording; underlying composition public domain.
+- Duration: 1:50 final cue.
+- Conversion notes: rendered from the researched source package with fade and format conversion for music and sound channels.
+
 ## Fury
 
 ### Fury Becomes a State
