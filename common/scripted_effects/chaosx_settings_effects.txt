@@ -4608,17 +4608,8 @@ fire_event_by_temp_id_no_cluster = {
 		}
 	}
 	if = {
-		limit = { check_variable = { event_id = constant:secret_alliance_event.id } }
-		secret_alliance_initialize_pact = yes
-		if = {
-			limit = {
-				OR = {
-					check_variable = { secret_alliance_context_ready < 1 }
-					NOT = { has_event_target = secret_alliance_target }
-				}
-			}
-			set_temp_variable = { event_single_fire_allowed = 0 }
-		}
+		limit = { check_variable = { event_id = 11 } }
+		set_temp_variable = { event_single_fire_allowed = 0 }
 	}
 	if = {
 		limit = { check_variable = { event_id = constant:random_faction_event.id } }
@@ -4665,16 +4656,6 @@ fire_event_by_temp_id_no_cluster = {
 			event_target:cannibalism_origin_country = {
 				set_country_flag = cannibalism_event_dispatch_context
 				country_event = { id = chaosx.nr14.2 }
-			}
-		}
-		else_if = {
-			limit = {
-				check_variable = { event_fire_record_id = constant:secret_alliance_event.id }
-				has_event_target = secret_alliance_target
-			}
-			event_target:secret_alliance_target = {
-				set_country_flag = secret_alliance_event_dispatch_context
-				country_event = { id = chaosx.nr11.1 }
 			}
 		}
 		else_if = {

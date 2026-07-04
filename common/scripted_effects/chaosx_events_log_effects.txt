@@ -148,14 +148,6 @@ events_log_set_default_actor_for_current_event = {
 	}
 	else_if = {
 		limit = {
-			check_variable = { event_id = constant:secret_alliance_event.id }
-			has_event_target = secret_alliance_target
-		}
-		event_target:secret_alliance_target = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
-		set_temp_variable = { events_log_default_has_actor = 1 }
-	}
-	else_if = {
-		limit = {
 			check_variable = { event_id = constant:random_faction_event.id }
 			has_event_target = random_faction_target_country
 		}
@@ -1458,28 +1450,6 @@ events_log_rebuild_open_event_details_view = {
 			set_temp_variable = { events_log_event_detail_preview_type = constant:cannibalism_event_log.evolution_type }
 			set_temp_variable = { events_log_event_detail_preview_tier = 3 }
 			set_temp_variable = { events_log_event_detail_preview_stage = constant:cannibalism_evolution_stage.global_table }
-			events_log_add_event_detail_evolution_preview = yes
-		}
-
-		if = {
-			limit = {
-				check_variable = {
-					var = event_id
-					value = constant:secret_alliance_event.id
-					compare = equals
-				}
-			}
-			set_temp_variable = { events_log_event_detail_preview_type = constant:secret_alliance_event.evolution_type }
-			set_temp_variable = { events_log_event_detail_preview_tier = 1 }
-			set_temp_variable = { events_log_event_detail_preview_stage = constant:secret_alliance_evolution_stage.coordinated_minor_expansion }
-			events_log_add_event_detail_evolution_preview = yes
-			set_temp_variable = { events_log_event_detail_preview_type = constant:secret_alliance_event.evolution_type }
-			set_temp_variable = { events_log_event_detail_preview_tier = 2 }
-			set_temp_variable = { events_log_event_detail_preview_stage = constant:secret_alliance_evolution_stage.patroned_conspiracy }
-			events_log_add_event_detail_evolution_preview = yes
-			set_temp_variable = { events_log_event_detail_preview_type = constant:secret_alliance_event.evolution_type }
-			set_temp_variable = { events_log_event_detail_preview_tier = 3 }
-			set_temp_variable = { events_log_event_detail_preview_stage = constant:secret_alliance_evolution_stage.exposed_pact_crisis }
 			events_log_add_event_detail_evolution_preview = yes
 		}
 
