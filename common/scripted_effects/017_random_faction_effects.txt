@@ -879,13 +879,15 @@ random_faction_corridor_success = {
 	add_command_power = constant:random_faction_decision_cost.command_power_reward_small
 	for_each_scope_loop = {
 		array = random_faction_corridor_targets
-		limit = {
-			has_country_flag = random_faction_corridor_guaranteed
-			random_faction_country_base_valid = yes
+		if = {
+			limit = {
+				has_country_flag = random_faction_corridor_guaranteed
+				random_faction_country_base_valid = yes
+			}
+			subtract_from_variable = { random_faction_pressure_score = constant:random_faction_pressure_value.staff_mission_support }
+			add_to_variable = { random_faction_neutrality_resilience = constant:random_faction_pressure_value.observers_resilience }
+			random_faction_clamp_current_country_values = yes
 		}
-		subtract_from_variable = { random_faction_pressure_score = constant:random_faction_pressure_value.staff_mission_support }
-		add_to_variable = { random_faction_neutrality_resilience = constant:random_faction_pressure_value.observers_resilience }
-		random_faction_clamp_current_country_values = yes
 	}
 	clear_array = random_faction_corridor_targets
 }
@@ -895,12 +897,14 @@ random_faction_corridor_failure = {
 	add_stability = constant:random_faction_decision_fixed_cost.stability_low
 	for_each_scope_loop = {
 		array = random_faction_corridor_targets
-		limit = {
-			has_country_flag = random_faction_corridor_guaranteed
-			random_faction_country_base_valid = yes
+		if = {
+			limit = {
+				has_country_flag = random_faction_corridor_guaranteed
+				random_faction_country_base_valid = yes
+			}
+			add_to_variable = { random_faction_pressure_score = constant:random_faction_pressure_value.commitment_pressure }
+			random_faction_clamp_current_country_values = yes
 		}
-		add_to_variable = { random_faction_pressure_score = constant:random_faction_pressure_value.commitment_pressure }
-		random_faction_clamp_current_country_values = yes
 	}
 	clear_array = random_faction_corridor_targets
 }

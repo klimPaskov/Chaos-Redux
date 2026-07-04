@@ -5,6 +5,8 @@
 # AI preference helpers for the dynamic Random Faction system.
 # ============================================================================
 @random_faction_border_post_divisions = 1
+# has_opinion value does not accept script constants, so this mirrors random_faction_ai_threshold.positive_opinion.
+@random_faction_positive_opinion = 20
 
 random_faction_country_base_valid = {
 	exists = yes
@@ -26,7 +28,7 @@ is_random_faction_eligible_country = {
 	NOT = { has_country_flag = random_faction_recent_alignment }
 	NOT = { has_country_flag = random_faction_selection_cooldown }
 	any_country = {
-		random_faction_is_valid_faction_leader_for_root_target = yes
+		random_faction_is_valid_faction_leader_for_prev_target = yes
 	}
 }
 
@@ -42,7 +44,7 @@ is_random_faction_wartime_candidate = {
 		any_neighbor_country = { is_in_faction = yes }
 	}
 	any_country = {
-		random_faction_is_valid_faction_leader_for_root_target = yes
+		random_faction_is_valid_faction_leader_for_prev_target = yes
 	}
 }
 
@@ -89,6 +91,24 @@ random_faction_is_valid_faction_leader_for_root_target = {
 		}
 	}
 	ROOT = {
+		random_faction_country_base_valid = yes
+		NOT = { is_subject = yes }
+		NOT = { is_in_faction = yes }
+	}
+}
+
+random_faction_is_valid_faction_leader_for_prev_target = {
+	is_random_faction_allowed_faction_leader = yes
+	NOT = { tag = PREV }
+	NOT = { has_war_with = PREV }
+	NOT = { is_in_faction_with = PREV }
+	NOT = {
+		any_country = {
+			is_in_faction_with = PREV
+			has_war_with = PREV.PREV
+		}
+	}
+	PREV = {
 		random_faction_country_base_valid = yes
 		NOT = { is_subject = yes }
 		NOT = { is_in_faction = yes }
@@ -262,28 +282,28 @@ random_faction_option_4_has_common_enemy = {
 random_faction_option_1_has_positive_relations = {
 	random_faction_option_1_valid = yes
 	event_target:random_faction_option_1_leader = {
-		has_opinion = { target = ROOT value > constant:random_faction_ai_threshold.positive_opinion }
+		has_opinion = { target = ROOT value > @random_faction_positive_opinion }
 	}
 }
 
 random_faction_option_2_has_positive_relations = {
 	random_faction_option_2_valid = yes
 	event_target:random_faction_option_2_leader = {
-		has_opinion = { target = ROOT value > constant:random_faction_ai_threshold.positive_opinion }
+		has_opinion = { target = ROOT value > @random_faction_positive_opinion }
 	}
 }
 
 random_faction_option_3_has_positive_relations = {
 	random_faction_option_3_valid = yes
 	event_target:random_faction_option_3_leader = {
-		has_opinion = { target = ROOT value > constant:random_faction_ai_threshold.positive_opinion }
+		has_opinion = { target = ROOT value > @random_faction_positive_opinion }
 	}
 }
 
 random_faction_option_4_has_positive_relations = {
 	random_faction_option_4_valid = yes
 	event_target:random_faction_option_4_leader = {
-		has_opinion = { target = ROOT value > constant:random_faction_ai_threshold.positive_opinion }
+		has_opinion = { target = ROOT value > @random_faction_positive_opinion }
 	}
 }
 
