@@ -12,6 +12,8 @@ Baseline report policy is generous. A country hit by a disaster gets a delayed r
 
 Evolution unlock order follows the global Chaos Meter tiers: Evolution I unlocks at Gathering Storm, Evolution II unlocks at Rising Chaos, and Evolution III unlocks at Chaos Tier. Totalen Chaos and World Collapse keep Evolution III access active.
 
+Visible Natural Disasters evolution titles must not reuse Chaos Meter tier names. Use Regional Cascade for Evolution I, Global Disaster Season for Evolution II, and Abnormal Front for Evolution III.
+
 ## Evolution I, diversified disaster seasons
 
 Evolution I makes disasters more varied and makes several regions suffer within the same season. It does not make every effect massively stronger. The main change is breadth, variety, and pacing.

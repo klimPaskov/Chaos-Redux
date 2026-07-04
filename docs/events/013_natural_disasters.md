@@ -11,7 +11,7 @@ Event 013 is a minor repeatable disaster-season system. One firing creates one E
 5. Each pulse selects a family and validates the target against that family's trigger, applies building damage, opens recovery, records civilian deaths through the Deaths system when allowed, schedules a delayed report according to the profile's news policy, and queues family-specific follow-ups near the same region.
 6. The slot cleans itself after the final pulse. Recovery decisions and missions continue until affected states are cleared or recovery fails.
 
-Baseline seasons usually delay five to ten days between pulses. Evolution I unlocks at Gathering Storm and compresses to multi-region cadence, Evolution II unlocks at Rising Chaos and uses global and multi-state cadence with throttled news, and Evolution III unlocks at Chaos Tier and allows abnormal families with short cadence plus special warnings. Totalen Chaos and World Collapse continue to use the Evolution III profile.
+Baseline seasons usually delay five to ten days between pulses. Regional Cascade unlocks at Gathering Storm and compresses to multi-region cadence. Global Disaster Season unlocks at Rising Chaos and uses global and multi-state cadence with throttled news. Abnormal Front unlocks at Chaos Tier and allows abnormal families with short cadence plus special warnings. Totalen Chaos and World Collapse continue to use the Abnormal Front profile.
 
 ## Disaster Families
 
