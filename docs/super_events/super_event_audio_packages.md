@@ -190,23 +190,6 @@ This file records restored, sourced, and converted super-event audio assets used
 - Duration: 30.071 seconds.
 - Notes: sourced replacement for the prior generated cue. Attribution required: Ven. Chan Master Hsuan Hua, `Shurangama Dharani Chant` excerpt, via Wikimedia Commons / Internet Archive, licensed CC BY-SA 3.0.
 
-## Secret Alliance
-
-### The Pact Made Public
-
-- Super-event ID: `111`
-- Music file: `music/super_event_secret_alliance_reveal.ogg`
-- Sound-channel file: `sound/chaosx_super_event_secret_alliance_reveal.wav`
-- Sound definition: `chaosx_super_event_secret_alliance_reveal_track`
-- Source title: `Egmont Overture, Op. 84`
-- Composer / creator: Ludwig van Beethoven.
-- Performer / recording: Czech National Symphony Orchestra.
-- Source URL: <https://commons.wikimedia.org/wiki/File:Beethoven_EgmontOvertureOp.84_LudwigVanBeethoven-EgmontOvertureOp.84.ogg>
-- Source file: `docs/super_events/source_audio/011_secret_alliance/beethoven_egmont_overture_source.ogg`
-- License: CC0 1.0 Universal Public Domain Dedication; underlying composition public domain.
-- Duration: final reveal cue rendered from the researched source with fade and format conversion for music and sound channels.
-- Conversion notes: OGG and WAV are rendered from the same licensed source package; the runtime OGG is also preserved under `music/super_events/011_secret_alliance/011_secret_alliance_egmont_overture.ogg`.
-
 ## Natural Disasters
 
 ### Foundations Out of Course
