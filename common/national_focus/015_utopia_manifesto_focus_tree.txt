@@ -22,7 +22,7 @@ focus_tree = {
 	}
 
 	default = no
-	continuous_focus_position = { x = 50 y = 1800 }
+	continuous_focus_position = { x = -1200 y = 3600 }
 	initial_show_position = { x = 12 y = 0 }
 
 	focus = {
@@ -503,7 +503,7 @@ focus_tree = {
 		icon = GFX_goal_utopia_store_state
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
 		x = 10
-		y = 10
+		y = 11
 		cost = @utopia_focus_long
 		prerequisite = { focus = utopia_central_auditors }
 		prerequisite = { focus = utopia_crisis_rations }
@@ -659,7 +659,7 @@ focus_tree = {
 		icon = GFX_goal_utopia_guild_charter
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
 		x = 17
-		y = 10
+		y = 11
 		cost = @utopia_focus_long
 		prerequisite = { focus = utopia_engineer_guilds }
 		prerequisite = { focus = utopia_common_patents }
@@ -872,7 +872,7 @@ focus_tree = {
 		icon = GFX_goal_utopia_island_compact
 		search_filters = { FOCUS_FILTER_NAVY FOCUS_FILTER_STABILITY }
 		x = 24
-		y = 10
+		y = 11
 		cost = @utopia_focus_long
 		prerequisite = { focus = utopia_shore_engineers }
 		prerequisite = { focus = utopia_lighthouse_couriers }
@@ -898,7 +898,10 @@ focus_tree = {
 		x = 6
 		y = 12
 		cost = @utopia_focus_medium
-		prerequisite = { focus = utopia_first_common_store }
+		available = {
+			has_completed_focus = utopia_first_common_store
+			has_completed_focus = utopia_four_readings
+		}
 		completion_reward = {
 			random_owned_controlled_state = {
 				limit = { is_controlled_by = ROOT }
@@ -1025,7 +1028,7 @@ focus_tree = {
 		icon = GFX_goal_utopia_foreign_aid
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 		x = 8
-		y = 15
+		y = 16
 		cost = @utopia_focus_long
 		prerequisite = { focus = utopia_winter_reserve }
 		available = { utopia_manifesto_surplus_stable = yes }
@@ -1046,7 +1049,7 @@ focus_tree = {
 		icon = GFX_goal_utopia_store_network
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
 		x = 6
-		y = 16
+		y = 17
 		cost = @utopia_focus_long
 		prerequisite = { focus = utopia_surplus_for_neighbors }
 		completion_reward = {
@@ -1065,7 +1068,10 @@ focus_tree = {
 		x = 16
 		y = 12
 		cost = @utopia_focus_medium
-		prerequisite = { focus = utopia_register_useful_arts }
+		available = {
+			has_completed_focus = utopia_register_useful_arts
+			has_completed_focus = utopia_four_readings
+		}
 		completion_reward = {
 			set_country_flag = utopia_manifesto_vocation_balance_unlocked
 			set_temp_variable = { utopia_manifesto_ledger_delta = constant:utopia_manifesto_focus_reward.ledger_large }
@@ -1185,7 +1191,7 @@ focus_tree = {
 		x = 24
 		y = 12
 		cost = @utopia_focus_medium
-		prerequisite = { focus = utopia_question_of_boundaries }
+		available = { has_completed_focus = utopia_question_of_boundaries }
 		completion_reward = {
 			army_experience = constant:utopia_manifesto_focus_reward.army_xp_small
 			set_country_flag = utopia_manifesto_just_war_review
@@ -1352,7 +1358,7 @@ focus_tree = {
 		x = 30
 		y = 12
 		cost = @utopia_focus_medium
-		prerequisite = { focus = utopia_question_of_boundaries }
+		available = { has_completed_focus = utopia_question_of_boundaries }
 		completion_reward = {
 			set_country_flag = utopia_manifesto_neighbors_observing
 			add_ideas = utopia_manifesto_arbitration_tables
@@ -1510,8 +1516,10 @@ focus_tree = {
 		x = 12
 		y = 18
 		cost = @utopia_focus_medium
-		prerequisite = { focus = utopia_question_of_boundaries }
-		available = { utopia_manifesto_can_open_needful_land = yes }
+		available = {
+			has_completed_focus = utopia_question_of_boundaries
+			utopia_manifesto_can_open_needful_land = yes
+		}
 		completion_reward = {
 			set_country_flag = utopia_manifesto_needful_land_open
 			add_ideas = utopia_manifesto_needful_land_commission
@@ -1808,11 +1816,12 @@ focus_tree = {
 		x = 18
 		y = 18
 		cost = @utopia_focus_medium
-		prerequisite = { focus = utopia_question_of_boundaries }
 		allow_branch = {
+			has_completed_focus = utopia_question_of_boundaries
 			utopia_manifesto_can_open_marked_bounds = yes
 		}
 		available = {
+			has_completed_focus = utopia_question_of_boundaries
 			utopia_manifesto_can_open_marked_bounds = yes
 		}
 		completion_reward = {
@@ -1994,8 +2003,12 @@ focus_tree = {
 		x = 6
 		y = 26
 		cost = @utopia_focus_long
-		prerequisite = { focus = utopia_common_store_network focus = utopia_all_useful_arts focus = utopia_needful_land_commission }
 		available = {
+			OR = {
+				has_completed_focus = utopia_common_store_network
+				has_completed_focus = utopia_all_useful_arts
+				has_completed_focus = utopia_needful_land_commission
+			}
 			OR = {
 				utopia_manifesto_consent_low = yes
 				utopia_manifesto_surplus_low = yes
@@ -2023,11 +2036,16 @@ focus_tree = {
 		x = 10
 		y = 26
 		cost = @utopia_focus_long
-		prerequisite = { focus = utopia_living_commonwealth focus = utopia_store_state focus = utopia_guild_charter focus = utopia_island_compact }
-		prerequisite = { focus = utopia_common_store_network }
-		prerequisite = { focus = utopia_no_secret_empire }
-		prerequisite = { focus = utopia_adapt_the_commonwealth }
 		available = {
+			OR = {
+				has_completed_focus = utopia_living_commonwealth
+				has_completed_focus = utopia_store_state
+				has_completed_focus = utopia_guild_charter
+				has_completed_focus = utopia_island_compact
+			}
+			has_completed_focus = utopia_common_store_network
+			has_completed_focus = utopia_no_secret_empire
+			has_completed_focus = utopia_adapt_the_commonwealth
 			utopia_manifesto_consent_stable = yes
 			utopia_manifesto_surplus_stable = yes
 			utopia_manifesto_overreach_safe = yes
@@ -2058,9 +2076,9 @@ focus_tree = {
 		x = 14
 		y = 26
 		cost = @utopia_focus_long
-		prerequisite = { focus = utopia_needful_land_commission }
-		prerequisite = { focus = utopia_guard_the_ledger }
 		available = {
+			has_completed_focus = utopia_needful_land_commission
+			has_completed_focus = utopia_guard_the_ledger
 			utopia_manifesto_need_high = yes
 			utopia_manifesto_consent_stable = yes
 			NOT = { utopia_manifesto_is_marked_bounds = yes }

@@ -10,7 +10,7 @@ AI targets are forced to accept. Human targets can accept or reject. Acceptance 
 
 Target eligibility is defined in `common/scripted_triggers/015_utopia_manifesto_triggers.txt`.
 
-- Valid targets must use normal civilian systems, must not be major powers, must not be nonhuman or special chaos countries, must not be capitulated, and must not already be in another event-owned focus-tree route.
+- Valid targets must use normal civilian systems, must not be major powers, must not be nonhuman or special chaos countries, must not be capitulated, and must not already be in another event-owned focus-tree route. Countries already marked by a Chaos route are rejected through the shared `is_special_chaos_country` and `is_actual_nonhuman_country` gates.
 - Strong states are blocked by total factories, military factories, naval factories, controlled states, and division count.
 - Player countries are eligible if they pass the same safety gates.
 - AI countries are additionally screened so subject-at-war and player-enemy cases do not force the route into unsafe wars.
