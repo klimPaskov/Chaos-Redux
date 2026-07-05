@@ -1,7 +1,7 @@
 ## Utopia Ledger Seal Brief
 
 - Asset name: `utopia_ledger_seal`
-- In-game use: animated ledger header or category seal when an important Utopian Ledger action is available
+- Archive use: dormant animated Ledger seal source retained for possible future design work
 - Subject type: symbolic civic manuscript seal
 - Target frame size: `64x64`
 - Frame count: `8`
@@ -15,4 +15,4 @@
 - Static fallback PNG/DDS: `docs/assets/015_utopia_manifesto/processed_png/utopia_ledger_seal_static.png`, `gfx/interface/utopia_manifesto/utopia_ledger_seal_static.dds`
 - Sheet PNG/DDS: `docs/assets/015_utopia_manifesto/animations/utopia_ledger_seal/sheets/utopia_ledger_seal_sheet.png`, `gfx/interface/utopia_manifesto/utopia_ledger_seal_sheet.dds`
 - Preview/contact: `docs/assets/015_utopia_manifesto/animations/utopia_ledger_seal/previews/utopia_ledger_seal_preview.gif`, `docs/assets/015_utopia_manifesto/animations/utopia_ledger_seal/previews/utopia_ledger_seal_contact.png`
-- Suggested `.gfx` file: `interface/015_utopia_manifesto.gfx`
+- Active `.gfx` file: none; Event 015 is currently a disabled placeholder.
