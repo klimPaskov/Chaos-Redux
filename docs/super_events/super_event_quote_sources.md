@@ -13,32 +13,6 @@ This file records external quote sources used by Chaos Redux super-events when t
 - Verification source: <https://en.wikisource.org/wiki/Leviathan_(1651)/Chapter_13> records the related Chapter XIII wording "such a warre, as is of every man, against every man"; <https://en.wikisource.org/wiki/Leviathan_(1651)/Chapter_14> records the Chapter XIV wording used by the in-game quote.
 - Use note: The localisation uses modernized spelling and a shortened excerpt. Keep the attribution to Hobbes, `Leviathan`, rather than a later quote collection.
 
-## Utopian Manifesto
-
-### New Utopia
-
-- Super-event ID: `151`
-- Localisation key: `chaosx_super_event.151.q`
-- Quote in game: "if care is taken to keep the public stores full no private man can want anything"
-- Attribution: Thomas More, `Utopia`.
-- Verification source: <https://www.gutenberg.org/files/2130/2130-h/2130-h.htm> records the public-stores passage in the public-domain `Utopia` text.
-- Button remark: "Rather wish, than hope."
-- Button source: Thomas More, `Utopia`, in the closing passage of the same Project Gutenberg text.
-- Attribution confidence: High. Both lines are selected from the same public-domain work and fit the route's common-store proclamation without turning the card into a victory speech.
-- Use note: Keep the quote, attribution, and button remark together as a single More package. Do not mix this card with a different translation unless the wording is re-verified.
-
-### Marked Bounds
-
-- Super-event ID: `152`
-- Localisation key: `chaosx_super_event.152.q`
-- Quote in game: "they account it a very just cause of war, when one people suffers a part of their soil to lie idle and uncultivated"
-- Attribution: Thomas More, `Utopia`.
-- Verification source: <https://www.gutenberg.org/files/2130/2130-h/2130-h.htm> records the idle-soil cause-of-war passage in the public-domain `Utopia` text.
-- Button remark: "Remove not the ancient landmark."
-- Button source: Proverbs 22:28, King James Version. <https://www.biblegateway.com/passage/?search=Proverbs+22%3A28&version=KJV>
-- Attribution confidence: High. The main quote is the exact doctrine literalized by the Marked Bounds route; the button is public-domain KJV boundary language used as an outside warning.
-- Use note: Use this only for the hidden Marked Bounds culmination. It relies on the route keeping Needful Land as a coercive land-clause escalation, not a generic conquest card.
-
 ## Holy Realm Buddhahood
 
 ### The Awakened One

@@ -288,38 +288,6 @@ This file records restored, sourced, and converted super-event audio assets used
 - Duration: 3:00 final cue.
 - Conversion notes: first three minutes rendered from the source OGG with short fade-in/fade-out and loudness normalization; OGG and WAV are rendered from the same source.
 
-## Utopian Manifesto
-
-### New Utopia
-
-- Super-event ID: `151`
-- Music file: `music/super_event_utopia_new_utopia.ogg`
-- Sound-channel file: `sound/chaosx_super_event_utopia_new_utopia.wav`
-- Sound definition: `chaosx_super_event_utopia_new_utopia_track`
-- Source title: `Ave Maria`
-- Composer / creator: Anton Bruckner.
-- Performer / recording: United States Navy Band Sea Chanters ensemble.
-- Source URL: <https://commons.wikimedia.org/wiki/File:Ave_Maria_(USNB).ogg>
-- Source file: `docs/super_events/source_audio/015_utopia_manifesto/ave_maria_usnb_original.ogg`
-- License: public domain U.S. federal government recording; underlying composition public domain.
-- Duration: 1:56 final cue.
-- Conversion notes: opening 116 seconds rendered from the source OGG with short fade-in, five-second fade-out, loudness normalization, and 44.1 kHz Vorbis output. The in-game OGG and WAV are rendered from the same researched package.
-
-### Marked Bounds
-
-- Super-event ID: `152`
-- Music file: `music/super_event_utopia_marked_bounds.ogg`
-- Sound-channel file: `sound/chaosx_super_event_utopia_marked_bounds.wav`
-- Sound definition: `chaosx_super_event_utopia_marked_bounds_track`
-- Source title: `Funeral March, Op. posth. 72 no. 2`
-- Composer / creator: Frederic Chopin.
-- Performer / recording: Aya Higuchi, via Musopen source mirrored on Wikimedia Commons.
-- Source URL: <https://commons.wikimedia.org/wiki/File:Funeral_March_Chopin_Op_72_2.ogg>
-- Source file: `docs/super_events/source_audio/015_utopia_manifesto/chopin_funeral_march_op72_no2_original.ogg`
-- License: CC0 1.0 Universal Public Domain Dedication; underlying composition public domain.
-- Duration: 1:50 final cue.
-- Conversion notes: opening 110 seconds rendered from the source OGG with short fade-in, five-second fade-out, loudness normalization, resampling from 48 kHz to 44.1 kHz, and Vorbis output. The in-game OGG and WAV are rendered from the same researched package.
-
 ## Mengele
 
 ### The Angel of Death Leaves the Camp
