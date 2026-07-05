@@ -158,7 +158,7 @@ The route requires all of these concepts:
 
 - Event 014 has evolved to global network scale
 - cannibalism is no longer one country's army problem
-- Hannibal exists or an accepted future spec explicitly replaces Hannibal with another unifier
+- Hannibal exists
 - deaths, territory, cult nodes, or infected states show the network can survive normal containment
 - chaos exceeds the world-end threshold
 

@@ -118,7 +118,6 @@ For each important option or option family, define:
 - whether the tone should be serious, ironic, sarcastic, cruel, frightened, resigned, bureaucratic, or absurd
 - what kinds of cultural references may fit
 - which references need research before wording is written
-- which jokes are forbidden because the subject is too severe
 - how route, ideology, chaos tier, campaign state, or country culture should change the reaction
 
 Humour should fit the stakes. Minor chaotic events can use sharper jokes and visible sarcasm. Major disasters, massacres, atrocities, mass death, and real-world suffering should use severity, official euphemism, cynical propaganda, hypocrisy, or self-damning grim irony. Cheap comedy is forbidden there.
@@ -127,7 +126,7 @@ Cultural remarks should be treated as research directions unless already sourced
 
 Do not list example option lines. Do not write sample buttons. Do not write placeholder localisation for options. Coding agents may paste those into the game.
 
-Some events need one cutting reaction direction and one plain practical reaction direction. Some need several route-specific reaction directions. Some need no joke because a quiet response fits better. The spec should state the intended option tone and purpose, then leave the final wording to the coding agent.
+Some events need one cutting reaction direction and one plain practical reaction direction. Some need several route-specific reaction directions. The spec should state the intended option tone and purpose, then leave the final wording to the coding agent.
 
 ## 3.2 Depth standard
 
@@ -1487,7 +1486,7 @@ The spec file should contain only the event specification.
 
 Do not put the asset prompt, super-event prompt, coding-agent prompt, or goal prompt inside the spec file.
 
-Keep planning files readable as design handoffs, not implementation blueprints. Prefer route purpose, player-facing behavior, balance intent, asset direction, AI intent, and acceptance criteria. Avoid long technical tables, exact constant lists, full scripted-effect recipes, exhaustive file inventories, parser-level implementation notes, and detailed code wiring unless the user explicitly asks for a technical blueprint.
+Keep planning files readable as design handoffs, not implementation blueprints. Prefer route purpose, player-facing behavior, balance intent, asset direction, AI intent, and acceptance criteria. Avoid long technical tables, exact constant lists, full scripted-effect recipes, exhaustive file inventories, parser-level implementation notes, and detailed code wiring. The specs you create are not implementation oriented. You do not give implementation guidance, you are just handing off ideas.
 
 Create sequential files:
 

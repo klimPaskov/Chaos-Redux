@@ -245,7 +245,6 @@ Use this whenever a threat-specific system changes whether its own source flag s
 - `world_threat_source_mengele`
 - `world_threat_source_fury`
 - `world_threat_source_death`
-- `world_threat_source_cannibalism`
 
 Future threats should follow the same pattern:
 
