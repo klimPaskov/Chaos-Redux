@@ -13,21 +13,6 @@ triggerable_scenario_can_spawn_zombie_state = {
 	}
 }
 
-triggerable_scenario_cannibalism_can_be_coastal_origin = {
-	cannibalism_can_be_origin = yes
-	any_owned_state = {
-		is_controlled_by = ROOT
-		is_coastal = yes
-	}
-}
-
-triggerable_scenario_cannibalism_hannibal_network_unlocked = {
-	OR = {
-		cannibalism_hannibal_or_unifier_exists = yes
-		has_global_flag = cannibalism_triggerable_hannibal_network_test_bypass
-	}
-}
-
 triggerable_scenario_can_launch_selected = {
 	OR = {
 		check_variable = {
@@ -77,40 +62,6 @@ triggerable_scenario_can_launch_selected = {
 		check_variable = {
 			var = triggerable_scenarios_selected
 			value = constant:triggerable_scenario_id.africa_is_one
-		}
-		AND = {
-			check_variable = {
-				var = triggerable_scenarios_selected
-				value = constant:triggerable_scenario_id.cannibalism
-			}
-			NOT = { has_global_flag = world_end }
-			NOT = { has_global_flag = cannibalism_world_end_started }
-			OR = {
-				AND = {
-					check_variable = { triggerable_scenarios_cannibalism_type = constant:triggerable_scenario_cannibalism_type.war_horror_opening }
-					cannibalism_has_valid_origin_available = yes
-				}
-				AND = {
-					check_variable = { triggerable_scenarios_cannibalism_type = constant:triggerable_scenario_cannibalism_type.cult_seeds }
-					cannibalism_has_valid_origin_available = yes
-				}
-				AND = {
-					check_variable = { triggerable_scenarios_cannibalism_type = constant:triggerable_scenario_cannibalism_type.silent_islands }
-					any_country = { triggerable_scenario_cannibalism_can_be_coastal_origin = yes }
-				}
-				AND = {
-					check_variable = { triggerable_scenarios_cannibalism_type = constant:triggerable_scenario_cannibalism_type.cannibal_commune }
-					cannibalism_has_valid_origin_available = yes
-				}
-				AND = {
-					check_variable = { triggerable_scenarios_cannibalism_type = constant:triggerable_scenario_cannibalism_type.hannibal_network }
-					triggerable_scenario_cannibalism_hannibal_network_unlocked = yes
-					OR = {
-						cannibalism_has_valid_origin_available = yes
-						country_exists = CBL
-					}
-				}
-			}
 		}
 	}
 }

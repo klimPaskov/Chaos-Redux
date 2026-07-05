@@ -164,22 +164,6 @@ events_log_set_default_actor_for_current_event = {
 	}
 	else_if = {
 		limit = {
-			check_variable = { event_id = constant:cannibalism_event_log.event_id }
-			has_event_target = cannibalism_latest_actor
-		}
-		event_target:cannibalism_latest_actor = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
-		set_temp_variable = { events_log_default_has_actor = 1 }
-	}
-	else_if = {
-		limit = {
-			check_variable = { event_id = constant:cannibalism_event_log.event_id }
-			CBL = { exists = yes }
-		}
-		CBL = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
-		set_temp_variable = { events_log_default_has_actor = 1 }
-	}
-	else_if = {
-		limit = {
 			check_variable = { event_id = constant:white_peace_event_log.event_id }
 			has_event_target = white_peace_primary
 		}
@@ -1420,28 +1404,6 @@ events_log_rebuild_open_event_details_view = {
 			set_temp_variable = { events_log_event_detail_preview_type = constant:natural_disaster_event.evolution_type }
 			set_temp_variable = { events_log_event_detail_preview_tier = constant:natural_disaster_evolution_tier.abnormal_disasters }
 			set_temp_variable = { events_log_event_detail_preview_stage = constant:natural_disaster_evolution_stage.abnormal_disasters }
-			events_log_add_event_detail_evolution_preview = yes
-		}
-
-		if = {
-			limit = {
-				check_variable = {
-					var = event_id
-					value = constant:cannibalism_event_log.event_id
-					compare = equals
-				}
-			}
-			set_temp_variable = { events_log_event_detail_preview_type = constant:cannibalism_event_log.evolution_type }
-			set_temp_variable = { events_log_event_detail_preview_tier = 1 }
-			set_temp_variable = { events_log_event_detail_preview_stage = constant:cannibalism_evolution_stage.ritual_hunger }
-			events_log_add_event_detail_evolution_preview = yes
-			set_temp_variable = { events_log_event_detail_preview_type = constant:cannibalism_event_log.evolution_type }
-			set_temp_variable = { events_log_event_detail_preview_tier = 2 }
-			set_temp_variable = { events_log_event_detail_preview_stage = constant:cannibalism_evolution_stage.silent_islands }
-			events_log_add_event_detail_evolution_preview = yes
-			set_temp_variable = { events_log_event_detail_preview_type = constant:cannibalism_event_log.evolution_type }
-			set_temp_variable = { events_log_event_detail_preview_tier = 3 }
-			set_temp_variable = { events_log_event_detail_preview_stage = constant:cannibalism_evolution_stage.global_table }
 			events_log_add_event_detail_evolution_preview = yes
 		}
 
