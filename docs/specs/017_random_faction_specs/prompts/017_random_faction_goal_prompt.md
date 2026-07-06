@@ -4,4 +4,6 @@ Required skills and docs: `AGENTS.md`, `chaos-redux-events`, `chaos-redux-event-
 
 Pass or fail requirements: dynamic eligible minor selection, valid existing faction discovery, player receives one to four faction options when selected and cannot decline, AI uses the same option targets, no Axis or Comintern hardcode, baseline join plus alignment shock and regional pressure, Evolution I regional bloc race, Evolution II pressured neutrality and wartime eligibility, Evolution III capped neutrality collapse, Bloc Pressure decisions and timed missions with concrete costs, full AI behavior, cleanup for invalid countries and dead faction leaders, event log, detail, evolution log, cluster, docs, achievements, assets, and spreadsheet alignment.
 
+Near-completion rule: spawning `chaosx_improvement_loop_planner` is mandatory. Spawn it with `fork_context=false` after a meaningful implementation tranche and before the final completion audit.
+
 Use project subagents with `fork_context=false` where appropriate. Do not use fallbacks or simplifications. Keep iterating until the implementation satisfies the spec to its fullest extent. Do not claim completion until all visible surfaces, AI paths, validation notes, docs, assets, and catalog wording are complete and any blocker is reported clearly.

@@ -36,7 +36,7 @@ General systems remain fully in scope, including:
 - docs
 - shared infrastructure and helper files
 
-Event-specific implementation cleanup is limited to Events 1 through 10 only.
+Event-specific implementation cleanup is limited to Events 1 through 10 only, excluding event 6.
 
 Do not audit, refactor, clean up, delete, preserve, or improve the old event-specific implementations for Events 11 and higher. Those events are waiting for full rework and their current event-specific code should be treated as obsolete implementation that will be replaced completely.
 
@@ -50,12 +50,13 @@ Do not spend time improving old Events 11 and higher event chains, decisions, fo
 2. Find dead or unused scripted effects, scripted triggers, variables, flags, localisation keys, event helpers, GUI helpers, scripted GUI entries, decision helpers, and related code paths.
 3. Identify dead code that was clearly meant to be used but is not currently wired.
 4. Improve file ownership so each system has a logical place instead of scattering logic across giant mixed files.
-5. Simplify code where it is safe and useful.
-6. Replace duplication with reusable helpers only when it improves readability and future maintenance.
-7. Improve naming, organization, comments, and documentation where needed.
-8. Keep gameplay behavior the same unless the cleanup reveals a clear bug.
-9. If behavior changes, document exactly why the change is correct.
-10. Keep documentation and localisation aligned with any cleanup that changes visible behavior, file ownership, helper behavior, or system wiring.
+5. Simplify code where it is safe and useful, especially obviously overcomplicated scripted logic, long condition blocks, repeated branching, manual state arrays, tangled helper chains, and multi-step flows that can be expressed with a clearer existing pattern.
+6. Normalize inconsistent workflow patterns so similar systems use clear shared conventions for setup, validation, effects, logging, cleanup, documentation, and localisation.
+7. Replace duplication with reusable helpers only when it improves readability and future maintenance.
+8. Improve naming, organization, comments, and documentation where needed.
+9. Keep gameplay behavior the same unless the cleanup reveals a clear bug.
+10. If behavior changes, document exactly why the change is correct.
+11. Keep documentation and localisation aligned with any cleanup that changes visible behavior, file ownership, helper behavior, or system wiring.
 
 ## Required starting points
 
@@ -159,6 +160,11 @@ Search for duplicated or near-duplicated patterns such as:
 - stale variable, flag, mission, and event target cleanup
 - repeated scripted localisation selectors
 - repeated localisation tooltips for dynamic values
+- overcomplicated condition trees that can be replaced by existing scripted triggers
+- long repeated effect chains that can use an existing or new helper
+- inconsistent event, decision, focus, GUI, or localisation workflow patterns
+- scattered setup, effect, cleanup, logging, and documentation logic for the same subsystem
+- one-off helper variants that do the same job with different names, scope assumptions, or cleanup behavior
 
 For each candidate, decide one outcome:
 
@@ -236,6 +242,16 @@ When moving code:
 
 Every new script file must have a short overview at the top and follow existing naming and folder patterns.
 
+## Workflow consistency rules
+
+Audit the actual workflow shape of each subsystem, not only individual helpers. Similar systems should follow the same lifecycle unless a real engine, scope, or gameplay reason requires a different path.
+
+Look for ad hoc variants of the same flow, especially setup, target selection, eligibility checks, cost checks, effect execution, event-log recording, evolution-log recording, scenario launch, GUI click handling, super-event playback, localisation selection, docs updates, and cleanup.
+
+When a workflow is clearly scattered across unrelated files, or when several files solve the same lifecycle in different ways, normalize the pattern if the migration is safe and bounded. Prefer an existing repo convention. Add a helper, trigger, script constant, or dedicated subsystem owner only when it makes the lifecycle easier to follow and all relevant call sites can be updated in the same change.
+
+Do not force symmetry for its own sake. Keep a one-off path when it is genuinely simpler in place, when a different scope requires it, or when unifying it would change gameplay. Report the reason when an obvious inconsistency is intentionally kept.
+
 ## Dead code rules
 
 Search for references before deleting anything.
@@ -295,7 +311,7 @@ Use `chaosx_spreadsheet_doc_worker` only when the event catalog workbook needs u
 
 Use skills actively during this cleanup.
 
-If the cleanup reveals a reusable workflow, validation pattern, naming rule, search method, dead-code detection method, or common mistake, use `chaosx_skill_maintainer` or update the relevant skill.
+If the cleanup reveals a reusable workflow, validation pattern, naming rule, a common mistake, use `chaosx_skill_maintainer` or update the relevant skill.
 
 Prefer updating an existing skill when the workflow belongs there. Create a new skill only when the workflow is distinct and reusable.
 
@@ -329,7 +345,7 @@ Keep cleanup changes grouped by subsystem so the diff is reviewable.
 
 1. Build a repo map of main systems and ownership boundaries.
 2. Inventory existing dynamic effects, dynamic triggers, shared constants, subsystem files, and helper docs.
-3. Search for duplicated logic and scattered subsystem code.
+3. Search for duplicated logic, overcomplicated code, and scattered subsystem workflows.
 4. Search for likely dead code and unused references.
 5. Verify references carefully before changing anything.
 6. Patch safe cleanup in coherent subsystem groups.
@@ -355,6 +371,8 @@ At minimum, check:
 - moved logic still has every old caller updated
 - new files are loaded by HOI4 path conventions
 - removed duplicate patterns are really gone or intentionally kept
+- simplified overcomplicated code still preserves intended behavior
+- normalized workflows still use the correct setup, effect, logging, cleanup, and documentation path
 - deleted code has no remaining real references
 - retained uncertain code is documented
 - renamed keys, IDs, helpers, or files have no stale references
@@ -379,6 +397,8 @@ The final report must include:
 - scripted triggers created or updated
 - constants created or updated
 - duplicated logic removed
+- overcomplicated code simplified
+- workflow patterns normalized
 - code moved between files
 - new dedicated files created
 - dead code removed
