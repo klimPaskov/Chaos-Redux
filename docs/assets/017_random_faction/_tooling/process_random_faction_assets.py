@@ -14,6 +14,7 @@ PROCESSED = PACKAGE / "processed_png"
 DDS_PACKAGE = PACKAGE / "dds"
 CONTACT = PACKAGE / "contact_sheets"
 ANIM = PACKAGE / "animations"
+ACHIEVEMENT_NOT_ELIGIBLE_OVERLAY = ROOT / ".agents" / "skills" / "chaos-redux-event-assets" / "assets" / "achievements" / "overlay.png"
 
 
 def ensure_dirs() -> None:
@@ -97,17 +98,12 @@ def save_png_and_dds(img: Image.Image, processed_path: Path, dds_path: Path, pac
 		shutil.copy2(dds_path, package_dds_path)
 
 
-def add_not_eligible_cross(grey: Image.Image) -> Image.Image:
+def add_not_eligible_overlay(grey: Image.Image) -> Image.Image:
 	grey = grey.convert("RGBA")
-	cross = Image.new("RGBA", grey.size, (0, 0, 0, 0))
-	draw = ImageDraw.Draw(cross)
-	margin = 8
-	end = grey.width - margin
-	draw.line((margin, margin, end, end), fill=(45, 0, 0, 220), width=12)
-	draw.line((end, margin, margin, end), fill=(45, 0, 0, 220), width=12)
-	draw.line((margin, margin, end, end), fill=(205, 34, 34, 245), width=8)
-	draw.line((end, margin, margin, end), fill=(205, 34, 34, 245), width=8)
-	return Image.alpha_composite(grey, cross)
+	overlay = Image.open(ACHIEVEMENT_NOT_ELIGIBLE_OVERLAY).convert("RGBA")
+	if overlay.size != grey.size:
+		overlay = overlay.resize(grey.size, Image.Resampling.LANCZOS)
+	return Image.alpha_composite(grey, overlay)
 
 
 def achievement_variant(img: Image.Image, kind: str) -> Image.Image:
@@ -119,7 +115,7 @@ def achievement_variant(img: Image.Image, kind: str) -> Image.Image:
 	grey.putalpha(alpha)
 	if kind == "grey":
 		return grey
-	return add_not_eligible_cross(grey)
+	return add_not_eligible_overlay(grey)
 
 
 def make_contact(items: list[tuple[str, Image.Image]], out: Path, thumb: tuple[int, int] = (96, 96), cols: int = 6) -> None:
@@ -220,6 +216,7 @@ def process_static_assets() -> list[str]:
 		"017_random_faction_frontier_commitment",
 		"017_random_faction_not_everyone",
 	]
+	not_eligible_items: list[tuple[str, Image.Image]] = []
 	for stem in achievement_stems:
 		base = fit_icon(SOURCE / f"{stem}_source.png", (64, 64), 3)
 		for suffix, kind in [("", "base"), ("_grey", "grey"), ("_not_eligible", "not_eligible")]:
@@ -232,9 +229,12 @@ def process_static_assets() -> list[str]:
 				DDS_PACKAGE / f"{name}.dds",
 			)
 			processed_items.append((name, img))
+			if kind == "not_eligible":
+				not_eligible_items.append((name, img))
 		rows.append(f"| `GFX_achievement_{stem}` triplet | achievement icons | `docs/assets/017_random_faction/source/{stem}_source.png` | `docs/assets/017_random_faction/processed_png/{stem}*.png` | `gfx/achievements/{stem}*.dds` | 64x64 |")
 
 	make_contact(processed_items, CONTACT / "event17_processed_static_contact_sheet.png", cols=6)
+	make_contact(not_eligible_items, CONTACT / "achievement_not_eligible_red_cross_contact_sheet.png", cols=6)
 	return rows
 
 
@@ -367,12 +367,14 @@ def write_docs(rows: list[str], validation: list[str]) -> None:
 		"## Source Mode\n\n"
 		"Static icons, achievements, event pictures, category picture, and animation frames use generated source art created through the built-in `$imagegen` workflow and partial Event 17 asset subagent output. The asset subagent stalled before landing final runtime DDS files, so the main implementation pass completed deterministic processing locally. Processing was limited to chroma-key alpha removal, crop/fit, exact-size resizing, contact-sheet assembly, frame-sheet assembly, GIF preview creation, and DDS export.\n\n"
 		"Animation source frames come from generated source atlases with separately drawn frame states, then are sliced into source frames before deterministic processing. No final animation was made by moving, scaling, rotating, warping, blurring, recoloring, or filtering one still image.\n\n"
+		"Achievement not-eligible variants copy the matching grey achievement icon and composite `.agents/skills/chaos-redux-event-assets/assets/achievements/overlay.png` on top. They do not use a red tint or red filter on the base icon.\n\n"
 		"## Final Runtime Assets\n\n"
 		"| Sprite or group | Type | Source | Processed PNG | Final DDS | Size |\n"
 		"|---|---|---|---|---|---|\n"
 		f"{row_text}\n\n"
 		"## Review Files\n\n"
 		"- Static contact sheet: `docs/assets/017_random_faction/contact_sheets/event17_processed_static_contact_sheet.png`\n"
+		"- Not-eligible achievement red-cross overlay review sheet: `docs/assets/017_random_faction/contact_sheets/achievement_not_eligible_red_cross_contact_sheet.png`\n"
 		"- Decision source contact sheet: `docs/assets/017_random_faction/contact_sheets/decision_source_contact_sheet.png`\n"
 		"- Animation contact sheets and GIF previews under `docs/assets/017_random_faction/animations/*/previews/`\n"
 		"- Package DDS copies under `docs/assets/017_random_faction/dds/`\n\n"
@@ -392,9 +394,9 @@ def write_docs(rows: list[str], validation: list[str]) -> None:
 		"- Achievement triplets: `gfx/achievements/017_random_faction*.dds`\n\n"
 		"## Animated Sprites\n\n"
 		"- `GFX_random_faction_bloc_pressure_seal_static` -> `random_faction_bloc_pressure_seal_static.dds`\n"
-		"- `GFX_random_faction_bloc_pressure_seal_animated` -> `random_faction_bloc_pressure_seal_sheet.dds`, 8 frames, 8 FPS, looped\n"
+		"- `GFX_random_faction_bloc_pressure_seal_animated` -> `random_faction_bloc_pressure_seal_sheet.dds`, 8 frames, 8 FPS, looped; visible on `random_faction_convene_neutrality_council`\n"
 		"- `GFX_random_faction_border_warning_static` -> `random_faction_border_warning_static.dds`\n"
-		"- `GFX_random_faction_border_warning_animated` -> `random_faction_border_warning_sheet.dds`, 8 frames, 8 FPS, looped\n\n"
+		"- `GFX_random_faction_border_warning_animated` -> `random_faction_border_warning_sheet.dds`, 8 frames, 8 FPS, looped; visible on `random_faction_reinforce_border_posts` and `random_faction_guarantee_corridor_mission`\n\n"
 		"## Validation Summary\n\n"
 		f"{validation_text}\n\n"
 		"No missing runtime DDS paths were found by the processor.\n",

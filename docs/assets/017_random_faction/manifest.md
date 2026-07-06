@@ -10,7 +10,7 @@ Static icons, achievements, event pictures, category picture, and animation fram
 
 Animation source frames come from generated source atlases with separately drawn frame states, then are sliced into source frames before deterministic processing. No final animation was made by moving, scaling, rotating, warping, blurring, recoloring, or filtering one still image.
 
-Achievement not-eligible variants reuse the matching grey achievement icon and apply a centered red cross overlay. They do not use a red tint or red filter on the base icon.
+Achievement not-eligible variants copy the matching grey achievement icon and composite `.agents/skills/chaos-redux-event-assets/assets/achievements/overlay.png` on top. They do not use a red tint or red filter on the base icon.
 
 ## Final Runtime Assets
 
@@ -52,7 +52,7 @@ Achievement not-eligible variants reuse the matching grey achievement icon and a
 ## Review Files
 
 - Static contact sheet: `docs/assets/017_random_faction/contact_sheets/event17_processed_static_contact_sheet.png`
-- Not-eligible achievement review sheet: `docs/assets/017_random_faction/contact_sheets/achievement_not_eligible_red_cross_contact_sheet.png`
+- Not-eligible achievement red-cross overlay review sheet: `docs/assets/017_random_faction/contact_sheets/achievement_not_eligible_red_cross_contact_sheet.png`
 - Decision source contact sheet: `docs/assets/017_random_faction/contact_sheets/decision_source_contact_sheet.png`
 - Animation contact sheets and GIF previews under `docs/assets/017_random_faction/animations/*/previews/`
 - Package DDS copies under `docs/assets/017_random_faction/dds/`
