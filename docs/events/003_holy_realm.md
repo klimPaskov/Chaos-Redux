@@ -399,25 +399,25 @@ Super-event art:
 Super-event audio:
 
 - The Buddha Mandate, audio ID `7`:
-  - music file: `music/super_event_buddha_mandate.ogg`
+  - music file: `music/003_holy_realm/super_event_7_buddha_mandate.ogg`
   - sound definition: `chaosx_super_event_buddha_mandate_track`
 - Final Silence, audio ID `8`:
-  - music file: `music/super_event_final_silence.ogg`
+  - music file: `music/003_holy_realm/super_event_8_final_silence.ogg`
   - sound definition: `chaosx_super_event_final_silence_track`
 - Thermonuclear Final Silence, audio ID `9`:
-  - music file: `music/super_event_final_silence_thermonuclear.ogg`
+  - music file: `music/003_holy_realm/super_event_9_final_silence_thermonuclear.ogg`
   - sound definition: `chaosx_super_event_final_silence_thermonuclear_track`
 - The Mandala Breaks, audio ID `10`:
-  - music file: `music/super_event_mandala_breaks.ogg`
+  - music file: `music/003_holy_realm/super_event_10_mandala_breaks.ogg`
   - sound definition: `chaosx_super_event_mandala_breaks_track`
 - Divine Sovereignty, audio ID `11`:
-  - music file: `music/super_event_divine_sovereignty.ogg`
+  - music file: `music/003_holy_realm/super_event_11_divine_sovereignty.ogg`
   - sound definition: `chaosx_super_event_divine_sovereignty_track`
 - Mandala of Nations, audio ID `51`:
-  - music file: `music/super_event_mandala_of_nations.ogg`
+  - music file: `music/003_holy_realm/super_event_51_mandala_of_nations.ogg`
   - sound definition: `chaosx_super_event_mandala_of_nations_track`
 - Powers of the Awakened, audio ID `61`:
-  - music file: `music/super_event_powers_of_the_awakened.ogg`
+  - music file: `music/003_holy_realm/super_event_61_powers_of_the_awakened.ogg`
   - sound definition: `chaosx_super_event_powers_of_the_awakened_track`
   - image: `gfx/super_events/003_holy_realm/super_event_powers_of_the_awakened.dds`
 - Audio sources, licenses, durations, and conversion notes are recorded in `docs/super_events/super_event_audio_packages.md`.

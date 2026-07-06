@@ -8,10 +8,10 @@ Audio slots `67` through `70` are wired for the Event 013 Natural Disasters abno
 
 | Slot | Super-event | Music file | Sound file |
 | --- | --- | --- | --- |
-| `67` | Global rupture | `music/super_event_natural_disasters_great_rupture.ogg` | `sound/chaosx_super_event_natural_disasters_great_rupture.wav` |
-| `68` | Massive eruption | `music/super_event_natural_disasters_massive_eruption.ogg` | `sound/chaosx_super_event_natural_disasters_massive_eruption.wav` |
-| `69` | Meteor shower | `music/super_event_natural_disasters_skyfall.ogg` | `sound/chaosx_super_event_natural_disasters_skyfall.wav` |
-| `70` | Moving storm corridor | `music/super_event_natural_disasters_storm_corridor.ogg` | `sound/chaosx_super_event_natural_disasters_storm_corridor.wav` |
+| `67` | Global rupture | `music/013_natural_disasters/super_event_67_natural_disasters_great_rupture.ogg` | `sound/013_natural_disasters/super_event_67_natural_disasters_great_rupture.wav` |
+| `68` | Massive eruption | `music/013_natural_disasters/super_event_68_natural_disasters_massive_eruption.ogg` | `sound/013_natural_disasters/super_event_68_natural_disasters_massive_eruption.wav` |
+| `69` | Meteor shower | `music/013_natural_disasters/super_event_69_natural_disasters_skyfall.ogg` | `sound/013_natural_disasters/super_event_69_natural_disasters_skyfall.wav` |
+| `70` | Moving storm corridor | `music/013_natural_disasters/super_event_70_natural_disasters_storm_corridor.ogg` | `sound/013_natural_disasters/super_event_70_natural_disasters_storm_corridor.wav` |
 
 ## Wiring
 

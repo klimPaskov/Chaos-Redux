@@ -255,9 +255,9 @@ The super-event image is registered under the final filename and currently conta
 Registered super-event audio:
 
 - slot and audio ID: `12`
-- music file: `music/super_event_angel_directorate.ogg`
+- music file: `music/003_holy_realm/super_event_12_angel_directorate.ogg`
 - sound definition: `chaosx_super_event_angel_directorate_track`
-- sound-channel derivative: `sound/chaosx_super_event_angel_directorate.wav`
+- sound-channel derivative: `sound/003_holy_realm/super_event_12_angel_directorate.wav`
 - source, license, duration, and conversion notes: `docs/super_events/super_event_audio_packages.md`
 
 Registered leader portrait:

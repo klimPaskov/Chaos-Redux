@@ -169,7 +169,7 @@ Dead necrotic and demonic zombie outcomes also no longer resolve into obedient c
 - Armor is no longer granted purely by disease family for the ordinary outbreak families. It only appears on the hardened outbreak path when both strength and durability resolve high enough.
 - `Wendigo Pack` sits outside the normal successful outbreak ladder: it is always armored, always hostile, and only appears when the project catastrophically fails at completion.
 - The Wendigo super event now records the actual originating country instead of using a placeholder source token, and the super-event remark is fully wired for slot `6`.
-- The Wendigo super event now also uses its own dedicated sound asset on the super-event sound-output path: `sound/chaosx_super_event_wendigo.wav`.
+- The Wendigo super event now also uses its own dedicated sound asset on the super-event sound-output path: `sound/002_zombie_outbreak/super_event_6_wendigo.wav`.
 - A necrotic or extra-scientific zombie profile with a dead or transformed life state and at least four extreme mutation picks now guarantees the catastrophic Wendigo completion failure if no other Wendigo already exists in the campaign.
 - Zombies marked `zombies-only` can only target zombie-controlled states and can earn the `Fight Fire With Fire` achievement.
 - Independent weaponized outbreaks are excluded from the base zombie auto-merge rules in `common/on_actions/002_zombie_outbreak_on_actions.txt`.
