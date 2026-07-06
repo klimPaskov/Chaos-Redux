@@ -20,7 +20,7 @@ There is no world-end branch, manual scenario, or event cluster requirement in t
   - `common/decisions/AST.txt`: scoped loops, targeted decision activation, saved event targets.
   - `common/factions/templates/`: faction template structure.
 - Chaos Redux precedents:
-  - Event 017 Random Faction docs and scripts for dynamic faction target selection, arrays, saved leader targets, invalid target cleanup, and target arrays.
+  - Shared dynamic helper documentation and existing event-owned target-array patterns for candidate selection, saved event targets, invalid target cleanup, and target arrays.
   - `common/scripted_effects/chaosx_dynamic_effects.md`.
   - `common/scripted_triggers/chaosx_dynamic_triggers.md`.
   - `common/mtth/chaosx_mtth_variables.txt`.
@@ -80,7 +80,7 @@ Candidate weighting should prefer countries that are more narratively plausible 
 - Countries threatened by player expansion, high world tension, or recent player wars.
 - Countries outside the player's faction and outside factions friendly to the player.
 
-Use the Event 017 pattern for weighted arrays: add candidates multiple times to a temporary pool according to scripted trigger bands, then use `random_scope_in_array`. Keep candidate pool setup in scripted effects and keep criteria in scripted triggers.
+Use a weighted-array pattern: add candidates multiple times to a temporary pool according to scripted trigger bands, then use `random_scope_in_array`. Keep candidate pool setup in scripted effects and keep criteria in scripted triggers.
 
 If future design wants countries already in factions, represent them as `secret_alliance_associate` contacts rather than pact members. Associates can sabotage or leak intel, but should not be added to the revealed faction unless they first become eligible. This avoids a hidden pact reveal unintentionally involving a third-party faction.
 
@@ -387,6 +387,6 @@ A future implementation should not be considered complete until:
 
 ## Validation Notes For This Handoff
 
-This handoff is read-only architecture. No runtime validation was possible because no gameplay scripts were changed. The design was checked against offline wiki pages, vanilla documentation, vanilla faction and decision examples, Event 017 Chaos Redux patterns, and the existing dynamic helper documentation.
+This handoff is read-only architecture. No runtime validation was possible because no gameplay scripts were changed. The design was checked against offline wiki pages, vanilla documentation, vanilla faction and decision examples, and the existing dynamic helper documentation.
 
 No simplifications were used in this document. Open design decisions are explicitly called out above instead of being replaced with fallbacks.

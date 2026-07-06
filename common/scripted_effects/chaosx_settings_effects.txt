@@ -3815,7 +3815,6 @@ toggle_world_end = {
         if = {
             limit = { check_variable = { global.world_end_backup = 1 } }
             set_global_flag = world_end
-            random_faction_cleanup_after_world_end = yes
         }
 
         log = "CHAOS REDUX SETTINGS: World end scenario mechanic has been ENABLED"
@@ -4590,22 +4589,6 @@ fire_event_by_temp_id_no_cluster = {
 		set_temp_variable = { event_single_fire_allowed = 0 }
 	}
 	if = {
-		limit = { check_variable = { event_id = constant:random_faction_event.id } }
-		set_country_flag = random_faction_prefer_current_dispatch_target
-		random_faction_prepare_runtime_context = yes
-		clr_country_flag = random_faction_prefer_current_dispatch_target
-		if = {
-			limit = {
-				OR = {
-					check_variable = { random_faction_context_ready < 1 }
-					NOT = { has_event_target = random_faction_target_country }
-				}
-			}
-			set_temp_variable = { event_single_fire_allowed = 0 }
-		}
-	}
-
-	if = {
 		limit = {
 			check_variable = {
 				var = event_single_fire_allowed
@@ -4618,16 +4601,6 @@ fire_event_by_temp_id_no_cluster = {
 		if = {
 			limit = { check_variable = { event_fire_record_id = 4 } }
 			random_war_fire_current_context = yes
-		}
-		else_if = {
-			limit = {
-				check_variable = { event_fire_record_id = constant:random_faction_event.id }
-				has_event_target = random_faction_target_country
-			}
-			event_target:random_faction_target_country = {
-				set_country_flag = random_faction_event_dispatch_context
-				country_event = { id = chaosx.nr17.1 }
-			}
 		}
 		else = {
 			meta_effect = {
