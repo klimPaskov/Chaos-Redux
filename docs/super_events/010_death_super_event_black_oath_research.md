@@ -31,4 +31,4 @@ The quote intentionally uses only the opening clause. The full verse continues i
 - Text research status: complete
 - Localisation status: implemented
 - Super-event image status: `GFX_super_event_death_black_oath` is registered in `interface/chaosx_super_events.gfx`
-- Music status: `music/super_event_death_black_oath.ogg` is registered in `music/chaosx_super_event_music.txt`
+- Music status: `music/010_death/super_event_66_death_black_oath.ogg` is registered in `music/chaosx_super_event_music.txt`

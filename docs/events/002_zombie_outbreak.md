@@ -703,7 +703,7 @@ Current coastal breakout tuning:
 
 This is the air-contamination collapse world-end event in the same namespace. It is not a zombie outbreak event, but it shares the same super-event numbering block and therefore belongs in this namespace-level documentation.
 
-The fallout super-event uses image sprite `GFX_super_event_fallout`, DDS file `gfx/super_events/002_zombie_outbreak/super_event_fallout.dds`, audio ID `4`, music file `music/super_event_fallout.ogg`, and sound definition `chaosx_super_event_fallout_track`. The image source and conversion notes are recorded in `docs/assets/fallout_super_event/manifest.md`. Audio source, license, duration, and conversion notes are recorded in `docs/super_events/super_event_audio_packages.md`.
+The fallout super-event uses image sprite `GFX_super_event_fallout`, DDS file `gfx/super_events/002_zombie_outbreak/super_event_fallout.dds`, audio ID `4`, music file `music/002_zombie_outbreak/super_event_4_fallout.ogg`, and sound definition `chaosx_super_event_fallout_track`. The image source and conversion notes are recorded in `docs/assets/fallout_super_event/manifest.md`. Audio source, license, duration, and conversion notes are recorded in `docs/super_events/super_event_audio_packages.md`.
 
 #### `chaosx.nr2.11`: Wendigo ascendancy
 
@@ -994,22 +994,22 @@ Existing outbreak-related assets already used by the system:
 Audio assets:
 
 - slot `1`, initial outbreak:
-  - music file: `music/zombies.ogg`
+  - music file: `music/002_zombie_outbreak/super_event_1_zombies.ogg`
   - sound definition: `chaosx_super_event_zombies_track`
 - slot `2`, Anti-Zombie League:
-  - music file: `music/super_event_alliance_of_man.ogg`
+  - music file: `music/002_zombie_outbreak/super_event_2_alliance_of_man.ogg`
   - sound definition: `chaosx_super_event_alliance_of_man_track`
 - slot `3`, zombie apocalypse:
-  - music file: `music/super_event_zombie_apocalypse.ogg`
+  - music file: `music/002_zombie_outbreak/super_event_3_zombie_apocalypse.ogg`
   - sound definition: `chaosx_super_event_zombie_apocalypse_track`
 - slot `4`, fallout:
-  - music file: `music/super_event_fallout.ogg`
+  - music file: `music/002_zombie_outbreak/super_event_4_fallout.ogg`
   - sound definition: `chaosx_super_event_fallout_track`
 - slot `5`, final zombie defeat:
-  - music file: `music/zombies_defeat.ogg`
+  - music file: `music/002_zombie_outbreak/super_event_5_zombies_defeat.ogg`
   - sound definition: `chaosx_super_event_zombies_defeat_track`
 - slot `6`, Wendigo:
-  - music file: `music/wendigo.ogg`
+  - music file: `music/002_zombie_outbreak/super_event_6_wendigo.ogg`
   - sound definition: `chaosx_super_event_wendigo_track`
 
 Audio source, license, duration, and conversion notes are recorded in `docs/super_events/super_event_audio_packages.md`.

@@ -209,36 +209,36 @@ Audio assets used:
   - `sound/chaosx_sound.asset`
 - Music-channel sources:
   - `music/default.ogg`
-  - `music/zombies.ogg`
-  - `music/super_event_alliance_of_man.ogg`
-  - `music/super_event_zombie_apocalypse.ogg`
-  - `music/zombies_defeat.ogg`
-  - `music/wendigo.ogg`
-  - `music/super_event_fallout.ogg`
-  - `music/super_event_buddha_mandate.ogg`
-  - `music/super_event_final_silence.ogg`
-  - `music/super_event_final_silence_thermonuclear.ogg`
-  - `music/super_event_mandala_breaks.ogg`
-  - `music/super_event_divine_sovereignty.ogg`
-  - `music/super_event_mandala_of_nations.ogg`
-  - `music/super_event_angel_directorate.ogg`
-  - `music/super_event_angelic_world_order.ogg`
+  - `music/002_zombie_outbreak/super_event_1_zombies.ogg`
+  - `music/002_zombie_outbreak/super_event_2_alliance_of_man.ogg`
+  - `music/002_zombie_outbreak/super_event_3_zombie_apocalypse.ogg`
+  - `music/002_zombie_outbreak/super_event_5_zombies_defeat.ogg`
+  - `music/002_zombie_outbreak/super_event_6_wendigo.ogg`
+  - `music/002_zombie_outbreak/super_event_4_fallout.ogg`
+  - `music/003_holy_realm/super_event_7_buddha_mandate.ogg`
+  - `music/003_holy_realm/super_event_8_final_silence.ogg`
+  - `music/003_holy_realm/super_event_9_final_silence_thermonuclear.ogg`
+  - `music/003_holy_realm/super_event_10_mandala_breaks.ogg`
+  - `music/003_holy_realm/super_event_11_divine_sovereignty.ogg`
+  - `music/003_holy_realm/super_event_51_mandala_of_nations.ogg`
+  - `music/003_holy_realm/super_event_12_angel_directorate.ogg`
+  - `music/003_holy_realm/super_event_13_angelic_world_order.ogg`
 - Sound-channel sources:
   - `sound/chaosx_super_event_default.wav`
-  - `sound/chaosx_super_event_zombies.wav`
-  - `sound/chaosx_super_event_alliance_of_man.wav`
-  - `sound/chaosx_super_event_zombie_apocalypse.wav`
-  - `sound/chaosx_super_event_zombies_defeat.wav`
-  - `sound/chaosx_super_event_wendigo.wav`
-  - `sound/chaosx_super_event_fallout.wav`
-  - `sound/chaosx_super_event_buddha_mandate.wav`
-  - `sound/chaosx_super_event_final_silence.wav`
-  - `sound/chaosx_super_event_final_silence_thermonuclear.wav`
-  - `sound/chaosx_super_event_mandala_breaks.wav`
-  - `sound/chaosx_super_event_divine_sovereignty.wav`
-  - `sound/chaosx_super_event_mandala_of_nations.wav`
-  - `sound/chaosx_super_event_angel_directorate.wav`
-  - `sound/chaosx_super_event_angelic_world_order.wav`
+  - `sound/002_zombie_outbreak/super_event_1_zombies.wav`
+  - `sound/002_zombie_outbreak/super_event_2_alliance_of_man.wav`
+  - `sound/002_zombie_outbreak/super_event_3_zombie_apocalypse.wav`
+  - `sound/002_zombie_outbreak/super_event_5_zombies_defeat.wav`
+  - `sound/002_zombie_outbreak/super_event_6_wendigo.wav`
+  - `sound/002_zombie_outbreak/super_event_4_fallout.wav`
+  - `sound/003_holy_realm/super_event_7_buddha_mandate.wav`
+  - `sound/003_holy_realm/super_event_8_final_silence.wav`
+  - `sound/003_holy_realm/super_event_9_final_silence_thermonuclear.wav`
+  - `sound/003_holy_realm/super_event_10_mandala_breaks.wav`
+  - `sound/003_holy_realm/super_event_11_divine_sovereignty.wav`
+  - `sound/003_holy_realm/super_event_51_mandala_of_nations.wav`
+  - `sound/003_holy_realm/super_event_12_angel_directorate.wav`
+  - `sound/003_holy_realm/super_event_13_angelic_world_order.wav`
 - Audio source and license documentation:
   - `docs/super_events/super_event_audio_packages.md`
 

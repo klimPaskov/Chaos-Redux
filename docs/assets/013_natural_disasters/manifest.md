@@ -29,10 +29,10 @@ These are 457x328 super-event radio images wired through `interface/chaosx_super
 
 | Super-event slot | Music file | Sound file | Source package | Status |
 | --- | --- | --- | --- | --- |
-| `67` | `music/super_event_natural_disasters_great_rupture.ogg` | `sound/chaosx_super_event_natural_disasters_great_rupture.wav` | `Holst - Saturn`, `docs/assets/013_natural_disasters/audio_research/source/holst_saturn_1923_pd.ogg`, processed as `event013_great_rupture_wave_candidate.ogg` | `complete` |
-| `68` | `music/super_event_natural_disasters_massive_eruption.ogg` | `sound/chaosx_super_event_natural_disasters_massive_eruption.wav` | `Beethoven - Egmont Overture`, `docs/assets/013_natural_disasters/audio_research/source/beethoven_egmont_overture_musopen_cc0.ogg`, processed as `event013_massive_eruption_candidate.ogg` | `complete` |
-| `69` | `music/super_event_natural_disasters_skyfall.ogg` | `sound/chaosx_super_event_natural_disasters_skyfall.wav` | `Holst - Neptune`, `docs/assets/013_natural_disasters/audio_research/source/holst_neptune_1923_pd.ogg`, processed as `event013_skyfall_candidate.ogg` | `complete` |
-| `70` | `music/super_event_natural_disasters_storm_corridor.ogg` | `sound/chaosx_super_event_natural_disasters_storm_corridor.wav` | `Holst - Uranus`, `docs/assets/013_natural_disasters/audio_research/source/holst_uranus_usaf_pd.ogg`, processed as `event013_moving_storm_corridor_candidate.ogg` | `complete` |
+| `67` | `music/013_natural_disasters/super_event_67_natural_disasters_great_rupture.ogg` | `sound/013_natural_disasters/super_event_67_natural_disasters_great_rupture.wav` | `Holst - Saturn`, `docs/assets/013_natural_disasters/audio_research/source/holst_saturn_1923_pd.ogg`, processed as `event013_great_rupture_wave_candidate.ogg` | `complete` |
+| `68` | `music/013_natural_disasters/super_event_68_natural_disasters_massive_eruption.ogg` | `sound/013_natural_disasters/super_event_68_natural_disasters_massive_eruption.wav` | `Beethoven - Egmont Overture`, `docs/assets/013_natural_disasters/audio_research/source/beethoven_egmont_overture_musopen_cc0.ogg`, processed as `event013_massive_eruption_candidate.ogg` | `complete` |
+| `69` | `music/013_natural_disasters/super_event_69_natural_disasters_skyfall.ogg` | `sound/013_natural_disasters/super_event_69_natural_disasters_skyfall.wav` | `Holst - Neptune`, `docs/assets/013_natural_disasters/audio_research/source/holst_neptune_1923_pd.ogg`, processed as `event013_skyfall_candidate.ogg` | `complete` |
+| `70` | `music/013_natural_disasters/super_event_70_natural_disasters_storm_corridor.ogg` | `sound/013_natural_disasters/super_event_70_natural_disasters_storm_corridor.wav` | `Holst - Uranus`, `docs/assets/013_natural_disasters/audio_research/source/holst_uranus_usaf_pd.ogg`, processed as `event013_moving_storm_corridor_candidate.ogg` | `complete` |
 
 ### Decision category picture derivatives
 

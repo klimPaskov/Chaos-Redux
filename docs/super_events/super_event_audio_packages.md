@@ -7,8 +7,8 @@ This file records restored, sourced, and converted super-event audio assets used
 ### Undead?
 
 - Super-event ID: `1`
-- Music file: `music/zombies.ogg`
-- Sound-channel file: `sound/chaosx_super_event_zombies.wav`
+- Music file: `music/002_zombie_outbreak/super_event_1_zombies.ogg`
+- Sound-channel file: `sound/002_zombie_outbreak/super_event_1_zombies.wav`
 - Sound definition: `chaosx_super_event_zombies_track`
 - Source title: `Requiem: Dies irae`
 - Composer / creator: Giuseppe Verdi.
@@ -21,8 +21,8 @@ This file records restored, sourced, and converted super-event audio assets used
 ### The Alliance of Man
 
 - Super-event ID: `2`
-- Music file: `music/super_event_alliance_of_man.ogg`
-- Sound-channel file: `sound/chaosx_super_event_alliance_of_man.wav`
+- Music file: `music/002_zombie_outbreak/super_event_2_alliance_of_man.ogg`
+- Sound-channel file: `sound/002_zombie_outbreak/super_event_2_alliance_of_man.wav`
 - Sound definition: `chaosx_super_event_alliance_of_man_track`
 - Source title: `Battle Hymn of the Republic`
 - Composer / creator: John William Steffe / Julia Ward Howe, arranged by Eric Richards.
@@ -36,8 +36,8 @@ This file records restored, sourced, and converted super-event audio assets used
 ### Zombie Apocalypse
 
 - Super-event ID: `3`
-- Music file: `music/super_event_zombie_apocalypse.ogg`
-- Sound-channel file: `sound/chaosx_super_event_zombie_apocalypse.wav`
+- Music file: `music/002_zombie_outbreak/super_event_3_zombie_apocalypse.ogg`
+- Sound-channel file: `sound/002_zombie_outbreak/super_event_3_zombie_apocalypse.wav`
 - Sound definition: `chaosx_super_event_zombie_apocalypse_track`
 - Source title: `Dies Irae`
 - Composer / creator: traditional Gregorian chant; recording by Membeth.
@@ -51,8 +51,8 @@ This file records restored, sourced, and converted super-event audio assets used
 ### Fallout
 
 - Super-event ID: `4`
-- Music file: `music/super_event_fallout.ogg`
-- Sound-channel file: `sound/chaosx_super_event_fallout.wav`
+- Music file: `music/002_zombie_outbreak/super_event_4_fallout.ogg`
+- Sound-channel file: `sound/002_zombie_outbreak/super_event_4_fallout.wav`
 - Sound definition: `chaosx_super_event_fallout_track`
 - Source title: `Overture in C minor, Op. 62, "Coriolan"`
 - Composer / creator: Ludwig van Beethoven.
@@ -65,8 +65,8 @@ This file records restored, sourced, and converted super-event audio assets used
 ### The Dead Are Buried
 
 - Super-event ID: `5`
-- Music file: `music/zombies_defeat.ogg`
-- Sound-channel file: `sound/chaosx_super_event_zombies_defeat.wav`
+- Music file: `music/002_zombie_outbreak/super_event_5_zombies_defeat.ogg`
+- Sound-channel file: `sound/002_zombie_outbreak/super_event_5_zombies_defeat.wav`
 - Sound definition: `chaosx_super_event_zombies_defeat_track`
 - Source title: `Unknown / uncredited source track`
 - Composer / creator: Unknown / uncredited.
@@ -79,8 +79,8 @@ This file records restored, sourced, and converted super-event audio assets used
 ### Wendigo
 
 - Super-event ID: `6`
-- Music file: `music/wendigo.ogg`
-- Sound-channel file: `sound/chaosx_super_event_wendigo.wav`
+- Music file: `music/002_zombie_outbreak/super_event_6_wendigo.ogg`
+- Sound-channel file: `sound/002_zombie_outbreak/super_event_6_wendigo.wav`
 - Sound definition: `chaosx_super_event_wendigo_track`
 - Source title: `Tapiola, Op. 112`
 - Composer / creator: Jean Sibelius.
@@ -95,8 +95,8 @@ This file records restored, sourced, and converted super-event audio assets used
 ### The Buddha Mandate
 
 - Super-event ID: `7`
-- Music file: `music/super_event_buddha_mandate.ogg`
-- Sound-channel file: `sound/chaosx_super_event_buddha_mandate.wav`
+- Music file: `music/003_holy_realm/super_event_7_buddha_mandate.ogg`
+- Sound-channel file: `sound/003_holy_realm/super_event_7_buddha_mandate.wav`
 - Sound definition: `chaosx_super_event_buddha_mandate_track`
 - Source title: `Buddham Saranam Gacchami - Male Voice, with Female Chorus`
 - Composer / creator: Hariharan.
@@ -109,8 +109,8 @@ This file records restored, sourced, and converted super-event audio assets used
 ### Powers of the Awakened
 
 - Super-event ID: `61`
-- Music file: `music/super_event_powers_of_the_awakened.ogg`
-- Sound-channel file: `sound/chaosx_super_event_powers_of_the_awakened.wav`
+- Music file: `music/003_holy_realm/super_event_61_powers_of_the_awakened.ogg`
+- Sound-channel file: `sound/003_holy_realm/super_event_61_powers_of_the_awakened.wav`
 - Sound definition: `chaosx_super_event_powers_of_the_awakened_track`
 - Source title: `Bhikkhu Pāṭimokkha Pali`
 - Composer / creator: traditional Pali monastic chant; recording uploaded by Wikimedia Commons account `Tevaprapas` / `พระวินัยธร`.
@@ -123,8 +123,8 @@ This file records restored, sourced, and converted super-event audio assets used
 ### Final Silence
 
 - Super-event ID: `8`
-- Music file: `music/super_event_final_silence.ogg`
-- Sound-channel file: `sound/chaosx_super_event_final_silence.wav`
+- Music file: `music/003_holy_realm/super_event_8_final_silence.ogg`
+- Sound-channel file: `sound/003_holy_realm/super_event_8_final_silence.wav`
 - Sound definition: `chaosx_super_event_final_silence_track`
 - Source title: `Bore Xinjing (Heart Sutra) in Mandarin recited by a Chinese Buddhist layperson 2`
 - Composer / creator: Heart Sutra text is ancient scripture; recording by Nyarlathotep1001.
@@ -137,8 +137,8 @@ This file records restored, sourced, and converted super-event audio assets used
 ### Thermonuclear Final Silence
 
 - Super-event ID: `9`
-- Music file: `music/super_event_final_silence_thermonuclear.ogg`
-- Sound-channel file: `sound/chaosx_super_event_final_silence_thermonuclear.wav`
+- Music file: `music/003_holy_realm/super_event_9_final_silence_thermonuclear.ogg`
+- Sound-channel file: `sound/003_holy_realm/super_event_9_final_silence_thermonuclear.wav`
 - Sound definition: `chaosx_super_event_final_silence_thermonuclear_track`
 - Source title: `Bore Xinjing (Heart Sutra) in Mandarin recited by a Chinese Buddhist layperson`
 - Composer / creator: Heart Sutra text is ancient scripture; recording by Nyarlathotep1001.
@@ -151,8 +151,8 @@ This file records restored, sourced, and converted super-event audio assets used
 ### The Mandala Breaks
 
 - Super-event ID: `10`
-- Music file: `music/super_event_mandala_breaks.ogg`
-- Sound-channel file: `sound/chaosx_super_event_mandala_breaks.wav`
+- Music file: `music/003_holy_realm/super_event_10_mandala_breaks.ogg`
+- Sound-channel file: `sound/003_holy_realm/super_event_10_mandala_breaks.wav`
 - Sound definition: `chaosx_super_event_mandala_breaks_track`
 - Source title: `Symphony No. 5 in C minor, Op. 67: I. Allegro con brio`
 - Composer / creator: Ludwig van Beethoven.
@@ -164,8 +164,8 @@ This file records restored, sourced, and converted super-event audio assets used
 ### Divine Sovereignty
 
 - Super-event ID: `11`
-- Music file: `music/super_event_divine_sovereignty.ogg`
-- Sound-channel file: `sound/chaosx_super_event_divine_sovereignty.wav`
+- Music file: `music/003_holy_realm/super_event_11_divine_sovereignty.ogg`
+- Sound-channel file: `sound/003_holy_realm/super_event_11_divine_sovereignty.wav`
 - Sound definition: `chaosx_super_event_divine_sovereignty_track`
 - Source title: `Ave Maria from Gregorian Vespers`
 - Composer / creator: Traditional Gregorian chant.
@@ -178,8 +178,8 @@ This file records restored, sourced, and converted super-event audio assets used
 ### Mandala of Nations
 
 - Super-event ID: `51`
-- Music file: `music/super_event_mandala_of_nations.ogg`
-- Sound-channel file: `sound/chaosx_super_event_mandala_of_nations.wav`
+- Music file: `music/003_holy_realm/super_event_51_mandala_of_nations.ogg`
+- Sound-channel file: `sound/003_holy_realm/super_event_51_mandala_of_nations.wav`
 - Sound definition: `chaosx_super_event_mandala_of_nations_track`
 - Source title: `Shurangama Dharani Chant`, 120-150 second excerpt.
 - Composer / creator: Ven. Chan Master Hsuan Hua recording excerpt.
@@ -195,8 +195,8 @@ This file records restored, sourced, and converted super-event audio assets used
 ### Foundations Out of Course
 
 - Super-event ID: `67`
-- Music file: `music/super_event_natural_disasters_great_rupture.ogg`
-- Sound-channel file: `sound/chaosx_super_event_natural_disasters_great_rupture.wav`
+- Music file: `music/013_natural_disasters/super_event_67_natural_disasters_great_rupture.ogg`
+- Sound-channel file: `sound/013_natural_disasters/super_event_67_natural_disasters_great_rupture.wav`
 - Sound definition: `chaosx_super_event_natural_disasters_great_rupture_track`
 - Source title: `The Planets, Op. 32: V. Saturn, the Bringer of Old Age`
 - Composer / creator: Gustav Holst.
@@ -211,8 +211,8 @@ This file records restored, sourced, and converted super-event audio assets used
 ### Everything Is Ashes
 
 - Super-event ID: `68`
-- Music file: `music/super_event_natural_disasters_massive_eruption.ogg`
-- Sound-channel file: `sound/chaosx_super_event_natural_disasters_massive_eruption.wav`
+- Music file: `music/013_natural_disasters/super_event_68_natural_disasters_massive_eruption.ogg`
+- Sound-channel file: `sound/013_natural_disasters/super_event_68_natural_disasters_massive_eruption.wav`
 - Sound definition: `chaosx_super_event_natural_disasters_massive_eruption_track`
 - Source title: `Egmont Overture, Op. 84`
 - Composer / creator: Ludwig van Beethoven.
@@ -227,8 +227,8 @@ This file records restored, sourced, and converted super-event audio assets used
 ### The Falling Stars
 
 - Super-event ID: `69`
-- Music file: `music/super_event_natural_disasters_skyfall.ogg`
-- Sound-channel file: `sound/chaosx_super_event_natural_disasters_skyfall.wav`
+- Music file: `music/013_natural_disasters/super_event_69_natural_disasters_skyfall.ogg`
+- Sound-channel file: `sound/013_natural_disasters/super_event_69_natural_disasters_skyfall.wav`
 - Sound definition: `chaosx_super_event_natural_disasters_skyfall_track`
 - Source title: `The Planets, Op. 32: VII. Neptune, the Mystic`
 - Composer / creator: Gustav Holst.
@@ -243,8 +243,8 @@ This file records restored, sourced, and converted super-event audio assets used
 ### In the Whirlwind
 
 - Super-event ID: `70`
-- Music file: `music/super_event_natural_disasters_storm_corridor.ogg`
-- Sound-channel file: `sound/chaosx_super_event_natural_disasters_storm_corridor.wav`
+- Music file: `music/013_natural_disasters/super_event_70_natural_disasters_storm_corridor.ogg`
+- Sound-channel file: `sound/013_natural_disasters/super_event_70_natural_disasters_storm_corridor.wav`
 - Sound definition: `chaosx_super_event_natural_disasters_storm_corridor_track`
 - Source title: `The Planets, Op. 32: VI. Uranus, the Magician`
 - Composer / creator: Gustav Holst.
@@ -261,8 +261,8 @@ This file records restored, sourced, and converted super-event audio assets used
 ### Fury Becomes a State
 
 - Super-event ID: `59`
-- Music file: `music/fury_becomes_a_state.ogg`
-- Sound-channel file: `sound/chaosx_super_event_fury_becomes_a_state.wav`
+- Music file: `music/007_fury/super_event_59_fury_becomes_a_state.ogg`
+- Sound-channel file: `sound/007_fury/super_event_59_fury_becomes_a_state.wav`
 - Sound definition: `chaosx_super_event_fury_becomes_a_state_track`
 - Source title: `Symphony No. 9 in E minor "From the New World", Op. 95: IV. Allegro con fuoco`
 - Composer / creator: Antonín Dvořák.
@@ -276,8 +276,8 @@ This file records restored, sourced, and converted super-event audio assets used
 ### The World in Fury
 
 - Super-event ID: `60`
-- Music file: `music/super_event_world_in_fury.ogg`
-- Sound-channel file: `sound/chaosx_super_event_world_in_fury.wav`
+- Music file: `music/007_fury/super_event_60_world_in_fury.ogg`
+- Sound-channel file: `sound/007_fury/super_event_60_world_in_fury.wav`
 - Sound definition: `chaosx_super_event_world_in_fury_track`
 - Source title: `The Planets, Op. 32: I. Mars, the Bringer of War`
 - Composer / creator: Gustav Holst.
@@ -293,8 +293,8 @@ This file records restored, sourced, and converted super-event audio assets used
 ### The Angel of Death Leaves the Camp
 
 - Super-event ID: `12`
-- Music file: `music/super_event_angel_directorate.ogg`
-- Sound-channel file: `sound/chaosx_super_event_angel_directorate.wav`
+- Music file: `music/003_holy_realm/super_event_12_angel_directorate.ogg`
+- Sound-channel file: `sound/003_holy_realm/super_event_12_angel_directorate.wav`
 - Sound definition: `chaosx_super_event_angel_directorate_track`
 - Source title: `A Night on the Bare Mountain`
 - Composer / creator: Modest Mussorgsky.
@@ -307,8 +307,8 @@ This file records restored, sourced, and converted super-event audio assets used
 ### Angelic World Order
 
 - Super-event ID: `13`
-- Music file: `music/super_event_angelic_world_order.ogg`
-- Sound-channel file: `sound/chaosx_super_event_angelic_world_order.wav`
+- Music file: `music/003_holy_realm/super_event_13_angelic_world_order.ogg`
+- Sound-channel file: `sound/003_holy_realm/super_event_13_angelic_world_order.wav`
 - Sound definition: `chaosx_super_event_angelic_world_order_track`
 - Source title: `Toccata and Fugue in D minor, BWV 565`
 - Composer / creator: Johann Sebastian Bach.

@@ -12,11 +12,11 @@ The role labels below are planning labels, not final player-facing localisation.
 
 ## Packaging notes
 
-- Preserved source downloads live under `music/source/010_death/`, with the Herald oath source preserved under `docs/assets/010_death/audio_source/` per the optional-route handoff request.
-- Final candidates were exported to `44.1 kHz` `.ogg` under `music/`.
-- Sound-channel WAV mirrors exist under `sound/chaosx_super_event_death_*.wav`.
+- Preserved source downloads, including the Herald oath source, live under `docs/assets/010_death/audio_source/`.
+- Final candidates were exported to `44.1 kHz` `.ogg` under `music/010_death/`.
+- Sound-channel WAV mirrors exist under `sound/010_death/`.
 - Conversion used `ffmpeg`, `libvorbis`, quality `5`, plus a short fade-out on each final clip.
-- I rejected unclear-license reuse, generated audio, and the repo's existing unverified `music/zombies_defeat.ogg`.
+- I rejected unclear-license reuse, generated audio, and the repo's existing unverified `music/002_zombie_outbreak/super_event_5_zombies_defeat.ogg`.
 
 ## Selected audio
 
@@ -33,8 +33,8 @@ The role labels below are planning labels, not final player-facing localisation.
 - License confidence: high
 - Attribution required: `Ivan Ilic, "La Cathédrale engloutie" recording, CC BY 3.0 via Wikimedia Commons.`
 - Source duration: `5:24.920`
-- Original downloaded source path: `music/source/010_death/death_reveal_la_cathedrale_engloutie_source.ogg`
-- Final `.ogg` path: `music/super_event_death_reveal.ogg`
+- Original downloaded source path: `docs/assets/010_death/audio_source/death_reveal_la_cathedrale_engloutie_source.ogg`
+- Final `.ogg` path: `music/010_death/super_event_62_death_reveal.ogg`
 - Final duration: `1:52.000`
 - Music asset family: `chaosx_super_event_62_*`
 - Sound track id: `chaosx_super_event_death_reveal_track`
@@ -62,8 +62,8 @@ The role labels below are planning labels, not final player-facing localisation.
 - License confidence: high
 - Attribution required: not legally required. Courtesy credit recommended to performer and Musopen mirror.
 - Source duration: `9:49.044`
-- Original downloaded source path: `music/source/010_death/death_world_end_chopin_funeral_march_source.ogg`
-- Final `.ogg` path: `music/super_event_death_world_end.ogg`
+- Original downloaded source path: `docs/assets/010_death/audio_source/death_world_end_chopin_funeral_march_source.ogg`
+- Final `.ogg` path: `music/010_death/super_event_63_death_world_end.ogg`
 - Final duration: `1:57.980`
 - Music asset family: `chaosx_super_event_63_*`
 - Sound track id: `chaosx_super_event_death_world_end_track`
@@ -91,8 +91,8 @@ The role labels below are planning labels, not final player-facing localisation.
 - License confidence: high
 - Attribution required: not legally required. Courtesy credit recommended to Paul Pitman and Musopen.
 - Source duration: `4:58.210`
-- Original downloaded source path: `music/source/010_death/death_defeat_pathetique_adagio_source.ogg`
-- Final `.ogg` path: `music/super_event_death_defeat_aftermath.ogg`
+- Original downloaded source path: `docs/assets/010_death/audio_source/death_defeat_pathetique_adagio_source.ogg`
+- Final `.ogg` path: `music/010_death/super_event_64_death_defeat_aftermath.ogg`
 - Final duration: `1:56.000`
 - Music asset family: `chaosx_super_event_64_*`
 - Sound track id: `chaosx_super_event_death_defeat_aftermath_track`
@@ -120,8 +120,8 @@ The role labels below are planning labels, not final player-facing localisation.
 - License confidence: high
 - Attribution required: not legally required. Courtesy credit recommended to Paul Pitman and Musopen.
 - Source duration: `17:15.102`
-- Original downloaded source path: `music/source/010_death/death_world_consumed_hammerklavier_adagio_source.ogg`
-- Final `.ogg` path: `music/super_event_death_world_consumed.ogg`
+- Original downloaded source path: `docs/assets/010_death/audio_source/death_world_consumed_hammerklavier_adagio_source.ogg`
+- Final `.ogg` path: `music/010_death/super_event_65_death_world_consumed.ogg`
 - Final duration: `2:00.000`
 - Music asset family: `chaosx_super_event_65_*`
 - Sound track id: `chaosx_super_event_death_world_consumed_track`
@@ -154,7 +154,7 @@ The role labels below are planning labels, not final player-facing localisation.
   - Musopen courtesy request on the rights page asks for attribution on commercial or derived uses.
 - Source duration: `5:35.769`
 - Original downloaded source path: `docs/assets/010_death/audio_source/death_black_oath_moonlight_source.ogg`
-- Final `.ogg` path: `music/super_event_death_black_oath.ogg`
+- Final `.ogg` path: `music/010_death/super_event_66_death_black_oath.ogg`
 - Final duration: `1:52.000`
 - Music asset family: `chaosx_super_event_66_*`
 - Sound track id: `chaosx_super_event_death_black_oath_track`
@@ -172,7 +172,7 @@ The role labels below are planning labels, not final player-facing localisation.
 
 ## Rejected or not selected
 
-- `music/zombies_defeat.ogg`
+- `music/002_zombie_outbreak/super_event_5_zombies_defeat.ogg`
   - Rejected because the repo track list marks it `Unknown / uncredited`.
 - Share-alike Wikimedia piano-midi and chant uploads
   - Rejected for this package because stronger PD / CC0 options were available for the mandatory roles.
@@ -192,24 +192,24 @@ ffmpeg -y -i <source>.ogg \
 ## Final handoff summary
 
 - Wired files:
-- `music/super_event_death_reveal.ogg`
-- `music/super_event_death_world_end.ogg`
-- `music/super_event_death_defeat_aftermath.ogg`
-- `music/super_event_death_world_consumed.ogg`
-- `music/super_event_death_black_oath.ogg`
+- `music/010_death/super_event_62_death_reveal.ogg`
+- `music/010_death/super_event_63_death_world_end.ogg`
+- `music/010_death/super_event_64_death_defeat_aftermath.ogg`
+- `music/010_death/super_event_65_death_world_consumed.ogg`
+- `music/010_death/super_event_66_death_black_oath.ogg`
 - Preserved original sources:
-  - `music/source/010_death/death_reveal_la_cathedrale_engloutie_source.ogg`
-  - `music/source/010_death/death_world_end_chopin_funeral_march_source.ogg`
-  - `music/source/010_death/death_defeat_pathetique_adagio_source.ogg`
-  - `music/source/010_death/death_world_consumed_hammerklavier_adagio_source.ogg`
+  - `docs/assets/010_death/audio_source/death_reveal_la_cathedrale_engloutie_source.ogg`
+  - `docs/assets/010_death/audio_source/death_world_end_chopin_funeral_march_source.ogg`
+  - `docs/assets/010_death/audio_source/death_defeat_pathetique_adagio_source.ogg`
+  - `docs/assets/010_death/audio_source/death_world_consumed_hammerklavier_adagio_source.ogg`
   - `docs/assets/010_death/audio_source/death_black_oath_moonlight_source.ogg`
 
 ## Implementation audit
 
 | ID | Title | Music file | Sound mirror | Duration |
 | --- | --- | --- | --- | --- |
-| 62 | `The Name in the Ledger` | `music/super_event_death_reveal.ogg` | `sound/chaosx_super_event_death_reveal.wav` | `1:52` |
-| 63 | `The Census of Zol` | `music/super_event_death_world_end.ogg` | `sound/chaosx_super_event_death_world_end.wav` | `1:57.98` |
-| 64 | `The Unfinished Work` | `music/super_event_death_defeat_aftermath.ogg` | `sound/chaosx_super_event_death_defeat_aftermath.wav` | `1:56` |
-| 65 | `No Witness Remains` | `music/super_event_death_world_consumed.ogg` | `sound/chaosx_super_event_death_world_consumed.wav` | `2:00` |
-| 66 | `A Covenant with Death` | `music/super_event_death_black_oath.ogg` | `sound/chaosx_super_event_death_black_oath.wav` | `1:52` |
+| 62 | `The Name in the Ledger` | `music/010_death/super_event_62_death_reveal.ogg` | `sound/010_death/super_event_62_death_reveal.wav` | `1:52` |
+| 63 | `The Census of Zol` | `music/010_death/super_event_63_death_world_end.ogg` | `sound/010_death/super_event_63_death_world_end.wav` | `1:57.98` |
+| 64 | `The Unfinished Work` | `music/010_death/super_event_64_death_defeat_aftermath.ogg` | `sound/010_death/super_event_64_death_defeat_aftermath.wav` | `1:56` |
+| 65 | `No Witness Remains` | `music/010_death/super_event_65_death_world_consumed.ogg` | `sound/010_death/super_event_65_death_world_consumed.wav` | `2:00` |
+| 66 | `A Covenant with Death` | `music/010_death/super_event_66_death_black_oath.ogg` | `sound/010_death/super_event_66_death_black_oath.wav` | `1:52` |

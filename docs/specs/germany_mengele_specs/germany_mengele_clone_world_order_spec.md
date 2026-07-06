@@ -253,9 +253,9 @@ Quote:
 
 Audio:
 
-- `chaosx_super_event_13_*` music variants use `music/super_event_angelic_world_order.ogg`.
+- `chaosx_super_event_13_*` music variants use `music/003_holy_realm/super_event_13_angelic_world_order.ogg`.
 - `chaosx_super_event_13_sound_*` sound variants use `chaosx_super_event_angelic_world_order_track`.
-- The sound-channel derivative is `sound/chaosx_super_event_angelic_world_order.wav`.
+- The sound-channel derivative is `sound/003_holy_realm/super_event_13_angelic_world_order.wav`.
 - Source, license, duration, and conversion notes are recorded in `docs/super_events/super_event_audio_packages.md`.
 
 ## Asset Package
