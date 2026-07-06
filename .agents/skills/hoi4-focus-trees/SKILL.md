@@ -490,7 +490,6 @@ Good rewards include:
 - local leagues
 - foreign aid mechanics
 - crisis value effects
-- achievement tracking
 - event chains
 
 Small numeric modifiers can support a focus, but they should not be the main point of most focuses.
