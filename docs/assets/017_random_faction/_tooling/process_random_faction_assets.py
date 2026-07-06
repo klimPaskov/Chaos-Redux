@@ -97,19 +97,29 @@ def save_png_and_dds(img: Image.Image, processed_path: Path, dds_path: Path, pac
 		shutil.copy2(dds_path, package_dds_path)
 
 
+def add_not_eligible_cross(grey: Image.Image) -> Image.Image:
+	grey = grey.convert("RGBA")
+	cross = Image.new("RGBA", grey.size, (0, 0, 0, 0))
+	draw = ImageDraw.Draw(cross)
+	margin = 8
+	end = grey.width - margin
+	draw.line((margin, margin, end, end), fill=(45, 0, 0, 220), width=12)
+	draw.line((end, margin, margin, end), fill=(45, 0, 0, 220), width=12)
+	draw.line((margin, margin, end, end), fill=(205, 34, 34, 245), width=8)
+	draw.line((end, margin, margin, end), fill=(205, 34, 34, 245), width=8)
+	return Image.alpha_composite(grey, cross)
+
+
 def achievement_variant(img: Image.Image, kind: str) -> Image.Image:
 	if kind == "base":
 		return img
 	alpha = img.getchannel("A")
 	grey = ImageOps.grayscale(img.convert("RGB")).convert("RGBA")
-	if kind == "grey":
-		grey = ImageEnhance.Brightness(grey).enhance(0.62)
-	else:
-		grey = ImageEnhance.Brightness(grey).enhance(0.42)
-		overlay = Image.new("RGBA", grey.size, (75, 20, 20, 80))
-		grey = Image.alpha_composite(grey, overlay)
+	grey = ImageEnhance.Brightness(grey).enhance(0.62)
 	grey.putalpha(alpha)
-	return grey
+	if kind == "grey":
+		return grey
+	return add_not_eligible_cross(grey)
 
 
 def make_contact(items: list[tuple[str, Image.Image]], out: Path, thumb: tuple[int, int] = (96, 96), cols: int = 6) -> None:
