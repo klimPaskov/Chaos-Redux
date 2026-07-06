@@ -5,9 +5,9 @@ description: Use when expanding Chaos Redux event ideas into detailed specificat
 
 # Chaos Redux Event Planning
 
-Use this skill to design or expand events for the Hearts of Iron IV mod Chaos Redux (https://github.com/klimPaskov/Chaos-Redux).
+Use this skill to design or expand events for the Hearts of Iron IV mod Chaos Redux.
 
-This skill creates event specifications. It does not implement code. Implementation belongs to `chaos-redux-events`. Visual asset generation and processing belongs to `chaos-redux-event-assets`. Animated sprite planning, frame-sheet requirements, animated portrait packages, and animation handoff details belong to `chaos-redux-frame-animation` when motion is needed. Super-event quote, remark, music, and presentation research belongs to `chaos-redux-super-events`.
+This skill creates event specifications directly inside the Chaos Redux repository. It does not implement code. Implementation belongs to `chaos-redux-events`. Visual asset generation and processing belongs to `chaos-redux-event-assets`. Animated sprite planning, frame-sheet requirements, animated portrait packages, and animation handoff details belong to `chaos-redux-frame-animation` when motion is needed. Super-event quote, remark, music, and presentation research belongs to `chaos-redux-super-events`.
 
 ## 1. Required reading
 
@@ -26,7 +26,7 @@ Before writing the event specification, use the following as the design baseline
 
 Use those sources to understand how Chaos Redux already works, then expand creatively from there.
 
-Inspecting the repo is mandatory, but the specification should not read like a technical audit. Use repo findings to prevent mistakes and match patterns. Keep proof of inspection in the final response checklist, not in admin sections inside the spec.
+Inspecting the repo is mandatory, but the specification should not read like a technical audit. Use repo findings to prevent mistakes and match patterns. Record proof of inspection in the completion report, not in admin sections inside the spec.
 
 ## 2. Input
 
@@ -66,7 +66,7 @@ Do not put sections such as:
 - `Existing implementation audit`
 - `Generic trigger safeguards`
 
-The final response may mention that the repo and spreadsheet were inspected. The spec should be player-facing design and implementation-relevant event design.
+The spec should be player-facing design and implementation-relevant event design.
 
 Avoid obvious lines such as:
 
@@ -101,7 +101,7 @@ Text direction should avoid bland map-summary framing and generic communications
 
 When planning player-facing warning, threat, suspicious-report, and escalation text, do not instruct the coding agent to say that something is a warning, that something is not a warning, that a threat is coming, or that a danger signal has appeared. The text should show the pattern through partial information: fearful witnesses, rumours, anomalies, mysterious powers seen, etc
 
-A report can make the player uneasy without naming the unease. Use mystery, information gaps, fear, institutional caution, rumours, and uncertain public interpretation. The player should infer that something may be wrong from the content and consequences, not from a label.
+A report can make the player uneasy without naming the unease. Use mystery, information gaps, fear, rumours, etc. The player should infer that something may be wrong from the content and consequences, not from a label.
 
 When a concept benefits from mystery, fantasy, surrealism, myth, occult signs, prophecy, impossible resolve, strange energy, or unclear public rumours, state that direction clearly without drafting the final prose.
 
@@ -446,7 +446,7 @@ Advisor unlocks should match route identity. Political routes unlock ideological
 
 Large focus trees should include achievement hooks for difficult route completions, rare branch combinations, expansion outcomes, internal reform, avoiding foreign dependency, league formation, high-chaos survival, or late-game ambitions.
 
-The final implementation prompt should ask for a route coverage table comparing required routes against implemented routes. Missing, renamed, merged, simplified, fallback, or replaced routes must be reported.
+The implementation handoff should require a route coverage table comparing required routes against implemented routes. Missing, renamed, merged, simplified, fallback, or replaced routes must be reported.
 
 
 ### Route visibility, pacing, tradeoffs, and failure states
@@ -625,11 +625,11 @@ For each achievement, define:
 - related focus paths, decisions, evolutions, tags, factions, super-events, or assets
 - implementation notes for tracking if the unlock cannot be checked from a single final state
 
-Achievement design must include asset planning. Each achievement needs a 64x64 completed icon direction, and the asset prompt must hand those icons to `chaos-redux-event-assets`. Grey, locked, and not-eligible variants can be produced later if the achievement system requires them.
+Achievement design must include asset planning. Each achievement needs a 64x64 completed icon direction, and the asset brief must hand those icons to `chaos-redux-event-assets`. Grey, locked, and not-eligible variants can be produced later if the achievement system requires them.
 
 The achievement list should include a spread of routes. Do not put all achievements on the safest or most obvious path. Cover containment, failure recovery, republic victories, foreign influence, special factions, strange countries, high-chaos routes, and secret or hard branches when those exist.
 
-If an event creates many playable tags, design achievements for the most important ones and for the event-wide systems. A large event can justify dozens of achievements. The achievement prompt should still explain which ones are highest priority if implementation must be staged.
+If an event creates many playable tags, design achievements for the most important ones and for the event-wide systems. A large event can justify dozens of achievements. The achievement handoff should still explain which ones are highest priority if implementation must be staged.
 
 ## 3.8 Baseline stages versus evolutions
 
@@ -904,11 +904,11 @@ Every decision, decision category, idea, national spirit, achievement, faction e
 
 Every country package must include flags. Required flag coverage includes normal, medium, and small sizes for each implemented flag state. If the country has ideology-specific names, focus-tree transformations, puppet identities, restored historical forms, radical routes, or high-chaos mutations, the spec must identify whether those states need separate flags.
 
-Historical and real-world flags should not be invented with `$imagegen` by default. If a country, movement, party, military authority, or restoration path has a real historical flag or a well-attested symbolic design, the asset prompt should instruct the asset agent to source that flag or symbol from a reliable source, document it, and convert it into HOI4 flag sizes. Use `$imagegen` only for fictional, alternate, supernatural, or deliberately invented flag identities when generated art is appropriate.
+Historical and real-world flags should not be invented with `$imagegen` by default. If a country, movement, party, military authority, or restoration path has a real historical flag or a well-attested symbolic design, the asset brief should instruct the asset agent to source that flag or symbol from a reliable source, document it, and convert it into HOI4 flag sizes. Use `$imagegen` only for fictional, alternate, supernatural, or deliberately invented flag identities when generated art is appropriate.
 
 Historical or real leaders should not be generated. The spec should identify likely real portrait needs and instruct the asset agent to source real images, document source and license status, and crop them to HOI4 portrait size. Fictional leaders, council portraits, cult leaders, alternate invented officers, and symbolic committee portraits can use `$imagegen` when generated art is appropriate.
 
-When an asset source is historically sensitive, disputed, or politically loaded, the asset prompt must require source notes, and a clear distinction between sourced historical use and fictional alternate-history invention.
+When an asset source is historically sensitive, disputed, or politically loaded, the asset brief must require source notes, and a clear distinction between sourced historical use and fictional alternate-history invention.
 
 
 ## 3.15 Effect strength and impact standard
@@ -1114,7 +1114,7 @@ Do not include unresearched `possible line`, `sample title`, `placeholder quote`
 
 Describe the desired shape instead. For example, write `short title direction about public recognition of the threat, avoiding generic apocalypse wording`, not a finished title.
 
-Functional labels are allowed for spec structure, asset filenames, and prompt routing, but they must be neutral and explicitly non-final. Use labels such as `mainland reveal super-event`, `world-end super-event`, or `se_death_mainland_reveal`. Do not name assets, localisation keys, or prompt files after unresearched title concepts.
+Functional labels are allowed for spec structure, asset filenames, and handoff routing, but they must be neutral and explicitly non-final. Use labels such as `mainland reveal super-event`, `world-end super-event`, or `se_death_mainland_reveal`. Do not name assets, localisation keys, or prompt files after unresearched title concepts.
 
 ### Major-event defeat aftermath
 
@@ -1158,7 +1158,7 @@ Mention implementation only where it matters for the design, such as super-event
 
 This planning skill defines direction for player-facing text. It must not write final player-facing localisation. This includes event titles, event option text, event descriptions, news and report prose, decision names, decision descriptions, focus names, focus descriptions, achievement titles, achievement descriptions, GUI labels, event-detail text, spreadsheet-facing wording, super-event titles, super-event button text, super-event quotes, cultural remarks, source-like allusions, and final audio selections.
 
-The planning spec may define tone, actor viewpoint, structure, visible information, route variation, dynamic placeholders that final text should use, and research needs. If a working label is needed for a row, filename, prompt, branch, route, asset, diagram, or internal handoff, mark it clearly as `working label, not final localisation`.
+The planning spec may define tone, actor viewpoint, structure, visible information, route variation, dynamic placeholders that final text should use, and research needs. If a working label is needed for a row, filename, brief, branch, route, asset, diagram, or internal handoff, mark it clearly as `working label, not final localisation`.
 
 Important super-event boundary: this planning skill may define super-event role, trigger, tone, image direction, quote direction, cultural-remark direction, and audio mood. Any source-dependent wording belongs to `chaos-redux-super-events` and must stay blocked until researched and documented.
 
@@ -1215,7 +1215,7 @@ For major events, split the spec into parts if needed. Do not compress deep desi
 
 Only include sections for surfaces that exist or that need design. If a world-end scenario, manual triggerable scenario, super-event, focus tree, custom country, achievement set, or asset family is absent, omit that section instead of writing that it is absent. Because negative notes create noise and can mislead later agents into thinking the absence is a designed feature.
 
-## 12. Depth and continuation
+## 12. Depth, file splitting, and internal resume notes
 
 Do not compress the spec so much that important ideas become shallow.
 
@@ -1223,35 +1223,34 @@ The goal is depth, not speed.
 
 Think through the event as far as the idea can reasonably go. If the event has multiple branches, evolutions, rare variants, custom countries, focus trees, UI elements, super-events, or major system connections, treat each of those as deserving real design space.
 
-Large events should be written across multiple parts instead of being rushed into one response.
+Large events should be written across multiple spec files instead of being rushed into one oversized file. Split at clean design boundaries, such as core loop, evolutions, focus trees, decisions, country packages, assets, super-events, achievements, AI, or acceptance criteria.
 
-Each part should be complete enough to be useful on its own. Stop at a clean section boundary or a clean subsection boundary when possible. If the response must stop in the middle of a large design surface, stop after a complete paragraph, table, or list item instead of cutting a thought in half.
+Each file should be complete enough to be useful on its own. Stop files at a clean section boundary or subsection boundary when possible. If a design surface is too large for one file, stop after a complete paragraph, table, route, country package, or list item instead of cutting a thought in half.
 
-Do not summarize later sections just because the current response is getting long. Continue in the next part instead. Use the available response space for real specification content. Do not hold back important design material for a shorter answer.
+Do not summarize later sections just because the current working context is getting large. Continue in another repo file under the same spec folder. Use the available context for real specification content and do not hold back important design material for a shorter handoff.
 
-When a large event specification cannot fit into one response, end the current part with a temporary continuation prompt for the next iteration. This continuation prompt is not part of the final specification, not part of the downloadable package, and not part of any event docs. It is only a working handoff that the user can paste back so the next response continues from the exact stopping point.
+Do not create user-facing continuation text blocks as deliverables. This skill is for coding agents working directly in the Chaos Redux repository. The agent should continue by writing the next spec file, not by asking the user to paste text into a later chat turn.
 
-The continuation prompt should be concise but precise. It should include:
+Internal continuation notes are allowed only when the agent is about to hit context limits, output a very large amount of design material, hand off to another agent, or prepare for auto compaction. Put those notes outside the source spec, preferably in `docs/plans/<event_id>_<event_slug>_plans/resume_packet.md` or another clearly marked plan handoff. Internal notes should not be part of event docs, specs, localisation, spreadsheets, or asset manifests.
 
-- the event id, event name, and current part number when known
-- the exact section and subsection where the previous part stopped
-- the last completed heading or table
-- the next heading, table, route, country package, decision family, asset group, or prompt package to write
-- any constraints that must continue to apply, including direction-only localisation, country naming rules, asset source rules, and the user's core event idea
+An internal resume note should include:
+
+- event id, event slug, and current source spec folder
+- files already written or updated
+- exact section, subsection, route, table, or country package where work stopped
+- next file, heading, table, route, decision family, country package, asset group, or research brief to write
+- constraints that must continue to apply, including direction-only localisation, country naming rules, asset source rules, and the user's core event idea
+- unresolved research needs, blockers, and accepted assumptions
 - a reminder to continue with full-depth design and not summarize missing sections
-- a reminder to avoid repeating already completed sections except for short context needed to continue cleanly
+- a reminder to avoid repeating completed sections except for short context needed to continue cleanly
 
-Use a clear temporary heading such as `Temporary continuation prompt, not part of the spec`. Keep it outside the saved spec content. In the final compiled package, remove all temporary continuation prompts and only keep the complete specification, asset prompt, implementation prompt, and any other requested final files.
+When the source spec is complete, remove temporary resume wording from source spec files. If a resume packet remains useful for implementation, mark it as a working handoff under `docs/plans/` rather than source design.
 
-If several iterations are needed, each part should write a new continuation prompt that reflects the new stopping point. Do not reuse an older continuation prompt after the design has moved forward.
-
-When the final part is complete, do not write a continuation prompt. Instead, provide the final package or completion summary and make clear that the specification has reached the planned end.
-
-For major events, the final combined specification may be extremely long. That is acceptable. A 10,000 line, 50,000 line, or 100,000+ line specification is valid if the event truly needs that much design detail. Do not compress focus trees, rare variants, or decision webs into summaries just to keep the file short.
+For major events, the combined specification may be extremely long. That is acceptable. A 10,000 line, 50,000 line, or 100,000+ line specification is valid if the event truly needs that much design detail. Do not compress focus trees, rare variants, or decision webs into summaries just to keep the file short.
 
 Avoid filler. Every section should add useful design, player-facing detail, implementation clarity, asset direction, or system connection.
 
-Before saving the final spec, run a cleanup pass. Remove generic safeguards, obvious implementation boilerplate, empty labels, repeated wording, and admin audit sections.
+Before saving the final spec files, run a cleanup pass. Remove generic safeguards, obvious implementation boilerplate, empty labels, repeated wording, admin audit sections, and any temporary continuation or compaction notes that do not belong in source specs.
 
 ## 13. Asset planning
 
@@ -1286,7 +1285,7 @@ Historical or real-world assets need special care. Historical flags, historical 
 
 ### Reference examples for asset planning
 
-When a spec or asset prompt asks for generated or sourced assets, tell the asset agent to inspect the matching reference examples before creating anything.
+When a spec or asset brief asks for generated or sourced assets, tell the asset agent to inspect the matching reference examples before creating anything.
 
 Use Linux project paths:
 
@@ -1317,11 +1316,11 @@ Reference mapping:
 
 The event spec does not need to analyze those images itself. It should make the handoff explicit so the asset agent knows which example set to inspect before generation, sourcing, cropping, or wiring.
 
-## 14. Asset prompt handoff
+## 14. Asset brief handoff
 
-After the full event specification is complete, create a separate asset prompt file for `chaos-redux-event-assets`.
+After the full event specification is complete, create a separate asset brief file for `chaos-redux-event-assets`.
 
-The asset prompt should include:
+The asset brief should include:
 
 - required assets
 - visual style
@@ -1339,13 +1338,13 @@ The asset prompt should include:
 - source mode, including whether a flag, symbol, or portrait must be sourced historically instead of generated
 - reference example folder that must be inspected before asset work
 
-The asset prompt must state the correct source mode where relevant.
+The asset brief must state the correct source mode where relevant.
 
 It must also state the relevant reference folder from the list above when a matching folder exists.
 
 Use `chaos-redux-event-assets` rules for source selection. Symbolic icons usually use `$imagegen`. News event images, report event images, and super-event images may be sourced or generated. prefer generated assets for fictional, alternate-history, symbolic, high-chaos, or unique scenes, and sourced assets for real historical people, real photographed events, and real archival artifacts. Historical flags and historically attested symbols should be sourced and documented, then converted to HOI4 flag sizes. Fictional, supernatural, invented, or alternate-history flags can use `$imagegen` through `chaos-redux-event-assets` when appropriate.
 
-Do not make the asset prompt vague. If a country has multiple cosmetic identities, ideology names, focus-route transformations, or leader changes, the asset prompt must list the required assets for each visible identity state. If any visible identity state is important enough to feel like a reveal, crisis mode, high-chaos form, completed formable, or living mechanic state, the asset prompt should usually include an animated sprite or animated portrait plan plus a static fallback.
+Do not make the asset brief vague. If a country has multiple cosmetic identities, ideology names, focus-route transformations, or leader changes, the asset brief must list the required assets for each visible identity state. If any visible identity state is important enough to feel like a reveal, crisis mode, high-chaos form, completed formable, or living mechanic state, the asset prompt should usually include an animated sprite or animated portrait plan plus a static fallback.
 
 ## 15. HOI4 asset size reference
 
@@ -1387,9 +1386,9 @@ Progression-state variants may include selected, dim, active, locked, completed,
 
 ## 17. Super-event research handoff
 
-If the event has one or more super-events, create a separate super-event prompt file for `chaos-redux-super-events`.
+If the event has one or more super-events, create a separate super-event research brief file for `chaos-redux-super-events`.
 
-The prompt should ask that skill to research or create the full super-event presentation package.
+The research brief should ask that skill to research or create the full super-event presentation package.
 
 For each super-event, include:
 
@@ -1405,7 +1404,7 @@ For each super-event, include:
 - whether it is a normal escalation, defeat moment, aftermath moment, or world-end moment
 - any special constraints from the event spec
 
-The `chaos-redux-super-events` prompt should ask the agent to:
+The `chaos-redux-super-events` research brief should ask the agent to:
 
 - find a real quote using the repository web research workflow from `AGENTS.md`
 - verify quote wording and attribution
@@ -1419,7 +1418,7 @@ Do not claim a quote, cultural reference, or audio track is usable without check
 
 If a license or attribution is unclear, mark it as uncertain.
 
-The super-event prompt must explicitly state that unresearched titles, button text, quotes, cultural remarks, slogans, lyric fragments, allusions, and audio choices are blockers. The implementation agent must not convert research directions, working labels, achievement names, asset names, or draft-like wording into final super-event localisation.
+The super-event research brief must explicitly state that unresearched titles, button text, quotes, cultural remarks, slogans, lyric fragments, allusions, and audio choices are blockers. The implementation agent must not convert research directions, working labels, achievement names, asset names, or draft-like wording into final super-event localisation.
 
 ## Improvement-loop expansion specs
 
@@ -1449,7 +1448,7 @@ The coding agent writes the final in-game text during implementation. The planni
 
 The planning agent should preserve the open structure of the addendum where that helps the idea. Use tables, route maps, prose, diagrams, or country package matrices only when they make the design easier to implement. Do not convert every improvement into a rigid checklist.
 
-When an improvement addendum proposes formables, scripted GUI, animated sprites, animated portraits, or hidden routes, the final spec pack should carry those ideas into the relevant files instead of leaving them isolated. The core spec explains why the expansion matters. The decision and focus files explain how the player reaches it. The asset prompt explains the static and animated visual work. The coding prompt and goal prompt tell the implementation agent to wire and validate it.
+When an improvement addendum proposes formables, scripted GUI, animated sprites, animated portraits, or hidden routes, the final spec pack should carry those ideas into the relevant files instead of leaving them isolated. The core spec explains why the expansion matters. The decision and focus files explain how the player reaches it. The asset brief explains the static and animated visual work. The implementation handoff tells the implementation agent to wire and validate it.
 
 
 ## Specification folder convention
@@ -1480,11 +1479,11 @@ Full event specification output belongs under `docs/specs/<event_id>_<event_slug
 
 Subagent planning addenda, audit follow-up plans, implementation notes, and temporary handoffs belong under `docs/plans/<event_id>_<event_slug>_plans/`. The plans folder is a working area. Accepted plan content should be folded into the relevant spec under `docs/specs/` when the final source-of-truth spec is updated.
 
-Do not create new event specs, addenda, prompt packages, or extracted handoffs under `docs/planning/`, `planning/`, or any other planning folder. If a prompt says "planning folder", interpret that as `docs/plans/` for subagent plans and `docs/specs/` for source specs unless the user explicitly provides a different path.
+Do not create new event specs, addenda, handoff bundles, or extracted handoffs under `docs/planning/`, `planning/`, or any other planning folder. If a task says "planning folder", interpret that as `docs/plans/` for subagent plans and `docs/specs/` for source specs unless the user explicitly provides a different path.
 
 The spec file should contain only the event specification.
 
-Do not put the asset prompt, super-event prompt, coding-agent prompt, or goal prompt inside the spec file.
+Do not put the asset brief, super-event research brief, implementation handoff, or compact task handoff inside the main spec file.
 
 Keep planning files readable as design handoffs, not implementation blueprints. Prefer route purpose, player-facing behavior, balance intent, asset direction, AI intent, and acceptance criteria. Avoid long technical tables, exact constant lists, full scripted-effect recipes, exhaustive file inventories, parser-level implementation notes, and detailed code wiring. The specs you create are not implementation oriented. You do not give implementation guidance, you are just handing off ideas.
 
@@ -1498,84 +1497,72 @@ Create sequential files:
 Do not repeat earlier sections unless needed for clarity.
 
 
-## 18.1 Final zip package requirement
+## 18.1 Repo-native output requirement
 
-The final output should be delivered as one zip file that contains every necessary file for the planning handoff.
+This skill is for coding agents working directly in the Chaos Redux repository. Do not create a zip package, external bundle, or user-facing collection of loose files.
 
-The zip should include, when relevant:
+Write the planning output directly into the repository:
 
-- all spec Markdown files
-- focus-tree path spec parts
-- optional focus tree path diagrams or route sketches when useful
-- asset prompt file
-- super-event prompt file
-- achievement prompt file
-- coding-agent prompt file
-- goal prompt file
-- research notes or bibliography files
-- any country package matrices, AI matrices, decision maps, or acceptance criteria files created separately
+- source specification files under `docs/specs/<event_id>_<event_slug>_specs/`
+- accepted follow-up addenda, resume packets, audit notes, and working handoffs under `docs/plans/<event_id>_<event_slug>_plans/`
+- asset briefs, super-event research briefs, achievement handoffs, decision and mission handoffs, route diagrams, research notes, matrices, and implementation handoffs inside the relevant spec or plan folder
 
-Do not make the user collect many loose files manually. The main deliverable should be a single zip package.
+The spec folder should be immediately usable by another coding agent. It should not depend on a chat transcript, an external archive, or an external package structure.
 
-Use a clear package name such as:
-
-`event_name_planning_package.zip`
-
-The package should have a clean internal structure, for example:
+Use clear repo filenames such as:
 
 ```text
-specs/
-prompts/
-focus_graphs/
-research/
-matrices/
+docs/specs/<event_id>_<event_slug>_specs/<event_id>_<event_slug>_spec_part_1_core.md
+docs/specs/<event_id>_<event_slug>_specs/<event_id>_<event_slug>_asset_brief.md
+docs/specs/<event_id>_<event_slug>_specs/<event_id>_<event_slug>_super_event_research_brief.md
+docs/specs/<event_id>_<event_slug>_specs/<event_id>_<event_slug>_achievement_handoff.md
+docs/specs/<event_id>_<event_slug>_specs/<event_id>_<event_slug>_implementation_handoff.md
 ```
 
-The goal prompt inside the package must still be under 4000 characters.
-The extracted zip should be placed in `docs/specs/<event_id>_<event_slug>_specs/` when it is the event source spec pack. If the zip contains only subagent plans, follow-up handoffs, or audits, place it under `docs/plans/<event_id>_<event_slug>_plans/`.
+Do not create packaging-only directories such as `specs/`, `prompts/`, `focus_graphs/`, `research/`, or `matrices/` inside a zip-style bundle. Use repo folders and descriptive files instead.
 
-## 19. Final prompt files
+## 19. Repo-native handoff files
 
-Only after the full specification is complete, create separate prompt files outside the spec file and include them in the final zip package.
+After the full specification is complete, create separate handoff files outside the main spec file when they make implementation or subagent routing clearer. These are repo files, not chat deliverables.
 
-Required prompt files:
+Create only the files that are relevant to the event:
 
-- `event_name_asset_prompt.md`
-- `event_name_super_event_prompt.md` when the event has one or more super-events
-- `event_name_achievement_prompt.md`
-- `event_name_decision_mission_prompt.md` when the event has large decision or mission systems
-- `event_name_coding_prompt.md`
-- `event_name_goal_prompt.md`
+- `<event_id>_<event_slug>_asset_brief.md`
+- `<event_id>_<event_slug>_super_event_research_brief.md` when the event has one or more super-events
+- `<event_id>_<event_slug>_achievement_handoff.md` when achievements exist
+- `<event_id>_<event_slug>_decision_mission_handoff.md` when the event has large decision or mission systems
+- `<event_id>_<event_slug>_implementation_handoff.md` for the coding agent that will implement the spec
+- `<event_id>_<event_slug>_resume_packet.md` only when compaction, interruption, or long-running handoff makes it useful
 
-The final answer should point to the final zip package as the deliverable and briefly summarize what the package contains.
+Do not create a separate compact goal file by default. A compact goal file is only useful when an external runner or parent agent explicitly asks for it. When a compact handoff is needed, prefer an implementation handoff that points to repo files and acceptance criteria.
 
-### Asset prompt file
+### Asset brief file
 
-Create an asset prompt for `chaos-redux-event-assets`.
+Create an asset brief for `chaos-redux-event-assets` when the event needs visual assets.
 
-The prompt should cover all required visual assets, progression-state variants, final asset packaging, reference folders, source modes, and manifest requirements.
+The brief should cover all required visual assets, progression-state variants, final asset packaging, reference folders, source modes, and manifest requirements.
 
-### Super-event prompt file
+### Super-event research brief file
 
-Create a super-event prompt for `chaos-redux-super-events` if the event has one or more super-events.
+Create a super-event research brief for `chaos-redux-super-events` if the event has one or more super-events.
 
-The prompt should cover title direction, description direction, quote research, cultural remark research, audio research, image direction, source documentation, licensing notes, and coordination with asset work.
+The brief should cover title direction, description direction, quote research, cultural remark research, audio research, image direction, source documentation, licensing notes, and coordination with asset work.
 
-The prompt must not provide unresearched final titles, button text, quotes, slogans, lyric fragments, cultural references, or final audio choices. Use research gates and role labels instead. It must tell the super-event researcher to produce the final text package only after source checks.
+The brief must not provide unresearched final titles, button text, quotes, slogans, lyric fragments, cultural references, or final audio choices. Use research gates and role labels instead. It must tell the super-event researcher to produce the final text package only after source checks.
 
-### Achievement prompt file
+### Achievement handoff file
 
-Create a separate achievement prompt file for the coding and asset agents.
+Create a separate achievement handoff file when the event needs achievements.
 
-The achievement prompt must include every planned achievement with id, title direction or working label, description direction, eligible countries, unlock conditions, disqualifiers, difficulty, hidden or visible status, why it is not trivial, icon direction, and all required tracking notes.
+The achievement handoff must include every planned achievement with id, title direction or working label, description direction, eligible countries, unlock conditions, disqualifiers, difficulty, hidden or visible status, why it is not trivial, icon direction, and all required tracking notes.
 
-The achievement prompt should tell the implementation agent to inspect existing achievement patterns, implement the achievements, wire localisation and icons, create any required tracking flags or variables, document them, and avoid easy unlocks.
+The achievement handoff should tell the implementation agent to inspect existing achievement patterns, implement the achievements, wire localisation and icons, create any required tracking flags or variables, document them, and avoid easy unlocks.
 
-### Coding-agent prompt file
+### Implementation handoff file
 
-Create a coding-agent implementation prompt that summarizes the finished event spec.
+Create an implementation handoff that summarizes the finished event spec and points to the source spec files.
 
-The prompt must tell the coding agent to:
+The implementation handoff must tell the coding agent to:
 
 - implement the event according to the spec
 - implement all mapped decisions, variants, evolutions, focus trees, custom tags, country packages, achievements, assets, and super-events included in the spec
@@ -1596,30 +1583,24 @@ The prompt must tell the coding agent to:
 - avoid fallbacks, simplifications, temporary versions, and good-enough approximations
 - not claim completion until the implemented files satisfy the spec
 
-### Goal prompt file
+### Optional compact task handoff
 
-Create a separate `/goal` prompt file.
+Create a compact task handoff only when another coding agent needs a short entry point, the task is being moved into a goal runner, or the parent explicitly asks for it.
 
-The goal prompt must be less than 4000 characters.
+The compact task handoff should point to repo files instead of repeating the full spec. Keep it short and include:
 
-The goal prompt should not contain the whole spec or all long instructions. It should point to the spec files and the other prompt files, then state the most important pass or fail requirements.
-
-The goal prompt must tell the implementation agent to keep iterating until the goal is accomplished to its fullest extent. It must also say not to claim completion until the implemented files satisfy the spec.
-
-A good goal prompt should include:
-
-- the spec file path
-- the coding prompt file path
-- the asset prompt file path
-- the super-event prompt file path when relevant
-- the achievement prompt file path
+- the spec folder path
+- the implementation handoff path
+- the asset brief path when relevant
+- the super-event research brief path when relevant
+- the achievement handoff path when relevant
 - the required skills or docs to follow
 - the top design non-negotiables
 - the requirement to create all required static and animated assets, static fallbacks, tags, starting divisions, reinforcement pathways, non-linear focus trees based on the mapped paths, focus filter tags, decisions, evolutions, achievements, and docs
 - the requirement to research and source final super-event titles, button text, quotes, cultural remarks, and audio through the proper super-event workflow when super-events exist
 - the requirement to provide a concrete completion report
 
-If the goal prompt is near 4000 characters, shorten it by pointing to files instead of repeating details.
+If the compact task handoff is near a size limit, shorten it by pointing to files instead of repeating details.
 
 ## Formation and UI questions for planning passes
 
@@ -1633,22 +1614,26 @@ Before finishing a major event spec, ask:
 - Has every important mechanic, formable route, high-chaos route, hidden reveal, faction board, patron network, crisis meter, and major transformation received an animation planning pass?
 - Are animated sprites, leader portraits, particles, glow, float loops, warning pulses, selected states, hover states, or button states planned where they would make the mechanic clearer?
 - If a major surface stays static, does the spec explain why motion would add clutter instead of clarity?
-- Does the asset prompt include all static and animated UI pieces, frame-sheet needs, sprite names, state logic, and fallbacks?
-- Does the goal prompt tell the implementation agent to verify formables, UI windows, animated sprites, frame-sheet handoffs, and fallbacks?
+- Does the asset brief include all static and animated UI pieces, frame-sheet needs, sprite names, state logic, and fallbacks?
+- Does the implementation handoff tell the implementation agent to verify formables, UI windows, animated sprites, frame-sheet handoffs, and fallbacks?
 
-## 20. Final response checklist
+## 20. Completion report checklist
 
-The final response should include:
+When the planning pass is complete, write a concise completion report for the parent agent or repository handoff. The report should point to repo paths, not external deliverables.
 
-- spec file created
-- spreadsheet row used when applicable
+The completion report should include:
+
+- spec folder path and spec files created or updated
+- spreadsheet row or CSV row used when applicable
 - repo context inspected
 - event cluster role defined when relevant
 - assets defined when needed, including country identity assets
+- asset brief path when visual assets are required
 - animation planning pass completed for important mechanics, custom UI, formables, route reveals, high-chaos states, and major leader transformations
 - animated sprite and animated portrait needs mapped with static fallbacks, state logic, and `chaos-redux-frame-animation` handoff expectations when relevant
 - historical flags, real symbols, and real leader portraits marked for sourced asset work when relevant
 - super-event direction defined when needed
+- super-event research brief path when super-events are required
 - general localisation handoff uses direction only for event titles, options, descriptions, decision text, focus text, achievement text, GUI labels, event-detail text, and spreadsheet-facing wording
 - super-event text research gates used when final title, button text, quote, cultural remark, or audio has not been researched
 - no unresearched super-event title, button text, quote, cultural remark, slogan, lyric fragment, or allusion presented as final localisation
@@ -1660,8 +1645,7 @@ The final response should include:
 - every major focus tree includes a non-linear architecture map with trunk focuses, fork points, route locks, optional branches, convergence nodes, hidden routes, crisis branches, and late-game branches where relevant
 - every major focus tree includes focus reward diversity and an idea audit when ideas or national spirits are used
 - focus rewards include varied buildings, factories, military, industry, diplomacy, decisions, missions, identities, and mechanics where appropriate, not mostly new ideas
-- final zip package created with all spec files, prompt files, route diagrams if used, research notes, and matrices
-- focus tree files split into separate parts when the tree is too large for one file
+- spec files split into separate parts when the tree or event is too large for one file
 - decisions and rare variants mapped when they exist
 - event option tone mapped where event options exist, including irony, sarcasm, cultural remarks, humour, or deliberate plain severity
 - evolution entry paths mapped when evolutions exist, including active-event evolution, pre-fire evolved opening, or a clear reason only one path applies
@@ -1669,9 +1653,10 @@ The final response should include:
 - achievements mapped with difficult conditions, icon directions, and tracking notes
 - ideology-specific names, cosmetic names, leader changes, and flag changes mapped when relevant
 - unit-creating focuses and decisions mapped with requirements, template families, pressure effects, AI behavior, and blocked localisation notes when relevant
+- implementation handoff path
+- resume packet path if one was created for compaction or handoff
 - uncertainties or blockers
 - idea, spirit, decision, mission, and focus effects are strong enough to matter and not only conservative small modifiers
-- downloadable link to the final zip package
 
 ## 21. Cleanup and quality gate
 
@@ -1738,7 +1723,7 @@ Reject the draft if it has any of these problems:
 - localisation that reveals hidden effects, secret outcomes, or future surprises instead of visible baseline effects
 - route-unlocked advisors that do not match route identity
 - major focus trees without achievement hooks
-- completion prompts missing a route coverage table requirement
+- implementation handoffs missing a route coverage table requirement
 - focus trees where unit rewards are repeated generic division spawns instead of route-specific military institutions, decisions, templates, or mobilization systems
 - unit-granting focuses that exist only as filler or repeated free divisions with no story, route logic, or constraints
 - major focus trees that read like one vertical checklist instead of a branching system
@@ -1766,11 +1751,9 @@ Reject the draft if it has any of these problems:
 - sample, possible, temporary, or placeholder player-facing text included in the spec when the coding agent should write the final wording
 - super-event title, button text, quote, cultural remark, slogan, lyric fragment, allusion, or audio choice written as final content without research and source documentation
 - placeholder, sample, or working super-event text that could be pasted into localisation
-- role labels, asset names, achievement titles, or prompt filenames reused as final super-event localisation without research
-- coding prompt or goal prompt that lets unresearched super-event text be implemented instead of treating it as blocked
-- goal prompt over 4000 characters
-- goal prompt that tries to contain the whole spec instead of pointing to files
-- missing final zip package containing all required spec files, prompt files, route diagrams if used, research notes, and matrices
+- role labels, asset names, achievement titles, brief filenames, or handoff filenames reused as final super-event localisation without research
+- implementation handoff that lets unresearched super-event text be implemented instead of treating it as blocked
+- missing repo-native source spec files, handoff files, route diagrams if used, research notes, or matrices required by the event
 - admin audit sections inside the spec
 - major event ideas or spirits whose main effect is a tiny modifier with no meaningful strategic role
 - obvious system plumbing repeated as design
