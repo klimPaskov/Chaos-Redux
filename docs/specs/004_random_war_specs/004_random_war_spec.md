@@ -111,7 +111,11 @@ Target candidates should be:
 - active on the map
 - outside recent target cooldown
 - not already at war with the aggressor
+- not allied with the aggressor through same-faction or subject relationships
+- legally declarable by the aggressor under current game rules
 - outside protected scripted states
+
+Hard exclusions cover same-country, same-faction, master or subject, already-at-war, and other pairs that fail the engine declaration check.
 
 Increase target weight for:
 
@@ -123,8 +127,6 @@ Increase target weight for:
 
 Decrease target weight for:
 
-- same-faction countries at early stages
-- puppets of the aggressor
 - countries already overwhelmed by wars
 - distant countries at baseline
 
