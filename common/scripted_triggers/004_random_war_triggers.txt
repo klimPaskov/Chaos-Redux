@@ -1,6 +1,6 @@
 # Overview:
 # - Random War eligibility gates for sovereign participants, shared special chaos
-#   countries, and declaration pairs selected by Event 4.
+#   countries, legal declaration pairs, and declaration pairs selected by Event 4.
 
 random_war_country_can_be_aggressor = {
 	exists = yes
@@ -22,7 +22,9 @@ random_war_country_can_be_target = {
 random_war_target_valid_for_prev_aggressor = {
 	random_war_country_can_be_target = yes
 	NOT = { has_war_with = PREV }
+	NOT = { is_ally_with = PREV }
 	NOT = { is_subject_of = PREV }
+	PREV = { can_declare_war_on = PREV }
 	random_war_calm_world_pair_scale_valid_for_prev_aggressor = yes
 }
 

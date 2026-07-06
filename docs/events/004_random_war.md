@@ -4,7 +4,7 @@
 
 Random War is a repeatable minor event that creates unexpected wars between eligible sovereign countries. The base event creates one declaration. At higher chaos tiers, the War Contagion evolution track increases the number of declarations and makes compatible Chaos Redux special countries more likely to participate.
 
-The root event remains `chaosx.nr4.1`. It is hidden and delegates to `random_war_fire_current_context`; the event picker and event-log trigger path call the same firing effect directly after preparing a valid aggressor/target context.
+The root event remains `chaosx.nr4.1`. It is hidden and delegates to `random_war_fire_current_context`. The event picker and event-log trigger path call the same firing effect directly after preparing a valid aggressor/target context.
 
 ## Flow
 
@@ -25,8 +25,10 @@ Targets must exist, control at least one state, be sovereign, not be capitulated
 Pairs are checked with:
 
 - no existing war between aggressor and target
+- the countries are not allies, including same-faction and subject or master relationships
+- the aggressor can legally declare war on the target under current game rules
 - target is not a subject of the aggressor
-- Calm World does not pair a major country against a non-major country; major-minor pairings open once the chaos tier has advanced beyond Calm World
+- Calm World does not pair a major country against a non-major country. Major-minor pairings open once the chaos tier has advanced beyond Calm World.
 
 Compatible special countries use the shared `is_special_chaos_country` trigger. It includes existing Chaos Redux special-country markers, Holy Realm compatibility, and Germany Mengele civil-war or post-coup state markers.
 
