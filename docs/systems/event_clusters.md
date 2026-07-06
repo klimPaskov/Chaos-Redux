@@ -72,7 +72,6 @@ Current membership:
 | Liberations | Event 6, Independence Wave | Low | Auto-disabled placeholder member |
 | Liberations | Event 5, Soviet Union Collapse | Severe | Optional member, fire-once, gated by Soviet crisis eligibility |
 | Diplomatic Panic | Event 8, Tensions Rising | Medium | Required member when selected or manually queued |
-| Diplomatic Panic | Event 17, Random faction | Low | Optional member, 65% participation, gated by dynamic faction eligibility |
 | Peace | Event 9, White Peace | Low | Required member when selected or manually queued |
 | Natural Disasters | Event 13, Natural Disasters | Medium | Required opening season when selected or manually queued |
 | Natural Disasters | Event 13, Natural Disasters | Medium | Optional follow-up season unlocked at Gathering Storm |
