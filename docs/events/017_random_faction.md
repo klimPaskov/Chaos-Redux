@@ -4,7 +4,7 @@ Event 017 is a Minor Repeatable diplomatic-pressure event. It selects an eligibl
 
 ## Runtime Flow
 
-1. Event dispatch calls `random_faction_prepare_runtime_context` from the settings/event pool helper.
+1. Event dispatch calls `random_faction_prepare_runtime_context` from the settings/event pool helper. Manual settings dispatch first tries the current player country when it is an eligible Event 17 target, then falls back to the dynamic world selector.
 2. The helper builds a weighted pool of eligible minors with `is_random_faction_eligible_country`, prefers wartime and pressure-adjacent situations, saves `random_faction_target_country`, and verifies that at least one valid faction leader exists.
 3. `chaosx.nr17.1` runs in the selected country scope and routes player countries to `chaosx.nr17.10` and AI countries to `chaosx.nr17.20`.
 4. `random_faction_collect_faction_options` builds up to four distinct saved leader targets from living faction leaders that can accept the selected country.
