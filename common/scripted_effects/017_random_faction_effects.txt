@@ -67,8 +67,10 @@ random_faction_prepare_runtime_context = {
 	set_temp_variable = { random_faction_context_ready = 0 }
 	clear_temp_array = random_faction_target_pool
 	set_temp_variable = { random_faction_target_pool_count = 0 }
-	every_country = {
+
+	if = {
 		limit = {
+			has_country_flag = random_faction_prefer_current_dispatch_target
 			OR = {
 				is_random_faction_eligible_country = yes
 				AND = {
@@ -77,10 +79,34 @@ random_faction_prepare_runtime_context = {
 				}
 			}
 		}
-		random_faction_add_current_country_to_target_pool = yes
+		save_event_target_as = random_faction_target_country
+		random_faction_collect_faction_options = yes
+		if = {
+			limit = { check_variable = { random_faction_option_count > 0 } }
+			set_temp_variable = { random_faction_context_ready = 1 }
+		}
+	}
+
+	if = {
+		limit = { check_variable = { random_faction_context_ready < 1 } }
+		every_country = {
+			limit = {
+				OR = {
+					is_random_faction_eligible_country = yes
+					AND = {
+						has_global_flag = random_faction_evolution_ii_unlocked
+						is_random_faction_wartime_candidate = yes
+					}
+				}
+			}
+			random_faction_add_current_country_to_target_pool = yes
+		}
 	}
 	if = {
-		limit = { check_variable = { random_faction_target_pool_count > 0 } }
+		limit = {
+			check_variable = { random_faction_context_ready < 1 }
+			check_variable = { random_faction_target_pool_count > 0 }
+		}
 		random_scope_in_array = {
 			array = random_faction_target_pool
 			limit = {
@@ -98,6 +124,7 @@ random_faction_prepare_runtime_context = {
 	clear_temp_array = random_faction_target_pool
 	if = {
 		limit = {
+			check_variable = { random_faction_context_ready < 1 }
 			has_event_target = random_faction_target_country
 			event_target:random_faction_target_country = {
 				OR = {
