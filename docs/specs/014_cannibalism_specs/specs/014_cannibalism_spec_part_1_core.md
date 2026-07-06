@@ -227,7 +227,6 @@ Event 014 should connect where the link improves play.
 
 Useful links:
 
-- Natural Disasters can raise hunger pressure after famine, drought, flood, ash, crater, or refugee aftermath
 - Black Plague can increase public fear and make quarantine costs cheaper or more accepted
 - Disease in Divisions can create false positives and make the first reports harder to identify
 - Mass Panic can amplify fear, leaks, and decision category urgency

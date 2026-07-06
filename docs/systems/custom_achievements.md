@@ -6,7 +6,7 @@ This mechanic adds Chaos Redux custom achievements using HOI4's mod achievement 
 
 The achievement registry is root-only because it owns the single `chaos_redux_achievements` unique id. Inside that registry, achievements are grouped by global or event section, and each engine-facing achievement id is also the root DDS filename stem and localisation key stem.
 
-Event-owned ids use the event prefix form, for example `010_death_no_witnesses` and `013_natural_disasters_global_relief`. Global Chaos Redux ids use the shared prefix form, for example `000_chaos_redux_10_maximum_chaos`.
+Event-owned ids use the event prefix form, for example `010_death_no_witnesses`. Global Chaos Redux ids use the shared prefix form, for example `000_chaos_redux_10_maximum_chaos`.
 
 HOI4 custom achievements do not expose a native tier field in the file format, so tiering is preserved through internal grouping, naming, and docs rather than a dedicated engine-side rarity value.
 
@@ -27,7 +27,6 @@ HOI4 custom achievements do not expose a native tier field in the file format, s
      - Set when global contamination reaches `10%` or higher before January 1, 1945.
    - `achievement_used_chemical_ability`
      - Set when a chemical cylinder ability is used.
-   - Event 013 sets country flags from disaster hit, recovery decision, mission success, and Disaster Barrage hooks. The achievement file reads only final `achievement_nd_*_ready` flags.
 5. Achievement art is wired in two layers:
    - HOI4 mod achievement UI looks for icon files in `gfx/achievements/`.
    - `interface/chaosx_achievements.gfx` adds stable sprite aliases for the primary icon of each achievement for any future custom UI use.
@@ -124,22 +123,3 @@ HOI4 custom achievements do not expose a native tier field in the file format, s
   - Open the Black Book, bind a name, burn the book before scandal breaks, avoid the Black Oath, and defeat Death.
 - `010_death_black_apostolate`
   - As a Herald, serve Zol through sacrifices and favor during Last Shores, then proclaim the Black Apostolate.
-
-### Event 013 Natural Disasters
-
-- `013_natural_disasters_global_relief`
-  - Recover all active disaster aftermath, avoid failed disaster recovery missions, and keep control of the capital after the delayed season ends.
-- `013_natural_disasters_aftershock_control`
-  - Survive an earthquake-chain disaster, then restore supply and reopen port or airfield access before recovery fails.
-- `013_natural_disasters_prepared_capital`
-  - Hidden. Use the predicted-path evacuation response on three moving storm corridor states.
-- `013_natural_disasters_no_world_end`
-  - Clear ash and stabilize food/water after a massive eruption without failed recovery missions.
-- `013_natural_disasters_skyfall_survivor`
-  - Hidden. Recover local infrastructure after a meteor shower by clearing routes and restoring supply or ash clearance.
-- `013_natural_disasters_firebreak_master`
-  - Complete three firebreak responses against wildfire, drought, or heat-driven aftermath.
-- `013_natural_disasters_no_deaths_sequence`
-  - Recover from a wartime sand or dust storm by restoring supply and clearing dust in the affected state.
-- `013_natural_disasters_tame_the_barrage`
-  - Hidden. Complete a maximum Disaster Barrage with abnormal disasters active and clear all owned disaster aftermath.

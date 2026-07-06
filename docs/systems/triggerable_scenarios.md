@@ -40,7 +40,6 @@ Type controls cycle scenario-specific type variables:
 - Soviet Collapse: ordinary republics or chaos republics.
 - Final Silence: nuclear or thermonuclear payload.
 - Death: Instant Outbreak only.
-- Disaster Barrage: mixed barrage, skyfall opening, global rupture opening, massive eruption opening, or storm corridor opening.
 - Reserved placeholder: fixed Reserved display with neutral placeholder launch event.
 
 The trigger button opens a separate confirmation window. Confirming reads the stored selected scenario, type, and intensity at launch time. Scenario launches intentionally bypass the normal automatic firing prerequisites for their source events, including chaos thresholds, prior event-state gates, route prerequisites, and super-event history flags. The launch gate only keeps impossible or conflicting launches out, such as requiring the Soviet Union to exist for Soviet Collapse and preventing most second world-end branches while `world_end` is already active. The launch button uses the same gate for click enablement and buttonstate rendering, so impossible selections are disabled and visually greyed out before the confirmation window can open.
@@ -84,12 +83,6 @@ The World in Fury scenario seeds dispersed Fury actors through the existing Fury
 The Death scenario starts Event 010 through the same shared state-consumption helpers used by live Death, but it has only one setup type: Instant Outbreak. It consumes a hidden island origin, intensity-scaled extra islands, and at least one mainland reveal state immediately. This bypass does not set the Chaos Meter, record natural evolution stages by shortcut, or start the Death world-end branch.
 
 Intensity controls the starting footprint and starting ghost hosts. Low creates one weak passive host, Medium creates two weak passive hosts, High creates two stronger hosts, and Maximum creates four stronger hosts. After launch, Death escalates through the same natural pulses, deaths, focus gates, evolution records, and world-end requirements as a normal Death crisis.
-
-### SCN-007: Disaster Barrage
-
-The Disaster Barrage scenario launches Event 013 Natural Disasters through the same delayed sequence controller used by live disaster seasons. It does not create separate Event Log entries for individual disasters. The selected type can leave the opening mixed or force the first pulse to meteor shower, global rupture, massive eruption, or moving storm corridor before the rest of the barrage continues through the Event 013 family picker.
-
-Intensity controls the number and cadence of delayed pulses inside the barrage: Low schedules two to four pulses with four-to-seven-day cadence, Medium five to eight with two-to-five-day cadence, High eight to fourteen with one-to-four-day cadence, and Maximum twelve to twenty with one-to-three-day cadence. The sequence still uses Event 013 targeting, building damage, Deaths-system population loss, recovery decisions, throttled news, and abnormal super-event thresholds.
 
 ### SCN-008: Africa Is One
 
