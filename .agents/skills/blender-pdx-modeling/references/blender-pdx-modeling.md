@@ -55,11 +55,16 @@ Observed sanity check from `ENG_infantry.mesh` in this environment: imported bou
 
 The final model must be inspectable from front, side, back, top, and angled views.
 
+The final model must also pass a visual quality gate. It should look like a coherent production-intent model, not like a toy, primitive blockout, mannequin, technical rig test, or loose collection of props. A technically volumetric mesh still fails if it does not visibly match the concept/reference in silhouette, anatomy, clothing layers, material read, and distinctive features.
+
 Acceptable geometry:
 
 - Sculpted mesh objects, joined mesh parts, bevelled primitives, curves converted to mesh, metaballs converted to mesh, or manually created mesh topology.
 - Separate accessory meshes for straps, pouches, helmets, boots, exposed bones, claws, and cloth tears.
 - Material slots and texture maps on real mesh surfaces.
+- Duplicated or retopologized vanilla body/uniform meshes used as a measured base for PDX scale, silhouette, and rig compatibility, then substantially edited with zombie-specific geometry and materials.
+- Layered garment geometry with real thickness, fitted silhouettes, ragged hems, seams, collars, cuffs, straps, and back detail.
+- Integrated wound anatomy, exposed bone, teeth, claws, and decay geometry that is attached to and shaped around the body.
 
 Unacceptable as final model:
 
@@ -69,8 +74,25 @@ Unacceptable as final model:
 - Extruded silhouette from a PNG.
 - Single front-facing textured shell.
 - Primitive stick figure without modeled body volume.
+- A humanoid body assembled mainly from spheres, cones, cylinders, and cubes.
+- Random blobs, red dots, loose sticks, or floating debris used as wound/detail substitutes.
+- A primitive mannequin or toy-like figure presented as a finished PDX unit.
+- A generic reskin that does not match the reference image's face, hands, garment damage, gear, and silhouette.
+- Flat diffuse material colors or undirected noise claimed as "proper textures".
 
 Use imagegen output only as visual reference. It may sit off to the side as a hidden or non-rendered reference plane, but it must not be the model.
+
+## Reference-Matching Quality Gate
+
+Before claiming completion, render the model without a ghost overlay and compare it to the concept/reference sheet:
+
+- Silhouette: proportions, stance, head/torso/limb ratios, and strategy-map readability match the concept and vanilla scale.
+- Anatomy: face, skull, hands, fingers, claws, wounds, exposed bones, and decay are integrated into the body rather than pasted on.
+- Clothing: uniform layers, torn fabric, boots, straps, belt, pouches, collar/cuffs, and back details are recognizable from front, side, and back.
+- Materials: skin, cloth, leather, metal, bone, and wounds have distinct material reads with deliberate color, roughness, texture, grime, and damage.
+- Rig: the model remains bound to the intended armature and deformation/export candidates are selected separately from helpers.
+
+If any item fails in a way a user would reasonably call simplified, ugly, or unlike the reference, keep iterating. If iteration is not possible in the current turn, report the model as incomplete and leave the scene clean or clearly mark the failed attempt. Do not present failed renders as successful validation.
 
 ## Armature and Export Requirements
 
@@ -96,3 +118,6 @@ Before reporting completion:
 - Cameras/lights exist for inspection.
 - Front and side renders or viewport checks were inspected.
 - Hidden helper image planes are not counted as the final model.
+- The unoccluded validation renders do not read as a primitive blockout, toy, mannequin, or generic reskin.
+- The model visibly matches the concept/reference in the major forms and details the user asked for.
+- Texture/material claims are honest: procedural placeholders, unbaked materials, and missing DDS textures are reported as limitations.

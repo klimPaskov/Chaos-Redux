@@ -13,6 +13,8 @@ Use imagegen only to create a concept/reference image. Never use the generated i
 
 If no photo or reference image is available, ask the user to upload one before modeling. If the user wants a PDX/HOI4-compatible unit, always import a vanilla model first and read scale, facing, origin, and armature structure from it.
 
+Do not report a simplified proxy, primitive mannequin, toy-like blockout, or loosely themed placeholder as complete. If the result does not visibly match the supplied concept/reference in silhouette, anatomy, clothing layers, surface condition, and material read, delete or clearly mark the failed attempt and keep iterating. Completion requires a model that would be reasonable to hand to a human artist for polish/export, not merely a technically rigged arrangement of primitives.
+
 ## Required References
 
 For PDX/HOI4 work, read [Blender PDX Modeling](references/blender-pdx-modeling.md) before touching Blender. Read [Chaos Redux Integration TODO](references/chaos-redux-integration-todo.md) before claiming anything about export, animation, textures, or in-game wiring.
@@ -44,6 +46,10 @@ For PDX/HOI4 work, read [Blender PDX Modeling](references/blender-pdx-modeling.m
    - Model side and back surfaces, not just the camera-facing view.
    - Use bevels, smoothing, modifiers, sculpt-like mesh deformation, separate detail meshes, or joined mesh parts as appropriate.
    - Use real Blender materials and UV/image textures only as surface detail on real mesh, never as a substitute for geometry.
+   - For humanoid PDX units, prefer a measured vanilla mesh or armature-compatible base mesh over assembling the main body from spheres, cones, and cylinders. Primitives are acceptable only as temporary scaffolding or small accessories; they are not acceptable as the finished body, face, clothing, or hands.
+   - Build clothing as layered, fitted, damaged garments with believable hems, seams, collars, cuffs, wrinkles, tears, and thickness. Do not represent clothing with a few flat-looking triangles or generic tubes.
+   - Build faces, hands, claws, wounds, teeth, and exposed bones as integrated anatomy. They must not look like loose blobs, decals floating off the body, or disconnected props.
+   - Use procedural materials, UV painting, or texture maps to create meaningful surface variation. Do not claim "proper textures" when the result only has flat diffuse colors or generic noise.
 
 6. Rig and weight.
    - Duplicate or construct an armature compatible with the imported reference.
@@ -58,6 +64,8 @@ For PDX/HOI4 work, read [Blender PDX Modeling](references/blender-pdx-modeling.m
    - Confirm feet sit on the ground/origin convention from the imported reference.
    - Confirm the model is selected with its rig, materials assigned, modifiers visible/renderable, and reference still available.
    - Render or viewport-check at least front and side views.
+   - Compare the renders directly against the concept/reference sheet. Check silhouette, proportions, face, hands, clothing damage, gear placement, and material read. If the model reads as a primitive blockout, toy, mannequin, or generic reskin, it has failed validation.
+   - Inspect renders without hiding behind a reference overlay. Use a ghosted vanilla reference only for scale/facing validation, not as a way to obscure model quality.
 
 ## Failure Conditions
 
@@ -68,6 +76,12 @@ Stop and correct the scene before reporting completion if any of these are true:
 - Scale, facing, origin, or bone structure were guessed instead of measured from the imported reference.
 - The mesh has no real limbs/body volume, no back/side detail, or no usable armature relationship.
 - The imagegen output is being used as the model instead of as a reference.
+- The model is mostly primitive spheres, cylinders, cones, cubes, or disconnected accessory pieces.
+- The model looks simplified, toy-like, mannequin-like, or visibly unlike the concept/reference.
+- The face, hands, wounds, or clothing details look like pasted-on blobs, floating markers, loose sticks, or random debris.
+- Materials are only flat colors or generic procedural noise while the user asked for proper textures or a realistic material read.
+- The completion report would need to excuse the result as "rough", "blockout", "proxy", "placeholder", "first pass", or "needs artist polish" when the user asked for a finished model.
+- The validation renders would embarrassingly fail a direct side-by-side comparison with the concept/reference sheet. In that case, do not present them as complete; either continue iterating or report the task as incomplete.
 
 ## Completion Report
 
@@ -79,3 +93,4 @@ Report:
 - Scale/facing/origin facts from the scene.
 - Validation views checked.
 - Any limitations, especially if export, animation, texture baking, or Chaos Redux wiring remains TODO.
+- Honest quality status. If the model is still a blockout, proxy, or incomplete artist handoff, say so and do not call the goal complete.
