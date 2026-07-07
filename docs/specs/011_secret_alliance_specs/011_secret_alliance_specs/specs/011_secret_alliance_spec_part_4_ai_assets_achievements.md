@@ -107,13 +107,6 @@ Innocent suspected countries:
 
 Secret Alliance should not create full new focus trees for random pact members. The event selects existing countries from the campaign, and replacing their focus trees would damage compatibility and identity. Instead, pact members keep their existing trees and receive event-owned decisions, ideas, AI strategies, and faction behavior.
 
-Implementation should still add lightweight focus hooks where safe:
-
-- a country currently completing a diplomacy or expansion focus can gain pact willingness
-- a country with a focus that targets the player can gain confidence
-- a player focus that improves intelligence, diplomacy, fortification, or internal security can improve Preparedness or Evidence if the implementation has clean hooks
-- existing focus rewards should not be rewritten for every possible country
-
 This event is therefore a decision, event, AI, and super-event system rather than a random-country focus tree system.
 
 ## National spirits and ideas
