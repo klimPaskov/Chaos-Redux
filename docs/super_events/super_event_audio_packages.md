@@ -109,8 +109,9 @@ This file records restored, sourced, and converted super-event audio assets used
 ### Powers of the Awakened
 
 - Super-event ID: `61`
-- Music file: `music/003_holy_realm/super_event_61_powers_of_the_awakened.ogg`
-- Sound-channel file: `sound/003_holy_realm/super_event_61_powers_of_the_awakened.wav`
+- Audio ID: `31`
+- Music file: `music/003_holy_realm/super_event_31_powers_of_the_awakened.ogg`
+- Sound-channel file: `sound/003_holy_realm/super_event_31_powers_of_the_awakened.wav`
 - Sound definition: `chaosx_super_event_powers_of_the_awakened_track`
 - Source title: `Bhikkhu Pāṭimokkha Pali`
 - Composer / creator: traditional Pali monastic chant; recording uploaded by Wikimedia Commons account `Tevaprapas` / `พระวินัยธร`.
@@ -178,8 +179,9 @@ This file records restored, sourced, and converted super-event audio assets used
 ### Mandala of Nations
 
 - Super-event ID: `51`
-- Music file: `music/003_holy_realm/super_event_51_mandala_of_nations.ogg`
-- Sound-channel file: `sound/003_holy_realm/super_event_51_mandala_of_nations.wav`
+- Audio ID: `28`
+- Music file: `music/003_holy_realm/super_event_28_mandala_of_nations.ogg`
+- Sound-channel file: `sound/003_holy_realm/super_event_28_mandala_of_nations.wav`
 - Sound definition: `chaosx_super_event_mandala_of_nations_track`
 - Source title: `Shurangama Dharani Chant`, 120-150 second excerpt.
 - Composer / creator: Ven. Chan Master Hsuan Hua recording excerpt.
@@ -195,8 +197,9 @@ This file records restored, sourced, and converted super-event audio assets used
 ### Fury Becomes a State
 
 - Super-event ID: `59`
-- Music file: `music/007_fury/super_event_59_fury_becomes_a_state.ogg`
-- Sound-channel file: `sound/007_fury/super_event_59_fury_becomes_a_state.wav`
+- Audio ID: `29`
+- Music file: `music/007_fury/super_event_29_fury_becomes_a_state.ogg`
+- Sound-channel file: `sound/007_fury/super_event_29_fury_becomes_a_state.wav`
 - Sound definition: `chaosx_super_event_fury_becomes_a_state_track`
 - Source title: `Symphony No. 9 in E minor "From the New World", Op. 95: IV. Allegro con fuoco`
 - Composer / creator: Antonín Dvořák.
@@ -210,8 +213,9 @@ This file records restored, sourced, and converted super-event audio assets used
 ### The World in Fury
 
 - Super-event ID: `60`
-- Music file: `music/007_fury/super_event_60_world_in_fury.ogg`
-- Sound-channel file: `sound/007_fury/super_event_60_world_in_fury.wav`
+- Audio ID: `30`
+- Music file: `music/007_fury/super_event_30_world_in_fury.ogg`
+- Sound-channel file: `sound/007_fury/super_event_30_world_in_fury.wav`
 - Sound definition: `chaosx_super_event_world_in_fury_track`
 - Source title: `The Planets, Op. 32: I. Mars, the Bringer of War`
 - Composer / creator: Gustav Holst.

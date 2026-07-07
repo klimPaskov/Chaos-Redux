@@ -57,20 +57,21 @@ Behavior:
 Current song routing:
 - The script now builds `chaosx_super_event_<id>_<volume_suffix>` dynamically through `meta_effect`.
 - Sound-channel playback builds `chaosx_super_event_<id>_sound_<volume_suffix>` the same way.
-- Current live super-event ID `1` uses the initial outbreak track definitions.
-- Current live super-event ID `2` uses the Alliance of Man track definitions.
-- Current live super-event ID `3` uses the zombie apocalypse track definitions.
-- Current live super-event ID `4` uses the fallout track definitions.
-- Current live super-event ID `5` uses the zombie-threat-defeated track definitions.
-- Current live super-event ID `6` uses the Wendigo track definitions.
-- Current live super-event ID `7` uses the Buddha Mandate track definitions.
-- Current live super-event ID `8` uses the normal Final Silence track definitions.
-- Current live super-event ID `9` uses the thermonuclear Final Silence track definitions.
-- Current live super-event ID `10` uses the Mandala Breaks track definitions.
-- Current live super-event ID `11` uses the Divine Sovereignty track definitions.
-- Current live super-event ID `12` uses the Angel Directorate track definitions.
-- Current live super-event ID `13` uses the Angelic World Order track definitions.
-- Current live super-event ID `51` uses the Mandala of Nations track definitions.
+- Current audio ID `1` uses the initial outbreak track definitions.
+- Current audio ID `2` uses the Alliance of Man track definitions.
+- Current audio ID `3` uses the zombie apocalypse track definitions.
+- Current audio ID `4` uses the fallout track definitions.
+- Current audio ID `5` uses the zombie-threat-defeated track definitions.
+- Current audio ID `6` uses the Wendigo track definitions.
+- Current audio ID `7` uses the Buddha Mandate track definitions.
+- Current audio ID `8` uses the normal Final Silence track definitions.
+- Current audio ID `9` uses the thermonuclear Final Silence track definitions.
+- Current audio ID `10` uses the Mandala Breaks track definitions.
+- Current audio ID `11` uses the Divine Sovereignty track definitions.
+- Current audio ID `12` uses the Angel Directorate track definitions.
+- Current audio ID `13` uses the Angelic World Order track definitions.
+- Current audio ID `28` uses the Mandala of Nations track definitions.
+- Current audio ID `31` uses the Powers of the Awakened track definitions.
 
 The variant song IDs are defined in:
 - `music/chaosx_super_event_music.asset`
@@ -220,7 +221,7 @@ Audio assets used:
   - `music/003_holy_realm/super_event_9_final_silence_thermonuclear.ogg`
   - `music/003_holy_realm/super_event_10_mandala_breaks.ogg`
   - `music/003_holy_realm/super_event_11_divine_sovereignty.ogg`
-  - `music/003_holy_realm/super_event_51_mandala_of_nations.ogg`
+  - `music/003_holy_realm/super_event_28_mandala_of_nations.ogg`
   - `music/003_holy_realm/super_event_12_angel_directorate.ogg`
   - `music/003_holy_realm/super_event_13_angelic_world_order.ogg`
 - Sound-channel sources:
@@ -236,7 +237,7 @@ Audio assets used:
   - `sound/003_holy_realm/super_event_9_final_silence_thermonuclear.wav`
   - `sound/003_holy_realm/super_event_10_mandala_breaks.wav`
   - `sound/003_holy_realm/super_event_11_divine_sovereignty.wav`
-  - `sound/003_holy_realm/super_event_51_mandala_of_nations.wav`
+  - `sound/003_holy_realm/super_event_28_mandala_of_nations.wav`
   - `sound/003_holy_realm/super_event_12_angel_directorate.wav`
   - `sound/003_holy_realm/super_event_13_angelic_world_order.wav`
 - Audio source and license documentation:

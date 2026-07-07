@@ -34,11 +34,11 @@ The role labels below are planning labels, not final player-facing localisation.
 - Attribution required: `Ivan Ilic, "La Cathédrale engloutie" recording, CC BY 3.0 via Wikimedia Commons.`
 - Source duration: `5:24.920`
 - Original downloaded source path: `docs/assets/010_death/audio_source/death_reveal_la_cathedrale_engloutie_source.ogg`
-- Final `.ogg` path: `music/010_death/super_event_62_death_reveal.ogg`
+- Final `.ogg` path: `music/010_death/super_event_32_death_reveal.ogg`
 - Final duration: `1:52.000`
-- Music asset family: `chaosx_super_event_62_*`
+- Music asset family: `chaosx_super_event_32_*`
 - Sound track id: `chaosx_super_event_death_reveal_track`
-- Sound effect family: `chaosx_super_event_62_sound_*`
+- Sound effect family: `chaosx_super_event_32_sound_*`
 - Suggested super-event use: mainland reveal only
 - Editing and conversion:
   - start `0:00`
@@ -63,11 +63,11 @@ The role labels below are planning labels, not final player-facing localisation.
 - Attribution required: not legally required. Courtesy credit recommended to performer and Musopen mirror.
 - Source duration: `9:49.044`
 - Original downloaded source path: `docs/assets/010_death/audio_source/death_world_end_chopin_funeral_march_source.ogg`
-- Final `.ogg` path: `music/010_death/super_event_63_death_world_end.ogg`
+- Final `.ogg` path: `music/010_death/super_event_33_death_world_end.ogg`
 - Final duration: `1:57.980`
-- Music asset family: `chaosx_super_event_63_*`
+- Music asset family: `chaosx_super_event_33_*`
 - Sound track id: `chaosx_super_event_death_world_end_track`
-- Sound effect family: `chaosx_super_event_63_sound_*`
+- Sound effect family: `chaosx_super_event_33_sound_*`
 - Suggested super-event use: world-end only
 - Editing and conversion:
   - start `0:00`
@@ -92,11 +92,11 @@ The role labels below are planning labels, not final player-facing localisation.
 - Attribution required: not legally required. Courtesy credit recommended to Paul Pitman and Musopen.
 - Source duration: `4:58.210`
 - Original downloaded source path: `docs/assets/010_death/audio_source/death_defeat_pathetique_adagio_source.ogg`
-- Final `.ogg` path: `music/010_death/super_event_64_death_defeat_aftermath.ogg`
+- Final `.ogg` path: `music/010_death/super_event_34_death_defeat_aftermath.ogg`
 - Final duration: `1:56.000`
-- Music asset family: `chaosx_super_event_64_*`
+- Music asset family: `chaosx_super_event_34_*`
 - Sound track id: `chaosx_super_event_death_defeat_aftermath_track`
-- Sound effect family: `chaosx_super_event_64_sound_*`
+- Sound effect family: `chaosx_super_event_34_sound_*`
 - Suggested super-event use: defeat aftermath only
 - Editing and conversion:
   - start `0:00`
@@ -121,11 +121,11 @@ The role labels below are planning labels, not final player-facing localisation.
 - Attribution required: not legally required. Courtesy credit recommended to Paul Pitman and Musopen.
 - Source duration: `17:15.102`
 - Original downloaded source path: `docs/assets/010_death/audio_source/death_world_consumed_hammerklavier_adagio_source.ogg`
-- Final `.ogg` path: `music/010_death/super_event_65_death_world_consumed.ogg`
+- Final `.ogg` path: `music/010_death/super_event_35_death_world_consumed.ogg`
 - Final duration: `2:00.000`
-- Music asset family: `chaosx_super_event_65_*`
+- Music asset family: `chaosx_super_event_35_*`
 - Sound track id: `chaosx_super_event_death_world_consumed_track`
-- Sound effect family: `chaosx_super_event_65_sound_*`
+- Sound effect family: `chaosx_super_event_35_sound_*`
 - Suggested super-event use: whole world consumed only
 - Editing and conversion:
   - start `0:00`
@@ -154,11 +154,11 @@ The role labels below are planning labels, not final player-facing localisation.
   - Musopen courtesy request on the rights page asks for attribution on commercial or derived uses.
 - Source duration: `5:35.769`
 - Original downloaded source path: `docs/assets/010_death/audio_source/death_black_oath_moonlight_source.ogg`
-- Final `.ogg` path: `music/010_death/super_event_66_death_black_oath.ogg`
+- Final `.ogg` path: `music/010_death/super_event_36_death_black_oath.ogg`
 - Final duration: `1:52.000`
-- Music asset family: `chaosx_super_event_66_*`
+- Music asset family: `chaosx_super_event_36_*`
 - Sound track id: `chaosx_super_event_death_black_oath_track`
-- Sound effect family: `chaosx_super_event_66_sound_*`
+- Sound effect family: `chaosx_super_event_36_sound_*`
 - Suggested super-event use: optional Event 010 Herald oath reveal / Black Oath public pledge only
 - Editing and conversion:
   - removed lead-in silence by starting the usable excerpt at `0:04.542`
@@ -192,11 +192,11 @@ ffmpeg -y -i <source>.ogg \
 ## Final handoff summary
 
 - Wired files:
-- `music/010_death/super_event_62_death_reveal.ogg`
-- `music/010_death/super_event_63_death_world_end.ogg`
-- `music/010_death/super_event_64_death_defeat_aftermath.ogg`
-- `music/010_death/super_event_65_death_world_consumed.ogg`
-- `music/010_death/super_event_66_death_black_oath.ogg`
+- `music/010_death/super_event_32_death_reveal.ogg`
+- `music/010_death/super_event_33_death_world_end.ogg`
+- `music/010_death/super_event_34_death_defeat_aftermath.ogg`
+- `music/010_death/super_event_35_death_world_consumed.ogg`
+- `music/010_death/super_event_36_death_black_oath.ogg`
 - Preserved original sources:
   - `docs/assets/010_death/audio_source/death_reveal_la_cathedrale_engloutie_source.ogg`
   - `docs/assets/010_death/audio_source/death_world_end_chopin_funeral_march_source.ogg`
@@ -206,10 +206,10 @@ ffmpeg -y -i <source>.ogg \
 
 ## Implementation audit
 
-| ID | Title | Music file | Sound mirror | Duration |
-| --- | --- | --- | --- | --- |
-| 62 | `The Name in the Ledger` | `music/010_death/super_event_62_death_reveal.ogg` | `sound/010_death/super_event_62_death_reveal.wav` | `1:52` |
-| 63 | `The Census of Zol` | `music/010_death/super_event_63_death_world_end.ogg` | `sound/010_death/super_event_63_death_world_end.wav` | `1:57.98` |
-| 64 | `The Unfinished Work` | `music/010_death/super_event_64_death_defeat_aftermath.ogg` | `sound/010_death/super_event_64_death_defeat_aftermath.wav` | `1:56` |
-| 65 | `No Witness Remains` | `music/010_death/super_event_65_death_world_consumed.ogg` | `sound/010_death/super_event_65_death_world_consumed.wav` | `2:00` |
-| 66 | `A Covenant with Death` | `music/010_death/super_event_66_death_black_oath.ogg` | `sound/010_death/super_event_66_death_black_oath.wav` | `1:52` |
+| Slot | Audio ID | Title | Music file | Sound mirror | Duration |
+| --- | --- | --- | --- | --- | --- |
+| 62 | 32 | `The Name in the Ledger` | `music/010_death/super_event_32_death_reveal.ogg` | `sound/010_death/super_event_32_death_reveal.wav` | `1:52` |
+| 63 | 33 | `The Census of Zol` | `music/010_death/super_event_33_death_world_end.ogg` | `sound/010_death/super_event_33_death_world_end.wav` | `1:57.98` |
+| 64 | 34 | `The Unfinished Work` | `music/010_death/super_event_34_death_defeat_aftermath.ogg` | `sound/010_death/super_event_34_death_defeat_aftermath.wav` | `1:56` |
+| 65 | 35 | `No Witness Remains` | `music/010_death/super_event_35_death_world_consumed.ogg` | `sound/010_death/super_event_35_death_world_consumed.wav` | `2:00` |
+| 66 | 36 | `A Covenant with Death` | `music/010_death/super_event_36_death_black_oath.ogg` | `sound/010_death/super_event_36_death_black_oath.wav` | `1:52` |

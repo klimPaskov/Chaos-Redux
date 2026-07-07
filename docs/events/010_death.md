@@ -70,11 +70,11 @@ Registered sprites:
 
 Death super-event package:
 
-- `62`, `The Name in the Ledger`, image `GFX_super_event_death_reveal`, audio `music/010_death/super_event_62_death_reveal.ogg`, quote source Francis Bacon
-- `63`, `The Census of Zol`, image `GFX_super_event_death_world_end`, audio `music/010_death/super_event_63_death_world_end.ogg`, quote source Matthew Arnold
-- `64`, `The Unfinished Work`, image `GFX_super_event_death_defeat`, audio `music/010_death/super_event_64_death_defeat_aftermath.ogg`, quote source Abraham Lincoln
-- `65`, `No Witness Remains`, image `GFX_super_event_death_world_consumed`, audio `music/010_death/super_event_65_death_world_consumed.ogg`, quote source Edward Young
-- `66`, `A Covenant with Death`, image `GFX_super_event_death_black_oath`, audio `music/010_death/super_event_66_death_black_oath.ogg`, quote source Isaiah 28:15
+- `62`, `The Name in the Ledger`, image `GFX_super_event_death_reveal`, audio `music/010_death/super_event_32_death_reveal.ogg`, quote source Francis Bacon
+- `63`, `The Census of Zol`, image `GFX_super_event_death_world_end`, audio `music/010_death/super_event_33_death_world_end.ogg`, quote source Matthew Arnold
+- `64`, `The Unfinished Work`, image `GFX_super_event_death_defeat`, audio `music/010_death/super_event_34_death_defeat_aftermath.ogg`, quote source Abraham Lincoln
+- `65`, `No Witness Remains`, image `GFX_super_event_death_world_consumed`, audio `music/010_death/super_event_35_death_world_consumed.ogg`, quote source Edward Young
+- `66`, `A Covenant with Death`, image `GFX_super_event_death_black_oath`, audio `music/010_death/super_event_36_death_black_oath.ogg`, quote source Isaiah 28:15
 
 Final asset details are recorded in `docs/assets/010_death/generated_art_manifest.md`. Static assets are wired for Death, Herald of Zol, Black Apostolate, the researched Black Oath super-event, and the world-end Zol portrait fallback. The Black Atlas scripted GUI is wired to stable sprite names and uses frame-sheet animation surfaces. The optional world-end Zol animation package is complete as an eight-frame source-frame sheet and registered animated sprite. World-end gameplay uses the static fallback for the country leader portrait.
 
