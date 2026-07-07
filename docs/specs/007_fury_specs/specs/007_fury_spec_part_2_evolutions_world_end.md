@@ -363,7 +363,7 @@ Quote direction: real historical or literary quote about unchecked expansion, fo
 
 Button direction: cold and short. Example direction: `The map keeps moving`.
 
-Current implementation note: slot `59` uses generated final image art at `gfx/super_events/007_fury/fury_becomes_a_state.dds`, with source and processed PNGs under `docs/assets/007_fury/super_events/fury_becomes_a_state/`. Its final sourced audio uses ID `59`, `music/007_fury/super_event_59_fury_becomes_a_state.ogg`, and `sound/007_fury/super_event_59_fury_becomes_a_state.wav`; source and license details are recorded in `docs/super_events/super_event_audio_packages.md`.
+Current implementation note: slot `59` uses generated final image art at `gfx/super_events/007_fury/fury_becomes_a_state.dds`, with source and processed PNGs under `docs/assets/007_fury/super_events/fury_becomes_a_state/`. Its final sourced audio uses ID `29`, `music/007_fury/super_event_29_fury_becomes_a_state.ogg`, and `sound/007_fury/super_event_29_fury_becomes_a_state.wav`; source and license details are recorded in `docs/super_events/super_event_audio_packages.md`.
 
 ### Super-event 2: The World in Fury
 
@@ -379,7 +379,7 @@ Quote direction: real quote about war spreading through imitation, the end of or
 
 Button direction: short and terminal. Example direction: `Every border is a front`.
 
-Current implementation note: slot `60` uses generated final image art at `gfx/super_events/007_fury/super_event_world_in_fury.dds`, with source and processed PNGs under `docs/assets/007_fury/super_events/world_in_fury/`. Its final sourced audio uses ID `60`, `music/007_fury/super_event_60_world_in_fury.ogg`, and `sound/007_fury/super_event_60_world_in_fury.wav`; source and license details are recorded in `docs/super_events/super_event_audio_packages.md`.
+Current implementation note: slot `60` uses generated final image art at `gfx/super_events/007_fury/super_event_world_in_fury.dds`, with source and processed PNGs under `docs/assets/007_fury/super_events/world_in_fury/`. Its final sourced audio uses ID `30`, `music/007_fury/super_event_30_world_in_fury.ogg`, and `sound/007_fury/super_event_30_world_in_fury.wav`; source and license details are recorded in `docs/super_events/super_event_audio_packages.md`.
 
 ### Optional super-event 3: Fury defeated after terminal branch
 

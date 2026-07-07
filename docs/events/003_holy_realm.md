@@ -413,11 +413,11 @@ Super-event audio:
 - Divine Sovereignty, audio ID `11`:
   - music file: `music/003_holy_realm/super_event_11_divine_sovereignty.ogg`
   - sound definition: `chaosx_super_event_divine_sovereignty_track`
-- Mandala of Nations, audio ID `51`:
-  - music file: `music/003_holy_realm/super_event_51_mandala_of_nations.ogg`
+- Mandala of Nations, audio ID `28`:
+  - music file: `music/003_holy_realm/super_event_28_mandala_of_nations.ogg`
   - sound definition: `chaosx_super_event_mandala_of_nations_track`
-- Powers of the Awakened, audio ID `61`:
-  - music file: `music/003_holy_realm/super_event_61_powers_of_the_awakened.ogg`
+- Powers of the Awakened, audio ID `31`:
+  - music file: `music/003_holy_realm/super_event_31_powers_of_the_awakened.ogg`
   - sound definition: `chaosx_super_event_powers_of_the_awakened_track`
   - image: `gfx/super_events/003_holy_realm/super_event_powers_of_the_awakened.dds`
 - Audio sources, licenses, durations, and conversion notes are recorded in `docs/super_events/super_event_audio_packages.md`.

@@ -70,7 +70,7 @@ Key coverage confirmed:
 - Death ideas in `common/ideas/chaosx_ideas.txt`.
 - Death achievements in `common/achievements/chaos_redux_achievements.txt`.
 - Super-event keys `chaosx_super_event.62` through `chaosx_super_event.65` title/quote/button/description.
-- Music display keys `chaosx_super_event_62_*` through `chaosx_super_event_65_*`.
+- Music display keys `chaosx_super_event_32_*` through `chaosx_super_event_35_*`.
 
 Expected non-issues:
 

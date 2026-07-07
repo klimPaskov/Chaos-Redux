@@ -172,10 +172,10 @@ Current wiring uses stable Fury-specific assets:
 - news event: `GFX_news_event_fury_first_conquest`
 - super-event slot: `59`
 - super-event image: `GFX_super_event_fury_becomes_a_state`, backed by generated final art at `gfx/super_events/007_fury/fury_becomes_a_state.dds`
-- major Fury super-event audio: ID `59`, `music/007_fury/super_event_59_fury_becomes_a_state.ogg`, `sound/007_fury/super_event_59_fury_becomes_a_state.wav`
+- major Fury super-event audio: ID `29`, `music/007_fury/super_event_29_fury_becomes_a_state.ogg`, `sound/007_fury/super_event_29_fury_becomes_a_state.wav`
 - world-end super-event slot: `60`
 - world-end super-event image: `GFX_super_event_world_in_fury`, backed by generated final art at `gfx/super_events/007_fury/super_event_world_in_fury.dds`
-- world-end super-event audio: ID `60`, `music/007_fury/super_event_60_world_in_fury.ogg`, `sound/007_fury/super_event_60_world_in_fury.wav`
+- world-end super-event audio: ID `30`, `music/007_fury/super_event_30_world_in_fury.ogg`, `sound/007_fury/super_event_30_world_in_fury.wav`
 - achievement icons: final filenames registered in `interface/chaosx_achievements.gfx`
 - Fury leader overlay: `GFX_fury_leader_flame_overlay_animated`, backed by an 8-frame looping sheet at `gfx/interface/leader_frames/007_fury/fury_leader_flame_overlay_sheet.dds`
 - Fury leader overlay static fallback: `GFX_fury_leader_flame_overlay_static`, backed by `gfx/interface/leader_frames/007_fury/fury_leader_flame_overlay_static.dds`
@@ -199,10 +199,10 @@ Recommended final asset paths:
 - `gfx/event_pictures/007_fury/fury_first_conquest.dds`
 - `gfx/super_events/007_fury/fury_becomes_a_state.dds`
 - `gfx/super_events/007_fury/super_event_world_in_fury.dds`
-- `music/007_fury/super_event_59_fury_becomes_a_state.ogg`
-- `sound/007_fury/super_event_59_fury_becomes_a_state.wav`
-- `music/007_fury/super_event_60_world_in_fury.ogg`
-- `sound/007_fury/super_event_60_world_in_fury.wav`
+- `music/007_fury/super_event_29_fury_becomes_a_state.ogg`
+- `sound/007_fury/super_event_29_fury_becomes_a_state.wav`
+- `music/007_fury/super_event_30_world_in_fury.ogg`
+- `sound/007_fury/super_event_30_world_in_fury.wav`
 - `gfx/interface/leader_frames/007_fury/fury_leader_flame_overlay_sheet.dds`
 - `gfx/interface/leader_frames/007_fury/fury_leader_flame_overlay_static.dds`
 - `gfx/achievements/007_fury_*`

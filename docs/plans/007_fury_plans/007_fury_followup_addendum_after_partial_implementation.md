@@ -345,8 +345,8 @@ Asset families:
 
 Audio:
 
-- major-Fury super-event audio is wired as ID `59` with `music/007_fury/super_event_59_fury_becomes_a_state.ogg` and `sound/007_fury/super_event_59_fury_becomes_a_state.wav`; source and license are documented in `docs/super_events/super_event_audio_packages.md`.
-- World in Fury terminal super-event audio is wired as ID `60` with `music/007_fury/super_event_60_world_in_fury.ogg` and `sound/007_fury/super_event_60_world_in_fury.wav`; source and license are documented in `docs/super_events/super_event_audio_packages.md`.
+- major-Fury super-event audio is wired as ID `29` with `music/007_fury/super_event_29_fury_becomes_a_state.ogg` and `sound/007_fury/super_event_29_fury_becomes_a_state.wav`; source and license are documented in `docs/super_events/super_event_audio_packages.md`.
+- World in Fury terminal super-event audio is wired as ID `30` with `music/007_fury/super_event_30_world_in_fury.ogg` and `sound/007_fury/super_event_30_world_in_fury.wav`; source and license are documented in `docs/super_events/super_event_audio_packages.md`.
 
 Documentation and spreadsheet:
 
