@@ -26,7 +26,7 @@ The recurring extraction decision uses `soviet_collapse_kmb_resource_expansion_s
 
 The export auction and treaty decisions use opinion, market access, and state 569 resource-rights deals so KMB can convert its resource glut into external industrial support instead of only stacking local deposits.
 
-Coal golems are KMB's unique shock unit:
+Coal golems are KMB's unique shock unit. Their equipment archetype uses `can_be_produced = { tag = KMB }`, so only the Kuznetsk Mining Board can produce any coal-golem equipment variant:
 
 - equipment file: `common/units/equipment/coal_golems.txt`
 - subunit file: `common/units/coal_golems.txt`
@@ -35,7 +35,7 @@ Coal golems are KMB's unique shock unit:
 
 `KMB_raise_furnace_columns` is the dedicated focus for a mass coal-golem call-up. Ordinary focus rewards spawn several columns, while this focus spawns a larger furnace-column wave. Manpower support is calculated from the number of spawned columns and `coal_golem_manpower_per_column`.
 
-Coal golems are slow infantry-format battalions with tank-like armor, piercing, hard attack, breakthrough, and hardness. Their limiting factor is production: `coal_golem_equipment_1` costs a large amount of coal plus steel, chromium, and tungsten.
+Coal golems are slow infantry-format battalions with tank-like armor, piercing, hard attack, breakthrough, and hardness. Their limiting factor is production: `coal_golem_equipment_1` costs a large amount of coal plus steel, chromium, and tungsten. The battalion remains globally inactive and is instantiated only through KMB's dedicated template and spawn helpers.
 
 ## Files
 
