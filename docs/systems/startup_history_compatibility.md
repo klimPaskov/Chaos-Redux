@@ -20,7 +20,7 @@ Use startup grants for additive existing-country setup:
 - technology-linked tactic unlocks or startup sync effects required by those technologies
 - starting equipment stockpiles
 - starting chemical or biowarfare facilities
-- recruited Chaos Redux scientists or advisors
+- generated Chaos Redux scientists, using `generate_character` or `generate_scientist_character`
 - additive character traits
 - startup-only variables and event targets
 - delayed country events that previously lived in country history
@@ -34,6 +34,7 @@ History files remain valid for:
 
 - custom Chaos Redux tags that need to exist before startup
 - custom starting OOBs for custom countries
+- `recruit_character` setup for custom tags or unavoidable history-only setup
 - country setup that must happen before any startup effect can safely run
 - unavoidable direct edits inside vanilla history definitions that cannot be recreated additively
 
@@ -46,7 +47,7 @@ Current intentional vanilla-history exceptions:
 
 The startup effect currently replaces copied vanilla overrides for:
 
-- existing-country Chaos Redux technology, stockpile, scientist, trait, breakthrough, special-project, and delayed-event grants
+- existing-country Chaos Redux technology, stockpile, generated scientist, trait, breakthrough, special-project, and delayed-event grants
 - chemical warfare facility placement in states 16, 59, 122, 158, 239, 361, and 530
 - biowarfare facility placement in states 247, 282, 328, 338, 440, 609, 816, and 823
 - the Australia citizen-army tuning variables

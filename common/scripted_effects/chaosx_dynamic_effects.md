@@ -34,13 +34,13 @@ Outputs and side effects:
 
 - Sets `chaosx_startup_history_grants_applied` globally to prevent duplicate grants.
 - Calls one country-specific `chaosx_startup_grant_<tag>` effect per affected vanilla country.
-- Grants starting technologies, equipment stockpiles, recruited Chaos scientists, chemical commander traits, startup tuning variables, breakthrough progress, delayed biowarfare events, the British anthrax project, and startup chemical/biowarfare facilities.
+- Grants starting technologies, equipment stockpiles, generated Chaos scientists, chemical commander traits, startup tuning variables, breakthrough progress, delayed biowarfare events, the British anthrax project, and startup chemical/biowarfare facilities.
 - Uses `popup = no` on startup technology grants to avoid research popups.
 - Syncs chemical tactic unlocks and preferred-weight suppression ideas after migrated technology grants, so behavior does not depend on on_action file order.
 - Reads stockpile amounts, facility level, breakthrough values, and delayed-event timing from `common/script_constants/startup_history_constants.txt`.
 - Adds facilities only when the expected starting owner still owns the state and the state lacks that facility type.
 
-Do not use this effect for new custom country packages that require real history files before startup.
+Do not use this effect for new custom country packages that require real history files before startup. Do not put `recruit_character` here; the engine only accepts it in history files. Existing-country startup scientists should be created with `generate_character` or `generate_scientist_character` in the relevant startup grant effect.
 
 Example:
 
