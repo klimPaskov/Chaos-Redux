@@ -733,7 +733,7 @@ Existing countries with their own meaningful tree should usually receive additiv
 For every event-created country, verify:
 
 - tag
-- history setup
+- history setup for new custom tags only; use `common/scripted_effects/chaosx_startup_history_effects.txt` and `on_startup` for additive existing-country technologies, equipment, facilities, characters, and traits
 - localisation
 - flags
 - leader or council

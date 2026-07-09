@@ -8,6 +8,7 @@ Before adding new dynamic logic, check this file and reuse an existing effect if
 
 ## Table of contents
 
+- [chaosx_apply_startup_history_grants](#chaosx_apply_startup_history_grants)
 - [modify_value_based_on_chaos_tier](#modify_value_based_on_chaos_tier)
 - [calculate_economy_scaled_factory_grant](#calculate_economy_scaled_factory_grant)
 - [damage_buildings_in_random_states](#damage_buildings_in_random_states)
@@ -20,6 +21,38 @@ Before adding new dynamic logic, check this file and reuse an existing effect if
 - [count_dynamic_major_weight_pool_events](#count_dynamic_major_weight_pool_events)
 - [calculate_dynamic_major_weight_gain](#calculate_dynamic_major_weight_gain)
 - [apply_dynamic_major_weight_gain_after_minor](#apply_dynamic_major_weight_gain_after_minor)
+
+## chaosx_apply_startup_history_grants
+
+This reusable startup helper lives in `common/scripted_effects/chaosx_startup_history_effects.txt`. It applies additive country and state setup that used to require copied vanilla history overrides.
+
+Scope: Country scope, called once from `on_startup` through a random country. It uses static country and state scopes internally.
+
+Inputs: none.
+
+Outputs and side effects:
+
+- Sets `chaosx_startup_history_grants_applied` globally to prevent duplicate grants.
+- Calls one country-specific `chaosx_startup_grant_<tag>` effect per affected vanilla country.
+- Grants starting technologies, equipment stockpiles, recruited Chaos scientists, chemical commander traits, startup tuning variables, breakthrough progress, delayed biowarfare events, the British anthrax project, and startup chemical/biowarfare facilities.
+- Uses `popup = no` on startup technology grants to avoid research popups.
+- Syncs chemical tactic unlocks and preferred-weight suppression ideas after migrated technology grants, so behavior does not depend on on_action file order.
+- Reads stockpile amounts, facility level, breakthrough values, and delayed-event timing from `common/script_constants/startup_history_constants.txt`.
+- Adds facilities only when the expected starting owner still owns the state and the state lacks that facility type.
+
+Do not use this effect for new custom country packages that require real history files before startup.
+
+Example:
+
+```txt
+on_startup = {
+	effect = {
+		random_country = {
+			chaosx_apply_startup_history_grants = yes
+		}
+	}
+}
+```
 ## evaluate_random_event_active_pool_candidate
 
 This reusable event-system helper lives in `common/scripted_effects/chaosx_logic_effects.txt`. It checks whether a temp `event_id` is a current automatic random-pool entry before weight and UI filter checks are applied.

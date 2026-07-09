@@ -1,0 +1,827 @@
+# ============================================================================
+# CHAOS REDUX - STARTUP HISTORY COMPATIBILITY EFFECTS
+# ============================================================================
+# Additive startup grants that replace copied vanilla history overrides.
+# Existing-country technologies, stockpiles, scientists, commander traits,
+# breakthrough progress, special projects, delayed events, and starting facility
+# placement belong here unless they define a new Chaos Redux country package.
+# ============================================================================
+
+chaosx_apply_startup_history_grants = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = chaosx_startup_history_grants_applied }
+		}
+		set_global_flag = chaosx_startup_history_grants_applied
+
+		chaosx_startup_grant_ast = yes
+		chaosx_startup_grant_bel = yes
+		chaosx_startup_grant_bul = yes
+		chaosx_startup_grant_can = yes
+		chaosx_startup_grant_cze = yes
+		chaosx_startup_grant_eng = yes
+		chaosx_startup_grant_fra = yes
+		chaosx_startup_grant_ger = yes
+		chaosx_startup_grant_gre = yes
+		chaosx_startup_grant_hol = yes
+		chaosx_startup_grant_hun = yes
+		chaosx_startup_grant_ita = yes
+		chaosx_startup_grant_jap = yes
+		chaosx_startup_grant_man = yes
+		chaosx_startup_grant_nzl = yes
+		chaosx_startup_grant_pol = yes
+		chaosx_startup_grant_raj = yes
+		chaosx_startup_grant_rom = yes
+		chaosx_startup_grant_saf = yes
+		chaosx_startup_grant_sov = yes
+		chaosx_startup_grant_spr = yes
+		chaosx_startup_grant_tur = yes
+		chaosx_startup_grant_usa = yes
+		chaosx_startup_grant_yug = yes
+	}
+}
+
+chaosx_startup_sync_chemical_technology_unlocks = {
+	chem_sync_chemical_tactic_preferred_weight_ideas = yes
+
+	if = {
+		limit = {
+			has_tech = basic_gas_masks
+			NOT = { has_tactic = tactic_gas_mask_defense }
+		}
+		unlock_tactic = tactic_gas_mask_defense
+	}
+
+	if = {
+		limit = {
+			NOT = { has_tactic = tactic_chemical_shelling }
+			OR = {
+				has_tech = chlorine_gas
+				has_tech = phosgene
+				has_tech = mustard_gas
+				has_tech = lewisite
+				has_tech = sarin
+				has_tech = soman
+			}
+		}
+		unlock_tactic = tactic_chemical_shelling
+	}
+}
+
+chaosx_startup_grant_ast = {
+	AST = {
+		if = {
+			limit = { exists = yes }
+			set_technology = {
+				basic_gas_masks = 1
+				portable_anemometer = 1
+				popup = no
+			}
+			chaosx_startup_sync_chemical_technology_unlocks = yes
+			add_breakthrough_progress = {
+				specialization = specialization_biowarfare
+				value = constant:startup_history_breakthrough.australia_biowarfare
+			}
+			recruit_character = AST_howard_florey
+			set_variable = { var = AST_citizen_army_spirit_army_non_core_attack_factor value = constant:startup_history_australia.citizen_army_non_core_attack_factor }
+			set_variable = { var = AST_citizen_army_spirit_army_non_core_defence_factor value = constant:startup_history_australia.citizen_army_non_core_defence_factor }
+		}
+	}
+}
+
+chaosx_startup_grant_bel = {
+	BEL = {
+		if = {
+			limit = { exists = yes }
+			set_technology = {
+				basic_gas_masks = 1
+				portable_anemometer = 1
+				pathogen_handling_protocols = 1
+				popup = no
+			}
+			chaosx_startup_sync_chemical_technology_unlocks = yes
+		}
+	}
+}
+
+chaosx_startup_grant_bul = {
+	BUL = {
+		if = {
+			limit = { exists = yes }
+			set_technology = {
+				basic_gas_masks = 1
+				popup = no
+			}
+			chaosx_startup_sync_chemical_technology_unlocks = yes
+		}
+	}
+}
+
+chaosx_startup_grant_can = {
+	CAN = {
+		if = {
+			limit = { exists = yes }
+			set_technology = {
+				basic_gas_masks = 1
+				portable_anemometer = 1
+				pathogen_handling_protocols = 1
+				popup = no
+			}
+			chaosx_startup_sync_chemical_technology_unlocks = yes
+		}
+	}
+}
+
+chaosx_startup_grant_cze = {
+	CZE = {
+		if = {
+			limit = { exists = yes }
+			set_technology = {
+				basic_gas_masks = 1
+				portable_anemometer = 1
+				pathogen_handling_protocols = 1
+				popup = no
+			}
+			chaosx_startup_sync_chemical_technology_unlocks = yes
+		}
+	}
+}
+
+chaosx_startup_grant_eng = {
+	ENG = {
+		if = {
+			limit = { exists = yes }
+			set_technology = {
+				basic_gas_masks = 1
+				portable_anemometer = 1
+				pathogen_handling_protocols = 1
+				bio_surveillance_networks = 1
+				meteorological_stations = 1
+				livens_projector_tech = 1
+				chlorine_gas = 1
+				phosgene = 1
+				mustard_gas = 1
+				popup = no
+			}
+			chaosx_startup_sync_chemical_technology_unlocks = yes
+			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.major_chlorine_cylinders }
+			add_equipment_to_stockpile = { type = chemical_chlorine_payload_cylinder_1 amount = startup_history_stockpile_amount }
+			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.major_phosgene_cylinders }
+			add_equipment_to_stockpile = { type = chemical_phosgene_payload_cylinder_1 amount = startup_history_stockpile_amount }
+			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.major_mustard_cylinders }
+			add_equipment_to_stockpile = { type = chemical_mustard_payload_cylinder_1 amount = startup_history_stockpile_amount }
+			add_breakthrough_progress = {
+				specialization = specialization_biowarfare
+				value = constant:startup_history_breakthrough.britain_biowarfare
+			}
+			recruit_character = ENG_paul_fildes
+			recruit_character = ENG_alexander_fleming
+			recruit_character = ENG_ernst_chain
+			complete_special_project = sp:anthrax_bomb
+			if = {
+				limit = { 122 = { is_owned_by = ENG } }
+				122 = { chaosx_add_startup_cw_facility_9364 = yes }
+			}
+			if = {
+				limit = { 338 = { is_owned_by = ENG } }
+				338 = { chaosx_add_startup_biowarfare_facility_6351 = yes }
+			}
+		}
+	}
+}
+
+chaosx_startup_grant_fra = {
+	FRA = {
+		if = {
+			limit = { exists = yes }
+			set_technology = {
+				basic_gas_masks = 1
+				portable_anemometer = 1
+				pathogen_handling_protocols = 1
+				meteorological_stations = 1
+				livens_projector_tech = 1
+				chlorine_gas = 1
+				phosgene = 1
+				mustard_gas = 1
+				popup = no
+			}
+			chaosx_startup_sync_chemical_technology_unlocks = yes
+			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.major_chlorine_cylinders }
+			add_equipment_to_stockpile = { type = chemical_chlorine_payload_cylinder_1 amount = startup_history_stockpile_amount }
+			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.major_phosgene_cylinders }
+			add_equipment_to_stockpile = { type = chemical_phosgene_payload_cylinder_1 amount = startup_history_stockpile_amount }
+			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.major_mustard_cylinders }
+			add_equipment_to_stockpile = { type = chemical_mustard_payload_cylinder_1 amount = startup_history_stockpile_amount }
+			if = {
+				limit = { 16 = { is_owned_by = FRA } }
+				16 = { chaosx_add_startup_cw_facility_9725 = yes }
+			}
+		}
+	}
+}
+
+chaosx_startup_grant_ger = {
+	GER = {
+		if = {
+			limit = { exists = yes }
+			set_technology = {
+				basic_gas_masks = 1
+				portable_anemometer = 1
+				pathogen_handling_protocols = 1
+				bio_surveillance_networks = 1
+				meteorological_stations = 1
+				livens_projector_tech = 1
+				chlorine_gas = 1
+				phosgene = 1
+				mustard_gas = 1
+				tabun = 1
+				popup = no
+			}
+			chaosx_startup_sync_chemical_technology_unlocks = yes
+			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.major_chlorine_cylinders }
+			add_equipment_to_stockpile = { type = chemical_chlorine_payload_cylinder_1 amount = startup_history_stockpile_amount }
+			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.major_phosgene_cylinders }
+			add_equipment_to_stockpile = { type = chemical_phosgene_payload_cylinder_1 amount = startup_history_stockpile_amount }
+			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.major_mustard_cylinders }
+			add_equipment_to_stockpile = { type = chemical_mustard_payload_cylinder_1 amount = startup_history_stockpile_amount }
+			add_breakthrough_progress = {
+				specialization = specialization_biowarfare
+				value = constant:startup_history_breakthrough.germany_biowarfare
+			}
+			recruit_character = GER_gerhard_schrader
+			recruit_character = GER_kurt_blome
+			recruit_character = GER_walter_schreiber
+			recruit_character = GER_erich_traub
+			recruit_character = GER_kurt_gutzeit
+			recruit_character = GER_sigmund_rascher
+			recruit_character = GER_josef_mengele
+			set_temp_variable = { var = startup_history_event_days value = constant:startup_history_event_delay.germany_biowarfare_days }
+			set_temp_variable = { var = startup_history_event_random_days value = constant:startup_history_event_delay.germany_biowarfare_random_days }
+			country_event = { id = biowarfare.2 days = startup_history_event_days random_days = startup_history_event_random_days }
+			if = {
+				limit = { 59 = { is_owned_by = GER } }
+				59 = { chaosx_add_startup_cw_facility_6298 = yes }
+			}
+		}
+	}
+}
+
+chaosx_startup_grant_gre = {
+	GRE = {
+		if = {
+			limit = { exists = yes }
+			set_technology = {
+				basic_gas_masks = 1
+				popup = no
+			}
+			chaosx_startup_sync_chemical_technology_unlocks = yes
+		}
+	}
+}
+
+chaosx_startup_grant_hol = {
+	HOL = {
+		if = {
+			limit = { exists = yes }
+			set_technology = {
+				basic_gas_masks = 1
+				portable_anemometer = 1
+				pathogen_handling_protocols = 1
+				popup = no
+			}
+			chaosx_startup_sync_chemical_technology_unlocks = yes
+		}
+	}
+}
+
+chaosx_startup_grant_hun = {
+	HUN = {
+		if = {
+			limit = { exists = yes }
+			set_technology = {
+				basic_gas_masks = 1
+				popup = no
+			}
+			chaosx_startup_sync_chemical_technology_unlocks = yes
+		}
+	}
+}
+
+chaosx_startup_grant_ita = {
+	ITA = {
+		if = {
+			limit = { exists = yes }
+			set_technology = {
+				basic_gas_masks = 1
+				portable_anemometer = 1
+				pathogen_handling_protocols = 1
+				livens_projector_tech = 1
+				chlorine_gas = 1
+				mustard_gas = 1
+				popup = no
+			}
+			chaosx_startup_sync_chemical_technology_unlocks = yes
+			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.italy_chlorine_cylinders }
+			add_equipment_to_stockpile = { type = chemical_chlorine_payload_cylinder_1 amount = startup_history_stockpile_amount }
+			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.italy_mustard_cylinders }
+			add_equipment_to_stockpile = { type = chemical_mustard_payload_cylinder_1 amount = startup_history_stockpile_amount }
+			if = {
+				limit = { has_character = ITA_rodolfo_graziani }
+				add_trait = { character = ITA_rodolfo_graziani trait = chemical_operations_commander }
+			}
+			if = {
+				limit = { has_character = ITA_pietro_badoglio }
+				add_trait = { character = ITA_pietro_badoglio trait = chemical_operations_commander }
+			}
+			if = {
+				limit = { has_character = ITA_emilio_de_bono }
+				add_trait = { character = ITA_emilio_de_bono trait = chemical_operations_commander }
+			}
+			if = {
+				limit = { 158 = { is_owned_by = ITA } }
+				158 = { chaosx_add_startup_cw_facility_11723 = yes }
+			}
+		}
+	}
+}
+
+chaosx_startup_grant_jap = {
+	JAP = {
+		if = {
+			limit = { exists = yes }
+			set_technology = {
+				basic_gas_masks = 1
+				portable_anemometer = 1
+				pathogen_handling_protocols = 1
+				bio_surveillance_networks = 1
+				livens_projector_tech = 1
+				chlorine_gas = 1
+				mustard_gas = 1
+				popup = no
+			}
+			chaosx_startup_sync_chemical_technology_unlocks = yes
+			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.japan_chlorine_cylinders }
+			add_equipment_to_stockpile = { type = chemical_chlorine_payload_cylinder_1 amount = startup_history_stockpile_amount }
+			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.japan_mustard_cylinders }
+			add_equipment_to_stockpile = { type = chemical_mustard_payload_cylinder_1 amount = startup_history_stockpile_amount }
+			add_breakthrough_progress = {
+				specialization = specialization_biowarfare
+				value = constant:startup_history_breakthrough.japan_biowarfare
+			}
+			recruit_character = JAP_shiro_ishii
+			recruit_character = JAP_masaji_kitano
+			recruit_character = JAP_chikahiko_koizumi
+			if = {
+				limit = { has_character = JAP_shunroku_hata }
+				add_trait = { character = JAP_shunroku_hata trait = chemical_operations_commander }
+			}
+			if = {
+				limit = { has_character = JAP_yasuji_okamura }
+				add_trait = { character = JAP_yasuji_okamura trait = chemical_operations_commander }
+			}
+			if = {
+				limit = { has_character = JAP_naruhiko_higashikuni }
+				add_trait = { character = JAP_naruhiko_higashikuni trait = chemical_operations_commander }
+			}
+			if = {
+				limit = { has_character = JAP_seishiro_itagaki }
+				add_trait = { character = JAP_seishiro_itagaki trait = chemical_operations_commander }
+			}
+			if = {
+				limit = { has_character = JAP_tadaichi_wakamatsu }
+				add_trait = { character = JAP_tadaichi_wakamatsu trait = chemical_operations_commander }
+			}
+			if = {
+				limit = { 282 = { is_owned_by = JAP } }
+				282 = { chaosx_add_startup_biowarfare_facility_1182 = yes }
+			}
+			if = {
+				limit = { 530 = { is_owned_by = JAP } }
+				530 = { chaosx_add_startup_cw_facility_4179 = yes }
+			}
+			if = {
+				limit = { 609 = { is_owned_by = JAP } }
+				609 = { chaosx_add_startup_biowarfare_facility_3900 = yes }
+			}
+		}
+	}
+}
+
+chaosx_startup_grant_man = {
+	MAN = {
+		if = {
+			limit = { exists = yes }
+			if = {
+				limit = { 328 = { is_owned_by = MAN } }
+				328 = { chaosx_add_startup_biowarfare_facility_10433 = yes }
+			}
+		}
+	}
+}
+
+chaosx_startup_grant_nzl = {
+	NZL = {
+		if = {
+			limit = { exists = yes }
+			set_technology = {
+				basic_gas_masks = 1
+				portable_anemometer = 1
+				popup = no
+			}
+			chaosx_startup_sync_chemical_technology_unlocks = yes
+		}
+	}
+}
+
+chaosx_startup_grant_pol = {
+	POL = {
+		if = {
+			limit = { exists = yes }
+			set_technology = {
+				basic_gas_masks = 1
+				portable_anemometer = 1
+				popup = no
+			}
+			chaosx_startup_sync_chemical_technology_unlocks = yes
+			recruit_character = POL_franciszek_witaszek
+			set_temp_variable = { var = startup_history_event_days value = constant:startup_history_event_delay.poland_biowarfare_days }
+			set_temp_variable = { var = startup_history_event_random_days value = constant:startup_history_event_delay.poland_biowarfare_random_days }
+			country_event = { id = biowarfare.3 days = startup_history_event_days random_days = startup_history_event_random_days }
+		}
+	}
+}
+
+chaosx_startup_grant_raj = {
+	RAJ = {
+		if = {
+			limit = { exists = yes }
+			set_technology = {
+				basic_gas_masks = 1
+				portable_anemometer = 1
+				popup = no
+			}
+			chaosx_startup_sync_chemical_technology_unlocks = yes
+			if = {
+				limit = { 440 = { is_owned_by = RAJ } }
+				440 = { chaosx_add_startup_biowarfare_facility_10173 = yes }
+			}
+			if = {
+				limit = { is_historical_focus_on = yes }
+				430 = {
+					set_variable = { global.famine_state = THIS }
+				}
+			}
+		}
+	}
+}
+
+chaosx_startup_grant_rom = {
+	ROM = {
+		if = {
+			limit = { exists = yes }
+			set_technology = {
+				basic_gas_masks = 1
+				popup = no
+			}
+			chaosx_startup_sync_chemical_technology_unlocks = yes
+		}
+	}
+}
+
+chaosx_startup_grant_saf = {
+	SAF = {
+		if = {
+			limit = { exists = yes }
+			set_technology = {
+				basic_gas_masks = 1
+				portable_anemometer = 1
+				popup = no
+			}
+			chaosx_startup_sync_chemical_technology_unlocks = yes
+		}
+	}
+}
+
+chaosx_startup_grant_sov = {
+	SOV = {
+		if = {
+			limit = { exists = yes }
+			set_technology = {
+				basic_gas_masks = 1
+				portable_anemometer = 1
+				pathogen_handling_protocols = 1
+				meteorological_stations = 1
+				livens_projector_tech = 1
+				chlorine_gas = 1
+				phosgene = 1
+				mustard_gas = 1
+				popup = no
+			}
+			chaosx_startup_sync_chemical_technology_unlocks = yes
+			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.major_chlorine_cylinders }
+			add_equipment_to_stockpile = { type = chemical_chlorine_payload_cylinder_1 amount = startup_history_stockpile_amount }
+			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.major_phosgene_cylinders }
+			add_equipment_to_stockpile = { type = chemical_phosgene_payload_cylinder_1 amount = startup_history_stockpile_amount }
+			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.major_mustard_cylinders }
+			add_equipment_to_stockpile = { type = chemical_mustard_payload_cylinder_1 amount = startup_history_stockpile_amount }
+			add_breakthrough_progress = {
+				specialization = specialization_biowarfare
+				value = constant:startup_history_breakthrough.soviet_biowarfare
+			}
+			recruit_character = SOV_lavrentiy_pavlovich_beria
+			recruit_character = SOV_grigory_mairanovsky
+			recruit_character = SOV_ivan_mikhailovich_velikanov
+			if = {
+				limit = { has_character = SOV_mikhail_tukhachevsky }
+				add_trait = { character = SOV_mikhail_tukhachevsky trait = chemical_operations_commander }
+			}
+			if = {
+				limit = { 239 = { is_owned_by = SOV } }
+				239 = { chaosx_add_startup_cw_facility_326 = yes }
+			}
+			if = {
+				limit = { 247 = { is_owned_by = SOV } }
+				247 = { chaosx_add_startup_biowarfare_facility_344 = yes }
+			}
+			if = {
+				limit = { 823 = { is_owned_by = SOV } }
+				823 = { chaosx_add_startup_biowarfare_facility_12233 = yes }
+			}
+		}
+	}
+}
+
+chaosx_startup_grant_spr = {
+	SPR = {
+		if = {
+			limit = { exists = yes }
+			set_technology = {
+				basic_gas_masks = 1
+				portable_anemometer = 1
+				mustard_gas = 1
+				popup = no
+			}
+			chaosx_startup_sync_chemical_technology_unlocks = yes
+		}
+	}
+}
+
+chaosx_startup_grant_tur = {
+	TUR = {
+		if = {
+			limit = { exists = yes }
+			set_technology = {
+				basic_gas_masks = 1
+				popup = no
+			}
+			chaosx_startup_sync_chemical_technology_unlocks = yes
+		}
+	}
+}
+
+chaosx_startup_grant_usa = {
+	USA = {
+		if = {
+			limit = { exists = yes }
+			set_technology = {
+				basic_gas_masks = 1
+				portable_anemometer = 1
+				pathogen_handling_protocols = 1
+				bio_surveillance_networks = 1
+				meteorological_stations = 1
+				chlorine_gas = 1
+				mustard_gas = 1
+				lewisite = 1
+				popup = no
+			}
+			chaosx_startup_sync_chemical_technology_unlocks = yes
+			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.usa_mustard_cylinders }
+			add_equipment_to_stockpile = { type = chemical_mustard_payload_cylinder_1 amount = startup_history_stockpile_amount }
+			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.usa_lewisite_cylinders }
+			add_equipment_to_stockpile = { type = chemical_lewisite_payload_cylinder_1 amount = startup_history_stockpile_amount }
+			add_breakthrough_progress = {
+				specialization = specialization_biowarfare
+				value = constant:startup_history_breakthrough.usa_biowarfare
+			}
+			recruit_character = USA_frank_olson
+			recruit_character = USA_ira_baldwin
+			recruit_character = USA_murray_sanders
+			if = {
+				limit = { 361 = { is_owned_by = USA } }
+				361 = { chaosx_add_startup_cw_facility_9758 = yes }
+			}
+			if = {
+				limit = { 816 = { is_owned_by = USA } }
+				816 = { chaosx_add_startup_biowarfare_facility_11888 = yes }
+			}
+		}
+	}
+}
+
+chaosx_startup_grant_yug = {
+	YUG = {
+		if = {
+			limit = { exists = yes }
+			set_technology = {
+				basic_gas_masks = 1
+				popup = no
+			}
+			chaosx_startup_sync_chemical_technology_unlocks = yes
+		}
+	}
+}
+
+chaosx_add_startup_cw_facility_326 = {
+	if = {
+		limit = { cw_facility < 1 }
+		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
+		add_building_construction = {
+			type = cw_facility
+			level = startup_history_facility_level
+			instant_build = yes
+			province = { id = 326 }
+		}
+	}
+}
+
+chaosx_add_startup_cw_facility_4179 = {
+	if = {
+		limit = { cw_facility < 1 }
+		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
+		add_building_construction = {
+			type = cw_facility
+			level = startup_history_facility_level
+			instant_build = yes
+			province = { id = 4179 }
+		}
+	}
+}
+
+chaosx_add_startup_cw_facility_6298 = {
+	if = {
+		limit = { cw_facility < 1 }
+		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
+		add_building_construction = {
+			type = cw_facility
+			level = startup_history_facility_level
+			instant_build = yes
+			province = { id = 6298 }
+		}
+	}
+}
+
+chaosx_add_startup_cw_facility_9364 = {
+	if = {
+		limit = { cw_facility < 1 }
+		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
+		add_building_construction = {
+			type = cw_facility
+			level = startup_history_facility_level
+			instant_build = yes
+			province = { id = 9364 }
+		}
+	}
+}
+
+chaosx_add_startup_cw_facility_9725 = {
+	if = {
+		limit = { cw_facility < 1 }
+		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
+		add_building_construction = {
+			type = cw_facility
+			level = startup_history_facility_level
+			instant_build = yes
+			province = { id = 9725 }
+		}
+	}
+}
+
+chaosx_add_startup_cw_facility_9758 = {
+	if = {
+		limit = { cw_facility < 1 }
+		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
+		add_building_construction = {
+			type = cw_facility
+			level = startup_history_facility_level
+			instant_build = yes
+			province = { id = 9758 }
+		}
+	}
+}
+
+chaosx_add_startup_cw_facility_11723 = {
+	if = {
+		limit = { cw_facility < 1 }
+		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
+		add_building_construction = {
+			type = cw_facility
+			level = startup_history_facility_level
+			instant_build = yes
+			province = { id = 11723 }
+		}
+	}
+}
+
+chaosx_add_startup_biowarfare_facility_344 = {
+	if = {
+		limit = { biowarfare_facility < 1 }
+		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
+		add_building_construction = {
+			type = biowarfare_facility
+			level = startup_history_facility_level
+			instant_build = yes
+			province = { id = 344 }
+		}
+	}
+}
+
+chaosx_add_startup_biowarfare_facility_1182 = {
+	if = {
+		limit = { biowarfare_facility < 1 }
+		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
+		add_building_construction = {
+			type = biowarfare_facility
+			level = startup_history_facility_level
+			instant_build = yes
+			province = { id = 1182 }
+		}
+	}
+}
+
+chaosx_add_startup_biowarfare_facility_3900 = {
+	if = {
+		limit = { biowarfare_facility < 1 }
+		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
+		add_building_construction = {
+			type = biowarfare_facility
+			level = startup_history_facility_level
+			instant_build = yes
+			province = { id = 3900 }
+		}
+	}
+}
+
+chaosx_add_startup_biowarfare_facility_6351 = {
+	if = {
+		limit = { biowarfare_facility < 1 }
+		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
+		add_building_construction = {
+			type = biowarfare_facility
+			level = startup_history_facility_level
+			instant_build = yes
+			province = { id = 6351 }
+		}
+	}
+}
+
+chaosx_add_startup_biowarfare_facility_10173 = {
+	if = {
+		limit = { biowarfare_facility < 1 }
+		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
+		add_building_construction = {
+			type = biowarfare_facility
+			level = startup_history_facility_level
+			instant_build = yes
+			province = { id = 10173 }
+		}
+	}
+}
+
+chaosx_add_startup_biowarfare_facility_10433 = {
+	if = {
+		limit = { biowarfare_facility < 1 }
+		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
+		add_building_construction = {
+			type = biowarfare_facility
+			level = startup_history_facility_level
+			instant_build = yes
+			province = { id = 10433 }
+		}
+	}
+}
+
+chaosx_add_startup_biowarfare_facility_11888 = {
+	if = {
+		limit = { biowarfare_facility < 1 }
+		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
+		add_building_construction = {
+			type = biowarfare_facility
+			level = startup_history_facility_level
+			instant_build = yes
+			province = { id = 11888 }
+		}
+	}
+}
+
+chaosx_add_startup_biowarfare_facility_12233 = {
+	if = {
+		limit = { biowarfare_facility < 1 }
+		set_temp_variable = { var = startup_history_facility_level value = constant:startup_history_facility.starting_level }
+		add_building_construction = {
+			type = biowarfare_facility
+			level = startup_history_facility_level
+			instant_build = yes
+			province = { id = 12233 }
+		}
+	}
+}
