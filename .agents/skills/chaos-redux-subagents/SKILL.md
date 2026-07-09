@@ -47,7 +47,7 @@ Use `chaosx_icon_artist` for focus icons, idea icons, national spirit icons, off
 
 Use `chaosx_super_event_text_researcher` for super-event main quotes, exact wording checks, attribution confidence, source comparison, button text, cultural remarks, slogans, allusions, and short references.
 
-Use `chaosx_super_event_audio_researcher` for licensed or public domain audio research, source verification, download, `.ogg` conversion, and audio handoff notes.
+Use `chaosx_super_event_audio_researcher` for licensed or public domain audio research, source verification, download, single-file `.ogg` conversion, and audio handoff notes. Super-event audio handoffs should preserve one final `.ogg` for both music and sound wrappers, not a duplicate `.wav`.
 
 Use `chaosx_focus_tree_auditor` for focus tree audits and active small patches covering branch depth, route coverage, icons, localisation, rewards, prerequisites, mutual exclusions, AI, focus-formable links, and simplification.
 
@@ -233,7 +233,7 @@ Use separate research agents when the super-event package has enough work to jus
 
 Use `chaosx_super_event_text_researcher` for quotes, exact wording, attribution confidence, button text, cultural remarks, slogans, allusions, and short references.
 
-Use `chaosx_super_event_audio_researcher` for audio research, license verification, download, `.ogg` conversion, and audio handoff notes.
+Use `chaosx_super_event_audio_researcher` for audio research, license verification, download, single-file `.ogg` conversion, and audio handoff notes. The handoff should identify the final `.ogg` as the shared source for both music-output and sound-output definitions and should not create a duplicate sound-channel `.wav`.
 
 Use `chaosx_asset_source_researcher` or `chaosx_generated_event_art` for image work according to the source mode required by `chaos-redux-event-assets`.
 
