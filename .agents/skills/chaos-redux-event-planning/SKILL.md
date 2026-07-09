@@ -771,7 +771,7 @@ For every new country, and every existing country that is meaningfully changed, 
 - tag or placeholder tag, with a note that final tags must avoid conflicts
 - spawn, release, transformation, or takeover conditions
 - core territory, claimed territory, disputed territory, and fallback territory
-- history file needs for new custom tags and additive startup setup for existing countries
+- history file needs for new custom tags, generated startup scientists for existing countries when characters are needed, and additive startup setup for existing countries
 - public country name and cosmetic names, following the country naming rules below
 - ideology-specific names
 - focus-tree route names
@@ -1569,7 +1569,7 @@ The implementation handoff must tell the coding agent to:
 - implement the mapped cost and sacrifice model, avoiding boring political power or command power only decisions when the spec calls for XP, equipment, manpower, stability, war support, fuel, supply, units, local support, foreign access, or other concrete costs
 - implement focus trees according to the path design, with coherent non-linear branches, route locks, side paths, convergence nodes, hidden routes, focus filter tags or search categories, varied reward types, proper icons, final localisation written from the spec direction, AI behavior, event integration, and no filler shortcuts
 - create the final exact focus layout and connections cleanly in implementation while preserving the spec's path logic
-- implement every country package from the spec, including tag, custom-tag history or existing-country startup grants, names, cosmetic names, ideology names, ruling parties, leaders, leader changes, flags, route-specific identity changes, starting divisions, dynamic unit packages, force-growth decisions and focuses, volunteer routes, decisions, ideas, AI behavior, localisation, assets, and docs
+- implement every country package from the spec, including tag, custom-tag history, generated startup scientists when required, existing-country startup grants, names, cosmetic names, ideology names, ruling parties, leaders, leader changes, flags, route-specific identity changes, starting divisions, dynamic unit packages, force-growth decisions and focuses, volunteer routes, decisions, ideas, AI behavior, localisation, assets, and docs
 - implement the full AI strategy matrix from the spec, including route preferences, foreign influence behavior, focus choices, unit-raising choices, decision choices, faction behavior, and high-chaos exceptions
 - follow `AGENTS.md`
 - follow `chaos-redux-events`

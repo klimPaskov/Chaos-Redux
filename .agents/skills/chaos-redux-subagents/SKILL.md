@@ -53,7 +53,7 @@ Use `chaosx_focus_tree_auditor` for focus tree audits and active small patches c
 
 Use `chaosx_decision_mission_auditor` for decision and mission audits and active small patches covering category lifecycle, objective quality, costs, tooltips, scripted GUI decision hooks, AI behavior, cleanup, balance, and exploit risk.
 
-Use `chaosx_country_package_auditor` for country package audits and active small patches covering tags, custom-tag history, existing-country startup grants, states, leaders, portraits, flags, parties, focus loading, ideas, advisors, units, technologies, claims, cores, localisation, AI, formables, and playable setup.
+Use `chaosx_country_package_auditor` for country package audits and active small patches covering tags, custom-tag history, generated startup scientists, existing-country startup grants, states, leaders, portraits, flags, parties, focus loading, ideas, advisors, units, technologies, claims, cores, localisation, AI, formables, and playable setup.
 
 Use `chaosx_localisation_auditor` for localisation and scripted localisation audits and active small patches covering missing keys, duplicate keys, encoding, tooltip quality, broken dynamic text, namespace consistency, dynamic cost text, and cross-surface text mismatch.
 
