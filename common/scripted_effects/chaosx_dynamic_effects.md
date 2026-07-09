@@ -40,7 +40,7 @@ Outputs and side effects:
 - Reads stockpile amounts, facility level, breakthrough values, and delayed-event timing from `common/script_constants/startup_history_constants.txt`.
 - Adds facilities only when the expected starting owner still owns the state and the state lacks that facility type.
 
-Do not use this effect for new custom country packages that require real history files before startup. Do not put `recruit_character` here; the engine only accepts it in history files. Existing-country startup scientists should be created with `generate_character` or `generate_scientist_character` in the relevant startup grant effect.
+Do not use this effect for new custom country packages that require real history files before startup. Do not put `recruit_character` here; the engine only accepts it in history files. Named existing-country startup scientists should be created with `generate_character`, then given their scientist role with `add_scientist_role` in the relevant startup grant effect. Use `generate_scientist_character` only for intentionally generic/random scientists.
 
 Example:
 
