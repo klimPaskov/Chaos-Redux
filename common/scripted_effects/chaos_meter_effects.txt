@@ -82,6 +82,12 @@ initialize_chaos_meter_system = {
     clear_array = global.chaos_meter_history_view_has_actor_entries
     clear_array = global.chaos_meter_condemnation_view_country_entries
     clear_array = global.chaos_meter_condemnation_view_value_entries
+    clear_array = global.chaos_meter_condemnation_view_tier_entries
+    clear_array = global.chaos_meter_condemnation_view_recent_gain_entries
+    clear_array = global.chaos_meter_condemnation_view_main_source_entries
+    clear_array = global.chaos_meter_condemnation_view_active_sanction_entries
+    clear_array = global.chaos_meter_condemnation_view_highest_sanction_tier_entries
+    clear_array = global.chaos_meter_condemnation_view_compliance_entries
     clear_array = global.chaos_meter_deaths_sequence_entries
     clear_array = global.chaos_meter_deaths_date_entries
     clear_array = global.chaos_meter_deaths_change_entries
@@ -985,109 +991,347 @@ chaos_meter_add_country_deaths_cause_total = {
 	}
 }
 
+rebuild_chaos_meter_condemnation_detail_snapshot = {
+	# UI-only snapshot. THIS is the selected condemned country and ROOT is the
+	# player viewing the Chaos Meter. Existing final UI assets are sufficient.
+	set_variable = { ROOT.chaos_meter_condemnation_selected_country = THIS }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_total = condemnation_total }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_tier = condemnation_tier }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_peak_tier = condemnation_peak_tier }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_next_threshold = condemnation_next_threshold }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_chemical = condemnation_chemical }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_biological = condemnation_biological }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_nuclear = condemnation_nuclear }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_atrocity = condemnation_atrocity }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_coverup = condemnation_coverup }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_repeat_use = condemnation_repeat_use }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_recent_gain = condemnation_recent_gain }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_last_source_type = condemnation_last_source_type }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_last_source_context = condemnation_last_source_context }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_last_source_severity = condemnation_last_source_severity }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_last_source_gain = condemnation_last_source_gain }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_last_source_date = 0 }
+	if = {
+		limit = { has_variable = condemnation_last_gain_date }
+		set_variable = { ROOT.chaos_meter_condemnation_detail_last_source_date = condemnation_last_gain_date }
+	}
+	set_variable = { ROOT.chaos_meter_condemnation_detail_recent_count = 0 }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_recent_1_type = constant:condemnation_source.mixed }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_recent_1_context = constant:condemnation_context.unspecified }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_recent_1_gain = 0 }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_recent_1_date = 0 }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_recent_2_type = constant:condemnation_source.mixed }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_recent_2_context = constant:condemnation_context.unspecified }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_recent_2_gain = 0 }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_recent_2_date = 0 }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_recent_3_type = constant:condemnation_source.mixed }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_recent_3_context = constant:condemnation_context.unspecified }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_recent_3_gain = 0 }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_recent_3_date = 0 }
+	if = {
+		limit = { check_variable = { condemnation_source_log_types^num > 0 } }
+		set_variable = { ROOT.chaos_meter_condemnation_detail_recent_count = 1 }
+		set_variable = { ROOT.chaos_meter_condemnation_detail_recent_1_type = condemnation_source_log_types^0 }
+		set_variable = { ROOT.chaos_meter_condemnation_detail_recent_1_context = condemnation_source_log_contexts^0 }
+		set_variable = { ROOT.chaos_meter_condemnation_detail_recent_1_gain = condemnation_source_log_gains^0 }
+		set_variable = { ROOT.chaos_meter_condemnation_detail_recent_1_date = condemnation_source_log_dates^0 }
+	}
+	if = {
+		limit = { check_variable = { condemnation_source_log_types^num > 1 } }
+		set_variable = { ROOT.chaos_meter_condemnation_detail_recent_count = 2 }
+		set_variable = { ROOT.chaos_meter_condemnation_detail_recent_2_type = condemnation_source_log_types^1 }
+		set_variable = { ROOT.chaos_meter_condemnation_detail_recent_2_context = condemnation_source_log_contexts^1 }
+		set_variable = { ROOT.chaos_meter_condemnation_detail_recent_2_gain = condemnation_source_log_gains^1 }
+		set_variable = { ROOT.chaos_meter_condemnation_detail_recent_2_date = condemnation_source_log_dates^1 }
+	}
+	if = {
+		limit = { check_variable = { condemnation_source_log_types^num > 2 } }
+		set_variable = { ROOT.chaos_meter_condemnation_detail_recent_count = 3 }
+		set_variable = { ROOT.chaos_meter_condemnation_detail_recent_3_type = condemnation_source_log_types^2 }
+		set_variable = { ROOT.chaos_meter_condemnation_detail_recent_3_context = condemnation_source_log_contexts^2 }
+		set_variable = { ROOT.chaos_meter_condemnation_detail_recent_3_gain = condemnation_source_log_gains^2 }
+		set_variable = { ROOT.chaos_meter_condemnation_detail_recent_3_date = condemnation_source_log_dates^2 }
+	}
+	set_variable = { ROOT.chaos_meter_condemnation_detail_active_sanctions = condemnation_active_sanctions }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_highest_sanction_tier = condemnation_highest_sanction_tier }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_native_embargo_count = condemnation_native_embargo_count }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_arms_count = condemnation_arms_participant_count }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_strategic_count = condemnation_strategic_participant_count }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_total_count = condemnation_total_participant_count }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_pariah_count = condemnation_pariah_participant_count }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_carveout_count = condemnation_carveout_count }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_quiet_breach_count = condemnation_quiet_breach_count }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_shield_count = condemnation_shield_count }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_tight_enforcement_count = condemnation_tight_enforcement_count }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_likely_count = condemnation_likely_next_participant_count }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_candidate_industry_weight = condemnation_candidate_industry_weight }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_candidate_trade_weight = condemnation_candidate_trade_weight }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_weighted_industry_share = condemnation_weighted_industry_share }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_weighted_trade_share = condemnation_weighted_trade_share }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_average_fatigue = condemnation_average_participant_fatigue }
+	set_temp_variable = { condemnation_detail_target_id = id }
+	set_temp_variable = { condemnation_detail_earliest_review_date = 0 }
+	for_each_scope_loop = {
+		array = condemnation_sanction_participants
+		limit = { exists = yes }
+		set_temp_variable = { condemnation_detail_current_review_date = 0 }
+		meta_effect = {
+			text = {
+				if = {
+					limit = { has_variable = condemnation_pair_[TARGET_ID]_expires_date }
+					set_temp_variable = { condemnation_detail_current_review_date = condemnation_pair_[TARGET_ID]_expires_date }
+				}
+			}
+			TARGET_ID = "[?condemnation_detail_target_id|.0]"
+		}
+		if = {
+			limit = {
+				check_variable = { condemnation_detail_current_review_date > 0 }
+				OR = {
+					check_variable = { condemnation_detail_earliest_review_date < 1 }
+					check_variable = {
+						var = condemnation_detail_current_review_date
+						value = condemnation_detail_earliest_review_date
+						compare = less_than
+					}
+				}
+			}
+			set_temp_variable = { condemnation_detail_earliest_review_date = condemnation_detail_current_review_date }
+		}
+	}
+	set_variable = { ROOT.chaos_meter_condemnation_detail_next_review_date = condemnation_detail_earliest_review_date }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_compliance_state = condemnation_compliance_state }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_decay_credit = condemnation_decay_credit }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_evasion_pressure = condemnation_evasion_pressure }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_black_market_exposure = condemnation_black_market_exposure }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_import_vulnerability = condemnation_import_vulnerability }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_fuel_vulnerability = condemnation_fuel_vulnerability }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_isolation_severity = condemnation_weighted_isolation_severity }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_penalty_arms_efficiency = condemnation_penalty_arms_efficiency }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_penalty_license_cost = condemnation_penalty_license_cost }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_penalty_censure_trade_opinion = condemnation_penalty_censure_trade_opinion }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_penalty_censure_license_cost = condemnation_penalty_censure_license_cost }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_penalty_censure_research = condemnation_penalty_censure_research }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_penalty_strategic_factory = condemnation_penalty_strategic_factory }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_penalty_strategic_dockyard = condemnation_penalty_strategic_dockyard }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_penalty_strategic_fuel = condemnation_penalty_strategic_fuel }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_penalty_strategic_consumer_goods = condemnation_penalty_strategic_consumer_goods }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_penalty_resource_projects = condemnation_penalty_resource_projects }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_penalty_isolation_factory = condemnation_penalty_isolation_factory }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_penalty_isolation_research = condemnation_penalty_isolation_research }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_penalty_isolation_consumer_goods = condemnation_penalty_isolation_consumer_goods }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_penalty_trade_opinion = condemnation_penalty_trade_opinion }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_penalty_enemy_detection = condemnation_penalty_enemy_detection }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_penalty_resistance = condemnation_penalty_resistance }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_penalty_pariah_stability = condemnation_penalty_pariah_stability }
+
+	set_variable = { ROOT.chaos_meter_condemnation_detail_likely_1 = 0 }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_likely_2 = 0 }
+	set_variable = { ROOT.chaos_meter_condemnation_detail_likely_3 = 0 }
+	if = {
+		limit = { check_variable = { condemnation_likely_participants^num > 0 } }
+		set_variable = { ROOT.chaos_meter_condemnation_detail_likely_1 = condemnation_likely_participants^0 }
+	}
+	if = {
+		limit = { check_variable = { condemnation_likely_participants^num > 1 } }
+		set_variable = { ROOT.chaos_meter_condemnation_detail_likely_2 = condemnation_likely_participants^1 }
+	}
+	if = {
+		limit = { check_variable = { condemnation_likely_participants^num > 2 } }
+		set_variable = { ROOT.chaos_meter_condemnation_detail_likely_3 = condemnation_likely_participants^2 }
+	}
+
+	ROOT = {
+		clr_country_flag = chaos_meter_condemnation_detail_decay_blocked
+		clr_country_flag = chaos_meter_condemnation_detail_decay_accelerated
+		clr_country_flag = chaos_meter_condemnation_detail_evasion_visible
+	}
+	if = {
+		limit = { condemnation_decay_blocked = yes }
+		ROOT = { set_country_flag = chaos_meter_condemnation_detail_decay_blocked }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { condemnation_decay_credit > 0 }
+				condemnation_has_compliance_path = yes
+			}
+		}
+		ROOT = { set_country_flag = chaos_meter_condemnation_detail_decay_accelerated }
+	}
+	if = {
+		limit = {
+			OR = {
+				tag = ROOT
+				has_country_flag = condemnation_evasion_exposed
+			}
+		}
+		ROOT = { set_country_flag = chaos_meter_condemnation_detail_evasion_visible }
+	}
+}
+
+open_chaos_meter_condemnation_details = {
+	rebuild_chaos_meter_condemnation_detail_snapshot = yes
+	ROOT = { set_country_flag = chaos_meter_condemnation_details_open }
+}
+
+close_chaos_meter_condemnation_details = {
+	clr_country_flag = chaos_meter_condemnation_details_open
+	clr_country_flag = chaos_meter_condemnation_detail_decay_blocked
+	clr_country_flag = chaos_meter_condemnation_detail_decay_accelerated
+	clr_country_flag = chaos_meter_condemnation_detail_evasion_visible
+	set_variable = { chaos_meter_condemnation_selected_country = 0 }
+	set_variable = { chaos_meter_condemnation_detail_likely_1 = 0 }
+	set_variable = { chaos_meter_condemnation_detail_likely_2 = 0 }
+	set_variable = { chaos_meter_condemnation_detail_likely_3 = 0 }
+	set_variable = { chaos_meter_condemnation_detail_next_review_date = 0 }
+}
+
 rebuild_chaos_meter_condemnation_view = {
-    clear_array = global.chaos_meter_condemnation_view_country_entries
-    clear_array = global.chaos_meter_condemnation_view_value_entries
-    clear_array = temp_chaos_meter_condemnation_countries
+	clr_global_flag = chaos_meter_condemnation_view_dirty
+	clear_array = global.chaos_meter_condemnation_view_country_entries
+	clear_array = global.chaos_meter_condemnation_view_value_entries
+	clear_array = global.chaos_meter_condemnation_view_tier_entries
+	clear_array = global.chaos_meter_condemnation_view_recent_gain_entries
+	clear_array = global.chaos_meter_condemnation_view_main_source_entries
+	clear_array = global.chaos_meter_condemnation_view_active_sanction_entries
+	clear_array = global.chaos_meter_condemnation_view_highest_sanction_tier_entries
+	clear_array = global.chaos_meter_condemnation_view_compliance_entries
+	clear_temp_array = temp_chaos_meter_condemnation_countries
 
-    every_country = {
-        limit = {
-            has_variable = chem_warfare_condemnation
-            check_variable = { chem_warfare_condemnation > 0 }
-        }
-        ROOT = {
-            add_to_array = {
-                array = temp_chaos_meter_condemnation_countries
-                value = PREV
-            }
-        }
-    }
+	# The shared target registry prevents a world-wide country scan and the
+	# public total avoids exposing hidden evidence in the Condemnation tab.
+	for_each_scope_loop = {
+		array = global.condemnation_targets
+		if = {
+			limit = {
+				exists = yes
+				has_variable = condemnation_total
+				check_variable = { condemnation_total > constant:condemnation_decay.minimum_total }
+			}
+			add_to_temp_array = { temp_chaos_meter_condemnation_countries = THIS }
+		}
+	}
 
-    while_loop_effect = {
-        limit = { check_variable = { temp_chaos_meter_condemnation_countries^num > 0 } }
+	while_loop_effect = {
+		limit = { check_variable = { temp_chaos_meter_condemnation_countries^num > 0 } }
 
-        set_temp_variable = { condemnation_best_country = temp_chaos_meter_condemnation_countries^0 }
-        set_temp_variable = { condemnation_best_value = 0 }
-        var:condemnation_best_country = {
-            if = {
-                limit = { has_variable = chem_warfare_condemnation }
-                set_temp_variable = { condemnation_best_value = chem_warfare_condemnation }
-            }
-        }
+		set_temp_variable = { condemnation_best_country = temp_chaos_meter_condemnation_countries^0 }
+		var:condemnation_best_country = { set_temp_variable = { condemnation_best_value = condemnation_total } }
 
-        set_temp_variable = { condemnation_country_scan_index = 0 }
-        while_loop_effect = {
-            limit = { check_variable = { condemnation_country_scan_index < temp_chaos_meter_condemnation_countries^num } }
-            set_temp_variable = { condemnation_candidate_country = temp_chaos_meter_condemnation_countries^condemnation_country_scan_index }
-            set_temp_variable = { condemnation_candidate_value = 0 }
-            var:condemnation_candidate_country = {
-                if = {
-                    limit = { has_variable = chem_warfare_condemnation }
-                    set_temp_variable = { condemnation_candidate_value = chem_warfare_condemnation }
-                }
-            }
+		set_temp_variable = { condemnation_country_scan_index = 0 }
+		while_loop_effect = {
+			limit = { check_variable = { condemnation_country_scan_index < temp_chaos_meter_condemnation_countries^num } }
+			set_temp_variable = { condemnation_candidate_country = temp_chaos_meter_condemnation_countries^condemnation_country_scan_index }
+			var:condemnation_candidate_country = { set_temp_variable = { condemnation_candidate_value = condemnation_total } }
 
-            if = {
-                limit = {
-                    has_country_flag = chaos_meter_condemnation_sort_descending
-                    check_variable = {
-                        var = condemnation_candidate_value
-                        value = condemnation_best_value
-                        compare = greater_than
-                    }
-                }
-                set_temp_variable = { condemnation_best_country = condemnation_candidate_country }
-                set_temp_variable = { condemnation_best_value = condemnation_candidate_value }
-            }
-            else_if = {
-                limit = {
-                    NOT = { has_country_flag = chaos_meter_condemnation_sort_descending }
-                    check_variable = {
-                        var = condemnation_candidate_value
-                        value = condemnation_best_value
-                        compare = less_than
-                    }
-                }
-                set_temp_variable = { condemnation_best_country = condemnation_candidate_country }
-                set_temp_variable = { condemnation_best_value = condemnation_candidate_value }
-            }
-            else_if = {
-                limit = {
-                    check_variable = {
-                        var = condemnation_candidate_value
-                        value = condemnation_best_value
-                        compare = equals
-                    }
-                    check_variable = {
-                        var = condemnation_candidate_country
-                        value = condemnation_best_country
-                        compare = less_than
-                    }
-                }
-                set_temp_variable = { condemnation_best_country = condemnation_candidate_country }
-                set_temp_variable = { condemnation_best_value = condemnation_candidate_value }
-            }
+			if = {
+				limit = {
+					has_country_flag = chaos_meter_condemnation_sort_descending
+					check_variable = {
+						var = condemnation_candidate_value
+						value = condemnation_best_value
+						compare = greater_than
+					}
+				}
+				set_temp_variable = { condemnation_best_country = condemnation_candidate_country }
+				set_temp_variable = { condemnation_best_value = condemnation_candidate_value }
+			}
+			else_if = {
+				limit = {
+					NOT = { has_country_flag = chaos_meter_condemnation_sort_descending }
+					check_variable = {
+						var = condemnation_candidate_value
+						value = condemnation_best_value
+						compare = less_than
+					}
+				}
+				set_temp_variable = { condemnation_best_country = condemnation_candidate_country }
+				set_temp_variable = { condemnation_best_value = condemnation_candidate_value }
+			}
+			else_if = {
+				limit = {
+					check_variable = {
+						var = condemnation_candidate_value
+						value = condemnation_best_value
+						compare = equals
+					}
+					check_variable = {
+						var = condemnation_candidate_country
+						value = condemnation_best_country
+						compare = less_than
+					}
+				}
+				set_temp_variable = { condemnation_best_country = condemnation_candidate_country }
+				set_temp_variable = { condemnation_best_value = condemnation_candidate_value }
+			}
 
-            add_to_temp_variable = { condemnation_country_scan_index = 1 }
-        }
+			add_to_temp_variable = { condemnation_country_scan_index = 1 }
+		}
 
-        add_to_array = {
-            array = global.chaos_meter_condemnation_view_country_entries
-            value = condemnation_best_country
-        }
-        add_to_array = {
-            array = global.chaos_meter_condemnation_view_value_entries
-            value = condemnation_best_value
-        }
-        remove_from_array = {
-            array = temp_chaos_meter_condemnation_countries
-            value = condemnation_best_country
-        }
-    }
+		var:condemnation_best_country = {
+			set_temp_variable = { condemnation_best_tier = condemnation_tier }
+			set_temp_variable = { condemnation_best_recent_gain = condemnation_recent_gain }
+			set_temp_variable = { condemnation_best_active_sanctions = condemnation_active_sanctions }
+			set_temp_variable = { condemnation_best_highest_sanction_tier = condemnation_highest_sanction_tier }
+			set_temp_variable = { condemnation_best_compliance_state = condemnation_compliance_state }
+			set_temp_variable = { condemnation_best_main_source = constant:condemnation_source.chemical }
+			set_temp_variable = { condemnation_best_main_source_value = condemnation_chemical }
+			if = {
+				limit = { check_variable = { var = condemnation_biological value = condemnation_best_main_source_value compare = greater_than } }
+				set_temp_variable = { condemnation_best_main_source = constant:condemnation_source.biological }
+				set_temp_variable = { condemnation_best_main_source_value = condemnation_biological }
+			}
+			if = {
+				limit = { check_variable = { var = condemnation_nuclear value = condemnation_best_main_source_value compare = greater_than } }
+				set_temp_variable = { condemnation_best_main_source = constant:condemnation_source.nuclear }
+				set_temp_variable = { condemnation_best_main_source_value = condemnation_nuclear }
+			}
+			if = {
+				limit = { check_variable = { var = condemnation_atrocity value = condemnation_best_main_source_value compare = greater_than } }
+				set_temp_variable = { condemnation_best_main_source = constant:condemnation_source.atrocity }
+				set_temp_variable = { condemnation_best_main_source_value = condemnation_atrocity }
+			}
+			if = {
+				limit = { check_variable = { var = condemnation_coverup value = condemnation_best_main_source_value compare = greater_than } }
+				set_temp_variable = { condemnation_best_main_source = constant:condemnation_source.coverup }
+				set_temp_variable = { condemnation_best_main_source_value = condemnation_coverup }
+			}
+			if = {
+				limit = { check_variable = { var = condemnation_repeat_use value = condemnation_best_main_source_value compare = greater_than } }
+				set_temp_variable = { condemnation_best_main_source = constant:condemnation_source.mixed }
+			}
+		}
+
+		add_to_array = { array = global.chaos_meter_condemnation_view_country_entries value = condemnation_best_country }
+		add_to_array = { array = global.chaos_meter_condemnation_view_value_entries value = condemnation_best_value }
+		add_to_array = { array = global.chaos_meter_condemnation_view_tier_entries value = condemnation_best_tier }
+		add_to_array = { array = global.chaos_meter_condemnation_view_recent_gain_entries value = condemnation_best_recent_gain }
+		add_to_array = { array = global.chaos_meter_condemnation_view_main_source_entries value = condemnation_best_main_source }
+		add_to_array = { array = global.chaos_meter_condemnation_view_active_sanction_entries value = condemnation_best_active_sanctions }
+		add_to_array = { array = global.chaos_meter_condemnation_view_highest_sanction_tier_entries value = condemnation_best_highest_sanction_tier }
+		add_to_array = { array = global.chaos_meter_condemnation_view_compliance_entries value = condemnation_best_compliance_state }
+		remove_from_temp_array = { temp_chaos_meter_condemnation_countries = condemnation_best_country }
+	}
+
+	if = {
+		limit = {
+			has_country_flag = chaos_meter_condemnation_details_open
+			condemnation_selected_country_valid = yes
+			var:chaos_meter_condemnation_selected_country = { condemnation_has_public_record = yes }
+		}
+		var:chaos_meter_condemnation_selected_country = { rebuild_chaos_meter_condemnation_detail_snapshot = yes }
+	}
+	else_if = {
+		limit = { has_country_flag = chaos_meter_condemnation_details_open }
+		close_chaos_meter_condemnation_details = yes
+	}
 }
 
 refresh_chaos_meter_condemnation_view_if_open = {
-    rebuild_chaos_meter_condemnation_view = yes
+	# Background country pulses must not rebuild shared list arrays in an AI
+	# scope. Player tab/sort interactions perform the actual rebuild.
+	set_global_flag = chaos_meter_condemnation_view_dirty
 }
 
 rebuild_chaos_meter_deaths_view = {
@@ -2723,65 +2967,83 @@ chaos_meter_apply_nuclear_fallout_to_state = {
 }
 
 chaos_meter_register_nuclear_condemnation = {
-    if = {
-        limit = {
-            tag = USA
-            FROM = {
-                OR = {
-                    OWNER = { tag = JAP }
-                    CONTROLLER = { tag = JAP }
-                    OWNER = { original_tag = JAP }
-                    CONTROLLER = { original_tag = JAP }
-                }
-            }
-        }
-    }
-    else = {
-        set_temp_variable = { chaos_nuke_condemnation_add = constant:chaos_meter_nuclear_fallout.condemnation_base }
+        set_temp_variable = { chaos_nuke_condemnation_add = constant:condemnation_source_default_gain.nuclear_low_population }
         set_temp_variable = { chaos_nuke_condemnation_pop_millions = 0 }
         set_temp_variable = { chaos_nuke_condemnation_density_mult = 1 }
 
         FROM = {
             set_temp_variable = { chaos_nuke_condemnation_pop_millions = state_population_k }
-            divide_temp_variable = { chaos_nuke_condemnation_pop_millions = 1000 }
+            divide_temp_variable = { chaos_nuke_condemnation_pop_millions = constant:condemnation_source_default_gain.nuclear_population_divisor }
             set_temp_variable = { chaos_state_deaths_mult = 1 }
             chaos_meter_apply_state_death_density_multiplier = yes
             set_temp_variable = { chaos_nuke_condemnation_density_mult = chaos_state_deaths_mult }
 
             if = {
-                limit = { check_variable = { state_population_k > 20000 } }
-                multiply_temp_variable = { chaos_nuke_condemnation_density_mult = constant:chaos_meter_nuclear_fallout.condemnation_populous_20m }
+                limit = { check_variable = { state_population_k > constant:condemnation_source_default_gain.nuclear_populous_20m_threshold } }
+                multiply_temp_variable = { chaos_nuke_condemnation_density_mult = constant:condemnation_source_default_gain.nuclear_populous_20m_multiplier }
             }
             else_if = {
-                limit = { check_variable = { state_population_k > 10000 } }
-                multiply_temp_variable = { chaos_nuke_condemnation_density_mult = constant:chaos_meter_nuclear_fallout.condemnation_populous_10m }
+                limit = { check_variable = { state_population_k > constant:condemnation_source_default_gain.nuclear_populous_10m_threshold } }
+                multiply_temp_variable = { chaos_nuke_condemnation_density_mult = constant:condemnation_source_default_gain.nuclear_populous_10m_multiplier }
             }
             else_if = {
-                limit = { check_variable = { state_population_k > 5000 } }
-                multiply_temp_variable = { chaos_nuke_condemnation_density_mult = constant:chaos_meter_nuclear_fallout.condemnation_populous_5m }
+                limit = { check_variable = { state_population_k > constant:condemnation_source_default_gain.nuclear_populous_5m_threshold } }
+                multiply_temp_variable = { chaos_nuke_condemnation_density_mult = constant:condemnation_source_default_gain.nuclear_populous_5m_multiplier }
             }
+			if = {
+				limit = { is_capital = yes }
+				add_to_temp_variable = { chaos_nuke_condemnation_add = constant:condemnation_source_default_gain.nuclear_capital_bonus }
+			}
+			if = {
+				limit = { industrial_complex > constant:condemnation_source_default_gain.nuclear_major_industry_factories }
+				add_to_temp_variable = { chaos_nuke_condemnation_add = constant:condemnation_source_default_gain.nuclear_major_industry_bonus }
+			}
+			CONTROLLER = { set_temp_variable = { condemnation_victim_country = THIS } }
         }
 
-        multiply_temp_variable = { chaos_nuke_condemnation_pop_millions = constant:chaos_meter_nuclear_fallout.condemnation_per_million_population }
+        multiply_temp_variable = { chaos_nuke_condemnation_pop_millions = constant:condemnation_source_default_gain.nuclear_per_million_population }
         add_to_temp_variable = { chaos_nuke_condemnation_add = chaos_nuke_condemnation_pop_millions }
         multiply_temp_variable = { chaos_nuke_condemnation_add = chaos_nuke_condemnation_density_mult }
+		if = {
+			limit = {
+				var:condemnation_victim_country = { exists = yes }
+				NOT = { has_war_with = var:condemnation_victim_country }
+			}
+			multiply_temp_variable = { chaos_nuke_condemnation_add = constant:condemnation_source_default_gain.nuclear_non_belligerent_multiplier }
+		}
+		if = {
+			limit = {
+				var:condemnation_victim_country = { exists = yes }
+				OR = {
+					is_in_faction_with = var:condemnation_victim_country
+					is_subject_of = var:condemnation_victim_country
+					var:condemnation_victim_country = { is_subject_of = PREV }
+				}
+			}
+			multiply_temp_variable = { chaos_nuke_condemnation_add = constant:condemnation_source_default_gain.nuclear_ally_or_subject_multiplier }
+		}
 
         if = {
             limit = { has_tech = thermonuclear_bombs }
-            multiply_temp_variable = { chaos_nuke_condemnation_add = constant:chaos_meter_nuclear_fallout.condemnation_thermonuclear_mult }
+            multiply_temp_variable = { chaos_nuke_condemnation_add = constant:condemnation_source_default_gain.thermonuclear_multiplier }
         }
 
         if = {
             limit = { check_variable = { chaos_nuke_condemnation_add > 0 } }
+            set_temp_variable = { condemnation_source_type = constant:condemnation_source.nuclear }
+            set_temp_variable = { condemnation_base_gain = chaos_nuke_condemnation_add }
+            set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+            set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.major }
+            set_temp_variable = { condemnation_context_type = constant:condemnation_context.nuclear_strike }
             if = {
-                limit = { NOT = { has_variable = chem_warfare_condemnation } }
-                set_variable = { chem_warfare_condemnation = 0 }
+                limit = { has_tech = thermonuclear_bombs }
+                set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.doomsday }
+                set_temp_variable = { condemnation_context_type = constant:condemnation_context.thermonuclear_strike }
             }
-            add_to_variable = { chem_warfare_condemnation = chaos_nuke_condemnation_add }
-            chem_apply_condemnation_diplomatic_consequences = yes
-            refresh_chaos_meter_condemnation_view_if_open = yes
+            set_temp_variable = { condemnation_civilian_deaths = chaos_nuke_civilian_deaths }
+            set_temp_variable = { condemnation_contamination_value = chaos_fallout_intensity_add }
+            condemnation_add_source = yes
         }
-    }
 }
 
 chaos_meter_apply_combat_civilian_deaths_to_state = {
@@ -4564,16 +4826,24 @@ air_cleanliness_treaty_monthly_update = {
             }
         }
 
-        every_country = {
-            limit = { NOT = { has_country_flag = air_cleanliness_treaty_member } }
-            every_other_country = {
-                limit = {
-                    has_country_flag = air_cleanliness_treaty_member
-                    NOT = { is_subject_of = PREV }
-                }
-                send_embargo = PREV
-            }
-        }
+		every_country = {
+			limit = { exists = yes }
+			set_temp_variable = { air_treaty_embargo_target = THIS }
+			every_other_country = {
+				limit = { exists = yes }
+				set_temp_variable = { condemnation_embargo_target = air_treaty_embargo_target }
+				set_temp_variable = { condemnation_embargo_source = constant:condemnation_embargo_source.air_cleanliness_treaty }
+				if = {
+					limit = {
+						has_country_flag = air_cleanliness_treaty_member
+						var:air_treaty_embargo_target = { NOT = { has_country_flag = air_cleanliness_treaty_member } }
+						NOT = { is_subject_of = var:air_treaty_embargo_target }
+					}
+					condemnation_register_native_embargo_source = yes
+				}
+				else = { condemnation_unregister_native_embargo_source = yes }
+			}
+		}
 
         air_cleanliness_treaty_try_cleaning_day = yes
     }
@@ -4590,17 +4860,19 @@ air_cleanliness_treaty_on_unconventional_use = {
         clr_country_flag = air_cleanliness_treaty_member
         set_country_flag = air_cleanliness_treaty_banned
 
-        every_other_country = {
-            limit = {
-                exists = yes
-                NOT = { is_subject_of = PREV }
+		every_other_country = {
+			limit = {
+				exists = yes
+				NOT = { is_subject_of = PREV }
             }
             add_opinion_modifier = {
                 target = PREV
                 modifier = air_cleanliness_treaty_violator
             }
-            send_embargo = PREV
-        }
+			set_temp_variable = { condemnation_embargo_target = PREV }
+			set_temp_variable = { condemnation_embargo_source = constant:condemnation_embargo_source.air_cleanliness_treaty }
+			condemnation_register_native_embargo_source = yes
+		}
 
         news_event = { id = chaosx_contamination.8 }
     }
@@ -5290,9 +5562,9 @@ chaos_meter_on_nuke_drop = {
     add_chaos_meter_value = yes
     log = "CHAOS METER: Nuclear use #[?global.chaos_meter_nuclear_uses|.0] by [THIS.GetName] on [FROM.GetName] ([?chaos_change|=] chaos)"
 
-    chaos_meter_register_nuclear_condemnation = yes
-
+    set_temp_variable = { chaos_nuke_civilian_deaths = 0 }
     FROM = {
+		set_temp_variable = { chaos_deaths_change = 0 }
         set_temp_variable = { chaos_state_deaths_percent = ROOT.chaos_nuke_state_deaths_percent }
         set_temp_variable = { chaos_state_deaths_mult = 1 }
         chaos_meter_apply_nuclear_state_death_environment_multiplier = yes
@@ -5301,8 +5573,11 @@ chaos_meter_on_nuke_drop = {
         set_temp_variable = { chaos_state_deaths_random_span = constant:chaos_meter_state_death_dynamic.nuclear_random_span }
         set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.nuclear_strike }
         chaos_meter_register_state_civilian_deaths_percent = yes
+        set_temp_variable = { chaos_nuke_civilian_deaths = chaos_deaths_change }
         chaos_meter_apply_nuclear_fallout_to_state = yes
     }
+
+    chaos_meter_register_nuclear_condemnation = yes
 
     if = {
         limit = {

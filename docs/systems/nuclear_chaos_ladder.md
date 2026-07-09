@@ -2,7 +2,7 @@
 
 ## What This Adds
 
-Nuclear and thermonuclear weapon use now adds direct chaos on a global diminishing ladder.
+Nuclear and thermonuclear weapon use adds direct chaos on a global diminishing ladder.
 
 The first nuclear or thermonuclear use adds `+10` chaos, the second adds `+5`, the third adds `+3`, the fourth adds `+2`, and the fifth and every later use adds `+1`.
 
@@ -19,7 +19,7 @@ Both nuclear and thermonuclear strikes share the same counter. A campaign that u
 3. maps the current count to the ladder values in `common/script_constants/chaos_meter_constants.txt`,
 4. records the strike through `add_chaos_meter_value`,
 5. keeps the existing nuclear or thermonuclear history reason,
-6. applies the existing deaths, fallout, condemnation, and treaty effects.
+6. applies deaths and fallout, registers the nuclear source with the shared condemnation system, and notifies the Air Cleanliness Treaty use hook.
 
 The tuneable values live in `chaos_meter_delta.nuke`:
 
@@ -28,6 +28,14 @@ The tuneable values live in `chaos_meter_delta.nuke`:
 - `third = 3`
 - `fourth = 2`
 - `fifth_plus = 1`
+
+## Condemnation Integration
+
+The chaos ladder and condemnation gain are separate. Every strike records either `nuclear_strike` or `thermonuclear_strike` context in the public nuclear bucket.
+
+Nuclear condemnation tuning lives in `common/script_constants/condemnation_sanctions_constants.txt`. A normal strike starts at `55`, adds `0.55` per million people, applies shared state-density scaling, and then applies extra `1.15`, `1.35`, or `1.65` population-band multipliers above `5`, `10`, or `20` million people. A capital adds `35`, and a state with more than `8` industrial complexes adds `20`. Strikes against a non-belligerent or an ally or subject each apply `1.50`. Thermonuclear use multiplies that calculated base by `2.25`. Measured civilian deaths then add one point per `10,000` up to `100`, and fallout intensity adds `0.50` per point up to `50`. Major severity applies to a normal strike, while doomsday severity applies to the thermonuclear result.
+
+There is no country-pair exemption. The full source, tier, sanctions, and UI model is documented in `docs/systems/condemnation_sanctions.md`.
 
 ## Player-Facing References
 

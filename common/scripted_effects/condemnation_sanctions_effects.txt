@@ -1,0 +1,2386 @@
+# ============================================================================
+# CHAOS REDUX - CONDEMNATION SANCTIONS SCRIPTED EFFECTS
+# ============================================================================
+# Shared system for source-aware condemnation, tier transitions, sanction-pair
+# scoring, native embargo ownership, practical penalties, counterplay, decay,
+# and cleanup. All public condemnation gains must call condemnation_add_source.
+#
+# condemnation_add_source inputs (temporary variables on the condemned actor):
+# - condemnation_source_type: constant:condemnation_source.*
+# - condemnation_base_gain: positive pre-scaled source gain
+# - condemnation_visibility_type: constant:condemnation_visibility.*
+# - condemnation_severity_type: constant:condemnation_severity.*
+# - condemnation_civilian_deaths: optional raw death count
+# - condemnation_contamination_value: optional contamination pressure
+# - condemnation_victim_country: optional country scope pointer
+# - condemnation_context_type: optional constant:condemnation_context.*
+# ============================================================================
+
+condemnation_initialize_country = {
+	if = {
+		limit = { NOT = { has_variable = condemnation_total } }
+		set_variable = { condemnation_total = 0 }
+	}
+	if = { limit = { NOT = { has_variable = condemnation_tier } } set_variable = { condemnation_tier = constant:condemnation_tier.normal } }
+	if = { limit = { NOT = { has_variable = condemnation_peak_tier } } set_variable = { condemnation_peak_tier = constant:condemnation_tier.normal } }
+	if = { limit = { NOT = { has_variable = condemnation_chemical } } set_variable = { condemnation_chemical = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_biological } } set_variable = { condemnation_biological = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_nuclear } } set_variable = { condemnation_nuclear = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_atrocity } } set_variable = { condemnation_atrocity = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_coverup } } set_variable = { condemnation_coverup = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_repeat_use } } set_variable = { condemnation_repeat_use = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_hidden_chemical } } set_variable = { condemnation_hidden_chemical = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_hidden_biological } } set_variable = { condemnation_hidden_biological = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_hidden_nuclear } } set_variable = { condemnation_hidden_nuclear = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_hidden_atrocity } } set_variable = { condemnation_hidden_atrocity = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_hidden_coverup } } set_variable = { condemnation_hidden_coverup = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_hidden_total } } set_variable = { condemnation_hidden_total = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_recent_gain } } set_variable = { condemnation_recent_gain = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_decay_credit } } set_variable = { condemnation_decay_credit = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_sanction_pressure } } set_variable = { condemnation_sanction_pressure = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_evasion_pressure } } set_variable = { condemnation_evasion_pressure = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_active_sanctions } } set_variable = { condemnation_active_sanctions = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_black_market_exposure } } set_variable = { condemnation_black_market_exposure = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_compliance_state } } set_variable = { condemnation_compliance_state = constant:condemnation_compliance_state.none } }
+	if = { limit = { NOT = { has_variable = condemnation_participant_refresh_credit } } set_variable = { condemnation_participant_refresh_credit = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_enforcement_burden_total } } set_variable = { condemnation_enforcement_burden_total = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_sanction_fatigue } } set_variable = { condemnation_sanction_fatigue = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_active_pair_count } } set_variable = { condemnation_active_pair_count = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_candidate_industry_weight } } set_variable = { condemnation_candidate_industry_weight = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_candidate_trade_weight } } set_variable = { condemnation_candidate_trade_weight = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_recent_civilian_deaths } } set_variable = { condemnation_recent_civilian_deaths = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_contamination_pressure } } set_variable = { condemnation_contamination_pressure = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_compensation_convoy_requirement } } set_variable = { condemnation_compensation_convoy_requirement = constant:condemnation_cost.compensation_convoys_base } }
+	if = { limit = { NOT = { has_variable = condemnation_military_import_vulnerability } } set_variable = { condemnation_military_import_vulnerability = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_faction_shield_strength } } set_variable = { condemnation_faction_shield_strength = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_black_market_route_strength } } set_variable = { condemnation_black_market_route_strength = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_compliance_credibility } } set_variable = { condemnation_compliance_credibility = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_last_source_type } } set_variable = { condemnation_last_source_type = constant:condemnation_source.mixed } }
+	if = { limit = { NOT = { has_variable = condemnation_last_source_gain } } set_variable = { condemnation_last_source_gain = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_last_source_context } } set_variable = { condemnation_last_source_context = constant:condemnation_context.unspecified } }
+	if = { limit = { NOT = { has_variable = condemnation_last_source_severity } } set_variable = { condemnation_last_source_severity = constant:condemnation_severity.minor } }
+}
+
+condemnation_recalculate_total = {
+	set_variable = { condemnation_total = condemnation_chemical }
+	add_to_variable = { condemnation_total = condemnation_biological }
+	add_to_variable = { condemnation_total = condemnation_nuclear }
+	add_to_variable = { condemnation_total = condemnation_atrocity }
+	add_to_variable = { condemnation_total = condemnation_coverup }
+	add_to_variable = { condemnation_total = condemnation_repeat_use }
+	clamp_variable = { var = condemnation_total min = constant:condemnation_decay.minimum_total max = constant:condemnation_threshold.total_cap }
+}
+
+condemnation_recalculate_hidden_total = {
+	set_variable = { condemnation_hidden_total = condemnation_hidden_chemical }
+	add_to_variable = { condemnation_hidden_total = condemnation_hidden_biological }
+	add_to_variable = { condemnation_hidden_total = condemnation_hidden_nuclear }
+	add_to_variable = { condemnation_hidden_total = condemnation_hidden_atrocity }
+	add_to_variable = { condemnation_hidden_total = condemnation_hidden_coverup }
+	clamp_variable = { var = condemnation_hidden_total min = 0 max = constant:condemnation_threshold.total_cap }
+}
+
+condemnation_register_target = {
+	if = {
+		limit = { NOT = { is_in_array = { array = global.condemnation_targets value = THIS } } }
+		add_to_array = { array = global.condemnation_targets value = THIS }
+	}
+}
+
+condemnation_unregister_target_if_inactive = {
+	if = {
+		limit = {
+			check_variable = { condemnation_total < constant:condemnation_gain.minimum_visible_gain }
+			check_variable = { condemnation_hidden_total < constant:condemnation_gain.minimum_visible_gain }
+			check_variable = { condemnation_active_sanctions < 1 }
+			NOT = { condemnation_has_compliance_path = yes }
+			NOT = { condemnation_has_defiance_path = yes }
+			NOT = { condemnation_has_evasion_path = yes }
+		}
+		remove_from_array = { array = global.condemnation_targets value = THIS }
+	}
+}
+
+condemnation_append_public_source_log = {
+	add_to_array = { array = condemnation_source_log_types value = condemnation_source_type index = 0 }
+	add_to_array = { array = condemnation_source_log_contexts value = condemnation_context_type index = 0 }
+	add_to_array = { array = condemnation_source_log_gains value = condemnation_gain_final index = 0 }
+	add_to_array = { array = condemnation_source_log_dates value = global.date index = 0 }
+	set_temp_variable = { condemnation_source_log_limit = constant:condemnation_runtime.source_log_limit }
+	if = {
+		limit = { check_variable = { var = condemnation_source_log_types^num value = condemnation_source_log_limit compare = greater_than } }
+		resize_array = { array = condemnation_source_log_types size = condemnation_source_log_limit }
+		resize_array = { array = condemnation_source_log_contexts size = condemnation_source_log_limit }
+		resize_array = { array = condemnation_source_log_gains size = condemnation_source_log_limit }
+		resize_array = { array = condemnation_source_log_dates size = condemnation_source_log_limit }
+	}
+}
+
+condemnation_expose_hidden_bucket = {
+	# Inputs: condemnation_source_type, condemnation_hidden_exposure_fraction,
+	# condemnation_context_type.
+	set_temp_variable = { condemnation_hidden_exposed_gain = 0 }
+	if = {
+		limit = { check_variable = { var = condemnation_source_type value = constant:condemnation_source.chemical compare = equals } }
+		set_temp_variable = { condemnation_hidden_exposed_gain = condemnation_hidden_chemical }
+		multiply_temp_variable = { condemnation_hidden_exposed_gain = condemnation_hidden_exposure_fraction }
+		subtract_from_variable = { condemnation_hidden_chemical = condemnation_hidden_exposed_gain }
+		add_to_variable = { condemnation_chemical = condemnation_hidden_exposed_gain }
+	}
+	else_if = {
+		limit = { check_variable = { var = condemnation_source_type value = constant:condemnation_source.biological compare = equals } }
+		set_temp_variable = { condemnation_hidden_exposed_gain = condemnation_hidden_biological }
+		multiply_temp_variable = { condemnation_hidden_exposed_gain = condemnation_hidden_exposure_fraction }
+		subtract_from_variable = { condemnation_hidden_biological = condemnation_hidden_exposed_gain }
+		add_to_variable = { condemnation_biological = condemnation_hidden_exposed_gain }
+	}
+	else_if = {
+		limit = { check_variable = { var = condemnation_source_type value = constant:condemnation_source.nuclear compare = equals } }
+		set_temp_variable = { condemnation_hidden_exposed_gain = condemnation_hidden_nuclear }
+		multiply_temp_variable = { condemnation_hidden_exposed_gain = condemnation_hidden_exposure_fraction }
+		subtract_from_variable = { condemnation_hidden_nuclear = condemnation_hidden_exposed_gain }
+		add_to_variable = { condemnation_nuclear = condemnation_hidden_exposed_gain }
+	}
+	else_if = {
+		limit = { check_variable = { var = condemnation_source_type value = constant:condemnation_source.atrocity compare = equals } }
+		set_temp_variable = { condemnation_hidden_exposed_gain = condemnation_hidden_atrocity }
+		multiply_temp_variable = { condemnation_hidden_exposed_gain = condemnation_hidden_exposure_fraction }
+		subtract_from_variable = { condemnation_hidden_atrocity = condemnation_hidden_exposed_gain }
+		add_to_variable = { condemnation_atrocity = condemnation_hidden_exposed_gain }
+	}
+	else_if = {
+		limit = { check_variable = { var = condemnation_source_type value = constant:condemnation_source.coverup compare = equals } }
+		set_temp_variable = { condemnation_hidden_exposed_gain = condemnation_hidden_coverup }
+		multiply_temp_variable = { condemnation_hidden_exposed_gain = condemnation_hidden_exposure_fraction }
+		subtract_from_variable = { condemnation_hidden_coverup = condemnation_hidden_exposed_gain }
+		add_to_variable = { condemnation_coverup = condemnation_hidden_exposed_gain }
+	}
+	if = {
+		limit = { check_variable = { condemnation_hidden_exposed_gain > constant:condemnation_gain.minimum_visible_gain } }
+		set_temp_variable = { condemnation_gain_final = condemnation_hidden_exposed_gain }
+		add_to_variable = { condemnation_recent_gain = condemnation_hidden_exposed_gain }
+		add_to_variable = { condemnation_participant_refresh_credit = condemnation_hidden_exposed_gain }
+		set_variable = { condemnation_last_source_type = condemnation_source_type }
+		set_variable = { condemnation_last_source_context = condemnation_context_type }
+		set_variable = { condemnation_last_source_gain = condemnation_hidden_exposed_gain }
+		set_variable = { condemnation_last_source_severity = constant:condemnation_severity.major }
+		set_variable = { condemnation_last_gain_date = global.date }
+		condemnation_append_public_source_log = yes
+	}
+}
+
+condemnation_expose_hidden_evidence = {
+	set_temp_variable = { condemnation_source_type = constant:condemnation_source.chemical }
+	condemnation_expose_hidden_bucket = yes
+	set_temp_variable = { condemnation_source_type = constant:condemnation_source.biological }
+	condemnation_expose_hidden_bucket = yes
+	set_temp_variable = { condemnation_source_type = constant:condemnation_source.nuclear }
+	condemnation_expose_hidden_bucket = yes
+	set_temp_variable = { condemnation_source_type = constant:condemnation_source.atrocity }
+	condemnation_expose_hidden_bucket = yes
+	set_temp_variable = { condemnation_source_type = constant:condemnation_source.coverup }
+	condemnation_expose_hidden_bucket = yes
+	condemnation_recalculate_hidden_total = yes
+	condemnation_recalculate_total = yes
+	clamp_variable = { var = condemnation_recent_gain min = 0 max = constant:condemnation_threshold.recent_gain_cap }
+	if = {
+		limit = { check_variable = { condemnation_recent_gain > 0 } }
+		set_temp_variable = { condemnation_recent_gain_days = constant:condemnation_duration_days.recent_gain }
+		set_country_flag = { flag = condemnation_recent_gain_visible days = condemnation_recent_gain_days }
+	}
+	condemnation_refresh_tier = yes
+}
+
+condemnation_start_targeted_pulse = {
+	if = {
+		limit = { NOT = { has_country_flag = condemnation_targeted_pulse_active } }
+		set_country_flag = condemnation_targeted_pulse_active
+		set_temp_variable = { condemnation_pulse_days = constant:condemnation_duration_days.pulse }
+		country_event = {
+			id = condemnation_sanctions.1
+			days = condemnation_pulse_days
+		}
+	}
+}
+
+# Input: condemnation_fuel_fraction_cost (temporary fixed-point value).
+condemnation_pay_fuel_fraction = {
+	set_temp_variable = { condemnation_fuel_ratio_after_cost = fuel_ratio }
+	set_temp_variable = { condemnation_fuel_ratio_cost = condemnation_fuel_ratio_after_cost }
+	multiply_temp_variable = { condemnation_fuel_ratio_cost = condemnation_fuel_fraction_cost }
+	subtract_from_temp_variable = { condemnation_fuel_ratio_after_cost = condemnation_fuel_ratio_cost }
+	clamp_temp_variable = { var = condemnation_fuel_ratio_after_cost min = 0 max = 1 }
+	set_fuel_ratio = condemnation_fuel_ratio_after_cost
+}
+
+condemnation_add_source = {
+	condemnation_initialize_country = yes
+	if = { limit = { NOT = { has_variable = condemnation_source_type } } set_temp_variable = { condemnation_source_type = constant:condemnation_source.mixed } }
+	if = { limit = { NOT = { has_variable = condemnation_base_gain } } set_temp_variable = { condemnation_base_gain = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_visibility_type } } set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public } }
+	if = { limit = { NOT = { has_variable = condemnation_severity_type } } set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.combat } }
+	if = { limit = { NOT = { has_variable = condemnation_civilian_deaths } } set_temp_variable = { condemnation_civilian_deaths = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_contamination_value } } set_temp_variable = { condemnation_contamination_value = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_context_type } } set_temp_variable = { condemnation_context_type = constant:condemnation_context.unspecified } }
+	set_temp_variable = { condemnation_source_is_weapon_use = constant:condemnation_tier.normal }
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = condemnation_context_type value = constant:condemnation_context.chemical_combat compare = equals }
+				check_variable = { var = condemnation_context_type value = constant:condemnation_context.chemical_air_strike compare = equals }
+				check_variable = { var = condemnation_context_type value = constant:condemnation_context.chemical_doomsday compare = equals }
+				check_variable = { var = condemnation_context_type value = constant:condemnation_context.biological_strike compare = equals }
+				check_variable = { var = condemnation_context_type value = constant:condemnation_context.biological_outbreak compare = equals }
+				check_variable = { var = condemnation_context_type value = constant:condemnation_context.biological_doomsday compare = equals }
+				check_variable = { var = condemnation_context_type value = constant:condemnation_context.weaponized_zombies compare = equals }
+				check_variable = { var = condemnation_context_type value = constant:condemnation_context.nuclear_strike compare = equals }
+				check_variable = { var = condemnation_context_type value = constant:condemnation_context.thermonuclear_strike compare = equals }
+				check_variable = { var = condemnation_context_type value = constant:condemnation_context.final_silence compare = equals }
+			}
+		}
+		set_temp_variable = { condemnation_source_is_weapon_use = constant:condemnation_tier.concern }
+	}
+
+	set_temp_variable = { condemnation_scaled_base_gain = condemnation_base_gain }
+	set_temp_variable = { condemnation_death_gain = condemnation_civilian_deaths }
+	divide_temp_variable = { condemnation_death_gain = constant:condemnation_gain.civilian_deaths_divisor }
+	multiply_temp_variable = { condemnation_death_gain = constant:condemnation_gain.civilian_deaths_factor }
+	clamp_temp_variable = { var = condemnation_death_gain min = 0 max = constant:condemnation_gain.civilian_deaths_gain_cap }
+	add_to_temp_variable = { condemnation_scaled_base_gain = condemnation_death_gain }
+	set_temp_variable = { condemnation_contamination_gain = condemnation_contamination_value }
+	multiply_temp_variable = { condemnation_contamination_gain = constant:condemnation_gain.contamination_factor }
+	clamp_temp_variable = { var = condemnation_contamination_gain min = 0 max = constant:condemnation_gain.contamination_gain_cap }
+	add_to_temp_variable = { condemnation_scaled_base_gain = condemnation_contamination_gain }
+	set_temp_variable = { condemnation_gain_final = condemnation_scaled_base_gain }
+	if = {
+		limit = { check_variable = { var = condemnation_visibility_type value = constant:condemnation_visibility.hidden compare = equals } }
+		multiply_temp_variable = { condemnation_gain_final = constant:condemnation_gain.visibility_hidden }
+	}
+	else_if = {
+		limit = { check_variable = { var = condemnation_visibility_type value = constant:condemnation_visibility.suspected compare = equals } }
+		multiply_temp_variable = { condemnation_gain_final = constant:condemnation_gain.visibility_suspected }
+	}
+	else_if = {
+		limit = { check_variable = { var = condemnation_visibility_type value = constant:condemnation_visibility.discovered compare = equals } }
+		multiply_temp_variable = { condemnation_gain_final = constant:condemnation_gain.visibility_discovered }
+	}
+	else = {
+		multiply_temp_variable = { condemnation_gain_final = constant:condemnation_gain.visibility_public }
+	}
+
+	if = {
+		limit = { check_variable = { var = condemnation_severity_type value = constant:condemnation_severity.minor compare = equals } }
+		multiply_temp_variable = { condemnation_gain_final = constant:condemnation_gain.severity_minor }
+	}
+	else_if = {
+		limit = { check_variable = { var = condemnation_severity_type value = constant:condemnation_severity.major compare = equals } }
+		multiply_temp_variable = { condemnation_gain_final = constant:condemnation_gain.severity_major }
+	}
+	else_if = {
+		limit = { check_variable = { var = condemnation_severity_type value = constant:condemnation_severity.mass_death compare = equals } }
+		multiply_temp_variable = { condemnation_gain_final = constant:condemnation_gain.severity_mass_death }
+	}
+	else_if = {
+		limit = { check_variable = { var = condemnation_severity_type value = constant:condemnation_severity.doomsday compare = equals } }
+		multiply_temp_variable = { condemnation_gain_final = constant:condemnation_gain.severity_doomsday }
+	}
+	else = {
+		multiply_temp_variable = { condemnation_gain_final = constant:condemnation_gain.severity_combat }
+	}
+
+	set_temp_variable = { condemnation_gain_hidden = 0 }
+	if = {
+		limit = { check_variable = { var = condemnation_visibility_type value = constant:condemnation_visibility.hidden compare = equals } }
+		set_temp_variable = { condemnation_gain_hidden = condemnation_scaled_base_gain }
+		if = { limit = { check_variable = { var = condemnation_severity_type value = constant:condemnation_severity.minor compare = equals } } multiply_temp_variable = { condemnation_gain_hidden = constant:condemnation_gain.severity_minor } }
+		else_if = { limit = { check_variable = { var = condemnation_severity_type value = constant:condemnation_severity.major compare = equals } } multiply_temp_variable = { condemnation_gain_hidden = constant:condemnation_gain.severity_major } }
+		else_if = { limit = { check_variable = { var = condemnation_severity_type value = constant:condemnation_severity.mass_death compare = equals } } multiply_temp_variable = { condemnation_gain_hidden = constant:condemnation_gain.severity_mass_death } }
+		else_if = { limit = { check_variable = { var = condemnation_severity_type value = constant:condemnation_severity.doomsday compare = equals } } multiply_temp_variable = { condemnation_gain_hidden = constant:condemnation_gain.severity_doomsday } }
+		else = { multiply_temp_variable = { condemnation_gain_hidden = constant:condemnation_gain.severity_combat } }
+	}
+	else_if = {
+		limit = { check_variable = { var = condemnation_visibility_type value = constant:condemnation_visibility.suspected compare = equals } }
+		set_temp_variable = { condemnation_gain_hidden = condemnation_gain_final }
+		divide_temp_variable = { condemnation_gain_hidden = constant:condemnation_gain.visibility_suspected }
+		subtract_from_temp_variable = { condemnation_gain_hidden = condemnation_gain_final }
+	}
+	else_if = {
+		limit = { check_variable = { var = condemnation_visibility_type value = constant:condemnation_visibility.discovered compare = equals } }
+		set_temp_variable = { condemnation_gain_hidden = condemnation_gain_final }
+		divide_temp_variable = { condemnation_gain_hidden = constant:condemnation_gain.visibility_discovered }
+		subtract_from_temp_variable = { condemnation_gain_hidden = condemnation_gain_final }
+	}
+
+	if = {
+		limit = { check_variable = { condemnation_gain_hidden > constant:condemnation_gain.minimum_visible_gain } }
+		if = { limit = { check_variable = { var = condemnation_source_type value = constant:condemnation_source.chemical compare = equals } } add_to_variable = { condemnation_hidden_chemical = condemnation_gain_hidden } }
+		else_if = { limit = { check_variable = { var = condemnation_source_type value = constant:condemnation_source.biological compare = equals } } add_to_variable = { condemnation_hidden_biological = condemnation_gain_hidden } }
+		else_if = { limit = { check_variable = { var = condemnation_source_type value = constant:condemnation_source.nuclear compare = equals } } add_to_variable = { condemnation_hidden_nuclear = condemnation_gain_hidden } }
+		else_if = { limit = { check_variable = { var = condemnation_source_type value = constant:condemnation_source.atrocity compare = equals } } add_to_variable = { condemnation_hidden_atrocity = condemnation_gain_hidden } }
+		else_if = { limit = { check_variable = { var = condemnation_source_type value = constant:condemnation_source.coverup compare = equals } } add_to_variable = { condemnation_hidden_coverup = condemnation_gain_hidden } }
+		else = {
+			set_temp_variable = { condemnation_hidden_mixed_half = condemnation_gain_hidden }
+			divide_temp_variable = { condemnation_hidden_mixed_half = constant:condemnation_math.two_way_average_divisor }
+			add_to_variable = { condemnation_hidden_atrocity = condemnation_hidden_mixed_half }
+			add_to_variable = { condemnation_hidden_coverup = condemnation_hidden_mixed_half }
+		}
+		clamp_variable = { var = condemnation_hidden_chemical min = 0 max = constant:condemnation_threshold.bucket_cap }
+		clamp_variable = { var = condemnation_hidden_biological min = 0 max = constant:condemnation_threshold.bucket_cap }
+		clamp_variable = { var = condemnation_hidden_nuclear min = 0 max = constant:condemnation_threshold.bucket_cap }
+		clamp_variable = { var = condemnation_hidden_atrocity min = 0 max = constant:condemnation_threshold.bucket_cap }
+		clamp_variable = { var = condemnation_hidden_coverup min = 0 max = constant:condemnation_threshold.bucket_cap }
+		condemnation_recalculate_hidden_total = yes
+		condemnation_register_target = yes
+	}
+
+	if = {
+		limit = { check_variable = { condemnation_gain_final > constant:condemnation_gain.minimum_visible_gain } }
+		set_temp_variable = { condemnation_repeat_gain = 0 }
+		if = {
+			limit = {
+				has_country_flag = condemnation_recent_use
+				check_variable = { condemnation_source_is_weapon_use > constant:condemnation_tier.normal }
+			}
+			set_temp_variable = { condemnation_repeat_gain = condemnation_gain_final }
+			multiply_temp_variable = { condemnation_repeat_gain = constant:condemnation_gain.repeat_fraction }
+			add_to_variable = { condemnation_repeat_use = condemnation_repeat_gain }
+		}
+
+		set_temp_variable = { condemnation_compliance_breach_applied = constant:condemnation_tier.normal }
+		if = {
+			limit = {
+				has_country_flag = condemnation_non_use_pledge
+				check_variable = { condemnation_source_is_weapon_use > constant:condemnation_tier.normal }
+			}
+			clr_country_flag = condemnation_non_use_pledge
+			set_temp_variable = { condemnation_pledge_break_days = constant:condemnation_duration_days.pledge_break_memory }
+			set_country_flag = { flag = condemnation_pledge_broken days = condemnation_pledge_break_days }
+			add_to_variable = { condemnation_coverup = constant:condemnation_gain.pledge_break_coverup }
+			add_to_variable = { condemnation_repeat_use = constant:condemnation_gain.pledge_break_repeat }
+			set_temp_variable = { condemnation_context_type = constant:condemnation_context.pledge_breach }
+			set_temp_variable = { condemnation_compliance_breach_applied = constant:condemnation_tier.concern }
+		}
+		if = {
+			limit = {
+				check_variable = { condemnation_source_is_weapon_use > constant:condemnation_tier.normal }
+				check_variable = { var = condemnation_source_type value = constant:condemnation_source.chemical compare = equals }
+			}
+			clr_country_flag = condemnation_chemical_stockpiles_destroyed
+			if = {
+				limit = { has_country_flag = condemnation_chemical_stockpile_restriction }
+				clr_country_flag = condemnation_chemical_stockpile_restriction
+				set_temp_variable = { condemnation_compliance_breach_applied = constant:condemnation_tier.concern }
+			}
+		}
+		else_if = {
+			limit = {
+				check_variable = { condemnation_source_is_weapon_use > constant:condemnation_tier.normal }
+				check_variable = { var = condemnation_source_type value = constant:condemnation_source.biological compare = equals }
+			}
+			clr_country_flag = condemnation_biological_stockpiles_destroyed
+			if = {
+				limit = { has_country_flag = condemnation_biological_stockpile_restriction }
+				clr_country_flag = condemnation_biological_stockpile_restriction
+				set_temp_variable = { condemnation_compliance_breach_applied = constant:condemnation_tier.concern }
+			}
+		}
+		if = {
+			limit = {
+				NOT = { has_country_flag = condemnation_chemical_stockpiles_destroyed }
+				NOT = { has_country_flag = condemnation_biological_stockpiles_destroyed }
+			}
+			clr_country_flag = condemnation_stockpiles_destroyed
+		}
+		if = {
+			limit = { check_variable = { condemnation_compliance_breach_applied > constant:condemnation_tier.normal } }
+			if = {
+				limit = { NOT = { has_country_flag = condemnation_pledge_broken } }
+				set_temp_variable = { condemnation_pledge_break_days = constant:condemnation_duration_days.pledge_break_memory }
+				set_country_flag = { flag = condemnation_pledge_broken days = condemnation_pledge_break_days }
+				add_to_variable = { condemnation_coverup = constant:condemnation_gain.pledge_break_coverup }
+				add_to_variable = { condemnation_repeat_use = constant:condemnation_gain.pledge_break_repeat }
+				set_temp_variable = { condemnation_context_type = constant:condemnation_context.pledge_breach }
+			}
+		}
+
+		if = {
+			limit = { check_variable = { var = condemnation_source_type value = constant:condemnation_source.chemical compare = equals } }
+			add_to_variable = { condemnation_chemical = condemnation_gain_final }
+		}
+		else_if = {
+			limit = { check_variable = { var = condemnation_source_type value = constant:condemnation_source.biological compare = equals } }
+			add_to_variable = { condemnation_biological = condemnation_gain_final }
+		}
+		else_if = {
+			limit = { check_variable = { var = condemnation_source_type value = constant:condemnation_source.nuclear compare = equals } }
+			add_to_variable = { condemnation_nuclear = condemnation_gain_final }
+		}
+		else_if = {
+			limit = { check_variable = { var = condemnation_source_type value = constant:condemnation_source.atrocity compare = equals } }
+			add_to_variable = { condemnation_atrocity = condemnation_gain_final }
+		}
+		else_if = {
+			limit = { check_variable = { var = condemnation_source_type value = constant:condemnation_source.coverup compare = equals } }
+			add_to_variable = { condemnation_coverup = condemnation_gain_final }
+		}
+		else = {
+			set_temp_variable = { condemnation_mixed_half = condemnation_gain_final }
+			divide_temp_variable = { condemnation_mixed_half = constant:condemnation_math.two_way_average_divisor }
+			add_to_variable = { condemnation_atrocity = condemnation_mixed_half }
+			add_to_variable = { condemnation_coverup = condemnation_mixed_half }
+		}
+
+		add_to_variable = { condemnation_recent_gain = condemnation_gain_final }
+		add_to_variable = { condemnation_participant_refresh_credit = condemnation_gain_final }
+		add_to_variable = { condemnation_recent_civilian_deaths = condemnation_civilian_deaths }
+		add_to_variable = { condemnation_contamination_pressure = condemnation_contamination_value }
+		clamp_variable = { var = condemnation_contamination_pressure min = 0 max = constant:condemnation_threshold.contamination_cap }
+		if = {
+			limit = {
+				has_variable = condemnation_victim_country
+				var:condemnation_victim_country = {
+					exists = yes
+					NOT = { tag = ROOT }
+				}
+			}
+			set_variable = { condemnation_last_victim = condemnation_victim_country }
+		}
+
+		clamp_variable = { var = condemnation_chemical min = 0 max = constant:condemnation_threshold.bucket_cap }
+		clamp_variable = { var = condemnation_biological min = 0 max = constant:condemnation_threshold.bucket_cap }
+		clamp_variable = { var = condemnation_nuclear min = 0 max = constant:condemnation_threshold.bucket_cap }
+		clamp_variable = { var = condemnation_atrocity min = 0 max = constant:condemnation_threshold.bucket_cap }
+		clamp_variable = { var = condemnation_coverup min = 0 max = constant:condemnation_threshold.bucket_cap }
+		clamp_variable = { var = condemnation_repeat_use min = 0 max = constant:condemnation_threshold.repeat_use_cap }
+		clamp_variable = { var = condemnation_recent_gain min = 0 max = constant:condemnation_threshold.recent_gain_cap }
+		condemnation_recalculate_total = yes
+		condemnation_register_target = yes
+
+		set_temp_variable = { condemnation_recent_gain_days = constant:condemnation_duration_days.recent_gain }
+		set_country_flag = { flag = condemnation_recent_gain_visible days = condemnation_recent_gain_days }
+		if = {
+			limit = { check_variable = { condemnation_source_is_weapon_use > constant:condemnation_tier.normal } }
+			set_temp_variable = { condemnation_recent_use_days = constant:condemnation_duration_days.recent_use }
+			set_country_flag = { flag = condemnation_recent_use days = condemnation_recent_use_days }
+			set_country_flag = used_unconventional_weapon
+		}
+		set_variable = { condemnation_last_gain_date = global.date }
+		set_variable = { condemnation_last_source_type = condemnation_source_type }
+		set_variable = { condemnation_last_source_gain = condemnation_gain_final }
+		set_variable = { condemnation_last_source_context = condemnation_context_type }
+		set_variable = { condemnation_last_source_severity = condemnation_severity_type }
+		condemnation_append_public_source_log = yes
+		condemnation_refresh_tier = yes
+		condemnation_start_targeted_pulse = yes
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = condemnation_tier_changed
+					check_variable = { condemnation_participant_refresh_credit > constant:condemnation_threshold.participant_refresh_gain }
+				}
+			}
+			set_variable = { condemnation_participant_refresh_credit = 0 }
+			condemnation_recalculate_participants = yes
+		}
+		refresh_chaos_meter_condemnation_view_if_open = yes
+	}
+}
+
+condemnation_refresh_tier = {
+	condemnation_initialize_country = yes
+	set_temp_variable = { condemnation_previous_tier = condemnation_tier }
+	if = {
+		limit = { check_variable = { var = condemnation_total value = constant:condemnation_threshold.pariah_state compare = greater_than_or_equals } }
+		set_variable = { condemnation_tier = constant:condemnation_tier.pariah_state }
+		set_variable = { condemnation_next_threshold = constant:condemnation_threshold.total_cap }
+	}
+	else_if = {
+		limit = { check_variable = { var = condemnation_total value = constant:condemnation_threshold.total_embargo compare = greater_than_or_equals } }
+		set_variable = { condemnation_tier = constant:condemnation_tier.total_embargo }
+		set_variable = { condemnation_next_threshold = constant:condemnation_threshold.pariah_state }
+	}
+	else_if = {
+		limit = { check_variable = { var = condemnation_total value = constant:condemnation_threshold.strategic_embargo compare = greater_than_or_equals } }
+		set_variable = { condemnation_tier = constant:condemnation_tier.strategic_embargo }
+		set_variable = { condemnation_next_threshold = constant:condemnation_threshold.total_embargo }
+	}
+	else_if = {
+		limit = { check_variable = { var = condemnation_total value = constant:condemnation_threshold.arms_embargo compare = greater_than_or_equals } }
+		set_variable = { condemnation_tier = constant:condemnation_tier.arms_embargo }
+		set_variable = { condemnation_next_threshold = constant:condemnation_threshold.strategic_embargo }
+	}
+	else_if = {
+		limit = { check_variable = { var = condemnation_total value = constant:condemnation_threshold.formal_censure compare = greater_than_or_equals } }
+		set_variable = { condemnation_tier = constant:condemnation_tier.formal_censure }
+		set_variable = { condemnation_next_threshold = constant:condemnation_threshold.arms_embargo }
+	}
+	else_if = {
+		limit = { check_variable = { var = condemnation_total value = constant:condemnation_threshold.concern compare = greater_than_or_equals } }
+		set_variable = { condemnation_tier = constant:condemnation_tier.concern }
+		set_variable = { condemnation_next_threshold = constant:condemnation_threshold.formal_censure }
+	}
+	else = {
+		set_variable = { condemnation_tier = constant:condemnation_tier.normal }
+		set_variable = { condemnation_next_threshold = constant:condemnation_threshold.concern }
+	}
+	set_variable = { condemnation_compensation_convoy_requirement = condemnation_tier }
+	multiply_variable = { condemnation_compensation_convoy_requirement = constant:condemnation_cost.compensation_convoys_per_tier }
+	add_to_variable = { condemnation_compensation_convoy_requirement = constant:condemnation_cost.compensation_convoys_base }
+
+	if = {
+		limit = {
+			check_variable = {
+				var = condemnation_tier
+				value = condemnation_peak_tier
+				compare = greater_than
+			}
+		}
+		set_variable = { condemnation_peak_tier = condemnation_tier }
+	}
+
+	clr_country_flag = condemnation_tier_changed
+	if = {
+		limit = {
+			NOT = {
+				check_variable = {
+					var = condemnation_tier
+					value = condemnation_previous_tier
+					compare = equals
+				}
+			}
+		}
+		set_country_flag = condemnation_tier_changed
+	}
+	condemnation_refresh_target_modifiers = yes
+}
+
+condemnation_register_native_embargo_source = {
+	set_temp_variable = { condemnation_native_claim_succeeded = constant:condemnation_tier.normal }
+	if = {
+		limit = { NOT = { has_dlc = "By Blood Alone" } }
+		set_temp_variable = { condemnation_native_claim_succeeded = constant:condemnation_tier.concern }
+	}
+	if = {
+		limit = {
+			has_dlc = "By Blood Alone"
+			var:condemnation_embargo_target = { exists = yes }
+		}
+		if = {
+			limit = { NOT = { is_embargoing = var:condemnation_embargo_target } }
+			remove_from_array = { array = condemnation_native_external_targets value = condemnation_embargo_target }
+			remove_from_array = { array = condemnation_native_system_created_targets value = condemnation_embargo_target }
+		}
+		set_temp_variable = { condemnation_native_relation_preexisting = constant:condemnation_tier.normal }
+		if = {
+			limit = { is_embargoing = var:condemnation_embargo_target }
+			set_temp_variable = { condemnation_native_claim_succeeded = constant:condemnation_tier.concern }
+			set_temp_variable = { condemnation_native_relation_preexisting = constant:condemnation_tier.concern }
+		}
+		if = {
+			limit = {
+				is_embargoing = var:condemnation_embargo_target
+				NOT = {
+					OR = {
+						is_in_array = { array = condemnation_native_condemnation_targets value = condemnation_embargo_target }
+						is_in_array = { array = condemnation_native_air_treaty_targets value = condemnation_embargo_target }
+						is_in_array = { array = condemnation_native_great_embargo_targets value = condemnation_embargo_target }
+						is_in_array = { array = condemnation_native_external_targets value = condemnation_embargo_target }
+					}
+				}
+			}
+			add_to_array = { array = condemnation_native_external_targets value = condemnation_embargo_target }
+		}
+		if = {
+			limit = {
+				NOT = { is_embargoing = var:condemnation_embargo_target }
+			}
+			send_embargo = var:condemnation_embargo_target
+		}
+		if = {
+			limit = { is_embargoing = var:condemnation_embargo_target }
+			set_temp_variable = { condemnation_native_claim_succeeded = constant:condemnation_tier.concern }
+			if = {
+				limit = { check_variable = { var = condemnation_embargo_source value = constant:condemnation_embargo_source.condemnation compare = equals } }
+				if = {
+					limit = { NOT = { is_in_array = { array = condemnation_native_condemnation_targets value = condemnation_embargo_target } } }
+					add_to_array = { array = condemnation_native_condemnation_targets value = condemnation_embargo_target }
+				}
+			}
+			else_if = {
+				limit = { check_variable = { var = condemnation_embargo_source value = constant:condemnation_embargo_source.air_cleanliness_treaty compare = equals } }
+				if = {
+					limit = { NOT = { is_in_array = { array = condemnation_native_air_treaty_targets value = condemnation_embargo_target } } }
+					add_to_array = { array = condemnation_native_air_treaty_targets value = condemnation_embargo_target }
+				}
+			}
+			else_if = {
+				limit = { check_variable = { var = condemnation_embargo_source value = constant:condemnation_embargo_source.great_embargo_event compare = equals } }
+				if = {
+					limit = { NOT = { is_in_array = { array = condemnation_native_great_embargo_targets value = condemnation_embargo_target } } }
+					add_to_array = { array = condemnation_native_great_embargo_targets value = condemnation_embargo_target }
+				}
+			}
+			if = {
+				limit = { check_variable = { condemnation_native_relation_preexisting < constant:condemnation_tier.concern } }
+				add_to_array = { array = condemnation_native_system_created_targets value = condemnation_embargo_target }
+			}
+		}
+	}
+}
+
+condemnation_unregister_native_embargo_source = {
+	if = {
+		limit = { var:condemnation_embargo_target = { exists = yes } }
+		if = {
+			limit = { check_variable = { var = condemnation_embargo_source value = constant:condemnation_embargo_source.condemnation compare = equals } }
+			while_loop_effect = {
+				limit = { is_in_array = { array = condemnation_native_condemnation_targets value = condemnation_embargo_target } }
+				remove_from_array = { array = condemnation_native_condemnation_targets value = condemnation_embargo_target }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { var = condemnation_embargo_source value = constant:condemnation_embargo_source.air_cleanliness_treaty compare = equals } }
+			while_loop_effect = {
+				limit = { is_in_array = { array = condemnation_native_air_treaty_targets value = condemnation_embargo_target } }
+				remove_from_array = { array = condemnation_native_air_treaty_targets value = condemnation_embargo_target }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { var = condemnation_embargo_source value = constant:condemnation_embargo_source.great_embargo_event compare = equals } }
+			while_loop_effect = {
+				limit = { is_in_array = { array = condemnation_native_great_embargo_targets value = condemnation_embargo_target } }
+				remove_from_array = { array = condemnation_native_great_embargo_targets value = condemnation_embargo_target }
+			}
+		}
+
+		if = {
+			limit = {
+				has_dlc = "By Blood Alone"
+				is_embargoing = var:condemnation_embargo_target
+				is_in_array = { array = condemnation_native_system_created_targets value = condemnation_embargo_target }
+				NOT = {
+					OR = {
+						is_in_array = { array = condemnation_native_condemnation_targets value = condemnation_embargo_target }
+						is_in_array = { array = condemnation_native_air_treaty_targets value = condemnation_embargo_target }
+						is_in_array = { array = condemnation_native_great_embargo_targets value = condemnation_embargo_target }
+						is_in_array = { array = condemnation_native_external_targets value = condemnation_embargo_target }
+					}
+				}
+			}
+			if = {
+				limit = { tag = ROOT }
+				break_embargo = var:condemnation_embargo_target
+				remove_from_array = { array = condemnation_native_system_created_targets value = condemnation_embargo_target }
+			}
+			else = {
+				var:condemnation_embargo_target = { save_event_target_as = condemnation_native_release_target }
+				if = {
+					limit = { check_variable = { var = condemnation_embargo_source value = constant:condemnation_embargo_source.condemnation compare = equals } }
+					country_event = { id = condemnation_sanctions.3 }
+				}
+				else_if = {
+					limit = { check_variable = { var = condemnation_embargo_source value = constant:condemnation_embargo_source.air_cleanliness_treaty compare = equals } }
+					country_event = { id = condemnation_sanctions.4 }
+				}
+				else = { country_event = { id = condemnation_sanctions.5 } }
+			}
+		}
+	}
+}
+
+condemnation_read_pair_record = {
+	set_temp_variable = { condemnation_pair_previous_tier = constant:condemnation_tier.normal }
+	set_temp_variable = { condemnation_pair_previous_cost = 0 }
+	set_temp_variable = { condemnation_pair_previous_expires = 0 }
+	if = {
+		limit = { var:condemnation_pair_target = { exists = yes } }
+		var:condemnation_pair_target = {
+			set_temp_variable = { condemnation_pair_target_id = id }
+		}
+		if = {
+			limit = {
+				meta_trigger = {
+					text = { has_variable = condemnation_pair_[TARGET_ID]_tier }
+					TARGET_ID = "[?condemnation_pair_target_id|.0]"
+				}
+			}
+			meta_effect = {
+				text = {
+					set_temp_variable = { condemnation_pair_previous_tier = condemnation_pair_[TARGET_ID]_tier }
+					set_temp_variable = { condemnation_pair_previous_cost = condemnation_pair_[TARGET_ID]_enforcement_cost }
+					set_temp_variable = { condemnation_pair_previous_expires = condemnation_pair_[TARGET_ID]_expires_date }
+				}
+				TARGET_ID = "[?condemnation_pair_target_id|.0]"
+			}
+		}
+	}
+}
+
+condemnation_write_pair_record = {
+	if = {
+		limit = { var:condemnation_pair_target = { exists = yes } }
+		var:condemnation_pair_target = {
+			set_temp_variable = { condemnation_pair_target_id = id }
+		}
+		set_temp_variable = { condemnation_pair_started_date = global.date }
+		set_temp_variable = { condemnation_pair_expires_date = global.date }
+		add_to_temp_variable = { condemnation_pair_expires_date = condemnation_pair_review_days }
+		if = {
+			limit = {
+				meta_trigger = {
+					text = { NOT = { has_variable = condemnation_pair_[TARGET_ID]_tier } }
+					TARGET_ID = "[?condemnation_pair_target_id|.0]"
+				}
+			}
+			if = {
+				limit = { check_variable = { condemnation_active_pair_count < 1 } }
+				add_relation_rule_override = {
+					trigger = condemnation_relation_is_arms_embargo_target
+					usage_desc = condemnation_relation_is_arms_embargo_target_tt
+					can_send_volunteers = no
+				}
+				add_relation_rule_override = {
+					trigger = condemnation_relation_is_arms_embargo_target
+					usage_desc = condemnation_relation_is_arms_market_target_tt
+					can_access_market = no
+				}
+			}
+			add_to_variable = { condemnation_active_pair_count = 1 }
+			add_to_variable = { condemnation_enforcement_burden_total = condemnation_pair_enforcement_cost }
+			set_temp_variable = { condemnation_enforcement_convoy_cost = constant:condemnation_cost.participant_convoys_base }
+			multiply_temp_variable = { condemnation_enforcement_convoy_cost = -1 }
+			add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_enforcement_convoy_cost }
+			set_temp_variable = { condemnation_fuel_fraction_cost = constant:condemnation_cost.participant_fuel_fraction }
+			condemnation_pay_fuel_fraction = yes
+			meta_effect = {
+				text = { set_variable = { condemnation_pair_[TARGET_ID]_started_date = condemnation_pair_started_date } }
+				TARGET_ID = "[?condemnation_pair_target_id|.0]"
+			}
+		}
+		else = {
+			subtract_from_variable = { condemnation_enforcement_burden_total = condemnation_pair_previous_cost }
+			add_to_variable = { condemnation_enforcement_burden_total = condemnation_pair_enforcement_cost }
+			clamp_variable = { var = condemnation_enforcement_burden_total min = 0 max = constant:condemnation_threshold.total_cap }
+		}
+		meta_effect = {
+			text = {
+				set_variable = { condemnation_pair_[TARGET_ID]_tier = condemnation_pair_tier }
+				set_variable = { condemnation_pair_[TARGET_ID]_score = condemnation_pair_score }
+				set_variable = { condemnation_pair_[TARGET_ID]_trade_dependency = condemnation_pair_trade_dependency }
+				set_variable = { condemnation_pair_[TARGET_ID]_resource_dependency = condemnation_pair_resource_dependency }
+				set_variable = { condemnation_pair_[TARGET_ID]_moral_pressure = condemnation_pair_moral_pressure }
+				set_variable = { condemnation_pair_[TARGET_ID]_enforcement_cost = condemnation_pair_enforcement_cost }
+				set_variable = { condemnation_pair_[TARGET_ID]_expires_date = condemnation_pair_expires_date }
+			}
+			TARGET_ID = "[?condemnation_pair_target_id|.0]"
+		}
+		condemnation_refresh_participant_burden = yes
+	}
+}
+
+condemnation_calculate_pair_score = {
+	set_temp_variable = { condemnation_score_target = THIS }
+	set_temp_variable = { condemnation_pair_score = 0 }
+	set_temp_variable = { condemnation_pair_trade_dependency = 0 }
+	set_temp_variable = { condemnation_pair_resource_dependency = 0 }
+	set_temp_variable = { condemnation_pair_moral_pressure = 0 }
+	set_temp_variable = { condemnation_target_factories = num_of_factories }
+
+	set_temp_variable = { condemnation_score_term = condemnation_tier }
+	multiply_temp_variable = { condemnation_score_term = constant:condemnation_participant_score.tier }
+	add_to_temp_variable = { condemnation_pair_moral_pressure = condemnation_score_term }
+	set_temp_variable = { condemnation_score_term = condemnation_peak_tier }
+	multiply_temp_variable = { condemnation_score_term = constant:condemnation_participant_score.peak_tier }
+	add_to_temp_variable = { condemnation_pair_moral_pressure = condemnation_score_term }
+	set_temp_variable = { condemnation_score_term = condemnation_recent_gain }
+	multiply_temp_variable = { condemnation_score_term = constant:condemnation_participant_score.recent_gain }
+	add_to_temp_variable = { condemnation_pair_moral_pressure = condemnation_score_term }
+	set_temp_variable = { condemnation_score_term = condemnation_nuclear }
+	multiply_temp_variable = { condemnation_score_term = constant:condemnation_participant_score.nuclear }
+	add_to_temp_variable = { condemnation_pair_moral_pressure = condemnation_score_term }
+	set_temp_variable = { condemnation_score_term = condemnation_biological }
+	multiply_temp_variable = { condemnation_score_term = constant:condemnation_participant_score.biological }
+	add_to_temp_variable = { condemnation_pair_moral_pressure = condemnation_score_term }
+	set_temp_variable = { condemnation_score_term = condemnation_atrocity }
+	multiply_temp_variable = { condemnation_score_term = constant:condemnation_participant_score.atrocity }
+	add_to_temp_variable = { condemnation_pair_moral_pressure = condemnation_score_term }
+	set_temp_variable = { condemnation_score_term = condemnation_coverup }
+	multiply_temp_variable = { condemnation_score_term = constant:condemnation_participant_score.coverup }
+	add_to_temp_variable = { condemnation_pair_moral_pressure = condemnation_score_term }
+	set_temp_variable = { condemnation_score_term = condemnation_repeat_use }
+	multiply_temp_variable = { condemnation_score_term = constant:condemnation_participant_score.repeat_use }
+	add_to_temp_variable = { condemnation_pair_moral_pressure = condemnation_score_term }
+	set_temp_variable = { condemnation_score_term = condemnation_contamination_pressure }
+	multiply_temp_variable = { condemnation_score_term = constant:condemnation_participant_score.contamination }
+	add_to_temp_variable = { condemnation_pair_moral_pressure = condemnation_score_term }
+	set_temp_variable = { condemnation_score_term = condemnation_recent_civilian_deaths }
+	divide_temp_variable = { condemnation_score_term = constant:condemnation_participant_score.deaths_divisor }
+	multiply_temp_variable = { condemnation_score_term = constant:condemnation_participant_score.civilian_deaths_per_thousand }
+	add_to_temp_variable = { condemnation_pair_moral_pressure = condemnation_score_term }
+	if = { limit = { check_variable = { var = condemnation_last_source_severity value = constant:condemnation_severity.major compare = equals } } add_to_temp_variable = { condemnation_pair_moral_pressure = constant:condemnation_participant_score.recent_major_source } }
+	else_if = { limit = { check_variable = { var = condemnation_last_source_severity value = constant:condemnation_severity.mass_death compare = equals } } add_to_temp_variable = { condemnation_pair_moral_pressure = constant:condemnation_participant_score.recent_mass_death_source } }
+	else_if = { limit = { check_variable = { var = condemnation_last_source_severity value = constant:condemnation_severity.doomsday compare = equals } } add_to_temp_variable = { condemnation_pair_moral_pressure = constant:condemnation_participant_score.recent_doomsday_source } }
+	if = { limit = { has_country_flag = condemnation_domestic_propaganda_active } add_to_temp_variable = { condemnation_pair_moral_pressure = constant:condemnation_participant_score.defiant_propaganda } }
+	set_temp_variable = { condemnation_pair_score = condemnation_pair_moral_pressure }
+	set_temp_variable = { condemnation_score_has_victim = 0 }
+	if = {
+		limit = { has_variable = condemnation_last_victim var:condemnation_last_victim = { exists = yes } }
+		set_temp_variable = { condemnation_score_victim = condemnation_last_victim }
+		set_temp_variable = { condemnation_score_has_victim = 1 }
+	}
+
+	capital_scope = { save_event_target_as = condemnation_scoring_target_capital }
+	if = {
+		limit = { var:condemnation_pair_participant = { exists = yes } }
+		var:condemnation_pair_participant = {
+			set_temp_variable = { condemnation_participant_factories = num_of_factories }
+			set_temp_variable = { condemnation_participant_imports = resource_imported@oil }
+			add_to_temp_variable = { condemnation_participant_imports = resource_imported@rubber }
+			add_to_temp_variable = { condemnation_participant_imports = resource_imported@tungsten }
+			add_to_temp_variable = { condemnation_participant_imports = resource_imported@chromium }
+			add_to_temp_variable = { condemnation_participant_imports = resource_imported@aluminium }
+			add_to_temp_variable = { condemnation_participant_imports = resource_imported@steel }
+			set_temp_variable = { condemnation_participant_consumption = resource_consumed@oil }
+			add_to_temp_variable = { condemnation_participant_consumption = resource_consumed@rubber }
+			add_to_temp_variable = { condemnation_participant_consumption = resource_consumed@tungsten }
+			add_to_temp_variable = { condemnation_participant_consumption = resource_consumed@chromium }
+			add_to_temp_variable = { condemnation_participant_consumption = resource_consumed@aluminium }
+			add_to_temp_variable = { condemnation_participant_consumption = resource_consumed@steel }
+			set_temp_variable = { condemnation_participant_strategic_imports = resource_imported@oil }
+			add_to_temp_variable = { condemnation_participant_strategic_imports = resource_imported@rubber }
+			add_to_temp_variable = { condemnation_participant_strategic_imports = resource_imported@tungsten }
+			add_to_temp_variable = { condemnation_participant_strategic_imports = resource_imported@chromium }
+			set_temp_variable = { condemnation_participant_strategic_consumption = resource_consumed@oil }
+			add_to_temp_variable = { condemnation_participant_strategic_consumption = resource_consumed@rubber }
+			add_to_temp_variable = { condemnation_participant_strategic_consumption = resource_consumed@tungsten }
+			add_to_temp_variable = { condemnation_participant_strategic_consumption = resource_consumed@chromium }
+			set_temp_variable = { condemnation_participant_own_total = condemnation_total }
+			set_temp_variable = { condemnation_participant_fatigue = condemnation_sanction_fatigue }
+		}
+
+		set_temp_variable = { condemnation_target_exports = resource_exported@oil }
+		add_to_temp_variable = { condemnation_target_exports = resource_exported@rubber }
+		add_to_temp_variable = { condemnation_target_exports = resource_exported@tungsten }
+		add_to_temp_variable = { condemnation_target_exports = resource_exported@chromium }
+		add_to_temp_variable = { condemnation_target_exports = resource_exported@aluminium }
+		add_to_temp_variable = { condemnation_target_exports = resource_exported@steel }
+		set_temp_variable = { condemnation_target_strategic_exports = resource_exported@oil }
+		add_to_temp_variable = { condemnation_target_strategic_exports = resource_exported@rubber }
+		add_to_temp_variable = { condemnation_target_strategic_exports = resource_exported@tungsten }
+		add_to_temp_variable = { condemnation_target_strategic_exports = resource_exported@chromium }
+		multiply_temp_variable = { condemnation_target_exports = constant:condemnation_participant_score.export_capacity_scale }
+		multiply_temp_variable = { condemnation_target_strategic_exports = constant:condemnation_participant_score.export_capacity_scale }
+		clamp_temp_variable = { var = condemnation_target_exports min = 0 max = constant:condemnation_pair.percent_scale }
+		clamp_temp_variable = { var = condemnation_target_strategic_exports min = 0 max = constant:condemnation_pair.percent_scale }
+		clamp_temp_variable = { var = condemnation_participant_consumption min = constant:condemnation_pair.denominator_floor max = constant:condemnation_threshold.total_cap }
+		clamp_temp_variable = { var = condemnation_participant_strategic_consumption min = constant:condemnation_pair.denominator_floor max = constant:condemnation_threshold.total_cap }
+		set_temp_variable = { condemnation_pair_trade_dependency = condemnation_participant_imports }
+		divide_temp_variable = { condemnation_pair_trade_dependency = condemnation_participant_consumption }
+		multiply_temp_variable = { condemnation_pair_trade_dependency = condemnation_target_exports }
+		set_temp_variable = { condemnation_pair_resource_dependency = condemnation_participant_strategic_imports }
+		divide_temp_variable = { condemnation_pair_resource_dependency = condemnation_participant_strategic_consumption }
+		multiply_temp_variable = { condemnation_pair_resource_dependency = condemnation_target_strategic_exports }
+		clamp_temp_variable = { var = condemnation_pair_trade_dependency min = 0 max = constant:condemnation_pair.percent_scale }
+		clamp_temp_variable = { var = condemnation_pair_resource_dependency min = 0 max = constant:condemnation_pair.percent_scale }
+
+		set_temp_variable = { condemnation_score_term = condemnation_pair_trade_dependency }
+		multiply_temp_variable = { condemnation_score_term = constant:condemnation_participant_score.trade_dependency }
+		add_to_temp_variable = { condemnation_pair_score = condemnation_score_term }
+		set_temp_variable = { condemnation_score_term = condemnation_pair_resource_dependency }
+		multiply_temp_variable = { condemnation_score_term = constant:condemnation_participant_score.resource_dependency }
+		add_to_temp_variable = { condemnation_pair_score = condemnation_score_term }
+		set_temp_variable = { condemnation_score_term = condemnation_participant_own_total }
+		multiply_temp_variable = { condemnation_score_term = constant:condemnation_participant_score.hypocrisy }
+		add_to_temp_variable = { condemnation_pair_score = condemnation_score_term }
+		set_temp_variable = { condemnation_score_term = condemnation_participant_fatigue }
+		multiply_temp_variable = { condemnation_score_term = constant:condemnation_participant_score.fatigue }
+		add_to_temp_variable = { condemnation_pair_score = condemnation_score_term }
+		set_temp_variable = { condemnation_score_term = condemnation_decay_credit }
+		multiply_temp_variable = { condemnation_score_term = constant:condemnation_participant_score.compliance }
+		add_to_temp_variable = { condemnation_pair_score = condemnation_score_term }
+		set_temp_variable = { condemnation_score_term = condemnation_evasion_pressure }
+		multiply_temp_variable = { condemnation_score_term = constant:condemnation_participant_score.evasion }
+		add_to_temp_variable = { condemnation_pair_score = condemnation_score_term }
+
+		var:condemnation_pair_participant = {
+			if = { limit = { has_government = democratic } add_to_temp_variable = { condemnation_pair_score = constant:condemnation_participant_score.democratic } }
+			else_if = {
+				limit = {
+					has_government = fascism
+					var:condemnation_score_target = { NOT = { has_government = fascism } }
+				}
+				add_to_temp_variable = { condemnation_pair_score = constant:condemnation_participant_score.fascist_rival }
+			}
+			else_if = {
+				limit = {
+					has_government = communism
+					var:condemnation_score_target = { NOT = { has_government = communism } }
+				}
+				add_to_temp_variable = { condemnation_pair_score = constant:condemnation_participant_score.communist_rival }
+			}
+			else = { add_to_temp_variable = { condemnation_pair_score = constant:condemnation_participant_score.nonaligned } }
+
+			if = {
+				limit = {
+					OR = {
+						AND = { has_government = democratic var:condemnation_score_target = { has_government = democratic } }
+						AND = { has_government = fascism var:condemnation_score_target = { has_government = fascism } }
+						AND = { has_government = communism var:condemnation_score_target = { has_government = communism } }
+						AND = { has_government = neutrality var:condemnation_score_target = { has_government = neutrality } }
+					}
+				}
+				add_to_temp_variable = { condemnation_pair_score = constant:condemnation_participant_score.same_ideology }
+			}
+			if = { limit = { is_in_faction_with = var:condemnation_score_target } add_to_temp_variable = { condemnation_pair_score = constant:condemnation_participant_score.same_faction } }
+			if = {
+				limit = {
+					OR = {
+						is_subject_of = var:condemnation_score_target
+						var:condemnation_score_target = { is_subject_of = PREV }
+					}
+				}
+				add_to_temp_variable = { condemnation_pair_score = constant:condemnation_participant_score.overlord_or_subject }
+			}
+			if = { limit = { has_war_together_with = var:condemnation_score_target } add_to_temp_variable = { condemnation_pair_score = constant:condemnation_participant_score.common_war } }
+			if = { limit = { has_war_with = var:condemnation_score_target } add_to_temp_variable = { condemnation_pair_score = constant:condemnation_participant_score.rival } }
+			if = { limit = { is_neighbor_of = var:condemnation_score_target } add_to_temp_variable = { condemnation_pair_score = constant:condemnation_participant_score.neighbour } }
+			if = { limit = { is_faction_leader = yes } add_to_temp_variable = { condemnation_pair_score = constant:condemnation_participant_score.faction_leader } }
+			if = {
+				limit = { check_variable = { condemnation_score_has_victim > 0 } has_guaranteed = var:condemnation_score_victim }
+				add_to_temp_variable = { condemnation_pair_score = constant:condemnation_participant_score.victim_guarantor }
+			}
+			if = {
+				limit = { is_subject = yes }
+				OVERLORD = { set_temp_variable = { condemnation_score_overlord = THIS } }
+				if = {
+					limit = { var:condemnation_score_target = { is_in_array = { array = condemnation_sanction_participants value = condemnation_score_overlord } } }
+					add_to_temp_variable = { condemnation_pair_score = constant:condemnation_participant_score.overlord_alignment }
+				}
+				else_if = {
+					limit = {
+						var:condemnation_score_target = {
+							OR = {
+								is_in_array = { array = condemnation_shielding_participants value = condemnation_score_overlord }
+								is_in_array = { array = condemnation_abstaining_participants value = condemnation_score_overlord }
+							}
+						}
+					}
+					add_to_temp_variable = { condemnation_pair_score = constant:condemnation_participant_score.overlord_shield_alignment }
+				}
+			}
+			if = { limit = { is_major = yes } add_to_temp_variable = { condemnation_pair_score = constant:condemnation_participant_score.participant_major } }
+			if = { limit = { check_variable = { num_of_factories < constant:condemnation_industry.weak_factories } } add_to_temp_variable = { condemnation_pair_score = constant:condemnation_participant_score.weak_industry } }
+			capital_scope = {
+				if = { limit = { distance_to = { target = event_target:condemnation_scoring_target_capital value < constant:condemnation_distance.near } } add_to_temp_variable = { condemnation_pair_score = constant:condemnation_participant_score.near_distance } }
+				else_if = { limit = { NOT = { distance_to = { target = event_target:condemnation_scoring_target_capital value < constant:condemnation_distance.far } } } add_to_temp_variable = { condemnation_pair_score = constant:condemnation_participant_score.far_distance } }
+			}
+		}
+
+		if = { limit = { is_major = yes } add_to_temp_variable = { condemnation_pair_score = constant:condemnation_participant_score.target_major } }
+		if = { limit = { check_variable = { var = condemnation_participant_factories value = condemnation_target_factories compare = greater_than } } add_to_temp_variable = { condemnation_pair_score = constant:condemnation_participant_score.participant_stronger } }
+		else_if = { limit = { check_variable = { var = condemnation_participant_factories value = condemnation_target_factories compare = less_than } } add_to_temp_variable = { condemnation_pair_score = constant:condemnation_participant_score.target_stronger } }
+		if = {
+			limit = {
+				has_variable = condemnation_last_victim
+				check_variable = { var = condemnation_last_victim value = condemnation_pair_participant compare = equals }
+			}
+			add_to_temp_variable = { condemnation_pair_score = constant:condemnation_participant_score.direct_victim }
+		}
+		if = { limit = { has_world_tension > constant:condemnation_world_tension.extreme } add_to_temp_variable = { condemnation_pair_score = constant:condemnation_participant_score.extreme_world_tension } }
+		else_if = { limit = { has_world_tension > constant:condemnation_world_tension.high } add_to_temp_variable = { condemnation_pair_score = constant:condemnation_participant_score.high_world_tension } }
+	}
+}
+
+condemnation_apply_pair_ai_strategy_delta = {
+	if = {
+		limit = {
+			is_ai = yes
+			check_variable = { condemnation_pair_previous_tier < constant:condemnation_tier.arms_embargo }
+			check_variable = { condemnation_pair_tier > constant:condemnation_tier.formal_censure }
+		}
+		add_ai_strategy = { type = send_lend_lease_desire id = var:condemnation_pair_target value = constant:condemnation_ai_strategy.arms_lend_lease }
+		add_ai_strategy = { type = send_volunteers_desire id = var:condemnation_pair_target value = constant:condemnation_ai_strategy.arms_volunteers }
+		add_ai_strategy = { type = equipment_market_trade_desire id = var:condemnation_pair_target value = constant:condemnation_ai_strategy.arms_market }
+		add_ai_strategy = { type = diplo_action_acceptance id = var:condemnation_pair_target target = military_access value = constant:condemnation_ai_strategy.military_access }
+	}
+	if = {
+		limit = {
+			is_ai = yes
+			check_variable = { condemnation_pair_previous_tier < constant:condemnation_tier.strategic_embargo }
+			check_variable = { condemnation_pair_tier > constant:condemnation_tier.arms_embargo }
+		}
+		add_ai_strategy = { type = equipment_market_trade_desire id = var:condemnation_pair_target value = constant:condemnation_ai_strategy.strategic_market }
+	}
+	if = {
+		limit = {
+			is_ai = yes
+			check_variable = { condemnation_pair_previous_tier < constant:condemnation_tier.total_embargo }
+			check_variable = { condemnation_pair_tier > constant:condemnation_tier.strategic_embargo }
+		}
+		add_ai_strategy = { type = befriend id = var:condemnation_pair_target value = constant:condemnation_ai_strategy.total_befriend }
+		add_ai_strategy = { type = protect id = var:condemnation_pair_target value = constant:condemnation_ai_strategy.total_protect }
+	}
+	if = {
+		limit = {
+			is_ai = yes
+			check_variable = { condemnation_pair_previous_tier < constant:condemnation_tier.pariah_state }
+			check_variable = { condemnation_pair_tier > constant:condemnation_tier.total_embargo }
+		}
+		add_ai_strategy = { type = antagonize id = var:condemnation_pair_target value = constant:condemnation_ai_strategy.pariah_antagonize }
+		add_ai_strategy = { type = contain id = var:condemnation_pair_target value = constant:condemnation_ai_strategy.pariah_contain }
+	}
+}
+
+condemnation_remove_pair_ai_strategies = {
+	if = {
+		limit = {
+			is_ai = yes
+			check_variable = { condemnation_pair_previous_tier > constant:condemnation_tier.formal_censure }
+		}
+		add_ai_strategy = { type = send_lend_lease_desire id = var:condemnation_pair_target value = constant:condemnation_ai_strategy.arms_lend_lease_restore }
+		add_ai_strategy = { type = send_volunteers_desire id = var:condemnation_pair_target value = constant:condemnation_ai_strategy.arms_volunteers_restore }
+		add_ai_strategy = { type = equipment_market_trade_desire id = var:condemnation_pair_target value = constant:condemnation_ai_strategy.arms_market_restore }
+		add_ai_strategy = { type = diplo_action_acceptance id = var:condemnation_pair_target target = military_access value = constant:condemnation_ai_strategy.military_access_restore }
+	}
+	if = {
+		limit = {
+			is_ai = yes
+			check_variable = { condemnation_pair_previous_tier > constant:condemnation_tier.arms_embargo }
+		}
+		add_ai_strategy = { type = equipment_market_trade_desire id = var:condemnation_pair_target value = constant:condemnation_ai_strategy.strategic_market_restore }
+	}
+	if = {
+		limit = {
+			is_ai = yes
+			check_variable = { condemnation_pair_previous_tier > constant:condemnation_tier.strategic_embargo }
+		}
+		add_ai_strategy = { type = befriend id = var:condemnation_pair_target value = constant:condemnation_ai_strategy.total_befriend_restore }
+		add_ai_strategy = { type = protect id = var:condemnation_pair_target value = constant:condemnation_ai_strategy.total_protect_restore }
+	}
+	if = {
+		limit = {
+			is_ai = yes
+			check_variable = { condemnation_pair_previous_tier > constant:condemnation_tier.total_embargo }
+		}
+		add_ai_strategy = { type = antagonize id = var:condemnation_pair_target value = constant:condemnation_ai_strategy.pariah_antagonize_restore }
+		add_ai_strategy = { type = contain id = var:condemnation_pair_target value = constant:condemnation_ai_strategy.pariah_contain_restore }
+	}
+}
+
+condemnation_apply_sanction_pair = {
+	set_temp_variable = { condemnation_pair_target_scope = THIS }
+	if = {
+		limit = { var:condemnation_pair_participant = { exists = yes } }
+		var:condemnation_pair_participant = {
+			set_temp_variable = { condemnation_embargo_target = var:condemnation_pair_target_scope }
+			set_temp_variable = { condemnation_embargo_source = constant:condemnation_embargo_source.condemnation }
+			condemnation_register_native_embargo_source = yes
+		}
+		if = {
+			limit = { check_variable = { condemnation_native_claim_succeeded > constant:condemnation_tier.normal } }
+			if = {
+				limit = {
+					NOT = {
+						is_in_array = {
+							array = condemnation_sanction_participants
+							value = condemnation_pair_participant
+						}
+					}
+				}
+				add_to_array = { array = condemnation_sanction_participants value = condemnation_pair_participant }
+			}
+			remove_from_array = { array = condemnation_arms_embargo_participants value = condemnation_pair_participant }
+		remove_from_array = { array = condemnation_strategic_embargo_participants value = condemnation_pair_participant }
+		remove_from_array = { array = condemnation_total_embargo_participants value = condemnation_pair_participant }
+		remove_from_array = { array = condemnation_pariah_embargo_participants value = condemnation_pair_participant }
+		remove_from_array = { array = condemnation_abstaining_participants value = condemnation_pair_participant }
+		remove_from_array = { array = condemnation_shielding_participants value = condemnation_pair_participant }
+		add_to_array = { array = condemnation_arms_embargo_participants value = condemnation_pair_participant }
+		if = {
+			limit = { check_variable = { condemnation_pair_tier > constant:condemnation_tier.arms_embargo } }
+			add_to_array = { array = condemnation_strategic_embargo_participants value = condemnation_pair_participant }
+		}
+		if = {
+			limit = { check_variable = { condemnation_pair_tier > constant:condemnation_tier.strategic_embargo } }
+			add_to_array = { array = condemnation_total_embargo_participants value = condemnation_pair_participant }
+		}
+		if = {
+			limit = { check_variable = { condemnation_pair_tier > constant:condemnation_tier.total_embargo } }
+			add_to_array = { array = condemnation_pariah_embargo_participants value = condemnation_pair_participant }
+		}
+
+		if = {
+			limit = { check_variable = { var = condemnation_pair_tier value = constant:condemnation_tier.pariah_state compare = greater_than_or_equals } }
+			set_temp_variable = { condemnation_pair_review_days = constant:condemnation_duration_days.pariah_embargo_review }
+		}
+		else_if = {
+			limit = { check_variable = { var = condemnation_pair_tier value = constant:condemnation_tier.total_embargo compare = greater_than_or_equals } }
+			set_temp_variable = { condemnation_pair_review_days = constant:condemnation_duration_days.total_embargo_review }
+		}
+		else_if = {
+			limit = { check_variable = { var = condemnation_pair_tier value = constant:condemnation_tier.strategic_embargo compare = greater_than_or_equals } }
+			set_temp_variable = { condemnation_pair_review_days = constant:condemnation_duration_days.strategic_embargo_review }
+		}
+		else = {
+			set_temp_variable = { condemnation_pair_review_days = constant:condemnation_duration_days.arms_embargo_review }
+		}
+
+	set_temp_variable = { condemnation_pair_enforcement_cost = constant:condemnation_pair.enforcement_cost_base }
+		set_temp_variable = { condemnation_pair_dependency_cost = condemnation_pair_trade_dependency }
+		multiply_temp_variable = { condemnation_pair_dependency_cost = constant:condemnation_pair.enforcement_cost_dependency }
+	add_to_temp_variable = { condemnation_pair_enforcement_cost = condemnation_pair_dependency_cost }
+	set_temp_variable = { condemnation_pair_enforcement_tier_factor = constant:condemnation_pair.enforcement_tier_arms }
+	if = { limit = { check_variable = { var = condemnation_pair_tier value = constant:condemnation_tier.pariah_state compare = greater_than_or_equals } } set_temp_variable = { condemnation_pair_enforcement_tier_factor = constant:condemnation_pair.enforcement_tier_pariah } }
+	else_if = { limit = { check_variable = { var = condemnation_pair_tier value = constant:condemnation_tier.total_embargo compare = greater_than_or_equals } } set_temp_variable = { condemnation_pair_enforcement_tier_factor = constant:condemnation_pair.enforcement_tier_total } }
+	else_if = { limit = { check_variable = { var = condemnation_pair_tier value = constant:condemnation_tier.strategic_embargo compare = greater_than_or_equals } } set_temp_variable = { condemnation_pair_enforcement_tier_factor = constant:condemnation_pair.enforcement_tier_strategic } }
+	multiply_temp_variable = { condemnation_pair_enforcement_cost = condemnation_pair_enforcement_tier_factor }
+
+			var:condemnation_pair_participant = {
+				set_temp_variable = { condemnation_pair_target = var:condemnation_pair_target_scope }
+				condemnation_read_pair_record = yes
+				set_temp_variable = { condemnation_pair_old_tier = condemnation_pair_previous_tier }
+				condemnation_remove_pair_ai_strategies = yes
+				if = {
+					limit = {
+						check_variable = { condemnation_pair_old_tier > constant:condemnation_tier.normal }
+						check_variable = { var = condemnation_pair_tier value = condemnation_pair_old_tier compare = greater_than }
+					}
+					set_temp_variable = { condemnation_escalation_convoy_cost = constant:condemnation_cost.participant_escalation_convoys }
+					multiply_temp_variable = { condemnation_escalation_convoy_cost = -1 }
+					add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_escalation_convoy_cost }
+					set_temp_variable = { condemnation_fuel_fraction_cost = constant:condemnation_cost.participant_escalation_fuel_fraction }
+					condemnation_pay_fuel_fraction = yes
+				}
+				set_temp_variable = { condemnation_pair_previous_tier = constant:condemnation_tier.normal }
+				condemnation_write_pair_record = yes
+				condemnation_apply_pair_ai_strategy_delta = yes
+				recall_volunteers_from = var:condemnation_pair_target_scope
+				recall_attache = var:condemnation_pair_target_scope
+				add_opinion_modifier = { target = var:condemnation_pair_target_scope modifier = condemnation_sanctioning_target }
+				var:condemnation_pair_target_scope = { add_opinion_modifier = { target = PREV modifier = condemnation_targeted_by_sanctions } }
+			}
+		}
+		else_if = {
+			limit = { is_in_array = { array = condemnation_sanction_participants value = condemnation_pair_participant } }
+			condemnation_clear_sanction_pair = yes
+		}
+	}
+	set_variable = { condemnation_active_sanctions = condemnation_sanction_participants^num }
+	condemnation_refresh_target_modifiers = yes
+	refresh_chaos_meter_condemnation_view_if_open = yes
+}
+
+condemnation_clear_sanction_pair = {
+	set_temp_variable = { condemnation_pair_target_scope = THIS }
+	if = {
+		limit = { var:condemnation_pair_participant = { exists = yes } }
+		remove_from_array = { array = condemnation_sanction_participants value = condemnation_pair_participant }
+		remove_from_array = { array = condemnation_arms_embargo_participants value = condemnation_pair_participant }
+		remove_from_array = { array = condemnation_strategic_embargo_participants value = condemnation_pair_participant }
+		remove_from_array = { array = condemnation_total_embargo_participants value = condemnation_pair_participant }
+		remove_from_array = { array = condemnation_pariah_embargo_participants value = condemnation_pair_participant }
+		remove_from_array = { array = condemnation_humanitarian_carveout_participants value = condemnation_pair_participant }
+		remove_from_array = { array = condemnation_quiet_breach_participants value = condemnation_pair_participant }
+		remove_from_array = { array = condemnation_tight_enforcement_participants value = condemnation_pair_participant }
+		remove_from_array = { array = condemnation_abstaining_participants value = condemnation_pair_participant }
+		remove_from_array = { array = condemnation_shielding_participants value = condemnation_pair_participant }
+		var:condemnation_pair_participant = {
+			set_temp_variable = { condemnation_pair_target = var:condemnation_pair_target_scope }
+			condemnation_read_pair_record = yes
+			set_temp_variable = { condemnation_pair_tight_cost = 0 }
+			meta_effect = {
+				text = { if = { limit = { has_variable = condemnation_pair_[TARGET_ID]_tight_cost } set_temp_variable = { condemnation_pair_tight_cost = condemnation_pair_[TARGET_ID]_tight_cost } } }
+				TARGET_ID = "[?condemnation_pair_target_id|.0]"
+			}
+			condemnation_remove_pair_ai_strategies = yes
+			subtract_from_variable = { condemnation_enforcement_burden_total = condemnation_pair_previous_cost }
+			subtract_from_variable = { condemnation_enforcement_burden_total = condemnation_pair_tight_cost }
+			clamp_variable = { var = condemnation_enforcement_burden_total min = 0 max = constant:condemnation_threshold.total_cap }
+			subtract_from_variable = { condemnation_sanction_fatigue = constant:condemnation_pair.fatigue_withdrawal_relief }
+			clamp_variable = { var = condemnation_sanction_fatigue min = 0 max = constant:condemnation_pair.fatigue_cap }
+			subtract_from_variable = { condemnation_active_pair_count = 1 }
+			clamp_variable = { var = condemnation_active_pair_count min = 0 max = constant:condemnation_threshold.total_cap }
+			if = {
+				limit = { check_variable = { condemnation_active_pair_count < 1 } }
+				set_variable = { condemnation_sanction_fatigue = 0 }
+				remove_relation_rule_override = {
+					trigger = condemnation_relation_is_arms_embargo_target
+					can_send_volunteers = no
+				}
+				remove_relation_rule_override = {
+					trigger = condemnation_relation_is_arms_embargo_target
+					can_access_market = no
+				}
+			}
+			set_temp_variable = { condemnation_embargo_target = var:condemnation_pair_target_scope }
+			set_temp_variable = { condemnation_embargo_source = constant:condemnation_embargo_source.condemnation }
+			condemnation_unregister_native_embargo_source = yes
+			remove_opinion_modifier = { target = var:condemnation_pair_target_scope modifier = condemnation_sanctioning_target }
+			var:condemnation_pair_target_scope = { remove_opinion_modifier = { target = PREV modifier = condemnation_targeted_by_sanctions } }
+			var:condemnation_pair_target = { set_temp_variable = { condemnation_pair_target_id = id } }
+			meta_effect = {
+				text = {
+					clear_variable = condemnation_pair_[TARGET_ID]_tier
+					clear_variable = condemnation_pair_[TARGET_ID]_score
+					clear_variable = condemnation_pair_[TARGET_ID]_trade_dependency
+					clear_variable = condemnation_pair_[TARGET_ID]_resource_dependency
+					clear_variable = condemnation_pair_[TARGET_ID]_moral_pressure
+					clear_variable = condemnation_pair_[TARGET_ID]_enforcement_cost
+					clear_variable = condemnation_pair_[TARGET_ID]_started_date
+					clear_variable = condemnation_pair_[TARGET_ID]_expires_date
+					clear_variable = condemnation_pair_[TARGET_ID]_carveout_expires
+					clear_variable = condemnation_pair_[TARGET_ID]_quiet_breach_expires
+					clear_variable = condemnation_pair_[TARGET_ID]_tight_enforcement_expires
+					clear_variable = condemnation_pair_[TARGET_ID]_tight_cost
+					clear_variable = condemnation_pair_[TARGET_ID]_abstention_expires
+					clear_variable = condemnation_pair_[TARGET_ID]_shield_expires
+					clear_variable = condemnation_pair_[TARGET_ID]_watch_tier
+				}
+				TARGET_ID = "[?condemnation_pair_target_id|.0]"
+			}
+			condemnation_refresh_participant_burden = yes
+		}
+	}
+	set_variable = { condemnation_active_sanctions = condemnation_sanction_participants^num }
+	condemnation_refresh_target_modifiers = yes
+	refresh_chaos_meter_condemnation_view_if_open = yes
+}
+
+condemnation_record_abstention = {
+	set_temp_variable = { condemnation_pair_target = THIS }
+	if = {
+		limit = {
+			var:condemnation_pair_participant = { exists = yes }
+			NOT = { is_in_array = { array = condemnation_abstaining_participants value = condemnation_pair_participant } }
+		}
+		remove_from_array = { array = condemnation_shielding_participants value = condemnation_pair_participant }
+		add_to_array = { array = condemnation_abstaining_participants value = condemnation_pair_participant }
+		var:condemnation_pair_participant = {
+			set_temp_variable = { condemnation_abstaining_country = THIS }
+			var:condemnation_pair_target = { set_temp_variable = { condemnation_pair_target_id = id } }
+			set_temp_variable = { condemnation_status_expires = global.date }
+			add_to_temp_variable = { condemnation_status_expires = constant:condemnation_duration_days.arms_embargo_review }
+			meta_effect = {
+				text = { set_variable = { condemnation_pair_[TARGET_ID]_abstention_expires = condemnation_status_expires } }
+				TARGET_ID = "[?condemnation_pair_target_id|.0]"
+			}
+			add_opinion_modifier = { target = var:condemnation_pair_target modifier = condemnation_abstained_from_sanctions }
+		}
+		if = {
+			limit = { has_variable = condemnation_last_victim var:condemnation_last_victim = { exists = yes } }
+			var:condemnation_last_victim = { add_opinion_modifier = { target = var:condemnation_abstaining_country modifier = condemnation_abstention_condemned } }
+		}
+		for_each_scope_loop = {
+			array = condemnation_sanction_participants
+			limit = { exists = yes NOT = { tag = var:condemnation_abstaining_country } }
+			add_opinion_modifier = { target = var:condemnation_abstaining_country modifier = condemnation_abstention_condemned }
+		}
+	}
+}
+
+condemnation_record_faction_shield = {
+	set_temp_variable = { condemnation_pair_target = THIS }
+	if = {
+		limit = { var:condemnation_pair_participant = { exists = yes } }
+		remove_from_array = { array = condemnation_abstaining_participants value = condemnation_pair_participant }
+		if = {
+			limit = { NOT = { is_in_array = { array = condemnation_shielding_participants value = condemnation_pair_participant } } }
+			add_to_array = { array = condemnation_shielding_participants value = condemnation_pair_participant }
+			var:condemnation_pair_participant = {
+				var:condemnation_pair_target = { set_temp_variable = { condemnation_pair_target_id = id } }
+				set_temp_variable = { condemnation_status_expires = global.date }
+				add_to_temp_variable = { condemnation_status_expires = constant:condemnation_duration_days.faction_shield }
+				meta_effect = {
+					text = { set_variable = { condemnation_pair_[TARGET_ID]_shield_expires = condemnation_status_expires } }
+					TARGET_ID = "[?condemnation_pair_target_id|.0]"
+				}
+				set_temp_variable = { condemnation_shield_convoy_cost = constant:condemnation_cost.shield_convoys }
+				multiply_temp_variable = { condemnation_shield_convoy_cost = -1 }
+				add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_shield_convoy_cost }
+				add_to_variable = { condemnation_sanction_fatigue = constant:condemnation_pair.fatigue_monthly }
+				add_opinion_modifier = { target = var:condemnation_pair_target modifier = condemnation_shielding_target }
+			}
+		}
+	}
+	condemnation_refresh_target_modifiers = yes
+	refresh_chaos_meter_condemnation_view_if_open = yes
+}
+
+condemnation_apply_humanitarian_carveout = {
+	set_temp_variable = { condemnation_pair_target = THIS }
+	if = {
+		limit = {
+			var:condemnation_pair_participant = { exists = yes }
+			NOT = { is_in_array = { array = condemnation_humanitarian_carveout_participants value = condemnation_pair_participant } }
+		}
+		add_to_array = { array = condemnation_humanitarian_carveout_participants value = condemnation_pair_participant }
+		var:condemnation_pair_participant = {
+			var:condemnation_pair_target = { set_temp_variable = { condemnation_pair_target_id = id } }
+			set_temp_variable = { condemnation_status_expires = global.date }
+			add_to_temp_variable = { condemnation_status_expires = constant:condemnation_duration_days.humanitarian_carveout }
+			meta_effect = {
+				text = { set_variable = { condemnation_pair_[TARGET_ID]_carveout_expires = condemnation_status_expires } }
+				TARGET_ID = "[?condemnation_pair_target_id|.0]"
+			}
+			set_temp_variable = { condemnation_carveout_convoy_cost = constant:condemnation_cost.carveout_convoys }
+			multiply_temp_variable = { condemnation_carveout_convoy_cost = -1 }
+			add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_carveout_convoy_cost }
+		}
+		condemnation_refresh_target_modifiers = yes
+	}
+}
+
+condemnation_apply_quiet_breach = {
+	set_temp_variable = { condemnation_pair_target = THIS }
+	if = {
+		limit = {
+			var:condemnation_pair_participant = { exists = yes }
+			NOT = { is_in_array = { array = condemnation_quiet_breach_participants value = condemnation_pair_participant } }
+		}
+		add_to_array = { array = condemnation_quiet_breach_participants value = condemnation_pair_participant }
+		add_to_variable = { condemnation_evasion_pressure = constant:condemnation_route.intermediary_strength }
+		add_to_variable = { condemnation_black_market_exposure = constant:condemnation_route.exposure_per_route }
+		var:condemnation_pair_participant = {
+			var:condemnation_pair_target = { set_temp_variable = { condemnation_pair_target_id = id } }
+			set_temp_variable = { condemnation_status_expires = global.date }
+			add_to_temp_variable = { condemnation_status_expires = constant:condemnation_duration_days.quiet_breach }
+			meta_effect = {
+				text = { set_variable = { condemnation_pair_[TARGET_ID]_quiet_breach_expires = condemnation_status_expires } }
+				TARGET_ID = "[?condemnation_pair_target_id|.0]"
+			}
+			set_temp_variable = { condemnation_breach_convoy_cost = constant:condemnation_cost.quiet_breach_convoys }
+			multiply_temp_variable = { condemnation_breach_convoy_cost = -1 }
+			add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_breach_convoy_cost }
+			set_temp_variable = { condemnation_breach_equipment_cost = constant:condemnation_cost.quiet_breach_equipment }
+			multiply_temp_variable = { condemnation_breach_equipment_cost = -1 }
+			add_equipment_to_stockpile = { type = infantry_equipment amount = condemnation_breach_equipment_cost }
+			set_temp_variable = { condemnation_fuel_fraction_cost = constant:condemnation_cost.quiet_breach_fuel_fraction }
+			condemnation_pay_fuel_fraction = yes
+		}
+		condemnation_refresh_target_modifiers = yes
+	}
+}
+
+condemnation_apply_tight_enforcement = {
+	set_temp_variable = { condemnation_pair_target = THIS }
+	if = {
+		limit = {
+			var:condemnation_pair_participant = { exists = yes }
+			NOT = { is_in_array = { array = condemnation_tight_enforcement_participants value = condemnation_pair_participant } }
+		}
+		add_to_array = { array = condemnation_tight_enforcement_participants value = condemnation_pair_participant }
+		remove_from_array = { array = condemnation_quiet_breach_participants value = condemnation_pair_participant }
+		var:condemnation_pair_participant = {
+			var:condemnation_pair_target = { set_temp_variable = { condemnation_pair_target_id = id } }
+			set_temp_variable = { condemnation_status_expires = global.date }
+			add_to_temp_variable = { condemnation_status_expires = constant:condemnation_duration_days.tight_enforcement }
+			meta_effect = {
+				text = {
+					set_variable = { condemnation_pair_[TARGET_ID]_tight_enforcement_expires = condemnation_status_expires }
+					set_variable = { condemnation_pair_[TARGET_ID]_tight_cost = constant:condemnation_pair.enforcement_cost_base }
+				}
+				TARGET_ID = "[?condemnation_pair_target_id|.0]"
+			}
+			set_temp_variable = { condemnation_enforcement_convoy_cost = constant:condemnation_cost.tight_enforcement_convoys }
+			multiply_temp_variable = { condemnation_enforcement_convoy_cost = -1 }
+			add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_enforcement_convoy_cost }
+			add_to_variable = { condemnation_enforcement_burden_total = constant:condemnation_pair.enforcement_cost_base }
+			condemnation_refresh_participant_burden = yes
+		}
+		condemnation_refresh_target_modifiers = yes
+	}
+}
+
+condemnation_expose_quiet_breach = {
+	set_temp_variable = { condemnation_pair_target = THIS }
+	if = {
+		limit = { condemnation_quiet_breach_participants^num > 0 }
+		random_scope_in_array = {
+			array = condemnation_quiet_breach_participants
+			limit = { exists = yes }
+			set_temp_variable = { condemnation_exposed_participant = THIS }
+		}
+		if = {
+			limit = { var:condemnation_exposed_participant = { exists = yes } }
+			remove_from_array = { array = condemnation_quiet_breach_participants value = condemnation_exposed_participant }
+			set_temp_variable = { condemnation_exposure_days = constant:condemnation_duration_days.exposure_memory }
+			set_country_flag = { flag = condemnation_evasion_exposed days = condemnation_exposure_days }
+			set_temp_variable = { condemnation_source_type = constant:condemnation_source.coverup }
+			set_temp_variable = { condemnation_base_gain = constant:condemnation_gain.quiet_breach_exposure_coverup }
+			set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+			set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.major }
+			set_temp_variable = { condemnation_context_type = constant:condemnation_context.black_market_exposure }
+			condemnation_add_source = yes
+			var:condemnation_exposed_participant = {
+				set_temp_variable = { condemnation_source_type = constant:condemnation_source.coverup }
+				set_temp_variable = { condemnation_base_gain = constant:condemnation_gain.quiet_breach_exposure_coverup }
+				set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+				set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.minor }
+				set_temp_variable = { condemnation_context_type = constant:condemnation_context.black_market_exposure }
+				condemnation_add_source = yes
+				add_opinion_modifier = { target = var:condemnation_pair_target modifier = condemnation_breach_exposed }
+			}
+			for_each_scope_loop = {
+				array = condemnation_sanction_participants
+				limit = { exists = yes NOT = { tag = var:condemnation_exposed_participant } }
+				add_opinion_modifier = { target = var:condemnation_exposed_participant modifier = condemnation_breach_exposed }
+			}
+			if = {
+				limit = { has_variable = condemnation_last_victim var:condemnation_last_victim = { exists = yes } }
+				var:condemnation_last_victim = { add_opinion_modifier = { target = var:condemnation_exposed_participant modifier = condemnation_breach_exposed } }
+			}
+		}
+	}
+}
+
+condemnation_cleanup_pair_statuses = {
+	if = {
+		limit = { var:condemnation_pair_target = { exists = yes } }
+		var:condemnation_pair_target = { set_temp_variable = { condemnation_pair_target_id = id } }
+		set_temp_variable = { condemnation_carveout_expires = 0 }
+		set_temp_variable = { condemnation_quiet_breach_expires = 0 }
+		set_temp_variable = { condemnation_tight_enforcement_expires = 0 }
+		set_temp_variable = { condemnation_abstention_expires = 0 }
+		set_temp_variable = { condemnation_shield_expires = 0 }
+		meta_effect = {
+			text = {
+				if = { limit = { has_variable = condemnation_pair_[TARGET_ID]_carveout_expires } set_temp_variable = { condemnation_carveout_expires = condemnation_pair_[TARGET_ID]_carveout_expires } }
+				if = { limit = { has_variable = condemnation_pair_[TARGET_ID]_quiet_breach_expires } set_temp_variable = { condemnation_quiet_breach_expires = condemnation_pair_[TARGET_ID]_quiet_breach_expires } }
+				if = { limit = { has_variable = condemnation_pair_[TARGET_ID]_tight_enforcement_expires } set_temp_variable = { condemnation_tight_enforcement_expires = condemnation_pair_[TARGET_ID]_tight_enforcement_expires } }
+				if = { limit = { has_variable = condemnation_pair_[TARGET_ID]_abstention_expires } set_temp_variable = { condemnation_abstention_expires = condemnation_pair_[TARGET_ID]_abstention_expires } }
+				if = { limit = { has_variable = condemnation_pair_[TARGET_ID]_shield_expires } set_temp_variable = { condemnation_shield_expires = condemnation_pair_[TARGET_ID]_shield_expires } }
+			}
+			TARGET_ID = "[?condemnation_pair_target_id|.0]"
+		}
+		if = {
+			limit = {
+				check_variable = { condemnation_carveout_expires > 0 }
+				check_variable = { var = global.date value = condemnation_carveout_expires compare = greater_than_or_equals }
+			}
+			var:condemnation_pair_target = { remove_from_array = { array = condemnation_humanitarian_carveout_participants value = PREV } }
+			meta_effect = { text = { clear_variable = condemnation_pair_[TARGET_ID]_carveout_expires } TARGET_ID = "[?condemnation_pair_target_id|.0]" }
+		}
+		if = {
+			limit = {
+				check_variable = { condemnation_quiet_breach_expires > 0 }
+				check_variable = { var = global.date value = condemnation_quiet_breach_expires compare = greater_than_or_equals }
+			}
+			var:condemnation_pair_target = { remove_from_array = { array = condemnation_quiet_breach_participants value = PREV } }
+			meta_effect = { text = { clear_variable = condemnation_pair_[TARGET_ID]_quiet_breach_expires } TARGET_ID = "[?condemnation_pair_target_id|.0]" }
+		}
+		if = {
+			limit = {
+				check_variable = { condemnation_tight_enforcement_expires > 0 }
+				check_variable = { var = global.date value = condemnation_tight_enforcement_expires compare = greater_than_or_equals }
+			}
+			var:condemnation_pair_target = { remove_from_array = { array = condemnation_tight_enforcement_participants value = PREV } }
+			subtract_from_variable = { condemnation_enforcement_burden_total = constant:condemnation_pair.enforcement_cost_base }
+			clamp_variable = { var = condemnation_enforcement_burden_total min = 0 max = constant:condemnation_threshold.total_cap }
+			meta_effect = { text = { clear_variable = condemnation_pair_[TARGET_ID]_tight_enforcement_expires clear_variable = condemnation_pair_[TARGET_ID]_tight_cost } TARGET_ID = "[?condemnation_pair_target_id|.0]" }
+			condemnation_refresh_participant_burden = yes
+		}
+		if = {
+			limit = {
+				check_variable = { condemnation_abstention_expires > 0 }
+				check_variable = { var = global.date value = condemnation_abstention_expires compare = greater_than_or_equals }
+			}
+			var:condemnation_pair_target = { remove_from_array = { array = condemnation_abstaining_participants value = PREV } }
+			meta_effect = { text = { clear_variable = condemnation_pair_[TARGET_ID]_abstention_expires } TARGET_ID = "[?condemnation_pair_target_id|.0]" }
+		}
+		if = {
+			limit = {
+				check_variable = { condemnation_shield_expires > 0 }
+				check_variable = { var = global.date value = condemnation_shield_expires compare = greater_than_or_equals }
+			}
+			var:condemnation_pair_target = { remove_from_array = { array = condemnation_shielding_participants value = PREV } }
+			meta_effect = { text = { clear_variable = condemnation_pair_[TARGET_ID]_shield_expires } TARGET_ID = "[?condemnation_pair_target_id|.0]" }
+		}
+	}
+}
+
+condemnation_recalculate_participants = {
+	condemnation_initialize_country = yes
+	set_temp_variable = { condemnation_recalculation_target = THIS }
+	for_each_scope_loop = {
+		array = condemnation_likely_participants
+		limit = { exists = yes }
+		var:condemnation_recalculation_target = { set_temp_variable = { condemnation_pair_target_id = id } }
+		set_temp_variable = { condemnation_watch_tier = constant:condemnation_tier.formal_censure }
+		meta_effect = {
+			text = {
+				if = {
+					limit = { has_variable = condemnation_pair_[TARGET_ID]_watch_tier }
+					set_temp_variable = { condemnation_watch_tier = condemnation_pair_[TARGET_ID]_watch_tier }
+				}
+				clear_variable = condemnation_pair_[TARGET_ID]_watch_tier
+			}
+			TARGET_ID = "[?condemnation_pair_target_id|.0]"
+		}
+		if = {
+			limit = {
+				is_ai = yes
+				check_variable = { var = condemnation_watch_tier value = constant:condemnation_tier.concern compare = equals }
+			}
+			add_ai_strategy = { type = send_lend_lease_desire id = var:condemnation_recalculation_target value = constant:condemnation_ai_strategy.concern_lend_lease_restore }
+			add_ai_strategy = { type = send_volunteers_desire id = var:condemnation_recalculation_target value = constant:condemnation_ai_strategy.concern_volunteers_restore }
+			add_ai_strategy = { type = diplo_action_acceptance id = var:condemnation_recalculation_target target = military_access value = constant:condemnation_ai_strategy.concern_military_access_restore }
+		}
+		else_if = {
+			limit = { is_ai = yes }
+			add_ai_strategy = { type = send_lend_lease_desire id = var:condemnation_recalculation_target value = constant:condemnation_ai_strategy.censure_lend_lease_restore }
+			add_ai_strategy = { type = send_volunteers_desire id = var:condemnation_recalculation_target value = constant:condemnation_ai_strategy.censure_volunteers_restore }
+			add_ai_strategy = { type = diplo_action_acceptance id = var:condemnation_recalculation_target target = military_access value = constant:condemnation_ai_strategy.censure_military_access_restore }
+		}
+		remove_opinion_modifier = { target = var:condemnation_recalculation_target modifier = condemnation_monitoring_target }
+	}
+	set_variable = { condemnation_candidate_industry_weight = 0 }
+	set_variable = { condemnation_candidate_trade_weight = 0 }
+	clear_array = condemnation_likely_participants
+	every_other_country = {
+		limit = { exists = yes }
+		set_temp_variable = { condemnation_pair_participant = THIS }
+		set_temp_variable = { condemnation_pair_target = var:condemnation_recalculation_target }
+		condemnation_cleanup_pair_statuses = yes
+		var:condemnation_recalculation_target = { condemnation_calculate_pair_score = yes }
+		condemnation_read_pair_record = yes
+		set_temp_variable = { condemnation_pair_is_active = condemnation_pair_previous_tier }
+		if = {
+			limit = {
+				has_dlc = "By Blood Alone"
+				check_variable = { condemnation_pair_is_active > constant:condemnation_tier.normal }
+				NOT = { is_embargoing = var:condemnation_recalculation_target }
+			}
+			set_temp_variable = { condemnation_pair_previous_expires = 0 }
+		}
+		set_temp_variable = { condemnation_pair_desired_tier = constant:condemnation_tier.normal }
+
+		if = {
+			limit = {
+				var:condemnation_recalculation_target = {
+					condemnation_is_arms_embargo_tier = yes
+				}
+				check_variable = { var = condemnation_pair_score value = constant:condemnation_participant_band.arms compare = greater_than_or_equals }
+				OR = {
+					check_variable = { condemnation_pair_is_active > constant:condemnation_tier.normal }
+					condemnation_can_bear_enforcement_cost = yes
+				}
+			}
+			set_temp_variable = { condemnation_pair_desired_tier = constant:condemnation_tier.arms_embargo }
+			if = {
+				limit = {
+					var:condemnation_recalculation_target = { condemnation_is_strategic_embargo_tier = yes }
+					check_variable = { var = condemnation_pair_score value = constant:condemnation_participant_band.strategic compare = greater_than_or_equals }
+					OR = { check_variable = { condemnation_pair_is_active < constant:condemnation_tier.concern } condemnation_can_bear_escalation_cost = yes }
+				}
+				set_temp_variable = { condemnation_pair_desired_tier = constant:condemnation_tier.strategic_embargo }
+			}
+			if = {
+				limit = {
+					var:condemnation_recalculation_target = { condemnation_is_total_embargo_tier = yes }
+					check_variable = { var = condemnation_pair_score value = constant:condemnation_participant_band.total compare = greater_than_or_equals }
+					OR = { check_variable = { condemnation_pair_is_active < constant:condemnation_tier.concern } condemnation_can_bear_escalation_cost = yes }
+				}
+				set_temp_variable = { condemnation_pair_desired_tier = constant:condemnation_tier.total_embargo }
+			}
+			if = {
+				limit = {
+					var:condemnation_recalculation_target = { condemnation_is_pariah_state = yes }
+					check_variable = { var = condemnation_pair_score value = constant:condemnation_participant_band.lead_enforcement compare = greater_than_or_equals }
+					OR = { check_variable = { condemnation_pair_is_active < constant:condemnation_tier.concern } condemnation_can_bear_escalation_cost = yes }
+				}
+				set_temp_variable = { condemnation_pair_desired_tier = constant:condemnation_tier.pariah_state }
+			}
+		}
+		if = {
+			limit = {
+				check_variable = { var = condemnation_participant_fatigue value = constant:condemnation_pair.fatigue_withdrawal compare = greater_than_or_equals }
+				check_variable = { var = condemnation_pair_score value = constant:condemnation_participant_band.lead_enforcement compare = less_than }
+			}
+			set_temp_variable = { condemnation_pair_desired_tier = constant:condemnation_tier.normal }
+		}
+
+		set_temp_variable = { condemnation_pair_valid = constant:condemnation_tier.concern }
+		if = {
+			limit = {
+				OR = {
+					is_subject_of = var:condemnation_recalculation_target
+					var:condemnation_recalculation_target = { is_subject_of = PREV }
+					is_in_faction_with = var:condemnation_recalculation_target
+					has_war_with = var:condemnation_recalculation_target
+				}
+			}
+			set_temp_variable = { condemnation_pair_valid = constant:condemnation_tier.normal }
+		}
+		if = {
+			limit = {
+				check_variable = { condemnation_pair_valid > constant:condemnation_tier.normal }
+				check_variable = { var = condemnation_pair_score value = constant:condemnation_participant_band.watch compare = greater_than_or_equals }
+			}
+			set_temp_variable = { condemnation_candidate_weight = condemnation_participant_factories }
+			divide_temp_variable = { condemnation_candidate_weight = constant:condemnation_industry.weight_divisor }
+			clamp_temp_variable = { var = condemnation_candidate_weight min = 0 max = constant:condemnation_industry.weight_cap }
+			add_to_temp_variable = { condemnation_candidate_weight = constant:condemnation_industry.base_weight }
+			if = { limit = { is_major = yes } add_to_temp_variable = { condemnation_candidate_weight = constant:condemnation_industry.major_weight } }
+			var:condemnation_recalculation_target = {
+				add_to_variable = { condemnation_candidate_industry_weight = condemnation_candidate_weight }
+				add_to_variable = { condemnation_candidate_trade_weight = condemnation_pair_trade_dependency }
+			}
+		}
+
+		if = {
+			limit = { is_ai = no }
+			if = {
+				limit = {
+					check_variable = { condemnation_pair_is_active > constant:condemnation_tier.normal }
+					OR = {
+						check_variable = { condemnation_pair_valid < constant:condemnation_tier.concern }
+						var:condemnation_recalculation_target = { NOT = { condemnation_is_arms_embargo_tier = yes } }
+					}
+				}
+				var:condemnation_recalculation_target = { condemnation_clear_sanction_pair = yes }
+			}
+			else_if = {
+				limit = {
+					check_variable = { condemnation_pair_is_active > constant:condemnation_tier.normal }
+					var:condemnation_recalculation_target = {
+						check_variable = { var = condemnation_tier value = condemnation_pair_is_active compare = less_than }
+					}
+				}
+				set_temp_variable = { condemnation_pair_tier = var:condemnation_recalculation_target.condemnation_tier }
+				var:condemnation_recalculation_target = { condemnation_apply_sanction_pair = yes }
+			}
+			else_if = {
+				limit = {
+					check_variable = { condemnation_pair_is_active > constant:condemnation_tier.normal }
+					check_variable = { var = global.date value = condemnation_pair_previous_expires compare = greater_than_or_equals }
+				}
+				set_temp_variable = { condemnation_pair_tier = condemnation_pair_is_active }
+				var:condemnation_recalculation_target = { condemnation_apply_sanction_pair = yes }
+			}
+		}
+		else = {
+			if = {
+				limit = { check_variable = { condemnation_pair_valid < constant:condemnation_tier.concern } }
+				if = {
+					limit = { check_variable = { condemnation_pair_is_active > constant:condemnation_tier.normal } }
+					var:condemnation_recalculation_target = { condemnation_clear_sanction_pair = yes }
+				}
+				if = {
+					limit = {
+						var:condemnation_recalculation_target = { condemnation_is_concern = yes }
+						check_variable = { var = condemnation_pair_score value = constant:condemnation_participant_band.shield compare = less_than_or_equals }
+						condemnation_can_pay_shield_cost = yes
+						NOT = { has_war_with = var:condemnation_recalculation_target }
+						OR = {
+							is_in_faction_with = var:condemnation_recalculation_target
+							is_subject_of = var:condemnation_recalculation_target
+							var:condemnation_recalculation_target = { is_subject_of = PREV }
+						}
+					}
+					var:condemnation_recalculation_target = { condemnation_record_faction_shield = yes }
+				}
+			}
+			else_if = {
+				limit = { check_variable = { condemnation_pair_desired_tier > constant:condemnation_tier.normal } }
+				set_temp_variable = { condemnation_pair_tier = condemnation_pair_desired_tier }
+				set_temp_variable = { condemnation_quiet_breach_dependency_threshold = constant:condemnation_pair.quiet_breach_dependency }
+				subtract_from_temp_variable = { condemnation_quiet_breach_dependency_threshold = constant:condemnation_ai.quiet_breach_dependency_relief }
+				set_temp_variable = { condemnation_pair_record_expired = constant:condemnation_tier.normal }
+				if = {
+					limit = { check_variable = { var = global.date value = condemnation_pair_previous_expires compare = greater_than_or_equals } }
+					set_temp_variable = { condemnation_pair_record_expired = constant:condemnation_tier.concern }
+				}
+				if = {
+					limit = {
+						OR = {
+							NOT = { check_variable = { var = condemnation_pair_tier value = condemnation_pair_previous_tier compare = equals } }
+							check_variable = { condemnation_pair_record_expired > constant:condemnation_tier.normal }
+						}
+					}
+					var:condemnation_recalculation_target = { condemnation_apply_sanction_pair = yes }
+				}
+				if = {
+					limit = {
+						check_variable = { condemnation_pair_is_active > constant:condemnation_tier.normal }
+						NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.carveout_convoys } }
+						OR = {
+							has_government = democratic
+							check_variable = { var = condemnation_pair_trade_dependency value = constant:condemnation_ai.carveout_dependency compare = greater_than_or_equals }
+						}
+						var:condemnation_recalculation_target = { NOT = { is_in_array = { array = condemnation_humanitarian_carveout_participants value = PREV } } }
+					}
+					var:condemnation_recalculation_target = { condemnation_apply_humanitarian_carveout = yes }
+				}
+				if = {
+					limit = {
+						check_variable = { var = condemnation_pair_trade_dependency value = condemnation_quiet_breach_dependency_threshold compare = greater_than_or_equals }
+						check_variable = { var = condemnation_pair_score value = constant:condemnation_participant_band.quiet_breach_ceiling compare = less_than }
+						condemnation_can_pay_quiet_breach_cost = yes
+						var:condemnation_recalculation_target = { NOT = { is_in_array = { array = condemnation_quiet_breach_participants value = PREV } } }
+					}
+					var:condemnation_recalculation_target = { condemnation_apply_quiet_breach = yes }
+				}
+				if = {
+					limit = {
+						var:condemnation_recalculation_target = {
+							OR = {
+								has_country_flag = condemnation_evasion_exposed
+								check_variable = { condemnation_evasion_pressure > 0 }
+							}
+						}
+						check_variable = { var = condemnation_pair_score value = constant:condemnation_participant_band.lead_enforcement compare = greater_than_or_equals }
+						NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.tight_enforcement_convoys } }
+						var:condemnation_recalculation_target = { NOT = { is_in_array = { array = condemnation_tight_enforcement_participants value = PREV } } }
+					}
+					var:condemnation_recalculation_target = { condemnation_apply_tight_enforcement = yes }
+				}
+			}
+			else = {
+				if = {
+					limit = { check_variable = { condemnation_pair_is_active > constant:condemnation_tier.normal } }
+					var:condemnation_recalculation_target = { condemnation_clear_sanction_pair = yes }
+				}
+				if = {
+					limit = {
+						var:condemnation_recalculation_target = { condemnation_is_concern = yes }
+						check_variable = { var = condemnation_pair_score value = constant:condemnation_participant_band.watch compare = greater_than_or_equals }
+					}
+					var:condemnation_recalculation_target = {
+						add_to_array = { array = condemnation_likely_participants value = PREV }
+					}
+					if = {
+						limit = {
+							is_ai = yes
+							var:condemnation_recalculation_target = {
+								check_variable = { var = condemnation_tier value = constant:condemnation_tier.concern compare = equals }
+							}
+						}
+						add_ai_strategy = { type = send_lend_lease_desire id = var:condemnation_recalculation_target value = constant:condemnation_ai_strategy.concern_lend_lease }
+						add_ai_strategy = { type = send_volunteers_desire id = var:condemnation_recalculation_target value = constant:condemnation_ai_strategy.concern_volunteers }
+						add_ai_strategy = { type = diplo_action_acceptance id = var:condemnation_recalculation_target target = military_access value = constant:condemnation_ai_strategy.concern_military_access }
+						var:condemnation_recalculation_target = { set_temp_variable = { condemnation_pair_target_id = id } }
+						meta_effect = {
+							text = { set_variable = { condemnation_pair_[TARGET_ID]_watch_tier = constant:condemnation_tier.concern } }
+							TARGET_ID = "[?condemnation_pair_target_id|.0]"
+						}
+					}
+					else_if = {
+						limit = { is_ai = yes }
+						add_ai_strategy = { type = send_lend_lease_desire id = var:condemnation_recalculation_target value = constant:condemnation_ai_strategy.censure_lend_lease }
+						add_ai_strategy = { type = send_volunteers_desire id = var:condemnation_recalculation_target value = constant:condemnation_ai_strategy.censure_volunteers }
+						add_ai_strategy = { type = diplo_action_acceptance id = var:condemnation_recalculation_target target = military_access value = constant:condemnation_ai_strategy.censure_military_access }
+						var:condemnation_recalculation_target = { set_temp_variable = { condemnation_pair_target_id = id } }
+						meta_effect = {
+							text = { set_variable = { condemnation_pair_[TARGET_ID]_watch_tier = constant:condemnation_tier.formal_censure } }
+							TARGET_ID = "[?condemnation_pair_target_id|.0]"
+						}
+					}
+					add_opinion_modifier = { target = var:condemnation_recalculation_target modifier = condemnation_monitoring_target }
+				}
+				if = {
+					limit = {
+						var:condemnation_recalculation_target = { condemnation_is_formally_censured = yes }
+						OR = {
+							check_variable = { var = condemnation_pair_trade_dependency value = constant:condemnation_ai.abstain_dependency compare = greater_than_or_equals }
+							check_variable = { var = condemnation_pair_score value = constant:condemnation_participant_band.abstain compare = less_than }
+						}
+						var:condemnation_recalculation_target = { NOT = { is_in_array = { array = condemnation_abstaining_participants value = PREV } } }
+					}
+					var:condemnation_recalculation_target = { condemnation_record_abstention = yes }
+				}
+			}
+		}
+
+		if = {
+			limit = {
+				check_variable = { condemnation_pair_is_active > constant:condemnation_tier.normal }
+				var:condemnation_recalculation_target = {
+					is_in_array = { array = condemnation_sanction_participants value = PREV }
+				}
+			}
+			set_temp_variable = { condemnation_fatigue_gain = condemnation_pair_previous_cost }
+			multiply_temp_variable = { condemnation_fatigue_gain = constant:condemnation_pair.fatigue_cost_factor }
+			add_to_temp_variable = { condemnation_fatigue_gain = constant:condemnation_pair.fatigue_monthly }
+			add_to_variable = { condemnation_sanction_fatigue = condemnation_fatigue_gain }
+			clamp_variable = { var = condemnation_sanction_fatigue min = 0 max = constant:condemnation_pair.fatigue_cap }
+			condemnation_refresh_participant_burden = yes
+		}
+	}
+	set_variable = { condemnation_active_sanctions = condemnation_sanction_participants^num }
+	condemnation_refresh_target_modifiers = yes
+}
+
+condemnation_cleanup_participant_arrays = {
+	for_each_scope_loop = {
+		array = condemnation_sanction_participants
+		limit = { NOT = { exists = yes } }
+		set_temp_variable = { condemnation_dead_participant = THIS }
+		ROOT = {
+			remove_from_array = { array = condemnation_sanction_participants value = condemnation_dead_participant }
+			remove_from_array = { array = condemnation_arms_embargo_participants value = condemnation_dead_participant }
+			remove_from_array = { array = condemnation_strategic_embargo_participants value = condemnation_dead_participant }
+			remove_from_array = { array = condemnation_total_embargo_participants value = condemnation_dead_participant }
+			remove_from_array = { array = condemnation_pariah_embargo_participants value = condemnation_dead_participant }
+			remove_from_array = { array = condemnation_humanitarian_carveout_participants value = condemnation_dead_participant }
+			remove_from_array = { array = condemnation_quiet_breach_participants value = condemnation_dead_participant }
+			remove_from_array = { array = condemnation_tight_enforcement_participants value = condemnation_dead_participant }
+		}
+	}
+	for_each_scope_loop = {
+		array = condemnation_abstaining_participants
+		limit = { NOT = { exists = yes } }
+		set_temp_variable = { condemnation_dead_participant = THIS }
+		ROOT = { remove_from_array = { array = condemnation_abstaining_participants value = condemnation_dead_participant } }
+	}
+	for_each_scope_loop = {
+		array = condemnation_shielding_participants
+		limit = { NOT = { exists = yes } }
+		set_temp_variable = { condemnation_dead_participant = THIS }
+		ROOT = { remove_from_array = { array = condemnation_shielding_participants value = condemnation_dead_participant } }
+	}
+	set_variable = { condemnation_active_sanctions = condemnation_sanction_participants^num }
+}
+
+condemnation_register_observed_breach = {
+	# Target scope; condemnation_pair_participant identifies the sender.
+	set_temp_variable = { condemnation_pair_target = THIS }
+	if = {
+		limit = { var:condemnation_pair_participant = { exists = yes } }
+		if = {
+			limit = { NOT = { is_in_array = { array = condemnation_quiet_breach_participants value = condemnation_pair_participant } } }
+			add_to_array = { array = condemnation_quiet_breach_participants value = condemnation_pair_participant }
+		}
+		var:condemnation_pair_participant = {
+			var:condemnation_pair_target = { set_temp_variable = { condemnation_pair_target_id = id } }
+			set_temp_variable = { condemnation_status_expires = global.date }
+			add_to_temp_variable = { condemnation_status_expires = constant:condemnation_duration_days.quiet_breach }
+			meta_effect = {
+				text = { set_variable = { condemnation_pair_[TARGET_ID]_quiet_breach_expires = condemnation_status_expires } }
+				TARGET_ID = "[?condemnation_pair_target_id|.0]"
+			}
+		}
+		add_to_variable = { condemnation_black_market_exposure = constant:condemnation_route.exposure_per_route }
+		add_to_variable = { condemnation_evasion_pressure = constant:condemnation_route.intermediary_strength }
+		clamp_variable = { var = condemnation_black_market_exposure min = 0 max = constant:condemnation_route.exposure_cap }
+		clamp_variable = { var = condemnation_evasion_pressure min = 0 max = constant:condemnation_route.exposure_cap }
+		condemnation_start_targeted_pulse = yes
+		condemnation_refresh_target_modifiers = yes
+	}
+}
+
+condemnation_cleanup_annexed_target_records = {
+	# Input: condemnation_annexed_target_id and condemnation_annexed_target scope.
+	every_country = {
+		if = {
+			limit = {
+				meta_trigger = {
+					text = { has_variable = condemnation_pair_[TARGET_ID]_tier }
+					TARGET_ID = "[?condemnation_annexed_target_id|.0]"
+				}
+			}
+			set_temp_variable = { condemnation_annexed_pair_cost = 0 }
+			set_temp_variable = { condemnation_annexed_tight_cost = 0 }
+			set_temp_variable = { condemnation_pair_previous_tier = constant:condemnation_tier.normal }
+			meta_effect = {
+				text = {
+					set_temp_variable = { condemnation_pair_previous_tier = condemnation_pair_[TARGET_ID]_tier }
+					set_temp_variable = { condemnation_annexed_pair_cost = condemnation_pair_[TARGET_ID]_enforcement_cost }
+					if = { limit = { has_variable = condemnation_pair_[TARGET_ID]_tight_cost } set_temp_variable = { condemnation_annexed_tight_cost = condemnation_pair_[TARGET_ID]_tight_cost } }
+					clear_variable = condemnation_pair_[TARGET_ID]_tier
+					clear_variable = condemnation_pair_[TARGET_ID]_score
+					clear_variable = condemnation_pair_[TARGET_ID]_trade_dependency
+					clear_variable = condemnation_pair_[TARGET_ID]_resource_dependency
+					clear_variable = condemnation_pair_[TARGET_ID]_moral_pressure
+					clear_variable = condemnation_pair_[TARGET_ID]_enforcement_cost
+					clear_variable = condemnation_pair_[TARGET_ID]_started_date
+					clear_variable = condemnation_pair_[TARGET_ID]_expires_date
+					clear_variable = condemnation_pair_[TARGET_ID]_carveout_expires
+					clear_variable = condemnation_pair_[TARGET_ID]_quiet_breach_expires
+					clear_variable = condemnation_pair_[TARGET_ID]_tight_enforcement_expires
+					clear_variable = condemnation_pair_[TARGET_ID]_tight_cost
+					clear_variable = condemnation_pair_[TARGET_ID]_abstention_expires
+					clear_variable = condemnation_pair_[TARGET_ID]_shield_expires
+					clear_variable = condemnation_pair_[TARGET_ID]_watch_tier
+				}
+				TARGET_ID = "[?condemnation_annexed_target_id|.0]"
+			}
+			set_temp_variable = { condemnation_pair_target = var:condemnation_annexed_target }
+			condemnation_remove_pair_ai_strategies = yes
+			remove_opinion_modifier = { target = var:condemnation_annexed_target modifier = condemnation_sanctioning_target }
+			subtract_from_variable = { condemnation_enforcement_burden_total = condemnation_annexed_pair_cost }
+			subtract_from_variable = { condemnation_enforcement_burden_total = condemnation_annexed_tight_cost }
+			subtract_from_variable = { condemnation_sanction_fatigue = constant:condemnation_pair.fatigue_withdrawal_relief }
+			subtract_from_variable = { condemnation_active_pair_count = 1 }
+			clamp_variable = { var = condemnation_enforcement_burden_total min = 0 max = constant:condemnation_threshold.total_cap }
+			clamp_variable = { var = condemnation_sanction_fatigue min = 0 max = constant:condemnation_pair.fatigue_cap }
+			clamp_variable = { var = condemnation_active_pair_count min = 0 max = constant:condemnation_threshold.total_cap }
+			if = {
+				limit = { check_variable = { condemnation_active_pair_count < 1 } }
+				set_variable = { condemnation_sanction_fatigue = 0 }
+				remove_relation_rule_override = { trigger = condemnation_relation_is_arms_embargo_target can_send_volunteers = no }
+				remove_relation_rule_override = { trigger = condemnation_relation_is_arms_embargo_target can_access_market = no }
+			}
+			condemnation_refresh_participant_burden = yes
+		}
+		remove_from_array = { array = condemnation_native_condemnation_targets value = condemnation_annexed_target }
+		remove_from_array = { array = condemnation_native_air_treaty_targets value = condemnation_annexed_target }
+		remove_from_array = { array = condemnation_native_great_embargo_targets value = condemnation_annexed_target }
+		remove_from_array = { array = condemnation_native_external_targets value = condemnation_annexed_target }
+		remove_from_array = { array = condemnation_native_system_created_targets value = condemnation_annexed_target }
+	}
+}
+
+condemnation_apply_decay_to_bucket = {
+	# Inputs: condemnation_decay_bucket_id and condemnation_monthly_decay.
+	if = {
+		limit = { check_variable = { var = condemnation_decay_bucket_id value = constant:condemnation_source.chemical compare = equals } }
+		set_temp_variable = { condemnation_bucket_decay = condemnation_chemical }
+		divide_temp_variable = { condemnation_bucket_decay = condemnation_total }
+		multiply_temp_variable = { condemnation_bucket_decay = condemnation_monthly_decay }
+		subtract_from_variable = { condemnation_chemical = condemnation_bucket_decay }
+		clamp_variable = { var = condemnation_chemical min = 0 max = constant:condemnation_threshold.bucket_cap }
+	}
+	else_if = {
+		limit = { check_variable = { var = condemnation_decay_bucket_id value = constant:condemnation_source.biological compare = equals } }
+		set_temp_variable = { condemnation_bucket_decay = condemnation_biological }
+		divide_temp_variable = { condemnation_bucket_decay = condemnation_total }
+		multiply_temp_variable = { condemnation_bucket_decay = condemnation_monthly_decay }
+		subtract_from_variable = { condemnation_biological = condemnation_bucket_decay }
+		clamp_variable = { var = condemnation_biological min = 0 max = constant:condemnation_threshold.bucket_cap }
+	}
+	else_if = {
+		limit = { check_variable = { var = condemnation_decay_bucket_id value = constant:condemnation_source.nuclear compare = equals } }
+		set_temp_variable = { condemnation_bucket_decay = condemnation_nuclear }
+		divide_temp_variable = { condemnation_bucket_decay = condemnation_total }
+		multiply_temp_variable = { condemnation_bucket_decay = condemnation_monthly_decay }
+		subtract_from_variable = { condemnation_nuclear = condemnation_bucket_decay }
+		clamp_variable = { var = condemnation_nuclear min = 0 max = constant:condemnation_threshold.bucket_cap }
+	}
+	else_if = {
+		limit = { check_variable = { var = condemnation_decay_bucket_id value = constant:condemnation_source.atrocity compare = equals } }
+		set_temp_variable = { condemnation_bucket_decay = condemnation_atrocity }
+		divide_temp_variable = { condemnation_bucket_decay = condemnation_total }
+		multiply_temp_variable = { condemnation_bucket_decay = condemnation_monthly_decay }
+		subtract_from_variable = { condemnation_atrocity = condemnation_bucket_decay }
+		clamp_variable = { var = condemnation_atrocity min = 0 max = constant:condemnation_threshold.bucket_cap }
+	}
+	else_if = {
+		limit = { check_variable = { var = condemnation_decay_bucket_id value = constant:condemnation_source.coverup compare = equals } }
+		set_temp_variable = { condemnation_bucket_decay = condemnation_coverup }
+		divide_temp_variable = { condemnation_bucket_decay = condemnation_total }
+		multiply_temp_variable = { condemnation_bucket_decay = condemnation_monthly_decay }
+		subtract_from_variable = { condemnation_coverup = condemnation_bucket_decay }
+		clamp_variable = { var = condemnation_coverup min = 0 max = constant:condemnation_threshold.bucket_cap }
+	}
+}
+
+condemnation_refresh_compliance_state = {
+	set_variable = { condemnation_compliance_state = constant:condemnation_compliance_state.none }
+	if = { limit = { has_country_flag = condemnation_inspections_active } set_variable = { condemnation_compliance_state = constant:condemnation_compliance_state.inspections } }
+	if = { limit = { has_country_flag = condemnation_stockpiles_destroyed } set_variable = { condemnation_compliance_state = constant:condemnation_compliance_state.stockpile_destruction } }
+	if = { limit = { has_country_flag = condemnation_compensation_active } set_variable = { condemnation_compliance_state = constant:condemnation_compliance_state.compensation } }
+	if = { limit = { OR = { has_country_flag = condemnation_non_use_pledge has_country_flag = condemnation_verified_non_use } } set_variable = { condemnation_compliance_state = constant:condemnation_compliance_state.non_use_pledge } }
+	if = { limit = { has_country_flag = condemnation_observers_active } set_variable = { condemnation_compliance_state = constant:condemnation_compliance_state.observers } }
+	if = { limit = { has_country_flag = condemnation_command_reformed } set_variable = { condemnation_compliance_state = constant:condemnation_compliance_state.command_reform } }
+	if = { limit = { condemnation_has_defiance_path = yes } set_variable = { condemnation_compliance_state = constant:condemnation_compliance_state.defiance } }
+	if = { limit = { condemnation_has_evasion_path = yes } set_variable = { condemnation_compliance_state = constant:condemnation_compliance_state.evasion } }
+}
+
+condemnation_monthly_pulse = {
+	condemnation_initialize_country = yes
+	condemnation_cleanup_participant_arrays = yes
+	if = {
+		limit = {
+			has_country_flag = condemnation_inspections_active
+			check_variable = { condemnation_hidden_total > 0 }
+		}
+		set_temp_variable = { condemnation_hidden_exposure_fraction = constant:condemnation_decay.inspection_hidden_exposure }
+		set_temp_variable = { condemnation_context_type = constant:condemnation_context.inspection_disclosure }
+		condemnation_expose_hidden_evidence = yes
+	}
+	if = {
+		limit = {
+			has_country_flag = condemnation_observers_active
+			check_variable = { condemnation_hidden_total > 0 }
+		}
+		set_temp_variable = { condemnation_hidden_exposure_fraction = constant:condemnation_decay.observer_hidden_exposure }
+		set_temp_variable = { condemnation_context_type = constant:condemnation_context.observer_report }
+		condemnation_expose_hidden_evidence = yes
+	}
+	set_temp_variable = { condemnation_monthly_decay = constant:condemnation_decay.base_monthly }
+	if = { limit = { condemnation_is_pariah_state = yes } set_temp_variable = { condemnation_monthly_decay = constant:condemnation_decay.pariah_monthly } }
+	else_if = { limit = { condemnation_is_total_embargo_tier = yes } set_temp_variable = { condemnation_monthly_decay = constant:condemnation_decay.total_monthly } }
+	else_if = { limit = { condemnation_is_strategic_embargo_tier = yes } set_temp_variable = { condemnation_monthly_decay = constant:condemnation_decay.strategic_monthly } }
+	else_if = { limit = { condemnation_is_arms_embargo_tier = yes } set_temp_variable = { condemnation_monthly_decay = constant:condemnation_decay.arms_monthly } }
+	else_if = { limit = { condemnation_is_formally_censured = yes } set_temp_variable = { condemnation_monthly_decay = constant:condemnation_decay.formal_monthly } }
+	else_if = { limit = { condemnation_is_concern = yes } set_temp_variable = { condemnation_monthly_decay = constant:condemnation_decay.concern_monthly } }
+
+	if = { limit = { has_country_flag = condemnation_inspections_active } add_to_temp_variable = { condemnation_monthly_decay = constant:condemnation_decay.inspection_bonus } }
+	if = { limit = { has_country_flag = condemnation_observers_active } add_to_temp_variable = { condemnation_monthly_decay = constant:condemnation_decay.observers_bonus } }
+	if = { limit = { has_country_flag = condemnation_verified_non_use } add_to_temp_variable = { condemnation_monthly_decay = constant:condemnation_decay.verified_non_use_bonus } }
+	if = { limit = { has_country_flag = condemnation_compensation_active } add_to_temp_variable = { condemnation_monthly_decay = constant:condemnation_decay.compensation_bonus } }
+	if = { limit = { has_country_flag = condemnation_stockpiles_destroyed } add_to_temp_variable = { condemnation_monthly_decay = constant:condemnation_decay.stockpile_destruction_bonus } }
+	if = { limit = { has_country_flag = condemnation_sites_dismantled } add_to_temp_variable = { condemnation_monthly_decay = constant:condemnation_decay.site_dismantlement_bonus } }
+	if = { limit = { has_country_flag = condemnation_command_reformed } add_to_temp_variable = { condemnation_monthly_decay = constant:condemnation_decay.command_reform_bonus } }
+	if = { limit = { has_country_flag = condemnation_refused_inspection } subtract_from_temp_variable = { condemnation_monthly_decay = constant:condemnation_decay.refusal_penalty } }
+	if = { limit = { condemnation_has_evasion_path = yes } subtract_from_temp_variable = { condemnation_monthly_decay = constant:condemnation_decay.evasion_penalty } }
+	if = { limit = { condemnation_decay_blocked = yes } set_temp_variable = { condemnation_monthly_decay = constant:condemnation_decay.minimum_total } }
+
+	if = {
+		limit = {
+			check_variable = { condemnation_decay_credit > 0 }
+			NOT = { condemnation_decay_blocked = yes }
+		}
+		set_temp_variable = { condemnation_credit_decay = condemnation_decay_credit }
+		multiply_temp_variable = { condemnation_credit_decay = constant:condemnation_decay.credit_conversion }
+		clamp_temp_variable = { var = condemnation_credit_decay min = 0 max = constant:condemnation_decay.credit_monthly_cap }
+		add_to_temp_variable = { condemnation_monthly_decay = condemnation_credit_decay }
+		set_temp_variable = { condemnation_credit_spent = condemnation_credit_decay }
+		divide_temp_variable = { condemnation_credit_spent = constant:condemnation_decay.credit_conversion }
+		subtract_from_variable = { condemnation_decay_credit = condemnation_credit_spent }
+		clamp_variable = { var = condemnation_decay_credit min = 0 max = constant:condemnation_compliance_credit.maximum }
+	}
+	clamp_temp_variable = { var = condemnation_monthly_decay min = 0 max = constant:condemnation_decay.maximum_monthly }
+
+	if = {
+		limit = { check_variable = { condemnation_total > 0 } }
+		set_temp_variable = { condemnation_decay_bucket_id = constant:condemnation_source.chemical }
+		condemnation_apply_decay_to_bucket = yes
+		set_temp_variable = { condemnation_decay_bucket_id = constant:condemnation_source.biological }
+		condemnation_apply_decay_to_bucket = yes
+		set_temp_variable = { condemnation_decay_bucket_id = constant:condemnation_source.nuclear }
+		condemnation_apply_decay_to_bucket = yes
+		set_temp_variable = { condemnation_decay_bucket_id = constant:condemnation_source.atrocity }
+		condemnation_apply_decay_to_bucket = yes
+		set_temp_variable = { condemnation_decay_bucket_id = constant:condemnation_source.coverup }
+		condemnation_apply_decay_to_bucket = yes
+	}
+	subtract_from_variable = { condemnation_repeat_use = constant:condemnation_decay.repeat_use_fade }
+	subtract_from_variable = { condemnation_recent_gain = constant:condemnation_decay.recent_gain_fade }
+	multiply_variable = { condemnation_recent_civilian_deaths = constant:condemnation_decay.civilian_deaths_fade }
+	multiply_variable = { condemnation_contamination_pressure = constant:condemnation_decay.contamination_fade }
+	multiply_variable = { condemnation_black_market_exposure = constant:condemnation_decay.exposure_fade }
+	multiply_variable = { condemnation_evasion_pressure = constant:condemnation_route.strength_fade }
+	clamp_variable = { var = condemnation_repeat_use min = 0 max = constant:condemnation_threshold.repeat_use_cap }
+	clamp_variable = { var = condemnation_recent_gain min = 0 max = constant:condemnation_threshold.recent_gain_cap }
+	clamp_variable = { var = condemnation_black_market_exposure min = 0 max = constant:condemnation_route.exposure_cap }
+	clamp_variable = { var = condemnation_evasion_pressure min = 0 max = constant:condemnation_route.exposure_cap }
+	if = { limit = { check_variable = { condemnation_black_market_exposure < constant:condemnation_gain.minimum_visible_gain } } set_variable = { condemnation_black_market_exposure = 0 } }
+	if = { limit = { check_variable = { condemnation_evasion_pressure < constant:condemnation_gain.minimum_visible_gain } } set_variable = { condemnation_evasion_pressure = 0 } }
+	condemnation_recalculate_total = yes
+	condemnation_refresh_tier = yes
+
+	if = {
+		limit = { check_variable = { condemnation_black_market_exposure > 0 } }
+		set_temp_variable = { condemnation_exposure_chance = condemnation_black_market_exposure }
+		add_to_temp_variable = { condemnation_exposure_chance = constant:condemnation_route.exposure_roll_base }
+		clamp_temp_variable = { var = condemnation_exposure_chance min = 0 max = constant:condemnation_route.exposure_cap }
+		random = {
+			chance = condemnation_exposure_chance
+			if = { limit = { condemnation_quiet_breach_participants^num > 0 } condemnation_expose_quiet_breach = yes }
+			else = {
+				set_temp_variable = { condemnation_exposure_days = constant:condemnation_duration_days.exposure_memory }
+				set_country_flag = { flag = condemnation_evasion_exposed days = condemnation_exposure_days }
+				set_temp_variable = { condemnation_source_type = constant:condemnation_source.coverup }
+				set_temp_variable = { condemnation_base_gain = constant:condemnation_gain.black_market_exposure_coverup }
+				set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+				set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.major }
+				set_temp_variable = { condemnation_context_type = constant:condemnation_context.black_market_exposure }
+				condemnation_add_source = yes
+			}
+		}
+	}
+
+	condemnation_recalculate_participants = yes
+	condemnation_refresh_compliance_state = yes
+	refresh_chaos_meter_condemnation_view_if_open = yes
+	if = {
+		limit = { condemnation_pulse_required = yes }
+		set_temp_variable = { condemnation_pulse_days = constant:condemnation_duration_days.pulse }
+		country_event = { id = condemnation_sanctions.1 days = condemnation_pulse_days }
+	}
+	else = { clr_country_flag = condemnation_targeted_pulse_active }
+	condemnation_unregister_target_if_inactive = yes
+}
+
+condemnation_refresh_participant_burden = {
+	condemnation_initialize_country = yes
+	set_temp_variable = { condemnation_participant_burden_factor = condemnation_enforcement_burden_total }
+	divide_temp_variable = { condemnation_participant_burden_factor = constant:condemnation_pair.enforcement_scale }
+	clamp_temp_variable = { var = condemnation_participant_burden_factor min = 0 max = 1 }
+	set_temp_variable = { condemnation_participant_fatigue_factor = condemnation_sanction_fatigue }
+	divide_temp_variable = { condemnation_participant_fatigue_factor = constant:condemnation_pair.fatigue_scale }
+	clamp_temp_variable = { var = condemnation_participant_fatigue_factor min = 0 max = 1 }
+
+	set_variable = { condemnation_participant_consumer_goods = condemnation_participant_burden_factor }
+	multiply_variable = { condemnation_participant_consumer_goods = constant:condemnation_penalty.enforcement_consumer_goods }
+	set_variable = { condemnation_participant_factory_output = condemnation_participant_burden_factor }
+	multiply_variable = { condemnation_participant_factory_output = constant:condemnation_penalty.enforcement_factory_output }
+	set_variable = { condemnation_participant_fuel_gain = condemnation_participant_burden_factor }
+	multiply_variable = { condemnation_participant_fuel_gain = constant:condemnation_penalty.enforcement_fuel_gain }
+	set_variable = { condemnation_participant_fatigue_stability = condemnation_participant_fatigue_factor }
+	multiply_variable = { condemnation_participant_fatigue_stability = constant:condemnation_penalty.fatigue_stability }
+
+	if = {
+		limit = { check_variable = { condemnation_enforcement_burden_total > 0 } }
+		if = {
+			limit = { NOT = { has_dynamic_modifier = { modifier = condemnation_participant_enforcement_burden } } }
+			add_dynamic_modifier = { modifier = condemnation_participant_enforcement_burden }
+		}
+		force_update_dynamic_modifier = yes
+	}
+	else = {
+		if = {
+			limit = { has_dynamic_modifier = { modifier = condemnation_participant_enforcement_burden } }
+			remove_dynamic_modifier = { modifier = condemnation_participant_enforcement_burden }
+		}
+	}
+}
+
+condemnation_refresh_target_modifiers = {
+	condemnation_initialize_country = yes
+	set_variable = { condemnation_active_sanctions = condemnation_sanction_participants^num }
+	set_variable = { condemnation_arms_participant_count = condemnation_arms_embargo_participants^num }
+	set_variable = { condemnation_strategic_participant_count = condemnation_strategic_embargo_participants^num }
+	set_variable = { condemnation_total_participant_count = condemnation_total_embargo_participants^num }
+	set_variable = { condemnation_pariah_participant_count = condemnation_pariah_embargo_participants^num }
+	set_variable = { condemnation_carveout_count = condemnation_humanitarian_carveout_participants^num }
+	set_variable = { condemnation_quiet_breach_count = condemnation_quiet_breach_participants^num }
+	set_variable = { condemnation_shield_count = condemnation_shielding_participants^num }
+	set_variable = { condemnation_tight_enforcement_count = condemnation_tight_enforcement_participants^num }
+	set_variable = { condemnation_likely_next_participant_count = condemnation_likely_participants^num }
+
+	set_variable = { condemnation_highest_sanction_tier = constant:condemnation_tier.normal }
+	if = { limit = { check_variable = { condemnation_arms_participant_count > 0 } } set_variable = { condemnation_highest_sanction_tier = constant:condemnation_tier.arms_embargo } }
+	if = { limit = { check_variable = { condemnation_strategic_participant_count > 0 } } set_variable = { condemnation_highest_sanction_tier = constant:condemnation_tier.strategic_embargo } }
+	if = { limit = { check_variable = { condemnation_total_participant_count > 0 } } set_variable = { condemnation_highest_sanction_tier = constant:condemnation_tier.total_embargo } }
+	if = { limit = { check_variable = { condemnation_pariah_participant_count > 0 } } set_variable = { condemnation_highest_sanction_tier = constant:condemnation_tier.pariah_state } }
+
+	set_temp_variable = { condemnation_imported_resources = resource_imported@oil }
+	add_to_temp_variable = { condemnation_imported_resources = resource_imported@rubber }
+	add_to_temp_variable = { condemnation_imported_resources = resource_imported@tungsten }
+	add_to_temp_variable = { condemnation_imported_resources = resource_imported@chromium }
+	add_to_temp_variable = { condemnation_imported_resources = resource_imported@aluminium }
+	add_to_temp_variable = { condemnation_imported_resources = resource_imported@steel }
+	set_temp_variable = { condemnation_consumed_resources = resource_consumed@oil }
+	add_to_temp_variable = { condemnation_consumed_resources = resource_consumed@rubber }
+	add_to_temp_variable = { condemnation_consumed_resources = resource_consumed@tungsten }
+	add_to_temp_variable = { condemnation_consumed_resources = resource_consumed@chromium }
+	add_to_temp_variable = { condemnation_consumed_resources = resource_consumed@aluminium }
+	add_to_temp_variable = { condemnation_consumed_resources = resource_consumed@steel }
+	set_variable = { condemnation_import_vulnerability = 0 }
+	if = {
+		limit = { check_variable = { condemnation_consumed_resources > 0 } }
+		set_variable = { condemnation_import_vulnerability = condemnation_imported_resources }
+		divide_variable = { condemnation_import_vulnerability = condemnation_consumed_resources }
+		clamp_variable = { var = condemnation_import_vulnerability min = 0 max = 1 }
+	}
+	set_variable = { condemnation_fuel_vulnerability = 0 }
+	set_temp_variable = { condemnation_oil_consumption = resource_consumed@oil }
+	if = {
+		limit = { check_variable = { condemnation_oil_consumption > 0 } }
+		set_variable = { condemnation_fuel_vulnerability = resource_imported@oil }
+		divide_variable = { condemnation_fuel_vulnerability = condemnation_oil_consumption }
+		clamp_variable = { var = condemnation_fuel_vulnerability min = 0 max = 1 }
+	}
+	set_variable = { condemnation_military_import_vulnerability = condemnation_import_vulnerability }
+	add_to_variable = { condemnation_military_import_vulnerability = condemnation_fuel_vulnerability }
+	divide_variable = { condemnation_military_import_vulnerability = constant:condemnation_math.two_way_average_divisor }
+	clamp_variable = { var = condemnation_military_import_vulnerability min = 0 max = 1 }
+
+	set_temp_variable = { condemnation_target_id = id }
+	set_temp_variable = { condemnation_active_industry_weight = 0 }
+	set_temp_variable = { condemnation_active_trade_weight = 0 }
+	set_temp_variable = { condemnation_raw_isolation_severity = 0 }
+	set_temp_variable = { condemnation_native_embargo_count_temp = 0 }
+	set_temp_variable = { condemnation_participant_fatigue_total = 0 }
+	for_each_scope_loop = {
+		array = condemnation_sanction_participants
+		if = {
+			limit = { exists = yes }
+			set_temp_variable = { condemnation_current_participant_weight = constant:condemnation_industry.base_weight }
+			set_temp_variable = { condemnation_participant_factory_weight = num_of_civilian_factories }
+			add_to_temp_variable = { condemnation_participant_factory_weight = num_of_military_factories }
+			divide_temp_variable = { condemnation_participant_factory_weight = constant:condemnation_industry.weight_divisor }
+			clamp_temp_variable = { var = condemnation_participant_factory_weight min = 0 max = constant:condemnation_industry.weight_cap }
+			add_to_temp_variable = { condemnation_current_participant_weight = condemnation_participant_factory_weight }
+			if = { limit = { is_major = yes } add_to_temp_variable = { condemnation_current_participant_weight = constant:condemnation_industry.major_weight } }
+			add_to_temp_variable = { condemnation_active_industry_weight = condemnation_current_participant_weight }
+			set_temp_variable = { condemnation_current_pair_dependency = 0 }
+			meta_effect = {
+				text = { set_temp_variable = { condemnation_current_pair_dependency = condemnation_pair_[TARGET_ID]_trade_dependency } }
+				TARGET_ID = "[?condemnation_target_id|.0]"
+			}
+			add_to_temp_variable = { condemnation_active_trade_weight = condemnation_current_pair_dependency }
+			add_to_temp_variable = { condemnation_participant_fatigue_total = condemnation_sanction_fatigue }
+			set_temp_variable = { condemnation_current_tier_weight = constant:condemnation_pair.arms_tier_weight }
+			if = {
+				limit = { ROOT = { is_in_array = { array = condemnation_strategic_embargo_participants value = PREV } } }
+				set_temp_variable = { condemnation_current_tier_weight = constant:condemnation_pair.strategic_tier_weight }
+			}
+			if = {
+				limit = { ROOT = { is_in_array = { array = condemnation_total_embargo_participants value = PREV } } }
+				set_temp_variable = { condemnation_current_tier_weight = constant:condemnation_pair.total_tier_weight }
+			}
+			if = {
+				limit = { ROOT = { is_in_array = { array = condemnation_pariah_embargo_participants value = PREV } } }
+				set_temp_variable = { condemnation_current_tier_weight = constant:condemnation_pair.pariah_tier_weight }
+			}
+			multiply_temp_variable = { condemnation_current_tier_weight = condemnation_current_participant_weight }
+			add_to_temp_variable = { condemnation_raw_isolation_severity = condemnation_current_tier_weight }
+			if = {
+				limit = { has_dlc = "By Blood Alone" is_embargoing = ROOT }
+				add_to_temp_variable = { condemnation_native_embargo_count_temp = 1 }
+			}
+		}
+	}
+	set_variable = { condemnation_native_embargo_count = condemnation_native_embargo_count_temp }
+	set_variable = { condemnation_average_participant_fatigue = 0 }
+	if = {
+		limit = { check_variable = { condemnation_active_sanctions > 0 } }
+		set_variable = { condemnation_average_participant_fatigue = condemnation_participant_fatigue_total }
+		divide_variable = { condemnation_average_participant_fatigue = condemnation_active_sanctions }
+	}
+	set_variable = { condemnation_weighted_industry_share = 0 }
+	if = {
+		limit = { check_variable = { condemnation_candidate_industry_weight > 0 } }
+		set_variable = { condemnation_weighted_industry_share = condemnation_active_industry_weight }
+		divide_variable = { condemnation_weighted_industry_share = condemnation_candidate_industry_weight }
+		clamp_variable = { var = condemnation_weighted_industry_share min = 0 max = 1 }
+	}
+	set_variable = { condemnation_weighted_trade_share = 0 }
+	if = {
+		limit = { check_variable = { condemnation_candidate_trade_weight > 0 } }
+		set_variable = { condemnation_weighted_trade_share = condemnation_active_trade_weight }
+		divide_variable = { condemnation_weighted_trade_share = condemnation_candidate_trade_weight }
+		clamp_variable = { var = condemnation_weighted_trade_share min = 0 max = 1 }
+	}
+	set_variable = { condemnation_faction_shield_strength = 0 }
+	if = {
+		limit = { check_variable = { condemnation_active_sanctions > 0 } }
+		set_variable = { condemnation_faction_shield_strength = condemnation_shield_count }
+		divide_variable = { condemnation_faction_shield_strength = condemnation_active_sanctions }
+		clamp_variable = { var = condemnation_faction_shield_strength min = 0 max = 1 }
+	}
+	set_variable = { condemnation_black_market_route_strength = condemnation_evasion_pressure }
+	divide_variable = { condemnation_black_market_route_strength = constant:condemnation_route.exposure_cap }
+	clamp_variable = { var = condemnation_black_market_route_strength min = 0 max = 1 }
+	set_variable = { condemnation_compliance_credibility = condemnation_decay_credit }
+	divide_variable = { condemnation_compliance_credibility = constant:condemnation_compliance_credit.maximum }
+	if = { limit = { has_country_flag = condemnation_inspections_active } add_to_variable = { condemnation_compliance_credibility = constant:condemnation_compliance_credibility.inspections } }
+	if = { limit = { has_country_flag = condemnation_observers_active } add_to_variable = { condemnation_compliance_credibility = constant:condemnation_compliance_credibility.observers } }
+	if = { limit = { has_country_flag = condemnation_verified_non_use } add_to_variable = { condemnation_compliance_credibility = constant:condemnation_compliance_credibility.verified_non_use } }
+	clamp_variable = { var = condemnation_compliance_credibility min = 0 max = 1 }
+
+	set_temp_variable = { condemnation_relief_factor = 0 }
+	if = {
+		limit = { check_variable = { condemnation_active_sanctions > 0 } }
+		set_temp_variable = { condemnation_carveout_relief = condemnation_carveout_count }
+		divide_temp_variable = { condemnation_carveout_relief = condemnation_active_sanctions }
+		multiply_temp_variable = { condemnation_carveout_relief = constant:condemnation_pair.carveout_relief }
+		add_to_temp_variable = { condemnation_relief_factor = condemnation_carveout_relief }
+		set_temp_variable = { condemnation_shield_relief = condemnation_shield_count }
+		divide_temp_variable = { condemnation_shield_relief = condemnation_active_sanctions }
+		multiply_temp_variable = { condemnation_shield_relief = constant:condemnation_pair.shield_relief }
+		add_to_temp_variable = { condemnation_relief_factor = condemnation_shield_relief }
+	}
+	set_temp_variable = { condemnation_evasion_relief = condemnation_evasion_pressure }
+	divide_temp_variable = { condemnation_evasion_relief = constant:condemnation_route.exposure_cap }
+	multiply_temp_variable = { condemnation_evasion_relief = constant:condemnation_pair.quiet_breach_relief }
+	add_to_temp_variable = { condemnation_relief_factor = condemnation_evasion_relief }
+	set_temp_variable = { condemnation_route_relief = 0 }
+	if = { limit = { has_country_flag = condemnation_autarky_active } add_to_temp_variable = { condemnation_route_relief = constant:condemnation_route.autarky_relief } }
+	if = { limit = { has_country_flag = condemnation_forced_extraction_active } add_to_temp_variable = { condemnation_route_relief = constant:condemnation_route.forced_extraction_relief } }
+	if = { limit = { has_country_flag = condemnation_substitute_materials_active } add_to_temp_variable = { condemnation_route_relief = constant:condemnation_route.substitute_materials_relief } }
+	if = { limit = { has_country_flag = condemnation_military_rationing_active } add_to_temp_variable = { condemnation_route_relief = constant:condemnation_route.rationing_relief } }
+	if = { limit = { has_country_flag = condemnation_subject_pressure_active } add_to_temp_variable = { condemnation_route_relief = constant:condemnation_route.subject_pressure_relief } }
+	if = { limit = { has_country_flag = condemnation_controlled_shipping_active } add_to_temp_variable = { condemnation_route_relief = constant:condemnation_route.controlled_shipping_relief } }
+	add_to_temp_variable = { condemnation_relief_factor = condemnation_route_relief }
+	set_temp_variable = { condemnation_enforcement_bonus = condemnation_tight_enforcement_count }
+	if = {
+		limit = { check_variable = { condemnation_active_sanctions > 0 } }
+		divide_temp_variable = { condemnation_enforcement_bonus = condemnation_active_sanctions }
+		multiply_temp_variable = { condemnation_enforcement_bonus = constant:condemnation_pair.tight_enforcement_bonus }
+		subtract_from_temp_variable = { condemnation_relief_factor = condemnation_enforcement_bonus }
+	}
+	clamp_temp_variable = { var = condemnation_relief_factor min = 0 max = constant:condemnation_pair.maximum_relief }
+	set_temp_variable = { condemnation_pressure_multiplier = 1 }
+	subtract_from_temp_variable = { condemnation_pressure_multiplier = condemnation_relief_factor }
+	multiply_temp_variable = { condemnation_raw_isolation_severity = condemnation_pressure_multiplier }
+	set_variable = { condemnation_weighted_isolation_severity = condemnation_raw_isolation_severity }
+	set_variable = { condemnation_sanction_pressure = condemnation_raw_isolation_severity }
+
+	set_temp_variable = { condemnation_penalty_factor = condemnation_raw_isolation_severity }
+	divide_temp_variable = { condemnation_penalty_factor = constant:condemnation_penalty.severity_divisor }
+	clamp_temp_variable = { var = condemnation_penalty_factor min = 0 max = constant:condemnation_penalty.severity_cap }
+	set_variable = { condemnation_penalty_arms_efficiency = condemnation_penalty_factor }
+	multiply_variable = { condemnation_penalty_arms_efficiency = constant:condemnation_penalty.arms_efficiency_gain }
+	set_variable = { condemnation_penalty_license_cost = condemnation_penalty_factor }
+	multiply_variable = { condemnation_penalty_license_cost = constant:condemnation_penalty.arms_license_cost }
+	set_temp_variable = { condemnation_censure_penalty_factor = condemnation_tier }
+	divide_temp_variable = { condemnation_censure_penalty_factor = constant:condemnation_penalty.censure_tier_scale }
+	clamp_temp_variable = { var = condemnation_censure_penalty_factor min = 0 max = 1 }
+	set_variable = { condemnation_penalty_censure_trade_opinion = condemnation_censure_penalty_factor }
+	multiply_variable = { condemnation_penalty_censure_trade_opinion = constant:condemnation_penalty.censure_trade_opinion }
+	set_variable = { condemnation_penalty_censure_license_cost = condemnation_censure_penalty_factor }
+	multiply_variable = { condemnation_penalty_censure_license_cost = constant:condemnation_penalty.censure_license_cost }
+	set_variable = { condemnation_penalty_censure_research = condemnation_censure_penalty_factor }
+	multiply_variable = { condemnation_penalty_censure_research = constant:condemnation_penalty.censure_research }
+
+	set_temp_variable = { condemnation_strategic_penalty_factor = condemnation_penalty_factor }
+	multiply_temp_variable = { condemnation_strategic_penalty_factor = condemnation_import_vulnerability }
+	set_variable = { condemnation_penalty_strategic_factory = condemnation_strategic_penalty_factor }
+	multiply_variable = { condemnation_penalty_strategic_factory = constant:condemnation_penalty.strategic_factory_output }
+	set_variable = { condemnation_penalty_strategic_dockyard = condemnation_strategic_penalty_factor }
+	multiply_variable = { condemnation_penalty_strategic_dockyard = constant:condemnation_penalty.strategic_dockyard_output }
+	set_variable = { condemnation_penalty_strategic_consumer_goods = condemnation_strategic_penalty_factor }
+	multiply_variable = { condemnation_penalty_strategic_consumer_goods = constant:condemnation_penalty.strategic_consumer_goods }
+	set_variable = { condemnation_penalty_resource_projects = condemnation_strategic_penalty_factor }
+	multiply_variable = { condemnation_penalty_resource_projects = constant:condemnation_penalty.strategic_resource_projects }
+	set_temp_variable = { condemnation_fuel_penalty_factor = condemnation_penalty_factor }
+	multiply_temp_variable = { condemnation_fuel_penalty_factor = condemnation_fuel_vulnerability }
+	set_variable = { condemnation_penalty_strategic_fuel = condemnation_fuel_penalty_factor }
+	multiply_variable = { condemnation_penalty_strategic_fuel = constant:condemnation_penalty.strategic_fuel_gain }
+
+	set_variable = { condemnation_penalty_isolation_factory = condemnation_penalty_factor }
+	multiply_variable = { condemnation_penalty_isolation_factory = constant:condemnation_penalty.isolation_factory_output }
+	set_variable = { condemnation_penalty_isolation_research = condemnation_penalty_factor }
+	multiply_variable = { condemnation_penalty_isolation_research = constant:condemnation_penalty.isolation_research }
+	set_variable = { condemnation_penalty_isolation_consumer_goods = condemnation_penalty_factor }
+	multiply_variable = { condemnation_penalty_isolation_consumer_goods = constant:condemnation_penalty.isolation_consumer_goods }
+	set_variable = { condemnation_penalty_trade_opinion = condemnation_penalty_factor }
+	multiply_variable = { condemnation_penalty_trade_opinion = constant:condemnation_penalty.isolation_trade_opinion }
+	set_variable = { condemnation_penalty_enemy_detection = condemnation_penalty_factor }
+	multiply_variable = { condemnation_penalty_enemy_detection = constant:condemnation_penalty.pariah_enemy_detection }
+	set_variable = { condemnation_penalty_resistance = condemnation_penalty_factor }
+	multiply_variable = { condemnation_penalty_resistance = constant:condemnation_penalty.pariah_resistance }
+	set_variable = { condemnation_penalty_pariah_stability = condemnation_penalty_factor }
+	multiply_variable = { condemnation_penalty_pariah_stability = constant:condemnation_penalty.pariah_stability }
+
+	if = {
+		limit = { condemnation_is_concern = yes }
+		if = { limit = { NOT = { has_dynamic_modifier = { modifier = condemnation_censure_pressure } } } add_dynamic_modifier = { modifier = condemnation_censure_pressure } }
+	}
+	else = { if = { limit = { has_dynamic_modifier = { modifier = condemnation_censure_pressure } } remove_dynamic_modifier = { modifier = condemnation_censure_pressure } } }
+	if = {
+		limit = { check_variable = { condemnation_arms_participant_count > 0 } }
+		if = { limit = { NOT = { has_dynamic_modifier = { modifier = condemnation_arms_import_bottleneck } } } add_dynamic_modifier = { modifier = condemnation_arms_import_bottleneck } }
+	}
+	else = { if = { limit = { has_dynamic_modifier = { modifier = condemnation_arms_import_bottleneck } } remove_dynamic_modifier = { modifier = condemnation_arms_import_bottleneck } } }
+	if = {
+		limit = { check_variable = { condemnation_strategic_participant_count > 0 } }
+		if = { limit = { NOT = { has_dynamic_modifier = { modifier = condemnation_strategic_shortage } } } add_dynamic_modifier = { modifier = condemnation_strategic_shortage } }
+	}
+	else = { if = { limit = { has_dynamic_modifier = { modifier = condemnation_strategic_shortage } } remove_dynamic_modifier = { modifier = condemnation_strategic_shortage } } }
+	if = {
+		limit = { check_variable = { condemnation_total_participant_count > 0 } }
+		if = { limit = { NOT = { has_dynamic_modifier = { modifier = condemnation_isolation_economy } } } add_dynamic_modifier = { modifier = condemnation_isolation_economy } }
+	}
+	else = { if = { limit = { has_dynamic_modifier = { modifier = condemnation_isolation_economy } } remove_dynamic_modifier = { modifier = condemnation_isolation_economy } } }
+	if = {
+		limit = { check_variable = { condemnation_pariah_participant_count > 0 } }
+		if = { limit = { NOT = { has_dynamic_modifier = { modifier = condemnation_pariah_pressure } } } add_dynamic_modifier = { modifier = condemnation_pariah_pressure } }
+	}
+	else = { if = { limit = { has_dynamic_modifier = { modifier = condemnation_pariah_pressure } } remove_dynamic_modifier = { modifier = condemnation_pariah_pressure } } }
+	force_update_dynamic_modifier = yes
+}

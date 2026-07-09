@@ -47,7 +47,7 @@ The system uses three state buildings:
 - `extermination_camp`
 - `gulag_labor_camp_network`
 
-Concentration camps are available in the normal construction interface. Extermination camps and gulag networks are created by decisions and scripted effects. Whenever script creates or registers a site, the affected state stores `genocide_responsible_country`; that variable is the authority used later for discovery, condemnation, events, and tribunals.
+Concentration camps are available in the normal construction interface. Extermination camps and gulag networks are created by decisions and scripted effects. Whenever script creates or registers a site, the affected state stores `genocide_responsible_country`. That variable is the authority used later for discovery, condemnation, events, and tribunals.
 
 ### Concentration Camps
 
@@ -70,17 +70,17 @@ Gulag labor camp networks represent Soviet forced labor and mass repression. The
 5. The existing Chaos Meter monthly pulse runs `genocide_monthly_global_pulse`.
 6. Only registered states that still have active camp buildings, experiment-site flags, or an active restricted chemical site flag are processed.
 7. Monthly camp and experiment-site deaths reduce real state population through the Chaos Meter deaths pipeline. When deaths happen in occupied territory, the state owner receives the registered death total while the occupier remains the responsible country for evidence and condemnation.
-8. Responsible countries accumulate hidden crisis variables such as `genocide_escalation`, `genocide_deaths`, `genocide_visibility`, `genocide_resistance_pressure`, `genocide_refugee_pressure`, and `hidden_atrocity_score`.
+8. Responsible countries accumulate hidden crisis variables such as `genocide_escalation`, `genocide_deaths`, `genocide_visibility`, `genocide_resistance_pressure`, `genocide_refugee_pressure`, and `hidden_atrocity_score`. Camp deaths, restricted-site operation, and concealment also feed the canonical hidden atrocity or cover-up buckets.
 9. Active camp processing does not roll recurring internal report, leak, refugee, or sabotage popups. Internal pressure is represented through variables, state modifiers, decisions, and later discovery.
 10. If enemy forces take a state with undiscovered atrocity evidence, `on_state_control_changed` attempts discovery.
-11. Discovery marks the state, calculates condemnation based on site type and repeat discoveries, and applies condemnation to the stored responsible country.
+11. Discovery marks the state, exposes the responsible country's stored hidden atrocity and cover-up buckets, calculates an additional public source from site type and repeat discoveries, and applies it to the stored responsible country.
 12. The first discovery fires the discoverer event and responsible-country event. Extermination discoveries fire the global news event once.
-13. Condemnation thresholds at 25, 50, 75, and 100 trigger newspaper, refugee, sanctions, and tribunal-pressure events.
+13. Genocide-crisis reactions at `25`, `50`, `75`, and `100` read the country's combined atrocity and cover-up condemnation. These reaction points are separate from the seven general condemnation tiers.
 14. If the responsible country capitulates after reaching tribunal-level condemnation, tribunal preparation activates.
 
 ## Decision Visibility
 
-The `Camps and Genocide` category has the lowest priority and appears only when the country has an actual player action available beyond the show/hide controls. The generic category no longer offers concentration camp construction decisions; concentration camps are built through the normal construction interface. The generic category highlights only controlled states with an existing concentration camp that can be upgraded into an extermination camp.
+The `Camps and Genocide` category has the lowest priority and appears only when the country has an actual player action available beyond the show/hide controls. The generic category no longer offers concentration camp construction decisions. Concentration camps are built through the normal construction interface. The generic category highlights only controlled states with an existing concentration camp that can be upgraded into an extermination camp.
 
 When a valid existing concentration camp can be upgraded, `genocide_show_hidden_decisions` reveals the extermination-camp upgrade decision and `genocide_hide_hidden_decisions` hides it again. The reveal decision remains available while valid upgrade targets exist, but the category disappears when the country has no existing concentration camps, no eligible upgrade targets, or no special decision to take.
 
@@ -116,7 +116,7 @@ The Soviet Union uses gulag expansion, deportations, food confiscation, camp-adm
 
 Restricted chemical escalation is a state-targeted camp decision for countries with sarin or soman capability through existing technologies or special projects and enough matching cylinder stockpile. The target must already be an active extermination, gulag, or experiment site with stored responsibility.
 
-The action consumes sarin or soman cylinders, applies existing state contamination through `chem_apply_state_contamination`, creates immediate hidden deaths, registers the site for monthly processing, and leaves `genocide_restricted_chemical_site` evidence. It does not fire the public chemical-attack condemnation path immediately; condemnation is added later if enemy forces discover the site.
+The action consumes sarin or soman cylinders, applies existing state contamination through `chem_apply_state_contamination`, creates immediate hidden deaths, registers the site for monthly processing, and leaves `genocide_restricted_chemical_site` evidence. Operation accumulates hidden atrocity pressure with `restricted_site_operation` context. It does not fire the public chemical-use condemnation path immediately. Discovery exposes stored hidden atrocity and cover-up evidence, then adds the public restricted-site discovery source.
 
 ## Country AI
 
@@ -141,7 +141,13 @@ The country summary folds concentration-camp, extermination-camp, and gulag repr
 
 ### Condemnation
 
-Discovery adds to the existing `chem_warfare_condemnation` variable so the Chaos Meter Condemnation tab and diplomatic consequence effects continue to work. Camps do not add passive condemnation before discovery.
+Discovery adds to the shared public condemnation model. Camp and gulag evidence enters the atrocity bucket with `camp_discovery` context. Experiment sites use `experiment_site`, and restricted chemical sites use `restricted_chemical_site`. Destroyed or failed cover-up evidence can add a separate cover-up source. The Chaos Meter Condemnation tab and participant sanctions read the resulting public total.
+
+Discovery of Japan's prisoner-experiment or biological-warfare site also adds a distinct public biological source with `experiment_site` context. This is evidence of a biological program, not a weapon-use action, so it does not trigger repeat-use or break a non-use pledge.
+
+Camps do not add passive public condemnation before discovery. Camp operation and its recorded deaths accumulate canonical hidden atrocity evidence, while concealment accumulates hidden cover-up evidence. Occupation or liberation exposes all stored hidden atrocity and cover-up pressure for the responsible country, then adds the state-specific public discovery source. Inspections and observers can expose smaller fractions through the shared condemnation system.
+
+The canonical source, tier, sanctions, and cleanup reference is `docs/systems/condemnation_sanctions.md`.
 
 ### Biological Warfare
 
@@ -155,8 +161,8 @@ When Germany authorizes or restricts the Auschwitz Experiments, state `88` is ma
 
 Extermination camps feed the Mengele system when Germany has active or restricted Auschwitz authority:
 
-- restricted authority gives small one-time and monthly autonomy growth;
-- full authority gives larger one-time and monthly autonomy growth;
+- restricted authority gives small one-time and monthly autonomy growth
+- full authority gives larger one-time and monthly autonomy growth
 - bypass authority gives the largest autonomy growth and pushes coup pressure fastest.
 
 If enemy forces capture an Auschwitz-linked or biological-facility state while Germany has high Mengele autonomy, the genocide state-control hook can trigger the emergency laboratory revolt. The Directorate then fights the invader first and later attempts war against loyalist Germany once it is no longer at war.
@@ -179,7 +185,7 @@ Required sprites:
 
 The concentration camp building entry uses a vanilla fort-style building icon and the vanilla bunker map mesh. The extermination camp building entry uses a distinct vanilla intelligence-building icon and the vanilla stronghold-network map mesh. Both building types have valid UI sprites and map entities until dedicated final camp art exists.
 
-Camp and Gulag decision categories use the existing Chaos Redux doom category icon `GFX_decision_category_chaos_doom`; no separate camp category DDS is required.
+Camp and Gulag decision categories use the existing Chaos Redux doom category icon `GFX_decision_category_chaos_doom`. No separate camp category DDS is required.
 
 The dynamic modifiers and ideas use existing `GFX_idea_jews_massacre` / `generic_oppression` style icons. The decisions use existing vanilla/Chaos decision icons and do not require additional sprites.
 

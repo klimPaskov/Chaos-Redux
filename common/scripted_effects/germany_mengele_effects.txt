@@ -41,13 +41,18 @@ germany_mengele_add_autonomy = {
 }
 
 germany_mengele_add_condemnation = {
-    if = {
-        limit = { NOT = { has_variable = chem_warfare_condemnation } }
-        set_variable = { chem_warfare_condemnation = 0 }
-    }
-    add_to_variable = { chem_warfare_condemnation = mengele_condemnation_add }
-    chem_apply_condemnation_diplomatic_consequences = yes
-    refresh_chaos_meter_condemnation_view_if_open = yes
+	set_temp_variable = { condemnation_source_type = mengele_condemnation_source_type }
+	set_temp_variable = { condemnation_base_gain = mengele_condemnation_add }
+	set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+	if = {
+		limit = { has_variable = mengele_condemnation_visibility_type }
+		set_temp_variable = { condemnation_visibility_type = mengele_condemnation_visibility_type }
+	}
+	set_temp_variable = { condemnation_severity_type = mengele_condemnation_severity_type }
+	set_temp_variable = { condemnation_civilian_deaths = 0 }
+	set_temp_variable = { condemnation_contamination_value = 0 }
+	set_temp_variable = { condemnation_context_type = mengele_condemnation_context_type }
+	condemnation_add_source = yes
 }
 
 germany_mengele_add_chaos = {
@@ -196,6 +201,10 @@ germany_mengele_import_subjects_from_from_state = {
     set_temp_variable = { mengele_autonomy_delta = germany_mengele_foreign_subjects_autonomy }
     germany_mengele_add_autonomy = yes
     set_temp_variable = { mengele_condemnation_add = constant:germany_mengele_foreign_subjects.condemnation }
+	set_temp_variable = { mengele_condemnation_source_type = constant:condemnation_source.atrocity }
+	set_temp_variable = { mengele_condemnation_severity_type = constant:condemnation_severity.mass_death }
+	set_temp_variable = { mengele_condemnation_context_type = constant:condemnation_context.experiment_site }
+	set_temp_variable = { mengele_condemnation_visibility_type = constant:condemnation_visibility.hidden }
     germany_mengele_add_condemnation = yes
     FROM = {
         set_variable = { genocide_responsible_country = ROOT }
@@ -378,6 +387,10 @@ germany_mengele_add_requested_biowarfare_facility = {
         set_temp_variable = { mengele_autonomy_delta = constant:germany_mengele_permission.facility_demand_autonomy }
         germany_mengele_add_autonomy = yes
         set_temp_variable = { mengele_condemnation_add = constant:germany_mengele_permission.facility_demand_condemnation }
+		set_temp_variable = { mengele_condemnation_source_type = constant:condemnation_source.atrocity }
+		set_temp_variable = { mengele_condemnation_severity_type = constant:condemnation_severity.major }
+		set_temp_variable = { mengele_condemnation_context_type = constant:condemnation_context.experiment_site }
+		set_temp_variable = { mengele_condemnation_visibility_type = constant:condemnation_visibility.hidden }
         germany_mengele_add_condemnation = yes
         set_temp_variable = { mengele_chaos_change = constant:germany_mengele_permission.facility_demand_chaos }
         set_temp_variable = { mengele_chaos_reason = constant:chaos_meter_history_reason.special.mengele_authorization }
@@ -1392,6 +1405,9 @@ mengele_clone_world_order_launch = {
         set_temp_variable = { mengele_chaos_reason = constant:chaos_meter_history_reason.special.mengele_world_order }
         germany_mengele_add_chaos = yes
         set_temp_variable = { mengele_condemnation_add = constant:mengele_clone_world_order.world_condemnation }
+		set_temp_variable = { mengele_condemnation_source_type = constant:condemnation_source.atrocity }
+		set_temp_variable = { mengele_condemnation_severity_type = constant:condemnation_severity.mass_death }
+		set_temp_variable = { mengele_condemnation_context_type = constant:condemnation_context.experiment_site }
         germany_mengele_add_condemnation = yes
         every_other_country = {
             limit = {
@@ -1449,6 +1465,10 @@ germany_mengele_authorize_full_program = {
         days = @MENGELE_PROGRAM_SPIRIT_DAYS
     }
     set_temp_variable = { mengele_condemnation_add = constant:germany_mengele_condemnation.authorization }
+	set_temp_variable = { mengele_condemnation_source_type = constant:condemnation_source.atrocity }
+	set_temp_variable = { mengele_condemnation_severity_type = constant:condemnation_severity.major }
+	set_temp_variable = { mengele_condemnation_context_type = constant:condemnation_context.experiment_site }
+	set_temp_variable = { mengele_condemnation_visibility_type = constant:condemnation_visibility.hidden }
     germany_mengele_add_condemnation = yes
     set_temp_variable = { mengele_chaos_change = constant:germany_mengele_chaos.authorization }
     set_temp_variable = { mengele_chaos_reason = constant:chaos_meter_history_reason.special.mengele_authorization }
@@ -1663,6 +1683,9 @@ germany_mengele_start_coup = {
     set_temp_variable = { mengele_chaos_reason = constant:chaos_meter_history_reason.special.mengele_coup }
     germany_mengele_add_chaos = yes
     set_temp_variable = { mengele_condemnation_add = constant:germany_mengele_condemnation.coup }
+	set_temp_variable = { mengele_condemnation_source_type = constant:condemnation_source.atrocity }
+	set_temp_variable = { mengele_condemnation_severity_type = constant:condemnation_severity.major }
+	set_temp_variable = { mengele_condemnation_context_type = constant:condemnation_context.experiment_site }
     germany_mengele_add_condemnation = yes
     germany_mengele_register_coup_state_deaths = yes
     if = {
@@ -1796,6 +1819,9 @@ germany_mengele_mark_victory = {
     set_temp_variable = { mengele_chaos_reason = constant:chaos_meter_history_reason.special.mengele_victory }
     germany_mengele_add_chaos = yes
     set_temp_variable = { mengele_condemnation_add = constant:germany_mengele_condemnation.mengele_victory }
+	set_temp_variable = { mengele_condemnation_source_type = constant:condemnation_source.atrocity }
+	set_temp_variable = { mengele_condemnation_severity_type = constant:condemnation_severity.mass_death }
+	set_temp_variable = { mengele_condemnation_context_type = constant:condemnation_context.experiment_site }
     germany_mengele_add_condemnation = yes
     germany_mengele_apply_master_claim_formations = yes
     set_temp_variable = { mengele_stage_value = constant:germany_mengele_stage.resolution }
@@ -1911,6 +1937,9 @@ germany_tibet_finish_expedition = {
         set_temp_variable = { mengele_chaos_reason = constant:chaos_meter_history_reason.special.tibet_scandal }
         germany_mengele_add_chaos = yes
         set_temp_variable = { mengele_condemnation_add = constant:germany_mengele_condemnation.tibet_scandal }
+		set_temp_variable = { mengele_condemnation_source_type = constant:condemnation_source.coverup }
+		set_temp_variable = { mengele_condemnation_severity_type = constant:condemnation_severity.major }
+		set_temp_variable = { mengele_condemnation_context_type = constant:condemnation_context.destroyed_records }
         germany_mengele_add_condemnation = yes
         every_other_country = {
             limit = {
@@ -1947,6 +1976,9 @@ germany_tibet_finish_expedition = {
         set_temp_variable = { mengele_chaos_reason = constant:chaos_meter_history_reason.special.tibet_claim }
         germany_mengele_add_chaos = yes
         set_temp_variable = { mengele_condemnation_add = constant:germany_mengele_condemnation.tibet_holy_confirmed }
+		set_temp_variable = { mengele_condemnation_source_type = constant:condemnation_source.mixed }
+		set_temp_variable = { mengele_condemnation_severity_type = constant:condemnation_severity.major }
+		set_temp_variable = { mengele_condemnation_context_type = constant:condemnation_context.observer_report }
         germany_mengele_add_condemnation = yes
     }
     else_if = {
@@ -1956,6 +1988,9 @@ germany_tibet_finish_expedition = {
         set_temp_variable = { mengele_chaos_reason = constant:chaos_meter_history_reason.special.tibet_claim }
         germany_mengele_add_chaos = yes
         set_temp_variable = { mengele_condemnation_add = constant:germany_mengele_condemnation.tibet_public_claim }
+		set_temp_variable = { mengele_condemnation_source_type = constant:condemnation_source.coverup }
+		set_temp_variable = { mengele_condemnation_severity_type = constant:condemnation_severity.major }
+		set_temp_variable = { mengele_condemnation_context_type = constant:condemnation_context.destroyed_records }
         germany_mengele_add_condemnation = yes
     }
     else_if = {

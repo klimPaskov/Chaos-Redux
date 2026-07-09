@@ -56,6 +56,7 @@ scripted_gui = {
 						clr_country_flag = chaos_meter_air_tab
 						clr_country_flag = chaos_meter_condemnation_tab
 						clr_country_flag = chaos_meter_deaths_tab
+						close_chaos_meter_condemnation_details = yes
 						clr_country_flag = chaos_meter_deaths_details_open
 						set_variable = { chaos_meter_deaths_selected_index = -1 }
 					}
@@ -125,6 +126,7 @@ scripted_gui = {
 						clr_country_flag = chaos_meter_air_tab
 						set_country_flag = chaos_meter_condemnation_tab
 						clr_country_flag = chaos_meter_deaths_tab
+						close_chaos_meter_condemnation_details = yes
 						clr_country_flag = chaos_meter_deaths_details_open
 						set_variable = { chaos_meter_deaths_selected_index = -1 }
 						rebuild_chaos_meter_condemnation_view = yes
@@ -135,6 +137,7 @@ scripted_gui = {
 						clr_country_flag = chaos_meter_air_tab
 						set_country_flag = chaos_meter_condemnation_tab
 						clr_country_flag = chaos_meter_deaths_tab
+						close_chaos_meter_condemnation_details = yes
 						clr_country_flag = chaos_meter_deaths_details_open
 						set_variable = { chaos_meter_deaths_selected_index = -1 }
 						rebuild_chaos_meter_condemnation_view = yes
@@ -418,6 +421,10 @@ scripted_gui = {
 					ROOT = { goto_state = PREV }
 				}
 			}
+
+			condemnation_entry_plate_button_click = {
+				open_chaos_meter_condemnation_details = yes
+			}
 		}
 
 		triggers = {
@@ -431,6 +438,9 @@ scripted_gui = {
 				always = yes
 			}
 			condemnation_open_diplomacy_button_visible = {
+				always = yes
+			}
+			condemnation_entry_plate_button_click_enabled = {
 				always = yes
 			}
 			condemnation_country_flag_visible = {
@@ -457,6 +467,61 @@ scripted_gui = {
 				image = "[?global.chaos_meter_condemnation_view_country_entries^condemnation_index.GetFlag]"
 			}
 		}
+
+			ai_enabled = {
+				always = no
+			}
+		}
+
+		chaos_meter_popup_condemnation_details_gui = {
+			context_type = player_context
+			parent_scripted_gui = "chaos_meter_popup_shell_gui"
+			window_name = "chaos_meter_condemnation_details_overlay"
+
+			visible = {
+				has_country_flag = chaos_meter_window_open
+				has_country_flag = chaos_meter_condemnation_tab
+				has_country_flag = chaos_meter_condemnation_details_open
+				condemnation_selected_country_valid = yes
+			}
+
+			effects = {
+				condemnation_details_close_button_click = {
+					close_chaos_meter_condemnation_details = yes
+				}
+
+				condemnation_details_open_diplomacy_button_click = {
+					var:chaos_meter_condemnation_selected_country = {
+						capital_scope = {
+							ROOT = { goto_state = PREV }
+						}
+					}
+				}
+			}
+
+			triggers = {
+				condemnation_details_close_button_click_enabled = {
+					always = yes
+				}
+				condemnation_details_open_diplomacy_button_click_enabled = {
+					condemnation_selected_country_valid = yes
+				}
+				condemnation_details_open_diplomacy_button_visible = {
+					condemnation_selected_country_valid = yes
+				}
+				condemnation_details_country_flag_visible = {
+					condemnation_selected_country_valid = yes
+				}
+				condemnation_details_country_flag_frame_visible = {
+					condemnation_selected_country_valid = yes
+				}
+			}
+
+			properties = {
+				condemnation_details_country_flag = {
+					image = "[?chaos_meter_condemnation_selected_country.GetFlag]"
+				}
+			}
 
 			ai_enabled = {
 				always = no

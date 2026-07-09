@@ -3791,13 +3791,15 @@ apply_weaponized_zombie_strike_consequences = {
             add_political_power = constant:weaponized_zombies.condemnation_pp_loss_negative
             add_stability = constant:weaponized_zombies.condemnation_stability_loss_negative
             add_war_support = constant:weaponized_zombies.condemnation_warsupport_loss_negative
-            if = {
-                limit = { NOT = { has_variable = chem_warfare_condemnation } }
-                set_variable = { chem_warfare_condemnation = 0 }
+            set_temp_variable = { bio_condemnation_base_gain = constant:weaponized_zombies.condemnation_score }
+            multiply_temp_variable = { bio_condemnation_base_gain = bio_bw_condemnation_mult }
+            set_temp_variable = { bio_condemnation_severity_type = constant:condemnation_severity.major }
+            var:victim_country = {
+                set_temp_variable = { bio_condemnation_victim_country = THIS }
             }
-            set_temp_variable = { var = weaponized_zombie_condemnation_add value = constant:weaponized_zombies.condemnation_score }
-            multiply_temp_variable = { var = weaponized_zombie_condemnation_add value = bio_bw_condemnation_mult }
-            add_to_variable = { chem_warfare_condemnation = weaponized_zombie_condemnation_add }
+            set_temp_variable = { bio_condemnation_contamination_value = 0 }
+            set_temp_variable = { bio_condemnation_context_type = constant:condemnation_context.weaponized_zombies }
+            bio_register_condemnation_source = yes
             if = {
                 limit = { NOT = { has_variable = bioweapon_uses } }
                 set_variable = { bioweapon_uses = 0 }
@@ -3806,7 +3808,6 @@ apply_weaponized_zombie_strike_consequences = {
             set_country_flag = used_bioweapon
             set_country_flag = used_unconventional_weapon
             air_cleanliness_treaty_on_unconventional_use = yes
-            refresh_chaos_meter_condemnation_view_if_open = yes
             if = {
                 limit = { NOT = { has_country_flag = used_weaponized_zombie_weapon } }
                 set_country_flag = used_weaponized_zombie_weapon

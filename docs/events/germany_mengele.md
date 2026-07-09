@@ -84,7 +84,7 @@ The chain adds dedicated chaos-meter history reasons:
 - `tibet_claim`
 - `tibet_scandal`
 
-Condemnation uses the existing chemical/biological condemnation variable and diplomatic consequence effect.
+Condemnation uses the shared source buckets and sanctions system. Secret experiments and internal concealment can accumulate hidden atrocity or cover-up evidence. Discovery and observer paths expose that evidence and add public experiment-site or destroyed-record sources.
 
 ## Final Solution Decision Layer
 

@@ -2,7 +2,7 @@
 
 ## What This Adds
 
-This update adds a global atmospheric contamination system that feeds both gameplay pressure and chaos progression.
+The Air Cleanliness mechanic tracks global atmospheric contamination and feeds both gameplay pressure and chaos progression.
 
 It introduces:
 
@@ -58,8 +58,8 @@ At `75%` contamination (`constant:air_contamination_threshold_bp.winter_75`), th
 - A major democratic country that has not used unconventional weapons forms the treaty and sends invitation events to countries globally.
 - Countries decide whether to join through `chaosx_contamination.9` (AI weighted toward democracies and minor countries without unconventional stockpiles).
 - Treaty members gain mutual respect opinion (`air_cleanliness_treaty_member_respect`).
-- Treaty members embargo all non-members.
-- If a treaty member uses an unconventional weapon (chemical/bioweapon/nuclear hook), it is expelled, marked banned, embargoed by all other countries, and receives a violation opinion penalty (`air_cleanliness_treaty_violator`).
+- Treaty members claim a broad native embargo against all non-members when By Blood Alone is active.
+- If a treaty member uses an unconventional weapon through a chemical, biological, or nuclear hook, it is expelled, marked banned, claimed for broad embargo by all other countries, and receives a violation opinion penalty (`air_cleanliness_treaty_violator`).
 - Treaty activation and violations fire news events (`chaosx_contamination.7` and `.8`).
 - Members also get treaty decisions:
   - `air_cleanliness_global_cleaning_day`
@@ -91,14 +91,17 @@ Treaty event IDs in the same file:
 - `chaosx_contamination.10` Founder confirmation
 - `chaosx_contamination.11` Global Cleaning Day news
 
+Treaty embargo ownership is tracked separately from condemnation sanctions and the Great Embargo event. Removing one source releases the native relation only when no other owner remains and the relation was created by these systems. Without By Blood Alone, treaty state and opinion consequences still apply but no native embargo relation can be created.
+
 ## UI Integration
 
-The Chaos Meter popup now has four tabs:
+The Chaos Meter popup has five tabs:
 
 1. `Status`
 2. `History`
 3. `Air Cleanliness`
 4. `Condemnation`
+5. `Deaths`
 
 The contamination tab displays:
 
@@ -115,10 +118,12 @@ The right-side monthly-model and threshold reference values are refreshed whenev
 
 The condemnation tab displays:
 
-- player condemnation,
+- the player's public condemnation,
 - global total condemnation and active country count,
-- sortable country rows (ascending/descending),
-- per-country diplomacy quick-open.
+- sortable country rows with total, tier, recent gain, main source, sanction count, highest active sanction tier, and compliance state,
+- a selected-country detail view with public-source breakdown, current and peak tier, participant counts, estimated trade dependency, practical penalties, decay, and compliance state.
+
+Hidden evidence is excluded from the list and detail snapshot until it is disclosed. Exact bilateral trade is unavailable to script, so the displayed trade value is an aggregate complementarity estimate. See `docs/systems/condemnation_sanctions.md` for the complete UI read model and embargo ownership rules.
 
 ## World-End Integration
 
@@ -143,9 +148,7 @@ It sets:
 ### Existing sprite reused
 
 - `GFX_modifiers_radiation` (already defined in `interface/countrystateview.gfx`) is used for the global contamination state modifier icon.
-- Condemnation list uses existing UI sprites:
-  - `GFX_flag_small2` and `GFX_diplo_countrylist_flag_frame` for country rows,
-  - `GFX_mini_tooltip` for diplomacy quick-open button.
+- Condemnation list and detail view use `GFX_flag_small2` and `GFX_diplo_countrylist_flag_frame` for country flags, plus `GFX_mini_tooltip` for the detail-view diplomacy button.
 - Treaty news event uses existing report image:
   - `GFX_report_event_generic_sign_treaty2` (no new sprite required).
 

@@ -1,0 +1,704 @@
+# ============================================================================
+# CHAOS REDUX - CONDEMNATION SANCTIONS SYSTEM CONSTANTS
+# ============================================================================
+# Shared tuning for source-aware condemnation, tier transitions, sanction-pair
+# scoring, native embargo ownership, decay, counterplay, AI, and UI values.
+# All gameplay files consume these values through constant:<category>.<key>.
+# ============================================================================
+
+condemnation_source = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	chemical = 1
+	biological = 2
+	nuclear = 3
+	atrocity = 4
+	coverup = 5
+	mixed = 6
+}
+
+condemnation_context = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	unspecified = 0
+	chemical_combat = 101
+	chemical_air_strike = 102
+	chemical_doomsday = 103
+	biological_strike = 201
+	biological_outbreak = 202
+	biological_doomsday = 203
+	weaponized_zombies = 204
+	nuclear_strike = 301
+	thermonuclear_strike = 302
+	final_silence = 303
+	camp_discovery = 401
+	experiment_site = 402
+	restricted_chemical_site = 403
+	inspection_disclosure = 404
+	observer_report = 405
+	camp_operation = 406
+	restricted_site_operation = 407
+	destroyed_records = 501
+	blocked_inspection = 502
+	black_market_exposure = 503
+	pledge_breach = 504
+	concealment_operation = 505
+}
+
+condemnation_visibility = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	hidden = 0
+	suspected = 1
+	discovered = 2
+	public = 3
+}
+
+condemnation_severity = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	minor = 1
+	combat = 2
+	major = 3
+	mass_death = 4
+	doomsday = 5
+}
+
+condemnation_tier = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	normal = 0
+	concern = 1
+	formal_censure = 2
+	arms_embargo = 3
+	strategic_embargo = 4
+	total_embargo = 5
+	pariah_state = 6
+}
+
+condemnation_math = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	two_way_average_divisor = 2
+}
+
+condemnation_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	concern = 25
+	formal_censure = 50
+	arms_embargo = 100
+	strategic_embargo = 175
+	total_embargo = 300
+	pariah_state = 500
+	total_cap = 1000
+	bucket_cap = 1000
+	recent_gain_cap = 300
+	repeat_use_cap = 200
+	contamination_cap = 200
+	participant_refresh_gain = 10
+}
+
+condemnation_runtime = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	source_log_limit = 8
+}
+
+condemnation_gain = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	visibility_hidden = 0
+	visibility_suspected = 0.35
+	visibility_discovered = 0.75
+	visibility_public = 1
+	severity_minor = 0.75
+	severity_combat = 1
+	severity_major = 1.35
+	severity_mass_death = 1.75
+	severity_doomsday = 2.50
+	repeat_fraction = 0.25
+	repeat_pledge_fraction = 0.50
+	pledge_break_coverup = 35
+	pledge_break_repeat = 25
+	blocked_inspection_coverup = 18
+	quiet_breach_exposure_coverup = 12
+	black_market_exposure_coverup = 16
+	civilian_deaths_divisor = 10000
+	civilian_deaths_factor = 1
+	civilian_deaths_gain_cap = 100
+	contamination_factor = 0.50
+	contamination_gain_cap = 50
+	minimum_visible_gain = 0.10
+}
+
+condemnation_source_default_gain = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	chemical_combat = 4
+	chemical_public_contamination = 8
+	chemical_doomsday_base = 40
+	chemical_doomsday_acute_divisor = 1000
+	chemical_doomsday_scaling_cap = 80
+	biological_tactical = 18
+	biological_strategic = 35
+	biological_doomsday = 90
+	biological_experiment_discovery = 18
+	nuclear_low_population = 55
+	nuclear_per_million_population = 0.55
+	nuclear_population_divisor = 1000
+	nuclear_populous_5m_threshold = 5000
+	nuclear_populous_10m_threshold = 10000
+	nuclear_populous_20m_threshold = 20000
+	nuclear_populous_5m_multiplier = 1.15
+	nuclear_populous_10m_multiplier = 1.35
+	nuclear_populous_20m_multiplier = 1.65
+	nuclear_capital_bonus = 35
+	nuclear_major_industry_bonus = 20
+	nuclear_major_industry_factories = 8
+	nuclear_non_belligerent_multiplier = 1.50
+	nuclear_ally_or_subject_multiplier = 1.50
+	thermonuclear_multiplier = 2.25
+	atrocity_discovery = 25
+	restricted_site_discovery = 30
+	coverup_discovery = 20
+}
+
+condemnation_duration_days = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	pulse = 30
+	recent_use = 180
+	recent_gain = 90
+	inspection = 180
+	observers = 180
+	non_use_pledge = 365
+	verified_non_use = 180
+	compensation = 180
+	command_reform = 270
+	defiance_program = 180
+	evasion_route = 120
+	decision_cooldown = 90
+	exposure_memory = 180
+	pledge_break_memory = 365
+	arms_embargo_review = 180
+	strategic_embargo_review = 270
+	total_embargo_review = 360
+	pariah_embargo_review = 540
+	humanitarian_carveout = 180
+	quiet_breach = 120
+	tight_enforcement = 180
+	faction_shield = 180
+}
+
+condemnation_decay = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_monthly = 0.50
+	concern_monthly = 0.75
+	formal_monthly = 0.60
+	arms_monthly = 0.45
+	strategic_monthly = 0.30
+	total_monthly = 0.20
+	pariah_monthly = 0.10
+	inspection_bonus = 0.75
+	observers_bonus = 0.50
+	verified_non_use_bonus = 1.00
+	compensation_bonus = 0.75
+	stockpile_destruction_bonus = 1.25
+	site_dismantlement_bonus = 1.00
+	command_reform_bonus = 0.75
+	refusal_penalty = 1.00
+	evasion_penalty = 0.50
+	credit_conversion = 0.10
+	credit_monthly_cap = 2
+	maximum_monthly = 7
+	recent_gain_fade = 0.35
+	repeat_use_fade = 0.20
+	civilian_deaths_fade = 0.85
+	contamination_fade = 0.90
+	exposure_fade = 0.75
+	inspection_hidden_exposure = 0.10
+	observer_hidden_exposure = 0.05
+	discovery_hidden_exposure = 1
+	minimum_total = 0
+}
+
+condemnation_compliance_credit = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	inspection = 12
+	destroy_chemical_stockpile = 20
+	destroy_biological_stockpile = 25
+	dismantle_sites = 22
+	compensation = 18
+	non_use_pledge = 10
+	verified_non_use = 25
+	observers = 14
+	command_reform = 30
+	maximum = 150
+}
+
+condemnation_compliance_credibility = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	inspections = 0.15
+	observers = 0.10
+	verified_non_use = 0.20
+}
+
+condemnation_compliance_state = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	inspections = 1
+	stockpile_destruction = 2
+	compensation = 3
+	non_use_pledge = 4
+	observers = 5
+	command_reform = 6
+	defiance = 7
+	evasion = 8
+}
+
+condemnation_participant_score = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	tier = 18
+	peak_tier = 4
+	recent_gain = 0.20
+	nuclear = 0.08
+	biological = 0.07
+	atrocity = 0.08
+	coverup = 0.06
+	repeat_use = 0.10
+	contamination = 0.20
+	civilian_deaths_per_thousand = 0.10
+	democratic = 28
+	fascist_rival = 18
+	communist_rival = 18
+	nonaligned = 6
+	direct_victim = 45
+	victim_guarantor = 16
+	recent_major_source = 8
+	recent_mass_death_source = 18
+	recent_doomsday_source = 30
+	defiant_propaganda = 18
+	rival = 24
+	neighbour = 10
+	near_distance = 10
+	far_distance = -12
+	high_world_tension = 12
+	extreme_world_tension = 18
+	same_faction = -70
+	overlord_or_subject = -65
+	same_ideology = -12
+	common_war = -18
+	weak_industry = -12
+	target_major = -10
+	participant_major = 12
+	participant_stronger = 8
+	target_stronger = -15
+	hypocrisy = -0.12
+	trade_dependency = -0.75
+	resource_dependency = -0.50
+	fatigue = -0.60
+	compliance = -0.40
+	evasion = 0.45
+	faction_leader = 12
+	overlord_alignment = 22
+	overlord_shield_alignment = -22
+	deaths_divisor = 1000
+	export_capacity_scale = 5
+}
+
+condemnation_participant_band = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	watch = 15
+	abstain = 30
+	arms = 55
+	strategic = 85
+	total = 120
+	lead_enforcement = 155
+	quiet_breach_ceiling = 105
+	shield = -45
+}
+
+condemnation_world_tension = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	high = 0.40
+	extreme = 0.75
+}
+
+condemnation_distance = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	near = 1200
+	far = 5000
+}
+
+condemnation_industry = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	weak_factories = 12
+	strong_factories = 50
+	weight_divisor = 20
+	weight_cap = 5
+	major_weight = 3
+	base_weight = 1
+}
+
+condemnation_pair = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	arms_tier_weight = 1
+	strategic_tier_weight = 2
+	total_tier_weight = 3
+	pariah_tier_weight = 4
+	carveout_relief = 0.25
+	shield_relief = 0.35
+	tight_enforcement_bonus = 0.20
+	quiet_breach_relief = 0.20
+	fatigue_monthly = 1
+	fatigue_cost_factor = 0.25
+	fatigue_withdrawal_relief = 15
+	fatigue_cap = 100
+	fatigue_withdrawal = 75
+	enforcement_cost_base = 1
+	enforcement_cost_dependency = 0.10
+	enforcement_tier_arms = 1
+	enforcement_tier_strategic = 1.50
+	enforcement_tier_total = 2.25
+	enforcement_tier_pariah = 3
+	enforcement_scale = 20
+	fatigue_scale = 100
+	maximum_relief = 0.75
+	quiet_breach_dependency = 60
+	percent_scale = 100
+	denominator_floor = 1
+}
+
+condemnation_penalty = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	severity_divisor = 35
+	severity_cap = 1
+	censure_tier_scale = 2
+	censure_trade_opinion = -0.15
+	censure_license_cost = 0.20
+	censure_research = -0.03
+	arms_efficiency_gain = -0.18
+	arms_license_cost = 0.60
+	arms_market_access = -0.70
+	strategic_factory_output = -0.20
+	strategic_dockyard_output = -0.15
+	strategic_fuel_gain = -0.40
+	strategic_consumer_goods = 0.12
+	strategic_resource_projects = -0.20
+	isolation_factory_output = -0.18
+	isolation_research = -0.16
+	isolation_consumer_goods = 0.16
+	isolation_trade_opinion = -0.60
+	pariah_enemy_detection = -0.30
+	pariah_resistance = 0.15
+	pariah_stability = -0.10
+	enforcement_consumer_goods = 0.08
+	enforcement_factory_output = -0.08
+	enforcement_fuel_gain = -0.10
+	fatigue_stability = -0.06
+}
+
+condemnation_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	chemical_stockpile_fraction = 0.75
+	biological_stockpile_fraction = 0.75
+	compensation_convoys_base = 12
+	compensation_convoys_per_tier = 4
+	compensation_fuel_fraction = 0.12
+	compensation_infantry_equipment = 500
+	observer_convoys = 4
+	command_reform_army_xp = 30
+	command_reform_air_xp = 20
+	command_reform_navy_xp = 20
+	propaganda_stability = -0.02
+	autarky_fuel_fraction = 0.08
+	forced_extraction_stability = -0.04
+	subject_pressure_stability = -0.03
+	controlled_shipping_convoys = 10
+	controlled_shipping_fuel_fraction = 0.05
+	black_market_convoys = 12
+	black_market_fuel_fraction = 0.08
+	black_market_infantry_equipment = 750
+	black_market_support_equipment = 150
+	black_market_infantry_gain = 500
+	black_market_support_gain = 100
+	false_manifest_convoys = 8
+	intermediary_convoys = 6
+	intermediary_infantry_gain = 250
+	covert_fuel_convoys = 10
+	covert_fuel_gain_fraction = 0.12
+	reflagging_convoys = 6
+	stolen_license_convoys = 8
+	smuggled_lab_convoys = 6
+	smuggled_lab_equipment = 5
+	participant_convoys_base = 6
+	participant_fuel_fraction = 0.03
+	participant_escalation_convoys = 2
+	participant_escalation_fuel_fraction = 0.01
+	carveout_convoys = 5
+	carveout_relief_convoys = 5
+	quiet_breach_convoys = 8
+	quiet_breach_fuel_fraction = 0.04
+	quiet_breach_equipment = 300
+	tight_enforcement_convoys = 6
+	shield_convoys = 8
+}
+
+condemnation_route = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	autarky_relief = 0.20
+	forced_extraction_relief = 0.15
+	substitute_materials_relief = 0.18
+	rationing_relief = 0.12
+	subject_pressure_relief = 0.18
+	controlled_shipping_relief = 0.15
+	black_market_strength = 12
+	false_manifest_strength = 10
+	intermediary_strength = 8
+	subject_front_strength = 10
+	covert_fuel_strength = 10
+	reflagging_strength = 8
+	stolen_license_strength = 8
+	smuggled_lab_strength = 8
+	exposure_per_route = 10
+	exposure_cap = 100
+	exposure_roll_base = 5
+	strength_fade = 0.75
+}
+
+condemnation_response_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	inspection_consumer_goods = 0.05
+	inspection_encryption = -0.15
+	observer_consumer_goods = 0.03
+	observer_detection = -0.20
+	compensation_consumer_goods = 0.07
+	compensation_factory_output = -0.04
+	pledge_war_support = -0.03
+	command_reform_org = -0.06
+	command_reform_training = 0.15
+	propaganda_war_support = 0.08
+	propaganda_stability = -0.03
+	propaganda_consumer_goods = 0.04
+	autarky_resources = 0.25
+	autarky_consumer_goods = 0.08
+	autarky_factory_output = -0.05
+	forced_extraction_resources = 0.35
+	forced_extraction_efficiency = -0.10
+	substitute_resources = 0.15
+	substitute_efficiency = -0.08
+	rationing_fuel_use = -0.18
+	rationing_factory_output = -0.04
+	subject_pressure_resources = 0.20
+	subject_pressure_stability = -0.03
+	controlled_shipping_convoys = 0.12
+	controlled_shipping_factory_output = -0.03
+	hardline_war_support = 0.05
+	hardline_stability = -0.05
+	black_market_factory_output = -0.03
+	false_manifest_convoy_efficiency = 0.10
+	intermediary_license_cost = -0.15
+	subject_front_resources = 0.12
+	covert_fuel_use = -0.08
+	reflagging_convoys = 0.18
+	stolen_license_efficiency = 0.05
+	smuggled_lab_research = 0.04
+}
+
+condemnation_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	decision_base = 10
+	participant_decision_base = 0
+	factor_very_high = 2
+	factor_high = 1.8
+	factor_medium_high = 1.6
+	factor_elevated = 1.5
+	factor_cautious = 0.5
+	factor_low = 0.4
+	factor_very_low = 0.35
+	compliance_weak = 35
+	compliance_strong = -20
+	defiance_weak = -20
+	defiance_strong = 35
+	evasion_base = 18
+	sanction_join = 30
+	abstain_dependency = 40
+	shield_ally = 50
+	quiet_breach_dependency_relief = 20
+	tighten_after_exposure = 45
+	carveout_dependency = 25
+	democratic_compliance = 15
+	fascist_defiance = 18
+	communist_defiance = 10
+	war_defiance = 15
+	peace_compliance = 10
+	major_strength = 20
+	minor_weakness = 15
+	hypocrisy_defiance = 12
+	recent_source_compliance = 15
+	recent_source_defiance = 12
+	critical_condemnation_compliance = 10
+	import_vulnerability = 0.50
+	exposure_caution = 50
+}
+
+condemnation_ai_strategy = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	arms_lend_lease = -1000
+	arms_volunteers = -1000
+	arms_market = -1000
+	military_access = -750
+	strategic_market = -1500
+	total_befriend = -250
+	total_protect = -400
+	pariah_antagonize = 150
+	pariah_contain = 150
+	censure_lend_lease = -200
+	censure_volunteers = -175
+	censure_military_access = -150
+	concern_lend_lease = -60
+	concern_volunteers = -50
+	concern_military_access = -40
+	arms_lend_lease_restore = 1000
+	arms_volunteers_restore = 1000
+	arms_market_restore = 1000
+	military_access_restore = 750
+	strategic_market_restore = 1500
+	total_befriend_restore = 250
+	total_protect_restore = 400
+	pariah_antagonize_restore = -150
+	pariah_contain_restore = -150
+	censure_lend_lease_restore = 200
+	censure_volunteers_restore = 175
+	censure_military_access_restore = 150
+	concern_lend_lease_restore = 60
+	concern_volunteers_restore = 50
+	concern_military_access_restore = 40
+}
+
+condemnation_opinion = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	sanctioner_to_target = -60
+	monitoring_to_target = -15
+	target_to_sanctioner = -45
+	abstention_to_target = 10
+	abstention_by_victim = -20
+	shield_to_target = 35
+	breach_exposed = -50
+	compensation_received = 45
+	decay_fast = 0.50
+	decay_slow = 0.20
+}
+
+condemnation_embargo_source = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	condemnation = 1
+	air_cleanliness_treaty = 2
+	great_embargo_event = 3
+}

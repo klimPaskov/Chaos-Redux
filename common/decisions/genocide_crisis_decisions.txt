@@ -1185,38 +1185,6 @@ genocide_foreign_response_category = {
 		ai_will_do = { base = constant:genocide_ai_weight.foreign_response }
 	}
 
-	genocide_enact_sanctions = {
-		icon = GFX_decision_generic_political_discourse
-		cost = constant:genocide_decision_cost.foreign_sanctions
-		days_re_enable = constant:genocide_timing.decision_cooldown
-		visible = {
-			OR = {
-				is_ai = yes
-				has_country_flag = genocide_decisions_visible
-			}
-		}
-		target_root_trigger = {
-			OR = {
-				is_major = yes
-				has_government = democratic
-			}
-			any_country = { genocide_country_condemnation_75 = yes }
-		}
-		target_trigger = {
-			FROM = {
-				genocide_country_condemnation_75 = yes
-				NOT = { tag = ROOT }
-			}
-		}
-		available = {
-			FROM = { genocide_country_condemnation_75 = yes }
-		}
-		complete_effect = {
-			genocide_foreign_sanction_target = yes
-		}
-		ai_will_do = { base = constant:genocide_ai_weight.foreign_response }
-	}
-
 	genocide_support_resistance_networks = {
 		icon = GFX_decision_generic_operation
 		cost = constant:genocide_decision_cost.foreign_resistance_support

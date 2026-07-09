@@ -357,6 +357,7 @@ chem_air_bomb_register_ground_ops_heat_won = {
 			var = chem_air_ground_ops_heat
 			value = constant:chem_air_bomb_detection.ground_ops.heat_add.won
 		}
+		chem_air_bomb_start_targeted_tick = yes
 	}
 }
 
@@ -375,6 +376,16 @@ chem_air_bomb_register_ground_ops_heat_lost = {
 			var = chem_air_ground_ops_heat
 			value = constant:chem_air_bomb_detection.ground_ops.heat_add.lost
 		}
+		chem_air_bomb_start_targeted_tick = yes
+	}
+}
+
+chem_air_bomb_start_targeted_tick = {
+	if = {
+		limit = { NOT = { has_country_flag = chem_air_bomb_targeted_tick_active } }
+		set_country_flag = chem_air_bomb_targeted_tick_active
+		set_temp_variable = { chem_air_bomb_tick_days = constant:chem_air_bomb_detection.ground_ops.tick_days.value }
+		country_event = { id = chemical_air_bomb.1 days = chem_air_bomb_tick_days }
 	}
 }
 

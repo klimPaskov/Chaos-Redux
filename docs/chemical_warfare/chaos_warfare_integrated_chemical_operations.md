@@ -6,7 +6,7 @@ This mechanic adds the `integrated_chemical_operations` subdoctrine to the Chaos
 Design goal:
 - Keep general buffs limited while shifting value into recon/intelligence-led chemical warfare.
 - Increase chemical raid impact and contamination potency through progression flags.
-- Reduce condemnation growth with staged reductions, ending at `-50%`.
+- Reduce chemical and biological source gains with staged multipliers, ending at `-50%`.
 - Add limited air integration so chemical air-bomb contamination scales with doctrine progress.
 - Improve biological outbreak strike efficiency and potency while reducing BW condemnation impact.
 
@@ -117,17 +117,19 @@ Localisation keys added in:
 Doctrine icon registration:
 - `interface/chaosx_doctrines.gfx`
 - Sprite key: `GFX_doctrine_integrated_chemical_operations_medium`
-- Current texture mapping: `gfx/interface/doctrines/icons/doctrine_chaos_warfare.dds`
+- Reused final texture: `gfx/interface/doctrines/icons/doctrine_chaos_warfare.dds`
 
-## Icons Needed
-1. Optional dedicated doctrine icon
-- Path: `gfx/interface/doctrines/icons/doctrine_integrated_chemical_operations.dds`
-- GFX key: `GFX_doctrine_integrated_chemical_operations_medium`
-- GFX file: `interface/chaosx_doctrines.gfx`
+## Condemnation Integration
 
-If no custom icon is provided, the current fallback mapping remains valid.
+The integrated-operations multiplier is applied to each qualifying chemical or biological gain before the value enters the shared chemical or biological bucket. It does not erase the public source, recent-use and repeat-use memory, source context, Air Cleanliness Treaty reaction, or sanction consequences. Chemical air activity uses `chemical_air_strike`, biological outbreak strikes use `biological_outbreak`, and hostile weaponized-zombie deployment uses `weaponized_zombies`.
+
+The canonical source, tier, participant, decay, and UI behavior is documented in `docs/systems/condemnation_sanctions.md`.
+
+## Icons
+
+No new icon is required. The final registered sprite `GFX_doctrine_integrated_chemical_operations_medium` in `interface/chaosx_doctrines.gfx` reuses `gfx/interface/doctrines/icons/doctrine_chaos_warfare.dds`.
 
 ## Future Plans / Suggestions
 1. Add a dedicated operations-track milestone in `chaos_warfare_grand_doctrine.txt` so this subdoctrine has explicit milestone synergy.
-2. Split condemnation scaling by source (abilities vs raids vs air-bombs) if finer diplomatic balancing is needed later.
+2. Split the multiplier by source if later balance work needs separate ability, raid, and air-bomb tuning.
 3. Add AI weighting hooks to prioritize this subdoctrine when the country has strong chemical stockpile and active chemical raid use.

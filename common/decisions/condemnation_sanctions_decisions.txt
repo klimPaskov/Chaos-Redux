@@ -1,0 +1,617 @@
+# ============================================================================
+# CHAOS REDUX - CONDEMNATION SANCTIONS DECISIONS
+# ============================================================================
+# Player and AI counterplay for condemned targets plus bilateral participant
+# actions. Political power and command power are deliberately not default
+# costs; effects consume stockpiles, convoys, fuel, factories, experience,
+# stability, intelligence security, and production capacity.
+# ============================================================================
+
+condemnation_target_response_category = {
+	condemnation_view_compliance_options = {
+		icon = GFX_decision_SWI_support_humanitarian_efforts
+		cost = 0
+		visible = { is_ai = no condemnation_is_concern = yes }
+		available = { NOT = { has_country_flag = condemnation_response_view_compliance } }
+		complete_effect = { hidden_effect = {
+			clr_country_flag = condemnation_response_view_defiance
+			clr_country_flag = condemnation_response_view_evasion
+			set_country_flag = condemnation_response_view_compliance
+		} }
+		ai_will_do = { base = 0 }
+	}
+
+	condemnation_view_defiance_options = {
+		icon = GFX_decision_generic_political_rally
+		cost = 0
+		visible = { is_ai = no condemnation_is_concern = yes }
+		available = { NOT = { has_country_flag = condemnation_response_view_defiance } }
+		complete_effect = { hidden_effect = {
+			clr_country_flag = condemnation_response_view_compliance
+			clr_country_flag = condemnation_response_view_evasion
+			set_country_flag = condemnation_response_view_defiance
+		} }
+		ai_will_do = { base = 0 }
+	}
+
+	condemnation_view_evasion_options = {
+		icon = GFX_decision_generic_intelligence_operation
+		cost = 0
+		visible = { is_ai = no condemnation_is_concern = yes }
+		available = { NOT = { has_country_flag = condemnation_response_view_evasion } }
+		complete_effect = { hidden_effect = {
+			clr_country_flag = condemnation_response_view_compliance
+			clr_country_flag = condemnation_response_view_defiance
+			set_country_flag = condemnation_response_view_evasion
+		} }
+		ai_will_do = { base = 0 }
+	}
+
+	condemnation_accept_international_inspections = {
+		icon = GFX_decision_generic_intelligence_operation
+		cost = 0
+		visible = { condemnation_show_compliance_actions = yes condemnation_is_concern = yes NOT = { has_country_flag = condemnation_inspections_active } }
+		available = { always = yes }
+		complete_effect = { custom_effect_tooltip = condemnation_accept_international_inspections_tt hidden_effect = { condemnation_accept_inspections = yes } }
+		ai_will_do = {
+			base = constant:condemnation_ai.decision_base
+			modifier = { add = constant:condemnation_ai.compliance_weak condemnation_target_is_weak = yes }
+			modifier = { add = constant:condemnation_ai.compliance_strong condemnation_target_is_strong = yes }
+			modifier = { add = constant:condemnation_ai.recent_source_compliance condemnation_has_severe_recent_source = yes }
+			modifier = { add = constant:condemnation_ai.critical_condemnation_compliance condemnation_is_total_embargo_tier = yes }
+			modifier = { factor = constant:condemnation_ai.factor_very_high has_government = democratic }
+			modifier = { factor = constant:condemnation_ai.factor_elevated NOT = { has_war = yes } }
+			modifier = { factor = constant:condemnation_ai.factor_cautious is_major = yes has_war = yes }
+		}
+	}
+
+	condemnation_destroy_chemical_stockpiles_decision = {
+		icon = GFX_decision_generic_scorched_earth
+		cost = 0
+		visible = { condemnation_show_compliance_actions = yes condemnation_is_formally_censured = yes condemnation_has_chemical_stockpile = yes NOT = { has_country_flag = condemnation_chemical_stockpiles_destroyed } }
+		available = { condemnation_has_chemical_stockpile = yes NOT = { has_country_flag = condemnation_chemical_stockpiles_destroyed } }
+		complete_effect = { custom_effect_tooltip = condemnation_destroy_chemical_stockpiles_tt hidden_effect = { condemnation_destroy_chemical_stockpiles = yes } }
+		ai_will_do = {
+			base = constant:condemnation_ai.decision_base
+			modifier = { add = constant:condemnation_ai.compliance_weak condemnation_target_is_weak = yes }
+			modifier = { add = constant:condemnation_ai.compliance_strong condemnation_target_is_strong = yes }
+			modifier = { add = constant:condemnation_ai.recent_source_compliance condemnation_has_severe_recent_source = yes }
+			modifier = { factor = constant:condemnation_ai.factor_very_high has_government = democratic }
+			modifier = { factor = constant:condemnation_ai.factor_cautious has_war = yes }
+		}
+	}
+
+	condemnation_destroy_biological_stockpiles_decision = {
+		icon = GFX_decision_deploy_field_hospitals
+		cost = 0
+		visible = { condemnation_show_compliance_actions = yes condemnation_is_formally_censured = yes condemnation_has_biological_stockpile = yes NOT = { has_country_flag = condemnation_biological_stockpiles_destroyed } }
+		available = { condemnation_has_biological_stockpile = yes NOT = { has_country_flag = condemnation_biological_stockpiles_destroyed } }
+		complete_effect = { custom_effect_tooltip = condemnation_destroy_biological_stockpiles_tt hidden_effect = { condemnation_destroy_biological_stockpiles = yes } }
+		ai_will_do = {
+			base = constant:condemnation_ai.decision_base
+			modifier = { add = constant:condemnation_ai.compliance_weak condemnation_target_is_weak = yes }
+			modifier = { add = constant:condemnation_ai.compliance_strong condemnation_target_is_strong = yes }
+			modifier = { add = constant:condemnation_ai.recent_source_compliance condemnation_has_severe_recent_source = yes }
+			modifier = { factor = constant:condemnation_ai.factor_very_high has_government = democratic }
+			modifier = { factor = constant:condemnation_ai.factor_low has_war = yes }
+		}
+	}
+
+	condemnation_dismantle_restricted_sites_decision = {
+		icon = GFX_decision_generic_construction
+		cost = 0
+		visible = { condemnation_show_compliance_actions = yes condemnation_is_formally_censured = yes condemnation_has_restricted_sites = yes }
+		available = { condemnation_has_restricted_sites = yes }
+		complete_effect = { custom_effect_tooltip = condemnation_dismantle_restricted_sites_tt hidden_effect = { condemnation_dismantle_restricted_sites = yes } }
+		ai_will_do = {
+			base = constant:condemnation_ai.decision_base
+			modifier = { add = constant:condemnation_ai.compliance_weak condemnation_target_is_weak = yes }
+			modifier = { add = constant:condemnation_ai.compliance_strong condemnation_target_is_strong = yes }
+			modifier = { add = constant:condemnation_ai.recent_source_compliance condemnation_has_severe_recent_source = yes }
+			modifier = { factor = constant:condemnation_ai.factor_very_high has_government = democratic }
+			modifier = { factor = constant:condemnation_ai.factor_very_low has_government = fascism }
+		}
+	}
+
+	condemnation_pay_victim_compensation = {
+		icon = GFX_decision_soviet_collapse_foreign_trade
+		cost = 0
+		visible = { condemnation_show_compliance_actions = yes condemnation_is_formally_censured = yes NOT = { has_country_flag = condemnation_compensation_active } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = condemnation_pay_victim_compensation_requirements_tt
+				hidden_trigger = { condemnation_can_pay_compensation = yes }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { condemnation_can_pay_compensation = yes } }
+		custom_cost_text = condemnation_pay_victim_compensation_cost
+		complete_effect = { custom_effect_tooltip = condemnation_pay_victim_compensation_tt hidden_effect = { condemnation_pay_compensation = yes } }
+		ai_will_do = {
+			base = constant:condemnation_ai.decision_base
+			modifier = { add = constant:condemnation_ai.compliance_weak condemnation_target_is_weak = yes }
+			modifier = { add = constant:condemnation_ai.compliance_strong condemnation_target_is_strong = yes }
+			modifier = { add = constant:condemnation_ai.recent_source_compliance condemnation_has_severe_recent_source = yes }
+			modifier = { factor = constant:condemnation_ai.factor_high has_government = democratic }
+			modifier = { factor = constant:condemnation_ai.factor_low has_war = yes }
+		}
+	}
+
+	condemnation_issue_non_use_pledge = {
+		icon = GFX_decision_generic_political_address
+		cost = 0
+		visible = { condemnation_show_compliance_actions = yes condemnation_is_formally_censured = yes NOT = { has_country_flag = condemnation_non_use_pledge } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = condemnation_issue_non_use_pledge_requirements_tt
+				hidden_trigger = { NOT = { has_country_flag = condemnation_pledge_broken } }
+			}
+		}
+		complete_effect = { custom_effect_tooltip = condemnation_issue_non_use_pledge_tt hidden_effect = { condemnation_make_non_use_pledge = yes } }
+		ai_will_do = {
+			base = constant:condemnation_ai.decision_base
+			modifier = { add = constant:condemnation_ai.compliance_weak condemnation_target_is_weak = yes }
+			modifier = { add = constant:condemnation_ai.compliance_strong condemnation_target_is_strong = yes }
+			modifier = { add = constant:condemnation_ai.recent_source_compliance condemnation_has_severe_recent_source = yes }
+			modifier = { factor = constant:condemnation_ai.factor_very_high has_government = democratic }
+			modifier = { factor = constant:condemnation_ai.factor_cautious has_war = yes }
+		}
+	}
+
+	condemnation_allow_foreign_observers = {
+		icon = GFX_decision_generic_intelligence_operation
+		cost = 0
+		visible = { condemnation_show_compliance_actions = yes condemnation_is_formally_censured = yes NOT = { has_country_flag = condemnation_observers_active } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = condemnation_allow_foreign_observers_requirements_tt
+				hidden_trigger = { condemnation_can_pay_observer_cost = yes }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { condemnation_can_pay_observer_cost = yes } }
+		custom_cost_text = condemnation_allow_foreign_observers_cost
+		complete_effect = { custom_effect_tooltip = condemnation_allow_foreign_observers_tt hidden_effect = { condemnation_allow_observers = yes } }
+		ai_will_do = {
+			base = constant:condemnation_ai.decision_base
+			modifier = { add = constant:condemnation_ai.compliance_weak condemnation_target_is_weak = yes }
+			modifier = { add = constant:condemnation_ai.compliance_strong condemnation_target_is_strong = yes }
+			modifier = { add = constant:condemnation_ai.recent_source_compliance condemnation_has_severe_recent_source = yes }
+			modifier = { factor = constant:condemnation_ai.factor_very_high has_government = democratic }
+			modifier = { factor = constant:condemnation_ai.factor_cautious has_government = fascism }
+		}
+	}
+
+	condemnation_reform_unconventional_command = {
+		icon = GFX_decision_generic_military
+		cost = 0
+		visible = { condemnation_show_compliance_actions = yes condemnation_is_arms_embargo_tier = yes NOT = { has_country_flag = condemnation_command_reformed } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = condemnation_reform_unconventional_command_requirements_tt
+				hidden_trigger = { condemnation_can_reform_command = yes }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { condemnation_can_reform_command = yes } }
+		custom_cost_text = condemnation_reform_unconventional_command_cost
+		complete_effect = { custom_effect_tooltip = condemnation_reform_unconventional_command_tt hidden_effect = { condemnation_reform_command = yes } }
+		ai_will_do = {
+			base = constant:condemnation_ai.decision_base
+			modifier = { add = constant:condemnation_ai.compliance_weak condemnation_target_is_weak = yes }
+			modifier = { add = constant:condemnation_ai.compliance_strong condemnation_target_is_strong = yes }
+			modifier = { add = constant:condemnation_ai.recent_source_compliance condemnation_has_severe_recent_source = yes }
+			modifier = { factor = constant:condemnation_ai.factor_high has_government = democratic }
+			modifier = { factor = constant:condemnation_ai.factor_very_low has_war = yes }
+		}
+	}
+
+	condemnation_refuse_inspections_decision = {
+		icon = GFX_decision_generic_political_rally
+		cost = 0
+		visible = { condemnation_show_defiance_actions = yes condemnation_is_formally_censured = yes NOT = { has_country_flag = condemnation_refused_inspection } }
+		available = { always = yes }
+		complete_effect = { custom_effect_tooltip = condemnation_refuse_inspections_tt hidden_effect = { condemnation_refuse_inspections = yes } }
+		ai_will_do = {
+			base = constant:condemnation_ai.decision_base
+			modifier = { add = constant:condemnation_ai.defiance_weak condemnation_target_is_weak = yes }
+			modifier = { add = constant:condemnation_ai.defiance_strong condemnation_target_is_strong = yes }
+			modifier = { add = constant:condemnation_ai.recent_source_defiance condemnation_has_severe_recent_source = yes }
+			modifier = { factor = constant:condemnation_ai.factor_very_high has_government = fascism }
+			modifier = { factor = constant:condemnation_ai.factor_elevated has_war = yes }
+			modifier = { factor = constant:condemnation_ai.factor_elevated is_major = yes }
+		}
+	}
+
+	condemnation_domestic_propaganda_campaign = {
+		icon = GFX_decision_generic_political_rally
+		cost = 0
+		visible = { condemnation_show_defiance_actions = yes condemnation_is_formally_censured = yes NOT = { has_country_flag = condemnation_domestic_propaganda_active } }
+		available = { always = yes }
+		complete_effect = { custom_effect_tooltip = condemnation_domestic_propaganda_campaign_tt hidden_effect = { condemnation_activate_domestic_propaganda = yes } }
+		ai_will_do = {
+			base = constant:condemnation_ai.decision_base
+			modifier = { add = constant:condemnation_ai.defiance_weak condemnation_target_is_weak = yes }
+			modifier = { add = constant:condemnation_ai.defiance_strong condemnation_target_is_strong = yes }
+			modifier = { add = constant:condemnation_ai.recent_source_defiance condemnation_has_severe_recent_source = yes }
+			modifier = { factor = constant:condemnation_ai.factor_very_high has_government = fascism }
+			modifier = { factor = constant:condemnation_ai.factor_elevated has_war = yes }
+		}
+	}
+
+	condemnation_launch_autarky_program = {
+		icon = GFX_decision_generic_industry
+		cost = 0
+		visible = { condemnation_show_defiance_actions = yes condemnation_is_strategic_embargo_tier = yes NOT = { has_country_flag = condemnation_autarky_active } }
+		available = { always = yes }
+		custom_cost_trigger = { hidden_trigger = { check_variable = { fuel_k > 0 } } }
+		custom_cost_text = condemnation_launch_autarky_program_cost
+		complete_effect = { custom_effect_tooltip = condemnation_launch_autarky_program_tt hidden_effect = { condemnation_activate_autarky = yes } }
+		ai_will_do = {
+			base = constant:condemnation_ai.decision_base
+			modifier = { add = constant:condemnation_ai.defiance_weak condemnation_target_is_weak = yes }
+			modifier = { add = constant:condemnation_ai.defiance_strong condemnation_target_is_strong = yes }
+			modifier = { factor = constant:condemnation_ai.factor_very_high check_variable = { condemnation_import_vulnerability > constant:condemnation_ai.import_vulnerability } }
+			modifier = { factor = constant:condemnation_ai.factor_elevated is_major = yes }
+		}
+	}
+
+	condemnation_force_domestic_extraction = {
+		icon = GFX_decision_generic_industry
+		cost = 0
+		visible = { condemnation_show_defiance_actions = yes condemnation_is_strategic_embargo_tier = yes NOT = { has_country_flag = condemnation_forced_extraction_active } }
+		available = { always = yes }
+		complete_effect = { custom_effect_tooltip = condemnation_force_domestic_extraction_tt hidden_effect = { condemnation_activate_forced_extraction = yes } }
+		ai_will_do = {
+			base = constant:condemnation_ai.decision_base
+			modifier = { add = constant:condemnation_ai.defiance_weak condemnation_target_is_weak = yes }
+			modifier = { add = constant:condemnation_ai.defiance_strong condemnation_target_is_strong = yes }
+			modifier = { factor = constant:condemnation_ai.factor_high has_government = fascism }
+			modifier = { factor = constant:condemnation_ai.factor_elevated has_war = yes }
+		}
+	}
+
+	condemnation_substitute_materials_program = {
+		icon = GFX_decision_generic_research
+		cost = 0
+		visible = { condemnation_show_defiance_actions = yes condemnation_is_strategic_embargo_tier = yes NOT = { has_country_flag = condemnation_substitute_materials_active } }
+		available = { always = yes }
+		complete_effect = { custom_effect_tooltip = condemnation_substitute_materials_program_tt hidden_effect = { condemnation_activate_substitute_materials = yes } }
+		ai_will_do = {
+			base = constant:condemnation_ai.decision_base
+			modifier = { add = constant:condemnation_ai.defiance_weak condemnation_target_is_weak = yes }
+			modifier = { add = constant:condemnation_ai.defiance_strong condemnation_target_is_strong = yes }
+			modifier = { factor = constant:condemnation_ai.factor_elevated check_variable = { condemnation_import_vulnerability > constant:condemnation_ai.import_vulnerability } }
+		}
+	}
+
+	condemnation_impose_military_rationing = {
+		icon = GFX_decision_generic_military
+		cost = 0
+		visible = { condemnation_show_defiance_actions = yes condemnation_is_strategic_embargo_tier = yes NOT = { has_country_flag = condemnation_military_rationing_active } }
+		available = { always = yes }
+		complete_effect = { custom_effect_tooltip = condemnation_impose_military_rationing_tt hidden_effect = { condemnation_activate_military_rationing = yes } }
+		ai_will_do = {
+			base = constant:condemnation_ai.decision_base
+			modifier = { add = constant:condemnation_ai.defiance_weak condemnation_target_is_weak = yes }
+			modifier = { add = constant:condemnation_ai.defiance_strong condemnation_target_is_strong = yes }
+			modifier = { factor = constant:condemnation_ai.factor_very_high has_war = yes }
+		}
+	}
+
+	condemnation_pressure_subject_supply = {
+		icon = GFX_decision_generic_political_discourse
+		cost = 0
+		visible = { condemnation_show_defiance_actions = yes condemnation_is_strategic_embargo_tier = yes condemnation_has_subject_route = yes NOT = { has_country_flag = condemnation_subject_pressure_active } }
+		available = { condemnation_has_subject_route = yes }
+		complete_effect = { custom_effect_tooltip = condemnation_pressure_subject_supply_tt hidden_effect = { condemnation_activate_subject_pressure = yes } }
+		ai_will_do = {
+			base = constant:condemnation_ai.decision_base
+			modifier = { add = constant:condemnation_ai.defiance_weak condemnation_target_is_weak = yes }
+			modifier = { add = constant:condemnation_ai.defiance_strong condemnation_target_is_strong = yes }
+			modifier = { factor = constant:condemnation_ai.factor_high has_government = fascism }
+		}
+	}
+
+	condemnation_establish_controlled_shipping = {
+		icon = GFX_decision_soviet_collapse_foreign_trade
+		cost = 0
+		visible = { condemnation_show_defiance_actions = yes condemnation_is_strategic_embargo_tier = yes NOT = { has_country_flag = condemnation_controlled_shipping_active } }
+		available = { always = yes }
+		custom_cost_trigger = { hidden_trigger = { condemnation_can_pay_controlled_shipping_cost = yes } }
+		custom_cost_text = condemnation_establish_controlled_shipping_cost
+		complete_effect = { custom_effect_tooltip = condemnation_establish_controlled_shipping_tt hidden_effect = { condemnation_activate_controlled_shipping = yes } }
+		ai_will_do = {
+			base = constant:condemnation_ai.decision_base
+			modifier = { add = constant:condemnation_ai.defiance_weak condemnation_target_is_weak = yes }
+			modifier = { add = constant:condemnation_ai.defiance_strong condemnation_target_is_strong = yes }
+			modifier = { factor = constant:condemnation_ai.factor_medium_high has_war = yes }
+		}
+	}
+
+	condemnation_hardline_mobilization_decision = {
+		icon = GFX_decision_emergency_mobilization
+		cost = 0
+		visible = { condemnation_show_defiance_actions = yes condemnation_is_total_embargo_tier = yes NOT = { has_country_flag = condemnation_hardline_mobilization_active } }
+		available = { always = yes }
+		complete_effect = { custom_effect_tooltip = condemnation_hardline_mobilization_tt hidden_effect = { condemnation_activate_hardline_mobilization = yes } }
+		ai_will_do = {
+			base = constant:condemnation_ai.decision_base
+			modifier = { add = constant:condemnation_ai.defiance_weak condemnation_target_is_weak = yes }
+			modifier = { add = constant:condemnation_ai.defiance_strong condemnation_target_is_strong = yes }
+			modifier = { add = constant:condemnation_ai.recent_source_defiance condemnation_has_severe_recent_source = yes }
+			modifier = { factor = constant:condemnation_ai.factor_very_high has_government = fascism }
+			modifier = { factor = constant:condemnation_ai.factor_elevated is_major = yes }
+		}
+	}
+
+	condemnation_black_market_arms_procurement = {
+		icon = GFX_decision_seize_depots
+		cost = 0
+		visible = { condemnation_show_evasion_actions = yes condemnation_is_arms_embargo_tier = yes NOT = { has_country_flag = condemnation_black_market_active } }
+		available = { always = yes }
+		custom_cost_trigger = { hidden_trigger = { condemnation_can_pay_black_market_cost = yes } }
+		custom_cost_text = condemnation_black_market_arms_procurement_cost
+		complete_effect = { custom_effect_tooltip = condemnation_black_market_arms_procurement_tt hidden_effect = { condemnation_open_black_market = yes } }
+		ai_will_do = {
+			base = constant:condemnation_ai.evasion_base
+			modifier = { add = constant:condemnation_ai.defiance_weak condemnation_target_is_weak = yes }
+			modifier = { add = constant:condemnation_ai.defiance_strong condemnation_target_is_strong = yes }
+			modifier = { factor = constant:condemnation_ai.factor_very_high has_war = yes }
+			modifier = { factor = constant:condemnation_ai.factor_low check_variable = { condemnation_black_market_exposure > constant:condemnation_ai.exposure_caution } }
+		}
+	}
+
+	condemnation_falsify_shipping_manifests = {
+		icon = GFX_decision_generic_intelligence_operation
+		cost = 0
+		visible = { condemnation_show_evasion_actions = yes condemnation_is_strategic_embargo_tier = yes NOT = { has_country_flag = condemnation_false_manifest_active } }
+		available = { always = yes }
+		custom_cost_trigger = { hidden_trigger = { condemnation_can_pay_false_manifest_cost = yes } }
+		custom_cost_text = condemnation_falsify_shipping_manifests_cost
+		complete_effect = { custom_effect_tooltip = condemnation_falsify_shipping_manifests_tt hidden_effect = { condemnation_use_false_manifests = yes } }
+		ai_will_do = { base = constant:condemnation_ai.evasion_base modifier = { factor = constant:condemnation_ai.factor_elevated is_major = yes } }
+	}
+
+	condemnation_hire_neutral_intermediaries = {
+		icon = GFX_decision_soviet_collapse_foreign_trade
+		cost = 0
+		visible = { condemnation_show_evasion_actions = yes condemnation_is_strategic_embargo_tier = yes NOT = { has_country_flag = condemnation_intermediary_active } }
+		available = { always = yes }
+		custom_cost_trigger = { hidden_trigger = { NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.intermediary_convoys } } } }
+		custom_cost_text = condemnation_hire_neutral_intermediaries_cost
+		complete_effect = { custom_effect_tooltip = condemnation_hire_neutral_intermediaries_tt hidden_effect = { condemnation_use_neutral_intermediaries = yes } }
+		ai_will_do = { base = constant:condemnation_ai.evasion_base modifier = { factor = constant:condemnation_ai.factor_elevated has_war = yes } }
+	}
+
+	condemnation_use_subject_front_company = {
+		icon = GFX_decision_generic_political_discourse
+		cost = 0
+		visible = { condemnation_show_evasion_actions = yes condemnation_is_strategic_embargo_tier = yes condemnation_has_subject_route = yes NOT = { has_country_flag = condemnation_subject_front_active } }
+		available = { condemnation_has_subject_route = yes }
+		complete_effect = { custom_effect_tooltip = condemnation_use_subject_front_company_tt hidden_effect = { condemnation_use_subject_front = yes } }
+		ai_will_do = { base = constant:condemnation_ai.evasion_base modifier = { factor = constant:condemnation_ai.factor_medium_high has_government = fascism } }
+	}
+
+	condemnation_open_covert_fuel_route_decision = {
+		icon = GFX_decision_soviet_collapse_foreign_trade
+		cost = 0
+		visible = { condemnation_show_evasion_actions = yes condemnation_is_strategic_embargo_tier = yes NOT = { has_country_flag = condemnation_covert_fuel_active } }
+		available = { always = yes }
+		custom_cost_trigger = { hidden_trigger = { NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.covert_fuel_convoys } } } }
+		custom_cost_text = condemnation_open_covert_fuel_route_cost
+		complete_effect = { custom_effect_tooltip = condemnation_open_covert_fuel_route_tt hidden_effect = { condemnation_open_covert_fuel_route = yes } }
+		ai_will_do = { base = constant:condemnation_ai.evasion_base modifier = { factor = constant:condemnation_ai.factor_very_high check_variable = { condemnation_fuel_vulnerability > constant:condemnation_ai.import_vulnerability } } }
+	}
+
+	condemnation_reflag_merchant_shipping = {
+		icon = GFX_decision_soviet_collapse_foreign_trade
+		cost = 0
+		visible = { condemnation_show_evasion_actions = yes condemnation_is_total_embargo_tier = yes NOT = { has_country_flag = condemnation_reflagging_active } }
+		available = { always = yes }
+		custom_cost_trigger = { hidden_trigger = { NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.reflagging_convoys } } } }
+		custom_cost_text = condemnation_reflag_merchant_shipping_cost
+		complete_effect = { custom_effect_tooltip = condemnation_reflag_merchant_shipping_tt hidden_effect = { condemnation_reflag_shipping = yes } }
+		ai_will_do = { base = constant:condemnation_ai.evasion_base modifier = { factor = constant:condemnation_ai.factor_medium_high is_major = yes } }
+	}
+
+	condemnation_acquire_stolen_license = {
+		icon = GFX_decision_generic_research
+		cost = 0
+		visible = { condemnation_show_evasion_actions = yes condemnation_is_arms_embargo_tier = yes NOT = { has_country_flag = condemnation_stolen_license_active } }
+		available = { always = yes }
+		custom_cost_trigger = { hidden_trigger = { NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.stolen_license_convoys } } } }
+		custom_cost_text = condemnation_acquire_stolen_license_cost
+		complete_effect = { custom_effect_tooltip = condemnation_acquire_stolen_license_tt hidden_effect = { condemnation_use_stolen_license = yes } }
+		ai_will_do = { base = constant:condemnation_ai.evasion_base modifier = { factor = constant:condemnation_ai.factor_elevated is_major = yes } }
+	}
+
+	condemnation_open_smuggled_laboratory_decision = {
+		icon = GFX_decision_generic_research
+		cost = 0
+		visible = { condemnation_show_evasion_actions = yes condemnation_is_total_embargo_tier = yes NOT = { has_country_flag = condemnation_smuggled_lab_active } }
+		available = { always = yes }
+		custom_cost_trigger = { hidden_trigger = { NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.smuggled_lab_convoys } } NOT = { has_equipment = { support_equipment < constant:condemnation_cost.smuggled_lab_equipment } } } }
+		custom_cost_text = condemnation_open_smuggled_laboratory_cost
+		complete_effect = { custom_effect_tooltip = condemnation_open_smuggled_laboratory_tt hidden_effect = { condemnation_open_smuggled_lab = yes } }
+		ai_will_do = { base = constant:condemnation_ai.evasion_base modifier = { factor = constant:condemnation_ai.factor_high is_major = yes } }
+	}
+}
+
+condemnation_participant_action_category = {
+	condemnation_join_arms_embargo = {
+		icon = GFX_decision_generic_military
+		cost = 0
+		target_array = global.enabled_countries_list
+		target_root_trigger = { exists = yes }
+		target_trigger = { condemnation_can_join_arms_embargo_against_from = yes }
+		visible = { always = yes }
+		available = { always = yes }
+		custom_cost_trigger = { hidden_trigger = { condemnation_can_bear_enforcement_cost = yes } }
+		custom_cost_text = condemnation_join_embargo_cost
+		complete_effect = {
+			hidden_effect = {
+				FROM = {
+					set_temp_variable = { condemnation_pair_participant = ROOT }
+					condemnation_calculate_pair_score = yes
+					set_temp_variable = { condemnation_pair_tier = constant:condemnation_tier.arms_embargo }
+					condemnation_apply_sanction_pair = yes
+				}
+			}
+			custom_effect_tooltip = condemnation_join_arms_embargo_tt
+		}
+		ai_will_do = { base = constant:condemnation_ai.participant_decision_base }
+	}
+
+	condemnation_escalate_strategic_embargo = {
+		icon = GFX_decision_soviet_collapse_foreign_trade
+		cost = 0
+		target_array = global.enabled_countries_list
+		target_root_trigger = { exists = yes }
+		target_trigger = { condemnation_can_join_strategic_embargo_against_from = yes }
+		visible = { always = yes }
+		available = { always = yes }
+		custom_cost_trigger = { hidden_trigger = { condemnation_can_bear_escalation_cost = yes } }
+		custom_cost_text = condemnation_escalate_embargo_cost
+		complete_effect = {
+			hidden_effect = {
+				FROM = {
+					set_temp_variable = { condemnation_pair_participant = ROOT }
+					condemnation_calculate_pair_score = yes
+					set_temp_variable = { condemnation_pair_tier = constant:condemnation_tier.strategic_embargo }
+					condemnation_apply_sanction_pair = yes
+				}
+			}
+			custom_effect_tooltip = condemnation_escalate_strategic_embargo_tt
+		}
+		ai_will_do = { base = constant:condemnation_ai.participant_decision_base }
+	}
+
+	condemnation_escalate_total_embargo = {
+		icon = GFX_decision_soviet_collapse_foreign_trade
+		cost = 0
+		target_array = global.enabled_countries_list
+		target_root_trigger = { exists = yes }
+		target_trigger = { condemnation_can_join_total_embargo_against_from = yes }
+		visible = { always = yes }
+		available = { always = yes }
+		custom_cost_trigger = { hidden_trigger = { condemnation_can_bear_escalation_cost = yes } }
+		custom_cost_text = condemnation_escalate_embargo_cost
+		complete_effect = {
+			hidden_effect = {
+				FROM = {
+					set_temp_variable = { condemnation_pair_participant = ROOT }
+					condemnation_calculate_pair_score = yes
+					set_temp_variable = { condemnation_pair_tier = constant:condemnation_tier.total_embargo }
+					condemnation_apply_sanction_pair = yes
+				}
+			}
+			custom_effect_tooltip = condemnation_escalate_total_embargo_tt
+		}
+		ai_will_do = { base = constant:condemnation_ai.participant_decision_base }
+	}
+
+	condemnation_escalate_pariah_embargo = {
+		icon = GFX_decision_generic_protection
+		cost = 0
+		target_array = global.enabled_countries_list
+		target_root_trigger = { exists = yes }
+		target_trigger = { condemnation_can_join_pariah_embargo_against_from = yes }
+		visible = { always = yes }
+		available = { always = yes }
+		custom_cost_trigger = { hidden_trigger = { condemnation_can_bear_escalation_cost = yes } }
+		custom_cost_text = condemnation_escalate_embargo_cost
+		complete_effect = {
+			hidden_effect = {
+				FROM = {
+					set_temp_variable = { condemnation_pair_participant = ROOT }
+					condemnation_calculate_pair_score = yes
+					set_temp_variable = { condemnation_pair_tier = constant:condemnation_tier.pariah_state }
+					condemnation_apply_sanction_pair = yes
+				}
+			}
+			custom_effect_tooltip = condemnation_escalate_pariah_embargo_tt
+		}
+		ai_will_do = { base = constant:condemnation_ai.participant_decision_base }
+	}
+
+	condemnation_abstain_from_sanctions = {
+		icon = GFX_decision_generic_political_discourse
+		cost = 0
+		target_array = global.enabled_countries_list
+		target_root_trigger = { exists = yes }
+		target_trigger = { condemnation_can_abstain_against_from = yes }
+		visible = { always = yes }
+		available = { always = yes }
+		complete_effect = { hidden_effect = { FROM = { set_temp_variable = { condemnation_pair_participant = ROOT } condemnation_record_abstention = yes } } custom_effect_tooltip = condemnation_abstain_from_sanctions_tt }
+		ai_will_do = { base = constant:condemnation_ai.participant_decision_base }
+	}
+
+	condemnation_add_humanitarian_carveout = {
+		icon = GFX_decision_SWI_support_humanitarian_efforts
+		cost = 0
+		target_array = global.enabled_countries_list
+		target_root_trigger = { exists = yes }
+		target_trigger = { condemnation_can_add_humanitarian_carveout_against_from = yes }
+		visible = { always = yes }
+		available = { always = yes }
+		custom_cost_trigger = { hidden_trigger = { NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.carveout_convoys } } } }
+		custom_cost_text = condemnation_humanitarian_carveout_cost
+		complete_effect = { hidden_effect = { FROM = { set_temp_variable = { condemnation_pair_participant = ROOT } condemnation_apply_humanitarian_carveout = yes } } custom_effect_tooltip = condemnation_add_humanitarian_carveout_tt }
+		ai_will_do = { base = constant:condemnation_ai.participant_decision_base }
+	}
+
+	condemnation_quietly_breach_sanctions = {
+		icon = GFX_decision_generic_intelligence_operation
+		cost = 0
+		target_array = global.enabled_countries_list
+		target_root_trigger = { exists = yes }
+		target_trigger = { condemnation_can_quietly_breach_against_from = yes }
+		visible = { always = yes }
+		available = { always = yes }
+		custom_cost_trigger = { hidden_trigger = { condemnation_can_pay_quiet_breach_cost = yes } }
+		custom_cost_text = condemnation_quiet_breach_cost
+		complete_effect = { hidden_effect = { FROM = { set_temp_variable = { condemnation_pair_participant = ROOT } condemnation_apply_quiet_breach = yes } } custom_effect_tooltip = condemnation_quietly_breach_sanctions_tt }
+		ai_will_do = { base = constant:condemnation_ai.participant_decision_base }
+	}
+
+	condemnation_tighten_enforcement = {
+		icon = GFX_decision_generic_protection
+		cost = 0
+		target_array = global.enabled_countries_list
+		target_root_trigger = { exists = yes }
+		target_trigger = { condemnation_can_tighten_enforcement_against_from = yes }
+		visible = { always = yes }
+		available = { always = yes }
+		custom_cost_trigger = { hidden_trigger = { NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.tight_enforcement_convoys } } } }
+		custom_cost_text = condemnation_tighten_enforcement_cost
+		complete_effect = { hidden_effect = { FROM = { set_temp_variable = { condemnation_pair_participant = ROOT } condemnation_apply_tight_enforcement = yes } } custom_effect_tooltip = condemnation_tighten_enforcement_tt }
+		ai_will_do = { base = constant:condemnation_ai.participant_decision_base }
+	}
+
+	condemnation_shield_ally = {
+		icon = GFX_decision_generic_protection
+		cost = 0
+		target_array = global.enabled_countries_list
+		target_root_trigger = { exists = yes }
+		target_trigger = {
+			condemnation_pair_can_shield_from = yes
+			FROM = { condemnation_is_formally_censured = yes NOT = { is_in_array = { array = condemnation_shielding_participants value = ROOT } } }
+		}
+		visible = { always = yes }
+		available = { always = yes }
+		custom_cost_trigger = { hidden_trigger = { condemnation_can_pay_shield_cost = yes } }
+		custom_cost_text = condemnation_shield_ally_cost
+		complete_effect = { hidden_effect = { FROM = { set_temp_variable = { condemnation_pair_participant = ROOT } condemnation_record_faction_shield = yes } } custom_effect_tooltip = condemnation_shield_ally_tt }
+		ai_will_do = { base = constant:condemnation_ai.participant_decision_base }
+	}
+
+	condemnation_withdraw_sanctions = {
+		icon = GFX_decision_generic_political_discourse
+		cost = 0
+		target_array = global.enabled_countries_list
+		target_root_trigger = { exists = yes }
+		target_trigger = { condemnation_pair_is_active_against_from = yes }
+		visible = { always = yes }
+		available = { always = yes }
+		complete_effect = { hidden_effect = { FROM = { set_temp_variable = { condemnation_pair_participant = ROOT } condemnation_clear_sanction_pair = yes } } custom_effect_tooltip = condemnation_withdraw_sanctions_tt }
+		ai_will_do = { base = constant:condemnation_ai.participant_decision_base }
+	}
+}

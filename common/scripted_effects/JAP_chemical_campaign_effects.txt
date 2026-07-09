@@ -4,7 +4,8 @@
 # State-targeted cylinder operations used by Japan decisions during the China
 # war. The player can rotate the prepared attack agent for free, then launch
 # a single targeted chemical attack that consumes the matching cylinder type
-# and applies state contamination without feeding the global condemnation track.
+# and applies state contamination through the shared condemnation and treaty
+# consequence pipeline.
 # ============================================================================
 
 @JAPAN_CHEMICAL_CAMPAIGN_TARGET_STATE_COOLDOWN_DAYS = 24
@@ -16,17 +17,27 @@ japan_finalize_targeted_chemical_campaign = {
         multiply_temp_variable = { var = chem_state_duration_add value = japan_campaign_duration_mult }
 
         save_event_target_as = chem_state_dispersal_owner_country
-        if = {
-            limit = { has_event_target = japan_chemical_campaign_target_state }
-            event_target:japan_chemical_campaign_target_state = {
+		if = {
+			limit = { has_event_target = japan_chemical_campaign_target_state }
+			event_target:japan_chemical_campaign_target_state = {
                 set_state_flag = {
                     flag = japan_chemical_campaign_recently_targeted
                     days = @JAPAN_CHEMICAL_CAMPAIGN_TARGET_STATE_COOLDOWN_DAYS
-                }
-                chem_apply_state_contamination = yes
-            }
-        }
-    }
+				}
+				chem_apply_state_contamination = yes
+				OWNER = { set_temp_variable = { chem_condemnation_victim_country = THIS } }
+			}
+		}
+		set_temp_variable = { chem_consumed_amount = japan_campaign_consumed_amount }
+		set_temp_variable = { chem_condemnation_civilian_deaths = 0 }
+		set_temp_variable = { chem_condemnation_contamination_value = chem_dose_each }
+		if = {
+			limit = { check_variable = { chem_condemnation_contamination_value < 0 } }
+			multiply_temp_variable = { chem_condemnation_contamination_value = -1 }
+		}
+		set_temp_variable = { chem_condemnation_context_type = constant:condemnation_context.chemical_combat }
+		chem_warfare_register_attack_use_no_livens = yes
+	}
 }
 
 japan_set_default_targeted_chemical_campaign_agent = {
@@ -81,8 +92,10 @@ japan_apply_targeted_chemical_campaign_attack = {
     set_temp_variable = { var = japan_campaign_dose_mult value = constant:chem_japan_campaign_decision.defaults.attack_dose_mult }
     set_temp_variable = { var = japan_campaign_duration_mult value = constant:chem_japan_campaign_decision.defaults.attack_duration_mult }
 
-    set_temp_variable = { var = chem_dose_each value = 0 }
-    set_temp_variable = { var = chem_state_duration_add value = 0 }
+	set_temp_variable = { var = chem_dose_each value = 0 }
+	set_temp_variable = { var = chem_state_duration_add value = 0 }
+	set_temp_variable = { var = chem_condemnation_base value = 0 }
+	set_temp_variable = { var = chem_condemnation_per_unit value = 0 }
 
     if = {
         limit = {
@@ -93,8 +106,10 @@ japan_apply_targeted_chemical_campaign_attack = {
             }
             has_equipment = { chemical_chlorine_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
         }
-        set_temp_variable = { var = chem_dose_each value = constant:chem_japan_campaign_state_dose.chlorine }
-        set_temp_variable = { var = chem_state_duration_add value = constant:chem_japan_campaign_state_duration_days.chlorine }
+		set_temp_variable = { var = chem_dose_each value = constant:chem_japan_campaign_state_dose.chlorine }
+		set_temp_variable = { var = chem_state_duration_add value = constant:chem_japan_campaign_state_duration_days.chlorine }
+		set_temp_variable = { var = chem_condemnation_base value = constant:chem_japan_campaign_condemnation.base.chlorine }
+		set_temp_variable = { var = chem_condemnation_per_unit value = constant:chem_japan_campaign_condemnation.per_cylinder.chlorine }
 
         set_temp_variable = { var = japan_campaign_equipment_to_consume value = japan_campaign_consumed_amount }
         multiply_temp_variable = { var = japan_campaign_equipment_to_consume value = -1 }
@@ -109,8 +124,10 @@ japan_apply_targeted_chemical_campaign_attack = {
             }
             has_equipment = { chemical_phosgene_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
         }
-        set_temp_variable = { var = chem_dose_each value = constant:chem_japan_campaign_state_dose.phosgene }
-        set_temp_variable = { var = chem_state_duration_add value = constant:chem_japan_campaign_state_duration_days.phosgene }
+		set_temp_variable = { var = chem_dose_each value = constant:chem_japan_campaign_state_dose.phosgene }
+		set_temp_variable = { var = chem_state_duration_add value = constant:chem_japan_campaign_state_duration_days.phosgene }
+		set_temp_variable = { var = chem_condemnation_base value = constant:chem_japan_campaign_condemnation.base.phosgene }
+		set_temp_variable = { var = chem_condemnation_per_unit value = constant:chem_japan_campaign_condemnation.per_cylinder.phosgene }
 
         set_temp_variable = { var = japan_campaign_equipment_to_consume value = japan_campaign_consumed_amount }
         multiply_temp_variable = { var = japan_campaign_equipment_to_consume value = -1 }
@@ -125,8 +142,10 @@ japan_apply_targeted_chemical_campaign_attack = {
             }
             has_equipment = { chemical_lewisite_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
         }
-        set_temp_variable = { var = chem_dose_each value = constant:chem_japan_campaign_state_dose.lewisite }
-        set_temp_variable = { var = chem_state_duration_add value = constant:chem_japan_campaign_state_duration_days.lewisite }
+		set_temp_variable = { var = chem_dose_each value = constant:chem_japan_campaign_state_dose.lewisite }
+		set_temp_variable = { var = chem_state_duration_add value = constant:chem_japan_campaign_state_duration_days.lewisite }
+		set_temp_variable = { var = chem_condemnation_base value = constant:chem_japan_campaign_condemnation.base.lewisite }
+		set_temp_variable = { var = chem_condemnation_per_unit value = constant:chem_japan_campaign_condemnation.per_cylinder.lewisite }
 
         set_temp_variable = { var = japan_campaign_equipment_to_consume value = japan_campaign_consumed_amount }
         multiply_temp_variable = { var = japan_campaign_equipment_to_consume value = -1 }
@@ -144,8 +163,10 @@ japan_apply_targeted_chemical_campaign_attack = {
             }
             has_equipment = { chemical_mustard_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
         }
-        set_temp_variable = { var = chem_dose_each value = constant:chem_japan_campaign_state_dose.mustard }
-        set_temp_variable = { var = chem_state_duration_add value = constant:chem_japan_campaign_state_duration_days.mustard }
+		set_temp_variable = { var = chem_dose_each value = constant:chem_japan_campaign_state_dose.mustard }
+		set_temp_variable = { var = chem_state_duration_add value = constant:chem_japan_campaign_state_duration_days.mustard }
+		set_temp_variable = { var = chem_condemnation_base value = constant:chem_japan_campaign_condemnation.base.mustard }
+		set_temp_variable = { var = chem_condemnation_per_unit value = constant:chem_japan_campaign_condemnation.per_cylinder.mustard }
 
         set_temp_variable = { var = japan_campaign_equipment_to_consume value = japan_campaign_consumed_amount }
         multiply_temp_variable = { var = japan_campaign_equipment_to_consume value = -1 }

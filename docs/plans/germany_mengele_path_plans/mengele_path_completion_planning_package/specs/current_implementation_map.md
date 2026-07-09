@@ -44,7 +44,7 @@ The path records experiment deaths through `chaos_meter_register_deaths` in Ausc
 
 The path has dedicated chaos history reasons for authorization, reports, coup, purge, truce, victory, world order, Tibet claim, and Tibet scandal.
 
-Condemnation uses the chemical and biological condemnation variable and diplomatic consequence effect. It must follow the genocide-crisis rule that hidden internal damage can accumulate before foreign condemnation becomes public through discovery or other concrete evidence.
+Condemnation uses the shared source buckets and sanctions system. Hidden experiment and concealment evidence accumulates in canonical atrocity or cover-up buckets before discovery, observation, or another concrete disclosure exposes it as public condemnation.
 
 ## Super-event and asset status from current source
 

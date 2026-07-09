@@ -19,14 +19,14 @@ Add two new building types:
 1. Concentration Camps
 2. Extermination Camps
 
-Both buildings interact with the existing Chaos Redux civilian deaths system. They also interact with the condemnation system through discovery events, not passive monthly condemnation.
+Both buildings interact with the existing Chaos Redux civilian deaths system. Camp registration and monthly deaths accumulate hidden atrocity evidence in the canonical condemnation buckets. Public condemnation comes through discovery, inspection, observation, or another concrete disclosure path rather than a passive public monthly gain.
 
 ## Main Design Rule
 
 Camps should have two layers:
 
-1. Hidden internal damage
-2. External condemnation after discovery
+1. Hidden internal damage and canonical hidden atrocity or cover-up evidence
+2. Public condemnation after discovery or another concrete disclosure
 
 While the original regime controls the state, the system tracks deaths, population loss, and internal crisis.
 
@@ -71,7 +71,7 @@ Effects:
 
 ### Design Notes
 
-Concentration camps should not create automatic global condemnation. They should create hidden atrocity score. Condemnation should rise once the camps are discovered by an enemy occupier or by concrete aftermath logic. First discovery can fire a bounded event; subsequent discoveries should mainly update variables and condemnation without spam.
+Concentration camps should not create automatic public condemnation. They should create hidden atrocity score and canonical hidden atrocity evidence. Public condemnation should rise once the camps are discovered by an enemy occupier or by concrete aftermath logic. First discovery can fire a bounded event. Subsequent discoveries should mainly update variables and condemnation without spam.
 
 ## Extermination Camps
 
@@ -1155,5 +1155,5 @@ Extermination camps are an extreme escalation available to fascist, communist, o
 
 Germany should be the main AI user of the Holocaust chain when it remains fascist and follows its historical path. Japan should use a separate occupation atrocity system focused on forced labor, massacres, resistance suppression, and biological warfare. The Soviet Union should use gulag, purge, deportation, famine pressure, and mass repression mechanics, with possible escalation into genocide through extreme Stalinist or Chaos Doctrine paths.
 
-The key change is that camps do not create automatic global condemnation while they remain hidden. They create hidden atrocity score. Condemnation rises when enemy forces occupy or liberate camp states and expose the evidence.
+The key rule is that camps do not create automatic public condemnation while they remain hidden. They create hidden atrocity score and canonical hidden atrocity evidence. Enemy occupation or liberation exposes the responsible country's hidden atrocity and cover-up buckets, then adds the state-specific public discovery source.
 Also, add any historical starting locations for camps in countries. So Germany, Japan and Soviet Union must definitely have starting mechanics and camps somewhere. And some other countries might too have. And tie the system with Mengele as well for Germany.

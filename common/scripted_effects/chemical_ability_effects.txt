@@ -443,6 +443,15 @@ chem_register_current_ability_condemnation = {
 }
 
 chem_register_state_civilian_deaths = {
+	if = {
+		limit = { NOT = { has_variable = chem_condemnation_civilian_deaths } }
+		set_temp_variable = { chem_condemnation_civilian_deaths = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = chem_condemnation_contamination_value } }
+		set_temp_variable = { chem_condemnation_contamination_value = 0 }
+	}
+	set_temp_variable = { chaos_deaths_change = 0 }
     set_temp_variable = { chaos_state_deaths_percent = constant:chaos_meter_contamination_deaths_percent.chemical_application }
     set_temp_variable = { chaos_state_deaths_mult = 1 }
     chaos_meter_apply_outbreak_state_death_environment_multiplier = yes
@@ -451,9 +460,19 @@ chem_register_state_civilian_deaths = {
     set_temp_variable = { chaos_state_deaths_random_span = constant:chaos_meter_state_death_dynamic.outbreak_random_span }
     set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.chemical_attack }
     chaos_meter_register_state_civilian_deaths_percent = yes
+	add_to_temp_variable = { chem_condemnation_civilian_deaths = chaos_deaths_change }
+	set_temp_variable = { chem_condemnation_state_contamination = chem_dose_each }
+	if = {
+		limit = { check_variable = { chem_condemnation_state_contamination < 0 } }
+		multiply_temp_variable = { chem_condemnation_state_contamination = -1 }
+	}
+	add_to_temp_variable = { chem_condemnation_contamination_value = chem_condemnation_state_contamination }
 }
 
 chem_apply_state_contamination = {
+	# State-based chemical adapters can identify the affected controller even
+	# when the combat on_action does not expose an opposing country scope.
+	OWNER = { set_temp_variable = { chem_condemnation_victim_country = THIS } }
     set_temp_variable = { var = chem_current_day value = global.num_days }
     set_temp_variable = { var = chem_max_strength value = constant:chem_state.core.max_strength_base }
     multiply_temp_variable = { var = chem_max_strength value = constant:chem_state.core.strength_scale }
@@ -645,6 +664,21 @@ chem_unleash_stockpile_doomsday = {
     round_temp_variable = chem_doom_state_duration_add
     clamp_temp_variable = { var = chem_doom_state_duration_add min = 1 max = constant:chem_doom.cap.state_duration_add_max }
 
+    set_temp_variable = { condemnation_source_type = constant:condemnation_source.chemical }
+    set_temp_variable = { condemnation_base_gain = chem_doom_points_acute }
+    divide_temp_variable = { condemnation_base_gain = constant:condemnation_source_default_gain.chemical_doomsday_acute_divisor }
+    clamp_temp_variable = { var = condemnation_base_gain min = 0 max = constant:condemnation_source_default_gain.chemical_doomsday_scaling_cap }
+    add_to_temp_variable = { condemnation_base_gain = constant:condemnation_source_default_gain.chemical_doomsday_base }
+    set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+    set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.doomsday }
+    set_temp_variable = { condemnation_civilian_deaths = 0 }
+    set_temp_variable = { condemnation_contamination_value = chem_doom_points_acute }
+    divide_temp_variable = { condemnation_contamination_value = constant:chem_doom.scale.state_dose }
+    clamp_temp_variable = { var = condemnation_contamination_value min = 0 max = constant:chem_doom.cap.state_dose_max }
+    set_temp_variable = { condemnation_context_type = constant:condemnation_context.chemical_doomsday }
+	set_temp_variable = { chem_condemnation_civilian_deaths = 0 }
+	set_temp_variable = { chem_condemnation_contamination_value = condemnation_contamination_value }
+
     every_controlled_state = {
         damage_units = {
             state = THIS
@@ -657,6 +691,11 @@ chem_unleash_stockpile_doomsday = {
         set_temp_variable = { var = chem_state_duration_add value = chem_doom_state_duration_add }
         chem_apply_state_contamination_doomsday = yes
     }
+
+	set_temp_variable = { condemnation_civilian_deaths = chem_condemnation_civilian_deaths }
+	set_temp_variable = { condemnation_contamination_value = chem_condemnation_contamination_value }
+	condemnation_add_source = yes
+	air_cleanliness_treaty_on_unconventional_use = yes
 
     set_temp_variable = { var = chem_doom_remove value = chem_doom_stock_chlorine }
     multiply_temp_variable = { var = chem_doom_remove value = -1 }
@@ -704,6 +743,8 @@ chem_apply_state_dispersal = {
     OWNER = { set_variable = { chem_state_dispersal_leader_var = PREV } }
     set_temp_variable = { var = chem_state_dose_per_div value = 0 }
     set_temp_variable = { var = chem_state_duration_add value = 0 }
+	set_temp_variable = { chem_condemnation_civilian_deaths = 0 }
+	set_temp_variable = { chem_condemnation_contamination_value = 0 }
     clr_unit_leader_flag = chem_ability_hit_nonhuman_state
     clr_unit_leader_flag = chem_ability_hit_human_state
     clr_unit_leader_flag = chem_ability_japan_china_target
