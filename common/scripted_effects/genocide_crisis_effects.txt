@@ -50,6 +50,48 @@ genocide_initialize_country_variables = {
 	}
 }
 
+# Inputs: genocide_condemnation_source_type, genocide_condemnation_add,
+# and genocide_condemnation_severity_type. This is only called after evidence
+# has become public through discovery or foreign observation.
+genocide_register_public_condemnation_source = {
+	set_temp_variable = { condemnation_source_type = genocide_condemnation_source_type }
+	set_temp_variable = { condemnation_base_gain = genocide_condemnation_add }
+	set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+	set_temp_variable = { condemnation_severity_type = genocide_condemnation_severity_type }
+	set_temp_variable = { condemnation_civilian_deaths = 0 }
+	set_temp_variable = { condemnation_contamination_value = 0 }
+	if = {
+		limit = { has_event_target = genocide_discovering_country }
+		set_temp_variable = { condemnation_victim_country = event_target:genocide_discovering_country }
+	}
+	set_temp_variable = { condemnation_context_type = genocide_condemnation_context_type }
+	condemnation_add_source = yes
+}
+
+# Inputs: genocide_condemnation_source_type, genocide_condemnation_add,
+# genocide_condemnation_severity_type, genocide_condemnation_context_type,
+# and genocide_condemnation_civilian_deaths. Secret conduct is stored in the
+# canonical hidden evidence buckets until inspection, observation, or discovery.
+genocide_register_hidden_condemnation_source = {
+	set_temp_variable = { condemnation_source_type = genocide_condemnation_source_type }
+	set_temp_variable = { condemnation_base_gain = genocide_condemnation_add }
+	set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.hidden }
+	set_temp_variable = { condemnation_severity_type = genocide_condemnation_severity_type }
+	set_temp_variable = { condemnation_civilian_deaths = genocide_condemnation_civilian_deaths }
+	set_temp_variable = { condemnation_contamination_value = 0 }
+	set_temp_variable = { condemnation_context_type = genocide_condemnation_context_type }
+	condemnation_add_source = yes
+}
+
+genocide_register_hidden_coverup = {
+	set_temp_variable = { genocide_condemnation_source_type = constant:condemnation_source.coverup }
+	set_temp_variable = { genocide_condemnation_add = genocide_hidden_coverup_gain }
+	set_temp_variable = { genocide_condemnation_severity_type = genocide_hidden_coverup_severity }
+	set_temp_variable = { genocide_condemnation_context_type = constant:condemnation_context.concealment_operation }
+	set_temp_variable = { genocide_condemnation_civilian_deaths = 0 }
+	genocide_register_hidden_condemnation_source = yes
+}
+
 genocide_activate_crisis = {
 	genocide_initialize_country_variables = yes
 	set_country_flag = genocide_crisis_active
@@ -97,6 +139,20 @@ genocide_credit_state_deaths_to_responsible = {
 			genocide_initialize_country_variables = yes
 			add_to_variable = { genocide_deaths = PREV.genocide_last_state_deaths }
 			add_to_variable = { hidden_atrocity_score = constant:genocide_crisis_value.hidden_atrocity_minor }
+			set_temp_variable = { genocide_condemnation_source_type = constant:condemnation_source.atrocity }
+			set_temp_variable = { genocide_condemnation_add = constant:genocide_crisis_value.hidden_atrocity_minor }
+			set_temp_variable = { genocide_condemnation_severity_type = constant:condemnation_severity.major }
+			set_temp_variable = { genocide_condemnation_context_type = constant:condemnation_context.camp_operation }
+			if = {
+				limit = { PREV = { has_state_flag = genocide_restricted_chemical_site_active } }
+				set_temp_variable = { genocide_condemnation_context_type = constant:condemnation_context.restricted_site_operation }
+			}
+			else_if = {
+				limit = { PREV = { OR = { has_state_flag = genocide_auschwitz_experiment_site has_state_flag = genocide_ss_laboratory_site has_state_flag = genocide_japanese_biowarfare_atrocity_site } } }
+				set_temp_variable = { genocide_condemnation_context_type = constant:condemnation_context.experiment_site }
+			}
+			set_temp_variable = { genocide_condemnation_civilian_deaths = PREV.genocide_last_state_deaths }
+			genocide_register_hidden_condemnation_source = yes
 		}
 	}
 }
@@ -315,6 +371,12 @@ genocide_register_concentration_site_for_root = {
 		add_to_variable = { genocide_visibility = constant:genocide_crisis_value.visibility_minor }
 		add_to_variable = { genocide_resistance_pressure = constant:genocide_crisis_value.resistance_pressure_minor }
 		add_to_variable = { hidden_atrocity_score = constant:genocide_crisis_value.hidden_atrocity_minor }
+		set_temp_variable = { genocide_condemnation_source_type = constant:condemnation_source.atrocity }
+		set_temp_variable = { genocide_condemnation_add = constant:genocide_crisis_value.hidden_atrocity_minor }
+		set_temp_variable = { genocide_condemnation_severity_type = constant:condemnation_severity.minor }
+		set_temp_variable = { genocide_condemnation_context_type = constant:condemnation_context.camp_operation }
+		set_temp_variable = { genocide_condemnation_civilian_deaths = 0 }
+		genocide_register_hidden_condemnation_source = yes
 		add_to_variable = { genocide_camp_administration_strength = constant:genocide_crisis_value.camp_administration_strength }
 		genocide_add_radical_hardliner_support = yes
 	}
@@ -344,6 +406,12 @@ genocide_register_extermination_site_for_root = {
 		add_to_variable = { genocide_resistance_pressure = constant:genocide_crisis_value.resistance_pressure_major }
 		add_to_variable = { genocide_refugee_pressure = constant:genocide_crisis_value.refugee_pressure_major }
 		add_to_variable = { hidden_atrocity_score = constant:genocide_crisis_value.hidden_atrocity_major }
+		set_temp_variable = { genocide_condemnation_source_type = constant:condemnation_source.atrocity }
+		set_temp_variable = { genocide_condemnation_add = constant:genocide_crisis_value.hidden_atrocity_major }
+		set_temp_variable = { genocide_condemnation_severity_type = constant:condemnation_severity.major }
+		set_temp_variable = { genocide_condemnation_context_type = constant:condemnation_context.camp_operation }
+		set_temp_variable = { genocide_condemnation_civilian_deaths = 0 }
+		genocide_register_hidden_condemnation_source = yes
 		genocide_add_radical_hardliner_support = yes
 		if = {
 			limit = {
@@ -394,6 +462,12 @@ genocide_register_gulag_site_for_root = {
 		add_to_variable = { genocide_visibility = constant:genocide_crisis_value.visibility_minor }
 		add_to_variable = { genocide_resistance_pressure = constant:genocide_crisis_value.resistance_pressure_minor }
 		add_to_variable = { hidden_atrocity_score = constant:genocide_crisis_value.hidden_atrocity_minor }
+		set_temp_variable = { genocide_condemnation_source_type = constant:condemnation_source.atrocity }
+		set_temp_variable = { genocide_condemnation_add = constant:genocide_crisis_value.hidden_atrocity_minor }
+		set_temp_variable = { genocide_condemnation_severity_type = constant:condemnation_severity.minor }
+		set_temp_variable = { genocide_condemnation_context_type = constant:condemnation_context.camp_operation }
+		set_temp_variable = { genocide_condemnation_civilian_deaths = 0 }
+		genocide_register_hidden_condemnation_source = yes
 		genocide_add_radical_hardliner_support = yes
 		if = {
 			limit = { original_tag = SOV }
@@ -557,6 +631,7 @@ genocide_apply_monthly_state_effects = {
 				OR = {
 					has_state_flag = genocide_auschwitz_experiment_site
 					has_state_flag = genocide_ss_laboratory_site
+					has_state_flag = genocide_japanese_biowarfare_atrocity_site
 				}
 			}
 			genocide_apply_monthly_experiment_site_effects = yes
@@ -647,9 +722,13 @@ genocide_apply_condemnation_thresholds = {
 
 genocide_calculate_discovery_condemnation_from_prev_state = {
 	set_temp_variable = { genocide_condemnation_add = constant:genocide_condemnation.concentration_first }
+	set_temp_variable = { genocide_condemnation_severity_type = constant:condemnation_severity.major }
+	set_temp_variable = { genocide_coverup_condemnation_add = 0 }
+	set_temp_variable = { genocide_condemnation_context_type = constant:condemnation_context.camp_discovery }
 	if = {
 		limit = { PREV = { extermination_camp > 0 } }
 		set_temp_variable = { genocide_condemnation_add = constant:genocide_condemnation.extermination_first }
+		set_temp_variable = { genocide_condemnation_severity_type = constant:condemnation_severity.mass_death }
 	}
 	else_if = {
 		limit = { PREV = { gulag_labor_camp_network > 0 } }
@@ -678,10 +757,12 @@ genocide_calculate_discovery_condemnation_from_prev_state = {
 	if = {
 		limit = { PREV = { has_state_flag = genocide_evidence_destroyed } }
 		multiply_temp_variable = { genocide_condemnation_add = constant:genocide_condemnation.destroyed_evidence_factor }
+		set_temp_variable = { genocide_coverup_condemnation_add = constant:condemnation_source_default_gain.coverup_discovery }
 	}
 	if = {
 		limit = { PREV = { has_state_flag = genocide_evidence_destroy_failed } }
 		multiply_temp_variable = { genocide_condemnation_add = constant:genocide_condemnation.failed_coverup_factor }
+		set_temp_variable = { genocide_coverup_condemnation_add = constant:condemnation_source_default_gain.coverup_discovery }
 	}
 	if = {
 		limit = {
@@ -693,6 +774,7 @@ genocide_calculate_discovery_condemnation_from_prev_state = {
 			}
 		}
 		add_to_temp_variable = { genocide_condemnation_add = constant:genocide_condemnation.experiment_site_bonus }
+		set_temp_variable = { genocide_condemnation_context_type = constant:condemnation_context.experiment_site }
 		if = {
 			limit = { has_variable = mengele_autonomy }
 			set_temp_variable = { genocide_mengele_autonomy_condemnation = mengele_autonomy }
@@ -709,6 +791,7 @@ genocide_calculate_discovery_condemnation_from_prev_state = {
 	if = {
 		limit = { PREV = { has_state_flag = genocide_restricted_chemical_site } }
 		add_to_temp_variable = { genocide_condemnation_add = constant:genocide_condemnation.restricted_chemical_site_bonus }
+		set_temp_variable = { genocide_condemnation_context_type = constant:condemnation_context.restricted_chemical_site }
 	}
 }
 
@@ -720,14 +803,34 @@ genocide_apply_discovery_to_responsible_from_prev_state = {
 	add_to_variable = { genocide_foreign_pressure = constant:genocide_crisis_value.discovery_foreign_pressure }
 	add_to_variable = { hidden_atrocity_score = constant:genocide_crisis_value.hidden_atrocity_major }
 	set_country_flag = genocide_evidence_reached_foreign_observers
-	if = {
-		limit = { NOT = { has_variable = chem_warfare_condemnation } }
-		set_variable = { chem_warfare_condemnation = 0 }
-	}
-	add_to_variable = { chem_warfare_condemnation = genocide_condemnation_add }
+	set_temp_variable = { condemnation_hidden_exposure_fraction = constant:condemnation_decay.discovery_hidden_exposure }
+	set_temp_variable = { condemnation_context_type = genocide_condemnation_context_type }
+	set_temp_variable = { condemnation_source_type = constant:condemnation_source.atrocity }
+	condemnation_expose_hidden_bucket = yes
+	set_temp_variable = { condemnation_source_type = constant:condemnation_source.coverup }
+	condemnation_expose_hidden_bucket = yes
+	condemnation_recalculate_hidden_total = yes
+	set_temp_variable = { genocide_condemnation_source_type = constant:condemnation_source.atrocity }
+	genocide_register_public_condemnation_source = yes
 	set_variable = { genocide_last_condemnation_add = genocide_condemnation_add }
-	chem_apply_condemnation_diplomatic_consequences = yes
-	refresh_chaos_meter_condemnation_view_if_open = yes
+	if = {
+		limit = { PREV = { has_state_flag = genocide_japanese_biowarfare_atrocity_site } }
+		set_temp_variable = { genocide_condemnation_source_type = constant:condemnation_source.biological }
+		set_temp_variable = { genocide_condemnation_add = constant:condemnation_source_default_gain.biological_experiment_discovery }
+		set_temp_variable = { genocide_condemnation_severity_type = constant:condemnation_severity.major }
+		set_temp_variable = { genocide_condemnation_context_type = constant:condemnation_context.experiment_site }
+		genocide_register_public_condemnation_source = yes
+		add_to_variable = { genocide_last_condemnation_add = constant:condemnation_source_default_gain.biological_experiment_discovery }
+	}
+	if = {
+		limit = { check_variable = { genocide_coverup_condemnation_add > 0 } }
+		set_temp_variable = { genocide_condemnation_source_type = constant:condemnation_source.coverup }
+		set_temp_variable = { genocide_condemnation_add = genocide_coverup_condemnation_add }
+		set_temp_variable = { genocide_condemnation_severity_type = constant:condemnation_severity.major }
+		set_temp_variable = { genocide_condemnation_context_type = constant:condemnation_context.destroyed_records }
+		genocide_register_public_condemnation_source = yes
+		add_to_variable = { genocide_last_condemnation_add = genocide_coverup_condemnation_add }
+	}
 	add_stability = constant:genocide_political_effect.exposure_stability
 	genocide_apply_condemnation_thresholds = yes
 	if = {
@@ -743,15 +846,13 @@ genocide_apply_discovery_to_responsible_from_prev_state = {
 		}
 		event_target:germany_mengele_faction = {
 			genocide_initialize_country_variables = yes
-			if = {
-				limit = { NOT = { has_variable = chem_warfare_condemnation } }
-				set_variable = { chem_warfare_condemnation = 0 }
-			}
-			add_to_variable = { chem_warfare_condemnation = constant:genocide_condemnation.mengele_faction_site_bonus }
+			set_temp_variable = { genocide_condemnation_source_type = constant:condemnation_source.atrocity }
+			set_temp_variable = { genocide_condemnation_add = constant:genocide_condemnation.mengele_faction_site_bonus }
+			set_temp_variable = { genocide_condemnation_severity_type = constant:condemnation_severity.major }
+			set_temp_variable = { genocide_condemnation_context_type = constant:condemnation_context.experiment_site }
+			genocide_register_public_condemnation_source = yes
 			add_to_variable = { genocide_foreign_pressure = constant:genocide_crisis_value.discovery_foreign_pressure }
 			set_country_flag = genocide_experiment_site_discovered_against_mengele
-			chem_apply_condemnation_diplomatic_consequences = yes
-			refresh_chaos_meter_condemnation_view_if_open = yes
 			genocide_apply_condemnation_thresholds = yes
 		}
 	}
@@ -904,6 +1005,9 @@ genocide_hide_evidence_from_foreign_observers = {
 	add_to_variable = { genocide_decisions_taken = 1 }
 	add_to_variable = { genocide_coverup_effort = constant:genocide_crisis_value.coverup_effort }
 	add_to_variable = { genocide_visibility = constant:genocide_crisis_value.visibility_reduction }
+	set_temp_variable = { genocide_hidden_coverup_gain = constant:genocide_crisis_value.coverup_effort }
+	set_temp_variable = { genocide_hidden_coverup_severity = constant:condemnation_severity.major }
+	genocide_register_hidden_coverup = yes
 	set_country_flag = {
 		flag = genocide_coverup_recently_used
 		days = @GENOCIDE_COVERUP_COOLDOWN_DAYS
@@ -921,6 +1025,9 @@ genocide_suppress_internal_reports = {
 	add_to_variable = { genocide_resistance_pressure = constant:genocide_crisis_value.resistance_pressure_minor }
 	add_to_variable = { hidden_atrocity_score = constant:genocide_crisis_value.hidden_atrocity_minor }
 	add_to_variable = { genocide_camp_administration_strength = constant:genocide_crisis_value.camp_administration_strength }
+	set_temp_variable = { genocide_hidden_coverup_gain = constant:genocide_crisis_value.coverup_effort }
+	set_temp_variable = { genocide_hidden_coverup_severity = constant:condemnation_severity.minor }
+	genocide_register_hidden_coverup = yes
 	set_country_flag = {
 		flag = genocide_internal_reports_suppressed_recently
 		days = @GENOCIDE_INTERNAL_SUPPRESSED_COOLDOWN_DAYS
@@ -1004,6 +1111,9 @@ genocide_manage_military_objections = {
 	genocide_activate_crisis = yes
 	add_to_variable = { genocide_decisions_taken = 1 }
 	add_to_variable = { genocide_coverup_effort = constant:genocide_crisis_value.coverup_effort }
+	set_temp_variable = { genocide_hidden_coverup_gain = constant:genocide_crisis_value.coverup_effort }
+	set_temp_variable = { genocide_hidden_coverup_severity = constant:condemnation_severity.minor }
+	genocide_register_hidden_coverup = yes
 	add_timed_idea = {
 		idea = genocide_military_objections_suppressed
 		days = @GENOCIDE_STATE_MODIFIER_DAYS
@@ -1062,6 +1172,9 @@ genocide_destroy_camp_evidence_in_from = {
 	add_to_variable = { genocide_decisions_taken = 1 }
 	add_to_variable = { genocide_coverup_effort = constant:genocide_crisis_value.coverup_effort }
 	add_to_variable = { hidden_atrocity_score = constant:genocide_crisis_value.hidden_atrocity_major }
+	set_temp_variable = { genocide_hidden_coverup_gain = constant:genocide_crisis_value.hidden_atrocity_major }
+	set_temp_variable = { genocide_hidden_coverup_severity = constant:condemnation_severity.major }
+	genocide_register_hidden_coverup = yes
 }
 
 genocide_dismantle_extermination_camp_in_from = {
@@ -1070,6 +1183,9 @@ genocide_dismantle_extermination_camp_in_from = {
 	add_to_variable = { genocide_visibility = constant:genocide_crisis_value.dismantle_visibility_reduction }
 	add_to_variable = { genocide_resistance_pressure = constant:genocide_crisis_value.dismantle_resistance_pressure }
 	add_to_variable = { genocide_coverup_effort = constant:genocide_crisis_value.coverup_effort }
+	set_temp_variable = { genocide_hidden_coverup_gain = constant:genocide_crisis_value.coverup_effort }
+	set_temp_variable = { genocide_hidden_coverup_severity = constant:condemnation_severity.major }
+	genocide_register_hidden_coverup = yes
 	add_stability = constant:genocide_crisis_value.dismantle_instability
 	if = {
 		limit = { has_variable = genocide_extermination_sites }
@@ -1105,6 +1221,9 @@ genocide_cover_up_liberated_camps = {
 	add_to_variable = { genocide_decisions_taken = 1 }
 	add_to_variable = { genocide_coverup_effort = constant:genocide_crisis_value.coverup_effort }
 	add_to_variable = { genocide_visibility = constant:genocide_crisis_value.visibility_reduction }
+	set_temp_variable = { genocide_hidden_coverup_gain = constant:genocide_crisis_value.coverup_effort }
+	set_temp_variable = { genocide_hidden_coverup_severity = constant:condemnation_severity.major }
+	genocide_register_hidden_coverup = yes
 	add_stability = constant:genocide_political_effect.internal_crisis_stability
 }
 
@@ -1404,17 +1523,6 @@ genocide_foreign_publicize_target = {
 		modifier = genocide_atrocity_condemned
 	}
 	FROM = {
-		add_to_variable = { genocide_foreign_pressure = constant:genocide_crisis_value.discovery_foreign_pressure }
-	}
-}
-
-genocide_foreign_sanction_target = {
-	add_opinion_modifier = {
-		target = FROM
-		modifier = genocide_sanctions_pressure
-	}
-	FROM = {
-		add_ideas = genocide_international_sanctions
 		add_to_variable = { genocide_foreign_pressure = constant:genocide_crisis_value.discovery_foreign_pressure }
 	}
 }

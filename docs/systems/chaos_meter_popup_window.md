@@ -2,7 +2,7 @@
 
 ## What This Adds
 
-This update adds a dedicated Chaos Meter popup window that opens from the topbar chaos meter.
+The dedicated Chaos Meter popup opens from the topbar chaos meter.
 
 The popup is designed around the vanilla world tension window style and size, and adds five tabs:
 
@@ -77,13 +77,16 @@ Every value/summary row in this tab has a tooltip explaining what it represents.
 
 The `Condemnation` tab shows:
 
-- your current country condemnation (`chem_warfare_condemnation`),
+- your current public condemnation total,
 - global total condemnation and number of contributing countries,
-- a scrollable country list of condemnation sources,
+- a scrollable country list with public total, tier, recent gain, main source, active sanctions, highest active sanction tier, and compliance state,
 - ascending/descending sort controls by condemnation amount.
 
-Rows include country flags and a diplomacy quick-open button.
-When condemnation values change, the visible condemnation tab is rebuilt immediately so the list updates in real time.
+Rows include country flags and open a selected-country detail view. The detail snapshot covers current and peak tier, next threshold or Pariah cap, all six public source buckets, the three newest public source entries, participant counts, native embargo count, relief and enforcement counts, likely participants, industry and trade estimates, participant fatigue, decay and compliance state, allowed evasion data, vulnerability, isolation severity, and practical penalties.
+
+Only public totals are registered in the list. Hidden evidence remains unavailable until a disclosure path moves it into public source buckets. The trade value is an aggregate complementarity estimate because exact bilateral trade volume is unavailable to script.
+
+When condemnation values change, background country effects mark the view dirty. Opening the tab or changing its sort rebuilds from the targeted `global.condemnation_targets` registry in the player's scope, so AI pulses cannot overwrite the player's ordering. It does not scan every country.
 
 ### Deaths Tab
 
@@ -95,7 +98,7 @@ The `Deaths` tab shows:
 - a separator and a scrollable country totals list below the summary block.
 
 Country entries show the country name on a single line with a tight right-aligned cluster of value boxes, and each icon sits just to the left of its box.
-Each value group has a tooltip with its cause breakdown; only causes with recorded casualties for that country are shown.
+Each value group has a tooltip with its cause breakdown. Only causes with recorded casualties for that country are shown.
 The per-country details overlay is intentionally disabled in this version of the deaths view.
 
 ## Data Flow
@@ -131,10 +134,22 @@ Condemnation view arrays:
 
 - `global.chaos_meter_condemnation_view_country_entries`
 - `global.chaos_meter_condemnation_view_value_entries`
+- `global.chaos_meter_condemnation_view_tier_entries`
+- `global.chaos_meter_condemnation_view_recent_gain_entries`
+- `global.chaos_meter_condemnation_view_main_source_entries`
+- `global.chaos_meter_condemnation_view_active_sanction_entries`
+- `global.chaos_meter_condemnation_view_highest_sanction_tier_entries`
+- `global.chaos_meter_condemnation_view_compliance_entries`
 
 Condemnation view rebuild effect:
 
 - `rebuild_chaos_meter_condemnation_view`
+
+Selected-country detail effect:
+
+- `rebuild_chaos_meter_condemnation_detail_snapshot`
+
+The complete source, sanctions, disclosure, and detail-snapshot contract is documented in `docs/systems/condemnation_sanctions.md`.
 
 Deaths source arrays:
 
@@ -186,7 +201,7 @@ Vanilla sprite references reused directly in the deaths header:
 - `GFX_population_icon`
 - `GFX_manpower_icon`
 
-No additional art is required for this feature unless you want a custom non-vanilla visual skin.
+No additional art is required for this feature.
 
 ## Future Plans
 

@@ -156,48 +156,61 @@ has_unconventional_weapon_stockpile = {
     }
 }
 
+has_public_unconventional_weapon_condemnation = {
+	OR = {
+		check_variable = { condemnation_chemical > 0 }
+		check_variable = { condemnation_biological > 0 }
+		check_variable = { condemnation_nuclear > 0 }
+	}
+}
+
+is_within_air_cleanliness_treaty_condemnation_limit = {
+	set_temp_variable = { air_cleanliness_unconventional_condemnation_check = condemnation_chemical }
+	add_to_temp_variable = { air_cleanliness_unconventional_condemnation_check = condemnation_biological }
+	add_to_temp_variable = { air_cleanliness_unconventional_condemnation_check = condemnation_nuclear }
+	check_variable = {
+		var = air_cleanliness_unconventional_condemnation_check
+		value = constant:air_cleanliness_treaty.member_condemnation_max
+		compare = less_than_or_equals
+	}
+}
+
 has_used_unconventional_weapons = {
-    OR = {
-        has_country_flag = used_unconventional_weapon
-        has_country_flag = used_bioweapon
-        has_country_flag = used_anthrax_weapon
-        has_country_flag = used_plague_weapon
-        has_country_flag = used_tularemia_weapon
-        has_country_flag = used_smallpox_weapon
-        AND = {
-            has_variable = chem_warfare_condemnation
-            check_variable = { chem_warfare_condemnation > 0 }
-        }
-    }
+	OR = {
+		has_country_flag = used_unconventional_weapon
+		has_country_flag = used_bioweapon
+		has_country_flag = used_anthrax_weapon
+		has_country_flag = used_plague_weapon
+		has_country_flag = used_tularemia_weapon
+		has_country_flag = used_smallpox_weapon
+		has_public_unconventional_weapon_condemnation = yes
+	}
 }
 
 has_enemy_used_chemical_weapons = {
-    any_enemy_country = {
-        has_variable = chem_warfare_condemnation
-        check_variable = { chem_warfare_condemnation > 0 }
-    }
+	any_enemy_country = {
+		check_variable = { condemnation_chemical > 0 }
+	}
 }
 
 has_enemy_chemical_condemnation_considerable = {
-    any_enemy_country = {
-        has_variable = chem_warfare_condemnation
-        check_variable = {
-            var = chem_warfare_condemnation
-            value = constant:chem_ability_ai.retaliate_threshold.considerable
-            compare = greater_than
-        }
-    }
+	any_enemy_country = {
+		check_variable = {
+			var = condemnation_chemical
+			value = constant:chem_ability_ai.retaliate_threshold.considerable
+			compare = greater_than
+		}
+	}
 }
 
 has_enemy_chemical_condemnation_very_high = {
-    any_enemy_country = {
-        has_variable = chem_warfare_condemnation
-        check_variable = {
-            var = chem_warfare_condemnation
-            value = constant:chem_ability_ai.retaliate_threshold.very_high
-            compare = greater_than
-        }
-    }
+	any_enemy_country = {
+		check_variable = {
+			var = condemnation_chemical
+			value = constant:chem_ability_ai.retaliate_threshold.very_high
+			compare = greater_than
+		}
+	}
 }
 
 has_war_with_chinese_country = {

@@ -1,0 +1,405 @@
+# ============================================================================
+# CHAOS REDUX - CONDEMNATION SANCTIONS SCRIPTED TRIGGERS
+# ============================================================================
+# Shared tier, response, sanction-pair, cleanup, and concrete-cost checks.
+# Country-targeted decision convention: ROOT is the acting participant and
+# FROM is the condemned target.
+# ============================================================================
+
+condemnation_has_public_record = {
+	has_variable = condemnation_total
+	check_variable = { condemnation_total > constant:condemnation_decay.minimum_total }
+}
+
+condemnation_is_concern = {
+	check_variable = { condemnation_tier > constant:condemnation_tier.normal }
+}
+
+condemnation_is_formally_censured = {
+	check_variable = { condemnation_tier > constant:condemnation_tier.concern }
+}
+
+condemnation_is_arms_embargo_tier = {
+	check_variable = { condemnation_tier > constant:condemnation_tier.formal_censure }
+}
+
+condemnation_is_strategic_embargo_tier = {
+	check_variable = { condemnation_tier > constant:condemnation_tier.arms_embargo }
+}
+
+condemnation_is_total_embargo_tier = {
+	check_variable = { condemnation_tier > constant:condemnation_tier.strategic_embargo }
+}
+
+condemnation_is_pariah_state = {
+	check_variable = { condemnation_tier > constant:condemnation_tier.total_embargo }
+}
+
+condemnation_has_active_sanctions = {
+	has_variable = condemnation_active_sanctions
+	check_variable = { condemnation_active_sanctions > 0 }
+}
+
+condemnation_target_is_weak = {
+	NOT = { is_major = yes }
+	check_variable = { num_of_factories < constant:condemnation_industry.weak_factories }
+}
+
+condemnation_target_is_strong = {
+	OR = {
+		is_major = yes
+		check_variable = { var = num_of_factories value = constant:condemnation_industry.strong_factories compare = greater_than_or_equals }
+	}
+}
+
+condemnation_has_severe_recent_source = {
+	has_country_flag = condemnation_recent_gain_visible
+	check_variable = { var = condemnation_last_source_severity value = constant:condemnation_severity.major compare = greater_than_or_equals }
+}
+
+condemnation_has_compliance_path = {
+	OR = {
+		has_country_flag = condemnation_inspections_active
+		has_country_flag = condemnation_observers_active
+		has_country_flag = condemnation_non_use_pledge
+		has_country_flag = condemnation_verified_non_use
+		has_country_flag = condemnation_compensation_active
+		has_country_flag = condemnation_chemical_stockpile_restriction
+		has_country_flag = condemnation_biological_stockpile_restriction
+	}
+}
+
+condemnation_has_defiance_path = {
+	OR = {
+		has_country_flag = condemnation_refused_inspection
+		has_country_flag = condemnation_domestic_propaganda_active
+		has_country_flag = condemnation_autarky_active
+		has_country_flag = condemnation_forced_extraction_active
+		has_country_flag = condemnation_substitute_materials_active
+		has_country_flag = condemnation_military_rationing_active
+		has_country_flag = condemnation_subject_pressure_active
+		has_country_flag = condemnation_controlled_shipping_active
+		has_country_flag = condemnation_hardline_mobilization_active
+	}
+}
+
+condemnation_has_evasion_path = {
+	OR = {
+		has_country_flag = condemnation_black_market_active
+		has_country_flag = condemnation_false_manifest_active
+		has_country_flag = condemnation_intermediary_active
+		has_country_flag = condemnation_subject_front_active
+		has_country_flag = condemnation_covert_fuel_active
+		has_country_flag = condemnation_reflagging_active
+		has_country_flag = condemnation_stolen_license_active
+		has_country_flag = condemnation_smuggled_lab_active
+	}
+}
+
+condemnation_show_compliance_actions = {
+	OR = {
+		is_ai = yes
+		has_country_flag = condemnation_response_view_compliance
+	}
+}
+
+condemnation_show_defiance_actions = {
+	OR = {
+		is_ai = yes
+		has_country_flag = condemnation_response_view_defiance
+	}
+}
+
+condemnation_show_evasion_actions = {
+	OR = {
+		is_ai = yes
+		has_country_flag = condemnation_response_view_evasion
+	}
+}
+
+condemnation_decay_blocked = {
+	OR = {
+		has_country_flag = condemnation_recent_use
+		has_country_flag = condemnation_recent_gain_visible
+		has_country_flag = condemnation_refused_inspection
+		has_country_flag = condemnation_pledge_broken
+		has_country_flag = condemnation_evasion_exposed
+	}
+}
+
+condemnation_pulse_required = {
+	OR = {
+		condemnation_has_public_record = yes
+		condemnation_has_active_sanctions = yes
+		condemnation_has_compliance_path = yes
+		condemnation_has_defiance_path = yes
+		condemnation_has_evasion_path = yes
+		check_variable = { condemnation_evasion_pressure > constant:condemnation_gain.minimum_visible_gain }
+		check_variable = { condemnation_black_market_exposure > constant:condemnation_gain.minimum_visible_gain }
+	}
+}
+
+condemnation_has_chemical_stockpile = {
+	OR = {
+		has_equipment = { chemical_chlorine_payload_cylinder_1 > 0 }
+		has_equipment = { chemical_phosgene_payload_cylinder_1 > 0 }
+		has_equipment = { chemical_mustard_payload_cylinder_1 > 0 }
+		has_equipment = { chemical_lewisite_payload_cylinder_1 > 0 }
+		has_equipment = { chemical_tabun_payload_cylinder_1 > 0 }
+		has_equipment = { chemical_sarin_payload_cylinder_1 > 0 }
+		has_equipment = { chemical_soman_payload_cylinder_1 > 0 }
+	}
+}
+
+condemnation_has_biological_stockpile = {
+	OR = {
+		has_equipment = { anthrax_bomb_1 > 0 }
+		has_equipment = { plague_bomb_1 > 0 }
+		has_equipment = { tularemia_bomb_1 > 0 }
+		has_equipment = { smallpox_bomb_1 > 0 }
+		has_equipment = { zombie_disease_bomb_1 > 0 }
+	}
+}
+
+condemnation_has_restricted_sites = {
+	any_controlled_state = {
+		OR = {
+			has_state_flag = genocide_restricted_chemical_site_active
+			has_state_flag = genocide_restricted_chemical_site
+			has_state_flag = genocide_auschwitz_experiment_site
+			has_state_flag = genocide_ss_laboratory_site
+			has_state_flag = genocide_japanese_biowarfare_atrocity_site
+		}
+	}
+}
+
+condemnation_has_subject_route = {
+	any_subject_country = { exists = yes }
+}
+
+condemnation_can_pay_compensation = {
+	has_variable = condemnation_last_victim
+	var:condemnation_last_victim = { exists = yes }
+	NOT = { has_equipment = { convoy_1 < condemnation_compensation_convoy_requirement } }
+	NOT = { has_equipment = { infantry_equipment < constant:condemnation_cost.compensation_infantry_equipment } }
+	check_variable = { fuel_k > 0 }
+}
+
+condemnation_can_pay_false_manifest_cost = {
+	NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.false_manifest_convoys } }
+}
+
+condemnation_can_pay_quiet_breach_cost = {
+	NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.quiet_breach_convoys } }
+	NOT = { has_equipment = { infantry_equipment < constant:condemnation_cost.quiet_breach_equipment } }
+	check_variable = { fuel_k > 0 }
+}
+
+condemnation_can_reform_command = {
+	check_variable = { var = army_experience value = constant:condemnation_cost.command_reform_army_xp compare = greater_than_or_equals }
+	check_variable = { var = air_experience value = constant:condemnation_cost.command_reform_air_xp compare = greater_than_or_equals }
+	check_variable = { var = navy_experience value = constant:condemnation_cost.command_reform_navy_xp compare = greater_than_or_equals }
+}
+
+condemnation_can_bear_enforcement_cost = {
+	NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.participant_convoys_base } }
+	check_variable = { fuel_k > 0 }
+}
+
+condemnation_can_bear_escalation_cost = {
+	NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.participant_escalation_convoys } }
+	check_variable = { fuel_k > 0 }
+}
+
+condemnation_pair_is_distinct_against_from = {
+	FROM = {
+		exists = yes
+		NOT = { tag = ROOT }
+	}
+}
+
+condemnation_can_pay_observer_cost = {
+	NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.observer_convoys } }
+}
+
+condemnation_can_pay_black_market_cost = {
+	NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.black_market_convoys } }
+	check_variable = { fuel_k > 0 }
+}
+
+condemnation_can_pay_controlled_shipping_cost = {
+	NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.controlled_shipping_convoys } }
+	check_variable = { fuel_k > 0 }
+}
+
+condemnation_can_pay_shield_cost = {
+	NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.shield_convoys } }
+}
+
+condemnation_pair_is_active_against_from = {
+	FROM = {
+		is_in_array = {
+			array = condemnation_sanction_participants
+			value = ROOT
+		}
+	}
+}
+
+condemnation_pair_is_not_active_against_from = {
+	FROM = {
+		NOT = {
+			is_in_array = {
+				array = condemnation_sanction_participants
+				value = ROOT
+			}
+		}
+	}
+}
+
+condemnation_pair_is_valid_against_from = {
+	FROM = {
+		exists = yes
+		NOT = { tag = ROOT }
+		NOT = { is_subject_of = ROOT }
+		ROOT = { NOT = { is_subject_of = PREV } }
+		NOT = { is_in_faction_with = ROOT }
+		NOT = { has_war_with = ROOT }
+	}
+}
+
+condemnation_pair_can_shield_from = {
+	FROM = {
+		exists = yes
+		NOT = { tag = ROOT }
+		OR = {
+			is_in_faction_with = ROOT
+			is_subject_of = ROOT
+			ROOT = { is_subject_of = PREV }
+		}
+	}
+}
+
+condemnation_can_join_arms_embargo_against_from = {
+	condemnation_pair_is_not_active_against_from = yes
+	condemnation_pair_is_valid_against_from = yes
+	FROM = { condemnation_is_arms_embargo_tier = yes }
+}
+
+condemnation_can_join_strategic_embargo_against_from = {
+	condemnation_pair_is_active_against_from = yes
+	FROM = { condemnation_is_strategic_embargo_tier = yes }
+	FROM = {
+		NOT = {
+			is_in_array = {
+				array = condemnation_strategic_embargo_participants
+				value = ROOT
+			}
+		}
+	}
+}
+
+condemnation_can_join_total_embargo_against_from = {
+	condemnation_pair_is_active_against_from = yes
+	FROM = { condemnation_is_total_embargo_tier = yes }
+	FROM = {
+		NOT = {
+			is_in_array = {
+				array = condemnation_total_embargo_participants
+				value = ROOT
+			}
+		}
+	}
+}
+
+condemnation_can_join_pariah_embargo_against_from = {
+	condemnation_pair_is_active_against_from = yes
+	FROM = { condemnation_is_pariah_state = yes }
+	FROM = {
+		NOT = {
+			is_in_array = {
+				array = condemnation_pariah_embargo_participants
+				value = ROOT
+			}
+		}
+	}
+}
+
+condemnation_can_abstain_against_from = {
+	condemnation_pair_is_distinct_against_from = yes
+	condemnation_pair_is_not_active_against_from = yes
+	FROM = { condemnation_is_formally_censured = yes }
+	FROM = {
+		NOT = {
+			is_in_array = {
+				array = condemnation_abstaining_participants
+				value = ROOT
+			}
+		}
+	}
+}
+
+condemnation_can_add_humanitarian_carveout_against_from = {
+	condemnation_pair_is_active_against_from = yes
+	FROM = {
+		NOT = {
+			is_in_array = {
+				array = condemnation_humanitarian_carveout_participants
+				value = ROOT
+			}
+		}
+	}
+}
+
+condemnation_can_quietly_breach_against_from = {
+	condemnation_pair_is_active_against_from = yes
+	FROM = {
+		NOT = {
+			is_in_array = {
+				array = condemnation_quiet_breach_participants
+				value = ROOT
+			}
+		}
+	}
+}
+
+condemnation_can_tighten_enforcement_against_from = {
+	condemnation_pair_is_active_against_from = yes
+	FROM = {
+		OR = {
+			check_variable = { condemnation_evasion_pressure > 0 }
+			has_country_flag = condemnation_evasion_exposed
+		}
+		NOT = {
+			is_in_array = {
+				array = condemnation_tight_enforcement_participants
+				value = ROOT
+			}
+		}
+	}
+}
+
+condemnation_selected_country_valid = {
+	has_variable = chaos_meter_condemnation_selected_country
+	check_variable = { chaos_meter_condemnation_selected_country > 0 }
+	var:chaos_meter_condemnation_selected_country = { exists = yes }
+}
+
+# Relation-rule overrides evaluate this trigger on the acting participant;
+# FROM is the prospective relation target.
+condemnation_relation_is_arms_embargo_target = {
+	FROM = {
+		is_in_array = {
+			array = condemnation_arms_embargo_participants
+			value = ROOT
+		}
+	}
+}
+
+condemnation_relation_is_strategic_embargo_target = {
+	FROM = {
+		is_in_array = {
+			array = condemnation_strategic_embargo_participants
+			value = ROOT
+		}
+	}
+}

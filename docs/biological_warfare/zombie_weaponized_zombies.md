@@ -149,7 +149,7 @@ Dead necrotic and demonic zombie outcomes also no longer resolve into obedient c
 - The strike uses the same province-targeted air-raid model as the other bioweapons.
 - The strike explicitly sets `days_re_enable = 0` on every hostile and human-friendly raid variant, so it has no target re-enable cooldown beyond payload, preparation, war, and target-validity requirements.
 - The strike now declares its zombie-payload cost through raid `essential_equipment`, so preparing the raid requires and collects `125` `zombie_disease_bomb_equipment`.
-- Hostile deployments now register strategic bioweapon condemnation in the shared `chem_warfare_condemnation` tracker, with the existing biological integrated-operations condemnation reductions applied.
+- Hostile deployments register strategic bioweapon condemnation in the public biological bucket with `weaponized_zombies` context. Existing biological integrated-operations reductions scale the source gain before it enters the shared condemnation system described in `docs/systems/condemnation_sanctions.md`.
 - Targeting is now obedience-aware instead of hardcoded:
   - `friendly to humans` outcomes can only be deployed onto zombie-controlled states
   - all other outcomes can be deployed onto any province

@@ -11,8 +11,8 @@ Chemical warfare is implemented as one connected gameplay package:
 3. Chemical tank support companies (per chemical type and chassis class).
 4. Nerve-agent raid options (Sarin and Soman).
 5. US special-project raid options (Malodor and Aphrodisiac bombs).
-6. Global diplomatic backlash (international condemnation).
-7. Chemical air bomb modules marked as under-development.
+6. Shared condemnation and sanctions consequences.
+7. Chemical air bomb modules with targeted regional processing.
 
 The system rewards preparation and logistics while making repeated chemical use politically costly.
 
@@ -37,8 +37,8 @@ The genocide crisis system can consume restricted nerve-agent stockpiles through
 - US special-project raids are also short-lived and focus on disruption rather than direct casualties.
 - US special-project raids do not add international condemnation.
 - Chemical air-delivered raids use the same province-targeted deployment model as the biological bomb raids.
-- Direct Sarin and Soman strikes now consume their cylinder payloads without requiring deployed bomber wings; only the rocket variants still require missile equipment.
-- Air bomb modules are visible in progression, while plane-based contamination and condemnation behavior remains disabled.
+- Direct Sarin and Soman strikes consume their cylinder payloads without requiring deployed bomber wings. Only the rocket variants require missile equipment.
+- Air bomb modules feed targeted regional contamination and chemical-air-strike condemnation when chemical-capable aircraft are active in a heated war region.
 
 ## Core Gameplay Flow
 
@@ -49,7 +49,8 @@ The genocide crisis system can consume restricted nerve-agent stockpiles through
    - Livens support company,
    - Chemical tank support company,
    - Nerve raid (Sarin/Soman),
-   - US special raid (Malodor/Aphrodisiac).
+   - US special raid (Malodor/Aphrodisiac),
+   - Chemical air bomb modules.
 4. Execute usage while managing condemnation growth.
 5. Adjust operations around weather, stockpiles, and diplomatic pressure.
 
@@ -132,20 +133,26 @@ The malodor and aphrodisiac bombs are US-only special-project raid payloads.
 
 ## International Condemnation and Diplomacy
 
-Most major chemical delivery paths feed condemnation:
+Most major chemical delivery paths feed the public chemical source in the shared condemnation model:
 
 - cylinder abilities,
 - Livens support combat use,
 - chemical tank support combat use,
-- nerve raids.
+- nerve raids,
+- active chemical air-bomb regions,
+- chemical doomsday release.
 
 Exception:
 
 - Cylinder abilities used only against zombie-held fronts do not add condemnation.
 - US special-project malodor and aphrodisiac raids do not add condemnation.
-- Japan's targeted chemical campaign decisions against China do not add condemnation.
+- Japan's targeted chemical campaign decisions against China use reduced campaign-specific condemnation values rather than the normal cylinder values.
 
-As condemnation rises, external diplomatic pressure and penalties intensify.
+Chemical use records `chemical_combat`, `chemical_air_strike`, or `chemical_doomsday` context. Where a delivery path measures civilian deaths or contamination, the shared helper adds up to `100` from deaths at one point per `10,000`, plus up to `50` from contamination at `0.50` per point, before visibility and severity. Public gains contribute to the seven shared tiers from Normal through Pariah State. Eligible countries can impose scalable arms, strategic, total, and pariah restrictions. Chemical doomsday release starts from `40`, adds stockpile scaling divided by `1000` up to an additional `80`, and then applies doomsday severity.
+
+State-based chemical abilities, support-company scans, Japan's campaign action, and nerve-agent raids record the affected controller as the most recent victim when the engine exposes that country scope. This feeds direct-victim and guarantor participant scoring and enables compensation. A combat-result callback that exposes only the acting unit owner cannot name an opponent unless the associated state scan supplies one.
+
+Integrated Chemical Operations reduces the chemical source gain before it enters the shared bucket. It never removes the source, recent-use memory, treaty reaction, or sanctions consequences. The complete model is documented in `docs/systems/condemnation_sanctions.md`.
 
 ## Defensive Mitigation
 
@@ -169,11 +176,12 @@ AI treats chemical warfare as a strategic path with tradeoffs.
 
 ## Chemical Air Bomb Modules
 
-Chemical air bomb modules are marked as under-development content.
+Chemical air bomb modules are active content.
 
 - They are present in progression and UI.
-- Plane-based chemical contamination behavior is disabled.
-- Plane-based condemnation behavior is disabled.
+- Ground-operation heat starts a targeted, self-scheduling country tick while war activity continues.
+- Active chemical-capable aircraft can contaminate affected states through regional processing.
+- A processed active region contributes public chemical condemnation with `chemical_air_strike` context.
 
 ## Operational Notes
 

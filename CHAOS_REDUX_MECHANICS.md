@@ -277,19 +277,27 @@ The tab also includes an enable/disable checkbox for the air cleanliness system.
 
 ### Condemnation System
 
-Condemnation is diplomatic blame for unconventional weapon use.
+Condemnation is the shared diplomatic consequence system for publicly known unconventional warfare, exposed atrocity sites, cover-ups, and repeated use.
 
 What increases condemnation:
 
-- Chemical units actively used in combat
-- Chemical and biological attack use
-- Nuclear strike use, with larger strikes on more populated states causing heavier condemnation
-- Some decisions as well
+- Chemical combat, chemical raids, and chemical doomsday effects
+- Biological strikes, outbreaks, biological doomsday effects, and hostile weaponized-zombie deployments
+- Nuclear and thermonuclear strikes, with populated capitals and industrial targets causing heavier pressure
+- Discovered camps, experiment sites, restricted chemical sites, destroyed records, blocked inspections, and exposed evasion
+- Repeated public sources inside the recent-use window
 
-The **Condemnation** tab shows your value and a sortable country list.  
-The list updates instantly when condemnation changes.
+Public condemnation is divided into chemical, biological, nuclear, atrocity, cover-up, and repeat-use sources. Hidden evidence remains outside the public total until inspections, observers, occupation, discovery, or another disclosure path reveals it.
 
-<!-- IMAGE PLACEHOLDER: Condemnation tab with sortable country list -->
+The seven tiers are Normal below `25`, International Concern from `25`, Formal Censure from `50`, Arms Embargo from `100`, Strategic Embargo from `175`, Total Embargo from `300`, and Pariah State from `500`.
+
+The **Condemnation** tab shows public country rows and opens a selected-country detail view with source breakdown, the three newest public sources, current and peak tier, next threshold or Pariah score cap, participant counts, practical penalties, decay, and compliance state. Hidden evidence is never shown before disclosure.
+
+At International Concern, likely participants begin monitoring the target with light opinion and military-support pressure; Formal Censure strengthens those reactions. At Arms Embargo and higher, qualifying countries can impose scalable bilateral restrictions. The native diplomatic embargo is broad rather than resource-specific and requires **By Blood Alone**. Without that DLC, the bilateral enforcement record and its economic and diplomatic penalties still apply. The displayed trade dependency is an aggregate estimate because exact bilateral trade volume is not available to script.
+
+Active volunteers and attachés can be recalled, new lend-lease agreements from sanction participants are blocked, and new volunteer or attaché violations are detected. Already active lend-lease, production licences, and research-sharing membership cannot be generically cancelled or revoked by this system.
+
+Detailed implementation and tuning reference: `docs/systems/condemnation_sanctions.md`.
 
 ### Deaths System
 
@@ -595,15 +603,13 @@ Support companies can contribute to contamination when they are actively partici
 
 #### Diplomacy and Condemnation
 
-Using chemical supports in combat increases international condemnation.
+Verified chemical support use in combat adds to the public chemical condemnation source. Chemical raids and chemical doomsday effects use the same shared source model with context-specific severity.
 
-Heavy repeated use can trigger escalating diplomatic fallout.
+Heavy repeated use can add repeat-use pressure and cross the seven condemnation tiers, leading from concern and censure to arms, strategic, total, and pariah enforcement.
 
 Condemnation is based on real use of unconventional weapons in combat, not on just being at war or owning stockpiles.
 
-You can track who is responsible in the Chaos Meter **Condemnation** tab.
-
-<!-- IMAGE PLACEHOLDER: Condemnation tab showing countries and updated totals -->
+You can track who is responsible and inspect public source, sanctions, compliance, and penalty details in the Chaos Meter **Condemnation** tab.
 
 ### Chemical Planes
 
@@ -735,12 +741,14 @@ What the player does:
 
 The camp and genocide crisis system models state repression, forced labor, extermination sites, gulag networks, experiment-linked atrocity sites, restricted chemical site escalation, evidence destruction, discovery, foreign response, and tribunal pressure.
 
-The key rule is separation between hidden internal damage and external condemnation:
+The key rule is separation between hidden internal damage and public condemnation:
 
 - Camp systems reduce real state population through the Chaos Meter Deaths system.
 - Responsible countries accumulate hidden crisis variables such as `genocide_escalation`, `genocide_visibility`, `genocide_deaths`, `genocide_resistance_pressure`, `genocide_foreign_pressure`, `genocide_coverup_effort`, and `genocide_discovered_sites`.
-- Foreign condemnation does not rise passively while the responsible regime still controls the evidence.
-- Condemnation rises when enemy forces occupy or liberate a state containing undiscovered camp, gulag, or destroyed atrocity-site evidence.
+- Camp operation, restricted-site operation, recorded deaths, and internal concealment also accumulate hidden atrocity or cover-up evidence in the shared condemnation system.
+- Public condemnation does not rise passively while the responsible regime still controls the evidence.
+- Discovery exposes the responsible country's hidden atrocity and cover-up evidence, then adds a public state-specific atrocity source. Experiment sites and restricted chemical sites add source-specific bonuses, while destroyed or failed cover-up evidence can add a separate public cover-up source.
+- Enemy occupation or liberation can expose undiscovered camp, gulag, experiment, restricted-site, or destroyed-site evidence.
 
 ### Buildings and State Tracking
 
@@ -766,7 +774,7 @@ Country-specific categories handle:
 - Japan: forced labor camps, anti-partisan reprisals, prisoner experimentation, occupation evidence destruction, and biological warfare links during the China war.
 - Soviet Union: gulag expansion, deportations, famine pressure, camp-administrator purges, forced-labor quotas, evidence destruction, and a mechanical Soviet Collapse bridge.
 
-Restricted chemical site escalation uses existing sarin/soman tech, special-project, stockpile, contamination, Deaths, and discovery systems. It creates hidden camp evidence and delayed condemnation instead of firing public chemical-attack condemnation immediately.
+Restricted chemical site escalation uses existing sarin/soman tech, special-project, stockpile, contamination, Deaths, and discovery systems. It creates hidden evidence and delayed atrocity or cover-up condemnation instead of firing public chemical-use condemnation immediately.
 
 AI weights make fascist Germany, imperial Japan, and communist Soviet Union the primary users under historical or radicalized conditions. A separate AI strategy package adjusts broad behavior for active and exposed crisis regimes.
 

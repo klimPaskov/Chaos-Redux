@@ -2293,6 +2293,7 @@ holy_realm_prepare_final_silence = {
 		set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.final_silence_thermonuclear_gain }
 		set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_silence }
 		set_temp_variable = { holy_realm_final_condemnation = constant:holy_realm_final_silence.condemnation_thermonuclear }
+		set_temp_variable = { holy_realm_final_contamination = constant:holy_realm_final_silence.thermonuclear_fallout_intensity }
 	}
 	else = {
 		clr_global_flag = world_end_final_silence_thermonuclear
@@ -2300,16 +2301,19 @@ holy_realm_prepare_final_silence = {
 		set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.final_silence_gain }
 		set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_silence }
 		set_temp_variable = { holy_realm_final_condemnation = constant:holy_realm_final_silence.condemnation_normal }
+		set_temp_variable = { holy_realm_final_contamination = constant:holy_realm_final_silence.normal_fallout_intensity }
 	}
 	holy_realm_add_chaos = yes
 	holy_realm_show_super_event = yes
-	if = {
-		limit = { NOT = { has_variable = chem_warfare_condemnation } }
-		set_variable = { chem_warfare_condemnation = 0 }
-	}
-	add_to_variable = { chem_warfare_condemnation = holy_realm_final_condemnation }
-	chem_apply_condemnation_diplomatic_consequences = yes
-	refresh_chaos_meter_condemnation_view_if_open = yes
+	set_temp_variable = { condemnation_source_type = constant:condemnation_source.nuclear }
+	set_temp_variable = { condemnation_base_gain = holy_realm_final_condemnation }
+	set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+	set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.doomsday }
+	set_temp_variable = { condemnation_civilian_deaths = 0 }
+	set_temp_variable = { condemnation_contamination_value = holy_realm_final_contamination }
+	set_temp_variable = { condemnation_victim_country = THIS }
+	set_temp_variable = { condemnation_context_type = constant:condemnation_context.final_silence }
+	condemnation_add_source = yes
 	air_contamination_lock_final_silence = yes
 	set_country_flag = used_unconventional_weapon
 	air_cleanliness_treaty_on_unconventional_use = yes

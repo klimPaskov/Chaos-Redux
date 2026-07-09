@@ -82,6 +82,25 @@ bio_set_integrated_operations_bw_modifiers_from_operation_actor = {
 	}
 }
 
+# Canonical biological condemnation adapter.
+# Required temporary inputs on the condemned country:
+# - bio_condemnation_base_gain
+# - bio_condemnation_severity_type
+# - bio_condemnation_victim_country
+# - bio_condemnation_contamination_value
+# - bio_condemnation_context_type
+bio_register_condemnation_source = {
+	set_temp_variable = { condemnation_source_type = constant:condemnation_source.biological }
+	set_temp_variable = { condemnation_base_gain = bio_condemnation_base_gain }
+	set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+	set_temp_variable = { condemnation_severity_type = bio_condemnation_severity_type }
+	set_temp_variable = { condemnation_civilian_deaths = 0 }
+	set_temp_variable = { condemnation_contamination_value = bio_condemnation_contamination_value }
+	set_temp_variable = { condemnation_victim_country = bio_condemnation_victim_country }
+	set_temp_variable = { condemnation_context_type = bio_condemnation_context_type }
+	condemnation_add_source = yes
+}
+
 bio_operation_calculate_plant_success_chance = {
 	set_temp_variable = { var = bio_operation_success_chance value = constant:bio_operation_plant_outbreak.base_success }
 	set_temp_variable = { var = bio_operation_infectiousness_bonus value = bio_operation_infectiousness }
@@ -158,6 +177,15 @@ bio_operation_apply_plague_bioweapon_consequences = {
 		set_temp_variable = { var = bio_bioweapon_use_add value = 1 }
 		multiply_temp_variable = { var = bio_bioweapon_use_add value = bio_bw_condemnation_mult }
 		add_to_variable = { bioweapon_uses = bio_bioweapon_use_add }
+		set_temp_variable = { bio_condemnation_base_gain = constant:condemnation_source_default_gain.biological_strategic }
+		multiply_temp_variable = { bio_condemnation_base_gain = bio_bw_condemnation_mult }
+		set_temp_variable = { bio_condemnation_severity_type = constant:condemnation_severity.major }
+		event_target:bio_operation_victim = {
+			set_temp_variable = { bio_condemnation_victim_country = THIS }
+		}
+		set_temp_variable = { bio_condemnation_contamination_value = 0 }
+		set_temp_variable = { bio_condemnation_context_type = constant:condemnation_context.biological_outbreak }
+		bio_register_condemnation_source = yes
 
 		set_temp_variable = { var = bio_war_support_penalty value = constant:bio_war_support_penalty.plague }
 		multiply_temp_variable = { var = bio_war_support_penalty value = bio_bw_condemnation_mult }
@@ -229,6 +257,15 @@ bio_operation_apply_smallpox_bioweapon_consequences = {
 		set_temp_variable = { var = bio_bioweapon_use_add value = 1 }
 		multiply_temp_variable = { var = bio_bioweapon_use_add value = bio_bw_condemnation_mult }
 		add_to_variable = { bioweapon_uses = bio_bioweapon_use_add }
+		set_temp_variable = { bio_condemnation_base_gain = constant:condemnation_source_default_gain.biological_strategic }
+		multiply_temp_variable = { bio_condemnation_base_gain = bio_bw_condemnation_mult }
+		set_temp_variable = { bio_condemnation_severity_type = constant:condemnation_severity.major }
+		event_target:bio_operation_victim = {
+			set_temp_variable = { bio_condemnation_victim_country = THIS }
+		}
+		set_temp_variable = { bio_condemnation_contamination_value = 0 }
+		set_temp_variable = { bio_condemnation_context_type = constant:condemnation_context.biological_outbreak }
+		bio_register_condemnation_source = yes
 
 		set_temp_variable = { var = bio_war_support_penalty value = constant:bio_war_support_penalty.smallpox }
 		multiply_temp_variable = { var = bio_war_support_penalty value = bio_bw_condemnation_mult }
@@ -294,13 +331,15 @@ bio_operation_apply_weaponized_zombie_consequences = {
 			add_political_power = constant:weaponized_zombies.condemnation_pp_loss_negative
 			add_stability = constant:weaponized_zombies.condemnation_stability_loss_negative
 			add_war_support = constant:weaponized_zombies.condemnation_warsupport_loss_negative
-			if = {
-				limit = { NOT = { has_variable = chem_warfare_condemnation } }
-				set_variable = { chem_warfare_condemnation = 0 }
+			set_temp_variable = { bio_condemnation_base_gain = constant:weaponized_zombies.condemnation_score }
+			multiply_temp_variable = { bio_condemnation_base_gain = bio_bw_condemnation_mult }
+			set_temp_variable = { bio_condemnation_severity_type = constant:condemnation_severity.major }
+			event_target:bio_operation_victim = {
+				set_temp_variable = { bio_condemnation_victim_country = THIS }
 			}
-			set_temp_variable = { var = weaponized_zombie_condemnation_add value = constant:weaponized_zombies.condemnation_score }
-			multiply_temp_variable = { var = weaponized_zombie_condemnation_add value = bio_bw_condemnation_mult }
-			add_to_variable = { chem_warfare_condemnation = weaponized_zombie_condemnation_add }
+			set_temp_variable = { bio_condemnation_contamination_value = 0 }
+			set_temp_variable = { bio_condemnation_context_type = constant:condemnation_context.weaponized_zombies }
+			bio_register_condemnation_source = yes
 			if = {
 				limit = { NOT = { has_variable = bioweapon_uses } }
 				set_variable = { bioweapon_uses = 0 }
@@ -309,7 +348,6 @@ bio_operation_apply_weaponized_zombie_consequences = {
 			set_country_flag = used_bioweapon
 			set_country_flag = used_unconventional_weapon
 			air_cleanliness_treaty_on_unconventional_use = yes
-			refresh_chaos_meter_condemnation_view_if_open = yes
 			set_country_flag = used_weaponized_zombie_weapon
 			every_other_country = {
 				limit = {
@@ -716,6 +754,15 @@ apply_anthrax_bioweapon_consequences = {
 		set_temp_variable = { var = bio_bioweapon_use_add value = 1 }
 		multiply_temp_variable = { var = bio_bioweapon_use_add value = bio_bw_condemnation_mult }
         add_to_variable = { bioweapon_uses = bio_bioweapon_use_add }
+		set_temp_variable = { bio_condemnation_base_gain = constant:condemnation_source_default_gain.biological_tactical }
+		multiply_temp_variable = { bio_condemnation_base_gain = bio_bw_condemnation_mult }
+		set_temp_variable = { bio_condemnation_severity_type = constant:condemnation_severity.combat }
+		var:victim_country = {
+			set_temp_variable = { bio_condemnation_victim_country = THIS }
+		}
+		set_temp_variable = { bio_condemnation_contamination_value = 0 }
+		set_temp_variable = { bio_condemnation_context_type = constant:condemnation_context.biological_strike }
+		bio_register_condemnation_source = yes
 
         # War Support penalty using constant
 		set_temp_variable = { var = bio_war_support_penalty value = constant:bio_war_support_penalty.anthrax }
@@ -803,6 +850,15 @@ apply_plague_bioweapon_consequences = {
 		set_temp_variable = { var = bio_bioweapon_use_add value = 1 }
 		multiply_temp_variable = { var = bio_bioweapon_use_add value = bio_bw_condemnation_mult }
         add_to_variable = { bioweapon_uses = bio_bioweapon_use_add }
+		set_temp_variable = { bio_condemnation_base_gain = constant:condemnation_source_default_gain.biological_strategic }
+		multiply_temp_variable = { bio_condemnation_base_gain = bio_bw_condemnation_mult }
+		set_temp_variable = { bio_condemnation_severity_type = constant:condemnation_severity.major }
+		var:victim_country = {
+			set_temp_variable = { bio_condemnation_victim_country = THIS }
+		}
+		set_temp_variable = { bio_condemnation_contamination_value = 0 }
+		set_temp_variable = { bio_condemnation_context_type = constant:condemnation_context.biological_strike }
+		bio_register_condemnation_source = yes
 
         # War Support penalty using constant (higher for plague)
 		set_temp_variable = { var = bio_war_support_penalty value = constant:bio_war_support_penalty.plague }
@@ -2192,6 +2248,10 @@ bio_unleash_stockpile_doomsday = {
 	set_temp_variable = { var = bio_doom_stock_plague value = num_equipment@plague_bomb_1 }
 	set_temp_variable = { var = bio_doom_stock_tularemia value = num_equipment@tularemia_bomb_1 }
 	set_temp_variable = { var = bio_doom_stock_smallpox value = num_equipment@smallpox_bomb_1 }
+	set_temp_variable = { bio_doom_total_stockpile = bio_doom_stock_anthrax }
+	add_to_temp_variable = { bio_doom_total_stockpile = bio_doom_stock_plague }
+	add_to_temp_variable = { bio_doom_total_stockpile = bio_doom_stock_tularemia }
+	add_to_temp_variable = { bio_doom_total_stockpile = bio_doom_stock_smallpox }
 
 	set_temp_variable = { var = bio_doom_points_acute value = 0 }
 	set_temp_variable = { var = bio_doom_tmp value = bio_doom_stock_anthrax }
@@ -2253,6 +2313,21 @@ bio_unleash_stockpile_doomsday = {
 		divide_temp_variable = { var = bio_doom_intensity_smallpox value = constant:bio_doom_intensity_div.smallpox }
 	add_to_temp_variable = { var = bio_doom_intensity_smallpox value = 1 }
 		clamp_temp_variable = { var = bio_doom_intensity_smallpox min = 1 max = constant:bio_doom_intensity_max.smallpox }
+
+	if = {
+		limit = { check_variable = { bio_doom_total_stockpile > 0 } }
+		set_country_flag = used_bioweapon
+		set_temp_variable = { bio_condemnation_base_gain = constant:condemnation_source_default_gain.biological_doomsday }
+		set_temp_variable = { bio_condemnation_severity_type = constant:condemnation_severity.doomsday }
+		set_temp_variable = { bio_condemnation_victim_country = THIS }
+		set_temp_variable = { bio_condemnation_contamination_value = bio_doom_intensity_anthrax }
+		add_to_temp_variable = { bio_condemnation_contamination_value = bio_doom_intensity_plague }
+		add_to_temp_variable = { bio_condemnation_contamination_value = bio_doom_intensity_tularemia }
+		add_to_temp_variable = { bio_condemnation_contamination_value = bio_doom_intensity_smallpox }
+		set_temp_variable = { bio_condemnation_context_type = constant:condemnation_context.biological_doomsday }
+		bio_register_condemnation_source = yes
+		air_cleanliness_treaty_on_unconventional_use = yes
+	}
 
 	every_controlled_state = {
 		damage_units = {
@@ -2328,6 +2403,15 @@ apply_tularemia_bioweapon_consequences = {
 		set_temp_variable = { var = bio_bioweapon_use_add value = 1 }
 		multiply_temp_variable = { var = bio_bioweapon_use_add value = bio_bw_condemnation_mult }
         add_to_variable = { bioweapon_uses = bio_bioweapon_use_add }
+		set_temp_variable = { bio_condemnation_base_gain = constant:condemnation_source_default_gain.biological_tactical }
+		multiply_temp_variable = { bio_condemnation_base_gain = bio_bw_condemnation_mult }
+		set_temp_variable = { bio_condemnation_severity_type = constant:condemnation_severity.combat }
+		var:victim_country = {
+			set_temp_variable = { bio_condemnation_victim_country = THIS }
+		}
+		set_temp_variable = { bio_condemnation_contamination_value = 0 }
+		set_temp_variable = { bio_condemnation_context_type = constant:condemnation_context.biological_strike }
+		bio_register_condemnation_source = yes
 
         # War Support penalty using constant (lower for tularemia as it's tactical)
 		set_temp_variable = { var = bio_war_support_penalty value = constant:bio_war_support_penalty.tularemia }
@@ -2418,6 +2502,15 @@ apply_smallpox_bioweapon_consequences = {
 		set_temp_variable = { var = bio_bioweapon_use_add value = 1 }
 		multiply_temp_variable = { var = bio_bioweapon_use_add value = bio_bw_condemnation_mult }
         add_to_variable = { bioweapon_uses = bio_bioweapon_use_add }
+		set_temp_variable = { bio_condemnation_base_gain = constant:condemnation_source_default_gain.biological_strategic }
+		multiply_temp_variable = { bio_condemnation_base_gain = bio_bw_condemnation_mult }
+		set_temp_variable = { bio_condemnation_severity_type = constant:condemnation_severity.major }
+		var:victim_country = {
+			set_temp_variable = { bio_condemnation_victim_country = THIS }
+		}
+		set_temp_variable = { bio_condemnation_contamination_value = 0 }
+		set_temp_variable = { bio_condemnation_context_type = constant:condemnation_context.biological_strike }
+		bio_register_condemnation_source = yes
 
         # War Support penalty using constant (highest penalty for strategic weapon)
 		set_temp_variable = { var = bio_war_support_penalty value = constant:bio_war_support_penalty.smallpox }

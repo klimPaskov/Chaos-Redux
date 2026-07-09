@@ -1,0 +1,83 @@
+add_namespace = condemnation_sanctions
+
+# ============================================================================
+# CHAOS REDUX - CONDEMNATION SANCTIONS TARGETED EVENTS
+# ============================================================================
+# Self-scheduling maintenance for countries that have a public condemnation
+# record, an active sanction relationship, or an unresolved response path.
+# This avoids a global daily/weekly/monthly country iteration.
+# ============================================================================
+
+country_event = {
+	id = condemnation_sanctions.1
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		condemnation_monthly_pulse = yes
+	}
+}
+
+# Native embargo release dispatchers. These events deliberately make the
+# embargoing participant event ROOT before calling break_embargo.
+country_event = {
+	id = condemnation_sanctions.3
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		if = {
+			limit = { has_event_target = condemnation_native_release_target }
+			set_temp_variable = { condemnation_embargo_target = event_target:condemnation_native_release_target }
+			set_temp_variable = { condemnation_embargo_source = constant:condemnation_embargo_source.condemnation }
+			condemnation_unregister_native_embargo_source = yes
+		}
+	}
+}
+
+country_event = {
+	id = condemnation_sanctions.4
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		if = {
+			limit = { has_event_target = condemnation_native_release_target }
+			set_temp_variable = { condemnation_embargo_target = event_target:condemnation_native_release_target }
+			set_temp_variable = { condemnation_embargo_source = constant:condemnation_embargo_source.air_cleanliness_treaty }
+			condemnation_unregister_native_embargo_source = yes
+		}
+	}
+}
+
+country_event = {
+	id = condemnation_sanctions.5
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		if = {
+			limit = { has_event_target = condemnation_native_release_target }
+			set_temp_variable = { condemnation_embargo_target = event_target:condemnation_native_release_target }
+			set_temp_variable = { condemnation_embargo_source = constant:condemnation_embargo_source.great_embargo_event }
+			condemnation_unregister_native_embargo_source = yes
+		}
+	}
+}
+
+country_event = {
+	id = condemnation_sanctions.2
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				NOT = { has_country_flag = condemnation_pledge_broken }
+				NOT = { has_country_flag = condemnation_recent_use }
+			}
+			set_temp_variable = { condemnation_verified_days = constant:condemnation_duration_days.verified_non_use }
+			set_country_flag = { flag = condemnation_verified_non_use days = condemnation_verified_days }
+			add_to_variable = { condemnation_decay_credit = constant:condemnation_compliance_credit.verified_non_use }
+			clamp_variable = { var = condemnation_decay_credit min = 0 max = constant:condemnation_compliance_credit.maximum }
+			condemnation_start_targeted_pulse = yes
+		}
+	}
+}

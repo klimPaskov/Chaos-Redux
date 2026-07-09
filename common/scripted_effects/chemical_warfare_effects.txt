@@ -4,7 +4,7 @@
 # -------------------------------
 # Behavior:
 # - Computes a condemnation increment based on supplied potency and consumption inputs.
-# - Adds the result to OWNER.chem_warfare_condemnation (creates it if missing).
+# - Sends the result through the canonical chemical condemnation source helper.
 #
 # Inputs (set by caller before invoking):
 # - chem_condemnation_base (temp variable): flat condemnation per use (default 0 if missing).
@@ -17,7 +17,7 @@
 #     - chem_ratio_loc (temp variable, 0–1): fallback scale if chem_attack_scale is not set.
 #
 # Output:
-# - OWNER.chem_warfare_condemnation (country variable) increases by:
+# - OWNER gains chemical condemnation equal to:
 #     chem_condemnation_base + (consumed_or_scaled_requirement * chem_condemnation_per_unit)
 #
 # Scope requirement:
@@ -379,15 +379,31 @@ chem_warfare_register_attack_use = {
     if = {
         limit = { check_variable = { var = chem_condemnation_add value = 0 compare = greater_than } }
         OWNER = {
+            set_temp_variable = { condemnation_source_type = constant:condemnation_source.chemical }
+            set_temp_variable = { condemnation_base_gain = chem_condemnation_add }
+            set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+            set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.combat }
+            set_temp_variable = { condemnation_civilian_deaths = 0 }
             if = {
-                limit = { NOT = { has_variable = chem_warfare_condemnation } }
-                set_variable = { chem_warfare_condemnation = 0 }
+                limit = { has_variable = chem_condemnation_civilian_deaths }
+                set_temp_variable = { condemnation_civilian_deaths = chem_condemnation_civilian_deaths }
             }
-            add_to_variable = { chem_warfare_condemnation = chem_condemnation_add }
-            set_country_flag = used_unconventional_weapon
-            chem_apply_condemnation_diplomatic_consequences = yes
+            set_temp_variable = { condemnation_contamination_value = 0 }
+            if = {
+                limit = { has_variable = chem_condemnation_contamination_value }
+                set_temp_variable = { condemnation_contamination_value = chem_condemnation_contamination_value }
+            }
+			if = {
+				limit = { var:chem_condemnation_victim_country = { exists = yes } }
+				set_temp_variable = { condemnation_victim_country = chem_condemnation_victim_country }
+			}
+            set_temp_variable = { condemnation_context_type = constant:condemnation_context.chemical_combat }
+            if = {
+                limit = { has_variable = chem_condemnation_context_type }
+                set_temp_variable = { condemnation_context_type = chem_condemnation_context_type }
+            }
+            condemnation_add_source = yes
             air_cleanliness_treaty_on_unconventional_use = yes
-            refresh_chaos_meter_condemnation_view_if_open = yes
         }
     }
 }
@@ -406,66 +422,6 @@ chem_register_livens_support_combat_condemnation_lost = {
     set_temp_variable = { var = chem_consumed_amount value = 0 }
     set_temp_variable = { var = chem_required_amount value = 0 }
     chem_warfare_register_attack_use = yes
-}
-
-chem_apply_condemnation_diplomatic_consequences = {
-    if = {
-        limit = {
-            check_variable = { var = chem_warfare_condemnation value = constant:chem_condemnation_diplomacy.threshold.low compare = greater_than }
-            NOT = { has_country_flag = chem_condemnation_diplomacy_low_applied }
-        }
-        set_country_flag = chem_condemnation_diplomacy_low_applied
-        every_other_country = {
-            limit = {
-                exists = yes
-                has_government = democratic
-                NOT = { is_subject_of = PREV }
-            }
-            add_opinion_modifier = {
-                target = PREV
-                modifier = chemical_warfare_condemnation_low
-            }
-        }
-    }
-
-    if = {
-        limit = {
-            check_variable = { var = chem_warfare_condemnation value = constant:chem_condemnation_diplomacy.threshold.med compare = greater_than }
-            NOT = { has_country_flag = chem_condemnation_diplomacy_med_applied }
-        }
-        set_country_flag = chem_condemnation_diplomacy_med_applied
-        every_other_country = {
-            limit = {
-                exists = yes
-                has_government = democratic
-                NOT = { is_subject_of = PREV }
-            }
-            add_opinion_modifier = {
-                target = PREV
-                modifier = chemical_warfare_condemnation_med
-            }
-        }
-    }
-
-    if = {
-        limit = {
-            check_variable = { var = chem_warfare_condemnation value = constant:chem_condemnation_diplomacy.threshold.high compare = greater_than }
-            NOT = { has_country_flag = chem_condemnation_diplomacy_high_applied }
-        }
-        set_country_flag = chem_condemnation_diplomacy_high_applied
-        every_other_country = {
-            limit = {
-                exists = yes
-                has_government = democratic
-                NOT = { is_subject_of = PREV }
-            }
-            add_opinion_modifier = {
-                target = PREV
-                modifier = chemical_warfare_condemnation_high
-            }
-            send_embargo = PREV
-        }
-    }
 }
 
 chem_warfare_register_attack_use_no_livens = {
@@ -510,31 +466,61 @@ chem_warfare_register_attack_use_no_livens = {
 
     if = {
         limit = { check_variable = { var = chem_condemnation_add value = 0 compare = greater_than } }
+        set_temp_variable = { condemnation_source_type = constant:condemnation_source.chemical }
+        set_temp_variable = { condemnation_base_gain = chem_condemnation_add }
+        set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+        set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.combat }
+        set_temp_variable = { condemnation_civilian_deaths = 0 }
         if = {
-            limit = { NOT = { has_variable = chem_warfare_condemnation } }
-            set_variable = { chem_warfare_condemnation = 0 }
+            limit = { has_variable = chem_condemnation_civilian_deaths }
+            set_temp_variable = { condemnation_civilian_deaths = chem_condemnation_civilian_deaths }
         }
-        add_to_variable = { chem_warfare_condemnation = chem_condemnation_add }
-        set_country_flag = used_unconventional_weapon
-        chem_apply_condemnation_diplomatic_consequences = yes
+        set_temp_variable = { condemnation_contamination_value = 0 }
+        if = {
+            limit = { has_variable = chem_condemnation_contamination_value }
+            set_temp_variable = { condemnation_contamination_value = chem_condemnation_contamination_value }
+        }
+		if = {
+			limit = { var:chem_condemnation_victim_country = { exists = yes } }
+			set_temp_variable = { condemnation_victim_country = chem_condemnation_victim_country }
+		}
+        set_temp_variable = { condemnation_context_type = constant:condemnation_context.chemical_combat }
+        if = {
+            limit = { check_variable = { chem_air_bomb_active_regions > 0 } }
+            set_temp_variable = { condemnation_context_type = constant:condemnation_context.chemical_air_strike }
+        }
+        else_if = {
+            limit = { has_variable = chem_condemnation_context_type }
+            set_temp_variable = { condemnation_context_type = chem_condemnation_context_type }
+        }
+        condemnation_add_source = yes
         air_cleanliness_treaty_on_unconventional_use = yes
-        refresh_chaos_meter_condemnation_view_if_open = yes
     }
 }
 
 chem_register_nerve_raid_condemnation_sarin = {
+	if = {
+		limit = { var:victim_country = { exists = yes } }
+		var:victim_country = { set_temp_variable = { chem_condemnation_victim_country = THIS } }
+	}
     set_temp_variable = { var = chem_condemnation_base value = constant:chem_nerve_raid.condemnation_base.sarin }
     set_temp_variable = { var = chem_condemnation_per_unit value = constant:chem_nerve_raid.condemnation_per_unit.sarin }
     set_temp_variable = { var = chem_consumed_amount value = constant:chem_nerve_raid.consumed.sarin }
     set_temp_variable = { var = chem_required_amount value = 0 }
+    set_temp_variable = { chem_condemnation_context_type = constant:condemnation_context.chemical_air_strike }
     chem_warfare_register_attack_use_no_livens = yes
 }
 
 chem_register_nerve_raid_condemnation_soman = {
+	if = {
+		limit = { var:victim_country = { exists = yes } }
+		var:victim_country = { set_temp_variable = { chem_condemnation_victim_country = THIS } }
+	}
     set_temp_variable = { var = chem_condemnation_base value = constant:chem_nerve_raid.condemnation_base.soman }
     set_temp_variable = { var = chem_condemnation_per_unit value = constant:chem_nerve_raid.condemnation_per_unit.soman }
     set_temp_variable = { var = chem_consumed_amount value = constant:chem_nerve_raid.consumed.soman }
     set_temp_variable = { var = chem_required_amount value = 0 }
+    set_temp_variable = { chem_condemnation_context_type = constant:condemnation_context.chemical_air_strike }
     chem_warfare_register_attack_use_no_livens = yes
 }
 

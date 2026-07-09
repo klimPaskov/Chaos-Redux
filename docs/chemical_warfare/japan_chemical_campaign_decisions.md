@@ -20,19 +20,19 @@ The decisions are state-targeted and only appear for Japan while it is at war wi
 2. Japan can rotate the prepared chemical agent for free inside the category.
 3. The attack decision spends command power and consumes the selected cylinder type.
 4. The selected state receives contamination through `chem_apply_state_contamination`.
-5. Condemnation is applied through `chem_warfare_register_attack_use_no_livens`, so diplomacy/condemnation systems update immediately.
+5. The operation calls the shared chemical-use helper with reduced Japan-campaign tuning, the target owner, and measured contamination, then notifies the Air Cleanliness Treaty use hook.
 6. The targeted state gets a short anti-spam cooldown flag (`japan_chemical_campaign_recently_targeted`).
 
 ## Integration With Existing Systems
 
-- **Condemnation:** Uses the existing chemical condemnation pipeline and treaty reactions.
+- **Condemnation:** The state-targeted China campaign decision applies reduced source-aware chemical condemnation and treaty-use reactions. Japan's separate general-led cylinder use against Chinese targets also uses reduced chemical condemnation.
 - **Air Cleanliness / Contamination:** Adds to state contamination using existing chemical state modifier logic.
 - **Deaths / Chaos:** Uses existing contamination/death systems through shared effects.
 - **AI:** Japan gets extra AI weighting for Livens and chemical support usage during the China war.
 
 ## AI Changes
 
-- Major-country cylinder production now requires enemy chemical weapon use, except Japan.
+- Major-country cylinder production requires enemy chemical weapon use, except Japan.
 - Japan starts with `livens_projector_tech` in 1936 setup.
 - Japan gets increased Livens and chemical support template/production pressure while fighting China.
 
@@ -50,4 +50,3 @@ If custom art is added later, place sprite definitions in a dedicated decision `
 
 - Add decision outcome events/news flavor for major operations.
 - Add front-distance scaling so decisions prioritize active Japanese offensives.
-- Add escalation interactions with the air cleanliness treaty and condemnation diplomacy.

@@ -1,0 +1,110 @@
+# ============================================================================
+# CHAOS REDUX - CONDEMNATION SANCTIONS TARGETED ON ACTIONS
+# ============================================================================
+# Lifecycle and breach hooks only. No broad daily, weekly, or monthly scan is
+# introduced; active targets maintain themselves through scheduled events.
+# ============================================================================
+
+on_actions = {
+	on_war_relation_added = {
+		effect = {
+			if = { limit = { condemnation_pulse_required = yes } condemnation_recalculate_participants = yes }
+			FROM = { if = { limit = { condemnation_pulse_required = yes } condemnation_recalculate_participants = yes } }
+		}
+	}
+
+	on_puppet = {
+		effect = {
+			if = { limit = { condemnation_pulse_required = yes } condemnation_recalculate_participants = yes }
+			FROM = { if = { limit = { condemnation_pulse_required = yes } condemnation_recalculate_participants = yes } }
+		}
+	}
+
+	on_join_faction = {
+		effect = {
+			if = { limit = { condemnation_pulse_required = yes } condemnation_recalculate_participants = yes }
+			FROM = { if = { limit = { condemnation_pulse_required = yes } condemnation_recalculate_participants = yes } }
+		}
+	}
+
+	on_annex = {
+		effect = {
+			FROM = {
+				set_temp_variable = { condemnation_annexed_target_id = id }
+				set_temp_variable = { condemnation_annexed_target = THIS }
+				for_each_scope_loop = {
+					array = condemnation_likely_participants
+					limit = { exists = yes }
+					set_temp_variable = { condemnation_watch_tier = constant:condemnation_tier.formal_censure }
+					meta_effect = {
+						text = {
+							if = {
+								limit = { has_variable = condemnation_pair_[TARGET_ID]_watch_tier }
+								set_temp_variable = { condemnation_watch_tier = condemnation_pair_[TARGET_ID]_watch_tier }
+							}
+							clear_variable = condemnation_pair_[TARGET_ID]_watch_tier
+						}
+						TARGET_ID = "[?condemnation_annexed_target_id|.0]"
+					}
+					if = {
+						limit = {
+							is_ai = yes
+							check_variable = { var = condemnation_watch_tier value = constant:condemnation_tier.concern compare = equals }
+						}
+						add_ai_strategy = { type = send_lend_lease_desire id = var:condemnation_annexed_target value = constant:condemnation_ai_strategy.concern_lend_lease_restore }
+						add_ai_strategy = { type = send_volunteers_desire id = var:condemnation_annexed_target value = constant:condemnation_ai_strategy.concern_volunteers_restore }
+						add_ai_strategy = { type = diplo_action_acceptance id = var:condemnation_annexed_target target = military_access value = constant:condemnation_ai_strategy.concern_military_access_restore }
+					}
+					else_if = {
+						limit = { is_ai = yes }
+						add_ai_strategy = { type = send_lend_lease_desire id = var:condemnation_annexed_target value = constant:condemnation_ai_strategy.censure_lend_lease_restore }
+						add_ai_strategy = { type = send_volunteers_desire id = var:condemnation_annexed_target value = constant:condemnation_ai_strategy.censure_volunteers_restore }
+						add_ai_strategy = { type = diplo_action_acceptance id = var:condemnation_annexed_target target = military_access value = constant:condemnation_ai_strategy.censure_military_access_restore }
+					}
+					remove_opinion_modifier = { target = var:condemnation_annexed_target modifier = condemnation_monitoring_target }
+				}
+				clear_array = condemnation_likely_participants
+				remove_from_array = { array = global.condemnation_targets value = THIS }
+			}
+			condemnation_cleanup_annexed_target_records = yes
+		}
+	}
+
+	on_lend_lease = {
+		effect = {
+			FROM = {
+				if = {
+					limit = { is_in_array = { array = condemnation_sanction_participants value = ROOT } }
+					set_temp_variable = { condemnation_pair_participant = ROOT }
+					condemnation_register_observed_breach = yes
+				}
+			}
+		}
+	}
+
+	on_send_attache = {
+		effect = {
+			FROM = {
+				if = {
+					limit = { is_in_array = { array = condemnation_arms_embargo_participants value = ROOT } }
+					set_temp_variable = { condemnation_pair_participant = ROOT }
+					condemnation_register_observed_breach = yes
+					ROOT = { recall_attache = PREV }
+				}
+			}
+		}
+	}
+
+	on_send_volunteers = {
+		effect = {
+			FROM = {
+				if = {
+					limit = { is_in_array = { array = condemnation_arms_embargo_participants value = ROOT } }
+					set_temp_variable = { condemnation_pair_participant = ROOT }
+					condemnation_register_observed_breach = yes
+					ROOT = { recall_volunteers_from = PREV }
+				}
+			}
+		}
+	}
+}

@@ -31,9 +31,11 @@ country_event = {
             limit = { OR = { is_major = yes is_ai = no } }
             country_event = { id = chaosx.nr50.2 }
             news_event = { id = chaosx.news.52 days = 2 }
-            every_other_country = {
-                send_embargo = PREV
-            }
+			every_other_country = {
+				set_temp_variable = { condemnation_embargo_target = PREV }
+				set_temp_variable = { condemnation_embargo_source = constant:condemnation_embargo_source.great_embargo_event }
+				condemnation_register_native_embargo_source = yes
+			}
         }
     }
 }

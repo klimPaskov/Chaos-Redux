@@ -369,36 +369,34 @@ genocide_country_has_discovered_sites = {
 	check_variable = { genocide_discovered_sites > 0 }
 }
 
-genocide_country_condemnation_25 = {
+genocide_country_meets_condemnation_threshold = {
+	set_temp_variable = { genocide_public_condemnation_check = condemnation_atrocity }
+	add_to_temp_variable = { genocide_public_condemnation_check = condemnation_coverup }
 	check_variable = {
-		var = chem_warfare_condemnation
-		value = constant:genocide_condemnation.newspaper_threshold
+		var = genocide_public_condemnation_check
+		value = genocide_condemnation_threshold_check
 		compare = greater_than_or_equals
 	}
+}
+
+genocide_country_condemnation_25 = {
+	set_temp_variable = { genocide_condemnation_threshold_check = constant:genocide_condemnation.newspaper_threshold }
+	genocide_country_meets_condemnation_threshold = yes
 }
 
 genocide_country_condemnation_50 = {
-	check_variable = {
-		var = chem_warfare_condemnation
-		value = constant:genocide_condemnation.refugee_threshold
-		compare = greater_than_or_equals
-	}
+	set_temp_variable = { genocide_condemnation_threshold_check = constant:genocide_condemnation.refugee_threshold }
+	genocide_country_meets_condemnation_threshold = yes
 }
 
 genocide_country_condemnation_75 = {
-	check_variable = {
-		var = chem_warfare_condemnation
-		value = constant:genocide_condemnation.sanctions_threshold
-		compare = greater_than_or_equals
-	}
+	set_temp_variable = { genocide_condemnation_threshold_check = constant:genocide_condemnation.sanctions_threshold }
+	genocide_country_meets_condemnation_threshold = yes
 }
 
 genocide_country_condemnation_100 = {
-	check_variable = {
-		var = chem_warfare_condemnation
-		value = constant:genocide_condemnation.tribunal_threshold
-		compare = greater_than_or_equals
-	}
+	set_temp_variable = { genocide_condemnation_threshold_check = constant:genocide_condemnation.tribunal_threshold }
+	genocide_country_meets_condemnation_threshold = yes
 }
 
 genocide_state_is_german_occupied_poland_target = {
