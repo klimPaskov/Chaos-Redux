@@ -418,8 +418,6 @@ Every super-event implementation must include complete audio wiring. Do not leav
 
 Every super-event must have its own unique final track, unique audio id, and unique sound wrapper unless the user explicitly approves a specific reuse before implementation. Do not reuse another super-event's track just because the moments are related.
 
-Final super-event audio should be stored as one game-ready `.ogg` file. Use that same `.ogg` as the source for both music-output and sound-output wrappers whenever super-event sound playback is needed. Do not create a duplicate `.wav` copy of the same super-event track by default. Preserve `.ogg`, not `.wav`, for the final in-game super-event track.
-
 The final audio should be actual music by default: a musical recording, chant, hymn, orchestral excerpt, song, march, or other track with musical structure. Do not use pure sound effects, drones, pulses, room tone, one-shot stingers, abstract ambience, or texture beds for a super-event unless the user explicitly asks for non-musical audio and the exception is documented.
 
 Never create or accept a super-event track from generated test tones, primitive waveforms, signal-generator output, metronome clicks, generated beeps, simple oscillator layers, noise beds, or quick local synthesis. This includes sine, square, triangle, sawtooth, and similar waveforms, even when mixed with noise or effects. If no real licensed track is available, stop and report the blocker instead of manufacturing a cue.
@@ -433,7 +431,7 @@ The final music should be chosen intentionally.
 Before looking outside the repository, check whether an approved suitable track already exists in the repo. Inspect:
 
 - existing `music/*.ogg`
-- existing super-event sound definitions in `sound/*.asset`, including whether they point at the shared `.ogg` or still point at an obsolete duplicate `.wav`
+- existing `sound/*.wav`
 - `music/chaosx_super_event_music.asset`
 - `music/chaosx_super_event_music.txt`
 - `sound/chaosx_sound.asset`
@@ -505,7 +503,7 @@ For every super-event audio package:
 6. Place the final `.ogg` in the correct event-scoped music folder: `music/<event_id>_<event_slug>/super_event_<super_event_id>_<super_event_name>.ogg`. Shared defaults or non-event music may remain in `music/` only when they are intentionally shared and documented.
 7. Add or update `music/chaosx_super_event_music.asset` definitions for every dynamic volume variant that the current audio helper can call.
 8. Add or update `music/chaosx_super_event_music.txt` so the station includes a representative entry for every final super-event track.
-9. Add or update `sound/chaosx_sound.asset` sound and soundeffect definitions for sound-channel playback. The sound definition should reference the same final `.ogg` track instead of requiring a duplicate `.wav`; if the first live-tested package proves a cross-folder `.ogg` path unusable, stop and report the blocker instead of silently reintroducing WAV duplicates.
+9. Add or update `sound/chaosx_sound.asset` sound and soundeffect definitions for sound-channel playback. If a sound-channel WAV is used for the same super-event, mirror the folder and filename structure under `sound/<event_id>_<event_slug>/super_event_<super_event_id>_<super_event_name>.wav`.
 10. Wire the super-event to the correct audio id through `global.current_super_event_audio_id` and the settings-aware playback helper.
 11. Update the relevant event/system documentation and `music/chaosx_music_track_list.html`. every super-event track must have a row in the HTML music table, and that row must list the super-event id using the track. If a user-approved reuse exists, document every id in the row and explain the approval in the audio docs.
 12. Verify the final file paths, definitions, ids, and docs before calling the super-event complete.
@@ -574,7 +572,7 @@ For each super-event audio package, document:
 - attribution text if required
 - downloaded source path
 - final `.ogg` path
-- final sound-wrapper path, which should normally be the same `.ogg` path used by the music definition
+- final sound-channel `.wav` path, when used
 - sound definition id
 - super-event id or key using the track
 - `music/chaosx_music_track_list.html` row with the final track and super-event ID or IDs
@@ -594,12 +592,11 @@ Before finishing any super-event task, confirm:
 - the selected track is between 1 and 2 minutes long, or the exception is documented
 - the music definitions point to the correct `.ogg`
 - `music/chaosx_super_event_music.txt` includes the final super-event track or a representative helper song id for that track
-- the sound definitions point to the correct shared `.ogg` file or intended sound wrapper
+- the sound definitions point to the correct file or intended sound wrapper
 - the super-event points to the correct audio id
 - `music/chaosx_music_track_list.html` documents every super-event track and shows the super-event ID or IDs using it
 - documentation records the source, license, and duration
 - documentation records the downloaded source path, final `.ogg` path, sound definition id, and super-event use
-- no duplicate sound-channel `.wav` exists for the same completed super-event track unless the user explicitly approved the exception after a documented compatibility blocker
 - no generated test-tone, oscillator, beep, primitive waveform, or noise-bed music remains in any completed super-event track
 - every completed super-event has a unique final track unless exact reuse was explicitly approved by the user and documented
 - no placeholder, default, mismatched, or wrong-format audio remains for completed super-events
@@ -740,7 +737,6 @@ The note should include:
 - attribution text if required
 - downloaded source path
 - final `.ogg` path
-- sound wrapper path, normally the same `.ogg` path
 - sound definition id
 - super-event id or key using the track
 - editing or conversion steps
