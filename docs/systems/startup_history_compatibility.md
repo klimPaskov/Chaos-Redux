@@ -20,7 +20,7 @@ Use startup grants for additive existing-country setup:
 - technology-linked tactic unlocks or startup sync effects required by those technologies
 - starting equipment stockpiles
 - starting chemical or biowarfare facilities
-- generated Chaos Redux scientists, using `generate_character` or `generate_scientist_character`
+- generated Chaos Redux scientists. For named scientists, create the named character with `generate_character`, then attach the scientist role with `add_scientist_role`. Use `generate_scientist_character` only when a generic/random generated scientist is intended.
 - additive character traits
 - startup-only variables and event targets
 - delayed country events that previously lived in country history
