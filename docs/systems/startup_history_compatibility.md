@@ -20,7 +20,7 @@ Use startup grants for additive existing-country setup:
 - technology-linked tactic unlocks or startup sync effects required by those technologies
 - starting equipment stockpiles
 - starting chemical or biowarfare facilities
-- generated Chaos Redux scientists. For named scientists, create the named character with `generate_character`, then attach the scientist role with `add_scientist_role`. Use `generate_scientist_character` only when a generic/random generated scientist is intended.
+- generated Chaos Redux scientists. For named country-specific scientists, call `generate_scientist_character` from the country startup grant with explicit portrait, gender, skills, and traits when any, then immediately select the newly generated scientist with `random_scientist`, apply `set_character_name`, restore the intended portrait if needed, and set a persistent identity flag for later scripted references.
 - additive character traits
 - startup-only variables and event targets
 - delayed country events that previously lived in country history
@@ -37,6 +37,8 @@ History files remain valid for:
 - `recruit_character` setup for custom tags or unavoidable history-only setup
 - country setup that must happen before any startup effect can safely run
 - unavoidable direct edits inside vanilla history definitions that cannot be recreated additively
+
+Do not use `history/general` for country-specific Chaos Redux scientists. That folder is for generic character pools, not specific named characters assigned to specific countries.
 
 Current intentional vanilla-history exceptions:
 

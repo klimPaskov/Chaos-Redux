@@ -733,7 +733,7 @@ Existing countries with their own meaningful tree should usually receive additiv
 For every event-created country, verify:
 
 - tag
-- history setup for new custom tags only; use `common/scripted_effects/chaosx_startup_history_effects.txt` and `on_startup` for additive existing-country technologies, equipment, facilities, generated scientists, and traits. Do not use `recruit_character` in scripted effects or on_actions; for named existing-country startup scientists, create the named character with `generate_character`, then attach its scientist role with `add_scientist_role`. Use `generate_scientist_character` only for intentionally generic/random scientists.
+- history setup for new custom tags only; use `common/scripted_effects/chaosx_startup_history_effects.txt` and `on_startup` for additive existing-country technologies, equipment, facilities, generated scientists, and traits. Do not use `recruit_character` in scripted effects or on_actions. Do not use `history/general` for country-specific Chaos Redux scientists; it is for generic character pools. For named existing-country startup scientists, call `generate_scientist_character` from the country startup grant with explicit portrait, gender, skills, and traits when any, mark/select the newly generated scientist with the startup helper flags, apply `set_character_name` and the intended portrait if needed, and set a persistent identity flag for later scripted references.
 - localisation
 - flags
 - leader or council

@@ -9,6 +9,8 @@ Before adding new dynamic logic, check this file and reuse an existing effect if
 ## Table of contents
 
 - [chaosx_apply_startup_history_grants](#chaosx_apply_startup_history_grants)
+- [chaosx_startup_mark_existing_scientists](#chaosx_startup_mark_existing_scientists)
+- [chaosx_startup_clear_generated_scientist_helper_flags](#chaosx_startup_clear_generated_scientist_helper_flags)
 - [modify_value_based_on_chaos_tier](#modify_value_based_on_chaos_tier)
 - [calculate_economy_scaled_factory_grant](#calculate_economy_scaled_factory_grant)
 - [damage_buildings_in_random_states](#damage_buildings_in_random_states)
@@ -40,7 +42,7 @@ Outputs and side effects:
 - Reads stockpile amounts, facility level, breakthrough values, and delayed-event timing from `common/script_constants/startup_history_constants.txt`.
 - Adds facilities only when the expected starting owner still owns the state and the state lacks that facility type.
 
-Do not use this effect for new custom country packages that require real history files before startup. Do not put `recruit_character` here; the engine only accepts it in history files. Named existing-country startup scientists should be created with `generate_character`, then given their scientist role with `add_scientist_role` in the relevant startup grant effect. Use `generate_scientist_character` only for intentionally generic/random scientists.
+Do not use this effect for new custom country packages that require real history files before startup. Do not put `recruit_character` here; the engine only accepts it in history files. Do not move country-specific Chaos Redux scientists into `history/general`; that folder is for generic character pools, not specific country assignments. Named existing-country startup scientists should be created with `generate_scientist_character` in the relevant country grant with explicit portrait, gender, skills, and traits when any, then immediately selected with `random_scientist`, named with `set_character_name`, assigned the intended portrait if needed, and marked with a persistent identity flag for later scripted references.
 
 Example:
 
@@ -51,6 +53,84 @@ on_startup = {
 			chaosx_apply_startup_history_grants = yes
 		}
 	}
+}
+```
+
+## chaosx_startup_mark_existing_scientists
+
+This startup helper lives in `common/scripted_effects/chaosx_startup_history_effects.txt`. It marks all scientists already present in the current country before a country startup grant generates named Chaos Redux scientists.
+
+Scope: Country scope.
+
+Inputs: none.
+
+Outputs and side effects:
+
+- Sets `chaosx_startup_scientist_preexisting` on every current-country scientist.
+- Allows later `random_scientist` blocks to target only newly generated startup scientists.
+
+Example:
+
+```txt
+ENG = {
+	chaosx_startup_mark_existing_scientists = yes
+	generate_scientist_character = {
+		portrait = GFX_portrait_ENG_paul_fildes
+		gender = male
+		traits = { scientist_trait_bright }
+		skills = {
+			specialization_biowarfare = 2
+		}
+	}
+	random_scientist = {
+		limit = {
+			NOT = { has_character_flag = chaosx_startup_scientist_preexisting }
+			NOT = { has_character_flag = chaosx_startup_scientist_named }
+		}
+		set_character_name = ENG_paul_fildes
+		set_character_flag = chaosx_startup_scientist_named
+		set_character_flag = chaosx_scientist_eng_paul_fildes
+	}
+	chaosx_startup_clear_generated_scientist_helper_flags = yes
+}
+```
+
+## chaosx_startup_clear_generated_scientist_helper_flags
+
+This startup helper lives in `common/scripted_effects/chaosx_startup_history_effects.txt`. It removes temporary startup-selection flags after a country grant finishes naming its generated scientists.
+
+Scope: Country scope.
+
+Inputs: none.
+
+Outputs and side effects:
+
+- Clears `chaosx_startup_scientist_preexisting` and `chaosx_startup_scientist_named` from every current-country scientist.
+- Leaves persistent identity flags such as `chaosx_scientist_pol_franciszek_witaszek` intact.
+
+Example:
+
+```txt
+POL = {
+	chaosx_startup_mark_existing_scientists = yes
+	generate_scientist_character = {
+		portrait = GFX_portrait_POL_franciszek_witaszek
+		gender = male
+		traits = { scientist_trait_resourceful }
+		skills = {
+			specialization_biowarfare = 2
+		}
+	}
+	random_scientist = {
+		limit = {
+			NOT = { has_character_flag = chaosx_startup_scientist_preexisting }
+			NOT = { has_character_flag = chaosx_startup_scientist_named }
+		}
+		set_character_name = POL_franciszek_witaszek
+		set_character_flag = chaosx_startup_scientist_named
+		set_character_flag = chaosx_scientist_pol_franciszek_witaszek
+	}
+	chaosx_startup_clear_generated_scientist_helper_flags = yes
 }
 ```
 ## evaluate_random_event_active_pool_candidate
