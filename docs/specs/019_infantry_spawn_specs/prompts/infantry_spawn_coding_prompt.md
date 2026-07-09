@@ -1,0 +1,21 @@
+# Infantry Spawn coding-agent implementation prompt
+
+Implement Event 019 Infantry Spawn according to the full spec pack in `docs/specs/019_infantry_spawn_specs/`. Read every spec, matrix, and prompt file first. Follow `AGENTS.md`, `chaos-redux-events`, `chaos-redux-event-assets`, `chaos-redux-frame-animation`, `hoi4-decisions-missions`, `hoi4-focus-trees`, `chaos-redux-super-events` if any super-event is accepted, `chaos-redux-improvement-loop`, and `chaos-redux-subagents`.
+
+Implement the event as a Minor Repeatable rework. Baseline should spawn weak or basic divisions across almost every eligible controlled state, with diminishing per-state density for large countries and no hard country cap. Countries with more territory should still gain more total units. Use dynamic state eligibility, country size, war state, supply, stability, prior fatigue, and chaos factors.
+
+Implement all four evolutions. Evolution I improves organization and equipment. Evolution II adds more serious unit families, multiple divisions in some states, armor, mechanized, armored cars, helicopters when valid, stronger wartime rolls, temporary supply strain, command confusion, and the management decision category. Evolution III stops clean default spawns and moves unit creation into crisis decisions, random battalion and support company construction, possessed generals, demand chains, revolt logic, and possible human breakaway countries. Evolution IV adds chaos units through a documented registry. Zombies are trainable only as the base zombie unit. Ghosts and golems are spawn-only. Future chaos units must be added through the registry.
+
+Implement management values: muster_fatigue, roster_backlog, depot_disorder, command_confusion, formation_absurdity, officer_appetite, and chaos_leakage. Make key values visible in the decision category, GUI, ideas, or tooltips. Decisions and missions must change these values with dynamic costs and real tradeoffs.
+
+Implement possessed generals with generated fictional portrait assets, matching name pools, traits, demand chains, concessions, refusal outcomes, and revolt logic. Revolts should use real spawned units and territory when possible. Human breakaway countries need tag pool, origin flags, leaders, flags, starting units, ideas, AI, reinforcement routes, and a shared crisis focus tree or equivalent play layer.
+
+Implement Evolution IV chaos splinters as lesser separate countries. Ragged horde must not use advanced zombie variants or parent Zombie Outbreak mechanics. Grey host must not use Death country, Black Ledger, or instant population erasure. Stone host must not call any future parent golem event chain. All splinters need separate identities, flags, leaders, ideas, starting forces, AI, and weaker mechanics.
+
+Implement the triggerable scenario with type and intensity controls. It should directly create instant crisis conditions and clear launch bypass flags after setup. Do not gate it behind normal chaos, date, prior event, or evolution prerequisites except for impossible or terminal campaign conflicts.
+
+Create final player-facing localisation from spec direction only. Do not paste working labels. Treat unresearched super-event title, button text, quote, cultural remark, slogan, allusion, or audio as blocked until the super-event workflow researches and documents it.
+
+Create or wire all required assets. Use generated fictional assets for possessed generals, icons, flags, fictional event images, and animated UI. Use proper source rules if any real or historical asset is added. Every animated asset requires real source frames, sheet DDS, static fallback, preview GIF, manifest, and GFX handoff.
+
+Update event logs, Event Details, evolution details, docs, scenario docs, achievements, AI, and the event catalog spreadsheet. Before claiming completion, run the relevant subagents in the implementation environment: scripted system architect for helpers, decision auditor, focus auditor if a tree is added, country package auditor, localisation auditor, spreadsheet worker, improvement loop planner, and completion auditor. Resolve all accepted addenda or findings. Do not use fallbacks or simplifications without explicit approval, and do not claim completion until the implementation satisfies the full spec.
