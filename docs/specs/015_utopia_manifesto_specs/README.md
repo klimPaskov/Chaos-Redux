@@ -1,33 +1,39 @@
-# Event 015 Utopia Manifesto planning package
+# Event 15 Utopia Manifesto Planning Package
 
-This package contains the source specification and implementation handoff for Event 015 `utopia_manifesto`.
+This package is the source design handoff for Chaos Redux Event 15, `utopia_manifesto`.
 
-The event replaces the old World Tension Subsides Event 15. It targets eligible minors and player minors, excludes majors and strong industrial powers, makes AI always accept, and gives human players an accept or refuse choice.
+The event replaces the reserved `World Tension Subsides` entry and changes Event 15 into a Minor Fire-Once event with no cluster membership. A weak country discovers or revives a utopian manifesto. An AI country accepts it. A human player can accept or reject it. Acceptance replaces the eligible country's current generic or approved replaceable focus tree with a comprehensive Utopia tree and activates the Commonwealth Ledger mechanic.
 
-## Important v2 design correction
+All player-facing names in this package are working labels unless a file states otherwise. They define purpose, tone, route identity, and implementation coverage. They are not pasteable localisation.
 
-The focus tree is now specified as a deeper uneven tree. Main branches should not be implemented as five-focus lanes. The tree should build through opening institutions, domestic pillars, doctrine routes, military and diplomacy branches, late enforcement, puppet utopias, and an Ultimate Utopia convergence branch where the mature branches connect into route-colored final outcomes.
+## Package map
 
-The late tree now includes external goals to export, enforce, or renounce Utopia abroad. It also includes puppet utopia subject forms such as Charter Commonwealths, Surveyor Protectorates, Necessary Wards, Daughter Commonwealths, and hidden No-Place Precincts. These subjects need visible mechanics, local values, decisions, failure states, and final fates.
+- `specs/` contains the source event specification.
+- `matrices/` contains target selection, route, decision, idea, AI, achievement, asset, and acceptance matrices.
+- `focus_graphs/` contains branch and mechanic flow diagrams.
+- `research/` contains the historical design basis, bibliography, source-reading ledger, and manual improvement-loop review.
+- `prompts/` contains the asset, super-event, achievement, decision, coding, and goal prompts.
+- `prompts/subagents/` contains reproducible prompts for every relevant Chaos Redux project subagent.
+- `handoffs/` contains implementation order, subagent orchestration, and verification blockers.
+- `catalog/` contains the Event 15 catalog replacement plan.
 
-## Important v3 workflow correction
+## Design promise
 
-The compact goal prompt now makes `chaosx_improvement_loop_planner` mandatory when the implementation goal is nearing completion. The loop must run after a meaningful implementation tranche and before the final completion audit. Its output must have a recorded disposition before completion is claimed.
+The event asks whether an economically weak state can turn an old literary model into a functioning country. The resulting campaign revolves around provision, chosen or assigned work, common stores, consent, settlement, and the claim that land may be demanded only when genuine need exists. The tree supports democratic, council-socialist, technocratic, coercive, and hidden humanist interpretations. It also makes the source text's harsher features playable, including colonial claims to underused land, compulsory labor, mercenary warfare, and restricted tolerance.
 
+The mechanic is built around four visible pressures:
 
-## Important v4 workflow correction
+1. **Need** measures material and strategic shortage.
+2. **Plenty** measures the ability to provide food, housing, transport, tools, and reserves.
+3. **Concord** measures consent, public confidence, and local acceptance.
+4. **Choice versus Assignment** measures whether occupations and duties are selected freely or imposed by planners.
 
-The package now includes `prompts/utopia_manifesto_subagent_routing_prompt.md`. The compact goal prompt, coding prompt, and acceptance criteria point to this routing handoff. The near-completion `chaosx_improvement_loop_planner` pass must receive explicit context with `fork_context=false`, must run before the final completion audit, and must have a recorded disposition before any completion claim. If the loop subagent cannot be spawned because the tool is unavailable, that is a blocker.
+The values alter focus access, decisions, integration rules, external claims, route corruption, AI behavior, and the final state identity.
 
-## Structure
+## Honest limits of this planning run
 
-- `specs/` contains the event source design parts.
-- `matrices/` contains implementation-facing design matrices.
-- `prompts/` contains prompts for the implementation agent and subagents, including the subagent routing handoff.
-- `research/` contains research notes and the source reading log.
+Every supplied Markdown file, TOML subagent definition, and CSV catalog was read and processed. The supplied event catalog confirms that ID 15 is reserved for rework.
 
-## Main files
+The full Chaos Redux repository, offline Paradox wiki snapshot, vanilla Hearts of Iron IV installation, and project subagent execution runtime were not mounted in this environment. Repository pattern verification, exact state IDs, exact file paths inside the live mod, vanilla precedent checks, and actual subagent execution remain implementation-stage work. No result in this package claims those checks were performed.
 
-Read `specs/015_utopia_manifesto_spec_part_2_focus_tree.md` for the expanded focus tree. Read `specs/015_utopia_manifesto_spec_part_6_late_enforcement_and_puppet_utopias.md` for late enforcement and subject mechanics.
-
-Use `prompts/utopia_manifesto_goal_prompt.md` for the compact `/goal` prompt. It is under 4000 characters.
+A manual improvement-loop and anti-bloat pass is included. It follows the supplied improvement-loop and audit criteria, but it is not a substitute for the mandatory `chaosx_improvement_loop_planner` and completion-auditor runs in the implementation environment.

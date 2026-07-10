@@ -130,7 +130,7 @@ The zombie resolves into one of several behavior profiles:
 These outcomes change outbreak behavior, the creator-side temporary cure advantage, bomb production cost, and whether spawned outbreak countries merge back into the main `ZZZ` horde.
 They do not define the battalion family on their own.
 One selective-control branch can later fail in the field, but that instability is no longer labeled as its own visible zombie type.
-Dead necrotic and demonic zombie outcomes also no longer resolve into obedient control profiles just because high obedience options were chosen during research; those paths can still be attempted in the lab, but they do not produce reliable control in the final outcome.
+Dead necrotic and demonic zombie outcomes also no longer resolve into obedient control profiles just because high obedience options were chosen during research. Those paths can still be attempted in the lab, but they do not produce reliable control in the final outcome.
 `Canonical Convergence`, the profile that tends to merge with the existing zombie outbreak, now only resolves from the `Undead Horde` type when no more than two of the five core zombie attributes are at maximum strength.
 
 ## Runtime behavior
@@ -162,7 +162,7 @@ Dead necrotic and demonic zombie outcomes also no longer resolve into obedient c
 - Raid-created weaponized outbreaks also receive a matching cosmetic country name (`Demonic Zombie Horde`, `Necrotic Horde`, `Undead Horde`, and so on) instead of staying on the base `ZZZ` name.
 - Raid-created weaponized outbreaks also receive a matching leader portrait through `interface/chaosx_characters.gfx` and `weaponized_zombie_refresh_country_leader`.
 - Weaponized outbreaks now immediately declare on valid neighboring enemies as soon as they spawn and keep retrying through the daily outbreak maintenance hook when declaration is legal.
-- Weaponized outbreaks always attack neighboring zombie outbreaks if their resolved profile does not integrate back into the existing outbreak; canonical convergence remains the exception.
+- Weaponized outbreaks always attack neighboring zombie outbreaks if their resolved profile does not integrate back into the existing outbreak. Canonical convergence remains the exception.
 - Canonical-convergence weaponized outbreaks merge back into the main `ZZZ` outbreak if they border it. If they border a standard dynamic zombie outbreak instead, the side with more divisions annexes the other.
 - If a human-friendly weaponized outbreak somehow enters a war against a human country, daily maintenance clears its human-friendly state and protected-country array, making it hostile to all humans from then on.
 - The outbreak runtime now prunes all nonmatching zombie templates and pushes type-specific AI template priorities, so an `Infected Horde` trains infected zombie divisions, a `Demonic Zombie Horde` trains demonic zombie divisions, and so on.

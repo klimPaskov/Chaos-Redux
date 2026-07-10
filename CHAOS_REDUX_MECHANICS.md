@@ -117,7 +117,7 @@ When a major event fires:
 
 Events that require a specific country or small set of country tags must have a reusable valid-target trigger before they can be selected or manually fired. If no valid target exists, the event is treated as unavailable, shows `N/A` in the event list, and is not queued against a nonexistent country.
 
-The Holy Realm uses this rule directly: Tibet is the normal host; if Tibet no longer exists, Bhutan or Nepal can host; if all three are gone or invalid, event ID `3` has no live weight.
+The Holy Realm uses this rule directly. Tibet is the normal host. If Tibet no longer exists, Bhutan or Nepal can host. If all three are gone or invalid, event ID `3` has no live weight.
 
 ### Fire-Once Events
 
@@ -146,8 +146,8 @@ The Holy Realm uses this rule directly: Tibet is the normal host; if Tibet no lo
 
 | Event type | Default start weight | Repeat behavior | Recovery / growth | System effect after firing |
 | --- | --- | --- | --- | --- |
-| **Fire-Once** | `1000` | Fires once per campaign | None | Event is marked fired permanently and removed from future selection; still adds minor-event timer pressure |
-| **Repeatable** | `1000` | Can fire repeatedly | `+20` weight per month up to current cap | Weight cap is halved each firing; still adds minor-event timer pressure |
+| **Fire-Once** | `1000` | Fires once per campaign | None | Event is marked fired permanently and removed from future selection. It still adds minor-event timer pressure |
+| **Repeatable** | `1000` | Can fire repeatedly | `+20` weight per month up to current cap | Weight cap is halved each firing. It still adds minor-event timer pressure |
 | **Major** | `0` | Fires once per campaign | Current dynamic major gain per minor pacing event | Fired major resets major weights and resets timer acceleration state |
 
 ### Super Event Example
@@ -374,7 +374,7 @@ Any row in **History**, **Evolutions**, **Events**, or **Clusters** can be click
 
 ## Event Clusters
 
-Event clusters are linked groups of normal events. The random-event picker still selects one event first; if that event belongs to a cluster, the cluster can roll to fire the wider incident instead of only the selected event.
+Event clusters are linked groups of normal events. The random-event picker still selects one event first. If that event belongs to a cluster, the cluster can roll to fire the wider incident instead of only the selected event.
 
 Cluster firing counts as one global pacing event. Member events still apply their effects, log entries, repeatable cap changes, fire-once removal, fired history, and event details, but they do not each advance the event timer or apply the dynamic major-event gain.
 
