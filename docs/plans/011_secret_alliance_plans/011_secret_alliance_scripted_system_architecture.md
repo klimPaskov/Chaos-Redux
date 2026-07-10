@@ -2,7 +2,7 @@
 
 Status: superseded historical design handoff. No gameplay, localisation, GUI, GFX, binary, or spreadsheet files were changed by this document.
 
-Use `subagent_handoffs/scripted_system_architecture_pass.md` for the accepted implementation architecture and the current code plus current audits for implementation facts. This early handoff predates the full source specification; its statement that Event 011 has no manual scenario is superseded by the accepted SCN-009 Coalition Unmasked design.
+Use `subagent_handoffs/scripted_system_architecture_pass.md` for the accepted implementation architecture and gameplay candidate `c4bb10ce` for current behavior. The strict reports remain clean evidence at their recorded `b7965b7e` and `087d66ab` freezes. The running final completion audit owns the current verdict. This early handoff predates the full source specification, and its statement that Event 011 has no manual scenario is superseded by the accepted SCN-009 Coalition Unmasked design.
 
 ## Scope
 

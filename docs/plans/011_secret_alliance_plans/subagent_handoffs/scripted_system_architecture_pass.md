@@ -2,7 +2,7 @@
 
 Status: promoted implementation-architecture handoff. This pass did not edit gameplay, localisation, UI, GFX, audio, spreadsheet, or event-system files.
 
-The architecture remains the accepted engine-safety and ownership baseline. References to provisional files, outstanding wiring, or pre-implementation blockers are historical. Current code establishes implementation facts, and the current decision/mission and localisation audits establish completion status.
+The architecture remains the accepted engine-safety and ownership baseline. References to provisional files, outstanding wiring, or pre-implementation blockers are historical. Gameplay candidate `c4bb10ce` establishes current behavior. The clean decision and mission report at `b7965b7e` and the clean localisation report at `087d66ab` are scoped historical freezes. The running final completion audit owns the current verdict.
 
 Date: 2026-07-10.
 
