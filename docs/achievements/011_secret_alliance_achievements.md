@@ -6,6 +6,8 @@ All six Event 011 achievements are available to any human tag. Their authoritati
 
 The event snapshots normal, scenario, and forced/debug origin separately. A normal origin is recorded only for the automatic Event 011 opening. Coalition Unmasked records scenario intensity and clears normal origin. A launch performed through debug or force-trigger state records `achievement_secret_alliance_forced_origin`. Forced origin disqualifies all six achievements.
 
+Every normal or scenario initialization first clears the target's Event 011 run snapshots, qualification flags, resolution flags, and starting-capital state. Achievement evidence therefore belongs to one pact only and cannot carry into a later manual or automatic run.
+
 `chaosx.nr11.900` is the hidden AI-target test entry. It is triggered only from a valid AI country scope, temporarily enables the AI target initializer, and sets `secret_alliance_ai_test_origin`. Event initialization converts that origin into `achievement_secret_alliance_forced_origin`. The entry is absent from player-facing content and cannot qualify any Event 011 achievement.
 
 At public reveal the fixed target snapshots valid active membership, active majors, Evidence, independent evidence-class count, whether every active member was confirmed, whether a founder or major sponsor had been turned, whether that controlled channel survived, and the number of members that must later leave for Divide the Table. Starting-capital control is checked at settlement. Innocent public naming, normal war against an innocent lead, and annexation of an unconfirmed suspect are recorded as durable disqualifiers where applicable.
@@ -28,9 +30,9 @@ At public reveal the fixed target snapshots valid active membership, active majo
 
 - Visibility: hidden achievement.
 - Eligibility: normal automatic Event 011 origin, human target, and target has not capitulated.
-- Required: turn a founder or major sponsor, preserve its controlled channel through reveal, and cause its planted false plan to produce a wartime consequence before target victory.
+- Required: turn a founder or major sponsor, preserve its controlled channel through reveal, and have an accepted planted false plan convert into a public-war consequence when the pact is revealed.
 - Disqualifiers: maximum scenario origin or forced/debug origin.
-- Snapshot: founder-or-major status and channel survival are recorded at reveal. The false-plan consequence is recorded when reveal conversion or the planned call uses the compromised channel.
+- Snapshot: founder-or-major status and channel survival are recorded before the public faction transaction. `achievement_secret_alliance_their_man_in_the_room_ready` is set during reveal conversion only when the accepted false plan and both preserved-channel snapshots are present; it does not wait for a later target-victory branch.
 
 ## Divide the Table
 
@@ -41,10 +43,10 @@ At public reveal the fixed target snapshots valid active membership, active majo
 
 ## Surrounded, Not Buried
 
-- Eligibility: Coalition Unmasked at Maximum intensity. The achieved composition reaches the requested roster or exhausts every safe valid candidate. Requested major sponsorship is achieved. The human target has not capitulated.
+- Eligibility: Coalition Unmasked at Maximum intensity. The achieved composition reaches the requested roster or exactly exhausts every safe valid candidate, even when that safe pool contains fewer than eight countries. Requested major sponsorship is achieved. The human target has not capitulated.
 - Required: survive the configured opening-pulse threshold, keep control of the snapshotted starting capital, remain independent, and reach target victory through dissolution or settlement.
 - Disqualifiers: human-consent bypass, forced/debug origin, or any active world-end state.
-- Snapshot: requested members, requested majors, safe valid pool, achieved members, and achieved majors are stored before reveal. `achievement_secret_alliance_maximum_composition_qualified` is set only from those immutable values. The target capital is saved before reveal. Opening survival is recorded by the public-war pulse. Final readiness is set only during target victory.
+- Snapshot: requested members, requested majors, safe valid pool, achieved members, and achieved majors are stored before reveal. `achievement_secret_alliance_maximum_composition_qualified` is set only from those immutable values. The target capital is saved before reveal. Opening survival is recorded by the public-war pulse. A qualifying dissolution or negotiated/continued settlement records `achievement_secret_alliance_resolution_qualified`; only then is final readiness set.
 
 ## Two Giants, One Grave
 
