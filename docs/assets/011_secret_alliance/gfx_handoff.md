@@ -49,13 +49,13 @@ Current event consumers in `events/011_secret_alliance.txt`:
 
 | Sprite | Events |
 | --- | --- |
-| `GFX_report_event_011_secret_alliance_first_pattern` | `chaosx.nr11.3`, `.9`, `.12`, `.193` |
+| `GFX_report_event_011_secret_alliance_first_pattern` | `chaosx.nr11.3`, `.9`, `.12`, `.193`, `.196`, `.197` |
 | `GFX_report_event_011_secret_alliance_missing_courier` | `chaosx.nr11.6` |
 | `GFX_report_event_011_secret_alliance_machine_sabotage` | `chaosx.nr11.7` |
 | `GFX_report_event_011_secret_alliance_safehouse_raid` | `chaosx.nr11.11`, `.13`, `.15`, `.194` |
 | `GFX_report_event_011_secret_alliance_border_survey` | `chaosx.nr11.5`, `.8`, `.192` |
 | `GFX_report_event_011_secret_alliance_political_attack` | `chaosx.nr11.4`, `.10` |
-| `GFX_report_event_011_secret_alliance_turned_channel` | `chaosx.nr11.14`, `.16`, `.191` |
+| `GFX_report_event_011_secret_alliance_turned_channel` | `chaosx.nr11.14`, `.16`, `.191`, `.195`, `.198` |
 | `GFX_news_event_011_secret_alliance_public_coalition` | `chaosx.nr11.200` |
 
 ## Reveal super-event sprite

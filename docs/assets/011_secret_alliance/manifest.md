@@ -71,7 +71,7 @@ Additional current-project precedents inspected:
 
 - Asset type: report event image
 - Intended use: first noticeable pattern incident; railway dispatch evidence comparison
-- Related events: `chaosx.nr11.3`, `chaosx.nr11.9`, `chaosx.nr11.12`, `chaosx.nr11.193`
+- Related events: `chaosx.nr11.3`, `chaosx.nr11.9`, `chaosx.nr11.12`, `chaosx.nr11.193`, `chaosx.nr11.196`, `chaosx.nr11.197`
 - Source mode: generated with built-in `$imagegen`
 - Exact generation prompt: `prompts/generated_event_art_prompts.md`, section `report_event_first_pattern`
 - Era-fit note: 1938 railway office, period clerks, pigeonholes, clock, dispatch envelopes, and telegraph equipment
@@ -173,7 +173,7 @@ Additional current-project precedents inspected:
 
 - Asset type: report event image
 - Intended use: turned member, controlled channel, or counter-network success
-- Related events: `chaosx.nr11.14`, `chaosx.nr11.16`, `chaosx.nr11.191`
+- Related events: `chaosx.nr11.14`, `chaosx.nr11.16`, `chaosx.nr11.191`, `chaosx.nr11.195`, `chaosx.nr11.198`
 - Source mode: generated with built-in `$imagegen`
 - Exact generation prompt: `prompts/generated_event_art_prompts.md`, section `report_event_turned_channel`
 - Era-fit note: 1943 provincial railway waiting room, period coats and hats, travel case, practical lamps, and natural facial obscuration
