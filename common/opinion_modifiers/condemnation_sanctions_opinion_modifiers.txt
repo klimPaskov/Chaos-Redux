@@ -5,52 +5,65 @@
 # Gameplay restrictions and economic costs live in pair records/modifiers.
 # ============================================================================
 
+# Opinion database fields do not accept script-constant tokens. These mirrors
+# match condemnation_opinion in the shared sanctions tuning table.
+@COND_OPINION_SANCTIONER_TO_TARGET = -60
+@COND_OPINION_MONITORING_TO_TARGET = -15
+@COND_OPINION_TARGET_TO_SANCTIONER = -45
+@COND_OPINION_ABSTENTION_TO_TARGET = 10
+@COND_OPINION_ABSTENTION_BY_VICTIM = -20
+@COND_OPINION_SHIELD_TO_TARGET = 35
+@COND_OPINION_BREACH_EXPOSED = -50
+@COND_OPINION_COMPENSATION_RECEIVED = 45
+@COND_OPINION_DECAY_FAST = 0.50
+@COND_OPINION_DECAY_SLOW = 0.20
+
 opinion_modifiers = {
 	condemnation_sanctioning_target = {
-		value = constant:condemnation_opinion.sanctioner_to_target
-		decay = constant:condemnation_opinion.decay_slow
+		value = @COND_OPINION_SANCTIONER_TO_TARGET
+		decay = @COND_OPINION_DECAY_SLOW
 		months = 0
 		trade = no
 	}
 	condemnation_monitoring_target = {
-		value = constant:condemnation_opinion.monitoring_to_target
-		decay = constant:condemnation_opinion.decay_fast
+		value = @COND_OPINION_MONITORING_TO_TARGET
+		decay = @COND_OPINION_DECAY_FAST
 		months = 0
 		trade = no
 	}
 	condemnation_targeted_by_sanctions = {
-		value = constant:condemnation_opinion.target_to_sanctioner
-		decay = constant:condemnation_opinion.decay_slow
+		value = @COND_OPINION_TARGET_TO_SANCTIONER
+		decay = @COND_OPINION_DECAY_SLOW
 		months = 0
 		trade = no
 	}
 	condemnation_abstained_from_sanctions = {
-		value = constant:condemnation_opinion.abstention_to_target
-		decay = constant:condemnation_opinion.decay_fast
+		value = @COND_OPINION_ABSTENTION_TO_TARGET
+		decay = @COND_OPINION_DECAY_FAST
 		months = 0
 		trade = yes
 	}
 	condemnation_abstention_condemned = {
-		value = constant:condemnation_opinion.abstention_by_victim
-		decay = constant:condemnation_opinion.decay_fast
+		value = @COND_OPINION_ABSTENTION_BY_VICTIM
+		decay = @COND_OPINION_DECAY_FAST
 		months = 0
 		trade = no
 	}
 	condemnation_shielding_target = {
-		value = constant:condemnation_opinion.shield_to_target
-		decay = constant:condemnation_opinion.decay_slow
+		value = @COND_OPINION_SHIELD_TO_TARGET
+		decay = @COND_OPINION_DECAY_SLOW
 		months = 0
 		trade = yes
 	}
 	condemnation_breach_exposed = {
-		value = constant:condemnation_opinion.breach_exposed
-		decay = constant:condemnation_opinion.decay_slow
+		value = @COND_OPINION_BREACH_EXPOSED
+		decay = @COND_OPINION_DECAY_SLOW
 		months = 0
 		trade = no
 	}
 	condemnation_compensation_received = {
-		value = constant:condemnation_opinion.compensation_received
-		decay = constant:condemnation_opinion.decay_fast
+		value = @COND_OPINION_COMPENSATION_RECEIVED
+		decay = @COND_OPINION_DECAY_FAST
 		months = 0
 		trade = yes
 	}

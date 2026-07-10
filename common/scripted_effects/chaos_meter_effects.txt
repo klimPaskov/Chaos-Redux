@@ -1085,30 +1085,32 @@ rebuild_chaos_meter_condemnation_detail_snapshot = {
 	set_temp_variable = { condemnation_detail_earliest_review_date = 0 }
 	for_each_scope_loop = {
 		array = condemnation_sanction_participants
-		limit = { exists = yes }
-		set_temp_variable = { condemnation_detail_current_review_date = 0 }
-		meta_effect = {
-			text = {
-				if = {
-					limit = { has_variable = condemnation_pair_[TARGET_ID]_expires_date }
-					set_temp_variable = { condemnation_detail_current_review_date = condemnation_pair_[TARGET_ID]_expires_date }
-				}
-			}
-			TARGET_ID = "[?condemnation_detail_target_id|.0]"
-		}
 		if = {
-			limit = {
-				check_variable = { condemnation_detail_current_review_date > 0 }
-				OR = {
-					check_variable = { condemnation_detail_earliest_review_date < 1 }
-					check_variable = {
-						var = condemnation_detail_current_review_date
-						value = condemnation_detail_earliest_review_date
-						compare = less_than
+			limit = { exists = yes }
+			set_temp_variable = { condemnation_detail_current_review_date = 0 }
+			meta_effect = {
+				text = {
+					if = {
+						limit = { has_variable = condemnation_pair_[TARGET_ID]_expires_date }
+						set_temp_variable = { condemnation_detail_current_review_date = condemnation_pair_[TARGET_ID]_expires_date }
 					}
 				}
+				TARGET_ID = "[?condemnation_detail_target_id|.0]"
 			}
-			set_temp_variable = { condemnation_detail_earliest_review_date = condemnation_detail_current_review_date }
+			if = {
+				limit = {
+					check_variable = { condemnation_detail_current_review_date > 0 }
+					OR = {
+						check_variable = { condemnation_detail_earliest_review_date < 1 }
+						check_variable = {
+							var = condemnation_detail_current_review_date
+							value = condemnation_detail_earliest_review_date
+							compare = less_than
+						}
+					}
+				}
+				set_temp_variable = { condemnation_detail_earliest_review_date = condemnation_detail_current_review_date }
+			}
 		}
 	}
 	set_variable = { ROOT.chaos_meter_condemnation_detail_next_review_date = condemnation_detail_earliest_review_date }

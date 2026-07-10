@@ -5,6 +5,13 @@
 # relief actions. State damage remains in Event 013 dynamic modifiers.
 # ============================================================================
 
+# Idea modifier fields do not accept script-constant tokens. These file-scoped
+# mirrors match common/script_constants/013_natural_disasters_constants.txt.
+@ND_CONSTRUCTION_BURDEN = 0.05
+@ND_HEAVY_CONSTRUCTION_BURDEN = 0.10
+@ND_FOREIGN_DEPENDENCY_CONSUMER_GOODS = 0.02
+@ND_FOREIGN_DEPENDENCY_POLITICAL_POWER_GAIN = -0.10
+
 ideas = {
 	country = {
 		natural_disaster_aftermath_idea = {
@@ -13,7 +20,7 @@ ideas = {
 			allowed_civil_war = { always = yes }
 			removal_cost = -1
 			modifier = {
-				consumer_goods_factor = constant:natural_disaster_cost_fixed.construction_burden
+				consumer_goods_factor = @ND_CONSTRUCTION_BURDEN
 			}
 		}
 
@@ -23,7 +30,7 @@ ideas = {
 			allowed_civil_war = { always = yes }
 			removal_cost = -1
 			modifier = {
-				consumer_goods_factor = constant:natural_disaster_cost_fixed.heavy_construction_burden
+				consumer_goods_factor = @ND_HEAVY_CONSTRUCTION_BURDEN
 			}
 			on_remove = {
 				clr_country_flag = natural_disaster_outbound_relief_active
@@ -36,8 +43,8 @@ ideas = {
 			allowed_civil_war = { always = yes }
 			removal_cost = -1
 			modifier = {
-				consumer_goods_factor = constant:natural_disaster_cost_fixed.foreign_dependency_consumer_goods
-				political_power_gain = constant:natural_disaster_cost_fixed.foreign_dependency_political_power_gain
+				consumer_goods_factor = @ND_FOREIGN_DEPENDENCY_CONSUMER_GOODS
+				political_power_gain = @ND_FOREIGN_DEPENDENCY_POLITICAL_POWER_GAIN
 			}
 		}
 	}

@@ -5,6 +5,10 @@
 # abnormal-access checks for the Event 013 disaster call contract.
 # ============================================================================
 
+# has_resources_amount does not accept script-constant tokens in amount
+# comparisons. This mirror matches natural_disaster_threshold.resource_presence_amount.
+@ND_RESOURCE_PRESENCE_AMOUNT = 0
+
 natural_disaster_is_valid_impact_state = {
 	impassable = no
 	check_variable = { state_population_k > 0 }
@@ -143,7 +147,7 @@ natural_disaster_state_has_strategic_transport = {
 		supply_node > 0
 		any_province_building_level = {
 			province = { all_provinces = yes }
-			building = railway
+			building = rail_way
 			level > constant:natural_disaster_threshold.strategic_railway
 		}
 	}
@@ -165,7 +169,7 @@ natural_disaster_country_has_operational_supply_route = {
 			naval_base > constant:natural_disaster_threshold.strategic_naval_base
 			any_province_building_level = {
 				province = { all_provinces = yes }
-				building = railway
+				building = rail_way
 				level > constant:natural_disaster_threshold.strategic_railway
 			}
 		}
@@ -186,7 +190,7 @@ natural_disaster_country_has_operational_rail_corridor = {
 		infrastructure > constant:natural_disaster_threshold.strategic_infrastructure
 		any_province_building_level = {
 			province = { all_provinces = yes }
-			building = railway
+			building = rail_way
 			level > constant:natural_disaster_threshold.strategic_railway
 		}
 	}
@@ -232,12 +236,12 @@ natural_disaster_state_has_agricultural_proxy = {
 
 natural_disaster_state_has_resource_proxy = {
 	OR = {
-		has_resources_amount = { resource = steel amount > constant:natural_disaster_threshold.resource_presence_amount }
-		has_resources_amount = { resource = aluminium amount > constant:natural_disaster_threshold.resource_presence_amount }
-		has_resources_amount = { resource = tungsten amount > constant:natural_disaster_threshold.resource_presence_amount }
-		has_resources_amount = { resource = chromium amount > constant:natural_disaster_threshold.resource_presence_amount }
-		has_resources_amount = { resource = oil amount > constant:natural_disaster_threshold.resource_presence_amount }
-		has_resources_amount = { resource = rubber amount > constant:natural_disaster_threshold.resource_presence_amount }
+		has_resources_amount = { resource = steel amount > @ND_RESOURCE_PRESENCE_AMOUNT }
+		has_resources_amount = { resource = aluminium amount > @ND_RESOURCE_PRESENCE_AMOUNT }
+		has_resources_amount = { resource = tungsten amount > @ND_RESOURCE_PRESENCE_AMOUNT }
+		has_resources_amount = { resource = chromium amount > @ND_RESOURCE_PRESENCE_AMOUNT }
+		has_resources_amount = { resource = oil amount > @ND_RESOURCE_PRESENCE_AMOUNT }
+		has_resources_amount = { resource = rubber amount > @ND_RESOURCE_PRESENCE_AMOUNT }
 	}
 }
 
@@ -492,7 +496,7 @@ natural_disaster_gui_selected_uses_rupture_layer = {
 }
 
 natural_disaster_can_pay_warning_field_teams = {
-	manpower > constant:natural_disaster_cost_gate.warning_manpower
+	has_manpower > constant:natural_disaster_cost_gate.warning_manpower
 	OR = {
 		has_equipment = { support_equipment_1 > constant:natural_disaster_cost_gate.warning_support_equipment }
 		has_equipment = { motorized_equipment_1 > constant:natural_disaster_cost_gate.warning_trucks }
@@ -500,7 +504,7 @@ natural_disaster_can_pay_warning_field_teams = {
 }
 
 natural_disaster_can_pay_warning_transport = {
-	manpower > constant:natural_disaster_cost_gate.warning_manpower
+	has_manpower > constant:natural_disaster_cost_gate.warning_manpower
 	OR = {
 		has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.warning_trains }
 		has_equipment = { convoy_1 > constant:natural_disaster_cost_gate.warning_convoys }
@@ -508,13 +512,13 @@ natural_disaster_can_pay_warning_transport = {
 }
 
 natural_disaster_can_pay_warning_shelter = {
-	manpower > constant:natural_disaster_cost_gate.warning_manpower
+	has_manpower > constant:natural_disaster_cost_gate.warning_manpower
 	has_equipment = { support_equipment_1 > constant:natural_disaster_cost_gate.warning_support_equipment }
-	stability > constant:natural_disaster_cost_gate_fixed.warning_stability
+	has_stability > constant:natural_disaster_cost_gate_fixed.warning_stability
 }
 
 natural_disaster_can_pay_rescue = {
-	manpower > constant:natural_disaster_cost_gate.rescue_manpower
+	has_manpower > constant:natural_disaster_cost_gate.rescue_manpower
 	has_equipment = { support_equipment_1 > constant:natural_disaster_cost_gate.rescue_support_equipment }
 	has_equipment = { motorized_equipment_1 > constant:natural_disaster_cost_gate.rescue_trucks }
 }
@@ -530,20 +534,20 @@ natural_disaster_can_pay_stabilization = {
 
 # Country-scope physical work packages for the seven visible chain objectives.
 natural_disaster_can_pay_chain_tsunami = {
-	manpower > constant:natural_disaster_cost_gate.rescue_manpower
+	has_manpower > constant:natural_disaster_cost_gate.rescue_manpower
 	has_equipment = { motorized_equipment_1 > constant:natural_disaster_cost_gate.rescue_trucks }
 	has_equipment = { convoy_1 > constant:natural_disaster_cost_gate.warning_convoys }
 	has_fuel > constant:natural_disaster_cost_gate.rescue_fuel
 }
 
 natural_disaster_can_pay_chain_disease = {
-	manpower > constant:natural_disaster_cost_gate.rescue_manpower
+	has_manpower > constant:natural_disaster_cost_gate.rescue_manpower
 	has_equipment = { support_equipment_1 > constant:natural_disaster_cost_gate.rescue_support_equipment }
 	has_equipment = { motorized_equipment_1 > constant:natural_disaster_cost_gate.rescue_trucks }
 }
 
 natural_disaster_can_pay_chain_famine = {
-	manpower > constant:natural_disaster_cost_gate.warning_manpower
+	has_manpower > constant:natural_disaster_cost_gate.warning_manpower
 	has_equipment = { support_equipment_1 > constant:natural_disaster_cost_gate.stabilize_support_equipment }
 	OR = {
 		has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.stabilize_trains }
@@ -552,7 +556,7 @@ natural_disaster_can_pay_chain_famine = {
 }
 
 natural_disaster_can_pay_chain_wildfire = {
-	manpower > constant:natural_disaster_cost_gate.rescue_manpower
+	has_manpower > constant:natural_disaster_cost_gate.rescue_manpower
 	has_equipment = { support_equipment_1 > constant:natural_disaster_cost_gate.rescue_support_equipment }
 	has_equipment = { motorized_equipment_1 > constant:natural_disaster_cost_gate.rescue_trucks }
 	has_fuel > constant:natural_disaster_cost_gate.rescue_fuel
@@ -564,7 +568,7 @@ natural_disaster_can_pay_chain_supply = {
 }
 
 natural_disaster_can_pay_chain_lahar = {
-	manpower > constant:natural_disaster_cost_gate.rescue_manpower
+	has_manpower > constant:natural_disaster_cost_gate.rescue_manpower
 	has_equipment = { motorized_equipment_1 > constant:natural_disaster_cost_gate.rescue_trucks }
 	has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.warning_trains }
 	has_fuel > constant:natural_disaster_cost_gate.rescue_fuel
@@ -583,11 +587,11 @@ natural_disaster_can_pay_reconstruction = {
 		has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.reconstruct_trains }
 		has_equipment = { convoy_1 > constant:natural_disaster_cost_gate.reconstruct_convoys }
 	}
-	stability > constant:natural_disaster_cost_gate_fixed.reconstruct_stability
+	has_stability > constant:natural_disaster_cost_gate_fixed.reconstruct_stability
 }
 
 natural_disaster_can_offer_foreign_relief = {
-	manpower > constant:natural_disaster_cost_gate.rescue_manpower
+	has_manpower > constant:natural_disaster_cost_gate.rescue_manpower
 	has_equipment = { support_equipment_1 > constant:natural_disaster_cost_gate.foreign_support_equipment }
 	has_equipment = { motorized_equipment_1 > constant:natural_disaster_cost_gate.foreign_trucks }
 	has_equipment = { convoy_1 > constant:natural_disaster_cost_gate.foreign_convoys }

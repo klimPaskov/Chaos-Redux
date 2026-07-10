@@ -5,6 +5,15 @@
 # introduced; active targets maintain themselves through scheduled events.
 # ============================================================================
 
+# add_ai_strategy does not accept script-constant values. These file-scoped
+# mirrors match condemnation_ai_strategy in the shared sanctions tuning table.
+@COND_AI_CONCERN_LEND_LEASE_RESTORE = 60
+@COND_AI_CONCERN_VOLUNTEERS_RESTORE = 50
+@COND_AI_CONCERN_MILITARY_ACCESS_RESTORE = 40
+@COND_AI_CENSURE_LEND_LEASE_RESTORE = 200
+@COND_AI_CENSURE_VOLUNTEERS_RESTORE = 175
+@COND_AI_CENSURE_MILITARY_ACCESS_RESTORE = 150
+
 on_actions = {
 	on_war_relation_added = {
 		effect = {
@@ -32,36 +41,39 @@ on_actions = {
 			FROM = {
 				set_temp_variable = { condemnation_annexed_target_id = id }
 				set_temp_variable = { condemnation_annexed_target = THIS }
+				save_event_target_as = condemnation_annexed_target
 				for_each_scope_loop = {
 					array = condemnation_likely_participants
-					limit = { exists = yes }
-					set_temp_variable = { condemnation_watch_tier = constant:condemnation_tier.formal_censure }
-					meta_effect = {
-						text = {
-							if = {
-								limit = { has_variable = condemnation_pair_[TARGET_ID]_watch_tier }
-								set_temp_variable = { condemnation_watch_tier = condemnation_pair_[TARGET_ID]_watch_tier }
-							}
-							clear_variable = condemnation_pair_[TARGET_ID]_watch_tier
-						}
-						TARGET_ID = "[?condemnation_annexed_target_id|.0]"
-					}
 					if = {
-						limit = {
-							is_ai = yes
-							check_variable = { var = condemnation_watch_tier value = constant:condemnation_tier.concern compare = equals }
+						limit = { exists = yes }
+						set_temp_variable = { condemnation_watch_tier = constant:condemnation_tier.formal_censure }
+						meta_effect = {
+							text = {
+								if = {
+									limit = { has_variable = condemnation_pair_[TARGET_ID]_watch_tier }
+									set_temp_variable = { condemnation_watch_tier = condemnation_pair_[TARGET_ID]_watch_tier }
+								}
+								clear_variable = condemnation_pair_[TARGET_ID]_watch_tier
+							}
+							TARGET_ID = "[?condemnation_annexed_target_id|.0]"
 						}
-						add_ai_strategy = { type = send_lend_lease_desire id = var:condemnation_annexed_target value = constant:condemnation_ai_strategy.concern_lend_lease_restore }
-						add_ai_strategy = { type = send_volunteers_desire id = var:condemnation_annexed_target value = constant:condemnation_ai_strategy.concern_volunteers_restore }
-						add_ai_strategy = { type = diplo_action_acceptance id = var:condemnation_annexed_target target = military_access value = constant:condemnation_ai_strategy.concern_military_access_restore }
+						if = {
+							limit = {
+								is_ai = yes
+								check_variable = { var = condemnation_watch_tier value = constant:condemnation_tier.concern compare = equals }
+							}
+							add_ai_strategy = { type = send_lend_lease_desire id = event_target:condemnation_annexed_target value = @COND_AI_CONCERN_LEND_LEASE_RESTORE }
+							add_ai_strategy = { type = send_volunteers_desire id = event_target:condemnation_annexed_target value = @COND_AI_CONCERN_VOLUNTEERS_RESTORE }
+							add_ai_strategy = { type = diplo_action_acceptance id = event_target:condemnation_annexed_target target = military_access value = @COND_AI_CONCERN_MILITARY_ACCESS_RESTORE }
+						}
+						else_if = {
+							limit = { is_ai = yes }
+							add_ai_strategy = { type = send_lend_lease_desire id = event_target:condemnation_annexed_target value = @COND_AI_CENSURE_LEND_LEASE_RESTORE }
+							add_ai_strategy = { type = send_volunteers_desire id = event_target:condemnation_annexed_target value = @COND_AI_CENSURE_VOLUNTEERS_RESTORE }
+							add_ai_strategy = { type = diplo_action_acceptance id = event_target:condemnation_annexed_target target = military_access value = @COND_AI_CENSURE_MILITARY_ACCESS_RESTORE }
+						}
+						remove_opinion_modifier = { target = event_target:condemnation_annexed_target modifier = condemnation_monitoring_target }
 					}
-					else_if = {
-						limit = { is_ai = yes }
-						add_ai_strategy = { type = send_lend_lease_desire id = var:condemnation_annexed_target value = constant:condemnation_ai_strategy.censure_lend_lease_restore }
-						add_ai_strategy = { type = send_volunteers_desire id = var:condemnation_annexed_target value = constant:condemnation_ai_strategy.censure_volunteers_restore }
-						add_ai_strategy = { type = diplo_action_acceptance id = var:condemnation_annexed_target target = military_access value = constant:condemnation_ai_strategy.censure_military_access_restore }
-					}
-					remove_opinion_modifier = { target = var:condemnation_annexed_target modifier = condemnation_monitoring_target }
 				}
 				clear_array = condemnation_likely_participants
 				remove_from_array = { array = global.condemnation_targets value = THIS }

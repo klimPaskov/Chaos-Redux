@@ -6,6 +6,44 @@
 # modifiers in common/dynamic_modifiers/condemnation_sanctions_dynamic_modifiers.txt.
 # ============================================================================
 
+# Idea modifier fields do not accept script-constant tokens. These file-scoped
+# mirrors match condemnation_response_modifier in the shared tuning table.
+@COND_INSPECTION_CONSUMER_GOODS = 0.05
+@COND_INSPECTION_ENCRYPTION = -0.15
+@COND_OBSERVER_CONSUMER_GOODS = 0.03
+@COND_OBSERVER_DETECTION = -0.20
+@COND_COMPENSATION_CONSUMER_GOODS = 0.07
+@COND_COMPENSATION_FACTORY_OUTPUT = -0.04
+@COND_PLEDGE_WAR_SUPPORT = -0.03
+@COND_COMMAND_REFORM_ORG = -0.06
+@COND_COMMAND_REFORM_TRAINING = 0.15
+@COND_PROPAGANDA_WAR_SUPPORT = 0.08
+@COND_PROPAGANDA_STABILITY = -0.03
+@COND_PROPAGANDA_CONSUMER_GOODS = 0.04
+@COND_AUTARKY_RESOURCES = 0.25
+@COND_AUTARKY_CONSUMER_GOODS = 0.08
+@COND_AUTARKY_FACTORY_OUTPUT = -0.05
+@COND_FORCED_EXTRACTION_RESOURCES = 0.35
+@COND_FORCED_EXTRACTION_EFFICIENCY = -0.10
+@COND_SUBSTITUTE_RESOURCES = 0.15
+@COND_SUBSTITUTE_EFFICIENCY = -0.08
+@COND_RATIONING_FUEL_USE = -0.18
+@COND_RATIONING_FACTORY_OUTPUT = -0.04
+@COND_SUBJECT_PRESSURE_RESOURCES = 0.20
+@COND_SUBJECT_PRESSURE_STABILITY = -0.03
+@COND_CONTROLLED_SHIPPING_CONVOYS = 0.12
+@COND_CONTROLLED_SHIPPING_FACTORY_OUTPUT = -0.03
+@COND_HARDLINE_WAR_SUPPORT = 0.05
+@COND_HARDLINE_STABILITY = -0.05
+@COND_BLACK_MARKET_FACTORY_OUTPUT = -0.03
+@COND_FALSE_MANIFEST_CONVOY_EFFICIENCY = 0.10
+@COND_INTERMEDIARY_LICENSE_COST = -0.15
+@COND_SUBJECT_FRONT_RESOURCES = 0.12
+@COND_COVERT_FUEL_USE = -0.08
+@COND_REFLAGGING_CONVOYS = 0.18
+@COND_STOLEN_LICENSE_EFFICIENCY = 0.05
+@COND_SMUGGLED_LAB_RESEARCH = 0.04
+
 ideas = {
 	country = {
 		condemnation_inspection_burden = {
@@ -13,8 +51,8 @@ ideas = {
 			allowed = { always = yes }
 			removal_cost = -1
 			modifier = {
-				consumer_goods_factor = constant:condemnation_response_modifier.inspection_consumer_goods
-				encryption_factor = constant:condemnation_response_modifier.inspection_encryption
+				consumer_goods_factor = @COND_INSPECTION_CONSUMER_GOODS
+				encryption_factor = @COND_INSPECTION_ENCRYPTION
 			}
 		}
 		condemnation_observer_access = {
@@ -22,8 +60,8 @@ ideas = {
 			allowed = { always = yes }
 			removal_cost = -1
 			modifier = {
-				consumer_goods_factor = constant:condemnation_response_modifier.observer_consumer_goods
-				enemy_operative_detection_chance_factor = constant:condemnation_response_modifier.observer_detection
+				consumer_goods_factor = @COND_OBSERVER_CONSUMER_GOODS
+				enemy_operative_detection_chance_factor = @COND_OBSERVER_DETECTION
 			}
 		}
 		condemnation_compensation_program = {
@@ -31,23 +69,23 @@ ideas = {
 			allowed = { always = yes }
 			removal_cost = -1
 			modifier = {
-				consumer_goods_factor = constant:condemnation_response_modifier.compensation_consumer_goods
-				industrial_capacity_factory = constant:condemnation_response_modifier.compensation_factory_output
+				consumer_goods_factor = @COND_COMPENSATION_CONSUMER_GOODS
+				industrial_capacity_factory = @COND_COMPENSATION_FACTORY_OUTPUT
 			}
 		}
 		condemnation_non_use_pledge_idea = {
 			picture = GFX_idea_generic_constitutional_guarantees
 			allowed = { always = yes }
 			removal_cost = -1
-			modifier = { war_support_factor = constant:condemnation_response_modifier.pledge_war_support }
+			modifier = { war_support_factor = @COND_PLEDGE_WAR_SUPPORT }
 		}
 		condemnation_command_reform = {
 			picture = GFX_idea_generic_army_war_college
 			allowed = { always = yes }
 			removal_cost = -1
 			modifier = {
-				army_org_factor = constant:condemnation_response_modifier.command_reform_org
-				training_time_army_factor = constant:condemnation_response_modifier.command_reform_training
+				army_org_factor = @COND_COMMAND_REFORM_ORG
+				training_time_army_factor = @COND_COMMAND_REFORM_TRAINING
 			}
 		}
 		condemnation_domestic_propaganda = {
@@ -55,9 +93,9 @@ ideas = {
 			allowed = { always = yes }
 			removal_cost = -1
 			modifier = {
-				war_support_factor = constant:condemnation_response_modifier.propaganda_war_support
-				stability_factor = constant:condemnation_response_modifier.propaganda_stability
-				consumer_goods_factor = constant:condemnation_response_modifier.propaganda_consumer_goods
+				war_support_factor = @COND_PROPAGANDA_WAR_SUPPORT
+				stability_factor = @COND_PROPAGANDA_STABILITY
+				consumer_goods_factor = @COND_PROPAGANDA_CONSUMER_GOODS
 			}
 		}
 		condemnation_autarky_program = {
@@ -65,9 +103,9 @@ ideas = {
 			allowed = { always = yes }
 			removal_cost = -1
 			modifier = {
-				local_resources_factor = constant:condemnation_response_modifier.autarky_resources
-				consumer_goods_factor = constant:condemnation_response_modifier.autarky_consumer_goods
-				industrial_capacity_factory = constant:condemnation_response_modifier.autarky_factory_output
+				local_resources_factor = @COND_AUTARKY_RESOURCES
+				consumer_goods_factor = @COND_AUTARKY_CONSUMER_GOODS
+				industrial_capacity_factory = @COND_AUTARKY_FACTORY_OUTPUT
 			}
 		}
 		condemnation_forced_extraction = {
@@ -75,8 +113,8 @@ ideas = {
 			allowed = { always = yes }
 			removal_cost = -1
 			modifier = {
-				local_resources_factor = constant:condemnation_response_modifier.forced_extraction_resources
-				production_factory_efficiency_gain_factor = constant:condemnation_response_modifier.forced_extraction_efficiency
+				local_resources_factor = @COND_FORCED_EXTRACTION_RESOURCES
+				production_factory_efficiency_gain_factor = @COND_FORCED_EXTRACTION_EFFICIENCY
 			}
 		}
 		condemnation_substitute_materials = {
@@ -84,8 +122,8 @@ ideas = {
 			allowed = { always = yes }
 			removal_cost = -1
 			modifier = {
-				local_resources_factor = constant:condemnation_response_modifier.substitute_resources
-				production_factory_efficiency_gain_factor = constant:condemnation_response_modifier.substitute_efficiency
+				local_resources_factor = @COND_SUBSTITUTE_RESOURCES
+				production_factory_efficiency_gain_factor = @COND_SUBSTITUTE_EFFICIENCY
 			}
 		}
 		condemnation_military_rationing = {
@@ -93,10 +131,10 @@ ideas = {
 			allowed = { always = yes }
 			removal_cost = -1
 			modifier = {
-				army_fuel_consumption_factor = constant:condemnation_response_modifier.rationing_fuel_use
-				air_fuel_consumption_factor = constant:condemnation_response_modifier.rationing_fuel_use
-				navy_fuel_consumption_factor = constant:condemnation_response_modifier.rationing_fuel_use
-				industrial_capacity_factory = constant:condemnation_response_modifier.rationing_factory_output
+				army_fuel_consumption_factor = @COND_RATIONING_FUEL_USE
+				air_fuel_consumption_factor = @COND_RATIONING_FUEL_USE
+				navy_fuel_consumption_factor = @COND_RATIONING_FUEL_USE
+				industrial_capacity_factory = @COND_RATIONING_FACTORY_OUTPUT
 			}
 		}
 		condemnation_subject_pressure = {
@@ -104,8 +142,8 @@ ideas = {
 			allowed = { always = yes }
 			removal_cost = -1
 			modifier = {
-				local_resources_factor = constant:condemnation_response_modifier.subject_pressure_resources
-				stability_factor = constant:condemnation_response_modifier.subject_pressure_stability
+				local_resources_factor = @COND_SUBJECT_PRESSURE_RESOURCES
+				stability_factor = @COND_SUBJECT_PRESSURE_STABILITY
 			}
 		}
 		condemnation_controlled_shipping = {
@@ -113,8 +151,8 @@ ideas = {
 			allowed = { always = yes }
 			removal_cost = -1
 			modifier = {
-				convoy_escort_efficiency = constant:condemnation_response_modifier.controlled_shipping_convoys
-				industrial_capacity_factory = constant:condemnation_response_modifier.controlled_shipping_factory_output
+				convoy_escort_efficiency = @COND_CONTROLLED_SHIPPING_CONVOYS
+				industrial_capacity_factory = @COND_CONTROLLED_SHIPPING_FACTORY_OUTPUT
 			}
 		}
 		condemnation_hardline_mobilization = {
@@ -122,61 +160,61 @@ ideas = {
 			allowed = { always = yes }
 			removal_cost = -1
 			modifier = {
-				war_support_factor = constant:condemnation_response_modifier.hardline_war_support
-				stability_factor = constant:condemnation_response_modifier.hardline_stability
+				war_support_factor = @COND_HARDLINE_WAR_SUPPORT
+				stability_factor = @COND_HARDLINE_STABILITY
 			}
 		}
 		condemnation_black_market_network = {
 			picture = GFX_idea_generic_deal_with_the_devil
 			allowed = { always = yes }
 			removal_cost = -1
-			modifier = { industrial_capacity_factory = constant:condemnation_response_modifier.black_market_factory_output }
+			modifier = { industrial_capacity_factory = @COND_BLACK_MARKET_FACTORY_OUTPUT }
 		}
 		condemnation_false_manifests = {
 			picture = GFX_idea_generic_deal_with_the_devil2
 			allowed = { always = yes }
 			removal_cost = -1
-			modifier = { convoy_escort_efficiency = constant:condemnation_response_modifier.false_manifest_convoy_efficiency }
+			modifier = { convoy_escort_efficiency = @COND_FALSE_MANIFEST_CONVOY_EFFICIENCY }
 		}
 		condemnation_neutral_intermediaries = {
 			picture = GFX_idea_generic_foreign_capital
 			allowed = { always = yes }
 			removal_cost = -1
-			modifier = { license_purchase_cost = constant:condemnation_response_modifier.intermediary_license_cost }
+			modifier = { license_purchase_cost = @COND_INTERMEDIARY_LICENSE_COST }
 		}
 		condemnation_subject_front = {
 			picture = GFX_idea_generic_oppression
 			allowed = { always = yes }
 			removal_cost = -1
-			modifier = { local_resources_factor = constant:condemnation_response_modifier.subject_front_resources }
+			modifier = { local_resources_factor = @COND_SUBJECT_FRONT_RESOURCES }
 		}
 		condemnation_covert_fuel_route = {
 			picture = GFX_idea_generic_deal_with_the_devil
 			allowed = { always = yes }
 			removal_cost = -1
 			modifier = {
-				army_fuel_consumption_factor = constant:condemnation_response_modifier.covert_fuel_use
-				air_fuel_consumption_factor = constant:condemnation_response_modifier.covert_fuel_use
-				navy_fuel_consumption_factor = constant:condemnation_response_modifier.covert_fuel_use
+				army_fuel_consumption_factor = @COND_COVERT_FUEL_USE
+				air_fuel_consumption_factor = @COND_COVERT_FUEL_USE
+				navy_fuel_consumption_factor = @COND_COVERT_FUEL_USE
 			}
 		}
 		condemnation_reflagged_shipping = {
 			picture = GFX_idea_generic_foreign_capital
 			allowed = { always = yes }
 			removal_cost = -1
-			modifier = { convoy_escort_efficiency = constant:condemnation_response_modifier.reflagging_convoys }
+			modifier = { convoy_escort_efficiency = @COND_REFLAGGING_CONVOYS }
 		}
 		condemnation_stolen_license = {
 			picture = GFX_idea_generic_license_production
 			allowed = { always = yes }
 			removal_cost = -1
-			modifier = { production_factory_efficiency_gain_factor = constant:condemnation_response_modifier.stolen_license_efficiency }
+			modifier = { production_factory_efficiency_gain_factor = @COND_STOLEN_LICENSE_EFFICIENCY }
 		}
 		condemnation_smuggled_laboratory = {
 			picture = GFX_idea_generic_research_bonus
 			allowed = { always = yes }
 			removal_cost = -1
-			modifier = { research_speed_factor = constant:condemnation_response_modifier.smuggled_lab_research }
+			modifier = { research_speed_factor = @COND_SMUGGLED_LAB_RESEARCH }
 		}
 	}
 }
