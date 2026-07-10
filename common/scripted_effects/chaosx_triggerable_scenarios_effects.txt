@@ -44,6 +44,10 @@ initialize_triggerable_scenarios_settings = {
 		set_variable = { triggerable_scenarios_disaster_barrage_type = constant:natural_disaster_scenario_type.random_barrage }
 	}
 	if = {
+		limit = { NOT = { has_variable = triggerable_scenarios_secret_alliance_type } }
+		set_variable = { triggerable_scenarios_secret_alliance_type = constant:secret_alliance_scenario_type.random_coalition }
+	}
+	if = {
 		limit = { NOT = { has_variable = triggerable_scenarios_sort_mode } }
 		set_variable = { triggerable_scenarios_sort_mode = constant:triggerable_scenario_sort_mode.id }
 	}
@@ -118,6 +122,14 @@ triggerable_scenarios_initialize_registry = {
 		array = global.triggerable_scenario_all_name_sort_values
 		value = constant:triggerable_scenario_sort_value.africa_is_one_name
 	}
+	add_to_array = {
+		array = global.triggerable_scenario_all_ids
+		value = constant:triggerable_scenario_id.coalition_unmasked
+	}
+	add_to_array = {
+		array = global.triggerable_scenario_all_name_sort_values
+		value = constant:triggerable_scenario_sort_value.coalition_unmasked_name
+	}
 }
 
 triggerable_scenarios_rebuild_view = {
@@ -139,6 +151,14 @@ triggerable_scenarios_rebuild_view = {
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.coalition_unmasked
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.coalition_unmasked_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
 			value = constant:triggerable_scenario_id.mengele_clones
 		}
 		add_to_array = {
@@ -199,6 +219,7 @@ triggerable_scenarios_rebuild_view = {
 			check_variable = { triggerable_scenarios_sort_mode = constant:triggerable_scenario_sort_mode.name }
 			has_country_flag = triggerable_scenarios_sort_descending
 		}
+		# Reverse of the configured name order.
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
 			value = constant:triggerable_scenario_id.zombie_apocalypse
@@ -257,6 +278,14 @@ triggerable_scenarios_rebuild_view = {
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.coalition_unmasked
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.coalition_unmasked_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
 			value = constant:triggerable_scenario_id.africa_is_one
 		}
 		add_to_array = {
@@ -268,6 +297,14 @@ triggerable_scenarios_rebuild_view = {
 		limit = {
 			check_variable = { triggerable_scenarios_sort_mode = constant:triggerable_scenario_sort_mode.id }
 			has_country_flag = triggerable_scenarios_sort_descending
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.coalition_unmasked
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.coalition_unmasked_name
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
@@ -398,6 +435,14 @@ triggerable_scenarios_rebuild_view = {
 		add_to_array = {
 			array = global.triggerable_scenario_view_name_sort_values
 			value = constant:triggerable_scenario_sort_value.africa_is_one_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.coalition_unmasked
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.coalition_unmasked_name
 		}
 	}
 }
@@ -488,6 +533,11 @@ select_triggerable_scenario_disaster_barrage = {
 select_triggerable_scenario_africa = {
 	initialize_triggerable_scenarios_settings = yes
 	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.africa_is_one }
+}
+
+select_triggerable_scenario_coalition_unmasked = {
+	initialize_triggerable_scenarios_settings = yes
+	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.coalition_unmasked }
 }
 
 set_triggerable_scenario_intensity_low = {
@@ -594,6 +644,14 @@ triggerable_scenario_type_previous = {
 			set_variable = { triggerable_scenarios_final_silence_type = constant:triggerable_scenario_final_silence_type.thermonuclear }
 		}
 	}
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.coalition_unmasked } }
+		subtract_from_variable = { triggerable_scenarios_secret_alliance_type = 1 }
+		if = {
+			limit = { check_variable = { triggerable_scenarios_secret_alliance_type < constant:secret_alliance_scenario_type.regional_ring } }
+			set_variable = { triggerable_scenarios_secret_alliance_type = constant:secret_alliance_scenario_type.random_coalition }
+		}
+	}
 }
 
 triggerable_scenario_type_next = {
@@ -648,6 +706,14 @@ triggerable_scenario_type_next = {
 		if = {
 			limit = { check_variable = { triggerable_scenarios_final_silence_type > constant:triggerable_scenario_final_silence_type.thermonuclear } }
 			set_variable = { triggerable_scenarios_final_silence_type = constant:triggerable_scenario_final_silence_type.nuclear }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.coalition_unmasked } }
+		add_to_variable = { triggerable_scenarios_secret_alliance_type = 1 }
+		if = {
+			limit = { check_variable = { triggerable_scenarios_secret_alliance_type > constant:secret_alliance_scenario_type.random_coalition } }
+			set_variable = { triggerable_scenarios_secret_alliance_type = constant:secret_alliance_scenario_type.regional_ring }
 		}
 	}
 }
@@ -739,6 +805,16 @@ trigger_selected_chaosx_scenario = {
 			}
 		}
 		country_event = { id = chaosx.triggerable_scenarios.8 days = 1 }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = triggerable_scenario_launch_id
+				value = constant:triggerable_scenario_id.coalition_unmasked
+				compare = equals
+			}
+		}
+		trigger_secret_alliance_coalition_unmasked_scenario = yes
 	}
 	if = {
 		limit = { has_country_flag = triggerable_scenario_preserved_event_timer }

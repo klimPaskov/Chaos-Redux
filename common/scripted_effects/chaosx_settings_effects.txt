@@ -4582,6 +4582,15 @@ fire_event_by_temp_id_no_cluster = {
 		}
 	}
 	if = {
+		limit = { check_variable = { event_id = constant:secret_alliance_event.id } }
+		set_temp_variable = { secret_alliance_prefire_ready = 0 }
+		secret_alliance_prepare_random_event_fire = yes
+		if = {
+			limit = { check_variable = { secret_alliance_prefire_ready < 1 } }
+			set_temp_variable = { event_single_fire_allowed = 0 }
+		}
+	}
+	if = {
 		limit = { check_variable = { event_id = constant:white_peace_event_log.event_id } }
 		prepare_white_peace_runtime_context = yes
 		if = {
@@ -4591,10 +4600,6 @@ fire_event_by_temp_id_no_cluster = {
 	}
 	if = {
 		limit = { check_variable = { event_id = 15 } }
-		set_temp_variable = { event_single_fire_allowed = 0 }
-	}
-	if = {
-		limit = { check_variable = { event_id = 11 } }
 		set_temp_variable = { event_single_fire_allowed = 0 }
 	}
 	if = {

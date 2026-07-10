@@ -14,7 +14,7 @@ Package scope: seven report images, one public-coalition news image, and one rev
 
 All nine requested raster assets have distinct generated source artwork, deterministic processed PNGs, exact-size 32-bit BGRA DDS files, review contact sheets, a super-event mask preview, prompt records, and a GFX handoff. The runtime DDS filenames and sprite names match `docs/specs/011_secret_alliance_specs/matrices/011_secret_alliance_asset_register.md` exactly.
 
-The package does not include gameplay, localisation, GUI, GFX-definition, event, decision, idea, achievement, audio, or spreadsheet edits. Runtime wiring remains with the main implementation agent.
+The asset-production tranche did not edit gameplay, localisation, GUI, event, decision, idea, achievement, audio, or spreadsheet files. The final implementation registers these assets in `interface/011_secret_alliance.gfx` and `interface/chaosx_super_events.gfx` and uses them from the Event 011 event, decision, and super-event surfaces.
 
 ## Source and rights status
 
@@ -80,9 +80,9 @@ Additional current-project precedents inspected:
 - Final DDS: `gfx/event_pictures/011_secret_alliance/report_event_first_pattern.dds`
 - Target size: `210x176`
 - Sprite: `GFX_report_event_011_secret_alliance_first_pattern`
-- Target GFX: `interface/011_secret_alliance.gfx` (main-agent wiring)
+- Target GFX: `interface/011_secret_alliance.gfx` (wired)
 - Localisation key: not applicable
-- Status: `handed_off`
+- Status: `wired_complete`
 
 ### `report_missing_courier`
 
@@ -97,9 +97,9 @@ Additional current-project precedents inspected:
 - Final DDS: `gfx/event_pictures/011_secret_alliance/report_event_missing_courier.dds`
 - Target size: `210x176`
 - Sprite: `GFX_report_event_011_secret_alliance_missing_courier`
-- Target GFX: `interface/011_secret_alliance.gfx` (main-agent wiring)
+- Target GFX: `interface/011_secret_alliance.gfx` (wired)
 - Localisation key: not applicable
-- Status: `handed_off`
+- Status: `wired_complete`
 
 ### `report_machine_sabotage`
 
@@ -114,9 +114,9 @@ Additional current-project precedents inspected:
 - Final DDS: `gfx/event_pictures/011_secret_alliance/report_event_machine_sabotage.dds`
 - Target size: `210x176`
 - Sprite: `GFX_report_event_011_secret_alliance_machine_sabotage`
-- Target GFX: `interface/011_secret_alliance.gfx` (main-agent wiring)
+- Target GFX: `interface/011_secret_alliance.gfx` (wired)
 - Localisation key: not applicable
-- Status: `handed_off`
+- Status: `wired_complete`
 
 ### `report_safehouse_raid`
 
@@ -131,9 +131,9 @@ Additional current-project precedents inspected:
 - Final DDS: `gfx/event_pictures/011_secret_alliance/report_event_safehouse_raid.dds`
 - Target size: `210x176`
 - Sprite: `GFX_report_event_011_secret_alliance_safehouse_raid`
-- Target GFX: `interface/011_secret_alliance.gfx` (main-agent wiring)
+- Target GFX: `interface/011_secret_alliance.gfx` (wired)
 - Localisation key: not applicable
-- Status: `handed_off`
+- Status: `wired_complete`
 
 ### `report_border_survey`
 
@@ -148,9 +148,9 @@ Additional current-project precedents inspected:
 - Final DDS: `gfx/event_pictures/011_secret_alliance/report_event_border_survey.dds`
 - Target size: `210x176`
 - Sprite: `GFX_report_event_011_secret_alliance_border_survey`
-- Target GFX: `interface/011_secret_alliance.gfx` (main-agent wiring)
+- Target GFX: `interface/011_secret_alliance.gfx` (wired)
 - Localisation key: not applicable
-- Status: `handed_off`
+- Status: `wired_complete`
 
 ### `report_political_attack`
 
@@ -165,9 +165,9 @@ Additional current-project precedents inspected:
 - Final DDS: `gfx/event_pictures/011_secret_alliance/report_event_political_attack.dds`
 - Target size: `210x176`
 - Sprite: `GFX_report_event_011_secret_alliance_political_attack`
-- Target GFX: `interface/011_secret_alliance.gfx` (main-agent wiring)
+- Target GFX: `interface/011_secret_alliance.gfx` (wired)
 - Localisation key: not applicable
-- Status: `handed_off`
+- Status: `wired_complete`
 
 ### `report_turned_channel`
 
@@ -182,9 +182,9 @@ Additional current-project precedents inspected:
 - Final DDS: `gfx/event_pictures/011_secret_alliance/report_event_turned_channel.dds`
 - Target size: `210x176`
 - Sprite: `GFX_report_event_011_secret_alliance_turned_channel`
-- Target GFX: `interface/011_secret_alliance.gfx` (main-agent wiring)
+- Target GFX: `interface/011_secret_alliance.gfx` (wired)
 - Localisation key: not applicable
-- Status: `handed_off`
+- Status: `wired_complete`
 
 ### `news_public_coalition`
 
@@ -199,9 +199,9 @@ Additional current-project precedents inspected:
 - Final DDS: `gfx/event_pictures/011_secret_alliance/news_event_public_coalition.dds`
 - Target size: `397x153`, true black-and-white/grayscale
 - Sprite: `GFX_news_event_011_secret_alliance_public_coalition`
-- Target GFX: `interface/011_secret_alliance.gfx` (main-agent wiring)
+- Target GFX: `interface/011_secret_alliance.gfx` (wired)
 - Localisation key: not applicable
-- Status: `handed_off`
+- Status: `wired_complete`
 
 ### `super_event_reveal`
 
@@ -216,9 +216,9 @@ Additional current-project precedents inspected:
 - Final DDS: `gfx/super_events/011_secret_alliance/super_event_public_reveal.dds`
 - Target size: `457x328`
 - Sprite: `GFX_super_event_011_secret_alliance_public_reveal`
-- Target GFX: `interface/chaosx_super_events.gfx` (main-agent wiring)
+- Target GFX: `interface/chaosx_super_events.gfx` (wired)
 - Localisation key: selected separately by the Event 011 super-event text package
-- Status: `handed_off`
+- Status: `wired_complete`
 
 ## Review files
 
@@ -239,4 +239,4 @@ Additional current-project precedents inspected:
 
 ## Simplifications, omissions, and blockers
 
-None within this raster tranche. GFX definitions and gameplay/super-event wiring were intentionally left to the main implementation agent under the parent-granted scope boundary.
+None. The raster tranche delivered every requested final asset, and the final Event 011 implementation completed all GFX and gameplay/super-event wiring.

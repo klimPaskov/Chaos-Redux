@@ -133,4 +133,4 @@ The animation uses the verified horizontal `frameAnimatedSpriteType` pattern fro
 - The faction emblem is only an Event 011 scripted-GUI/UI seal. If implementation later requires the engine's full faction-logo surface, create a separately designed `200x100` full logo and `32x32` miniature rather than resizing this `64x64` emblem.
 - No GFX or GUI file was edited by this asset tranche.
 
-No asset blocker remains. Main-agent wiring is still required before the manifest statuses can move from `handed_off` to `wired` or `complete`.
+No asset blocker remains. The registrations in `interface/011_secret_alliance.gfx` and `interface/chaosx_achievements.gfx`, together with `interface/011_secret_alliance.gui`, complete the handoff. The final manifest status is `wired_complete`.
