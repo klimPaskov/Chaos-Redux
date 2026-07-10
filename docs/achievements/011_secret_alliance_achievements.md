@@ -32,7 +32,7 @@ At public reveal the fixed target snapshots valid active membership, active majo
 - Eligibility: normal automatic Event 011 origin, human target, and target has not capitulated.
 - Required: turn a founder or major sponsor, preserve its controlled channel through reveal, and have an accepted planted false plan convert into a public-war consequence when the pact is revealed.
 - Disqualifiers: maximum scenario origin or forced/debug origin.
-- Snapshot: founder-or-major status and channel survival are recorded before the public faction transaction. `achievement_secret_alliance_their_man_in_the_room_ready` is set during reveal conversion only when the accepted false plan and both preserved-channel snapshots are present; it does not wait for a later target-victory branch.
+- Snapshot: founder-or-major status and channel survival are recorded before the public faction transaction. `achievement_secret_alliance_their_man_in_the_room_ready` is set during reveal conversion only when the accepted false plan and both preserved-channel snapshots are present. It does not wait for a later target-victory branch.
 
 ## Divide the Table
 
@@ -46,7 +46,7 @@ At public reveal the fixed target snapshots valid active membership, active majo
 - Eligibility: Coalition Unmasked at Maximum intensity. The achieved composition reaches the requested roster or exactly exhausts every safe valid candidate, even when that safe pool contains fewer than eight countries. Requested major sponsorship is achieved. The human target has not capitulated.
 - Required: survive the configured opening-pulse threshold, keep control of the snapshotted starting capital, remain independent, and reach target victory through dissolution or settlement.
 - Disqualifiers: human-consent bypass, forced/debug origin, or any active world-end state.
-- Snapshot: requested members, requested majors, safe valid pool, achieved members, and achieved majors are stored before reveal. `achievement_secret_alliance_maximum_composition_qualified` is set only from those immutable values. The target capital is saved before reveal. Opening survival is recorded by the public-war pulse. A qualifying dissolution or negotiated/continued settlement records `achievement_secret_alliance_resolution_qualified`; only then is final readiness set.
+- Snapshot: requested members, requested majors, safe valid pool, achieved members, and achieved majors are stored before reveal. `achievement_secret_alliance_maximum_composition_qualified` is set only from those immutable values. The target capital is saved before reveal. Opening survival is recorded by the public-war pulse. A qualifying dissolution or negotiated/continued settlement records `achievement_secret_alliance_resolution_qualified`. Final readiness is set only after that resolution record exists.
 
 ## Two Giants, One Grave
 
