@@ -3,14 +3,21 @@
 Event id: `017`
 Event slug: `random_faction`
 Runtime sprite registry: `interface/017_random_faction.gfx`
+Achievement sprite registry: `interface/chaosx_achievements.gfx`
+Canonical prompt record: `docs/assets/017_random_faction/prompts/icon_and_animation_prompts.md`
+Asset audit: 2026-07-10
 
 ## Source Mode
 
-Static icons, achievements, event pictures, category picture, and animation frames use generated source art created through the built-in `$imagegen` workflow and partial Event 17 asset subagent output. The asset subagent stalled before landing final runtime DDS files, so the main implementation pass completed deterministic processing locally. Processing was limited to chroma-key alpha removal, crop/fit, exact-size resizing, contact-sheet assembly, frame-sheet assembly, GIF preview creation, and DDS export.
+All assets in the final runtime table use generated source art created through the built-in `$imagegen` workflow. Their original generated PNGs or source atlases are preserved under `docs/assets/017_random_faction/source/`, and the animation source frames are preserved under their animation packages. Deterministic processing is limited to chroma-key alpha removal, crop/fit, shared-scale anchor normalization, exact-size resizing, contact-sheet assembly, exact RGBA frame-sheet assembly, GIF preview creation, grayscale achievement variants, the standard not-eligible overlay, and DDS export.
 
-Animation source frames come from generated source atlases with separately drawn frame states, then are sliced into source frames before deterministic processing. No final animation was made by moving, scaling, rotating, warping, blurring, recoloring, or filtering one still image.
+Decision, decision-category, idea, and achievement art are separate asset-type sources. The package does not satisfy one icon type by resizing, recoloring, padding, or lightly editing another icon type. Every final icon within a group has a unique source-art hash.
 
-Achievement not-eligible variants copy the matching grey achievement icon and composite `.agents/skills/chaos-redux-event-assets/assets/achievements/overlay.png` on top. They do not use a red tint or red filter on the base icon.
+Animation source frames come from generated source atlases with eight separately drawn frame states, then are sliced into source frames before deterministic processing. No final animation was made by moving, scaling, rotating, warping, blurring, recoloring, or filtering one still image. Both sequences use 64x64 frames, eight unique source states, 512x64 horizontal sheets, 8 FPS playback, centered anchors, looping, and `play_on_show = yes`.
+
+Achievement not-eligible variants copy the matching grey achievement icon and composite the standard repository achievement cross overlay on top. They do not use a red tint or red filter on the base icon. The overlay source was present when these variants were made and is visible in the completed not-eligible files and review sheet; the skill reference-asset directory that contained it was later removed from the current tree.
+
+Every row in the final runtime table has source mode `$imagegen` and asset status `converted` or later. Runtime wiring status is documented in `gfx_handoff.md`.
 
 ## Final Runtime Assets
 
@@ -20,7 +27,7 @@ Achievement not-eligible variants copy the matching grey achievement icon and co
 | `GFX_report_event_random_faction_border` | report image | `docs/assets/017_random_faction/source/report_event_random_faction_border_source.png` | `docs/assets/017_random_faction/processed_png/report_event_random_faction_border.png` | `gfx/event_pictures/017_random_faction/report_event_random_faction_border.dds` | 210x176 |
 | `GFX_report_event_random_faction_liaison` | report image | `docs/assets/017_random_faction/source/report_event_random_faction_liaison_source.png` | `docs/assets/017_random_faction/processed_png/report_event_random_faction_liaison.png` | `gfx/event_pictures/017_random_faction/report_event_random_faction_liaison.dds` | 210x176 |
 | `GFX_report_event_random_faction_regional_cascade` | report image | `docs/assets/017_random_faction/source/report_event_random_faction_regional_cascade_source.png` | `docs/assets/017_random_faction/processed_png/report_event_random_faction_regional_cascade.png` | `gfx/event_pictures/017_random_faction/report_event_random_faction_regional_cascade.dds` | 210x176 |
-| `GFX_decision_category_random_faction_bloc_pressure` | decision icon | `docs/assets/017_random_faction/source/decision_category_random_faction_bloc_pressure_source.png` | `docs/assets/017_random_faction/processed_png/decision_category_random_faction_bloc_pressure.png` | `gfx/interface/decisions/017_random_faction/decision_category_random_faction_bloc_pressure.dds` | 32x32 |
+| `GFX_decision_category_random_faction_bloc_pressure` | decision category icon | `docs/assets/017_random_faction/source/decision_category_random_faction_bloc_pressure_source.png` | `docs/assets/017_random_faction/processed_png/decision_category_random_faction_bloc_pressure.png` | `gfx/interface/decisions/017_random_faction/decision_category_random_faction_bloc_pressure.dds` | 32x32 |
 | `GFX_decision_random_faction_stabilize_alignment` | decision icon | `docs/assets/017_random_faction/source/decision_random_faction_stabilize_alignment_source.png` | `docs/assets/017_random_faction/processed_png/decision_random_faction_stabilize_alignment.png` | `gfx/interface/decisions/017_random_faction/decision_random_faction_stabilize_alignment.dds` | 32x32 |
 | `GFX_decision_random_faction_liaison` | decision icon | `docs/assets/017_random_faction/source/decision_random_faction_liaison_source.png` | `docs/assets/017_random_faction/processed_png/decision_random_faction_liaison.png` | `gfx/interface/decisions/017_random_faction/decision_random_faction_liaison.dds` | 32x32 |
 | `GFX_decision_random_faction_opposition` | decision icon | `docs/assets/017_random_faction/source/decision_random_faction_opposition_source.png` | `docs/assets/017_random_faction/processed_png/decision_random_faction_opposition.png` | `gfx/interface/decisions/017_random_faction/decision_random_faction_opposition.dds` | 32x32 |
@@ -56,6 +63,7 @@ Achievement not-eligible variants copy the matching grey achievement icon and co
 - Decision source contact sheet: `docs/assets/017_random_faction/contact_sheets/decision_source_contact_sheet.png`
 - Animation contact sheets and GIF previews under `docs/assets/017_random_faction/animations/*/previews/`
 - Package DDS copies under `docs/assets/017_random_faction/dds/`
+- Canonical prompt record: `docs/assets/017_random_faction/prompts/icon_and_animation_prompts.md`
 
 ## Validation
 
@@ -104,4 +112,19 @@ Achievement not-eligible variants copy the matching grey achievement icon and co
 - `gfx\interface\ideas\017_random_faction\idea_random_faction_liaison_mission.dds	64x64	OK`
 - `gfx\interface\ideas\017_random_faction\idea_random_faction_neutrality_exhaustion.dds	64x64	OK`
 
+## Animation Audit
+
+- Bloc-pressure seal: eight unique source PNG hashes; processed alpha bounds occupy roughly 49-50x55-56 pixels inside each 64x64 frame; all eight sheet cells are exact RGBA copies of the corresponding processed frames; static fallback equals frame 000; preview GIF contains eight states plus one review-only repeated rest frame.
+- Border warning: eight unique source PNG hashes; processed alpha bounds occupy roughly 42-45x55-56 pixels inside each 64x64 frame; all eight sheet cells are exact RGBA copies of the corresponding processed frames; static fallback equals frame 000; preview GIF contains eight states plus one review-only repeated rest frame.
+- Both runtime sheets and static fallbacks are 32-bit uncompressed DDS with A8R8G8B8 masks, real transparent unused pixels, and no visible chroma fringe.
+- The animated border warning is used instead of a static-only warning treatment because the real frame-authored amber-to-red sequence communicates low neutrality resilience clearly; its frame-000 static fallback is still included.
+
+## Reference and Reproducibility Notes
+
+- The required decision, idea, report, and achievement examples were inspected through the preserved `docs/assets/017_random_faction/contact_sheets/reference_contact_sheet.png` created while those reference folders existed.
+- The original reference folders under `.agents/skills/chaos-redux-event-assets/assets/` and the achievement overlay source were deleted from the current tree after the package was produced. Their absence does not affect the final runtime assets, but those historical inputs must be restored before regenerating achievement not-eligible variants from scratch.
+- The original source commit did not retain verbatim built-in imagegen tool-call text. The canonical production prompts are recorded in `docs/assets/017_random_faction/prompts/icon_and_animation_prompts.md` without claiming to be verbatim transcripts.
+
 Blocked assets: none.
+
+Simplifications or substituted assets: none.
