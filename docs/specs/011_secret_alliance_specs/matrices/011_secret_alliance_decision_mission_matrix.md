@@ -1,6 +1,6 @@
 # Event 011 Secret Alliance decision and mission matrix
 
-All names in this matrix are working labels, not final localisation. Costs are design bands. Implementation should calculate them from target scale, current pressure, prior use, and available resources.
+Status: implemented design matrix reconciled to final gameplay and balance freeze `1c87d923`. Names remain design labels where they differ from final localisation. Live costs are calculated from target capacity, action family, relevant Evidence bands, and available resources. There is no separate repeat-use cost multiplier.
 
 ## Category lifecycle
 
@@ -28,22 +28,22 @@ All names in this matrix are working labels, not final localisation. Costs are d
 
 ## Counterintelligence missions
 
-| Working label | Type | Objective | Duration band | Full success | Partial success | Failure |
+| Working label | Type | Objective | Runtime timeout | Full success | Partial success | Failure |
 | --- | --- | --- | --- | --- | --- | --- |
-| Watch the liaison route | Timed mission | Maintain surveillance on a known route without alarming it | 90 to 140 days | Identify a member and safehouse | Gain Evidence but lose the route | Pact cleans the route and alertness rises |
-| Seize a compromised courier | Timed mission | Control named border, port, or capital route and maintain agency readiness | 90 to 120 days | Capture material and identify a member | Disrupt route and gain moderate Evidence | Courier escapes, later traffic becomes harder to trace |
-| Turn the recruited clerk | Goal mission | Preserve access, avoid broad purges, and feed controlled material | 120 to 180 days | Create a turned channel | One false packet is accepted | Clerk disappears or exposes the operation |
-| Protect the defecting envoy | Timed mission | Keep security and diplomatic access while extraction occurs | 90 to 150 days | Reveal one member and one planned operation | Gain Evidence without membership proof | Envoy is killed, abducted, or recants |
-| Break the safehouse network | Regional timed mission | Hold or police named urban and transport states, commit supplied units and agency assets | 120 to 180 days | Remove a network and reduce readiness | Delay operations | Raid fails and raises pact cohesion through shared fear |
-| National manhunt | Emergency mission | Respond to an attempted political killing | 60 to 100 days | Capture an operative and gain major Evidence | Protect officials and reduce future risk | Another official is attacked or the cell escapes |
-| Control the rumor channel | Goal mission | Keep public stability, avoid overreaction, and trace the source | 90 to 140 days | Turn media contact and reduce recruitment | Reduce political pressure | Crackdown creates credibility loss and recruitment gain |
+| Watch the liaison route | Timed mission | Maintain surveillance on a known route without alarming it | 150 days | Identify a member and safehouse | Gain Evidence but lose the route | Pact cleans the route and alertness rises |
+| Seize a compromised courier | Timed mission | Control named border, port, or capital route and maintain agency readiness | 135 days | Capture material and identify a member | Disrupt route and gain moderate Evidence | Courier escapes, later traffic becomes harder to trace |
+| Turn the recruited clerk | Goal mission | Preserve access, avoid broad purges, and feed controlled material | 190 days | Create a turned channel | One false packet is accepted | Clerk disappears or exposes the operation |
+| Protect the defecting envoy | Timed mission | Keep security and diplomatic access while extraction occurs | 150 days | Reveal one member and one planned operation | Gain Evidence without membership proof | Envoy is killed, abducted, or recants |
+| Break the safehouse network | Regional timed mission | Hold or police named urban and transport states, commit supplied units and agency assets | 190 days | Remove a network and reduce readiness | Delay operations | Raid fails and raises pact cohesion through shared fear |
+| National manhunt | Emergency mission | Respond to an attempted political killing | 100 days | Capture an operative and gain major Evidence | Protect officials and reduce future risk | Another official is attacked or the cell escapes |
+| Control the rumor channel | Goal mission | Keep public stability, avoid overreaction, and trace the source | 140 days | Turn media contact and reduce recruitment | Reduce political pressure | Crackdown creates credibility loss and recruitment gain |
 
 ## Protection decisions
 
 | Working label | Availability | Concrete commitment | Preparedness effect | Secondary effect | Repetition control |
 | --- | --- | --- | --- | --- | --- |
 | Compartmentalize staff plans | Intelligence clue | Command power, army experience, temporary planning penalty | Strong protection against plan theft | Slower coordination for target army | Cooldown, stronger burden when repeated |
-| Rotate ciphers and couriers | Cipher or courier incident | Command power, trains or convoys, agency capacity | Protects intelligence and reduces penetration chance | Temporary communication friction | Replacement cost escalates after repeated use |
+| Rotate ciphers and couriers | Cipher or courier incident | Command power, trains or convoys, agency capacity | Protects intelligence and reduces penetration chance | Temporary communication friction | Long project lock and resource burden limit reuse |
 | Secure industrial choke points | Sabotage clue | Support equipment, civilian factory burden, local unit presence | Protects priority factories and rail nodes | Temporary production cost | Limited number of protected regions |
 | Disperse critical stockpiles | Evolution II | Trucks, trains, fuel, military factory disruption | Reduces severe stockpile loss and depot strikes | Raises logistics burden | Cannot cover every theater |
 | Guard the political cabinet | Threat or killing attempt | Manpower, command power, stability cost | Protects leaders and advisors | Public security presence can hurt legitimacy | Emergency duration only |
@@ -137,11 +137,11 @@ Border actions exist only against a neighboring pact member or high-confidence s
 The category should normally show no more than:
 
 - two active investigation missions
-- two active protection projects
+- one active protection project
 - one diplomatic probe against the selected suspect
 - one offensive counter-network action
 - one border mission when geography allows it
-- two emergency actions during Evolution III
+- one emergency action during Evolution III
 
 Completed, obsolete, invalid, or route-incompatible decisions close cleanly. Suspect-targeted actions use a selected-target flow so the category does not list every country at once.
 

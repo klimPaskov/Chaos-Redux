@@ -1,5 +1,7 @@
 # Decision and mission planning audit handoff
 
+Status: historical planning audit. The live decision and mission surface is implemented and frozen at `1c87d923`; use the final decision matrix and holistic completion audit for current facts.
+
 ## Status by design surface
 
 | Surface | Planning status | Main evidence |
@@ -16,8 +18,8 @@
 | Revealed-war fracture | Complete | Seven actions tied to Resolve and motive |
 | AI equivalence | Complete at design level | AI matrix and prompt |
 | Cleanup | Complete at design level | Category and target lifecycle rules |
-| Localisation | Direction complete, final copy pending implementation | Localisation handoff |
-| Assets | Fully registered for planning | Asset register |
+| Localisation | Historical direction complete; final copy implemented | Final localisation audit |
+| Assets | Historical planning register fulfilled | Final asset register and validator |
 
 ## Strengths
 

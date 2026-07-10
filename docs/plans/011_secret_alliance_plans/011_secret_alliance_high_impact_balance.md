@@ -4,6 +4,8 @@ Date: 2026-07-10
 
 ## Directive and disposition
 
+Status: implemented and frozen in commit `1c87d9235319781c871c2948813ab55693eb8618`. This document is the accepted balance rationale and validation record for that freeze.
+
 This balance tranche implements the accepted direction that Event 011 must use substantially larger, consequential values and much harsher counter-network costs. It prevents a one-state minor from buying full Preparedness through cheap project cycling while preserving a difficult route to a complete defense through several independently funded systems.
 
 The source design is updated in `docs/specs/011_secret_alliance_specs/specs/011_secret_alliance_spec_part_5_ai_presentation_and_acceptance.md`. Live tuning remains centralized in `common/script_constants/011_secret_alliance_constants.txt`; mission timeouts and decision cooldowns that do not parse shared script constants remain file-scoped at the top of `common/decisions/011_secret_alliance_decisions.txt`.

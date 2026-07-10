@@ -1,4 +1,6 @@
-# Package manifest
+# Original source-package manifest
+
+Status: historical packaging ledger. The byte counts and SHA-256 values below describe the original 33-file source package and are intentionally not presented as current checksums after implementation reconciliation. Final gameplay and balance authority is `1c87d923`, and current runtime hashes are recorded in `handoffs/documentation_state.md` and the holistic completion audit.
 
 - Event: 011 Secret Alliance
 - Package type: source specification and implementation handoff
@@ -58,4 +60,4 @@
 
 ## Package status
 
-The source specification is complete. Gameplay implementation, final localisation, visual asset production, licensed audio production, workbook editing, and in-game validation remain implementation tasks. No project custom subagent was externally spawned in this environment. The supplied subagent contracts were applied manually and their disposition is documented under `handoffs/`.
+The source specification is implemented. Gameplay, final localisation, visual assets, licensed audio, workbook alignment, specialist audits, and documentation reconciliation are complete at the final static evidence freeze. The original subagent-environment note remains planning chronology. No in-engine playtest is claimed by the documentation audit.

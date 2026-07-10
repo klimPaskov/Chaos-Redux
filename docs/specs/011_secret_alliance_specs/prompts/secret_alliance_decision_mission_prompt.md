@@ -1,5 +1,7 @@
 # Decision and mission implementation prompt: Event 011 Secret Alliance
 
+Status: fulfilled historical implementation prompt. The final decision and mission surface is frozen at `1c87d923`; current durations, caps, and costs are recorded in the reconciled decision matrix and completion audit.
+
 Implement the full decision, mission, and mechanic-window system described in the five event spec parts and `matrices/011_secret_alliance_decision_mission_matrix.md`. Follow the project decisions and missions skill, event skill, and frame-animation skill.
 
 ## Core category behavior

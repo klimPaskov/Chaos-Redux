@@ -1,5 +1,7 @@
 # Improvement-loop closure handoff
 
+Status: historical source-design closure. The accepted implementation addendum is fully disposed in `docs/plans/011_secret_alliance_plans/011_secret_alliance_improvement_resolution.md`; no accepted improvement item remains queued.
+
 ## Review question
 
 Does Event 011 still need a broader route, country, focus, formable, UI, asset, or super-event expansion before its source specification can close?

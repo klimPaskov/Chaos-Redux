@@ -1,5 +1,7 @@
 # Event 011 Secret Alliance super-event text research
 
+Status: historical candidate research. The title is no longer blocked. The implemented package uses `THE PACT UNMASKED`, the Sun Tzu quotation, the `Look about you.` button fragment, five route descriptions, slot `73`, and audio ID `43`. See `docs/super_events/011_secret_alliance_super_event_research.md`.
+
 ## Super-event role
 
 The super-event appears the first time the concealed pact becomes a public faction. It is a reveal and faction-formation moment. It is not a world-end presentation and should not sound like an inevitable apocalypse.
@@ -8,7 +10,7 @@ The player should feel that many earlier incidents have acquired a single meanin
 
 ## Title research direction
 
-Final title wording remains blocked for the implementation research pass. It should be short and specific to public coalition formation. It should avoid generic phrases about darkness, final war, the end beginning, or a new world order.
+At the time of this candidate pass, final title wording remained open. That planning state is superseded by the implemented title `THE PACT UNMASKED`.
 
 Useful concepts:
 

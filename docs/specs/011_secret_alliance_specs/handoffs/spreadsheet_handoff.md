@@ -1,49 +1,50 @@
-# Event catalog spreadsheet handoff
+# Event 011 event-catalog spreadsheet handoff
 
-## Status
+## Current status
 
-The event catalog workbook was not edited because this task creates source specifications, not final in-game wording. The spreadsheet worker should run after implementation and localisation are stable.
+The planning-era instruction to defer workbook work is superseded. The live catalog workbook is frozen at commit `97a2da80` and reconciled to final Event 011 and SCN-009 wording. Final gameplay and balance commit `1c87d923` changes numeric decision tuning and matching Event 011 localisation, not the workbook's narrative mirrors or status cells.
 
-## Event row
+- Workbook: `docs/spreadsheets/chaos_redux_events_catalog.xlsx`
+- SHA-256: `597E71A1307958135BA1B34A8E60741320CD9E2753FA2EBDDBC1ED83403E1D59`
+- `Events!M12`: `Implemented`
+- `Scenarios!F9`: `Implemented`
+- Formula error cells: none
+- Formula error tokens: none
 
-- Event ID: 11
-- Event name: Secret Alliance
-- Type: Minor Fire-Once
-- Status after full implementation: update from To Be Reworked to the repository's completed or active status value
-- Cluster: blank
+This documentation pass does not edit the workbook.
 
-## Fields to update later
+## Event row disposition
 
-- Details
-- event log wording mirror
-- evolution names and detail mirrors for Evolutions I, II, and III
-- super-event presence and public reveal role
-- manual scenario entry and types
-- implementation status
-- any columns for asset, documentation, or completion tracking used by the live workbook
+| Field | Current disposition |
+| --- | --- |
+| Event ID | `11` |
+| Event name | `Secret Alliance` |
+| Type | Minor Fire-Once |
+| Status | `Implemented` |
+| Cluster | Blank; Event 011 is not clustered |
+| Details | Mirrors the implemented Event Log description rather than variables or hidden mechanics |
+| Evolutions I-III | Names and detail wording match the in-game localisation |
+| Super-event | Records the first public reveal and faction-formation role |
+| Scenario | Records SCN-009 `Coalition Unmasked` and its immediate public-coalition role |
 
-## Player-facing Details direction
+## Wording contract
 
-Describe recurring foreign interference against the target, growing evidence of coordination among several governments, and the possibility that the network can become an open coalition. Do not list variables, modifiers, member-selection rules, decision effects, war-call code, or hidden doctrines.
+The Event Details mirror describes foreign incidents, corroborated coordinated interference, and the public coalition from the target's world-state perspective. It does not expose hidden member count, exact Cohesion, exact Readiness, internal variables, code paths, or implementation history.
 
-## Evolution detail direction
+Evolution wording follows the implemented localisation:
 
-- Evolution I: a wider circle of minor governments begins coordinating more frequent activity while membership remains concealed.
-- Evolution II: a major sponsor can organize the network, severe operations become possible, and the target gains an investigation and preparation response system.
-- Evolution III: the coalition becomes publicly visible, may gain another major, and moves toward open war.
+- Evolution I widens concealed coordination and minor recruitment.
+- Evolution II permits a strategically valid major sponsor, severe operations, and the target's investigation and preparedness system.
+- Evolution III closes the coalition toward public formation and open war, with controlled, forced, weakened, and fractured state outcomes.
 
-Use the exact final in-game localisation wording rather than paraphrasing these directions.
+The scenario record reflects five compositions, Regional Ring, Ideological Front, Great-Power Sponsor, Unlikely Coalition, and Random Coalition, across Low, Medium, High, and Maximum intensity. Scenario members are AI-only and the launching human remains the target.
 
-## Scenario table direction
+## Alignment evidence
 
-Add the final scenario name and exact in-game detail after registration. Include the five type labels and four intensity bands only where the workbook schema supports them. The scenario launches an immediate public coalition and war against the selected target.
+- Automatic Event Log wording is selected by durable target-owned coordinated-interference and public-reveal history flags. Scenario and forced origins do not manufacture automatic-run history.
+- Super-event slot `73` uses the exact five route packages through durable presentation snapshots and `GetSecretAlliancePresentationFactionName`.
+- The workbook status matches implemented gameplay, final localisation, six achievements, the 57-DDS asset package, the eight-frame confrontation emblem plus still fallback, and licensed audio ID `43`.
 
-## Blockers
+## Remaining items
 
-- final Event Details localisation not yet written
-- final evolution names not yet written
-- final scenario public name and ID not yet registered
-- final super-event title not yet selected
-- implementation status does not yet exist
-
-The spreadsheet worker should mark unresolved cells for review rather than inventing final copy.
+No workbook content or formula blocker remains. The holistic verdict is owned by `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md`; this spreadsheet handoff does not replace it. No in-engine playtest is claimed.

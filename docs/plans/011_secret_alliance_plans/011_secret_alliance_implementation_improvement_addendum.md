@@ -1,8 +1,10 @@
 # Event 011 Secret Alliance implementation improvement addendum
 
-Status: accepted and resolved design-fidelity pass.
+Status: accepted mandatory design-fidelity pass, fully disposed.
 
-`011_secret_alliance_improvement_resolution.md` records the implementation disposition of tranches A-G. That resolution closes this addendum as a planning item and does not make an Event 011 completion claim. The clean decision and mission freeze at `b7965b7e` and the clean localisation freeze at `087d66ab` record their audited states. Gameplay candidate `c4bb10ce` postdates those freezes with later commitment and operation-dossier causality, and its final completion audit is still running.
+`011_secret_alliance_improvement_resolution.md` records the implementation or promotion disposition of every accepted requirement in tranches A-G, all seventeen acceptance scenarios, and the mandatory architecture carryover. No accepted item remains queued or unresolved. That resolution closes this addendum as a planning item and does not make an Event 011 completion claim.
+
+The implementation chronology is `abc70f55` for the causal gameplay tranche, `6a33976e` for the first reveal wording freeze, `3a48a344` for valid-human recruitment capacity, `690dae0e` for reveal-time casualty baselines, `a1f47c0c` for the main lifecycle and presentation closure, `7563648f` for counted delayed-callback isolation, `97a2da80` for wording and catalog mirrors, and `1c87d923` for the final high-impact balance freeze. The clean reports at `b7965b7e` and `087d66ab` remain historical scoped evidence; the final decision, completion-finding, localisation, and balance rescans supersede them as current authority. DM-15 through DM-20 and CA-01 through CA-13 are resolved. The holistic verdict is owned by `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md`; this accepted addendum does not replace it.
 
 Date: 2026-07-10.
 
@@ -360,7 +362,7 @@ Human candidates require explicit join, refuse, leak, or expose outcomes during 
 
 Keep the six registered achievements. Strengthen their underlying proof:
 
-- complete-network proof uses independent evidence classes and the active reveal snapshot
+- complete-network proof uses independent evidence classes and the active reveal membership record
 - turned-source proof requires a preserved channel and a concrete wartime result
 - fracture-exit proof counts only Event 011 withdrawal, refusal, or separate-terms outcomes
 - Maximum scenario proof uses immutable type, intensity, achieved composition, consent, capital, and independence facts
@@ -396,7 +398,7 @@ None of these optional ideas blocks Event 011 completion. They must not be used 
 
 - Keep the existing six achievements.
 - Keep one compact category-attached mechanic GUI.
-- Keep the single Evolution III warning animation family.
+- Keep the single Evolution III confrontation-emblem animation family. The original warning label is superseded player-facing terminology.
 - Keep existing countries and their focus trees.
 - Keep the event outside a cluster.
 - Keep one reveal super-event.

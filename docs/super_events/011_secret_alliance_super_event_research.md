@@ -1,10 +1,10 @@
 # Event 011 Secret Alliance super-event research
 
-This note records the authoritative implementation package for the first public reveal of Event 011 `Secret Alliance`.
+This note records the authoritative implementation package for the first public reveal of Event 011 `Secret Alliance`. Gameplay, balance, and presentation state are frozen at `1c87d9235319781c871c2948813ab55693eb8618`; Event 011 localisation has SHA-256 prefix `6A42CEFE`. The balance tranche does not alter the verified quote, button fragment, five route packages, image, audio, or presentation lifetime.
 
 ## Research status
 
-- Text package: complete and implementation-ready
+- Text package: complete and implemented
 - Quote wording and attribution: verified against a public-domain primary-text edition
 - Button fragment: verified against a public-domain primary-text edition
 - Audio research and final files: complete
@@ -14,7 +14,7 @@ This note records the authoritative implementation package for the first public 
 - Final super-event image: complete and wired
 - Gameplay, localisation, GFX, audio-definition, and music-table wiring: complete
 
-The source specification governs the selection. The older plan that chose Luke 8:17 and `In battalions.` is superseded.
+The source specification governs the selection. The older plan that chose Luke 8:17 and `In battalions.` is a superseded candidate package.
 
 ## Final text package
 
@@ -34,10 +34,11 @@ chaosx_super_event.73.t: "THE PACT UNMASKED"
 chaosx_super_event.73.q: "\"All warfare is based on deception.\"\n§YSun Tzu, The Art of War, trans. Lionel Giles§!"
 chaosx_super_event.73.a: "Look about you."
 chaosx_super_event.73.d: "[This.GetSecretAllianceSuperEventDescription]"
-super_event_73_desc_hostile_war: "The entry of one pact government into open war has activated commitments prepared in secret. [secret_alliance_leader.GetNameDefCap] has called [?secret_alliance_target.secret_alliance_reveal_member_count_snapshot|0] governments into [secret_alliance_leader.GetFactionName] against [secret_alliance_target.GetNameDef]. Military missions, supply agreements, and earlier disturbances now serve one campaign."
-super_event_73_desc_pact_controlled: "At a public conference, [secret_alliance_leader.GetNameDefCap] has announced [secret_alliance_leader.GetFactionName] as a common front against [secret_alliance_target.GetNameDef]. [?secret_alliance_target.secret_alliance_reveal_member_count_snapshot|0] governments have signed the declaration, opened military liaison offices, and placed their preparations under a single command. The coalition's offensive timetable has entered public view."
-super_event_73_desc_player_forced: "Evidence released by [secret_alliance_target.GetNameDef] has exposed the governments coordinating against it. [secret_alliance_leader.GetNameDefCap] has held [?secret_alliance_target.secret_alliance_reveal_member_count_snapshot|0] members together under the name [secret_alliance_leader.GetFactionName]. The exposed coalition has compromised routes, known contacts, and contested commitments that leave its first military plans open to interference."
-super_event_73_desc_fractured: "After several withdrawals, [?secret_alliance_target.secret_alliance_reveal_member_count_snapshot|0] governments have joined [secret_alliance_leader.GetNameDef] in [secret_alliance_leader.GetFactionName] against [secret_alliance_target.GetNameDef]. Empty chairs and unsigned commitments mark the public conference. The remaining delegations have opened military liaison offices and begun a common timetable for joint operations."
+super_event_73_desc_hostile_war: "The entry of one pact government into open war has activated commitments prepared in secret. [secret_alliance_presentation_leader.GetNameDefCap] has called [?secret_alliance_presentation_target.secret_alliance_reveal_member_count_snapshot|0] governments into [GetSecretAlliancePresentationFactionName] against [secret_alliance_presentation_target.GetNameDef]. Military missions, supply agreements, and earlier disturbances now serve one campaign."
+super_event_73_desc_pact_controlled: "At a public conference, [secret_alliance_presentation_leader.GetNameDefCap] has announced [GetSecretAlliancePresentationFactionName] as a common front against [secret_alliance_presentation_target.GetNameDef]. [?secret_alliance_presentation_target.secret_alliance_reveal_member_count_snapshot|0] governments have signed the declaration, opened military liaison offices, and placed their preparations under a single command. The coalition's offensive timetable has entered public view."
+super_event_73_desc_player_forced: "Evidence released by [secret_alliance_presentation_target.GetNameDef] has exposed the governments coordinating against it. [secret_alliance_presentation_leader.GetNameDefCap] has held [?secret_alliance_presentation_target.secret_alliance_reveal_member_count_snapshot|0] members together under the name [GetSecretAlliancePresentationFactionName]. The exposed coalition has compromised routes, known contacts, and contested commitments that leave its first military plans open to interference."
+super_event_73_desc_fractured: "[?secret_alliance_presentation_target.secret_alliance_reveal_member_count_snapshot|0] governments have entered [GetSecretAlliancePresentationFactionName] under [secret_alliance_presentation_leader.GetNameDef] against [secret_alliance_presentation_target.GetNameDef]. Old grievances are already splitting the declaration. A threatened withdrawal, delayed signatures, and unsigned operational orders may empty chairs before the first joint action. Liaison offices are open. Whether every delegation answers the call remains unsettled."
+super_event_73_desc_weakened: "[secret_alliance_presentation_leader.GetNameDefCap] has announced [GetSecretAlliancePresentationFactionName] against [secret_alliance_presentation_target.GetNameDef]. Disrupted schedules and defensive preparations have forced the delegates into a hurried opening. [?secret_alliance_presentation_target.secret_alliance_reveal_member_count_snapshot|0] governments have signed the declaration. Liaison staffs are revising routes, calls, and deployment plans already under strain."
 ```
 
 ## Reveal-route mapping
@@ -48,17 +49,22 @@ super_event_73_desc_fractured: "After several withdrawals, [?secret_alliance_tar
 | `super_event_73_desc_pact_controlled` | `secret_alliance_reveal_route.public_conference` |
 | `super_event_73_desc_player_forced` | `secret_alliance_reveal_route.public_dossier`, `captured_conference`, and `preemption` |
 | `super_event_73_desc_fractured` | `secret_alliance_reveal_route.fractured` |
+| `super_event_73_desc_weakened` | `secret_alliance_reveal_route.weakened` |
 
-No generic route fallback is approved. Every current reveal-route value is mapped.
+No generic route fallback is approved. Every current reveal-route value is mapped. The controlled package is selected only for a strong and ready pact facing lower target Preparedness. The player-forced package covers coalition-case Evidence or an exposed sponsor. The fractured package covers low Cohesion, a recent dispute, or a preserved turned channel. The weakened package is the remaining public-conference outcome after the state checks and applies the matching Cohesion and Readiness losses before conversion.
 
 ## Dynamic localisation inputs
 
-- fixed target `secret_alliance_target`
-- public faction leader `secret_alliance_leader`
-- actual public faction name `[secret_alliance_leader.GetFactionName]`
-- reveal count `[?secret_alliance_target.secret_alliance_reveal_member_count_snapshot|0]`
+- presentation target `secret_alliance_presentation_target`
+- presentation leader `secret_alliance_presentation_leader`
+- stable presentation faction helper `[GetSecretAlliancePresentationFactionName]`
+- reveal count `[?secret_alliance_presentation_target.secret_alliance_reveal_member_count_snapshot|0]`
 
-The event-target prefix is omitted inside localisation. The count uses integer formatting and reads the durable reveal snapshot on the fixed target. The snapshot must be created before the super-event is shown.
+The event-target prefix is omitted inside localisation. The count uses integer formatting and reads the durable reveal-time member count on the presentation target. `GetSecretAlliancePresentationFactionName` resolves the country-name or adjective-name form from the copied grammar flag rather than reading a faction that settlement may already have renamed or dismantled.
+
+## Presentation lifetime
+
+`secret_alliance_fire_reveal_super_event` copies the route, target, leader, member count, and faction-name grammar before it opens slot `73`. The slot and audio remain active for 14 days. Hidden event `chaosx.nr11.202` runs on day 15 and clears the slot, audio ID, route snapshot, presentation targets, and grammar flag. Country lifecycle handling closes the same context early if either presentation country ceases to exist. Automatic and scenario relaunch gates require counted `.50` delayed-call callbacks, counted `.51` through `.53` commitment callbacks, this presentation callback context, the `.190` war-pulse callback, and the `.201` scenario notice callback to drain before a new run starts. Annexation releases the counted delayed-call slot owned by the annexed country.
 
 ## Quote source and rights
 
@@ -96,7 +102,8 @@ The button uses the exact lexical fragment `look about you` with standalone capi
 - performer United States Marine Band
 - director Col. John R. Bourgeois
 - recording source *Sound Off!*, 1992
-- source and recording rights public domain as documented in the audio handoff
+- composition status public domain, separately documented in the audio handoff and Wikimedia Commons rights record
+- recording status public-domain United States federal-government performance, independently identified by the official Marine Band catalogue
 - audio ID `43`
 - final duration `86.101746` seconds
 - final OGG `music/011_secret_alliance/super_event_43_public_reveal.ogg`
@@ -120,12 +127,12 @@ The final generated documentary image is registered in `interface/chaosx_super_e
 
 ## UI fit
 
-The title and remark are short. The quote uses one line plus attribution. Each description uses one paragraph and three complete sentences in the active `320 x 370` description box. Dynamic long-form country and faction names remain the presentation edge case. No text or wiring fallback is used for them.
+The title and remark are short. The quote uses one line plus attribution. Each description uses one compact paragraph in the active `320 x 370` description box. Dynamic long-form country names remain the presentation edge case, while the stable helper prevents live faction teardown from changing the displayed faction identity. No generic text or wiring fallback is used.
 
 ## Implementation handoff
 
-The full selector logic, exact localisation contract, source comparison, and wiring checklist are in:
+The historical selector plan, source comparison, and wiring checklist are in:
 
 `docs/plans/011_secret_alliance_plans/subagent_handoffs/super_event_text_research.md`
 
-No quote, remark, title, audio, image, or route-text fallback was used. The settings-aware music and sound variants, audio ID table, image selector, explicit fractured-route description, reveal effect, and music catalogue row are fully wired.
+That handoff's old image and wiring blockers are superseded by the final implementation package. No quote, remark, title, audio, image, or route-text fallback was used. The settings-aware music and sound variants, audio ID table, image selector, explicit fractured and weakened route descriptions, durable 14-day presentation context, day-15 cleanup, reveal effect, and music catalogue row are fully wired. The holistic verdict is owned by `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md`; this super-event record does not replace it.
