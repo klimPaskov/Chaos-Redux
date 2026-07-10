@@ -8,8 +8,8 @@ The implementation is a fresh source design. Event 046 is an inactive unknown pl
 
 1. The random-event dispatcher, Natural Disasters cluster, Disaster Barrage scenario, or another event calls `call_natural_disaster` from country scope.
 2. The public API validates the caller, family, target mode, severity, presentation policies, scaling overrides, heat exclusion, and abnormal-family access.
-3. The resolver selects an exact country, state, or strategic region and provisionally allocates a global sequence id; a no-target rejection rolls that allocation back.
-4. Every primary impact receives a distinct future date. The warning job, impact job, controller report, optional news item, family follow-up, and recovery reassessments are stored in the affected state's current controller queue.
+3. The resolver selects an exact country, state, or strategic region. Random Event 013 calls may reroll the family-target pair through the bounded target-attempt table before rejecting, then provisionally allocate a global sequence id; a no-target rejection rolls that allocation back.
+4. Every primary impact receives a distinct future date. Random Event 013 and cluster seasons always give the first impact a state-specific warning on the preceding day, while later warnings and reusable external calls retain family and exposure chance. The warning job, impact job, controller report, optional news item, family follow-up, and recovery reassessments are stored in the affected state's current controller queue.
 5. `chaosx.nr13.2` processes one due job. Impact resolution applies Deaths-system population loss, family-specific building damage, state disruption, regional spread when appropriate, aftermath-card state, report/news routing, and follow-up scheduling.
 6. Rescue, stabilization, and reconstruction missions advance the state card. Full recovery closes the card; partial or failed work prolongs cleanup and may strengthen delayed chains.
 7. Sequence-aware ledgers close achievement and history predicates only after that exact sequence has no queued jobs left in the affected country.
@@ -84,17 +84,17 @@ Geological disasters at regional severity or above can produce a delayed tsunami
 
 Baseline random seasons draw earthquake, flood, extreme wind, thunderstorm, hailstorm, cold wave, heat wave, wildfire, and dry mass movement. They use local or severe impacts with distinct state targets and delayed reports, cause meaningful damage to infrastructure, supply, industry, ports, airfields, or resources according to family identity, and pass population losses to the shared Deaths system as the natural-disaster cause.
 
-### Evolution I - Wider Disaster Seasons
+### Wider Disaster Seasons
 
-Evolution I expands sequence length and adds tropical cyclone, blizzard, drought, dust and sandstorm, wet mass movement, volcanic eruption, and storm surge to the random pool. More warning and aftermath cards can compete for the fixed mission slots, making prioritization important even before regional spread is common.
+This first evolution unlocks at Gathering Storm. It expands sequence length and adds tropical cyclone, blizzard, drought, dust and sandstorm, wet mass movement, volcanic eruption, and storm surge to the random pool. More warning and aftermath cards can compete for the fixed mission slots, making prioritization important even before regional spread is common.
 
-### Evolution II - Regional Cascades
+### Regional Cascades
 
-Evolution II adds tornado outbreak, ashfall, lahar, and tsunami to the normal random pool. It raises deaths, building damage, state-modifier duration, neighboring-state damage, supply disruption, famine, disease, refugee pressure, and recovery-score penalties. Regional and catastrophic impacts apply weaker but still persistent cards to neighboring valid states, including their own controller reports and recovery work.
+This second evolution unlocks at Rising Chaos. It adds tornado outbreak, ashfall, lahar, and tsunami to the normal random pool. It raises deaths, building damage, state-modifier duration, neighboring-state damage, supply disruption, famine, disease, refugee pressure, and recovery-score penalties. Regional and catastrophic impacts apply weaker but still persistent cards to neighboring valid states, including their own controller reports and recovery work.
 
-### Evolution III - Abnormal Paths
+### Abnormal Paths
 
-Evolution III opens abnormal meteor showers, whole-earth rupture, massive eruption, moving storm and tornado corridors, multi-coast tsunami paths, and related severe chains. These can devastate several states or regions while remaining non-terminal. Automatic abnormal families observe a global cooldown; the manual Maximum Disaster Barrage may bypass that cooldown only for its call and does not record a natural Evolution III milestone.
+This third evolution unlocks at Chaos. It opens abnormal meteor showers, whole-earth rupture, massive eruption, moving storm and tornado corridors, multi-coast tsunami paths, and related severe chains. These can devastate several states or regions while remaining non-terminal. Automatic abnormal families observe a global cooldown; the manual Maximum Disaster Barrage may bypass that cooldown only for its call and does not record a natural third-evolution milestone.
 
 ## Damage, Deaths, and disruption
 
