@@ -1,19 +1,427 @@
 add_namespace = chaosx.nr17
 
 # ============================================================================
-# CHAOS REDUX - EVENT 017 PLACEHOLDER
+# CHAOS REDUX - EVENT 017 RANDOM FACTION
 # ============================================================================
-# Event 17 keeps a stable namespace so direct references to chaosx.nr17.1
-# resolve safely. It is not registered in the random-event pool.
+# Selects an eligible minor, discovers living faction leaders dynamically, and
+# forces the selected country into one of one to four valid faction options.
+# Follow-up events handle regional pressure, faction leader reaction, and the
+# three Random Faction evolutions.
 # ============================================================================
 
 country_event = {
 	id = chaosx.nr17.1
 	title = chaosx.nr17.1.t
-	desc = chaosx.nr17.1.d
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		random_faction_entry_route_current_country = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr17.10
+	title = chaosx.nr17.10.t
+	desc = chaosx.nr17.10.d
+	picture = GFX_report_event_random_faction_cabinet
 	is_triggered_only = yes
 
 	option = {
-		name = chaosx.nr17.1.a
+		name = chaosx.nr17.10.a
+		trigger = { random_faction_option_1_valid = yes }
+		custom_effect_tooltip = random_faction_option_1_join_tt
+		if = { limit = { event_target:random_faction_option_1_leader = { has_war = yes } } custom_effect_tooltip = random_faction_option_1_war_warning_tt }
+		hidden_effect = { random_faction_choose_option_1_and_join = yes }
+	}
+	option = {
+		name = chaosx.nr17.10.b
+		trigger = { random_faction_option_2_valid = yes }
+		custom_effect_tooltip = random_faction_option_2_join_tt
+		if = { limit = { event_target:random_faction_option_2_leader = { has_war = yes } } custom_effect_tooltip = random_faction_option_2_war_warning_tt }
+		hidden_effect = { random_faction_choose_option_2_and_join = yes }
+	}
+	option = {
+		name = chaosx.nr17.10.c
+		trigger = { random_faction_option_3_valid = yes }
+		custom_effect_tooltip = random_faction_option_3_join_tt
+		if = { limit = { event_target:random_faction_option_3_leader = { has_war = yes } } custom_effect_tooltip = random_faction_option_3_war_warning_tt }
+		hidden_effect = { random_faction_choose_option_3_and_join = yes }
+	}
+	option = {
+		name = chaosx.nr17.10.e
+		trigger = { random_faction_option_4_valid = yes }
+		custom_effect_tooltip = random_faction_option_4_join_tt
+		if = { limit = { event_target:random_faction_option_4_leader = { has_war = yes } } custom_effect_tooltip = random_faction_option_4_war_warning_tt }
+		hidden_effect = { random_faction_choose_option_4_and_join = yes }
+	}
+	option = {
+		name = chaosx.nr17.10.f
+		trigger = { NOT = { random_faction_has_saved_valid_option = yes } }
+		hidden_effect = { random_faction_reopen_dead_faction_file = yes }
+	}
+}
+
+country_event = {
+	id = chaosx.nr17.20
+	title = chaosx.nr17.20.t
+	hidden = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr17.20.a
+		trigger = { random_faction_option_1_valid = yes }
+		hidden_effect = { random_faction_choose_option_1_and_join = yes }
+		ai_chance = {
+			base = constant:random_faction_ai_weight.medium
+			modifier = { factor = constant:random_faction_ai_factor.strong random_faction_ai_prefers_option_1 = yes }
+			modifier = { factor = constant:random_faction_ai_factor.urgent random_faction_option_1_has_regional_pull = yes }
+			modifier = { factor = constant:random_faction_ai_factor.preferred random_faction_option_1_has_regional_reach = yes }
+			modifier = { factor = constant:random_faction_ai_factor.urgent has_war = yes random_faction_option_1_has_common_enemy = yes }
+			modifier = { factor = constant:random_faction_ai_factor.preferred random_faction_option_1_has_positive_relations = yes }
+			modifier = { factor = constant:random_faction_ai_factor.strong random_faction_option_1_has_strong_bloc = yes }
+			modifier = { factor = constant:random_faction_ai_factor.cautious event_target:random_faction_option_1_leader = { random_faction_current_option_has_high_cohesion_strain = yes } }
+			modifier = { factor = constant:random_faction_ai_factor.cautious event_target:random_faction_option_1_leader = { has_country_flag = random_faction_recent_patron_failure } }
+			modifier = { factor = constant:random_faction_ai_factor.preferred random_faction_target_under_strong_pressure = yes random_faction_option_1_has_regional_reach = yes }
+			modifier = { factor = constant:random_faction_ai_factor.discouraged NOT = { random_faction_option_1_has_regional_reach = yes } NOT = { random_faction_target_under_strong_pressure = yes } }
+			modifier = { factor = constant:random_faction_ai_factor.strong random_faction_high_chaos = yes NOT = { random_faction_option_1_has_regional_reach = yes } }
+			modifier = { factor = constant:random_faction_ai_factor.cautious has_war = yes NOT = { random_faction_option_1_has_common_enemy = yes } }
+			modifier = { factor = constant:random_faction_ai_factor.discouraged event_target:random_faction_option_1_leader = { random_faction_current_option_patron_is_failing = yes } NOT = { random_faction_target_under_strong_pressure = yes } }
+		}
+	}
+	option = {
+		name = chaosx.nr17.20.b
+		trigger = { random_faction_option_2_valid = yes }
+		hidden_effect = { random_faction_choose_option_2_and_join = yes }
+		ai_chance = {
+			base = constant:random_faction_ai_weight.medium
+			modifier = { factor = constant:random_faction_ai_factor.strong random_faction_ai_prefers_option_2 = yes }
+			modifier = { factor = constant:random_faction_ai_factor.urgent random_faction_option_2_has_regional_pull = yes }
+			modifier = { factor = constant:random_faction_ai_factor.preferred random_faction_option_2_has_regional_reach = yes }
+			modifier = { factor = constant:random_faction_ai_factor.urgent has_war = yes random_faction_option_2_has_common_enemy = yes }
+			modifier = { factor = constant:random_faction_ai_factor.preferred random_faction_option_2_has_positive_relations = yes }
+			modifier = { factor = constant:random_faction_ai_factor.strong random_faction_option_2_has_strong_bloc = yes }
+			modifier = { factor = constant:random_faction_ai_factor.cautious event_target:random_faction_option_2_leader = { random_faction_current_option_has_high_cohesion_strain = yes } }
+			modifier = { factor = constant:random_faction_ai_factor.cautious event_target:random_faction_option_2_leader = { has_country_flag = random_faction_recent_patron_failure } }
+			modifier = { factor = constant:random_faction_ai_factor.preferred random_faction_target_under_strong_pressure = yes random_faction_option_2_has_regional_reach = yes }
+			modifier = { factor = constant:random_faction_ai_factor.discouraged NOT = { random_faction_option_2_has_regional_reach = yes } NOT = { random_faction_target_under_strong_pressure = yes } }
+			modifier = { factor = constant:random_faction_ai_factor.strong random_faction_high_chaos = yes NOT = { random_faction_option_2_has_regional_reach = yes } }
+			modifier = { factor = constant:random_faction_ai_factor.cautious has_war = yes NOT = { random_faction_option_2_has_common_enemy = yes } }
+			modifier = { factor = constant:random_faction_ai_factor.discouraged event_target:random_faction_option_2_leader = { random_faction_current_option_patron_is_failing = yes } NOT = { random_faction_target_under_strong_pressure = yes } }
+		}
+	}
+	option = {
+		name = chaosx.nr17.20.c
+		trigger = { random_faction_option_3_valid = yes }
+		hidden_effect = { random_faction_choose_option_3_and_join = yes }
+		ai_chance = {
+			base = constant:random_faction_ai_weight.medium
+			modifier = { factor = constant:random_faction_ai_factor.strong random_faction_ai_prefers_option_3 = yes }
+			modifier = { factor = constant:random_faction_ai_factor.urgent random_faction_option_3_has_regional_pull = yes }
+			modifier = { factor = constant:random_faction_ai_factor.preferred random_faction_option_3_has_regional_reach = yes }
+			modifier = { factor = constant:random_faction_ai_factor.urgent has_war = yes random_faction_option_3_has_common_enemy = yes }
+			modifier = { factor = constant:random_faction_ai_factor.preferred random_faction_option_3_has_positive_relations = yes }
+			modifier = { factor = constant:random_faction_ai_factor.strong random_faction_option_3_has_strong_bloc = yes }
+			modifier = { factor = constant:random_faction_ai_factor.cautious event_target:random_faction_option_3_leader = { random_faction_current_option_has_high_cohesion_strain = yes } }
+			modifier = { factor = constant:random_faction_ai_factor.cautious event_target:random_faction_option_3_leader = { has_country_flag = random_faction_recent_patron_failure } }
+			modifier = { factor = constant:random_faction_ai_factor.preferred random_faction_target_under_strong_pressure = yes random_faction_option_3_has_regional_reach = yes }
+			modifier = { factor = constant:random_faction_ai_factor.discouraged NOT = { random_faction_option_3_has_regional_reach = yes } NOT = { random_faction_target_under_strong_pressure = yes } }
+			modifier = { factor = constant:random_faction_ai_factor.strong random_faction_high_chaos = yes NOT = { random_faction_option_3_has_regional_reach = yes } }
+			modifier = { factor = constant:random_faction_ai_factor.cautious has_war = yes NOT = { random_faction_option_3_has_common_enemy = yes } }
+			modifier = { factor = constant:random_faction_ai_factor.discouraged event_target:random_faction_option_3_leader = { random_faction_current_option_patron_is_failing = yes } NOT = { random_faction_target_under_strong_pressure = yes } }
+		}
+	}
+	option = {
+		name = chaosx.nr17.20.e
+		trigger = { random_faction_option_4_valid = yes }
+		hidden_effect = { random_faction_choose_option_4_and_join = yes }
+		ai_chance = {
+			base = constant:random_faction_ai_weight.medium
+			modifier = { factor = constant:random_faction_ai_factor.strong random_faction_ai_prefers_option_4 = yes }
+			modifier = { factor = constant:random_faction_ai_factor.urgent random_faction_option_4_has_regional_pull = yes }
+			modifier = { factor = constant:random_faction_ai_factor.preferred random_faction_option_4_has_regional_reach = yes }
+			modifier = { factor = constant:random_faction_ai_factor.urgent has_war = yes random_faction_option_4_has_common_enemy = yes }
+			modifier = { factor = constant:random_faction_ai_factor.preferred random_faction_option_4_has_positive_relations = yes }
+			modifier = { factor = constant:random_faction_ai_factor.strong random_faction_option_4_has_strong_bloc = yes }
+			modifier = { factor = constant:random_faction_ai_factor.cautious event_target:random_faction_option_4_leader = { random_faction_current_option_has_high_cohesion_strain = yes } }
+			modifier = { factor = constant:random_faction_ai_factor.cautious event_target:random_faction_option_4_leader = { has_country_flag = random_faction_recent_patron_failure } }
+			modifier = { factor = constant:random_faction_ai_factor.preferred random_faction_target_under_strong_pressure = yes random_faction_option_4_has_regional_reach = yes }
+			modifier = { factor = constant:random_faction_ai_factor.discouraged NOT = { random_faction_option_4_has_regional_reach = yes } NOT = { random_faction_target_under_strong_pressure = yes } }
+			modifier = { factor = constant:random_faction_ai_factor.strong random_faction_high_chaos = yes NOT = { random_faction_option_4_has_regional_reach = yes } }
+			modifier = { factor = constant:random_faction_ai_factor.cautious has_war = yes NOT = { random_faction_option_4_has_common_enemy = yes } }
+			modifier = { factor = constant:random_faction_ai_factor.discouraged event_target:random_faction_option_4_leader = { random_faction_current_option_patron_is_failing = yes } NOT = { random_faction_target_under_strong_pressure = yes } }
+		}
+	}
+	option = {
+		name = chaosx.nr17.20.f
+		trigger = { NOT = { random_faction_has_saved_valid_option = yes } }
+		hidden_effect = { random_faction_reopen_dead_faction_file = yes }
+		ai_chance = { base = constant:random_faction_ai_weight.low }
+	}
+}
+
+country_event = {
+	id = chaosx.nr17.30
+	title = chaosx.nr17.30.t
+	desc = chaosx.nr17.30.d
+	picture = GFX_report_event_random_faction_border
+	is_triggered_only = yes
+	trigger = {
+		random_faction_pressured_neutral_decisions_visible = yes
+		random_faction_pressure_source_is_valid = yes
+	}
+
+	immediate = {
+		random_faction_prepare_pressure_choice = yes
+	}
+
+	option = {
+		name = chaosx.nr17.30.a
+		trigger = { random_faction_option_1_valid = yes }
+		custom_effect_tooltip = random_faction_option_1_join_tt
+		if = { limit = { event_target:random_faction_option_1_leader = { has_war = yes } } custom_effect_tooltip = random_faction_option_1_war_warning_tt }
+		hidden_effect = { random_faction_pressure_copy_bloc = yes }
+		ai_chance = {
+			base = constant:random_faction_ai_weight.medium
+			modifier = { factor = constant:random_faction_ai_factor.strong random_faction_ai_prefers_option_1 = yes }
+			modifier = { factor = constant:random_faction_ai_factor.strong random_faction_option_1_has_regional_reach = yes }
+			modifier = { factor = constant:random_faction_ai_factor.urgent has_war = yes random_faction_option_1_has_common_enemy = yes }
+			modifier = { factor = constant:random_faction_ai_factor.preferred random_faction_option_1_has_positive_relations = yes }
+			modifier = { factor = constant:random_faction_ai_factor.strong random_faction_option_1_has_strong_bloc = yes }
+			modifier = { factor = constant:random_faction_ai_factor.cautious event_target:random_faction_option_1_leader = { random_faction_current_option_has_high_cohesion_strain = yes } }
+			modifier = { factor = constant:random_faction_ai_factor.cautious event_target:random_faction_option_1_leader = { has_country_flag = random_faction_recent_patron_failure } }
+			modifier = { factor = constant:random_faction_ai_factor.strong random_faction_target_has_low_resilience = yes }
+			modifier = { factor = constant:random_faction_ai_factor.strong random_faction_target_has_source_faction_neighbor = yes }
+			modifier = { factor = constant:random_faction_ai_factor.cautious random_faction_target_has_high_resilience = yes }
+			modifier = { factor = constant:random_faction_ai_factor.discouraged event_target:random_faction_option_1_leader = { random_faction_current_option_patron_is_failing = yes } NOT = { random_faction_target_has_low_resilience = yes } }
+			modifier = { factor = constant:random_faction_ai_factor.preferred random_faction_high_chaos = yes }
+		}
+	}
+	option = {
+		name = chaosx.nr17.30.b
+		trigger = { random_faction_option_2_valid = yes }
+		custom_effect_tooltip = random_faction_option_2_join_tt
+		if = { limit = { event_target:random_faction_option_2_leader = { has_war = yes } } custom_effect_tooltip = random_faction_option_2_war_warning_tt }
+		hidden_effect = { random_faction_pressure_counter_align = yes }
+		ai_chance = {
+			base = constant:random_faction_ai_weight.medium
+			modifier = { factor = constant:random_faction_ai_factor.strong random_faction_ai_prefers_option_2 = yes }
+			modifier = { factor = constant:random_faction_ai_factor.strong random_faction_option_2_has_regional_reach = yes }
+			modifier = { factor = constant:random_faction_ai_factor.preferred random_faction_option_2_has_positive_relations = yes }
+			modifier = { factor = constant:random_faction_ai_factor.strong random_faction_option_2_has_common_enemy = yes }
+			modifier = { factor = constant:random_faction_ai_factor.strong random_faction_target_has_source_faction_neighbor = yes }
+			modifier = { factor = constant:random_faction_ai_factor.strong random_faction_target_has_low_resilience = yes }
+			modifier = { factor = constant:random_faction_ai_factor.cautious random_faction_target_has_high_resilience = yes }
+			modifier = { factor = constant:random_faction_ai_factor.preferred random_faction_high_chaos = yes }
+			modifier = { factor = constant:random_faction_ai_factor.cautious event_target:random_faction_option_2_leader = { random_faction_current_option_has_high_cohesion_strain = yes } }
+			modifier = { factor = constant:random_faction_ai_factor.cautious event_target:random_faction_option_2_leader = { has_country_flag = random_faction_recent_patron_failure } }
+			modifier = { factor = constant:random_faction_ai_factor.discouraged event_target:random_faction_option_2_leader = { random_faction_current_option_patron_is_failing = yes } NOT = { random_faction_target_has_low_resilience = yes } }
+		}
+	}
+	option = {
+		name = chaosx.nr17.30.c
+		custom_effect_tooltip = random_faction_resist_alignment_tt
+		hidden_effect = { random_faction_pressure_resist_alignment = yes }
+		ai_chance = {
+			base = constant:random_faction_ai_weight.high
+			modifier = { factor = constant:random_faction_ai_factor.strong has_stability > constant:random_faction_resistance_threshold.confident_stability }
+			modifier = { factor = constant:random_faction_ai_factor.strong NOT = { has_war = yes } }
+			modifier = { factor = constant:random_faction_ai_factor.urgent random_faction_target_has_high_resilience = yes }
+			modifier = { factor = constant:random_faction_ai_factor.discouraged random_faction_target_has_low_resilience = yes }
+			modifier = { factor = constant:random_faction_ai_factor.cautious has_war = yes }
+			modifier = { factor = constant:random_faction_ai_factor.cautious random_faction_target_has_source_faction_neighbor = yes }
+			modifier = { factor = constant:random_faction_ai_factor.preferred OR = { has_government = democratic has_government = neutrality } }
+			modifier = { factor = constant:random_faction_ai_factor.cautious OR = { has_government = fascism has_government = communism } }
+			modifier = { factor = constant:random_faction_ai_factor.cautious random_faction_high_chaos = yes }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr17.40
+	title = chaosx.nr17.40.t
+	desc = chaosx.nr17.40.d
+	picture = GFX_report_event_random_faction_liaison
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr17.40.a
+		trigger = { random_faction_leader_reaction_context_valid = yes }
+		custom_effect_tooltip = random_faction_leader_staff_response_tt
+		hidden_effect = { random_faction_leader_staff_mission_from_event = yes }
+		ai_chance = {
+			base = constant:random_faction_ai_weight.high
+			modifier = { factor = constant:random_faction_ai_factor.strong has_war = yes }
+			modifier = { factor = constant:random_faction_ai_factor.preferred NOT = { random_faction_leader_has_multiple_reachable_pressure_targets = yes } }
+		}
+	}
+	option = {
+		name = chaosx.nr17.40.b
+		trigger = { random_faction_leader_reaction_context_valid = yes }
+		custom_effect_tooltip = random_faction_leader_radio_response_tt
+		hidden_effect = { random_faction_leader_radio_network_from_event = yes }
+		ai_chance = {
+			base = constant:random_faction_ai_weight.medium
+			modifier = { factor = constant:random_faction_ai_factor.strong random_faction_leader_has_multiple_reachable_pressure_targets = yes }
+			modifier = { factor = constant:random_faction_ai_factor.preferred NOT = { has_war = yes } }
+			modifier = { factor = constant:random_faction_ai_factor.strong OR = { has_government = fascism has_government = communism } }
+			modifier = { factor = constant:random_faction_ai_factor.cautious has_government = democratic }
+			modifier = { factor = constant:random_faction_ai_factor.strong random_faction_high_chaos = yes }
+		}
+	}
+	option = {
+		name = chaosx.nr17.40.c
+		trigger = { NOT = { random_faction_leader_reaction_context_valid = yes } }
+		hidden_effect = { random_faction_cleanup_dead_faction_targets = yes }
+	}
+}
+
+country_event = {
+	id = chaosx.nr17.50
+	title = chaosx.nr17.50.t
+	desc = chaosx.nr17.50.d
+	picture = GFX_report_event_random_faction_border
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		random_faction_run_evo1_regional_bloc_race = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr17.60
+	title = chaosx.nr17.60.t
+	desc = chaosx.nr17.60.d
+	picture = GFX_report_event_random_faction_border
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		random_faction_run_evo2_pressure = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr17.70
+	title = chaosx.nr17.70.t
+	desc = chaosx.nr17.70.d
+	picture = GFX_report_event_random_faction_regional_cascade
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		random_faction_run_evo3_cascade = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr17.80
+	title = chaosx.nr17.80.t
+	desc = chaosx.nr17.80.d
+	picture = GFX_report_event_random_faction_regional_cascade
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr17.80.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr17.81
+	title = chaosx.nr17.81.t
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_country_flag = random_faction_four_doors_candidate
+				random_faction_alignment_memory_is_valid = yes
+				NOT = { has_capitulated = yes }
+				NOT = { is_subject = yes }
+			}
+			set_country_flag = random_faction_achievement_four_doors
+		}
+		clr_country_flag = random_faction_four_doors_candidate
+		random_faction_cleanup_expired_current_country_state = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr17.82
+	title = chaosx.nr17.82.t
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_country_flag = random_faction_hold_the_line_candidate
+				has_global_flag = random_faction_evolution_i_unlocked
+				NOT = { is_in_faction = yes }
+				NOT = { has_capitulated = yes }
+				NOT = { is_subject = yes }
+				capital_scope = { is_controlled_by = PREV }
+			}
+			set_country_flag = random_faction_achievement_hold_the_line
+		}
+		clr_country_flag = random_faction_hold_the_line_candidate
+		random_faction_cleanup_expired_current_country_state = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr17.83
+	title = chaosx.nr17.83.t
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		random_faction_check_liaison_web_candidate_achievement = yes
+		random_faction_cleanup_expired_current_country_state = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr17.84
+	title = chaosx.nr17.84.t
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_country_flag = random_faction_frontier_commitment_candidate
+				random_faction_frontier_commitment_objective_secured = yes
+			}
+			set_country_flag = random_faction_achievement_frontier_commitment
+		}
+		clr_country_flag = random_faction_frontier_commitment_candidate
+		clear_array = random_faction_frontier_core_state_targets
+		random_faction_cleanup_expired_current_country_state = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr17.85
+	title = chaosx.nr17.85.t
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		random_faction_cleanup_expired_current_country_state = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr17.86
+	title = chaosx.nr17.86.t
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		random_faction_check_not_everyone_achievement = yes
+		random_faction_cleanup_expired_current_country_state = yes
 	}
 }

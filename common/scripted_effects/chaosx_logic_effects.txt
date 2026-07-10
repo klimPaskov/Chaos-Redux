@@ -38,6 +38,8 @@ initialize_event_system = {
     clear_array = global.events_log_history_event_type_entries
     clear_array = global.events_log_history_actor_entries
     clear_array = global.events_log_history_has_actor_entries
+	clear_array = global.events_log_history_secondary_actor_entries
+	clear_array = global.events_log_history_has_secondary_actor_entries
     clear_array = global.events_log_history_minor_since_major_entries
     clear_array = global.events_log_history_unique_left_entries
     clear_array = global.events_log_history_total_fired_entries
@@ -47,6 +49,8 @@ initialize_event_system = {
     clear_array = global.events_log_view_event_type_entries
     clear_array = global.events_log_view_actor_entries
     clear_array = global.events_log_view_has_actor_entries
+	clear_array = global.events_log_view_secondary_actor_entries
+	clear_array = global.events_log_view_has_secondary_actor_entries
     clear_array = global.events_log_view_cluster_id_entries
     clear_array = global.events_log_view_cluster_sequence_entries
     clear_array = global.events_log_events_view_fired_entries
@@ -54,6 +58,8 @@ initialize_event_system = {
     clear_array = global.events_log_events_view_unique_entries
     clear_array = global.events_log_events_view_weight_entries
     clear_array = global.events_log_open_event_detail_entries
+	clear_array = global.events_log_open_event_detail_secondary_actor_entries
+	clear_array = global.events_log_open_event_detail_has_secondary_actor_entries
     clear_array = global.events_log_event_detail_evolution_type_entries
     clear_array = global.events_log_event_detail_evolution_tier_entries
     clear_array = global.events_log_event_detail_evolution_stage_entries
@@ -195,6 +201,7 @@ initialize_event_categories = {
     add_to_array = { global.repeatable_events = 8 }   # +WORLD TENSION
     add_to_array = { global.repeatable_events = 9 }   # WHITE PEACE
 	add_to_array = { global.repeatable_events = 13 }  # NATURAL DISASTERS
+	add_to_array = { global.repeatable_events = constant:random_faction_event.id }  # RANDOM FACTION
     add_to_array = { global.repeatable_events = 18 }  # RAND RESOURCE
     add_to_array = { global.repeatable_events = 19 }  # INF SPAWN
     add_to_array = { global.repeatable_events = 21 }  # RAND CW
@@ -520,6 +527,10 @@ evaluate_random_event_active_pool_candidate = {
 				AND = {
 					check_variable = { event_id = constant:secret_alliance_event.id }
 					NOT = { secret_alliance_automatic_event_is_available = yes }
+				}
+				AND = {
+					check_variable = { event_id = constant:random_faction_event.id }
+					NOT = { random_faction_has_dispatchable_context = yes }
 				}
 				check_variable = { event_id = 6 }
 				check_variable = { event_id = 12 }

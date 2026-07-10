@@ -1,0 +1,99 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 017 RANDOM FACTION IDEAS
+# ============================================================================
+# Country spirits for forced alignment shock, regional bloc pressure, pressured
+# neutrality, liaison missions, and neutrality collapse after Event 17.
+# ============================================================================
+
+@random_faction_alignment_stability = -0.04
+@random_faction_alignment_war_support = -0.02
+@random_faction_alignment_drift_defence = -0.05
+@random_faction_alignment_ally_desire = -0.05
+@random_faction_border_stability = -0.025
+@random_faction_border_war_support = 0.02
+@random_faction_border_conscription = 0.02
+@random_faction_border_drift_defence = -0.03
+@random_faction_polarization_political_power = -0.04
+@random_faction_polarization_trade_opinion = -0.05
+@random_faction_polarization_justification_time = -0.06
+@random_faction_polarization_drift_defence = -0.04
+@random_faction_exhaustion_stability = -0.03
+@random_faction_exhaustion_war_support = -0.03
+@random_faction_exhaustion_political_power = -0.03
+@random_faction_exhaustion_trade_opinion = -0.04
+@random_faction_liaison_command_power = 0.035
+@random_faction_liaison_organization = 0.025
+@random_faction_liaison_planning = 0.04
+@random_faction_liaison_reinforce = 0.01
+@random_faction_coordination_organization = 0.02
+@random_faction_coordination_planning = 0.02
+@random_faction_coordination_reinforce = 0.005
+
+ideas = {
+	country = {
+		random_faction_alignment_shock = {
+			picture = GFX_idea_random_faction_alignment_shock
+			allowed_civil_war = { always = yes }
+			modifier = {
+				stability_factor = @random_faction_alignment_stability
+				war_support_factor = @random_faction_alignment_war_support
+				drift_defence_factor = @random_faction_alignment_drift_defence
+				ai_join_ally_desire_factor = @random_faction_alignment_ally_desire
+			}
+		}
+
+		random_faction_emergency_defensive_coordination = {
+			picture = GFX_idea_random_faction_liaison_mission
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_org_factor = @random_faction_coordination_organization
+				planning_speed = @random_faction_coordination_planning
+				land_reinforce_rate = @random_faction_coordination_reinforce
+			}
+		}
+
+		random_faction_border_pressure = {
+			picture = GFX_idea_random_faction_border_pressure
+			allowed_civil_war = { always = yes }
+			modifier = {
+				stability_factor = @random_faction_border_stability
+				war_support_factor = @random_faction_border_war_support
+				conscription_factor = @random_faction_border_conscription
+				drift_defence_factor = @random_faction_border_drift_defence
+			}
+		}
+
+		random_faction_bloc_polarization = {
+			picture = GFX_idea_random_faction_bloc_polarization
+			allowed_civil_war = { always = yes }
+			modifier = {
+				political_power_gain = @random_faction_polarization_political_power
+				trade_opinion_factor = @random_faction_polarization_trade_opinion
+				enemy_justify_war_goal_time = @random_faction_polarization_justification_time
+				drift_defence_factor = @random_faction_polarization_drift_defence
+			}
+		}
+
+		random_faction_neutrality_exhaustion = {
+			picture = GFX_idea_random_faction_neutrality_exhaustion
+			allowed_civil_war = { always = yes }
+			modifier = {
+				stability_factor = @random_faction_exhaustion_stability
+				war_support_factor = @random_faction_exhaustion_war_support
+				political_power_gain = @random_faction_exhaustion_political_power
+				trade_opinion_factor = @random_faction_exhaustion_trade_opinion
+			}
+		}
+
+		random_faction_liaison_mission = {
+			picture = GFX_idea_random_faction_liaison_mission
+			allowed_civil_war = { always = yes }
+			modifier = {
+				command_power_gain = @random_faction_liaison_command_power
+				army_org_factor = @random_faction_liaison_organization
+				planning_speed = @random_faction_liaison_planning
+				land_reinforce_rate = @random_faction_liaison_reinforce
+			}
+		}
+	}
+}
