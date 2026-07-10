@@ -205,6 +205,14 @@ The pact can be strong, but the player must have credible ways to fracture, dela
 
 Important actions should change membership, evidence quality, preparedness, operation access, reveal timing, or war readiness. Tiny modifiers should support these outcomes rather than replace them.
 
+### Make preparation state-capacity limited
+
+Counter-preparation must be a strategic mobilization, not a cheap meter purchase. Dynamic costs scale from real command power, Army Experience, equipment, transport, fuel, manpower, Political Power, Stability, and War Support commitments. Countries below the small-industry, field-army, or territorial-capacity thresholds pay additional multiplicative surcharges. Large countries retain their existing upward scale, so neither a microstate nor a major can buy the complete response matrix trivially.
+
+Only one protection project and one emergency commitment may be active at a time. Their long lock periods force the target to choose which preparedness layer matters most. The Mobilized band begins at 85, and reaching it requires several independently funded layers such as protection, emergency mobilization, known plans, allied consultation, or a secured frontier. A one-state minor can still defend itself, but cannot reach full Preparedness through cheap project cycling.
+
+Higher costs must buy consequential results. Evidence and confidence gains remain sufficient to reach the public-case gates through independent corroboration. Defensive projects, false plans, defections, war objectives, and settlements have larger visible consequences. Hostile operations, false accusations, failed public actions, coalition opening bonuses, wartime Resolve facts, and persistent ideas increase in parallel so the event remains dangerous rather than becoming a resource sink with negligible outcomes.
+
 ## Anti-exploit rules
 
 - suspects cannot be farmed for repeated Evidence
