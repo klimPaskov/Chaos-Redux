@@ -1,6 +1,8 @@
 # Event 011 Secret Alliance implementation improvement addendum
 
-Status: accepted must-fix design fidelity pass after the first meaningful gameplay implementation tranche.
+Status: accepted and resolved design-fidelity pass.
+
+`011_secret_alliance_improvement_resolution.md` records the implementation disposition of tranches A-G. That resolution closes this addendum as a planning item, but it is not an Event 011 completion claim. The current decision/mission and localisation audits remain authoritative for unresolved implementation findings until clean re-audits supersede them.
 
 Date: 2026-07-10.
 

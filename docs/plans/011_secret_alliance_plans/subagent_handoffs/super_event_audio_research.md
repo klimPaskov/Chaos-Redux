@@ -1,5 +1,9 @@
 # Event 011 Secret Alliance super-event audio research handoff
 
+## Disposition
+
+Accepted and promoted. Audio ID `43` and both final derivatives are implemented and wired. The main-agent wiring work listed later in this research handoff is historical; `docs/super_events/011_secret_alliance_super_event_research.md` and `docs/super_events/super_event_audio_packages.md` are the current implementation records.
+
 ## Scope and outcome
 
 This handoff covers the unique music package for the Event 011 public-revelation and faction-formation super-event. It does not wire gameplay, localisation, music definitions, sound definitions, the music table, or spreadsheets.

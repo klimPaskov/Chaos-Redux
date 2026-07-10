@@ -1,6 +1,8 @@
 # Event 011 Secret Alliance scripted-system architecture pass
 
-Status: implementation-ready design handoff. This pass does not edit gameplay, localisation, UI, GFX, audio, spreadsheet, or event-system files.
+Status: promoted implementation-architecture handoff. This pass did not edit gameplay, localisation, UI, GFX, audio, spreadsheet, or event-system files.
+
+The architecture remains the accepted engine-safety and ownership baseline. References to provisional files, outstanding wiring, or pre-implementation blockers are historical. Current code establishes implementation facts, and the current decision/mission and localisation audits establish completion status.
 
 Date: 2026-07-10.
 

@@ -1,6 +1,8 @@
 # Event 011 Secret Alliance improvement addendum
 
-Status: proposed planning addendum.
+Status: promoted historical planning addendum.
+
+The accepted five-part source specification under `docs/specs/011_secret_alliance_specs/specs/` supersedes this file as design authority. The prohibition on a manual triggerable scenario in this early plan was rejected by the accepted source specification; SCN-009 Coalition Unmasked is part of the approved Event 011 scope. Retain this file only as the improvement-loop design history.
 
 Working labels in this file are implementation handles only. They are not final localisation, final super-event text, final quote text, final button text, or final cultural references.
 

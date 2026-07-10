@@ -1,5 +1,9 @@
 # Event 011 Secret Alliance Decision and Mission Handoff
 
+## Disposition
+
+Historical pre-spec planning handoff. The accepted decision design is now governed by the five-part source specification and `docs/specs/011_secret_alliance_specs/matrices/011_secret_alliance_decision_mission_matrix.md`. The statement near the end of this file that no Event 011 source specification exists is stale. For implementation status, use `subagent_handoffs/decision_mission_audit.md`; it remains the current strict audit until a clean re-audit supersedes it.
+
 This handoff designs the decision and mission layer for Event 011 Secret Alliance. It is direction-only planning. Working labels below are not final localisation and should not be pasted into player-facing text.
 
 ## Implementation Surface
@@ -881,4 +885,3 @@ Every AI decision must use the same validity triggers as the human-facing versio
 - Decision icons, category art, achievement icons, and any animated category presentation are not planned here because the user requested a decision and mission handoff only.
 - Focus integration is not planned because no Event 011 focus surface was provided.
 - Final localisation is not provided by design. Implementation must write in-world text from the direction above.
-
