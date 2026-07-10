@@ -22,6 +22,12 @@
 @ND_RECONSTRUCTION_ACTION_LOCK_DAYS = 210
 @ND_FOREIGN_RELIEF_DEPENDENCY_DAYS = 365
 @ND_CHAIN_MISSION_BASE_DAYS = 1
+@ND_MISSION_MODIFIER_REMOVE_DAYS = -1
+
+# Decision modifier fields do not accept script-constant tokens. These mirrors
+# match natural_disaster_cost_fixed in the shared Event 013 tuning table.
+@ND_CONSTRUCTION_BURDEN = 0.05
+@ND_HEAVY_CONSTRUCTION_BURDEN = 0.10
 
 @ND_PRIORITY_WARNING = 100
 @ND_PRIORITY_CARD = 120
@@ -4085,7 +4091,7 @@ natural_disaster_aftermath_category = {
 			base = @ND_AI_BASE_HIGH
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { natural_disaster_state_has_dense_population = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { check_variable = { natural_disaster_damage_shelter > 0 } } }
-			modifier = { factor = @ND_AI_FACTOR_HIGH stability < constant:natural_disaster_factor.low_stability_threshold }
+			modifier = { factor = @ND_AI_FACTOR_HIGH has_stability < constant:natural_disaster_factor.low_stability_threshold }
 		}
 	}
 
@@ -5268,8 +5274,9 @@ natural_disaster_aftermath_category = {
 		selectable_mission = no
 		is_good = no
 		days_mission_timeout = constant:natural_disaster_aftermath.rescue_days
+		days_remove = @ND_MISSION_MODIFIER_REMOVE_DAYS
 		modifier = {
-			consumer_goods_factor = constant:natural_disaster_cost_fixed.construction_burden
+			consumer_goods_factor = @ND_CONSTRUCTION_BURDEN
 		}
 		complete_effect = {
 			if = {
@@ -5354,8 +5361,9 @@ natural_disaster_aftermath_category = {
 		selectable_mission = no
 		is_good = no
 		days_mission_timeout = constant:natural_disaster_aftermath.rescue_days
+		days_remove = @ND_MISSION_MODIFIER_REMOVE_DAYS
 		modifier = {
-			consumer_goods_factor = constant:natural_disaster_cost_fixed.construction_burden
+			consumer_goods_factor = @ND_CONSTRUCTION_BURDEN
 		}
 		complete_effect = {
 			if = {
@@ -5440,8 +5448,9 @@ natural_disaster_aftermath_category = {
 		selectable_mission = no
 		is_good = no
 		days_mission_timeout = constant:natural_disaster_aftermath.rescue_days
+		days_remove = @ND_MISSION_MODIFIER_REMOVE_DAYS
 		modifier = {
-			consumer_goods_factor = constant:natural_disaster_cost_fixed.construction_burden
+			consumer_goods_factor = @ND_CONSTRUCTION_BURDEN
 		}
 		complete_effect = {
 			if = {
@@ -5524,7 +5533,8 @@ natural_disaster_aftermath_category = {
 		selectable_mission = no
 		is_good = no
 		days_mission_timeout = constant:natural_disaster_aftermath.rescue_days
-		modifier = { consumer_goods_factor = constant:natural_disaster_cost_fixed.construction_burden }
+		days_remove = @ND_MISSION_MODIFIER_REMOVE_DAYS
+		modifier = { consumer_goods_factor = @ND_CONSTRUCTION_BURDEN }
 		complete_effect = {
 			if = {
 				limit = { has_variable = natural_disaster_rescue_state_4 }
@@ -5599,8 +5609,9 @@ natural_disaster_aftermath_category = {
 		selectable_mission = no
 		is_good = no
 		days_mission_timeout = constant:natural_disaster_aftermath.stabilization_days
+		days_remove = @ND_MISSION_MODIFIER_REMOVE_DAYS
 		modifier = {
-			consumer_goods_factor = constant:natural_disaster_cost_fixed.construction_burden
+			consumer_goods_factor = @ND_CONSTRUCTION_BURDEN
 		}
 		complete_effect = {
 			if = {
@@ -5685,8 +5696,9 @@ natural_disaster_aftermath_category = {
 		selectable_mission = no
 		is_good = no
 		days_mission_timeout = constant:natural_disaster_aftermath.stabilization_days
+		days_remove = @ND_MISSION_MODIFIER_REMOVE_DAYS
 		modifier = {
-			consumer_goods_factor = constant:natural_disaster_cost_fixed.construction_burden
+			consumer_goods_factor = @ND_CONSTRUCTION_BURDEN
 		}
 		complete_effect = {
 			if = {
@@ -5769,7 +5781,8 @@ natural_disaster_aftermath_category = {
 		selectable_mission = no
 		is_good = no
 		days_mission_timeout = constant:natural_disaster_aftermath.stabilization_days
-		modifier = { consumer_goods_factor = constant:natural_disaster_cost_fixed.construction_burden }
+		days_remove = @ND_MISSION_MODIFIER_REMOVE_DAYS
+		modifier = { consumer_goods_factor = @ND_CONSTRUCTION_BURDEN }
 		complete_effect = {
 			if = {
 				limit = { has_variable = natural_disaster_stabilization_state_3 }
@@ -5844,8 +5857,9 @@ natural_disaster_aftermath_category = {
 		selectable_mission = no
 		is_good = no
 		days_mission_timeout = constant:natural_disaster_aftermath.reconstruction_days
+		days_remove = @ND_MISSION_MODIFIER_REMOVE_DAYS
 		modifier = {
-			consumer_goods_factor = constant:natural_disaster_cost_fixed.heavy_construction_burden
+			consumer_goods_factor = @ND_HEAVY_CONSTRUCTION_BURDEN
 		}
 		complete_effect = {
 			if = {
@@ -5930,8 +5944,9 @@ natural_disaster_aftermath_category = {
 		selectable_mission = no
 		is_good = no
 		days_mission_timeout = constant:natural_disaster_aftermath.reconstruction_days
+		days_remove = @ND_MISSION_MODIFIER_REMOVE_DAYS
 		modifier = {
-			consumer_goods_factor = constant:natural_disaster_cost_fixed.heavy_construction_burden
+			consumer_goods_factor = @ND_HEAVY_CONSTRUCTION_BURDEN
 		}
 		complete_effect = {
 			if = {
@@ -6018,7 +6033,8 @@ natural_disaster_aftermath_category = {
 		selectable_mission = no
 		is_good = no
 		days_mission_timeout = constant:natural_disaster_aftermath.reconstruction_days
-		modifier = { consumer_goods_factor = constant:natural_disaster_cost_fixed.heavy_construction_burden }
+		days_remove = @ND_MISSION_MODIFIER_REMOVE_DAYS
+		modifier = { consumer_goods_factor = @ND_HEAVY_CONSTRUCTION_BURDEN }
 		complete_effect = {
 			if = {
 				limit = { has_variable = natural_disaster_reconstruction_state_3 }
@@ -6742,8 +6758,9 @@ natural_disaster_aftermath_category = {
 		selectable_mission = no
 		is_good = no
 		days_mission_timeout = constant:natural_disaster_aftermath.foreign_relief_days
+		days_remove = @ND_MISSION_MODIFIER_REMOVE_DAYS
 		modifier = {
-			consumer_goods_factor = constant:natural_disaster_cost_fixed.construction_burden
+			consumer_goods_factor = @ND_CONSTRUCTION_BURDEN
 		}
 		complete_effect = {
 			set_country_flag = {
@@ -6756,8 +6773,11 @@ natural_disaster_aftermath_category = {
 			}
 			if = {
 				limit = { has_variable = natural_disaster_inbound_relief_donor }
+				var:natural_disaster_inbound_relief_donor = {
+					save_event_target_as = natural_disaster_inbound_relief_donor_target
+				}
 				add_opinion_modifier = {
-					target = var:natural_disaster_inbound_relief_donor
+					target = event_target:natural_disaster_inbound_relief_donor_target
 					modifier = natural_disaster_relief_gratitude
 				}
 			}
