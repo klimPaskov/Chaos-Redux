@@ -1,6 +1,6 @@
 # Event 011 Secret Alliance decision and mission matrix
 
-Status: implemented design matrix reconciled to final gameplay and balance freeze `1c87d923`. Names remain design labels where they differ from final localisation. Live costs are calculated from target capacity, action family, relevant Evidence bands, and available resources. There is no separate repeat-use cost multiplier.
+Status: implemented design matrix reconciled through gameplay commit `407b9a05`, with balance frozen at `1c87d923`. Names remain design labels where they differ from final localisation. Live costs are calculated from target capacity, action family, relevant Evidence bands, and available resources. There is no separate repeat-use cost multiplier.
 
 ## Category lifecycle
 

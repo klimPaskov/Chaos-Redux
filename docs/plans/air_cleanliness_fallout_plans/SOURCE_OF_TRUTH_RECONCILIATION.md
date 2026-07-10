@@ -1,0 +1,174 @@
+# Source of Truth Reconciliation
+
+Ownership authority: `FALLOUT_EVENT_AND_ASSET_OWNERSHIP.md`.
+
+## Authority order
+
+Use the following precedence when two sources disagree:
+
+1. The latest direct user constraints in the continuation prompt.
+2. The accepted design in `air_cleanliness_fallout_planning_package_expanded.zip`.
+3. Live repository behavior at commit `8044d232376fef3a1a3ca1ea3e0d487523924cc6` as evidence of what currently exists.
+4. Current repository documentation as a description to be corrected when stale.
+5. The originally uploaded Air Cleanliness document as historical design context.
+
+Live code does not silently override accepted design. A difference between code and design becomes an implementation task or an explicit parent decision.
+
+## System identity and path ownership
+
+Air Cleanliness and Fallout are an unnumbered global system package. Fallout is a terminal world rewrite and a manual scenario, not ordinary a numbered random event content.
+
+Canonical working paths use the system slug:
+
+- `docs/specs/air_cleanliness_fallout_specs/` for accepted system specifications
+- `docs/plans/air_cleanliness_fallout_plans/` for implementation plans, audits, and handoffs
+- system-owned asset folders named for `fallout_world_end` and `air_cleanliness`
+- `events/fallout_world_end_events.txt` as the only Fallout event-definition file
+- `chaosx.fallout` as the dedicated Fallout event namespace
+
+Fallout has no numbered random-event identity and no ownership relationship with another feature package. Remove stale event definitions, callers, sprites, and asset paths instead of retaining compatibility shims in another namespace.
+
+## Reconciled design decisions
+
+### Fallout trigger eligibility
+
+Accepted rule:
+
+- Fallout may become eligible after Air Contamination reaches or exceeds 100 percent.
+- A scripted terminal event may request Fallout immediately.
+- The manual Fallout scenario may request Fallout after its seven-day strike interval.
+- Fallout does not require Chaos above 1000.
+
+Implementation interpretation:
+
+- `100 percent` is the eligibility threshold for the normal contamination route.
+- Eligibility does not have to mean guaranteed immediate transition.
+- Risk can rise with contamination, state exposure, persistent winter depth, nuclear use, and other terminal causes.
+- A direct scripted caller can bypass the gradual risk model.
+- A guaranteed upper contamination threshold may remain as a tuning safety rail, but it is not the sole trigger.
+
+### Fallout presentation
+
+Accepted rule:
+
+- Fallout is not a normal super-event.
+- No super-event slot, quote, normal super-event option, or super-event audio wrapper is used.
+- The screen becomes black.
+- Centered text appears one sentence or beat at a time.
+- The world rewrite occurs while control is withheld.
+
+Implementation interpretation:
+
+- Delete the old Fallout event block from `events/chemical_warfare_events.txt`.
+- Add the complete Fallout chain to `events/fallout_world_end_events.txt` under `chaosx.fallout`.
+- Migrate Air Contamination and scripted terminal callers directly to the Fallout request helper or a Fallout-owned entry event.
+- A dedicated independent scripted GUI and a scripted transition state machine own the presentation.
+- The GUI has no close button during processing.
+- The transition ends only after world rewrite validation and player continuation are complete.
+
+### Winter model
+
+Accepted rule:
+
+- Winter phases are state based.
+- Phases are visible in a new mapmode.
+- Phases affect population, buildings, supply, state categories, and decisions.
+- Winter includes flavour events with actual effects.
+
+Implementation interpretation:
+
+- The current random-state winter pulse is replaced by a persistent state phase model.
+- The existing monthly contamination host pass is extended instead of adding another world-wide monthly pass.
+- Population loss uses the shared Chaos Meter Deaths pipeline.
+- Building and state-category damage use bounded, persistent exposure logic.
+- State phase, exposure, recovery, and adaptation are kept distinct.
+
+### Treaty layer
+
+Accepted source design includes an Air Cleanliness Treaty at severe contamination. The live monthly update currently cleans up old treaty state instead of calling the treaty monthly helper, even though treaty helper code and events remain in the repository.
+
+Decision for implementation planning:
+
+- Restore and modernize the treaty layer.
+- Do not delete the accepted treaty design because live code disabled it.
+- Connect treaty members to winter mitigation, relief missions, verification, embargo behavior, violations, and Fallout-era memory.
+- Audit treaty performance before restoring global country-to-country loops.
+- Replace broad repeated opinion and embargo loops with targeted or cached behavior where possible.
+
+### Successor countries
+
+Accepted rule:
+
+- Many successor identities use existing base tags, releasables, dynamic civil-war tags, and cosmetic tags.
+- The 99-row matrix is a candidate pool.
+- It is not a requirement to spawn every candidate at once.
+- Every active survivor receives non-generic focus content.
+
+Implementation interpretation:
+
+- No base tag is repurposed until its current package and event ownership are recorded.
+- Cosmetic tags provide visible identity without requiring a unique base tag for every identity.
+- Dynamic tags are used only after pool capacity and crash risk are verified.
+- Country packages are implemented and audited in regional batches.
+
+### Focus architecture
+
+Accepted rule:
+
+- Every selected country uses an archetype skeleton, regional overlay, and country memory overlay.
+- Each country is manually customized.
+
+Implementation interpretation:
+
+- The three layers are design composition layers.
+- Engine implementation uses either verified shared-focus composition or a compiled reviewed full tree.
+- Each active tree contains at least one unique country-memory branch with its own gameplay consequences.
+- A pair of token focuses does not satisfy the country-memory requirement.
+
+### Mutant identities
+
+Accepted rule:
+
+- Mutant countries are fictional high-chaos content.
+- They must not be represented as real radiation science.
+
+Implementation interpretation:
+
+- Mutant routes use explicit fictional presentation and high-chaos gates.
+- Research notes and implementation docs distinguish real fallout effects from invented mutation content.
+- Real-world public health or genetics claims are not used to justify fictional outcomes.
+
+## Live-code conflicts that require correction
+
+| Surface | Live state | Accepted state | Required action |
+| --- | --- | --- | --- |
+| Fallout event ownership | a Fallout block exists in a non-Fallout event file | every Fallout event lives in `events/fallout_world_end_events.txt` under `chaosx.fallout` | delete the old block and migrate callers directly |
+| Fallout threshold | event trigger checks 1000 percent | eligibility begins at 100 percent and direct scripted callers exist | add request and risk coordinator |
+| Winter | global flag plus random states and generic fallout modifiers | persistent state phases and phase-specific effects | replace winter pulse with state model |
+| Treaty | helper code exists but monthly update removes old state | active severe-contamination diplomacy and mitigation layer | restore with performance-safe lifecycle |
+| Air docs | describe old recovery, old event id, normal super-event | must describe live and accepted implementation | rewrite after each tranche |
+| Scenario registry | the inspected snapshot assigns ids through 8, with Africa Is One at 8 | Fallout must use the next id in the live registry | scan all live assignments, set Fallout to current maximum plus one, and preserve every existing id |
+| Mapmode strip | `.gfx` says 19 frames and comments claim two appended slots | docs claim 20 frames and slots 19 and 20 | inspect texture and correct frame metadata before adding winter |
+| Province sweep | no verified repository precedent | every valid province receives thermonuclear strike | prove official engine route before implementation |
+
+## Documentation disposition
+
+The following current documentation must be treated as stale evidence until implementation aligns it:
+
+- `docs/systems/air_contamination_mechanic.md`
+- world-end sections in `CHAOS_REDUX_MECHANICS.md`
+- any super-event registry entry that still lists Fallout as a normal super-event
+- scenario documentation that hardcodes a Fallout id before the live registry has been scanned
+- stale Fallout event ids from any non-Fallout namespace
+- stale Fallout asset paths inside another feature folder
+- stale Fallout event definitions outside `events/fallout_world_end_events.txt`
+
+Do not erase historical source material. Mark superseded notes where needed and keep one current implementation document per system.
+
+## Promotion rule
+
+The expanded source pack is a system specification package, not an ordinary numbered event specification. When added to the repository, use the unnumbered system area. This implementation package belongs under:
+
+`docs/plans/air_cleanliness_fallout_plans/`
+
+Accepted implementation facts should be promoted into current system documentation after code exists. Working blockers, audits, migration notes, and tranche handoffs remain in the plans folder.

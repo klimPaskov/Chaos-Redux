@@ -2,7 +2,7 @@
 
 ## Disposition
 
-Historical pre-spec planning handoff. The accepted decision design is governed by the five-part source specification and the reconciled `docs/specs/011_secret_alliance_specs/matrices/011_secret_alliance_decision_mission_matrix.md`. The statement near the end of this file that no Event 011 source specification exists is stale historical text. `subagent_handoffs/decision_mission_audit.md` preserves an earlier scoped freeze. Final gameplay and balance authority is `1c87d923`, and the holistic verdict is `subagent_handoffs/completion_audit.md`.
+Historical pre-spec planning handoff. The accepted decision design is governed by the five-part source specification and the reconciled `docs/specs/011_secret_alliance_specs/matrices/011_secret_alliance_decision_mission_matrix.md`. The statement near the end of this file that no Event 011 source specification exists is stale historical text. `subagent_handoffs/decision_mission_audit.md` preserves an earlier scoped freeze. Final gameplay authority is `407b9a05`, balance remains frozen at `1c87d923`, and the holistic verdict is `subagent_handoffs/completion_audit.md`.
 
 This handoff designs the decision and mission layer for Event 011 Secret Alliance. It is direction-only planning. Working labels below are not final localisation and should not be pasted into player-facing text.
 

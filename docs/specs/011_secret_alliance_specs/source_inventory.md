@@ -1,6 +1,6 @@
 # Source inventory and reading record
 
-Status: historical source-package reading ledger. Catalog statuses, scenario availability, and implementation instructions recorded below describe the planning intake, not the final repository. Final gameplay and balance authority is `1c87d923`, SCN-009 is implemented, and the workbook records both Event 011 and SCN-009 as `Implemented`.
+Status: historical source-package reading ledger. Catalog statuses, scenario availability, and implementation instructions recorded below describe the planning intake, not the final repository. Final gameplay authority is `407b9a05`, balance remains frozen at `1c87d923`, SCN-009 is implemented, and the workbook records both Event 011 and SCN-009 as `Implemented`.
 
 ## Reading status
 

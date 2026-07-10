@@ -1,62 +1,88 @@
-# Event 018 Resources Found Canonical Planning Package
+# Event 018 Resources Found Planning Package
 
-This is the clean canonical planning package for Event 018, `Resources found`.
+This package is the source design handoff for Chaos Redux Event 018, Resources Found.
 
-The package consolidates the original planning pass, the deepening pass, the focus-by-focus blueprint, scripted GUI wireframe, public repo implementation addendum, verified super-event research candidates, matrices, diagrams, and implementation prompts into one handoff. Temporary continuation prompts were removed from this canonical package.
+The event remains a Minor Repeatable member of the Economy (pos) cluster with Medium member severity. Its ordinary firing is a large strategic-resource discovery. Repeated investment can turn that discovery into a trade center, a concession struggle, a border crisis, a lethal excavation, a public monster emergency, and finally a playable nonhuman cave country. The world-end branch begins only after the cave country consumes a continent and global chaos is above 1000.
 
-## Canonical design state
+All labels described as working labels are internal design handles, not final localisation. Final event titles, options, descriptions, focus text, decision text, achievement text, GUI labels, super-event titles, quotes, remarks, and audio selections must be written or researched during implementation.
 
-Event 018 remains a minor repeatable economy-positive cluster member with medium severity. The baseline remains simple and preserved: a random valid state receives around 100 of one random resource, and the owner receives a popup. The expanded system adds field exploitation, trade and diplomacy interest, border risk, staged weirdness, sick workers, cave monsters, closure, the Cave Host country, resource-based Host deployment, and a world-end scenario if the Host owns a continent.
+## Package statistics
 
-The Cave Host rule is preserved exactly as a design constraint: it uses no manpower or equipment, receives automatic divisions from captured resources, gains one division per 10 total resources in captured non-origin states, caps non-origin deployment at 10 divisions per state, and starts with an origin army capped around 30 based on prior exploitation.
+- 8 sequential source-spec parts
+- 6 implementation matrices
+- 1 focus architecture map
+- 6 specialist implementation prompts
+- 4 research and review notes
+- More than 61,000 words before the final manifest
+- Goal prompt length: 3,998 characters
 
-Closure before Evolution IV remains the safe sacrifice path. Closing the field removes the resources from that state and blocks Cave Host emergence.
+The root `manifest.md` records file sizes, word counts, and SHA-256 checksums.
 
-## New in the canonical pass
+## Package map
 
-- Added `specs/018_resources_found_spec_part_11_repo_confirmed_implementation_addendum.md`.
-- Added `specs/018_resources_found_spec_part_12_verified_super_event_research.md`.
-- Added `research/018_resources_found_public_repo_exploration_handoff.md`.
-- Added `matrices/018_resources_found_super_event_verified_candidates.md`.
-- Added `research/018_resources_found_canonical_read_manifest.md` and `manifests/018_resources_found_canonical_file_manifest.json`.
-- Removed temporary continuation prompts from the clean canonical zip.
-- Updated prompt files to point implementation agents at the public repo handoff and verified super-event research candidates.
+### Specifications
 
-## Important boundaries
+- `specs/018_resources_found_spec_part_1_core_and_baseline.md`
+- `specs/018_resources_found_spec_part_2_resource_field_mechanic.md`
+- `specs/018_resources_found_spec_part_3_trade_diplomacy_and_border_conflict.md`
+- `specs/018_resources_found_spec_part_4_evolutions.md`
+- `specs/018_resources_found_spec_part_5_cave_country_package.md`
+- `specs/018_resources_found_spec_part_6_focus_tree_and_brood_warfare.md`
+- `specs/018_resources_found_spec_part_7_world_end_aftermath_and_connections.md`
+- `specs/018_resources_found_spec_part_8_ai_text_assets_and_acceptance.md`
 
-All player-facing text remains direction-only until implementation. Working labels are not final localisation.
+### Matrices
 
-No final super-event title, button text, quote, cultural remark, slogan, lyric fragment, or audio choice is approved in this package. The super-event research file contains source-checked candidates only. The implementation agent must still choose exact excerpts, verify final rights and attribution, and write final localisation.
+- `matrices/event_chain_map.md`
+- `matrices/decision_mission_matrix.md`
+- `matrices/ai_strategy_matrix.md`
+- `matrices/country_package_matrix.md`
+- `matrices/tuning_and_balance_framework.md`
+- `matrices/acceptance_criteria.md`
 
-The public Chaos Redux GitHub repository was inspected for current Event 018 paths and old behavior. The local Windows repo, offline Paradox wiki snapshot, vanilla Hearts of Iron IV documentation, final workbook, and custom Codex subagent runner were not mounted here. The coding prompt keeps those as required implementation steps.
+### Focus architecture
 
-No gameplay files were edited. No assets were generated. No audio was downloaded or converted. No spreadsheet workbook was edited.
+- `focus_graphs/cave_host_focus_architecture.md`
 
-## Catalog baseline read from provided CSV
+### Research and review
 
-```json
-{
-  "ID": "18",
-  "Event Name": "Resources found",
-  "Details": "Random province gets 100 production of some resource.",
-  "Evo I": "",
-  "Evo II": "",
-  "Evo III": "",
-  "Evo IV": "",
-  "Evo V": "",
-  "World-End Scenario": "",
-  "Type": "Minor Repeatable",
-  "Cluster ID": "",
-  "Member Severity": "",
-  "Status": "To Be Reworked"
-}
-```
+- `research/catalog_reconciliation.md`
+- `research/historical_and_folklore_research.md`
+- `research/improvement_loop_review.md`
+- `research/source_corpus_read_log.md`
 
-## Folder layout
+### Implementation prompts
 
-- `specs/` contains source design parts.
-- `diagrams/` contains route and field state diagrams.
-- `matrices/` contains decision, AI, country, focus, GUI, asset, acceptance, and super-event candidate matrices.
-- `research/` contains reading notes, repo handoffs, and verified research notes.
-- `prompts/` contains coding, asset, achievement, decision, repo, spreadsheet, super-event, and goal prompts.
-- `manifests/` contains machine-readable package manifests.
+- `prompts/resources_found_asset_prompt.md`
+- `prompts/resources_found_super_event_prompt.md`
+- `prompts/resources_found_achievement_prompt.md`
+- `prompts/resources_found_decision_mission_prompt.md`
+- `prompts/resources_found_coding_prompt.md`
+- `prompts/resources_found_goal_prompt.md`
+
+## Design non-negotiables
+
+1. The discovered resource type is fully random across the standard strategic-resource pool.
+2. The baseline deposit is large, centered around 100 resource production in one valid state.
+3. Event-added resources are tracked separately from the state’s original resources so successful closure removes only Event 018 additions.
+4. Repeated discoveries can stack the same resource in the same state.
+5. The owner receives a decision category with a compact resource-field management surface.
+6. Trade, concessions, smuggling, espionage, demilitarization, and border conflict react to the value and location of the field.
+7. Evolution II and Evolution III progress gradually even when the first firing occurs at a high evolution stage.
+8. A successful pre-breach closure permanently prevents the cave-country branch for that site and removes every Event 018 resource addition from the state.
+9. Evolution IV creates a fully playable nonhuman country led by a literal cave monster.
+10. The cave country has no manpower or equipment economy and cannot train normal divisions.
+11. Its starting army scales with historical exploitation and is capped at 30 divisions.
+12. The starting state is excluded from future captured-state brood calculations.
+13. Each captured resource state provides one brood-capacity point per 10 total resources, capped at 10 points for that state.
+14. New cave divisions appear automatically from captured resource capacity.
+15. Cave units are very slow, heavily armored, and countered primarily by serious hard attack.
+16. The cave country declares war on every current and newly created land neighbor.
+17. The world-end branch requires a consumed continent, chaos above 1000, and no existing world-end state.
+18. The world-end branch opens stronger cave footholds on other continents and freezes incompatible random-event progression.
+19. The event’s first layers remain economically attractive. The horror is earned through excavation choices and repeated escalation rather than revealed in the first popup.
+20. No fallback, placeholder asset, unresearched super-event text, or generic country package counts as completion.
+
+## Formal review note
+
+The supplied custom subagent briefs were read and applied as review lenses throughout this package. This session did not expose a custom-subagent execution interface, so the mandatory independently spawned `chaosx_improvement_loop_planner` pass could not literally be run. A parent-performed depth and anti-bloat review is recorded in `research/improvement_loop_review.md`. Implementation must still run the actual planner with `fork_context=false` before claiming the event complete.

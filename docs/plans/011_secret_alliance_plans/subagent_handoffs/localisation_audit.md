@@ -4,7 +4,7 @@
 
 **Status: FINAL CLEAN**
 
-The final localisation and workbook audit is pinned to gameplay and balance freeze `1c87d9235319781c871c2948813ab55693eb8618`. That commit sits on lifecycle commit `a1f47c0c`, callback isolation `7563648f`, and wording/catalog commit `97a2da80`. The earlier CLEAN report at `087d66ab4b3950b7854ee242343f5f0154c7906f` is preserved as historical chronology and is superseded as current evidence by this freeze.
+The final localisation and workbook audit remains valid through engine-compatibility commit `407b9a05eb7024dd1728c4092fba2f1162efde9c`. That correction preserves every visible value and does not change Event 011 localisation, achievement localisation, or the workbook. The earlier CLEAN report at `087d66ab4b3950b7854ee242343f5f0154c7906f` is preserved as historical chronology.
 
 This is a scoped localisation and presentation verdict. The holistic Event 011 verdict is owned by `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md`; this report does not replace it.
 
@@ -14,7 +14,7 @@ This is a scoped localisation and presentation verdict. The holistic Event 011 v
 | --- | --- |
 | `events/011_secret_alliance.txt` | `02046301A3157FF36A46147E7C058E63A8A5D7ACB27018BEEAF49C2388938904` |
 | `common/scripted_localisation/011_secret_alliance_scripted_localisation.txt` | `51F25FE38E06E6787AB38B975AC2D64C00F5260BB159A3ABD30B9989D6CC2980` |
-| `common/script_constants/011_secret_alliance_constants.txt` | `8A5C5F0F215A6FBE5BF568C935ED9804CA216A4A1DF5AB8A4345957C1716CE8D` |
+| `common/script_constants/011_secret_alliance_constants.txt` | `2A635EE58242229ABC9D265991A74E52B25B88188719C1AB87DC31B239BEEF21` |
 | `common/decisions/011_secret_alliance_decisions.txt` | `B22CC92AAF15F13860A9FDEB56520B03F6E78D479EE6F5F62DFC07221CA5B921` |
 | `localisation/english/011_secret_alliance_l_english.yml` | `6A42CEFE3DBAD7EFD2A3C7DD615F0F32E4DB9C3B2E768A11CBFB3E7FCC42434F` |
 | `localisation/english/chaosx_achievements_l_english.yml` | `6EE16E2B3E81C1292595F3F285C209C13F24C6F41D2FC073D72381D643244C4D` |

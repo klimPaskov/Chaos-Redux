@@ -4,7 +4,7 @@ Date: 2026-07-10
 
 ## Scope and current verdict
 
-This pass reconciles Event 011 implementation documentation to final gameplay and balance freeze `1c87d9235319781c871c2948813ab55693eb8618`, atop lifecycle commit `a1f47c0c`, callback isolation `7563648f`, and wording/catalog commit `97a2da80`. It edits documentation only. It does not replace the accepted five-part specification or change the workbook.
+This pass reconciles Event 011 implementation documentation through engine-compatible gameplay commit `407b9a05eb7024dd1728c4092fba2f1162efde9c`, atop high-impact balance freeze `1c87d9235319781c871c2948813ab55693eb8618`, lifecycle commit `a1f47c0c`, callback isolation `7563648f`, and wording/catalog commit `97a2da80`. It does not replace the accepted five-part specification or change the workbook.
 
 DM-15 through DM-20 are resolved, and the independent decision specialist returned CLEAN for the decision and mission surface. CA-01 through CA-13 are resolved on the completion-audit rescan. The final localisation and workbook audit is FINAL CLEAN, and the high-impact balance pass is frozen at `1c87d923`. The holistic verdict is now present at `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md`; this curation handoff does not replace it.
 
@@ -20,6 +20,7 @@ DM-15 through DM-20 are resolved, and the independent decision specialist return
 | `7563648f` | Counted `.50` delayed-call and `.51` through `.53` commitment callbacks, released annexed owners, and completed automatic/manual relaunch isolation. |
 | `97a2da80` | Finalized Event 011 and achievement wording and synchronized the catalog workbook. |
 | `1c87d923` | Froze high-impact dynamic costs, one protection and one emergency slot, longer mission and commitment durations, 65 percent preemption, 120/180/120-day AI cooldowns, and a 730-day retained-counterintelligence ceiling. |
+| `407b9a05` | Replaced eight unsupported country-tension trigger calls and moved 39 unchanged idea values into file-local constants accepted by the idea database. |
 
 ## Source-of-truth map
 
@@ -27,7 +28,8 @@ DM-15 through DM-20 are resolved, and the independent decision specialist return
 | --- | --- | --- |
 | Accepted design and completion boundary | `docs/specs/011_secret_alliance_specs/specs/` parts 1-5 | Historical source design and required behavior. The design remains authoritative where it does not conflict with verified engine constraints or the accepted later SCN-009 direction. |
 | Detailed accepted design maps | `docs/specs/011_secret_alliance_specs/matrices/` | Event chain, decisions, missions, AI, tuning, assets, and achievement intent. |
-| Final gameplay and balance behavior | Event 011 gameplay files at `1c87d923` | Authoritative for implemented facts. SHA-256 prefixes are recorded below. |
+| Final gameplay behavior | Event 011 gameplay files at `407b9a05` | Authoritative for implemented facts. SHA-256 prefixes are recorded below. |
+| Final balance behavior | Event 011 tuning at `1c87d923` | Authoritative for the high-impact values retained by the compatibility correction. |
 | Current mechanic overview | `docs/events/011_secret_alliance.md` | Canonical implementation summary and file map. |
 | Improvement-loop closure | `docs/plans/011_secret_alliance_plans/011_secret_alliance_improvement_resolution.md` | Itemized disposition of tranches A-G, mandatory architecture carryover, and all seventeen acceptance scenarios. |
 | Holistic completion evidence | `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md` | Final static verdict, CA and DM disposition, frozen hashes, assets, audio, achievements, workbook, and plan disposition. |
@@ -45,9 +47,11 @@ DM-15 through DM-20 are resolved, and the independent decision specialist return
 | Surface | SHA-256 prefix |
 | --- | --- |
 | Decisions | `B22CC92A` |
-| Script constants | `8A5C5F0F` |
-| Scripted effects | `EF4D9C1B` |
-| Scripted triggers | `BE26F05D` |
+| Script constants | `2A635EE5` |
+| Scripted effects | `10B03E94` |
+| Scripted triggers | `A228DC3B` |
+| Ideas | `D9C0C4D8` |
+| MTTH | `8CE980BF` |
 | Scripted localisation | `51F25FE3` |
 | Events | `02046301` |
 | Event 011 localisation | `6A42CEFE` |
@@ -74,8 +78,8 @@ DM-15 through DM-20 are resolved, and the independent decision specialist return
 
 | Finding range | Current disposition |
 | --- | --- |
-| DM-15 through DM-20 | Resolved and preserved at final freeze `1c87d923`: public-war-start gating, mission-aware phase cleanup, current suspect-bound border pairs, valid envoy objective state, revealed cost refresh, and exact AI protection-state selection. |
-| CA-01 through CA-13 | Resolved and preserved at final freeze `1c87d923`: leader and exit validity, exact border transaction, repeat-turn guard, preemption handling, fractured wording, pending-transaction safety, delayed-event gates, origin-safe achievements and Event Log, durable presentation context, per-run Sponsor Accountability, and counted callback draining through `.50` to `.53`, `.190`, `.201`, and `.202`. |
+| DM-15 through DM-20 | Resolved and preserved through `407b9a05`: public-war-start gating, mission-aware phase cleanup, current suspect-bound border pairs, valid envoy objective state, revealed cost refresh, and exact AI protection-state selection. |
+| CA-01 through CA-13 | Resolved and preserved through `407b9a05`: leader and exit validity, exact border transaction, repeat-turn guard, preemption handling, fractured wording, pending-transaction safety, delayed-event gates, origin-safe achievements and Event Log, durable presentation context, per-run Sponsor Accountability, and counted callback draining through `.50` to `.53`, `.190`, `.201`, and `.202`. |
 | Holistic completion verdict | Owned by `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md`; this scoped documentation pass does not replace it. |
 
 ## Plan and handoff dispositions
@@ -94,8 +98,8 @@ DM-15 through DM-20 are resolved, and the independent decision specialist return
 | `subagent_handoffs/improvement_loop_implementation_pass.md` | Implemented historical handoff | Its accepted gap is closed by the implementation addendum and resolution. |
 | `subagent_handoffs/super_event_text_research.md` | Promoted and reconciled | Sun Tzu and Artemidorus sourcing remains valid; four-route and live-faction wording is superseded by the five-package presentation-snapshot implementation. |
 | `subagent_handoffs/super_event_audio_research.md` | Promoted and resolved | Final files, audio ID, duration, source, and rights are implemented. Old wiring instructions are historical. |
-| `subagent_handoffs/decision_mission_audit.md` | Historical CLEAN scoped freeze | Its `b7965b7e` verdict and earlier findings are valuable causal evidence. Final balance facts and the holistic verdict are owned by the `1c87d923` completion audit. |
-| `subagent_handoffs/localisation_audit.md` | Current FINAL CLEAN report | Preserves `087d66ab` as historical chronology and pins current evidence to final freeze `1c87d923`, localisation `6A42CEFE`, achievement localisation `6EE16E2B`, and workbook `597E71A1`. |
+| `subagent_handoffs/decision_mission_audit.md` | Historical CLEAN scoped freeze | Its `b7965b7e` verdict and earlier findings are valuable causal evidence. Final gameplay facts and the holistic verdict are owned by the `407b9a05` completion audit. |
+| `subagent_handoffs/localisation_audit.md` | Current FINAL CLEAN report | Preserves `087d66ab` as historical chronology and confirms that `407b9a05` leaves localisation `6A42CEFE`, achievement localisation `6EE16E2B`, and workbook `597E71A1` unchanged. |
 | `subagent_handoffs/completion_audit.md` | Current holistic verdict | Created as the final evidence-backed report and source-of-truth verdict owner named by the documentation map. |
 | Source-package handoffs under `docs/specs/011_secret_alliance_specs/handoffs/` | Reconciled implementation records | Planning-era pending statements are superseded, while source-design chronology is preserved. |
 
@@ -104,7 +108,7 @@ DM-15 through DM-20 are resolved, and the independent decision specialist return
 - Runtime and documentation now agree on two investigation slots, one protection slot, and one emergency slot.
 - Runtime and documentation now agree on the 65 percent preemption gate, 15/10/6 percent strain bands, 8 percent false-case Stability cost, 120/180/120-day direct-AI cooldowns, exact mission timeouts, and the 730-day aftermath ceiling.
 - The cost model no longer claims a repeat-use multiplier. It records capacity, action-family, resource, and Evidence scaling, including mixed-profile scale `2.2425` and the 170 PP AI hint.
-- Current authority no longer points at pre-balance hashes or the old gameplay candidate. All current ledgers identify `1c87d923` and the final hashes.
+- Current authority identifies compatibility commit `407b9a05`, balance freeze `1c87d923`, and the matching final hashes.
 - The missing plan-level holistic completion report now exists and every current source-of-truth map points to it.
 - Source-package prompts are marked fulfilled. Planning manifests and reading inventories are marked historical so their original hashes, catalog statuses, and work orders cannot be mistaken for current state.
 - Asset and super-event facts remain intact. The original 165.746939-second audio source duration is intentional source evidence, while the final derivative duration remains 86.101746 seconds.

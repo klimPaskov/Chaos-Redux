@@ -6,7 +6,7 @@ Date: 2026-07-10
 
 **Final static completion verdict: FINAL CLEAN.**
 
-Event 011 gameplay and balance are frozen in commit `1c87d9235319781c871c2948813ab55693eb8618`, atop lifecycle closure `a1f47c0c`, callback isolation `7563648f`, and wording and catalog reconciliation `97a2da80`. The decision and mission audit findings DM-15 through DM-20 are closed. Completion findings CA-01 through CA-13 are closed. The final localisation and workbook audit is FINAL CLEAN.
+Event 011 engine-compatible gameplay is frozen in commit `407b9a05eb7024dd1728c4092fba2f1162efde9c`, atop high-impact balance commit `1c87d923`, documentation reconciliation `02decf32`, lifecycle closure `a1f47c0c`, callback isolation `7563648f`, and wording and catalog reconciliation `97a2da80`. The decision and mission audit findings DM-15 through DM-20 are closed. Completion findings CA-01 through CA-13 are closed. The final localisation and workbook audit is FINAL CLEAN.
 
 This report is the holistic verdict owner named by the Event 011 documentation map. It compiles source, audit, localisation, workbook, asset, audio, achievement, and plan-disposition evidence. It does not claim an in-engine playtest.
 
@@ -14,10 +14,12 @@ This report is the holistic verdict owner named by the Event 011 documentation m
 
 | Surface | SHA-256 |
 | --- | --- |
-| `common/script_constants/011_secret_alliance_constants.txt` | `8A5C5F0F215A6FBE5BF568C935ED9804CA216A4A1DF5AB8A4345957C1716CE8D` |
-| `common/scripted_effects/011_secret_alliance_effects.txt` | `EF4D9C1B425EFDF440AF9A189492374A58349C74930289C650B0D6FF19621BC9` |
+| `common/script_constants/011_secret_alliance_constants.txt` | `2A635EE58242229ABC9D265991A74E52B25B88188719C1AB87DC31B239BEEF21` |
+| `common/scripted_effects/011_secret_alliance_effects.txt` | `10B03E949BC56497065C8BCDAB8D025D2D601C1C9AD604F4D954D637FAB4FFF1` |
 | `common/decisions/011_secret_alliance_decisions.txt` | `B22CC92AAF15F13860A9FDEB56520B03F6E78D479EE6F5F62DFC07221CA5B921` |
-| `common/scripted_triggers/011_secret_alliance_triggers.txt` | `BE26F05D49DA2D25C347D950276A6A0A1811AF6471A9A638B8BD9A5E6B8A3A11` |
+| `common/scripted_triggers/011_secret_alliance_triggers.txt` | `A228DC3BBB7D7AABDE115B30D01F3B983D9FAF4C47019D46E3C7C534CA164087` |
+| `common/ideas/011_secret_alliance_ideas.txt` | `D9C0C4D8128896E04AAD9D61445A81378F4F35F0A12135090851653B7B652D02` |
+| `common/mtth/011_secret_alliance_mtth.txt` | `8CE980BF54FCF404BA643555C02DA2799CAF2BDC533925507CA2DD918538BA8A` |
 | `events/011_secret_alliance.txt` | `02046301A3157FF36A46147E7C058E63A8A5D7ACB27018BEEAF49C2388938904` |
 | `common/scripted_localisation/011_secret_alliance_scripted_localisation.txt` | `51F25FE38E06E6787AB38B975AC2D64C00F5260BB159A3ABD30B9989D6CC2980` |
 | `common/scripted_guis/011_secret_alliance_scripted_gui.txt` | `C07907E21CBC30B267C1AC4D2112F494E9748FC44B936C9081B5F4E044B699FA` |
@@ -53,6 +55,7 @@ This report is the holistic verdict owner named by the Event 011 documentation m
 | --- | --- |
 | DM-15 through DM-20 | Closed. Public-war-start gating, mission-aware phase cleanup, suspect-bound border pairs, valid envoy objectives, revealed cost refresh, and exact AI protection-state selection are present. |
 | CA-01 through CA-13 | Closed. Route-aware leadership and exits, exact border transactions, repeat-turn prevention, preemption preservation, explicit fractured wording, lifecycle-safe pending transactions, delayed-event gates, origin-safe achievements and Event Log history, durable reveal presentation, per-run Sponsor Accountability, and callback draining are present. |
+| Engine compatibility | Closed. Eight calls use documented `has_added_tension_amount`, all idea modifiers use 39 defined file-local constants, and the former unsupported script-constant entries were removed without changing their values. |
 | Localisation and workbook | FINAL CLEAN. Event 011 localisation matches final balance values, all six achievement tooltips resolve, Event 011 and SCN-009 are `Implemented`, and no formula error cells or formula error tokens remain. |
 
 ## Presentation, assets, audio, and achievements

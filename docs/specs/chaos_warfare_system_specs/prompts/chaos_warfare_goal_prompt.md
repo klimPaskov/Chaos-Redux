@@ -1,0 +1,19 @@
+Rework Chaos Warfare, chemical warfare, biological warfare, protective equipment, CBRN command, and consequence systems using this package. Do not implement from this compact file alone.
+
+Read every other file here. Start with `README.md` and `handoffs/source_of_truth_map.md`. Read all twelve numbered files under `specs/` in order and treat them as the accepted design source. Read every file under `matrices/` for system mappings. Read all files under `research/` for source context.
+
+Follow `handoffs/staged_implementation_plan.md` for order and `handoffs/implementation_surface_map.md` for repository coverage. Use `prompts/chaos_warfare_coding_prompt.md` as the implementation brief. Use the other prompts in `prompts/` for specialist work. Use `handoffs/completion_audit_checklist.md` before completion. Resolve conflicts in favor of the numbered specs, then the matrices, then the specialist prompts. Report conflicts without reducing scope.
+
+Before editing, read `AGENTS.md`, required repository skills, current warfare files and docs, the relevant offline wiki, installed game documentation, and vanilla examples. Verify current headquarters, support, equipment, raid, air, designer, AI, and scripted-GUI surfaces. Report unsupported behavior and avoid undisclosed approximations or fallbacks.
+
+Build the conditional CBRN system defined by the specs. Cover Chemical Readiness, use policy, producible gas masks, protection, decontamination, medical response, payload logistics, evidence, attribution, deaths, contamination, outbreaks, Condemnation, sanctions, and headquarters preparation. Implement all mapped doctrine, technology, unit, headquarters, support, officer corps, designer, decision, asset, achievement, AI, and documentation content.
+
+All chemical delivery methods must use one shared exposure pipeline. Consume payload, account for protection and conditions, then record disruption, deaths, contamination, medical saturation, evidence, and Condemnation. Chemical air raids must contaminate the selected state. Continuous air missions may contaminate only when a verified current-version hook proves eligible activity. Idle chemical-capable aircraft must never contaminate a region. Ask before retaining an estimator.
+
+Make gas masks producible equipment with model progression, national reserves, military issue, civilian distribution, filters, stock loss, and population-scaled decisions. Use `matrices/gas_mask_starting_stockpile_matrix.md`. Give prepared First World War powers larger reserves, with Britain strongest. Record totals as gameplay tuning with honest historical confidence.
+
+Biological warfare must use distinct agents, incubation, detection, spread, containment, countermeasures, stockpile safety, attribution, accidents, and treatment. Keep weaponized zombies separate except where the specs share helpers. Nerve-agent suppression must consume equipment and create deaths, contamination, resistance trauma, evidence, and severe diplomatic consequences. Doctrine must never unlock genocide infrastructure or erase confirmed responsibility.
+
+Use Army Headquarters as the theater layer and regimental support as the division layer. Powerful companies and abilities need essential equipment, shortage scaling, cost, duration, cooldown, AI use, and cleanup. Centralize tuning. Do not add broad all-country periodic pulses without permission.
+
+Implement route-aware AI and differentiated country profiles. Produce assets through the required workflow, with no placeholders or resized cross-type substitutes. Write final localisation from the package direction. Migrate legacy identifiers safely. Run the mapped specialist audits, improvement-loop pass, completion audit, and package scenarios. Report changed files, meaningful validation, engine limits, and every omission. Do not claim completion while any numbered spec, matrix requirement, specialist prompt, implementation stage, or audit finding remains unresolved.

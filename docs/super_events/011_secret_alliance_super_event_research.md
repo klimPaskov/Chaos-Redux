@@ -1,6 +1,6 @@
 # Event 011 Secret Alliance super-event research
 
-This note records the authoritative implementation package for the first public reveal of Event 011 `Secret Alliance`. Gameplay, balance, and presentation state are frozen at `1c87d9235319781c871c2948813ab55693eb8618`; Event 011 localisation has SHA-256 prefix `6A42CEFE`. The balance tranche does not alter the verified quote, button fragment, five route packages, image, audio, or presentation lifetime.
+This note records the authoritative implementation package for the first public reveal of Event 011 `Secret Alliance`. Engine-compatible gameplay is frozen at `407b9a05eb7024dd1728c4092fba2f1162efde9c`, while balance and presentation state remain frozen at `1c87d9235319781c871c2948813ab55693eb8618`; Event 011 localisation has SHA-256 prefix `6A42CEFE`. The parser correction does not alter the verified quote, button fragment, five route packages, image, audio, or presentation lifetime.
 
 ## Research status
 

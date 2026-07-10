@@ -2,7 +2,7 @@
 
 ## Verdict
 
-The Event 011 decision, mission, reveal, scenario, settlement, aftermath, achievement, AI, and cleanup implementation at commit `b7965b7e3743b43c643f0a3ef10c2d57ad723665` was clean in its audited scope. DM-01 through DM-14 and RA-01 through RA-02 remain resolved. This is a historical scoped freeze. Final gameplay and balance authority is `1c87d923`, and the holistic verdict is maintained in `completion_audit.md`.
+The Event 011 decision, mission, reveal, scenario, settlement, aftermath, achievement, AI, and cleanup implementation at commit `b7965b7e3743b43c643f0a3ef10c2d57ad723665` was clean in its audited scope. DM-01 through DM-14 and RA-01 through RA-02 remain resolved. This is a historical scoped freeze. Final gameplay authority is `407b9a05`, balance remains frozen at `1c87d923`, and the holistic verdict is maintained in `completion_audit.md`.
 
 This was a report-only audit. The auditor did not edit gameplay, localisation, interface, AI, event, scenario, achievement, asset, or spreadsheet files.
 

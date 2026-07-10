@@ -4,16 +4,18 @@
 
 The original version of this file audited the planning package before implementation. That planning verdict remains valid as historical source-design evidence, but its statements that gameplay, assets, audio, localisation, scenario registration, and workbook work had not started are superseded.
 
-The final gameplay and balance freeze is `1c87d9235319781c871c2948813ab55693eb8618`. It sits on the lifecycle closure at `a1f47c0c`, callback isolation at `7563648f`, and wording/catalog reconciliation at `97a2da80`. DM-15 through DM-20 and CA-01 through CA-13 are resolved, the decision specialist returned CLEAN, and the localisation/workbook audit returned FINAL CLEAN. The holistic verdict is owned by `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md`; this source-package handoff does not replace it.
+The final engine-compatible gameplay commit is `407b9a05eb7024dd1728c4092fba2f1162efde9c`, atop high-impact balance freeze `1c87d9235319781c871c2948813ab55693eb8618`. It also sits on lifecycle closure `a1f47c0c`, callback isolation `7563648f`, and wording/catalog reconciliation `97a2da80`. DM-15 through DM-20 and CA-01 through CA-13 are resolved, the decision specialist returned CLEAN, and the localisation/workbook audit returned FINAL CLEAN. The holistic verdict is owned by `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md`; this source-package handoff does not replace it.
 
 ## Immutable audit hashes
 
 | Surface | SHA-256 prefix |
 | --- | --- |
 | Decisions | `B22CC92A` |
-| Script constants | `8A5C5F0F` |
-| Scripted effects | `EF4D9C1B` |
-| Scripted triggers | `BE26F05D` |
+| Script constants | `2A635EE5` |
+| Scripted effects | `10B03E94` |
+| Scripted triggers | `A228DC3B` |
+| Ideas | `D9C0C4D8` |
+| MTTH | `8CE980BF` |
 | Scripted localisation | `51F25FE3` |
 | Events | `02046301` |
 | Event 011 localisation | `6A42CEFE` |

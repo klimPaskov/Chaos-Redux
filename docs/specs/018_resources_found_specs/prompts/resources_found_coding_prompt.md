@@ -1,52 +1,309 @@
-# Coding Prompt for Event 018 Resources Found
+# Coding-Agent Implementation Prompt for Event 018 Resources Found
 
-Implement Event 018 according to the full planning package in `docs/specs/018_resources_found_specs/`.
+Implement Chaos Redux Event 018, Resources Found, to the fullest extent of the source specification package. Treat every mapped mechanic, evolution, decision family, country surface, focus route, asset, achievement, super-event, AI behavior, log entry, documentation field, and validation scenario as acceptance criteria.
 
-Read and follow `AGENTS.md`, `chaos-redux-events`, `chaos-redux-event-planning`, `hoi4-decisions-missions`, `hoi4-focus-trees`, `chaos-redux-event-assets`, `chaos-redux-frame-animation`, `chaos-redux-super-events`, `chaos-redux-improvement-loop`, and `chaos-redux-subagents`. Before editing, inspect the actual Chaos Redux repository, relevant offline Paradox wiki pages, vanilla HOI4 documentation, and vanilla precedents.
+Do not implement a smaller fallback version. Do not replace the resource-field system with one popup and one modifier. Do not replace the cave country with a temporary enemy spawn. Do not omit AI, assets, localisation, closure, ownership transfer, focus routes, deployment rules, or world-end behavior. Report every blocked or simplified item.
 
-## Source files
+## Required reading
 
-Use all spec files, matrices, diagrams, prompts, research notes, and handoff files in this package as the source spec. Part 7 is the Cave Host focus blueprint. Part 8 is the scripted GUI wireframe. Part 9 is the super-event research handoff. Part 10 is the repo and spreadsheet handoff.
+Before editing, read:
 
-## Non-negotiables
+- `AGENTS.md`
+- the full Event 018 spec pack
+- all matrices in this package
+- the focus architecture
+- the asset, super-event, achievement, and decision prompts
+- `chaos-redux-events`
+- `chaos-redux-event-assets`
+- `chaos-redux-frame-animation`
+- `chaos-redux-super-events`
+- `hoi4-focus-trees`
+- `hoi4-decisions-missions`
+- `chaos-redux-improvement-loop`
+- `chaos-redux-subagents`
+- required offline Paradox wiki pages
+- relevant vanilla documentation and precedents
+- current Chaos Redux event, log, evolution, cluster, country, decision, focus, dynamic helper, super-event, audio, achievement, and spreadsheet patterns
 
-- Baseline Event 018 remains Minor Repeatable and simple: a random valid state gets around 100 of one random resource.
-- The owning country receives a popup and a decision category.
-- The event belongs to economy positive cluster with medium severity.
-- Diplomacy, trade interest, concessions, smuggling, and border crisis logic must exist.
-- A border war can transfer the state when valid.
-- The decision category must use meaningful costs, missions, values, staged visibility, AI, and cleanup.
-- Evolution I adds larger deposits and international pressure.
-- Evolution II adds sickness, worker deaths, corrosion, and cave incidents.
-- Evolution III adds public monster attacks, evacuation, hunts, population loss, and closure.
-- The site can still be closed before Evolution IV, removing event-added resources and preventing the Cave Host.
-- Evolution IV creates the Cave Host, a nonhuman cave monster country with leader, flags, country package, focus tree, unique divisions, AI, and wars against neighbours.
-- Cave Host divisions do not use manpower or equipment. They spawn automatically from captured resources: every 10 total resources in a controlled non-origin state gives 1 division, capped at 10 per state. Initial origin divisions are based on exploitation and capped around 30.
-- Cave monster units are slow, heavily armored, and countered by severe hard attack.
-- Cave Host must be registered as special chaos country and actual nonhuman country.
-- Cave Host integrates with the shared world threat framework.
-- World-end triggers when Cave Host owns enough of a continent at chaos over 1000, then stronger Cave Host appearances begin on other continents.
-- Cave Host reveal, world-end, and conditional defeat aftermath need full super-event packages with researched text and licensed audio.
-- Achievements, assets, docs, event log, evolutions, event details, and spreadsheet alignment must be completed.
-- The Cave Host focus tree must map final focus ids to the Part 7 blueprint or report accepted renames, merges, or omissions.
-- If the Part 8 scripted GUI is implemented, GUI buttons must call real decision logic and have AI equivalents.
+Use `chaosx_repo_explorer` with `fork_context=false` if exact files, IDs, slots, tags, or precedents are unclear. The explorer is useful here because the task spans many systems. Pass it every path and constraint explicitly.
 
-## Required subagent and audit use
+## Core implementation contract
 
-Use `chaosx_repo_explorer` if file locations or precedents are unclear. Use `chaosx_scripted_system_architect` for reusable resource field helpers, cave capacity refresh, event targets, dynamic resource addition, cleanup, and constants. Use asset and super-event subagents for visual and audio packages. Use decision, country, focus, localisation, and completion auditors before claiming completion. Use `chaosx_improvement_loop_planner` near completion with `fork_context=false` and resolve its addendum, queue it with reason, reject it with reason, or record closure before completion.
+Preserve these non-negotiable rules:
 
-## Text and research rules
+1. Event 018 remains Minor Repeatable in Economy (pos) with Medium cluster severity.
+2. The ordinary event selects one valid state and one completely random standard strategic resource.
+3. The baseline deposit is centered around 100.
+4. Event-owned resource additions are stored separately for all six resource types.
+5. Repeated firings can enrich the same field, including duplicate resource stacking.
+6. Baseline discovery, appraisal, development, contracts, safety, suspension, transfer, and closure work with evolutions disabled.
+7. Full closure removes only Event 018 additions.
+8. Evolution I creates compound fields and international competition.
+9. Evolution II creates gradual sickness, corrosion, deaths, and underground attacks.
+10. Evolution III creates a huge all-resource field, public monsters, hunts, evacuation, and a guaranteed successful full-seal prevention route.
+11. Evolution IV creates a complete playable actual nonhuman cave country.
+12. Cave opening strength scales from 6 to 30 divisions from exploitation history.
+13. The origin state is excluded from future captured capacity.
+14. Each non-origin captured state gives floor(total strategic resources divided by 10), capped at 10.
+15. Capacity activates after continuous control and spawns divisions automatically over time.
+16. Cave units use no normal manpower or equipment, cannot train normally, move very slowly, have extreme armor, and are countered by serious hard attack.
+17. The cave country declares war on all current and newly adjacent land neighbors.
+18. The cave country has a real focus tree, decisions, AI, leader, flags, ideas, templates, and assets.
+19. World end requires chaos above 1000 and verified control of every eligible origin-continent state.
+20. World end creates stronger distributed footholds on other continents and freezes incompatible random-event progression.
 
-Write final localisation from the direction in the spec. Do not paste working labels as final player-facing text. Do not expose hidden cave mechanics in baseline event details. Treat unresearched super-event titles, button remarks, quotes, cultural allusions, slogans, and audio as blockers until the super-event workflow verifies them.
+## Suggested implementation order
 
-## Completion
+### Phase 1: Repository map and design registration
 
-Do not claim completion until the implementation satisfies the spec to the fullest extent. Report every simplification, omission, blocker, skipped asset, unresolved addendum, missing audit, or validation gap. Provide route coverage, decision coverage, country package coverage, asset coverage, super-event coverage, achievement coverage, AI coverage, and spreadsheet update status in the completion report.
+- map current Event 018 files and status
+- map event registration and default-enabled allowlist
+- map Economy (pos) cluster constants and membership
+- map event-log and evolution surfaces
+- reserve country tag, focus tree ID, decision IDs, helper names, achievement IDs, super-event slots, image sprites, and audio IDs
+- write an implementation ledger under `docs/plans/018_resources_found_plans/`
 
-## Canonical continuation addendum
+### Phase 2: Core field helpers and tuning
 
-Before implementation, read `specs/018_resources_found_spec_part_11_repo_confirmed_implementation_addendum.md`, `specs/018_resources_found_spec_part_12_verified_super_event_research.md`, and `research/018_resources_found_public_repo_exploration_handoff.md`.
+Use `chaosx_scripted_system_architect` for reusable logic.
 
-The public GitHub pass found an old Event 018 implementation in `events/018_random_resource.txt` that adds 200 of one resource. Do not copy that old value as the baseline. The canonical baseline is around 100 of one random resource in one valid state. Treat 200-level and larger values as evolved, repeated, or exploited states only when the spec calls for them.
+Create documented helpers for:
 
-The local repo, offline Paradox wiki, vanilla HOI4 docs, final workbook, and subagent runner were not available to the planning environment. Repeat those checks locally before editing. Use the public repo handoff only as a map of likely current paths and risks.
+- valid owner and state selection
+- random resource roll
+- exact event-owned resource addition
+- field initialization and lookup
+- field selection
+- resource composition display
+- total and distinct resource calculation
+- state ownership transfer
+- suspension and closure subtraction
+- value changes and thresholds
+- contract validity
+- claimant and foreign-interest scoring
+- evolution pacing
+- cave exploitation score
+- captured-state capacity
+- anchor activation and cleanup
+- spawn queue and excess divisions
+- neighbor-war refresh
+- continent progress and eligible-state verification
+- world-threat refresh
+
+Centralize all tuning values. Document every new dynamic helper with scope, inputs, outputs, defaults, side effects, and examples.
+
+### Phase 3: Baseline event and management system
+
+Implement:
+
+- canonical discovery event
+- repeat enrichment
+- persistent field record
+- one random resource and approximately 100 production
+- selected-field decision category and compact header
+- four visible baseline values
+- administration postures
+- appraisal, development, transport, processing, labor, safety, security, extraction modes, suspension, and closure
+- state transfer and occupation behavior
+- event-log history and Event Details
+- AI owner behavior
+
+Do not continue to evolutions until exact ledger and closure behavior are proven.
+
+### Phase 4: Trade, foreign pressure, and border system
+
+Implement:
+
+- foreign interest scoring
+- shortlist bids
+- contracts and lifecycle
+- concessions and influence
+- reserve and diversified access
+- nationalization and compensation
+- smuggling, espionage, sabotage, and exposure
+- commission and demilitarization
+- staged border crisis
+- active frontier missions
+- limited border war and state transfer
+- foreign AI
+
+Reuse shared border infrastructure when valid.
+
+### Phase 5: Evolutions I through III
+
+Implement separate pre-fire and active entries for every evolution. Use dynamic MTTH pacing and shared evolution logging.
+
+Evolution I:
+
+- 2 to 4 pre-fire rolls
+- compound-field active enrichment
+- multi-resource administration
+- international rush and DMZ routes
+
+Evolution II:
+
+- 3 to 5 pre-fire rolls
+- gradual sickness and corrosion incidents
+- visible Disturbance reveal
+- shared Deaths integration
+- restricted workings, survey, concealment, and closure
+
+Evolution III:
+
+- very large all-resource opening
+- gradual inherited Evolution II sequence
+- public breach and visible Breach Pressure
+- hunts, evacuation, aid, urban crisis
+- partial closure
+- full sealing that removes all Event 018 resources and permanently blocks Evolution IV
+
+Disabled later evolutions must leave clean stabilization and closure routes.
+
+### Phase 6: Cave country
+
+Use country, focus, decision, localisation, and asset subagents in bounded passes.
+
+Implement:
+
+- one stable tag
+- safe state transfer and former-owner aftermath
+- literal cave-monster leader with original name
+- country names, party, sub-ideology, flags, portraits
+- shared special-chaos and actual-nonhuman classification
+- origin state supply and idea package
+- 6 to 30 dynamic starting divisions
+- no normal manpower, equipment, training, trade, faction, navy, or air system
+- slow armored templates and hard-attack counterplay
+- resource-anchor capacity with origin exclusion
+- continuous-control activation
+- paced automatic spawning
+- capacity loss and Unfed Broods
+- neighbor-war refresh
+- complete focus tree from architecture
+- phased cave decisions
+- route-aware AI
+
+### Phase 7: Anti-cave response, continent, and world end
+
+Implement:
+
+- neighbor mobilization
+- anti-armor aid and research
+- resource denial
+- activation-window recapture
+- anchor cleanup and resource restoration
+- cave world-threat source
+- origin-continent eligible state group
+- visible progress
+- 25, 50, and 75 percent milestones as ordinary progress events
+- full-continent verification
+- chaos above 1000 gate
+- terminal world-end effect
+- stronger cross-continent footholds
+- terminal cave identity and AI
+- regional defeat cleanup
+- global defeat aftermath only when justified
+
+### Phase 8: Assets, super-events, achievements, text, docs, spreadsheet
+
+Produce and wire the full asset package. Do not use placeholders.
+
+Research and wire unique emergence and world-end super-events. Implement global defeat super-event only when its severity gate exists.
+
+Implement the achievement set with tracking, disqualifiers, icon triplets, GFX, localisation, docs, and tests.
+
+Write final localisation from the spec direction. Do not paste working labels as final text. Do not expose hidden mechanics in Event Details.
+
+Update:
+
+- event script and all companion systems
+- event registration and default enablement
+- event log and evolution log
+- cluster mapping
+- scripted GUI and GFX
+- country, focus, decision, ideas, AI, templates, traits, history
+- super-event text, images, audio, and music docs
+- achievements
+- `docs/events/018_resources_found.md`
+- helper docs
+- asset and super-event manifests
+- catalog workbook through `chaosx_spreadsheet_doc_worker`
+
+## Required subagent passes
+
+All project subagents use `fork_context=false` and receive explicit paths, IDs, constraints, and current status.
+
+Use as appropriate:
+
+- repo explorer before broad editing
+- scripted system architect for helpers and tuning
+- decision and mission auditor after categories are built
+- focus tree auditor after the cave tree is built
+- country package auditor after the cave tag is complete
+- localisation auditor after broad text is written
+- generated event art and icon artist for assets
+- super-event text and audio researchers
+- documentation curator after several handoffs
+- spreadsheet worker after final in-game wording exists
+- event completion auditor before completion claim
+
+Before near completion, run `chaosx_improvement_loop_planner`. Resolve its addendum or closure handoff. Do not stack another unresolved plan.
+
+## Writing rules
+
+Final player-facing text must:
+
+- use no em dash
+- use no semicolon in sentences
+- avoid staccato drama
+- avoid dialectical hedging and staged contrast formulas
+- avoid generic disaster filler
+- describe observed actors, work, fear, violence, and consequences
+- keep ordinary discovery positive and practical
+- keep early horror uncertain
+- avoid cheap humor around sickness and deaths
+- keep cave-country language original and readable
+- avoid achievement language outside achievement UI
+- keep Event Details free of mechanical effects and hidden spoilers
+
+## Balance and meaningful validation
+
+Run and document every scenario in `matrices/acceptance_criteria.md`, especially:
+
+- exact resource addition and closure subtraction
+- repeated duplicate rolls
+- contract transfer
+- border settlement and border-war state transfer
+- high-safety versus low-safety Evolution II outcomes
+- successful Evolution III full seal
+- maximum 30-division breach
+- capacity results at 0, 9, 10, 48, 100, and over 100 resources
+- origin exclusion
+- activation interruption
+- capacity loss and excess divisions
+- cave AI target selection and hard-attack response
+- continent eligibility and chaos gate
+- cross-continent foothold validity
+- regional and global defeat cleanup
+
+Do not fill the completion report with boilerplate syntax checks. Report task-specific evidence, findings, balance changes, and unresolved risks.
+
+## Completion report
+
+The final report must list:
+
+- files changed by surface
+- event, decision, focus, country, helper, asset, super-event, achievement, and localisation IDs
+- route coverage
+- decision and mission coverage
+- country package coverage
+- AI behavior
+- exact resource and capacity validation
+- assets created and wired
+- audio sources and licenses
+- documentation and spreadsheet updates
+- accepted plan dispositions
+- meaningful validation scenarios and results
+- every simplification, omission, fallback, blocker, or skipped validation
+
+If any requested surface is incomplete, state that the event is incomplete. Do not present partial work as full completion.
