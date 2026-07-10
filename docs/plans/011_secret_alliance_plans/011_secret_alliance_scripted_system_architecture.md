@@ -1,6 +1,8 @@
 # Event 011 Secret Alliance - Scripted System Architecture Handoff
 
-Status: design-only handoff. No gameplay, localisation, GUI, GFX, binary, or spreadsheet files are changed by this document.
+Status: superseded historical design handoff. No gameplay, localisation, GUI, GFX, binary, or spreadsheet files were changed by this document.
+
+Use `subagent_handoffs/scripted_system_architecture_pass.md` for the accepted implementation architecture and the current code plus current audits for implementation facts. This early handoff predates the full source specification; its statement that Event 011 has no manual scenario is superseded by the accepted SCN-009 Coalition Unmasked design.
 
 ## Scope
 

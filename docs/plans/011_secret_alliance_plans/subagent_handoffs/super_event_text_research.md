@@ -1,5 +1,9 @@
 # Event 011 Secret Alliance super-event text research handoff
 
+## Disposition
+
+Accepted and promoted. The final text package is implemented at display slot `73`. The image and wiring blockers recorded at the end of this research handoff are historical; `docs/super_events/011_secret_alliance_super_event_research.md` is the current implementation record.
+
 ## Scope and outcome
 
 This handoff supplies the final implementation-ready text package for the first public reveal of the Event 011 coalition. It covers the stable title, four reveal-route descriptions, selected quote, selected button fragment, exact source notes, dynamic localisation inputs, UI fit, and alignment with the finished audio research.

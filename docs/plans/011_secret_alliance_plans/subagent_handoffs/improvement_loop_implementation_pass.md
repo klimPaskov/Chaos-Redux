@@ -4,7 +4,9 @@ Date: 2026-07-10.
 
 ## Disposition
 
-The mandatory post-implementation improvement pass found a bounded causal-depth gap. Broad expansion remains closed. The current Event 011 implementation should not be called design-complete until the accepted must-fix sections in the addendum are implemented or explicitly rejected with a reason.
+Historical accepted-plan handoff. The mandatory post-implementation improvement pass found a bounded causal-depth gap and closed broad expansion. Its must-fix sections were accepted and are recorded as resolved in `../011_secret_alliance_improvement_resolution.md`.
+
+This handoff no longer represents the current implementation verdict. The strict decision/mission and localisation audits in this folder remain current and incomplete until clean re-audits supersede them.
 
 Primary addendum:
 

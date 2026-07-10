@@ -42,6 +42,7 @@ Type controls cycle scenario-specific type variables:
 - Death: Instant Outbreak only.
 - Disaster Barrage: Random Barrage, Geological Crisis, Weather Crisis, Skyfall Crisis, or Full Catalogue.
 - Africa Is One placeholder: fixed Reserved display with neutral placeholder launch event.
+- Coalition Unmasked: Regional Ring, Ideological Front, Great-Power Sponsor, Unlikely Coalition, or Random Coalition.
 
 The trigger button opens a separate confirmation window. Confirming reads the stored selected scenario, type, and intensity at launch time. Scenario launches intentionally bypass the normal automatic firing prerequisites for their source events, including chaos thresholds, prior event-state gates, route prerequisites, and super-event history flags. The launch gate only keeps impossible or conflicting launches out, such as requiring the Soviet Union to exist for Soviet Collapse and preventing most second world-end branches while `world_end` is already active. The launch button uses the same gate for click enablement and buttonstate rendering, so impossible selections are disabled and visually greyed out before the confirmation window can open.
 
@@ -96,3 +97,13 @@ The scenario stores one Event 013 history row through `natural_disaster_log_mode
 ### SCN-008: Africa Is One
 
 Reserved manual scenario placeholder for Event 012. It remains listed in the manual scenario window and launches only a neutral placeholder event until the source event is reworked.
+
+### SCN-009: Coalition Unmasked
+
+Coalition Unmasked launches the complete Event 011 Evolution III public-reveal package against the current player. The target is fixed before composition. Regional Ring favors neighboring and same-continent minors. Ideological Front favors governments opposed to the target. Great-Power Sponsor requires one valid major sponsor. Unlikely Coalition favors factioned, distant, and non-neighbor candidates. Random Coalition uses the full valid pool.
+
+Every composition uses the Event 011 validity contract: the target, target faction partners, countries already fighting the target, subjects, invalid actors, and special nonhuman chaos countries are excluded. Scenario members are AI-controlled; a human country is never silently inserted into the hostile coalition. Factionless candidates retain the normal preference unless a selected type deliberately changes the weighting.
+
+Low, Medium, High, and Maximum intensity scale minor membership, major sponsorship, starting resolve and readiness, support equipment, trains, trucks, and fuel. High permits one major; Maximum permits two when both are valid. The scenario creates the concealed membership and profiles first, records the Evolution III state, then reveals through the same reusable faction and war path as the live event. Maximum origin is snapshotted for `Surrounded, Not Buried`; High and Maximum origin are eligible for `Two Giants, One Grave`.
+
+Manual launch bypasses normal Chaos, evolution, date, automatic event history, prior Event 011 completion, and pre-fire requirements. It retains the active Event 011 context guard, valid human-target gate, viable minor/major composition gate, and human-consent restrictions. It does not bypass an active `world_end` terminal conflict or create an impossible coalition.
