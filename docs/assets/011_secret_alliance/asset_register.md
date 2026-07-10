@@ -42,6 +42,8 @@ The 17 unique decision sprites use the root `GFX_decision_011_secret_alliance_` 
 
 The seven unique idea sprites use the root `GFX_idea_011_secret_alliance_` and the suffixes `unexplained_interference`, `compromised_channels`, `hardened_networks`, `public_coalition_pressure`, `known_enemy_plans`, `coalition_opening_coordination`, and `fractured_coalition`. Their files use the same suffixes under `gfx/interface/ideas/011_secret_alliance/idea_*.dds`.
 
+The one-year `secret_alliance_retained_counterintelligence` aftermath idea deliberately uses `GFX_idea_011_secret_alliance_hardened_networks`. It represents retained methods from the same counter-network program, so this is an explicit same-system visual reuse rather than a missing or placeholder asset.
+
 ## Evolution III warning animation
 
 - Animated sprite: `GFX_011_secret_alliance_coalition_closure_warning_animated`
