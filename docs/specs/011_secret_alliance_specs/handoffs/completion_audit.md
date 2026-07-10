@@ -89,4 +89,4 @@ The audit evidence is static and source based. It is not an in-engine playtest. 
 
 **Immutable implementation evidence reconciled.**
 
-DM-15 through DM-20 and CA-01 through CA-13 remain closed at final gameplay and balance freeze `1c87d923`, and the wording/workbook audit is FINAL CLEAN. The holistic verdict is owned by `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md`.
+DM-15 through DM-20 and CA-01 through CA-13 remain closed through engine-compatible gameplay commit `407b9a05`, atop balance freeze `1c87d923`, and the wording/workbook audit is FINAL CLEAN. The holistic verdict is owned by `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md`.

@@ -1,6 +1,6 @@
 # Repo explorer style handoff
 
-Status: historical planning-intake map. Its `To Be Reworked` and missing-scenario statements describe the original intake. Final gameplay and balance authority is `1c87d923`; SCN-009 and the workbook statuses are implemented.
+Status: historical planning-intake map. Its `To Be Reworked` and missing-scenario statements describe the original intake. Current gameplay authority is engine-compatible commit `407b9a05`, atop balance freeze `1c87d923`; SCN-009 and the workbook statuses are implemented.
 
 ## Scope read
 
