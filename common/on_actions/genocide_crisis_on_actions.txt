@@ -22,6 +22,32 @@ on_actions = {
 		}
 	}
 
+	on_annex = {
+		effect = {
+			FROM = {
+				camp_rework_on_country_annexed = yes
+			}
+		}
+	}
+
+	on_government_change = {
+		effect = {
+			if = {
+				limit = { has_country_flag = camp_repression_ledger_open }
+				camp_rework_close_ledger = yes
+			}
+			if = {
+				limit = {
+					OR = {
+						has_active_camp_network = yes
+						has_visible_camp_reform_work = yes
+					}
+				}
+				camp_rework_rebuild_display_values = yes
+			}
+		}
+	}
+
 	on_capitulation = {
 		effect = {
 			genocide_try_trigger_tribunal_after_defeat = yes

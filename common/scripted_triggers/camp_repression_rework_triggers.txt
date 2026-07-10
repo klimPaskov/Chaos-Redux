@@ -1,0 +1,1192 @@
+# ============================================================================
+# CHAOS REDUX - CAMP AND REPRESSION REWORK TRIGGERS
+# ============================================================================
+# Overview:
+# - Defines the canonical active-site lifecycle and player-facing visibility.
+# - Centralizes territorial state pools for every country kit.
+# - Provides conservative route, resource, reform, and AI-cap gates.
+# - Keeps targeting territorial and political; no protected-class selector is
+#   defined anywhere in this system.
+# ============================================================================
+
+is_valid_camp_dormant_marker_state = {
+	has_state_flag = genocide_historical_quiet_camp
+	NOT = { has_state_flag = camp_rework_site_active }
+}
+
+camp_rework_state_can_accept_responsibility_from_root = {
+	OR = {
+		NOT = { has_variable = genocide_responsible_country }
+		var:genocide_responsible_country = { tag = ROOT }
+	}
+}
+
+is_valid_camp_active_site_state = {
+	has_state_flag = camp_rework_site_active
+	has_variable = genocide_responsible_country
+	NOT = { has_state_flag = camp_rework_site_dismantled }
+	OR = {
+		concentration_camp > 0
+		extermination_camp > 0
+		gulag_labor_camp_network > 0
+		has_state_flag = genocide_auschwitz_experiment_site
+		has_state_flag = genocide_ss_laboratory_site
+		has_state_flag = genocide_japanese_biowarfare_atrocity_site
+		has_state_flag = genocide_soviet_mass_repression_site
+		has_state_flag = genocide_soviet_famine_pressure_site
+		has_state_flag = camp_rework_expanded_labor_site
+		has_state_flag = camp_rework_experiment_site
+		has_state_flag = camp_rework_radicalized_site
+		has_state_flag = genocide_restricted_chemical_site_active
+	}
+}
+
+is_valid_camp_discovery_state = {
+	has_variable = genocide_responsible_country
+	NOT = { has_state_flag = genocide_site_discovered }
+	NOT = { has_state_flag = genocide_historical_quiet_camp }
+	OR = {
+		is_valid_camp_active_site_state = yes
+		has_state_flag = genocide_destroyed_atrocity_site
+		has_state_flag = genocide_evidence_destroyed
+		has_state_flag = genocide_evidence_destroy_failed
+		has_state_flag = camp_rework_liberated_evidence
+	}
+}
+
+is_valid_camp_dismantlement_state = {
+	is_controlled_by = ROOT
+	has_variable = genocide_responsible_country
+	OR = {
+		is_valid_camp_active_site_state = yes
+		has_state_flag = genocide_site_discovered
+	}
+}
+
+is_valid_camp_enemy_proximity_state = {
+	is_valid_camp_discovery_state = yes
+	genocide_state_has_enemy_forces_near_root = yes
+}
+
+camp_rework_state_requires_unregister = {
+	OR = {
+		NOT = { has_variable = genocide_responsible_country }
+		AND = {
+			has_variable = genocide_responsible_country
+			NOT = { var:genocide_responsible_country = { exists = yes } }
+		}
+		has_state_flag = camp_rework_site_dismantled
+		AND = {
+			has_variable = genocide_responsible_country
+			NOT = {
+				OR = {
+					var:genocide_responsible_country = {
+						PREV = { is_controlled_by = PREV }
+					}
+					CONTROLLER = {
+						is_subject_of = var:PREV.genocide_responsible_country
+					}
+				}
+			}
+		}
+		AND = {
+			has_state_flag = camp_rework_site_active
+			NOT = { is_valid_camp_active_site_state = yes }
+		}
+	}
+}
+
+has_active_camp_network = {
+	OR = {
+		check_variable = { camp_active_site_count > 0 }
+		check_variable = { camp_network_reach > 0 }
+		genocide_country_has_registered_active_camps = yes
+	}
+}
+
+has_visible_camp_reform_work = {
+	OR = {
+		check_variable = {
+			var = camp_reform_pressure
+			value = constant:camp_rework_threshold.reform_visible
+			compare = greater_than_or_equals
+		}
+		has_country_flag = camp_rework_reform_route_open
+		has_country_flag = camp_rework_dismantlement_in_progress
+		has_country_flag = camp_rework_redress_pending
+		has_country_flag = genocide_evidence_reached_foreign_observers
+		genocide_country_has_discovered_sites = yes
+	}
+}
+
+has_camp_country_specific_route = {
+	OR = {
+		original_tag = GER
+		original_tag = JAP
+		original_tag = SOV
+		original_tag = ENG
+		original_tag = USA
+		original_tag = FRA
+		tag = VIC
+		original_tag = ITA
+		original_tag = BEL
+		has_country_flag = unlocked_generic_detention_network
+		has_country_flag = camp_rework_inherited_network
+	}
+}
+
+camp_rework_country_uses_generic_kit = {
+	NOT = {
+		OR = {
+			original_tag = GER
+			original_tag = JAP
+			original_tag = SOV
+			original_tag = ENG
+			original_tag = USA
+			original_tag = FRA
+			tag = VIC
+			original_tag = ITA
+			original_tag = BEL
+		}
+	}
+}
+
+has_camp_category_visible_action = {
+	OR = {
+		has_active_camp_network = yes
+		has_visible_camp_reform_work = yes
+		camp_rework_country_can_activate_generic = yes
+		has_country_flag = genocide_decisions_visible
+		has_country_flag = camp_rework_managed_network_visible
+		AND = {
+			has_camp_country_specific_route = yes
+			OR = {
+				has_war = yes
+				has_country_flag = camp_rework_dormant_route_available
+				has_country_flag = camp_rework_inherited_network
+				genocide_country_has_crisis = yes
+			}
+		}
+	}
+}
+
+camp_rework_country_can_reform = {
+	OR = {
+		has_government = democratic
+		has_country_flag = unlocked_generic_reform_and_dismantlement
+		has_country_flag = camp_rework_reform_route_open
+		has_country_flag = genocide_evidence_reached_foreign_observers
+		genocide_country_has_discovered_sites = yes
+		NOT = { has_government = fascism }
+	}
+}
+
+camp_rework_country_can_use_radicalized_route = {
+	has_active_camp_network = yes
+	OR = {
+		has_country_flag = unlocked_generic_radicalized_atrocity_escalation
+		has_country_flag = genocide_extreme_doctrine_unlocked
+		has_doctrine = extermination_columns
+		has_completed_subdoctrine = extermination_columns
+		AND = {
+			has_government = fascism
+			has_war = yes
+		}
+		AND = {
+			has_government = communism
+			OR = {
+				has_war = yes
+				has_stability < constant:camp_rework_threshold.low_stability
+			}
+		}
+	}
+	NOT = { has_country_flag = camp_rework_expansion_frozen }
+}
+
+camp_rework_country_can_activate_generic = {
+	NOT = { has_country_flag = camp_rework_expansion_frozen }
+	OR = {
+		has_country_flag = unlocked_generic_detention_network
+		has_doctrine = extermination_columns
+		has_completed_subdoctrine = extermination_columns
+		AND = {
+			OR = {
+				has_government = fascism
+				has_government = communism
+				has_government = neutrality
+			}
+			has_war = yes
+			any_controlled_state = { is_generic_occupied_camp_pool_state = yes }
+		}
+		AND = {
+			has_government = democratic
+			has_country_flag = camp_rework_democratic_emergency_authorized
+			has_war = yes
+			has_stability < constant:camp_rework_threshold.severe_stability
+		}
+	}
+}
+
+camp_rework_state_is_occupied_noncore_pool = {
+	is_controlled_by = ROOT
+	NOT = { is_owned_by = ROOT }
+	NOT = { is_core_of = ROOT }
+}
+
+camp_rework_state_is_colonial_subject_pool = {
+	NOT = { is_core_of = ROOT }
+	OR = {
+		has_state_flag = camp_rework_colonial_pool
+		OWNER = { is_subject_of = ROOT }
+		CONTROLLER = { is_subject_of = ROOT }
+	}
+}
+
+camp_rework_country_is_desperate_in_war = {
+	has_war = yes
+	OR = {
+		surrender_progress > constant:camp_rework_threshold.desperate_surrender
+		has_stability < constant:camp_rework_threshold.severe_stability
+		has_global_flag = { flag = chaos_tier value = 5 }
+	}
+}
+
+camp_rework_state_is_noncore_pool = {
+	is_owned_and_controlled_by = ROOT
+	NOT = { is_core_of = ROOT }
+}
+
+camp_rework_state_is_periphery_pool = {
+	is_controlled_by = ROOT
+	OR = {
+		has_state_flag = camp_rework_periphery_pool
+		has_state_flag = camp_rework_political_opposition_pool
+		has_state_flag = camp_rework_prison_labor_pool
+		has_resistance = yes
+	}
+}
+
+camp_rework_state_is_core_fallback_pool = {
+	is_owned_and_controlled_by = ROOT
+	is_core_of = ROOT
+}
+
+camp_rework_state_is_high_priority_pool = {
+	OR = {
+		camp_rework_state_is_occupied_noncore_pool = yes
+		camp_rework_state_is_colonial_subject_pool = yes
+		camp_rework_state_is_noncore_pool = yes
+		camp_rework_state_is_periphery_pool = yes
+	}
+}
+
+is_generic_occupied_camp_pool_state = {
+	camp_rework_state_is_occupied_noncore_pool = yes
+	OR = {
+		has_resistance = yes
+		ROOT = { has_war = yes }
+	}
+}
+
+is_generic_colonial_camp_pool_state = {
+	camp_rework_state_is_colonial_subject_pool = yes
+}
+
+is_generic_noncore_security_pool_state = {
+	camp_rework_state_is_noncore_pool = yes
+	OR = {
+		has_resistance = yes
+		has_state_flag = camp_rework_security_pool
+	}
+}
+
+is_generic_political_opposition_pool_state = {
+	is_controlled_by = ROOT
+	has_state_flag = camp_rework_political_opposition_pool
+}
+
+is_generic_core_fallback_pool_state = {
+	camp_rework_state_is_core_fallback_pool = yes
+	ROOT = {
+		NOT = {
+			any_controlled_state = { camp_rework_state_is_high_priority_pool = yes }
+		}
+	}
+}
+
+is_generic_ai_priority_camp_pool_state = {
+	OR = {
+		is_generic_occupied_camp_pool_state = yes
+		AND = {
+			is_generic_colonial_camp_pool_state = yes
+			ROOT = { NOT = { any_controlled_state = { is_generic_occupied_camp_pool_state = yes } } }
+		}
+		AND = {
+			is_generic_noncore_security_pool_state = yes
+			ROOT = {
+				NOT = { any_controlled_state = { is_generic_occupied_camp_pool_state = yes } }
+				NOT = { any_controlled_state = { is_generic_colonial_camp_pool_state = yes } }
+			}
+		}
+		AND = {
+			is_generic_political_opposition_pool_state = yes
+			ROOT = {
+				NOT = { any_controlled_state = { is_generic_occupied_camp_pool_state = yes } }
+				NOT = { any_controlled_state = { is_generic_colonial_camp_pool_state = yes } }
+				NOT = { any_controlled_state = { is_generic_noncore_security_pool_state = yes } }
+			}
+		}
+		is_generic_core_fallback_pool_state = yes
+	}
+}
+
+is_germany_occupied_transfer_pool_state = {
+	is_controlled_by = ROOT
+	NOT = { is_core_of = ROOT }
+	OR = {
+		genocide_state_is_german_occupied_poland_target = yes
+		camp_rework_state_is_occupied_noncore_pool = yes
+		camp_rework_state_is_noncore_pool = yes
+	}
+}
+
+is_germany_occupied_poland_prisoner_source = {
+	is_controlled_by = ROOT
+	NOT = { is_core_of = ROOT }
+	is_on_continent = europe
+	OR = {
+		state = 88
+		state = 89
+		state = 90
+		state = 92
+		state = 97
+		state = 762
+		is_core_of = POL
+		is_core_of = SIL
+	}
+}
+
+is_germany_other_occupied_europe_prisoner_source = {
+	is_controlled_by = ROOT
+	NOT = { is_core_of = ROOT }
+	is_on_continent = europe
+	NOT = { is_germany_occupied_poland_prisoner_source = yes }
+}
+
+is_germany_core_prisoner_source_fallback = {
+	is_owned_and_controlled_by = ROOT
+	is_core_of = ROOT
+	ROOT = {
+		original_tag = GER
+		NOT = { any_controlled_state = { is_germany_occupied_poland_prisoner_source = yes } }
+		NOT = { any_controlled_state = { is_germany_other_occupied_europe_prisoner_source = yes } }
+	}
+}
+
+is_germany_core_fallback_pool_state = {
+	camp_rework_state_is_core_fallback_pool = yes
+	ROOT = {
+		original_tag = GER
+		NOT = { any_controlled_state = { is_germany_occupied_transfer_pool_state = yes } }
+	}
+}
+
+is_japan_china_manchuria_pool_state = {
+	OR = {
+		is_controlled_by = ROOT
+		CONTROLLER = { is_subject_of = ROOT }
+	}
+	NOT = { is_core_of = JAP }
+	OR = {
+		is_core_of = CHI
+		is_core_of = PRC
+		is_core_of = GXC
+		is_core_of = MEN
+		is_core_of = MAN
+		is_core_of = YUN
+		is_core_of = SHX
+		is_core_of = XSM
+	}
+}
+
+is_japan_colonial_occupation_pool_state = {
+	NOT = { is_core_of = JAP }
+	OR = {
+		is_controlled_by = ROOT
+		CONTROLLER = { is_subject_of = ROOT }
+	}
+	NOT = { is_japan_china_manchuria_pool_state = yes }
+	OR = {
+		is_on_continent = asia
+		is_on_continent = australia
+	}
+}
+
+is_japan_home_island_fallback_state = {
+	is_owned_and_controlled_by = ROOT
+	is_core_of = JAP
+	ROOT = {
+		original_tag = JAP
+		camp_rework_country_is_desperate_in_war = yes
+		NOT = { any_controlled_state = { is_japan_china_manchuria_pool_state = yes } }
+		NOT = { any_controlled_state = { is_japan_colonial_occupation_pool_state = yes } }
+		OR = {
+			has_global_flag = { flag = chaos_tier value = 4 }
+			has_global_flag = { flag = chaos_tier value = 5 }
+		}
+	}
+}
+
+is_soviet_gulag_periphery_pool_state = {
+	is_controlled_by = ROOT
+	OR = {
+		genocide_state_is_soviet_gulag_target = yes
+		is_core_of = KAZ
+		is_core_of = KYR
+		is_core_of = TAJ
+		is_core_of = TMS
+		is_core_of = UZB
+		is_core_of = UKR
+		is_core_of = BLR
+		is_core_of = GEO
+		is_core_of = ARM
+		is_core_of = AZR
+		has_state_flag = camp_rework_soviet_borderland_pool
+		has_state_flag = camp_rework_political_opposition_pool
+		AND = {
+			NOT = { is_core_of = ROOT }
+			has_resistance = yes
+		}
+	}
+}
+
+is_uk_raj_detention_pool_state = {
+	OR = {
+		is_core_of = RAJ
+		is_core_of = PAK
+		is_core_of = BAN
+		OWNER = { original_tag = RAJ }
+		CONTROLLER = { original_tag = RAJ }
+	}
+	OR = {
+		is_controlled_by = ROOT
+		CONTROLLER = { is_subject_of = ROOT }
+	}
+}
+
+is_uk_indian_ocean_security_pool_state = {
+	OR = {
+		is_core_of = BRM
+		is_core_of = SRL
+		is_core_of = MAL
+	}
+	OR = {
+		is_controlled_by = ROOT
+		CONTROLLER = { is_subject_of = ROOT }
+	}
+}
+
+is_uk_colonial_emergency_pool_state = {
+	NOT = { is_core_of = ROOT }
+	OR = {
+		is_controlled_by = ROOT
+		CONTROLLER = { is_subject_of = ROOT }
+	}
+	OR = {
+		has_resistance = yes
+		is_coastal = yes
+		has_state_flag = camp_rework_security_pool
+	}
+}
+
+is_uk_core_fallback_pool_state = {
+	camp_rework_state_is_core_fallback_pool = yes
+	ROOT = {
+		original_tag = ENG
+		has_war = yes
+		surrender_progress > constant:camp_rework_threshold.retreat_surrender
+		NOT = { any_controlled_state = { is_uk_raj_detention_pool_state = yes } }
+		NOT = { any_controlled_state = { is_uk_indian_ocean_security_pool_state = yes } }
+		NOT = { any_controlled_state = { is_uk_colonial_emergency_pool_state = yes } }
+		NOT = {
+			any_subject_country = {
+				any_controlled_state = {
+					OR = {
+						is_uk_raj_detention_pool_state = yes
+						is_uk_indian_ocean_security_pool_state = yes
+						is_uk_colonial_emergency_pool_state = yes
+					}
+				}
+			}
+		}
+	}
+}
+
+is_usa_wartime_security_zone_state = {
+	is_owned_and_controlled_by = ROOT
+	OR = {
+		state = 377
+		state = 378
+		state = 379
+		state = 380
+		state = 385
+		state = 386
+		state = 387
+		state = 463
+		state = 629
+		state = 685
+	}
+}
+
+is_usa_overseas_security_pool_state = {
+	is_controlled_by = ROOT
+	NOT = { is_core_of = ROOT }
+	OR = {
+		is_owned_by = ROOT
+		camp_rework_state_is_occupied_noncore_pool = yes
+	}
+}
+
+is_usa_interior_relocation_site_state = {
+	is_owned_and_controlled_by = ROOT
+	is_core_of = USA
+	is_coastal = no
+	NOT = { is_usa_wartime_security_zone_state = yes }
+}
+
+is_usa_core_emergency_fallback_state = {
+	is_owned_and_controlled_by = ROOT
+	is_core_of = USA
+	ROOT = {
+		original_tag = USA
+		has_war = yes
+		OR = {
+			surrender_progress > constant:camp_rework_threshold.retreat_surrender
+			has_global_flag = { flag = chaos_tier value = 4 }
+			has_global_flag = { flag = chaos_tier value = 5 }
+		}
+		NOT = { any_controlled_state = { is_usa_wartime_security_zone_state = yes } }
+		NOT = { any_controlled_state = { is_usa_overseas_security_pool_state = yes } }
+		NOT = { any_controlled_state = { is_usa_interior_relocation_site_state = yes } }
+	}
+}
+
+is_france_camp_legacy_pool_state = {
+	is_controlled_by = ROOT
+	OR = {
+		has_state_flag = camp_rework_france_camp_legacy
+		state = 21
+		state = 31
+		state = 32
+	}
+}
+
+is_france_north_africa_labor_pool_state = {
+	OR = {
+		is_core_of = ALG
+		is_core_of = MOR
+		is_core_of = TUN
+	}
+	OR = {
+		is_controlled_by = ROOT
+		CONTROLLER = { is_subject_of = ROOT }
+	}
+}
+
+is_france_vichy_internment_pool_state = {
+	is_controlled_by = ROOT
+	OR = {
+		is_france_camp_legacy_pool_state = yes
+		is_france_north_africa_labor_pool_state = yes
+	}
+}
+
+is_france_other_colonial_labor_pool_state = {
+	NOT = { is_core_of = ROOT }
+	NOT = { is_france_north_africa_labor_pool_state = yes }
+	OR = {
+		is_controlled_by = ROOT
+		CONTROLLER = { is_subject_of = ROOT }
+	}
+	OR = {
+		has_resistance = yes
+		has_state_flag = camp_rework_france_colonial_labor_pool
+	}
+}
+
+is_france_core_fallback_pool_state = {
+	camp_rework_state_is_core_fallback_pool = yes
+	ROOT = {
+		OR = {
+			original_tag = FRA
+			tag = VIC
+		}
+		camp_rework_country_is_desperate_in_war = yes
+		NOT = { any_controlled_state = { is_france_camp_legacy_pool_state = yes } }
+		NOT = { any_controlled_state = { is_france_north_africa_labor_pool_state = yes } }
+		NOT = { any_controlled_state = { is_france_other_colonial_labor_pool_state = yes } }
+	}
+}
+
+is_italy_libya_repression_pool_state = {
+	is_controlled_by = ROOT
+	is_core_of = LBA
+}
+
+is_italy_east_africa_repression_pool_state = {
+	is_controlled_by = ROOT
+	OR = {
+		is_core_of = ETH
+		is_core_of = ERI
+		is_core_of = SOM
+	}
+}
+
+is_italy_balkan_occupation_pool_state = {
+	is_controlled_by = ROOT
+	NOT = { is_core_of = ROOT }
+	OR = {
+		is_core_of = YUG
+		is_core_of = GRE
+		is_core_of = ALB
+	}
+	ROOT = {
+		has_war = yes
+		OR = {
+			has_global_flag = { flag = chaos_tier value = 3 }
+			has_global_flag = { flag = chaos_tier value = 4 }
+			has_global_flag = { flag = chaos_tier value = 5 }
+		}
+	}
+}
+
+is_italy_core_fallback_pool_state = {
+	camp_rework_state_is_core_fallback_pool = yes
+	ROOT = {
+		original_tag = ITA
+		camp_rework_country_is_desperate_in_war = yes
+		NOT = { any_controlled_state = { is_italy_libya_repression_pool_state = yes } }
+		NOT = { any_controlled_state = { is_italy_east_africa_repression_pool_state = yes } }
+		NOT = { any_controlled_state = { is_italy_balkan_occupation_pool_state = yes } }
+	}
+}
+
+is_italy_colonial_project_pool_state = {
+	is_italy_libya_repression_pool_state = yes
+	OR = {
+		has_resistance = yes
+		is_coastal = yes
+		infrastructure < constant:camp_rework_state_threshold.low_infrastructure
+	}
+}
+
+is_bel_congo_concession_pool_state = {
+	OR = {
+		is_core_of = COG
+		has_state_flag = camp_rework_congo_concession_pool
+	}
+	OR = {
+		is_controlled_by = ROOT
+		CONTROLLER = { is_subject_of = ROOT }
+	}
+}
+
+is_bel_congo_transport_project_state = {
+	is_bel_congo_concession_pool_state = yes
+	OR = {
+		is_coastal = yes
+		infrastructure < constant:camp_rework_state_threshold.low_infrastructure
+		has_state_flag = camp_rework_congo_transport_pool
+	}
+}
+
+is_bel_colonial_emergency_pool_state = {
+	NOT = { is_core_of = BEL }
+	OR = {
+		is_controlled_by = ROOT
+		CONTROLLER = { is_subject_of = ROOT }
+	}
+}
+
+camp_rework_state_matches_country_kit_pool = {
+	OR = {
+		AND = {
+			ROOT = { original_tag = GER }
+			OR = {
+				is_germany_occupied_transfer_pool_state = yes
+				is_germany_core_fallback_pool_state = yes
+			}
+		}
+		AND = {
+			ROOT = { original_tag = JAP }
+			OR = {
+				is_japan_china_manchuria_pool_state = yes
+				is_japan_colonial_occupation_pool_state = yes
+				is_japan_home_island_fallback_state = yes
+			}
+		}
+		AND = {
+			ROOT = { original_tag = SOV }
+			is_soviet_gulag_periphery_pool_state = yes
+		}
+		AND = {
+			ROOT = { original_tag = ENG }
+			OR = {
+				is_uk_raj_detention_pool_state = yes
+				is_uk_indian_ocean_security_pool_state = yes
+				is_uk_colonial_emergency_pool_state = yes
+				is_uk_core_fallback_pool_state = yes
+			}
+		}
+		AND = {
+			ROOT = { original_tag = USA }
+			OR = {
+				is_usa_wartime_security_zone_state = yes
+				is_usa_overseas_security_pool_state = yes
+				is_usa_interior_relocation_site_state = yes
+				is_usa_core_emergency_fallback_state = yes
+			}
+		}
+		AND = {
+			ROOT = {
+				OR = {
+					original_tag = FRA
+					tag = VIC
+				}
+			}
+			OR = {
+				is_france_camp_legacy_pool_state = yes
+				is_france_north_africa_labor_pool_state = yes
+				is_france_vichy_internment_pool_state = yes
+				is_france_other_colonial_labor_pool_state = yes
+				is_france_core_fallback_pool_state = yes
+			}
+		}
+		AND = {
+			ROOT = { original_tag = ITA }
+			OR = {
+				is_italy_libya_repression_pool_state = yes
+				is_italy_east_africa_repression_pool_state = yes
+				is_italy_balkan_occupation_pool_state = yes
+				is_italy_colonial_project_pool_state = yes
+				is_italy_core_fallback_pool_state = yes
+			}
+		}
+		AND = {
+			ROOT = { original_tag = BEL }
+			OR = {
+				is_bel_congo_concession_pool_state = yes
+				is_bel_congo_transport_project_state = yes
+				is_bel_colonial_emergency_pool_state = yes
+			}
+		}
+		AND = {
+			ROOT = {
+				NOT = {
+					OR = {
+						original_tag = GER
+						original_tag = JAP
+						original_tag = SOV
+						original_tag = ENG
+						original_tag = USA
+						original_tag = FRA
+						tag = VIC
+						original_tag = ITA
+						original_tag = BEL
+					}
+				}
+			}
+			OR = {
+				is_generic_occupied_camp_pool_state = yes
+				is_generic_colonial_camp_pool_state = yes
+				is_generic_noncore_security_pool_state = yes
+				is_generic_political_opposition_pool_state = yes
+				is_generic_core_fallback_pool_state = yes
+			}
+		}
+	}
+}
+
+camp_rework_country_has_chemical_chlorine_activation_capacity = {
+	has_tech = chlorine_gas
+	has_equipment = { chemical_chlorine_payload_cylinder_1 > constant:camp_rework_chemical_cost.chlorine_cylinders }
+}
+
+camp_rework_country_has_chemical_phosgene_activation_capacity = {
+	has_tech = phosgene
+	has_equipment = { chemical_phosgene_payload_cylinder_1 > constant:camp_rework_chemical_cost.phosgene_cylinders }
+}
+
+camp_rework_country_has_chemical_mustard_activation_capacity = {
+	has_tech = mustard_gas
+	has_equipment = { chemical_mustard_payload_cylinder_1 > constant:camp_rework_chemical_cost.mustard_cylinders }
+}
+
+camp_rework_country_has_chemical_lewisite_activation_capacity = {
+	has_tech = lewisite
+	has_equipment = { chemical_lewisite_payload_cylinder_1 > constant:camp_rework_chemical_cost.lewisite_cylinders }
+}
+
+camp_rework_country_has_chemical_tabun_activation_capacity = {
+	has_tech = tabun
+	has_equipment = { chemical_tabun_payload_cylinder_1 > constant:camp_rework_chemical_cost.tabun_cylinders }
+}
+
+camp_rework_country_has_chemical_sarin_activation_capacity = {
+	OR = {
+		has_tech = sarin
+		is_special_project_completed = sp:sp_cw_sarin_program
+	}
+	has_equipment = { chemical_sarin_payload_cylinder_1 > constant:camp_rework_chemical_cost.sarin_cylinders }
+}
+
+camp_rework_country_has_chemical_soman_activation_capacity = {
+	OR = {
+		has_tech = soman
+		is_special_project_completed = sp:sp_cw_soman_program
+	}
+	has_equipment = { chemical_soman_payload_cylinder_1 > constant:camp_rework_chemical_cost.soman_cylinders }
+}
+
+camp_rework_country_has_chemical_escalation_capacity = {
+	OR = {
+		camp_rework_country_has_chemical_chlorine_activation_capacity = yes
+		camp_rework_country_has_chemical_phosgene_activation_capacity = yes
+		camp_rework_country_has_chemical_mustard_activation_capacity = yes
+		camp_rework_country_has_chemical_lewisite_activation_capacity = yes
+		camp_rework_country_has_chemical_tabun_activation_capacity = yes
+		camp_rework_country_has_chemical_sarin_activation_capacity = yes
+		camp_rework_country_has_chemical_soman_activation_capacity = yes
+	}
+}
+
+camp_rework_country_has_biowarfare_facility = {
+	OR = {
+		any_controlled_state = { biowarfare_facility > 0 }
+		any_subject_country = {
+			any_controlled_state = { biowarfare_facility > 0 }
+		}
+	}
+}
+
+camp_rework_country_has_biological_anthrax_activation_capacity = {
+	camp_rework_country_has_biowarfare_facility = yes
+	has_tech = anthrax_bomb_delivery_systems
+	has_equipment = { anthrax_bomb_1 > constant:camp_rework_equipment_cost.biological_anthrax }
+}
+
+camp_rework_country_has_biological_tularemia_activation_capacity = {
+	camp_rework_country_has_biowarfare_facility = yes
+	has_tech = tularemia_bomb_delivery_systems
+	has_equipment = { tularemia_bomb_1 > constant:camp_rework_equipment_cost.biological_tularemia }
+}
+
+camp_rework_country_has_biological_plague_activation_capacity = {
+	camp_rework_country_has_biowarfare_facility = yes
+	has_tech = plague_bomb_delivery_systems
+	has_equipment = { plague_bomb_1 > constant:camp_rework_equipment_cost.biological_plague }
+}
+
+camp_rework_country_has_biological_smallpox_activation_capacity = {
+	camp_rework_country_has_biowarfare_facility = yes
+	has_tech = smallpox_bomb_delivery_systems
+	has_equipment = { smallpox_bomb_1 > constant:camp_rework_equipment_cost.biological_smallpox }
+}
+
+camp_rework_country_has_biological_escalation_capacity = {
+	OR = {
+		camp_rework_country_has_biological_anthrax_activation_capacity = yes
+		camp_rework_country_has_biological_tularemia_activation_capacity = yes
+		camp_rework_country_has_biological_plague_activation_capacity = yes
+		camp_rework_country_has_biological_smallpox_activation_capacity = yes
+	}
+}
+
+camp_rework_state_is_chemical_escalation_target = {
+	is_controlled_by = ROOT
+	is_valid_camp_active_site_state = yes
+	camp_rework_state_can_accept_responsibility_from_root = yes
+	NOT = { has_state_flag = camp_rework_chemical_method_active }
+	NOT = { has_state_flag = camp_rework_biological_method_active }
+	NOT = { has_state_flag = genocide_evidence_destroyed }
+	OR = {
+		extermination_camp > 0
+		gulag_labor_camp_network > 0
+		has_state_flag = camp_rework_experiment_site
+		has_state_flag = camp_rework_radicalized_site
+		has_state_flag = genocide_auschwitz_experiment_site
+		has_state_flag = genocide_japanese_biowarfare_atrocity_site
+	}
+}
+
+camp_rework_state_is_biological_escalation_target = {
+	is_controlled_by = ROOT
+	is_valid_camp_active_site_state = yes
+	camp_rework_state_can_accept_responsibility_from_root = yes
+	NOT = { has_state_flag = camp_rework_biological_method_active }
+	NOT = { has_state_flag = camp_rework_chemical_method_active }
+	NOT = { has_state_flag = genocide_evidence_destroyed }
+	OR = {
+		has_state_flag = camp_rework_experiment_site
+		has_state_flag = genocide_auschwitz_experiment_site
+		has_state_flag = genocide_ss_laboratory_site
+		has_state_flag = genocide_japanese_biowarfare_atrocity_site
+		biowarfare_facility > 0
+	}
+}
+
+camp_rework_country_under_ai_site_cap = {
+	OR = {
+		AND = {
+			original_tag = GER
+			check_variable = { camp_active_site_count < constant:camp_rework_ai_cap.germany_active_sites }
+		}
+		AND = {
+			original_tag = JAP
+			check_variable = { camp_active_site_count < constant:camp_rework_ai_cap.japan_active_sites }
+		}
+		AND = {
+			original_tag = SOV
+			check_variable = { camp_active_site_count < constant:camp_rework_ai_cap.soviet_active_sites }
+		}
+		AND = {
+			original_tag = ENG
+			check_variable = { camp_active_site_count < constant:camp_rework_ai_cap.uk_active_sites }
+		}
+		AND = {
+			original_tag = USA
+			check_variable = { camp_active_site_count < constant:camp_rework_ai_cap.usa_active_sites }
+		}
+		AND = {
+			OR = { original_tag = FRA tag = VIC }
+			check_variable = { camp_active_site_count < constant:camp_rework_ai_cap.france_active_sites }
+		}
+		AND = {
+			original_tag = ITA
+			check_variable = { camp_active_site_count < constant:camp_rework_ai_cap.italy_active_sites }
+		}
+		AND = {
+			original_tag = BEL
+			check_variable = { camp_active_site_count < constant:camp_rework_ai_cap.belgium_active_sites }
+		}
+		AND = {
+			NOT = {
+				OR = {
+					original_tag = GER
+					original_tag = JAP
+					original_tag = SOV
+					original_tag = ENG
+					original_tag = USA
+					original_tag = FRA
+					tag = VIC
+					original_tag = ITA
+					original_tag = BEL
+				}
+			}
+			OR = {
+				AND = {
+					is_major = yes
+					check_variable = { camp_active_site_count < constant:camp_rework_ai_cap.generic_major_sites }
+				}
+				AND = {
+					is_major = no
+					check_variable = { camp_active_site_count < constant:camp_rework_ai_cap.generic_minor_sites }
+				}
+			}
+		}
+	}
+}
+
+camp_rework_country_under_ai_radicalized_cap = {
+	OR = {
+		AND = {
+			original_tag = GER
+			check_variable = { camp_radicalized_site_count < constant:camp_rework_ai_cap.germany_radicalized_sites }
+		}
+		AND = {
+			NOT = { original_tag = GER }
+			check_variable = { camp_radicalized_site_count < constant:camp_rework_ai_cap.generic_radicalized_sites }
+		}
+	}
+}
+
+camp_rework_country_under_ai_experiment_cap = {
+	OR = {
+		AND = {
+			original_tag = GER
+			check_variable = { camp_experiment_site_count < constant:camp_rework_ai_cap.germany_experiment_sites }
+		}
+		AND = {
+			original_tag = JAP
+			check_variable = { camp_experiment_site_count < constant:camp_rework_ai_cap.japan_experiment_sites }
+		}
+	}
+}
+
+camp_rework_country_under_ai_restricted_method_cap = {
+	check_variable = { camp_contaminated_site_count < constant:camp_rework_ai_cap.restricted_method_sites }
+}
+
+# ---------------------------------------------------------------------------
+# Germany, Japan, and Soviet country-package gates
+# ---------------------------------------------------------------------------
+
+camp_rework_germany_has_poland_priority_pool = {
+	original_tag = GER
+	any_controlled_state = {
+		is_germany_occupied_poland_prisoner_source = yes
+		NOT = { has_state_flag = camp_rework_site_dismantled }
+	}
+}
+
+camp_rework_germany_has_layered_auschwitz_site = {
+	original_tag = GER
+	88 = {
+		is_controlled_by = ROOT
+		OR = {
+			concentration_camp > 0
+			extermination_camp > 0
+			biowarfare_facility > 0
+			has_state_flag = genocide_auschwitz_experiment_site
+			has_state_flag = genocide_ss_laboratory_site
+		}
+	}
+}
+
+camp_rework_germany_cloning_unlock_ready = {
+	original_tag = GER
+	OR = {
+		germany_mengele_program_active = yes
+		germany_mengele_restricted_program_active = yes
+	}
+	has_variable = mengele_permission_level
+	check_variable = {
+		var = mengele_permission_level
+		value = constant:germany_mengele_permission.full
+		compare = greater_than_or_equals
+	}
+	has_variable = mengele_autonomy
+	check_variable = {
+		var = mengele_autonomy
+		value = constant:camp_rework_germany.cloning_autonomy_gate
+		compare = greater_than_or_equals
+	}
+	OR = {
+		NOT = { has_country_flag = germany_mengele_military_review_active }
+		AND = {
+			has_variable = ss_archive_control
+			check_variable = {
+				var = ss_archive_control
+				value = constant:camp_rework_germany.cloning_archive_gate
+				compare = greater_than_or_equals
+			}
+		}
+	}
+	has_variable = mengele_cloning_project_progress
+	check_variable = {
+		var = mengele_cloning_project_progress
+		value = constant:camp_rework_germany.cloning_project_progress_gate
+		compare = greater_than_or_equals
+	}
+	check_variable = { camp_experiment_site_count > 0 }
+	any_controlled_state = {
+		biowarfare_facility > 0
+		OR = {
+			state = 88
+			has_state_flag = camp_rework_experiment_site
+			has_state_flag = genocide_auschwitz_experiment_site
+			has_state_flag = genocide_ss_laboratory_site
+		}
+	}
+	NOT = { has_country_flag = germany_mengele_cloning_project_available }
+	NOT = { has_country_flag = germany_mengele_cloning_project_completed }
+}
+
+germany_mengele_cloning_unlock_ready = {
+	camp_rework_germany_cloning_unlock_ready = yes
+}
+
+camp_rework_japan_can_open_pingfang_route = {
+	original_tag = JAP
+	has_government = fascism
+	has_war_with_chinese_country = yes
+	OR = {
+		any_controlled_state = { is_japan_china_manchuria_pool_state = yes }
+		any_subject_country = { any_controlled_state = { is_japan_china_manchuria_pool_state = yes } }
+	}
+}
+
+camp_rework_japan_has_biowarfare_project_capacity = {
+	original_tag = JAP
+	OR = {
+		any_controlled_state = { biowarfare_facility > 0 }
+		has_tech = anthrax_bomb_delivery_systems
+		has_tech = tularemia_bomb_delivery_systems
+		has_tech = plague_bomb_delivery_systems
+		has_tech = smallpox_bomb_delivery_systems
+	}
+}
+
+camp_rework_japan_outbreak_threshold_reached = {
+	original_tag = JAP
+	check_variable = {
+		var = outbreak_accident_risk
+		value = constant:camp_rework_japan.critical_outbreak_risk
+		compare = greater_than_or_equals
+	}
+}
+
+camp_rework_soviet_paranoia_medium = {
+	original_tag = SOV
+	has_variable = SOV_paranoia
+	check_variable = {
+		var = SOV_paranoia
+		value = constant:camp_rework_soviet.paranoia_medium
+		compare = greater_than_or_equals
+	}
+}
+
+camp_rework_soviet_paranoia_high = {
+	original_tag = SOV
+	has_variable = SOV_paranoia
+	check_variable = {
+		var = SOV_paranoia
+		value = constant:camp_rework_soviet.paranoia_high
+		compare = greater_than_or_equals
+	}
+}
+
+camp_rework_soviet_paranoia_critical = {
+	original_tag = SOV
+	has_variable = SOV_paranoia
+	check_variable = {
+		var = SOV_paranoia
+		value = constant:camp_rework_soviet.paranoia_critical
+		compare = greater_than_or_equals
+	}
+}
+
+camp_rework_soviet_famine_crisis_active = {
+	original_tag = SOV
+	check_variable = {
+		var = famine_pressure
+		value = constant:camp_rework_soviet.famine_pressure_critical
+		compare = greater_than_or_equals
+	}
+}
+
+camp_rework_soviet_union_crisis_can_receive_relief = {
+	original_tag = SOV
+	has_variable = soviet_collapse_total_collapse_threat
+	has_variable = union_crisis_suppression_relief
+	check_variable = {
+		var = soviet_collapse_total_collapse_threat
+		value = constant:camp_rework_soviet.union_crisis_relief_stop
+		compare = less_than
+	}
+	check_variable = {
+		var = union_crisis_suppression_relief
+		value = constant:camp_rework_soviet.suppression_relief_cap
+		compare = less_than
+	}
+}

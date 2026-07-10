@@ -112,6 +112,7 @@ genocide_crisis_category = {
 		}
 		target_trigger = {
 			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
 				genocide_state_is_german_occupied_poland_target = yes
 				NOT = { concentration_camp > 0 }
 			}
@@ -120,6 +121,7 @@ genocide_crisis_category = {
 			genocide_country_is_german_holocaust_actor = yes
 			date > 1939.12.31
 			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
 				genocide_state_is_german_occupied_poland_target = yes
 				NOT = { concentration_camp > 0 }
 			}
@@ -151,6 +153,7 @@ genocide_crisis_category = {
 		}
 		target_trigger = {
 			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
 				genocide_state_is_german_occupied_poland_target = yes
 				concentration_camp > 0
 				NOT = { extermination_camp > 0 }
@@ -166,6 +169,7 @@ genocide_crisis_category = {
 				command_power > @GENOCIDE_EXTERMINATION_COMMAND_POWER_COST
 			}
 			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
 				genocide_state_is_german_occupied_poland_target = yes
 				concentration_camp > 0
 				NOT = { extermination_camp > 0 }
@@ -230,12 +234,27 @@ genocide_crisis_category = {
 				germany_mengele_program_active = yes
 				germany_mengele_restricted_program_active = yes
 			}
+			has_variable = mengele_permission_level
+			check_variable = { mengele_permission_level > constant:germany_mengele_permission.rejected }
+			88 = {
+				is_controlled_by = ROOT
+				camp_rework_state_can_accept_responsibility_from_root = yes
+			}
 		}
 		target_trigger = {
 			FROM = {
 				is_controlled_by = ROOT
 				genocide_state_has_active_camps = yes
-				NOT = { has_state_flag = genocide_auschwitz_experiment_site }
+				has_variable = genocide_responsible_country
+				var:genocide_responsible_country = { tag = ROOT }
+				OR = {
+					is_germany_occupied_poland_prisoner_source = yes
+					AND = {
+						is_germany_other_occupied_europe_prisoner_source = yes
+						ROOT = { NOT = { any_controlled_state = { is_germany_occupied_poland_prisoner_source = yes } } }
+					}
+					is_germany_core_prisoner_source_fallback = yes
+				}
 			}
 		}
 		available = {
@@ -244,6 +263,12 @@ genocide_crisis_category = {
 				germany_mengele_program_active = yes
 				germany_mengele_restricted_program_active = yes
 			}
+			has_variable = mengele_permission_level
+			check_variable = { mengele_permission_level > constant:germany_mengele_permission.rejected }
+			88 = {
+				is_controlled_by = ROOT
+				camp_rework_state_can_accept_responsibility_from_root = yes
+			}
 			custom_trigger_tooltip = {
 				tooltip = genocide_requires_rail_army_xp_tt
 				has_army_experience > @GENOCIDE_RAIL_ARMY_XP_COST
@@ -251,7 +276,16 @@ genocide_crisis_category = {
 			FROM = {
 				is_controlled_by = ROOT
 				genocide_state_has_active_camps = yes
-				NOT = { has_state_flag = genocide_auschwitz_experiment_site }
+				has_variable = genocide_responsible_country
+				var:genocide_responsible_country = { tag = ROOT }
+				OR = {
+					is_germany_occupied_poland_prisoner_source = yes
+					AND = {
+						is_germany_other_occupied_europe_prisoner_source = yes
+						ROOT = { NOT = { any_controlled_state = { is_germany_occupied_poland_prisoner_source = yes } } }
+					}
+					is_germany_core_prisoner_source_fallback = yes
+				}
 			}
 		}
 		complete_effect = {
@@ -268,6 +302,7 @@ genocide_crisis_category = {
 		cost = constant:genocide_decision_cost.restricted_chemical_escalation
 		days_re_enable = constant:genocide_timing.decision_cooldown
 		visible = {
+			NOT = { camp_rework_country_uses_generic_kit = yes }
 			OR = {
 				is_ai = yes
 				has_country_flag = genocide_decisions_visible
@@ -275,6 +310,7 @@ genocide_crisis_category = {
 			genocide_country_has_restricted_chemical_site_target = yes
 		}
 		target_root_trigger = {
+			NOT = { camp_rework_country_uses_generic_kit = yes }
 			genocide_country_has_restricted_chemical_site_capacity = yes
 		}
 		target_trigger = {
@@ -300,6 +336,7 @@ genocide_crisis_category = {
 		cost = constant:genocide_decision_cost.build_extermination
 		days_re_enable = constant:genocide_timing.decision_cooldown
 		visible = {
+			NOT = { camp_rework_country_uses_generic_kit = yes }
 			OR = {
 				is_ai = yes
 				has_country_flag = genocide_decisions_visible
@@ -319,6 +356,7 @@ genocide_crisis_category = {
 
 		target_trigger = {
 			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
 				concentration_camp > 0
 				NOT = { extermination_camp > 0 }
 			}
@@ -335,6 +373,7 @@ genocide_crisis_category = {
 				}
 			}
 			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
 				concentration_camp > 0
 				NOT = { extermination_camp > 0 }
 			}
@@ -556,6 +595,7 @@ genocide_crisis_category = {
 		days_re_enable = constant:genocide_timing.decision_cooldown
 		visible = {
 			is_ai = yes
+			NOT = { camp_rework_country_uses_generic_kit = yes }
 		}
 
 		target_trigger = {
@@ -595,6 +635,7 @@ genocide_crisis_category = {
 		days_remove = constant:genocide_timing.state_modifier_days
 		visible = {
 			is_ai = yes
+			NOT = { camp_rework_country_uses_generic_kit = yes }
 		}
 
 		target_trigger = {
@@ -668,6 +709,7 @@ imperial_occupation_crisis = {
 		}
 		target_trigger = {
 			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
 				genocide_state_is_japanese_occupation_target = yes
 				NOT = { concentration_camp > 0 }
 			}
@@ -677,6 +719,7 @@ imperial_occupation_crisis = {
 			has_government = fascism
 			has_war_with_chinese_country = yes
 			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
 				genocide_state_is_japanese_occupation_target = yes
 				NOT = { concentration_camp > 0 }
 			}
@@ -712,14 +755,20 @@ imperial_occupation_crisis = {
 			has_war_with_chinese_country = yes
 		}
 		target_trigger = {
-			FROM = { genocide_state_is_japanese_occupation_target = yes }
+			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
+				genocide_state_is_japanese_occupation_target = yes
+			}
 		}
 		available = {
 			original_tag = JAP
 			has_government = fascism
 			has_war_with_chinese_country = yes
 			command_power > @GENOCIDE_SECURITY_COMMAND_POWER_COST
-			FROM = { genocide_state_is_japanese_occupation_target = yes }
+			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
+				genocide_state_is_japanese_occupation_target = yes
+			}
 		}
 		complete_effect = {
 			add_command_power = @GENOCIDE_SECURITY_COMMAND_POWER_COST_NEG
@@ -753,7 +802,10 @@ imperial_occupation_crisis = {
 			genocide_country_has_biowarfare_atrocity_capacity = yes
 		}
 		target_trigger = {
-			FROM = { genocide_state_is_japanese_occupation_target = yes }
+			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
+				genocide_state_is_japanese_occupation_target = yes
+			}
 		}
 		available = {
 			original_tag = JAP
@@ -761,7 +813,10 @@ imperial_occupation_crisis = {
 			has_war_with_chinese_country = yes
 			genocide_country_has_biowarfare_atrocity_capacity = yes
 			has_army_experience > @GENOCIDE_RAIL_ARMY_XP_COST
-			FROM = { genocide_state_is_japanese_occupation_target = yes }
+			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
+				genocide_state_is_japanese_occupation_target = yes
+			}
 		}
 		complete_effect = {
 			army_experience = @GENOCIDE_RAIL_ARMY_XP_COST_NEG
@@ -872,6 +927,7 @@ gulag_and_mass_repression_system = {
 		}
 		target_trigger = {
 			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
 				NOT = { gulag_labor_camp_network > 0 }
 				OR = {
 					genocide_state_is_soviet_gulag_target = yes
@@ -886,6 +942,7 @@ gulag_and_mass_repression_system = {
 			command_power > @GENOCIDE_GULAG_COMMAND_POWER_COST_TRIGGER
 			has_political_power > @GENOCIDE_GULAG_POLITICAL_POWER_COST_TRIGGER
 			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
 				NOT = { gulag_labor_camp_network > 0 }
 				OR = {
 					genocide_state_is_soviet_gulag_target = yes
@@ -929,6 +986,7 @@ gulag_and_mass_repression_system = {
 		}
 		target_trigger = {
 			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
 				OR = {
 					genocide_state_is_soviet_gulag_target = yes
 					has_resistance = yes
@@ -941,6 +999,7 @@ gulag_and_mass_repression_system = {
 			has_government = communism
 			command_power > @GENOCIDE_DEPORTATION_COMMAND_POWER_COST
 			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
 				OR = {
 					genocide_state_is_soviet_gulag_target = yes
 					has_resistance = yes
@@ -982,6 +1041,7 @@ gulag_and_mass_repression_system = {
 		}
 		target_trigger = {
 			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
 				OR = {
 					has_resistance = yes
 					NOT = { is_core_of = ROOT }
@@ -993,6 +1053,7 @@ gulag_and_mass_repression_system = {
 			has_government = communism
 			has_army_experience > @GENOCIDE_GULAG_ARMY_XP_COST
 			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
 				OR = {
 					has_resistance = yes
 					NOT = { is_core_of = ROOT }
@@ -1038,6 +1099,7 @@ gulag_and_mass_repression_system = {
 		}
 		target_trigger = {
 			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
 				OR = {
 					gulag_labor_camp_network > 0
 					genocide_state_is_soviet_gulag_target = yes
@@ -1051,6 +1113,7 @@ gulag_and_mass_repression_system = {
 			command_power > @GENOCIDE_GULAG_COMMAND_POWER_COST_TRIGGER
 			has_political_power > @GENOCIDE_GULAG_POLITICAL_POWER_COST_TRIGGER
 			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
 				OR = {
 					gulag_labor_camp_network > 0
 					genocide_state_is_soviet_gulag_target = yes
@@ -1087,6 +1150,7 @@ gulag_and_mass_repression_system = {
 		}
 		target_trigger = {
 			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
 				OR = {
 					gulag_labor_camp_network > 0
 					genocide_state_is_soviet_gulag_target = yes
@@ -1097,6 +1161,7 @@ gulag_and_mass_repression_system = {
 			original_tag = SOV
 			has_government = communism
 			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
 				OR = {
 					gulag_labor_camp_network > 0
 					genocide_state_is_soviet_gulag_target = yes

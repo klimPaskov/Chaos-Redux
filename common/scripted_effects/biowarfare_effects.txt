@@ -462,18 +462,28 @@ bio_apply_outbreak_strike_potency_to_contamination = {
 }
 
 bio_register_state_civilian_deaths = {
+	set_temp_variable = { chaos_deaths_change = 0 }
 	if = {
-		limit = { NOT = { has_variable = bio_state_deaths_percent } }
-		set_temp_variable = { bio_state_deaths_percent = constant:chaos_meter_contamination_deaths_percent.plague_application }
+		limit = { check_variable = { camp_rework_suppress_contamination_deaths > 0 } }
 	}
-	set_temp_variable = { chaos_state_deaths_percent = bio_state_deaths_percent }
-	set_temp_variable = { chaos_state_deaths_mult = 1 }
-	chaos_meter_apply_outbreak_state_death_environment_multiplier = yes
-	set_temp_variable = { chaos_state_deaths_cap_factor = constant:chaos_meter_state_death_dynamic.outbreak_cap_factor }
-	set_temp_variable = { chaos_state_deaths_random_min = constant:chaos_meter_state_death_dynamic.outbreak_random_min }
-	set_temp_variable = { chaos_state_deaths_random_span = constant:chaos_meter_state_death_dynamic.outbreak_random_span }
-	set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.biowarfare_outbreak }
-	chaos_meter_register_state_civilian_deaths_percent = yes
+	else = {
+		if = {
+			limit = { NOT = { has_variable = bio_state_deaths_percent } }
+			set_temp_variable = { bio_state_deaths_percent = constant:chaos_meter_contamination_deaths_percent.plague_application }
+		}
+		set_temp_variable = { chaos_state_deaths_percent = bio_state_deaths_percent }
+		set_temp_variable = { chaos_state_deaths_mult = 1 }
+		chaos_meter_apply_outbreak_state_death_environment_multiplier = yes
+		if = {
+			limit = { check_variable = { camp_rework_method_death_factor > 0 } }
+			multiply_temp_variable = { chaos_state_deaths_mult = camp_rework_method_death_factor }
+		}
+		set_temp_variable = { chaos_state_deaths_cap_factor = constant:chaos_meter_state_death_dynamic.outbreak_cap_factor }
+		set_temp_variable = { chaos_state_deaths_random_min = constant:chaos_meter_state_death_dynamic.outbreak_random_min }
+		set_temp_variable = { chaos_state_deaths_random_span = constant:chaos_meter_state_death_dynamic.outbreak_random_span }
+		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.biowarfare_outbreak }
+		chaos_meter_register_state_civilian_deaths_percent = yes
+	}
 }
 
 # Apply anthrax contamination to a state
@@ -2806,7 +2816,7 @@ progress_smallpox_vaccination = {
             }
 
             # Add weekly progress
-            add_to_variable = { smallpox_vaccination_progress = ROOT.weekly_progress }
+            add_to_variable = { smallpox_vaccination_progress = weekly_progress }
 
             # Cap total progress at 60%
             if = {
