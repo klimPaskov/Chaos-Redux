@@ -117,7 +117,7 @@ scripted effect should initialize them in its outer effect block first:
 Side effects:
 
 - reserves a unique delayed date for every subevent in the sequence
-- retries a bounded set of evolution-valid family and state pairs for random-valid targeting before returning a no-target rejection
+- retries a bounded set of evolution-valid family and state pairs for random-valid and random-family selected-country targeting before returning a no-target rejection
 - stores queued state scopes and metadata on each affected state's current controller
 - stores active aftermath data on affected states
 - merges a later caller-selected hit into an already open card for that exact state, with the latest sequence owning the card while accumulated recovery work and prior losses remain visible

@@ -475,7 +475,9 @@ natural_disaster_prepare_random_event_fire = {
 	natural_disaster_set_call_defaults = yes
 	natural_disaster_refresh_evolution_state = yes
 	set_temp_variable = { natural_disaster_sequence_index = 0 }
-	set_temp_variable = { natural_disaster_call_target_mode = constant:natural_disaster_target_mode.random_valid }
+	save_event_target_as = natural_disaster_call_target_country
+	set_temp_variable = { natural_disaster_call_target_country_supplied = 1 }
+	set_temp_variable = { natural_disaster_call_target_mode = constant:natural_disaster_target_mode.selected_country }
 	set_temp_variable = { natural_disaster_target_resolved = 0 }
 	set_temp_variable = { natural_disaster_random_target_attempt = 0 }
 	while_loop_effect = {
@@ -2516,7 +2518,10 @@ natural_disaster_plan_sequence = {
 			limit = {
 				check_variable = { natural_disaster_target_resolved < 1 }
 				check_variable = { natural_disaster_call_family = constant:natural_disaster_family.random }
-				check_variable = { natural_disaster_call_target_mode = constant:natural_disaster_target_mode.random_valid }
+				OR = {
+					check_variable = { natural_disaster_call_target_mode = constant:natural_disaster_target_mode.random_valid }
+					check_variable = { natural_disaster_call_target_mode = constant:natural_disaster_target_mode.selected_country }
+				}
 				check_variable = { natural_disaster_path_target_required < 1 }
 			}
 			set_temp_variable = { natural_disaster_random_target_attempt = 1 }
