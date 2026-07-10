@@ -18,6 +18,17 @@ country_event = {
 		set_temp_variable = { natural_disaster_call_caller_event_id = constant:natural_disaster_event.id }
 		if = {
 			limit = {
+				NOT = {
+					AND = {
+						has_event_target = natural_disaster_call_target_state
+						event_target:natural_disaster_call_target_state = { has_variable = natural_disaster_prefire_family }
+					}
+				}
+			}
+			natural_disaster_prepare_random_event_fire = yes
+		}
+		if = {
+			limit = {
 				has_event_target = natural_disaster_call_target_state
 				event_target:natural_disaster_call_target_state = { has_variable = natural_disaster_prefire_family }
 			}
@@ -30,11 +41,13 @@ country_event = {
 		}
 		else = {
 			set_temp_variable = { natural_disaster_call_family = constant:natural_disaster_family.random }
-			set_temp_variable = { natural_disaster_call_target_mode = constant:natural_disaster_target_mode.random_valid }
+			save_event_target_as = natural_disaster_call_target_country
+			set_temp_variable = { natural_disaster_call_target_country_supplied = 1 }
+			set_temp_variable = { natural_disaster_call_target_mode = constant:natural_disaster_target_mode.selected_country }
 		}
 		set_temp_variable = { natural_disaster_call_sequence_mode = constant:natural_disaster_sequence_mode.local_season }
 		set_temp_variable = { natural_disaster_call_news_policy = constant:natural_disaster_news_policy.meaningful }
-		set_temp_variable = { natural_disaster_call_report_policy = constant:natural_disaster_report_policy.affected_country }
+		set_temp_variable = { natural_disaster_call_report_policy = constant:natural_disaster_report_policy.caller }
 		set_temp_variable = { natural_disaster_call_aftermath_policy = constant:natural_disaster_aftermath_policy.normal }
 		set_temp_variable = { natural_disaster_call_chain_policy = constant:natural_disaster_chain_policy.family }
 		set_temp_variable = { natural_disaster_call_log_mode = constant:natural_disaster_log_mode.event_system }
