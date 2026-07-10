@@ -2,6 +2,20 @@
 
 This file records external quote sources used by Chaos Redux super-events when the source matters for completion proof.
 
+## Secret Alliance
+
+### The Pact Unmasked
+
+- Super-event ID: `73`
+- Localisation key: `chaosx_super_event.73.q`
+- Quote in game: "All warfare is based on deception."
+- Attribution: Sun Tzu, *The Art of War*, translated by Lionel Giles.
+- Verification source: <https://www.gutenberg.org/files/132/132-h/132-h.htm> prints the sentence in Chapter I, item 18 of Giles's 1910 translation. <https://www.gutenberg.org/ebooks/132> records the translator and public-domain United States status.
+- Rights note: the underlying work and Giles translation are public domain in the United States. The in-game text uses a six-word excerpt with exact translator attribution.
+- Button fragment: `Look about you.` is taken from Artemidorus's warning in Shakespeare's *Julius Caesar*, Act II, Scene III, verified in Project Gutenberg eBook 1522.
+- Punctuation lock: the final quote ends with a period inside the quotation marks. The attribution has no surrounding dash. The button begins with a capital letter and ends with a period.
+- Use note: the quote belongs only to the first public reveal of the Event 011 coalition.
+
 ## Fury
 
 ### Fury Becomes a State / The World in Fury

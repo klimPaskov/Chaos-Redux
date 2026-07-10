@@ -8,11 +8,11 @@ This note records the authoritative implementation package for the first public 
 - Quote wording and attribution: verified against a public-domain primary-text edition
 - Button fragment: verified against a public-domain primary-text edition
 - Audio research and final files: complete
-- Display slot: reserved as `73`
-- Unique audio ID: reserved as `43`
+- Display slot: implemented as `73`
+- Unique audio ID: implemented as `43`
 - Image direction and identifiers: final
-- Final super-event image: not present during this research pass
-- Gameplay, localisation, GFX, audio-definition, and music-table wiring: main-agent work
+- Final super-event image: complete and wired
+- Gameplay, localisation, GFX, audio-definition, and music-table wiring: complete
 
 The source specification governs the selection. The older plan that chose Luke 8:17 and `In battalions.` is superseded.
 
@@ -25,26 +25,29 @@ The source specification governs the selection. The older plan that chose Luke 8
 | Attribution | `Sun Tzu, The Art of War, trans. Lionel Giles` |
 | Button remark | `Look about you.` |
 
-Recommended localisation:
+The final punctuation is locked to the implemented localisation. The quote retains its terminal period inside the closing quotation mark. The attribution has no leading or trailing dash. The button fragment is capitalized as `Look` and ends with a period.
+
+Implemented localisation:
 
 ```yaml
 chaosx_super_event.73.t: "THE PACT UNMASKED"
-chaosx_super_event.73.q: "\"All warfare is based on deception.\"\n§Y-Sun Tzu, The Art of War, trans. Lionel Giles-§!"
+chaosx_super_event.73.q: "\"All warfare is based on deception.\"\n§YSun Tzu, The Art of War, trans. Lionel Giles§!"
 chaosx_super_event.73.a: "Look about you."
-chaosx_super_event.73.d.hostile_war: "The entry of one pact government into open war has activated commitments prepared in secret. [secret_alliance_leader.GetNameDefCap] has called [?secret_alliance_target.secret_alliance_reveal_member_count_snapshot|0] governments into [secret_alliance_leader.GetFactionName] against [secret_alliance_target.GetNameDef]. Military missions, supply agreements, and earlier disturbances now serve one campaign."
-chaosx_super_event.73.d.pact_controlled: "At a public conference, [secret_alliance_leader.GetNameDefCap] has announced [secret_alliance_leader.GetFactionName] as a common front against [secret_alliance_target.GetNameDef]. [?secret_alliance_target.secret_alliance_reveal_member_count_snapshot|0] governments have signed the declaration, opened military liaison offices, and placed their preparations under a single command. The coalition's offensive timetable has entered public view."
-chaosx_super_event.73.d.player_forced: "Evidence released by [secret_alliance_target.GetNameDef] has exposed the governments coordinating against it. [secret_alliance_leader.GetNameDefCap] has held [?secret_alliance_target.secret_alliance_reveal_member_count_snapshot|0] members together under the name [secret_alliance_leader.GetFactionName]. The exposed coalition has compromised routes, known contacts, and contested commitments that leave its first military plans open to interference."
-chaosx_super_event.73.d.fractured: "After several withdrawals, [?secret_alliance_target.secret_alliance_reveal_member_count_snapshot|0] governments have joined [secret_alliance_leader.GetNameDef] in [secret_alliance_leader.GetFactionName] against [secret_alliance_target.GetNameDef]. Empty chairs and unsigned commitments mark the public conference. The remaining delegations have opened military liaison offices and begun a common timetable for joint operations."
+chaosx_super_event.73.d: "[This.GetSecretAllianceSuperEventDescription]"
+super_event_73_desc_hostile_war: "The entry of one pact government into open war has activated commitments prepared in secret. [secret_alliance_leader.GetNameDefCap] has called [?secret_alliance_target.secret_alliance_reveal_member_count_snapshot|0] governments into [secret_alliance_leader.GetFactionName] against [secret_alliance_target.GetNameDef]. Military missions, supply agreements, and earlier disturbances now serve one campaign."
+super_event_73_desc_pact_controlled: "At a public conference, [secret_alliance_leader.GetNameDefCap] has announced [secret_alliance_leader.GetFactionName] as a common front against [secret_alliance_target.GetNameDef]. [?secret_alliance_target.secret_alliance_reveal_member_count_snapshot|0] governments have signed the declaration, opened military liaison offices, and placed their preparations under a single command. The coalition's offensive timetable has entered public view."
+super_event_73_desc_player_forced: "Evidence released by [secret_alliance_target.GetNameDef] has exposed the governments coordinating against it. [secret_alliance_leader.GetNameDefCap] has held [?secret_alliance_target.secret_alliance_reveal_member_count_snapshot|0] members together under the name [secret_alliance_leader.GetFactionName]. The exposed coalition has compromised routes, known contacts, and contested commitments that leave its first military plans open to interference."
+super_event_73_desc_fractured: "After several withdrawals, [?secret_alliance_target.secret_alliance_reveal_member_count_snapshot|0] governments have joined [secret_alliance_leader.GetNameDef] in [secret_alliance_leader.GetFactionName] against [secret_alliance_target.GetNameDef]. Empty chairs and unsigned commitments mark the public conference. The remaining delegations have opened military liaison offices and begun a common timetable for joint operations."
 ```
 
 ## Reveal-route mapping
 
 | Description key | Reveal-route constants |
 | --- | --- |
-| `chaosx_super_event.73.d.hostile_war` | `secret_alliance_reveal_route.hostile_war` |
-| `chaosx_super_event.73.d.pact_controlled` | `secret_alliance_reveal_route.public_conference` |
-| `chaosx_super_event.73.d.player_forced` | `secret_alliance_reveal_route.public_dossier`, `captured_conference`, and `preemption` |
-| `chaosx_super_event.73.d.fractured` | `secret_alliance_reveal_route.fractured` |
+| `super_event_73_desc_hostile_war` | `secret_alliance_reveal_route.hostile_war` |
+| `super_event_73_desc_pact_controlled` | `secret_alliance_reveal_route.public_conference` |
+| `super_event_73_desc_player_forced` | `secret_alliance_reveal_route.public_dossier`, `captured_conference`, and `preemption` |
+| `super_event_73_desc_fractured` | `secret_alliance_reveal_route.fractured` |
 
 No generic route fallback is approved. Every current reveal-route value is mapped.
 
@@ -99,23 +102,25 @@ The button uses the exact lexical fragment `look about you` with standalone capi
 - final OGG `music/011_secret_alliance/super_event_43_public_reveal.ogg`
 - sound mirror `sound/011_secret_alliance/super_event_43_public_reveal.wav`
 - sound ID `chaosx_super_event_secret_alliance_public_reveal_track`
+- music catalogue `music/chaosx_music_track_list.html`
+- catalogue row `The Pact Unmasked`, audio ID `43`, `Revelation`, United States Marine Band, duration `01:26`, public-domain composition and federal-government recording
 - detailed handoff `docs/plans/011_secret_alliance_plans/subagent_handoffs/super_event_audio_research.md`
 
 The cue has a formal martial shape and remains tag-neutral. It supports a dangerous public coalition without implying a terminal scenario.
 
 ## Image package
 
-- expected DDS `gfx/super_events/011_secret_alliance/super_event_public_reveal.dds`
+- final DDS `gfx/super_events/011_secret_alliance/super_event_public_reveal.dds`
 - sprite `GFX_super_event_011_secret_alliance_public_reveal`
 - source mode generated alternate-history documentary art
 - central subject public delegations and military representatives accepting one common commitment
 - no fixed participant flags or readable generated text
 
-The final image file was not present during this pass. The image remains the outstanding asset needed before the complete super-event can be claimed as wired.
+The final generated documentary image is registered in `interface/chaosx_super_events.gfx`, selected in `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt`, and listed in the final Event 011 asset register.
 
 ## UI fit
 
-The title and remark are short. The quote uses one line plus attribution. Each description uses one paragraph and three complete sentences to fit the active `320 x 370` description box. Dynamic long-form country names remain the main wrapping risk and should receive a visual check after wiring.
+The title and remark are short. The quote uses one line plus attribution. Each description uses one paragraph and three complete sentences in the active `320 x 370` description box. Dynamic long-form country and faction names remain the presentation edge case. No text or wiring fallback is used for them.
 
 ## Implementation handoff
 
@@ -123,4 +128,4 @@ The full selector logic, exact localisation contract, source comparison, and wir
 
 `docs/plans/011_secret_alliance_plans/subagent_handoffs/super_event_text_research.md`
 
-No quote, remark, title, audio, or route-text fallback was used. Full completion still depends on the final image and main-agent wiring.
+No quote, remark, title, audio, image, or route-text fallback was used. The settings-aware music and sound variants, audio ID table, image selector, explicit fractured-route description, reveal effect, and music catalogue row are fully wired.
