@@ -87,7 +87,7 @@ Inputs are temporary variables set immediately before the call:
 - `natural_disaster_call_death_scale`: optional Deaths multiplier, default `1.0`
 - `natural_disaster_call_building_scale`: optional building-damage multiplier, default `1.0`
 - `natural_disaster_call_damage_scale`: compatibility alias used only when `building_scale` was not supplied
-- `natural_disaster_call_warning_scale`: optional warning-chance multiplier
+- `natural_disaster_call_warning_scale`: optional warning-chance multiplier; reusable external calls retain this chance, while the first impact of a random Event 013 or cluster season always receives a delayed warning
 - `natural_disaster_call_recovery_scale`: optional recovery-burden multiplier
 - `natural_disaster_call_supply_scale`: optional state-disruption multiplier
 - `natural_disaster_call_caller_cost_checked`: proof flag required for deity and hostile-actor callers
@@ -117,6 +117,7 @@ scripted effect should initialize them in its outer effect block first:
 Side effects:
 
 - reserves a unique delayed date for every subevent in the sequence
+- retries a bounded set of evolution-valid family and state pairs for random-valid targeting before returning a no-target rejection
 - stores queued state scopes and metadata on each affected state's current controller
 - stores active aftermath data on affected states
 - merges a later caller-selected hit into an already open card for that exact state, with the latest sequence owning the card while accumulated recovery work and prior losses remain visible

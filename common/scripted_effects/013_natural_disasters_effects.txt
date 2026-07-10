@@ -475,10 +475,19 @@ natural_disaster_prepare_random_event_fire = {
 	natural_disaster_set_call_defaults = yes
 	natural_disaster_refresh_evolution_state = yes
 	set_temp_variable = { natural_disaster_sequence_index = 0 }
-	natural_disaster_resolve_random_family = yes
-	set_temp_variable = { natural_disaster_call_family = natural_disaster_current_family }
 	set_temp_variable = { natural_disaster_call_target_mode = constant:natural_disaster_target_mode.random_valid }
-	natural_disaster_resolve_target = yes
+	set_temp_variable = { natural_disaster_target_resolved = 0 }
+	set_temp_variable = { natural_disaster_random_target_attempt = 0 }
+	while_loop_effect = {
+		limit = {
+			check_variable = { natural_disaster_target_resolved < 1 }
+			check_variable = { natural_disaster_random_target_attempt < constant:natural_disaster_sequence.random_target_attempts }
+		}
+		natural_disaster_resolve_random_family = yes
+		set_temp_variable = { natural_disaster_call_family = natural_disaster_current_family }
+		natural_disaster_resolve_target = yes
+		add_to_temp_variable = { natural_disaster_random_target_attempt = 1 }
+	}
 	if = {
 		limit = {
 			check_variable = { natural_disaster_target_resolved > 0 }
@@ -2400,6 +2409,16 @@ natural_disaster_schedule_warning_and_impact = {
 		}
 		multiply_temp_variable = { natural_disaster_warning_percent = constant:natural_disaster_factor.percent_to_random_chance }
 		round_temp_variable = natural_disaster_warning_percent
+		if = {
+			limit = {
+				check_variable = { natural_disaster_sequence_index = 0 }
+				OR = {
+					check_variable = { natural_disaster_call_caller_type = constant:natural_disaster_caller.random }
+					check_variable = { natural_disaster_call_caller_type = constant:natural_disaster_caller.cluster }
+				}
+			}
+			set_temp_variable = { natural_disaster_warning_percent = constant:natural_disaster_factor.percent_to_random_chance }
+		}
 
 		set_temp_variable = { natural_disaster_warning_delay = natural_disaster_schedule_delay }
 		subtract_from_temp_variable = { natural_disaster_warning_delay = 1 }
@@ -2493,6 +2512,24 @@ natural_disaster_plan_sequence = {
 			set_temp_variable = { natural_disaster_sequence_locked_family = natural_disaster_current_family }
 		}
 		natural_disaster_resolve_target = yes
+		if = {
+			limit = {
+				check_variable = { natural_disaster_target_resolved < 1 }
+				check_variable = { natural_disaster_call_family = constant:natural_disaster_family.random }
+				check_variable = { natural_disaster_call_target_mode = constant:natural_disaster_target_mode.random_valid }
+				check_variable = { natural_disaster_path_target_required < 1 }
+			}
+			set_temp_variable = { natural_disaster_random_target_attempt = 1 }
+			while_loop_effect = {
+				limit = {
+					check_variable = { natural_disaster_target_resolved < 1 }
+					check_variable = { natural_disaster_random_target_attempt < constant:natural_disaster_sequence.random_target_attempts }
+				}
+				natural_disaster_resolve_family = yes
+				natural_disaster_resolve_target = yes
+				add_to_temp_variable = { natural_disaster_random_target_attempt = 1 }
+			}
+		}
 		natural_disaster_set_next_gap = yes
 		if = {
 			limit = { check_variable = { natural_disaster_target_resolved > 0 } }
