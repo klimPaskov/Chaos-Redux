@@ -40,7 +40,8 @@ Type controls cycle scenario-specific type variables:
 - Soviet Collapse: ordinary republics or chaos republics.
 - Final Silence: nuclear or thermonuclear payload.
 - Death: Instant Outbreak only.
-- Reserved placeholder: fixed Reserved display with neutral placeholder launch event.
+- Disaster Barrage: Random Barrage, Geological Crisis, Weather Crisis, Skyfall Crisis, or Full Catalogue.
+- Africa Is One placeholder: fixed Reserved display with neutral placeholder launch event.
 
 The trigger button opens a separate confirmation window. Confirming reads the stored selected scenario, type, and intensity at launch time. Scenario launches intentionally bypass the normal automatic firing prerequisites for their source events, including chaos thresholds, prior event-state gates, route prerequisites, and super-event history flags. The launch gate only keeps impossible or conflicting launches out, such as requiring the Soviet Union to exist for Soviet Collapse and preventing most second world-end branches while `world_end` is already active. The launch button uses the same gate for click enablement and buttonstate rendering, so impossible selections are disabled and visually greyed out before the confirmation window can open.
 
@@ -83,6 +84,14 @@ The World in Fury scenario seeds dispersed Fury actors through the existing Fury
 The Death scenario starts Event 010 through the same shared state-consumption helpers used by live Death, but it has only one setup type: Instant Outbreak. It consumes a hidden island origin, intensity-scaled extra islands, and at least one mainland reveal state immediately. This bypass does not set the Chaos Meter, record natural evolution stages by shortcut, or start the Death world-end branch.
 
 Intensity controls the starting footprint and starting ghost hosts. Low creates one weak passive host, Medium creates two weak passive hosts, High creates two stronger hosts, and Maximum creates four stronger hosts. After launch, Death escalates through the same natural pulses, deaths, focus gates, evolution records, and world-end requirements as a normal Death crisis.
+
+### SCN-007: Disaster Barrage
+
+Disaster Barrage starts one Event 013 season in the launching country through `call_natural_disaster`. The scenario wrapper supplies caller, target, family, news, report, aftermath, follow-up, type, intensity, and log policy. Event 013 remains the sole owner of target selection, delayed impacts, deaths, building damage, reports, recovery cards, and follow-up chains.
+
+The five types select Random Barrage, Geological Crisis, Weather Crisis, Skyfall Crisis, or Full Catalogue. Low starts a varied local season. Medium uses regional severity and full aftermath work. High uses catastrophic severity and emergency aftermath work. Maximum temporarily opens abnormal family access for the launch, uses abnormal severity and abnormal follow-up paths, then removes the temporary access flag. Full Catalogue uses major-only news policy to control global reporting.
+
+The scenario stores one Event 013 history row through `natural_disaster_log_mode.scenario_history`. It never sets `world_end` or another terminal flag. Launch is unavailable only when the launching country has no valid controlled impact state or a terminal world-end state is already active. It does not use a periodic world on-action.
 
 ### SCN-008: Africa Is One
 

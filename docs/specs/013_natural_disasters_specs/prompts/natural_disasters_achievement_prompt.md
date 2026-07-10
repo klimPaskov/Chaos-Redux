@@ -1,5 +1,7 @@
 # Achievement prompt for Event 013 Natural Disasters
 
+> Implementation disposition: executed for the ten accepted achievements. Reuse this prompt only for a bounded repair or audited extension; the live registry, localisation, icons, and sequence-bound hooks are authoritative.
+
 Use the Event 013 specification package as source design. Do not write final achievement localisation without review. Working labels below are not final titles.
 
 ## Achievement set

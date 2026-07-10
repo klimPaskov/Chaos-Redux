@@ -1,5 +1,7 @@
 # Event 013 Natural Disasters, source-of-truth and disposition map
 
+> Implementation disposition, 2026-07-10: the accepted package mapped below has been implemented as the fresh Event 013 system. The original completion stance at the end of this planning document describes the pre-implementation snapshot. Current live-file, audit, asset, and validation evidence is indexed by `docs/events/013_natural_disasters.md` and `docs/plans/013_natural_disasters_plans/013_implementation_validation_notes.md`.
+
 This file is a closure follow-up for the expanded second-pass package. It does not add new disaster mechanics. It tells the implementation agent which files now own the accepted design, which files are support material, and which working prompts are superseded.
 
 ## Current source-of-truth set

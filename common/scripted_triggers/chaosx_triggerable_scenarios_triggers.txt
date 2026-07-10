@@ -55,6 +55,25 @@ triggerable_scenario_can_launch_selected = {
 			any_state = { death_is_valid_origin_state_outer = yes }
 			any_state = { death_is_valid_triggerable_mainland_reveal_target = yes }
 		}
+		AND = {
+			check_variable = {
+				var = triggerable_scenarios_selected
+				value = constant:triggerable_scenario_id.disaster_barrage
+			}
+			NOT = { has_global_flag = world_end }
+			NOT = {
+				AND = {
+					check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum }
+					has_country_flag = achievement_nd_barrage_maximum_started
+					NOT = { has_country_flag = achievement_nd_barrage_maximum_ended }
+					NOT = { has_country_flag = achievement_nd_barrage_aftermath_unresolved }
+				}
+			}
+			any_owned_state = {
+				is_controlled_by = ROOT
+				natural_disaster_is_valid_impact_state = yes
+			}
+		}
 		check_variable = {
 			var = triggerable_scenarios_selected
 			value = constant:triggerable_scenario_id.africa_is_one

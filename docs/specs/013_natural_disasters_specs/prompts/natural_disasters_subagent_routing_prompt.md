@@ -1,5 +1,7 @@
 # Subagent routing prompt set for Event 013 Natural Disasters
 
+> Implementation disposition: superseded by the executed handoffs under `docs/plans/013_natural_disasters_plans/subagent_handoffs/`. Retain these prompts only as routing history; do not repeat a completed tranche without a new blocker.
+
 The actual subagent execution tool was not available in this chat environment. This file preserves bounded prompts for a later Codex run with `fork_context=false`.
 
 ## Repo explorer

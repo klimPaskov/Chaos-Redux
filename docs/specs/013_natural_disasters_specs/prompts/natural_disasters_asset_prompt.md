@@ -1,5 +1,7 @@
 # Asset prompt for Event 013 Natural Disasters
 
+> Implementation disposition: executed for the Event 013 report, news, decision, idea, super-event, achievement, and abnormal-GUI packages. The asset manifest and GFX handoff are authoritative for delivered files and any documented provenance limit.
+
 Use `chaos-redux-event-assets` and `chaos-redux-frame-animation` for every animated asset. Inspect the relevant reference folders before creating source art or processing files.
 
 ## Package scope

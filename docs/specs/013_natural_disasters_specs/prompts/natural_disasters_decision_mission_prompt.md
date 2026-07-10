@@ -1,5 +1,7 @@
 # Decision and mission prompt for Event 013 Natural Disasters
 
+> Implementation disposition: executed for staged warnings, rescue, stabilization, reconstruction, chain prevention, foreign relief, caps, partial outcomes, AI, and cleanup. Future changes must start from the live decision file and its audit handoff.
+
 Use `hoi4-decisions-missions` and the Event 013 spec package. Design and implement decisions as family-specific recovery work, not political power stores.
 
 ## Main category

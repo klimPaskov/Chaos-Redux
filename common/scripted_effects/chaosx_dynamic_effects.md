@@ -11,6 +11,11 @@ Before adding new dynamic logic, check this file and reuse an existing effect if
 - [chaosx_apply_startup_history_grants](#chaosx_apply_startup_history_grants)
 - [chaosx_startup_mark_existing_scientists](#chaosx_startup_mark_existing_scientists)
 - [chaosx_startup_clear_generated_scientist_helper_flags](#chaosx_startup_clear_generated_scientist_helper_flags)
+- [call_natural_disaster](#call_natural_disaster)
+- [natural_disaster_transfer_pending_jobs_for_state](#natural_disaster_transfer_pending_jobs_for_state)
+- [natural_disaster_append_abnormal_history_record](#natural_disaster_append_abnormal_history_record)
+- [natural_disaster_update_abnormal_history_record](#natural_disaster_update_abnormal_history_record)
+- [natural_disaster_rebuild_abnormal_gui_view](#natural_disaster_rebuild_abnormal_gui_view)
 - [modify_value_based_on_chaos_tier](#modify_value_based_on_chaos_tier)
 - [calculate_economy_scaled_factory_grant](#calculate_economy_scaled_factory_grant)
 - [damage_buildings_in_random_states](#damage_buildings_in_random_states)
@@ -55,6 +60,206 @@ on_startup = {
 	}
 }
 ```
+
+## call_natural_disaster
+
+This is the public country-scope entry point for Event 013. It validates a
+disaster request, resolves exact states, allocates one sequence, persists every
+delayed job in the affected state's current controller queue, and creates at most one Event 013
+history row. Family impact, Deaths registration, damage, reports, news,
+aftermath cards, and follow-ups remain internal to Event 013.
+
+Inputs are temporary variables set immediately before the call:
+
+- `natural_disaster_call_caller_type`: `natural_disaster_caller.*`
+- `natural_disaster_call_caller_event_id`: positive numeric source event id
+- `natural_disaster_call_family`: a specific `natural_disaster_family.*`, or `random`
+- `natural_disaster_call_family_group`: a normal or abnormal `natural_disaster_family_group.*`; leave `random` when a specific family is supplied
+- `natural_disaster_call_target_mode`: `natural_disaster_target_mode.*`
+- `natural_disaster_call_target_region`: strategic-region id for `selected_region`
+- `natural_disaster_call_severity`: `natural_disaster_severity.*`
+- `natural_disaster_call_sequence_mode`: `natural_disaster_sequence_mode.*`
+- `natural_disaster_call_sequence_count`: optional exact primary-impact count
+- `natural_disaster_call_news_policy`: `natural_disaster_news_policy.*`
+- `natural_disaster_call_report_policy`: `natural_disaster_report_policy.*`; every value preserves the affected country's delayed report, while caller/global select additional recipients and `silent` suppresses only additional distribution
+- `natural_disaster_call_aftermath_policy`: `natural_disaster_aftermath_policy.*`
+- `natural_disaster_call_chain_policy`: `natural_disaster_chain_policy.*`
+- `natural_disaster_call_death_scale`: optional Deaths multiplier, default `1.0`
+- `natural_disaster_call_building_scale`: optional building-damage multiplier, default `1.0`
+- `natural_disaster_call_damage_scale`: compatibility alias used only when `building_scale` was not supplied
+- `natural_disaster_call_warning_scale`: optional warning-chance multiplier
+- `natural_disaster_call_recovery_scale`: optional recovery-burden multiplier
+- `natural_disaster_call_supply_scale`: optional state-disruption multiplier
+- `natural_disaster_call_caller_cost_checked`: proof flag required for deity and hostile-actor callers
+- `natural_disaster_call_caller_cooldown_checked`: proof flag required for deity and hostile-actor callers
+- `natural_disaster_call_target_legitimacy_checked`: proof flag required for deity and hostile-actor callers
+- `natural_disaster_call_log_mode`: `natural_disaster_log_mode.*`
+- `natural_disaster_call_scenario_type`: Disaster Barrage family mix, validated against `natural_disaster_scenario_type.*`
+- `natural_disaster_call_scenario_intensity`: Disaster Barrage intensity, validated against `natural_disaster_scenario_intensity.*`
+- `natural_disaster_call_manual_abnormal_bypass`: permits an abnormal scenario to bypass only the abnormal-family cooldown; accepted only for scenario or debug callers
+- `natural_disaster_call_target_state_supplied`: set to `1` in the same effect chain after saving `natural_disaster_call_target_state`
+- `natural_disaster_call_target_country_supplied`: set to `1` in the same effect chain after saving `natural_disaster_call_target_country`
+
+Optional regular event targets:
+
+- `natural_disaster_call_target_state` plus `natural_disaster_call_target_state_supplied = 1` for `selected_state`
+- `natural_disaster_call_target_country` plus `natural_disaster_call_target_country_supplied = 1` for `selected_country`
+- either or both target/proof pairs for `caller_provided`
+
+Outputs are temporary variables. A caller that needs to read them after the
+scripted effect should initialize them in its outer effect block first:
+
+- `natural_disaster_call_result`: accepted or rejected
+- `natural_disaster_call_reject_reason`: the exact validation failure
+- `natural_disaster_call_sequence_id`: allocated sequence id, or `0`
+- `natural_disaster_call_primary_job_count`: queued primary impacts
+
+Side effects:
+
+- reserves a unique delayed date for every subevent in the sequence
+- stores queued state scopes and metadata on each affected state's current controller
+- stores active aftermath data on affected states
+- merges a later caller-selected hit into an already open card for that exact state, with the latest sequence owning the card while accumulated recovery work and prior losses remain visible
+- guarantees the affected state's current controller its delayed report whenever reports are enabled; `global` additionally delivers the same family report to every country
+- may create one Event 013 history row according to `natural_disaster_call_log_mode`
+- resets all public inputs after the call so a second request cannot inherit them
+
+Validation is fail-closed. Unknown enums, conflicting specific family and family-group selectors, invalid scaling or sequence counts, missing or unproved target scopes, unproven hostile/deity calls, invalid scenario metadata, and unauthorized abnormal bypasses return `rejected` with a stable reject reason and queue no work. A call that finds no eligible target restores the global sequence counter and leaves the caller's last accepted sequence id, anchor flag, and hit counts unchanged.
+
+Example:
+
+```txt
+GER = {
+	random_owned_controlled_state = {
+		limit = { natural_disaster_is_valid_impact_state = yes }
+		save_event_target_as = natural_disaster_call_target_state
+	}
+}
+set_temp_variable = { natural_disaster_call_caller_type = constant:natural_disaster_caller.external_event }
+set_temp_variable = { natural_disaster_call_caller_event_id = 77 }
+set_temp_variable = { natural_disaster_call_family = constant:natural_disaster_family.earthquake }
+set_temp_variable = { natural_disaster_call_target_mode = constant:natural_disaster_target_mode.selected_state }
+set_temp_variable = { natural_disaster_call_target_state_supplied = 1 }
+set_temp_variable = { natural_disaster_call_severity = constant:natural_disaster_severity.severe }
+set_temp_variable = { natural_disaster_call_sequence_mode = constant:natural_disaster_sequence_mode.single }
+call_natural_disaster = yes
+```
+
+## natural_disaster_transfer_pending_jobs_for_state
+
+This Event 013 internal helper migrates the four aligned delayed-job arrays for one active disaster state when state control changes. It preserves the sequence id and globally reserved due date, schedules replacement worker wakeups on the new responsible country, and leaves the former country's unrelated queue rows untouched.
+
+Scope: Former responsible country. It is called only by `natural_disaster_handle_state_control_change` from the narrow `on_state_control_changed` hook.
+
+Inputs:
+
+- `event_target:natural_disaster_transfer_state`: the active state whose responsibility changed
+- `event_target:natural_disaster_new_responsible_country`: a valid country that owns or controls the state
+
+Outputs and side effects:
+
+- removes matching indices from `natural_disaster_job_target_state_entries`, `natural_disaster_job_type_entries`, `natural_disaster_job_sequence_id_entries`, and `natural_disaster_job_due_date_entries`
+- appends the same aligned rows to the new responsible country
+- preserves the existing global sequence/day reservation instead of reserving a replacement date
+- schedules a new `chaosx.nr13.2` worker for the exact remaining delay; a due-today row uses the engine-supported zero-day wakeup, while only an already-overdue row is clamped to zero
+- clears the former country's queue-active flag only when no other delayed jobs remain
+
+Do not call this effect directly from an event. The transfer handler owns mission-pointer cleanup, card registration, and responsibility validation around it.
+
+## natural_disaster_append_abnormal_history_record
+
+This Event 013 state-scope helper creates one immutable-identity abnormal-map
+record for the current state and sequence. It writes an aligned global ledger
+containing the state pointer, family, origin family, severity, sequence,
+segment, dates, casualties, warning result, aftermath phase and scores, chain
+risk, damage directions, linked state, display status, response result, and
+relief state. Repeated registration of the same state/sequence updates the same
+row; a later abnormal sequence in the same state appends a distinct row.
+
+Inputs:
+
+- current state disaster variables and flags
+- a valid \`natural_disaster_sequence_id\`
+
+Outputs and side effects:
+
+- appends one row to the \`global.natural_disaster_abnormal_history_*_entries\` arrays
+- stores the row index in \`natural_disaster_abnormal_history_record_index\`
+- stores the row identity in \`natural_disaster_abnormal_history_registered_sequence_id\`
+
+Defaults are prepared by \`natural_disaster_prepare_abnormal_history_record\`;
+missing optional dates, scores, damage directions, and linked-state data become
+zero rather than reading stale state data.
+
+Example:
+
+\`\`\`txt
+event_target:natural_disaster_impact_state = {
+	natural_disaster_append_abnormal_history_record = yes
+}
+\`\`\`
+
+## natural_disaster_update_abnormal_history_record
+
+This Event 013 state-scope helper refreshes the current abnormal row while its
+state/sequence identity still matches. It fails closed when the state has since
+received an ordinary disaster or another abnormal sequence, so an archived row
+cannot be rewritten by the state's live disaster variables. Card closure calls
+it after setting the closed phase and path status, freezing the final response
+result before cleanup.
+
+Inputs:
+
+- \`natural_disaster_abnormal_history_record_index\`
+- \`natural_disaster_abnormal_history_registered_sequence_id\`
+- current state disaster variables and flags
+
+Outputs and side effects:
+
+- updates only the aligned global row whose recorded sequence matches the live sequence
+- leaves every earlier row for the same state unchanged
+
+Example:
+
+\`\`\`txt
+set_variable = { natural_disaster_card_state = constant:natural_disaster_card_state.closed }
+set_variable = { natural_disaster_phase = constant:natural_disaster_phase.closed }
+set_variable = { natural_disaster_path_status = constant:natural_disaster_path_status.closed }
+natural_disaster_update_abnormal_history_record = yes
+\`\`\`
+
+## natural_disaster_rebuild_abnormal_gui_view
+
+This country-scope presentation helper builds the five-card abnormal map from
+record indices, not live state fields. Active view candidates are the
+controller's active abnormal rows. History view candidates are every global
+abnormal row, including multiple sequences in the same physical state. A
+globally monotonic rebuild id makes the temporary exclusion marks safe when
+several countries rebuild the global history view.
+
+Inputs:
+
+- \`natural_disaster_abnormal_history_view\` country flag
+- active \`natural_disaster_abnormal_states\` when using the live view
+- aligned \`global.natural_disaster_abnormal_history_*_entries\` ledger
+
+Outputs and side effects:
+
+- rebuilds aligned \`natural_disaster_gui_*_entries\` view arrays
+- sorts by pending impact, warning state, open recovery, chain risk, severity, date, and path segment
+- preserves a dormant zero-row history view without dereferencing a missing selected record
+
+The companion \`natural_disaster_gui_selected_record_exists\` trigger guards every
+selected-row scripted-GUI read. The selected layer triggers route the snapshot
+origin/family to rupture, meteor, eruption, tsunami, or storm frame sheets.
+
+Example:
+
+\`\`\`txt
+set_country_flag = natural_disaster_abnormal_history_view
+natural_disaster_rebuild_abnormal_gui_view = yes
+set_country_flag = natural_disaster_abnormal_map_open
+\`\`\`
 
 ## chaosx_startup_mark_existing_scientists
 
@@ -140,7 +345,7 @@ This reusable event-system helper lives in `common/scripted_effects/chaosx_logic
 Inputs: `event_id` temp variable.
 Output: `event_active_pool_candidate_is_valid` temp variable (`1` or `0`).
 
-It excludes disabled events, fired non-repeatable events, locked Event 91, unavailable Holy Realm, unavailable Fury, unavailable automatic Tensions Rising, and any other permanent-unavailable gates added to the helper. Repeatable events remain valid after firing as long as they stay in the pool.
+It excludes disabled events, fired non-repeatable events, and any other permanent-unavailable gates added to the helper. Repeatable events remain valid after firing as long as they stay in the pool.
 
 Example:
 
