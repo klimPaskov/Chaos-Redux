@@ -3,8 +3,8 @@
 Event id: `013`
 Event slug: `natural_disasters`
 Source mode summary: generated event art, generated icons, and regenerated frame-animation source art through official `image_gen`
-Scope note: this manifest covers Event 13 report, news, decision-category picture, decision icon, decision-category icon, idea icon, and animated scripted-GUI assets.
-Prompt record: `docs/assets/013_natural_disasters/prompts/generated_event_art_prompts.md`
+Scope note: this manifest covers Event 13 report, news, super-event, decision-category picture, decision icon, decision-category icon, idea/state icon, achievement, static abnormal-GUI, and animated scripted-GUI assets.
+Prompt records: `docs/assets/013_natural_disasters/prompts/generated_event_art_prompts.md` and `docs/assets/013_natural_disasters/prompts/2026-07-10_static_completion_prompts.md`
 Report contact sheet: `docs/assets/013_natural_disasters/contact_sheets/013_natural_disasters_report_contact_sheet.png`
 News contact sheet: `docs/assets/013_natural_disasters/contact_sheets/013_natural_disasters_news_contact_sheet.png`
 Specific family news contact sheet: `docs/assets/013_natural_disasters/contact_sheets/013_natural_disasters_specific_news_contact_sheet.png`
@@ -14,7 +14,132 @@ Decision icon contact sheet: `docs/assets/013_natural_disasters/contact_sheets/n
 Idea icon contact sheet: `docs/assets/013_natural_disasters/contact_sheets/natural_disaster_idea_icons_contact.png`
 Validation note: `docs/assets/013_natural_disasters/notes/report_news_validation.md`
 
-## Complete
+## 2026-07-10 accepted static completion addendum
+
+This addendum is the current source of truth for the accepted non-animation completion pass. Earlier inventory below is retained for preserved assets and historical production context; its wiring statements are not completion proof.
+
+Path contract for every listed non-achievement asset:
+
+- source: `docs/assets/013_natural_disasters/source_png/<asset>_source.png`
+- processed: `docs/assets/013_natural_disasters/processed_png/<asset>.png`
+- package DDS: `docs/assets/013_natural_disasters/dds/<asset>.dds`
+- live DDS: the system-specific path shown in `docs/assets/013_natural_disasters/gfx_handoff.md`
+
+### Added report identities (`210x176`, sepia report cards)
+
+| Asset | Coverage purpose | Status |
+| --- | --- | --- |
+| `report_event_nd_tropical_cyclone` | tropical-cyclone family report | complete |
+| `report_event_nd_heat_wave` | heat-wave family report | complete |
+| `report_event_nd_extreme_wind` | extreme-wind family report | complete |
+| `report_event_nd_tornado_outbreak` | tornado-outbreak family report | complete |
+| `report_event_nd_hailstorm` | hailstorm family report | complete |
+| `report_event_nd_extreme_cold_wave` | cold-wave family report | complete |
+| `report_event_nd_wet_mass_movement` | wet mass-movement family report | complete |
+| `report_event_nd_ashfall` | ashfall family report | complete |
+| `report_event_nd_lahar` | lahar family report | complete |
+| `report_event_nd_storm_surge` | storm-surge family report | complete |
+| `report_event_nd_meteor_impact` | single-impact family report | complete |
+| `report_event_nd_meteor_shower` | meteor-shower family report | complete |
+| `report_event_nd_massive_eruption` | massive-eruption family report | complete |
+| `report_event_nd_regional_aftermath` | live gameplay reference; broad multi-province reconstruction identity | complete |
+
+### Added news identities (`397x153`, grayscale press images)
+
+| Asset | Status |
+| --- | --- |
+| `news_event_nd_tornado_outbreak` | complete |
+| `news_event_nd_ashfall` | complete |
+| `news_event_nd_lahar` | complete |
+| `news_event_nd_storm_surge` | complete |
+| `news_event_nd_meteor_impact` | complete |
+
+### Added decision, category, and idea/state icons
+
+| Asset | Final size | Status |
+| --- | --- | --- |
+| `decision_nd_port_closure` | `32x32` | complete |
+| `decision_nd_food_relief` | `32x32` | complete |
+| `decision_nd_firebreaks` | `32x32` | complete |
+| `decision_nd_ash_cleanup` | `32x32` | complete |
+| `decision_nd_water_trains` | `32x32` | complete |
+| `decision_nd_observatory_watch` | `32x32` | complete |
+| `decision_nd_reconstruction` | `32x32` | complete |
+| `decision_category_013_natural_disaster_aftermath` | `53x40` | complete |
+| `idea_013_ashfall` | `64x64` | complete |
+| `idea_013_disease_risk` | `64x64` | complete |
+| `idea_013_blocked_ports` | `64x64` | complete |
+| `idea_013_scorched_state` | `64x64` | complete |
+| `idea_013_frozen_supply` | `64x64` | complete |
+| `idea_013_cracked_ground` | `64x64` | complete |
+| `idea_013_crater_aftermath` | `64x64` | complete |
+
+### Added abnormal-GUI static assets
+
+| Asset | Final size | Status |
+| --- | --- | --- |
+| `013_abnormal_disaster_panel` | `760x520` | complete |
+| `013_abnormal_disaster_panel_damaged` | `760x520` | complete |
+| `013_disaster_card_frame` | `280x124` | complete |
+| `013_map_marker_impact` | `48x48` | complete |
+| `013_map_marker_chain_risk` | `48x48` | complete |
+| `013_foreign_relief_badge` | `48x48` | complete |
+| `013_recovery_progress_frame` | `280x24` | complete |
+| `013_recovery_progress_fill` | `276x16` | complete |
+
+### Added super-event identities (`457x328`, grayscale radio images)
+
+| Asset | Status |
+| --- | --- |
+| `super_event_nd_abnormal_disaster_age` | complete; slot unassigned |
+| `super_event_nd_delayed_tsunami_chain` | complete; slot unassigned |
+
+### Accepted achievement identities
+
+Each identity has individual source PNG, processed colour PNG, grey PNG, not-eligible PNG, package DDS triplet, and live root DDS triplet under `gfx/achievements/`. The live basename is `013_natural_disasters_<slug>`.
+
+| Slug | Status |
+| --- | --- |
+| `after_the_sirens` | complete |
+| `no_second_wave` | complete |
+| `every_bridge_counts` | complete |
+| `ashes_without_famine` | complete |
+| `no_global_announcer` | complete |
+| `under_the_falling_sky` | complete |
+| `shake_the_world_back` | complete |
+| `disaster_barrage_maximum` | complete |
+| `not_one_more_camp` | complete |
+| `catalogue_of_ruin` | complete |
+
+The not-eligible treatment uses `source_png/achievement_not_eligible_overlay_recovered.png`, mathematically recovered from eight existing Event 013 repository triplets with mean reconstruction error `0.07/255`, because the skill-pack overlay file was absent.
+
+### Storm-corridor super-event provenance closure
+
+| Field | Current record |
+| --- | --- |
+| Asset | `super_event_nd_storm_corridor` |
+| Event | `013_natural_disasters` |
+| Asset type | generated super-event radio image |
+| Intended use | slot `70`, sustained destructive multi-state moving storm/tornado corridor |
+| Source mode | official built-in `image_gen`; generated fictional/composite period-documentary scene |
+| Source-mode rationale | no single archival incident can honestly represent the accepted sustained Event 013 rail/road corridor, separated funnels, multiple towns, and coordinated period relief route |
+| Exact prompt and result | `docs/assets/013_natural_disasters/prompts/2026-07-10_static_completion_prompts.md`; result `exec-f951d9ec-e1c4-49e2-bab7-fbdee7797b5a.png` |
+| Era-fit note | 1936-1945 press-photograph treatment; period freight cars, telephone poles, small-town architecture, canvas-covered relief trucks, ambulance, railway workers, and civilian evacuees; no modern objects or branding |
+| Source PNG | `docs/assets/013_natural_disasters/source_png/super_event_nd_storm_corridor_source.png` |
+| Processed PNG | `docs/assets/013_natural_disasters/processed_png/super_event_nd_storm_corridor.png` |
+| Package DDS | `docs/assets/013_natural_disasters/dds/super_event_nd_storm_corridor.dds` |
+| Live DDS | `gfx/super_events/013_natural_disasters/super_event_nd_storm_corridor.dds` |
+| Target size | `457x328` |
+| Sprite | `GFX_super_event_nd_storm_corridor` |
+| Target GFX file | `interface/chaosx_super_events.gfx` (unchanged; not edited by asset task) |
+| Visual identity | broad storm shelf, four separated visible funnels, continuous rail/road damage path, multiple settlements, and period response convoy; the path reads as sustained geographic motion rather than one local storm |
+| Status | `complete`; fresh source and exact prompt provenance recorded 2026-07-10 |
+
+### DDS format normalization without identity changes
+
+The following eight preserved files were reconverted from their existing processed PNGs to 32-bit RGB+A DDS in package and live locations without source or identity changes: `news_event_nd_disaster_barrage`, `news_event_nd_great_rupture`, `news_event_nd_massive_eruption`, `news_event_nd_meteor_showers`, `news_event_nd_regional_floods`, `super_event_nd_great_rupture`, `super_event_nd_massive_eruption`, and `super_event_nd_skyfall`. `super_event_nd_storm_corridor` was also normalized in that pass, but its source art has since been deliberately replaced by the provenance-closed generated package above.
+
+## Legacy inventory and historical production status
 
 ### Super-event radio art
 
@@ -25,7 +150,7 @@ These are 457x328 super-event radio images wired through `interface/chaosx_super
 | `super_event_nd_great_rupture` | `67` | `docs/assets/013_natural_disasters/source_png/super_event_nd_great_rupture_source.png` | `docs/assets/013_natural_disasters/processed_png/super_event_nd_great_rupture.png` | `gfx/super_events/013_natural_disasters/super_event_nd_great_rupture.dds` | `GFX_super_event_nd_great_rupture` | `complete` |
 | `super_event_nd_massive_eruption` | `68` | `docs/assets/013_natural_disasters/source_png/super_event_nd_massive_eruption_source.png` | `docs/assets/013_natural_disasters/processed_png/super_event_nd_massive_eruption.png` | `gfx/super_events/013_natural_disasters/super_event_nd_massive_eruption.dds` | `GFX_super_event_nd_massive_eruption` | `complete` |
 | `super_event_nd_skyfall` | `69` | `docs/assets/013_natural_disasters/source_png/super_event_nd_skyfall_source.png` | `docs/assets/013_natural_disasters/processed_png/super_event_nd_skyfall.png` | `gfx/super_events/013_natural_disasters/super_event_nd_skyfall.dds` | `GFX_super_event_nd_skyfall` | `complete` |
-| `super_event_nd_storm_corridor` | `70` | `docs/assets/013_natural_disasters/source_png/super_event_nd_storm_corridor_source.png` | `docs/assets/013_natural_disasters/processed_png/super_event_nd_storm_corridor.png` | `gfx/super_events/013_natural_disasters/super_event_nd_storm_corridor.dds` | `GFX_super_event_nd_storm_corridor` | `complete` |
+| `super_event_nd_storm_corridor` | `70` | `docs/assets/013_natural_disasters/source_png/super_event_nd_storm_corridor_source.png` | `docs/assets/013_natural_disasters/processed_png/super_event_nd_storm_corridor.png` | `gfx/super_events/013_natural_disasters/super_event_nd_storm_corridor.dds` | `GFX_super_event_nd_storm_corridor` | `complete; provenance-closed replacement` |
 
 ### Decision category picture derivatives
 
@@ -94,17 +219,34 @@ The visible country-level disaster-pressure ideas use dedicated `64x64` national
 Contact sheet: `docs/assets/013_natural_disasters/contact_sheets/natural_disaster_idea_icons_contact.png`
 Validation: processed PNGs, package DDS copies, and live DDS files are `64x64` with alpha, transparent corners, and zero visible green, magenta, or purple key pixels.
 
-### Animated scripted-GUI alpha cleanup
+### Accepted Part 9 abnormal-GUI animations
 
-All Event 013 scripted-GUI animation packages were regenerated from per-frame source art with clean transparency. Each package has 8 source frames, 8 processed frames, a `288x36` frame sheet, a `36x36` static fallback, DDS copies under both the package folder and live `gfx/interface/animated/013_natural_disasters/`, a GIF preview, and a contact sheet.
+These eight packages contain generated source atlases, separate source-frame PNGs, processed alpha frames, horizontal sheet PNG+DDS, static PNG+DDS, review-only GIFs, contact sheets, exact retained prompts, per-frame atlas/cell provenance, briefs, frame plans, and build metadata. The DDS files are delivered to `gfx/interface/animated/013_natural_disasters/` and are wired through `interface/013_natural_disasters.gfx`, `interface/013_natural_disasters.gui`, and `common/scripted_guis/013_natural_disasters_scripted_gui.txt` with state-driven animated/static switching.
 
-| Asset | Frame sheet | Static fallback | Handoff |
-| --- | --- | --- | --- |
-| `natural_disaster_warning_pulse` | `gfx/interface/animated/013_natural_disasters/natural_disaster_warning_pulse_sheet.dds` | `gfx/interface/animated/013_natural_disasters/natural_disaster_warning_pulse_static.dds` | `docs/plans/013_natural_disasters_plans/subagent_handoffs/2026-07-01_event013_animation_alpha_cleanup_handoff.md` |
-| `natural_disaster_storm_corridor_track` | `gfx/interface/animated/013_natural_disasters/natural_disaster_storm_corridor_track_sheet.dds` | `gfx/interface/animated/013_natural_disasters/natural_disaster_storm_corridor_track_static.dds` | `docs/plans/013_natural_disasters_plans/subagent_handoffs/2026-07-01_event013_animation_alpha_cleanup_handoff.md` |
-| `natural_disaster_tsunami_countdown` | `gfx/interface/animated/013_natural_disasters/natural_disaster_tsunami_countdown_sheet.dds` | `gfx/interface/animated/013_natural_disasters/natural_disaster_tsunami_countdown_static.dds` | `docs/plans/013_natural_disasters_plans/subagent_handoffs/2026-07-01_event013_animation_alpha_cleanup_handoff.md` |
-| `natural_disaster_eruption_ashfall` | `gfx/interface/animated/013_natural_disasters/natural_disaster_eruption_ashfall_sheet.dds` | `gfx/interface/animated/013_natural_disasters/natural_disaster_eruption_ashfall_static.dds` | `docs/plans/013_natural_disasters_plans/subagent_handoffs/2026-07-01_event013_animation_alpha_cleanup_handoff.md` |
-| `natural_disaster_skyfall_alarm` | `gfx/interface/animated/013_natural_disasters/natural_disaster_skyfall_alarm_sheet.dds` | `gfx/interface/animated/013_natural_disasters/natural_disaster_skyfall_alarm_static.dds` | `docs/plans/013_natural_disasters_plans/subagent_handoffs/2026-07-01_event013_animation_alpha_cleanup_handoff.md` |
+| Asset | Frames | Frame/sheet size | FPS | Sprite pair | Final sheet/static DDS | Status |
+| --- | ---: | --- | ---: | --- | --- | --- |
+| `013_disaster_card_frame_warning` | 8 | `540x88` / `4320x88` | 10 | `GFX_013_disaster_card_frame_warning_animated` / `GFX_013_disaster_card_frame_warning_static` | `013_disaster_card_frame_warning_{sheet,static}.dds` | `handed_off` |
+| `013_disaster_card_frame_impact` | 10 | `540x88` / `5400x88` | 11 | `GFX_013_disaster_card_frame_impact_animated` / `GFX_013_disaster_card_frame_impact_static` | `013_disaster_card_frame_impact_{sheet,static}.dds` | `handed_off` |
+| `013_impact_pulse_overlay` | 8 | `64x64` / `512x64` | 8 | `GFX_013_map_marker_next_hit_animated` / `GFX_013_map_marker_next_hit_static` | `013_impact_pulse_overlay_{sheet,static}.dds` | `handed_off` |
+| `013_rupture_wave_overlay` | 12 | `560x130` / `6720x130` | 8 | `GFX_013_rupture_wave_sheet` / `GFX_013_rupture_wave_static` | `013_rupture_wave_overlay_{sheet,static}.dds` | `handed_off` |
+| `013_meteor_rain_overlay` | 12 | `320x210` / `3840x210` | 10 | `GFX_013_meteor_fall_sheet` / `GFX_013_meteor_fall_static` | `013_meteor_rain_overlay_{sheet,static}.dds` | `handed_off` |
+| `013_ash_plume_overlay` | 12 | `300x190` / `3600x190` | 8 | `GFX_013_eruption_plume_sheet` / `GFX_013_eruption_plume_static` | `013_ash_plume_overlay_{sheet,static}.dds` | `handed_off` |
+| `013_tsunami_path_ribbon` | 10 | `520x24` / `5200x24` | 8 | `GFX_013_tsunami_train_sheet` / `GFX_013_tsunami_train_static` | `013_tsunami_path_ribbon_{sheet,static}.dds` | `handed_off` |
+| `013_storm_corridor_path_ribbon` | 14 | `520x24` / `7280x24` | 10 | `GFX_013_storm_corridor_sheet` / `GFX_013_storm_corridor_static` | `013_storm_corridor_path_ribbon_{sheet,static}.dds` | `handed_off` |
+
+Exact final DDS paths use `gfx/interface/animated/013_natural_disasters/<asset>_{sheet,static}.dds`. Each package records its exact paths in `brief.md` and `notes/build_metadata.json`. Ready-to-copy sprite definitions and GUI-state routing are in `gfx_handoff.md`. Implementation handoff: `docs/plans/013_natural_disasters_plans/subagent_handoffs/2026-07-10_event013_abnormal_animation_asset_handoff.md`.
+
+### Retained auxiliary 36x36 animations
+
+The five earlier packages remain usable auxiliary markers. Their generated 4x2 source sheets and eight distinct source-frame cells are retained. The original exact prompts and built-in result identifiers were not retained, so the package provenance notes explicitly record that limitation rather than inventing prompt history. Their prior manifest link pointed to a nonexistent handoff and is superseded by the handoff above.
+
+| Asset | Frames | Frame/sheet size | Measured preview rate | Sprite pair | Status |
+| --- | ---: | --- | ---: | --- | --- |
+| `natural_disaster_warning_pulse` | 8 | `36x36` / `288x36` | about 8.33 fps | `GFX_013_warning_pulse_animated` / `GFX_013_warning_pulse` | `handed_off` |
+| `natural_disaster_storm_corridor_track` | 8 | `36x36` / `288x36` | about 8.33 fps | `GFX_013_storm_corridor_marker_animated` / `GFX_013_storm_corridor_marker` | `handed_off` |
+| `natural_disaster_tsunami_countdown` | 8 | `36x36` / `288x36` | about 8.33 fps | `GFX_013_tsunami_countdown_animated` / `GFX_013_tsunami_countdown` | `handed_off` |
+| `natural_disaster_eruption_ashfall` | 8 | `36x36` / `288x36` | about 8.33 fps | `GFX_013_eruption_marker_animated` / `GFX_013_eruption_marker` | `handed_off` |
+| `natural_disaster_skyfall_alarm` | 8 | `36x36` / `288x36` | about 8.33 fps | `GFX_013_skyfall_alarm_animated` / `GFX_013_skyfall_alarm` | `handed_off` |
 
 ### `report_event_nd_flood`
 

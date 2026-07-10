@@ -1,19 +1,17 @@
-## Natural Disaster Storm Corridor Track Brief
+# Natural disaster storm corridor track brief
 
-- Asset name: `natural_disaster_storm_corridor_track`
-- In-game use: Evolution III corridor tracker
-- Subject type: symbolic moving storm path icon
-- Target frame size: `36x36`
-- Frame count: `8`
-- Sheet size: `288x36`
-- Animation rate: `9 fps`
-- Looping: `yes`
-- `play_on_show`: `yes`
-- Anchor: center
-- Source mode: generated `4x2` sheet, then sliced into per-frame source PNGs
-- Reference inspected: `.agents/skills/chaos-redux-event-assets/assets/decisions`, `docs/assets/010_death/animations/death_coastal_risk_pulse/brief.md`
-- Static fallback PNG/DDS: `processed_png/natural_disaster_storm_corridor_track_static.png`, `gfx/interface/animated/013_natural_disasters/natural_disaster_storm_corridor_track_static.dds`
-- Sheet PNG/DDS: `animations/natural_disaster_storm_corridor_track/sheets/natural_disaster_storm_corridor_track_sheet.png`, `gfx/interface/animated/013_natural_disasters/natural_disaster_storm_corridor_track_sheet.dds`
-- Preview/contact: `animations/natural_disaster_storm_corridor_track/previews/natural_disaster_storm_corridor_track_preview.gif`, `animations/natural_disaster_storm_corridor_track/previews/natural_disaster_storm_corridor_track_contact.png`
-- Suggested `.gfx` file: `interface/013_natural_disasters.gfx`
+- Asset name: `natural_disaster_storm_corridor_track`.
+- Accepted role: auxiliary `36x36` storm-family marker; it does not replace the accepted `520x24` corridor ribbon.
+- Target frame size: `36x36`; frame count `8`; sheet size `288x36`.
+- Static sprite: `GFX_013_storm_corridor_marker`.
+- Animated sprite: `GFX_013_storm_corridor_marker_animated`.
+- Animation rate: `25/3 fps` (120 ms GIF frames, about `8.33 fps`).
+- Looping/play on show: `yes` / `yes`.
+- Anchor: center.
+- Static fallback: `sheets/natural_disaster_storm_corridor_track_static.png` and `gfx/interface/animated/013_natural_disasters/natural_disaster_storm_corridor_track_static.dds`.
+- Sheet: `sheets/natural_disaster_storm_corridor_track_sheet.png` and `gfx/interface/animated/013_natural_disasters/natural_disaster_storm_corridor_track_sheet.dds`.
+- Review-only preview/contact: `previews/natural_disaster_storm_corridor_track_preview.gif` and `previews/natural_disaster_storm_corridor_track_contact.png`.
+- Source mode: generated `4x2` animation source sheet, then sliced and normalized; exact original prompt/result identifier not retained. See `notes/provenance.md`.
+- Target `.gfx`: `interface/013_natural_disasters.gfx`.
+- Target `.gui`: `interface/013_natural_disasters.gui`, proposed auxiliary element `natural_disaster_storm_corridor_marker`.
 

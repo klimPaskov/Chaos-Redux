@@ -156,6 +156,15 @@ events_log_set_default_actor_for_current_event = {
 	}
 	else_if = {
 		limit = {
+			check_variable = { event_id = constant:natural_disaster_event.id }
+			has_event_target = natural_disaster_log_actor
+			event_target:natural_disaster_log_actor = { exists = yes }
+		}
+		event_target:natural_disaster_log_actor = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		set_temp_variable = { events_log_default_has_actor = 1 }
+	}
+	else_if = {
+		limit = {
 			check_variable = { event_id = constant:death_event.id }
 			has_event_target = death_country
 			event_target:death_country = { exists = yes }
@@ -1336,6 +1345,28 @@ events_log_rebuild_open_event_details_view = {
 			set_temp_variable = { events_log_event_detail_preview_type = constant:white_peace_event_log.evolution_type }
 			set_temp_variable = { events_log_event_detail_preview_tier = constant:chaos_meter_tier_id.tier_3 }
 			set_temp_variable = { events_log_event_detail_preview_stage = constant:white_peace_event_log.stage_broad_settlement }
+			events_log_add_event_detail_evolution_preview = yes
+		}
+
+		if = {
+			limit = {
+				check_variable = {
+					var = event_id
+					value = constant:natural_disaster_event.id
+					compare = equals
+				}
+			}
+			set_temp_variable = { events_log_event_detail_preview_type = constant:natural_disaster_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:natural_disaster_event.evolution_i_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:natural_disaster_event.evolution_i_stage }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:natural_disaster_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:natural_disaster_event.evolution_ii_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:natural_disaster_event.evolution_ii_stage }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:natural_disaster_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:natural_disaster_event.evolution_iii_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:natural_disaster_event.evolution_iii_stage }
 			events_log_add_event_detail_evolution_preview = yes
 		}
 

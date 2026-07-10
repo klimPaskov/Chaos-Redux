@@ -1833,3 +1833,216 @@ unique_id = chaos_redux_achievements
 	}
 	hidden = yes
 }
+
+#############################
+# EVENT 013 - NATURAL DISASTERS ACHIEVEMENTS
+#############################
+
+013_natural_disasters_after_the_sirens = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_nd_after_the_sirens_tooltip
+			is_ai = no
+			has_capitulated = no
+			has_country_flag = achievement_nd_severe_season_started
+			has_country_flag = achievement_nd_severe_season_ended
+			has_country_flag = achievement_nd_severe_recovery_closed
+			check_variable = { achievement_nd_severe_cards_expected > 0 }
+			check_variable = {
+				var = achievement_nd_severe_cards_recovered
+				value = achievement_nd_severe_cards_expected
+				compare = greater_than_or_equals
+			}
+			NOT = { natural_disaster_country_has_open_aftermath = yes }
+			NOT = { has_country_flag = natural_disaster_chain_mission_active }
+			NOT = { has_country_flag = achievement_nd_severe_recovery_deadline_failed }
+			NOT = { has_country_flag = achievement_nd_severe_aftermath_abandoned }
+		}
+	}
+}
+
+013_natural_disasters_no_second_wave = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_nd_no_second_wave_tooltip
+			is_ai = no
+			has_capitulated = no
+			has_country_flag = achievement_nd_tsunami_prevention_started
+			has_country_flag = achievement_nd_tsunami_chain_prevented
+			check_variable = { achievement_nd_tsunami_preventions > 0 }
+			NOT = { has_country_flag = achievement_nd_second_wave_arrived }
+			NOT = { has_country_flag = achievement_nd_second_wave_death_spike }
+		}
+	}
+}
+
+013_natural_disasters_every_bridge_counts = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_nd_every_bridge_counts_tooltip
+			is_ai = no
+			has_capitulated = no
+			has_country_flag = achievement_nd_transport_recovery_started
+			has_country_flag = achievement_nd_transport_sequence_ended
+			has_country_flag = achievement_nd_transport_recovery_complete
+			NOT = { has_country_flag = achievement_nd_transport_attempt_failed }
+			check_variable = { achievement_nd_transport_cards_expected > 0 }
+			check_variable = {
+				var = achievement_nd_transport_cards_recovered
+				value = achievement_nd_transport_cards_expected
+				compare = greater_than_or_equals
+			}
+			NOT = { has_country_flag = achievement_nd_capital_supply_route_failed }
+		}
+	}
+}
+
+013_natural_disasters_ashes_without_famine = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_nd_ashes_without_famine_tooltip
+			is_ai = no
+			has_capitulated = no
+			has_country_flag = achievement_nd_major_ashfall_started
+			has_country_flag = achievement_nd_ashfall_sequence_ended
+			has_country_flag = achievement_nd_ashfall_recovery_complete
+			NOT = { has_country_flag = achievement_nd_ashfall_attempt_failed }
+			check_variable = { achievement_nd_ashfall_states_affected > 0 }
+			check_variable = {
+				var = achievement_nd_ashfall_states_recovered
+				value = achievement_nd_ashfall_states_affected
+				compare = greater_than_or_equals
+			}
+			NOT = { has_country_flag = achievement_nd_ash_famine_matured }
+		}
+	}
+}
+
+013_natural_disasters_no_global_announcer = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_nd_no_global_announcer_tooltip
+			is_ai = no
+			has_country_flag = achievement_nd_report_group_ground
+			has_country_flag = achievement_nd_report_group_water
+			has_country_flag = achievement_nd_report_group_weather
+			has_country_flag = achievement_nd_report_group_climate
+			NOT = { has_country_flag = achievement_nd_global_announcer_used }
+		}
+	}
+}
+
+013_natural_disasters_under_the_falling_sky = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_nd_under_the_falling_sky_tooltip
+			is_ai = no
+			has_capitulated = no
+			has_country_flag = achievement_nd_meteor_shower_started
+			has_country_flag = achievement_nd_meteor_shower_ended
+			check_variable = {
+				var = achievement_nd_skyfall_survived_hits
+				value = constant:natural_disaster_achievement.skyfall_survival_hits
+				compare = greater_than_or_equals
+			}
+			has_country_flag = achievement_nd_skyfall_capital_operational
+			has_country_flag = achievement_nd_skyfall_supply_route_operational
+			has_country_flag = achievement_nd_skyfall_airfield_network_operational
+			NOT = { has_country_flag = achievement_nd_skyfall_capital_failed }
+			NOT = { has_country_flag = achievement_nd_skyfall_supply_route_failed }
+			NOT = { has_country_flag = achievement_nd_skyfall_airfield_network_failed }
+		}
+	}
+}
+
+013_natural_disasters_shake_the_world_back = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_nd_shake_the_world_back_tooltip
+			is_ai = no
+			has_capitulated = no
+			has_country_flag = achievement_nd_rupture_recovery_started
+			has_country_flag = achievement_nd_rupture_sequence_ended
+			has_country_flag = achievement_nd_rupture_recovery_closed
+			NOT = { has_country_flag = achievement_nd_rupture_attempt_failed }
+			check_variable = {
+				var = achievement_nd_rupture_regions_recovered
+				value = constant:natural_disaster_achievement.aftershock_successes
+				compare = greater_than_or_equals
+			}
+			NOT = { has_country_flag = achievement_nd_rupture_aftershock_matured }
+			NOT = { has_country_flag = achievement_nd_rupture_tsunami_matured }
+		}
+	}
+}
+
+013_natural_disasters_disaster_barrage_maximum = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_nd_disaster_barrage_maximum_tooltip
+			is_ai = no
+			has_capitulated = no
+			has_country_flag = achievement_nd_barrage_maximum_started
+			has_country_flag = achievement_nd_barrage_maximum_ended
+			check_variable = {
+				var = achievement_nd_barrage_recovery_cards
+				value = constant:natural_disaster_achievement.barrage_maximum_recovery_cards
+				compare = greater_than_or_equals
+			}
+			has_country_flag = achievement_nd_barrage_capital_route_preserved
+			OR = {
+				has_country_flag = achievement_nd_barrage_port_corridor_preserved
+				has_country_flag = achievement_nd_barrage_rail_corridor_preserved
+			}
+			NOT = { natural_disaster_country_has_open_aftermath = yes }
+			NOT = { has_country_flag = natural_disaster_chain_mission_active }
+			NOT = { has_country_flag = achievement_nd_barrage_country_collapsed }
+			NOT = { has_country_flag = achievement_nd_barrage_aftermath_unresolved }
+		}
+	}
+}
+
+013_natural_disasters_not_one_more_camp = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_nd_not_one_more_camp_tooltip
+			is_ai = no
+			has_capitulated = no
+			has_country_flag = achievement_nd_refugee_protection_started
+			has_country_flag = achievement_nd_refugee_sequence_ended
+			has_country_flag = achievement_nd_refugee_pressure_resolved
+			NOT = { has_country_flag = achievement_nd_refugee_attempt_failed }
+			check_variable = { achievement_nd_refugee_routes_completed > 0 }
+			NOT = { has_country_flag = achievement_nd_refugee_death_threshold_failed }
+			NOT = { has_country_flag = achievement_nd_refugee_camp_disease_failed }
+			NOT = { has_country_flag = achievement_nd_refugee_border_camp_failed }
+		}
+	}
+}
+
+013_natural_disasters_catalogue_of_ruin = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_nd_catalogue_of_ruin_tooltip
+			is_ai = no
+			has_country_flag = achievement_nd_catalogue_seismic_recovered
+			has_country_flag = achievement_nd_catalogue_water_coastal_recovered
+			has_country_flag = achievement_nd_catalogue_fire_drought_recovered
+			has_country_flag = achievement_nd_catalogue_winter_recovered
+			has_country_flag = achievement_nd_catalogue_storm_recovered
+			has_country_flag = achievement_nd_catalogue_mass_movement_recovered
+			has_country_flag = achievement_nd_catalogue_volcanic_ash_recovered
+			has_country_flag = achievement_nd_catalogue_dust_sand_recovered
+		}
+	}
+}

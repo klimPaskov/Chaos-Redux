@@ -1,5 +1,7 @@
 # Super-event research prompt for Event 013 Natural Disasters
 
+> Implementation disposition: executed for slots 67-72. The researched text, audio, image, and wiring documentation under `docs/super_events/` and `docs/assets/013_natural_disasters/` is authoritative.
+
 Use `chaos-redux-super-events`. Use text and audio research subagents where available. Do not edit localisation, event files, GFX, GUI, sound definitions, or spreadsheets.
 
 ## Super-event package scope

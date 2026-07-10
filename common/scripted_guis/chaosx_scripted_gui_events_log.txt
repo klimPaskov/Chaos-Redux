@@ -1154,6 +1154,14 @@ scripted_gui = {
 				events_log_toggle_event_disabled_by_row = yes
 			}
 
+			events_log_event_detail_open_abnormal_map_button_click = {
+				set_variable = { events_log_selected_event_id = global.events_log_open_event_detail_entries^events_log_open_event_detail_index }
+				if = {
+					limit = { check_variable = { events_log_selected_event_id = constant:natural_disaster_event.id } }
+					natural_disaster_open_abnormal_gui_history = yes
+				}
+			}
+
 			history_detail_evolution_open_details_button_click = {
 				events_log_open_selected_event_detail_evolution = yes
 			}
@@ -1252,6 +1260,17 @@ scripted_gui = {
 						compare = greater_than
 					}
 				}
+			}
+			events_log_event_detail_open_abnormal_map_button_visible = {
+				check_variable = {
+					var = global.events_log_open_event_detail_entries^events_log_open_event_detail_index
+					value = constant:natural_disaster_event.id
+					compare = equals
+				}
+				has_global_flag = natural_disaster_evolution_iii_logged
+			}
+			events_log_event_detail_open_abnormal_map_button_click_enabled = {
+				has_global_flag = natural_disaster_evolution_iii_logged
 			}
 			events_log_event_detail_actor_flag_visible = {
 				AND = {

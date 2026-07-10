@@ -1,8 +1,253 @@
 # Event 013 Natural Disasters art handoff
 
-Active `.gfx` file: `interface/013_natural_disasters.gfx`
+Proposed target `.gfx` file: `interface/013_natural_disasters.gfx`
 
-All sprite names below are wired through Event 13 gameplay files.
+Integration closure, 2026-07-10: the parent implementation registered the accepted sprites, bound the GUI identities, and switched the matching report/news events to their family-specific art. The tables below remain the source identity handoff; their original asset-subtask wording is historical, while live wiring is proven by `interface/013_natural_disasters.gfx`, `interface/013_natural_disasters.gui`, and `events/013_natural_disasters.txt`.
+
+## Accepted 2026-07-10 static completion registration
+
+The following exact names and paths were the registration handoff for the non-animation completion pass. The parent implementation has completed the registration.
+
+### Report-event sprites
+
+Register these as `spriteType` entries in `interface/013_natural_disasters.gfx`.
+
+| Sprite | Live DDS path |
+| --- | --- |
+| `GFX_report_event_nd_tropical_cyclone` | `gfx/event_pictures/013_natural_disasters/report_event_nd_tropical_cyclone.dds` |
+| `GFX_report_event_nd_heat_wave` | `gfx/event_pictures/013_natural_disasters/report_event_nd_heat_wave.dds` |
+| `GFX_report_event_nd_extreme_wind` | `gfx/event_pictures/013_natural_disasters/report_event_nd_extreme_wind.dds` |
+| `GFX_report_event_nd_tornado_outbreak` | `gfx/event_pictures/013_natural_disasters/report_event_nd_tornado_outbreak.dds` |
+| `GFX_report_event_nd_hailstorm` | `gfx/event_pictures/013_natural_disasters/report_event_nd_hailstorm.dds` |
+| `GFX_report_event_nd_extreme_cold_wave` | `gfx/event_pictures/013_natural_disasters/report_event_nd_extreme_cold_wave.dds` |
+| `GFX_report_event_nd_wet_mass_movement` | `gfx/event_pictures/013_natural_disasters/report_event_nd_wet_mass_movement.dds` |
+| `GFX_report_event_nd_ashfall` | `gfx/event_pictures/013_natural_disasters/report_event_nd_ashfall.dds` |
+| `GFX_report_event_nd_lahar` | `gfx/event_pictures/013_natural_disasters/report_event_nd_lahar.dds` |
+| `GFX_report_event_nd_storm_surge` | `gfx/event_pictures/013_natural_disasters/report_event_nd_storm_surge.dds` |
+| `GFX_report_event_nd_meteor_impact` | `gfx/event_pictures/013_natural_disasters/report_event_nd_meteor_impact.dds` |
+| `GFX_report_event_nd_meteor_shower` | `gfx/event_pictures/013_natural_disasters/report_event_nd_meteor_shower.dds` |
+| `GFX_report_event_nd_massive_eruption` | `gfx/event_pictures/013_natural_disasters/report_event_nd_massive_eruption.dds` |
+| `GFX_report_event_nd_regional_aftermath` | `gfx/event_pictures/013_natural_disasters/report_event_nd_regional_aftermath.dds` |
+
+### News-event sprites
+
+Register these as `spriteType` entries in `interface/013_natural_disasters.gfx`.
+
+| Sprite | Live DDS path |
+| --- | --- |
+| `GFX_news_event_nd_tornado_outbreak` | `gfx/event_pictures/013_natural_disasters/news_event_nd_tornado_outbreak.dds` |
+| `GFX_news_event_nd_ashfall` | `gfx/event_pictures/013_natural_disasters/news_event_nd_ashfall.dds` |
+| `GFX_news_event_nd_lahar` | `gfx/event_pictures/013_natural_disasters/news_event_nd_lahar.dds` |
+| `GFX_news_event_nd_storm_surge` | `gfx/event_pictures/013_natural_disasters/news_event_nd_storm_surge.dds` |
+| `GFX_news_event_nd_meteor_impact` | `gfx/event_pictures/013_natural_disasters/news_event_nd_meteor_impact.dds` |
+
+### Decision and idea sprites
+
+Register these as `spriteType` entries in `interface/013_natural_disasters.gfx`.
+
+| Sprite | Live DDS path |
+| --- | --- |
+| `GFX_decision_nd_port_closure` | `gfx/interface/decisions/013_natural_disasters/decision_nd_port_closure.dds` |
+| `GFX_decision_nd_food_relief` | `gfx/interface/decisions/013_natural_disasters/decision_nd_food_relief.dds` |
+| `GFX_decision_nd_firebreaks` | `gfx/interface/decisions/013_natural_disasters/decision_nd_firebreaks.dds` |
+| `GFX_decision_nd_ash_cleanup` | `gfx/interface/decisions/013_natural_disasters/decision_nd_ash_cleanup.dds` |
+| `GFX_decision_nd_water_trains` | `gfx/interface/decisions/013_natural_disasters/decision_nd_water_trains.dds` |
+| `GFX_decision_nd_observatory_watch` | `gfx/interface/decisions/013_natural_disasters/decision_nd_observatory_watch.dds` |
+| `GFX_decision_nd_reconstruction` | `gfx/interface/decisions/013_natural_disasters/decision_nd_reconstruction.dds` |
+| `GFX_decision_category_013_natural_disaster_aftermath` | `gfx/interface/decisions/013_natural_disasters/decision_category_013_natural_disaster_aftermath.dds` |
+| `GFX_idea_013_ashfall` | `gfx/interface/ideas/013_natural_disasters/idea_013_ashfall.dds` |
+| `GFX_idea_013_disease_risk` | `gfx/interface/ideas/013_natural_disasters/idea_013_disease_risk.dds` |
+| `GFX_idea_013_blocked_ports` | `gfx/interface/ideas/013_natural_disasters/idea_013_blocked_ports.dds` |
+| `GFX_idea_013_scorched_state` | `gfx/interface/ideas/013_natural_disasters/idea_013_scorched_state.dds` |
+| `GFX_idea_013_frozen_supply` | `gfx/interface/ideas/013_natural_disasters/idea_013_frozen_supply.dds` |
+| `GFX_idea_013_cracked_ground` | `gfx/interface/ideas/013_natural_disasters/idea_013_cracked_ground.dds` |
+| `GFX_idea_013_crater_aftermath` | `gfx/interface/ideas/013_natural_disasters/idea_013_crater_aftermath.dds` |
+
+### Abnormal-GUI static sprites
+
+Register these as `spriteType` entries in `interface/013_natural_disasters.gfx`, then bind the same names in `interface/013_natural_disasters.gui`.
+
+| Sprite | Live DDS path |
+| --- | --- |
+| `GFX_013_abnormal_disaster_panel` | `gfx/interface/013_natural_disasters/013_abnormal_disaster_panel.dds` |
+| `GFX_013_abnormal_disaster_panel_damaged` | `gfx/interface/013_natural_disasters/013_abnormal_disaster_panel_damaged.dds` |
+| `GFX_013_disaster_card_frame` | `gfx/interface/013_natural_disasters/013_disaster_card_frame.dds` |
+| `GFX_013_map_marker_impact` | `gfx/interface/013_natural_disasters/013_map_marker_impact.dds` |
+| `GFX_013_map_marker_chain_risk` | `gfx/interface/013_natural_disasters/013_map_marker_chain_risk.dds` |
+| `GFX_013_foreign_relief_badge` | `gfx/interface/013_natural_disasters/013_foreign_relief_badge.dds` |
+| `GFX_013_recovery_progress_frame` | `gfx/interface/013_natural_disasters/013_recovery_progress_frame.dds` |
+| `GFX_013_recovery_progress_fill` | `gfx/interface/013_natural_disasters/013_recovery_progress_fill.dds` |
+
+### Super-event sprites
+
+Assign unused super-event slots first, then register these `spriteType` entries in `interface/chaosx_super_events.gfx`. Neither image has a slot yet.
+
+| Sprite | Live DDS path |
+| --- | --- |
+| `GFX_super_event_nd_abnormal_disaster_age` | `gfx/super_events/013_natural_disasters/super_event_nd_abnormal_disaster_age.dds` |
+| `GFX_super_event_nd_delayed_tsunami_chain` | `gfx/super_events/013_natural_disasters/super_event_nd_delayed_tsunami_chain.dds` |
+
+### Achievement texture triplets
+
+The achievement registry uses root texture basenames rather than `spriteType` registrations. For each slug below, use:
+
+- completed: `gfx/achievements/013_natural_disasters_<slug>.dds`
+- grey: `gfx/achievements/013_natural_disasters_<slug>_grey.dds`
+- not eligible: `gfx/achievements/013_natural_disasters_<slug>_not_eligible.dds`
+
+Accepted slugs: `after_the_sirens`, `no_second_wave`, `every_bridge_counts`, `ashes_without_famine`, `no_global_announcer`, `under_the_falling_sky`, `shake_the_world_back`, `disaster_barrage_maximum`, `not_one_more_camp`, and `catalogue_of_ruin`.
+
+### Format-only replacements
+
+No sprite-name or path change is required for the preserved identities `GFX_news_event_nd_disaster_barrage`, `GFX_news_event_nd_great_rupture`, `GFX_news_event_nd_massive_eruption`, `GFX_news_event_nd_meteor_showers`, `GFX_news_event_nd_regional_floods`, `GFX_super_event_nd_great_rupture`, `GFX_super_event_nd_massive_eruption`, and `GFX_super_event_nd_skyfall`. Their live DDS files were replaced in place with 32-bit RGB+A outputs. `GFX_super_event_nd_storm_corridor` also keeps its stable name and path, but the texture now comes from a fresh provenance-closed generated source rather than a format-only replacement.
+
+## Abnormal scripted-GUI animation handoff
+
+Local precedents inspected: offline `Graphical asset modding`, `Interface modding`, and `Scripted GUI modding` pages; vanilla `interface/alerts.gfx`, `interface/alerts.gui`, and `interface/mapicons.gfx`. The final HOI4 assets are horizontal DDS sheets; GIFs under `previews/` are review-only.
+
+| State/use | GUI element proposed | Static sprite | Animated sprite | Frames / FPS | Loop / play on show | Anchor |
+| --- | --- | --- | --- | --- | --- | --- |
+| `warning_window` card | `natural_disaster_card_frame_warning` | `GFX_013_disaster_card_frame_warning_static` | `GFX_013_disaster_card_frame_warning_animated` | 8 / 10 | yes / yes | center |
+| `impact_pending` card | `natural_disaster_card_frame_impact` | `GFX_013_disaster_card_frame_impact_static` | `GFX_013_disaster_card_frame_impact_animated` | 10 / 11 | yes / yes | center |
+| selected next-hit state | `natural_disaster_map_marker_next_hit` | `GFX_013_map_marker_next_hit_static` | `GFX_013_map_marker_next_hit_animated` | 8 / 8 | yes / yes | center |
+| `rupture_wave_layer` | `natural_disaster_rupture_wave_layer` | `GFX_013_rupture_wave_static` | `GFX_013_rupture_wave_sheet` | 12 / 8 | yes / yes | center |
+| `meteor_path_layer` | `natural_disaster_meteor_path_layer` | `GFX_013_meteor_fall_static` | `GFX_013_meteor_fall_sheet` | 12 / 10 | yes / yes | bottom-center |
+| `eruption_plume_layer` | `natural_disaster_eruption_plume_layer` | `GFX_013_eruption_plume_static` | `GFX_013_eruption_plume_sheet` | 12 / 8 | yes / yes | bottom-center |
+| `tsunami_train_layer` | `natural_disaster_tsunami_train_layer` | `GFX_013_tsunami_train_static` | `GFX_013_tsunami_train_sheet` | 10 / 8 | yes / yes | center, fixed coast at right |
+| `storm_corridor_layer` | `natural_disaster_storm_corridor_layer` | `GFX_013_storm_corridor_static` | `GFX_013_storm_corridor_sheet` | 14 / 10 | yes / yes | center, fixed route studs |
+
+Static fallbacks should occupy the same GUI position and size as their animated pair. The scripted GUI should show the animated element only for the listed state and show the static element when animation is disabled, unsupported, or intentionally hidden. The accepted sprite names ending in `_sheet` are still `frameAnimatedSpriteType` names; the suffix is part of the accepted Part 9 contract.
+
+Ready-to-copy `.gfx` definitions:
+
+```txt
+spriteTypes = {
+	spriteType = {
+		name = "GFX_013_disaster_card_frame_warning_static"
+		texturefile = "gfx/interface/animated/013_natural_disasters/013_disaster_card_frame_warning_static.dds"
+	}
+	frameAnimatedSpriteType = {
+		name = "GFX_013_disaster_card_frame_warning_animated"
+		texturefile = "gfx/interface/animated/013_natural_disasters/013_disaster_card_frame_warning_sheet.dds"
+		noOfFrames = 8
+		animation_rate_fps = 10
+		looping = yes
+		play_on_show = yes
+		pause_on_loop = 0.0
+		alwaystransparent = yes
+	}
+	spriteType = {
+		name = "GFX_013_disaster_card_frame_impact_static"
+		texturefile = "gfx/interface/animated/013_natural_disasters/013_disaster_card_frame_impact_static.dds"
+	}
+	frameAnimatedSpriteType = {
+		name = "GFX_013_disaster_card_frame_impact_animated"
+		texturefile = "gfx/interface/animated/013_natural_disasters/013_disaster_card_frame_impact_sheet.dds"
+		noOfFrames = 10
+		animation_rate_fps = 11
+		looping = yes
+		play_on_show = yes
+		pause_on_loop = 0.0
+		alwaystransparent = yes
+	}
+	spriteType = {
+		name = "GFX_013_map_marker_next_hit_static"
+		texturefile = "gfx/interface/animated/013_natural_disasters/013_impact_pulse_overlay_static.dds"
+	}
+	frameAnimatedSpriteType = {
+		name = "GFX_013_map_marker_next_hit_animated"
+		texturefile = "gfx/interface/animated/013_natural_disasters/013_impact_pulse_overlay_sheet.dds"
+		noOfFrames = 8
+		animation_rate_fps = 8
+		looping = yes
+		play_on_show = yes
+		pause_on_loop = 0.0
+		alwaystransparent = yes
+	}
+	spriteType = {
+		name = "GFX_013_rupture_wave_static"
+		texturefile = "gfx/interface/animated/013_natural_disasters/013_rupture_wave_overlay_static.dds"
+	}
+	frameAnimatedSpriteType = {
+		name = "GFX_013_rupture_wave_sheet"
+		texturefile = "gfx/interface/animated/013_natural_disasters/013_rupture_wave_overlay_sheet.dds"
+		noOfFrames = 12
+		animation_rate_fps = 8
+		looping = yes
+		play_on_show = yes
+		pause_on_loop = 0.0
+		alwaystransparent = yes
+	}
+	spriteType = {
+		name = "GFX_013_meteor_fall_static"
+		texturefile = "gfx/interface/animated/013_natural_disasters/013_meteor_rain_overlay_static.dds"
+	}
+	frameAnimatedSpriteType = {
+		name = "GFX_013_meteor_fall_sheet"
+		texturefile = "gfx/interface/animated/013_natural_disasters/013_meteor_rain_overlay_sheet.dds"
+		noOfFrames = 12
+		animation_rate_fps = 10
+		looping = yes
+		play_on_show = yes
+		pause_on_loop = 0.0
+		alwaystransparent = yes
+	}
+	spriteType = {
+		name = "GFX_013_eruption_plume_static"
+		texturefile = "gfx/interface/animated/013_natural_disasters/013_ash_plume_overlay_static.dds"
+	}
+	frameAnimatedSpriteType = {
+		name = "GFX_013_eruption_plume_sheet"
+		texturefile = "gfx/interface/animated/013_natural_disasters/013_ash_plume_overlay_sheet.dds"
+		noOfFrames = 12
+		animation_rate_fps = 8
+		looping = yes
+		play_on_show = yes
+		pause_on_loop = 0.0
+		alwaystransparent = yes
+	}
+	spriteType = {
+		name = "GFX_013_tsunami_train_static"
+		texturefile = "gfx/interface/animated/013_natural_disasters/013_tsunami_path_ribbon_static.dds"
+	}
+	frameAnimatedSpriteType = {
+		name = "GFX_013_tsunami_train_sheet"
+		texturefile = "gfx/interface/animated/013_natural_disasters/013_tsunami_path_ribbon_sheet.dds"
+		noOfFrames = 10
+		animation_rate_fps = 8
+		looping = yes
+		play_on_show = yes
+		pause_on_loop = 0.0
+		alwaystransparent = yes
+	}
+	spriteType = {
+		name = "GFX_013_storm_corridor_static"
+		texturefile = "gfx/interface/animated/013_natural_disasters/013_storm_corridor_path_ribbon_static.dds"
+	}
+	frameAnimatedSpriteType = {
+		name = "GFX_013_storm_corridor_sheet"
+		texturefile = "gfx/interface/animated/013_natural_disasters/013_storm_corridor_path_ribbon_sheet.dds"
+		noOfFrames = 14
+		animation_rate_fps = 10
+		looping = yes
+		play_on_show = yes
+		pause_on_loop = 0.0
+		alwaystransparent = yes
+	}
+}
+```
+
+Auxiliary marker sprite pairs are also ready for optional wiring. They do not replace the accepted assets above:
+
+| Proposed GUI element | Static / animated sprite | DDS basename | Frames / FPS |
+| --- | --- | --- | --- |
+| `natural_disaster_warning_pulse_marker` | `GFX_013_warning_pulse` / `GFX_013_warning_pulse_animated` | `natural_disaster_warning_pulse` | 8 / 8.333 |
+| `natural_disaster_storm_corridor_marker` | `GFX_013_storm_corridor_marker` / `GFX_013_storm_corridor_marker_animated` | `natural_disaster_storm_corridor_track` | 8 / 8.333 |
+| `natural_disaster_tsunami_countdown_marker` | `GFX_013_tsunami_countdown` / `GFX_013_tsunami_countdown_animated` | `natural_disaster_tsunami_countdown` | 8 / 8.333 |
+| `natural_disaster_eruption_marker` | `GFX_013_eruption_marker` / `GFX_013_eruption_marker_animated` | `natural_disaster_eruption_ashfall` | 8 / 8.333 |
+| `natural_disaster_skyfall_alarm_marker` | `GFX_013_skyfall_alarm` / `GFX_013_skyfall_alarm_animated` | `natural_disaster_skyfall_alarm` | 8 / 8.333 |
+
+Use the same static-plus-`frameAnimatedSpriteType` pattern shown above, with texture paths under `gfx/interface/animated/013_natural_disasters/`, `noOfFrames = 8`, `animation_rate_fps = 8.333`, `looping = yes`, and `play_on_show = yes`. The corrected briefs name the exact static and sheet paths. Their original exact image-generation prompts were not retained; package provenance notes record that limitation.
 
 ## Super-event radio images
 
@@ -27,7 +272,10 @@ These use the shared super-event radio frame and are wired through `interface/ch
   - Final DDS path: `gfx/super_events/013_natural_disasters/super_event_nd_storm_corridor.dds`
   - Package DDS path: `docs/assets/013_natural_disasters/dds/super_event_nd_storm_corridor.dds`
   - Super-event slot: `70`
-  - Use notes: mapped storm front, damaged rail corridor, and period response crews support the moving-path hazard reveal.
+  - Source PNG: `docs/assets/013_natural_disasters/source_png/super_event_nd_storm_corridor_source.png`
+  - Processed PNG: `docs/assets/013_natural_disasters/processed_png/super_event_nd_storm_corridor.png`
+  - Prompt provenance: `docs/assets/013_natural_disasters/prompts/2026-07-10_static_completion_prompts.md`, result `exec-f951d9ec-e1c4-49e2-bab7-fbdee7797b5a.png`
+  - Use notes: broad storm shelf, four separated funnels, continuous rail/road damage path, multiple towns, and period response convoy support the accepted sustained multi-state moving storm/tornado corridor. The replacement is not a local-storm fallback.
 
 ## Report event pictures
 
@@ -90,7 +338,7 @@ These use the shared super-event radio frame and are wired through `interface/ch
 
 ## News event pictures
 
-Meaningful individual-hit news events `chaosx.nr13.305` through `chaosx.nr13.328` use dedicated `397x153` black-and-white news sprites. They are separate from report-event pictures and are wired in `interface/013_natural_disasters.gfx`.
+Meaningful individual-hit news events `chaosx.nr13.305` through `chaosx.nr13.328` use dedicated `397x153` black-and-white news sprites. They are separate from report-event pictures; verify their current registrations in `interface/013_natural_disasters.gfx` during parent integration.
 
 Specific family headline sprites:
 
@@ -189,4 +437,4 @@ The current DDS files were regenerated from fresh official `image_gen` source ar
 | `GFX_idea_013_broken_infrastructure` | `gfx/interface/ideas/013_natural_disasters/idea_013_broken_infrastructure.dds` |
 | `GFX_idea_013_disaster_recovery_mobilization` | `gfx/interface/ideas/013_natural_disasters/idea_013_disaster_recovery_mobilization.dds` |
 
-Validation note: each processed PNG, package DDS copy, and live DDS file is `64x64` with alpha, transparent corners, and zero visible green, magenta, or purple key pixels. No `.gfx` edits are needed because the registered sprite names and texture paths stayed stable.
+Validation note: each preserved processed PNG, package DDS copy, and live DDS file is `64x64` with alpha, transparent corners, and zero visible green, magenta, or purple key pixels. This production pass made no `.gfx` edit; the five historical sprite names and texture paths in this legacy section stayed stable.

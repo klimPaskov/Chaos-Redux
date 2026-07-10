@@ -1,5 +1,7 @@
 # Event 013 Natural Disasters, implementation readiness ledger
 
+> Implementation disposition, 2026-07-10: this ledger remains the acceptance checklist. The live implementation and final audit evidence are recorded outside the source specification in `docs/events/013_natural_disasters.md` and `docs/plans/013_natural_disasters_plans/013_implementation_validation_notes.md`.
+
 This ledger turns the expanded planning package into a practical completion gate. It does not add new mechanics. It names what the coding pass must implement, which source files anchor the requirement, what simplification is forbidden, and what evidence should exist before completion is claimed.
 
 ## Core system gates

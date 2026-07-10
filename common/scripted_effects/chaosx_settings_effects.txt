@@ -4573,6 +4573,15 @@ fire_event_by_temp_id_no_cluster = {
 		tensions_rising_prepare_random_event_fire = yes
 	}
 	if = {
+		limit = { check_variable = { event_id = constant:natural_disaster_event.id } }
+		set_temp_variable = { natural_disaster_prefire_ready = 0 }
+		natural_disaster_prepare_random_event_fire = yes
+		if = {
+			limit = { check_variable = { natural_disaster_prefire_ready < 1 } }
+			set_temp_variable = { event_single_fire_allowed = 0 }
+		}
+	}
+	if = {
 		limit = { check_variable = { event_id = constant:white_peace_event_log.event_id } }
 		prepare_white_peace_runtime_context = yes
 		if = {

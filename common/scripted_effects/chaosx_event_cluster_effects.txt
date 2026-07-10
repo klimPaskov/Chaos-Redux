@@ -16,6 +16,7 @@
 @event_cluster_liberations_cooldown_days = 90
 @event_cluster_diplomatic_panic_cooldown_days = 120
 @event_cluster_peace_cooldown_days = 120
+@event_cluster_natural_disasters_cooldown_days = 120
 @event_cluster_formables_cooldown_days = 120
 
 initialize_event_cluster_system = {
@@ -104,6 +105,15 @@ initialize_event_cluster_definitions = {
 	add_to_array = {
 		array = global.event_cluster_unlock_tier_entries
 		value = constant:event_cluster_peace.unlock_tier
+	}
+	add_to_array = { global.event_clusters = constant:event_cluster_id.natural_disasters }
+	add_to_array = {
+		array = global.event_cluster_type_entries
+		value = constant:event_cluster_type.repeatable
+	}
+	add_to_array = {
+		array = global.event_cluster_unlock_tier_entries
+		value = constant:event_cluster_natural_disasters.unlock_tier
 	}
 	add_to_array = { global.event_clusters = constant:event_cluster_id.formables }
 	add_to_array = {
@@ -325,6 +335,16 @@ event_belongs_to_cluster = {
 		limit = {
 			check_variable = {
 				var = event_id
+				value = constant:natural_disaster_event.id
+				compare = equals
+			}
+		}
+		set_temp_variable = { event_cluster_candidate_id = constant:event_cluster_id.natural_disasters }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = event_id
 				value = 12
 				compare = equals
 			}
@@ -379,6 +399,45 @@ load_event_cluster_members = {
 		add_to_array = { array = temp_event_cluster_member_chance_entries value = constant:event_cluster_member_participation.soviet_collapse }
 		add_to_array = { array = temp_event_cluster_member_min_tier_entries value = constant:chaos_meter_tier_id.tier_0 }
 		add_to_array = { array = temp_event_cluster_member_danger_entries value = constant:event_cluster_member_danger.low }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = event_cluster_id
+				value = constant:event_cluster_id.natural_disasters
+				compare = equals
+			}
+		}
+		# Five logical seasons all dispatch Event 013. Only the first is required.
+		add_to_array = { array = temp_event_cluster_member_event_id_entries value = constant:natural_disaster_event.id }
+		add_to_array = { array = temp_event_cluster_member_role_entries value = constant:event_cluster_member_role.required }
+		add_to_array = { array = temp_event_cluster_member_chance_entries value = constant:event_cluster_member_participation.required }
+		add_to_array = { array = temp_event_cluster_member_min_tier_entries value = constant:chaos_meter_tier_id.tier_0 }
+		add_to_array = { array = temp_event_cluster_member_danger_entries value = constant:event_cluster_member_danger.low }
+
+		add_to_array = { array = temp_event_cluster_member_event_id_entries value = constant:natural_disaster_event.id }
+		add_to_array = { array = temp_event_cluster_member_role_entries value = constant:event_cluster_member_role.optional }
+		add_to_array = { array = temp_event_cluster_member_chance_entries value = constant:event_cluster_member_participation.natural_disaster_early_repeat }
+		add_to_array = { array = temp_event_cluster_member_min_tier_entries value = constant:chaos_meter_tier_id.tier_0 }
+		add_to_array = { array = temp_event_cluster_member_danger_entries value = constant:event_cluster_member_danger.low }
+
+		add_to_array = { array = temp_event_cluster_member_event_id_entries value = constant:natural_disaster_event.id }
+		add_to_array = { array = temp_event_cluster_member_role_entries value = constant:event_cluster_member_role.optional }
+		add_to_array = { array = temp_event_cluster_member_chance_entries value = constant:event_cluster_member_participation.natural_disaster_varied_repeat }
+		add_to_array = { array = temp_event_cluster_member_min_tier_entries value = constant:chaos_meter_tier_id.tier_2 }
+		add_to_array = { array = temp_event_cluster_member_danger_entries value = constant:event_cluster_member_danger.medium }
+
+		add_to_array = { array = temp_event_cluster_member_event_id_entries value = constant:natural_disaster_event.id }
+		add_to_array = { array = temp_event_cluster_member_role_entries value = constant:event_cluster_member_role.optional }
+		add_to_array = { array = temp_event_cluster_member_chance_entries value = constant:event_cluster_member_participation.natural_disaster_regional_repeat }
+		add_to_array = { array = temp_event_cluster_member_min_tier_entries value = constant:chaos_meter_tier_id.tier_3 }
+		add_to_array = { array = temp_event_cluster_member_danger_entries value = constant:event_cluster_member_danger.high }
+
+		add_to_array = { array = temp_event_cluster_member_event_id_entries value = constant:natural_disaster_event.id }
+		add_to_array = { array = temp_event_cluster_member_role_entries value = constant:event_cluster_member_role.optional }
+		add_to_array = { array = temp_event_cluster_member_chance_entries value = constant:event_cluster_member_participation.natural_disaster_abnormal_repeat }
+		add_to_array = { array = temp_event_cluster_member_min_tier_entries value = constant:chaos_meter_tier_id.tier_4 }
+		add_to_array = { array = temp_event_cluster_member_danger_entries value = constant:event_cluster_member_danger.severe }
 	}
 	else_if = {
 		limit = {
@@ -543,6 +602,16 @@ can_event_cluster_fire = {
 					AND = {
 						check_variable = {
 							var = event_cluster_id
+							value = constant:event_cluster_id.natural_disasters
+							compare = equals
+						}
+						has_global_flag = event_cluster_natural_disasters_cooldown
+					}
+				}
+				NOT = {
+					AND = {
+						check_variable = {
+							var = event_cluster_id
 							value = constant:event_cluster_id.formables
 							compare = equals
 						}
@@ -587,6 +656,7 @@ prepare_event_cluster_firing = {
     set_temp_variable = { event_cluster_member_count = temp_event_cluster_member_event_id_entries^num }
     set_temp_variable = { event_cluster_fired_member_count = 0 }
     set_temp_variable = { event_cluster_skipped_member_count = 0 }
+	clr_country_flag = event_cluster_trigger_member_claimed
 
     for_loop_effect = {
         start = 0
@@ -606,9 +676,11 @@ prepare_event_cluster_firing = {
                     value = event_cluster_trigger_event_id
                     compare = equals
                 }
+				NOT = { has_country_flag = event_cluster_trigger_member_claimed }
             }
             set_temp_variable = { event_cluster_member_role = constant:event_cluster_member_role.required }
             set_temp_variable = { event_cluster_member_chance = constant:event_cluster_member_participation.required }
+			set_country_flag = event_cluster_trigger_member_claimed
         }
 
         if = {
@@ -672,6 +744,7 @@ prepare_event_cluster_firing = {
             value = event_cluster_member_status
         }
     }
+	clr_country_flag = event_cluster_trigger_member_claimed
     build_event_cluster_firing_order = yes
 }
 
@@ -967,7 +1040,37 @@ event_cluster_clear_pending_member_queue = {
 
 fire_event_cluster_member_by_temp_id = {
     set_country_flag = event_cluster_member_fire_context
-    fire_event_by_temp_id_no_cluster = yes
+	if = {
+		limit = { check_variable = { event_id = constant:natural_disaster_event.id } }
+		set_temp_variable = { natural_disaster_call_caller_type = constant:natural_disaster_caller.cluster }
+		set_temp_variable = { natural_disaster_call_caller_event_id = constant:natural_disaster_event.id }
+		set_temp_variable = { natural_disaster_call_family = constant:natural_disaster_family.random }
+		set_temp_variable = { natural_disaster_call_target_mode = constant:natural_disaster_target_mode.random_valid }
+		if = {
+			limit = {
+				check_variable = { event_cluster_current_member_sequence = 1 }
+				has_event_target = natural_disaster_call_target_state
+				event_target:natural_disaster_call_target_state = { has_variable = natural_disaster_prefire_family }
+			}
+			event_target:natural_disaster_call_target_state = {
+				ROOT = { set_temp_variable = { natural_disaster_call_family = PREV.natural_disaster_prefire_family } }
+				clear_variable = natural_disaster_prefire_family
+			}
+			set_temp_variable = { natural_disaster_call_target_state_supplied = 1 }
+			set_temp_variable = { natural_disaster_call_target_mode = constant:natural_disaster_target_mode.selected_state }
+		}
+		set_temp_variable = { natural_disaster_call_severity = constant:natural_disaster_severity.local }
+		set_temp_variable = { natural_disaster_call_sequence_mode = constant:natural_disaster_sequence_mode.local_season }
+		set_temp_variable = { natural_disaster_call_news_policy = constant:natural_disaster_news_policy.meaningful }
+		set_temp_variable = { natural_disaster_call_report_policy = constant:natural_disaster_report_policy.affected_country }
+		set_temp_variable = { natural_disaster_call_aftermath_policy = constant:natural_disaster_aftermath_policy.normal }
+		set_temp_variable = { natural_disaster_call_chain_policy = constant:natural_disaster_chain_policy.family }
+		set_temp_variable = { natural_disaster_call_log_mode = constant:natural_disaster_log_mode.event_013_history }
+		call_natural_disaster = yes
+	}
+	else = {
+		fire_event_by_temp_id_no_cluster = yes
+	}
     clr_country_flag = event_cluster_member_fire_context
 }
 
@@ -1164,6 +1267,16 @@ mark_event_cluster_fired_state = {
 		limit = {
 			check_variable = {
 				var = event_cluster_id
+				value = constant:event_cluster_id.natural_disasters
+				compare = equals
+			}
+		}
+		set_global_flag = { flag = event_cluster_natural_disasters_cooldown days = @event_cluster_natural_disasters_cooldown_days }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = event_cluster_id
 				value = constant:event_cluster_id.formables
 				compare = equals
 			}
@@ -1207,6 +1320,25 @@ event_cluster_prepare_runtime_context = {
 		if = {
 			limit = { check_variable = { global.white_peace_context_ready < 1 } }
 			set_temp_variable = { event_cluster_runtime_ready = 0 }
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = event_cluster_id
+				value = constant:event_cluster_id.natural_disasters
+				compare = equals
+			}
+		}
+		natural_disaster_prepare_random_event_fire = yes
+		if = {
+			limit = { check_variable = { natural_disaster_prefire_ready < 1 } }
+			set_temp_variable = { event_cluster_runtime_ready = 0 }
+		}
+		else = {
+			event_target:natural_disaster_call_target_country = {
+				save_event_target_as = event_cluster_actor
+			}
 		}
 	}
 }

@@ -2,6 +2,8 @@
 
 Tool: official `image_gen`
 
+Accepted 2026-07-10 static completion prompts and built-in result provenance are recorded in `docs/assets/013_natural_disasters/prompts/2026-07-10_static_completion_prompts.md`. That ledger adds the thirteen Part 8 report identities, the additional live-referenced regional-aftermath report, five missing news identities, two retained Part 6 super-event images, the fresh provenance-closed `super_event_nd_storm_corridor` replacement, and the corrected current processing route.
+
 Source mode summary: generated period-documentary disaster scenes were appropriate because Event 13 needs reusable fictional and alternate-history report/news scenes rather than archival photos of one real historical incident.
 
 ## Report event image prompts
@@ -41,3 +43,5 @@ Source mode summary: generated period-documentary disaster scenes were appropria
 - News images were cover-cropped to `397x153`, converted to black and white, and normalized to stronger press-photo contrast.
 - Super-event radio images were cover-cropped to `457x328`, converted to black and white, normalized, and exported as uncompressed DDS.
 - DDS export used `convert -define dds:compression=none`.
+
+The legacy `convert` note above describes the older pass only. The 2026-07-10 completion pass used `.tools/convert_to_dds.py`, which writes one-mip 32-bit BGRA/B8G8R8A8-style DDS files. It also reconverted the nine older 24-bit news/super-event DDS files named in the accepted asset audit without changing their visual identity.

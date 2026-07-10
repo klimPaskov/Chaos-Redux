@@ -1,0 +1,27 @@
+# 013 meteor rain overlay animation brief
+
+- Asset name: `013_meteor_rain_overlay`.
+- In-game use: falling meteor fragments and compact ground flashes.
+- Gameplay surface: `meteor_path_layer` in the Event 013 abnormal scripted GUI.
+- State: meteor shower or impact cluster active; decorative/state-driven and non-interactive.
+- Target frame size: `320x210`.
+- Frame count: `12`.
+- Horizontal sheet size: `3840x210`.
+- Static sprite: `GFX_013_meteor_fall_static`.
+- Animated sprite: `GFX_013_meteor_fall_sheet` (accepted Part 9 name; define it as `frameAnimatedSpriteType`).
+- Animation rate: `10 fps`.
+- Looping: `yes` for meteor-shower use.
+- `play_on_show`: `yes`.
+- Anchor: bottom-center.
+- Static fallback frame: processed frame `006`, compact impact and crater-cluster state.
+- Subject type: fictional symbolic abnormal-disaster overlay.
+- Source mode: built-in `image_gen`; frames are distinct row-major cells across three generated 2x2 atlases. Exact prompts and cell provenance are in `notes/generation_provenance.md`.
+- References inspected: Event 013 Part 9; Event 013 asset audit; offline Graphical Asset, Interface, and Scripted GUI wiki pages; vanilla `interface/mapicons.gfx`; existing Event 013 skyfall animation contact.
+- Package sheet PNG/DDS: `sheets/013_meteor_rain_overlay_sheet.png` and `sheets/013_meteor_rain_overlay_sheet.dds`.
+- Package static PNG/DDS: `sheets/013_meteor_rain_overlay_static.png` and `sheets/013_meteor_rain_overlay_static.dds`.
+- Final sheet DDS: `gfx/interface/animated/013_natural_disasters/013_meteor_rain_overlay_sheet.dds`.
+- Final static DDS: `gfx/interface/animated/013_natural_disasters/013_meteor_rain_overlay_static.dds`.
+- Review-only GIF/contact: `previews/013_meteor_rain_overlay_preview.gif` and `previews/013_meteor_rain_overlay_contact.png`.
+- Target `.gfx`: `interface/013_natural_disasters.gfx`.
+- Target `.gui`: `interface/013_natural_disasters.gui`, proposed element `natural_disaster_meteor_path_layer`.
+- Wiring note: the delivered accepted sprite is the looping shower state. A separate one-shot `looping = no` alias for a single impact is not defined by the accepted sprite list and remains a main-agent wiring decision.

@@ -1,14 +1,817 @@
 add_namespace = chaosx.nr13
 
 # ============================================================================
-# CHAOS REDUX - EVENT 013 RESERVED PLACEHOLDER
+# CHAOS REDUX - EVENT 013 NATURAL DISASTERS
 # ============================================================================
-# Event 013 is intentionally inert. The namespace and root event remain defined
-# so stale manual calls fail harmlessly instead of referencing missing ids.
+# The canonical entry creates one history sequence without a generic popup.
+# Persistent controller-owned queue workers later deliver family-specific reports,
+# news, warnings, impacts, follow-ups, and reassessments for exact states.
 # ============================================================================
 
 country_event = {
 	id = chaosx.nr13.1
 	hidden = yes
 	is_triggered_only = yes
+
+	immediate = {
+		set_temp_variable = { natural_disaster_call_caller_type = constant:natural_disaster_caller.random }
+		set_temp_variable = { natural_disaster_call_caller_event_id = constant:natural_disaster_event.id }
+		if = {
+			limit = {
+				has_event_target = natural_disaster_call_target_state
+				event_target:natural_disaster_call_target_state = { has_variable = natural_disaster_prefire_family }
+			}
+			event_target:natural_disaster_call_target_state = {
+				ROOT = { set_temp_variable = { natural_disaster_call_family = PREV.natural_disaster_prefire_family } }
+				clear_variable = natural_disaster_prefire_family
+			}
+			set_temp_variable = { natural_disaster_call_target_state_supplied = 1 }
+			set_temp_variable = { natural_disaster_call_target_mode = constant:natural_disaster_target_mode.selected_state }
+		}
+		else = {
+			set_temp_variable = { natural_disaster_call_family = constant:natural_disaster_family.random }
+			set_temp_variable = { natural_disaster_call_target_mode = constant:natural_disaster_target_mode.random_valid }
+		}
+		set_temp_variable = { natural_disaster_call_sequence_mode = constant:natural_disaster_sequence_mode.local_season }
+		set_temp_variable = { natural_disaster_call_news_policy = constant:natural_disaster_news_policy.meaningful }
+		set_temp_variable = { natural_disaster_call_report_policy = constant:natural_disaster_report_policy.affected_country }
+		set_temp_variable = { natural_disaster_call_aftermath_policy = constant:natural_disaster_aftermath_policy.normal }
+		set_temp_variable = { natural_disaster_call_chain_policy = constant:natural_disaster_chain_policy.family }
+		set_temp_variable = { natural_disaster_call_log_mode = constant:natural_disaster_log_mode.event_system }
+		call_natural_disaster = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr13.2
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		natural_disaster_process_due_job = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr13.3
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_country_flag = achievement_nd_barrage_maximum_started
+				NOT = { has_country_flag = achievement_nd_barrage_maximum_ended }
+				check_variable = {
+					var = achievement_nd_barrage_expiry_date
+					value = global.date
+					compare = less_than_or_equals
+				}
+			}
+			set_country_flag = achievement_nd_barrage_deadline_reached
+			natural_disaster_achievement_check_operational_state = yes
+			if = {
+				limit = {
+					OR = {
+						NOT = { has_country_flag = achievement_nd_barrage_impact_sequence_ended }
+						natural_disaster_country_has_open_aftermath = yes
+						has_country_flag = natural_disaster_chain_mission_active
+						check_variable = {
+							var = achievement_nd_barrage_recovery_cards
+							value = constant:natural_disaster_achievement.barrage_maximum_recovery_cards
+							compare = less_than
+						}
+						NOT = { has_country_flag = achievement_nd_barrage_capital_route_preserved }
+						AND = {
+							NOT = { has_country_flag = achievement_nd_barrage_port_corridor_preserved }
+							NOT = { has_country_flag = achievement_nd_barrage_rail_corridor_preserved }
+						}
+						has_country_flag = achievement_nd_barrage_country_collapsed
+					}
+				}
+				set_country_flag = achievement_nd_barrage_aftermath_unresolved
+			}
+			else = {
+				set_country_flag = achievement_nd_barrage_maximum_ended
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr13.4
+	title = chaosx.nr13.4.t
+	desc = chaosx.nr13.4.d
+	picture = GFX_report_event_nd_regional_aftermath
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr13.4.a
+		natural_disaster_open_abnormal_gui = yes
+	}
+
+	option = {
+		name = chaosx.nr13.4.b
+		clr_country_flag = natural_disaster_abnormal_map_unread
+	}
+}
+
+# earthquake
+country_event = {
+	id = chaosx.nr13.101
+	title = chaosx.nr13.101.t
+	desc = chaosx.nr13.101.d
+	picture = GFX_report_event_nd_earthquake
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr13.101.a
+		clr_country_flag = natural_disaster_aftermath_unread
+		set_country_flag = natural_disaster_report_received
+	}
+}
+
+news_event = {
+	id = chaosx.nr13.201
+	title = chaosx.nr13.201.t
+	desc = chaosx.nr13.201.d
+	picture = GFX_news_event_nd_earthquake
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx.nr13.201.a
+	}
+}
+
+# flood
+country_event = {
+	id = chaosx.nr13.102
+	title = chaosx.nr13.102.t
+	desc = chaosx.nr13.102.d
+	picture = GFX_report_event_nd_flood
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr13.102.a
+		clr_country_flag = natural_disaster_aftermath_unread
+		set_country_flag = natural_disaster_report_received
+	}
+}
+
+news_event = {
+	id = chaosx.nr13.202
+	title = chaosx.nr13.202.t
+	desc = chaosx.nr13.202.d
+	picture = GFX_news_event_nd_flood
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx.nr13.202.a
+	}
+}
+
+# tropical_cyclone
+country_event = {
+	id = chaosx.nr13.103
+	title = chaosx.nr13.103.t
+	desc = chaosx.nr13.103.d
+	picture = GFX_report_event_nd_tropical_cyclone
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr13.103.a
+		clr_country_flag = natural_disaster_aftermath_unread
+		set_country_flag = natural_disaster_report_received
+	}
+}
+
+news_event = {
+	id = chaosx.nr13.203
+	title = chaosx.nr13.203.t
+	desc = chaosx.nr13.203.d
+	picture = GFX_news_event_nd_tropical_cyclone
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx.nr13.203.a
+	}
+}
+
+# extreme_wind
+country_event = {
+	id = chaosx.nr13.104
+	title = chaosx.nr13.104.t
+	desc = chaosx.nr13.104.d
+	picture = GFX_report_event_nd_extreme_wind
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr13.104.a
+		clr_country_flag = natural_disaster_aftermath_unread
+		set_country_flag = natural_disaster_report_received
+	}
+}
+
+news_event = {
+	id = chaosx.nr13.204
+	title = chaosx.nr13.204.t
+	desc = chaosx.nr13.204.d
+	picture = GFX_news_event_nd_extreme_wind
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx.nr13.204.a
+	}
+}
+
+# tornado_outbreak
+country_event = {
+	id = chaosx.nr13.105
+	title = chaosx.nr13.105.t
+	desc = chaosx.nr13.105.d
+	picture = GFX_report_event_nd_tornado_outbreak
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr13.105.a
+		clr_country_flag = natural_disaster_aftermath_unread
+		set_country_flag = natural_disaster_report_received
+	}
+}
+
+news_event = {
+	id = chaosx.nr13.205
+	title = chaosx.nr13.205.t
+	desc = chaosx.nr13.205.d
+	picture = GFX_news_event_nd_tornado_outbreak
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx.nr13.205.a
+	}
+}
+
+# thunderstorm
+country_event = {
+	id = chaosx.nr13.106
+	title = chaosx.nr13.106.t
+	desc = chaosx.nr13.106.d
+	picture = GFX_report_event_nd_storm
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr13.106.a
+		clr_country_flag = natural_disaster_aftermath_unread
+		set_country_flag = natural_disaster_report_received
+	}
+}
+
+news_event = {
+	id = chaosx.nr13.206
+	title = chaosx.nr13.206.t
+	desc = chaosx.nr13.206.d
+	picture = GFX_news_event_nd_thunderstorm
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx.nr13.206.a
+	}
+}
+
+# hailstorm
+country_event = {
+	id = chaosx.nr13.107
+	title = chaosx.nr13.107.t
+	desc = chaosx.nr13.107.d
+	picture = GFX_report_event_nd_hailstorm
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr13.107.a
+		clr_country_flag = natural_disaster_aftermath_unread
+		set_country_flag = natural_disaster_report_received
+	}
+}
+
+news_event = {
+	id = chaosx.nr13.207
+	title = chaosx.nr13.207.t
+	desc = chaosx.nr13.207.d
+	picture = GFX_news_event_nd_hailstorm
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx.nr13.207.a
+	}
+}
+
+# blizzard
+country_event = {
+	id = chaosx.nr13.108
+	title = chaosx.nr13.108.t
+	desc = chaosx.nr13.108.d
+	picture = GFX_report_event_nd_winter
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr13.108.a
+		clr_country_flag = natural_disaster_aftermath_unread
+		set_country_flag = natural_disaster_report_received
+	}
+}
+
+news_event = {
+	id = chaosx.nr13.208
+	title = chaosx.nr13.208.t
+	desc = chaosx.nr13.208.d
+	picture = GFX_news_event_nd_blizzard
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx.nr13.208.a
+	}
+}
+
+# cold_wave
+country_event = {
+	id = chaosx.nr13.109
+	title = chaosx.nr13.109.t
+	desc = chaosx.nr13.109.d
+	picture = GFX_report_event_nd_extreme_cold_wave
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr13.109.a
+		clr_country_flag = natural_disaster_aftermath_unread
+		set_country_flag = natural_disaster_report_received
+	}
+}
+
+news_event = {
+	id = chaosx.nr13.209
+	title = chaosx.nr13.209.t
+	desc = chaosx.nr13.209.d
+	picture = GFX_news_event_nd_cold_wave
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx.nr13.209.a
+	}
+}
+
+# heat_wave
+country_event = {
+	id = chaosx.nr13.110
+	title = chaosx.nr13.110.t
+	desc = chaosx.nr13.110.d
+	picture = GFX_report_event_nd_heat_wave
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr13.110.a
+		clr_country_flag = natural_disaster_aftermath_unread
+		set_country_flag = natural_disaster_report_received
+	}
+}
+
+news_event = {
+	id = chaosx.nr13.210
+	title = chaosx.nr13.210.t
+	desc = chaosx.nr13.210.d
+	picture = GFX_news_event_nd_heat_wave
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx.nr13.210.a
+	}
+}
+
+# drought
+country_event = {
+	id = chaosx.nr13.111
+	title = chaosx.nr13.111.t
+	desc = chaosx.nr13.111.d
+	picture = GFX_report_event_nd_drought_famine
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr13.111.a
+		clr_country_flag = natural_disaster_aftermath_unread
+		set_country_flag = natural_disaster_report_received
+	}
+}
+
+news_event = {
+	id = chaosx.nr13.211
+	title = chaosx.nr13.211.t
+	desc = chaosx.nr13.211.d
+	picture = GFX_news_event_nd_drought
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx.nr13.211.a
+	}
+}
+
+# dust_and_sandstorm
+country_event = {
+	id = chaosx.nr13.112
+	title = chaosx.nr13.112.t
+	desc = chaosx.nr13.112.d
+	picture = GFX_report_event_nd_dust_sandstorm
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr13.112.a
+		clr_country_flag = natural_disaster_aftermath_unread
+		set_country_flag = natural_disaster_report_received
+	}
+}
+
+news_event = {
+	id = chaosx.nr13.212
+	title = chaosx.nr13.212.t
+	desc = chaosx.nr13.212.d
+	picture = GFX_news_event_nd_dust_storm
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx.nr13.212.a
+	}
+}
+
+# wildfire
+country_event = {
+	id = chaosx.nr13.113
+	title = chaosx.nr13.113.t
+	desc = chaosx.nr13.113.d
+	picture = GFX_report_event_nd_wildfire
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr13.113.a
+		clr_country_flag = natural_disaster_aftermath_unread
+		set_country_flag = natural_disaster_report_received
+	}
+}
+
+news_event = {
+	id = chaosx.nr13.213
+	title = chaosx.nr13.213.t
+	desc = chaosx.nr13.213.d
+	picture = GFX_news_event_nd_wildfire
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx.nr13.213.a
+	}
+}
+
+# dry_mass_movement
+country_event = {
+	id = chaosx.nr13.114
+	title = chaosx.nr13.114.t
+	desc = chaosx.nr13.114.d
+	picture = GFX_report_event_nd_landslide
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr13.114.a
+		clr_country_flag = natural_disaster_aftermath_unread
+		set_country_flag = natural_disaster_report_received
+	}
+}
+
+news_event = {
+	id = chaosx.nr13.214
+	title = chaosx.nr13.214.t
+	desc = chaosx.nr13.214.d
+	picture = GFX_news_event_nd_dry_mass_movement
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx.nr13.214.a
+	}
+}
+
+# wet_mass_movement
+country_event = {
+	id = chaosx.nr13.115
+	title = chaosx.nr13.115.t
+	desc = chaosx.nr13.115.d
+	picture = GFX_report_event_nd_wet_mass_movement
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr13.115.a
+		clr_country_flag = natural_disaster_aftermath_unread
+		set_country_flag = natural_disaster_report_received
+	}
+}
+
+news_event = {
+	id = chaosx.nr13.215
+	title = chaosx.nr13.215.t
+	desc = chaosx.nr13.215.d
+	picture = GFX_news_event_nd_wet_mass_movement
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx.nr13.215.a
+	}
+}
+
+# volcanic_eruption
+country_event = {
+	id = chaosx.nr13.116
+	title = chaosx.nr13.116.t
+	desc = chaosx.nr13.116.d
+	picture = GFX_report_event_nd_volcano
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr13.116.a
+		clr_country_flag = natural_disaster_aftermath_unread
+		set_country_flag = natural_disaster_report_received
+	}
+}
+
+news_event = {
+	id = chaosx.nr13.216
+	title = chaosx.nr13.216.t
+	desc = chaosx.nr13.216.d
+	picture = GFX_news_event_nd_volcanic_eruption
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx.nr13.216.a
+	}
+}
+
+# ashfall
+country_event = {
+	id = chaosx.nr13.117
+	title = chaosx.nr13.117.t
+	desc = chaosx.nr13.117.d
+	picture = GFX_report_event_nd_ashfall
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr13.117.a
+		clr_country_flag = natural_disaster_aftermath_unread
+		set_country_flag = natural_disaster_report_received
+	}
+}
+
+news_event = {
+	id = chaosx.nr13.217
+	title = chaosx.nr13.217.t
+	desc = chaosx.nr13.217.d
+	picture = GFX_news_event_nd_ashfall
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx.nr13.217.a
+	}
+}
+
+# lahar
+country_event = {
+	id = chaosx.nr13.118
+	title = chaosx.nr13.118.t
+	desc = chaosx.nr13.118.d
+	picture = GFX_report_event_nd_lahar
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr13.118.a
+		clr_country_flag = natural_disaster_aftermath_unread
+		set_country_flag = natural_disaster_report_received
+	}
+}
+
+news_event = {
+	id = chaosx.nr13.218
+	title = chaosx.nr13.218.t
+	desc = chaosx.nr13.218.d
+	picture = GFX_news_event_nd_lahar
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx.nr13.218.a
+	}
+}
+
+# tsunami
+country_event = {
+	id = chaosx.nr13.119
+	title = chaosx.nr13.119.t
+	desc = chaosx.nr13.119.d
+	picture = GFX_report_event_nd_tsunami
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr13.119.a
+		clr_country_flag = natural_disaster_aftermath_unread
+		set_country_flag = natural_disaster_report_received
+	}
+}
+
+news_event = {
+	id = chaosx.nr13.219
+	title = chaosx.nr13.219.t
+	desc = chaosx.nr13.219.d
+	picture = GFX_news_event_nd_tsunami
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx.nr13.219.a
+	}
+}
+
+# storm_surge
+country_event = {
+	id = chaosx.nr13.120
+	title = chaosx.nr13.120.t
+	desc = chaosx.nr13.120.d
+	picture = GFX_report_event_nd_storm_surge
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr13.120.a
+		clr_country_flag = natural_disaster_aftermath_unread
+		set_country_flag = natural_disaster_report_received
+	}
+}
+
+news_event = {
+	id = chaosx.nr13.220
+	title = chaosx.nr13.220.t
+	desc = chaosx.nr13.220.d
+	picture = GFX_news_event_nd_storm_surge
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx.nr13.220.a
+	}
+}
+
+# meteor_impact
+country_event = {
+	id = chaosx.nr13.121
+	title = chaosx.nr13.121.t
+	desc = chaosx.nr13.121.d
+	picture = GFX_report_event_nd_meteor_impact
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr13.121.a
+		clr_country_flag = natural_disaster_aftermath_unread
+		set_country_flag = natural_disaster_report_received
+	}
+}
+
+news_event = {
+	id = chaosx.nr13.221
+	title = chaosx.nr13.221.t
+	desc = chaosx.nr13.221.d
+	picture = GFX_news_event_nd_meteor_impact
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx.nr13.221.a
+	}
+}
+
+# meteor_shower
+country_event = {
+	id = chaosx.nr13.122
+	title = chaosx.nr13.122.t
+	desc = chaosx.nr13.122.d
+	picture = GFX_report_event_nd_meteor_shower
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr13.122.a
+		clr_country_flag = natural_disaster_aftermath_unread
+		set_country_flag = natural_disaster_report_received
+	}
+}
+
+news_event = {
+	id = chaosx.nr13.222
+	title = chaosx.nr13.222.t
+	desc = chaosx.nr13.222.d
+	picture = GFX_news_event_nd_meteor_showers
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx.nr13.222.a
+	}
+}
+
+# whole_earth_rupture
+country_event = {
+	id = chaosx.nr13.123
+	title = chaosx.nr13.123.t
+	desc = chaosx.nr13.123.d
+	picture = GFX_report_event_nd_rupture_wave
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr13.123.a
+		clr_country_flag = natural_disaster_aftermath_unread
+		set_country_flag = natural_disaster_report_received
+	}
+}
+
+news_event = {
+	id = chaosx.nr13.223
+	title = chaosx.nr13.223.t
+	desc = chaosx.nr13.223.d
+	picture = GFX_news_event_nd_great_rupture
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx.nr13.223.a
+	}
+}
+
+# massive_eruption
+country_event = {
+	id = chaosx.nr13.124
+	title = chaosx.nr13.124.t
+	desc = chaosx.nr13.124.d
+	picture = GFX_report_event_nd_massive_eruption
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr13.124.a
+		clr_country_flag = natural_disaster_aftermath_unread
+		set_country_flag = natural_disaster_report_received
+	}
+}
+
+news_event = {
+	id = chaosx.nr13.224
+	title = chaosx.nr13.224.t
+	desc = chaosx.nr13.224.d
+	picture = GFX_news_event_nd_massive_eruption_specific
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx.nr13.224.a
+	}
+}
+
+# moving_storm_corridor
+country_event = {
+	id = chaosx.nr13.125
+	title = chaosx.nr13.125.t
+	desc = chaosx.nr13.125.d
+	picture = GFX_report_event_nd_moving_corridor
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr13.125.a
+		clr_country_flag = natural_disaster_aftermath_unread
+		set_country_flag = natural_disaster_report_received
+	}
+}
+
+news_event = {
+	id = chaosx.nr13.225
+	title = chaosx.nr13.225.t
+	desc = chaosx.nr13.225.d
+	picture = GFX_news_event_nd_storm_corridor
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx.nr13.225.a
+	}
 }

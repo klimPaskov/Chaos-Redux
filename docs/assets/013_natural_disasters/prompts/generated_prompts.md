@@ -1,5 +1,7 @@
 # Event 013 Natural Disasters Generated Prompt Log
 
+Accepted 2026-07-10 static completion prompts, source-atlas cell orders, built-in result provenance, and achievement overlay recovery evidence are recorded in `docs/assets/013_natural_disasters/prompts/2026-07-10_static_completion_prompts.md`.
+
 ## Idea Icons
 
 The country-level disaster-pressure idea icons were regenerated from fresh official `image_gen` source art as dedicated `64x64` national-spirit assets. They use transparent canvases after chroma-key cleanup and are not circular medallions, decision icons, focus icons, resized category art, or edits of the previous purple-matted set.

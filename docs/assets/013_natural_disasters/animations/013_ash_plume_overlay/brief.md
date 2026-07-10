@@ -1,0 +1,26 @@
+# 013 ash plume overlay animation brief
+
+- Asset name: `013_ash_plume_overlay`.
+- In-game use: volcanic plume growth and downwind ash drift.
+- Gameplay surface: `eruption_plume_layer` in the Event 013 abnormal scripted GUI.
+- State: active massive eruption or ashfall chain; decorative/state-driven and non-interactive.
+- Target frame size: `300x190`.
+- Frame count: `12`.
+- Horizontal sheet size: `3600x190`.
+- Static sprite: `GFX_013_eruption_plume_static`.
+- Animated sprite: `GFX_013_eruption_plume_sheet` (accepted Part 9 name; define it as `frameAnimatedSpriteType`).
+- Animation rate: `8 fps`.
+- Looping: `yes`.
+- `play_on_show`: `yes`.
+- Anchor: bottom-center at the vent.
+- Static fallback frame: processed frame `005`, peak plume with downwind tongue.
+- Subject type: fictional symbolic abnormal-disaster overlay.
+- Source mode: built-in `image_gen`; frames are distinct row-major cells across three generated 2x2 atlases. Exact prompts and cell provenance are in `notes/generation_provenance.md`.
+- References inspected: Event 013 Part 9; Event 013 asset audit; offline Graphical Asset, Interface, and Scripted GUI wiki pages; vanilla frame-animated sprite examples; existing Event 013 eruption auxiliary contact.
+- Package sheet PNG/DDS: `sheets/013_ash_plume_overlay_sheet.png` and `sheets/013_ash_plume_overlay_sheet.dds`.
+- Package static PNG/DDS: `sheets/013_ash_plume_overlay_static.png` and `sheets/013_ash_plume_overlay_static.dds`.
+- Final sheet DDS: `gfx/interface/animated/013_natural_disasters/013_ash_plume_overlay_sheet.dds`.
+- Final static DDS: `gfx/interface/animated/013_natural_disasters/013_ash_plume_overlay_static.dds`.
+- Review-only GIF/contact: `previews/013_ash_plume_overlay_preview.gif` and `previews/013_ash_plume_overlay_contact.png`.
+- Target `.gfx`: `interface/013_natural_disasters.gfx`.
+- Target `.gui`: `interface/013_natural_disasters.gui`, proposed element `natural_disaster_eruption_plume_layer`.

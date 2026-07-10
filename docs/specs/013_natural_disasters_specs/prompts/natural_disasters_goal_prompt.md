@@ -1,5 +1,7 @@
 # Event 013 Natural Disasters goal prompt
 
+> Implementation disposition: active implementation goal. This remains the acceptance statement until the completion audits and validation ledger close every accepted surface.
+
 Implement Event 013 Natural Disasters from `docs/specs/013_natural_disasters_specs/` as a fresh source design. Do not preserve old Natural Disasters logic. Do not reuse old Earth Earthquake logic. Event 046 stays an inactive unknown placeholder, while whole-earth rupture behavior belongs to Event 013 Evolution III. Event 099 Sandstorm becomes a placeholder or narrow bridge into the Event 013 dust and sandstorm family. Event 051 Heat Wave remains separate, and Event 013 heat must not stack with it.
 
 Build the reusable dynamic disaster system first. Other events must be able to call a specific disaster family, random family, selected country, selected state, selected region, severity band, news setting, report setting, aftermath setting, follow-up setting, and death or damage scaling override without copying disaster logic. One Event 013 firing may contain many delayed disaster subevents, but it creates one Event 013 history row.
