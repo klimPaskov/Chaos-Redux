@@ -26,6 +26,8 @@ The Event Logs window tracks fired automatic events in a dedicated popup and exp
 - Clicking a history row opens the same shared event-details popup used by the `Events` tab.
 - That shared detail popup uses the clicked history row as context when available, so `Fired on`, `Log #`, and `Actor` reflect the selected log entry.
 - If an event has a mapped actor and it has already fired, the shared detail popup shows that actor as a clickable flag next to the title instead of a separate `Actor:` row.
+- Event 17 stores a second country reference for the faction leader chosen by that exact firing. Its History row and Event Details text read both countries from the selected history sequence rather than from the actor's current faction memory.
+- If Event 17's stored leader no longer exists, the selected minor remains visible and neutral result text states that the country which led the faction at accession no longer exists. If no leader has been bound yet, the row uses an unresolved result instead of substituting a later live faction.
 
 ## Events tab behavior
 - Each event row shows the current live selection weight from `global.event_weights`, presented as `0` when the event is disabled or is an already-fired unique event.
@@ -35,7 +37,7 @@ The Event Logs window tracks fired automatic events in a dedicated popup and exp
 - The `Events` tab rebuilds when a new event is logged while the tab is open, keeping live weights and fired counts current.
 
 ## Evolutions tab behavior
-- Logs evolution entries (currently zombie evolution stages, with room for additional types).
+- Logs registered evolution entries, including all three Event 17 stages after they actually unlock.
 - Zombie evolution logs are written only for the main zombie country (`tag = ZZZ`), not for dynamic outbreak tags.
 - Filter options: `All`, `Major`, `Minor` (driven by stored event type for each evolution entry).
 - Sort options: `By Index`, `By Tier`, `By Stage`, `By Actor`.
@@ -66,10 +68,12 @@ The Event Logs window tracks fired automatic events in a dedicated popup and exp
 - `Ctrl+E` opens the Event Logs window on the Events tab.
 - `Ctrl+Shift+T` shows the Event Timer window.
 
-## Actor flags
+## Stored actors
 - History actor flags are shown only when `global.events_log_view_has_actor_entries^events_log_history_index > 0`.
 - Evolution actor flags are shown only when `global.events_log_evolution_view_has_actor_entries^events_log_evolution_index > 0`.
 - Non-actor rows are sanitized to actor `0` and has-actor `0`.
+- The secondary history actor is sequence-bound result context. It does not replace the primary actor flag.
+- Event 17 sets the paired secondary-actor presence entry to `1` when the faction signature succeeds. A missing secondary country with that stored presence bit is a lost result. A history row with no stored secondary actor is unresolved.
 
 ## Data structures
 Events-tab metadata arrays:
@@ -85,6 +89,8 @@ Source history arrays:
 - `global.events_log_history_event_type_entries`
 - `global.events_log_history_actor_entries`
 - `global.events_log_history_has_actor_entries`
+- `global.events_log_history_secondary_actor_entries`
+- `global.events_log_history_has_secondary_actor_entries`
 
 Derived view arrays:
 - `global.events_log_view_sequence_entries`
@@ -93,6 +99,14 @@ Derived view arrays:
 - `global.events_log_view_event_type_entries`
 - `global.events_log_view_actor_entries`
 - `global.events_log_view_has_actor_entries`
+- `global.events_log_view_secondary_actor_entries`
+- `global.events_log_view_has_secondary_actor_entries`
+
+Selected and open Event Details secondary-actor state:
+- `events_log_history_selected_secondary_actor`
+- `events_log_history_selected_has_secondary_actor`
+- `global.events_log_open_event_detail_secondary_actor_entries`
+- `global.events_log_open_event_detail_has_secondary_actor_entries`
 
 Source evolution arrays:
 - `global.events_log_evolution_sequence_entries`
@@ -158,6 +172,8 @@ These are defined in:
   - `global.events_log_history_*` for fired/log/actor context,
   - `global.events_log_evolution_*` for the latest reached evolution stage.
 - If a history row should show an actor, make sure the actor already exists before the fired-event handler records the row. Event immediates run after the generic log recorder for normal random firing, so actor preparation may need to happen in a pre-fire helper.
+- Event 17 uses that ordering deliberately. Its pre-fire helper supplies `random_faction_target_country` as the primary actor. After the generic history row is inserted, `random_faction_bind_history_sequence` stores the exact sequence on that country. A successful join stores the pending leader. The bind and finalize helpers can arrive in either order and write the chosen leader only when both values exist, using the matching sequence and Event ID.
+- `common/scripted_guis/chaosx_scripted_gui_events_log.txt` copies both selected actors from the clicked derived row before rebuilding Event Details.
 
 ## Future extensions
 - Add per-country actor filter.

@@ -18,7 +18,7 @@ All entries below are registered in `interface/017_random_faction.gfx` and point
 
 | Sprite | Asset type | Final DDS | Size | Gameplay consumer |
 |---|---|---|---:|---|
-| `GFX_decision_category_random_faction_bloc_pressure` | decision category icon | `gfx/interface/decisions/017_random_faction/decision_category_random_faction_bloc_pressure.dds` | 32x32 | `random_faction_bloc_pressure` category |
+| `GFX_decision_category_random_faction_bloc_pressure` | decision category icon | `gfx/interface/decisions/017_random_faction/decision_category_random_faction_bloc_pressure.dds` | 32x32 | `random_faction_bloc_pressure_category` |
 | `GFX_decision_random_faction_stabilize_alignment` | decision icon | `gfx/interface/decisions/017_random_faction/decision_random_faction_stabilize_alignment.dds` | 32x32 | alignment stabilization decisions |
 | `GFX_decision_random_faction_liaison` | decision icon | `gfx/interface/decisions/017_random_faction/decision_random_faction_liaison.dds` | 32x32 | liaison decisions |
 | `GFX_decision_random_faction_opposition` | decision icon | `gfx/interface/decisions/017_random_faction/decision_random_faction_opposition.dds` | 32x32 | opposition decisions |

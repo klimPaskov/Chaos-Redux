@@ -98,6 +98,81 @@ sanitize_events_log_history_actor_entries = {
 
         add_to_temp_variable = { events_log_sanitize_index = 1 }
     }
+	sanitize_events_log_history_secondary_actor_entries = yes
+}
+
+sanitize_events_log_history_secondary_actor_entries = {
+	if = {
+		limit = {
+			check_variable = {
+				var = global.events_log_history_event_id_entries^num
+				value = global.events_log_history_secondary_actor_entries^num
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { events_log_missing_secondary_actor_entries = global.events_log_history_event_id_entries^num }
+		subtract_from_temp_variable = { events_log_missing_secondary_actor_entries = global.events_log_history_secondary_actor_entries^num }
+		while_loop_effect = {
+			limit = { check_variable = { events_log_missing_secondary_actor_entries > 0 } }
+			add_to_array = { array = global.events_log_history_secondary_actor_entries value = 0 }
+			add_to_array = { array = global.events_log_history_has_secondary_actor_entries value = 0 }
+			subtract_from_temp_variable = { events_log_missing_secondary_actor_entries = 1 }
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = global.events_log_history_event_id_entries^num
+				value = global.events_log_history_has_secondary_actor_entries^num
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { events_log_missing_has_secondary_actor_entries = global.events_log_history_event_id_entries^num }
+		subtract_from_temp_variable = { events_log_missing_has_secondary_actor_entries = global.events_log_history_has_secondary_actor_entries^num }
+		while_loop_effect = {
+			limit = { check_variable = { events_log_missing_has_secondary_actor_entries > 0 } }
+			add_to_array = { array = global.events_log_history_has_secondary_actor_entries value = 0 }
+			subtract_from_temp_variable = { events_log_missing_has_secondary_actor_entries = 1 }
+		}
+	}
+	set_temp_variable = { events_log_secondary_sanitize_index = 0 }
+	while_loop_effect = {
+		limit = {
+			check_variable = {
+				var = events_log_secondary_sanitize_index
+				value = global.events_log_history_event_id_entries^num
+				compare = less_than
+			}
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = global.events_log_history_has_secondary_actor_entries^events_log_secondary_sanitize_index
+					value = 1
+					compare = less_than
+				}
+			}
+			set_variable = { global.events_log_history_secondary_actor_entries^events_log_secondary_sanitize_index = 0 }
+			set_variable = { global.events_log_history_has_secondary_actor_entries^events_log_secondary_sanitize_index = 0 }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = global.events_log_history_has_secondary_actor_entries^events_log_secondary_sanitize_index
+					value = 0
+					compare = greater_than
+				}
+				check_variable = {
+					var = global.events_log_history_secondary_actor_entries^events_log_secondary_sanitize_index
+					value = 1
+					compare = less_than
+				}
+			}
+			set_variable = { global.events_log_history_secondary_actor_entries^events_log_secondary_sanitize_index = 0 }
+			set_variable = { global.events_log_history_has_secondary_actor_entries^events_log_secondary_sanitize_index = 0 }
+		}
+		add_to_temp_variable = { events_log_secondary_sanitize_index = 1 }
+	}
 }
 
 events_log_set_default_actor_for_current_event = {
@@ -153,6 +228,15 @@ events_log_set_default_actor_for_current_event = {
 			event_target:secret_alliance_target = { exists = yes }
 		}
 		event_target:secret_alliance_target = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		set_temp_variable = { events_log_default_has_actor = 1 }
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:random_faction_event.id }
+			has_event_target = random_faction_target_country
+			event_target:random_faction_target_country = { exists = yes }
+		}
+		event_target:random_faction_target_country = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
 		set_temp_variable = { events_log_default_has_actor = 1 }
 	}
 	else_if = {
@@ -305,6 +389,16 @@ record_events_log_history_entry = {
         value = events_log_default_has_actor
         index = 0
     }
+	add_to_array = {
+		array = global.events_log_history_secondary_actor_entries
+		value = 0
+		index = 0
+	}
+	add_to_array = {
+		array = global.events_log_history_has_secondary_actor_entries
+		value = 0
+		index = 0
+	}
     add_to_array = {
         array = global.events_log_history_minor_since_major_entries
         value = global.minor_events_since_major
@@ -320,6 +414,13 @@ record_events_log_history_entry = {
         value = global.total_events_fired
         index = 0
     }
+	if = {
+		limit = {
+			check_variable = { event_id = constant:random_faction_event.id }
+			has_event_target = random_faction_target_country
+		}
+		event_target:random_faction_target_country = { random_faction_bind_history_sequence = yes }
+	}
     every_country = {
         limit = {
             is_ai = no
@@ -644,6 +745,8 @@ toggle_events_log_popup = {
         clear_array = global.events_log_open_event_detail_sequence_entries
         clear_array = global.events_log_open_event_detail_actor_entries
         clear_array = global.events_log_open_event_detail_has_actor_entries
+		clear_array = global.events_log_open_event_detail_secondary_actor_entries
+		clear_array = global.events_log_open_event_detail_has_secondary_actor_entries
         clear_array = global.events_log_open_event_detail_evolution_stage_entries
         clear_array = global.events_log_event_detail_evolution_type_entries
         clear_array = global.events_log_event_detail_evolution_tier_entries
@@ -682,6 +785,8 @@ toggle_events_log_popup = {
         clear_array = global.events_log_open_event_detail_sequence_entries
         clear_array = global.events_log_open_event_detail_actor_entries
         clear_array = global.events_log_open_event_detail_has_actor_entries
+		clear_array = global.events_log_open_event_detail_secondary_actor_entries
+		clear_array = global.events_log_open_event_detail_has_secondary_actor_entries
         clear_array = global.events_log_open_event_detail_evolution_stage_entries
         clear_array = global.events_log_event_detail_evolution_type_entries
         clear_array = global.events_log_event_detail_evolution_tier_entries
@@ -721,6 +826,8 @@ events_log_close_history_details_view = {
     set_variable = { events_log_history_selected_sequence = 0 }
     set_variable = { events_log_history_selected_actor = 0 }
     set_variable = { events_log_history_selected_has_actor = 0 }
+	set_variable = { events_log_history_selected_secondary_actor = 0 }
+	set_variable = { events_log_history_selected_has_secondary_actor = 0 }
     set_variable = { events_log_history_selected_total_fired = 0 }
     set_variable = { events_log_history_selected_enabled = 1 }
     clear_array = global.events_log_history_detail_evolution_sequence_entries
@@ -950,6 +1057,8 @@ events_log_rebuild_open_event_details_view = {
     clear_array = global.events_log_open_event_detail_sequence_entries
     clear_array = global.events_log_open_event_detail_actor_entries
     clear_array = global.events_log_open_event_detail_has_actor_entries
+	clear_array = global.events_log_open_event_detail_secondary_actor_entries
+	clear_array = global.events_log_open_event_detail_has_secondary_actor_entries
     clear_array = global.events_log_open_event_detail_evolution_stage_entries
     clear_array = global.events_log_event_detail_evolution_type_entries
     clear_array = global.events_log_event_detail_evolution_tier_entries
@@ -1000,6 +1109,8 @@ events_log_rebuild_open_event_details_view = {
         set_temp_variable = { events_log_open_detail_sequence = 0 }
         set_temp_variable = { events_log_open_detail_actor = 0 }
         set_temp_variable = { events_log_open_detail_has_actor = 0 }
+		set_temp_variable = { events_log_open_detail_secondary_actor = 0 }
+		set_temp_variable = { events_log_open_detail_has_secondary_actor = 0 }
         set_temp_variable = { events_log_open_detail_evolution_stage = 0 }
         set_temp_variable = { events_log_open_detail_use_history_context = 0 }
         if = {
@@ -1058,6 +1169,8 @@ events_log_rebuild_open_event_details_view = {
                         set_temp_variable = { events_log_open_detail_actor = global.events_log_history_actor_entries^events_log_open_detail_history_index }
                         set_temp_variable = { events_log_open_detail_has_actor = global.events_log_history_has_actor_entries^events_log_open_detail_history_index }
                     }
+					set_temp_variable = { events_log_open_detail_secondary_actor = global.events_log_history_secondary_actor_entries^events_log_open_detail_history_index }
+					set_temp_variable = { events_log_open_detail_has_secondary_actor = global.events_log_history_has_secondary_actor_entries^events_log_open_detail_history_index }
                 }
             }
             add_to_temp_variable = { events_log_open_detail_history_index = 1 }
@@ -1083,6 +1196,8 @@ events_log_rebuild_open_event_details_view = {
                 set_temp_variable = { events_log_open_detail_actor = events_log_history_selected_actor }
                 set_temp_variable = { events_log_open_detail_has_actor = events_log_history_selected_has_actor }
             }
+			set_temp_variable = { events_log_open_detail_secondary_actor = events_log_history_selected_secondary_actor }
+			set_temp_variable = { events_log_open_detail_has_secondary_actor = events_log_history_selected_has_secondary_actor }
         }
         if = {
             limit = {
@@ -1121,6 +1236,14 @@ events_log_rebuild_open_event_details_view = {
             array = global.events_log_open_event_detail_has_actor_entries
             value = events_log_open_detail_has_actor
         }
+		add_to_array = {
+			array = global.events_log_open_event_detail_secondary_actor_entries
+			value = events_log_open_detail_secondary_actor
+		}
+		add_to_array = {
+			array = global.events_log_open_event_detail_has_secondary_actor_entries
+			value = events_log_open_detail_has_secondary_actor
+		}
 
         set_temp_variable = { events_log_open_detail_evolution_index = 0 }
         while_loop_effect = {
@@ -1252,6 +1375,28 @@ events_log_rebuild_open_event_details_view = {
             set_temp_variable = { events_log_event_detail_preview_stage = constant:random_war_stage.world_collapse }
             events_log_add_event_detail_evolution_preview = yes
         }
+
+		if = {
+			limit = {
+				check_variable = {
+					var = event_id
+					value = constant:random_faction_event.id
+					compare = equals
+				}
+			}
+			set_temp_variable = { events_log_event_detail_preview_type = constant:random_faction_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:chaos_meter_tier_id.tier_1 }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:random_faction_evolution_stage.regional_bloc_race }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:random_faction_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:chaos_meter_tier_id.tier_2 }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:random_faction_evolution_stage.pressured_neutrality }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:random_faction_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:chaos_meter_tier_id.tier_3 }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:random_faction_evolution_stage.neutrality_collapse }
+			events_log_add_event_detail_evolution_preview = yes
+		}
 
         if = {
             limit = {
@@ -1427,6 +1572,8 @@ events_log_add_event_details_entry = {
         set_variable = { events_log_history_selected_sequence = 0 }
         set_variable = { events_log_history_selected_actor = 0 }
         set_variable = { events_log_history_selected_has_actor = 0 }
+		set_variable = { events_log_history_selected_secondary_actor = 0 }
+		set_variable = { events_log_history_selected_has_secondary_actor = 0 }
         set_country_flag = events_log_event_details_open
         events_log_rebuild_open_event_details_view = yes
         events_log_rebuild_history_details_view = yes
@@ -1745,6 +1892,8 @@ events_log_close_all_event_details_entries = {
     clear_array = global.events_log_open_event_detail_sequence_entries
     clear_array = global.events_log_open_event_detail_actor_entries
     clear_array = global.events_log_open_event_detail_has_actor_entries
+	clear_array = global.events_log_open_event_detail_secondary_actor_entries
+	clear_array = global.events_log_open_event_detail_has_secondary_actor_entries
     clear_array = global.events_log_open_event_detail_evolution_stage_entries
     clear_array = global.events_log_event_detail_evolution_type_entries
     clear_array = global.events_log_event_detail_evolution_tier_entries
@@ -1879,6 +2028,14 @@ events_log_append_view_row_from_source = {
         array = global.events_log_view_has_actor_entries
         value = global.events_log_history_has_actor_entries^events_log_source_index
     }
+	add_to_array = {
+		array = global.events_log_view_secondary_actor_entries
+		value = global.events_log_history_secondary_actor_entries^events_log_source_index
+	}
+	add_to_array = {
+		array = global.events_log_view_has_secondary_actor_entries
+		value = global.events_log_history_has_secondary_actor_entries^events_log_source_index
+	}
     add_to_array = {
         array = global.events_log_view_cluster_id_entries
         value = 0
@@ -1918,6 +2075,8 @@ events_log_append_cluster_history_row_from_source = {
         array = global.events_log_view_has_actor_entries
         value = global.events_log_cluster_has_actor_entries^events_log_cluster_history_source_index
     }
+	add_to_array = { array = global.events_log_view_secondary_actor_entries value = 0 }
+	add_to_array = { array = global.events_log_view_has_secondary_actor_entries value = 0 }
     add_to_array = {
         array = global.events_log_view_cluster_id_entries
         value = global.events_log_cluster_id_entries^events_log_cluster_history_source_index
@@ -2147,6 +2306,8 @@ rebuild_events_log_history_view = {
     clear_array = global.events_log_view_event_type_entries
     clear_array = global.events_log_view_actor_entries
     clear_array = global.events_log_view_has_actor_entries
+	clear_array = global.events_log_view_secondary_actor_entries
+	clear_array = global.events_log_view_has_secondary_actor_entries
     clear_array = global.events_log_view_cluster_id_entries
     clear_array = global.events_log_view_cluster_sequence_entries
     clear_array = global.events_log_view_cluster_type_entries
@@ -2945,6 +3106,8 @@ rebuild_events_log_events_view = {
     clear_array = global.events_log_view_event_type_entries
     clear_array = global.events_log_view_actor_entries
     clear_array = global.events_log_view_has_actor_entries
+	clear_array = global.events_log_view_secondary_actor_entries
+	clear_array = global.events_log_view_has_secondary_actor_entries
     clear_array = global.events_log_view_cluster_type_entries
     clear_array = global.events_log_events_view_fired_entries
     clear_array = global.events_log_events_view_enabled_entries
@@ -3308,6 +3471,8 @@ initialize_events_log_settings = {
     clear_array = global.events_log_open_event_detail_sequence_entries
     clear_array = global.events_log_open_event_detail_actor_entries
     clear_array = global.events_log_open_event_detail_has_actor_entries
+	clear_array = global.events_log_open_event_detail_secondary_actor_entries
+	clear_array = global.events_log_open_event_detail_has_secondary_actor_entries
     clear_array = global.events_log_open_event_detail_evolution_stage_entries
     clear_array = global.events_log_event_detail_evolution_type_entries
     clear_array = global.events_log_event_detail_evolution_tier_entries

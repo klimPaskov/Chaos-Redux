@@ -4,6 +4,10 @@
 
 This is a read-only architecture handoff. It does not edit or approve the restored Event 017 gameplay draft. The implementation must follow the four source specs under `docs/specs/017_random_faction_specs/specs/`, the AI and decision matrices, and the stricter contracts in this report.
 
+Resolution update on 2026-07-10: the blocker table below records the restored draft observed during the architecture pass. Current disposition lives in `017_random_faction_improvement_addendum.md`. The tuning-ownership blocker is resolved. Event effects use shared script constants directly for fixed delays and temporary-variable bridges for computed delays, timed flags, and timed ideas. Decision re-enable fields use script constants directly, and mission timeout variables are initialized from constants before activation. The only documented file-scoped exceptions are the three `ai_hint_pp_cost` mirrors, whose field rejects dynamic values, and the maritime `random_select_amount`, which has no proven dynamic form. The prohibited regional substitute identifier and behavior are absent.
+
+The closure addendum rejects the proposed generic option scorer, new MTTH table, and larger generic lifecycle framework. Their rows below remain historical architecture proposals, not open completion requirements.
+
 The implementation has these non-negotiable guarantees:
 
 1. Automatic dispatch uses weighted selection across all eligible countries. It does not automatically prefer the country that happens to own the event-system call scope.
@@ -14,7 +18,7 @@ The implementation has these non-negotiable guarantees:
 6. Pressure expiry and invalid-country cleanup are event-driven. No `on_daily`, `on_weekly`, `on_monthly`, or comparable whole-world periodic on-action is permitted.
 7. No hardcoded faction names, static faction tag list, alternate target, generic regional substitute, or silent simplification is permitted.
 
-## Current restored-draft blockers
+## Restored-draft blockers at architecture review time
 
 The following are acceptance blockers in the gameplay draft observed during this pass.
 
@@ -32,7 +36,7 @@ The following are acceptance blockers in the gameplay draft observed during this
 | External faction joins | `common/on_actions/017_random_faction_on_actions.txt` has no guarded join hook. Vanilla also states that `on_join_faction` does not fire for `add_to_faction`. | The Event 017 join effect must directly call cleanup. Guarded `on_join_faction` and `on_offer_join_faction` hooks handle other join routes without scanning the world. |
 | Event history | `events_log_set_default_actor_for_current_event` records `random_faction_target_country`, but the history schema has no chosen-leader field. The history row is created before a human chooses. | Add a two-phase Event 017 result binding keyed by the exact history sequence, with a parallel chosen-leader scope entry. Never assume the newest row is still index zero. |
 | Event-details evolution catalog | Event 017 scripted localisation exists, but `events_log_rebuild_open_event_details_view` has no Event 017 preview branch. | Add three previews using `random_faction_event.evolution_type` and the three `random_faction_evolution_stage` constants. |
-| Tuning ownership | `common/scripted_effects/017_random_faction_effects.txt` mirrors many values already present in `chaosx_random_faction_constants.txt` and includes a literal named `random_faction_regional_fallback_targets`. | Use script constants directly where accepted; assign constants to variables before duration fields that reject them. Remove the prohibited regional substitute identifier and behavior. |
+| Tuning ownership [resolved] | The restored draft mirrored values from `chaosx_random_faction_constants.txt` and included the prohibited `random_faction_regional_fallback_targets` identifier. | The live implementation uses shared constants and documented parser bridges. Only `ai_hint_pp_cost` and maritime `random_select_amount` retain file-scoped values. The prohibited identifier and substitute behavior are removed. |
 
 The invalid-option path in the source spec is implemented as canonical revalidation of the same selected country. It is not a second target-selection mode: rebuild the valid faction set, reopen the same human/AI resolver, and cancel without join or pressure if the set is empty.
 
@@ -106,7 +110,6 @@ Normal variables store country-scope ids after the chain ends:
 | Holder | Variable | Meaning |
 | --- | --- | --- |
 | joined minor | `random_faction_alignment_leader` | faction leader chosen by this Event 017 result |
-| joined minor | `random_faction_alignment_anchor_country` | country whose alignment originated the current pressure packet; normally self |
 | pressured country | `random_faction_pressure_source_country` | aligned country that caused the pressure |
 | pressured country | `random_faction_pressure_source_leader` | live leader responsible for the faction pull |
 | pressured country | `random_faction_pressure_anchor_country` | regional anchor used for reach and objectives |
@@ -115,13 +118,13 @@ Normal variables store country-scope ids after the chain ends:
 | pressured country | `random_faction_pressure_worker_due_day` | due day of the one active expiry worker |
 | cascade candidate | `random_faction_evo3_cascade_id` | owning active-cascade ledger row |
 | history actor | `random_faction_pending_history_sequence` | exact Event 017 history sequence awaiting result binding |
-| history actor | `random_faction_pending_history_leader` | chosen leader if resolution preceded sequence binding |
+| history actor | `random_faction_pending_history_leader` | chosen leader if the marked baseline resolution preceded sequence binding |
 
 Validate a stored country scope with both `country_exists = var:<name>` and `var:<name> = { exists = yes ... }`. `scope_exists` alone is insufficient because the variable scope can exist while its stored country is invalid. Clear the variable when validation fails.
 
 ### Temporary context
 
-The following are temporary and unscoped: eligible-country pool, valid-leader pool, target/option weights, selected option count during construction, cascade desired count, and MTTH results. Initialize them in the caller block and reset them on every entry. Do not write `ROOT.temp_name` or `PREV.temp_name`.
+The following are temporary and unscoped: eligible-country pool, valid-leader pool, target/option weights, cascade desired count, and MTTH results. Initialize them in the caller block and reset them on every entry. Do not write `ROOT.temp_name` or `PREV.temp_name`. `random_faction_option_count` is a normal country variable because it must survive into the human or AI event; clear it on join, resistance, cancellation, and full cleanup.
 
 ### Persistent arrays
 
@@ -203,7 +206,7 @@ On success it performs, in order:
 1. Revalidate country and leader through `can_random_faction_join_faction`.
 2. Execute `event_target:random_faction_selected_leader = { add_to_faction = ROOT }`.
 3. Confirm ROOT is in that faction.
-4. Save the leader scope into `random_faction_alignment_leader` and the Event 017 pending-history leader variable.
+4. Save the leader scope into `random_faction_chosen_leader`; save it into the pending-history leader only when `random_faction_history_result_pending` marks the baseline firing.
 5. Call `random_faction_cleanup_country_pressure` before applying the joined-country alignment state.
 6. Apply alignment shock, cooldown, arrays, regional memory, leader reaction, evolution scheduling, achievements, news, and history result exactly once.
 
@@ -294,14 +297,14 @@ Extend history with parallel arrays:
 - `global.events_log_history_has_secondary_actor_entries`
 - matching history-view, open-detail, and selected-detail arrays
 
-`record_events_log_history_entry` inserts zero placeholders for every event. Immediately after the Event 017 history row is recorded, `random_faction_bind_history_sequence` stores the exact `global.events_log_history_sequence` on `random_faction_target_country`. It never stores array index zero.
+`record_events_log_history_entry` inserts zero placeholders for every event. Before dispatch, the selected country receives `random_faction_history_result_pending`; immediately after the Event 017 history row is recorded, `random_faction_bind_history_sequence` stores the exact `global.events_log_history_sequence` only while that marker is present. It never stores array index zero. Follow-up pressure and Evolution III joins lack the marker and cannot write pending history state.
 
 `random_faction_finalize_history_result` searches `global.events_log_history_sequence_entries` for that exact sequence and writes the chosen leader scope and `has_secondary_actor = 1` at the matching index. It is called by both sides of the possible timing order:
 
 - post-log binding, if an AI result already stored `random_faction_pending_history_leader`;
 - shared join success, if the history sequence is already bound for a human result.
 
-Cancellation clears the pending sequence and leader without writing a successful result. Sanitization, history sorting, history-details rebuild, and event-details rebuild must copy both new arrays at the same indices as the existing actor arrays.
+Cancellation clears the baseline-result marker, pending sequence, and pending leader without writing a successful result. Sanitization, history sorting, history-details rebuild, and event-details rebuild must copy both new arrays at the same indices as the existing actor arrays.
 
 Scripted localisation displays the primary actor as the selected minor and the secondary actor as the chosen faction leader, using its current `GetName` and `GetFactionName` loc objects. Add the three Event 017 evolution previews in `events_log_rebuild_open_event_details_view` with the existing Event 017 constants.
 

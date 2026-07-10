@@ -1,0 +1,195 @@
+# ============================================================================
+# CHAOS REDUX - RANDOM FACTION ON ACTIONS
+# ============================================================================
+# Narrow lifecycle hooks keep Event 17 pressure, leader memory, missions, and
+# target arrays valid without a daily, weekly, or monthly world iteration.
+# ============================================================================
+
+on_actions = {
+	on_offer_join_faction = {
+		effect = {
+			FROM = {
+				if = {
+					limit = { has_country_flag = random_faction_join_in_progress }
+					clr_country_flag = random_faction_join_in_progress
+				}
+				else_if = {
+					limit = {
+						is_in_faction = yes
+						random_faction_current_country_has_tracked_state = yes
+					}
+					random_faction_remove_current_target_from_not_everyone_candidates = yes
+					random_faction_cleanup_after_country_lifecycle_change = yes
+				}
+			}
+		}
+	}
+
+	on_join_faction = {
+		effect = {
+			random_faction_remove_current_target_from_not_everyone_candidates = yes
+			if = {
+				limit = { has_country_flag = random_faction_join_in_progress }
+				clr_country_flag = random_faction_join_in_progress
+			}
+			else_if = {
+				limit = { random_faction_current_country_has_tracked_state = yes }
+				random_faction_cleanup_after_country_lifecycle_change = yes
+			}
+		}
+	}
+
+	on_leave_faction = {
+		effect = {
+			if = {
+				limit = { has_country_flag = random_faction_four_doors_candidate }
+				clr_country_flag = random_faction_four_doors_candidate
+			}
+			if = {
+				limit = { random_faction_current_country_has_tracked_state = yes }
+				random_faction_cleanup_after_country_lifecycle_change = yes
+			}
+		}
+	}
+
+	on_assume_faction_leadership = {
+		effect = {
+			save_event_target_as = random_faction_new_faction_leader
+			if = {
+				limit = { FROM = { exists = yes } }
+				FROM = { random_faction_transfer_current_leader_state_to_successor = yes }
+			}
+		}
+	}
+
+	on_capitulation = {
+		effect = {
+			random_faction_disqualify_current_target_achievement_ledgers = yes
+			if = {
+				limit = { random_faction_current_country_has_tracked_state = yes }
+				random_faction_cleanup_after_country_lifecycle_change = yes
+			}
+		}
+	}
+
+	on_uncapitulation = {
+		effect = {
+			if = {
+				limit = { random_faction_current_country_has_tracked_state = yes }
+				random_faction_cleanup_after_country_lifecycle_change = yes
+			}
+		}
+	}
+
+	on_puppet = {
+		effect = {
+			random_faction_disqualify_current_target_achievement_ledgers = yes
+			if = {
+				limit = { random_faction_current_country_has_tracked_state = yes }
+				random_faction_cleanup_after_country_lifecycle_change = yes
+			}
+		}
+	}
+
+	on_release_as_puppet = {
+		effect = {
+			random_faction_disqualify_current_target_achievement_ledgers = yes
+			if = {
+				limit = { random_faction_current_country_has_tracked_state = yes }
+				random_faction_cleanup_after_country_lifecycle_change = yes
+			}
+		}
+	}
+
+	on_release_as_free = {
+		effect = {
+			if = {
+				limit = { random_faction_current_country_has_tracked_state = yes }
+				random_faction_cleanup_after_country_lifecycle_change = yes
+			}
+		}
+	}
+
+	on_subject_free = {
+		effect = {
+			if = {
+				limit = { random_faction_current_country_has_tracked_state = yes }
+				random_faction_cleanup_after_country_lifecycle_change = yes
+			}
+		}
+	}
+
+	on_subject_autonomy_level_change = {
+		effect = {
+			if = {
+				limit = {
+					is_subject = yes
+					random_faction_current_country_has_tracked_state = yes
+				}
+				random_faction_disqualify_current_target_achievement_ledgers = yes
+				random_faction_cleanup_after_country_lifecycle_change = yes
+			}
+		}
+	}
+
+	on_subject_annexed = {
+		effect = {
+			random_faction_disqualify_current_target_achievement_ledgers = yes
+			if = {
+				limit = { random_faction_current_country_has_tracked_state = yes }
+				random_faction_cleanup_after_country_lifecycle_change = yes
+			}
+		}
+	}
+
+	on_annex = {
+		effect = {
+			if = {
+				limit = { FROM = { random_faction_current_country_has_tracked_state = yes } }
+				FROM = {
+					random_faction_disqualify_current_target_achievement_ledgers = yes
+					random_faction_cleanup_after_country_lifecycle_change = yes
+				}
+			}
+		}
+	}
+
+	on_government_exiled = {
+		effect = {
+			random_faction_disqualify_current_target_achievement_ledgers = yes
+			if = {
+				limit = { random_faction_current_country_has_tracked_state = yes }
+				random_faction_cleanup_after_country_lifecycle_change = yes
+			}
+		}
+	}
+
+	on_government_change = {
+		effect = {
+			if = {
+				limit = {
+					random_faction_current_country_has_tracked_state = yes
+					NOT = { random_faction_country_base_valid = yes }
+				}
+				random_faction_disqualify_current_target_achievement_ledgers = yes
+				random_faction_cleanup_after_country_lifecycle_change = yes
+			}
+		}
+	}
+
+	on_state_control_changed = {
+		effect = {
+			FROM.FROM = { save_event_target_as = random_faction_frontier_lost_state }
+			FROM = { random_faction_break_frontier_commitment_on_state_loss = yes }
+		}
+	}
+
+	on_war_relation_added = {
+		effect = {
+			FROM = { save_event_target_as = random_faction_liaison_war_other }
+			ROOT = { random_faction_break_liaison_web_candidate_at_war_with_other = yes }
+			ROOT = { save_event_target_as = random_faction_liaison_war_other }
+			FROM = { random_faction_break_liaison_web_candidate_at_war_with_other = yes }
+		}
+	}
+}

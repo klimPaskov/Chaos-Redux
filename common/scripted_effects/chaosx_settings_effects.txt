@@ -919,6 +919,8 @@ export_chaosx_settings_config_to_log = {
 		clear_array = global.events_log_open_event_detail_sequence_entries
 		clear_array = global.events_log_open_event_detail_actor_entries
 		clear_array = global.events_log_open_event_detail_has_actor_entries
+		clear_array = global.events_log_open_event_detail_secondary_actor_entries
+		clear_array = global.events_log_open_event_detail_has_secondary_actor_entries
 		clear_array = global.events_log_open_event_detail_evolution_stage_entries
 		clear_array = global.events_log_event_detail_evolution_type_entries
 		clear_array = global.events_log_event_detail_evolution_tier_entries
@@ -3815,6 +3817,7 @@ toggle_world_end = {
         if = {
             limit = { check_variable = { global.world_end_backup = 1 } }
             set_global_flag = world_end
+			random_faction_cleanup_after_world_end = yes
         }
 
         log = "CHAOS REDUX SETTINGS: World end scenario mechanic has been ENABLED"
@@ -4591,6 +4594,19 @@ fire_event_by_temp_id_no_cluster = {
 		}
 	}
 	if = {
+		limit = { check_variable = { event_id = constant:random_faction_event.id } }
+		random_faction_prepare_runtime_context = yes
+		if = {
+			limit = {
+				OR = {
+					check_variable = { random_faction_context_ready < 1 }
+					NOT = { has_event_target = random_faction_target_country }
+				}
+			}
+			set_temp_variable = { event_single_fire_allowed = 0 }
+		}
+	}
+	if = {
 		limit = { check_variable = { event_id = constant:white_peace_event_log.event_id } }
 		prepare_white_peace_runtime_context = yes
 		if = {
@@ -4615,6 +4631,18 @@ fire_event_by_temp_id_no_cluster = {
 		if = {
 			limit = { check_variable = { event_fire_record_id = 4 } }
 			random_war_fire_current_context = yes
+		}
+		else_if = {
+			limit = {
+				check_variable = { event_fire_record_id = constant:random_faction_event.id }
+				has_event_target = random_faction_target_country
+			}
+			event_target:random_faction_target_country = {
+				clear_variable = random_faction_pending_history_sequence
+				clear_variable = random_faction_pending_history_leader
+				set_country_flag = random_faction_history_result_pending
+				country_event = { id = chaosx.nr17.1 }
+			}
 		}
 		else = {
 			meta_effect = {

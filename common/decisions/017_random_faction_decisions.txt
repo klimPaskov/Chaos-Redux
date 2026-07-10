@@ -1,0 +1,604 @@
+# ai_hint_pp_cost does not accept script-constant tokens; these mirror the shared low/medium/high PP costs.
+@random_faction_ai_hint_pp_low = 25
+@random_faction_ai_hint_pp_medium = 45
+@random_faction_ai_hint_pp_high = 70
+
+# ============================================================================
+# CHAOS REDUX - EVENT 017 RANDOM FACTION DECISIONS
+# ============================================================================
+# Bloc Pressure decisions for newly aligned minors, pressured neutrals, and
+# faction leaders with Event 17 pressure targets. All visible costs are backed
+# by scripted effects in the Event 17 helper layer.
+# ============================================================================
+
+random_faction_bloc_pressure_category = {
+	random_faction_stabilize_alignment = {
+		icon = GFX_decision_random_faction_stabilize_alignment
+		visible = {
+			random_faction_newly_aligned_minor_decisions_visible = yes
+			has_idea = random_faction_alignment_shock
+			NOT = { has_country_flag = random_faction_alignment_stabilized }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_faction_stabilize_alignment_available_tt
+				hidden_trigger = { can_pay_random_faction_stabilize_alignment_cost = yes }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { can_pay_random_faction_stabilize_alignment_cost = yes } }
+		custom_cost_text = random_faction_stabilize_alignment_cost_text
+		ai_hint_pp_cost = @random_faction_ai_hint_pp_high
+		days_re_enable = constant:random_faction_days.decision_reenable_medium
+		complete_effect = {
+			custom_effect_tooltip = random_faction_stabilize_alignment_tt
+			hidden_effect = { random_faction_decision_stabilize_alignment = yes }
+		}
+		ai_will_do = {
+			base = constant:random_faction_ai_weight.high
+			modifier = {
+				factor = constant:random_faction_ai_factor.strong
+				has_stability < constant:random_faction_resistance_threshold.confident_stability
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.cautious
+				has_war = yes
+				NOT = { has_equipment = { support_equipment > constant:random_faction_decision_cost.support_equipment_medium } }
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.cautious
+				has_war = yes
+				has_stability < constant:random_faction_resistance_threshold.low_stability
+			}
+		}
+	}
+
+	random_faction_request_liaison = {
+		icon = GFX_decision_random_faction_liaison
+		target_array = global.random_faction_faction_leaders
+		target_root_trigger = {
+			random_faction_newly_aligned_minor_decisions_visible = yes
+			NOT = { has_country_flag = random_faction_requested_liaison }
+		}
+		target_trigger = {
+			FROM = { random_faction_is_current_faction_leader_for_root = yes }
+		}
+		visible = {
+			random_faction_newly_aligned_minor_decisions_visible = yes
+			NOT = { has_country_flag = random_faction_requested_liaison }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_faction_request_liaison_available_tt
+				hidden_trigger = {
+					FROM = { random_faction_is_current_faction_leader_for_root = yes }
+					can_pay_random_faction_request_liaison_cost = yes
+				}
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { can_pay_random_faction_request_liaison_cost = yes } }
+		custom_cost_text = random_faction_request_liaison_cost_text
+		days_re_enable = constant:random_faction_days.decision_reenable_long
+		complete_effect = {
+			custom_effect_tooltip = random_faction_request_liaison_tt
+			hidden_effect = { random_faction_decision_request_liaison = yes }
+		}
+		ai_will_do = {
+			base = constant:random_faction_ai_weight.medium
+			modifier = {
+				factor = constant:random_faction_ai_factor.strong
+				FROM = { random_faction_target_ideology_matches_root = yes }
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.preferred
+				FROM = { random_faction_target_has_positive_relations_with_root = yes }
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.strong
+				OR = {
+					has_war = yes
+					FROM = { has_war = yes }
+				}
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.preferred
+				FROM = { is_neighbor_of = ROOT }
+			}
+		}
+	}
+
+	random_faction_quiet_opposition = {
+		icon = GFX_decision_random_faction_opposition
+		visible = {
+			random_faction_newly_aligned_minor_decisions_visible = yes
+			has_idea = random_faction_alignment_shock
+			NOT = { has_country_flag = random_faction_opposition_quieted }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_faction_quiet_opposition_available_tt
+				hidden_trigger = { can_pay_random_faction_quiet_opposition_cost = yes }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { can_pay_random_faction_quiet_opposition_cost = yes } }
+		custom_cost_text = random_faction_quiet_opposition_cost_text
+		ai_hint_pp_cost = @random_faction_ai_hint_pp_low
+		days_re_enable = constant:random_faction_days.decision_reenable_medium
+		complete_effect = {
+			custom_effect_tooltip = random_faction_quiet_opposition_tt
+			hidden_effect = { random_faction_decision_quiet_opposition = yes }
+		}
+		ai_will_do = {
+			base = constant:random_faction_ai_weight.low
+			modifier = {
+				factor = constant:random_faction_ai_factor.preferred
+				OR = {
+					has_government = fascism
+					has_government = communism
+				}
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.cautious
+				has_government = democratic
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.cautious
+				has_war = yes
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.cautious
+				has_stability < constant:random_faction_resistance_threshold.confident_stability
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.strong
+				check_variable = {
+					var = random_faction_pressure_score
+					value = constant:random_faction_pressure_value.collapse_threshold
+					compare = greater_than_or_equals
+				}
+			}
+		}
+	}
+
+	random_faction_convene_neutrality_council = {
+		icon = GFX_random_faction_bloc_pressure_seal_animated
+		visible = {
+			random_faction_pressured_neutral_decisions_visible = yes
+			NOT = { has_country_flag = random_faction_neutrality_council_convened }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_faction_convene_neutrality_council_available_tt
+				hidden_trigger = { can_pay_random_faction_neutrality_council_cost = yes }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { can_pay_random_faction_neutrality_council_cost = yes } }
+		custom_cost_text = random_faction_neutrality_council_cost_text
+		ai_hint_pp_cost = @random_faction_ai_hint_pp_medium
+		days_re_enable = constant:random_faction_days.decision_reenable_long
+		complete_effect = {
+			custom_effect_tooltip = random_faction_convene_neutrality_council_tt
+			hidden_effect = { random_faction_decision_convene_neutrality_council = yes }
+		}
+		ai_will_do = {
+			base = constant:random_faction_ai_weight.high
+			modifier = {
+				factor = constant:random_faction_ai_factor.strong
+				OR = {
+					has_government = democratic
+					has_government = neutrality
+				}
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.preferred
+				has_stability > constant:random_faction_resistance_threshold.confident_stability
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.cautious
+				OR = {
+					has_government = fascism
+					has_government = communism
+					has_war = yes
+				}
+			}
+		}
+	}
+
+	random_faction_reinforce_border_posts = {
+		icon = GFX_random_faction_border_warning_animated
+		days_mission_timeout = random_faction_border_posts_mission_duration
+		is_good = no
+		fire_only_once = no
+		activation = {
+			has_country_flag = random_faction_border_posts_active
+			random_faction_pressured_neutral_decisions_visible = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_faction_border_posts_objective_tt
+				hidden_trigger = { random_faction_border_posts_objective_secured = yes }
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { has_country_flag = random_faction_border_posts_active }
+				NOT = { exists = yes }
+				is_in_faction = yes
+				NOT = { random_faction_pressured_neutral_decisions_visible = yes }
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = random_faction_cancel_border_posts_mission_tt
+			hidden_effect = { random_faction_cancel_border_posts_mission = yes }
+		}
+		complete_effect = {
+			custom_effect_tooltip = random_faction_border_posts_success_tt
+			hidden_effect = { random_faction_border_posts_success = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = random_faction_border_posts_failure_tt
+			hidden_effect = { random_faction_border_posts_failure = yes }
+		}
+	}
+
+	random_faction_invite_observers = {
+		icon = GFX_decision_random_faction_observers
+		target_array = global.random_faction_faction_leaders
+		target_root_trigger = {
+			random_faction_pressured_neutral_decisions_visible = yes
+			NOT = { has_country_flag = random_faction_invited_observers }
+		}
+		target_trigger = {
+			FROM = { random_faction_is_valid_observer_source_for_root = yes }
+		}
+		visible = {
+			random_faction_pressured_neutral_decisions_visible = yes
+			NOT = { has_country_flag = random_faction_invited_observers }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_faction_invite_observers_available_tt
+				hidden_trigger = {
+					FROM = { random_faction_is_valid_observer_source_for_root = yes }
+					can_pay_random_faction_invite_observers_cost = yes
+				}
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { can_pay_random_faction_invite_observers_cost = yes } }
+		custom_cost_text = random_faction_invite_observers_cost_text
+		days_re_enable = constant:random_faction_days.decision_reenable_long
+		complete_effect = {
+			custom_effect_tooltip = random_faction_invite_observers_tt
+			hidden_effect = { random_faction_decision_invite_observers = yes }
+		}
+		ai_will_do = {
+			base = constant:random_faction_ai_weight.medium
+			modifier = {
+				factor = constant:random_faction_ai_factor.strong
+				FROM = { random_faction_target_ideology_matches_root = yes }
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.preferred
+				FROM = { random_faction_target_has_positive_relations_with_root = yes }
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.strong
+				random_faction_target_is_threatened = yes
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.strong
+				random_faction_target_has_low_resilience = yes
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.cautious
+				random_faction_target_has_high_resilience = yes
+			}
+		}
+	}
+
+	random_faction_publish_neutrality = {
+		icon = GFX_decision_random_faction_neutrality_press
+		visible = {
+			random_faction_pressured_neutral_decisions_visible = yes
+			NOT = { has_country_flag = random_faction_neutrality_published }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_faction_publish_neutrality_available_tt
+				hidden_trigger = { can_pay_random_faction_publish_neutrality_cost = yes }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { can_pay_random_faction_publish_neutrality_cost = yes } }
+		custom_cost_text = random_faction_publish_neutrality_cost_text
+		ai_hint_pp_cost = @random_faction_ai_hint_pp_low
+		days_re_enable = constant:random_faction_days.decision_reenable_medium
+		complete_effect = {
+			custom_effect_tooltip = random_faction_publish_neutrality_tt
+			hidden_effect = { random_faction_decision_publish_neutrality = yes }
+		}
+		ai_will_do = {
+			base = constant:random_faction_ai_weight.medium
+			modifier = {
+				factor = constant:random_faction_ai_factor.strong
+				OR = {
+					has_government = democratic
+					has_government = neutrality
+				}
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.preferred
+				has_stability > constant:random_faction_resistance_threshold.confident_stability
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.preferred
+				random_faction_target_has_high_resilience = yes
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.cautious
+				OR = {
+					has_government = fascism
+					has_government = communism
+					has_war = yes
+					random_faction_target_has_low_resilience = yes
+				}
+			}
+		}
+	}
+
+	random_faction_offer_staff_mission = {
+		icon = GFX_decision_random_faction_staff_mission
+		target_array = global.random_faction_pressure_targets
+		target_root_trigger = { random_faction_faction_leader_decisions_visible = yes }
+		target_trigger = { FROM = { random_faction_valid_staff_mission_target_for_root = yes } }
+		visible = { random_faction_faction_leader_decisions_visible = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_faction_offer_staff_mission_available_tt
+				hidden_trigger = {
+					FROM = { random_faction_valid_staff_mission_target_for_root = yes }
+					can_pay_random_faction_staff_mission_cost = yes
+				}
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { can_pay_random_faction_staff_mission_cost = yes } }
+		custom_cost_text = random_faction_staff_mission_cost_text
+		days_re_enable = constant:random_faction_days.decision_reenable_medium
+		complete_effect = {
+			custom_effect_tooltip = random_faction_offer_staff_mission_tt
+			hidden_effect = { random_faction_decision_offer_staff_mission = yes }
+		}
+		ai_will_do = {
+			base = constant:random_faction_ai_weight.high
+			modifier = {
+				factor = constant:random_faction_ai_factor.strong
+				FROM = { random_faction_target_ideology_matches_root = yes }
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.preferred
+				FROM = { random_faction_target_has_positive_relations_with_root = yes }
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.strong
+				FROM = { random_faction_target_is_threatened = yes }
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.strong
+				FROM = { random_faction_target_has_low_resilience = yes }
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.cautious
+				FROM = { random_faction_target_has_high_resilience = yes }
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.preferred
+				FROM = { is_neighbor_of = ROOT }
+			}
+		}
+	}
+
+	random_faction_radio_networks = {
+		icon = GFX_decision_random_faction_radio_networks
+		visible = {
+			random_faction_faction_leader_decisions_visible = yes
+			NOT = { has_country_flag = random_faction_radio_networks_active }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_faction_radio_networks_available_tt
+				hidden_trigger = { can_pay_random_faction_radio_networks_cost = yes }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { can_pay_random_faction_radio_networks_cost = yes } }
+		custom_cost_text = random_faction_radio_networks_cost_text
+		ai_hint_pp_cost = @random_faction_ai_hint_pp_low
+		days_re_enable = constant:random_faction_days.decision_reenable_long
+		complete_effect = {
+			custom_effect_tooltip = random_faction_radio_networks_tt
+			hidden_effect = { random_faction_decision_radio_networks = yes }
+		}
+		ai_will_do = {
+			base = constant:random_faction_ai_weight.medium
+			modifier = {
+				factor = constant:random_faction_ai_factor.strong
+				random_faction_leader_has_multiple_reachable_pressure_targets = yes
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.strong
+				OR = {
+					has_government = fascism
+					has_government = communism
+				}
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.strong
+				has_global_flag = random_faction_evolution_iii_unlocked
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.cautious
+				has_government = democratic
+			}
+		}
+	}
+
+	random_faction_guarantee_corridor = {
+		icon = GFX_decision_random_faction_corridor
+		target_array = global.random_faction_pressure_targets
+		target_root_trigger = {
+			random_faction_faction_leader_decisions_visible = yes
+			NOT = { has_country_flag = random_faction_corridor_mission_active }
+		}
+		target_trigger = { FROM = { random_faction_valid_corridor_target_for_root = yes } }
+		visible = {
+			random_faction_faction_leader_decisions_visible = yes
+			NOT = { has_country_flag = random_faction_corridor_mission_active }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_faction_guarantee_corridor_available_tt
+				hidden_trigger = {
+					FROM = { random_faction_valid_corridor_target_for_root = yes }
+					can_pay_random_faction_corridor_cost = yes
+				}
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { can_pay_random_faction_corridor_cost = yes } }
+		custom_cost_text = random_faction_corridor_cost_text
+		days_re_enable = constant:random_faction_days.decision_reenable_long
+		complete_effect = {
+			custom_effect_tooltip = random_faction_guarantee_corridor_tt
+			hidden_effect = { random_faction_decision_guarantee_corridor = yes }
+		}
+		ai_will_do = {
+			base = constant:random_faction_ai_weight.medium
+			modifier = {
+				factor = constant:random_faction_ai_factor.strong
+				FROM = { random_faction_target_is_threatened = yes }
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.strong
+				FROM = { random_faction_target_has_low_resilience = yes }
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.cautious
+				FROM = { random_faction_target_has_high_resilience = yes }
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.preferred
+				FROM = { random_faction_target_ideology_matches_root = yes }
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.strong
+				FROM = { is_neighbor_of = ROOT }
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.preferred
+				has_war = yes
+			}
+		}
+	}
+
+	random_faction_guarantee_corridor_mission = {
+		icon = GFX_random_faction_border_warning_animated
+		days_mission_timeout = random_faction_corridor_mission_duration
+		is_good = no
+		fire_only_once = no
+		activation = { has_country_flag = random_faction_corridor_mission_active }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_faction_corridor_objective_tt
+				hidden_trigger = { random_faction_corridor_objective_secured = yes }
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { has_country_flag = random_faction_corridor_mission_active }
+				NOT = { random_faction_has_valid_corridor_objective_target = yes }
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = random_faction_cancel_corridor_mission_tt
+			hidden_effect = { random_faction_cancel_corridor_mission = yes }
+		}
+		complete_effect = {
+			custom_effect_tooltip = random_faction_corridor_success_tt
+			hidden_effect = { random_faction_corridor_success = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = random_faction_corridor_failure_tt
+			hidden_effect = { random_faction_corridor_failure = yes }
+		}
+	}
+
+	random_faction_demand_commitment = {
+		icon = GFX_decision_random_faction_commitment
+		target_array = global.random_faction_pressure_targets
+		target_root_trigger = {
+			random_faction_faction_leader_decisions_visible = yes
+			random_faction_commitment_demands_unlocked = yes
+		}
+		target_trigger = {
+			FROM = {
+				random_faction_valid_commitment_target_for_root = yes
+				NOT = { has_country_flag = random_faction_commitment_demanded }
+			}
+		}
+		visible = {
+			random_faction_faction_leader_decisions_visible = yes
+			random_faction_commitment_demands_unlocked = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_faction_demand_commitment_available_tt
+				hidden_trigger = {
+					FROM = { random_faction_valid_commitment_target_for_root = yes }
+					can_pay_random_faction_commitment_cost = yes
+				}
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { can_pay_random_faction_commitment_cost = yes } }
+		custom_cost_text = random_faction_commitment_cost_text
+		ai_hint_pp_cost = @random_faction_ai_hint_pp_high
+		days_re_enable = constant:random_faction_days.decision_reenable_long
+		complete_effect = {
+			custom_effect_tooltip = random_faction_demand_commitment_tt
+			hidden_effect = { random_faction_decision_demand_commitment = yes }
+		}
+		ai_will_do = {
+			base = constant:random_faction_ai_weight.low
+			modifier = {
+				factor = constant:random_faction_ai_factor.strong
+				OR = {
+					has_government = fascism
+					has_government = communism
+				}
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.discouraged
+				has_government = democratic
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.strong
+				has_war = yes
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.strong
+				has_global_flag = random_faction_evolution_iii_unlocked
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.strong
+				FROM = { random_faction_target_is_threatened = yes }
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.strong
+				FROM = { random_faction_target_has_low_resilience = yes }
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.cautious
+				FROM = { random_faction_target_has_high_resilience = yes }
+			}
+			modifier = {
+				factor = constant:random_faction_ai_factor.preferred
+				FROM = { random_faction_target_ideology_matches_root = yes }
+			}
+		}
+	}
+}

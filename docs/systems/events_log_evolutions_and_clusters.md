@@ -8,7 +8,7 @@ It also adds clickable detail windows for:
 - events-list entries (shared event detail window),
 - cluster catalogue entries and fired cluster history entries (cluster detail window with clickable member events).
 
-The zombie outbreak event has authored gameplay text in the event-details window, and its related evolution milestones can be opened directly from both the history-details overlay and the events-tab detail window.
+The zombie outbreak event has authored gameplay text in the event-details window, and its related evolution milestones can be opened directly from both the history-details overlay and the events-tab detail window. Event 17 also has authored result text, exact sequence-bound selected-minor and chosen-leader context, and three evolution previews.
 
 ## Step-by-step behavior
 1. Opening the popup (`toggle_events_log_popup`) initializes all three tab-state groups:
@@ -38,8 +38,10 @@ The zombie outbreak event has authored gameplay text in the event-details window
    - latest reached evolution stage.
 15. Event `2` (`Zombie Outbreak`) renders gameplay-useful description text in that detail window.
 16. Event `4` (`Random War`) renders War Contagion detail text and stage previews.
-17. If the selected event has logged or preview evolutions, the event detail window shows a clickable evolution list under the description text.
-18. Clicking a related evolution entry, or an entry from the `Evolutions` tab, opens the evolution detail popup with:
+17. Event `17` (`Random faction`) renders the selected minor and original chosen faction leader from the exact history sequence. A deleted leader uses neutral lost-result wording, while a row not yet bound to a successful signature uses unresolved wording.
+18. Event `17` exposes three ordered previews for Regional Bloc Race, Pressured Neutrality, and Collapse of Neutrality. Its history evolution rows still show only stages that actually recorded.
+19. If the selected event has logged or preview evolutions, the event detail window shows a clickable evolution list under the description text.
+20. Clicking a related evolution entry, or an entry from the `Evolutions` tab, opens the evolution detail popup with:
 	   - evolution title and summary,
 	   - logged actor country link,
 	   - a portrait panel only when that evolution family has an authored portrait mapping or an intentional placeholder treatment for the selected stage,
@@ -84,6 +86,10 @@ The row id/type payload reuses:
 Detail-window selection variables:
 - `events_log_selected_event_id`
 - `events_log_selected_event_type`
+- `events_log_history_selected_actor`
+- `events_log_history_selected_has_actor`
+- `events_log_history_selected_secondary_actor`
+- `events_log_history_selected_has_secondary_actor`
 - `events_log_selected_evolution_type`
 - `events_log_selected_evolution_tier`
 - `events_log_selected_evolution_stage`

@@ -1,0 +1,956 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 017 RANDOM FACTION TRIGGERS
+# ============================================================================
+# Eligibility, option validation, pressure visibility, decision cost gates, and
+# AI preference helpers for the dynamic Random Faction system.
+# ============================================================================
+# has_opinion value does not accept script constants, so this parser-static threshold is file scoped.
+@random_faction_positive_opinion = 20
+
+random_faction_country_base_valid = {
+	exists = yes
+	uses_normal_civilian_systems = yes
+	num_of_controlled_states > constant:random_faction_requirement.min_controlled_states
+	capital_scope = { is_controlled_by = PREV }
+	NOT = { has_capitulated = yes }
+	NOT = { is_government_in_exile = yes }
+	NOT = { has_global_flag = world_end }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+}
+
+is_random_faction_eligible_country = {
+	random_faction_country_base_valid = yes
+	NOT = { is_major = yes }
+	NOT = { is_subject = yes }
+	NOT = { is_in_faction = yes }
+	NOT = { has_war = yes }
+	NOT = { has_country_flag = random_faction_recent_alignment }
+	NOT = { has_country_flag = random_faction_selection_cooldown }
+	NOT = { has_country_flag = random_faction_selection_pending }
+	any_country = {
+		random_faction_is_valid_faction_leader_for_prev_target = yes
+	}
+}
+
+is_random_faction_wartime_candidate = {
+	random_faction_country_base_valid = yes
+	NOT = { is_major = yes }
+	NOT = { is_subject = yes }
+	NOT = { is_in_faction = yes }
+	NOT = { has_country_flag = random_faction_recent_alignment }
+	NOT = { has_country_flag = random_faction_selection_cooldown }
+	NOT = { has_country_flag = random_faction_selection_pending }
+	OR = {
+		has_war = yes
+		any_neighbor_country = {
+			is_in_faction = yes
+			has_war = yes
+		}
+		random_faction_has_active_pressure = yes
+	}
+	any_country = {
+		random_faction_is_valid_faction_leader_for_prev_target = yes
+	}
+}
+
+random_faction_has_valid_target_available = {
+	any_country = {
+		OR = {
+			is_random_faction_eligible_country = yes
+			AND = {
+				has_global_flag = random_faction_evolution_ii_unlocked
+				is_random_faction_wartime_candidate = yes
+			}
+		}
+	}
+}
+
+random_faction_has_dispatchable_context = {
+	random_faction_has_valid_target_available = yes
+	any_country = { is_random_faction_allowed_faction_leader = yes }
+}
+
+is_random_faction_allowed_faction_leader = {
+	exists = yes
+	uses_normal_civilian_systems = yes
+	num_of_controlled_states > constant:random_faction_requirement.min_controlled_states
+	is_faction_leader = yes
+	is_in_faction = yes
+	NOT = { has_capitulated = yes }
+	NOT = { is_government_in_exile = yes }
+	NOT = { has_global_flag = world_end }
+	NOT = { is_subject = yes }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+}
+
+random_faction_target_requires_wartime_reach = {
+	has_global_flag = random_faction_evolution_ii_unlocked
+	OR = {
+		has_war = yes
+		any_neighbor_country = {
+			is_in_faction = yes
+			has_war = yes
+		}
+		random_faction_has_active_pressure = yes
+	}
+}
+
+random_faction_current_leader_has_wartime_reach_to_root = {
+	OR = {
+		is_neighbor_of = ROOT
+		is_on_same_continent_as = ROOT
+		any_country = {
+			is_in_faction_with = PREV
+			OR = {
+				is_neighbor_of = ROOT
+				is_on_same_continent_as = ROOT
+			}
+		}
+		AND = {
+			ROOT = {
+				any_controlled_state = { is_coastal = yes }
+				NOT = { has_equipment = { convoy < constant:random_faction_requirement.wartime_overseas_convoys } }
+			}
+			OR = {
+				any_controlled_state = { is_coastal = yes }
+				any_country = {
+					is_in_faction_with = PREV
+					any_controlled_state = { is_coastal = yes }
+				}
+			}
+		}
+		any_country = {
+			has_war_with = ROOT
+			PREV = { has_war_with = THIS }
+		}
+	}
+}
+
+random_faction_current_leader_has_wartime_reach_to_prev = {
+	OR = {
+		is_neighbor_of = PREV
+		is_on_same_continent_as = PREV
+		any_country = {
+			is_in_faction_with = PREV
+			OR = {
+				is_neighbor_of = PREV.PREV
+				is_on_same_continent_as = PREV.PREV
+			}
+		}
+		AND = {
+			PREV = {
+				any_controlled_state = { is_coastal = yes }
+				NOT = { has_equipment = { convoy < constant:random_faction_requirement.wartime_overseas_convoys } }
+			}
+			OR = {
+				any_controlled_state = { is_coastal = yes }
+				any_country = {
+					is_in_faction_with = PREV
+					any_controlled_state = { is_coastal = yes }
+				}
+			}
+		}
+		any_country = {
+			has_war_with = PREV.PREV
+			PREV = { has_war_with = THIS }
+		}
+	}
+}
+
+random_faction_is_valid_faction_leader_for_root_target = {
+	is_random_faction_allowed_faction_leader = yes
+	NOT = { tag = ROOT }
+	NOT = { has_war_with = ROOT }
+	NOT = { is_in_faction_with = ROOT }
+	NOT = {
+		any_country = {
+			is_in_faction_with = PREV
+			has_war_with = ROOT
+		}
+	}
+	ROOT = {
+		random_faction_country_base_valid = yes
+		NOT = { is_subject = yes }
+		NOT = { is_in_faction = yes }
+	}
+	OR = {
+		NOT = { has_global_flag = random_faction_evolution_ii_unlocked }
+		AND = {
+			NOT = { has_war = yes }
+			ROOT = { NOT = { random_faction_target_requires_wartime_reach = yes } }
+		}
+		random_faction_current_leader_has_wartime_reach_to_root = yes
+	}
+}
+
+random_faction_is_valid_faction_leader_for_prev_target = {
+	is_random_faction_allowed_faction_leader = yes
+	NOT = { tag = PREV }
+	NOT = { has_war_with = PREV }
+	NOT = { is_in_faction_with = PREV }
+	NOT = {
+		any_country = {
+			is_in_faction_with = PREV
+			has_war_with = PREV.PREV
+		}
+	}
+	PREV = {
+		random_faction_country_base_valid = yes
+		NOT = { is_subject = yes }
+		NOT = { is_in_faction = yes }
+	}
+	OR = {
+		NOT = { has_global_flag = random_faction_evolution_ii_unlocked }
+		AND = {
+			NOT = { has_war = yes }
+			PREV = { NOT = { random_faction_target_requires_wartime_reach = yes } }
+		}
+		random_faction_current_leader_has_wartime_reach_to_prev = yes
+	}
+}
+
+can_random_faction_join_faction = {
+	random_faction_is_valid_faction_leader_for_root_target = yes
+}
+
+is_random_faction_pressure_neighbor = {
+	random_faction_country_base_valid = yes
+	NOT = { is_major = yes }
+	NOT = { is_subject = yes }
+	NOT = { is_in_faction = yes }
+	NOT = { has_country_flag = random_faction_recent_alignment }
+	NOT = { has_country_flag = random_faction_pressure_cooldown }
+}
+
+random_faction_region_can_cascade = {
+	has_global_flag = random_faction_evolution_iii_unlocked
+	check_variable = {
+		var = random_faction_evo3_cascade_count
+		value = random_faction_evo3_response_budget
+		compare = less_than
+	}
+	any_of_scopes = {
+		array = random_faction_evo3_candidate_targets
+		is_random_faction_cascade_candidate = yes
+	}
+}
+
+random_faction_current_region_cascade_available = {
+	has_variable = random_faction_region_id
+	meta_trigger = {
+		text = {
+			NOT = { has_global_flag = random_faction_evo3_region_[REGION_ID]_active }
+		}
+		REGION_ID = "[?random_faction_region_id|.0]"
+	}
+}
+
+is_random_faction_cascade_candidate = {
+	OR = {
+		is_random_faction_eligible_country = yes
+		AND = {
+			has_global_flag = random_faction_evolution_ii_unlocked
+			is_random_faction_wartime_candidate = yes
+		}
+	}
+	NOT = { has_country_flag = random_faction_evo3_handled }
+}
+
+random_faction_option_1_valid = {
+	check_variable = { random_faction_option_count > 0 }
+	has_event_target = random_faction_option_1_leader
+	event_target:random_faction_option_1_leader = { can_random_faction_join_faction = yes }
+}
+
+random_faction_option_2_valid = {
+	check_variable = { random_faction_option_count > 1 }
+	has_event_target = random_faction_option_2_leader
+	event_target:random_faction_option_2_leader = { can_random_faction_join_faction = yes }
+}
+
+random_faction_option_3_valid = {
+	check_variable = { random_faction_option_count > 2 }
+	has_event_target = random_faction_option_3_leader
+	event_target:random_faction_option_3_leader = { can_random_faction_join_faction = yes }
+}
+
+random_faction_option_4_valid = {
+	check_variable = { random_faction_option_count > 3 }
+	has_event_target = random_faction_option_4_leader
+	event_target:random_faction_option_4_leader = { can_random_faction_join_faction = yes }
+}
+
+random_faction_has_saved_valid_option = {
+	OR = {
+		random_faction_option_1_valid = yes
+		random_faction_option_2_valid = yes
+		random_faction_option_3_valid = yes
+		random_faction_option_4_valid = yes
+	}
+}
+
+random_faction_option_1_has_regional_pull = {
+	random_faction_option_1_valid = yes
+	any_neighbor_country = { is_in_faction_with = event_target:random_faction_option_1_leader }
+}
+
+random_faction_option_2_has_regional_pull = {
+	random_faction_option_2_valid = yes
+	any_neighbor_country = { is_in_faction_with = event_target:random_faction_option_2_leader }
+}
+
+random_faction_option_3_has_regional_pull = {
+	random_faction_option_3_valid = yes
+	any_neighbor_country = { is_in_faction_with = event_target:random_faction_option_3_leader }
+}
+
+random_faction_option_4_has_regional_pull = {
+	random_faction_option_4_valid = yes
+	any_neighbor_country = { is_in_faction_with = event_target:random_faction_option_4_leader }
+}
+
+random_faction_option_1_has_regional_reach = {
+	random_faction_option_1_valid = yes
+	event_target:random_faction_option_1_leader = { random_faction_current_leader_has_wartime_reach_to_root = yes }
+}
+
+random_faction_option_2_has_regional_reach = {
+	random_faction_option_2_valid = yes
+	event_target:random_faction_option_2_leader = { random_faction_current_leader_has_wartime_reach_to_root = yes }
+}
+
+random_faction_option_3_has_regional_reach = {
+	random_faction_option_3_valid = yes
+	event_target:random_faction_option_3_leader = { random_faction_current_leader_has_wartime_reach_to_root = yes }
+}
+
+random_faction_option_4_has_regional_reach = {
+	random_faction_option_4_valid = yes
+	event_target:random_faction_option_4_leader = { random_faction_current_leader_has_wartime_reach_to_root = yes }
+}
+
+random_faction_option_1_has_common_enemy = {
+	random_faction_option_1_valid = yes
+	any_country = {
+		has_war_with = ROOT
+		event_target:random_faction_option_1_leader = { has_war_with = PREV }
+	}
+}
+
+random_faction_option_2_has_common_enemy = {
+	random_faction_option_2_valid = yes
+	any_country = {
+		has_war_with = ROOT
+		event_target:random_faction_option_2_leader = { has_war_with = PREV }
+	}
+}
+
+random_faction_option_3_has_common_enemy = {
+	random_faction_option_3_valid = yes
+	any_country = {
+		has_war_with = ROOT
+		event_target:random_faction_option_3_leader = { has_war_with = PREV }
+	}
+}
+
+random_faction_option_4_has_common_enemy = {
+	random_faction_option_4_valid = yes
+	any_country = {
+		has_war_with = ROOT
+		event_target:random_faction_option_4_leader = { has_war_with = PREV }
+	}
+}
+
+random_faction_option_1_has_positive_relations = {
+	random_faction_option_1_valid = yes
+	event_target:random_faction_option_1_leader = {
+		has_opinion = { target = ROOT value > @random_faction_positive_opinion }
+	}
+}
+
+random_faction_option_2_has_positive_relations = {
+	random_faction_option_2_valid = yes
+	event_target:random_faction_option_2_leader = {
+		has_opinion = { target = ROOT value > @random_faction_positive_opinion }
+	}
+}
+
+random_faction_option_3_has_positive_relations = {
+	random_faction_option_3_valid = yes
+	event_target:random_faction_option_3_leader = {
+		has_opinion = { target = ROOT value > @random_faction_positive_opinion }
+	}
+}
+
+random_faction_option_4_has_positive_relations = {
+	random_faction_option_4_valid = yes
+	event_target:random_faction_option_4_leader = {
+		has_opinion = { target = ROOT value > @random_faction_positive_opinion }
+	}
+}
+
+random_faction_option_1_has_strong_bloc = {
+	random_faction_option_1_valid = yes
+	event_target:random_faction_option_1_leader = {
+		OR = {
+			num_divisions > constant:random_faction_ai_floor.strong_leader_divisions
+			alliance_strength_ratio > constant:random_faction_ai_threshold.strong_alliance_ratio
+		}
+	}
+}
+
+random_faction_option_2_has_strong_bloc = {
+	random_faction_option_2_valid = yes
+	event_target:random_faction_option_2_leader = {
+		OR = {
+			num_divisions > constant:random_faction_ai_floor.strong_leader_divisions
+			alliance_strength_ratio > constant:random_faction_ai_threshold.strong_alliance_ratio
+		}
+	}
+}
+
+random_faction_option_3_has_strong_bloc = {
+	random_faction_option_3_valid = yes
+	event_target:random_faction_option_3_leader = {
+		OR = {
+			num_divisions > constant:random_faction_ai_floor.strong_leader_divisions
+			alliance_strength_ratio > constant:random_faction_ai_threshold.strong_alliance_ratio
+		}
+	}
+}
+
+random_faction_option_4_has_strong_bloc = {
+	random_faction_option_4_valid = yes
+	event_target:random_faction_option_4_leader = {
+		OR = {
+			num_divisions > constant:random_faction_ai_floor.strong_leader_divisions
+			alliance_strength_ratio > constant:random_faction_ai_threshold.strong_alliance_ratio
+		}
+	}
+}
+
+random_faction_target_under_strong_pressure = {
+	OR = {
+		has_war = yes
+		random_faction_has_active_pressure = yes
+		check_variable = {
+			var = random_faction_neutrality_resilience
+			value = constant:random_faction_ai_threshold.low_neutrality_resilience
+			compare = less_than
+		}
+	}
+}
+
+random_faction_high_chaos = {
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:chaos_meter_tier_range.tier_3.min
+		compare = greater_than_or_equals
+	}
+}
+
+random_faction_current_option_patron_is_failing = {
+	has_war = yes
+	surrender_progress > constant:random_faction_ai_threshold.failing_patron_surrender
+}
+
+random_faction_current_option_has_high_cohesion_strain = {
+	has_variable = random_faction_faction_cohesion_strain
+	check_variable = {
+		var = random_faction_faction_cohesion_strain
+		value = constant:random_faction_ai_threshold.high_cohesion_strain
+		compare = greater_than_or_equals
+	}
+}
+
+random_faction_target_has_source_faction_neighbor = {
+	random_faction_pressure_source_is_valid = yes
+	any_neighbor_country = {
+		is_in_faction_with = var:PREV.random_faction_pressure_source_leader
+	}
+}
+
+random_faction_ai_prefers_option_1 = {
+	random_faction_option_1_valid = yes
+	event_target:random_faction_option_1_leader = { has_same_ideology = ROOT }
+}
+
+random_faction_ai_prefers_option_2 = {
+	random_faction_option_2_valid = yes
+	event_target:random_faction_option_2_leader = { has_same_ideology = ROOT }
+}
+
+random_faction_ai_prefers_option_3 = {
+	random_faction_option_3_valid = yes
+	event_target:random_faction_option_3_leader = { has_same_ideology = ROOT }
+}
+
+random_faction_ai_prefers_option_4 = {
+	random_faction_option_4_valid = yes
+	event_target:random_faction_option_4_leader = { has_same_ideology = ROOT }
+}
+
+random_faction_current_region_has_neutral_survivor = {
+	any_of_scopes = {
+		array = random_faction_current_region_targets
+		random_faction_country_base_valid = yes
+		NOT = { is_major = yes }
+		NOT = { is_subject = yes }
+		NOT = { is_in_faction = yes }
+		NOT = { has_country_flag = random_faction_selection_pending }
+	}
+}
+
+random_faction_has_active_pressure = {
+	OR = {
+		has_country_flag = random_faction_under_pressure
+		has_country_flag = random_faction_border_posts_active
+		has_idea = random_faction_border_pressure
+		has_idea = random_faction_bloc_polarization
+		has_idea = random_faction_neutrality_exhaustion
+		has_idea = random_faction_liaison_mission
+	}
+}
+
+has_random_faction_active_pressure = {
+	random_faction_has_active_pressure = yes
+}
+
+random_faction_pressure_source_is_valid = {
+	has_variable = random_faction_pressure_source_leader
+	has_variable = random_faction_pressure_source_country
+	country_exists = var:random_faction_pressure_source_leader
+	country_exists = var:random_faction_pressure_source_country
+	var:random_faction_pressure_source_leader = {
+		is_random_faction_allowed_faction_leader = yes
+		NOT = { has_war_with = PREV }
+	}
+	var:random_faction_pressure_source_country = {
+		random_faction_country_base_valid = yes
+		is_in_faction = yes
+		is_in_faction_with = var:PREV.random_faction_pressure_source_leader
+	}
+}
+
+random_faction_alignment_memory_is_valid = {
+	random_faction_country_base_valid = yes
+	is_in_faction = yes
+	has_variable = random_faction_chosen_leader
+	country_exists = var:random_faction_chosen_leader
+	var:random_faction_chosen_leader = {
+		exists = yes
+		is_in_faction_with = PREV
+	}
+}
+
+random_faction_open_event_detail_has_bound_alignment_result = {
+	check_variable = { global.events_log_open_event_detail_actor_entries^num > 0 }
+	check_variable = { global.events_log_open_event_detail_has_actor_entries^num > 0 }
+	check_variable = { global.events_log_open_event_detail_secondary_actor_entries^num > 0 }
+	check_variable = { global.events_log_open_event_detail_has_secondary_actor_entries^num > 0 }
+	check_variable = { global.events_log_open_event_detail_has_actor_entries^events_log_open_event_detail_index > 0 }
+	check_variable = { global.events_log_open_event_detail_has_secondary_actor_entries^events_log_open_event_detail_index > 0 }
+	country_exists = var:global.events_log_open_event_detail_actor_entries^events_log_open_event_detail_index
+	country_exists = var:global.events_log_open_event_detail_secondary_actor_entries^events_log_open_event_detail_index
+}
+
+random_faction_open_event_detail_has_lost_alignment_result = {
+	check_variable = { global.events_log_open_event_detail_actor_entries^num > 0 }
+	check_variable = { global.events_log_open_event_detail_secondary_actor_entries^num > 0 }
+	check_variable = { global.events_log_open_event_detail_has_secondary_actor_entries^num > 0 }
+	check_variable = { global.events_log_open_event_detail_has_secondary_actor_entries^events_log_open_event_detail_index > 0 }
+	country_exists = var:global.events_log_open_event_detail_actor_entries^events_log_open_event_detail_index
+	NOT = { country_exists = var:global.events_log_open_event_detail_secondary_actor_entries^events_log_open_event_detail_index }
+}
+
+random_faction_open_event_detail_has_recorded_alignment_context = {
+	check_variable = { global.events_log_open_event_detail_fired_entries^num > 0 }
+	check_variable = { global.events_log_open_event_detail_actor_entries^num > 0 }
+	check_variable = { global.events_log_open_event_detail_has_actor_entries^num > 0 }
+	check_variable = { global.events_log_open_event_detail_fired_entries^events_log_open_event_detail_index > 0 }
+	check_variable = { global.events_log_open_event_detail_has_actor_entries^events_log_open_event_detail_index > 0 }
+	country_exists = var:global.events_log_open_event_detail_actor_entries^events_log_open_event_detail_index
+}
+
+random_faction_history_row_has_bound_alignment_result = {
+	check_variable = { global.events_log_view_event_id_entries^num > 0 }
+	check_variable = { global.events_log_view_actor_entries^num > 0 }
+	check_variable = { global.events_log_view_has_actor_entries^num > 0 }
+	check_variable = { global.events_log_view_secondary_actor_entries^num > 0 }
+	check_variable = { global.events_log_view_has_secondary_actor_entries^num > 0 }
+	check_variable = {
+		var = global.events_log_view_event_id_entries^events_log_history_index
+		value = constant:random_faction_event.id
+		compare = equals
+	}
+	check_variable = { global.events_log_view_has_actor_entries^events_log_history_index > 0 }
+	check_variable = { global.events_log_view_has_secondary_actor_entries^events_log_history_index > 0 }
+	country_exists = var:global.events_log_view_actor_entries^events_log_history_index
+	country_exists = var:global.events_log_view_secondary_actor_entries^events_log_history_index
+}
+
+random_faction_history_row_has_lost_alignment_result = {
+	check_variable = { global.events_log_view_event_id_entries^num > 0 }
+	check_variable = { global.events_log_view_actor_entries^num > 0 }
+	check_variable = { global.events_log_view_has_secondary_actor_entries^num > 0 }
+	check_variable = {
+		var = global.events_log_view_event_id_entries^events_log_history_index
+		value = constant:random_faction_event.id
+		compare = equals
+	}
+	check_variable = { global.events_log_view_has_secondary_actor_entries^events_log_history_index > 0 }
+	country_exists = var:global.events_log_view_actor_entries^events_log_history_index
+	NOT = { country_exists = var:global.events_log_view_secondary_actor_entries^events_log_history_index }
+}
+
+random_faction_history_row_has_recorded_alignment_context = {
+	check_variable = { global.events_log_view_event_id_entries^num > 0 }
+	check_variable = { global.events_log_view_actor_entries^num > 0 }
+	check_variable = { global.events_log_view_has_actor_entries^num > 0 }
+	check_variable = {
+		var = global.events_log_view_event_id_entries^events_log_history_index
+		value = constant:random_faction_event.id
+		compare = equals
+	}
+	check_variable = { global.events_log_view_has_actor_entries^events_log_history_index > 0 }
+	country_exists = var:global.events_log_view_actor_entries^events_log_history_index
+}
+
+random_faction_current_country_has_tracked_state = {
+	OR = {
+		random_faction_has_active_pressure = yes
+		has_country_flag = random_faction_selection_pending
+		has_country_flag = random_faction_history_result_pending
+		has_country_flag = random_faction_recent_alignment
+		has_country_flag = random_faction_regional_bucket_target
+		has_country_flag = random_faction_four_doors_candidate
+		has_country_flag = random_faction_hold_the_line_candidate
+		has_country_flag = random_faction_frontier_commitment_candidate
+		has_country_flag = random_faction_liaison_web_candidate
+		has_country_flag = random_faction_not_everyone_region_candidate
+		check_variable = { random_faction_liaison_candidate_leaders^num > 0 }
+		check_variable = { random_faction_not_everyone_candidate_owners^num > 0 }
+		check_variable = { random_faction_not_everyone_survivor_targets^num > 0 }
+		has_variable = random_faction_chosen_leader
+		has_variable = random_faction_pending_history_sequence
+		has_variable = random_faction_pending_history_leader
+		has_variable = random_faction_pressure_source_leader
+		has_variable = random_faction_pressure_source_country
+		has_variable = random_faction_pressure_anchor_country
+		is_in_array = { array = global.random_faction_pressure_targets value = THIS }
+		is_in_array = { array = global.random_faction_pressured_neutrals value = THIS }
+		is_in_array = { array = global.random_faction_aligned_minors value = THIS }
+		is_in_array = { array = global.random_faction_faction_leaders value = THIS }
+	}
+}
+
+random_faction_current_country_has_active_achievement_proof = {
+	OR = {
+		has_country_flag = random_faction_four_doors_candidate
+		has_country_flag = random_faction_hold_the_line_candidate
+		has_country_flag = random_faction_frontier_commitment_candidate
+		has_country_flag = random_faction_liaison_web_candidate
+		has_country_flag = random_faction_not_everyone_region_candidate
+	}
+}
+
+random_faction_newly_aligned_minor_decisions_visible = {
+	random_faction_country_base_valid = yes
+	has_country_flag = random_faction_recent_alignment
+	random_faction_alignment_memory_is_valid = yes
+	NOT = { is_major = yes }
+	OR = {
+		NOT = { has_country_flag = random_faction_requested_liaison }
+		AND = {
+			has_idea = random_faction_alignment_shock
+			OR = {
+				NOT = { has_country_flag = random_faction_alignment_stabilized }
+				NOT = { has_country_flag = random_faction_opposition_quieted }
+			}
+		}
+	}
+}
+
+random_faction_pressured_neutral_decisions_visible = {
+	random_faction_country_base_valid = yes
+	NOT = { is_in_faction = yes }
+	random_faction_has_active_pressure = yes
+	random_faction_pressure_source_is_valid = yes
+}
+
+random_faction_faction_leader_decisions_visible = {
+	is_random_faction_allowed_faction_leader = yes
+	is_in_array = { array = global.random_faction_faction_leaders value = THIS }
+	any_of_scopes = {
+		array = global.random_faction_pressure_targets
+		random_faction_valid_radio_target_for_root = yes
+	}
+}
+
+random_faction_bloc_pressure_category_visible = {
+	OR = {
+		random_faction_newly_aligned_minor_decisions_visible = yes
+		random_faction_pressured_neutral_decisions_visible = yes
+		random_faction_faction_leader_decisions_visible = yes
+	}
+}
+
+random_faction_is_current_faction_leader_for_root = {
+	is_random_faction_allowed_faction_leader = yes
+	is_in_faction_with = ROOT
+}
+
+random_faction_is_valid_observer_source_for_root = {
+	is_random_faction_allowed_faction_leader = yes
+	NOT = { has_war_with = ROOT }
+	random_faction_target_has_regional_reach_from_root = yes
+	ROOT = { random_faction_pressured_neutral_decisions_visible = yes }
+}
+
+random_faction_target_has_regional_reach_from_root = {
+	OR = {
+		is_in_faction_with = ROOT
+		is_neighbor_of = ROOT
+		any_neighbor_country = { is_in_faction_with = ROOT }
+		AND = {
+			any_controlled_state = { is_coastal = yes }
+			ROOT = { any_controlled_state = { is_coastal = yes } }
+		}
+	}
+}
+
+random_faction_target_ideology_matches_root = {
+	has_same_ideology = ROOT
+}
+
+random_faction_target_has_positive_relations_with_root = {
+	has_opinion = { target = ROOT value > @random_faction_positive_opinion }
+}
+
+random_faction_target_has_low_resilience = {
+	check_variable = {
+		var = random_faction_neutrality_resilience
+		value = constant:random_faction_ai_threshold.low_neutrality_resilience
+		compare = less_than
+	}
+}
+
+random_faction_target_has_high_resilience = {
+	check_variable = {
+		var = random_faction_neutrality_resilience
+		value = constant:random_faction_ai_threshold.high_neutrality_resilience
+		compare = greater_than_or_equals
+	}
+}
+
+random_faction_target_is_threatened = {
+	OR = {
+		has_war = yes
+		any_neighbor_country = { has_war = yes }
+		any_neighbor_country = {
+			is_in_faction = yes
+			NOT = { is_in_faction_with = ROOT }
+		}
+	}
+}
+
+random_faction_valid_leader_action_target_for_root = {
+	random_faction_country_base_valid = yes
+	OR = {
+		has_country_flag = random_faction_recent_alignment
+		random_faction_has_active_pressure = yes
+		is_in_faction_with = ROOT
+	}
+	NOT = { has_war_with = ROOT }
+	ROOT = { is_random_faction_allowed_faction_leader = yes }
+}
+
+random_faction_valid_staff_mission_target_for_root = {
+	random_faction_valid_leader_action_target_for_root = yes
+	random_faction_target_has_regional_reach_from_root = yes
+	NOT = { has_country_flag = random_faction_staff_mission_recent }
+}
+
+random_faction_valid_radio_target_for_root = {
+	random_faction_valid_leader_action_target_for_root = yes
+	random_faction_target_has_regional_reach_from_root = yes
+}
+
+random_faction_valid_corridor_target_for_root = {
+	random_faction_valid_leader_action_target_for_root = yes
+	random_faction_target_has_regional_reach_from_root = yes
+}
+
+random_faction_commitment_demands_unlocked = {
+	OR = {
+		has_global_flag = random_faction_evolution_ii_unlocked
+		has_global_flag = random_faction_evolution_iii_unlocked
+	}
+}
+
+random_faction_valid_commitment_target_for_root = {
+	random_faction_valid_leader_action_target_for_root = yes
+	random_faction_target_has_regional_reach_from_root = yes
+	NOT = { is_in_faction_with = ROOT }
+	random_faction_has_active_pressure = yes
+}
+
+random_faction_leader_has_multiple_reachable_pressure_targets = {
+	any_of_scopes = {
+		array = global.random_faction_pressure_targets
+		random_faction_valid_radio_target_for_root = yes
+		any_of_scopes = {
+			array = global.random_faction_pressure_targets
+			random_faction_valid_radio_target_for_root = yes
+			NOT = { tag = PREV }
+		}
+	}
+}
+
+random_faction_leader_reaction_context_valid = {
+	is_random_faction_allowed_faction_leader = yes
+	has_event_target = random_faction_target_country
+	event_target:random_faction_target_country = {
+		random_faction_country_base_valid = yes
+		NOT = { is_subject = yes }
+		NOT = { has_war_with = ROOT }
+		is_in_faction_with = ROOT
+		has_variable = random_faction_chosen_leader
+		check_variable = {
+			var = random_faction_chosen_leader
+			value = ROOT
+			compare = equals
+		}
+	}
+}
+
+random_faction_has_valid_corridor_objective_target = {
+	any_of_scopes = {
+		array = random_faction_corridor_targets
+		has_country_flag = random_faction_corridor_guaranteed
+		random_faction_valid_corridor_target_for_root = yes
+	}
+}
+
+random_faction_border_posts_objective_secured = {
+	random_faction_pressured_neutral_decisions_visible = yes
+	capital_scope = { is_controlled_by = ROOT }
+	has_variable = random_faction_border_post_state
+	has_variable = random_faction_border_post_division_floor
+	var:random_faction_border_post_state = { is_controlled_by = ROOT }
+	NOT = { has_equipment = { infantry_equipment < constant:random_faction_decision_cost.infantry_equipment_medium } }
+	meta_trigger = {
+		text = {
+			divisions_in_state = {
+				state = var:random_faction_border_post_state
+				size > [DIVISION_FLOOR]
+			}
+		}
+		DIVISION_FLOOR = "[?random_faction_border_post_division_floor|.0]"
+	}
+}
+
+random_faction_corridor_objective_secured = {
+	random_faction_faction_leader_decisions_visible = yes
+	random_faction_has_valid_corridor_objective_target = yes
+	has_variable = random_faction_corridor_train_floor
+	NOT = { has_equipment = { convoy < constant:random_faction_decision_cost.convoy_low } }
+	meta_trigger = {
+		text = { has_equipment = { train_equipment > [TRAIN_FLOOR] } }
+		TRAIN_FLOOR = "[?random_faction_corridor_train_floor|.0]"
+	}
+}
+
+random_faction_frontier_commitment_objective_secured = {
+	random_faction_country_base_valid = yes
+	is_in_faction = yes
+	NOT = { is_subject = yes }
+	NOT = { has_capitulated = yes }
+	capital_scope = { is_controlled_by = PREV }
+	check_variable = { random_faction_frontier_core_state_targets^num > 0 }
+	NOT = {
+		any_of_scopes = {
+			array = random_faction_frontier_core_state_targets
+			NOT = { is_controlled_by = ROOT }
+		}
+	}
+}
+
+can_pay_random_faction_stabilize_alignment_cost = {
+	has_variable = random_faction_stabilize_pp_cost
+	has_variable = random_faction_stabilize_support_cost
+	meta_trigger = {
+		text = { NOT = { has_political_power < [POLITICAL_POWER_COST] } }
+		POLITICAL_POWER_COST = "[?random_faction_stabilize_pp_cost|.3]"
+	}
+	meta_trigger = {
+		text = { NOT = { has_equipment = { support_equipment < [SUPPORT_EQUIPMENT_COST] } } }
+		SUPPORT_EQUIPMENT_COST = "[?random_faction_stabilize_support_cost|.0]"
+	}
+	if = {
+		limit = { has_country_flag = random_faction_stabilize_wartime_cost }
+		has_variable = random_faction_stabilize_command_power_cost
+		meta_trigger = {
+			text = { NOT = { command_power < [COMMAND_POWER_COST] } }
+			COMMAND_POWER_COST = "[?random_faction_stabilize_command_power_cost|.3]"
+		}
+		NOT = { has_war_support < constant:random_faction_decision_fixed_gate.war_support_low }
+	}
+}
+
+can_pay_random_faction_request_liaison_cost = {
+	NOT = { command_power < constant:random_faction_decision_cost.command_power_low }
+	FROM = {
+		exists = yes
+		NOT = { has_equipment = { support_equipment < constant:random_faction_decision_cost.support_equipment_low } }
+	}
+}
+
+can_pay_random_faction_quiet_opposition_cost = {
+	NOT = { has_political_power < constant:random_faction_decision_cost.pp_low }
+	NOT = { has_stability < constant:random_faction_decision_fixed_gate.stability_low }
+	if = {
+		limit = { has_war = yes }
+		NOT = { has_war_support < constant:random_faction_decision_fixed_gate.war_support_low }
+	}
+	NOT = { has_equipment = { infantry_equipment < constant:random_faction_decision_cost.infantry_equipment_medium } }
+}
+
+can_pay_random_faction_neutrality_council_cost = {
+	NOT = { has_political_power < constant:random_faction_decision_cost.pp_medium }
+	NOT = { command_power < constant:random_faction_decision_cost.command_power_low }
+	NOT = { has_stability < constant:random_faction_decision_fixed_gate.stability_low }
+}
+
+can_pay_random_faction_invite_observers_cost = {
+	NOT = { command_power < constant:random_faction_decision_cost.command_power_low }
+	NOT = { has_equipment = { convoy < constant:random_faction_decision_cost.convoy_low } }
+}
+
+can_pay_random_faction_publish_neutrality_cost = {
+	NOT = { has_political_power < constant:random_faction_decision_cost.pp_low }
+	NOT = { has_stability < constant:random_faction_decision_fixed_gate.stability_low }
+}
+
+can_pay_random_faction_staff_mission_cost = {
+	NOT = { command_power < constant:random_faction_decision_cost.command_power_medium }
+	NOT = { has_equipment = { support_equipment < constant:random_faction_decision_cost.support_equipment_medium } }
+}
+
+can_pay_random_faction_radio_networks_cost = {
+	NOT = { has_political_power < constant:random_faction_decision_cost.pp_low }
+	NOT = { has_equipment = { support_equipment < constant:random_faction_decision_cost.support_equipment_medium } }
+}
+
+can_pay_random_faction_corridor_cost = {
+	NOT = { command_power < constant:random_faction_decision_cost.command_power_low }
+	NOT = { has_equipment = { infantry_equipment < constant:random_faction_decision_cost.infantry_equipment_medium } }
+	NOT = { has_equipment = { convoy < constant:random_faction_decision_cost.convoy_low } }
+}
+
+can_pay_random_faction_commitment_cost = {
+	NOT = { has_political_power < constant:random_faction_decision_cost.pp_high }
+	NOT = { command_power < constant:random_faction_decision_cost.command_power_medium }
+}
