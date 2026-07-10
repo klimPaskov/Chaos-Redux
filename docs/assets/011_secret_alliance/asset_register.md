@@ -55,7 +55,7 @@ The up-to-one-year `secret_alliance_retained_counterintelligence` aftermath idea
 - Static fallback sprite: `GFX_011_secret_alliance_coalition_closure_warning`
 - Static fallback: `gfx/interface/011_secret_alliance/coalition_closure_warning_static.dds`
 
-The animation is frame-authored: every source frame is a separate generated visual state. The fallback is registered alongside it but is not used as a transform-only substitute for the animation.
+The animation is frame-authored with a separate generated visual state for every source frame. The registered fallback supplies the static presentation for non-animated use.
 
 ## Achievement art
 

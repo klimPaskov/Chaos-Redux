@@ -1,5 +1,9 @@
 # Event 011 Secret Alliance repository implementation map
 
+## Disposition
+
+Historical pre-implementation repository map. Its placeholder, provisional-file, and required-action statements describe the explorer's original freeze. Gameplay candidate `c4bb10ce`, `docs/events/011_secret_alliance.md`, and the running final completion audit govern current behavior and status.
+
 ## Scope and authority
 
 This is a read-only repository-exploration handoff for the main implementation agent. The explorer changed no gameplay, localisation, interface, asset, audio, spreadsheet, or binary file.

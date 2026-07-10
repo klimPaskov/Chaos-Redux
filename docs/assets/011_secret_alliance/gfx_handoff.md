@@ -1,5 +1,7 @@
 # Event 011 Secret Alliance raster GFX handoff
 
+Disposition: historical asset-production handoff. The wiring instructions below record the boundary of the generated event-art tranche. Final registration and use are complete in `interface/011_secret_alliance.gfx`, `interface/chaosx_super_events.gfx`, and the Event 011 consumers. Current paths and statuses are recorded in `asset_register.md` and `manifest.md`.
+
 This handoff covers only the seven report images, one news image, and one reveal super-event image created by the generated event-art tranche. Icon, UI, achievement, and animation assets use their separate tranche handoff.
 
 The runtime event script already refers to the report and news sprite names below. The DDS files are ready at the exact paths registered in the Event 011 asset matrix. This subagent did not edit any `.gfx` file.
