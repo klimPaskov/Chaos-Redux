@@ -2046,3 +2046,128 @@ unique_id = chaos_redux_achievements
 		}
 	}
 }
+
+#############################
+# EVENT 011 - SECRET ALLIANCE ACHIEVEMENTS
+#############################
+
+011_secret_alliance_the_empty_chair = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_secret_alliance_the_empty_chair_tooltip
+			is_ai = no
+			has_capitulated = no
+			has_country_flag = achievement_secret_alliance_empty_chair_ready
+			has_country_flag = achievement_secret_alliance_normal_origin
+			has_country_flag = achievement_secret_alliance_true_founder_confirmed
+			has_country_flag = secret_alliance_hidden_pact_collapsed
+			NOT = { has_country_flag = secret_alliance_public_reveal_occurred }
+			NOT = { has_country_flag = achievement_secret_alliance_innocent_named }
+			NOT = { has_country_flag = achievement_secret_alliance_innocent_attacked }
+			NOT = { has_country_flag = achievement_secret_alliance_unconfirmed_suspect_annexed }
+			NOT = { has_country_flag = achievement_secret_alliance_scenario_maximum }
+			NOT = { has_country_flag = achievement_secret_alliance_forced_origin }
+		}
+	}
+}
+
+011_secret_alliance_every_thread = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_secret_alliance_every_thread_tooltip
+			is_ai = no
+			has_capitulated = no
+			has_country_flag = achievement_secret_alliance_every_thread_ready
+			has_country_flag = achievement_secret_alliance_all_members_confirmed
+			has_country_flag = achievement_secret_alliance_normal_origin
+			check_variable = { secret_alliance_evidence_snapshot = constant:secret_alliance_band.evidence_complete_network }
+			check_variable = {
+				var = secret_alliance_independent_evidence_classes_snapshot
+				value = constant:secret_alliance_evidence.complete_network_classes
+				compare = greater_than_or_equals
+			}
+			NOT = { has_country_flag = achievement_secret_alliance_innocent_named }
+			NOT = { has_country_flag = achievement_secret_alliance_forced_origin }
+		}
+	}
+}
+
+011_secret_alliance_their_man_in_the_room = {
+	hidden = yes
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_secret_alliance_their_man_in_the_room_tooltip
+			is_ai = no
+			has_capitulated = no
+			has_country_flag = achievement_secret_alliance_their_man_in_the_room_ready
+			has_country_flag = achievement_secret_alliance_turned_founder_or_major_snapshot
+			has_country_flag = achievement_secret_alliance_turned_channel_preserved_snapshot
+			has_country_flag = achievement_secret_alliance_false_plan_consequence
+			has_country_flag = achievement_secret_alliance_normal_origin
+			NOT = { has_country_flag = achievement_secret_alliance_forced_origin }
+		}
+	}
+}
+
+011_secret_alliance_divide_the_table = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_secret_alliance_divide_the_table_tooltip
+			is_ai = no
+			has_capitulated = no
+			has_country_flag = achievement_secret_alliance_divide_table_ready
+			NOT = { has_country_flag = secret_alliance_coalition_victory }
+			NOT = { has_country_flag = achievement_secret_alliance_forced_origin }
+			check_variable = {
+				var = secret_alliance_event_fracture_exit_count
+				value = secret_alliance_fracture_exit_requirement
+				compare = greater_than_or_equals
+			}
+		}
+	}
+}
+
+011_secret_alliance_surrounded_not_buried = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_secret_alliance_surrounded_not_buried_tooltip
+			is_ai = no
+			has_capitulated = no
+			has_country_flag = achievement_secret_alliance_surrounded_not_buried_ready
+			has_country_flag = achievement_secret_alliance_scenario_maximum
+			has_country_flag = achievement_secret_alliance_maximum_composition_qualified
+			has_country_flag = achievement_secret_alliance_opening_survived
+			has_country_flag = secret_alliance_target_kept_starting_capital
+			is_subject = no
+			NOT = { has_country_flag = achievement_secret_alliance_human_consent_bypassed }
+			NOT = { has_country_flag = achievement_secret_alliance_forced_origin }
+			NOT = { has_global_flag = world_end }
+		}
+	}
+}
+
+011_secret_alliance_two_giants_one_grave = {
+	hidden = yes
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_secret_alliance_two_giants_one_grave_tooltip
+			is_ai = no
+			has_capitulated = no
+			has_country_flag = achievement_secret_alliance_two_giants_one_grave_ready
+			has_country_flag = achievement_secret_alliance_two_major_snapshot
+			has_country_flag = secret_alliance_target_kept_starting_capital
+			has_country_flag = secret_alliance_target_victory
+			OR = {
+				has_country_flag = achievement_secret_alliance_normal_origin
+				has_country_flag = achievement_secret_alliance_scenario_high_or_maximum
+			}
+			NOT = { has_country_flag = achievement_secret_alliance_forced_origin }
+		}
+	}
+}

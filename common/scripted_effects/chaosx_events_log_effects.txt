@@ -148,6 +148,15 @@ events_log_set_default_actor_for_current_event = {
 	}
 	else_if = {
 		limit = {
+			check_variable = { event_id = constant:secret_alliance_event.id }
+			has_event_target = secret_alliance_target
+			event_target:secret_alliance_target = { exists = yes }
+		}
+		event_target:secret_alliance_target = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		set_temp_variable = { events_log_default_has_actor = 1 }
+	}
+	else_if = {
+		limit = {
 			check_variable = { event_id = constant:white_peace_event_log.event_id }
 			has_event_target = white_peace_primary
 		}
@@ -3077,6 +3086,13 @@ rebuild_events_log_events_view = {
 			if = {
 				limit = {
 					check_variable = { event_id = 15 }
+				}
+				set_temp_variable = { events_log_events_live_weight = -1 }
+			}
+			if = {
+				limit = {
+					check_variable = { event_id = constant:secret_alliance_event.id }
+					NOT = { secret_alliance_automatic_event_is_available = yes }
 				}
 				set_temp_variable = { events_log_events_live_weight = -1 }
 			}
