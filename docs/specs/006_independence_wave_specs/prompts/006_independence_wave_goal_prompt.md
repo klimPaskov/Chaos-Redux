@@ -1,9 +1,0 @@
-# 006 Independence Wave, Goal Prompt
-
-```text
-/goal Implement Event 6, Independence Wave, from docs/specs/006_independence_wave_specs/. Read every file in that folder first. Event 6 is Minor Repeatable in Liberations. Releases are instant. Wave count ladder is 3, 4, 5, 7, 10. Hosts must never be fully deleted and should keep their capital when possible. Event 6 origin must stay separate from Soviet Collapse even when tags overlap. New Event 6 custom country, formable, cosmetic, and route split tags must end in X. Every release needs Event 6 content, not an empty tag.
-
-Build release selection, host safeguards, origin flags, mechanics, decisions, missions, scripted GUI, focus overlay, regional inserts, country packages, starting forces, formables, league and compact endgames, super-event thresholds, release-all scenario variants, achievements, assets, AI, docs, and cleanup. Make legitimacy, recognition, foreign support, patron influence, sponsor rivalry, coalition trust, border heat, instability, local control, host anger, league cohesion, and aggressive pressure visible and dynamic.
-
-Do not reduce the spec to political power buttons, tiny modifiers, empty tags, generic focus ladders, placeholder assets, or silent fallbacks. Use sourced assets for real leaders, historical flags, and attested symbols. Use generated workflows for fictional and high-chaos assets. Use concrete decision costs, success, partial success, failure, cooldowns, AI behavior, clutter control, and exploit prevention. Add achievements with conditions, disqualifiers, icons, docs, and validation. Run meaningful tests for normal waves, evolved waves, scenario variants, host survival, origin separation, focus loading, decisions, GUI, formables, super-events, achievements, cleanup, and AI. Report any skipped, simplified, blocked, or placeholder content honestly.
-```

@@ -6,7 +6,7 @@ Date: 2026-07-10.
 
 Historical accepted-plan handoff. The mandatory post-implementation improvement pass found a bounded causal-depth gap and closed broad expansion. Its must-fix sections were accepted and are recorded as resolved in `../011_secret_alliance_improvement_resolution.md`.
 
-This handoff no longer represents the current implementation verdict. At the time of this pass, the strict audits were incomplete. Later scoped audits and the final balance freeze supersede that state. Current gameplay and balance authority is `1c87d923`, the accepted addendum is fully disposed, and `completion_audit.md` owns the holistic verdict.
+This handoff no longer represents the current implementation verdict. At the time of this pass, the strict audits were incomplete. Later scoped audits and the final balance freeze supersede that state. Current gameplay authority is `407b9a05`, balance remains frozen at `1c87d923`, the accepted addendum is fully disposed, and `completion_audit.md` owns the holistic verdict.
 
 Primary addendum:
 

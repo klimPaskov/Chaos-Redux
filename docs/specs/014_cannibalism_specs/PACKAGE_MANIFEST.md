@@ -1,0 +1,49 @@
+# Package Manifest
+
+| Path | Bytes | Lines | SHA-256 |
+| --- | ---: | ---: | --- |
+| `README.md` | 4327 | 51 | `5861aa914e16b554ea4a58cd9279904f414935ed3d4ae6982fa39fe547fbc227` |
+| `focus_graphs/event_escalation_flow.mmd` | 1448 | 43 | `ea4871ee1d7dff48ff212f8dd41da81ec08cca40c322baf929dbc04d01a82d01` |
+| `focus_graphs/local_warlord_focus_architecture.mmd` | 847 | 34 | `0e62b618d57feabf0b3ef220aa72f05979afa705f016b2ec7d539cec7be6a2b0` |
+| `focus_graphs/united_hannibal_focus_architecture.mmd` | 713 | 28 | `5b34e03179856aee194cbafeda85717cc1e38d469c6d7cbc384589a59e3f2813` |
+| `focus_graphs/wendigo_overlay_focus_architecture.mmd` | 435 | 14 | `9b2f0e0088ea3b831e379f50606103899a7624bffa2a0ea4ed6cb07ad125c3c1` |
+| `matrices/ai_strategy_matrix.md` | 1901 | 19 | `6d8c7cc33bfa448d5c2b0ad733f324320b23706df21e77d0a14663b361a32767` |
+| `matrices/asset_inventory_matrix.md` | 1854 | 21 | `973c99eb268df93cc520fcd55dcc3807e83be6ab32e1aefa8a7d6bf755f66f23` |
+| `matrices/country_package_matrix.md` | 2304 | 34 | `3c05a1a8eb3e26717c207067be12e5d14405f4166cf133fe9c104da7739bcae7` |
+| `matrices/decision_mission_matrix.md` | 4996 | 32 | `a831c2b002ba91930a767c55b02523b37d0c00a6a52eb2fb04a75b4f6291789c` |
+| `matrices/event_map_and_state_machine.md` | 3614 | 84 | `0d1c1296ac13f73d216763cfa79926b52b767550e7562c61c54e9c6d4dd2c8d4` |
+| `matrices/focus_route_matrix.md` | 3924 | 47 | `ae3c64e1e1f2b8f030ea84e4a1fdecc0e68ab8cb977ab5453b10860f78ef2137` |
+| `matrices/hidden_identity_surface_audit.md` | 1411 | 21 | `55e2694fe2be9d524352714826bd389df081ce8767adc77582e3ae456a863de9` |
+| `matrices/idea_lifecycle_matrix.md` | 2010 | 18 | `29a6c57e79dcba97ad1caa1f45e27467760dccacdc1f6ca88a826179111838f2` |
+| `matrices/super_event_matrix.md` | 1406 | 23 | `86194f55723ed08cf1ed086987ef03360e0816757131c57a3c939d3a27d22ed6` |
+| `matrices/world_reaction_matrix.md` | 1313 | 16 | `03e5f37f0092c675fc6e445eab852285e1d5bf76210e07aa0bddc5101dde631c` |
+| `prompts/cannibalism_achievement_prompt.md` | 2869 | 52 | `57cf048459421fd761c5d2a4262891ed12e7da3536b9e7c43654862b8a59418a` |
+| `prompts/cannibalism_asset_prompt.md` | 6675 | 185 | `736a9e49041b355a7af70cfef31ce9f340ba924dc3fd8591b525a9095b0acbf8` |
+| `prompts/cannibalism_coding_prompt.md` | 5125 | 56 | `d05802cb4f46d52b996934cc5a41bd33d00a55f151220dfcca6e20553abbc984` |
+| `prompts/cannibalism_completion_audit_prompt.md` | 2057 | 45 | `970686cc3dde5b4db762d6968f610dcb86d1ee01e0aab4579b4dc65260247e50` |
+| `prompts/cannibalism_decision_mission_prompt.md` | 4139 | 116 | `3214c059e2b27d801804840b5eb28d3a6ffb04c76d572c17727b0847ba25cabd` |
+| `prompts/cannibalism_goal_prompt.md` | 3993 | 18 | `032e2e9076056ab542d3741863f2e863ad0ca9b026a57b4527cc028882b70d55` |
+| `prompts/cannibalism_improvement_loop_prompt.md` | 2189 | 37 | `8dd630ed40f49e40f0f942f32cc82597dd42c8c622f1a5fee55c2c3f966e10c4` |
+| `prompts/cannibalism_super_event_prompt.md` | 4604 | 178 | `adc75baece631f7d55e0d892e51e885a1d696de641a8fd5799d3fa226819d441` |
+| `prompts/subagent_orchestration_plan.md` | 2505 | 23 | `961b3289b05b5aa2506b752dc4505f80b16bd00b739be453d15f66dd402705ac` |
+| `quality/anti_spoiler_audit.md` | 3416 | 50 | `c1d94d8b11952a953404d62b55ce4e02937ca235303402dd4dfb4712514a81bc` |
+| `quality/manual_improvement_loop_review.md` | 5329 | 142 | `c8eab879c3057cacefb1804a524f537f56f59ef2bb2cc74560f588779ac09705` |
+| `quality/package_status.md` | 1276 | 30 | `e55476d458137589c0e1d2f01cefb83d85388e26c2ecd69150a05dbe49c5c4cd` |
+| `quality/package_validation.md` | 2462 | 62 | `c4ce34d4d015022049379f10dfd332395a6eff7d9d2e8f547146fb8901884552` |
+| `research/historical_and_cultural_research.md` | 6385 | 100 | `67fb251b59f340edd5b65732bbcc38e40cbaaf02e0752df93900b5ec852c6350` |
+| `research/research_to_design_connections.md` | 2159 | 16 | `bb6fe14fcd95e40962f9836e8b3b1750c13c81bbcd2ebef8e205a1eced74363a` |
+| `research/source_reading_manifest.md` | 4921 | 50 | `628bfa0785734e2ce9c5a6522c02c199f947727cc3248dcbb8277cba4c9f7888` |
+| `specs/014_cannibalism_spec_part_10_assets_animation_and_localisation.md` | 14556 | 497 | `e11a1e521b65d62e7d813f362b863ba7649bde7ad5649c29be21452e6aa479ea` |
+| `specs/014_cannibalism_spec_part_11_achievements_scenarios_and_aftermath.md` | 12174 | 607 | `d268932e64a3f3a7560770791dcd363b67b19b900885c495e8a2c7b30da60f98` |
+| `specs/014_cannibalism_spec_part_12_acceptance_criteria.md` | 9958 | 209 | `fba95454c463fbd9653bac870f6343f2e891f3e9253797d614ca69365b24b0a8` |
+| `specs/014_cannibalism_spec_part_1_core.md` | 17797 | 347 | `e9ff4ad1986af0275ef364d5bd9cff1827d4a559ce5fb64b3fca49231e03e51a` |
+| `specs/014_cannibalism_spec_part_2_baseline_containment.md` | 17968 | 716 | `514d67826f12bba34b7c122f61eb301a32fed4c4c5022afd1972939d27f07ead` |
+| `specs/014_cannibalism_spec_part_3_evolutions_and_spread.md` | 19532 | 576 | `888029b10afd33ef5330463bd47c6fd5bc8dfde99cdc673db2bcdf56d97dc546` |
+| `specs/014_cannibalism_spec_part_4_country_packages.md` | 21351 | 691 | `7da129d94a43902c39d2c24bf5276d217edc1aee753a8aa4295353c79962e4a3` |
+| `specs/014_cannibalism_spec_part_5_focus_tree_architecture.md` | 16986 | 702 | `27dcfd2c1a940f96cb9ff868bc5a63b5a439d84b552949cf30016588a5da6c63` |
+| `specs/014_cannibalism_spec_part_6_decisions_missions_and_gui.md` | 14948 | 736 | `6885f0a443acf591f0a4a78ee155b7da9a685a191331dac02605d78c42d36ff8` |
+| `specs/014_cannibalism_spec_part_7_hannibal_reveal_and_unification.md` | 13438 | 449 | `c8448807a990ec419512d55c479f6a2217f96dfa8ee1c6927c5b77c8ecb8b4dc` |
+| `specs/014_cannibalism_spec_part_8_wendigo_and_world_end.md` | 12142 | 405 | `a135eab90fb2ec1a1bbbb0e456bd293e65d85cb3eac4a965eb2ec172f874d774` |
+| `specs/014_cannibalism_spec_part_9_ai_balance_and_integrations.md` | 16051 | 551 | `f52e17ad91ec6e4ea2be9e32719ea2bf790ae59c0bd7e9636213060bdf89fbc5` |
+
+Total files before this manifest: 43

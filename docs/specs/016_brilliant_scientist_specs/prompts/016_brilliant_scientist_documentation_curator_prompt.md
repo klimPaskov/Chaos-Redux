@@ -1,0 +1,20 @@
+# Documentation-curation prompt for Event 016 Brilliant Scientist
+
+Spawn `chaosx_documentation_curator` with `fork_context=false` after major implementation tranches and before the completion audit.
+
+Read the Event 16 source specs, all plans and addenda, subagent handoffs, asset manifests, super-event research, event documentation, implementation prompts, and current implementation evidence named by the parent.
+
+Create a source-of-truth map under `docs/plans/016_brilliant_scientist_plans/`.
+
+Required work:
+
+- Record every plan and addendum as implemented, promoted, queued with reason, rejected with reason, superseded, or blocked.
+- Reconcile the ten-part spec pack with accepted improvement-loop changes.
+- Mark stale prompts or old design notes as superseded rather than silently deleting them.
+- Keep `docs/events/016_brilliant_scientist.md` aligned with actual triggers, projects, evolutions, country routes, super-events, world end, and limitations.
+- Reconcile asset and audio manifests with wired files.
+- Record whether the unnumbered `Crazy Scientist` catalog concept was absorbed or redesigned.
+- Create or update a resume packet before a later implementation session.
+- Do not edit gameplay, localisation, assets, audio, or spreadsheets.
+
+Return changed documentation paths, open contradictions, plan dispositions, stale references, validation searches, and the exact next implementation step.

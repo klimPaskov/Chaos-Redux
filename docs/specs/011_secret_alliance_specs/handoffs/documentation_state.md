@@ -6,7 +6,8 @@
 | --- | --- |
 | Historical source design | `docs/specs/011_secret_alliance_specs/specs/` parts 1-5 |
 | Design matrices | `docs/specs/011_secret_alliance_specs/matrices/` |
-| Final gameplay and balance implementation | Event 011 gameplay files at `1c87d9235319781c871c2948813ab55693eb8618` |
+| Final engine-compatible gameplay | Event 011 gameplay files at `407b9a05eb7024dd1728c4092fba2f1162efde9c` |
+| High-impact balance implementation | Event 011 tuning at `1c87d9235319781c871c2948813ab55693eb8618` |
 | Lifecycle, callback, wording, and catalog lineage | Commits `a1f47c0c`, `7563648f`, and `97a2da80` beneath the final freeze |
 | Mechanic overview | `docs/events/011_secret_alliance.md` |
 | Improvement-loop closure | `docs/plans/011_secret_alliance_plans/011_secret_alliance_improvement_resolution.md` |
@@ -22,7 +23,7 @@
 
 ## Historical design disposition
 
-The five-part specification and matrices remain the accepted source design. Planning-era implementation prompts, asset requests, spreadsheet directions, and completion statements are historical handoffs. They are retained for chronology but do not override verified gameplay and balance behavior at `1c87d923`.
+The five-part specification and matrices remain the accepted source design. Planning-era implementation prompts, asset requests, spreadsheet directions, and completion statements are historical handoffs. They are retained for chronology but do not override verified gameplay behavior at `407b9a05` or the balance values frozen at `1c87d923`.
 
 Early working labels are no longer current localisation authority. Stable identifiers and final player-facing wording are defined by the immutable event, scripted-localisation, Event 011 localisation, achievement localisation, scenario localisation, and super-event localisation files. The early no-manual-scenario direction is superseded by accepted SCN-009.
 
@@ -31,9 +32,11 @@ Early working labels are no longer current localisation authority. Stable identi
 | Surface | SHA-256 prefix |
 | --- | --- |
 | Decisions | `B22CC92A` |
-| Constants | `8A5C5F0F` |
-| Effects | `EF4D9C1B` |
-| Triggers | `BE26F05D` |
+| Constants | `2A635EE5` |
+| Effects | `10B03E94` |
+| Triggers | `A228DC3B` |
+| Ideas | `D9C0C4D8` |
+| MTTH | `8CE980BF` |
 | Scripted localisation | `51F25FE3` |
 | Events | `02046301` |
 | Event 011 localisation | `6A42CEFE` |

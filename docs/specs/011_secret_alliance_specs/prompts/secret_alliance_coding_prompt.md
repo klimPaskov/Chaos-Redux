@@ -1,6 +1,6 @@
 # Coding prompt: Implement Event 011 Secret Alliance
 
-Status: fulfilled historical implementation prompt. Final gameplay and balance authority is commit `1c87d923`. Do not rerun this prompt as open work.
+Status: fulfilled historical implementation prompt. Final gameplay authority is commit `407b9a05`, with balance frozen at `1c87d923`. Do not rerun this prompt as open work.
 
 Implement the full Event 011 Secret Alliance rework from this planning package. Treat every file in `specs/`, `matrices/`, and `research/` as one design set. Follow `AGENTS.md`, `chaos-redux-events`, `hoi4-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-frame-animation`, `chaos-redux-super-events`, `chaos-redux-subagents`, and `chaos-redux-improvement-loop`.
 

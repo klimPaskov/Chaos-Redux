@@ -2,7 +2,7 @@
 
 ## Disposition
 
-Historical pre-implementation repository map. Its placeholder, provisional-file, and required-action statements describe the explorer's original freeze. Final gameplay and balance commit `1c87d923`, `docs/events/011_secret_alliance.md`, and the holistic `completion_audit.md` govern current behavior and status.
+Historical pre-implementation repository map. Its placeholder, provisional-file, and required-action statements describe the explorer's original freeze. Gameplay commit `407b9a05`, balance freeze `1c87d923`, `docs/events/011_secret_alliance.md`, and the holistic `completion_audit.md` govern current behavior and status.
 
 ## Scope and authority
 

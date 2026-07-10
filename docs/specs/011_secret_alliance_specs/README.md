@@ -1,6 +1,6 @@
 # Event 011 Secret Alliance Planning Package
 
-Status: implemented source-design archive. Final gameplay and balance authority is commit `1c87d923`. The canonical implementation summary is `docs/events/011_secret_alliance.md`, and the holistic verdict is `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md`.
+Status: implemented source-design archive. Final gameplay authority is commit `407b9a05`, with balance frozen at `1c87d923`. The canonical implementation summary is `docs/events/011_secret_alliance.md`, and the holistic verdict is `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md`.
 
 This package is the retained source design handoff for Chaos Redux Event 011, **Secret Alliance**.
 

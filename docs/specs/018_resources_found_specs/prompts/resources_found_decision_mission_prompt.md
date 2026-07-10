@@ -1,66 +1,245 @@
-# Decision and Mission Prompt for Event 018 Resources Found
+# Decision and Mission Implementation Prompt for Event 018 Resources Found
 
-Use `hoi4-decisions-missions`, `chaos-redux-events`, and the Event 018 spec files. After implementation, run `chaosx_decision_mission_auditor` and resolve its findings.
+Implement the complete Event 018 decision and mission systems from the source specs and `matrices/decision_mission_matrix.md`. Follow `AGENTS.md`, `chaos-redux-events`, and `hoi4-decisions-missions`. Use the scripted-system architect for repeated field, target, capacity, cost, and cleanup logic. Run the decision and mission auditor before completion.
 
-## Required category
+All working labels are design handles, not final localisation. Write final player-facing text during implementation.
 
-Create a resource field decision category or scripted GUI-backed category for the owning country of the active field. It must show the selected state and the current visible values.
+## Required decision surfaces
 
-Visible values:
+Implement five coordinated surfaces.
 
-- field richness
-- extraction pressure
-- survey confidence
-- worker safety
-- foreign interest
-- local dependence
-- public panic after public danger
-- vague below pressure or dangerous-depth status after sickness
+### 1. Resource field management category
 
-## Required decision families
+Owner-facing category for discovery, appraisal, development, extraction, labor, safety, security, trade posture, suspension, and closure.
 
-Implement staged families from the decision map:
+Attach a compact scripted GUI header that shows:
 
-- survey and confirmation
-- extraction and infrastructure
-- trade and concessions
-- nationalization and concession balancing
-- security and smuggling response
-- safety and worker relief
-- medical survey camps
-- demilitarized field pressure
-- border crisis and possible border war
-- evacuation and city shelter
-- cave hunts
-- closure and emergency shaft collapse
-- anti-Cave Host resource denial
-- aftermath reclamation
+- selected field state
+- Event 018 resource composition
+- Developed Yield
+- Excavation Depth
+- Workforce Safety
+- Foreign Pressure
+- Subsurface Disturbance after reveal
+- Breach Pressure in Evolution III
+- posture
+- contracts or commission status
+- current closure or suspension state
 
-## Cost rules
+Use a selected-field cycle for human players. AI must evaluate all fields without selecting them.
 
-Do not default to political power or command power. Use concrete costs and requirements such as civilian factory time, construction capacity, infantry equipment, support equipment, artillery, anti-tank, trains, convoys, fuel, manpower, divisions in the state, state infrastructure, rail access, relations, stability, war support, local dependence, survey confidence, and worker safety.
+The category must use phases and replacement actions. Do not show every development, diplomacy, crisis, and closure decision at once.
 
-Command power costs must stay conservative.
+### 2. Foreign contract and pressure actions
 
-## Mission rules
+Implement targeted behavior for interested countries and the field owner.
 
-Create timed missions for actual objectives:
+Required families:
 
-- securing survey zones with divisions
-- building extraction routes
-- balancing concessions
-- protecting lower works
-- evacuating settlements
-- sealing before breach
-- starving Cave Host by denying resource states
-- reclaiming and sealing origin state
+- invite bids
+- request purchase agreement
+- offer development assistance
+- seek exclusive rights
+- guarantee or protect access
+- reserve domestic output
+- balance buyers
+- renegotiate concession
+- nationalize
+- settle compensation
+- counter survey teams
+- expose sabotage
+- break smuggling routes
 
-Missions need success, failure, partial success where useful, cleanup, AI logic, and dynamic localisation for state names and costs.
+Only high-interest countries should receive active decisions. Use a compact target-management or event-offer pattern rather than one visible row per country worldwide.
 
-## AI rules
+Contracts must store partner, term, access, current status, and interruption reason. They must react to occupation, route loss, war, suspension, closure, partner death, and state transfer.
 
-AI must understand resource need, war state, stability, industry, country strength, ideology, foreign relations, field richness, public danger, and Cave Host risk. AI must be able to use equivalents for any important scripted GUI button.
+### 3. Border crisis and commission category
 
-## Cleanup
+Implement the staged dispute only when a valid claimant exists.
 
-Handle owner change, state transfer, site closure, Cave Host emergence, Cave Host defeat, invalid target countries, invalid state, disabled evolution, and world-end state. Do not leave stale decisions or missions visible.
+Required stages:
+
+- competing surveys
+- road or customs confrontation
+- armed patrol incident
+- timed frontier mission
+- limited border war where appropriate
+- victory, transfer, stalemate, and settlement
+- commission proposal
+- demilitarization and inspection
+- violation and compliance restoration
+- commission dissolution
+
+Timed missions must use named states, supplied divisions, route control, troop limits, or other active objectives. Do not use passive manpower or stability checks as the main mission.
+
+Reuse existing border-conflict infrastructure if valid. Event 018 still owns field-value gates, claimant validity, state transfer, ledger persistence, contracts, and settlement.
+
+### 4. Evolution III containment and closure category
+
+Required actions:
+
+- reinforce perimeter
+- hunt surface packs
+- clear urban district
+- secure transport corridor
+- evacuate field settlements
+- evacuate state center
+- request foreign hard-attack aid
+- seal one access network
+- partial closure
+- full sealing
+- last emergency seal
+
+Hunts require supplied hard-attack capable forces and real equipment commitments. Evacuation uses trains, trucks, routes, time, and receiving capacity. Full sealing requires suspended extraction, state control, engineering, evacuation or secured civilians, surface containment, and total sacrifice of Event 018 resource additions.
+
+Success and failure effects must be distinct. Full-seal success permanently blocks Evolution IV and removes only Event 018 resources. Partial closure must never set the prevention flag.
+
+### 5. Cave-country and anti-cave categories
+
+Cave-country actions:
+
+- mark a high-resource target
+- activate a captured resource anchor
+- accelerate a critical anchor
+- guard a feeding chamber
+- choose next spawn template
+- replace destroyed protected origin brood
+- consolidate Unfed Broods
+- build bounded tunnel links
+- use doctrine-specific assault actions
+- convert captured industry
+- track continent progress
+- prepare cross-continent rupture after terminal prerequisites
+
+Ordinary-country anti-cave actions:
+
+- emergency anti-armor contracts
+- request or send hard-attack aid
+- deny a resource state before loss
+- liberate an activating anchor within the activation window
+- clear a mature anchor
+- share hard-attack intelligence
+- open evacuation corridors
+- restore liberated resources and infrastructure
+
+## Dynamic values and costs
+
+Centralize thresholds, gains, losses, durations, cooldowns, AI weights, and scaling values. Use actual field and country conditions.
+
+Factors include:
+
+- resource amount and types
+- field yield, depth, safety, pressure, disturbance, breach
+- country industry, manpower, equipment, fuel, trains, and supply
+- war state
+- stability and war support
+- state infrastructure and control
+- contract influence
+- claimant strength
+- chaos and evolution stage
+- active field count
+- cave capacity and active divisions
+
+Major actions cannot default to political power or command power only. Use civilian factory burden, equipment, manpower exposure, trains, trucks, fuel, supplied divisions, state control, local safety, contract commitments, and time.
+
+Show nonstandard costs with icon-first scripted localisation and custom tooltips. If a button has many requirements, show a short met or not-met summary and place the full list in a tooltip.
+
+## Mission quality
+
+Every timed mission must ask the player or AI to do something active.
+
+Good Event 018 objectives include:
+
+- hold the field and rail corridor
+- maintain supplied divisions in named border states
+- keep troop levels below commission limits
+- recapture a resource state before anchor activation
+- secure evacuation routes
+- hold a city district during a hunt
+- keep the origin state supplied
+- control all eligible continent states for the verification period
+
+Use varied durations. Ordinary projects can use 90 to 180 days, major construction and closure longer, emergency missions shorter only when the crisis demands it.
+
+Implement partial success where appropriate. A corridor can remain open while one settlement is lost. A hunt can destroy a pack but lose the transport line. A border mission can secure the field but fail the diplomatic objective.
+
+## Selected-target and clutter rules
+
+- Show one selected field to the human owner.
+- Use target shortlists for foreign contracts.
+- Use named dispute states for border missions.
+- Use one marked resource target for the cave country at a time.
+- Hide obsolete development actions after suspension or closure.
+- Replace basic decisions with stronger later versions.
+- Cancel missions when owner, state, target, route, war, field, cave country, or world-end status becomes invalid.
+- Do not leave closed fields, dead partners, lost states, completed anchors, or defeated cave targets visible.
+
+## AI requirements
+
+Implement the full intent in `matrices/ai_strategy_matrix.md`.
+
+AI must:
+
+- choose field posture from need, strength, ideology, and risk
+- invest where the field is valuable and defensible
+- fund safety and closure when appropriate
+- exploit dangerously only under real pressure or extreme route preferences
+- offer contracts only when route and need are valid
+- avoid border war when much weaker or blocked by commission
+- request and send Evolution III aid
+- prioritize hard attack and anchor denial against cave units
+- target resource-rich states as the cave country
+- protect origin and mature anchors
+- respond to over-capacity weakness
+- complete continent objectives
+
+Human-only scripted GUI buttons need AI-equivalent decision or effect paths.
+
+## Cleanup requirements
+
+Clean:
+
+- selected field
+- state field records
+- partner targets
+- bidder lists
+- contract flags and timers
+- commission guarantors
+- claimant references
+- active missions
+- disturbance and breach targets
+- closure flags
+- cave origin references
+- anchor activation progress
+- capacity contributions
+- spawn queue state
+- excess-division state
+- continent-progress arrays
+- world-end candidates
+
+Use global event targets only where persistence requires them and clear them explicitly.
+
+## Localisation requirements
+
+Every category, decision, mission, button, cost, blocked state, success, failure, and tooltip needs final localisation. Use dynamic state, country, resource, value, timer, and cost references. Keep integer values without unwanted decimals.
+
+Do not expose raw triggers. Do not reveal hidden cave formulas in ordinary field text. Do not use achievement language outside the achievement UI.
+
+## Required audit handoff
+
+After implementation, run `chaosx_decision_mission_auditor` with `fork_context=false`. The handoff must report:
+
+- categories and decisions implemented
+- mission owners, targets, durations, success, failure, and duplicate risk
+- costs and dynamic scaling
+- AI validity
+- cleanup
+- exploit checks
+- localisation keys
+- meaningful validation scenarios
+- simplifications or blockers
+
+## Completion standard
+
+The decision layer is complete only when it creates active field management, material tradeoffs, targeted diplomacy, staged border conflict, meaningful containment and evacuation, full closure, cave resource deployment, anti-cave counterplay, AI parity, readable dynamic values, lifecycle cleanup, and no passive store-like clutter. Every mapped action must be implemented, explicitly merged with a reason, or reported as missing.

@@ -1,6 +1,6 @@
 # Goal prompt: Complete Event 011 Secret Alliance
 
-Status: fulfilled historical goal prompt. Final gameplay and balance authority is commit `1c87d923`; the holistic evidence-backed verdict is under `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md`.
+Status: fulfilled historical goal prompt. Final gameplay authority is commit `407b9a05`, with balance frozen at `1c87d923`; the holistic evidence-backed verdict is under `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md`.
 
 Complete the full Chaos Redux rework of Event 011 Secret Alliance from `011_secret_alliance_specs`. Follow AGENTS.md and the repository event, decision, asset, animation, super-event, subagent, and improvement-loop skills. Read the required offline wiki pages, vanilla documentation and existing Chaos Redux patterns before editing.
 
