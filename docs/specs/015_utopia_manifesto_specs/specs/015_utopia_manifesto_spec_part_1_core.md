@@ -1,121 +1,278 @@
-# Event 015 Utopia Manifesto, part 1 core concept
+# Event 15 Utopia Manifesto, Part 1: Core Event Design
 
-## Premise
+All names in this specification are working labels, not final localisation.
 
-A minor country recovers an old manifesto that describes a society organized around public need, chosen work, common stores, simple law, and the careful use of land. The document is not treated as a museum object. It becomes an argument inside the country. Reformers read it as a route out of poverty and dependency. Officers read it as a way to bind the army to a civic purpose. Surveyors read it as a land doctrine. Radicals read it as proof that the country has the right to remake the world around it.
+## Event identity
 
-The event should replace Event 15 World Tension Subsides completely. The old row is a reserved rework entry in the current event catalog, and the new event identity is Utopia Manifesto. The event type is Minor Fire-Once. It is not a world relaxation event. It is a country transformation event that chooses one eligible minor country and gives it a full national project if the country accepts.
+- Event ID: `15`
+- Event slug: `utopia_manifesto`
+- Classification: Minor Fire-Once
+- Cluster membership: none
+- Canonical entry: `chaosx.nr15.1`
+- Replacement rule: this design completely replaces the reserved World Tension Subsides event and its repeatable classification.
 
-The manifesto is inspired by Thomas More's Utopia, but the design should not turn the country into a simple communist reward machine. The important promise is that society can be rationally organized around need. The important danger is that need can become a justification for taking land, assigning labor, and overriding consent. The player should feel that the country is trying to build a good place, then discover that every ledger entry can become an excuse.
+The event places a recovered or revived utopian manifesto in the hands of an economically modest country. The manifesto promises a society organized around common provision, useful labor, learning, local communities, and territorial demands justified by necessity. It also contains or attracts arguments for assignment, colonization, penal labor, forced unity, and the externalization of war.
 
-## Host selection and opening choice
+An AI recipient always accepts the manifesto. A human recipient chooses whether to accept or reject it. Acceptance activates a new national system and replaces the country's current focus tree only when the country passed the replacement-safety gate. Rejection ends the event for that country and leaves the global fire-once event consumed.
 
-The host should usually be a random minor country. The event should favor countries that can plausibly be transformed by a manifesto because their institutions are weak enough, small enough, or unsettled enough that a sudden national project can take over public life.
+## Playable promise
 
-The event should avoid strong countries. It should not target majors, countries with very strong industry, special chaos countries, nonhuman countries, terminal world-end actors, or countries already bound to a major event identity that should not be overwritten. The host can be AI or player. If the host is AI, it always accepts the manifesto. If the host is human, the opening event gives a real choice.
+Acceptance begins a country transformation campaign rather than granting a national spirit and a line of bonuses. The player must answer four questions over several years.
 
-Player option directions:
+1. Can the state provide enough food, housing, transport, tools, and reserves to make common provision credible?
+2. Can people choose their work while shortages, war, and reconstruction demand particular skills?
+3. Can a doctrine of taking land only when needed remain restrained once the country gains power?
+4. Can a literary ideal survive administration, dissent, occupation, and foreign rivalry without becoming a coercive state?
 
-| Player option role | Narrative meaning | Gameplay direction |
-| --- | --- | --- |
-| Embrace the manifesto | The country treats the document as a national program | Replace the current focus tree with the Utopian tree, initialize the Need Ledger, add early ideas, open decisions, and mark the country as the Utopia Manifesto actor |
-| Keep it in public reading rooms | The state permits discussion but avoids a state project | Event is marked fired, no tree replacement, small public debate effect, no Utopian mechanics |
-| Suppress the agitation | The government fears the manifesto will dissolve existing authority | Event is marked fired, no tree replacement, short internal security effect, small legitimacy cost, no Utopian mechanics |
+The answer is built through the Commonwealth Ledger mechanic, a comprehensive focus tree, evolving decisions, route events, local integration projects, and a final national identity.
 
-The final localisation should not use these labels as final text. They are option roles. The accept option should feel like a brave or arrogant leap depending on ideology. The non-accept options should sound like state reactions, not jokes.
+## Recipient fantasy
 
-## The core loop
+The ideal recipient is a minor country whose small scale makes radical institutional rebuilding plausible and whose limited industry gives the manifesto something concrete to solve. The event should often reach a random weak AI country, but an eligible human player should remain a meaningful candidate.
 
-The accepted country gains a visible Need Ledger. The player tries to keep public need, chosen work, stores, and land pressure balanced. Every major focus route changes how the country handles that balance.
+The event must avoid feeling like a punishment that deletes years of unique content. A player should receive the manifesto only when the current tree is generic, event-approved for replacement, or still shallow enough that replacement is a fair campaign transformation. The eligibility system is therefore part of the event's identity, not a hidden technical afterthought.
 
-The loop is built from five values.
+## Recipient selection
 
-| Value | What it represents | Good sources | Bad sources | What it changes |
-| --- | --- | --- | --- | --- |
-| Eutopia Index | How much the manifesto is becoming a real public good | stores filled, chosen work protected, successful integration, peaceful charters, simple law, education | broken promises, coercive laws, failed surveys, hunger, forced labor | unlocks humane branches, federation content, low-resistance integration, recognition |
-| Common Stores | Whether the country can meet practical needs | factories, infrastructure, rail, convoys, local workshops, equipment sacrifices, food proxy projects | overexpansion, convoy loss, occupation strain, empty stockpiles, bombing | reduces consumer goods pressure, funds integration, lowers land pressure |
-| Vocational Freedom | Whether people can choose useful work | trade schools, family adoption, voluntary retraining, public lectures, high stability | forced assignments, repeated emergency overrides, unemployment, war exhaustion | affects production efficiency, legitimacy, manpower, strikes, route access |
-| Land Need | The pressure to seek more space, ports, food, resources, or defensible settlement | population pressure, low building slots, no coast on island route, refugee pressure, occupied wards needing settlement | solved shortages, released wards, filled stores, trade access | unlocks temporary claims, lease requests, charters, or coercive demands |
-| Outopia Fracture | The contradiction between promised consent and state coercion | forced labor, needless claims, harsh occupation, mercenary overuse, secret route choices | renouncing unneeded claims, autonomous wards, public audits, peaceful admissions | unlocks high-chaos branch, worsens stability, changes super-event eligibility |
+### Candidate classes
 
-The player is never meant to raise all values without tradeoff. A country can become a consent-based commonwealth with slower expansion, a technocratic order with strong capacity and limited freedom, a naval island society with ports and charters, a defensive household militia state, or a coercive good-place mandate that uses the language of need as a weapon.
+The selection pass builds three candidate pools in order.
 
-## Event identity and route fantasy
+1. Eligible human players.
+2. Eligible AI minors with generic or approved replaceable trees.
+3. Eligible AI minors with lightly developed non-generic trees that are explicitly safe for replacement.
 
-The country should feel different from other minor countries in three ways.
+The first nonempty class is used. Within that class, the final recipient is chosen by a weighted weak-country score.
 
-First, it should be able to grow without normal claim spam. Claims are treated as need mandates. They appear only when Land Need is real, and they can fade or become politically costly when the need is solved.
+This priority keeps the event relevant to players without forcing it onto a major or an established bespoke campaign. It also guarantees that the event can normally find an AI recipient when no player qualifies.
 
-Second, occupation is not normal annexation. Occupied land becomes a ward, charter, colony, common table member, or integrated household depending on the route. Integration should require visible public work such as stores, roads, schools, local trade choice, security, and consent. Coercive routes can core faster, but they should damage Eutopia and create lasting fracture.
+### Hard exclusions
 
-Third, the focus tree is a national identity tree. It should replace the host's tree after acceptance and should not play as a generic boost ladder. It should include political routes, economy, military, diplomacy, expansion, internal legitimacy, a special mechanic branch, island and landlocked variations, AI behavior, and late-game ambitions.
+A country is excluded when any of the following is true.
 
-## The manifesto as a living national spirit
+- It is a major country.
+- Its industrial capacity exceeds the event's upper safety band.
+- It is a faction leader with a large subject or member network.
+- It is in a civil war, near capitulation, or under an active country-replacement sequence.
+- It is a special Chaos country, nonhuman country, terminal scenario actor, or world-end actor.
+- It was created by another event and is using that event's country package or focus tree.
+- It is currently using a focus tree that the repository marks as protected from replacement.
+- It has completed enough political or identity focuses that replacement would erase a mature route.
+- It lacks a valid capital or controllable core territory.
+- It is a subject whose overlord relationship makes independent constitutional transformation impossible, unless the event-specific subject route is enabled by implementation review.
+- It already has the Utopia Manifesto event state.
 
-The first accepted idea should be a mixed national spirit. It is not a free buff. It gives a small public mobilization advantage and opens mechanics, but it also creates public expectations. If the country cannot feed stores, protect chosen work, or explain its land claims, the idea becomes unstable.
+### Weak-country score
 
-Idea lifecycle direction:
+The weighted score should prefer countries that have a reason to gamble on the manifesto.
 
-| Idea working label | Start or unlock | Role | Mitigation or upgrade | Failure form |
-| --- | --- | --- | --- | --- |
-| Found Manifesto | Opening acceptance | Public excitement and political instability | becomes Reading Circles or Council Charter | becomes Forbidden Book Memory if suppressed |
-| Reading Circles | early focus | legitimacy and education growth | becomes Public Lectures or State Survey Schools | becomes Pamphlet Factionalism |
-| Empty Stores | early problem when stores are low | consumer goods burden and instability | becomes Common Stores | becomes Empty Shelf Panic |
-| Chosen Trades | vocational route | production and legitimacy | becomes Trades by Inclination or Public Occasion System | becomes Forced Assignments |
-| Needful Land Doctrine | expansion route | temporary claims and diplomatic demands | becomes Consent Charter Doctrine or Mandate of Need | becomes Outopian Justification |
-| Outopia Fracture | hidden or visible warning idea | contradiction pressure | reduced by audits and renunciation | becomes No-Place State pressure |
+Positive factors include:
 
-## Baseline stages
+- low civilian, military, and naval factory count
+- a generic or repository-approved replaceable focus tree
+- limited research capacity
+- low infrastructure or weak internal transport
+- high unemployment represented by unused manpower, low mobilization, or route-appropriate proxies
+- refugee or migration pressure from compatible events
+- weak international position without an immediate fatal war
+- a small number of controlled states
+- a coastal or island situation that can support the island-society fantasy
+- a landlocked capital that can support the Inland Island variant
+- human control, provided every safety gate passes
 
-Baseline stages describe the ordinary accepted-country progression. They should not be logged as evolutions.
+Negative factors include:
 
-| Baseline stage | What the player sees | Main play task |
-| --- | --- | --- |
-| Reading | focus tree starts, first ideas, Need Ledger appears | choose whether the manifesto is public debate, state blueprint, or ideological weapon |
-| Counting | surveys, stores, vocational rolls, local committees | turn abstract need into visible values and projects |
-| First Public Works | roads, storehouses, workshops, schools, household guard | fix early weaknesses without exhausting a small country |
-| Need Doctrine | land pressure begins producing foreign choices | decide whether need means trade, lease, federation, wardship, or war |
-| Settlement | occupation, wards, charters, colonies, league admission | integrate land through consent or coercion |
-| Commonwealth | late route payoff, formable or faction | finish a country identity and defend it from larger powers |
+- active offensive war
+- high industrial growth already underway
+- major-power guarantees that make early external cases trivial
+- extensive colonies or occupied territory
+- many subjects
+- a large completed focus count
+- a strong unique tree
+- current domination of a region
+- recent receipt of another full country transformation event
 
-## Event evolutions
+The score should use shared tuning bands rather than one brittle factory threshold. The implementation should expose the important rejection reason in debug and manual-fire tools, while ordinary player-facing text only needs to communicate that the manifesto has appeared in a country able to attempt it.
 
-Evolutions are mutation tracks layered over the accepted country or over a later pre-fire opening. They are not normal focus stages. Each evolution should be logged as an Event 15 evolution only when the Utopia Manifesto actor exists or when the event has not fired and the first accepted host would start with a stronger opening.
+### Human fairness rules
 
-| Evolution stage | Chaos tier | Active-event entry | Pre-fire evolved opening | Design purpose |
-| --- | --- | --- | --- | --- |
-| Ledger of Hunger | Gathering Storm | if stores are low or Land Need is rising, unlock emergency rationing, foreign grain leases, and more volatile shortage missions | host starts with higher Empty Stores pressure and a stronger first public works need | turns the manifesto from debate into survival management |
-| Continental Charters | Rising Chaos | if Land Need and Eutopia are both meaningful, unlock charters, settlement wards, and foreign communes | host can begin with one nearby charter target already identified | makes expansion possible without normal conquest |
-| The No-Place Argument | Chaos Tier | if Outopia Fracture is high, reveal secret contradiction branch and coercive justifications | host begins with stronger coercive route temptation and more suspicious neighbors | makes the utopian claim politically dangerous |
-| The World as Island | Totalen Chaos | if the actor is strong, has colonies or league members, and either very high Eutopia or very high Fracture, unlock a super-event threshold and late ambition branch | first firing can create a more advanced actor with immediate regional attention | raises the event from local reform to world-order experiment |
-| Empty Coast Memory | World Collapse | if world collapse is active but no terminal branch is used, unlock defensive refugee and preservation content | no ordinary pre-fire opening should use this unless the world already collapses | keeps the actor playable in apocalyptic campaigns without making Event 15 a world-end scenario |
+When an eligible player is selected, the opening option that accepts the manifesto must clearly warn that the country's current focus tree will be replaced. The warning should explain the scope of the transformation without listing hidden branches.
 
-## Super-event thresholds
+The reject option must be real. It should not apply a crippling penalty, fire a civil war, or secretly force the route later. Rejection represents a government deciding that the document is too disruptive or too uncertain to become state doctrine.
 
-The initial manifesto popup is not a super-event. Two late outcomes can deserve super-event treatment if the implementation chooses to wire them.
+The event remains fire-once after rejection. This preserves the user's requested event identity and prevents a player from repeatedly refusing until another country receives it.
 
-The first is a peaceful or federative revelation when the country forms a durable Utopian Commonwealth or leads a league that other countries join willingly. The role is an ideological transformation and regional order announcement.
+## Opening event chain
 
-The second is a coercive or high-chaos revelation when the country turns need into a doctrine of forced settlement and declares that unused land anywhere may be measured by its ledger. The role is a frightening world-order announcement. It should not present the country as a normal villain. It should show a public system becoming dangerous through its own arithmetic.
+### Stage 1: recovery
 
-Super-event final titles, quote text, cultural remarks, and audio are research-gated. The spec only defines roles and tone.
+The source of the manifesto varies with country context.
 
-## Player-facing text direction
+- An island or maritime country may recover a translated copy through a port library, religious house, customs archive, or private collection.
+- A landlocked country may receive a copied manuscript through a university, refugee network, antiquarian society, or exiled political circle.
+- A socialist or labor-oriented country may revive it as an old precursor to common ownership.
+- A democratic country may present it as a constitutional provocation.
+- An authoritarian country may treat it as a manual for measured order and self-sufficiency.
+- A country with strong religious institutions may debate its moral and communal claims.
 
-The opening event should feel like a small country discovering a document that suddenly makes existing politics look inadequate. It should mention the recovered manifesto, public readings, reformers, worried landowners, and young workers changing the argument in the capital. It should not list effects. It should not state that a focus tree will be replaced in the event prose.
+The event description direction should focus on the book's physical return, its rapid circulation, and the competing groups that find useful passages in it. It should not summarize the entire future system or announce that the book is dangerous.
 
-Event Details and spreadsheet details should describe the premise, the eligible minor country, and the possible transformation into a need-based society. They should not list focus rewards, variable names, or mechanical effects.
+### Player options
 
-Decision text should describe public actions. It should explain visible requirements such as stores, local support, rail access, convoys, equipment, ward compliance, or Land Need. It should not reveal hidden Outopia outcomes too early.
+#### Accept the manifesto
 
-Focus descriptions should sound like public institutions and political arguments. They should not sound like a generic strategy guide. Route tone should change by path.
+The speaking voice is the government or head of state choosing to convene a public interpretation and reconstruction program. The tone should fit the country's existing ideology. Democratic acceptance should sound open and provisional. Socialist acceptance should sound collective and material. Neutral acceptance should sound practical. Fascist acceptance should sound confident and disciplinary.
 
-## Connections to Chaos Redux systems
+Visible consequence direction:
 
-Chaos Meter should affect the event by changing urgency, evolution eligibility, Land Need pressure, and Outopia temptation. Higher chaos should make shortage missions harsher, foreign consent harder, and coercive readings more attractive.
+- the current replaceable focus tree will be replaced
+- the Commonwealth Ledger will open after the initial survey
+- the country will begin an interpretive congress
+- existing military and map ownership remain intact
 
-Event logs should show Event 15 as a transformed identity event once accepted. The history row should use the host as actor. The event detail should show the public premise and the current evolution entries if any are logged.
+Hidden route details, evolution gates, final identities, and achievement conditions must remain unspoken.
 
-World threats should interact with the Utopian League route. A strong consent-based actor can offer stores, volunteers, field hospitals, evacuation corridors, and anti-puppet clauses against special chaos threats. A coercive actor can exploit world threats to justify wardship.
+AI always chooses this option.
 
-The event should not use generic world-end scenario behavior. If the actor becomes globally powerful, use a late super-event and world-order content rather than a terminal scenario.
+#### Reject the manifesto
+
+The speaking voice is a government deciding that a literary plan should not become a constitutional program. The tone can be skeptical, cautious, amused, or hostile according to ideology.
+
+Visible consequence direction:
+
+- the event ends for the country
+- the focus tree remains unchanged
+- the manuscript may remain a cultural curiosity through a short-lived, low-impact modifier or a one-time research effect only if that addition improves closure
+
+The rejection outcome must not create a second full route.
+
+### Stage 2: public circulation
+
+Acceptance begins a short preparation period before the new tree becomes fully active. The country receives a temporary Found Manifesto idea that represents public debate, administrative distraction, and intellectual enthusiasm.
+
+The preparation period produces three immediate tasks.
+
+1. Translate and publish a usable edition in the country's political language.
+2. Survey households, occupations, stores, transport, housing, and state capacity.
+3. Convene an interpretive congress that establishes how literally the text will be followed.
+
+The new focus tree loads immediately or at the safest supported transition point. Its opening focuses represent these tasks, so the player is never left without a route.
+
+### Stage 3: the first ledger
+
+The survey establishes initial values for Need, Plenty, Concord, and Choice versus Assignment. Starting values are dynamic.
+
+- A poor or blockaded country begins with high Need and low Plenty.
+- A stable democracy begins with higher Concord and Choice.
+- An authoritarian country begins nearer Assignment.
+- A country with extensive occupied territory begins with lower Concord and greater territorial contradiction.
+- An island country begins with a modest advantage in the island-society project.
+- A landlocked country begins with a stronger Inland Island requirement and no penalty for lacking a coast.
+- A subject begins with dependency pressure if the implementation approves subject eligibility.
+
+The first ledger should make the player's starting problem readable. It should not predetermine the route.
+
+## Baseline campaign flow
+
+### Phase 1: interpretation and survival
+
+The player establishes the public edition, surveys the country, opens common stores, and chooses initial labor rules. The immediate goal is to keep the country functional while the old institutions are being measured and reorganized.
+
+Key pressures:
+
+- shortages
+- administrative overload
+- elite or property resistance
+- worker and household expectations
+- the risk of promising more than the country can provide
+
+### Phase 2: institutions
+
+The interpretive congress commits the country to a political route. The player develops callings, housing, public works, defense, trade, and local government. Focuses begin to unlock route-specific decisions rather than simply granting modifiers.
+
+Key pressures:
+
+- Choice versus Assignment
+- reserve targets
+- regional imbalance
+- religious and political dissent
+- the treatment of property and local autonomy
+
+### Phase 3: external need
+
+The country decides whether its shortages can be solved internally. If they cannot, it can open a Necessary Ground case. Peaceful routes use purchase, lease, migration, and joint administration first. Coercive routes can escalate faster.
+
+Key pressures:
+
+- whether the claimed need is genuine
+- whether the target has a fair alternative
+- whether the country can house and supply settlers or refugees
+- whether local people accept the arrangement
+- whether foreign powers see a small experiment or a new expansionist doctrine
+
+### Phase 4: commonwealth or closed island
+
+The country forms associate municipalities, a cooperative league, a planned regional network, or a closed and militarized island-state. The final identity depends on route, values, conduct, and external relationships.
+
+The late game should continue after formation through integration, league politics, aid, defense, and ideological competition. Formation is a major payoff, not the end of play.
+
+## Core route families
+
+The interpretive congress opens five coherent interpretations.
+
+1. **Consent of Households**, a democratic and voluntary social commonwealth.
+2. **Common Table**, a council-socialist system of common ownership and worker governance.
+3. **Guardians of Measure**, a technocratic planning state centered on surveys, quotas, and standardization.
+4. **Closed Island**, an authoritarian system that uses unity, assignment, and necessity to justify exclusion and coercion.
+5. **The Joke Understood**, a hidden humanist route that treats the manifesto as satire and reforms institutions without making the book infallible.
+
+The route labels are structural. Implementation writes final focus names and player-facing prose.
+
+## Event memory and connections
+
+Event 15 should remember important conduct rather than only the final ideology.
+
+Persistent conduct flags or equivalent records should distinguish:
+
+- accepted or rejected manifesto
+- voluntary or assigned labor dominance
+- first common-store success or failure
+- first external Need case
+- peaceful acquisition, coerced acquisition, or unjustified acquisition
+- first local charter
+- first integration by consent
+- first use of penal labor
+- first use of auxiliary mercenaries
+- league creation
+- final commonwealth formation
+- hidden humanist interpretation
+- high-chaos Perfect Island path
+
+These records support route events, achievements, AI reactions, and the final super-event variant.
+
+Optional soft connections can respond to nearby Chaos Redux concepts without becoming prerequisites.
+
+- Independence Wave can make local autonomy and associate status more attractive.
+- Tensions Rising can increase the cost of external Need cases.
+- White Peace can support arbitration and demilitarized settlements.
+- End Subject Status and Autonomy can affect a subject recipient or associate municipality.
+- Collaboration can alter local integration calculations.
+- Demilitarization can support a peaceful island-defense variant.
+- The Book should remain thematically distinct. Event 145 is a demonic power text for a major or player. Event 15 is a political thought experiment for a weak country.
+- Pacifism can strengthen nonviolent settlement routes.
+- Immigrations can create genuine housing and settlement Need.
+- The Free World can react to a mature voluntary commonwealth if that event is later implemented.
+
+No connection should make Event 15 impossible when the other event is disabled or unreworked.
+
+## Design boundaries
+
+- The event does not turn every recipient into the same ideology.
+- The event does not give instant cores or free industrial parity with majors.
+- The focus tree does not consist mainly of new national spirits.
+- The decision system does not become a political-power store.
+- The territorial doctrine does not make every shortage a free war goal.
+- The humane routes do not receive coercive tools without political and social consequences.
+- The authoritarian route is not an unrelated villain branch. It grows from the manifesto's real tensions around necessity, assignment, colonization, slavery, and unity.
+- The hidden humanist route does not become the only correct route. It offers adaptability and civil liberty, but it sacrifices the strongest planning efficiencies and the easiest route to rapid transformation.
+- The final state identity must remain readable on the map and must use route-specific cosmetic identity rather than replacing the original tag by default.

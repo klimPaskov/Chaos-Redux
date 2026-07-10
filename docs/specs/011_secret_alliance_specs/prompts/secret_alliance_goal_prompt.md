@@ -1,0 +1,19 @@
+# Goal prompt: Complete Event 011 Secret Alliance
+
+Complete the full Chaos Redux rework of Event 011 Secret Alliance from `011_secret_alliance_specs`. Follow AGENTS.md and the repository event, decision, asset, animation, super-event, subagent, and improvement-loop skills. Read the required offline wiki pages, vanilla documentation and existing Chaos Redux patterns before editing.
+
+Implement Event 011 as Minor Fire-Once and fix the target to the player country at firing. Select three valid minor founders through the weighted factors in the spec. Prefer factionless countries. Exclude the target, target-aligned or invalid actors, countries already at war with the target, and special nonhuman chaos countries. Do not add the event to a cluster.
+
+Build a concealed event-owned pact with motives, doctrine, cohesion, readiness, alertness, recruitment, operations, recruitment, disputes, leaks, and defections. Baseline stages are ordinary progression. Evolution I widens minor membership and operations. Evolution II permits one valid major sponsor, serious covert action, and the foreign-interference category with visible Evidence and Preparedness. Evolution III permits public faction formation, a possible second major, war pressure, preparation, and preemption. Support active-event and pre-fire evolved openings.
+
+Implement the full decision and mission matrix with dynamic costs, named objectives, partial success, confidence bands, false-accusation consequences, cleanup, and AI equivalents. Do not reduce the system to political-power purchases or passive modifiers.
+
+Enforce the reveal contract. If any active member enters a normal hostile war with the target, immediately reveal the pact, create the actual Anti-[target] faction, add every valid active member, and bring every valid active member into the target war. Other reveal routes converge on the same reusable effect. Convert hidden values into Coalition Resolve, opening coordination, known weaknesses, and target defenses. Preserve turned-member, false-plan, delayed-call, and fracture consequences.
+
+Implement the mapped coalition-war AI and postwar settlement. Add the triggerable scenario with the five specified types and four intensity levels. Manual launch bypasses normal chaos, evolution, date, and history requirements while retaining terminal-state, impossible-scope, and human-consent gates.
+
+Produce and wire the asset register, including event art, mechanic UI, icons, faction emblem, achievement art, and the eight-frame Evolution III warning with a static fallback. Implement the reveal super-event with final text, verified quote, unique licensed music, unique audio ID, settings-aware playback, image, GFX, scripted localisation, docs, and music-table entry. Placeholders, reused tracks, generated tones, and unlicensed audio are blockers.
+
+Implement all six achievements with exact eligibility, disqualifiers, snapshots, scenario-origin rules, localisation, icon triplets, GFX, and docs. Write final localisation without exposing hidden membership too early. Update registration, logs, event details, scenario registry, AI, `docs/events/011_secret_alliance.md`, super-event and asset docs, and the event catalog workbook after final wording exists.
+
+Use project subagents with `fork_context=false` where available. Run the architecture pass, decision audit, localisation audit, documentation cleanup, mandatory improvement-loop pass, and final completion audit. Resolve every accepted addendum. Report every omission, simplification, fallback, blocked asset, unresolved licence, or skipped task-specific validation. Do not claim completion until every mapped mechanic, AI path, asset, achievement, super-event component, document, and spreadsheet field is complete and aligned.
