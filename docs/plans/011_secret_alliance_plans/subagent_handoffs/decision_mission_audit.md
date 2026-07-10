@@ -1,618 +1,73 @@
-# Event 011 Secret Alliance decision and mission implementation audit
+# Event 011 Secret Alliance decision and mission re-audit
 
-## Final re-audit dated 2026-07-10
+## Verdict
 
-### Final verdict
+The current Event 011 decision and mission implementation resolves DM-01 through DM-14 and RA-01 through RA-02. The earlier incomplete findings in this handoff are superseded by this re-audit.
 
-**Incomplete and not ready for a completion claim.**
+This was a report-only audit. The auditor did not edit gameplay, localisation, interface, AI, event, scenario, achievement, asset, or spreadsheet files. No commit was created.
 
-The current working tree resolves eight of the fourteen decision and mission findings and both cross-system RA findings. Six DM findings remain incomplete. The reveal transaction, GUI selection flow, delayed mission verification, source-specific Preparedness expiry, per-suspect corroboration, one-incident scheduler, dynamic operation weights, and Maximum scenario composition proof are materially present. The remaining blockers are hidden or exclusive affordability requirements, incomplete suspect invalidation, no actual border-supply proof, no authorized AI-target or AI public-member selection route, incomplete terminal teardown, and a decision category that still exposes far more than the accepted 7 to 11 current actions.
+## Audited freeze
 
-| Final disposition | Count |
-| --- | ---: |
-| Incomplete high findings | 5 |
-| Incomplete medium findings | 1 |
-| Resolved DM findings | 8 |
-| Resolved RA findings | 2 |
+The final evidence below was taken from this exact working-tree snapshot:
 
-No gameplay, localisation, interface, asset, achievement, scenario, spreadsheet, or faction file was edited by this final re-audit.
-
-### Final DM-01 through DM-14 disposition
-
-| Finding | Status | Severity | Current proof or remaining blocker |
-| --- | --- | --- | --- |
-| DM-01 | Resolved | None | `common/scripted_guis/011_secret_alliance_scripted_gui.txt:9-75` uses ROOT-owned flags and variables rather than event targets. Its click effects select each of the three visible array entries, its clear button drops the selected scope, and its trigger names match the buttons, warning sprites, and War Pressure text in `interface/011_secret_alliance.gui:30-47`. Meter positions and card frames are driven through scripted-GUI properties. Preserve this implementation. |
-| DM-02 | Resolved | None | `secret_alliance_select_reveal_leader` at `common/scripted_effects/011_secret_alliance_effects.txt:3583-3605` scores divisions, factories, and major status and keeps the strongest candidate. Faction creation verifies the leader and every member join at lines 3698-3735. Hostile-war entry retries every surviving snapshot member and rolls back the reveal if any member remains outside the target war at lines 3891-4010. Planned reveal removes turned and fractured members from active membership and the faction, and unresolved calls retry before becoming explicit exits at lines 4013-4125. Preserve the all-member hostile-war rule. |
-| DM-03 | Incomplete | High | Dynamic resource checks are inclusive through `NOT = { resource < cost }` at `common/scripted_triggers/011_secret_alliance_triggers.txt:358-419`. Continuity sites now use one matching protection-plus-train gate and payment, and blocked cost roots are visibly red at `localisation/english/011_secret_alliance_l_english.yml:436-496`. Fixed affordability and threshold gates still use strict `>` checks, including diplomacy command power and stability at triggers lines 436-441 and 513-519 and several political-power decisions at `common/decisions/011_secret_alliance_decisions.txt:472-485,716-765,947-948`. The decision file contains 112 hidden requirement blocks and no `custom_trigger_tooltip`, so a red aggregate cost still does not explain which resource, evidence, suspect, stability, state, or cap condition is blocking the action. Make fixed gates inclusive and expose named requirement tooltips. |
-| DM-04 | Resolved | None | Each mission begins without its verification flag, schedules a delayed country event, and cannot complete until the named state and route-specific condition pass at `common/scripted_effects/011_secret_alliance_effects.txt:2050-2250`. The non-selectable missions require those delayed flags at `common/decisions/011_secret_alliance_decisions.txt:203-305`. Full, expiry, cancel, and cleanup paths clear their saved objective state and suspect scope. Preserve the delayed verification contract. |
-| DM-05 | Resolved | None | Preparedness is rebuilt from separate staff-plan, cipher, stockpile, port, cabinet, continuity-site, border, allied, and emergency sources at `common/scripted_effects/011_secret_alliance_effects.txt:2950-2993`. Each maintained project owns its own delayed expiry at lines 3001-3115. Emergency components receive matching timed flags and expiry events at lines 3493-3575. No source clears an unrelated active contribution. Preserve the source-specific variables and idempotent cap release. |
-| DM-06 | Resolved | None | Each suspect stores its own evidence-class flags and `secret_alliance_suspect_evidence_classes` count at `common/scripted_effects/011_secret_alliance_effects.txt:1750-1903`. Confirmation requires both confidence and independent-class thresholds. Mission helpers carry their saved suspect and route-specific class at lines 2467-2494. Public naming and coalition-case triggers require corroboration at `common/scripted_triggers/011_secret_alliance_triggers.txt:325-348`. Reveal achievement proof requires every active member to have passed that per-member model. Preserve this corroboration contract. |
-| DM-07 | Incomplete | Medium | The GUI provides three functional card selectors and a clear-selection button, and `secret_alliance_is_valid_suspect` correctly excludes subjects, civil-war actors, and target faction partners at `common/scripted_triggers/011_secret_alliance_triggers.txt:292-302`. `secret_alliance_refresh_suspect_validity` at `common/scripted_effects/011_secret_alliance_effects.txt:1339-1367` does not use that trigger. It retains subjects, civil-war actors, and target faction partners in the internal and visible arrays. `secret_alliance_ai_select_action_target` at lines 1276-1300 applies the same weaker filter. Selected scope is cleared, but invalid entries can still occupy cards and AI ranking. Rebuild both pools through the canonical validity trigger. |
-| DM-08 | Resolved | None | Foreign Interference remains concealed-only, reveal closes `secret_alliance_response_category_open`, and Coalition Crisis owns Evolution III and revealed actions. Preserve this phase lock. |
-| DM-09 | Incomplete | High | The border chain stores and prints both state names, highlights the exact pair, and cancels the exact attacker and defender state block through `secret_alliance_cancel_exact_border_conflict` at `common/scripted_effects/011_secret_alliance_effects.txt:2852-2870`. Manual exits and cleanup call that helper before clearing runtime state. `secret_alliance_prepared_border_pair_has_units` at `common/scripted_triggers/011_secret_alliance_triggers.txt:481-493` proves infrastructure and division presence only. It does not prove a supply node, railway connection, or another real supply-readiness fact, while the mission text explicitly promises local supply. Add one engine-supported supply condition for the stored pair and reuse it for start and mission completion. |
-| DM-10 | Resolved | None | Reveal conversion applies no idea at zero and selects low, medium, or high coalition coordination, known plans, and target defenses. Cleanup removes every stage. Preserve the staged conversion. |
-| DM-11 | Incomplete | High | Automatic and scenario entry both call `secret_alliance_target_is_valid`, which still requires `is_ai = no` at `common/scripted_triggers/011_secret_alliance_triggers.txt:9-17,548-555`. `secret_alliance_run_target_ai_response` therefore has no authorized entry route. The public-member selector at `common/decisions/011_secret_alliance_decisions.txt:895-908` also has `ai_will_do = { base = 0 }`, so AI cannot establish the target needed by separate terms, member opposition, or sponsor accountability. The reserve and existential-war blocker exists, but target and public-war selection remain unreachable. Add an explicit testing or scenario AI-target entry and a full-array public-member selector before shared effect calls. |
-| DM-12 | Resolved | None | False confirmation uses the immutable `secret_alliance_innocent_accused` fact, and later recruitment cannot erase it. Preserve this fact until terminal cleanup. |
-| DM-13 | Incomplete | High | Cleanup now cancels the exact live border conflict first and removes low, medium, and high staged ideas at `common/scripted_effects/011_secret_alliance_effects.txt:4654-4771`. It still leaves Event 011 global flags such as `secret_alliance_operation_active`, the six `secret_alliance_evidence_class_*` flags, `secret_alliance_recent_clue_registered`, `secret_alliance_duplicate_clue_rejected`, `secret_alliance_agenda_delayed_by_dispute`, the five scenario-type flags, `secret_alliance_public_faction_failed`, and `secret_alliance_member_call_failed`. These can contaminate a later Event 011 run. The on-action file adds puppet and autonomy hooks but omits the documented `on_liberate`, `on_release_as_free`, `on_release_as_puppet`, `on_subject_annexed`, and `on_subject_free` refresh opportunities. Clear every event-owned runtime flag and add the narrow release and subject hooks. |
-| DM-14 | Incomplete | High | `secret_alliance_run_concealed_pulse` at `common/scripted_effects/011_secret_alliance_effects.txt:1232-1273` now selects exactly one prioritized incident. Operation-family weights at lines 1477-1520 respond to role, motive, doctrine, recent family, and protected surface, then select a matching actor and real readiness layer. Founder and scenario batches build one pool and draw without replacement. The player category still exposes dozens of simultaneous entries. Sixty-three entries use broad concealed, suspect, Evolution III, or revealed visibility rather than curating the accepted 7 to 11 current actions. Add stage, recent-incident, selected-suspect, objective, and cap-aware visibility so the scheduler's causal state also governs the player action set. |
-
-### Final RA disposition
-
-| Finding | Status | Severity | Current proof |
-| --- | --- | --- | --- |
-| RA-01 | Resolved | None | `secret_alliance_apply_scenario_identity` freezes achieved members and majors, requires the eight-member floor, exact requested major count, and either requested membership or exhaustion of the safe pool, then sets `achievement_secret_alliance_maximum_composition_qualified` at `common/scripted_effects/011_secret_alliance_effects.txt:5181-5199`. The achievement requires that immutable fact at `common/achievements/chaos_redux_achievements.txt:2134-2151`. The safe-pool notice reports achieved composition. |
-| RA-02 | Resolved | None | Full, partial, failure, and expired bands are named in `common/script_constants/011_secret_alliance_constants.txt:35-44`. The full and partial helpers store the matching constants at `common/scripted_effects/011_secret_alliance_effects.txt:2363-2379`, and all current consumers use named constants rather than the prior raw `2`. |
-
-### Final completion disposition
-
-Event 011 remains incomplete. The next patch should close DM-03, DM-07, DM-09, DM-11, DM-13, and DM-14 without weakening the eight resolved DM contracts or either resolved RA proof. A completion claim is not valid until the six remaining findings are re-audited as resolved.
-
-## Superseded re-audit dated 2026-07-10
-
-### Current verdict
-
-**Incomplete and not ready for a completion claim.**
-
-The current working tree resolves DM-08, the core conversion defect in DM-10, and DM-12. Eleven earlier findings remain partial or unresolved. Two additional cross-system defects were found in the accepted implementation: Maximum scenario achievement proof does not use achieved composition, and the named full and partial outcome constants are stored backwards.
-
-The most serious blockers are engine-invalid scripted GUI scope usage and the lack of a transaction-level response when a valid reveal member fails to enter the target war. Mission objectives, Preparedness maintenance, border-war teardown, AI target play, and the accepted incident scheduler also remain below the specification.
-
-| Current disposition | Count |
-| --- | ---: |
-| Critical blockers | 2 |
-| High blockers | 9 |
-| Medium blockers | 2 |
-| Resolved prior findings | 3 |
-
-No gameplay, localisation, interface, asset, achievement, scenario, spreadsheet, or faction file was edited by this re-audit.
-
-### Current DM-01 through DM-14 disposition
-
-| Finding | Status | Severity | Current evidence and required patch |
-| --- | --- | --- | --- |
-| DM-01 | Partial | Critical | The English localisation, scripted localisation, GUI, GFX, and category attachment now exist. A reference audit found 378 required Event 011 roots and zero undefined roots. The GUI still calls `secret_alliance_response_category_visible` and `secret_alliance_coalition_crisis_visible` from `common/scripted_guis/011_secret_alliance_scripted_gui.txt:10-16`. Those triggers resolve `event_target:secret_alliance_target` at `common/scripted_triggers/011_secret_alliance_triggers.txt:249-263`, but the offline Scripted GUI reference states that event targets cannot be used in scripted GUIs. The GUI trigger names at lines 18 and 22 do not match any element name in `interface/011_secret_alliance.gui:28-30`, so both warning sprites and War Pressure remain unconditional. The meter fills and card frames at GUI lines 11-20 are static and the cards provide no select or close action. Replace GUI visibility with target-country flags and ROOT-safe state, bind `<element>_visible` triggers to the actual elements, drive meter and card state through properties or frames, and add the accepted three-card select and close flow. |
-| DM-02 | Partial | Critical | Member validity now rejects subjects, civil wars, incompatible faction leaders, and target allies at `common/scripted_triggers/011_secret_alliance_triggers.txt:63-83`. Faction creation and member joins have postconditions and rollback at `common/scripted_effects/011_secret_alliance_effects.txt:3248-3301`. The leader selector at effects lines 3096-3155 still takes the first saved major, sponsor, or founder instead of the strongest actor in the specified order. `secret_alliance_join_current_member_to_existing_target_war` sets `secret_alliance_member_call_failed` when `add_to_war` fails, but both join-all callers continue without rollback or repair. In the planned route at effects lines 3541-3608, a turned member is counted as a fracture exit but remains an active faction member at peace. Implement strongest deterministic leader scoring, make failed calls a transaction failure with retry or explicit removal before completion, and remove turned or withdrawn members from active membership and the public faction before counting the exit. Hostile-war reveal must finish only after every surviving snapshot member is verified at war. |
-| DM-03 | Partial | High | Dynamic resource gates, payment variables, and political-power AI hints are present. `secret_alliance_establish_continuity_sites` is still gated and displayed as a protection project at `common/decisions/011_secret_alliance_decisions.txt:403-413`, while `secret_alliance_protect_continuity_sites` pays the emergency package plus trains at effects lines 2611-2619. The protection gate does not verify the emergency manpower and fuel deductions. Dynamic resource meta triggers use strict `>` checks, so an exact balance is rejected. All `_blocked` cost roots at `localisation/english/011_secret_alliance_l_english.yml:429-490` alias the normal yellow cost instead of showing the unavailable parts, and the decision file has 54 hidden requirement blocks with no `custom_trigger_tooltip`. Give continuity sites one matching gate, display, payment helper, and cap family. Use inclusive affordability. Add visible requirement tooltips and resource-specific blocked cost colouring. |
-| DM-04 | Partial | High | All seven missions now save an objective state, highlight it, and test control or units at `common/decisions/011_secret_alliance_decisions.txt:203-307`. The activation decisions choose states already owned and controlled, set their required route flag, and then activate a non-selectable mission. Existing ciphers, mapped routes, consultation, industrial security, or cabinet security can therefore make the mission `available` immediately. The engine auto-completes a non-selectable mission as soon as `available` becomes true, so these do not prove maintenance for the stated duration. Add a target-bound delayed verification state or a mission-specific progress flag that cannot exist at activation. Require the named condition to survive the hold period before full completion. Keep timeout and failure branches distinct and clear the objective target on every terminal path. |
-| DM-05 | Partial | High | Active protection, diplomacy, offensive, emergency, and border counters now increment and release. Preparedness components are still single shared variables. Both staff projects overwrite `secret_alliance_preparedness_staff`, both transport projects overwrite `secret_alliance_preparedness_transport`, and multiple continuity actions overwrite `secret_alliance_preparedness_continuity` at effects lines 2512-2659. The first delayed expiry can clear a later active contribution. Emergency actions at effects lines 3028-3090 overwrite the same components but release only the cap after 90 days, leaving the Preparedness contribution permanent. `secret_alliance_protect_continuity_sites` consumes both the emergency and protection caps. Track each active project contribution separately, sum them in recalculation, and remove only the expiring source. Give every emergency contribution an expiry or explicit conversion. Do not charge two cap families for one action. |
-| DM-06 | Partial | High | Six evidence classes and per-country class flags reject the same source and class pair at effects lines 1584-1683. Independent class count is global, not per suspect. `secret_alliance_raise_current_suspect_confidence` confirms a true member from scalar confidence alone at effects lines 1686-1714. The coalition-case decision at decisions lines 737-746 requires only global Evidence. Its effect at effects lines 2983-2997 also checks immutable false-accusation memory, but neither path requires independent evidence classes. Generic full and partial helpers select a random true member or false lead using the current global operation family, so one mission can build confidence for an unrelated suspect. Store class and source memory per suspect, require corroborating classes for confirmation and public naming, and pass the mission's actual source, actor, and class into the result helper. Complete-network achievement proof must use the same per-member evidence model. |
-| DM-07 | Partial | Medium | `secret_alliance_rebuild_visible_suspects` caps and ranks three visible suspects, and a separate public-member array and selector now exist. The GUI cards are display-only, so human selection still occurs through one targeted decision row per visible suspect. `secret_alliance_refresh_suspect_validity` at effects lines 1214-1245 excludes only nonexistence, special systems, capitulation, and a cleared flag. It does not invalidate new subjects, civil-war actors, or countries whose faction relation makes the route unusable. Make the cards the select and close interface, preserve the full hidden pool, and apply the same eligibility policy used by actions and reveal. Clear selected pointers before every concealed or public action when eligibility changes. |
-| DM-08 | Resolved | None | `secret_alliance_response_category_visible` now requires concealed state at triggers lines 249-254, reveal clears `secret_alliance_response_category_open`, and the Coalition Crisis category carries Evolution III and revealed play. Preserve this phase lock. |
-| DM-09 | Partial | High | The border family now stores and highlights an exact pair, requires local divisions, pays dynamic offensive and manpower costs, consumes the border cap, and provides escalation, withdrawal, and negotiation. All three manual exits use `cancel_border_war = yes` at effects lines 2470, 2483, and 2492. Vanilla `common/decisions/JAP.txt:3702-3705` uses a block with exact attacker and defender states. Terminal cleanup at effects lines 4204-4215 clears Event 011 border variables without cancelling the live war. The current unit trigger checks presence but not the required supplied state, and player text does not print both stored state names. Use an exact `cancel_border_war` block before clearing the variables, guard the cancel callback, use the same helper for every terminal path, add a real supply readiness condition, and localise both state names. |
-| DM-10 | Resolved core | None | Reveal conversion at effects lines 3303-3403 now applies no idea at zero and selects low, medium, or high opening coordination, known plans, and target defenses. `secret_alliance_compromised_channels` is removed at reveal. Preserve this staged conversion. The missing removal of low and medium stages is recorded under DM-13. |
-| DM-11 | Unresolved | High | `secret_alliance_target_is_valid` still requires `is_ai = no` at triggers lines 9-17. The concealed pulse invokes `secret_alliance_run_target_ai_response` only if the target is AI at effects lines 1128-1157, making the helper unreachable in normal and scenario entry. The helper also lacks existential-war and reserve blockers. Role AI strategies exist, but motive and settlement behaviour remain limited. Provide an authorized AI-target entry path, let AI score the same valid concealed and public arrays without GUI state, and add reserve, access, stability, and existential-war blockers before shared effect calls. |
-| DM-12 | Resolved | None | `secret_alliance_has_false_confirmed_suspect` now checks immutable `secret_alliance_innocent_accused` at triggers lines 587-591. Later recruitment does not erase the accusation fact. Preserve it through all public-case gates and clear it only at terminal cleanup. |
-| DM-13 | Partial | High | Cleanup removes missions, counters, targets, arrays, and most ideas. It does not cancel a live border war before `secret_alliance_clear_border_conflict_runtime`. `secret_alliance_remove_current_member_runtime` at effects lines 4109-4171 removes only the high opening-coordination idea, not its low and medium stages. Target cleanup at effects lines 4216-4222 removes only the high known-plans and hardened-network ideas, not `secret_alliance_known_enemy_plans_low`, `secret_alliance_known_enemy_plans_medium`, `secret_alliance_target_defenses_low`, or `secret_alliance_target_defenses_medium`. Add exact border cancellation first, then remove every staged idea variant. Add the available release and subject on-actions or an equivalent narrow validity refresh for state changes not currently covered. |
-| DM-14 | Unresolved | High | The accepted scheduler is not implemented. `secret_alliance_run_concealed_pulse` at effects lines 1128-1157 independently attempts recruitment, a dispute, a leak, a defection, and an operation in one pulse. `secret_alliance_launch_weighted_operation` at effects lines 1358-1508 chooses a family from fixed weights before actor role, motive, geography, target vulnerability, or current preparation is considered. `global.secret_alliance_operation_readiness_layer` is assigned the operation-family number. Decision visibility still exposes most families at once, with caps used mainly as disabled `available` gates. Candidate ticket selection still rescans the world and duplicates candidates. Replace the pulse with one prioritized incident scheduler, score family from causal inputs, select a matching actor and meaningful surface, store the real preparation layer, and gate the category to the accepted 7 to 11 current actions. Build one candidate pool per batch and draw without replacement. |
-
-### New cross-system findings
-
-#### RA-01 High: Maximum scenario achievement proof ignores achieved composition
-
-Evidence:
-
-- `secret_alliance_apply_scenario_identity` stores `secret_alliance_scenario_achieved_members` and `secret_alliance_scenario_achieved_majors` at `common/scripted_effects/011_secret_alliance_effects.txt:4568-4569`.
-- Those variables are never read anywhere else.
-- Scenario launch accepts any composition above the minimum active-member floor with the requested major count in `trigger_secret_alliance_coalition_unmasked_scenario`.
-- `011_secret_alliance_surrounded_not_buried` at `common/achievements/chaos_redux_achievements.txt:2134-2151` requires the Maximum selection flag but no achieved-composition fact.
-- The accepted addendum requires Maximum proof to use immutable type, intensity, achieved composition, consent, capital, and independence facts.
-
-Required patch:
-
-1. Freeze achieved member and major counts after final safe candidate selection.
-2. Set a separate maximum-composition-qualified fact only when the selector has met the accepted 8 to 12 band or consumed the entire safe pool under the documented cap rule.
-3. Display the achieved composition when the safe pool is smaller than the requested band.
-4. Require the immutable qualified fact in the achievement, not the selection flag alone.
-
-#### RA-02 Medium: full and partial outcome constants are semantically reversed
-
-Evidence:
-
-- `secret_alliance_outcome_band` defines `full = 1` and `partial = 2` at `common/script_constants/011_secret_alliance_constants.txt:35-44`.
-- `secret_alliance_record_full_success` stores `partial`, while `secret_alliance_record_partial_success` stores `full` at effects lines 2009-2028.
-- Downstream mission and offensive branches repeat the reversed labels. One decision still compares the raw magic number `2` at `common/decisions/011_secret_alliance_decisions.txt:191`.
-
-Impact:
-
-The current consumers mostly preserve the old numeric behaviour, but the named contract is backwards and unsafe for later branches, localisation, audits, and achievement checks.
-
-Required patch:
-
-1. Store `full` from the full helper and `partial` from the partial helper.
-2. Update every equality consumer to the corrected meaning in the same patch.
-3. Replace raw outcome numbers with named constants.
-4. Validate all seven mission completion and expiry bands plus every generic offensive outcome.
-
-### Accepted improvement addendum disposition
-
-| Tranche | Current result | Blocking evidence |
-| --- | --- | --- |
-| A. Pact causality | Partial | Member roles, motives, promises, and dispute actors exist, but disputes apply one generic cohesion loss and do not resolve the saved commitments into distinct outcomes. |
-| B. Incident scheduler | Incomplete | One pulse can launch several incident families, and operation family weights ignore the causal inputs required by the addendum. |
-| C. Evidence memory | Partial | Class and source deduplication exists globally, but confirmation and public proof remain scalar and are not per suspect. |
-| D. Maintained Preparedness | Partial | Timed protection flags and burdens exist, but shared component variables overwrite each other and emergency contributions do not expire. |
-| E. Reveal transaction | Partial | Validity, faction postconditions, rollback, and delayed-call events exist. Failed war calls do not abort or repair the transaction, and turned members can remain active faction members at peace. |
-| F. Doctrine and AI identity | Partial | Doctrine goals and role strategies exist. Normal AI-target play is unreachable and operation choice is not actor, motive, geography, or vulnerability driven. |
-| G. Cleanup and proof | Partial | Broad cleanup and achievements exist. Border teardown, staged idea removal, per-member evidence proof, and Maximum achieved-composition proof remain incomplete. |
-
-### Re-audit completion disposition
-
-Event 011 still fails the hard all-member reveal contract and multiple must-fix addendum tranches. The next implementation pass should prioritize DM-01, DM-02, DM-09, DM-13, and DM-14, then repair DM-04 through DM-06 and DM-11 before another completion audit. DM-08, DM-10 core conversion, and DM-12 need no redesign, only regression coverage.
-
-## Original audit baseline from the earlier working tree
-
-**Incomplete and not ready for a completion claim.**
-
-The current implementation has a broad nominal identifier surface. It contains 67 decision or mission entries and the expected family counts are recognizable. The central player loop is not yet faithful to the accepted specification. Most objectives are passive meter or flag checks, four declared active-cap families never change their counters, dynamic affordability checks do not match click-time deductions, Evidence has no corroborating classes, the three-card suspect UI does not exist, and no Event 011 English localisation exists.
-
-The hostile-war reveal hook has a sound foundation. It checks both directions of `on_war_relation_added`, excludes a limited border conflict because it waits for a normal war relation, guards reveal re-entry, and calls the common reveal transaction. That transaction still cannot prove the hard all-valid-members rule because current validity permits third-party subjects and incompatible faction leaders, faction joining is not post-validated, and delayed or fractured members skipped by a planned offensive receive no later resolution.
-
-Severity summary:
-
-| Severity | Count |
-| --- | ---: |
-| Critical | 2 |
-| High | 8 |
-| Medium | 4 |
-
-No gameplay, localisation, asset, spreadsheet, or GUI file was edited by this audit.
-
-## Sources and method
-
-The audit read the complete Event 011 source package, including all five specification parts, all matrices, prompts, research notes, and handoffs. It also read `AGENTS.md`, `hoi4-decisions-missions`, and `chaos-redux-events`.
-
-Required engine references included:
-
-- `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md`
-- the other required offline core pages for data structures, triggers, effects, modifiers, localisation, scopes, on actions, events, ideas, and AI
-- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/decisions/_documentation.md`
-- `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/on_actions/_documentation.md`
-- official trigger, effect, script-constant, and script-concept documentation
-- vanilla `common/decisions/JAP.txt`, especially the border-incident and border-conflict chain around lines 3540 to 3683
-- vanilla `common/decisions/AST.txt`, including activated mission and cancellation patterns
-- vanilla `common/decisions/FIN.txt`, including dynamic variable-backed custom-cost triggers
-
-Important engine semantics applied in this audit:
-
-- `activate_mission` ignores normal activation conditions and cannot activate an already active mission.
-- A non-selectable mission auto-completes when its `available` block becomes true.
-- `remove_mission` removes a mission without running complete or timeout effects.
-- Decision `visible` and `available` are interface-frequency checks. Target filtering belongs in daily `target_root_trigger` and `target_trigger` when possible.
-- A custom cost displays and blocks but does not deduct anything. Its trigger, displayed text, and manual deduction must describe the same price.
-- Vanilla border conflict decisions use named state pairs, state highlighting, and `divisions_in_border_state` before starting the conflict.
-
-## Nominal matrix coverage
-
-The table distinguishes identifier presence from playable fidelity.
-
-| Matrix family | Current identifiers | Status | Audit result |
-| --- | ---: | --- | --- |
-| Category lifecycle | 2 categories | Partial | Both categories exist, but Foreign Interference remains open after reveal and the required compact mechanic UI is absent. |
-| Investigation decisions | 8 | Partial | All working roles have an entry. Seven merely activate generic missions and one resolves an immediate generic roll. Several decision-to-mission mappings do not match their subject. |
-| Counterintelligence missions | 7 | Partial | All seven have timeout bands and mechanical full, partial, and failure branches. Their completion requirements are passive flags or meters rather than named actionable objectives. |
-| Protection projects | 8 | Partial | All eight labels exist. They are instant permanent Preparedness gains with the same idea and no maintained burden, regional target, expiry, or working active cap. |
-| Diplomatic probes | 7 | Partial | All seven exist. Selected-suspect handling is stale-prone, concessions are mostly generic, and the AI cannot independently choose a target. |
-| Deception and offensive actions | 8 | Partial | All eight exist. The active-offensive cap is inert, several are immediate generic rolls, and Evidence classes do not constrain repeated use. |
-| Border conflict family | 5 actions plus 1 mission | Incomplete | The conflict can start for free, requires no divisions in the selected border states, does not highlight or name its state pair, bypasses its active cap, and has no withdraw or negotiation choice. |
-| Public exposure | 5 | Partial | All five exist. A later recruitment can erase the gameplay meaning of an earlier false accusation. Public proof is a scalar threshold rather than corroborated evidence. |
-| Evolution III emergency | 7 plus countdown | Partial | All seven actions and the countdown exist. The emergency cap is inert and the actions can be taken together for a large one-day permanent Preparedness jump. |
-| Revealed-war actions | 7 | Partial | All seven exist. Public members are not rebuilt into a valid target selector, so several actions can be inaccessible or point at a stale pre-reveal suspect. |
-| Full, partial, failure memory | 7 missions and some generic rolls | Partial | Outcome bands and counters exist. Evidence classes, per-route memory, and later adaptation are absent. |
-| Suspect confidence and false leads | Scalar confidence | Incomplete | Bands and false leads exist, but the three-card cap, clue-class corroboration, immutable innocence memory, invalid-target cleanup, and reveal-time public member list do not. |
-| AI equivalence | `ai_will_do` on most buttons | Incomplete | Normal targets are hard-blocked to `is_ai = no`, selector AI has weight zero, and no AI target-selection helper bypasses the human selector. |
-| Cleanup and cancellation | Common cleanup effect | Partial | Missions are removed and many flags clear. A live border war is not cancelled, selected suspects are not pruned when invalid, one flag name is mismatched, and faction or subject changes have no immediate hook. |
-| Localisation and tooltips | Script references only | Missing | No Event 011 localisation file or key definition exists under `localisation/`. |
-
-## Findings
-
-### DM-01 Critical: the complete player-facing localisation and mechanic UI surface is absent
-
-Evidence:
-
-- `localisation/` contains zero matches for `secret_alliance` or `chaosx.nr11`.
-- `localisation/english/011_secret_alliance_l_english.yml` does not exist.
-- `common/scripted_guis/011_secret_alliance_scripted_gui.txt` does not exist.
-- `interface/011_secret_alliance.gui` does not exist.
-- Neither category in `common/decisions/categories/011_secret_alliance_categories.txt:9-23` has `scripted_gui =`.
-- `common/scripted_localisation/011_secret_alliance_scripted_localisation.txt` defines phase, Evidence, Preparedness, suspect, confidence, and incident helpers, but no category, GUI, or localisation string calls them.
-- The decision file references 67 decision or mission IDs, 22 custom-cost roots, and 74 custom effect tooltips. The event file references 72 event keys. The scripted localisation file routes 32 output keys. A conservative minimum of 397 unique Event 011 localisation definitions is required before adding all GUI, faction, scenario, achievement, and super-event strings. None are currently defined in `localisation/`.
-
-Impact:
-
-The decision and mission layer is not readable or reviewable in game. Costs, blocked states, objective names, success, partial success, failure, suspect confidence, Evidence, Preparedness, and the faction identity have no final visible text. The supplied meter, card, and warning sprites are registered only as sprites and do not form a mechanic window.
-
-Exact patch:
-
-1. Add `localisation/english/011_secret_alliance_l_english.yml` with UTF-8 BOM and cover every current ID, `_desc`, custom tooltip, and all three custom-cost variants: base, `_blocked`, and `_tooltip`.
-2. Add `common/scripted_guis/011_secret_alliance_scripted_gui.txt` and `interface/011_secret_alliance.gui` with two meters, exactly three suspect cards, recent incident, active mission count, confidence, selected target, and Evolution III War Pressure.
-3. Attach the GUI to the appropriate category with `scripted_gui = <event_owned_gui_id>`.
-4. Use `[GetSecretAlliancePhase]`, `[GetSecretAllianceEvidenceBand]`, `[GetSecretAlliancePreparednessBand]`, `[GetSecretAllianceSelectedSuspectName]`, `[GetSecretAllianceSelectedConfidenceBand]`, and `[GetSecretAllianceRecentOperation]` in real category or GUI text.
-5. Add named `custom_trigger_tooltip` blocks for all hidden requirements. Current `hidden_trigger` blocks suppress the very information the player needs.
-6. Make every custom-cost string icon-first and display the exact stored dynamic variables as integers.
-
-### DM-02 Critical: the reveal transaction does not guarantee the all-valid-members contract
-
-Evidence:
-
-- `secret_alliance_handle_war_relation_added` at `common/scripted_effects/011_secret_alliance_effects.txt:3208-3231` correctly detects either side of a normal target-member war and calls the shared reveal.
-- `secret_alliance_is_valid_member` at `common/scripted_triggers/011_secret_alliance_triggers.txt:62-72` does not exclude a third-party subject, a civil-war-invalid actor, or a country that became the leader of an incompatible faction after recruitment.
-- `secret_alliance_prepare_current_member_for_faction` at `common/scripted_effects/011_secret_alliance_effects.txt:2164-2172` removes only non-leader faction members. An existing faction leader remains in its faction.
-- `secret_alliance_select_reveal_leader` at `common/scripted_effects/011_secret_alliance_effects.txt:2043-2087` randomly selects among eligible sponsors or founders. It does not select the strongest actor in the specified order.
-- `secret_alliance_create_public_faction` at `common/scripted_effects/011_secret_alliance_effects.txt:2174-2197` does not verify that the leader actually created the faction or that every snapshot member successfully joined it.
-- `secret_alliance_start_planned_coalition_war` at `common/scripted_effects/011_secret_alliance_effects.txt:2361-2411` skips delayed and fractured members. Only turned members are recorded as fracture exits. `constant:secret_alliance_reveal_conversion.delayed_call_days` at `common/script_constants/011_secret_alliance_constants.txt:440` is unused, so delayed and fractured members can remain in the faction and at peace with the target indefinitely.
-
-Impact:
-
-The hard hostile-war rule is structurally present but not proven for all current states. Public planned reveals also leave unresolved faction members rather than giving them delayed entry, refusal, or withdrawal.
-
-Exact patch:
-
-1. Extend `secret_alliance_is_valid_member` with `is_subject = no`, civil-war reliability checks, and a verified faction-exit rule. If an existing faction leader cannot be safely moved, remove it from active membership before the reveal snapshot.
-2. Split reveal-leader selection into designated sponsor, strongest valid major, strongest valid founder, and hostile-war anchor fallback. Use a score or sorted candidate helper instead of `random_scope_in_array`.
-3. After faction creation, verify `event_target:secret_alliance_leader = { is_faction_leader = yes }`. After each join, verify `is_in_faction_with = event_target:secret_alliance_leader`. Remove or explicitly resolve failures before war accession.
-4. Preserve the current two-sided war hook and reveal re-entry guard.
-5. Add a delayed-call event or activated mission using `delayed_call_days`. It must either join the member to the target war after the delay or mark withdrawal, remove active membership, and increment the fracture-exit count.
-6. Keep hostile-war reveal as the exception that ignores delayed or compromised call state and joins every remaining valid member immediately.
-
-### DM-03 High: affordability, displayed costs, and manual deductions do not use one price
-
-Evidence:
-
-- `secret_alliance_refresh_dynamic_costs` at `common/scripted_effects/011_secret_alliance_effects.txt:442-493` can scale a base 15 command power and 120 support equipment to materially larger values.
-- `secret_alliance_can_start_investigation` at `common/scripted_triggers/011_secret_alliance_triggers.txt:241-246` still checks command power above 14 and support equipment above 99.
-- `secret_alliance_can_start_protection` at lines 248-253 checks the unscaled base values.
-- `secret_alliance_can_start_offensive_action` at lines 264-269 never checks support equipment or trains even though `secret_alliance_pay_offensive_cost` deducts both.
-- `secret_alliance_can_start_emergency_action` at lines 290-299 never checks fuel even though `secret_alliance_pay_emergency_cost` deducts fuel.
-- `secret_alliance_can_start_war_action` at lines 301-306 never checks support equipment even though `secret_alliance_pay_war_cost` deducts it.
-- `secret_alliance_trace_courier_route` pays trains without checking trains. `secret_alliance_inspect_military_access_talks` pays convoys without checking convoys.
-- Many decisions add static base checks for trains, trucks, convoys, fuel, or manpower while click-time deductions use scaled country variables.
-- `secret_alliance_reconstruct_meeting_circuit` at `common/decisions/011_secret_alliance_decisions.txt:166-188` pays the investigation command-power cost and then pays the command-power cost a second time. At maximum current scale this can exceed the skill's 60 command-power ceiling.
-- Every custom political-power cost lacks `ai_hint_pp_cost`, so official decision behavior gives the AI no reason to reserve the manually deducted political power.
-
-Impact:
-
-A decision can be shown as affordable and then deduct more equipment, trains, fuel, manpower, XP, or command power than the player owns. The displayed price can disagree with the actual price. AI resource reservation is also incomplete.
-
-Exact patch:
-
-1. Add action-family affordability triggers that compare against the same stored variables used by payment. Use `meta_trigger` for a field that does not accept a variable token.
-2. Stop recalculating cost inside `secret_alliance_pay_*`. Refresh the stored price before the category opens and on the narrow event pulse, then use that exact snapshot for both affordability and deduction.
-3. Give every action with extra trains, trucks, convoys, fuel, manpower, or service XP its own composite affordability trigger and custom-cost localisation.
-4. Remove the second command-power payment from `secret_alliance_reconstruct_meeting_circuit`, or assign a dedicated capped heavy-investigation price.
-5. Add the appropriate static `ai_hint_pp_cost` to every decision whose custom cost manually deducts political power.
-6. Use the currently unused action scale, repeat scale, air XP, navy XP, and pressure factors or remove them. The matrix calls for action-specific and repeat-sensitive costs, not one country-size multiplier for nearly every family.
-
-### DM-04 High: the seven counterintelligence missions are passive checks, not named objectives
-
-Evidence:
-
-- `secret_alliance_watch_liaison_route` completes when total Evidence is above 45 and a recent-source-loss flag is absent.
-- `secret_alliance_seize_compromised_courier` completes from a generic border-routes flag and Preparedness above 25.
-- `secret_alliance_turn_recruited_clerk` completes from two prior flags plus Alertness below 50.
-- `secret_alliance_protect_defecting_envoy` completes from a prior consultation flag and Stability above 49 percent.
-- `secret_alliance_break_safehouse_network` completes from a safehouse flag and Preparedness above 50.
-- `secret_alliance_national_manhunt` completes from cabinet protection, command power, and Stability.
-- `secret_alliance_control_rumor_channel` completes from a prior public or consultation flag and Stability.
-- These blocks are at `common/decisions/011_secret_alliance_decisions.txt:197-294`.
-- No mission stores or displays a state, region, port, rail junction, depot, route, supplied division count, local unit requirement, transport commitment, or extraction point.
-- `secret_alliance_inspect_military_access_talks` activates `secret_alliance_national_manhunt`, which does not match the decision subject.
-
-Impact:
-
-Because a non-selectable mission auto-completes when `available` becomes true, several objectives can complete immediately when activated. The rest ask the player to wait for a generic flag or meter. Full, partial, and failure code exists, but the player has little direct work to perform.
-
-Exact patch:
-
-1. At mission activation, select and persist event-owned objective states or routes. Store the target state IDs and print their names in localisation.
-2. Use named and visible requirements:
-   - liaison and courier routes should name a capital, port, or border route and require maintained transport or surveillance state
-   - courier seizure and safehouse missions should require control plus supplied divisions in the selected state or border pair
-   - envoy extraction should name and retain control of an extraction capital or port
-   - the national manhunt should protect the target capital region and a specific threatened office or route
-   - the rumor mission should require a concrete funding or media-channel action rather than Stability alone
-3. Add `highlight_states` for map objectives and clear the saved state pair on completion, cancellation, timeout, or invalidation.
-4. Preserve the existing 90 to 180 day durations except for the justified 75-day emergency mission.
-5. Keep mission-specific full, partial, and failure helpers, but make their outcomes depend on the actual objective state.
-6. Remap `secret_alliance_inspect_military_access_talks` to an access or port mission instead of the national manhunt.
-
-### DM-05 High: active caps are inert and permanent Preparedness can be stacked immediately
-
-Evidence:
-
-- `secret_alliance_active_protections`, `secret_alliance_active_diplomacy`, `secret_alliance_active_offensive`, and `secret_alliance_active_emergency` are initialized and cleared, then only read by cap triggers. No gameplay path increments or decrements them.
-- Only investigations and one border mission change their active counters. The complete reference set is visible in `common/scripted_effects/011_secret_alliance_effects.txt:485-491,1224-1405,1894-1898` and `common/scripted_triggers/011_secret_alliance_triggers.txt:241-299`.
-- Seven repeatable protection decisions and the one-time continuity project can add 83 total Preparedness in one availability window. Each also grants or preserves the same `secret_alliance_hardened_networks` idea.
-- Protection gains do not expire or decay. The idea has no cancellation or timed lifecycle.
-- Emergency actions can add another 59 Preparedness in one window because the declared emergency cap of two is never consumed.
-
-Impact:
-
-A resource-rich target can nearly maximize Preparedness in one day. Protection projects are duplicate permanent-value buttons rather than maintained commitments. The active caps displayed by the design do not control play.
-
-Exact patch:
-
-1. Convert protection projects into timed maintained projects or activated missions with start, active, complete, cancel, and expiry helpers.
-2. Increment `secret_alliance_active_protections` or `secret_alliance_active_emergency` on activation and decrement it on every terminal path.
-3. Give each project a maintained component and expiry behavior. Preparedness should be recalculated from active components or lose the component gain when maintenance ends.
-4. Add active state to diplomatic and offensive operations that represent continuing probes. Instant actions should use cooldown and per-clue consumption rather than a meaningless active counter.
-5. Prevent a completed project from being repeated unless its prior protection expired or a new incident reopened the relevant surface.
-6. Replace the single always-identical hardened idea with staged or component-aware ideas.
-
-### DM-06 High: Evidence is farmable and does not use independent evidence classes
-
-Evidence:
-
-- The accepted model requires communications, financial, diplomatic, military, method, and human evidence with corroboration.
-- The current code has only `global.secret_alliance_evidence` and direct additions throughout events, missions, and decisions.
-- `secret_alliance_record_full_success` at `common/scripted_effects/011_secret_alliance_effects.txt:1136-1145` always adds 15 Evidence and selects a true-member clue, regardless of the action family.
-- Repeatable mission-start decisions have cooldowns but no per-clue consumption or completed-route blocker.
-- `secret_alliance_present_coalition_case` needs only scalar Evidence above 80 and the current false-confirmed trigger.
-- Confidence can be raised repeatedly without proving independent classes.
-
-Impact:
-
-The player can build a complete public case by repeating one method. Duplicate investigations become Evidence generators, and the public-proof route does not enforce corroboration.
-
-Exact patch:
-
-1. Implement one documented `secret_alliance_add_evidence` helper with inputs for evidence class, quality, actor, and source ID.
-2. Track per-class values or immutable class flags plus consumed source IDs.
-3. Apply diminishing or zero gain when the same source repeats without a new incident.
-4. Add `secret_alliance_has_corroborated_evidence` and require at least two independent classes for Likely, Confirmed, public naming, and the coalition case.
-5. Route every event, mission, leak, defector, and investigation through this helper instead of direct Evidence additions.
-6. Record full, partial, and failure memory by mission family so pact operation selection can adapt to what succeeded.
-
-### DM-07 High: suspect capacity, selected-target lifecycle, and revealed-member selection are incomplete
-
-Evidence:
-
-- `secret_alliance_register_current_country_as_suspect` at `common/scripted_effects/011_secret_alliance_effects.txt:924-934` appends every new suspect. It has no three-card cap, priority score, replacement rule, or weak-lead dismissal memory.
-- `secret_alliance_select_suspect` at `common/decisions/011_secret_alliance_decisions.txt:299-306` creates one targeted selector entry per array element. The array can grow without bound.
-- `secret_alliance_has_selected_suspect` at `common/scripted_triggers/011_secret_alliance_triggers.txt:197-204` makes stale targets unusable but does not clear the global event target or remove the invalid array entry.
-- No on action handles join-faction, puppet, subject-autonomy, or civil-war changes for immediate suspect and member cleanup.
-- Reveal snapshotting at `common/scripted_effects/011_secret_alliance_effects.txt:2088-2162` does not populate a public-member selector. Revealed-war actions still depend on the pre-reveal selected suspect and suspect array.
-
-Impact:
-
-The promised three suspect cards do not exist. The decision list can grow with every false lead. Revealed war actions such as separate terms and member opposition may be unavailable because the selected suspect is innocent, cleared, dead, or not one of the public members.
-
-Exact patch:
-
-1. Add a capped, scored three-entry human suspect view array or fixed GUI card set. Keep the full hidden evaluation pool separate.
-2. Add `secret_alliance_refresh_suspect_validity` and call it before display rebuilds, on the event pulse, and from narrow faction, subject, annexation, capitulation, and civil-war hooks.
-3. Clear `secret_alliance_selected_suspect` immediately when the target becomes invalid and remove its selector decision.
-4. On reveal, build a separate public-member target array from `secret_alliance_reveal_member_snapshot`. Revealed-war decisions must target this array, not the concealed suspect array.
-5. Give AI a separate target-scoring helper that evaluates every valid actionable member without touching the human selected card.
-
-### DM-08 High: category phase locks do not transform the interface at reveal
-
-Evidence:
-
-- `secret_alliance_response_category_visible` at `common/scripted_triggers/011_secret_alliance_triggers.txt:177-187` remains true when the pact is revealed.
-- Most investigation, protection, diplomacy, deception, border, and public exposure decisions use only that trigger or the selected suspect for visibility.
-- Mission cancel triggers correctly cancel concealed missions on reveal, but the old clickable decisions remain visible and can activate those missions again.
-- The Coalition Crisis category opens alongside the stale Foreign Interference category.
-
-Impact:
-
-The category does not transform from investigation to public coalition management. It produces obsolete actions, two simultaneous major categories, possible immediate mission cancellation loops, and much more clutter than the phase matrix allows.
-
-Exact patch:
-
-1. Make `secret_alliance_response_category_visible` require `secret_alliance_is_concealed = yes`.
-2. Move only still-valid protection or counterintelligence aftermath actions into Coalition Crisis with revealed-specific IDs or visible branches.
-3. Hide public exposure after reveal and expose the public-member selector plus revealed-war actions instead.
-4. During reveal, explicitly remove active hidden decisions if they were activated by effect and cancel hidden missions before the public category rebuild.
-
-### DM-09 High: the border family does not enforce the mapped cost, objective, cap, or exit choices
-
-Evidence:
-
-- `secret_alliance_begin_limited_border_conflict` at `common/decisions/011_secret_alliance_decisions.txt:622-631` shows a custom cost but calls only `secret_alliance_start_dynamic_border_conflict`. No payment helper runs.
-- Starting the conflict does not increment `secret_alliance_active_border`, so another border mission can start while the conflict is active.
-- The selected state pair is random. No state name or highlight is shown to the player.
-- The action checks only that some valid state pair exists. It does not require any division on that border, supplied units, equipment, manpower, or local commitment.
-- `secret_alliance_escalate_or_withdraw_border_conflict` at lines 633-641 always calls escalation. There is no withdraw or negotiate outcome.
-- `secret_alliance_secure_contested_crossing` at lines 643-657 checks generic flags and Preparedness instead of the stored state pair.
-- Vanilla `common/decisions/JAP.txt:3577-3683` highlights the exact states, checks `divisions_in_border_state`, activates matching warning and timeout decisions, and cleans the state flags.
-
-Impact:
-
-The limited conflict is free, geographically opaque, and can bypass its active cap. The player is not making the mapped choice between escalation, negotiation, and withdrawal.
-
-Exact patch:
-
-1. Persist the selected attacker and defender state IDs for the entire border chain and expose both state names through scripted localisation.
-2. Add `highlight_states` and a custom requirement tooltip.
-3. Require `divisions_in_border_state`, control of the exact pair, supplied local divisions, and the mapped equipment, manpower, XP, and command-power commitment.
-4. Call the exact payment helper before `start_border_war` and increment `secret_alliance_active_border`.
-5. Decrement the counter and clear state IDs on win, loss, cancellation, escalation, withdrawal, cleanup, and invalidation.
-6. Split escalation, negotiation, and withdrawal into separate decisions with distinct costs and results.
-7. Keep the current rule that a border conflict alone does not trigger normal-war reveal.
-
-### DM-10 High: Evidence, Preparedness, and Readiness convert into flat ideas rather than scaled wartime effects
-
-Evidence:
-
-- `secret_alliance_convert_hidden_values_to_war_state` computes four 0 to 100 conversion values at `common/scripted_effects/011_secret_alliance_effects.txt:2199-2242`.
-- Every reveal member then receives the same `secret_alliance_coalition_opening_coordination` idea regardless of starting Readiness.
-- The target always receives `secret_alliance_known_enemy_plans` and `secret_alliance_hardened_networks`, even when scenario launch starts Evidence and Preparedness at zero.
-- The ideas in `common/ideas/011_secret_alliance_ideas.txt:36-75` have fixed modifiers and do not read the computed values.
-
-Impact:
-
-A coalition with 18 Readiness and one with 90 Readiness receive the same opening coordination idea. A target with zero Evidence receives the same known-plans idea as a target with a complete case. Prewar counterplay does not carry into the opening war in the promised dynamic way.
-
-Exact patch:
-
-1. Add staged ideas or dynamic modifiers for low, medium, and high opening coordination, known weaknesses, and target defenses.
-2. Apply no known-plans idea at zero or fragmentary Evidence.
-3. Apply no hardened-network wartime idea at zero or exposed Preparedness.
-4. Select the coalition coordination stage from Readiness after turned-member and false-plan penalties.
-5. Make Coalition Resolve affect actual member posture or staged modifiers, not only fracture checks and later decisions.
-6. Remove or transform `secret_alliance_compromised_channels` at reveal so the visible idea lifecycle matches the phase transition.
-
-### DM-11 High: AI decision equivalence is not operational
-
-Evidence:
-
-- `secret_alliance_target_is_valid` at `common/scripted_triggers/011_secret_alliance_triggers.txt:9-16` requires `is_ai = no`. Normal setup therefore cannot create an AI-controlled target.
-- The human selector decision has `ai_will_do = { base = 0 }` at `common/decisions/011_secret_alliance_decisions.txt:299-306`.
-- Suspect-facing AI weights rely on the one global human-selected suspect. There is no AI target-selection helper.
-- Most `ai_will_do` blocks do not block expenditure during an existential war or when paying the cost would exhaust critical reserves.
-- Custom political-power costs lack `ai_hint_pp_cost`.
-- Member AI strategies in `common/ai_strategy/011_secret_alliance.txt` are broad build-army and avoid-war values. They do not implement motive, reach, land, maritime, distant-support, or separate-settlement roles from the AI matrix.
-
-Impact:
-
-The presence of `ai_will_do` does not provide the required AI equivalent. An AI target cannot enter the normal system, cannot select a better suspect, and may spend according to stale or incomplete affordability. Coalition member AI also lacks the mapped theater roles.
-
-Exact patch:
-
-1. Add a supported AI-target path for testing and scenario use, or clearly remove the source-spec AI-target promise through an accepted spec change. Do not leave dead weights.
-2. Add `secret_alliance_ai_select_action_target` that scores every valid suspect or public member from confidence, geography, resources, motive compatibility that the AI is allowed to know, and current war state.
-3. Let AI call the same validated effect helpers without requiring GUI selection.
-4. Add zero-weight blockers for existential war, low Stability, low stockpile reserve, unreachable target, invalid route, and insufficient strategic access.
-5. Add `ai_hint_pp_cost` for every manually deducted political-power custom cost.
-6. Expand member posture by motive and theater role, with cleanup on exit and settlement.
-
-### DM-12 Medium: false-accusation memory is based on current membership instead of innocence at accusation
-
-Evidence:
-
-- `secret_alliance_apply_false_accusation_consequences` marks `secret_alliance_innocent_accused`, then can recruit the false-lead country into the pact at `common/scripted_effects/011_secret_alliance_effects.txt:1623-1648`.
-- `secret_alliance_has_false_confirmed_suspect` at `common/scripted_triggers/011_secret_alliance_triggers.txt:405-410` checks whether a publicly named country is not currently an active member.
-- Once the innocent country joins because of the accusation, that trigger becomes false. The same historically false accusation no longer blocks the coalition case.
-
-Impact:
-
-An incorrect public accusation can later be treated as a correct case without new proof because the victim joined after being accused. Achievement disqualification remains, but the gameplay public-proof route forgets the error.
-
-Exact patch:
-
-1. Make `secret_alliance_innocent_accused` an immutable at-time fact until terminal cleanup.
-2. Change `secret_alliance_has_false_confirmed_suspect` to check that flag, not current active membership.
-3. Require a distinct later investigation and explicit proof event before an accusation victim that subsequently joins can be publicly confirmed as a member.
-4. Store an Evidence snapshot for public naming and require new evidence before repeating a public accusation against the same country.
-
-### DM-13 Medium: cancellation and cleanup leave stale state
-
-Evidence:
-
-- `secret_alliance_cleanup_runtime_context` clears the unresolved border-war flag but never calls `cancel_border_war` for a live Event 011 conflict.
-- `secret_alliance_stockpiles_disperse` is set at `common/scripted_effects/011_secret_alliance_effects.txt:1585`, but cleanup clears `secret_alliance_stockpiles_dispersed` at line 2952.
-- Selected suspect cleanup occurs only at final runtime cleanup or manual clear, not at target invalidation.
-- Member and suspect validity changes through faction joining, subject status, or civil war have no immediate on-action hook in `common/on_actions/011_secret_alliance_on_actions.txt`.
-- `secret_alliance_compromised_channels` is not removed during reveal conversion and can remain stacked with the public-phase ideas until terminal cleanup.
-
-Impact:
-
-The event can leave a border war running after its state is cleared, retain a misspelled protection flag, keep stale suspect pointers, and carry a concealed-phase idea into public war.
-
-Exact patch:
-
-1. Cancel the active border war before clearing Event 011 border flags and state IDs. Keep callback guards so cancellation cannot double-resolve.
-2. Standardize the stockpile flag spelling and migrate or clear both spellings once.
-3. Add narrow state-change hooks for faction entry, puppet or subject changes, civil-war invalidation, capitulation, annexation, and release as needed.
-4. Clear or rebuild the selected target immediately on invalidation.
-5. Transform or remove concealed-phase ideas at reveal, then remove public-phase ideas at settlement.
-
-### DM-14 Medium: decision volume and target checks exceed the specified clutter and performance budget
-
-Evidence:
-
-- The sustained Evolution II category can expose most of 8 investigation entries, 8 protection entries, 7 diplomatic probes, 8 offensive actions, 5 border actions, 5 public actions, active missions, and one selector row per suspect.
-- The phase matrix calls for 7 to 11 relevant actions in sustained Evolution II.
-- `secret_alliance_select_suspect` uses an uncapped target array and interface-frequency `visible` and `available` checks rather than a three-card GUI.
-- Official decision documentation states that decision `visible` and `available` checks run at interface frequency and that targeted prefiltering should use `target_root_trigger` and `target_trigger` where possible.
-- Founder and scenario member selection can rescan every country once per added member and build up to 40 duplicate ticket entries per candidate. Maximum scenario composition can repeat this process many times in one launch.
-
-Impact:
-
-The category is a debug-menu-sized list rather than a current-state response system. The uncapped suspect selector increases both clutter and repeated UI evaluation. Selection spikes are not recurring global on actions, but they are unnecessarily expensive.
-
-Exact patch:
-
-1. Gate each family by recent incident, phase, selected card, geography, active cap, and route state so only the current 7 to 11 actions appear.
-2. Use the fixed three-card scripted GUI instead of one selector row per hidden suspect.
-3. Move root-only conditions into `target_root_trigger` and target validity into `target_trigger` on any remaining targeted decision.
-4. Build one scored candidate pool per recruitment or evolution batch, then draw without replacement. Do not rescan the whole world for every added member.
-5. Preserve the current positive performance property: there is no forbidden global daily, weekly, or monthly country iteration. The event uses a target-bound 45-day pulse and narrow on-action handlers.
-
-## Threshold audit
-
-The confidence and Evidence band helpers use strict `>` comparisons. At exact configured thresholds, the lower band remains active. Examples include `confidence_possible = 15`, `confidence_plausible = 35`, `confidence_likely = 60`, `confidence_confirmed = 85`, and Evidence thresholds at 45, 65, and 80.
-
-This is lower severity than the findings above, but the patch should use explicit `greater_than_or_equals` at the intended inclusive thresholds in:
-
-- `secret_alliance_selected_suspect_is_possible`
-- `secret_alliance_selected_suspect_is_plausible`
-- `secret_alliance_selected_suspect_is_likely`
-- `secret_alliance_selected_suspect_is_confirmed`
-- the corresponding scripted-localisation band selectors
-- public dossier and reveal gates where the spec says the threshold itself qualifies
-
-## Duplicate and exploit audit
-
-### Engine duplicate protection
-
-Current mission activation generally checks `NOT = { has_active_mission = ... }`, and `activate_mission` itself refuses an already active mission. A simultaneous duplicate instance of the same mission is therefore not the main risk.
-
-### Remaining duplicate and exploit risks
-
-| Risk | Evidence | Required control |
-| --- | --- | --- |
-| Repeat Evidence farming | Repeatable decision cooldowns reopen the same mission after completion. Full success always adds the same Evidence package. | Consume source IDs and evidence classes. Block or diminish repeats until a new incident. |
-| Duplicate protection gameplay | Most protection entries use the same generic payment, the same idea, and a flat 8 to 12 Preparedness gain. | Make each project regional or component-specific with an active lifecycle. |
-| Emergency burst | Emergency cap stays zero while one-time buttons can all be clicked. | Increment and decrement the cap through project missions. |
-| Border cap bypass | Starting the actual border conflict does not increment the border counter. | Increment on start and decrement on every exit. |
-| Public naming repeat | `secret_alliance_name_first_member` can reopen after 90 days without a new-evidence requirement. | Snapshot evidence per suspect and require a later corroborating source. |
-| Static conversion exploit | Evidence zero and Evidence one hundred grant the same known-plans idea. | Use tiered or dynamic reveal conversion. |
-
-## Required patch order
-
-1. Implement localisation and the actual compact GUI so the player-facing contract can be reviewed.
-2. Fix reveal member validity, faction postconditions, delayed calls, and public member targeting.
-3. Make cost snapshots, affordability, displayed cost, manual deduction, and AI hints identical.
-4. Implement evidence classes and the capped three-card suspect model.
-5. Replace passive mission checks with named state and route objectives.
-6. Activate the protection, emergency, offensive, diplomacy, and border caps and remove permanent repeat stacking.
-7. Rebuild border conflict costs, units, state highlighting, choices, and cleanup.
-8. Add phase locks, AI target selection, motive and theater behavior, and invalidation hooks.
-9. Replace flat reveal ideas with tiered or dynamic conversion.
-10. Run the validation scenarios below, then request a fresh decision and mission audit.
-
-## Required validation scenarios after patching
-
-| Scenario | Required proof |
+| File | SHA-256 |
 | --- | --- |
-| Dynamic cost on a large major | Every displayed amount equals the affordability gate and exact deduction. No resource becomes negative. |
-| Two active investigations | A third investigation is blocked. Completion, timeout, cancellation, reveal, and cleanup each free exactly one slot. |
-| Two active protection projects | A third project is blocked. Expiry removes or recalculates its Preparedness component. |
-| Repeated same clue | Repeating one clue class cannot produce a complete dossier or confirmed member. |
-| Three suspects plus a fourth lead | Only three cards display. Closing or invalidating one admits the next scored lead and clears the old target. |
-| Innocent public accusation | The innocence fact remains even if that country later joins. A coalition case still recognizes the earlier error. |
-| Named courier or safehouse mission | The mission displays exact states or route, highlights them, requires real unit, control, supply, or transport action, and resolves full, partial, and failure distinctly. |
-| Border conflict | The exact state pair and divisions are required, the full cost is paid, only one border objective is active, and win, loss, cancel, withdraw, negotiate, escalation, and event cleanup all clear state. |
-| Border war versus normal war | A limited conflict does not reveal the pact. Escalation to normal war does. |
-| Hostile-war reveal | Every post-cleanup valid member joins the public faction and target war exactly once. Turned and delayed flags do not delay this route. |
-| Planned reveal with delayed member | The member joins after the configured delay or records a withdrawal. It does not remain an unresolved faction member at peace. |
-| Low versus high prewar values | Evidence, Preparedness, and Readiness produce visibly different opening ideas or dynamic modifiers. |
-| AI target | AI selects a valid suspect or public member without GUI state, respects resources and current wars, and uses the same validated helpers. |
-| Reveal phase transition | Concealed missions cancel, Foreign Interference closes, Coalition Crisis opens, and only public-phase actions remain. |
-| Terminal cleanup during border conflict | The border war is cancelled, missions disappear, targets and state IDs clear, and no runtime flag remains. |
+| `common/decisions/011_secret_alliance_decisions.txt` | `ECC0B7A09CD21938C418A64732FC8D5F483C04FDC8F0AFEF5DC6C066812B2B97` |
+| `common/scripted_triggers/011_secret_alliance_triggers.txt` | `55FD17D4DB83E4A503BAF05F95DE6A15ED10558082C49EECDD5000CCFCDA1B63` |
+| `common/scripted_effects/011_secret_alliance_effects.txt` | `AE6E453DAD29A5A9D7659776DF6C81967AAAB75F148CDF3D4B85C9702931A6DF` |
+| `events/011_secret_alliance.txt` | `641838E5C237B9FC9872F71466D735935B6E9534E288B57F4CA1463D3292C4A4` |
+| `common/on_actions/011_secret_alliance_on_actions.txt` | `40E78311DD75CFB6D72C348DDE2DF237C53F723972A4626971EE25DB944F14F2` |
+| `common/scripted_guis/011_secret_alliance_scripted_gui.txt` | `C715868C26CF43EE937E89EF327562F0724BEAB63714F7A74B82C5E14166989F` |
+| `common/scripted_localisation/011_secret_alliance_scripted_localisation.txt` | `34D1ABAB4FEB30B83942BC949BC6EDB7D19414EC7D1246EA42CE587726347339` |
+| `common/ai_strategy/011_secret_alliance.txt` | `3FB48B7EAC0025F1CE1859696FA00C1AB738B63ED011C0D91CD21DA0176405EE` |
+| `common/script_constants/011_secret_alliance_constants.txt` | `473698C9686877CE3935CEE2268BC0C668CD45A1E477C08BE2B6CC7DAF9A9CD4` |
 
-## Positive implementation evidence worth preserving
+## References used
 
-- Event-owned constants, decisions, categories, ideas, triggers, effects, AI, factions, events, and on actions are separated cleanly.
-- Decision and mission durations are centralized with safe file-scoped `@` constants.
-- The seven investigation missions have explicit timeout, cancel, full, partial, and failure helpers.
-- The concealed-to-public reveal uses one guarded transaction rather than separate duplicated reveal effects.
-- `on_war_relation_added` is two-sided and avoids a forbidden periodic global country scan.
-- Hidden-war reveal calls the same faction and conversion helpers as other reveal routes.
-- Runtime cleanup removes active missions with `remove_mission`, then clears counters explicitly, which matches the documented effect semantics.
-- The code does not treat a border war as a normal war relation.
+The audit used the accepted Event 011 specs, especially the decision and mission matrix, AI strategy matrix, tuning model, event-chain map, and spec parts 1 through 5.
 
-## Completion disposition
+Required offline Paradox wiki references were consulted for Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, Faction modding, Interface modding, and Scripted GUI modding.
 
-No accepted matrix family is fully complete in its current player-facing form. The identifier count should not be used as coverage proof. Completion requires the patches and task-specific scenarios above, followed by a fresh audit of the actual final localisation, GUI, decision visibility, dynamic costs, objectives, AI targeting, reveal transaction, and cleanup.
+Vanilla documentation was consulted for decisions, scripted GUIs, factions, on actions, AI strategy, triggers, effects, modifiers, script concepts, dynamic variables, localisation formatters/objects, and script constants. The exact-state and border-war structure was compared with the vanilla Japanese border-conflict implementation in `common/decisions/JAP.txt:3577-3683`. Official trigger documentation confirms that `divisions_in_border_state` checks the named country/state pair and that `has_railway_level` checks the named state for the required minimum railway level.
+
+## DM-01 through DM-14
+
+| ID | Result | Evidence |
+| --- | --- | --- |
+| DM-01 | Resolved | The scripted GUI is ROOT-only, disables AI use, supplies three clickable suspect cards plus clear and animation controls, and drives meters/card frames through properties at `common/scripted_guis/011_secret_alliance_scripted_gui.txt:5-76`. Matching interface elements exist at `interface/011_secret_alliance.gui:30-47`. No event target is resolved inside the GUI. |
+| DM-02 | Resolved | Reveal leader selection scores every valid active member by military, industrial, and major strength at `common/scripted_effects/011_secret_alliance_effects.txt:3637-3659`. Reveal snapshot and public-faction membership are post-validated at lines 3661-3805. Hostile-war reveal calls every valid active snapshot member, retries failures, and rolls back the transaction if any call remains unresolved at lines 3947-4073. The common transaction preserves the hostile-war route even during a dispute and stores the explicit fractured route for other disputed reveals at lines 4021-4035; scripted localisation reads that distinct constant at `common/scripted_localisation/011_secret_alliance_scripted_localisation.txt:204-228`. Planned war handles turned, delayed, fractured, retried, and explicit-exit states at effects lines 4076-4192. |
+| DM-03 | Resolved | Family affordability gates match their payment helpers at `common/scripted_triggers/011_secret_alliance_triggers.txt:397-588` and `common/scripted_effects/011_secret_alliance_effects.txt:2302-2410`. Diplomacy's reusable payment gate covers the scaled PP, CP, Stability, and active slot at triggers lines 491-501; Allied Consultation and Neutral Inquiry use it in both availability and custom-cost gates at `common/decisions/011_secret_alliance_decisions.txt:472-492`. Preemption uses the same 50% War Support gate in availability and custom cost at decisions lines 827-845, then pays the separately displayed 5% strain at effects lines 3584-3589. Border escalation pays its displayed War Support variable at effects lines 2953-2958. The rumor event accepts an exact PP balance at `events/011_secret_alliance.txt:213-217`. The final strict-resource sweep found no Event 011 resource affordability site using a bare strict `>`. Named requirement tooltips and visibly blocked cost roots are present in the decision and localisation files. |
+| DM-04 | Resolved | All seven investigation missions are activated as nonselectable named objectives and require both their saved exact state and a route-specific verified flag at `common/decisions/011_secret_alliance_decisions.txt:206-308`. Objective preparation saves the state and suspect identity at `common/scripted_effects/011_secret_alliance_effects.txt:2099-2191`; delayed verification checks that same state plus the mission-specific field condition at lines 2193-2300. Completion, cancellation, and expiry clear the exact objective state and suspect pointer at lines 2516-2776. |
+| DM-05 | Resolved | Preparedness is recomputed from separate staff-plan, cipher, industrial, stockpile, port, border-communications, border-patrol, cabinet, continuity-site, allied-consultation, emergency, and known-plan sources at `common/scripted_effects/011_secret_alliance_effects.txt:3001-3044`. Protection projects create distinct timed sources and distinct end helpers at lines 3052-3166. Emergency, patrol, and consultation sources have their own expiry helpers at lines 3625-3631, wired through `events/011_secret_alliance.txt:433-459`. One expiring source cannot erase another active contribution. |
+| DM-06 | Resolved | Evidence sources are stored per suspect by class while the dossier maintains its independent global class count at `common/scripted_effects/011_secret_alliance_effects.txt:1799-1929`. Confirmation requires both confidence and per-suspect corroboration at lines 1932-1952 and `common/scripted_triggers/011_secret_alliance_triggers.txt:360-387`. Mission clues retain the prepared suspect and supply a defined evidence class at effects lines 2516-2543. |
+| DM-07 | Resolved | The canonical suspect trigger rejects subjects, civil wars, special countries, capitulated countries, the target, cleared suspects, and target-faction partners at `common/scripted_triggers/011_secret_alliance_triggers.txt:327-337`. Both AI targeting and the full hidden suspect pool use that trigger at `common/scripted_effects/011_secret_alliance_effects.txt:1312-1355` and 1394-1415. The visible pool is independently ranked and capped to three cards at lines 1732-1772. |
+| DM-08 | Resolved | Foreign Interference is concealed Evolution II only, while Coalition Crisis owns Evolution III and revealed play at `common/scripted_triggers/011_secret_alliance_triggers.txt:275-290` and `common/decisions/categories/011_secret_alliance_categories.txt:9-24`. Reveal closes the response category at `common/scripted_effects/011_secret_alliance_effects.txt:4051-4057`. |
+| DM-09 | Resolved | The prepared border pair requires the stored attacker/defender states, minimum infrastructure, railway level in both exact states, target divisions on the exact border, and suspect divisions in the defender state at `common/scripted_triggers/011_secret_alliance_triggers.txt:540-560`. The conflict decision highlights that pair and requires the complete logistics/unit gate at `common/decisions/011_secret_alliance_decisions.txt:646-709`. Start, exact cancellation, escalation, withdrawal, negotiation, win, loss, and cancel paths are wired at `common/scripted_effects/011_secret_alliance_effects.txt:2860-2983`; terminal cleanup cancels the exact live conflict before clearing its state. |
+| DM-10 | Resolved | Hidden values convert to Resolve, opening coordination, known weaknesses, and target defenses at `common/scripted_effects/011_secret_alliance_effects.txt:3808-3850`. Zero applies no staged idea; low, medium, and high bands apply distinct ideas at lines 3852-3908, defined at `common/ideas/011_secret_alliance_ideas.txt:94-173`. Cleanup removes every stage. |
+| DM-11 | Resolved | Normal entry remains human-target-only, with an explicit hidden opt-in AI test entry at `common/scripted_triggers/011_secret_alliance_triggers.txt:9-23` and `events/011_secret_alliance.txt:552-584`. Concealed AI selects from the full valid suspect array and revealed AI selects from the full valid public-member array at `common/scripted_effects/011_secret_alliance_effects.txt:1312-1355`. Human revealed targeting uses `global.secret_alliance_public_members` at `common/decisions/011_secret_alliance_decisions.txt:901-916`, and AI wartime response consumes the selected public member at effects lines 4341-4365. |
+| DM-12 | Resolved | A false public accusation writes the immutable `secret_alliance_innocent_accused` marker, applies Stability, cohesion, alertness, opinion, and possible recruitment consequences at `common/scripted_effects/011_secret_alliance_effects.txt:3169-3193`. Coalition-case safeguards read that marker at `common/scripted_triggers/011_secret_alliance_triggers.txt:379-387` and 708-712. War against an innocent lead records the separate achievement consequence at effects lines 5376-5396. |
+| DM-13 | Resolved | Cleanup first cancels the exact border conflict, removes all missions and staged ideas, clears target/member/suspect flags and variables, clears every Event 011 array and global event target, and clears the event-owned global runtime state at `common/scripted_effects/011_secret_alliance_effects.txt:4717-5103`. A mechanical comparison found no Event 011 global flag set without a corresponding clear and no saved Event 011 global event target without a corresponding clear. Narrow lifecycle refreshes cover war, capitulation, uncapitulation, government, annexation, faction, leadership, puppet, liberation, release, subject, civil-war, and peace-conference changes at `common/on_actions/011_secret_alliance_on_actions.txt:8-76`, with handlers at effects lines 5376-5486. |
+| DM-14 | Resolved | Each concealed pulse chooses exactly one prioritized incident at `common/scripted_effects/011_secret_alliance_effects.txt:1268-1309`. Operation-family weights consume member roles, motives, doctrine, recent family, and prepared surfaces, then select a matching actor and real readiness layer at lines 1526-1718. Decision visibility is phase-, incident-, suspect-, objective-, and cap-aware throughout `common/decisions/011_secret_alliance_decisions.txt:30-774`; the seven Evolution III actions plus countdown are at lines 782-893, and revealed selection plus seven war actions are at lines 901-998. Feed False Plans is a one-card replacement while its event-owned channel exists, all normal offensive branches carry the inverse gate, and the effect consumes the channel at decisions lines 512-597 and effects lines 3365-3372. This preserves the accepted current-action bands instead of exposing the full catalog. |
+
+## RA-01 and RA-02
+
+| ID | Result | Evidence |
+| --- | --- | --- |
+| RA-01 | Resolved | Maximum requests 12 total members and two majors, within the accepted 8-12/maximum-two band, at `common/script_constants/011_secret_alliance_constants.txt:191-196`. The scenario counts its valid AI-only safe minor/major pool, selects majors first and minors without exceeding the requested total, and records requested, safe, and achieved composition at `common/scripted_effects/011_secret_alliance_effects.txt:5109-5184` and 5282-5309. Maximum qualification requires the achieved major count and either the requested total or the exact safe-pool ceiling at lines 5286-5300. Launch aborts rather than substituting an invalid composition at lines 5312-5367. |
+| RA-02 | Resolved | Outcome-band constants define full, partial, expired, and failure identities at `common/script_constants/011_secret_alliance_constants.txt:35-41`. Every mission outcome helper writes those named constants at `common/scripted_effects/011_secret_alliance_effects.txt:2412-2513`; downstream decisions and expiry effects read the same named values. No raw numeric outcome identity remains in the audited decision/mission flow. |
+
+## Task-specific verification
+
+- Re-froze the gameplay files after every audit-triggered correction and based this report on the hashes above.
+- Confirmed the hostile-war reveal transaction cannot complete while a valid snapshot member remains outside the target war.
+- Confirmed every named investigation objective binds completion to its saved exact state and delayed verification fact.
+- Confirmed every Preparedness source expires independently.
+- Confirmed the border conflict requires the exact stored state pair, local divisions, infrastructure, and railway readiness, and that every exit path reaches exact cancellation or resolution.
+- Confirmed the AI-only test route is opt-in and hidden, while ordinary event eligibility remains human-target-only.
+- Confirmed Maximum scenario proof is based on achieved composition rather than requested intensity alone.
+- Confirmed the final resource-affordability sweep contains no strict exact-balance `>` gate.
+- Confirmed Event 011 global flags and saved global event targets all have teardown coverage.
+
+## Simplifications, omissions, and blockers
+
+None in the audited DM-01 through DM-14 and RA-01 through RA-02 scope. No fallback or weaker substitute was accepted.
