@@ -1,88 +1,78 @@
-# Documentation state
+# Event 011 documentation state
 
-## Source-of-truth map
+## Current source-of-truth map
 
 | Area | Current source |
 | --- | --- |
-| Core event design | `specs/011_secret_alliance_spec_part_1_core_and_hidden_pact.md` |
-| Progression and evolutions | `specs/011_secret_alliance_spec_part_2_progression_and_evolutions.md` |
-| Counterplay and decisions | `specs/011_secret_alliance_spec_part_3_counterplay_and_decisions.md` |
-| Reveal, war, scenario, and super-event role | `specs/011_secret_alliance_spec_part_4_reveal_war_and_scenario.md` |
-| AI, presentation, balance, and acceptance | `specs/011_secret_alliance_spec_part_5_ai_presentation_and_acceptance.md` |
-| Event family map | `matrices/011_secret_alliance_event_chain_map.md` |
-| Decision and mission detail | `matrices/011_secret_alliance_decision_mission_matrix.md` |
-| AI behavior | `matrices/011_secret_alliance_ai_strategy_matrix.md` |
-| Tuning relationships | `matrices/011_secret_alliance_tuning_model.md` |
-| Asset coverage | `matrices/011_secret_alliance_asset_register.md` |
-| Achievements | `matrices/011_secret_alliance_achievement_matrix.md` |
-| Research basis | `research/011_secret_alliance_historical_research.md` and bibliography |
-| Super-event text research | `research/011_secret_alliance_super_event_text_research.md` |
-| Implementation direction | files under `prompts/` |
-| Specialist disposition | files under `handoffs/` |
+| Historical source design | `docs/specs/011_secret_alliance_specs/specs/` parts 1-5 |
+| Design matrices | `docs/specs/011_secret_alliance_specs/matrices/` |
+| Final gameplay and balance implementation | Event 011 gameplay files at `1c87d9235319781c871c2948813ab55693eb8618` |
+| Lifecycle, callback, wording, and catalog lineage | Commits `a1f47c0c`, `7563648f`, and `97a2da80` beneath the final freeze |
+| Mechanic overview | `docs/events/011_secret_alliance.md` |
+| Improvement-loop closure | `docs/plans/011_secret_alliance_plans/011_secret_alliance_improvement_resolution.md` |
+| Holistic completion verdict | `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md` |
+| Source-package audit chronology | `docs/specs/011_secret_alliance_specs/handoffs/completion_audit.md` |
+| Decision and mission audit chronology | `docs/plans/011_secret_alliance_plans/subagent_handoffs/decision_mission_audit.md` plus the final independent rescan recorded in the completion audit |
+| Super-event implementation | `docs/super_events/011_secret_alliance_super_event_research.md` |
+| Asset and animation evidence | `docs/assets/011_secret_alliance/asset_register.md`, `manifest.md`, `manifest_icons_ui_animation.md`, and `notes/validation.md` |
+| Audio rights and conversion | `docs/plans/011_secret_alliance_plans/subagent_handoffs/super_event_audio_research.md` and `docs/super_events/super_event_audio_packages.md` |
+| Achievements | `docs/achievements/011_secret_alliance_achievements.md` and live definitions |
+| Scenario | `docs/systems/triggerable_scenarios.md`, spec part 4, and live SCN-009 registration |
+| Workbook | `docs/spreadsheets/chaos_redux_events_catalog.xlsx` and `handoffs/spreadsheet_handoff.md` |
 
-## Working-label policy
+## Historical design disposition
 
-Names marked as working labels are not final localisation. This includes:
+The five-part specification and matrices remain the accepted source design. Planning-era implementation prompts, asset requests, spreadsheet directions, and completion statements are historical handoffs. They are retained for chronology but do not override verified gameplay and balance behavior at `1c87d923`.
 
-- route labels
-- decision names
-- achievement titles
-- scenario public name
-- super-event title direction
-- internal helper proposals
-- proposed sprite names not yet registered
+Early working labels are no longer current localisation authority. Stable identifiers and final player-facing wording are defined by the immutable event, scripted-localisation, Event 011 localisation, achievement localisation, scenario localisation, and super-event localisation files. The early no-manual-scenario direction is superseded by accepted SCN-009.
 
-The implementation agent must write or confirm final player-facing names and preserve stable engine identifiers once registered.
+## Immutable implementation markers
+
+| Surface | SHA-256 prefix |
+| --- | --- |
+| Decisions | `B22CC92A` |
+| Constants | `8A5C5F0F` |
+| Effects | `EF4D9C1B` |
+| Triggers | `BE26F05D` |
+| Scripted localisation | `51F25FE3` |
+| Events | `02046301` |
+| Event 011 localisation | `6A42CEFE` |
+| Achievement localisation | `6EE16E2B` |
+| Scripted GUI | `C07907E2` |
+
+## Current lifecycle notes
+
+- Automatic Event Log evolution and reveal history is stored on the normal target only. Scenario, forced, debug, and AI-test origins do not create that history.
+- Pending invitation, sponsor, `.4`, and `.5` content is bound to its exact target and phase. Counted `.50` delayed-call and `.51` through `.53` commitment callbacks plus pending `.190`, `.201`, and `.202` state must drain before automatic or scenario relaunch. Annexation releases a delayed-call owner's pending slot.
+- Super-event slot `73` reads durable route, target, leader, member count, and faction-name grammar snapshots for 14 days. `.202` closes the context on day 15.
+- The direct AI controller owns eight protections, Turn Member, and three wartime actions with exact state selection and 120/180/120-day cooldowns.
+- Live family caps are two investigations, one protection, one diplomacy, one offensive action, one border action, and one emergency commitment. Retained counterintelligence is capped at 730 days.
+- Scripted-GUI suspect selection refreshes the exact suspect-bound border pair and is locked while a conflict is unresolved.
+- DM-15 through DM-20 and CA-01 through CA-13 are resolved at the immutable freeze.
 
 ## Plan disposition
 
-| Planning item | Disposition |
+| Planning item | Current disposition |
 | --- | --- |
-| Main five-part spec | Source design, ready to place under `docs/specs/011_secret_alliance_specs/` |
-| Historical research | Supporting source note |
-| Super-event quote research | Supporting source note, final title and audio still require implementation research |
+| Main five-part spec | Historical source design, implemented and retained |
+| Historical research | Supporting source evidence |
+| Super-event text research | Promoted; older Luke and Hamlet candidate superseded |
+| Improvement-loop addendum | Accepted and fully disposed through the resolution record |
+| High-impact balance plan | Implemented and frozen at `1c87d923` |
 | Focus-tree expansion | Rejected as bloat |
 | New country package | Rejected as contrary to procedural design |
 | Formable | Rejected as unrelated |
-| World-end branch | Omitted because it is not part of the event design |
-| Triggerable scenario | Accepted source design |
-| One animated warning | Accepted source design |
+| World-end branch | Not part of Event 011 |
+| Triggerable scenario | Implemented as SCN-009 with five compositions and four intensities |
+| Evolution III animation | Implemented with eight authored frames and a static fallback |
 | Additional animated UI | Rejected as readability cost |
-| Improvement-loop review | Closed with no expansion addendum |
 
-## Implementation documentation to create or update
+## Evidence status
 
-- `docs/events/011_secret_alliance.md`
-- `docs/plans/011_secret_alliance_plans/subagent_handoffs/`
-- `docs/assets/011_secret_alliance/manifest.md`
-- `docs/assets/011_secret_alliance/gfx_handoff.md`
-- `docs/super_events/011_secret_alliance_super_event_research.md`
-- triggerable-scenario system documentation
-- music track table
-- dynamic helper documentation when new helpers are added
-- event catalog workbook
-
-## Contradiction review
-
-No contradiction remains between the user's catalog brief and the spec on:
-
-- three initial minor founders
-- preference for factionless countries
-- no initial war with target
-- hidden beginning
-- continued invitations
-- Evolution I through III
-- major entry at Evolution II
-- optional second major at Evolution III
-- direct player counterplay at Evolution II
-- public faction visibility at Evolution III
-- immediate reveal and universal active-member war entry when one member enters war
-- reveal super-event
-- no event cluster
-- direct coalition-war scenario
-
-The design clarifies one edge case. “All pact members” at wartime reveal means all current valid active members after cleanup. A country that ceased to exist, joined the target faction, became an incompatible subject, or was explicitly removed is no longer an active member.
+- Final workbook SHA-256 is `597E71A1307958135BA1B34A8E60741320CD9E2753FA2EBDDBC1ED83403E1D59`; Event 011 and SCN-009 status cells are `Implemented`, and no formula error cells or formula error tokens remain.
+- Audio ID `43` uses `Revelation`; final OGG and WAV duration is `86.101746` seconds at 44.1 kHz. Composition and federal-government recording rights are documented separately.
+- The asset validator covers 57 runtime DDS targets, eight source and processed animation frames, one static fallback, and six achievement triplets.
 
 ## Resume note
 
-The next agent should start from the coding prompt and use the repo explorer handoff to confirm file paths and identifiers. It should not redesign the event before implementation unless a verified engine constraint conflicts with the source design.
+The holistic verdict is owned by `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md`; this documentation-state map does not replace it. No accepted plan remains queued. No in-engine playtest is claimed by this scoped documentation record.

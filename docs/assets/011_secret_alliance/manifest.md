@@ -14,7 +14,7 @@ Package scope: seven report images, one public-coalition news image, and one rev
 
 All nine requested raster assets have distinct generated source artwork, deterministic processed PNGs, exact-size 32-bit BGRA DDS files, review contact sheets, a super-event mask preview, prompt records, and a GFX handoff. The runtime DDS filenames and sprite names match `docs/specs/011_secret_alliance_specs/matrices/011_secret_alliance_asset_register.md` exactly.
 
-The asset-production tranche did not edit gameplay, localisation, GUI, event, decision, idea, achievement, audio, or spreadsheet files. The final implementation registers these assets in `interface/011_secret_alliance.gfx` and `interface/chaosx_super_events.gfx` and uses them from the Event 011 event, decision, and super-event surfaces.
+The original asset-production tranche did not edit gameplay, localisation, GUI, event, decision, idea, achievement, audio, or spreadsheet files. That statement is production chronology, not current wiring status. The final gameplay and balance freeze `1c87d923` registers these assets in `interface/011_secret_alliance.gfx` and `interface/chaosx_super_events.gfx` and uses them from the Event 011 event, decision, achievement, animation, and super-event surfaces.
 
 ## Source and rights status
 
@@ -156,7 +156,7 @@ Additional current-project precedents inspected:
 
 - Asset type: report event image
 - Intended use: Evolution II attempted killing or threat aftermath
-- Related events: `chaosx.nr11.4`, `chaosx.nr11.10`
+- Related events: `chaosx.nr11.4`, `chaosx.nr11.10`, `chaosx.nr11.21`
 - Source mode: generated with built-in `$imagegen`
 - Exact generation prompt: `prompts/generated_event_art_prompts.md`, section `report_event_political_attack`
 - Era-fit note: 1942 government steps, period staff car, shattered window, winter coats, and restrained security perimeter
@@ -239,4 +239,4 @@ Additional current-project precedents inspected:
 
 ## Simplifications, omissions, and blockers
 
-None. The raster tranche delivered every requested final asset, and the final Event 011 implementation completed all GFX and gameplay/super-event wiring.
+None. The raster tranche delivered every requested final asset, and final Event 011 gameplay and balance freeze `1c87d923` preserves all GFX and gameplay/super-event wiring. The holistic verdict is owned by `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md`; that separate authority is not an asset blocker.

@@ -1,5 +1,7 @@
 # Source inventory and reading record
 
+Status: historical source-package reading ledger. Catalog statuses, scenario availability, and implementation instructions recorded below describe the planning intake, not the final repository. Final gameplay and balance authority is `1c87d923`, SCN-009 is implemented, and the workbook records both Event 011 and SCN-009 as `Implemented`.
+
 ## Reading status
 
 Every file listed below was read in full before the final package was assembled. Long Markdown files and catalogs were read in bounded sections to avoid tool truncation. The custom subagent TOML files were read as project instruction sources. The spreadsheet skill files were read because the task uses catalog CSVs and prepares a later workbook handoff.
@@ -47,8 +49,8 @@ Every file listed below was read in full before the final package was assembled.
 | `chaos_redux_clusters_catalog.csv` | 14 | 14 | 7 |
 | `chaos_redux_scenarios_catalog.csv` | 7 | 7 | 6 |
 
-The event catalog contains the Event 011 row identifying Secret Alliance as Minor Fire-Once and To Be Reworked. The cluster catalog contains no registered cluster assignment for Event 011. The scenario catalog contains no existing Secret Alliance scenario, so the implementation agent must inspect the live registry and allocate the next stable scenario ID.
+At planning intake, the event catalog identified Secret Alliance as Minor Fire-Once and To Be Reworked, the cluster catalog had no Event 011 assignment, and no Secret Alliance scenario existed. Those intake facts are superseded for current status: Event 011 remains Minor Fire-Once and unclustered, while SCN-009 Coalition Unmasked and the Event 011 workbook row are implemented.
 
 ## Reading limitations
 
-No supplied project source file was skipped, simplified, or read only from a truncated preview. The current environment did not expose the project custom-subagent spawn interface, so the subagent contracts were applied manually rather than executed as external agents.
+No supplied project source file was skipped, simplified, or read only from a truncated preview during the original planning pass. The note about that pass's subagent interface is retained as chronology and has no bearing on final implementation status.

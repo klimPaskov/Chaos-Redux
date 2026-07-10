@@ -1,6 +1,8 @@
 # Event 011 Secret Alliance subagent-role application
 
-The current environment did not expose a project custom-subagent spawn interface. Every supplied subagent contract was fully read and applied manually through the planning files and handoffs listed below. This document records how each role affected the package and what remains for implementation.
+Status: historical planning-role record. It does not describe the final agent run or current implementation status. Final specialist dispositions are recorded in the Event 011 documentation state and holistic completion audit.
+
+The original planning environment did not expose a project custom-subagent spawn interface. Every supplied subagent contract was read and applied manually through the planning files and handoffs listed below. This document records how each role affected the planning package; its implementation work list is fulfilled or superseded.
 
 | Supplied role | Planning-package application | Output or disposition |
 | --- | --- | --- |

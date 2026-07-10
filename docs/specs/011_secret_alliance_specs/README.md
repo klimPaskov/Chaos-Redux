@@ -1,10 +1,12 @@
 # Event 011 Secret Alliance Planning Package
 
-This package is the source design handoff for Chaos Redux Event 011, **Secret Alliance**.
+Status: implemented source-design archive. Final gameplay and balance authority is commit `1c87d923`. The canonical implementation summary is `docs/events/011_secret_alliance.md`, and the holistic verdict is `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md`.
+
+This package is the retained source design handoff for Chaos Redux Event 011, **Secret Alliance**.
 
 The event remains a Minor Fire-Once event. Its core identity is a hidden anti-player coalition that begins with three countries, recruits additional members, interferes with the target country, and becomes a real faction when secrecy fails or the coalition enters its final escalation.
 
-The package is split so implementation agents can read the design in a useful order without mixing design, research, asset production, and coding instructions.
+The package remains split so maintainers can trace the implemented design without mixing design, research, asset production, and historical coding instructions.
 
 ## Recommended reading order
 
@@ -24,13 +26,13 @@ The event uses existing countries. It does not create a new country tag and it d
 
 This keeps the event compatible with any player country, any ideology, and countries that already have substantial content. It also prevents a minor event from overwriting unrelated national identities.
 
-The specification gives direction for all player-facing text. It does not provide final localisation that can be pasted into the game. The implementation pass must write final text from the supplied tone and information rules.
+The specification gives historical direction for player-facing text. Final localisation is implemented and is authoritative over working labels in this package.
 
-The reveal super-event has a researched quote recommendation, but its final title, description, button wording, image, and audio remain gated behind the dedicated super-event research and asset workflows.
+The reveal super-event title, descriptions, button wording, image, and audio are implemented. The authoritative implementation record is `docs/super_events/011_secret_alliance_super_event_research.md`.
 
 ## Package status
 
-The source reading, design, historical research, architecture pass, decision and mission review, localisation review, asset routing review, improvement-loop review, and completion review are represented in this package.
+The source reading, design, historical research, architecture pass, decision and mission review, localisation review, asset routing review, improvement-loop review, and source-package completion review are represented in this package. Their planning-era pending instructions are fulfilled or superseded and must not be rerun as open work.
 
 The current environment did not expose the Chaos Redux custom subagent spawning interface. The supplied subagent TOML contracts were therefore read in full and applied as separate manual specialist passes. The corresponding handoffs state this limitation directly and do not claim that an external subagent process ran.
 
@@ -38,7 +40,8 @@ The current environment did not expose the Chaos Redux custom subagent spawning 
 
 - `source_inventory.md` records every supplied source file, byte count, line count, SHA-256 hash, and full-reading status.
 - `manifest.md` records the complete package file list and hashes.
-- `handoffs/completion_audit.md` compares the package against every requirement in the Event 011 brief.
+- `handoffs/completion_audit.md` preserves the source-package audit and its final implementation reconciliation.
+- `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md` owns the holistic final verdict.
 - `handoffs/improvement_loop_closure.md` records the mandatory depth and anti-bloat conclusion.
 
-The package contains 33 Markdown files and about 41,000 words before ZIP packaging. The goal prompt is 3,756 characters, within the required 3,500 to 4,000 character range.
+The original package contained 33 Markdown files and about 41,000 words before ZIP packaging. Those counts and the package manifest hashes are historical packaging evidence, not checksums for the reconciled working documents.

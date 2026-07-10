@@ -1,6 +1,6 @@
 # Event 011 Secret Alliance final asset register
 
-Status: complete and wired. The detailed source, prompt, conversion, dimensions, alpha, contact-sheet, and validation ledgers remain in `manifest.md` and `manifest_icons_ui_animation.md`. This register is the gameplay-facing map of every final visual and audio package.
+Status: complete and wired through final gameplay and balance freeze `1c87d923`. The detailed source, prompt, conversion, dimensions, alpha, contact-sheet, and validation ledgers remain in `manifest.md` and `manifest_icons_ui_animation.md`. This register is the gameplay-facing map of every final visual and audio package. The balance freeze does not alter asset paths or binaries.
 
 ## Event, news, and super-event art
 
@@ -42,9 +42,9 @@ The 17 unique decision sprites use the root `GFX_decision_011_secret_alliance_` 
 
 The seven unique idea sprites use the root `GFX_idea_011_secret_alliance_` and the suffixes `unexplained_interference`, `compromised_channels`, `hardened_networks`, `public_coalition_pressure`, `known_enemy_plans`, `coalition_opening_coordination`, and `fractured_coalition`. Their files use the same suffixes under `gfx/interface/ideas/011_secret_alliance/idea_*.dds`.
 
-The up-to-one-year `secret_alliance_retained_counterintelligence` aftermath idea deliberately uses `GFX_idea_011_secret_alliance_hardened_networks`. Its duration scales with the Preparedness preserved at hidden collapse. It represents retained methods from the same counter-network program, so this is an explicit same-system visual reuse rather than a missing or placeholder asset.
+The up-to-two-year `secret_alliance_retained_counterintelligence` aftermath idea deliberately uses `GFX_idea_011_secret_alliance_hardened_networks`. Its Preparedness-scaled duration is capped at 730 days. It represents retained methods from the same counter-network program, so this is an explicit same-system visual reuse rather than a missing or placeholder asset.
 
-## Evolution III warning animation
+## Evolution III confrontation emblem animation
 
 - Animated sprite: `GFX_011_secret_alliance_coalition_closure_warning_animated`
 - Sheet: `gfx/interface/011_secret_alliance/coalition_closure_warning_sheet.dds`
@@ -55,7 +55,7 @@ The up-to-one-year `secret_alliance_retained_counterintelligence` aftermath idea
 - Static fallback sprite: `GFX_011_secret_alliance_coalition_closure_warning`
 - Static fallback: `gfx/interface/011_secret_alliance/coalition_closure_warning_static.dds`
 
-The animation is frame-authored with a separate generated visual state for every source frame. The registered fallback supplies the static presentation for non-animated use.
+The confrontation emblem is frame-authored with a separate generated visual state for every source frame. The registered fallback supplies the still presentation selected by the UI toggle.
 
 ## Achievement art
 
@@ -73,16 +73,18 @@ The six icon triplets are registered in `interface/chaosx_achievements.gfx`. Eac
 - Unique audio ID: `43`
 - Work: `Revelation` by William Paris Chambers
 - Performance: United States Marine Band, directed by Col. John R. Bourgeois
+- Composition status: public domain, documented separately in the audio handoff and source rights record
 - Recording status: United States federal-government public-domain recording, documented in the audio handoff
 - Final music: `music/011_secret_alliance/super_event_43_public_reveal.ogg`
 - Final sound mirror: `sound/011_secret_alliance/super_event_43_public_reveal.wav`
 - Sound source ID: `chaosx_super_event_secret_alliance_public_reveal_track`
 - Settings-aware variants: `chaosx_super_event_43_{0_5,1_0,1_5,2_0,2_5,3_0}` and matching sound effects
 - Source preservation: `docs/assets/011_secret_alliance/source_audio/revelation_us_marine_band_commons_source.ogg`
+- Exact final duration: `86.101746` seconds for both the OGG and WAV at 44.1 kHz
 - Music catalogue: `music/chaosx_music_track_list.html` records The Pact Unmasked, audio ID `43`, `Revelation`, the United States Marine Band performance, duration `01:26`, and verified public-domain status
 
 The package is unique to Event 011. No reused track, generated tone, placeholder, or unlicensed audio remains.
 
 ## Completion evidence
 
-The asset validation covers final dimensions, single-mip BGRA/B8G8R8A8 DDS output, transparency, sheet slicing, distinct animation frames, six achievement triplets, and absence of visible chroma-key residue. The source and processed contact sheets are under `docs/assets/011_secret_alliance/contact_sheets/`.
+The package validator covers 57 runtime DDS targets. Every target uses one-mip 32-bit BGRA/B8G8R8A8-style masks. It verifies 38 transparent runtime assets, 143,172 visible alpha pixels, zero visible bright chroma-green pixels, 17 unique decision sources, seven unique idea sources, eight unique animation source frames, eight unique processed frames, the four-state suspect sheet, and six achievement triplets. The source and processed contact sheets are under `docs/assets/011_secret_alliance/contact_sheets/`. The immutable freeze changes presentation scopes and lifecycle state, not sprite paths, animation frames, achievement triplets, or audio files.

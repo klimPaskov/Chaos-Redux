@@ -1,5 +1,7 @@
 # Super-event research and production prompt: Event 011 Secret Alliance
 
+Status: fulfilled historical implementation prompt. The final title, five route descriptions, quote, remark, image, audio, and presentation lifetime are implemented and documented in `docs/super_events/011_secret_alliance_super_event_research.md`.
+
 Research and prepare the full super-event package for the first public reveal of the anti-target pact. Read the event specs, `research/011_secret_alliance_super_event_text_research.md`, and the project super-event skill before work.
 
 ## Role
@@ -33,7 +35,7 @@ Preferred button remark candidate:
 
 Backups include the researched Shakespeare, Psalm 83, and Thucydides candidates. Confirm attribution, rights status, and UI fit before selection.
 
-Final title wording still requires research and editorial choice. Use a short title about public coalition formation, the closing of a ring, or the pact declaring itself. Avoid generic apocalypse language. Do not use an unverified cultural reference.
+This prompt originally left the title open. The implemented title is `THE PACT UNMASKED`; the historical direction below does not reopen that choice.
 
 Write the final description as original in-world prose. It should mention the public faction, its leader, its membership scale, and the immediate strategic change. It must not explain internal variables or list every earlier incident.
 

@@ -1,5 +1,7 @@
 # Asset production prompt: Event 011 Secret Alliance
 
+Status: fulfilled historical implementation prompt. The final 57-DDS package, animation frames, static fallback, and six achievement triplets are validated and wired. Do not rerun this prompt as open work.
+
 Create the complete visual asset package for Chaos Redux Event 011 Secret Alliance. Treat the supplied spec pack and `matrices/011_secret_alliance_asset_register.md` as the source design. Follow `chaos-redux-event-assets` for every static asset and `chaos-redux-frame-animation` for the one animated warning family.
 
 ## Required ownership split

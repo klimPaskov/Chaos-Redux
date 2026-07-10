@@ -1,73 +1,66 @@
-# Event 011 localisation re-audit
+# Event 011 final localisation audit
 
-## Audit result
+## Final verdict
 
-**Status: CLEAN**
+**Status: FINAL CLEAN**
 
-The current Event 011 implementation resolves all eight findings from the obsolete localisation audit. The disclosure wall, confidence and corroboration wording, dynamic cost presentation, faction-name grammar routing, workbook mirrors, writing style, active-objective list, achievements, scenario presentation, and super-event slot 73 are aligned with the accepted Event 011 package.
+The final localisation and workbook audit is pinned to gameplay and balance freeze `1c87d9235319781c871c2948813ab55693eb8618`. That commit sits on lifecycle commit `a1f47c0c`, callback isolation `7563648f`, and wording/catalog commit `97a2da80`. The earlier CLEAN report at `087d66ab4b3950b7854ee242343f5f0154c7906f` is preserved as historical chronology and is superseded as current evidence by this freeze.
 
-This was a report-only audit. No gameplay, localisation, asset, interface, or spreadsheet file was edited by the auditor.
+This is a scoped localisation and presentation verdict. The holistic Event 011 verdict is owned by `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md`; this report does not replace it.
 
-## Finding closure
+## Audited hashes
 
-| Finding | Result | Current evidence |
-| --- | --- | --- |
-| LOC-011-01: event-log disclosure | Pass | `chaosx.event_name.11` routes through `GetSecretAllianceEventLogName` at `localisation/english/chaosx_event_names_l_english.yml:13`. Name and detail routing is concealed, coordinated at Evolution II, and revealed only after public reveal in `common/scripted_localisation/011_secret_alliance_scripted_localisation.txt:8-32`. Evolution type and all three bodies use the same disclosure wall at `:34-72`. The routed strings and spoiler-safe locked titles are at `localisation/english/011_secret_alliance_l_english.yml:251-275`. Shared Event Log selectors consume these helper-backed keys rather than a direct revealed name or body. |
-| LOC-011-02: protected pre-reveal vocabulary | Pass | Concealed event reports, decision names, descriptions, requirement text, tooltips, GUI copy, and Event Log text use incident, interference, suspect, participant, backer, planner, and coordination language. Direct pact, coalition-member, founder, sponsor, hidden-doctrine, Cohesion, Readiness, and public faction wording is confined to exposed facts, scenario or achievement criteria, faction presentation, reveal news, and post-reveal or settlement surfaces. Representative concealed decisions are at `localisation/english/011_secret_alliance_l_english.yml:342-359`, `:391-409`, and `:570-597`. |
-| LOC-011-03: confidence and corroboration | Pass | The only player-facing confidence labels are `Trace`, `Plausible`, `Credible`, and `Confirmed` at `localisation/english/011_secret_alliance_l_english.yml:109-113`. The shared confirmed trigger requires both the numeric confidence threshold and three independent evidence classes at `common/scripted_triggers/011_secret_alliance_triggers.txt:360-363`. All three suspect cards call that trigger before returning `Confirmed` and show their own corroboration state at `common/scripted_localisation/011_secret_alliance_scripted_localisation.txt:278-363`. The card text combines confidence and corroboration in `localisation/english/011_secret_alliance_l_english.yml:135-137`. The normal offensive and channel-dependent false-plan requirements also use the exact `Credible` term at `:576-577`. |
-| LOC-011-04: dynamic and blocked costs | Pass | All 31 custom-cost roots have raw, yellow available, red blocked, and tooltip forms at `localisation/english/011_secret_alliance_l_english.yml:435-559`. Raw strings display refreshed runtime variables rather than duplicated tuning literals. `secret_alliance_refresh_dynamic_costs` populates them at `common/scripted_effects/011_secret_alliance_effects.txt:930-983`. Allied consultation and neutral inquiry share the full live diplomacy affordability trigger at `common/decisions/011_secret_alliance_decisions.txt:472-492` and `common/scripted_triggers/011_secret_alliance_triggers.txt:491-502`. Preemption separately presents its 50 percent minimum gate and its 5 percent spent strain at `localisation/english/011_secret_alliance_l_english.yml:462` and `:597`, gates it at `common/decisions/011_secret_alliance_decisions.txt:827-845`, and deducts the same displayed cost variable at `common/scripted_effects/011_secret_alliance_effects.txt:3583-3587`. Border escalation likewise pays its displayed variable at `:2954-2957`. |
-| LOC-011-05: faction-name grammar | Pass | The single public-name helper selects the country form for dynamic countries or the event-owned override and otherwise uses the adjective form at `common/scripted_localisation/011_secret_alliance_scripted_localisation.txt:235-249`. The two forms are `Anti-[target name] Pact` and `Anti-[target adjective] Pact` at `localisation/english/011_secret_alliance_l_english.yml:163-165`. `secret_alliance_initialize_faction_name_grammar` derives the override from dynamic status or the maintained `secret_alliance_faction_name_country_exception` flag at `common/scripted_effects/011_secret_alliance_effects.txt:785-798`. Normal initialization, scenario initialization, and faction creation refresh it at `:861`, `:3755`, and `:5308`. Faction presentation, news, super-event text, Event Log text, and previews all route through the created faction name or this helper. The exception contract is documented at `docs/events/011_secret_alliance.md:47`. |
-| LOC-011-06: workbook mirrors | Pass | `docs/spreadsheets/chaos_redux_events_catalog.xlsx` matches the final in-game strings exactly. `Events!B12:F12` matches the three routed event names, concealed detail, and three concealed evolution bodies at `localisation/english/011_secret_alliance_l_english.yml:261-275`. `Scenarios!B9:E9` matches the scenario name, default random-coalition detail, all five type labels, and all four intensity descriptions at `:234-249`. Exact cell-to-localisation comparisons returned true for all nine audited cells. |
-| LOC-011-07: prohibited punctuation | Pass | No semicolon or U+2014 em dash remains in `localisation/english/011_secret_alliance_l_english.yml`, the Event 011 slice of `localisation/english/chaosx_achievements_l_english.yml:397-416`, `localisation/english/chaosx_event_names_l_english.yml:13`, or `docs/events/011_secret_alliance.md`. |
-| LOC-011-08: active named objectives | Pass | The compact panel now lists active named objectives through eight mission-aware helpers at `localisation/english/011_secret_alliance_l_english.yml:140-149`. Liaison Route, Courier, Clerk, Envoy, Safehouse, Manhunt, Rumor Channel, and Contested Crossing are selected from live `has_active_mission` state at `common/scripted_localisation/011_secret_alliance_scripted_localisation.txt:368-414`. The list is placed in the mechanic panel at `interface/011_secret_alliance.gui:43`. It is not a count-only display. |
+| File | SHA-256 |
+| --- | --- |
+| `events/011_secret_alliance.txt` | `02046301A3157FF36A46147E7C058E63A8A5D7ACB27018BEEAF49C2388938904` |
+| `common/scripted_localisation/011_secret_alliance_scripted_localisation.txt` | `51F25FE38E06E6787AB38B975AC2D64C00F5260BB159A3ABD30B9989D6CC2980` |
+| `common/script_constants/011_secret_alliance_constants.txt` | `8A5C5F0F215A6FBE5BF568C935ED9804CA216A4A1DF5AB8A4345957C1716CE8D` |
+| `common/decisions/011_secret_alliance_decisions.txt` | `B22CC92AAF15F13860A9FDEB56520B03F6E78D479EE6F5F62DFC07221CA5B921` |
+| `localisation/english/011_secret_alliance_l_english.yml` | `6A42CEFE3DBAD7EFD2A3C7DD615F0F32E4DB9C3B2E768A11CBFB3E7FCC42434F` |
+| `localisation/english/chaosx_achievements_l_english.yml` | `6EE16E2B3E81C1292595F3F285C209C13F24C6F41D2FC073D72381D643244C4D` |
+| `docs/spreadsheets/chaos_redux_events_catalog.xlsx` | `597E71A1307958135BA1B34A8E60741320CD9E2753FA2EBDDBC1ED83403E1D59` |
 
-## Exhaustive key coverage
+## Final wording verification
 
-The reference audit collected Event 011 localisation references from its events, decisions and categories, ideas, scripted effects, scripted triggers, scripted localisation, scripted GUI, faction template, goals and rules, interface, achievements, Event Log integrations, scenario integrations, and super-event integrations.
+- The highest live mixed capacity profile has scale `2.2425`. Its rounded 168 PP dynamic maximum is covered by the `170` PP AI planning hint used by dynamic political actions.
+- Preemption wording and costs match the 65 percent War Support gate and 15, 10, or 6 percent strain bands. Retained counterintelligence states that the benefit can last as long as two years.
+- The UI toggle calls the animated surface the `confrontation emblem` and offers motion or still presentation.
+- The mission title is `Countdown to Open Confrontation`, and concealed crisis copy says actions remain possible `before the countdown expires`.
+- Continuity protection requires `elevated War Pressure`.
+- Crossing descriptions and tooltips use the named crossing and named border states. Player-facing `state pair` language is absent.
+- Controlled Shipment describes full, partial, and failure results in world-state terms. Any useful result exposes a safehouse route.
+- Full planning-conference success captures the conference records and forces public disclosure. Partial success disrupts confidence.
+- Border withdrawal cancels the border war and lowers War Pressure. It does not claim to record a separate withdrawal fact.
+- The fractured super-event package uses durable presentation target, leader, member-count, and faction-name state. It is explicit and has no generic route fallback.
+- Every achievement tooltip states that the player country must not capitulate. Relevant tooltips disclose forced/debug disqualification. Two Giants, One Grave describes governments present when the coalition was revealed rather than an implementation snapshot.
 
-- 87 event references resolve: 25 titles, 25 descriptions, and 37 option names.
-- All 70 parsed Event 011 decisions have title and description keys.
-- All 19 parsed Event 011 ideas have title and description keys.
-- All 31 used custom-cost roots have base, blocked, and tooltip keys.
-- All six achievements have name, description, and custom criteria tooltip keys.
-- The channel-dependent `secret_alliance_false_plan_requirements_tt` reference at `common/decisions/011_secret_alliance_decisions.txt:515` resolves to the exact live requirement text at `localisation/english/011_secret_alliance_l_english.yml:577`.
-- Across the collected Event 011-facing key set, zero keys are missing and zero relevant keys are duplicated.
+## Disclosure and dynamic presentation
 
-## Achievements
+- Automatic Event Log names and details use durable target-owned coordinated-interference and public-reveal history flags. Scenario, forced, debug, and AI-test origins do not manufacture automatic-run history.
+- The counter-network GUI keeps hidden member count, exact Cohesion, exact Readiness, motives, and unconfirmed membership secret.
+- Confidence and independent corroboration remain separate player-facing requirements.
+- `GetSecretAlliancePresentationFactionName` uses the presentation target's copied country-name or adjective-name grammar. News and all five super-event descriptions use presentation scopes rather than live runtime faction state.
+- Slot `73` remains visible for 14 days, and `.202` clears the presentation state on day 15.
 
-All six implemented achievements match `docs/specs/011_secret_alliance_specs/matrices/011_secret_alliance_achievement_matrix.md` in player-facing requirements and disqualifiers:
+## Workbook alignment
 
-1. The Empty Chair
-2. Every Thread
-3. Their Man in the Room
-4. Divide the Table
-5. Surrounded, Not Buried
-6. Two Giants, One Grave
+The workbook mirrors the final in-game Event 011 and SCN-009 wording at commit `97a2da80`.
 
-The definitions are at `common/achievements/chaos_redux_achievements.txt:2054-2173`, and their name, description, and criteria text is at `localisation/english/chaosx_achievements_l_english.yml:398-415`. The text covers normal versus scenario origin, innocent-country disqualifiers, corroborated complete-network evidence, turned-channel preservation, event-driven coalition exits, safe-pool maximum composition, major-sponsor snapshots, capital retention, independence, Resolve collapse, and world-end or human-consent exclusions where applicable.
+- `Events!M12` is `Implemented`.
+- `Scenarios!F9` is `Implemented`.
+- The routed Event Log names, Event Details, Evolution I through III details, scenario name, five scenario type labels, and four intensity descriptions match final localisation.
+- No formula error cells or formula error tokens remain.
 
-## Scenario and super-event integration
+## Achievement and scenario presentation
 
-SCN-009, `Coalition Unmasked`, is registered as `triggerable_scenario_id.coalition_unmasked`. Its name, five type-specific descriptions, five type labels, and four intensity descriptions are selected in `common/scripted_localisation/chaosx_scripted_localisation_scenarios.txt:40-41`, `:282-310`, `:521-549`, and `:720-741`. The result notice reports achieved member and major counts and preserves the safe-pool maximum qualification at `localisation/english/011_secret_alliance_l_english.yml:90-92`.
+All six achievement names, descriptions, and criteria tooltips resolve. The final tooltips disclose the relevant origin restrictions and the universal no-capitulation requirement.
 
-Super-event slot 73 is complete and route-exact:
+SCN-009 `Coalition Unmasked` presents Regional Ring, Ideological Front, Great-Power Sponsor, Unlikely Coalition, and Random Coalition at Low, Medium, High, and Maximum intensity. The revised Low and Medium descriptions explain the major/minor composition in player-facing prose.
 
-- slot 73 and unique audio ID 43 are defined at `common/script_constants/011_secret_alliance_constants.txt:945-946`
-- title, route-backed description, quote, and remark are at `localisation/english/011_secret_alliance_l_english.yml:224-231`. The quote text, attribution, and formatting at `:226` exactly match the implemented package recorded at `docs/super_events/011_secret_alliance_super_event_research.md:30-33`
-- hostile-war, player-forced, fractured, and pact-controlled descriptions have explicit route conditions and no generic route fallback at `common/scripted_localisation/011_secret_alliance_scripted_localisation.txt:204-228`
-- the reveal transaction stores the caller's route, then explicitly records `secret_alliance_reveal_route.fractured` for every non-hostile reveal with a recent dispute at `common/scripted_effects/011_secret_alliance_effects.txt:4021-4035`. The sixth route constant therefore reaches the fractured selector without an implicit scripted-localisation fallback
-- the shared super-event image, title, quote, remark, and description selectors register slot 73 at `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt:228-230`, `:572-573`, `:802-803`, `:1032-1033`, and `:1262-1263`
-- `GFX_super_event_011_secret_alliance_public_reveal` is registered at `interface/chaosx_super_events.gfx:172-173`
-- reveal visibility, audio selection, playback, and public news routing are invoked at `common/scripted_effects/011_secret_alliance_effects.txt:3924-3942`. The news event is defined at `events/011_secret_alliance.txt:532-540`
+## Super-event and licensed audio
 
-## Sources reviewed
-
-- repository `AGENTS.md`
-- `chaos-redux-subagents`, `chaos-redux-events`, `hoi4-decisions-missions`, and `xlsx`
-- accepted Event 011 specification parts 1 to 5, matrices, localisation and spreadsheet handoffs, implementation documentation, and current Event 011 script and presentation files
-- offline Paradox wiki pages required by the repository, including localisation, data structures, triggers, effects, modifiers, scopes, on actions, events, decisions, ideas, AI, factions, achievements, interface modding, and scripted GUI modding
-- relevant vanilla documentation for localisation formatting and objects, script concepts, triggers, effects, modifiers, decisions, factions, on actions, and scripted GUIs
+Super-event slot `73` has hostile-war, pact-controlled, player-forced, fractured, and weakened packages. The quote, attribution, and button fragment remain source aligned. Audio ID `43` is `Revelation` by William Paris Chambers, performed by the United States Marine Band. The public-domain composition and federal-government recording have separate rights evidence, and both final audio files measure `86.101746` seconds at 44.1 kHz.
 
 ## Simplifications, omissions, and blockers
 
-None within the localisation re-audit scope. No fallback, placeholder, missing route, missing key, stale workbook field, or unresolved LOC-011-01 through LOC-011-08 finding remains. This verdict covers the assigned localisation and presentation audit. It is not a standalone claim that every unrelated Event 011 gameplay or asset audit is complete.
+None within the assigned localisation, presentation, and workbook scope. No fallback, placeholder, missing route, missing key, stale workbook mirror, or unresolved localisation finding remains.

@@ -1,5 +1,7 @@
 # Repo explorer style handoff
 
+Status: historical planning-intake map. Its `To Be Reworked` and missing-scenario statements describe the original intake. Final gameplay and balance authority is `1c87d923`; SCN-009 and the workbook statuses are implemented.
+
 ## Scope read
 
 - Parent task: create the full source specification package for Event 011 Secret Alliance

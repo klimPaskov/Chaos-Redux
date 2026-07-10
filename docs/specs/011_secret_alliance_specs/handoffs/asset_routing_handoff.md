@@ -1,5 +1,7 @@
 # Asset routing handoff
 
+Status: fulfilled historical routing handoff. The generated-art and icon packages are complete and wired. Any blocked-asset language below is a production rule, not a current Event 011 blocker.
+
 ## Source-mode decision
 
 Event 011 is procedural. Its participants can be any valid countries. A real archival coalition photograph would falsely lock the event to one historical alliance. Generated alternate-history documentary art is therefore the correct source mode for event scenes, news art, super-event art, and UI decoration.

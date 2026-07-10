@@ -4,142 +4,159 @@ Date: 2026-07-10
 
 ## Scope and current verdict
 
-This is the current source-of-truth, resume, and completion-status map for Event 011 documentation at gameplay candidate `c4bb10ce439ba72f5ddb6d686199524120240895`. It reconciles the accepted specification, historical plans, implementation handoffs, current implementation documentation, final asset and super-event records, workbook facts, and strict-audit chronology. It does not replace a whole-event completion audit.
+This pass reconciles Event 011 implementation documentation to final gameplay and balance freeze `1c87d9235319781c871c2948813ab55693eb8618`, atop lifecycle commit `a1f47c0c`, callback isolation `7563648f`, and wording/catalog commit `97a2da80`. It edits documentation only. It does not replace the accepted five-part specification or change the workbook.
 
-The strict reports provide clean scoped historical freezes:
+DM-15 through DM-20 are resolved, and the independent decision specialist returned CLEAN for the decision and mission surface. CA-01 through CA-13 are resolved on the completion-audit rescan. The final localisation and workbook audit is FINAL CLEAN, and the high-impact balance pass is frozen at `1c87d923`. The holistic verdict is now present at `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md`; this curation handoff does not replace it.
 
-- `subagent_handoffs/decision_mission_audit.md` resolves DM-01 through DM-14 and RA-01 through RA-02 at exact freeze `b7965b7e3743b43c643f0a3ef10c2d57ad723665`. Commits `087d66ab` and `769c4ba3` later changed member commitment storage and its causal use in operation ownership, defection, delayed calls, and reveal conversion. Commit `c4bb10ce` then connected stored operation evidence, risk, readiness layer, and surface to resolution and reveal. The report's audited hashes therefore do not match the current implementation.
-- `subagent_handoffs/localisation_audit.md` resolves LOC-011-01 through LOC-011-08 at exact freeze `087d66ab4b3950b7854ee242343f5f0154c7906f`. Commit `769c4ba3` later changed the retained-counterintelligence tooltip to describe its Preparedness-scaled duration and updated implementation documentation. The workbook comparisons remain valid because the mirrored Event and Scenario cells were unchanged.
+## Implementation chronology
 
-These reports supersede earlier incomplete snapshots for their recorded freezes. The final completion audit for gameplay candidate `c4bb10ce` is still running. No current whole-event CLEAN verdict is recorded in this handoff.
+| Commit | Disposition |
+| --- | --- |
+| `abc70f55` | Causal gameplay closure added dynamic roster and sponsor gates, Evidence-aware AI, state-matched protection, stage-gated operation breadth, rare `chaosx.nr11.21`, Evolution III state outcomes, Preparedness-driven delayed calls, factual Resolve, role-front AI, broad hidden-state bands, Evidence-scaled preemption, conditional invitations, and the weakened reveal route. |
+| `6a33976e` | First final reveal wording freeze for the attempted assassination and weakened super-event route. |
+| `3a48a344` | Dynamic candidate capacity began counting valid human recruits without treating capacity as consent. |
+| `690dae0e` | Reveal-time member casualty snapshots made war-burden Resolve count only Event 011 post-reveal casualties. |
+| `a1f47c0c` | Main lifecycle closure resolved DM-15 through DM-20 and CA-01 through CA-13, including presentation snapshots, direct-AI ownership, GUI border-pair reconciliation, and automatic-only history. |
+| `7563648f` | Counted `.50` delayed-call and `.51` through `.53` commitment callbacks, released annexed owners, and completed automatic/manual relaunch isolation. |
+| `97a2da80` | Finalized Event 011 and achievement wording and synchronized the catalog workbook. |
+| `1c87d923` | Froze high-impact dynamic costs, one protection and one emergency slot, longer mission and commitment durations, 65 percent preemption, 120/180/120-day AI cooldowns, and a 730-day retained-counterintelligence ceiling. |
 
-The five-part source specification remains accepted and unchanged. No source-spec design file was modified by this curation pass.
+## Source-of-truth map
 
-## Authority order
-
-| Question | Current authority | Notes |
+| Question | Current authority | Use |
 | --- | --- | --- |
-| Accepted event design and completion boundary | `docs/specs/011_secret_alliance_specs/specs/` parts 1-5 | Source of truth for the playable contract, disclosure rules, evolutions, reveal, scenario, AI, presentation, and acceptance. |
-| Detailed design maps | `docs/specs/011_secret_alliance_specs/matrices/` | Event chain, decisions and missions, AI, tuning, assets, and achievements. |
-| Current implementation behavior | Event-owned and shared Clausewitz files listed in `docs/events/011_secret_alliance.md` | Code is authoritative for implemented facts, but code presence is not completion proof. |
-| Current mechanic and registration overview | `docs/events/011_secret_alliance.md` | Explicitly marked as an overview, not completion proof. |
-| Decision and mission audit history | `subagent_handoffs/decision_mission_audit.md` | Clean scoped freeze at `b7965b7e`. Later commitment-causality changes require the current completion audit to recheck the candidate. |
-| Localisation and wording audit history | `subagent_handoffs/localisation_audit.md` | Clean scoped freeze at `087d66ab`. The workbook mirror evidence remains valid. The `769c4ba3` Preparedness-tooltip change postdates the freeze. |
-| Achievements | `docs/achievements/011_secret_alliance_achievements.md` and live achievement definitions | Six implemented achievement contracts and icon triplets. |
-| Final asset paths and wiring | `docs/assets/011_secret_alliance/asset_register.md`, `manifest.md`, and `manifest_icons_ui_animation.md` | Final runtime files and `wired_complete` records supersede production handoff language. |
-| Final super-event package | `docs/super_events/011_secret_alliance_super_event_research.md` | Display slot `73`, audio ID `43`, exact quote punctuation, explicit fractured route, image, audio package, and music-table row. |
-| Manual scenario | Accepted spec part 4, live SCN-009 implementation, and `docs/systems/triggerable_scenarios.md` | Prior Event 011 completion is bypassed. Active context, `world_end`, target validity, composition, and consent remain gates. |
-| Workbook alignment | `docs/spreadsheets/chaos_redux_events_catalog.xlsx` and the `087d66ab` localisation freeze | Event 011 is `Implemented` at `Events!M12`. SCN-009 is `Implemented` at `Scenarios!F9`. The final curation pass read the workbook and confirmed both rows without editing it. |
+| Accepted design and completion boundary | `docs/specs/011_secret_alliance_specs/specs/` parts 1-5 | Historical source design and required behavior. The design remains authoritative where it does not conflict with verified engine constraints or the accepted later SCN-009 direction. |
+| Detailed accepted design maps | `docs/specs/011_secret_alliance_specs/matrices/` | Event chain, decisions, missions, AI, tuning, assets, and achievement intent. |
+| Final gameplay and balance behavior | Event 011 gameplay files at `1c87d923` | Authoritative for implemented facts. SHA-256 prefixes are recorded below. |
+| Current mechanic overview | `docs/events/011_secret_alliance.md` | Canonical implementation summary and file map. |
+| Improvement-loop closure | `docs/plans/011_secret_alliance_plans/011_secret_alliance_improvement_resolution.md` | Itemized disposition of tranches A-G, mandatory architecture carryover, and all seventeen acceptance scenarios. |
+| Holistic completion evidence | `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md` | Final static verdict, CA and DM disposition, frozen hashes, assets, audio, achievements, workbook, and plan disposition. |
+| Source-package audit chronology | `docs/specs/011_secret_alliance_specs/handoffs/completion_audit.md` | Historical source-package audit reconciled to the final freeze. |
+| Super-event text and sources | `docs/super_events/011_secret_alliance_super_event_research.md` | Slot `73`, five route packages, durable presentation context, quote, remark, image, and audio map. |
+| Historical super-event research | `subagent_handoffs/super_event_text_research.md` | Preserves candidate selection and sourcing while marking superseded wording and wiring notes as chronology. |
+| Assets | `docs/assets/011_secret_alliance/asset_register.md`, `manifest.md`, `manifest_icons_ui_animation.md`, and `notes/validation.md` | Final paths, sprites, source ledgers, animation frames, 57-DDS validator, achievement triplets, and explicit `chaosx.nr11.21` art reuse. |
+| Achievements | `docs/achievements/011_secret_alliance_achievements.md` and live definitions | Six implemented achievement contracts with origin and anti-farming snapshots. |
+| Manual scenario | `docs/systems/triggerable_scenarios.md`, accepted spec part 4, and live SCN-009 implementation | Five AI-only compositions, four intensities, manual bypasses, retained safety gates, and workbook status. |
+| Workbook | `docs/spreadsheets/chaos_redux_events_catalog.xlsx` | SHA-256 `597E71A1307958135BA1B34A8E60741320CD9E2753FA2EBDDBC1ED83403E1D59`; `Events!M12` and `Scenarios!F9` are `Implemented`; no formula error cells or formula error tokens. |
+| Audio | `docs/super_events/super_event_audio_packages.md` and `subagent_handoffs/super_event_audio_research.md` | Audio ID `43`, final `Revelation` OGG and WAV, exact duration `86.101746` seconds, 44.1 kHz, and separate public-domain evidence for the composition and federal-government recording. |
 
-## Implementation evidence snapshot
+## Immutable audit hashes
 
-The current tree contains the full Event 011 implementation surface, including:
+| Surface | SHA-256 prefix |
+| --- | --- |
+| Decisions | `B22CC92A` |
+| Script constants | `8A5C5F0F` |
+| Scripted effects | `EF4D9C1B` |
+| Scripted triggers | `BE26F05D` |
+| Scripted localisation | `51F25FE3` |
+| Events | `02046301` |
+| Event 011 localisation | `6A42CEFE` |
+| Achievement localisation | `6EE16E2B` |
+| Scripted GUI | `C07907E2` |
 
-- root event `chaosx.nr11.1` and its report, invitation, expiry, verification, war, and settlement events
-- hidden AI test event `chaosx.nr11.900`, which is forced-origin, achievement-disqualified, and absent from player-facing content
-- event-owned constants, MTTH, triggers, effects, decisions, ideas, on-actions, AI, faction definitions, scripted GUI, interface, and localisation
-- SCN-009 `Coalition Unmasked` with five types and four intensities
-- public reveal super-event slot `73` with unique audio ID `43`
-- six Event 011 achievements and all normal, grey, and not-eligible icon triplets
-- final event, news, super-event, mechanic UI, decision, idea, faction-emblem, achievement, and eight-frame warning assets
-- final music catalogue entry for audio ID `43`, `Revelation`, duration `01:26`, performed by the United States Marine Band
-- operation dossiers whose stored evidence class, risk, readiness layer, and surface drive clue identity, risk-scaled outcomes, named readiness multipliers, exact industrial-state damage, mapped military opening coordination, and exposed-surface known weaknesses
+## Current implementation facts promoted into documentation
 
-The `b7965b7e` decision and mission freeze resolves all DM and RA findings for its audited state. It confirms capacity-aware and phase-aware visibility, mutually exclusive false-plan offensive routing, the 50 percent preemption minimum and separate 5 percent strain, the exact stored-state rail and unit checks, complete cleanup, and the forced AI test entry. The `087d66ab` and `769c4ba3` commitment work and the `c4bb10ce` operation-dossier work changed the effects file after that freeze, so the current completion audit must recheck those causal paths.
+- Automatic and scenario relaunches require counted `.50` delayed-call callbacks, counted `.51` through `.53` commitment callbacks, and pending `.190`, `.201`, and `.202` callback state to drain. Annexation releases a delayed-call owner's pending slot. Each callback family owns explicit pending state and its required target or owner.
+- Delayed `.4` and `.5` notices require the exact target and current evolution phase. Invitations and sponsor approaches require their live pending transaction, watchdog, and notification scope.
+- Automatic Event Log names and details use durable target-owned coordinated-interference and public-reveal history flags. Scenario, debug, forced, and AI-test origins do not create automatic-run history or normal-route achievement credit.
+- The reveal presentation snapshots route, target, leader, member count, and faction-name grammar. News and super-event localisation use the presentation scopes and `GetSecretAlliancePresentationFactionName`, not live runtime faction state.
+- Super-event slot `73` remains visible for 14 days. Hidden `.202` closes the slot, audio identity, and presentation context on day 15, or lifecycle invalidation closes them earlier.
+- The direct AI controller uniquely owns eight protection projects, Turn Member, and three wartime actions. Engine weights are blocked for those actions. The controller uses exact state selectors and applies 120-day protection, 180-day Turn Member, and 120-day wartime cooldowns.
+- Live family caps are two investigations, one protection, one diplomacy, one offensive action, one border action, and one emergency commitment. Mission timeouts are 150/135/190/150/190/100/140 days. Retained counterintelligence is capped at 730 days.
+- The maximum live mixed capacity profile uses scale `2.2425`. Its rounded 168 PP maximum is covered by a 170 PP AI planning hint. Preemption requires 65 percent War Support and spends 15, 10, or 6 percent according to Evidence. No repeat-use cost multiplier remains.
+- Scripted-GUI suspect selection and clearing refresh the exact suspect-bound border pair and cannot change it during an unresolved conflict. The border route pays only after a valid pair exists and the crossing mission receives its reinforced-patrol completion state.
+- Route-aware reveal leadership excludes planned exiters. Wartime fractures perform white peace, faction exit, active-member removal, and outcome counting.
+- Preemption preserves turned, delayed, and fractured planned-route outcomes. A hostile-war reveal force-calls every valid active member.
+- The weakened and fractured reveal routes each have explicit presentation text. Sponsor Accountability is per-run rather than permanent history.
+- All six achievement packages, five SCN-009 scenario compositions, four scenario intensities, eight authored animation frames plus static fallback, and 57 runtime DDS targets remain wired.
 
-The `087d66ab` localisation freeze resolves all eight LOC findings for its audited state. It confirms disclosure-stage wording, confidence and corroboration presentation, blocked and dynamic costs, initialized country-name grammar fallback through `secret_alliance_faction_name_country_exception`, exact workbook mirrors, final punctuation, active objectives, and explicit fractured-route storage. The later Preparedness-scaled aftermath tooltip is documented in the event doc, asset register, and improvement resolution.
+## Audit disposition
 
-## Root plan disposition ledger
+| Finding range | Current disposition |
+| --- | --- |
+| DM-15 through DM-20 | Resolved and preserved at final freeze `1c87d923`: public-war-start gating, mission-aware phase cleanup, current suspect-bound border pairs, valid envoy objective state, revealed cost refresh, and exact AI protection-state selection. |
+| CA-01 through CA-13 | Resolved and preserved at final freeze `1c87d923`: leader and exit validity, exact border transaction, repeat-turn guard, preemption handling, fractured wording, pending-transaction safety, delayed-event gates, origin-safe achievements and Event Log, durable presentation context, per-run Sponsor Accountability, and counted callback draining through `.50` to `.53`, `.190`, `.201`, and `.202`. |
+| Holistic completion verdict | Owned by `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md`; this scoped documentation pass does not replace it. |
 
-| Document | Disposition | Reason and current use |
+## Plan and handoff dispositions
+
+| Document | Disposition | Current use |
 | --- | --- | --- |
-| `011_secret_alliance_improvement_addendum.md` | Promoted, historical | Its connected hidden-coalition design was folded into the accepted source specification. Its prohibition on a manual scenario was rejected and superseded by accepted SCN-009. |
-| `011_secret_alliance_decision_mission_handoff.md` | Superseded, historical | Pre-spec planning only. The source specification and decision matrix govern design. The `b7965b7e` decision and mission freeze supersedes it for that audited state. |
-| `011_secret_alliance_scripted_system_architecture.md` | Superseded | Replaced by `subagent_handoffs/scripted_system_architecture_pass.md`. Its no-scenario statement is not current. |
-| `011_secret_alliance_implementation_improvement_addendum.md` | Accepted/resolved | Tranches A-G were accepted and have a resolution record. This closes the planning item, not the Event 011 completion gate. |
-| `011_secret_alliance_improvement_resolution.md` | Accepted and resolved with qualification | Records the disposition of every accepted improvement tranche. The clean strict reports support their recorded freezes, and the resolution is not standalone whole-event completion proof. |
-| `011_secret_alliance_super_event_text_research.md` | Superseded | Retired Luke/Hamlet working selection. The rejected selection remains historical only. |
+| `011_secret_alliance_improvement_addendum.md` | Folded and historical | Accepted design was promoted into the five-part spec. Its no-scenario direction was superseded by the later accepted SCN-009 design. |
+| `011_secret_alliance_implementation_improvement_addendum.md` | Accepted and fully disposed | No mandatory item remains queued. |
+| `011_secret_alliance_improvement_resolution.md` | Current mandatory-plan closure | Closes the addendum, not the whole event. |
+| `011_secret_alliance_high_impact_balance.md` | Implemented final balance plan | Frozen at `1c87d923`; no balance item remains queued. |
+| `011_secret_alliance_decision_mission_handoff.md` | Superseded historical planning | The final decision matrix, scoped audit, and holistic audit replace its proposed caps, durations, and implementation instructions. |
+| `011_secret_alliance_scripted_system_architecture.md` | Superseded historical planning | The promoted architecture pass and frozen runtime replace its early no-scenario and pending-implementation state. |
+| `011_secret_alliance_super_event_text_research.md` | Superseded candidate | Luke 8:17 and `In battalions.` remain rejected candidate history. |
+| `subagent_handoffs/repo_explorer_implementation_map.md` | Superseded historical scout | Its provisional file map and required actions describe pre-implementation chronology. |
+| `subagent_handoffs/scripted_system_architecture_pass.md` | Promoted architecture history | Its ownership and safety model remains useful, while provisional-file findings are resolved. |
+| `subagent_handoffs/improvement_loop_implementation_pass.md` | Implemented historical handoff | Its accepted gap is closed by the implementation addendum and resolution. |
+| `subagent_handoffs/super_event_text_research.md` | Promoted and reconciled | Sun Tzu and Artemidorus sourcing remains valid; four-route and live-faction wording is superseded by the five-package presentation-snapshot implementation. |
+| `subagent_handoffs/super_event_audio_research.md` | Promoted and resolved | Final files, audio ID, duration, source, and rights are implemented. Old wiring instructions are historical. |
+| `subagent_handoffs/decision_mission_audit.md` | Historical CLEAN scoped freeze | Its `b7965b7e` verdict and earlier findings are valuable causal evidence. Final balance facts and the holistic verdict are owned by the `1c87d923` completion audit. |
+| `subagent_handoffs/localisation_audit.md` | Current FINAL CLEAN report | Preserves `087d66ab` as historical chronology and pins current evidence to final freeze `1c87d923`, localisation `6A42CEFE`, achievement localisation `6EE16E2B`, and workbook `597E71A1`. |
+| `subagent_handoffs/completion_audit.md` | Current holistic verdict | Created as the final evidence-backed report and source-of-truth verdict owner named by the documentation map. |
+| Source-package handoffs under `docs/specs/011_secret_alliance_specs/handoffs/` | Reconciled implementation records | Planning-era pending statements are superseded, while source-design chronology is preserved. |
 
-## Subagent handoff disposition ledger
+## Contradictions and stale-instruction closure
 
-| Document | Disposition | Reason and current use |
-| --- | --- | --- |
-| `subagent_handoffs/repo_explorer_implementation_map.md` | Historical | File mapping and precedents remain useful evidence. Its provisional blockers and unresolved text choice were closed by later implementation and research. |
-| `subagent_handoffs/scripted_system_architecture_pass.md` | Promoted, historical implementation handoff | Accepted engine-safety and ownership baseline. Provisional-file and unwired-surface language is historical. Gameplay candidate `c4bb10ce` governs behavior, and the running completion audit governs current status. |
-| `subagent_handoffs/improvement_loop_implementation_pass.md` | Accepted and resolved, historical | Created the accepted implementation improvement addendum. Broad expansion remains closed. |
-| `subagent_handoffs/decision_mission_audit.md` | Clean scoped historical freeze | Resolves DM-01 through DM-14 and RA-01 through RA-02 at `b7965b7e`. Its effects hash predates the `087d66ab` and `769c4ba3` commitment changes and the `c4bb10ce` operation-dossier changes. |
-| `subagent_handoffs/localisation_audit.md` | Clean scoped historical freeze | Resolves LOC-011-01 through LOC-011-08 at `087d66ab` and confirms workbook mirrors that remain unchanged. The `769c4ba3` Preparedness-tooltip change postdates its hash table. |
-| `subagent_handoffs/super_event_text_research.md` | Promoted, accepted and resolved | Final text package is implemented at display slot `73`. Its old image and wiring blockers are historical. |
-| `subagent_handoffs/super_event_audio_research.md` | Promoted, accepted and resolved | Final `Revelation` derivatives are implemented at audio ID `43`. The final music-table row closes its old catalogue handoff. |
+- Runtime and documentation now agree on two investigation slots, one protection slot, and one emergency slot.
+- Runtime and documentation now agree on the 65 percent preemption gate, 15/10/6 percent strain bands, 8 percent false-case Stability cost, 120/180/120-day direct-AI cooldowns, exact mission timeouts, and the 730-day aftermath ceiling.
+- The cost model no longer claims a repeat-use multiplier. It records capacity, action-family, resource, and Evidence scaling, including mixed-profile scale `2.2425` and the 170 PP AI hint.
+- Current authority no longer points at pre-balance hashes or the old gameplay candidate. All current ledgers identify `1c87d923` and the final hashes.
+- The missing plan-level holistic completion report now exists and every current source-of-truth map points to it.
+- Source-package prompts are marked fulfilled. Planning manifests and reading inventories are marked historical so their original hashes, catalog statuses, and work orders cannot be mistaken for current state.
+- Asset and super-event facts remain intact. The original 165.746939-second audio source duration is intentional source evidence, while the final derivative duration remains 86.101746 seconds.
 
-## Source-package handoff disposition ledger
+No contradiction or parent decision remains open. Historical uses of `provisional` are confined to documents explicitly marked as pre-implementation chronology.
 
-The handoffs under `docs/specs/011_secret_alliance_specs/handoffs/` document the planning package. They do not report current implementation status.
+## Files changed by this curation pass
 
-| Document | Disposition | Reason and current use |
-| --- | --- | --- |
-| `asset_routing_handoff.md` | Promoted, accepted and resolved | Its source-mode and ownership decisions produced the final asset package. Final manifests govern wiring status. |
-| `completion_audit.md` | Historical | Planning-package audit only. Its explicit `Gameplay implementation not started` verdict describes the source-package moment, not the current tree. |
-| `decision_mission_audit_handoff.md` | Promoted, historical | Design-level review folded into the source matrix and implementation. The `b7965b7e` strict freeze supersedes it for that audited state. |
-| `documentation_state.md` | Superseded | Replaced as the current resume map by this documentation-curator handoff. It remains a valid map of the original source package. |
-| `improvement_loop_closure.md` | Historical | Closed broad planning before implementation. The later accepted implementation addendum and resolution record the post-implementation loop. |
-| `localisation_audit_handoff.md` | Promoted, historical | Its disclosure and tone rules remain design authority. The `087d66ab` strict localisation freeze supersedes it for that audited state. |
-| `repo_explorer_style_handoff.md` | Historical | Planning-era catalog and likely-surface map. Live implementation paths are established. |
-| `scripted_system_architecture_plan.md` | Superseded | Replaced by the implementation-ready architecture pass under `docs/plans/`. |
-| `spreadsheet_handoff.md` | Promoted, historical and resolved | The spreadsheet pass is complete. Event 011 and SCN-009 mirror final localisation and both rows are marked `Implemented`. |
-| `subagent_role_application.md` | Historical | Records how the original planning environment simulated role passes. It is not evidence that current implementation audits passed. |
-
-## Current documentation map
-
-- The source-package `README.md`, `manifest.md`, prompts, research, and planning handoffs remain historical design records. Their statements that implementation was pending are scoped to the planning package and should not be rewritten as runtime history.
-- `docs/events/011_secret_alliance.md` is the implementation overview. Its completion-status notice distinguishes the two clean historical freezes from the running current completion audit.
-- `docs/achievements/011_secret_alliance_achievements.md` is the achievement contract record.
-- Final asset manifests and the asset register supersede earlier `handed_off` or `main-agent wiring required` language.
-- `docs/super_events/011_secret_alliance_super_event_research.md` supersedes working text research and the old unwired-image state.
-- `docs/systems/triggerable_scenarios.md` agrees with the source spec and live gate. Manual SCN-009 bypasses prior Event 011 completion and retains the active-context, postwar-bloc, `world_end`, target-validity, composition, and consent guards.
-- The strict audit reports supersede their earlier incomplete snapshots only for their recorded freezes. The whole-event completion auditor, not the improvement resolution or planning completion audit, decides whether gameplay candidate `c4bb10ce` can be called complete.
-
-## Resume packet
-
-1. Use the clean `b7965b7e` decision and mission freeze for DM-01 through DM-14 and RA-01 through RA-02, then recheck the later commitment and operation-dossier causality against gameplay candidate `c4bb10ce`.
-2. Use the clean `087d66ab` localisation freeze for LOC-011-01 through LOC-011-08 and the unchanged workbook mirrors. Treat the `769c4ba3` Preparedness-tooltip line as later current wording.
-3. Use the event doc, improvement resolution, achievement doc, asset register, super-event package, scenario doc, and workbook as the current implementation documentation set.
-4. Await the running Event 011 completion audit against the accepted five-part specification, the improvement resolution, gameplay candidate `c4bb10ce`, final assets, achievements, scenario, super-event, docs, and workbook before making a whole-event completion claim.
-
-## Files changed by the earlier curation pass
-
-- `docs/events/011_secret_alliance.md`
-- `docs/achievements/011_secret_alliance_achievements.md`
 - `docs/assets/011_secret_alliance/asset_register.md`
-- `docs/super_events/011_secret_alliance_super_event_research.md`
-- `docs/super_events/super_event_audio_packages.md`
-- `docs/super_events/super_event_quote_sources.md`
-- `docs/systems/triggerable_scenarios.md`
-- `docs/plans/011_secret_alliance_plans/011_secret_alliance_improvement_resolution.md`
-- `docs/plans/011_secret_alliance_plans/subagent_handoffs/documentation_curator_handoff.md`
-
-The list above records the earlier curation pass and remains part of the chronology.
-
-## Files changed by the final reconciliation
-
+- `docs/assets/011_secret_alliance/manifest.md`
+- `docs/assets/011_secret_alliance/notes/validation.md`
 - `docs/events/011_secret_alliance.md`
-- `docs/assets/011_secret_alliance/asset_register.md`
-- `docs/assets/011_secret_alliance/gfx_handoff.md`
-- `docs/systems/triggerable_scenarios.md`
 - `docs/plans/011_secret_alliance_plans/011_secret_alliance_decision_mission_handoff.md`
+- `docs/plans/011_secret_alliance_plans/011_secret_alliance_high_impact_balance.md`
 - `docs/plans/011_secret_alliance_plans/011_secret_alliance_implementation_improvement_addendum.md`
 - `docs/plans/011_secret_alliance_plans/011_secret_alliance_improvement_resolution.md`
 - `docs/plans/011_secret_alliance_plans/011_secret_alliance_scripted_system_architecture.md`
+- `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md`
+- `docs/plans/011_secret_alliance_plans/subagent_handoffs/decision_mission_audit.md`
 - `docs/plans/011_secret_alliance_plans/subagent_handoffs/documentation_curator_handoff.md`
 - `docs/plans/011_secret_alliance_plans/subagent_handoffs/improvement_loop_implementation_pass.md`
+- `docs/plans/011_secret_alliance_plans/subagent_handoffs/localisation_audit.md`
 - `docs/plans/011_secret_alliance_plans/subagent_handoffs/repo_explorer_implementation_map.md`
 - `docs/plans/011_secret_alliance_plans/subagent_handoffs/scripted_system_architecture_pass.md`
+- `docs/plans/011_secret_alliance_plans/subagent_handoffs/super_event_text_research.md`
+- `docs/specs/011_secret_alliance_specs/README.md`
+- `docs/specs/011_secret_alliance_specs/handoffs/asset_routing_handoff.md`
+- `docs/specs/011_secret_alliance_specs/handoffs/completion_audit.md`
+- `docs/specs/011_secret_alliance_specs/handoffs/decision_mission_audit_handoff.md`
+- `docs/specs/011_secret_alliance_specs/handoffs/documentation_state.md`
+- `docs/specs/011_secret_alliance_specs/handoffs/improvement_loop_closure.md`
+- `docs/specs/011_secret_alliance_specs/handoffs/localisation_audit_handoff.md`
+- `docs/specs/011_secret_alliance_specs/handoffs/repo_explorer_style_handoff.md`
+- `docs/specs/011_secret_alliance_specs/handoffs/scripted_system_architecture_plan.md`
+- `docs/specs/011_secret_alliance_specs/handoffs/spreadsheet_handoff.md`
+- `docs/specs/011_secret_alliance_specs/handoffs/subagent_role_application.md`
+- `docs/specs/011_secret_alliance_specs/manifest.md`
+- `docs/specs/011_secret_alliance_specs/matrices/011_secret_alliance_decision_mission_matrix.md`
+- `docs/specs/011_secret_alliance_specs/prompts/secret_alliance_achievement_prompt.md`
+- `docs/specs/011_secret_alliance_specs/prompts/secret_alliance_asset_prompt.md`
+- `docs/specs/011_secret_alliance_specs/prompts/secret_alliance_coding_prompt.md`
+- `docs/specs/011_secret_alliance_specs/prompts/secret_alliance_decision_mission_prompt.md`
+- `docs/specs/011_secret_alliance_specs/prompts/secret_alliance_goal_prompt.md`
+- `docs/specs/011_secret_alliance_specs/prompts/secret_alliance_super_event_prompt.md`
+- `docs/specs/011_secret_alliance_specs/research/011_secret_alliance_super_event_text_research.md`
+- `docs/specs/011_secret_alliance_specs/source_inventory.md`
+- `docs/super_events/011_secret_alliance_super_event_research.md`
 
-No gameplay, localisation, UI, GFX, visual asset, audio, workbook, binary, source-spec, or historical report body was edited. No Event 011 identifier changed. The final reconciliation updates current status and disposition language while preserving the chronology inside historical plans and reports.
+No gameplay, localisation, scripted localisation, GUI, GFX, visual asset, audio file, workbook, binary, achievement definition, scenario implementation, or five-part source specification was edited. No commit was created.
 
-## Remaining risks and blockers
+## Remaining issues
 
-- The final Event 011 completion audit for gameplay candidate `c4bb10ce` is still running. No current whole-event CLEAN verdict exists yet.
-- Dynamic long-form country and faction names remain a visual wrapping edge case in the super-event description area, but no text, route, image, audio, or catalogue fallback remains.
+No documentation blocker, unresolved accepted plan, stale current audit owner, fallback, omitted route, or scope reduction remains. Optional future ideas remain outside the accepted completion boundary.
 
-No fallback, scope reduction, omitted route, or documentation-only substitute was used by this curation pass. This pass resolves the known stale audit-status and scenario-description contradictions. The running completion audit may still identify implementation or documentation findings.
+The documentation evidence is static. An in-engine playtest is outside this pass and is not claimed.

@@ -1,5 +1,7 @@
 # Localisation planning audit handoff
 
+Status: historical planning audit. Final Event 011 localisation is implemented with SHA-256 prefix `6A42CEFE`; the current FINAL CLEAN report is `docs/plans/011_secret_alliance_plans/subagent_handoffs/localisation_audit.md`.
+
 ## Audit status
 
 No in-game localisation was edited in this planning task. The spec intentionally provides direction and working labels rather than pasteable final copy. This handoff defines the localisation risks and required coverage for implementation.

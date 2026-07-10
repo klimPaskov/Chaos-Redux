@@ -1,5 +1,7 @@
 # Goal prompt: Complete Event 011 Secret Alliance
 
+Status: fulfilled historical goal prompt. Final gameplay and balance authority is commit `1c87d923`; the holistic evidence-backed verdict is under `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md`.
+
 Complete the full Chaos Redux rework of Event 011 Secret Alliance from `011_secret_alliance_specs`. Follow AGENTS.md and the repository event, decision, asset, animation, super-event, subagent, and improvement-loop skills. Read the required offline wiki pages, vanilla documentation and existing Chaos Redux patterns before editing.
 
 Implement Event 011 as Minor Fire-Once and fix the target to the player country at firing. Select three valid minor founders through the weighted factors in the spec. Prefer factionless countries. Exclude the target, target-aligned or invalid actors, countries already at war with the target, and special nonhuman chaos countries. Do not add the event to a cluster.
