@@ -20,7 +20,7 @@ Normal openings begin at baseline. If evolution settings already make later stag
 
 ## Concealed pact
 
-The pact is event-owned and is never represented by a normal faction while hidden. Its durable state is held in member, founder, sponsor, suspect, confirmed-member, turned-member, and public-member arrays plus global cohesion, readiness, alertness, doctrine, war pressure, and operation state. Each member has its own motive, operational role, support capability, private bargain, and commitment band.
+The pact is event-owned and is never represented by a normal faction while hidden. Its durable state is held in member, founder, sponsor, suspect, confirmed-member, turned-member, and public-member arrays plus global cohesion, readiness, alertness, doctrine, war pressure, and operation state. Each member has its own motive, operational role, support capability, private bargain, commitment score, and commitment band. Successful and disrupted operations change the actor's score and immediately recalculate its band.
 
 Baseline pulses are ordinary progression. They can recruit valid minors, generate internal disputes, leak traces, lose members, or launch one operation. Operations are selected across six families: diplomatic isolation, intelligence penetration, industrial and transport sabotage, political and social pressure, military preparation, and recruitment. The actor, target surface, risk, evidence class, and readiness layer are recorded before resolution. Adaptive recovery blocks immediate repetition after an exposed or failed operation.
 
