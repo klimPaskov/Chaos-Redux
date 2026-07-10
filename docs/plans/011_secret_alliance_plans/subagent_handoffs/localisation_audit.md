@@ -53,8 +53,9 @@ SCN-009, `Coalition Unmasked`, is registered as `triggerable_scenario_id.coaliti
 Super-event slot 73 is complete and route-exact:
 
 - slot 73 and unique audio ID 43 are defined at `common/script_constants/011_secret_alliance_constants.txt:945-946`
-- title, route-backed description, quote, and remark are at `localisation/english/011_secret_alliance_l_english.yml:224-231`
-- hostile-war, player-forced, fractured, and pact-controlled descriptions have explicit route conditions and no generic route fallback at `common/scripted_localisation/011_secret_alliance_scripted_localisation.txt:204-233`
+- title, route-backed description, quote, and remark are at `localisation/english/011_secret_alliance_l_english.yml:224-231`. The quote text, attribution, and formatting at `:226` exactly match the implemented package recorded at `docs/super_events/011_secret_alliance_super_event_research.md:30-33`
+- hostile-war, player-forced, fractured, and pact-controlled descriptions have explicit route conditions and no generic route fallback at `common/scripted_localisation/011_secret_alliance_scripted_localisation.txt:204-228`
+- the reveal transaction stores the caller's route, then explicitly records `secret_alliance_reveal_route.fractured` for every non-hostile reveal with a recent dispute at `common/scripted_effects/011_secret_alliance_effects.txt:4021-4035`. The sixth route constant therefore reaches the fractured selector without an implicit scripted-localisation fallback
 - the shared super-event image, title, quote, remark, and description selectors register slot 73 at `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt:228-230`, `:572-573`, `:802-803`, `:1032-1033`, and `:1262-1263`
 - `GFX_super_event_011_secret_alliance_public_reveal` is registered at `interface/chaosx_super_events.gfx:172-173`
 - reveal visibility, audio selection, playback, and public news routing are invoked at `common/scripted_effects/011_secret_alliance_effects.txt:3924-3942`. The news event is defined at `events/011_secret_alliance.txt:532-540`
