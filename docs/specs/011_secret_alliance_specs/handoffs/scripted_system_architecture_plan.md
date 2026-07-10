@@ -1,6 +1,6 @@
 # Scripted system architecture plan
 
-Status: historical planning architecture. Implemented architecture is frozen at `1c87d923`; current runtime and completion facts override proposed helper names or pending language below.
+Status: historical planning architecture. Implemented architecture is current at engine-compatible gameplay commit `407b9a05`, atop balance freeze `1c87d923`; current runtime and completion facts override proposed helper names or pending language below.
 
 This is an implementation architecture handoff, not Clausewitz code. Final helper names may be adjusted to existing repository conventions after inspection.
 

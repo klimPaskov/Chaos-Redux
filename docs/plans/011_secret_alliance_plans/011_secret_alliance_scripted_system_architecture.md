@@ -2,7 +2,7 @@
 
 Status: superseded historical design handoff. No gameplay, localisation, GUI, GFX, binary, or spreadsheet files were changed by this document.
 
-Use `subagent_handoffs/scripted_system_architecture_pass.md` for the accepted implementation architecture and commit `1c87d923` for current behavior. Earlier strict reports remain historical scoped evidence. The holistic completion audit owns the current verdict. This early handoff predates the full source specification, and its statement that Event 011 has no manual scenario is superseded by implemented SCN-009 Coalition Unmasked.
+Use `subagent_handoffs/scripted_system_architecture_pass.md` for the accepted implementation architecture and engine-compatible gameplay commit `407b9a05`, atop balance freeze `1c87d923`, for current behavior. Earlier strict reports remain historical scoped evidence. The holistic completion audit owns the current verdict. This early handoff predates the full source specification, and its statement that Event 011 has no manual scenario is superseded by implemented SCN-009 Coalition Unmasked.
 
 ## Scope
 

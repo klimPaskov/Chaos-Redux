@@ -2,7 +2,7 @@
 
 ## Current status
 
-The planning-era instruction to defer workbook work is superseded. The live catalog workbook is frozen at commit `97a2da80` and reconciled to final Event 011 and SCN-009 wording. Final gameplay and balance commit `1c87d923` changes numeric decision tuning and matching Event 011 localisation, not the workbook's narrative mirrors or status cells.
+The planning-era instruction to defer workbook work is superseded. The live catalog workbook is frozen at commit `97a2da80` and reconciled to final Event 011 and SCN-009 wording. High-impact balance commit `1c87d923` changes numeric decision tuning and matching Event 011 localisation, not the workbook's narrative mirrors or status cells; engine-compatibility commit `407b9a05` leaves those workbook surfaces unchanged.
 
 - Workbook: `docs/spreadsheets/chaos_redux_events_catalog.xlsx`
 - SHA-256: `597E71A1307958135BA1B34A8E60741320CD9E2753FA2EBDDBC1ED83403E1D59`
