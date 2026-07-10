@@ -255,3 +255,21 @@ This file records restored, sourced, and converted super-event audio assets used
 - License: public domain.
 - Duration: 1:59.5 restored cue.
 - Conversion notes: restored the pre-placeholder track while retaining the stable file paths.
+
+## Secret Alliance
+
+### The Pact Unmasked
+
+- Super-event ID: `73`
+- Audio ID: `43`
+- Music file: `music/011_secret_alliance/super_event_43_public_reveal.ogg`
+- Sound-channel file: `sound/011_secret_alliance/super_event_43_public_reveal.wav`
+- Sound definition: `chaosx_super_event_secret_alliance_public_reveal_track`
+- Source title: `Revelation`
+- Composer / creator: William Paris Chambers, composed 1901.
+- Performer / recording: United States Marine Band, directed by Col. John R. Bourgeois, from *Sound Off!* (1992).
+- Source file: `docs/assets/011_secret_alliance/source_audio/revelation_us_marine_band_commons_source.ogg`
+- Source record and rights: the United States Marine Band is a United States federal military ensemble. The selected federal-government recording is documented as public domain in `docs/plans/011_secret_alliance_plans/subagent_handoffs/super_event_audio_research.md`.
+- Duration: `86.101746` seconds.
+- Music catalogue: `music/chaosx_music_track_list.html` records The Pact Unmasked, audio ID `43`, `Revelation`, William Paris Chambers, the United States Marine Band performance, duration `01:26`, and verified public-domain status.
+- Conversion notes: the final OGG and WAV are derived from the same licensed source, use the unique Event 011 path, and are registered at all six settings-aware playback levels. No reused track, generated tone, placeholder, or attribution-dependent substitute is used.
