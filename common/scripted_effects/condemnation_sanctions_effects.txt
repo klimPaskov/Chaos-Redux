@@ -132,7 +132,10 @@ condemnation_unregister_target_if_inactive = {
 			NOT = { condemnation_has_defiance_path = yes }
 			NOT = { condemnation_has_evasion_path = yes }
 		}
-		remove_from_array = { array = global.condemnation_targets value = THIS }
+		if = {
+			limit = { is_in_array = { array = global.condemnation_targets value = THIS } }
+			remove_from_array = { array = global.condemnation_targets value = THIS }
+		}
 	}
 }
 
@@ -602,8 +605,14 @@ condemnation_register_native_embargo_source = {
 		}
 		if = {
 			limit = { NOT = { is_embargoing = var:condemnation_embargo_target } }
-			remove_from_array = { array = condemnation_native_external_targets value = condemnation_embargo_target }
-			remove_from_array = { array = condemnation_native_system_created_targets value = condemnation_embargo_target }
+			if = {
+				limit = { is_in_array = { array = condemnation_native_external_targets value = condemnation_embargo_target } }
+				remove_from_array = { array = condemnation_native_external_targets value = condemnation_embargo_target }
+			}
+			if = {
+				limit = { is_in_array = { array = condemnation_native_system_created_targets value = condemnation_embargo_target } }
+				remove_from_array = { array = condemnation_native_system_created_targets value = condemnation_embargo_target }
+			}
 		}
 		set_temp_variable = { condemnation_native_relation_preexisting = constant:condemnation_tier.normal }
 		if = {
@@ -1127,25 +1136,43 @@ condemnation_apply_sanction_pair = {
 				}
 				add_to_array = { array = condemnation_sanction_participants value = condemnation_pair_participant }
 			}
-			remove_from_array = { array = condemnation_arms_embargo_participants value = condemnation_pair_participant }
-		remove_from_array = { array = condemnation_strategic_embargo_participants value = condemnation_pair_participant }
-		remove_from_array = { array = condemnation_total_embargo_participants value = condemnation_pair_participant }
-		remove_from_array = { array = condemnation_pariah_embargo_participants value = condemnation_pair_participant }
-		remove_from_array = { array = condemnation_abstaining_participants value = condemnation_pair_participant }
-		remove_from_array = { array = condemnation_shielding_participants value = condemnation_pair_participant }
-		add_to_array = { array = condemnation_arms_embargo_participants value = condemnation_pair_participant }
-		if = {
-			limit = { check_variable = { condemnation_pair_tier > constant:condemnation_tier.arms_embargo } }
-			add_to_array = { array = condemnation_strategic_embargo_participants value = condemnation_pair_participant }
-		}
-		if = {
-			limit = { check_variable = { condemnation_pair_tier > constant:condemnation_tier.strategic_embargo } }
-			add_to_array = { array = condemnation_total_embargo_participants value = condemnation_pair_participant }
-		}
-		if = {
-			limit = { check_variable = { condemnation_pair_tier > constant:condemnation_tier.total_embargo } }
-			add_to_array = { array = condemnation_pariah_embargo_participants value = condemnation_pair_participant }
-		}
+			if = {
+				limit = { is_in_array = { array = condemnation_arms_embargo_participants value = condemnation_pair_participant } }
+				remove_from_array = { array = condemnation_arms_embargo_participants value = condemnation_pair_participant }
+			}
+			if = {
+				limit = { is_in_array = { array = condemnation_strategic_embargo_participants value = condemnation_pair_participant } }
+				remove_from_array = { array = condemnation_strategic_embargo_participants value = condemnation_pair_participant }
+			}
+			if = {
+				limit = { is_in_array = { array = condemnation_total_embargo_participants value = condemnation_pair_participant } }
+				remove_from_array = { array = condemnation_total_embargo_participants value = condemnation_pair_participant }
+			}
+			if = {
+				limit = { is_in_array = { array = condemnation_pariah_embargo_participants value = condemnation_pair_participant } }
+				remove_from_array = { array = condemnation_pariah_embargo_participants value = condemnation_pair_participant }
+			}
+			if = {
+				limit = { is_in_array = { array = condemnation_abstaining_participants value = condemnation_pair_participant } }
+				remove_from_array = { array = condemnation_abstaining_participants value = condemnation_pair_participant }
+			}
+			if = {
+				limit = { is_in_array = { array = condemnation_shielding_participants value = condemnation_pair_participant } }
+				remove_from_array = { array = condemnation_shielding_participants value = condemnation_pair_participant }
+			}
+			add_to_array = { array = condemnation_arms_embargo_participants value = condemnation_pair_participant }
+			if = {
+				limit = { check_variable = { condemnation_pair_tier > constant:condemnation_tier.arms_embargo } }
+				add_to_array = { array = condemnation_strategic_embargo_participants value = condemnation_pair_participant }
+			}
+			if = {
+				limit = { check_variable = { condemnation_pair_tier > constant:condemnation_tier.strategic_embargo } }
+				add_to_array = { array = condemnation_total_embargo_participants value = condemnation_pair_participant }
+			}
+			if = {
+				limit = { check_variable = { condemnation_pair_tier > constant:condemnation_tier.total_embargo } }
+				add_to_array = { array = condemnation_pariah_embargo_participants value = condemnation_pair_participant }
+			}
 
 		if = {
 			limit = { check_variable = { var = condemnation_pair_tier value = constant:condemnation_tier.pariah_state compare = greater_than_or_equals } }
@@ -1213,16 +1240,16 @@ condemnation_clear_sanction_pair = {
 	save_event_target_as = condemnation_pair_target_scope
 	if = {
 		limit = { var:condemnation_pair_participant = { exists = yes } }
-		remove_from_array = { array = condemnation_sanction_participants value = condemnation_pair_participant }
-		remove_from_array = { array = condemnation_arms_embargo_participants value = condemnation_pair_participant }
-		remove_from_array = { array = condemnation_strategic_embargo_participants value = condemnation_pair_participant }
-		remove_from_array = { array = condemnation_total_embargo_participants value = condemnation_pair_participant }
-		remove_from_array = { array = condemnation_pariah_embargo_participants value = condemnation_pair_participant }
-		remove_from_array = { array = condemnation_humanitarian_carveout_participants value = condemnation_pair_participant }
-		remove_from_array = { array = condemnation_quiet_breach_participants value = condemnation_pair_participant }
-		remove_from_array = { array = condemnation_tight_enforcement_participants value = condemnation_pair_participant }
-		remove_from_array = { array = condemnation_abstaining_participants value = condemnation_pair_participant }
-		remove_from_array = { array = condemnation_shielding_participants value = condemnation_pair_participant }
+		if = { limit = { is_in_array = { array = condemnation_sanction_participants value = condemnation_pair_participant } } remove_from_array = { array = condemnation_sanction_participants value = condemnation_pair_participant } }
+		if = { limit = { is_in_array = { array = condemnation_arms_embargo_participants value = condemnation_pair_participant } } remove_from_array = { array = condemnation_arms_embargo_participants value = condemnation_pair_participant } }
+		if = { limit = { is_in_array = { array = condemnation_strategic_embargo_participants value = condemnation_pair_participant } } remove_from_array = { array = condemnation_strategic_embargo_participants value = condemnation_pair_participant } }
+		if = { limit = { is_in_array = { array = condemnation_total_embargo_participants value = condemnation_pair_participant } } remove_from_array = { array = condemnation_total_embargo_participants value = condemnation_pair_participant } }
+		if = { limit = { is_in_array = { array = condemnation_pariah_embargo_participants value = condemnation_pair_participant } } remove_from_array = { array = condemnation_pariah_embargo_participants value = condemnation_pair_participant } }
+		if = { limit = { is_in_array = { array = condemnation_humanitarian_carveout_participants value = condemnation_pair_participant } } remove_from_array = { array = condemnation_humanitarian_carveout_participants value = condemnation_pair_participant } }
+		if = { limit = { is_in_array = { array = condemnation_quiet_breach_participants value = condemnation_pair_participant } } remove_from_array = { array = condemnation_quiet_breach_participants value = condemnation_pair_participant } }
+		if = { limit = { is_in_array = { array = condemnation_tight_enforcement_participants value = condemnation_pair_participant } } remove_from_array = { array = condemnation_tight_enforcement_participants value = condemnation_pair_participant } }
+		if = { limit = { is_in_array = { array = condemnation_abstaining_participants value = condemnation_pair_participant } } remove_from_array = { array = condemnation_abstaining_participants value = condemnation_pair_participant } }
+		if = { limit = { is_in_array = { array = condemnation_shielding_participants value = condemnation_pair_participant } } remove_from_array = { array = condemnation_shielding_participants value = condemnation_pair_participant } }
 		var:condemnation_pair_participant = {
 			set_temp_variable = { condemnation_pair_target = var:condemnation_pair_target_scope }
 			condemnation_read_pair_record = yes
@@ -1293,7 +1320,10 @@ condemnation_record_abstention = {
 			var:condemnation_pair_participant = { exists = yes }
 			NOT = { is_in_array = { array = condemnation_abstaining_participants value = condemnation_pair_participant } }
 		}
-		remove_from_array = { array = condemnation_shielding_participants value = condemnation_pair_participant }
+		if = {
+			limit = { is_in_array = { array = condemnation_shielding_participants value = condemnation_pair_participant } }
+			remove_from_array = { array = condemnation_shielding_participants value = condemnation_pair_participant }
+		}
 		add_to_array = { array = condemnation_abstaining_participants value = condemnation_pair_participant }
 		var:condemnation_pair_participant = {
 			set_temp_variable = { condemnation_abstaining_country = THIS }
@@ -1326,7 +1356,10 @@ condemnation_record_faction_shield = {
 	save_event_target_as = condemnation_pair_target
 	if = {
 		limit = { var:condemnation_pair_participant = { exists = yes } }
-		remove_from_array = { array = condemnation_abstaining_participants value = condemnation_pair_participant }
+		if = {
+			limit = { is_in_array = { array = condemnation_abstaining_participants value = condemnation_pair_participant } }
+			remove_from_array = { array = condemnation_abstaining_participants value = condemnation_pair_participant }
+		}
 		if = {
 			limit = { NOT = { is_in_array = { array = condemnation_shielding_participants value = condemnation_pair_participant } } }
 			add_to_array = { array = condemnation_shielding_participants value = condemnation_pair_participant }
@@ -1413,7 +1446,10 @@ condemnation_apply_tight_enforcement = {
 			NOT = { is_in_array = { array = condemnation_tight_enforcement_participants value = condemnation_pair_participant } }
 		}
 		add_to_array = { array = condemnation_tight_enforcement_participants value = condemnation_pair_participant }
-		remove_from_array = { array = condemnation_quiet_breach_participants value = condemnation_pair_participant }
+		if = {
+			limit = { is_in_array = { array = condemnation_quiet_breach_participants value = condemnation_pair_participant } }
+			remove_from_array = { array = condemnation_quiet_breach_participants value = condemnation_pair_participant }
+		}
 		var:condemnation_pair_participant = {
 			var:condemnation_pair_target = { set_temp_variable = { condemnation_pair_target_id = id } }
 			set_temp_variable = { condemnation_status_expires = global.date }
@@ -1505,7 +1541,12 @@ condemnation_cleanup_pair_statuses = {
 				check_variable = { condemnation_carveout_expires > 0 }
 				check_variable = { var = global.date value = condemnation_carveout_expires compare = greater_than_or_equals }
 			}
-			var:condemnation_pair_target = { remove_from_array = { array = condemnation_humanitarian_carveout_participants value = PREV } }
+			var:condemnation_pair_target = {
+				if = {
+					limit = { is_in_array = { array = condemnation_humanitarian_carveout_participants value = PREV } }
+					remove_from_array = { array = condemnation_humanitarian_carveout_participants value = PREV }
+				}
+			}
 			meta_effect = { text = { clear_variable = condemnation_pair_[TARGET_ID]_carveout_expires } TARGET_ID = "[?condemnation_pair_target_id|.0]" }
 		}
 		if = {
@@ -1513,7 +1554,12 @@ condemnation_cleanup_pair_statuses = {
 				check_variable = { condemnation_quiet_breach_expires > 0 }
 				check_variable = { var = global.date value = condemnation_quiet_breach_expires compare = greater_than_or_equals }
 			}
-			var:condemnation_pair_target = { remove_from_array = { array = condemnation_quiet_breach_participants value = PREV } }
+			var:condemnation_pair_target = {
+				if = {
+					limit = { is_in_array = { array = condemnation_quiet_breach_participants value = PREV } }
+					remove_from_array = { array = condemnation_quiet_breach_participants value = PREV }
+				}
+			}
 			meta_effect = { text = { clear_variable = condemnation_pair_[TARGET_ID]_quiet_breach_expires } TARGET_ID = "[?condemnation_pair_target_id|.0]" }
 		}
 		if = {
@@ -1521,7 +1567,12 @@ condemnation_cleanup_pair_statuses = {
 				check_variable = { condemnation_tight_enforcement_expires > 0 }
 				check_variable = { var = global.date value = condemnation_tight_enforcement_expires compare = greater_than_or_equals }
 			}
-			var:condemnation_pair_target = { remove_from_array = { array = condemnation_tight_enforcement_participants value = PREV } }
+			var:condemnation_pair_target = {
+				if = {
+					limit = { is_in_array = { array = condemnation_tight_enforcement_participants value = PREV } }
+					remove_from_array = { array = condemnation_tight_enforcement_participants value = PREV }
+				}
+			}
 			subtract_from_variable = { condemnation_enforcement_burden_total = constant:condemnation_pair.enforcement_cost_base }
 			clamp_variable = { var = condemnation_enforcement_burden_total min = 0 max = constant:condemnation_threshold.total_cap }
 			meta_effect = { text = { clear_variable = condemnation_pair_[TARGET_ID]_tight_enforcement_expires clear_variable = condemnation_pair_[TARGET_ID]_tight_cost } TARGET_ID = "[?condemnation_pair_target_id|.0]" }
@@ -1532,7 +1583,12 @@ condemnation_cleanup_pair_statuses = {
 				check_variable = { condemnation_abstention_expires > 0 }
 				check_variable = { var = global.date value = condemnation_abstention_expires compare = greater_than_or_equals }
 			}
-			var:condemnation_pair_target = { remove_from_array = { array = condemnation_abstaining_participants value = PREV } }
+			var:condemnation_pair_target = {
+				if = {
+					limit = { is_in_array = { array = condemnation_abstaining_participants value = PREV } }
+					remove_from_array = { array = condemnation_abstaining_participants value = PREV }
+				}
+			}
 			meta_effect = { text = { clear_variable = condemnation_pair_[TARGET_ID]_abstention_expires } TARGET_ID = "[?condemnation_pair_target_id|.0]" }
 		}
 		if = {
@@ -1540,7 +1596,12 @@ condemnation_cleanup_pair_statuses = {
 				check_variable = { condemnation_shield_expires > 0 }
 				check_variable = { var = global.date value = condemnation_shield_expires compare = greater_than_or_equals }
 			}
-			var:condemnation_pair_target = { remove_from_array = { array = condemnation_shielding_participants value = PREV } }
+			var:condemnation_pair_target = {
+				if = {
+					limit = { is_in_array = { array = condemnation_shielding_participants value = PREV } }
+					remove_from_array = { array = condemnation_shielding_participants value = PREV }
+				}
+			}
 			meta_effect = { text = { clear_variable = condemnation_pair_[TARGET_ID]_shield_expires } TARGET_ID = "[?condemnation_pair_target_id|.0]" }
 		}
 	}
@@ -1869,13 +1930,13 @@ condemnation_cleanup_participant_arrays = {
 			set_temp_variable = { condemnation_dead_participant = THIS }
 			ROOT = {
 				remove_from_array = { array = condemnation_sanction_participants value = condemnation_dead_participant }
-				remove_from_array = { array = condemnation_arms_embargo_participants value = condemnation_dead_participant }
-				remove_from_array = { array = condemnation_strategic_embargo_participants value = condemnation_dead_participant }
-				remove_from_array = { array = condemnation_total_embargo_participants value = condemnation_dead_participant }
-				remove_from_array = { array = condemnation_pariah_embargo_participants value = condemnation_dead_participant }
-				remove_from_array = { array = condemnation_humanitarian_carveout_participants value = condemnation_dead_participant }
-				remove_from_array = { array = condemnation_quiet_breach_participants value = condemnation_dead_participant }
-				remove_from_array = { array = condemnation_tight_enforcement_participants value = condemnation_dead_participant }
+				if = { limit = { is_in_array = { array = condemnation_arms_embargo_participants value = condemnation_dead_participant } } remove_from_array = { array = condemnation_arms_embargo_participants value = condemnation_dead_participant } }
+				if = { limit = { is_in_array = { array = condemnation_strategic_embargo_participants value = condemnation_dead_participant } } remove_from_array = { array = condemnation_strategic_embargo_participants value = condemnation_dead_participant } }
+				if = { limit = { is_in_array = { array = condemnation_total_embargo_participants value = condemnation_dead_participant } } remove_from_array = { array = condemnation_total_embargo_participants value = condemnation_dead_participant } }
+				if = { limit = { is_in_array = { array = condemnation_pariah_embargo_participants value = condemnation_dead_participant } } remove_from_array = { array = condemnation_pariah_embargo_participants value = condemnation_dead_participant } }
+				if = { limit = { is_in_array = { array = condemnation_humanitarian_carveout_participants value = condemnation_dead_participant } } remove_from_array = { array = condemnation_humanitarian_carveout_participants value = condemnation_dead_participant } }
+				if = { limit = { is_in_array = { array = condemnation_quiet_breach_participants value = condemnation_dead_participant } } remove_from_array = { array = condemnation_quiet_breach_participants value = condemnation_dead_participant } }
+				if = { limit = { is_in_array = { array = condemnation_tight_enforcement_participants value = condemnation_dead_participant } } remove_from_array = { array = condemnation_tight_enforcement_participants value = condemnation_dead_participant } }
 			}
 		}
 	}
@@ -1980,11 +2041,11 @@ condemnation_cleanup_annexed_target_records = {
 			}
 			condemnation_refresh_participant_burden = yes
 		}
-		remove_from_array = { array = condemnation_native_condemnation_targets value = condemnation_annexed_target }
-		remove_from_array = { array = condemnation_native_air_treaty_targets value = condemnation_annexed_target }
-		remove_from_array = { array = condemnation_native_great_embargo_targets value = condemnation_annexed_target }
-		remove_from_array = { array = condemnation_native_external_targets value = condemnation_annexed_target }
-		remove_from_array = { array = condemnation_native_system_created_targets value = condemnation_annexed_target }
+		if = { limit = { is_in_array = { array = condemnation_native_condemnation_targets value = condemnation_annexed_target } } remove_from_array = { array = condemnation_native_condemnation_targets value = condemnation_annexed_target } }
+		if = { limit = { is_in_array = { array = condemnation_native_air_treaty_targets value = condemnation_annexed_target } } remove_from_array = { array = condemnation_native_air_treaty_targets value = condemnation_annexed_target } }
+		if = { limit = { is_in_array = { array = condemnation_native_great_embargo_targets value = condemnation_annexed_target } } remove_from_array = { array = condemnation_native_great_embargo_targets value = condemnation_annexed_target } }
+		if = { limit = { is_in_array = { array = condemnation_native_external_targets value = condemnation_annexed_target } } remove_from_array = { array = condemnation_native_external_targets value = condemnation_annexed_target } }
+		if = { limit = { is_in_array = { array = condemnation_native_system_created_targets value = condemnation_annexed_target } } remove_from_array = { array = condemnation_native_system_created_targets value = condemnation_annexed_target } }
 	}
 }
 
