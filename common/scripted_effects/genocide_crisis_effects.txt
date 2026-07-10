@@ -158,20 +158,8 @@ genocide_credit_state_deaths_to_responsible = {
 }
 
 genocide_track_state_for_monthly_pulse = {
-	if = {
-		limit = {
-			NOT = {
-				is_in_array = {
-					array = global.genocide_active_camp_states
-					value = THIS
-				}
-			}
-		}
-		add_to_array = {
-			array = global.genocide_active_camp_states
-			value = THIS
-		}
-	}
+	set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.none }
+	camp_rework_register_active_site = yes
 }
 
 genocide_add_historical_quiet_concentration_camp = {
@@ -195,7 +183,6 @@ genocide_queue_historical_camp_flavor_event = {
 			NOT = { has_country_flag = genocide_historical_camp_flavor_seen }
 		}
 		set_country_flag = genocide_historical_camp_flavor_seen
-		country_event = { id = chaosx_genocide.40 days = @GENOCIDE_HISTORICAL_FLAVOR_DELAY_DAYS }
 	}
 }
 
@@ -347,11 +334,13 @@ genocide_refresh_concentration_camp_network_modifier = {
 }
 
 genocide_register_concentration_site_for_root = {
-	set_variable = { genocide_responsible_country = PREV }
+	if = {
+		limit = { NOT = { has_variable = genocide_responsible_country } }
+		set_variable = { genocide_responsible_country = PREV }
+	}
 	set_state_flag = genocide_site_has_responsible_country
 	set_state_flag = genocide_concentration_site
 	set_state_flag = genocide_atrocity_site_known_to_regime
-	genocide_track_state_for_monthly_pulse = yes
 	if = {
 		limit = { NOT = { concentration_camp > 0 } }
 		add_building_construction = {
@@ -381,15 +370,18 @@ genocide_register_concentration_site_for_root = {
 		genocide_add_radical_hardliner_support = yes
 	}
 	genocide_refresh_concentration_camp_network_modifier = yes
+	genocide_track_state_for_monthly_pulse = yes
 }
 
 genocide_register_extermination_site_for_root = {
-	set_variable = { genocide_responsible_country = PREV }
+	if = {
+		limit = { NOT = { has_variable = genocide_responsible_country } }
+		set_variable = { genocide_responsible_country = PREV }
+	}
 	set_state_flag = genocide_site_has_responsible_country
 	set_state_flag = genocide_extermination_site
 	set_state_flag = genocide_atrocity_site_known_to_regime
 	clr_state_flag = genocide_historical_quiet_camp
-	genocide_track_state_for_monthly_pulse = yes
 	if = {
 		limit = { NOT = { extermination_camp > 0 } }
 		add_building_construction = {
@@ -439,14 +431,17 @@ genocide_register_extermination_site_for_root = {
 			germany_mengele_add_autonomy = yes
 		}
 	}
+	genocide_track_state_for_monthly_pulse = yes
 }
 
 genocide_register_gulag_site_for_root = {
-	set_variable = { genocide_responsible_country = PREV }
+	if = {
+		limit = { NOT = { has_variable = genocide_responsible_country } }
+		set_variable = { genocide_responsible_country = PREV }
+	}
 	set_state_flag = genocide_site_has_responsible_country
 	set_state_flag = genocide_gulag_site
 	set_state_flag = genocide_atrocity_site_known_to_regime
-	genocide_track_state_for_monthly_pulse = yes
 	if = {
 		limit = { NOT = { gulag_labor_camp_network > 0 } }
 		add_building_construction = {
@@ -474,209 +469,88 @@ genocide_register_gulag_site_for_root = {
 			soviet_collapse_apply_genocide_gulag_repression_memory = yes
 		}
 	}
+	genocide_track_state_for_monthly_pulse = yes
 }
 
-genocide_build_concentration_camp_in_from = {
+genocide_build_concentration_camp_in_from_accepted = {
 	genocide_activate_crisis = yes
 	FROM = {
 		genocide_register_concentration_site_for_root = yes
 	}
 }
 
-genocide_build_extermination_camp_in_from = {
+genocide_build_concentration_camp_in_from = {
+	if = {
+		limit = { FROM = { camp_rework_state_can_accept_responsibility_from_root = yes } }
+		genocide_build_concentration_camp_in_from_accepted = yes
+	}
+}
+
+genocide_build_extermination_camp_in_from_accepted = {
 	genocide_activate_crisis = yes
 	FROM = {
 		genocide_register_extermination_site_for_root = yes
 	}
 }
 
-genocide_build_gulag_network_in_from = {
+genocide_build_extermination_camp_in_from = {
+	if = {
+		limit = { FROM = { camp_rework_state_can_accept_responsibility_from_root = yes } }
+		genocide_build_extermination_camp_in_from_accepted = yes
+	}
+}
+
+genocide_build_gulag_network_in_from_accepted = {
 	genocide_activate_crisis = yes
 	FROM = {
 		genocide_register_gulag_site_for_root = yes
 	}
 }
 
-genocide_apply_monthly_concentration_state_effects = {
-	genocide_refresh_concentration_camp_network_modifier = yes
-	set_temp_variable = { chaos_state_deaths_percent = constant:genocide_death_percent.concentration_monthly }
-	set_temp_variable = { chaos_state_deaths_cap_factor = constant:genocide_death_cap.concentration }
-	set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
-	genocide_prepare_death_multiplier_from_responsible = yes
-	chaos_meter_register_state_civilian_deaths_percent = yes
-	set_variable = { genocide_last_state_deaths = chaos_deaths_change }
-	genocide_credit_state_deaths_to_responsible = yes
+genocide_build_gulag_network_in_from = {
 	if = {
-		limit = { has_variable = genocide_responsible_country }
-		var:genocide_responsible_country = {
-			add_to_variable = { genocide_resistance_pressure = constant:genocide_crisis_value.resistance_pressure_minor }
-		}
+		limit = { FROM = { camp_rework_state_can_accept_responsibility_from_root = yes } }
+		genocide_build_gulag_network_in_from_accepted = yes
 	}
+}
+
+genocide_apply_monthly_concentration_state_effects = {
+	camp_rework_apply_monthly_state_effects = yes
 }
 
 genocide_apply_monthly_extermination_state_effects = {
-	set_temp_variable = { chaos_state_deaths_percent = constant:genocide_death_percent.extermination_monthly }
-	set_temp_variable = { chaos_state_deaths_cap_factor = constant:genocide_death_cap.extermination }
-	set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.extermination_camp }
-	genocide_prepare_death_multiplier_from_responsible = yes
-	chaos_meter_register_state_civilian_deaths_percent = yes
-	set_variable = { genocide_last_state_deaths = chaos_deaths_change }
-	genocide_credit_state_deaths_to_responsible = yes
-	if = {
-		limit = { has_variable = genocide_responsible_country }
-		var:genocide_responsible_country = {
-			add_to_variable = { genocide_resistance_pressure = constant:genocide_crisis_value.resistance_pressure_major }
-			add_to_variable = { genocide_refugee_pressure = constant:genocide_crisis_value.refugee_pressure_major }
-			if = {
-				limit = {
-					original_tag = GER
-					has_variable = mengele_permission_level
-					check_variable = { mengele_permission_level > constant:germany_mengele_permission.full }
-				}
-				set_temp_variable = { mengele_autonomy_delta = constant:germany_mengele_permission.extermination_monthly_bypass }
-				germany_mengele_add_autonomy = yes
-			}
-			else_if = {
-				limit = {
-					original_tag = GER
-					germany_mengele_program_active = yes
-				}
-				set_temp_variable = { mengele_autonomy_delta = constant:germany_mengele_permission.extermination_monthly_full }
-				germany_mengele_add_autonomy = yes
-			}
-			else_if = {
-				limit = {
-					original_tag = GER
-					germany_mengele_restricted_program_active = yes
-				}
-				set_temp_variable = { mengele_autonomy_delta = constant:germany_mengele_permission.extermination_monthly_restricted }
-				germany_mengele_add_autonomy = yes
-			}
-		}
-	}
+	camp_rework_apply_monthly_state_effects = yes
 }
 
 genocide_apply_monthly_gulag_state_effects = {
-	set_temp_variable = { chaos_state_deaths_percent = constant:genocide_death_percent.gulag_monthly }
-	set_temp_variable = { chaos_state_deaths_cap_factor = constant:genocide_death_cap.gulag }
-	set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.gulag_repression }
-	genocide_prepare_death_multiplier_from_responsible = yes
-	chaos_meter_register_state_civilian_deaths_percent = yes
-	set_variable = { genocide_last_state_deaths = chaos_deaths_change }
-	genocide_credit_state_deaths_to_responsible = yes
-	if = {
-		limit = { has_variable = genocide_responsible_country }
-		var:genocide_responsible_country = {
-			add_to_variable = { genocide_resistance_pressure = constant:genocide_crisis_value.resistance_pressure_minor }
-			add_to_variable = { genocide_refugee_pressure = constant:genocide_crisis_value.refugee_pressure_minor }
-		}
-	}
+	camp_rework_apply_monthly_state_effects = yes
 }
 
 genocide_apply_monthly_experiment_site_effects = {
-	set_temp_variable = { chaos_state_deaths_percent = constant:genocide_death_percent.experiment_monthly }
-	set_temp_variable = { chaos_state_deaths_cap_factor = constant:genocide_death_cap.experiment }
-	set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
-	if = {
-		limit = { extermination_camp > 0 }
-		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.extermination_camp }
-	}
-	genocide_prepare_death_multiplier_from_responsible = yes
-	chaos_meter_register_state_civilian_deaths_percent = yes
-	set_variable = { genocide_last_state_deaths = chaos_deaths_change }
-	genocide_credit_state_deaths_to_responsible = yes
+	camp_rework_apply_monthly_state_effects = yes
 }
 
 genocide_apply_monthly_biowarfare_experiment_site_effects = {
-	set_temp_variable = { chaos_state_deaths_percent = constant:genocide_death_percent.biowarfare_experiment_monthly }
-	set_temp_variable = { chaos_state_deaths_cap_factor = constant:genocide_death_cap.experiment }
-	set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.biowarfare_outbreak }
-	genocide_prepare_death_multiplier_from_responsible = yes
-	chaos_meter_register_state_civilian_deaths_percent = yes
-	set_variable = { genocide_last_state_deaths = chaos_deaths_change }
-	genocide_credit_state_deaths_to_responsible = yes
+	camp_rework_apply_monthly_state_effects = yes
 }
 
 genocide_apply_monthly_restricted_chemical_site_effects = {
-	set_temp_variable = { chaos_state_deaths_percent = constant:genocide_death_percent.restricted_chemical_monthly }
-	set_temp_variable = { chaos_state_deaths_cap_factor = constant:genocide_death_cap.restricted_chemical }
-	set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.extermination_camp }
-	if = {
-		limit = { gulag_labor_camp_network > 0 }
-		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.gulag_repression }
-	}
-	genocide_prepare_death_multiplier_from_responsible = yes
-	chaos_meter_register_state_civilian_deaths_percent = yes
-	set_variable = { genocide_last_state_deaths = chaos_deaths_change }
-	genocide_credit_state_deaths_to_responsible = yes
+	camp_rework_apply_monthly_state_effects = yes
 }
 
 genocide_apply_monthly_state_effects = {
 	if = {
-		limit = { NOT = { has_state_flag = genocide_historical_quiet_camp } }
-		if = {
-			limit = { concentration_camp > 0 }
-			genocide_apply_monthly_concentration_state_effects = yes
-		}
-		if = {
-			limit = { extermination_camp > 0 }
-			genocide_apply_monthly_extermination_state_effects = yes
-		}
-		if = {
-			limit = { gulag_labor_camp_network > 0 }
-			genocide_apply_monthly_gulag_state_effects = yes
-		}
-		if = {
-			limit = {
-				OR = {
-					has_state_flag = genocide_auschwitz_experiment_site
-					has_state_flag = genocide_ss_laboratory_site
-					has_state_flag = genocide_japanese_biowarfare_atrocity_site
-				}
-			}
-			genocide_apply_monthly_experiment_site_effects = yes
-		}
-		if = {
-			limit = { has_state_flag = genocide_japanese_biowarfare_atrocity_site }
-			genocide_apply_monthly_biowarfare_experiment_site_effects = yes
-		}
-		if = {
-			limit = { has_state_flag = genocide_restricted_chemical_site_active }
-			genocide_apply_monthly_restricted_chemical_site_effects = yes
-		}
+		limit = { is_valid_camp_active_site_state = yes }
+		camp_rework_apply_monthly_state_effects = yes
 	}
 }
 
 genocide_register_constructed_concentration_camps = {
-	every_country = {
-		limit = {
-			exists = yes
-			any_controlled_state = {
-				concentration_camp > 0
-				NOT = { has_state_flag = genocide_concentration_site }
-				NOT = { has_state_flag = genocide_historical_quiet_camp }
-			}
-		}
-		every_controlled_state = {
-			limit = {
-				concentration_camp > 0
-				NOT = { has_state_flag = genocide_concentration_site }
-				NOT = { has_state_flag = genocide_historical_quiet_camp }
-			}
-			genocide_register_concentration_site_for_root = yes
-		}
-	}
+	camp_rework_run_versioned_migration = yes
 }
 
 genocide_monthly_global_pulse = {
-	genocide_register_constructed_concentration_camps = yes
-	for_each_scope_loop = {
-		array = global.genocide_active_camp_states
-		if = {
-			limit = { genocide_state_requires_monthly_processing = yes }
-			genocide_apply_monthly_state_effects = yes
-		}
-	}
+	camp_rework_monthly_global_pulse = yes
 }
 
 genocide_apply_condemnation_thresholds = {
@@ -726,23 +600,53 @@ genocide_calculate_discovery_condemnation_from_prev_state = {
 	set_temp_variable = { genocide_coverup_condemnation_add = 0 }
 	set_temp_variable = { genocide_condemnation_context_type = constant:condemnation_context.camp_discovery }
 	if = {
-		limit = { PREV = { extermination_camp > 0 } }
+		limit = {
+			PREV = {
+				OR = {
+					extermination_camp > 0
+					check_variable = { camp_state_evidence_site_type = constant:camp_rework_site_type.radicalized }
+					check_variable = { camp_state_evidence_site_type = constant:camp_rework_site_type.contaminated }
+				}
+			}
+		}
 		set_temp_variable = { genocide_condemnation_add = constant:genocide_condemnation.extermination_first }
 		set_temp_variable = { genocide_condemnation_severity_type = constant:condemnation_severity.mass_death }
 	}
 	else_if = {
-		limit = { PREV = { gulag_labor_camp_network > 0 } }
+		limit = {
+			PREV = {
+				OR = {
+					gulag_labor_camp_network > 0
+					check_variable = { camp_state_evidence_site_type = constant:camp_rework_site_type.gulag }
+				}
+			}
+		}
 		set_temp_variable = { genocide_condemnation_add = constant:genocide_condemnation.gulag_first }
 	}
 	if = {
 		limit = { check_variable = { genocide_discovered_sites > 0 } }
 		set_temp_variable = { genocide_condemnation_add = constant:genocide_condemnation.concentration_repeat }
 		if = {
-			limit = { PREV = { extermination_camp > 0 } }
+			limit = {
+				PREV = {
+					OR = {
+						extermination_camp > 0
+						check_variable = { camp_state_evidence_site_type = constant:camp_rework_site_type.radicalized }
+						check_variable = { camp_state_evidence_site_type = constant:camp_rework_site_type.contaminated }
+					}
+				}
+			}
 			set_temp_variable = { genocide_condemnation_add = constant:genocide_condemnation.extermination_repeat }
 		}
 		else_if = {
-			limit = { PREV = { gulag_labor_camp_network > 0 } }
+			limit = {
+				PREV = {
+					OR = {
+						gulag_labor_camp_network > 0
+						check_variable = { camp_state_evidence_site_type = constant:camp_rework_site_type.gulag }
+					}
+				}
+			}
 			set_temp_variable = { genocide_condemnation_add = constant:genocide_condemnation.gulag_repeat }
 		}
 		set_temp_variable = { genocide_repeat_divisor = genocide_discovered_sites }
@@ -753,6 +657,42 @@ genocide_calculate_discovery_condemnation_from_prev_state = {
 			min = constant:genocide_condemnation.repeat_floor
 			max = constant:genocide_condemnation.repeat_max
 		}
+	}
+	set_temp_variable = { camp_dynamic_discovery_bonus = 0 }
+	if = {
+		limit = { PREV = { has_variable = camp_state_evidence_depth } }
+		set_temp_variable = { camp_dynamic_discovery_add = PREV.camp_state_evidence_depth }
+		multiply_temp_variable = { camp_dynamic_discovery_add = constant:camp_rework_discovery_factor.evidence_depth }
+		add_to_temp_variable = { camp_dynamic_discovery_bonus = camp_dynamic_discovery_add }
+	}
+	if = {
+		limit = { PREV = { has_variable = camp_site_last_month_deaths } }
+		set_temp_variable = { camp_dynamic_discovery_add = PREV.camp_site_last_month_deaths }
+		multiply_temp_variable = { camp_dynamic_discovery_add = constant:camp_rework_discovery_factor.state_civilian_deaths }
+		add_to_temp_variable = { camp_dynamic_discovery_bonus = camp_dynamic_discovery_add }
+	}
+	if = {
+		limit = { PREV = { has_variable = camp_state_observer_exposure } }
+		set_temp_variable = { camp_dynamic_discovery_add = PREV.camp_state_observer_exposure }
+		multiply_temp_variable = { camp_dynamic_discovery_add = constant:camp_rework_discovery_factor.observer_exposure }
+		add_to_temp_variable = { camp_dynamic_discovery_bonus = camp_dynamic_discovery_add }
+	}
+	set_temp_variable = { camp_dynamic_discovery_add = camp_network_reach }
+	multiply_temp_variable = { camp_dynamic_discovery_add = constant:camp_rework_discovery_factor.network_reach }
+	add_to_temp_variable = { camp_dynamic_discovery_bonus = camp_dynamic_discovery_add }
+	set_temp_variable = { camp_dynamic_discovery_add = camp_foreign_visibility }
+	multiply_temp_variable = { camp_dynamic_discovery_add = constant:camp_rework_discovery_factor.foreign_visibility }
+	add_to_temp_variable = { camp_dynamic_discovery_bonus = camp_dynamic_discovery_add }
+	clamp_temp_variable = {
+		var = camp_dynamic_discovery_bonus
+		min = 0
+		max = constant:camp_rework_discovery_factor.maximum_dynamic_bonus
+	}
+	add_to_temp_variable = { genocide_condemnation_add = camp_dynamic_discovery_bonus }
+	PREV = { set_variable = { camp_state_discovery_severity = camp_dynamic_discovery_bonus } }
+	if = {
+		limit = { check_variable = { camp_dynamic_discovery_bonus > constant:camp_rework_threshold.band_high } }
+		set_temp_variable = { genocide_condemnation_severity_type = constant:condemnation_severity.mass_death }
 	}
 	if = {
 		limit = { PREV = { has_state_flag = genocide_evidence_destroyed } }
@@ -770,6 +710,7 @@ genocide_calculate_discovery_condemnation_from_prev_state = {
 				OR = {
 					has_state_flag = genocide_auschwitz_experiment_site
 					has_state_flag = genocide_ss_laboratory_site
+					check_variable = { camp_state_evidence_site_type = constant:camp_rework_site_type.experiment }
 				}
 			}
 		}
@@ -814,7 +755,14 @@ genocide_apply_discovery_to_responsible_from_prev_state = {
 	genocide_register_public_condemnation_source = yes
 	set_variable = { genocide_last_condemnation_add = genocide_condemnation_add }
 	if = {
-		limit = { PREV = { has_state_flag = genocide_japanese_biowarfare_atrocity_site } }
+		limit = {
+			PREV = {
+				OR = {
+					has_state_flag = genocide_japanese_biowarfare_atrocity_site
+					has_state_flag = camp_rework_biological_evidence_site
+				}
+			}
+		}
 		set_temp_variable = { genocide_condemnation_source_type = constant:condemnation_source.biological }
 		set_temp_variable = { genocide_condemnation_add = constant:condemnation_source_default_gain.biological_experiment_discovery }
 		set_temp_variable = { genocide_condemnation_severity_type = constant:condemnation_severity.major }
@@ -835,10 +783,12 @@ genocide_apply_discovery_to_responsible_from_prev_state = {
 	genocide_apply_condemnation_thresholds = yes
 	if = {
 		limit = {
+			original_tag = GER
 			PREV = {
 				OR = {
 					has_state_flag = genocide_auschwitz_experiment_site
 					has_state_flag = genocide_ss_laboratory_site
+					check_variable = { camp_state_evidence_site_type = constant:camp_rework_site_type.experiment }
 				}
 			}
 			has_event_target = germany_mengele_faction
@@ -856,6 +806,12 @@ genocide_apply_discovery_to_responsible_from_prev_state = {
 			genocide_apply_condemnation_thresholds = yes
 		}
 	}
+	add_to_variable = { camp_policy_evidence = constant:camp_rework_country_value.evidence_major }
+	add_to_variable = { camp_policy_visibility = constant:camp_rework_country_value.visibility_major }
+	add_to_variable = { camp_policy_tribunal = constant:camp_rework_country_value.tribunal_major }
+	add_to_variable = { camp_policy_reform = constant:camp_rework_country_value.reform_major }
+	camp_rework_register_country_for_monthly_pulse = yes
+	camp_rework_recalculate_country_values = yes
 }
 
 genocide_fire_first_discovery_events_from_state = {
@@ -879,7 +835,11 @@ genocide_fire_first_discovery_events_from_state = {
 	}
 	if = {
 		limit = {
-			extermination_camp > 0
+			OR = {
+				extermination_camp > 0
+				check_variable = { camp_state_evidence_site_type = constant:camp_rework_site_type.radicalized }
+				check_variable = { camp_state_evidence_site_type = constant:camp_rework_site_type.contaminated }
+			}
 			NOT = { has_global_flag = genocide_extermination_news_fired }
 			NOT = { has_global_flag = genocide_extermination_news_cooldown }
 		}
@@ -906,6 +866,7 @@ genocide_try_discover_state_atrocity = {
 			genocide_state_has_undiscovered_atrocity_evidence = yes
 			has_event_target = genocide_discovering_country
 			has_event_target = genocide_responsible_country
+			event_target:genocide_responsible_country = { exists = yes }
 			event_target:genocide_discovering_country = {
 				NOT = { tag = event_target:genocide_responsible_country }
 			}
@@ -915,11 +876,67 @@ genocide_try_discover_state_atrocity = {
 			}
 		}
 		set_state_flag = genocide_site_discovered
+		set_variable = { camp_state_evidence_status = constant:camp_rework_evidence_status.discovered }
+		add_to_variable = { camp_state_observer_exposure = constant:camp_rework_discovery_factor.discovery_observer_gain }
+		clamp_variable = { var = camp_state_observer_exposure min = 0 max = constant:camp_rework_threshold.max_value }
+		camp_rework_register_evidence_state = yes
 		save_event_target_as = genocide_discovered_state
 		event_target:genocide_responsible_country = {
 			genocide_apply_discovery_to_responsible_from_prev_state = yes
 		}
 		genocide_fire_first_discovery_events_from_state = yes
+	}
+	if = {
+		limit = {
+			genocide_state_has_undiscovered_atrocity_evidence = yes
+			has_event_target = genocide_discovering_country
+			has_variable = genocide_responsible_country
+			var:genocide_responsible_country = { exists = no }
+		}
+		set_state_flag = genocide_site_discovered
+		set_state_flag = camp_rework_dead_regime_evidence_discovered
+		set_variable = { camp_state_evidence_status = constant:camp_rework_evidence_status.liberated }
+		add_to_variable = { camp_state_observer_exposure = constant:camp_rework_discovery_factor.discovery_observer_gain }
+		clamp_variable = { var = camp_state_observer_exposure min = 0 max = constant:camp_rework_threshold.max_value }
+		set_temp_variable = { camp_dead_regime_discovery_severity = camp_state_evidence_depth }
+		multiply_temp_variable = { camp_dead_regime_discovery_severity = constant:camp_rework_discovery_factor.evidence_depth }
+		if = {
+			limit = { has_variable = camp_site_last_month_deaths }
+			set_temp_variable = { camp_dead_regime_discovery_add = camp_site_last_month_deaths }
+			multiply_temp_variable = { camp_dead_regime_discovery_add = constant:camp_rework_discovery_factor.state_civilian_deaths }
+			add_to_temp_variable = { camp_dead_regime_discovery_severity = camp_dead_regime_discovery_add }
+		}
+		set_temp_variable = { camp_dead_regime_discovery_add = camp_state_observer_exposure }
+		multiply_temp_variable = { camp_dead_regime_discovery_add = constant:camp_rework_discovery_factor.observer_exposure }
+		add_to_temp_variable = { camp_dead_regime_discovery_severity = camp_dead_regime_discovery_add }
+		clamp_temp_variable = {
+			var = camp_dead_regime_discovery_severity
+			min = 0
+			max = constant:camp_rework_discovery_factor.maximum_dynamic_bonus
+		}
+		set_variable = { camp_state_discovery_severity = camp_dead_regime_discovery_severity }
+		save_event_target_as = genocide_discovered_state
+		set_global_flag = genocide_foreign_response_unlocked
+		set_global_flag = genocide_tribunal_system_active
+		event_target:genocide_discovering_country = {
+			set_country_flag = genocide_dead_regime_evidence_discovered
+			set_variable = { camp_dead_regime_latest_discovery_severity = camp_dead_regime_discovery_severity }
+			country_event = { id = chaosx_genocide.1 hours = @GENOCIDE_DISCOVERY_DISCOVERER_DELAY_HOURS }
+		}
+		if = {
+			limit = {
+				OR = {
+					has_state_flag = genocide_destroyed_atrocity_site
+					check_variable = { camp_state_evidence_site_type = constant:camp_rework_site_type.radicalized }
+					check_variable = { camp_state_evidence_site_type = constant:camp_rework_site_type.contaminated }
+				}
+				NOT = { has_global_flag = genocide_extermination_news_fired }
+			}
+			set_global_flag = genocide_extermination_news_fired
+			event_target:genocide_discovering_country = {
+				news_event = { id = chaosx_genocide.3 hours = @GENOCIDE_DISCOVERY_NEWS_DELAY_HOURS }
+			}
+		}
 	}
 }
 
@@ -931,6 +948,14 @@ genocide_on_state_control_changed = {
 	FROM.FROM = {
 		genocide_try_discover_state_atrocity = yes
 		genocide_mengele_maybe_spawn_against_invader_from_state_loss = yes
+		if = {
+			limit = { camp_rework_state_requires_unregister = yes }
+			camp_rework_unregister_inactive_site = yes
+		}
+	}
+	if = {
+		limit = { has_country_flag = camp_repression_ledger_open }
+		camp_rework_rebuild_display_values = yes
 	}
 }
 
@@ -973,10 +998,10 @@ genocide_mengele_maybe_spawn_against_invader_from_state_loss = {
 
 genocide_register_decision_deaths_in_from_state = {
 	FROM = {
+		set_temp_variable = { chaos_deaths_change = 0 }
 		set_temp_variable = { chaos_state_deaths_cap_factor = constant:genocide_death_cap.decision }
 		chaos_meter_register_state_civilian_deaths_percent = yes
-		set_variable = { genocide_last_state_deaths = chaos_deaths_change }
-		genocide_credit_state_deaths_to_responsible = yes
+		camp_rework_record_latest_state_deaths = yes
 	}
 }
 
@@ -993,9 +1018,9 @@ genocide_intensify_deportations = {
 		set_temp_variable = { chaos_state_deaths_cap_factor = constant:genocide_death_cap.decision }
 		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
 		genocide_prepare_death_multiplier_from_responsible = yes
+		set_temp_variable = { chaos_deaths_change = 0 }
 		chaos_meter_register_state_civilian_deaths_percent = yes
-		set_variable = { genocide_last_state_deaths = chaos_deaths_change }
-		genocide_credit_state_deaths_to_responsible = yes
+		camp_rework_record_latest_state_deaths = yes
 	}
 	genocide_add_radical_hardliner_support = yes
 }
@@ -1059,9 +1084,9 @@ genocide_redirect_trains_and_supplies = {
 		set_temp_variable = { chaos_state_deaths_cap_factor = constant:genocide_death_cap.decision }
 		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
 		genocide_prepare_death_multiplier_from_responsible = yes
+		set_temp_variable = { chaos_deaths_change = 0 }
 		chaos_meter_register_state_civilian_deaths_percent = yes
-		set_variable = { genocide_last_state_deaths = chaos_deaths_change }
-		genocide_credit_state_deaths_to_responsible = yes
+		camp_rework_record_latest_state_deaths = yes
 	}
 }
 
@@ -1081,9 +1106,9 @@ genocide_deal_with_resistance_sabotage = {
 		set_temp_variable = { chaos_state_deaths_cap_factor = constant:genocide_death_cap.decision }
 		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
 		genocide_prepare_death_multiplier_from_responsible = yes
+		set_temp_variable = { chaos_deaths_change = 0 }
 		chaos_meter_register_state_civilian_deaths_percent = yes
-		set_variable = { genocide_last_state_deaths = chaos_deaths_change }
-		genocide_credit_state_deaths_to_responsible = yes
+		camp_rework_record_latest_state_deaths = yes
 	}
 }
 
@@ -1122,98 +1147,25 @@ genocide_manage_military_objections = {
 
 genocide_destroy_camp_evidence_in_from = {
 	genocide_activate_crisis = yes
-	FROM = {
-		if = {
-			limit = { genocide_state_has_undiscovered_atrocity_evidence = yes }
-			set_temp_variable = { chaos_state_deaths_percent = constant:genocide_death_percent.evidence_destruction }
-			set_temp_variable = { chaos_state_deaths_cap_factor = constant:genocide_death_cap.evidence }
-			set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
-			genocide_prepare_death_multiplier_from_responsible = yes
-			chaos_meter_register_state_civilian_deaths_percent = yes
-			set_variable = { genocide_last_state_deaths = chaos_deaths_change }
-			genocide_credit_state_deaths_to_responsible = yes
-			add_dynamic_modifier = {
-				modifier = genocide_evidence_burned_state
-				days = @GENOCIDE_STATE_MODIFIER_DAYS
-			}
-			random_list = {
-				70 = {
-					set_state_flag = genocide_evidence_destroyed
-					set_state_flag = genocide_destroyed_atrocity_site
-					if = {
-						limit = { concentration_camp > 0 }
-						remove_building = {
-							type = concentration_camp
-							level = 1
-						}
-					}
-					if = {
-						limit = { extermination_camp > 0 }
-						remove_building = {
-							type = extermination_camp
-							level = 1
-						}
-					}
-					if = {
-						limit = { gulag_labor_camp_network > 0 }
-						remove_building = {
-							type = gulag_labor_camp_network
-							level = 1
-						}
-					}
-				}
-				30 = {
-					set_state_flag = genocide_evidence_destroy_failed
-					add_to_variable = { genocide_site_failed_coverup_records = 1 }
-				}
-			}
-		}
-	}
 	add_to_variable = { genocide_decisions_taken = 1 }
 	add_to_variable = { genocide_coverup_effort = constant:genocide_crisis_value.coverup_effort }
 	add_to_variable = { hidden_atrocity_score = constant:genocide_crisis_value.hidden_atrocity_major }
-	set_temp_variable = { genocide_hidden_coverup_gain = constant:genocide_crisis_value.hidden_atrocity_major }
-	set_temp_variable = { genocide_hidden_coverup_severity = constant:condemnation_severity.major }
-	genocide_register_hidden_coverup = yes
+	FROM = {
+		camp_rework_destroy_evidence = yes
+	}
+	camp_rework_recalculate_country_values = yes
 }
 
 genocide_dismantle_extermination_camp_in_from = {
 	genocide_activate_crisis = yes
 	add_to_variable = { genocide_decisions_taken = 1 }
-	add_to_variable = { genocide_visibility = constant:genocide_crisis_value.dismantle_visibility_reduction }
-	add_to_variable = { genocide_resistance_pressure = constant:genocide_crisis_value.dismantle_resistance_pressure }
-	add_to_variable = { genocide_coverup_effort = constant:genocide_crisis_value.coverup_effort }
-	set_temp_variable = { genocide_hidden_coverup_gain = constant:genocide_crisis_value.coverup_effort }
-	set_temp_variable = { genocide_hidden_coverup_severity = constant:condemnation_severity.major }
-	genocide_register_hidden_coverup = yes
 	add_stability = constant:genocide_crisis_value.dismantle_instability
-	if = {
-		limit = { has_variable = genocide_extermination_sites }
-		subtract_from_variable = { genocide_extermination_sites = 1 }
-		clamp_variable = {
-			var = genocide_extermination_sites
-			min = 0
-			max = constant:genocide_cleanup.max_site_count
-		}
-	}
+	add_to_variable = { camp_policy_reform = constant:camp_rework_country_value.reform_major }
 	FROM = {
-		if = {
-			limit = { extermination_camp > 0 }
-			remove_building = {
-				type = extermination_camp
-				level = 1
-			}
-		}
 		set_state_flag = genocide_extermination_site_dismantled
-		set_state_flag = genocide_destroyed_atrocity_site
-		set_state_flag = genocide_evidence_destroyed
-		clr_state_flag = genocide_extermination_site
-		add_dynamic_modifier = {
-			modifier = genocide_evidence_burned_state
-			days = @GENOCIDE_STATE_MODIFIER_DAYS
-		}
+		camp_rework_complete_dismantlement = yes
 	}
-	genocide_add_radical_hardliner_support = yes
+	camp_rework_recalculate_country_values = yes
 }
 
 genocide_cover_up_liberated_camps = {
@@ -1227,14 +1179,17 @@ genocide_cover_up_liberated_camps = {
 	add_stability = constant:genocide_political_effect.internal_crisis_stability
 }
 
-genocide_japan_anti_partisan_reprisals_in_from = {
+genocide_japan_anti_partisan_reprisals_in_from_accepted = {
 	genocide_activate_crisis = yes
 	add_to_variable = { genocide_decisions_taken = 1 }
 	add_to_variable = { genocide_escalation = constant:genocide_crisis_value.terror_escalation }
 	add_to_variable = { genocide_visibility = constant:genocide_crisis_value.visibility_major }
 	add_to_variable = { hidden_atrocity_score = constant:genocide_crisis_value.hidden_atrocity_major }
 	FROM = {
-		set_variable = { genocide_responsible_country = ROOT }
+		if = {
+			limit = { NOT = { has_variable = genocide_responsible_country } }
+			set_variable = { genocide_responsible_country = ROOT }
+		}
 		set_state_flag = genocide_japanese_occupation_atrocity_site
 		add_dynamic_modifier = {
 			modifier = genocide_camp_sabotage_pressure_state
@@ -1244,13 +1199,20 @@ genocide_japan_anti_partisan_reprisals_in_from = {
 		set_temp_variable = { chaos_state_deaths_cap_factor = constant:genocide_death_cap.decision }
 		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
 		genocide_prepare_death_multiplier_from_responsible = yes
+		set_temp_variable = { chaos_deaths_change = 0 }
 		chaos_meter_register_state_civilian_deaths_percent = yes
-		set_variable = { genocide_last_state_deaths = chaos_deaths_change }
-		genocide_credit_state_deaths_to_responsible = yes
+		camp_rework_record_latest_state_deaths = yes
 	}
 }
 
-genocide_japan_prisoner_experimentation_in_from = {
+genocide_japan_anti_partisan_reprisals_in_from = {
+	if = {
+		limit = { FROM = { camp_rework_state_can_accept_responsibility_from_root = yes } }
+		genocide_japan_anti_partisan_reprisals_in_from_accepted = yes
+	}
+}
+
+genocide_japan_prisoner_experimentation_in_from_accepted = {
 	genocide_activate_crisis = yes
 	add_to_variable = { genocide_decisions_taken = 1 }
 	add_to_variable = { genocide_escalation = constant:genocide_crisis_value.terror_escalation }
@@ -1258,26 +1220,35 @@ genocide_japan_prisoner_experimentation_in_from = {
 	add_to_variable = { hidden_atrocity_score = constant:genocide_crisis_value.hidden_atrocity_major }
 	add_to_variable = { genocide_tribunal_severity = constant:genocide_crisis_value.hidden_atrocity_major }
 	FROM = {
-		set_variable = { genocide_responsible_country = ROOT }
+		if = {
+			limit = { NOT = { has_variable = genocide_responsible_country } }
+			set_variable = { genocide_responsible_country = ROOT }
+		}
 		set_state_flag = genocide_site_has_responsible_country
 		set_state_flag = genocide_japanese_biowarfare_atrocity_site
 		set_state_flag = genocide_atrocity_site_known_to_regime
-		genocide_track_state_for_monthly_pulse = yes
-		set_temp_variable = { chaos_state_deaths_percent = constant:genocide_death_percent.biowarfare_experiment }
-		set_temp_variable = { chaos_state_deaths_cap_factor = constant:genocide_death_cap.decision }
-		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.biowarfare_outbreak }
-		genocide_prepare_death_multiplier_from_responsible = yes
-		chaos_meter_register_state_civilian_deaths_percent = yes
-		set_variable = { genocide_last_state_deaths = chaos_deaths_change }
-		genocide_credit_state_deaths_to_responsible = yes
-		set_temp_variable = { contamination_days = constant:genocide_timing.biowarfare_outbreak_days }
-		set_temp_variable = { bio_outbreak_potency_mult = constant:genocide_crisis_value.biowarfare_outbreak_potency }
-		random_list = {
-			55 = { set_state_flag = genocide_biowarfare_experiment_no_outbreak }
-			20 = { apply_anthrax_contamination = yes }
-			15 = { apply_tularemia_contamination = yes }
-			10 = { apply_plague_contamination = yes }
-		}
+		set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.experiment }
+		camp_rework_register_active_site = yes
+		set_temp_variable = { camp_rework_death_burst_percent = constant:camp_rework_death_percent.decision_major }
+		set_temp_variable = { camp_rework_death_burst_cap = constant:camp_rework_death_cap.decision }
+		set_temp_variable = { camp_rework_death_burst_reason = constant:chaos_meter_deaths_reason.biowarfare_outbreak }
+		camp_rework_apply_state_death_burst = yes
+		set_state_flag = genocide_biowarfare_experiment_no_outbreak
+		add_to_variable = { camp_state_evidence_depth = constant:camp_rework_japan.occupation_records_major }
+		camp_rework_register_evidence_state = yes
+	}
+	add_to_variable = { ishii_influence = constant:camp_rework_japan.ishii_influence_major }
+	add_to_variable = { outbreak_accident_risk = constant:camp_rework_japan.outbreak_risk_minor }
+	add_to_variable = { evidence_depth_china = constant:camp_rework_japan.occupation_records_major }
+	add_to_variable = { camp_policy_evidence = constant:camp_rework_country_value.evidence_major }
+	add_to_variable = { camp_policy_tribunal = constant:camp_rework_country_value.tribunal_major }
+	camp_rework_recalculate_country_values = yes
+}
+
+genocide_japan_prisoner_experimentation_in_from = {
+	if = {
+		limit = { FROM = { camp_rework_state_can_accept_responsibility_from_root = yes } }
+		genocide_japan_prisoner_experimentation_in_from_accepted = yes
 	}
 }
 
@@ -1303,7 +1274,7 @@ genocide_germany_intensify_extermination_policy = {
 	genocide_add_radical_hardliner_support = yes
 }
 
-genocide_germany_transfer_prisoners_to_experiment_site_in_from = {
+genocide_germany_transfer_prisoners_to_experiment_site_in_from_accepted = {
 	genocide_activate_crisis = yes
 	add_to_variable = { genocide_decisions_taken = 1 }
 	add_to_variable = { genocide_escalation = constant:genocide_crisis_value.terror_escalation }
@@ -1311,11 +1282,9 @@ genocide_germany_transfer_prisoners_to_experiment_site_in_from = {
 	add_to_variable = { hidden_atrocity_score = constant:genocide_crisis_value.foreign_experimentation_hidden_atrocity }
 	add_to_variable = { genocide_tribunal_severity = constant:genocide_crisis_value.hidden_atrocity_major }
 	FROM = {
-		set_variable = { genocide_responsible_country = ROOT }
-		set_state_flag = genocide_site_has_responsible_country
-		set_state_flag = genocide_auschwitz_experiment_site
+		set_state_flag = genocide_foreign_experimentation_source
 		set_state_flag = genocide_atrocity_site_known_to_regime
-		genocide_track_state_for_monthly_pulse = yes
+		add_to_variable = { camp_state_evidence_depth = constant:camp_rework_country_value.evidence_minor }
 		set_temp_variable = { chaos_state_deaths_percent = constant:genocide_death_percent.foreign_experimentation }
 		set_temp_variable = { chaos_state_deaths_cap_factor = constant:genocide_death_cap.decision }
 		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
@@ -1324,17 +1293,71 @@ genocide_germany_transfer_prisoners_to_experiment_site_in_from = {
 			set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.extermination_camp }
 		}
 		genocide_prepare_death_multiplier_from_responsible = yes
+		set_temp_variable = { chaos_deaths_change = 0 }
 		chaos_meter_register_state_civilian_deaths_percent = yes
-		set_variable = { genocide_last_state_deaths = chaos_deaths_change }
-		genocide_credit_state_deaths_to_responsible = yes
+		camp_rework_record_latest_state_deaths = yes
+	}
+	88 = {
+		if = {
+			limit = { NOT = { has_variable = genocide_responsible_country } }
+			set_variable = { genocide_responsible_country = ROOT }
+		}
+		set_state_flag = genocide_site_has_responsible_country
+		set_state_flag = genocide_auschwitz_experiment_site
+		set_state_flag = genocide_ss_laboratory_site
+		set_state_flag = camp_rework_experiment_site
+		set_state_flag = genocide_atrocity_site_known_to_regime
+		add_to_variable = { camp_state_evidence_depth = constant:camp_rework_country_value.evidence_major }
+		set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.experiment }
+		camp_rework_register_active_site = yes
 	}
 	if = {
 		limit = {
-			original_tag = GER
-			has_variable = mengele_permission_level
+			FROM = { is_germany_occupied_poland_prisoner_source = yes }
 		}
-		set_temp_variable = { mengele_autonomy_delta = constant:germany_mengele_permission.extermination_full }
+		add_to_variable = { poland_transfer_pressure = constant:camp_rework_germany.poland_transfer_pressure }
+	}
+	else = {
+		add_to_variable = { occupied_deportation_pressure = constant:camp_rework_germany.deportation_pressure_minor }
+	}
+	if = {
+		limit = { FROM = { is_germany_core_prisoner_source_fallback = yes } }
+		add_stability = constant:camp_rework_germany.core_fallback_stability
+		add_war_support = constant:camp_rework_germany.core_fallback_war_support
+		add_to_variable = { camp_policy_legitimacy = constant:camp_rework_country_value.legitimacy_major }
+		set_temp_variable = { mengele_autonomy_delta = constant:camp_rework_germany.core_fallback_autonomy }
 		germany_mengele_add_autonomy = yes
+	}
+	if = {
+		limit = { check_variable = { mengele_permission_level > constant:germany_mengele_permission.full } }
+		set_temp_variable = { mengele_autonomy_delta = constant:germany_mengele_permission.extermination_bypass }
+		set_temp_variable = { mengele_cloning_progress_delta = constant:camp_rework_germany.hidden_project_progress_major }
+		germany_mengele_add_autonomy = yes
+		germany_mengele_add_cloning_project_progress = yes
+	}
+	else_if = {
+		limit = { check_variable = { mengele_permission_level = constant:germany_mengele_permission.full } }
+		set_temp_variable = { mengele_autonomy_delta = constant:germany_mengele_permission.extermination_full }
+		set_temp_variable = { mengele_cloning_progress_delta = constant:camp_rework_germany.hidden_project_progress_major }
+		germany_mengele_add_autonomy = yes
+		germany_mengele_add_cloning_project_progress = yes
+	}
+	else = {
+		set_temp_variable = { mengele_autonomy_delta = constant:germany_mengele_permission.extermination_restricted }
+		set_temp_variable = { mengele_cloning_progress_delta = constant:camp_rework_germany.hidden_project_progress_minor }
+		germany_mengele_add_autonomy = yes
+		germany_mengele_add_cloning_project_progress = yes
+	}
+	camp_rework_recalculate_country_values = yes
+}
+
+genocide_germany_transfer_prisoners_to_experiment_site_in_from = {
+	if = {
+		limit = {
+			FROM = { camp_rework_state_can_accept_responsibility_from_root = yes }
+			88 = { camp_rework_state_can_accept_responsibility_from_root = yes }
+		}
+		genocide_germany_transfer_prisoners_to_experiment_site_in_from_accepted = yes
 	}
 }
 
@@ -1342,84 +1365,68 @@ genocide_apply_restricted_chemical_site_escalation_in_from = {
 	genocide_activate_crisis = yes
 	add_to_variable = { genocide_decisions_taken = 1 }
 	add_to_variable = { genocide_escalation = constant:genocide_crisis_value.terror_escalation }
-	add_to_variable = { genocide_visibility = constant:genocide_crisis_value.restricted_chemical_visibility }
 	add_to_variable = { hidden_atrocity_score = constant:genocide_crisis_value.restricted_chemical_hidden_atrocity }
-	add_to_variable = { genocide_tribunal_severity = constant:genocide_crisis_value.hidden_atrocity_major }
-	FROM = {
-		set_variable = { genocide_responsible_country = ROOT }
-		set_state_flag = genocide_site_has_responsible_country
-		set_state_flag = genocide_restricted_chemical_site
-		set_state_flag = {
-			flag = genocide_restricted_chemical_site_active
-			days = @GENOCIDE_RESTRICTED_CHEMICAL_SITE_DAYS
-		}
-		set_state_flag = genocide_atrocity_site_known_to_regime
-		genocide_track_state_for_monthly_pulse = yes
-		if = {
-			limit = {
-				ROOT = {
-					OR = {
-						has_tech = soman
-						is_special_project_completed = sp:sp_cw_soman_program
-					}
-					has_equipment = { chemical_soman_payload_cylinder_1 > constant:genocide_chemical_bridge.soman_cylinder_gate }
-				}
-			}
-			ROOT = {
-				set_temp_variable = { genocide_chemical_cylinder_remove = constant:genocide_chemical_bridge.soman_cylinder_cost }
-				multiply_temp_variable = { genocide_chemical_cylinder_remove = -1 }
-				add_equipment_to_stockpile = {
-					type = chemical_soman_payload_cylinder_1
-					amount = genocide_chemical_cylinder_remove
-				}
-			}
-			set_temp_variable = { chem_dose_each = constant:genocide_chemical_bridge.contamination_dose_soman }
-			set_temp_variable = { chem_state_duration_add = constant:genocide_chemical_bridge.contamination_duration_soman }
-		}
-		else = {
-			ROOT = {
-				set_temp_variable = { genocide_chemical_cylinder_remove = constant:genocide_chemical_bridge.sarin_cylinder_cost }
-				multiply_temp_variable = { genocide_chemical_cylinder_remove = -1 }
-				add_equipment_to_stockpile = {
-					type = chemical_sarin_payload_cylinder_1
-					amount = genocide_chemical_cylinder_remove
-				}
-			}
-			set_temp_variable = { chem_dose_each = constant:genocide_chemical_bridge.contamination_dose_sarin }
-			set_temp_variable = { chem_state_duration_add = constant:genocide_chemical_bridge.contamination_duration_sarin }
-		}
-		chem_apply_state_contamination = yes
-		set_temp_variable = { chaos_state_deaths_percent = constant:genocide_death_percent.restricted_chemical_burst }
-		set_temp_variable = { chaos_state_deaths_cap_factor = constant:genocide_death_cap.restricted_chemical }
-		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.extermination_camp }
-		if = {
-			limit = { gulag_labor_camp_network > 0 }
-			set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.gulag_repression }
-		}
-		genocide_prepare_death_multiplier_from_responsible = yes
-		chaos_meter_register_state_civilian_deaths_percent = yes
-		set_variable = { genocide_last_state_deaths = chaos_deaths_change }
-		genocide_credit_state_deaths_to_responsible = yes
-	}
-	add_to_variable = { genocide_resistance_pressure = constant:genocide_crisis_value.restricted_chemical_accident_pressure }
+	camp_rework_apply_chemical_escalation_in_from = yes
 }
 
-genocide_soviet_deport_suspected_groups_in_from = {
+genocide_soviet_deport_suspected_groups_in_from_accepted = {
 	genocide_activate_crisis = yes
 	add_to_variable = { genocide_decisions_taken = 1 }
 	add_to_variable = { genocide_escalation = constant:genocide_crisis_value.deportation_escalation }
 	add_to_variable = { genocide_visibility = constant:genocide_crisis_value.visibility_minor }
 	add_to_variable = { hidden_atrocity_score = constant:genocide_crisis_value.hidden_atrocity_minor }
 	FROM = {
-		set_variable = { genocide_responsible_country = ROOT }
+		if = {
+			limit = { NOT = { has_variable = genocide_responsible_country } }
+			set_variable = { genocide_responsible_country = ROOT }
+		}
 		set_state_flag = genocide_soviet_mass_repression_site
+		set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.gulag }
+		camp_rework_register_active_site = yes
 		set_temp_variable = { chaos_state_deaths_percent = constant:genocide_death_percent.deportation_sweep }
 		set_temp_variable = { chaos_state_deaths_cap_factor = constant:genocide_death_cap.decision }
 		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.gulag_repression }
 		genocide_prepare_death_multiplier_from_responsible = yes
+		set_temp_variable = { chaos_deaths_change = 0 }
 		chaos_meter_register_state_civilian_deaths_percent = yes
-		set_variable = { genocide_last_state_deaths = chaos_deaths_change }
-		genocide_credit_state_deaths_to_responsible = yes
+		camp_rework_record_latest_state_deaths = yes
+	}
+	if = {
+		limit = { original_tag = SOV }
+		soviet_collapse_apply_genocide_gulag_repression_memory = yes
+	}
+}
+
+genocide_soviet_deport_suspected_groups_in_from = {
+	if = {
+		limit = { FROM = { camp_rework_state_can_accept_responsibility_from_root = yes } }
+		genocide_soviet_deport_suspected_groups_in_from_accepted = yes
+	}
+}
+
+genocide_soviet_confiscate_food_in_from_accepted = {
+	genocide_activate_crisis = yes
+	add_to_variable = { genocide_decisions_taken = 1 }
+	add_to_variable = { genocide_escalation = constant:genocide_crisis_value.terror_escalation }
+	add_to_variable = { genocide_visibility = constant:genocide_crisis_value.visibility_minor }
+	add_to_variable = { hidden_atrocity_score = constant:genocide_crisis_value.hidden_atrocity_major }
+	FROM = {
+		if = {
+			limit = { NOT = { has_variable = genocide_responsible_country } }
+			set_variable = { genocide_responsible_country = ROOT }
+		}
+		set_state_flag = genocide_soviet_famine_pressure_site
+		set_state_flag = camp_rework_soviet_famine_pressure
+		add_to_variable = { sov_famine_state_pressure = constant:camp_rework_soviet.famine_pressure_major }
+		set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.gulag }
+		camp_rework_register_active_site = yes
+		set_temp_variable = { chaos_state_deaths_percent = constant:genocide_death_percent.famine_pressure }
+		set_temp_variable = { chaos_state_deaths_cap_factor = constant:genocide_death_cap.decision }
+		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.gulag_repression }
+		genocide_prepare_death_multiplier_from_responsible = yes
+		set_temp_variable = { chaos_deaths_change = 0 }
+		chaos_meter_register_state_civilian_deaths_percent = yes
+		camp_rework_record_latest_state_deaths = yes
 	}
 	if = {
 		limit = { original_tag = SOV }
@@ -1428,37 +1435,26 @@ genocide_soviet_deport_suspected_groups_in_from = {
 }
 
 genocide_soviet_confiscate_food_in_from = {
-	genocide_activate_crisis = yes
-	add_to_variable = { genocide_decisions_taken = 1 }
-	add_to_variable = { genocide_escalation = constant:genocide_crisis_value.terror_escalation }
-	add_to_variable = { genocide_visibility = constant:genocide_crisis_value.visibility_minor }
-	add_to_variable = { hidden_atrocity_score = constant:genocide_crisis_value.hidden_atrocity_major }
-	FROM = {
-		set_variable = { genocide_responsible_country = ROOT }
-		set_state_flag = genocide_soviet_famine_pressure_site
-		set_temp_variable = { chaos_state_deaths_percent = constant:genocide_death_percent.famine_pressure }
-		set_temp_variable = { chaos_state_deaths_cap_factor = constant:genocide_death_cap.decision }
-		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.gulag_repression }
-		genocide_prepare_death_multiplier_from_responsible = yes
-		chaos_meter_register_state_civilian_deaths_percent = yes
-		set_variable = { genocide_last_state_deaths = chaos_deaths_change }
-		genocide_credit_state_deaths_to_responsible = yes
-	}
 	if = {
-		limit = { original_tag = SOV }
-		soviet_collapse_apply_genocide_gulag_repression_memory = yes
+		limit = { FROM = { camp_rework_state_can_accept_responsibility_from_root = yes } }
+		genocide_soviet_confiscate_food_in_from_accepted = yes
 	}
 }
 
-genocide_soviet_purge_camp_administrators_in_from = {
+genocide_soviet_purge_camp_administrators_in_from_accepted = {
 	genocide_activate_crisis = yes
 	add_to_variable = { genocide_decisions_taken = 1 }
 	add_to_variable = { genocide_escalation = constant:genocide_crisis_value.deportation_escalation }
 	add_to_variable = { genocide_resistance_pressure = constant:genocide_crisis_value.resistance_pressure_minor }
 	add_to_variable = { hidden_atrocity_score = constant:genocide_crisis_value.hidden_atrocity_minor }
 	FROM = {
-		set_variable = { genocide_responsible_country = ROOT }
+		if = {
+			limit = { NOT = { has_variable = genocide_responsible_country } }
+			set_variable = { genocide_responsible_country = ROOT }
+		}
 		set_state_flag = genocide_soviet_mass_repression_site
+		set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.gulag }
+		camp_rework_register_active_site = yes
 		add_dynamic_modifier = {
 			modifier = genocide_camp_sabotage_pressure_state
 			days = @GENOCIDE_STATE_MODIFIER_DAYS
@@ -1467,21 +1463,33 @@ genocide_soviet_purge_camp_administrators_in_from = {
 		set_temp_variable = { chaos_state_deaths_cap_factor = constant:genocide_death_cap.decision }
 		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.gulag_repression }
 		genocide_prepare_death_multiplier_from_responsible = yes
+		set_temp_variable = { chaos_deaths_change = 0 }
 		chaos_meter_register_state_civilian_deaths_percent = yes
-		set_variable = { genocide_last_state_deaths = chaos_deaths_change }
-		genocide_credit_state_deaths_to_responsible = yes
+		camp_rework_record_latest_state_deaths = yes
 	}
 	soviet_collapse_apply_genocide_gulag_repression_memory = yes
 }
 
-genocide_soviet_forced_labor_quotas_in_from = {
+genocide_soviet_purge_camp_administrators_in_from = {
+	if = {
+		limit = { FROM = { camp_rework_state_can_accept_responsibility_from_root = yes } }
+		genocide_soviet_purge_camp_administrators_in_from_accepted = yes
+	}
+}
+
+genocide_soviet_forced_labor_quotas_in_from_accepted = {
 	genocide_activate_crisis = yes
 	add_to_variable = { genocide_decisions_taken = 1 }
 	add_to_variable = { genocide_escalation = constant:genocide_crisis_value.forced_labor_escalation }
 	add_to_variable = { hidden_atrocity_score = constant:genocide_crisis_value.hidden_atrocity_minor }
 	FROM = {
-		set_variable = { genocide_responsible_country = ROOT }
+		if = {
+			limit = { NOT = { has_variable = genocide_responsible_country } }
+			set_variable = { genocide_responsible_country = ROOT }
+		}
 		set_state_flag = genocide_soviet_mass_repression_site
+		set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.gulag }
+		camp_rework_register_active_site = yes
 		if = {
 			limit = { gulag_labor_camp_network > 0 }
 			add_dynamic_modifier = {
@@ -1493,11 +1501,18 @@ genocide_soviet_forced_labor_quotas_in_from = {
 		set_temp_variable = { chaos_state_deaths_cap_factor = constant:genocide_death_cap.decision }
 		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.gulag_repression }
 		genocide_prepare_death_multiplier_from_responsible = yes
+		set_temp_variable = { chaos_deaths_change = 0 }
 		chaos_meter_register_state_civilian_deaths_percent = yes
-		set_variable = { genocide_last_state_deaths = chaos_deaths_change }
-		genocide_credit_state_deaths_to_responsible = yes
+		camp_rework_record_latest_state_deaths = yes
 	}
 	soviet_collapse_apply_genocide_gulag_repression_memory = yes
+}
+
+genocide_soviet_forced_labor_quotas_in_from = {
+	if = {
+		limit = { FROM = { camp_rework_state_can_accept_responsibility_from_root = yes } }
+		genocide_soviet_forced_labor_quotas_in_from_accepted = yes
+	}
 }
 
 genocide_try_trigger_tribunal_after_defeat = {
@@ -1668,4 +1683,5 @@ genocide_initialize_system_if_needed = {
 			SOV = { genocide_initialize_historical_soviet_sites = yes }
 		}
 	}
+	camp_rework_run_versioned_migration = yes
 }

@@ -1,0 +1,3181 @@
+# ============================================================================
+# CHAOS REDUX - CAMP AND REPRESSION REWORK EFFECTS
+# ============================================================================
+# Overview:
+# - Provides one duplicate-safe active-site and active-country registry.
+# - Recalculates the connected national pressure model from registered states.
+# - Applies one exclusive monthly Deaths pulse per active state, including
+#   abstract chemical/biological factors without operational instructions.
+# - Owns cleanup, display caches, bounded GUI arrays, and shared reform hooks.
+# ============================================================================
+
+camp_rework_initialize_country_variables = {
+	if = { limit = { NOT = { has_variable = camp_network_reach } } set_variable = { camp_network_reach = 0 } }
+	if = { limit = { NOT = { has_variable = camp_labor_output } } set_variable = { camp_labor_output = 0 } }
+	if = { limit = { NOT = { has_variable = camp_coercive_control } } set_variable = { camp_coercive_control = 0 } }
+	if = { limit = { NOT = { has_variable = camp_population_loss_index } } set_variable = { camp_population_loss_index = 0 } }
+	if = { limit = { NOT = { has_variable = camp_resistance_pressure } } set_variable = { camp_resistance_pressure = 0 } }
+	if = { limit = { NOT = { has_variable = camp_stability_damage } } set_variable = { camp_stability_damage = 0 } }
+	if = { limit = { NOT = { has_variable = camp_evidence_level } } set_variable = { camp_evidence_level = 0 } }
+	if = { limit = { NOT = { has_variable = camp_overstretch } } set_variable = { camp_overstretch = 0 } }
+	if = { limit = { NOT = { has_variable = camp_foreign_visibility } } set_variable = { camp_foreign_visibility = 0 } }
+	if = { limit = { NOT = { has_variable = camp_tribunal_severity } } set_variable = { camp_tribunal_severity = 0 } }
+	if = { limit = { NOT = { has_variable = camp_hardliner_pressure } } set_variable = { camp_hardliner_pressure = 0 } }
+	if = { limit = { NOT = { has_variable = camp_democratic_legitimacy_damage } } set_variable = { camp_democratic_legitimacy_damage = 0 } }
+	if = { limit = { NOT = { has_variable = camp_reform_pressure } } set_variable = { camp_reform_pressure = 0 } }
+	if = { limit = { NOT = { has_variable = camp_current_phase } } set_variable = { camp_current_phase = constant:camp_rework_phase.dormant } }
+
+	if = { limit = { NOT = { has_variable = camp_active_site_count } } set_variable = { camp_active_site_count = 0 } }
+	if = { limit = { NOT = { has_variable = camp_detention_site_count } } set_variable = { camp_detention_site_count = 0 } }
+	if = { limit = { NOT = { has_variable = camp_expanded_site_count } } set_variable = { camp_expanded_site_count = 0 } }
+	if = { limit = { NOT = { has_variable = camp_gulag_site_count } } set_variable = { camp_gulag_site_count = 0 } }
+	if = { limit = { NOT = { has_variable = camp_experiment_site_count } } set_variable = { camp_experiment_site_count = 0 } }
+	if = { limit = { NOT = { has_variable = camp_radicalized_site_count } } set_variable = { camp_radicalized_site_count = 0 } }
+	if = { limit = { NOT = { has_variable = camp_contaminated_site_count } } set_variable = { camp_contaminated_site_count = 0 } }
+
+	if = { limit = { NOT = { has_variable = camp_policy_labor_output } } set_variable = { camp_policy_labor_output = 0 } }
+	if = { limit = { NOT = { has_variable = camp_policy_coercive_control } } set_variable = { camp_policy_coercive_control = 0 } }
+	if = { limit = { NOT = { has_variable = camp_policy_population_loss } } set_variable = { camp_policy_population_loss = 0 } }
+	if = { limit = { NOT = { has_variable = camp_policy_resistance_pressure } } set_variable = { camp_policy_resistance_pressure = 0 } }
+	if = { limit = { NOT = { has_variable = camp_policy_stability_damage } } set_variable = { camp_policy_stability_damage = 0 } }
+	if = { limit = { NOT = { has_variable = camp_policy_evidence } } set_variable = { camp_policy_evidence = 0 } }
+	if = { limit = { NOT = { has_variable = camp_policy_overstretch } } set_variable = { camp_policy_overstretch = 0 } }
+	if = { limit = { NOT = { has_variable = camp_policy_visibility } } set_variable = { camp_policy_visibility = 0 } }
+	if = { limit = { NOT = { has_variable = camp_policy_tribunal } } set_variable = { camp_policy_tribunal = 0 } }
+	if = { limit = { NOT = { has_variable = camp_policy_hardliner } } set_variable = { camp_policy_hardliner = 0 } }
+	if = { limit = { NOT = { has_variable = camp_policy_legitimacy } } set_variable = { camp_policy_legitimacy = 0 } }
+	if = { limit = { NOT = { has_variable = camp_policy_reform } } set_variable = { camp_policy_reform = 0 } }
+	if = { limit = { NOT = { has_variable = camp_guard_burden } } set_variable = { camp_guard_burden = 0 } }
+	if = { limit = { NOT = { has_variable = camp_rail_burden } } set_variable = { camp_rail_burden = 0 } }
+	if = { limit = { NOT = { has_variable = camp_supply_burden } } set_variable = { camp_supply_burden = 0 } }
+	if = { limit = { NOT = { has_variable = camp_convoy_burden } } set_variable = { camp_convoy_burden = 0 } }
+
+	if = { limit = { NOT = { has_variable = camp_chemical_killing_efficiency } } set_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.none } }
+	if = { limit = { NOT = { has_variable = camp_biological_killing_efficiency } } set_variable = { camp_biological_killing_efficiency = constant:camp_rework_biological_tier.none } }
+
+	genocide_initialize_country_variables = yes
+}
+
+camp_rework_register_country_for_monthly_pulse = {
+	camp_rework_initialize_country_variables = yes
+	if = {
+		limit = {
+			NOT = {
+				is_in_array = {
+					array = global.camp_repression_active_countries
+					value = THIS
+				}
+			}
+		}
+		add_to_array = {
+			array = global.camp_repression_active_countries
+			value = THIS
+		}
+	}
+}
+
+camp_rework_classify_state_pool_for_root = {
+	set_variable = { camp_state_pool_type = constant:camp_rework_pool_type.none }
+	if = {
+		limit = { camp_rework_state_is_occupied_noncore_pool = yes }
+		set_variable = { camp_state_pool_type = constant:camp_rework_pool_type.occupied_noncore }
+	}
+	else_if = {
+		limit = { camp_rework_state_is_colonial_subject_pool = yes }
+		set_variable = { camp_state_pool_type = constant:camp_rework_pool_type.colonial_subject }
+	}
+	else_if = {
+		limit = { camp_rework_state_is_noncore_pool = yes }
+		set_variable = { camp_state_pool_type = constant:camp_rework_pool_type.noncore }
+	}
+	else_if = {
+		limit = { camp_rework_state_is_periphery_pool = yes }
+		set_variable = { camp_state_pool_type = constant:camp_rework_pool_type.periphery }
+	}
+	else_if = {
+		limit = { camp_rework_state_is_core_fallback_pool = yes }
+		set_variable = { camp_state_pool_type = constant:camp_rework_pool_type.core_fallback }
+	}
+}
+
+camp_rework_refresh_state_site_profile = {
+	if = { limit = { NOT = { has_variable = camp_state_evidence_depth } } set_variable = { camp_state_evidence_depth = 0 } }
+	if = { limit = { NOT = { has_variable = camp_state_resistance_accumulation } } set_variable = { camp_state_resistance_accumulation = 0 } }
+	if = { limit = { NOT = { has_variable = camp_state_observer_exposure } } set_variable = { camp_state_observer_exposure = 0 } }
+	if = { limit = { NOT = { has_variable = camp_state_pool_type } } set_variable = { camp_state_pool_type = constant:camp_rework_pool_type.none } }
+	if = { limit = { NOT = { has_variable = camp_state_evidence_site_type } } set_variable = { camp_state_evidence_site_type = constant:camp_rework_site_type.none } }
+
+	set_variable = { camp_state_site_type = constant:camp_rework_site_type.none }
+	if = {
+		limit = {
+			OR = {
+				has_state_flag = genocide_restricted_chemical_site_active
+				has_state_flag = camp_rework_chemical_method_active
+				has_state_flag = camp_rework_biological_method_active
+			}
+		}
+		set_variable = { camp_state_site_type = constant:camp_rework_site_type.contaminated }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_state_flag = camp_rework_radicalized_site
+				has_state_flag = genocide_extermination_site
+				extermination_camp > 0
+			}
+		}
+		set_variable = { camp_state_site_type = constant:camp_rework_site_type.radicalized }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_state_flag = camp_rework_experiment_site
+				has_state_flag = genocide_auschwitz_experiment_site
+				has_state_flag = genocide_ss_laboratory_site
+				has_state_flag = genocide_japanese_biowarfare_atrocity_site
+			}
+		}
+		set_variable = { camp_state_site_type = constant:camp_rework_site_type.experiment }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_state_flag = genocide_gulag_site
+				has_state_flag = genocide_soviet_mass_repression_site
+				has_state_flag = genocide_soviet_famine_pressure_site
+				gulag_labor_camp_network > 0
+			}
+		}
+		set_variable = { camp_state_site_type = constant:camp_rework_site_type.gulag }
+	}
+	else_if = {
+		limit = { has_state_flag = camp_rework_expanded_labor_site }
+		set_variable = { camp_state_site_type = constant:camp_rework_site_type.expanded_labor }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_state_flag = genocide_concentration_site
+				concentration_camp > 0
+			}
+		}
+		set_variable = { camp_state_site_type = constant:camp_rework_site_type.detention }
+	}
+
+	set_variable = { camp_state_reach = 0 }
+	set_variable = { camp_state_labor_output = 0 }
+	set_variable = { camp_state_coercive_control = 0 }
+	set_variable = { camp_state_population_loss_pressure = 0 }
+	set_variable = { camp_state_resistance_base = 0 }
+	set_variable = { camp_state_stability_damage = 0 }
+	set_variable = { camp_state_evidence_base = 0 }
+	set_variable = { camp_state_overstretch = 0 }
+	set_variable = { camp_state_visibility_base = 0 }
+	set_variable = { camp_state_tribunal_base = 0 }
+	set_variable = { camp_state_hardliner_pressure = 0 }
+	set_variable = { camp_state_legitimacy_damage = 0 }
+
+	if = {
+		limit = { check_variable = { camp_state_site_type = constant:camp_rework_site_type.detention } }
+		set_variable = { camp_state_reach = constant:camp_rework_site_contribution.detention_reach }
+		set_variable = { camp_state_labor_output = constant:camp_rework_site_contribution.detention_labor }
+		set_variable = { camp_state_coercive_control = constant:camp_rework_site_contribution.detention_control }
+		set_variable = { camp_state_population_loss_pressure = constant:camp_rework_site_contribution.detention_population_loss }
+		set_variable = { camp_state_resistance_base = constant:camp_rework_site_contribution.detention_resistance }
+		set_variable = { camp_state_stability_damage = constant:camp_rework_site_contribution.detention_stability }
+		set_variable = { camp_state_evidence_base = constant:camp_rework_site_contribution.detention_evidence }
+		set_variable = { camp_state_overstretch = constant:camp_rework_site_contribution.detention_overstretch }
+		set_variable = { camp_state_visibility_base = constant:camp_rework_site_contribution.detention_visibility }
+		set_variable = { camp_state_tribunal_base = constant:camp_rework_site_contribution.detention_tribunal }
+		set_variable = { camp_state_hardliner_pressure = constant:camp_rework_site_contribution.detention_hardliner }
+	}
+	else_if = {
+		limit = { check_variable = { camp_state_site_type = constant:camp_rework_site_type.expanded_labor } }
+		set_variable = { camp_state_reach = constant:camp_rework_site_contribution.expanded_reach }
+		set_variable = { camp_state_labor_output = constant:camp_rework_site_contribution.expanded_labor }
+		set_variable = { camp_state_coercive_control = constant:camp_rework_site_contribution.expanded_control }
+		set_variable = { camp_state_population_loss_pressure = constant:camp_rework_site_contribution.expanded_population_loss }
+		set_variable = { camp_state_resistance_base = constant:camp_rework_site_contribution.expanded_resistance }
+		set_variable = { camp_state_stability_damage = constant:camp_rework_site_contribution.expanded_stability }
+		set_variable = { camp_state_evidence_base = constant:camp_rework_site_contribution.expanded_evidence }
+		set_variable = { camp_state_overstretch = constant:camp_rework_site_contribution.expanded_overstretch }
+		set_variable = { camp_state_visibility_base = constant:camp_rework_site_contribution.expanded_visibility }
+		set_variable = { camp_state_tribunal_base = constant:camp_rework_site_contribution.expanded_tribunal }
+		set_variable = { camp_state_hardliner_pressure = constant:camp_rework_site_contribution.expanded_hardliner }
+	}
+	else_if = {
+		limit = { check_variable = { camp_state_site_type = constant:camp_rework_site_type.gulag } }
+		set_variable = { camp_state_reach = constant:camp_rework_site_contribution.gulag_reach }
+		set_variable = { camp_state_labor_output = constant:camp_rework_site_contribution.gulag_labor }
+		set_variable = { camp_state_coercive_control = constant:camp_rework_site_contribution.gulag_control }
+		set_variable = { camp_state_population_loss_pressure = constant:camp_rework_site_contribution.gulag_population_loss }
+		set_variable = { camp_state_resistance_base = constant:camp_rework_site_contribution.gulag_resistance }
+		set_variable = { camp_state_stability_damage = constant:camp_rework_site_contribution.gulag_stability }
+		set_variable = { camp_state_evidence_base = constant:camp_rework_site_contribution.gulag_evidence }
+		set_variable = { camp_state_overstretch = constant:camp_rework_site_contribution.gulag_overstretch }
+		set_variable = { camp_state_visibility_base = constant:camp_rework_site_contribution.gulag_visibility }
+		set_variable = { camp_state_tribunal_base = constant:camp_rework_site_contribution.gulag_tribunal }
+		set_variable = { camp_state_hardliner_pressure = constant:camp_rework_site_contribution.gulag_hardliner }
+	}
+	else_if = {
+		limit = { check_variable = { camp_state_site_type = constant:camp_rework_site_type.experiment } }
+		set_variable = { camp_state_reach = constant:camp_rework_site_contribution.experiment_reach }
+		set_variable = { camp_state_labor_output = constant:camp_rework_site_contribution.experiment_labor }
+		set_variable = { camp_state_coercive_control = constant:camp_rework_site_contribution.experiment_control }
+		set_variable = { camp_state_population_loss_pressure = constant:camp_rework_site_contribution.experiment_population_loss }
+		set_variable = { camp_state_resistance_base = constant:camp_rework_site_contribution.experiment_resistance }
+		set_variable = { camp_state_stability_damage = constant:camp_rework_site_contribution.experiment_stability }
+		set_variable = { camp_state_evidence_base = constant:camp_rework_site_contribution.experiment_evidence }
+		set_variable = { camp_state_overstretch = constant:camp_rework_site_contribution.experiment_overstretch }
+		set_variable = { camp_state_visibility_base = constant:camp_rework_site_contribution.experiment_visibility }
+		set_variable = { camp_state_tribunal_base = constant:camp_rework_site_contribution.experiment_tribunal }
+		set_variable = { camp_state_hardliner_pressure = constant:camp_rework_site_contribution.experiment_hardliner }
+	}
+	else_if = {
+		limit = { check_variable = { camp_state_site_type = constant:camp_rework_site_type.radicalized } }
+		set_variable = { camp_state_reach = constant:camp_rework_site_contribution.radicalized_reach }
+		set_variable = { camp_state_labor_output = constant:camp_rework_site_contribution.radicalized_labor }
+		set_variable = { camp_state_coercive_control = constant:camp_rework_site_contribution.radicalized_control }
+		set_variable = { camp_state_population_loss_pressure = constant:camp_rework_site_contribution.radicalized_population_loss }
+		set_variable = { camp_state_resistance_base = constant:camp_rework_site_contribution.radicalized_resistance }
+		set_variable = { camp_state_stability_damage = constant:camp_rework_site_contribution.radicalized_stability }
+		set_variable = { camp_state_evidence_base = constant:camp_rework_site_contribution.radicalized_evidence }
+		set_variable = { camp_state_overstretch = constant:camp_rework_site_contribution.radicalized_overstretch }
+		set_variable = { camp_state_visibility_base = constant:camp_rework_site_contribution.radicalized_visibility }
+		set_variable = { camp_state_tribunal_base = constant:camp_rework_site_contribution.radicalized_tribunal }
+		set_variable = { camp_state_hardliner_pressure = constant:camp_rework_site_contribution.radicalized_hardliner }
+	}
+	else_if = {
+		limit = { check_variable = { camp_state_site_type = constant:camp_rework_site_type.contaminated } }
+		set_variable = { camp_state_reach = constant:camp_rework_site_contribution.contaminated_reach }
+		set_variable = { camp_state_labor_output = constant:camp_rework_site_contribution.contaminated_labor }
+		set_variable = { camp_state_coercive_control = constant:camp_rework_site_contribution.contaminated_control }
+		set_variable = { camp_state_population_loss_pressure = constant:camp_rework_site_contribution.contaminated_population_loss }
+		set_variable = { camp_state_resistance_base = constant:camp_rework_site_contribution.contaminated_resistance }
+		set_variable = { camp_state_stability_damage = constant:camp_rework_site_contribution.contaminated_stability }
+		set_variable = { camp_state_evidence_base = constant:camp_rework_site_contribution.contaminated_evidence }
+		set_variable = { camp_state_overstretch = constant:camp_rework_site_contribution.contaminated_overstretch }
+		set_variable = { camp_state_visibility_base = constant:camp_rework_site_contribution.contaminated_visibility }
+		set_variable = { camp_state_tribunal_base = constant:camp_rework_site_contribution.contaminated_tribunal }
+		set_variable = { camp_state_hardliner_pressure = constant:camp_rework_site_contribution.contaminated_hardliner }
+	}
+
+	set_variable = { camp_state_death_pool_factor = 1 }
+	if = {
+		limit = { check_variable = { camp_state_pool_type = constant:camp_rework_pool_type.occupied_noncore } }
+		multiply_variable = { camp_state_labor_output = constant:camp_rework_pool_factor.occupied_labor }
+		multiply_variable = { camp_state_population_loss_pressure = constant:camp_rework_pool_factor.occupied_deaths }
+		multiply_variable = { camp_state_resistance_base = constant:camp_rework_pool_factor.occupied_resistance }
+		multiply_variable = { camp_state_visibility_base = constant:camp_rework_pool_factor.occupied_visibility }
+		set_variable = { camp_state_death_pool_factor = constant:camp_rework_pool_factor.occupied_deaths }
+	}
+	else_if = {
+		limit = { check_variable = { camp_state_pool_type = constant:camp_rework_pool_type.colonial_subject } }
+		multiply_variable = { camp_state_labor_output = constant:camp_rework_pool_factor.colonial_labor }
+		multiply_variable = { camp_state_population_loss_pressure = constant:camp_rework_pool_factor.colonial_deaths }
+		multiply_variable = { camp_state_resistance_base = constant:camp_rework_pool_factor.colonial_resistance }
+		multiply_variable = { camp_state_visibility_base = constant:camp_rework_pool_factor.colonial_visibility }
+		set_variable = { camp_state_death_pool_factor = constant:camp_rework_pool_factor.colonial_deaths }
+	}
+	else_if = {
+		limit = { check_variable = { camp_state_pool_type = constant:camp_rework_pool_type.periphery } }
+		multiply_variable = { camp_state_labor_output = constant:camp_rework_pool_factor.periphery_labor }
+		multiply_variable = { camp_state_population_loss_pressure = constant:camp_rework_pool_factor.periphery_deaths }
+		multiply_variable = { camp_state_resistance_base = constant:camp_rework_pool_factor.periphery_resistance }
+		multiply_variable = { camp_state_visibility_base = constant:camp_rework_pool_factor.periphery_visibility }
+		set_variable = { camp_state_death_pool_factor = constant:camp_rework_pool_factor.periphery_deaths }
+	}
+	else_if = {
+		limit = { check_variable = { camp_state_pool_type = constant:camp_rework_pool_type.core_fallback } }
+		multiply_variable = { camp_state_labor_output = constant:camp_rework_pool_factor.core_labor }
+		multiply_variable = { camp_state_population_loss_pressure = constant:camp_rework_pool_factor.core_deaths }
+		multiply_variable = { camp_state_resistance_base = constant:camp_rework_pool_factor.core_resistance }
+		multiply_variable = { camp_state_visibility_base = constant:camp_rework_pool_factor.core_visibility }
+		multiply_variable = { camp_state_stability_damage = constant:camp_rework_pool_factor.core_stability }
+		set_variable = { camp_state_legitimacy_damage = camp_state_stability_damage }
+		multiply_variable = { camp_state_legitimacy_damage = constant:camp_rework_pool_factor.core_legitimacy }
+		set_variable = { camp_state_death_pool_factor = constant:camp_rework_pool_factor.core_deaths }
+	}
+
+	set_variable = { camp_state_evidence_contribution = camp_state_evidence_base }
+	add_to_variable = { camp_state_evidence_contribution = camp_state_evidence_depth }
+	set_variable = { camp_state_resistance_contribution = camp_state_resistance_base }
+	add_to_variable = { camp_state_resistance_contribution = camp_state_resistance_accumulation }
+	set_variable = { camp_state_visibility_contribution = camp_state_visibility_base }
+	add_to_variable = { camp_state_visibility_contribution = camp_state_observer_exposure }
+	set_variable = { camp_state_tribunal_contribution = camp_state_tribunal_base }
+	add_to_variable = { camp_state_tribunal_contribution = camp_state_evidence_depth }
+	set_variable = { camp_state_pressure_score = camp_state_resistance_contribution }
+	add_to_variable = { camp_state_pressure_score = camp_state_evidence_contribution }
+	set_variable = { camp_state_phase = constant:camp_rework_phase.active }
+	if = {
+		limit = { check_variable = { camp_state_site_type = constant:camp_rework_site_type.contaminated } }
+		set_variable = { camp_state_phase = constant:camp_rework_phase.contaminated }
+	}
+	else_if = {
+		limit = { check_variable = { camp_state_site_type = constant:camp_rework_site_type.radicalized } }
+		set_variable = { camp_state_phase = constant:camp_rework_phase.radicalized }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { camp_state_site_type = constant:camp_rework_site_type.expanded_labor }
+				check_variable = { camp_state_site_type = constant:camp_rework_site_type.gulag }
+				check_variable = { camp_state_site_type = constant:camp_rework_site_type.experiment }
+			}
+		}
+		set_variable = { camp_state_phase = constant:camp_rework_phase.expanded }
+	}
+	if = {
+		limit = { has_state_flag = genocide_site_discovered }
+		set_variable = { camp_state_phase = constant:camp_rework_phase.discovered }
+	}
+	if = {
+		limit = { has_state_flag = camp_rework_site_reforming }
+		set_variable = { camp_state_phase = constant:camp_rework_phase.reform }
+	}
+	if = {
+		limit = { has_state_flag = camp_rework_site_dismantled }
+		set_variable = { camp_state_phase = constant:camp_rework_phase.dismantled }
+	}
+}
+
+camp_rework_register_active_site = {
+	if = {
+		limit = { NOT = { has_variable = genocide_responsible_country } }
+		set_variable = { genocide_responsible_country = ROOT }
+	}
+	if = {
+		limit = { var:genocide_responsible_country = { tag = ROOT } }
+		set_state_flag = genocide_site_has_responsible_country
+		set_state_flag = genocide_atrocity_site_known_to_regime
+		set_state_flag = camp_rework_site_active
+		clr_state_flag = camp_rework_site_dismantled
+		clr_state_flag = camp_rework_site_evidence_resolved
+		clr_state_flag = camp_rework_annexed_evidence_site
+		clr_state_flag = genocide_historical_quiet_camp
+
+		if = {
+			limit = {
+				check_variable = { camp_register_site_type > constant:camp_rework_site_type.none }
+			}
+			if = {
+				limit = { check_variable = { camp_register_site_type = constant:camp_rework_site_type.expanded_labor } }
+				set_state_flag = camp_rework_expanded_labor_site
+			}
+			else_if = {
+				limit = { check_variable = { camp_register_site_type = constant:camp_rework_site_type.experiment } }
+				set_state_flag = camp_rework_experiment_site
+			}
+			else_if = {
+				limit = { check_variable = { camp_register_site_type = constant:camp_rework_site_type.radicalized } }
+				set_state_flag = camp_rework_radicalized_site
+			}
+			else_if = {
+				limit = { check_variable = { camp_register_site_type = constant:camp_rework_site_type.contaminated } }
+				set_state_flag = camp_rework_contaminated_evidence_site
+			}
+		}
+
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = camp_state_pool_type }
+					check_variable = { camp_state_pool_type = constant:camp_rework_pool_type.none }
+				}
+				var:genocide_responsible_country = { tag = ROOT }
+			}
+			camp_rework_classify_state_pool_for_root = yes
+		}
+		if = {
+			limit = { NOT = { has_global_flag = camp_rework_migration_in_progress } }
+			camp_rework_apply_core_fallback_penalty = yes
+		}
+
+		if = {
+			limit = {
+				NOT = {
+					is_in_array = {
+						array = global.genocide_active_camp_states
+						value = THIS
+					}
+				}
+			}
+			add_to_array = {
+				array = global.genocide_active_camp_states
+				value = THIS
+			}
+		}
+
+		camp_rework_refresh_state_site_profile = yes
+		if = {
+			limit = { check_variable = { camp_state_site_type > constant:camp_rework_site_type.none } }
+			set_variable = { camp_state_evidence_site_type = camp_state_site_type }
+		}
+		camp_rework_register_evidence_state = yes
+		var:genocide_responsible_country = {
+			if = {
+				limit = {
+					NOT = {
+						is_in_array = {
+							array = camp_active_site_states
+							value = PREV
+						}
+					}
+				}
+				add_to_array = {
+					array = camp_active_site_states
+					value = PREV
+				}
+			}
+			camp_rework_register_country_for_monthly_pulse = yes
+			if = {
+				limit = { NOT = { has_global_flag = camp_rework_migration_in_progress } }
+				camp_rework_recalculate_country_values = yes
+			}
+		}
+	}
+	set_temp_variable = { camp_register_site_type = 0 }
+}
+
+camp_rework_resolve_site_evidence = {
+	if = {
+		limit = {
+			has_variable = genocide_responsible_country
+			var:genocide_responsible_country = { exists = yes }
+		}
+		var:genocide_responsible_country = {
+			remove_from_array = {
+				array = camp_active_site_states
+				value = PREV
+			}
+			remove_from_array = {
+				array = camp_evidence_states
+				value = PREV
+			}
+			camp_rework_validate_selected_state = yes
+			camp_rework_recalculate_country_values = yes
+		}
+	}
+	remove_from_array = {
+		array = global.genocide_active_camp_states
+		value = THIS
+	}
+	clr_state_flag = camp_rework_site_active
+	set_state_flag = camp_rework_site_evidence_resolved
+	clr_state_flag = genocide_site_has_responsible_country
+	clear_variable = genocide_responsible_country
+}
+
+camp_rework_unregister_inactive_site = {
+	if = {
+		limit = { check_variable = { camp_state_site_type > constant:camp_rework_site_type.none } }
+		set_variable = { camp_state_evidence_site_type = camp_state_site_type }
+	}
+	remove_from_array = {
+		array = global.genocide_active_camp_states
+		value = THIS
+	}
+	clr_state_flag = camp_rework_site_active
+	set_variable = { camp_state_site_type = constant:camp_rework_site_type.none }
+	if = {
+		limit = { has_variable = genocide_responsible_country }
+		var:genocide_responsible_country = {
+			remove_from_array = {
+				array = camp_active_site_states
+				value = PREV
+			}
+			camp_rework_validate_selected_state = yes
+			camp_rework_recalculate_country_values = yes
+		}
+	}
+}
+
+camp_rework_clean_invalid_active_sites = {
+	clear_temp_array = temp_camp_rework_invalid_states
+	for_each_scope_loop = {
+		array = global.genocide_active_camp_states
+		if = {
+			limit = { camp_rework_state_requires_unregister = yes }
+			add_to_temp_array = {
+				temp_camp_rework_invalid_states = THIS
+			}
+		}
+	}
+	for_each_scope_loop = {
+		array = temp_camp_rework_invalid_states
+		camp_rework_unregister_inactive_site = yes
+	}
+	clear_temp_array = temp_camp_rework_invalid_states
+}
+
+camp_rework_recalculate_country_values = {
+	camp_rework_initialize_country_variables = yes
+	set_variable = { camp_network_reach = 0 }
+	set_variable = { camp_labor_output = 0 }
+	set_variable = { camp_coercive_control = 0 }
+	set_variable = { camp_population_loss_index = 0 }
+	set_variable = { camp_resistance_pressure = 0 }
+	set_variable = { camp_stability_damage = 0 }
+	set_variable = { camp_evidence_level = 0 }
+	set_variable = { camp_overstretch = 0 }
+	set_variable = { camp_foreign_visibility = 0 }
+	set_variable = { camp_tribunal_severity = 0 }
+	set_variable = { camp_hardliner_pressure = 0 }
+	set_variable = { camp_democratic_legitimacy_damage = 0 }
+	set_variable = { camp_reform_pressure = 0 }
+	set_variable = { camp_active_site_count = 0 }
+	set_variable = { camp_detention_site_count = 0 }
+	set_variable = { camp_expanded_site_count = 0 }
+	set_variable = { camp_gulag_site_count = 0 }
+	set_variable = { camp_experiment_site_count = 0 }
+	set_variable = { camp_radicalized_site_count = 0 }
+	set_variable = { camp_contaminated_site_count = 0 }
+
+	for_each_scope_loop = {
+		array = camp_active_site_states
+		if = {
+			limit = {
+				is_valid_camp_active_site_state = yes
+			}
+			camp_rework_refresh_state_site_profile = yes
+			PREV = {
+				add_to_variable = { camp_active_site_count = 1 }
+				add_to_variable = { camp_network_reach = PREV.camp_state_reach }
+				add_to_variable = { camp_labor_output = PREV.camp_state_labor_output }
+				add_to_variable = { camp_coercive_control = PREV.camp_state_coercive_control }
+				add_to_variable = { camp_population_loss_index = PREV.camp_state_population_loss_pressure }
+				add_to_variable = { camp_resistance_pressure = PREV.camp_state_resistance_contribution }
+				add_to_variable = { camp_stability_damage = PREV.camp_state_stability_damage }
+				add_to_variable = { camp_evidence_level = PREV.camp_state_evidence_contribution }
+				add_to_variable = { camp_overstretch = PREV.camp_state_overstretch }
+				add_to_variable = { camp_foreign_visibility = PREV.camp_state_visibility_contribution }
+				add_to_variable = { camp_tribunal_severity = PREV.camp_state_tribunal_contribution }
+				add_to_variable = { camp_hardliner_pressure = PREV.camp_state_hardliner_pressure }
+				add_to_variable = { camp_democratic_legitimacy_damage = PREV.camp_state_legitimacy_damage }
+			}
+			if = {
+				limit = { check_variable = { camp_state_site_type = constant:camp_rework_site_type.detention } }
+				PREV = { add_to_variable = { camp_detention_site_count = 1 } }
+			}
+			else_if = {
+				limit = { check_variable = { camp_state_site_type = constant:camp_rework_site_type.expanded_labor } }
+				PREV = { add_to_variable = { camp_expanded_site_count = 1 } }
+			}
+			else_if = {
+				limit = { check_variable = { camp_state_site_type = constant:camp_rework_site_type.gulag } }
+				PREV = { add_to_variable = { camp_gulag_site_count = 1 } }
+			}
+			else_if = {
+				limit = { check_variable = { camp_state_site_type = constant:camp_rework_site_type.experiment } }
+				PREV = { add_to_variable = { camp_experiment_site_count = 1 } }
+			}
+			else_if = {
+				limit = { check_variable = { camp_state_site_type = constant:camp_rework_site_type.radicalized } }
+				PREV = { add_to_variable = { camp_radicalized_site_count = 1 } }
+			}
+			else_if = {
+				limit = { check_variable = { camp_state_site_type = constant:camp_rework_site_type.contaminated } }
+				PREV = { add_to_variable = { camp_contaminated_site_count = 1 } }
+			}
+		}
+	}
+
+	# Inactive evidence remains attributable after a site is dismantled or lost.
+	# Active entries are excluded because their contributions were added above.
+	for_each_scope_loop = {
+		array = camp_evidence_states
+		if = {
+			limit = {
+				has_variable = genocide_responsible_country
+				PREV = {
+					NOT = {
+						is_in_array = {
+							array = camp_active_site_states
+							value = PREV
+						}
+					}
+				}
+			}
+			set_temp_variable = { camp_inactive_evidence_value = camp_state_evidence_depth }
+			set_temp_variable = { camp_inactive_visibility_value = camp_state_evidence_depth }
+			multiply_temp_variable = { camp_inactive_visibility_value = constant:camp_rework_evidence_carry.visibility_factor }
+			add_to_temp_variable = { camp_inactive_visibility_value = camp_state_observer_exposure }
+			set_temp_variable = { camp_inactive_tribunal_value = camp_state_evidence_depth }
+			multiply_temp_variable = { camp_inactive_tribunal_value = constant:camp_rework_evidence_carry.tribunal_factor }
+			set_temp_variable = { camp_inactive_reform_value = camp_state_evidence_depth }
+			multiply_temp_variable = { camp_inactive_reform_value = constant:camp_rework_evidence_carry.reform_factor }
+			PREV = {
+				add_to_variable = { camp_evidence_level = camp_inactive_evidence_value }
+				add_to_variable = { camp_foreign_visibility = camp_inactive_visibility_value }
+				add_to_variable = { camp_tribunal_severity = camp_inactive_tribunal_value }
+				add_to_variable = { camp_reform_pressure = camp_inactive_reform_value }
+			}
+		}
+	}
+
+	add_to_variable = { camp_labor_output = camp_policy_labor_output }
+	add_to_variable = { camp_coercive_control = camp_policy_coercive_control }
+	add_to_variable = { camp_population_loss_index = camp_policy_population_loss }
+	add_to_variable = { camp_resistance_pressure = camp_policy_resistance_pressure }
+	add_to_variable = { camp_stability_damage = camp_policy_stability_damage }
+	add_to_variable = { camp_evidence_level = camp_policy_evidence }
+	add_to_variable = { camp_overstretch = camp_policy_overstretch }
+	add_to_variable = { camp_foreign_visibility = camp_policy_visibility }
+	add_to_variable = { camp_tribunal_severity = camp_policy_tribunal }
+	add_to_variable = { camp_hardliner_pressure = camp_policy_hardliner }
+	add_to_variable = { camp_democratic_legitimacy_damage = camp_policy_legitimacy }
+	add_to_variable = { camp_reform_pressure = camp_policy_reform }
+
+	if = {
+		limit = {
+			OR = {
+				has_government = democratic
+				check_variable = { party_popularity@democratic > constant:camp_rework_threshold.democratic_support }
+			}
+			check_variable = { camp_active_site_count > 0 }
+		}
+		add_to_variable = { camp_democratic_legitimacy_damage = camp_active_site_count }
+		add_to_variable = { camp_reform_pressure = camp_active_site_count }
+	}
+
+	clamp_variable = { var = camp_network_reach min = 0 max = constant:camp_rework_threshold.max_site_count }
+	clamp_variable = { var = camp_labor_output min = 0 max = constant:camp_rework_threshold.max_value }
+	clamp_variable = { var = camp_coercive_control min = 0 max = constant:camp_rework_threshold.max_value }
+	clamp_variable = { var = camp_population_loss_index min = 0 max = constant:camp_rework_threshold.max_value }
+	clamp_variable = { var = camp_resistance_pressure min = 0 max = constant:camp_rework_threshold.max_value }
+	clamp_variable = { var = camp_stability_damage min = 0 max = constant:camp_rework_threshold.max_value }
+	clamp_variable = { var = camp_evidence_level min = 0 max = constant:camp_rework_threshold.max_value }
+	clamp_variable = { var = camp_overstretch min = 0 max = constant:camp_rework_threshold.max_value }
+	clamp_variable = { var = camp_foreign_visibility min = 0 max = constant:camp_rework_threshold.max_value }
+	clamp_variable = { var = camp_tribunal_severity min = 0 max = constant:camp_rework_threshold.max_value }
+	clamp_variable = { var = camp_hardliner_pressure min = 0 max = constant:camp_rework_threshold.max_value }
+	clamp_variable = { var = camp_democratic_legitimacy_damage min = 0 max = constant:camp_rework_threshold.max_value }
+	clamp_variable = { var = camp_reform_pressure min = 0 max = constant:camp_rework_threshold.max_value }
+
+	set_variable = { camp_current_phase = constant:camp_rework_phase.dormant }
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = camp_rework_dismantlement_in_progress
+				has_country_flag = camp_rework_reform_route_open
+				check_variable = { camp_reform_pressure > 0 }
+			}
+		}
+		set_variable = { camp_current_phase = constant:camp_rework_phase.reform }
+	}
+	else_if = {
+		limit = { genocide_country_has_discovered_sites = yes }
+		set_variable = { camp_current_phase = constant:camp_rework_phase.discovered }
+	}
+	else_if = {
+		limit = { check_variable = { camp_contaminated_site_count > 0 } }
+		set_variable = { camp_current_phase = constant:camp_rework_phase.contaminated }
+	}
+	else_if = {
+		limit = { check_variable = { camp_radicalized_site_count > 0 } }
+		set_variable = { camp_current_phase = constant:camp_rework_phase.radicalized }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { camp_expanded_site_count > 0 }
+				check_variable = { camp_network_reach > constant:camp_rework_threshold.expanded_reach }
+			}
+		}
+		set_variable = { camp_current_phase = constant:camp_rework_phase.expanded }
+	}
+	else_if = {
+		limit = { check_variable = { camp_active_site_count > 0 } }
+		set_variable = { camp_current_phase = constant:camp_rework_phase.active }
+	}
+	else_if = {
+		limit = { has_country_flag = camp_rework_reformed_legacy }
+		set_variable = { camp_current_phase = constant:camp_rework_phase.dismantled }
+	}
+
+	camp_rework_recalculate_burdens = yes
+	camp_rework_sync_legacy_compatibility_values = yes
+	camp_rework_copy_display_values = yes
+}
+
+camp_rework_prepare_state_death_multiplier = {
+	set_temp_variable = { chaos_state_deaths_mult = camp_state_death_pool_factor }
+	if = {
+		limit = { has_variable = genocide_responsible_country }
+		var:genocide_responsible_country = {
+			set_temp_variable = { camp_death_reach_add = camp_network_reach }
+			multiply_temp_variable = { camp_death_reach_add = constant:camp_rework_death_factor.network_reach }
+			add_to_temp_variable = { chaos_state_deaths_mult = camp_death_reach_add }
+
+			set_temp_variable = { camp_death_overstretch_add = camp_overstretch }
+			multiply_temp_variable = { camp_death_overstretch_add = constant:camp_rework_death_factor.overstretch }
+			add_to_temp_variable = { chaos_state_deaths_mult = camp_death_overstretch_add }
+
+			set_temp_variable = { camp_death_resistance_add = camp_resistance_pressure }
+			multiply_temp_variable = { camp_death_resistance_add = constant:camp_rework_death_factor.resistance }
+			add_to_temp_variable = { chaos_state_deaths_mult = camp_death_resistance_add }
+
+			set_temp_variable = { camp_death_population_add = camp_population_loss_index }
+			multiply_temp_variable = { camp_death_population_add = constant:camp_rework_death_factor.population_loss_index }
+			add_to_temp_variable = { chaos_state_deaths_mult = camp_death_population_add }
+
+			if = {
+				limit = { has_stability < constant:camp_rework_threshold.severe_stability }
+				add_to_temp_variable = { chaos_state_deaths_mult = constant:camp_rework_death_factor.severe_stability }
+			}
+			else_if = {
+				limit = { has_stability < constant:camp_rework_threshold.low_stability }
+				add_to_temp_variable = { chaos_state_deaths_mult = constant:camp_rework_death_factor.low_stability }
+			}
+			if = {
+				limit = { has_country_flag = camp_rework_guards_allocated }
+				add_to_temp_variable = { chaos_state_deaths_mult = constant:camp_rework_death_factor.guard_relief }
+			}
+			if = {
+				limit = { has_country_flag = camp_rework_relief_active }
+				add_to_temp_variable = { chaos_state_deaths_mult = constant:camp_rework_death_factor.reform_relief }
+			}
+			if = {
+				limit = { has_country_flag = camp_rework_inspection_active }
+				add_to_temp_variable = { chaos_state_deaths_mult = constant:camp_rework_death_factor.inspection_relief }
+			}
+			if = {
+				limit = { has_country_flag = camp_rework_quotas_reduced }
+				add_to_temp_variable = { chaos_state_deaths_mult = constant:camp_rework_death_factor.inspection_relief }
+			}
+			if = {
+				limit = {
+					OR = {
+						NOT = { has_equipment = { train_equipment_1 > 0 } }
+						NOT = { has_equipment = { motorized_equipment_1 > 0 } }
+					}
+				}
+				add_to_temp_variable = { chaos_state_deaths_mult = constant:camp_rework_death_factor.supply_shortage }
+			}
+			if = {
+				limit = {
+					original_tag = GER
+					PREV = {
+						OR = {
+							has_state_flag = genocide_auschwitz_experiment_site
+							has_state_flag = genocide_ss_laboratory_site
+							has_state_flag = camp_rework_experiment_site
+						}
+					}
+				}
+				if = {
+					limit = { has_variable = mengele_autonomy }
+					set_temp_variable = { camp_mengele_autonomy_death_add = mengele_autonomy }
+					multiply_temp_variable = { camp_mengele_autonomy_death_add = constant:camp_rework_germany.autonomy_death_factor }
+					add_to_temp_variable = { chaos_state_deaths_mult = camp_mengele_autonomy_death_add }
+				}
+				if = {
+					limit = { check_variable = { mengele_permission_level > constant:germany_mengele_permission.full } }
+					add_to_temp_variable = { chaos_state_deaths_mult = constant:germany_mengele_permission.extermination_monthly_bypass }
+				}
+				else_if = {
+					limit = { check_variable = { mengele_permission_level = constant:germany_mengele_permission.full } }
+					add_to_temp_variable = { chaos_state_deaths_mult = constant:germany_mengele_permission.extermination_monthly_full }
+				}
+				else_if = {
+					limit = {
+						check_variable = {
+							var = mengele_permission_level
+							value = constant:germany_mengele_permission.restricted
+							compare = greater_than_or_equals
+						}
+					}
+					add_to_temp_variable = { chaos_state_deaths_mult = constant:germany_mengele_permission.extermination_monthly_restricted }
+				}
+			}
+			if = {
+				limit = {
+					original_tag = SOV
+					PREV = { has_state_flag = genocide_soviet_famine_pressure_site }
+					check_variable = { famine_pressure > 0 }
+				}
+				set_temp_variable = { camp_soviet_famine_death_add = famine_pressure }
+				multiply_temp_variable = { camp_soviet_famine_death_add = constant:camp_rework_soviet.famine_death_factor }
+				add_to_temp_variable = { chaos_state_deaths_mult = camp_soviet_famine_death_add }
+			}
+		}
+	}
+
+	if = {
+		limit = { has_global_flag = { flag = chaos_tier value = 5 } }
+		add_to_temp_variable = { chaos_state_deaths_mult = constant:camp_rework_death_factor.chaos_tier_5 }
+	}
+	else_if = {
+		limit = { has_global_flag = { flag = chaos_tier value = 4 } }
+		add_to_temp_variable = { chaos_state_deaths_mult = constant:camp_rework_death_factor.chaos_tier_4 }
+	}
+	else_if = {
+		limit = { has_global_flag = { flag = chaos_tier value = 3 } }
+		add_to_temp_variable = { chaos_state_deaths_mult = constant:camp_rework_death_factor.chaos_tier_3 }
+	}
+
+	if = {
+		limit = { has_state_flag = camp_rework_chemical_method_active }
+		if = {
+			limit = { check_variable = { camp_state_chemical_killing_efficiency = constant:camp_rework_chemical_tier.soman } }
+			multiply_temp_variable = { chaos_state_deaths_mult = constant:camp_rework_chemical_factor.soman_deaths }
+		}
+		else_if = {
+			limit = { check_variable = { camp_state_chemical_killing_efficiency = constant:camp_rework_chemical_tier.sarin } }
+			multiply_temp_variable = { chaos_state_deaths_mult = constant:camp_rework_chemical_factor.sarin_deaths }
+		}
+		else_if = {
+			limit = { check_variable = { camp_state_chemical_killing_efficiency = constant:camp_rework_chemical_tier.tabun } }
+			multiply_temp_variable = { chaos_state_deaths_mult = constant:camp_rework_chemical_factor.tabun_deaths }
+		}
+		else_if = {
+			limit = { check_variable = { camp_state_chemical_killing_efficiency = constant:camp_rework_chemical_tier.lewisite } }
+			multiply_temp_variable = { chaos_state_deaths_mult = constant:camp_rework_chemical_factor.lewisite_deaths }
+		}
+		else_if = {
+			limit = { check_variable = { camp_state_chemical_killing_efficiency = constant:camp_rework_chemical_tier.mustard } }
+			multiply_temp_variable = { chaos_state_deaths_mult = constant:camp_rework_chemical_factor.mustard_deaths }
+		}
+		else_if = {
+			limit = { check_variable = { camp_state_chemical_killing_efficiency = constant:camp_rework_chemical_tier.phosgene } }
+			multiply_temp_variable = { chaos_state_deaths_mult = constant:camp_rework_chemical_factor.phosgene_deaths }
+		}
+		else_if = {
+			limit = { check_variable = { camp_state_chemical_killing_efficiency = constant:camp_rework_chemical_tier.chlorine } }
+			multiply_temp_variable = { chaos_state_deaths_mult = constant:camp_rework_chemical_factor.chlorine_deaths }
+		}
+	}
+	else_if = {
+		limit = { has_state_flag = camp_rework_biological_method_active }
+		if = {
+			limit = { check_variable = { camp_state_biological_killing_efficiency = constant:camp_rework_biological_tier.smallpox } }
+			multiply_temp_variable = { chaos_state_deaths_mult = constant:camp_rework_biological_factor.smallpox_deaths }
+		}
+		else_if = {
+			limit = { check_variable = { camp_state_biological_killing_efficiency = constant:camp_rework_biological_tier.plague } }
+			multiply_temp_variable = { chaos_state_deaths_mult = constant:camp_rework_biological_factor.plague_deaths }
+		}
+		else_if = {
+			limit = { check_variable = { camp_state_biological_killing_efficiency = constant:camp_rework_biological_tier.tularemia } }
+			multiply_temp_variable = { chaos_state_deaths_mult = constant:camp_rework_biological_factor.tularemia_deaths }
+		}
+		else_if = {
+			limit = { check_variable = { camp_state_biological_killing_efficiency = constant:camp_rework_biological_tier.anthrax } }
+			multiply_temp_variable = { chaos_state_deaths_mult = constant:camp_rework_biological_factor.anthrax_deaths }
+		}
+	}
+
+	clamp_temp_variable = {
+		var = chaos_state_deaths_mult
+		min = constant:camp_rework_death_factor.min
+		max = constant:camp_rework_death_factor.max
+	}
+}
+
+camp_rework_maintain_restricted_method = {
+	set_temp_variable = { camp_method_maintenance_success = 0 }
+	if = {
+		limit = {
+			has_state_flag = camp_rework_chemical_method_active
+			has_variable = genocide_responsible_country
+			var:genocide_responsible_country = { exists = yes }
+		}
+		var:genocide_responsible_country = {
+			if = {
+				limit = {
+					PREV = { check_variable = { camp_state_chemical_killing_efficiency = constant:camp_rework_chemical_tier.soman } }
+					OR = {
+						has_tech = soman
+						is_special_project_completed = sp:sp_cw_soman_program
+					}
+					has_equipment = { chemical_soman_payload_cylinder_1 > constant:camp_rework_chemical_monthly_cost.soman_cylinders }
+				}
+				set_temp_variable = { camp_method_maintenance_success = 1 }
+				set_temp_variable = { camp_method_stockpile_remove = constant:camp_rework_chemical_monthly_cost.soman_cylinders }
+				multiply_temp_variable = { camp_method_stockpile_remove = -1 }
+				add_equipment_to_stockpile = { type = chemical_soman_payload_cylinder_1 amount = camp_method_stockpile_remove }
+			}
+			else_if = {
+				limit = {
+					PREV = { check_variable = { camp_state_chemical_killing_efficiency = constant:camp_rework_chemical_tier.sarin } }
+					OR = {
+						has_tech = sarin
+						is_special_project_completed = sp:sp_cw_sarin_program
+					}
+					has_equipment = { chemical_sarin_payload_cylinder_1 > constant:camp_rework_chemical_monthly_cost.sarin_cylinders }
+				}
+				set_temp_variable = { camp_method_maintenance_success = 1 }
+				set_temp_variable = { camp_method_stockpile_remove = constant:camp_rework_chemical_monthly_cost.sarin_cylinders }
+				multiply_temp_variable = { camp_method_stockpile_remove = -1 }
+				add_equipment_to_stockpile = { type = chemical_sarin_payload_cylinder_1 amount = camp_method_stockpile_remove }
+			}
+			else_if = {
+				limit = {
+					PREV = { check_variable = { camp_state_chemical_killing_efficiency = constant:camp_rework_chemical_tier.tabun } }
+					has_tech = tabun
+					has_equipment = { chemical_tabun_payload_cylinder_1 > constant:camp_rework_chemical_monthly_cost.tabun_cylinders }
+				}
+				set_temp_variable = { camp_method_maintenance_success = 1 }
+				set_temp_variable = { camp_method_stockpile_remove = constant:camp_rework_chemical_monthly_cost.tabun_cylinders }
+				multiply_temp_variable = { camp_method_stockpile_remove = -1 }
+				add_equipment_to_stockpile = { type = chemical_tabun_payload_cylinder_1 amount = camp_method_stockpile_remove }
+			}
+			else_if = {
+				limit = {
+					PREV = { check_variable = { camp_state_chemical_killing_efficiency = constant:camp_rework_chemical_tier.lewisite } }
+					has_tech = lewisite
+					has_equipment = { chemical_lewisite_payload_cylinder_1 > constant:camp_rework_chemical_monthly_cost.lewisite_cylinders }
+				}
+				set_temp_variable = { camp_method_maintenance_success = 1 }
+				set_temp_variable = { camp_method_stockpile_remove = constant:camp_rework_chemical_monthly_cost.lewisite_cylinders }
+				multiply_temp_variable = { camp_method_stockpile_remove = -1 }
+				add_equipment_to_stockpile = { type = chemical_lewisite_payload_cylinder_1 amount = camp_method_stockpile_remove }
+			}
+			else_if = {
+				limit = {
+					PREV = { check_variable = { camp_state_chemical_killing_efficiency = constant:camp_rework_chemical_tier.mustard } }
+					has_tech = mustard_gas
+					has_equipment = { chemical_mustard_payload_cylinder_1 > constant:camp_rework_chemical_monthly_cost.mustard_cylinders }
+				}
+				set_temp_variable = { camp_method_maintenance_success = 1 }
+				set_temp_variable = { camp_method_stockpile_remove = constant:camp_rework_chemical_monthly_cost.mustard_cylinders }
+				multiply_temp_variable = { camp_method_stockpile_remove = -1 }
+				add_equipment_to_stockpile = { type = chemical_mustard_payload_cylinder_1 amount = camp_method_stockpile_remove }
+			}
+			else_if = {
+				limit = {
+					PREV = { check_variable = { camp_state_chemical_killing_efficiency = constant:camp_rework_chemical_tier.phosgene } }
+					has_tech = phosgene
+					has_equipment = { chemical_phosgene_payload_cylinder_1 > constant:camp_rework_chemical_monthly_cost.phosgene_cylinders }
+				}
+				set_temp_variable = { camp_method_maintenance_success = 1 }
+				set_temp_variable = { camp_method_stockpile_remove = constant:camp_rework_chemical_monthly_cost.phosgene_cylinders }
+				multiply_temp_variable = { camp_method_stockpile_remove = -1 }
+				add_equipment_to_stockpile = { type = chemical_phosgene_payload_cylinder_1 amount = camp_method_stockpile_remove }
+			}
+			else_if = {
+				limit = {
+					PREV = { check_variable = { camp_state_chemical_killing_efficiency = constant:camp_rework_chemical_tier.chlorine } }
+					has_tech = chlorine_gas
+					has_equipment = { chemical_chlorine_payload_cylinder_1 > constant:camp_rework_chemical_monthly_cost.chlorine_cylinders }
+				}
+				set_temp_variable = { camp_method_maintenance_success = 1 }
+				set_temp_variable = { camp_method_stockpile_remove = constant:camp_rework_chemical_monthly_cost.chlorine_cylinders }
+				multiply_temp_variable = { camp_method_stockpile_remove = -1 }
+				add_equipment_to_stockpile = { type = chemical_chlorine_payload_cylinder_1 amount = camp_method_stockpile_remove }
+			}
+		}
+		if = {
+			limit = { check_variable = { camp_method_maintenance_success > 0 } }
+			set_temp_variable = { camp_method_suppression_days = constant:camp_rework_timing.restricted_method_suppression_days }
+			set_state_flag = {
+				flag = camp_rework_restricted_method_suppression_active
+				days = camp_method_suppression_days
+			}
+			if = {
+				limit = { check_variable = { camp_state_chemical_killing_efficiency = constant:camp_rework_chemical_tier.soman } }
+				add_to_variable = { camp_state_resistance_accumulation = constant:camp_rework_chemical_factor.soman_suppression }
+				if = { limit = { has_resistance = yes } add_resistance = constant:camp_rework_chemical_factor.soman_suppression }
+			}
+			else_if = {
+				limit = { check_variable = { camp_state_chemical_killing_efficiency = constant:camp_rework_chemical_tier.sarin } }
+				add_to_variable = { camp_state_resistance_accumulation = constant:camp_rework_chemical_factor.sarin_suppression }
+				if = { limit = { has_resistance = yes } add_resistance = constant:camp_rework_chemical_factor.sarin_suppression }
+			}
+			else_if = {
+				limit = { check_variable = { camp_state_chemical_killing_efficiency = constant:camp_rework_chemical_tier.tabun } }
+				add_to_variable = { camp_state_resistance_accumulation = constant:camp_rework_chemical_factor.tabun_suppression }
+				if = { limit = { has_resistance = yes } add_resistance = constant:camp_rework_chemical_factor.tabun_suppression }
+			}
+			else_if = {
+				limit = { check_variable = { camp_state_chemical_killing_efficiency = constant:camp_rework_chemical_tier.lewisite } }
+				add_to_variable = { camp_state_resistance_accumulation = constant:camp_rework_chemical_factor.lewisite_suppression }
+				if = { limit = { has_resistance = yes } add_resistance = constant:camp_rework_chemical_factor.lewisite_suppression }
+			}
+			else_if = {
+				limit = { check_variable = { camp_state_chemical_killing_efficiency = constant:camp_rework_chemical_tier.mustard } }
+				add_to_variable = { camp_state_resistance_accumulation = constant:camp_rework_chemical_factor.mustard_suppression }
+				if = { limit = { has_resistance = yes } add_resistance = constant:camp_rework_chemical_factor.mustard_suppression }
+			}
+			else_if = {
+				limit = { check_variable = { camp_state_chemical_killing_efficiency = constant:camp_rework_chemical_tier.phosgene } }
+				add_to_variable = { camp_state_resistance_accumulation = constant:camp_rework_chemical_factor.phosgene_suppression }
+				if = { limit = { has_resistance = yes } add_resistance = constant:camp_rework_chemical_factor.phosgene_suppression }
+			}
+			else_if = {
+				limit = { check_variable = { camp_state_chemical_killing_efficiency = constant:camp_rework_chemical_tier.chlorine } }
+				add_to_variable = { camp_state_resistance_accumulation = constant:camp_rework_chemical_factor.chlorine_suppression }
+				if = { limit = { has_resistance = yes } add_resistance = constant:camp_rework_chemical_factor.chlorine_suppression }
+			}
+		}
+		else = {
+			clr_state_flag = camp_rework_chemical_method_active
+			clr_state_flag = genocide_restricted_chemical_site_active
+			set_variable = { camp_state_chemical_killing_efficiency = constant:camp_rework_chemical_tier.none }
+			set_state_flag = camp_rework_restricted_method_shortage
+			add_to_variable = { camp_state_evidence_depth = constant:camp_rework_monthly.method_shortage_evidence_gain }
+		}
+	}
+	else_if = {
+		limit = {
+			has_state_flag = camp_rework_biological_method_active
+			has_variable = genocide_responsible_country
+			var:genocide_responsible_country = { exists = yes }
+		}
+		var:genocide_responsible_country = {
+			if = {
+				limit = {
+					PREV = { check_variable = { camp_state_biological_killing_efficiency = constant:camp_rework_biological_tier.smallpox } }
+					camp_rework_country_has_biowarfare_facility = yes
+					has_tech = smallpox_bomb_delivery_systems
+					has_equipment = { smallpox_bomb_1 > constant:camp_rework_biological_monthly_cost.smallpox }
+				}
+				set_temp_variable = { camp_method_maintenance_success = 1 }
+				set_temp_variable = { camp_method_stockpile_remove = constant:camp_rework_biological_monthly_cost.smallpox }
+				multiply_temp_variable = { camp_method_stockpile_remove = -1 }
+				add_equipment_to_stockpile = { type = smallpox_bomb_1 amount = camp_method_stockpile_remove }
+			}
+			else_if = {
+				limit = {
+					PREV = { check_variable = { camp_state_biological_killing_efficiency = constant:camp_rework_biological_tier.plague } }
+					camp_rework_country_has_biowarfare_facility = yes
+					has_tech = plague_bomb_delivery_systems
+					has_equipment = { plague_bomb_1 > constant:camp_rework_biological_monthly_cost.plague }
+				}
+				set_temp_variable = { camp_method_maintenance_success = 1 }
+				set_temp_variable = { camp_method_stockpile_remove = constant:camp_rework_biological_monthly_cost.plague }
+				multiply_temp_variable = { camp_method_stockpile_remove = -1 }
+				add_equipment_to_stockpile = { type = plague_bomb_1 amount = camp_method_stockpile_remove }
+			}
+			else_if = {
+				limit = {
+					PREV = { check_variable = { camp_state_biological_killing_efficiency = constant:camp_rework_biological_tier.tularemia } }
+					camp_rework_country_has_biowarfare_facility = yes
+					has_tech = tularemia_bomb_delivery_systems
+					has_equipment = { tularemia_bomb_1 > constant:camp_rework_biological_monthly_cost.tularemia }
+				}
+				set_temp_variable = { camp_method_maintenance_success = 1 }
+				set_temp_variable = { camp_method_stockpile_remove = constant:camp_rework_biological_monthly_cost.tularemia }
+				multiply_temp_variable = { camp_method_stockpile_remove = -1 }
+				add_equipment_to_stockpile = { type = tularemia_bomb_1 amount = camp_method_stockpile_remove }
+			}
+			else_if = {
+				limit = {
+					PREV = { check_variable = { camp_state_biological_killing_efficiency = constant:camp_rework_biological_tier.anthrax } }
+					camp_rework_country_has_biowarfare_facility = yes
+					has_tech = anthrax_bomb_delivery_systems
+					has_equipment = { anthrax_bomb_1 > constant:camp_rework_biological_monthly_cost.anthrax }
+				}
+				set_temp_variable = { camp_method_maintenance_success = 1 }
+				set_temp_variable = { camp_method_stockpile_remove = constant:camp_rework_biological_monthly_cost.anthrax }
+				multiply_temp_variable = { camp_method_stockpile_remove = -1 }
+				add_equipment_to_stockpile = { type = anthrax_bomb_1 amount = camp_method_stockpile_remove }
+			}
+		}
+		if = {
+			limit = { check_variable = { camp_method_maintenance_success > 0 } }
+			set_temp_variable = { camp_method_suppression_days = constant:camp_rework_timing.restricted_method_suppression_days }
+			set_state_flag = {
+				flag = camp_rework_restricted_method_suppression_active
+				days = camp_method_suppression_days
+			}
+			if = {
+				limit = { check_variable = { camp_state_biological_killing_efficiency = constant:camp_rework_biological_tier.smallpox } }
+				add_to_variable = { camp_state_resistance_accumulation = constant:camp_rework_biological_factor.smallpox_suppression }
+				if = { limit = { has_resistance = yes } add_resistance = constant:camp_rework_biological_factor.smallpox_suppression }
+			}
+			else_if = {
+				limit = { check_variable = { camp_state_biological_killing_efficiency = constant:camp_rework_biological_tier.plague } }
+				add_to_variable = { camp_state_resistance_accumulation = constant:camp_rework_biological_factor.plague_suppression }
+				if = { limit = { has_resistance = yes } add_resistance = constant:camp_rework_biological_factor.plague_suppression }
+			}
+			else_if = {
+				limit = { check_variable = { camp_state_biological_killing_efficiency = constant:camp_rework_biological_tier.tularemia } }
+				add_to_variable = { camp_state_resistance_accumulation = constant:camp_rework_biological_factor.tularemia_suppression }
+				if = { limit = { has_resistance = yes } add_resistance = constant:camp_rework_biological_factor.tularemia_suppression }
+			}
+			else_if = {
+				limit = { check_variable = { camp_state_biological_killing_efficiency = constant:camp_rework_biological_tier.anthrax } }
+				add_to_variable = { camp_state_resistance_accumulation = constant:camp_rework_biological_factor.anthrax_suppression }
+				if = { limit = { has_resistance = yes } add_resistance = constant:camp_rework_biological_factor.anthrax_suppression }
+			}
+		}
+		else = {
+			clr_state_flag = camp_rework_biological_method_active
+			set_variable = { camp_state_biological_killing_efficiency = constant:camp_rework_biological_tier.none }
+			set_state_flag = camp_rework_restricted_method_shortage
+			add_to_variable = { camp_state_evidence_depth = constant:camp_rework_monthly.method_shortage_evidence_gain }
+		}
+	}
+	clamp_variable = { var = camp_state_resistance_accumulation min = 0 max = constant:camp_rework_threshold.max_value }
+	clamp_variable = { var = camp_state_evidence_depth min = 0 max = constant:camp_rework_threshold.max_value }
+}
+
+camp_rework_prepare_monthly_state_death_profile = {
+	set_temp_variable = { chaos_state_deaths_percent = 0 }
+	set_temp_variable = { chaos_state_deaths_cap_factor = constant:camp_rework_death_cap.detention }
+	set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
+	set_temp_variable = { camp_monthly_evidence_gain = 0 }
+	set_temp_variable = { camp_monthly_resistance_gain = 0 }
+
+	if = {
+		limit = { check_variable = { camp_state_site_type = constant:camp_rework_site_type.detention } }
+		set_temp_variable = { chaos_state_deaths_percent = constant:camp_rework_death_percent.detention_monthly }
+		set_temp_variable = { chaos_state_deaths_cap_factor = constant:camp_rework_death_cap.detention }
+		set_temp_variable = { camp_monthly_evidence_gain = constant:camp_rework_monthly.detention_evidence_gain }
+		set_temp_variable = { camp_monthly_resistance_gain = constant:camp_rework_monthly.detention_resistance_gain }
+	}
+	else_if = {
+		limit = { check_variable = { camp_state_site_type = constant:camp_rework_site_type.expanded_labor } }
+		set_temp_variable = { chaos_state_deaths_percent = constant:camp_rework_death_percent.expanded_labor_monthly }
+		set_temp_variable = { chaos_state_deaths_cap_factor = constant:camp_rework_death_cap.expanded_labor }
+		set_temp_variable = { camp_monthly_evidence_gain = constant:camp_rework_monthly.expanded_evidence_gain }
+		set_temp_variable = { camp_monthly_resistance_gain = constant:camp_rework_monthly.expanded_resistance_gain }
+	}
+	else_if = {
+		limit = { check_variable = { camp_state_site_type = constant:camp_rework_site_type.gulag } }
+		set_temp_variable = { chaos_state_deaths_percent = constant:camp_rework_death_percent.gulag_monthly }
+		set_temp_variable = { chaos_state_deaths_cap_factor = constant:camp_rework_death_cap.gulag }
+		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.gulag_repression }
+		set_temp_variable = { camp_monthly_evidence_gain = constant:camp_rework_monthly.gulag_evidence_gain }
+		set_temp_variable = { camp_monthly_resistance_gain = constant:camp_rework_monthly.gulag_resistance_gain }
+	}
+	else_if = {
+		limit = { check_variable = { camp_state_site_type = constant:camp_rework_site_type.experiment } }
+		set_temp_variable = { chaos_state_deaths_percent = constant:camp_rework_death_percent.experiment_monthly }
+		set_temp_variable = { chaos_state_deaths_cap_factor = constant:camp_rework_death_cap.experiment }
+		set_temp_variable = { camp_monthly_evidence_gain = constant:camp_rework_monthly.experiment_evidence_gain }
+		set_temp_variable = { camp_monthly_resistance_gain = constant:camp_rework_monthly.experiment_resistance_gain }
+		if = {
+			limit = { has_state_flag = genocide_japanese_biowarfare_atrocity_site }
+			set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.biowarfare_outbreak }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { camp_state_site_type = constant:camp_rework_site_type.radicalized } }
+		set_temp_variable = { chaos_state_deaths_percent = constant:camp_rework_death_percent.radicalized_monthly }
+		set_temp_variable = { chaos_state_deaths_cap_factor = constant:camp_rework_death_cap.radicalized }
+		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.extermination_camp }
+		set_temp_variable = { camp_monthly_evidence_gain = constant:camp_rework_monthly.radicalized_evidence_gain }
+		set_temp_variable = { camp_monthly_resistance_gain = constant:camp_rework_monthly.radicalized_resistance_gain }
+	}
+	else_if = {
+		limit = { check_variable = { camp_state_site_type = constant:camp_rework_site_type.contaminated } }
+		set_temp_variable = { chaos_state_deaths_percent = constant:camp_rework_death_percent.contaminated_monthly }
+		set_temp_variable = { chaos_state_deaths_cap_factor = constant:camp_rework_death_cap.contaminated }
+		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.extermination_camp }
+		set_temp_variable = { camp_monthly_evidence_gain = constant:camp_rework_monthly.contaminated_evidence_gain }
+		set_temp_variable = { camp_monthly_resistance_gain = constant:camp_rework_monthly.contaminated_resistance_gain }
+		if = {
+			limit = { has_state_flag = camp_rework_biological_method_active }
+			set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.biowarfare_outbreak }
+		}
+		else_if = {
+			limit = { has_state_flag = camp_rework_chemical_method_active }
+			set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.chemical_attack }
+		}
+	}
+
+	camp_rework_prepare_state_death_multiplier = yes
+}
+
+camp_rework_apply_monthly_state_effects = {
+	camp_rework_refresh_state_site_profile = yes
+	camp_rework_maintain_restricted_method = yes
+	camp_rework_refresh_state_site_profile = yes
+	camp_rework_prepare_monthly_state_death_profile = yes
+	set_temp_variable = { chaos_deaths_change = 0 }
+	if = {
+		limit = { check_variable = { chaos_state_deaths_percent > 0 } }
+		chaos_meter_register_state_civilian_deaths_percent = yes
+		camp_rework_record_latest_state_deaths = yes
+	}
+	add_to_variable = { camp_state_evidence_depth = camp_monthly_evidence_gain }
+	add_to_variable = { camp_state_resistance_accumulation = camp_monthly_resistance_gain }
+	clamp_variable = { var = camp_state_evidence_depth min = 0 max = constant:camp_rework_threshold.max_value }
+	clamp_variable = { var = camp_state_resistance_accumulation min = 0 max = constant:camp_rework_threshold.max_value }
+	camp_rework_refresh_state_site_profile = yes
+}
+
+camp_rework_apply_state_death_burst = {
+	set_temp_variable = { chaos_state_deaths_percent = camp_rework_death_burst_percent }
+	set_temp_variable = { chaos_state_deaths_cap_factor = camp_rework_death_burst_cap }
+	set_temp_variable = { chaos_deaths_reason = camp_rework_death_burst_reason }
+	camp_rework_prepare_state_death_multiplier = yes
+	set_temp_variable = { chaos_deaths_change = 0 }
+	chaos_meter_register_state_civilian_deaths_percent = yes
+	camp_rework_record_latest_state_deaths = yes
+}
+
+camp_rework_record_latest_state_deaths = {
+	set_variable = { camp_site_last_month_deaths = chaos_deaths_change }
+	set_variable = { genocide_last_state_deaths = chaos_deaths_change }
+	genocide_credit_state_deaths_to_responsible = yes
+}
+
+camp_rework_register_exact_state_deaths = {
+	set_temp_variable = { chaos_deaths_change = 0 }
+	if = {
+		limit = {
+			NOT = { has_global_flag = settings_chaos_deaths_disabled }
+			has_variable = camp_exact_deaths
+			check_variable = { camp_exact_deaths > 0 }
+			check_variable = { state_population_k > 0 }
+		}
+		set_temp_variable = { chaos_deaths_change = camp_exact_deaths }
+		set_temp_variable = { camp_exact_deaths_max = state_population_k }
+		multiply_temp_variable = { camp_exact_deaths_max = 1000 }
+		clamp_temp_variable = {
+			var = chaos_deaths_change
+			min = 0
+			max = camp_exact_deaths_max
+		}
+		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
+		if = {
+			limit = { has_variable = camp_exact_deaths_reason }
+			set_temp_variable = { chaos_deaths_reason = camp_exact_deaths_reason }
+		}
+		set_temp_variable = { chaos_deaths_is_civilian = 1 }
+		set_temp_variable = { chaos_deaths_apply_state_pop = 1 }
+		set_temp_variable = { chaos_deaths_target_country = OWNER }
+		set_temp_variable = { chaos_deaths_has_target_country = 1 }
+		chaos_meter_register_deaths = yes
+	}
+	camp_rework_record_latest_state_deaths = yes
+}
+
+camp_rework_decay_policy_pressures = {
+	multiply_variable = { camp_policy_labor_output = constant:camp_rework_monthly.policy_pressure_decay }
+	multiply_variable = { camp_policy_coercive_control = constant:camp_rework_monthly.policy_pressure_decay }
+	multiply_variable = { camp_policy_population_loss = constant:camp_rework_monthly.policy_pressure_decay }
+	multiply_variable = { camp_policy_resistance_pressure = constant:camp_rework_monthly.policy_pressure_decay }
+	multiply_variable = { camp_policy_stability_damage = constant:camp_rework_monthly.policy_pressure_decay }
+	multiply_variable = { camp_policy_evidence = constant:camp_rework_monthly.policy_pressure_decay }
+	multiply_variable = { camp_policy_overstretch = constant:camp_rework_monthly.policy_pressure_decay }
+	multiply_variable = { camp_policy_visibility = constant:camp_rework_monthly.policy_pressure_decay }
+	multiply_variable = { camp_policy_tribunal = constant:camp_rework_monthly.policy_pressure_decay }
+	multiply_variable = { camp_policy_hardliner = constant:camp_rework_monthly.policy_pressure_decay }
+	multiply_variable = { camp_policy_legitimacy = constant:camp_rework_monthly.policy_pressure_decay }
+	multiply_variable = { camp_policy_reform = constant:camp_rework_monthly.reform_pressure_decay }
+}
+
+camp_rework_refresh_lifecycle_ideas = {
+	if = {
+		limit = {
+			check_variable = {
+				var = camp_overstretch
+				value = constant:camp_rework_threshold.overstretched
+				compare = greater_than_or_equals
+			}
+			NOT = { has_idea = camp_repression_network_overstretch }
+		}
+		add_ideas = camp_repression_network_overstretch
+	}
+	else_if = {
+		limit = {
+			has_idea = camp_repression_network_overstretch
+			check_variable = { camp_overstretch < constant:camp_rework_threshold.overstretched }
+		}
+		remove_ideas = camp_repression_network_overstretch
+	}
+
+	if = {
+		limit = {
+			check_variable = { camp_democratic_legitimacy_damage > 0 }
+			NOT = { has_idea = camp_democratic_legitimacy_crisis }
+		}
+		add_ideas = camp_democratic_legitimacy_crisis
+	}
+	else_if = {
+		limit = {
+			has_idea = camp_democratic_legitimacy_crisis
+			check_variable = { camp_democratic_legitimacy_damage < constant:camp_rework_threshold.band_low }
+		}
+		remove_ideas = camp_democratic_legitimacy_crisis
+	}
+
+	if = {
+		limit = {
+			has_visible_camp_reform_work = yes
+			NOT = { has_idea = camp_repression_reform_pressure }
+		}
+		add_ideas = camp_repression_reform_pressure
+	}
+	else_if = {
+		limit = {
+			has_idea = camp_repression_reform_pressure
+			NOT = { has_visible_camp_reform_work = yes }
+		}
+		remove_ideas = camp_repression_reform_pressure
+	}
+
+	camp_rework_refresh_country_specific_ideas = yes
+}
+
+camp_rework_apply_country_monthly_pressure = {
+	camp_rework_decay_policy_pressures = yes
+	camp_rework_recalculate_country_values = yes
+	if = {
+		limit = { check_variable = { camp_active_site_count > 0 } }
+		set_temp_variable = { camp_monthly_stability_loss = camp_stability_damage }
+		multiply_temp_variable = { camp_monthly_stability_loss = constant:camp_rework_monthly.stability_loss_per_damage }
+		clamp_temp_variable = {
+			var = camp_monthly_stability_loss
+			min = 0
+			max = constant:camp_rework_monthly.stability_loss_max
+		}
+		multiply_temp_variable = { camp_monthly_stability_loss = -1 }
+		add_stability = camp_monthly_stability_loss
+	}
+	camp_rework_refresh_lifecycle_ideas = yes
+	camp_rework_update_country_specific_monthly_bridges = yes
+	if = {
+		limit = { has_country_flag = camp_repression_ledger_open }
+		camp_rework_rebuild_display_values = yes
+	}
+}
+
+camp_rework_on_country_annexed = {
+	remove_from_array = {
+		array = global.camp_repression_active_countries
+		value = THIS
+	}
+	clear_temp_array = temp_camp_rework_annexed_states
+	for_each_scope_loop = {
+		array = camp_active_site_states
+		add_to_temp_array = {
+			temp_camp_rework_annexed_states = THIS
+		}
+	}
+	for_each_scope_loop = {
+		array = temp_camp_rework_annexed_states
+		camp_rework_refresh_state_site_profile = yes
+		if = {
+			limit = { check_variable = { camp_state_site_type > constant:camp_rework_site_type.none } }
+			set_variable = { camp_state_evidence_site_type = camp_state_site_type }
+		}
+		remove_from_array = {
+			array = global.genocide_active_camp_states
+			value = THIS
+		}
+		if = {
+			limit = { concentration_camp > 0 }
+			remove_building = { type = concentration_camp level = 1 }
+		}
+		if = {
+			limit = { extermination_camp > 0 }
+			remove_building = { type = extermination_camp level = 1 }
+		}
+		if = {
+			limit = { gulag_labor_camp_network > 0 }
+			remove_building = { type = gulag_labor_camp_network level = 1 }
+		}
+		if = {
+			limit = { has_dynamic_modifier = { modifier = genocide_concentration_camp_network_state } }
+			remove_dynamic_modifier = { modifier = genocide_concentration_camp_network_state }
+		}
+		if = {
+			limit = { has_dynamic_modifier = { modifier = genocide_forced_labor_exploitation_state } }
+			remove_dynamic_modifier = { modifier = genocide_forced_labor_exploitation_state }
+		}
+		if = {
+			limit = { has_dynamic_modifier = { modifier = genocide_camp_sabotage_pressure_state } }
+			remove_dynamic_modifier = { modifier = genocide_camp_sabotage_pressure_state }
+		}
+		if = {
+			limit = { has_dynamic_modifier = { modifier = sov_famine_pressure_state } }
+			remove_dynamic_modifier = { modifier = sov_famine_pressure_state }
+		}
+		clr_state_flag = camp_rework_site_active
+		clr_state_flag = genocide_concentration_site
+		clr_state_flag = genocide_extermination_site
+		clr_state_flag = genocide_gulag_site
+		clr_state_flag = genocide_auschwitz_experiment_site
+		clr_state_flag = genocide_ss_laboratory_site
+		clr_state_flag = genocide_japanese_biowarfare_atrocity_site
+		clr_state_flag = genocide_soviet_mass_repression_site
+		clr_state_flag = genocide_soviet_famine_pressure_site
+		clr_state_flag = camp_rework_expanded_labor_site
+		clr_state_flag = camp_rework_experiment_site
+		clr_state_flag = camp_rework_radicalized_site
+		clr_state_flag = camp_rework_soviet_famine_pressure
+		clr_state_flag = camp_rework_chemical_method_active
+		clr_state_flag = camp_rework_biological_method_active
+		clr_state_flag = genocide_restricted_chemical_site_active
+		set_state_flag = camp_rework_annexed_evidence_site
+		set_state_flag = genocide_destroyed_atrocity_site
+		set_state_flag = camp_rework_liberated_evidence
+		clear_variable = sov_famine_state_pressure
+		set_variable = { camp_state_evidence_status = constant:camp_rework_evidence_status.liberated }
+		add_to_variable = { camp_state_evidence_depth = constant:camp_rework_discovery_factor.annexed_evidence_gain }
+		add_to_variable = { camp_state_observer_exposure = constant:camp_rework_discovery_factor.annexed_observer_gain }
+		clamp_variable = { var = camp_state_evidence_depth min = 0 max = constant:camp_rework_threshold.max_value }
+		clamp_variable = { var = camp_state_observer_exposure min = 0 max = constant:camp_rework_threshold.max_value }
+		if = {
+			limit = { CONTROLLER = { exists = yes } }
+			CONTROLLER = { save_event_target_as = genocide_discovering_country }
+			genocide_try_discover_state_atrocity = yes
+		}
+	}
+	clear_temp_array = temp_camp_rework_annexed_states
+	clear_array = camp_active_site_states
+	clr_country_flag = camp_repression_ledger_open
+	clr_country_flag = camp_ledger_tab_overview
+	clr_country_flag = camp_ledger_tab_state_pools
+	clr_country_flag = camp_ledger_tab_sites
+	clr_country_flag = camp_ledger_tab_country
+	clr_country_flag = camp_ledger_tab_discovery
+	clear_variable = camp_selected_state_id
+	camp_rework_clear_ledger_arrays = yes
+}
+
+camp_rework_clean_inactive_countries = {
+	clear_temp_array = temp_camp_rework_inactive_countries
+	for_each_scope_loop = {
+		array = global.camp_repression_active_countries
+		if = {
+			limit = {
+				OR = {
+					exists = no
+					AND = {
+						exists = yes
+						NOT = { has_active_camp_network = yes }
+						NOT = { has_visible_camp_reform_work = yes }
+						NOT = { has_country_flag = camp_repression_ledger_open }
+					}
+				}
+			}
+			add_to_temp_array = {
+				temp_camp_rework_inactive_countries = THIS
+			}
+		}
+	}
+	for_each_scope_loop = {
+		array = temp_camp_rework_inactive_countries
+		remove_from_array = {
+			array = global.camp_repression_active_countries
+			value = THIS
+		}
+	}
+	clear_temp_array = temp_camp_rework_inactive_countries
+}
+
+camp_rework_monthly_global_pulse = {
+	camp_rework_clean_invalid_active_sites = yes
+	for_each_scope_loop = {
+		array = global.genocide_active_camp_states
+		if = {
+			limit = { is_valid_camp_active_site_state = yes }
+			camp_rework_apply_monthly_state_effects = yes
+		}
+	}
+	for_each_scope_loop = {
+		array = global.camp_repression_active_countries
+		if = {
+			limit = { exists = yes }
+			camp_rework_apply_country_monthly_pressure = yes
+		}
+	}
+	camp_rework_clean_inactive_countries = yes
+}
+
+# ---------------------------------------------------------------------------
+# Compatibility projections, burdens, and display caches
+# ---------------------------------------------------------------------------
+
+camp_rework_recalculate_burdens = {
+	set_variable = { camp_guard_burden = camp_active_site_count }
+	multiply_variable = { camp_guard_burden = constant:camp_rework_burden.guard_per_site }
+	set_temp_variable = { camp_burden_add = camp_radicalized_site_count }
+	multiply_temp_variable = { camp_burden_add = constant:camp_rework_burden.radicalized_guard }
+	add_to_variable = { camp_guard_burden = camp_burden_add }
+	set_temp_variable = { camp_burden_add = camp_overstretch }
+	multiply_temp_variable = { camp_burden_add = constant:camp_rework_burden.overstretch_guard }
+	add_to_variable = { camp_guard_burden = camp_burden_add }
+
+	set_variable = { camp_rail_burden = camp_active_site_count }
+	multiply_variable = { camp_rail_burden = constant:camp_rework_burden.rail_per_site }
+	set_temp_variable = { camp_burden_add = camp_overstretch }
+	multiply_temp_variable = { camp_burden_add = constant:camp_rework_burden.overstretch_rail }
+	add_to_variable = { camp_rail_burden = camp_burden_add }
+
+	set_variable = { camp_supply_burden = camp_active_site_count }
+	multiply_variable = { camp_supply_burden = constant:camp_rework_burden.supply_per_site }
+	set_temp_variable = { camp_burden_add = camp_contaminated_site_count }
+	multiply_temp_variable = { camp_burden_add = constant:camp_rework_burden.contaminated_supply }
+	add_to_variable = { camp_supply_burden = camp_burden_add }
+
+	set_variable = { camp_convoy_burden = 0 }
+	for_each_scope_loop = {
+		array = camp_active_site_states
+		if = {
+			limit = {
+				check_variable = { camp_state_pool_type = constant:camp_rework_pool_type.colonial_subject }
+			}
+			PREV = {
+				add_to_variable = { camp_convoy_burden = constant:camp_rework_burden.convoy_per_colonial_site }
+			}
+		}
+	}
+
+	if = {
+		limit = { has_country_flag = camp_rework_guards_allocated }
+		add_to_variable = { camp_guard_burden = constant:camp_rework_burden.allocated_guard_relief }
+	}
+	if = {
+		limit = { has_country_flag = camp_rework_inspection_active }
+		add_to_variable = { camp_supply_burden = constant:camp_rework_burden.inspection_relief }
+	}
+
+	clamp_variable = { var = camp_guard_burden min = 0 max = constant:camp_rework_burden.max }
+	clamp_variable = { var = camp_rail_burden min = 0 max = constant:camp_rework_burden.max }
+	clamp_variable = { var = camp_supply_burden min = 0 max = constant:camp_rework_burden.max }
+	clamp_variable = { var = camp_convoy_burden min = 0 max = constant:camp_rework_burden.max }
+}
+
+camp_rework_sync_legacy_compatibility_values = {
+	set_variable = { genocide_concentration_sites = camp_detention_site_count }
+	add_to_variable = { genocide_concentration_sites = camp_expanded_site_count }
+	add_to_variable = { genocide_concentration_sites = camp_experiment_site_count }
+	set_variable = { genocide_extermination_sites = camp_radicalized_site_count }
+	set_variable = { genocide_gulag_sites = camp_gulag_site_count }
+	set_variable = { genocide_resistance_pressure = camp_resistance_pressure }
+	set_variable = { genocide_visibility = camp_foreign_visibility }
+	set_variable = { genocide_tribunal_severity = camp_tribunal_severity }
+	if = {
+		limit = {
+			OR = {
+				check_variable = { camp_active_site_count > 0 }
+				has_visible_camp_reform_work = yes
+			}
+		}
+		set_country_flag = genocide_decisions_visible
+	}
+}
+
+camp_rework_prepare_display_band = {
+	set_temp_variable = { camp_display_band_result = constant:camp_rework_band.none }
+	if = {
+		limit = {
+			check_variable = {
+				var = camp_display_band_input
+				value = constant:camp_rework_threshold.band_critical
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { camp_display_band_result = constant:camp_rework_band.critical }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = camp_display_band_input
+				value = constant:camp_rework_threshold.band_severe
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { camp_display_band_result = constant:camp_rework_band.severe }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = camp_display_band_input
+				value = constant:camp_rework_threshold.band_high
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { camp_display_band_result = constant:camp_rework_band.high }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = camp_display_band_input
+				value = constant:camp_rework_threshold.band_medium
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { camp_display_band_result = constant:camp_rework_band.medium }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = camp_display_band_input
+				value = constant:camp_rework_threshold.band_low
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { camp_display_band_result = constant:camp_rework_band.low }
+	}
+}
+
+camp_rework_copy_display_values = {
+	set_variable = { display_camp_network_reach = camp_network_reach }
+	set_variable = { display_camp_active_site_count = camp_active_site_count }
+	set_variable = { display_camp_active_pool_count = camp_pool_occupied_states^num }
+	add_to_variable = { display_camp_active_pool_count = camp_pool_colonial_states^num }
+	add_to_variable = { display_camp_active_pool_count = camp_pool_noncore_states^num }
+	add_to_variable = { display_camp_active_pool_count = camp_pool_periphery_states^num }
+	add_to_variable = { display_camp_active_pool_count = camp_pool_core_fallback_states^num }
+	set_variable = { display_camp_concentration_sites = camp_detention_site_count }
+	add_to_variable = { display_camp_concentration_sites = camp_expanded_site_count }
+	set_variable = { display_camp_radicalized_sites = camp_radicalized_site_count }
+	set_variable = { display_camp_gulag_sites = camp_gulag_site_count }
+	set_variable = { display_camp_experiment_sites = camp_experiment_site_count }
+	set_variable = { display_camp_contaminated_evidence_sites = camp_contaminated_site_count }
+	set_variable = { display_camp_labor_output = camp_labor_output }
+	set_variable = { display_camp_coercive_control = camp_coercive_control }
+	set_variable = { display_camp_population_loss_pressure = camp_population_loss_index }
+	set_variable = { display_camp_stability_drag = camp_stability_damage }
+	set_variable = { display_camp_resistance_pressure = camp_resistance_pressure }
+	set_variable = { display_camp_guard_burden = camp_guard_burden }
+	set_variable = { display_camp_rail_burden = camp_rail_burden }
+	set_variable = { display_camp_supply_burden = camp_supply_burden }
+	set_variable = { display_camp_convoy_burden = camp_convoy_burden }
+	set_variable = { display_camp_evidence_risk = camp_evidence_level }
+	set_variable = { display_camp_foreign_visibility = camp_foreign_visibility }
+	set_variable = { display_camp_tribunal_severity = camp_tribunal_severity }
+	set_variable = { display_camp_reform_pressure = camp_reform_pressure }
+	set_variable = { display_camp_overstretch = camp_overstretch }
+	set_variable = { display_camp_network_phase = camp_current_phase }
+
+	set_temp_variable = { camp_display_band_input = camp_network_reach }
+	camp_rework_prepare_display_band = yes
+	set_variable = { display_camp_reach_band = camp_display_band_result }
+	set_temp_variable = { camp_display_band_input = camp_population_loss_index }
+	camp_rework_prepare_display_band = yes
+	set_variable = { display_camp_population_band = camp_display_band_result }
+	set_temp_variable = { camp_display_band_input = camp_evidence_level }
+	camp_rework_prepare_display_band = yes
+	set_variable = { display_camp_evidence_band = camp_display_band_result }
+	set_temp_variable = { camp_display_band_input = camp_overstretch }
+	camp_rework_prepare_display_band = yes
+	set_variable = { display_camp_overstretch_band = camp_display_band_result }
+	set_temp_variable = { camp_display_band_input = camp_reform_pressure }
+	camp_rework_prepare_display_band = yes
+	set_variable = { display_camp_reform_band = camp_display_band_result }
+
+	set_variable = { display_mengele_autonomy = 0 }
+	set_variable = { display_mengele_permission_level = 0 }
+	if = {
+		limit = { has_variable = mengele_autonomy }
+		set_variable = { display_mengele_autonomy = mengele_autonomy }
+	}
+	if = {
+		limit = { has_variable = mengele_permission_level }
+		set_variable = { display_mengele_permission_level = mengele_permission_level }
+	}
+	camp_rework_copy_major_country_display_values = yes
+}
+
+# ---------------------------------------------------------------------------
+# Country-owned state and evidence arrays
+# ---------------------------------------------------------------------------
+
+camp_rework_register_evidence_state = {
+	if = {
+		limit = { has_variable = genocide_responsible_country }
+		var:genocide_responsible_country = {
+			if = {
+				limit = {
+					NOT = {
+						is_in_array = {
+							array = camp_evidence_states
+							value = PREV
+						}
+					}
+				}
+				add_to_array = {
+					array = camp_evidence_states
+					value = PREV
+				}
+			}
+			camp_rework_register_country_for_monthly_pulse = yes
+		}
+	}
+}
+
+camp_rework_clear_ledger_arrays = {
+	clear_array = camp_pool_occupied_states
+	clear_array = camp_pool_colonial_states
+	clear_array = camp_pool_noncore_states
+	clear_array = camp_pool_periphery_states
+	clear_array = camp_pool_core_fallback_states
+	clear_array = camp_ledger_site_states
+	clear_array = camp_ledger_site_ids
+	clear_array = camp_ledger_site_types
+	clear_array = camp_ledger_site_phases
+	clear_array = camp_ledger_site_pools
+	clear_array = camp_ledger_site_pressures
+	clear_array = camp_ledger_site_evidence
+	clear_array = camp_ledger_site_resistance
+	clear_array = camp_ledger_evidence_states
+	clear_array = camp_ledger_evidence_ids
+	clear_array = camp_ledger_evidence_values
+	clear_array = camp_ledger_evidence_statuses
+}
+
+camp_rework_append_current_state_to_root_pool = {
+	if = {
+		limit = { check_variable = { camp_state_pool_type = constant:camp_rework_pool_type.occupied_noncore } }
+		ROOT = {
+			if = {
+				limit = { check_variable = { camp_pool_occupied_states^num < constant:camp_rework_gui_limit.pool_rows } }
+				add_to_array = { array = camp_pool_occupied_states value = PREV }
+			}
+		}
+	}
+	else_if = {
+		limit = { check_variable = { camp_state_pool_type = constant:camp_rework_pool_type.colonial_subject } }
+		ROOT = {
+			if = {
+				limit = { check_variable = { camp_pool_colonial_states^num < constant:camp_rework_gui_limit.pool_rows } }
+				add_to_array = { array = camp_pool_colonial_states value = PREV }
+			}
+		}
+	}
+	else_if = {
+		limit = { check_variable = { camp_state_pool_type = constant:camp_rework_pool_type.noncore } }
+		ROOT = {
+			if = {
+				limit = { check_variable = { camp_pool_noncore_states^num < constant:camp_rework_gui_limit.pool_rows } }
+				add_to_array = { array = camp_pool_noncore_states value = PREV }
+			}
+		}
+	}
+	else_if = {
+		limit = { check_variable = { camp_state_pool_type = constant:camp_rework_pool_type.periphery } }
+		ROOT = {
+			if = {
+				limit = { check_variable = { camp_pool_periphery_states^num < constant:camp_rework_gui_limit.pool_rows } }
+				add_to_array = { array = camp_pool_periphery_states value = PREV }
+			}
+		}
+	}
+	else_if = {
+		limit = { check_variable = { camp_state_pool_type = constant:camp_rework_pool_type.core_fallback } }
+		ROOT = {
+			if = {
+				limit = { check_variable = { camp_pool_core_fallback_states^num < constant:camp_rework_gui_limit.pool_rows } }
+				add_to_array = { array = camp_pool_core_fallback_states value = PREV }
+			}
+		}
+	}
+}
+
+camp_rework_build_pool_arrays = {
+	clear_array = camp_pool_occupied_states
+	clear_array = camp_pool_colonial_states
+	clear_array = camp_pool_noncore_states
+	clear_array = camp_pool_periphery_states
+	clear_array = camp_pool_core_fallback_states
+	every_controlled_state = {
+		limit = {
+			camp_rework_state_matches_country_kit_pool = yes
+			NOT = { has_state_flag = camp_rework_site_dismantled }
+		}
+		camp_rework_classify_state_pool_for_root = yes
+		camp_rework_append_current_state_to_root_pool = yes
+	}
+	every_subject_country = {
+		limit = { exists = yes }
+		every_controlled_state = {
+			limit = {
+				camp_rework_state_matches_country_kit_pool = yes
+				NOT = { has_state_flag = camp_rework_site_dismantled }
+			}
+			camp_rework_classify_state_pool_for_root = yes
+			camp_rework_append_current_state_to_root_pool = yes
+		}
+	}
+}
+
+camp_rework_build_site_arrays = {
+	clear_array = camp_ledger_site_states
+	clear_array = camp_ledger_site_ids
+	clear_array = camp_ledger_site_types
+	clear_array = camp_ledger_site_phases
+	clear_array = camp_ledger_site_pools
+	clear_array = camp_ledger_site_pressures
+	clear_array = camp_ledger_site_evidence
+	clear_array = camp_ledger_site_resistance
+	for_each_scope_loop = {
+		array = camp_active_site_states
+		if = {
+			limit = {
+				is_valid_camp_active_site_state = yes
+				PREV = {
+					check_variable = { camp_ledger_site_states^num < constant:camp_rework_gui_limit.active_site_rows }
+				}
+			}
+			camp_rework_refresh_state_site_profile = yes
+			set_temp_variable = { camp_ledger_row_id = THIS.id }
+			set_temp_variable = { camp_ledger_row_type = camp_state_site_type }
+			set_temp_variable = { camp_ledger_row_phase = camp_state_phase }
+			set_temp_variable = { camp_ledger_row_pool = camp_state_pool_type }
+			set_temp_variable = { camp_ledger_row_pressure = camp_state_pressure_score }
+			set_temp_variable = { camp_ledger_row_evidence = camp_state_evidence_contribution }
+			set_temp_variable = { camp_ledger_row_resistance = camp_state_resistance_contribution }
+			PREV = {
+				add_to_array = { array = camp_ledger_site_states value = PREV }
+				add_to_array = { array = camp_ledger_site_ids value = camp_ledger_row_id }
+				add_to_array = { array = camp_ledger_site_types value = camp_ledger_row_type }
+				add_to_array = { array = camp_ledger_site_phases value = camp_ledger_row_phase }
+				add_to_array = { array = camp_ledger_site_pools value = camp_ledger_row_pool }
+				add_to_array = { array = camp_ledger_site_pressures value = camp_ledger_row_pressure }
+				add_to_array = { array = camp_ledger_site_evidence value = camp_ledger_row_evidence }
+				add_to_array = { array = camp_ledger_site_resistance value = camp_ledger_row_resistance }
+			}
+		}
+	}
+}
+
+camp_rework_build_evidence_arrays = {
+	clear_array = camp_ledger_evidence_states
+	clear_array = camp_ledger_evidence_ids
+	clear_array = camp_ledger_evidence_values
+	clear_array = camp_ledger_evidence_statuses
+	for_each_scope_loop = {
+		array = camp_evidence_states
+		if = {
+			limit = {
+				has_variable = genocide_responsible_country
+				PREV = {
+					check_variable = { camp_ledger_evidence_states^num < constant:camp_rework_gui_limit.evidence_rows }
+				}
+			}
+			set_temp_variable = { camp_evidence_row_id = THIS.id }
+			set_temp_variable = { camp_evidence_row_value = camp_state_evidence_depth }
+			set_temp_variable = { camp_evidence_row_status = constant:camp_rework_evidence_status.none }
+			if = {
+				limit = { has_state_flag = camp_rework_liberated_evidence }
+				set_temp_variable = { camp_evidence_row_status = constant:camp_rework_evidence_status.liberated }
+			}
+			else_if = {
+				limit = { has_state_flag = genocide_evidence_destroy_failed }
+				set_temp_variable = { camp_evidence_row_status = constant:camp_rework_evidence_status.failed_coverup }
+			}
+			else_if = {
+				limit = { has_state_flag = genocide_evidence_destroyed }
+				set_temp_variable = { camp_evidence_row_status = constant:camp_rework_evidence_status.destroyed_records }
+			}
+			else_if = {
+				limit = { has_state_flag = genocide_site_discovered }
+				set_temp_variable = { camp_evidence_row_status = constant:camp_rework_evidence_status.discovered }
+			}
+			PREV = {
+				add_to_array = { array = camp_ledger_evidence_states value = PREV }
+				add_to_array = { array = camp_ledger_evidence_ids value = camp_evidence_row_id }
+				add_to_array = { array = camp_ledger_evidence_values value = camp_evidence_row_value }
+				add_to_array = { array = camp_ledger_evidence_statuses value = camp_evidence_row_status }
+			}
+		}
+	}
+}
+
+camp_rework_validate_selected_state = {
+	set_temp_variable = { camp_selected_state_is_valid = 0 }
+	if = {
+		limit = { has_variable = camp_selected_state_id }
+		var:camp_selected_state_id = {
+			if = {
+				limit = {
+					OR = {
+						is_controlled_by = PREV
+						PREV = {
+							OR = {
+								is_in_array = { array = camp_active_site_states value = PREV }
+								is_in_array = { array = camp_evidence_states value = PREV }
+								is_in_array = { array = camp_pool_occupied_states value = PREV }
+								is_in_array = { array = camp_pool_colonial_states value = PREV }
+								is_in_array = { array = camp_pool_noncore_states value = PREV }
+								is_in_array = { array = camp_pool_periphery_states value = PREV }
+								is_in_array = { array = camp_pool_core_fallback_states value = PREV }
+							}
+						}
+					}
+				}
+				set_temp_variable = { camp_selected_state_is_valid = 1 }
+				camp_rework_refresh_state_site_profile = yes
+				set_temp_variable = { camp_selected_row_type = camp_state_site_type }
+				set_temp_variable = { camp_selected_row_phase = camp_state_phase }
+				set_temp_variable = { camp_selected_row_pool = camp_state_pool_type }
+				set_temp_variable = { camp_selected_row_pressure = camp_state_pressure_score }
+				set_temp_variable = { camp_selected_row_evidence = camp_state_evidence_contribution }
+				set_temp_variable = { camp_selected_row_resistance = camp_state_resistance_contribution }
+			}
+		}
+	}
+	if = {
+		limit = { check_variable = { camp_selected_state_is_valid = 0 } }
+		clear_variable = camp_selected_state_id
+		set_variable = { display_selected_camp_state_id = 0 }
+		set_variable = { display_selected_camp_site_type = constant:camp_rework_site_type.none }
+		set_variable = { display_selected_camp_phase = constant:camp_rework_phase.dormant }
+		set_variable = { display_selected_camp_pool = constant:camp_rework_pool_type.none }
+		set_variable = { display_selected_camp_pressure = 0 }
+		set_variable = { display_selected_camp_evidence = 0 }
+		set_variable = { display_selected_camp_resistance = 0 }
+	}
+	else = {
+		set_variable = { display_selected_camp_state_id = camp_selected_state_id }
+		set_variable = { display_selected_camp_site_type = camp_selected_row_type }
+		set_variable = { display_selected_camp_phase = camp_selected_row_phase }
+		set_variable = { display_selected_camp_pool = camp_selected_row_pool }
+		set_variable = { display_selected_camp_pressure = camp_selected_row_pressure }
+		set_variable = { display_selected_camp_evidence = camp_selected_row_evidence }
+		set_variable = { display_selected_camp_resistance = camp_selected_row_resistance }
+	}
+}
+
+camp_rework_select_state_for_display = {
+	set_variable = { camp_selected_state_id = camp_gui_requested_state_id }
+	camp_rework_validate_selected_state = yes
+}
+
+camp_rework_rebuild_display_values = {
+	camp_rework_clean_invalid_active_sites = yes
+	camp_rework_recalculate_country_values = yes
+	camp_rework_build_pool_arrays = yes
+	camp_rework_build_site_arrays = yes
+	camp_rework_build_evidence_arrays = yes
+	camp_rework_validate_selected_state = yes
+	camp_rework_copy_display_values = yes
+}
+
+camp_rework_open_ledger = {
+	camp_rework_register_country_for_monthly_pulse = yes
+	set_country_flag = camp_repression_ledger_open
+	clr_country_flag = camp_ledger_tab_state_pools
+	clr_country_flag = camp_ledger_tab_sites
+	clr_country_flag = camp_ledger_tab_country
+	clr_country_flag = camp_ledger_tab_discovery
+	set_country_flag = camp_ledger_tab_overview
+	camp_rework_rebuild_display_values = yes
+}
+
+camp_rework_close_ledger = {
+	clr_country_flag = camp_repression_ledger_open
+	clr_country_flag = camp_ledger_tab_overview
+	clr_country_flag = camp_ledger_tab_state_pools
+	clr_country_flag = camp_ledger_tab_sites
+	clr_country_flag = camp_ledger_tab_country
+	clr_country_flag = camp_ledger_tab_discovery
+	clear_variable = camp_selected_state_id
+	camp_rework_clear_ledger_arrays = yes
+}
+
+camp_rework_gui_pay_political_cost = {
+	set_temp_variable = { camp_gui_political_cost_remove = camp_gui_political_cost }
+	multiply_temp_variable = { camp_gui_political_cost_remove = -1 }
+	add_political_power = camp_gui_political_cost_remove
+}
+
+camp_rework_gui_reveal_country_directives = {
+	set_country_flag = camp_rework_managed_network_visible
+	set_country_flag = genocide_decisions_visible
+	if = {
+		limit = { original_tag = SOV }
+		set_country_flag = genocide_gulag_decisions_visible
+	}
+	camp_rework_rebuild_display_values = yes
+}
+
+camp_rework_gui_expand_selected_pool = {
+	set_temp_variable = { camp_gui_political_cost = constant:camp_rework_cost.activation_pp }
+	if = {
+		limit = { var:camp_selected_state_id = { is_valid_camp_active_site_state = yes } }
+		set_temp_variable = { camp_gui_political_cost = constant:camp_rework_cost.expansion_pp }
+	}
+	camp_rework_gui_pay_political_cost = yes
+	var:camp_selected_state_id = {
+		if = {
+			limit = { is_valid_camp_active_site_state = yes }
+			PREV = { camp_rework_expand_labor_in_from = yes }
+		}
+		else = {
+			PREV = { camp_rework_activate_detention_in_from = yes }
+		}
+	}
+	camp_rework_rebuild_display_values = yes
+}
+
+camp_rework_gui_start_labor_project = {
+	set_temp_variable = { camp_gui_political_cost = constant:camp_rework_cost.labor_project_pp }
+	camp_rework_gui_pay_political_cost = yes
+	var:camp_selected_state_id = {
+		PREV = {
+			set_temp_variable = { camp_requested_project_type = constant:camp_rework_project_type.construction }
+			camp_rework_start_generic_labor_project_in_from = yes
+			activate_mission = generic_labor_project_cycle
+		}
+	}
+	camp_rework_rebuild_display_values = yes
+}
+
+camp_rework_gui_allocate_guards = {
+	set_temp_variable = { camp_gui_political_cost = constant:camp_rework_cost.guard_pp }
+	camp_rework_gui_pay_political_cost = yes
+	camp_rework_allocate_additional_guards = yes
+	camp_rework_rebuild_display_values = yes
+}
+
+camp_rework_reduce_labor_quotas = {
+	set_temp_variable = { camp_quota_duration_days = constant:camp_rework_timing.idea_medium_days }
+	set_country_flag = {
+		flag = camp_rework_quotas_reduced
+		days = camp_quota_duration_days
+	}
+	add_to_variable = { camp_policy_labor_output = constant:camp_rework_country_value.quota_relief }
+	add_to_variable = { camp_policy_population_loss = constant:camp_rework_country_value.quota_relief }
+	add_to_variable = { camp_policy_resistance_pressure = constant:camp_rework_country_value.guard_relief }
+	add_to_variable = { camp_policy_overstretch = constant:camp_rework_country_value.quota_relief }
+	add_to_variable = { camp_policy_reform = constant:camp_rework_country_value.reform_minor }
+	camp_rework_recalculate_country_values = yes
+}
+
+camp_rework_gui_reduce_quotas = {
+	set_temp_variable = { camp_gui_political_cost = constant:camp_rework_cost.guard_pp }
+	camp_rework_gui_pay_political_cost = yes
+	camp_rework_reduce_labor_quotas = yes
+	camp_rework_rebuild_display_values = yes
+}
+
+camp_rework_gui_inspect_selected_site = {
+	set_temp_variable = { camp_gui_political_cost = constant:camp_rework_cost.review_pp }
+	camp_rework_gui_pay_political_cost = yes
+	set_temp_variable = { camp_inspection_duration_days = constant:camp_rework_timing.idea_medium_days }
+	set_country_flag = {
+		flag = camp_rework_inspection_active
+		days = camp_inspection_duration_days
+	}
+	set_country_flag = camp_rework_reform_route_open
+	set_country_flag = camp_rework_expansion_frozen
+	add_to_variable = { camp_policy_reform = constant:camp_rework_country_value.reform_major }
+	add_to_variable = { camp_policy_visibility = constant:camp_rework_country_value.visibility_minor }
+	var:camp_selected_state_id = {
+		set_state_flag = camp_rework_site_under_inspection
+		add_to_variable = { camp_state_observer_exposure = constant:camp_rework_discovery_factor.discovery_observer_gain }
+		clamp_variable = { var = camp_state_observer_exposure min = 0 max = constant:camp_rework_threshold.max_value }
+	}
+	camp_rework_rebuild_display_values = yes
+}
+
+camp_rework_gui_begin_selected_dismantlement = {
+	set_temp_variable = { camp_gui_political_cost = constant:camp_rework_cost.dismantle_pp }
+	camp_rework_gui_pay_political_cost = yes
+	camp_rework_consume_dismantlement_resources = yes
+	set_variable = { camp_gui_dismantlement_state_id = camp_selected_state_id }
+	var:camp_gui_dismantlement_state_id = { camp_rework_start_dismantlement = yes }
+	set_country_flag = camp_rework_gui_dismantlement_active
+	activate_mission = camp_gui_selected_dismantlement_mission
+	camp_rework_rebuild_display_values = yes
+}
+
+camp_rework_gui_complete_selected_dismantlement = {
+	if = {
+		limit = { has_variable = camp_gui_dismantlement_state_id }
+		var:camp_gui_dismantlement_state_id = {
+			if = {
+				limit = {
+					has_variable = genocide_responsible_country
+					var:genocide_responsible_country = { tag = ROOT }
+				}
+				camp_rework_complete_dismantlement = yes
+			}
+		}
+	}
+	clr_country_flag = camp_rework_gui_dismantlement_active
+	clear_variable = camp_gui_dismantlement_state_id
+	camp_rework_rebuild_display_values = yes
+}
+
+camp_rework_gui_cancel_selected_dismantlement = {
+	if = {
+		limit = { has_variable = camp_gui_dismantlement_state_id }
+		var:camp_gui_dismantlement_state_id = {
+			clr_state_flag = camp_rework_site_reforming
+			clr_state_flag = camp_rework_site_dismantlement_in_progress
+		}
+	}
+	clr_country_flag = camp_rework_gui_dismantlement_active
+	clear_variable = camp_gui_dismantlement_state_id
+	camp_rework_rebuild_display_values = yes
+}
+
+camp_rework_gui_destroy_selected_evidence = {
+	set_temp_variable = { camp_gui_political_cost = constant:camp_rework_cost.evidence_pp }
+	camp_rework_gui_pay_political_cost = yes
+	camp_rework_consume_evidence_resources = yes
+	var:camp_selected_state_id = { camp_rework_destroy_evidence = yes }
+	camp_rework_rebuild_display_values = yes
+}
+
+camp_rework_gui_apply_selected_chemical_method = {
+	set_temp_variable = { camp_gui_political_cost = constant:camp_rework_cost.chemical_pp }
+	camp_rework_gui_pay_political_cost = yes
+	var:camp_selected_state_id = { PREV = { camp_rework_apply_chemical_escalation_in_from = yes } }
+	camp_rework_rebuild_display_values = yes
+}
+
+camp_rework_gui_apply_selected_biological_method = {
+	set_temp_variable = { camp_gui_political_cost = constant:camp_rework_cost.biological_pp }
+	camp_rework_gui_pay_political_cost = yes
+	var:camp_selected_state_id = { PREV = { camp_rework_apply_biological_escalation_in_from = yes } }
+	camp_rework_rebuild_display_values = yes
+}
+
+camp_rework_select_ai_state = {
+	clear_variable = camp_ai_selected_state_id
+	camp_rework_build_pool_arrays = yes
+	if = {
+		limit = { check_variable = { camp_pool_occupied_states^num > 0 } }
+		random_scope_in_array = {
+			array = camp_pool_occupied_states
+			PREV = { set_variable = { camp_ai_selected_state_id = PREV.id } }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { camp_pool_colonial_states^num > 0 } }
+		random_scope_in_array = {
+			array = camp_pool_colonial_states
+			PREV = { set_variable = { camp_ai_selected_state_id = PREV.id } }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { camp_pool_noncore_states^num > 0 } }
+		random_scope_in_array = {
+			array = camp_pool_noncore_states
+			PREV = { set_variable = { camp_ai_selected_state_id = PREV.id } }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { camp_pool_periphery_states^num > 0 } }
+		random_scope_in_array = {
+			array = camp_pool_periphery_states
+			PREV = { set_variable = { camp_ai_selected_state_id = PREV.id } }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { camp_pool_core_fallback_states^num > 0 } }
+		random_scope_in_array = {
+			array = camp_pool_core_fallback_states
+			PREV = { set_variable = { camp_ai_selected_state_id = PREV.id } }
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Shared fallback, cover-up, and dismantlement lifecycle
+# ---------------------------------------------------------------------------
+
+camp_rework_apply_core_fallback_penalty = {
+	if = {
+		limit = {
+			check_variable = { camp_state_pool_type = constant:camp_rework_pool_type.core_fallback }
+			NOT = { has_state_flag = camp_rework_core_fallback_penalty_applied }
+			has_variable = genocide_responsible_country
+		}
+		set_state_flag = camp_rework_core_fallback_penalty_applied
+		var:genocide_responsible_country = {
+			camp_rework_initialize_country_variables = yes
+			add_stability = constant:camp_rework_cost.stability_major
+			add_war_support = constant:camp_rework_cost.war_support_major
+			add_to_variable = { camp_policy_legitimacy = constant:camp_rework_country_value.legitimacy_major }
+			add_to_variable = { camp_policy_evidence = constant:camp_rework_country_value.evidence_major }
+			add_to_variable = { camp_policy_visibility = constant:camp_rework_country_value.visibility_major }
+		}
+	}
+}
+
+camp_rework_start_dismantlement = {
+	set_state_flag = camp_rework_site_reforming
+	set_temp_variable = { camp_dismantlement_days = constant:camp_rework_timing.dismantle_days }
+	set_state_flag = {
+		flag = camp_rework_site_dismantlement_in_progress
+		days = camp_dismantlement_days
+	}
+	if = {
+		limit = { has_variable = genocide_responsible_country }
+		var:genocide_responsible_country = {
+			set_country_flag = camp_rework_dismantlement_in_progress
+			set_country_flag = camp_rework_expansion_frozen
+			add_to_variable = { camp_policy_reform = constant:camp_rework_country_value.reform_major }
+			camp_rework_register_country_for_monthly_pulse = yes
+		}
+	}
+}
+
+camp_rework_complete_dismantlement = {
+	camp_rework_refresh_state_site_profile = yes
+	if = {
+		limit = { check_variable = { camp_state_site_type > constant:camp_rework_site_type.none } }
+		set_variable = { camp_state_evidence_site_type = camp_state_site_type }
+	}
+	if = {
+		limit = { concentration_camp > 0 }
+		remove_building = { type = concentration_camp level = 1 }
+	}
+	if = {
+		limit = { extermination_camp > 0 }
+		remove_building = { type = extermination_camp level = 1 }
+	}
+	if = {
+		limit = { gulag_labor_camp_network > 0 }
+		remove_building = { type = gulag_labor_camp_network level = 1 }
+	}
+	if = {
+		limit = { has_dynamic_modifier = { modifier = genocide_concentration_camp_network_state } }
+		remove_dynamic_modifier = { modifier = genocide_concentration_camp_network_state }
+	}
+	if = {
+		limit = { has_dynamic_modifier = { modifier = genocide_forced_labor_exploitation_state } }
+		remove_dynamic_modifier = { modifier = genocide_forced_labor_exploitation_state }
+	}
+	if = {
+		limit = { has_dynamic_modifier = { modifier = genocide_camp_sabotage_pressure_state } }
+		remove_dynamic_modifier = { modifier = genocide_camp_sabotage_pressure_state }
+	}
+	clr_state_flag = genocide_concentration_site
+	clr_state_flag = genocide_extermination_site
+	clr_state_flag = genocide_gulag_site
+	clr_state_flag = genocide_auschwitz_experiment_site
+	clr_state_flag = genocide_ss_laboratory_site
+	clr_state_flag = genocide_japanese_biowarfare_atrocity_site
+	clr_state_flag = camp_rework_expanded_labor_site
+	clr_state_flag = camp_rework_experiment_site
+	clr_state_flag = camp_rework_radicalized_site
+	clr_state_flag = camp_rework_chemical_method_active
+	clr_state_flag = camp_rework_biological_method_active
+	clr_state_flag = genocide_restricted_chemical_site_active
+	clr_state_flag = camp_rework_site_reforming
+	clr_state_flag = camp_rework_site_dismantlement_in_progress
+	set_state_flag = camp_rework_site_dismantled
+	set_state_flag = genocide_destroyed_atrocity_site
+	set_state_flag = camp_rework_liberated_evidence
+	camp_rework_register_evidence_state = yes
+	camp_rework_unregister_inactive_site = yes
+	if = {
+		limit = { has_variable = genocide_responsible_country }
+		var:genocide_responsible_country = {
+			add_to_variable = { camp_policy_reform = constant:camp_rework_country_value.reform_major }
+			add_to_variable = { camp_policy_hardliner = constant:camp_rework_country_value.dismantle_reform_credit }
+			camp_rework_recalculate_country_values = yes
+			if = {
+				limit = { check_variable = { camp_active_site_count = 0 } }
+				clr_country_flag = camp_rework_dismantlement_in_progress
+				set_country_flag = camp_rework_reformed_legacy
+			}
+		}
+	}
+}
+
+camp_rework_destroy_evidence = {
+	set_temp_variable = { camp_rework_death_burst_percent = constant:camp_rework_death_percent.evidence_destruction }
+	set_temp_variable = { camp_rework_death_burst_cap = constant:camp_rework_death_cap.evidence }
+	set_temp_variable = { camp_rework_death_burst_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
+	camp_rework_apply_state_death_burst = yes
+	if = {
+		limit = {
+			check_variable = { camp_state_evidence_depth < constant:camp_rework_coverup.safe_evidence_ceiling }
+			NOT = { is_valid_camp_enemy_proximity_state = yes }
+		}
+		set_state_flag = genocide_evidence_destroyed
+		add_to_variable = { camp_state_evidence_depth = constant:camp_rework_coverup.success_evidence_relief }
+		clamp_variable = { var = camp_state_evidence_depth min = 0 max = constant:camp_rework_threshold.max_value }
+		if = {
+			limit = { has_variable = genocide_responsible_country }
+			var:genocide_responsible_country = {
+				add_to_variable = { camp_policy_visibility = constant:camp_rework_coverup.success_visibility_relief }
+				add_to_variable = { camp_policy_tribunal = constant:camp_rework_coverup.success_tribunal_gain }
+				set_temp_variable = { genocide_hidden_coverup_gain = constant:genocide_crisis_value.coverup_effort }
+				set_temp_variable = { genocide_hidden_coverup_severity = constant:condemnation_severity.major }
+				genocide_register_hidden_coverup = yes
+			}
+		}
+	}
+	else = {
+		set_state_flag = genocide_evidence_destroy_failed
+		set_state_flag = genocide_site_discovered
+		set_variable = { camp_state_evidence_status = constant:camp_rework_evidence_status.failed_coverup }
+		add_to_variable = { camp_state_evidence_depth = constant:camp_rework_coverup.failure_evidence_gain }
+		add_to_variable = { camp_state_observer_exposure = constant:camp_rework_discovery_factor.failed_coverup_observer_gain }
+		clamp_variable = { var = camp_state_observer_exposure min = 0 max = constant:camp_rework_threshold.max_value }
+		if = {
+			limit = {
+				has_variable = genocide_responsible_country
+				var:genocide_responsible_country = { exists = yes }
+			}
+			var:genocide_responsible_country = {
+				add_to_variable = { camp_policy_visibility = constant:camp_rework_coverup.failure_visibility_gain }
+				add_to_variable = { camp_policy_tribunal = constant:camp_rework_coverup.failure_tribunal_gain }
+				genocide_apply_discovery_to_responsible_from_prev_state = yes
+			}
+		}
+	}
+	camp_rework_register_evidence_state = yes
+}
+
+# ---------------------------------------------------------------------------
+# Versioned one-time migration. This is the only broad reconstruction pass.
+# ---------------------------------------------------------------------------
+
+camp_rework_run_versioned_migration = {
+	if = {
+		limit = {
+			NOT = {
+				check_variable = {
+					var = global.camp_rework_schema_version
+					value = constant:camp_rework_schema.current
+					compare = greater_than_or_equals
+				}
+			}
+		}
+		set_global_flag = camp_rework_migration_in_progress
+		clear_array = global.genocide_active_camp_states
+		clear_array = global.camp_repression_active_countries
+		# Pass one clears every destination before any controller can append a
+		# state to a different responsible country's arrays.
+		every_country = {
+			limit = { exists = yes }
+			clear_array = camp_active_site_states
+			clear_array = camp_evidence_states
+			camp_rework_initialize_country_variables = yes
+		}
+		# Pass two rebuilds state membership and preserves the stored perpetrator
+		# even when a different country currently controls the evidence site.
+		every_country = {
+			limit = { exists = yes }
+			every_controlled_state = {
+				limit = {
+					OR = {
+						concentration_camp > 0
+						extermination_camp > 0
+						gulag_labor_camp_network > 0
+						has_state_flag = genocide_concentration_site
+						has_state_flag = genocide_extermination_site
+						has_state_flag = genocide_gulag_site
+						has_state_flag = genocide_auschwitz_experiment_site
+						has_state_flag = genocide_ss_laboratory_site
+						has_state_flag = genocide_japanese_biowarfare_atrocity_site
+						has_state_flag = genocide_restricted_chemical_site
+						has_state_flag = genocide_site_discovered
+						has_state_flag = genocide_evidence_destroyed
+						has_state_flag = genocide_evidence_destroy_failed
+					}
+				}
+				if = {
+					limit = { NOT = { has_variable = genocide_responsible_country } }
+					set_variable = { genocide_responsible_country = PREV }
+				}
+				set_variable = { camp_state_pool_type = constant:camp_rework_pool_type.core_fallback }
+				if = {
+					limit = {
+						is_controlled_by = PREV
+						NOT = { is_owned_by = PREV }
+						NOT = { is_core_of = PREV }
+					}
+					set_variable = { camp_state_pool_type = constant:camp_rework_pool_type.occupied_noncore }
+				}
+				else_if = {
+					limit = {
+						is_owned_and_controlled_by = PREV
+						NOT = { is_core_of = PREV }
+					}
+					set_variable = { camp_state_pool_type = constant:camp_rework_pool_type.noncore }
+				}
+				else_if = {
+					limit = {
+						OR = {
+							has_state_flag = camp_rework_periphery_pool
+							has_state_flag = camp_rework_political_opposition_pool
+							has_state_flag = camp_rework_prison_labor_pool
+						}
+					}
+					set_variable = { camp_state_pool_type = constant:camp_rework_pool_type.periphery }
+				}
+				if = {
+					limit = {
+						NOT = { has_state_flag = genocide_historical_quiet_camp }
+						NOT = { has_state_flag = camp_rework_annexed_evidence_site }
+						OR = {
+							concentration_camp > 0
+							extermination_camp > 0
+							gulag_labor_camp_network > 0
+							has_state_flag = genocide_auschwitz_experiment_site
+							has_state_flag = genocide_ss_laboratory_site
+							has_state_flag = genocide_japanese_biowarfare_atrocity_site
+							has_state_flag = genocide_restricted_chemical_site_active
+						}
+					}
+					set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.none }
+					camp_rework_register_active_site = yes
+				}
+				if = {
+					limit = {
+						OR = {
+							has_state_flag = genocide_site_discovered
+							has_state_flag = genocide_evidence_destroyed
+							has_state_flag = genocide_evidence_destroy_failed
+							has_state_flag = genocide_restricted_chemical_site
+						}
+					}
+					camp_rework_register_evidence_state = yes
+				}
+			}
+		}
+		# Pass three recalculates only after cross-country array writes are done.
+		every_country = {
+			limit = {
+				exists = yes
+				OR = {
+					check_variable = { camp_active_site_states^num > 0 }
+					check_variable = { camp_evidence_states^num > 0 }
+					has_visible_camp_reform_work = yes
+				}
+			}
+			camp_rework_register_country_for_monthly_pulse = yes
+			camp_rework_recalculate_country_values = yes
+		}
+		set_variable = { global.camp_rework_schema_version = constant:camp_rework_schema.current }
+		clr_global_flag = camp_rework_migration_in_progress
+	}
+}
+
+# Country-specific idea and monthly bridge dispatchers are expanded by the
+# country packages. Keeping a stable shared call site avoids duplicate loops.
+camp_rework_refresh_country_specific_ideas = {
+	if = {
+		limit = { camp_rework_country_uses_generic_kit = yes }
+		if = {
+			limit = { has_country_flag = camp_rework_reformed_legacy }
+			remove_ideas = generic_detention_network_administration
+			remove_ideas = generic_expanded_labor_network
+			remove_ideas = generic_overextended_repression_network
+			remove_ideas = generic_radicalized_atrocity_policy
+			remove_ideas = generic_reform_pressure
+			if = {
+				limit = { NOT = { has_idea = generic_reformed_legacy } }
+				add_ideas = generic_reformed_legacy
+			}
+		}
+		else = {
+			remove_ideas = generic_detention_network_administration
+			remove_ideas = generic_expanded_labor_network
+			remove_ideas = generic_overextended_repression_network
+			if = {
+				limit = {
+					check_variable = {
+						var = camp_overstretch
+						value = constant:camp_rework_threshold.overstretched
+						compare = greater_than_or_equals
+					}
+				}
+				add_ideas = generic_overextended_repression_network
+			}
+			else_if = {
+				limit = {
+					OR = {
+						check_variable = { camp_expanded_site_count > 0 }
+						check_variable = { camp_labor_output > constant:camp_rework_threshold.band_medium }
+					}
+				}
+				add_ideas = generic_expanded_labor_network
+			}
+			else_if = {
+				limit = { check_variable = { camp_active_site_count > 0 } }
+				add_ideas = generic_detention_network_administration
+			}
+
+			if = {
+				limit = {
+					check_variable = { camp_radicalized_site_count > 0 }
+					NOT = { has_idea = generic_radicalized_atrocity_policy }
+				}
+				add_ideas = generic_radicalized_atrocity_policy
+			}
+			else_if = {
+				limit = {
+					has_idea = generic_radicalized_atrocity_policy
+					check_variable = { camp_radicalized_site_count = 0 }
+				}
+				remove_ideas = generic_radicalized_atrocity_policy
+			}
+
+			if = {
+				limit = {
+					has_visible_camp_reform_work = yes
+					NOT = { has_idea = generic_reform_pressure }
+				}
+				add_ideas = generic_reform_pressure
+			}
+			else_if = {
+				limit = {
+					has_idea = generic_reform_pressure
+					NOT = { has_visible_camp_reform_work = yes }
+				}
+				remove_ideas = generic_reform_pressure
+			}
+		}
+	}
+	camp_rework_refresh_major_country_ideas = yes
+}
+
+camp_rework_update_country_specific_monthly_bridges = {
+	camp_rework_update_major_country_monthly_bridge = yes
+}
+
+# ---------------------------------------------------------------------------
+# Abstract chemical and biological method tiers
+# ---------------------------------------------------------------------------
+
+camp_rework_resolve_restricted_method_tiers = {
+	set_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.none }
+	if = {
+		limit = { camp_rework_country_has_chemical_soman_activation_capacity = yes }
+		set_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.soman }
+	}
+	else_if = {
+		limit = { camp_rework_country_has_chemical_sarin_activation_capacity = yes }
+		set_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.sarin }
+	}
+	else_if = {
+		limit = { camp_rework_country_has_chemical_tabun_activation_capacity = yes }
+		set_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.tabun }
+	}
+	else_if = {
+		limit = { camp_rework_country_has_chemical_lewisite_activation_capacity = yes }
+		set_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.lewisite }
+	}
+	else_if = {
+		limit = { camp_rework_country_has_chemical_mustard_activation_capacity = yes }
+		set_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.mustard }
+	}
+	else_if = {
+		limit = { camp_rework_country_has_chemical_phosgene_activation_capacity = yes }
+		set_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.phosgene }
+	}
+	else_if = {
+		limit = { camp_rework_country_has_chemical_chlorine_activation_capacity = yes }
+		set_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.chlorine }
+	}
+
+	set_variable = { camp_biological_killing_efficiency = constant:camp_rework_biological_tier.none }
+	if = {
+		limit = { camp_rework_country_has_biological_smallpox_activation_capacity = yes }
+		set_variable = { camp_biological_killing_efficiency = constant:camp_rework_biological_tier.smallpox }
+	}
+	else_if = {
+		limit = { camp_rework_country_has_biological_plague_activation_capacity = yes }
+		set_variable = { camp_biological_killing_efficiency = constant:camp_rework_biological_tier.plague }
+	}
+	else_if = {
+		limit = { camp_rework_country_has_biological_tularemia_activation_capacity = yes }
+		set_variable = { camp_biological_killing_efficiency = constant:camp_rework_biological_tier.tularemia }
+	}
+	else_if = {
+		limit = { camp_rework_country_has_biological_anthrax_activation_capacity = yes }
+		set_variable = { camp_biological_killing_efficiency = constant:camp_rework_biological_tier.anthrax }
+	}
+
+	set_variable = { display_camp_chemical_killing_efficiency = camp_chemical_killing_efficiency }
+	set_variable = { display_camp_biological_killing_efficiency = camp_biological_killing_efficiency }
+}
+
+camp_rework_prepare_chemical_method_outcome = {
+	set_temp_variable = { camp_rework_method_death_factor = 1 }
+	set_temp_variable = { camp_method_evidence_gain = 0 }
+	set_temp_variable = { camp_method_accident_pressure = 0 }
+	set_temp_variable = { camp_method_stockpile_cost = 0 }
+	set_temp_variable = { chem_dose_each = constant:camp_rework_chemical_contamination.chlorine_dose }
+	set_temp_variable = { chem_state_duration_add = constant:camp_rework_chemical_contamination.chlorine_days }
+	if = {
+		limit = { check_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.soman } }
+		set_temp_variable = { camp_rework_method_death_factor = constant:camp_rework_chemical_factor.soman_deaths }
+		set_temp_variable = { camp_method_evidence_gain = constant:camp_rework_chemical_factor.soman_evidence }
+		set_temp_variable = { camp_method_accident_pressure = constant:camp_rework_chemical_factor.soman_accident }
+		set_temp_variable = { camp_method_stockpile_cost = constant:camp_rework_chemical_cost.soman_cylinders }
+		set_temp_variable = { chem_dose_each = constant:camp_rework_chemical_contamination.soman_dose }
+		set_temp_variable = { chem_state_duration_add = constant:camp_rework_chemical_contamination.soman_days }
+	}
+	else_if = {
+		limit = { check_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.sarin } }
+		set_temp_variable = { camp_rework_method_death_factor = constant:camp_rework_chemical_factor.sarin_deaths }
+		set_temp_variable = { camp_method_evidence_gain = constant:camp_rework_chemical_factor.sarin_evidence }
+		set_temp_variable = { camp_method_accident_pressure = constant:camp_rework_chemical_factor.sarin_accident }
+		set_temp_variable = { camp_method_stockpile_cost = constant:camp_rework_chemical_cost.sarin_cylinders }
+		set_temp_variable = { chem_dose_each = constant:camp_rework_chemical_contamination.sarin_dose }
+		set_temp_variable = { chem_state_duration_add = constant:camp_rework_chemical_contamination.sarin_days }
+	}
+	else_if = {
+		limit = { check_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.tabun } }
+		set_temp_variable = { camp_rework_method_death_factor = constant:camp_rework_chemical_factor.tabun_deaths }
+		set_temp_variable = { camp_method_evidence_gain = constant:camp_rework_chemical_factor.tabun_evidence }
+		set_temp_variable = { camp_method_accident_pressure = constant:camp_rework_chemical_factor.tabun_accident }
+		set_temp_variable = { camp_method_stockpile_cost = constant:camp_rework_chemical_cost.tabun_cylinders }
+		set_temp_variable = { chem_dose_each = constant:camp_rework_chemical_contamination.tabun_dose }
+		set_temp_variable = { chem_state_duration_add = constant:camp_rework_chemical_contamination.tabun_days }
+	}
+	else_if = {
+		limit = { check_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.lewisite } }
+		set_temp_variable = { camp_rework_method_death_factor = constant:camp_rework_chemical_factor.lewisite_deaths }
+		set_temp_variable = { camp_method_evidence_gain = constant:camp_rework_chemical_factor.lewisite_evidence }
+		set_temp_variable = { camp_method_accident_pressure = constant:camp_rework_chemical_factor.lewisite_accident }
+		set_temp_variable = { camp_method_stockpile_cost = constant:camp_rework_chemical_cost.lewisite_cylinders }
+		set_temp_variable = { chem_dose_each = constant:camp_rework_chemical_contamination.lewisite_dose }
+		set_temp_variable = { chem_state_duration_add = constant:camp_rework_chemical_contamination.lewisite_days }
+	}
+	else_if = {
+		limit = { check_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.mustard } }
+		set_temp_variable = { camp_rework_method_death_factor = constant:camp_rework_chemical_factor.mustard_deaths }
+		set_temp_variable = { camp_method_evidence_gain = constant:camp_rework_chemical_factor.mustard_evidence }
+		set_temp_variable = { camp_method_accident_pressure = constant:camp_rework_chemical_factor.mustard_accident }
+		set_temp_variable = { camp_method_stockpile_cost = constant:camp_rework_chemical_cost.mustard_cylinders }
+		set_temp_variable = { chem_dose_each = constant:camp_rework_chemical_contamination.mustard_dose }
+		set_temp_variable = { chem_state_duration_add = constant:camp_rework_chemical_contamination.mustard_days }
+	}
+	else_if = {
+		limit = { check_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.phosgene } }
+		set_temp_variable = { camp_rework_method_death_factor = constant:camp_rework_chemical_factor.phosgene_deaths }
+		set_temp_variable = { camp_method_evidence_gain = constant:camp_rework_chemical_factor.phosgene_evidence }
+		set_temp_variable = { camp_method_accident_pressure = constant:camp_rework_chemical_factor.phosgene_accident }
+		set_temp_variable = { camp_method_stockpile_cost = constant:camp_rework_chemical_cost.phosgene_cylinders }
+		set_temp_variable = { chem_dose_each = constant:camp_rework_chemical_contamination.phosgene_dose }
+		set_temp_variable = { chem_state_duration_add = constant:camp_rework_chemical_contamination.phosgene_days }
+	}
+	else_if = {
+		limit = { check_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.chlorine } }
+		set_temp_variable = { camp_rework_method_death_factor = constant:camp_rework_chemical_factor.chlorine_deaths }
+		set_temp_variable = { camp_method_evidence_gain = constant:camp_rework_chemical_factor.chlorine_evidence }
+		set_temp_variable = { camp_method_accident_pressure = constant:camp_rework_chemical_factor.chlorine_accident }
+		set_temp_variable = { camp_method_stockpile_cost = constant:camp_rework_chemical_cost.chlorine_cylinders }
+	}
+}
+
+camp_rework_consume_chemical_stockpile = {
+	set_temp_variable = { camp_method_stockpile_remove = camp_method_stockpile_cost }
+	multiply_temp_variable = { camp_method_stockpile_remove = -1 }
+	if = {
+		limit = { check_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.soman } }
+		add_equipment_to_stockpile = { type = chemical_soman_payload_cylinder_1 amount = camp_method_stockpile_remove }
+	}
+	else_if = {
+		limit = { check_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.sarin } }
+		add_equipment_to_stockpile = { type = chemical_sarin_payload_cylinder_1 amount = camp_method_stockpile_remove }
+	}
+	else_if = {
+		limit = { check_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.tabun } }
+		add_equipment_to_stockpile = { type = chemical_tabun_payload_cylinder_1 amount = camp_method_stockpile_remove }
+	}
+	else_if = {
+		limit = { check_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.lewisite } }
+		add_equipment_to_stockpile = { type = chemical_lewisite_payload_cylinder_1 amount = camp_method_stockpile_remove }
+	}
+	else_if = {
+		limit = { check_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.mustard } }
+		add_equipment_to_stockpile = { type = chemical_mustard_payload_cylinder_1 amount = camp_method_stockpile_remove }
+	}
+	else_if = {
+		limit = { check_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.phosgene } }
+		add_equipment_to_stockpile = { type = chemical_phosgene_payload_cylinder_1 amount = camp_method_stockpile_remove }
+	}
+	else_if = {
+		limit = { check_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.chlorine } }
+		add_equipment_to_stockpile = { type = chemical_chlorine_payload_cylinder_1 amount = camp_method_stockpile_remove }
+	}
+}
+
+camp_rework_apply_chemical_escalation_in_from = {
+	camp_rework_resolve_restricted_method_tiers = yes
+	if = {
+		limit = {
+			check_variable = { camp_chemical_killing_efficiency > constant:camp_rework_chemical_tier.none }
+			FROM = { camp_rework_state_is_chemical_escalation_target = yes }
+		}
+		camp_rework_prepare_chemical_method_outcome = yes
+		camp_rework_consume_chemical_stockpile = yes
+		add_to_variable = { camp_policy_population_loss = constant:camp_rework_country_value.population_loss_major }
+		add_to_variable = { camp_policy_resistance_pressure = camp_method_accident_pressure }
+		add_to_variable = { camp_policy_evidence = camp_method_evidence_gain }
+		add_to_variable = { camp_policy_visibility = constant:camp_rework_country_value.visibility_major }
+		add_to_variable = { camp_policy_tribunal = constant:camp_rework_country_value.tribunal_major }
+		add_to_variable = { camp_policy_overstretch = constant:camp_rework_country_value.overstretch_major }
+		FROM = {
+			if = {
+				limit = { NOT = { has_variable = genocide_responsible_country } }
+				set_variable = { genocide_responsible_country = ROOT }
+			}
+			set_state_flag = genocide_site_has_responsible_country
+			clr_state_flag = camp_rework_restricted_method_shortage
+			set_state_flag = genocide_restricted_chemical_site
+			set_state_flag = camp_rework_contaminated_evidence_site
+			set_state_flag = {
+				flag = genocide_restricted_chemical_site_active
+				days = chem_state_duration_add
+			}
+			set_state_flag = {
+				flag = camp_rework_chemical_method_active
+				days = chem_state_duration_add
+			}
+			set_variable = { camp_state_chemical_killing_efficiency = ROOT.camp_chemical_killing_efficiency }
+			add_to_variable = { camp_state_evidence_depth = camp_method_evidence_gain }
+			add_to_variable = { camp_state_resistance_accumulation = camp_method_accident_pressure }
+			chem_apply_state_contamination = yes
+			camp_rework_record_latest_state_deaths = yes
+			set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.none }
+			camp_rework_register_active_site = yes
+			camp_rework_register_evidence_state = yes
+		}
+		camp_rework_recalculate_country_values = yes
+	}
+	set_temp_variable = { camp_rework_method_death_factor = 0 }
+}
+
+camp_rework_prepare_biological_method_outcome = {
+	set_temp_variable = { camp_rework_method_death_factor = 1 }
+	set_temp_variable = { camp_method_evidence_gain = 0 }
+	set_temp_variable = { camp_method_accident_pressure = 0 }
+	set_temp_variable = { camp_method_stockpile_cost = 0 }
+	set_temp_variable = { contamination_days = constant:camp_rework_monthly.biological_contamination_days }
+	if = {
+		limit = { check_variable = { camp_biological_killing_efficiency = constant:camp_rework_biological_tier.smallpox } }
+		set_temp_variable = { camp_rework_method_death_factor = constant:camp_rework_biological_factor.smallpox_deaths }
+		set_temp_variable = { camp_method_evidence_gain = constant:camp_rework_biological_factor.smallpox_evidence }
+		set_temp_variable = { camp_method_accident_pressure = constant:camp_rework_biological_factor.smallpox_accident }
+		set_temp_variable = { camp_method_stockpile_cost = constant:camp_rework_equipment_cost.biological_smallpox }
+	}
+	else_if = {
+		limit = { check_variable = { camp_biological_killing_efficiency = constant:camp_rework_biological_tier.plague } }
+		set_temp_variable = { camp_rework_method_death_factor = constant:camp_rework_biological_factor.plague_deaths }
+		set_temp_variable = { camp_method_evidence_gain = constant:camp_rework_biological_factor.plague_evidence }
+		set_temp_variable = { camp_method_accident_pressure = constant:camp_rework_biological_factor.plague_accident }
+		set_temp_variable = { camp_method_stockpile_cost = constant:camp_rework_equipment_cost.biological_plague }
+	}
+	else_if = {
+		limit = { check_variable = { camp_biological_killing_efficiency = constant:camp_rework_biological_tier.tularemia } }
+		set_temp_variable = { camp_rework_method_death_factor = constant:camp_rework_biological_factor.tularemia_deaths }
+		set_temp_variable = { camp_method_evidence_gain = constant:camp_rework_biological_factor.tularemia_evidence }
+		set_temp_variable = { camp_method_accident_pressure = constant:camp_rework_biological_factor.tularemia_accident }
+		set_temp_variable = { camp_method_stockpile_cost = constant:camp_rework_equipment_cost.biological_tularemia }
+	}
+	else_if = {
+		limit = { check_variable = { camp_biological_killing_efficiency = constant:camp_rework_biological_tier.anthrax } }
+		set_temp_variable = { camp_rework_method_death_factor = constant:camp_rework_biological_factor.anthrax_deaths }
+		set_temp_variable = { camp_method_evidence_gain = constant:camp_rework_biological_factor.anthrax_evidence }
+		set_temp_variable = { camp_method_accident_pressure = constant:camp_rework_biological_factor.anthrax_accident }
+		set_temp_variable = { camp_method_stockpile_cost = constant:camp_rework_equipment_cost.biological_anthrax }
+	}
+}
+
+camp_rework_consume_biological_stockpile = {
+	set_temp_variable = { camp_method_stockpile_remove = camp_method_stockpile_cost }
+	multiply_temp_variable = { camp_method_stockpile_remove = -1 }
+	if = {
+		limit = { check_variable = { camp_biological_killing_efficiency = constant:camp_rework_biological_tier.smallpox } }
+		add_equipment_to_stockpile = { type = smallpox_bomb_1 amount = camp_method_stockpile_remove }
+	}
+	else_if = {
+		limit = { check_variable = { camp_biological_killing_efficiency = constant:camp_rework_biological_tier.plague } }
+		add_equipment_to_stockpile = { type = plague_bomb_1 amount = camp_method_stockpile_remove }
+	}
+	else_if = {
+		limit = { check_variable = { camp_biological_killing_efficiency = constant:camp_rework_biological_tier.tularemia } }
+		add_equipment_to_stockpile = { type = tularemia_bomb_1 amount = camp_method_stockpile_remove }
+	}
+	else_if = {
+		limit = { check_variable = { camp_biological_killing_efficiency = constant:camp_rework_biological_tier.anthrax } }
+		add_equipment_to_stockpile = { type = anthrax_bomb_1 amount = camp_method_stockpile_remove }
+	}
+}
+
+camp_rework_apply_biological_escalation_in_from = {
+	camp_rework_resolve_restricted_method_tiers = yes
+	if = {
+		limit = {
+			check_variable = { camp_biological_killing_efficiency > constant:camp_rework_biological_tier.none }
+			FROM = { camp_rework_state_is_biological_escalation_target = yes }
+		}
+		camp_rework_prepare_biological_method_outcome = yes
+		camp_rework_consume_biological_stockpile = yes
+		add_to_variable = { camp_policy_population_loss = constant:camp_rework_country_value.population_loss_major }
+		add_to_variable = { camp_policy_resistance_pressure = camp_method_accident_pressure }
+		add_to_variable = { camp_policy_evidence = camp_method_evidence_gain }
+		add_to_variable = { camp_policy_visibility = constant:camp_rework_country_value.visibility_major }
+		add_to_variable = { camp_policy_tribunal = constant:camp_rework_country_value.tribunal_major }
+		add_to_variable = { camp_policy_overstretch = constant:camp_rework_country_value.overstretch_major }
+		FROM = {
+			if = {
+				limit = { NOT = { has_variable = genocide_responsible_country } }
+				set_variable = { genocide_responsible_country = ROOT }
+			}
+			set_state_flag = genocide_site_has_responsible_country
+			clr_state_flag = camp_rework_restricted_method_shortage
+			set_state_flag = camp_rework_biological_evidence_site
+			set_state_flag = camp_rework_contaminated_evidence_site
+			set_state_flag = {
+				flag = camp_rework_biological_method_active
+				days = contamination_days
+			}
+			set_variable = { camp_state_biological_killing_efficiency = ROOT.camp_biological_killing_efficiency }
+			add_to_variable = { camp_state_evidence_depth = camp_method_evidence_gain }
+			add_to_variable = { camp_state_resistance_accumulation = camp_method_accident_pressure }
+			if = {
+				limit = { ROOT = { original_tag = JAP } }
+				set_state_flag = genocide_japanese_biowarfare_atrocity_site
+			}
+			if = {
+				limit = { check_variable = { camp_state_biological_killing_efficiency = constant:camp_rework_biological_tier.smallpox } }
+				apply_smallpox_contamination = yes
+			}
+			else_if = {
+				limit = { check_variable = { camp_state_biological_killing_efficiency = constant:camp_rework_biological_tier.plague } }
+				apply_plague_contamination = yes
+			}
+			else_if = {
+				limit = { check_variable = { camp_state_biological_killing_efficiency = constant:camp_rework_biological_tier.tularemia } }
+				apply_tularemia_contamination = yes
+			}
+			else_if = {
+				limit = { check_variable = { camp_state_biological_killing_efficiency = constant:camp_rework_biological_tier.anthrax } }
+				apply_anthrax_contamination = yes
+			}
+			camp_rework_record_latest_state_deaths = yes
+			set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.none }
+			camp_rework_register_active_site = yes
+			camp_rework_register_evidence_state = yes
+		}
+		camp_rework_recalculate_country_values = yes
+	}
+	set_temp_variable = { camp_rework_method_death_factor = 0 }
+}
+
+# ---------------------------------------------------------------------------
+# Shared resource costs and generic-country action effects
+# ---------------------------------------------------------------------------
+
+camp_rework_consume_activation_resources = {
+	set_temp_variable = { camp_cost_remove = constant:camp_rework_cost.activation_manpower }
+	multiply_temp_variable = { camp_cost_remove = -1 }
+	add_manpower = camp_cost_remove
+	set_temp_variable = { camp_cost_remove = constant:camp_rework_equipment_cost.support_equipment }
+	multiply_temp_variable = { camp_cost_remove = -1 }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = camp_cost_remove }
+	set_temp_variable = { camp_cost_remove = constant:camp_rework_cost.activation_command }
+	multiply_temp_variable = { camp_cost_remove = -1 }
+	add_command_power = camp_cost_remove
+}
+
+camp_rework_consume_expansion_resources = {
+	set_temp_variable = { camp_cost_remove = constant:camp_rework_cost.expansion_manpower }
+	multiply_temp_variable = { camp_cost_remove = -1 }
+	add_manpower = camp_cost_remove
+	set_temp_variable = { camp_cost_remove = constant:camp_rework_equipment_cost.infantry_equipment }
+	multiply_temp_variable = { camp_cost_remove = -1 }
+	add_equipment_to_stockpile = { type = infantry_equipment amount = camp_cost_remove }
+	set_temp_variable = { camp_cost_remove = constant:camp_rework_equipment_cost.support_equipment }
+	multiply_temp_variable = { camp_cost_remove = -1 }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = camp_cost_remove }
+	set_temp_variable = { camp_cost_remove = constant:camp_rework_equipment_cost.trains }
+	multiply_temp_variable = { camp_cost_remove = -1 }
+	add_equipment_to_stockpile = { type = train_equipment_1 amount = camp_cost_remove }
+	set_temp_variable = { camp_cost_remove = constant:camp_rework_cost.expansion_command }
+	multiply_temp_variable = { camp_cost_remove = -1 }
+	add_command_power = camp_cost_remove
+}
+
+camp_rework_consume_labor_project_resources = {
+	set_temp_variable = { camp_cost_remove = constant:camp_rework_equipment_cost.motorized_equipment }
+	multiply_temp_variable = { camp_cost_remove = -1 }
+	add_equipment_to_stockpile = { type = motorized_equipment_1 amount = camp_cost_remove }
+	set_temp_variable = { camp_cost_remove = constant:camp_rework_equipment_cost.trains }
+	multiply_temp_variable = { camp_cost_remove = -1 }
+	add_equipment_to_stockpile = { type = train_equipment_1 amount = camp_cost_remove }
+	set_temp_variable = { camp_cost_remove = constant:camp_rework_equipment_cost.support_equipment }
+	multiply_temp_variable = { camp_cost_remove = -1 }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = camp_cost_remove }
+}
+
+camp_rework_consume_guard_resources = {
+	set_temp_variable = { camp_cost_remove = constant:camp_rework_cost.guard_manpower }
+	multiply_temp_variable = { camp_cost_remove = -1 }
+	add_manpower = camp_cost_remove
+	set_temp_variable = { camp_cost_remove = constant:camp_rework_equipment_cost.infantry_equipment }
+	multiply_temp_variable = { camp_cost_remove = -1 }
+	add_equipment_to_stockpile = { type = infantry_equipment amount = camp_cost_remove }
+	set_temp_variable = { camp_cost_remove = constant:camp_rework_cost.guard_command }
+	multiply_temp_variable = { camp_cost_remove = -1 }
+	add_command_power = camp_cost_remove
+}
+
+camp_rework_consume_evidence_resources = {
+	set_temp_variable = { camp_cost_remove = constant:camp_rework_cost.activation_manpower }
+	multiply_temp_variable = { camp_cost_remove = -1 }
+	add_manpower = camp_cost_remove
+	set_temp_variable = { camp_cost_remove = constant:camp_rework_equipment_cost.support_equipment }
+	multiply_temp_variable = { camp_cost_remove = -1 }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = camp_cost_remove }
+	set_temp_variable = { camp_cost_remove = constant:camp_rework_cost.evidence_command }
+	multiply_temp_variable = { camp_cost_remove = -1 }
+	add_command_power = camp_cost_remove
+}
+
+camp_rework_consume_dismantlement_resources = {
+	set_temp_variable = { camp_cost_remove = constant:camp_rework_cost.dismantle_manpower }
+	multiply_temp_variable = { camp_cost_remove = -1 }
+	add_manpower = camp_cost_remove
+	set_temp_variable = { camp_cost_remove = constant:camp_rework_equipment_cost.support_equipment }
+	multiply_temp_variable = { camp_cost_remove = -1 }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = camp_cost_remove }
+}
+
+camp_rework_activate_detention_in_from = {
+	genocide_activate_crisis = yes
+	camp_rework_consume_activation_resources = yes
+	add_to_variable = { camp_policy_coercive_control = constant:camp_rework_country_value.coercive_control_minor }
+	add_to_variable = { camp_policy_population_loss = constant:camp_rework_country_value.population_loss_minor }
+	add_to_variable = { camp_policy_evidence = constant:camp_rework_country_value.evidence_minor }
+	add_to_variable = { camp_policy_overstretch = constant:camp_rework_country_value.overstretch_minor }
+	FROM = {
+		if = {
+			limit = { NOT = { has_variable = genocide_responsible_country } }
+			set_variable = { genocide_responsible_country = ROOT }
+		}
+		set_state_flag = genocide_site_has_responsible_country
+		set_state_flag = genocide_concentration_site
+		set_state_flag = genocide_atrocity_site_known_to_regime
+		if = {
+			limit = { NOT = { concentration_camp > 0 } }
+			add_building_construction = {
+				type = concentration_camp
+				level = 1
+				instant_build = yes
+			}
+		}
+		set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.detention }
+		camp_rework_register_active_site = yes
+	}
+	set_country_flag = camp_rework_managed_network_visible
+	camp_rework_recalculate_country_values = yes
+	camp_rework_refresh_lifecycle_ideas = yes
+}
+
+camp_rework_expand_labor_in_from = {
+	camp_rework_consume_expansion_resources = yes
+	add_to_variable = { camp_policy_labor_output = constant:camp_rework_country_value.labor_output_major }
+	add_to_variable = { camp_policy_coercive_control = constant:camp_rework_country_value.coercive_control_major }
+	add_to_variable = { camp_policy_population_loss = constant:camp_rework_country_value.population_loss_major }
+	add_to_variable = { camp_policy_resistance_pressure = constant:camp_rework_country_value.resistance_major }
+	add_to_variable = { camp_policy_evidence = constant:camp_rework_country_value.evidence_major }
+	add_to_variable = { camp_policy_overstretch = constant:camp_rework_country_value.overstretch_major }
+	FROM = {
+		if = {
+			limit = { NOT = { has_variable = genocide_responsible_country } }
+			set_variable = { genocide_responsible_country = ROOT }
+		}
+		set_state_flag = camp_rework_expanded_labor_site
+		set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.expanded_labor }
+		camp_rework_register_active_site = yes
+		set_temp_variable = { camp_action_duration_days = constant:camp_rework_timing.idea_medium_days }
+		add_dynamic_modifier = {
+			modifier = genocide_forced_labor_exploitation_state
+			days = camp_action_duration_days
+		}
+		set_temp_variable = { camp_rework_death_burst_percent = constant:camp_rework_death_percent.decision_minor }
+		set_temp_variable = { camp_rework_death_burst_cap = constant:camp_rework_death_cap.decision }
+		set_temp_variable = { camp_rework_death_burst_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
+		camp_rework_apply_state_death_burst = yes
+	}
+	camp_rework_recalculate_country_values = yes
+	camp_rework_refresh_lifecycle_ideas = yes
+}
+
+camp_rework_start_generic_labor_project_in_from = {
+	camp_rework_consume_labor_project_resources = yes
+	set_country_flag = generic_labor_project_active
+	set_variable = { generic_labor_project_state_id = FROM.id }
+	set_variable = { generic_labor_project_type = camp_requested_project_type }
+	FROM = { set_state_flag = camp_rework_labor_project_active }
+	add_to_variable = { camp_policy_labor_output = constant:camp_rework_country_value.labor_output_minor }
+	add_to_variable = { camp_policy_overstretch = constant:camp_rework_country_value.overstretch_minor }
+	add_to_variable = { camp_policy_resistance_pressure = constant:camp_rework_country_value.resistance_minor }
+	camp_rework_recalculate_country_values = yes
+}
+
+camp_rework_complete_generic_labor_project = {
+	set_temp_variable = { camp_generic_project_succeeded = 0 }
+	if = {
+		limit = { has_variable = generic_labor_project_state_id }
+		var:generic_labor_project_state_id = {
+			if = {
+				limit = {
+					is_controlled_by = PREV
+					is_valid_camp_active_site_state = yes
+				}
+				camp_rework_refresh_state_site_profile = yes
+				if = {
+					limit = {
+						PREV = { check_variable = { generic_labor_project_type = constant:camp_rework_project_type.construction } }
+						infrastructure < 5
+					}
+					add_building_construction = {
+						type = infrastructure
+						level = 1
+						instant_build = yes
+					}
+				}
+				else_if = {
+					limit = { PREV = { check_variable = { generic_labor_project_type = constant:camp_rework_project_type.extraction } } }
+					set_temp_variable = { camp_action_duration_days = constant:camp_rework_timing.idea_long_days }
+					add_dynamic_modifier = {
+						modifier = genocide_forced_labor_exploitation_state
+						days = camp_action_duration_days
+					}
+				}
+				set_temp_variable = { camp_rework_death_burst_percent = constant:camp_rework_death_percent.decision_minor }
+				set_temp_variable = { camp_rework_death_burst_cap = constant:camp_rework_death_cap.decision }
+				set_temp_variable = { camp_rework_death_burst_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
+				camp_rework_apply_state_death_burst = yes
+				add_to_variable = { camp_state_evidence_depth = constant:camp_rework_country_value.evidence_minor }
+				clr_state_flag = camp_rework_labor_project_active
+				set_temp_variable = { camp_generic_project_succeeded = 1 }
+			}
+		}
+	}
+	if = {
+		limit = { check_variable = { camp_generic_project_succeeded > 0 } }
+		add_to_variable = { camp_policy_labor_output = constant:camp_rework_country_value.labor_output_major }
+	}
+	else = {
+		add_to_variable = { camp_policy_evidence = constant:camp_rework_country_value.evidence_major }
+		add_to_variable = { camp_policy_overstretch = constant:camp_rework_country_value.overstretch_major }
+	}
+	clr_country_flag = generic_labor_project_active
+	clear_variable = generic_labor_project_state_id
+	clear_variable = generic_labor_project_type
+	camp_rework_recalculate_country_values = yes
+}
+
+camp_rework_allocate_additional_guards = {
+	camp_rework_consume_guard_resources = yes
+	set_temp_variable = { camp_guard_duration_days = constant:camp_rework_timing.idea_medium_days }
+	set_country_flag = {
+		flag = camp_rework_guards_allocated
+		days = camp_guard_duration_days
+	}
+	add_to_variable = { camp_policy_resistance_pressure = constant:camp_rework_country_value.guard_relief }
+	add_to_variable = { camp_policy_overstretch = constant:camp_rework_country_value.guard_overstretch }
+	camp_rework_recalculate_country_values = yes
+}
+
+camp_rework_radicalize_site_in_from = {
+	camp_rework_consume_expansion_resources = yes
+	add_stability = constant:camp_rework_cost.stability_major
+	add_to_variable = { camp_policy_coercive_control = constant:camp_rework_country_value.coercive_control_major }
+	add_to_variable = { camp_policy_population_loss = constant:camp_rework_country_value.population_loss_major }
+	add_to_variable = { camp_policy_resistance_pressure = constant:camp_rework_country_value.resistance_major }
+	add_to_variable = { camp_policy_evidence = constant:camp_rework_country_value.evidence_major }
+	add_to_variable = { camp_policy_overstretch = constant:camp_rework_country_value.overstretch_major }
+	add_to_variable = { camp_policy_visibility = constant:camp_rework_country_value.visibility_major }
+	add_to_variable = { camp_policy_tribunal = constant:camp_rework_country_value.tribunal_major }
+	add_to_variable = { camp_policy_hardliner = constant:camp_rework_country_value.hardliner_major }
+	FROM = {
+		if = {
+			limit = { NOT = { has_variable = genocide_responsible_country } }
+			set_variable = { genocide_responsible_country = ROOT }
+		}
+		if = {
+			limit = { NOT = { extermination_camp > 0 } }
+			add_building_construction = {
+				type = extermination_camp
+				level = 1
+				instant_build = yes
+			}
+		}
+		set_state_flag = genocide_extermination_site
+		set_state_flag = camp_rework_radicalized_site
+		set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.radicalized }
+		camp_rework_register_active_site = yes
+		set_temp_variable = { camp_rework_death_burst_percent = constant:camp_rework_death_percent.decision_severe }
+		set_temp_variable = { camp_rework_death_burst_cap = constant:camp_rework_death_cap.decision }
+		set_temp_variable = { camp_rework_death_burst_reason = constant:chaos_meter_deaths_reason.extermination_camp }
+		camp_rework_apply_state_death_burst = yes
+	}
+	camp_rework_recalculate_country_values = yes
+	camp_rework_refresh_lifecycle_ideas = yes
+}
+
+camp_rework_expose_network_crisis = {
+	set_country_flag = camp_rework_crisis_exposed
+	set_country_flag = genocide_evidence_reached_foreign_observers
+	add_to_variable = { camp_policy_evidence = constant:camp_rework_country_value.evidence_major }
+	add_to_variable = { camp_policy_visibility = constant:camp_rework_country_value.visibility_major }
+	add_to_variable = { camp_policy_tribunal = constant:camp_rework_country_value.tribunal_major }
+	add_to_variable = { camp_policy_reform = constant:camp_rework_country_value.reform_major }
+	set_temp_variable = { condemnation_hidden_exposure_fraction = constant:condemnation_decay.discovery_hidden_exposure }
+	set_temp_variable = { condemnation_context_type = constant:condemnation_context.camp_operation }
+	set_temp_variable = { condemnation_source_type = constant:condemnation_source.atrocity }
+	condemnation_expose_hidden_bucket = yes
+	condemnation_recalculate_hidden_total = yes
+	set_temp_variable = { genocide_condemnation_source_type = constant:condemnation_source.atrocity }
+	set_temp_variable = { genocide_condemnation_add = constant:genocide_crisis_value.discovery_foreign_pressure }
+	set_temp_variable = { genocide_condemnation_severity_type = constant:condemnation_severity.major }
+	set_temp_variable = { genocide_condemnation_context_type = constant:condemnation_context.camp_operation }
+	genocide_register_public_condemnation_source = yes
+	genocide_apply_condemnation_thresholds = yes
+	camp_rework_recalculate_country_values = yes
+}
+
+camp_rework_trigger_retreat_discovery = {
+	set_temp_variable = { camp_retreat_discovery_processed = 0 }
+	for_each_scope_loop = {
+		array = camp_active_site_states
+		if = {
+			limit = {
+				check_variable = { camp_retreat_discovery_processed = 0 }
+				is_valid_camp_enemy_proximity_state = yes
+			}
+			set_state_flag = genocide_evidence_destroy_failed
+			set_state_flag = genocide_site_discovered
+			set_variable = { camp_state_evidence_status = constant:camp_rework_evidence_status.failed_coverup }
+			add_to_variable = { camp_state_evidence_depth = constant:camp_rework_coverup.failure_evidence_gain }
+			add_to_variable = { camp_state_observer_exposure = constant:camp_rework_discovery_factor.failed_coverup_observer_gain }
+			clamp_variable = { var = camp_state_observer_exposure min = 0 max = constant:camp_rework_threshold.max_value }
+			camp_rework_register_evidence_state = yes
+			if = {
+				limit = {
+					has_variable = genocide_responsible_country
+					var:genocide_responsible_country = { exists = yes }
+				}
+				var:genocide_responsible_country = {
+					genocide_apply_discovery_to_responsible_from_prev_state = yes
+				}
+			}
+			set_temp_variable = { camp_retreat_discovery_processed = 1 }
+		}
+	}
+	if = {
+		limit = { check_variable = { camp_retreat_discovery_processed = 0 } }
+		camp_rework_expose_network_crisis = yes
+	}
+}
+
+camp_rework_complete_generic_reform = {
+	camp_rework_recalculate_country_values = yes
+	if = {
+		limit = { check_variable = { camp_active_site_count = 0 } }
+		set_country_flag = camp_rework_reformed_legacy
+		clr_country_flag = camp_rework_expansion_frozen
+		clr_country_flag = camp_rework_dismantlement_in_progress
+		remove_ideas = generic_detention_network_administration
+		remove_ideas = generic_expanded_labor_network
+		remove_ideas = generic_overextended_repression_network
+		remove_ideas = generic_radicalized_atrocity_policy
+		remove_ideas = generic_reform_pressure
+		add_ideas = generic_reformed_legacy
+	}
+	else = {
+		add_stability = constant:camp_rework_cost.stability_medium
+		add_to_variable = { camp_policy_reform = constant:camp_rework_country_value.reform_major }
+		add_to_variable = { camp_policy_resistance_pressure = constant:camp_rework_country_value.resistance_minor }
+	}
+	camp_rework_recalculate_country_values = yes
+}

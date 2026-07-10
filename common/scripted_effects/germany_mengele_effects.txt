@@ -99,6 +99,7 @@ germany_mengele_update_cloning_project_manpower = {
 
 germany_mengele_complete_cloning_project = {
     set_country_flag = germany_mengele_cloning_project_completed
+    clr_country_flag = germany_mengele_cloning_unlock_pending
     set_country_flag = directorate_special_project_cloning_completed
     germany_mengele_update_cloning_project_manpower = yes
     if = {
@@ -182,17 +183,24 @@ germany_mengele_register_experiment_deaths = {
     }
     round_temp_variable = mengele_experiment_deaths
     88 = {
-        set_temp_variable = { chaos_deaths_change = mengele_experiment_deaths }
-        set_temp_variable = { chaos_deaths_is_civilian = 1 }
-        set_temp_variable = { chaos_deaths_apply_state_pop = 1 }
-        set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.biowarfare_outbreak }
-        set_temp_variable = { chaos_deaths_target_country = OWNER }
-        set_temp_variable = { chaos_deaths_has_target_country = 1 }
-        chaos_meter_register_deaths = yes
+        if = {
+            limit = { camp_rework_state_can_accept_responsibility_from_root = yes }
+            if = {
+                limit = { NOT = { has_variable = genocide_responsible_country } }
+                set_variable = { genocide_responsible_country = ROOT }
+            }
+            if = {
+                limit = { NOT = { has_state_flag = genocide_site_has_responsible_country } }
+                set_state_flag = genocide_site_has_responsible_country
+            }
+            set_temp_variable = { camp_exact_deaths = mengele_experiment_deaths }
+            set_temp_variable = { camp_exact_deaths_reason = constant:chaos_meter_deaths_reason.biowarfare_outbreak }
+            camp_rework_register_exact_state_deaths = yes
+        }
     }
 }
 
-germany_mengele_import_subjects_from_from_state = {
+germany_mengele_import_subjects_from_from_state_accepted = {
     genocide_initialize_country_variables = yes
     add_to_variable = { hidden_atrocity_score = constant:germany_mengele_foreign_subjects.hidden_atrocity }
     add_to_variable = { genocide_tribunal_severity = constant:germany_mengele_foreign_subjects.hidden_atrocity }
@@ -207,7 +215,10 @@ germany_mengele_import_subjects_from_from_state = {
 	set_temp_variable = { mengele_condemnation_visibility_type = constant:condemnation_visibility.hidden }
     germany_mengele_add_condemnation = yes
     FROM = {
-        set_variable = { genocide_responsible_country = ROOT }
+        if = {
+            limit = { NOT = { has_variable = genocide_responsible_country } }
+            set_variable = { genocide_responsible_country = ROOT }
+        }
         set_state_flag = genocide_site_has_responsible_country
         set_state_flag = genocide_foreign_experimentation_source
         set_state_flag = genocide_atrocity_site_known_to_regime
@@ -216,15 +227,22 @@ germany_mengele_import_subjects_from_from_state = {
         set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.biowarfare_outbreak }
         set_temp_variable = { chaos_deaths_target_country = ROOT }
         set_temp_variable = { chaos_deaths_has_target_country = 1 }
+        set_temp_variable = { chaos_deaths_change = 0 }
         chaos_meter_register_state_civilian_deaths_percent = yes
-        set_variable = { genocide_last_state_deaths = chaos_deaths_change }
-        genocide_credit_state_deaths_to_responsible = yes
+        camp_rework_record_latest_state_deaths = yes
         controller = {
             add_political_power = constant:germany_mengele_foreign_subjects.cooperator_political_power
             add_war_support = constant:germany_mengele_foreign_subjects.cooperator_war_support
             army_experience = constant:germany_mengele_foreign_subjects.cooperator_army_experience
         }
     }
+}
+
+germany_mengele_import_subjects_from_from_state = {
+	if = {
+		limit = { FROM = { camp_rework_state_can_accept_responsibility_from_root = yes } }
+		germany_mengele_import_subjects_from_from_state_accepted = yes
+	}
 }
 
 germany_mengele_register_coup_state_deaths = {
@@ -238,7 +256,9 @@ germany_mengele_register_coup_state_deaths = {
         set_temp_variable = { chaos_state_deaths_percent = constant:germany_mengele_deaths.coup_state_percent }
         set_temp_variable = { chaos_state_deaths_cap_hard_max = constant:germany_mengele_deaths.max_coup_deaths }
         set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.biowarfare_outbreak }
+        set_temp_variable = { chaos_deaths_change = 0 }
         chaos_meter_register_state_civilian_deaths_percent = yes
+        camp_rework_record_latest_state_deaths = yes
     }
 }
 
@@ -274,8 +294,14 @@ germany_mengele_mark_auschwitz_laboratory_site = {
     genocide_initialize_country_variables = yes
     88 = {
         if = {
-            limit = { is_controlled_by = ROOT }
-            set_variable = { genocide_responsible_country = ROOT }
+            limit = {
+                is_controlled_by = ROOT
+                camp_rework_state_can_accept_responsibility_from_root = yes
+            }
+            if = {
+                limit = { NOT = { has_variable = genocide_responsible_country } }
+                set_variable = { genocide_responsible_country = ROOT }
+            }
             set_state_flag = genocide_site_has_responsible_country
             set_state_flag = genocide_atrocity_site_known_to_regime
             set_state_flag = genocide_auschwitz_experiment_site
@@ -325,6 +351,7 @@ germany_mengele_add_requested_biowarfare_facility = {
                 province = { id = 9412 }
             }
             set_state_flag = genocide_ss_laboratory_site
+            camp_rework_germany_register_requested_laboratory_state = yes
         }
         set_country_flag = germany_mengele_facility_built_from_demand
     }
@@ -343,6 +370,7 @@ germany_mengele_add_requested_biowarfare_facility = {
                 province = { id = 11411 }
             }
             set_state_flag = genocide_ss_laboratory_site
+            camp_rework_germany_register_requested_laboratory_state = yes
         }
         set_country_flag = germany_mengele_facility_built_from_demand
     }
@@ -361,6 +389,7 @@ germany_mengele_add_requested_biowarfare_facility = {
                 province = { id = 3499 }
             }
             set_state_flag = genocide_ss_laboratory_site
+            camp_rework_germany_register_requested_laboratory_state = yes
         }
         set_country_flag = germany_mengele_facility_built_from_demand
     }
@@ -379,6 +408,7 @@ germany_mengele_add_requested_biowarfare_facility = {
                 province = { id = 3561 }
             }
             set_state_flag = genocide_ss_laboratory_site
+            camp_rework_germany_register_requested_laboratory_state = yes
         }
         set_country_flag = germany_mengele_facility_built_from_demand
     }
@@ -1518,6 +1548,7 @@ germany_mengele_reject_program = {
 
 germany_mengele_cancel_program = {
     set_country_flag = germany_mengele_program_closed
+    clr_country_flag = germany_mengele_cloning_unlock_pending
     set_variable = { mengele_permission_level = constant:germany_mengele_permission.rejected }
     clr_country_flag = germany_mengele_program_recently_expired
     if = { limit = { has_idea = germany_auschwitz_experiments } remove_ideas = germany_auschwitz_experiments }
@@ -1529,6 +1560,7 @@ germany_mengele_cancel_program = {
 germany_mengele_expire_program = {
     set_country_flag = germany_mengele_program_expired
     set_country_flag = germany_mengele_program_closed
+    clr_country_flag = germany_mengele_cloning_unlock_pending
     set_variable = { mengele_permission_level = constant:germany_mengele_permission.rejected }
     clr_country_flag = germany_mengele_program_recently_expired
     if = { limit = { has_idea = germany_auschwitz_experiments } remove_ideas = germany_auschwitz_experiments }
@@ -1676,6 +1708,7 @@ germany_mengele_apply_master_claim_formations = {
 
 germany_mengele_start_coup = {
     set_country_flag = germany_mengele_coup_fired
+    clr_country_flag = germany_mengele_cloning_unlock_pending
     set_global_flag = germany_mengele_civil_war_active
     save_global_event_target_as = germany_mengele_loyalist
     set_temp_variable = { mengele_stage_value = constant:germany_mengele_stage.coup }

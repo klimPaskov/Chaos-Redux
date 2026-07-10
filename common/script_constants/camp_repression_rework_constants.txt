@@ -1,0 +1,1006 @@
+# ============================================================================
+# CHAOS REDUX - CAMP AND REPRESSION REWORK CONSTANTS
+# ============================================================================
+# Shared tuning for the connected repression network. These constants define
+# lifecycle ids, pressure contributions, state-population loss, resource
+# burdens, country-package caps, AI behavior, and the abstract chemical and
+# biological escalation tiers used by the existing genocide_crisis spine.
+# ============================================================================
+
+camp_rework_schema = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	current = 1
+}
+
+camp_rework_gui_limit = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	pool_rows = 24
+	active_site_rows = 24
+	evidence_rows = 24
+	country_rows = 12
+}
+
+camp_rework_phase = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	dormant = 0
+	active = 1
+	expanded = 2
+	radicalized = 3
+	contaminated = 4
+	discovered = 5
+	reform = 6
+	dismantled = 7
+}
+
+camp_rework_site_type = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	detention = 1
+	expanded_labor = 2
+	gulag = 3
+	experiment = 4
+	radicalized = 5
+	contaminated = 6
+}
+
+camp_rework_pool_type = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	occupied_noncore = 1
+	colonial_subject = 2
+	noncore = 3
+	periphery = 4
+	core_fallback = 5
+}
+
+camp_rework_band = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	low = 1
+	medium = 2
+	high = 3
+	severe = 4
+	critical = 5
+}
+
+camp_rework_evidence_status = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	discovered = 1
+	destroyed_records = 2
+	failed_coverup = 3
+	liberated = 4
+}
+
+camp_rework_evidence_carry = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	visibility_factor = 0.50
+	tribunal_factor = 1.00
+	reform_factor = 0.35
+}
+
+camp_rework_discovery_factor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	evidence_depth = 0.30
+	state_civilian_deaths = 0.00004
+	observer_exposure = 0.50
+	network_reach = 0.30
+	foreign_visibility = 0.20
+	maximum_dynamic_bonus = 40.00
+	discovery_observer_gain = 6.00
+	failed_coverup_observer_gain = 10.00
+	annexed_evidence_gain = 8.00
+	annexed_observer_gain = 5.00
+}
+
+camp_rework_project_type = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	construction = 1
+	extraction = 2
+}
+
+camp_rework_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	band_low = 1.00
+	band_medium = 8.00
+	band_high = 18.00
+	band_severe = 35.00
+	band_critical = 60.00
+	expanded_reach = 4.00
+	radicalized_reach = 8.00
+	contaminated_evidence = 45.00
+	overstretched = 28.00
+	critical_overstretch = 55.00
+	severe_discovery = 55.00
+	critical_tribunal = 80.00
+	reform_visible = 1.00
+	democratic_support = 0.35
+	low_stability = 0.50
+	severe_stability = 0.35
+	retreat_surrender = 0.45
+	desperate_surrender = 0.65
+	min_value = -100.00
+	max_value = 100.00
+	max_site_count = 9999.00
+}
+
+camp_rework_state_threshold = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	low_infrastructure = 3
+}
+
+camp_rework_site_contribution = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	detention_reach = 1.00
+	detention_labor = 2.00
+	detention_control = 2.50
+	detention_population_loss = 1.00
+	detention_resistance = 1.25
+	detention_stability = 0.50
+	detention_evidence = 1.50
+	detention_overstretch = 1.00
+	detention_visibility = 0.50
+	detention_tribunal = 0.50
+	detention_hardliner = 0.35
+
+	expanded_reach = 1.50
+	expanded_labor = 5.00
+	expanded_control = 3.50
+	expanded_population_loss = 3.00
+	expanded_resistance = 3.00
+	expanded_stability = 1.50
+	expanded_evidence = 4.00
+	expanded_overstretch = 3.00
+	expanded_visibility = 1.50
+	expanded_tribunal = 2.00
+	expanded_hardliner = 1.00
+
+	gulag_reach = 1.50
+	gulag_labor = 4.00
+	gulag_control = 4.00
+	gulag_population_loss = 2.50
+	gulag_resistance = 2.50
+	gulag_stability = 1.25
+	gulag_evidence = 3.00
+	gulag_overstretch = 2.50
+	gulag_visibility = 0.75
+	gulag_tribunal = 1.50
+	gulag_hardliner = 1.25
+
+	experiment_reach = 1.00
+	experiment_labor = 0.50
+	experiment_control = 1.00
+	experiment_population_loss = 5.00
+	experiment_resistance = 4.00
+	experiment_stability = 2.00
+	experiment_evidence = 8.00
+	experiment_overstretch = 3.00
+	experiment_visibility = 2.50
+	experiment_tribunal = 6.00
+	experiment_hardliner = 2.00
+
+	radicalized_reach = 2.00
+	radicalized_labor = 0.00
+	radicalized_control = 4.00
+	radicalized_population_loss = 12.00
+	radicalized_resistance = 8.00
+	radicalized_stability = 4.00
+	radicalized_evidence = 14.00
+	radicalized_overstretch = 7.00
+	radicalized_visibility = 5.00
+	radicalized_tribunal = 12.00
+	radicalized_hardliner = 5.00
+
+	contaminated_reach = 1.00
+	contaminated_labor = 0.00
+	contaminated_control = 0.00
+	contaminated_population_loss = 15.00
+	contaminated_resistance = 10.00
+	contaminated_stability = 5.00
+	contaminated_evidence = 18.00
+	contaminated_overstretch = 9.00
+	contaminated_visibility = 8.00
+	contaminated_tribunal = 18.00
+	contaminated_hardliner = 3.00
+}
+
+camp_rework_pool_factor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	occupied_labor = 1.20
+	occupied_deaths = 1.15
+	occupied_resistance = 1.25
+	occupied_visibility = 1.20
+	colonial_labor = 1.10
+	colonial_deaths = 1.05
+	colonial_resistance = 1.20
+	colonial_visibility = 1.10
+	noncore_labor = 1.00
+	noncore_deaths = 1.00
+	noncore_resistance = 1.00
+	noncore_visibility = 1.00
+	periphery_labor = 0.90
+	periphery_deaths = 1.00
+	periphery_resistance = 1.10
+	periphery_visibility = 0.90
+	core_labor = 0.45
+	core_deaths = 0.85
+	core_resistance = 1.60
+	core_visibility = 1.35
+	core_stability = 2.00
+	core_legitimacy = 2.00
+}
+
+camp_rework_death_percent = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	detention_monthly = 0.00125
+	expanded_labor_monthly = 0.00450
+	gulag_monthly = 0.00275
+	experiment_monthly = 0.00650
+	radicalized_monthly = 0.03000
+	contaminated_monthly = 0.01000
+	famine_low_monthly = 0.00250
+	famine_medium_monthly = 0.00600
+	famine_high_monthly = 0.01200
+	famine_critical_monthly = 0.02200
+	decision_minor = 0.00350
+	decision_major = 0.01000
+	decision_severe = 0.02250
+	evidence_destruction = 0.01250
+}
+
+camp_rework_death_cap = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	detention = 30.00
+	expanded_labor = 75.00
+	gulag = 55.00
+	experiment = 110.00
+	radicalized = 300.00
+	contaminated = 180.00
+	famine = 260.00
+	decision = 220.00
+	evidence = 150.00
+}
+
+camp_rework_death_factor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	network_reach = 0.025
+	overstretch = 0.012
+	resistance = 0.008
+	population_loss_index = 0.010
+	low_stability = 0.20
+	severe_stability = 0.35
+	chaos_tier_3 = 0.10
+	chaos_tier_4 = 0.20
+	chaos_tier_5 = 0.35
+	guard_relief = -0.15
+	reform_relief = -0.35
+	inspection_relief = -0.25
+	supply_shortage = 0.25
+	min = 0.25
+	max = 5.00
+}
+
+camp_rework_monthly = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	detention_evidence_gain = 0.20
+	expanded_evidence_gain = 0.55
+	gulag_evidence_gain = 0.40
+	experiment_evidence_gain = 0.90
+	radicalized_evidence_gain = 1.50
+	contaminated_evidence_gain = 2.00
+	detention_resistance_gain = 0.10
+	expanded_resistance_gain = 0.30
+	gulag_resistance_gain = 0.25
+	experiment_resistance_gain = 0.40
+	radicalized_resistance_gain = 0.75
+	contaminated_resistance_gain = 1.00
+	stability_loss_per_damage = 0.00035
+	stability_loss_max = 0.030
+	policy_pressure_decay = 0.97
+	reform_pressure_decay = 0.985
+	chemical_contamination_base = -0.004
+	biological_contamination_days = 120.00
+	method_shortage_evidence_gain = 2.00
+}
+
+camp_rework_chemical_contamination = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	chlorine_dose = -0.0030
+	phosgene_dose = -0.0035
+	mustard_dose = -0.0040
+	lewisite_dose = -0.0045
+	tabun_dose = -0.0055
+	sarin_dose = -0.0065
+	soman_dose = -0.0080
+	chlorine_days = 20.00
+	phosgene_days = 25.00
+	mustard_days = 35.00
+	lewisite_days = 40.00
+	tabun_days = 45.00
+	sarin_days = 55.00
+	soman_days = 65.00
+}
+
+camp_rework_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	survey_pp = 20.00
+	activation_pp = 35.00
+	expansion_pp = 45.00
+	labor_project_pp = 30.00
+	guard_pp = 20.00
+	review_pp = 45.00
+	dismantle_pp = 60.00
+	redress_pp = 80.00
+	evidence_pp = 25.00
+	chemical_pp = 55.00
+	biological_pp = 60.00
+	activation_command = 10.00
+	expansion_command = 20.00
+	guard_command = 25.00
+	evidence_command = 20.00
+	activation_manpower = 5000.00
+	expansion_manpower = 10000.00
+	guard_manpower = 15000.00
+	dismantle_manpower = 6000.00
+	stability_minor = -0.010
+	stability_medium = -0.025
+	stability_major = -0.050
+	war_support_minor = -0.010
+	war_support_major = -0.040
+}
+
+camp_rework_equipment_cost = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	infantry_equipment = 650
+	support_equipment = 180
+	motorized_equipment = 120
+	trains = 18
+	convoys = 12
+	biological_anthrax = 20
+	biological_tularemia = 16
+	biological_plague = 12
+	biological_smallpox = 6
+}
+
+camp_rework_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	short_action_days = 90
+	standard_action_days = 150
+	construction_days = 180
+	suppression_days = 180
+	reform_days = 270
+	dismantle_days = 365
+	major_settlement_days = 450
+	retreat_days = 45
+	idea_short_days = 120
+	idea_medium_days = 180
+	idea_long_days = 365
+	decision_cooldown_days = 60
+	restricted_method_suppression_days = 35
+	threshold_event_delay_days = 1
+	news_event_delay_hours = 12
+	news_cooldown_days = 180
+	uk_hold_raj_security_line_days = 150
+	uk_complete_raj_military_works_days = 180
+	uk_postwar_raj_review_days = 365
+	uk_negotiate_indian_release_terms_days = 270
+	usa_court_review_period_days = 180
+	usa_security_authority_sunset_days = 270
+	usa_redress_commission_work_days = 365
+	fr_gurs_legacy_review_days = 180
+	fr_north_africa_rail_labor_project_days = 180
+	fr_refugee_pressure_response_days = 150
+	fr_post_liberation_reckoning_days = 365
+	ita_desert_road_labor_project_days = 180
+	ita_colonial_security_sweep_days = 150
+	ita_desert_camp_closure_days = 270
+	ita_postwar_colonial_compensation_days = 365
+	bel_congo_resource_quota_cycle_days = 120
+	bel_congo_transport_corridor_project_days = 210
+	bel_colonial_strike_response_days = 150
+	bel_concession_reform_mandate_days = 365
+}
+
+camp_rework_ai_cap = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	germany_active_sites = 12.00
+	germany_radicalized_sites = 5.00
+	germany_experiment_sites = 4.00
+	japan_active_sites = 8.00
+	japan_experiment_sites = 3.00
+	soviet_active_sites = 14.00
+	uk_active_sites = 4.00
+	usa_active_sites = 3.00
+	france_active_sites = 5.00
+	italy_active_sites = 5.00
+	belgium_active_sites = 4.00
+	generic_major_sites = 5.00
+	generic_minor_sites = 2.00
+	generic_radicalized_sites = 1.00
+	restricted_method_sites = 1.00
+	max_concurrent_projects = 1.00
+}
+
+camp_rework_ai_weight = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	blocked = 0.00
+	germany_activation = 80.00
+	germany_expansion = 70.00
+	germany_experiment = 45.00
+	germany_reform = 2.00
+	japan_activation = 55.00
+	japan_expansion = 45.00
+	japan_experiment = 35.00
+	japan_reform = 8.00
+	soviet_activation = 55.00
+	soviet_expansion = 48.00
+	soviet_famine = 18.00
+	soviet_relief = 40.00
+	uk_activation = 25.00
+	uk_expansion = 18.00
+	uk_reform = 80.00
+	usa_activation = 6.00
+	usa_expansion = 2.00
+	usa_reform = 90.00
+	france_vichy_expansion = 42.00
+	france_reform = 75.00
+	italy_expansion = 42.00
+	italy_reform = 70.00
+	belgium_expansion = 38.00
+	belgium_reform = 75.00
+	generic_authoritarian_activation = 25.00
+	generic_extremist_activation = 45.00
+	generic_radicalized = 12.00
+	generic_reform = 85.00
+	evidence_destruction = 55.00
+	guard_allocation = 35.00
+	factor_war = 1.50
+	factor_high_resistance = 1.35
+	factor_low_stability = 1.25
+	factor_high_condemnation = 0.10
+	factor_losing_war = 0.20
+	factor_postwar_reform = 2.00
+	uk_peace_reform = 20.00
+	uk_wartime_low_expansion = 25.00
+	uk_wartime_low_reform = 5.00
+	uk_wartime_high_expansion = 45.00
+	uk_wartime_high_reform = 10.00
+	uk_postwar_reform = 80.00
+	uk_exposed_reform = 100.00
+	uk_high_chaos_expansion = 55.00
+	uk_high_chaos_reform = 5.00
+	usa_war_low_activation = 5.00
+	usa_war_low_reform = 10.00
+	usa_threat_activation = 25.00
+	usa_threat_expansion = 10.00
+	usa_threat_reform = 5.00
+	usa_extreme_activation = 40.00
+	usa_extreme_expansion = 20.00
+	usa_extreme_reform = 5.00
+	usa_court_reform = 65.00
+	usa_postwar_reform = 100.00
+	france_democratic_reform = 30.00
+	france_free_reform = 70.00
+	france_vichy_expansion = 45.00
+	france_vichy_reform = 5.00
+	france_vichy_pressure_expansion = 60.00
+	france_regime_change_reform = 90.00
+	france_exposure_reform = 60.00
+	italy_peace_expansion = 20.00
+	italy_war_expansion = 55.00
+	italy_losing_expansion = 25.00
+	italy_losing_reform = 10.00
+	italy_regime_change_reform = 85.00
+	italy_exposure_reform = 70.00
+	belgium_peace_expansion = 15.00
+	belgium_peace_reform = 10.00
+	belgium_war_expansion = 50.00
+	belgium_foreign_pressure_expansion = 10.00
+	belgium_foreign_pressure_reform = 55.00
+	belgium_exposure_reform = 90.00
+	belgium_independence_reform = 80.00
+	belgium_high_chaos_expansion = 65.00
+}
+
+camp_rework_chemical_tier = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	chlorine = 1
+	phosgene = 2
+	mustard = 3
+	lewisite = 4
+	tabun = 5
+	sarin = 6
+	soman = 7
+}
+
+camp_rework_chemical_cost = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	chlorine_cylinders = 70
+	phosgene_cylinders = 60
+	mustard_cylinders = 50
+	lewisite_cylinders = 45
+	tabun_cylinders = 40
+	sarin_cylinders = 35
+	soman_cylinders = 28
+}
+
+camp_rework_chemical_monthly_cost = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	chlorine_cylinders = 10
+	phosgene_cylinders = 9
+	mustard_cylinders = 8
+	lewisite_cylinders = 7
+	tabun_cylinders = 6
+	sarin_cylinders = 5
+	soman_cylinders = 4
+}
+
+camp_rework_burden = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	guard_per_site = 2.00
+	rail_per_site = 1.50
+	supply_per_site = 1.25
+	convoy_per_colonial_site = 1.00
+	radicalized_guard = 3.00
+	contaminated_supply = 4.00
+	overstretch_guard = 0.20
+	overstretch_rail = 0.15
+	allocated_guard_relief = -5.00
+	inspection_relief = -3.00
+	max = 100.00
+}
+
+camp_rework_idea_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	overstretch_consumer_goods = 0.06
+	overstretch_stability = -0.08
+	overstretch_war_support = -0.05
+	overstretch_supply = 0.10
+	legitimacy_consumer_goods = 0.04
+	legitimacy_stability = -0.06
+	legitimacy_political_power = -0.08
+	legitimacy_war_support = -0.04
+	reform_consumer_goods = 0.05
+	reform_stability = -0.03
+	reform_political_power = -0.05
+	generic_base_construction = 0.04
+	generic_base_resources = 0.03
+	generic_base_stability = -0.02
+	generic_expanded_construction = 0.08
+	generic_expanded_resources = 0.06
+	generic_expanded_stability = -0.04
+	generic_expanded_supply = 0.06
+	generic_overextended_construction = 0.04
+	generic_overextended_stability = -0.10
+	generic_overextended_supply = 0.12
+	generic_radicalized_war_support = 0.05
+	generic_radicalized_stability = -0.12
+	generic_radicalized_political_power = -0.10
+	generic_reformed_stability = 0.03
+	generic_reformed_political_power = 0.04
+	germany_administration_construction = 0.08
+	germany_administration_stability = -0.03
+	germany_administration_supply = 0.06
+	germany_laboratory_research = 0.06
+	germany_laboratory_stability = -0.05
+	germany_laboratory_political_power = -0.04
+	germany_reform_stability = -0.02
+	germany_reform_political_power = 0.03
+	japan_occupation_construction = 0.05
+	japan_occupation_stability = -0.04
+	japan_occupation_supply = 0.05
+	japan_ishii_research = 0.08
+	japan_ishii_stability = -0.05
+	japan_containment_research = 0.03
+	japan_containment_consumer_goods = 0.03
+	japan_review_stability = -0.02
+	japan_review_political_power = -0.03
+	soviet_gulag_construction = 0.07
+	soviet_gulag_resources = 0.06
+	soviet_gulag_stability = -0.04
+	soviet_nkvd_political_power = 0.05
+	soviet_nkvd_stability = -0.05
+	soviet_famine_stability = -0.10
+	soviet_famine_supply = 0.12
+	soviet_famine_recruitable = -0.05
+	soviet_reform_stability = 0.02
+	soviet_reform_political_power = -0.03
+}
+
+camp_rework_coverup = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	safe_evidence_ceiling = 18.00
+	success_evidence_relief = -8.00
+	success_visibility_relief = -4.00
+	success_tribunal_gain = 5.00
+	failure_evidence_gain = 16.00
+	failure_visibility_gain = 14.00
+	failure_tribunal_gain = 12.00
+}
+
+camp_rework_chemical_factor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	chlorine_deaths = 1.15
+	phosgene_deaths = 1.30
+	mustard_deaths = 1.45
+	lewisite_deaths = 1.60
+	tabun_deaths = 1.90
+	sarin_deaths = 2.20
+	soman_deaths = 2.55
+	chlorine_evidence = 5.00
+	phosgene_evidence = 6.00
+	mustard_evidence = 7.00
+	lewisite_evidence = 8.00
+	tabun_evidence = 11.00
+	sarin_evidence = 14.00
+	soman_evidence = 17.00
+	chlorine_accident = 2.00
+	phosgene_accident = 3.00
+	mustard_accident = 4.00
+	lewisite_accident = 5.00
+	tabun_accident = 8.00
+	sarin_accident = 11.00
+	soman_accident = 14.00
+	chlorine_suppression = -0.25
+	phosgene_suppression = -0.35
+	mustard_suppression = -0.50
+	lewisite_suppression = -0.65
+	tabun_suppression = -0.90
+	sarin_suppression = -1.15
+	soman_suppression = -1.40
+}
+
+camp_rework_biological_tier = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	anthrax = 1
+	tularemia = 2
+	plague = 3
+	smallpox = 4
+}
+
+camp_rework_biological_factor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	anthrax_deaths = 1.35
+	tularemia_deaths = 1.55
+	plague_deaths = 1.85
+	smallpox_deaths = 2.20
+	anthrax_evidence = 8.00
+	tularemia_evidence = 10.00
+	plague_evidence = 13.00
+	smallpox_evidence = 16.00
+	anthrax_accident = 5.00
+	tularemia_accident = 7.00
+	plague_accident = 10.00
+	smallpox_accident = 13.00
+	anthrax_potency = 0.35
+	tularemia_potency = 0.40
+	plague_potency = 0.48
+	smallpox_potency = 0.55
+	facility_relief = -2.00
+	containment_relief = -4.00
+	anthrax_suppression = -0.40
+	tularemia_suppression = -0.55
+	plague_suppression = -0.75
+	smallpox_suppression = -1.00
+}
+
+camp_rework_biological_monthly_cost = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	anthrax = 4
+	tularemia = 3
+	plague = 2
+	smallpox = 1
+}
+
+camp_rework_germany = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	cloning_autonomy_gate = 55.00
+	cloning_archive_gate = 8.00
+	cloning_project_progress_gate = 6.00
+	experiment_site_coup_pressure = 5.00
+	radicalized_site_coup_pressure = 4.00
+	chemical_site_coup_pressure = 3.00
+	core_fallback_autonomy = 6.00
+	core_fallback_stability = -0.060
+	core_fallback_war_support = -0.050
+	radicalization_minor = 3.00
+	radicalization_major = 7.00
+	archive_control_minor = 2.00
+	archive_control_major = 5.00
+	deportation_pressure_minor = 3.00
+	deportation_pressure_major = 8.00
+	poland_transfer_pressure = 6.00
+	hidden_project_progress_minor = 2.00
+	hidden_project_progress_major = 5.00
+	autonomy_death_factor = 0.004
+	review_relief = -10.00
+	purge_relief = -18.00
+	shutdown_relief = -25.00
+}
+
+camp_rework_country_value = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	decision_reach_minor = 1.00
+	decision_reach_major = 2.00
+	labor_output_minor = 3.00
+	labor_output_major = 7.00
+	coercive_control_minor = 2.00
+	coercive_control_major = 5.00
+	population_loss_minor = 1.50
+	population_loss_major = 4.00
+	resistance_minor = 2.00
+	resistance_major = 5.00
+	stability_damage_minor = 1.00
+	stability_damage_major = 3.00
+	evidence_minor = 2.00
+	evidence_major = 7.00
+	overstretch_minor = 2.00
+	overstretch_major = 5.00
+	visibility_minor = 1.00
+	visibility_major = 4.00
+	tribunal_minor = 1.00
+	tribunal_major = 6.00
+	hardliner_minor = 1.00
+	hardliner_major = 4.00
+	legitimacy_minor = 2.00
+	legitimacy_major = 6.00
+	reform_minor = 2.00
+	reform_major = 6.00
+	guard_relief = -6.00
+	guard_overstretch = 2.00
+	quota_relief = -5.00
+	inspection_evidence_relief = -6.00
+	inspection_tribunal_relief = -4.00
+	dismantle_reform_credit = -8.00
+}
+
+camp_rework_japan = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	ishii_influence_minor = 4.00
+	ishii_influence_major = 9.00
+	kwantung_autonomy_minor = 3.00
+	kwantung_autonomy_major = 7.00
+	pingfang_facility_level = 1.00
+	occupation_records_minor = 4.00
+	occupation_records_major = 10.00
+	bio_project_pressure_minor = 3.00
+	bio_project_pressure_major = 8.00
+	outbreak_risk_minor = 3.00
+	outbreak_risk_major = 8.00
+	army_review_relief = -8.00
+	shutdown_relief = -14.00
+	critical_influence = 55.00
+	critical_outbreak_risk = 60.00
+	monthly_experiment_outbreak_risk = 0.60
+	monthly_containment_relief = -1.25
+	monthly_records_evidence = 0.35
+	shutdown_records_relief = -12.00
+	shutdown_project_relief = -10.00
+	project_influence_gate = 20.00
+	project_autonomy_gate = 20.00
+	project_records_gate = 20.00
+	cherry_blossom_influence_gate = 55.00
+	cherry_blossom_pressure_gate = 35.00
+}
+
+camp_rework_soviet = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	paranoia_low = 20.00
+	paranoia_medium = 40.00
+	paranoia_high = 65.00
+	paranoia_critical = 85.00
+	nkvd_authority_minor = 3.00
+	nkvd_authority_major = 8.00
+	grain_burden_minor = 4.00
+	grain_burden_major = 10.00
+	famine_pressure_minor = 5.00
+	famine_pressure_major = 12.00
+	famine_pressure_critical = 60.00
+	old_movement_grievance_minor = 2.00
+	old_movement_grievance_major = 6.00
+	suppression_relief_minor = 1.00
+	suppression_relief_major = 2.00
+	suppression_relief_cap = 8.00
+	union_crisis_relief_stop = 86.00
+	grain_relief = -12.00
+	quota_relief = -7.00
+	administrator_corruption_minor = 3.00
+	administrator_corruption_major = 8.00
+	republic_fear_minor = 3.00
+	republic_fear_major = 8.00
+	monthly_famine_from_grain = 0.35
+	monthly_famine_from_quota = 0.25
+	monthly_famine_from_paranoia = 0.35
+	monthly_famine_from_low_stability = 0.50
+	monthly_famine_decay = -0.50
+	famine_death_factor = 0.006
+	emergency_relief_stability = -0.020
+	review_paranoia_relief = -8.00
+	release_manpower = 15000.00
+}
+
+camp_rework_soviet_state_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	local_manpower_per_pressure = -0.0012
+	production_per_pressure = -0.0010
+	resources_per_pressure = -0.0008
+	resistance_per_pressure = 0.0010
+	local_supplies_per_pressure = -0.0010
+	minimum_factor = -0.60
+	maximum_resistance = 0.45
+}
+
+camp_rework_colonial = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	subject_autonomy_minor = 0.015
+	subject_autonomy_major = 0.035
+	local_burden_minor = 3.00
+	local_burden_major = 8.00
+	accountability_minor = 3.00
+	accountability_major = 8.00
+	reform_credit = 8.00
+	redress_credit = 12.00
+}
