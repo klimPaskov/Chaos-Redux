@@ -447,6 +447,14 @@ Intensity stops:
 
 Manual launch should only block impossible or conflicting states, such as an already active Death crisis or no valid origin and mainland targets. It must not require live Chaos Meter progression, prior reports, date gates, or natural evolution unlocks. It must not set the Chaos Meter, record natural evolutions by shortcut, or start world-end. Chaos should rise only from Death's later natural kills and shared deaths-system links after the scenario has begun.
 
+## Implemented spatial and custodial addendum (2026-07-11)
+
+Ordinary mainland revelation, its living-war bypass, and ordinary coastal jumps use one ordered spatial contract. Tier one accepts an otherwise-valid coast within 750 distance units of an active Death wasteland. Tier two accepts a warned or investigating coast within 1,500. Tier three accepts an otherwise-valid coast within 2,500 only at high spread pressure. The first tier with a candidate is selected; an empty search takes the normal cooldown and retains pressure. There is no ordinary global-coast fallback. World-end footholds keep their independent continent-by-continent strict, relaxed, defended, and last-resort rules.
+
+Recaptured wasteland progression is irreversible: Recaptured Wasteland -> Surveyed Dead Zone -> Custodial Outpost -> one permanent policy after defeat. Sealed Exclusion costs 1 capacity. Memorial Stewardship costs 2, applies its permanent state policy to each selected dead zone, and grants its national stability/mourning reconciliation only once per country. Transit Custodianship costs 3 capacity plus command power, support equipment, trucks, trains, and fuel; its maintained-corridor layer lasts 180 days and requires another service allotment to renew. Surveys, outposts, Compact service, and defeat participation provide capacity through centralized values.
+
+The selected policy never restores population, the wasteland state category, factories, resources, or recruitable manpower. State ledger flags prevent survey, outpost, Memorial-state, and achievement rewards from being claimed twice after reconsumption or controller changes; a country ledger separately prevents repeated national Memorial reconciliation. Reconsumption removes the active project and policy modifiers before restoring the Death wasteland. Controller changes repair the permanent policy but end the outgoing controller's timed transit maintenance.
+
 ## Balance philosophy
 
 Death should be frightening because it is allowed to become a crisis, not because it instantly overpowers the world.

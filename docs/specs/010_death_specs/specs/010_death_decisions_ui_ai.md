@@ -352,3 +352,11 @@ World-end text: terminal, spare, no melodramatic filler.
 - Compact membership should clean up when Death is defeated, the country capitulates, or the country becomes Herald.
 - Temporary wasteland, outpost, watch, and quarantine modifiers should expire or be removed if the state changes controller, is reconsumed, or Death is defeated.
 - All temporary variables used for popup outcomes should be cleared by event options, not by an early generic cleanup if options still need them.
+
+## Implemented case-file and custodial decision addendum (2026-07-11)
+
+The Maritime Errata category displays the current evidence band and contextual advice. Existing report, telegraph, quarantine, survey, and weather actions write to the same country ledger. AI investigations strengthen as evidence moves from fragmentary through pattern and probable; confirmed countries stop treating weather dismissal as a viable response. Before confirmation, an exposed report recipient sees the containment category as Coastal Precautions and receives only unknown-route port-watch wording; the Black Country title, named exceptions, and Black Atlas remain behind country confirmation or public revelation.
+
+After Death's custom defeat, state-targeted survey and outpost decisions establish the required progression. Three mutually exclusive state-targeted policy decisions then spend custodial capacity inside their shared state effects: Sealed Exclusion for exposed coasts and borders, Memorial Stewardship for secure interior dead zones, and Transit Custodianship for surviving supply-node corridors. Memorial remains selectable per eligible state, but its +3% stability and up-to-2 mourning-debt national reconciliation can fire only once per country. Transit maintenance appears only when its timed maintained-corridor modifier has expired. Selection effects revalidate target and cost so map-target scope cannot grant a free policy.
+
+No new visual identifier is required. The implementation reuses the registered survey boat, quarantine line, Living Compact, dead-zone outpost, and wasteland-gear sprites; future art may split them only through the Event 010 asset workflow without renaming the gameplay decisions first.

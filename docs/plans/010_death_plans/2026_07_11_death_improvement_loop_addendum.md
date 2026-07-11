@@ -2,9 +2,11 @@
 
 Date: 2026-07-11
 
-Status: reviewed proposal, queued for implementation. No gameplay or localisation change is authorized by this addendum alone.
+Status: tranche one implemented and audited on 2026-07-11. The later tranches remain queued and are not part of this completion claim.
 
-Disposition: a further bounded pass is justified. The previous focus-depth and remaining-routes plans are implemented and closed. This addendum does not reopen them.
+Disposition: the bounded Maritime Case File, spatial ordinary-spread, and post-defeat custodianship pass is implemented. The previous focus-depth and remaining-routes plans remain closed; this addendum does not reopen them.
+
+Implementation evidence is split between `subagent_handoffs/2026_07_11_death_backend_tranche_handoff.md`, `subagent_handoffs/2026_07_11_death_tranche_completion_audit.md`, and `subagent_handoffs/2026_07_11_death_localisation_audit.md`. The completion and localisation audits passed with bounded corrections and found no remaining in-scope blocker. The event premise, evolution catalog, and event-detail bodies did not change, so the events spreadsheet requires no wording change for this tranche; the mechanic docs and player-facing decision localisation carry the new facts. Living Compact obligations, Black Atlas expansion, and route-aware aftermath remain separate future tranches.
 
 ## Verdict
 

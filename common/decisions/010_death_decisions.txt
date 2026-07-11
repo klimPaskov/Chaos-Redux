@@ -223,7 +223,14 @@ death_missing_island_category = {
 		ai_will_do = {
 			base = constant:death_decision_tuning.ai_low
 			modifier = { factor = 0 NOT = { death_has_consumed_more_than_one_island = yes } }
-			modifier = { factor = 3 has_country_flag = death_received_second_missing_island_report }
+			modifier = {
+				factor = constant:death_decision_tuning.ai_maritime_investigate_factor
+				death_maritime_evidence_band_pattern = yes
+			}
+			modifier = {
+				factor = constant:death_decision_tuning.ai_maritime_strong_case_factor
+				death_maritime_evidence_band_probable = yes
+			}
 			modifier = { factor = 0 has_global_flag = death_publicly_revealed }
 		}
 	}
@@ -245,7 +252,15 @@ death_missing_island_category = {
 		}
 		ai_will_do = {
 			base = constant:death_decision_tuning.ai_medium
-			modifier = { factor = 2 has_country_flag = death_received_second_missing_island_report }
+			modifier = {
+				factor = constant:death_decision_tuning.ai_maritime_strong_case_factor
+				death_maritime_evidence_band_fragmentary = yes
+			}
+			modifier = {
+				factor = constant:death_decision_tuning.ai_maritime_investigate_factor
+				death_maritime_evidence_band_pattern = yes
+			}
+			modifier = { factor = 0 death_has_country_confirmed_maritime_case = yes }
 		}
 	}
 
@@ -265,7 +280,17 @@ death_missing_island_category = {
 		}
 		ai_will_do = {
 			base = constant:death_decision_tuning.ai_low
-			modifier = { factor = 2 has_country_flag = death_received_second_missing_island_report }
+			modifier = {
+				factor = constant:death_decision_tuning.ai_maritime_investigate_factor
+				death_maritime_evidence_band_fragmentary = yes
+			}
+			modifier = {
+				factor = constant:death_decision_tuning.ai_maritime_quarantine_factor
+				OR = {
+					death_maritime_evidence_band_pattern = yes
+					death_maritime_evidence_band_probable = yes
+				}
+			}
 		}
 	}
 
@@ -283,7 +308,18 @@ death_missing_island_category = {
 		}
 		ai_will_do = {
 			base = constant:death_decision_tuning.ai_low
-			modifier = { factor = 0 has_country_flag = death_received_second_missing_island_report }
+			modifier = {
+				factor = constant:death_decision_tuning.ai_maritime_low_evidence_close_factor
+				death_maritime_evidence_band_fragmentary = yes
+			}
+			modifier = {
+				factor = constant:death_decision_tuning.ai_maritime_close_file_suppression_factor
+				OR = {
+					death_maritime_evidence_band_pattern = yes
+					death_maritime_evidence_band_probable = yes
+				}
+			}
+			modifier = { factor = 0 death_has_country_confirmed_maritime_case = yes }
 		}
 	}
 }
@@ -682,21 +718,15 @@ death_country_containment_category = {
 		on_map_mode = map_and_decisions_view
 		visible = {
 			death_has_no_forbidden_oath = yes
-			death_has_recaptured_wasteland_candidate = yes
+			death_has_wasteland_survey_candidate = yes
 		}
-		target_root_trigger = { death_has_recaptured_wasteland_candidate = yes }
+		target_root_trigger = { death_has_wasteland_survey_candidate = yes }
 		target_trigger = {
-			FROM = {
-				is_controlled_by = ROOT
-				has_state_flag = death_recaptured_wasteland
-			}
+			FROM = { death_is_valid_wasteland_survey_target = yes }
 		}
 		available = {
 			hidden_trigger = { can_pay_death_wasteland_survey_cost = yes }
-			FROM = {
-				is_controlled_by = ROOT
-				has_state_flag = death_recaptured_wasteland
-			}
+			FROM = { death_is_valid_wasteland_survey_target = yes }
 		}
 		custom_cost_trigger = { hidden_trigger = { can_pay_death_wasteland_survey_cost = yes } }
 		custom_cost_text = death_wasteland_survey_cost_text
@@ -714,23 +744,15 @@ death_country_containment_category = {
 		on_map_mode = map_and_decisions_view
 		visible = {
 			death_has_no_forbidden_oath = yes
-			death_has_recaptured_wasteland_candidate = yes
+			death_has_dead_zone_outpost_candidate = yes
 		}
-		target_root_trigger = { death_has_recaptured_wasteland_candidate = yes }
+		target_root_trigger = { death_has_dead_zone_outpost_candidate = yes }
 		target_trigger = {
-			FROM = {
-				is_controlled_by = ROOT
-				has_state_flag = death_recaptured_wasteland
-				NOT = { has_state_flag = death_dead_zone_outpost }
-			}
+			FROM = { death_is_valid_dead_zone_outpost_target = yes }
 		}
 		available = {
 			hidden_trigger = { can_pay_death_dead_zone_outpost_cost = yes }
-			FROM = {
-				is_controlled_by = ROOT
-				has_state_flag = death_recaptured_wasteland
-				NOT = { has_state_flag = death_dead_zone_outpost }
-			}
+			FROM = { death_is_valid_dead_zone_outpost_target = yes }
 		}
 		custom_cost_trigger = { hidden_trigger = { can_pay_death_dead_zone_outpost_cost = yes } }
 		custom_cost_text = death_dead_zone_outpost_cost_text
@@ -743,6 +765,196 @@ death_country_containment_category = {
 			base = constant:death_decision_tuning.ai_medium
 			modifier = { factor = 2 has_global_flag = death_defeated }
 		}
+	}
+
+	death_select_sealed_exclusion = {
+		icon = GFX_decision_death_quarantine_line
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			death_has_no_forbidden_oath = yes
+			has_global_flag = death_defeated
+			death_has_custodial_policy_candidate = yes
+		}
+		target_root_trigger = { death_has_custodial_policy_candidate = yes }
+		target_trigger = {
+			FROM = { death_is_valid_custodial_policy_target = yes }
+		}
+		available = {
+			hidden_trigger = { can_pay_death_sealed_exclusion_policy_cost = yes }
+			FROM = { death_is_valid_custodial_policy_target = yes }
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_death_sealed_exclusion_policy_cost = yes }
+		}
+		custom_cost_text = death_custodial_sealed_exclusion_cost_text
+		complete_effect = {
+			custom_effect_tooltip = death_select_sealed_exclusion_tt
+			hidden_effect = {
+				FROM = { death_select_sealed_exclusion_policy = yes }
+			}
+		}
+		ai_will_do = {
+			base = constant:death_decision_tuning.ai_low
+			modifier = {
+				factor = constant:death_decision_tuning.ai_custodial_exposed_sealed_factor
+				FROM = {
+					OR = {
+						is_coastal = yes
+						any_neighbor_state = {
+							NOT = { is_controlled_by = ROOT }
+						}
+					}
+				}
+			}
+			modifier = {
+				factor = constant:death_decision_tuning.ai_custodial_unfit_factor
+				FROM = {
+					is_coastal = no
+					all_neighbor_state = { is_controlled_by = ROOT }
+				}
+			}
+		}
+	}
+
+	death_select_memorial_stewardship = {
+		icon = GFX_decision_death_living_compact
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			death_has_no_forbidden_oath = yes
+			has_global_flag = death_defeated
+			death_has_custodial_policy_candidate = yes
+		}
+		target_root_trigger = { death_has_custodial_policy_candidate = yes }
+		target_trigger = {
+			FROM = { death_is_valid_custodial_policy_target = yes }
+		}
+		available = {
+			hidden_trigger = { can_pay_death_memorial_stewardship_policy_cost = yes }
+			FROM = { death_is_valid_custodial_policy_target = yes }
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_death_memorial_stewardship_policy_cost = yes }
+		}
+		custom_cost_text = death_custodial_memorial_stewardship_cost_text
+		complete_effect = {
+			custom_effect_tooltip = death_select_memorial_stewardship_tt
+			hidden_effect = {
+				FROM = { death_select_memorial_stewardship_policy = yes }
+			}
+		}
+		ai_will_do = {
+			base = constant:death_decision_tuning.ai_low
+			modifier = {
+				factor = constant:death_decision_tuning.ai_custodial_secure_memorial_factor
+				FROM = {
+					is_coastal = no
+					all_neighbor_state = { is_controlled_by = ROOT }
+				}
+			}
+			modifier = {
+				factor = constant:death_decision_tuning.ai_custodial_unfit_factor
+				FROM = {
+					OR = {
+						is_coastal = yes
+						any_neighbor_state = {
+							NOT = { is_controlled_by = ROOT }
+						}
+					}
+				}
+			}
+			modifier = {
+				factor = constant:death_decision_tuning.ai_custodial_mourning_pressure_factor
+				check_variable = {
+					var = death_mourning_debt
+					value = constant:death_decision_tuning.ai_custodial_mourning_debt_threshold
+					compare = greater_than
+				}
+			}
+		}
+	}
+
+	death_select_transit_custodianship = {
+		icon = GFX_decision_death_dead_zone_outpost
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			death_has_no_forbidden_oath = yes
+			has_global_flag = death_defeated
+			death_has_custodial_policy_candidate = yes
+		}
+		target_root_trigger = { death_has_custodial_policy_candidate = yes }
+		target_trigger = {
+			FROM = { death_is_valid_custodial_policy_target = yes }
+		}
+		available = {
+			hidden_trigger = { can_pay_death_transit_custodianship_policy_cost = yes }
+			FROM = { death_is_valid_custodial_policy_target = yes }
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_death_transit_custodianship_policy_cost = yes }
+		}
+		custom_cost_text = death_custodial_transit_custodianship_cost_text
+		complete_effect = {
+			custom_effect_tooltip = death_select_transit_custodianship_tt
+			hidden_effect = {
+				FROM = { death_select_transit_custodianship_policy = yes }
+			}
+		}
+		ai_will_do = {
+			base = constant:death_decision_tuning.ai_low
+			modifier = {
+				factor = constant:death_decision_tuning.ai_custodial_strategic_transit_factor
+				FROM = {
+					OR = {
+						naval_base > 0
+						supply_node > 0
+					}
+				}
+			}
+			modifier = {
+				factor = constant:death_decision_tuning.ai_custodial_unfit_factor
+				FROM = {
+					NOT = {
+						OR = {
+							naval_base > 0
+							supply_node > 0
+						}
+					}
+				}
+			}
+		}
+	}
+
+	death_maintain_transit_custodianship = {
+		icon = GFX_decision_death_wasteland_gear
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			death_has_no_forbidden_oath = yes
+			has_global_flag = death_defeated
+			death_has_transit_custodianship_maintenance_candidate = yes
+		}
+		target_root_trigger = { death_has_transit_custodianship_maintenance_candidate = yes }
+		target_trigger = {
+			FROM = { death_transit_custodianship_needs_maintenance = yes }
+		}
+		available = {
+			hidden_trigger = { can_pay_death_transit_custodianship_upkeep = yes }
+			FROM = { death_transit_custodianship_needs_maintenance = yes }
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_death_transit_custodianship_upkeep = yes }
+		}
+		custom_cost_text = death_custodial_transit_upkeep_cost_text
+		complete_effect = {
+			custom_effect_tooltip = death_maintain_transit_custodianship_tt
+			hidden_effect = {
+				FROM = { death_maintain_transit_custodianship = yes }
+			}
+		}
+		ai_will_do = { base = constant:death_decision_tuning.ai_high }
 	}
 
 	death_open_black_book = {
