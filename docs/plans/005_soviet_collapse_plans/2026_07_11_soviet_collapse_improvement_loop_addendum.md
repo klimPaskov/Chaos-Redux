@@ -2,9 +2,9 @@
 
 Date: 2026-07-11
 
-Status: reviewed proposal, queued for implementation. No gameplay or localisation change is authorized by this addendum alone.
+Status: Command and Corridors tranche implemented and audited on 2026-07-11. The later tranches and the separate May 29 focus backlog remain queued; this is not an Event 005 completion claim.
 
-Disposition: the 2026-05-29 focus redesign remains partially implemented and explicitly queued. This addendum does not duplicate that backlog. It defines the missing shared crisis loop and reconciles later Event 005 additions.
+Disposition: the 2026-05-29 focus redesign remains partially implemented and explicitly queued. This addendum does not duplicate that backlog. Its first tranche is the implemented shared crisis loop; Patron Rivalry, Successor Relations, Reconsolidation and Aftermath, and full UWR/KMB completion remain separate accepted-design work.
 
 ## Verdict
 
@@ -34,7 +34,7 @@ The canonical June 5 ledger is stale.
 - The live scripts contain selected-target variables, flags, event-target activation, array normalization, and checks in both scope directions. This is a verification contradiction, not evidence that another targeting system is needed.
 - Reconquest resolution currently clears the crisis and resets its component values. It does not turn the manner of victory into a political settlement or lasting aftermath.
 
-This review updates the source map and documentation ledger with these facts and marks the new addendum as proposed rather than implemented. Future implementation must preserve that disposition until the tranche is actually complete.
+The source map and documentation ledger now distinguish the implemented Command and Corridors tranche from the still-queued focus, successor, aftermath, presentation, and country-package work.
 
 ## Tranche One: Command And Corridors
 
@@ -119,6 +119,23 @@ Tranche one adds hooks, not focuses.
 - KMB AI should value basin control, rail access, treaties when isolated, and concessions when militarily superior.
 - No unrestricted daily, weekly, or monthly all-country loop is introduced.
 
+## Implementation Evidence
+
+The implemented tranche preserves all 118 mission identifiers and classifies them exactly once as 37 Chain of Command, 21 Corridors and Depots, and 60 Republic Settlement missions. It reuses the existing active-objective cap, monthly refill cap, refill event, progressive release system, and selected-target categories. All 21 corridor missions are bound to a live qualifying state and cancel into refill without success or failure when that state becomes invalid. The opening posture is applied before the first objective fill.
+
+Release causes are recorded before release setup and affect the released country's package, Moscow's next family, sponsor interest, neighboring breakaways, and AI without forcing a release. The five selected-target scope families use one shared lifecycle, retain cooldowns while hidden, and convert to bounded wartime actions after Union Unmade. UWR contamination and KMB treaty/concession hooks feed the shared crisis values; both countries receive route-aware AI without adding focus nodes.
+
+Implementation and audit records:
+
+- `subagent_handoffs/2026_07_11_soviet_command_corridors_backend_handoff.md`
+- `subagent_handoffs/2026_07_11_soviet_command_corridors_audit.md`
+- `subagent_handoffs/2026_07_11_soviet_selected_target_uwr_kmb_audit.md`
+- `subagent_handoffs/2026_07_11_soviet_selected_target_lifecycle_handoff.md`
+- `subagent_handoffs/2026_07_11_soviet_command_corridors_completion_audit.md`
+- `subagent_handoffs/2026_07_11_soviet_localisation_audit.md`
+
+The Event 005 spreadsheet row and event-detail/evolution bodies are unchanged because this tranche does not alter the event premise or evolution catalog. Their pre-existing parity backlog remains queued. No new visual identifier is introduced; the tranche reuses registered decision icons.
+
 ## Later Tranches
 
 These require separate acceptance after tranche one works:
@@ -172,4 +189,4 @@ These labels are design directions, not final player-facing localisation.
 - asset work before gameplay identifiers and accepted scope are stable
 - a world-scanning recurring on-action
 
-No fallback design or simplification is approved in this addendum. Event 005 remains incomplete until its queued focus backlog, AI parity, presentation alignment, assets, and completion audits are resolved.
+No fallback design or simplification was used for the implemented tranche. Event 005 remains incomplete until its queued focus backlog, later shared-mechanic tranches, presentation alignment, country-package completion, assets, and final full-event audits are resolved.

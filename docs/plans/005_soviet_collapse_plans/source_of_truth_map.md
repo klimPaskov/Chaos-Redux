@@ -8,10 +8,10 @@ This map tells the next parent agent which documents to trust first. It does not
 ## 2026-07-11 Reconciliation
 
 - The four active Event 005 focus files now contain 43 trees and 1,728 focuses. The 41-tree and 1,698-focus figures below describe the June 5 pre-UWR/KMB audit and are retained as historical audit evidence.
-- `common/decisions/005_soviet_collapse_decisions.txt` currently defines 118 numbered Soviet crisis missions.
-- `005_soviet_collapse_unconventional_warfare_republic.md` and `005_soviet_collapse_kuznetsk_mining_board.md` are later supplemental country-package specs. They explain the additional UWR and KMB trees and must be read with core spec part 6.
-- `2026_07_11_soviet_collapse_improvement_loop_addendum.md` is a reviewed proposal queued for implementation. It does not supersede the partially implemented May 29 focus backlog and is not completion evidence.
-- Selected-target normalization, array registration, event-target activation, and target plus `FROM` checks exist in the live scripts. The Tajikistan-style empty-panel item is therefore a verification target. Patch the shared dynamic helper only if the base, Tajikistan, non-base dynamic, high-chaos, or post-Union-Unmade scope proof fails.
+- `common/decisions/005_soviet_collapse_decisions.txt` defines 118 numbered Soviet crisis missions, classified exactly once as 37 Chain of Command, 21 Corridors and Depots, and 60 Republic Settlement missions. The July 11 tranche preserves the existing board, cap, refill event, and release scheduler.
+- `005_soviet_collapse_unconventional_warfare_republic.md` and `005_soviet_collapse_kuznetsk_mining_board.md` are later supplemental country-package specs. Their shared crisis hooks and route AI are implemented, while their full decision, aftermath, treaty-competition, conquered-basin, and asset packages remain queued with core spec part 6.
+- `2026_07_11_soviet_collapse_improvement_loop_addendum.md` is implemented for Command and Corridors and statically audited against its bounded acceptance scenarios. It does not supersede the partially implemented May 29 focus backlog and is not full Event 005 completion evidence.
+- The five-case selected-target lifecycle has one statically verified shared dynamic path covering base republics, Tajikistan, dynamic non-base republics, high-chaos successors, and a post-Union-Unmade target. Selection controls display only; substantive availability, cooldown preservation, resolution cleanup, and terminal conversion are documented in the July 11 lifecycle handoff. The stale empty-panel finding is closed without tag-specific exceptions.
 
 ## Highest Authority
 
@@ -26,8 +26,8 @@ This map tells the next parent agent which documents to trust first. It does not
 | `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_5_focus_trees.md` | Focus-tree route depth, reward quality, route visibility, completion proof. | Active focus work is not complete. |
 | `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_6_countries_splinters_restorations.md` | Country packages, high-chaos splinters, factory states, ancient restorations. | Use for remaining custom splinter, OGB, and ancient tree depth. |
 | `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_7_assets_achievements_validation.md` | Assets, achievements, super-events, final validation. | Asset/flag requirements are no-touch future scope under the current parent correction. Do not route active Event005 cleanup into flags. |
-| `docs/specs/005_soviet_collapse_specs/005_soviet_collapse_unconventional_warfare_republic.md` | Later UWR country package, special-project identity, current compact focus surface, and queued decision/contamination work. | Supplemental to core spec part 6. It is not proof that UWR has full AI, decision, aftermath, or asset parity. |
-| `docs/specs/005_soviet_collapse_specs/005_soviet_collapse_kuznetsk_mining_board.md` | Later KMB country package, resource sovereignty, coal-golem, treaty, and concession mechanics. | Supplemental to core spec part 6. It is not proof that KMB has bespoke AI or completed treaty and conquered-basin depth. |
+| `docs/specs/005_soviet_collapse_specs/005_soviet_collapse_unconventional_warfare_republic.md` | Later UWR country package, special-project identity, compact focus surface, shared-crisis contamination hook, and route AI. | Supplemental to core spec part 6. Shared hooks are implemented; dedicated decisions, conqueror aftermath, and final asset parity remain queued. |
+| `docs/specs/005_soviet_collapse_specs/005_soviet_collapse_kuznetsk_mining_board.md` | Later KMB country package, resource sovereignty, coal-golem, treaty/concession crisis hooks, reusable target gates, and route AI. | Supplemental to core spec part 6. Shared hooks are implemented; treaty competition, conquered-basin depth, and final assets remain queued. |
 
 ## Current Event Overview
 
@@ -44,7 +44,8 @@ This map tells the next parent agent which documents to trust first. It does not
 | `docs/plans/005_soviet_collapse_plans/subagent_handoffs/2026_06_05_documentation_curator_full_event005_cleanup.md` | Full-event documentation cleanup handoff, validation, spreadsheet inspection notes, and remaining risks. | Latest documentation-curator handoff for this broad cleanup pass. |
 | `docs/plans/005_soviet_collapse_plans/subagent_handoffs/2026_06_05_153830_documentation_curator_release_focus_resume.md` | Documentation-curator handoff for release/focus resume constraints, no-flag boundary, and validation commands. | Superseded as latest curator handoff by the full-event cleanup handoff, but still valid for its scoped release/focus notes. |
 | `docs/plans/005_soviet_collapse_plans/subagent_handoffs/2026_06_05_documentation_curator_current_state_handoff.md` | Documentation-curator validation and remaining parent decisions. | Created by documentation curator. |
-| `docs/plans/005_soviet_collapse_plans/2026_07_11_soviet_collapse_improvement_loop_addendum.md` | Proposed Command and Corridors loop, selected-target verification, UWR/KMB integration, later aftermath tranches, and explicit anti-bloat boundaries. | Reviewed and queued. No gameplay implementation is implied. |
+| `docs/plans/005_soviet_collapse_plans/2026_07_11_soviet_collapse_improvement_loop_addendum.md` | Implemented Command and Corridors loop, selected-target lifecycle, release-cause inheritance, UWR/KMB shared hooks, later aftermath tranches, and explicit anti-bloat boundaries. | Tranche one is implemented and audited. Later tranches and the May 29 focus backlog remain queued. |
+| Six July 11 implementation and audit handoffs under `subagent_handoffs/` | Backend ownership, first-pass blocker audit, selected-target/UWR/KMB audit, lifecycle corrections, final completion audit, and localisation audit. | Current evidence for the bounded Command and Corridors tranche; none is a full Event 005 completion claim. |
 
 ## Doc Disposition Summary
 
@@ -55,14 +56,15 @@ This map tells the next parent agent which documents to trust first. It does not
 | `docs/events/005_soviet_collapse.md` | Current compact overview and urgent playability routing. It is a summary, not a completion report and not a blanket deletion of older evidence. |
 | `docs/plans/005_soviet_collapse_plans/documentation_state.md` | Current resume/status packet, accepted constraints, known contradictions, queued work, and no-flag boundary. |
 | `docs/plans/005_soviet_collapse_plans/source_of_truth_map.md` | Current documentation routing map. |
-| Seven files under `docs/specs/005_soviet_collapse_specs/` | Source design and final completion standards, read through the current no-flag-touching boundary for urgent playability work. |
+| Nine core and supplemental files under `docs/specs/005_soviet_collapse_specs/` | Source design and final completion standards, including the UWR and KMB supplements, read through the current no-flag-touching boundary for urgent playability work. |
+| `docs/plans/005_soviet_collapse_plans/2026_07_11_soviet_collapse_improvement_loop_addendum.md` | Implemented source for the bounded Command and Corridors tranche and queued source for its later shared-mechanic tranches. |
 
 ### Queued Docs And Evidence
 
 | Source | Queued use |
 | --- | --- |
 | `2026_05_29_soviet_collapse_focus_tree_redesign_followup_plan.md` | Focus-depth backlog. Some route-lock and CFR items are implemented; custom splinter identity, ancient restoration depth, OGB depth, helper-generic reward cleanup, and layout cleanup remain queued. |
-| `2026_07_11_soviet_collapse_improvement_loop_addendum.md` | Shared Command and Corridors crisis loop. Reuses the 118 existing missions, staged releases, and selected target desks. It does not add focus trees or a parallel mission board. |
+| Later tranches in `2026_07_11_soviet_collapse_improvement_loop_addendum.md` | Patron Rivalry, Successor Relations, Reconsolidation and Aftermath, and full UWR/KMB completion remain queued after the implemented Command and Corridors tranche. |
 | `2026_06_05_focus_tree_auditor_post_cfr_current_audit_pathline_patch.md` | Current focus-risk baseline: 520 pathline risks and 1,127 helper-only or nearly helper-only reward findings remain queued for parent work. |
 | Event-detail, evolution-detail, and spreadsheet parity notes | Queued until implementation facts are stable and wording can be mirrored exactly. XML inspection of `docs/spreadsheets/chaos_redux_events_catalog.xlsx` found Event005 row strings, but no safe workbook edit was made in this documentation pass. |
 | Asset and flag requirements in spec part 7 | Final-validation scope only under the current correction. Do not route urgent playability work into flags or assets. |
@@ -84,7 +86,7 @@ This map tells the next parent agent which documents to trust first. It does not
 | Completion claims | Event005 is not complete. Completed tranches, including CFR depth and route-lock cleanup, are not Event005 completion. |
 | Flag requirements versus active no-touch scope | Final specs still require asset/flag validation, but the active user correction forbids touching flags and assets. Treat those requirements as future/final-validation scope. |
 | Existing-country focus-tree eligibility | Event-created focus-tree loading appears gated by `soviet_collapse_event_created_republic`, but existing-country eligibility remains an urgent validation target before completion claims. |
-| Intervention visibility | Live target normalization and dual-scope checks exist, while older docs still report Tajikistan-style empty panels. Treat this as a five-case verification target. Patch only a demonstrated shared scope failure and never add hardcoded tag lists. |
+| Intervention visibility | The July 11 lifecycle audit closes the stale empty-panel contradiction across base, Tajikistan, dynamic non-base, high-chaos, and post-terminal targets. Shared substantive gates, cooldown-preserving display, and symmetric cleanup are authoritative; no tag exception was added. |
 
 ## Recent Handoffs To Trust For Current State
 
@@ -99,6 +101,12 @@ This map tells the next parent agent which documents to trust first. It does not
 | `subagent_handoffs/2026_06_05_focus_tree_auditor_post_cfr_current_audit_pathline_patch.md` | Full pre-UWR/KMB post-CFR audit baseline: 41 trees, 1698 focuses, 0 duplicate focus IDs, 0 coordinate duplicates, 0 direct focus idea effects, 520 pathline risks, and 1,127 helper-only or nearly helper-only reward findings. | Historical risk baseline. Current static counts are 43 trees and 1,728 focuses, so the old clean findings cannot prove the two later trees complete. |
 | `subagent_handoffs/20260605T145855Z_event005_focus_tree_auditor_current_state_handoff.md` | Earlier full mechanical focus audit count baseline. | Superseded as current focus baseline by the post-CFR audit, but useful for comparing route-lock and pre-CFR state. |
 | `subagent_handoffs/2026_06_05_145453_focus_tree_audit.md` | Helper-heavy reward, cloned splinter scaffold, compact high-chaos/ancient depth concerns. | Its exact BLR coordinate, BLR/KAZ/GAC pathline, and broad starting-tension cleanup findings are superseded by later parent patches. |
+| `subagent_handoffs/2026_07_11_soviet_command_corridors_backend_handoff.md` | Mission classification, priority/refill integration, state-bound corridors, compromises, release causes, terminal desks, and UWR/KMB hooks. | Backend implementation evidence for tranche one. |
+| `subagent_handoffs/2026_07_11_soviet_command_corridors_audit.md` | First-pass risks and blocker findings. | Superseded where the lifecycle patch and final audits record corrections; retain as audit history. |
+| `subagent_handoffs/2026_07_11_soviet_selected_target_uwr_kmb_audit.md` | Selected-target, terminal conversion, UWR, KMB, and AI review. | Modified by the lifecycle correction handoff and final audits. |
+| `subagent_handoffs/2026_07_11_soviet_selected_target_lifecycle_handoff.md` | Five-case shared lifecycle, substantive gates, cooldown preservation, invalidation cleanup, release-cause ordering, and sponsor AI. | Current selected-target and lifecycle evidence. |
+| `subagent_handoffs/2026_07_11_soviet_command_corridors_completion_audit.md` | Final bounded gameplay audit and correction disposition. | Current completion evidence for tranche one only. |
+| `subagent_handoffs/2026_07_11_soviet_localisation_audit.md` | Player-facing key coverage, tooltip accuracy, category state, and localisation encoding. | Current localisation evidence for tranche one only. |
 
 ## Historical Plans And Audits
 
@@ -110,8 +118,9 @@ This map tells the next parent agent which documents to trust first. It does not
 | `2026_05_31_parent_focus_release_analysis.md` | Historical parent analysis. Use its remaining-work themes, not its older counts as current facts. |
 | `2026_06_05_parent_dynamic_release_pacing_and_idea_cleanup_followup.md` | Current evidence that active non-base release pacing is pressure-gated and standalone triggerable scenarios keep exhaustive all-possible behavior. Do not read as a general all-release-off or all-release-instant rule. |
 | `2026_06_04_focus_tree_auditor_all_soviet_collapse_audit.md` | Historical audit. Newer June 5 audits and patches replace its coordinate and route-lock specifics. |
+| `2026_07_11_soviet_collapse_improvement_loop_addendum.md` | Implemented for Command and Corridors. Use its later-tranche sections as queued design, not as proof that Patron Rivalry, Successor Relations, Reconsolidation, or full UWR/KMB completion exists. |
 
-## Explicit Out-Of-Scope For Current Parent Task
+## Documentation-Curator Boundary And Remaining Asset Scope
 
 - `gfx/flags`
 - flag sprite files
@@ -122,7 +131,7 @@ This map tells the next parent agent which documents to trust first. It does not
 - localisation files
 - script, focus, decision, event, GUI, GFX, history, AI, spreadsheet, or asset edits by the documentation curator
 
-Future asset work can return to spec part 7 only after the parent explicitly reopens it. The current active state is no flag edits.
+The gameplay, localisation, script, focus, decision, event, GUI, history, AI, spreadsheet, and related editing bullets above describe the documentation curator's ownership boundary, not the completed Command and Corridors integration. The flag and binary-asset bullets remain the active asset boundary. Future asset work can return to spec part 7 only after the parent explicitly reopens it.
 
 ## Active Unresolved Implementation Items
 
@@ -132,6 +141,6 @@ Future asset work can return to spec part 7 only after the parent explicitly reo
 - Focus trees still need broad cleanup: political, industry, expansion branches; compact layouts; no overlapping lines; fewer pointless mutexes; no idea spam; and meaningful mechanics or regional payoffs.
 - Evolution details remain pending and must match spreadsheet descriptions exactly after implementation facts are finalized.
 - `docs/spreadsheets/chaos_redux_events_catalog.xlsx` still contains Event005 wording that should be reviewed by the spreadsheet doc worker after gameplay facts settle. The row includes `To Be Reworked` status text and evolution wording that may need to mirror the current two-family event-log design exactly.
-- Selected-breakaway intervention visibility needs five-case scope verification, especially the reported Tajikistan-style empty panel. Do not change code if the live dynamic helpers pass, and never fix it with hardcoded tag lists.
-- UWR and KMB need source-map, AI, crisis-loop, and completion reconciliation. Their later compact trees raise the current static baseline to 43 trees and 1,728 focuses.
+- Patron Rivalry, Successor Relations, Reconsolidation and Aftermath, and full UWR/KMB completion remain queued as later shared-mechanic tranches.
+- UWR and KMB shared-crisis hooks and AI are reconciled; dedicated UWR decisions/conqueror aftermath and KMB treaty competition/conquered-basin policy remain incomplete. Their later compact trees raise the current static baseline to 43 trees and 1,728 focuses.
 - Existing-country focus-tree eligibility remains an urgent validation target. Runtime focus-tree replacement must stay limited to Event005-created republics unless an explicit additive integration is designed.

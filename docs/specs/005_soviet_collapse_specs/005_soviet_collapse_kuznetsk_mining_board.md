@@ -87,3 +87,9 @@ Future art pass:
 - Add targeted concession decisions against specific neighboring resource states once a safe dynamic target UI is available.
 - Add treaty chains where foreign industrial powers compete for Kuznetsk output.
 - Add late-game integration choices for conquered basins: direct board rule, concession puppet, or resource corridor.
+
+## Implemented shared-crisis and AI hooks (2026-07-11)
+
+The six Mining Board decision costs are centralized. A signed resource treaty raises KMB depot control while increasing Moscow's Depot Vulnerability and Foreign Appetite and prioritizing Corridors and Depots. A successful forced concession raises Moscow's Depot Vulnerability, Republic Confidence, and Foreign Appetite and prioritizes both corridor and settlement work. These hooks use the existing decisions and add no focus node or release timer.
+
+KMB AI now protects state 569, allocates infantry and train production, reserves one coal-golem factory after Guard the Pitheads and two after Raise Furnace Columns, avoids opportunistic wars while isolated on the treaty route, and enters concession posture only when a valid neighboring target exists and KMB exceeds the shared 1.25 strength ratio. The decision and strategy use the same reusable target triggers. Conquered-basin policy, treaty competition, and final route assets remain in the later KMB completion tranche.

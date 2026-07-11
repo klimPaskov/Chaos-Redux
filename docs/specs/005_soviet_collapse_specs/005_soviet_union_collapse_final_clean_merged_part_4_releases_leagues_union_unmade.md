@@ -272,6 +272,14 @@ High-chaos successor actors should not wait passively for terminal collapse. Whe
 
 After Union Unmade, pre-collapse intervention categories and missions should not keep running as if the Soviet Union still has central authority.
 
+## Implemented release-cause and terminal-desk addendum (2026-07-11)
+
+Every ordinary release records the dominant live operational cause without changing the release gate or adding a scheduler: command fracture, corridor/depot loss, negotiated political break, or foreign/League-backed rupture. Recent mapped objective failures add bounded cause pressure, but the live crisis values remain the primary comparison. The released country receives one cause flag and numeric cause value. That cause changes its opening component package, Moscow's next family priority, sponsor-interest signal, AI posture, and one-time neighboring-breakaway reactions.
+
+The release-cause package runs inside the existing setup and force calculation. Command fracture adds local-authority pressure and a field formation; corridor loss adds depot control and a field formation; negotiated break adds institutions and resilience; foreign/League rupture adds liaison reach, patronage risk, and League support. None of these paths forces a release or bypasses gradual active-crisis pacing.
+
+At Union Unmade, pre-collapse targeted rows and open-menu state are cleared. A surviving target can then be deliberately selected again for the aftermath surface. Moscow's converted action coordinates a live reclamation front against a selected wartime breakaway and dynamically attacks one qualifying original-Union corridor; a foreign patron's converted action establishes a wartime aid corridor to a selected republic fighting Moscow. Pre-collapse treaty, administration, recognition, dependency, and cabinet rows require the active crisis and do not remain valid merely because the category still exists.
+
 Cancel or convert:
 
 - Soviet Crisis objectives that no longer make sense

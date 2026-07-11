@@ -1040,8 +1040,10 @@ soviet_collapse_decision_cost = {
 	send_loyalist_officers_obedience = 7
 	send_loyalist_officers_depot_relief = -2
 	cut_rebel_supply_routes_fuel = 36000
+	cut_rebel_supply_routes_fuel_gate = 35999.99
 	cut_rebel_supply_routes_fuel_spend = -36000
 	cut_rebel_supply_routes_trains = 8
+	cut_rebel_supply_routes_trains_gate = 7
 	cut_rebel_supply_routes_train_spend = -8
 	cut_rebel_supply_routes_depot_relief = -6
 	cut_rebel_supply_routes_league_disruption = -3
@@ -1540,6 +1542,12 @@ soviet_collapse_kmb_balance = {
 	decision_stage_coal = 30
 	decision_stage_secondary = 6
 	resource_expansion_stage_cap = 5
+	deepen_subsoil_extraction_cost = 20
+	sell_coal_for_machines_cost = 25
+	open_export_auction_cost = 25
+	sign_resource_treaty_cost = 35
+	trade_oil_for_trucks_cost = 30
+	force_mining_concession_cost = 45
 	steel = 70
 	aluminum = 45
 	oil = 45
@@ -1827,22 +1835,31 @@ soviet_collapse_foreign_intervention = {
 	press_network_ideology_popularity = 0.02
 	press_network_soviet_foreign_pressure = 2
 	aid_corridor_fuel = 12000
+	aid_corridor_fuel_gate = 11999.99
 	aid_corridor_fuel_spend = -12000
 	aid_corridor_regional_fuel = 18000
+	aid_corridor_regional_fuel_gate = 17999.99
 	aid_corridor_regional_fuel_extra_spend = -6000
 	aid_corridor_major_fuel = 26000
+	aid_corridor_major_fuel_gate = 25999.99
 	aid_corridor_major_fuel_extra_spend = -14000
 	aid_corridor_trains = 4
+	aid_corridor_trains_gate = 3
 	aid_corridor_train_spend = -4
 	aid_corridor_regional_trains = 6
+	aid_corridor_regional_trains_gate = 5
 	aid_corridor_regional_train_extra_spend = -2
 	aid_corridor_major_trains = 8
+	aid_corridor_major_trains_gate = 7
 	aid_corridor_major_train_extra_spend = -4
 	aid_corridor_convoys = 4
+	aid_corridor_convoys_gate = 3
 	aid_corridor_convoy_spend = -4
 	aid_corridor_regional_convoys = 6
+	aid_corridor_regional_convoys_gate = 5
 	aid_corridor_regional_convoy_extra_spend = -2
 	aid_corridor_major_convoys = 8
+	aid_corridor_major_convoys_gate = 7
 	aid_corridor_major_convoy_extra_spend = -4
 	aid_corridor_soviet_foreign_pressure = 3
 	aid_corridor_soviet_depot_pressure = 2
@@ -2585,4 +2602,127 @@ soviet_collapse_secession_evolution_mtth = {
 	terminal_add = 14
 	breakaway_over_floor_add = 3
 	check_cooldown_days = 30
+}
+
+# Shared tuning for the Command and Corridors operational-family layer.
+# Priorities measure distance from the nearest healthier posture band, then
+# add secondary Foreign Appetite, League Cohesion, and Old Movement pressure.
+soviet_collapse_operational_priority = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	score_floor = 0
+	score_ceiling = 300
+	negation_multiplier = -1
+	calm_authority_floor = 55
+	calm_obedience_floor = 50
+	calm_republic_ceiling = 42
+	calm_depot_ceiling = 30
+	contested_authority_floor = 50
+	contested_obedience_floor = 45
+	contested_republic_ceiling = 42
+	contested_depot_ceiling = 30
+	crisis_authority_floor = 50
+	crisis_obedience_floor = 48
+	crisis_republic_ceiling = 42
+	crisis_depot_ceiling = 30
+	indivisible_authority_floor_offset = 5
+	indivisible_obedience_floor_offset = 5
+	autonomy_republic_ceiling_offset = -5
+	isolate_republic_ceiling_offset = -2
+	isolate_depot_ceiling_offset = -5
+	discipline_authority_floor_offset = 2
+	discipline_obedience_floor_offset = 5
+	chain_foreign_factor = 0.10
+	chain_league_factor = 0.10
+	chain_old_movement_factor = 0.30
+	corridor_foreign_factor = 0.40
+	corridor_league_factor = 0.25
+	corridor_old_movement_factor = 0.50
+	settlement_foreign_factor = 0.60
+	settlement_league_factor = 0.75
+	settlement_old_movement_factor = 0.50
+	foreign_rupture_foreign_factor = 1
+	foreign_rupture_league_factor = 1
+	foreign_rupture_old_movement_factor = 0.50
+	next_priority_boost = 100
+	recorded_failure_cause_boost = 25
+	chain_compromise_command_power_cost = 15
+	chain_compromise_command_power_gate = 14.99
+	corridor_compromise_political_power_cost = 35
+	corridor_compromise_political_power_gate = 34.99
+	settlement_compromise_political_power_cost = 50
+	settlement_compromise_political_power_gate = 49.99
+	chain_compromise_authority = 1
+	chain_compromise_obedience = 1
+	chain_compromise_confidence = 2
+	corridor_compromise_authority = -2
+	corridor_compromise_depot = -2
+	corridor_compromise_foreign = 1
+	corridor_compromise_league = 2
+	settlement_compromise_authority = -2
+	settlement_compromise_confidence = -2
+	settlement_compromise_foreign = 1
+	settlement_compromise_league = 2
+	release_cause_command_fracture = 1
+	release_cause_corridor_depot_loss = 2
+	release_cause_negotiated_political_break = 3
+	release_cause_foreign_league_rupture = 4
+	command_release_local_authority_pressure = 4
+	command_release_field_unit_bonus = 1
+	command_release_sponsor_interest = 0
+	corridor_release_depot_control = 5
+	corridor_release_field_unit_bonus = 1
+	corridor_release_sponsor_interest = 1
+	negotiated_release_institution_strength = 5
+	negotiated_release_independence_resilience = 4
+	negotiated_release_sponsor_interest = 1
+	foreign_release_liaison_reach = 5
+	foreign_release_patronage_risk = 4
+	foreign_release_league_support = 3
+	foreign_release_sponsor_interest = 4
+	neighbor_command_local_authority_pressure = 1
+	neighbor_corridor_depot_control = 1
+	neighbor_negotiated_institution_strength = 1
+	neighbor_foreign_liaison_reach = 1
+}
+
+soviet_collapse_kmb_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	superiority_ratio = 1.25
+	treaty_local_depot_control = 4
+	treaty_soviet_depot_pressure = 2
+	treaty_soviet_foreign_pressure = 1
+	concession_soviet_depot_pressure = 4
+	concession_soviet_republic_pressure = 3
+	concession_soviet_foreign_pressure = 2
+}
+
+soviet_collapse_uwr_aftermath = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	contamination_soviet_republic_pressure = 3
+	contamination_soviet_foreign_pressure = 2
+}
+
+soviet_collapse_selected_target_aftermath = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	breakaway_count_step = 1
+	reclamation_corridor_damage = 1
+	reclamation_corridor_trace_days = 90
+	reclamation_conquer_ai_weight = 160
+	reclamation_antagonize_ai_weight = 140
 }

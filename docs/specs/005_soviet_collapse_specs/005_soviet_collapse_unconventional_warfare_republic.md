@@ -57,4 +57,10 @@ The current UWR flags are placeholders copied from the existing Dead Soldiers' C
 - Add dedicated UWR decisions for targeted field releases, prisoner intake, and facility overclocking.
 - Add post-conquest contamination cleanup or integration choices for players fighting UWR.
 - Add final UWR flag and focus icon art.
+
+## Implemented shared-crisis hooks (2026-07-11)
+
+UWR now has route AI overlays without adding focus nodes. After the Tver directorate, CW facility, or experiment-camp milestones, it prioritizes army, infantry, and support production; Field Release Doctrine or Chaos Warfare raises army commitment and force concentration. These overlays use the successor decision surface so terminal collapse does not switch the route off.
+
+Each state actually selected by `soviet_collapse_uwr_contaminate_neighbor_front` is marked once for later contamination aftermath. During the active Union crisis that state record raises Republic Confidence and Foreign Appetite and prioritizes Republic Settlement. It adds no release scheduler, recurring scan, cleanup decision, or claim that the later UWR completion tranche is finished.
 - Extend `grant_random_chaos_special_project_available_tech` whenever new bio/chemical chaos special projects are implemented.
