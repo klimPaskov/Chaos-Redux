@@ -2,6 +2,8 @@
 
 > Implementation closure, 2026-07-10: this file preserves the original research snapshot. All six accepted roles are implemented in slots 67-72 with unique audio ids 37-42, preserved sources and hashes, OGG/WAV derivatives, music and sound registration, settings-aware playback, and final role-specific localisation. The blocker lists below are historical and are superseded by `docs/assets/013_natural_disasters/audio_manifest.md` and `docs/plans/013_natural_disasters_plans/013_implementation_validation_notes.md`.
 
+> Uniqueness correction, 2026-07-11: decoded-audio fingerprinting proved that the implemented ID 37 *Egmont Overture* cue duplicated Soviet Collapse ID 14, despite conflicting catalogue attribution. ID 37's OGG and WAV were replaced at their stable paths with Grieg's *In the Hall of the Mountain King*, performed by the Czech National Symphony Orchestra / Musopen Symphony. Commons documents a worldwide public-domain dedication for the recording and public-domain status for the composition. The preserved source, checksum match, edit, conversion, final hashes, and fingerprint evidence are recorded in `docs/assets/013_natural_disasters/audio_manifest.md`. The original ID 37 recommendation below is retained only as superseded research history. The HTML music-table row remains parent implementation work.
+
 ## Scope and status
 
 This is an audio-research handoff for the four Event 013 abnormal outcomes retained by the accepted specification and text-research pass:
