@@ -87,6 +87,72 @@ camp_rework_band = {
 	critical = 5
 }
 
+camp_rework_site_status = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	dormant = 0
+	active = 1
+	radicalized = 2
+	experiment = 3
+	laboratory = 4
+	discovered = 5
+	dismantled = 6
+}
+
+camp_rework_gui_eligibility = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	blocked = 0
+	eligible = 1
+	core_fallback_penalty = 2
+}
+
+camp_rework_gui_action = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	select_state = 1
+}
+
+camp_rework_gui_country_value = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	germany_mengele_autonomy = 100
+	germany_mengele_permission = 101
+	germany_auschwitz_status = 102
+	japan_ishii_influence = 200
+	japan_kwantung_autonomy = 201
+	japan_outbreak_risk = 202
+	soviet_gulag_reach = 300
+	soviet_paranoia = 301
+	soviet_famine = 302
+	soviet_union_crisis_relief = 303
+	uk_raj_labor_burden = 400
+	uk_indian_autonomy_resistance = 401
+	usa_civil_liberties_damage = 500
+	usa_court_challenge_pressure = 501
+	france_vichy_collaboration_reach = 600
+	france_north_africa_labor_burden = 601
+	italy_desert_camp_burden = 700
+	belgium_congo_extraction_pressure = 800
+	belgium_accountability_pressure = 801
+	generic_network_reach = 900
+	generic_evidence_risk = 901
+	generic_reform_pressure = 902
+}
+
 camp_rework_evidence_status = {
 	schema = {
 		any_key = yes
@@ -129,6 +195,43 @@ camp_rework_discovery_factor = {
 	annexed_observer_gain = 5.00
 }
 
+camp_rework_responsibility_share = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	explicit_collaborator = 0.35
+}
+
+camp_rework_achievement = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	severe_sites_required = 3.00
+	inherited_sites_required = 3.00
+}
+
+camp_rework_super_event = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	visible_days = 30
+	global_discovery_slot = 74
+	soviet_famine_slot = 75
+	pingfang_exposure_slot = 76
+	colonial_reckoning_slot = 77
+	global_discovery_audio = 44
+	angel_directorate_audio = 45
+	soviet_famine_audio = 46
+	pingfang_exposure_audio = 47
+	colonial_reckoning_audio = 48
+}
+
 camp_rework_project_type = {
 	schema = {
 		any_key = yes
@@ -138,6 +241,118 @@ camp_rework_project_type = {
 	none = 0
 	construction = 1
 	extraction = 2
+}
+
+camp_rework_action = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	reveal_country_directives = 1.00
+	expand_selected_pool = 2.00
+	start_labor_project = 3.00
+	allocate_guards = 4.00
+	reduce_quotas = 5.00
+	inspect_selected_site = 6.00
+	dismantle_selected_site = 7.00
+	destroy_evidence = 8.00
+	chemical_method = 9.00
+	biological_method = 10.00
+
+	generic_activate_detention_network = 100.00
+	generic_expand_labor_quotas = 101.00
+	generic_redirect_labor_to_construction = 102.00
+	generic_redirect_labor_to_resource_extraction = 103.00
+	generic_allocate_additional_guards = 104.00
+	generic_reduce_labor_quotas = 105.00
+	generic_upgrade_existing_site_to_radicalized_atrocity_site = 106.00
+	generic_restricted_contaminated_site_escalation = 107.00
+	generic_destroy_evidence_before_retreat = 108.00
+	generic_dismantle_detention_network = 109.00
+	camp_repression_close_dormant_legacy_site = 110.00
+
+	germany_route_prisoner_labor_to_war_construction = 200.00
+	germany_redirect_prisoner_labor_to_eastern_fortifications = 201.00
+	germany_tighten_deportation_logistics = 202.00
+	germany_increase_guard_allocation_to_ss_sites = 203.00
+	germany_build_ss_laboratory_annex_at_auschwitz = 204.00
+	germany_destroy_auschwitz_evidence_before_retreat = 205.00
+	germany_dismantle_auschwitz_complex = 206.00
+
+	japan_establish_pingfang_research_bureau = 300.00
+	japan_expand_occupation_test_records = 301.00
+	japan_shield_ishii_from_army_review = 302.00
+	japan_redirect_records_to_army_medical_control = 303.00
+	japan_invite_kwantung_army_medical_officers = 304.00
+	japan_suppress_chinese_resistance_cells = 305.00
+	japan_route_supplies_to_epidemic_prevention = 306.00
+	japan_open_epidemic_containment_office = 307.00
+	japan_destroy_pingfang_records = 308.00
+	japan_evacuate_pingfang_research_staff = 309.00
+	japan_submit_to_army_review = 310.00
+	japan_remove_ishii_from_program_control = 311.00
+	japan_shut_down_prisoner_experiments = 312.00
+
+	sov_transfer_prisoners_to_industrial_camps = 400.00
+	sov_reinforce_nkvd_authority = 401.00
+	sov_reduce_paranoia_through_party_review = 402.00
+	sov_release_prisoners_for_military_service = 403.00
+	sov_dismantle_overextended_gulags = 404.00
+	sov_emergency_famine_relief = 405.00
+	sov_conceal_famine_mortality = 406.00
+	sov_admit_local_administrative_collapse = 407.00
+	sov_authorize_extreme_periphery_repression = 408.00
+
+	uk_survey_raj_emergency_detention = 500.00
+	uk_activate_raj_emergency_detention = 501.00
+	uk_route_colonial_labor_to_military_construction = 502.00
+	uk_expand_raj_detention_districts = 503.00
+	uk_demand_indian_manpower_levy = 504.00
+	uk_tighten_dominion_security_coordination = 505.00
+	uk_allocate_additional_colonial_guards = 506.00
+	uk_release_political_prisoners_for_negotiations = 507.00
+	uk_begin_colonial_labor_reform = 508.00
+	uk_dismantle_raj_detention_network = 509.00
+
+	usa_authorize_emergency_relocation_zones = 520.00
+	usa_expand_interior_security_camps = 521.00
+	usa_assign_detainee_labor_to_local_works = 522.00
+	usa_strengthen_wartime_review_boards = 523.00
+	usa_allow_court_review = 524.00
+	usa_release_detainees_under_supervision = 525.00
+	usa_terminate_wartime_relocation_authority = 526.00
+	usa_establish_redress_commission = 527.00
+
+	fr_inspect_legacy_camp_system = 540.00
+	fr_close_legacy_camp_system = 541.00
+	fr_expand_vichy_internment_administration = 542.00
+	fr_route_north_africa_labor_to_rail_projects = 543.00
+	fr_collaboration_transfer_records = 544.00
+	fr_suppress_refugee_and_rescue_networks = 545.00
+	fr_open_post_liberation_camp_review = 546.00
+	fr_dismantle_north_africa_labor_network = 547.00
+	fr_support_refugee_and_rescue_networks = 548.00
+
+	ita_reopen_desert_camp_administration = 560.00
+	ita_authorize_homeland_emergency_detention = 561.00
+	ita_redirect_colonial_labor_to_roads_and_forts = 562.00
+	ita_force_settlement_of_rebel_districts = 563.00
+	ita_raise_colonial_security_battalions = 564.00
+	ita_expand_transport_guard = 565.00
+	ita_close_desert_camps = 566.00
+	ita_compensate_colonial_victims = 567.00
+
+	bel_expand_concession_labor_quotas = 580.00
+	bel_route_labor_to_rubber_and_minerals = 581.00
+	bel_build_congo_transport_corridors = 582.00
+	bel_suppress_colonial_strikes = 583.00
+	bel_open_international_inspection = 584.00
+	bel_reform_concession_companies = 585.00
+	bel_recognize_local_administration = 586.00
+	bel_negotiate_colonial_strike_settlement = 587.00
+
+	generic_inspect_active_site = 111.00
 }
 
 camp_rework_threshold = {
@@ -176,6 +391,8 @@ camp_rework_state_threshold = {
 	}
 
 	low_infrastructure = 3
+	interior_infrastructure_floor = 1
+	project_infrastructure_ceiling = 5
 }
 
 camp_rework_site_contribution = {
@@ -415,6 +632,7 @@ camp_rework_cost = {
 	evidence_pp = 25.00
 	chemical_pp = 55.00
 	biological_pp = 60.00
+	restricted_method_pp = 60.00
 	activation_command = 10.00
 	expansion_command = 20.00
 	guard_command = 25.00
@@ -428,6 +646,7 @@ camp_rework_cost = {
 	stability_major = -0.050
 	war_support_minor = -0.010
 	war_support_major = -0.040
+	transport_guard_fuel = 1200.00
 }
 
 camp_rework_equipment_cost = {
@@ -445,6 +664,54 @@ camp_rework_equipment_cost = {
 	biological_tularemia = 16
 	biological_plague = 12
 	biological_smallpox = 6
+}
+
+# Equipment that must remain available for the full duration of a timed
+# logistics mission after its one-time start cost has been consumed.
+camp_rework_mission_equipment_reserve = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	infantry_equipment = 200
+	support_equipment = 60
+	motorized_equipment = 40
+	trains = 6
+	convoys = 4
+}
+
+# One-time charge plus the reserve that the associated mission maintains.
+camp_rework_equipment_start_requirement = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	infantry_equipment = 850
+	support_equipment = 240
+	motorized_equipment = 160
+	trains = 24
+	convoys = 16
+}
+
+camp_rework_mission_capacity = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	civilian_factory_floor = 0
+}
+
+camp_rework_mission_ratio = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	unit_strength = 0.50
+	unit_organization = 0.25
 }
 
 camp_rework_timing = {
@@ -488,6 +755,7 @@ camp_rework_timing = {
 	bel_congo_transport_corridor_project_days = 210
 	bel_colonial_strike_response_days = 150
 	bel_concession_reform_mandate_days = 365
+	response_cooldown_days = 180
 }
 
 camp_rework_ai_cap = {
@@ -499,19 +767,57 @@ camp_rework_ai_cap = {
 	germany_active_sites = 12.00
 	germany_radicalized_sites = 5.00
 	germany_experiment_sites = 4.00
+	germany_restricted_sites = 1.00
+	germany_active_projects = 1.00
 	japan_active_sites = 8.00
+	japan_radicalized_sites = 2.00
 	japan_experiment_sites = 3.00
+	japan_restricted_sites = 1.00
+	japan_active_projects = 1.00
 	soviet_active_sites = 14.00
+	soviet_radicalized_sites = 4.00
+	soviet_extreme_radicalized_sites = 1.00
+	soviet_experiment_sites = 0.00
+	soviet_restricted_sites = 1.00
+	soviet_active_projects = 1.00
 	uk_active_sites = 4.00
+	uk_radicalized_sites = 0.00
+	uk_experiment_sites = 0.00
+	uk_restricted_sites = 0.00
+	uk_active_projects = 1.00
 	usa_active_sites = 3.00
+	usa_radicalized_sites = 0.00
+	usa_experiment_sites = 0.00
+	usa_restricted_sites = 0.00
+	usa_active_projects = 1.00
 	france_active_sites = 5.00
+	france_vichy_radicalized_sites = 1.00
+	france_democratic_radicalized_sites = 0.00
+	france_experiment_sites = 0.00
+	france_restricted_sites = 0.00
+	france_active_projects = 1.00
 	italy_active_sites = 5.00
+	italy_radicalized_sites = 1.00
+	italy_experiment_sites = 0.00
+	italy_restricted_sites = 0.00
+	italy_active_projects = 1.00
 	belgium_active_sites = 4.00
+	belgium_radicalized_sites = 0.00
+	belgium_experiment_sites = 0.00
+	belgium_restricted_sites = 0.00
+	belgium_active_projects = 2.00
 	generic_major_sites = 5.00
 	generic_minor_sites = 2.00
+	generic_democratic_sites = 1.00
 	generic_radicalized_sites = 1.00
-	restricted_method_sites = 1.00
-	max_concurrent_projects = 1.00
+	generic_experiment_sites = 1.00
+	generic_restricted_sites = 1.00
+	generic_active_projects = 1.00
+	max_concurrent_projects = 2.00
+	resource_cap_reduction = 2.00
+	stress_cap_reduction = 1.00
+	critical_stress_cap_reduction = 2.00
+	severe_supply_burden = 20.00
 }
 
 camp_rework_ai_weight = {
@@ -531,15 +837,17 @@ camp_rework_ai_weight = {
 	japan_reform = 8.00
 	soviet_activation = 55.00
 	soviet_expansion = 48.00
+	soviet_focus_expansion = 20.00
 	soviet_famine = 18.00
 	soviet_relief = 40.00
+	soviet_extreme_escalation = 2.00
+	soviet_extreme_focus_escalation = 2.00
 	uk_activation = 25.00
 	uk_expansion = 18.00
 	uk_reform = 80.00
 	usa_activation = 6.00
 	usa_expansion = 2.00
 	usa_reform = 90.00
-	france_vichy_expansion = 42.00
 	france_reform = 75.00
 	italy_expansion = 42.00
 	italy_reform = 70.00
@@ -844,6 +1152,7 @@ camp_rework_germany = {
 	radicalized_site_coup_pressure = 4.00
 	chemical_site_coup_pressure = 3.00
 	core_fallback_autonomy = 6.00
+	poland_pool_loss_relief = -6.00
 	core_fallback_stability = -0.060
 	core_fallback_war_support = -0.050
 	radicalization_minor = 3.00

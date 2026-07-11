@@ -12,6 +12,7 @@ add_namespace = germany_mengele
 @MENGELE_EMERGENCY_INVADER_DELAY_HOURS = 6
 @MENGELE_EMERGENCY_GERMANY_WAR_DELAY_DAYS = 120
 @MENGELE_EMERGENCY_GERMANY_WAR_RECHECK_DAYS = 60
+@MENGELE_CLONING_UNLOCK_DELAY_DAYS = 1
 
 ##############################################################################################################
 # GERMANY: AUSCHWITZ EXPERIMENTS, MENGELE COUP, AND TIBET EXPEDITION
@@ -116,7 +117,10 @@ country_event = {
 		name = germany_mengele.10.c
 		trigger = { germany_mengele_program_active = yes }
 		ai_chance = { base = 20 }
-		set_country_flag = germany_mengele_military_review_active
+		if = {
+			limit = { NOT = { has_active_mission = germany_auschwitz_military_review_mission } }
+			camp_rework_germany_start_military_review_mission = yes
+		}
 		set_temp_variable = { mengele_autonomy_delta = constant:germany_mengele_autonomy.military_review_reduction }
 		germany_mengele_add_autonomy = yes
 		country_event = { id = germany_mengele.11 days = 150 random_days = 45 }
@@ -584,6 +588,13 @@ country_event = {
 
 	immediate = {
 		if = {
+			limit = {
+				has_country_flag = germany_mengele_cloning_unlock_pending
+				germany_mengele_cloning_unlock_ready = yes
+			}
+			country_event = { id = germany_mengele.23 days = @MENGELE_CLONING_UNLOCK_DELAY_DAYS }
+		}
+		if = {
 			limit = { germany_mengele_program_active = yes }
 			germany_mengele_calculate_coup_pressure = yes
 			if = {
@@ -683,16 +694,14 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		germany_mengele_program_active = yes
-		NOT = { has_country_flag = germany_mengele_cloning_project_available }
-		NOT = { has_country_flag = germany_mengele_cloning_project_completed }
+		germany_mengele_cloning_unlock_ready = yes
 	}
 
 	option = {
 		name = germany_mengele.23.a
 		ai_chance = { base = 100 }
 		set_country_flag = germany_mengele_cloning_project_available
-		set_country_flag = directorate_special_project_cloning_available
+		clr_country_flag = germany_mengele_cloning_unlock_pending
 		add_breakthrough_progress = {
 			specialization = specialization_biowarfare
 			value = mengele_clone_focus_value.breakthrough_small

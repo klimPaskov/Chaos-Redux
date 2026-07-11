@@ -121,6 +121,24 @@ germany_mengele_calculate_coup_pressure = {
     multiply_temp_variable = { mengele_facility_pressure = constant:germany_mengele_autonomy.facility_count_factor }
     add_to_temp_variable = { mengele_coup_pressure = mengele_facility_pressure }
     if = {
+        limit = { has_variable = camp_experiment_site_count }
+        set_temp_variable = { mengele_experiment_site_pressure = camp_experiment_site_count }
+        multiply_temp_variable = { mengele_experiment_site_pressure = constant:camp_rework_germany.experiment_site_coup_pressure }
+        add_to_temp_variable = { mengele_coup_pressure = mengele_experiment_site_pressure }
+    }
+    if = {
+        limit = { has_variable = camp_radicalized_site_count }
+        set_temp_variable = { mengele_radicalized_site_pressure = camp_radicalized_site_count }
+        multiply_temp_variable = { mengele_radicalized_site_pressure = constant:camp_rework_germany.radicalized_site_coup_pressure }
+        add_to_temp_variable = { mengele_coup_pressure = mengele_radicalized_site_pressure }
+    }
+    if = {
+        limit = { has_variable = camp_contaminated_site_count }
+        set_temp_variable = { mengele_chemical_site_pressure = camp_contaminated_site_count }
+        multiply_temp_variable = { mengele_chemical_site_pressure = constant:camp_rework_germany.chemical_site_coup_pressure }
+        add_to_temp_variable = { mengele_coup_pressure = mengele_chemical_site_pressure }
+    }
+    if = {
         limit = { has_war_with = SOV }
         add_to_temp_variable = { mengele_coup_pressure = constant:germany_mengele_autonomy.war_with_soviets }
     }
@@ -278,15 +296,19 @@ germany_mengele_refresh_world_threat = {
 }
 
 germany_mengele_show_angel_coup_super_event = {
-    set_global_flag = {
-        flag = super_event_visible
-        days = @MENGELE_ANGEL_SUPER_EVENT_DAYS
-        value = 12
-    }
-    set_variable = { global.current_super_event_audio_id = 12 }
-    every_country = {
-        limit = { is_ai = no }
-        play_current_super_event_audio = yes
+    if = {
+        limit = { NOT = { has_global_flag = camp_rework_super_event_angel_directorate_fired } }
+        set_global_flag = camp_rework_super_event_angel_directorate_fired
+        set_global_flag = {
+            flag = super_event_visible
+            days = @MENGELE_ANGEL_SUPER_EVENT_DAYS
+            value = 12
+        }
+		set_variable = { global.current_super_event_audio_id = constant:camp_rework_super_event.angel_directorate_audio }
+        every_country = {
+            limit = { is_ai = no }
+            play_current_super_event_audio = yes
+        }
     }
 }
 
@@ -308,6 +330,7 @@ germany_mengele_mark_auschwitz_laboratory_site = {
             set_state_flag = genocide_ss_laboratory_site
         }
     }
+	camp_rework_germany_register_auschwitz_layers = yes
     add_to_variable = { hidden_atrocity_score = constant:genocide_crisis_value.hidden_atrocity_major }
     add_to_variable = { genocide_visibility = constant:genocide_crisis_value.visibility_major }
 }
@@ -447,6 +470,7 @@ mengele_clone_army_add_biowarfare_facility = {
                 province = { id = 9412 }
             }
             set_state_flag = genocide_ss_laboratory_site
+			camp_rework_germany_register_requested_laboratory_state = yes
         }
         set_country_flag = mengele_clone_army_facility_built
     }
@@ -465,6 +489,7 @@ mengele_clone_army_add_biowarfare_facility = {
                 province = { id = 11411 }
             }
             set_state_flag = genocide_ss_laboratory_site
+			camp_rework_germany_register_requested_laboratory_state = yes
         }
         set_country_flag = mengele_clone_army_facility_built
     }
@@ -483,6 +508,7 @@ mengele_clone_army_add_biowarfare_facility = {
                 province = { id = 3499 }
             }
             set_state_flag = genocide_ss_laboratory_site
+			camp_rework_germany_register_requested_laboratory_state = yes
         }
         set_country_flag = mengele_clone_army_facility_built
     }
@@ -501,6 +527,7 @@ mengele_clone_army_add_biowarfare_facility = {
                 province = { id = 3561 }
             }
             set_state_flag = genocide_ss_laboratory_site
+			camp_rework_germany_register_requested_laboratory_state = yes
         }
         set_country_flag = mengele_clone_army_facility_built
     }
@@ -1415,7 +1442,31 @@ mengele_clone_world_order_launch = {
         else = {
             set_global_flag = world_end_angelic_world_order
         }
-        add_ideas = mengele_clone_world_order_state
+        if = { limit = { has_idea = mengele_clone_global_replacement_maps } remove_ideas = mengele_clone_global_replacement_maps }
+        if = { limit = { has_idea = mengele_clone_future_state } remove_ideas = mengele_clone_future_state }
+        if = { limit = { has_idea = mengele_clone_reclamation_authority } remove_ideas = mengele_clone_reclamation_authority }
+        if = { limit = { has_idea = mengele_clone_continental_dominance } remove_ideas = mengele_clone_continental_dominance }
+        if = { limit = { has_idea = mengele_clone_continental_command_spine } remove_ideas = mengele_clone_continental_command_spine }
+        if = { limit = { has_idea = mengele_clone_world_dominance_protocols } remove_ideas = mengele_clone_world_dominance_protocols }
+        if = {
+            limit = { has_completed_focus = MCL_assert_world_dominance }
+            add_ideas = mengele_clone_world_order_state_with_command
+        }
+        else_if = {
+            limit = { has_completed_focus = MCL_continental_command_spine }
+            add_ideas = mengele_clone_world_order_state_with_command_spine
+        }
+        else_if = {
+            limit = { has_completed_focus = MCL_continental_dominance_protocol }
+            add_ideas = mengele_clone_world_order_state_with_continental_command
+        }
+        else_if = {
+            limit = { has_completed_focus = MCL_reclamation_war_cabinet }
+            add_ideas = mengele_clone_world_order_state_with_reclamation
+        }
+        else = {
+            add_ideas = mengele_clone_world_order_state
+        }
         add_manpower = constant:mengele_clone_world_order_int.final_manpower
         add_equipment_to_stockpile = {
             type = infantry_equipment
@@ -1535,6 +1586,8 @@ germany_mengele_restrict_program = {
 
 germany_mengele_reject_program = {
     set_country_flag = germany_mengele_program_rejected
+    clr_country_flag = germany_mengele_cloning_project_available
+    clr_country_flag = germany_mengele_cloning_unlock_pending
     set_variable = { mengele_permission_level = constant:germany_mengele_permission.rejected }
     add_stability = constant:germany_mengele_decision_value.rejection_stability
     add_popularity = {
@@ -1548,6 +1601,7 @@ germany_mengele_reject_program = {
 
 germany_mengele_cancel_program = {
     set_country_flag = germany_mengele_program_closed
+    clr_country_flag = germany_mengele_cloning_project_available
     clr_country_flag = germany_mengele_cloning_unlock_pending
     set_variable = { mengele_permission_level = constant:germany_mengele_permission.rejected }
     clr_country_flag = germany_mengele_program_recently_expired
@@ -1560,6 +1614,7 @@ germany_mengele_cancel_program = {
 germany_mengele_expire_program = {
     set_country_flag = germany_mengele_program_expired
     set_country_flag = germany_mengele_program_closed
+    clr_country_flag = germany_mengele_cloning_project_available
     clr_country_flag = germany_mengele_cloning_unlock_pending
     set_variable = { mengele_permission_level = constant:germany_mengele_permission.rejected }
     clr_country_flag = germany_mengele_program_recently_expired
@@ -1707,6 +1762,13 @@ germany_mengele_apply_master_claim_formations = {
 }
 
 germany_mengele_start_coup = {
+    if = {
+        limit = { NOT = { has_country_flag = germany_mengele_coup_fired } }
+        germany_mengele_start_coup_internal = yes
+    }
+}
+
+germany_mengele_start_coup_internal = {
     set_country_flag = germany_mengele_coup_fired
     clr_country_flag = germany_mengele_cloning_unlock_pending
     set_global_flag = germany_mengele_civil_war_active

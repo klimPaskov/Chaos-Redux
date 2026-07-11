@@ -1,6 +1,6 @@
 # System Camp Repression Rework: Colonial and Generic Event Art GFX Handoff
 
-This handoff covers exactly ten accepted report/news sprites. The asset tranche did not edit `interface/*.gfx`.
+This handoff covers exactly ten accepted report/news sprites. Their definitions are live in `interface/camp_repression_rework.gfx`, and their report/news mappings are live in the country event packages.
 
 Suggested registry: `interface/camp_repression_rework.gfx`, which already owns the Repression Ledger sprite family.
 
@@ -19,9 +19,9 @@ Suggested registry: `interface/camp_repression_rework.gfx`, which already owns t
 | `GFX_report_event_generic_camp_discovery` | `gfx/event_pictures/system_camp_repression_rework/report_event_generic_camp_discovery.dds` | `210x176` | Generic detention-site discovery |
 | `GFX_news_event_global_atrocity_evidence` | `gfx/event_pictures/system_camp_repression_rework/news_event_global_atrocity_evidence.dds` | `397x153` | First severe global atrocity-evidence disclosure |
 
-## Ready-to-copy sprite definitions
+## Live sprite definitions
 
-Insert these definitions inside the existing `spriteTypes = { ... }` block in `interface/camp_repression_rework.gfx`:
+The following definitions are present inside the existing `spriteTypes = { ... }` block in `interface/camp_repression_rework.gfx`:
 
 ```text
 	spriteType = { name = "GFX_report_event_raj_detention_discovery" texturefile = "gfx/event_pictures/system_camp_repression_rework/report_event_raj_detention_discovery.dds" }
@@ -70,4 +70,4 @@ Insert these definitions inside the existing `spriteTypes = { ... }` block in `i
 - Runtime and package DDS copies are byte-identical for all ten assets.
 - Full validation record: `docs/assets/system_camp_repression_rework/notes/validation_colonial_generic_event_art.md`.
 - Blocked assets: none.
-- Parent-owned remaining work: add sprite definitions, assign the sprites to final events/news events, and align localisation/event docs. No `.gfx`, gameplay, localisation, spreadsheet, audio, or super-event file was changed in this asset tranche.
+- Runtime registration, report/news assignment, and localisation/event alignment are complete. No parent-owned wiring item remains for this tranche.

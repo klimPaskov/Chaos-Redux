@@ -1,6 +1,6 @@
 # Repression Ledger UI GFX Handoff
 
-The main implementation has registered all UI sprites in `interface/camp_repression_rework.gfx` and consumes them from `interface/camp_repression_ledger.gui` plus the repression decision category.
+The main implementation registers all UI sprites in `interface/camp_repression_rework.gfx` and consumes them from `interface/camp_repression_ledger.gui` plus the repression decision category. The stable runtime ids are now backed by the frozen ImageGen archival-ledger and dossier-emblem sources recorded in `manifest_ui.md`; the build script handles extraction, resizing, transparency, state sheets, and DDS delivery.
 
 | Family | Live path pattern | Consumer |
 | --- | --- | --- |
@@ -10,4 +10,4 @@ The main implementation has registered all UI sprites in `interface/camp_repress
 | Compact marks | `gfx/interface/camp_repression/GFX_repression_ledger_{tab_*,population_pressure,labor_output,evidence_risk,reform_pressure,guard_burden,rail_burden}.dds` | Tabs and value-card icon family |
 | Static state layers | `gfx/interface/camp_repression/GFX_repression_ledger_{warning_frame_static,evidence_seal_static,reform_seal_static,selected_state_frame_static,critical_frame_static}.dds` | Pool warning, discovery, reform, selected state, and critical state |
 
-No animation `.gfx` entry is required. The accepted static fallback IDs are the runtime sprites.
+No animation `.gfx` entry is required. The maintained static ImageGen-derived IDs are the runtime sprites.

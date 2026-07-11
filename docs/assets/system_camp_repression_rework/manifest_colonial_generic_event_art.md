@@ -11,10 +11,10 @@ Asset tranche: colonial and generic report/news imagery only.
 - Source link, author, archive, collection, and source license: not applicable to generated original source art.
 - Historical status: historically grounded fictional documentary imagery. These images must not be presented as authentic archival photographs or as evidence of a real photographed person, document, or incident.
 - Exact prompts and built-in result identifiers: `docs/assets/system_camp_repression_rework/prompts/colonial_generic_event_art_prompts.md`.
-- Proposed sprite registry: `interface/camp_repression_rework.gfx`.
-- Localisation keys and final event ids: not assigned by this asset-only tranche.
+- Live sprite registry: `interface/camp_repression_rework.gfx`.
+- Localisation keys and final event ids are assigned through the country event packages and scripted image mappings.
 - Animation: not applicable; all ten assets are static.
-- Status vocabulary: every row is `handed_off`, meaning the source, processed PNG, package DDS, and runtime DDS are complete while `.gfx` and gameplay wiring remain parent-owned.
+- Status vocabulary: the retained `handed_off` row label records the original producer milestone. All ten identities are now registered and consumed by live report/news event mappings.
 
 ## Processing contract
 
@@ -66,4 +66,4 @@ This is the same verified implementation used by `docs/assets/011_secret_allianc
 
 ## Scope and blockers
 
-No placeholders, fallbacks, or blocked assets remain in this ten-asset tranche. No `.gfx`, event, decision, localisation, spreadsheet, audio, or super-event file was edited. Runtime wiring remains intentionally pending for the parent agent.
+No placeholders, fallbacks, blocked assets, or runtime-wiring items remain in this ten-asset tranche. All ten identities have live sprite definitions and report/news consumers.

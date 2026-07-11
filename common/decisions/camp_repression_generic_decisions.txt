@@ -64,7 +64,7 @@ camp_repression_network_category = {
 
 	generic_activate_detention_network = {
 		icon = GFX_decision_generic_expand_labor_network
-		state_target = any_controlled_state
+		state_target = any
 		on_map_mode = map_and_decisions_view
 		cost = constant:camp_rework_cost.activation_pp
 		days_re_enable = constant:camp_rework_timing.decision_cooldown_days
@@ -91,13 +91,7 @@ camp_repression_network_category = {
 			}
 			FROM = {
 				camp_rework_state_can_accept_responsibility_from_root = yes
-				OR = {
-					is_generic_occupied_camp_pool_state = yes
-					is_generic_colonial_camp_pool_state = yes
-					is_generic_noncore_security_pool_state = yes
-					is_generic_political_opposition_pool_state = yes
-					is_generic_core_fallback_pool_state = yes
-				}
+				is_generic_player_selectable_camp_pool_state = yes
 				NOT = { is_valid_camp_active_site_state = yes }
 				NOT = { concentration_camp > 0 }
 			}
@@ -113,22 +107,19 @@ camp_repression_network_category = {
 			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 			FROM = {
 				camp_rework_state_can_accept_responsibility_from_root = yes
-				OR = {
-					is_generic_occupied_camp_pool_state = yes
-					is_generic_colonial_camp_pool_state = yes
-					is_generic_noncore_security_pool_state = yes
-					is_generic_political_opposition_pool_state = yes
-					is_generic_core_fallback_pool_state = yes
-				}
+				is_generic_player_selectable_camp_pool_state = yes
 				NOT = { is_valid_camp_active_site_state = yes }
 			}
 		}
 		complete_effect = {
 			custom_effect_tooltip = generic_activate_detention_network_effect_tt
-			camp_rework_activate_detention_in_from = yes
+			set_variable = { camp_rework_action_state_id = FROM.id }
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.generic_activate_detention_network }
+			camp_rework_route_country_specific_action = yes
 		}
 		ai_will_do = {
 			base = 0
+			modifier = { factor = 0 NOT = { camp_rework_country_under_ai_site_cap = yes } }
 			modifier = {
 				add = constant:camp_rework_ai_weight.generic_authoritarian_activation
 				OR = {
@@ -155,7 +146,7 @@ camp_repression_network_category = {
 
 	generic_expand_labor_quotas = {
 		icon = GFX_decision_generic_expand_labor_network
-		state_target = any_controlled_state
+		state_target = any
 		on_map_mode = map_and_decisions_view
 		cost = constant:camp_rework_cost.expansion_pp
 		days_re_enable = constant:camp_rework_timing.decision_cooldown_days
@@ -165,20 +156,18 @@ camp_repression_network_category = {
 			has_active_camp_network = yes
 		}
 		target_root_trigger = {
-			has_active_camp_network = yes
-			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			camp_rework_country_can_expand_generic_labor = yes
 		}
 		target_trigger = {
 			FROM = {
 				is_valid_camp_active_site_state = yes
-				has_variable = genocide_responsible_country
-				var:genocide_responsible_country = { tag = ROOT }
+				camp_rework_state_is_actor_responsible_controlled = yes
 				NOT = { has_state_flag = camp_rework_expanded_labor_site }
 				NOT = { extermination_camp > 0 }
 			}
 		}
 		available = {
-			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			camp_rework_country_can_expand_generic_labor = yes
 			manpower > constant:camp_rework_cost.expansion_manpower
 			command_power > constant:camp_rework_cost.expansion_command
 			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
@@ -186,12 +175,16 @@ camp_repression_network_category = {
 			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
 			FROM = {
 				is_valid_camp_active_site_state = yes
+				camp_rework_state_is_actor_responsible_controlled = yes
 				NOT = { has_state_flag = camp_rework_expanded_labor_site }
+				NOT = { extermination_camp > 0 }
 			}
 		}
 		complete_effect = {
 			custom_effect_tooltip = generic_expand_labor_quotas_effect_tt
-			camp_rework_expand_labor_in_from = yes
+			set_variable = { camp_rework_action_state_id = FROM.id }
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.generic_expand_labor_quotas }
+			camp_rework_route_country_specific_action = yes
 		}
 		ai_will_do = {
 			base = constant:camp_rework_ai_weight.generic_authoritarian_activation
@@ -212,7 +205,7 @@ camp_repression_network_category = {
 
 	generic_redirect_labor_to_construction = {
 		icon = GFX_decision_generic_expand_labor_network
-		state_target = any_controlled_state
+		state_target = any
 		on_map_mode = map_and_decisions_view
 		cost = constant:camp_rework_cost.labor_project_pp
 		days_re_enable = constant:camp_rework_timing.standard_action_days
@@ -222,31 +215,39 @@ camp_repression_network_category = {
 			check_variable = { camp_labor_output > 0 }
 		}
 		target_root_trigger = {
+			camp_rework_country_can_expand_generic_labor = yes
 			check_variable = { camp_labor_output > 0 }
 			NOT = { has_country_flag = generic_labor_project_active }
 		}
 		target_trigger = {
 			FROM = {
 				is_valid_camp_active_site_state = yes
-				infrastructure < 5
-				has_variable = genocide_responsible_country
-				var:genocide_responsible_country = { tag = ROOT }
+				infrastructure < constant:camp_rework_state_threshold.project_infrastructure_ceiling
+				camp_rework_state_is_actor_responsible_controlled = yes
 			}
 		}
 		available = {
+			camp_rework_country_can_expand_generic_labor = yes
 			NOT = { has_country_flag = generic_labor_project_active }
-			has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_cost.motorized_equipment }
-			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
-			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
-			FROM = { is_valid_camp_active_site_state = yes infrastructure < 5 }
+			has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_start_requirement.motorized_equipment }
+			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_start_requirement.trains }
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_start_requirement.support_equipment }
+			num_of_civilian_factories_available_for_projects > constant:camp_rework_mission_capacity.civilian_factory_floor
+			FROM = {
+				is_valid_camp_active_site_state = yes
+				infrastructure < constant:camp_rework_state_threshold.project_infrastructure_ceiling
+				camp_rework_state_is_actor_responsible_controlled = yes
+			}
 		}
 		complete_effect = {
-			set_temp_variable = { camp_requested_project_type = constant:camp_rework_project_type.construction }
-			camp_rework_start_generic_labor_project_in_from = yes
 			custom_effect_tooltip = generic_labor_project_cycle_started_tt
+			set_variable = { camp_rework_action_state_id = FROM.id }
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.generic_redirect_labor_to_construction }
+			camp_rework_route_country_specific_action = yes
 		}
 		ai_will_do = {
 			base = constant:camp_rework_ai_weight.generic_authoritarian_activation
+			modifier = { factor = 0 NOT = { camp_rework_country_under_ai_project_cap = yes } }
 			modifier = {
 				factor = 0
 				check_variable = {
@@ -260,7 +261,7 @@ camp_repression_network_category = {
 
 	generic_redirect_labor_to_resource_extraction = {
 		icon = GFX_decision_generic_expand_labor_network
-		state_target = any_controlled_state
+		state_target = any
 		on_map_mode = map_and_decisions_view
 		cost = constant:camp_rework_cost.labor_project_pp
 		days_re_enable = constant:camp_rework_timing.standard_action_days
@@ -270,30 +271,38 @@ camp_repression_network_category = {
 			check_variable = { camp_labor_output > 0 }
 		}
 		target_root_trigger = {
+			camp_rework_country_can_expand_generic_labor = yes
 			check_variable = { camp_labor_output > 0 }
 			NOT = { has_country_flag = generic_labor_project_active }
 		}
 		target_trigger = {
 			FROM = {
 				is_valid_camp_active_site_state = yes
-				has_variable = genocide_responsible_country
-				var:genocide_responsible_country = { tag = ROOT }
+				camp_rework_state_is_actor_responsible_controlled = yes
+				camp_rework_state_has_extractable_resources = yes
 			}
 		}
 		available = {
+			camp_rework_country_can_expand_generic_labor = yes
 			NOT = { has_country_flag = generic_labor_project_active }
-			has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_cost.motorized_equipment }
-			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
-			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
-			FROM = { is_valid_camp_active_site_state = yes }
+			has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_start_requirement.motorized_equipment }
+			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_start_requirement.trains }
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_start_requirement.support_equipment }
+			FROM = {
+				is_valid_camp_active_site_state = yes
+				camp_rework_state_has_extractable_resources = yes
+				camp_rework_state_is_actor_responsible_controlled = yes
+			}
 		}
 		complete_effect = {
-			set_temp_variable = { camp_requested_project_type = constant:camp_rework_project_type.extraction }
-			camp_rework_start_generic_labor_project_in_from = yes
 			custom_effect_tooltip = generic_labor_project_cycle_started_tt
+			set_variable = { camp_rework_action_state_id = FROM.id }
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.generic_redirect_labor_to_resource_extraction }
+			camp_rework_route_country_specific_action = yes
 		}
 		ai_will_do = {
 			base = constant:camp_rework_ai_weight.generic_authoritarian_activation
+			modifier = { factor = 0 NOT = { camp_rework_country_under_ai_project_cap = yes } }
 			modifier = {
 				factor = 0
 				check_variable = {
@@ -326,7 +335,8 @@ camp_repression_network_category = {
 		}
 		complete_effect = {
 			custom_effect_tooltip = generic_allocate_additional_guards_effect_tt
-			camp_rework_allocate_additional_guards = yes
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.generic_allocate_additional_guards }
+			camp_rework_route_country_specific_action = yes
 		}
 		ai_will_do = {
 			base = constant:camp_rework_ai_weight.guard_allocation
@@ -352,7 +362,8 @@ camp_repression_network_category = {
 		}
 		complete_effect = {
 			custom_effect_tooltip = generic_reduce_labor_quotas_effect_tt
-			camp_rework_reduce_labor_quotas = yes
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.generic_reduce_labor_quotas }
+			camp_rework_route_country_specific_action = yes
 		}
 		ai_will_do = {
 			base = constant:camp_rework_ai_weight.guard_allocation
@@ -365,7 +376,7 @@ camp_repression_network_category = {
 
 	generic_upgrade_existing_site_to_radicalized_atrocity_site = {
 		icon = GFX_decision_chaos_doom
-		state_target = any_controlled_state
+		state_target = any
 		on_map_mode = map_and_decisions_view
 		cost = constant:camp_rework_cost.expansion_pp
 		days_re_enable = constant:camp_rework_timing.suppression_days
@@ -387,12 +398,12 @@ camp_repression_network_category = {
 				is_valid_camp_active_site_state = yes
 				concentration_camp > 0
 				NOT = { extermination_camp > 0 }
-				has_variable = genocide_responsible_country
-				var:genocide_responsible_country = { tag = ROOT }
+				camp_rework_state_is_actor_responsible_controlled = yes
 			}
 		}
 		available = {
 			camp_rework_country_can_use_radicalized_route = yes
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
 			OR = {
 				is_ai = no
 				camp_rework_country_under_ai_radicalized_cap = yes
@@ -402,11 +413,18 @@ camp_repression_network_category = {
 			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
 			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
-			FROM = { concentration_camp > 0 NOT = { extermination_camp > 0 } }
+			FROM = {
+				is_valid_camp_active_site_state = yes
+				concentration_camp > 0
+				NOT = { extermination_camp > 0 }
+				camp_rework_state_is_actor_responsible_controlled = yes
+			}
 		}
 		complete_effect = {
 			custom_effect_tooltip = generic_radicalized_atrocity_site_effect_tt
-			camp_rework_radicalize_site_in_from = yes
+			set_variable = { camp_rework_action_state_id = FROM.id }
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.generic_upgrade_existing_site_to_radicalized_atrocity_site }
+			camp_rework_route_country_specific_action = yes
 		}
 		ai_will_do = {
 			base = constant:camp_rework_ai_weight.generic_radicalized
@@ -423,9 +441,9 @@ camp_repression_network_category = {
 
 	generic_restricted_contaminated_site_escalation = {
 		icon = GFX_decision_chaos_doom
-		state_target = any_controlled_state
+		state_target = any
 		on_map_mode = map_and_decisions_view
-		cost = constant:camp_rework_cost.chemical_pp
+		cost = constant:camp_rework_cost.restricted_method_pp
 		days_re_enable = constant:camp_rework_timing.suppression_days
 		allowed = { camp_rework_country_uses_generic_kit = yes }
 		visible = {
@@ -440,44 +458,53 @@ camp_repression_network_category = {
 			camp_rework_country_can_use_radicalized_route = yes
 			NOT = { has_country_flag = camp_rework_expansion_frozen }
 			OR = {
+				is_ai = no
+				camp_rework_country_under_ai_restricted_method_cap = yes
+			}
+			OR = {
 				camp_rework_country_has_chemical_escalation_capacity = yes
 				camp_rework_country_has_biological_escalation_capacity = yes
 			}
 		}
 		target_trigger = {
-			FROM = {
-				OR = {
-					camp_rework_state_is_chemical_escalation_target = yes
-					camp_rework_state_is_biological_escalation_target = yes
+			OR = {
+				AND = {
+					camp_rework_country_has_chemical_escalation_capacity = yes
+					FROM = { camp_rework_state_is_chemical_escalation_target = yes }
+				}
+				AND = {
+					camp_rework_country_has_biological_escalation_capacity = yes
+					FROM = { camp_rework_state_is_biological_escalation_target = yes }
 				}
 			}
 		}
 		available = {
 			camp_rework_country_can_use_radicalized_route = yes
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
 			OR = {
-				camp_rework_country_has_chemical_escalation_capacity = yes
-				camp_rework_country_has_biological_escalation_capacity = yes
+				is_ai = no
+				camp_rework_country_under_ai_restricted_method_cap = yes
 			}
-			FROM = {
-				OR = {
-					camp_rework_state_is_chemical_escalation_target = yes
-					camp_rework_state_is_biological_escalation_target = yes
+			OR = {
+				AND = {
+					camp_rework_country_has_chemical_escalation_capacity = yes
+					FROM = { camp_rework_state_is_chemical_escalation_target = yes }
+				}
+				AND = {
+					camp_rework_country_has_biological_escalation_capacity = yes
+					FROM = { camp_rework_state_is_biological_escalation_target = yes }
 				}
 			}
 		}
 		complete_effect = {
 			custom_effect_tooltip = generic_restricted_contaminated_site_effect_tt
-			if = {
-				limit = {
-					camp_rework_country_has_chemical_escalation_capacity = yes
-					FROM = { camp_rework_state_is_chemical_escalation_target = yes }
-				}
-				camp_rework_apply_chemical_escalation_in_from = yes
-			}
-			else = { camp_rework_apply_biological_escalation_in_from = yes }
+			set_variable = { camp_rework_action_state_id = FROM.id }
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.generic_restricted_contaminated_site_escalation }
+			camp_rework_route_country_specific_action = yes
 		}
 		ai_will_do = {
 			base = constant:camp_rework_ai_weight.generic_radicalized
+			modifier = { factor = 0 NOT = { camp_rework_country_under_ai_restricted_method_cap = yes } }
 			modifier = {
 				factor = 0
 				genocide_country_condemnation_25 = yes
@@ -491,7 +518,7 @@ camp_repression_network_category = {
 
 	generic_destroy_evidence_before_retreat = {
 		icon = GFX_decision_generic_destroy_evidence
-		state_target = any_controlled_state
+		state_target = any
 		on_map_mode = map_and_decisions_view
 		cost = constant:camp_rework_cost.evidence_pp
 		days_re_enable = constant:camp_rework_timing.retreat_days
@@ -500,18 +527,20 @@ camp_repression_network_category = {
 			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
 			has_active_camp_network = yes
 		}
-		target_root_trigger = { has_active_camp_network = yes }
+		target_root_trigger = { camp_rework_country_can_destroy_retreat_evidence = yes }
 		target_trigger = { FROM = { is_valid_camp_enemy_proximity_state = yes } }
 		available = {
+			camp_rework_country_can_destroy_retreat_evidence = yes
 			manpower > constant:camp_rework_cost.activation_manpower
 			command_power > constant:camp_rework_cost.evidence_command
 			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 			FROM = { is_valid_camp_enemy_proximity_state = yes }
 		}
 		complete_effect = {
-			camp_rework_consume_evidence_resources = yes
-			genocide_destroy_camp_evidence_in_from = yes
 			custom_effect_tooltip = generic_destroy_evidence_before_retreat_effect_tt
+			set_variable = { camp_rework_action_state_id = FROM.id }
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.generic_destroy_evidence_before_retreat }
+			camp_rework_route_country_specific_action = yes
 		}
 		ai_will_do = {
 			base = constant:camp_rework_ai_weight.evidence_destruction
@@ -522,9 +551,46 @@ camp_repression_network_category = {
 		}
 	}
 
+	generic_inspect_active_site = {
+		icon = GFX_decision_generic_site_inspection
+		state_target = any
+		on_map_mode = map_and_decisions_view
+		cost = constant:camp_rework_cost.review_pp
+		days_re_enable = constant:camp_rework_timing.idea_medium_days
+		allowed = { camp_rework_country_uses_generic_kit = yes }
+		visible = {
+			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
+			has_active_camp_network = yes
+			OR = {
+				camp_rework_country_can_reform = yes
+				has_country_flag = camp_rework_crisis_exposed
+				genocide_country_has_discovered_sites = yes
+				check_variable = { camp_evidence_level > constant:camp_rework_threshold.band_medium }
+			}
+		}
+		target_root_trigger = {
+			camp_rework_country_can_open_site_inspection = yes
+		}
+		target_trigger = { FROM = { is_valid_camp_inspection_state = yes } }
+		available = {
+			camp_rework_country_can_open_site_inspection = yes
+			FROM = { is_valid_camp_inspection_state = yes }
+		}
+		complete_effect = {
+			custom_effect_tooltip = generic_inspect_active_site_effect_tt
+			set_variable = { camp_rework_action_state_id = FROM.id }
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.generic_inspect_active_site }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = {
+			base = constant:camp_rework_ai_weight.generic_reform
+			modifier = { factor = 0 has_government = fascism NOT = { has_country_flag = camp_rework_crisis_exposed } }
+		}
+	}
+
 	generic_dismantle_detention_network = {
 		icon = GFX_decision_generic_dismantle_network
-		state_target = any_controlled_state
+		state_target = any
 		on_map_mode = map_and_decisions_view
 		cost = constant:camp_rework_cost.dismantle_pp
 		days_remove = constant:camp_rework_timing.dismantle_days
@@ -547,12 +613,12 @@ camp_repression_network_category = {
 		}
 		modifier = { consumer_goods_factor = constant:camp_rework_idea_modifier.reform_consumer_goods }
 		complete_effect = {
-			camp_rework_consume_dismantlement_resources = yes
-			set_country_flag = camp_rework_site_closure_active
-			FROM = { camp_rework_start_dismantlement = yes }
 			custom_effect_tooltip = generic_dismantle_detention_network_started_tt
+			set_variable = { camp_rework_action_state_id = FROM.id }
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.generic_dismantle_detention_network }
+			camp_rework_route_country_specific_action = yes
 		}
-		cancel_trigger = { NOT = { FROM = { is_controlled_by = ROOT } } }
+		cancel_trigger = { NOT = { FROM = { camp_rework_state_is_actor_or_subject_controlled = yes } } }
 		cancel_effect = {
 			clr_country_flag = camp_rework_site_closure_active
 			FROM = {
@@ -573,16 +639,75 @@ camp_repression_network_category = {
 		}
 	}
 
+	camp_repression_close_dormant_legacy_site = {
+		icon = GFX_decision_generic_dismantle_network
+		state_target = any
+		on_map_mode = map_and_decisions_view
+		cost = constant:camp_rework_cost.dismantle_pp
+		days_remove = constant:camp_rework_timing.reform_days
+		allowed = { always = yes }
+		visible = {
+			OR = {
+				is_ai = yes
+				has_country_flag = camp_rework_managed_network_visible
+			}
+			camp_rework_country_can_close_dormant_legacy = yes
+		}
+		target_root_trigger = {
+			camp_rework_country_can_close_dormant_legacy = yes
+			NOT = { has_country_flag = camp_rework_dormant_legacy_closure_active }
+		}
+		target_trigger = { FROM = { is_valid_camp_dormant_reform_state = yes } }
+		available = {
+			manpower > constant:camp_rework_cost.dismantle_manpower
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+			FROM = { is_valid_camp_dormant_reform_state = yes }
+		}
+		modifier = { consumer_goods_factor = constant:camp_rework_idea_modifier.reform_consumer_goods }
+		complete_effect = {
+			set_variable = { camp_rework_action_state_id = FROM.id }
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.camp_repression_close_dormant_legacy_site }
+			camp_rework_route_country_specific_action = yes
+		}
+		cancel_trigger = { NOT = { FROM = { is_controlled_by = ROOT } } }
+		cancel_effect = { clr_country_flag = camp_rework_dormant_legacy_closure_active }
+		remove_effect = {
+			clr_country_flag = camp_rework_dormant_legacy_closure_active
+			FROM = { camp_rework_close_dormant_inherited_site = yes }
+		}
+		ai_will_do = {
+			base = constant:camp_rework_ai_weight.generic_reform
+			modifier = {
+				factor = constant:camp_rework_ai_weight.factor_postwar_reform
+				has_war = no
+			}
+		}
+	}
+
 	generic_labor_project_cycle = {
 		icon = GFX_decision_generic_expand_labor_network
+		modifier = { consumer_goods_factor = constant:camp_rework_idea_modifier.reform_consumer_goods }
 		allowed = { camp_rework_country_uses_generic_kit = yes }
 		activation = { has_country_flag = generic_labor_project_active }
 		visible = { has_country_flag = generic_labor_project_active }
 		available = { hidden_trigger = { always = no } }
 		days_mission_timeout = constant:camp_rework_timing.standard_action_days
-		is_good = no
-		timeout_effect = { camp_rework_complete_generic_labor_project = yes }
-		cancel_trigger = { NOT = { has_country_flag = generic_labor_project_active } }
+		is_good = yes
+		timeout_effect = {
+			if = {
+				limit = { camp_rework_generic_labor_project_requirements_met = yes }
+				custom_effect_tooltip = generic_labor_project_cycle_success_tt
+			}
+			else = { custom_effect_tooltip = generic_labor_project_cycle_failure_tt }
+			camp_rework_complete_generic_labor_project = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { has_country_flag = generic_labor_project_active }
+				NOT = { camp_rework_generic_labor_project_requirements_met = yes }
+			}
+		}
+		cancel_effect = { camp_rework_complete_generic_labor_project = yes }
 		ai_will_do = { base = 0 }
 	}
 
@@ -618,13 +743,27 @@ camp_repression_network_category = {
 		allowed = { camp_rework_country_uses_generic_kit = yes }
 		activation = {
 			has_active_camp_network = yes
-			any_controlled_state = { is_valid_camp_enemy_proximity_state = yes }
+			OR = {
+				any_controlled_state = { is_valid_camp_enemy_proximity_state = yes }
+				any_subject_country = {
+					any_controlled_state = { is_valid_camp_enemy_proximity_state = yes }
+				}
+			}
 		}
 		visible = { has_active_camp_network = yes }
 		available = { hidden_trigger = { always = no } }
 		days_mission_timeout = constant:camp_rework_timing.retreat_days
 		is_good = no
-		cancel_trigger = { NOT = { any_controlled_state = { is_valid_camp_enemy_proximity_state = yes } } }
+		cancel_trigger = {
+			NOT = {
+				OR = {
+					any_controlled_state = { is_valid_camp_enemy_proximity_state = yes }
+					any_subject_country = {
+						any_controlled_state = { is_valid_camp_enemy_proximity_state = yes }
+					}
+				}
+			}
+		}
 		timeout_effect = { camp_rework_trigger_retreat_discovery = yes }
 		ai_will_do = { base = 0 }
 	}
@@ -644,7 +783,7 @@ camp_repression_network_category = {
 		}
 		available = { hidden_trigger = { always = no } }
 		days_mission_timeout = constant:camp_rework_timing.reform_days
-		is_good = yes
+		is_good = no
 		cancel_trigger = { check_variable = { camp_active_site_count = 0 } }
 		cancel_effect = { camp_rework_complete_generic_reform = yes }
 		timeout_effect = { camp_rework_complete_generic_reform = yes }
@@ -664,7 +803,7 @@ camp_repression_network_category = {
 				NOT = { has_variable = camp_gui_dismantlement_state_id }
 				var:camp_gui_dismantlement_state_id = {
 					OR = {
-						NOT = { is_controlled_by = ROOT }
+						NOT = { camp_rework_state_is_actor_or_subject_controlled = yes }
 						NOT = { has_state_flag = camp_rework_site_dismantlement_in_progress }
 					}
 				}

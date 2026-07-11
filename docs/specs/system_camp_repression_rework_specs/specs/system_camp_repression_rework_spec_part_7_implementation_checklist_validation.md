@@ -4,6 +4,28 @@ Working feature id: `system_camp_repression_rework`
 
 This checklist is for the implementation agent. It should be used after Parts 1 through 6 are accepted as the source design. It names the likely files, helper families, integration order, validation commands, and scenario checks. It does not claim that the live repository has these exact paths available in the sandbox. The implementer must verify paths in the real Chaos Redux repository before editing.
 
+## Live implementation reconciliation, 2026-07-11
+
+The package has moved beyond the preimplementation checklist below. The current runtime is split across `common/decisions/camp_repression_major_country_decisions.txt`, `common/decisions/camp_repression_colonial_country_decisions.txt`, `common/decisions/camp_repression_generic_decisions.txt`, the matching country effects and ideas, `common/scripted_effects/camp_repression_action_dispatcher_effects.txt`, and the shared camp-rework trigger/effect layer.
+
+The final live inventory is **29 major-country actions + 43 colonial-country actions + 12 generic actions = 84 player actions**. The closing actions are `fr_support_refugee_and_rescue_networks`, `bel_negotiate_colonial_strike_settlement`, and `generic_inspect_active_site`. The same decision files contain **41 missions**, and the four Ledger show, hide, open, and close controls are tracked separately. A final decision-and-mission re-audit passed after the bounded cooldown-parity correction; its evidence is in `docs/plans/system_camp_repression_rework_plans/subagent_handoffs/decision_mission_final_audit_2026-07-11.md`.
+
+The subject-selected action bus is implemented through `camp_rework_action_state_id`, `camp_rework_prepare_selected_action_state`, `camp_rework_dispatch_prepare_colonial_selection`, `camp_rework_dispatch_restore_colonial_selection`, and `camp_rework_route_country_specific_action`. Restricted methods use the fixed-country and explicit-doctrine route gates in `common/scripted_triggers/camp_repression_rework_triggers.txt`; country identity or ideology alone is not sufficient.
+
+The connected monthly runtime processes registered active-country and active-state arrays. Population damage reduces real state population and enters the Chaos Meter Deaths pipeline. Active sites retain their stored responsible country, and evidence-based discovery and condemnation follow that stored authority. Germany, Japan, the Soviet Union, the U.K./Raj, the U.S.A., France/Vichy, Italy, Belgium/Congo, and generic country kits are live.
+
+Restricted methods are implemented as abstract capability and stockpile tiers: chlorine, phosgene, mustard, lewisite, tabun, sarin, and soman for chemical capacity; anthrax, tularemia, plague, and smallpox for biological capacity. They resolve through abstract harm, contamination or outbreak, evidence, discovery, instability, and tribunal consequences without operational instructions or protected-class selectors.
+
+The Repression Ledger is implemented with five exact tabs: Overview, State Pools, Active Sites, Country System, and Discovery & Reform. The header displays `[ROOT.GetName]: [GetCampCountryPanelName]` plus phase and discovery state, and all 32 Ledger country action slots use their native decision cooldown gates. Its maintained presentation uses 24 derived DDS sprites from frozen ImageGen sources in `docs/assets/system_camp_repression_rework/source/ui_imagegen/`; all 24 have live consumers, including scripted visibility for the evidence and reform seals. The recorded prompts are in `docs/assets/system_camp_repression_rework/prompts/repression_ledger_imagegen_prompts.md`, and `docs/assets/system_camp_repression_rework/tools/build_ledger_ui_assets.py` is the deterministic processor. This is the accepted static presentation, not a fallback or simple-shape substitute. Optional authored frame animation remains queued.
+
+The five super events are wired at slots `12`, `74`, `75`, `76`, and `77`, with audio ids `45`, `44`, `46`, `47`, and `48` respectively. Static Ledger UI assets, decision/idea/project/achievement icons, report/news art, super-event art, localisation, and the five audio packages are present and wired. Achievements `60` through `69` are live. Germany's focus reward lifecycle is consolidated to at most three stable lane spirits before convergence and exactly one final capstone spirit. The core final variant preserves exact science-and-force totals; stage-specific variants preserve the exact highest completed optional territorial stage through reclamation, continental dominance, the command spine, or full world dominance, with no new command prerequisite.
+
+The event workbook remains aligned through the existing Soviet Collapse Event Log record; this system rework does not create a standalone ChaosX event identity. The historical rows and checkboxes below remain accepted design and validation-contract evidence; current implementation status lives in `source_of_truth_and_completion_tracker.md`, the completion report, and the linked scenario report.
+
+The final decision-and-mission audit is closed. All 13 Part 7 scenarios plus the two cross-cutting abstract-method and full-Ledger contracts were statically traced with zero failures. No engine-runtime scenario execution occurred in this environment, so the static trace does not prove rendered GUI behavior, AI selection, timed outcomes, or numeric deltas in a running game. `docs/plans/system_camp_repression_rework_plans/scenario_contract_validation_report.md` records the evidence and this explicit validation gap. The remainder of this document stays as the accepted implementation and validation contract rather than being rewritten as implementation history.
+
+The remainder of this document is retained as the accepted implementation-order and validation contract. Its `Likely` file tables and recommended helper names are a preimplementation snapshot where they differ from the live file map above.
+
 ## Implementation order
 
 Use this order so the rework remains integrated with the existing `genocide_crisis`, Deaths, Condemnation, and country-specific systems.
@@ -386,6 +408,8 @@ Manual review required:
 ## Scenario validation matrix
 
 Run or document these scenario checks in a new save after implementation.
+
+Implementation reconciliation: all 13 rows below and the two cross-cutting `SCN-ABSTRACT-CHEM-BIO` and `SCN-FULL-LEDGER` contracts passed static trace with `ScenarioContracts=15 Failed=0`. This was not a new-save or engine-runtime run. The exact evidence and remaining runtime gap are recorded in `docs/plans/system_camp_repression_rework_plans/scenario_contract_validation_report.md`.
 
 | Scenario | Setup | Expected result |
 | --- | --- | --- |

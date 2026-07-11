@@ -231,16 +231,17 @@ This file records restored, sourced, and converted super-event audio assets used
 ### The Angel of Death Leaves the Camp
 
 - Super-event ID: `12`
-- Music file: `music/003_holy_realm/super_event_12_angel_directorate.ogg`
-- Sound-channel file: `sound/003_holy_realm/super_event_12_angel_directorate.wav`
-- Sound definition: `chaosx_super_event_angel_directorate_track`
-- Source title: `A Night on the Bare Mountain`
-- Composer / creator: Modest Mussorgsky.
-- Performer / recording: Musopen source recording hosted on Wikimedia Commons.
-- Source URL: <https://commons.wikimedia.org/wiki/File:Modest_Mussorgsky_-_night_on_bald_mountain.ogg>
-- License: public domain.
-- Duration: 1:59.5 restored cue.
-- Conversion notes: restored the pre-placeholder track while retaining the stable file paths.
+- Audio ID: `45`
+- Music file: `music/system_camp_repression_rework/super_event_45_angel_of_death_directorate_revolt.ogg`
+- Sound-channel file: `sound/system_camp_repression_rework/super_event_45_angel_of_death_directorate_revolt.wav`
+- Sound definition: `chaosx_super_event_camp_angel_directorate_revolt_track`
+- Source title: `Passacaglia and Fugue in C minor, BWV 582`
+- Composer / creator: Johann Sebastian Bach.
+- Performer / recording: Awadagin Pratt, White House Evening of Classical Music, 2009.
+- Source URL: <https://commons.wikimedia.org/wiki/File:20091104_Awadagin_Pratt_-_Bach%27s_Passacaglia_and_Fugue_in_C_minor,_BWV_582.ogg>
+- License: public-domain composition; CC BY 3.0 performance/source file.
+- Duration: 1:54 final excerpt.
+- Conversion notes: opening silence removed, 48 kHz source resampled to 44.1 kHz, normalized, and faded. The cue is registered at all six settings-aware levels in both playback modes.
 
 ### Angelic World Order
 
@@ -273,3 +274,65 @@ This file records restored, sourced, and converted super-event audio assets used
 - Duration: `86.101746` seconds.
 - Music catalogue: `music/chaosx_music_track_list.html` records The Pact Unmasked, audio ID `43`, `Revelation`, William Paris Chambers, the United States Marine Band performance, duration `01:26`, and verified public-domain status.
 - Conversion notes: the final OGG and WAV are derived from the same licensed source, use the unique Event 011 path, and are registered at all six settings-aware playback levels. No reused track, generated tone, placeholder, or attribution-dependent substitute is used.
+
+## Camp Repression Rework
+
+### The Evidence Crosses the Wire
+
+- Super-event ID: `74`
+- Audio ID: `44`
+- Music file: `music/system_camp_repression_rework/super_event_44_global_atrocity_evidence_discovery.ogg`
+- Sound-channel file: `sound/system_camp_repression_rework/super_event_44_global_atrocity_evidence_discovery.wav`
+- Sound definition: `chaosx_super_event_camp_global_discovery_track`
+- Source title: `Gnossienne No. 1`
+- Composer / creator: Erik Satie.
+- Performer / recording: La Pianista, 2010 self-recording.
+- Source URL: <https://commons.wikimedia.org/wiki/File:Satie_-_Gnossienne_1.ogg>
+- License: public-domain composition; CC BY-SA 3.0 performance.
+- Duration: 1:52 final excerpt.
+- Conversion notes: normalized and faded from the source opening; registered at all six settings-aware levels in both playback modes.
+
+### The Empty Granaries
+
+- Super-event ID: `75`
+- Audio ID: `46`
+- Music file: `music/system_camp_repression_rework/super_event_46_soviet_famine_catastrophe.ogg`
+- Sound-channel file: `sound/system_camp_repression_rework/super_event_46_soviet_famine_catastrophe.wav`
+- Sound definition: `chaosx_super_event_camp_soviet_famine_catastrophe_track`
+- Source title: `Hey, Plyve Kacha po Tysyni`
+- Composer / creator: traditional Ukrainian Lemko folk lament.
+- Performer / recording: Revutsky Capella, London, 2013.
+- Source URL: <https://commons.wikimedia.org/wiki/File:%D0%9A%D0%B0%D0%BF%D0%B5%D0%BB%D0%B0_%D1%96%D0%BC._%D0%A0%D0%B5%D0%B2%D1%83%D1%86%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_-_%D0%93%D0%B5%D0%B9,_%D0%BF%D0%BB%D0%B8%D0%B2%D0%B5_%D0%BA%D0%B0%D1%87%D0%B0_%D0%BF%D0%BE_%D0%A2%D0%B8%D1%81%D0%B8%D0%BD%D1%96.webm>
+- License: traditional composition; CC BY 3.0 recording.
+- Duration: 1:56 final excerpt.
+- Conversion notes: audio isolated from WebM, timestamps repaired, normalized, and faded; registered at all six settings-aware levels in both playback modes.
+
+### The Pingfang Files
+
+- Super-event ID: `76`
+- Audio ID: `47`
+- Music file: `music/system_camp_repression_rework/super_event_47_pingfang_exposure.ogg`
+- Sound-channel file: `sound/system_camp_repression_rework/super_event_47_pingfang_exposure.wav`
+- Sound definition: `chaosx_super_event_camp_pingfang_exposure_track`
+- Source title: `Yangguan Sandie (Three Refrains on the Yang Pass Theme)`
+- Composer / creator: traditional Chinese guqin repertory; `Qinxue Rumen` (1867) score source.
+- Performer / recording: Charlie Huang / Charles R Tsua, 2013.
+- Source URL: <https://commons.wikimedia.org/wiki/File:Guqin-Yangguan_Sandie.ogg>
+- License: public-domain score source; CC BY-SA 3.0 performance.
+- Duration: 1:49 final excerpt.
+- Conversion notes: leading silence removed and the excerpt closed at the first extended musical pause; registered at all six settings-aware levels in both playback modes.
+
+### The Empire's Accounts
+
+- Super-event ID: `77`
+- Audio ID: `48`
+- Music file: `music/system_camp_repression_rework/super_event_48_colonial_reckoning.ogg`
+- Sound-channel file: `sound/system_camp_repression_rework/super_event_48_colonial_reckoning.wav`
+- Sound definition: `chaosx_super_event_camp_colonial_reckoning_track`
+- Source title: `Go Down Moses`
+- Composer / creator: traditional nineteenth-century African American spiritual.
+- Performer / recording: Les Petits Chanteurs de Montigny, Jamendo, 2005.
+- Source URL: <https://commons.wikimedia.org/wiki/File:01_-_Go_down_Moses_(Negro_Spiritual).ogg>
+- License: public-domain traditional composition; CC BY-SA 2.0 performance.
+- Duration: 1:50 final excerpt.
+- Conversion notes: normalized and faded while retaining the source license metadata; registered at all six settings-aware levels in both playback modes.

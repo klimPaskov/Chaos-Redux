@@ -1,0 +1,156 @@
+# ============================================================================
+# CHAOS REDUX - JAPAN ISHII / PINGFANG EVENTS
+# ============================================================================
+# Overview:
+# - Provides threshold, outbreak, retreat, discovery, and tribunal events for
+#   the connected Japanese repression route.
+# - Ordinary monthly site processing remains silent; these events fire only at
+#   accepted authority, outbreak, invasion, discovery, or postwar thresholds.
+# - Outbreak population harm is delegated to the shared camp Deaths adapter.
+# ============================================================================
+
+add_namespace = japan_ishii
+
+country_event = {
+	id = japan_ishii.1
+	title = japan_ishii.1.t
+	desc = japan_ishii.1.d
+	picture = GFX_report_event_pingfang_authority
+	is_triggered_only = yes
+
+	option = {
+		name = japan_ishii.1.a
+		set_country_flag = japan_ishii_independent_authority
+		set_country_flag = japan_ishii_program_active
+		add_to_variable = { ishii_influence = constant:camp_rework_japan.ishii_influence_major }
+		add_to_variable = { kwantung_autonomy = constant:camp_rework_japan.kwantung_autonomy_major }
+		add_to_variable = { bio_project_pressure = constant:camp_rework_japan.bio_project_pressure_major }
+		add_to_variable = { occupation_evidence_depth = constant:camp_rework_japan.occupation_records_minor }
+		camp_rework_recalculate_country_values = yes
+	}
+}
+
+country_event = {
+	id = japan_ishii.2
+	title = japan_ishii.2.t
+	desc = japan_ishii.2.d
+	picture = GFX_report_event_kwantung_medical_bypass
+	is_triggered_only = yes
+
+	option = {
+		name = japan_ishii.2.a
+		set_country_flag = japan_kwantung_medical_bypass
+		camp_rework_japan_shield_ishii = yes
+		add_to_variable = { imperial_army_review_pressure = constant:camp_rework_japan.occupation_records_minor }
+	}
+	option = {
+		name = japan_ishii.2.b
+		camp_rework_japan_submit_to_army_review = yes
+	}
+}
+
+country_event = {
+	id = japan_ishii.3
+	title = japan_ishii.3.t
+	desc = japan_ishii.3.d
+	picture = GFX_report_event_pingfang_outbreak
+	is_triggered_only = yes
+
+	immediate = {
+		set_country_flag = japan_uncontrolled_outbreak_occurred
+		set_country_flag = japan_outbreak_response_required
+		camp_rework_japan_apply_outbreak = yes
+	}
+
+	option = {
+		name = japan_ishii.3.a
+		camp_rework_japan_open_containment_office = yes
+		clr_country_flag = japan_outbreak_response_required
+	}
+	option = {
+		name = japan_ishii.3.b
+		add_to_variable = { occupation_test_records = constant:camp_rework_japan.occupation_records_major }
+		add_to_variable = { occupation_evidence_depth = constant:camp_rework_japan.outbreak_risk_major }
+		add_to_variable = { tribunal_biowarfare_severity = constant:camp_rework_japan.outbreak_risk_major }
+		clr_country_flag = japan_outbreak_response_required
+	}
+	option = {
+		name = japan_ishii.3.c
+		camp_rework_japan_submit_to_army_review = yes
+		clr_country_flag = japan_outbreak_response_required
+	}
+}
+
+country_event = {
+	id = japan_ishii.4
+	title = japan_ishii.4.t
+	desc = japan_ishii.4.d
+	picture = GFX_report_event_pingfang_discovery
+	is_triggered_only = yes
+
+	option = {
+		name = japan_ishii.4.a
+		set_country_flag = camp_rework_achievement_japan_internal_exposure
+		set_country_flag = japan_pingfang_evidence_exposed
+		set_country_flag = genocide_evidence_reached_foreign_observers
+		add_to_variable = { occupation_evidence_depth = constant:camp_rework_coverup.failure_evidence_gain }
+		add_to_variable = { tribunal_biowarfare_severity = constant:camp_rework_coverup.failure_tribunal_gain }
+		camp_rework_expose_network_crisis = yes
+	}
+}
+
+country_event = {
+	id = japan_ishii.5
+	title = japan_ishii.5.t
+	desc = japan_ishii.5.d
+	picture = GFX_report_event_pingfang_retreat
+	is_triggered_only = yes
+
+	option = {
+		name = japan_ishii.5.a
+		trigger = { 328 = { is_valid_camp_enemy_proximity_state = yes } }
+		camp_rework_japan_evacuate_pingfang_records = yes
+	}
+	option = {
+		name = japan_ishii.5.b
+		trigger = { 328 = { is_valid_camp_enemy_proximity_state = yes } }
+		328 = {
+			if = {
+				limit = { is_valid_camp_enemy_proximity_state = yes }
+				camp_rework_destroy_evidence = yes
+			}
+		}
+		set_country_flag = japan_pingfang_records_destroyed
+	}
+	option = {
+		name = japan_ishii.5.c
+		set_country_flag = camp_rework_achievement_japan_internal_exposure
+		set_country_flag = japan_pingfang_records_surrendered
+		camp_rework_japan_submit_to_army_review = yes
+		328 = {
+			if = {
+				limit = { camp_rework_state_can_accept_responsibility_from_root = yes }
+				set_state_flag = genocide_site_discovered
+				set_state_flag = camp_rework_liberated_evidence
+				set_variable = { camp_state_evidence_status = constant:camp_rework_evidence_status.liberated }
+			}
+		}
+	}
+}
+
+country_event = {
+	id = japan_ishii.6
+	title = japan_ishii.6.t
+	desc = japan_ishii.6.d
+	picture = GFX_report_event_pingfang_tribunal
+	is_triggered_only = yes
+
+	option = {
+		name = japan_ishii.6.a
+		set_country_flag = japan_pingfang_tribunal_exposure
+		add_to_variable = { camp_policy_tribunal = constant:camp_rework_country_value.tribunal_major }
+		add_to_variable = { camp_policy_reform = constant:camp_rework_country_value.reform_major }
+		add_stability = constant:camp_rework_cost.stability_major
+		camp_rework_recalculate_country_values = yes
+	}
+}

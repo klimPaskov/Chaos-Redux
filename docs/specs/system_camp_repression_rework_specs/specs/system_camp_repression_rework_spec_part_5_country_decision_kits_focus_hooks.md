@@ -6,6 +6,22 @@ All names in this file are working labels and implementation ids, not final loca
 
 This part turns the broad country packages from Part 2 into implementation-ready country kits. It covers the U.K. and Raj, U.S.A., France and Vichy, Italy and Libya, Belgium and Congo, and generic users. Germany, Japan, and the Soviet Union remain governed by Part 3 for their deepest country-specific logic.
 
+## Live implementation reconciliation
+
+The accepted country kits are live in `common/decisions/camp_repression_colonial_country_decisions.txt`, `common/scripted_effects/camp_repression_colonial_country_effects.txt`, and `common/ideas/camp_repression_colonial_country_ideas.txt`. The verified final inventory is 43 colonial player actions: U.K./Raj 10, U.S.A. 8, France/Vichy 9, Italy 8, and Belgium/Congo 8. The two closing actions are live as `fr_support_refugee_and_rescue_networks` and `bel_negotiate_colonial_strike_settlement`. The generic package contains 12 actions in `common/decisions/camp_repression_generic_decisions.txt`, including `generic_inspect_active_site`.
+
+Across the three package decision files, the implementation contains 84 player actions and 41 missions. The four Ledger show, hide, open, and close controls are tracked separately. A final decision-and-mission re-audit passed after the bounded cooldown-parity correction; no accepted mission family remains an open implementation gate.
+
+Every player action sets a `camp_rework_action` constant and calls `camp_rework_route_country_specific_action`. State actions use `camp_rework_action_state_id`. The colonial prepare and restore helpers make the same bus work for subject-controlled states without replacing the player's persistent Ledger selection.
+
+The current France pool names are `is_france_camp_legacy_pool_state`, `is_france_north_africa_labor_pool_state`, `is_france_vichy_internment_pool_state`, `is_france_other_colonial_labor_pool_state`, and `is_france_core_fallback_pool_state`.
+
+The current Italy pool names are `is_italy_libya_repression_pool_state`, `is_italy_east_africa_repression_pool_state`, `is_italy_balkan_occupation_pool_state`, `is_italy_colonial_project_pool_state`, and `is_italy_core_fallback_pool_state`. The project pool accepts Libya or East Africa. Italy's live action inventory includes `ita_authorize_homeland_emergency_detention` and `ita_expand_desert_transport_guard`.
+
+Fixed U.K., U.S.A., France/Vichy, Italy, and Belgium packages require `camp_rework_country_has_explicit_extreme_doctrine_route` before restricted-method escalation. They cannot inherit the generic ideology route.
+
+The tables below remain the accepted design record. The live names and file ownership in this section supersede earlier working trigger names and preimplementation placement suggestions.
+
 ## Shared country-kit contract
 
 Each country kit should use the same underlying helper families so the system stays maintainable.
@@ -335,10 +351,10 @@ France should split by regime. Democratic France and Free France receive inherit
 
 | Working trigger | State pool | Use |
 | --- | --- | --- |
-| `is_france_camp_legacy_state` | Mainland states with dormant detention legacy markers, including the Gurs working region if represented | Dormant inheritance and inspection route. |
-| `is_vichy_collaboration_pool_state` | Vichy-controlled mainland or collaboration-administered states | Collaboration and internment administration route. |
+| `is_france_camp_legacy_pool_state` | Mainland states with dormant detention legacy markers, including the Gurs working region if represented | Dormant inheritance and inspection route. |
+| `is_france_vichy_internment_pool_state` | Vichy-controlled mainland or collaboration-administered states | Collaboration and internment administration route. |
 | `is_france_north_africa_labor_pool_state` | Algeria, Morocco, Tunisia, Sahara, and other French North African controlled states | Colonial labor and desert works route. |
-| `is_france_colonial_labor_pool_state` | Other controlled French colonial territories | Secondary colonial route. |
+| `is_france_other_colonial_labor_pool_state` | Other controlled French colonial territories | Secondary colonial route. |
 | `is_france_core_fallback_pool_state` | French cores | Only authoritarian or collaboration route, only when legacy pool exists or high crisis applies. |
 
 When Vichy operates under German influence, responsibility must remain clear. Vichy is responsible for Vichy-created sites. Germany can gain linked evidence or collaborator-benefit variables only through explicit decisions that store responsibility correctly.
@@ -457,7 +473,7 @@ Italy should focus on colonial repression, desert logistics, forced settlement, 
 | `is_italy_libya_repression_pool_state` | Italian-controlled Libya and Cyrenaica working regions | Main colonial repression pool. |
 | `is_italy_east_africa_repression_pool_state` | Italian East Africa when controlled | Secondary colonial pool. |
 | `is_italy_balkan_occupation_pool_state` | Occupied Balkans or other non-core occupied territories after war escalation | Wartime occupation extension. |
-| `is_italy_colonial_logistics_project_state` | Colonial states with ports, supply routes, roads, or fort targets | Labor-output target pool. |
+| `is_italy_colonial_project_pool_state` | Valid Libyan or East African colonial states with resistance, coastal access, or low infrastructure | Labor-output target pool. |
 | `is_italy_core_fallback_pool_state` | Italian cores | Desperate fallback only, with poor output and heavy stability damage. |
 
 State output should favor roads, forts, ports, infrastructure, and supply. Resource or factory output should be secondary unless the state has a clear existing resource or industrial target.
@@ -467,6 +483,7 @@ State output should favor roads, forts, ports, infrastructure, and supply. Resou
 | Working decision id | Availability | Costs | Main visible effect | Consequence pressure |
 | --- | --- | --- | --- | --- |
 | `ita_reopen_desert_camp_administration` | Fascist or authoritarian Italy, controls Libya or East Africa | Political power, infantry equipment, support equipment | Activates colonial camp administration | Libyan resistance, population damage, evidence level |
+| `ita_authorize_homeland_emergency_detention` | Authoritarian Italy in a desperate war after colonial and Balkan pools are exhausted | Political power, stability, support equipment | Activates a heavily penalized homeland emergency site | Severe domestic legitimacy, evidence, and reform pressure |
 | `ita_redirect_colonial_labor_to_roads_and_forts` | Active colonial network, logistics target | Trucks, trains, convoys, civilian-factory burden | Builds or repairs infrastructure, forts, ports, or supply links | Desert camp burden, local unrest, rail and convoy burden |
 | `ita_force_settlement_of_rebel_districts` | High resistance or insurgency pressure | Command power, manpower, infantry equipment, stability | Reduces short-term local resistance and increases colonial control | High population loss pressure and future revolt severity |
 | `ita_raise_colonial_security_battalions` | Active network and local unrest | Infantry equipment, support equipment, manpower | Spawns or strengthens local security units or garrison modifier | Increases colonial resentment and equipment strain |
@@ -702,10 +719,12 @@ The generic system should let any country access the mechanic under extreme poli
 | `generic_redirect_labor_to_construction` | Active labor output, construction target | Civilian-factory burden, trucks, trains | Adds construction or repair output | Rail burden and resistance pressure |
 | `generic_redirect_labor_to_resource_extraction` | Resource state target | Support equipment, trucks, trains | Adds resource extraction pressure | Stronger local burden and evidence depth |
 | `generic_allocate_additional_guards` | Overextension or unrest | Manpower, infantry equipment, command power | Reduces immediate breakdown | Higher guard burden and deaths pressure |
+| `generic_reduce_labor_quotas` | Active network with quota or overextension pressure | Political power and reduced output | Lowers labor pressure and recurring harm while the order remains active | Reduced coercive output and persistent evidence |
 | `generic_upgrade_existing_site_to_radicalized_atrocity_site` | Existing concentration camp, extreme ideology or chaos doctrine, major war or crisis | Political power, stability, guard and rail cost | Converts site to radicalized escalation route | Severe Deaths, evidence, resistance, and tribunal severity |
-| `generic_restricted_contaminated_site_escalation` | Existing radicalized, gulag, or experiment site, relevant capability, strict route gate | Existing stockpile and logistics costs, stability, evidence risk | Marks contaminated evidence and severe consequence branch | No efficiency curve, only higher evidence, accidents, spread risk, and tribunal severity |
+| `generic_restricted_contaminated_site_escalation` | Existing radicalized, gulag, or experiment site, relevant capability, strict route gate | Matching stockpile and logistics costs, stability, evidence risk | Applies an abstract chemical or biological severity tier through one Deaths path | Higher contamination or outbreak risk, evidence, resistance, instability, and tribunal severity |
 | `generic_destroy_evidence_before_retreat` | Enemy near undiscovered active site | Command power, manpower, support equipment, stability | Reduces or changes evidence depth if successful | Adds deaths pressure, failed cover-up risk, and discovery severity if failure |
 | `generic_dismantle_detention_network` | Reform route, regime change, discovery, or player choice | Civilian-factory burden, support equipment, long mission | Removes active sites and ends output | Short-term unrest, long-term reform credit |
+| `camp_repression_close_dormant_legacy_site` | Controlled inherited dormant marker and an accepted reform route | Political power, support equipment, and local closure work | Removes the dormant marker without activating the site | Preserves responsibility and reform memory |
 
 ### Generic missions and timing
 

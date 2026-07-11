@@ -2,9 +2,10 @@
 
 ## Status and source mode
 
-The 24 static Repression Ledger assets are complete and live. They are deterministic UI chrome built from the frozen `900x560` GUI wireframe rather than generated illustration: paper-ledger panels, brass borders, compact symbolic marks, three-state buttons, evidence and reform seals, and static warning frames. This is the code-native path required for simple UI shapes; no historical photograph, leader likeness, flag, third-party image, readable generated text, or protected-class symbol is used.
+The 24 static Repression Ledger assets are complete and live. The visual package is built from two frozen ImageGen sources: a full archival-ledger surface and a sixteen-cell period dossier emblem atlas. The processing pass preserves the `900x560` GUI contract, extracts the emblem family, derives textured panels and three-state buttons, and exports the accepted static warning layers. No historical photograph, leader likeness, flag, third-party image, readable generated text, or protected-class symbol is used in the final sprites.
 
 - Build source: `docs/assets/system_camp_repression_rework/tools/build_ledger_ui_assets.py`
+- Frozen ImageGen sources: `docs/assets/system_camp_repression_rework/source/ui_imagegen/repression_ledger_window_imagegen_source.png` and `repression_ledger_icon_atlas_imagegen_source.png`
 - Source PNGs: `docs/assets/system_camp_repression_rework/source/ui/`
 - Processed PNGs: `docs/assets/system_camp_repression_rework/processed/ui/`
 - Package DDS copies: `docs/assets/system_camp_repression_rework/dds/ui/`
@@ -45,9 +46,10 @@ Every row has a same-name `_source.png`, processed `.png`, package `.dds`, and l
 
 ## Validation
 
+- The two frozen ImageGen sources exist and feed all 24 derived source/processed/package/live chains.
 - 24 processed PNGs and 24 live DDS files exist.
 - Pillow decodes every DDS as RGBA; registered dimensions match the frozen GUI.
 - Button sheets are exactly three horizontal frames.
-- The icons and seals retain transparent pixels; panels are intentionally opaque.
-- Static fallbacks are used. Part 6 explicitly accepts static presentation, so no transform-only animation or missing animated dependency exists.
+- The icons and seals retain transparent pixels; panels preserve the generated leather, paper, brass, ink, wax, rail-map, and filing textures.
+- The maintained ImageGen-derived sprites provide the static presentation. Part 6 accepts static presentation, so optional authored animation is not a missing runtime dependency.
 - `interface/camp_repression_rework.gfx` points directly to every live DDS path.

@@ -7,11 +7,12 @@
 # ============================================================================
 
 camp_repression_network_category = {
-	visible_when_empty = yes
+	visible_when_empty = no
 	visible = {
 		has_camp_category_visible_action = yes
 	}
 	icon = GFX_decision_category_repression_ledger
+	scripted_gui = camp_repression_ledger_scripted_gui
 	highlight_states = {
 		highlight_states_trigger = {
 			OR = {
@@ -68,6 +69,7 @@ imperial_occupation_crisis = {
 			is_ai = yes
 			genocide_country_has_crisis = yes
 			genocide_country_has_japanese_china_occupation_target = yes
+			camp_rework_japan_can_activate_ordered_repression_pool = yes
 		}
 	}
 	icon = GFX_decision_category_chaos_doom
@@ -75,15 +77,35 @@ imperial_occupation_crisis = {
 }
 
 gulag_and_mass_repression_system = {
+	visible_when_empty = yes
 	visible = {
 		original_tag = SOV
-		has_government = communism
-		any_controlled_state = {
-			NOT = { gulag_labor_camp_network > 0 }
-			OR = {
-				genocide_state_is_soviet_gulag_target = yes
-				NOT = { is_core_of = ROOT }
-				has_resistance = yes
+		OR = {
+			AND = {
+				has_government = communism
+				any_controlled_state = {
+					NOT = { gulag_labor_camp_network > 0 }
+					OR = {
+						is_soviet_gulag_periphery_pool_state = yes
+						NOT = { is_core_of = ROOT }
+						has_resistance = yes
+					}
+				}
+			}
+			has_active_camp_network = yes
+			check_variable = { camp_gulag_site_count > 0 }
+			check_variable = { famine_pressure > 0 }
+			has_country_flag = genocide_gulag_decisions_visible
+			has_country_flag = sov_famine_crisis_active
+			has_country_flag = sov_gulag_dismantlement_active
+			has_country_flag = sov_post_collapse_records_exposed
+			sov_camp_is_reform_route = yes
+			any_controlled_state = {
+				OR = {
+					has_state_flag = genocide_soviet_mass_repression_site
+					has_state_flag = genocide_soviet_famine_pressure_site
+					has_state_flag = camp_rework_soviet_records_concealed
+				}
 			}
 		}
 	}

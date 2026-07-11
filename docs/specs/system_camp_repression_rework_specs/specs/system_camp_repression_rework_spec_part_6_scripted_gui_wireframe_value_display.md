@@ -4,6 +4,10 @@ Working feature id: `system_camp_repression_rework`
 
 All GUI labels in this file are working labels and implementation ids, not final localisation. Final GUI text must be written in localisation files after implementation choices are known. This part defines what the player sees, how values are calculated for display, which buttons exist, which sprites are needed, and how the GUI stays hidden for ordinary players.
 
+## Live implementation reconciliation, 2026-07-11
+
+The optional/deferred wording below records the original implementation plan. The full `repression_ledger_window` is live with Overview, State Pools, Active Sites, Country System, and Discovery & Reform tabs. The header displays `[ROOT.GetName]: [GetCampCountryPanelName]` plus phase and discovery state; all 32 Ledger country action slots use their native decision cooldown gates. All 24 ImageGen-derived static sprites have live consumers, including scripted visibility for evidence and reform seals. The maintained static presentation is not a fallback or simple-shape substitute. Only authored frame animation remains optional and queued.
+
 ## Presentation principle
 
 The average player should not manage this system unless their country has active sites, inherited reform work, discovery pressure, or a country-specific crisis. The GUI should feel like a ledger and command surface for a state system that already exists. It should not appear as a gamey optimization board for maximizing deaths.

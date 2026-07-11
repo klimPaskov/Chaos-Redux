@@ -1,0 +1,227 @@
+# ============================================================================
+# CHAOS REDUX - JAPAN ISHII / PINGFANG SPECIAL PROJECTS
+# ============================================================================
+# Overview:
+# - Adds the five accepted research-and-risk projects for Japan's Pingfang
+#   branch without adding an operational biological attack recipe.
+# - Availability follows the canonical Ishii, occupation-record, outbreak,
+#   experiment-site, and desperate-war values from the repression network.
+# - Only one project in this branch may be researched at a time.
+# ============================================================================
+
+@japan_ishii_project_breakthrough_low = 1
+@japan_ishii_project_breakthrough_high = 2
+@japan_ishii_project_steel_cost = 2
+@japan_ishii_project_rubber_cost = 2
+@japan_ishii_project_chromium_cost = 1
+@japan_ishii_project_ai_base = 2
+@japan_ishii_project_ai_war_factor = 2
+@japan_ishii_project_ai_risk_factor = 2
+
+sp_japan_pingfang_records_office = {
+	specialization = specialization_biowarfare
+	icon = GFX_sp_japan_pingfang_records_office
+	allowed = { original_tag = JAP }
+	visible = { FROM = { has_country_flag = japan_pingfang_records_office_available } }
+	available = {
+		FROM = {
+			japan_ishii_project_branch_available = yes
+			NOT = {
+				OR = {
+					is_special_project_being_researched = sp:sp_japan_kwantung_medical_intelligence
+					is_special_project_being_researched = sp:sp_japan_occupation_test_ledger
+					is_special_project_being_researched = sp:sp_japan_epidemic_mapping_bureau
+					is_special_project_being_researched = sp:sp_japan_cherry_blossom_dossier
+				}
+			}
+		}
+	}
+	breakthrough_cost = { specialization_biowarfare = @japan_ishii_project_breakthrough_low }
+	prototype_time = sp_time.prototype.short
+	resource_cost = { resources = { steel = @japan_ishii_project_steel_cost rubber = @japan_ishii_project_rubber_cost } }
+	complexity = sp_complexity.small
+	ai_will_do = {
+		base = @japan_ishii_project_ai_base
+		modifier = { factor = @japan_ishii_project_ai_war_factor FROM = { has_war = yes } }
+	}
+	project_output = {
+		country_effects = {
+			custom_effect_tooltip = sp_japan_pingfang_records_office_completed_tt
+			hidden_effect = { camp_rework_japan_complete_pingfang_records_project = yes }
+		}
+	}
+}
+
+sp_japan_kwantung_medical_intelligence = {
+	specialization = specialization_biowarfare
+	icon = GFX_sp_japan_kwantung_medical_intelligence
+	allowed = { original_tag = JAP }
+	visible = { FROM = { has_country_flag = japan_kwantung_medical_intelligence_available } }
+	available = {
+		FROM = {
+			is_special_project_completed = sp:sp_japan_pingfang_records_office
+			check_variable = {
+				var = ishii_influence
+				value = constant:camp_rework_japan.project_influence_gate
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = kwantung_autonomy
+				value = constant:camp_rework_japan.project_autonomy_gate
+				compare = greater_than_or_equals
+			}
+			NOT = {
+				OR = {
+					is_special_project_being_researched = sp:sp_japan_pingfang_records_office
+					is_special_project_being_researched = sp:sp_japan_occupation_test_ledger
+					is_special_project_being_researched = sp:sp_japan_epidemic_mapping_bureau
+					is_special_project_being_researched = sp:sp_japan_cherry_blossom_dossier
+				}
+			}
+		}
+	}
+	breakthrough_cost = { specialization_biowarfare = @japan_ishii_project_breakthrough_low }
+	prototype_time = sp_time.prototype.short
+	resource_cost = { resources = { steel = @japan_ishii_project_steel_cost chromium = @japan_ishii_project_chromium_cost } }
+	complexity = sp_complexity.small
+	ai_will_do = { base = @japan_ishii_project_ai_base }
+	project_output = {
+		country_effects = {
+			custom_effect_tooltip = sp_japan_kwantung_medical_intelligence_completed_tt
+			hidden_effect = { camp_rework_japan_complete_kwantung_intelligence_project = yes }
+		}
+	}
+}
+
+sp_japan_occupation_test_ledger = {
+	specialization = specialization_biowarfare
+	icon = GFX_sp_japan_occupation_test_ledger
+	allowed = { original_tag = JAP }
+	visible = { FROM = { has_country_flag = japan_occupation_test_ledger_available } }
+	available = {
+		FROM = {
+			is_special_project_completed = sp:sp_japan_pingfang_records_office
+			check_variable = {
+				var = occupation_test_records
+				value = constant:camp_rework_japan.project_records_gate
+				compare = greater_than_or_equals
+			}
+			check_variable = { camp_experiment_site_count > 0 }
+			NOT = {
+				OR = {
+					is_special_project_being_researched = sp:sp_japan_pingfang_records_office
+					is_special_project_being_researched = sp:sp_japan_kwantung_medical_intelligence
+					is_special_project_being_researched = sp:sp_japan_epidemic_mapping_bureau
+					is_special_project_being_researched = sp:sp_japan_cherry_blossom_dossier
+				}
+			}
+		}
+	}
+	breakthrough_cost = { specialization_biowarfare = @japan_ishii_project_breakthrough_low }
+	prototype_time = sp_time.prototype.medium
+	resource_cost = { resources = { steel = @japan_ishii_project_steel_cost rubber = @japan_ishii_project_rubber_cost } }
+	complexity = sp_complexity.small
+	ai_will_do = {
+		base = @japan_ishii_project_ai_base
+		modifier = { factor = @japan_ishii_project_ai_war_factor FROM = { has_war = yes } }
+	}
+	project_output = {
+		country_effects = {
+			custom_effect_tooltip = sp_japan_occupation_test_ledger_completed_tt
+			hidden_effect = { camp_rework_japan_complete_occupation_test_ledger_project = yes }
+		}
+	}
+}
+
+sp_japan_epidemic_mapping_bureau = {
+	specialization = specialization_biowarfare
+	icon = GFX_sp_japan_epidemic_mapping_bureau
+	allowed = { original_tag = JAP }
+	visible = { FROM = { has_country_flag = japan_epidemic_mapping_bureau_available } }
+	available = {
+		FROM = {
+			OR = {
+				is_special_project_completed = sp:sp_japan_kwantung_medical_intelligence
+				is_special_project_completed = sp:sp_japan_occupation_test_ledger
+			}
+			OR = {
+				check_variable = { outbreak_accident_risk > 0 }
+				check_variable = { occupation_evidence_depth > 0 }
+				has_country_flag = japan_uncontrolled_outbreak_occurred
+			}
+			NOT = {
+				OR = {
+					is_special_project_being_researched = sp:sp_japan_pingfang_records_office
+					is_special_project_being_researched = sp:sp_japan_kwantung_medical_intelligence
+					is_special_project_being_researched = sp:sp_japan_occupation_test_ledger
+					is_special_project_being_researched = sp:sp_japan_cherry_blossom_dossier
+				}
+			}
+		}
+	}
+	breakthrough_cost = { specialization_biowarfare = @japan_ishii_project_breakthrough_low }
+	prototype_time = sp_time.prototype.medium
+	resource_cost = { resources = { steel = @japan_ishii_project_steel_cost rubber = @japan_ishii_project_rubber_cost } }
+	complexity = sp_complexity.medium
+	ai_will_do = {
+		base = @japan_ishii_project_ai_base
+		modifier = { factor = @japan_ishii_project_ai_risk_factor FROM = { check_variable = { outbreak_accident_risk > constant:camp_rework_threshold.band_medium } } }
+	}
+	project_output = {
+		country_effects = {
+			custom_effect_tooltip = sp_japan_epidemic_mapping_bureau_completed_tt
+			hidden_effect = { camp_rework_japan_complete_epidemic_mapping_project = yes }
+		}
+	}
+}
+
+sp_japan_cherry_blossom_dossier = {
+	specialization = specialization_biowarfare
+	icon = GFX_sp_japan_cherry_blossom_dossier
+	allowed = { original_tag = JAP }
+	visible = { FROM = { has_country_flag = japan_cherry_blossom_dossier_available } }
+	available = {
+		FROM = {
+			check_variable = {
+				var = ishii_influence
+				value = constant:camp_rework_japan.cherry_blossom_influence_gate
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = bio_project_pressure
+				value = constant:camp_rework_japan.cherry_blossom_pressure_gate
+				compare = greater_than_or_equals
+			}
+			camp_rework_country_is_desperate_in_war = yes
+			OR = {
+				has_global_flag = { flag = chaos_tier value = 4 }
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+			camp_rework_country_has_biological_escalation_capacity = yes
+			NOT = { has_country_flag = japan_prisoner_experiments_shutdown }
+			NOT = { has_country_flag = japan_army_medical_review_active }
+			NOT = {
+				OR = {
+					is_special_project_being_researched = sp:sp_japan_pingfang_records_office
+					is_special_project_being_researched = sp:sp_japan_kwantung_medical_intelligence
+					is_special_project_being_researched = sp:sp_japan_occupation_test_ledger
+					is_special_project_being_researched = sp:sp_japan_epidemic_mapping_bureau
+				}
+			}
+		}
+	}
+	breakthrough_cost = { specialization_biowarfare = @japan_ishii_project_breakthrough_high }
+	prototype_time = sp_time.prototype.long
+	resource_cost = { resources = { steel = @japan_ishii_project_steel_cost chromium = @japan_ishii_project_chromium_cost rubber = @japan_ishii_project_rubber_cost } }
+	complexity = sp_complexity.medium
+	ai_will_do = {
+		base = @japan_ishii_project_ai_base
+		modifier = { factor = @japan_ishii_project_ai_war_factor FROM = { camp_rework_country_is_desperate_in_war = yes } }
+	}
+	project_output = {
+		country_effects = {
+			custom_effect_tooltip = sp_japan_cherry_blossom_dossier_completed_tt
+			hidden_effect = { camp_rework_japan_complete_cherry_blossom_dossier_project = yes }
+		}
+	}
+}

@@ -1,0 +1,65 @@
+# ============================================================================
+# CHAOS REDUX - CAMP REPRESSION SUPER-EVENT EFFECTS
+# ============================================================================
+# Overview:
+# - Emits the four new evidence/reckoning threshold super-events through the
+#   existing settings-aware audio framework.
+# - Keeps the existing Angel of Death visibility slot while assigning its
+#   dedicated camp-rework audio id in germany_mengele_effects.txt.
+# - Every public threshold is one-shot and never runs from routine camp ticks.
+# ============================================================================
+
+# Inputs: camp_rework_super_event_slot and camp_rework_super_event_audio.
+camp_rework_emit_super_event = {
+	set_temp_variable = { camp_rework_super_event_visible_days = constant:camp_rework_super_event.visible_days }
+	set_global_flag = {
+		flag = super_event_visible
+		days = camp_rework_super_event_visible_days
+		value = camp_rework_super_event_slot
+	}
+	set_variable = { global.current_super_event_audio_id = camp_rework_super_event_audio }
+	every_country = {
+		limit = { is_ai = no }
+		play_current_super_event_audio = yes
+	}
+}
+
+camp_rework_show_global_discovery_super_event = {
+	if = {
+		limit = { NOT = { has_global_flag = camp_rework_super_event_global_discovery_fired } }
+		set_global_flag = camp_rework_super_event_global_discovery_fired
+		set_temp_variable = { camp_rework_super_event_slot = constant:camp_rework_super_event.global_discovery_slot }
+		set_temp_variable = { camp_rework_super_event_audio = constant:camp_rework_super_event.global_discovery_audio }
+		camp_rework_emit_super_event = yes
+	}
+}
+
+camp_rework_show_soviet_famine_super_event = {
+	if = {
+		limit = { NOT = { has_global_flag = camp_rework_super_event_soviet_famine_fired } }
+		set_global_flag = camp_rework_super_event_soviet_famine_fired
+		set_temp_variable = { camp_rework_super_event_slot = constant:camp_rework_super_event.soviet_famine_slot }
+		set_temp_variable = { camp_rework_super_event_audio = constant:camp_rework_super_event.soviet_famine_audio }
+		camp_rework_emit_super_event = yes
+	}
+}
+
+camp_rework_show_pingfang_exposure_super_event = {
+	if = {
+		limit = { NOT = { has_global_flag = camp_rework_super_event_pingfang_exposure_fired } }
+		set_global_flag = camp_rework_super_event_pingfang_exposure_fired
+		set_temp_variable = { camp_rework_super_event_slot = constant:camp_rework_super_event.pingfang_exposure_slot }
+		set_temp_variable = { camp_rework_super_event_audio = constant:camp_rework_super_event.pingfang_exposure_audio }
+		camp_rework_emit_super_event = yes
+	}
+}
+
+camp_rework_show_colonial_reckoning_super_event = {
+	if = {
+		limit = { NOT = { has_global_flag = camp_rework_super_event_colonial_reckoning_fired } }
+		set_global_flag = camp_rework_super_event_colonial_reckoning_fired
+		set_temp_variable = { camp_rework_super_event_slot = constant:camp_rework_super_event.colonial_reckoning_slot }
+		set_temp_variable = { camp_rework_super_event_audio = constant:camp_rework_super_event.colonial_reckoning_audio }
+		camp_rework_emit_super_event = yes
+	}
+}

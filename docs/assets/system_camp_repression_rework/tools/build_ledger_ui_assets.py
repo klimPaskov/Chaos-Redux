@@ -1,106 +1,142 @@
 #!/usr/bin/env python3
-"""Build deterministic Repression Ledger chrome from the frozen GUI dimensions."""
+"""Build the Repression Ledger sprites from frozen ImageGen source artwork."""
 
+from __future__ import annotations
+
+import subprocess
+import sys
 from pathlib import Path
-from PIL import Image, ImageDraw, ImageFilter
+
+from PIL import Image, ImageDraw, ImageEnhance
 
 
 ROOT = Path(__file__).resolve().parents[4]
+IMAGEGEN_SOURCE = ROOT / "docs/assets/system_camp_repression_rework/source/ui_imagegen"
 SOURCE = ROOT / "docs/assets/system_camp_repression_rework/source/ui"
 PROCESSED = ROOT / "docs/assets/system_camp_repression_rework/processed/ui"
+PACKAGE_DDS = ROOT / "docs/assets/system_camp_repression_rework/dds/ui"
+LIVE_DDS = ROOT / "gfx/interface/camp_repression"
+CONVERTER = ROOT / ".tools/convert_to_dds.py"
+CONTACT_SHEET = ROOT / "docs/assets/system_camp_repression_rework/contact_sheets/repression_ledger_ui_contact_sheet.jpg"
 
+WINDOW_SOURCE = IMAGEGEN_SOURCE / "repression_ledger_window_imagegen_source.png"
+ATLAS_SOURCE = IMAGEGEN_SOURCE / "repression_ledger_icon_atlas_imagegen_source.png"
 
-INK = (17, 20, 20, 255)
-PAPER = (62, 57, 48, 244)
-PAPER_LIGHT = (89, 80, 64, 236)
-BRASS = (151, 122, 67, 255)
-BRASS_DARK = (83, 67, 39, 255)
-RED = (124, 39, 34, 255)
-PURPLE = (79, 55, 88, 255)
-GREEN = (55, 91, 65, 255)
+BRASS = (155, 116, 67, 255)
+BRASS_DARK = (63, 45, 31, 255)
+BURGUNDY = (126, 43, 36, 255)
+PURPLE = (92, 62, 111, 255)
+GREEN = (58, 99, 70, 255)
 TRANSPARENT = (0, 0, 0, 0)
 
 
-def grain(image: Image.Image, strength: int = 8) -> Image.Image:
+ASSET_SIZES = {
+	"GFX_decision_category_repression_ledger": (53, 53),
+	"GFX_decision_open_repression_ledger": (32, 32),
+	"GFX_repression_ledger_window_bg": (900, 560),
+	"GFX_repression_ledger_summary_strip": (864, 52),
+	"GFX_repression_ledger_card_bg": (344, 90),
+	"GFX_repression_ledger_country_card_bg": (710, 304),
+	"GFX_repression_ledger_tab_button": (420, 42),
+	"GFX_repression_ledger_action_button": (408, 38),
+	"GFX_repression_ledger_tab_overview": (32, 32),
+	"GFX_repression_ledger_tab_state_pools": (32, 32),
+	"GFX_repression_ledger_tab_sites": (32, 32),
+	"GFX_repression_ledger_tab_country": (32, 32),
+	"GFX_repression_ledger_tab_discovery": (32, 32),
+	"GFX_repression_ledger_population_pressure": (24, 24),
+	"GFX_repression_ledger_labor_output": (24, 24),
+	"GFX_repression_ledger_evidence_risk": (24, 24),
+	"GFX_repression_ledger_reform_pressure": (24, 24),
+	"GFX_repression_ledger_guard_burden": (24, 24),
+	"GFX_repression_ledger_rail_burden": (24, 24),
+	"GFX_repression_ledger_warning_frame_static": (710, 48),
+	"GFX_repression_ledger_evidence_seal_static": (112, 112),
+	"GFX_repression_ledger_reform_seal_static": (112, 112),
+	"GFX_repression_ledger_selected_state_frame_static": (710, 38),
+	"GFX_repression_ledger_critical_frame_static": (710, 48),
+}
+
+
+def cover(image: Image.Image, size: tuple[int, int], anchor: tuple[float, float] = (0.5, 0.5)) -> Image.Image:
+	"""Resize and crop without distorting the ImageGen source."""
+	target_w, target_h = size
+	scale = max(target_w / image.width, target_h / image.height)
+	resized = image.resize((round(image.width * scale), round(image.height * scale)), Image.Resampling.LANCZOS)
+	left = round((resized.width - target_w) * anchor[0])
+	top = round((resized.height - target_h) * anchor[1])
+	return resized.crop((left, top, left + target_w, top + target_h))
+
+
+def imagegen_panel(background: Image.Image, size: tuple[int, int], anchor: tuple[float, float], accent=BRASS) -> Image.Image:
+	panel = cover(background, size, anchor).convert("RGBA")
+	shade = Image.new("RGBA", size, (7, 7, 7, 88))
+	panel = Image.alpha_composite(panel, shade)
+	draw = ImageDraw.Draw(panel)
+	draw.rounded_rectangle((0, 0, size[0] - 1, size[1] - 1), radius=5, outline=BRASS_DARK, width=3)
+	draw.rounded_rectangle((4, 4, size[0] - 5, size[1] - 5), radius=4, outline=accent, width=1)
+	return panel
+
+
+def button_sheet(background: Image.Image, frame_size: tuple[int, int], anchor: tuple[float, float], accent=BRASS) -> Image.Image:
+	frame = imagegen_panel(background, frame_size, anchor, accent)
+	frames = []
+	for brightness, saturation, overlay in (
+		(0.92, 0.85, (0, 0, 0, 18)),
+		(1.16, 1.15, (110, 70, 25, 16)),
+		(0.55, 0.55, (0, 0, 0, 92)),
+	):
+		state = ImageEnhance.Brightness(frame).enhance(brightness)
+		state = ImageEnhance.Color(state).enhance(saturation)
+		state = Image.alpha_composite(state, Image.new("RGBA", frame_size, overlay))
+		frames.append(state)
+	out = Image.new("RGBA", (frame_size[0] * 3, frame_size[1]), TRANSPARENT)
+	for index, state in enumerate(frames):
+		out.alpha_composite(state, (index * frame_size[0], 0))
+	return out
+
+
+def atlas_cell(atlas: Image.Image, index: int) -> Image.Image:
+	column = index % 4
+	row = index // 4
+	x0 = round(column * atlas.width / 4)
+	x1 = round((column + 1) * atlas.width / 4)
+	y0 = round(row * atlas.height / 4)
+	y1 = round((row + 1) * atlas.height / 4)
+	margin_x = round((x1 - x0) * 0.055)
+	margin_y = round((y1 - y0) * 0.055)
+	return atlas.crop((x0 + margin_x, y0 + margin_y, x1 - margin_x, y1 - margin_y)).convert("RGBA")
+
+
+def make_black_transparent(image: Image.Image) -> Image.Image:
 	pixels = image.load()
 	for y in range(image.height):
 		for x in range(image.width):
-			r, g, b, a = pixels[x, y]
-			if not a:
-				continue
-			n = ((x * 37 + y * 73 + x * y * 3) % (strength * 2 + 1)) - strength
-			pixels[x, y] = (max(0, min(255, r + n)), max(0, min(255, g + n)), max(0, min(255, b + n)), a)
-	return image
+			r, g, b, _ = pixels[x, y]
+			light = max(r, g, b)
+			alpha = max(0, min(255, (light - 5) * 5))
+			pixels[x, y] = (r, g, b, alpha)
+	bounds = image.getbbox()
+	return image.crop(bounds) if bounds else image
 
 
-def ledger_panel(size: tuple[int, int], inset: int = 5, accent=BRASS) -> Image.Image:
-	img = Image.new("RGBA", size, TRANSPARENT)
-	d = ImageDraw.Draw(img)
-	d.rounded_rectangle((0, 0, size[0] - 1, size[1] - 1), radius=7, fill=INK, outline=BRASS_DARK, width=2)
-	d.rounded_rectangle((inset, inset, size[0] - inset - 1, size[1] - inset - 1), radius=5, fill=PAPER, outline=accent, width=1)
-	for y in range(inset + 13, size[1] - inset, 17):
-		d.line((inset + 8, y, size[0] - inset - 8, y), fill=(34, 33, 29, 35), width=1)
-	return grain(img)
+def icon_from_atlas(atlas: Image.Image, index: int, size: tuple[int, int], padding: float = 0.06) -> Image.Image:
+	art = make_black_transparent(atlas_cell(atlas, index))
+	max_w = max(1, round(size[0] * (1 - padding * 2)))
+	max_h = max(1, round(size[1] * (1 - padding * 2)))
+	art.thumbnail((max_w, max_h), Image.Resampling.LANCZOS)
+	out = Image.new("RGBA", size, TRANSPARENT)
+	out.alpha_composite(art, ((size[0] - art.width) // 2, (size[1] - art.height) // 2))
+	return out
 
 
-def button_sheet(size: tuple[int, int], accent=BRASS) -> Image.Image:
-	w, h = size
-	img = Image.new("RGBA", (w * 3, h), TRANSPARENT)
-	for frame, (fill, edge) in enumerate(((PAPER_LIGHT, BRASS_DARK), ((104, 89, 65, 255), accent), ((43, 40, 35, 255), (72, 65, 54, 255)))):
-		d = ImageDraw.Draw(img)
-		x0 = frame * w
-		d.rounded_rectangle((x0, 0, x0 + w - 1, h - 1), radius=5, fill=INK, outline=edge, width=2)
-		d.rounded_rectangle((x0 + 3, 3, x0 + w - 4, h - 4), radius=4, fill=fill, outline=edge, width=1)
-		d.line((x0 + 9, h - 7, x0 + w - 10, h - 7), fill=edge, width=2)
-	return grain(img)
-
-
-def seal(size: int, accent, glyph: str) -> Image.Image:
-	img = Image.new("RGBA", (size, size), TRANSPARENT)
-	d = ImageDraw.Draw(img)
-	c = size // 2
-	d.ellipse((5, 5, size - 6, size - 6), fill=(25, 24, 22, 235), outline=accent, width=4)
-	d.ellipse((14, 14, size - 15, size - 15), fill=(51, 47, 40, 245), outline=accent, width=2)
-	if glyph == "evidence":
-		d.rectangle((c - 20, c - 24, c + 19, c + 23), fill=(210, 196, 165, 255), outline=INK, width=2)
-		for y in range(c - 15, c + 16, 8):
-			d.line((c - 13, y, c + 12, y), fill=PURPLE, width=2)
-		d.ellipse((c + 4, c + 5, c + 24, c + 25), outline=PURPLE, width=4)
-	elif glyph == "reform":
-		d.polygon(((c, c - 27), (c + 9, c - 8), (c + 28, c - 5), (c + 14, c + 9), (c + 18, c + 29), (c, c + 18), (c - 18, c + 29), (c - 14, c + 9), (c - 28, c - 5), (c - 9, c - 8)), fill=GREEN, outline=(185, 206, 175, 255))
-	return img.filter(ImageFilter.GaussianBlur(0.15))
-
-
-def icon(size: int, kind: str, accent) -> Image.Image:
-	img = Image.new("RGBA", (size, size), TRANSPARENT)
-	d = ImageDraw.Draw(img)
-	d.ellipse((2, 2, size - 3, size - 3), fill=(26, 28, 27, 250), outline=accent, width=2)
-	c = size // 2
-	if kind == "ledger":
-		d.rectangle((c - 11, c - 13, c + 10, c + 13), fill=(202, 188, 155, 255), outline=INK, width=1)
-		for y in range(c - 8, c + 10, 6):
-			d.line((c - 7, y, c + 6, y), fill=accent, width=1)
-	elif kind == "population":
-		d.ellipse((c - 5, c - 11, c + 5, c - 1), fill=accent)
-		d.polygon(((c - 13, c + 13), (c - 9, c + 1), (c, c - 2), (c + 9, c + 1), (c + 13, c + 13)), fill=accent)
-	elif kind == "labor":
-		d.line((c - 11, c + 11, c + 10, c - 10), fill=accent, width=5)
-		d.rectangle((c + 4, c - 13, c + 13, c - 5), fill=accent)
-	elif kind == "evidence":
-		d.rectangle((c - 10, c - 12, c + 9, c + 12), fill=(204, 191, 161, 255), outline=accent, width=2)
-		d.line((c - 6, c - 5, c + 5, c - 5), fill=accent, width=2)
-		d.line((c - 6, c + 1, c + 5, c + 1), fill=accent, width=2)
-	elif kind == "reform":
-		d.arc((c - 13, c - 13, c + 13, c + 13), 30, 300, fill=accent, width=4)
-		d.polygon(((c + 12, c - 8), (c + 14, c + 2), (c + 4, c - 1)), fill=accent)
-	elif kind == "guard":
-		d.polygon(((c, c - 14), (c + 11, c - 8), (c + 8, c + 8), (c, c + 14), (c - 8, c + 8), (c - 11, c - 8)), fill=accent, outline=(215, 204, 179, 255))
-	elif kind == "rail":
-		d.line((c - 9, c - 13, c - 9, c + 13), fill=accent, width=3)
-		d.line((c + 9, c - 13, c + 9, c + 13), fill=accent, width=3)
-		for y in range(c - 10, c + 11, 6):
-			d.line((c - 12, y, c + 12, y), fill=accent, width=2)
-	return img
+def state_frame(background: Image.Image, atlas: Image.Image, size: tuple[int, int], icon_index: int, accent) -> Image.Image:
+	frame = imagegen_panel(background, size, (0.62, 0.65), accent)
+	frame = Image.alpha_composite(frame, Image.new("RGBA", size, (0, 0, 0, 42)))
+	mark_size = min(size[1] - 8, 38)
+	mark = icon_from_atlas(atlas, icon_index, (mark_size, mark_size), 0.02)
+	frame.alpha_composite(mark, (8, (size[1] - mark_size) // 2))
+	return frame
 
 
 def save(name: str, image: Image.Image) -> None:
@@ -110,52 +146,83 @@ def save(name: str, image: Image.Image) -> None:
 	image.save(PROCESSED / f"{name}.png")
 
 
+def convert_to_dds(name: str) -> None:
+	PACKAGE_DDS.mkdir(parents=True, exist_ok=True)
+	LIVE_DDS.mkdir(parents=True, exist_ok=True)
+	width, height = ASSET_SIZES[name]
+	processed = PROCESSED / f"{name}.png"
+	package = PACKAGE_DDS / f"{name}.dds"
+	command = [
+		sys.executable,
+		str(CONVERTER),
+		"--input",
+		str(processed),
+		"--output",
+		str(package),
+		"--width",
+		str(width),
+		"--height",
+		str(height),
+	]
+	subprocess.run(command, check=True)
+	LIVE_DDS.joinpath(package.name).write_bytes(package.read_bytes())
+
+
 def build_contact_sheet() -> None:
 	files = sorted(PROCESSED.glob("*.png"))
-	cell_w, cell_h, columns = 260, 170, 4
+	cell_w, cell_h, columns = 300, 190, 4
 	rows = (len(files) + columns - 1) // columns
-	sheet = Image.new("RGBA", (cell_w * columns, cell_h * rows), (25, 25, 23, 255))
-	d = ImageDraw.Draw(sheet)
+	sheet = Image.new("RGBA", (cell_w * columns, cell_h * rows), (19, 18, 17, 255))
+	draw = ImageDraw.Draw(sheet)
 	for index, path in enumerate(files):
 		asset = Image.open(path).convert("RGBA")
-		asset.thumbnail((cell_w - 24, cell_h - 42), Image.Resampling.LANCZOS)
+		asset.thumbnail((cell_w - 24, cell_h - 46), Image.Resampling.LANCZOS)
 		x = (index % columns) * cell_w + (cell_w - asset.width) // 2
 		y = (index // columns) * cell_h + 8
 		sheet.alpha_composite(asset, (x, y))
-		d.text(((index % columns) * cell_w + 8, (index // columns) * cell_h + cell_h - 27), path.stem, fill=(220, 208, 178, 255))
-	contact_dir = ROOT / "docs/assets/system_camp_repression_rework/contact_sheets"
-	contact_dir.mkdir(parents=True, exist_ok=True)
-	sheet.convert("RGB").save(contact_dir / "repression_ledger_ui_contact_sheet.jpg", quality=92)
+		draw.text(((index % columns) * cell_w + 8, (index // columns) * cell_h + cell_h - 29), path.stem, fill=(222, 205, 170, 255))
+	CONTACT_SHEET.parent.mkdir(parents=True, exist_ok=True)
+	sheet.convert("RGB").save(CONTACT_SHEET, quality=94)
 
 
 def main() -> None:
-	save("GFX_repression_ledger_window_bg", ledger_panel((900, 560), 7, BRASS))
-	save("GFX_repression_ledger_summary_strip", ledger_panel((864, 52), 4, BRASS))
-	save("GFX_repression_ledger_card_bg", ledger_panel((344, 90), 4, BRASS_DARK))
-	save("GFX_repression_ledger_country_card_bg", ledger_panel((710, 304), 5, BRASS_DARK))
-	save("GFX_repression_ledger_tab_button", button_sheet((140, 42), BRASS))
-	save("GFX_repression_ledger_action_button", button_sheet((136, 38), BRASS))
-	save("GFX_repression_ledger_warning_frame_static", ledger_panel((710, 48), 2, RED))
-	save("GFX_repression_ledger_selected_state_frame_static", ledger_panel((710, 38), 2, BRASS))
-	save("GFX_repression_ledger_critical_frame_static", ledger_panel((710, 48), 2, (180, 36, 30, 255)))
-	save("GFX_repression_ledger_evidence_seal_static", seal(112, PURPLE, "evidence"))
-	save("GFX_repression_ledger_reform_seal_static", seal(112, GREEN, "reform"))
-	save("GFX_decision_category_repression_ledger", icon(53, "ledger", BRASS))
-	save("GFX_decision_open_repression_ledger", icon(32, "ledger", BRASS))
-	for name, kind, accent in (
-		("GFX_repression_ledger_tab_overview", "ledger", BRASS),
-		("GFX_repression_ledger_tab_state_pools", "population", BRASS),
-		("GFX_repression_ledger_tab_sites", "guard", RED),
-		("GFX_repression_ledger_tab_country", "ledger", (94, 121, 145, 255)),
-		("GFX_repression_ledger_tab_discovery", "evidence", PURPLE),
-		("GFX_repression_ledger_population_pressure", "population", RED),
-		("GFX_repression_ledger_labor_output", "labor", BRASS),
-		("GFX_repression_ledger_evidence_risk", "evidence", PURPLE),
-		("GFX_repression_ledger_reform_pressure", "reform", GREEN),
-		("GFX_repression_ledger_guard_burden", "guard", (105, 126, 143, 255)),
-		("GFX_repression_ledger_rail_burden", "rail", (121, 106, 79, 255)),
-	):
-		save(name, icon(32 if "tab_" in name else 24, kind, accent))
+	if not WINDOW_SOURCE.exists() or not ATLAS_SOURCE.exists():
+		raise FileNotFoundError("The frozen ImageGen Ledger sources are missing")
+	background = Image.open(WINDOW_SOURCE).convert("RGBA")
+	atlas = Image.open(ATLAS_SOURCE).convert("RGBA")
+
+	save("GFX_repression_ledger_window_bg", cover(background, (900, 560)))
+	save("GFX_repression_ledger_summary_strip", imagegen_panel(background, (864, 52), (0.50, 0.24), BRASS))
+	save("GFX_repression_ledger_card_bg", imagegen_panel(background, (344, 90), (0.38, 0.58), BRASS_DARK))
+	save("GFX_repression_ledger_country_card_bg", imagegen_panel(background, (710, 304), (0.56, 0.55), BRASS_DARK))
+	save("GFX_repression_ledger_tab_button", button_sheet(background, (140, 42), (0.23, 0.42), BRASS))
+	save("GFX_repression_ledger_action_button", button_sheet(background, (136, 38), (0.72, 0.70), BRASS))
+	save("GFX_repression_ledger_warning_frame_static", state_frame(background, atlas, (710, 48), 11, BURGUNDY))
+	save("GFX_repression_ledger_selected_state_frame_static", state_frame(background, atlas, (710, 38), 1, BRASS))
+	save("GFX_repression_ledger_critical_frame_static", state_frame(background, atlas, (710, 48), 15, (184, 43, 34, 255)))
+	save("GFX_repression_ledger_evidence_seal_static", icon_from_atlas(atlas, 4, (112, 112), 0.01))
+	save("GFX_repression_ledger_reform_seal_static", icon_from_atlas(atlas, 9, (112, 112), 0.01))
+
+	save("GFX_decision_category_repression_ledger", icon_from_atlas(atlas, 0, (53, 53), 0.02))
+	save("GFX_decision_open_repression_ledger", icon_from_atlas(atlas, 0, (32, 32), 0.01))
+	icon_map = {
+		"GFX_repression_ledger_tab_overview": (0, 32),
+		"GFX_repression_ledger_tab_state_pools": (1, 32),
+		"GFX_repression_ledger_tab_sites": (2, 32),
+		"GFX_repression_ledger_tab_country": (3, 32),
+		"GFX_repression_ledger_tab_discovery": (4, 32),
+		"GFX_repression_ledger_population_pressure": (5, 24),
+		"GFX_repression_ledger_labor_output": (6, 24),
+		"GFX_repression_ledger_evidence_risk": (10, 24),
+		"GFX_repression_ledger_reform_pressure": (9, 24),
+		"GFX_repression_ledger_guard_burden": (7, 24),
+		"GFX_repression_ledger_rail_burden": (8, 24),
+	}
+	for name, (index, size) in icon_map.items():
+		save(name, icon_from_atlas(atlas, index, (size, size), 0.01))
+
+	for name in ASSET_SIZES:
+		convert_to_dds(name)
 	build_contact_sheet()
 
 
