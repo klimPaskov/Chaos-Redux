@@ -25,12 +25,17 @@ natural_disaster_is_valid_repeat_impact_state = {
 	has_state_flag = natural_disaster_aftermath_active
 	NOT = { has_state_flag = natural_disaster_impact_guard }
 	NOT = { has_state_flag = natural_disaster_impact_scheduled }
+	natural_disaster_is_family_geographically_eligible = yes
+	natural_disaster_family_origin_context_is_valid = yes
+	natural_disaster_family_initiating_context_is_valid = yes
+	natural_disaster_target_matches_locked_path_basin = yes
 	if = {
 		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.heat_wave } }
 		OWNER = {
 			NOT = { has_idea = heat_wave }
 			NOT = { has_country_flag = natural_disaster_heat_exclusion }
 		}
+		NOT = { has_state_flag = natural_disaster_heat_aftermath }
 	}
 }
 
@@ -39,8 +44,158 @@ natural_disaster_is_valid_coastal_impact_state = {
 	is_coastal = yes
 }
 
+natural_disaster_chain_is_physical = {
+	OR = {
+		check_variable = { natural_disaster_chain_risk = constant:natural_disaster_chain.aftershock }
+		check_variable = { natural_disaster_chain_risk = constant:natural_disaster_chain.tsunami }
+		check_variable = { natural_disaster_chain_risk = constant:natural_disaster_chain.lahar }
+		check_variable = { natural_disaster_chain_risk = constant:natural_disaster_chain.wildfire_spread }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.aftershock }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.seismic_landslide }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.offshore_tsunami }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.urban_fire }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.dam_failure_flash_flood }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.storm_surge }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.inland_flood }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.wildfire_spread }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.severe_thunderstorm_tail }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.wildfire_line }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.hailstorm }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.flash_flood }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.wildfire_ignition }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.thunderstorm_return }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.extreme_cold_wave }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.blizzard_followup }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.wildfire }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.drought }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.heat_wave }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.drought_feedback }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.aftershock_damage }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.flood_renewal }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.ashfall }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.lahar }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.tsunami }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.flood }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.dust_veil }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.meteor_shower }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.meteor_impact }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.global_aftershocks }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.delayed_tsunami_chain }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.regional_landslides }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.regional_ashfall }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.tornado_outbreak }
+		check_variable = { natural_disaster_followup_route = constant:natural_disaster_followup_route.skyfire_hail }
+	}
+}
+
+# Temp-variable contract used by the bounded random-family resolver. A family
+# may be tried only after its evolution has unlocked it; this turns the final
+# search into a complete pass over the live pool instead of another random
+# draw with replacement.
+natural_disaster_current_family_available_for_evolution = {
+	OR = {
+		check_variable = { natural_disaster_current_family = constant:natural_disaster_family.earthquake }
+		check_variable = { natural_disaster_current_family = constant:natural_disaster_family.flood }
+		check_variable = { natural_disaster_current_family = constant:natural_disaster_family.extreme_wind }
+		check_variable = { natural_disaster_current_family = constant:natural_disaster_family.thunderstorm }
+		check_variable = { natural_disaster_current_family = constant:natural_disaster_family.hailstorm }
+		check_variable = { natural_disaster_current_family = constant:natural_disaster_family.cold_wave }
+		check_variable = { natural_disaster_current_family = constant:natural_disaster_family.heat_wave }
+		check_variable = { natural_disaster_current_family = constant:natural_disaster_family.wildfire }
+		check_variable = { natural_disaster_current_family = constant:natural_disaster_family.dry_mass_movement }
+		AND = {
+			check_variable = { natural_disaster_current_evolution > constant:natural_disaster_event.evolution_i_stage }
+			OR = {
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.tornado_outbreak }
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.ashfall }
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.lahar }
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.tsunami }
+			}
+		}
+		AND = {
+			check_variable = { natural_disaster_current_evolution > 0 }
+			OR = {
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.tropical_cyclone }
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.blizzard }
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.drought }
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.dust_and_sandstorm }
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.wet_mass_movement }
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.volcanic_eruption }
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.storm_surge }
+			}
+		}
+		AND = {
+			check_variable = { natural_disaster_current_evolution > constant:natural_disaster_event.evolution_ii_stage }
+			OR = {
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.meteor_impact }
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.meteor_shower }
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.whole_earth_rupture }
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.massive_eruption }
+				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.moving_storm_corridor }
+			}
+		}
+	}
+}
+
+# State scope. Warning choices mitigate a matching hazard after the family has
+# independently resolved; they never choose, replace, or manufacture the
+# follow-up route.
+natural_disaster_warning_protection_matches_chain = {
+	has_state_flag = natural_disaster_warning_action_taken
+	OR = {
+		AND = {
+			check_variable = { natural_disaster_warning_protection = constant:natural_disaster_warning_protection.population }
+			OR = {
+				check_variable = { natural_disaster_chain_risk = constant:natural_disaster_chain.aftershock }
+				check_variable = { natural_disaster_chain_risk = constant:natural_disaster_chain.tsunami }
+				check_variable = { natural_disaster_chain_risk = constant:natural_disaster_chain.lahar }
+				check_variable = { natural_disaster_chain_risk = constant:natural_disaster_chain.refugee_pressure }
+			}
+		}
+		AND = {
+			check_variable = { natural_disaster_warning_protection = constant:natural_disaster_warning_protection.transport }
+			OR = {
+				check_variable = { natural_disaster_chain_risk = constant:natural_disaster_chain.aftershock }
+				check_variable = { natural_disaster_chain_risk = constant:natural_disaster_chain.supply_collapse }
+				check_variable = { natural_disaster_chain_risk = constant:natural_disaster_chain.lahar }
+				check_variable = { natural_disaster_chain_risk = constant:natural_disaster_chain.refugee_pressure }
+			}
+		}
+		AND = {
+			check_variable = { natural_disaster_warning_protection = constant:natural_disaster_warning_protection.industry_air }
+			OR = {
+				check_variable = { natural_disaster_chain_risk = constant:natural_disaster_chain.supply_collapse }
+				check_variable = { natural_disaster_chain_risk = constant:natural_disaster_chain.wildfire_spread }
+			}
+		}
+		AND = {
+			check_variable = { natural_disaster_warning_protection = constant:natural_disaster_warning_protection.food_water }
+			OR = {
+				check_variable = { natural_disaster_chain_risk = constant:natural_disaster_chain.famine }
+				check_variable = { natural_disaster_chain_risk = constant:natural_disaster_chain.disease }
+			}
+		}
+		AND = {
+			check_variable = { natural_disaster_warning_protection = constant:natural_disaster_warning_protection.coast }
+			check_variable = { natural_disaster_chain_risk = constant:natural_disaster_chain.tsunami }
+		}
+		AND = {
+			check_variable = { natural_disaster_warning_protection = constant:natural_disaster_warning_protection.fire }
+			check_variable = { natural_disaster_chain_risk = constant:natural_disaster_chain.wildfire_spread }
+		}
+		AND = {
+			check_variable = { natural_disaster_warning_protection = constant:natural_disaster_warning_protection.medical }
+			OR = {
+				check_variable = { natural_disaster_chain_risk = constant:natural_disaster_chain.disease }
+				check_variable = { natural_disaster_chain_risk = constant:natural_disaster_chain.refugee_pressure }
+			}
+		}
+	}
+}
+
 natural_disaster_is_valid_heat_impact_state = {
 	natural_disaster_is_valid_impact_state = yes
+	natural_disaster_is_family_geographically_eligible = yes
 	OWNER = {
 		NOT = { has_idea = heat_wave }
 		NOT = { has_country_flag = natural_disaster_heat_exclusion }
@@ -53,86 +208,33 @@ natural_disaster_scheduled_state_is_still_valid = {
 	check_variable = { state_population_k > 0 }
 	OWNER = { exists = yes }
 	has_state_flag = natural_disaster_impact_scheduled
+	natural_disaster_is_family_geographically_eligible = yes
+	natural_disaster_family_origin_context_is_valid = yes
+	natural_disaster_family_initiating_context_is_valid = yes
+	natural_disaster_target_matches_locked_path_basin = yes
 	if = {
-		limit = { check_variable = { natural_disaster_family = constant:natural_disaster_family.heat_wave } }
+		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.heat_wave } }
 		OWNER = {
 			NOT = { has_idea = heat_wave }
 			NOT = { has_country_flag = natural_disaster_heat_exclusion }
 		}
+		NOT = { has_state_flag = natural_disaster_heat_aftermath }
 	}
 }
 
 natural_disaster_is_valid_family_target = {
 	natural_disaster_is_valid_impact_state = yes
-	if = {
-		limit = {
-			OR = {
-				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.tropical_cyclone }
-				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.tsunami }
-				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.storm_surge }
-			}
-		}
-		is_coastal = yes
-	}
+	natural_disaster_is_family_geographically_eligible = yes
+	natural_disaster_family_origin_context_is_valid = yes
+	natural_disaster_family_initiating_context_is_valid = yes
+	natural_disaster_target_matches_locked_path_basin = yes
 	if = {
 		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.heat_wave } }
-		natural_disaster_is_valid_heat_impact_state = yes
-	}
-	if = {
-		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.dust_and_sandstorm } }
-		OR = {
-			natural_disaster_state_has_low_infrastructure = yes
-			natural_disaster_state_has_agricultural_proxy = yes
-			natural_disaster_state_has_resource_proxy = yes
-			natural_disaster_state_has_dry_hazard_history = yes
+		OWNER = {
+			NOT = { has_idea = heat_wave }
+			NOT = { has_country_flag = natural_disaster_heat_exclusion }
 		}
-	}
-	if = {
-		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.dry_mass_movement } }
-		OR = {
-			natural_disaster_state_has_low_infrastructure = yes
-			natural_disaster_state_has_strategic_transport = yes
-			natural_disaster_state_has_resource_proxy = yes
-			natural_disaster_state_has_dry_hazard_history = yes
-		}
-	}
-	if = {
-		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.wet_mass_movement } }
-		OR = {
-			natural_disaster_state_has_low_infrastructure = yes
-			natural_disaster_state_has_strategic_transport = yes
-			natural_disaster_state_has_resource_proxy = yes
-			natural_disaster_state_has_wet_hazard_history = yes
-		}
-	}
-	if = {
-		limit = {
-			OR = {
-				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.volcanic_eruption }
-				check_variable = { natural_disaster_current_family = constant:natural_disaster_family.massive_eruption }
-			}
-		}
-		OR = {
-			natural_disaster_state_has_resource_proxy = yes
-			natural_disaster_state_has_volcanic_hazard_history = yes
-			is_coastal = yes
-		}
-	}
-	if = {
-		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.ashfall } }
-		OR = {
-			natural_disaster_state_has_air_assets = yes
-			natural_disaster_state_has_agricultural_proxy = yes
-			natural_disaster_state_has_volcanic_hazard_history = yes
-		}
-	}
-	if = {
-		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.lahar } }
-		OR = {
-			natural_disaster_state_has_resource_proxy = yes
-			natural_disaster_state_has_volcanic_hazard_history = yes
-			natural_disaster_state_has_wet_hazard_history = yes
-		}
+		NOT = { has_state_flag = natural_disaster_heat_aftermath }
 	}
 }
 
@@ -151,6 +253,29 @@ natural_disaster_state_has_strategic_transport = {
 			level > constant:natural_disaster_threshold.strategic_railway
 		}
 	}
+}
+
+# State scope. Generic recovery packages take the sea route only when a
+# coastal card actually carries coastal/water damage. All other cards use the
+# rail route. This is a physical route decision, never an inventory fallback.
+natural_disaster_state_uses_convoy_recovery_route = {
+	is_coastal = yes
+	OR = {
+		check_variable = { natural_disaster_damage_coastal > 0 }
+		check_variable = { natural_disaster_family = constant:natural_disaster_family.flood }
+		check_variable = { natural_disaster_family = constant:natural_disaster_family.tropical_cyclone }
+		check_variable = { natural_disaster_family = constant:natural_disaster_family.tsunami }
+		check_variable = { natural_disaster_family = constant:natural_disaster_family.storm_surge }
+		AND = {
+			check_variable = { natural_disaster_origin_medium = constant:natural_disaster_origin_medium.ocean_impact }
+			check_variable = { natural_disaster_sequence_origin_family = constant:natural_disaster_family.meteor_shower }
+		}
+	}
+}
+
+natural_disaster_state_has_recovery_card = {
+	natural_disaster_state_has_open_card = yes
+	NOT = { has_state_flag = natural_disaster_chain_only_card }
 }
 
 natural_disaster_country_has_operational_capital_route = {
@@ -300,6 +425,53 @@ natural_disaster_state_has_open_card = {
 	check_variable = { natural_disaster_card_state < constant:natural_disaster_card_state.closed }
 }
 
+natural_disaster_state_has_unresolved_chain = {
+	OR = {
+		has_state_flag = natural_disaster_refugee_disease_pending
+		AND = {
+			check_variable = { natural_disaster_chain_risk > constant:natural_disaster_chain.none }
+			NOT = { has_state_flag = natural_disaster_chain_prevented }
+			NOT = { has_state_flag = natural_disaster_chain_arrived }
+			NOT = { has_state_flag = natural_disaster_physical_chain_skipped }
+		}
+	}
+}
+
+natural_disaster_state_chain_cleanup_ready = {
+	NOT = { natural_disaster_state_has_unresolved_chain = yes }
+}
+
+# State-scope display gate shared by the family-specific category shells and
+# their read-only state cards. Warnings and open aftermaths are deliberately
+# visible together so a category does not change identity between stages.
+natural_disaster_state_has_displayable_activity = {
+	has_variable = natural_disaster_family
+	OR = {
+		has_state_flag = natural_disaster_impact_scheduled
+		has_state_flag = natural_disaster_warning_scheduled
+		has_state_flag = natural_disaster_warning_active
+		natural_disaster_state_has_open_card = yes
+	}
+	NOT = { has_state_flag = natural_disaster_recovery_unresolved_territory }
+}
+
+# Country-scope proof that the stored category presentation family still
+# belongs to a controlled, displayable state. This keeps the recovery fallback
+# mutually exclusive with every disaster-family picture.
+natural_disaster_country_has_display_family_activity = {
+	has_variable = natural_disaster_category_display_family
+	has_variable = natural_disaster_category_display_state
+	var:natural_disaster_category_display_state = {
+		natural_disaster_state_has_displayable_activity = yes
+		is_controlled_by = ROOT
+		check_variable = {
+			var = natural_disaster_family
+			value = ROOT.natural_disaster_category_display_family
+			compare = equals
+		}
+	}
+}
+
 natural_disaster_country_has_open_aftermath = {
 	any_controlled_state = {
 		natural_disaster_state_has_open_card = yes
@@ -309,7 +481,11 @@ natural_disaster_country_has_open_aftermath = {
 
 natural_disaster_country_has_warning = {
 	any_controlled_state = {
-		has_state_flag = natural_disaster_warning_active
+		OR = {
+			has_state_flag = natural_disaster_impact_scheduled
+			has_state_flag = natural_disaster_warning_scheduled
+			has_state_flag = natural_disaster_warning_active
+		}
 		NOT = { has_state_flag = natural_disaster_recovery_unresolved_territory }
 	}
 }
@@ -498,32 +674,378 @@ natural_disaster_gui_selected_uses_rupture_layer = {
 	}
 }
 
-natural_disaster_can_pay_warning_field_teams = {
-	has_manpower > constant:natural_disaster_cost_gate.warning_manpower
+natural_disaster_state_uses_coastal_warning_route = {
+	is_coastal = yes
 	OR = {
-		has_equipment = { support_equipment_1 > constant:natural_disaster_cost_gate.warning_support_equipment }
-		has_equipment = { motorized_equipment_1 > constant:natural_disaster_cost_gate.warning_trucks }
+		naval_base > 0
+		dockyard > 0
+	}
+}
+
+natural_disaster_warning_uses_coastal_route = {
+	FROM = { natural_disaster_state_uses_coastal_warning_route = yes }
+}
+
+natural_disaster_can_pay_warning_air = {
+	if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.abnormal } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.abnormal_manpower
+		has_equipment = { support_equipment_1 > constant:natural_disaster_warning_cost_gate.abnormal_support }
+		has_fuel > constant:natural_disaster_warning_cost_gate.abnormal_fuel
+		command_power > constant:natural_disaster_warning_cost_gate.abnormal_command_power
+	}
+	else_if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.catastrophic } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.catastrophic_manpower
+		has_equipment = { support_equipment_1 > constant:natural_disaster_warning_cost_gate.catastrophic_support }
+		has_fuel > constant:natural_disaster_warning_cost_gate.catastrophic_fuel
+		command_power > constant:natural_disaster_warning_cost_gate.catastrophic_command_power
+	}
+	else_if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.regional } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.regional_manpower
+		has_equipment = { support_equipment_1 > constant:natural_disaster_warning_cost_gate.regional_support }
+		has_fuel > constant:natural_disaster_warning_cost_gate.regional_fuel
+		command_power > constant:natural_disaster_warning_cost_gate.regional_command_power
+	}
+	else_if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.severe } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.severe_manpower
+		has_equipment = { support_equipment_1 > constant:natural_disaster_warning_cost_gate.severe_support }
+		has_fuel > constant:natural_disaster_warning_cost_gate.severe_fuel
+		command_power > constant:natural_disaster_warning_cost_gate.severe_command_power
+	}
+	else = {
+		has_manpower > constant:natural_disaster_warning_cost_gate.local_manpower
+		has_equipment = { support_equipment_1 > constant:natural_disaster_warning_cost_gate.local_support }
+		has_fuel > constant:natural_disaster_warning_cost_gate.local_fuel
+		command_power > constant:natural_disaster_warning_cost_gate.local_command_power
+	}
+}
+
+natural_disaster_can_pay_warning_naval_coast = {
+	if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.abnormal } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.abnormal_manpower
+		has_equipment = { convoy_1 > constant:natural_disaster_warning_cost_gate.abnormal_convoys }
+		has_fuel > constant:natural_disaster_warning_cost_gate.abnormal_fuel
+		command_power > constant:natural_disaster_warning_cost_gate.abnormal_command_power
+	}
+	else_if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.catastrophic } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.catastrophic_manpower
+		has_equipment = { convoy_1 > constant:natural_disaster_warning_cost_gate.catastrophic_convoys }
+		has_fuel > constant:natural_disaster_warning_cost_gate.catastrophic_fuel
+		command_power > constant:natural_disaster_warning_cost_gate.catastrophic_command_power
+	}
+	else_if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.regional } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.regional_manpower
+		has_equipment = { convoy_1 > constant:natural_disaster_warning_cost_gate.regional_convoys }
+		has_fuel > constant:natural_disaster_warning_cost_gate.regional_fuel
+		command_power > constant:natural_disaster_warning_cost_gate.regional_command_power
+	}
+	else_if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.severe } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.severe_manpower
+		has_equipment = { convoy_1 > constant:natural_disaster_warning_cost_gate.severe_convoys }
+		has_fuel > constant:natural_disaster_warning_cost_gate.severe_fuel
+		command_power > constant:natural_disaster_warning_cost_gate.severe_command_power
+	}
+	else = {
+		has_manpower > constant:natural_disaster_warning_cost_gate.local_manpower
+		has_equipment = { convoy_1 > constant:natural_disaster_warning_cost_gate.local_convoys }
+		has_fuel > constant:natural_disaster_warning_cost_gate.local_fuel
+		command_power > constant:natural_disaster_warning_cost_gate.local_command_power
+	}
+}
+
+natural_disaster_can_pay_warning_command_rail = {
+	if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.abnormal } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.abnormal_manpower
+		has_equipment = { train_equipment_1 > constant:natural_disaster_warning_cost_gate.abnormal_trains }
+		has_equipment = { support_equipment_1 > constant:natural_disaster_warning_cost_gate.abnormal_support }
+		has_fuel > constant:natural_disaster_warning_cost_gate.abnormal_fuel
+		command_power > constant:natural_disaster_warning_cost_gate.abnormal_command_power
+	}
+	else_if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.catastrophic } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.catastrophic_manpower
+		has_equipment = { train_equipment_1 > constant:natural_disaster_warning_cost_gate.catastrophic_trains }
+		has_equipment = { support_equipment_1 > constant:natural_disaster_warning_cost_gate.catastrophic_support }
+		has_fuel > constant:natural_disaster_warning_cost_gate.catastrophic_fuel
+		command_power > constant:natural_disaster_warning_cost_gate.catastrophic_command_power
+	}
+	else_if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.regional } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.regional_manpower
+		has_equipment = { train_equipment_1 > constant:natural_disaster_warning_cost_gate.regional_trains }
+		has_equipment = { support_equipment_1 > constant:natural_disaster_warning_cost_gate.regional_support }
+		has_fuel > constant:natural_disaster_warning_cost_gate.regional_fuel
+		command_power > constant:natural_disaster_warning_cost_gate.regional_command_power
+	}
+	else_if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.severe } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.severe_manpower
+		has_equipment = { train_equipment_1 > constant:natural_disaster_warning_cost_gate.severe_trains }
+		has_equipment = { support_equipment_1 > constant:natural_disaster_warning_cost_gate.severe_support }
+		has_fuel > constant:natural_disaster_warning_cost_gate.severe_fuel
+		command_power > constant:natural_disaster_warning_cost_gate.severe_command_power
+	}
+	else = {
+		has_manpower > constant:natural_disaster_warning_cost_gate.local_manpower
+		has_equipment = { train_equipment_1 > constant:natural_disaster_warning_cost_gate.local_trains }
+		has_equipment = { support_equipment_1 > constant:natural_disaster_warning_cost_gate.local_support }
+		has_fuel > constant:natural_disaster_warning_cost_gate.local_fuel
+		command_power > constant:natural_disaster_warning_cost_gate.local_command_power
+	}
+}
+
+natural_disaster_can_pay_warning_civilian_shutdown = {
+	if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.abnormal } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.abnormal_manpower
+		has_equipment = { support_equipment_1 > constant:natural_disaster_warning_cost_gate.abnormal_support }
+		has_stability > constant:natural_disaster_warning_cost_fixed.abnormal_stability_gate
+		num_of_civilian_factories_available_for_projects > constant:natural_disaster_warning_cost_gate.abnormal_civilian_factories
+		if = {
+			limit = { has_war = yes }
+			has_war_support > constant:natural_disaster_warning_cost_fixed.abnormal_war_support_gate
+		}
+	}
+	else_if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.catastrophic } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.catastrophic_manpower
+		has_equipment = { support_equipment_1 > constant:natural_disaster_warning_cost_gate.catastrophic_support }
+		has_stability > constant:natural_disaster_warning_cost_fixed.catastrophic_stability_gate
+		num_of_civilian_factories_available_for_projects > constant:natural_disaster_warning_cost_gate.catastrophic_civilian_factories
+		if = {
+			limit = { has_war = yes }
+			has_war_support > constant:natural_disaster_warning_cost_fixed.catastrophic_war_support_gate
+		}
+	}
+	else_if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.regional } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.regional_manpower
+		has_equipment = { support_equipment_1 > constant:natural_disaster_warning_cost_gate.regional_support }
+		has_stability > constant:natural_disaster_warning_cost_fixed.regional_stability_gate
+		num_of_civilian_factories_available_for_projects > constant:natural_disaster_warning_cost_gate.regional_civilian_factories
+		if = {
+			limit = { has_war = yes }
+			has_war_support > constant:natural_disaster_warning_cost_fixed.regional_war_support_gate
+		}
+	}
+	else_if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.severe } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.severe_manpower
+		has_equipment = { support_equipment_1 > constant:natural_disaster_warning_cost_gate.severe_support }
+		has_stability > constant:natural_disaster_warning_cost_fixed.severe_stability_gate
+		num_of_civilian_factories_available_for_projects > constant:natural_disaster_warning_cost_gate.severe_civilian_factories
+		if = {
+			limit = { has_war = yes }
+			has_war_support > constant:natural_disaster_warning_cost_fixed.severe_war_support_gate
+		}
+	}
+	else = {
+		has_manpower > constant:natural_disaster_warning_cost_gate.local_manpower
+		has_equipment = { support_equipment_1 > constant:natural_disaster_warning_cost_gate.local_support }
+		has_stability > constant:natural_disaster_warning_cost_fixed.local_stability_gate
+		num_of_civilian_factories_available_for_projects > constant:natural_disaster_warning_cost_gate.local_civilian_factories
+		if = {
+			limit = { has_war = yes }
+			has_war_support > constant:natural_disaster_warning_cost_fixed.local_war_support_gate
+		}
+	}
+}
+
+natural_disaster_can_pay_warning_shelter_medical = {
+	if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.abnormal } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.abnormal_manpower
+		has_equipment = { support_equipment_1 > constant:natural_disaster_warning_cost_gate.abnormal_support }
+		has_stability > constant:natural_disaster_warning_cost_fixed.abnormal_stability_gate
+	}
+	else_if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.catastrophic } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.catastrophic_manpower
+		has_equipment = { support_equipment_1 > constant:natural_disaster_warning_cost_gate.catastrophic_support }
+		has_stability > constant:natural_disaster_warning_cost_fixed.catastrophic_stability_gate
+	}
+	else_if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.regional } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.regional_manpower
+		has_equipment = { support_equipment_1 > constant:natural_disaster_warning_cost_gate.regional_support }
+		has_stability > constant:natural_disaster_warning_cost_fixed.regional_stability_gate
+	}
+	else_if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.severe } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.severe_manpower
+		has_equipment = { support_equipment_1 > constant:natural_disaster_warning_cost_gate.severe_support }
+		has_stability > constant:natural_disaster_warning_cost_fixed.severe_stability_gate
+	}
+	else = {
+		has_manpower > constant:natural_disaster_warning_cost_gate.local_manpower
+		has_equipment = { support_equipment_1 > constant:natural_disaster_warning_cost_gate.local_support }
+		has_stability > constant:natural_disaster_warning_cost_fixed.local_stability_gate
 	}
 }
 
 natural_disaster_can_pay_warning_transport = {
-	has_manpower > constant:natural_disaster_cost_gate.warning_manpower
-	OR = {
-		has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.warning_trains }
-		has_equipment = { convoy_1 > constant:natural_disaster_cost_gate.warning_convoys }
+	if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.abnormal } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.abnormal_manpower
+		has_equipment = { motorized_equipment_1 > constant:natural_disaster_warning_cost_gate.abnormal_trucks }
+		has_fuel > constant:natural_disaster_warning_cost_gate.abnormal_fuel
+		has_stability > constant:natural_disaster_warning_cost_fixed.abnormal_stability_gate
+	}
+	else_if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.catastrophic } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.catastrophic_manpower
+		has_equipment = { motorized_equipment_1 > constant:natural_disaster_warning_cost_gate.catastrophic_trucks }
+		has_fuel > constant:natural_disaster_warning_cost_gate.catastrophic_fuel
+		has_stability > constant:natural_disaster_warning_cost_fixed.catastrophic_stability_gate
+	}
+	else_if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.regional } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.regional_manpower
+		has_equipment = { motorized_equipment_1 > constant:natural_disaster_warning_cost_gate.regional_trucks }
+		has_fuel > constant:natural_disaster_warning_cost_gate.regional_fuel
+		has_stability > constant:natural_disaster_warning_cost_fixed.regional_stability_gate
+	}
+	else_if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.severe } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.severe_manpower
+		has_equipment = { motorized_equipment_1 > constant:natural_disaster_warning_cost_gate.severe_trucks }
+		has_fuel > constant:natural_disaster_warning_cost_gate.severe_fuel
+		has_stability > constant:natural_disaster_warning_cost_fixed.severe_stability_gate
+	}
+	else = {
+		has_manpower > constant:natural_disaster_warning_cost_gate.local_manpower
+		has_equipment = { motorized_equipment_1 > constant:natural_disaster_warning_cost_gate.local_trucks }
+		has_fuel > constant:natural_disaster_warning_cost_gate.local_fuel
+		has_stability > constant:natural_disaster_warning_cost_fixed.local_stability_gate
 	}
 }
 
-natural_disaster_can_pay_warning_shelter = {
-	has_manpower > constant:natural_disaster_cost_gate.warning_manpower
-	has_equipment = { support_equipment_1 > constant:natural_disaster_cost_gate.warning_support_equipment }
-	has_stability > constant:natural_disaster_cost_gate_fixed.warning_stability
+natural_disaster_can_pay_warning_fuel_convoy = {
+	if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.abnormal } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.abnormal_manpower
+		has_equipment = { support_equipment_1 > constant:natural_disaster_warning_cost_gate.abnormal_support }
+		has_fuel > constant:natural_disaster_warning_cost_gate.abnormal_fuel
+		if = {
+			limit = { natural_disaster_warning_uses_coastal_route = yes }
+			has_equipment = { convoy_1 > constant:natural_disaster_warning_cost_gate.abnormal_convoys }
+		}
+		else = { has_equipment = { train_equipment_1 > constant:natural_disaster_warning_cost_gate.abnormal_trains } }
+	}
+	else_if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.catastrophic } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.catastrophic_manpower
+		has_equipment = { support_equipment_1 > constant:natural_disaster_warning_cost_gate.catastrophic_support }
+		has_fuel > constant:natural_disaster_warning_cost_gate.catastrophic_fuel
+		if = {
+			limit = { natural_disaster_warning_uses_coastal_route = yes }
+			has_equipment = { convoy_1 > constant:natural_disaster_warning_cost_gate.catastrophic_convoys }
+		}
+		else = { has_equipment = { train_equipment_1 > constant:natural_disaster_warning_cost_gate.catastrophic_trains } }
+	}
+	else_if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.regional } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.regional_manpower
+		has_equipment = { support_equipment_1 > constant:natural_disaster_warning_cost_gate.regional_support }
+		has_fuel > constant:natural_disaster_warning_cost_gate.regional_fuel
+		if = {
+			limit = { natural_disaster_warning_uses_coastal_route = yes }
+			has_equipment = { convoy_1 > constant:natural_disaster_warning_cost_gate.regional_convoys }
+		}
+		else = { has_equipment = { train_equipment_1 > constant:natural_disaster_warning_cost_gate.regional_trains } }
+	}
+	else_if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.severe } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.severe_manpower
+		has_equipment = { support_equipment_1 > constant:natural_disaster_warning_cost_gate.severe_support }
+		has_fuel > constant:natural_disaster_warning_cost_gate.severe_fuel
+		if = {
+			limit = { natural_disaster_warning_uses_coastal_route = yes }
+			has_equipment = { convoy_1 > constant:natural_disaster_warning_cost_gate.severe_convoys }
+		}
+		else = { has_equipment = { train_equipment_1 > constant:natural_disaster_warning_cost_gate.severe_trains } }
+	}
+	else = {
+		has_manpower > constant:natural_disaster_warning_cost_gate.local_manpower
+		has_equipment = { support_equipment_1 > constant:natural_disaster_warning_cost_gate.local_support }
+		has_fuel > constant:natural_disaster_warning_cost_gate.local_fuel
+		if = {
+			limit = { natural_disaster_warning_uses_coastal_route = yes }
+			has_equipment = { convoy_1 > constant:natural_disaster_warning_cost_gate.local_convoys }
+		}
+		else = { has_equipment = { train_equipment_1 > constant:natural_disaster_warning_cost_gate.local_trains } }
+	}
 }
+
+natural_disaster_can_pay_warning_field_research = {
+	if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.abnormal } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.abnormal_manpower
+		has_equipment = { support_equipment_1 > constant:natural_disaster_warning_cost_gate.abnormal_support }
+		command_power > constant:natural_disaster_warning_cost_gate.abnormal_command_power
+		num_of_civilian_factories_available_for_projects > constant:natural_disaster_warning_cost_gate.abnormal_civilian_factories
+	}
+	else_if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.catastrophic } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.catastrophic_manpower
+		has_equipment = { support_equipment_1 > constant:natural_disaster_warning_cost_gate.catastrophic_support }
+		command_power > constant:natural_disaster_warning_cost_gate.catastrophic_command_power
+		num_of_civilian_factories_available_for_projects > constant:natural_disaster_warning_cost_gate.catastrophic_civilian_factories
+	}
+	else_if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.regional } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.regional_manpower
+		has_equipment = { support_equipment_1 > constant:natural_disaster_warning_cost_gate.regional_support }
+		command_power > constant:natural_disaster_warning_cost_gate.regional_command_power
+		num_of_civilian_factories_available_for_projects > constant:natural_disaster_warning_cost_gate.regional_civilian_factories
+	}
+	else_if = {
+		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.severe } } }
+		has_manpower > constant:natural_disaster_warning_cost_gate.severe_manpower
+		has_equipment = { support_equipment_1 > constant:natural_disaster_warning_cost_gate.severe_support }
+		command_power > constant:natural_disaster_warning_cost_gate.severe_command_power
+		num_of_civilian_factories_available_for_projects > constant:natural_disaster_warning_cost_gate.severe_civilian_factories
+	}
+	else = {
+		has_manpower > constant:natural_disaster_warning_cost_gate.local_manpower
+		has_equipment = { support_equipment_1 > constant:natural_disaster_warning_cost_gate.local_support }
+		command_power > constant:natural_disaster_warning_cost_gate.local_command_power
+		num_of_civilian_factories_available_for_projects > constant:natural_disaster_warning_cost_gate.local_civilian_factories
+	}
+}
+
 
 natural_disaster_can_pay_rescue = {
 	has_manpower > constant:natural_disaster_cost_gate.rescue_manpower
 	has_equipment = { support_equipment_1 > constant:natural_disaster_cost_gate.rescue_support_equipment }
 	has_equipment = { motorized_equipment_1 > constant:natural_disaster_cost_gate.rescue_trucks }
+	has_stability > constant:natural_disaster_cost_gate_fixed.rescue_stability
+}
+
+# Country scope with the targeted aftermath state in FROM. The physical state
+# route determines the transport stockpile; low inventory never substitutes a
+# different route.
+natural_disaster_can_pay_rescue_routed = {
+	natural_disaster_can_pay_rescue = yes
+	has_fuel > constant:natural_disaster_cost_gate.rescue_fuel
+	OR = {
+		AND = {
+			FROM = { natural_disaster_state_uses_convoy_recovery_route = yes }
+			has_equipment = { convoy_1 > constant:natural_disaster_cost_gate.warning_convoys }
+		}
+		AND = {
+			FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } }
+			has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.warning_trains }
+		}
+	}
 }
 
 natural_disaster_can_pay_stabilization = {
@@ -533,6 +1055,24 @@ natural_disaster_can_pay_stabilization = {
 		has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.stabilize_trains }
 		has_equipment = { convoy_1 > constant:natural_disaster_cost_gate.stabilize_convoys }
 	}
+	has_stability > constant:natural_disaster_cost_gate_fixed.stabilize_stability
+}
+
+natural_disaster_can_pay_stabilization_routed = {
+	has_equipment = { support_equipment_1 > constant:natural_disaster_cost_gate.stabilize_support_equipment }
+	has_equipment = { motorized_equipment_1 > constant:natural_disaster_cost_gate.stabilize_trucks }
+	has_fuel > constant:natural_disaster_cost_gate.stabilize_fuel
+	has_stability > constant:natural_disaster_cost_gate_fixed.stabilize_stability
+	OR = {
+		AND = {
+			FROM = { natural_disaster_state_uses_convoy_recovery_route = yes }
+			has_equipment = { convoy_1 > constant:natural_disaster_cost_gate.stabilize_convoys }
+		}
+		AND = {
+			FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } }
+			has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.stabilize_trains }
+		}
+	}
 }
 
 # Country-scope physical work packages for the seven visible chain objectives.
@@ -541,21 +1081,30 @@ natural_disaster_can_pay_chain_tsunami = {
 	has_equipment = { motorized_equipment_1 > constant:natural_disaster_cost_gate.rescue_trucks }
 	has_equipment = { convoy_1 > constant:natural_disaster_cost_gate.warning_convoys }
 	has_fuel > constant:natural_disaster_cost_gate.rescue_fuel
+	has_stability > constant:natural_disaster_cost_gate_fixed.rescue_stability
 }
 
 natural_disaster_can_pay_chain_disease = {
 	has_manpower > constant:natural_disaster_cost_gate.rescue_manpower
 	has_equipment = { support_equipment_1 > constant:natural_disaster_cost_gate.rescue_support_equipment }
 	has_equipment = { motorized_equipment_1 > constant:natural_disaster_cost_gate.rescue_trucks }
+	has_stability > constant:natural_disaster_cost_gate_fixed.rescue_stability
 }
 
 natural_disaster_can_pay_chain_famine = {
 	has_manpower > constant:natural_disaster_cost_gate.warning_manpower
 	has_equipment = { support_equipment_1 > constant:natural_disaster_cost_gate.stabilize_support_equipment }
 	OR = {
-		has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.stabilize_trains }
-		has_equipment = { convoy_1 > constant:natural_disaster_cost_gate.stabilize_convoys }
+		AND = {
+			FROM = { natural_disaster_state_uses_convoy_recovery_route = yes }
+			has_equipment = { convoy_1 > constant:natural_disaster_cost_gate.stabilize_convoys }
+		}
+		AND = {
+			FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } }
+			has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.stabilize_trains }
+		}
 	}
+	has_stability > constant:natural_disaster_cost_gate_fixed.stabilize_stability
 }
 
 natural_disaster_can_pay_chain_wildfire = {
@@ -563,11 +1112,11 @@ natural_disaster_can_pay_chain_wildfire = {
 	has_equipment = { support_equipment_1 > constant:natural_disaster_cost_gate.rescue_support_equipment }
 	has_equipment = { motorized_equipment_1 > constant:natural_disaster_cost_gate.rescue_trucks }
 	has_fuel > constant:natural_disaster_cost_gate.rescue_fuel
+	has_stability > constant:natural_disaster_cost_gate_fixed.rescue_stability
 }
 
 natural_disaster_can_pay_chain_supply = {
-	natural_disaster_can_pay_stabilization = yes
-	has_fuel > constant:natural_disaster_cost_gate.stabilize_fuel
+	natural_disaster_can_pay_stabilization_routed = yes
 }
 
 natural_disaster_can_pay_chain_lahar = {
@@ -575,12 +1124,14 @@ natural_disaster_can_pay_chain_lahar = {
 	has_equipment = { motorized_equipment_1 > constant:natural_disaster_cost_gate.rescue_trucks }
 	has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.warning_trains }
 	has_fuel > constant:natural_disaster_cost_gate.rescue_fuel
+	has_stability > constant:natural_disaster_cost_gate_fixed.rescue_stability
 }
 
 natural_disaster_can_pay_chain_aftershock = {
 	has_equipment = { support_equipment_1 > constant:natural_disaster_cost_gate.stabilize_support_equipment }
 	has_equipment = { motorized_equipment_1 > constant:natural_disaster_cost_gate.stabilize_trucks }
 	has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.stabilize_trains }
+	has_stability > constant:natural_disaster_cost_gate_fixed.stabilize_stability
 }
 
 natural_disaster_can_pay_reconstruction = {
@@ -593,12 +1144,101 @@ natural_disaster_can_pay_reconstruction = {
 	has_stability > constant:natural_disaster_cost_gate_fixed.reconstruct_stability
 }
 
+natural_disaster_can_pay_reconstruction_routed = {
+	has_equipment = { support_equipment_1 > constant:natural_disaster_cost_gate.reconstruct_support_equipment }
+	has_equipment = { motorized_equipment_1 > constant:natural_disaster_cost_gate.reconstruct_trucks }
+	has_fuel > constant:natural_disaster_cost_gate.reconstruct_fuel
+	has_stability > constant:natural_disaster_cost_gate_fixed.reconstruct_stability
+	OR = {
+		AND = {
+			FROM = { natural_disaster_state_uses_convoy_recovery_route = yes }
+			has_equipment = { convoy_1 > constant:natural_disaster_cost_gate.reconstruct_convoys }
+		}
+		AND = {
+			FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } }
+			has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.reconstruct_trains }
+		}
+	}
+}
+
 natural_disaster_can_offer_foreign_relief = {
 	has_manpower > constant:natural_disaster_cost_gate.rescue_manpower
 	has_equipment = { support_equipment_1 > constant:natural_disaster_cost_gate.foreign_support_equipment }
 	has_equipment = { motorized_equipment_1 > constant:natural_disaster_cost_gate.foreign_trucks }
 	has_equipment = { convoy_1 > constant:natural_disaster_cost_gate.foreign_convoys }
+	has_stability > constant:natural_disaster_cost_gate_fixed.foreign_relief_stability
+	has_war_support > constant:natural_disaster_cost_gate_fixed.foreign_relief_war_support
 	NOT = { has_country_flag = natural_disaster_outbound_relief_active }
+}
+
+natural_disaster_can_begin_foreign_relief = {
+	has_stability > constant:natural_disaster_cost_gate_fixed.foreign_relief_stability
+	has_war_support > constant:natural_disaster_cost_gate_fixed.foreign_relief_war_support
+	NOT = { has_country_flag = natural_disaster_outbound_relief_active }
+}
+
+natural_disaster_can_offer_neighbor_relief = {
+	natural_disaster_can_begin_foreign_relief = yes
+	has_manpower > constant:natural_disaster_cost_gate.rescue_manpower
+	has_equipment = { support_equipment_1 > constant:natural_disaster_cost_gate.foreign_support_equipment }
+	has_equipment = { motorized_equipment_1 > constant:natural_disaster_cost_gate.foreign_trucks }
+	has_equipment = { convoy_1 > constant:natural_disaster_cost_gate.foreign_convoys }
+	has_fuel > constant:natural_disaster_cost_gate.foreign_fuel
+}
+
+natural_disaster_can_offer_port_lifeline = {
+	natural_disaster_can_begin_foreign_relief = yes
+	OR = {
+		is_faction_leader = yes
+		any_owned_state = { naval_base > constant:natural_disaster_threshold.strategic_naval_base }
+	}
+	has_manpower > constant:natural_disaster_cost_gate.foreign_port_manpower
+	has_equipment = { convoy_1 > constant:natural_disaster_cost_gate.foreign_port_convoys }
+	has_fuel > constant:natural_disaster_cost_gate.foreign_port_fuel
+}
+
+natural_disaster_can_offer_engineer_relief = {
+	natural_disaster_can_begin_foreign_relief = yes
+	OR = {
+		is_major = yes
+		is_faction_leader = yes
+		num_of_factories > constant:natural_disaster_threshold.relief_industrial_factory_count
+	}
+	has_equipment = { support_equipment_1 > constant:natural_disaster_cost_gate.foreign_engineer_support_equipment }
+	has_equipment = { motorized_equipment_1 > constant:natural_disaster_cost_gate.foreign_engineer_trucks }
+	has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.foreign_engineer_trains }
+	has_fuel > constant:natural_disaster_cost_gate.foreign_engineer_fuel
+}
+
+natural_disaster_can_offer_medical_relief = {
+	natural_disaster_can_begin_foreign_relief = yes
+	OR = {
+		is_major = yes
+		has_government = democratic
+		has_government = communism
+	}
+	has_manpower > constant:natural_disaster_cost_gate.foreign_medical_manpower
+	has_equipment = { support_equipment_1 > constant:natural_disaster_cost_gate.foreign_medical_support_equipment }
+	has_equipment = { motorized_equipment_1 > constant:natural_disaster_cost_gate.foreign_medical_trucks }
+	has_fuel > constant:natural_disaster_cost_gate.foreign_medical_fuel
+}
+
+natural_disaster_can_route_inbound_relief = {
+	has_variable = natural_disaster_inbound_relief_state
+	has_manpower > constant:natural_disaster_cost_gate.warning_manpower
+	has_fuel > constant:natural_disaster_cost_gate.warning_fuel
+	has_stability > constant:natural_disaster_cost_gate_fixed.warning_stability
+	has_war_support > constant:natural_disaster_cost_gate_fixed.foreign_relief_war_support
+	OR = {
+		AND = {
+			has_country_flag = natural_disaster_inbound_relief_route_convoy
+			has_equipment = { convoy_1 > constant:natural_disaster_cost_gate.warning_convoys }
+		}
+		AND = {
+			has_country_flag = natural_disaster_inbound_relief_route_rail
+			has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.warning_trains }
+		}
+	}
 }
 
 natural_disaster_warning_action_available = {
@@ -618,16 +1258,79 @@ natural_disaster_state_matches_priority_phase = {
 			check_variable = { natural_disaster_priority_phase = constant:natural_disaster_phase.early_rescue }
 			check_variable = { natural_disaster_phase = constant:natural_disaster_phase.early_rescue }
 			NOT = { natural_disaster_state_has_rescue_slot = yes }
+			check_variable = { natural_disaster_rescue_score < constant:natural_disaster_aftermath.rescue_success_score }
+			NOT = { has_state_flag = natural_disaster_phase_partial }
+			NOT = { has_state_flag = natural_disaster_phase_failed }
 		}
 		AND = {
 			check_variable = { natural_disaster_priority_phase = constant:natural_disaster_phase.middle_stabilization }
 			check_variable = { natural_disaster_phase = constant:natural_disaster_phase.middle_stabilization }
 			NOT = { natural_disaster_state_has_stabilization_slot = yes }
+			check_variable = { natural_disaster_stabilization_score < constant:natural_disaster_aftermath.stabilization_success_score }
+			NOT = { has_state_flag = natural_disaster_phase_partial }
+			NOT = { has_state_flag = natural_disaster_phase_failed }
 		}
 		AND = {
 			check_variable = { natural_disaster_priority_phase = constant:natural_disaster_phase.late_reconstruction }
 			check_variable = { natural_disaster_phase = constant:natural_disaster_phase.late_reconstruction }
 			NOT = { natural_disaster_state_has_reconstruction_slot = yes }
+			check_variable = { natural_disaster_reconstruction_score < constant:natural_disaster_aftermath.reconstruction_success_score }
+			NOT = { has_state_flag = natural_disaster_phase_partial }
+			NOT = { has_state_flag = natural_disaster_phase_failed }
+		}
+	}
+}
+
+# State scope. Uses the same phase eligibility as the normal priority selector,
+# but narrows the candidate pool to severe, catastrophic, and abnormal cards.
+natural_disaster_state_matches_severe_reservation_phase = {
+	check_variable = {
+		var = natural_disaster_severity
+		value = constant:natural_disaster_severity.severe
+		compare = greater_than_or_equals
+	}
+	natural_disaster_state_matches_priority_phase = yes
+}
+
+# Country scope. A phase needs at most one protected severe slot; remaining
+# capacity continues to use the ordinary priority order.
+natural_disaster_country_has_severe_reserved_slot_for_phase = {
+	OR = {
+		AND = {
+			check_variable = { natural_disaster_priority_phase = constant:natural_disaster_phase.early_rescue }
+			any_controlled_state = {
+				check_variable = {
+					var = natural_disaster_severity
+					value = constant:natural_disaster_severity.severe
+					compare = greater_than_or_equals
+				}
+				check_variable = { natural_disaster_phase = constant:natural_disaster_phase.early_rescue }
+				natural_disaster_state_has_rescue_slot = yes
+			}
+		}
+		AND = {
+			check_variable = { natural_disaster_priority_phase = constant:natural_disaster_phase.middle_stabilization }
+			any_controlled_state = {
+				check_variable = {
+					var = natural_disaster_severity
+					value = constant:natural_disaster_severity.severe
+					compare = greater_than_or_equals
+				}
+				check_variable = { natural_disaster_phase = constant:natural_disaster_phase.middle_stabilization }
+				natural_disaster_state_has_stabilization_slot = yes
+			}
+		}
+		AND = {
+			check_variable = { natural_disaster_priority_phase = constant:natural_disaster_phase.late_reconstruction }
+			any_controlled_state = {
+				check_variable = {
+					var = natural_disaster_severity
+					value = constant:natural_disaster_severity.severe
+					compare = greater_than_or_equals
+				}
+				check_variable = { natural_disaster_phase = constant:natural_disaster_phase.late_reconstruction }
+				natural_disaster_state_has_reconstruction_slot = yes
+			}
 		}
 	}
 }
@@ -644,7 +1347,6 @@ natural_disaster_rescue_action_available = {
 		check_variable = { var = natural_disaster_rescue_state_3 value = FROM compare = equals }
 		check_variable = { var = natural_disaster_rescue_state_4 value = FROM compare = equals }
 	}
-	natural_disaster_can_pay_rescue = yes
 }
 
 natural_disaster_stabilization_action_available = {
@@ -658,7 +1360,6 @@ natural_disaster_stabilization_action_available = {
 		check_variable = { var = natural_disaster_stabilization_state_2 value = FROM compare = equals }
 		check_variable = { var = natural_disaster_stabilization_state_3 value = FROM compare = equals }
 	}
-	natural_disaster_can_pay_stabilization = yes
 }
 
 natural_disaster_reconstruction_action_available = {
@@ -672,5 +1373,4 @@ natural_disaster_reconstruction_action_available = {
 		check_variable = { var = natural_disaster_reconstruction_state_2 value = FROM compare = equals }
 		check_variable = { var = natural_disaster_reconstruction_state_3 value = FROM compare = equals }
 	}
-	natural_disaster_can_pay_reconstruction = yes
 }

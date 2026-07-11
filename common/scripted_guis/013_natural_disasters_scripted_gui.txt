@@ -20,14 +20,13 @@ scripted_gui = {
 			}
 		}
 
-		effects = {
+			effects = {
 			natural_disaster_gui_close_click = {
 				clr_country_flag = natural_disaster_abnormal_map_open
 				clr_country_flag = natural_disaster_abnormal_history_view
 			}
 			natural_disaster_gui_return_click = {
-				clr_country_flag = natural_disaster_abnormal_map_open
-				clr_country_flag = natural_disaster_abnormal_history_view
+				natural_disaster_gui_return_to_selected_aftermath = yes
 			}
 			natural_disaster_gui_refresh_click = {
 				natural_disaster_rebuild_abnormal_gui_view = yes
@@ -39,11 +38,37 @@ scripted_gui = {
 				}
 				else = { set_country_flag = natural_disaster_animations_disabled }
 			}
-			natural_disaster_gui_card_1_click = { set_variable = { natural_disaster_gui_selected_index = 0 } }
-			natural_disaster_gui_card_2_click = { set_variable = { natural_disaster_gui_selected_index = 1 } }
-			natural_disaster_gui_card_3_click = { set_variable = { natural_disaster_gui_selected_index = 2 } }
-			natural_disaster_gui_card_4_click = { set_variable = { natural_disaster_gui_selected_index = 3 } }
-			natural_disaster_gui_card_5_click = { set_variable = { natural_disaster_gui_selected_index = 4 } }
+			natural_disaster_gui_previous_path_click = {
+				natural_disaster_gui_select_previous_path_segment = yes
+			}
+			natural_disaster_gui_locate_state_click = {
+				natural_disaster_gui_locate_selected_state = yes
+			}
+			natural_disaster_gui_next_path_click = {
+				natural_disaster_gui_select_next_path_segment = yes
+			}
+			natural_disaster_gui_previous_sequence_click = {
+				natural_disaster_gui_select_previous_sequence = yes
+			}
+			natural_disaster_gui_next_sequence_click = {
+				natural_disaster_gui_select_next_sequence = yes
+			}
+			natural_disaster_gui_card_1_click = { set_variable = { natural_disaster_gui_selected_index = 0 } set_variable = { natural_disaster_gui_selected_milestone = 0 } }
+			natural_disaster_gui_card_2_click = { set_variable = { natural_disaster_gui_selected_index = 1 } set_variable = { natural_disaster_gui_selected_milestone = 0 } }
+			natural_disaster_gui_card_3_click = { set_variable = { natural_disaster_gui_selected_index = 2 } set_variable = { natural_disaster_gui_selected_milestone = 0 } }
+			natural_disaster_gui_card_4_click = { set_variable = { natural_disaster_gui_selected_index = 3 } set_variable = { natural_disaster_gui_selected_milestone = 0 } }
+			natural_disaster_gui_card_5_click = { set_variable = { natural_disaster_gui_selected_index = 4 } set_variable = { natural_disaster_gui_selected_milestone = 0 } }
+			natural_disaster_gui_marker_1_click = { set_variable = { natural_disaster_gui_selected_index = 0 } set_variable = { natural_disaster_gui_selected_milestone = 0 } }
+			natural_disaster_gui_marker_2_click = { set_variable = { natural_disaster_gui_selected_index = 1 } set_variable = { natural_disaster_gui_selected_milestone = 0 } }
+			natural_disaster_gui_marker_3_click = { set_variable = { natural_disaster_gui_selected_index = 2 } set_variable = { natural_disaster_gui_selected_milestone = 0 } }
+			natural_disaster_gui_marker_4_click = { set_variable = { natural_disaster_gui_selected_index = 3 } set_variable = { natural_disaster_gui_selected_milestone = 0 } }
+			natural_disaster_gui_marker_5_click = { set_variable = { natural_disaster_gui_selected_index = 4 } set_variable = { natural_disaster_gui_selected_milestone = 0 } }
+			natural_disaster_gui_milestone_warning_click = { set_variable = { natural_disaster_gui_selected_milestone = 1 } }
+			natural_disaster_gui_milestone_schedule_click = { set_variable = { natural_disaster_gui_selected_milestone = 2 } }
+			natural_disaster_gui_milestone_impact_click = { set_variable = { natural_disaster_gui_selected_milestone = 3 } }
+			natural_disaster_gui_milestone_report_click = { set_variable = { natural_disaster_gui_selected_milestone = 4 } }
+			natural_disaster_gui_milestone_followup_click = { set_variable = { natural_disaster_gui_selected_milestone = 5 } }
+			natural_disaster_gui_milestone_reassessment_click = { set_variable = { natural_disaster_gui_selected_milestone = 6 } }
 		}
 
 		triggers = {
@@ -52,12 +77,191 @@ scripted_gui = {
 			natural_disaster_gui_card_3_visible = { check_variable = { natural_disaster_gui_state_entries^num > 2 } }
 			natural_disaster_gui_card_4_visible = { check_variable = { natural_disaster_gui_state_entries^num > 3 } }
 			natural_disaster_gui_card_5_visible = { check_variable = { natural_disaster_gui_state_entries^num > 4 } }
+			natural_disaster_gui_previous_sequence_visible = { check_variable = { natural_disaster_gui_sequence_entries^num > 1 } }
+			natural_disaster_gui_previous_sequence_click_enabled = { check_variable = { natural_disaster_gui_sequence_entries^num > 1 } }
+			natural_disaster_gui_next_sequence_visible = { check_variable = { natural_disaster_gui_sequence_entries^num > 1 } }
+			natural_disaster_gui_next_sequence_click_enabled = { check_variable = { natural_disaster_gui_sequence_entries^num > 1 } }
+			natural_disaster_gui_marker_1_visible = { check_variable = { natural_disaster_gui_state_entries^num > 0 } }
+			natural_disaster_gui_milestone_warning_visible = {
+				natural_disaster_gui_selected_record_exists = yes
+				OR = {
+					check_variable = { natural_disaster_gui_warning_protection_entries^natural_disaster_gui_selected_index > constant:natural_disaster_warning_protection.none }
+					check_variable = { natural_disaster_gui_warning_outcome_entries^natural_disaster_gui_selected_index > 0 }
+					check_variable = { natural_disaster_gui_record_status_entries^natural_disaster_gui_selected_index = constant:natural_disaster_gui_record_status.warning_scheduled }
+					check_variable = { natural_disaster_gui_record_status_entries^natural_disaster_gui_selected_index = constant:natural_disaster_gui_record_status.warning_active }
+				}
+			}
+			natural_disaster_gui_milestone_schedule_visible = {
+				natural_disaster_gui_selected_record_exists = yes
+				check_variable = { natural_disaster_gui_schedule_date_entries^natural_disaster_gui_selected_index > 0 }
+			}
+			natural_disaster_gui_milestone_impact_visible = {
+				natural_disaster_gui_selected_record_exists = yes
+				check_variable = { natural_disaster_gui_impact_date_entries^natural_disaster_gui_selected_index > 0 }
+			}
+			natural_disaster_gui_milestone_report_visible = {
+				natural_disaster_gui_selected_record_exists = yes
+				check_variable = { natural_disaster_gui_report_date_entries^natural_disaster_gui_selected_index > 0 }
+			}
+			natural_disaster_gui_milestone_followup_visible = {
+				natural_disaster_gui_selected_record_exists = yes
+				check_variable = { natural_disaster_gui_chain_due_date_entries^natural_disaster_gui_selected_index > 0 }
+			}
+			natural_disaster_gui_milestone_reassessment_visible = {
+				natural_disaster_gui_selected_record_exists = yes
+				check_variable = { natural_disaster_gui_reassessment_date_entries^natural_disaster_gui_selected_index > 0 }
+			}
+			natural_disaster_gui_marker_1_warning_animated_visible = {
+				check_variable = { natural_disaster_gui_state_entries^num > 0 }
+				NOT = { has_country_flag = natural_disaster_animations_disabled }
+				OR = {
+					check_variable = { natural_disaster_gui_record_status_entries^0 = constant:natural_disaster_gui_record_status.warning_scheduled }
+					check_variable = { natural_disaster_gui_record_status_entries^0 = constant:natural_disaster_gui_record_status.warning_active }
+				}
+			}
+			natural_disaster_gui_marker_1_warning_static_visible = {
+				check_variable = { natural_disaster_gui_state_entries^num > 0 }
+				has_country_flag = natural_disaster_animations_disabled
+				OR = {
+					check_variable = { natural_disaster_gui_record_status_entries^0 = constant:natural_disaster_gui_record_status.warning_scheduled }
+					check_variable = { natural_disaster_gui_record_status_entries^0 = constant:natural_disaster_gui_record_status.warning_active }
+				}
+			}
+			natural_disaster_gui_marker_1_next_visible = {
+				check_variable = { natural_disaster_gui_state_entries^num > 0 }
+				check_variable = { natural_disaster_gui_record_status_entries^0 = constant:natural_disaster_gui_record_status.impact_scheduled }
+			}
+			natural_disaster_gui_marker_1_impact_visible = {
+				check_variable = { natural_disaster_gui_state_entries^num > 0 }
+				OR = {
+					check_variable = { natural_disaster_gui_record_status_entries^0 = constant:natural_disaster_gui_record_status.recovery }
+					check_variable = { natural_disaster_gui_record_status_entries^0 = constant:natural_disaster_gui_record_status.history }
+				}
+			}
+			natural_disaster_gui_marker_2_visible = { check_variable = { natural_disaster_gui_state_entries^num > 1 } }
+			natural_disaster_gui_marker_2_warning_animated_visible = {
+				check_variable = { natural_disaster_gui_state_entries^num > 1 }
+				NOT = { has_country_flag = natural_disaster_animations_disabled }
+				OR = {
+					check_variable = { natural_disaster_gui_record_status_entries^1 = constant:natural_disaster_gui_record_status.warning_scheduled }
+					check_variable = { natural_disaster_gui_record_status_entries^1 = constant:natural_disaster_gui_record_status.warning_active }
+				}
+			}
+			natural_disaster_gui_marker_2_warning_static_visible = {
+				check_variable = { natural_disaster_gui_state_entries^num > 1 }
+				has_country_flag = natural_disaster_animations_disabled
+				OR = {
+					check_variable = { natural_disaster_gui_record_status_entries^1 = constant:natural_disaster_gui_record_status.warning_scheduled }
+					check_variable = { natural_disaster_gui_record_status_entries^1 = constant:natural_disaster_gui_record_status.warning_active }
+				}
+			}
+			natural_disaster_gui_marker_2_next_visible = {
+				check_variable = { natural_disaster_gui_state_entries^num > 1 }
+				check_variable = { natural_disaster_gui_record_status_entries^1 = constant:natural_disaster_gui_record_status.impact_scheduled }
+			}
+			natural_disaster_gui_marker_2_impact_visible = {
+				check_variable = { natural_disaster_gui_state_entries^num > 1 }
+				OR = {
+					check_variable = { natural_disaster_gui_record_status_entries^1 = constant:natural_disaster_gui_record_status.recovery }
+					check_variable = { natural_disaster_gui_record_status_entries^1 = constant:natural_disaster_gui_record_status.history }
+				}
+			}
+			natural_disaster_gui_marker_3_visible = { check_variable = { natural_disaster_gui_state_entries^num > 2 } }
+			natural_disaster_gui_marker_3_warning_animated_visible = {
+				check_variable = { natural_disaster_gui_state_entries^num > 2 }
+				NOT = { has_country_flag = natural_disaster_animations_disabled }
+				OR = {
+					check_variable = { natural_disaster_gui_record_status_entries^2 = constant:natural_disaster_gui_record_status.warning_scheduled }
+					check_variable = { natural_disaster_gui_record_status_entries^2 = constant:natural_disaster_gui_record_status.warning_active }
+				}
+			}
+			natural_disaster_gui_marker_3_warning_static_visible = {
+				check_variable = { natural_disaster_gui_state_entries^num > 2 }
+				has_country_flag = natural_disaster_animations_disabled
+				OR = {
+					check_variable = { natural_disaster_gui_record_status_entries^2 = constant:natural_disaster_gui_record_status.warning_scheduled }
+					check_variable = { natural_disaster_gui_record_status_entries^2 = constant:natural_disaster_gui_record_status.warning_active }
+				}
+			}
+			natural_disaster_gui_marker_3_next_visible = {
+				check_variable = { natural_disaster_gui_state_entries^num > 2 }
+				check_variable = { natural_disaster_gui_record_status_entries^2 = constant:natural_disaster_gui_record_status.impact_scheduled }
+			}
+			natural_disaster_gui_marker_3_impact_visible = {
+				check_variable = { natural_disaster_gui_state_entries^num > 2 }
+				OR = {
+					check_variable = { natural_disaster_gui_record_status_entries^2 = constant:natural_disaster_gui_record_status.recovery }
+					check_variable = { natural_disaster_gui_record_status_entries^2 = constant:natural_disaster_gui_record_status.history }
+				}
+			}
+			natural_disaster_gui_marker_4_visible = { check_variable = { natural_disaster_gui_state_entries^num > 3 } }
+			natural_disaster_gui_marker_4_warning_animated_visible = {
+				check_variable = { natural_disaster_gui_state_entries^num > 3 }
+				NOT = { has_country_flag = natural_disaster_animations_disabled }
+				OR = {
+					check_variable = { natural_disaster_gui_record_status_entries^3 = constant:natural_disaster_gui_record_status.warning_scheduled }
+					check_variable = { natural_disaster_gui_record_status_entries^3 = constant:natural_disaster_gui_record_status.warning_active }
+				}
+			}
+			natural_disaster_gui_marker_4_warning_static_visible = {
+				check_variable = { natural_disaster_gui_state_entries^num > 3 }
+				has_country_flag = natural_disaster_animations_disabled
+				OR = {
+					check_variable = { natural_disaster_gui_record_status_entries^3 = constant:natural_disaster_gui_record_status.warning_scheduled }
+					check_variable = { natural_disaster_gui_record_status_entries^3 = constant:natural_disaster_gui_record_status.warning_active }
+				}
+			}
+			natural_disaster_gui_marker_4_next_visible = {
+				check_variable = { natural_disaster_gui_state_entries^num > 3 }
+				check_variable = { natural_disaster_gui_record_status_entries^3 = constant:natural_disaster_gui_record_status.impact_scheduled }
+			}
+			natural_disaster_gui_marker_4_impact_visible = {
+				check_variable = { natural_disaster_gui_state_entries^num > 3 }
+				OR = {
+					check_variable = { natural_disaster_gui_record_status_entries^3 = constant:natural_disaster_gui_record_status.recovery }
+					check_variable = { natural_disaster_gui_record_status_entries^3 = constant:natural_disaster_gui_record_status.history }
+				}
+			}
+			natural_disaster_gui_marker_5_visible = { check_variable = { natural_disaster_gui_state_entries^num > 4 } }
+			natural_disaster_gui_marker_5_warning_animated_visible = {
+				check_variable = { natural_disaster_gui_state_entries^num > 4 }
+				NOT = { has_country_flag = natural_disaster_animations_disabled }
+				OR = {
+					check_variable = { natural_disaster_gui_record_status_entries^4 = constant:natural_disaster_gui_record_status.warning_scheduled }
+					check_variable = { natural_disaster_gui_record_status_entries^4 = constant:natural_disaster_gui_record_status.warning_active }
+				}
+			}
+			natural_disaster_gui_marker_5_warning_static_visible = {
+				check_variable = { natural_disaster_gui_state_entries^num > 4 }
+				has_country_flag = natural_disaster_animations_disabled
+				OR = {
+					check_variable = { natural_disaster_gui_record_status_entries^4 = constant:natural_disaster_gui_record_status.warning_scheduled }
+					check_variable = { natural_disaster_gui_record_status_entries^4 = constant:natural_disaster_gui_record_status.warning_active }
+				}
+			}
+			natural_disaster_gui_marker_5_next_visible = {
+				check_variable = { natural_disaster_gui_state_entries^num > 4 }
+				check_variable = { natural_disaster_gui_record_status_entries^4 = constant:natural_disaster_gui_record_status.impact_scheduled }
+			}
+			natural_disaster_gui_marker_5_impact_visible = {
+				check_variable = { natural_disaster_gui_state_entries^num > 4 }
+				OR = {
+					check_variable = { natural_disaster_gui_record_status_entries^4 = constant:natural_disaster_gui_record_status.recovery }
+					check_variable = { natural_disaster_gui_record_status_entries^4 = constant:natural_disaster_gui_record_status.history }
+				}
+			}
 			natural_disaster_gui_detail_frame_visible = { natural_disaster_gui_selected_record_exists = yes }
 			natural_disaster_gui_selected_title_visible = { natural_disaster_gui_selected_record_exists = yes }
 			natural_disaster_gui_selected_details_visible = { natural_disaster_gui_selected_record_exists = yes }
 			natural_disaster_gui_recovery_progress_frame_visible = { natural_disaster_gui_selected_record_exists = yes }
 			natural_disaster_gui_recovery_progress_text_visible = { natural_disaster_gui_selected_record_exists = yes }
 			natural_disaster_gui_timeline_visible = { natural_disaster_gui_selected_record_exists = yes }
+			natural_disaster_gui_previous_path_visible = { natural_disaster_gui_selected_record_exists = yes }
+			natural_disaster_gui_previous_path_click_enabled = { natural_disaster_gui_selected_record_exists = yes }
+			natural_disaster_gui_locate_state_visible = { natural_disaster_gui_selected_record_exists = yes }
+			natural_disaster_gui_locate_state_click_enabled = { natural_disaster_gui_selected_record_exists = yes }
+			natural_disaster_gui_next_path_visible = { natural_disaster_gui_selected_record_exists = yes }
+			natural_disaster_gui_next_path_click_enabled = { natural_disaster_gui_selected_record_exists = yes }
 
 			natural_disaster_gui_damaged_panel_visible = {
 				natural_disaster_gui_selected_record_exists = yes
@@ -98,36 +302,6 @@ scripted_gui = {
 					check_variable = { natural_disaster_gui_record_status_entries^natural_disaster_gui_selected_index = constant:natural_disaster_gui_record_status.impact_scheduled }
 					check_variable = { natural_disaster_gui_record_status_entries^natural_disaster_gui_selected_index = constant:natural_disaster_gui_record_status.recovery }
 				}
-			}
-			natural_disaster_gui_next_hit_animated_visible = {
-				natural_disaster_gui_selected_record_exists = yes
-				NOT = { has_country_flag = natural_disaster_animations_disabled }
-				OR = {
-					check_variable = { natural_disaster_gui_record_status_entries^natural_disaster_gui_selected_index = constant:natural_disaster_gui_record_status.warning_scheduled }
-					check_variable = { natural_disaster_gui_record_status_entries^natural_disaster_gui_selected_index = constant:natural_disaster_gui_record_status.warning_active }
-					check_variable = { natural_disaster_gui_record_status_entries^natural_disaster_gui_selected_index = constant:natural_disaster_gui_record_status.impact_scheduled }
-				}
-			}
-			natural_disaster_gui_next_hit_static_visible = {
-				natural_disaster_gui_selected_record_exists = yes
-				has_country_flag = natural_disaster_animations_disabled
-				OR = {
-					check_variable = { natural_disaster_gui_record_status_entries^natural_disaster_gui_selected_index = constant:natural_disaster_gui_record_status.warning_scheduled }
-					check_variable = { natural_disaster_gui_record_status_entries^natural_disaster_gui_selected_index = constant:natural_disaster_gui_record_status.warning_active }
-					check_variable = { natural_disaster_gui_record_status_entries^natural_disaster_gui_selected_index = constant:natural_disaster_gui_record_status.impact_scheduled }
-				}
-			}
-			natural_disaster_gui_impact_marker_visible = {
-				natural_disaster_gui_selected_record_exists = yes
-				check_variable = { natural_disaster_gui_record_status_entries^natural_disaster_gui_selected_index = constant:natural_disaster_gui_record_status.recovery }
-			}
-			natural_disaster_gui_chain_marker_visible = {
-				natural_disaster_gui_selected_record_exists = yes
-				check_variable = { natural_disaster_gui_chain_risk_entries^natural_disaster_gui_selected_index > constant:natural_disaster_chain.none }
-			}
-			natural_disaster_gui_relief_marker_visible = {
-				natural_disaster_gui_selected_record_exists = yes
-				check_variable = { natural_disaster_gui_relief_status_entries^natural_disaster_gui_selected_index > 0 }
 			}
 			natural_disaster_gui_recovery_progress_fill_1_visible = {
 				natural_disaster_gui_selected_record_exists = yes

@@ -15,6 +15,7 @@ natural_disaster_event = {
 
 	id = 13
 	evolution_type = 13
+	baseline_stage = 0
 	evolution_i_stage = 1
 	evolution_ii_stage = 2
 	evolution_iii_stage = 3
@@ -66,6 +67,7 @@ natural_disaster_call_reject_reason = {
 	caller_cooldown_missing = 21
 	caller_target_illegitimate = 22
 	invalid_scenario = 23
+	invalid_evolution_override = 24
 }
 
 natural_disaster_job_type = {
@@ -168,6 +170,58 @@ natural_disaster_target_mode = {
 	nearby_enemy = 6
 	dense_state = 7
 	caller_provided = 8
+}
+
+# Physical path domains. Cyclone and tsunami routes lock one basin after the
+# first resolved state; tornado and non-basin wind corridors use their own
+# domain markers.
+natural_disaster_path_basin = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	north_atlantic = 1
+	northeast_pacific = 2
+	western_north_pacific = 3
+	north_indian = 4
+	southwest_indian = 5
+	australian_south_pacific = 6
+	pacific_tsunami = 11
+	indian_tsunami = 12
+	atlantic_tsunami = 13
+	mediterranean_tsunami = 14
+	black_sea_tsunami = 15
+	tornado = 20
+	windstorm = 21
+}
+
+natural_disaster_origin_medium = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	land_impact = 1
+	atmospheric_fragmentation = 2
+	ocean_impact = 3
+}
+
+natural_disaster_skyfall_variant = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	local_land_impact = 1
+	severe_land_chain = 2
+	meteor_shower = 3
+	skyfire_chain = 4
+	ocean_impact_chain = 5
+	max = 5
 }
 
 natural_disaster_severity = {
@@ -311,6 +365,73 @@ natural_disaster_chain = {
 	political_shock = 9
 }
 
+# Player-facing causal route chosen for an individual aftermath card. These
+# values preserve the expanded family mini-spec identities while
+# natural_disaster_chain remains the smaller mechanical outcome dispatcher.
+natural_disaster_followup_route = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	aftershock = 1
+	seismic_landslide = 2
+	offshore_tsunami = 3
+	urban_fire = 4
+	waterborne_disease = 5
+	refugee_pressure = 6
+	crop_loss = 7
+	dam_failure_flash_flood = 8
+	storm_surge = 9
+	inland_flood = 10
+	disease = 11
+	supply_collapse = 12
+	wildfire_spread = 13
+	rail_derailment = 14
+	transport_collapse = 15
+	severe_thunderstorm_tail = 16
+	wildfire_line = 17
+	hailstorm = 18
+	flash_flood = 19
+	wildfire_ignition = 20
+	ration_pressure = 21
+	airfield_accident = 22
+	thunderstorm_return = 23
+	extreme_cold_wave = 24
+	refugee_exposure = 25
+	blizzard_followup = 26
+	shelter_disease = 27
+	wildfire = 28
+	drought = 29
+	unrest = 30
+	famine_pressure = 31
+	heat_wave = 32
+	smoke_illness = 33
+	drought_feedback = 34
+	supply_isolation = 35
+	aftershock_damage = 36
+	resource_shutdown = 37
+	flood_renewal = 38
+	ashfall = 39
+	lahar = 40
+	tsunami = 41
+	respiratory_deaths = 42
+	flood = 43
+	naval_disruption = 44
+	coastal_famine = 45
+	port_supply_collapse = 46
+	dust_veil = 47
+	meteor_shower = 48
+	meteor_impact = 49
+	global_aftershocks = 50
+	delayed_tsunami_chain = 51
+	regional_landslides = 52
+	regional_ashfall = 53
+	tornado_outbreak = 54
+	skyfire_hail = 55
+}
+
 natural_disaster_phase = {
 	schema = {
 		any_key = yes
@@ -392,6 +513,8 @@ natural_disaster_sequence = {
 	barrage_high_hits = 14
 	barrage_maximum_hits = 20
 	maximum_caller_hits = 20
+	causal_segment_stride = 25
+	maximum_causal_segment_offset = 500
 }
 
 natural_disaster_call_scale = {
@@ -464,11 +587,14 @@ natural_disaster_threshold = {
 	industry_factory = 2
 	industry_dockyard = 1
 	weak_country_factory_count = 15
+	relief_industrial_factory_count = 39
 	minimum_active_flag_days = 2
 	minimum_chain_delay_days = 2
 	minimum_job_delay_days = 1
+	ocean_proxy_target_lock = 2
 	invalid_array_index = -1
 	resource_presence_amount = 0
+	maximum_strategic_region = 304
 }
 
 natural_disaster_target_weight = {
@@ -744,9 +870,35 @@ natural_disaster_chain_outcome = {
 	aftershock_partial_death = 0.70
 	aftershock_partial_building = 0.60
 	aftershock_partial_disruption = 0.75
+	matched_warning_death = 0.78
+	matched_warning_building = 0.85
+	matched_warning_disruption = 0.72
 	failed_death = 1.20
 	failed_building = 1.20
 	failed_disruption = 1.25
+}
+
+natural_disaster_action_outcome = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	population_death = 0.70
+	population_building = 0.95
+	population_disruption = 0.75
+	transport_death = 0.88
+	transport_building = 0.72
+	transport_disruption = 0.55
+	medical_death = 0.62
+	medical_building = 1.00
+	medical_disruption = 0.65
+	food_death = 0.68
+	food_building = 0.92
+	food_disruption = 0.60
+	inspection_death = 0.90
+	inspection_building = 0.58
+	inspection_disruption = 0.62
 }
 
 natural_disaster_consequence = {
@@ -799,6 +951,17 @@ natural_disaster_cost = {
 	foreign_trucks = 200
 	foreign_convoys = 20
 	foreign_fuel = 5000
+	foreign_port_manpower = 3000
+	foreign_port_convoys = 30
+	foreign_port_fuel = 6500
+	foreign_engineer_support_equipment = 400
+	foreign_engineer_trucks = 160
+	foreign_engineer_trains = 10
+	foreign_engineer_fuel = 3000
+	foreign_medical_manpower = 4000
+	foreign_medical_support_equipment = 350
+	foreign_medical_trucks = 100
+	foreign_medical_fuel = 2000
 }
 
 # Inclusive affordability floors expressed for Clausewitz's strict `>`
@@ -835,6 +998,17 @@ natural_disaster_cost_gate = {
 	foreign_trucks = 199
 	foreign_convoys = 19
 	foreign_fuel = 4999
+	foreign_port_manpower = 2999
+	foreign_port_convoys = 29
+	foreign_port_fuel = 6499
+	foreign_engineer_support_equipment = 399
+	foreign_engineer_trucks = 159
+	foreign_engineer_trains = 9
+	foreign_engineer_fuel = 2999
+	foreign_medical_manpower = 3999
+	foreign_medical_support_equipment = 349
+	foreign_medical_trucks = 99
+	foreign_medical_fuel = 1999
 }
 
 natural_disaster_cost_gate_fixed = {
@@ -844,7 +1018,11 @@ natural_disaster_cost_gate_fixed = {
 	}
 
 	warning_stability = 0.004
+	rescue_stability = 0.009
+	stabilize_stability = 0.014
 	reconstruct_stability = 0.019
+	foreign_relief_stability = 0.009
+	foreign_relief_war_support = 0.009
 }
 
 natural_disaster_cost_fixed = {
@@ -864,6 +1042,133 @@ natural_disaster_cost_fixed = {
 	heavy_construction_burden = 0.10
 	foreign_dependency_consumer_goods = 0.02
 	foreign_dependency_political_power_gain = -0.10
+}
+
+# Severity-scaled warning mobilization costs. Each warning profile consumes a
+# different subset; the tier is read from the exact targeted disaster state.
+natural_disaster_warning_cost = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	local_manpower = 1800
+	severe_manpower = 2500
+	regional_manpower = 4000
+	catastrophic_manpower = 5200
+	abnormal_manpower = 6500
+	local_support = 50
+	severe_support = 75
+	regional_support = 120
+	catastrophic_support = 160
+	abnormal_support = 200
+	local_trucks = 40
+	severe_trucks = 60
+	regional_trucks = 100
+	catastrophic_trucks = 130
+	abnormal_trucks = 160
+	local_trains = 2
+	severe_trains = 3
+	regional_trains = 5
+	catastrophic_trains = 6
+	abnormal_trains = 8
+	local_convoys = 5
+	severe_convoys = 8
+	regional_convoys = 14
+	catastrophic_convoys = 18
+	abnormal_convoys = 22
+	local_fuel = 800
+	severe_fuel = 1200
+	regional_fuel = 2200
+	catastrophic_fuel = 2850
+	abnormal_fuel = 3500
+	local_command_power = 3
+	severe_command_power = 5
+	regional_command_power = 8
+	catastrophic_command_power = 10
+	abnormal_command_power = 12
+	local_civilian_factories = 1
+	severe_civilian_factories = 2
+	regional_civilian_factories = 3
+	catastrophic_civilian_factories = 4
+	abnormal_civilian_factories = 4
+}
+
+natural_disaster_warning_cost_gate = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	local_manpower = 1799
+	severe_manpower = 2499
+	regional_manpower = 3999
+	catastrophic_manpower = 5199
+	abnormal_manpower = 6499
+	local_support = 49
+	severe_support = 74
+	regional_support = 119
+	catastrophic_support = 159
+	abnormal_support = 199
+	local_trucks = 39
+	severe_trucks = 59
+	regional_trucks = 99
+	catastrophic_trucks = 129
+	abnormal_trucks = 159
+	local_trains = 1
+	severe_trains = 2
+	regional_trains = 4
+	catastrophic_trains = 5
+	abnormal_trains = 7
+	local_convoys = 4
+	severe_convoys = 7
+	regional_convoys = 13
+	catastrophic_convoys = 17
+	abnormal_convoys = 21
+	local_fuel = 799
+	severe_fuel = 1199
+	regional_fuel = 2199
+	catastrophic_fuel = 2849
+	abnormal_fuel = 3499
+	local_command_power = 2
+	severe_command_power = 4
+	regional_command_power = 7
+	catastrophic_command_power = 9
+	abnormal_command_power = 11
+	local_civilian_factories = 0
+	severe_civilian_factories = 1
+	regional_civilian_factories = 2
+	catastrophic_civilian_factories = 3
+	abnormal_civilian_factories = 3
+}
+
+natural_disaster_warning_cost_fixed = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	local_stability = -0.0025
+	severe_stability = -0.0050
+	regional_stability = -0.0075
+	catastrophic_stability = -0.0090
+	abnormal_stability = -0.0100
+	local_war_support = -0.0025
+	severe_war_support = -0.0050
+	regional_war_support = -0.0075
+	catastrophic_war_support = -0.0090
+	abnormal_war_support = -0.0100
+	local_stability_gate = 0.0024
+	severe_stability_gate = 0.0049
+	regional_stability_gate = 0.0074
+	catastrophic_stability_gate = 0.0089
+	abnormal_stability_gate = 0.0099
+	local_war_support_gate = 0.0024
+	severe_war_support_gate = 0.0049
+	regional_war_support_gate = 0.0074
+	catastrophic_war_support_gate = 0.0089
+	abnormal_war_support_gate = 0.0099
+	civilian_burden_per_action = 0.01
 }
 
 natural_disaster_scenario_type = {
@@ -905,6 +1210,8 @@ natural_disaster_abnormal = {
 	delayed_tsunami_min_coastal_groups = 2
 	delayed_tsunami_min_segment_index = 1
 	delayed_tsunami_min_severity = 4
+	super_event_min_confirmed_path_segment = 1
+	skyfall_super_event_min_destructive_impacts = 2
 	super_event_visible_days = 14
 	super_event_great_rupture = 67
 	super_event_massive_eruption = 68
@@ -954,6 +1261,9 @@ natural_disaster_priority = {
 	coast_bonus = 1100
 	chain_bonus = 1800
 	variant_match_bonus = 6000
+	presentation_warning_bonus = 30000
+	presentation_abnormal_bonus = 60000
+	chain_due_sentinel = 100000
 }
 
 natural_disaster_resilience = {
@@ -967,6 +1277,10 @@ natural_disaster_resilience = {
 	related_building_mult = 0.64
 	related_disruption_mult = 0.70
 	secondary_death_mult = 0.92
+	partial_transport_damage_mult = 0.92
+	partial_related_death_mult = 0.94
+	partial_related_building_mult = 0.82
+	partial_related_disruption_mult = 0.86
 }
 
 natural_disaster_gui = {

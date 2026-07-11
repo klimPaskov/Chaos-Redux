@@ -2,6 +2,8 @@
 
 > Implementation closure, 2026-07-10: both accepted addendum roles are implemented. Slot 71 is the once-only natural Evolution III reveal, and slot 72 requires a delayed major tsunami arrival with a qualifying origin, at least two coastal country groups, and a large path. Their unique images, audio, quotations, cultural remarks, registrations, and provenance records are complete. Production blockers below describe the pre-implementation research snapshot.
 
+> Asset archive note, 2026-07-11: source/package paths under `docs/assets/013_natural_disasters/` below refer to the committed production archive removed from this working tree by the broader concurrent `docs/assets/` cleanup. The live slot 71-72 DDS, OGG, WAV, registrations, localisation, triggers, and text/audio provenance remain present.
+
 Research date: 2026-07-10
 
 ## Scope and authority
