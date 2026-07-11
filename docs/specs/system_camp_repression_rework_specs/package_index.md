@@ -1,5 +1,17 @@
 # Package Index
 
+Status: accepted design package with final implementation reconciliation on 2026-07-11. The live inventory is 84 player actions, 41 missions, and four Repression Ledger controls. Fifteen static scenario contracts passed code-and-asset trace; engine-runtime scenario execution was not performed in this environment.
+
+Current implementation truth and completion tracking live outside this source package in:
+
+- `../../plans/system_camp_repression_rework_plans/source_of_truth_and_completion_tracker.md`
+- `../../plans/system_camp_repression_rework_plans/completion_report.md`
+- `../../plans/system_camp_repression_rework_plans/scenario_contract_validation_report.md`
+- `../../systems/genocide_crisis_system.md`
+- `../../super_events/system_camp_repression_rework_super_event_research.md`
+
+The source files below remain the accepted design and provenance package. Where a planning label differs from a live identifier, the reconciliation sections in Parts 2, 5, and 7 and the source-of-truth tracker control. Archived pending checkboxes and earlier 81-action snapshots are retained only as dated planning evidence and do not describe the final implementation.
+
 - `README.md`
 - `continuation/continuation_prompt.md`
 - `matrices/country_ai_matrix.md`

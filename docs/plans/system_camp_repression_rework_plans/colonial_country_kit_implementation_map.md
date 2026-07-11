@@ -2,11 +2,26 @@
 
 ## Purpose and status
 
-This is the read-only implementation map for the U.K./Raj, U.S.A., France/Vichy/North Africa, Italy/Libya, and Belgium/Congo tranche of the camp and repression rework. It does not amend the accepted design and it does not evidence implementation. The accepted package remains the source of truth, especially Parts 2, 4, 5, 6, and 7 and the four matrices under `docs/specs/system_camp_repression_rework_specs/`.
+This file now records the live U.K./Raj, U.S.A., France/Vichy/North Africa, Italy, and Belgium/Congo implementation. The original read-only audit is retained below as preimplementation evidence. Statements in that snapshot that call files, values, decisions, missions, assets, or action routing absent are superseded by this section.
 
-The live camp helper files were being assembled in the shared worktree during this audit. The file-and-symbol citations below describe the final snapshot inspected for this report and remain useful while concurrent patches shift line numbers. Every colonial-tranche decision, mission, idea, country value, country display value, country-specific monthly bridge, localisation key, and listed country asset was still absent at that snapshot. The territorial pool helpers, shared registry, shared dismantlement, common constants, and common enemy-control discovery path were present.
+The colonial decision file contains **43 verified player actions** and 19 missions. The final split is U.K./Raj 10, U.S.A. 8, France/Vichy 9, Italy 8, and Belgium/Congo 8. The closing actions are live as `fr_support_refugee_and_rescue_networks` and `bel_negotiate_colonial_strike_settlement`. The exact implemented action IDs are controlled by `common/decisions/camp_repression_colonial_country_decisions.txt` and the source-of-truth tracker. The final decision-and-mission re-audit passed; any lower counts or absent-surface statements retained below are preimplementation history only.
 
-No gameplay, localisation, asset, workbook, focus-tree, or Event 17 file was edited for this report.
+Current implementation files are:
+
+- `common/decisions/camp_repression_colonial_country_decisions.txt`
+- `common/scripted_effects/camp_repression_colonial_country_effects.txt`
+- `common/ideas/camp_repression_colonial_country_ideas.txt`
+- `common/scripted_effects/camp_repression_action_dispatcher_effects.txt`
+- `localisation/english/camp_repression_country_kits_l_english.yml`
+- `interface/camp_repression_rework.gfx`
+
+Subject-controlled state actions are live. Decisions and Ledger buttons use `camp_rework_action_state_id`, and the colonial prepare and restore helpers temporarily adapt `camp_selected_state_id` for existing country payloads. This avoids a world-state targeted decision and preserves a human player's Ledger selection.
+
+The current France pool API is `is_france_camp_legacy_pool_state`, `is_france_north_africa_labor_pool_state`, `is_france_vichy_internment_pool_state`, `is_france_other_colonial_labor_pool_state`, and `is_france_core_fallback_pool_state`.
+
+The current Italy pool API is `is_italy_libya_repression_pool_state`, `is_italy_east_africa_repression_pool_state`, `is_italy_balkan_occupation_pool_state`, `is_italy_colonial_project_pool_state`, and `is_italy_core_fallback_pool_state`. The project pool accepts Libya or East Africa. Italy also has the explicit `ita_authorize_homeland_emergency_detention` and `ita_expand_desert_transport_guard` actions.
+
+The fixed colonial kits cannot inherit the generic restricted-method gate. They require `camp_rework_country_has_explicit_extreme_doctrine_route`, a matching capable stockpile, and a valid responsible country-kit target.
 
 ## Required references consulted
 
@@ -21,7 +36,7 @@ Two engine constraints govern this tranche:
 1. A targeted decision using `state_target = any` evaluates every world state and is explicitly documented as expensive. `any_controlled_state` is the bounded direct-control form, but it does **not** include states controlled by a subject. Subject-administered Raj, Burma, Malaya, and Congo targets therefore need the existing bounded country/subject arrays plus selected-state scripted-GUI dispatch; they must not be exposed by a world-scanning `state_target = any` workaround.
 2. `add_autonomy_ratio` and `add_autonomy_score` execute in the subject country scope. `set_autonomy` executes in the overlord country scope. Every use must first prove the subject relationship. Vanilla precedents are `ENG_viceroy_reduce_autonomy_effect` in `common/scripted_effects/ENG_scripted_effects.txt` and `BEL_requisition_congolese_funds_decision` in `common/decisions/BEL.txt`. Ordinary camp pressure should use guarded `add_autonomy_ratio`; no ordinary decision should silently change a subject's autonomy tier with `set_autonomy`.
 
-## Live shared integration map
+## Superseded preimplementation shared integration map
 
 | Surface | Live evidence | Meaning for this tranche |
 | --- | --- | --- |
@@ -672,7 +687,7 @@ Initialise every Part 2 value in `camp_rework_initialize_country_variables`, cla
 | Country discovery/report events | Add bounded, one-shot court, inspection, liberation, decolonisation, compensation, and reckoning entry points where justified. | No recurring monthly minor-report spam; final event IDs must be recorded in the tracker before code. |
 | `common/national_focus/` | No edit for this tranche. | All 29 Part 5 hooks are country flags only because no bespoke tree exists. |
 
-## Collisions, unsupported assumptions, and blockers
+## Superseded preimplementation collisions, assumptions, and blockers
 
 ### Must be resolved before country implementation can be called complete
 
@@ -718,6 +733,6 @@ Initialise every Part 2 value in `camp_rework_initialize_country_variables`, cla
 6. Run the five Part 7 scenarios plus direct-control/subject-control and loss-of-subject variants. Confirm state owner Deaths, stored responsibility, evidence retention, route caps, AI reform, and category visibility after territorial loss.
 7. Run the decision/mission, country-package, localisation, and event-completion audit routes before any completion claim. The absence of a bespoke focus tree is not an omission if all listed focus interfaces are implemented and reported as flags.
 
-## Completion boundary for this map
+## Historical completion boundary for the original map
 
 This report contains the full accepted ID inventories, the live pool behavior, exact vanilla state/tag/autonomy evidence, required subject and responsibility handling, conditional AI tables and current numeric caps, lifecycle/discovery expectations, focus-hook disposition, localisation key contract, asset IDs, implementation surfaces, and Part 7 scenario outcomes for all five kits. It makes no gameplay simplification and does not treat any missing country content as implemented. The blockers above remain implementation work or explicit design choices for the parent owner.

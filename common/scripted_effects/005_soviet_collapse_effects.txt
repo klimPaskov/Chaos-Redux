@@ -59,82 +59,8 @@ soviet_collapse_clamp_crisis_components = {
 }
 
 soviet_collapse_apply_genocide_gulag_repression_memory = {
-	if = {
-		limit = { NOT = { has_variable = soviet_collapse_gulag_repression_memory } }
-		set_variable = { soviet_collapse_gulag_repression_memory = 0 }
-	}
-	add_to_variable = { soviet_collapse_gulag_repression_memory = constant:genocide_soviet_collapse.memory_gain }
-	if = {
-		limit = { is_soviet_collapse_active = yes }
-		if = {
-			limit = { NOT = { has_variable = union_crisis_suppression_relief } }
-			set_variable = { union_crisis_suppression_relief = 0 }
-		}
-		clamp_variable = {
-			var = union_crisis_suppression_relief
-			min = 0
-			max = constant:camp_rework_soviet.suppression_relief_cap
-		}
-	}
-	if = {
-		limit = {
-			has_variable = soviet_collapse_total_collapse_threat
-			has_variable = soviet_collapse_moscow_authority
-			has_variable = soviet_collapse_military_obedience
-			has_variable = soviet_collapse_republic_confidence
-			has_variable = soviet_collapse_old_movement_pressure
-			has_variable = soviet_collapse_foreign_appetite
-		}
-		add_to_variable = { soviet_collapse_old_movement_pressure = constant:genocide_soviet_collapse.old_movement_grievance_gain }
-		add_to_variable = { soviet_collapse_foreign_appetite = constant:genocide_soviet_collapse.foreign_appetite_gain }
-		if = {
-			limit = {
-				is_soviet_collapse_active = yes
-				NOT = { has_global_flag = soviet_collapse_terminal_collapse }
-				has_variable = union_crisis_suppression_relief
-				check_variable = {
-					var = soviet_collapse_total_collapse_threat
-					value = constant:genocide_soviet_collapse.max_suppression_threat
-					compare = less_than
-				}
-				check_variable = {
-					var = union_crisis_suppression_relief
-					value = constant:camp_rework_soviet.suppression_relief_cap
-					compare = less_than
-				}
-			}
-			set_temp_variable = { soviet_collapse_suppression_relief_gain = constant:camp_rework_soviet.suppression_relief_cap }
-			subtract_from_temp_variable = { soviet_collapse_suppression_relief_gain = union_crisis_suppression_relief }
-			clamp_temp_variable = {
-				var = soviet_collapse_suppression_relief_gain
-				min = 0
-				max = constant:camp_rework_soviet.suppression_relief_minor
-			}
-			add_to_variable = { union_crisis_suppression_relief = soviet_collapse_suppression_relief_gain }
-			set_temp_variable = { soviet_collapse_suppression_authority_gain = soviet_collapse_suppression_relief_gain }
-			multiply_temp_variable = { soviet_collapse_suppression_authority_gain = constant:genocide_soviet_collapse.authority_gain }
-			add_to_variable = { soviet_collapse_moscow_authority = soviet_collapse_suppression_authority_gain }
-			set_temp_variable = { soviet_collapse_suppression_obedience_gain = soviet_collapse_suppression_relief_gain }
-			multiply_temp_variable = { soviet_collapse_suppression_obedience_gain = constant:genocide_soviet_collapse.obedience_gain }
-			add_to_variable = { soviet_collapse_military_obedience = soviet_collapse_suppression_obedience_gain }
-			set_temp_variable = { soviet_collapse_suppression_republic_confidence_loss = soviet_collapse_suppression_relief_gain }
-			multiply_temp_variable = { soviet_collapse_suppression_republic_confidence_loss = constant:genocide_soviet_collapse.republic_confidence_loss }
-			subtract_from_variable = { soviet_collapse_republic_confidence = soviet_collapse_suppression_republic_confidence_loss }
-			if = {
-				limit = { has_variable = soviet_collapse_progressive_release_pressure }
-				set_temp_variable = { soviet_collapse_suppression_release_pressure_loss = soviet_collapse_suppression_relief_gain }
-				multiply_temp_variable = { soviet_collapse_suppression_release_pressure_loss = constant:genocide_soviet_collapse.release_pressure_loss }
-				subtract_from_variable = { soviet_collapse_progressive_release_pressure = soviet_collapse_suppression_release_pressure_loss }
-				clamp_variable = {
-					var = soviet_collapse_progressive_release_pressure
-					min = constant:soviet_collapse_baseline.component_min
-					max = constant:soviet_collapse_baseline.component_max
-				}
-			}
-		}
-		soviet_collapse_clamp_crisis_components = yes
-		soviet_collapse_recalculate_total_threat = yes
-	}
+	set_temp_variable = { camp_rework_soviet_requested_relief = constant:camp_rework_soviet.suppression_relief_minor }
+	camp_rework_soviet_apply_union_crisis_repression_bridge = yes
 }
 
 soviet_collapse_build_capital_railway_to_this_state = {
@@ -20143,14 +20069,26 @@ soviet_collapse_uwr_build_cw_facility = {
 }
 
 soviet_collapse_uwr_build_experiment_camp = {
-    random_owned_controlled_state = {
-        limit = { NOT = { concentration_camp > 0 } }
-        add_building_construction = {
-            type = concentration_camp
-            level = 1
-            instant_build = yes
-        }
-    }
+	random_owned_controlled_state = {
+		limit = { NOT = { concentration_camp > 0 } }
+		if = {
+			limit = { NOT = { has_variable = genocide_responsible_country } }
+			set_variable = { genocide_responsible_country = ROOT }
+		}
+		set_state_flag = genocide_site_has_responsible_country
+		set_state_flag = genocide_concentration_site
+		set_state_flag = camp_rework_experiment_site
+		set_state_flag = genocide_atrocity_site_known_to_regime
+		add_building_construction = {
+			type = concentration_camp
+			level = 1
+			instant_build = yes
+		}
+		add_to_variable = { camp_state_evidence_depth = constant:camp_rework_country_value.evidence_major }
+		set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.experiment }
+		camp_rework_register_active_site = yes
+		camp_rework_register_evidence_state = yes
+	}
 }
 
 soviet_collapse_uwr_contaminate_neighbor_front = {

@@ -169,7 +169,7 @@ The Directorate periodically recalculates `mengele_clone_network_hosts`, `mengel
 
 The world-end scenario is named `Angelic World Order`. If the Directorate is operating through the Aryan variant branch, the scenario title becomes `Aryan Supremacy`. Both variants use the same final network machinery, but the Aryan branch strengthens client-unit scale.
 
-The final Directorate idea is `mengele_clone_world_order_state`, while activated client regimes receive `mengele_clone_client_state`.
+World-order launch removes every live pre-capstone lane idea and grants exactly one final Directorate idea. `mengele_clone_world_order_state` carries the science-and-force result; the `_with_reclamation`, `_with_continental_command`, `_with_command_spine`, and `_with_command` variants preserve the exact highest completed optional territorial stage without adding a new prerequisite. Activated client regimes receive `mengele_clone_client_state`.
 
 ## Special Project Registry
 

@@ -2239,3 +2239,167 @@ unique_id = chaos_redux_achievements
 	}
 	hidden = yes
 }
+
+#############################
+# SYSTEM - CAMP REPRESSION REWORK
+#############################
+
+000_chaos_redux_60_inherit_the_ledger_close_the_ledger = {
+	possible = { custom_override_tooltip = { tooltip = camp_repression_achievement_eligible_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = camp_repression_achievement_inherit_close_tooltip
+			has_country_flag = camp_rework_achievement_inherited_dormant_legacy
+			has_country_flag = camp_rework_achievement_large_inherited_network
+			has_country_flag = camp_rework_achievement_inherited_network_dismantled
+			has_country_flag = camp_rework_achievement_inherited_network_dismantled_during_war
+			has_country_flag = camp_rework_reformed_legacy
+			check_variable = { camp_active_site_count = 0 }
+			NOT = { has_country_flag = camp_rework_achievement_severe_discovery_reached }
+			NOT = { has_country_flag = camp_rework_achievement_severe_tribunal_reached }
+			NOT = { has_country_flag = genocide_condemnation_tribunal_threshold }
+		}
+	}
+}
+
+000_chaos_redux_61_papers_for_the_liberated = {
+	possible = { custom_override_tooltip = { tooltip = camp_repression_achievement_eligible_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = camp_repression_achievement_papers_liberated_tooltip
+			is_major = yes
+			has_government = democratic
+			has_country_flag = camp_rework_achievement_severe_sites_documented
+			check_variable = {
+				var = camp_rework_liberated_severe_sites
+				value = constant:camp_rework_achievement.severe_sites_required
+				compare = greater_than_or_equals
+			}
+			NOT = { has_country_flag = camp_rework_achievement_operated_radicalized_site }
+		}
+	}
+}
+
+000_chaos_redux_62_the_doctor_loses_his_war = {
+	possible = { custom_override_tooltip = { tooltip = camp_repression_achievement_eligible_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = camp_repression_achievement_doctor_loses_tooltip
+			original_tag = GER
+			has_country_flag = germany_mengele_program_authorized
+			has_country_flag = germany_mengele_coup_fired
+			has_country_flag = germany_mengele_defeated
+			has_country_flag = germany_auschwitz_complex_dismantled
+			check_variable = { camp_experiment_site_count = 0 }
+		}
+	}
+}
+
+000_chaos_redux_63_no_pingfang_shadow = {
+	possible = { custom_override_tooltip = { tooltip = camp_repression_achievement_eligible_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = camp_repression_achievement_no_pingfang_shadow_tooltip
+			original_tag = JAP
+			has_country_flag = camp_rework_achievement_japan_internal_exposure
+			has_country_flag = camp_rework_achievement_ishii_removed
+			has_country_flag = japan_prisoner_experiments_shutdown
+			check_variable = { camp_experiment_site_count = 0 }
+			NOT = { has_country_flag = camp_rework_achievement_major_outbreak_occurred }
+		}
+	}
+}
+
+000_chaos_redux_64_grain_before_fear = {
+	possible = { custom_override_tooltip = { tooltip = camp_repression_achievement_eligible_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = camp_repression_achievement_grain_before_fear_tooltip
+			original_tag = SOV
+			OR = {
+				has_idea = soviet_collapse_union_restored
+				has_country_flag = soviet_collapse_crisis_desk_disbanded
+			}
+			NOT = { has_country_flag = sov_famine_critical_fired }
+		}
+	}
+}
+
+000_chaos_redux_65_dominion_without_chains = {
+	possible = { custom_override_tooltip = { tooltip = camp_repression_achievement_eligible_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = camp_repression_achievement_dominion_without_chains_tooltip
+			original_tag = ENG
+			has_country_flag = camp_rework_uk_raj_review_complete
+			has_country_flag = camp_rework_reformed_legacy
+			check_variable = { camp_active_site_count = 0 }
+			RAJ = {
+				exists = yes
+				is_subject_of = ROOT
+			}
+			NOT = { has_country_flag = camp_rework_achievement_uk_colonial_revolt_occurred }
+		}
+	}
+}
+
+000_chaos_redux_66_redress_before_victory = {
+	possible = { custom_override_tooltip = { tooltip = camp_repression_achievement_eligible_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = camp_repression_achievement_redress_before_victory_tooltip
+			original_tag = USA
+			has_country_flag = camp_rework_achievement_usa_redress_before_victory
+			has_country_flag = camp_rework_usa_authority_terminated
+			has_country_flag = camp_rework_usa_redress_complete
+		}
+	}
+}
+
+000_chaos_redux_67_congo_reformed = {
+	possible = { custom_override_tooltip = { tooltip = camp_repression_achievement_eligible_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = camp_repression_achievement_congo_reformed_tooltip
+			original_tag = BEL
+			has_country_flag = camp_rework_belgium_concessions_reformed
+			has_country_flag = camp_rework_reformed_legacy
+			check_variable = { camp_active_site_count = 0 }
+			NOT = { has_country_flag = camp_rework_crisis_exposed }
+		}
+	}
+}
+
+000_chaos_redux_68_roads_without_camps = {
+	possible = { custom_override_tooltip = { tooltip = camp_repression_achievement_eligible_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = camp_repression_achievement_roads_without_camps_tooltip
+			original_tag = ITA
+			has_country_flag = camp_rework_italy_desert_camps_closed
+			has_country_flag = camp_rework_achievement_italy_conventional_infrastructure_complete
+			has_country_flag = camp_rework_achievement_italy_conventional_garrison_used
+			check_variable = { camp_active_site_count = 0 }
+			any_controlled_state = {
+				is_core_of = LBA
+				infrastructure > constant:camp_rework_state_threshold.interior_infrastructure_floor
+				ROOT = { divisions_in_state = { state = PREV size > 0 } }
+			}
+		}
+	}
+}
+
+000_chaos_redux_69_gurs_closed = {
+	possible = { custom_override_tooltip = { tooltip = camp_repression_achievement_eligible_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = camp_repression_achievement_gurs_closed_tooltip
+			original_tag = FRA
+			has_government = democratic
+			has_country_flag = camp_rework_france_legacy_closed
+			has_country_flag = camp_rework_reformed_legacy
+			check_variable = { camp_active_site_count = 0 }
+			NOT = { has_country_flag = camp_rework_achievement_severe_tribunal_reached }
+		}
+	}
+}

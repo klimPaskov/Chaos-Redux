@@ -1,10 +1,12 @@
 # Camp and Repression Rework: Repository Explorer File Map
 
+> **Superseded preimplementation snapshot.** This file records the repository state explored on 2026-07-10 before the camp repression implementation tranche. Its absence findings, candidate file map, and proposed edit order are historical evidence only. Use `source_of_truth_and_completion_tracker.md` and `completion_report.md` for current files, identifiers, implementation status, and remaining gates.
+
 Date: 2026-07-10
 
 Mode: read-only repository exploration. This handoff does not alter gameplay, localisation, assets, specifications, or the event catalog.
 
-## 1. Executive result
+## 1. Historical executive result
 
 The repository has a functioning but narrow genocide-crisis scaffold. It already owns three camp buildings, state registration, monthly deaths, discovery on control change, hidden/public condemnation, a small foreign-response layer, Germany/Japan/Soviet decisions, and bridges into the Chaos Meter Deaths system, the condemnation system, chemical contamination, the Mengele chain, and Soviet Collapse.
 

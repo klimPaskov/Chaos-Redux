@@ -2,11 +2,84 @@
 
 Feature id: `system_camp_repression_rework`
 
-Curated: 2026-07-10
+Curated: 2026-07-11
 
 Purpose: provide one implementation ledger for the accepted package in `docs/specs/system_camp_repression_rework_specs/`, record active precedence, assign file ownership, and prevent partial implementation from being reported as complete.
 
 This is a working plan, not a replacement for the accepted specs. The specs remain the source design except where the current user request and the package's current implementation prompts explicitly override older text. No gameplay, localisation, asset, or workbook implementation is evidenced by this document.
+
+## Live implementation reconciliation, 2026-07-11
+
+Status: **implementation complete; static contracts passed; engine-runtime scenario execution gap recorded**.
+
+This section is the current implementation ledger. It supersedes the preimplementation observations and empty implementation-status columns retained later in this file. Those older rows remain useful as acceptance-history evidence, but they must not be used to infer that live files or surfaces are absent.
+
+### Current implementation surfaces
+
+| Surface | Live source |
+| --- | --- |
+| Shared lifecycle, registration, Deaths, evidence, cleanup, display cache, and GUI action routing | `common/scripted_effects/camp_repression_rework_effects.txt` |
+| Unified player decision dispatcher | `common/scripted_effects/camp_repression_action_dispatcher_effects.txt` |
+| Territorial pools, route gates, restricted-method gates, and mission outcome triggers | `common/scripted_triggers/camp_repression_rework_triggers.txt` |
+| Generic player actions and generic missions | `common/decisions/camp_repression_generic_decisions.txt` |
+| Germany, Japan, and Soviet actions and missions | `common/decisions/camp_repression_major_country_decisions.txt` |
+| U.K./Raj, U.S.A., France/Vichy, Italy, and Belgium actions and missions | `common/decisions/camp_repression_colonial_country_decisions.txt` |
+| Major-country effects, ideas, modifiers, projects, and events | `common/scripted_effects/camp_repression_major_country_effects.txt`, `common/ideas/camp_repression_major_country_ideas.txt`, `common/dynamic_modifiers/camp_repression_major_country_dynamic_modifiers.txt`, `common/special_projects/projects/japan_ishii_projects.txt`, `events/japan_ishii.txt`, and `events/soviet_gulag.txt` |
+| Colonial-country effects and ideas | `common/scripted_effects/camp_repression_colonial_country_effects.txt` and `common/ideas/camp_repression_colonial_country_ideas.txt` |
+| Germany focus reward lifecycle | `common/national_focus/germany_mengele_clone_army.txt` and `common/ideas/germany_mengele_ideas.txt` |
+| Repression Ledger | `common/scripted_guis/camp_repression_ledger_scripted_gui.txt`, `common/scripted_localisation/camp_repression_ledger_scripted_localisation.txt`, and `interface/camp_repression_ledger.gui` |
+| Presentation wiring | `interface/camp_repression_rework.gfx`, `interface/chaosx_super_events.gfx`, `interface/chaosx_achievements.gfx`, and `interface/special_projects/biowarfare.gfx` |
+
+### Exact player-action inventory
+
+The implemented decision files contain **84 verified player actions**: 29 major, 43 colonial, and 12 generic. Mission blocks and the Ledger open, close, show, and hide controls are not included in this count. The three closing actions are live as `fr_support_refugee_and_rescue_networks`, `bel_negotiate_colonial_strike_settlement`, and `generic_inspect_active_site`.
+
+| Family | Count | Exact live actions |
+| --- | ---: | --- |
+| Germany | 7 | `germany_route_prisoner_labor_to_war_construction`, `germany_redirect_prisoner_labor_to_eastern_fortifications`, `germany_tighten_deportation_logistics`, `germany_increase_guard_allocation_to_ss_sites`, `germany_build_ss_laboratory_annex_at_auschwitz`, `germany_destroy_auschwitz_evidence_before_retreat`, `germany_dismantle_auschwitz_complex` |
+| Japan | 13 | `japan_establish_pingfang_research_bureau`, `japan_expand_occupation_test_records`, `japan_shield_ishii_from_army_review`, `japan_redirect_records_to_army_medical_control`, `japan_invite_kwantung_army_medical_officers`, `japan_suppress_chinese_resistance_cells`, `japan_route_supplies_to_epidemic_prevention`, `japan_open_epidemic_containment_office`, `japan_destroy_pingfang_records`, `japan_evacuate_pingfang_research_staff`, `japan_submit_to_army_review`, `japan_remove_ishii_from_program_control`, `japan_shut_down_prisoner_experiments` |
+| Soviet Union | 9 | `sov_transfer_prisoners_to_industrial_camps`, `sov_reinforce_nkvd_authority`, `sov_reduce_paranoia_through_party_review`, `sov_release_prisoners_for_military_service`, `sov_dismantle_overextended_gulags`, `sov_emergency_famine_relief`, `sov_conceal_famine_mortality`, `sov_admit_local_administrative_collapse`, `sov_authorize_extreme_periphery_repression` |
+| U.K. and Raj | 10 | `uk_survey_raj_emergency_detention`, `uk_activate_raj_emergency_detention`, `uk_route_colonial_labor_to_military_construction`, `uk_expand_raj_detention_districts`, `uk_demand_indian_manpower_levy`, `uk_tighten_dominion_security_coordination`, `uk_allocate_additional_colonial_guards`, `uk_release_political_prisoners_for_negotiations`, `uk_reform_colonial_labor_administration`, `uk_dismantle_raj_detention_network` |
+| U.S.A. | 8 | `usa_authorize_emergency_relocation_zones`, `usa_expand_interior_security_camps`, `usa_assign_detainee_labor_to_local_works`, `usa_strengthen_wartime_review_boards`, `usa_allow_court_review`, `usa_release_detainees_under_supervision`, `usa_terminate_relocation_authority`, `usa_establish_redress_commission` |
+| France and Vichy | 9 | `fr_inspect_camp_legacy`, `fr_close_camp_legacy_sites`, `fr_expand_vichy_internment_administration`, `fr_route_north_africa_labor_to_rail_projects`, `fr_collaboration_transfer_records`, `fr_suppress_refugee_and_rescue_networks`, `fr_support_refugee_and_rescue_networks`, `fr_open_colonial_labor_review`, `fr_dismantle_north_africa_labor_network` |
+| Italy | 8 | `ita_reopen_desert_camp_administration`, `ita_authorize_homeland_emergency_detention`, `ita_redirect_colonial_labor_to_roads_and_forts`, `ita_force_settlement_of_rebel_districts`, `ita_raise_colonial_security_battalions`, `ita_expand_desert_transport_guard`, `ita_close_desert_camps`, `ita_compensate_local_communities` |
+| Belgium and Congo | 8 | `bel_expand_concession_labor_quotas`, `bel_route_labor_to_rubber_and_minerals`, `bel_build_congo_transport_corridors`, `bel_suppress_colonial_strikes`, `bel_negotiate_colonial_strike_settlement`, `bel_open_international_inspection`, `bel_reform_concession_system`, `bel_recognize_local_administration` |
+| Generic | 12 | `generic_activate_detention_network`, `generic_expand_labor_quotas`, `generic_redirect_labor_to_construction`, `generic_redirect_labor_to_resource_extraction`, `generic_allocate_additional_guards`, `generic_reduce_labor_quotas`, `generic_inspect_active_site`, `generic_upgrade_existing_site_to_radicalized_atrocity_site`, `generic_restricted_contaminated_site_escalation`, `generic_destroy_evidence_before_retreat`, `generic_dismantle_detention_network`, `camp_repression_close_dormant_legacy_site` |
+
+The major-country file owns 29 verified actions and 17 missions. The colonial-country file owns 43 verified actions and 19 missions. The generic file owns 12 verified actions and 5 missions. The total inventory is therefore 84 player actions, 41 missions, and four separate Ledger controls.
+
+The final decision-and-mission re-audit passed after the bounded cooldown-parity correction. All 32 Ledger country action slots use the same native decision cooldown gates as their corresponding normal decisions. The full evidence is recorded in `subagent_handoffs/decision_mission_final_audit_2026-07-11.md`.
+
+### Current action, pool, and route contracts
+
+- `camp_rework_route_country_specific_action` is the unified country action bus. Decisions set `camp_rework_action_id`, and state actions use the normal country variable `camp_rework_action_state_id`.
+- `camp_rework_prepare_selected_action_state` copies a human Ledger selection into the action pointer. `camp_rework_dispatch_prepare_colonial_selection` and `camp_rework_dispatch_restore_colonial_selection` let colonial helpers act on direct or subject-controlled states without overwriting the persistent Ledger selection.
+- The host-owned monthly runtime processes the connected active-country and active-state arrays. State harm reduces real state population through the Chaos Meter Deaths pipeline rather than through a parallel counter or recruitable-population modifier alone.
+- Active sites retain the stored responsible country. Evidence-based discovery and condemnation follow that stored authority across owner or controller changes and do not blame the discoverer.
+- France uses `is_france_camp_legacy_pool_state`, `is_france_north_africa_labor_pool_state`, `is_france_vichy_internment_pool_state`, `is_france_other_colonial_labor_pool_state`, and `is_france_core_fallback_pool_state`.
+- Italy uses `is_italy_libya_repression_pool_state`, `is_italy_east_africa_repression_pool_state`, `is_italy_balkan_occupation_pool_state`, `is_italy_colonial_project_pool_state`, and `is_italy_core_fallback_pool_state`. The project pool accepts Libya or East Africa. `ita_authorize_homeland_emergency_detention` is the explicit desperate homeland route and is not a colonial project shortcut.
+- Fixed country packages do not inherit the generic fascist or communist restricted-method route. `camp_rework_country_can_use_restricted_method_route` requires the Germany full-permission and autonomy gate, the Japan Ishii project and influence gate, `sov_camp_extreme_escalation_available`, or an explicit extreme-doctrine gate for the colonial kits. Capability triggers also require the matching live stockpile.
+- Restricted-method capacity is abstract. Chemical tiers are chlorine, phosgene, mustard, lewisite, tabun, sarin, and soman; biological tiers are anthrax, tularemia, plague, and smallpox. They resolve through stockpile, Deaths, contamination or outbreak, evidence, discovery, instability, and tribunal outcomes without operational instructions or protected-class selectors.
+
+### Ledger, presentation, and catalog status
+
+- The live Ledger has five tabs: **Overview**, **State Pools**, **Active Sites**, **Country System**, and **Discovery & Reform**.
+- Its header displays `[ROOT.GetName]: [GetCampCountryPanelName]` plus the current phase and discovery state. All 24 generated Ledger sprites have live consumers, including scripted visibility for the evidence and reform seals.
+- The 24 DDS sprites are derived from frozen ImageGen sources in `docs/assets/system_camp_repression_rework/source/ui_imagegen/`. Prompts are recorded in `docs/assets/system_camp_repression_rework/prompts/repression_ledger_imagegen_prompts.md`; `docs/assets/system_camp_repression_rework/tools/build_ledger_ui_assets.py` is the deterministic processor. This is the maintained static presentation, not a fallback or simple-shape substitute.
+- Germany, Japan, the Soviet Union, the U.K./Raj, the U.S.A., France/Vichy, Italy, Belgium/Congo, and generic country kits are live.
+- Germany's focus reward lifecycle has at most three stable lane spirits before convergence and exactly one final world-order spirit after convergence. The core variant preserves exact science-and-force totals; stage-specific variants preserve the exact highest completed optional territorial stage through reclamation, continental dominance, the command spine, or full world dominance. No new command prerequisite was added.
+- Super-event slots `12`, `74`, `75`, `76`, and `77` use audio IDs `45`, `44`, `46`, `47`, and `48` respectively. Each slot has live text, a unique sprite, a unique final audio track, and settings-aware playback.
+- The static asset tranche is present. It includes 24 Ledger UI assets, 102 live icon DDS files, 17 major report and super-event identities, 10 colonial or generic report and news identities, and achievement triplets for IDs `60` through `69`.
+- The optional animated Ledger warning, evidence, reform, selected-state, and critical frames remain **queued** as an enhancement. The accepted static presentation is live and complete for the current scope.
+- `docs/spreadsheets/chaos_redux_events_catalog.xlsx` remains the event catalog. This package is a system rework and does not create a new standalone ChaosX event identity. The existing Soviet Collapse row `Events!C6` matches the live 1,148-character Event Details text.
+
+### Completion disposition
+
+- No accepted gameplay, decision, mission, Ledger, country-kit, asset, localisation, achievement, super-event, or audio implementation item remains open in this tracker.
+- All 13 Part 7 scenarios plus `SCN-ABSTRACT-CHEM-BIO` and `SCN-FULL-LEDGER` passed static contract trace with `ScenarioContracts=15 Failed=0`. The evidence is in `scenario_contract_validation_report.md`.
+- No engine-runtime scenario execution occurred in this environment. Rendered GUI behavior, timed mission outcomes, AI choices, and numeric runtime deltas therefore remain an explicit validation gap rather than a claimed pass.
+- The final parent review is complete with the engine-runtime validation gap carried explicitly. The scoped commit is the closing repository action for this tranche.
+- No fallback or simplification was used. Optional authored Ledger frame animation remains queued as an enhancement and is not a runtime blocker.
 
 ## Status discipline
 
@@ -67,10 +140,12 @@ No implementation blocker is recorded at tracker creation. Missing final GUI dim
 | `prompts/...achievement_prompt.md` | Ten achievement concepts and required icon/tracking/localisation/doc surfaces. |
 | `continuation/continuation_prompt.md` | Non-spec resume record; read last and used only to confirm no planning section remains. |
 
-### Live repository surface observations at curation
+### Archived repository surface observations at initial curation
+
+This subsection records the preimplementation snapshot only. It is superseded by the live reconciliation above and must not be read as a claim that the Ledger or country surfaces are still absent.
 
 - All core candidate files named in Part 7 exist, including the genocide-crisis constants, decisions/categories, effects, triggers, on-actions, modifiers, ideas, AI, Germany/Mengele integration, system documentation, and event catalog workbook.
-- No genocide-crisis-specific scripted GUI file or `interface/genocide_crisis.gui` exists at curation time; the required full ledger therefore needs an intentional new GUI surface or a clearly named integration into an existing Chaos Redux GUI file.
+- At initial curation, no genocide-crisis-specific scripted GUI file or `interface/genocide_crisis.gui` existed, so the full Ledger required a new intentional surface. That surface is now live in the files listed in the current implementation table above.
 - The matching custom focus inventory contains the Germany/Mengele tree and Soviet-collapse trees, but no dedicated U.K., U.S., France/Vichy, Italy, or Belgium tree files. Their Part 5 route flags/decision gates are the current accepted hook surface unless the parent separately approves new bespoke trees.
 - These observations establish likely ownership and sequencing only. They are not completion evidence and do not mark any gameplay row implemented or blocked.
 
@@ -78,16 +153,20 @@ No implementation blocker is recorded at tracker creation. Missing final GUI dim
 
 | Id | Conflict | Active resolution | Pending | Implemented | Queued with reason | Blocked with evidence | Rejected with reason |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `PRECEDENCE-CHEM-BIO` | README, research, Parts 1/4/5/6, and the values matrix say no efficiency curve or optimization; current goal/coding/decision/GUI/validation prompts and continuation require chemical/biological killing-efficiency mechanics, including nerve agents. | Implement abstract game values and decision effects only: relevant capability/stockpile can scale Deaths and short-term resistance suppression, while consuming stockpile/logistics and sharply increasing contamination, evidence, discovery, stability damage, foreign reaction, and tribunal severity. Never include recipes, synthesis, dosage, delivery engineering, operational procedures, protected-class selectors, or real-world optimization guidance. The earlier ban remains in force for operational detail and target selection, but not for abstract HOI4 values. | [x] | [ ] | — | — | — |
-| `PRECEDENCE-GUI` | Parts 4/6/7 and older coding/GUI prompts allow the full GUI to be optional or deferred behind a header. | The full `repression_ledger_window` is required by the current user request. The decision-category header is also required as a compact summary/launcher and parity surface; it is not an acceptable substitute for the full GUI. | [x] | [ ] | — | — | — |
-| `PRECEDENCE-FOCUS` | Part 5 permits route flags when the live repo has no relevant custom country tree; repository rules forbid unapproved fallbacks. | Implement every named hook. Where no custom tree exists, route flags and decision gates are the accepted Part 5 integration surface, but they must be reported as hooks rather than falsely described as a bespoke focus branch. Creating or replacing whole vanilla trees requires a separate accepted design, not a silent fallback. | [x] | [ ] | — | — | — |
-| `PRECEDENCE-ANIMATION` | Part 6 recommends animation but accepts static presentation; the full GUI is now mandatory. | Full static GUI presentation and static fallbacks are required. The optional animated frames remain conditional and are queued until the static GUI, dimensions, and sprite paths are stable. | [ ] | [ ] | [x] Static GUI first; animation is an accepted optional enhancement. | — | — |
+| `PRECEDENCE-CHEM-BIO` | README, research, Parts 1/4/5/6, and the values matrix say no efficiency curve or optimization; current goal/coding/decision/GUI/validation prompts and continuation require chemical/biological killing-efficiency mechanics, including nerve agents. | Implemented as abstract capability and stockpile tiers feeding Deaths, contamination or outbreak, evidence, discovery, instability, and tribunal outcomes. No recipes, synthesis, dosage, delivery engineering, operational procedures, protected-class selectors, or real-world optimization guidance are present. | [ ] | [x] | — | — | — |
+| `PRECEDENCE-GUI` | Parts 4/6/7 and older coding/GUI prompts allow the full GUI to be optional or deferred behind a header. | Implemented as the full five-tab `repression_ledger_window` plus a country/panel/phase/discovery header. All 24 generated static sprites are consumed; the result is not header-only or a simple-shape fallback. | [ ] | [x] | — | — | — |
+| `PRECEDENCE-FOCUS` | Part 5 permits route flags when the live repo has no relevant custom country tree; repository rules forbid unapproved fallbacks. | Implemented through the accepted country route flags and decision gates where no bespoke tree exists. Germany's custom focus reward lifecycle is consolidated to at most three stable spirits and exactly one conditional final variant with preserved arithmetic; the optional command branch remains optional. No whole vanilla tree was silently replaced. | [ ] | [x] | — | — | — |
+| `PRECEDENCE-ANIMATION` | Part 6 recommends animation but accepts static presentation; the full GUI is now mandatory. | The generated static GUI is implemented and maintained. Authored frame animation remains optional and outside the accepted completion gate. | [ ] | [ ] | [x] Optional enhancement; the complete static presentation remains live. | — | — |
 | `REJECT-HEADER-ONLY` | Header-only implementation could previously satisfy a deferred GUI tranche. | Header-only completion cannot satisfy the current request. | [ ] | [ ] | — | — | [x] Full Repression Ledger is required. |
 | `REJECT-OPERATIONAL-CHEM-BIO` | A literal reading of “optimization” could invite operational detail. | Operational recipes, production instructions, dosages, delivery procedures, or real-world targeting guidance are outside the accepted abstract game design. | [ ] | [ ] | — | — | [x] Only abstract game values and consequences are accepted. |
 | `REJECT-PROTECTED-SELECTOR` | Country/state history includes persecution context. | No player-operated selector by ethnicity, religion, nationality, or other protected class. | [ ] | [ ] | — | — | [x] State pools must remain territorial, legal, political, occupation, colonial, periphery, prison-labor, or crisis based. |
 | `REJECT-WORLD-LOOP` | A separate daily/weekly/monthly world scan would simplify refresh logic. | Use the existing registered active-site array, host-only monthly path, state-control hooks, decisions, GUI-open refresh, and bounded country/state events. | [ ] | [ ] | — | — | [x] AGENTS.md and Part 6/7 forbid a new broad loop. |
 
-## Core system requirement ledger
+## Archived preimplementation requirement ledger
+
+All checkbox matrices from this heading through the final scenario matrix are frozen planning-time acceptance evidence. Their `Pending`, `Implemented`, and `Queued` cells are not current implementation status and must not be used for completion claims. The live reconciliation at the top of this file, `completion_report.md`, and `scenario_contract_validation_report.md` supersede them; the archived rows remain only to prove that no accepted requirement disappeared during implementation. In particular, archived pending GUI rows do not mean the five-tab Ledger is absent, and archived pending `SCN-*` rows do not override `ScenarioContracts=15 Failed=0` static trace evidence.
+
+### Core system requirements
 
 | Id | Accepted requirement | Implementation surfaces | Pending | Implemented | Queued with reason | Blocked with evidence | Rejected with reason |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -396,6 +475,8 @@ The parent owns commits. Each commit contains only its tranche and is created on
 
 This table intentionally uses internal identifiers and expectation tokens only. It is not player-facing prose.
 
+The checkbox state below is the frozen preimplementation snapshot. Current evidence is `ScenarioContracts=15 Failed=0` for static trace across all rows. No engine-runtime execution occurred; see `scenario_contract_validation_report.md`.
+
 | Scenario id | Setup identifiers | Expectation identifiers | Pending | Implemented | Queued with reason | Blocked with evidence | Rejected with reason |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `SCN-GER-AUSCHWITZ` | `GER`; `fascist`; `year_ge_1940`; `controls_state_88`; `experiments_authorized` | `auschwitz_shared_node`; `deaths_pipeline_delta`; `real_state_population_delta`; `mengele_values_affect_pressure`; `cloning_unlock_gated` | [x] | [ ] | — | — | — |
@@ -416,7 +497,9 @@ This table intentionally uses internal identifiers and expectation tokens only. 
 
 ## Completion gate
 
-The rework remains incomplete while any required row is pending. Queued rows are acceptable only where the package makes the surface conditional or the parent records a specific accepted deferral. Blocked rows require evidence and an explicit incomplete report. Rejected rows must retain their reason. Final completion additionally requires:
+The archived checklist below remains the accepted completion contract, but its frozen pending boxes no longer control current status. The implementation and decision/mission audit are reconciled. Static contract trace passed all 15 scenarios; engine-runtime execution remains unperformed. Final completion therefore rests on the parent review of that explicit validation gap and the final scoped commit.
+
+The accepted completion contract requires:
 
 - all active-site creation/removal paths audited for exactly-once registration and stored responsibility;
 - Deaths-tab and real state-population changes demonstrated for every active damage family;

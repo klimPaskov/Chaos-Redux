@@ -1,5 +1,7 @@
 # Camp Repression Rework: Core Script Architecture Handoff
 
+> **Superseded preimplementation architecture snapshot.** This handoff explains the design that guided the core runtime. Proposed files, migration language, and future-tense requirements are not current status. The implemented runtime now lives in the consolidated files listed in `source_of_truth_and_completion_tracker.md`. Preserve this document as architecture rationale and use `completion_report.md` plus `scenario_contract_validation_report.md` for final status and the recorded engine-runtime validation gap.
+
 Feature id: system_camp_repression_rework
 
 Prepared: 2026-07-10

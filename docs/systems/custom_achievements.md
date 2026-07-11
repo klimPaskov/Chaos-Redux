@@ -29,7 +29,7 @@ HOI4 custom achievements do not expose a native tier field in the file format, s
      - Set when a chemical cylinder ability is used.
 5. Achievement art is wired in two layers:
    - HOI4 mod achievement UI looks for icon files in `gfx/achievements/`.
-   - `interface/chaosx_achievements.gfx` adds stable sprite aliases for the primary icon of each achievement for any future custom UI use.
+   - `interface/chaosx_achievements.gfx` adds stable sprite aliases for the eligible, grey, and not-eligible variants for custom UI reuse.
 
 ## Achievement Conditions
 
@@ -94,6 +94,31 @@ HOI4 custom achievements do not expose a native tier field in the file format, s
   - As the Holy Realm, complete Northern Indian and Eastern Mandala staged integration, then unlock `The World Is Asked to Kneel`.
 - `003_holy_realm_34_empty_mandala`
   - As the Holy Realm, complete the Final Silence world-end scenario.
+
+### Camp Repression System
+
+- `000_chaos_redux_60_inherit_the_ledger_close_the_ledger`
+  - Inherit a large dormant network, dismantle every active site during wartime, complete reform, and avoid severe discovery or tribunal exposure.
+- `000_chaos_redux_61_papers_for_the_liberated`
+  - As a democratic major, document the required number of liberated severe sites without operating a radicalized site.
+- `000_chaos_redux_62_the_doctor_loses_his_war`
+  - As Germany, authorize the Mengele program, survive its attempted seizure of power, defeat it, dismantle Auschwitz, and close every experiment site.
+- `000_chaos_redux_63_no_pingfang_shadow`
+  - As Japan, expose the program internally, remove Ishii, shut down prisoner experimentation, close every experiment site, and avoid a major outbreak.
+- `000_chaos_redux_64_grain_before_fear`
+  - As the Soviet Union, restore or disband the Union Crisis apparatus without reaching the critical famine event.
+- `000_chaos_redux_65_dominion_without_chains`
+  - As the United Kingdom, complete the Raj review and close the network while the Raj remains a subject and no colonial revolt has occurred.
+- `000_chaos_redux_66_redress_before_victory`
+  - As the United States, terminate relocation authority and complete redress before the recorded victory threshold.
+- `000_chaos_redux_67_congo_reformed`
+  - As Belgium, reform the Congo concessions and close every active site before the colonial crisis is publicly exposed.
+- `000_chaos_redux_68_roads_without_camps`
+  - As Italy, close the desert camp network while retaining defended infrastructure in Libya.
+- `000_chaos_redux_69_gurs_closed`
+  - As democratic France, close the camp legacy and every active site without reaching severe tribunal exposure.
+
+Each of these ten achievements has a `64x64` eligible icon plus grey and not-eligible variants in `gfx/achievements/`. Their sprite aliases use `GFX_achievement_<achievement_id>` in `interface/chaosx_achievements.gfx`.
 
 ### Event 010 Death
 

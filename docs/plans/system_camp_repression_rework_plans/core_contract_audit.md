@@ -1,5 +1,7 @@
 # Camp Repression Rework Core Contract Audit
 
+> **Superseded audit snapshot.** This report preserves the original core findings and the corrected re-audit that closed `CR-CORE-01` through `CR-CORE-07`. Its hashes and line references describe frozen intermediate files, not the final package. Use `source_of_truth_and_completion_tracker.md`, `completion_report.md`, and `scenario_contract_validation_report.md` for current status. The final decision-and-mission audit passed, and all 15 scenario contracts passed static trace; no engine-runtime scenario execution occurred in this environment, and that validation gap remains explicit in the final record.
+
 ## Final corrected re-audit verdict
 
 The corrected shared-core snapshot passes `CR-CORE-01` through `CR-CORE-07`.

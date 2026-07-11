@@ -1,0 +1,1607 @@
+# ============================================================================
+# CHAOS REDUX - MAJOR COUNTRY CAMP AND REPRESSION DECISIONS
+# ============================================================================
+# Overview:
+# - Adds the exact Germany, Japan, and Soviet decision/mission identifiers from
+#   the accepted major-country implementation map.
+# - Territorial actions use ordered state pools and the immutable shared
+#   responsibility gate.
+# - Effects delegate resource consumption, state registration, population
+#   loss, value refresh, and cleanup to the shared scripted-effect lifecycle.
+# ============================================================================
+
+@CAMP_GERMANY_POLAND_EXPANSION_DAYS = 180
+@CAMP_GERMANY_EASTERN_FORTIFICATIONS_DAYS = 180
+@CAMP_GERMANY_LABORATORY_ANNEX_DAYS = 180
+@CAMP_GERMANY_MILITARY_REVIEW_DAYS = 120
+@CAMP_GERMANY_EVIDENCE_DESTRUCTION_DAYS = 45
+@CAMP_GERMANY_DISMANTLEMENT_DAYS = 270
+@CAMP_GERMANY_WAR_CONSTRUCTION_COOLDOWN_DAYS = 365
+
+@CAMP_JAPAN_PINGFANG_BUREAU_DAYS = 180
+@CAMP_JAPAN_ARMY_REVIEW_DAYS = 120
+@CAMP_JAPAN_CONTAINMENT_DAYS = 150
+@CAMP_JAPAN_EVACUATION_DAYS = 45
+@CAMP_JAPAN_SHUTDOWN_DAYS = 270
+
+@CAMP_SOVIET_GULAG_QUOTA_DAYS = 180
+@CAMP_SOVIET_FAMINE_PRESSURE_DAYS = 180
+@CAMP_SOVIET_FAMINE_RELIEF_DAYS = 180
+@CAMP_SOVIET_ADMINISTRATOR_REVIEW_DAYS = 150
+@CAMP_SOVIET_DISMANTLEMENT_DAYS = 270
+@CAMP_SOVIET_RETREAT_RECORDS_DAYS = 45
+@CAMP_MAJOR_COUNTRY_INFRASTRUCTURE_CAP = 5
+
+# ---------------------------------------------------------------------------
+# Germany
+# ---------------------------------------------------------------------------
+
+genocide_crisis_category = {
+	germany_route_prisoner_labor_to_war_construction = {
+		icon = GFX_decision_germany_ss_camp_administration
+		cost = constant:camp_rework_cost.labor_project_pp
+		custom_cost_trigger = {
+			has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_cost.motorized_equipment }
+			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+		}
+		custom_cost_text = germany_route_prisoner_labor_to_war_construction_cost
+		days_re_enable = @CAMP_GERMANY_WAR_CONSTRUCTION_COOLDOWN_DAYS
+		allowed = { original_tag = GER }
+		visible = {
+			OR = { is_ai = yes has_country_flag = genocide_decisions_visible }
+			original_tag = GER
+			has_government = fascism
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			check_variable = { camp_labor_output > 0 }
+		}
+		available = {
+			NOT = { has_country_flag = camp_gui_country_action_1_cooldown }
+			original_tag = GER
+			has_government = fascism
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			check_variable = { camp_labor_output > 0 }
+			has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_cost.motorized_equipment }
+			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+		}
+		complete_effect = {
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.germany_route_prisoner_labor_to_war_construction }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = {
+			base = constant:camp_rework_ai_weight.germany_expansion
+			modifier = {
+				factor = 0
+				check_variable = {
+					var = camp_overstretch
+					value = constant:camp_rework_threshold.critical_overstretch
+					compare = greater_than_or_equals
+				}
+			}
+		}
+	}
+
+	germany_redirect_prisoner_labor_to_eastern_fortifications = {
+		icon = GFX_decision_germany_ss_camp_administration
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		cost = constant:camp_rework_cost.labor_project_pp
+		custom_cost_trigger = {
+			has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_cost.motorized_equipment }
+			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+		}
+		custom_cost_text = germany_redirect_prisoner_labor_to_eastern_fortifications_cost
+		days_re_enable = constant:camp_rework_timing.decision_cooldown_days
+		allowed = { original_tag = GER }
+		visible = {
+			OR = { is_ai = yes has_country_flag = genocide_decisions_visible }
+			original_tag = GER
+			has_government = fascism
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			check_variable = { camp_labor_output > 0 }
+		}
+		target_root_trigger = {
+			original_tag = GER
+			has_government = fascism
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			NOT = { has_active_mission = germany_eastern_fortifications_labor_mission }
+		}
+		target_trigger = {
+			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
+				is_valid_camp_active_site_state = yes
+				infrastructure < @CAMP_MAJOR_COUNTRY_INFRASTRUCTURE_CAP
+				OR = {
+					is_germany_occupied_poland_prisoner_source = yes
+					AND = {
+						is_germany_other_occupied_noncore_prisoner_source = yes
+						ROOT = { NOT = { any_controlled_state = { is_germany_occupied_poland_prisoner_source = yes } } }
+					}
+					is_germany_core_prisoner_source_fallback = yes
+				}
+			}
+		}
+		available = {
+			has_government = fascism
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			NOT = { has_active_mission = germany_eastern_fortifications_labor_mission }
+			has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_cost.motorized_equipment }
+			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
+				is_valid_camp_active_site_state = yes
+				infrastructure < @CAMP_MAJOR_COUNTRY_INFRASTRUCTURE_CAP
+				OR = {
+					is_germany_occupied_poland_prisoner_source = yes
+					AND = {
+						is_germany_other_occupied_noncore_prisoner_source = yes
+						ROOT = { NOT = { any_controlled_state = { is_germany_occupied_poland_prisoner_source = yes } } }
+					}
+					is_germany_core_prisoner_source_fallback = yes
+				}
+			}
+		}
+		complete_effect = {
+			if = {
+				limit = { FROM = { is_germany_core_prisoner_source_fallback = yes } }
+				custom_effect_tooltip = germany_core_transfer_fallback_penalty_tt
+			}
+			set_variable = { camp_rework_action_state_id = FROM.id }
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.germany_redirect_prisoner_labor_to_eastern_fortifications }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = {
+			base = constant:camp_rework_ai_weight.germany_expansion
+			modifier = { factor = 0 NOT = { camp_rework_country_under_ai_project_cap = yes } }
+			modifier = { factor = 0 has_active_mission = germany_eastern_fortifications_labor_mission }
+			modifier = {
+				factor = 0
+				check_variable = {
+					var = camp_overstretch
+					value = constant:camp_rework_threshold.critical_overstretch
+					compare = greater_than_or_equals
+				}
+			}
+		}
+	}
+
+	germany_tighten_deportation_logistics = {
+		icon = GFX_decision_germany_auschwitz_transfer
+		cost = constant:camp_rework_cost.labor_project_pp
+		custom_cost_trigger = {
+			has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_cost.motorized_equipment }
+			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+		}
+		custom_cost_text = germany_tighten_deportation_logistics_cost
+		days_re_enable = constant:camp_rework_timing.standard_action_days
+		allowed = { original_tag = GER }
+		visible = {
+			OR = { is_ai = yes has_country_flag = genocide_decisions_visible }
+			original_tag = GER
+			has_government = fascism
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			check_variable = { camp_active_site_count > 0 }
+		}
+		available = {
+			has_government = fascism
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_cost.motorized_equipment }
+			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+		}
+		complete_effect = {
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.germany_tighten_deportation_logistics }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = {
+			base = constant:camp_rework_ai_weight.germany_expansion
+			modifier = {
+				factor = 0
+				check_variable = {
+					var = camp_overstretch
+					value = constant:camp_rework_threshold.critical_overstretch
+					compare = greater_than_or_equals
+				}
+			}
+		}
+	}
+
+	germany_increase_guard_allocation_to_ss_sites = {
+		icon = GFX_decision_camp_guard_allocation
+		cost = constant:camp_rework_cost.guard_pp
+		custom_cost_trigger = {
+			manpower > constant:camp_rework_cost.guard_manpower
+			command_power > constant:camp_rework_cost.guard_command
+			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
+		}
+		custom_cost_text = germany_increase_guard_allocation_to_ss_sites_cost
+		days_re_enable = constant:camp_rework_timing.standard_action_days
+		allowed = { original_tag = GER }
+		visible = {
+			OR = { is_ai = yes has_country_flag = genocide_decisions_visible }
+			original_tag = GER
+			has_government = fascism
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			check_variable = { camp_active_site_count > 0 }
+		}
+		available = {
+			NOT = { has_country_flag = camp_gui_country_action_2_cooldown }
+			has_government = fascism
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			manpower > constant:camp_rework_cost.guard_manpower
+			command_power > constant:camp_rework_cost.guard_command
+			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
+		}
+		complete_effect = {
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.germany_increase_guard_allocation_to_ss_sites }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = {
+			base = constant:camp_rework_ai_weight.germany_expansion
+			modifier = { factor = 0 check_variable = { camp_guard_burden < 1 } }
+		}
+	}
+
+	germany_build_ss_laboratory_annex_at_auschwitz = {
+		icon = GFX_decision_germany_ss_laboratory_annex
+		cost = constant:camp_rework_cost.expansion_pp
+		custom_cost_trigger = {
+			manpower > constant:camp_rework_cost.expansion_manpower
+			command_power > constant:camp_rework_cost.expansion_command
+			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
+		}
+		custom_cost_text = germany_build_ss_laboratory_annex_at_auschwitz_cost
+		allowed = { original_tag = GER }
+		visible = {
+			OR = { is_ai = yes has_country_flag = genocide_decisions_visible }
+			original_tag = GER
+			has_government = fascism
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			germany_controls_auschwitz_area = yes
+			OR = { germany_mengele_program_active = yes germany_mengele_restricted_program_active = yes }
+		}
+		available = {
+			has_government = fascism
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			NOT = { has_active_mission = germany_ss_laboratory_annex_mission }
+			NOT = { has_country_flag = germany_auschwitz_complex_dismantled }
+			OR = {
+				is_ai = no
+				camp_rework_country_under_ai_project_cap = yes
+			}
+			custom_trigger_tooltip = {
+				tooltip = germany_auschwitz_state_88_required_tt
+				88 = {
+					is_controlled_by = ROOT
+					camp_rework_state_can_accept_responsibility_from_root = yes
+					NOT = { biowarfare_facility > 0 }
+				}
+			}
+			manpower > constant:camp_rework_cost.expansion_manpower
+			command_power > constant:camp_rework_cost.expansion_command
+			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
+		}
+		complete_effect = {
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.germany_build_ss_laboratory_annex_at_auschwitz }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = {
+			base = constant:camp_rework_ai_weight.germany_experiment
+			modifier = { factor = 0 NOT = { camp_rework_country_under_ai_experiment_cap = yes } }
+			modifier = { factor = 0 NOT = { camp_rework_country_under_ai_project_cap = yes } }
+			modifier = { factor = 0 has_active_mission = germany_ss_laboratory_annex_mission }
+		}
+	}
+
+	germany_destroy_auschwitz_evidence_before_retreat = {
+		icon = GFX_decision_camp_evidence_destruction
+		cost = constant:camp_rework_cost.evidence_pp
+		custom_cost_trigger = {
+			manpower > constant:camp_rework_cost.activation_manpower
+			command_power > constant:camp_rework_cost.evidence_command
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+		}
+		custom_cost_text = germany_destroy_auschwitz_evidence_before_retreat_cost
+		allowed = { original_tag = GER }
+		visible = {
+			original_tag = GER
+			has_government = fascism
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			88 = {
+				has_variable = genocide_responsible_country
+				var:genocide_responsible_country = { tag = ROOT }
+				NOT = { has_state_flag = genocide_evidence_destroyed }
+			}
+		}
+		available = {
+			NOT = { has_country_flag = camp_gui_country_action_3_cooldown }
+			has_government = fascism
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			NOT = { has_active_mission = germany_auschwitz_evidence_destruction_mission }
+			88 = {
+				is_controlled_by = ROOT
+				camp_rework_state_can_accept_responsibility_from_root = yes
+				genocide_state_has_enemy_forces_near_root = yes
+			}
+			manpower > constant:camp_rework_cost.activation_manpower
+			command_power > constant:camp_rework_cost.evidence_command
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+		}
+		complete_effect = {
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.germany_destroy_auschwitz_evidence_before_retreat }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = {
+			base = constant:camp_rework_ai_weight.germany_expansion
+			modifier = { factor = 0 has_active_mission = germany_auschwitz_evidence_destruction_mission }
+		}
+	}
+
+	germany_dismantle_auschwitz_complex = {
+		icon = GFX_decision_camp_dismantlement
+		cost = constant:camp_rework_cost.dismantle_pp
+		custom_cost_trigger = {
+			manpower > constant:camp_rework_cost.dismantle_manpower
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+		}
+		custom_cost_text = germany_dismantle_auschwitz_complex_cost
+		allowed = { original_tag = GER }
+		visible = {
+			original_tag = GER
+			NOT = { has_government = fascism }
+			NOT = { has_country_flag = germany_auschwitz_complex_dismantled }
+			88 = { is_valid_camp_active_site_state = yes }
+		}
+		available = {
+			NOT = { has_country_flag = camp_gui_country_action_4_cooldown }
+			NOT = { has_active_mission = germany_auschwitz_dismantlement_mission }
+			88 = {
+				is_controlled_by = ROOT
+				camp_rework_state_can_accept_responsibility_from_root = yes
+			}
+			manpower > constant:camp_rework_cost.dismantle_manpower
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+		}
+		complete_effect = {
+			custom_effect_tooltip = germany_auschwitz_dismantlement_effect_tt
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.germany_dismantle_auschwitz_complex }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = {
+			base = constant:camp_rework_ai_weight.germany_reform
+			modifier = { factor = 0 has_government = fascism }
+		}
+	}
+
+	germany_occupied_poland_camp_expansion_mission = {
+		icon = GFX_decision_germany_ss_camp_administration
+		allowed = { always = no }
+		visible = { original_tag = GER }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @CAMP_GERMANY_POLAND_EXPANSION_DAYS
+		available = {
+			NOT = { any_controlled_state = { has_state_flag = camp_rework_germany_poland_expansion_project } }
+		}
+		cancel_trigger = { has_country_flag = germany_auschwitz_complex_dismantled }
+		complete_effect = { custom_effect_tooltip = germany_occupied_poland_camp_expansion_mission_failure camp_rework_germany_fail_occupied_poland_expansion_mission = yes }
+		timeout_effect = { custom_effect_tooltip = germany_occupied_poland_camp_expansion_mission_success camp_rework_germany_complete_occupied_poland_expansion_mission = yes }
+		cancel_effect = { custom_effect_tooltip = germany_occupied_poland_camp_expansion_mission_cancelled camp_rework_germany_cancel_occupied_poland_expansion_mission = yes }
+	}
+
+	germany_eastern_fortifications_labor_mission = {
+		icon = GFX_decision_germany_ss_camp_administration
+		allowed = { always = no }
+		visible = { original_tag = GER }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @CAMP_GERMANY_EASTERN_FORTIFICATIONS_DAYS
+		available = {
+			NOT = { any_controlled_state = { has_state_flag = camp_rework_germany_eastern_fortification_project } }
+		}
+		cancel_trigger = { has_country_flag = germany_auschwitz_complex_dismantled }
+		complete_effect = { custom_effect_tooltip = germany_eastern_fortifications_labor_mission_failure camp_rework_germany_fail_eastern_fortifications = yes }
+		timeout_effect = { custom_effect_tooltip = germany_eastern_fortifications_labor_mission_success camp_rework_germany_complete_eastern_fortifications = yes }
+		cancel_effect = { custom_effect_tooltip = germany_eastern_fortifications_labor_mission_cancelled camp_rework_germany_cancel_eastern_fortifications = yes }
+	}
+
+	germany_ss_laboratory_annex_mission = {
+		icon = GFX_decision_germany_ss_laboratory_annex
+		allowed = { always = no }
+		visible = { original_tag = GER }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @CAMP_GERMANY_LABORATORY_ANNEX_DAYS
+		available = {
+			OR = {
+				NOT = { 88 = { is_controlled_by = ROOT } }
+				NOT = { 88 = { camp_rework_state_can_accept_responsibility_from_root = yes } }
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				has_country_flag = germany_mengele_program_closed
+				has_country_flag = germany_mengele_program_rejected
+				has_country_flag = germany_auschwitz_complex_dismantled
+			}
+		}
+		complete_effect = { custom_effect_tooltip = germany_ss_laboratory_annex_mission_failure camp_rework_germany_fail_laboratory_annex = yes }
+		timeout_effect = { custom_effect_tooltip = germany_ss_laboratory_annex_mission_success camp_rework_germany_build_auschwitz_laboratory_annex = yes }
+		cancel_effect = { custom_effect_tooltip = germany_ss_laboratory_annex_mission_failure camp_rework_germany_fail_laboratory_annex = yes }
+	}
+
+	germany_auschwitz_military_review_mission = {
+		icon = GFX_decision_germany_military_review
+		allowed = { always = no }
+		visible = { original_tag = GER }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @CAMP_GERMANY_MILITARY_REVIEW_DAYS
+		available = { has_country_flag = germany_mengele_coup_fired }
+		cancel_trigger = {
+			OR = {
+				NOT = { has_country_flag = germany_mengele_military_review_active }
+				has_country_flag = germany_mengele_program_closed
+				has_country_flag = germany_mengele_program_rejected
+			}
+		}
+		complete_effect = { custom_effect_tooltip = germany_auschwitz_military_review_mission_failure camp_rework_germany_fail_military_review_mission = yes }
+		timeout_effect = { custom_effect_tooltip = germany_auschwitz_military_review_mission_success camp_rework_germany_complete_military_review_mission = yes }
+		cancel_effect = { custom_effect_tooltip = germany_auschwitz_military_review_mission_cancelled camp_rework_germany_cancel_military_review_mission = yes }
+	}
+
+	germany_auschwitz_evidence_destruction_mission = {
+		icon = GFX_decision_camp_evidence_destruction
+		allowed = { always = no }
+		visible = { original_tag = GER }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @CAMP_GERMANY_EVIDENCE_DESTRUCTION_DAYS
+		available = { NOT = { 88 = { is_controlled_by = ROOT } } }
+		cancel_trigger = { has_country_flag = germany_auschwitz_complex_dismantled }
+		complete_effect = { custom_effect_tooltip = germany_auschwitz_evidence_destruction_mission_failure camp_rework_germany_fail_evidence_destruction = yes }
+		timeout_effect = { custom_effect_tooltip = germany_auschwitz_evidence_destruction_mission_success camp_rework_germany_complete_evidence_destruction = yes }
+		cancel_effect = { custom_effect_tooltip = germany_auschwitz_evidence_destruction_mission_cancelled camp_rework_germany_cancel_evidence_destruction = yes }
+	}
+
+	germany_auschwitz_dismantlement_mission = {
+		icon = GFX_decision_camp_dismantlement
+		allowed = { always = no }
+		visible = { original_tag = GER }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @CAMP_GERMANY_DISMANTLEMENT_DAYS
+		available = { has_government = fascism }
+		cancel_trigger = {
+			OR = {
+				has_country_flag = germany_auschwitz_complex_dismantled
+				NOT = {
+					88 = {
+						is_controlled_by = ROOT
+						is_valid_camp_dismantlement_state = yes
+					}
+				}
+			}
+		}
+		complete_effect = { custom_effect_tooltip = germany_auschwitz_dismantlement_mission_failure camp_rework_germany_fail_auschwitz_dismantlement = yes }
+		timeout_effect = {
+			if = {
+				limit = { 88 = { is_controlled_by = ROOT is_valid_camp_dismantlement_state = yes } }
+				custom_effect_tooltip = germany_auschwitz_dismantlement_mission_success
+				camp_rework_germany_complete_auschwitz_dismantlement = yes
+			}
+			else = {
+				custom_effect_tooltip = germany_auschwitz_dismantlement_mission_failure
+				camp_rework_germany_fail_auschwitz_dismantlement = yes
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { has_country_flag = germany_auschwitz_complex_dismantled }
+				custom_effect_tooltip = germany_auschwitz_dismantlement_mission_success
+				camp_rework_germany_cancel_auschwitz_dismantlement = yes
+			}
+			else = {
+				custom_effect_tooltip = germany_auschwitz_dismantlement_mission_failure
+				camp_rework_germany_fail_auschwitz_dismantlement = yes
+			}
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Japan
+# ---------------------------------------------------------------------------
+
+imperial_occupation_crisis = {
+	japan_establish_pingfang_research_bureau = {
+		icon = GFX_decision_japan_pingfang_bureau
+		cost = constant:camp_rework_cost.expansion_pp
+		custom_cost_trigger = {
+			manpower > constant:camp_rework_cost.expansion_manpower
+			command_power > constant:camp_rework_cost.expansion_command
+			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
+		}
+		custom_cost_text = japan_establish_pingfang_research_bureau_cost
+		allowed = { original_tag = JAP }
+		visible = {
+			original_tag = JAP
+			camp_rework_japan_can_open_pingfang_route = yes
+			NOT = { has_country_flag = japan_biowarfare_reform_route }
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			NOT = { has_country_flag = japan_pingfang_route_unlocked }
+		}
+		available = {
+			NOT = { has_country_flag = japan_biowarfare_reform_route }
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			NOT = { has_country_flag = camp_rework_japan_pingfang_bureau_active }
+			custom_trigger_tooltip = {
+				tooltip = japan_pingfang_anchor_required_tt
+				328 = {
+					OR = { is_controlled_by = ROOT CONTROLLER = { is_subject_of = ROOT } }
+					camp_rework_state_can_accept_responsibility_from_root = yes
+				}
+			}
+			manpower > constant:camp_rework_cost.expansion_manpower
+			command_power > constant:camp_rework_cost.expansion_command
+			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
+		}
+		complete_effect = {
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.japan_establish_pingfang_research_bureau }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = {
+			base = constant:camp_rework_ai_weight.japan_activation
+			modifier = { factor = 0 NOT = { camp_rework_country_under_ai_project_cap = yes } }
+			modifier = { factor = 0 NOT = { camp_rework_country_under_ai_site_cap = yes } }
+			modifier = { factor = 0 NOT = { camp_rework_country_under_ai_experiment_cap = yes } }
+		}
+	}
+
+	japan_expand_occupation_test_records = {
+		icon = GFX_decision_japan_pingfang_records
+		cost = constant:camp_rework_cost.survey_pp
+		days_re_enable = constant:camp_rework_timing.decision_cooldown_days
+		allowed = { original_tag = JAP }
+		visible = {
+			original_tag = JAP
+			has_country_flag = japan_ishii_program_active
+			NOT = { has_country_flag = japan_biowarfare_reform_route }
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+		}
+		available = {
+			NOT = { has_country_flag = japan_prisoner_experiments_shutdown }
+			NOT = { has_country_flag = japan_biowarfare_reform_route }
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			check_variable = {
+				var = occupation_test_records
+				value = constant:camp_rework_threshold.max_value
+				compare = less_than
+			}
+		}
+		complete_effect = {
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.japan_expand_occupation_test_records }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = {
+			base = constant:camp_rework_ai_weight.japan_experiment
+			modifier = { factor = 0 NOT = { camp_rework_country_under_ai_experiment_cap = yes } }
+			modifier = {
+				factor = 0
+				check_variable = {
+					var = outbreak_accident_risk
+					value = constant:camp_rework_japan.critical_outbreak_risk
+					compare = greater_than_or_equals
+				}
+			}
+		}
+	}
+
+	japan_shield_ishii_from_army_review = {
+		icon = GFX_decision_japan_army_medical_review
+		cost = constant:camp_rework_cost.review_pp
+		days_re_enable = constant:camp_rework_timing.standard_action_days
+		allowed = { original_tag = JAP }
+		visible = {
+			original_tag = JAP
+			has_country_flag = japan_ishii_program_active
+			NOT = { has_country_flag = japan_biowarfare_reform_route }
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+		}
+		available = {
+			NOT = { has_country_flag = japan_prisoner_experiments_shutdown }
+			NOT = { has_country_flag = japan_biowarfare_reform_route }
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			NOT = { has_active_mission = japan_army_medical_review_mission }
+		}
+		complete_effect = {
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.japan_shield_ishii_from_army_review }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = {
+			base = constant:camp_rework_ai_weight.japan_experiment
+			modifier = { factor = 0 has_country_flag = japan_biowarfare_reform_route }
+		}
+	}
+
+	japan_redirect_records_to_army_medical_control = {
+		icon = GFX_decision_japan_army_medical_review
+		cost = constant:camp_rework_cost.review_pp
+		days_re_enable = constant:camp_rework_timing.standard_action_days
+		allowed = { original_tag = JAP }
+		visible = { original_tag = JAP check_variable = { occupation_test_records > 0 } }
+		available = { NOT = { has_country_flag = japan_prisoner_experiments_shutdown } }
+		complete_effect = {
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.japan_redirect_records_to_army_medical_control }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = { base = constant:camp_rework_ai_weight.japan_reform }
+	}
+
+	japan_invite_kwantung_army_medical_officers = {
+		icon = GFX_decision_japan_army_medical_review
+		cost = constant:camp_rework_cost.survey_pp
+		days_re_enable = constant:camp_rework_timing.standard_action_days
+		allowed = { original_tag = JAP }
+		visible = {
+			original_tag = JAP
+			has_country_flag = japan_pingfang_route_unlocked
+			NOT = { has_country_flag = japan_biowarfare_reform_route }
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+		}
+		available = {
+			NOT = { has_country_flag = japan_prisoner_experiments_shutdown }
+			NOT = { has_country_flag = japan_biowarfare_reform_route }
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			check_variable = {
+				var = kwantung_autonomy
+				value = constant:camp_rework_threshold.max_value
+				compare = less_than
+			}
+		}
+		complete_effect = {
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.japan_invite_kwantung_army_medical_officers }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = {
+			base = constant:camp_rework_ai_weight.japan_expansion
+			modifier = { factor = 0 has_country_flag = japan_biowarfare_reform_route }
+		}
+	}
+
+	japan_suppress_chinese_resistance_cells = {
+		icon = GFX_decision_japan_prisoner_experiment
+		state_target = asia
+		on_map_mode = map_and_decisions_view
+		cost = constant:camp_rework_cost.guard_pp
+		custom_cost_trigger = {
+			manpower > constant:camp_rework_cost.guard_manpower
+			command_power > constant:camp_rework_cost.guard_command
+			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
+		}
+		custom_cost_text = japan_suppress_chinese_resistance_cells_cost
+		days_re_enable = constant:camp_rework_timing.standard_action_days
+		allowed = { original_tag = JAP }
+		visible = {
+			original_tag = JAP
+			has_war_with_chinese_country = yes
+			NOT = { has_country_flag = japan_biowarfare_reform_route }
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+		}
+		target_root_trigger = {
+			original_tag = JAP
+			has_war_with_chinese_country = yes
+			NOT = { has_country_flag = japan_biowarfare_reform_route }
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+		}
+		target_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = japan_china_manchuria_pool_required_tt
+				FROM = {
+					camp_rework_state_can_accept_responsibility_from_root = yes
+					is_japan_china_manchuria_pool_state = yes
+				}
+			}
+		}
+		available = {
+			NOT = { has_country_flag = japan_biowarfare_reform_route }
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			manpower > constant:camp_rework_cost.guard_manpower
+			command_power > constant:camp_rework_cost.guard_command
+			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
+			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
+				is_japan_china_manchuria_pool_state = yes
+			}
+		}
+		complete_effect = {
+			set_variable = { camp_rework_action_state_id = FROM.id }
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.japan_suppress_chinese_resistance_cells }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = {
+			base = constant:camp_rework_ai_weight.japan_expansion
+			modifier = { factor = 0 NOT = { camp_rework_country_under_ai_site_cap = yes } }
+		}
+	}
+
+	japan_route_supplies_to_epidemic_prevention = {
+		icon = GFX_decision_japan_epidemic_containment
+		cost = constant:camp_rework_cost.labor_project_pp
+		custom_cost_trigger = {
+			has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_cost.motorized_equipment }
+			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+		}
+		custom_cost_text = japan_route_supplies_to_epidemic_prevention_cost
+		days_re_enable = constant:camp_rework_timing.standard_action_days
+		allowed = { original_tag = JAP }
+		visible = {
+			original_tag = JAP
+			OR = { check_variable = { outbreak_accident_risk > 0 } has_country_flag = japan_biowarfare_outbreak_active }
+		}
+		available = {
+			has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_cost.motorized_equipment }
+			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+		}
+		complete_effect = {
+			custom_effect_tooltip = japan_outbreak_risk_effect_tt
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.japan_route_supplies_to_epidemic_prevention }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = { base = constant:camp_rework_ai_weight.japan_reform }
+	}
+
+	japan_open_epidemic_containment_office = {
+		icon = GFX_decision_japan_epidemic_containment
+		cost = constant:camp_rework_cost.review_pp
+		custom_cost_trigger = {
+			has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_cost.motorized_equipment }
+			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+		}
+		custom_cost_text = japan_open_epidemic_containment_office_cost
+		allowed = { original_tag = JAP }
+		visible = { original_tag = JAP has_country_flag = japan_biowarfare_outbreak_active }
+		available = {
+			NOT = { has_country_flag = camp_gui_country_action_4_cooldown }
+			NOT = { has_country_flag = camp_rework_japan_containment_mission_active }
+			has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_cost.motorized_equipment }
+			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+		}
+		complete_effect = {
+			custom_effect_tooltip = japan_outbreak_risk_effect_tt
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.japan_open_epidemic_containment_office }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = { base = constant:camp_rework_ai_weight.japan_reform }
+	}
+
+	japan_destroy_pingfang_records = {
+		icon = GFX_decision_japan_pingfang_records
+		cost = constant:camp_rework_cost.evidence_pp
+		custom_cost_trigger = {
+			manpower > constant:camp_rework_cost.activation_manpower
+			command_power > constant:camp_rework_cost.evidence_command
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+		}
+		custom_cost_text = japan_destroy_pingfang_records_cost
+		allowed = { original_tag = JAP }
+		visible = {
+			original_tag = JAP
+			NOT = { has_country_flag = japan_biowarfare_reform_route }
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			328 = {
+				has_variable = genocide_responsible_country
+				var:genocide_responsible_country = { tag = ROOT }
+				NOT = { has_state_flag = genocide_evidence_destroyed }
+			}
+		}
+		available = {
+			NOT = { has_country_flag = japan_biowarfare_reform_route }
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			NOT = { has_country_flag = camp_rework_japan_pingfang_retreat_active }
+			328 = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
+				genocide_state_has_enemy_forces_near_root = yes
+			}
+			manpower > constant:camp_rework_cost.activation_manpower
+			command_power > constant:camp_rework_cost.evidence_command
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+		}
+		complete_effect = {
+			custom_effect_tooltip = japan_pingfang_records_choice_tt
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.japan_destroy_pingfang_records }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = { base = constant:camp_rework_ai_weight.japan_expansion }
+	}
+
+	japan_evacuate_pingfang_research_staff = {
+		icon = GFX_decision_japan_pingfang_records
+		cost = constant:camp_rework_cost.labor_project_pp
+		custom_cost_trigger = {
+			has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_cost.motorized_equipment }
+			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+		}
+		custom_cost_text = japan_evacuate_pingfang_research_staff_cost
+		allowed = { original_tag = JAP }
+		visible = {
+			original_tag = JAP
+			has_country_flag = japan_pingfang_route_unlocked
+			NOT = { has_country_flag = japan_biowarfare_reform_route }
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+		}
+		available = {
+			NOT = { has_country_flag = camp_gui_country_action_3_cooldown }
+			NOT = { has_country_flag = japan_biowarfare_reform_route }
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			NOT = { has_country_flag = camp_rework_japan_pingfang_retreat_active }
+			328 = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
+				genocide_state_has_enemy_forces_near_root = yes
+			}
+			has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_cost.motorized_equipment }
+			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+		}
+		complete_effect = {
+			custom_effect_tooltip = japan_pingfang_records_choice_tt
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.japan_evacuate_pingfang_research_staff }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = { base = constant:camp_rework_ai_weight.japan_reform }
+	}
+
+	japan_submit_to_army_review = {
+		icon = GFX_decision_japan_army_medical_review
+		cost = constant:camp_rework_cost.review_pp
+		allowed = { original_tag = JAP }
+		visible = {
+			original_tag = JAP
+			NOT = { has_country_flag = camp_rework_achievement_japan_internal_exposure }
+			OR = {
+				has_country_flag = japan_ishii_independent_authority
+				has_country_flag = japan_kwantung_medical_bypass
+				check_variable = { imperial_army_review_pressure > 0 }
+			}
+		}
+		available = {
+			NOT = { has_country_flag = camp_gui_country_action_1_cooldown }
+			NOT = { has_country_flag = camp_rework_achievement_japan_internal_exposure }
+			NOT = { has_country_flag = camp_rework_japan_army_review_mission_active }
+		}
+		complete_effect = {
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.japan_submit_to_army_review }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = { base = constant:camp_rework_ai_weight.japan_reform }
+	}
+
+	japan_remove_ishii_from_program_control = {
+		icon = GFX_decision_japan_army_medical_review
+		cost = constant:camp_rework_cost.review_pp
+		days_re_enable = constant:camp_rework_timing.decision_cooldown_days
+		allowed = { original_tag = JAP }
+		visible = {
+			original_tag = JAP
+			has_country_flag = japan_ishii_program_active
+			NOT = { has_country_flag = camp_rework_achievement_ishii_removed }
+		}
+		available = {
+			NOT = { has_country_flag = camp_rework_achievement_ishii_removed }
+			OR = {
+				has_country_flag = japan_army_medical_review_active
+				has_country_flag = japan_biowarfare_reform_route
+			}
+			check_variable = { ishii_influence > 0 }
+		}
+		complete_effect = {
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.japan_remove_ishii_from_program_control }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = { base = constant:camp_rework_ai_weight.japan_reform }
+	}
+
+	japan_shut_down_prisoner_experiments = {
+		icon = GFX_decision_japan_army_medical_review
+		cost = constant:camp_rework_cost.dismantle_pp
+		custom_cost_trigger = {
+			manpower > constant:camp_rework_cost.dismantle_manpower
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+		}
+		custom_cost_text = japan_shut_down_prisoner_experiments_cost
+		allowed = { original_tag = JAP }
+		visible = {
+			original_tag = JAP
+			check_variable = { camp_experiment_site_count > 0 }
+			OR = { has_country_flag = japan_biowarfare_reform_route NOT = { has_government = fascism } }
+		}
+		available = {
+			NOT = { has_country_flag = camp_gui_country_action_2_cooldown }
+			NOT = { has_country_flag = camp_rework_japan_shutdown_mission_active }
+			manpower > constant:camp_rework_cost.dismantle_manpower
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+		}
+		complete_effect = {
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.japan_shut_down_prisoner_experiments }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = { base = constant:camp_rework_ai_weight.japan_reform }
+	}
+
+	japan_pingfang_research_bureau_mission = {
+		icon = GFX_decision_japan_pingfang_bureau
+		allowed = { always = no }
+		visible = { original_tag = JAP }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @CAMP_JAPAN_PINGFANG_BUREAU_DAYS
+		available = {
+			OR = {
+				NOT = { 328 = { OR = { is_controlled_by = ROOT CONTROLLER = { is_subject_of = ROOT } } } }
+				NOT = { 328 = { camp_rework_state_can_accept_responsibility_from_root = yes } }
+				has_country_flag = japan_biowarfare_reform_route
+			}
+		}
+		cancel_trigger = { NOT = { has_country_flag = camp_rework_japan_pingfang_bureau_active } }
+		complete_effect = { custom_effect_tooltip = japan_pingfang_research_bureau_mission_failure camp_rework_japan_fail_pingfang_bureau = yes }
+		timeout_effect = { custom_effect_tooltip = japan_pingfang_research_bureau_mission_success camp_rework_japan_establish_pingfang_bureau = yes }
+		cancel_effect = { custom_effect_tooltip = japan_pingfang_research_bureau_mission_cancelled camp_rework_japan_cancel_pingfang_bureau = yes }
+	}
+
+	japan_army_medical_review_mission = {
+		icon = GFX_decision_japan_army_medical_review
+		allowed = { always = no }
+		visible = { original_tag = JAP }
+		selectable_mission = no
+		is_good = no
+		days_mission_timeout = @CAMP_JAPAN_ARMY_REVIEW_DAYS
+		available = {
+			check_variable = {
+				var = ishii_influence
+				value = constant:camp_rework_threshold.band_high
+				compare = less_than
+			}
+		}
+		cancel_trigger = { NOT = { has_country_flag = camp_rework_japan_army_review_mission_active } }
+		complete_effect = { custom_effect_tooltip = japan_army_medical_review_mission_success camp_rework_japan_complete_army_review = yes }
+		timeout_effect = { custom_effect_tooltip = japan_army_medical_review_mission_failure camp_rework_japan_fail_army_review = yes }
+		cancel_effect = { custom_effect_tooltip = japan_army_medical_review_mission_cancelled camp_rework_japan_cancel_army_review = yes }
+	}
+
+	japan_epidemic_containment_mission = {
+		icon = GFX_decision_japan_epidemic_containment
+		allowed = { always = no }
+		visible = { original_tag = JAP }
+		selectable_mission = no
+		is_good = no
+		days_mission_timeout = @CAMP_JAPAN_CONTAINMENT_DAYS
+		available = {
+			check_variable = {
+				var = outbreak_accident_risk
+				value = constant:camp_rework_threshold.band_medium
+				compare = less_than
+			}
+		}
+		cancel_trigger = { NOT = { has_country_flag = camp_rework_japan_containment_mission_active } }
+		complete_effect = { custom_effect_tooltip = japan_epidemic_containment_mission_success camp_rework_japan_complete_containment = yes }
+		timeout_effect = { custom_effect_tooltip = japan_epidemic_containment_mission_failure camp_rework_japan_fail_containment = yes }
+		cancel_effect = { custom_effect_tooltip = japan_epidemic_containment_mission_cancelled camp_rework_japan_cancel_containment = yes }
+	}
+
+	japan_pingfang_evacuation_mission = {
+		icon = GFX_decision_japan_pingfang_records
+		allowed = { always = no }
+		visible = { original_tag = JAP }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @CAMP_JAPAN_EVACUATION_DAYS
+		available = {
+			NOT = { 328 = { OR = { is_controlled_by = ROOT CONTROLLER = { is_subject_of = ROOT } } } }
+		}
+		cancel_trigger = { NOT = { has_country_flag = camp_rework_japan_pingfang_retreat_active } }
+		complete_effect = { custom_effect_tooltip = japan_pingfang_evacuation_mission_failure camp_rework_japan_fail_pingfang_retreat = yes }
+		timeout_effect = { custom_effect_tooltip = japan_pingfang_evacuation_mission_success camp_rework_japan_complete_pingfang_retreat = yes }
+		cancel_effect = { custom_effect_tooltip = japan_pingfang_evacuation_mission_cancelled camp_rework_japan_cancel_pingfang_retreat = yes }
+	}
+
+	japan_prisoner_experiment_shutdown_mission = {
+		icon = GFX_decision_japan_army_medical_review
+		allowed = { always = no }
+		visible = { original_tag = JAP }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @CAMP_JAPAN_SHUTDOWN_DAYS
+		available = {
+			AND = {
+				has_country_flag = japan_biowarfare_outbreak_active
+				camp_rework_japan_outbreak_threshold_reached = yes
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { has_country_flag = camp_rework_japan_shutdown_mission_active }
+				NOT = { camp_rework_japan_all_experiment_sites_currently_closable = yes }
+			}
+		}
+		complete_effect = { custom_effect_tooltip = japan_prisoner_experiment_shutdown_mission_failure camp_rework_japan_fail_prisoner_experiment_shutdown = yes }
+		timeout_effect = {
+			if = {
+				limit = { camp_rework_japan_all_experiment_sites_currently_closable = yes }
+				custom_effect_tooltip = japan_prisoner_experiment_shutdown_mission_success
+				camp_rework_japan_complete_prisoner_experiment_shutdown = yes
+			}
+			else = {
+				custom_effect_tooltip = japan_prisoner_experiment_shutdown_mission_failure
+				camp_rework_japan_fail_prisoner_experiment_shutdown = yes
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { NOT = { camp_rework_japan_all_experiment_sites_currently_closable = yes } }
+				custom_effect_tooltip = japan_prisoner_experiment_shutdown_mission_failure
+				camp_rework_japan_fail_prisoner_experiment_shutdown = yes
+			}
+			else = {
+				custom_effect_tooltip = japan_prisoner_experiment_shutdown_mission_cancelled
+				camp_rework_japan_cancel_prisoner_experiment_shutdown = yes
+			}
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Soviet Union
+# ---------------------------------------------------------------------------
+
+gulag_and_mass_repression_system = {
+	sov_transfer_prisoners_to_industrial_camps = {
+		icon = GFX_decision_sov_prisoner_transfer
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		cost = constant:camp_rework_cost.expansion_pp
+		custom_cost_trigger = {
+			manpower > constant:camp_rework_cost.expansion_manpower
+			command_power > constant:camp_rework_cost.expansion_command
+			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
+		}
+		custom_cost_text = sov_transfer_prisoners_to_industrial_camps_cost
+		days_re_enable = constant:camp_rework_timing.decision_cooldown_days
+		allowed = { original_tag = SOV }
+		visible = {
+			OR = { is_ai = yes has_country_flag = genocide_gulag_decisions_visible }
+			original_tag = SOV
+			sov_camp_is_stalinist_repression_route = yes
+			NOT = { sov_camp_is_reform_route = yes }
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+		}
+		target_root_trigger = {
+			original_tag = SOV
+			sov_camp_is_stalinist_repression_route = yes
+			NOT = { sov_camp_is_reform_route = yes }
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			OR = { is_ai = no camp_rework_country_under_ai_project_cap = yes }
+		}
+		target_trigger = {
+			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
+				is_soviet_remote_gulag_pool_state = yes
+			}
+		}
+		available = {
+			sov_camp_is_stalinist_repression_route = yes
+			NOT = { sov_camp_is_reform_route = yes }
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			OR = { is_ai = no camp_rework_country_under_ai_project_cap = yes }
+			manpower > constant:camp_rework_cost.expansion_manpower
+			command_power > constant:camp_rework_cost.expansion_command
+			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
+			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
+				is_soviet_remote_gulag_pool_state = yes
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = sov_union_crisis_suppression_cap_tt
+			set_variable = { camp_rework_action_state_id = FROM.id }
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.sov_transfer_prisoners_to_industrial_camps }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = {
+			base = constant:camp_rework_ai_weight.soviet_expansion
+			modifier = { add = constant:camp_rework_ai_weight.soviet_focus_expansion sov_camp_has_repression_focus_hook = yes }
+			modifier = { factor = 0 NOT = { camp_rework_country_under_ai_site_cap = yes } }
+			modifier = { factor = 0 sov_camp_is_reform_route = yes }
+			modifier = { factor = 0 NOT = { camp_rework_country_under_ai_project_cap = yes } }
+		}
+	}
+
+	sov_reinforce_nkvd_authority = {
+		icon = GFX_decision_sov_nkvd_review
+		cost = constant:camp_rework_cost.guard_pp
+		custom_cost_trigger = {
+			manpower > constant:camp_rework_cost.guard_manpower
+			command_power > constant:camp_rework_cost.guard_command
+			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
+		}
+		custom_cost_text = sov_reinforce_nkvd_authority_cost
+		days_re_enable = constant:camp_rework_timing.standard_action_days
+		allowed = { original_tag = SOV }
+		visible = {
+			OR = { is_ai = yes has_country_flag = genocide_gulag_decisions_visible }
+			original_tag = SOV
+			sov_camp_is_stalinist_repression_route = yes
+			camp_rework_soviet_paranoia_high = yes
+			NOT = { sov_camp_is_reform_route = yes }
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+		}
+		available = {
+			sov_camp_is_stalinist_repression_route = yes
+			camp_rework_soviet_paranoia_high = yes
+			NOT = { sov_camp_is_reform_route = yes }
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			manpower > constant:camp_rework_cost.guard_manpower
+			command_power > constant:camp_rework_cost.guard_command
+			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
+		}
+		complete_effect = {
+			custom_effect_tooltip = sov_union_crisis_suppression_cap_tt
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.sov_reinforce_nkvd_authority }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = {
+			base = constant:camp_rework_ai_weight.soviet_expansion
+			modifier = { add = constant:camp_rework_ai_weight.soviet_focus_expansion sov_camp_has_repression_focus_hook = yes }
+			modifier = { factor = 0 sov_camp_is_reform_route = yes }
+		}
+	}
+
+	sov_reduce_paranoia_through_party_review = {
+		icon = GFX_decision_sov_nkvd_review
+		cost = constant:camp_rework_cost.review_pp
+		allowed = { original_tag = SOV }
+		visible = {
+			original_tag = SOV
+			has_country_flag = SOV_paranoia_system_active_flag
+			camp_rework_soviet_paranoia_medium = yes
+		}
+		available = {
+			NOT = { has_country_flag = camp_gui_country_action_1_cooldown }
+			NOT = { has_country_flag = camp_rework_soviet_administrator_review_active }
+		}
+		complete_effect = {
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.sov_reduce_paranoia_through_party_review }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = { base = constant:camp_rework_ai_weight.soviet_relief }
+	}
+
+	sov_release_prisoners_for_military_service = {
+		icon = GFX_decision_sov_prisoner_transfer
+		cost = constant:camp_rework_cost.review_pp
+		days_re_enable = constant:camp_rework_timing.standard_action_days
+		allowed = { original_tag = SOV }
+		visible = {
+			original_tag = SOV
+			has_war = yes
+			check_variable = { forced_labor_quota > 0 }
+		}
+		available = {
+			NOT = { has_country_flag = camp_gui_country_action_3_cooldown }
+			manpower < constant:camp_rework_soviet.release_manpower
+		}
+		complete_effect = {
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.sov_release_prisoners_for_military_service }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = { base = constant:camp_rework_ai_weight.soviet_relief }
+	}
+
+	sov_dismantle_overextended_gulags = {
+		icon = GFX_decision_sov_gulag_dismantlement
+		cost = constant:camp_rework_cost.dismantle_pp
+		custom_cost_trigger = {
+			manpower > constant:camp_rework_cost.dismantle_manpower
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+		}
+		custom_cost_text = sov_dismantle_overextended_gulags_cost
+		allowed = { original_tag = SOV }
+		visible = {
+			original_tag = SOV
+			check_variable = { camp_gulag_site_count > 0 }
+			OR = {
+				sov_camp_is_reform_route = yes
+				check_variable = {
+					var = camp_administrator_corruption
+					value = constant:camp_rework_threshold.band_high
+					compare = greater_than_or_equals
+				}
+				check_variable = {
+					var = famine_pressure
+					value = constant:camp_rework_threshold.band_high
+					compare = greater_than_or_equals
+				}
+			}
+		}
+		available = {
+			NOT = { has_country_flag = camp_gui_country_action_4_cooldown }
+			NOT = { has_country_flag = sov_gulag_dismantlement_active }
+			manpower > constant:camp_rework_cost.dismantle_manpower
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+		}
+		complete_effect = {
+			custom_effect_tooltip = sov_gulag_dismantlement_effect_tt
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.sov_dismantle_overextended_gulags }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = { base = constant:camp_rework_ai_weight.soviet_relief }
+	}
+
+	sov_emergency_famine_relief = {
+		icon = GFX_decision_sov_famine_relief
+		cost = constant:camp_rework_cost.labor_project_pp
+		custom_cost_trigger = {
+			has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_cost.motorized_equipment }
+			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+		}
+		custom_cost_text = sov_emergency_famine_relief_cost
+		allowed = { original_tag = SOV }
+		visible = { original_tag = SOV check_variable = { famine_pressure > 0 } }
+		available = {
+			NOT = { has_country_flag = camp_gui_country_action_2_cooldown }
+			NOT = { has_active_mission = sov_emergency_famine_relief_mission }
+			NOT = { has_country_flag = sov_famine_relief_active }
+			has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_cost.motorized_equipment }
+			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+		}
+		complete_effect = {
+			custom_effect_tooltip = sov_famine_relief_effect_tt
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.sov_emergency_famine_relief }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = { base = constant:camp_rework_ai_weight.soviet_relief }
+	}
+
+	sov_conceal_famine_mortality = {
+		icon = GFX_decision_sov_records_retreat
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		cost = constant:camp_rework_cost.evidence_pp
+		custom_cost_trigger = {
+			manpower > constant:camp_rework_cost.activation_manpower
+			command_power > constant:camp_rework_cost.evidence_command
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+		}
+		custom_cost_text = sov_conceal_famine_mortality_cost
+		days_re_enable = constant:camp_rework_timing.standard_action_days
+		allowed = { original_tag = SOV }
+		visible = {
+			original_tag = SOV
+			has_country_flag = sov_famine_crisis_active
+			sov_camp_is_stalinist_repression_route = yes
+			camp_rework_soviet_paranoia_high = yes
+			NOT = { sov_camp_is_reform_route = yes }
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+		}
+		target_root_trigger = {
+			original_tag = SOV
+			sov_camp_is_stalinist_repression_route = yes
+			camp_rework_soviet_paranoia_high = yes
+			NOT = { sov_camp_is_reform_route = yes }
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+		}
+		target_trigger = {
+			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
+				has_state_flag = genocide_soviet_famine_pressure_site
+				NOT = { has_state_flag = camp_rework_soviet_records_concealed }
+			}
+		}
+		available = {
+			sov_camp_is_stalinist_repression_route = yes
+			camp_rework_soviet_paranoia_high = yes
+			NOT = { sov_camp_is_reform_route = yes }
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			manpower > constant:camp_rework_cost.activation_manpower
+			command_power > constant:camp_rework_cost.evidence_command
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
+				has_state_flag = genocide_soviet_famine_pressure_site
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = sov_famine_pressure_effect_tt
+			set_variable = { camp_rework_action_state_id = FROM.id }
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.sov_conceal_famine_mortality }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = {
+			base = constant:camp_rework_ai_weight.soviet_famine
+			modifier = { factor = 0 sov_camp_is_reform_route = yes }
+		}
+	}
+
+	sov_admit_local_administrative_collapse = {
+		icon = GFX_decision_sov_famine_relief
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		cost = constant:camp_rework_cost.review_pp
+		days_re_enable = constant:camp_rework_timing.standard_action_days
+		allowed = { original_tag = SOV }
+		visible = {
+			original_tag = SOV
+			OR = { has_country_flag = sov_famine_crisis_active sov_camp_is_reform_route = yes }
+		}
+		target_root_trigger = { original_tag = SOV }
+		target_trigger = {
+			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
+				has_state_flag = genocide_soviet_famine_pressure_site
+				NOT = { has_state_flag = genocide_site_discovered }
+			}
+		}
+		available = {
+			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
+				has_state_flag = genocide_soviet_famine_pressure_site
+			}
+		}
+		complete_effect = {
+			set_variable = { camp_rework_action_state_id = FROM.id }
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.sov_admit_local_administrative_collapse }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = { base = constant:camp_rework_ai_weight.soviet_relief }
+	}
+
+	sov_authorize_extreme_periphery_repression = {
+		icon = GFX_decision_sov_gulag_expansion
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		cost = constant:camp_rework_cost.expansion_pp
+		custom_cost_trigger = {
+			manpower > constant:camp_rework_cost.expansion_manpower
+			command_power > constant:camp_rework_cost.expansion_command
+			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
+		}
+		custom_cost_text = sov_authorize_extreme_periphery_repression_cost
+		days_re_enable = constant:camp_rework_timing.suppression_days
+		allowed = { original_tag = SOV }
+		visible = {
+			original_tag = SOV
+			sov_camp_extreme_escalation_available = yes
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+		}
+		target_root_trigger = {
+			sov_camp_extreme_escalation_available = yes
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			OR = { is_ai = no camp_rework_soviet_under_ai_extreme_cap = yes }
+		}
+		target_trigger = {
+			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
+				is_soviet_extreme_repression_pool_state = yes
+				NOT = { extermination_camp > 0 }
+				NOT = { has_state_flag = camp_rework_radicalized_site }
+			}
+		}
+		available = {
+			sov_camp_extreme_escalation_available = yes
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			OR = { is_ai = no camp_rework_soviet_under_ai_extreme_cap = yes }
+			manpower > constant:camp_rework_cost.expansion_manpower
+			command_power > constant:camp_rework_cost.expansion_command
+			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
+			FROM = {
+				camp_rework_state_can_accept_responsibility_from_root = yes
+				is_soviet_extreme_repression_pool_state = yes
+				NOT = { extermination_camp > 0 }
+				NOT = { has_state_flag = camp_rework_radicalized_site }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = sov_authorize_extreme_periphery_repression_effect_tt
+			custom_effect_tooltip = sov_union_crisis_suppression_cap_tt
+			if = {
+				limit = {
+					OR = {
+						NOT = { is_soviet_collapse_active = yes }
+						has_global_flag = soviet_collapse_terminal_collapse
+						NOT = { has_variable = soviet_collapse_total_collapse_threat }
+						NOT = { has_variable = union_crisis_suppression_relief }
+						check_variable = {
+							var = soviet_collapse_total_collapse_threat
+							value = constant:camp_rework_soviet.union_crisis_relief_stop
+							compare = greater_than_or_equals
+						}
+						check_variable = {
+							var = union_crisis_suppression_relief
+							value = constant:camp_rework_soviet.suppression_relief_cap
+							compare = greater_than_or_equals
+						}
+					}
+				}
+				custom_effect_tooltip = sov_union_crisis_relief_stopped_tt
+			}
+			custom_effect_tooltip = sov_famine_pressure_effect_tt
+			set_variable = { camp_rework_action_state_id = FROM.id }
+			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.sov_authorize_extreme_periphery_repression }
+			camp_rework_route_country_specific_action = yes
+		}
+		ai_will_do = {
+			base = constant:camp_rework_ai_weight.soviet_extreme_escalation
+			modifier = { add = constant:camp_rework_ai_weight.soviet_extreme_focus_escalation sov_camp_has_repression_focus_hook = yes }
+			modifier = { factor = 0 NOT = { sov_camp_extreme_escalation_available = yes } }
+			modifier = { factor = 0 NOT = { camp_rework_soviet_under_ai_extreme_cap = yes } }
+		}
+	}
+
+	sov_gulag_quota_cycle = {
+		icon = GFX_decision_sov_gulag_expansion
+		allowed = { always = no }
+		visible = { original_tag = SOV }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @CAMP_SOVIET_GULAG_QUOTA_DAYS
+		available = {
+			OR = {
+				sov_camp_is_reform_route = yes
+				check_variable = {
+					var = camp_overstretch
+					value = constant:camp_rework_threshold.critical_overstretch
+					compare = greater_than_or_equals
+				}
+			}
+		}
+		cancel_trigger = { NOT = { has_country_flag = camp_rework_soviet_gulag_quota_cycle_active } }
+		complete_effect = { custom_effect_tooltip = sov_gulag_quota_cycle_failure camp_rework_soviet_fail_gulag_quota_cycle = yes }
+		timeout_effect = { custom_effect_tooltip = sov_gulag_quota_cycle_success camp_rework_soviet_complete_gulag_quota_cycle = yes }
+		cancel_effect = { custom_effect_tooltip = sov_gulag_quota_cycle_cancelled camp_rework_soviet_cancel_gulag_quota_cycle = yes }
+	}
+
+	sov_famine_pressure_cycle = {
+		icon = GFX_decision_sov_grain_confiscation
+		allowed = { always = no }
+		visible = { original_tag = SOV }
+		selectable_mission = no
+		is_good = no
+		days_mission_timeout = @CAMP_SOVIET_FAMINE_PRESSURE_DAYS
+		available = {
+			OR = {
+				check_variable = { famine_pressure = 0 }
+				check_variable = { grain_extraction_burden = 0 }
+			}
+		}
+		cancel_trigger = { NOT = { has_country_flag = camp_rework_soviet_famine_pressure_cycle_active } }
+		complete_effect = { custom_effect_tooltip = sov_famine_pressure_cycle_success camp_rework_soviet_complete_famine_pressure_cycle = yes }
+		timeout_effect = { custom_effect_tooltip = sov_famine_pressure_cycle_failure camp_rework_soviet_fail_famine_pressure_cycle = yes }
+		cancel_effect = { custom_effect_tooltip = sov_famine_pressure_cycle_cancelled camp_rework_soviet_cancel_famine_pressure_cycle = yes }
+	}
+
+	sov_emergency_famine_relief_mission = {
+		icon = GFX_decision_sov_famine_relief
+		allowed = { always = no }
+		visible = { original_tag = SOV }
+		selectable_mission = no
+		is_good = no
+		days_mission_timeout = @CAMP_SOVIET_FAMINE_RELIEF_DAYS
+		available = {
+			check_variable = {
+				var = famine_pressure
+				value = constant:camp_rework_threshold.band_medium
+				compare = less_than
+			}
+		}
+		cancel_trigger = { NOT = { has_country_flag = sov_famine_relief_active } }
+		complete_effect = { custom_effect_tooltip = sov_emergency_famine_relief_mission_success camp_rework_soviet_complete_famine_relief = yes }
+		timeout_effect = { custom_effect_tooltip = sov_emergency_famine_relief_mission_failure camp_rework_soviet_fail_famine_relief = yes }
+		cancel_effect = { custom_effect_tooltip = sov_emergency_famine_relief_mission_cancelled camp_rework_soviet_cancel_famine_relief = yes }
+	}
+
+	sov_camp_administrator_review_mission = {
+		icon = GFX_decision_sov_nkvd_review
+		allowed = { always = no }
+		visible = { original_tag = SOV }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @CAMP_SOVIET_ADMINISTRATOR_REVIEW_DAYS
+		available = { camp_rework_soviet_paranoia_critical = yes }
+		cancel_trigger = { NOT = { has_country_flag = camp_rework_soviet_administrator_review_active } }
+		complete_effect = { custom_effect_tooltip = sov_camp_administrator_review_mission_failure camp_rework_soviet_fail_party_review = yes }
+		timeout_effect = { custom_effect_tooltip = sov_camp_administrator_review_mission_success camp_rework_soviet_complete_party_review = yes }
+		cancel_effect = { custom_effect_tooltip = sov_camp_administrator_review_mission_cancelled camp_rework_soviet_cancel_party_review = yes }
+	}
+
+	sov_overextended_gulag_dismantlement_mission = {
+		icon = GFX_decision_sov_gulag_dismantlement
+		allowed = { always = no }
+		visible = { original_tag = SOV }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @CAMP_SOVIET_DISMANTLEMENT_DAYS
+		available = {
+			AND = {
+				NOT = { sov_camp_is_reform_route = yes }
+				check_variable = {
+					var = nkvd_authority
+					value = constant:camp_rework_threshold.band_severe
+					compare = greater_than_or_equals
+				}
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { has_country_flag = sov_gulag_dismantlement_active }
+				NOT = { camp_rework_soviet_all_gulag_sites_currently_closable = yes }
+			}
+		}
+		complete_effect = { custom_effect_tooltip = sov_overextended_gulag_dismantlement_mission_failure camp_rework_soviet_fail_gulag_dismantlement = yes }
+		timeout_effect = {
+			if = {
+				limit = { camp_rework_soviet_all_gulag_sites_currently_closable = yes }
+				custom_effect_tooltip = sov_overextended_gulag_dismantlement_mission_success
+				camp_rework_soviet_complete_gulag_dismantlement = yes
+			}
+			else = {
+				custom_effect_tooltip = sov_overextended_gulag_dismantlement_mission_failure
+				camp_rework_soviet_fail_gulag_dismantlement = yes
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { NOT = { camp_rework_soviet_all_gulag_sites_currently_closable = yes } }
+				custom_effect_tooltip = sov_overextended_gulag_dismantlement_mission_failure
+				camp_rework_soviet_fail_gulag_dismantlement = yes
+			}
+			else = {
+				custom_effect_tooltip = sov_overextended_gulag_dismantlement_mission_cancelled
+				camp_rework_soviet_cancel_gulag_dismantlement = yes
+			}
+		}
+	}
+
+	sov_retreat_records_crisis_mission = {
+		icon = GFX_decision_sov_records_retreat
+		allowed = { always = no }
+		visible = { original_tag = SOV }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = @CAMP_SOVIET_RETREAT_RECORDS_DAYS
+		available = {
+			NOT = {
+				any_controlled_state = { has_state_flag = camp_rework_soviet_retreat_records_target }
+			}
+		}
+		cancel_trigger = { NOT = { has_country_flag = camp_rework_soviet_retreat_records_active } }
+		complete_effect = { custom_effect_tooltip = sov_retreat_records_crisis_mission_failure camp_rework_soviet_fail_retreat_records_crisis = yes }
+		timeout_effect = { custom_effect_tooltip = sov_retreat_records_crisis_mission_success camp_rework_soviet_complete_retreat_records_crisis = yes }
+		cancel_effect = { custom_effect_tooltip = sov_retreat_records_crisis_mission_cancelled camp_rework_soviet_cancel_retreat_records_crisis = yes }
+	}
+}

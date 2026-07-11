@@ -2,6 +2,21 @@
 
 This part maps country packages. The working labels are not final localisation.
 
+## Live implementation reconciliation
+
+The live package implements the country systems through three decision files and one unified action bus:
+
+- `common/decisions/camp_repression_major_country_decisions.txt` contains 29 verified Germany, Japan, and Soviet player actions.
+- `common/decisions/camp_repression_colonial_country_decisions.txt` contains 43 verified U.K./Raj, U.S.A., France/Vichy, Italy, and Belgium player actions, including `fr_support_refugee_and_rescue_networks` and `bel_negotiate_colonial_strike_settlement`.
+- `common/decisions/camp_repression_generic_decisions.txt` contains 12 verified generic player actions, including `generic_inspect_active_site`.
+- `common/scripted_effects/camp_repression_action_dispatcher_effects.txt` routes every decision family through `camp_rework_route_country_specific_action`.
+
+The final inventory is 84 player actions: 29 major, 43 colonial, and 12 generic. It excludes the separately verified 41 missions and the four Ledger show, hide, open, and close controls. The exact implemented IDs are recorded in `docs/plans/system_camp_repression_rework_plans/source_of_truth_and_completion_tracker.md`.
+
+France and Italy use the current consolidated pool helper names in `common/scripted_triggers/camp_repression_rework_triggers.txt`. Italy's package includes the homeland emergency action `ita_authorize_homeland_emergency_detention` and the transport-guard action `ita_expand_desert_transport_guard`. Subject-selected states use `camp_rework_action_state_id` rather than a world-state decision target.
+
+Fixed country packages use explicit restricted-method gates. They do not inherit the generic fascist or communist route. The detailed design below remains controlling where it describes country identity and consequences. The live identifiers in this reconciliation control where an earlier working label differs.
+
 ## Germany: SS Camp Administration and Auschwitz Integration
 
 Germany should remain the deepest country-specific package because the existing `germany_mengele` and `genocide_crisis` systems already share Auschwitz, Deaths, condemnation, and coup hooks.
@@ -269,9 +284,11 @@ Italy's route should focus on colonial repression, logistics, and forced settlem
 ### Decisions
 
 - Reopen Desert Camp Administration.
+- Authorize Homeland Emergency Detention.
 - Redirect Colonial Labor to Roads and Forts.
 - Force Settlement of Rebel Districts.
 - Increase Colonial Security Battalions.
+- Expand Desert Transport Guard.
 - Close Desert Camps.
 - Compensate Local Communities after Regime Change.
 
@@ -308,13 +325,17 @@ Every country can eventually access a generic camp system through ideology, occu
 
 ### Generic decisions
 
-- Build Active Detention Network through construction.
+- Activate Detention Network.
 - Expand Labor Quotas.
 - Redirect Labor to Construction.
+- Redirect Labor to Resource Extraction.
+- Allocate Additional Guards.
+- Reduce Labor Quotas.
 - Upgrade Existing Site to Radicalized Atrocity Site.
-- Increase Guards.
-- Dismantle Network.
+- Escalate a Valid Site through the Restricted Contaminated Route.
 - Destroy Evidence During Retreat.
+- Dismantle Detention Network.
+- Close a Dormant Legacy Site.
 
 ### Generic AI
 

@@ -42,6 +42,10 @@ focus_tree = {
 		cost = @mcl_focus_cost_short
 		completion_reward = {
 			set_country_flag = mengele_clone_focus_directorate
+			set_temp_variable = { mengele_cloning_progress_delta = constant:camp_rework_germany.hidden_project_progress_major }
+			germany_mengele_add_cloning_project_progress = yes
+			add_to_variable = { ss_archive_control = constant:camp_rework_germany.archive_control_major }
+			add_to_variable = { racial_policy_radicalization = constant:camp_rework_germany.radicalization_major }
 			add_ideas = mengele_clone_directorate
 			add_political_power = constant:mengele_clone_focus_int.directorate_political_power
 			add_stability = constant:mengele_clone_focus_value.directorate_stability
@@ -77,6 +81,10 @@ focus_tree = {
 		prerequisite = { focus = MCL_directorate_of_replication }
 		completion_reward = {
 			set_country_flag = mengele_clone_focus_war_laboratory_state
+			set_temp_variable = { mengele_cloning_progress_delta = constant:camp_rework_germany.hidden_project_progress_minor }
+			germany_mengele_add_cloning_project_progress = yes
+			add_to_variable = { camp_policy_evidence = constant:camp_rework_country_value.evidence_minor }
+			remove_ideas = mengele_clone_directorate
 			add_ideas = mengele_clone_biowarfare_directorate
 			add_war_support = constant:mengele_clone_focus_value.laboratory_war_support
 			add_breakthrough_progress = {
@@ -97,6 +105,9 @@ focus_tree = {
 		prerequisite = { focus = MCL_war_laboratory_state }
 		completion_reward = {
 			set_country_flag = mengele_clone_focus_silesian_biological_axis
+			set_temp_variable = { mengele_cloning_progress_delta = constant:camp_rework_germany.hidden_project_progress_minor }
+			germany_mengele_add_cloning_project_progress = yes
+			add_to_variable = { occupied_deportation_pressure = constant:camp_rework_germany.deportation_pressure_minor }
 			mengele_clone_army_add_biowarfare_facility = yes
 			add_breakthrough_progress = {
 				specialization = specialization_biowarfare
@@ -116,6 +127,10 @@ focus_tree = {
 		prerequisite = { focus = MCL_silesian_biological_axis }
 		completion_reward = {
 			set_country_flag = mengele_clone_focus_auschwitz_lab_grid
+			camp_rework_germany_register_auschwitz_layers = yes
+			set_temp_variable = { mengele_cloning_progress_delta = constant:camp_rework_germany.hidden_project_progress_major }
+			germany_mengele_add_cloning_project_progress = yes
+			add_to_variable = { auschwitz_evidence_depth = constant:camp_rework_country_value.evidence_major }
 			mengele_clone_army_add_biowarfare_facility = yes
 			mengele_clone_army_add_biowarfare_facility = yes
 			add_tech_bonus = {
@@ -296,6 +311,10 @@ focus_tree = {
 		prerequisite = { focus = MCL_unnatural_payload_authority }
 		completion_reward = {
 			set_country_flag = mengele_clone_focus_black_archive_release
+			add_to_variable = { ss_archive_control = constant:camp_rework_germany.archive_control_major }
+			set_temp_variable = { mengele_cloning_progress_delta = constant:camp_rework_germany.hidden_project_progress_major }
+			germany_mengele_add_cloning_project_progress = yes
+			add_to_variable = { camp_policy_tribunal = constant:camp_rework_country_value.tribunal_major }
 			custom_effect_tooltip = MCL_black_archive_release_tt
 			make_all_directorate_special_projects_researchable = yes
 			add_breakthrough_progress = {
@@ -401,6 +420,7 @@ focus_tree = {
 		completion_reward = {
 			set_country_flag = mengele_clone_focus_stabilized_growth_series
 			set_country_flag = mengele_clone_decision_conditioning_unlocked
+			remove_ideas = mengele_clone_vat_network
 			add_ideas = mengele_clone_conditioning_protocols
 			army_experience = constant:mengele_clone_focus_int.medium_army_experience
 		}
@@ -461,6 +481,7 @@ focus_tree = {
 		prerequisite = { focus = MCL_stabilized_growth_series }
 		completion_reward = {
 			set_country_flag = mengele_clone_focus_clone_officer_cadres
+			remove_ideas = mengele_clone_conditioning_protocols
 			add_ideas = mengele_clone_officer_cadres
 			army_experience = constant:mengele_clone_focus_int.large_army_experience
 			add_tech_bonus = {
@@ -531,7 +552,15 @@ focus_tree = {
 		completion_reward = {
 			set_country_flag = mengele_clone_focus_genius_cohorts
 			set_country_flag = mengele_clone_decision_genius_unlocked
-			add_ideas = mengele_clone_genius_cohorts
+			if = {
+				limit = { has_idea = mengele_clone_biowarfare_directorate }
+				remove_ideas = mengele_clone_biowarfare_directorate
+				add_ideas = mengele_clone_genius_cohorts
+			}
+			else = {
+				remove_ideas = mengele_clone_directorate
+				add_ideas = mengele_clone_genius_cohorts
+			}
 			add_research_slot = 1
 			add_stability = constant:mengele_clone_focus_value.research_slot_stability
 		}
@@ -572,7 +601,6 @@ focus_tree = {
 		prerequisite = { focus = MCL_research_twins }
 		completion_reward = {
 			set_country_flag = mengele_clone_focus_perfected_muscle_memory
-			add_ideas = mengele_clone_perfected_muscle_memory
 			army_experience = constant:mengele_clone_focus_int.medium_army_experience
 		}
 		ai_will_do = { base = 6 }
@@ -588,7 +616,6 @@ focus_tree = {
 		prerequisite = { focus = MCL_research_twins }
 		completion_reward = {
 			set_country_flag = mengele_clone_focus_replacement_pipeline
-			add_ideas = mengele_clone_replacement_pipeline
 			add_manpower = constant:mengele_clone_focus_int.replacement_pipeline_manpower
 		}
 		ai_will_do = { base = 6 }
@@ -712,6 +739,11 @@ focus_tree = {
 		prerequisite = { focus = MCL_biological_war_ministry }
 		completion_reward = {
 			set_country_flag = mengele_clone_focus_occupation_experiment_zones
+			add_to_variable = { occupied_deportation_pressure = constant:camp_rework_germany.deportation_pressure_major }
+			add_to_variable = { camp_policy_population_loss = constant:camp_rework_country_value.population_loss_major }
+			add_to_variable = { camp_policy_evidence = constant:camp_rework_country_value.evidence_major }
+			set_temp_variable = { mengele_cloning_progress_delta = constant:camp_rework_germany.hidden_project_progress_minor }
+			germany_mengele_add_cloning_project_progress = yes
 			add_stability = constant:mengele_clone_focus_value.occupation_stability
 			mengele_clone_army_add_biowarfare_facility = yes
 			every_owned_state = {
@@ -797,11 +829,16 @@ focus_tree = {
 		prerequisite = { focus = MCL_doctrine_of_the_replicated_state }
 		completion_reward = {
 			set_country_flag = mengele_clone_focus_the_numbered_future
+			set_temp_variable = { mengele_cloning_progress_delta = constant:camp_rework_germany.hidden_project_progress_major }
+			germany_mengele_add_cloning_project_progress = yes
+			add_to_variable = { camp_policy_hardliner = constant:camp_rework_country_value.hardliner_major }
+			add_to_variable = { camp_policy_overstretch = constant:camp_rework_country_value.overstretch_major }
 			set_country_flag = mengele_clone_decision_growth_vats_unlocked
 			set_country_flag = mengele_clone_decision_conditioning_unlocked
 			set_country_flag = mengele_clone_decision_genius_unlocked
 			set_country_flag = mengele_clone_decision_biowarfare_trials_unlocked
 			set_country_flag = mengele_clone_decision_immunity_unlocked
+			remove_ideas = mengele_clone_officer_cadres
 			add_ideas = mengele_clone_future_state
 			add_manpower = constant:mengele_clone_focus_int.numbered_legions_manpower
 			add_breakthrough_progress = {
@@ -887,6 +924,7 @@ focus_tree = {
 			set_country_flag = mengele_clone_focus_continental_dominance_protocol
 			set_country_flag = mengele_clone_decision_continental_assault_unlocked
 			set_country_flag = mengele_clone_decision_borderland_commands_unlocked
+			remove_ideas = mengele_clone_reclamation_authority
 			add_ideas = mengele_clone_continental_dominance
 			add_war_support = constant:mengele_clone_focus_value.expansion_war_support
 			army_experience = constant:mengele_clone_focus_int.large_army_experience
@@ -911,7 +949,6 @@ focus_tree = {
 		prerequisite = { focus = MCL_continental_dominance_protocol }
 			completion_reward = {
 				set_country_flag = mengele_clone_focus_rhine_specimen_corridor
-				add_ideas = mengele_clone_western_command
 				add_political_power = constant:mengele_clone_focus_int.expansion_political_power
 				add_equipment_to_stockpile = {
 					type = infantry_equipment
@@ -960,7 +997,10 @@ focus_tree = {
 		prerequisite = { focus = MCL_continental_dominance_protocol }
 			completion_reward = {
 				set_country_flag = mengele_clone_focus_eastern_laboratory_march
-				add_ideas = mengele_clone_eastern_command
+				add_to_variable = { occupied_deportation_pressure = constant:camp_rework_germany.deportation_pressure_major }
+				add_to_variable = { camp_policy_visibility = constant:camp_rework_country_value.visibility_major }
+				set_temp_variable = { mengele_cloning_progress_delta = constant:camp_rework_germany.hidden_project_progress_minor }
+				germany_mengele_add_cloning_project_progress = yes
 				army_experience = constant:mengele_clone_focus_int.large_army_experience
 				add_equipment_to_stockpile = {
 					type = artillery_equipment
@@ -1008,7 +1048,6 @@ focus_tree = {
 		prerequisite = { focus = MCL_continental_dominance_protocol }
 			completion_reward = {
 				set_country_flag = mengele_clone_focus_danubian_replacement_zone
-				add_ideas = mengele_clone_southern_command
 				add_political_power = constant:mengele_clone_focus_int.expansion_political_power
 				add_equipment_to_stockpile = {
 					type = infantry_equipment
@@ -1060,6 +1099,7 @@ focus_tree = {
 		completion_reward = {
 			set_country_flag = mengele_clone_focus_continental_command_spine
 			set_country_flag = mengele_clone_decision_borderland_commands_unlocked
+			remove_ideas = mengele_clone_continental_dominance
 			add_ideas = mengele_clone_continental_command_spine
 			mengele_clone_army_core_reclaimed_continental_borderlands = yes
 			mengele_clone_army_fortify_continental_borderlands = yes
@@ -1087,6 +1127,7 @@ focus_tree = {
 		}
 			completion_reward = {
 				set_country_flag = mengele_clone_focus_assert_world_dominance
+				remove_ideas = mengele_clone_continental_command_spine
 				add_ideas = mengele_clone_world_dominance_protocols
 				set_rule = { can_declare_war_on_same_ideology = yes }
 				add_manpower = constant:mengele_clone_focus_int.world_dominance_manpower
@@ -1151,6 +1192,7 @@ focus_tree = {
 		prerequisite = { focus = MCL_foreign_aid_fronts }
 		completion_reward = {
 			set_country_flag = mengele_clone_focus_embassy_science_cells
+			remove_ideas = mengele_clone_genius_cohorts
 			add_ideas = mengele_clone_foreign_science_front
 			add_breakthrough_progress = {
 				specialization = specialization_biowarfare
@@ -1171,7 +1213,6 @@ focus_tree = {
 		completion_reward = {
 			set_country_flag = mengele_clone_focus_hidden_tank_consortia
 			set_country_flag = mengele_clone_decision_deepen_network_unlocked
-			add_ideas = mengele_clone_foreign_tank_consortia
 			add_tech_bonus = {
 				name = mcl_hidden_tank_consortia_bonus
 				bonus = @mcl_focus_bonus_industry
@@ -1214,6 +1255,7 @@ focus_tree = {
 		completion_reward = {
 			set_country_flag = mengele_clone_focus_global_replacement_maps
 			set_country_flag = mengele_clone_decision_activation_ledger_unlocked
+			remove_ideas = mengele_clone_foreign_science_front
 			add_ideas = mengele_clone_global_replacement_maps
 			mengele_clone_world_order_recalculate_network_totals = yes
 			mengele_clone_world_order_refresh_rank_status = yes
@@ -1238,6 +1280,10 @@ focus_tree = {
 		}
 		completion_reward = {
 			set_country_flag = mengele_clone_focus_the_numbered_world
+			add_to_variable = { foreign_clone_network_strength = constant:camp_rework_country_value.decision_reach_major }
+			add_to_variable = { laboratory_state_reach = constant:camp_rework_country_value.decision_reach_major }
+			add_to_variable = { camp_policy_evidence = constant:camp_rework_country_value.evidence_major }
+			add_to_variable = { camp_policy_tribunal = constant:camp_rework_country_value.tribunal_major }
 			mengele_clone_world_order_launch = yes
 		}
 		ai_will_do = { base = 2 }

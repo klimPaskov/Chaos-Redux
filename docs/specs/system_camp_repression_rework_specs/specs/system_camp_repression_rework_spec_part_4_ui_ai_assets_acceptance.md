@@ -1,5 +1,9 @@
 # System Camp Repression Rework Spec, Part 4: UI, AI, Assets, Achievements, and Acceptance Criteria
 
+## Live implementation reconciliation, 2026-07-11
+
+The optional/deferred GUI language below is retained as accepted planning history. The current implementation uses the full five-tab Repression Ledger plus the decision-category header. The header displays country, country-panel name, phase, and discovery state; all 32 Ledger country action slots use their native decision cooldown gates. All 24 ImageGen-derived Ledger sprites have live consumers, including scripted visibility for evidence and reform seals. Only authored frame animation remains optional and queued.
+
 ## UI and presentation
 
 The system should primarily use decision categories and scripted localisation. A custom scripted GUI is optional but recommended after the first implementation tranche if decision-category text becomes too dense.
