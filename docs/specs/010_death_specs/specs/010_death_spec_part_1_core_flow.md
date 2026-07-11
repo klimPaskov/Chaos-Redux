@@ -264,3 +264,9 @@ Death has no event cluster. It is a solitary fire-once incident with its own int
 - Ghost divisions appear only around the 600-tier evolution and strengthen at later stages.
 - The world-end branch requires both continent consumption and Chaos above 1000.
 - The final whole-world consumed branch has a super-event and achievement.
+
+## Implemented maritime case-file addendum (2026-07-11)
+
+Missing-route knowledge is country-scoped. `death_maritime_evidence` runs from 0 to 12 with fragmentary, pattern, probable, and confirmed bands at 1, 4, 7, and 10. The first report adds 2, the second adds 3, registry work adds 2, quiet quarantine adds 1, a survey adds 5 and confirms the local case, a confirmed warning adds 5 and confirms it, and filing under weather removes 3. One-time report and warning flags prevent duplicate claims.
+
+Before country confirmation or public revelation, the category and survey tooltip refer only to missing routes, contradictory records, and an unknown coastal threat. They do not name Death, Zol, DTH focus consequences, or world-end rules. A public reveal changes information wording but does not retroactively add hidden country evidence. The pre-transfer owner and controller of a consumed revealed coast each receive the confirmed-warning path once.

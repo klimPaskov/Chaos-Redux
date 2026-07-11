@@ -1,8 +1,8 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 010 DEATH CONSTANTS
 # ============================================================================
-# Shared tuning for Death origin selection, state consumption, spread, ghosts,
-# super-events, and triggerable scenario SCN-006.
+# Shared tuning for Death origin selection, maritime evidence, spatial spread,
+# state consumption, ghosts, custodianship, super-events, and SCN-006.
 # ============================================================================
 
 death_event = {
@@ -104,6 +104,39 @@ death_spread = {
 	island_pressure = 1
 	mainland_pressure = 3
 	world_end_pressure = 10
+}
+
+death_spatial_route = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	short_distance = 750
+	wide_distance = 1500
+	maximum_distance = 2500
+}
+
+death_maritime_evidence = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum = 0
+	maximum = 12
+	fragmentary_threshold = 1
+	pattern_threshold = 4
+	probable_threshold = 7
+	confirmed_threshold = 10
+	first_report_gain = 2
+	second_report_gain = 3
+	telegraph_gain = 2
+	quiet_quarantine_gain = 1
+	survey_gain = 5
+	confirmed_coastal_warning_gain = 5
+	weather_loss = -3
+	decay_loss = -1
 }
 
 death_wither_damage = {
@@ -364,6 +397,77 @@ death_decision_cost = {
 	break_oath_cp_spend = -40
 	break_oath_stability_gate = 0.099
 	break_oath_stability_spend = -0.10
+	custodial_transit_cp_gate = 19.99
+	custodial_transit_cp_spend = -20
+	custodial_transit_support_gate = 199.99
+	custodial_transit_support_spend = -200
+	custodial_transit_truck_gate = 99.99
+	custodial_transit_truck_spend = -100
+	custodial_transit_train_gate = 5.99
+	custodial_transit_train_spend = -6
+	custodial_transit_fuel_gate = 399.99
+	custodial_transit_fuel_spend = -400
+	custodial_transit_upkeep_cp_gate = 9.99
+	custodial_transit_upkeep_cp_spend = -10
+	custodial_transit_upkeep_support_gate = 99.99
+	custodial_transit_upkeep_support_spend = -100
+	custodial_transit_upkeep_truck_gate = 49.99
+	custodial_transit_upkeep_truck_spend = -50
+	custodial_transit_upkeep_train_gate = 2.99
+	custodial_transit_upkeep_train_spend = -3
+	custodial_transit_upkeep_fuel_gate = 249.99
+	custodial_transit_upkeep_fuel_spend = -250
+}
+
+death_custodial_capacity = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum = 0
+	maximum = 12
+	survey_gain = 1
+	outpost_gain = 1
+	compact_contribution_gain = 2
+	defeat_participation_gain = 2
+	sealed_exclusion_cost = 1
+	memorial_stewardship_cost = 2
+	transit_custodianship_cost = 3
+	memorial_stability_gain = 0.03
+	memorial_mourning_debt_reduction = -2
+	transit_maintenance_days = 180
+}
+
+death_custodial_state_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	policy_local_factories = -0.15
+	policy_local_resources = -0.10
+	sealed_local_supplies = -0.15
+	sealed_local_org_regain = 0.15
+	sealed_army_speed = -0.10
+	sealed_attrition = -0.35
+	sealed_truck_attrition = -0.20
+	sealed_building_speed = -0.65
+	memorial_local_org_regain = 0.05
+	memorial_attrition = -0.20
+	memorial_truck_attrition = -0.10
+	memorial_building_speed = -0.65
+	transit_local_supplies = 0.05
+	transit_local_org_regain = 0.05
+	transit_army_speed = 0.05
+	transit_attrition = -0.10
+	transit_truck_attrition = -0.05
+	transit_building_speed = -0.65
+	transit_maintained_local_supplies = 0.35
+	transit_maintained_local_org_regain = 0.10
+	transit_maintained_army_speed = 0.30
+	transit_maintained_attrition = -0.20
+	transit_maintained_truck_attrition = -0.20
 }
 
 death_decision_tuning = {
@@ -444,6 +548,18 @@ death_decision_tuning = {
 	ai_ledger_host_public_factor = 2
 	ai_ledger_host_war_factor = 3
 	ai_ledger_host_world_end_factor = 5
+	ai_maritime_investigate_factor = 3
+	ai_maritime_strong_case_factor = 5
+	ai_maritime_quarantine_factor = 4
+	ai_maritime_low_evidence_close_factor = 2
+	ai_maritime_close_file_suppression_factor = 0.1
+	ai_custodial_exposed_sealed_factor = 5
+	ai_custodial_strategic_transit_factor = 5
+	ai_custodial_secure_memorial_factor = 4
+	ai_custodial_mourning_pressure_factor = 3
+	ai_custodial_mourning_debt_threshold = 0
+	ai_custodial_default_factor = 1
+	ai_custodial_unfit_factor = 0
 }
 
 death_focus_reward = {

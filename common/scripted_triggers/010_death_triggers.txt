@@ -5,8 +5,8 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 010 DEATH TRIGGERS
 # ============================================================================
-# Trigger helpers for Death country state, origin/spread targets, reveal gates,
-# world-end gates, and scenario launch validation.
+# Trigger helpers for Death country state, maritime evidence, spatial spread,
+# custodianship, reveal/world-end gates, and scenario launch validation.
 # ============================================================================
 
 is_death_country = {
@@ -20,6 +20,82 @@ is_death_country = {
 death_country_exists = {
 	country_exists = DTH
 	DTH = { has_country_flag = death_country }
+}
+
+death_has_country_confirmed_maritime_case = {
+	OR = {
+		has_country_flag = death_maritime_case_confirmed
+		check_variable = {
+			var = death_maritime_evidence
+			value = constant:death_maritime_evidence.confirmed_threshold
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+death_has_confirmed_maritime_case = {
+	OR = {
+		death_has_country_confirmed_maritime_case = yes
+		has_global_flag = death_publicly_revealed
+	}
+}
+
+death_maritime_evidence_band_none = {
+	NOT = { death_has_confirmed_maritime_case = yes }
+	OR = {
+		NOT = { has_variable = death_maritime_evidence }
+		check_variable = {
+			var = death_maritime_evidence
+			value = constant:death_maritime_evidence.fragmentary_threshold
+			compare = less_than
+		}
+	}
+}
+
+death_maritime_evidence_band_fragmentary = {
+	NOT = { death_has_confirmed_maritime_case = yes }
+	check_variable = {
+		var = death_maritime_evidence
+		value = constant:death_maritime_evidence.fragmentary_threshold
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = death_maritime_evidence
+		value = constant:death_maritime_evidence.pattern_threshold
+		compare = less_than
+	}
+}
+
+death_maritime_evidence_band_pattern = {
+	NOT = { death_has_confirmed_maritime_case = yes }
+	check_variable = {
+		var = death_maritime_evidence
+		value = constant:death_maritime_evidence.pattern_threshold
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = death_maritime_evidence
+		value = constant:death_maritime_evidence.probable_threshold
+		compare = less_than
+	}
+}
+
+death_maritime_evidence_band_probable = {
+	NOT = { death_has_confirmed_maritime_case = yes }
+	check_variable = {
+		var = death_maritime_evidence
+		value = constant:death_maritime_evidence.probable_threshold
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = death_maritime_evidence
+		value = constant:death_maritime_evidence.confirmed_threshold
+		compare = less_than
+	}
+}
+
+death_maritime_evidence_band_confirmed = {
+	death_has_confirmed_maritime_case = yes
 }
 
 death_is_consumed_state = {
@@ -273,6 +349,97 @@ death_is_near_active_wasteland = {
 	}
 }
 
+death_is_within_short_ordinary_route = {
+	meta_trigger = {
+		text = {
+			any_state = {
+				has_state_flag = death_active_wasteland
+				is_controlled_by = DTH
+				distance_to = {
+					target = PREV
+					value < [DEATH_ROUTE_DISTANCE]
+				}
+			}
+		}
+		DEATH_ROUTE_DISTANCE = "[?global.death_ordinary_route_short_distance|.0]"
+	}
+}
+
+death_is_within_wide_ordinary_route = {
+	meta_trigger = {
+		text = {
+			any_state = {
+				has_state_flag = death_active_wasteland
+				is_controlled_by = DTH
+				distance_to = {
+					target = PREV
+					value < [DEATH_ROUTE_DISTANCE]
+				}
+			}
+		}
+		DEATH_ROUTE_DISTANCE = "[?global.death_ordinary_route_wide_distance|.0]"
+	}
+}
+
+death_is_within_maximum_ordinary_route = {
+	meta_trigger = {
+		text = {
+			any_state = {
+				has_state_flag = death_active_wasteland
+				is_controlled_by = DTH
+				distance_to = {
+					target = PREV
+					value < [DEATH_ROUTE_DISTANCE]
+				}
+			}
+		}
+		DEATH_ROUTE_DISTANCE = "[?global.death_ordinary_route_maximum_distance|.0]"
+	}
+}
+
+death_coast_is_warned_or_investigating = {
+	OR = {
+		has_state_flag = death_coastal_watch
+		has_global_flag = death_publicly_revealed
+		OWNER = {
+			OR = {
+				has_country_flag = death_received_second_missing_island_report
+				has_country_flag = death_checked_telegraph_office
+				has_country_flag = death_quiet_quarantine_active
+				has_country_flag = death_discovered_before_name
+				has_country_flag = death_recognized_death_war
+				has_country_flag = death_received_confirmed_coastal_warning
+				death_has_country_confirmed_maritime_case = yes
+			}
+		}
+		CONTROLLER = {
+			OR = {
+				has_country_flag = death_received_second_missing_island_report
+				has_country_flag = death_checked_telegraph_office
+				has_country_flag = death_quiet_quarantine_active
+				has_country_flag = death_discovered_before_name
+				has_country_flag = death_recognized_death_war
+				has_country_flag = death_received_confirmed_coastal_warning
+				death_has_country_confirmed_maritime_case = yes
+			}
+		}
+	}
+}
+
+death_is_ordinary_route_tier_one_target = {
+	death_is_within_short_ordinary_route = yes
+}
+
+death_is_ordinary_route_tier_two_target = {
+	death_is_within_wide_ordinary_route = yes
+	death_coast_is_warned_or_investigating = yes
+}
+
+death_is_ordinary_route_tier_three_target = {
+	death_is_within_maximum_ordinary_route = yes
+	death_spread_pressure_is_high = yes
+}
+
 death_is_valid_nearby_island_spread_target = {
 	death_is_valid_island_spread_target = yes
 	death_is_near_active_wasteland = yes
@@ -414,7 +581,7 @@ death_watch_network_can_intercept_coastal_jump = {
 	DTH = {
 		NOT = { has_country_flag = death_focus_no_ferry_returns }
 	}
-	any_state = { death_is_valid_coastal_jump_target = yes }
+	death_has_spatial_coastal_jump_target = yes
 }
 
 death_island_spread_soul_cost_is_cheap = {
@@ -442,13 +609,13 @@ death_can_use_mainland_pressure_standard_decision = {
 		value = constant:death_spread.mainland_pressure_threshold
 		compare = greater_than_or_equals
 	}
-	any_state = { death_is_valid_mainland_reveal_target = yes }
+	death_has_spatial_mainland_reveal_target = yes
 }
 
 death_can_use_mainland_pressure_war_decision = {
 	death_can_push_mainland_reveal = yes
 	death_can_bypass_mainland_hunger_from_war = yes
-	any_state = { death_is_valid_triggerable_mainland_reveal_target = yes }
+	death_has_spatial_triggerable_mainland_reveal_target = yes
 }
 
 death_has_mainland_pressure_route = {
@@ -492,8 +659,8 @@ death_ai_should_hold_host_souls_for_mainland_ledger = {
 		AND = {
 			death_can_push_mainland_reveal = yes
 			OR = {
-				any_state = { death_is_valid_mainland_reveal_target = yes }
-				any_state = { death_is_valid_triggerable_mainland_reveal_target = yes }
+				death_has_spatial_mainland_reveal_target = yes
+				death_has_spatial_triggerable_mainland_reveal_target = yes
 			}
 		}
 	}
@@ -612,6 +779,12 @@ death_is_valid_mainland_reveal_target = {
 	}
 	NOT = { death_is_consumed_state = yes }
 	NOT = { is_controlled_by = DTH }
+	OR = {
+		has_global_flag = death_world_end_started
+		NOT = { has_state_flag = death_coastal_watch }
+		DTH = { has_country_flag = death_focus_no_ferry_returns }
+	}
+	NOT = { has_state_flag = death_quarantine_line }
 	death_state_has_no_divisions = yes
 }
 
@@ -625,6 +798,12 @@ death_is_valid_triggerable_mainland_reveal_target = {
 	}
 	NOT = { death_is_consumed_state = yes }
 	NOT = { is_controlled_by = DTH }
+	OR = {
+		has_global_flag = death_world_end_started
+		NOT = { has_state_flag = death_coastal_watch }
+		DTH = { has_country_flag = death_focus_no_ferry_returns }
+	}
+	NOT = { has_state_flag = death_quarantine_line }
 	death_state_has_no_divisions = yes
 }
 
@@ -648,6 +827,39 @@ death_is_valid_coastal_jump_target = {
 	}
 	NOT = { has_state_flag = death_quarantine_line }
 	death_state_has_no_divisions = yes
+}
+
+death_has_spatial_mainland_reveal_target = {
+	any_state = {
+		death_is_valid_mainland_reveal_target = yes
+		OR = {
+			death_is_ordinary_route_tier_one_target = yes
+			death_is_ordinary_route_tier_two_target = yes
+			death_is_ordinary_route_tier_three_target = yes
+		}
+	}
+}
+
+death_has_spatial_triggerable_mainland_reveal_target = {
+	any_state = {
+		death_is_valid_triggerable_mainland_reveal_target = yes
+		OR = {
+			death_is_ordinary_route_tier_one_target = yes
+			death_is_ordinary_route_tier_two_target = yes
+			death_is_ordinary_route_tier_three_target = yes
+		}
+	}
+}
+
+death_has_spatial_coastal_jump_target = {
+	any_state = {
+		death_is_valid_coastal_jump_target = yes
+		OR = {
+			death_is_ordinary_route_tier_one_target = yes
+			death_is_ordinary_route_tier_two_target = yes
+			death_is_ordinary_route_tier_three_target = yes
+		}
+	}
 }
 
 death_is_valid_world_end_foothold_target_strict = {
@@ -796,6 +1008,8 @@ death_missing_island_decisions_visible = {
 	has_global_flag = death_active
 	NOT = { has_global_flag = death_defeated }
 	NOT = { has_global_flag = death_publicly_revealed }
+	NOT = { has_country_flag = death_ignored_missing_island_report }
+	NOT = { has_country_flag = death_maritime_case_closed_under_weather }
 	OR = {
 		has_country_flag = death_received_missing_island_report
 		has_country_flag = death_received_second_missing_island_report
@@ -1086,7 +1300,68 @@ death_has_quarantine_line_candidate = {
 death_has_recaptured_wasteland_candidate = {
 	any_controlled_state = {
 		has_state_flag = death_recaptured_wasteland
-		NOT = { has_state_flag = death_dead_zone_outpost }
+	}
+}
+
+death_is_valid_wasteland_survey_target = {
+	has_state_flag = death_recaptured_wasteland
+	NOT = { has_state_flag = death_active_wasteland }
+	NOT = { has_state_flag = death_wasteland_surveyed }
+	NOT = { has_state_flag = death_dead_zone_outpost }
+	NOT = { is_controlled_by = DTH }
+	is_controlled_by = ROOT
+}
+
+death_has_wasteland_survey_candidate = {
+	any_controlled_state = { death_is_valid_wasteland_survey_target = yes }
+}
+
+death_is_valid_dead_zone_outpost_target = {
+	has_state_flag = death_recaptured_wasteland
+	has_state_flag = death_wasteland_surveyed
+	NOT = { has_state_flag = death_active_wasteland }
+	NOT = { has_state_flag = death_dead_zone_outpost }
+	NOT = { is_controlled_by = DTH }
+	is_controlled_by = ROOT
+}
+
+death_has_dead_zone_outpost_candidate = {
+	any_controlled_state = { death_is_valid_dead_zone_outpost_target = yes }
+}
+
+death_is_valid_custodial_policy_target = {
+	has_global_flag = death_defeated
+	has_state_flag = death_recaptured_wasteland
+	has_state_flag = death_wasteland_surveyed
+	has_state_flag = death_dead_zone_outpost
+	NOT = { has_state_flag = death_active_wasteland }
+	NOT = { has_state_flag = death_custodial_policy_selected }
+	NOT = { is_controlled_by = DTH }
+	is_controlled_by = ROOT
+}
+
+death_has_custodial_policy_candidate = {
+	any_controlled_state = { death_is_valid_custodial_policy_target = yes }
+}
+
+death_transit_custodianship_needs_maintenance = {
+	has_state_flag = death_recaptured_wasteland
+	has_state_flag = death_custodial_policy_selected
+	has_state_flag = death_custodial_transit_custodianship
+	NOT = { has_state_flag = death_active_wasteland }
+	NOT = { has_dynamic_modifier = death_custodial_transit_maintenance_state }
+	is_controlled_by = ROOT
+}
+
+death_has_transit_custodianship_maintenance_candidate = {
+	any_controlled_state = { death_transit_custodianship_needs_maintenance = yes }
+}
+
+death_has_custodial_capacity = {
+	check_variable = {
+		var = death_custodial_capacity
+		value = constant:death_custodial_capacity.minimum
+		compare = greater_than
 	}
 }
 
@@ -1212,6 +1487,43 @@ can_pay_death_dead_zone_outpost_cost = {
 	has_equipment = { support_equipment > constant:death_decision_cost.outpost_support_gate }
 	has_equipment = { motorized_equipment > constant:death_decision_cost.outpost_truck_gate }
 	has_equipment = { train_equipment > constant:death_decision_cost.outpost_train_gate }
+}
+
+can_pay_death_sealed_exclusion_policy_cost = {
+	check_variable = {
+		var = death_custodial_capacity
+		value = constant:death_custodial_capacity.sealed_exclusion_cost
+		compare = greater_than_or_equals
+	}
+}
+
+can_pay_death_memorial_stewardship_policy_cost = {
+	check_variable = {
+		var = death_custodial_capacity
+		value = constant:death_custodial_capacity.memorial_stewardship_cost
+		compare = greater_than_or_equals
+	}
+}
+
+can_pay_death_transit_custodianship_policy_cost = {
+	check_variable = {
+		var = death_custodial_capacity
+		value = constant:death_custodial_capacity.transit_custodianship_cost
+		compare = greater_than_or_equals
+	}
+	command_power > constant:death_decision_cost.custodial_transit_cp_gate
+	has_fuel > constant:death_decision_cost.custodial_transit_fuel_gate
+	has_equipment = { support_equipment > constant:death_decision_cost.custodial_transit_support_gate }
+	has_equipment = { motorized_equipment > constant:death_decision_cost.custodial_transit_truck_gate }
+	has_equipment = { train_equipment > constant:death_decision_cost.custodial_transit_train_gate }
+}
+
+can_pay_death_transit_custodianship_upkeep = {
+	command_power > constant:death_decision_cost.custodial_transit_upkeep_cp_gate
+	has_fuel > constant:death_decision_cost.custodial_transit_upkeep_fuel_gate
+	has_equipment = { support_equipment > constant:death_decision_cost.custodial_transit_upkeep_support_gate }
+	has_equipment = { motorized_equipment > constant:death_decision_cost.custodial_transit_upkeep_truck_gate }
+	has_equipment = { train_equipment > constant:death_decision_cost.custodial_transit_upkeep_train_gate }
 }
 
 can_pay_death_last_shores_response_cost = {
