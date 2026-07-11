@@ -1,0 +1,32 @@
+# Event 013 super-event audio production and uniqueness record
+
+## Production status
+
+The six Event 013 super-events use UI slots 67-72 and distinct playback audio IDs 37-42. Every cue has a live OGG, a WAV mirror for sound-mode playback, music and sound registration, settings-aware volume variants, source-and-rights documentation, and a role-specific trigger. The catalogue-wide decoded-audio comparison found one prior collision: the first ID 37 export was the same recording as Soviet Collapse audio ID 14. ID 37 was replaced at its stable paths with a different public-domain recording before this record was closed.
+
+| UI slot | Audio ID | Super-event | Source and recording rights | Source SHA-256 | Edit and loudness | Final files |
+| --- | --- | --- | --- | --- | --- | --- |
+| 67 | 37 | No Firm Ground | Grieg, *Peer Gynt Suite No. 1*, IV. *In the Hall of the Mountain King*, Czech National Symphony Orchestra / Musopen Symphony; [Commons source and rights](https://commons.wikimedia.org/wiki/File%3AGrieg_-_Peer_Gynt_Suite_No._1%2C_Op._46_-_IV._In_the_Hall_of_the_Mountain_King_%28Musopen_Symphony%29.flac), worldwide public-domain dedication for the recording and public-domain composition | `1C1BE6B3E0042EE031CEE42A8D151B04C78BFCCF3126C4DE6271E7B2FDCB6937` | 0:36.091-2:34.091, final six-second fade, 44.1 kHz export; -18.1 LUFS, -1.6 dBTP | `music/013_natural_disasters/super_event_37_earth_rupture.ogg`; `sound/013_natural_disasters/super_event_37_earth_rupture.wav` |
+| 68 | 38 | Ash at Noon | Tchaikovsky, Symphony No. 6 IV, Musopen performance; [Commons source and rights](https://commons.wikimedia.org/wiki/File%3ATchaikovsky%2C_Symphony_No._6_in_B_minor%2C_Op._74%2C_%27Pathetique%27_-_IV._Finale_Adagio_lamentoso.ogg), CC0 recording | `77C355A7BBC0DEC05ECA247740CE34AFE8D4FF61A53D7EF3266F1FC485B24BBC` | selected 1:55 cue, final six-second fade; -18.0 LUFS, -2.2 dBTP | `music/013_natural_disasters/super_event_38_massive_eruption.ogg`; `sound/013_natural_disasters/super_event_38_massive_eruption.wav` |
+| 69 | 39 | The Burning Firmament | Mahler, Symphony No. 2 V, DuPage Symphony Orchestra / Barbara Schubert; [Commons source and rights](https://commons.wikimedia.org/wiki/File%3AMahler_Symphony_no._2%2C_V._Im_Tempo_des_Scherzos.ogg), CC0 recording | `BC0F512DC3E0E24DF8A424296046D7D86B4A59EE12EDEA46557A280B03147D98` | 0:00-1:58, final six-second fade; -18.0 LUFS, -1.4 dBTP | `music/013_natural_disasters/super_event_39_skyfall.ogg`; `sound/013_natural_disasters/super_event_39_skyfall.wav` |
+| 70 | 40 | The Fretful Elements | Rossini, *William Tell Overture*, United States Marine Band / Timothy Foley; [archived federal source](https://web.archive.org/web/1/www.marineband.usmc.mil/downloads/audio/overture_to_william_tell.mp3), U.S. federal public-domain recording | `B5C9593339E4262917A18C824AB181380F5783B3B01D0FA77E190AB8E8970E42` | 7:30-9:25, final six-second fade; -18.1 LUFS, -1.4 dBTP | `music/013_natural_disasters/super_event_40_storm_corridor.ogg`; `sound/013_natural_disasters/super_event_40_storm_corridor.wav` |
+| 71 | 41 | Old Stories Cease to Be Incredible | Beethoven, *Coriolan Overture*, Czech National Symphony Orchestra / Musopen; [Commons source and rights](https://commons.wikimedia.org/wiki/File:Beethoven_-_Coriolan_Overture,_Op._62_(Musopen_Symphony).flac), public-domain/CC0 recording | `2949526B38864BA2CEE698F3E29E6881C93C1462DF97606630940987E81EF0C3` | 0:00-1:50, final six-second fade; -18.1 LUFS, -2.4 dBTP | `music/013_natural_disasters/super_event_41_abnormal_disaster_age.ogg`; `sound/013_natural_disasters/super_event_41_abnormal_disaster_age.wav` |
+| 72 | 42 | Below the Stone | Mendelssohn, *The Hebrides*, Musopen Symphony; [Commons source and rights](https://commons.wikimedia.org/wiki/File:Mendelssohn_-_Hebrides_Overture,_Op._26_(Musopen_Symphony).flac), public-domain/CC0 recording | `48E0ED748A461E1F8A04686F438477AC181390C2DC870788F8D3DFDA88416952` | selected 1:55 cue, final six-second fade; -18.1 LUFS, -1.3 dBTP | `music/013_natural_disasters/super_event_42_delayed_tsunami_chain.ogg`; `sound/013_natural_disasters/super_event_42_delayed_tsunami_chain.wav` |
+
+## Collision correction
+
+The superseded ID 37 OGG matched Soviet Collapse ID 14 over the full 932-word Chromaprint sequence: similarity was `0.993730` against the ID 14 OGG and `0.994434` against its WAV mirror at zero offset. This proved reuse of one recording rather than a coincidental similarity between compositions.
+
+The replacement Grieg source's SHA-1 is `7D34C97620149EFF83BC14A1E838EF5D8E66746B`, matching the checksum published by Commons. The final ID 37 OGG SHA-256 is `189AF2FD28DEFD122CDF80CA0CCBF34317268148B3379C0BEE382285F17346A8`; the WAV SHA-256 is `1D527BAD4BC93D77AC4265D4791D3B8ADABBA88C38C745F9A7623D554B6B7CFF`. Both decode to the same 44.1 kHz stereo signed-16-bit PCM hash, `0657C8A2E6897428E44C0423D2BEF0B3B4BDE15CB74BCC2C17B06F9AC0B911FE`, and run for 118.000 seconds.
+
+The final minimum-offset Chromaprint pass compared every Event 013 cue against the registered non-Event-013 catalogue, including later audio IDs 49, 50, and 52-56. Maximum cross-event similarities were `0.578529` (37), `0.595616` (38), `0.572875` (39), `0.578056` (40), `0.580522` (41), and `0.596505` (42). The confirmed reuse control was `0.993730-0.994434`; no final Event 013 cue falls in the reuse cluster.
+
+## Runtime registration
+
+`music/chaosx_super_event_music.asset` exposes `chaosx_super_event_<audio_id>_<volume>` variants from 0.5 through 3.0. `sound/chaosx_sound.asset` exposes the matching `chaosx_super_event_<audio_id>_sound_<volume>` variants. Event 013 therefore uses the common `play_current_super_event_audio` path and honors player sound-mode and volume settings without a bespoke fallback.
+
+Unused Soviet Collapse audio IDs 16 and 19-27 and their OGG/WAV files, registrations, localisation, and catalogue rows were removed. Soviet Collapse retains only the referenced IDs 14, 15, 17, and 18.
+
+## Archival note
+
+The untouched source recordings and analysis artifacts were committed with the production record in commit `453f9d2f`. The broader concurrent `docs/assets/` cleanup currently removes that binary source archive from the working tree. This document preserves canonical source pages, rights, hashes, edits, loudness, final paths, and collision evidence; restoring the binary source archive remains explicitly queued pending the repository-wide asset-retention decision.

@@ -62,6 +62,34 @@ natural_disaster_aftermath_category = {
 		ai_will_do = { factor = 0 }
 	}
 
+	# A successful API call exposes its exact scheduled state immediately. The
+	# actionable family warning remains conditional and delayed, but the player
+	# never has to infer from a hidden root event that a disaster was accepted.
+	natural_disaster_forecast_card = {
+		state_target = any_controlled_state
+		target_root_trigger = { natural_disaster_country_has_warning = yes }
+		target_trigger = {
+			FROM = {
+				has_state_flag = natural_disaster_impact_scheduled
+				NOT = { has_state_flag = natural_disaster_warning_active }
+				NOT = { has_state_flag = natural_disaster_recovery_unresolved_territory }
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		priority = @ND_PRIORITY_WARNING
+		available = {
+			FROM = { NOT = { has_state_flag = natural_disaster_forecast_acknowledged } }
+		}
+		complete_effect = {
+			custom_effect_tooltip = natural_disaster_forecast_card_acknowledge_tt
+			FROM = {
+				set_state_flag = natural_disaster_forecast_acknowledged
+				natural_disaster_set_category_display_from_state = yes
+			}
+		}
+		ai_will_do = { factor = 0 }
+	}
+
 	natural_disaster_review_abnormal_path_map = {
 		icon = GFX_013_map_marker_next_hit_static
 		visible = { has_country_flag = natural_disaster_abnormal_map_available }
@@ -88,49 +116,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_transport = yes
-			has_fuel > constant:natural_disaster_cost_gate.warning_fuel
+			natural_disaster_can_pay_warning_command_rail = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_transport
+		custom_cost_text = natural_disaster_cost_warning_command_rail
 		complete_effect = {
-			set_temp_variable = { nd_warning_manpower_cost = constant:natural_disaster_cost.warning_manpower }
-			multiply_temp_variable = { nd_warning_manpower_cost = -1 }
-			add_manpower = nd_warning_manpower_cost
-			if = {
-				limit = { has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.warning_trains } }
-				set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_trains }
-				multiply_temp_variable = { nd_warning_transport_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = train_equipment_1
-					amount = nd_warning_transport_cost
-				}
-			}
-			else = {
-				set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_convoys }
-				multiply_temp_variable = { nd_warning_transport_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = convoy_1
-					amount = nd_warning_transport_cost
-				}
-			}
-			set_temp_variable = { nd_warning_fuel_cost = constant:natural_disaster_cost.warning_fuel }
-			multiply_temp_variable = { nd_warning_fuel_cost = -1 }
-			add_fuel = nd_warning_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.warning_stability
-			FROM = {
-				set_state_flag = {
-					flag = natural_disaster_warning_action_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				set_state_flag = {
-					flag = natural_disaster_warn_earthquake_rail_crews_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				add_to_variable = { natural_disaster_preparation_score = @ND_WARNING_ACTION_SCORE }
-			}
+			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.primary }
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.transport }
+			natural_disaster_pay_warning_command_rail = yes
+			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_command_rail = yes } }
 			modifier = {
 				factor = @ND_AI_FACTOR_CRITICAL
 				FROM = { is_capital = yes }
@@ -159,49 +156,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_transport = yes
-			has_fuel > constant:natural_disaster_cost_gate.warning_fuel
+			natural_disaster_can_pay_warning_command_rail = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_transport
+		custom_cost_text = natural_disaster_cost_warning_command_rail
 		complete_effect = {
-			set_temp_variable = { nd_warning_manpower_cost = constant:natural_disaster_cost.warning_manpower }
-			multiply_temp_variable = { nd_warning_manpower_cost = -1 }
-			add_manpower = nd_warning_manpower_cost
-			if = {
-				limit = { has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.warning_trains } }
-				set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_trains }
-				multiply_temp_variable = { nd_warning_transport_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = train_equipment_1
-					amount = nd_warning_transport_cost
-				}
-			}
-			else = {
-				set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_convoys }
-				multiply_temp_variable = { nd_warning_transport_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = convoy_1
-					amount = nd_warning_transport_cost
-				}
-			}
-			set_temp_variable = { nd_warning_fuel_cost = constant:natural_disaster_cost.warning_fuel }
-			multiply_temp_variable = { nd_warning_fuel_cost = -1 }
-			add_fuel = nd_warning_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.warning_stability
-			FROM = {
-				set_state_flag = {
-					flag = natural_disaster_warning_action_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				set_state_flag = {
-					flag = natural_disaster_warn_flood_move_rolling_stock_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				add_to_variable = { natural_disaster_preparation_score = @ND_WARNING_ACTION_SCORE }
-			}
+			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.primary }
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.transport }
+			natural_disaster_pay_warning_command_rail = yes
+			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_command_rail = yes } }
 			modifier = {
 				factor = @ND_AI_FACTOR_HIGH
 				FROM = { natural_disaster_state_has_dense_population = yes }
@@ -230,49 +196,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_transport = yes
-			has_fuel > constant:natural_disaster_cost_gate.warning_fuel
+			natural_disaster_can_pay_warning_naval_coast = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_transport
+		custom_cost_text = natural_disaster_cost_warning_naval_coast
 		complete_effect = {
-			set_temp_variable = { nd_warning_manpower_cost = constant:natural_disaster_cost.warning_manpower }
-			multiply_temp_variable = { nd_warning_manpower_cost = -1 }
-			add_manpower = nd_warning_manpower_cost
-			if = {
-				limit = { has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.warning_trains } }
-				set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_trains }
-				multiply_temp_variable = { nd_warning_transport_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = train_equipment_1
-					amount = nd_warning_transport_cost
-				}
-			}
-			else = {
-				set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_convoys }
-				multiply_temp_variable = { nd_warning_transport_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = convoy_1
-					amount = nd_warning_transport_cost
-				}
-			}
-			set_temp_variable = { nd_warning_fuel_cost = constant:natural_disaster_cost.warning_fuel }
-			multiply_temp_variable = { nd_warning_fuel_cost = -1 }
-			add_fuel = nd_warning_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.warning_stability
-			FROM = {
-				set_state_flag = {
-					flag = natural_disaster_warning_action_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				set_state_flag = {
-					flag = natural_disaster_warn_tropical_cyclone_close_ports_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				add_to_variable = { natural_disaster_preparation_score = @ND_WARNING_ACTION_SCORE }
-			}
+			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.primary }
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.coast }
+			natural_disaster_pay_warning_naval_coast = yes
+			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_naval_coast = yes } }
 			modifier = {
 				factor = @ND_AI_FACTOR_HIGH
 				FROM = { natural_disaster_state_has_strategic_transport = yes }
@@ -301,49 +236,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_transport = yes
-			has_fuel > constant:natural_disaster_cost_gate.warning_fuel
+			natural_disaster_can_pay_warning_command_rail = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_transport
+		custom_cost_text = natural_disaster_cost_warning_command_rail
 		complete_effect = {
-			set_temp_variable = { nd_warning_manpower_cost = constant:natural_disaster_cost.warning_manpower }
-			multiply_temp_variable = { nd_warning_manpower_cost = -1 }
-			add_manpower = nd_warning_manpower_cost
-			if = {
-				limit = { has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.warning_trains } }
-				set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_trains }
-				multiply_temp_variable = { nd_warning_transport_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = train_equipment_1
-					amount = nd_warning_transport_cost
-				}
-			}
-			else = {
-				set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_convoys }
-				multiply_temp_variable = { nd_warning_transport_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = convoy_1
-					amount = nd_warning_transport_cost
-				}
-			}
-			set_temp_variable = { nd_warning_fuel_cost = constant:natural_disaster_cost.warning_fuel }
-			multiply_temp_variable = { nd_warning_fuel_cost = -1 }
-			add_fuel = nd_warning_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.warning_stability
-			FROM = {
-				set_state_flag = {
-					flag = natural_disaster_warning_action_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				set_state_flag = {
-					flag = natural_disaster_warn_extreme_wind_pause_trains_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				add_to_variable = { natural_disaster_preparation_score = @ND_WARNING_ACTION_SCORE }
-			}
+			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.primary }
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.transport }
+			natural_disaster_pay_warning_command_rail = yes
+			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_command_rail = yes } }
 			modifier = {
 				factor = @ND_AI_FACTOR_HIGH
 				FROM = { natural_disaster_state_has_strategic_transport = yes }
@@ -372,34 +276,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_shelter = yes
+			natural_disaster_can_pay_warning_shelter_medical = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_shelter
+		custom_cost_text = natural_disaster_cost_warning_shelter_medical
 		complete_effect = {
-			set_temp_variable = { nd_warning_manpower_cost = constant:natural_disaster_cost.warning_manpower }
-			multiply_temp_variable = { nd_warning_manpower_cost = -1 }
-			add_manpower = nd_warning_manpower_cost
-			set_temp_variable = { nd_warning_support_cost = constant:natural_disaster_cost.warning_support_equipment }
-			multiply_temp_variable = { nd_warning_support_cost = -1 }
-			add_equipment_to_stockpile = {
-				type = support_equipment_1
-				amount = nd_warning_support_cost
-			}
-			add_stability = constant:natural_disaster_cost_fixed.warning_stability
-			FROM = {
-				set_state_flag = {
-					flag = natural_disaster_warning_action_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				set_state_flag = {
-					flag = natural_disaster_warn_tornado_outbreak_shelter_belt_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				add_to_variable = { natural_disaster_preparation_score = @ND_WARNING_ACTION_SCORE }
-			}
+			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.primary }
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.population }
+			natural_disaster_pay_warning_shelter_medical = yes
+			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_shelter_medical = yes } }
 			modifier = {
 				factor = @ND_AI_FACTOR_CRITICAL
 				FROM = { is_capital = yes }
@@ -428,45 +316,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_field_teams = yes
+			natural_disaster_can_pay_warning_field_research = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_field
+		custom_cost_text = natural_disaster_cost_warning_field_research
 		complete_effect = {
-			set_temp_variable = { nd_warning_manpower_cost = constant:natural_disaster_cost.warning_manpower }
-			multiply_temp_variable = { nd_warning_manpower_cost = -1 }
-			add_manpower = nd_warning_manpower_cost
-			if = {
-				limit = { has_equipment = { support_equipment_1 > constant:natural_disaster_cost_gate.warning_support_equipment } }
-				set_temp_variable = { nd_warning_equipment_cost = constant:natural_disaster_cost.warning_support_equipment }
-				multiply_temp_variable = { nd_warning_equipment_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = support_equipment_1
-					amount = nd_warning_equipment_cost
-				}
-			}
-			else = {
-				set_temp_variable = { nd_warning_equipment_cost = constant:natural_disaster_cost.warning_trucks }
-				multiply_temp_variable = { nd_warning_equipment_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = motorized_equipment_1
-					amount = nd_warning_equipment_cost
-				}
-			}
-			add_stability = constant:natural_disaster_cost_fixed.warning_stability
-			FROM = {
-				set_state_flag = {
-					flag = natural_disaster_warning_action_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				set_state_flag = {
-					flag = natural_disaster_warn_thunderstorm_lightning_patrol_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				add_to_variable = { natural_disaster_preparation_score = @ND_WARNING_ACTION_SCORE }
-			}
+			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.primary }
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.fire }
+			natural_disaster_pay_warning_field_research = yes
+			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_field_research = yes } }
 			modifier = {
 				factor = @ND_AI_FACTOR_HIGH
 				FROM = { natural_disaster_state_has_strategic_transport = yes }
@@ -485,51 +346,25 @@ natural_disaster_aftermath_category = {
 			natural_disaster_warning_action_available = yes
 			FROM = {
 				check_variable = { natural_disaster_family = constant:natural_disaster_family.hailstorm }
+				air_base > 0
 				NOT = { has_state_flag = natural_disaster_warn_hailstorm_cover_aircraft_taken }
 			}
 		}
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_field_teams = yes
+			natural_disaster_can_pay_warning_air = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_field
+		custom_cost_text = natural_disaster_cost_warning_air
 		complete_effect = {
-			set_temp_variable = { nd_warning_manpower_cost = constant:natural_disaster_cost.warning_manpower }
-			multiply_temp_variable = { nd_warning_manpower_cost = -1 }
-			add_manpower = nd_warning_manpower_cost
-			if = {
-				limit = { has_equipment = { support_equipment_1 > constant:natural_disaster_cost_gate.warning_support_equipment } }
-				set_temp_variable = { nd_warning_equipment_cost = constant:natural_disaster_cost.warning_support_equipment }
-				multiply_temp_variable = { nd_warning_equipment_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = support_equipment_1
-					amount = nd_warning_equipment_cost
-				}
-			}
-			else = {
-				set_temp_variable = { nd_warning_equipment_cost = constant:natural_disaster_cost.warning_trucks }
-				multiply_temp_variable = { nd_warning_equipment_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = motorized_equipment_1
-					amount = nd_warning_equipment_cost
-				}
-			}
-			add_stability = constant:natural_disaster_cost_fixed.warning_stability
-			FROM = {
-				set_state_flag = {
-					flag = natural_disaster_warning_action_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				set_state_flag = {
-					flag = natural_disaster_warn_hailstorm_cover_aircraft_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				add_to_variable = { natural_disaster_preparation_score = @ND_WARNING_ACTION_SCORE }
-			}
+			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.primary }
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.industry_air }
+			natural_disaster_pay_warning_air = yes
+			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_air = yes } }
 			modifier = {
 				factor = @ND_AI_FACTOR_HIGH
 				FROM = { natural_disaster_state_has_dense_population = yes }
@@ -554,49 +389,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_transport = yes
-			has_fuel > constant:natural_disaster_cost_gate.warning_fuel
+			natural_disaster_can_pay_warning_fuel_convoy = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_transport
+		custom_cost_text = natural_disaster_cost_warning_fuel_convoy
 		complete_effect = {
-			set_temp_variable = { nd_warning_manpower_cost = constant:natural_disaster_cost.warning_manpower }
-			multiply_temp_variable = { nd_warning_manpower_cost = -1 }
-			add_manpower = nd_warning_manpower_cost
-			if = {
-				limit = { has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.warning_trains } }
-				set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_trains }
-				multiply_temp_variable = { nd_warning_transport_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = train_equipment_1
-					amount = nd_warning_transport_cost
-				}
-			}
-			else = {
-				set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_convoys }
-				multiply_temp_variable = { nd_warning_transport_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = convoy_1
-					amount = nd_warning_transport_cost
-				}
-			}
-			set_temp_variable = { nd_warning_fuel_cost = constant:natural_disaster_cost.warning_fuel }
-			multiply_temp_variable = { nd_warning_fuel_cost = -1 }
-			add_fuel = nd_warning_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.warning_stability
-			FROM = {
-				set_state_flag = {
-					flag = natural_disaster_warning_action_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				set_state_flag = {
-					flag = natural_disaster_warn_blizzard_fuel_corridor_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				add_to_variable = { natural_disaster_preparation_score = @ND_WARNING_ACTION_SCORE }
-			}
+			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.primary }
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.transport }
+			natural_disaster_pay_warning_fuel_convoy = yes
+			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_fuel_convoy = yes } }
 			modifier = {
 				factor = @ND_AI_FACTOR_HIGH
 				FROM = { natural_disaster_state_has_dense_population = yes }
@@ -625,34 +429,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_shelter = yes
+			natural_disaster_can_pay_warning_shelter_medical = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_shelter
+		custom_cost_text = natural_disaster_cost_warning_shelter_medical
 		complete_effect = {
-			set_temp_variable = { nd_warning_manpower_cost = constant:natural_disaster_cost.warning_manpower }
-			multiply_temp_variable = { nd_warning_manpower_cost = -1 }
-			add_manpower = nd_warning_manpower_cost
-			set_temp_variable = { nd_warning_support_cost = constant:natural_disaster_cost.warning_support_equipment }
-			multiply_temp_variable = { nd_warning_support_cost = -1 }
-			add_equipment_to_stockpile = {
-				type = support_equipment_1
-				amount = nd_warning_support_cost
-			}
-			add_stability = constant:natural_disaster_cost_fixed.warning_stability
-			FROM = {
-				set_state_flag = {
-					flag = natural_disaster_warning_action_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				set_state_flag = {
-					flag = natural_disaster_warn_cold_wave_heat_shelters_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				add_to_variable = { natural_disaster_preparation_score = @ND_WARNING_ACTION_SCORE }
-			}
+			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.primary }
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.population }
+			natural_disaster_pay_warning_shelter_medical = yes
+			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_shelter_medical = yes } }
 			modifier = {
 				factor = @ND_AI_FACTOR_CRITICAL
 				FROM = { is_capital = yes }
@@ -677,49 +465,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_transport = yes
-			has_fuel > constant:natural_disaster_cost_gate.warning_fuel
+			natural_disaster_can_pay_warning_fuel_convoy = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_transport
+		custom_cost_text = natural_disaster_cost_warning_fuel_convoy
 		complete_effect = {
-			set_temp_variable = { nd_warning_manpower_cost = constant:natural_disaster_cost.warning_manpower }
-			multiply_temp_variable = { nd_warning_manpower_cost = -1 }
-			add_manpower = nd_warning_manpower_cost
-			if = {
-				limit = { has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.warning_trains } }
-				set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_trains }
-				multiply_temp_variable = { nd_warning_transport_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = train_equipment_1
-					amount = nd_warning_transport_cost
-				}
-			}
-			else = {
-				set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_convoys }
-				multiply_temp_variable = { nd_warning_transport_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = convoy_1
-					amount = nd_warning_transport_cost
-				}
-			}
-			set_temp_variable = { nd_warning_fuel_cost = constant:natural_disaster_cost.warning_fuel }
-			multiply_temp_variable = { nd_warning_fuel_cost = -1 }
-			add_fuel = nd_warning_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.warning_stability
-			FROM = {
-				set_state_flag = {
-					flag = natural_disaster_warning_action_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				set_state_flag = {
-					flag = natural_disaster_warn_heat_wave_water_points_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				add_to_variable = { natural_disaster_preparation_score = @ND_WARNING_ACTION_SCORE }
-			}
+			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.primary }
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.food_water }
+			natural_disaster_pay_warning_fuel_convoy = yes
+			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_fuel_convoy = yes } }
 			modifier = {
 				factor = @ND_AI_FACTOR_CRITICAL
 				FROM = { is_capital = yes }
@@ -744,49 +501,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_transport = yes
-			has_fuel > constant:natural_disaster_cost_gate.warning_fuel
+			natural_disaster_can_pay_warning_fuel_convoy = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_transport
+		custom_cost_text = natural_disaster_cost_warning_fuel_convoy
 		complete_effect = {
-			set_temp_variable = { nd_warning_manpower_cost = constant:natural_disaster_cost.warning_manpower }
-			multiply_temp_variable = { nd_warning_manpower_cost = -1 }
-			add_manpower = nd_warning_manpower_cost
-			if = {
-				limit = { has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.warning_trains } }
-				set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_trains }
-				multiply_temp_variable = { nd_warning_transport_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = train_equipment_1
-					amount = nd_warning_transport_cost
-				}
-			}
-			else = {
-				set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_convoys }
-				multiply_temp_variable = { nd_warning_transport_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = convoy_1
-					amount = nd_warning_transport_cost
-				}
-			}
-			set_temp_variable = { nd_warning_fuel_cost = constant:natural_disaster_cost.warning_fuel }
-			multiply_temp_variable = { nd_warning_fuel_cost = -1 }
-			add_fuel = nd_warning_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.warning_stability
-			FROM = {
-				set_state_flag = {
-					flag = natural_disaster_warning_action_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				set_state_flag = {
-					flag = natural_disaster_warn_drought_water_trains_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				add_to_variable = { natural_disaster_preparation_score = @ND_WARNING_ACTION_SCORE }
-			}
+			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.primary }
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.food_water }
+			natural_disaster_pay_warning_fuel_convoy = yes
+			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_fuel_convoy = yes } }
 			modifier = {
 				factor = @ND_AI_FACTOR_HIGH
 				FROM = { natural_disaster_state_has_dense_population = yes }
@@ -811,49 +537,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_transport = yes
-			has_fuel > constant:natural_disaster_cost_gate.warning_fuel
+			natural_disaster_can_pay_warning_fuel_convoy = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_transport
+		custom_cost_text = natural_disaster_cost_warning_fuel_convoy
 		complete_effect = {
-			set_temp_variable = { nd_warning_manpower_cost = constant:natural_disaster_cost.warning_manpower }
-			multiply_temp_variable = { nd_warning_manpower_cost = -1 }
-			add_manpower = nd_warning_manpower_cost
-			if = {
-				limit = { has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.warning_trains } }
-				set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_trains }
-				multiply_temp_variable = { nd_warning_transport_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = train_equipment_1
-					amount = nd_warning_transport_cost
-				}
-			}
-			else = {
-				set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_convoys }
-				multiply_temp_variable = { nd_warning_transport_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = convoy_1
-					amount = nd_warning_transport_cost
-				}
-			}
-			set_temp_variable = { nd_warning_fuel_cost = constant:natural_disaster_cost.warning_fuel }
-			multiply_temp_variable = { nd_warning_fuel_cost = -1 }
-			add_fuel = nd_warning_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.warning_stability
-			FROM = {
-				set_state_flag = {
-					flag = natural_disaster_warning_action_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				set_state_flag = {
-					flag = natural_disaster_warn_dust_and_sandstorm_convoy_spacing_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				add_to_variable = { natural_disaster_preparation_score = @ND_WARNING_ACTION_SCORE }
-			}
+			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.primary }
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.transport }
+			natural_disaster_pay_warning_fuel_convoy = yes
+			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_fuel_convoy = yes } }
 			modifier = {
 				factor = @ND_AI_FACTOR_HIGH
 				FROM = { natural_disaster_state_has_strategic_transport = yes }
@@ -878,45 +573,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_field_teams = yes
+			natural_disaster_can_pay_warning_field_research = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_field
+		custom_cost_text = natural_disaster_cost_warning_field_research
 		complete_effect = {
-			set_temp_variable = { nd_warning_manpower_cost = constant:natural_disaster_cost.warning_manpower }
-			multiply_temp_variable = { nd_warning_manpower_cost = -1 }
-			add_manpower = nd_warning_manpower_cost
-			if = {
-				limit = { has_equipment = { support_equipment_1 > constant:natural_disaster_cost_gate.warning_support_equipment } }
-				set_temp_variable = { nd_warning_equipment_cost = constant:natural_disaster_cost.warning_support_equipment }
-				multiply_temp_variable = { nd_warning_equipment_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = support_equipment_1
-					amount = nd_warning_equipment_cost
-				}
-			}
-			else = {
-				set_temp_variable = { nd_warning_equipment_cost = constant:natural_disaster_cost.warning_trucks }
-				multiply_temp_variable = { nd_warning_equipment_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = motorized_equipment_1
-					amount = nd_warning_equipment_cost
-				}
-			}
-			add_stability = constant:natural_disaster_cost_fixed.warning_stability
-			FROM = {
-				set_state_flag = {
-					flag = natural_disaster_warning_action_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				set_state_flag = {
-					flag = natural_disaster_warn_wildfire_firebreaks_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				add_to_variable = { natural_disaster_preparation_score = @ND_WARNING_ACTION_SCORE }
-			}
+			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.primary }
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.fire }
+			natural_disaster_pay_warning_field_research = yes
+			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_field_research = yes } }
 			modifier = {
 				factor = @ND_AI_FACTOR_CRITICAL
 				FROM = { is_capital = yes }
@@ -945,45 +613,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_field_teams = yes
+			natural_disaster_can_pay_warning_field_research = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_field
+		custom_cost_text = natural_disaster_cost_warning_field_research
 		complete_effect = {
-			set_temp_variable = { nd_warning_manpower_cost = constant:natural_disaster_cost.warning_manpower }
-			multiply_temp_variable = { nd_warning_manpower_cost = -1 }
-			add_manpower = nd_warning_manpower_cost
-			if = {
-				limit = { has_equipment = { support_equipment_1 > constant:natural_disaster_cost_gate.warning_support_equipment } }
-				set_temp_variable = { nd_warning_equipment_cost = constant:natural_disaster_cost.warning_support_equipment }
-				multiply_temp_variable = { nd_warning_equipment_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = support_equipment_1
-					amount = nd_warning_equipment_cost
-				}
-			}
-			else = {
-				set_temp_variable = { nd_warning_equipment_cost = constant:natural_disaster_cost.warning_trucks }
-				multiply_temp_variable = { nd_warning_equipment_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = motorized_equipment_1
-					amount = nd_warning_equipment_cost
-				}
-			}
-			add_stability = constant:natural_disaster_cost_fixed.warning_stability
-			FROM = {
-				set_state_flag = {
-					flag = natural_disaster_warning_action_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				set_state_flag = {
-					flag = natural_disaster_warn_dry_mass_movement_slope_watch_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				add_to_variable = { natural_disaster_preparation_score = @ND_WARNING_ACTION_SCORE }
-			}
+			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.primary }
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.transport }
+			natural_disaster_pay_warning_field_research = yes
+			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_field_research = yes } }
 			modifier = {
 				factor = @ND_AI_FACTOR_HIGH
 				FROM = { natural_disaster_state_has_strategic_transport = yes }
@@ -1008,45 +649,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_field_teams = yes
+			natural_disaster_can_pay_warning_transport = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_field
+		custom_cost_text = natural_disaster_cost_warning_transport
 		complete_effect = {
-			set_temp_variable = { nd_warning_manpower_cost = constant:natural_disaster_cost.warning_manpower }
-			multiply_temp_variable = { nd_warning_manpower_cost = -1 }
-			add_manpower = nd_warning_manpower_cost
-			if = {
-				limit = { has_equipment = { support_equipment_1 > constant:natural_disaster_cost_gate.warning_support_equipment } }
-				set_temp_variable = { nd_warning_equipment_cost = constant:natural_disaster_cost.warning_support_equipment }
-				multiply_temp_variable = { nd_warning_equipment_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = support_equipment_1
-					amount = nd_warning_equipment_cost
-				}
-			}
-			else = {
-				set_temp_variable = { nd_warning_equipment_cost = constant:natural_disaster_cost.warning_trucks }
-				multiply_temp_variable = { nd_warning_equipment_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = motorized_equipment_1
-					amount = nd_warning_equipment_cost
-				}
-			}
-			add_stability = constant:natural_disaster_cost_fixed.warning_stability
-			FROM = {
-				set_state_flag = {
-					flag = natural_disaster_warning_action_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				set_state_flag = {
-					flag = natural_disaster_warn_wet_mass_movement_valley_evacuation_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				add_to_variable = { natural_disaster_preparation_score = @ND_WARNING_ACTION_SCORE }
-			}
+			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.primary }
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.population }
+			natural_disaster_pay_warning_transport = yes
+			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_transport = yes } }
 			modifier = {
 				factor = @ND_AI_FACTOR_HIGH
 				FROM = { natural_disaster_state_has_dense_population = yes }
@@ -1071,34 +685,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_shelter = yes
+			natural_disaster_can_pay_warning_transport = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_shelter
+		custom_cost_text = natural_disaster_cost_warning_transport
 		complete_effect = {
-			set_temp_variable = { nd_warning_manpower_cost = constant:natural_disaster_cost.warning_manpower }
-			multiply_temp_variable = { nd_warning_manpower_cost = -1 }
-			add_manpower = nd_warning_manpower_cost
-			set_temp_variable = { nd_warning_support_cost = constant:natural_disaster_cost.warning_support_equipment }
-			multiply_temp_variable = { nd_warning_support_cost = -1 }
-			add_equipment_to_stockpile = {
-				type = support_equipment_1
-				amount = nd_warning_support_cost
-			}
-			add_stability = constant:natural_disaster_cost_fixed.warning_stability
-			FROM = {
-				set_state_flag = {
-					flag = natural_disaster_warning_action_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				set_state_flag = {
-					flag = natural_disaster_warn_volcanic_eruption_exclusion_zone_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				add_to_variable = { natural_disaster_preparation_score = @ND_WARNING_ACTION_SCORE }
-			}
+			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.primary }
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.population }
+			natural_disaster_pay_warning_transport = yes
+			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_transport = yes } }
 			modifier = {
 				factor = @ND_AI_FACTOR_CRITICAL
 				FROM = { is_capital = yes }
@@ -1127,45 +725,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_field_teams = yes
+			natural_disaster_can_pay_warning_civilian_shutdown = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_field
+		custom_cost_text = natural_disaster_cost_warning_civilian_shutdown
 		complete_effect = {
-			set_temp_variable = { nd_warning_manpower_cost = constant:natural_disaster_cost.warning_manpower }
-			multiply_temp_variable = { nd_warning_manpower_cost = -1 }
-			add_manpower = nd_warning_manpower_cost
-			if = {
-				limit = { has_equipment = { support_equipment_1 > constant:natural_disaster_cost_gate.warning_support_equipment } }
-				set_temp_variable = { nd_warning_equipment_cost = constant:natural_disaster_cost.warning_support_equipment }
-				multiply_temp_variable = { nd_warning_equipment_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = support_equipment_1
-					amount = nd_warning_equipment_cost
-				}
-			}
-			else = {
-				set_temp_variable = { nd_warning_equipment_cost = constant:natural_disaster_cost.warning_trucks }
-				multiply_temp_variable = { nd_warning_equipment_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = motorized_equipment_1
-					amount = nd_warning_equipment_cost
-				}
-			}
-			add_stability = constant:natural_disaster_cost_fixed.warning_stability
-			FROM = {
-				set_state_flag = {
-					flag = natural_disaster_warning_action_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				set_state_flag = {
-					flag = natural_disaster_warn_ashfall_cover_machinery_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				add_to_variable = { natural_disaster_preparation_score = @ND_WARNING_ACTION_SCORE }
-			}
+			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.primary }
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.industry_air }
+			natural_disaster_pay_warning_civilian_shutdown = yes
+			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_civilian_shutdown = yes } }
 			modifier = {
 				factor = @ND_AI_FACTOR_HIGH
 				FROM = { natural_disaster_state_has_dense_population = yes }
@@ -1190,34 +761,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_shelter = yes
+			natural_disaster_can_pay_warning_shelter_medical = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_shelter
+		custom_cost_text = natural_disaster_cost_warning_shelter_medical
 		complete_effect = {
-			set_temp_variable = { nd_warning_manpower_cost = constant:natural_disaster_cost.warning_manpower }
-			multiply_temp_variable = { nd_warning_manpower_cost = -1 }
-			add_manpower = nd_warning_manpower_cost
-			set_temp_variable = { nd_warning_support_cost = constant:natural_disaster_cost.warning_support_equipment }
-			multiply_temp_variable = { nd_warning_support_cost = -1 }
-			add_equipment_to_stockpile = {
-				type = support_equipment_1
-				amount = nd_warning_support_cost
-			}
-			add_stability = constant:natural_disaster_cost_fixed.warning_stability
-			FROM = {
-				set_state_flag = {
-					flag = natural_disaster_warning_action_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				set_state_flag = {
-					flag = natural_disaster_warn_lahar_valley_sirens_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				add_to_variable = { natural_disaster_preparation_score = @ND_WARNING_ACTION_SCORE }
-			}
+			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.primary }
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.population }
+			natural_disaster_pay_warning_shelter_medical = yes
+			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_shelter_medical = yes } }
 			modifier = {
 				factor = @ND_AI_FACTOR_HIGH
 				FROM = { natural_disaster_state_has_dense_population = yes }
@@ -1243,48 +798,17 @@ natural_disaster_aftermath_category = {
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
 			natural_disaster_can_pay_warning_transport = yes
-			has_fuel > constant:natural_disaster_cost_gate.warning_fuel
 		}
 		custom_cost_text = natural_disaster_cost_warning_transport
 		complete_effect = {
-			set_temp_variable = { nd_warning_manpower_cost = constant:natural_disaster_cost.warning_manpower }
-			multiply_temp_variable = { nd_warning_manpower_cost = -1 }
-			add_manpower = nd_warning_manpower_cost
-			if = {
-				limit = { has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.warning_trains } }
-				set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_trains }
-				multiply_temp_variable = { nd_warning_transport_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = train_equipment_1
-					amount = nd_warning_transport_cost
-				}
-			}
-			else = {
-				set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_convoys }
-				multiply_temp_variable = { nd_warning_transport_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = convoy_1
-					amount = nd_warning_transport_cost
-				}
-			}
-			set_temp_variable = { nd_warning_fuel_cost = constant:natural_disaster_cost.warning_fuel }
-			multiply_temp_variable = { nd_warning_fuel_cost = -1 }
-			add_fuel = nd_warning_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.warning_stability
-			FROM = {
-				set_state_flag = {
-					flag = natural_disaster_warning_action_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				set_state_flag = {
-					flag = natural_disaster_warn_tsunami_inland_corridors_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				add_to_variable = { natural_disaster_preparation_score = @ND_WARNING_ACTION_SCORE }
-			}
+			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.primary }
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.population }
+			natural_disaster_pay_warning_transport = yes
+			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_transport = yes } }
 			modifier = {
 				factor = @ND_AI_FACTOR_CRITICAL
 				FROM = { is_capital = yes }
@@ -1313,45 +837,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_field_teams = yes
+			natural_disaster_can_pay_warning_civilian_shutdown = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_field
+		custom_cost_text = natural_disaster_cost_warning_civilian_shutdown
 		complete_effect = {
-			set_temp_variable = { nd_warning_manpower_cost = constant:natural_disaster_cost.warning_manpower }
-			multiply_temp_variable = { nd_warning_manpower_cost = -1 }
-			add_manpower = nd_warning_manpower_cost
-			if = {
-				limit = { has_equipment = { support_equipment_1 > constant:natural_disaster_cost_gate.warning_support_equipment } }
-				set_temp_variable = { nd_warning_equipment_cost = constant:natural_disaster_cost.warning_support_equipment }
-				multiply_temp_variable = { nd_warning_equipment_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = support_equipment_1
-					amount = nd_warning_equipment_cost
-				}
-			}
-			else = {
-				set_temp_variable = { nd_warning_equipment_cost = constant:natural_disaster_cost.warning_trucks }
-				multiply_temp_variable = { nd_warning_equipment_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = motorized_equipment_1
-					amount = nd_warning_equipment_cost
-				}
-			}
-			add_stability = constant:natural_disaster_cost_fixed.warning_stability
-			FROM = {
-				set_state_flag = {
-					flag = natural_disaster_warning_action_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				set_state_flag = {
-					flag = natural_disaster_warn_storm_surge_sandbag_low_roads_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				add_to_variable = { natural_disaster_preparation_score = @ND_WARNING_ACTION_SCORE }
-			}
+			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.primary }
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.transport }
+			natural_disaster_pay_warning_civilian_shutdown = yes
+			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_civilian_shutdown = yes } }
 			modifier = {
 				factor = @ND_AI_FACTOR_HIGH
 				FROM = { natural_disaster_state_has_dense_population = yes }
@@ -1381,48 +878,17 @@ natural_disaster_aftermath_category = {
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
 			natural_disaster_can_pay_warning_transport = yes
-			has_fuel > constant:natural_disaster_cost_gate.warning_fuel
 		}
 		custom_cost_text = natural_disaster_cost_warning_transport
 		complete_effect = {
-			set_temp_variable = { nd_warning_manpower_cost = constant:natural_disaster_cost.warning_manpower }
-			multiply_temp_variable = { nd_warning_manpower_cost = -1 }
-			add_manpower = nd_warning_manpower_cost
-			if = {
-				limit = { has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.warning_trains } }
-				set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_trains }
-				multiply_temp_variable = { nd_warning_transport_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = train_equipment_1
-					amount = nd_warning_transport_cost
-				}
-			}
-			else = {
-				set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_convoys }
-				multiply_temp_variable = { nd_warning_transport_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = convoy_1
-					amount = nd_warning_transport_cost
-				}
-			}
-			set_temp_variable = { nd_warning_fuel_cost = constant:natural_disaster_cost.warning_fuel }
-			multiply_temp_variable = { nd_warning_fuel_cost = -1 }
-			add_fuel = nd_warning_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.warning_stability
-			FROM = {
-				set_state_flag = {
-					flag = natural_disaster_warning_action_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				set_state_flag = {
-					flag = natural_disaster_warn_meteor_impact_crater_evacuation_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				add_to_variable = { natural_disaster_preparation_score = @ND_WARNING_ACTION_SCORE }
-			}
+			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.primary }
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.population }
+			natural_disaster_pay_warning_transport = yes
+			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_transport = yes } }
 			modifier = {
 				factor = @ND_AI_FACTOR_CRITICAL
 				FROM = { is_capital = yes }
@@ -1451,34 +917,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_shelter = yes
+			natural_disaster_can_pay_warning_shelter_medical = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_shelter
+		custom_cost_text = natural_disaster_cost_warning_shelter_medical
 		complete_effect = {
-			set_temp_variable = { nd_warning_manpower_cost = constant:natural_disaster_cost.warning_manpower }
-			multiply_temp_variable = { nd_warning_manpower_cost = -1 }
-			add_manpower = nd_warning_manpower_cost
-			set_temp_variable = { nd_warning_support_cost = constant:natural_disaster_cost.warning_support_equipment }
-			multiply_temp_variable = { nd_warning_support_cost = -1 }
-			add_equipment_to_stockpile = {
-				type = support_equipment_1
-				amount = nd_warning_support_cost
-			}
-			add_stability = constant:natural_disaster_cost_fixed.warning_stability
-			FROM = {
-				set_state_flag = {
-					flag = natural_disaster_warning_action_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				set_state_flag = {
-					flag = natural_disaster_warn_meteor_shower_shelter_lights_out_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				add_to_variable = { natural_disaster_preparation_score = @ND_WARNING_ACTION_SCORE }
-			}
+			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.primary }
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.population }
+			natural_disaster_pay_warning_shelter_medical = yes
+			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_shelter_medical = yes } }
 			modifier = {
 				factor = @ND_AI_FACTOR_CRITICAL
 				FROM = { is_capital = yes }
@@ -1507,49 +957,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_transport = yes
-			has_fuel > constant:natural_disaster_cost_gate.warning_fuel
+			natural_disaster_can_pay_warning_command_rail = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_transport
+		custom_cost_text = natural_disaster_cost_warning_command_rail
 		complete_effect = {
-			set_temp_variable = { nd_warning_manpower_cost = constant:natural_disaster_cost.warning_manpower }
-			multiply_temp_variable = { nd_warning_manpower_cost = -1 }
-			add_manpower = nd_warning_manpower_cost
-			if = {
-				limit = { has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.warning_trains } }
-				set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_trains }
-				multiply_temp_variable = { nd_warning_transport_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = train_equipment_1
-					amount = nd_warning_transport_cost
-				}
-			}
-			else = {
-				set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_convoys }
-				multiply_temp_variable = { nd_warning_transport_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = convoy_1
-					amount = nd_warning_transport_cost
-				}
-			}
-			set_temp_variable = { nd_warning_fuel_cost = constant:natural_disaster_cost.warning_fuel }
-			multiply_temp_variable = { nd_warning_fuel_cost = -1 }
-			add_fuel = nd_warning_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.warning_stability
-			FROM = {
-				set_state_flag = {
-					flag = natural_disaster_warning_action_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				set_state_flag = {
-					flag = natural_disaster_warn_whole_earth_rupture_rail_standdown_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				add_to_variable = { natural_disaster_preparation_score = @ND_WARNING_ACTION_SCORE }
-			}
+			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.primary }
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.transport }
+			natural_disaster_pay_warning_command_rail = yes
+			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_command_rail = yes } }
 			modifier = {
 				factor = @ND_AI_FACTOR_CRITICAL
 				FROM = { is_capital = yes }
@@ -1578,49 +997,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_transport = yes
-			has_fuel > constant:natural_disaster_cost_gate.warning_fuel
+			natural_disaster_can_pay_warning_fuel_convoy = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_transport
+		custom_cost_text = natural_disaster_cost_warning_fuel_convoy
 		complete_effect = {
-			set_temp_variable = { nd_warning_manpower_cost = constant:natural_disaster_cost.warning_manpower }
-			multiply_temp_variable = { nd_warning_manpower_cost = -1 }
-			add_manpower = nd_warning_manpower_cost
-			if = {
-				limit = { has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.warning_trains } }
-				set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_trains }
-				multiply_temp_variable = { nd_warning_transport_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = train_equipment_1
-					amount = nd_warning_transport_cost
-				}
-			}
-			else = {
-				set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_convoys }
-				multiply_temp_variable = { nd_warning_transport_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = convoy_1
-					amount = nd_warning_transport_cost
-				}
-			}
-			set_temp_variable = { nd_warning_fuel_cost = constant:natural_disaster_cost.warning_fuel }
-			multiply_temp_variable = { nd_warning_fuel_cost = -1 }
-			add_fuel = nd_warning_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.warning_stability
-			FROM = {
-				set_state_flag = {
-					flag = natural_disaster_warning_action_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				set_state_flag = {
-					flag = natural_disaster_warn_massive_eruption_food_corridors_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				add_to_variable = { natural_disaster_preparation_score = @ND_WARNING_ACTION_SCORE }
-			}
+			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.primary }
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.food_water }
+			natural_disaster_pay_warning_fuel_convoy = yes
+			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_fuel_convoy = yes } }
 			modifier = {
 				factor = @ND_AI_FACTOR_HIGH
 				FROM = { natural_disaster_state_has_dense_population = yes }
@@ -1649,49 +1037,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_transport = yes
-			has_fuel > constant:natural_disaster_cost_gate.warning_fuel
+			natural_disaster_can_pay_warning_command_rail = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_transport
+		custom_cost_text = natural_disaster_cost_warning_command_rail
 		complete_effect = {
-			set_temp_variable = { nd_warning_manpower_cost = constant:natural_disaster_cost.warning_manpower }
-			multiply_temp_variable = { nd_warning_manpower_cost = -1 }
-			add_manpower = nd_warning_manpower_cost
-			if = {
-				limit = { has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.warning_trains } }
-				set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_trains }
-				multiply_temp_variable = { nd_warning_transport_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = train_equipment_1
-					amount = nd_warning_transport_cost
-				}
-			}
-			else = {
-				set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_convoys }
-				multiply_temp_variable = { nd_warning_transport_cost = -1 }
-				add_equipment_to_stockpile = {
-					type = convoy_1
-					amount = nd_warning_transport_cost
-				}
-			}
-			set_temp_variable = { nd_warning_fuel_cost = constant:natural_disaster_cost.warning_fuel }
-			multiply_temp_variable = { nd_warning_fuel_cost = -1 }
-			add_fuel = nd_warning_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.warning_stability
-			FROM = {
-				set_state_flag = {
-					flag = natural_disaster_warning_action_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				set_state_flag = {
-					flag = natural_disaster_warn_moving_storm_corridor_rail_reroute_taken
-					days = @ND_WARNING_ACTION_LOCK_DAYS
-				}
-				add_to_variable = { natural_disaster_preparation_score = @ND_WARNING_ACTION_SCORE }
-			}
+			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.primary }
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.transport }
+			natural_disaster_pay_warning_command_rail = yes
+			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_command_rail = yes } }
 			modifier = {
 				factor = @ND_AI_FACTOR_CRITICAL
 				FROM = { is_capital = yes }
@@ -1717,22 +1074,26 @@ natural_disaster_aftermath_category = {
 		target_root_trigger = { natural_disaster_country_has_warning = yes }
 		target_trigger = {
 			natural_disaster_warning_action_available = yes
-			FROM = { check_variable = { natural_disaster_family = constant:natural_disaster_family.earthquake } }
+			FROM = {
+				check_variable = { natural_disaster_family = constant:natural_disaster_family.earthquake }
+				is_coastal = yes
+			}
 		}
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_shelter = yes
+			natural_disaster_can_pay_warning_transport = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_shelter
+		custom_cost_text = natural_disaster_cost_warning_transport
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.secondary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.population }
-			natural_disaster_pay_warning_shelter = yes
+			natural_disaster_pay_warning_transport = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_transport = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { is_capital = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { natural_disaster_state_has_dense_population = yes } }
 		}
@@ -1748,18 +1109,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_transport = yes
-			has_fuel > constant:natural_disaster_cost_gate.warning_fuel
+			natural_disaster_can_pay_warning_naval_coast = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_transport
+		custom_cost_text = natural_disaster_cost_warning_naval_coast
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.tertiary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.coast }
-			natural_disaster_pay_warning_transport = yes
+			natural_disaster_pay_warning_naval_coast = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_naval_coast = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { is_coastal = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { naval_base > 0 } }
 		}
@@ -1775,17 +1136,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_field_teams = yes
+			natural_disaster_can_pay_warning_civilian_shutdown = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_field
+		custom_cost_text = natural_disaster_cost_warning_civilian_shutdown
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.secondary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.transport }
-			natural_disaster_pay_warning_field_teams = yes
+			natural_disaster_pay_warning_civilian_shutdown = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_civilian_shutdown = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { natural_disaster_state_has_strategic_transport = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH has_war = yes }
 		}
@@ -1801,17 +1163,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_shelter = yes
+			natural_disaster_can_pay_warning_shelter_medical = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_shelter
+		custom_cost_text = natural_disaster_cost_warning_shelter_medical
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.tertiary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.medical }
-			natural_disaster_pay_warning_shelter = yes
+			natural_disaster_pay_warning_shelter_medical = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_shelter_medical = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { is_capital = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { natural_disaster_state_has_dense_population = yes } }
 		}
@@ -1822,22 +1185,26 @@ natural_disaster_aftermath_category = {
 		target_root_trigger = { natural_disaster_country_has_warning = yes }
 		target_trigger = {
 			natural_disaster_warning_action_available = yes
-			FROM = { check_variable = { natural_disaster_family = constant:natural_disaster_family.tropical_cyclone } }
+			FROM = {
+				check_variable = { natural_disaster_family = constant:natural_disaster_family.tropical_cyclone }
+				air_base > 0
+			}
 		}
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_field_teams = yes
+			natural_disaster_can_pay_warning_air = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_field
+		custom_cost_text = natural_disaster_cost_warning_air
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.secondary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.industry_air }
-			natural_disaster_pay_warning_field_teams = yes
+			natural_disaster_pay_warning_air = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_air = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { natural_disaster_state_has_industry = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { air_base > 0 } }
 		}
@@ -1854,7 +1221,6 @@ natural_disaster_aftermath_category = {
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
 			natural_disaster_can_pay_warning_transport = yes
-			has_fuel > constant:natural_disaster_cost_gate.warning_fuel
 		}
 		custom_cost_text = natural_disaster_cost_warning_transport
 		complete_effect = {
@@ -1865,6 +1231,7 @@ natural_disaster_aftermath_category = {
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_transport = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { is_capital = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { natural_disaster_state_has_dense_population = yes } }
 		}
@@ -1875,22 +1242,26 @@ natural_disaster_aftermath_category = {
 		target_root_trigger = { natural_disaster_country_has_warning = yes }
 		target_trigger = {
 			natural_disaster_warning_action_available = yes
-			FROM = { check_variable = { natural_disaster_family = constant:natural_disaster_family.extreme_wind } }
+			FROM = {
+				check_variable = { natural_disaster_family = constant:natural_disaster_family.extreme_wind }
+				air_base > 0
+			}
 		}
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_field_teams = yes
+			natural_disaster_can_pay_warning_air = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_field
+		custom_cost_text = natural_disaster_cost_warning_air
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.secondary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.industry_air }
-			natural_disaster_pay_warning_field_teams = yes
+			natural_disaster_pay_warning_air = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_air = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { natural_disaster_state_has_industry = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { air_base > 0 } }
 		}
@@ -1906,17 +1277,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_shelter = yes
+			natural_disaster_can_pay_warning_civilian_shutdown = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_shelter
+		custom_cost_text = natural_disaster_cost_warning_civilian_shutdown
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.tertiary }
-			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.population }
-			natural_disaster_pay_warning_shelter = yes
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.industry_air }
+			natural_disaster_pay_warning_civilian_shutdown = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_civilian_shutdown = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { is_capital = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { natural_disaster_state_has_dense_population = yes } }
 		}
@@ -1927,22 +1299,26 @@ natural_disaster_aftermath_category = {
 		target_root_trigger = { natural_disaster_country_has_warning = yes }
 		target_trigger = {
 			natural_disaster_warning_action_available = yes
-			FROM = { check_variable = { natural_disaster_family = constant:natural_disaster_family.tornado_outbreak } }
+			FROM = {
+				check_variable = { natural_disaster_family = constant:natural_disaster_family.tornado_outbreak }
+				air_base > 0
+			}
 		}
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_field_teams = yes
+			natural_disaster_can_pay_warning_field_research = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_field
+		custom_cost_text = natural_disaster_cost_warning_field_research
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.secondary }
-			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.medical }
-			natural_disaster_pay_warning_field_teams = yes
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.population }
+			natural_disaster_pay_warning_field_research = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_field_research = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { is_capital = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { natural_disaster_state_has_dense_population = yes } }
 		}
@@ -1958,18 +1334,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_transport = yes
-			has_fuel > constant:natural_disaster_cost_gate.warning_fuel
+			natural_disaster_can_pay_warning_air = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_transport
+		custom_cost_text = natural_disaster_cost_warning_air
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.tertiary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.industry_air }
-			natural_disaster_pay_warning_transport = yes
+			natural_disaster_pay_warning_air = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_air = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { natural_disaster_state_has_industry = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { air_base > 0 } }
 		}
@@ -1980,22 +1356,26 @@ natural_disaster_aftermath_category = {
 		target_root_trigger = { natural_disaster_country_has_warning = yes }
 		target_trigger = {
 			natural_disaster_warning_action_available = yes
-			FROM = { check_variable = { natural_disaster_family = constant:natural_disaster_family.thunderstorm } }
+			FROM = {
+				check_variable = { natural_disaster_family = constant:natural_disaster_family.thunderstorm }
+				air_base > 0
+			}
 		}
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_field_teams = yes
+			natural_disaster_can_pay_warning_air = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_field
+		custom_cost_text = natural_disaster_cost_warning_air
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.secondary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.industry_air }
-			natural_disaster_pay_warning_field_teams = yes
+			natural_disaster_pay_warning_air = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_air = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { natural_disaster_state_has_industry = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { air_base > 0 } }
 		}
@@ -2011,18 +1391,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_transport = yes
-			has_fuel > constant:natural_disaster_cost_gate.warning_fuel
+			natural_disaster_can_pay_warning_civilian_shutdown = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_transport
+		custom_cost_text = natural_disaster_cost_warning_civilian_shutdown
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.tertiary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.transport }
-			natural_disaster_pay_warning_transport = yes
+			natural_disaster_pay_warning_civilian_shutdown = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_civilian_shutdown = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { natural_disaster_state_has_strategic_transport = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH has_war = yes }
 		}
@@ -2038,17 +1418,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_field_teams = yes
+			natural_disaster_can_pay_warning_civilian_shutdown = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_field
+		custom_cost_text = natural_disaster_cost_warning_civilian_shutdown
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.secondary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.industry_air }
-			natural_disaster_pay_warning_field_teams = yes
+			natural_disaster_pay_warning_civilian_shutdown = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_civilian_shutdown = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { natural_disaster_state_has_industry = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { air_base > 0 } }
 		}
@@ -2064,17 +1445,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_shelter = yes
+			natural_disaster_can_pay_warning_fuel_convoy = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_shelter
+		custom_cost_text = natural_disaster_cost_warning_fuel_convoy
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.tertiary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.food_water }
-			natural_disaster_pay_warning_shelter = yes
+			natural_disaster_pay_warning_fuel_convoy = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_fuel_convoy = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { OR = { has_state_category = pastoral has_state_category = rural } } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { natural_disaster_state_has_dense_population = yes } }
 		}
@@ -2090,18 +1472,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_transport = yes
-			has_fuel > constant:natural_disaster_cost_gate.warning_fuel
+			natural_disaster_can_pay_warning_command_rail = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_transport
+		custom_cost_text = natural_disaster_cost_warning_command_rail
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.secondary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.transport }
-			natural_disaster_pay_warning_transport = yes
+			natural_disaster_pay_warning_command_rail = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_command_rail = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { natural_disaster_state_has_strategic_transport = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH has_war = yes }
 		}
@@ -2117,17 +1499,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_shelter = yes
+			natural_disaster_can_pay_warning_shelter_medical = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_shelter
+		custom_cost_text = natural_disaster_cost_warning_shelter_medical
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.tertiary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.population }
-			natural_disaster_pay_warning_shelter = yes
+			natural_disaster_pay_warning_shelter_medical = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_shelter_medical = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { is_capital = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { natural_disaster_state_has_dense_population = yes } }
 		}
@@ -2143,17 +1526,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_field_teams = yes
+			natural_disaster_can_pay_warning_civilian_shutdown = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_field
+		custom_cost_text = natural_disaster_cost_warning_civilian_shutdown
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.secondary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.food_water }
-			natural_disaster_pay_warning_field_teams = yes
+			natural_disaster_pay_warning_civilian_shutdown = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_civilian_shutdown = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { OR = { has_state_category = pastoral has_state_category = rural } } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { natural_disaster_state_has_dense_population = yes } }
 		}
@@ -2169,17 +1553,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_shelter = yes
+			natural_disaster_can_pay_warning_command_rail = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_shelter
+		custom_cost_text = natural_disaster_cost_warning_command_rail
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.tertiary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.population }
-			natural_disaster_pay_warning_shelter = yes
+			natural_disaster_pay_warning_command_rail = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_command_rail = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { is_capital = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { natural_disaster_state_has_dense_population = yes } }
 		}
@@ -2195,17 +1580,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_shelter = yes
+			natural_disaster_can_pay_warning_civilian_shutdown = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_shelter
+		custom_cost_text = natural_disaster_cost_warning_civilian_shutdown
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.secondary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.population }
-			natural_disaster_pay_warning_shelter = yes
+			natural_disaster_pay_warning_civilian_shutdown = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_civilian_shutdown = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { is_capital = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { natural_disaster_state_has_dense_population = yes } }
 		}
@@ -2221,17 +1607,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_field_teams = yes
+			natural_disaster_can_pay_warning_field_research = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_field
+		custom_cost_text = natural_disaster_cost_warning_field_research
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.tertiary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.fire }
-			natural_disaster_pay_warning_field_teams = yes
+			natural_disaster_pay_warning_field_research = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_field_research = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { natural_disaster_state_has_industry = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { natural_disaster_state_has_dense_population = yes } }
 		}
@@ -2247,17 +1634,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_shelter = yes
+			natural_disaster_can_pay_warning_transport = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_shelter
+		custom_cost_text = natural_disaster_cost_warning_transport
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.secondary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.food_water }
-			natural_disaster_pay_warning_shelter = yes
+			natural_disaster_pay_warning_transport = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_transport = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { OR = { has_state_category = pastoral has_state_category = rural } } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { natural_disaster_state_has_dense_population = yes } }
 		}
@@ -2273,17 +1661,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_field_teams = yes
+			natural_disaster_can_pay_warning_field_research = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_field
+		custom_cost_text = natural_disaster_cost_warning_field_research
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.tertiary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.fire }
-			natural_disaster_pay_warning_field_teams = yes
+			natural_disaster_pay_warning_field_research = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_field_research = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { natural_disaster_state_has_industry = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { natural_disaster_state_has_dense_population = yes } }
 		}
@@ -2294,22 +1683,26 @@ natural_disaster_aftermath_category = {
 		target_root_trigger = { natural_disaster_country_has_warning = yes }
 		target_trigger = {
 			natural_disaster_warning_action_available = yes
-			FROM = { check_variable = { natural_disaster_family = constant:natural_disaster_family.dust_and_sandstorm } }
+			FROM = {
+				check_variable = { natural_disaster_family = constant:natural_disaster_family.dust_and_sandstorm }
+				air_base > 0
+			}
 		}
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_field_teams = yes
+			natural_disaster_can_pay_warning_air = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_field
+		custom_cost_text = natural_disaster_cost_warning_air
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.secondary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.industry_air }
-			natural_disaster_pay_warning_field_teams = yes
+			natural_disaster_pay_warning_air = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_air = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { natural_disaster_state_has_industry = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { air_base > 0 } }
 		}
@@ -2325,17 +1718,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_shelter = yes
+			natural_disaster_can_pay_warning_shelter_medical = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_shelter
+		custom_cost_text = natural_disaster_cost_warning_shelter_medical
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.tertiary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.food_water }
-			natural_disaster_pay_warning_shelter = yes
+			natural_disaster_pay_warning_shelter_medical = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_shelter_medical = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { OR = { has_state_category = pastoral has_state_category = rural } } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { natural_disaster_state_has_dense_population = yes } }
 		}
@@ -2352,7 +1746,6 @@ natural_disaster_aftermath_category = {
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
 			natural_disaster_can_pay_warning_transport = yes
-			has_fuel > constant:natural_disaster_cost_gate.warning_fuel
 		}
 		custom_cost_text = natural_disaster_cost_warning_transport
 		complete_effect = {
@@ -2363,6 +1756,7 @@ natural_disaster_aftermath_category = {
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_transport = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { is_capital = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { natural_disaster_state_has_dense_population = yes } }
 		}
@@ -2378,17 +1772,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_field_teams = yes
+			natural_disaster_can_pay_warning_civilian_shutdown = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_field
+		custom_cost_text = natural_disaster_cost_warning_civilian_shutdown
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.tertiary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.industry_air }
-			natural_disaster_pay_warning_field_teams = yes
+			natural_disaster_pay_warning_civilian_shutdown = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_civilian_shutdown = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { natural_disaster_state_has_industry = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { air_base > 0 } }
 		}
@@ -2399,23 +1794,26 @@ natural_disaster_aftermath_category = {
 		target_root_trigger = { natural_disaster_country_has_warning = yes }
 		target_trigger = {
 			natural_disaster_warning_action_available = yes
-			FROM = { check_variable = { natural_disaster_family = constant:natural_disaster_family.dry_mass_movement } }
+			FROM = {
+				check_variable = { natural_disaster_family = constant:natural_disaster_family.dry_mass_movement }
+				natural_disaster_state_has_resource_proxy = yes
+			}
 		}
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_transport = yes
-			has_fuel > constant:natural_disaster_cost_gate.warning_fuel
+			natural_disaster_can_pay_warning_command_rail = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_transport
+		custom_cost_text = natural_disaster_cost_warning_command_rail
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.secondary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.transport }
-			natural_disaster_pay_warning_transport = yes
+			natural_disaster_pay_warning_command_rail = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_command_rail = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { natural_disaster_state_has_strategic_transport = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH has_war = yes }
 		}
@@ -2431,17 +1829,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_shelter = yes
+			natural_disaster_can_pay_warning_transport = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_shelter
+		custom_cost_text = natural_disaster_cost_warning_transport
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.tertiary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.population }
-			natural_disaster_pay_warning_shelter = yes
+			natural_disaster_pay_warning_transport = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_transport = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { is_capital = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { natural_disaster_state_has_dense_population = yes } }
 		}
@@ -2457,18 +1856,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_transport = yes
-			has_fuel > constant:natural_disaster_cost_gate.warning_fuel
+			natural_disaster_can_pay_warning_command_rail = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_transport
+		custom_cost_text = natural_disaster_cost_warning_command_rail
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.secondary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.transport }
-			natural_disaster_pay_warning_transport = yes
+			natural_disaster_pay_warning_command_rail = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_command_rail = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { natural_disaster_state_has_strategic_transport = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH has_war = yes }
 		}
@@ -2484,17 +1883,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_field_teams = yes
+			natural_disaster_can_pay_warning_civilian_shutdown = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_field
+		custom_cost_text = natural_disaster_cost_warning_civilian_shutdown
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.tertiary }
-			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.medical }
-			natural_disaster_pay_warning_field_teams = yes
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.transport }
+			natural_disaster_pay_warning_civilian_shutdown = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_civilian_shutdown = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { is_capital = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { natural_disaster_state_has_dense_population = yes } }
 		}
@@ -2505,22 +1905,26 @@ natural_disaster_aftermath_category = {
 		target_root_trigger = { natural_disaster_country_has_warning = yes }
 		target_trigger = {
 			natural_disaster_warning_action_available = yes
-			FROM = { check_variable = { natural_disaster_family = constant:natural_disaster_family.volcanic_eruption } }
+			FROM = {
+				check_variable = { natural_disaster_family = constant:natural_disaster_family.volcanic_eruption }
+				air_base > 0
+			}
 		}
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_field_teams = yes
+			natural_disaster_can_pay_warning_field_research = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_field
+		custom_cost_text = natural_disaster_cost_warning_field_research
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.secondary }
-			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.industry_air }
-			natural_disaster_pay_warning_field_teams = yes
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.population }
+			natural_disaster_pay_warning_field_research = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_field_research = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { natural_disaster_state_has_industry = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { air_base > 0 } }
 		}
@@ -2536,18 +1940,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_transport = yes
-			has_fuel > constant:natural_disaster_cost_gate.warning_fuel
+			natural_disaster_can_pay_warning_air = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_transport
+		custom_cost_text = natural_disaster_cost_warning_air
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.tertiary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.industry_air }
-			natural_disaster_pay_warning_transport = yes
+			natural_disaster_pay_warning_air = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_air = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { natural_disaster_state_has_industry = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { air_base > 0 } }
 		}
@@ -2558,22 +1962,26 @@ natural_disaster_aftermath_category = {
 		target_root_trigger = { natural_disaster_country_has_warning = yes }
 		target_trigger = {
 			natural_disaster_warning_action_available = yes
-			FROM = { check_variable = { natural_disaster_family = constant:natural_disaster_family.ashfall } }
+			FROM = {
+				check_variable = { natural_disaster_family = constant:natural_disaster_family.ashfall }
+				air_base > 0
+			}
 		}
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_field_teams = yes
+			natural_disaster_can_pay_warning_air = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_field
+		custom_cost_text = natural_disaster_cost_warning_air
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.secondary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.industry_air }
-			natural_disaster_pay_warning_field_teams = yes
+			natural_disaster_pay_warning_air = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_air = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { natural_disaster_state_has_industry = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { air_base > 0 } }
 		}
@@ -2589,17 +1997,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_shelter = yes
+			natural_disaster_can_pay_warning_shelter_medical = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_shelter
+		custom_cost_text = natural_disaster_cost_warning_shelter_medical
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.tertiary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.food_water }
-			natural_disaster_pay_warning_shelter = yes
+			natural_disaster_pay_warning_shelter_medical = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_shelter_medical = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { OR = { has_state_category = pastoral has_state_category = rural } } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { natural_disaster_state_has_dense_population = yes } }
 		}
@@ -2615,18 +2024,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_transport = yes
-			has_fuel > constant:natural_disaster_cost_gate.warning_fuel
+			natural_disaster_can_pay_warning_command_rail = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_transport
+		custom_cost_text = natural_disaster_cost_warning_command_rail
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.secondary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.transport }
-			natural_disaster_pay_warning_transport = yes
+			natural_disaster_pay_warning_command_rail = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_command_rail = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { natural_disaster_state_has_strategic_transport = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH has_war = yes }
 		}
@@ -2642,17 +2051,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_field_teams = yes
+			natural_disaster_can_pay_warning_civilian_shutdown = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_field
+		custom_cost_text = natural_disaster_cost_warning_civilian_shutdown
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.tertiary }
-			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.medical }
-			natural_disaster_pay_warning_field_teams = yes
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.transport }
+			natural_disaster_pay_warning_civilian_shutdown = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_civilian_shutdown = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { is_capital = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { natural_disaster_state_has_dense_population = yes } }
 		}
@@ -2668,17 +2078,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_shelter = yes
+			natural_disaster_can_pay_warning_naval_coast = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_shelter
+		custom_cost_text = natural_disaster_cost_warning_naval_coast
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.secondary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.coast }
-			natural_disaster_pay_warning_shelter = yes
+			natural_disaster_pay_warning_naval_coast = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_naval_coast = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { is_coastal = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { naval_base > 0 } }
 		}
@@ -2694,18 +2105,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_transport = yes
-			has_fuel > constant:natural_disaster_cost_gate.warning_fuel
+			natural_disaster_can_pay_warning_naval_coast = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_transport
+		custom_cost_text = natural_disaster_cost_warning_naval_coast
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.tertiary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.coast }
-			natural_disaster_pay_warning_transport = yes
+			natural_disaster_pay_warning_naval_coast = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_naval_coast = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { is_coastal = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { naval_base > 0 } }
 		}
@@ -2721,18 +2132,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_transport = yes
-			has_fuel > constant:natural_disaster_cost_gate.warning_fuel
+			natural_disaster_can_pay_warning_naval_coast = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_transport
+		custom_cost_text = natural_disaster_cost_warning_naval_coast
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.secondary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.coast }
-			natural_disaster_pay_warning_transport = yes
+			natural_disaster_pay_warning_naval_coast = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_naval_coast = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { is_coastal = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { naval_base > 0 } }
 		}
@@ -2748,17 +2159,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_shelter = yes
+			natural_disaster_can_pay_warning_transport = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_shelter
+		custom_cost_text = natural_disaster_cost_warning_transport
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.tertiary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.population }
-			natural_disaster_pay_warning_shelter = yes
+			natural_disaster_pay_warning_transport = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_transport = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { is_capital = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { natural_disaster_state_has_dense_population = yes } }
 		}
@@ -2774,17 +2186,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_field_teams = yes
+			natural_disaster_can_pay_warning_field_research = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_field
+		custom_cost_text = natural_disaster_cost_warning_field_research
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.secondary }
-			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.industry_air }
-			natural_disaster_pay_warning_field_teams = yes
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.population }
+			natural_disaster_pay_warning_field_research = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_field_research = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { natural_disaster_state_has_industry = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { air_base > 0 } }
 		}
@@ -2800,18 +2213,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_transport = yes
-			has_fuel > constant:natural_disaster_cost_gate.warning_fuel
+			natural_disaster_can_pay_warning_field_research = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_transport
+		custom_cost_text = natural_disaster_cost_warning_field_research
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.tertiary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.fire }
-			natural_disaster_pay_warning_transport = yes
+			natural_disaster_pay_warning_field_research = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_field_research = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { natural_disaster_state_has_industry = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { natural_disaster_state_has_dense_population = yes } }
 		}
@@ -2827,17 +2240,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_field_teams = yes
+			natural_disaster_can_pay_warning_field_research = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_field
+		custom_cost_text = natural_disaster_cost_warning_field_research
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.secondary }
-			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.industry_air }
-			natural_disaster_pay_warning_field_teams = yes
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.population }
+			natural_disaster_pay_warning_field_research = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_field_research = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { natural_disaster_state_has_industry = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { air_base > 0 } }
 		}
@@ -2853,17 +2267,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_shelter = yes
+			natural_disaster_can_pay_warning_field_research = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_shelter
+		custom_cost_text = natural_disaster_cost_warning_field_research
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.tertiary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.fire }
-			natural_disaster_pay_warning_shelter = yes
+			natural_disaster_pay_warning_field_research = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_field_research = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { natural_disaster_state_has_industry = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { natural_disaster_state_has_dense_population = yes } }
 		}
@@ -2874,22 +2289,26 @@ natural_disaster_aftermath_category = {
 		target_root_trigger = { natural_disaster_country_has_warning = yes }
 		target_trigger = {
 			natural_disaster_warning_action_available = yes
-			FROM = { check_variable = { natural_disaster_family = constant:natural_disaster_family.whole_earth_rupture } }
+			FROM = {
+				check_variable = { natural_disaster_family = constant:natural_disaster_family.whole_earth_rupture }
+				is_coastal = yes
+			}
 		}
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_field_teams = yes
+			natural_disaster_can_pay_warning_naval_coast = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_field
+		custom_cost_text = natural_disaster_cost_warning_naval_coast
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.secondary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.coast }
-			natural_disaster_pay_warning_field_teams = yes
+			natural_disaster_pay_warning_naval_coast = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_naval_coast = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { is_coastal = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { naval_base > 0 } }
 		}
@@ -2905,17 +2324,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_shelter = yes
+			natural_disaster_can_pay_warning_shelter_medical = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_shelter
+		custom_cost_text = natural_disaster_cost_warning_shelter_medical
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.tertiary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.medical }
-			natural_disaster_pay_warning_shelter = yes
+			natural_disaster_pay_warning_shelter_medical = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_shelter_medical = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { is_capital = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { natural_disaster_state_has_dense_population = yes } }
 		}
@@ -2926,22 +2346,26 @@ natural_disaster_aftermath_category = {
 		target_root_trigger = { natural_disaster_country_has_warning = yes }
 		target_trigger = {
 			natural_disaster_warning_action_available = yes
-			FROM = { check_variable = { natural_disaster_family = constant:natural_disaster_family.massive_eruption } }
+			FROM = {
+				check_variable = { natural_disaster_family = constant:natural_disaster_family.massive_eruption }
+				air_base > 0
+			}
 		}
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_shelter = yes
+			natural_disaster_can_pay_warning_transport = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_shelter
+		custom_cost_text = natural_disaster_cost_warning_transport
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.secondary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.population }
-			natural_disaster_pay_warning_shelter = yes
+			natural_disaster_pay_warning_transport = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_transport = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { is_capital = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { natural_disaster_state_has_dense_population = yes } }
 		}
@@ -2957,17 +2381,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_field_teams = yes
+			natural_disaster_can_pay_warning_air = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_field
+		custom_cost_text = natural_disaster_cost_warning_air
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.tertiary }
 			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.industry_air }
-			natural_disaster_pay_warning_field_teams = yes
+			natural_disaster_pay_warning_air = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_air = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { natural_disaster_state_has_industry = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { air_base > 0 } }
 		}
@@ -2983,17 +2408,18 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_field_teams = yes
+			natural_disaster_can_pay_warning_field_research = yes
 		}
-		custom_cost_text = natural_disaster_cost_warning_field
+		custom_cost_text = natural_disaster_cost_warning_field_research
 		complete_effect = {
 			set_temp_variable = { nd_warning_choice = constant:natural_disaster_warning_choice.secondary }
-			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.industry_air }
-			natural_disaster_pay_warning_field_teams = yes
+			set_temp_variable = { nd_warning_protection = constant:natural_disaster_warning_protection.population }
+			natural_disaster_pay_warning_field_research = yes
 			FROM = { natural_disaster_apply_warning_direction = yes }
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_field_research = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { natural_disaster_state_has_industry = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { air_base > 0 } }
 		}
@@ -3010,7 +2436,6 @@ natural_disaster_aftermath_category = {
 		priority = @ND_PRIORITY_WARNING
 		custom_cost_trigger = {
 			natural_disaster_can_pay_warning_transport = yes
-			has_fuel > constant:natural_disaster_cost_gate.warning_fuel
 		}
 		custom_cost_text = natural_disaster_cost_warning_transport
 		complete_effect = {
@@ -3021,6 +2446,7 @@ natural_disaster_aftermath_category = {
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
+			modifier = { factor = 0 NOT = { natural_disaster_can_pay_warning_transport = yes } }
 			modifier = { factor = @ND_AI_FACTOR_CRITICAL FROM = { is_capital = yes } }
 			modifier = { factor = @ND_AI_FACTOR_HIGH FROM = { natural_disaster_state_has_dense_population = yes } }
 		}
@@ -3061,14 +2487,9 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_RESCUE
 		custom_cost_trigger = {
-			natural_disaster_can_pay_rescue = yes
-			has_fuel > constant:natural_disaster_cost_gate.rescue_fuel
-			OR = {
-				has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.warning_trains }
-				has_equipment = { convoy_1 > constant:natural_disaster_cost_gate.warning_convoys }
-			}
+			natural_disaster_can_pay_rescue_routed = yes
 		}
-		custom_cost_text = natural_disaster_cost_rescue_either
+		custom_cost_text = natural_disaster_cost_rescue_routed
 		complete_effect = {
 			set_temp_variable = { nd_rescue_manpower_cost = constant:natural_disaster_cost.rescue_manpower }
 			multiply_temp_variable = { nd_rescue_manpower_cost = -1 }
@@ -3086,7 +2507,7 @@ natural_disaster_aftermath_category = {
 				amount = nd_rescue_truck_cost
 			}
 			if = {
-				limit = { has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.warning_trains } }
+				limit = { FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } } }
 				set_temp_variable = { nd_rescue_transport_cost = constant:natural_disaster_cost.warning_trains }
 				multiply_temp_variable = { nd_rescue_transport_cost = -1 }
 				add_equipment_to_stockpile = {
@@ -3113,6 +2534,7 @@ natural_disaster_aftermath_category = {
 				}
 				add_to_variable = { natural_disaster_rescue_score = @ND_RESCUE_ACTION_SCORE }
 				set_variable = { natural_disaster_card_state = constant:natural_disaster_card_state.recovering }
+				set_state_flag = natural_disaster_rescue_search_completed
 			}
 		}
 		ai_will_do = {
@@ -3169,14 +2591,9 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_RESCUE
 		custom_cost_trigger = {
-			natural_disaster_can_pay_rescue = yes
-			has_fuel > constant:natural_disaster_cost_gate.rescue_fuel
-			OR = {
-				has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.warning_trains }
-				has_equipment = { convoy_1 > constant:natural_disaster_cost_gate.warning_convoys }
-			}
+			natural_disaster_can_pay_rescue_routed = yes
 		}
-		custom_cost_text = natural_disaster_cost_rescue_either
+		custom_cost_text = natural_disaster_cost_rescue_routed
 		complete_effect = {
 			set_temp_variable = { nd_rescue_manpower_cost = constant:natural_disaster_cost.rescue_manpower }
 			multiply_temp_variable = { nd_rescue_manpower_cost = -1 }
@@ -3194,7 +2611,7 @@ natural_disaster_aftermath_category = {
 				amount = nd_rescue_truck_cost
 			}
 			if = {
-				limit = { has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.warning_trains } }
+				limit = { FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } } }
 				set_temp_variable = { nd_rescue_transport_cost = constant:natural_disaster_cost.warning_trains }
 				multiply_temp_variable = { nd_rescue_transport_cost = -1 }
 				add_equipment_to_stockpile = {
@@ -3223,6 +2640,7 @@ natural_disaster_aftermath_category = {
 				}
 				add_to_variable = { natural_disaster_rescue_score = @ND_RESCUE_ACTION_SCORE }
 				set_variable = { natural_disaster_card_state = constant:natural_disaster_card_state.recovering }
+				set_state_flag = natural_disaster_shelters_opened
 			}
 		}
 		ai_will_do = {
@@ -3299,6 +2717,7 @@ natural_disaster_aftermath_category = {
 				}
 				add_to_variable = { natural_disaster_rescue_score = @ND_RESCUE_ACTION_SCORE }
 				set_variable = { natural_disaster_card_state = constant:natural_disaster_card_state.recovering }
+				set_state_flag = natural_disaster_rescue_route_cleared
 			}
 		}
 		ai_will_do = {
@@ -3350,14 +2769,9 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_RESCUE
 		custom_cost_trigger = {
-			natural_disaster_can_pay_rescue = yes
-			has_fuel > constant:natural_disaster_cost_gate.rescue_fuel
-			OR = {
-				has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.warning_trains }
-				has_equipment = { convoy_1 > constant:natural_disaster_cost_gate.warning_convoys }
-			}
+			natural_disaster_can_pay_rescue_routed = yes
 		}
-		custom_cost_text = natural_disaster_cost_rescue_either
+		custom_cost_text = natural_disaster_cost_rescue_routed
 		complete_effect = {
 			set_temp_variable = { nd_rescue_manpower_cost = constant:natural_disaster_cost.rescue_manpower }
 			multiply_temp_variable = { nd_rescue_manpower_cost = -1 }
@@ -3375,7 +2789,7 @@ natural_disaster_aftermath_category = {
 				amount = nd_rescue_truck_cost
 			}
 			if = {
-				limit = { has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.warning_trains } }
+				limit = { FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } } }
 				set_temp_variable = { nd_rescue_transport_cost = constant:natural_disaster_cost.warning_trains }
 				multiply_temp_variable = { nd_rescue_transport_cost = -1 }
 				add_equipment_to_stockpile = {
@@ -3404,6 +2818,7 @@ natural_disaster_aftermath_category = {
 				}
 				add_to_variable = { natural_disaster_rescue_score = @ND_RESCUE_ACTION_SCORE }
 				set_variable = { natural_disaster_card_state = constant:natural_disaster_card_state.recovering }
+				set_state_flag = natural_disaster_emergency_evacuation_completed
 			}
 		}
 		ai_will_do = {
@@ -3444,14 +2859,9 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_RESCUE
 		custom_cost_trigger = {
-			natural_disaster_can_pay_rescue = yes
-			has_fuel > constant:natural_disaster_cost_gate.rescue_fuel
-			OR = {
-				has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.warning_trains }
-				has_equipment = { convoy_1 > constant:natural_disaster_cost_gate.warning_convoys }
-			}
+			natural_disaster_can_pay_rescue_routed = yes
 		}
-		custom_cost_text = natural_disaster_cost_rescue_either
+		custom_cost_text = natural_disaster_cost_rescue_routed
 		complete_effect = {
 			set_temp_variable = { nd_rescue_manpower_cost = constant:natural_disaster_cost.rescue_manpower }
 			multiply_temp_variable = { nd_rescue_manpower_cost = -1 }
@@ -3469,7 +2879,7 @@ natural_disaster_aftermath_category = {
 				amount = nd_rescue_truck_cost
 			}
 			if = {
-				limit = { has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.warning_trains } }
+				limit = { FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } } }
 				set_temp_variable = { nd_rescue_transport_cost = constant:natural_disaster_cost.warning_trains }
 				multiply_temp_variable = { nd_rescue_transport_cost = -1 }
 				add_equipment_to_stockpile = {
@@ -3498,6 +2908,7 @@ natural_disaster_aftermath_category = {
 				}
 				add_to_variable = { natural_disaster_rescue_score = @ND_RESCUE_ACTION_SCORE }
 				set_variable = { natural_disaster_card_state = constant:natural_disaster_card_state.recovering }
+				set_state_flag = natural_disaster_medical_triage_completed
 			}
 		}
 		ai_will_do = {
@@ -3580,6 +2991,7 @@ natural_disaster_aftermath_category = {
 				}
 				add_to_variable = { natural_disaster_rescue_score = @ND_RESCUE_ACTION_SCORE }
 				set_variable = { natural_disaster_card_state = constant:natural_disaster_card_state.recovering }
+				set_state_flag = natural_disaster_port_lifeline_established
 			}
 		}
 		ai_will_do = {
@@ -3612,11 +3024,15 @@ natural_disaster_aftermath_category = {
 				natural_disaster_state_has_open_card = yes
 				check_variable = { natural_disaster_phase = constant:natural_disaster_phase.middle_stabilization }
 				is_controlled_by = ROOT
-				check_variable = { natural_disaster_family > constant:natural_disaster_family.random }
-				check_variable = {
-					var = natural_disaster_family
-					value = constant:natural_disaster_family.max
-					compare = less_than_or_equals
+				OR = {
+					check_variable = { natural_disaster_chain_risk = constant:natural_disaster_chain.disease }
+					check_variable = { natural_disaster_family = constant:natural_disaster_family.flood }
+					check_variable = { natural_disaster_family = constant:natural_disaster_family.tropical_cyclone }
+					check_variable = { natural_disaster_family = constant:natural_disaster_family.heat_wave }
+					check_variable = { natural_disaster_family = constant:natural_disaster_family.ashfall }
+					check_variable = { natural_disaster_family = constant:natural_disaster_family.lahar }
+					check_variable = { natural_disaster_family = constant:natural_disaster_family.tsunami }
+					check_variable = { natural_disaster_family = constant:natural_disaster_family.storm_surge }
 				}
 				NOT = { has_state_flag = natural_disaster_stabilize_clean_water_taken }
 			}
@@ -3624,10 +3040,9 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_STABILIZATION
 		custom_cost_trigger = {
-			natural_disaster_can_pay_stabilization = yes
-			has_fuel > constant:natural_disaster_cost_gate.stabilize_fuel
+			natural_disaster_can_pay_stabilization_routed = yes
 		}
-		custom_cost_text = natural_disaster_cost_stabilization_either
+		custom_cost_text = natural_disaster_cost_stabilization_routed
 		complete_effect = {
 			set_temp_variable = { nd_stabilization_support_cost = constant:natural_disaster_cost.stabilize_support_equipment }
 			multiply_temp_variable = { nd_stabilization_support_cost = -1 }
@@ -3642,7 +3057,7 @@ natural_disaster_aftermath_category = {
 				amount = nd_stabilization_truck_cost
 			}
 			if = {
-				limit = { has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.stabilize_trains } }
+				limit = { FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } } }
 				set_temp_variable = { nd_stabilization_transport_cost = constant:natural_disaster_cost.stabilize_trains }
 				multiply_temp_variable = { nd_stabilization_transport_cost = -1 }
 				add_equipment_to_stockpile = {
@@ -3669,10 +3084,7 @@ natural_disaster_aftermath_category = {
 				}
 				add_to_variable = { natural_disaster_stabilization_score = @ND_STABILIZATION_ACTION_SCORE }
 				set_variable = { natural_disaster_card_state = constant:natural_disaster_card_state.recovering }
-				set_state_flag = {
-					flag = natural_disaster_clean_water_secured
-					days = @ND_STABILIZATION_ACTION_LOCK_DAYS
-				}
+				set_state_flag = natural_disaster_clean_water_secured
 			}
 		}
 		ai_will_do = {
@@ -3683,7 +3095,7 @@ natural_disaster_aftermath_category = {
 			}
 			modifier = {
 				factor = @ND_AI_FACTOR_HIGH
-				FROM = { natural_disaster_state_has_dense_population = yes }
+				FROM = { check_variable = { natural_disaster_chain_risk = constant:natural_disaster_chain.disease } }
 			}
 		}
 	}
@@ -3702,6 +3114,10 @@ natural_disaster_aftermath_category = {
 					var = natural_disaster_family
 					value = constant:natural_disaster_family.max
 					compare = less_than_or_equals
+				}
+				OR = {
+					check_variable = { natural_disaster_damage_transport > 0 }
+					natural_disaster_state_has_strategic_transport = yes
 				}
 				NOT = { has_state_flag = natural_disaster_stabilize_restore_rail_taken }
 			}
@@ -3744,10 +3160,7 @@ natural_disaster_aftermath_category = {
 				}
 				add_to_variable = { natural_disaster_stabilization_score = @ND_STABILIZATION_ACTION_SCORE }
 				set_variable = { natural_disaster_card_state = constant:natural_disaster_card_state.recovering }
-				set_state_flag = {
-					flag = natural_disaster_relief_rail_restored
-					days = @ND_STABILIZATION_ACTION_LOCK_DAYS
-				}
+				set_state_flag = natural_disaster_relief_rail_restored
 			}
 		}
 		ai_will_do = {
@@ -3831,10 +3244,7 @@ natural_disaster_aftermath_category = {
 				}
 				add_to_variable = { natural_disaster_stabilization_score = @ND_STABILIZATION_ACTION_SCORE }
 				set_variable = { natural_disaster_card_state = constant:natural_disaster_card_state.recovering }
-				set_state_flag = {
-					flag = natural_disaster_relief_port_reopened
-					days = @ND_STABILIZATION_ACTION_LOCK_DAYS
-				}
+				set_state_flag = natural_disaster_relief_port_reopened
 			}
 		}
 		ai_will_do = {
@@ -3863,11 +3273,15 @@ natural_disaster_aftermath_category = {
 				natural_disaster_state_has_open_card = yes
 				check_variable = { natural_disaster_phase = constant:natural_disaster_phase.middle_stabilization }
 				is_controlled_by = ROOT
-				check_variable = { natural_disaster_family > constant:natural_disaster_family.random }
-				check_variable = {
-					var = natural_disaster_family
-					value = constant:natural_disaster_family.max
-					compare = less_than_or_equals
+				OR = {
+					check_variable = { natural_disaster_chain_risk = constant:natural_disaster_chain.famine }
+					check_variable = { natural_disaster_damage_resources > 0 }
+					check_variable = { natural_disaster_family = constant:natural_disaster_family.flood }
+					check_variable = { natural_disaster_family = constant:natural_disaster_family.hailstorm }
+					check_variable = { natural_disaster_family = constant:natural_disaster_family.heat_wave }
+					check_variable = { natural_disaster_family = constant:natural_disaster_family.drought }
+					check_variable = { natural_disaster_family = constant:natural_disaster_family.wildfire }
+					check_variable = { natural_disaster_family = constant:natural_disaster_family.ashfall }
 				}
 				NOT = { has_state_flag = natural_disaster_stabilize_secure_food_taken }
 			}
@@ -3875,10 +3289,9 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_STABILIZATION
 		custom_cost_trigger = {
-			natural_disaster_can_pay_stabilization = yes
-			has_fuel > constant:natural_disaster_cost_gate.stabilize_fuel
+			natural_disaster_can_pay_stabilization_routed = yes
 		}
-		custom_cost_text = natural_disaster_cost_stabilization_either
+		custom_cost_text = natural_disaster_cost_stabilization_routed
 		complete_effect = {
 			set_temp_variable = { nd_stabilization_support_cost = constant:natural_disaster_cost.stabilize_support_equipment }
 			multiply_temp_variable = { nd_stabilization_support_cost = -1 }
@@ -3893,7 +3306,7 @@ natural_disaster_aftermath_category = {
 				amount = nd_stabilization_truck_cost
 			}
 			if = {
-				limit = { has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.stabilize_trains } }
+				limit = { FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } } }
 				set_temp_variable = { nd_stabilization_transport_cost = constant:natural_disaster_cost.stabilize_trains }
 				multiply_temp_variable = { nd_stabilization_transport_cost = -1 }
 				add_equipment_to_stockpile = {
@@ -3920,17 +3333,14 @@ natural_disaster_aftermath_category = {
 				}
 				add_to_variable = { natural_disaster_stabilization_score = @ND_STABILIZATION_ACTION_SCORE }
 				set_variable = { natural_disaster_card_state = constant:natural_disaster_card_state.recovering }
-				set_state_flag = {
-					flag = natural_disaster_food_corridor_secured
-					days = @ND_STABILIZATION_ACTION_LOCK_DAYS
-				}
+				set_state_flag = natural_disaster_food_corridor_secured
 			}
 		}
 		ai_will_do = {
 			base = @ND_AI_BASE_MEDIUM
 			modifier = {
 				factor = @ND_AI_FACTOR_CRITICAL
-				FROM = { is_capital = yes }
+				FROM = { check_variable = { natural_disaster_chain_risk = constant:natural_disaster_chain.famine } }
 			}
 			modifier = {
 				factor = @ND_AI_FACTOR_HIGH
@@ -3952,11 +3362,19 @@ natural_disaster_aftermath_category = {
 				natural_disaster_state_has_open_card = yes
 				check_variable = { natural_disaster_phase = constant:natural_disaster_phase.middle_stabilization }
 				is_controlled_by = ROOT
-				check_variable = { natural_disaster_family > constant:natural_disaster_family.random }
-				check_variable = {
-					var = natural_disaster_family
-					value = constant:natural_disaster_family.max
-					compare = less_than_or_equals
+				OR = {
+					check_variable = { natural_disaster_damage_industry > 0 }
+					AND = {
+						natural_disaster_state_has_industry = yes
+						OR = {
+							check_variable = { natural_disaster_family = constant:natural_disaster_family.earthquake }
+							check_variable = { natural_disaster_family = constant:natural_disaster_family.extreme_wind }
+							check_variable = { natural_disaster_family = constant:natural_disaster_family.ashfall }
+							check_variable = { natural_disaster_family = constant:natural_disaster_family.wildfire }
+							check_variable = { natural_disaster_family = constant:natural_disaster_family.meteor_impact }
+							check_variable = { natural_disaster_family = constant:natural_disaster_family.meteor_shower }
+						}
+					}
 				}
 				NOT = { has_state_flag = natural_disaster_stabilize_factory_inspection_taken }
 			}
@@ -3964,10 +3382,9 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_STABILIZATION
 		custom_cost_trigger = {
-			natural_disaster_can_pay_stabilization = yes
-			has_fuel > constant:natural_disaster_cost_gate.stabilize_fuel
+			natural_disaster_can_pay_stabilization_routed = yes
 		}
-		custom_cost_text = natural_disaster_cost_stabilization_either
+		custom_cost_text = natural_disaster_cost_stabilization_routed
 		complete_effect = {
 			set_temp_variable = { nd_stabilization_support_cost = constant:natural_disaster_cost.stabilize_support_equipment }
 			multiply_temp_variable = { nd_stabilization_support_cost = -1 }
@@ -3982,7 +3399,7 @@ natural_disaster_aftermath_category = {
 				amount = nd_stabilization_truck_cost
 			}
 			if = {
-				limit = { has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.stabilize_trains } }
+				limit = { FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } } }
 				set_temp_variable = { nd_stabilization_transport_cost = constant:natural_disaster_cost.stabilize_trains }
 				multiply_temp_variable = { nd_stabilization_transport_cost = -1 }
 				add_equipment_to_stockpile = {
@@ -4009,10 +3426,7 @@ natural_disaster_aftermath_category = {
 				}
 				add_to_variable = { natural_disaster_stabilization_score = @ND_STABILIZATION_ACTION_SCORE }
 				set_variable = { natural_disaster_card_state = constant:natural_disaster_card_state.recovering }
-				set_state_flag = {
-					flag = natural_disaster_factory_inspection_complete
-					days = @ND_STABILIZATION_ACTION_LOCK_DAYS
-				}
+				set_state_flag = natural_disaster_factory_inspection_complete
 			}
 		}
 		ai_will_do = {
@@ -4286,10 +3700,9 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_CHAIN
 		custom_cost_trigger = {
-			natural_disaster_can_pay_stabilization = yes
-			has_fuel > constant:natural_disaster_cost_gate.stabilize_fuel
+			natural_disaster_can_pay_stabilization_routed = yes
 		}
-		custom_cost_text = natural_disaster_cost_stabilization_either
+		custom_cost_text = natural_disaster_cost_stabilization_routed
 		complete_effect = {
 			set_temp_variable = { nd_stabilization_support_cost = constant:natural_disaster_cost.stabilize_support_equipment }
 			multiply_temp_variable = { nd_stabilization_support_cost = -1 }
@@ -4304,7 +3717,7 @@ natural_disaster_aftermath_category = {
 				amount = nd_stabilization_truck_cost
 			}
 			if = {
-				limit = { has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.stabilize_trains } }
+				limit = { FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } } }
 				set_temp_variable = { nd_stabilization_transport_cost = constant:natural_disaster_cost.stabilize_trains }
 				multiply_temp_variable = { nd_stabilization_transport_cost = -1 }
 				add_equipment_to_stockpile = {
@@ -4378,11 +3791,19 @@ natural_disaster_aftermath_category = {
 				natural_disaster_state_has_open_card = yes
 				check_variable = { natural_disaster_phase = constant:natural_disaster_phase.late_reconstruction }
 				is_controlled_by = ROOT
-				check_variable = { natural_disaster_family > constant:natural_disaster_family.random }
-				check_variable = {
-					var = natural_disaster_family
-					value = constant:natural_disaster_family.max
-					compare = less_than_or_equals
+				OR = {
+					check_variable = { natural_disaster_family = constant:natural_disaster_family.earthquake }
+					check_variable = { natural_disaster_family = constant:natural_disaster_family.flood }
+					check_variable = { natural_disaster_family = constant:natural_disaster_family.blizzard }
+					check_variable = { natural_disaster_family = constant:natural_disaster_family.dry_mass_movement }
+					check_variable = { natural_disaster_family = constant:natural_disaster_family.wet_mass_movement }
+					check_variable = { natural_disaster_family = constant:natural_disaster_family.lahar }
+					check_variable = { natural_disaster_family = constant:natural_disaster_family.whole_earth_rupture }
+					check_variable = { natural_disaster_family = constant:natural_disaster_family.moving_storm_corridor }
+				}
+				OR = {
+					check_variable = { natural_disaster_damage_transport > 0 }
+					natural_disaster_state_has_strategic_transport = yes
 				}
 				NOT = { has_state_flag = natural_disaster_reconstruct_resilient_rails_taken }
 			}
@@ -4425,7 +3846,7 @@ natural_disaster_aftermath_category = {
 				}
 				add_to_variable = { natural_disaster_reconstruction_score = @ND_RECONSTRUCTION_ACTION_SCORE }
 				set_variable = { natural_disaster_card_state = constant:natural_disaster_card_state.recovering }
-				set_state_flag = natural_disaster_resilient_rails
+				set_state_flag = natural_disaster_resilient_rails_pending
 			}
 		}
 		ai_will_do = {
@@ -4469,10 +3890,9 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_RECONSTRUCTION
 		custom_cost_trigger = {
-			natural_disaster_can_pay_reconstruction = yes
-			has_fuel > constant:natural_disaster_cost_gate.reconstruct_fuel
+			natural_disaster_can_pay_reconstruction_routed = yes
 		}
-		custom_cost_text = natural_disaster_cost_reconstruction_either
+		custom_cost_text = natural_disaster_cost_reconstruction_routed
 		complete_effect = {
 			set_temp_variable = { nd_reconstruction_support_cost = constant:natural_disaster_cost.reconstruct_support_equipment }
 			multiply_temp_variable = { nd_reconstruction_support_cost = -1 }
@@ -4487,7 +3907,7 @@ natural_disaster_aftermath_category = {
 				amount = nd_reconstruction_truck_cost
 			}
 			if = {
-				limit = { has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.reconstruct_trains } }
+				limit = { FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } } }
 				set_temp_variable = { nd_reconstruction_transport_cost = constant:natural_disaster_cost.reconstruct_trains }
 				multiply_temp_variable = { nd_reconstruction_transport_cost = -1 }
 				add_equipment_to_stockpile = {
@@ -4514,7 +3934,7 @@ natural_disaster_aftermath_category = {
 				}
 				add_to_variable = { natural_disaster_reconstruction_score = @ND_RECONSTRUCTION_ACTION_SCORE }
 				set_variable = { natural_disaster_card_state = constant:natural_disaster_card_state.recovering }
-				set_state_flag = natural_disaster_seismic_retrofit
+				set_state_flag = natural_disaster_seismic_retrofit_pending
 			}
 		}
 		ai_will_do = {
@@ -4596,7 +4016,7 @@ natural_disaster_aftermath_category = {
 				}
 				add_to_variable = { natural_disaster_reconstruction_score = @ND_RECONSTRUCTION_ACTION_SCORE }
 				set_variable = { natural_disaster_card_state = constant:natural_disaster_card_state.recovering }
-				set_state_flag = natural_disaster_coastal_barriers
+				set_state_flag = natural_disaster_coastal_barriers_pending
 			}
 		}
 		ai_will_do = {
@@ -4644,10 +4064,9 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_RECONSTRUCTION
 		custom_cost_trigger = {
-			natural_disaster_can_pay_reconstruction = yes
-			has_fuel > constant:natural_disaster_cost_gate.reconstruct_fuel
+			natural_disaster_can_pay_reconstruction_routed = yes
 		}
-		custom_cost_text = natural_disaster_cost_reconstruction_either
+		custom_cost_text = natural_disaster_cost_reconstruction_routed
 		complete_effect = {
 			set_temp_variable = { nd_reconstruction_support_cost = constant:natural_disaster_cost.reconstruct_support_equipment }
 			multiply_temp_variable = { nd_reconstruction_support_cost = -1 }
@@ -4662,7 +4081,7 @@ natural_disaster_aftermath_category = {
 				amount = nd_reconstruction_truck_cost
 			}
 			if = {
-				limit = { has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.reconstruct_trains } }
+				limit = { FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } } }
 				set_temp_variable = { nd_reconstruction_transport_cost = constant:natural_disaster_cost.reconstruct_trains }
 				multiply_temp_variable = { nd_reconstruction_transport_cost = -1 }
 				add_equipment_to_stockpile = {
@@ -4689,7 +4108,7 @@ natural_disaster_aftermath_category = {
 				}
 				add_to_variable = { natural_disaster_reconstruction_score = @ND_RECONSTRUCTION_ACTION_SCORE }
 				set_variable = { natural_disaster_card_state = constant:natural_disaster_card_state.recovering }
-				set_state_flag = natural_disaster_firebreak_network
+				set_state_flag = natural_disaster_firebreak_network_pending
 			}
 		}
 		ai_will_do = {
@@ -4726,10 +4145,9 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_RECONSTRUCTION
 		custom_cost_trigger = {
-			natural_disaster_can_pay_reconstruction = yes
-			has_fuel > constant:natural_disaster_cost_gate.reconstruct_fuel
+			natural_disaster_can_pay_reconstruction_routed = yes
 		}
-		custom_cost_text = natural_disaster_cost_reconstruction_either
+		custom_cost_text = natural_disaster_cost_reconstruction_routed
 		complete_effect = {
 			set_temp_variable = { nd_reconstruction_support_cost = constant:natural_disaster_cost.reconstruct_support_equipment }
 			multiply_temp_variable = { nd_reconstruction_support_cost = -1 }
@@ -4744,7 +4162,7 @@ natural_disaster_aftermath_category = {
 				amount = nd_reconstruction_truck_cost
 			}
 			if = {
-				limit = { has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.reconstruct_trains } }
+				limit = { FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } } }
 				set_temp_variable = { nd_reconstruction_transport_cost = constant:natural_disaster_cost.reconstruct_trains }
 				multiply_temp_variable = { nd_reconstruction_transport_cost = -1 }
 				add_equipment_to_stockpile = {
@@ -4771,7 +4189,7 @@ natural_disaster_aftermath_category = {
 				}
 				add_to_variable = { natural_disaster_reconstruction_score = @ND_RECONSTRUCTION_ACTION_SCORE }
 				set_variable = { natural_disaster_card_state = constant:natural_disaster_card_state.recovering }
-				set_state_flag = natural_disaster_volcanic_exclusion_routes
+				set_state_flag = natural_disaster_volcanic_exclusion_routes_pending
 			}
 		}
 		ai_will_do = {
@@ -4800,11 +4218,14 @@ natural_disaster_aftermath_category = {
 				natural_disaster_state_has_open_card = yes
 				check_variable = { natural_disaster_phase = constant:natural_disaster_phase.late_reconstruction }
 				is_controlled_by = ROOT
-				check_variable = { natural_disaster_family > constant:natural_disaster_family.random }
-				check_variable = {
-					var = natural_disaster_family
-					value = constant:natural_disaster_family.max
-					compare = less_than_or_equals
+				OR = {
+					check_variable = { natural_disaster_family = constant:natural_disaster_family.flood }
+					check_variable = { natural_disaster_family = constant:natural_disaster_family.heat_wave }
+					check_variable = { natural_disaster_family = constant:natural_disaster_family.drought }
+					check_variable = { natural_disaster_family = constant:natural_disaster_family.dust_and_sandstorm }
+					check_variable = { natural_disaster_family = constant:natural_disaster_family.ashfall }
+					check_variable = { natural_disaster_family = constant:natural_disaster_family.tsunami }
+					check_variable = { natural_disaster_family = constant:natural_disaster_family.storm_surge }
 				}
 				NOT = { has_state_flag = natural_disaster_reconstruct_water_security_taken }
 			}
@@ -4812,10 +4233,9 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_RECONSTRUCTION
 		custom_cost_trigger = {
-			natural_disaster_can_pay_reconstruction = yes
-			has_fuel > constant:natural_disaster_cost_gate.reconstruct_fuel
+			natural_disaster_can_pay_reconstruction_routed = yes
 		}
-		custom_cost_text = natural_disaster_cost_reconstruction_either
+		custom_cost_text = natural_disaster_cost_reconstruction_routed
 		complete_effect = {
 			set_temp_variable = { nd_reconstruction_support_cost = constant:natural_disaster_cost.reconstruct_support_equipment }
 			multiply_temp_variable = { nd_reconstruction_support_cost = -1 }
@@ -4830,7 +4250,7 @@ natural_disaster_aftermath_category = {
 				amount = nd_reconstruction_truck_cost
 			}
 			if = {
-				limit = { has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.reconstruct_trains } }
+				limit = { FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } } }
 				set_temp_variable = { nd_reconstruction_transport_cost = constant:natural_disaster_cost.reconstruct_trains }
 				multiply_temp_variable = { nd_reconstruction_transport_cost = -1 }
 				add_equipment_to_stockpile = {
@@ -4857,7 +4277,7 @@ natural_disaster_aftermath_category = {
 				}
 				add_to_variable = { natural_disaster_reconstruction_score = @ND_RECONSTRUCTION_ACTION_SCORE }
 				set_variable = { natural_disaster_card_state = constant:natural_disaster_card_state.recovering }
-				set_state_flag = natural_disaster_water_security
+				set_state_flag = natural_disaster_water_security_pending
 			}
 		}
 		ai_will_do = {
@@ -4893,10 +4313,9 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_RECONSTRUCTION
 		custom_cost_trigger = {
-			natural_disaster_can_pay_reconstruction = yes
-			has_fuel > constant:natural_disaster_cost_gate.reconstruct_fuel
+			natural_disaster_can_pay_reconstruction_routed = yes
 		}
-		custom_cost_text = natural_disaster_cost_reconstruction_either
+		custom_cost_text = natural_disaster_cost_reconstruction_routed
 		complete_effect = {
 			set_temp_variable = { nd_reconstruction_support_cost = constant:natural_disaster_cost.reconstruct_support_equipment }
 			multiply_temp_variable = { nd_reconstruction_support_cost = -1 }
@@ -4911,7 +4330,7 @@ natural_disaster_aftermath_category = {
 				amount = nd_reconstruction_truck_cost
 			}
 			if = {
-				limit = { has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.reconstruct_trains } }
+				limit = { FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } } }
 				set_temp_variable = { nd_reconstruction_transport_cost = constant:natural_disaster_cost.reconstruct_trains }
 				multiply_temp_variable = { nd_reconstruction_transport_cost = -1 }
 				add_equipment_to_stockpile = {
@@ -4938,7 +4357,7 @@ natural_disaster_aftermath_category = {
 				}
 				add_to_variable = { natural_disaster_reconstruction_score = @ND_RECONSTRUCTION_ACTION_SCORE }
 				set_variable = { natural_disaster_card_state = constant:natural_disaster_card_state.recovering }
-				set_state_flag = natural_disaster_exclusion_cordon
+				set_state_flag = natural_disaster_exclusion_cordon_pending
 			}
 		}
 		ai_will_do = {
@@ -4984,10 +4403,9 @@ natural_disaster_aftermath_category = {
 		on_map_mode = map_and_decisions_view
 		priority = @ND_PRIORITY_RECONSTRUCTION
 		custom_cost_trigger = {
-			natural_disaster_can_pay_reconstruction = yes
-			has_fuel > constant:natural_disaster_cost_gate.reconstruct_fuel
+			natural_disaster_can_pay_reconstruction_routed = yes
 		}
-		custom_cost_text = natural_disaster_cost_reconstruction_either
+		custom_cost_text = natural_disaster_cost_reconstruction_routed
 		complete_effect = {
 			set_temp_variable = { nd_reconstruction_support_cost = constant:natural_disaster_cost.reconstruct_support_equipment }
 			multiply_temp_variable = { nd_reconstruction_support_cost = -1 }
@@ -5002,7 +4420,7 @@ natural_disaster_aftermath_category = {
 				amount = nd_reconstruction_truck_cost
 			}
 			if = {
-				limit = { has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.reconstruct_trains } }
+				limit = { FROM = { NOT = { natural_disaster_state_uses_convoy_recovery_route = yes } } }
 				set_temp_variable = { nd_reconstruction_transport_cost = constant:natural_disaster_cost.reconstruct_trains }
 				multiply_temp_variable = { nd_reconstruction_transport_cost = -1 }
 				add_equipment_to_stockpile = {
@@ -5029,7 +4447,7 @@ natural_disaster_aftermath_category = {
 				}
 				add_to_variable = { natural_disaster_reconstruction_score = @ND_RECONSTRUCTION_ACTION_SCORE }
 				set_variable = { natural_disaster_card_state = constant:natural_disaster_card_state.recovering }
-				set_state_flag = natural_disaster_weather_shelter_network
+				set_state_flag = natural_disaster_weather_shelter_network_pending
 			}
 		}
 		ai_will_do = {
@@ -5105,7 +4523,7 @@ natural_disaster_aftermath_category = {
 				}
 				add_to_variable = { natural_disaster_reconstruction_score = @ND_RECONSTRUCTION_ACTION_SCORE }
 				set_variable = { natural_disaster_card_state = constant:natural_disaster_card_state.recovering }
-				set_state_flag = natural_disaster_slope_stabilization
+				set_state_flag = natural_disaster_slope_stabilization_pending
 			}
 		}
 		ai_will_do = {
@@ -5133,16 +4551,15 @@ natural_disaster_aftermath_category = {
 		}
 		priority = @ND_PRIORITY_RELIEF
 		custom_cost_trigger = {
-			natural_disaster_can_pay_warning_transport = yes
-			has_fuel > constant:natural_disaster_cost_gate.warning_fuel
+			natural_disaster_can_route_inbound_relief = yes
 		}
-		custom_cost_text = natural_disaster_cost_inbound_relief_route
+		custom_cost_text = natural_disaster_cost_inbound_relief_routed
 		complete_effect = {
 			set_temp_variable = { nd_warning_manpower_cost = constant:natural_disaster_cost.warning_manpower }
 			multiply_temp_variable = { nd_warning_manpower_cost = -1 }
 			add_manpower = nd_warning_manpower_cost
 			if = {
-				limit = { has_equipment = { train_equipment_1 > constant:natural_disaster_cost_gate.warning_trains } }
+				limit = { has_country_flag = natural_disaster_inbound_relief_route_rail }
 				set_temp_variable = { nd_warning_transport_cost = constant:natural_disaster_cost.warning_trains }
 				multiply_temp_variable = { nd_warning_transport_cost = -1 }
 				add_equipment_to_stockpile = {
@@ -5210,6 +4627,8 @@ natural_disaster_aftermath_category = {
 			remove_mission = natural_disaster_inbound_relief_mission
 			clr_country_flag = natural_disaster_inbound_relief_active
 			clr_country_flag = natural_disaster_inbound_relief_route_secured
+			clr_country_flag = natural_disaster_inbound_relief_route_convoy
+			clr_country_flag = natural_disaster_inbound_relief_route_rail
 			clr_country_flag = natural_disaster_relief_variant_neighbor_convoy
 			clr_country_flag = natural_disaster_relief_variant_port_lifeline
 			clr_country_flag = natural_disaster_relief_variant_engineer
@@ -5270,6 +4689,7 @@ natural_disaster_aftermath_category = {
 		}
 		cancel_effect = {
 			clear_variable = natural_disaster_rescue_state_1
+			natural_disaster_schedule_capacity_refill = yes
 		}
 		selectable_mission = no
 		is_good = no
@@ -5290,6 +4710,7 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			clear_variable = natural_disaster_rescue_state_1
+			natural_disaster_schedule_capacity_refill = yes
 		}
 		timeout_effect = {
 			if = {
@@ -5327,6 +4748,7 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			clear_variable = natural_disaster_rescue_state_1
+			natural_disaster_schedule_capacity_refill = yes
 		}
 	}
 
@@ -5357,6 +4779,7 @@ natural_disaster_aftermath_category = {
 		}
 		cancel_effect = {
 			clear_variable = natural_disaster_rescue_state_2
+			natural_disaster_schedule_capacity_refill = yes
 		}
 		selectable_mission = no
 		is_good = no
@@ -5377,6 +4800,7 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			clear_variable = natural_disaster_rescue_state_2
+			natural_disaster_schedule_capacity_refill = yes
 		}
 		timeout_effect = {
 			if = {
@@ -5414,6 +4838,7 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			clear_variable = natural_disaster_rescue_state_2
+			natural_disaster_schedule_capacity_refill = yes
 		}
 	}
 
@@ -5444,6 +4869,7 @@ natural_disaster_aftermath_category = {
 		}
 		cancel_effect = {
 			clear_variable = natural_disaster_rescue_state_3
+			natural_disaster_schedule_capacity_refill = yes
 		}
 		selectable_mission = no
 		is_good = no
@@ -5464,6 +4890,7 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			clear_variable = natural_disaster_rescue_state_3
+			natural_disaster_schedule_capacity_refill = yes
 		}
 		timeout_effect = {
 			if = {
@@ -5501,6 +4928,7 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			clear_variable = natural_disaster_rescue_state_3
+			natural_disaster_schedule_capacity_refill = yes
 		}
 	}
 
@@ -5529,7 +4957,10 @@ natural_disaster_aftermath_category = {
 				}
 			}
 		}
-		cancel_effect = { clear_variable = natural_disaster_rescue_state_4 }
+		cancel_effect = {
+			clear_variable = natural_disaster_rescue_state_4
+			natural_disaster_schedule_capacity_refill = yes
+		}
 		selectable_mission = no
 		is_good = no
 		days_mission_timeout = constant:natural_disaster_aftermath.rescue_days
@@ -5544,6 +4975,7 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			clear_variable = natural_disaster_rescue_state_4
+			natural_disaster_schedule_capacity_refill = yes
 		}
 		timeout_effect = {
 			if = {
@@ -5575,6 +5007,7 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			clear_variable = natural_disaster_rescue_state_4
+			natural_disaster_schedule_capacity_refill = yes
 		}
 	}
 
@@ -5605,6 +5038,7 @@ natural_disaster_aftermath_category = {
 		}
 		cancel_effect = {
 			clear_variable = natural_disaster_stabilization_state_1
+			natural_disaster_schedule_capacity_refill = yes
 		}
 		selectable_mission = no
 		is_good = no
@@ -5625,6 +5059,7 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			clear_variable = natural_disaster_stabilization_state_1
+			natural_disaster_schedule_capacity_refill = yes
 		}
 		timeout_effect = {
 			if = {
@@ -5662,6 +5097,7 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			clear_variable = natural_disaster_stabilization_state_1
+			natural_disaster_schedule_capacity_refill = yes
 		}
 	}
 
@@ -5692,6 +5128,7 @@ natural_disaster_aftermath_category = {
 		}
 		cancel_effect = {
 			clear_variable = natural_disaster_stabilization_state_2
+			natural_disaster_schedule_capacity_refill = yes
 		}
 		selectable_mission = no
 		is_good = no
@@ -5712,6 +5149,7 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			clear_variable = natural_disaster_stabilization_state_2
+			natural_disaster_schedule_capacity_refill = yes
 		}
 		timeout_effect = {
 			if = {
@@ -5749,6 +5187,7 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			clear_variable = natural_disaster_stabilization_state_2
+			natural_disaster_schedule_capacity_refill = yes
 		}
 	}
 
@@ -5777,7 +5216,10 @@ natural_disaster_aftermath_category = {
 				}
 			}
 		}
-		cancel_effect = { clear_variable = natural_disaster_stabilization_state_3 }
+		cancel_effect = {
+			clear_variable = natural_disaster_stabilization_state_3
+			natural_disaster_schedule_capacity_refill = yes
+		}
 		selectable_mission = no
 		is_good = no
 		days_mission_timeout = constant:natural_disaster_aftermath.stabilization_days
@@ -5792,6 +5234,7 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			clear_variable = natural_disaster_stabilization_state_3
+			natural_disaster_schedule_capacity_refill = yes
 		}
 		timeout_effect = {
 			if = {
@@ -5823,6 +5266,7 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			clear_variable = natural_disaster_stabilization_state_3
+			natural_disaster_schedule_capacity_refill = yes
 		}
 	}
 
@@ -5853,6 +5297,7 @@ natural_disaster_aftermath_category = {
 		}
 		cancel_effect = {
 			clear_variable = natural_disaster_reconstruction_state_1
+			natural_disaster_schedule_capacity_refill = yes
 		}
 		selectable_mission = no
 		is_good = no
@@ -5873,6 +5318,7 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			clear_variable = natural_disaster_reconstruction_state_1
+			natural_disaster_schedule_capacity_refill = yes
 		}
 		timeout_effect = {
 			if = {
@@ -5910,6 +5356,7 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			clear_variable = natural_disaster_reconstruction_state_1
+			natural_disaster_schedule_capacity_refill = yes
 		}
 	}
 
@@ -5940,6 +5387,7 @@ natural_disaster_aftermath_category = {
 		}
 		cancel_effect = {
 			clear_variable = natural_disaster_reconstruction_state_2
+			natural_disaster_schedule_capacity_refill = yes
 		}
 		selectable_mission = no
 		is_good = no
@@ -5960,6 +5408,7 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			clear_variable = natural_disaster_reconstruction_state_2
+			natural_disaster_schedule_capacity_refill = yes
 		}
 		timeout_effect = {
 			if = {
@@ -5997,6 +5446,7 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			clear_variable = natural_disaster_reconstruction_state_2
+			natural_disaster_schedule_capacity_refill = yes
 		}
 	}
 
@@ -6029,7 +5479,10 @@ natural_disaster_aftermath_category = {
 				}
 			}
 		}
-		cancel_effect = { clear_variable = natural_disaster_reconstruction_state_3 }
+		cancel_effect = {
+			clear_variable = natural_disaster_reconstruction_state_3
+			natural_disaster_schedule_capacity_refill = yes
+		}
 		selectable_mission = no
 		is_good = no
 		days_mission_timeout = constant:natural_disaster_aftermath.reconstruction_days
@@ -6044,6 +5497,7 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			clear_variable = natural_disaster_reconstruction_state_3
+			natural_disaster_schedule_capacity_refill = yes
 		}
 		timeout_effect = {
 			if = {
@@ -6075,6 +5529,7 @@ natural_disaster_aftermath_category = {
 				}
 			}
 			clear_variable = natural_disaster_reconstruction_state_3
+			natural_disaster_schedule_capacity_refill = yes
 		}
 	}
 
@@ -6121,8 +5576,7 @@ natural_disaster_aftermath_category = {
 					}
 				}
 			}
-			clr_country_flag = natural_disaster_chain_mission_active
-			clear_variable = natural_disaster_chain_mission_state
+			natural_disaster_release_chain_mission_slot = yes
 		}
 		selectable_mission = no
 		is_good = no
@@ -6132,8 +5586,7 @@ natural_disaster_aftermath_category = {
 				limit = { has_variable = natural_disaster_chain_mission_state }
 				var:natural_disaster_chain_mission_state = { set_state_flag = natural_disaster_chain_mission_success }
 			}
-			clr_country_flag = natural_disaster_chain_mission_active
-			clear_variable = natural_disaster_chain_mission_state
+			natural_disaster_release_chain_mission_slot = yes
 		}
 		timeout_effect = {
 			if = {
@@ -6155,8 +5608,7 @@ natural_disaster_aftermath_category = {
 					}
 				}
 			}
-			clr_country_flag = natural_disaster_chain_mission_active
-			clear_variable = natural_disaster_chain_mission_state
+			natural_disaster_release_chain_mission_slot = yes
 		}
 	}
 
@@ -6203,8 +5655,7 @@ natural_disaster_aftermath_category = {
 					}
 				}
 			}
-			clr_country_flag = natural_disaster_chain_mission_active
-			clear_variable = natural_disaster_chain_mission_state
+			natural_disaster_release_chain_mission_slot = yes
 		}
 		selectable_mission = no
 		is_good = no
@@ -6214,8 +5665,7 @@ natural_disaster_aftermath_category = {
 				limit = { has_variable = natural_disaster_chain_mission_state }
 				var:natural_disaster_chain_mission_state = { set_state_flag = natural_disaster_chain_mission_success }
 			}
-			clr_country_flag = natural_disaster_chain_mission_active
-			clear_variable = natural_disaster_chain_mission_state
+			natural_disaster_release_chain_mission_slot = yes
 		}
 		timeout_effect = {
 			if = {
@@ -6237,8 +5687,7 @@ natural_disaster_aftermath_category = {
 					}
 				}
 			}
-			clr_country_flag = natural_disaster_chain_mission_active
-			clear_variable = natural_disaster_chain_mission_state
+			natural_disaster_release_chain_mission_slot = yes
 		}
 	}
 
@@ -6285,8 +5734,7 @@ natural_disaster_aftermath_category = {
 					}
 				}
 			}
-			clr_country_flag = natural_disaster_chain_mission_active
-			clear_variable = natural_disaster_chain_mission_state
+			natural_disaster_release_chain_mission_slot = yes
 		}
 		selectable_mission = no
 		is_good = no
@@ -6296,8 +5744,7 @@ natural_disaster_aftermath_category = {
 				limit = { has_variable = natural_disaster_chain_mission_state }
 				var:natural_disaster_chain_mission_state = { set_state_flag = natural_disaster_chain_mission_success }
 			}
-			clr_country_flag = natural_disaster_chain_mission_active
-			clear_variable = natural_disaster_chain_mission_state
+			natural_disaster_release_chain_mission_slot = yes
 		}
 		timeout_effect = {
 			if = {
@@ -6319,8 +5766,7 @@ natural_disaster_aftermath_category = {
 					}
 				}
 			}
-			clr_country_flag = natural_disaster_chain_mission_active
-			clear_variable = natural_disaster_chain_mission_state
+			natural_disaster_release_chain_mission_slot = yes
 		}
 	}
 
@@ -6367,8 +5813,7 @@ natural_disaster_aftermath_category = {
 					}
 				}
 			}
-			clr_country_flag = natural_disaster_chain_mission_active
-			clear_variable = natural_disaster_chain_mission_state
+			natural_disaster_release_chain_mission_slot = yes
 		}
 		selectable_mission = no
 		is_good = no
@@ -6378,8 +5823,7 @@ natural_disaster_aftermath_category = {
 				limit = { has_variable = natural_disaster_chain_mission_state }
 				var:natural_disaster_chain_mission_state = { set_state_flag = natural_disaster_chain_mission_success }
 			}
-			clr_country_flag = natural_disaster_chain_mission_active
-			clear_variable = natural_disaster_chain_mission_state
+			natural_disaster_release_chain_mission_slot = yes
 		}
 		timeout_effect = {
 			if = {
@@ -6401,8 +5845,7 @@ natural_disaster_aftermath_category = {
 					}
 				}
 			}
-			clr_country_flag = natural_disaster_chain_mission_active
-			clear_variable = natural_disaster_chain_mission_state
+			natural_disaster_release_chain_mission_slot = yes
 		}
 	}
 
@@ -6449,8 +5892,7 @@ natural_disaster_aftermath_category = {
 					}
 				}
 			}
-			clr_country_flag = natural_disaster_chain_mission_active
-			clear_variable = natural_disaster_chain_mission_state
+			natural_disaster_release_chain_mission_slot = yes
 		}
 		selectable_mission = no
 		is_good = no
@@ -6460,8 +5902,7 @@ natural_disaster_aftermath_category = {
 				limit = { has_variable = natural_disaster_chain_mission_state }
 				var:natural_disaster_chain_mission_state = { set_state_flag = natural_disaster_chain_mission_success }
 			}
-			clr_country_flag = natural_disaster_chain_mission_active
-			clear_variable = natural_disaster_chain_mission_state
+			natural_disaster_release_chain_mission_slot = yes
 		}
 		timeout_effect = {
 			if = {
@@ -6483,8 +5924,7 @@ natural_disaster_aftermath_category = {
 					}
 				}
 			}
-			clr_country_flag = natural_disaster_chain_mission_active
-			clear_variable = natural_disaster_chain_mission_state
+			natural_disaster_release_chain_mission_slot = yes
 		}
 	}
 
@@ -6531,8 +5971,7 @@ natural_disaster_aftermath_category = {
 					}
 				}
 			}
-			clr_country_flag = natural_disaster_chain_mission_active
-			clear_variable = natural_disaster_chain_mission_state
+			natural_disaster_release_chain_mission_slot = yes
 		}
 		selectable_mission = no
 		is_good = no
@@ -6542,8 +5981,7 @@ natural_disaster_aftermath_category = {
 				limit = { has_variable = natural_disaster_chain_mission_state }
 				var:natural_disaster_chain_mission_state = { set_state_flag = natural_disaster_chain_mission_success }
 			}
-			clr_country_flag = natural_disaster_chain_mission_active
-			clear_variable = natural_disaster_chain_mission_state
+			natural_disaster_release_chain_mission_slot = yes
 		}
 		timeout_effect = {
 			if = {
@@ -6565,8 +6003,7 @@ natural_disaster_aftermath_category = {
 					}
 				}
 			}
-			clr_country_flag = natural_disaster_chain_mission_active
-			clear_variable = natural_disaster_chain_mission_state
+			natural_disaster_release_chain_mission_slot = yes
 		}
 	}
 
@@ -6613,8 +6050,7 @@ natural_disaster_aftermath_category = {
 					}
 				}
 			}
-			clr_country_flag = natural_disaster_chain_mission_active
-			clear_variable = natural_disaster_chain_mission_state
+			natural_disaster_release_chain_mission_slot = yes
 		}
 		selectable_mission = no
 		is_good = no
@@ -6624,8 +6060,7 @@ natural_disaster_aftermath_category = {
 				limit = { has_variable = natural_disaster_chain_mission_state }
 				var:natural_disaster_chain_mission_state = { set_state_flag = natural_disaster_chain_mission_success }
 			}
-			clr_country_flag = natural_disaster_chain_mission_active
-			clear_variable = natural_disaster_chain_mission_state
+			natural_disaster_release_chain_mission_slot = yes
 		}
 		timeout_effect = {
 			if = {
@@ -6647,8 +6082,7 @@ natural_disaster_aftermath_category = {
 					}
 				}
 			}
-			clr_country_flag = natural_disaster_chain_mission_active
-			clear_variable = natural_disaster_chain_mission_state
+			natural_disaster_release_chain_mission_slot = yes
 		}
 	}
 
@@ -6686,8 +6120,7 @@ natural_disaster_aftermath_category = {
 					}
 				}
 			}
-			clr_country_flag = natural_disaster_chain_mission_active
-			clear_variable = natural_disaster_chain_mission_state
+			natural_disaster_release_chain_mission_slot = yes
 		}
 		selectable_mission = no
 		is_good = no
@@ -6702,8 +6135,7 @@ natural_disaster_aftermath_category = {
 					}
 				}
 			}
-			clr_country_flag = natural_disaster_chain_mission_active
-			clear_variable = natural_disaster_chain_mission_state
+			natural_disaster_release_chain_mission_slot = yes
 		}
 		timeout_effect = {
 			if = {
@@ -6722,8 +6154,7 @@ natural_disaster_aftermath_category = {
 					}
 				}
 			}
-			clr_country_flag = natural_disaster_chain_mission_active
-			clear_variable = natural_disaster_chain_mission_state
+			natural_disaster_release_chain_mission_slot = yes
 		}
 	}
 
@@ -6748,12 +6179,15 @@ natural_disaster_aftermath_category = {
 			}
 			clr_country_flag = natural_disaster_inbound_relief_active
 			clr_country_flag = natural_disaster_inbound_relief_route_secured
+			clr_country_flag = natural_disaster_inbound_relief_route_convoy
+			clr_country_flag = natural_disaster_inbound_relief_route_rail
 			clr_country_flag = natural_disaster_relief_variant_neighbor_convoy
 			clr_country_flag = natural_disaster_relief_variant_port_lifeline
 			clr_country_flag = natural_disaster_relief_variant_engineer
 			clr_country_flag = natural_disaster_relief_variant_medical
 			clear_variable = natural_disaster_inbound_relief_state
 			clear_variable = natural_disaster_inbound_relief_donor
+			natural_disaster_schedule_capacity_refill = yes
 		}
 		selectable_mission = no
 		is_good = no
@@ -6763,6 +6197,10 @@ natural_disaster_aftermath_category = {
 			consumer_goods_factor = @ND_CONSTRUCTION_BURDEN
 		}
 		complete_effect = {
+			set_country_flag = {
+				flag = natural_disaster_inbound_relief_capacity_bonus
+				days = @ND_STABILIZATION_ACTION_LOCK_DAYS
+			}
 			set_country_flag = {
 				flag = natural_disaster_foreign_relief_dependency_pressure
 				days = @ND_FOREIGN_RELIEF_DEPENDENCY_DAYS
@@ -6841,12 +6279,15 @@ natural_disaster_aftermath_category = {
 			}
 			clr_country_flag = natural_disaster_inbound_relief_active
 			clr_country_flag = natural_disaster_inbound_relief_route_secured
+			clr_country_flag = natural_disaster_inbound_relief_route_convoy
+			clr_country_flag = natural_disaster_inbound_relief_route_rail
 			clr_country_flag = natural_disaster_relief_variant_neighbor_convoy
 			clr_country_flag = natural_disaster_relief_variant_port_lifeline
 			clr_country_flag = natural_disaster_relief_variant_engineer
 			clr_country_flag = natural_disaster_relief_variant_medical
 			clear_variable = natural_disaster_inbound_relief_state
 			clear_variable = natural_disaster_inbound_relief_donor
+			natural_disaster_schedule_capacity_refill = yes
 		}
 		timeout_effect = {
 			if = {
@@ -6865,12 +6306,15 @@ natural_disaster_aftermath_category = {
 			add_war_support = constant:natural_disaster_cost_fixed.foreign_relief_war_support
 			clr_country_flag = natural_disaster_inbound_relief_active
 			clr_country_flag = natural_disaster_inbound_relief_route_secured
+			clr_country_flag = natural_disaster_inbound_relief_route_convoy
+			clr_country_flag = natural_disaster_inbound_relief_route_rail
 			clr_country_flag = natural_disaster_relief_variant_neighbor_convoy
 			clr_country_flag = natural_disaster_relief_variant_port_lifeline
 			clr_country_flag = natural_disaster_relief_variant_engineer
 			clr_country_flag = natural_disaster_relief_variant_medical
 			clear_variable = natural_disaster_inbound_relief_state
 			clear_variable = natural_disaster_inbound_relief_donor
+			natural_disaster_schedule_capacity_refill = yes
 		}
 	}
 
@@ -6886,9 +6330,7 @@ natural_disaster_foreign_relief_category = {
 	natural_disaster_offer_neighbor_convoy_relief = {
 		target_array = neighbors_owned
 		target_root_trigger = {
-			natural_disaster_can_offer_foreign_relief = yes
-			has_fuel > constant:natural_disaster_cost_gate.foreign_fuel
-			NOT = { has_idea = natural_disaster_outbound_relief_burden }
+			natural_disaster_can_offer_neighbor_relief = yes
 		}
 		target_trigger = {
 			FROM = {
@@ -6903,50 +6345,18 @@ natural_disaster_foreign_relief_category = {
 				natural_disaster_country_has_open_aftermath = yes
 				NOT = { has_country_flag = natural_disaster_inbound_relief_active }
 				any_controlled_state = {
-					natural_disaster_state_has_open_card = yes
+					natural_disaster_state_has_recovery_card = yes
 				}
 			}
 		}
 		priority = @ND_PRIORITY_RELIEF
 		fixed_random_seed = no
 		custom_cost_trigger = {
-			natural_disaster_can_offer_foreign_relief = yes
-			has_fuel > constant:natural_disaster_cost_gate.foreign_fuel
+			natural_disaster_can_offer_neighbor_relief = yes
 		}
-		custom_cost_text = natural_disaster_cost_outbound_relief
+		custom_cost_text = natural_disaster_cost_neighbor_relief
 		complete_effect = {
-			set_temp_variable = { nd_foreign_manpower_cost = constant:natural_disaster_cost.rescue_manpower }
-			multiply_temp_variable = { nd_foreign_manpower_cost = -1 }
-			add_manpower = nd_foreign_manpower_cost
-			set_temp_variable = { nd_foreign_support_cost = constant:natural_disaster_cost.foreign_support_equipment }
-			multiply_temp_variable = { nd_foreign_support_cost = -1 }
-			add_equipment_to_stockpile = {
-				type = support_equipment_1
-				amount = nd_foreign_support_cost
-			}
-			set_temp_variable = { nd_foreign_truck_cost = constant:natural_disaster_cost.foreign_trucks }
-			multiply_temp_variable = { nd_foreign_truck_cost = -1 }
-			add_equipment_to_stockpile = {
-				type = motorized_equipment_1
-				amount = nd_foreign_truck_cost
-			}
-			set_temp_variable = { nd_foreign_convoy_cost = constant:natural_disaster_cost.foreign_convoys }
-			multiply_temp_variable = { nd_foreign_convoy_cost = -1 }
-			add_equipment_to_stockpile = {
-				type = convoy_1
-				amount = nd_foreign_convoy_cost
-			}
-			set_temp_variable = { nd_foreign_fuel_cost = constant:natural_disaster_cost.foreign_fuel }
-			multiply_temp_variable = { nd_foreign_fuel_cost = -1 }
-			add_fuel = nd_foreign_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.foreign_relief_stability
-			add_war_support = constant:natural_disaster_cost_fixed.foreign_relief_war_support
-			set_country_flag = natural_disaster_outbound_relief_active
-			set_temp_variable = { nd_foreign_relief_burden_days = constant:natural_disaster_aftermath.foreign_relief_days }
-			add_timed_idea = {
-				idea = natural_disaster_outbound_relief_burden
-				days = nd_foreign_relief_burden_days
-			}
+			natural_disaster_pay_neighbor_relief = yes
 			FROM = {
 				set_country_flag = natural_disaster_inbound_relief_active
 				set_country_flag = natural_disaster_relief_variant_neighbor_convoy
@@ -6957,6 +6367,7 @@ natural_disaster_foreign_relief_category = {
 				if = {
 					limit = { check_variable = { natural_disaster_priority_selected > 0 } }
 					event_target:natural_disaster_priority_open_card_state = {
+						natural_disaster_set_inbound_relief_route_from_state = yes
 						set_state_flag = natural_disaster_inbound_relief_active
 						controller = {
 							set_variable = { natural_disaster_inbound_relief_state = PREV }
@@ -6990,9 +6401,7 @@ natural_disaster_foreign_relief_category = {
 	natural_disaster_offer_port_lifeline_relief = {
 		target_array = faction_members
 		target_root_trigger = {
-			natural_disaster_can_offer_foreign_relief = yes
-			has_fuel > constant:natural_disaster_cost_gate.foreign_fuel
-			NOT = { has_idea = natural_disaster_outbound_relief_burden }
+			natural_disaster_can_offer_port_lifeline = yes
 		}
 		target_trigger = {
 			FROM = {
@@ -7007,7 +6416,7 @@ natural_disaster_foreign_relief_category = {
 				natural_disaster_country_has_open_aftermath = yes
 				NOT = { has_country_flag = natural_disaster_inbound_relief_active }
 				any_controlled_state = {
-					natural_disaster_state_has_open_card = yes
+					natural_disaster_state_has_recovery_card = yes
 					is_coastal = yes
 				}
 			}
@@ -7015,43 +6424,11 @@ natural_disaster_foreign_relief_category = {
 		priority = @ND_PRIORITY_RELIEF
 		fixed_random_seed = no
 		custom_cost_trigger = {
-			natural_disaster_can_offer_foreign_relief = yes
-			has_fuel > constant:natural_disaster_cost_gate.foreign_fuel
+			natural_disaster_can_offer_port_lifeline = yes
 		}
-		custom_cost_text = natural_disaster_cost_outbound_relief
+		custom_cost_text = natural_disaster_cost_port_lifeline_relief
 		complete_effect = {
-			set_temp_variable = { nd_foreign_manpower_cost = constant:natural_disaster_cost.rescue_manpower }
-			multiply_temp_variable = { nd_foreign_manpower_cost = -1 }
-			add_manpower = nd_foreign_manpower_cost
-			set_temp_variable = { nd_foreign_support_cost = constant:natural_disaster_cost.foreign_support_equipment }
-			multiply_temp_variable = { nd_foreign_support_cost = -1 }
-			add_equipment_to_stockpile = {
-				type = support_equipment_1
-				amount = nd_foreign_support_cost
-			}
-			set_temp_variable = { nd_foreign_truck_cost = constant:natural_disaster_cost.foreign_trucks }
-			multiply_temp_variable = { nd_foreign_truck_cost = -1 }
-			add_equipment_to_stockpile = {
-				type = motorized_equipment_1
-				amount = nd_foreign_truck_cost
-			}
-			set_temp_variable = { nd_foreign_convoy_cost = constant:natural_disaster_cost.foreign_convoys }
-			multiply_temp_variable = { nd_foreign_convoy_cost = -1 }
-			add_equipment_to_stockpile = {
-				type = convoy_1
-				amount = nd_foreign_convoy_cost
-			}
-			set_temp_variable = { nd_foreign_fuel_cost = constant:natural_disaster_cost.foreign_fuel }
-			multiply_temp_variable = { nd_foreign_fuel_cost = -1 }
-			add_fuel = nd_foreign_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.foreign_relief_stability
-			add_war_support = constant:natural_disaster_cost_fixed.foreign_relief_war_support
-			set_country_flag = natural_disaster_outbound_relief_active
-			set_temp_variable = { nd_foreign_relief_burden_days = constant:natural_disaster_aftermath.foreign_relief_days }
-			add_timed_idea = {
-				idea = natural_disaster_outbound_relief_burden
-				days = nd_foreign_relief_burden_days
-			}
+			natural_disaster_pay_port_lifeline_relief = yes
 			FROM = {
 				set_country_flag = natural_disaster_inbound_relief_active
 				set_country_flag = natural_disaster_relief_variant_port_lifeline
@@ -7062,6 +6439,7 @@ natural_disaster_foreign_relief_category = {
 				if = {
 					limit = { check_variable = { natural_disaster_priority_selected > 0 } }
 					event_target:natural_disaster_priority_open_card_state = {
+						natural_disaster_set_inbound_relief_route_from_state = yes
 						set_state_flag = natural_disaster_inbound_relief_active
 						controller = {
 							set_variable = { natural_disaster_inbound_relief_state = PREV }
@@ -7099,9 +6477,7 @@ natural_disaster_foreign_relief_category = {
 	natural_disaster_offer_engineer_relief = {
 		target_array = faction_members
 		target_root_trigger = {
-			natural_disaster_can_offer_foreign_relief = yes
-			has_fuel > constant:natural_disaster_cost_gate.foreign_fuel
-			NOT = { has_idea = natural_disaster_outbound_relief_burden }
+			natural_disaster_can_offer_engineer_relief = yes
 		}
 		target_trigger = {
 			FROM = {
@@ -7110,7 +6486,7 @@ natural_disaster_foreign_relief_category = {
 				natural_disaster_country_has_open_aftermath = yes
 				NOT = { has_country_flag = natural_disaster_inbound_relief_active }
 				any_controlled_state = {
-					natural_disaster_state_has_open_card = yes
+					natural_disaster_state_has_recovery_card = yes
 					OR = {
 						natural_disaster_state_has_strategic_transport = yes
 						natural_disaster_state_has_industry = yes
@@ -7121,43 +6497,11 @@ natural_disaster_foreign_relief_category = {
 		priority = @ND_PRIORITY_RELIEF
 		fixed_random_seed = no
 		custom_cost_trigger = {
-			natural_disaster_can_offer_foreign_relief = yes
-			has_fuel > constant:natural_disaster_cost_gate.foreign_fuel
+			natural_disaster_can_offer_engineer_relief = yes
 		}
-		custom_cost_text = natural_disaster_cost_outbound_relief
+		custom_cost_text = natural_disaster_cost_engineer_relief
 		complete_effect = {
-			set_temp_variable = { nd_foreign_manpower_cost = constant:natural_disaster_cost.rescue_manpower }
-			multiply_temp_variable = { nd_foreign_manpower_cost = -1 }
-			add_manpower = nd_foreign_manpower_cost
-			set_temp_variable = { nd_foreign_support_cost = constant:natural_disaster_cost.foreign_support_equipment }
-			multiply_temp_variable = { nd_foreign_support_cost = -1 }
-			add_equipment_to_stockpile = {
-				type = support_equipment_1
-				amount = nd_foreign_support_cost
-			}
-			set_temp_variable = { nd_foreign_truck_cost = constant:natural_disaster_cost.foreign_trucks }
-			multiply_temp_variable = { nd_foreign_truck_cost = -1 }
-			add_equipment_to_stockpile = {
-				type = motorized_equipment_1
-				amount = nd_foreign_truck_cost
-			}
-			set_temp_variable = { nd_foreign_convoy_cost = constant:natural_disaster_cost.foreign_convoys }
-			multiply_temp_variable = { nd_foreign_convoy_cost = -1 }
-			add_equipment_to_stockpile = {
-				type = convoy_1
-				amount = nd_foreign_convoy_cost
-			}
-			set_temp_variable = { nd_foreign_fuel_cost = constant:natural_disaster_cost.foreign_fuel }
-			multiply_temp_variable = { nd_foreign_fuel_cost = -1 }
-			add_fuel = nd_foreign_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.foreign_relief_stability
-			add_war_support = constant:natural_disaster_cost_fixed.foreign_relief_war_support
-			set_country_flag = natural_disaster_outbound_relief_active
-			set_temp_variable = { nd_foreign_relief_burden_days = constant:natural_disaster_aftermath.foreign_relief_days }
-			add_timed_idea = {
-				idea = natural_disaster_outbound_relief_burden
-				days = nd_foreign_relief_burden_days
-			}
+			natural_disaster_pay_engineer_relief = yes
 			FROM = {
 				set_country_flag = natural_disaster_inbound_relief_active
 				set_country_flag = natural_disaster_relief_variant_engineer
@@ -7168,6 +6512,7 @@ natural_disaster_foreign_relief_category = {
 				if = {
 					limit = { check_variable = { natural_disaster_priority_selected > 0 } }
 					event_target:natural_disaster_priority_open_card_state = {
+						natural_disaster_set_inbound_relief_route_from_state = yes
 						set_state_flag = natural_disaster_inbound_relief_active
 						controller = {
 							set_variable = { natural_disaster_inbound_relief_state = PREV }
@@ -7197,9 +6542,7 @@ natural_disaster_foreign_relief_category = {
 	natural_disaster_offer_medical_relief = {
 		target_array = neighbors_owned
 		target_root_trigger = {
-			natural_disaster_can_offer_foreign_relief = yes
-			has_fuel > constant:natural_disaster_cost_gate.foreign_fuel
-			NOT = { has_idea = natural_disaster_outbound_relief_burden }
+			natural_disaster_can_offer_medical_relief = yes
 		}
 		target_trigger = {
 			FROM = {
@@ -7214,7 +6557,7 @@ natural_disaster_foreign_relief_category = {
 				natural_disaster_country_has_open_aftermath = yes
 				NOT = { has_country_flag = natural_disaster_inbound_relief_active }
 				any_controlled_state = {
-					natural_disaster_state_has_open_card = yes
+					natural_disaster_state_has_recovery_card = yes
 					OR = {
 						natural_disaster_state_has_dense_population = yes
 						has_state_flag = natural_disaster_disease_pressure
@@ -7225,43 +6568,11 @@ natural_disaster_foreign_relief_category = {
 		priority = @ND_PRIORITY_RELIEF
 		fixed_random_seed = no
 		custom_cost_trigger = {
-			natural_disaster_can_offer_foreign_relief = yes
-			has_fuel > constant:natural_disaster_cost_gate.foreign_fuel
+			natural_disaster_can_offer_medical_relief = yes
 		}
-		custom_cost_text = natural_disaster_cost_outbound_relief
+		custom_cost_text = natural_disaster_cost_medical_relief
 		complete_effect = {
-			set_temp_variable = { nd_foreign_manpower_cost = constant:natural_disaster_cost.rescue_manpower }
-			multiply_temp_variable = { nd_foreign_manpower_cost = -1 }
-			add_manpower = nd_foreign_manpower_cost
-			set_temp_variable = { nd_foreign_support_cost = constant:natural_disaster_cost.foreign_support_equipment }
-			multiply_temp_variable = { nd_foreign_support_cost = -1 }
-			add_equipment_to_stockpile = {
-				type = support_equipment_1
-				amount = nd_foreign_support_cost
-			}
-			set_temp_variable = { nd_foreign_truck_cost = constant:natural_disaster_cost.foreign_trucks }
-			multiply_temp_variable = { nd_foreign_truck_cost = -1 }
-			add_equipment_to_stockpile = {
-				type = motorized_equipment_1
-				amount = nd_foreign_truck_cost
-			}
-			set_temp_variable = { nd_foreign_convoy_cost = constant:natural_disaster_cost.foreign_convoys }
-			multiply_temp_variable = { nd_foreign_convoy_cost = -1 }
-			add_equipment_to_stockpile = {
-				type = convoy_1
-				amount = nd_foreign_convoy_cost
-			}
-			set_temp_variable = { nd_foreign_fuel_cost = constant:natural_disaster_cost.foreign_fuel }
-			multiply_temp_variable = { nd_foreign_fuel_cost = -1 }
-			add_fuel = nd_foreign_fuel_cost
-			add_stability = constant:natural_disaster_cost_fixed.foreign_relief_stability
-			add_war_support = constant:natural_disaster_cost_fixed.foreign_relief_war_support
-			set_country_flag = natural_disaster_outbound_relief_active
-			set_temp_variable = { nd_foreign_relief_burden_days = constant:natural_disaster_aftermath.foreign_relief_days }
-			add_timed_idea = {
-				idea = natural_disaster_outbound_relief_burden
-				days = nd_foreign_relief_burden_days
-			}
+			natural_disaster_pay_medical_relief = yes
 			FROM = {
 				set_country_flag = natural_disaster_inbound_relief_active
 				set_country_flag = natural_disaster_relief_variant_medical
@@ -7272,6 +6583,7 @@ natural_disaster_foreign_relief_category = {
 				if = {
 					limit = { check_variable = { natural_disaster_priority_selected > 0 } }
 					event_target:natural_disaster_priority_open_card_state = {
+						natural_disaster_set_inbound_relief_route_from_state = yes
 						set_state_flag = natural_disaster_inbound_relief_active
 						controller = {
 							set_variable = { natural_disaster_inbound_relief_state = PREV }

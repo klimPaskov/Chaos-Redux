@@ -206,3 +206,13 @@ Minor repeated hits in Evolution II should usually not create global news. They 
 | Disaster Barrage scenario | Scenario type sets family pool, intensity sets sequence size and abnormal access, direct manual launch actor. |
 | Sandstorm placeholder bridge | Event 099 calls dust or sandstorm family and then stops, no separate sandstorm logic. |
 | Earth Earthquake placeholder | Event 046 does not call anything automatically unless a manual debug path is accepted. Evolution III rupture wave owns the concept. |
+
+## Accepted implementation clarifications, 2026-07-11
+
+Physical eligibility is an immutable gate, not a scoring preference. Volcanic eruption requires a state in the 175-state Holocene-volcano registry derived from Smithsonian Global Volcanism Program data and the vanilla state raster. Massive eruption and lahar use narrower high-consequence and water-and-relief subsets. Heat, cold, drought, wildfire, dust, cyclone, storm surge, tsunami, slope, and moving-path families use separate climate, coast, basin, relief, and domain registries. A candidate that fails its family's physical gate is rejected; infrastructure, population, buildings, resources, and history are used only to rank candidates that already passed. Eligibility is rechecked at delayed execution and for every spread, repeat, follow-up, and abnormal path segment.
+
+An accepted call immediately exposes a state-targeted forecast decision naming the exact family, state, severity, hazard class, and scheduled date. Acknowledgment clears only the forecast alert. The warning remains a later family-specific preparation window, and every impact remains at least one day after the call.
+
+Every report job stores immutable impact facts in the aligned delayed-job arrays: family, severity, deaths, transport, industry, port, air, resource and shelter damage, warning choice and result, fine follow-up route, follow-up target and due date, recovery phase, origin family and medium, path basin, sequence, and segment. Delivery text reads the snapshot rather than mutable current state. Controller reports are mandatory; caller/global distribution and news are independent policies.
+
+Open aftermath cards are registered in a bounded global state ledger. When Regional Cascades first opens, an event-driven idempotent synchronization upgrades unresolved serious cards once, preserves their identity and existing route, creates a valid route only when none exists, and never replays the impact or writes another history row. No periodic world scan is used.

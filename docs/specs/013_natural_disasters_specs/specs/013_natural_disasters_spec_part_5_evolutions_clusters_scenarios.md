@@ -78,6 +78,16 @@ Do not log ordinary disaster hits as evolutions. Evolution log entries are for t
 
 The final implementation can name these in localisation. This spec gives direction only.
 
+The accepted names and unlock tiers are:
+
+| Stage | Player-facing name | Unlock tier |
+| --- | --- | --- |
+| Evolution I | Wider Disaster Seasons | Gathering Storm, tier 1 |
+| Evolution II | Regional Cascades | Rising Chaos, tier 2 |
+| Evolution III | Abnormal Paths | Chaos, tier 3 |
+
+Player-facing evolution titles use only the names above. Event Details summarizes an evolution with only its chaos tier and evolution stage; it does not prefix the title with `Evolution I`, `Evolution II`, or `Evolution III`, and it does not add a generic progression explanation.
+
 ## Cluster behavior
 
 The Natural Disasters cluster should contain Event 013 only at this stage. Do not add flood, sandstorm, heat wave, Earth Earthquake, or volcano entries as separate cluster members.
@@ -118,6 +128,8 @@ Disaster Barrage is the manual scenario for Event 013. It should launch Event 01
 | High | Severe chained behavior opens, with stronger deaths and more recovery pressure. |
 | Maximum | Abnormal access opens, with meteor showers, rupture waves, massive eruption pressure, delayed tsunami, and moving storm corridor possible in one season. |
 
+Skyfall Crisis is causal rather than a renamed random family pool. Low uses a local land impact, Medium can add a larger land sequence and regional falloff, High adds severe wildfire or dust-veil chains, and Maximum admits meteor shower, meteor-linked skyfire hail, ocean impact with a locked tsunami basin, delayed tsunami arrivals, and abnormal ash only after a valid dust-veil or eruption cause. A coastal proxy records an ocean impact but receives no crater damage. All causal segments remain inside the one Event 013 history sequence.
+
 Disaster Barrage should never create a terminal world-end branch. It can be campaign-shaping and devastating, but it must not set global terminal state.
 
 ## Handling outdated related events
@@ -125,7 +137,7 @@ Disaster Barrage should never create a terminal world-end branch. It can be camp
 | Event | Required handling |
 | --- | --- |
 | Event 046 Earth Earthquake | Inactive unknown placeholder. Remove independent gameplay. The whole-world rupture wave lives in Event 013 Evolution III. |
-| Event 099 Sandstorm | Placeholder or one-line bridge into Event 013 sandstorm family. No separate dust logic. |
+| Event 099 Sandstorm | Narrow hidden compatibility bridge into Event 013 dust-and-sandstorm family after Wider Disaster Seasons is available. No separate dust logic. |
 | Event 051 Heat Wave | Keep as separate event unless later accepted. Event 013 heat family must block stacking. |
 | Event 043 Massive Flood | Do not absorb by default. Event 013 has flood family, but separate Event 043 needs its own later decision. |
 | Event 120 Massive Volcano Eruption | Event 013 Evolution III can express massive eruption crisis. Separate Event 120 stays unimplemented unless later accepted. |

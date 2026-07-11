@@ -116,3 +116,13 @@ All final animations must use real per-frame source art and a horizontal frame s
 ## Static fallback rule
 
 Every animated surface needs a static fallback. If animations are disabled, missing, unsupported, or blocked by asset work, the map must still communicate the active disaster, next affected states, report status, and recovery state through static sprites and text fields. A static fallback is not a gameplay simplification. It is required accessibility and engine safety.
+
+## Accepted implementation clarifications, 2026-07-11
+
+The live route view is sequence-scoped and contains up to five selectable markers in segment order. Each copied marker row carries its state scope, sequence and segment, family and origin, origin medium, basin or motion domain, schedule and impact state, fine route, linked target and due date, report date, recovery phase, reassessment, result, and archive status. Another sequence cannot enter that view, and each observer rebuilds independent country arrays.
+
+All five physical layers are authored against one normalized five-anchor layout. The family-specific frame sheet supplies the route shape, while the selected segment's state, strategic region, date, warning state, and next-hit status give each anchor its physical meaning. Static mode uses the same markers and coordinates.
+
+The bottom timeline has six selectable state-driven milestones: warning, schedule, impact, report, follow-up, and reassessment. A milestone is visible only when its fact exists and changes the scoped detail text rather than applying gameplay.
+
+The return control stores the selected state, closes the GUI, and routes a controlled live record back to the ordinary warning, recovery, relief, or chain decisions. Archived and foreign records remain read-only. No warning or recovery effect is duplicated in scripted GUI code.

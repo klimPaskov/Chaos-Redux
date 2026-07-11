@@ -1,11 +1,14 @@
 add_namespace = chaosx.nr99
 
 # ============================================================================
-# CHAOS REDUX - EVENT 099 RESERVED PLACEHOLDER
+# CHAOS REDUX - EVENT 099 DUST AND SANDSTORM BRIDGE
 # ============================================================================
-# Event 99 remains as a harmless target for stale manual calls. This namespace
-# intentionally does not start gameplay.
+# The legacy namespace owns no disaster logic. Its primary entry makes one
+# narrow call into Event 013 after the dust family is unlocked; the secondary
+# entry remains an inactive compatibility placeholder.
 # ============================================================================
+
+@EVENT_099_ID = 99
 
 country_event = {
 	id = chaosx.nr99.1
@@ -14,6 +17,24 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
+		if = {
+			limit = { natural_disaster_can_open_evolution_i = yes }
+			save_event_target_as = natural_disaster_call_target_country
+			set_temp_variable = { natural_disaster_call_caller_type = constant:natural_disaster_caller.external_event }
+			set_temp_variable = { natural_disaster_call_caller_event_id = @EVENT_099_ID }
+			set_temp_variable = { natural_disaster_call_family = constant:natural_disaster_family.dust_and_sandstorm }
+			set_temp_variable = { natural_disaster_call_target_mode = constant:natural_disaster_target_mode.selected_country }
+			set_temp_variable = { natural_disaster_call_target_country_supplied = 1 }
+			set_temp_variable = { natural_disaster_call_severity = constant:natural_disaster_severity.severe }
+			set_temp_variable = { natural_disaster_call_sequence_mode = constant:natural_disaster_sequence_mode.single }
+			set_temp_variable = { natural_disaster_call_sequence_count = 1 }
+			set_temp_variable = { natural_disaster_call_news_policy = constant:natural_disaster_news_policy.meaningful }
+			set_temp_variable = { natural_disaster_call_report_policy = constant:natural_disaster_report_policy.affected_country }
+			set_temp_variable = { natural_disaster_call_aftermath_policy = constant:natural_disaster_aftermath_policy.normal }
+			set_temp_variable = { natural_disaster_call_chain_policy = constant:natural_disaster_chain_policy.family }
+			set_temp_variable = { natural_disaster_call_log_mode = constant:natural_disaster_log_mode.event_013_history }
+			call_natural_disaster = yes
+		}
 	}
 }
 

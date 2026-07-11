@@ -3,12 +3,111 @@
 # ============================================================================
 # Owns the staged aftermath and foreign-relief category shells. Gameplay
 # visibility follows live warning, aftermath-card, and relief state rather than
-# the persistent notification flags used to draw the player's attention.
+# the persistent notification flags used to draw the player's attention. The
+# aftermath picture follows vanilla's triggered-picture form. One authoritative
+# presentation family makes every cosmetic predicate mutually exclusive.
 # ============================================================================
 
 natural_disaster_aftermath_category = {
 	icon = GFX_decision_category_nd_recovery_overview
-	picture = GFX_decision_cat_picture_nd_recovery_overview
+	picture = {
+		GFX_decision_cat_picture_nd_massive_eruption = {
+			natural_disaster_country_has_display_family_activity = yes
+			check_variable = { natural_disaster_category_display_family = constant:natural_disaster_family.massive_eruption }
+		}
+		GFX_decision_cat_picture_nd_rupture = {
+			natural_disaster_country_has_display_family_activity = yes
+			check_variable = { natural_disaster_category_display_family = constant:natural_disaster_family.whole_earth_rupture }
+		}
+		GFX_decision_cat_picture_nd_meteor_storm = {
+			natural_disaster_country_has_display_family_activity = yes
+			check_variable = { natural_disaster_category_display_family = constant:natural_disaster_family.meteor_shower }
+		}
+		GFX_decision_cat_picture_nd_skyfall = {
+			natural_disaster_country_has_display_family_activity = yes
+			check_variable = { natural_disaster_category_display_family = constant:natural_disaster_family.meteor_impact }
+		}
+		GFX_decision_cat_picture_nd_corridor = {
+			natural_disaster_country_has_display_family_activity = yes
+			check_variable = { natural_disaster_category_display_family = constant:natural_disaster_family.moving_storm_corridor }
+		}
+		GFX_decision_cat_picture_nd_tsunami = {
+			natural_disaster_country_has_display_family_activity = yes
+			check_variable = { natural_disaster_category_display_family = constant:natural_disaster_family.tsunami }
+		}
+		GFX_decision_cat_picture_nd_volcano = {
+			natural_disaster_country_has_display_family_activity = yes
+			OR = {
+				check_variable = { natural_disaster_category_display_family = constant:natural_disaster_family.volcanic_eruption }
+				check_variable = { natural_disaster_category_display_family = constant:natural_disaster_family.ashfall }
+				check_variable = { natural_disaster_category_display_family = constant:natural_disaster_family.lahar }
+			}
+		}
+		GFX_decision_cat_picture_nd_earthquake = {
+			natural_disaster_country_has_display_family_activity = yes
+			check_variable = { natural_disaster_category_display_family = constant:natural_disaster_family.earthquake }
+		}
+		GFX_decision_cat_picture_nd_flood = {
+			natural_disaster_country_has_display_family_activity = yes
+			check_variable = { natural_disaster_category_display_family = constant:natural_disaster_family.flood }
+		}
+		GFX_decision_cat_picture_nd_cyclone = {
+			natural_disaster_country_has_display_family_activity = yes
+			OR = {
+				check_variable = { natural_disaster_category_display_family = constant:natural_disaster_family.tropical_cyclone }
+				check_variable = { natural_disaster_category_display_family = constant:natural_disaster_family.storm_surge }
+			}
+		}
+		GFX_decision_cat_picture_nd_wind = {
+			natural_disaster_country_has_display_family_activity = yes
+			check_variable = { natural_disaster_category_display_family = constant:natural_disaster_family.extreme_wind }
+		}
+		GFX_decision_cat_picture_nd_severe_storm = {
+			natural_disaster_country_has_display_family_activity = yes
+			OR = {
+				check_variable = { natural_disaster_category_display_family = constant:natural_disaster_family.tornado_outbreak }
+				check_variable = { natural_disaster_category_display_family = constant:natural_disaster_family.thunderstorm }
+			}
+		}
+		GFX_decision_cat_picture_nd_hail = {
+			natural_disaster_country_has_display_family_activity = yes
+			check_variable = { natural_disaster_category_display_family = constant:natural_disaster_family.hailstorm }
+		}
+		GFX_decision_cat_picture_nd_winter = {
+			natural_disaster_country_has_display_family_activity = yes
+			OR = {
+				check_variable = { natural_disaster_category_display_family = constant:natural_disaster_family.blizzard }
+				check_variable = { natural_disaster_category_display_family = constant:natural_disaster_family.cold_wave }
+			}
+		}
+		GFX_decision_cat_picture_nd_heat = {
+			natural_disaster_country_has_display_family_activity = yes
+			check_variable = { natural_disaster_category_display_family = constant:natural_disaster_family.heat_wave }
+		}
+		GFX_decision_cat_picture_nd_drought = {
+			natural_disaster_country_has_display_family_activity = yes
+			check_variable = { natural_disaster_category_display_family = constant:natural_disaster_family.drought }
+		}
+		GFX_decision_cat_picture_nd_dust = {
+			natural_disaster_country_has_display_family_activity = yes
+			check_variable = { natural_disaster_category_display_family = constant:natural_disaster_family.dust_and_sandstorm }
+		}
+		GFX_decision_cat_picture_nd_firefront = {
+			natural_disaster_country_has_display_family_activity = yes
+			check_variable = { natural_disaster_category_display_family = constant:natural_disaster_family.wildfire }
+		}
+		GFX_decision_cat_picture_nd_slope = {
+			natural_disaster_country_has_display_family_activity = yes
+			check_variable = { natural_disaster_category_display_family = constant:natural_disaster_family.dry_mass_movement }
+		}
+		GFX_decision_cat_picture_nd_landslide = {
+			natural_disaster_country_has_display_family_activity = yes
+			check_variable = { natural_disaster_category_display_family = constant:natural_disaster_family.wet_mass_movement }
+		}
+		GFX_decision_cat_picture_nd_recovery_overview = {
+			NOT = { natural_disaster_country_has_display_family_activity = yes }
+		}
+	}
 	visible = {
 		OR = {
 			natural_disaster_country_has_warning = yes
@@ -22,7 +121,7 @@ natural_disaster_aftermath_category = {
 
 natural_disaster_foreign_relief_category = {
 	icon = GFX_decision_category_nd_famine_displacement_commission
-	picture = GFX_decision_cat_picture_nd_recovery_overview
+	picture = GFX_decision_cat_picture_nd_famine
 	# The category stays hidden unless one of its targeted donor actions has a
 	# valid affected neighbor or faction member.
 	priority = 85

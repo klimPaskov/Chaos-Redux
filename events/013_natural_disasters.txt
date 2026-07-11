@@ -50,7 +50,12 @@ country_event = {
 		set_temp_variable = { natural_disaster_call_report_policy = constant:natural_disaster_report_policy.caller }
 		set_temp_variable = { natural_disaster_call_aftermath_policy = constant:natural_disaster_aftermath_policy.normal }
 		set_temp_variable = { natural_disaster_call_chain_policy = constant:natural_disaster_chain_policy.family }
-		set_temp_variable = { natural_disaster_call_log_mode = constant:natural_disaster_log_mode.event_system }
+		set_temp_variable = { natural_disaster_call_log_mode = constant:natural_disaster_log_mode.event_013_history }
+		if = {
+			limit = { has_country_flag = natural_disaster_dispatcher_history_owned }
+			set_temp_variable = { natural_disaster_call_log_mode = constant:natural_disaster_log_mode.event_system }
+			clr_country_flag = natural_disaster_dispatcher_history_owned
+		}
 		call_natural_disaster = yes
 	}
 }
@@ -107,6 +112,52 @@ country_event = {
 			else = {
 				set_country_flag = achievement_nd_barrage_maximum_ended
 			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr13.5
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		natural_disaster_cleanup_super_event_target = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr13.6
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		natural_disaster_release_warning_civilian_burden = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr13.7
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		clr_country_flag = natural_disaster_capacity_refill_pending
+		natural_disaster_fill_open_aftermath_capacity = yes
+		natural_disaster_fill_chain_mission_capacity = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr13.8
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { has_global_flag = natural_disaster_super_event_queue_retry_pending }
+			clr_global_flag = natural_disaster_super_event_queue_retry_pending
+			natural_disaster_dispatch_queued_super_event = yes
 		}
 	}
 }

@@ -1,13 +1,104 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 013 NATURAL DISASTERS STATE MODIFIERS
 # ============================================================================
-# One variable-backed disruption profile is shared by every disaster family.
-# The impact helper writes family- and severity-specific values on the state;
-# recovery actions weaken those values before removing the modifier.
+# Family-group profiles expose the actual kind of disruption on the state.
+# The impact helper writes severity-scaled values; each modifier consumes only
+# the systems that family group physically disrupts.
 # ============================================================================
 
-natural_disaster_state_disruption = {
+natural_disaster_seismic_disruption = {
+	icon = GFX_idea_013_cracked_ground
+	attacker_modifier = yes
+	enable = { has_state_flag = natural_disaster_aftermath_active }
+	remove_trigger = { NOT = { has_state_flag = natural_disaster_aftermath_active } }
+	local_supplies = var:natural_disaster_mod_supply
+	local_supply_impact_factor = var:natural_disaster_mod_supply_impact
+	army_speed_factor_for_controller = var:natural_disaster_mod_speed
+	attrition_for_controller = var:natural_disaster_mod_attrition
+	state_production_speed_buildings_factor = var:natural_disaster_mod_repair
+	local_resources = var:natural_disaster_mod_resources
+}
+
+natural_disaster_water_coastal_disruption = {
+	icon = GFX_idea_013_blocked_ports
+	attacker_modifier = yes
+	enable = { has_state_flag = natural_disaster_aftermath_active }
+	remove_trigger = { NOT = { has_state_flag = natural_disaster_aftermath_active } }
+	local_supplies = var:natural_disaster_mod_supply
+	local_supply_impact_factor = var:natural_disaster_mod_supply_impact
+	army_speed_factor_for_controller = var:natural_disaster_mod_speed
+	state_production_speed_buildings_factor = var:natural_disaster_mod_repair
+}
+
+natural_disaster_storm_weather_disruption = {
 	icon = GFX_idea_013_broken_infrastructure
+	attacker_modifier = yes
+	enable = { has_state_flag = natural_disaster_aftermath_active }
+	remove_trigger = { NOT = { has_state_flag = natural_disaster_aftermath_active } }
+	army_speed_factor_for_controller = var:natural_disaster_mod_speed
+	attrition_for_controller = var:natural_disaster_mod_attrition
+	truck_attrition = var:natural_disaster_mod_attrition
+	state_production_speed_buildings_factor = var:natural_disaster_mod_repair
+}
+
+natural_disaster_winter_temperature_disruption = {
+	icon = GFX_idea_013_frozen_supply
+	attacker_modifier = yes
+	enable = { has_state_flag = natural_disaster_aftermath_active }
+	remove_trigger = { NOT = { has_state_flag = natural_disaster_aftermath_active } }
+	local_supplies = var:natural_disaster_mod_supply
+	army_speed_factor_for_controller = var:natural_disaster_mod_speed
+	attrition_for_controller = var:natural_disaster_mod_attrition
+	truck_attrition = var:natural_disaster_mod_attrition
+}
+
+natural_disaster_fire_drought_disruption = {
+	icon = GFX_idea_013_scorched_state
+	attacker_modifier = yes
+	enable = { has_state_flag = natural_disaster_aftermath_active }
+	remove_trigger = { NOT = { has_state_flag = natural_disaster_aftermath_active } }
+	local_supplies = var:natural_disaster_mod_supply
+	state_production_speed_buildings_factor = var:natural_disaster_mod_repair
+	local_resources = var:natural_disaster_mod_resources
+}
+
+natural_disaster_mass_movement_disruption = {
+	icon = GFX_idea_013_broken_infrastructure
+	attacker_modifier = yes
+	enable = { has_state_flag = natural_disaster_aftermath_active }
+	remove_trigger = { NOT = { has_state_flag = natural_disaster_aftermath_active } }
+	local_supplies = var:natural_disaster_mod_supply
+	army_speed_factor_for_controller = var:natural_disaster_mod_speed
+	state_production_speed_buildings_factor = var:natural_disaster_mod_repair
+}
+
+natural_disaster_volcanic_ash_disruption = {
+	icon = GFX_idea_013_ashfall
+	attacker_modifier = yes
+	enable = { has_state_flag = natural_disaster_aftermath_active }
+	remove_trigger = { NOT = { has_state_flag = natural_disaster_aftermath_active } }
+	local_supplies = var:natural_disaster_mod_supply
+	local_supply_impact_factor = var:natural_disaster_mod_supply_impact
+	army_speed_factor_for_controller = var:natural_disaster_mod_speed
+	attrition_for_controller = var:natural_disaster_mod_attrition
+	state_production_speed_buildings_factor = var:natural_disaster_mod_repair
+	local_resources = var:natural_disaster_mod_resources
+}
+
+natural_disaster_dust_sand_disruption = {
+	icon = GFX_idea_013_broken_infrastructure
+	attacker_modifier = yes
+	enable = { has_state_flag = natural_disaster_aftermath_active }
+	remove_trigger = { NOT = { has_state_flag = natural_disaster_aftermath_active } }
+	local_supplies = var:natural_disaster_mod_supply
+	army_speed_factor_for_controller = var:natural_disaster_mod_speed
+	attrition_for_controller = var:natural_disaster_mod_attrition
+	truck_attrition = var:natural_disaster_mod_attrition
+	local_resources = var:natural_disaster_mod_resources
+}
+
+natural_disaster_abnormal_disruption = {
+	icon = GFX_idea_013_crater_aftermath
 	attacker_modifier = yes
 	enable = { has_state_flag = natural_disaster_aftermath_active }
 	remove_trigger = { NOT = { has_state_flag = natural_disaster_aftermath_active } }
