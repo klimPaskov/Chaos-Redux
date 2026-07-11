@@ -36,6 +36,26 @@
 @SOV_COLLAPSE_AI_KAZ_STEPPE_ARMY = 95
 @SOV_COLLAPSE_AI_KAZ_FOREIGN_CONTAIN = 60
 @SOV_COLLAPSE_AI_KAZ_SUPPLY = 40
+@SOV_COLLAPSE_AI_RELEASE_COMMAND_ARMY = 70
+@SOV_COLLAPSE_AI_RELEASE_COMMAND_SUPPLY = 30
+@SOV_COLLAPSE_AI_RELEASE_CORRIDOR_TRAINS = 50
+@SOV_COLLAPSE_AI_RELEASE_CORRIDOR_SUPPORT = 35
+@SOV_COLLAPSE_AI_RELEASE_POLITICAL_RESTRAINT = 75
+@SOV_COLLAPSE_AI_RELEASE_FOREIGN_ARMY = 90
+@SOV_COLLAPSE_AI_RELEASE_FOREIGN_SUPPORT = 40
+@SOV_COLLAPSE_AI_UWR_BLACKSITE_ARMY = 100
+@SOV_COLLAPSE_AI_UWR_INFANTRY = 40
+@SOV_COLLAPSE_AI_UWR_SUPPORT = 30
+@SOV_COLLAPSE_AI_UWR_FIELD_RELEASE_ARMY = 120
+@SOV_COLLAPSE_AI_UWR_FIELD_CONCENTRATION = 25
+@SOV_COLLAPSE_AI_KMB_BASIN_ARMY = 100
+@SOV_COLLAPSE_AI_KMB_INFANTRY = 45
+@SOV_COLLAPSE_AI_KMB_TRAINS = 50
+@SOV_COLLAPSE_AI_KMB_TREATY_RESTRAINT = 80
+@SOV_COLLAPSE_AI_KMB_CONCESSION_ARMY = 120
+@SOV_COLLAPSE_AI_KMB_CONCESSION_CONCENTRATION = 25
+@SOV_COLLAPSE_AI_KMB_COAL_GOLEM_FACTORY_EARLY = 1
+@SOV_COLLAPSE_AI_KMB_COAL_GOLEM_FACTORY_LATE = 2
 
 soviet_collapse_soviet_crisis_containment = {
 	allowed = { original_tag = SOV }
@@ -714,6 +734,224 @@ soviet_collapse_kazakhstan_foreign_technical_route = {
 		type = equipment_production_factor
 		id = support
 		value = @SOV_COLLAPSE_AI_KAZ_SUPPLY
+	}
+}
+
+soviet_collapse_release_cause_command_fracture = {
+	allowed = { always = yes }
+	enable = {
+		is_soviet_collapse_aftermath_active = yes
+		is_soviet_collapse_breakaway_country = yes
+		has_soviet_collapse_release_cause_command_fracture = yes
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @SOV_COLLAPSE_AI_RELEASE_COMMAND_ARMY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @SOV_COLLAPSE_AI_RELEASE_COMMAND_SUPPLY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @SOV_COLLAPSE_AI_RELEASE_COMMAND_SUPPLY
+	}
+}
+
+soviet_collapse_release_cause_corridor_depot_loss = {
+	allowed = { always = yes }
+	enable = {
+		is_soviet_collapse_aftermath_active = yes
+		is_soviet_collapse_breakaway_country = yes
+		has_soviet_collapse_release_cause_corridor_depot_loss = yes
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = equipment_production_factor
+		id = train
+		value = @SOV_COLLAPSE_AI_RELEASE_CORRIDOR_TRAINS
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @SOV_COLLAPSE_AI_RELEASE_CORRIDOR_SUPPORT
+	}
+}
+
+soviet_collapse_release_cause_negotiated_political_break = {
+	allowed = { always = yes }
+	enable = {
+		is_soviet_collapse_aftermath_active = yes
+		is_soviet_collapse_breakaway_country = yes
+		has_soviet_collapse_release_cause_negotiated_political_break = yes
+		NOT = { has_war_with = SOV }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @SOV_COLLAPSE_AI_RELEASE_POLITICAL_RESTRAINT
+	}
+}
+
+soviet_collapse_release_cause_foreign_league_rupture = {
+	allowed = { always = yes }
+	enable = {
+		is_soviet_collapse_aftermath_active = yes
+		is_soviet_collapse_breakaway_country = yes
+		has_soviet_collapse_release_cause_foreign_league_rupture = yes
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @SOV_COLLAPSE_AI_RELEASE_FOREIGN_ARMY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @SOV_COLLAPSE_AI_RELEASE_FOREIGN_SUPPORT
+	}
+}
+
+soviet_collapse_uwr_blacksite_posture = {
+	allowed = { original_tag = UWR }
+	enable = {
+		has_country_flag = soviet_collapse_unconventional_warfare_successor
+		has_soviet_collapse_successor_decision_surface = yes
+		OR = {
+			has_country_flag = uwr_focus_tver_pathogen_directorate
+			has_country_flag = uwr_focus_cw_facility_section
+			has_country_flag = uwr_focus_experiment_camp_registry
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @SOV_COLLAPSE_AI_UWR_BLACKSITE_ARMY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @SOV_COLLAPSE_AI_UWR_INFANTRY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = support
+		value = @SOV_COLLAPSE_AI_UWR_SUPPORT
+	}
+}
+
+soviet_collapse_uwr_field_release_posture = {
+	allowed = { original_tag = UWR }
+	enable = {
+		has_country_flag = soviet_collapse_unconventional_warfare_successor
+		has_soviet_collapse_successor_decision_surface = yes
+		OR = {
+			has_country_flag = uwr_focus_field_release_doctrine
+			has_country_flag = uwr_focus_chaos_warfare_path
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @SOV_COLLAPSE_AI_UWR_FIELD_RELEASE_ARMY
+	}
+	ai_strategy = {
+		type = force_concentration_factor
+		value = @SOV_COLLAPSE_AI_UWR_FIELD_CONCENTRATION
+	}
+}
+
+soviet_collapse_kmb_basin_posture = {
+	allowed = { original_tag = KMB }
+	enable = {
+		has_country_flag = soviet_collapse_kuznetsk_mining_successor
+		has_soviet_collapse_successor_decision_surface = yes
+		569 = { is_controlled_by = ROOT }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @SOV_COLLAPSE_AI_KMB_BASIN_ARMY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = infantry
+		value = @SOV_COLLAPSE_AI_KMB_INFANTRY
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = train
+		value = @SOV_COLLAPSE_AI_KMB_TRAINS
+	}
+}
+
+soviet_collapse_kmb_coal_golem_opening_line = {
+	allowed = { original_tag = KMB }
+	enable = {
+		has_country_flag = soviet_collapse_kuznetsk_mining_successor
+		has_soviet_collapse_successor_decision_surface = yes
+		has_country_flag = kmb_focus_guard_the_pitheads
+		NOT = { has_country_flag = kmb_focus_raise_furnace_columns }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = equipment_production_min_factories_archetype
+		id = coal_golem_equipment
+		value = @SOV_COLLAPSE_AI_KMB_COAL_GOLEM_FACTORY_EARLY
+	}
+}
+
+soviet_collapse_kmb_coal_golem_mass_line = {
+	allowed = { original_tag = KMB }
+	enable = {
+		has_country_flag = soviet_collapse_kuznetsk_mining_successor
+		has_soviet_collapse_successor_decision_surface = yes
+		has_country_flag = kmb_focus_raise_furnace_columns
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = equipment_production_min_factories_archetype
+		id = coal_golem_equipment
+		value = @SOV_COLLAPSE_AI_KMB_COAL_GOLEM_FACTORY_LATE
+	}
+}
+
+soviet_collapse_kmb_treaty_posture = {
+	allowed = { original_tag = KMB }
+	enable = {
+		has_country_flag = soviet_collapse_kuznetsk_mining_successor
+		has_soviet_collapse_successor_decision_surface = yes
+		has_country_flag = kmb_focus_export_treaty_board
+		is_in_faction = no
+		has_war = no
+		NOT = { has_soviet_collapse_kmb_superior_concession_target = yes }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @SOV_COLLAPSE_AI_KMB_TREATY_RESTRAINT
+	}
+}
+
+soviet_collapse_kmb_concession_posture = {
+	allowed = { original_tag = KMB }
+	enable = {
+		has_country_flag = soviet_collapse_kuznetsk_mining_successor
+		has_soviet_collapse_successor_decision_surface = yes
+		has_country_flag = kmb_focus_concession_treaties
+		has_soviet_collapse_kmb_superior_concession_target = yes
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = build_army
+		value = @SOV_COLLAPSE_AI_KMB_CONCESSION_ARMY
+	}
+	ai_strategy = {
+		type = force_concentration_factor
+		value = @SOV_COLLAPSE_AI_KMB_CONCESSION_CONCENTRATION
 	}
 }
 
