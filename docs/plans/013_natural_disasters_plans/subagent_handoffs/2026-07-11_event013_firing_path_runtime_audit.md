@@ -2,6 +2,8 @@
 
 Date: 2026-07-11
 
+Closure note, 2026-07-12: this is the preserved pre-fix audit. The complete group/type-preserving family pass, selected-type Disaster Barrage launch proof, explicit direct/scenario rejection notice, direct-entry history ownership, immediate exact forecast card, cluster context arrays, hard geography registry, temporary random draws, inclusive documented endpoints, and caller-side initialization for nested temporary outputs were implemented afterward. The authoritative current verdict is `docs/plans/013_natural_disasters_plans/013_event_completion_final_audit.md`; its queued live-engine scenario matrix and repository-wide source-asset retention decision remain open.
+
 Mode: read-only gameplay audit. This handoff is the audit's only repository edit. No gameplay, localisation, GUI, asset, workbook, or existing documentation file was changed.
 
 Line references were captured from the shared working tree during this audit; identifiers are authoritative if concurrent parent edits move a block.
@@ -169,8 +171,8 @@ Required fix:
 ### S4 - delayed worker state recovery (V1 gate)
 
 1. From a known state/controller pair, enqueue exactly one impact job at a one-day delay with a unique sequence id.
-2. Before the worker, require all four aligned arrays to have length one and the state row to equal the selected state.
-3. On `.2`, require `natural_disaster_job_index = 0`, `natural_disaster_impact_state` to resolve to that exact state before removal, and all four arrays to return to length zero.
+2. Before the worker, require all 26 aligned delayed-job snapshot arrays to have length one and the state row to equal the selected state.
+3. On `.2`, require `natural_disaster_job_index = 0`, `natural_disaster_impact_state` to resolve to that exact state before removal, and all 26 arrays to return to length zero.
 4. Require the reservation row to be released, `natural_disaster_impact_scheduled` to clear, and the state to enter aftermath with actual family effects. A missing target with a consumed queue row is a hard failure.
 
 ### S5 - overlapping cluster queue

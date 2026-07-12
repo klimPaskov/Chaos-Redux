@@ -56,7 +56,12 @@ country_event = {
 			set_temp_variable = { natural_disaster_call_log_mode = constant:natural_disaster_log_mode.event_system }
 			clr_country_flag = natural_disaster_dispatcher_history_owned
 		}
+		set_temp_variable = { natural_disaster_call_result = constant:natural_disaster_call_result.rejected }
 		call_natural_disaster = yes
+		if = {
+			limit = { check_variable = { natural_disaster_call_result = constant:natural_disaster_call_result.rejected } }
+			country_event = { id = chaosx.nr13.126 }
+		}
 	}
 }
 
@@ -177,6 +182,34 @@ country_event = {
 	option = {
 		name = chaosx.nr13.4.b
 		clr_country_flag = natural_disaster_abnormal_map_unread
+	}
+}
+
+# A direct Event 013 invocation found no uncommitted physical route. This is
+# explicit rejection feedback, not a disaster report or Event 013 history row.
+country_event = {
+	id = chaosx.nr13.126
+	title = chaosx.nr13.126.t
+	desc = chaosx.nr13.126.d
+	picture = GFX_report_event_nd_regional_aftermath
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr13.126.a
+	}
+}
+
+# Disaster Barrage keeps its own failure wording so the player can change the
+# selected crisis type or country without mistaking rejection for a queued hit.
+country_event = {
+	id = chaosx.nr13.127
+	title = chaosx.nr13.127.t
+	desc = chaosx.nr13.127.d
+	picture = GFX_report_event_nd_regional_aftermath
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr13.127.a
 	}
 }
 

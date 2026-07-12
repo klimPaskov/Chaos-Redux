@@ -1,5 +1,7 @@
 # Event 013 Decision and Mission Handoff
 
+> Completion disposition, 2026-07-12: this is a preserved early tranche handoff. The later completion pass implemented the donor relationship outcomes, notification cleanup, typed objectives, transfer handling, bounded foreign-relief ledger, and archetype-safe train spending. Current gameplay and `013_decision_mission_final_audit.md` supersede the open-hook language below.
+
 ## Scope
 
 This tranche implements the player-facing warning, aftermath recovery, mission-slot, and foreign-relief gameplay surface for Event 013. It is intentionally isolated from the shared Event 013 engine, localisation, interface, assets, events, and specification files.
@@ -246,9 +248,7 @@ The donor AI should also use a shared hostility and dependency eligibility trigg
 
 ### Archetype-Safe Equipment Spending Hook
 
-Add a reusable scripted effect for spending from equipment archetypes without assuming a specific equipment version. The decisions check support equipment, motorized equipment, trains, and convoys by archetype, but Clausewitz stockpile removal requires a concrete equipment type in the effect. The current effects use the common version-one tokens. Trains are the highest-risk case when a country primarily holds armored trains.
-
-The helper should accept an archetype and amount, resolve a valid owned type, and remove that stockpile. Replace direct version-one deductions in warning, recovery, and outbound-relief actions once the helper exists.
+Resolved in the completion pass. Vanilla supports both `has_equipment = { train_equipment ... }` and negative `add_equipment_to_stockpile = { type = train_equipment ... }` against the train archetype. All Event 013 warning, recovery, chain-prevention, inbound-routing, and engineer-relief train gates and deductions use `train_equipment`, so basic, civilian, and armored trains contribute to the same cost without a version-specific helper.
 
 ### Notification Cleanup Hook
 

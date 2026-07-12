@@ -92,7 +92,7 @@ Disaster Barrage starts one Event 013 season in the launching country through `c
 
 The five types select Random Barrage, Geological Crisis, Weather Crisis, Skyfall Crisis, or Full Catalogue. Low starts a varied local season. Medium uses regional severity and full aftermath work. High uses catastrophic severity and emergency aftermath work. Maximum temporarily opens abnormal family access for the launch, uses abnormal severity and abnormal follow-up paths, then removes the temporary access flag. Full Catalogue uses major-only news policy to control global reporting.
 
-The scenario stores one Event 013 history row through `natural_disaster_log_mode.scenario_history`. It never sets `world_end` or another terminal flag. Launch is unavailable only when the launching country has no valid controlled impact state or a terminal world-end state is already active. It does not use a periodic world on-action.
+The scenario stores one Event 013 history row through `natural_disaster_log_mode.scenario_history`. It never sets `world_end` or another terminal flag. Launch is unavailable when a terminal world-end state is active or the selected crisis type has no physically compatible controlled state. After weighted family draws, Event 013 exhausts only that selected type's valid family pool; a same-chain rejection receives an explicit Barrage notice. It does not use a periodic world on-action.
 
 ### SCN-008: Africa Is One
 

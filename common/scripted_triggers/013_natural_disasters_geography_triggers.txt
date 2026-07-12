@@ -868,64 +868,74 @@ natural_disaster_target_matches_active_origin_tsunami_basin = {
 natural_disaster_active_origin_is_volcanic = {
 	check_variable = { natural_disaster_active_origin_saved > 0 }
 	has_event_target = natural_disaster_active_origin_state
-	event_target:natural_disaster_active_origin_state = { natural_disaster_state_is_volcanic_vent_zone = yes }
+	OR = {
+		check_variable = { natural_disaster_active_origin_medium = constant:natural_disaster_origin_medium.none }
+		check_variable = { natural_disaster_active_origin_medium = constant:natural_disaster_origin_medium.land_impact }
+	}
+	OR = {
+		AND = {
+			check_variable = { natural_disaster_active_origin_family = constant:natural_disaster_family.volcanic_eruption }
+			event_target:natural_disaster_active_origin_state = { natural_disaster_state_is_volcanic_vent_zone = yes }
+		}
+		AND = {
+			check_variable = { natural_disaster_active_origin_family = constant:natural_disaster_family.massive_eruption }
+			event_target:natural_disaster_active_origin_state = { natural_disaster_state_is_massive_eruption_zone = yes }
+		}
+	}
 }
 
 natural_disaster_active_origin_can_generate_tsunami = {
 	check_variable = { natural_disaster_active_origin_saved > 0 }
 	has_event_target = natural_disaster_active_origin_state
 	OR = {
-		event_target:natural_disaster_active_origin_state = {
+		AND = {
 			OR = {
-				natural_disaster_state_is_seismic_zone = yes
-				natural_disaster_state_is_volcanic_vent_zone = yes
+				check_variable = { natural_disaster_active_origin_family = constant:natural_disaster_family.earthquake }
+				check_variable = { natural_disaster_active_origin_family = constant:natural_disaster_family.whole_earth_rupture }
 			}
+			OR = {
+				check_variable = { natural_disaster_active_origin_medium = constant:natural_disaster_origin_medium.none }
+				check_variable = { natural_disaster_active_origin_medium = constant:natural_disaster_origin_medium.land_impact }
+			}
+			event_target:natural_disaster_active_origin_state = { natural_disaster_state_is_seismic_zone = yes }
 		}
-		check_variable = { natural_disaster_active_origin_family = constant:natural_disaster_family.meteor_impact }
-		check_variable = { natural_disaster_active_origin_family = constant:natural_disaster_family.meteor_shower }
-		check_variable = { natural_disaster_active_origin_family = constant:natural_disaster_family.whole_earth_rupture }
-		check_variable = { natural_disaster_active_origin_family = constant:natural_disaster_family.massive_eruption }
+		AND = {
+			natural_disaster_active_origin_is_volcanic = yes
+		}
+		AND = {
+			OR = {
+				check_variable = { natural_disaster_active_origin_family = constant:natural_disaster_family.meteor_impact }
+				check_variable = { natural_disaster_active_origin_family = constant:natural_disaster_family.meteor_shower }
+			}
+			check_variable = { natural_disaster_active_origin_medium = constant:natural_disaster_origin_medium.ocean_impact }
+			event_target:natural_disaster_active_origin_state = { natural_disaster_state_is_ocean_exposed_coast = yes }
+		}
 	}
 }
 
-# State scope. Origin-dependent families fail closed. A direct call can use
-# the target itself only when it is a valid physical origin; receptor calls
-# must supply or inherit the saved origin proof.
+# State scope. Origin-dependent families always require a supplied or inherited
+# physical origin. The receptor can be the origin state itself, but the target
+# can never manufacture the origin proof that authorizes its own impact.
 natural_disaster_family_origin_context_is_valid = {
 	if = {
 		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.ashfall } }
-		OR = {
-			natural_disaster_state_is_volcanic_vent_zone = yes
-			AND = {
-				natural_disaster_active_origin_is_volcanic = yes
-				natural_disaster_state_is_active_origin_or_neighbor = yes
-			}
+		AND = {
+			natural_disaster_active_origin_is_volcanic = yes
+			natural_disaster_state_is_active_origin_or_neighbor = yes
 		}
 	}
 	else_if = {
 		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.lahar } }
-		OR = {
-			natural_disaster_state_is_volcanic_vent_zone = yes
-			AND = {
-				natural_disaster_active_origin_is_volcanic = yes
-				natural_disaster_state_is_active_origin_or_neighbor = yes
-			}
+		AND = {
+			natural_disaster_active_origin_is_volcanic = yes
+			natural_disaster_state_is_active_origin_or_neighbor = yes
 		}
 	}
 	else_if = {
 		limit = { check_variable = { natural_disaster_current_family = constant:natural_disaster_family.tsunami } }
-		OR = {
-			AND = {
-				is_coastal = yes
-				OR = {
-					natural_disaster_state_is_seismic_zone = yes
-					natural_disaster_state_is_volcanic_vent_zone = yes
-				}
-			}
-			AND = {
-				natural_disaster_active_origin_can_generate_tsunami = yes
-				natural_disaster_target_matches_active_origin_tsunami_basin = yes
-			}
+		AND = {
+			natural_disaster_active_origin_can_generate_tsunami = yes
+			natural_disaster_target_matches_active_origin_tsunami_basin = yes
 		}
 	}
 }

@@ -121,6 +121,56 @@ natural_disaster_family_group = {
 	max = 9
 }
 
+# Snapshot-safe casualty exposure labels. Values 1-9 are the broad family
+# baselines used when no more specific physical or strategic vulnerability is
+# present. Values 10+ identify the strongest observed driver at impact.
+natural_disaster_death_driver = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	seismic_exposure = 1
+	water_coastal_exposure = 2
+	storm_weather_exposure = 3
+	winter_temperature_exposure = 4
+	fire_drought_exposure = 5
+	mass_movement_exposure = 6
+	volcanic_ash_exposure = 7
+	dust_sand_exposure = 8
+	abnormal_exposure = 9
+	dense_population = 10
+	low_infrastructure = 11
+	coastal_population = 12
+	strategic_transport = 13
+	air_assets = 14
+	agricultural_exposure = 15
+	dry_fuel = 16
+	slope_valley = 17
+	volcanic_proximity = 18
+	war_logistics = 19
+	unresolved_devastation = 20
+	warning_failure = 21
+	repeated_abnormal_impacts = 22
+	max = 22
+}
+
+natural_disaster_relief_status = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	pledged = 1
+	route_secured = 2
+	arrived = 3
+	misdirected = 4
+	refused = 5
+	withdrawn = 6
+}
+
 natural_disaster_family = {
 	schema = {
 		any_key = yes
@@ -655,6 +705,55 @@ natural_disaster_family_lethality = {
 	whole_earth_rupture = 1.85
 	massive_eruption = 1.70
 	moving_storm_corridor = 1.25
+}
+
+# Conditional exposure factors are accumulated and then clamped. Family
+# lethality remains the baseline, while these factors make the physical state
+# and its strategic use matter without duplicating one table per family.
+natural_disaster_death_driver_factor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	dense_population = 1.10
+	low_infrastructure = 1.08
+	coastal_population = 1.12
+	strategic_transport = 1.06
+	air_assets = 1.05
+	agricultural_exposure = 1.05
+	dry_fuel = 1.10
+	slope_valley = 1.12
+	volcanic_proximity = 1.12
+	war_logistics = 1.07
+	unresolved_devastation = 1.00
+	warning_failure = 1.08
+	repeated_abnormal_impacts = 1.10
+	maximum_combined = 1.35
+}
+
+# The highest-priority matching condition becomes the stored player-facing
+# explanation. Every matching condition still contributes to the bounded
+# casualty factor above.
+natural_disaster_death_driver_priority = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	dense_population = 60
+	low_infrastructure = 55
+	coastal_population = 80
+	strategic_transport = 50
+	air_assets = 45
+	agricultural_exposure = 40
+	dry_fuel = 75
+	slope_valley = 85
+	volcanic_proximity = 90
+	war_logistics = 65
+	unresolved_devastation = 95
+	warning_failure = 70
+	repeated_abnormal_impacts = 88
 }
 
 natural_disaster_damage = {

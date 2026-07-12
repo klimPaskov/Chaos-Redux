@@ -2,7 +2,9 @@
 
 ## Status and authority
 
-This is a plan-only architecture handoff for the fresh Event 013 Natural Disasters implementation. It does not authorize legacy recovery or reuse. The current inert `events/013_natural_disasters.txt` is the only Event 013 gameplay file treated as live. Deleted Event 013 history and the former Earth Earthquake implementation are outside the reference set and must not be inspected, copied, or adapted.
+Implementation closure, 2026-07-12: this file is the preserved pre-implementation architecture handoff. The live public contract and implemented outputs are authoritative in `common/scripted_effects/chaosx_dynamic_effects.md`, while `docs/plans/013_natural_disasters_plans/013_event_completion_final_audit.md` records the final disposition. References below to an inert entry event, proposed enums, four outputs, or constants still to add describe the planning snapshot and are not current implementation instructions.
+
+This architecture required a fresh Event 013 Natural Disasters implementation and did not authorize legacy recovery or reuse. Deleted Event 013 history and the former Earth Earthquake implementation were outside the reference set and were not copied or adapted.
 
 This architecture follows:
 
