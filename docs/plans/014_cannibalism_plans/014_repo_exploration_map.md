@@ -1,5 +1,7 @@
 # Repo Explorer Handoff
 
+> Superseded exploration snapshot. This file records the repository state before Event 014 implementation. It is retained for provenance and must not be used as current implementation status. Current facts live in `docs/specs/014_cannibalism_specs/`, `docs/events/014_cannibalism.md`, and the final reconciliation handoffs.
+
 ## Scope read
 
 This is a read-only implementation map for Event 014, Cannibalism. It does not

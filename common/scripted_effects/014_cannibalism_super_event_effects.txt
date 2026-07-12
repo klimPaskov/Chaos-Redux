@@ -136,43 +136,41 @@ cannibalism_trigger_wendigo_world_end_super_event = {
 }
 
 # ---------------------------------------------------------------------------
-# Ordinary terminal route
+# Terminal global war activation
 # ---------------------------------------------------------------------------
 
 cannibalism_activate_terminal_global_war = {
 	save_event_target_as = cannibalism_terminal_global_actor
 	if = { limit = { is_in_faction = yes } leave_faction = yes }
-	every_country = {
-		limit = {
-			exists = yes
-			NOT = { tag = event_target:cannibalism_terminal_global_actor }
-			NOT = { has_capitulated = yes }
-		}
-		event_target:cannibalism_terminal_global_actor = {
-			if = {
-				limit = { is_cannibalism_wendigo_hannibal_country = yes }
-				add_ai_strategy = { type = conquer id = PREV value = constant:cannibalism_ai_strategy.wendigo_terminal_conquest }
-				add_ai_strategy = { type = antagonize id = PREV value = constant:cannibalism_ai_strategy.wendigo_terminal_conquest }
-				add_ai_strategy = { type = front_unit_request id = PREV value = constant:cannibalism_ai_strategy.wendigo_terminal_front }
+	if = {
+		limit = { is_cannibalism_wendigo_hannibal_country = yes }
+		cannibalism_wendigo_apply_scored_terminal_priorities = yes
+	}
+	else = {
+		every_country = {
+			limit = {
+				exists = yes
+				NOT = { tag = event_target:cannibalism_terminal_global_actor }
+				NOT = { has_capitulated = yes }
 			}
-			else = {
+			event_target:cannibalism_terminal_global_actor = {
 				add_ai_strategy = { type = conquer id = PREV value = constant:cannibalism_ai_strategy.hannibal_terminal_conquest }
 				add_ai_strategy = { type = antagonize id = PREV value = constant:cannibalism_ai_strategy.hannibal_terminal_conquest }
 				add_ai_strategy = { type = front_unit_request id = PREV value = constant:cannibalism_ai_strategy.hannibal_terminal_front }
-			}
-			if = {
-				limit = {
-					NOT = { has_war_with = PREV }
-					NOT = { has_wargoal_against = PREV }
+				if = {
+					limit = {
+						NOT = { has_war_with = PREV }
+						NOT = { has_wargoal_against = PREV }
+					}
+					create_wargoal = { type = annex_everything target = PREV expire = 0 }
 				}
-				create_wargoal = { type = annex_everything target = PREV expire = 0 }
-			}
-			if = {
-				limit = {
-					NOT = { has_war_with = PREV }
-					can_declare_war_on = PREV
+				if = {
+					limit = {
+						NOT = { has_war_with = PREV }
+						can_declare_war_on = PREV
+					}
+					declare_war_on = { target = PREV type = annex_everything }
 				}
-				declare_war_on = { target = PREV type = annex_everything }
 			}
 		}
 	}
@@ -220,6 +218,7 @@ cannibalism_integrate_terminal_ai_warlords = {
 cannibalism_try_start_ordinary_world_end = {
 	if = {
 		limit = {
+			world_end_cannibalism_ordinary_scenario_enabled = yes
 			cannibalism_can_complete_ordinary_world_end = yes
 			has_country_flag = cannibalism_unified_world_end_focus_complete
 			has_country_flag = cannibalism_terminal_route_complete

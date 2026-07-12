@@ -220,6 +220,14 @@ The route should reward resistance without undermining the core requirement that
 - completed local-route history should set branch variables that alter the unified opening
 - existing normal countries must never receive the Hannibal tree through a blind tag collision
 
+### Constituent technology union
+
+Every successful constituent absorption transfers researched technology tokens additively before donor cleanup and annexation. The recipient keeps all existing technology, research slots, and its established mutually exclusive industry branch. Every other compatible donor token is granted without popups. Later donors accumulate rather than replace earlier inheritance, and repeated donor tokens are idempotent.
+
+The shared helper is `union_compatible_researched_technologies_from_donor`. It receives the donor through `technology_union_donor` and is called for initial CBL creation, later CBL or transformed-ZZZ absorptions, and the primary warlord donor absorbed into the in-place Wendigo host. Autonomous, resistant, or challenging warlords transfer nothing until a later transaction actually absorbs them.
+
+Completed special projects, prototypes, facilities, scientists, and project progress are outside the researched-token union. The original ZZZ country retains its own existing special-project state because the transformation occurs in place.
+
 ### Decision integration
 
 - local decisions close or convert
@@ -448,3 +456,7 @@ Before implementation completion, search every player-facing surface for:
 - achievement titles that reveal the identity
 
 All matches before the reveal flag must be removed or made internal-only.
+
+## Unified decision asset closure
+
+All 39 unified decisions have a one-to-one deterministic asset contract: decision ID, `GFX_decision_<decision_id>` sprite, source PNG, processed transparent PNG, and `gfx/interface/decisions/014_cannibalism/decision_<decision_id>.dds`. No unified decision reuses a baseline decision, focus, idea, or unrelated icon.

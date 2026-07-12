@@ -1,20 +1,28 @@
 # Hidden Identity Surface Audit
 
-| Surface | Before reveal | After reveal |
-| --- | --- | --- |
-| Entry event | Wartime evidence only | Not reused |
-| Follow-up events | Cells, symbols, shared methods | Can name Hannibal when context requires |
-| Event Details | Premise and possible spread | Can add revealed state through dynamic text |
-| Evolution I log | Ritualization | Historical row remains spoiler-safe |
-| Evolution II log | Organized coordination | Historical row remains spoiler-safe |
-| Evolution III log | Not visible before trigger | Names Hannibal |
-| Ordinary decisions | Network and cell terms | Counter-Hannibal actions allowed |
-| Warlord focuses | Alignment, shared orders, defiance | Hannibal response branches allowed |
-| GUI | Uncertain coordination | Revealed command window |
-| Country names | Regional Host or Commune | Unified public identity allowed |
-| Warlord portraits | Generic leaders | Remain visible as lieutenants or rivals |
-| Hannibal portrait | Never loaded on public surface | Leader and event presentation |
-| Achievements | Late routes hidden | Late achievements can reveal |
-| Scenario UI | Neutral network type | Reveal occurs in-world after launch |
-| Music and quote | No identity-bearing public metadata | Final super-event package allowed |
-| Spreadsheet Details | No spoiler | Evolution and world-end columns can describe revealed route only where appropriate |
+The hard public boundary is `cannibalism_reveal_complete`. Internal identifiers may use `hannibal`, but no pre-reveal player-facing lookup may resolve the name, face, silhouette, command title, personal pronoun, terminal route, or a claim that one individual directs the network.
+
+| Surface | Before reveal | After reveal | Current gate evidence |
+| --- | --- | --- | --- |
+| Entry and baseline events | Wartime evidence, supply failure, formations, and cells | Entry is not reused | Entry paths do not resolve the public character |
+| Follow-up and spread events | Source country, route, cells, symbols, and shared methods | Can name Hannibal when context requires | Public reveal flag precedes named event chain |
+| Event Details premise | Baseline premise and spread risk | Revealed command state may be named | Scripted-localisation branch reads reveal state |
+| Evolution I log | Ritualization without a master | Historical row stays spoiler-safe | Evolution I title/body remain neutral |
+| Evolution II log | Organized coordination with uncertain source | Historical row stays spoiler-safe | Evolution II title/body remain neutral |
+| Evolution III log | Row cannot exist before trigger | Names Hannibal and unification | Evolution III mappings require reveal state |
+| Ordinary decisions | Containment, cells, networks, and convergence | Counter-Hannibal actions allowed | Named content is post-reveal only |
+| Warlord focuses | Alignment, shared orders, manipulation, and defiance | Submission and resistance can name revealed command | All 72 pre-reveal focus titles/descriptions/tooltips passed the focus audit |
+| Scripted GUI | Early crisis and uncertain network | Revealed and transformed command windows | Early/network windows require no reveal. Named portrait windows require reveal |
+| Country names and flags | Regional Host or Commune identity | CBL and transformed cosmetic identities | Public identity transaction follows reveal flag |
+| Warlord portraits | Generic regional leaders | Remain as commanders, governors, servants, or rivals | All 56 are distinct and do not resemble Hannibal |
+| Ordinary portrait | Never on a public selector | 12-frame real-source sequence | `GFX_portrait_CBL_hannibal` is post-reveal |
+| Transformed portrait | Never on a public selector | 16-frame real-source sequence | Requires reveal and Wendigo merge |
+| Achievement registry | Five baseline entries visible. Thirteen late entries statically hidden | Static registry remains unchanged | Engine schema boundary |
+| Achievement tracker | Stage-gated neutral entries only | Revealed and merged entries open at their public stages | 18 read-only entries use persistent discovery flags and real completion triggers |
+| Scenario UI | Five neutral `SCN-010` types | Reveal occurs in-world after launch | No scenario type names Hannibal or Wendigo |
+| Terminal Event Details rows | Neither terminal row enters the list | IDs 6 and 7 appear independently | Both rows require `cannibalism_reveal_complete` |
+| Super-event defaults | No Event 014 revealed slot can surface early | IDs 49, 50, 52, and 53 resolve by role | All emitters require reveal. Audio uses settings-aware routing |
+| Music and audio UI | No identity metadata displayed | Matching event can expose its public role | Track metadata remains documentation, not an early player surface |
+| Spreadsheet details | Baseline premise | Dedicated evolution and terminal columns contain public-stage facts | Workbook wording mirrors the in-game surfaces |
+
+Strict cultural and likeness boundaries apply in both stages. No surface uses ancient-general, Carthaginian, Punic, actor-likeness, living Indigenous ceremonial, sacred, tribal, or authenticity framing.

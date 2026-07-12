@@ -1,0 +1,214 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 014 TARGET-SCORING EFFECTS
+# ============================================================================
+# Retrieves temporary ordered country/score arrays, applies one-shot AI
+# priorities, and supplies the Wendigo terminal-war consumer. Arrays are
+# cleared both before and after every consumer; no persistent score cache and
+# no recurring country scan is created.
+# ============================================================================
+
+cannibalism_get_unified_scored_targets = {
+	clear_temp_array = cannibalism_scored_target_countries
+	clear_temp_array = cannibalism_scored_target_values
+	get_sorted_scored_countries_temp = {
+		scorer = cannibalism_unified_target_scorer
+		array = cannibalism_scored_target_countries
+		scores = cannibalism_scored_target_values
+	}
+}
+
+cannibalism_get_wendigo_scored_targets = {
+	clear_temp_array = cannibalism_scored_target_countries
+	clear_temp_array = cannibalism_scored_target_values
+	get_sorted_scored_countries_temp = {
+		scorer = cannibalism_wendigo_target_scorer
+		array = cannibalism_scored_target_countries
+		scores = cannibalism_scored_target_values
+	}
+}
+
+cannibalism_clear_scored_target_runtime = {
+	clear_temp_array = cannibalism_scored_target_countries
+	clear_temp_array = cannibalism_scored_target_values
+	set_temp_variable = { cannibalism_scored_target_index = 0 }
+	set_temp_variable = { cannibalism_current_scored_target_value = 0 }
+}
+
+cannibalism_unified_apply_current_scored_target_priority = {
+	if = {
+		limit = {
+			check_variable = {
+				var = cannibalism_current_scored_target_value
+				value = constant:cannibalism_target_score.high_score
+				compare = greater_than_or_equals
+			}
+		}
+		add_ai_strategy = { type = conquer id = event_target:cannibalism_current_scored_target value = constant:cannibalism_target_ai.unified_high }
+		add_ai_strategy = { type = antagonize id = event_target:cannibalism_current_scored_target value = constant:cannibalism_target_ai.unified_high }
+		add_ai_strategy = { type = front_unit_request id = event_target:cannibalism_current_scored_target value = constant:cannibalism_target_ai.unified_high }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = cannibalism_current_scored_target_value
+				value = constant:cannibalism_target_score.medium_score
+				compare = greater_than_or_equals
+			}
+		}
+		add_ai_strategy = { type = conquer id = event_target:cannibalism_current_scored_target value = constant:cannibalism_target_ai.unified_medium }
+		add_ai_strategy = { type = antagonize id = event_target:cannibalism_current_scored_target value = constant:cannibalism_target_ai.unified_medium }
+		add_ai_strategy = { type = front_unit_request id = event_target:cannibalism_current_scored_target value = constant:cannibalism_target_ai.unified_medium }
+	}
+	else = {
+		add_ai_strategy = { type = conquer id = event_target:cannibalism_current_scored_target value = constant:cannibalism_target_ai.unified_low }
+		add_ai_strategy = { type = antagonize id = event_target:cannibalism_current_scored_target value = constant:cannibalism_target_ai.unified_low }
+		add_ai_strategy = { type = front_unit_request id = event_target:cannibalism_current_scored_target value = constant:cannibalism_target_ai.unified_low }
+	}
+}
+
+cannibalism_wendigo_apply_current_scored_target_priority = {
+	if = {
+		limit = {
+			check_variable = {
+				var = cannibalism_current_scored_target_value
+				value = constant:cannibalism_target_score.high_score
+				compare = greater_than_or_equals
+			}
+		}
+		if = {
+			limit = { has_country_flag = cannibalism_wendigo_transformation_locked }
+			add_ai_strategy = { type = conquer id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.postlock_target_high }
+			add_ai_strategy = { type = antagonize id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.postlock_target_high }
+			add_ai_strategy = { type = front_unit_request id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.postlock_target_high }
+		}
+		else = {
+			add_ai_strategy = { type = conquer id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.prelock_target_high }
+			add_ai_strategy = { type = antagonize id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.prelock_target_high }
+			add_ai_strategy = { type = front_unit_request id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.prelock_target_high }
+		}
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = cannibalism_current_scored_target_value
+				value = constant:cannibalism_target_score.medium_score
+				compare = greater_than_or_equals
+			}
+		}
+		if = {
+			limit = { has_country_flag = cannibalism_wendigo_transformation_locked }
+			add_ai_strategy = { type = conquer id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.postlock_target_medium }
+			add_ai_strategy = { type = antagonize id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.postlock_target_medium }
+			add_ai_strategy = { type = front_unit_request id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.postlock_target_medium }
+		}
+		else = {
+			add_ai_strategy = { type = conquer id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.prelock_target_medium }
+			add_ai_strategy = { type = antagonize id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.prelock_target_medium }
+			add_ai_strategy = { type = front_unit_request id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.prelock_target_medium }
+		}
+	}
+	else = {
+		if = {
+			limit = { has_country_flag = cannibalism_wendigo_transformation_locked }
+			add_ai_strategy = { type = conquer id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.postlock_target_low }
+			add_ai_strategy = { type = antagonize id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.postlock_target_low }
+			add_ai_strategy = { type = front_unit_request id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.postlock_target_low }
+		}
+		else = {
+			add_ai_strategy = { type = conquer id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.prelock_target_low }
+			add_ai_strategy = { type = antagonize id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.prelock_target_low }
+			add_ai_strategy = { type = front_unit_request id = event_target:cannibalism_current_scored_target value = constant:cannibalism_wendigo_ai.prelock_target_low }
+		}
+	}
+}
+
+# Pre-lock focus rewards may rescore at several milestones. Add each target's
+# strategy band once so repeated focus calls can discover new enemies without
+# stacking duplicate entries for countries already prioritized.
+cannibalism_wendigo_apply_new_scored_enemy_priority = {
+	if = {
+		limit = {
+			NOT = {
+				is_in_array = {
+					array = cannibalism_wendigo_prelock_scored_priority_targets
+					value = event_target:cannibalism_current_scored_target
+				}
+			}
+		}
+		cannibalism_wendigo_apply_current_scored_target_priority = yes
+		add_to_array = { cannibalism_wendigo_prelock_scored_priority_targets = event_target:cannibalism_current_scored_target }
+	}
+}
+
+cannibalism_unified_apply_scored_campaign_priorities = {
+	cannibalism_get_unified_scored_targets = yes
+	set_temp_variable = { cannibalism_scored_target_index = 0 }
+	while_loop_effect = {
+		limit = {
+			check_variable = {
+				var = cannibalism_scored_target_index
+				value = cannibalism_scored_target_countries^num
+				compare = less_than
+			}
+		}
+		set_temp_variable = { cannibalism_current_scored_target_value = cannibalism_scored_target_values^cannibalism_scored_target_index }
+		var:cannibalism_scored_target_countries^cannibalism_scored_target_index = { save_event_target_as = cannibalism_current_scored_target }
+		cannibalism_unified_apply_current_scored_target_priority = yes
+		add_to_temp_variable = { cannibalism_scored_target_index = 1 }
+	}
+	cannibalism_clear_scored_target_runtime = yes
+}
+
+cannibalism_wendigo_apply_scored_enemy_priorities = {
+	cannibalism_get_wendigo_scored_targets = yes
+	set_temp_variable = { cannibalism_scored_target_index = 0 }
+	while_loop_effect = {
+		limit = {
+			check_variable = {
+				var = cannibalism_scored_target_index
+				value = cannibalism_scored_target_countries^num
+				compare = less_than
+			}
+		}
+		set_temp_variable = { cannibalism_current_scored_target_value = cannibalism_scored_target_values^cannibalism_scored_target_index }
+		var:cannibalism_scored_target_countries^cannibalism_scored_target_index = { save_event_target_as = cannibalism_current_scored_target }
+		cannibalism_wendigo_apply_new_scored_enemy_priority = yes
+		add_to_temp_variable = { cannibalism_scored_target_index = 1 }
+	}
+	cannibalism_clear_scored_target_runtime = yes
+}
+
+# One-shot post-lock helper. The reserved super-event effect should call this
+# instead of applying the Wendigo branch to every country indiscriminately.
+cannibalism_wendigo_apply_scored_terminal_priorities = {
+	cannibalism_get_wendigo_scored_targets = yes
+	set_temp_variable = { cannibalism_scored_target_index = 0 }
+	while_loop_effect = {
+		limit = {
+			check_variable = {
+				var = cannibalism_scored_target_index
+				value = cannibalism_scored_target_countries^num
+				compare = less_than
+			}
+		}
+		set_temp_variable = { cannibalism_current_scored_target_value = cannibalism_scored_target_values^cannibalism_scored_target_index }
+		var:cannibalism_scored_target_countries^cannibalism_scored_target_index = { save_event_target_as = cannibalism_current_scored_target }
+		cannibalism_wendigo_apply_current_scored_target_priority = yes
+		if = {
+			limit = {
+				NOT = { has_war_with = event_target:cannibalism_current_scored_target }
+				NOT = { has_wargoal_against = event_target:cannibalism_current_scored_target }
+			}
+			create_wargoal = { type = annex_everything target = event_target:cannibalism_current_scored_target expire = 0 }
+		}
+		if = {
+			limit = {
+				NOT = { has_war_with = event_target:cannibalism_current_scored_target }
+				can_declare_war_on = event_target:cannibalism_current_scored_target
+			}
+			declare_war_on = { target = event_target:cannibalism_current_scored_target type = annex_everything }
+		}
+		add_to_temp_variable = { cannibalism_scored_target_index = 1 }
+	}
+	cannibalism_clear_scored_target_runtime = yes
+}

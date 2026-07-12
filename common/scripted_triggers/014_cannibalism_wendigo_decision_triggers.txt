@@ -13,6 +13,7 @@ cannibalism_wendigo_command_is_open = {
 	is_cannibalism_wendigo_hannibal_country = yes
 	has_country_flag = cannibalism_wendigo_transformation_prelock
 	NOT = { has_country_flag = cannibalism_wendigo_transformation_locked }
+	NOT = { has_country_flag = cannibalism_wendigo_transformation_broken }
 	NOT = { has_capitulated = yes }
 	has_event_target = cannibalism_wendigo_merge_host
 	tag = event_target:cannibalism_wendigo_merge_host
@@ -44,6 +45,32 @@ cannibalism_wendigo_can_pay_fortify_anchor_cost = {
 	command_power > constant:cannibalism_wendigo_decision.fortify_anchor_command_gate
 }
 
+cannibalism_wendigo_requested_pack_batch_fits_capacity = {
+	has_variable = cannibalism_wendigo_pack_capacity
+	check_variable = {
+		var = cannibalism_wendigo_requested_pack_batch
+		value = constant:cannibalism_meter.min
+		compare = greater_than
+	}
+	set_temp_variable = { cannibalism_wendigo_pack_count_after_requested_batch = cannibalism_wendigo_trained_pack_count }
+	add_to_temp_variable = { cannibalism_wendigo_pack_count_after_requested_batch = cannibalism_wendigo_requested_pack_batch }
+	check_variable = {
+		var = cannibalism_wendigo_pack_count_after_requested_batch
+		value = cannibalism_wendigo_pack_capacity
+		compare = less_than_or_equals
+	}
+}
+
+cannibalism_wendigo_ai_preserves_countdown_larder_after_cost = {
+	set_temp_variable = { cannibalism_wendigo_ai_required_larder_after_cost = constant:cannibalism_wendigo_countdown.minimum_larder }
+	add_to_temp_variable = { cannibalism_wendigo_ai_required_larder_after_cost = cannibalism_wendigo_ai_larder_cost }
+	check_variable = {
+		var = cannibalism_larder
+		value = cannibalism_wendigo_ai_required_larder_after_cost
+		compare = greater_than_or_equals
+	}
+}
+
 cannibalism_wendigo_can_pay_train_pack_cost = {
 	cannibalism_wendigo_command_is_open = yes
 	has_country_flag = cannibalism_wendigo_pack_training_open
@@ -53,12 +80,14 @@ cannibalism_wendigo_can_pay_train_pack_cost = {
 		value = constant:cannibalism_wendigo_decision.train_pack_larder
 		compare = greater_than_or_equals
 	}
-	has_variable = cannibalism_wendigo_pack_capacity
-	check_variable = {
-		var = cannibalism_wendigo_trained_pack_count
-		value = cannibalism_wendigo_pack_capacity
-		compare = less_than
-	}
+	set_temp_variable = { cannibalism_wendigo_requested_pack_batch = constant:cannibalism_wendigo_decision.train_pack_batch }
+	cannibalism_wendigo_requested_pack_batch_fits_capacity = yes
+}
+
+cannibalism_wendigo_ai_can_pay_train_pack_cost = {
+	cannibalism_wendigo_can_pay_train_pack_cost = yes
+	set_temp_variable = { cannibalism_wendigo_ai_larder_cost = constant:cannibalism_wendigo_decision.train_pack_larder }
+	cannibalism_wendigo_ai_preserves_countdown_larder_after_cost = yes
 }
 
 cannibalism_wendigo_can_pay_acceleration_cost = {

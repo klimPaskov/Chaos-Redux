@@ -1,5 +1,7 @@
 # Event 014 Scripted GUI Dimension Ledger
 
+> **Fulfilled frozen contract.** The measured dimensions below remain the wiring contract. Final static surfaces, twelve non-portrait frame packages, both real-frame portrait packages, hashes, and GFX handoff data are recorded in `docs/assets/014_cannibalism/gui_animation_portraits/manifest.md` and its validation ledgers.
+
 Date frozen: 2026-07-11
 
 This ledger is the implementation-owned size contract for the five Event 014 mechanic windows in `interface/014_cannibalism_frontline_hunger.gui`. It removes the former GUI-dimension blocker from the asset plan. Every final is fictional generated art and uses uncompressed 32-bit BGRA DDS.

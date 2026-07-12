@@ -10,22 +10,11 @@ The unified Hannibal country remains human at first, even though its institution
 
 ## Tag allocation
 
-The implementation pass must discover conflict-free three-letter tags. The specification uses role placeholders rather than claiming final engine tags.
-
-Required tag capacity:
-
-- eight reusable regional warlord slots
-- one unified Hannibal slot or a verified cosmetic-tag strategy
-- one Wendigo Hannibal identity, implemented through a new tag, cosmetic tag, or verified transformation of the existing Wendigo country
+The implemented country contract uses eight reusable regional warlord slots, `CBA` through `CBH`, one ordinary unified country, `CBL`, and an in-place transformation of the existing original `ZZZ` country with the `ZZZ_CANNIBALISM_HANNIBAL` cosmetic identity.
 
 The eight warlord slots should be reusable after a country is fully eliminated and cleaned up, provided no history, character, flag, decision, focus, or global target still references the old incarnation.
 
-Each slot has a distinct portrait for Europe, Asia, Africa, the Middle East,
-North America, South America, and Oceania. The actual origin state's stored
-region chooses the portrait and male name pool together. That region and
-portrait must survive submission and commander reconstruction at unification.
-An unsupported or missing region prevents formation instead of selecting a
-generic face.
+Each slot has a distinct portrait for Europe, Asia, Africa, the Middle East, North America, South America, and Oceania. The complete matrix contains 56 portraits. The actual origin state's stored region chooses the portrait and male name pool together. That region and portrait survive submission and commander reconstruction at unification. An unsupported or missing region prevents formation instead of selecting a generic face.
 
 A released slot must record:
 
@@ -68,7 +57,7 @@ Every pre-unification country receives one generated male warlord.
 - less conventionally human-looking through grounded human-origin traits such as pallor, bloodshot eyes, asymmetry, damaged ears, irregular teeth, extreme posture, and predatory expression
 - rough hides, raw cloth, bone ornaments, scavenged webbing, damaged helmets, prison garments, or torn period uniforms
 - period-compatible weapon or command prop when composition allows
-- at least one of the 56 regional portraits must hold a skull and visibly lick a dark-crimson smear from it; the other portraits need different behaviors and props rather than repeating that pose
+- at least one of the 56 regional portraits must hold a skull and visibly lick a dark-crimson smear from it. The other portraits need different behaviors and props rather than repeating that pose
 - no modern objects
 - no readable text
 - no real Indigenous, African, Pacific, or religious ceremonial regalia
@@ -649,7 +638,7 @@ The unified country becomes a world-threat source, receives global hostility, an
 
 ## Wendigo Hannibal country package
 
-The implementation must discover the existing Wendigo country, tag, units, technologies, ideas, and classification before wiring this branch.
+The branch uses the existing original `ZZZ` Wendigo country in place. It preserves its territory, units, technologies, ideas, equipment, special-project state, and active player control rather than replacing the country or rebuilding its OOB.
 
 ### Merge rules
 
@@ -659,6 +648,8 @@ The implementation must discover the existing Wendigo country, tag, units, techn
 - all relevant territory, units, technologies, and powerful bonuses are retained
 - Hannibal becomes the transformed leader
 - ordinary and Wendigo recruitment systems remain available
+
+The preserved recruitment boundary is paid-only after transformation. The merge calls `cannibalism_wendigo_focus_preserve_pack_contract` before the first overlay focus or player interaction and sets normal queue recruitment for the locked `Wendigo Pack` to `no`. The two Event 014 scripted Pack musters remain available after their focus unlocks.
 
 ### Classification
 

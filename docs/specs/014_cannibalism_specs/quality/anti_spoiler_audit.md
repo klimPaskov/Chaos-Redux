@@ -1,49 +1,46 @@
 # Hannibal Anti-Spoiler Audit
 
-## Audit result
+Status date: 2026-07-13
 
-The package contains internal Hannibal design because implementation requires it. It contains no final player-facing localisation. Every early public surface is directed to use neutral wartime, ritual, cell, network, commune, island, and warlord language.
+## Public boundary
 
-## Surface rules
+`cannibalism_reveal_complete` is the atomic public boundary. Ordinary and Wendigo unification both set it before public country identity, leader, portrait, focus, decision, report, news, super-event, GUI, terminal-row, or audio-facing operations.
 
-| Surface | Pre-reveal rule | Audit test |
-| --- | --- | --- |
-| Entry event | Military breakdown only | No Hannibal, master, unifier, final portrait, or supreme command wording |
-| Baseline follow-ups | Evidence, hunger, command, cells | No personal source of coordination |
-| Evolution I | Ritual ideology | No global command claim |
-| Evolution II | Shared methods and uncertain coordination | No name, pronoun, portrait, title, or unique leader symbol |
-| Event Details | Premise and spread risk | No later country or world-end spoiler |
-| Event log preview | Spoiler-safe evolution direction | Evolution III row does not exist before trigger |
-| Normal decisions | Containment and network terms | No counter-Hannibal labels before reveal |
-| Warlord focus tree | Alignment, manipulation, defiance | No named master before reveal |
-| GUI | Network nodes and shared orders | No leader card, face, or personal title |
-| Scenario | Discipline Collapse, Ritual Cells, Silent Islands, Warlord States, Convergence | No Hannibal or Wendigo type label |
-| Achievements | Early achievements visible, late achievements hidden | No visible late title before reveal |
-| Portraits | Generic warlords only | Hannibal sprite never appears in public selector or default state |
-| Flags | Regional Host and Commune symbols | No unified symbol before reveal |
-| Super-event defaults | Empty or safe fallback | Reveal slot cannot show early text, image, or audio |
-| Music and audio UI | No player-visible identity metadata | Track name does not spoil before event |
-| Spreadsheet Details | Baseline premise | Evolution and terminal content confined to their proper columns and wording |
+Before that flag, every visible surface uses only current evidence: supply failure, missing soldiers, ritual cells, shared symbols, courier routes, communes, islands, warlords, coordinated operations, convergence, and uncertain command. It does not discuss a hidden identity, later revelation, future leader, final portrait, or terminal route.
+
+## Surface results
+
+| Surface | Current result |
+| --- | --- |
+| Entry and baseline events | Military breakdown only. No exact or indirect identity claim |
+| Evolution I and II | Ritual and network language remains impersonal and uncertain |
+| Event Details | Baseline premise before reveal. Named command only after reveal |
+| Terminal Event Details | Scenario IDs 6 and 7 are absent from the visible list before reveal |
+| Warlord focus tree | 72 of 72 title/description/tooltip sets contain no Hannibal, Lecter, or Wendigo leak |
+| Decisions and missions | Pre-reveal actions use network and convergence language |
+| Scripted GUI | Early and network windows exclude revealed portrait and name selectors |
+| Achievement tracker | Five baseline rows open at system start. Late rows open only at exploitation, Island Host, Evolution II, convergence, reveal, merge, or aftermath |
+| Scenario `SCN-010` | All five types remain neutral and stage the reveal in-world |
+| Portraits and flags | 56 generic warlord portraits and pre-reveal flags do not reproduce the revealed leader identity |
+| Reports and news | Pre-reveal assignments use neutral images. Reveal and transformed images are gated |
+| Super-events and audio | All four Event 014 emitters require reveal. No default Event 014 slot surfaces identity early |
 
 ## Internal identifiers
 
-Internal script, character, asset, achievement, and documentation identifiers may contain `hannibal` where precision is required. They must not be printed by player-facing localisation or UI before the reveal.
+Internal script, character, asset, achievement, audio, and documentation identifiers may contain `hannibal` where precision is required. They must not be printed through a player-facing lookup before reveal. Historical handoffs and source manifests may also name the character because they are not game UI.
 
-## High-risk implementation leaks
+## Staged achievement boundary
 
-1. Scripted-localisation default branch returns the revealed name before a flag check.
-2. Event Details evolution catalog lists Evolution III title from game start.
-3. Hidden achievement title is visible in the achievement browser.
-4. Scenario detail mentions the unifier or alternate branch.
-5. Warlord focus search filters contain the final name.
-6. Hannibal portrait is assigned to a hidden character that still appears in a country character list.
-7. Super-event image getter defaults to the reveal sprite.
-8. Audio documentation or station title is surfaced in game.
-9. A generic warlord uses the same scars, mantle, silhouette, or emblem as Hannibal.
-10. Wendigo country presence causes a pre-reveal tooltip to name the alternate form.
+The Career Profile achievement schema provides static hiding only. Five baseline achievements remain visible and thirteen late-route achievements remain statically hidden there. The implemented read-only tracker is the verified stage-aware presentation surface. Its 18 entries call the real achievement completion triggers and cannot grant, disqualify, or modify gameplay.
 
-## Required implementation grep and UI review
+## Visual and cultural boundary
 
-Search all player-facing localisation, scripted localisation, GUI, focus, decision, achievement, scenario, event-log, super-event, and country-name files for the final identity. Review every match manually. A match is valid only when it is internal-only or guarded by the reveal state.
+- No actor or celebrity likeness.
+- No ancient-general, Carthaginian, Punic, Barca, Roman-rival, laurel, toga, elephant, or classical-command framing.
+- No living Indigenous ceremonial clothing, regalia, sacred motif, ritual object, tribal shorthand, language, name, or authenticity claim.
+- The internal Wendigo identifier does not license borrowed folklore presentation.
+- Generated victims are fictional adults. Real atrocity photography and identifiable victims are excluded.
 
-The completion auditor must treat any early leak as a blocking defect.
+## Remaining audit dependency
+
+The known source/route, indirect-foreshadowing, dynamic-value, implementation-terminology, punctuation, and staged-achievement visibility defects were remediated. The final dedicated localisation verdict remains pending in package status until the final localisation handoff is delivered. This document does not claim an in-game runtime review.

@@ -1,8 +1,10 @@
 # Event 014 Live Asset Gap Map
 
+> **Superseded production snapshot.** This file records the live gap state on 2026-07-11 and must not be used as current missing-file evidence. The gaps it lists were resolved by later asset packages. Current authority is `docs/assets/014_cannibalism/manifest.md`, its linked package manifests, `docs/specs/014_cannibalism_specs/matrices/asset_inventory_matrix.md`, and the final documentation reconciliation handoff. The historical body below is intentionally preserved unchanged.
+
 Date of live audit: 2026-07-11
 
-Purpose: provide the authoritative bridge between the current Event 014 specification, retained source packages, the actual runtime filesystem, and the next asset-production and wiring passes. This document is an audit and production handoff. It does not declare the Event 014 visual package complete.
+Historical purpose: provide the bridge between the 2026-07-11 Event 014 specification, retained source packages, the runtime filesystem at that checkpoint, and the asset-production and wiring passes that followed. It does not describe the final package.
 
 ## Authority and status language
 

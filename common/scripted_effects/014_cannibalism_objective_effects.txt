@@ -1,0 +1,1018 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 014 MAINTAINED OBJECTIVE EFFECTS
+# ============================================================================
+# Pays seven action families, persists state/country identities with generation
+# checks, advances six objectives through the bounded Event 014 pulse, resolves
+# full/partial/failure outcomes, and retires completed aftermath participants.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Bounded observer registry
+# ---------------------------------------------------------------------------
+
+cannibalism_register_current_country_objective_observer = {
+	if = {
+		limit = {
+			exists = yes
+			NOT = { is_in_array = { array = global.cannibalism_actor_countries value = THIS } }
+			NOT = { is_in_array = { array = global.cannibalism_objective_countries value = THIS } }
+		}
+		add_to_array = { array = global.cannibalism_objective_countries value = THIS }
+	}
+}
+
+cannibalism_unregister_current_country_objective_observer_if_idle = {
+	if = {
+		limit = {
+			NOT = { cannibalism_current_country_has_active_maintained_objective = yes }
+			is_in_array = { array = global.cannibalism_objective_countries value = THIS }
+		}
+		remove_from_array = { array = global.cannibalism_objective_countries value = THIS }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Cost payment and action families
+# ---------------------------------------------------------------------------
+
+cannibalism_pay_officer_chain_cost = {
+	set_temp_variable = { cannibalism_current_cost = constant:cannibalism_objective_cost.officer_manpower }
+	cannibalism_pay_current_manpower_cost = yes
+	set_temp_variable = { cannibalism_current_cost = constant:cannibalism_objective_cost.officer_support }
+	cannibalism_pay_current_support_equipment_cost = yes
+	set_temp_variable = { cannibalism_current_cost = constant:cannibalism_objective_cost.officer_command }
+	cannibalism_pay_current_command_cost = yes
+}
+
+cannibalism_pay_ritual_infiltration_cost = {
+	set_temp_variable = { cannibalism_current_cost = constant:cannibalism_objective_cost.infiltration_manpower }
+	cannibalism_pay_current_manpower_cost = yes
+	set_temp_variable = { cannibalism_current_cost = constant:cannibalism_objective_cost.infiltration_support }
+	cannibalism_pay_current_support_equipment_cost = yes
+	set_temp_variable = { cannibalism_current_cost = constant:cannibalism_objective_cost.infiltration_command }
+	cannibalism_pay_current_command_cost = yes
+}
+
+cannibalism_pay_ritual_economy_cost = {
+	set_temp_variable = { cannibalism_current_cost = constant:cannibalism_objective_cost.ritual_economy_manpower }
+	cannibalism_pay_current_manpower_cost = yes
+	set_temp_variable = { cannibalism_current_cost = constant:cannibalism_objective_cost.ritual_economy_infantry }
+	cannibalism_pay_current_infantry_equipment_cost = yes
+	set_temp_variable = { cannibalism_current_cost = constant:cannibalism_objective_cost.ritual_economy_support }
+	cannibalism_pay_current_support_equipment_cost = yes
+	set_temp_variable = { cannibalism_current_cost = constant:cannibalism_objective_cost.ritual_economy_command }
+	cannibalism_pay_current_command_cost = yes
+}
+
+cannibalism_pay_island_recon_cost = {
+	set_temp_variable = { cannibalism_current_cost = constant:cannibalism_objective_cost.island_recon_convoys }
+	cannibalism_pay_current_convoy_cost = yes
+	set_temp_variable = { cannibalism_current_cost = constant:cannibalism_objective_cost.island_recon_command }
+	cannibalism_pay_current_command_cost = yes
+	set_temp_variable = { cannibalism_objective_experience_change = constant:cannibalism_objective_cost.island_recon_navy_experience }
+	multiply_temp_variable = { cannibalism_objective_experience_change = constant:cannibalism_objective_value.negative_one }
+	add_navy_experience = cannibalism_objective_experience_change
+}
+
+cannibalism_pay_feeding_state_liberation_cost = {
+	set_temp_variable = { cannibalism_current_cost = constant:cannibalism_objective_cost.liberation_manpower }
+	cannibalism_pay_current_manpower_cost = yes
+	set_temp_variable = { cannibalism_current_cost = constant:cannibalism_objective_cost.liberation_infantry }
+	cannibalism_pay_current_infantry_equipment_cost = yes
+	set_temp_variable = { cannibalism_current_cost = constant:cannibalism_objective_cost.liberation_support }
+	cannibalism_pay_current_support_equipment_cost = yes
+	set_temp_variable = { cannibalism_current_cost = constant:cannibalism_objective_cost.liberation_command }
+	cannibalism_pay_current_command_cost = yes
+}
+
+cannibalism_pay_network_submission_cost = {
+	subtract_from_variable = { cannibalism_larder = constant:cannibalism_objective_cost.submission_larder }
+	set_temp_variable = { cannibalism_current_cost = constant:cannibalism_objective_cost.submission_support }
+	cannibalism_pay_current_support_equipment_cost = yes
+	set_temp_variable = { cannibalism_current_cost = constant:cannibalism_objective_cost.submission_command }
+	cannibalism_pay_current_command_cost = yes
+}
+
+cannibalism_pay_network_resistance_cost = {
+	subtract_from_variable = { cannibalism_larder = constant:cannibalism_objective_cost.resistance_larder }
+	set_temp_variable = { cannibalism_current_cost = constant:cannibalism_objective_cost.resistance_infantry }
+	cannibalism_pay_current_infantry_equipment_cost = yes
+	set_temp_variable = { cannibalism_current_cost = constant:cannibalism_objective_cost.resistance_support }
+	cannibalism_pay_current_support_equipment_cost = yes
+	set_temp_variable = { cannibalism_current_cost = constant:cannibalism_objective_cost.resistance_command }
+	cannibalism_pay_current_command_cost = yes
+}
+
+cannibalism_replace_compromised_officer_chain = {
+	if = {
+		limit = {
+			cannibalism_can_pay_officer_chain_cost = yes
+			has_country_flag = cannibalism_ritual_prosecution_open
+		}
+		cannibalism_pay_officer_chain_cost = yes
+		add_to_variable = { cannibalism_command_integrity = constant:cannibalism_objective_effect.officer_integrity }
+		add_to_variable = { cannibalism_cell_strength = constant:cannibalism_objective_effect.officer_cell }
+		set_country_flag = cannibalism_compromised_officer_chain_replaced
+		cannibalism_record_investigation_operation = yes
+		cannibalism_clamp_current_country_meters = yes
+		cannibalism_refresh_country_penalty_variables = yes
+	}
+}
+
+cannibalism_infiltrate_ritual_cell = {
+	if = {
+		limit = {
+			cannibalism_can_pay_ritual_infiltration_cost = yes
+			has_country_flag = cannibalism_ritual_infiltration_open
+			has_event_target = cannibalism_ritual_action_state
+			event_target:cannibalism_ritual_action_state = { cannibalism_state_can_infiltrate_ritual_cell = yes }
+		}
+		cannibalism_pay_ritual_infiltration_cost = yes
+		event_target:cannibalism_ritual_action_state = {
+			add_to_variable = { cannibalism_node_strength = constant:cannibalism_objective_effect.infiltration_node }
+			clamp_variable = { var = cannibalism_node_strength min = constant:cannibalism_meter.min max = constant:cannibalism_meter.max }
+			set_temp_variable = { cannibalism_objective_cooldown_days = constant:cannibalism_objective_timing.state_action_cooldown_days }
+			set_state_flag = { flag = cannibalism_ritual_infiltration_cooldown days = cannibalism_objective_cooldown_days }
+		}
+		add_to_variable = { cannibalism_evidence = constant:cannibalism_objective_effect.infiltration_evidence }
+		add_to_variable = { cannibalism_cell_strength = constant:cannibalism_objective_effect.infiltration_cell }
+		if = {
+			limit = { has_variable = cannibalism_cult_cohesion }
+			add_to_variable = { cannibalism_cult_cohesion = constant:cannibalism_objective_effect.infiltration_cult }
+		}
+		set_country_flag = cannibalism_ritual_cell_infiltrated
+		cannibalism_record_investigation_operation = yes
+		cannibalism_clamp_current_country_evidence = yes
+		cannibalism_clamp_current_country_meters = yes
+		cannibalism_refresh_country_penalty_variables = yes
+	}
+}
+
+cannibalism_break_ritual_economy = {
+	if = {
+		limit = {
+			cannibalism_can_pay_ritual_economy_cost = yes
+			OR = {
+				has_country_flag = cannibalism_ritual_prosecution_open
+				has_country_flag = cannibalism_ritual_infiltration_open
+			}
+			has_event_target = cannibalism_ritual_action_state
+			event_target:cannibalism_ritual_action_state = { cannibalism_state_can_break_ritual_economy = yes }
+		}
+		cannibalism_pay_ritual_economy_cost = yes
+		event_target:cannibalism_ritual_action_state = {
+			add_to_variable = { cannibalism_node_strength = constant:cannibalism_objective_effect.ritual_economy_node }
+			clamp_variable = { var = cannibalism_node_strength min = constant:cannibalism_meter.min max = constant:cannibalism_meter.max }
+			set_temp_variable = { cannibalism_objective_cooldown_days = constant:cannibalism_objective_timing.state_action_cooldown_days }
+			set_state_flag = { flag = cannibalism_ritual_economy_cooldown days = cannibalism_objective_cooldown_days }
+		}
+		add_to_variable = { cannibalism_cell_strength = constant:cannibalism_objective_effect.ritual_economy_cell }
+		if = {
+			limit = { has_variable = cannibalism_cult_cohesion }
+			add_to_variable = { cannibalism_cult_cohesion = constant:cannibalism_objective_effect.ritual_economy_cult }
+		}
+		add_to_variable = { global.cannibalism_network_reach = constant:cannibalism_objective_effect.ritual_economy_network }
+		clamp_variable = { var = global.cannibalism_network_reach min = constant:cannibalism_meter.min max = constant:cannibalism_meter.max }
+		set_country_flag = cannibalism_ritual_economy_broken
+		cannibalism_record_investigation_operation = yes
+		cannibalism_clamp_current_country_meters = yes
+		cannibalism_refresh_country_penalty_variables = yes
+	}
+}
+
+cannibalism_reconnoiter_silent_island = {
+	if = {
+		limit = {
+			cannibalism_can_pay_island_recon_cost = yes
+			has_event_target = cannibalism_objective_country_target
+			event_target:cannibalism_objective_country_target = { cannibalism_is_valid_silent_island_recon_target = yes }
+		}
+		cannibalism_pay_island_recon_cost = yes
+		event_target:cannibalism_objective_country_target = {
+			set_temp_variable = { cannibalism_objective_cooldown_days = constant:cannibalism_objective_timing.country_action_cooldown_days }
+			set_country_flag = { flag = cannibalism_island_recon_cooldown days = cannibalism_objective_cooldown_days }
+		}
+		set_country_flag = cannibalism_silent_island_reconnaissance_complete
+		cannibalism_record_reach_island_operation = yes
+	}
+}
+
+cannibalism_liberate_feeding_state = {
+	if = {
+		limit = {
+			cannibalism_can_pay_feeding_state_liberation_cost = yes
+			has_event_target = cannibalism_liberation_state
+			event_target:cannibalism_liberation_state = { cannibalism_state_can_be_liberated_from_feeding_system = yes }
+		}
+		cannibalism_pay_feeding_state_liberation_cost = yes
+		event_target:cannibalism_liberation_state = {
+			set_temp_variable = { cannibalism_expected_node_id = cannibalism_node_id }
+			set_temp_variable = { cannibalism_expected_node_generation = cannibalism_node_generation }
+			set_temp_variable = { cannibalism_objective_cooldown_days = constant:cannibalism_objective_timing.state_action_cooldown_days }
+			set_state_flag = { flag = cannibalism_feeding_state_liberation_cooldown days = cannibalism_objective_cooldown_days }
+			cannibalism_begin_current_state_recovery = yes
+		}
+		add_stability = constant:cannibalism_objective_effect.liberation_stability
+		set_country_flag = cannibalism_feeding_state_liberation_led
+		cannibalism_record_current_country_as_defeat_contributor = yes
+	}
+}
+
+cannibalism_prepare_network_submission = {
+	if = {
+		limit = {
+			cannibalism_network_preparation_decisions_are_open = yes
+			cannibalism_can_pay_network_submission_cost = yes
+		}
+		cannibalism_pay_network_submission_cost = yes
+		set_country_flag = cannibalism_network_submission_prepared
+		add_to_variable = { cannibalism_network_alignment = constant:cannibalism_objective_effect.submission_alignment }
+		add_to_variable = { cannibalism_frenzy = constant:cannibalism_objective_effect.submission_frenzy }
+		clamp_variable = { var = cannibalism_network_alignment min = constant:cannibalism_consumption.alignment_min max = constant:cannibalism_consumption.alignment_max }
+		clamp_variable = { var = cannibalism_frenzy min = constant:cannibalism_consumption.frenzy_min max = constant:cannibalism_consumption.frenzy_max }
+	}
+}
+
+cannibalism_prepare_network_resistance = {
+	if = {
+		limit = {
+			cannibalism_network_preparation_decisions_are_open = yes
+			cannibalism_can_pay_network_resistance_cost = yes
+		}
+		cannibalism_pay_network_resistance_cost = yes
+		set_country_flag = cannibalism_network_resistance_prepared
+		add_to_variable = { cannibalism_network_alignment = constant:cannibalism_objective_effect.resistance_alignment }
+		add_to_variable = { cannibalism_command_integrity = constant:cannibalism_objective_effect.resistance_integrity }
+		add_to_variable = { cannibalism_frenzy = constant:cannibalism_objective_effect.resistance_frenzy }
+		clamp_variable = { var = cannibalism_network_alignment min = constant:cannibalism_consumption.alignment_min max = constant:cannibalism_consumption.alignment_max }
+		clamp_variable = { var = cannibalism_frenzy min = constant:cannibalism_consumption.frenzy_min max = constant:cannibalism_consumption.frenzy_max }
+		cannibalism_clamp_current_country_meters = yes
+	}
+}
+
+cannibalism_clear_network_preparation_flags = {
+	clr_country_flag = cannibalism_network_submission_prepared
+	clr_country_flag = cannibalism_network_resistance_prepared
+}
+
+# ---------------------------------------------------------------------------
+# Mission starts and operation receipts
+# ---------------------------------------------------------------------------
+
+cannibalism_start_investigation_mission = {
+	if = {
+		limit = {
+			cannibalism_containment_decisions_visible = yes
+			cannibalism_has_valid_primary_theater = yes
+			NOT = { has_country_flag = cannibalism_investigation_mission_active }
+			NOT = { has_country_flag = cannibalism_investigation_objective_resolved }
+		}
+		set_country_flag = cannibalism_investigation_mission_active
+		set_variable = { cannibalism_investigation_target_state = cannibalism_primary_theater_state }
+		clr_country_flag = cannibalism_investigation_target_has_node_identity
+		clear_variable = cannibalism_investigation_target_node_id
+		clear_variable = cannibalism_investigation_target_node_generation
+		var:cannibalism_investigation_target_state = {
+			if = {
+				limit = {
+					has_state_flag = cannibalism_active_node
+					has_variable = cannibalism_node_id
+					has_variable = cannibalism_node_generation
+				}
+				ROOT = {
+					set_country_flag = cannibalism_investigation_target_has_node_identity
+					set_variable = { cannibalism_investigation_target_node_id = PREV.cannibalism_node_id }
+					set_variable = { cannibalism_investigation_target_node_generation = PREV.cannibalism_node_generation }
+				}
+			}
+		}
+		set_variable = { cannibalism_investigation_progress = constant:cannibalism_objective_value.zero }
+		set_variable = { cannibalism_investigation_goal = constant:cannibalism_objective_progress.investigation_goal }
+		set_variable = { cannibalism_investigation_duration = constant:cannibalism_objective_timing.investigation_base_days }
+		if = {
+			limit = { has_global_flag = cannibalism_evolution_i_active }
+			add_to_variable = { cannibalism_investigation_duration = constant:cannibalism_objective_timing.investigation_evolution_add_days }
+		}
+		if = {
+			limit = { check_variable = { cannibalism_cell_strength > constant:cannibalism_meter.severe } }
+			add_to_variable = { cannibalism_investigation_duration = constant:cannibalism_objective_timing.investigation_severe_cell_add_days }
+		}
+		if = {
+			limit = { has_country_flag = cannibalism_policy_open_emergency }
+			subtract_from_variable = { cannibalism_investigation_duration = constant:cannibalism_objective_timing.investigation_open_response_reduction_days }
+		}
+		clamp_variable = { var = cannibalism_investigation_duration min = constant:cannibalism_objective_timing.investigation_minimum_days max = constant:cannibalism_objective_timing.investigation_maximum_days }
+		activate_mission = cannibalism_investigation_mission
+	}
+}
+
+cannibalism_record_investigation_operation = {
+	if = {
+		limit = { NOT = { has_country_flag = cannibalism_investigation_mission_active } }
+		cannibalism_start_investigation_mission = yes
+	}
+	if = {
+		limit = {
+			has_country_flag = cannibalism_investigation_mission_active
+			cannibalism_investigation_target_is_valid = yes
+		}
+		add_to_variable = { cannibalism_investigation_progress = constant:cannibalism_objective_value.one }
+		clamp_variable = { var = cannibalism_investigation_progress min = constant:cannibalism_objective_value.zero max = cannibalism_investigation_goal }
+	}
+}
+
+cannibalism_start_hold_prison_mission = {
+	if = {
+		limit = {
+			cannibalism_containment_decisions_visible = yes
+			NOT = { has_country_flag = cannibalism_hold_prison_mission_active }
+			NOT = { has_country_flag = cannibalism_hold_prison_objective_resolved }
+		}
+		random_controlled_state = {
+			limit = {
+				impassable = no
+				cannibalism_state_has_prison_or_camp = yes
+				has_state_flag = cannibalism_active_node
+				has_variable = cannibalism_node_id
+				has_variable = cannibalism_node_generation
+			}
+			save_event_target_as = cannibalism_prison_objective_state
+			ROOT = {
+				set_country_flag = cannibalism_hold_prison_mission_active
+				set_variable = { cannibalism_prison_target_state = event_target:cannibalism_prison_objective_state }
+				set_variable = { cannibalism_prison_target_node_id = event_target:cannibalism_prison_objective_state.cannibalism_node_id }
+				set_variable = { cannibalism_prison_target_node_generation = event_target:cannibalism_prison_objective_state.cannibalism_node_generation }
+				set_variable = { cannibalism_prison_hold_days = constant:cannibalism_objective_value.zero }
+				set_variable = { cannibalism_prison_required_hold_days = constant:cannibalism_objective_progress.prison_goal_days }
+				set_variable = { cannibalism_prison_division_floor = constant:cannibalism_objective_value.zero }
+				set_variable = { cannibalism_prison_duration = constant:cannibalism_objective_timing.prison_base_days }
+				if = {
+					limit = { check_variable = { cannibalism_cell_strength > constant:cannibalism_meter.severe } }
+					add_to_variable = { cannibalism_prison_duration = constant:cannibalism_objective_timing.prison_severe_cell_add_days }
+				}
+				if = {
+					limit = { event_target:cannibalism_prison_objective_state = { OR = { is_island_state = yes NOT = { is_in_home_area = yes } } } }
+					add_to_variable = { cannibalism_prison_duration = constant:cannibalism_objective_timing.prison_isolated_add_days }
+				}
+				clamp_variable = { var = cannibalism_prison_duration min = constant:cannibalism_objective_timing.prison_minimum_days max = constant:cannibalism_objective_timing.prison_maximum_days }
+				activate_mission = cannibalism_hold_prison_mission
+			}
+		}
+	}
+}
+
+cannibalism_start_reach_island_mission = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = cannibalism_reach_island_mission_active }
+			has_event_target = cannibalism_objective_country_target
+			event_target:cannibalism_objective_country_target = { cannibalism_is_valid_silent_island_recon_target = yes }
+		}
+		set_country_flag = cannibalism_reach_island_mission_active
+		set_variable = { cannibalism_reach_island_target_country = event_target:cannibalism_objective_country_target }
+		set_variable = { cannibalism_reach_island_target_generation = event_target:cannibalism_objective_country_target.cannibalism_actor_generation }
+		set_variable = { cannibalism_reach_island_progress = constant:cannibalism_objective_value.zero }
+		set_variable = { cannibalism_reach_island_goal = constant:cannibalism_objective_progress.island_goal }
+		set_variable = { cannibalism_reach_island_duration = constant:cannibalism_objective_timing.island_base_days }
+		if = {
+			limit = { event_target:cannibalism_objective_country_target = { has_country_flag = cannibalism_island_host_under_blockade } }
+			subtract_from_variable = { cannibalism_reach_island_duration = constant:cannibalism_objective_timing.island_blockade_reduction_days }
+		}
+		if = {
+			limit = { event_target:cannibalism_objective_country_target = { num_of_controlled_states > constant:cannibalism_objective_progress.large_island_host_state_threshold } }
+			add_to_variable = { cannibalism_reach_island_duration = constant:cannibalism_objective_timing.island_large_host_add_days }
+		}
+		clamp_variable = { var = cannibalism_reach_island_duration min = constant:cannibalism_objective_timing.island_minimum_days max = constant:cannibalism_objective_timing.island_maximum_days }
+		cannibalism_register_current_country_objective_observer = yes
+		activate_mission = cannibalism_reach_island_mission
+	}
+}
+
+cannibalism_record_reach_island_operation = {
+	if = {
+		limit = { NOT = { has_country_flag = cannibalism_reach_island_mission_active } }
+		cannibalism_start_reach_island_mission = yes
+	}
+	if = {
+		limit = {
+			has_country_flag = cannibalism_reach_island_mission_active
+			cannibalism_reach_island_target_identity_matches = yes
+			has_event_target = cannibalism_objective_country_target
+			event_target:cannibalism_objective_country_target = {
+				tag = var:ROOT.cannibalism_reach_island_target_country
+				check_variable = { var = cannibalism_actor_generation value = ROOT.cannibalism_reach_island_target_generation compare = equals }
+			}
+		}
+		add_to_variable = { cannibalism_reach_island_progress = constant:cannibalism_objective_value.one }
+		clamp_variable = { var = cannibalism_reach_island_progress min = constant:cannibalism_objective_value.zero max = cannibalism_reach_island_goal }
+	}
+}
+
+cannibalism_start_break_network_mission = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = cannibalism_break_network_mission_active }
+			has_event_target = cannibalism_objective_country_target
+			event_target:cannibalism_objective_country_target = {
+				exists = yes
+				has_variable = cannibalism_actor_generation
+				NOT = { has_capitulated = yes }
+			}
+		}
+		set_country_flag = cannibalism_break_network_mission_active
+		set_variable = { cannibalism_break_network_target_country = event_target:cannibalism_objective_country_target }
+		set_variable = { cannibalism_break_network_target_generation = event_target:cannibalism_objective_country_target.cannibalism_actor_generation }
+		set_variable = { cannibalism_break_network_progress = constant:cannibalism_objective_value.zero }
+		set_variable = { cannibalism_break_network_goal = constant:cannibalism_objective_progress.network_goal }
+		set_variable = { cannibalism_break_network_duration = constant:cannibalism_objective_timing.network_base_days }
+		if = {
+			limit = { check_variable = { global.cannibalism_network_reach > constant:cannibalism_meter.severe } }
+			add_to_variable = { cannibalism_break_network_duration = constant:cannibalism_objective_timing.network_high_reach_add_days }
+		}
+		clamp_variable = { var = cannibalism_break_network_duration min = constant:cannibalism_objective_timing.network_minimum_days max = constant:cannibalism_objective_timing.network_maximum_days }
+		cannibalism_register_current_country_objective_observer = yes
+		activate_mission = cannibalism_break_network_mission
+	}
+}
+
+cannibalism_record_break_network_operation = {
+	if = {
+		limit = { NOT = { has_country_flag = cannibalism_break_network_mission_active } }
+		cannibalism_start_break_network_mission = yes
+	}
+	if = {
+		limit = {
+			has_country_flag = cannibalism_break_network_mission_active
+			cannibalism_break_network_target_identity_matches = yes
+			has_event_target = cannibalism_objective_country_target
+			event_target:cannibalism_objective_country_target = {
+				tag = var:ROOT.cannibalism_break_network_target_country
+				check_variable = { var = cannibalism_actor_generation value = ROOT.cannibalism_break_network_target_generation compare = equals }
+			}
+		}
+		add_to_variable = { cannibalism_break_network_progress = constant:cannibalism_objective_value.one }
+		clamp_variable = { var = cannibalism_break_network_progress min = constant:cannibalism_objective_value.zero max = cannibalism_break_network_goal }
+	}
+}
+
+cannibalism_start_stop_unification_mission = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = cannibalism_stop_unification_mission_active }
+			has_global_flag = cannibalism_convergence_active
+			NOT = { has_global_flag = cannibalism_reveal_complete }
+			has_event_target = cannibalism_objective_country_target
+			event_target:cannibalism_objective_country_target = { has_variable = cannibalism_actor_generation }
+		}
+		set_country_flag = cannibalism_stop_unification_mission_active
+		set_variable = { cannibalism_stop_unification_target_country = event_target:cannibalism_objective_country_target }
+		set_variable = { cannibalism_stop_unification_target_generation = event_target:cannibalism_objective_country_target.cannibalism_actor_generation }
+		set_variable = { cannibalism_stop_unification_hold_days = constant:cannibalism_objective_value.zero }
+		set_variable = { cannibalism_stop_unification_goal_days = constant:cannibalism_objective_progress.unification_goal_days }
+		set_variable = { cannibalism_stop_unification_duration = global.cannibalism_convergence_due_date }
+		subtract_from_variable = { cannibalism_stop_unification_duration = global.date }
+		add_to_variable = { cannibalism_stop_unification_duration = constant:cannibalism_objective_timing.unification_timeout_buffer_days }
+		clamp_variable = { var = cannibalism_stop_unification_duration min = constant:cannibalism_objective_timing.unification_minimum_days max = constant:cannibalism_objective_timing.unification_maximum_days }
+		cannibalism_register_current_country_objective_observer = yes
+		activate_mission = cannibalism_stop_unification_mission
+	}
+}
+
+cannibalism_record_stop_unification_operation = {
+	if = {
+		limit = { NOT = { has_country_flag = cannibalism_stop_unification_mission_active } }
+		cannibalism_start_stop_unification_mission = yes
+	}
+}
+
+cannibalism_start_stop_transformation_mission = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = cannibalism_stop_transformation_mission_active }
+			has_event_target = cannibalism_wendigo_merge_host
+			event_target:cannibalism_wendigo_merge_host = {
+				has_variable = cannibalism_actor_generation
+				has_country_flag = cannibalism_wendigo_transformation_prelock
+				NOT = { has_country_flag = cannibalism_wendigo_transformation_locked }
+			}
+		}
+		set_country_flag = cannibalism_stop_transformation_mission_active
+		set_variable = { cannibalism_stop_transformation_target_country = event_target:cannibalism_wendigo_merge_host }
+		set_variable = { cannibalism_stop_transformation_target_generation = event_target:cannibalism_wendigo_merge_host.cannibalism_actor_generation }
+		set_variable = { cannibalism_stop_transformation_progress = constant:cannibalism_objective_value.zero }
+		set_variable = { cannibalism_stop_transformation_goal = constant:cannibalism_objective_progress.transformation_goal }
+		set_variable = { cannibalism_stop_transformation_duration = constant:cannibalism_objective_timing.transformation_base_days }
+		if = {
+			limit = { check_variable = { global.cannibalism_transformation_anchor_states^num > constant:cannibalism_objective_progress.transformation_dense_anchor_threshold } }
+			add_to_variable = { cannibalism_stop_transformation_duration = constant:cannibalism_objective_timing.transformation_dense_anchor_add_days }
+		}
+		clamp_variable = { var = cannibalism_stop_transformation_duration min = constant:cannibalism_objective_timing.transformation_minimum_days max = constant:cannibalism_objective_timing.transformation_maximum_days }
+		cannibalism_register_current_country_objective_observer = yes
+		activate_mission = cannibalism_stop_transformation_mission
+	}
+}
+
+cannibalism_record_stop_transformation_operation = {
+	if = {
+		limit = { NOT = { has_country_flag = cannibalism_stop_transformation_mission_active } }
+		cannibalism_start_stop_transformation_mission = yes
+	}
+	if = {
+		limit = {
+			has_country_flag = cannibalism_stop_transformation_mission_active
+			cannibalism_stop_transformation_target_identity_matches = yes
+		}
+		add_to_variable = { cannibalism_stop_transformation_progress = constant:cannibalism_objective_value.one }
+		clamp_variable = { var = cannibalism_stop_transformation_progress min = constant:cannibalism_objective_value.zero max = cannibalism_stop_transformation_goal }
+	}
+}
+
+cannibalism_process_current_country_objectives = {
+	if = {
+		limit = {
+			cannibalism_containment_decisions_visible = yes
+			NOT = { has_country_flag = cannibalism_hold_prison_mission_active }
+			NOT = { has_country_flag = cannibalism_hold_prison_objective_resolved }
+		}
+		cannibalism_start_hold_prison_mission = yes
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_hold_prison_mission_active }
+		if = {
+			limit = { cannibalism_prison_objective_secured = yes }
+			add_to_variable = { cannibalism_prison_hold_days = global.cannibalism_scheduled_pulse_interval_days }
+		}
+		else = { set_variable = { cannibalism_prison_hold_days = constant:cannibalism_objective_value.zero } }
+		clamp_variable = { var = cannibalism_prison_hold_days min = constant:cannibalism_objective_value.zero max = cannibalism_prison_required_hold_days }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_stop_unification_mission_active }
+		if = {
+			limit = { cannibalism_stop_unification_objective_is_maintained = yes }
+			add_to_variable = { cannibalism_stop_unification_hold_days = global.cannibalism_scheduled_pulse_interval_days }
+		}
+		else = { set_variable = { cannibalism_stop_unification_hold_days = constant:cannibalism_objective_value.zero } }
+		clamp_variable = { var = cannibalism_stop_unification_hold_days min = constant:cannibalism_objective_value.zero max = cannibalism_stop_unification_goal_days }
+	}
+	cannibalism_unregister_current_country_objective_observer_if_idle = yes
+}
+
+# ---------------------------------------------------------------------------
+# Mission cleanup and three-way outcomes
+# ---------------------------------------------------------------------------
+
+cannibalism_clear_investigation_mission = {
+	clr_country_flag = cannibalism_investigation_mission_active
+	clr_country_flag = cannibalism_investigation_target_has_node_identity
+	clear_variable = cannibalism_investigation_target_state
+	clear_variable = cannibalism_investigation_target_node_id
+	clear_variable = cannibalism_investigation_target_node_generation
+	clear_variable = cannibalism_investigation_progress
+	clear_variable = cannibalism_investigation_goal
+	clear_variable = cannibalism_investigation_duration
+	set_country_flag = cannibalism_investigation_objective_resolved
+}
+
+cannibalism_apply_investigation_target_node_change = {
+	if = {
+		limit = {
+			has_country_flag = cannibalism_investigation_target_has_node_identity
+			cannibalism_investigation_target_is_valid = yes
+		}
+		var:cannibalism_investigation_target_state = {
+			add_to_variable = { cannibalism_node_strength = cannibalism_objective_node_change }
+			clamp_variable = { var = cannibalism_node_strength min = constant:cannibalism_meter.min max = constant:cannibalism_meter.max }
+		}
+	}
+}
+
+cannibalism_complete_investigation_mission = {
+	set_temp_variable = { cannibalism_objective_node_change = constant:cannibalism_objective_effect.investigation_success_node }
+	cannibalism_apply_investigation_target_node_change = yes
+	add_to_variable = { cannibalism_evidence = constant:cannibalism_objective_effect.investigation_success_evidence }
+	add_to_variable = { cannibalism_cell_strength = constant:cannibalism_objective_effect.investigation_success_cell }
+	set_country_flag = cannibalism_investigation_objective_complete
+	cannibalism_clear_investigation_mission = yes
+	cannibalism_clamp_current_country_evidence = yes
+	cannibalism_clamp_current_country_meters = yes
+	cannibalism_refresh_country_penalty_variables = yes
+}
+
+cannibalism_partial_investigation_mission = {
+	set_temp_variable = { cannibalism_objective_node_change = constant:cannibalism_objective_effect.investigation_partial_node }
+	cannibalism_apply_investigation_target_node_change = yes
+	add_to_variable = { cannibalism_evidence = constant:cannibalism_objective_effect.investigation_partial_evidence }
+	add_to_variable = { cannibalism_cell_strength = constant:cannibalism_objective_effect.investigation_partial_cell }
+	set_country_flag = cannibalism_investigation_objective_partial
+	cannibalism_clear_investigation_mission = yes
+	cannibalism_clamp_current_country_evidence = yes
+	cannibalism_clamp_current_country_meters = yes
+	cannibalism_refresh_country_penalty_variables = yes
+}
+
+cannibalism_fail_investigation_mission = {
+	set_temp_variable = { cannibalism_objective_node_change = constant:cannibalism_objective_effect.investigation_failure_node }
+	cannibalism_apply_investigation_target_node_change = yes
+	add_to_variable = { cannibalism_command_integrity = constant:cannibalism_objective_effect.investigation_failure_integrity }
+	add_to_variable = { cannibalism_cell_strength = constant:cannibalism_objective_effect.investigation_failure_cell }
+	set_country_flag = cannibalism_investigation_objective_failed
+	cannibalism_clear_investigation_mission = yes
+	cannibalism_clamp_current_country_meters = yes
+	cannibalism_refresh_country_penalty_variables = yes
+}
+
+cannibalism_resolve_investigation_cancellation = {
+	if = { limit = { cannibalism_investigation_objective_complete = yes } cannibalism_complete_investigation_mission = yes }
+	else_if = {
+		limit = {
+			check_variable = {
+				var = cannibalism_investigation_progress
+				value = constant:cannibalism_objective_progress.investigation_partial
+				compare = greater_than_or_equals
+			}
+		}
+		cannibalism_partial_investigation_mission = yes
+	}
+	else = { cannibalism_fail_investigation_mission = yes }
+}
+
+cannibalism_apply_prison_target_node_change = {
+	if = {
+		limit = { cannibalism_prison_target_is_valid = yes }
+		var:cannibalism_prison_target_state = {
+			add_to_variable = { cannibalism_node_strength = cannibalism_objective_node_change }
+			clamp_variable = { var = cannibalism_node_strength min = constant:cannibalism_meter.min max = constant:cannibalism_meter.max }
+		}
+	}
+}
+
+cannibalism_clear_hold_prison_mission = {
+	clr_country_flag = cannibalism_hold_prison_mission_active
+	clear_variable = cannibalism_prison_target_state
+	clear_variable = cannibalism_prison_target_node_id
+	clear_variable = cannibalism_prison_target_node_generation
+	clear_variable = cannibalism_prison_hold_days
+	clear_variable = cannibalism_prison_required_hold_days
+	clear_variable = cannibalism_prison_division_floor
+	clear_variable = cannibalism_prison_duration
+	set_country_flag = cannibalism_hold_prison_objective_resolved
+}
+
+cannibalism_complete_hold_prison_mission = {
+	set_temp_variable = { cannibalism_objective_node_change = constant:cannibalism_objective_effect.prison_success_node }
+	cannibalism_apply_prison_target_node_change = yes
+	add_to_variable = { cannibalism_command_integrity = constant:cannibalism_objective_effect.prison_success_integrity }
+	add_to_variable = { cannibalism_cell_strength = constant:cannibalism_objective_effect.prison_success_cell }
+	set_country_flag = cannibalism_hold_prison_objective_complete
+	cannibalism_clear_hold_prison_mission = yes
+	cannibalism_clamp_current_country_meters = yes
+	cannibalism_refresh_country_penalty_variables = yes
+}
+
+cannibalism_partial_hold_prison_mission = {
+	set_temp_variable = { cannibalism_objective_node_change = constant:cannibalism_objective_effect.prison_partial_node }
+	cannibalism_apply_prison_target_node_change = yes
+	add_to_variable = { cannibalism_command_integrity = constant:cannibalism_objective_effect.prison_partial_integrity }
+	add_to_variable = { cannibalism_cell_strength = constant:cannibalism_objective_effect.prison_partial_cell }
+	set_country_flag = cannibalism_hold_prison_objective_partial
+	cannibalism_clear_hold_prison_mission = yes
+	cannibalism_clamp_current_country_meters = yes
+	cannibalism_refresh_country_penalty_variables = yes
+}
+
+cannibalism_fail_hold_prison_mission = {
+	set_temp_variable = { cannibalism_objective_node_change = constant:cannibalism_objective_effect.prison_failure_node }
+	cannibalism_apply_prison_target_node_change = yes
+	add_to_variable = { cannibalism_command_integrity = constant:cannibalism_objective_effect.prison_failure_integrity }
+	add_to_variable = { cannibalism_cell_strength = constant:cannibalism_objective_effect.prison_failure_cell }
+	set_country_flag = cannibalism_hold_prison_objective_failed
+	cannibalism_clear_hold_prison_mission = yes
+	cannibalism_clamp_current_country_meters = yes
+	cannibalism_refresh_country_penalty_variables = yes
+}
+
+cannibalism_resolve_hold_prison_cancellation = {
+	if = { limit = { cannibalism_prison_objective_complete = yes } cannibalism_complete_hold_prison_mission = yes }
+	else_if = {
+		limit = {
+			check_variable = {
+				var = cannibalism_prison_hold_days
+				value = constant:cannibalism_objective_progress.prison_partial_days
+				compare = greater_than_or_equals
+			}
+		}
+		cannibalism_partial_hold_prison_mission = yes
+	}
+	else = { cannibalism_fail_hold_prison_mission = yes }
+}
+
+cannibalism_apply_island_target_alignment_change = {
+	if = {
+		limit = { cannibalism_reach_island_target_identity_matches = yes }
+		var:cannibalism_reach_island_target_country = {
+			if = {
+				limit = { has_variable = cannibalism_network_alignment }
+				add_to_variable = { cannibalism_network_alignment = cannibalism_objective_alignment_change }
+				clamp_variable = { var = cannibalism_network_alignment min = constant:cannibalism_consumption.alignment_min max = constant:cannibalism_consumption.alignment_max }
+			}
+		}
+	}
+}
+
+cannibalism_clear_reach_island_mission = {
+	clr_country_flag = cannibalism_reach_island_mission_active
+	clear_variable = cannibalism_reach_island_target_country
+	clear_variable = cannibalism_reach_island_target_generation
+	clear_variable = cannibalism_reach_island_progress
+	clear_variable = cannibalism_reach_island_goal
+	clear_variable = cannibalism_reach_island_duration
+	cannibalism_unregister_current_country_objective_observer_if_idle = yes
+}
+
+cannibalism_complete_reach_island_mission = {
+	set_temp_variable = { cannibalism_objective_alignment_change = constant:cannibalism_objective_effect.island_success_alignment }
+	cannibalism_apply_island_target_alignment_change = yes
+	add_war_support = constant:cannibalism_objective_effect.island_success_war_support
+	set_country_flag = cannibalism_reach_island_objective_complete
+	cannibalism_record_current_country_as_defeat_contributor = yes
+	cannibalism_clear_reach_island_mission = yes
+}
+
+cannibalism_partial_reach_island_mission = {
+	set_temp_variable = { cannibalism_objective_alignment_change = constant:cannibalism_objective_effect.island_partial_alignment }
+	cannibalism_apply_island_target_alignment_change = yes
+	add_war_support = constant:cannibalism_objective_effect.island_partial_war_support
+	set_country_flag = cannibalism_reach_island_objective_partial
+	cannibalism_clear_reach_island_mission = yes
+}
+
+cannibalism_fail_reach_island_mission = {
+	set_temp_variable = { cannibalism_objective_alignment_change = constant:cannibalism_objective_effect.island_failure_alignment }
+	cannibalism_apply_island_target_alignment_change = yes
+	add_war_support = constant:cannibalism_objective_effect.island_failure_war_support
+	set_country_flag = cannibalism_reach_island_objective_failed
+	cannibalism_clear_reach_island_mission = yes
+}
+
+cannibalism_resolve_reach_island_cancellation = {
+	if = { limit = { cannibalism_reach_island_objective_complete = yes } cannibalism_complete_reach_island_mission = yes }
+	else_if = {
+		limit = {
+			check_variable = {
+				var = cannibalism_reach_island_progress
+				value = constant:cannibalism_objective_progress.island_partial
+				compare = greater_than_or_equals
+			}
+		}
+		cannibalism_partial_reach_island_mission = yes
+	}
+	else = { cannibalism_fail_reach_island_mission = yes }
+}
+
+cannibalism_apply_break_network_target_change = {
+	if = {
+		limit = { cannibalism_break_network_target_identity_matches = yes }
+		var:cannibalism_break_network_target_country = {
+			add_to_variable = { cannibalism_cell_strength = cannibalism_objective_target_cell_change }
+			if = {
+				limit = { has_variable = cannibalism_cult_cohesion }
+				add_to_variable = { cannibalism_cult_cohesion = cannibalism_objective_target_cult_change }
+			}
+			cannibalism_clamp_current_country_meters = yes
+			cannibalism_refresh_country_penalty_variables = yes
+		}
+	}
+}
+
+cannibalism_clear_break_network_mission = {
+	clr_country_flag = cannibalism_break_network_mission_active
+	clear_variable = cannibalism_break_network_target_country
+	clear_variable = cannibalism_break_network_target_generation
+	clear_variable = cannibalism_break_network_progress
+	clear_variable = cannibalism_break_network_goal
+	clear_variable = cannibalism_break_network_duration
+	cannibalism_unregister_current_country_objective_observer_if_idle = yes
+}
+
+cannibalism_complete_break_network_mission = {
+	set_temp_variable = { cannibalism_objective_target_cell_change = constant:cannibalism_objective_effect.network_success_target_cell }
+	set_temp_variable = { cannibalism_objective_target_cult_change = constant:cannibalism_objective_effect.network_success_target_cult }
+	cannibalism_apply_break_network_target_change = yes
+	add_to_variable = { global.cannibalism_network_reach = constant:cannibalism_objective_effect.network_success_reach }
+	add_to_variable = { cannibalism_command_integrity = constant:cannibalism_objective_effect.network_success_integrity }
+	set_country_flag = cannibalism_break_network_objective_complete
+	cannibalism_record_current_country_as_defeat_contributor = yes
+	cannibalism_clear_break_network_mission = yes
+	clamp_variable = { var = global.cannibalism_network_reach min = constant:cannibalism_meter.min max = constant:cannibalism_meter.max }
+}
+
+cannibalism_partial_break_network_mission = {
+	set_temp_variable = { cannibalism_objective_target_cell_change = constant:cannibalism_objective_effect.network_partial_target_cell }
+	set_temp_variable = { cannibalism_objective_target_cult_change = constant:cannibalism_objective_value.zero }
+	cannibalism_apply_break_network_target_change = yes
+	add_to_variable = { global.cannibalism_network_reach = constant:cannibalism_objective_effect.network_partial_reach }
+	add_to_variable = { cannibalism_command_integrity = constant:cannibalism_objective_effect.network_partial_integrity }
+	set_country_flag = cannibalism_break_network_objective_partial
+	cannibalism_clear_break_network_mission = yes
+	clamp_variable = { var = global.cannibalism_network_reach min = constant:cannibalism_meter.min max = constant:cannibalism_meter.max }
+}
+
+cannibalism_fail_break_network_mission = {
+	set_temp_variable = { cannibalism_objective_target_cell_change = constant:cannibalism_objective_effect.network_failure_target_cell }
+	set_temp_variable = { cannibalism_objective_target_cult_change = constant:cannibalism_objective_value.zero }
+	cannibalism_apply_break_network_target_change = yes
+	add_to_variable = { cannibalism_command_integrity = constant:cannibalism_objective_effect.network_failure_integrity }
+	set_country_flag = cannibalism_break_network_objective_failed
+	cannibalism_clear_break_network_mission = yes
+}
+
+cannibalism_resolve_break_network_cancellation = {
+	if = { limit = { cannibalism_break_network_objective_complete = yes } cannibalism_complete_break_network_mission = yes }
+	else_if = {
+		limit = {
+			check_variable = {
+				var = cannibalism_break_network_progress
+				value = constant:cannibalism_objective_progress.network_partial
+				compare = greater_than_or_equals
+			}
+		}
+		cannibalism_partial_break_network_mission = yes
+	}
+	else = { cannibalism_fail_break_network_mission = yes }
+}
+
+cannibalism_apply_stop_unification_target_alignment_change = {
+	if = {
+		limit = { cannibalism_stop_unification_target_identity_matches = yes }
+		var:cannibalism_stop_unification_target_country = {
+			if = {
+				limit = { has_variable = cannibalism_network_alignment }
+				add_to_variable = { cannibalism_network_alignment = cannibalism_objective_alignment_change }
+				clamp_variable = { var = cannibalism_network_alignment min = constant:cannibalism_consumption.alignment_min max = constant:cannibalism_consumption.alignment_max }
+			}
+		}
+	}
+}
+
+cannibalism_clear_stop_unification_mission = {
+	clr_country_flag = cannibalism_stop_unification_mission_active
+	clear_variable = cannibalism_stop_unification_target_country
+	clear_variable = cannibalism_stop_unification_target_generation
+	clear_variable = cannibalism_stop_unification_hold_days
+	clear_variable = cannibalism_stop_unification_goal_days
+	clear_variable = cannibalism_stop_unification_duration
+	cannibalism_unregister_current_country_objective_observer_if_idle = yes
+}
+
+cannibalism_complete_stop_unification_mission = {
+	set_temp_variable = { cannibalism_objective_alignment_change = constant:cannibalism_objective_effect.unification_success_alignment }
+	cannibalism_apply_stop_unification_target_alignment_change = yes
+	add_to_variable = { global.cannibalism_network_reach = constant:cannibalism_objective_effect.unification_success_reach }
+	set_country_flag = cannibalism_stop_unification_objective_complete
+	cannibalism_record_current_country_as_defeat_contributor = yes
+	cannibalism_clear_stop_unification_mission = yes
+	clamp_variable = { var = global.cannibalism_network_reach min = constant:cannibalism_meter.min max = constant:cannibalism_meter.max }
+}
+
+cannibalism_partial_stop_unification_mission = {
+	set_temp_variable = { cannibalism_objective_alignment_change = constant:cannibalism_objective_effect.unification_partial_alignment }
+	cannibalism_apply_stop_unification_target_alignment_change = yes
+	add_to_variable = { global.cannibalism_network_reach = constant:cannibalism_objective_effect.unification_partial_reach }
+	set_country_flag = cannibalism_stop_unification_objective_partial
+	cannibalism_clear_stop_unification_mission = yes
+	clamp_variable = { var = global.cannibalism_network_reach min = constant:cannibalism_meter.min max = constant:cannibalism_meter.max }
+}
+
+cannibalism_fail_stop_unification_mission = {
+	set_temp_variable = { cannibalism_objective_alignment_change = constant:cannibalism_objective_effect.unification_failure_alignment }
+	cannibalism_apply_stop_unification_target_alignment_change = yes
+	add_war_support = constant:cannibalism_objective_effect.unification_failure_war_support
+	set_country_flag = cannibalism_stop_unification_objective_failed
+	cannibalism_clear_stop_unification_mission = yes
+}
+
+cannibalism_resolve_stop_unification_cancellation = {
+	if = { limit = { cannibalism_stop_unification_objective_complete = yes } cannibalism_complete_stop_unification_mission = yes }
+	else_if = {
+		limit = {
+			check_variable = {
+				var = cannibalism_stop_unification_hold_days
+				value = constant:cannibalism_objective_progress.unification_partial_days
+				compare = greater_than_or_equals
+			}
+		}
+		cannibalism_partial_stop_unification_mission = yes
+	}
+	else = { cannibalism_fail_stop_unification_mission = yes }
+}
+
+cannibalism_clear_stop_transformation_mission = {
+	clr_country_flag = cannibalism_stop_transformation_mission_active
+	clear_variable = cannibalism_stop_transformation_target_country
+	clear_variable = cannibalism_stop_transformation_target_generation
+	clear_variable = cannibalism_stop_transformation_progress
+	clear_variable = cannibalism_stop_transformation_goal
+	clear_variable = cannibalism_stop_transformation_duration
+	cannibalism_unregister_current_country_objective_observer_if_idle = yes
+}
+
+cannibalism_complete_stop_transformation_mission = {
+	add_war_support = constant:cannibalism_objective_effect.transformation_success_war_support
+	set_country_flag = cannibalism_stop_transformation_objective_complete
+	cannibalism_record_current_country_as_defeat_contributor = yes
+	cannibalism_clear_stop_transformation_mission = yes
+}
+
+cannibalism_partial_stop_transformation_mission = {
+	add_war_support = constant:cannibalism_objective_effect.transformation_partial_war_support
+	set_country_flag = cannibalism_stop_transformation_objective_partial
+	cannibalism_clear_stop_transformation_mission = yes
+}
+
+cannibalism_fail_stop_transformation_mission = {
+	add_war_support = constant:cannibalism_objective_effect.transformation_failure_war_support
+	set_country_flag = cannibalism_stop_transformation_objective_failed
+	cannibalism_clear_stop_transformation_mission = yes
+}
+
+cannibalism_resolve_stop_transformation_cancellation = {
+	if = { limit = { cannibalism_stop_transformation_objective_complete = yes } cannibalism_complete_stop_transformation_mission = yes }
+	else_if = {
+		limit = {
+			check_variable = {
+				var = cannibalism_stop_transformation_progress
+				value = constant:cannibalism_objective_progress.transformation_partial
+				compare = greater_than_or_equals
+			}
+		}
+		cannibalism_partial_stop_transformation_mission = yes
+	}
+	else = { cannibalism_fail_stop_transformation_mission = yes }
+}
+
+# ---------------------------------------------------------------------------
+# Reconstruction compact progress and bounded category retirement
+# ---------------------------------------------------------------------------
+
+cannibalism_refresh_compact_vigilance_progress = {
+	if = {
+		limit = { has_variable = cannibalism_compact_vigilance_start_date }
+		set_variable = { cannibalism_compact_vigilance_progress_days = global.date }
+		subtract_from_variable = { cannibalism_compact_vigilance_progress_days = cannibalism_compact_vigilance_start_date }
+		clamp_variable = { var = cannibalism_compact_vigilance_progress_days min = constant:cannibalism_objective_value.zero max = constant:cannibalism_objective_timing.compact_vigilance_days }
+	}
+}
+
+cannibalism_refresh_global_aftermath_category_lifecycle = {
+	set_temp_variable = { cannibalism_reconstruction_participant_found = constant:cannibalism_objective_value.zero }
+	for_each_scope_loop = {
+		array = global.cannibalism_reconstruction_participants
+		if = {
+			limit = {
+				exists = yes
+				has_country_flag = cannibalism_reconstruction_participant
+			}
+			set_temp_variable = { cannibalism_reconstruction_participant_found = constant:cannibalism_objective_value.one }
+		}
+	}
+	if = {
+		limit = { check_variable = { cannibalism_reconstruction_participant_found < constant:cannibalism_objective_value.one } }
+		clr_global_flag = cannibalism_reconstruction_system_active
+	}
+}
+
+cannibalism_retire_current_country_reconstruction_participation = {
+	clr_country_flag = cannibalism_compact_vigilance_mission_active
+	clr_country_flag = cannibalism_reconstruction_participant
+	set_country_flag = cannibalism_reconstruction_participant_complete
+	if = {
+		limit = { is_in_array = { array = global.cannibalism_reconstruction_participants value = THIS } }
+		remove_from_array = { array = global.cannibalism_reconstruction_participants value = THIS }
+	}
+	clear_variable = cannibalism_compact_vigilance_start_date
+	clear_variable = cannibalism_compact_vigilance_progress_days
+	clear_variable = cannibalism_compact_vigilance_duration
+	cannibalism_refresh_current_country_reconstruction_idea = yes
+	cannibalism_refresh_global_aftermath_category_lifecycle = yes
+}
+
+cannibalism_partial_compact_vigilance = {
+	set_country_flag = cannibalism_compact_vigilance_partial
+	cannibalism_retire_current_country_reconstruction_participation = yes
+}
+
+cannibalism_resolve_compact_vigilance = {
+	cannibalism_refresh_compact_vigilance_progress = yes
+	if = {
+		limit = {
+			cannibalism_compact_vigilance_is_maintained = yes
+			cannibalism_compact_vigilance_has_full_progress = yes
+		}
+		cannibalism_complete_compact_vigilance = yes
+	}
+	else_if = {
+		limit = { cannibalism_compact_vigilance_has_partial_progress = yes }
+		cannibalism_partial_compact_vigilance = yes
+	}
+	else = { cannibalism_fail_compact_vigilance = yes }
+}

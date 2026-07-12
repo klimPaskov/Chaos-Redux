@@ -13,20 +13,7 @@ A world-end route can only trigger when global chaos is above 1000 and no other 
 
 ## Existing Wendigo dependency
 
-The alternate branch depends on the existing Chaos Redux Wendigo country. The specification does not guess its tag, focus tree, unit IDs, technologies, ideas, portraits, or shared classification.
-
-Implementation must discover:
-
-- exact country tag or dynamic identity
-- creation routes
-- leader and portrait
-- unit types and recruitment systems
-- national spirits and technologies
-- special-country and nonhuman classification
-- AI and decision hooks
-- current player-facing naming
-
-The alternate branch should reuse those systems and extend them. It must not replace them with a weak approximation.
+The alternate branch uses the existing Chaos Redux `ZZZ` Wendigo country in place. It preserves the live country, active player control, territory, units, templates, technologies, ideas, equipment, existing Event 2 profile state, and special-project state. The branch extends those systems and does not create a replacement country or OOB.
 
 ## Wendigo merge trigger
 
@@ -162,7 +149,7 @@ Losing anchors delays or reverses progress before lock.
 ### Wendigo inheritance
 
 - every existing Wendigo unit type
-- every existing recruitment decision
+- the existing unit and template identity, with Event 014 Pack recruitment restricted to paid scripted musters after transformation
 - relevant technologies and spirits
 - established supernatural mechanics
 
@@ -405,3 +392,24 @@ Possible outcomes:
 - complete defeat and reconstruction
 
 The final terminal form has no intended defeat aftermath because it represents the selected world-end state.
+
+## Accepted paid-Pack, receipt, and hunt closure
+
+The merge immediately calls `cannibalism_wendigo_focus_preserve_pack_contract`. It locks the preserved templates and disables normal queue recruitment for the original 16-battalion `Wendigo Pack` before any first-focus or player interaction. The ordinary paid decision creates two zero-start Packs. The receipt decision creates one zero-start Pack. Both validate `trained count + requested batch` against the same live capacity before the exact population transaction.
+
+Enemy-death receipts are permission tokens, not manpower or Deaths entries. Sampling begins from the current casualty counter and issues one receipt for each full 50,000 positive new casualties while the country remains an active enemy. The system caps each enemy epoch at two receipts and the actor pool at five. The actor-owned tracked-enemy registry clears inactive epochs, `on_war_relation_added` initializes a fresh non-retroactive epoch on re-war, and route break, terminal lock, actor loss, or shutdown clear the registered runtime.
+
+A receipt muster pays one receipt, exactly 100,000 controlled usable-state population through the canonical Deaths transaction, 200 Larder, 500 infantry equipment, and 100 support equipment. It converts 50 percent of the applied population loss into manpower and creates one empty Pack only after the exact transaction succeeds.
+
+The inherited winter-cell operation targets a current ordinary human enemy that already contains an Event 014 cell and usable population. It pays Larder, Command Power, and support equipment, applies a timed pressure modifier, registers its target for cleanup, and may add one bounded pressure contribution to the active terminal hunt. It creates no cell, war goal, unit, population, Larder, or stockpile.
+
+The terminal hunt consists of launch, a 120-day maintained mission, paid pressure, and defender break. Success is target capitulation or capital control at full pressure. Failure includes full defender counterpressure, timeout, route break, invalid target, ended war, actor loss, or loss of all anchors. The hunt never applies the world end. Final lock remains pulse-only.
+
+## Event Details terminal controls
+
+After `cannibalism_reveal_complete`, Event Details exposes two public branch rows with independent persistent default-enabled toggles:
+
+- world-end scenario ID `6`, **The World Is the Larder**, owns the ordinary branch and super-event ID `50`
+- world-end scenario ID `7`, **No Thaw Will Come**, owns the Wendigo branch and super-event ID `53`.
+
+Before reveal, neither row enters the dynamic list and neither title or detail body can resolve through a visible control. Disabling one branch affects only that branch and does not disable Event 14, its sibling ending, or the shared Chaos and world-state gates.

@@ -1,31 +1,40 @@
 # Decision and Mission Matrix
 
-| Family | Owner | Phase | Core cost | Map or action requirement | Success | Failure or risk | AI priority |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| Restore supply corridor | Ordinary country | Baseline | Trains, trucks, factories | Control and repair named route | Large Field Hunger reduction | Cell growth and unit refusal | Highest when supply is low |
-| Emergency convoy | Ordinary country | Baseline | Convoys, fuel, escort | Valid port and overseas theater | Relief and contact | Ship loss or island escalation | High for overseas host |
-| Rotate formation | Ordinary country | Baseline | Equipment, manpower, replacement unit | Move compromised unit out of combat | Cell exposure and integrity gain | Desertion and spread | High with valid replacement |
-| Officer replacement | Ordinary country | Baseline | Army experience, staff capacity | Evidence and command access | Organizer removal | False purge and integrity loss | Medium to high |
-| Burial protection | Ordinary country | Baseline | Manpower, support equipment | Secure affected state | Evidence and trust | Ambush or missing bodies | High after field evidence |
-| Forensic recovery | Ordinary country | Baseline | Support equipment, access | Secure site | True cell strength revealed | Evidence destroyed | High when uncertain |
-| Public tribunal | Ordinary country | Baseline | Stability exposure | Strong evidence | Integrity and trust | Martyr or panic | Ideology dependent |
-| Conditional amnesty | Ordinary country | Evolution I | Manpower, safe site | No active indiscriminate purge | Followers separate from leaders | Organizers relocate | High for low-resource states |
-| Infiltrate cell | Ordinary country | Evolution I | Intelligence exposure, manpower | Known cell | Organizer map | Infiltrator lost or converted | High with strong integrity |
-| Break ritual economy | Ordinary country | Evolution I | Police, transport inspection | Known stores or route | Cohesion loss | Cell adapts | High at high cohesion |
-| Terror battalion | Ordinary country | Exploitation | Prisoners, command access, integrity | Active compromised unit | Strong combat terror | Cult growth and warlord risk | Rare, desperation only |
-| Recon silent island | Ordinary country | Evolution II | Fuel, convoys, reconnaissance | Valid island node | Rescue or node discovery | Force disappears | High for coastal powers |
-| Blockade island Host | Ordinary country | Evolution II | Navy, fuel, convoys | Naval access | Larder starvation | Attrition and convoy loss | High if naval strength adequate |
-| Joint suppression | Several countries | Evolution II | Intelligence, equipment, access | Linked nodes in multiple countries | Large Network Reach loss | Nodes relocate | High when allies cooperate |
-| Liberate feeding state | Ordinary country | Counterwar | Supplied divisions, equipment | Control target after battle | Consumption stops | Warlord reinforcement | High at severe consumption |
-| Break convergence | Coalition | Pre-reveal | Multiple operations | Defeat host and destroy routes | Reveal delayed or canceled | Reveal proceeds stronger | Maximum priority |
-| Destroy anchor | Coalition | Wendigo pre-lock | Major assault force | Capture or sabotage anchor state | Transformation delayed | Heavy losses and acceleration | Maximum priority |
-| Consume state | Cannibal country | All | Controlled population | State control | Larder and recruitment | State exhaustion and revolt | High when Larder low |
-| Raise warband | Cannibal country | All | Larder, equipment, population | Valid recruitment state | New unit | Resource collapse | High if territory supports |
-| Seed foreign formation | Cannibal country | Evolution II | Cadre, Larder, access | Valid foreign route | New cell | Exposure and cadre loss | Targeted, not spammed |
-| Synchronize attack | Cannibal country | Evolution II | Alignment, Larder | Several actors and fronts | Coordinated bonuses | Network exposure | High when several warlords ready |
-| Submit to network | Warlord | Evolution II | Autonomy | Valid alignment | Reinforcement and safety | Future absorption | Personality dependent |
-| Resist unification | Warlord | Reveal | Military commitment | Hannibal revealed | Independence war | Isolation and defeat | Defiant personalities |
-| Absorb warlord | Hannibal | Unified | Authority, logistics | Valid submitted actor | Territory, units, character | Rebellion or losses | Highest early unification |
-| Purge warlord | Hannibal | Unified | Stability and commander depth | Captured or subordinate warlord | Central authority and terror | Regional revolt | Targeted at rivals |
-| Train Wendigo unit | Wendigo Hannibal | Alternate | Larder, anchor capacity | Valid existing unit system | Supernatural unit | Anchor strain | High before terminal |
-| Accelerate transformation | Wendigo Hannibal | Alternate | Population, Larder, anchors | Active countdown | Faster lock | Anchor exposure | Only when anchors secure |
+## Maintained objective families, 8
+
+| Mission | Owner and phase | Progress source | Persisted identity | Full result | Partial or failure result |
+| --- | --- | --- | --- | --- | --- |
+| Restore supply corridor | Ordinary host, baseline | Named route restoration and supplied theater | Target state and route context | Field Hunger falls and the route stabilizes | Cell pressure and formation refusal |
+| Rotate compromised formations | Ordinary host, baseline | Unit movement, screening, and replacement | Compromised formation context | Organizers exposed and Command Integrity restored | Desertion and spread |
+| Investigation | Ordinary host, baseline or ritual | Ration audit, forensic recovery, officer replacement, infiltration, and ritual-store seizure | State plus node id and generation where present | Linked record secured and node weakened | Fragment recovered or trail burned |
+| Hold prison | Ordinary host, network | Existing bounded actor pulse while garrison and reserves remain | State plus node id and generation | Compound secured | Partial staff removal or cordon failure |
+| Reach island | International responder, network | Reconnaissance, blockade, and landing operations | Exact Island Host and actor generation | Sea road opened | Charts retained or expedition loses initiative |
+| Break network | International responders, network | Repeated joint suppression against one target | Exact country and actor generation | Route family broken | Partial disruption or replacement links |
+| Stop unification | Coalition, convergence | Interdiction and maintained war pressure | Exact likely host and actor generation | Gathering fractured | Delay or failed pressure |
+| Stop transformation | Coalition, Wendigo pre-lock | Anchor identification, assault, logistics disruption, and recruitment-site actions | Exact merge host and actor generation | Anchor chain broken | Some anchors remain or counterwar window closes |
+
+The six objective-tranche missions use runtime durations, capped progress, generation-safe targets, explicit full, partial, and failure outcomes, timeout handling, and cancellation cleanup. The two earlier maintained missions retain their established contracts.
+
+## Added paid action families, 7
+
+| Decision | Route and target | Paid resources | Lifecycle | Main result |
+| --- | --- | --- | --- | --- |
+| Replace compromised officer chain | Ritual prosecution | Manpower, support equipment, Command Power | Country cooldown | Integrity restored and investigation advanced |
+| Infiltrate ritual cell | Controlled live ritual cell | Manpower, support equipment, Command Power | Decision and target-state cooldowns | Evidence rises and the cell weakens |
+| Break ritual economy | Controlled feeding-linked cell | Manpower, infantry equipment, support equipment, Command Power | Decision and target-state cooldowns | Cell, cohesion, node, and Network Reach fall |
+| Reconnoiter silent island | Live Island Host | Convoys, Navy Experience, Command Power | Decision and target-country cooldowns | Sea-road objective starts or advances |
+| Liberate feeding state | Controlled feeding or Silent Larder node | Manpower, infantry equipment, support equipment, Command Power | Decision and target-state cooldowns | Existing liberation and recovery sequence begins |
+| Prepare network submission | Pre-reveal warlord | Larder, support equipment, Command Power | One-shot, consumed by disposition | Alignment and retained-command submission weight rise |
+| Prepare network resistance | Pre-reveal warlord | Larder, infantry equipment, support equipment, Command Power | One-shot, consumed by disposition | Alignment falls and resistance weight rises |
+
+## Wendigo closure operations
+
+| Family | Surface count | Cost and proof | Result | Cleanup and limits |
+| --- | ---: | --- | --- | --- |
+| Terminal hunt | 4: launch, mission, press, defender break | Launch and press pay Larder, Command Power, equipment, and fuel. Defender pays manpower, Command Power, and equipment | Success gives 5 transformation progress. Failure removes 10 | One persistent target, timed lock, route-break and terminal cleanup. Never sets world end |
+| Enemy-death receipt muster | 1 | One bounded receipt, exact 100K population, 200 Larder, 500 infantry equipment, 100 support equipment | One zero-start Pack and 50K manpower conversion | Two receipts per enemy epoch, five held, complete batch must fit capacity |
+| Inherited winter cell | 1 | 150 Larder, 25 Command Power, 100 support equipment against an existing enemy cell | Sixty-day disruption and at most one bounded hunt-pressure interaction | Registered target array, 90-day target lock, no cell or free resource creation |
+
+## Read-only achievement tracker
+
+The separate tracker contains 18 permanently unavailable presentation entries. It reads the real achievement completion triggers and has no gameplay effects, costs, cooldowns, completion hooks, or AI blocks. It is excluded from the operational decision inventory.

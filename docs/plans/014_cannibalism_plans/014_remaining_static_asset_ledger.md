@@ -1,5 +1,7 @@
 # Event 014 Remaining Static Asset Ledger
 
+> **Superseded production ledger.** Every registered path frozen in this ledger has been dispositioned by later generated asset packages. The final 21-surface closure package also covers the objective, tracker, terminal-hunt, receipt-muster, and inherited-cell additions created after this ledger. Current authority is `docs/assets/014_cannibalism/manifest.md`, the linked package manifests, and `docs/specs/014_cannibalism_specs/matrices/asset_inventory_matrix.md`. The historical production rows below are preserved for provenance and must not be read as current missing DDS files.
+
 ## Status and ownership
 
 This is the frozen production ledger for Event 014 static assets that are already registered by live gameplay but do not yet have a runtime DDS. It excludes the separately owned 108 unified focus icons, 26 mechanic-window statics, 12 frame-led GUI animations, two animated leader portraits, 195 flags, and 18 achievement triplets.

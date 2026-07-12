@@ -8,13 +8,11 @@ Event 14 needs three focus surfaces:
 2. A full unified Hannibal tree after the reveal.
 3. A Wendigo Hannibal overlay or transformed tree after the alternate merge.
 
-The exact node count and coordinates belong to implementation. The content targets below exist to prevent shallow trees.
+The implemented node counts are exact:
 
-Recommended scale:
-
-- local warlord tree: 60 to 72 focuses
-- unified Hannibal tree: 96 to 120 focuses
-- Wendigo Hannibal overlay: 24 to 32 focuses
+- local warlord tree: 72 focuses
+- unified Hannibal tree: 108 focuses
+- Wendigo Hannibal overlay: 28 focuses
 
 Every focus needs its own focus-specific icon direction. Idea and decision icons must not be resized focus icons.
 
@@ -699,3 +697,21 @@ Focus rewards should use:
 - strong staged idea upgrades
 
 Small modifiers can support these rewards. They cannot be the main point of important focuses.
+
+## Accepted closure integration
+
+The focus-closure addendum did not add, remove, move, or rename a focus. It deepened the existing 28-focus Wendigo overlay through live operations and structural upgrades:
+
+- `Open the Winter Hunt` opens the scored pre-lock target profile.
+- `Count the Winter Victories` opens non-retroactive bounded enemy-death receipts.
+- `Drill the Original Pack`, `Expand the Hunting Packs`, and `Army of the Frozen Larder` add recon, engineer, and logistics support to the existing locked 16-battalion Pack exactly once.
+- `Open the Pack Musters` opens the one-Pack receipt muster alongside the ordinary two-Pack paid trainer.
+- `Retain the Warlord Captains` and `All Inheritances Intact` apply the two inherited-commander stages.
+- `Keep the Foreign Cells` opens the paid inherited winter-cell operation.
+- `All Inheritances Intact` also upgrades only the four inherited origin templates that actually exist.
+- `Hunt Every Remaining Capital` opens the four terminal-hunt surfaces.
+- `The World Beneath Winter` keeps the route and scored priorities open but does not set the terminal lock.
+
+The final country and focus audits confirm that normal queue recruitment for the Pack closes immediately during the in-place ZZZ transformation, before the first overlay focus. Both scripted Pack musters validate the complete requested batch against capacity before population consumption.
+
+All 208 focuses retain unique IDs, AI blocks, reward helpers, localisation, and distinct registered DDS icons. The accepted tuning normalization uses five-point increments for authored percentage and meter ladders, with documented exceptions only for semantic counters, engine building levels, Pack batch multiples, research-use counts, and encoded AI factors.

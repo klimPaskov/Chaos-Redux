@@ -132,8 +132,7 @@ cannibalism_feed_selected_wendigo_anchor = {
 	}
 }
 
-cannibalism_spawn_paid_wendigo_pack_batch = {
-	set_temp_variable = { cannibalism_wendigo_pack_batch = constant:cannibalism_wendigo_decision.train_pack_batch }
+cannibalism_spawn_empty_wendigo_pack_batch = {
 	set_temp_variable = { cannibalism_wendigo_pack_start_experience = constant:cannibalism_wendigo_decision.train_pack_start_experience }
 	set_temp_variable = { cannibalism_wendigo_pack_start_equipment = constant:cannibalism_wendigo_decision.train_pack_start_equipment }
 	set_temp_variable = { cannibalism_wendigo_pack_start_manpower = constant:cannibalism_wendigo_decision.train_pack_start_manpower }
@@ -155,10 +154,12 @@ cannibalism_spawn_paid_wendigo_pack_batch = {
 
 cannibalism_train_wendigo_pack_from_selected_anchor = {
 	set_temp_variable = { cannibalism_wendigo_pack_training_result = 0 }
+	set_temp_variable = { cannibalism_wendigo_requested_pack_batch = constant:cannibalism_wendigo_decision.train_pack_batch }
 	if = {
 		limit = {
 			has_event_target = cannibalism_wendigo_decision_state
 			cannibalism_wendigo_can_pay_train_pack_cost = yes
+			cannibalism_wendigo_requested_pack_batch_fits_capacity = yes
 			event_target:cannibalism_wendigo_decision_state = { cannibalism_state_can_train_wendigo_pack = yes }
 		}
 		save_event_target_as = cannibalism_wendigo_decision_actor
@@ -183,7 +184,8 @@ cannibalism_train_wendigo_pack_from_selected_anchor = {
 			multiply_temp_variable = { cannibalism_wendigo_pack_manpower = constant:cannibalism_wendigo_decision.train_pack_manpower_factor }
 			round_temp_variable = cannibalism_wendigo_pack_manpower
 			add_manpower = cannibalism_wendigo_pack_manpower
-			event_target:cannibalism_wendigo_decision_state = { cannibalism_spawn_paid_wendigo_pack_batch = yes }
+			set_temp_variable = { cannibalism_wendigo_pack_batch = constant:cannibalism_wendigo_decision.train_pack_batch }
+			event_target:cannibalism_wendigo_decision_state = { cannibalism_spawn_empty_wendigo_pack_batch = yes }
 			add_to_variable = { cannibalism_wendigo_trained_pack_count = constant:cannibalism_wendigo_decision.train_pack_batch }
 			set_temp_variable = { cannibalism_wendigo_pack_training_result = 1 }
 		}
@@ -372,6 +374,7 @@ cannibalism_identify_counterwar_anchor = {
 			set_temp_variable = { cannibalism_wendigo_decision_cooldown_days = constant:cannibalism_wendigo_decision.identify_cooldown_days }
 			set_country_flag = { flag = cannibalism_wendigo_identification_cooldown days = cannibalism_wendigo_decision_cooldown_days }
 			cannibalism_record_current_country_as_defeat_contributor = yes
+			cannibalism_record_stop_transformation_operation = yes
 			set_temp_variable = { cannibalism_wendigo_identification_result = 1 }
 		}
 	}
@@ -441,6 +444,7 @@ cannibalism_assault_selected_counterwar_anchor = {
 				country_event = { id = chaosx.nr14.77 hours = @CANNIBALISM_WENDIGO_DECISION_EVENT_HOURS }
 			}
 			cannibalism_record_current_country_as_defeat_contributor = yes
+			cannibalism_record_stop_transformation_operation = yes
 			set_temp_variable = { cannibalism_wendigo_anchor_assault_result = 1 }
 		}
 	}
@@ -482,6 +486,7 @@ cannibalism_disrupt_selected_wendigo_anchor_logistics = {
 				country_event = { id = chaosx.nr14.77 hours = @CANNIBALISM_WENDIGO_DECISION_EVENT_HOURS }
 			}
 			cannibalism_record_current_country_as_defeat_contributor = yes
+			cannibalism_record_stop_transformation_operation = yes
 			set_temp_variable = { cannibalism_wendigo_logistics_disruption_result = 1 }
 		}
 	}
@@ -519,6 +524,7 @@ cannibalism_break_selected_wendigo_recruitment_site = {
 				country_event = { id = chaosx.nr14.77 hours = @CANNIBALISM_WENDIGO_DECISION_EVENT_HOURS }
 			}
 			cannibalism_record_current_country_as_defeat_contributor = yes
+			cannibalism_record_stop_transformation_operation = yes
 			set_temp_variable = { cannibalism_wendigo_recruitment_site_break_result = 1 }
 		}
 	}
@@ -543,6 +549,11 @@ cannibalism_break_wendigo_transformation_route = {
 		clr_country_flag = cannibalism_wendigo_terminal_route_complete
 		clr_country_flag = cannibalism_wendigo_terminal_hunt_open
 		clr_global_flag = cannibalism_wendigo_countdown_active
+		if = {
+			limit = { has_country_flag = cannibalism_wendigo_terminal_hunt_active }
+			cannibalism_resolve_wendigo_terminal_hunt_failure = yes
+		}
+		cannibalism_clear_wendigo_prelock_operation_runtime = yes
 		set_variable = { cannibalism_wendigo_transformation_stage = constant:cannibalism_wendigo_stage.winter_network }
 		set_variable = { cannibalism_wendigo_transformation_progress = constant:cannibalism_wendigo_countdown.progress_min }
 		country_event = { id = chaosx.nr14.76 hours = @CANNIBALISM_WENDIGO_DECISION_EVENT_HOURS }

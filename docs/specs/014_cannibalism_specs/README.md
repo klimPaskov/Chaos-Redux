@@ -1,50 +1,54 @@
-# Event 014 Cannibalism Planning Package
+# Event 014 Cannibalism Source Specification
 
-This package is the source design handoff for Event 014, Cannibalism.
+This directory is the source-of-truth design and closure record for Event 014, Cannibalism. The event begins as a containable wartime military-predation crisis. Failed containment, exploitation, cross-border spread, and high chaos can produce ritual cells, remote communes, eight reusable warlord countries, the public Hannibal Lecter unification, and ordinary or Wendigo terminal routes.
 
-Extract the package contents into `docs/specs/014_cannibalism_specs/` so the `specs`, `matrices`, `focus_graphs`, `research`, `prompts`, and `quality` folders remain together.
+## Current implemented scale
 
-The event begins as wartime discipline collapse, starvation, and soldiers crossing a boundary that ordinary command systems cannot easily restore. It can remain a contained military horror. Failed containment, deliberate exploitation, international spread, and high chaos can turn the incident into ritual cells, remote communes, cannibal warlord countries, a hidden global command network, Hannibal's reveal, and two terminal world-end routes.
-
-The package preserves the central mystery. Hannibal is identified only inside internal design and implementation sections where the system needs that knowledge. Every player-facing surface before the reveal must avoid his name, likeness, title, personal pronouns, recognizable silhouette, and any wording that proves one supreme leader exists. Early public content should show repeated orders, symbols, military coordination, and shared ritual methods without confirming who or what directs them.
-
-## Classification
-
-- Event ID: `14`
-- Event name: Cannibalism
-- Event type: Minor Fire-Once
-- Cluster: none
-- Normal result: a containable country-level crisis
-- Deep result: cross-border cult network and warlord states
-- Terminal result: unified cannibal state led by Hannibal
-- Alternate terminal result: Wendigo Hannibal
-
-The current catalog CSV still labels Event 14 as Minor Repeatable. The current user brief supersedes that stale row. Implementation must correct the catalog and every matching registration surface to Minor Fire-Once.
+- Classification: Minor Fire-Once, no cluster.
+- Focus trees: 72 local warlord, 108 unified, 28 Wendigo overlay.
+- Warlord countries: CBA through CBH, four origin archetypes, 56 regional portraits.
+- AI closure: two country scorers, two decision-weight MTTH entries, six unified targeted-decision consumers, and separate pre-lock/post-lock Wendigo profiles.
+- Objective closure: eight maintained mission families and seven added paid action families.
+- Wendigo closure: paid-only Pack recruitment, bounded casualty receipts, complete-batch capacity checks, active-enemy epoch reset, inherited winter cells, structural Pack/origin/commander stages, and four terminal-hunt surfaces.
+- Achievements: 18 real achievement definitions plus an 18-entry staged read-only tracker.
+- Scenario: `SCN-010` with Discipline Collapse, Ritual Cells, Silent Islands, Warlord States, and Convergence.
+- Event Details: two independent post-reveal terminal rows and toggles.
+- Presentation: four action super-events, four unique audio IDs, 21 closure assets, two real-frame leader portraits, and zero missing Event 014 GFX texture paths in the final scan.
+- Final supporting audits: country package, localisation/secrecy, and assets/audio are completion-ready at P0/P1/P2/P3 all zero. The focus re-audit has no P0 or P1, with its documentation P2 closed by this reconciliation and its bounded P3 recorded in the AI source docs.
+- Final completion: `event014_final_completion_audit_2026-07-13.md` reports completion-ready status with P0, P1, and P2 at zero and one accepted non-blocking P3 for the documented first-assignment pre-lock AI band. `Events!M15` and `Scenarios!F10` are promoted to `Implemented`.
 
 ## Package map
 
-- `specs/` contains the source-of-truth event design in twelve parts.
-- `matrices/` contains event, country, focus, AI, decision, idea, asset, super-event, and acceptance maps.
-- `focus_graphs/` contains Mermaid architecture diagrams for implementation planning.
-- `research/` records the project sources, historical research, and cultural guardrails.
-- `prompts/` contains bounded prompts for implementation, assets, super-events, achievements, decisions, the final improvement loop, and completion audit.
-- `quality/` contains a manual improvement-loop review, spoiler audit, and package validation report.
+- `specs/` contains the twelve source specification parts.
+- `matrices/` contains current focus, decision, AI, country, idea, asset, super-event, world-reaction, state-machine, and secrecy maps.
+- `focus_graphs/` contains Mermaid architecture diagrams retained as design history and route orientation.
+- `research/` contains historical, cultural, and source-reading records.
+- `prompts/` contains the original bounded implementation and audit prompts. They are historical orchestration inputs, not current implementation status.
+- `quality/` contains current package status, validation boundaries, and anti-spoiler review.
+- `PACKAGE_MANIFEST.md` records current byte, line, and SHA-256 data for the package.
 
-## Non-negotiable design rules
+## Source-of-truth and supersession map
 
-1. Early player-facing content must read as wartime breakdown and supply collapse.
-2. Hannibal's identity remains hidden until the Evolution III reveal.
-3. Generic cannibal warlords lead every pre-unification country and commune.
-4. Warlord portraits depict bloody, bald men in invented rough hides, raw cloth, bone ornaments, and scavenged period military gear. They must not copy real Indigenous, African, or Pacific ceremonial clothing.
-5. Population consumption feeds the shared Deaths system and creates strong state consequences.
-6. Early containment must be genuinely winnable.
-7. Local victory does not cure other countries.
-8. The world system ends only when no active host, cell, commune, island, warlord country, or unified country remains.
-9. Final cannibal routes are special chaos-country content. Their completed payoffs must be deliberately absurd, oppressive, and overpowered.
-10. Gore and unsettling imagery are required across portraits, report images, news images, icons, and terminal presentation. Use generated fictional material rather than real atrocity photography.
-11. Animated presentation is a core feature. Every final animation requires separate source frames, a frame sheet, a static fallback, and a GIF review preview.
-12. The Wendigo branch must preserve existing Wendigo mechanics and units, while avoiding imported real-world sacred motifs or claims about living Indigenous traditions.
+Current implementation facts are read in this order:
 
-## Tooling disclosure
+1. Live gameplay, localisation, GFX, audio, and asset files.
+2. The twelve spec parts and current matrices in this directory.
+3. `docs/events/014_cannibalism.md` for the canonical mechanic overview.
+4. Current asset manifests under `docs/assets/014_cannibalism/`.
+5. Final audit and remediation handoffs under `docs/plans/014_cannibalism_plans/subagent_handoffs/`.
 
-This chat environment did not expose a custom Codex subagent runner. All provided subagent contracts were read in full and their ownership standards were applied manually. Ready-to-run prompts are included for the improvement planner, focused auditors, asset workers, researchers, and final completion auditor. The external execution of those custom subagents remains a tooling-dependent follow-up rather than a completed action inside this chat.
+The two accepted improvement addenda remain in `docs/plans/014_cannibalism_plans/improvement_loop/` as implementation history. Their accepted behavior is promoted into the source specs and matrices. Optional ideas in the first closure addendum remain queued and unaccepted.
+
+The 2026-07-11 `014_live_asset_gap_map.md` and `014_remaining_static_asset_ledger.md` are superseded production snapshots. They are retained for provenance but no longer describe missing live files. `014_flag_asset_frozen_ledger.md` and `014_gui_dimension_ledger.md` remain frozen contract records whose outputs are accounted for by the current asset manifests.
+
+Historical subagent handoffs are not rewritten. Their pending and missing statements describe the checkpoint when each handoff was created. Current disposition is recorded here, in package status, and in the final documentation reconciliation handoff.
+
+## Reveal and cultural boundary
+
+Hannibal Lecter is public only after `cannibalism_reveal_complete`. Before that flag, no player-facing event, evolution row, decision, focus, GUI, Event Details row, achievement tracker row, scenario, portrait, country identity, super-event, or audio presentation may expose his name, face, silhouette, command title, or a claim that one individual directs the network.
+
+No Event 014 surface uses ancient-general, Carthaginian, Punic, actor-likeness, living Indigenous ceremonial, sacred, tribal, or authenticity framing. The transformed route is fictional Chaos Redux content.
+
+## Validation boundary
+
+The current package records definition-level and filesystem validation plus the completed focus, decision, country, localisation, asset, spreadsheet, and final completion audits. It does not equate those checks with an in-game runtime session. Any runtime evidence must be reported separately and must not be inferred from this documentation.

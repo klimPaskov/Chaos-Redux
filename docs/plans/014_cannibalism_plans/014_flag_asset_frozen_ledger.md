@@ -1,5 +1,7 @@
 # Event 014 Flag Asset Frozen Ledger
 
+> **Fulfilled frozen contract.** The thirteen families, five compositions, and three sizes defined below are present in the final 195-file flag package. This ledger remains authoritative for naming and design history; current file and provenance evidence is in `docs/assets/014_cannibalism/flags_imagegen/manifest.md` and the top-level Event 014 asset manifest.
+
 ## Runtime contract
 
 This ledger resolves the former `CBL_LAST_TABLE` conflict and is the production source of truth for Event 014 flags.
@@ -66,4 +68,3 @@ Within each family, the five compositions should express collective command, civ
 - Provide processed PNG intermediates, all TGA files, a manifest, normal/medium/small contact sheets, alpha/orientation checks, and normalized RGBA uniqueness checks.
 - Do not overwrite existing Wendigo base flags; only add the explicit transformed cosmetic family.
 - Remove the obsolete `CBL_LAST_TABLE` live files only after all thirteen current families have passed validation.
-

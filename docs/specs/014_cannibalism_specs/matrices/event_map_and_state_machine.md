@@ -11,6 +11,7 @@
 | Convergence | Reveal readiness is near | Network thresholds | Readiness broken or Hannibal reveal |
 | Unified | Hannibal is revealed | Evolution III | Defeat, ordinary world-end, Wendigo merge |
 | Wendigo Merged | Alternate country exists | Valid existing Wendigo at unification | Defeat before lock or Wendigo world-end |
+| Terminal Hunt | One scored current enemy is pursued during the countdown | Paid hunt launch | Success, defender break, timeout, route break, invalidation, or terminal lock |
 | Ordinary World-End | Terminal ordinary route | Chaos above 1000 and route completion | Terminal campaign state |
 | Wendigo World-End | Terminal alternate route | Chaos above 1000 and transformation lock | Terminal campaign state |
 | Defeated | No active Event 14 actor remains | Global stabilization | Manual scenario only |
@@ -81,3 +82,7 @@ Weighted readiness then considers:
 - no warlord country
 - no unified country
 - no pending spread, convergence, or transformation mission
+
+## Public terminal controls
+
+After reveal, Event Details exposes two independent default-enabled rows. Scenario ID `6`, **The World Is the Larder**, gates only the ordinary terminal route. Scenario ID `7`, **No Thaw Will Come**, gates only the Wendigo terminal route. Each preserves its own disabled state and maps to its own terminal flag and super-event. Before reveal, neither row is projected into the visible Event Details list.

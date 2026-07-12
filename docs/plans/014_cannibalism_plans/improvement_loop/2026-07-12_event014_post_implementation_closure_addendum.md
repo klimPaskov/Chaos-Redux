@@ -2,22 +2,24 @@
 
 Date: 2026-07-12
 
-Status: accepted-required closure audit
+Status: accepted, implemented, and promoted into the Event 014 source specifications on 2026-07-13
 
 Scope: one improvement-loop pass after the country package and unified focus remediation
 
-This addendum reconciles the Event 014 source specifications with the current live implementation. It does not authorize a new route, country package, focus branch, currency, faction, super-event, evolution, or scripted GUI. The implementation is already broad enough. Closure requires satisfying two remaining requirements and then stopping expansion for this tranche.
+Disposition: the constituent technology union and 39 unique unified decision icons are implemented. Their final behavior is recorded in spec parts 7, 8, 10, and 12, the current matrices, and `docs/events/014_cannibalism.md`. Optional ideas A through C remain queued and unaccepted.
+
+This addendum records the bounded closure tranche that was later implemented. It does not authorize a new route, country package, focus branch, currency, faction, super-event, evolution, or scripted GUI. Historical implementation instructions below are retained as design provenance. Current status is controlled by the disposition above and the promoted source specifications.
 
 ## Outcome
 
-Event 014 is not ready for a completion claim within this audit scope. Two accepted-required items remain:
+Both accepted-required items are closed within this addendum's scope:
 
-1. The live constituent technology helper and all three call sites must receive focused integrated proof. The gameplay implementation now transfers every compatible researched technology token additively into CBL and transformed ZZZ. The recipient keeps its established mutually exclusive industry branch. Completed special-project state is a different system and is not part of this technology-token contract.
-2. All 39 unified decisions must receive their own generated source artwork and final DDS. The live decision and `.gfx` contracts already contain 39 distinct deterministic identifiers and paths, but all 39 referenced final files are absent.
+1. The shared constituent technology helper and all three call sites are present. They transfer compatible researched technology tokens additively into CBL and transformed ZZZ while preserving the recipient's established mutually exclusive industry branch. Completed special-project state remains outside this technology-token contract.
+2. All 39 unified decisions have distinct registered source artwork and final DDS files. The current `.gfx` closure scan reports zero missing Event 014 texture paths.
 
-These are compliance repairs. They are not optional depth additions. No fallback, reused icon, placeholder, silent technology-family exclusion, or weaker substitute is accepted.
+These were compliance repairs rather than optional depth additions. No fallback, reused icon, placeholder, silent technology-family exclusion, or weaker substitute was used.
 
-The optional ideas at the end of this document are not accepted implementation work. They do not block this tranche and must not be started until the two accepted-required items are closed and the parent explicitly promotes an idea into the source specification.
+The optional ideas at the end of this document remain queued and unaccepted. They do not block this tranche and require explicit promotion into the source specification before implementation.
 
 ## Source-of-truth boundary
 
@@ -30,7 +32,7 @@ The following remain authoritative:
 - `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_wendigo_preservation_audit.md`
 - `docs/plans/014_cannibalism_plans/014_scripted_system_architecture.md`
 
-This file is a working implementation addendum under `docs/plans/`. It does not change Event 014's source-of-truth design by itself. Accepted behavior must be folded into the relevant specification and event documentation when implemented.
+This file is an accepted historical implementation addendum under `docs/plans/`. Its accepted behavior is folded into the relevant specification and event documentation. The source specifications, current matrices, and package status supersede checkpoint language in this plan.
 
 ## Live remediation reconciliation
 
@@ -52,7 +54,7 @@ The prior country-package audit found several serious defects. The current live 
 | Unified terminal progress lacked hard operational proof | The ordinary Last Table packages, world-hostility thresholds, receipt caps, and terminal gates are implemented and documented by the unified-focus remediation handoff | Closed in live code |
 | Reveal order could expose the public identity too early | The reveal flag is set before public country, leader, portrait, focus, decision, report, news, super-event, and GUI operations in both ordinary and Wendigo transactions | Closed in live code |
 
-The remaining technology item is narrower than the old research continuity finding. Research slots, initial CBL transfer, primary Wendigo-donor transfer, later absorption transfer, shared helper promotion, and helper documentation are present. Meaningful integrated evidence and the stale handoff update remain.
+The technology item is closed. Research slots, initial CBL transfer, primary Wendigo-donor transfer, later absorption transfer, shared helper promotion, and helper documentation are present. Current reconciliation evidence is recorded in the source specifications and package validation. Historical handoffs are not rewritten.
 
 ## Immutable identity and cultural boundary
 
@@ -70,7 +72,7 @@ Current live evidence supports the boundary:
 - `common/scripted_effects/014_cannibalism_unification_effects.txt` sets `cannibalism_reveal_complete` before creating CBL's public country and leader surfaces.
 - `common/scripted_effects/014_cannibalism_wendigo_effects.txt` sets the same flag before the transformed cosmetic, leader, portrait, focus, decision, report, news, or audio-facing operations.
 - `common/scripted_guis/014_cannibalism_scripted_gui.txt` excludes the reveal from uncertain and pre-reveal views. Its revealed command and transformed views require the global reveal flag.
-- `common/characters/014_cannibalism_characters.txt` keeps the internal character definition unrecruited until the reveal transaction.
+- `common/characters/014_cannibalism_characters.txt` keeps the internal character definition without a public country-leader or advisor assignment until the reveal transaction.
 - `history/countries/CBL - Cannibal Unified Host.txt` leaves CBL dormant before the public transaction.
 - The reveal portrait, flag, report, news, and super-event handoffs under `docs/plans/014_cannibalism_plans/subagent_handoffs/` state the no-likeness and no-borrowed-motif rules.
 
@@ -89,7 +91,7 @@ This behavior applies to both unified destinations:
 - CBL created from the selected ordinary host
 - the original ZZZ country after its in-place Wendigo Hannibal transformation
 
-### Current live implementation and remaining gap
+### Final live implementation and closure evidence
 
 `common/scripted_effects/chaosx_dynamic_effects.txt` now defines `union_compatible_researched_technologies_from_donor`. The recipient is current country scope and the donor is the regular event target `technology_union_donor`. The helper iterates `event_target:technology_union_donor.researched_techs`, checks `has_tech = var:technology_union_entry`, and grants a missing token with `set_technology = { var:technology_union_entry = 1 popup = no }`.
 
@@ -101,10 +103,7 @@ The current call-site wiring covers all three required transfers:
 
 The loop is additive for compatible researched technology tokens. It does not clear a receiver technology, does not copy a persistent array, suppresses research popups, and skips the transfer when a warlord remains autonomous, resistant, or challenging.
 
-The remaining accepted-required gap is proof and documentation reconciliation:
-
-- No integrated scenario evidence yet proves initial CBL transfer, multi-donor CBL accumulation, primary Wendigo-donor transfer, later transformed-ZZZ accumulation, slot reuse, and research-slot preservation.
-- `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_technology_union_architect_2026-07-12.md` still names the superseded Event 014-specific helper and deleted file. It must be updated to the promoted shared helper, donor event target, and live call-site state.
+The current source specifications and package validation record the shared helper, donor event target, all three call sites, additive accumulation, and research-slot preservation. The earlier technology-union architect handoff is retained unchanged as a historical checkpoint. It is superseded by this disposition and the promoted source documentation.
 
 ### Required closure contract
 
@@ -190,19 +189,17 @@ Implementation is accepted only after evidence covers all of these scenarios:
 
 ## Accepted-required item 2: 39 unified decision icon assets
 
-### Current live state
+### Final live state
 
-`common/decisions/014_cannibalism_unified_decisions.txt` currently contains 39 unified decisions and 39 distinct icon tokens. Each token follows this deterministic contract:
+`common/decisions/014_cannibalism_unified_decisions.txt` contains 39 unified decisions and 39 distinct icon tokens. Each token follows this deterministic contract:
 
 - decision: `<decision_id>`
 - sprite: `GFX_decision_<decision_id>`
 - final file: `gfx/interface/decisions/014_cannibalism/decision_<decision_id>.dds`
 
-`interface/014_cannibalism.gfx` currently declares all 39 sprite names and all 39 deterministic DDS paths.
+`interface/014_cannibalism.gfx` declares all 39 sprite names and all 39 deterministic DDS paths.
 
-The registration repair is therefore complete. The asset production is not. A live filesystem audit found zero of the 39 referenced DDS files. There is also no dedicated 39-icon source package, processed PNG set, manifest, decoded-DDS contact sheet, or completion handoff.
-
-The statement in `docs/events/014_cannibalism.md` that unified decisions deliberately reuse existing sprites and introduce no art dependency is stale and contradicts the Event 014 requirement that no icon type be reused. It must be replaced when the asset package is delivered.
+Registration and asset production are complete. All 39 referenced DDS files have dedicated generated sources, processed PNGs, manifest rows, decoded-DDS contact sheets, and a completion handoff. `docs/events/014_cannibalism.md` records the distinct live icon package.
 
 ### Production contract
 
@@ -311,7 +308,7 @@ The icon package is accepted only when all of these conditions hold:
 5. Every decision's live `icon =` token resolves to its matching `spriteType` and exact file.
 6. The decoded-DDS contact sheet shows no opaque squares, white halos, clipping, invisible silhouettes, illegible micro-detail, or accidental text.
 7. The package contains no actor likeness, ancient-general or Carthaginian framing, living Indigenous motif, ceremonial regalia, real victim likeness, or pre-reveal identity leak.
-8. `docs/events/014_cannibalism.md` no longer claims that the unified decisions reuse old sprites or add no art dependency.
+8. `docs/events/014_cannibalism.md` records the 39 distinct unified decision icons.
 9. The asset inventory, Event 014 manifest, `.gfx` handoff, and subagent handoff agree on all names and paths.
 10. No placeholder or fallback icon remains in the package.
 
@@ -431,18 +428,15 @@ After both accepted-required items pass their closure audit, stop this improveme
 
 Any later expansion must begin from a new bounded plan that explains what player choice it adds, which existing mechanic it deepens, what balance pressure contains it, and why the same result cannot be achieved by extending an existing decision or effect.
 
-## Simplifications, omissions, and blockers
+## Simplifications, omissions, and final disposition
 
-No simplification or fallback is authorized by this addendum.
+No simplification or fallback was used for the two accepted requirements.
 
-Known blockers:
-
-1. Additive constituent technology gameplay wiring is present, but focused integrated scenario proof and the stale technology-union handoff update remain required for the completion audit.
-2. All 39 pre-registered unified decision DDS files and their source, processed, manifest, and contact-sheet package are missing.
+Both former blockers are closed. The additive constituent technology union is wired through the shared helper and all three recipient paths. All 39 unique unified decision source, processed, DDS, manifest, and contact-sheet records are present.
 
 Queued optional ideas are omissions by design and do not block this tranche.
 
-This addendum does not replace the final Event 014 completion audit, asset audit, localisation audit, focus audit, decision and mission audit, country package audit, spreadsheet alignment, or parent review. It narrows the current improvement loop to the two concrete closure gaps supported by live evidence.
+This addendum does not replace final audit or parent review. Its two concrete closure requirements are promoted into the Event 014 source specifications and current matrices.
 
 ## References consulted
 

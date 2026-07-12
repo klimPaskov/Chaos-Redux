@@ -212,9 +212,9 @@ Target size: 94 by 86.
 
 Expected production scale:
 
-- 60 to 72 local warlord icons
-- 96 to 120 unified Hannibal icons
-- 24 to 32 Wendigo overlay icons
+- 72 local warlord icons
+- 108 unified Hannibal icons
+- 28 Wendigo overlay icons
 
 A coordinated icon family may share motifs, but every focus needs focus-specific artwork or a deliberately approved shared icon where the function is truly repeated. Do not resize idea or decision icons into focus icons.
 
@@ -505,3 +505,24 @@ The anti-spoiler audit must inspect:
 - event log preview rows
 - Event Details evolution catalog
 - debug names visible outside debug mode
+
+## Final production reconciliation
+
+The implemented runtime package contains:
+
+- 29 report and news DDS files
+- four distinct action super-event DDS files
+- 56 regional warlord portraits
+- one 12-frame ordinary reveal portrait and one 16-frame transformed portrait, both built from independently generated source frames
+- 195 current Event 014 flag TGAs
+- 208 focus icons
+- 56 idea and modifier icons
+- 137 decision, category, mission, and panel textures
+- 18 achievement triplets
+- 12 non-portrait animation packages plus exact static GUI surfaces
+- four unique 44.1 kHz OGG/WAV super-event audio pairs
+- the final 21-surface closure package.
+
+The closure package covers 13 maintained objective/action icons, two achievement-tracker textures, four terminal-hunt textures, the receipt-backed Pack icon, and the inherited winter-cell icon. Every closure composition has independent generated source art, processed output, runtime DDS, hash ledger, validation report, and contact-sheet evidence.
+
+A final scan across the nine `.gfx` files that reference Event 014 found 816 texture references, 598 unique paths, and zero missing runtime files. The two leader animations are real-frame sequences. No completion claim relies on transform-only portrait motion, an absent static fallback, a missing texture, or reused unified decision art.
