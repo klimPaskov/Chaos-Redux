@@ -1,6 +1,14 @@
 # Event 018 Parent-Performed Improvement Loop Review
 
-## Review status
+## Current disposition, 2026-07-11
+
+This file preserves the planning-stage parent review and its original execution limitation. It is not the current improvement-loop verdict.
+
+The required independent implementation-time planner later completed and returned a closure-only handoff. RF-018-01 through RF-018-08 are closed, RF-018-01 through RF-018-05 were promoted into the source specifications where they changed design, and no new depth addendum or further planner run is required. The current record is [Event 018 improvement-loop closure handoff](../../../plans/018_resources_found_plans/improvement_loop_closure_handoff.md).
+
+Optional ideas rejected below remain outside the accepted design. They are not omissions and cannot block completion.
+
+## Historical review status
 
 This review applies the full `chaos-redux-improvement-loop` and `chaos-redux-event-planning` standards to the completed Event 018 planning package.
 
@@ -152,7 +160,7 @@ Broad planning expansion should stop. The package is deep, connected, replayable
 
 The correct next stage is implementation, followed by the required independent improvement-loop planner pass after a meaningful implementation tranche. That planner should check actual code and assets for simplifications, missing AI, shallow route rewards, or disconnected presentation. If it returns only a closure handoff, the design loop can remain closed. If it finds a new implementation-created gap, that gap should be resolved before completion.
 
-## Plan disposition
+## Historical plan disposition
 
 - Parent-performed review: completed in this file.
 - Independent `chaosx_improvement_loop_planner` pass: blocked in this session because no subagent execution interface was available.

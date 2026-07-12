@@ -1,0 +1,160 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 018 RESOURCES FOUND PREFIRE EFFECTS
+# ============================================================================
+# Overview:
+# - Resolves the exact country/state context before Event 018 history is fired.
+# - Dynamically weighs enrichment against a fresh field.
+# - Weighs well-connected or already-developed states without changing the
+#   final six-way resource roll, which remains completely random.
+# - Exposes regular event targets resources_found_prefire_owner and
+#   resources_found_prefire_state to the entry event in the same effect chain.
+# ============================================================================
+
+resources_found_clear_prefire_context = {
+	set_temp_variable = { resources_found_prefire_ready = constant:resources_found_value.zero }
+	set_temp_variable = { resources_found_new_field_weight = constant:resources_found_value.zero }
+	set_temp_variable = { resources_found_enrichment_weight = constant:resources_found_value.zero }
+	set_temp_variable = { resources_found_preferred_state_weight = constant:resources_found_value.zero }
+	set_temp_variable = { resources_found_ordinary_state_weight = constant:resources_found_value.zero }
+}
+
+# COUNTRY scope. Selects a fresh eligible field from two disjoint buckets so
+# existing resources, coasts, and large labour markets are genuinely weighted.
+resources_found_select_weighted_new_field_state = {
+	set_temp_variable = { resources_found_preferred_state_weight = constant:resources_found_value.zero }
+	set_temp_variable = { resources_found_ordinary_state_weight = constant:resources_found_value.zero }
+	if = {
+		limit = { any_owned_state = { resources_found_is_preferred_new_field_state = yes } }
+		set_temp_variable = { resources_found_preferred_state_weight = constant:resources_found_selection_weight.preferred_state_bucket }
+	}
+	if = {
+		limit = {
+			any_owned_state = {
+				resources_found_is_valid_new_field_state = yes
+				NOT = { resources_found_is_preferred_new_field_state = yes }
+			}
+		}
+		set_temp_variable = { resources_found_ordinary_state_weight = constant:resources_found_selection_weight.ordinary_state_bucket }
+	}
+	random_list = {
+		resources_found_preferred_state_weight = {
+			random_owned_controlled_state = {
+				limit = { resources_found_is_preferred_new_field_state = yes }
+				save_event_target_as = resources_found_prefire_state
+			}
+		}
+		resources_found_ordinary_state_weight = {
+			random_owned_controlled_state = {
+				limit = {
+					resources_found_is_valid_new_field_state = yes
+					NOT = { resources_found_is_preferred_new_field_state = yes }
+				}
+				save_event_target_as = resources_found_prefire_state
+			}
+		}
+	}
+}
+
+# COUNTRY scope. Mature, surveyed, connected, or internationally important
+# fields occupy the preferred bucket; suspended/closing fields never enter it.
+resources_found_select_weighted_enrichment_field = {
+	set_temp_variable = { resources_found_preferred_state_weight = constant:resources_found_value.zero }
+	set_temp_variable = { resources_found_ordinary_state_weight = constant:resources_found_value.zero }
+	if = {
+		limit = { any_owned_state = { resources_found_is_preferred_enrichment_field = yes } }
+		set_temp_variable = { resources_found_preferred_state_weight = constant:resources_found_selection_weight.preferred_enrichment_bucket }
+	}
+	if = {
+		limit = {
+			any_owned_state = {
+				resources_found_is_valid_enrichment_field = yes
+				NOT = { resources_found_is_preferred_enrichment_field = yes }
+			}
+		}
+		set_temp_variable = { resources_found_ordinary_state_weight = constant:resources_found_selection_weight.ordinary_enrichment_bucket }
+	}
+	random_list = {
+		resources_found_preferred_state_weight = {
+			random_owned_controlled_state = {
+				limit = { resources_found_is_preferred_enrichment_field = yes }
+				save_event_target_as = resources_found_prefire_state
+			}
+		}
+		resources_found_ordinary_state_weight = {
+			random_owned_controlled_state = {
+				limit = {
+					resources_found_is_valid_enrichment_field = yes
+					NOT = { resources_found_is_preferred_enrichment_field = yes }
+				}
+				save_event_target_as = resources_found_prefire_state
+			}
+		}
+	}
+}
+
+# COUNTRY scope. Output: resources_found_prefire_ready and the two regular
+# event targets. Enrichment preference responds to investments and evolutions;
+# a fresh field remains possible whenever a valid state exists.
+resources_found_prepare_random_event_fire = {
+	resources_found_clear_prefire_context = yes
+	if = {
+		limit = { resources_found_is_eligible_discovery_owner = yes }
+		save_event_target_as = resources_found_prefire_owner
+
+		if = {
+			limit = { any_owned_state = { resources_found_is_valid_new_field_state = yes } }
+			set_temp_variable = { resources_found_new_field_weight = constant:resources_found_selection_weight.new_field_base }
+		}
+		if = {
+			limit = { any_owned_state = { resources_found_is_valid_enrichment_field = yes } }
+			set_temp_variable = { resources_found_enrichment_weight = constant:resources_found_selection_weight.enrichment_base }
+			if = {
+				limit = { any_owned_state = { resources_found_is_preferred_enrichment_field = yes } }
+				add_to_temp_variable = { resources_found_enrichment_weight = constant:resources_found_selection_weight.enrichment_investment_bonus }
+			}
+			if = {
+				limit = { any_owned_state = { has_state_flag = resources_found_transport_corridor_complete } }
+				add_to_temp_variable = { resources_found_enrichment_weight = constant:resources_found_selection_weight.enrichment_transport_bonus }
+			}
+			if = {
+				limit = { any_owned_state = { has_state_flag = resources_found_deep_survey_complete } }
+				add_to_temp_variable = { resources_found_enrichment_weight = constant:resources_found_selection_weight.enrichment_survey_bonus }
+			}
+			if = {
+				limit = {
+					any_owned_state = {
+						resources_found_is_valid_enrichment_field = yes
+						check_variable = {
+							var = resources_found_foreign_pressure
+							value = constant:resources_found_threshold.preferred_enrichment_pressure
+							compare = greater_than_or_equals
+						}
+					}
+				}
+				add_to_temp_variable = { resources_found_enrichment_weight = constant:resources_found_selection_weight.enrichment_international_bonus }
+			}
+			if = {
+				limit = { resources_found_is_evolution_i_enabled = yes }
+				add_to_temp_variable = { resources_found_enrichment_weight = constant:resources_found_selection_weight.evolution_i_bonus }
+			}
+			if = {
+				limit = { resources_found_is_evolution_ii_enabled = yes }
+				add_to_temp_variable = { resources_found_enrichment_weight = constant:resources_found_selection_weight.evolution_ii_bonus }
+			}
+			if = {
+				limit = { resources_found_is_evolution_iii_enabled = yes }
+				add_to_temp_variable = { resources_found_enrichment_weight = constant:resources_found_selection_weight.evolution_iii_bonus }
+			}
+		}
+
+		random_list = {
+			resources_found_new_field_weight = { resources_found_select_weighted_new_field_state = yes }
+			resources_found_enrichment_weight = { resources_found_select_weighted_enrichment_field = yes }
+		}
+
+		if = {
+			limit = { has_event_target = resources_found_prefire_state }
+			set_temp_variable = { resources_found_prefire_ready = constant:resources_found_value.one }
+		}
+	}
+}

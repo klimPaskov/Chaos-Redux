@@ -1,0 +1,614 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 018 RESOURCES FOUND TRIGGERS
+# ============================================================================
+# Reusable state and country validation for resource-field selection, exact
+# ledgers, country-selected fields, transaction locks, suspension and closure,
+# contracts, commissions, border stages, evolution settings, cave emergence,
+# captured-state capacity, and world-end verification inputs.
+#
+# Scope contracts:
+# - Field, ledger, closure, border, capacity, and cave-origin triggers use STATE.
+# - Owner, selected-field, cave-strength-output, and terminal triggers use COUNTRY.
+# - Evolution setting and chronology-visibility triggers can run in any scope.
+#   They mirror shared flags and the chaos-tier contract without mutating temp
+#   state.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Field identity, selection, and ledger integrity
+# ---------------------------------------------------------------------------
+
+resources_found_is_active_field = {
+	has_state_flag = resources_found_field_active
+	has_variable = resources_found_field_sequence
+	NOT = { has_state_flag = resources_found_field_closed_permanently }
+	NOT = { has_state_flag = resources_found_field_converted_to_cave_origin }
+}
+
+resources_found_has_event_resource_ledger = {
+	OR = {
+		check_variable = { resources_found_added_oil > constant:resources_found_value.zero }
+		check_variable = { resources_found_added_aluminium > constant:resources_found_value.zero }
+		check_variable = { resources_found_added_rubber > constant:resources_found_value.zero }
+		check_variable = { resources_found_added_tungsten > constant:resources_found_value.zero }
+		check_variable = { resources_found_added_steel > constant:resources_found_value.zero }
+		check_variable = { resources_found_added_chromium > constant:resources_found_value.zero }
+	}
+}
+
+resources_found_resource_ledger_is_exactly_reversible = {
+	OR = {
+		NOT = { has_variable = resources_found_added_oil }
+		check_variable = { var = resources_found_added_oil value = constant:resources_found_value.zero compare = greater_than_or_equals }
+	}
+	OR = {
+		NOT = { has_variable = resources_found_added_oil }
+		check_variable = { var = resource@oil value = resources_found_added_oil compare = greater_than_or_equals }
+	}
+	OR = {
+		NOT = { has_variable = resources_found_added_aluminium }
+		check_variable = { var = resources_found_added_aluminium value = constant:resources_found_value.zero compare = greater_than_or_equals }
+	}
+	OR = {
+		NOT = { has_variable = resources_found_added_aluminium }
+		check_variable = { var = resource@aluminium value = resources_found_added_aluminium compare = greater_than_or_equals }
+	}
+	OR = {
+		NOT = { has_variable = resources_found_added_rubber }
+		check_variable = { var = resources_found_added_rubber value = constant:resources_found_value.zero compare = greater_than_or_equals }
+	}
+	OR = {
+		NOT = { has_variable = resources_found_added_rubber }
+		check_variable = { var = resource@rubber value = resources_found_added_rubber compare = greater_than_or_equals }
+	}
+	OR = {
+		NOT = { has_variable = resources_found_added_tungsten }
+		check_variable = { var = resources_found_added_tungsten value = constant:resources_found_value.zero compare = greater_than_or_equals }
+	}
+	OR = {
+		NOT = { has_variable = resources_found_added_tungsten }
+		check_variable = { var = resource@tungsten value = resources_found_added_tungsten compare = greater_than_or_equals }
+	}
+	OR = {
+		NOT = { has_variable = resources_found_added_steel }
+		check_variable = { var = resources_found_added_steel value = constant:resources_found_value.zero compare = greater_than_or_equals }
+	}
+	OR = {
+		NOT = { has_variable = resources_found_added_steel }
+		check_variable = { var = resource@steel value = resources_found_added_steel compare = greater_than_or_equals }
+	}
+	OR = {
+		NOT = { has_variable = resources_found_added_chromium }
+		check_variable = { var = resources_found_added_chromium value = constant:resources_found_value.zero compare = greater_than_or_equals }
+	}
+	OR = {
+		NOT = { has_variable = resources_found_added_chromium }
+		check_variable = { var = resource@chromium value = resources_found_added_chromium compare = greater_than_or_equals }
+	}
+}
+
+resources_found_field_values_are_in_bounds = {
+	check_variable = { var = resources_found_developed_yield value = constant:resources_found_field_value.minimum compare = greater_than_or_equals }
+	check_variable = { var = resources_found_developed_yield value = constant:resources_found_field_value.maximum compare = less_than_or_equals }
+	check_variable = { var = resources_found_excavation_depth value = constant:resources_found_field_value.minimum compare = greater_than_or_equals }
+	check_variable = { var = resources_found_excavation_depth value = constant:resources_found_field_value.maximum compare = less_than_or_equals }
+	check_variable = { var = resources_found_workforce_safety value = constant:resources_found_field_value.minimum compare = greater_than_or_equals }
+	check_variable = { var = resources_found_workforce_safety value = constant:resources_found_field_value.maximum compare = less_than_or_equals }
+	check_variable = { var = resources_found_foreign_pressure value = constant:resources_found_field_value.minimum compare = greater_than_or_equals }
+	check_variable = { var = resources_found_foreign_pressure value = constant:resources_found_field_value.maximum compare = less_than_or_equals }
+	check_variable = { var = resources_found_subsurface_disturbance value = constant:resources_found_field_value.minimum compare = greater_than_or_equals }
+	check_variable = { var = resources_found_subsurface_disturbance value = constant:resources_found_field_value.maximum compare = less_than_or_equals }
+	check_variable = { var = resources_found_breach_pressure value = constant:resources_found_field_value.minimum compare = greater_than_or_equals }
+	check_variable = { var = resources_found_breach_pressure value = constant:resources_found_field_value.maximum compare = less_than_or_equals }
+}
+
+resources_found_state_has_standard_resource_presence = {
+	OR = {
+		check_variable = { resource@oil > constant:resources_found_threshold.minimum_resource_presence }
+		check_variable = { resource@aluminium > constant:resources_found_threshold.minimum_resource_presence }
+		check_variable = { resource@rubber > constant:resources_found_threshold.minimum_resource_presence }
+		check_variable = { resource@tungsten > constant:resources_found_threshold.minimum_resource_presence }
+		check_variable = { resource@steel > constant:resources_found_threshold.minimum_resource_presence }
+		check_variable = { resource@chromium > constant:resources_found_threshold.minimum_resource_presence }
+	}
+}
+
+resources_found_is_valid_new_field_state = {
+	impassable = no
+	OWNER = {
+		exists = yes
+		NOT = { is_special_chaos_country = yes }
+		NOT = { is_actual_nonhuman_country = yes }
+	}
+	CONTROLLER = { exists = yes }
+	is_owned_and_controlled_by = OWNER
+	NOT = { has_global_flag = world_end }
+	NOT = { has_state_flag = resources_found_field_closed_permanently }
+	NOT = { has_state_flag = resources_found_field_converted_to_cave_origin }
+	NOT = { has_state_flag = resources_found_incompatible_terminal_site }
+	NOT = { has_state_flag = resources_found_field_transaction_lock }
+	NOT = { resources_found_is_active_field = yes }
+	OR = {
+		check_variable = { state_population_k > constant:resources_found_threshold.minimum_state_population_thousands }
+		resources_found_state_has_standard_resource_presence = yes
+		is_coastal = yes
+	}
+}
+
+resources_found_is_preferred_new_field_state = {
+	resources_found_is_valid_new_field_state = yes
+	OR = {
+		resources_found_state_has_standard_resource_presence = yes
+		is_coastal = yes
+		check_variable = { state_population_k > constant:resources_found_threshold.preferred_state_population_thousands }
+	}
+}
+
+resources_found_is_valid_enrichment_field = {
+	resources_found_is_active_field = yes
+	NOT = { has_state_flag = resources_found_field_suspended }
+	NOT = { has_state_flag = resources_found_field_closing }
+	NOT = { has_state_flag = resources_found_field_transaction_lock }
+	check_variable = { resources_found_total_added < constant:resources_found_deposit.practical_concentration_cap }
+	OWNER = {
+		exists = yes
+		NOT = { is_special_chaos_country = yes }
+		NOT = { is_actual_nonhuman_country = yes }
+	}
+	is_owned_and_controlled_by = OWNER
+}
+
+resources_found_is_preferred_enrichment_field = {
+	resources_found_is_valid_enrichment_field = yes
+	OR = {
+		check_variable = {
+			var = resources_found_developed_yield
+			value = constant:resources_found_threshold.preferred_enrichment_yield
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = resources_found_excavation_depth
+			value = constant:resources_found_threshold.preferred_enrichment_depth
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = resources_found_foreign_pressure
+			value = constant:resources_found_threshold.preferred_enrichment_pressure
+			compare = greater_than_or_equals
+		}
+		has_state_flag = resources_found_transport_corridor_complete
+		has_state_flag = resources_found_deep_survey_complete
+	}
+}
+
+resources_found_is_eligible_discovery_owner = {
+	exists = yes
+	NOT = { is_special_chaos_country = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { has_global_flag = world_end }
+	OR = {
+		any_owned_state = {
+			resources_found_is_valid_new_field_state = yes
+		}
+		any_owned_state = {
+			resources_found_is_valid_enrichment_field = yes
+		}
+	}
+}
+
+resources_found_country_has_valid_selected_field = {
+	has_variable = resources_found_selected_field
+	var:resources_found_selected_field = {
+		resources_found_is_active_field = yes
+		is_owned_by = PREV
+	}
+}
+
+# COUNTRY scope. Closed fields never re-enter the active registry; this pointer
+# exposes only the most recent exact seal as an administrative history record.
+resources_found_gui_has_closed_field_history = {
+	has_variable = resources_found_last_closed_field
+	var:resources_found_last_closed_field = {
+		has_state_flag = resources_found_field_closed_permanently
+		has_state_flag = resources_found_exact_ledger_reversed
+	}
+}
+
+resources_found_selected_field_is_available_for_action = {
+	resources_found_country_has_valid_selected_field = yes
+	var:resources_found_selected_field = {
+		is_owned_and_controlled_by = PREV
+		NOT = { has_state_flag = resources_found_field_transaction_lock }
+		NOT = { has_state_flag = resources_found_field_closing }
+	}
+}
+
+resources_found_field_transaction_available = {
+	NOT = { has_state_flag = resources_found_field_transaction_lock }
+	NOT = { has_state_flag = resources_found_field_closed_permanently }
+	NOT = { has_state_flag = resources_found_field_converted_to_cave_origin }
+}
+
+# ---------------------------------------------------------------------------
+# Suspension and permanent closure
+# ---------------------------------------------------------------------------
+
+resources_found_can_suspend_field = {
+	resources_found_is_active_field = yes
+	is_owned_and_controlled_by = OWNER
+	NOT = { has_state_flag = resources_found_field_suspended }
+	NOT = { has_state_flag = resources_found_field_closing }
+	NOT = { has_state_flag = resources_found_field_transaction_lock }
+}
+
+resources_found_can_resume_field = {
+	resources_found_is_active_field = yes
+	has_state_flag = resources_found_field_suspended
+	is_owned_and_controlled_by = OWNER
+	NOT = { has_state_flag = resources_found_field_closing }
+	NOT = { has_state_flag = resources_found_field_transaction_lock }
+	has_variable = resources_found_suspension_release_date
+	check_variable = { var = resources_found_suspension_release_date value = global.date compare = less_than_or_equals }
+}
+
+resources_found_can_begin_partial_closure = {
+	resources_found_is_active_field = yes
+	resources_found_has_event_resource_ledger = yes
+	is_owned_and_controlled_by = OWNER
+	NOT = { has_state_flag = resources_found_field_closing }
+	NOT = { has_state_flag = resources_found_field_transaction_lock }
+}
+
+resources_found_can_begin_full_seal = {
+	resources_found_is_active_field = yes
+	resources_found_has_event_resource_ledger = yes
+	is_owned_and_controlled_by = OWNER
+	NOT = { has_state_flag = resources_found_field_closing }
+	NOT = { has_state_flag = resources_found_field_transaction_lock }
+	NOT = { has_state_flag = resources_found_field_converted_to_cave_origin }
+}
+
+resources_found_can_complete_full_seal = {
+	resources_found_is_active_field = yes
+	has_state_flag = resources_found_field_suspended
+	has_state_flag = resources_found_full_seal_requirements_met
+	is_owned_and_controlled_by = OWNER
+	resources_found_resource_ledger_is_exactly_reversible = yes
+	NOT = { has_state_flag = resources_found_field_transaction_lock }
+	NOT = { has_state_flag = resources_found_field_converted_to_cave_origin }
+}
+
+resources_found_evolution_iv_is_permanently_blocked = {
+	OR = {
+		has_state_flag = resources_found_evolution_iv_prevented
+		has_state_flag = resources_found_field_closed_permanently
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Trade, commission, and border-stage validation
+# ---------------------------------------------------------------------------
+
+resources_found_field_can_accept_contract = {
+	resources_found_is_active_field = yes
+	is_owned_and_controlled_by = OWNER
+	NOT = { has_state_flag = resources_found_field_suspended }
+	NOT = { has_state_flag = resources_found_field_closing }
+	NOT = { has_state_flag = resources_found_field_contract_active }
+	OR = {
+		NOT = { has_variable = resources_found_contract_stage }
+		check_variable = { resources_found_contract_stage = constant:resources_found_contract_stage.none }
+		check_variable = { resources_found_contract_stage = constant:resources_found_contract_stage.terminated }
+	}
+	check_variable = { resources_found_foreign_pressure > constant:resources_found_threshold.minimum_resource_presence }
+}
+
+resources_found_has_valid_contract_partner = {
+	has_variable = resources_found_contract_partner
+	has_variable = resources_found_recorded_owner
+	check_variable = { var = resources_found_contract_partner value = resources_found_recorded_owner compare = not_equals }
+	var:resources_found_contract_partner = {
+		exists = yes
+		NOT = { is_special_chaos_country = yes }
+		NOT = { is_actual_nonhuman_country = yes }
+	}
+}
+
+resources_found_contract_is_active_and_valid = {
+	has_state_flag = resources_found_field_contract_active
+	check_variable = { resources_found_contract_stage = constant:resources_found_contract_stage.active }
+	resources_found_has_valid_contract_partner = yes
+	resources_found_is_active_field = yes
+	NOT = { has_state_flag = resources_found_field_suspended }
+	NOT = { has_state_flag = resources_found_field_control_disrupted }
+	NOT = { has_state_flag = resources_found_contracts_pending_review }
+}
+
+resources_found_contract_requires_review = {
+	resources_found_is_active_field = yes
+	has_state_flag = resources_found_contracts_pending_review
+	OR = {
+		has_variable = resources_found_contract_partner
+		has_variable = resources_found_concession_partner
+		has_variable = resources_found_commission_sponsor
+		has_variable = resources_found_border_claimant
+	}
+}
+
+resources_found_can_propose_commission = {
+	resources_found_is_active_field = yes
+	is_owned_and_controlled_by = OWNER
+	check_variable = { var = resources_found_foreign_pressure value = constant:resources_found_threshold.coercive_pressure compare = greater_than_or_equals }
+	check_variable = { var = resources_found_interested_country_count value = constant:resources_found_threshold.commission_minimum_interested_countries compare = greater_than_or_equals }
+	NOT = { has_state_flag = resources_found_commission_active }
+	NOT = { has_state_flag = resources_found_field_closing }
+	NOT = { check_variable = { resources_found_border_stage = constant:resources_found_border_stage.border_war } }
+}
+
+resources_found_commission_is_stable = {
+	resources_found_is_active_field = yes
+	has_state_flag = resources_found_commission_active
+	check_variable = { resources_found_commission_stage = constant:resources_found_commission_stage.active }
+	NOT = { has_state_flag = resources_found_commission_violation }
+	NOT = { has_state_flag = resources_found_field_closing }
+	is_owned_and_controlled_by = OWNER
+}
+
+resources_found_has_valid_border_claimant = {
+	has_variable = resources_found_border_claimant
+	has_variable = resources_found_recorded_owner
+	check_variable = { var = resources_found_border_claimant value = resources_found_recorded_owner compare = not_equals }
+	var:resources_found_border_claimant = {
+		exists = yes
+		NOT = { is_special_chaos_country = yes }
+		NOT = { is_actual_nonhuman_country = yes }
+	}
+	OR = {
+		is_claimed_by = var:resources_found_border_claimant
+		is_core_of = var:resources_found_border_claimant
+		has_state_flag = resources_found_mapped_border_dispute
+	}
+	any_neighbor_state = {
+		OR = {
+			is_owned_by = var:PREV.resources_found_border_claimant
+			is_controlled_by = var:PREV.resources_found_border_claimant
+		}
+	}
+}
+
+resources_found_can_enter_border_crisis = {
+	resources_found_is_active_field = yes
+	resources_found_has_valid_border_claimant = yes
+	is_owned_and_controlled_by = OWNER
+	check_variable = { var = resources_found_foreign_pressure value = constant:resources_found_threshold.coercive_pressure compare = greater_than_or_equals }
+	check_variable = { var = resources_found_total_added value = constant:resources_found_threshold.border_minimum_total compare = greater_than_or_equals }
+	check_variable = { var = resources_found_interested_country_count value = constant:resources_found_threshold.border_minimum_interested_countries compare = greater_than_or_equals }
+	NOT = { resources_found_commission_is_stable = yes }
+	NOT = { has_state_flag = resources_found_field_closing }
+	NOT = { has_global_flag = world_end }
+}
+
+resources_found_border_is_at_competing_surveys = {
+	check_variable = { resources_found_border_stage = constant:resources_found_border_stage.competing_surveys }
+}
+
+resources_found_border_is_at_road_confrontation = {
+	check_variable = { resources_found_border_stage = constant:resources_found_border_stage.road_confrontation }
+}
+
+resources_found_border_is_at_armed_patrol = {
+	check_variable = { resources_found_border_stage = constant:resources_found_border_stage.armed_patrol }
+}
+
+resources_found_border_is_at_frontier_mission = {
+	check_variable = { resources_found_border_stage = constant:resources_found_border_stage.frontier_mission }
+}
+
+resources_found_border_is_at_border_war = {
+	check_variable = { resources_found_border_stage = constant:resources_found_border_stage.border_war }
+}
+
+resources_found_border_is_at_settlement = {
+	check_variable = { resources_found_border_stage = constant:resources_found_border_stage.settlement }
+}
+
+resources_found_border_military_stage_ready = {
+	resources_found_can_enter_border_crisis = yes
+	has_state_flag = resources_found_frontier_conditions_met
+	has_state_flag = resources_found_claimant_military_ready
+	has_state_flag = resources_found_owner_military_ready
+}
+
+# ---------------------------------------------------------------------------
+# Shared evolution setting gates
+# ---------------------------------------------------------------------------
+
+resources_found_is_evolution_i_enabled = {
+	NOT = { has_global_flag = events_log_disabled_evolution_18_18_1 }
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:chaos_meter_tier_range.tier_1.min
+		compare = greater_than_or_equals
+	}
+}
+
+resources_found_is_evolution_ii_enabled = {
+	NOT = { has_global_flag = events_log_disabled_evolution_18_18_2 }
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:chaos_meter_tier_range.tier_2.min
+		compare = greater_than_or_equals
+	}
+}
+
+resources_found_is_evolution_iii_enabled = {
+	NOT = { has_global_flag = events_log_disabled_evolution_18_18_3 }
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:chaos_meter_tier_range.tier_3.min
+		compare = greater_than_or_equals
+	}
+}
+
+resources_found_is_evolution_iv_enabled = {
+	NOT = { has_global_flag = events_log_disabled_evolution_18_18_4 }
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:chaos_meter_tier_range.tier_4.min
+		compare = greater_than_or_equals
+	}
+}
+
+resources_found_selected_evolution_is_public = {
+	check_variable = { events_log_selected_evolution_event_id = constant:resources_found_event.id }
+	check_variable = { events_log_selected_evolution_type = constant:resources_found_event.evolution_type }
+	OR = {
+		AND = {
+			check_variable = { events_log_selected_evolution_stage = constant:resources_found_event.evolution_i_stage }
+			has_global_flag = resources_found_evolution_i_chronology_recorded
+		}
+		AND = {
+			check_variable = { events_log_selected_evolution_stage = constant:resources_found_event.evolution_ii_stage }
+			has_global_flag = resources_found_evolution_ii_chronology_recorded
+		}
+		AND = {
+			check_variable = { events_log_selected_evolution_stage = constant:resources_found_event.evolution_iii_stage }
+			has_global_flag = resources_found_evolution_iii_chronology_recorded
+		}
+		AND = {
+			check_variable = { events_log_selected_evolution_stage = constant:resources_found_event.evolution_iv_stage }
+			has_global_flag = resources_found_evolution_iv_chronology_recorded
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Cave emergence and captured-state capacity
+# ---------------------------------------------------------------------------
+
+resources_found_can_begin_evolution_iv = {
+	resources_found_is_active_field = yes
+	resources_found_is_evolution_iv_enabled = yes
+	NOT = { has_global_flag = resources_found_cave_threat_permanently_contained }
+	has_state_flag = resources_found_public_breach
+	has_state_flag = resources_found_evolution_iii_incident_sequence_complete
+	NOT = { resources_found_evolution_iv_is_permanently_blocked = yes }
+	NOT = { has_state_flag = resources_found_full_seal_active }
+	NOT = { has_state_flag = resources_found_field_transaction_lock }
+	NOT = { has_global_flag = world_end }
+	check_variable = { var = resources_found_breach_pressure value = constant:resources_found_threshold.cave_minimum_breach_pressure compare = greater_than_or_equals }
+	check_variable = { var = resources_found_exploitation_score value = constant:resources_found_threshold.cave_minimum_exploitation_score compare = greater_than_or_equals }
+	has_variable = resources_found_public_crisis_minimum_date
+	check_variable = { var = resources_found_public_crisis_minimum_date value = global.date compare = less_than_or_equals }
+	OWNER = { exists = yes }
+	CONTROLLER = { exists = yes }
+}
+
+resources_found_state_can_form_first_cave_origin = {
+	resources_found_can_begin_evolution_iv = yes
+	NOT = { has_global_flag = resources_found_cave_country_active }
+	NOT = { has_event_target = resources_found_cave_country }
+	any_neighbor_state = {
+		impassable = no
+		OWNER = { exists = yes }
+	}
+}
+
+resources_found_state_can_reinforce_existing_cave_host = {
+	resources_found_can_begin_evolution_iv = yes
+	has_global_flag = resources_found_cave_country_active
+	has_event_target = resources_found_cave_country
+	event_target:resources_found_cave_country = { exists = yes }
+}
+
+resources_found_is_cave_origin_state = {
+	OR = {
+		has_state_flag = resources_found_cave_origin
+		has_state_flag = resources_found_field_converted_to_cave_origin
+	}
+}
+
+resources_found_state_can_contribute_cave_capacity = {
+	impassable = no
+	NOT = { resources_found_is_cave_origin_state = yes }
+	is_controlled_by = DHO
+	has_variable = resources_found_capacity_source_total
+	check_variable = { var = resources_found_capacity_source_total value = constant:resources_found_capacity.resources_per_division compare = greater_than_or_equals }
+}
+
+resources_found_cave_starting_strength_is_valid = {
+	has_variable = resources_found_cave_starting_divisions
+	check_variable = { var = resources_found_cave_starting_divisions value = constant:resources_found_strength.minimum_divisions compare = greater_than_or_equals }
+	check_variable = { var = resources_found_cave_starting_divisions value = constant:resources_found_strength.maximum_divisions compare = less_than_or_equals }
+}
+
+# ---------------------------------------------------------------------------
+# Exact terminal verification inputs
+# ---------------------------------------------------------------------------
+
+resources_found_world_end_exact_continent_inputs_valid = {
+	has_country_flag = resources_found_continent_registry_ready
+	NOT = { has_country_flag = resources_found_continent_scan_mismatch }
+	has_variable = resources_found_continent_eligible_state_count
+	has_variable = resources_found_continent_scanned_state_count
+	has_variable = resources_found_continent_owned_state_count
+	has_variable = resources_found_continent_controlled_state_count
+	has_variable = resources_found_continent_owned_controlled_state_count
+	has_variable = resources_found_continent_remaining_state_count
+	check_variable = { var = resources_found_continent_eligible_state_count value = constant:resources_found_world_end.minimum_eligible_states compare = greater_than_or_equals }
+	check_variable = { var = resources_found_continent_scanned_state_count value = resources_found_continent_eligible_state_count compare = equals }
+	check_variable = { var = resources_found_continent_owned_state_count value = resources_found_continent_eligible_state_count compare = equals }
+	check_variable = { var = resources_found_continent_controlled_state_count value = resources_found_continent_eligible_state_count compare = equals }
+	check_variable = { var = resources_found_continent_owned_controlled_state_count value = resources_found_continent_eligible_state_count compare = equals }
+	check_variable = { resources_found_continent_remaining_state_count = constant:resources_found_value.zero }
+}
+
+resources_found_world_end_origin_inputs_valid = {
+	has_variable = resources_found_cave_origin_state
+	var:resources_found_cave_origin_state = {
+		resources_found_is_cave_origin_state = yes
+		is_owned_and_controlled_by = PREV
+	}
+}
+
+resources_found_can_start_world_end_verification = {
+	exists = yes
+	has_country_flag = resources_found_cave_country
+	has_country_flag = resources_found_world_end_preparation_complete
+	resources_found_is_evolution_iv_enabled = yes
+	resources_found_world_end_origin_inputs_valid = yes
+	resources_found_world_end_exact_continent_inputs_valid = yes
+	resources_found_world_end_foothold_inputs_valid = yes
+	NOT = { has_country_flag = resources_found_world_end_verification_active }
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = world_end_disabled }
+	has_variable = global.chaos_meter_value
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:resources_found_world_end.chaos_gate
+		compare = greater_than
+	}
+}
+
+resources_found_world_end_verification_complete = {
+	has_country_flag = resources_found_world_end_verification_active
+	resources_found_world_end_origin_inputs_valid = yes
+	resources_found_world_end_exact_continent_inputs_valid = yes
+	resources_found_world_end_foothold_inputs_valid = yes
+	has_variable = resources_found_world_end_verification_date
+	check_variable = { var = resources_found_world_end_verification_date value = global.date compare = less_than_or_equals }
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = world_end_disabled }
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:resources_found_world_end.chaos_gate
+		compare = greater_than
+	}
+}
+
+resources_found_world_end_foothold_inputs_valid = {
+	has_country_flag = resources_found_foothold_registry_ready
+	NOT = { has_country_flag = resources_found_foothold_registry_mismatch }
+	has_variable = resources_found_valid_foothold_count
+	check_variable = { var = resources_found_valid_foothold_count value = constant:resources_found_world_end.minimum_valid_footholds compare = greater_than_or_equals }
+}

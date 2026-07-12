@@ -1,0 +1,107 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 018 FIELD UI EFFECTS
+# ============================================================================
+# Country-scope helpers for rebuilding the valid field view, cycling the
+# selected persistent state record, and moving the map camera to that state.
+# The physical record remains state-owned in every case.
+# ============================================================================
+
+resources_found_gui_rebuild_field_list = {
+	resize_array = { resources_found_gui_fields = 0 }
+	every_owned_state = {
+		limit = { resources_found_is_active_field = yes }
+		resources_found_recalculate_resource_summary = yes
+		ROOT = { add_to_array = { resources_found_gui_fields = PREV } }
+	}
+
+	if = {
+		limit = { check_variable = { resources_found_gui_fields^num = constant:resources_found_value.zero } }
+		clear_variable = resources_found_gui_selected_index
+		clear_variable = resources_found_selected_field
+	}
+	else = {
+		if = {
+			limit = { NOT = { has_variable = resources_found_gui_selected_index } }
+			set_variable = { resources_found_gui_selected_index = constant:resources_found_value.zero }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = resources_found_gui_selected_index
+					value = resources_found_gui_fields^num
+					compare = greater_than_or_equals
+				}
+			}
+			set_variable = { resources_found_gui_selected_index = constant:resources_found_value.zero }
+		}
+		set_variable = { resources_found_selected_field = resources_found_gui_fields^resources_found_gui_selected_index }
+	}
+}
+
+resources_found_gui_select_next_field = {
+	resources_found_gui_rebuild_field_list = yes
+	if = {
+		limit = { check_variable = { resources_found_gui_fields^num > constant:resources_found_value.zero } }
+		clr_country_flag = resources_found_gui_closed_history_view
+		add_to_variable = { resources_found_gui_selected_index = constant:resources_found_value.one }
+		if = {
+			limit = {
+				check_variable = {
+					var = resources_found_gui_selected_index
+					value = resources_found_gui_fields^num
+					compare = greater_than_or_equals
+				}
+			}
+			set_variable = { resources_found_gui_selected_index = constant:resources_found_value.zero }
+		}
+		set_variable = { resources_found_selected_field = resources_found_gui_fields^resources_found_gui_selected_index }
+	}
+	resources_found_refresh_decision_cost_previews = yes
+}
+
+resources_found_gui_select_previous_field = {
+	resources_found_gui_rebuild_field_list = yes
+	if = {
+		limit = { check_variable = { resources_found_gui_fields^num > constant:resources_found_value.zero } }
+		clr_country_flag = resources_found_gui_closed_history_view
+		add_to_variable = { resources_found_gui_selected_index = constant:resources_found_value.negative_one }
+		if = {
+			limit = { check_variable = { resources_found_gui_selected_index < constant:resources_found_value.zero } }
+			set_variable = { resources_found_gui_selected_index = resources_found_gui_fields^num }
+			add_to_variable = { resources_found_gui_selected_index = constant:resources_found_value.negative_one }
+		}
+		set_variable = { resources_found_selected_field = resources_found_gui_fields^resources_found_gui_selected_index }
+	}
+	resources_found_refresh_decision_cost_previews = yes
+}
+
+resources_found_gui_goto_selected_field = {
+	if = {
+		limit = {
+			has_country_flag = resources_found_gui_closed_history_view
+			resources_found_gui_has_closed_field_history = yes
+		}
+		var:resources_found_last_closed_field = { ROOT = { goto_state = PREV } }
+	}
+	else = {
+		resources_found_validate_country_field_selection = yes
+		if = {
+			limit = { resources_found_country_has_valid_selected_field = yes }
+			var:resources_found_selected_field = { ROOT = { goto_state = PREV } }
+		}
+	}
+}
+
+resources_found_gui_toggle_closed_history = {
+	if = {
+		limit = {
+			has_country_flag = resources_found_gui_closed_history_view
+			resources_found_country_has_valid_selected_field = yes
+		}
+		clr_country_flag = resources_found_gui_closed_history_view
+	}
+	else_if = {
+		limit = { resources_found_gui_has_closed_field_history = yes }
+		set_country_flag = resources_found_gui_closed_history_view
+	}
+}

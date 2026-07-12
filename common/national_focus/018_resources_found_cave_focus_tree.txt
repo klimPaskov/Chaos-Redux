@@ -1,0 +1,1174 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 018 OTH-KESH NATIONAL FOCUS TREE
+# ============================================================================
+# Playable cave-country progression from emergence through three exclusive
+# hierarchy routes, three exclusive surface-war doctrines, resource anchors,
+# adaptation, continental conquest, and the verified world-end preparation.
+# Focus rewards dispatch into Event 018 helpers so route mechanics, templates,
+# AI objectives, and cleanup remain centralized outside the graph.
+# ============================================================================
+
+@cave_focus_emergency = 5
+@cave_focus_short = 7
+@cave_focus_normal = 10
+@cave_focus_project = 12
+@cave_focus_long = 14
+
+# File-scoped focus-selection tuning. Structural x/y coordinates remain literal;
+# every strategic weight and threshold is centralized here for balance passes.
+@cave_ai_disabled = 0
+@cave_ai_route_gate = 30
+@cave_ai_adaptation_gate = 35
+@cave_ai_low = 40
+@cave_ai_guarded = 42
+@cave_ai_measured = 43
+@cave_ai_cautious = 44
+@cave_ai_standard = 45
+@cave_ai_committed = 46
+@cave_ai_assertive = 47
+@cave_ai_high = 48
+@cave_ai_major = 50
+@cave_ai_targeted = 52
+@cave_ai_doctrine = 55
+@cave_ai_advance = 60
+@cave_ai_network = 62
+@cave_ai_expansion = 65
+@cave_ai_momentum = 68
+@cave_ai_continental = 70
+@cave_ai_terminal_preparation = 75
+@cave_ai_foothold = 78
+@cave_ai_world_end_ready = 80
+@cave_ai_opening_broods = 85
+@cave_ai_origin = 90
+@cave_ai_terminal = 100
+@cave_ai_favored_factor = 2
+@cave_ai_small_host_state_ceiling = 20
+@cave_ai_large_host_state_floor = 19
+@cave_ai_fort_level_threshold = 2
+
+# ============================================================================
+# CHAOS REDUX - EVENT 018 OTH-KESH HOST FOCUS TREE
+# ============================================================================
+# Sixty-five focuses teach and extend the origin, hierarchy, resource-anchor,
+# doctrine, adaptation, continental objective, and world-end systems. Hierarchy
+# and doctrine roots are mutually exclusive. Every reward changes Event 018
+# mechanics, templates, decisions, anchors, targets, map state, or AI behavior.
+# ============================================================================
+
+focus_tree = {
+	id = 018_resources_found_cave_focus_tree
+
+	country = {
+		factor = @cave_ai_disabled
+		modifier = {
+			add = @cave_ai_terminal
+			original_tag = DHO
+			has_country_flag = resources_found_cave_country
+		}
+	}
+
+	default = no
+	continuous_focus_position = { x = 1900 y = 120 }
+	initial_show_position = { x = 12 y = 0 }
+
+	# ------------------------------------------------------------------------
+	# Emergence trunk
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = DHO_the_first_breach
+		icon = GFX_focus_DHO_the_first_breach
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 12
+		y = 0
+		cost = @cave_focus_emergency
+		completion_reward = {
+			custom_effect_tooltip = DHO_the_first_breach_tt
+			resources_found_cave_initialize_live_systems = yes
+		}
+		ai_will_do = { base = @cave_ai_terminal }
+	}
+
+	focus = {
+		id = DHO_secure_the_origin_chamber
+		icon = GFX_focus_DHO_secure_the_origin_chamber
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 12
+		y = 1
+		cost = @cave_focus_short
+		prerequisite = { focus = DHO_the_first_breach }
+		completion_reward = {
+			custom_effect_tooltip = DHO_secure_the_origin_chamber_tt
+			resources_found_cave_secure_origin = yes
+		}
+		ai_will_do = { base = @cave_ai_origin }
+	}
+
+	focus = {
+		id = DHO_organize_the_first_war_broods
+		icon = GFX_focus_DHO_organize_the_first_war_broods
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		x = 12
+		y = 2
+		cost = @cave_focus_short
+		prerequisite = { focus = DHO_secure_the_origin_chamber }
+		completion_reward = {
+			custom_effect_tooltip = DHO_organize_the_first_war_broods_tt
+			resources_found_cave_recruit_commanders = yes
+		}
+		ai_will_do = { base = @cave_ai_opening_broods }
+	}
+
+	focus = {
+		id = DHO_read_the_surface_veins
+		icon = GFX_focus_DHO_read_the_surface_veins
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 12
+		y = 3
+		cost = @cave_focus_short
+		prerequisite = { focus = DHO_organize_the_first_war_broods }
+		completion_reward = {
+			custom_effect_tooltip = DHO_read_the_surface_veins_tt
+			set_country_flag = cave_focus_surface_veins_read
+			resources_found_cave_mark_richest_reachable_state = yes
+		}
+		ai_will_do = { base = @cave_ai_world_end_ready }
+	}
+
+	# ------------------------------------------------------------------------
+	# Hierarchy: One Maw
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = DHO_one_maw
+		icon = GFX_focus_DHO_one_maw
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 2
+		y = 5
+		cost = @cave_focus_normal
+		prerequisite = { focus = DHO_read_the_surface_veins }
+		mutually_exclusive = { focus = DHO_many_chambers focus = DHO_hoard_the_veins }
+		completion_reward = {
+			custom_effect_tooltip = DHO_one_maw_tt
+			resources_found_cave_choose_one_maw = yes
+		}
+		ai_will_do = {
+			base = @cave_ai_route_gate
+			modifier = { factor = @cave_ai_favored_factor num_of_controlled_states < @cave_ai_small_host_state_ceiling }
+			modifier = { factor = @cave_ai_disabled has_country_flag = cave_origin_lost }
+		}
+	}
+
+	focus = {
+		id = DHO_central_resonance
+		icon = GFX_focus_DHO_central_resonance
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 2
+		y = 6
+		cost = @cave_focus_short
+		prerequisite = { focus = DHO_one_maw }
+		completion_reward = {
+			custom_effect_tooltip = DHO_central_resonance_tt
+			resources_found_cave_refresh_command_network = yes
+			resources_found_cave_recalculate_capacity = yes
+		}
+		ai_will_do = { base = @cave_ai_standard }
+	}
+
+	focus = {
+		id = DHO_directed_war_broods
+		icon = GFX_focus_DHO_directed_war_broods
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		x = 3
+		y = 7
+		cost = @cave_focus_normal
+		prerequisite = { focus = DHO_central_resonance }
+		completion_reward = {
+			custom_effect_tooltip = DHO_directed_war_broods_tt
+			resources_found_cave_refresh_ai_targets = yes
+		}
+		ai_will_do = { base = @cave_ai_low }
+	}
+
+	focus = {
+		id = DHO_origin_above_all
+		icon = GFX_focus_DHO_origin_above_all
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 2
+		y = 8
+		cost = @cave_focus_project
+		prerequisite = { focus = DHO_central_resonance }
+		prerequisite = { focus = DHO_directed_war_broods }
+		completion_reward = {
+			custom_effect_tooltip = DHO_origin_above_all_tt
+			resources_found_cave_fortify_origin = yes
+		}
+		ai_will_do = { base = @cave_ai_high }
+	}
+
+	focus = {
+		id = DHO_the_singular_hunger
+		icon = GFX_focus_DHO_the_singular_hunger
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 2
+		y = 9
+		cost = @cave_focus_long
+		prerequisite = { focus = DHO_origin_above_all }
+		completion_reward = {
+			custom_effect_tooltip = DHO_the_singular_hunger_tt
+			resources_found_cave_mark_richest_reachable_state = yes
+		}
+		ai_will_do = { base = @cave_ai_major }
+	}
+
+	# ------------------------------------------------------------------------
+	# Hierarchy: Many Chambers
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = DHO_many_chambers
+		icon = GFX_focus_DHO_many_chambers
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 6
+		y = 5
+		cost = @cave_focus_normal
+		prerequisite = { focus = DHO_read_the_surface_veins }
+		mutually_exclusive = { focus = DHO_one_maw focus = DHO_hoard_the_veins }
+		completion_reward = {
+			custom_effect_tooltip = DHO_many_chambers_tt
+			resources_found_cave_choose_many_chambers = yes
+		}
+		ai_will_do = {
+			base = @cave_ai_route_gate
+			modifier = { factor = @cave_ai_favored_factor num_of_controlled_states > @cave_ai_large_host_state_floor }
+			modifier = { factor = @cave_ai_favored_factor has_country_flag = cave_origin_threatened }
+		}
+	}
+
+	focus = {
+		id = DHO_local_brood_memory
+		icon = GFX_focus_DHO_local_brood_memory
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 6
+		y = 6
+		cost = @cave_focus_short
+		prerequisite = { focus = DHO_many_chambers }
+		completion_reward = {
+			custom_effect_tooltip = DHO_local_brood_memory_tt
+			resources_found_cave_extend_anchor_grace = yes
+			resources_found_cave_refresh_spawn_interval = yes
+		}
+		ai_will_do = { base = @cave_ai_standard }
+	}
+
+	focus = {
+		id = DHO_distributed_command
+		icon = GFX_focus_DHO_distributed_command
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		x = 7
+		y = 7
+		cost = @cave_focus_normal
+		prerequisite = { focus = DHO_local_brood_memory }
+		completion_reward = {
+			custom_effect_tooltip = DHO_distributed_command_tt
+			resources_found_cave_refresh_ai_targets = yes
+		}
+		ai_will_do = { base = @cave_ai_guarded }
+	}
+
+	focus = {
+		id = DHO_a_second_deep_capital
+		icon = GFX_focus_DHO_a_second_deep_capital
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 6
+		y = 8
+		cost = @cave_focus_long
+		prerequisite = { focus = DHO_local_brood_memory }
+		prerequisite = { focus = DHO_distributed_command }
+		available = { resources_found_cave_has_secondary_capital_candidate = yes }
+		completion_reward = {
+			custom_effect_tooltip = DHO_a_second_deep_capital_tt
+			resources_found_cave_designate_secondary_capital = yes
+		}
+		ai_will_do = { base = @cave_ai_high }
+	}
+
+	focus = {
+		id = DHO_the_host_without_a_head
+		icon = GFX_focus_DHO_the_host_without_a_head
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 6
+		y = 9
+		cost = @cave_focus_long
+		prerequisite = { focus = DHO_a_second_deep_capital }
+		completion_reward = {
+			custom_effect_tooltip = DHO_the_host_without_a_head_tt
+			set_country_flag = cave_host_without_a_head
+			resources_found_cave_refresh_command_network = yes
+		}
+		ai_will_do = { base = @cave_ai_major }
+	}
+
+	# ------------------------------------------------------------------------
+	# Hierarchy: Hoard the Veins
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = DHO_hoard_the_veins
+		icon = GFX_focus_DHO_hoard_the_veins
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 10
+		y = 5
+		cost = @cave_focus_normal
+		prerequisite = { focus = DHO_read_the_surface_veins }
+		mutually_exclusive = { focus = DHO_one_maw focus = DHO_many_chambers }
+		completion_reward = {
+			custom_effect_tooltip = DHO_hoard_the_veins_tt
+			resources_found_cave_choose_hoard_the_veins = yes
+		}
+		ai_will_do = {
+			base = @cave_ai_route_gate
+			modifier = { factor = @cave_ai_favored_factor resources_found_cave_has_three_rich_anchors = yes }
+			modifier = { factor = @cave_ai_disabled NOT = { resources_found_cave_has_rich_reachable_state = yes } }
+		}
+	}
+
+	focus = {
+		id = DHO_mineral_tithe
+		icon = GFX_focus_DHO_mineral_tithe
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 10
+		y = 6
+		cost = @cave_focus_short
+		prerequisite = { focus = DHO_hoard_the_veins }
+		completion_reward = {
+			custom_effect_tooltip = DHO_mineral_tithe_tt
+			resources_found_cave_refresh_anchor_benefits = yes
+			resources_found_cave_refresh_spawn_interval = yes
+		}
+		ai_will_do = { base = @cave_ai_committed }
+	}
+
+	focus = {
+		id = DHO_guard_the_feeding_chambers
+		icon = GFX_focus_DHO_guard_the_feeding_chambers
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 9
+		y = 7
+		cost = @cave_focus_project
+		prerequisite = { focus = DHO_mineral_tithe }
+		completion_reward = {
+			custom_effect_tooltip = DHO_guard_the_feeding_chambers_tt
+			set_country_flag = cave_feeding_chamber_guards_unlocked
+		}
+		ai_will_do = { base = @cave_ai_standard }
+	}
+
+	focus = {
+		id = DHO_refuse_barren_ground
+		icon = GFX_focus_DHO_refuse_barren_ground
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 11
+		y = 7
+		cost = @cave_focus_normal
+		prerequisite = { focus = DHO_mineral_tithe }
+		completion_reward = {
+			custom_effect_tooltip = DHO_refuse_barren_ground_tt
+			resources_found_cave_refresh_ai_targets = yes
+		}
+		ai_will_do = { base = @cave_ai_measured }
+	}
+
+	focus = {
+		id = DHO_preserve_every_plate
+		icon = GFX_focus_DHO_preserve_every_plate
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		x = 10
+		y = 8
+		cost = @cave_focus_project
+		prerequisite = { focus = DHO_guard_the_feeding_chambers }
+		prerequisite = { focus = DHO_refuse_barren_ground }
+		completion_reward = {
+			custom_effect_tooltip = DHO_preserve_every_plate_tt
+			resources_found_cave_refresh_spawn_interval = yes
+		}
+		ai_will_do = { base = @cave_ai_assertive }
+	}
+
+	focus = {
+		id = DHO_vaults_beneath_the_continent
+		icon = GFX_focus_DHO_vaults_beneath_the_continent
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 10
+		y = 9
+		cost = @cave_focus_long
+		prerequisite = { focus = DHO_preserve_every_plate }
+		completion_reward = {
+			custom_effect_tooltip = DHO_vaults_beneath_the_continent_tt
+			resources_found_cave_deepen_anchor_vaults = yes
+		}
+		ai_will_do = { base = @cave_ai_major }
+	}
+
+	# ------------------------------------------------------------------------
+	# Resource-anchor economy
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = DHO_survey_surface_seams
+		icon = GFX_focus_DHO_survey_surface_seams
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 13
+		y = 5
+		cost = @cave_focus_short
+		prerequisite = { focus = DHO_read_the_surface_veins }
+		completion_reward = {
+			custom_effect_tooltip = DHO_survey_surface_seams_tt
+			resources_found_cave_refresh_ai_targets = yes
+		}
+		ai_will_do = { base = @cave_ai_expansion }
+	}
+
+	focus = {
+		id = DHO_activate_resource_anchors
+		icon = GFX_focus_DHO_activate_resource_anchors
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 13
+		y = 6
+		cost = @cave_focus_normal
+		prerequisite = { focus = DHO_survey_surface_seams }
+		completion_reward = {
+			custom_effect_tooltip = DHO_activate_resource_anchors_tt
+			set_country_flag = cave_anchor_activation_unlocked
+			resources_found_cave_scan_controlled_anchor_candidates = yes
+		}
+		ai_will_do = { base = @cave_ai_continental }
+	}
+
+	focus = {
+		id = DHO_build_brood_queues
+		icon = GFX_focus_DHO_build_brood_queues
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 12
+		y = 7
+		cost = @cave_focus_project
+		prerequisite = { focus = DHO_activate_resource_anchors }
+		completion_reward = {
+			custom_effect_tooltip = DHO_build_brood_queues_tt
+			set_country_flag = cave_brood_queue_controls_unlocked
+			resources_found_cave_recalculate_capacity = yes
+			resources_found_cave_refresh_spawn_interval = yes
+		}
+		ai_will_do = { base = @cave_ai_momentum }
+	}
+
+	focus = {
+		id = DHO_fortify_the_feeding_state
+		icon = GFX_focus_DHO_fortify_the_feeding_state
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 14
+		y = 7
+		cost = @cave_focus_project
+		prerequisite = { focus = DHO_activate_resource_anchors }
+		completion_reward = {
+			custom_effect_tooltip = DHO_fortify_the_feeding_state_tt
+			resources_found_cave_fortify_rich_anchors = yes
+		}
+		ai_will_do = { base = @cave_ai_advance }
+	}
+
+	focus = {
+		id = DHO_consume_captured_industry
+		icon = GFX_focus_DHO_consume_captured_industry
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 13
+		y = 8
+		cost = @cave_focus_project
+		prerequisite = { focus = DHO_build_brood_queues }
+		prerequisite = { focus = DHO_fortify_the_feeding_state }
+		completion_reward = {
+			custom_effect_tooltip = DHO_consume_captured_industry_tt
+			set_country_flag = cave_industry_conversion_unlocked
+			resources_found_cave_convert_secure_industry = yes
+		}
+		ai_will_do = { base = @cave_ai_network }
+	}
+
+	focus = {
+		id = DHO_link_the_chambers
+		icon = GFX_focus_DHO_link_the_chambers
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 13
+		y = 12
+		cost = @cave_focus_long
+		prerequisite = { focus = DHO_consume_captured_industry }
+		prerequisite = { focus = DHO_the_singular_hunger focus = DHO_the_host_without_a_head focus = DHO_vaults_beneath_the_continent }
+		prerequisite = { focus = DHO_the_moving_mountain focus = DHO_the_front_has_a_floor focus = DHO_the_hills_begin_to_move }
+		completion_reward = {
+			custom_effect_tooltip = DHO_link_the_chambers_tt
+			set_country_flag = cave_tunnel_links_unlocked
+			resources_found_cave_link_nearest_anchors = yes
+		}
+		ai_will_do = { base = @cave_ai_expansion }
+	}
+
+	focus = {
+		id = DHO_the_continental_network
+		icon = GFX_focus_DHO_the_continental_network
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 13
+		y = 13
+		cost = @cave_focus_long
+		prerequisite = { focus = DHO_link_the_chambers }
+		completion_reward = {
+			custom_effect_tooltip = DHO_the_continental_network_tt
+			set_country_flag = cave_continental_network
+			resources_found_cave_refresh_anchor_benefits = yes
+			resources_found_cave_recalculate_capacity = yes
+		}
+		ai_will_do = { base = @cave_ai_continental }
+	}
+
+	# ------------------------------------------------------------------------
+	# Surface-war doctrines
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = DHO_learn_the_open_sky
+		icon = GFX_focus_DHO_learn_the_open_sky
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		x = 21
+		y = 5
+		cost = @cave_focus_short
+		prerequisite = { focus = DHO_read_the_surface_veins }
+		completion_reward = {
+			custom_effect_tooltip = DHO_learn_the_open_sky_tt
+			resources_found_cave_refresh_ai_targets = yes
+		}
+		ai_will_do = { base = @cave_ai_continental }
+	}
+
+	focus = {
+		id = DHO_read_the_enemy_line
+		icon = GFX_focus_DHO_read_the_enemy_line
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		x = 21
+		y = 6
+		cost = @cave_focus_short
+		prerequisite = { focus = DHO_learn_the_open_sky }
+		completion_reward = {
+			custom_effect_tooltip = DHO_read_the_enemy_line_tt
+			resources_found_cave_analyze_enemy_piercing = yes
+		}
+		ai_will_do = { base = @cave_ai_momentum }
+	}
+
+	# Stone Phalanx
+	focus = {
+		id = DHO_stone_phalanx
+		icon = GFX_focus_DHO_stone_phalanx
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		x = 17
+		y = 7
+		cost = @cave_focus_normal
+		prerequisite = { focus = DHO_read_the_enemy_line }
+		mutually_exclusive = { focus = DHO_burrow_war focus = DHO_scree_tide }
+		completion_reward = {
+			custom_effect_tooltip = DHO_stone_phalanx_tt
+			resources_found_cave_choose_stone_phalanx = yes
+		}
+		ai_will_do = {
+			base = @cave_ai_route_gate
+			modifier = { factor = @cave_ai_favored_factor any_enemy_country = { is_major = yes } }
+			modifier = { factor = @cave_ai_favored_factor any_enemy_country = { any_controlled_state = { fort_level > @cave_ai_fort_level_threshold } } }
+		}
+	}
+
+	focus = {
+		id = DHO_interlocking_carapaces
+		icon = GFX_focus_DHO_interlocking_carapaces
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		x = 17
+		y = 8
+		cost = @cave_focus_project
+		prerequisite = { focus = DHO_stone_phalanx }
+		completion_reward = {
+			custom_effect_tooltip = DHO_interlocking_carapaces_tt
+			resources_found_cave_unlock_interlocking_carapaces = yes
+		}
+		ai_will_do = { base = @cave_ai_high }
+	}
+
+	focus = {
+		id = DHO_deliberate_front_advance
+		icon = GFX_focus_DHO_deliberate_front_advance
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		x = 16
+		y = 9
+		cost = @cave_focus_normal
+		prerequisite = { focus = DHO_interlocking_carapaces }
+		completion_reward = {
+			custom_effect_tooltip = DHO_deliberate_front_advance_tt
+			set_country_flag = cave_phalanx_assault_unlocked
+			resources_found_cave_refresh_ai_targets = yes
+		}
+		ai_will_do = { base = @cave_ai_cautious }
+	}
+
+	focus = {
+		id = DHO_resist_the_great_guns
+		icon = GFX_focus_DHO_resist_the_great_guns
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 18
+		y = 9
+		cost = @cave_focus_project
+		prerequisite = { focus = DHO_interlocking_carapaces }
+		available = { resources_found_cave_has_fought_piercing_enemy = yes }
+		completion_reward = {
+			custom_effect_tooltip = DHO_resist_the_great_guns_tt
+			resources_found_cave_unlock_great_gun_resistance = yes
+		}
+		ai_will_do = { base = @cave_ai_major }
+	}
+
+	focus = {
+		id = DHO_crush_the_fortified_line
+		icon = GFX_focus_DHO_crush_the_fortified_line
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 17
+		y = 10
+		cost = @cave_focus_project
+		prerequisite = { focus = DHO_deliberate_front_advance }
+		prerequisite = { focus = DHO_resist_the_great_guns }
+		completion_reward = {
+			custom_effect_tooltip = DHO_crush_the_fortified_line_tt
+			resources_found_cave_mark_strongpoint_target = yes
+		}
+		ai_will_do = { base = @cave_ai_targeted }
+	}
+
+	focus = {
+		id = DHO_the_moving_mountain
+		icon = GFX_focus_DHO_the_moving_mountain
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		x = 17
+		y = 11
+		cost = @cave_focus_long
+		prerequisite = { focus = DHO_crush_the_fortified_line }
+		completion_reward = {
+			custom_effect_tooltip = DHO_the_moving_mountain_tt
+			set_country_flag = resources_found_achievement_moving_mountain_route
+			resources_found_cave_set_stone_spawn_preference = yes
+		}
+		ai_will_do = { base = @cave_ai_doctrine }
+	}
+
+	# Burrow War
+	focus = {
+		id = DHO_burrow_war
+		icon = GFX_focus_DHO_burrow_war
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		x = 21
+		y = 7
+		cost = @cave_focus_normal
+		prerequisite = { focus = DHO_read_the_enemy_line }
+		mutually_exclusive = { focus = DHO_stone_phalanx focus = DHO_scree_tide }
+		completion_reward = {
+			custom_effect_tooltip = DHO_burrow_war_tt
+			resources_found_cave_choose_burrow_war = yes
+		}
+		ai_will_do = {
+			base = @cave_ai_route_gate
+			modifier = { factor = @cave_ai_favored_factor any_controlled_state = { OR = { terrain = mountain terrain = urban } } }
+			modifier = { factor = @cave_ai_favored_factor resources_found_cave_has_fought_piercing_enemy = yes }
+		}
+	}
+
+	focus = {
+		id = DHO_listen_beneath_the_roads
+		icon = GFX_focus_DHO_listen_beneath_the_roads
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 21
+		y = 8
+		cost = @cave_focus_project
+		prerequisite = { focus = DHO_burrow_war }
+		completion_reward = {
+			custom_effect_tooltip = DHO_listen_beneath_the_roads_tt
+			resources_found_cave_mark_transport_target = yes
+		}
+		ai_will_do = { base = @cave_ai_high }
+	}
+
+	focus = {
+		id = DHO_hidden_approach_chambers
+		icon = GFX_focus_DHO_hidden_approach_chambers
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 20
+		y = 9
+		cost = @cave_focus_project
+		prerequisite = { focus = DHO_listen_beneath_the_roads }
+		completion_reward = {
+			custom_effect_tooltip = DHO_hidden_approach_chambers_tt
+			set_country_flag = cave_burrow_approach_unlocked
+			resources_found_cave_link_nearest_anchors = yes
+		}
+		ai_will_do = { base = @cave_ai_committed }
+	}
+
+	focus = {
+		id = DHO_undermine_the_rail_junction
+		icon = GFX_focus_DHO_undermine_the_rail_junction
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 22
+		y = 9
+		cost = @cave_focus_normal
+		prerequisite = { focus = DHO_listen_beneath_the_roads }
+		completion_reward = {
+			custom_effect_tooltip = DHO_undermine_the_rail_junction_tt
+			resources_found_cave_mark_transport_target = yes
+		}
+		ai_will_do = { base = @cave_ai_standard }
+	}
+
+	focus = {
+		id = DHO_urban_cellar_networks
+		icon = GFX_focus_DHO_urban_cellar_networks
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 21
+		y = 10
+		cost = @cave_focus_project
+		prerequisite = { focus = DHO_hidden_approach_chambers }
+		prerequisite = { focus = DHO_undermine_the_rail_junction }
+		available = { resources_found_cave_has_urban_campaign = yes }
+		completion_reward = {
+			custom_effect_tooltip = DHO_urban_cellar_networks_tt
+			resources_found_cave_unlock_urban_cellar_networks = yes
+		}
+		ai_will_do = { base = @cave_ai_targeted }
+	}
+
+	focus = {
+		id = DHO_the_front_has_a_floor
+		icon = GFX_focus_DHO_the_front_has_a_floor
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		x = 21
+		y = 11
+		cost = @cave_focus_long
+		prerequisite = { focus = DHO_urban_cellar_networks }
+		completion_reward = {
+			custom_effect_tooltip = DHO_the_front_has_a_floor_tt
+			set_country_flag = resources_found_achievement_front_has_floor_route
+			resources_found_cave_set_burrow_spawn_preference = yes
+		}
+		ai_will_do = { base = @cave_ai_doctrine }
+	}
+
+	# Scree Tide
+	focus = {
+		id = DHO_scree_tide
+		icon = GFX_focus_DHO_scree_tide
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		x = 25
+		y = 7
+		cost = @cave_focus_normal
+		prerequisite = { focus = DHO_read_the_enemy_line }
+		mutually_exclusive = { focus = DHO_stone_phalanx focus = DHO_burrow_war }
+		completion_reward = {
+			custom_effect_tooltip = DHO_scree_tide_tt
+			resources_found_cave_choose_scree_tide = yes
+		}
+		ai_will_do = {
+			base = @cave_ai_route_gate
+			modifier = { factor = @cave_ai_favored_factor any_enemy_country = { is_major = no } }
+			modifier = { factor = @cave_ai_disabled has_country_flag = cave_enemy_piercing_high }
+		}
+	}
+
+	focus = {
+		id = DHO_split_the_great_broods
+		icon = GFX_focus_DHO_split_the_great_broods
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		x = 25
+		y = 8
+		cost = @cave_focus_project
+		prerequisite = { focus = DHO_scree_tide }
+		completion_reward = {
+			custom_effect_tooltip = DHO_split_the_great_broods_tt
+			resources_found_cave_unlock_split_broods = yes
+		}
+		ai_will_do = { base = @cave_ai_high }
+	}
+
+	focus = {
+		id = DHO_lighter_plates
+		icon = GFX_focus_DHO_lighter_plates
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		x = 24
+		y = 9
+		cost = @cave_focus_normal
+		prerequisite = { focus = DHO_split_the_great_broods }
+		completion_reward = {
+			custom_effect_tooltip = DHO_lighter_plates_tt
+			resources_found_cave_unlock_lighter_plates = yes
+		}
+		ai_will_do = { base = @cave_ai_committed }
+	}
+
+	focus = {
+		id = DHO_follow_the_retreat
+		icon = GFX_focus_DHO_follow_the_retreat
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 26
+		y = 9
+		cost = @cave_focus_normal
+		prerequisite = { focus = DHO_split_the_great_broods }
+		completion_reward = {
+			custom_effect_tooltip = DHO_follow_the_retreat_tt
+			set_country_flag = cave_follow_retreat
+			resources_found_cave_refresh_ai_targets = yes
+		}
+		ai_will_do = { base = @cave_ai_standard }
+	}
+
+	focus = {
+		id = DHO_swarm_the_crossings
+		icon = GFX_focus_DHO_swarm_the_crossings
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 25
+		y = 10
+		cost = @cave_focus_project
+		prerequisite = { focus = DHO_lighter_plates }
+		prerequisite = { focus = DHO_follow_the_retreat }
+		completion_reward = {
+			custom_effect_tooltip = DHO_swarm_the_crossings_tt
+			set_country_flag = cave_raiding_broods_unlocked
+			resources_found_cave_mark_transport_target = yes
+		}
+		ai_will_do = { base = @cave_ai_targeted }
+	}
+
+	focus = {
+		id = DHO_the_hills_begin_to_move
+		icon = GFX_focus_DHO_the_hills_begin_to_move
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		x = 25
+		y = 11
+		cost = @cave_focus_long
+		prerequisite = { focus = DHO_swarm_the_crossings }
+		completion_reward = {
+			custom_effect_tooltip = DHO_the_hills_begin_to_move_tt
+			set_country_flag = resources_found_achievement_hills_move_route
+			resources_found_cave_set_scree_spawn_preference = yes
+		}
+		ai_will_do = { base = @cave_ai_doctrine }
+	}
+
+	# ------------------------------------------------------------------------
+	# Enemy-linked adaptation
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = DHO_study_broken_weapons
+		icon = GFX_focus_DHO_study_broken_weapons
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 13
+		y = 14
+		cost = @cave_focus_project
+		prerequisite = { focus = DHO_the_continental_network }
+		available = { resources_found_cave_has_battle_analysis = yes }
+		completion_reward = {
+			custom_effect_tooltip = DHO_study_broken_weapons_tt
+			resources_found_cave_analyze_enemy_piercing = yes
+		}
+		ai_will_do = { base = @cave_ai_advance }
+	}
+
+	focus = {
+		id = DHO_grow_denser_plates
+		icon = GFX_focus_DHO_grow_denser_plates
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 11
+		y = 15
+		cost = @cave_focus_project
+		prerequisite = { focus = DHO_study_broken_weapons }
+		mutually_exclusive = { focus = DHO_open_the_joints }
+		available = { resources_found_cave_has_fought_piercing_enemy = yes }
+		completion_reward = {
+			custom_effect_tooltip = DHO_grow_denser_plates_tt
+			resources_found_cave_choose_dense_plate_adaptation = yes
+		}
+		ai_will_do = { base = @cave_ai_adaptation_gate modifier = { factor = @cave_ai_favored_factor has_country_flag = cave_enemy_piercing_high } }
+	}
+
+	focus = {
+		id = DHO_open_the_joints
+		icon = GFX_focus_DHO_open_the_joints
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 15
+		y = 15
+		cost = @cave_focus_project
+		prerequisite = { focus = DHO_study_broken_weapons }
+		mutually_exclusive = { focus = DHO_grow_denser_plates }
+		completion_reward = {
+			custom_effect_tooltip = DHO_open_the_joints_tt
+			resources_found_cave_choose_open_joint_adaptation = yes
+		}
+		ai_will_do = { base = @cave_ai_adaptation_gate modifier = { factor = @cave_ai_favored_factor has_country_flag = cave_enemy_piercing_low } }
+	}
+
+	focus = {
+		id = DHO_surface_senses
+		icon = GFX_focus_DHO_surface_senses
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 13
+		y = 16
+		cost = @cave_focus_normal
+		prerequisite = { focus = DHO_grow_denser_plates focus = DHO_open_the_joints }
+		completion_reward = {
+			custom_effect_tooltip = DHO_surface_senses_tt
+			resources_found_cave_upgrade_surface_senses_adaptation = yes
+			resources_found_cave_refresh_ai_targets = yes
+		}
+		ai_will_do = { base = @cave_ai_doctrine }
+	}
+
+	focus = {
+		id = DHO_harden_against_the_sky
+		icon = GFX_focus_DHO_harden_against_the_sky
+		search_filters = { FOCUS_FILTER_AIR_XP }
+		x = 13
+		y = 17
+		cost = @cave_focus_project
+		prerequisite = { focus = DHO_surface_senses }
+		available = { resources_found_cave_has_suffered_air_attack = yes }
+		completion_reward = {
+			custom_effect_tooltip = DHO_harden_against_the_sky_tt
+			resources_found_cave_upgrade_sky_hardened_adaptation = yes
+		}
+		ai_will_do = { base = @cave_ai_advance }
+	}
+
+	focus = {
+		id = DHO_choose_the_final_adaptation
+		icon = GFX_focus_DHO_choose_the_final_adaptation
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		x = 13
+		y = 18
+		cost = @cave_focus_long
+		prerequisite = { focus = DHO_harden_against_the_sky }
+		completion_reward = {
+			custom_effect_tooltip = DHO_choose_the_final_adaptation_tt
+			resources_found_cave_apply_final_adaptation = yes
+		}
+		ai_will_do = { base = @cave_ai_expansion }
+	}
+
+	# ------------------------------------------------------------------------
+	# Continental objective lane
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = DHO_mark_the_richest_route
+		icon = GFX_focus_DHO_mark_the_richest_route
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 13
+		y = 19
+		cost = @cave_focus_normal
+		prerequisite = { focus = DHO_choose_the_final_adaptation }
+		completion_reward = {
+			custom_effect_tooltip = DHO_mark_the_richest_route_tt
+			set_country_flag = cave_continental_objectives_unlocked
+			resources_found_cave_mark_richest_reachable_state = yes
+		}
+		ai_will_do = { base = @cave_ai_continental }
+	}
+
+	focus = {
+		id = DHO_break_the_first_ring
+		icon = GFX_focus_DHO_break_the_first_ring
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 13
+		y = 20
+		cost = @cave_focus_project
+		prerequisite = { focus = DHO_mark_the_richest_route }
+		available = { resources_found_cave_first_neighbor_ring_broken = yes }
+		completion_reward = {
+			custom_effect_tooltip = DHO_break_the_first_ring_tt
+			resources_found_cave_scan_controlled_anchor_candidates = yes
+			resources_found_cave_declare_neighbor_wars = yes
+		}
+		ai_will_do = { base = @cave_ai_expansion }
+	}
+
+	focus = {
+		id = DHO_consume_an_industrial_belt
+		icon = GFX_focus_DHO_consume_an_industrial_belt
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 11
+		y = 21
+		cost = @cave_focus_long
+		prerequisite = { focus = DHO_break_the_first_ring }
+		available = { resources_found_cave_has_industrial_belt_objective = yes }
+		completion_reward = {
+			custom_effect_tooltip = DHO_consume_an_industrial_belt_tt
+			resources_found_cave_convert_secure_industry = yes
+		}
+		ai_will_do = { base = @cave_ai_network }
+	}
+
+	focus = {
+		id = DHO_take_the_continental_capitals
+		icon = GFX_focus_DHO_take_the_continental_capitals
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 15
+		y = 21
+		cost = @cave_focus_long
+		prerequisite = { focus = DHO_break_the_first_ring }
+		available = { resources_found_cave_has_taken_continental_capital = yes }
+		completion_reward = {
+			custom_effect_tooltip = DHO_take_the_continental_capitals_tt
+			resources_found_cave_refresh_continent_progress = yes
+		}
+		ai_will_do = { base = @cave_ai_network }
+	}
+
+	focus = {
+		id = DHO_seal_the_coast
+		icon = GFX_focus_DHO_seal_the_coast
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 13
+		y = 22
+		cost = @cave_focus_project
+		prerequisite = { focus = DHO_consume_an_industrial_belt }
+		prerequisite = { focus = DHO_take_the_continental_capitals }
+		completion_reward = {
+			custom_effect_tooltip = DHO_seal_the_coast_tt
+			resources_found_cave_fortify_coastal_anchors = yes
+		}
+		ai_will_do = { base = @cave_ai_advance }
+	}
+
+	focus = {
+		id = DHO_break_continental_coalitions
+		icon = GFX_focus_DHO_break_continental_coalitions
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 13
+		y = 23
+		cost = @cave_focus_long
+		prerequisite = { focus = DHO_seal_the_coast }
+		completion_reward = {
+			custom_effect_tooltip = DHO_break_continental_coalitions_tt
+			resources_found_cave_refresh_ai_targets = yes
+			resources_found_cave_declare_neighbor_wars = yes
+		}
+		ai_will_do = { base = @cave_ai_expansion }
+	}
+
+	focus = {
+		id = DHO_consume_the_last_resistance
+		icon = GFX_focus_DHO_consume_the_last_resistance
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 13
+		y = 24
+		cost = @cave_focus_long
+		prerequisite = { focus = DHO_break_continental_coalitions }
+		available = { resources_found_cave_is_near_continent_control = yes }
+		completion_reward = {
+			custom_effect_tooltip = DHO_consume_the_last_resistance_tt
+			resources_found_cave_mark_remaining_continent_states = yes
+		}
+		ai_will_do = { base = @cave_ai_continental }
+	}
+
+	focus = {
+		id = DHO_continent_consumed
+		icon = GFX_focus_DHO_continent_consumed
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 13
+		y = 25
+		cost = @cave_focus_long
+		prerequisite = { focus = DHO_consume_the_last_resistance }
+		available = { resources_found_cave_controls_origin_continent = yes }
+		completion_reward = {
+			custom_effect_tooltip = DHO_continent_consumed_tt
+			resources_found_cave_begin_continent_verification = yes
+		}
+		ai_will_do = { base = @cave_ai_terminal_preparation }
+	}
+
+	# ------------------------------------------------------------------------
+	# World-end transformation
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = DHO_deepen_the_continental_heart
+		icon = GFX_focus_DHO_deepen_the_continental_heart
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 13
+		y = 26
+		cost = @cave_focus_long
+		prerequisite = { focus = DHO_continent_consumed }
+		available = { resources_found_cave_world_end_route_available = yes }
+		completion_reward = {
+			custom_effect_tooltip = DHO_deepen_the_continental_heart_tt
+			set_country_flag = cave_continental_heart_deepened
+			resources_found_cave_refresh_anchor_benefits = yes
+		}
+		ai_will_do = { base = @cave_ai_terminal_preparation }
+	}
+
+	focus = {
+		id = DHO_listen_beneath_distant_shores
+		icon = GFX_focus_DHO_listen_beneath_distant_shores
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 13
+		y = 27
+		cost = @cave_focus_long
+		prerequisite = { focus = DHO_deepen_the_continental_heart }
+		available = { resources_found_cave_has_cross_continent_candidate = yes }
+		completion_reward = {
+			custom_effect_tooltip = DHO_listen_beneath_distant_shores_tt
+			set_country_flag = cave_distant_shores_heard
+			resources_found_cave_prepare_foothold_candidates = yes
+		}
+		ai_will_do = { base = @cave_ai_foothold }
+	}
+
+	focus = {
+		id = DHO_choose_the_first_rupture
+		icon = GFX_focus_DHO_choose_the_first_rupture
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 13
+		y = 28
+		cost = @cave_focus_long
+		prerequisite = { focus = DHO_listen_beneath_distant_shores }
+		available = {
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:resources_found_world_end.chaos_gate
+				compare = greater_than
+			}
+		}
+		completion_reward = {
+			custom_effect_tooltip = DHO_choose_the_first_rupture_tt
+			resources_found_cave_weight_foothold_candidates = yes
+		}
+		ai_will_do = { base = @cave_ai_world_end_ready }
+	}
+
+	focus = {
+		id = DHO_the_world_opens_below
+		icon = GFX_focus_DHO_the_world_opens_below
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		x = 13
+		y = 29
+		cost = @cave_focus_long
+		prerequisite = { focus = DHO_choose_the_first_rupture }
+		available = { resources_found_cave_world_end_verified = yes }
+		completion_reward = {
+			custom_effect_tooltip = DHO_the_world_opens_below_tt
+			resources_found_cave_begin_world_end = yes
+		}
+		ai_will_do = { base = @cave_ai_terminal }
+	}
+}

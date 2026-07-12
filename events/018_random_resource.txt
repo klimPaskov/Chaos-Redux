@@ -1,92 +1,3411 @@
 add_namespace = chaosx.nr18
 
-##############################################################################################################
-#    ##    ## ########        ##    #######
-#    ###   ## ##     ##     ####   ##     ##
-#    ####  ## ##     ##       ##   ##     ##
-#    ## ## ## ########        ##    #######
-#    ##  #### ##   ##         ##   ##     ##
-#    ##   ### ##    ##        ##   ##     ##
-#    ##    ## ##     ##     ######  #######
-##############################################################################################################
-#   ######
-#   #     #   ##   #    # #####   ####  #    #    #####  ######  ####   ####  #    # #####   ####  ######
-#   #     #  #  #  ##   # #    # #    # ##  ##    #    # #      #      #    # #    # #    # #    # #
-#   ######  #    # # #  # #    # #    # # ## #    #    # #####   ####  #    # #    # #    # #      #####
-#   #   #   ###### #  # # #    # #    # #    #    #####  #           # #    # #    # #####  #      #
-#   #    #  #    # #   ## #    # #    # #    #    #   #  #      #    # #    # #    # #   #  #    # #
-#   #     # #    # #    # #####   ####  #    #    #    # ######  ####   ####   ####  #    #  ####  ######
+# ============================================================================
+# CHAOS REDUX - EVENT 018: RESOURCES FOUND
+# ============================================================================
+# Persistent resource-field discovery, enrichment, diplomacy, border crises,
+# evolved incidents, exact closure, cave emergence, continental escalation,
+# defeat, and reconstruction callbacks. The canonical entry consumes the
+# prepared resources_found_prefire_state/resources_found_prefire_owner targets.
+# Direct firing performs one defensive field selection and never reselects
+# after the opening package has run.
+# ============================================================================
 
-##############################################################################################################
+# ---------------------------------------------------------------------------
+# Canonical discovery and baseline field lifecycle
+# ---------------------------------------------------------------------------
 
 country_event = {
-    id = chaosx.nr18.1
-    title = chaosx.nr18.1.t
+	id = chaosx.nr18.1
+	title = chaosx.nr18.1.t
+	desc = chaosx.nr18.1.d
+	picture = GFX_report_event_018_resource_discovery
+	is_triggered_only = yes
 
-    hidden = yes
-    is_triggered_only = yes
+	trigger = {
+		OR = {
+			AND = {
+				check_variable = { resources_found_prefire_ready = constant:resources_found_value.one }
+				has_event_target = resources_found_prefire_owner
+				has_event_target = resources_found_prefire_state
+				event_target:resources_found_prefire_owner = { tag = ROOT }
+				event_target:resources_found_prefire_state = {
+					is_owned_and_controlled_by = ROOT
+					resources_found_is_valid_new_field_state = yes
+				}
+			}
+			AND = {
+				NOT = { has_event_target = resources_found_prefire_owner }
+				NOT = { has_event_target = resources_found_prefire_state }
+				any_owned_state = { resources_found_is_valid_new_field_state = yes }
+			}
+		}
+	}
 
-    immediate = {
-        random_country = {
-            country_event = { id = chaosx.nr18.2 days = 1 }
-        }
-    }
+	immediate = {
+		# The generic dispatcher prepares these targets. This block exists only
+		# for a deliberate direct fire and performs a single bounded selection.
+		if = {
+			limit = {
+				NOT = { has_event_target = resources_found_prefire_owner }
+				NOT = { has_event_target = resources_found_prefire_state }
+			}
+			save_event_target_as = resources_found_prefire_owner
+			if = {
+				limit = { any_owned_state = { resources_found_is_valid_new_field_state = yes } }
+				random_owned_controlled_state = {
+					limit = { resources_found_is_valid_new_field_state = yes }
+					save_event_target_as = resources_found_prefire_state
+				}
+			}
+			if = {
+				limit = { has_event_target = resources_found_prefire_state }
+				set_temp_variable = { resources_found_prefire_ready = constant:resources_found_value.one }
+			}
+		}
+		if = {
+			limit = {
+				check_variable = { resources_found_prefire_ready = constant:resources_found_value.one }
+				has_event_target = resources_found_prefire_owner
+				has_event_target = resources_found_prefire_state
+				event_target:resources_found_prefire_owner = { tag = ROOT }
+				event_target:resources_found_prefire_state = {
+					is_owned_and_controlled_by = ROOT
+					resources_found_is_valid_new_field_state = yes
+				}
+			}
+			event_target:resources_found_prefire_state = {
+				save_event_target_as = resources_found_field_state
+				if = {
+					limit = { NOT = { resources_found_is_active_field = yes } }
+					resources_found_initialize_field_record = yes
+				}
+				resources_found_apply_prefire_opening_package = yes
+				set_state_flag = resources_found_opening_notice_pending
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.1.a
+		custom_effect_tooltip = chaosx.nr18.1.a.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				set_variable = { resources_found_field_posture = constant:resources_found_posture.national_authority }
+				set_variable = { resources_found_field_stage = constant:resources_found_field_stage.appraisal }
+				set_state_flag = resources_found_national_authority
+				resources_found_refresh_field_record = yes
+			}
+		}
+		ai_chance = {
+			base = constant:resources_found_ai_weight.national_authority
+			modifier = {
+				add = constant:resources_found_ai_weight.strong_country_national_add
+				num_of_factories > constant:resources_found_country_scale.large_factory_floor
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.1.b
+		custom_effect_tooltip = chaosx.nr18.1.b.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				set_variable = { resources_found_field_posture = constant:resources_found_posture.domestic_charter }
+				set_variable = { resources_found_field_stage = constant:resources_found_field_stage.appraisal }
+				set_state_flag = resources_found_domestic_charter
+				resources_found_refresh_field_record = yes
+			}
+		}
+		ai_chance = {
+			base = constant:resources_found_ai_weight.domestic_charter
+			modifier = {
+				add = constant:resources_found_ai_weight.commercial_government_add
+				event_target:resources_found_field_state = {
+					check_variable = { resources_found_foreign_pressure > constant:resources_found_threshold.commercial_interest_pressure }
+				}
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.1.c
+		custom_effect_tooltip = chaosx.nr18.1.c.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				set_variable = { resources_found_field_posture = constant:resources_found_posture.foreign_concession }
+				set_variable = { resources_found_field_stage = constant:resources_found_field_stage.appraisal }
+				set_state_flag = resources_found_foreign_concession_open
+				resources_found_refresh_field_record = yes
+			}
+		}
+		ai_chance = {
+			base = constant:resources_found_ai_weight.foreign_concession
+			modifier = {
+				add = constant:resources_found_ai_weight.weak_country_concession_add
+				NOT = { num_of_factories > constant:resources_found_country_scale.large_factory_floor }
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.1.e
+		custom_effect_tooltip = chaosx.nr18.1.e.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				set_variable = { resources_found_field_posture = constant:resources_found_posture.strategic_reserve }
+				set_variable = { resources_found_field_stage = constant:resources_found_field_stage.appraisal }
+				set_state_flag = resources_found_strategic_reserve
+				resources_found_refresh_field_record = yes
+			}
+		}
+		ai_chance = {
+			base = constant:resources_found_ai_weight.strategic_reserve
+			modifier = {
+				add = constant:resources_found_ai_weight.critical_disturbance_closure_add
+				event_target:resources_found_field_state = {
+					check_variable = { resources_found_subsurface_disturbance > constant:resources_found_field_value.band_5 }
+				}
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = { has_event_target = resources_found_field_state }
+			event_target:resources_found_field_state = {
+				clr_state_flag = resources_found_opening_notice_pending
+				if = {
+					limit = { has_state_flag = resources_found_compressed_opening }
+					OWNER = { country_event = { id = chaosx.nr18.60 } }
+				}
+				else_if = {
+					limit = { check_variable = { resources_found_last_evolution_stage = constant:resources_found_event.evolution_iii_stage } }
+					OWNER = { country_event = { id = chaosx.nr18.60 } }
+				}
+				else_if = {
+					limit = { check_variable = { resources_found_last_evolution_stage = constant:resources_found_event.evolution_ii_stage } }
+					OWNER = { country_event = { id = chaosx.nr18.50 } }
+				}
+				else_if = {
+					limit = { check_variable = { resources_found_last_evolution_stage = constant:resources_found_event.evolution_i_stage } }
+					OWNER = { country_event = { id = chaosx.nr18.41 } }
+				}
+			}
+		}
+		resources_found_schedule_evolution_paths = yes
+		resources_found_refresh_decision_cost_previews = yes
+	}
 }
 
-##############################################################################################################
+country_event = {
+	id = chaosx.nr18.2
+	title = chaosx.nr18.2.t
+	desc = chaosx.nr18.2.d
+	picture = GFX_report_event_018_resource_discovery
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			AND = {
+				check_variable = { resources_found_prefire_ready = constant:resources_found_value.one }
+				has_event_target = resources_found_prefire_owner
+				has_event_target = resources_found_prefire_state
+				event_target:resources_found_prefire_owner = { tag = ROOT }
+				event_target:resources_found_prefire_state = {
+					is_owned_and_controlled_by = ROOT
+					resources_found_is_valid_enrichment_field = yes
+				}
+			}
+			AND = {
+				NOT = { has_event_target = resources_found_prefire_owner }
+				NOT = { has_event_target = resources_found_prefire_state }
+				resources_found_country_has_valid_selected_field = yes
+				var:resources_found_selected_field = { resources_found_is_valid_enrichment_field = yes }
+			}
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				NOT = { has_event_target = resources_found_prefire_owner }
+				NOT = { has_event_target = resources_found_prefire_state }
+				resources_found_country_has_valid_selected_field = yes
+				var:resources_found_selected_field = { resources_found_is_valid_enrichment_field = yes }
+			}
+			save_event_target_as = resources_found_prefire_owner
+			var:resources_found_selected_field = { save_event_target_as = resources_found_prefire_state }
+			set_temp_variable = { resources_found_prefire_ready = constant:resources_found_value.one }
+		}
+		if = {
+			limit = {
+				check_variable = { resources_found_prefire_ready = constant:resources_found_value.one }
+				has_event_target = resources_found_prefire_owner
+				has_event_target = resources_found_prefire_state
+				event_target:resources_found_prefire_owner = { tag = ROOT }
+				event_target:resources_found_prefire_state = {
+					is_owned_and_controlled_by = ROOT
+					resources_found_is_valid_enrichment_field = yes
+				}
+			}
+			event_target:resources_found_prefire_state = {
+				save_event_target_as = resources_found_field_state
+				clr_state_flag = resources_found_evolution_i_active_enrichment
+				clr_state_flag = resources_found_evolution_ii_active_enrichment
+				clr_state_flag = resources_found_evolution_iii_active_enrichment
+				clr_state_flag = resources_found_evolution_iv_active_enrichment
+				if = {
+					limit = { resources_found_is_evolution_iv_enabled = yes }
+					resources_found_apply_evolution_iii_all_resources_package = yes
+					set_state_flag = resources_found_evolution_iv_active_enrichment
+					set_state_flag = resources_found_compressed_opening
+					set_state_flag = resources_found_breach_prone_opening
+					set_variable = { resources_found_compressed_incident_minimum_date = global.date }
+					set_temp_variable = { resources_found_compressed_incident_delay = constant:resources_found_project_duration.compressed_incident_minimum_days }
+					add_to_variable = { resources_found_compressed_incident_minimum_date = resources_found_compressed_incident_delay }
+				}
+				else_if = {
+					limit = { resources_found_is_evolution_iii_enabled = yes }
+					resources_found_apply_evolution_iii_all_resources_package = yes
+					set_state_flag = resources_found_evolution_iii_active_enrichment
+				}
+				else_if = {
+					limit = { resources_found_is_evolution_ii_enabled = yes }
+					resources_found_apply_evolution_ii_active_package = yes
+					set_state_flag = resources_found_evolution_ii_active_enrichment
+				}
+				else_if = {
+					limit = { resources_found_is_evolution_i_enabled = yes }
+					resources_found_apply_evolution_i_active_package = yes
+					set_state_flag = resources_found_evolution_i_active_enrichment
+				}
+				else = { resources_found_apply_baseline_package = yes }
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.2.a
+		custom_effect_tooltip = chaosx.nr18.2.a.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				set_variable = { resources_found_field_stage = constant:resources_found_field_stage.development }
+				set_state_flag = resources_found_enrichment_integrated
+				resources_found_refresh_field_record = yes
+			}
+		}
+		ai_chance = {
+			base = constant:resources_found_ai_weight.base
+			modifier = {
+				add = constant:resources_found_ai_weight.high_safety_exploitation_add
+				event_target:resources_found_field_state = {
+					check_variable = { resources_found_workforce_safety > constant:resources_found_field_value.band_4 }
+				}
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.2.b
+		custom_effect_tooltip = chaosx.nr18.2.b.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				set_variable = { resources_found_field_posture = constant:resources_found_posture.strategic_reserve }
+				set_state_flag = resources_found_enrichment_reserved
+				resources_found_suspend_field = yes
+			}
+		}
+		ai_chance = {
+			base = constant:resources_found_ai_weight.cautious_appraisal
+			modifier = {
+				add = constant:resources_found_ai_weight.low_safety_caution_add
+				event_target:resources_found_field_state = {
+					check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 }
+				}
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = { has_event_target = resources_found_field_state }
+			event_target:resources_found_field_state = {
+				if = {
+					limit = { has_state_flag = resources_found_evolution_iv_active_enrichment }
+					OWNER = { country_event = { id = chaosx.nr18.60 } }
+				}
+				else_if = {
+					limit = { has_state_flag = resources_found_evolution_iii_active_enrichment }
+					OWNER = { country_event = { id = chaosx.nr18.60 } }
+				}
+				else_if = {
+					limit = { has_state_flag = resources_found_evolution_ii_active_enrichment }
+					OWNER = { country_event = { id = chaosx.nr18.50 } }
+				}
+				else_if = {
+					limit = { has_state_flag = resources_found_evolution_i_active_enrichment }
+					OWNER = { country_event = { id = chaosx.nr18.40 } }
+				}
+				clr_state_flag = resources_found_evolution_i_active_enrichment
+				clr_state_flag = resources_found_evolution_ii_active_enrichment
+				clr_state_flag = resources_found_evolution_iii_active_enrichment
+				clr_state_flag = resources_found_evolution_iv_active_enrichment
+			}
+		}
+		resources_found_schedule_evolution_paths = yes
+		resources_found_refresh_decision_cost_previews = yes
+	}
+}
 
 country_event = {
-    id = chaosx.nr18.2
-    title = chaosx.nr18.2.t
-    desc = chaosx.nr18.2.d
-    picture = GFX_report_event_random_resource
+	id = chaosx.nr18.3
+	title = chaosx.nr18.3.t
+	desc = chaosx.nr18.3.d
+	picture = GFX_report_event_018_resource_discovery
+	is_triggered_only = yes
 
-    is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = { var:resources_found_selected_field = { save_event_target_as = resources_found_field_state } }
 
-    option = {
-        name = chaosx.nr18.2.a
-        ROOT = {
-            random_owned_controlled_state = {
-                every_country = {
-                    limit = { is_ai = no }
-                    goto_state = PREV
-                }
-                random_list = {
-                    10 = {
-                        add_resource = {
-                            type = oil
-                            amount = 200
-                        }
-                    } 10 = {
-                        add_resource = {
-                            type = steel
-                            amount = 200
-                        }
-                    } 10 = {
-                        add_resource = {
-                            type = tungsten
-                            amount = 200
-                        }
-                    } 10 = {
-                        add_resource = {
-                            type = chromium
-                            amount = 200
-                        }
-                    } 10 = {
-                        add_resource = {
-                            type = aluminium
-                            amount = 200
-                        }
-                    } 10 = {
-                        add_resource = {
-                            type = rubber
-                            amount = 200
-                        }
-                    }
-                }
-            }
-        }
-        news_event = { id = chaosx.news.20 days = 2 }
-        ai_chance = { base = 100 }
-    }
+	option = {
+		name = chaosx.nr18.3.a
+		custom_effect_tooltip = chaosx.nr18.3.a.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				set_variable = { resources_found_field_stage = constant:resources_found_field_stage.development }
+				set_state_flag = resources_found_deeper_survey_authorized
+			}
+		}
+		ai_chance = {
+			base = constant:resources_found_ai_weight.base
+			modifier = {
+				add = constant:resources_found_ai_weight.war_need_add
+				has_war = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.3.b
+		custom_effect_tooltip = chaosx.nr18.3.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_transport_survey_prioritized } }
+		ai_chance = {
+			base = constant:resources_found_ai_weight.domestic_charter
+			modifier = {
+				add = constant:resources_found_ai_weight.commercial_government_add
+				event_target:resources_found_field_state = {
+					check_variable = { resources_found_foreign_pressure > constant:resources_found_threshold.commercial_interest_pressure }
+				}
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.3.c
+		custom_effect_tooltip = chaosx.nr18.3.c.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				set_variable = { resources_found_field_posture = constant:resources_found_posture.strategic_reserve }
+				set_state_flag = resources_found_survey_restrained
+				resources_found_suspend_field = yes
+			}
+		}
+		ai_chance = {
+			base = constant:resources_found_ai_weight.cautious_appraisal
+			modifier = {
+				add = constant:resources_found_ai_weight.critical_disturbance_closure_add
+				event_target:resources_found_field_state = {
+					check_variable = { resources_found_subsurface_disturbance > constant:resources_found_field_value.band_4 }
+				}
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.4
+	title = chaosx.nr18.4.t
+	desc = chaosx.nr18.4.d
+	picture = GFX_report_event_018_resource_discovery
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = { var:resources_found_selected_field = { save_event_target_as = resources_found_field_state } }
+
+	option = {
+		name = chaosx.nr18.4.a
+		custom_effect_tooltip = chaosx.nr18.4.a.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				set_state_flag = resources_found_foreign_interest_open
+				set_variable = { resources_found_contract_stage = constant:resources_found_contract_stage.negotiating }
+			}
+		}
+		ai_chance = {
+			base = constant:resources_found_ai_weight.foreign_concession
+			modifier = {
+				add = constant:resources_found_ai_weight.weak_country_concession_add
+				NOT = { is_major = yes }
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.4.b
+		custom_effect_tooltip = chaosx.nr18.4.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_foreign_inquiry_deferred } }
+		ai_chance = {
+			base = constant:resources_found_ai_weight.cautious_appraisal
+			modifier = {
+				add = constant:resources_found_ai_weight.low_safety_caution_add
+				event_target:resources_found_field_state = {
+					check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 }
+				}
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.4.c
+		custom_effect_tooltip = chaosx.nr18.4.c.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				set_variable = { resources_found_field_posture = constant:resources_found_posture.strategic_reserve }
+				set_state_flag = resources_found_foreign_inquiry_refused
+			}
+		}
+		ai_chance = {
+			base = constant:resources_found_ai_weight.strategic_reserve
+			modifier = {
+				add = constant:resources_found_ai_weight.strong_country_national_add
+				is_major = yes
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.5
+	title = chaosx.nr18.5.t
+	desc = chaosx.nr18.5.d
+	picture = GFX_report_event_018_resource_discovery
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = { var:resources_found_selected_field = { save_event_target_as = resources_found_field_state } }
+
+	option = {
+		name = chaosx.nr18.5.a
+		custom_effect_tooltip = chaosx.nr18.5.a.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				set_state_flag = resources_found_preferred_bid_selected
+				set_variable = { resources_found_contract_stage = constant:resources_found_contract_stage.negotiating }
+			}
+		}
+		ai_chance = {
+			base = constant:resources_found_ai_weight.foreign_concession
+			modifier = {
+				add = constant:resources_found_ai_weight.valid_contract_add
+				has_event_target = resources_found_contract_partner_target
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.5.b
+		custom_effect_tooltip = chaosx.nr18.5.b.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				set_state_flag = resources_found_diversified_bidding
+				set_variable = { resources_found_contract_stage = constant:resources_found_contract_stage.negotiating }
+			}
+		}
+		ai_chance = {
+			base = constant:resources_found_ai_weight.domestic_charter
+			modifier = {
+				add = constant:resources_found_ai_weight.commission_safety_add
+				event_target:resources_found_field_state = {
+					check_variable = { resources_found_foreign_pressure > constant:resources_found_threshold.coercive_pressure }
+				}
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.5.c
+		custom_effect_tooltip = chaosx.nr18.5.c.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				set_state_flag = resources_found_exclusivity_rejected
+				set_variable = { resources_found_contract_stage = constant:resources_found_contract_stage.none }
+			}
+		}
+		ai_chance = {
+			base = constant:resources_found_ai_weight.national_authority
+			modifier = {
+				add = constant:resources_found_ai_weight.strong_country_national_add
+				is_major = yes
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.6
+	title = chaosx.nr18.6.t
+	desc = chaosx.nr18.6.d
+	picture = GFX_report_event_018_resource_discovery
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = { var:resources_found_selected_field = { save_event_target_as = resources_found_field_state } }
+
+	option = {
+		name = chaosx.nr18.6.a
+		custom_effect_tooltip = chaosx.nr18.6.a.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				resources_found_activate_contract = yes
+				set_state_flag = resources_found_contract_notice_delivered
+			}
+		}
+		ai_chance = {
+			base = constant:resources_found_ai_weight.base
+			modifier = {
+				add = constant:resources_found_ai_weight.valid_contract_add
+				event_target:resources_found_field_state = { resources_found_has_valid_contract_partner = yes }
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.7
+	title = chaosx.nr18.7.t
+	desc = chaosx.nr18.7.d
+	picture = GFX_report_event_018_resource_discovery
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = { var:resources_found_selected_field = { save_event_target_as = resources_found_field_state } }
+
+	option = {
+		name = chaosx.nr18.7.a
+		custom_effect_tooltip = chaosx.nr18.7.a.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				set_variable = { resources_found_contract_stage = constant:resources_found_contract_stage.suspended }
+				set_state_flag = resources_found_contracts_pending_review
+				clr_state_flag = resources_found_field_contract_active
+				set_state_flag = resources_found_contract_restoration_requested
+			}
+		}
+		ai_chance = {
+			base = constant:resources_found_ai_weight.base
+			modifier = {
+				add = constant:resources_found_ai_weight.valid_contract_add
+				event_target:resources_found_field_state = { resources_found_has_valid_contract_partner = yes }
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.7.b
+		custom_effect_tooltip = chaosx.nr18.7.b.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				set_variable = { resources_found_contract_stage = constant:resources_found_contract_stage.pending_review }
+				set_state_flag = resources_found_contracts_pending_review
+			}
+		}
+		ai_chance = {
+			base = constant:resources_found_ai_weight.cautious_appraisal
+			modifier = {
+				add = constant:resources_found_ai_weight.low_safety_caution_add
+				event_target:resources_found_field_state = { has_state_flag = resources_found_field_control_disrupted }
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.7.c
+		custom_effect_tooltip = chaosx.nr18.7.c.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				set_variable = { resources_found_contract_stage = constant:resources_found_contract_stage.terminated }
+				clr_state_flag = resources_found_field_contract_active
+				clr_state_flag = resources_found_contracts_pending_review
+				set_state_flag = resources_found_contract_terminated_by_owner
+			}
+		}
+		ai_chance = {
+			base = constant:resources_found_ai_weight.national_authority
+			modifier = {
+				add = constant:resources_found_ai_weight.critical_breach_closure_add
+				event_target:resources_found_field_state = {
+					check_variable = { resources_found_breach_pressure > constant:resources_found_field_value.band_5 }
+				}
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.8
+	title = chaosx.nr18.8.t
+	desc = chaosx.nr18.8.d
+	picture = GFX_report_event_018_resource_discovery
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = { var:resources_found_selected_field = { save_event_target_as = resources_found_field_state } }
+
+	option = {
+		name = chaosx.nr18.8.a
+		custom_effect_tooltip = chaosx.nr18.8.a.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				set_variable = { resources_found_field_posture = constant:resources_found_posture.national_authority }
+				set_variable = { resources_found_contract_stage = constant:resources_found_contract_stage.terminated }
+				clr_state_flag = resources_found_field_contract_active
+				set_state_flag = resources_found_nationalization_hard_line
+			}
+		}
+		ai_chance = {
+			base = constant:resources_found_ai_weight.national_authority
+			modifier = {
+				add = constant:resources_found_ai_weight.statist_government_add
+				is_major = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.8.b
+		custom_effect_tooltip = chaosx.nr18.8.b.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				set_variable = { resources_found_contract_stage = constant:resources_found_contract_stage.pending_review }
+				set_state_flag = resources_found_compensation_offered
+				set_state_flag = resources_found_contracts_pending_review
+			}
+		}
+		ai_chance = {
+			base = constant:resources_found_ai_weight.domestic_charter
+			modifier = {
+				add = constant:resources_found_ai_weight.valid_contract_add
+				event_target:resources_found_field_state = { resources_found_has_valid_contract_partner = yes }
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.8.c
+		custom_effect_tooltip = chaosx.nr18.8.c.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				set_state_flag = resources_found_nationalization_arbitration
+				set_variable = { resources_found_commission_stage = constant:resources_found_commission_stage.proposed }
+			}
+		}
+		ai_chance = {
+			base = constant:resources_found_ai_weight.cautious_appraisal
+			modifier = {
+				add = constant:resources_found_ai_weight.commission_safety_add
+				event_target:resources_found_field_state = {
+					check_variable = { resources_found_foreign_pressure > constant:resources_found_threshold.coercive_pressure }
+				}
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.9
+	title = chaosx.nr18.9.t
+	desc = chaosx.nr18.9.d
+	picture = GFX_report_event_018_resource_discovery
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = { var:resources_found_selected_field = { save_event_target_as = resources_found_field_state } }
+
+	option = {
+		name = chaosx.nr18.9.a
+		custom_effect_tooltip = chaosx.nr18.9.a.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				set_variable = { resources_found_contract_stage = constant:resources_found_contract_stage.terminated }
+				clr_state_flag = resources_found_contracts_pending_review
+				set_state_flag = resources_found_compensation_settled
+				clr_state_flag = resources_found_compensation_offered
+			}
+		}
+		ai_chance = {
+			base = constant:resources_found_ai_weight.base
+			modifier = {
+				add = constant:resources_found_ai_weight.commission_safety_add
+				event_target:resources_found_field_state = {
+					check_variable = { resources_found_foreign_pressure > constant:resources_found_threshold.strategic_competition_pressure }
+				}
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.10
+	title = chaosx.nr18.10.t
+	desc = chaosx.nr18.10.d
+	picture = GFX_report_event_018_resource_discovery
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = { var:resources_found_selected_field = { save_event_target_as = resources_found_field_state } }
+
+	option = {
+		name = chaosx.nr18.10.a
+		custom_effect_tooltip = chaosx.nr18.10.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_smuggling_suppressed clr_state_flag = resources_found_smuggling_regularized } }
+		ai_chance = {
+			base = constant:resources_found_ai_weight.national_authority
+			modifier = {
+				add = constant:resources_found_ai_weight.strong_country_national_add
+				is_major = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.10.b
+		custom_effect_tooltip = chaosx.nr18.10.b.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				set_state_flag = resources_found_smuggling_regularized
+				clr_state_flag = resources_found_smuggling_suppressed
+				set_variable = { resources_found_field_posture = constant:resources_found_posture.domestic_charter }
+			}
+		}
+		ai_chance = {
+			base = constant:resources_found_ai_weight.domestic_charter
+			modifier = {
+				add = constant:resources_found_ai_weight.commercial_government_add
+				event_target:resources_found_field_state = {
+					check_variable = { resources_found_foreign_pressure < constant:resources_found_threshold.coercive_pressure }
+				}
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.10.c
+		custom_effect_tooltip = chaosx.nr18.10.c.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_smuggling_sponsor_accused } }
+		ai_chance = {
+			base = constant:resources_found_ai_weight.cautious_appraisal
+			modifier = {
+				add = constant:resources_found_ai_weight.valid_contract_add
+				event_target:resources_found_field_state = { resources_found_has_valid_contract_partner = yes }
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.11
+	title = chaosx.nr18.11.t
+	desc = chaosx.nr18.11.d
+	picture = GFX_report_event_018_resource_discovery
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = { var:resources_found_selected_field = { save_event_target_as = resources_found_field_state } }
+
+	option = {
+		name = chaosx.nr18.11.a
+		custom_effect_tooltip = chaosx.nr18.11.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_sabotage_diplomatic_demand } }
+		ai_chance = {
+			base = constant:resources_found_ai_weight.cautious_appraisal
+			modifier = {
+				add = constant:resources_found_ai_weight.valid_contract_add
+				event_target:resources_found_field_state = { resources_found_has_valid_contract_partner = yes }
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.11.b
+		custom_effect_tooltip = chaosx.nr18.11.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_sabotage_counteroperation } }
+		ai_chance = {
+			base = constant:resources_found_ai_weight.national_authority
+			modifier = {
+				add = constant:resources_found_ai_weight.war_need_add
+				has_war = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.11.c
+		custom_effect_tooltip = chaosx.nr18.11.c.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_sabotage_concealed } }
+		ai_chance = {
+			base = constant:resources_found_ai_weight.minimum
+			modifier = {
+				add = constant:resources_found_ai_weight.weak_country_concession_add
+				NOT = { is_major = yes }
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.12
+	title = chaosx.nr18.12.t
+	desc = chaosx.nr18.12.d
+	picture = GFX_report_event_018_resource_discovery
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = { var:resources_found_selected_field = { save_event_target_as = resources_found_field_state } }
+
+	option = {
+		name = chaosx.nr18.12.a
+		custom_effect_tooltip = chaosx.nr18.12.a.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				clr_state_flag = resources_found_contracts_pending_review
+				set_state_flag = resources_found_transfer_contracts_honored
+			}
+		}
+		ai_chance = {
+			base = constant:resources_found_ai_weight.domestic_charter
+			modifier = {
+				add = constant:resources_found_ai_weight.valid_contract_add
+				event_target:resources_found_field_state = { resources_found_has_valid_contract_partner = yes }
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.12.b
+		custom_effect_tooltip = chaosx.nr18.12.b.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				set_variable = { resources_found_contract_stage = constant:resources_found_contract_stage.pending_review }
+				set_state_flag = resources_found_contracts_pending_review
+				set_state_flag = resources_found_transfer_renegotiation
+			}
+		}
+		ai_chance = {
+			base = constant:resources_found_ai_weight.cautious_appraisal
+			modifier = {
+				add = constant:resources_found_ai_weight.commission_safety_add
+				event_target:resources_found_field_state = {
+					check_variable = { resources_found_foreign_pressure > constant:resources_found_threshold.coercive_pressure }
+				}
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.12.c
+		custom_effect_tooltip = chaosx.nr18.12.c.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				set_variable = { resources_found_field_posture = constant:resources_found_posture.national_authority }
+				set_variable = { resources_found_contract_stage = constant:resources_found_contract_stage.terminated }
+				clr_state_flag = resources_found_field_contract_active
+				set_state_flag = resources_found_transfer_nationalized
+			}
+		}
+		ai_chance = {
+			base = constant:resources_found_ai_weight.national_authority
+			modifier = {
+				add = constant:resources_found_ai_weight.strong_country_national_add
+				is_major = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.12.e
+		custom_effect_tooltip = chaosx.nr18.12.e.tt
+		hidden_effect = { event_target:resources_found_field_state = { resources_found_suspend_field = yes set_state_flag = resources_found_transfer_suspended } }
+		ai_chance = {
+			base = constant:resources_found_ai_weight.cautious_appraisal
+			modifier = {
+				add = constant:resources_found_ai_weight.critical_disturbance_closure_add
+				event_target:resources_found_field_state = {
+					check_variable = { resources_found_subsurface_disturbance > constant:resources_found_field_value.band_4 }
+				}
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.13
+	title = chaosx.nr18.13.t
+	desc = chaosx.nr18.13.d
+	picture = GFX_report_event_018_resource_discovery
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { resources_found_country_has_valid_selected_field = yes }
+			var:resources_found_selected_field = {
+				save_event_target_as = resources_found_field_state
+				resources_found_handle_field_control_change = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.13.a
+		custom_effect_tooltip = chaosx.nr18.13.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_occupation_exploitation } }
+		ai_chance = {
+			base = constant:resources_found_ai_weight.base
+			modifier = {
+				add = constant:resources_found_ai_weight.war_need_add
+				has_war = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.13.b
+		custom_effect_tooltip = chaosx.nr18.13.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_occupation_denial } }
+		ai_chance = {
+			base = constant:resources_found_ai_weight.cautious_appraisal
+			modifier = {
+				add = constant:resources_found_ai_weight.critical_breach_closure_add
+				event_target:resources_found_field_state = {
+					check_variable = { resources_found_breach_pressure > constant:resources_found_field_value.band_5 }
+				}
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.13.c
+		custom_effect_tooltip = chaosx.nr18.13.c.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_occupation_guarded } }
+		ai_chance = {
+			base = constant:resources_found_ai_weight.national_authority
+			modifier = {
+				add = constant:resources_found_ai_weight.low_safety_caution_add
+				event_target:resources_found_field_state = {
+					check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 }
+				}
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.14
+	title = chaosx.nr18.14.t
+	desc = chaosx.nr18.14.d
+	picture = GFX_report_event_018_resource_discovery
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = {
+		var:resources_found_selected_field = {
+			save_event_target_as = resources_found_field_state
+			set_variable = { resources_found_field_stage = constant:resources_found_field_stage.mature }
+			set_state_flag = resources_found_stable_field_milestone
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.14.a
+		custom_effect_tooltip = chaosx.nr18.14.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_field_posture = constant:resources_found_posture.national_authority } set_state_flag = resources_found_mature_national_identity } }
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.strong_country_national_add is_major = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.14.b
+		custom_effect_tooltip = chaosx.nr18.14.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_field_posture = constant:resources_found_posture.domestic_charter } set_state_flag = resources_found_mature_commercial_identity } }
+		ai_chance = { base = constant:resources_found_ai_weight.domestic_charter modifier = { add = constant:resources_found_ai_weight.commercial_government_add event_target:resources_found_field_state = { has_state_flag = resources_found_domestic_charter } } }
+	}
+
+	option = {
+		name = chaosx.nr18.14.c
+		custom_effect_tooltip = chaosx.nr18.14.c.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_field_posture = constant:resources_found_posture.foreign_concession } set_state_flag = resources_found_mature_concession_identity } }
+		ai_chance = { base = constant:resources_found_ai_weight.foreign_concession modifier = { add = constant:resources_found_ai_weight.valid_contract_add event_target:resources_found_field_state = { resources_found_contract_is_active_and_valid = yes } } }
+	}
+
+	option = {
+		name = chaosx.nr18.14.f
+		custom_effect_tooltip = chaosx.nr18.14.f.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_field_posture = constant:resources_found_posture.international_commission } set_state_flag = resources_found_mature_commission_identity } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.commission_safety_add event_target:resources_found_field_state = { resources_found_commission_is_stable = yes } } }
+	}
+
+	option = {
+		name = chaosx.nr18.14.e
+		custom_effect_tooltip = chaosx.nr18.14.e.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_field_posture = constant:resources_found_posture.strategic_reserve } set_state_flag = resources_found_mature_reserve_identity } }
+		ai_chance = { base = constant:resources_found_ai_weight.strategic_reserve modifier = { add = constant:resources_found_ai_weight.critical_disturbance_closure_add event_target:resources_found_field_state = { check_variable = { resources_found_subsurface_disturbance > constant:resources_found_field_value.band_4 } } } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.15
+	title = chaosx.nr18.15.t
+	desc = chaosx.nr18.15.d
+	picture = GFX_report_event_018_full_seal
+	is_triggered_only = yes
+
+	trigger = {
+		resources_found_country_has_valid_selected_field = yes
+		var:resources_found_selected_field = { resources_found_can_complete_full_seal = yes }
+	}
+	immediate = {
+		var:resources_found_selected_field = { save_event_target_as = resources_found_field_state }
+	}
+
+	option = {
+		name = chaosx.nr18.15.a
+		custom_effect_tooltip = chaosx.nr18.15.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { resources_found_complete_full_seal = yes } }
+		ai_chance = { base = constant:resources_found_ai_weight.base }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Border crisis and international commission callbacks
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr18.20
+	title = chaosx.nr18.20.t
+	desc = chaosx.nr18.20.d
+	picture = GFX_news_event_018_border_crisis
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = {
+		resources_found_emit_border_crisis_news = yes
+		var:resources_found_selected_field = { save_event_target_as = resources_found_field_state }
+	}
+
+	option = {
+		name = chaosx.nr18.20.a
+		custom_effect_tooltip = chaosx.nr18.20.a.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				set_variable = { resources_found_border_stage = constant:resources_found_border_stage.competing_surveys }
+				set_state_flag = resources_found_border_arbitration_requested
+			}
+		}
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.commission_safety_add event_target:resources_found_field_state = { check_variable = { resources_found_foreign_pressure > constant:resources_found_threshold.coercive_pressure } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.20.b
+		custom_effect_tooltip = chaosx.nr18.20.b.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				set_variable = { resources_found_border_stage = constant:resources_found_border_stage.road_confrontation }
+				set_state_flag = resources_found_foreign_survey_expelled
+			}
+		}
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.strong_country_national_add is_major = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.20.c
+		custom_effect_tooltip = chaosx.nr18.20.c.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				set_variable = { resources_found_border_stage = constant:resources_found_border_stage.competing_surveys }
+				set_state_flag = resources_found_shared_border_survey
+			}
+		}
+		ai_chance = { base = constant:resources_found_ai_weight.domestic_charter modifier = { add = constant:resources_found_ai_weight.valid_contract_add event_target:resources_found_field_state = { resources_found_has_valid_border_claimant = yes } } }
+	}
+
+	option = {
+		name = chaosx.nr18.20.e
+		custom_effect_tooltip = chaosx.nr18.20.e.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				set_variable = { resources_found_border_stage = constant:resources_found_border_stage.road_confrontation }
+				set_state_flag = resources_found_border_administration_reinforced
+			}
+		}
+		ai_chance = { base = constant:resources_found_ai_weight.base modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = yes } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.21
+	title = chaosx.nr18.21.t
+	desc = chaosx.nr18.21.d
+	picture = GFX_news_event_018_border_crisis
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = { var:resources_found_selected_field = { save_event_target_as = resources_found_field_state } }
+
+	option = {
+		name = chaosx.nr18.21.a
+		custom_effect_tooltip = chaosx.nr18.21.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_border_stage = constant:resources_found_border_stage.settlement } set_state_flag = resources_found_border_checkpoints_withdrawn } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.low_safety_caution_add event_target:resources_found_field_state = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.21.b
+		custom_effect_tooltip = chaosx.nr18.21.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_border_stage = constant:resources_found_border_stage.competing_surveys } set_state_flag = resources_found_customs_corridor_negotiated } }
+		ai_chance = { base = constant:resources_found_ai_weight.domestic_charter modifier = { add = constant:resources_found_ai_weight.valid_contract_add event_target:resources_found_field_state = { resources_found_has_valid_border_claimant = yes } } }
+	}
+
+	option = {
+		name = chaosx.nr18.21.c
+		custom_effect_tooltip = chaosx.nr18.21.c.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_border_stage = constant:resources_found_border_stage.armed_patrol } set_state_flag = resources_found_customs_guards_escalated resources_found_refresh_dispute_achievement_evidence = yes } }
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.border_claimant_strength_add event_target:resources_found_field_state = { has_state_flag = resources_found_owner_military_ready } } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.22
+	title = chaosx.nr18.22.t
+	desc = chaosx.nr18.22.d
+	picture = GFX_news_event_018_border_crisis
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = {
+		var:resources_found_selected_field = {
+			save_event_target_as = resources_found_field_state
+			set_variable = { resources_found_border_stage = constant:resources_found_border_stage.armed_patrol }
+			set_state_flag = resources_found_armed_patrol_incident
+			resources_found_refresh_dispute_achievement_evidence = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.22.a
+		custom_effect_tooltip = chaosx.nr18.22.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_border_stage = constant:resources_found_border_stage.settlement } set_state_flag = resources_found_patrol_apology_issued } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.commission_safety_add event_target:resources_found_field_state = { check_variable = { resources_found_foreign_pressure > constant:resources_found_threshold.coercive_pressure } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.22.b
+		custom_effect_tooltip = chaosx.nr18.22.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_border_stage = constant:resources_found_border_stage.frontier_mission } set_state_flag = resources_found_claimant_blamed resources_found_refresh_dispute_achievement_evidence = yes } }
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.border_claimant_strength_add event_target:resources_found_field_state = { has_state_flag = resources_found_owner_military_ready } } }
+	}
+
+	option = {
+		name = chaosx.nr18.22.c
+		custom_effect_tooltip = chaosx.nr18.22.c.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_border_stage = constant:resources_found_border_stage.frontier_mission } set_state_flag = resources_found_frontier_mission_requested resources_found_refresh_dispute_achievement_evidence = yes } }
+		ai_chance = { base = constant:resources_found_ai_weight.base modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.22.e
+		custom_effect_tooltip = chaosx.nr18.22.e.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_commission_stage = constant:resources_found_commission_stage.proposed } set_state_flag = resources_found_border_mediator_invited } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.commission_safety_add event_target:resources_found_field_state = { resources_found_can_propose_commission = yes } } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.23
+	title = chaosx.nr18.23.t
+	desc = chaosx.nr18.23.d
+	picture = GFX_news_event_018_border_crisis
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = { var:resources_found_selected_field = { save_event_target_as = resources_found_field_state } }
+
+	option = {
+		name = chaosx.nr18.23.a
+		custom_effect_tooltip = chaosx.nr18.23.a.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				set_variable = { resources_found_border_stage = constant:resources_found_border_stage.settlement }
+				set_state_flag = resources_found_frontier_mission_succeeded
+				set_state_flag = resources_found_owner_border_leverage
+			}
+		}
+		ai_chance = { base = constant:resources_found_ai_weight.base modifier = { add = constant:resources_found_ai_weight.border_claimant_strength_add event_target:resources_found_field_state = { has_state_flag = resources_found_owner_military_ready } } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.24
+	title = chaosx.nr18.24.t
+	desc = chaosx.nr18.24.d
+	picture = GFX_news_event_018_border_crisis
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = { var:resources_found_selected_field = { save_event_target_as = resources_found_field_state } }
+
+	option = {
+		name = chaosx.nr18.24.a
+		custom_effect_tooltip = chaosx.nr18.24.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_border_stage = constant:resources_found_border_stage.settlement } set_state_flag = resources_found_frontier_access_conceded } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.low_safety_caution_add event_target:resources_found_field_state = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.24.b
+		custom_effect_tooltip = chaosx.nr18.24.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_commission_stage = constant:resources_found_commission_stage.proposed } set_state_flag = resources_found_frontier_commission_requested } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.commission_safety_add event_target:resources_found_field_state = { resources_found_can_propose_commission = yes } } }
+	}
+
+	option = {
+		name = chaosx.nr18.24.c
+		custom_effect_tooltip = chaosx.nr18.24.c.tt
+		trigger = { event_target:resources_found_field_state = { resources_found_border_military_stage_ready = yes } }
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_border_stage = constant:resources_found_border_stage.border_war } set_state_flag = resources_found_border_war_authorized } }
+		ai_chance = { base = constant:resources_found_ai_weight.base modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = no } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.25
+	title = chaosx.nr18.25.t
+	desc = chaosx.nr18.25.d
+	picture = GFX_news_event_018_border_crisis
+	is_triggered_only = yes
+	trigger = { resources_found_border_callback_is_owner_context = yes }
+	immediate = {
+		set_variable = { resources_found_selected_field = resources_found_border_owner_state }
+		var:resources_found_border_owner_state = {
+			save_event_target_as = resources_found_field_state
+			set_variable = { resources_found_border_stage = constant:resources_found_border_stage.border_war }
+			set_state_flag = resources_found_border_war_active
+			set_state_flag = resources_found_dispute_border_war_fought
+			set_state_flag = resources_found_contract_century_border_war
+			resources_found_refresh_dispute_achievement_evidence = yes
+			resources_found_refresh_contract_century_qualification = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.25.a
+		custom_effect_tooltip = chaosx.nr18.25.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_border_war_notice_delivered } }
+		ai_chance = { base = constant:resources_found_ai_weight.base modifier = { add = constant:resources_found_ai_weight.border_claimant_strength_add event_target:resources_found_field_state = { resources_found_has_valid_border_claimant = yes } } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.26
+	title = chaosx.nr18.26.t
+	desc = chaosx.nr18.26.d
+	picture = GFX_news_event_018_border_crisis
+	is_triggered_only = yes
+	trigger = { resources_found_border_callback_is_owner_context = yes }
+	immediate = { set_variable = { resources_found_selected_field = resources_found_border_owner_state } var:resources_found_border_owner_state = { save_event_target_as = resources_found_field_state } }
+
+	option = {
+		name = chaosx.nr18.26.a
+		custom_effect_tooltip = chaosx.nr18.26.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_border_stage = constant:resources_found_border_stage.settlement } clr_state_flag = resources_found_border_war_active set_state_flag = resources_found_owner_border_victory } }
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.strong_country_national_add is_major = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.26.b
+		custom_effect_tooltip = chaosx.nr18.26.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_border_stage = constant:resources_found_border_stage.settlement } clr_state_flag = resources_found_border_war_active set_state_flag = resources_found_owner_victory_compensation } }
+		ai_chance = { base = constant:resources_found_ai_weight.domestic_charter modifier = { add = constant:resources_found_ai_weight.commission_safety_add event_target:resources_found_field_state = { check_variable = { resources_found_foreign_pressure > constant:resources_found_threshold.coercive_pressure } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.26.c
+		custom_effect_tooltip = chaosx.nr18.26.c.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_border_stage = constant:resources_found_border_stage.settlement } clr_state_flag = resources_found_border_war_active set_state_flag = resources_found_owner_victory_exclusion } }
+		ai_chance = { base = constant:resources_found_ai_weight.base modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = yes } }
+	}
+
+	after = { resources_found_clear_border_conflict_runtime = yes }
+}
+
+country_event = {
+	id = chaosx.nr18.27
+	title = chaosx.nr18.27.t
+	desc = chaosx.nr18.27.d
+	picture = GFX_news_event_018_border_crisis
+	is_triggered_only = yes
+	trigger = { resources_found_border_callback_is_owner_context = yes }
+	immediate = { set_variable = { resources_found_selected_field = resources_found_border_owner_state } var:resources_found_border_owner_state = { save_event_target_as = resources_found_field_state } }
+
+	option = {
+		name = chaosx.nr18.27.a
+		custom_effect_tooltip = chaosx.nr18.27.a.tt
+		hidden_effect = {
+			resources_found_record_border_transfer_result = yes
+			event_target:resources_found_field_state = {
+				if = {
+					limit = {
+						resources_found_has_valid_border_claimant = yes
+						NOT = { is_owned_by = var:resources_found_border_claimant }
+					}
+					transfer_state_to = var:resources_found_border_claimant
+					resources_found_handle_field_ownership_transfer = yes
+				}
+				set_variable = { resources_found_border_stage = constant:resources_found_border_stage.settlement }
+				clr_state_flag = resources_found_border_war_active
+				set_state_flag = resources_found_claimant_border_victory
+			}
+		}
+		ai_chance = { base = constant:resources_found_ai_weight.base modifier = { add = constant:resources_found_ai_weight.border_claimant_strength_add event_target:resources_found_field_state = { resources_found_has_valid_border_claimant = yes } } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.28
+	title = chaosx.nr18.28.t
+	desc = chaosx.nr18.28.d
+	picture = GFX_news_event_018_border_crisis
+	is_triggered_only = yes
+	trigger = { resources_found_border_callback_is_owner_context = yes }
+	immediate = { set_variable = { resources_found_selected_field = resources_found_border_owner_state } var:resources_found_border_owner_state = { save_event_target_as = resources_found_field_state } }
+
+	option = {
+		name = chaosx.nr18.28.a
+		custom_effect_tooltip = chaosx.nr18.28.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_commission_stage = constant:resources_found_commission_stage.proposed } set_variable = { resources_found_border_stage = constant:resources_found_border_stage.settlement } clr_state_flag = resources_found_border_war_active set_state_flag = resources_found_stalemate_commission } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.commission_safety_add event_target:resources_found_field_state = { resources_found_can_propose_commission = yes } } }
+	}
+
+	option = {
+		name = chaosx.nr18.28.b
+		custom_effect_tooltip = chaosx.nr18.28.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_border_stage = constant:resources_found_border_stage.settlement } clr_state_flag = resources_found_border_war_active set_state_flag = resources_found_stalemate_demilitarized } }
+		ai_chance = { base = constant:resources_found_ai_weight.domestic_charter modifier = { add = constant:resources_found_ai_weight.low_safety_caution_add event_target:resources_found_field_state = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.28.c
+		custom_effect_tooltip = chaosx.nr18.28.c.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_border_stage = constant:resources_found_border_stage.competing_surveys } clr_state_flag = resources_found_border_war_active set_state_flag = resources_found_stalemate_claim_renewed } }
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = no } }
+	}
+
+	after = { resources_found_clear_border_conflict_runtime = yes }
+}
+
+country_event = {
+	id = chaosx.nr18.29
+	title = chaosx.nr18.29.t
+	desc = chaosx.nr18.29.d
+	picture = GFX_news_event_018_border_crisis
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = { var:resources_found_selected_field = { save_event_target_as = resources_found_field_state } }
+
+	option = {
+		name = chaosx.nr18.29.a
+		custom_effect_tooltip = chaosx.nr18.29.a.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				resources_found_activate_commission = yes
+				set_variable = { resources_found_field_posture = constant:resources_found_posture.international_commission }
+				set_state_flag = resources_found_commission_terms_accepted
+				set_state_flag = resources_found_claimant_dispute_suspended_by_agreement
+				set_variable = { resources_found_border_stage = constant:resources_found_border_stage.settlement }
+			}
+			set_temp_variable = { resources_found_settlement_mode_input = constant:resources_found_settlement_mode.commission }
+			resources_found_begin_dispute_settlement_qualification = yes
+		}
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.commission_safety_add event_target:resources_found_field_state = { resources_found_can_propose_commission = yes } } }
+	}
+
+	option = {
+		name = chaosx.nr18.29.b
+		custom_effect_tooltip = chaosx.nr18.29.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_commission_stage = constant:resources_found_commission_stage.negotiating } set_state_flag = resources_found_commission_revision_demanded } }
+		ai_chance = { base = constant:resources_found_ai_weight.domestic_charter modifier = { add = constant:resources_found_ai_weight.valid_contract_add event_target:resources_found_field_state = { resources_found_has_valid_contract_partner = yes } } }
+	}
+
+	option = {
+		name = chaosx.nr18.29.c
+		custom_effect_tooltip = chaosx.nr18.29.c.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_commission_stage = constant:resources_found_commission_stage.none } set_state_flag = resources_found_commission_rejected } }
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.strong_country_national_add is_major = yes } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.30
+	title = chaosx.nr18.30.t
+	desc = chaosx.nr18.30.d
+	picture = GFX_news_event_018_border_crisis
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = { var:resources_found_selected_field = { save_event_target_as = resources_found_field_state } }
+
+	option = {
+		name = chaosx.nr18.30.a
+		custom_effect_tooltip = chaosx.nr18.30.a.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				set_variable = { resources_found_commission_stage = constant:resources_found_commission_stage.active }
+				set_variable = { resources_found_field_posture = constant:resources_found_posture.international_commission }
+				set_state_flag = resources_found_commission_active
+				set_state_flag = resources_found_commission_quotas_confirmed
+				set_state_flag = resources_found_claimant_dispute_suspended_by_agreement
+				set_variable = { resources_found_border_stage = constant:resources_found_border_stage.settlement }
+				clr_state_flag = resources_found_mapped_border_dispute
+			}
+			set_temp_variable = { resources_found_settlement_mode_input = constant:resources_found_settlement_mode.commission }
+			resources_found_begin_dispute_settlement_qualification = yes
+		}
+		ai_chance = { base = constant:resources_found_ai_weight.base modifier = { add = constant:resources_found_ai_weight.commission_safety_add event_target:resources_found_field_state = { check_variable = { resources_found_foreign_pressure > constant:resources_found_threshold.coercive_pressure } } } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.31
+	title = chaosx.nr18.31.t
+	desc = chaosx.nr18.31.d
+	picture = GFX_news_event_018_border_crisis
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = {
+		var:resources_found_selected_field = {
+			save_event_target_as = resources_found_field_state
+			set_state_flag = resources_found_commission_violation
+			set_variable = { resources_found_commission_stage = constant:resources_found_commission_stage.violation }
+			resources_found_refresh_dispute_achievement_evidence = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.31.a
+		custom_effect_tooltip = chaosx.nr18.31.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { clr_state_flag = resources_found_commission_violation set_variable = { resources_found_commission_stage = constant:resources_found_commission_stage.active } set_state_flag = resources_found_commission_compliance_restored } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.commission_safety_add event_target:resources_found_field_state = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.31.b
+		custom_effect_tooltip = chaosx.nr18.31.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_commission_public_accusation } }
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.border_claimant_strength_add event_target:resources_found_field_state = { resources_found_has_valid_border_claimant = yes } } }
+	}
+
+	option = {
+		name = chaosx.nr18.31.c
+		custom_effect_tooltip = chaosx.nr18.31.c.tt
+		hidden_effect = { event_target:resources_found_field_state = { clr_state_flag = resources_found_commission_active set_variable = { resources_found_commission_stage = constant:resources_found_commission_stage.dissolved } set_state_flag = resources_found_commission_withdrawal } }
+		ai_chance = { base = constant:resources_found_ai_weight.base modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = yes } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.32
+	title = chaosx.nr18.32.t
+	desc = chaosx.nr18.32.d
+	picture = GFX_news_event_018_border_crisis
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = { var:resources_found_selected_field = { save_event_target_as = resources_found_field_state } }
+
+	option = {
+		name = chaosx.nr18.32.a
+		custom_effect_tooltip = chaosx.nr18.32.a.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				clr_state_flag = resources_found_commission_active
+				clr_state_flag = resources_found_commission_violation
+				set_variable = { resources_found_commission_stage = constant:resources_found_commission_stage.dissolved }
+				set_variable = { resources_found_field_posture = constant:resources_found_posture.national_authority }
+				set_state_flag = resources_found_commission_returned_to_national_control
+				resources_found_refresh_dispute_achievement_evidence = yes
+			}
+		}
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.strong_country_national_add is_major = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.32.b
+		custom_effect_tooltip = chaosx.nr18.32.b.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				clr_state_flag = resources_found_commission_active
+				clr_state_flag = resources_found_commission_violation
+				set_variable = { resources_found_commission_stage = constant:resources_found_commission_stage.negotiating }
+				set_state_flag = resources_found_successor_commission_negotiation
+				resources_found_refresh_dispute_achievement_evidence = yes
+			}
+		}
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.commission_safety_add event_target:resources_found_field_state = { check_variable = { resources_found_foreign_pressure > constant:resources_found_threshold.coercive_pressure } } } }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Evolution I: compound fields and demilitarized corridors
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr18.40
+	title = chaosx.nr18.40.t
+	desc = chaosx.nr18.40.d
+	picture = GFX_report_event_018_compound_field
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = {
+		var:resources_found_selected_field = {
+			save_event_target_as = resources_found_field_state
+			if = {
+				limit = {
+					resources_found_is_evolution_i_enabled = yes
+					NOT = { has_state_flag = resources_found_evolution_i_repeat_package_applied }
+				}
+				resources_found_apply_evolution_i_active_package = yes
+			}
+			resources_found_record_evolution_i_from_field = yes
+			set_state_flag = resources_found_compound_field_revealed
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.40.a
+		custom_effect_tooltip = chaosx.nr18.40.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_field_posture = constant:resources_found_posture.national_authority } set_state_flag = resources_found_compound_centralized } }
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.strong_country_national_add is_major = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.40.b
+		custom_effect_tooltip = chaosx.nr18.40.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_field_posture = constant:resources_found_posture.foreign_concession } set_state_flag = resources_found_compound_concessions_split } }
+		ai_chance = { base = constant:resources_found_ai_weight.foreign_concession modifier = { add = constant:resources_found_ai_weight.valid_contract_add event_target:resources_found_field_state = { resources_found_contract_is_active_and_valid = yes } } }
+	}
+
+	option = {
+		name = chaosx.nr18.40.c
+		custom_effect_tooltip = chaosx.nr18.40.c.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_field_posture = constant:resources_found_posture.strategic_reserve } set_state_flag = resources_found_compound_output_rationed } }
+		ai_chance = { base = constant:resources_found_ai_weight.strategic_reserve modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = no } }
+	}
+
+	option = {
+		name = chaosx.nr18.40.e
+		custom_effect_tooltip = chaosx.nr18.40.e.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_compound_restrained resources_found_suspend_field = yes } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.low_safety_caution_add event_target:resources_found_field_state = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 } } } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.41
+	title = chaosx.nr18.41.t
+	desc = chaosx.nr18.41.d
+	picture = GFX_report_event_018_compound_field
+	is_triggered_only = yes
+	trigger = { has_event_target = resources_found_field_state }
+	immediate = {
+		event_target:resources_found_field_state = {
+			if = {
+				limit = {
+					resources_found_is_evolution_i_enabled = yes
+					NOT = { has_state_flag = resources_found_evolution_i_package_applied }
+				}
+				resources_found_apply_evolution_i_prefire_package = yes
+			}
+			resources_found_record_evolution_i_from_field = yes
+			set_state_flag = resources_found_evolution_i_prefire_opening
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.41.a
+		custom_effect_tooltip = chaosx.nr18.41.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_field_posture = constant:resources_found_posture.national_authority } set_state_flag = resources_found_compound_opening_national } }
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.strong_country_national_add is_major = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.41.b
+		custom_effect_tooltip = chaosx.nr18.41.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_field_posture = constant:resources_found_posture.domestic_charter } set_state_flag = resources_found_compound_opening_chartered } }
+		ai_chance = { base = constant:resources_found_ai_weight.domestic_charter modifier = { add = constant:resources_found_ai_weight.commercial_government_add event_target:resources_found_field_state = { check_variable = { resources_found_foreign_pressure > constant:resources_found_threshold.commercial_interest_pressure } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.41.c
+		custom_effect_tooltip = chaosx.nr18.41.c.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_field_posture = constant:resources_found_posture.strategic_reserve } set_state_flag = resources_found_compound_opening_reserved } }
+		ai_chance = { base = constant:resources_found_ai_weight.strategic_reserve modifier = { add = constant:resources_found_ai_weight.low_safety_caution_add event_target:resources_found_field_state = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 } } } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.42
+	title = chaosx.nr18.42.t
+	desc = chaosx.nr18.42.d
+	picture = GFX_report_event_018_compound_field
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = {
+		var:resources_found_selected_field = {
+			save_event_target_as = resources_found_field_state
+			set_state_flag = resources_found_transport_corridor_complete
+			if = {
+				limit = { NOT = { has_dynamic_modifier = { modifier = resources_found_compound_corridor } } }
+				add_dynamic_modifier = { modifier = resources_found_compound_corridor }
+				force_update_dynamic_modifier = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.42.a
+		custom_effect_tooltip = chaosx.nr18.42.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_corridor_domestic_priority } }
+		ai_chance = { base = constant:resources_found_ai_weight.domestic_charter modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.42.b
+		custom_effect_tooltip = chaosx.nr18.42.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_corridor_export_priority set_state_flag = resources_found_foreign_interest_open } }
+		ai_chance = { base = constant:resources_found_ai_weight.foreign_concession modifier = { add = constant:resources_found_ai_weight.valid_contract_add event_target:resources_found_field_state = { resources_found_contract_is_active_and_valid = yes } } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.43
+	title = chaosx.nr18.43.t
+	desc = chaosx.nr18.43.d
+	picture = GFX_news_event_018_global_resource_field
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = {
+		resources_found_emit_global_field_news = yes
+		var:resources_found_selected_field = {
+			save_event_target_as = resources_found_field_state
+			set_state_flag = resources_found_international_rush
+			set_state_flag = resources_found_foreign_interest_open
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.43.a
+		custom_effect_tooltip = chaosx.nr18.43.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_field_posture = constant:resources_found_posture.foreign_concession } set_state_flag = resources_found_international_market_opened } }
+		ai_chance = { base = constant:resources_found_ai_weight.foreign_concession modifier = { add = constant:resources_found_ai_weight.weak_country_concession_add NOT = { is_major = yes } } }
+	}
+
+	option = {
+		name = chaosx.nr18.43.b
+		custom_effect_tooltip = chaosx.nr18.43.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_field_posture = constant:resources_found_posture.strategic_reserve } set_state_flag = resources_found_international_output_reserved } }
+		ai_chance = { base = constant:resources_found_ai_weight.strategic_reserve modifier = { add = constant:resources_found_ai_weight.strong_country_national_add is_major = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.43.c
+		custom_effect_tooltip = chaosx.nr18.43.c.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_commission_stage = constant:resources_found_commission_stage.proposed } set_state_flag = resources_found_international_commission_requested } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.commission_safety_add event_target:resources_found_field_state = { check_variable = { resources_found_foreign_pressure > constant:resources_found_threshold.coercive_pressure } } } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.44
+	title = chaosx.nr18.44.t
+	desc = chaosx.nr18.44.d
+	picture = GFX_news_event_018_border_crisis
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = { var:resources_found_selected_field = { save_event_target_as = resources_found_field_state } }
+
+	option = {
+		name = chaosx.nr18.44.a
+		custom_effect_tooltip = chaosx.nr18.44.a.tt
+		hidden_effect = {
+			event_target:resources_found_field_state = {
+				set_state_flag = resources_found_demilitarized_field
+				set_state_flag = resources_found_claimant_dispute_suspended_by_agreement
+				set_variable = { resources_found_border_stage = constant:resources_found_border_stage.settlement }
+				set_variable = { resources_found_commission_stage = constant:resources_found_commission_stage.active }
+				if = {
+					limit = { NOT = { has_dynamic_modifier = { modifier = resources_found_demilitarized_commission } } }
+					add_dynamic_modifier = { modifier = resources_found_demilitarized_commission }
+					force_update_dynamic_modifier = yes
+				}
+			}
+			set_temp_variable = { resources_found_settlement_mode_input = constant:resources_found_settlement_mode.demilitarization }
+			resources_found_begin_dispute_settlement_qualification = yes
+		}
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.commission_safety_add event_target:resources_found_field_state = { check_variable = { resources_found_foreign_pressure > constant:resources_found_threshold.coercive_pressure } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.44.b
+		custom_effect_tooltip = chaosx.nr18.44.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_limited_field_guards set_variable = { resources_found_commission_stage = constant:resources_found_commission_stage.active } } }
+		ai_chance = { base = constant:resources_found_ai_weight.domestic_charter modifier = { add = constant:resources_found_ai_weight.low_safety_caution_add event_target:resources_found_field_state = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.44.c
+		custom_effect_tooltip = chaosx.nr18.44.c.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_demilitarization_rejected set_variable = { resources_found_commission_stage = constant:resources_found_commission_stage.none } } }
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = yes } }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Evolution II: sickness, evidence, disappearances, and containment
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr18.50
+	title = chaosx.nr18.50.t
+	desc = chaosx.nr18.50.d
+	picture = GFX_report_event_018_sick_workings
+	is_triggered_only = yes
+	trigger = { has_event_target = resources_found_field_state }
+	immediate = {
+		event_target:resources_found_field_state = {
+			if = {
+				limit = {
+					resources_found_is_evolution_ii_enabled = yes
+					NOT = { has_state_flag = resources_found_evolution_ii_package_applied }
+					NOT = { has_state_flag = resources_found_evolution_ii_repeat_package_applied }
+				}
+				resources_found_apply_evolution_ii_prefire_package = yes
+			}
+			resources_found_record_evolution_ii_from_field = yes
+			set_state_flag = resources_found_evolution_ii_prefire_opening
+			set_state_flag = resources_found_evolution_ii_incident_pending
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.50.a
+		custom_effect_tooltip = chaosx.nr18.50.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_field_posture = constant:resources_found_posture.national_authority } set_state_flag = resources_found_hazard_opening_national } }
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.strong_country_national_add is_major = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.50.b
+		custom_effect_tooltip = chaosx.nr18.50.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_field_posture = constant:resources_found_posture.domestic_charter } set_state_flag = resources_found_hazard_opening_chartered } }
+		ai_chance = { base = constant:resources_found_ai_weight.domestic_charter modifier = { add = constant:resources_found_ai_weight.commercial_government_add event_target:resources_found_field_state = { check_variable = { resources_found_foreign_pressure > constant:resources_found_threshold.commercial_interest_pressure } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.50.c
+		custom_effect_tooltip = chaosx.nr18.50.c.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_field_posture = constant:resources_found_posture.foreign_concession } set_state_flag = resources_found_hazard_opening_concession } }
+		ai_chance = { base = constant:resources_found_ai_weight.foreign_concession modifier = { add = constant:resources_found_ai_weight.weak_country_concession_add NOT = { is_major = yes } } }
+	}
+
+	option = {
+		name = chaosx.nr18.50.e
+		custom_effect_tooltip = chaosx.nr18.50.e.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_field_posture = constant:resources_found_posture.strategic_reserve } set_state_flag = resources_found_hazard_opening_reserved } }
+		ai_chance = { base = constant:resources_found_ai_weight.strategic_reserve modifier = { add = constant:resources_found_ai_weight.low_safety_caution_add event_target:resources_found_field_state = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 } } } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.51
+	title = chaosx.nr18.51.t
+	desc = chaosx.nr18.51.d
+	picture = GFX_report_event_018_sick_workings
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = {
+		var:resources_found_selected_field = {
+			save_event_target_as = resources_found_field_state
+			set_state_flag = resources_found_worker_sickness_reported
+			clr_state_flag = resources_found_evolution_ii_incident_pending
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.51.a
+		custom_effect_tooltip = chaosx.nr18.51.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_medical_inspection_active set_state_flag = resources_found_disturbance_revealed } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.low_safety_caution_add event_target:resources_found_field_state = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.51.b
+		custom_effect_tooltip = chaosx.nr18.51.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_crew_rotation_active set_state_flag = resources_found_restricted_workings } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.critical_disturbance_closure_add event_target:resources_found_field_state = { check_variable = { resources_found_subsurface_disturbance > constant:resources_found_field_value.band_4 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.51.c
+		custom_effect_tooltip = chaosx.nr18.51.c.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_incident_concealment set_state_flag = resources_found_casualties_concealed set_state_flag = resources_found_sickness_concealed } }
+		ai_chance = { base = constant:resources_found_ai_weight.minimum modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.51.e
+		custom_effect_tooltip = chaosx.nr18.51.e.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_sick_shifts_continued set_state_flag = resources_found_military_exploitation set_state_flag = resources_found_coercive_labor_used } }
+		ai_chance = { base = constant:resources_found_ai_weight.minimum modifier = { add = constant:resources_found_ai_weight.high_safety_exploitation_add event_target:resources_found_field_state = { check_variable = { resources_found_workforce_safety > constant:resources_found_field_value.band_4 } } } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.52
+	title = chaosx.nr18.52.t
+	desc = chaosx.nr18.52.d
+	picture = GFX_report_event_018_sick_workings
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = { var:resources_found_selected_field = { save_event_target_as = resources_found_field_state set_state_flag = resources_found_machinery_corrosion_reported } }
+
+	option = {
+		name = chaosx.nr18.52.a
+		custom_effect_tooltip = chaosx.nr18.52.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_corroded_machinery_replaced set_state_flag = resources_found_restricted_workings } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.low_safety_caution_add event_target:resources_found_field_state = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.52.b
+		custom_effect_tooltip = chaosx.nr18.52.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_corrosion_testing_active set_state_flag = resources_found_disturbance_revealed } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.commission_safety_add event_target:resources_found_field_state = { check_variable = { resources_found_foreign_pressure > constant:resources_found_threshold.strategic_competition_pressure } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.52.c
+		custom_effect_tooltip = chaosx.nr18.52.c.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_corroded_gallery_isolated set_state_flag = resources_found_sealed_network } }
+		ai_chance = { base = constant:resources_found_ai_weight.strategic_reserve modifier = { add = constant:resources_found_ai_weight.critical_disturbance_closure_add event_target:resources_found_field_state = { check_variable = { resources_found_subsurface_disturbance > constant:resources_found_field_value.band_4 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.52.e
+		custom_effect_tooltip = chaosx.nr18.52.e.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_corroded_machinery_reused set_state_flag = resources_found_military_exploitation } }
+		ai_chance = { base = constant:resources_found_ai_weight.minimum modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = yes } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.53
+	title = chaosx.nr18.53.t
+	desc = chaosx.nr18.53.d
+	picture = GFX_report_event_018_missing_shift
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = {
+		var:resources_found_selected_field = {
+			save_event_target_as = resources_found_field_state
+			set_state_flag = resources_found_missing_shift
+			set_temp_variable = { resources_found_incident_base_loss = constant:resources_found_civilian_loss.missing_shift }
+			set_temp_variable = { resources_found_incident_population_factor = constant:resources_found_civilian_loss_factor.missing_shift_population }
+			resources_found_apply_incident_civilian_loss = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.53.a
+		custom_effect_tooltip = chaosx.nr18.53.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_missing_shift_rescue set_state_flag = resources_found_rescue_mission_active } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.low_safety_caution_add event_target:resources_found_field_state = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.53.b
+		custom_effect_tooltip = chaosx.nr18.53.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_missing_shift_passage_sealed set_state_flag = resources_found_sealed_network } }
+		ai_chance = { base = constant:resources_found_ai_weight.strategic_reserve modifier = { add = constant:resources_found_ai_weight.critical_disturbance_closure_add event_target:resources_found_field_state = { check_variable = { resources_found_subsurface_disturbance > constant:resources_found_field_value.band_4 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.53.c
+		custom_effect_tooltip = chaosx.nr18.53.c.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_incident_concealment set_state_flag = resources_found_casualties_concealed set_state_flag = resources_found_missing_shift_concealed } }
+		ai_chance = { base = constant:resources_found_ai_weight.minimum modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.53.e
+		custom_effect_tooltip = chaosx.nr18.53.e.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_missing_shift_abandoned set_state_flag = resources_found_military_exploitation set_state_flag = resources_found_coercive_labor_used } }
+		ai_chance = { base = constant:resources_found_ai_weight.minimum modifier = { add = constant:resources_found_ai_weight.high_safety_exploitation_add event_target:resources_found_field_state = { check_variable = { resources_found_workforce_safety > constant:resources_found_field_value.band_4 } } } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.54
+	title = chaosx.nr18.54.t
+	desc = chaosx.nr18.54.d
+	picture = GFX_report_event_018_missing_shift
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = { var:resources_found_selected_field = { save_event_target_as = resources_found_field_state set_state_flag = resources_found_knocking_reported } }
+
+	option = {
+		name = chaosx.nr18.54.a
+		custom_effect_tooltip = chaosx.nr18.54.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_knocking_recorded set_state_flag = resources_found_disturbance_revealed } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.commission_safety_add event_target:resources_found_field_state = { check_variable = { resources_found_foreign_pressure > constant:resources_found_threshold.strategic_competition_pressure } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.54.b
+		custom_effect_tooltip = chaosx.nr18.54.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_lower_workings_evacuated set_state_flag = resources_found_restricted_workings } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.low_safety_caution_add event_target:resources_found_field_state = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.54.c
+		custom_effect_tooltip = chaosx.nr18.54.c.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_knocking_dismissed } }
+		ai_chance = { base = constant:resources_found_ai_weight.minimum modifier = { add = constant:resources_found_ai_weight.high_safety_exploitation_add event_target:resources_found_field_state = { check_variable = { resources_found_workforce_safety > constant:resources_found_field_value.band_4 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.54.e
+		custom_effect_tooltip = chaosx.nr18.54.e.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_knocking_investigation set_state_flag = resources_found_medical_inspection_active } }
+		ai_chance = { base = constant:resources_found_ai_weight.base modifier = { add = constant:resources_found_ai_weight.critical_disturbance_closure_add event_target:resources_found_field_state = { check_variable = { resources_found_subsurface_disturbance > constant:resources_found_field_value.band_4 } } } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.55
+	title = chaosx.nr18.55.t
+	desc = chaosx.nr18.55.d
+	picture = GFX_report_event_018_sick_workings
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = { var:resources_found_selected_field = { save_event_target_as = resources_found_field_state set_state_flag = resources_found_disturbance_revealed set_state_flag = resources_found_ordinary_tests_failed } }
+
+	option = {
+		name = chaosx.nr18.55.a
+		custom_effect_tooltip = chaosx.nr18.55.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_disturbance_publicly_reported set_state_flag = resources_found_restricted_workings } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.low_safety_caution_add event_target:resources_found_field_state = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.55.b
+		custom_effect_tooltip = chaosx.nr18.55.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_disturbance_classified set_state_flag = resources_found_medical_inspection_active } }
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = yes } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.56
+	title = chaosx.nr18.56.t
+	desc = chaosx.nr18.56.d
+	picture = GFX_report_event_018_first_evidence
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = { var:resources_found_selected_field = { save_event_target_as = resources_found_field_state set_state_flag = resources_found_first_physical_evidence } }
+
+	option = {
+		name = chaosx.nr18.56.a
+		custom_effect_tooltip = chaosx.nr18.56.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_evidence_military_study set_state_flag = resources_found_countermeasure_research } }
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.56.b
+		custom_effect_tooltip = chaosx.nr18.56.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_evidence_medical_study set_state_flag = resources_found_medical_inspection_active } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.low_safety_caution_add event_target:resources_found_field_state = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.56.c
+		custom_effect_tooltip = chaosx.nr18.56.c.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_evidence_destroyed set_state_flag = resources_found_sealed_network } }
+		ai_chance = { base = constant:resources_found_ai_weight.strategic_reserve modifier = { add = constant:resources_found_ai_weight.critical_disturbance_closure_add event_target:resources_found_field_state = { check_variable = { resources_found_subsurface_disturbance > constant:resources_found_field_value.band_4 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.56.e
+		custom_effect_tooltip = chaosx.nr18.56.e.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_evidence_public set_state_flag = resources_found_foreign_interest_open } }
+		ai_chance = { base = constant:resources_found_ai_weight.domestic_charter modifier = { add = constant:resources_found_ai_weight.commission_safety_add event_target:resources_found_field_state = { check_variable = { resources_found_foreign_pressure > constant:resources_found_threshold.strategic_competition_pressure } } } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.57
+	title = chaosx.nr18.57.t
+	desc = chaosx.nr18.57.d
+	picture = GFX_report_event_018_first_evidence
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = {
+		var:resources_found_selected_field = {
+			save_event_target_as = resources_found_field_state
+			set_state_flag = resources_found_underground_attack
+			set_temp_variable = { resources_found_incident_base_loss = constant:resources_found_civilian_loss.underground_attack }
+			set_temp_variable = { resources_found_incident_population_factor = constant:resources_found_civilian_loss_factor.underground_attack_population }
+			resources_found_apply_incident_civilian_loss = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.57.a
+		custom_effect_tooltip = chaosx.nr18.57.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_underground_rescue set_state_flag = resources_found_rescue_mission_active } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.low_safety_caution_add event_target:resources_found_field_state = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.57.b
+		custom_effect_tooltip = chaosx.nr18.57.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_armed_underground_sweep set_state_flag = resources_found_countermeasure_research } }
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.57.c
+		custom_effect_tooltip = chaosx.nr18.57.c.tt
+		trigger = {
+			resources_found_decision_containment_queue_available = yes
+			resources_found_decision_has_base_containment_inputs = yes
+			event_target:resources_found_field_state = { resources_found_can_begin_partial_closure = yes }
+		}
+		hidden_effect = {
+			resources_found_start_partial_closure_project = yes
+			if = {
+				limit = {
+					has_country_flag = resources_found_containment_project_active
+					check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.partial_closure }
+				}
+				var:resources_found_active_project_field = { set_state_flag = resources_found_lower_workings_closed }
+			}
+		}
+		ai_chance = { base = constant:resources_found_ai_weight.strategic_reserve modifier = { add = constant:resources_found_ai_weight.critical_disturbance_closure_add event_target:resources_found_field_state = { check_variable = { resources_found_subsurface_disturbance > constant:resources_found_field_value.band_4 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.57.e
+		custom_effect_tooltip = chaosx.nr18.57.e.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_shifts_kept_after_attack set_state_flag = resources_found_military_exploitation set_state_flag = resources_found_coercive_labor_used } }
+		ai_chance = { base = constant:resources_found_ai_weight.minimum modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = yes } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.58
+	title = chaosx.nr18.58.t
+	desc = chaosx.nr18.58.d
+	picture = GFX_report_event_018_first_evidence
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = { var:resources_found_selected_field = { save_event_target_as = resources_found_field_state set_state_flag = resources_found_concealed_deaths_exposed } }
+
+	option = {
+		name = chaosx.nr18.58.a
+		custom_effect_tooltip = chaosx.nr18.58.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { clr_state_flag = resources_found_incident_concealment clr_state_flag = resources_found_casualties_concealed set_state_flag = resources_found_deaths_admitted set_state_flag = resources_found_compensation_offered } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.low_safety_caution_add event_target:resources_found_field_state = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.58.b
+		custom_effect_tooltip = chaosx.nr18.58.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_concession_partner_blamed set_variable = { resources_found_contract_stage = constant:resources_found_contract_stage.pending_review } } }
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.valid_contract_add event_target:resources_found_field_state = { resources_found_has_valid_contract_partner = yes } } }
+	}
+
+	option = {
+		name = chaosx.nr18.58.c
+		custom_effect_tooltip = chaosx.nr18.58.c.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_incident_concealment set_state_flag = resources_found_casualties_concealed set_state_flag = resources_found_casualty_list_suppressed } }
+		ai_chance = { base = constant:resources_found_ai_weight.minimum modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.58.e
+		custom_effect_tooltip = chaosx.nr18.58.e.tt
+		hidden_effect = { event_target:resources_found_field_state = { clr_state_flag = resources_found_incident_concealment clr_state_flag = resources_found_casualties_concealed set_state_flag = resources_found_compensation_offered set_state_flag = resources_found_family_compensation_priority } }
+		ai_chance = { base = constant:resources_found_ai_weight.domestic_charter modifier = { add = constant:resources_found_ai_weight.commission_safety_add event_target:resources_found_field_state = { check_variable = { resources_found_foreign_pressure > constant:resources_found_threshold.strategic_competition_pressure } } } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.59
+	title = chaosx.nr18.59.t
+	desc = chaosx.nr18.59.d
+	picture = GFX_report_event_018_sick_workings
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = { var:resources_found_selected_field = { save_event_target_as = resources_found_field_state set_state_flag = resources_found_evolution_ii_stabilized set_state_flag = resources_found_restricted_workings } }
+
+	option = {
+		name = chaosx.nr18.59.a
+		custom_effect_tooltip = chaosx.nr18.59.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_restricted_field_maintained clr_state_flag = resources_found_military_exploitation } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.high_safety_exploitation_add event_target:resources_found_field_state = { check_variable = { resources_found_workforce_safety > constant:resources_found_field_value.band_4 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.59.b
+		custom_effect_tooltip = chaosx.nr18.59.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_evolution_ii_closure_requested } }
+		ai_chance = { base = constant:resources_found_ai_weight.base modifier = { add = constant:resources_found_ai_weight.critical_disturbance_closure_add event_target:resources_found_field_state = { check_variable = { resources_found_subsurface_disturbance > constant:resources_found_field_value.band_5 } } } }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Evolution III: public attacks, hunts, evacuation, and the final seal
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr18.60
+	title = chaosx.nr18.60.t
+	desc = chaosx.nr18.60.d
+	picture = GFX_news_event_018_global_resource_field
+	is_triggered_only = yes
+	trigger = { has_event_target = resources_found_field_state }
+	immediate = {
+		event_target:resources_found_field_state = {
+			if = {
+				limit = {
+					resources_found_is_evolution_iii_enabled = yes
+					NOT = { has_state_flag = resources_found_evolution_iii_package_applied }
+				}
+				resources_found_apply_evolution_iii_all_resources_package = yes
+			}
+			resources_found_record_evolution_iii_from_field = yes
+			set_state_flag = resources_found_evolution_iii_prefire_opening
+			set_state_flag = resources_found_global_scale_field
+			if = {
+				limit = { NOT = { has_state_flag = resources_found_evolution_ii_stabilized } }
+				set_state_flag = resources_found_evolution_ii_incident_pending
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.60.a
+		custom_effect_tooltip = chaosx.nr18.60.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_field_posture = constant:resources_found_posture.national_authority } set_state_flag = resources_found_global_field_nationalized } }
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.strong_country_national_add is_major = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.60.b
+		custom_effect_tooltip = chaosx.nr18.60.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_field_posture = constant:resources_found_posture.international_commission } set_variable = { resources_found_commission_stage = constant:resources_found_commission_stage.proposed } set_state_flag = resources_found_global_field_commission } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.commission_safety_add event_target:resources_found_field_state = { check_variable = { resources_found_foreign_pressure > constant:resources_found_threshold.coercive_pressure } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.60.c
+		custom_effect_tooltip = chaosx.nr18.60.c.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_variable = { resources_found_field_posture = constant:resources_found_posture.strategic_reserve } set_state_flag = resources_found_global_field_reserved } }
+		ai_chance = { base = constant:resources_found_ai_weight.strategic_reserve modifier = { add = constant:resources_found_ai_weight.low_safety_caution_add event_target:resources_found_field_state = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 } } } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.61
+	title = chaosx.nr18.61.t
+	desc = chaosx.nr18.61.d
+	picture = GFX_news_event_018_public_attack
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = {
+		resources_found_emit_public_attack_news = yes
+		var:resources_found_selected_field = {
+			save_event_target_as = resources_found_field_state
+			set_state_flag = resources_found_public_breach
+			set_state_flag = resources_found_breach_revealed
+			set_state_flag = resources_found_perimeter_breached
+			set_state_flag = resources_found_unsealed_nest
+			set_state_flag = resources_found_breach_incident_pending
+			resources_found_refresh_contract_century_qualification = yes
+			resources_found_refresh_dispute_achievement_evidence = yes
+			if = {
+				limit = { NOT = { has_variable = resources_found_public_crisis_minimum_date } }
+				set_variable = { resources_found_public_crisis_minimum_date = global.date }
+				set_temp_variable = { resources_found_public_crisis_delay = constant:resources_found_project_duration.public_crisis_minimum_days }
+				add_to_variable = { resources_found_public_crisis_minimum_date = resources_found_public_crisis_delay }
+			}
+			if = {
+				limit = { NOT = { has_dynamic_modifier = { modifier = resources_found_public_breach } } }
+				add_dynamic_modifier = { modifier = resources_found_public_breach }
+				force_update_dynamic_modifier = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.61.a
+		custom_effect_tooltip = chaosx.nr18.61.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_perimeter_reinforced set_state_flag = resources_found_countermeasure_research } }
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.61.b
+		custom_effect_tooltip = chaosx.nr18.61.b.tt
+		trigger = {
+			resources_found_decision_containment_queue_available = yes
+			resources_found_decision_has_base_containment_inputs = yes
+			event_target:resources_found_field_state = { resources_found_can_begin_partial_closure = yes }
+		}
+		hidden_effect = {
+			resources_found_start_partial_closure_project = yes
+			if = {
+				limit = {
+					has_country_flag = resources_found_containment_project_active
+					check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.partial_closure }
+				}
+				var:resources_found_active_project_field = { set_state_flag = resources_found_perimeter_access_sealed }
+			}
+		}
+		ai_chance = { base = constant:resources_found_ai_weight.strategic_reserve modifier = { add = constant:resources_found_ai_weight.critical_breach_closure_add event_target:resources_found_field_state = { check_variable = { resources_found_breach_pressure > constant:resources_found_field_value.band_5 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.61.c
+		custom_effect_tooltip = chaosx.nr18.61.c.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_perimeter_evacuation_ordered set_state_flag = resources_found_evacuation_prepared } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.low_safety_caution_add event_target:resources_found_field_state = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.61.e
+		custom_effect_tooltip = chaosx.nr18.61.e.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_public_attack_extraction_continued set_state_flag = resources_found_military_exploitation set_state_flag = resources_found_coercive_labor_used } }
+		ai_chance = { base = constant:resources_found_ai_weight.minimum modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = yes } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.62
+	title = chaosx.nr18.62.t
+	desc = chaosx.nr18.62.d
+	picture = GFX_news_event_018_public_attack
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = {
+		var:resources_found_selected_field = {
+			save_event_target_as = resources_found_field_state
+			set_state_flag = resources_found_settlement_attacked
+			set_temp_variable = { resources_found_incident_base_loss = constant:resources_found_civilian_loss.settlement_attack }
+			set_temp_variable = { resources_found_incident_population_factor = constant:resources_found_civilian_loss_factor.settlement_attack_population }
+			resources_found_apply_incident_civilian_loss = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.62.a
+		custom_effect_tooltip = chaosx.nr18.62.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_settlement_hunt_ordered set_state_flag = resources_found_hunt_mission_active } }
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.62.b
+		custom_effect_tooltip = chaosx.nr18.62.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_settlement_evacuation_ordered set_state_flag = resources_found_evacuation_prepared } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.low_safety_caution_add event_target:resources_found_field_state = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.62.c
+		custom_effect_tooltip = chaosx.nr18.62.c.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_settlement_route_fortified set_state_flag = resources_found_countermeasure_research } }
+		ai_chance = { base = constant:resources_found_ai_weight.base modifier = { add = constant:resources_found_ai_weight.critical_breach_closure_add event_target:resources_found_field_state = { check_variable = { resources_found_breach_pressure > constant:resources_found_field_value.band_4 } } } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.63
+	title = chaosx.nr18.63.t
+	desc = chaosx.nr18.63.d
+	picture = GFX_news_event_018_public_attack
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = {
+		var:resources_found_selected_field = {
+			save_event_target_as = resources_found_field_state
+			set_state_flag = resources_found_transport_line_cut
+			set_variable = { resources_found_contract_stage = constant:resources_found_contract_stage.suspended }
+			clr_state_flag = resources_found_field_contract_active
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.63.a
+		custom_effect_tooltip = chaosx.nr18.63.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_transport_escort_committed set_state_flag = resources_found_countermeasure_research } }
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.63.b
+		custom_effect_tooltip = chaosx.nr18.63.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_transport_rerouted set_state_flag = resources_found_contracts_pending_review } }
+		ai_chance = { base = constant:resources_found_ai_weight.domestic_charter modifier = { add = constant:resources_found_ai_weight.valid_contract_add event_target:resources_found_field_state = { resources_found_has_valid_contract_partner = yes } } }
+	}
+
+	option = {
+		name = chaosx.nr18.63.c
+		custom_effect_tooltip = chaosx.nr18.63.c.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_transport_abandoned resources_found_suspend_field = yes } }
+		ai_chance = { base = constant:resources_found_ai_weight.strategic_reserve modifier = { add = constant:resources_found_ai_weight.critical_breach_closure_add event_target:resources_found_field_state = { check_variable = { resources_found_breach_pressure > constant:resources_found_field_value.band_5 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.63.e
+		custom_effect_tooltip = chaosx.nr18.63.e.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_transport_aid_requested set_state_flag = resources_found_foreign_interest_open } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.weak_country_concession_add NOT = { is_major = yes } } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.64
+	title = chaosx.nr18.64.t
+	desc = chaosx.nr18.64.d
+	picture = GFX_news_event_018_public_attack
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = {
+		var:resources_found_selected_field = {
+			save_event_target_as = resources_found_field_state
+			set_state_flag = resources_found_city_intrusion
+			set_temp_variable = { resources_found_incident_base_loss = constant:resources_found_civilian_loss.city_intrusion }
+			set_temp_variable = { resources_found_incident_population_factor = constant:resources_found_civilian_loss_factor.city_intrusion_population }
+			resources_found_apply_incident_civilian_loss = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.64.a
+		custom_effect_tooltip = chaosx.nr18.64.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_urban_hunt_ordered set_state_flag = resources_found_hunt_mission_active } }
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.64.b
+		custom_effect_tooltip = chaosx.nr18.64.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_mass_evacuation_ordered set_state_flag = resources_found_evacuation_prepared } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.critical_breach_closure_add event_target:resources_found_field_state = { check_variable = { resources_found_breach_pressure > constant:resources_found_field_value.band_4 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.64.c
+		custom_effect_tooltip = chaosx.nr18.64.c.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_city_district_abandoned set_state_flag = resources_found_evacuation_prepared resources_found_suspend_field = yes } }
+		ai_chance = { base = constant:resources_found_ai_weight.strategic_reserve modifier = { add = constant:resources_found_ai_weight.low_safety_caution_add event_target:resources_found_field_state = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 } } } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.65
+	title = chaosx.nr18.65.t
+	desc = chaosx.nr18.65.d
+	picture = GFX_report_event_018_perimeter_breach
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = { var:resources_found_selected_field = { save_event_target_as = resources_found_field_state set_state_flag = resources_found_foreign_aid_offer } }
+
+	option = {
+		name = chaosx.nr18.65.a
+		custom_effect_tooltip = chaosx.nr18.65.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_foreign_engineers_accepted set_state_flag = resources_found_sealed_network } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.weak_country_concession_add NOT = { is_major = yes } } }
+	}
+
+	option = {
+		name = chaosx.nr18.65.b
+		custom_effect_tooltip = chaosx.nr18.65.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_foreign_weapons_accepted set_state_flag = resources_found_countermeasure_research } }
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.65.c
+		custom_effect_tooltip = chaosx.nr18.65.c.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_foreign_transport_accepted set_state_flag = resources_found_evacuation_prepared } }
+		ai_chance = { base = constant:resources_found_ai_weight.domestic_charter modifier = { add = constant:resources_found_ai_weight.low_safety_caution_add event_target:resources_found_field_state = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.65.e
+		custom_effect_tooltip = chaosx.nr18.65.e.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_foreign_aid_refused } }
+		ai_chance = { base = constant:resources_found_ai_weight.strategic_reserve modifier = { add = constant:resources_found_ai_weight.strong_country_national_add is_major = yes } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.66
+	title = chaosx.nr18.66.t
+	desc = chaosx.nr18.66.d
+	picture = GFX_report_event_018_monster_hunt
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = {
+		var:resources_found_selected_field = {
+			save_event_target_as = resources_found_field_state
+			add_to_variable = { resources_found_successful_hunts = constant:resources_found_value.one }
+			set_state_flag = resources_found_hunt_succeeded
+			clr_state_flag = resources_found_unsealed_nest
+			clr_state_flag = resources_found_hunt_mission_active
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.66.a
+		custom_effect_tooltip = chaosx.nr18.66.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_hunt_remains_studied set_state_flag = resources_found_countermeasure_research } }
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.66.b
+		custom_effect_tooltip = chaosx.nr18.66.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_hunt_remains_destroyed set_state_flag = resources_found_sealed_network } }
+		ai_chance = { base = constant:resources_found_ai_weight.strategic_reserve modifier = { add = constant:resources_found_ai_weight.critical_breach_closure_add event_target:resources_found_field_state = { check_variable = { resources_found_breach_pressure > constant:resources_found_field_value.band_4 } } } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.67
+	title = chaosx.nr18.67.t
+	desc = chaosx.nr18.67.d
+	picture = GFX_report_event_018_monster_hunt
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = {
+		var:resources_found_selected_field = {
+			save_event_target_as = resources_found_field_state
+			set_state_flag = resources_found_hunt_failed
+			clr_state_flag = resources_found_hunt_mission_active
+			set_temp_variable = { resources_found_incident_base_loss = constant:resources_found_civilian_loss.hunt_failure }
+			set_temp_variable = { resources_found_incident_population_factor = constant:resources_found_civilian_loss_factor.hunt_failure_population }
+			resources_found_apply_incident_civilian_loss = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.67.a
+		custom_effect_tooltip = chaosx.nr18.67.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_failed_hunt_withdrawal set_state_flag = resources_found_restricted_workings } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.low_safety_caution_add event_target:resources_found_field_state = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.67.b
+		custom_effect_tooltip = chaosx.nr18.67.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_failed_hunt_reinforced set_state_flag = resources_found_hunt_mission_active } }
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.67.c
+		custom_effect_tooltip = chaosx.nr18.67.c.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_incident_concealment set_state_flag = resources_found_casualties_concealed set_state_flag = resources_found_hunt_losses_concealed } }
+		ai_chance = { base = constant:resources_found_ai_weight.minimum modifier = { add = constant:resources_found_ai_weight.high_safety_exploitation_add event_target:resources_found_field_state = { check_variable = { resources_found_workforce_safety > constant:resources_found_field_value.band_4 } } } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.68
+	title = chaosx.nr18.68.t
+	desc = chaosx.nr18.68.d
+	picture = GFX_report_event_018_evacuation
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = {
+		var:resources_found_selected_field = {
+			save_event_target_as = resources_found_field_state
+			set_state_flag = resources_found_successful_evacuation
+			clr_state_flag = resources_found_evacuation_prepared
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.68.a
+		custom_effect_tooltip = chaosx.nr18.68.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_relocation_complete set_state_flag = resources_found_field_population_secured } }
+		ai_chance = { base = constant:resources_found_ai_weight.base modifier = { add = constant:resources_found_ai_weight.critical_breach_closure_add event_target:resources_found_field_state = { check_variable = { resources_found_breach_pressure > constant:resources_found_field_value.band_4 } } } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.69
+	title = chaosx.nr18.69.t
+	desc = chaosx.nr18.69.d
+	picture = GFX_report_event_018_evacuation
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = {
+		var:resources_found_selected_field = {
+			save_event_target_as = resources_found_field_state
+			set_state_flag = resources_found_failed_evacuation
+			clr_state_flag = resources_found_evacuation_prepared
+			set_temp_variable = { resources_found_incident_base_loss = constant:resources_found_civilian_loss.evacuation_failure }
+			set_temp_variable = { resources_found_incident_population_factor = constant:resources_found_civilian_loss_factor.evacuation_failure_population }
+			resources_found_apply_incident_civilian_loss = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.69.a
+		custom_effect_tooltip = chaosx.nr18.69.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_emergency_retreat set_state_flag = resources_found_partial_evacuation } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.low_safety_caution_add event_target:resources_found_field_state = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.69.b
+		custom_effect_tooltip = chaosx.nr18.69.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_civilians_abandoned set_state_flag = resources_found_military_exploitation } }
+		ai_chance = { base = constant:resources_found_ai_weight.minimum modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = yes } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.70
+	title = chaosx.nr18.70.t
+	desc = chaosx.nr18.70.d
+	picture = GFX_report_event_018_full_seal
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = {
+		var:resources_found_selected_field = {
+			save_event_target_as = resources_found_field_state
+			resources_found_complete_partial_closure = yes
+			set_state_flag = resources_found_partial_seal_complete
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.70.a
+		custom_effect_tooltip = chaosx.nr18.70.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_reduced_site_held set_state_flag = resources_found_restricted_workings } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.high_safety_exploitation_add event_target:resources_found_field_state = { check_variable = { resources_found_workforce_safety > constant:resources_found_field_value.band_4 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.70.b
+		custom_effect_tooltip = chaosx.nr18.70.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_full_seal_followup } }
+		ai_chance = { base = constant:resources_found_ai_weight.base modifier = { add = constant:resources_found_ai_weight.critical_breach_closure_add event_target:resources_found_field_state = { check_variable = { resources_found_breach_pressure > constant:resources_found_field_value.band_5 } } } }
+	}
+}
+
+# Exact closure endpoint. This option deliberately calls only the core ledger
+# transaction. It adds no retaliation, hidden branch, or post-closure penalty.
+country_event = {
+	id = chaosx.nr18.71
+	title = chaosx.nr18.71.t
+	desc = chaosx.nr18.71.d
+	picture = GFX_report_event_018_full_seal
+	is_triggered_only = yes
+
+	trigger = {
+		resources_found_country_has_valid_selected_field = yes
+		var:resources_found_selected_field = { resources_found_can_complete_full_seal = yes }
+	}
+	immediate = { var:resources_found_selected_field = { save_event_target_as = resources_found_field_state } }
+
+	option = {
+		name = chaosx.nr18.71.a
+		custom_effect_tooltip = chaosx.nr18.71.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { resources_found_complete_full_seal = yes } }
+		ai_chance = { base = constant:resources_found_ai_weight.base }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.72
+	title = chaosx.nr18.72.t
+	desc = chaosx.nr18.72.d
+	picture = GFX_report_event_018_full_seal
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = {
+		var:resources_found_selected_field = {
+			save_event_target_as = resources_found_field_state
+			set_state_flag = resources_found_failed_full_seal
+			clr_state_flag = resources_found_full_seal_active
+			clr_state_flag = resources_found_emergency_seal_active
+			clr_state_flag = resources_found_field_closing
+			clr_state_flag = resources_found_full_seal_requirements_met
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.72.a
+		custom_effect_tooltip = chaosx.nr18.72.a.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_full_seal_retry_requested } }
+		ai_chance = { base = constant:resources_found_ai_weight.base modifier = { add = constant:resources_found_ai_weight.critical_breach_closure_add event_target:resources_found_field_state = { check_variable = { resources_found_breach_pressure > constant:resources_found_field_value.band_5 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.72.b
+		custom_effect_tooltip = chaosx.nr18.72.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_final_defense_prepared set_state_flag = resources_found_countermeasure_research } }
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = yes } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.73
+	title = chaosx.nr18.73.t
+	desc = chaosx.nr18.73.d
+	picture = GFX_report_event_018_perimeter_breach
+	is_triggered_only = yes
+	trigger = { resources_found_country_has_valid_selected_field = yes }
+	immediate = {
+		var:resources_found_selected_field = {
+			save_event_target_as = resources_found_field_state
+			set_state_flag = resources_found_evolution_iii_incident_sequence_complete
+			set_state_flag = resources_found_final_closure_window
+			set_variable = { resources_found_final_breach_release_date = global.date }
+			set_temp_variable = { resources_found_final_window_delay = constant:resources_found_project_duration.emergency_seal_days }
+			add_to_variable = { resources_found_final_breach_release_date = resources_found_final_window_delay }
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.73.a
+		custom_effect_tooltip = chaosx.nr18.73.a.tt
+		trigger = {
+			resources_found_decision_full_seal_visible_prerequisites_met = yes
+			resources_found_decision_has_base_full_seal_inputs = yes
+		}
+		hidden_effect = { resources_found_start_emergency_seal_project = yes }
+		ai_chance = { base = constant:resources_found_ai_weight.base modifier = { add = constant:resources_found_ai_weight.critical_breach_closure_add event_target:resources_found_field_state = { check_variable = { resources_found_breach_pressure > constant:resources_found_field_value.band_5 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.73.b
+		custom_effect_tooltip = chaosx.nr18.73.b.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_final_evacuation_active set_state_flag = resources_found_evacuation_prepared } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.low_safety_caution_add event_target:resources_found_field_state = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 } } } }
+	}
+
+	option = {
+		name = chaosx.nr18.73.c
+		custom_effect_tooltip = chaosx.nr18.73.c.tt
+		hidden_effect = { event_target:resources_found_field_state = { set_state_flag = resources_found_final_defense_prepared set_state_flag = resources_found_countermeasure_research } }
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = yes } }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Evolution IV: the Oth-Kesh Host, anchors, defeat, and reconstruction
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr18.80
+	title = chaosx.nr18.80.t
+	desc = chaosx.nr18.80.d
+	picture = GFX_news_event_018_cave_country_emergence
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = resources_found_cave_origin_lost
+		DHO = { has_country_flag = resources_found_cave_country_created }
+	}
+	immediate = {
+		if = {
+			limit = { DHO = { has_variable = resources_found_cave_origin_state } }
+			DHO = { var:resources_found_cave_origin_state = { save_event_target_as = resources_found_cave_notice_state } }
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.80.a
+		custom_effect_tooltip = chaosx.nr18.80.a.tt
+		trigger = {
+			OR = {
+				is_ai = yes
+				num_owned_states > constant:resources_found_value.one
+			}
+		}
+		hidden_effect = {
+			set_country_flag = resources_found_cave_resistance_organized
+			set_country_flag = resources_found_cave_war_participant
+			if = { limit = { NOT = { has_idea = resources_found_anti_cave_contracts } } add_ideas = resources_found_anti_cave_contracts }
+			event_target:resources_found_cave_notice_state = { resources_found_complete_first_cave_emergence = yes }
+		}
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.war_need_add has_war_with = DHO } }
+	}
+
+	option = {
+		name = chaosx.nr18.80.b
+		custom_effect_tooltip = chaosx.nr18.80.b.tt
+		trigger = {
+			OR = {
+				is_ai = yes
+				num_owned_states > constant:resources_found_value.one
+			}
+		}
+		hidden_effect = {
+			set_country_flag = resources_found_cave_emergency_aid_requested
+			set_country_flag = resources_found_cave_aid_eligible
+			if = { limit = { NOT = { has_idea = resources_found_threat_cooperation } } add_ideas = resources_found_threat_cooperation }
+			event_target:resources_found_cave_notice_state = { resources_found_complete_first_cave_emergence = yes }
+		}
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.weak_country_concession_add NOT = { is_major = yes } } }
+	}
+
+	option = {
+		name = chaosx.nr18.80.c
+		custom_effect_tooltip = chaosx.nr18.80.c.tt
+		trigger = {
+			is_ai = no
+			has_country_flag = resources_found_cave_origin_lost
+			DHO = { has_country_flag = resources_found_cave_country_created }
+		}
+		hidden_effect = {
+			set_country_flag = resources_found_cave_player_continuation_chosen
+			DHO = {
+				set_country_flag = resources_found_cave_player_continuation_chosen
+				change_tag_from = ROOT
+			}
+			event_target:resources_found_cave_notice_state = { resources_found_complete_first_cave_emergence = yes }
+		}
+		ai_chance = { base = constant:resources_found_ai_weight.minimum }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.81
+	title = chaosx.nr18.81.t
+	desc = chaosx.nr18.81.d
+	picture = GFX_news_event_018_cave_country_emergence
+	is_triggered_only = yes
+	trigger = { has_country_flag = resources_found_cave_aid_eligible DHO = { exists = yes } }
+	immediate = {
+		if = {
+			limit = { has_event_target = resources_found_emergence_state }
+			event_target:resources_found_emergence_state = { save_event_target_as = resources_found_cave_notice_state }
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.81.a
+		custom_effect_tooltip = chaosx.nr18.81.a.tt
+		hidden_effect = { set_country_flag = resources_found_cave_assets_evacuated set_country_flag = resources_found_cave_war_participant }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.low_safety_caution_add has_war_with = DHO } }
+	}
+
+	option = {
+		name = chaosx.nr18.81.b
+		custom_effect_tooltip = chaosx.nr18.81.b.tt
+		hidden_effect = {
+			set_country_flag = resources_found_cave_resistance_organized
+			set_country_flag = resources_found_cave_war_participant
+			if = { limit = { NOT = { has_idea = resources_found_anti_cave_contracts } } add_ideas = resources_found_anti_cave_contracts }
+		}
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.war_need_add has_war_with = DHO } }
+	}
+
+	option = {
+		name = chaosx.nr18.81.c
+		custom_effect_tooltip = chaosx.nr18.81.c.tt
+		hidden_effect = {
+			set_country_flag = resources_found_cave_emergency_aid_requested
+			if = { limit = { NOT = { has_idea = resources_found_threat_cooperation } } add_ideas = resources_found_threat_cooperation }
+		}
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.weak_country_concession_add NOT = { is_major = yes } } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.82
+	title = chaosx.nr18.82.t
+	desc = chaosx.nr18.82.d
+	picture = GFX_news_event_018_cave_country_emergence
+	is_triggered_only = yes
+	trigger = { DHO = { exists = yes } }
+	immediate = {
+		if = {
+			limit = { DHO = { has_variable = resources_found_cave_origin_state } }
+			DHO = { var:resources_found_cave_origin_state = { save_event_target_as = resources_found_cave_notice_state } }
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.82.a
+		custom_effect_tooltip = chaosx.nr18.82.a.tt
+		trigger = { tag = DHO }
+		hidden_effect = {
+			set_country_flag = resources_found_cave_neighbor_ring_assaulted
+			resources_found_cave_refresh_ai_targets = yes
+			resources_found_cave_declare_neighbor_wars = yes
+		}
+		ai_chance = { base = constant:resources_found_ai_weight.base modifier = { add = constant:resources_found_ai_weight.war_need_add resources_found_cave_first_neighbor_ring_broken = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.82.b
+		custom_effect_tooltip = chaosx.nr18.82.b.tt
+		trigger = { NOT = { tag = DHO } }
+		hidden_effect = {
+			set_country_flag = resources_found_cave_resources_fortified
+			set_country_flag = resources_found_cave_war_participant
+			if = { limit = { NOT = { has_idea = resources_found_anti_cave_contracts } } add_ideas = resources_found_anti_cave_contracts }
+		}
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.war_need_add has_war_with = DHO } }
+	}
+
+	option = {
+		name = chaosx.nr18.82.c
+		custom_effect_tooltip = chaosx.nr18.82.c.tt
+		trigger = { NOT = { tag = DHO } }
+		hidden_effect = {
+			set_country_flag = resources_found_cave_hard_attack_aid_requested
+			set_country_flag = resources_found_cave_aid_eligible
+			if = { limit = { NOT = { has_idea = resources_found_threat_cooperation } } add_ideas = resources_found_threat_cooperation }
+		}
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.weak_country_concession_add NOT = { is_major = yes } } }
+	}
+
+	option = {
+		name = chaosx.nr18.82.e
+		custom_effect_tooltip = chaosx.nr18.82.e.tt
+		trigger = { NOT = { tag = DHO } }
+		hidden_effect = { set_country_flag = resources_found_cave_border_evacuation set_country_flag = resources_found_cave_war_participant }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.low_safety_caution_add has_war_with = DHO } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.83
+	title = chaosx.nr18.83.t
+	desc = chaosx.nr18.83.d
+	picture = GFX_report_event_018_perimeter_breach
+	is_triggered_only = yes
+	trigger = {
+		DHO = { exists = yes }
+		NOT = { tag = DHO }
+		has_country_flag = resources_found_first_battle_analysis_queued
+	}
+	immediate = {
+		clr_country_flag = resources_found_first_battle_analysis_queued
+		set_country_flag = resources_found_first_battle_analysis_presented
+		DHO = {
+			set_country_flag = resources_found_first_battle_analyzed
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.83.a
+		custom_effect_tooltip = chaosx.nr18.83.a.tt
+		hidden_effect = {
+			set_country_flag = resources_found_counterplay_anti_tank
+			set_country_flag = resources_found_anti_armor_prepared
+			if = { limit = { NOT = { has_idea = resources_found_anti_cave_contracts } } add_ideas = resources_found_anti_cave_contracts }
+			DHO = { set_country_flag = cave_enemy_piercing_observed }
+		}
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.war_need_add has_war_with = DHO } }
+	}
+
+	option = {
+		name = chaosx.nr18.83.b
+		custom_effect_tooltip = chaosx.nr18.83.b.tt
+		hidden_effect = {
+			set_country_flag = resources_found_counterplay_armor
+			if = { limit = { NOT = { has_idea = resources_found_anti_cave_contracts } } add_ideas = resources_found_anti_cave_contracts }
+			DHO = { set_country_flag = cave_enemy_piercing_observed }
+		}
+		ai_chance = { base = constant:resources_found_ai_weight.base modifier = { add = constant:resources_found_ai_weight.strong_country_national_add is_major = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.83.c
+		custom_effect_tooltip = chaosx.nr18.83.c.tt
+		hidden_effect = {
+			set_country_flag = resources_found_counterplay_airpower
+			if = { limit = { NOT = { has_idea = resources_found_threat_cooperation } } add_ideas = resources_found_threat_cooperation }
+			DHO = { set_country_flag = cave_hostile_air_power_observed }
+		}
+		ai_chance = { base = constant:resources_found_ai_weight.base modifier = { add = constant:resources_found_ai_weight.commission_safety_add has_war_with = DHO } }
+	}
+
+	option = {
+		name = chaosx.nr18.83.e
+		custom_effect_tooltip = chaosx.nr18.83.e.tt
+		hidden_effect = { set_country_flag = resources_found_counterplay_delaying_defense set_country_flag = resources_found_cave_aid_eligible }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.weak_country_concession_add NOT = { is_major = yes } } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.84
+	title = chaosx.nr18.84.t
+	desc = chaosx.nr18.84.d
+	picture = GFX_news_event_018_cave_country_emergence
+	is_triggered_only = yes
+	trigger = { tag = DHO has_global_flag = resources_found_cave_country_active }
+	immediate = {
+		if = {
+			limit = { any_controlled_state = { has_state_flag = resources_found_cave_anchor_active } }
+			random_controlled_state = {
+				limit = { has_state_flag = resources_found_cave_anchor_active }
+				save_event_target_as = resources_found_cave_notice_state
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.84.a
+		custom_effect_tooltip = chaosx.nr18.84.a.tt
+		hidden_effect = { set_country_flag = resources_found_anchor_activation_noted resources_found_cave_refresh_division_and_capacity_totals = yes }
+		ai_chance = { base = constant:resources_found_ai_weight.base modifier = { add = constant:resources_found_ai_weight.high_safety_exploitation_add check_variable = { resources_found_total_brood_capacity > resources_found_active_brood_divisions } } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.85
+	title = chaosx.nr18.85.t
+	desc = chaosx.nr18.85.d
+	picture = GFX_news_event_018_regional_containment
+	is_triggered_only = yes
+	trigger = { tag = DHO }
+
+	option = {
+		name = chaosx.nr18.85.a
+		custom_effect_tooltip = chaosx.nr18.85.a.tt
+		hidden_effect = { set_country_flag = resources_found_disrupted_anchor_recapture_priority resources_found_cave_refresh_ai_targets = yes }
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.85.b
+		custom_effect_tooltip = chaosx.nr18.85.b.tt
+		hidden_effect = { set_country_flag = resources_found_disrupted_anchor_consolidation resources_found_cave_recalculate_capacity = yes }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.low_safety_caution_add resources_found_cave_has_capacity_deficit = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.85.c
+		custom_effect_tooltip = chaosx.nr18.85.c.tt
+		hidden_effect = { set_country_flag = resources_found_disrupted_anchor_abandoned resources_found_cave_refresh_division_and_capacity_totals = yes }
+		ai_chance = { base = constant:resources_found_ai_weight.strategic_reserve modifier = { add = constant:resources_found_ai_weight.critical_breach_closure_add resources_found_cave_is_over_capacity = no } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.86
+	title = chaosx.nr18.86.t
+	desc = chaosx.nr18.86.d
+	picture = GFX_news_event_018_cave_country_emergence
+	is_triggered_only = yes
+	trigger = { tag = DHO resources_found_cave_is_over_capacity = yes }
+
+	option = {
+		name = chaosx.nr18.86.a
+		custom_effect_tooltip = chaosx.nr18.86.a.tt
+		hidden_effect = { set_country_flag = resources_found_unfed_anchor_priority resources_found_cave_refresh_ai_targets = yes }
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.86.b
+		custom_effect_tooltip = chaosx.nr18.86.b.tt
+		hidden_effect = { set_country_flag = resources_found_unfed_consolidation resources_found_cave_recalculate_capacity = yes }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.low_safety_caution_add resources_found_cave_has_capacity_deficit = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.86.c
+		custom_effect_tooltip = chaosx.nr18.86.c.tt
+		hidden_effect = { set_country_flag = resources_found_unfed_decay_accepted }
+		ai_chance = { base = constant:resources_found_ai_weight.minimum modifier = { add = constant:resources_found_ai_weight.high_safety_exploitation_add check_variable = { resources_found_active_brood_divisions > resources_found_total_brood_capacity } } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.87
+	title = chaosx.nr18.87.t
+	desc = chaosx.nr18.87.d
+	picture = GFX_news_event_018_cave_country_emergence
+	is_triggered_only = yes
+	trigger = { tag = DHO has_variable = resources_found_cave_origin_state }
+	immediate = { var:resources_found_cave_origin_state = { save_event_target_as = resources_found_cave_notice_state } }
+
+	option = {
+		name = chaosx.nr18.87.a
+		custom_effect_tooltip = chaosx.nr18.87.a.tt
+		hidden_effect = { set_country_flag = resources_found_origin_concentration_order resources_found_cave_refresh_ai_targets = yes }
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.87.b
+		custom_effect_tooltip = chaosx.nr18.87.b.tt
+		hidden_effect = { set_country_flag = resources_found_emergency_chamber_designated resources_found_cave_designate_secondary_capital = yes }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.low_safety_caution_add resources_found_cave_has_secondary_capital_candidate = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.87.c
+		custom_effect_tooltip = chaosx.nr18.87.c.tt
+		hidden_effect = { set_country_flag = resources_found_origin_retreat_ordered resources_found_cave_recalculate_capacity = yes }
+		ai_chance = { base = constant:resources_found_ai_weight.strategic_reserve modifier = { add = constant:resources_found_ai_weight.critical_breach_closure_add resources_found_cave_has_capacity_deficit = yes } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.88
+	title = chaosx.nr18.88.t
+	desc = chaosx.nr18.88.d
+	picture = GFX_news_event_018_regional_containment
+	is_triggered_only = yes
+	trigger = { has_global_flag = resources_found_cave_defeated NOT = { has_global_flag = resources_found_cave_global_defeat_eligible } }
+	immediate = { resources_found_emit_regional_containment_news = yes }
+
+	option = {
+		name = chaosx.nr18.88.a
+		custom_effect_tooltip = chaosx.nr18.88.a.tt
+		hidden_effect = {
+			set_country_flag = resources_found_regional_cleanup_participant
+			if = { limit = { NOT = { has_idea = resources_found_threat_cooperation } } add_ideas = resources_found_threat_cooperation }
+		}
+		ai_chance = { base = constant:resources_found_ai_weight.base modifier = { add = constant:resources_found_ai_weight.commission_safety_add has_country_flag = resources_found_cave_war_participant } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.89
+	title = chaosx.nr18.89.t
+	desc = chaosx.nr18.89.d
+	picture = GFX_report_event_018_anchor_cleanup
+	is_triggered_only = yes
+	immediate = {
+		if = {
+			limit = {
+				any_owned_state = {
+					has_state_flag = resources_found_cave_cleanup_complete
+					NOT = { has_state_flag = resources_found_cleanup_notice_delivered }
+				}
+			}
+			random_owned_controlled_state = {
+				limit = {
+					has_state_flag = resources_found_cave_cleanup_complete
+					NOT = { has_state_flag = resources_found_cleanup_notice_delivered }
+				}
+				set_state_flag = resources_found_cleanup_notice_delivered
+				save_event_target_as = resources_found_cave_notice_state
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.89.a
+		custom_effect_tooltip = chaosx.nr18.89.a.tt
+		hidden_effect = { if = { limit = { has_event_target = resources_found_cave_notice_state } event_target:resources_found_cave_notice_state = { set_state_flag = resources_found_cleanup_resource_restoration } } }
+		ai_chance = { base = constant:resources_found_ai_weight.domestic_charter modifier = { add = constant:resources_found_ai_weight.commercial_government_add has_country_flag = resources_found_cave_war_participant } }
+	}
+
+	option = {
+		name = chaosx.nr18.89.b
+		custom_effect_tooltip = chaosx.nr18.89.b.tt
+		hidden_effect = { if = { limit = { has_event_target = resources_found_cave_notice_state } event_target:resources_found_cave_notice_state = { set_state_flag = resources_found_cleanup_tunnels_sealed } } }
+		ai_chance = { base = constant:resources_found_ai_weight.strategic_reserve modifier = { add = constant:resources_found_ai_weight.critical_breach_closure_add has_global_flag = resources_found_cave_defeated } }
+	}
+
+	option = {
+		name = chaosx.nr18.89.c
+		custom_effect_tooltip = chaosx.nr18.89.c.tt
+		hidden_effect = { if = { limit = { has_event_target = resources_found_cave_notice_state } event_target:resources_found_cave_notice_state = { set_state_flag = resources_found_cleanup_evidence_preserved } } }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.commission_safety_add has_country_flag = resources_found_cave_aid_eligible } }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Continental milestones, world end, and global defeat
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr18.90
+	title = chaosx.nr18.90.t
+	desc = chaosx.nr18.90.d
+	picture = GFX_news_event_018_cave_country_emergence
+	is_triggered_only = yes
+	trigger = { tag = DHO has_country_flag = resources_found_continent_quarter_reached }
+
+	option = {
+		name = chaosx.nr18.90.a
+		custom_effect_tooltip = chaosx.nr18.90.a.tt
+		hidden_effect = { set_country_flag = resources_found_quarter_continent_strategy resources_found_cave_refresh_ai_targets = yes }
+		ai_chance = { base = constant:resources_found_ai_weight.base modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = yes } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.91
+	title = chaosx.nr18.91.t
+	desc = chaosx.nr18.91.d
+	picture = GFX_news_event_018_cave_country_emergence
+	is_triggered_only = yes
+	trigger = { tag = DHO has_country_flag = resources_found_continent_half_reached }
+
+	option = {
+		name = chaosx.nr18.91.a
+		custom_effect_tooltip = chaosx.nr18.91.a.tt
+		hidden_effect = { set_country_flag = resources_found_half_continent_strategy resources_found_cave_mark_remaining_continent_states = yes }
+		ai_chance = { base = constant:resources_found_ai_weight.base modifier = { add = constant:resources_found_ai_weight.border_claimant_strength_add resources_found_cave_is_near_continent_control = yes } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.92
+	title = chaosx.nr18.92.t
+	desc = chaosx.nr18.92.d
+	picture = GFX_news_event_018_cave_country_emergence
+	is_triggered_only = yes
+	trigger = { tag = DHO has_country_flag = resources_found_continent_three_quarter_reached }
+
+	option = {
+		name = chaosx.nr18.92.a
+		custom_effect_tooltip = chaosx.nr18.92.a.tt
+		hidden_effect = { set_country_flag = resources_found_three_quarter_terminal_preparation resources_found_cave_prepare_foothold_candidates = yes }
+		ai_chance = { base = constant:resources_found_ai_weight.base modifier = { add = constant:resources_found_ai_weight.war_need_add resources_found_cave_has_cross_continent_candidate = yes } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.93
+	title = chaosx.nr18.93.t
+	desc = chaosx.nr18.93.d
+	picture = GFX_news_event_018_cave_country_emergence
+	is_triggered_only = yes
+	trigger = { tag = DHO has_country_flag = resources_found_last_continent_states_notified }
+
+	option = {
+		name = chaosx.nr18.93.a
+		custom_effect_tooltip = chaosx.nr18.93.a.tt
+		hidden_effect = { set_country_flag = resources_found_last_states_assault_priority resources_found_cave_mark_remaining_continent_states = yes }
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.war_need_add has_war = yes } }
+	}
+
+	option = {
+		name = chaosx.nr18.93.b
+		custom_effect_tooltip = chaosx.nr18.93.b.tt
+		hidden_effect = { set_country_flag = resources_found_last_states_anchor_priority resources_found_cave_recalculate_capacity = yes }
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.low_safety_caution_add resources_found_cave_has_capacity_deficit = yes } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.94
+	title = chaosx.nr18.94.t
+	desc = chaosx.nr18.94.d
+	picture = GFX_news_event_018_cave_country_emergence
+	is_triggered_only = yes
+	trigger = { tag = DHO has_country_flag = resources_found_origin_continent_consumed }
+
+	option = {
+		name = chaosx.nr18.94.a
+		custom_effect_tooltip = chaosx.nr18.94.a.tt
+		hidden_effect = { resources_found_cave_weight_foothold_candidates = yes }
+		ai_chance = { base = constant:resources_found_ai_weight.base modifier = { add = constant:resources_found_ai_weight.war_need_add resources_found_cave_has_cross_continent_candidate = yes } }
+	}
+}
+
+# Verification notice only. The terminal transition remains exclusively behind
+# the final DHO focus, which repeats every exact world-end gate at completion.
+country_event = {
+	id = chaosx.nr18.95
+	title = chaosx.nr18.95.t
+	desc = chaosx.nr18.95.d
+	picture = GFX_news_event_018_cave_country_emergence
+	is_triggered_only = yes
+
+	trigger = {
+		tag = DHO
+		resources_found_cave_world_end_verified = yes
+		NOT = { has_global_flag = resources_found_cave_world_end }
+		NOT = { has_global_flag = world_end }
+	}
+
+	option = {
+		name = chaosx.nr18.95.a
+		custom_effect_tooltip = chaosx.nr18.95.a.tt
+		hidden_effect = { set_country_flag = resources_found_world_end_capstone_notified }
+		ai_chance = { base = constant:resources_found_ai_weight.base }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.96
+	title = chaosx.nr18.96.t
+	desc = chaosx.nr18.96.d
+	picture = GFX_news_event_018_cave_country_emergence
+	is_triggered_only = yes
+	trigger = { DHO = { exists = yes } }
+	immediate = {
+		if = {
+			limit = { has_event_target = resources_found_world_end_foothold_state }
+			event_target:resources_found_world_end_foothold_state = { save_event_target_as = resources_found_cave_notice_state }
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.96.a
+		custom_effect_tooltip = chaosx.nr18.96.a.tt
+		hidden_effect = {
+			set_country_flag = resources_found_distant_rupture_resistance
+			set_country_flag = resources_found_cave_war_participant
+			if = { limit = { NOT = { has_idea = resources_found_anti_cave_contracts } } add_ideas = resources_found_anti_cave_contracts }
+		}
+		ai_chance = { base = constant:resources_found_ai_weight.national_authority modifier = { add = constant:resources_found_ai_weight.war_need_add has_war_with = DHO } }
+	}
+
+	option = {
+		name = chaosx.nr18.96.b
+		custom_effect_tooltip = chaosx.nr18.96.b.tt
+		hidden_effect = {
+			set_country_flag = resources_found_distant_rupture_aid_requested
+			set_country_flag = resources_found_cave_aid_eligible
+			if = { limit = { NOT = { has_idea = resources_found_threat_cooperation } } add_ideas = resources_found_threat_cooperation }
+		}
+		ai_chance = { base = constant:resources_found_ai_weight.cautious_appraisal modifier = { add = constant:resources_found_ai_weight.weak_country_concession_add NOT = { is_major = yes } } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.97
+	title = chaosx.nr18.97.t
+	desc = chaosx.nr18.97.d
+	picture = GFX_news_event_018_global_defeat
+	is_triggered_only = yes
+	trigger = { has_global_flag = resources_found_cave_defeated has_global_flag = resources_found_cave_global_defeat_eligible }
+
+	option = {
+		name = chaosx.nr18.97.a
+		custom_effect_tooltip = chaosx.nr18.97.a.tt
+		hidden_effect = {
+			if = { limit = { NOT = { has_idea = resources_found_threat_cooperation } } add_ideas = resources_found_threat_cooperation }
+		}
+		ai_chance = { base = constant:resources_found_ai_weight.base modifier = { add = constant:resources_found_ai_weight.commission_safety_add has_country_flag = resources_found_cave_war_participant } }
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_global_flag = resources_found_cave_global_defeat_eligible
+				NOT = { has_global_flag = resources_found_global_defeat_super_event_fired }
+			}
+			country_event = { id = chaosx.nr18.98 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.98
+	title = chaosx.nr18.98.t
+	desc = chaosx.nr18.98.d
+	picture = GFX_news_event_018_global_defeat
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = resources_found_cave_global_defeat_eligible
+		NOT = { has_global_flag = resources_found_global_defeat_super_event_fired }
+	}
+	immediate = { resources_found_emit_global_defeat_news = yes }
+
+	option = {
+		name = chaosx.nr18.98.a
+		custom_effect_tooltip = chaosx.nr18.98.a.tt
+		hidden_effect = {
+			if = {
+				limit = { has_global_flag = resources_found_cave_global_defeat_eligible }
+				resources_found_emit_global_defeat_super_event = yes
+			}
+		}
+		ai_chance = { base = constant:resources_found_ai_weight.base }
+	}
+}
+
+country_event = {
+	id = chaosx.nr18.99
+	title = chaosx.nr18.99.t
+	desc = chaosx.nr18.99.d
+	picture = GFX_news_event_018_regional_containment
+	is_triggered_only = yes
+	trigger = {
+		has_global_flag = resources_found_cave_global_defeat_eligible
+		resources_found_decision_global_reconstruction_ready = yes
+		NOT = { has_country_flag = resources_found_reconstruction_choice_presented }
+		NOT = { has_country_flag = resources_found_reconstruction_compact_refused }
+		NOT = { has_country_flag = resources_found_global_reconstruction_complete }
+	}
+	immediate = { set_country_flag = resources_found_reconstruction_choice_presented }
+
+	option = {
+		name = chaosx.nr18.99.a
+		custom_effect_tooltip = chaosx.nr18.99.a.tt
+		hidden_effect = {
+			set_country_flag = resources_found_reconstruction_compact_join_committed
+			clr_country_flag = resources_found_reconstruction_compact_lead_committed
+			clr_country_flag = resources_found_reconstruction_compact_refused
+		}
+		ai_chance = {
+			base = constant:resources_found_ai_weight.domestic_charter
+			modifier = {
+				add = constant:resources_found_ai_weight.commission_safety_add
+				check_variable = { var = resources_found_anchor_cleanup_contribution value = constant:resources_found_decision_gate.reconstruction_contribution_target compare = greater_than_or_equals }
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.99.b
+		custom_effect_tooltip = chaosx.nr18.99.b.tt
+		trigger = {
+			is_major = yes
+			check_variable = { var = resources_found_anchor_cleanup_contribution value = constant:resources_found_decision_gate.reconstruction_contribution_target compare = greater_than_or_equals }
+		}
+		hidden_effect = {
+			set_country_flag = resources_found_reconstruction_compact_lead_committed
+			clr_country_flag = resources_found_reconstruction_compact_join_committed
+			clr_country_flag = resources_found_reconstruction_compact_refused
+		}
+		ai_chance = {
+			base = constant:resources_found_ai_weight.national_authority
+			modifier = {
+				add = constant:resources_found_ai_weight.strong_country_national_add
+				check_variable = { resources_found_anchor_cleanup_contribution > constant:resources_found_decision_gate.reconstruction_contribution_target }
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr18.99.c
+		custom_effect_tooltip = chaosx.nr18.99.c.tt
+		hidden_effect = {
+			set_country_flag = resources_found_reconstruction_compact_refused
+			clr_country_flag = resources_found_reconstruction_compact_join_committed
+			clr_country_flag = resources_found_reconstruction_compact_lead_committed
+		}
+		ai_chance = {
+			base = constant:resources_found_ai_weight.strategic_reserve
+			modifier = { add = constant:resources_found_ai_weight.strong_country_national_add NOT = { has_country_flag = resources_found_cave_war_participant } }
+		}
+	}
 }

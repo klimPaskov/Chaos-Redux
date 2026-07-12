@@ -482,6 +482,10 @@ refresh_world_threat_state = {
         limit = { has_global_flag = world_threat_source_death }
         add_to_variable = { global.world_threat_source_count = 1 }
     }
+	if = {
+		limit = { has_global_flag = world_threat_source_resources_found_caves }
+		add_to_variable = { global.world_threat_source_count = 1 }
+	}
 
     if = {
         limit = { check_variable = { global.world_threat_source_count > 0 } }
@@ -562,6 +566,81 @@ grant_random_chaos_special_project_available_tech = {
 call_natural_disaster = {
 	natural_disaster_call = yes
 	natural_disaster_reset_call_inputs = yes
+}
+
+###############################################################################################################
+
+# Public state-scope exact civilian population transaction. See
+# chaosx_dynamic_effects.md for the input/output contract.
+apply_exact_state_civilian_population_loss = {
+	set_temp_variable = { state_civilian_population_loss_applied = 0 }
+	set_temp_variable = { state_civilian_population_loss_result = 0 }
+
+	if = {
+		limit = { NOT = { has_variable = state_civilian_population_loss_requested } }
+		set_temp_variable = { state_civilian_population_loss_requested = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = state_civilian_population_loss_minimum_remaining } }
+		set_temp_variable = { state_civilian_population_loss_minimum_remaining = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = state_civilian_population_loss_log_deaths } }
+		set_temp_variable = { state_civilian_population_loss_log_deaths = 1 }
+	}
+	if = {
+		limit = { NOT = { has_variable = state_civilian_population_loss_reason } }
+		set_temp_variable = { state_civilian_population_loss_reason = constant:chaos_meter_deaths_reason.unknown }
+	}
+	if = {
+		limit = { NOT = { has_variable = state_civilian_population_loss_has_target_country } }
+		set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
+		set_temp_variable = { state_civilian_population_loss_has_target_country = 1 }
+	}
+
+	set_temp_variable = { state_civilian_population_loss_available = state_population_k }
+	multiply_temp_variable = { state_civilian_population_loss_available = 1000 }
+	subtract_from_temp_variable = {
+		state_civilian_population_loss_available = state_civilian_population_loss_minimum_remaining
+	}
+	clamp_temp_variable = {
+		var = state_civilian_population_loss_available
+		min = 0
+	}
+
+	set_temp_variable = { state_civilian_population_loss_applied = state_civilian_population_loss_requested }
+	clamp_temp_variable = {
+		var = state_civilian_population_loss_applied
+		min = 0
+		max = state_civilian_population_loss_available
+	}
+	round_temp_variable = state_civilian_population_loss_applied
+
+	if = {
+		limit = { check_variable = { state_civilian_population_loss_applied > 0 } }
+		set_temp_variable = { state_civilian_population_loss_result = 1 }
+		if = {
+			limit = {
+				NOT = { has_global_flag = settings_chaos_deaths_disabled }
+				check_variable = { state_civilian_population_loss_log_deaths > 0 }
+			}
+			set_temp_variable = { chaos_deaths_change = state_civilian_population_loss_applied }
+			set_temp_variable = { chaos_deaths_reason = state_civilian_population_loss_reason }
+			set_temp_variable = { chaos_deaths_is_civilian = 1 }
+			set_temp_variable = { chaos_deaths_apply_state_pop = 1 }
+			set_temp_variable = { chaos_deaths_target_country = state_civilian_population_loss_target_country }
+			set_temp_variable = { chaos_deaths_has_target_country = state_civilian_population_loss_has_target_country }
+			chaos_meter_register_deaths = yes
+		}
+		else = {
+			set_temp_variable = { state_civilian_population_loss_negative = state_civilian_population_loss_applied }
+			multiply_temp_variable = { state_civilian_population_loss_negative = -1 }
+			add_manpower = var:state_civilian_population_loss_negative
+		}
+	}
+
+	set_temp_variable = { state_civilian_population_loss_available = 0 }
+	set_temp_variable = { state_civilian_population_loss_negative = 0 }
 }
 
 ###############################################################################################################

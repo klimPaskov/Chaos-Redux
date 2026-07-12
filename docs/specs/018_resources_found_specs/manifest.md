@@ -1,12 +1,12 @@
 # Event 018 Planning Package Manifest
 
-Generated on 2026-07-10.
+Generated on 2026-07-12.
 
 ## Package totals
 
 - Files listed: 26
-- Total bytes excluding this manifest: 410485
-- Total words excluding this manifest: 61347
+- Total bytes excluding this manifest: 416650
+- Total words excluding this manifest: 61781
 - Goal prompt length: 3,998 characters
 - Required package folders present: specs, prompts, matrices, research, focus_graphs
 
@@ -19,20 +19,21 @@ Generated on 2026-07-10.
 - No em dash character appears in the package.
 - No semicolon character appears in the package.
 - The source corpus read log records every supplied Markdown, TOML, and CSV source.
-- The improvement review discloses the unavailable custom-subagent executor and does not claim an independent planner run.
+- The planning-stage improvement review preserves its original executor limitation as history, and its current note points to the completed independent closure handoff.
+- The acceptance matrix records all 363 accepted requirements under the documented static proof boundary and the three fresh closure audits record PASS.
 
 ## File inventory
 
 | Path | Bytes | Words | SHA-256 |
 | --- | ---: | ---: | --- |
-| `README.md` | 5375 | 639 | `4a918efa164545d9192b6ff96bbf5bd322893a827e60d4367911ba6500aab5a6` |
+| `README.md` | 5644 | 664 | `d058eef59883a4d789cd3f123e76727f40c30c0737a68e07b439aa113b0d5845` |
 | `focus_graphs/cave_host_focus_architecture.md` | 17004 | 2163 | `17464e6e13ba2b127b858be3cd79882399491cdb2e485336caaceb135fd7809d` |
-| `matrices/acceptance_criteria.md` | 22263 | 3857 | `d6c210454854fbbfeca20c5eb4e84e3026aa328120ac5d8d8624ef754084ec8e` |
+| `matrices/acceptance_criteria.md` | 23910 | 3676 | `478f64598582738f82b935a71d9bd53734f084d4ba7f74ab8db91ba39e5cb475` |
 | `matrices/ai_strategy_matrix.md` | 14501 | 2317 | `b2b7826bf963b32f85397da0fbfff6d9b1a8ef698e0b2c8fab45159ffbdff7ff` |
 | `matrices/country_package_matrix.md` | 12441 | 2068 | `c9b4b3dd02a8778c8435f0854e2c15e8c1585b8e90fc072ea98826ef00858d45` |
 | `matrices/decision_mission_matrix.md` | 21703 | 3877 | `c1ffdb9e2ff773576c432e108b60178c3f501b3b99d82e0c969696cbcbf2cfa8` |
 | `matrices/event_chain_map.md` | 15300 | 2601 | `f5f5cc0ffcef89279cbcd2693d6c89020d1b0011bd13af9eaf80718412a15afc` |
-| `matrices/tuning_and_balance_framework.md` | 16597 | 2932 | `2a3b043217d054c6801d7fc5c8f3059fbda7bfed539bb0ee6fb46e26d15b18e7` |
+| `matrices/tuning_and_balance_framework.md` | 17263 | 3038 | `abea342042e249489fa72c4dfa6ffb774f1f78027ce299c79cb0a8ff49f19069` |
 | `prompts/resources_found_achievement_prompt.md` | 17558 | 2565 | `20b006c27a1082f6fefd77a27036f9403c3bdfdf7a9914c1699449cebe33a69e` |
 | `prompts/resources_found_asset_prompt.md` | 22902 | 2711 | `c14910798d36d4c3debabe8c1e7ef5541a49ed7e88b1be41e8f56d5cfbfb7ba6` |
 | `prompts/resources_found_coding_prompt.md` | 12198 | 1735 | `0f3c0dbfa38e65839adb5f8780ea81db3686ffb6be517415040f668693e9497f` |
@@ -41,15 +42,15 @@ Generated on 2026-07-10.
 | `prompts/resources_found_super_event_prompt.md` | 14759 | 2037 | `cd412be701a4739138f6ccdca4168d93700e5b8aba934d48e140f3aec54a320a` |
 | `research/catalog_reconciliation.md` | 4237 | 633 | `ecf90d5d1e5a3ef434efcd8e2df9e4f635ece37a5fdce3da2dc068425f50913f` |
 | `research/historical_and_folklore_research.md` | 7702 | 934 | `bd6a77687ba19523959c34a8adf37478d314158104137880414ee223040bc1e7` |
-| `research/improvement_loop_review.md` | 9104 | 1251 | `d05c3b7e6825b2b5788de2cc845a20cda3d562f572f33b5a742edaa55a5d6daa` |
+| `research/improvement_loop_review.md` | 9877 | 1343 | `f11a0f4a68b4b005aa4976efcef2b6cceb458091abffb6d298e8c6520692491a` |
 | `research/source_corpus_read_log.md` | 1527 | 125 | `6dfdadabf25118db1a66f1b363bbedbd6d0626f7b6a2d929cf2f108a87275ec3` |
 | `specs/018_resources_found_spec_part_1_core_and_baseline.md` | 24509 | 3601 | `ba3b743c957ae85018cfca86272f1fc7f9ceecd6245a662af4362d9bad0faeac` |
 | `specs/018_resources_found_spec_part_2_resource_field_mechanic.md` | 23540 | 3487 | `d95045c759e7d0f622eb89d26ebf29629845610860e13064753d8e987276fa1f` |
 | `specs/018_resources_found_spec_part_3_trade_diplomacy_and_border_conflict.md` | 20256 | 3056 | `830f69489ff609504bac7fbb951428515d4a5eafd9b4e30b572dc6e3ffbd719b` |
-| `specs/018_resources_found_spec_part_4_evolutions.md` | 27585 | 4176 | `63c1bdb4929f7ced19d2d76da51de58d024c63b9eb7728678a2741ed7b46a4f7` |
-| `specs/018_resources_found_spec_part_5_cave_country_package.md` | 22120 | 3322 | `b40f2122ddb6c6c545862372a96ac7dd31bb114e163e3c0df5a163150d3fef5d` |
-| `specs/018_resources_found_spec_part_6_focus_tree_and_brood_warfare.md` | 25119 | 3706 | `e617085f7eed69d3cf40cd1dc772ffac1ac93c02229ee6c936c0110819b3c86d` |
-| `specs/018_resources_found_spec_part_7_world_end_aftermath_and_connections.md` | 19011 | 2797 | `4964d8a7cc8580344018cfa140e1b6451bbb5e04399f4baabda92cbe15b994b6` |
+| `specs/018_resources_found_spec_part_4_evolutions.md` | 27962 | 4216 | `8a4d185a894ddc550334dd777b2de4b41b032e5fa20a69390558ca774a38ba61` |
+| `specs/018_resources_found_spec_part_5_cave_country_package.md` | 22701 | 3405 | `8b12ee42a39e1954aeb415ee64c1b255d1c824c1f2896f6ea287abee45ba8846` |
+| `specs/018_resources_found_spec_part_6_focus_tree_and_brood_warfare.md` | 26207 | 3864 | `d16e3189a0f1bde7feba34915252db8fe2a2c11488634516538643ba9862da91` |
+| `specs/018_resources_found_spec_part_7_world_end_aftermath_and_connections.md` | 19775 | 2908 | `b066853392f27d25d7b0f36b0bba294e0092295f3107041554325ece3284f940` |
 | `specs/018_resources_found_spec_part_8_ai_text_assets_and_acceptance.md` | 19537 | 2835 | `25228fc23829eb73be65851305059a374b45a298fb701a12e43ed815c4e184b8` |
 
 The manifest does not hash itself. Recreate it after any package edit before redistribution.

@@ -32,6 +32,7 @@ Current coverage includes:
 - Germany Mengele civil-war and post-coup state markers
 - active Fury actor countries
 - `DTH` / original `DTH` / countries with the Death country marker
+- `DHO` / original `DHO` / countries with the Event 018 cave-country marker
 
 ## is_actual_nonhuman_country
 
@@ -45,3 +46,4 @@ Current coverage includes:
 - Wendigo outbreak flags or the Wendigo cosmetic tag
 - `ZIN`
 - `DTH` / original `DTH` / countries with the Death country marker
+- `DHO` / original `DHO` / countries with the Event 018 cave-country marker

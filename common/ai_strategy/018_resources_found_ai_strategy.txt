@@ -1,0 +1,521 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 018 AI STRATEGIES
+# ============================================================================
+# DHO alternates between anchor defense, measured resource-corridor attacks,
+# origin recovery, and terminal multi-front pressure. Ordinary countries at war
+# with DHO prioritize defeat and containment. Route selection is handled by the
+# focus tree and field-owner choices by decision/event weights.
+# ============================================================================
+
+@CAVE_FRONT_RATIO = 0
+@CAVE_UNDER_CAPACITY_PRIORITY = 180
+@CAVE_CORRIDOR_PRIORITY = 140
+@CAVE_ORIGIN_RECOVERY_PRIORITY = 300
+@CAVE_WORLD_END_PRIORITY = 220
+@CAVE_DEFEAT_WEIGHT = 500
+@CAVE_CONTAIN_WEIGHT = 350
+@CAVE_ALLIANCE_REJECTION = -1000
+@CAVE_MILITARY_ACCESS_REJECTION = -1000
+@CAVE_ORIGIN_FRONT_REQUEST = 600
+@CAVE_ANCHOR_FRONT_REQUEST = 360
+@CAVE_OBJECTIVE_FRONT_REQUEST = 320
+@CAVE_CAPITAL_FRONT_REQUEST = 400
+@CAVE_ONE_MAW_FRONT_REQUEST = 480
+@CAVE_MANY_CHAMBERS_FRONT_REQUEST = 420
+@CAVE_HOARD_FRONT_REQUEST = 520
+@CAVE_OBJECTIVE_CONCENTRATION = 100
+@CAVE_ONE_MAW_CONCENTRATION = 180
+@CAVE_GARRISON_WEIGHT = 100
+@CAVE_GARRISON_REINFORCEMENT_PRIORITY = 240
+@ANTI_CAVE_AT_PRODUCTION_FACTOR = 160
+@ANTI_CAVE_AT_ROLE_RATIO = 20
+@ANTI_CAVE_CAS_PRODUCTION_FACTOR = 40
+
+resources_found_cave_under_capacity_fronts = {
+	allowed = { original_tag = DHO }
+	enable = {
+		has_country_flag = resources_found_cave_country
+		has_war = yes
+		resources_found_cave_has_capacity_deficit = yes
+		NOT = { has_global_flag = resources_found_cave_world_end }
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = front_control
+		state_trigger = {
+			is_controlled_by = DHO
+			OR = {
+				has_state_flag = resources_found_cave_origin
+				has_state_flag = resources_found_cave_anchor_active
+			}
+		}
+		ratio = @CAVE_FRONT_RATIO
+		priority = @CAVE_UNDER_CAPACITY_PRIORITY
+		ordertype = front
+		execution_type = careful
+		execute_order = no
+		manual_attack = no
+	}
+
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = {
+			is_controlled_by = DHO
+			OR = {
+				has_state_flag = resources_found_cave_origin
+				has_state_flag = resources_found_cave_anchor_active
+			}
+		}
+		value = @CAVE_ANCHOR_FRONT_REQUEST
+	}
+}
+
+resources_found_cave_resource_corridor_offensive = {
+	allowed = { original_tag = DHO }
+	enable = {
+		has_country_flag = resources_found_cave_country
+		has_war = yes
+		NOT = { resources_found_cave_has_capacity_deficit = yes }
+		NOT = { has_country_flag = cave_origin_threatened }
+		NOT = { has_global_flag = resources_found_cave_world_end }
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = front_control
+		state_trigger = {
+			is_controlled_by = DHO
+			OR = {
+				has_state_flag = resources_found_cave_origin
+				has_state_flag = resources_found_cave_anchor_active
+			}
+		}
+		ratio = @CAVE_FRONT_RATIO
+		priority = @CAVE_CORRIDOR_PRIORITY
+		ordertype = front
+		execution_type = careful
+		execute_order = yes
+		manual_attack = yes
+	}
+
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = {
+			NOT = { is_controlled_by = DHO }
+			any_neighbor_state = { is_controlled_by = DHO }
+			OR = {
+				has_state_flag = resources_found_cave_marked_objective
+				has_state_flag = resources_found_cave_strongpoint_objective
+				has_state_flag = resources_found_cave_transport_objective
+			}
+		}
+		value = @CAVE_OBJECTIVE_FRONT_REQUEST
+	}
+
+	ai_strategy = {
+		type = force_concentration_target_weight
+		state_trigger = {
+			NOT = { is_controlled_by = DHO }
+			any_neighbor_state = { is_controlled_by = DHO }
+			OR = {
+				has_state_flag = resources_found_cave_marked_objective
+				has_state_flag = resources_found_cave_strongpoint_objective
+				has_state_flag = resources_found_cave_transport_objective
+			}
+		}
+		value = @CAVE_OBJECTIVE_CONCENTRATION
+	}
+}
+
+# Capital objectives are refreshed by the exact origin-continent scan. A
+# control change consumes the marker and records the expansion milestone.
+resources_found_cave_continental_capital_offensive = {
+	allowed = { original_tag = DHO }
+	enable = {
+		has_country_flag = resources_found_cave_country
+		has_war = yes
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = {
+			has_state_flag = resources_found_cave_continental_capital_objective
+			NOT = { is_controlled_by = DHO }
+		}
+		value = @CAVE_CAPITAL_FRONT_REQUEST
+	}
+}
+
+resources_found_cave_origin_recovery = {
+	allowed = { original_tag = DHO }
+	enable = {
+		has_country_flag = resources_found_cave_country
+		has_country_flag = cave_origin_threatened
+		has_war = yes
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = front_control
+		state_trigger = {
+			has_state_flag = resources_found_cave_origin
+		}
+		ratio = @CAVE_FRONT_RATIO
+		priority = @CAVE_ORIGIN_RECOVERY_PRIORITY
+		ordertype = front
+		execution_type = careful
+		execute_order = yes
+		manual_attack = yes
+	}
+
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = { has_state_flag = resources_found_cave_origin }
+		value = @CAVE_ORIGIN_FRONT_REQUEST
+	}
+}
+
+resources_found_cave_world_end_fronts = {
+	allowed = { original_tag = DHO }
+	enable = {
+		has_global_flag = resources_found_cave_world_end
+		has_war = yes
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = front_control
+		state_trigger = {
+			is_controlled_by = DHO
+			OR = {
+				has_state_flag = resources_found_cave_origin
+				has_state_flag = resources_found_cave_anchor_active
+				has_state_flag = resources_found_cave_world_end_foothold
+			}
+		}
+		ratio = @CAVE_FRONT_RATIO
+		priority = @CAVE_WORLD_END_PRIORITY
+		ordertype = front
+		execution_type = rush
+		execute_order = yes
+		manual_attack = yes
+	}
+
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = {
+			is_controlled_by = DHO
+			OR = {
+				has_state_flag = resources_found_cave_origin
+				has_state_flag = resources_found_cave_anchor_active
+				has_state_flag = resources_found_cave_world_end_foothold
+			}
+		}
+		value = @CAVE_ORIGIN_FRONT_REQUEST
+	}
+
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = {
+			NOT = { is_controlled_by = DHO }
+			any_neighbor_state = { is_controlled_by = DHO }
+			OR = {
+				has_state_flag = resources_found_cave_marked_objective
+				has_state_flag = resources_found_cave_last_continent_objective
+			}
+		}
+		value = @CAVE_ONE_MAW_FRONT_REQUEST
+	}
+}
+
+# DHO always keeps a reserve around the origin. Garrison weighting covers an
+# interior capital, while the unit request and front control take over as soon
+# as the random origin state becomes part of a live land front.
+resources_found_cave_origin_guard = {
+	allowed = { original_tag = DHO }
+	enable = {
+		has_country_flag = resources_found_cave_country
+		has_war = yes
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = garrison
+		value = @CAVE_GARRISON_WEIGHT
+	}
+
+	ai_strategy = {
+		type = garrison_reinforcement_priority
+		value = @CAVE_GARRISON_REINFORCEMENT_PRIORITY
+	}
+
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = { has_state_flag = resources_found_cave_origin }
+		value = @CAVE_ORIGIN_FRONT_REQUEST
+	}
+
+	ai_strategy = {
+		type = front_control
+		state_trigger = { has_state_flag = resources_found_cave_origin }
+		ratio = @CAVE_FRONT_RATIO
+		priority = @CAVE_ORIGIN_RECOVERY_PRIORITY
+		ordertype = front
+		execution_type = careful
+		execute_order = no
+		manual_attack = no
+	}
+}
+
+# Hierarchy strategies consume the persistent resource objective and anchor
+# flags. One Maw concentrates on one weighted route. Many Chambers distributes
+# more defenders among active anchors. Hoard the Veins makes feeding states the
+# strongest unit-request target while still advancing toward the marked vein.
+resources_found_cave_one_maw_concentration = {
+	allowed = { original_tag = DHO }
+	enable = {
+		has_country_flag = resources_found_cave_country
+		has_country_flag = cave_one_maw_hierarchy
+		has_war = yes
+		has_variable = resources_found_rich_target_state
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = {
+			has_state_flag = resources_found_cave_marked_objective
+			NOT = { is_controlled_by = DHO }
+			any_neighbor_state = { is_controlled_by = DHO }
+		}
+		value = @CAVE_ONE_MAW_FRONT_REQUEST
+	}
+
+	ai_strategy = {
+		type = force_concentration_target_weight
+		state_trigger = {
+			has_state_flag = resources_found_cave_marked_objective
+			NOT = { is_controlled_by = DHO }
+			any_neighbor_state = { is_controlled_by = DHO }
+		}
+		value = @CAVE_ONE_MAW_CONCENTRATION
+	}
+}
+
+resources_found_cave_many_chambers_defense = {
+	allowed = { original_tag = DHO }
+	enable = {
+		has_country_flag = resources_found_cave_country
+		has_country_flag = cave_many_chambers_hierarchy
+		has_war = yes
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = {
+			is_controlled_by = DHO
+			has_state_flag = resources_found_cave_anchor_active
+		}
+		value = @CAVE_MANY_CHAMBERS_FRONT_REQUEST
+	}
+}
+
+resources_found_cave_hoard_anchor_defense = {
+	allowed = { original_tag = DHO }
+	enable = {
+		has_country_flag = resources_found_cave_country
+		has_country_flag = cave_hoard_the_veins_hierarchy
+		has_war = yes
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = {
+			is_controlled_by = DHO
+			has_state_flag = resources_found_cave_anchor_active
+		}
+		value = @CAVE_HOARD_FRONT_REQUEST
+	}
+}
+
+# Doctrine targeting consumes the distinct map objectives created by the tree.
+# These requests alter unit assignment, while front_control continues to choose
+# the route-appropriate execution style on an already existing front.
+resources_found_cave_stone_strongpoint_assault = {
+	allowed = { original_tag = DHO }
+	enable = {
+		has_country_flag = resources_found_cave_country
+		has_country_flag = cave_stone_phalanx_doctrine
+		has_war = yes
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = {
+			has_state_flag = resources_found_cave_strongpoint_objective
+			NOT = { is_controlled_by = DHO }
+			any_neighbor_state = { is_controlled_by = DHO }
+		}
+		value = @CAVE_ONE_MAW_FRONT_REQUEST
+	}
+
+	ai_strategy = {
+		type = front_control
+		state_trigger = { has_state_flag = resources_found_cave_strongpoint_objective }
+		ratio = @CAVE_FRONT_RATIO
+		priority = @CAVE_WORLD_END_PRIORITY
+		ordertype = front
+		execution_type = careful
+		execute_order = yes
+		manual_attack = yes
+	}
+}
+
+resources_found_cave_burrow_transport_assault = {
+	allowed = { original_tag = DHO }
+	enable = {
+		has_country_flag = resources_found_cave_country
+		has_country_flag = cave_burrow_war_doctrine
+		has_war = yes
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = {
+			has_state_flag = resources_found_cave_transport_objective
+			NOT = { is_controlled_by = DHO }
+			any_neighbor_state = { is_controlled_by = DHO }
+		}
+		value = @CAVE_OBJECTIVE_FRONT_REQUEST
+	}
+
+	ai_strategy = {
+		type = front_control
+		state_trigger = { has_state_flag = resources_found_cave_transport_objective }
+		ratio = @CAVE_FRONT_RATIO
+		priority = @CAVE_WORLD_END_PRIORITY
+		ordertype = front
+		execution_type = rush_weak
+		execute_order = yes
+		manual_attack = yes
+	}
+}
+
+resources_found_cave_scree_weighted_assault = {
+	allowed = { original_tag = DHO }
+	enable = {
+		has_country_flag = resources_found_cave_country
+		has_country_flag = cave_scree_tide_doctrine
+		has_war = yes
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = {
+			has_state_flag = resources_found_cave_marked_objective
+			NOT = { is_controlled_by = DHO }
+			any_neighbor_state = { is_controlled_by = DHO }
+		}
+		value = @CAVE_OBJECTIVE_FRONT_REQUEST
+	}
+
+	ai_strategy = {
+		type = front_control
+		state_trigger = { has_state_flag = resources_found_cave_marked_objective }
+		ratio = @CAVE_FRONT_RATIO
+		priority = @CAVE_WORLD_END_PRIORITY
+		ordertype = front
+		execution_type = rush
+		execute_order = yes
+		manual_attack = yes
+	}
+}
+
+resources_found_ordinary_country_defeat_cave_host = {
+	allowed = {
+		NOT = { original_tag = DHO }
+	}
+	enable = {
+		DHO = { exists = yes has_country_flag = resources_found_cave_country }
+		has_war_with = DHO
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = conquer
+		id = DHO
+		value = @CAVE_DEFEAT_WEIGHT
+	}
+
+	ai_strategy = {
+		type = contain
+		id = DHO
+		value = @CAVE_CONTAIN_WEIGHT
+	}
+}
+
+# Ordinary AI countries translate the visible armor warning into factory and
+# template demand. The production factor does not force unavailable equipment,
+# while the role ratio makes existing anti-tank technology reach field units.
+resources_found_ordinary_country_anti_cave_force_mix = {
+	allowed = { NOT = { original_tag = DHO } }
+	enable = {
+		DHO = { exists = yes has_country_flag = resources_found_cave_country }
+		has_war_with = DHO
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_factor
+		id = anti_tank
+		value = @ANTI_CAVE_AT_PRODUCTION_FACTOR
+	}
+
+	ai_strategy = {
+		type = role_ratio
+		id = anti_tank
+		value = @ANTI_CAVE_AT_ROLE_RATIO
+	}
+
+	ai_strategy = {
+		type = equipment_production_factor
+		id = cas
+		value = @ANTI_CAVE_CAS_PRODUCTION_FACTOR
+	}
+}
+
+resources_found_diplomatic_rejection_of_cave_host = {
+	allowed = { always = yes }
+	enable = {
+		DHO = { exists = yes has_country_flag = resources_found_cave_country }
+		NOT = { original_tag = DHO }
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = alliance
+		id = DHO
+		value = @CAVE_ALLIANCE_REJECTION
+	}
+
+	ai_strategy = {
+		type = diplo_action_desire
+		id = DHO
+		target = military_access
+		value = @CAVE_MILITARY_ACCESS_REJECTION
+	}
+
+	ai_strategy = {
+		type = diplo_action_acceptance
+		id = DHO
+		target = military_access
+		value = @CAVE_MILITARY_ACCESS_REJECTION
+	}
+}

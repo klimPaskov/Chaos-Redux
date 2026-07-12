@@ -1,0 +1,53 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 018 CIVILIAN INCIDENT EFFECTS
+# ============================================================================
+# Exact state-population loss wrapper for Event 018 incidents. Callers provide
+# temp variables resources_found_incident_base_loss and
+# resources_found_incident_population_factor. The requested amount scales with
+# real state population, low safety, disturbance, breach pressure, evacuation,
+# and concealment, then the shared helper clamps to the protected population
+# floor and registers Deaths cause resource_field_incident.
+# ============================================================================
+
+# STATE scope. Output temp: state_civilian_population_loss_applied.
+resources_found_apply_incident_civilian_loss = {
+	set_temp_variable = { resources_found_incident_population_component = state_population_k }
+	multiply_temp_variable = { resources_found_incident_population_component = resources_found_incident_population_factor }
+	set_temp_variable = { resources_found_incident_risk_percent = constant:resources_found_civilian_loss.risk_base }
+	subtract_from_temp_variable = { resources_found_incident_risk_percent = resources_found_workforce_safety }
+	add_to_temp_variable = { resources_found_incident_risk_percent = resources_found_subsurface_disturbance }
+	add_to_temp_variable = { resources_found_incident_risk_percent = resources_found_breach_pressure }
+	clamp_temp_variable = {
+		var = resources_found_incident_risk_percent
+		min = constant:resources_found_civilian_loss.risk_floor
+		max = constant:resources_found_civilian_loss.risk_ceiling
+	}
+
+	set_temp_variable = { state_civilian_population_loss_requested = resources_found_incident_base_loss }
+	multiply_temp_variable = { state_civilian_population_loss_requested = resources_found_incident_risk_percent }
+	divide_temp_variable = { state_civilian_population_loss_requested = constant:resources_found_civilian_loss.risk_base }
+	add_to_temp_variable = { state_civilian_population_loss_requested = resources_found_incident_population_component }
+	if = {
+		limit = { has_state_flag = resources_found_successful_evacuation }
+		multiply_temp_variable = { state_civilian_population_loss_requested = constant:resources_found_civilian_loss_factor.evacuated }
+	}
+	if = {
+		limit = { has_state_flag = resources_found_casualties_concealed }
+		multiply_temp_variable = { state_civilian_population_loss_requested = constant:resources_found_civilian_loss_factor.concealed }
+	}
+	round_temp_variable = state_civilian_population_loss_requested
+
+	set_temp_variable = { state_civilian_population_loss_minimum_remaining = constant:resources_found_civilian_loss.minimum_population_remaining }
+	set_temp_variable = { state_civilian_population_loss_log_deaths = constant:resources_found_value.one }
+	set_temp_variable = { state_civilian_population_loss_reason = constant:chaos_meter_deaths_reason.resource_field_incident }
+	set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
+	set_temp_variable = { state_civilian_population_loss_has_target_country = constant:resources_found_value.one }
+	apply_exact_state_civilian_population_loss = yes
+
+	if = {
+		limit = { check_variable = { state_civilian_population_loss_applied > constant:resources_found_value.zero } }
+		add_to_variable = { resources_found_field_deaths = state_civilian_population_loss_applied }
+		add_to_variable = { global.resources_found_total_field_deaths = state_civilian_population_loss_applied }
+		resources_found_record_achievement_field_death = yes
+	}
+}

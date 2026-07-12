@@ -1,0 +1,502 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 018 ACHIEVEMENT TRACKING EFFECTS
+# ============================================================================
+# Records historical facts that cannot be reconstructed safely from the final
+# map. Field ledgers remain the authority for deposits and exact closure; these
+# helpers only preserve player-route, casualty, diplomacy, and cave-war facts.
+# ============================================================================
+
+# STATE scope. Called once when a normal Event 018 field record is created.
+resources_found_register_field_achievement_owner = {
+	if = {
+		limit = {
+			OWNER = {
+				exists = yes
+				NOT = { is_resources_found_cave_country = yes }
+			}
+		}
+		set_variable = { resources_found_achievement_original_field_owner = OWNER }
+		OWNER = {
+			set_country_flag = resources_found_achievement_started_ordinary_country
+			if = {
+				limit = { NOT = { has_variable = resources_found_achievement_starting_capital } }
+				capital_scope = { save_event_target_as = resources_found_achievement_capital_target }
+				set_variable = { resources_found_achievement_starting_capital = event_target:resources_found_achievement_capital_target }
+			}
+		}
+	}
+}
+
+# STATE scope. Starts a fresh, field-local Contract of the Century attempt only
+# after the long-term export flag and exact engine contract are both active.
+resources_found_begin_contract_century_qualification = {
+	clear_variable = resources_found_contract_century_owner
+	clr_state_flag = resources_found_contract_century_qualifying
+	clr_state_flag = resources_found_contract_century_disqualified
+	clr_state_flag = resources_found_contract_century_border_war
+	clr_state_flag = resources_found_contract_century_completed
+	set_variable = { resources_found_contract_century_owner = OWNER }
+	set_state_flag = resources_found_contract_century_qualifying
+	if = {
+		limit = { NOT = { resources_found_contract_century_conditions_met = yes } }
+		clr_state_flag = resources_found_contract_century_qualifying
+		set_state_flag = resources_found_contract_century_disqualified
+	}
+}
+
+# STATE scope. Called by the common field finalizer. Any threshold, sovereignty,
+# control, suspension, public-breach, or border-war failure is permanent for the
+# current review cycle even if the field later recovers.
+resources_found_refresh_contract_century_qualification = {
+	if = {
+		limit = {
+			has_state_flag = resources_found_contract_century_qualifying
+			NOT = { resources_found_contract_century_conditions_met = yes }
+		}
+		clr_state_flag = resources_found_contract_century_qualifying
+		set_state_flag = resources_found_contract_century_disqualified
+	}
+}
+
+# STATE scope. Latches the severe-pressure and armed-frontier facts before a
+# later agreement lowers pressure or returns the visible stage to settlement.
+resources_found_refresh_dispute_achievement_evidence = {
+	if = {
+		limit = {
+			resources_found_is_active_field = yes
+			has_variable = resources_found_border_claimant
+			check_variable = {
+				var = resources_found_foreign_pressure
+				value = constant:resources_found_threshold.crisis_pressure
+				compare = greater_than_or_equals
+			}
+		}
+		set_state_flag = resources_found_dispute_reached_crisis_pressure
+		if = {
+			limit = { NOT = { has_variable = resources_found_dispute_history_owner } }
+			set_variable = { resources_found_dispute_history_owner = OWNER }
+		}
+	}
+	if = {
+		limit = {
+			resources_found_is_active_field = yes
+			has_variable = resources_found_border_claimant
+			OR = {
+				check_variable = { resources_found_border_stage = constant:resources_found_border_stage.armed_patrol }
+				check_variable = { resources_found_border_stage = constant:resources_found_border_stage.frontier_mission }
+				check_variable = { resources_found_border_stage = constant:resources_found_border_stage.border_war }
+				has_state_flag = resources_found_customs_guards_escalated
+				has_state_flag = resources_found_armed_patrol_incident
+				has_state_flag = resources_found_frontier_mission_requested
+			}
+		}
+		set_state_flag = resources_found_dispute_reached_armed_stage
+		if = {
+			limit = { NOT = { has_variable = resources_found_dispute_history_owner } }
+			set_variable = { resources_found_dispute_history_owner = OWNER }
+		}
+	}
+	if = {
+		limit = {
+			has_variable = resources_found_dispute_history_owner
+			NOT = { is_owned_by = var:resources_found_dispute_history_owner }
+		}
+		set_state_flag = resources_found_dispute_history_owner_changed
+	}
+	if = {
+		limit = {
+			has_state_flag = resources_found_dispute_settlement_qualifying
+			OR = {
+				has_state_flag = resources_found_dispute_border_war_fought
+				has_state_flag = resources_found_dispute_border_transfer
+				has_state_flag = resources_found_dispute_history_owner_changed
+				has_state_flag = resources_found_dispute_owner_changed
+				has_state_flag = resources_found_dispute_control_disrupted
+				has_state_flag = resources_found_border_claimant_removed
+				has_state_flag = resources_found_public_breach
+				has_state_flag = resources_found_field_suspended
+					has_state_flag = resources_found_field_closing
+					has_state_flag = resources_found_field_control_disrupted
+					AND = {
+						check_variable = { resources_found_dispute_settlement_mode = constant:resources_found_settlement_mode.commission }
+						NOT = { resources_found_commission_is_stable = yes }
+					}
+					AND = {
+						check_variable = { resources_found_dispute_settlement_mode = constant:resources_found_settlement_mode.demilitarization }
+						OR = {
+							NOT = { has_state_flag = resources_found_demilitarized_field }
+							NOT = { is_demilitarized_zone = yes }
+						}
+					}
+				}
+		}
+		set_state_flag = resources_found_dispute_settlement_disqualified
+	}
+}
+
+# COUNTRY scope. Input temp variable resources_found_settlement_mode_input and
+# the exact resources_found_selected_field are immutable for the 180-day clock.
+resources_found_begin_dispute_settlement_qualification = {
+	if = {
+		limit = {
+			resources_found_country_has_valid_selected_field = yes
+			NOT = { has_active_mission = resources_found_dispute_settlement_stability_mission }
+			NOT = { has_variable = resources_found_dispute_settlement_field }
+			var:resources_found_selected_field = {
+				is_owned_and_controlled_by = ROOT
+				resources_found_dispute_has_required_history = yes
+				resources_found_border_is_at_settlement = yes
+				has_state_flag = resources_found_claimant_dispute_suspended_by_agreement
+				NOT = { has_state_flag = resources_found_field_suspended }
+				NOT = { has_state_flag = resources_found_field_closing }
+				OR = {
+					AND = {
+						check_variable = { resources_found_settlement_mode_input = constant:resources_found_settlement_mode.compensation }
+						has_state_flag = resources_found_compensation_settled
+					}
+					AND = {
+						check_variable = { resources_found_settlement_mode_input = constant:resources_found_settlement_mode.arbitration }
+						has_state_flag = resources_found_border_arbitration_settlement
+					}
+					AND = {
+						check_variable = { resources_found_settlement_mode_input = constant:resources_found_settlement_mode.commission }
+						resources_found_commission_is_stable = yes
+					}
+					AND = {
+						check_variable = { resources_found_settlement_mode_input = constant:resources_found_settlement_mode.demilitarization }
+						has_state_flag = resources_found_demilitarized_field
+						is_demilitarized_zone = yes
+					}
+				}
+			}
+		}
+		var:resources_found_selected_field = {
+			var:resources_found_border_claimant = { save_event_target_as = resources_found_dispute_claimant_target }
+			set_variable = { resources_found_dispute_settlement_owner = ROOT }
+			set_variable = { resources_found_dispute_settlement_claimant = event_target:resources_found_dispute_claimant_target }
+			set_variable = { resources_found_dispute_settlement_mode = resources_found_settlement_mode_input }
+			set_variable = { resources_found_dispute_settlement_started_date = global.date }
+			set_state_flag = resources_found_dispute_settlement_qualifying
+			clr_state_flag = resources_found_dispute_settlement_failed
+			clr_state_flag = resources_found_dispute_settlement_disqualified
+		}
+		set_variable = { resources_found_dispute_settlement_field = resources_found_selected_field }
+		set_variable = { resources_found_dispute_settlement_claimant = event_target:resources_found_dispute_claimant_target }
+		set_variable = { resources_found_dispute_settlement_mode = resources_found_settlement_mode_input }
+		set_variable = { resources_found_dispute_settlement_days = constant:resources_found_achievement.stable_settlement_days }
+		activate_mission = resources_found_dispute_settlement_stability_mission
+	}
+}
+
+# COUNTRY scope. The mission context rechecks the exact state, owner, claimant,
+# route, and live agreement before granting the historical completion flag.
+resources_found_complete_dispute_settlement_qualification = {
+	if = {
+		limit = { resources_found_decision_dispute_settlement_context_valid = yes }
+		set_country_flag = resources_found_achievement_resolve_field_dispute
+		var:resources_found_dispute_settlement_field = {
+			clr_state_flag = resources_found_dispute_settlement_qualifying
+			set_state_flag = resources_found_dispute_settlement_completed
+			set_variable = { resources_found_dispute_settlement_completed_date = global.date }
+		}
+	}
+	else = { resources_found_fail_dispute_settlement_qualification = yes }
+	clear_variable = resources_found_dispute_settlement_field
+	clear_variable = resources_found_dispute_settlement_claimant
+	clear_variable = resources_found_dispute_settlement_mode
+	clear_variable = resources_found_dispute_settlement_days
+}
+
+resources_found_fail_dispute_settlement_qualification = {
+	if = {
+		limit = { has_variable = resources_found_dispute_settlement_field }
+		var:resources_found_dispute_settlement_field = {
+			clr_state_flag = resources_found_dispute_settlement_qualifying
+			set_state_flag = resources_found_dispute_settlement_failed
+		}
+	}
+	clear_variable = resources_found_dispute_settlement_field
+	clear_variable = resources_found_dispute_settlement_claimant
+	clear_variable = resources_found_dispute_settlement_mode
+	clear_variable = resources_found_dispute_settlement_days
+}
+
+# STATE scope. Called only when an exact Event 018 civilian loss was applied.
+resources_found_record_achievement_field_death = {
+	set_state_flag = resources_found_achievement_field_death_recorded
+	OWNER = { set_country_flag = resources_found_achievement_field_death_recorded }
+}
+
+# STATE scope. Called immediately before a successful exact ledger reversal.
+resources_found_record_full_seal_achievement_state = {
+	if = {
+		limit = {
+			check_variable = {
+				var = resources_found_maximum_developed_yield
+				value = constant:resources_found_achievement.meaningful_yield
+				compare = greater_than_or_equals
+			}
+			has_state_flag = resources_found_major_development_completed
+			OR = {
+				NOT = { has_variable = resources_found_field_deaths }
+				check_variable = { resources_found_field_deaths < constant:resources_found_value.one }
+			}
+			NOT = { has_state_flag = resources_found_achievement_field_death_recorded }
+			NOT = { has_state_flag = resources_found_casualties_concealed }
+			NOT = { has_state_flag = resources_found_incident_concealment }
+			NOT = { has_state_flag = resources_found_hunt_losses_concealed }
+			NOT = { has_state_flag = resources_found_coercive_labor_used }
+		}
+		OWNER = { set_country_flag = resources_found_achievement_every_worker_home }
+	}
+	if = {
+		limit = {
+			has_state_flag = resources_found_evolution_iii_package_applied
+			OR = {
+				has_state_flag = resources_found_public_breach
+				has_state_flag = resources_found_settlement_attacked
+				has_state_flag = resources_found_transport_line_cut
+				has_state_flag = resources_found_city_intrusion
+			}
+			NOT = { has_state_flag = resources_found_field_converted_to_cave_origin }
+		}
+		OWNER = { set_country_flag = resources_found_achievement_full_seal_evolution_three }
+	}
+}
+
+# COUNTRY scope while the emergence state and frozen starting strength remain
+# in the current effect chain. Owner and controller may be different countries;
+# both are valid candidates and identical double calls are idempotent.
+resources_found_record_thirty_from_below_candidate = {
+	if = {
+		limit = {
+			exists = yes
+			NOT = { is_resources_found_cave_country = yes }
+			has_event_target = resources_found_emergence_state
+		}
+		set_country_flag = resources_found_achievement_cave_breach_owner_or_controller
+		set_variable = { resources_found_recorded_cave_starting_divisions = event_target:resources_found_emergence_state.resources_found_cave_starting_divisions }
+		if = {
+			limit = { NOT = { has_variable = resources_found_achievement_starting_capital } }
+			capital_scope = { save_event_target_as = resources_found_achievement_breach_capital_target }
+			if = {
+				limit = { has_event_target = resources_found_achievement_breach_capital_target }
+				set_variable = { resources_found_achievement_starting_capital = event_target:resources_found_achievement_breach_capital_target }
+			}
+		}
+	}
+}
+
+# STATE origin scope after cave strength is calculated and before transfer.
+resources_found_record_cave_emergence_achievement_state = {
+	if = {
+		limit = { has_event_target = resources_found_cave_former_owner }
+		event_target:resources_found_cave_former_owner = { resources_found_record_thirty_from_below_candidate = yes }
+	}
+	CONTROLLER = { resources_found_record_thirty_from_below_candidate = yes }
+	set_state_flag = resources_found_achievement_cave_origin_recorded
+}
+
+# DHO country scope. Clears the live Burrow War attempt without touching its
+# historical success flag. Mission cancel and timeout call the runtime-only
+# helper to avoid asking a mission to remove itself.
+resources_found_clear_burrow_objective_runtime = {
+	if = {
+		limit = { has_variable = resources_found_transport_target_state }
+		var:resources_found_transport_target_state = {
+			clr_state_flag = resources_found_cave_transport_objective
+			clr_state_flag = resources_found_burrow_objective_active
+			clr_state_flag = resources_found_burrow_objective_defended_at_start
+		}
+	}
+	clear_variable = resources_found_transport_target_state
+	clear_variable = resources_found_burrow_objective_window_days
+	clr_country_flag = resources_found_burrow_objective_window_active
+}
+
+resources_found_cancel_burrow_objective_window = {
+	if = {
+		limit = { has_active_mission = resources_found_burrow_objective_window_mission }
+		remove_mission = resources_found_burrow_objective_window_mission
+	}
+	resources_found_clear_burrow_objective_runtime = yes
+}
+
+# STATE scope from a successful ordinary-country anchor cleanup.
+resources_found_record_anchor_cleanup_contribution = {
+	if = {
+		limit = {
+			has_state_flag = resources_found_cave_mature_non_origin_anchor
+			NOT = { resources_found_is_cave_origin_state = yes }
+			NOT = { has_state_flag = resources_found_mature_anchor_cleanup_credited }
+		}
+		set_state_flag = resources_found_mature_anchor_cleanup_credited
+		OWNER = {
+			add_to_variable = { resources_found_mature_anchor_cleanup_contribution = constant:resources_found_value.one }
+			if = {
+				limit = {
+					check_variable = {
+						var = resources_found_mature_anchor_cleanup_contribution
+						value = constant:resources_found_achievement.minimum_regional_anchors
+						compare = greater_than_or_equals
+					}
+				}
+				set_country_flag = resources_found_achievement_mature_anchor_cleanup_contributor
+			}
+		}
+	}
+	OWNER = {
+		add_to_variable = { resources_found_anchor_cleanup_contribution = constant:resources_found_value.one }
+		if = {
+			limit = {
+				check_variable = {
+					var = resources_found_anchor_cleanup_contribution
+					value = constant:resources_found_achievement.major_contribution_states
+					compare = greater_than_or_equals
+				}
+			}
+			if = {
+				limit = { has_global_flag = resources_found_cave_global_defeat_eligible }
+				set_country_flag = resources_found_achievement_global_defeat_contributor
+			}
+			else = { set_country_flag = resources_found_achievement_regional_defeat_contributor }
+		}
+	}
+}
+
+# STATE scope from the bounded state-control hook.
+resources_found_record_cave_control_achievement_state = {
+	set_temp_variable = { resources_found_captured_burrow_state = THIS }
+	if = {
+		limit = {
+			has_event_target = resources_found_new_controller
+			event_target:resources_found_new_controller = { is_resources_found_cave_country = yes }
+		}
+		event_target:resources_found_new_controller = {
+			if = {
+				limit = {
+					has_country_flag = resources_found_rapid_route_window_active
+					PREV = {
+						OR = {
+							NOT = { has_variable = resources_found_rapid_route_last_counted_attempt }
+							check_variable = {
+								var = resources_found_rapid_route_last_counted_attempt
+								value = DHO.resources_found_rapid_route_attempt_sequence
+								compare = not_equals
+							}
+						}
+					}
+				}
+				PREV = { set_variable = { resources_found_rapid_route_last_counted_attempt = DHO.resources_found_rapid_route_attempt_sequence } }
+				add_to_variable = { resources_found_rapid_route_states_captured = constant:resources_found_value.one }
+				resources_found_try_complete_hills_begin_to_move = yes
+			}
+			if = {
+				limit = {
+					resources_found_cave_burrow_objective_context_valid = yes
+					check_variable = {
+						var = resources_found_transport_target_state
+						value = resources_found_captured_burrow_state
+						compare = equals
+					}
+					PREV = {
+						has_state_flag = resources_found_cave_transport_objective
+						has_state_flag = resources_found_burrow_objective_active
+						has_state_flag = resources_found_burrow_objective_defended_at_start
+					}
+					NOT = { has_global_flag = resources_found_cave_world_end }
+				}
+				set_country_flag = resources_found_achievement_burrow_objective_captured
+				resources_found_cancel_burrow_objective_window = yes
+			}
+		}
+	}
+	if = {
+		limit = {
+			resources_found_is_cave_origin_state = yes
+			has_event_target = resources_found_old_controller
+			event_target:resources_found_old_controller = {
+				is_resources_found_cave_country = yes
+				has_country_flag = resources_found_prepared_major_qualifying_war_active
+			}
+			has_event_target = resources_found_new_controller
+			event_target:resources_found_new_controller = { NOT = { is_resources_found_cave_country = yes } }
+		}
+		DHO = { set_country_flag = resources_found_origin_lost_during_qualifying_war }
+	}
+}
+
+# COUNTRY scope for an ordinary country capitulating to DHO.
+resources_found_record_prepared_major_defeat = {
+	if = {
+		limit = {
+			has_event_target = resources_found_capitulation_winner
+			event_target:resources_found_capitulation_winner = {
+				is_resources_found_cave_country = yes
+				has_country_flag = resources_found_rapid_route_window_active
+			}
+			OR = {
+				NOT = { has_variable = resources_found_rapid_route_last_defeated_attempt }
+				check_variable = {
+					var = resources_found_rapid_route_last_defeated_attempt
+					value = event_target:resources_found_capitulation_winner.resources_found_rapid_route_attempt_sequence
+					compare = not_equals
+				}
+			}
+		}
+		set_variable = { resources_found_rapid_route_last_defeated_attempt = event_target:resources_found_capitulation_winner.resources_found_rapid_route_attempt_sequence }
+		event_target:resources_found_capitulation_winner = {
+			add_to_variable = { resources_found_rapid_route_countries_defeated = constant:resources_found_value.one }
+			resources_found_try_complete_hills_begin_to_move = yes
+		}
+	}
+	if = {
+		limit = {
+			has_event_target = resources_found_capitulation_winner
+			event_target:resources_found_capitulation_winner = { is_resources_found_cave_country = yes }
+		}
+		if = {
+			limit = {
+				is_major = yes
+				has_country_flag = resources_found_anti_armor_prepared
+			}
+			event_target:resources_found_capitulation_winner = {
+				set_country_flag = resources_found_achievement_prepared_major_defeated
+				clr_country_flag = resources_found_prepared_major_qualifying_war_active
+			}
+		}
+	}
+}
+
+# DHO country scope. A route surge becomes historical only while the same live
+# attempt still has its state and capitulation thresholds, three deployed Scree
+# Packs, legal brood capacity, and the pre-World-End ruleset.
+resources_found_try_complete_hills_begin_to_move = {
+	resources_found_cave_refresh_division_and_capacity_totals = yes
+	resources_found_refresh_active_raiding_brood_formations = yes
+	if = {
+		limit = {
+			has_country_flag = resources_found_rapid_route_window_active
+			has_country_flag = resources_found_achievement_hills_move_route
+			check_variable = {
+				var = resources_found_rapid_route_states_captured
+				value = constant:resources_found_achievement.rapid_route_states
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = resources_found_rapid_route_countries_defeated
+				value = constant:resources_found_achievement.rapid_route_countries
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = resources_found_active_raiding_brood_formations
+				value = constant:resources_found_achievement.rapid_raiding_broods
+				compare = greater_than_or_equals
+			}
+			NOT = { resources_found_cave_is_over_capacity = yes }
+			NOT = { has_global_flag = resources_found_cave_world_end }
+		}
+		set_country_flag = resources_found_achievement_hills_begin_to_move_completed
+		clr_country_flag = resources_found_rapid_route_window_active
+	}
+}

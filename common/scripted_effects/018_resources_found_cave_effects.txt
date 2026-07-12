@@ -1,0 +1,2481 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 018 OTH-KESH CAVE EFFECTS
+# ============================================================================
+# Operational layer for first emergence, later breaches, protected opening
+# strength, continuous-control resource anchors, automatic brood spawning,
+# neighbor wars, focus rewards, exact continent verification, resource-weighted
+# world-end footholds, regional/global defeat, and postwar anchor cleanup.
+#
+# No global periodic country loop is used. The only recurring hook is
+# on_daily_DHO, which advances the cave tag's own anchor array and spawn queue.
+# Geography-wide passes are one-shot scans on emergence, control changes,
+# terminal preparation, and terminal verification.
+#
+# These file-scoped values are used where the random-list key and delayed-event
+# parsers require preprocessed literals. All other tuning uses script constants.
+# ============================================================================
+
+@CAVE_DEFAULT_BROOD_WEIGHT = 50
+@CAVE_DOCTRINE_BROOD_WEIGHT = 15
+@CAVE_GUARD_BROOD_WEIGHT = 5
+@CAVE_NOTICE_HOURS = 1
+@CAVE_FOLLOWUP_HOURS = 2
+@CAVE_FIRST_BATTLE_ANALYSIS_DAYS = 14
+
+# ---------------------------------------------------------------------------
+# Country setup and brood creation
+# ---------------------------------------------------------------------------
+
+# DHO country scope.
+resources_found_cave_setup_country = {
+	if = {
+		limit = { NOT = { has_country_flag = resources_found_cave_country } }
+		set_country_flag = resources_found_cave_country
+		set_country_flag = resources_found_cave_country_created
+		set_stability = constant:resources_found_cave_effect.setup_stability
+		set_war_support = constant:resources_found_cave_effect.setup_war_support
+		set_research_slots = constant:resources_found_cave_runtime.zero
+		set_politics = {
+			ruling_party = neutrality
+			elections_allowed = no
+		}
+		set_rule = {
+			can_join_factions = no
+			can_create_factions = no
+			can_puppet = no
+			can_send_volunteers = no
+			can_access_market = no
+			can_force_government = no
+			can_guarantee_other_ideologies = no
+		}
+		set_popularities = {
+			democratic = constant:resources_found_cave_runtime.zero
+			fascism = constant:resources_found_cave_runtime.zero
+			communism = constant:resources_found_cave_runtime.zero
+			neutrality = constant:resources_found_cave_runtime.full_popularity
+		}
+		load_oob = "DHO_1936"
+		load_focus_tree = { tree = 018_resources_found_cave_focus_tree keep_completed = no }
+		add_ideas = {
+			cave_mineral_carapaces
+			cave_slow_blood
+			cave_resource_born_broods
+			cave_surface_starvation
+			cave_untranslatable_command
+		}
+		set_variable = { resources_found_active_anchor_count = constant:resources_found_value.zero }
+		set_variable = { resources_found_total_anchor_capacity = constant:resources_found_value.zero }
+		set_variable = { resources_found_active_brood_divisions = constant:resources_found_value.zero }
+		set_variable = { resources_found_spawn_interval_days = constant:resources_found_capacity.ordinary_spawn_interval_days }
+		set_variable = { resources_found_anchor_grace_days = constant:resources_found_capacity.capacity_loss_grace_days }
+		resize_array = { resources_found_cave_anchor_states = 0 }
+	}
+	resources_found_refresh_decision_cost_previews = yes
+	save_global_event_target_as = resources_found_cave_country
+}
+
+# STATE scope.
+resources_found_cave_spawn_war_brood_here = {
+	set_temp_variable = { resources_found_spawn_experience = constant:resources_found_cave_unit.war_brood_experience }
+	set_temp_variable = { resources_found_spawn_equipment = constant:resources_found_cave_unit.full_equipment }
+	set_temp_variable = { resources_found_spawn_manpower = constant:resources_found_cave_unit.full_manpower }
+	set_temp_variable = { resources_found_spawn_count = constant:resources_found_cave_runtime.spawn_count }
+	meta_effect = {
+		text = {
+			create_unit = {
+				division = "name = \"Oth-Kesh War-Brood\" division_template = \"Oth-Kesh War-Brood\" start_experience_factor = [EXPERIENCE] start_equipment_factor = [EQUIPMENT] start_manpower_factor = [MANPOWER]"
+				owner = DHO
+				count = [COUNT]
+				allow_spawning_on_enemy_provs = yes
+			}
+		}
+		EXPERIENCE = "[?resources_found_spawn_experience]"
+		EQUIPMENT = "[?resources_found_spawn_equipment]"
+		MANPOWER = "[?resources_found_spawn_manpower]"
+		COUNT = "[?resources_found_spawn_count|.0]"
+	}
+}
+
+# STATE scope.
+resources_found_cave_spawn_stone_brood_here = {
+	set_temp_variable = { resources_found_spawn_experience = constant:resources_found_cave_unit.stone_phalanx_experience }
+	set_temp_variable = { resources_found_spawn_equipment = constant:resources_found_cave_unit.full_equipment }
+	set_temp_variable = { resources_found_spawn_manpower = constant:resources_found_cave_unit.full_manpower }
+	set_temp_variable = { resources_found_spawn_count = constant:resources_found_cave_runtime.spawn_count }
+	meta_effect = {
+		text = {
+			create_unit = {
+				division = "name = \"Stone Phalanx\" division_template = \"Oth-Kesh Stone Phalanx\" start_experience_factor = [EXPERIENCE] start_equipment_factor = [EQUIPMENT] start_manpower_factor = [MANPOWER]"
+				owner = DHO
+				count = [COUNT]
+				allow_spawning_on_enemy_provs = yes
+			}
+		}
+		EXPERIENCE = "[?resources_found_spawn_experience]"
+		EQUIPMENT = "[?resources_found_spawn_equipment]"
+		MANPOWER = "[?resources_found_spawn_manpower]"
+		COUNT = "[?resources_found_spawn_count|.0]"
+	}
+}
+
+# STATE scope.
+resources_found_cave_spawn_burrow_brood_here = {
+	set_temp_variable = { resources_found_spawn_experience = constant:resources_found_cave_unit.burrow_column_experience }
+	set_temp_variable = { resources_found_spawn_equipment = constant:resources_found_cave_unit.full_equipment }
+	set_temp_variable = { resources_found_spawn_manpower = constant:resources_found_cave_unit.full_manpower }
+	set_temp_variable = { resources_found_spawn_count = constant:resources_found_cave_runtime.spawn_count }
+	meta_effect = {
+		text = {
+			create_unit = {
+				division = "name = \"Burrow Column\" division_template = \"Oth-Kesh Burrow Column\" start_experience_factor = [EXPERIENCE] start_equipment_factor = [EQUIPMENT] start_manpower_factor = [MANPOWER]"
+				owner = DHO
+				count = [COUNT]
+				allow_spawning_on_enemy_provs = yes
+			}
+		}
+		EXPERIENCE = "[?resources_found_spawn_experience]"
+		EQUIPMENT = "[?resources_found_spawn_equipment]"
+		MANPOWER = "[?resources_found_spawn_manpower]"
+		COUNT = "[?resources_found_spawn_count|.0]"
+	}
+}
+
+# STATE scope.
+resources_found_cave_spawn_scree_brood_here = {
+	set_temp_variable = { resources_found_spawn_experience = constant:resources_found_cave_unit.scree_pack_experience }
+	set_temp_variable = { resources_found_spawn_equipment = constant:resources_found_cave_unit.full_equipment }
+	set_temp_variable = { resources_found_spawn_manpower = constant:resources_found_cave_unit.full_manpower }
+	set_temp_variable = { resources_found_spawn_count = constant:resources_found_cave_runtime.spawn_count }
+	meta_effect = {
+		text = {
+			create_unit = {
+				division = "name = \"Scree Pack\" division_template = \"Oth-Kesh Scree Pack\" start_experience_factor = [EXPERIENCE] start_equipment_factor = [EQUIPMENT] start_manpower_factor = [MANPOWER]"
+				owner = DHO
+				count = [COUNT]
+				allow_spawning_on_enemy_provs = yes
+			}
+		}
+		EXPERIENCE = "[?resources_found_spawn_experience]"
+		EQUIPMENT = "[?resources_found_spawn_equipment]"
+		MANPOWER = "[?resources_found_spawn_manpower]"
+		COUNT = "[?resources_found_spawn_count|.0]"
+	}
+}
+
+# STATE scope.
+resources_found_cave_spawn_guard_brood_here = {
+	set_temp_variable = { resources_found_spawn_experience = constant:resources_found_cave_unit.feeding_guard_experience }
+	set_temp_variable = { resources_found_spawn_equipment = constant:resources_found_cave_unit.full_equipment }
+	set_temp_variable = { resources_found_spawn_manpower = constant:resources_found_cave_unit.full_manpower }
+	set_temp_variable = { resources_found_spawn_count = constant:resources_found_cave_runtime.spawn_count }
+	meta_effect = {
+		text = {
+			create_unit = {
+				division = "name = \"Feeding Guard\" division_template = \"Oth-Kesh Feeding Guard\" start_experience_factor = [EXPERIENCE] start_equipment_factor = [EQUIPMENT] start_manpower_factor = [MANPOWER]"
+				owner = DHO
+				count = [COUNT]
+				allow_spawning_on_enemy_provs = yes
+			}
+		}
+		EXPERIENCE = "[?resources_found_spawn_experience]"
+		EQUIPMENT = "[?resources_found_spawn_equipment]"
+		MANPOWER = "[?resources_found_spawn_manpower]"
+		COUNT = "[?resources_found_spawn_count|.0]"
+	}
+}
+
+# STATE scope. Doctrine and player preference change the automatically created
+# template. Locked templates remain unavailable to the ordinary recruit queue.
+resources_found_cave_spawn_selected_brood_here = {
+	if = {
+		limit = { DHO = { has_country_flag = resources_found_spawn_preference_stone } }
+		resources_found_cave_spawn_stone_brood_here = yes
+	}
+	else_if = {
+		limit = { DHO = { has_country_flag = resources_found_spawn_preference_burrow } }
+		resources_found_cave_spawn_burrow_brood_here = yes
+	}
+	else_if = {
+		limit = { DHO = { has_country_flag = resources_found_spawn_preference_scree } }
+		resources_found_cave_spawn_scree_brood_here = yes
+	}
+	else = {
+		random_list = {
+			@CAVE_DEFAULT_BROOD_WEIGHT = { resources_found_cave_spawn_war_brood_here = yes }
+			@CAVE_DOCTRINE_BROOD_WEIGHT = {
+				trigger = { DHO = { has_country_flag = cave_stone_phalanx_doctrine } }
+				resources_found_cave_spawn_stone_brood_here = yes
+			}
+			@CAVE_DOCTRINE_BROOD_WEIGHT = {
+				trigger = { DHO = { has_country_flag = cave_burrow_war_doctrine } }
+				resources_found_cave_spawn_burrow_brood_here = yes
+			}
+			@CAVE_DOCTRINE_BROOD_WEIGHT = {
+				trigger = { DHO = { has_country_flag = cave_scree_tide_doctrine } }
+				resources_found_cave_spawn_scree_brood_here = yes
+			}
+			@CAVE_GUARD_BROOD_WEIGHT = {
+				trigger = { DHO = { has_country_flag = cave_feeding_chamber_guards_unlocked } }
+				resources_found_cave_spawn_guard_brood_here = yes
+			}
+		}
+	}
+}
+
+# STATE origin scope.
+resources_found_cave_spawn_opening_allocation = {
+	set_temp_variable = { resources_found_opening_broods_remaining = DHO.resources_found_cave_starting_divisions }
+	while = {
+		limit = { check_variable = { resources_found_opening_broods_remaining > constant:resources_found_value.zero } }
+		resources_found_cave_spawn_war_brood_here = yes
+		subtract_from_temp_variable = { resources_found_opening_broods_remaining = constant:resources_found_value.one }
+	}
+	DHO = { set_variable = { resources_found_active_brood_divisions = num_divisions } }
+}
+
+# DHO country scope.
+resources_found_cave_refresh_division_and_capacity_totals = {
+	set_variable = { resources_found_active_brood_divisions = num_divisions }
+	set_variable = { resources_found_total_brood_capacity = resources_found_protected_origin_allocation }
+	add_to_variable = { resources_found_total_brood_capacity = resources_found_total_anchor_capacity }
+	if = {
+		limit = { check_variable = { resources_found_total_brood_capacity < resources_found_protected_origin_allocation } }
+		set_variable = { resources_found_total_brood_capacity = resources_found_protected_origin_allocation }
+	}
+}
+
+# DHO country scope. Counts deployed Scree Pack formations from their unique
+# battalion identity. The value is refreshed at surge start and every exact
+# completion check, so destroyed formations cannot satisfy a later threshold.
+resources_found_refresh_active_raiding_brood_formations = {
+	set_temp_variable = { resources_found_active_raiding_brood_count = constant:resources_found_value.zero }
+	every_country_division = {
+		limit = { division_has_battalion_in_template = cave_scree_tide_brood }
+		add_to_temp_variable = { resources_found_active_raiding_brood_count = constant:resources_found_value.one }
+	}
+	set_variable = { resources_found_active_raiding_brood_formations = resources_found_active_raiding_brood_count }
+}
+
+# ---------------------------------------------------------------------------
+# Emergence and later Evolution IV breaches
+# ---------------------------------------------------------------------------
+
+# STATE field scope. Prepares the first persistent DHO incarnation, then asks
+# the former owner how play should continue before the origin state transfers.
+# This ordering preserves the choice even when the field is that country's
+# final owned state.
+resources_found_begin_first_cave_emergence = {
+	if = {
+		limit = { resources_found_state_can_form_first_cave_origin = yes }
+		save_event_target_as = resources_found_emergence_state
+		OWNER = {
+			save_global_event_target_as = resources_found_cave_former_owner
+			set_country_flag = resources_found_cave_origin_lost
+			set_country_flag = resources_found_cave_aid_eligible
+		}
+		DHO = { resources_found_cave_setup_country = yes }
+		resources_found_calculate_cave_starting_strength = yes
+		resources_found_record_cave_emergence_achievement_state = yes
+		resources_found_record_cave_origin = yes
+		event_target:resources_found_cave_former_owner = {
+			country_event = { id = chaosx.nr18.80 }
+		}
+	}
+}
+
+# STATE origin scope. Completes the first emergence only after Event .80 has
+# resolved. All three options call this exact helper, so AI countries, players
+# retaining their country, and players continuing as DHO share one lifecycle.
+resources_found_complete_first_cave_emergence = {
+	save_event_target_as = resources_found_emergence_state
+	if = {
+		limit = {
+			has_state_flag = resources_found_cave_origin
+			NOT = { has_state_flag = resources_found_first_cave_emergence_complete }
+			DHO = {
+				has_country_flag = resources_found_cave_country_created
+				has_variable = resources_found_cave_origin_state
+			}
+		}
+		resources_found_cave_declare_war_on_current_owner_and_controller = yes
+		transfer_state_to = DHO
+		add_core_of = DHO
+		set_state_controller_to = DHO
+		set_state_flag = resources_found_first_cave_emergence_complete
+		set_state_flag = resources_found_cave_cleanup_required
+		add_dynamic_modifier = { modifier = resources_found_cave_origin_chamber }
+		force_update_dynamic_modifier = yes
+		if = {
+			limit = { NOT = { supply_node > constant:resources_found_value.zero } }
+			add_building_construction = { type = supply_node level = constant:resources_found_value.one instant_build = yes }
+		}
+		DHO = {
+			set_capital = {
+				state = event_target:resources_found_emergence_state
+				remember_old_capital = no
+			}
+			set_variable = { resources_found_protected_origin_allocation = resources_found_cave_starting_divisions }
+			set_variable = { resources_found_total_brood_capacity = resources_found_cave_starting_divisions }
+			set_country_flag = resources_found_continent_registry_dirty
+		}
+		resources_found_cave_spawn_opening_allocation = yes
+		set_global_flag = world_threat_source_resources_found_caves
+		refresh_world_threat_state = yes
+		DHO = {
+			resources_found_cave_declare_neighbor_wars = yes
+			resources_found_cave_refresh_continent_progress = yes
+			resources_found_cave_prepare_foothold_candidates = yes
+		}
+		DHO = {
+			resources_found_emit_cave_emergence_news = yes
+			resources_found_emit_emergence_super_event = yes
+			country_event = { id = chaosx.nr18.82 hours = @CAVE_FOLLOWUP_HOURS }
+		}
+	}
+}
+
+# STATE field scope. A later breach strengthens the one persistent Host.
+resources_found_reinforce_existing_cave_host_from_field = {
+	if = {
+		limit = { resources_found_state_can_reinforce_existing_cave_host = yes }
+		save_event_target_as = resources_found_emergence_state
+		save_event_target_as = resources_found_unbinding_state
+		OWNER = {
+			save_event_target_as = resources_found_reinforcement_former_owner
+			set_country_flag = resources_found_cave_aid_eligible
+		}
+		resources_found_cave_declare_war_on_current_owner_and_controller = yes
+		set_state_flag = resources_found_field_converted_to_cave_breach
+		if = {
+			limit = { has_variable = resources_found_recorded_owner }
+			var:resources_found_recorded_owner = {
+				save_event_target_as = resources_found_reinforcement_registry_owner
+				resources_found_remove_field_from_country_registry = yes
+			}
+		}
+		# The registry helper normally selects another active field immediately.
+		# This state is still physically active until the registry mutation is
+		# complete, so prevent it from surviving as the former owner's selection.
+		if = {
+			limit = { has_event_target = resources_found_reinforcement_registry_owner }
+			event_target:resources_found_reinforcement_registry_owner = {
+				if = {
+					limit = {
+						has_variable = resources_found_selected_field
+						check_variable = {
+							var = resources_found_selected_field
+							value = event_target:resources_found_unbinding_state
+							compare = equals
+						}
+					}
+					clear_variable = resources_found_selected_field
+				}
+			}
+		}
+		clr_state_flag = resources_found_field_active
+		clr_state_flag = resources_found_field_suspended
+		if = {
+			limit = { has_event_target = resources_found_reinforcement_registry_owner }
+			event_target:resources_found_reinforcement_registry_owner = { resources_found_validate_country_field_selection = yes }
+		}
+		resources_found_clear_field_diplomacy_and_incidents = yes
+		transfer_state_to = DHO
+		add_core_of = DHO
+		set_state_controller_to = DHO
+		set_variable = { resources_found_recorded_owner = DHO }
+		set_variable = { resources_found_recorded_controller = DHO }
+		set_state_flag = resources_found_cave_cleanup_required
+		resources_found_cave_begin_anchor_activation = yes
+		DHO = {
+			resources_found_cave_refresh_division_and_capacity_totals = yes
+			resources_found_cave_declare_neighbor_wars = yes
+			resources_found_cave_refresh_continent_progress = yes
+		}
+		event_target:resources_found_reinforcement_former_owner = { country_event = { id = chaosx.nr18.81 hours = @CAVE_NOTICE_HOURS } }
+	}
+}
+
+# STATE scope. Selects first or later Evolution IV behavior without a fallback.
+resources_found_begin_cave_emergence = {
+	resources_found_record_evolution_iv_from_field = yes
+	if = {
+		limit = { resources_found_state_can_form_first_cave_origin = yes }
+		resources_found_begin_first_cave_emergence = yes
+	}
+	else_if = {
+		limit = { resources_found_state_can_reinforce_existing_cave_host = yes }
+		resources_found_reinforce_existing_cave_host_from_field = yes
+	}
+}
+
+# STATE scope.
+resources_found_cave_declare_war_on_current_owner_and_controller = {
+	OWNER = { save_event_target_as = resources_found_breach_owner_target }
+	CONTROLLER = { save_event_target_as = resources_found_breach_controller_target }
+	if = {
+		limit = {
+			has_event_target = resources_found_breach_owner_target
+			event_target:resources_found_breach_owner_target = {
+				exists = yes
+				NOT = { is_resources_found_cave_country = yes }
+				NOT = { has_war_with = DHO }
+			}
+			DHO = { can_declare_war_on = event_target:resources_found_breach_owner_target }
+		}
+		DHO = { declare_war_on = { target = event_target:resources_found_breach_owner_target type = annex_everything } }
+	}
+	if = {
+		limit = {
+			has_event_target = resources_found_breach_controller_target
+			event_target:resources_found_breach_controller_target = {
+				exists = yes
+				NOT = { is_resources_found_cave_country = yes }
+				NOT = { has_war_with = DHO }
+			}
+			DHO = { can_declare_war_on = event_target:resources_found_breach_controller_target }
+		}
+		DHO = { declare_war_on = { target = event_target:resources_found_breach_controller_target type = annex_everything } }
+	}
+}
+
+# STATE scope for a land state adjacent to DHO control. The war helper covers
+# distinct owner/controller actors, while the flag prevents repeated notices.
+resources_found_cave_attack_adjacent_state_actors = {
+	resources_found_cave_declare_war_on_current_owner_and_controller = yes
+	OWNER = {
+		if = {
+			limit = {
+				exists = yes
+				NOT = { is_resources_found_cave_country = yes }
+				has_war_with = DHO
+				NOT = { has_country_flag = resources_found_cave_frontier_notice_received }
+			}
+			set_country_flag = resources_found_cave_frontier_notice_received
+			country_event = { id = chaosx.nr18.82 hours = @CAVE_NOTICE_HOURS }
+		}
+	}
+	CONTROLLER = {
+		if = {
+			limit = {
+				exists = yes
+				NOT = { is_resources_found_cave_country = yes }
+				has_war_with = DHO
+				NOT = { has_country_flag = resources_found_cave_frontier_notice_received }
+			}
+			set_country_flag = resources_found_cave_frontier_notice_received
+			country_event = { id = chaosx.nr18.82 hours = @CAVE_NOTICE_HOURS }
+		}
+	}
+}
+
+# DHO country scope. Every present and newly adjacent land neighbor is attacked.
+# Controlled frontier states are used so conquests extend the war frontier even
+# before a peace conference changes state ownership.
+resources_found_cave_declare_neighbor_wars = {
+	every_controlled_state = {
+		every_neighbor_state = {
+			limit = {
+				impassable = no
+				NOT = { is_controlled_by = DHO }
+			}
+			resources_found_cave_attack_adjacent_state_actors = yes
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Anchor activation, recapture grace, and automatic spawning
+# ---------------------------------------------------------------------------
+
+# STATE scope after DHO gains control.
+resources_found_cave_begin_anchor_activation = {
+	resources_found_refresh_captured_state_capacity = yes
+	if = {
+		limit = {
+			resources_found_state_can_contribute_cave_capacity = yes
+			NOT = { has_state_flag = resources_found_cave_anchor_active }
+			NOT = { has_state_flag = resources_found_cave_anchor_activating }
+		}
+		set_state_flag = resources_found_cave_anchor_activating
+		set_state_flag = resources_found_cave_cleanup_required
+		set_variable = { resources_found_cave_anchor_activation_date = global.date }
+		set_temp_variable = { resources_found_anchor_activation_delay = constant:resources_found_capacity.activation_days }
+		add_to_variable = { resources_found_cave_anchor_activation_date = resources_found_anchor_activation_delay }
+		if = {
+			limit = {
+				has_state_flag = resources_found_cave_denial_prepared
+				has_variable = resources_found_cave_denial_capacity_penalty
+			}
+			# Demolition delays every interrupted connection attempt. Both the delay
+			# and capacity penalty remain prepared until an activation succeeds.
+			add_to_variable = { resources_found_cave_anchor_activation_date = constant:resources_found_decision_duration.anchor_recapture }
+		}
+		add_dynamic_modifier = { modifier = resources_found_cave_anchor_activating }
+		force_update_dynamic_modifier = yes
+		save_event_target_as = resources_found_anchor_registration_state
+		DHO = {
+			if = {
+				limit = {
+					NOT = {
+						is_in_array = {
+							array = resources_found_cave_anchor_states
+							value = event_target:resources_found_anchor_registration_state
+						}
+					}
+				}
+				add_to_array = {
+					array = resources_found_cave_anchor_states
+					value = event_target:resources_found_anchor_registration_state
+				}
+			}
+		}
+	}
+}
+
+# STATE scope while DHO controls it.
+resources_found_cave_activate_anchor_if_ready = {
+	if = {
+		limit = {
+			has_state_flag = resources_found_cave_anchor_activating
+			is_controlled_by = DHO
+			has_variable = resources_found_cave_anchor_activation_date
+			check_variable = {
+				var = resources_found_cave_anchor_activation_date
+				value = global.date
+				compare = less_than_or_equals
+			}
+		}
+		resources_found_refresh_captured_state_capacity = yes
+		if = {
+			limit = {
+				has_state_flag = resources_found_cave_denial_prepared
+				has_variable = resources_found_cave_denial_capacity_penalty
+			}
+			subtract_from_variable = { resources_found_captured_state_capacity = resources_found_cave_denial_capacity_penalty }
+			if = {
+				limit = { check_variable = { resources_found_captured_state_capacity < constant:resources_found_value.zero } }
+				set_variable = { resources_found_captured_state_capacity = constant:resources_found_value.zero }
+			}
+		}
+		if = {
+			limit = { resources_found_state_can_contribute_cave_capacity = yes }
+			set_variable = { resources_found_active_anchor_capacity = resources_found_captured_state_capacity }
+			clear_variable = resources_found_cave_denial_capacity_penalty
+			clr_state_flag = resources_found_cave_denial_prepared
+			clr_state_flag = resources_found_resource_denial_ready
+			clr_state_flag = resources_found_controlled_demolition_prepared
+			clr_state_flag = resources_found_cave_anchor_activating
+			clr_state_flag = resources_found_cave_anchor_disrupted
+			set_state_flag = resources_found_cave_anchor_active
+			if = {
+				limit = {
+					NOT = { resources_found_is_cave_origin_state = yes }
+					NOT = { has_state_flag = resources_found_cave_world_end_foothold }
+					NOT = { has_state_flag = resources_found_cave_mature_non_origin_anchor }
+					NOT = { has_global_flag = resources_found_cave_world_end }
+				}
+				set_state_flag = resources_found_cave_mature_non_origin_anchor
+			}
+			clear_variable = resources_found_cave_anchor_activation_date
+			if = {
+				limit = { has_dynamic_modifier = { modifier = resources_found_cave_anchor_activating } }
+				remove_dynamic_modifier = { modifier = resources_found_cave_anchor_activating }
+			}
+			add_dynamic_modifier = { modifier = resources_found_cave_anchor_active }
+			force_update_dynamic_modifier = yes
+			DHO = {
+				add_to_variable = { resources_found_total_anchor_capacity = PREV.resources_found_active_anchor_capacity }
+				add_to_variable = { resources_found_active_anchor_count = constant:resources_found_value.one }
+				resources_found_cave_refresh_division_and_capacity_totals = yes
+				resources_found_cave_refresh_anchor_benefits = yes
+				country_event = { id = chaosx.nr18.84 hours = @CAVE_NOTICE_HOURS }
+			}
+		}
+		else = {
+			clr_state_flag = resources_found_cave_anchor_activating
+			clear_variable = resources_found_cave_anchor_activation_date
+			if = {
+				limit = { has_dynamic_modifier = { modifier = resources_found_cave_anchor_activating } }
+				remove_dynamic_modifier = { modifier = resources_found_cave_anchor_activating }
+			}
+		}
+	}
+}
+
+# STATE scope when control is lost.
+resources_found_cave_disrupt_anchor = {
+	if = {
+		limit = { has_state_flag = resources_found_cave_anchor_activating }
+		clr_state_flag = resources_found_cave_anchor_activating
+		clear_variable = resources_found_cave_anchor_activation_date
+		if = {
+			limit = { has_dynamic_modifier = { modifier = resources_found_cave_anchor_activating } }
+			remove_dynamic_modifier = { modifier = resources_found_cave_anchor_activating }
+		}
+	}
+	if = {
+		limit = {
+			has_state_flag = resources_found_cave_anchor_active
+			NOT = { has_state_flag = resources_found_cave_anchor_disrupted }
+		}
+		set_state_flag = resources_found_cave_anchor_disrupted
+		set_variable = { resources_found_cave_anchor_grace_date = global.date }
+		set_temp_variable = { resources_found_anchor_grace_delay = DHO.resources_found_anchor_grace_days }
+		add_to_variable = { resources_found_cave_anchor_grace_date = resources_found_anchor_grace_delay }
+		if = {
+			limit = { has_dynamic_modifier = { modifier = resources_found_cave_anchor_active } }
+			remove_dynamic_modifier = { modifier = resources_found_cave_anchor_active }
+		}
+		if = {
+			limit = { has_dynamic_modifier = { modifier = resources_found_cave_anchor_fortified } }
+			remove_dynamic_modifier = { modifier = resources_found_cave_anchor_fortified }
+		}
+		add_dynamic_modifier = { modifier = resources_found_cave_anchor_activating }
+		force_update_dynamic_modifier = yes
+	}
+}
+
+# STATE scope if DHO recaptures before grace expires.
+resources_found_cave_restore_disrupted_anchor = {
+	if = {
+		limit = {
+			has_state_flag = resources_found_cave_anchor_active
+			has_state_flag = resources_found_cave_anchor_disrupted
+			is_controlled_by = DHO
+			has_variable = resources_found_cave_anchor_grace_date
+			check_variable = {
+				var = resources_found_cave_anchor_grace_date
+				value = global.date
+				compare = greater_than
+			}
+		}
+		clr_state_flag = resources_found_cave_anchor_disrupted
+		clear_variable = resources_found_cave_anchor_grace_date
+		if = {
+			limit = { has_dynamic_modifier = { modifier = resources_found_cave_anchor_activating } }
+			remove_dynamic_modifier = { modifier = resources_found_cave_anchor_activating }
+		}
+		add_dynamic_modifier = { modifier = resources_found_cave_anchor_active }
+		force_update_dynamic_modifier = yes
+		DHO = { resources_found_cave_refresh_anchor_benefits = yes }
+	}
+}
+
+# STATE scope from the DHO anchor array.
+resources_found_cave_remove_anchor_after_grace = {
+	if = {
+		limit = {
+			has_state_flag = resources_found_cave_anchor_active
+			has_state_flag = resources_found_cave_anchor_disrupted
+			NOT = { is_controlled_by = DHO }
+			has_variable = resources_found_cave_anchor_grace_date
+			check_variable = {
+				var = resources_found_cave_anchor_grace_date
+				value = global.date
+				compare = less_than_or_equals
+			}
+		}
+		DHO = {
+			subtract_from_variable = { resources_found_total_anchor_capacity = PREV.resources_found_active_anchor_capacity }
+			subtract_from_variable = { resources_found_active_anchor_count = constant:resources_found_value.one }
+			if = { limit = { check_variable = { resources_found_total_anchor_capacity < constant:resources_found_value.zero } } set_variable = { resources_found_total_anchor_capacity = constant:resources_found_value.zero } }
+			if = { limit = { check_variable = { resources_found_active_anchor_count < constant:resources_found_value.zero } } set_variable = { resources_found_active_anchor_count = constant:resources_found_value.zero } }
+			resources_found_cave_refresh_division_and_capacity_totals = yes
+			country_event = { id = chaosx.nr18.85 hours = @CAVE_NOTICE_HOURS }
+		}
+		clr_state_flag = resources_found_cave_anchor_active
+		clr_state_flag = resources_found_cave_anchor_disrupted
+		clear_variable = resources_found_active_anchor_capacity
+		clear_variable = resources_found_cave_anchor_grace_date
+		if = {
+			limit = { has_dynamic_modifier = { modifier = resources_found_cave_anchor_activating } }
+			remove_dynamic_modifier = { modifier = resources_found_cave_anchor_activating }
+		}
+	}
+}
+
+# STATE origin scope. Losing the first chamber removes its protected opening
+# allocation from live capacity, so surviving broods become unfed until the
+# origin is recovered or the distributed hierarchy has reduced the command
+# shock. Recapture restores the exact protected allocation recorded at loss.
+resources_found_cave_handle_origin_control_change = {
+	if = {
+		limit = {
+			resources_found_is_cave_origin_state = yes
+			has_event_target = resources_found_old_controller
+			event_target:resources_found_old_controller = { is_resources_found_cave_country = yes }
+			has_event_target = resources_found_new_controller
+			event_target:resources_found_new_controller = { NOT = { is_resources_found_cave_country = yes } }
+		}
+		DHO = {
+			if = {
+				limit = { NOT = { has_variable = resources_found_origin_allocation_before_loss } }
+				set_variable = { resources_found_origin_allocation_before_loss = resources_found_protected_origin_allocation }
+			}
+			set_country_flag = cave_origin_lost
+			set_country_flag = cave_origin_threatened
+			if = {
+				limit = {
+					has_country_flag = cave_host_without_a_head
+					has_variable = resources_found_cave_secondary_capital_state
+					var:resources_found_cave_secondary_capital_state = { is_owned_and_controlled_by = PREV }
+				}
+				set_variable = { resources_found_protected_origin_allocation = resources_found_origin_allocation_before_loss }
+				divide_variable = { resources_found_protected_origin_allocation = constant:resources_found_value.two }
+				var:resources_found_cave_secondary_capital_state = {
+					save_event_target_as = resources_found_emergency_cave_capital
+				}
+				set_capital = {
+					state = event_target:resources_found_emergency_cave_capital
+					remember_old_capital = no
+				}
+				if = { limit = { has_idea = cave_origin_command_crisis } remove_ideas = cave_origin_command_crisis }
+			}
+			else = {
+				set_variable = { resources_found_protected_origin_allocation = constant:resources_found_value.zero }
+				if = { limit = { NOT = { has_idea = cave_origin_command_crisis } } add_ideas = cave_origin_command_crisis }
+			}
+			resources_found_cave_refresh_division_and_capacity_totals = yes
+			resources_found_cave_refresh_unfed_status = yes
+			country_event = { id = chaosx.nr18.87 hours = @CAVE_NOTICE_HOURS }
+		}
+	}
+	else_if = {
+		limit = {
+			resources_found_is_cave_origin_state = yes
+			has_event_target = resources_found_new_controller
+			event_target:resources_found_new_controller = { is_resources_found_cave_country = yes }
+			DHO = { has_country_flag = cave_origin_lost }
+		}
+		DHO = {
+			if = {
+				limit = { has_variable = resources_found_origin_allocation_before_loss }
+				set_variable = { resources_found_protected_origin_allocation = resources_found_origin_allocation_before_loss }
+				clear_variable = resources_found_origin_allocation_before_loss
+			}
+			clr_country_flag = cave_origin_lost
+			clr_country_flag = cave_origin_threatened
+			if = { limit = { has_idea = cave_origin_command_crisis } remove_ideas = cave_origin_command_crisis }
+			resources_found_cave_refresh_division_and_capacity_totals = yes
+			resources_found_cave_refresh_unfed_status = yes
+		}
+	}
+}
+
+# STATE scope, called from the bounded state-control on action.
+resources_found_handle_state_control_change = {
+	resources_found_record_cave_control_achievement_state = yes
+	resources_found_cave_handle_origin_control_change = yes
+	if = {
+		limit = {
+			has_event_target = resources_found_new_controller
+			event_target:resources_found_new_controller = { is_resources_found_cave_country = yes }
+			has_state_flag = resources_found_cave_continental_capital_objective
+		}
+		clr_state_flag = resources_found_cave_continental_capital_objective
+		DHO = { set_country_flag = cave_continental_capital_taken_in_war }
+	}
+	if = {
+		limit = {
+			has_event_target = resources_found_new_controller
+			event_target:resources_found_new_controller = { is_resources_found_cave_country = yes }
+			has_state_flag = resources_found_cave_marked_objective
+		}
+		clr_state_flag = resources_found_cave_marked_objective
+		DHO = { clear_variable = resources_found_rich_target_state }
+	}
+	if = {
+		limit = {
+			has_event_target = resources_found_new_controller
+			event_target:resources_found_new_controller = { is_resources_found_cave_country = yes }
+			has_state_flag = resources_found_cave_strongpoint_objective
+		}
+		clr_state_flag = resources_found_cave_strongpoint_objective
+		DHO = { clear_variable = resources_found_strongpoint_target_state }
+	}
+	if = {
+		limit = {
+			has_event_target = resources_found_new_controller
+			event_target:resources_found_new_controller = { is_resources_found_cave_country = yes }
+			has_state_flag = resources_found_cave_transport_objective
+		}
+		DHO = { resources_found_cancel_burrow_objective_window = yes }
+	}
+	if = {
+		limit = {
+			OR = {
+				resources_found_is_active_field = yes
+				has_state_flag = resources_found_field_suspended
+			}
+		}
+		resources_found_handle_field_control_change = yes
+	}
+	if = {
+		limit = { has_state_flag = resources_found_field_closed_permanently }
+		resources_found_refresh_closed_field_identity = yes
+	}
+	if = {
+		limit = {
+			has_event_target = resources_found_new_controller
+			event_target:resources_found_new_controller = { is_resources_found_cave_country = yes }
+			NOT = { resources_found_is_cave_origin_state = yes }
+		}
+		if = {
+			limit = { has_state_flag = resources_found_cave_anchor_disrupted }
+			resources_found_cave_restore_disrupted_anchor = yes
+		}
+		else = { resources_found_cave_begin_anchor_activation = yes }
+	}
+	if = {
+		limit = {
+			has_event_target = resources_found_old_controller
+			event_target:resources_found_old_controller = { is_resources_found_cave_country = yes }
+			has_event_target = resources_found_new_controller
+			event_target:resources_found_new_controller = { NOT = { is_resources_found_cave_country = yes } }
+		}
+		resources_found_cave_disrupt_anchor = yes
+	}
+	if = {
+		limit = { has_global_flag = resources_found_cave_country_active }
+		DHO = {
+			resources_found_cave_declare_neighbor_wars = yes
+			resources_found_cave_refresh_ai_targets = yes
+			resources_found_cave_refresh_continent_progress = yes
+		}
+	}
+}
+
+# DHO country scope.
+resources_found_cave_process_anchor_array = {
+	for_each_scope_loop = {
+		array = resources_found_cave_anchor_states
+		resources_found_cave_restore_disrupted_anchor = yes
+		resources_found_cave_activate_anchor_if_ready = yes
+		resources_found_cave_remove_anchor_after_grace = yes
+	}
+}
+
+# DHO country scope.
+resources_found_cave_select_spawn_state = {
+	clear_global_event_target = resources_found_cave_spawn_state
+	if = {
+		limit = {
+			has_country_flag = cave_continental_network
+			any_controlled_state = {
+				has_state_flag = resources_found_cave_anchor_active
+				NOT = { has_state_flag = resources_found_cave_anchor_disrupted }
+				has_state_flag = resources_found_cave_tunnel_link_endpoint
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				has_state_flag = resources_found_cave_anchor_active
+				NOT = { has_state_flag = resources_found_cave_anchor_disrupted }
+				has_state_flag = resources_found_cave_tunnel_link_endpoint
+			}
+			save_global_event_target_as = resources_found_cave_spawn_state
+		}
+	}
+	else_if = {
+		limit = {
+			any_controlled_state = {
+				has_state_flag = resources_found_cave_anchor_active
+				NOT = { has_state_flag = resources_found_cave_anchor_disrupted }
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				has_state_flag = resources_found_cave_anchor_active
+				NOT = { has_state_flag = resources_found_cave_anchor_disrupted }
+			}
+			save_global_event_target_as = resources_found_cave_spawn_state
+		}
+	}
+	else_if = {
+		limit = { resources_found_world_end_origin_inputs_valid = yes }
+		var:resources_found_cave_origin_state = { save_global_event_target_as = resources_found_cave_spawn_state }
+	}
+}
+
+# DHO country scope.
+resources_found_cave_spawn_one_if_below_capacity = {
+	resources_found_cave_refresh_division_and_capacity_totals = yes
+	if = {
+		limit = {
+			resources_found_cave_has_capacity_deficit = yes
+			NOT = { has_country_flag = resources_found_cave_spawn_cooldown }
+		}
+		resources_found_cave_select_spawn_state = yes
+		if = {
+			limit = { has_event_target = resources_found_cave_spawn_state }
+			event_target:resources_found_cave_spawn_state = {
+				resources_found_cave_spawn_selected_brood_here = yes
+				if = {
+					limit = {
+						has_state_flag = resources_found_cave_anchor_active
+						NOT = { has_state_flag = resources_found_cave_anchor_disrupted }
+						NOT = { resources_found_is_cave_origin_state = yes }
+						check_variable = {
+							var = resources_found_active_anchor_capacity
+							value = constant:resources_found_achievement.full_anchor_capacity
+							compare = equals
+						}
+						NOT = { has_global_flag = resources_found_cave_world_end }
+					}
+					set_state_flag = resources_found_achievement_ten_capacity_spawn
+					DHO = { set_country_flag = resources_found_achievement_ten_from_one_state }
+				}
+			}
+			set_variable = { resources_found_active_brood_divisions = num_divisions }
+			set_temp_variable = { resources_found_spawn_delay = resources_found_spawn_interval_days }
+			set_country_flag = { flag = resources_found_cave_spawn_cooldown days = resources_found_spawn_delay }
+		}
+	}
+}
+
+# DHO country scope.
+resources_found_cave_refresh_unfed_status = {
+	resources_found_cave_refresh_division_and_capacity_totals = yes
+	if = {
+		limit = { resources_found_cave_is_over_capacity = yes }
+		if = { limit = { NOT = { has_idea = cave_unfed_broods } } add_ideas = cave_unfed_broods }
+		if = { limit = { NOT = { has_country_flag = resources_found_unfed_broods_notified } } set_country_flag = resources_found_unfed_broods_notified country_event = { id = chaosx.nr18.86 hours = @CAVE_NOTICE_HOURS } }
+	}
+	else = {
+		if = { limit = { has_idea = cave_unfed_broods } remove_ideas = cave_unfed_broods }
+		clr_country_flag = resources_found_unfed_broods_notified
+	}
+}
+
+# DHO country scope. Tag-specific recurring hook only.
+resources_found_cave_daily_pulse = {
+	resources_found_cave_process_anchor_array = yes
+	resources_found_cave_spawn_one_if_below_capacity = yes
+	resources_found_cave_refresh_unfed_status = yes
+	resources_found_cave_declare_neighbor_wars = yes
+	if = {
+		limit = {
+			has_country_flag = resources_found_world_end_verification_active
+			has_variable = resources_found_world_end_verification_date
+			check_variable = { var = resources_found_world_end_verification_date value = global.date compare = less_than_or_equals }
+		}
+		resources_found_cave_refresh_continent_progress = yes
+		resources_found_cave_prepare_foothold_candidates = yes
+		if = {
+			limit = { resources_found_world_end_verification_complete = yes }
+			resources_found_complete_world_end_verification = yes
+			# Verification unlocks the terminal focus. It never executes the
+			# terminal transition itself.
+			country_event = { id = chaosx.nr18.95 hours = @CAVE_NOTICE_HOURS }
+		}
+		else = { resources_found_cancel_world_end_verification = yes }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Focus-tree mechanic helpers
+# ---------------------------------------------------------------------------
+
+# DHO country scope.
+resources_found_cave_initialize_live_systems = {
+	resources_found_cave_refresh_division_and_capacity_totals = yes
+	resources_found_cave_scan_controlled_anchor_candidates = yes
+	resources_found_cave_declare_neighbor_wars = yes
+	resources_found_cave_refresh_continent_progress = yes
+}
+
+# DHO country scope.
+resources_found_cave_secure_origin = {
+	if = {
+		limit = { has_variable = resources_found_cave_origin_state }
+		var:resources_found_cave_origin_state = {
+			if = {
+				limit = { NOT = { has_dynamic_modifier = { modifier = resources_found_cave_origin_chamber } } }
+				add_dynamic_modifier = { modifier = resources_found_cave_origin_chamber }
+			}
+			add_building_construction = { type = bunker level = constant:resources_found_cave_runtime.origin_fort_level instant_build = yes }
+			force_update_dynamic_modifier = yes
+		}
+	}
+}
+
+# DHO country scope.
+resources_found_cave_recruit_commanders = {
+	if = { limit = { NOT = { has_character = DHO_thessik } } recruit_character = DHO_thessik }
+	if = { limit = { NOT = { has_character = DHO_orrukesh } } recruit_character = DHO_orrukesh }
+	if = { limit = { NOT = { has_character = DHO_khalvek } } recruit_character = DHO_khalvek }
+}
+
+# DHO country scope. Rebuilds exact active anchor totals from the persistent
+# anchor array without changing the per-state floor(total/10), cap-10 rule.
+resources_found_cave_recalculate_capacity = {
+	set_variable = { resources_found_total_anchor_capacity = constant:resources_found_value.zero }
+	set_variable = { resources_found_active_anchor_count = constant:resources_found_value.zero }
+	for_each_scope_loop = {
+		array = resources_found_cave_anchor_states
+		if = {
+			limit = {
+				has_state_flag = resources_found_cave_anchor_active
+				NOT = { has_state_flag = resources_found_cave_anchor_disrupted }
+				is_controlled_by = DHO
+			}
+			ROOT = {
+				add_to_variable = { resources_found_total_anchor_capacity = PREV.resources_found_active_anchor_capacity }
+				add_to_variable = { resources_found_active_anchor_count = constant:resources_found_value.one }
+			}
+		}
+	}
+	resources_found_cave_refresh_division_and_capacity_totals = yes
+}
+
+# DHO country scope.
+resources_found_cave_choose_one_maw = {
+	set_country_flag = cave_one_maw_hierarchy
+	clr_country_flag = cave_many_chambers_hierarchy
+	clr_country_flag = cave_hoard_the_veins_hierarchy
+	remove_ideas = {
+		cave_many_chambers_command
+		cave_hoard_the_veins_command
+	}
+	if = {
+		limit = { NOT = { has_idea = cave_one_maw_command } }
+		add_ideas = cave_one_maw_command
+	}
+}
+
+# DHO country scope.
+resources_found_cave_choose_many_chambers = {
+	clr_country_flag = cave_one_maw_hierarchy
+	set_country_flag = cave_many_chambers_hierarchy
+	clr_country_flag = cave_hoard_the_veins_hierarchy
+	remove_ideas = {
+		cave_one_maw_command
+		cave_hoard_the_veins_command
+	}
+	if = {
+		limit = { NOT = { has_idea = cave_many_chambers_command } }
+		add_ideas = cave_many_chambers_command
+	}
+	resources_found_cave_extend_anchor_grace = yes
+}
+
+# DHO country scope.
+resources_found_cave_choose_hoard_the_veins = {
+	clr_country_flag = cave_one_maw_hierarchy
+	clr_country_flag = cave_many_chambers_hierarchy
+	set_country_flag = cave_hoard_the_veins_hierarchy
+	remove_ideas = {
+		cave_one_maw_command
+		cave_many_chambers_command
+	}
+	if = {
+		limit = { NOT = { has_idea = cave_hoard_the_veins_command } }
+		add_ideas = cave_hoard_the_veins_command
+	}
+	resources_found_cave_refresh_anchor_benefits = yes
+}
+
+# DHO country scope.
+resources_found_cave_refresh_command_network = {
+	resources_found_cave_refresh_ai_targets = yes
+}
+
+# DHO country scope.
+resources_found_cave_extend_anchor_grace = {
+	add_to_variable = { resources_found_anchor_grace_days = constant:resources_found_cave_runtime.local_memory_grace_bonus_days }
+}
+
+# DHO country scope.
+resources_found_cave_refresh_spawn_interval = {
+	subtract_from_variable = { resources_found_spawn_interval_days = constant:resources_found_cave_runtime.spawn_interval_reduction }
+	if = {
+		limit = { check_variable = { resources_found_spawn_interval_days < constant:resources_found_cave_runtime.minimum_spawn_interval_days } }
+		set_variable = { resources_found_spawn_interval_days = constant:resources_found_cave_runtime.minimum_spawn_interval_days }
+	}
+}
+
+# DHO country scope.
+resources_found_cave_designate_secondary_capital = {
+	if = {
+		limit = {
+			any_controlled_state = {
+				has_state_flag = resources_found_cave_anchor_active
+				NOT = { resources_found_is_cave_origin_state = yes }
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				has_state_flag = resources_found_cave_anchor_active
+				NOT = { resources_found_is_cave_origin_state = yes }
+			}
+			ROOT = { set_variable = { resources_found_cave_secondary_capital_state = PREV } }
+		}
+	}
+}
+
+# DHO country scope.
+resources_found_cave_fortify_origin = {
+	resources_found_cave_secure_origin = yes
+}
+
+# DHO country scope.
+resources_found_cave_scan_controlled_anchor_candidates = {
+	every_controlled_state = {
+		limit = { NOT = { resources_found_is_cave_origin_state = yes } }
+		resources_found_cave_begin_anchor_activation = yes
+	}
+}
+
+# DHO country scope.
+resources_found_cave_refresh_anchor_benefits = {
+	every_controlled_state = {
+		limit = {
+			has_state_flag = resources_found_cave_anchor_active
+			NOT = { has_state_flag = resources_found_cave_anchor_disrupted }
+		}
+		if = {
+			limit = {
+				OR = {
+					ROOT = { has_country_flag = cave_anchor_fortification_unlocked }
+					ROOT = { has_country_flag = cave_continental_heart_deepened }
+				}
+				NOT = { has_dynamic_modifier = { modifier = resources_found_cave_anchor_fortified } }
+			}
+			add_dynamic_modifier = { modifier = resources_found_cave_anchor_fortified }
+			if = {
+				limit = { NOT = { has_state_flag = resources_found_cave_anchor_fortifications_built } }
+				add_building_construction = { type = bunker level = constant:resources_found_cave_runtime.anchor_fort_level instant_build = yes }
+				set_state_flag = resources_found_cave_anchor_fortifications_built
+			}
+			force_update_dynamic_modifier = yes
+		}
+		if = {
+			limit = {
+				ROOT = { has_country_flag = cave_deep_anchor_vaults_unlocked }
+				NOT = { has_state_flag = resources_found_cave_anchor_vaulted }
+			}
+			add_building_construction = { type = bunker level = constant:resources_found_cave_runtime.anchor_vault_extra_fort_level instant_build = yes }
+			set_state_flag = resources_found_cave_anchor_vaulted
+		}
+	}
+}
+
+# DHO country scope.
+resources_found_cave_fortify_rich_anchors = {
+	set_country_flag = cave_anchor_fortification_unlocked
+	resources_found_cave_refresh_anchor_benefits = yes
+}
+
+# DHO country scope. Existing and future mature anchors receive one additional
+# vault level exactly once; the state marker prevents recapture stacking.
+resources_found_cave_deepen_anchor_vaults = {
+	set_country_flag = cave_deep_anchor_vaults_unlocked
+	resources_found_cave_refresh_anchor_benefits = yes
+}
+
+# DHO country scope.
+resources_found_cave_convert_secure_industry = {
+	if = {
+		limit = {
+			any_controlled_state = {
+				NOT = { resources_found_is_cave_origin_state = yes }
+				NOT = { has_state_flag = resources_found_cave_industry_converted }
+				OR = { industrial_complex > constant:resources_found_value.zero arms_factory > constant:resources_found_value.zero }
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				NOT = { resources_found_is_cave_origin_state = yes }
+				NOT = { has_state_flag = resources_found_cave_industry_converted }
+				OR = { industrial_complex > constant:resources_found_value.zero arms_factory > constant:resources_found_value.zero }
+			}
+			set_state_flag = resources_found_cave_industry_converted
+			damage_building = { type = industrial_complex damage = constant:resources_found_cave_effect.industrial_conversion_damage }
+			damage_building = { type = arms_factory damage = constant:resources_found_cave_effect.industrial_conversion_damage }
+			ROOT = { resources_found_cave_refresh_spawn_interval = yes }
+		}
+	}
+}
+
+# DHO country scope.
+resources_found_cave_link_nearest_anchors = {
+	set_temp_variable = { resources_found_links_marked = constant:resources_found_value.zero }
+	every_controlled_state = {
+		limit = {
+			has_state_flag = resources_found_cave_anchor_active
+			ROOT = { check_variable = { resources_found_links_marked < constant:resources_found_value.two } }
+		}
+		set_state_flag = resources_found_cave_tunnel_link_endpoint
+		ROOT = { add_to_temp_variable = { resources_found_links_marked = constant:resources_found_value.one } }
+	}
+}
+
+# DHO country scope.
+resources_found_cave_choose_stone_phalanx = {
+	set_country_flag = cave_stone_phalanx_doctrine
+	clr_country_flag = cave_burrow_war_doctrine
+	clr_country_flag = cave_scree_tide_doctrine
+	remove_ideas = {
+		cave_burrow_war_doctrine
+		cave_urban_cellar_networks_adaptation
+		cave_scree_tide_doctrine
+		cave_split_broods_adaptation
+		cave_lighter_plates_adaptation
+	}
+	if = {
+		limit = {
+			NOT = {
+				OR = {
+					has_idea = cave_stone_phalanx_doctrine
+					has_idea = cave_interlocking_carapaces_adaptation
+					has_idea = cave_great_gun_resistance
+				}
+			}
+		}
+		add_ideas = cave_stone_phalanx_doctrine
+	}
+	resources_found_cave_set_stone_spawn_preference = yes
+}
+
+resources_found_cave_choose_burrow_war = {
+	clr_country_flag = cave_stone_phalanx_doctrine
+	set_country_flag = cave_burrow_war_doctrine
+	clr_country_flag = cave_scree_tide_doctrine
+	remove_ideas = {
+		cave_stone_phalanx_doctrine
+		cave_interlocking_carapaces_adaptation
+		cave_great_gun_resistance
+		cave_scree_tide_doctrine
+		cave_split_broods_adaptation
+		cave_lighter_plates_adaptation
+	}
+	if = {
+		limit = {
+			NOT = {
+				OR = {
+					has_idea = cave_burrow_war_doctrine
+					has_idea = cave_urban_cellar_networks_adaptation
+				}
+			}
+		}
+		add_ideas = cave_burrow_war_doctrine
+	}
+	resources_found_cave_set_burrow_spawn_preference = yes
+}
+
+resources_found_cave_choose_scree_tide = {
+	clr_country_flag = cave_stone_phalanx_doctrine
+	clr_country_flag = cave_burrow_war_doctrine
+	set_country_flag = cave_scree_tide_doctrine
+	remove_ideas = {
+		cave_stone_phalanx_doctrine
+		cave_interlocking_carapaces_adaptation
+		cave_great_gun_resistance
+		cave_burrow_war_doctrine
+		cave_urban_cellar_networks_adaptation
+	}
+	if = {
+		limit = {
+			NOT = {
+				OR = {
+					has_idea = cave_scree_tide_doctrine
+					has_idea = cave_split_broods_adaptation
+					has_idea = cave_lighter_plates_adaptation
+				}
+			}
+		}
+		add_ideas = cave_scree_tide_doctrine
+	}
+	resources_found_cave_set_scree_spawn_preference = yes
+}
+
+# DHO country scope. Each refinement swaps the route's single cumulative idea.
+# Repeated calls preserve the highest stage and cannot recreate earlier stages.
+resources_found_cave_unlock_interlocking_carapaces = {
+	if = {
+		limit = { NOT = { has_idea = cave_great_gun_resistance } }
+		if = {
+			limit = { has_idea = cave_stone_phalanx_doctrine }
+			swap_ideas = {
+				remove_idea = cave_stone_phalanx_doctrine
+				add_idea = cave_interlocking_carapaces_adaptation
+			}
+		}
+		else_if = {
+			limit = { NOT = { has_idea = cave_interlocking_carapaces_adaptation } }
+			add_ideas = cave_interlocking_carapaces_adaptation
+		}
+	}
+	if = {
+		limit = { has_idea = cave_interlocking_carapaces_adaptation }
+		remove_ideas = cave_stone_phalanx_doctrine
+	}
+	resources_found_cave_set_stone_spawn_preference = yes
+}
+
+resources_found_cave_unlock_great_gun_resistance = {
+	if = {
+		limit = { NOT = { has_idea = cave_great_gun_resistance } }
+		if = {
+			limit = { has_idea = cave_interlocking_carapaces_adaptation }
+			swap_ideas = {
+				remove_idea = cave_interlocking_carapaces_adaptation
+				add_idea = cave_great_gun_resistance
+			}
+		}
+		else_if = {
+			limit = { has_idea = cave_stone_phalanx_doctrine }
+			swap_ideas = {
+				remove_idea = cave_stone_phalanx_doctrine
+				add_idea = cave_great_gun_resistance
+			}
+		}
+		else = { add_ideas = cave_great_gun_resistance }
+	}
+	remove_ideas = {
+		cave_stone_phalanx_doctrine
+		cave_interlocking_carapaces_adaptation
+	}
+	resources_found_cave_set_stone_spawn_preference = yes
+	resources_found_cave_mark_strongpoint_target = yes
+}
+
+resources_found_cave_unlock_urban_cellar_networks = {
+	set_country_flag = cave_urban_cellar_networks
+	if = {
+		limit = { NOT = { has_idea = cave_urban_cellar_networks_adaptation } }
+		if = {
+			limit = { has_idea = cave_burrow_war_doctrine }
+			swap_ideas = {
+				remove_idea = cave_burrow_war_doctrine
+				add_idea = cave_urban_cellar_networks_adaptation
+			}
+		}
+		else = { add_ideas = cave_urban_cellar_networks_adaptation }
+	}
+	remove_ideas = cave_burrow_war_doctrine
+	resources_found_cave_set_burrow_spawn_preference = yes
+	resources_found_cave_mark_transport_target = yes
+}
+
+resources_found_cave_unlock_split_broods = {
+	if = {
+		limit = { NOT = { has_idea = cave_lighter_plates_adaptation } }
+		if = {
+			limit = { has_idea = cave_scree_tide_doctrine }
+			swap_ideas = {
+				remove_idea = cave_scree_tide_doctrine
+				add_idea = cave_split_broods_adaptation
+			}
+			resources_found_cave_refresh_spawn_interval = yes
+		}
+		else_if = {
+			limit = { NOT = { has_idea = cave_split_broods_adaptation } }
+			add_ideas = cave_split_broods_adaptation
+			resources_found_cave_refresh_spawn_interval = yes
+		}
+	}
+	if = {
+		limit = { has_idea = cave_split_broods_adaptation }
+		remove_ideas = cave_scree_tide_doctrine
+	}
+}
+
+resources_found_cave_unlock_lighter_plates = {
+	if = {
+		limit = { NOT = { has_idea = cave_lighter_plates_adaptation } }
+		if = {
+			limit = { has_idea = cave_split_broods_adaptation }
+			swap_ideas = {
+				remove_idea = cave_split_broods_adaptation
+				add_idea = cave_lighter_plates_adaptation
+			}
+		}
+		else_if = {
+			limit = { has_idea = cave_scree_tide_doctrine }
+			swap_ideas = {
+				remove_idea = cave_scree_tide_doctrine
+				add_idea = cave_lighter_plates_adaptation
+			}
+		}
+		else = { add_ideas = cave_lighter_plates_adaptation }
+	}
+	remove_ideas = {
+		cave_scree_tide_doctrine
+		cave_split_broods_adaptation
+	}
+	resources_found_cave_set_scree_spawn_preference = yes
+}
+
+resources_found_cave_set_stone_spawn_preference = {
+	set_country_flag = resources_found_spawn_preference_stone
+	clr_country_flag = resources_found_spawn_preference_burrow
+	clr_country_flag = resources_found_spawn_preference_scree
+}
+
+resources_found_cave_set_burrow_spawn_preference = {
+	clr_country_flag = resources_found_spawn_preference_stone
+	set_country_flag = resources_found_spawn_preference_burrow
+	clr_country_flag = resources_found_spawn_preference_scree
+}
+
+resources_found_cave_set_scree_spawn_preference = {
+	clr_country_flag = resources_found_spawn_preference_stone
+	clr_country_flag = resources_found_spawn_preference_burrow
+	set_country_flag = resources_found_spawn_preference_scree
+}
+
+# DHO country scope.
+resources_found_cave_analyze_enemy_piercing = {
+	set_country_flag = resources_found_first_battle_analyzed
+	if = {
+		limit = { has_country_flag = cave_enemy_piercing_observed }
+		set_country_flag = cave_enemy_piercing_high
+		clr_country_flag = cave_enemy_piercing_low
+	}
+	else = {
+		clr_country_flag = cave_enemy_piercing_high
+		set_country_flag = cave_enemy_piercing_low
+	}
+}
+
+# DHO country scope. Adaptation stages use one route-specific cumulative idea.
+resources_found_cave_choose_dense_plate_adaptation = {
+	set_country_flag = cave_final_adaptation_dense
+	clr_country_flag = cave_final_adaptation_motion
+	remove_ideas = {
+		cave_open_joint_adaptation
+		cave_open_surface_senses_adaptation
+		cave_open_sky_hardened_adaptation
+	}
+	if = {
+		limit = {
+			NOT = {
+				OR = {
+					has_idea = cave_dense_plate_adaptation
+					has_idea = cave_dense_surface_senses_adaptation
+					has_idea = cave_dense_sky_hardened_adaptation
+				}
+			}
+		}
+		add_ideas = cave_dense_plate_adaptation
+	}
+}
+
+resources_found_cave_choose_open_joint_adaptation = {
+	clr_country_flag = cave_final_adaptation_dense
+	set_country_flag = cave_final_adaptation_motion
+	remove_ideas = {
+		cave_dense_plate_adaptation
+		cave_dense_surface_senses_adaptation
+		cave_dense_sky_hardened_adaptation
+	}
+	if = {
+		limit = {
+			NOT = {
+				OR = {
+					has_idea = cave_open_joint_adaptation
+					has_idea = cave_open_surface_senses_adaptation
+					has_idea = cave_open_sky_hardened_adaptation
+				}
+			}
+		}
+		add_ideas = cave_open_joint_adaptation
+	}
+}
+
+resources_found_cave_upgrade_surface_senses_adaptation = {
+	if = {
+		limit = { has_country_flag = cave_final_adaptation_dense }
+		if = {
+			limit = {
+				has_idea = cave_dense_plate_adaptation
+				NOT = { has_idea = cave_dense_sky_hardened_adaptation }
+			}
+			swap_ideas = {
+				remove_idea = cave_dense_plate_adaptation
+				add_idea = cave_dense_surface_senses_adaptation
+			}
+		}
+		else_if = {
+			limit = {
+				NOT = { has_idea = cave_dense_surface_senses_adaptation }
+				NOT = { has_idea = cave_dense_sky_hardened_adaptation }
+			}
+			add_ideas = cave_dense_surface_senses_adaptation
+		}
+		remove_ideas = {
+			cave_open_joint_adaptation
+			cave_open_surface_senses_adaptation
+			cave_open_sky_hardened_adaptation
+		}
+	}
+	else_if = {
+		limit = { has_country_flag = cave_final_adaptation_motion }
+		if = {
+			limit = {
+				has_idea = cave_open_joint_adaptation
+				NOT = { has_idea = cave_open_sky_hardened_adaptation }
+			}
+			swap_ideas = {
+				remove_idea = cave_open_joint_adaptation
+				add_idea = cave_open_surface_senses_adaptation
+			}
+		}
+		else_if = {
+			limit = {
+				NOT = { has_idea = cave_open_surface_senses_adaptation }
+				NOT = { has_idea = cave_open_sky_hardened_adaptation }
+			}
+			add_ideas = cave_open_surface_senses_adaptation
+		}
+		remove_ideas = {
+			cave_dense_plate_adaptation
+			cave_dense_surface_senses_adaptation
+			cave_dense_sky_hardened_adaptation
+		}
+	}
+}
+
+resources_found_cave_upgrade_sky_hardened_adaptation = {
+	if = {
+		limit = { has_country_flag = cave_final_adaptation_dense }
+		if = {
+			limit = { NOT = { has_idea = cave_dense_sky_hardened_adaptation } }
+			if = {
+				limit = { has_idea = cave_dense_surface_senses_adaptation }
+				swap_ideas = {
+					remove_idea = cave_dense_surface_senses_adaptation
+					add_idea = cave_dense_sky_hardened_adaptation
+				}
+			}
+			else_if = {
+				limit = { has_idea = cave_dense_plate_adaptation }
+				swap_ideas = {
+					remove_idea = cave_dense_plate_adaptation
+					add_idea = cave_dense_sky_hardened_adaptation
+				}
+			}
+			else = { add_ideas = cave_dense_sky_hardened_adaptation }
+		}
+		remove_ideas = {
+			cave_dense_plate_adaptation
+			cave_dense_surface_senses_adaptation
+			cave_open_joint_adaptation
+			cave_open_surface_senses_adaptation
+			cave_open_sky_hardened_adaptation
+		}
+	}
+	else_if = {
+		limit = { has_country_flag = cave_final_adaptation_motion }
+		if = {
+			limit = { NOT = { has_idea = cave_open_sky_hardened_adaptation } }
+			if = {
+				limit = { has_idea = cave_open_surface_senses_adaptation }
+				swap_ideas = {
+					remove_idea = cave_open_surface_senses_adaptation
+					add_idea = cave_open_sky_hardened_adaptation
+				}
+			}
+			else_if = {
+				limit = { has_idea = cave_open_joint_adaptation }
+				swap_ideas = {
+					remove_idea = cave_open_joint_adaptation
+					add_idea = cave_open_sky_hardened_adaptation
+				}
+			}
+			else = { add_ideas = cave_open_sky_hardened_adaptation }
+		}
+		remove_ideas = {
+			cave_open_joint_adaptation
+			cave_open_surface_senses_adaptation
+			cave_dense_plate_adaptation
+			cave_dense_surface_senses_adaptation
+			cave_dense_sky_hardened_adaptation
+		}
+	}
+}
+
+# DHO country scope. This is deliberately safe to call repeatedly: it only
+# preserves the route's final cumulative spirit and an idempotent spawn choice.
+resources_found_cave_apply_final_adaptation = {
+	resources_found_cave_upgrade_sky_hardened_adaptation = yes
+	if = {
+		limit = { has_country_flag = cave_final_adaptation_dense }
+		resources_found_cave_set_stone_spawn_preference = yes
+	}
+	else_if = {
+		limit = { has_country_flag = cave_final_adaptation_motion }
+		resources_found_cave_set_scree_spawn_preference = yes
+	}
+}
+
+# DHO country scope. Deterministically selects the land-reachable enemy state
+# with the greatest total standard-resource value. A tie keeps the first state
+# in the engine's stable iteration order.
+resources_found_cave_mark_richest_reachable_state = {
+	if = {
+		limit = { has_variable = resources_found_rich_target_state }
+		var:resources_found_rich_target_state = { clr_state_flag = resources_found_cave_marked_objective }
+		clear_variable = resources_found_rich_target_state
+	}
+	set_temp_variable = { resources_found_rich_target_best_score = constant:resources_found_value.negative_one }
+	every_neighbor_country = {
+		limit = { NOT = { is_resources_found_cave_country = yes } }
+		every_owned_state = {
+			limit = {
+				resources_found_state_has_standard_resource_presence = yes
+				any_neighbor_state = { is_controlled_by = DHO }
+			}
+			resources_found_refresh_captured_state_capacity = yes
+			set_temp_variable = { resources_found_rich_target_candidate_score = resources_found_capacity_source_total }
+			if = {
+				limit = { check_variable = { resources_found_rich_target_candidate_score > resources_found_rich_target_best_score } }
+				set_temp_variable = { resources_found_rich_target_best_score = resources_found_rich_target_candidate_score }
+				save_event_target_as = resources_found_richest_reachable_candidate
+			}
+		}
+	}
+	if = {
+		limit = { has_event_target = resources_found_richest_reachable_candidate }
+		event_target:resources_found_richest_reachable_candidate = {
+			set_state_flag = resources_found_cave_marked_objective
+			ROOT = { set_variable = { resources_found_rich_target_state = event_target:resources_found_richest_reachable_candidate } }
+		}
+	}
+}
+
+# DHO country scope.
+resources_found_cave_refresh_ai_targets = {
+	resources_found_cave_mark_richest_reachable_state = yes
+}
+
+# DHO country scope.
+resources_found_cave_mark_strongpoint_target = {
+	if = {
+		limit = { has_variable = resources_found_strongpoint_target_state }
+		var:resources_found_strongpoint_target_state = { clr_state_flag = resources_found_cave_strongpoint_objective }
+		clear_variable = resources_found_strongpoint_target_state
+	}
+	if = {
+		limit = {
+			any_neighbor_country = {
+				any_owned_state = {
+					any_neighbor_state = { is_controlled_by = DHO }
+					OR = { bunker > constant:resources_found_value.zero coastal_bunker > constant:resources_found_value.zero }
+				}
+			}
+		}
+		random_neighbor_country = {
+			limit = {
+				any_owned_state = {
+					any_neighbor_state = { is_controlled_by = DHO }
+					OR = { bunker > constant:resources_found_value.zero coastal_bunker > constant:resources_found_value.zero }
+				}
+			}
+			random_owned_state = {
+				limit = {
+					any_neighbor_state = { is_controlled_by = DHO }
+					OR = { bunker > constant:resources_found_value.zero coastal_bunker > constant:resources_found_value.zero }
+				}
+				set_state_flag = resources_found_cave_strongpoint_objective
+				save_event_target_as = resources_found_strongpoint_target_state
+				ROOT = { set_variable = { resources_found_strongpoint_target_state = event_target:resources_found_strongpoint_target_state } }
+			}
+		}
+	}
+}
+
+# DHO country scope.
+resources_found_cave_mark_transport_target = {
+	resources_found_cancel_burrow_objective_window = yes
+	if = {
+		limit = {
+			any_controlled_state = {
+				has_state_flag = resources_found_cave_anchor_active
+				NOT = { has_state_flag = resources_found_cave_anchor_disrupted }
+				any_neighbor_state = { resources_found_cave_is_burrow_objective_candidate = yes }
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				has_state_flag = resources_found_cave_anchor_active
+				NOT = { has_state_flag = resources_found_cave_anchor_disrupted }
+				any_neighbor_state = { resources_found_cave_is_burrow_objective_candidate = yes }
+			}
+			random_neighbor_state = {
+				limit = { resources_found_cave_is_burrow_objective_candidate = yes }
+				set_state_flag = resources_found_cave_transport_objective
+				set_state_flag = resources_found_burrow_objective_defended_at_start
+				save_event_target_as = resources_found_transport_target_state
+				ROOT = { set_variable = { resources_found_transport_target_state = event_target:resources_found_transport_target_state } }
+				if = {
+					limit = { DHO = { has_country_flag = cave_urban_cellar_networks } }
+					resources_found_apply_urban_cellar_infiltration = yes
+				}
+			}
+		}
+	}
+}
+
+# STATE scope. A city-network objective receives a bounded disruption window;
+# repeated operations refresh its duration without creating a permanent scar.
+resources_found_apply_urban_cellar_infiltration = {
+	set_temp_variable = { resources_found_urban_cellar_days = constant:resources_found_cave_runtime.urban_cellar_infiltration_days }
+	add_dynamic_modifier = {
+		modifier = resources_found_burrow_infiltration
+		days = resources_found_urban_cellar_days
+	}
+	set_state_flag = {
+		flag = resources_found_burrow_infiltration_active
+		days = resources_found_urban_cellar_days
+	}
+}
+
+# DHO country scope.
+resources_found_cave_fortify_coastal_anchors = {
+	every_controlled_state = {
+		limit = {
+			has_state_flag = resources_found_cave_anchor_active
+			is_coastal = yes
+			NOT = { has_state_flag = resources_found_cave_coastal_anchor }
+		}
+		add_building_construction = { type = coastal_bunker level = constant:resources_found_cave_runtime.anchor_fort_level instant_build = yes }
+		set_state_flag = resources_found_cave_coastal_anchor
+	}
+}
+
+# DHO country scope.
+resources_found_cave_mark_remaining_continent_states = {
+	every_state = {
+		limit = {
+			resources_found_state_is_valid_continent_member = yes
+			resources_found_state_on_cave_origin_continent = yes
+			OR = {
+				NOT = { is_owned_by = DHO }
+				NOT = { is_controlled_by = DHO }
+			}
+		}
+		set_state_flag = resources_found_cave_last_continent_objective
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Exact continent progress and resource-weighted terminal candidates
+# ---------------------------------------------------------------------------
+
+# DHO country scope. One-shot exact scan, called only from state changes and
+# terminal milestones. Eligible states must be legitimate land states on the
+# stored origin continent. Ownership and control are counted independently.
+resources_found_cave_refresh_continent_progress = {
+	set_variable = { resources_found_continent_eligible_state_count = constant:resources_found_value.zero }
+	set_variable = { resources_found_continent_scanned_state_count = constant:resources_found_value.zero }
+	set_variable = { resources_found_continent_owned_state_count = constant:resources_found_value.zero }
+	set_variable = { resources_found_continent_controlled_state_count = constant:resources_found_value.zero }
+	set_variable = { resources_found_continent_owned_controlled_state_count = constant:resources_found_value.zero }
+	set_variable = { resources_found_continent_remaining_state_count = constant:resources_found_value.zero }
+	clr_country_flag = resources_found_continent_registry_ready
+	clr_country_flag = resources_found_continent_scan_mismatch
+	every_state = {
+		limit = { has_state_flag = resources_found_cave_continental_capital_objective }
+		clr_state_flag = resources_found_cave_continental_capital_objective
+	}
+
+	every_state = {
+		limit = {
+			resources_found_state_is_valid_continent_member = yes
+			resources_found_state_on_cave_origin_continent = yes
+		}
+		DHO = {
+			add_to_variable = { resources_found_continent_eligible_state_count = constant:resources_found_value.one }
+			add_to_variable = { resources_found_continent_scanned_state_count = constant:resources_found_value.one }
+		}
+		if = {
+			limit = { is_owned_by = DHO }
+			DHO = { add_to_variable = { resources_found_continent_owned_state_count = constant:resources_found_value.one } }
+		}
+		if = {
+			limit = { is_controlled_by = DHO }
+			DHO = { add_to_variable = { resources_found_continent_controlled_state_count = constant:resources_found_value.one } }
+		}
+		else_if = {
+			limit = { is_capital = yes }
+			set_state_flag = resources_found_cave_continental_capital_objective
+		}
+		if = {
+			limit = {
+				is_owned_by = DHO
+				is_controlled_by = DHO
+			}
+			DHO = { add_to_variable = { resources_found_continent_owned_controlled_state_count = constant:resources_found_value.one } }
+		}
+		else = { DHO = { add_to_variable = { resources_found_continent_remaining_state_count = constant:resources_found_value.one } } }
+	}
+
+	if = {
+		limit = {
+			check_variable = { resources_found_continent_eligible_state_count > constant:resources_found_value.zero }
+			check_variable = {
+				var = resources_found_continent_scanned_state_count
+				value = resources_found_continent_eligible_state_count
+				compare = equals
+			}
+		}
+		set_country_flag = resources_found_continent_registry_ready
+	}
+	else = { set_country_flag = resources_found_continent_scan_mismatch }
+	resources_found_refresh_near_control_status = yes
+
+	set_temp_variable = { resources_found_continent_quarter_test = resources_found_continent_owned_controlled_state_count }
+	multiply_temp_variable = { resources_found_continent_quarter_test = constant:resources_found_cave_runtime.quarter_multiplier }
+	if = {
+		limit = {
+			NOT = { has_country_flag = resources_found_continent_quarter_reached }
+			check_variable = {
+				var = resources_found_continent_quarter_test
+				value = resources_found_continent_eligible_state_count
+				compare = greater_than_or_equals
+			}
+		}
+		set_country_flag = resources_found_continent_quarter_reached
+		country_event = { id = chaosx.nr18.90 hours = @CAVE_NOTICE_HOURS }
+	}
+
+	set_temp_variable = { resources_found_continent_half_test = resources_found_continent_owned_controlled_state_count }
+	multiply_temp_variable = { resources_found_continent_half_test = constant:resources_found_cave_runtime.half_multiplier }
+	if = {
+		limit = {
+			NOT = { has_country_flag = resources_found_continent_half_reached }
+			check_variable = {
+				var = resources_found_continent_half_test
+				value = resources_found_continent_eligible_state_count
+				compare = greater_than_or_equals
+			}
+		}
+		set_country_flag = resources_found_continent_half_reached
+		country_event = { id = chaosx.nr18.91 hours = @CAVE_NOTICE_HOURS }
+	}
+
+	set_temp_variable = { resources_found_continent_three_quarter_left = resources_found_continent_owned_controlled_state_count }
+	multiply_temp_variable = { resources_found_continent_three_quarter_left = constant:resources_found_cave_runtime.three_quarter_multiplier }
+	set_temp_variable = { resources_found_continent_three_quarter_right = resources_found_continent_eligible_state_count }
+	multiply_temp_variable = { resources_found_continent_three_quarter_right = constant:resources_found_cave_runtime.three_quarter_required }
+	if = {
+		limit = {
+			NOT = { has_country_flag = resources_found_continent_three_quarter_reached }
+			check_variable = {
+				var = resources_found_continent_three_quarter_left
+				value = resources_found_continent_three_quarter_right
+				compare = greater_than_or_equals
+			}
+		}
+		set_country_flag = resources_found_continent_three_quarter_reached
+		country_event = { id = chaosx.nr18.92 hours = @CAVE_NOTICE_HOURS }
+	}
+
+	if = {
+		limit = {
+			check_variable = {
+				var = resources_found_continent_remaining_state_count
+				value = constant:resources_found_world_end.near_control_remaining_states
+				compare = less_than_or_equals
+			}
+			check_variable = { resources_found_continent_remaining_state_count > constant:resources_found_value.zero }
+			NOT = { has_country_flag = resources_found_last_continent_states_notified }
+		}
+		set_country_flag = resources_found_last_continent_states_notified
+		country_event = { id = chaosx.nr18.93 hours = @CAVE_NOTICE_HOURS }
+	}
+}
+
+# STATE scope. Appends THIS once to its continent array.
+resources_found_cave_append_foothold_candidate_once = {
+	save_event_target_as = resources_found_current_foothold_candidate
+	if = { limit = { is_on_continent = europe } DHO = { add_to_array = { resources_found_foothold_candidates_europe = event_target:resources_found_current_foothold_candidate } } }
+	else_if = { limit = { is_on_continent = north_america } DHO = { add_to_array = { resources_found_foothold_candidates_north_america = event_target:resources_found_current_foothold_candidate } } }
+	else_if = { limit = { is_on_continent = south_america } DHO = { add_to_array = { resources_found_foothold_candidates_south_america = event_target:resources_found_current_foothold_candidate } } }
+	else_if = { limit = { is_on_continent = australia } DHO = { add_to_array = { resources_found_foothold_candidates_australia = event_target:resources_found_current_foothold_candidate } } }
+	else_if = { limit = { is_on_continent = africa } DHO = { add_to_array = { resources_found_foothold_candidates_africa = event_target:resources_found_current_foothold_candidate } } }
+	else_if = { limit = { is_on_continent = asia } DHO = { add_to_array = { resources_found_foothold_candidates_asia = event_target:resources_found_current_foothold_candidate } } }
+	else_if = { limit = { is_on_continent = middle_east } DHO = { add_to_array = { resources_found_foothold_candidates_middle_east = event_target:resources_found_current_foothold_candidate } } }
+}
+
+# STATE scope. Repeated entries make selection proportional to resource bands.
+resources_found_cave_append_weighted_foothold_candidate = {
+	resources_found_refresh_captured_state_capacity = yes
+	if = {
+		limit = {
+			check_variable = {
+				var = resources_found_capacity_source_total
+				value = constant:resources_found_cave_runtime.foothold_minimum_resource_total
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { resources_found_foothold_distinct_resources = constant:resources_found_value.zero }
+		if = { limit = { check_variable = { resource@oil > constant:resources_found_value.zero } } add_to_temp_variable = { resources_found_foothold_distinct_resources = constant:resources_found_value.one } }
+		if = { limit = { check_variable = { resource@aluminium > constant:resources_found_value.zero } } add_to_temp_variable = { resources_found_foothold_distinct_resources = constant:resources_found_value.one } }
+		if = { limit = { check_variable = { resource@rubber > constant:resources_found_value.zero } } add_to_temp_variable = { resources_found_foothold_distinct_resources = constant:resources_found_value.one } }
+		if = { limit = { check_variable = { resource@tungsten > constant:resources_found_value.zero } } add_to_temp_variable = { resources_found_foothold_distinct_resources = constant:resources_found_value.one } }
+		if = { limit = { check_variable = { resource@steel > constant:resources_found_value.zero } } add_to_temp_variable = { resources_found_foothold_distinct_resources = constant:resources_found_value.one } }
+		if = { limit = { check_variable = { resource@chromium > constant:resources_found_value.zero } } add_to_temp_variable = { resources_found_foothold_distinct_resources = constant:resources_found_value.one } }
+
+		resources_found_cave_append_foothold_candidate_once = yes
+		if = {
+			limit = { check_variable = { resources_found_capacity_source_total > constant:resources_found_cave_runtime.resource_weight_second_entry } }
+			resources_found_cave_append_foothold_candidate_once = yes
+		}
+		if = {
+			limit = { check_variable = { resources_found_capacity_source_total > constant:resources_found_cave_runtime.resource_weight_third_entry } }
+			resources_found_cave_append_foothold_candidate_once = yes
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = resources_found_foothold_distinct_resources
+					value = constant:resources_found_cave_runtime.foothold_diversity_weight_threshold
+					compare = greater_than_or_equals
+				}
+			}
+			resources_found_cave_append_foothold_candidate_once = yes
+		}
+		if = {
+			limit = {
+				OR = {
+					industrial_complex > constant:resources_found_cave_runtime.foothold_industry_weight_threshold
+					arms_factory > constant:resources_found_cave_runtime.foothold_industry_weight_threshold
+					dockyard > constant:resources_found_cave_runtime.foothold_industry_weight_threshold
+				}
+			}
+			resources_found_cave_append_foothold_candidate_once = yes
+		}
+		if = {
+			limit = {
+				OR = {
+					infrastructure > constant:resources_found_cave_runtime.foothold_transport_weight_threshold
+					supply_node > constant:resources_found_value.zero
+					rail_way > constant:resources_found_value.zero
+				}
+			}
+			resources_found_cave_append_foothold_candidate_once = yes
+		}
+		if = { limit = { is_coastal = no } resources_found_cave_append_foothold_candidate_once = yes }
+		if = { limit = { OWNER = { is_major = yes } } resources_found_cave_append_foothold_candidate_once = yes }
+	}
+}
+
+# DHO country scope. One-shot distant state inventory and exact valid-continent
+# count. This is a candidate registry, not a premature foothold creation.
+resources_found_cave_prepare_foothold_candidates = {
+	resize_array = { resources_found_foothold_candidates_europe = 0 }
+	resize_array = { resources_found_foothold_candidates_north_america = 0 }
+	resize_array = { resources_found_foothold_candidates_south_america = 0 }
+	resize_array = { resources_found_foothold_candidates_australia = 0 }
+	resize_array = { resources_found_foothold_candidates_africa = 0 }
+	resize_array = { resources_found_foothold_candidates_asia = 0 }
+	resize_array = { resources_found_foothold_candidates_middle_east = 0 }
+	set_variable = { resources_found_valid_foothold_count = constant:resources_found_value.zero }
+	clr_country_flag = resources_found_foothold_registry_ready
+	clr_country_flag = resources_found_foothold_registry_mismatch
+
+	every_state = {
+		limit = { resources_found_state_is_valid_distant_foothold = yes }
+		resources_found_cave_append_weighted_foothold_candidate = yes
+	}
+	if = { limit = { check_variable = { resources_found_foothold_candidates_europe^num > constant:resources_found_value.zero } } add_to_variable = { resources_found_valid_foothold_count = constant:resources_found_value.one } }
+	if = { limit = { check_variable = { resources_found_foothold_candidates_north_america^num > constant:resources_found_value.zero } } add_to_variable = { resources_found_valid_foothold_count = constant:resources_found_value.one } }
+	if = { limit = { check_variable = { resources_found_foothold_candidates_south_america^num > constant:resources_found_value.zero } } add_to_variable = { resources_found_valid_foothold_count = constant:resources_found_value.one } }
+	if = { limit = { check_variable = { resources_found_foothold_candidates_australia^num > constant:resources_found_value.zero } } add_to_variable = { resources_found_valid_foothold_count = constant:resources_found_value.one } }
+	if = { limit = { check_variable = { resources_found_foothold_candidates_africa^num > constant:resources_found_value.zero } } add_to_variable = { resources_found_valid_foothold_count = constant:resources_found_value.one } }
+	if = { limit = { check_variable = { resources_found_foothold_candidates_asia^num > constant:resources_found_value.zero } } add_to_variable = { resources_found_valid_foothold_count = constant:resources_found_value.one } }
+	if = { limit = { check_variable = { resources_found_foothold_candidates_middle_east^num > constant:resources_found_value.zero } } add_to_variable = { resources_found_valid_foothold_count = constant:resources_found_value.one } }
+	if = {
+		limit = { check_variable = { resources_found_valid_foothold_count > constant:resources_found_value.zero } }
+		set_country_flag = resources_found_foothold_registry_ready
+	}
+	else = { set_country_flag = resources_found_foothold_registry_mismatch }
+}
+
+# DHO country scope. Called by the continent-consumed focus to record the
+# milestone. Verification starts only after distant rupture preparation.
+resources_found_cave_begin_continent_verification = {
+	resources_found_cave_refresh_continent_progress = yes
+	if = {
+		limit = { resources_found_world_end_exact_continent_inputs_valid = yes }
+		set_country_flag = resources_found_origin_continent_consumed
+		country_event = { id = chaosx.nr18.94 hours = @CAVE_NOTICE_HOURS }
+	}
+}
+
+# DHO country scope. Called by the first-rupture preparation focus.
+resources_found_cave_weight_foothold_candidates = {
+	resources_found_cave_prepare_foothold_candidates = yes
+	set_country_flag = resources_found_world_end_preparation_complete
+	resources_found_cave_refresh_continent_progress = yes
+	resources_found_start_world_end_verification = yes
+}
+
+# STATE scope. Converts one weighted distant candidate into an immediate,
+# capacity-scaled foothold after terminal verification.
+resources_found_cave_create_world_end_foothold_here = {
+	if = {
+		limit = { resources_found_state_is_valid_distant_foothold = yes }
+		save_event_target_as = resources_found_world_end_foothold_state
+		OWNER = {
+			save_event_target_as = resources_found_world_end_foothold_former_owner
+			set_country_flag = resources_found_cave_aid_eligible
+		}
+		resources_found_cave_declare_war_on_current_owner_and_controller = yes
+		transfer_state_to = DHO
+		add_core_of = DHO
+		set_state_controller_to = DHO
+		set_state_flag = resources_found_cave_world_end_foothold
+		set_state_flag = resources_found_cave_cleanup_required
+		resources_found_refresh_captured_state_capacity = yes
+		resources_found_cave_begin_anchor_activation = yes
+		add_dynamic_modifier = { modifier = resources_found_cave_anchor_fortified }
+		force_update_dynamic_modifier = yes
+		DHO = {
+			add_to_variable = { resources_found_world_end_footholds_created = constant:resources_found_value.one }
+		}
+		set_temp_variable = { resources_found_world_end_broods_remaining = resources_found_captured_state_capacity }
+		add_to_temp_variable = { resources_found_world_end_broods_remaining = constant:resources_found_cave_runtime.world_end_foothold_extra_capacity }
+		if = {
+			limit = {
+				DHO = {
+					OR = {
+						has_country_flag = cave_one_maw_hierarchy
+						has_country_flag = cave_many_chambers_hierarchy
+						has_country_flag = cave_hoard_the_veins_hierarchy
+					}
+				}
+			}
+			add_to_temp_variable = { resources_found_world_end_broods_remaining = constant:resources_found_cave_runtime.foothold_route_bonus }
+		}
+		if = {
+			limit = {
+				DHO = {
+					OR = {
+						has_country_flag = cave_stone_phalanx_doctrine
+						has_country_flag = cave_burrow_war_doctrine
+						has_country_flag = cave_scree_tide_doctrine
+					}
+				}
+			}
+			add_to_temp_variable = { resources_found_world_end_broods_remaining = constant:resources_found_cave_runtime.foothold_route_bonus }
+		}
+		if = {
+			limit = { DHO = { check_variable = { resources_found_active_anchor_count > constant:resources_found_cave_runtime.foothold_anchor_bonus_threshold } } }
+			add_to_temp_variable = { resources_found_world_end_broods_remaining = constant:resources_found_cave_runtime.foothold_route_bonus }
+		}
+		if = {
+			limit = { DHO = { check_variable = { resources_found_active_anchor_count > constant:resources_found_cave_runtime.foothold_anchor_bonus_high_threshold } } }
+			add_to_temp_variable = { resources_found_world_end_broods_remaining = constant:resources_found_cave_runtime.foothold_route_bonus }
+		}
+		if = {
+			limit = { check_variable = { resources_found_world_end_broods_remaining > constant:resources_found_cave_runtime.foothold_initial_brood_cap } }
+			set_temp_variable = { resources_found_world_end_broods_remaining = constant:resources_found_cave_runtime.foothold_initial_brood_cap }
+		}
+		while = {
+			limit = { check_variable = { resources_found_world_end_broods_remaining > constant:resources_found_value.zero } }
+			resources_found_cave_spawn_selected_brood_here = yes
+			subtract_from_temp_variable = { resources_found_world_end_broods_remaining = constant:resources_found_value.one }
+		}
+		DHO = { resources_found_cave_refresh_division_and_capacity_totals = yes }
+		event_target:resources_found_world_end_foothold_former_owner = { country_event = { id = chaosx.nr18.96 hours = @CAVE_NOTICE_HOURS } }
+	}
+}
+
+# DHO country scope. Creates one weighted foothold in every valid non-origin
+# continent array. Repeated array entries weight selection by resource richness.
+resources_found_cave_create_world_end_footholds = {
+	set_variable = { resources_found_world_end_footholds_created = constant:resources_found_value.zero }
+	if = { limit = { check_variable = { resources_found_foothold_candidates_europe^num > constant:resources_found_value.zero } } random_scope_in_array = { array = resources_found_foothold_candidates_europe resources_found_cave_create_world_end_foothold_here = yes } }
+	if = { limit = { check_variable = { resources_found_foothold_candidates_north_america^num > constant:resources_found_value.zero } } random_scope_in_array = { array = resources_found_foothold_candidates_north_america resources_found_cave_create_world_end_foothold_here = yes } }
+	if = { limit = { check_variable = { resources_found_foothold_candidates_south_america^num > constant:resources_found_value.zero } } random_scope_in_array = { array = resources_found_foothold_candidates_south_america resources_found_cave_create_world_end_foothold_here = yes } }
+	if = { limit = { check_variable = { resources_found_foothold_candidates_australia^num > constant:resources_found_value.zero } } random_scope_in_array = { array = resources_found_foothold_candidates_australia resources_found_cave_create_world_end_foothold_here = yes } }
+	if = { limit = { check_variable = { resources_found_foothold_candidates_africa^num > constant:resources_found_value.zero } } random_scope_in_array = { array = resources_found_foothold_candidates_africa resources_found_cave_create_world_end_foothold_here = yes } }
+	if = { limit = { check_variable = { resources_found_foothold_candidates_asia^num > constant:resources_found_value.zero } } random_scope_in_array = { array = resources_found_foothold_candidates_asia resources_found_cave_create_world_end_foothold_here = yes } }
+	if = { limit = { check_variable = { resources_found_foothold_candidates_middle_east^num > constant:resources_found_value.zero } } random_scope_in_array = { array = resources_found_foothold_candidates_middle_east resources_found_cave_create_world_end_foothold_here = yes } }
+}
+
+# ---------------------------------------------------------------------------
+# Super-events, world end, defeat, and cleanup
+# ---------------------------------------------------------------------------
+
+resources_found_emit_emergence_super_event = {
+	if = {
+		limit = { NOT = { has_global_flag = resources_found_emergence_super_event_fired } }
+		set_global_flag = resources_found_emergence_super_event_fired
+		set_temp_variable = { resources_found_super_event_days = constant:resources_found_cave_super_event.presentation_days }
+		set_global_flag = { flag = super_event_visible days = resources_found_super_event_days value = constant:resources_found_cave_super_event.emergence_display }
+		set_variable = { global.current_super_event_audio_id = constant:resources_found_cave_super_event.emergence_audio }
+		every_country = { limit = { is_ai = no } play_current_super_event_audio = yes }
+	}
+}
+
+resources_found_emit_world_end_super_event = {
+	if = {
+		limit = { NOT = { has_global_flag = resources_found_world_end_super_event_fired } }
+		set_global_flag = resources_found_world_end_super_event_fired
+		set_temp_variable = { resources_found_super_event_days = constant:resources_found_cave_super_event.presentation_days }
+		set_global_flag = { flag = super_event_visible days = resources_found_super_event_days value = constant:resources_found_cave_super_event.world_end_display }
+		set_variable = { global.current_super_event_audio_id = constant:resources_found_cave_super_event.world_end_audio }
+		every_country = { limit = { is_ai = no } play_current_super_event_audio = yes }
+	}
+}
+
+resources_found_emit_global_defeat_super_event = {
+	if = {
+		limit = {
+			has_global_flag = resources_found_cave_global_defeat_eligible
+			NOT = { has_global_flag = resources_found_global_defeat_super_event_fired }
+		}
+		set_global_flag = resources_found_global_defeat_super_event_fired
+		set_temp_variable = { resources_found_super_event_days = constant:resources_found_cave_super_event.presentation_days }
+		set_global_flag = { flag = super_event_visible days = resources_found_super_event_days value = constant:resources_found_cave_super_event.global_defeat_display }
+		set_variable = { global.current_super_event_audio_id = constant:resources_found_cave_super_event.global_defeat_audio }
+		every_country = { limit = { is_ai = no } play_current_super_event_audio = yes }
+	}
+}
+
+# STATE scope. Stops all incompatible Event 018 field progression while keeping
+# ledgers intact for post-terminal history. It is not a closure substitute.
+resources_found_suspend_field_for_terminal_state = {
+	if = {
+		limit = { resources_found_is_active_field = yes }
+		if = { limit = { resources_found_can_suspend_field = yes } resources_found_suspend_field = yes }
+		set_state_flag = resources_found_terminal_suspended
+		clr_state_flag = resources_found_partial_closure_active
+		clr_state_flag = resources_found_full_seal_active
+		clr_state_flag = resources_found_field_closing
+		resources_found_clear_field_diplomacy_and_incidents = yes
+	}
+}
+
+# DHO country scope. Must be called only after delayed exact verification.
+resources_found_cave_begin_world_end = {
+	if = {
+		limit = {
+			resources_found_cave_world_end_verified = yes
+			NOT = { has_global_flag = resources_found_cave_world_end }
+			NOT = { has_global_flag = world_end }
+		}
+		set_global_flag = world_end
+		set_global_flag = world_end_resources_found_caves
+		set_global_flag = resources_found_cave_world_end
+		resources_found_cancel_burrow_objective_window = yes
+		clr_country_flag = resources_found_rapid_route_window_active
+		set_variable = { resources_found_rapid_route_states_captured = constant:resources_found_value.zero }
+		set_variable = { resources_found_rapid_route_countries_defeated = constant:resources_found_value.zero }
+		set_variable = { global.world_end_event_id = constant:resources_found_event.id }
+		random_faction_cleanup_after_world_end = yes
+		set_cosmetic_tag = DHO_WORLD_BELOW
+		set_stability = constant:resources_found_cave_effect.world_end_stability
+		set_war_support = constant:resources_found_cave_effect.world_end_war_support
+		add_ideas = cave_world_below_network
+		set_variable = { resources_found_spawn_interval_days = constant:resources_found_capacity.world_end_spawn_interval_days }
+		set_country_flag = resources_found_world_end_actor
+		every_state = { resources_found_suspend_field_for_terminal_state = yes }
+		resources_found_cave_create_world_end_footholds = yes
+		resources_found_cave_refresh_division_and_capacity_totals = yes
+		resources_found_cave_declare_neighbor_wars = yes
+		resources_found_emit_world_end_super_event = yes
+		refresh_world_threat_state = yes
+	}
+}
+
+# COUNTRY scope for an ordinary country entering a cave war.
+resources_found_register_ordinary_country_cave_war = {
+	set_country_flag = resources_found_cave_aid_eligible
+	set_country_flag = resources_found_cave_war_participant
+	if = {
+		limit = {
+			NOT = { has_country_flag = resources_found_first_battle_analysis_queued }
+			NOT = { has_country_flag = resources_found_first_battle_analysis_presented }
+		}
+		set_country_flag = resources_found_first_battle_analysis_queued
+		country_event = { id = chaosx.nr18.83 days = @CAVE_FIRST_BATTLE_ANALYSIS_DAYS }
+	}
+	if = { limit = { NOT = { has_idea = resources_found_anti_cave_contracts } } add_ideas = resources_found_anti_cave_contracts }
+	if = {
+		limit = {
+			is_major = yes
+			has_country_flag = resources_found_anti_armor_prepared
+		}
+		DHO = { set_country_flag = resources_found_prepared_major_qualifying_war_active }
+	}
+	resources_found_refresh_decision_cost_previews = yes
+}
+
+# DHO country scope.
+resources_found_cave_on_capitulation = {
+	set_country_flag = resources_found_cave_capitulated
+	resources_found_cave_finish_defeat_if_valid = yes
+}
+
+# DHO country scope.
+resources_found_cave_on_puppet = {
+	set_country_flag = resources_found_cave_neutralized_subject
+	resources_found_cave_finish_defeat_if_valid = yes
+}
+
+# DHO country scope. Global aftermath requires cross-continent/world-end history,
+# or a fully consumed origin continent sustained for a full campaign year. The
+# 75-percent progression milestone is deliberately not sufficient by itself.
+resources_found_classify_defeat_scale = {
+	set_variable = { resources_found_cave_campaign_duration_days = constant:resources_found_value.zero }
+	if = {
+		limit = { has_variable = resources_found_cave_emergence_date }
+		set_variable = { resources_found_cave_campaign_duration_days = global.date }
+		subtract_from_variable = { resources_found_cave_campaign_duration_days = resources_found_cave_emergence_date }
+		if = {
+			limit = { check_variable = { resources_found_cave_campaign_duration_days < constant:resources_found_value.zero } }
+			set_variable = { resources_found_cave_campaign_duration_days = constant:resources_found_value.zero }
+		}
+	}
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_global_flag = world_end }
+				has_global_flag = world_end_resources_found_caves
+			}
+			OR = {
+				has_global_flag = resources_found_cave_world_end
+				check_variable = { resources_found_world_end_footholds_created > constant:resources_found_value.zero }
+				AND = {
+					has_country_flag = resources_found_origin_continent_consumed
+					check_variable = {
+						var = resources_found_cave_campaign_duration_days
+						value = constant:resources_found_cave_runtime.global_aftermath_minimum_campaign_days
+						compare = greater_than_or_equals
+					}
+				}
+			}
+		}
+		set_global_flag = resources_found_cave_global_defeat_eligible
+	}
+}
+
+# Any scope. Called only after a completed cleanup project. The trigger requires
+# the global scale gate, a real three-state cleanup contribution, no remaining
+# cave cleanup sites, and no live cave threat. Each country receives Event .99
+# once; its commitment project completes the choice instead of reopening it.
+resources_found_offer_reconstruction_compact_choices = {
+	if = {
+		limit = { has_global_flag = resources_found_cave_global_defeat_eligible }
+		every_country = {
+			limit = {
+				resources_found_decision_global_reconstruction_ready = yes
+				NOT = { has_country_flag = resources_found_reconstruction_choice_presented }
+				NOT = { has_country_flag = resources_found_reconstruction_compact_refused }
+				NOT = { has_country_flag = resources_found_global_reconstruction_complete }
+			}
+			country_event = { id = chaosx.nr18.99 hours = @CAVE_NOTICE_HOURS }
+		}
+	}
+}
+
+# COUNTRY scope for an annexed ordinary former field owner.
+resources_found_cleanup_removed_field_owner = {
+	clear_temp_array = temp_resources_found_removed_owner_fields
+	for_each_scope_loop = {
+		array = resources_found_owned_fields
+		add_to_temp_array = { temp_resources_found_removed_owner_fields = THIS }
+	}
+	for_each_scope_loop = {
+		array = temp_resources_found_removed_owner_fields
+		if = {
+			limit = {
+				OR = {
+					resources_found_is_active_field = yes
+					has_state_flag = resources_found_field_suspended
+				}
+				OWNER = { exists = yes }
+			}
+			resources_found_handle_field_ownership_transfer = yes
+		}
+	}
+	clear_temp_array = temp_resources_found_removed_owner_fields
+	resize_array = { resources_found_owned_fields = 0 }
+	clear_variable = resources_found_selected_field
+	clr_country_flag = resources_found_field_system_participant
+}
+
+# DHO country scope. Regional defeat always creates cleanup. Global/near-global
+# history additionally opens the major aftermath and slot 84.
+resources_found_cave_finish_defeat_if_valid = {
+	if = {
+		limit = {
+			has_country_flag = resources_found_cave_country
+			num_of_controlled_states < constant:resources_found_value.one
+			NOT = { has_global_flag = resources_found_cave_defeated }
+		}
+		set_global_flag = resources_found_cave_defeated
+		set_global_flag = resources_found_cave_threat_permanently_contained
+		resources_found_cancel_burrow_objective_window = yes
+		clr_country_flag = resources_found_rapid_route_window_active
+		set_variable = { resources_found_rapid_route_states_captured = constant:resources_found_value.zero }
+		set_variable = { resources_found_rapid_route_countries_defeated = constant:resources_found_value.zero }
+		clr_global_flag = resources_found_cave_country_active
+		clr_global_flag = world_threat_source_resources_found_caves
+		resources_found_classify_defeat_scale = yes
+		clr_global_flag = world_end_resources_found_caves
+		clr_global_flag = resources_found_cave_world_end
+		every_state = {
+			limit = {
+				OR = {
+					has_state_flag = resources_found_cave_origin
+					has_state_flag = resources_found_cave_anchor_active
+					has_state_flag = resources_found_cave_anchor_disrupted
+					has_state_flag = resources_found_cave_anchor_activating
+					has_state_flag = resources_found_cave_world_end_foothold
+					has_dynamic_modifier = { modifier = resources_found_denied_resource_state }
+				}
+			}
+			set_state_flag = resources_found_cave_cleanup_required
+			if = {
+				limit = { NOT = { has_dynamic_modifier = { modifier = resources_found_anchor_cleanup } } }
+				add_dynamic_modifier = { modifier = resources_found_anchor_cleanup }
+			}
+			force_update_dynamic_modifier = yes
+		}
+		every_state = {
+			limit = {
+				resources_found_is_active_field = yes
+				NOT = { has_state_flag = resources_found_evolution_iv_prevented }
+			}
+			set_state_flag = resources_found_evolution_iv_prevented
+			set_state_flag = resources_found_post_cave_containment
+			clr_state_flag = resources_found_public_breach
+			clr_state_flag = resources_found_breach_incident_pending
+		}
+		clr_country_flag = resources_found_cave_country
+		clr_country_flag = resources_found_world_end_actor
+		set_variable = { resources_found_protected_origin_allocation = constant:resources_found_value.zero }
+		set_variable = { resources_found_total_anchor_capacity = constant:resources_found_value.zero }
+		set_variable = { resources_found_total_brood_capacity = constant:resources_found_value.zero }
+		set_variable = { resources_found_active_anchor_count = constant:resources_found_value.zero }
+		resize_array = { resources_found_cave_anchor_states = 0 }
+		resize_array = { resources_found_foothold_candidates_europe = 0 }
+		resize_array = { resources_found_foothold_candidates_north_america = 0 }
+		resize_array = { resources_found_foothold_candidates_south_america = 0 }
+		resize_array = { resources_found_foothold_candidates_australia = 0 }
+		resize_array = { resources_found_foothold_candidates_africa = 0 }
+		resize_array = { resources_found_foothold_candidates_asia = 0 }
+		resize_array = { resources_found_foothold_candidates_middle_east = 0 }
+		if = {
+			limit = { has_variable = resources_found_rich_target_state }
+			var:resources_found_rich_target_state = { clr_state_flag = resources_found_cave_marked_objective }
+			clear_variable = resources_found_rich_target_state
+		}
+		if = {
+			limit = { has_variable = resources_found_strongpoint_target_state }
+			var:resources_found_strongpoint_target_state = { clr_state_flag = resources_found_cave_strongpoint_objective }
+			clear_variable = resources_found_strongpoint_target_state
+		}
+		if = {
+			limit = { has_variable = resources_found_transport_target_state }
+			var:resources_found_transport_target_state = {
+				clr_state_flag = resources_found_cave_transport_objective
+				clr_state_flag = resources_found_burrow_objective_active
+				clr_state_flag = resources_found_burrow_objective_defended_at_start
+			}
+			clear_variable = resources_found_transport_target_state
+		}
+		every_state = {
+			limit = {
+				OR = {
+					has_state_flag = resources_found_cave_marked_objective
+					has_state_flag = resources_found_cave_strongpoint_objective
+					has_state_flag = resources_found_cave_transport_objective
+					has_state_flag = resources_found_burrow_objective_active
+					has_state_flag = resources_found_burrow_objective_defended_at_start
+					has_state_flag = resources_found_cave_continental_capital_objective
+				}
+			}
+			clr_state_flag = resources_found_cave_marked_objective
+			clr_state_flag = resources_found_cave_strongpoint_objective
+			clr_state_flag = resources_found_cave_transport_objective
+			clr_state_flag = resources_found_burrow_objective_active
+			clr_state_flag = resources_found_burrow_objective_defended_at_start
+			clr_state_flag = resources_found_cave_continental_capital_objective
+		}
+		clear_global_event_target = resources_found_cave_country
+		clear_global_event_target = resources_found_cave_former_owner
+		clear_global_event_target = resources_found_cave_spawn_state
+		remove_ideas = cave_unfed_broods
+		remove_ideas = cave_world_below_network
+		remove_ideas = cave_origin_command_crisis
+		drop_cosmetic_tag = yes
+		refresh_world_threat_state = yes
+		if = {
+			limit = { has_global_flag = resources_found_cave_global_defeat_eligible }
+			every_country = { limit = { is_ai = no } country_event = { id = chaosx.nr18.97 hours = @CAVE_NOTICE_HOURS } }
+		}
+		else = {
+			every_country = {
+				limit = {
+					is_ai = no
+					OR = {
+						has_country_flag = resources_found_cave_war_participant
+						has_country_flag = resources_found_cave_aid_eligible
+					}
+				}
+				country_event = { id = chaosx.nr18.88 hours = @CAVE_NOTICE_HOURS }
+			}
+		}
+	}
+}
+
+# STATE scope from a liberating owner's cleanup decision.
+resources_found_complete_anchor_cleanup = {
+	if = {
+		limit = {
+			has_state_flag = resources_found_cave_cleanup_required
+			is_owned_and_controlled_by = OWNER
+			OWNER = { NOT = { is_resources_found_cave_country = yes } }
+		}
+		clr_state_flag = resources_found_cave_cleanup_required
+		clr_state_flag = resources_found_cave_anchor_active
+		clr_state_flag = resources_found_cave_anchor_disrupted
+		clr_state_flag = resources_found_cave_anchor_activating
+		clr_state_flag = resources_found_cave_anchor_accelerated
+		clr_state_flag = resources_found_cave_world_end_foothold
+		clr_state_flag = resources_found_cave_industry_converted
+		clr_state_flag = resources_found_cave_tunnel_link_endpoint
+		clr_state_flag = resources_found_cave_coastal_anchor
+		clr_state_flag = resources_found_cave_anchor_fortifications_built
+		clr_state_flag = resources_found_cave_anchor_vaulted
+		clr_state_flag = resources_found_cave_marked_objective
+		clr_state_flag = resources_found_cave_strongpoint_objective
+		clr_state_flag = resources_found_cave_transport_objective
+		clr_state_flag = resources_found_burrow_objective_active
+		clr_state_flag = resources_found_burrow_objective_defended_at_start
+		clr_state_flag = resources_found_cave_continental_capital_objective
+		clr_state_flag = resources_found_cave_last_continent_objective
+		clr_state_flag = resources_found_anchor_activation_interrupted
+		clr_state_flag = resources_found_anchor_recapture_window_failed
+		clr_state_flag = resources_found_cave_denial_prepared
+		clr_state_flag = resources_found_resource_denial_ready
+		clr_state_flag = resources_found_controlled_demolition_prepared
+		clear_variable = resources_found_cave_denial_capacity_penalty
+		clear_variable = resources_found_cave_anchor_activation_date
+		clear_variable = resources_found_cave_anchor_grace_date
+		clear_variable = resources_found_active_anchor_capacity
+		clear_variable = resources_found_captured_state_capacity
+		clear_variable = resources_found_capacity_source_total
+		if = { limit = { has_dynamic_modifier = { modifier = resources_found_cave_anchor_active } } remove_dynamic_modifier = { modifier = resources_found_cave_anchor_active } }
+		if = { limit = { has_dynamic_modifier = { modifier = resources_found_cave_anchor_activating } } remove_dynamic_modifier = { modifier = resources_found_cave_anchor_activating } }
+		if = { limit = { has_dynamic_modifier = { modifier = resources_found_cave_anchor_fortified } } remove_dynamic_modifier = { modifier = resources_found_cave_anchor_fortified } }
+		if = { limit = { has_dynamic_modifier = { modifier = resources_found_denied_resource_state } } remove_dynamic_modifier = { modifier = resources_found_denied_resource_state } }
+		if = { limit = { has_dynamic_modifier = { modifier = resources_found_cave_origin_chamber } } remove_dynamic_modifier = { modifier = resources_found_cave_origin_chamber } }
+		if = { limit = { has_dynamic_modifier = { modifier = resources_found_anchor_cleanup } } remove_dynamic_modifier = { modifier = resources_found_anchor_cleanup } }
+		remove_core_of = DHO
+		add_dynamic_modifier = { modifier = resources_found_sealed_field_scar }
+		set_state_flag = resources_found_cave_cleanup_complete
+		resources_found_record_anchor_cleanup_contribution = yes
+		force_update_dynamic_modifier = yes
+		resources_found_offer_reconstruction_compact_choices = yes
+		OWNER = { country_event = { id = chaosx.nr18.89 hours = @CAVE_NOTICE_HOURS } }
+	}
+}

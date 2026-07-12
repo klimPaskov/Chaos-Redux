@@ -1,0 +1,1423 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 018 RESOURCES FOUND EFFECTS
+# ============================================================================
+# Reusable core for persistent resource fields. State scope owns the physical
+# field record, six exact event-resource ledgers, field values, contracts, and
+# cave-capacity data. Country scope owns selected-field pointers, owned-field
+# arrays, and exact terminal-verification inputs.
+#
+# Package effects are atomic: they acquire a state transaction flag, mutate the
+# resource and field ledgers, refresh derived values, then release the flag.
+# Full sealing subtracts only the six Event 018 ledgers; resources that existed
+# before Event 018, or were added by another system, are never inferred away.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Transaction, ownership, and field-record helpers
+# ---------------------------------------------------------------------------
+
+# STATE scope. Output temp: resources_found_transaction_acquired (0 or 1).
+resources_found_begin_field_transaction = {
+	set_temp_variable = { resources_found_transaction_acquired = constant:resources_found_value.zero }
+	if = {
+		limit = { resources_found_field_transaction_available = yes }
+		set_state_flag = resources_found_field_transaction_lock
+		set_temp_variable = { resources_found_transaction_acquired = constant:resources_found_value.one }
+	}
+}
+
+# STATE scope.
+resources_found_end_field_transaction = {
+	clr_state_flag = resources_found_field_transaction_lock
+}
+
+# STATE scope, internal. Releases only a lock acquired by the current caller.
+resources_found_release_acquired_field_transaction = {
+	if = {
+		limit = { check_variable = { resources_found_transaction_acquired = constant:resources_found_value.one } }
+		resources_found_end_field_transaction = yes
+		set_temp_variable = { resources_found_transaction_acquired = constant:resources_found_value.zero }
+	}
+}
+
+# COUNTRY scope. Clears an invalid selected-field pointer, then selects one
+# owned active field if possible. The owned-fields array remains the complete
+# registry; the pointer is only the current UI/action selection.
+resources_found_validate_country_field_selection = {
+	if = {
+		limit = {
+			has_variable = resources_found_selected_field
+			NOT = { resources_found_country_has_valid_selected_field = yes }
+		}
+		clear_variable = resources_found_selected_field
+	}
+	if = {
+		limit = { NOT = { has_variable = resources_found_selected_field } }
+		every_owned_state = {
+			limit = {
+				resources_found_is_active_field = yes
+				ROOT = { NOT = { has_variable = resources_found_selected_field } }
+			}
+			ROOT = { set_variable = { resources_found_selected_field = PREV } }
+		}
+	}
+}
+
+# STATE scope. Keeps the identity shown by a sealed-field history record current
+# without making that state active, selectable for projects, or rediscoverable.
+resources_found_refresh_closed_field_identity = {
+	if = {
+		limit = { has_state_flag = resources_found_field_closed_permanently }
+		if = { limit = { OWNER = { exists = yes } } set_variable = { resources_found_recorded_owner = OWNER } }
+		if = { limit = { CONTROLLER = { exists = yes } } set_variable = { resources_found_recorded_controller = CONTROLLER } }
+	}
+}
+
+# STATE scope. Registers THIS with its current owner and selects it when the
+# owner's previous selection is absent or invalid.
+resources_found_bind_field_to_owner = {
+	save_event_target_as = resources_found_binding_state
+	if = {
+		limit = { OWNER = { exists = yes } }
+		set_variable = { resources_found_recorded_owner = OWNER }
+		OWNER = {
+			set_country_flag = resources_found_field_system_participant
+			if = {
+				limit = {
+					NOT = {
+						is_in_array = {
+							array = resources_found_owned_fields
+							value = event_target:resources_found_binding_state
+						}
+					}
+				}
+				add_to_array = {
+					array = resources_found_owned_fields
+					value = event_target:resources_found_binding_state
+				}
+			}
+			if = {
+				limit = { NOT = { resources_found_country_has_valid_selected_field = yes } }
+				set_variable = { resources_found_selected_field = event_target:resources_found_binding_state }
+			}
+		}
+	}
+}
+
+# COUNTRY scope. Requires regular event target resources_found_unbinding_state.
+resources_found_remove_field_from_country_registry = {
+	if = {
+		limit = { has_event_target = resources_found_unbinding_state }
+		if = {
+			limit = {
+				is_in_array = {
+					array = resources_found_owned_fields
+					value = event_target:resources_found_unbinding_state
+				}
+			}
+			remove_from_array = {
+				array = resources_found_owned_fields
+				value = event_target:resources_found_unbinding_state
+			}
+		}
+		if = {
+			limit = {
+				has_variable = resources_found_selected_field
+				check_variable = {
+					var = resources_found_selected_field
+					value = event_target:resources_found_unbinding_state
+					compare = equals
+				}
+			}
+			clear_variable = resources_found_selected_field
+		}
+		resources_found_validate_country_field_selection = yes
+		if = {
+			limit = {
+				check_variable = {
+					var = resources_found_owned_fields^num
+					value = constant:resources_found_value.zero
+					compare = equals
+				}
+			}
+			clr_country_flag = resources_found_field_system_participant
+		}
+	}
+}
+
+# STATE scope. Initializes the physical record but adds no resources. Call one
+# package effect after this effect. Existing resources are snapshotted solely
+# for audit/UI evidence; exact closure uses the separate added_* ledgers.
+resources_found_initialize_field_record = {
+	resources_found_begin_field_transaction = yes
+	if = {
+		limit = {
+			check_variable = { resources_found_transaction_acquired = constant:resources_found_value.one }
+			NOT = { resources_found_is_active_field = yes }
+		}
+		if = {
+			limit = { NOT = { has_variable = global.resources_found_next_field_sequence } }
+			set_variable = { global.resources_found_next_field_sequence = constant:resources_found_value.zero }
+		}
+		add_to_variable = { global.resources_found_next_field_sequence = constant:resources_found_value.one }
+		set_variable = { resources_found_field_sequence = global.resources_found_next_field_sequence }
+		set_variable = { resources_found_discovery_date = global.date }
+		set_variable = { resources_found_recorded_owner = OWNER }
+		set_variable = { resources_found_recorded_controller = CONTROLLER }
+		set_variable = { resources_found_discoverer = OWNER }
+
+		set_variable = { resources_found_preexisting_oil = resource@oil }
+		set_variable = { resources_found_preexisting_aluminium = resource@aluminium }
+		set_variable = { resources_found_preexisting_rubber = resource@rubber }
+		set_variable = { resources_found_preexisting_tungsten = resource@tungsten }
+		set_variable = { resources_found_preexisting_steel = resource@steel }
+		set_variable = { resources_found_preexisting_chromium = resource@chromium }
+
+		set_variable = { resources_found_added_oil = constant:resources_found_value.zero }
+		set_variable = { resources_found_added_aluminium = constant:resources_found_value.zero }
+		set_variable = { resources_found_added_rubber = constant:resources_found_value.zero }
+		set_variable = { resources_found_added_tungsten = constant:resources_found_value.zero }
+		set_variable = { resources_found_added_steel = constant:resources_found_value.zero }
+		set_variable = { resources_found_added_chromium = constant:resources_found_value.zero }
+		set_variable = { resources_found_total_added = constant:resources_found_value.zero }
+		set_variable = { resources_found_distinct_resource_count = constant:resources_found_value.zero }
+		set_variable = { resources_found_resource_roll_count = constant:resources_found_value.zero }
+		set_variable = { resources_found_discovery_count = constant:resources_found_value.zero }
+
+		set_variable = { resources_found_field_stage = constant:resources_found_field_stage.discovery }
+		set_variable = { resources_found_field_posture = constant:resources_found_posture.unassigned }
+		set_variable = { resources_found_contract_stage = constant:resources_found_contract_stage.none }
+		set_variable = { resources_found_commission_stage = constant:resources_found_commission_stage.none }
+		set_variable = { resources_found_border_stage = constant:resources_found_border_stage.none }
+		set_variable = { resources_found_developed_yield = constant:resources_found_field_value.initial_developed_yield }
+		set_variable = { resources_found_excavation_depth = constant:resources_found_field_value.initial_excavation_depth }
+		set_variable = { resources_found_workforce_safety = constant:resources_found_field_value.initial_workforce_safety }
+		set_variable = { resources_found_foreign_pressure = constant:resources_found_field_value.initial_foreign_pressure }
+		set_variable = { resources_found_subsurface_disturbance = constant:resources_found_field_value.initial_disturbance }
+		set_variable = { resources_found_breach_pressure = constant:resources_found_field_value.initial_breach }
+		set_variable = { resources_found_exploitation_score = constant:resources_found_value.zero }
+		set_variable = { resources_found_maximum_developed_yield = constant:resources_found_field_value.initial_developed_yield }
+		set_variable = { resources_found_maximum_excavation_depth = constant:resources_found_field_value.initial_excavation_depth }
+		set_variable = { resources_found_maximum_recorded_total = constant:resources_found_value.zero }
+		set_variable = { resources_found_maximum_extraction_days = constant:resources_found_value.zero }
+		set_variable = { resources_found_maximum_extraction_months = constant:resources_found_value.zero }
+		clear_variable = resources_found_maximum_extraction_start_date
+
+		set_state_flag = resources_found_field_active
+		clr_state_flag = resources_found_field_suspended
+		clr_state_flag = resources_found_field_closing
+		clr_state_flag = resources_found_field_closed_permanently
+		clr_state_flag = resources_found_evolution_iv_prevented
+		resources_found_bind_field_to_owner = yes
+		resources_found_register_field_achievement_owner = yes
+		resources_found_end_field_transaction = yes
+	}
+	resources_found_release_acquired_field_transaction = yes
+}
+
+# ---------------------------------------------------------------------------
+# Derived resource and field values
+# ---------------------------------------------------------------------------
+
+# STATE scope.
+resources_found_recalculate_resource_summary = {
+	set_variable = { resources_found_total_added = resources_found_added_oil }
+	add_to_variable = { resources_found_total_added = resources_found_added_aluminium }
+	add_to_variable = { resources_found_total_added = resources_found_added_rubber }
+	add_to_variable = { resources_found_total_added = resources_found_added_tungsten }
+	add_to_variable = { resources_found_total_added = resources_found_added_steel }
+	add_to_variable = { resources_found_total_added = resources_found_added_chromium }
+
+	set_variable = { resources_found_current_state_resource_total = resource@oil }
+	add_to_variable = { resources_found_current_state_resource_total = resource@aluminium }
+	add_to_variable = { resources_found_current_state_resource_total = resource@rubber }
+	add_to_variable = { resources_found_current_state_resource_total = resource@tungsten }
+	add_to_variable = { resources_found_current_state_resource_total = resource@steel }
+	add_to_variable = { resources_found_current_state_resource_total = resource@chromium }
+
+	set_variable = { resources_found_distinct_resource_count = constant:resources_found_value.zero }
+	if = { limit = { check_variable = { resources_found_added_oil > constant:resources_found_value.zero } } add_to_variable = { resources_found_distinct_resource_count = constant:resources_found_value.one } }
+	if = { limit = { check_variable = { resources_found_added_aluminium > constant:resources_found_value.zero } } add_to_variable = { resources_found_distinct_resource_count = constant:resources_found_value.one } }
+	if = { limit = { check_variable = { resources_found_added_rubber > constant:resources_found_value.zero } } add_to_variable = { resources_found_distinct_resource_count = constant:resources_found_value.one } }
+	if = { limit = { check_variable = { resources_found_added_tungsten > constant:resources_found_value.zero } } add_to_variable = { resources_found_distinct_resource_count = constant:resources_found_value.one } }
+	if = { limit = { check_variable = { resources_found_added_steel > constant:resources_found_value.zero } } add_to_variable = { resources_found_distinct_resource_count = constant:resources_found_value.one } }
+	if = { limit = { check_variable = { resources_found_added_chromium > constant:resources_found_value.zero } } add_to_variable = { resources_found_distinct_resource_count = constant:resources_found_value.one } }
+
+	clr_state_flag = resources_found_compound_field
+	if = {
+		limit = { check_variable = { var = resources_found_distinct_resource_count value = constant:resources_found_threshold.compound_distinct_resources compare = greater_than_or_equals } }
+		set_state_flag = resources_found_compound_field
+	}
+	clr_state_flag = resources_found_globally_significant_field
+	if = {
+		limit = { check_variable = { var = resources_found_total_added value = constant:resources_found_threshold.globally_significant_total compare = greater_than_or_equals } }
+		set_state_flag = resources_found_globally_significant_field
+	}
+}
+
+# STATE scope. Enforces the shared 0..100 contract and suspension yield cap.
+resources_found_clamp_field_values = {
+	if = { limit = { check_variable = { resources_found_developed_yield < constant:resources_found_field_value.minimum } } set_variable = { resources_found_developed_yield = constant:resources_found_field_value.minimum } }
+	if = { limit = { check_variable = { resources_found_developed_yield > constant:resources_found_field_value.maximum } } set_variable = { resources_found_developed_yield = constant:resources_found_field_value.maximum } }
+	if = { limit = { check_variable = { resources_found_excavation_depth < constant:resources_found_field_value.minimum } } set_variable = { resources_found_excavation_depth = constant:resources_found_field_value.minimum } }
+	if = { limit = { check_variable = { resources_found_excavation_depth > constant:resources_found_field_value.maximum } } set_variable = { resources_found_excavation_depth = constant:resources_found_field_value.maximum } }
+	if = { limit = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.minimum } } set_variable = { resources_found_workforce_safety = constant:resources_found_field_value.minimum } }
+	if = { limit = { check_variable = { resources_found_workforce_safety > constant:resources_found_field_value.maximum } } set_variable = { resources_found_workforce_safety = constant:resources_found_field_value.maximum } }
+	if = { limit = { check_variable = { resources_found_foreign_pressure < constant:resources_found_field_value.minimum } } set_variable = { resources_found_foreign_pressure = constant:resources_found_field_value.minimum } }
+	if = { limit = { check_variable = { resources_found_foreign_pressure > constant:resources_found_field_value.maximum } } set_variable = { resources_found_foreign_pressure = constant:resources_found_field_value.maximum } }
+	if = { limit = { check_variable = { resources_found_subsurface_disturbance < constant:resources_found_field_value.minimum } } set_variable = { resources_found_subsurface_disturbance = constant:resources_found_field_value.minimum } }
+	if = { limit = { check_variable = { resources_found_subsurface_disturbance > constant:resources_found_field_value.maximum } } set_variable = { resources_found_subsurface_disturbance = constant:resources_found_field_value.maximum } }
+	if = { limit = { check_variable = { resources_found_breach_pressure < constant:resources_found_field_value.minimum } } set_variable = { resources_found_breach_pressure = constant:resources_found_field_value.minimum } }
+	if = { limit = { check_variable = { resources_found_breach_pressure > constant:resources_found_field_value.maximum } } set_variable = { resources_found_breach_pressure = constant:resources_found_field_value.maximum } }
+	if = {
+		limit = {
+			has_state_flag = resources_found_field_suspended
+			check_variable = { resources_found_developed_yield > constant:resources_found_field_value.suspension_yield_cap }
+		}
+		set_variable = { resources_found_developed_yield = constant:resources_found_field_value.suspension_yield_cap }
+	}
+}
+
+# STATE scope. Preserves maxima for cave-strength scoring.
+resources_found_update_field_maxima = {
+	if = { limit = { check_variable = { var = resources_found_developed_yield value = resources_found_maximum_developed_yield compare = greater_than } } set_variable = { resources_found_maximum_developed_yield = resources_found_developed_yield } }
+	if = { limit = { check_variable = { var = resources_found_excavation_depth value = resources_found_maximum_excavation_depth compare = greater_than } } set_variable = { resources_found_maximum_excavation_depth = resources_found_excavation_depth } }
+	if = { limit = { check_variable = { var = resources_found_total_added value = resources_found_maximum_recorded_total compare = greater_than } } set_variable = { resources_found_maximum_recorded_total = resources_found_total_added } }
+}
+
+# STATE scope. Updates the 0..100 exploitation score and scale factors consumed
+# by decisions. Country size is read from OWNER; field scale is depth-based.
+resources_found_refresh_project_scales = {
+	set_variable = { resources_found_exploitation_score = resources_found_developed_yield }
+	add_to_variable = { resources_found_exploitation_score = resources_found_excavation_depth }
+	divide_variable = { resources_found_exploitation_score = constant:resources_found_value.two }
+	if = { limit = { check_variable = { resources_found_exploitation_score > constant:resources_found_field_value.maximum } } set_variable = { resources_found_exploitation_score = constant:resources_found_field_value.maximum } }
+
+	set_variable = { resources_found_project_cost_factor = constant:resources_found_country_factor.standard_cost }
+	set_variable = { resources_found_project_duration_factor = constant:resources_found_country_factor.standard_duration }
+	if = {
+		limit = { OWNER = { num_of_factories < constant:resources_found_country_scale.small_factory_ceiling } }
+		set_variable = { resources_found_project_cost_factor = constant:resources_found_country_factor.small_cost }
+		set_variable = { resources_found_project_duration_factor = constant:resources_found_country_factor.small_duration }
+	}
+	else_if = {
+		limit = { OWNER = { is_major = yes } }
+		set_variable = { resources_found_project_cost_factor = constant:resources_found_country_factor.major_cost }
+		set_variable = { resources_found_project_duration_factor = constant:resources_found_country_factor.major_duration }
+	}
+	else_if = {
+		limit = { OWNER = { num_of_factories > constant:resources_found_country_scale.large_factory_floor } }
+		set_variable = { resources_found_project_cost_factor = constant:resources_found_country_factor.large_cost }
+		set_variable = { resources_found_project_duration_factor = constant:resources_found_country_factor.large_duration }
+	}
+	if = {
+		limit = { OWNER = { has_war = yes } }
+		multiply_variable = { resources_found_project_duration_factor = constant:resources_found_field_factor.war_duration }
+	}
+	if = {
+		limit = { NOT = { is_owned_and_controlled_by = OWNER } }
+		multiply_variable = { resources_found_project_duration_factor = constant:resources_found_field_factor.occupied_duration }
+	}
+	if = {
+		limit = {
+			NOT = { infrastructure > constant:resources_found_country_scale.poor_infrastructure_maximum }
+		}
+		multiply_variable = { resources_found_project_duration_factor = constant:resources_found_field_factor.poor_infrastructure_duration }
+	}
+	else_if = {
+		limit = {
+			NOT = { infrastructure < constant:resources_found_country_scale.strong_infrastructure_minimum }
+		}
+		multiply_variable = { resources_found_project_duration_factor = constant:resources_found_field_factor.strong_infrastructure_duration }
+	}
+
+	set_variable = { resources_found_field_cost_factor = constant:resources_found_field_factor.standard }
+	if = { limit = { check_variable = { resources_found_excavation_depth < constant:resources_found_field_value.band_2 } } set_variable = { resources_found_field_cost_factor = constant:resources_found_field_factor.low } }
+	else_if = { limit = { check_variable = { resources_found_excavation_depth > constant:resources_found_field_value.band_5 } } set_variable = { resources_found_field_cost_factor = constant:resources_found_field_factor.extreme } }
+	else_if = { limit = { check_variable = { resources_found_excavation_depth > constant:resources_found_field_value.band_4 } } set_variable = { resources_found_field_cost_factor = constant:resources_found_field_factor.high } }
+}
+
+# STATE scope. Outputs persistent state-local weights for decision ai_will_do.
+resources_found_refresh_field_ai_weights = {
+	set_variable = { resources_found_ai_exploit_weight = constant:resources_found_ai_weight.base }
+	set_variable = { resources_found_ai_caution_weight = constant:resources_found_ai_weight.base }
+	set_variable = { resources_found_ai_closure_weight = constant:resources_found_ai_weight.base }
+	if = { limit = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 } } add_to_variable = { resources_found_ai_caution_weight = constant:resources_found_ai_weight.low_safety_caution_add } }
+	if = { limit = { check_variable = { resources_found_workforce_safety > constant:resources_found_field_value.band_4 } } add_to_variable = { resources_found_ai_exploit_weight = constant:resources_found_ai_weight.high_safety_exploitation_add } }
+	if = { limit = { check_variable = { resources_found_subsurface_disturbance > constant:resources_found_field_value.band_5 } } add_to_variable = { resources_found_ai_closure_weight = constant:resources_found_ai_weight.critical_disturbance_closure_add } }
+	if = { limit = { check_variable = { resources_found_breach_pressure > constant:resources_found_field_value.band_5 } } add_to_variable = { resources_found_ai_closure_weight = constant:resources_found_ai_weight.critical_breach_closure_add } }
+	if = { limit = { resources_found_contract_is_active_and_valid = yes } add_to_variable = { resources_found_ai_exploit_weight = constant:resources_found_ai_weight.valid_contract_add } }
+	if = { limit = { check_variable = { resources_found_ai_exploit_weight > constant:resources_found_ai_weight.maximum } } set_variable = { resources_found_ai_exploit_weight = constant:resources_found_ai_weight.maximum } }
+	if = { limit = { check_variable = { resources_found_ai_caution_weight > constant:resources_found_ai_weight.maximum } } set_variable = { resources_found_ai_caution_weight = constant:resources_found_ai_weight.maximum } }
+	if = { limit = { check_variable = { resources_found_ai_closure_weight > constant:resources_found_ai_weight.maximum } } set_variable = { resources_found_ai_closure_weight = constant:resources_found_ai_weight.maximum } }
+}
+
+# STATE scope. Removes every mutually exclusive field-output presentation.
+resources_found_clear_field_output_stage_modifiers = {
+	if = { limit = { has_dynamic_modifier = { modifier = resources_found_field_dormant } } remove_dynamic_modifier = { modifier = resources_found_field_dormant } }
+	if = { limit = { has_dynamic_modifier = { modifier = resources_found_field_surveyed } } remove_dynamic_modifier = { modifier = resources_found_field_surveyed } }
+	if = { limit = { has_dynamic_modifier = { modifier = resources_found_field_operating } } remove_dynamic_modifier = { modifier = resources_found_field_operating } }
+	if = { limit = { has_dynamic_modifier = { modifier = resources_found_field_industrial } } remove_dynamic_modifier = { modifier = resources_found_field_industrial } }
+	if = { limit = { has_dynamic_modifier = { modifier = resources_found_field_maximum_extraction } } remove_dynamic_modifier = { modifier = resources_found_field_maximum_extraction } }
+	if = { limit = { has_dynamic_modifier = { modifier = resources_found_field_suspended } } remove_dynamic_modifier = { modifier = resources_found_field_suspended } }
+}
+
+# STATE scope. Rebuilds the mutually exclusive field-output stage from durable
+# lifecycle facts. Suspension replaces the visible output stage without losing
+# the underlying development stage used when the field resumes.
+resources_found_normalize_field_output_stage = {
+	resources_found_clear_field_output_stage_modifiers = yes
+	if = {
+		limit = { resources_found_is_active_field = yes }
+		if = {
+			limit = { has_state_flag = resources_found_maximum_shifts_active }
+			set_variable = { resources_found_field_stage = constant:resources_found_field_stage.rush }
+		}
+		else_if = {
+			limit = { has_state_flag = resources_found_local_processing_complete }
+			set_variable = { resources_found_field_stage = constant:resources_found_field_stage.mature }
+		}
+		else_if = {
+			limit = { has_state_flag = resources_found_primary_works_open }
+			set_variable = { resources_found_field_stage = constant:resources_found_field_stage.development }
+		}
+		else_if = {
+			limit = { has_state_flag = resources_found_geological_appraisal_complete }
+			set_variable = { resources_found_field_stage = constant:resources_found_field_stage.appraisal }
+		}
+		else = {
+			set_variable = { resources_found_field_stage = constant:resources_found_field_stage.discovery }
+		}
+
+		if = {
+			limit = { has_state_flag = resources_found_field_suspended }
+			add_dynamic_modifier = { modifier = resources_found_field_suspended }
+		}
+		else_if = {
+			limit = { has_state_flag = resources_found_maximum_shifts_active }
+			add_dynamic_modifier = { modifier = resources_found_field_maximum_extraction }
+		}
+		else_if = {
+			limit = { has_state_flag = resources_found_local_processing_complete }
+			add_dynamic_modifier = { modifier = resources_found_field_industrial }
+		}
+		else_if = {
+			limit = { has_state_flag = resources_found_primary_works_open }
+			add_dynamic_modifier = { modifier = resources_found_field_operating }
+		}
+		else_if = {
+			limit = { has_state_flag = resources_found_geological_appraisal_complete }
+			add_dynamic_modifier = { modifier = resources_found_field_surveyed }
+		}
+		else = {
+			add_dynamic_modifier = { modifier = resources_found_field_dormant }
+		}
+	}
+	force_update_dynamic_modifier = yes
+}
+
+# STATE scope. Common finalizer after any field mutation.
+resources_found_refresh_field_record = {
+	resources_found_recalculate_resource_summary = yes
+	resources_found_clamp_field_values = yes
+	resources_found_normalize_field_output_stage = yes
+	resources_found_refresh_contract_century_qualification = yes
+	resources_found_refresh_dispute_achievement_evidence = yes
+	resources_found_update_field_maxima = yes
+	resources_found_refresh_project_scales = yes
+	resources_found_refresh_field_ai_weights = yes
+}
+
+# ---------------------------------------------------------------------------
+# Exact resource-ledger mutation and opening/evolution packages
+# ---------------------------------------------------------------------------
+
+# STATE scope, internal. Inputs are temp resources_found_roll_resource and
+# resources_found_roll_amount. The caller must hold the transaction lock.
+resources_found_add_selected_resource_unlocked = {
+	if = {
+		limit = { check_variable = { resources_found_roll_resource = constant:resources_found_resource.oil } }
+		add_resource = { type = oil amount = resources_found_roll_amount }
+		add_to_variable = { resources_found_added_oil = resources_found_roll_amount }
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_roll_resource = constant:resources_found_resource.aluminium } }
+		add_resource = { type = aluminium amount = resources_found_roll_amount }
+		add_to_variable = { resources_found_added_aluminium = resources_found_roll_amount }
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_roll_resource = constant:resources_found_resource.rubber } }
+		add_resource = { type = rubber amount = resources_found_roll_amount }
+		add_to_variable = { resources_found_added_rubber = resources_found_roll_amount }
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_roll_resource = constant:resources_found_resource.tungsten } }
+		add_resource = { type = tungsten amount = resources_found_roll_amount }
+		add_to_variable = { resources_found_added_tungsten = resources_found_roll_amount }
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_roll_resource = constant:resources_found_resource.steel } }
+		add_resource = { type = steel amount = resources_found_roll_amount }
+		add_to_variable = { resources_found_added_steel = resources_found_roll_amount }
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_roll_resource = constant:resources_found_resource.chromium } }
+		add_resource = { type = chromium amount = resources_found_roll_amount }
+		add_to_variable = { resources_found_added_chromium = resources_found_roll_amount }
+	}
+	set_variable = { resources_found_last_resource_type = resources_found_roll_resource }
+	set_variable = { resources_found_last_resource_amount = resources_found_roll_amount }
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = resources_found_largest_single_addition }
+				check_variable = { var = resources_found_roll_amount value = resources_found_largest_single_addition compare = greater_than }
+			}
+		}
+		set_variable = { resources_found_largest_single_addition = resources_found_roll_amount }
+	}
+	add_to_variable = { resources_found_resource_roll_count = constant:resources_found_value.one }
+}
+
+# STATE scope, internal. Inputs temp resources_found_roll_min/max. The max is
+# exclusive, mirroring set_temp_variable_to_random's documented range contract.
+resources_found_add_random_standard_resource_roll_unlocked = {
+	set_temp_variable_to_random = {
+		var = resources_found_roll_resource
+		min = constant:resources_found_value.one
+		max = constant:resources_found_resource.max_exclusive
+		integer = yes
+	}
+	set_temp_variable_to_random = {
+		var = resources_found_roll_amount
+		min = resources_found_roll_min
+		max = resources_found_roll_max
+		integer = yes
+	}
+	resources_found_add_selected_resource_unlocked = yes
+}
+
+# STATE scope, internal. Inputs temp roll count/min/max. Lock must be held.
+resources_found_apply_random_roll_batch_unlocked = {
+	while = {
+		limit = { check_variable = { resources_found_rolls_remaining > constant:resources_found_value.zero } }
+		resources_found_add_random_standard_resource_roll_unlocked = yes
+		subtract_from_temp_variable = { resources_found_rolls_remaining = constant:resources_found_value.one }
+	}
+}
+
+# STATE scope. One 80..120 standard-resource discovery.
+resources_found_apply_baseline_package = {
+	resources_found_begin_field_transaction = yes
+	if = {
+		limit = {
+			check_variable = { resources_found_transaction_acquired = constant:resources_found_value.one }
+			resources_found_is_active_field = yes
+		}
+		set_temp_variable = { resources_found_roll_min = constant:resources_found_deposit.baseline_min }
+		set_temp_variable = { resources_found_roll_max = constant:resources_found_deposit.baseline_max_exclusive }
+		set_temp_variable = { resources_found_rolls_remaining = constant:resources_found_value.one }
+		resources_found_apply_random_roll_batch_unlocked = yes
+		add_to_variable = { resources_found_discovery_count = constant:resources_found_value.one }
+		add_to_variable = { resources_found_excavation_depth = constant:resources_found_field_value.baseline_depth_gain }
+		add_to_variable = { resources_found_foreign_pressure = constant:resources_found_field_value.baseline_pressure_gain }
+		set_variable = { resources_found_last_evolution_stage = constant:resources_found_value.zero }
+		set_state_flag = resources_found_baseline_package_applied
+		resources_found_refresh_field_record = yes
+		resources_found_end_field_transaction = yes
+	}
+	resources_found_release_acquired_field_transaction = yes
+}
+
+# STATE scope. Two to four 80..120 rolls for an Evolution I pre-fire opening.
+resources_found_apply_evolution_i_prefire_package = {
+	resources_found_begin_field_transaction = yes
+	if = {
+		limit = { check_variable = { resources_found_transaction_acquired = constant:resources_found_value.one } resources_found_is_active_field = yes }
+		set_temp_variable = { resources_found_roll_min = constant:resources_found_deposit.evolution_i_min }
+		set_temp_variable = { resources_found_roll_max = constant:resources_found_deposit.evolution_i_max_exclusive }
+		set_temp_variable_to_random = {
+			var = resources_found_rolls_remaining
+			min = constant:resources_found_deposit.evolution_i_prefire_rolls_min
+			max = constant:resources_found_deposit.evolution_i_prefire_rolls_max_exclusive
+			integer = yes
+		}
+		resources_found_apply_random_roll_batch_unlocked = yes
+		add_to_variable = { resources_found_discovery_count = constant:resources_found_value.one }
+		add_to_variable = { resources_found_excavation_depth = constant:resources_found_field_value.evolution_i_prefire_depth_gain }
+		add_to_variable = { resources_found_foreign_pressure = constant:resources_found_field_value.evolution_i_prefire_pressure_gain }
+		set_variable = { resources_found_last_evolution_stage = constant:resources_found_event.evolution_i_stage }
+		set_state_flag = resources_found_evolution_i_package_applied
+		resources_found_refresh_field_record = yes
+		resources_found_end_field_transaction = yes
+	}
+	resources_found_release_acquired_field_transaction = yes
+}
+
+# STATE scope. One to three 80..120 rolls for repeat Evolution I discoveries.
+resources_found_apply_evolution_i_active_package = {
+	resources_found_begin_field_transaction = yes
+	if = {
+		limit = { check_variable = { resources_found_transaction_acquired = constant:resources_found_value.one } resources_found_is_active_field = yes }
+		set_temp_variable = { resources_found_roll_min = constant:resources_found_deposit.evolution_i_min }
+		set_temp_variable = { resources_found_roll_max = constant:resources_found_deposit.evolution_i_max_exclusive }
+		set_temp_variable_to_random = {
+			var = resources_found_rolls_remaining
+			min = constant:resources_found_deposit.evolution_i_active_rolls_min
+			max = constant:resources_found_deposit.evolution_i_active_rolls_max_exclusive
+			integer = yes
+		}
+		resources_found_apply_random_roll_batch_unlocked = yes
+		add_to_variable = { resources_found_discovery_count = constant:resources_found_value.one }
+		add_to_variable = { resources_found_excavation_depth = constant:resources_found_field_value.evolution_i_active_depth_gain }
+		add_to_variable = { resources_found_foreign_pressure = constant:resources_found_field_value.evolution_i_active_pressure_gain }
+		set_variable = { resources_found_last_evolution_stage = constant:resources_found_event.evolution_i_stage }
+		set_state_flag = resources_found_evolution_i_repeat_package_applied
+		resources_found_refresh_field_record = yes
+		resources_found_end_field_transaction = yes
+	}
+	resources_found_release_acquired_field_transaction = yes
+}
+
+# STATE scope. Three to five 90..140 rolls for an Evolution II pre-fire opening.
+resources_found_apply_evolution_ii_prefire_package = {
+	resources_found_begin_field_transaction = yes
+	if = {
+		limit = { check_variable = { resources_found_transaction_acquired = constant:resources_found_value.one } resources_found_is_active_field = yes }
+		set_temp_variable = { resources_found_roll_min = constant:resources_found_deposit.evolution_ii_min }
+		set_temp_variable = { resources_found_roll_max = constant:resources_found_deposit.evolution_ii_max_exclusive }
+		set_temp_variable_to_random = {
+			var = resources_found_rolls_remaining
+			min = constant:resources_found_deposit.evolution_ii_prefire_rolls_min
+			max = constant:resources_found_deposit.evolution_ii_prefire_rolls_max_exclusive
+			integer = yes
+		}
+		resources_found_apply_random_roll_batch_unlocked = yes
+		add_to_variable = { resources_found_discovery_count = constant:resources_found_value.one }
+		add_to_variable = { resources_found_excavation_depth = constant:resources_found_field_value.evolution_ii_prefire_depth_gain }
+		add_to_variable = { resources_found_foreign_pressure = constant:resources_found_field_value.evolution_ii_prefire_pressure_gain }
+		add_to_variable = { resources_found_subsurface_disturbance = constant:resources_found_field_value.evolution_ii_prefire_disturbance_gain }
+		set_variable = { resources_found_last_evolution_stage = constant:resources_found_event.evolution_ii_stage }
+		set_state_flag = resources_found_evolution_ii_package_applied
+		resources_found_refresh_field_record = yes
+		resources_found_end_field_transaction = yes
+	}
+	resources_found_release_acquired_field_transaction = yes
+}
+
+# STATE scope. One to three 90..140 rolls for repeat Evolution II discoveries.
+resources_found_apply_evolution_ii_active_package = {
+	resources_found_begin_field_transaction = yes
+	if = {
+		limit = { check_variable = { resources_found_transaction_acquired = constant:resources_found_value.one } resources_found_is_active_field = yes }
+		set_temp_variable = { resources_found_roll_min = constant:resources_found_deposit.evolution_ii_min }
+		set_temp_variable = { resources_found_roll_max = constant:resources_found_deposit.evolution_ii_max_exclusive }
+		set_temp_variable_to_random = {
+			var = resources_found_rolls_remaining
+			min = constant:resources_found_deposit.evolution_ii_active_rolls_min
+			max = constant:resources_found_deposit.evolution_ii_active_rolls_max_exclusive
+			integer = yes
+		}
+		resources_found_apply_random_roll_batch_unlocked = yes
+		add_to_variable = { resources_found_discovery_count = constant:resources_found_value.one }
+		add_to_variable = { resources_found_excavation_depth = constant:resources_found_field_value.evolution_ii_active_depth_gain }
+		add_to_variable = { resources_found_foreign_pressure = constant:resources_found_field_value.evolution_ii_active_pressure_gain }
+		add_to_variable = { resources_found_subsurface_disturbance = constant:resources_found_field_value.evolution_ii_active_disturbance_gain }
+		set_variable = { resources_found_last_evolution_stage = constant:resources_found_event.evolution_ii_stage }
+		set_state_flag = resources_found_evolution_ii_repeat_package_applied
+		resources_found_refresh_field_record = yes
+		resources_found_end_field_transaction = yes
+	}
+	resources_found_release_acquired_field_transaction = yes
+}
+
+# STATE scope. Adds one independent 120..200 roll for every standard resource.
+resources_found_apply_evolution_iii_all_resources_package = {
+	resources_found_begin_field_transaction = yes
+	if = {
+		limit = { check_variable = { resources_found_transaction_acquired = constant:resources_found_value.one } resources_found_is_active_field = yes }
+		set_temp_variable = { resources_found_roll_min = constant:resources_found_deposit.evolution_iii_min }
+		set_temp_variable = { resources_found_roll_max = constant:resources_found_deposit.evolution_iii_max_exclusive }
+		set_temp_variable = { resources_found_roll_resource = constant:resources_found_resource.oil }
+		set_temp_variable_to_random = { var = resources_found_roll_amount min = resources_found_roll_min max = resources_found_roll_max integer = yes }
+		resources_found_add_selected_resource_unlocked = yes
+		set_temp_variable = { resources_found_roll_resource = constant:resources_found_resource.aluminium }
+		set_temp_variable_to_random = { var = resources_found_roll_amount min = resources_found_roll_min max = resources_found_roll_max integer = yes }
+		resources_found_add_selected_resource_unlocked = yes
+		set_temp_variable = { resources_found_roll_resource = constant:resources_found_resource.rubber }
+		set_temp_variable_to_random = { var = resources_found_roll_amount min = resources_found_roll_min max = resources_found_roll_max integer = yes }
+		resources_found_add_selected_resource_unlocked = yes
+		set_temp_variable = { resources_found_roll_resource = constant:resources_found_resource.tungsten }
+		set_temp_variable_to_random = { var = resources_found_roll_amount min = resources_found_roll_min max = resources_found_roll_max integer = yes }
+		resources_found_add_selected_resource_unlocked = yes
+		set_temp_variable = { resources_found_roll_resource = constant:resources_found_resource.steel }
+		set_temp_variable_to_random = { var = resources_found_roll_amount min = resources_found_roll_min max = resources_found_roll_max integer = yes }
+		resources_found_add_selected_resource_unlocked = yes
+		set_temp_variable = { resources_found_roll_resource = constant:resources_found_resource.chromium }
+		set_temp_variable_to_random = { var = resources_found_roll_amount min = resources_found_roll_min max = resources_found_roll_max integer = yes }
+		resources_found_add_selected_resource_unlocked = yes
+		add_to_variable = { resources_found_discovery_count = constant:resources_found_value.one }
+		add_to_variable = { resources_found_excavation_depth = constant:resources_found_field_value.evolution_iii_depth_gain }
+		add_to_variable = { resources_found_foreign_pressure = constant:resources_found_field_value.evolution_iii_pressure_gain }
+		add_to_variable = { resources_found_subsurface_disturbance = constant:resources_found_field_value.evolution_iii_disturbance_gain }
+		set_variable = { resources_found_last_evolution_stage = constant:resources_found_event.evolution_iii_stage }
+		set_state_flag = resources_found_all_six_resources_discovered
+		set_state_flag = resources_found_evolution_iii_package_applied
+		resources_found_refresh_field_record = yes
+		resources_found_end_field_transaction = yes
+	}
+	resources_found_release_acquired_field_transaction = yes
+}
+
+# STATE scope. Highest-enabled pre-fire package wins. Evolution IV deliberately
+# opens with the Evolution III all-resource package and timing flags only: it
+# does not set public breach, create a cave country, or bypass incident gates.
+resources_found_apply_prefire_opening_package = {
+	if = {
+		limit = { resources_found_is_evolution_iv_enabled = yes }
+		resources_found_apply_evolution_iii_all_resources_package = yes
+		set_state_flag = resources_found_compressed_opening
+		set_state_flag = resources_found_breach_prone_opening
+		set_variable = { resources_found_compressed_incident_minimum_date = global.date }
+		set_temp_variable = { resources_found_compressed_incident_delay = constant:resources_found_project_duration.compressed_incident_minimum_days }
+		add_to_variable = { resources_found_compressed_incident_minimum_date = resources_found_compressed_incident_delay }
+	}
+	else_if = {
+		limit = { resources_found_is_evolution_iii_enabled = yes }
+		resources_found_apply_evolution_iii_all_resources_package = yes
+	}
+	else_if = {
+		limit = { resources_found_is_evolution_ii_enabled = yes }
+		resources_found_apply_evolution_ii_prefire_package = yes
+	}
+	else_if = {
+		limit = { resources_found_is_evolution_i_enabled = yes }
+		resources_found_apply_evolution_i_prefire_package = yes
+	}
+	else = {
+		resources_found_apply_baseline_package = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Suspension, closure, contracts, commissions, borders, and transfer
+# ---------------------------------------------------------------------------
+
+# STATE scope.
+resources_found_suspend_field = {
+	if = {
+		limit = { resources_found_can_suspend_field = yes }
+		# Finalize the active extraction interval before the suspended clock
+		# begins. The stop helper is idempotent for callers that already did so.
+		resources_found_stop_maximum_extraction_tracking = yes
+		if = {
+			limit = { has_state_flag = resources_found_field_contract_active }
+			clr_state_flag = resources_found_field_contract_active
+			set_state_flag = resources_found_contracts_pending_review
+			set_state_flag = resources_found_contract_paused_by_suspension
+			set_variable = { resources_found_contract_stage = constant:resources_found_contract_stage.suspended }
+		}
+		set_state_flag = resources_found_field_suspended
+		set_variable = { resources_found_suspension_start_date = global.date }
+		set_variable = { resources_found_suspension_release_date = global.date }
+		set_temp_variable = { resources_found_suspension_delay = constant:resources_found_project_duration.suspension_minimum_days }
+		add_to_variable = { resources_found_suspension_release_date = resources_found_suspension_delay }
+		resources_found_refresh_field_record = yes
+	}
+}
+
+# STATE scope.
+resources_found_resume_field = {
+	if = {
+		limit = { resources_found_can_resume_field = yes }
+		if = {
+			limit = { has_variable = resources_found_suspension_start_date }
+			set_temp_variable = { resources_found_completed_suspension_days = global.date }
+			subtract_from_temp_variable = { resources_found_completed_suspension_days = resources_found_suspension_start_date }
+			add_to_variable = { resources_found_total_suspension_days = resources_found_completed_suspension_days }
+		}
+		add_to_variable = { resources_found_suspension_count = constant:resources_found_value.one }
+		clr_state_flag = resources_found_field_suspended
+		clear_variable = resources_found_suspension_start_date
+		clear_variable = resources_found_suspension_release_date
+		# Maximum shifts is a durable operating posture. Resumption opens a new
+		# extraction interval so suspended days never enter its evidence ledger.
+		if = {
+			limit = { has_state_flag = resources_found_maximum_shifts_active }
+			resources_found_start_maximum_extraction_tracking = yes
+		}
+		resources_found_refresh_field_record = yes
+	}
+}
+
+# STATE scope. Starts the timed decision/mission; its completion calls the
+# matching complete effect below.
+resources_found_begin_partial_closure = {
+	if = {
+		limit = { resources_found_can_begin_partial_closure = yes }
+		set_state_flag = resources_found_field_closing
+		set_state_flag = resources_found_partial_closure_active
+		set_variable = { resources_found_closure_started_date = global.date }
+	}
+}
+
+# STATE scope. Leaves every resource and exact ledger intact while restricting
+# the physical workings and reducing the risky field values.
+resources_found_complete_partial_closure = {
+	if = {
+		limit = {
+			resources_found_is_active_field = yes
+			has_state_flag = resources_found_partial_closure_active
+			NOT = { has_state_flag = resources_found_field_transaction_lock }
+		}
+		set_state_flag = resources_found_restricted_workings
+		clr_state_flag = resources_found_partial_closure_active
+		clr_state_flag = resources_found_field_closing
+		subtract_from_variable = { resources_found_developed_yield = constant:resources_found_field_value.partial_closure_yield_loss }
+		subtract_from_variable = { resources_found_excavation_depth = constant:resources_found_field_value.partial_closure_depth_loss }
+		subtract_from_variable = { resources_found_subsurface_disturbance = constant:resources_found_field_value.partial_closure_disturbance_loss }
+		subtract_from_variable = { resources_found_breach_pressure = constant:resources_found_field_value.partial_closure_breach_loss }
+		add_to_variable = { resources_found_partial_closure_count = constant:resources_found_value.one }
+		set_variable = { resources_found_last_closure_date = global.date }
+		resources_found_refresh_field_record = yes
+	}
+}
+
+# STATE scope.
+resources_found_begin_full_seal = {
+	if = {
+		limit = { resources_found_can_begin_full_seal = yes }
+		if = {
+			limit = { NOT = { has_state_flag = resources_found_field_suspended } }
+			resources_found_suspend_field = yes
+		}
+		set_state_flag = resources_found_field_closing
+		set_state_flag = resources_found_full_seal_active
+		set_variable = { resources_found_closure_started_date = global.date }
+	}
+}
+
+# STATE scope. Clears all reusable diplomacy/incident state without firing any
+# event. This is intentionally called by exact full sealing and cave conversion.
+resources_found_clear_field_diplomacy_and_incidents = {
+	# Resource rights are an engine-level relationship and must be removed before
+	# the partner variables below are cleared by closure or cave conversion.
+	resources_found_remove_field_resource_rights = yes
+	set_demilitarized_zone = no
+	resources_found_clear_field_output_stage_modifiers = yes
+	if = { limit = { has_dynamic_modifier = { modifier = resources_found_compound_corridor } } remove_dynamic_modifier = { modifier = resources_found_compound_corridor } }
+	if = { limit = { has_dynamic_modifier = { modifier = resources_found_demilitarized_commission } } remove_dynamic_modifier = { modifier = resources_found_demilitarized_commission } }
+	if = { limit = { has_dynamic_modifier = { modifier = resources_found_public_breach } } remove_dynamic_modifier = { modifier = resources_found_public_breach } }
+	clr_state_flag = resources_found_field_contract_active
+	clr_state_flag = resources_found_contracts_pending_review
+	clr_state_flag = resources_found_contract_paused_by_suspension
+	clr_state_flag = resources_found_contract_interrupted_by_control
+	clr_state_flag = resources_found_contract_partner_removed
+	clr_state_flag = resources_found_concession_partner_removed
+	clr_state_flag = resources_found_commission_sponsor_removed
+	clr_state_flag = resources_found_border_claimant_removed
+	clr_state_flag = resources_found_commission_active
+	clr_state_flag = resources_found_commission_violation
+	clr_state_flag = resources_found_mapped_border_dispute
+	clr_state_flag = resources_found_frontier_conditions_met
+	clr_state_flag = resources_found_claimant_military_ready
+	clr_state_flag = resources_found_owner_military_ready
+	clr_state_flag = resources_found_public_breach
+	clr_state_flag = resources_found_breach_incident_pending
+	clr_state_flag = resources_found_evolution_iii_incident_sequence_complete
+	clr_state_flag = resources_found_emergency_seal_active
+	clr_state_flag = resources_found_evolution_ii_closure_requested
+	clr_state_flag = resources_found_full_seal_followup
+	clr_state_flag = resources_found_full_seal_retry_requested
+	clear_variable = resources_found_contract_partner
+	clear_variable = resources_found_concession_partner
+	clear_variable = resources_found_commission_sponsor
+	clear_variable = resources_found_border_claimant
+	set_variable = { resources_found_contract_stage = constant:resources_found_contract_stage.terminated }
+	set_variable = { resources_found_commission_stage = constant:resources_found_commission_stage.dissolved }
+	set_variable = { resources_found_border_stage = constant:resources_found_border_stage.settlement }
+	force_update_dynamic_modifier = yes
+}
+
+# STATE scope. Requires a regular event target named
+# resources_found_contract_partner_target.
+resources_found_activate_contract = {
+	if = {
+		limit = {
+			resources_found_field_can_accept_contract = yes
+			has_event_target = resources_found_contract_partner_target
+			event_target:resources_found_contract_partner_target = {
+				exists = yes
+				NOT = { is_special_chaos_country = yes }
+				NOT = { is_actual_nonhuman_country = yes }
+			}
+		}
+		set_variable = { resources_found_contract_partner = event_target:resources_found_contract_partner_target }
+		set_variable = { resources_found_contract_stage = constant:resources_found_contract_stage.active }
+		set_variable = { resources_found_contract_started_date = global.date }
+		set_state_flag = resources_found_field_contract_active
+		clr_state_flag = resources_found_contracts_pending_review
+		clr_state_flag = resources_found_contract_paused_by_suspension
+		clr_state_flag = resources_found_contract_interrupted_by_control
+		clr_state_flag = resources_found_contract_partner_removed
+		resources_found_refresh_field_ai_weights = yes
+	}
+}
+
+# STATE scope. Requires event target resources_found_commission_sponsor_target.
+resources_found_activate_commission = {
+	if = {
+		limit = {
+			resources_found_can_propose_commission = yes
+			has_event_target = resources_found_commission_sponsor_target
+			event_target:resources_found_commission_sponsor_target = { exists = yes }
+		}
+		set_variable = { resources_found_commission_sponsor = event_target:resources_found_commission_sponsor_target }
+		set_variable = { resources_found_commission_stage = constant:resources_found_commission_stage.active }
+		set_variable = { resources_found_commission_started_date = global.date }
+		set_state_flag = resources_found_commission_active
+		clr_state_flag = resources_found_commission_violation
+	}
+}
+
+# STATE scope. Requires event target resources_found_border_claimant_target.
+resources_found_begin_border_crisis = {
+	if = {
+		limit = {
+			has_event_target = resources_found_border_claimant_target
+			NOT = { has_state_flag = resources_found_field_closing }
+		}
+		set_variable = { resources_found_border_claimant = event_target:resources_found_border_claimant_target }
+		if = {
+			limit = { resources_found_can_enter_border_crisis = yes }
+			set_variable = { resources_found_border_stage = constant:resources_found_border_stage.competing_surveys }
+			set_variable = { resources_found_border_stage_date = global.date }
+			set_state_flag = resources_found_mapped_border_dispute
+		}
+		else = { clear_variable = resources_found_border_claimant }
+	}
+}
+
+# STATE scope. Performs the only permitted resource inverse. If another system
+# has reduced a resource below the Event 018 ledger, nothing is subtracted and a
+# reconciliation flag is raised for an explicit caller-owned resolution.
+resources_found_complete_full_seal = {
+	resources_found_begin_field_transaction = yes
+	if = {
+		limit = {
+			check_variable = { resources_found_transaction_acquired = constant:resources_found_value.one }
+			resources_found_is_active_field = yes
+			resources_found_has_event_resource_ledger = yes
+			has_state_flag = resources_found_field_suspended
+			has_state_flag = resources_found_full_seal_requirements_met
+			is_owned_and_controlled_by = OWNER
+			NOT = { has_state_flag = resources_found_field_converted_to_cave_origin }
+		}
+		if = {
+			limit = { resources_found_resource_ledger_is_exactly_reversible = yes }
+			resources_found_record_full_seal_achievement_state = yes
+			set_variable = { resources_found_sealed_total = resources_found_total_added }
+			set_variable = { resources_found_sealed_oil = resources_found_added_oil }
+			set_variable = { resources_found_sealed_aluminium = resources_found_added_aluminium }
+			set_variable = { resources_found_sealed_rubber = resources_found_added_rubber }
+			set_variable = { resources_found_sealed_tungsten = resources_found_added_tungsten }
+			set_variable = { resources_found_sealed_steel = resources_found_added_steel }
+			set_variable = { resources_found_sealed_chromium = resources_found_added_chromium }
+
+			set_temp_variable = { resources_found_inverse_amount = resources_found_added_oil }
+			multiply_temp_variable = { resources_found_inverse_amount = constant:resources_found_value.negative_one }
+			add_resource = { type = oil amount = resources_found_inverse_amount }
+			set_temp_variable = { resources_found_inverse_amount = resources_found_added_aluminium }
+			multiply_temp_variable = { resources_found_inverse_amount = constant:resources_found_value.negative_one }
+			add_resource = { type = aluminium amount = resources_found_inverse_amount }
+			set_temp_variable = { resources_found_inverse_amount = resources_found_added_rubber }
+			multiply_temp_variable = { resources_found_inverse_amount = constant:resources_found_value.negative_one }
+			add_resource = { type = rubber amount = resources_found_inverse_amount }
+			set_temp_variable = { resources_found_inverse_amount = resources_found_added_tungsten }
+			multiply_temp_variable = { resources_found_inverse_amount = constant:resources_found_value.negative_one }
+			add_resource = { type = tungsten amount = resources_found_inverse_amount }
+			set_temp_variable = { resources_found_inverse_amount = resources_found_added_steel }
+			multiply_temp_variable = { resources_found_inverse_amount = constant:resources_found_value.negative_one }
+			add_resource = { type = steel amount = resources_found_inverse_amount }
+			set_temp_variable = { resources_found_inverse_amount = resources_found_added_chromium }
+			multiply_temp_variable = { resources_found_inverse_amount = constant:resources_found_value.negative_one }
+			add_resource = { type = chromium amount = resources_found_inverse_amount }
+
+			set_variable = { resources_found_added_oil = constant:resources_found_value.zero }
+			set_variable = { resources_found_added_aluminium = constant:resources_found_value.zero }
+			set_variable = { resources_found_added_rubber = constant:resources_found_value.zero }
+			set_variable = { resources_found_added_tungsten = constant:resources_found_value.zero }
+			set_variable = { resources_found_added_steel = constant:resources_found_value.zero }
+			set_variable = { resources_found_added_chromium = constant:resources_found_value.zero }
+			resources_found_recalculate_resource_summary = yes
+			resources_found_clear_field_diplomacy_and_incidents = yes
+
+			# Make the closing record ineligible before rebuilding the owner's
+			# selected-field pointer, otherwise validation can select THIS again.
+			clr_state_flag = resources_found_field_active
+			save_event_target_as = resources_found_unbinding_state
+			if = {
+				limit = { has_variable = resources_found_recorded_owner }
+				var:resources_found_recorded_owner = {
+					set_variable = { resources_found_last_closed_field = event_target:resources_found_unbinding_state }
+					set_country_flag = resources_found_gui_closed_history_view
+					resources_found_remove_field_from_country_registry = yes
+				}
+			}
+			clr_state_flag = resources_found_field_closing
+			clr_state_flag = resources_found_full_seal_active
+			clr_state_flag = resources_found_emergency_seal_active
+			clr_state_flag = resources_found_full_seal_requirements_met
+			clr_state_flag = resources_found_final_closure_window
+			set_state_flag = resources_found_field_closed_permanently
+			set_state_flag = resources_found_evolution_iv_prevented
+			set_state_flag = resources_found_exact_ledger_reversed
+			set_variable = { resources_found_field_stage = constant:resources_found_field_stage.closure }
+			set_variable = { resources_found_full_seal_date = global.date }
+			clr_state_flag = resources_found_full_seal_reconciliation_needed
+		}
+		else = {
+			set_state_flag = resources_found_full_seal_reconciliation_needed
+		}
+		resources_found_end_field_transaction = yes
+	}
+	resources_found_release_acquired_field_transaction = yes
+}
+
+# STATE scope. Call from an ownership-transfer hook after the engine has changed
+# OWNER. It removes the old country registry entry, preserves all physical state
+# variables and resource ledgers, binds the new owner, and pauses diplomacy for
+# explicit review.
+resources_found_handle_field_ownership_transfer = {
+	if = {
+		limit = {
+			OR = {
+				resources_found_is_active_field = yes
+				has_state_flag = resources_found_field_suspended
+			}
+			OWNER = { exists = yes }
+		}
+		save_event_target_as = resources_found_unbinding_state
+		# Resource rights are owned by the previous field-owner relationship. Remove
+		# the engine grant before rebinding; review or renegotiation may grant a new
+		# relationship explicitly after the transfer.
+		resources_found_remove_field_resource_rights = yes
+		if = {
+			limit = { has_state_flag = resources_found_dispute_settlement_qualifying }
+			set_state_flag = resources_found_dispute_owner_changed
+		}
+		if = {
+			limit = { has_variable = resources_found_recorded_owner }
+			var:resources_found_recorded_owner = { resources_found_remove_field_from_country_registry = yes }
+		}
+		set_variable = { resources_found_recorded_owner = OWNER }
+		set_variable = { resources_found_recorded_controller = CONTROLLER }
+		set_variable = { resources_found_last_transfer_date = global.date }
+		add_to_variable = { resources_found_transfer_count = constant:resources_found_value.one }
+		if = {
+			limit = {
+				OR = {
+					has_variable = resources_found_contract_partner
+					has_variable = resources_found_concession_partner
+					has_variable = resources_found_commission_sponsor
+					has_variable = resources_found_border_claimant
+				}
+			}
+			set_state_flag = resources_found_contracts_pending_review
+			set_variable = { resources_found_contract_stage = constant:resources_found_contract_stage.pending_review }
+			clr_state_flag = resources_found_field_contract_active
+		}
+		resources_found_bind_field_to_owner = yes
+		resources_found_register_field_achievement_owner = yes
+		resources_found_refresh_field_record = yes
+	}
+}
+
+# STATE scope. Call from control-change hooks; it does not rebind ownership.
+resources_found_handle_field_control_change = {
+	if = {
+		limit = { resources_found_is_active_field = yes }
+		set_variable = { resources_found_recorded_controller = CONTROLLER }
+		set_variable = { resources_found_last_control_change_date = global.date }
+		if = {
+			limit = { NOT = { is_owned_and_controlled_by = OWNER } }
+			set_state_flag = resources_found_field_control_disrupted
+			if = {
+				limit = { has_state_flag = resources_found_dispute_settlement_qualifying }
+				set_state_flag = resources_found_dispute_control_disrupted
+			}
+			set_state_flag = resources_found_contracts_pending_review
+			if = {
+				limit = { has_state_flag = resources_found_field_contract_active }
+				clr_state_flag = resources_found_field_contract_active
+				set_state_flag = resources_found_contract_interrupted_by_control
+				set_variable = { resources_found_contract_stage = constant:resources_found_contract_stage.pending_review }
+			}
+		}
+		else = { clr_state_flag = resources_found_field_control_disrupted }
+	}
+}
+
+# STATE scope. Requires regular event target resources_found_removed_actor.
+# Annexation cleanup terminates or reviews only the relationships held by the
+# removed country and preserves the physical field record.
+resources_found_handle_removed_foreign_actor = {
+	if = {
+		limit = {
+			has_event_target = resources_found_removed_actor
+			has_variable = resources_found_contract_partner
+			check_variable = { var = resources_found_contract_partner value = event_target:resources_found_removed_actor compare = equals }
+		}
+		clear_variable = resources_found_contract_partner
+		clr_state_flag = resources_found_field_contract_active
+		clr_state_flag = resources_found_contracts_pending_review
+		set_state_flag = resources_found_contract_partner_removed
+		set_variable = { resources_found_contract_stage = constant:resources_found_contract_stage.terminated }
+	}
+	if = {
+		limit = {
+			has_event_target = resources_found_removed_actor
+			has_variable = resources_found_concession_partner
+			check_variable = { var = resources_found_concession_partner value = event_target:resources_found_removed_actor compare = equals }
+		}
+		clear_variable = resources_found_concession_partner
+		set_state_flag = resources_found_concession_partner_removed
+	}
+	if = {
+		limit = {
+			has_event_target = resources_found_removed_actor
+			has_variable = resources_found_commission_sponsor
+			check_variable = { var = resources_found_commission_sponsor value = event_target:resources_found_removed_actor compare = equals }
+		}
+		clear_variable = resources_found_commission_sponsor
+		clr_state_flag = resources_found_commission_active
+		clr_state_flag = resources_found_commission_violation
+		set_state_flag = resources_found_commission_sponsor_removed
+		set_variable = { resources_found_commission_stage = constant:resources_found_commission_stage.dissolved }
+	}
+	if = {
+		limit = {
+			has_event_target = resources_found_removed_actor
+			has_variable = resources_found_border_claimant
+			check_variable = { var = resources_found_border_claimant value = event_target:resources_found_removed_actor compare = equals }
+		}
+		clear_variable = resources_found_border_claimant
+		clr_state_flag = resources_found_mapped_border_dispute
+		clr_state_flag = resources_found_border_war_active
+		set_state_flag = resources_found_border_claimant_removed
+		set_variable = { resources_found_border_stage = constant:resources_found_border_stage.settlement }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Cave origin, captured-state capacity, starting strength, and terminal verify
+# ---------------------------------------------------------------------------
+
+# STATE scope. Outputs state variable resources_found_cave_origin_continent,
+# using the numeric mirror of vanilla map/continent.txt.
+resources_found_resolve_state_continent_enum = {
+	set_variable = { resources_found_cave_origin_continent = constant:resources_found_continent.none }
+	if = { limit = { is_on_continent = europe } set_variable = { resources_found_cave_origin_continent = constant:resources_found_continent.europe } }
+	else_if = { limit = { is_on_continent = north_america } set_variable = { resources_found_cave_origin_continent = constant:resources_found_continent.north_america } }
+	else_if = { limit = { is_on_continent = south_america } set_variable = { resources_found_cave_origin_continent = constant:resources_found_continent.south_america } }
+	else_if = { limit = { is_on_continent = australia } set_variable = { resources_found_cave_origin_continent = constant:resources_found_continent.australia } }
+	else_if = { limit = { is_on_continent = africa } set_variable = { resources_found_cave_origin_continent = constant:resources_found_continent.africa } }
+	else_if = { limit = { is_on_continent = asia } set_variable = { resources_found_cave_origin_continent = constant:resources_found_continent.asia } }
+	else_if = { limit = { is_on_continent = middle_east } set_variable = { resources_found_cave_origin_continent = constant:resources_found_continent.middle_east } }
+}
+
+# STATE scope. Requires persistent global event target
+# resources_found_cave_country. The parent cave-creation effect must create and
+# save that target before calling this core recorder.
+resources_found_record_cave_origin = {
+	if = {
+		limit = {
+			has_event_target = resources_found_cave_country
+			event_target:resources_found_cave_country = {
+				has_country_flag = resources_found_cave_country_created
+				NOT = { has_variable = resources_found_cave_origin_state }
+			}
+			NOT = { has_state_flag = resources_found_field_closed_permanently }
+		}
+		resources_found_resolve_state_continent_enum = yes
+		save_event_target_as = resources_found_cave_origin_state_target
+		save_event_target_as = resources_found_unbinding_state
+		set_variable = { resources_found_cave_breach_owner = OWNER }
+		set_variable = { resources_found_cave_breach_controller = CONTROLLER }
+		# The former owner must not reselect the converting field while its
+		# registry entry is removed and before state transfer completes.
+		clr_state_flag = resources_found_field_active
+		if = {
+			limit = { has_variable = resources_found_recorded_owner }
+			var:resources_found_recorded_owner = { resources_found_remove_field_from_country_registry = yes }
+		}
+		resources_found_clear_field_diplomacy_and_incidents = yes
+		set_state_flag = resources_found_cave_origin
+		set_state_flag = resources_found_field_converted_to_cave_origin
+		clr_state_flag = resources_found_field_suspended
+		clr_state_flag = resources_found_field_closing
+		set_variable = { resources_found_cave_emergence_date = global.date }
+		event_target:resources_found_cave_country = {
+			set_country_flag = resources_found_cave_country
+			set_variable = { resources_found_cave_origin_state = event_target:resources_found_cave_origin_state_target }
+			set_variable = { resources_found_cave_origin_continent = event_target:resources_found_cave_origin_state_target.resources_found_cave_origin_continent }
+			set_variable = { resources_found_cave_origin_field_sequence = event_target:resources_found_cave_origin_state_target.resources_found_field_sequence }
+			set_variable = { resources_found_cave_origin_discoverer = event_target:resources_found_cave_origin_state_target.resources_found_discoverer }
+			set_variable = { resources_found_cave_origin_owner = event_target:resources_found_cave_origin_state_target.resources_found_cave_breach_owner }
+			set_variable = { resources_found_cave_origin_controller = event_target:resources_found_cave_origin_state_target.resources_found_cave_breach_controller }
+			set_variable = { resources_found_cave_origin_exploitation_score = event_target:resources_found_cave_origin_state_target.resources_found_exploitation_score }
+			set_variable = { resources_found_cave_origin_added_oil = event_target:resources_found_cave_origin_state_target.resources_found_added_oil }
+			set_variable = { resources_found_cave_origin_added_aluminium = event_target:resources_found_cave_origin_state_target.resources_found_added_aluminium }
+			set_variable = { resources_found_cave_origin_added_rubber = event_target:resources_found_cave_origin_state_target.resources_found_added_rubber }
+			set_variable = { resources_found_cave_origin_added_tungsten = event_target:resources_found_cave_origin_state_target.resources_found_added_tungsten }
+			set_variable = { resources_found_cave_origin_added_steel = event_target:resources_found_cave_origin_state_target.resources_found_added_steel }
+			set_variable = { resources_found_cave_origin_added_chromium = event_target:resources_found_cave_origin_state_target.resources_found_added_chromium }
+			set_variable = { resources_found_cave_emergence_date = global.date }
+		}
+		var:resources_found_cave_breach_owner = {
+			if = {
+				limit = { is_ai = no }
+				event_target:resources_found_cave_country = { set_country_flag = resources_found_cave_origin_owner_was_player }
+			}
+		}
+		set_global_flag = resources_found_cave_country_active
+	}
+}
+
+# STATE scope. Exact floor(total standard resources / 10), capped at 10. Cave
+# origins always output zero future capacity. Parent spawn logic consumes
+# resources_found_captured_state_capacity and owns activation/grace timers.
+resources_found_refresh_captured_state_capacity = {
+	set_variable = { resources_found_capacity_source_total = resource@oil }
+	add_to_variable = { resources_found_capacity_source_total = resource@aluminium }
+	add_to_variable = { resources_found_capacity_source_total = resource@rubber }
+	add_to_variable = { resources_found_capacity_source_total = resource@tungsten }
+	add_to_variable = { resources_found_capacity_source_total = resource@steel }
+	add_to_variable = { resources_found_capacity_source_total = resource@chromium }
+	set_temp_variable = { resources_found_capacity_remainder = resources_found_capacity_source_total }
+	set_temp_variable = { resources_found_capacity_result = constant:resources_found_value.zero }
+	while = {
+		limit = {
+			check_variable = { var = resources_found_capacity_remainder value = constant:resources_found_capacity.resources_per_division compare = greater_than_or_equals }
+			check_variable = { resources_found_capacity_result < constant:resources_found_capacity.per_state_cap }
+		}
+		subtract_from_temp_variable = { resources_found_capacity_remainder = constant:resources_found_capacity.resources_per_division }
+		add_to_temp_variable = { resources_found_capacity_result = constant:resources_found_value.one }
+	}
+	if = {
+		limit = { resources_found_is_cave_origin_state = yes }
+		set_temp_variable = { resources_found_capacity_result = constant:resources_found_capacity.origin_future_capacity }
+	}
+	set_variable = { resources_found_captured_state_capacity = resources_found_capacity_result }
+	set_variable = { resources_found_capacity_last_refresh_date = global.date }
+}
+
+# STATE scope. Starts an exact maximum-extraction interval without resetting an
+# interval that is already active. The project completion hook owns the call.
+resources_found_start_maximum_extraction_tracking = {
+	if = {
+		limit = { NOT = { has_variable = resources_found_maximum_extraction_start_date } }
+		set_variable = { resources_found_maximum_extraction_start_date = global.date }
+	}
+}
+
+# STATE scope. Ends an exact maximum-extraction interval and preserves its days.
+# Regulated output, suspension, and closure hooks own the call.
+resources_found_stop_maximum_extraction_tracking = {
+	if = {
+		limit = { has_variable = resources_found_maximum_extraction_start_date }
+		set_temp_variable = { resources_found_completed_maximum_extraction_days = global.date }
+		subtract_from_temp_variable = { resources_found_completed_maximum_extraction_days = resources_found_maximum_extraction_start_date }
+		clamp_temp_variable = { var = resources_found_completed_maximum_extraction_days min = constant:resources_found_value.zero }
+		add_to_variable = { resources_found_maximum_extraction_days = resources_found_completed_maximum_extraction_days }
+		clear_variable = resources_found_maximum_extraction_start_date
+	}
+	resources_found_finalize_maximum_extraction_duration = yes
+}
+
+# STATE scope. Derives capped scoring months from completed days plus any live
+# interval. This is idempotent and does not end an active extraction interval.
+resources_found_finalize_maximum_extraction_duration = {
+	set_temp_variable = { resources_found_scored_maximum_extraction_days = constant:resources_found_value.zero }
+	if = {
+		limit = { has_variable = resources_found_maximum_extraction_days }
+		set_temp_variable = { resources_found_scored_maximum_extraction_days = resources_found_maximum_extraction_days }
+	}
+	if = {
+		limit = { has_variable = resources_found_maximum_extraction_start_date }
+		set_temp_variable = { resources_found_live_maximum_extraction_days = global.date }
+		subtract_from_temp_variable = { resources_found_live_maximum_extraction_days = resources_found_maximum_extraction_start_date }
+		clamp_temp_variable = { var = resources_found_live_maximum_extraction_days min = constant:resources_found_value.zero }
+		add_to_temp_variable = { resources_found_scored_maximum_extraction_days = resources_found_live_maximum_extraction_days }
+	}
+	divide_temp_variable = { resources_found_scored_maximum_extraction_days = constant:resources_found_strength.maximum_extraction_month_days }
+	clamp_temp_variable = {
+		var = resources_found_scored_maximum_extraction_days
+		min = constant:resources_found_value.zero
+		max = constant:resources_found_strength.maximum_extraction_score_months
+	}
+	set_variable = { resources_found_maximum_extraction_months = resources_found_scored_maximum_extraction_days }
+}
+
+# STATE cave-origin scope. Requires resources_found_cave_country event target.
+# Normalizes the mandatory six-resource package, scores persistent exploitation
+# and mitigation history, converts each complete five score points to one
+# division, adds the minimum six, and hard-caps both score and result at 30.
+resources_found_calculate_cave_starting_strength = {
+	save_event_target_as = resources_found_strength_origin_state
+	resources_found_recalculate_resource_summary = yes
+	resources_found_finalize_maximum_extraction_duration = yes
+	set_temp_variable = { resources_found_strength_score = resources_found_total_added }
+	subtract_from_temp_variable = { resources_found_strength_score = constant:resources_found_strength.mandatory_package_resource_floor }
+	clamp_temp_variable = { var = resources_found_strength_score min = constant:resources_found_value.zero }
+	divide_temp_variable = { resources_found_strength_score = constant:resources_found_strength.resource_score_divisor }
+	multiply_temp_variable = { resources_found_strength_score = constant:resources_found_strength_factor.resource_units }
+
+	set_temp_variable = { resources_found_strength_component = resources_found_distinct_resource_count }
+	multiply_temp_variable = { resources_found_strength_component = constant:resources_found_strength_factor.distinct_resource }
+	add_to_temp_variable = { resources_found_strength_score = resources_found_strength_component }
+	set_temp_variable = { resources_found_strength_component = resources_found_discovery_count }
+	subtract_from_temp_variable = { resources_found_strength_component = constant:resources_found_strength.free_discovery_count }
+	clamp_temp_variable = { var = resources_found_strength_component min = constant:resources_found_value.zero }
+	multiply_temp_variable = { resources_found_strength_component = constant:resources_found_strength_factor.discovery }
+	add_to_temp_variable = { resources_found_strength_score = resources_found_strength_component }
+	set_temp_variable = { resources_found_strength_component = resources_found_maximum_developed_yield }
+	multiply_temp_variable = { resources_found_strength_component = constant:resources_found_strength_factor.maximum_yield }
+	add_to_temp_variable = { resources_found_strength_score = resources_found_strength_component }
+	set_temp_variable = { resources_found_strength_component = resources_found_maximum_excavation_depth }
+	multiply_temp_variable = { resources_found_strength_component = constant:resources_found_strength_factor.maximum_depth }
+	add_to_temp_variable = { resources_found_strength_score = resources_found_strength_component }
+	set_temp_variable = { resources_found_strength_component = resources_found_maximum_extraction_months }
+	multiply_temp_variable = { resources_found_strength_component = constant:resources_found_strength_factor.maximum_extraction_month }
+	add_to_temp_variable = { resources_found_strength_score = resources_found_strength_component }
+	if = {
+		limit = { has_variable = resources_found_field_deaths }
+		set_temp_variable = { resources_found_strength_component = resources_found_field_deaths }
+		divide_temp_variable = { resources_found_strength_component = constant:resources_found_strength.death_score_divisor }
+		multiply_temp_variable = { resources_found_strength_component = constant:resources_found_strength_factor.field_deaths }
+		add_to_temp_variable = { resources_found_strength_score = resources_found_strength_component }
+	}
+	if = { limit = { has_state_flag = resources_found_failed_full_seal } add_to_temp_variable = { resources_found_strength_score = constant:resources_found_strength_factor.failed_full_seal } }
+	if = { limit = { has_state_flag = resources_found_military_exploitation } add_to_temp_variable = { resources_found_strength_score = constant:resources_found_strength_factor.military_exploitation } }
+	if = { limit = { has_state_flag = resources_found_unsealed_nest } add_to_temp_variable = { resources_found_strength_score = constant:resources_found_strength_factor.unsealed_nest } }
+
+	set_temp_variable = { resources_found_strength_component = resources_found_workforce_safety }
+	subtract_from_temp_variable = { resources_found_strength_component = constant:resources_found_strength.safety_reduction_floor }
+	clamp_temp_variable = { var = resources_found_strength_component min = constant:resources_found_value.zero }
+	multiply_temp_variable = { resources_found_strength_component = constant:resources_found_strength_factor.workforce_safety_reduction }
+	subtract_from_temp_variable = { resources_found_strength_score = resources_found_strength_component }
+	if = { limit = { has_state_flag = resources_found_successful_evacuation } subtract_from_temp_variable = { resources_found_strength_score = constant:resources_found_strength_factor.successful_evacuation_reduction } }
+	if = { limit = { has_state_flag = resources_found_sealed_network } subtract_from_temp_variable = { resources_found_strength_score = constant:resources_found_strength_factor.sealed_network_reduction } }
+	set_temp_variable = { resources_found_strength_component = constant:resources_found_value.zero }
+	if = {
+		limit = { has_variable = resources_found_total_suspension_days }
+		set_temp_variable = { resources_found_strength_component = resources_found_total_suspension_days }
+	}
+	if = {
+		limit = { has_variable = resources_found_suspension_start_date }
+		set_temp_variable = { resources_found_live_suspension_days = global.date }
+		subtract_from_temp_variable = { resources_found_live_suspension_days = resources_found_suspension_start_date }
+		clamp_temp_variable = { var = resources_found_live_suspension_days min = constant:resources_found_value.zero }
+		add_to_temp_variable = { resources_found_strength_component = resources_found_live_suspension_days }
+	}
+	divide_temp_variable = { resources_found_strength_component = constant:resources_found_strength.suspension_score_divisor_days }
+	clamp_temp_variable = { var = resources_found_strength_component min = constant:resources_found_value.zero max = constant:resources_found_strength.maximum_suspension_score_periods }
+	multiply_temp_variable = { resources_found_strength_component = constant:resources_found_strength_factor.long_suspension_reduction }
+	subtract_from_temp_variable = { resources_found_strength_score = resources_found_strength_component }
+	if = {
+		limit = { has_variable = resources_found_successful_hunts }
+		set_temp_variable = { resources_found_strength_component = resources_found_successful_hunts }
+		clamp_temp_variable = { var = resources_found_strength_component min = constant:resources_found_value.zero max = constant:resources_found_strength.maximum_hunts_scored }
+		multiply_temp_variable = { resources_found_strength_component = constant:resources_found_strength_factor.successful_hunt_reduction }
+		subtract_from_temp_variable = { resources_found_strength_score = resources_found_strength_component }
+	}
+	clamp_temp_variable = { var = resources_found_strength_score min = constant:resources_found_value.zero max = constant:resources_found_strength.maximum_score }
+
+	set_temp_variable = { resources_found_strength_remainder = resources_found_strength_score }
+	set_temp_variable = { resources_found_strength_divisions = constant:resources_found_strength.minimum_divisions }
+	while = {
+		limit = {
+			check_variable = { var = resources_found_strength_remainder value = constant:resources_found_strength.score_per_division compare = greater_than_or_equals }
+			check_variable = { resources_found_strength_divisions < constant:resources_found_strength.maximum_divisions }
+		}
+		subtract_from_temp_variable = { resources_found_strength_remainder = constant:resources_found_strength.score_per_division }
+		add_to_temp_variable = { resources_found_strength_divisions = constant:resources_found_value.one }
+	}
+	set_variable = { resources_found_cave_starting_score = resources_found_strength_score }
+	set_variable = { resources_found_cave_starting_divisions = resources_found_strength_divisions }
+	if = {
+		limit = {
+			has_event_target = resources_found_cave_country
+			event_target:resources_found_cave_country = { has_country_flag = resources_found_cave_country_created }
+		}
+		event_target:resources_found_cave_country = {
+			set_variable = { resources_found_cave_starting_score = event_target:resources_found_strength_origin_state.resources_found_cave_starting_score }
+			set_variable = { resources_found_cave_starting_divisions = event_target:resources_found_strength_origin_state.resources_found_cave_starting_divisions }
+		}
+	}
+}
+
+# COUNTRY scope. Clears externally maintained exact-scan inputs. The cave layer
+# must rebuild and mark them ready from explicit state-transfer/control hooks or
+# a caller-owned one-shot verification scan; this core file performs no pulse.
+resources_found_reset_world_end_verification_inputs = {
+	set_variable = { resources_found_continent_eligible_state_count = constant:resources_found_value.zero }
+	set_variable = { resources_found_continent_scanned_state_count = constant:resources_found_value.zero }
+	set_variable = { resources_found_continent_owned_state_count = constant:resources_found_value.zero }
+	set_variable = { resources_found_continent_controlled_state_count = constant:resources_found_value.zero }
+	set_variable = { resources_found_continent_owned_controlled_state_count = constant:resources_found_value.zero }
+	set_variable = { resources_found_continent_remaining_state_count = constant:resources_found_value.zero }
+	set_variable = { resources_found_valid_foothold_count = constant:resources_found_value.zero }
+	clr_country_flag = resources_found_continent_registry_ready
+	clr_country_flag = resources_found_foothold_registry_ready
+	clr_country_flag = resources_found_continent_scan_mismatch
+	clr_country_flag = resources_found_foothold_registry_mismatch
+}
+
+# COUNTRY scope. Sets/clears the near-control presentation/action flag from the
+# exact remaining-state input maintained by the cave layer.
+resources_found_refresh_near_control_status = {
+	clr_country_flag = resources_found_world_end_near_control
+	if = {
+		limit = {
+			has_variable = resources_found_continent_remaining_state_count
+			check_variable = { var = resources_found_continent_remaining_state_count value = constant:resources_found_world_end.near_control_remaining_states compare = less_than_or_equals }
+			check_variable = { resources_found_continent_remaining_state_count > constant:resources_found_value.zero }
+		}
+		set_country_flag = resources_found_world_end_near_control
+	}
+}
+
+# COUNTRY scope. Starts a reversible 60-day verification only after the exact
+# input triggers pass. Completion rechecks the same inputs.
+resources_found_start_world_end_verification = {
+	if = {
+		limit = { resources_found_can_start_world_end_verification = yes }
+		set_country_flag = resources_found_world_end_verification_active
+		clr_country_flag = resources_found_world_end_verification_complete
+		set_variable = { resources_found_world_end_verification_date = global.date }
+		set_temp_variable = { resources_found_world_end_verification_delay = constant:resources_found_world_end.verification_days }
+		add_to_variable = { resources_found_world_end_verification_date = resources_found_world_end_verification_delay }
+	}
+}
+
+# COUNTRY scope.
+resources_found_cancel_world_end_verification = {
+	if = {
+		limit = { has_country_flag = resources_found_world_end_verification_active }
+		clr_country_flag = resources_found_world_end_verification_active
+		clear_variable = resources_found_world_end_verification_date
+		add_to_variable = { resources_found_world_end_verification_cancellations = constant:resources_found_value.one }
+	}
+}
+
+# COUNTRY scope. Marks exact verification complete but deliberately does not set
+# the shared world_end flag; the parent Event 018 terminal event owns that write.
+resources_found_complete_world_end_verification = {
+	if = {
+		limit = { resources_found_world_end_verification_complete = yes }
+		clr_country_flag = resources_found_world_end_verification_active
+		set_country_flag = resources_found_world_end_verification_complete
+		set_variable = { resources_found_world_end_verified_date = global.date }
+	}
+}

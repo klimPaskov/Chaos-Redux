@@ -22,6 +22,7 @@ event_log_event_is_reworked_default_enabled = {
 		check_variable = { event_id = 13 }
 		check_variable = { event_id = 14 }
 		check_variable = { event_id = 17 }
+		check_variable = { event_id = constant:resources_found_event.id }
 	}
 }
 
@@ -172,6 +173,14 @@ has_events_log_selected_evolution_authored_portrait = {
 	OR = {
 		has_events_log_selected_fury_evolution = yes
 		has_events_log_selected_soviet_collapse_evolution = yes
+		AND = {
+			resources_found_selected_evolution_is_public = yes
+			check_variable = {
+				var = events_log_selected_evolution_stage
+				value = constant:resources_found_event.evolution_iv_stage
+				compare = equals
+			}
+		}
 		AND = {
 			check_variable = {
 				var = events_log_selected_evolution_event_id

@@ -1,0 +1,3258 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 018 DECISION AND MISSION EFFECTS
+# ============================================================================
+# Dynamic costs and duration, selected-field project dispatch, contracts and
+# resource rights, staged border conflict, evolution scheduling, cave actions,
+# and ordinary-country countermeasures. Temporary inputs never use a scope.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Dynamic project preparation and payment
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope. Clears all exact project inputs and outputs.
+resources_found_clear_decision_project_costs = {
+	set_variable = { resources_found_decision_cost_pp = constant:resources_found_value.zero }
+	set_variable = { resources_found_decision_cost_command = constant:resources_found_value.zero }
+	set_variable = { resources_found_decision_cost_army_xp = constant:resources_found_value.zero }
+	set_variable = { resources_found_decision_cost_manpower = constant:resources_found_value.zero }
+	set_variable = { resources_found_decision_cost_civ = constant:resources_found_value.zero }
+	set_variable = { resources_found_decision_cost_mil = constant:resources_found_value.zero }
+	set_variable = { resources_found_decision_cost_infantry = constant:resources_found_value.zero }
+	set_variable = { resources_found_decision_cost_support = constant:resources_found_value.zero }
+	set_variable = { resources_found_decision_cost_anti_tank = constant:resources_found_value.zero }
+	set_variable = { resources_found_decision_cost_trucks = constant:resources_found_value.zero }
+	set_variable = { resources_found_decision_cost_trains = constant:resources_found_value.zero }
+	set_variable = { resources_found_decision_cost_convoys = constant:resources_found_value.zero }
+	set_variable = { resources_found_decision_cost_fuel = constant:resources_found_value.zero }
+	set_variable = { resources_found_decision_cost_fuel_k = constant:resources_found_value.zero }
+}
+
+# COUNTRY scope. Inputs are temporary resources_found_project_profile,
+# resources_found_project_kind, resources_found_project_base_days, and
+# resources_found_project_family. Family 1 is field, 2 trade, 3 containment,
+# 4 cave, and 5 anti-cave. Outputs are persistent exact costs and duration.
+resources_found_prepare_decision_project = {
+	resources_found_clear_decision_project_costs = yes
+	set_variable = { resources_found_active_project_kind = resources_found_project_kind }
+	set_variable = { resources_found_active_project_profile = resources_found_project_profile }
+	set_variable = { resources_found_active_project_family = resources_found_project_family }
+	set_variable = { resources_found_active_project_base_days = resources_found_project_base_days }
+	set_variable = { resources_found_active_project_days = resources_found_project_base_days }
+	set_variable = { resources_found_decision_cost_scale = constant:resources_found_country_factor.standard_cost }
+	set_variable = { resources_found_decision_duration_scale = constant:resources_found_country_factor.standard_duration }
+
+	if = {
+		limit = { num_of_factories < constant:resources_found_country_scale.small_factory_ceiling }
+		set_variable = { resources_found_decision_cost_scale = constant:resources_found_country_factor.small_cost }
+		set_variable = { resources_found_decision_duration_scale = constant:resources_found_country_factor.small_duration }
+	}
+	else_if = {
+		limit = { is_major = yes }
+		set_variable = { resources_found_decision_cost_scale = constant:resources_found_country_factor.major_cost }
+		set_variable = { resources_found_decision_duration_scale = constant:resources_found_country_factor.major_duration }
+	}
+	else_if = {
+		limit = { num_of_factories > constant:resources_found_country_scale.large_factory_floor }
+		set_variable = { resources_found_decision_cost_scale = constant:resources_found_country_factor.large_cost }
+		set_variable = { resources_found_decision_duration_scale = constant:resources_found_country_factor.large_duration }
+	}
+
+	if = {
+		limit = {
+			resources_found_country_has_valid_selected_field = yes
+			OR = {
+				check_variable = { resources_found_project_family = constant:resources_found_decision_family.field }
+				check_variable = { resources_found_project_family = constant:resources_found_decision_family.trade }
+				check_variable = { resources_found_project_family = constant:resources_found_decision_family.containment }
+			}
+		}
+		set_variable = { resources_found_active_project_field = resources_found_selected_field }
+		var:resources_found_selected_field = {
+			resources_found_refresh_project_scales = yes
+			set_temp_variable = { resources_found_decision_field_cost_scale = resources_found_field_cost_factor }
+			set_temp_variable = { resources_found_decision_field_duration_scale = resources_found_project_duration_factor }
+			if = {
+				limit = { check_variable = { resources_found_breach_pressure > constant:resources_found_field_value.band_5 } }
+				multiply_temp_variable = { resources_found_decision_field_cost_scale = constant:resources_found_decision_factor.critical_risk }
+				multiply_temp_variable = { resources_found_decision_field_duration_scale = constant:resources_found_decision_factor.critical_risk }
+			}
+			else_if = {
+				limit = {
+					OR = {
+						check_variable = { resources_found_breach_pressure > constant:resources_found_field_value.band_4 }
+						check_variable = { resources_found_subsurface_disturbance > constant:resources_found_field_value.band_4 }
+					}
+				}
+				multiply_temp_variable = { resources_found_decision_field_cost_scale = constant:resources_found_decision_factor.high_risk }
+				multiply_temp_variable = { resources_found_decision_field_duration_scale = constant:resources_found_decision_factor.high_risk }
+			}
+			if = {
+				limit = { check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 } }
+				multiply_temp_variable = { resources_found_decision_field_duration_scale = constant:resources_found_decision_factor.low_safety_duration }
+			}
+			else_if = {
+				limit = { check_variable = { resources_found_workforce_safety > constant:resources_found_field_value.band_4 } }
+				multiply_temp_variable = { resources_found_decision_field_duration_scale = constant:resources_found_decision_factor.high_safety_duration }
+			}
+			if = {
+				limit = { resources_found_contract_is_active_and_valid = yes }
+				multiply_temp_variable = { resources_found_decision_field_duration_scale = constant:resources_found_decision_factor.active_contract_duration }
+			}
+		}
+		multiply_variable = { resources_found_decision_cost_scale = resources_found_decision_field_cost_scale }
+		multiply_variable = { resources_found_decision_duration_scale = resources_found_decision_field_duration_scale }
+	}
+	else = {
+		if = {
+			limit = { has_war = yes }
+			multiply_variable = { resources_found_decision_cost_scale = constant:resources_found_decision_factor.war_cost }
+			multiply_variable = { resources_found_decision_duration_scale = constant:resources_found_decision_factor.war_duration }
+		}
+	}
+
+	if = {
+		limit = {
+			check_variable = { resources_found_project_profile = constant:resources_found_decision_profile.full_seal }
+			num_of_factories < constant:resources_found_country_scale.small_factory_ceiling
+		}
+		multiply_variable = { resources_found_decision_cost_scale = constant:resources_found_decision_factor.small_full_seal_cost }
+		multiply_variable = { resources_found_decision_duration_scale = constant:resources_found_decision_factor.small_full_seal_duration }
+	}
+
+	if = {
+		limit = { check_variable = { resources_found_project_profile = constant:resources_found_decision_profile.administration } }
+		set_variable = { resources_found_decision_cost_pp = constant:resources_found_decision_cost.administration_pp }
+		set_variable = { resources_found_decision_cost_civ = constant:resources_found_decision_cost.administration_civ }
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_project_profile = constant:resources_found_decision_profile.survey } }
+		set_variable = { resources_found_decision_cost_pp = constant:resources_found_decision_cost.survey_pp }
+		set_variable = { resources_found_decision_cost_civ = constant:resources_found_decision_cost.survey_civ }
+		set_variable = { resources_found_decision_cost_support = constant:resources_found_decision_cost.survey_support }
+		set_variable = { resources_found_decision_cost_trucks = constant:resources_found_decision_cost.survey_trucks }
+		set_variable = { resources_found_decision_cost_fuel = constant:resources_found_decision_cost.survey_fuel }
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_project_profile = constant:resources_found_decision_profile.industry } }
+		set_variable = { resources_found_decision_cost_pp = constant:resources_found_decision_cost.industry_pp }
+		set_variable = { resources_found_decision_cost_civ = constant:resources_found_decision_cost.industry_civ }
+		set_variable = { resources_found_decision_cost_support = constant:resources_found_decision_cost.industry_support }
+		set_variable = { resources_found_decision_cost_trucks = constant:resources_found_decision_cost.industry_trucks }
+		set_variable = { resources_found_decision_cost_trains = constant:resources_found_decision_cost.industry_trains }
+		set_variable = { resources_found_decision_cost_fuel = constant:resources_found_decision_cost.industry_fuel }
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_project_profile = constant:resources_found_decision_profile.transport } }
+		set_variable = { resources_found_decision_cost_pp = constant:resources_found_decision_cost.transport_pp }
+		set_variable = { resources_found_decision_cost_civ = constant:resources_found_decision_cost.transport_civ }
+		set_variable = { resources_found_decision_cost_support = constant:resources_found_decision_cost.transport_support }
+		set_variable = { resources_found_decision_cost_trucks = constant:resources_found_decision_cost.transport_trucks }
+		set_variable = { resources_found_decision_cost_trains = constant:resources_found_decision_cost.transport_trains }
+		set_variable = { resources_found_decision_cost_fuel = constant:resources_found_decision_cost.transport_fuel }
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_project_profile = constant:resources_found_decision_profile.labor } }
+		set_variable = { resources_found_decision_cost_pp = constant:resources_found_decision_cost.labor_pp }
+		set_variable = { resources_found_decision_cost_civ = constant:resources_found_decision_cost.labor_civ }
+		set_variable = { resources_found_decision_cost_manpower = constant:resources_found_decision_cost.labor_manpower }
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_project_profile = constant:resources_found_decision_profile.security } }
+		set_variable = { resources_found_decision_cost_pp = constant:resources_found_decision_cost.security_pp }
+		set_variable = { resources_found_decision_cost_civ = constant:resources_found_decision_cost.security_civ }
+		set_variable = { resources_found_decision_cost_manpower = constant:resources_found_decision_cost.security_manpower }
+		set_variable = { resources_found_decision_cost_infantry = constant:resources_found_decision_cost.security_infantry }
+		set_variable = { resources_found_decision_cost_support = constant:resources_found_decision_cost.security_support }
+		set_variable = { resources_found_decision_cost_command = constant:resources_found_decision_cost.security_command }
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_project_profile = constant:resources_found_decision_profile.diplomacy } }
+		set_variable = { resources_found_decision_cost_pp = constant:resources_found_decision_cost.diplomacy_pp }
+		set_variable = { resources_found_decision_cost_civ = constant:resources_found_decision_cost.diplomacy_civ }
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_project_profile = constant:resources_found_decision_profile.containment } }
+		set_variable = { resources_found_decision_cost_pp = constant:resources_found_decision_cost.containment_pp }
+		set_variable = { resources_found_decision_cost_civ = constant:resources_found_decision_cost.containment_civ }
+		set_variable = { resources_found_decision_cost_manpower = constant:resources_found_decision_cost.containment_manpower }
+		set_variable = { resources_found_decision_cost_infantry = constant:resources_found_decision_cost.containment_infantry }
+		set_variable = { resources_found_decision_cost_support = constant:resources_found_decision_cost.containment_support }
+		set_variable = { resources_found_decision_cost_anti_tank = constant:resources_found_decision_cost.containment_anti_tank }
+		set_variable = { resources_found_decision_cost_trucks = constant:resources_found_decision_cost.containment_trucks }
+		set_variable = { resources_found_decision_cost_trains = constant:resources_found_decision_cost.containment_trains }
+		set_variable = { resources_found_decision_cost_command = constant:resources_found_decision_cost.containment_command }
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_project_profile = constant:resources_found_decision_profile.full_seal } }
+		set_variable = { resources_found_decision_cost_pp = constant:resources_found_decision_cost.full_seal_pp }
+		set_variable = { resources_found_decision_cost_civ = constant:resources_found_decision_cost.full_seal_civ }
+		set_variable = { resources_found_decision_cost_mil = constant:resources_found_decision_cost.full_seal_mil }
+		set_variable = { resources_found_decision_cost_manpower = constant:resources_found_decision_cost.full_seal_manpower }
+		set_variable = { resources_found_decision_cost_infantry = constant:resources_found_decision_cost.full_seal_infantry }
+		set_variable = { resources_found_decision_cost_support = constant:resources_found_decision_cost.full_seal_support }
+		set_variable = { resources_found_decision_cost_anti_tank = constant:resources_found_decision_cost.full_seal_anti_tank }
+		set_variable = { resources_found_decision_cost_trucks = constant:resources_found_decision_cost.full_seal_trucks }
+		set_variable = { resources_found_decision_cost_trains = constant:resources_found_decision_cost.full_seal_trains }
+		set_variable = { resources_found_decision_cost_fuel = constant:resources_found_decision_cost.full_seal_fuel }
+		set_variable = { resources_found_decision_cost_command = constant:resources_found_decision_cost.full_seal_command }
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_project_profile = constant:resources_found_decision_profile.cave } }
+		set_variable = { resources_found_decision_cost_pp = constant:resources_found_decision_cost.cave_pp }
+		set_variable = { resources_found_decision_cost_command = constant:resources_found_decision_cost.cave_command }
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_project_profile = constant:resources_found_decision_profile.anti_cave } }
+		set_variable = { resources_found_decision_cost_pp = constant:resources_found_decision_cost.anti_cave_pp }
+		set_variable = { resources_found_decision_cost_civ = constant:resources_found_decision_cost.anti_cave_civ }
+		set_variable = { resources_found_decision_cost_mil = constant:resources_found_decision_cost.anti_cave_mil }
+		set_variable = { resources_found_decision_cost_manpower = constant:resources_found_decision_cost.anti_cave_manpower }
+		set_variable = { resources_found_decision_cost_infantry = constant:resources_found_decision_cost.anti_cave_infantry }
+		set_variable = { resources_found_decision_cost_support = constant:resources_found_decision_cost.anti_cave_support }
+		set_variable = { resources_found_decision_cost_anti_tank = constant:resources_found_decision_cost.anti_cave_anti_tank }
+		set_variable = { resources_found_decision_cost_trucks = constant:resources_found_decision_cost.anti_cave_trucks }
+		set_variable = { resources_found_decision_cost_trains = constant:resources_found_decision_cost.anti_cave_trains }
+		set_variable = { resources_found_decision_cost_command = constant:resources_found_decision_cost.anti_cave_command }
+		set_variable = { resources_found_decision_cost_army_xp = constant:resources_found_decision_cost.anti_cave_army_xp }
+	}
+
+	multiply_variable = { resources_found_active_project_days = resources_found_decision_duration_scale }
+	multiply_variable = { resources_found_decision_cost_pp = resources_found_decision_cost_scale }
+	multiply_variable = { resources_found_decision_cost_command = resources_found_decision_cost_scale }
+	multiply_variable = { resources_found_decision_cost_army_xp = resources_found_decision_cost_scale }
+	multiply_variable = { resources_found_decision_cost_manpower = resources_found_decision_cost_scale }
+	multiply_variable = { resources_found_decision_cost_civ = resources_found_decision_cost_scale }
+	multiply_variable = { resources_found_decision_cost_mil = resources_found_decision_cost_scale }
+	multiply_variable = { resources_found_decision_cost_infantry = resources_found_decision_cost_scale }
+	multiply_variable = { resources_found_decision_cost_support = resources_found_decision_cost_scale }
+	multiply_variable = { resources_found_decision_cost_anti_tank = resources_found_decision_cost_scale }
+	multiply_variable = { resources_found_decision_cost_trucks = resources_found_decision_cost_scale }
+	multiply_variable = { resources_found_decision_cost_trains = resources_found_decision_cost_scale }
+	multiply_variable = { resources_found_decision_cost_convoys = resources_found_decision_cost_scale }
+	multiply_variable = { resources_found_decision_cost_fuel = resources_found_decision_cost_scale }
+	round_variable = resources_found_active_project_days
+	round_variable = resources_found_decision_cost_pp
+	round_variable = resources_found_decision_cost_command
+	round_variable = resources_found_decision_cost_army_xp
+	round_variable = resources_found_decision_cost_manpower
+	round_variable = resources_found_decision_cost_civ
+	round_variable = resources_found_decision_cost_mil
+	round_variable = resources_found_decision_cost_infantry
+	round_variable = resources_found_decision_cost_support
+	round_variable = resources_found_decision_cost_anti_tank
+	round_variable = resources_found_decision_cost_trucks
+	round_variable = resources_found_decision_cost_trains
+	round_variable = resources_found_decision_cost_convoys
+	round_variable = resources_found_decision_cost_fuel
+	if = { limit = { check_variable = { resources_found_active_project_days < constant:resources_found_value.zero } } set_variable = { resources_found_active_project_days = constant:resources_found_value.zero } }
+	if = { limit = { check_variable = { resources_found_decision_cost_pp < constant:resources_found_value.zero } } set_variable = { resources_found_decision_cost_pp = constant:resources_found_value.zero } }
+	if = { limit = { check_variable = { resources_found_decision_cost_command < constant:resources_found_value.zero } } set_variable = { resources_found_decision_cost_command = constant:resources_found_value.zero } }
+	if = { limit = { check_variable = { resources_found_decision_cost_army_xp < constant:resources_found_value.zero } } set_variable = { resources_found_decision_cost_army_xp = constant:resources_found_value.zero } }
+	if = { limit = { check_variable = { resources_found_decision_cost_manpower < constant:resources_found_value.zero } } set_variable = { resources_found_decision_cost_manpower = constant:resources_found_value.zero } }
+	if = { limit = { check_variable = { resources_found_decision_cost_civ < constant:resources_found_value.zero } } set_variable = { resources_found_decision_cost_civ = constant:resources_found_value.zero } }
+	if = { limit = { check_variable = { resources_found_decision_cost_mil < constant:resources_found_value.zero } } set_variable = { resources_found_decision_cost_mil = constant:resources_found_value.zero } }
+	if = { limit = { check_variable = { resources_found_decision_cost_infantry < constant:resources_found_value.zero } } set_variable = { resources_found_decision_cost_infantry = constant:resources_found_value.zero } }
+	if = { limit = { check_variable = { resources_found_decision_cost_support < constant:resources_found_value.zero } } set_variable = { resources_found_decision_cost_support = constant:resources_found_value.zero } }
+	if = { limit = { check_variable = { resources_found_decision_cost_anti_tank < constant:resources_found_value.zero } } set_variable = { resources_found_decision_cost_anti_tank = constant:resources_found_value.zero } }
+	if = { limit = { check_variable = { resources_found_decision_cost_trucks < constant:resources_found_value.zero } } set_variable = { resources_found_decision_cost_trucks = constant:resources_found_value.zero } }
+	if = { limit = { check_variable = { resources_found_decision_cost_trains < constant:resources_found_value.zero } } set_variable = { resources_found_decision_cost_trains = constant:resources_found_value.zero } }
+	if = { limit = { check_variable = { resources_found_decision_cost_convoys < constant:resources_found_value.zero } } set_variable = { resources_found_decision_cost_convoys = constant:resources_found_value.zero } }
+	if = { limit = { check_variable = { resources_found_decision_cost_fuel < constant:resources_found_value.zero } } set_variable = { resources_found_decision_cost_fuel = constant:resources_found_value.zero } }
+	set_variable = { resources_found_decision_cost_fuel_k = resources_found_decision_cost_fuel }
+	resources_found_assign_active_project_preview_slots = yes
+}
+
+# COUNTRY scope. Maps the calculator's real profile/family/base-duration inputs
+# to the stable cost and duration rows shown before selection. If an unsupported
+# combination reaches the calculator, no slot is assigned and payment fails.
+resources_found_assign_active_project_preview_slots = {
+	clear_variable = resources_found_active_project_cost_preview_slot
+	clear_variable = resources_found_active_project_duration_preview_slot
+	if = {
+		limit = {
+			OR = {
+				check_variable = { resources_found_active_project_family = constant:resources_found_decision_family.field }
+				check_variable = { resources_found_active_project_family = constant:resources_found_decision_family.trade }
+				check_variable = { resources_found_active_project_family = constant:resources_found_decision_family.containment }
+			}
+		}
+		if = { limit = { check_variable = { resources_found_active_project_profile = constant:resources_found_decision_profile.administration } } set_variable = { resources_found_active_project_cost_preview_slot = constant:resources_found_decision_preview_slot.administration_field } }
+		else_if = { limit = { check_variable = { resources_found_active_project_profile = constant:resources_found_decision_profile.survey } } set_variable = { resources_found_active_project_cost_preview_slot = constant:resources_found_decision_preview_slot.survey_field } }
+		else_if = { limit = { check_variable = { resources_found_active_project_profile = constant:resources_found_decision_profile.industry } } set_variable = { resources_found_active_project_cost_preview_slot = constant:resources_found_decision_preview_slot.industry_field } }
+		else_if = { limit = { check_variable = { resources_found_active_project_profile = constant:resources_found_decision_profile.transport } } set_variable = { resources_found_active_project_cost_preview_slot = constant:resources_found_decision_preview_slot.transport_field } }
+		else_if = { limit = { check_variable = { resources_found_active_project_profile = constant:resources_found_decision_profile.labor } } set_variable = { resources_found_active_project_cost_preview_slot = constant:resources_found_decision_preview_slot.labor_field } }
+		else_if = { limit = { check_variable = { resources_found_active_project_profile = constant:resources_found_decision_profile.security } } set_variable = { resources_found_active_project_cost_preview_slot = constant:resources_found_decision_preview_slot.security_field } }
+		else_if = { limit = { check_variable = { resources_found_active_project_profile = constant:resources_found_decision_profile.diplomacy } } set_variable = { resources_found_active_project_cost_preview_slot = constant:resources_found_decision_preview_slot.diplomacy_field } }
+		else_if = { limit = { check_variable = { resources_found_active_project_profile = constant:resources_found_decision_profile.containment } } set_variable = { resources_found_active_project_cost_preview_slot = constant:resources_found_decision_preview_slot.containment_field } }
+		else_if = { limit = { check_variable = { resources_found_active_project_profile = constant:resources_found_decision_profile.full_seal } } set_variable = { resources_found_active_project_cost_preview_slot = constant:resources_found_decision_preview_slot.full_seal_field } }
+
+		if = { limit = { check_variable = { resources_found_active_project_base_days = constant:resources_found_decision_duration.border_war_minimum } } set_variable = { resources_found_active_project_duration_preview_slot = constant:resources_found_decision_duration_preview_slot.field_14 } }
+		else_if = { limit = { check_variable = { resources_found_active_project_base_days = constant:resources_found_decision_duration.emergency_seal } check_variable = { resources_found_active_project_profile = constant:resources_found_decision_profile.full_seal } } set_variable = { resources_found_active_project_duration_preview_slot = constant:resources_found_decision_duration_preview_slot.field_60_full_seal } }
+		else_if = { limit = { check_variable = { resources_found_active_project_base_days = constant:resources_found_decision_duration.administration } } set_variable = { resources_found_active_project_duration_preview_slot = constant:resources_found_decision_duration_preview_slot.field_75 } }
+		else_if = { limit = { check_variable = { resources_found_active_project_base_days = constant:resources_found_decision_duration.survey } } set_variable = { resources_found_active_project_duration_preview_slot = constant:resources_found_decision_duration_preview_slot.field_90 } }
+		else_if = { limit = { check_variable = { resources_found_active_project_base_days = constant:resources_found_decision_duration.anti_cave } } set_variable = { resources_found_active_project_duration_preview_slot = constant:resources_found_decision_duration_preview_slot.field_120 } }
+		else_if = { limit = { check_variable = { resources_found_active_project_base_days = constant:resources_found_decision_duration.frontier_objective } } set_variable = { resources_found_active_project_duration_preview_slot = constant:resources_found_decision_duration_preview_slot.field_150 } }
+		else_if = { limit = { check_variable = { resources_found_active_project_base_days = constant:resources_found_decision_duration.industry } } set_variable = { resources_found_active_project_duration_preview_slot = constant:resources_found_decision_duration_preview_slot.field_180 } }
+		else_if = { limit = { check_variable = { resources_found_active_project_base_days = constant:resources_found_decision_duration.transport } } set_variable = { resources_found_active_project_duration_preview_slot = constant:resources_found_decision_duration_preview_slot.field_210 } }
+		else_if = { limit = { check_variable = { resources_found_active_project_base_days = constant:resources_found_decision_duration.partial_closure } } set_variable = { resources_found_active_project_duration_preview_slot = constant:resources_found_decision_duration_preview_slot.field_240 } }
+		else_if = { limit = { check_variable = { resources_found_active_project_base_days = constant:resources_found_decision_duration.full_seal } check_variable = { resources_found_active_project_profile = constant:resources_found_decision_profile.full_seal } } set_variable = { resources_found_active_project_duration_preview_slot = constant:resources_found_decision_duration_preview_slot.field_360_full_seal } }
+	}
+	else = {
+		if = { limit = { check_variable = { resources_found_active_project_profile = constant:resources_found_decision_profile.diplomacy } } set_variable = { resources_found_active_project_cost_preview_slot = constant:resources_found_decision_preview_slot.diplomacy_remote } }
+		else_if = { limit = { check_variable = { resources_found_active_project_profile = constant:resources_found_decision_profile.security } } set_variable = { resources_found_active_project_cost_preview_slot = constant:resources_found_decision_preview_slot.security_remote } }
+		else_if = { limit = { check_variable = { resources_found_active_project_profile = constant:resources_found_decision_profile.cave } } set_variable = { resources_found_active_project_cost_preview_slot = constant:resources_found_decision_preview_slot.cave } }
+		else_if = { limit = { check_variable = { resources_found_active_project_profile = constant:resources_found_decision_profile.anti_cave } } set_variable = { resources_found_active_project_cost_preview_slot = constant:resources_found_decision_preview_slot.anti_cave } }
+
+		if = { limit = { check_variable = { resources_found_active_project_base_days = constant:resources_found_decision_duration.cave_order } } set_variable = { resources_found_active_project_duration_preview_slot = constant:resources_found_decision_duration_preview_slot.remote_1 } }
+		else_if = { limit = { check_variable = { resources_found_active_project_base_days = constant:resources_found_decision_duration.cave_short } } set_variable = { resources_found_active_project_duration_preview_slot = constant:resources_found_decision_duration_preview_slot.remote_45 } }
+		else_if = { limit = { check_variable = { resources_found_active_project_base_days = constant:resources_found_decision_duration.diplomacy } } set_variable = { resources_found_active_project_duration_preview_slot = constant:resources_found_decision_duration_preview_slot.remote_90 } }
+		else_if = { limit = { check_variable = { resources_found_active_project_base_days = constant:resources_found_decision_duration.anti_cave } } set_variable = { resources_found_active_project_duration_preview_slot = constant:resources_found_decision_duration_preview_slot.remote_120 } }
+		else_if = { limit = { check_variable = { resources_found_active_project_base_days = constant:resources_found_decision_duration.cave_project } } set_variable = { resources_found_active_project_duration_preview_slot = constant:resources_found_decision_duration_preview_slot.remote_150 } }
+		else_if = { limit = { check_variable = { resources_found_active_project_base_days = constant:resources_found_decision_duration.reconstruction } } set_variable = { resources_found_active_project_duration_preview_slot = constant:resources_found_decision_duration_preview_slot.remote_180 } }
+	}
+}
+
+# COUNTRY scope. Persists one calculated profile in a stable preview slot. The
+# numeric slot is injected into variable names so the payment calculator remains
+# the only formula implementation used by both the UI and activation recheck.
+resources_found_store_decision_cost_preview = {
+	meta_effect = {
+		text = {
+			set_variable = { resources_found_decision_preview_[SLOT]_pp = resources_found_decision_cost_pp }
+			set_variable = { resources_found_decision_preview_[SLOT]_command = resources_found_decision_cost_command }
+			set_variable = { resources_found_decision_preview_[SLOT]_army_xp = resources_found_decision_cost_army_xp }
+			set_variable = { resources_found_decision_preview_[SLOT]_manpower = resources_found_decision_cost_manpower }
+			set_variable = { resources_found_decision_preview_[SLOT]_civ = resources_found_decision_cost_civ }
+			set_variable = { resources_found_decision_preview_[SLOT]_mil = resources_found_decision_cost_mil }
+			set_variable = { resources_found_decision_preview_[SLOT]_infantry = resources_found_decision_cost_infantry }
+			set_variable = { resources_found_decision_preview_[SLOT]_support = resources_found_decision_cost_support }
+			set_variable = { resources_found_decision_preview_[SLOT]_anti_tank = resources_found_decision_cost_anti_tank }
+			set_variable = { resources_found_decision_preview_[SLOT]_trucks = resources_found_decision_cost_trucks }
+			set_variable = { resources_found_decision_preview_[SLOT]_trains = resources_found_decision_cost_trains }
+			set_variable = { resources_found_decision_preview_[SLOT]_convoys = resources_found_decision_cost_convoys }
+			set_variable = { resources_found_decision_preview_[SLOT]_fuel = resources_found_decision_cost_fuel }
+		}
+		SLOT = "[?resources_found_decision_preview_slot|.0]"
+	}
+}
+
+# COUNTRY scope. Temporary inputs are resources_found_decision_preview_slot,
+# resources_found_decision_preview_profile, and
+# resources_found_decision_preview_family.
+resources_found_calculate_and_store_decision_cost_preview = {
+	set_temp_variable = { resources_found_project_kind = constant:resources_found_value.zero }
+	set_temp_variable = { resources_found_project_profile = resources_found_decision_preview_profile }
+	set_temp_variable = { resources_found_project_base_days = constant:resources_found_value.one }
+	set_temp_variable = { resources_found_project_family = resources_found_decision_preview_family }
+	resources_found_prepare_decision_project = yes
+	resources_found_store_decision_cost_preview = yes
+}
+
+# COUNTRY scope. Temporary inputs are resources_found_decision_duration_slot,
+# resources_found_decision_duration_base_days, family, and profile. Duration
+# previews call the same calculator used at activation and persist only the
+# rounded day result.
+resources_found_calculate_and_store_decision_duration_preview = {
+	set_temp_variable = { resources_found_project_kind = constant:resources_found_value.zero }
+	set_temp_variable = { resources_found_project_profile = resources_found_decision_duration_profile }
+	set_temp_variable = { resources_found_project_base_days = resources_found_decision_duration_base_days }
+	set_temp_variable = { resources_found_project_family = resources_found_decision_duration_family }
+	resources_found_prepare_decision_project = yes
+	meta_effect = {
+		text = { set_variable = { resources_found_decision_duration_preview_[SLOT]_days = resources_found_active_project_days } }
+		SLOT = "[?resources_found_decision_duration_slot|.0]"
+	}
+}
+
+# COUNTRY scope. Records the exact context used by the preview ledger. The
+# matching scripted triggers make every priced decision unselectable as soon as
+# country scale, war status, selected field, depth band, or risk band changes.
+resources_found_record_decision_cost_preview_context = {
+	set_variable = { resources_found_decision_preview_country_factor = constant:resources_found_country_factor.standard_cost }
+	if = {
+		limit = { num_of_factories < constant:resources_found_country_scale.small_factory_ceiling }
+		set_variable = { resources_found_decision_preview_country_factor = constant:resources_found_country_factor.small_cost }
+	}
+	else_if = {
+		limit = { is_major = yes }
+		set_variable = { resources_found_decision_preview_country_factor = constant:resources_found_country_factor.major_cost }
+	}
+	else_if = {
+		limit = { num_of_factories > constant:resources_found_country_scale.large_factory_floor }
+		set_variable = { resources_found_decision_preview_country_factor = constant:resources_found_country_factor.large_cost }
+	}
+
+	clr_country_flag = resources_found_decision_preview_war_context
+	if = {
+		limit = { has_war = yes }
+		set_country_flag = resources_found_decision_preview_war_context
+	}
+
+	clear_variable = resources_found_decision_preview_field
+	clear_variable = resources_found_decision_preview_excavation_depth
+	clear_variable = resources_found_decision_preview_breach_pressure
+	clear_variable = resources_found_decision_preview_subsurface_disturbance
+	clear_variable = resources_found_decision_preview_workforce_safety
+	clr_country_flag = resources_found_decision_preview_contract_context
+	clr_country_flag = resources_found_decision_preview_poor_infrastructure_context
+	clr_country_flag = resources_found_decision_preview_strong_infrastructure_context
+	if = {
+		limit = { resources_found_country_has_valid_selected_field = yes }
+		set_variable = { resources_found_decision_preview_field = resources_found_selected_field }
+		var:resources_found_selected_field = {
+			set_variable = { ROOT.resources_found_decision_preview_excavation_depth = resources_found_excavation_depth }
+			set_variable = { ROOT.resources_found_decision_preview_breach_pressure = resources_found_breach_pressure }
+			set_variable = { ROOT.resources_found_decision_preview_subsurface_disturbance = resources_found_subsurface_disturbance }
+			set_variable = { ROOT.resources_found_decision_preview_workforce_safety = resources_found_workforce_safety }
+			if = {
+				limit = { resources_found_contract_is_active_and_valid = yes }
+				ROOT = { set_country_flag = resources_found_decision_preview_contract_context }
+			}
+			if = {
+				limit = { NOT = { infrastructure > constant:resources_found_country_scale.poor_infrastructure_maximum } }
+				ROOT = { set_country_flag = resources_found_decision_preview_poor_infrastructure_context }
+			}
+			else_if = {
+				limit = { NOT = { infrastructure < constant:resources_found_country_scale.strong_infrastructure_minimum } }
+				ROOT = { set_country_flag = resources_found_decision_preview_strong_infrastructure_context }
+			}
+		}
+	}
+	set_country_flag = resources_found_decision_cost_preview_ready
+}
+
+# COUNTRY scope. Rebuilds every exact cost row while the shared project queue is
+# idle, clears the calculator's transient project state, then seals the ledger
+# with the context signature used by the availability triggers.
+resources_found_refresh_decision_cost_previews = {
+	if = {
+		limit = { resources_found_decision_project_queue_available = yes }
+		clr_country_flag = resources_found_decision_cost_preview_ready
+		set_temp_variable = { resources_found_decision_preview_family = constant:resources_found_decision_family.field }
+
+		set_temp_variable = { resources_found_decision_preview_slot = constant:resources_found_decision_preview_slot.administration_field }
+		set_temp_variable = { resources_found_decision_preview_profile = constant:resources_found_decision_profile.administration }
+		resources_found_calculate_and_store_decision_cost_preview = yes
+		set_temp_variable = { resources_found_decision_preview_slot = constant:resources_found_decision_preview_slot.survey_field }
+		set_temp_variable = { resources_found_decision_preview_profile = constant:resources_found_decision_profile.survey }
+		resources_found_calculate_and_store_decision_cost_preview = yes
+		set_temp_variable = { resources_found_decision_preview_slot = constant:resources_found_decision_preview_slot.industry_field }
+		set_temp_variable = { resources_found_decision_preview_profile = constant:resources_found_decision_profile.industry }
+		resources_found_calculate_and_store_decision_cost_preview = yes
+		set_temp_variable = { resources_found_decision_preview_slot = constant:resources_found_decision_preview_slot.transport_field }
+		set_temp_variable = { resources_found_decision_preview_profile = constant:resources_found_decision_profile.transport }
+		resources_found_calculate_and_store_decision_cost_preview = yes
+		set_temp_variable = { resources_found_decision_preview_slot = constant:resources_found_decision_preview_slot.labor_field }
+		set_temp_variable = { resources_found_decision_preview_profile = constant:resources_found_decision_profile.labor }
+		resources_found_calculate_and_store_decision_cost_preview = yes
+		set_temp_variable = { resources_found_decision_preview_slot = constant:resources_found_decision_preview_slot.security_field }
+		set_temp_variable = { resources_found_decision_preview_profile = constant:resources_found_decision_profile.security }
+		resources_found_calculate_and_store_decision_cost_preview = yes
+		set_temp_variable = { resources_found_decision_preview_slot = constant:resources_found_decision_preview_slot.diplomacy_field }
+		set_temp_variable = { resources_found_decision_preview_profile = constant:resources_found_decision_profile.diplomacy }
+		resources_found_calculate_and_store_decision_cost_preview = yes
+		set_temp_variable = { resources_found_decision_preview_slot = constant:resources_found_decision_preview_slot.containment_field }
+		set_temp_variable = { resources_found_decision_preview_profile = constant:resources_found_decision_profile.containment }
+		resources_found_calculate_and_store_decision_cost_preview = yes
+		set_temp_variable = { resources_found_decision_preview_slot = constant:resources_found_decision_preview_slot.full_seal_field }
+		set_temp_variable = { resources_found_decision_preview_profile = constant:resources_found_decision_profile.full_seal }
+		resources_found_calculate_and_store_decision_cost_preview = yes
+
+		set_temp_variable = { resources_found_decision_preview_family = constant:resources_found_decision_family.cave }
+		set_temp_variable = { resources_found_decision_preview_slot = constant:resources_found_decision_preview_slot.diplomacy_remote }
+		set_temp_variable = { resources_found_decision_preview_profile = constant:resources_found_decision_profile.diplomacy }
+		resources_found_calculate_and_store_decision_cost_preview = yes
+		set_temp_variable = { resources_found_decision_preview_slot = constant:resources_found_decision_preview_slot.security_remote }
+		set_temp_variable = { resources_found_decision_preview_profile = constant:resources_found_decision_profile.security }
+		resources_found_calculate_and_store_decision_cost_preview = yes
+		set_temp_variable = { resources_found_decision_preview_slot = constant:resources_found_decision_preview_slot.cave }
+		set_temp_variable = { resources_found_decision_preview_profile = constant:resources_found_decision_profile.cave }
+		resources_found_calculate_and_store_decision_cost_preview = yes
+
+		set_temp_variable = { resources_found_decision_preview_family = constant:resources_found_decision_family.anti_cave }
+		set_temp_variable = { resources_found_decision_preview_slot = constant:resources_found_decision_preview_slot.anti_cave }
+		set_temp_variable = { resources_found_decision_preview_profile = constant:resources_found_decision_profile.anti_cave }
+		resources_found_calculate_and_store_decision_cost_preview = yes
+
+		set_temp_variable = { resources_found_decision_duration_family = constant:resources_found_decision_family.field }
+		set_temp_variable = { resources_found_decision_duration_profile = constant:resources_found_decision_profile.administration }
+		set_temp_variable = { resources_found_decision_duration_slot = constant:resources_found_decision_duration_preview_slot.field_14 }
+		set_temp_variable = { resources_found_decision_duration_base_days = constant:resources_found_decision_duration.border_war_minimum }
+		resources_found_calculate_and_store_decision_duration_preview = yes
+		set_temp_variable = { resources_found_decision_duration_profile = constant:resources_found_decision_profile.full_seal }
+		set_temp_variable = { resources_found_decision_duration_slot = constant:resources_found_decision_duration_preview_slot.field_60_full_seal }
+		set_temp_variable = { resources_found_decision_duration_base_days = constant:resources_found_decision_duration.emergency_seal }
+		resources_found_calculate_and_store_decision_duration_preview = yes
+		set_temp_variable = { resources_found_decision_duration_profile = constant:resources_found_decision_profile.administration }
+		set_temp_variable = { resources_found_decision_duration_slot = constant:resources_found_decision_duration_preview_slot.field_75 }
+		set_temp_variable = { resources_found_decision_duration_base_days = constant:resources_found_decision_duration.administration }
+		resources_found_calculate_and_store_decision_duration_preview = yes
+		set_temp_variable = { resources_found_decision_duration_slot = constant:resources_found_decision_duration_preview_slot.field_90 }
+		set_temp_variable = { resources_found_decision_duration_base_days = constant:resources_found_decision_duration.survey }
+		resources_found_calculate_and_store_decision_duration_preview = yes
+		set_temp_variable = { resources_found_decision_duration_slot = constant:resources_found_decision_duration_preview_slot.field_120 }
+		set_temp_variable = { resources_found_decision_duration_base_days = constant:resources_found_decision_duration.anti_cave }
+		resources_found_calculate_and_store_decision_duration_preview = yes
+		set_temp_variable = { resources_found_decision_duration_slot = constant:resources_found_decision_duration_preview_slot.field_150 }
+		set_temp_variable = { resources_found_decision_duration_base_days = constant:resources_found_decision_duration.frontier_objective }
+		resources_found_calculate_and_store_decision_duration_preview = yes
+		set_temp_variable = { resources_found_decision_duration_slot = constant:resources_found_decision_duration_preview_slot.field_180 }
+		set_temp_variable = { resources_found_decision_duration_base_days = constant:resources_found_decision_duration.industry }
+		resources_found_calculate_and_store_decision_duration_preview = yes
+		set_temp_variable = { resources_found_decision_duration_slot = constant:resources_found_decision_duration_preview_slot.field_210 }
+		set_temp_variable = { resources_found_decision_duration_base_days = constant:resources_found_decision_duration.transport }
+		resources_found_calculate_and_store_decision_duration_preview = yes
+		set_temp_variable = { resources_found_decision_duration_slot = constant:resources_found_decision_duration_preview_slot.field_240 }
+		set_temp_variable = { resources_found_decision_duration_base_days = constant:resources_found_decision_duration.partial_closure }
+		resources_found_calculate_and_store_decision_duration_preview = yes
+		set_temp_variable = { resources_found_decision_duration_profile = constant:resources_found_decision_profile.full_seal }
+		set_temp_variable = { resources_found_decision_duration_slot = constant:resources_found_decision_duration_preview_slot.field_360_full_seal }
+		set_temp_variable = { resources_found_decision_duration_base_days = constant:resources_found_decision_duration.full_seal }
+		resources_found_calculate_and_store_decision_duration_preview = yes
+
+		set_temp_variable = { resources_found_decision_duration_family = constant:resources_found_decision_family.cave }
+		set_temp_variable = { resources_found_decision_duration_profile = constant:resources_found_decision_profile.cave }
+		set_temp_variable = { resources_found_decision_duration_slot = constant:resources_found_decision_duration_preview_slot.remote_1 }
+		set_temp_variable = { resources_found_decision_duration_base_days = constant:resources_found_decision_duration.cave_order }
+		resources_found_calculate_and_store_decision_duration_preview = yes
+		set_temp_variable = { resources_found_decision_duration_slot = constant:resources_found_decision_duration_preview_slot.remote_45 }
+		set_temp_variable = { resources_found_decision_duration_base_days = constant:resources_found_decision_duration.cave_short }
+		resources_found_calculate_and_store_decision_duration_preview = yes
+		set_temp_variable = { resources_found_decision_duration_slot = constant:resources_found_decision_duration_preview_slot.remote_90 }
+		set_temp_variable = { resources_found_decision_duration_base_days = constant:resources_found_decision_duration.diplomacy }
+		resources_found_calculate_and_store_decision_duration_preview = yes
+		set_temp_variable = { resources_found_decision_duration_slot = constant:resources_found_decision_duration_preview_slot.remote_120 }
+		set_temp_variable = { resources_found_decision_duration_base_days = constant:resources_found_decision_duration.anti_cave }
+		resources_found_calculate_and_store_decision_duration_preview = yes
+		set_temp_variable = { resources_found_decision_duration_slot = constant:resources_found_decision_duration_preview_slot.remote_150 }
+		set_temp_variable = { resources_found_decision_duration_base_days = constant:resources_found_decision_duration.cave_project }
+		resources_found_calculate_and_store_decision_duration_preview = yes
+		set_temp_variable = { resources_found_decision_duration_slot = constant:resources_found_decision_duration_preview_slot.remote_180 }
+		set_temp_variable = { resources_found_decision_duration_base_days = constant:resources_found_decision_duration.reconstruction }
+		resources_found_calculate_and_store_decision_duration_preview = yes
+
+		resources_found_clear_decision_project_runtime = yes
+		set_variable = { resources_found_contract_term_preview_days = constant:resources_found_decision_duration.contract_term }
+		set_variable = { resources_found_commission_observation_preview_days = constant:resources_found_decision_duration.commission_observation }
+		set_variable = { resources_found_border_war_limit_preview_days = constant:resources_found_decision_duration.border_war_limit }
+		set_variable = { resources_found_anchor_recapture_preview_days = constant:resources_found_decision_duration.anchor_recapture }
+		resources_found_record_decision_cost_preview_context = yes
+		clr_country_flag = resources_found_project_inputs_changed
+	}
+}
+
+# COUNTRY scope. Exact dynamic payment. Factory values are availability and
+# active-project burdens, not destroyed factories.
+resources_found_pay_decision_project_cost = {
+	set_temp_variable = { resources_found_decision_spend = resources_found_decision_cost_pp }
+	multiply_temp_variable = { resources_found_decision_spend = constant:resources_found_value.negative_one }
+	add_political_power = resources_found_decision_spend
+	set_temp_variable = { resources_found_decision_spend = resources_found_decision_cost_command }
+	multiply_temp_variable = { resources_found_decision_spend = constant:resources_found_value.negative_one }
+	add_command_power = resources_found_decision_spend
+	set_temp_variable = { resources_found_decision_spend = resources_found_decision_cost_army_xp }
+	multiply_temp_variable = { resources_found_decision_spend = constant:resources_found_value.negative_one }
+	add_army_experience = resources_found_decision_spend
+	set_temp_variable = { resources_found_decision_spend = resources_found_decision_cost_manpower }
+	multiply_temp_variable = { resources_found_decision_spend = constant:resources_found_value.negative_one }
+	add_manpower = resources_found_decision_spend
+	set_temp_variable = { resources_found_decision_spend = resources_found_decision_cost_infantry }
+	multiply_temp_variable = { resources_found_decision_spend = constant:resources_found_value.negative_one }
+	add_equipment_to_stockpile = { type = infantry_equipment amount = resources_found_decision_spend }
+	set_temp_variable = { resources_found_decision_spend = resources_found_decision_cost_support }
+	multiply_temp_variable = { resources_found_decision_spend = constant:resources_found_value.negative_one }
+	add_equipment_to_stockpile = { type = support_equipment amount = resources_found_decision_spend }
+	set_temp_variable = { resources_found_decision_spend = resources_found_decision_cost_anti_tank }
+	multiply_temp_variable = { resources_found_decision_spend = constant:resources_found_value.negative_one }
+	add_equipment_to_stockpile = { type = anti_tank_equipment amount = resources_found_decision_spend }
+	set_temp_variable = { resources_found_decision_spend = resources_found_decision_cost_trucks }
+	multiply_temp_variable = { resources_found_decision_spend = constant:resources_found_value.negative_one }
+	add_equipment_to_stockpile = { type = motorized_equipment amount = resources_found_decision_spend }
+	set_temp_variable = { resources_found_decision_spend = resources_found_decision_cost_trains }
+	multiply_temp_variable = { resources_found_decision_spend = constant:resources_found_value.negative_one }
+	add_equipment_to_stockpile = { type = train_equipment amount = resources_found_decision_spend }
+	set_temp_variable = { resources_found_decision_spend = resources_found_decision_cost_convoys }
+	multiply_temp_variable = { resources_found_decision_spend = constant:resources_found_value.negative_one }
+	add_equipment_to_stockpile = { type = convoy_1 amount = resources_found_decision_spend }
+	set_temp_variable = { resources_found_decision_spend = resources_found_decision_cost_fuel }
+	multiply_temp_variable = { resources_found_decision_spend = constant:resources_found_value.negative_one }
+	add_fuel = resources_found_decision_spend
+}
+
+# COUNTRY scope. Canonical closure launchers. Event options and decisions use
+# these same entry points so every physical closure pays the calculated cost,
+# locks the selected field, and owns exactly one containment mission callback.
+resources_found_start_partial_closure_project = {
+	set_temp_variable = { resources_found_project_kind = constant:resources_found_decision_project.partial_closure }
+	set_temp_variable = { resources_found_project_profile = constant:resources_found_decision_profile.containment }
+	set_temp_variable = { resources_found_project_base_days = constant:resources_found_decision_duration.partial_closure }
+	set_temp_variable = { resources_found_project_family = constant:resources_found_decision_family.containment }
+	resources_found_start_decision_project = yes
+}
+
+resources_found_start_full_seal_project = {
+	set_temp_variable = { resources_found_project_kind = constant:resources_found_decision_project.full_seal }
+	set_temp_variable = { resources_found_project_profile = constant:resources_found_decision_profile.full_seal }
+	set_temp_variable = { resources_found_project_base_days = constant:resources_found_decision_duration.full_seal }
+	set_temp_variable = { resources_found_project_family = constant:resources_found_decision_family.containment }
+	resources_found_start_decision_project = yes
+}
+
+resources_found_start_emergency_seal_project = {
+	set_temp_variable = { resources_found_project_kind = constant:resources_found_decision_project.emergency_seal }
+	set_temp_variable = { resources_found_project_profile = constant:resources_found_decision_profile.full_seal }
+	set_temp_variable = { resources_found_project_base_days = constant:resources_found_decision_duration.emergency_seal }
+	set_temp_variable = { resources_found_project_family = constant:resources_found_decision_family.containment }
+	resources_found_start_decision_project = yes
+}
+
+# COUNTRY scope. Starts one dynamically timed project in its owning category.
+resources_found_start_decision_project = {
+	resources_found_prepare_decision_project = yes
+	if = {
+		limit = { resources_found_decision_has_dynamic_project_inputs = yes }
+		clr_country_flag = resources_found_project_inputs_changed
+		resources_found_pay_decision_project_cost = yes
+		if = {
+			limit = { check_variable = { resources_found_active_project_family = constant:resources_found_decision_family.field } }
+			set_country_flag = resources_found_field_project_active
+			var:resources_found_active_project_field = { set_state_flag = resources_found_decision_project_active }
+			activate_mission = resources_found_field_project_mission
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_family = constant:resources_found_decision_family.trade } }
+			set_country_flag = resources_found_trade_project_active
+			var:resources_found_active_project_field = { set_state_flag = resources_found_decision_project_active }
+			activate_mission = resources_found_trade_project_mission
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_family = constant:resources_found_decision_family.containment } }
+			set_country_flag = resources_found_containment_project_active
+			var:resources_found_active_project_field = { set_state_flag = resources_found_decision_project_active }
+			if = {
+				limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.emergency_seal } }
+				var:resources_found_active_project_field = { set_state_flag = resources_found_emergency_seal_active }
+			}
+			if = {
+				limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.hunt_surface_packs } }
+				var:resources_found_active_project_field = { set_state_flag = resources_found_hunt_mission_active }
+			}
+			if = {
+				limit = {
+					OR = {
+						check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.evacuate_field_settlements }
+						check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.evacuate_state_center }
+					}
+				}
+				var:resources_found_active_project_field = { set_state_flag = resources_found_evacuation_prepared }
+			}
+			if = {
+				limit = {
+					OR = {
+						check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.partial_closure }
+						check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.full_seal }
+						check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.emergency_seal }
+						check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.baseline_exact_closure }
+					}
+				}
+				var:resources_found_active_project_field = {
+					if = {
+						limit = { check_variable = { ROOT.resources_found_active_project_kind = constant:resources_found_decision_project.partial_closure } }
+						if = { limit = { resources_found_can_begin_partial_closure = yes } resources_found_stop_maximum_extraction_tracking = yes }
+						resources_found_begin_partial_closure = yes
+					}
+					else = {
+						if = { limit = { resources_found_can_begin_full_seal = yes } resources_found_stop_maximum_extraction_tracking = yes }
+						resources_found_begin_full_seal = yes
+					}
+				}
+			}
+			activate_mission = resources_found_containment_project_mission
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_family = constant:resources_found_decision_family.cave } }
+			set_country_flag = resources_found_cave_project_active
+			activate_mission = resources_found_cave_project_mission
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_family = constant:resources_found_decision_family.anti_cave } }
+			set_country_flag = resources_found_anti_cave_project_active
+			activate_mission = resources_found_anti_cave_project_mission
+		}
+	}
+	else = {
+		set_country_flag = resources_found_project_inputs_changed
+		resources_found_clear_decision_project_runtime = yes
+	}
+}
+
+# COUNTRY scope. Pays a dynamic project profile for an immediate action or a
+# separately managed mission. Callers execute their action only while the
+# success flag is set, then clear it themselves after consuming the result.
+resources_found_pay_immediate_decision_project = {
+	clr_country_flag = resources_found_immediate_project_payment_succeeded
+	clear_variable = resources_found_immediate_project_days
+	resources_found_prepare_decision_project = yes
+	if = {
+		limit = { resources_found_decision_has_dynamic_project_inputs = yes }
+		clr_country_flag = resources_found_project_inputs_changed
+		resources_found_pay_decision_project_cost = yes
+		if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.secure_frontier_corridor } }
+			set_variable = { resources_found_immediate_project_days = resources_found_active_project_days }
+		}
+		set_country_flag = resources_found_immediate_project_payment_succeeded
+	}
+	else = { set_country_flag = resources_found_project_inputs_changed }
+	resources_found_clear_decision_project_runtime = yes
+}
+
+# COUNTRY scope.
+resources_found_clear_decision_project_runtime = {
+	if = {
+		limit = { has_variable = resources_found_active_project_field }
+		var:resources_found_active_project_field = { clr_state_flag = resources_found_decision_project_active }
+	}
+	clr_country_flag = resources_found_field_project_active
+	clr_country_flag = resources_found_trade_project_active
+	clr_country_flag = resources_found_containment_project_active
+	clr_country_flag = resources_found_cave_project_active
+	clr_country_flag = resources_found_anti_cave_project_active
+	clear_variable = resources_found_active_project_field
+	clear_variable = resources_found_active_project_kind
+	clear_variable = resources_found_active_project_profile
+	clear_variable = resources_found_active_project_family
+	clear_variable = resources_found_active_project_base_days
+	clear_variable = resources_found_active_project_days
+	clear_variable = resources_found_active_project_cost_preview_slot
+	clear_variable = resources_found_active_project_duration_preview_slot
+	clear_variable = resources_found_active_response_state
+	clear_variable = resources_found_pending_project_partner
+	resources_found_clear_decision_project_costs = yes
+}
+
+# ---------------------------------------------------------------------------
+# Selected-field project completion
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope. Rebinds the selected field to the locked project state and
+# creates the regular event target used by Event 018 callbacks.
+resources_found_bind_active_project_field = {
+	if = {
+		limit = { has_variable = resources_found_active_project_field }
+		set_variable = { resources_found_selected_field = resources_found_active_project_field }
+		var:resources_found_active_project_field = { save_event_target_as = resources_found_field_state }
+	}
+}
+
+# COUNTRY scope. Completes field, trade, or containment projects. Exact full
+# closure is never performed here directly. Its success callback sets the final
+# verified flag and Event .71 or .15 invokes the authoritative ledger inverse.
+resources_found_complete_selected_field_project = {
+	resources_found_bind_active_project_field = yes
+	if = {
+		limit = {
+			resources_found_country_has_valid_selected_field = yes
+			var:resources_found_active_project_field = { is_owned_and_controlled_by = ROOT }
+			resources_found_decision_active_trade_project_partner_valid = yes
+		}
+		if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.establish_national_authority } }
+			var:resources_found_active_project_field = {
+				set_variable = { resources_found_field_posture = constant:resources_found_posture.national_authority }
+				set_state_flag = resources_found_national_authority_established
+				subtract_from_variable = { resources_found_foreign_pressure = constant:resources_found_decision_change.minor }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.charter_domestic_operators } }
+			var:resources_found_active_project_field = {
+				set_variable = { resources_found_field_posture = constant:resources_found_posture.domestic_charter }
+				set_state_flag = resources_found_domestic_charter_established
+				add_to_variable = { resources_found_developed_yield = constant:resources_found_decision_change.moderate }
+				add_to_variable = { resources_found_foreign_pressure = constant:resources_found_decision_change.minor }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.create_international_commission } }
+			var:resources_found_active_project_field = {
+				resources_found_refresh_dispute_achievement_evidence = yes
+				set_variable = { resources_found_field_posture = constant:resources_found_posture.international_commission }
+				set_variable = { resources_found_commission_stage = constant:resources_found_commission_stage.active }
+				set_state_flag = resources_found_commission_active
+				set_state_flag = resources_found_commission_quotas_confirmed
+				set_state_flag = resources_found_demilitarized_field
+				set_demilitarized_zone = yes
+				set_building_level = { type = bunker level = constant:resources_found_value.zero }
+				set_building_level = { type = coastal_bunker level = constant:resources_found_value.zero }
+				if = {
+					limit = { NOT = { has_dynamic_modifier = { modifier = resources_found_demilitarized_commission } } }
+					add_dynamic_modifier = { modifier = resources_found_demilitarized_commission }
+				}
+				subtract_from_variable = { resources_found_foreign_pressure = constant:resources_found_decision_change.foreign_pressure_relief }
+			}
+			country_event = { id = chaosx.nr18.30 }
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.grant_foreign_concession } }
+			if = {
+				limit = { has_variable = resources_found_pending_project_partner }
+				var:resources_found_pending_project_partner = { save_event_target_as = resources_found_contract_partner_target }
+				resources_found_grant_selected_field_resource_rights = yes
+				var:resources_found_active_project_field = {
+					set_state_flag = resources_found_foreign_concession_granted
+					set_variable = { resources_found_field_posture = constant:resources_found_posture.foreign_concession }
+					add_to_variable = { resources_found_developed_yield = constant:resources_found_decision_change.moderate }
+				}
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.sign_export_contract } }
+			if = {
+				limit = { has_variable = resources_found_pending_project_partner }
+				var:resources_found_pending_project_partner = { save_event_target_as = resources_found_contract_partner_target }
+				resources_found_grant_selected_field_resource_rights = yes
+				var:resources_found_active_project_field = {
+					set_state_flag = resources_found_long_term_export_contract
+					resources_found_begin_contract_century_qualification = yes
+				}
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.strategic_reserve } }
+			var:resources_found_active_project_field = {
+				set_variable = { resources_found_field_posture = constant:resources_found_posture.strategic_reserve }
+				if = { limit = { resources_found_can_suspend_field = yes } resources_found_stop_maximum_extraction_tracking = yes }
+				resources_found_suspend_field = yes
+				set_state_flag = resources_found_strategic_reserve_field
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.geological_appraisal } }
+			var:resources_found_active_project_field = {
+				set_state_flag = resources_found_geological_appraisal_complete
+				set_state_flag = resources_found_closure_access_mapped
+				add_to_variable = { resources_found_developed_yield = constant:resources_found_decision_change.appraisal_yield }
+			}
+			country_event = { id = chaosx.nr18.3 }
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.deeper_test } }
+			var:resources_found_active_project_field = {
+				resources_found_begin_field_transaction = yes
+				if = {
+					limit = { check_variable = { resources_found_transaction_acquired = constant:resources_found_value.one } }
+					set_temp_variable = { resources_found_roll_min = constant:resources_found_deposit.baseline_min }
+					set_temp_variable = { resources_found_roll_max = constant:resources_found_deposit.baseline_max_exclusive }
+					resources_found_add_random_standard_resource_roll_unlocked = yes
+					resources_found_end_field_transaction = yes
+				}
+				resources_found_release_acquired_field_transaction = yes
+				add_to_variable = { resources_found_developed_yield = constant:resources_found_decision_change.deeper_test_yield }
+				add_to_variable = { resources_found_excavation_depth = constant:resources_found_decision_change.deeper_test_depth }
+				set_state_flag = resources_found_deep_survey_complete
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.map_basin } }
+			var:resources_found_active_project_field = {
+				set_state_flag = resources_found_basin_mapped
+				set_state_flag = resources_found_closure_access_mapped
+				set_state_flag = resources_found_corridor_route_mapped
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.open_primary_works } }
+			var:resources_found_active_project_field = {
+				add_to_variable = { resources_found_developed_yield = constant:resources_found_decision_change.primary_works_yield }
+				add_to_variable = { resources_found_excavation_depth = constant:resources_found_decision_change.primary_works_depth }
+				set_variable = { resources_found_field_stage = constant:resources_found_field_stage.development }
+				set_state_flag = resources_found_primary_works_open
+				set_state_flag = resources_found_major_development_completed
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.extend_corridor } }
+			var:resources_found_active_project_field = {
+				add_building_construction = { type = infrastructure level = constant:resources_found_value.one instant_build = yes }
+				set_state_flag = resources_found_integrated_transport_route
+				set_state_flag = resources_found_corridor_route_held
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.install_machinery } }
+			var:resources_found_active_project_field = {
+				add_to_variable = { resources_found_developed_yield = constant:resources_found_decision_change.machinery_yield }
+				add_to_variable = { resources_found_excavation_depth = constant:resources_found_decision_change.machinery_depth }
+				subtract_from_variable = { resources_found_workforce_safety = constant:resources_found_decision_change.minor }
+				set_state_flag = resources_found_heavy_machinery_installed
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.build_processing } }
+			var:resources_found_active_project_field = {
+				add_building_construction = { type = industrial_complex level = constant:resources_found_value.one instant_build = yes }
+				add_to_variable = { resources_found_developed_yield = constant:resources_found_decision_change.processing_yield }
+				set_state_flag = resources_found_local_processing_complete
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.expand_settlement } }
+			var:resources_found_active_project_field = {
+				add_to_variable = { resources_found_workforce_safety = constant:resources_found_decision_change.settlement_safety }
+				set_state_flag = resources_found_worker_settlement_expanded
+				set_state_flag = resources_found_field_population_secured
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.integrated_corridor } }
+			var:resources_found_active_project_field = {
+				add_building_construction = { type = infrastructure level = constant:resources_found_value.one instant_build = yes }
+				add_building_construction = { type = industrial_complex level = constant:resources_found_value.one instant_build = yes }
+				set_state_flag = resources_found_compound_corridor_complete
+				set_state_flag = resources_found_major_development_completed
+				if = { limit = { NOT = { has_dynamic_modifier = { modifier = resources_found_compound_corridor } } } add_dynamic_modifier = { modifier = resources_found_compound_corridor } }
+			}
+			country_event = { id = chaosx.nr18.42 }
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.unified_compound_authority } }
+			var:resources_found_active_project_field = {
+				set_state_flag = resources_found_unified_compound_authority
+				clr_state_flag = resources_found_split_resource_concessions
+				subtract_from_variable = { resources_found_foreign_pressure = constant:resources_found_decision_change.moderate }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.split_resource_concessions } }
+			var:resources_found_active_project_field = {
+				set_state_flag = resources_found_split_resource_concessions
+				clr_state_flag = resources_found_unified_compound_authority
+				set_state_flag = resources_found_diversified_access
+				add_to_variable = { resources_found_foreign_pressure = constant:resources_found_decision_change.moderate }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.recruit_regional_labor } }
+			var:resources_found_active_project_field = {
+				add_to_variable = { resources_found_developed_yield = constant:resources_found_decision_change.moderate }
+				subtract_from_variable = { resources_found_workforce_safety = constant:resources_found_decision_change.minor }
+				set_state_flag = resources_found_regional_labor_recruited
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.rotate_crews } }
+			var:resources_found_active_project_field = {
+				subtract_from_variable = { resources_found_developed_yield = constant:resources_found_decision_change.rotation_yield_loss }
+				add_to_variable = { resources_found_workforce_safety = constant:resources_found_decision_change.rotation_safety }
+				set_state_flag = resources_found_crew_rotation_active
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.reinforce_shafts } }
+			var:resources_found_active_project_field = {
+				add_to_variable = { resources_found_workforce_safety = constant:resources_found_decision_change.reinforcement_safety }
+				set_state_flag = resources_found_shafts_reinforced
+				set_state_flag = resources_found_full_seal_engineering_prepared
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.field_hospital } }
+			var:resources_found_active_project_field = {
+				add_to_variable = { resources_found_workforce_safety = constant:resources_found_decision_change.hospital_safety }
+				set_state_flag = resources_found_field_hospital_established
+				set_state_flag = resources_found_medical_inspection_active
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.compensate_families } }
+			var:resources_found_active_project_field = {
+				set_state_flag = resources_found_compensation_offered
+				set_state_flag = resources_found_family_compensation_priority
+				clr_state_flag = resources_found_casualties_concealed
+				subtract_from_variable = { resources_found_foreign_pressure = constant:resources_found_decision_change.minor }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.conceal_casualties } }
+			var:resources_found_active_project_field = {
+				set_state_flag = resources_found_incident_concealment
+				set_state_flag = resources_found_casualties_concealed
+				set_state_flag = resources_found_coercive_labor_used
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.test_air_water } }
+			var:resources_found_active_project_field = {
+				set_state_flag = resources_found_air_water_tests_complete
+				set_state_flag = resources_found_ordinary_tests_failed
+				set_state_flag = resources_found_disturbance_revealed
+			}
+			country_event = { id = chaosx.nr18.55 }
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.evacuate_lower_workings } }
+			var:resources_found_active_project_field = {
+				set_state_flag = resources_found_lower_workings_evacuated
+				set_state_flag = resources_found_restricted_workings
+				subtract_from_variable = { resources_found_subsurface_disturbance = constant:resources_found_decision_change.major }
+				subtract_from_variable = { resources_found_developed_yield = constant:resources_found_decision_change.moderate }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.underground_sweep } }
+			var:resources_found_active_project_field = {
+				set_state_flag = resources_found_armed_underground_sweep
+				set_state_flag = resources_found_first_physical_evidence
+				set_state_flag = resources_found_countermeasure_research
+				subtract_from_variable = { resources_found_subsurface_disturbance = constant:resources_found_decision_change.moderate }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.scientific_military_survey } }
+			var:resources_found_active_project_field = {
+				set_state_flag = resources_found_evidence_military_study
+				set_state_flag = resources_found_countermeasure_research
+				set_state_flag = resources_found_full_seal_engineering_prepared
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.regulated_output } }
+			var:resources_found_active_project_field = {
+				set_state_flag = resources_found_regulated_output
+				resources_found_stop_maximum_extraction_tracking = yes
+				clr_state_flag = resources_found_maximum_shifts_active
+				clr_state_flag = resources_found_wartime_requisition_active
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.maximum_shifts } }
+			var:resources_found_active_project_field = {
+				set_state_flag = resources_found_maximum_shifts_active
+				resources_found_start_maximum_extraction_tracking = yes
+				set_state_flag = resources_found_coercive_labor_used
+				add_to_variable = { resources_found_developed_yield = constant:resources_found_decision_change.maximum_yield }
+				add_to_variable = { resources_found_excavation_depth = constant:resources_found_decision_change.maximum_depth }
+				add_to_variable = { resources_found_subsurface_disturbance = constant:resources_found_decision_change.maximum_disturbance }
+				subtract_from_variable = { resources_found_workforce_safety = constant:resources_found_decision_change.maximum_safety_loss }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.wartime_requisition } }
+			var:resources_found_active_project_field = {
+				set_state_flag = resources_found_wartime_requisition_active
+				set_state_flag = resources_found_military_exploitation
+				set_state_flag = resources_found_coercive_labor_used
+				add_to_variable = { resources_found_developed_yield = constant:resources_found_decision_change.major }
+				add_to_variable = { resources_found_foreign_pressure = constant:resources_found_decision_change.foreign_pressure_growth }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.concession_surge } }
+			var:resources_found_active_project_field = {
+				set_state_flag = resources_found_concession_surge_active
+				add_to_variable = { resources_found_developed_yield = constant:resources_found_decision_change.major }
+				add_to_variable = { resources_found_excavation_depth = constant:resources_found_decision_change.moderate }
+				add_to_variable = { resources_found_foreign_pressure = constant:resources_found_decision_change.foreign_pressure_growth }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.emergency_suspension } }
+			var:resources_found_active_project_field = {
+				if = { limit = { resources_found_can_suspend_field = yes } resources_found_stop_maximum_extraction_tracking = yes }
+				resources_found_suspend_field = yes
+				subtract_from_variable = { resources_found_subsurface_disturbance = constant:resources_found_decision_change.suspension_disturbance_loss }
+				subtract_from_variable = { resources_found_breach_pressure = constant:resources_found_decision_change.suspension_breach_loss }
+				if = {
+					limit = { has_state_flag = resources_found_field_contract_active }
+					ROOT = { set_country_flag = resources_found_achievement_contract_breached }
+					set_state_flag = resources_found_contracts_pending_review
+				}
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.invite_strategic_bids } }
+			var:resources_found_active_project_field = {
+				set_state_flag = resources_found_foreign_interest_open
+				set_variable = { resources_found_interested_country_count = constant:resources_found_threshold.commission_minimum_interested_countries }
+				add_to_variable = { resources_found_foreign_pressure = constant:resources_found_decision_change.foreign_pressure_growth }
+			}
+			resources_found_select_foreign_interest_actor = yes
+			country_event = { id = chaosx.nr18.5 }
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.balance_buyers } }
+			var:resources_found_active_project_field = {
+				set_state_flag = resources_found_diversified_access
+				set_state_flag = resources_found_competing_buyers_balanced
+				subtract_from_variable = { resources_found_foreign_pressure = constant:resources_found_decision_change.minor }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.reserve_domestic_output } }
+			var:resources_found_active_project_field = {
+				set_state_flag = resources_found_output_reserved_domestically
+				if = {
+					limit = { has_state_flag = resources_found_field_contract_active }
+					clr_state_flag = resources_found_field_contract_active
+					set_variable = { resources_found_contract_stage = constant:resources_found_contract_stage.suspended }
+					ROOT = { set_country_flag = resources_found_achievement_contract_breached }
+				}
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.renegotiate_concession } }
+			var:resources_found_active_project_field = {
+				set_state_flag = resources_found_contract_terms_renegotiated
+				clr_state_flag = resources_found_contracts_pending_review
+			}
+			resources_found_reactivate_selected_field_contract = yes
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.nationalize_field } }
+			resources_found_remove_active_field_resource_rights = yes
+			var:resources_found_active_project_field = {
+				set_variable = { resources_found_field_posture = constant:resources_found_posture.national_authority }
+				set_state_flag = resources_found_field_nationalized
+				set_state_flag = resources_found_compensation_claim_unresolved
+				add_to_variable = { resources_found_foreign_pressure = constant:resources_found_decision_change.major }
+			}
+			country_event = { id = chaosx.nr18.8 }
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.settle_compensation } }
+			var:resources_found_active_project_field = {
+				resources_found_refresh_dispute_achievement_evidence = yes
+				clr_state_flag = resources_found_compensation_claim_unresolved
+				set_state_flag = resources_found_compensation_settled
+				set_state_flag = resources_found_contracts_settled_for_closure
+				if = {
+					limit = { resources_found_dispute_has_required_history = yes }
+					set_variable = { resources_found_border_stage = constant:resources_found_border_stage.settlement }
+					set_state_flag = resources_found_claimant_dispute_suspended_by_agreement
+				}
+				subtract_from_variable = { resources_found_foreign_pressure = constant:resources_found_decision_change.foreign_pressure_relief }
+			}
+			set_temp_variable = { resources_found_settlement_mode_input = constant:resources_found_settlement_mode.compensation }
+			resources_found_begin_dispute_settlement_qualification = yes
+			country_event = { id = chaosx.nr18.9 }
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.organize_field_guards } }
+			var:resources_found_active_project_field = {
+				set_state_flag = resources_found_field_guards_organized
+				set_state_flag = resources_found_owner_military_ready
+				subtract_from_variable = { resources_found_foreign_pressure = constant:resources_found_decision_change.minor }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.counter_foreign_surveys } }
+			var:resources_found_active_project_field = {
+				set_state_flag = resources_found_foreign_survey_countered
+				subtract_from_variable = { resources_found_foreign_pressure = constant:resources_found_decision_change.foreign_pressure_relief }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.break_smuggling_network } }
+			var:resources_found_active_project_field = {
+				set_state_flag = resources_found_smuggling_network_broken
+				clr_state_flag = resources_found_smuggling_network_active
+				subtract_from_variable = { resources_found_foreign_pressure = constant:resources_found_decision_change.foreign_pressure_relief }
+			}
+			country_event = { id = chaosx.nr18.10 }
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.prepare_demolition } }
+			var:resources_found_active_project_field = {
+				set_state_flag = resources_found_controlled_demolition_prepared
+				set_state_flag = resources_found_resource_denial_ready
+				subtract_from_variable = { resources_found_workforce_safety = constant:resources_found_decision_change.minor }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.invite_border_arbitration } }
+			var:resources_found_active_project_field = {
+				resources_found_refresh_dispute_achievement_evidence = yes
+				set_state_flag = resources_found_border_arbitration_requested
+				if = {
+					limit = { resources_found_dispute_has_required_history = yes }
+					set_variable = { resources_found_border_stage = constant:resources_found_border_stage.settlement }
+					set_state_flag = resources_found_border_arbitration_settlement
+					set_state_flag = resources_found_claimant_dispute_suspended_by_agreement
+					subtract_from_variable = { resources_found_foreign_pressure = constant:resources_found_decision_change.foreign_pressure_relief }
+				}
+			}
+			if = {
+				limit = { var:resources_found_active_project_field = { has_state_flag = resources_found_border_arbitration_settlement } }
+				set_temp_variable = { resources_found_settlement_mode_input = constant:resources_found_settlement_mode.arbitration }
+				resources_found_begin_dispute_settlement_qualification = yes
+			}
+			else = { country_event = { id = chaosx.nr18.20 } }
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.reinforce_field_administration } }
+			var:resources_found_active_project_field = {
+				set_state_flag = resources_found_border_administration_reinforced
+				set_state_flag = resources_found_owner_military_ready
+				set_state_flag = resources_found_frontier_conditions_met
+				add_to_variable = { resources_found_foreign_pressure = constant:resources_found_decision_change.border_pressure_growth }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.restore_commission_compliance } }
+			var:resources_found_active_project_field = {
+				clr_state_flag = resources_found_commission_violation
+				set_state_flag = resources_found_commission_compliance_restored
+				set_variable = { resources_found_commission_stage = constant:resources_found_commission_stage.active }
+				set_demilitarized_zone = yes
+				set_building_level = { type = bunker level = constant:resources_found_value.zero }
+				set_building_level = { type = coastal_bunker level = constant:resources_found_value.zero }
+			}
+			country_event = { id = chaosx.nr18.31 }
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.secure_transport_corridor } }
+			var:resources_found_active_project_field = {
+				set_state_flag = resources_found_corridor_route_held
+				set_state_flag = resources_found_transport_corridor_secured
+				subtract_from_variable = { resources_found_breach_pressure = constant:resources_found_decision_change.minor }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.reinforce_perimeter } }
+			var:resources_found_active_project_field = {
+				set_state_flag = resources_found_perimeter_reinforced
+				set_state_flag = resources_found_countermeasure_research
+				subtract_from_variable = { resources_found_breach_pressure = constant:resources_found_decision_change.perimeter_breach_loss }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.hunt_surface_packs } }
+			if = {
+				limit = {
+					var:resources_found_active_project_field = {
+						has_state_flag = resources_found_countermeasure_research
+						is_owned_and_controlled_by = ROOT
+					}
+				}
+				country_event = { id = chaosx.nr18.66 }
+			}
+			else = { country_event = { id = chaosx.nr18.67 } }
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.clear_urban_district } }
+			if = {
+				limit = { var:resources_found_active_project_field = { has_state_flag = resources_found_countermeasure_research is_owned_and_controlled_by = ROOT } }
+				var:resources_found_active_project_field = {
+					clr_state_flag = resources_found_city_intrusion
+					set_state_flag = resources_found_urban_district_cleared
+					subtract_from_variable = { resources_found_breach_pressure = constant:resources_found_decision_change.major }
+				}
+				country_event = { id = chaosx.nr18.66 }
+			}
+			else = { country_event = { id = chaosx.nr18.67 } }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.evacuate_field_settlements }
+					check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.evacuate_state_center }
+				}
+			}
+			if = {
+				limit = { var:resources_found_active_project_field = { is_owned_and_controlled_by = ROOT has_state_flag = resources_found_corridor_route_held } }
+				var:resources_found_active_project_field = {
+					set_state_flag = resources_found_field_population_secured
+					set_state_flag = resources_found_successful_evacuation
+					clr_state_flag = resources_found_evacuation_prepared
+				}
+				country_event = { id = chaosx.nr18.68 }
+			}
+			else = { country_event = { id = chaosx.nr18.69 } }
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.request_hard_attack_aid } }
+			var:resources_found_active_project_field = {
+				set_state_flag = resources_found_foreign_weapons_accepted
+				set_state_flag = resources_found_countermeasure_research
+			}
+			add_equipment_to_stockpile = { type = anti_tank_equipment amount = constant:resources_found_decision_cost.anti_cave_anti_tank }
+			country_event = { id = chaosx.nr18.65 }
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.seal_access_network } }
+			var:resources_found_active_project_field = {
+				set_state_flag = resources_found_sealed_network
+				set_state_flag = resources_found_full_seal_engineering_prepared
+				clr_state_flag = resources_found_unsealed_nest
+				subtract_from_variable = { resources_found_breach_pressure = constant:resources_found_decision_change.access_breach_loss }
+				subtract_from_variable = { resources_found_excavation_depth = constant:resources_found_decision_change.access_depth_loss }
+			}
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.partial_closure } }
+			country_event = { id = chaosx.nr18.70 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.full_seal }
+					check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.emergency_seal }
+				}
+			}
+			if = {
+				limit = { resources_found_decision_full_seal_completion_still_valid = yes }
+				var:resources_found_active_project_field = { set_state_flag = resources_found_full_seal_requirements_met }
+				country_event = { id = chaosx.nr18.71 }
+			}
+			else = { country_event = { id = chaosx.nr18.72 } }
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.baseline_exact_closure } }
+			var:resources_found_active_project_field = {
+				set_state_flag = resources_found_sealed_network
+				set_state_flag = resources_found_restricted_workings
+				set_state_flag = resources_found_perimeter_reinforced
+			}
+			if = {
+				limit = { resources_found_decision_full_seal_completion_still_valid = yes }
+				var:resources_found_active_project_field = { set_state_flag = resources_found_full_seal_requirements_met }
+				country_event = { id = chaosx.nr18.15 }
+			}
+			else = { country_event = { id = chaosx.nr18.72 } }
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.restricted_stabilization } }
+			var:resources_found_active_project_field = {
+				set_state_flag = resources_found_evolution_ii_stabilized
+				set_state_flag = resources_found_evolution_ii_incident_sequence_complete
+				set_state_flag = resources_found_restricted_workings
+				subtract_from_variable = { resources_found_subsurface_disturbance = constant:resources_found_decision_change.major }
+			}
+			country_event = { id = chaosx.nr18.59 }
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.transfer_review } }
+			country_event = { id = chaosx.nr18.12 }
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.contract_review } }
+			var:resources_found_active_project_field = {
+				clr_state_flag = resources_found_contracts_pending_review
+				set_state_flag = resources_found_contracts_settled_for_closure
+			}
+			resources_found_reactivate_selected_field_contract = yes
+		}
+		var:resources_found_active_project_field = {
+			if = { limit = { resources_found_is_active_field = yes } resources_found_refresh_field_record = yes }
+			force_update_dynamic_modifier = yes
+		}
+	}
+	else = { resources_found_fail_selected_field_project = yes }
+	resources_found_schedule_evolution_paths = yes
+	clear_variable = resources_found_pending_project_partner
+	resources_found_clear_decision_project_runtime = yes
+}
+
+# COUNTRY scope. Cancellation and invalidation never substitutes a successful
+# close. Seal projects route to the explicit failure event.
+resources_found_fail_selected_field_project = {
+	resources_found_bind_active_project_field = yes
+	if = {
+		limit = {
+			OR = {
+				check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.full_seal }
+				check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.emergency_seal }
+				check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.baseline_exact_closure }
+			}
+		}
+		if = {
+			limit = { has_variable = resources_found_active_project_field }
+			var:resources_found_active_project_field = {
+				set_state_flag = resources_found_failed_full_seal
+				clr_state_flag = resources_found_full_seal_active
+				clr_state_flag = resources_found_emergency_seal_active
+				clr_state_flag = resources_found_full_seal_requirements_met
+				clr_state_flag = resources_found_field_closing
+			}
+		}
+		if = {
+			limit = { resources_found_country_has_valid_selected_field = yes }
+			country_event = { id = chaosx.nr18.72 }
+		}
+	}
+	if = {
+		limit = { has_variable = resources_found_active_project_field }
+		var:resources_found_active_project_field = {
+			clr_state_flag = resources_found_decision_project_active
+			clr_state_flag = resources_found_partial_closure_active
+			if = {
+				limit = { check_variable = { ROOT.resources_found_active_project_kind = constant:resources_found_decision_project.partial_closure } }
+				clr_state_flag = resources_found_field_closing
+			}
+		}
+	}
+	resources_found_clear_decision_project_runtime = yes
+	clear_variable = resources_found_pending_project_partner
+}
+
+# ---------------------------------------------------------------------------
+# Contracts, resource rights, foreign pressure, and transfer cleanup
+# ---------------------------------------------------------------------------
+
+# STATE scope. Resource rights are removed in the receiving country scope. PREV
+# is the exact state, matching the current vanilla resource-rights pattern.
+resources_found_clear_field_foreign_offers = {
+	if = {
+		limit = { has_variable = resources_found_purchase_requester }
+		var:resources_found_purchase_requester = {
+			if = {
+				limit = { exists = yes }
+				clr_country_flag = resources_found_foreign_field_actor
+				clear_variable = resources_found_foreign_interest_owner
+				clear_variable = resources_found_foreign_interest_field
+			}
+		}
+	}
+	if = {
+		limit = { has_variable = resources_found_development_assistance_partner }
+		var:resources_found_development_assistance_partner = {
+			if = {
+				limit = { exists = yes }
+				clr_country_flag = resources_found_foreign_field_actor
+				clear_variable = resources_found_foreign_interest_owner
+				clear_variable = resources_found_foreign_interest_field
+			}
+		}
+	}
+	if = {
+		limit = { has_variable = resources_found_exclusive_rights_requester }
+		var:resources_found_exclusive_rights_requester = {
+			if = {
+				limit = { exists = yes }
+				clr_country_flag = resources_found_foreign_field_actor
+				clear_variable = resources_found_foreign_interest_owner
+				clear_variable = resources_found_foreign_interest_field
+			}
+		}
+	}
+	if = {
+		limit = { has_variable = resources_found_access_guarantor }
+		var:resources_found_access_guarantor = {
+			if = {
+				limit = { exists = yes }
+				clr_country_flag = resources_found_foreign_field_actor
+				clear_variable = resources_found_foreign_interest_owner
+				clear_variable = resources_found_foreign_interest_field
+			}
+		}
+	}
+	clr_state_flag = resources_found_purchase_agreement_requested
+	clr_state_flag = resources_found_development_assistance_offered
+	clr_state_flag = resources_found_exclusive_rights_requested
+	clr_state_flag = resources_found_access_guarantee_offered
+	clear_variable = resources_found_purchase_requester
+	clear_variable = resources_found_development_assistance_partner
+	clear_variable = resources_found_exclusive_rights_requester
+	clear_variable = resources_found_access_guarantor
+	OWNER = {
+		clr_country_flag = resources_found_foreign_commercial_offer_pending
+		clr_country_flag = resources_found_foreign_security_offer_pending
+	}
+}
+
+resources_found_remove_field_resource_rights = {
+	if = {
+		limit = { has_variable = resources_found_contract_partner }
+		var:resources_found_contract_partner = {
+			if = {
+				limit = { exists = yes NOT = { is_resources_found_cave_country = yes } }
+				remove_resource_rights = PREV
+				clr_country_flag = resources_found_foreign_field_actor
+				clear_variable = resources_found_foreign_interest_owner
+				clear_variable = resources_found_foreign_interest_field
+			}
+		}
+	}
+	if = {
+		limit = { has_variable = resources_found_concession_partner }
+		var:resources_found_concession_partner = {
+			if = {
+				limit = { exists = yes NOT = { is_resources_found_cave_country = yes } }
+				remove_resource_rights = PREV
+				clr_country_flag = resources_found_foreign_field_actor
+				clear_variable = resources_found_foreign_interest_owner
+				clear_variable = resources_found_foreign_interest_field
+			}
+		}
+	}
+	clr_state_flag = resources_found_resource_rights_active
+	resources_found_clear_field_foreign_offers = yes
+}
+
+# COUNTRY scope for the field owner.
+resources_found_remove_active_field_resource_rights = {
+	if = {
+		limit = { has_variable = resources_found_active_project_field }
+		var:resources_found_active_project_field = { resources_found_remove_field_resource_rights = yes }
+	}
+	else_if = {
+		limit = { resources_found_country_has_valid_selected_field = yes }
+		var:resources_found_selected_field = { resources_found_remove_field_resource_rights = yes }
+	}
+}
+
+# COUNTRY scope for the field owner. Requires regular event target
+# resources_found_contract_partner_target and a valid selected field.
+resources_found_grant_selected_field_resource_rights = {
+	if = {
+		limit = {
+			resources_found_country_has_valid_selected_field = yes
+			has_event_target = resources_found_contract_partner_target
+			event_target:resources_found_contract_partner_target = { resources_found_decision_is_valid_foreign_partner = yes }
+		}
+		give_resource_rights = {
+			receiver = event_target:resources_found_contract_partner_target
+			state = var:resources_found_selected_field
+			resources = { oil aluminium rubber tungsten steel chromium }
+		}
+		var:resources_found_selected_field = {
+			set_variable = { resources_found_contract_partner = event_target:resources_found_contract_partner_target }
+			set_variable = { resources_found_concession_partner = event_target:resources_found_contract_partner_target }
+			set_state_flag = resources_found_resource_rights_active
+			set_state_flag = resources_found_field_contract_active
+			set_variable = { resources_found_contract_stage = constant:resources_found_contract_stage.active }
+			set_variable = { resources_found_contract_started_date = global.date }
+			set_variable = { resources_found_contract_review_date = global.date }
+			add_to_variable = { resources_found_contract_review_date = constant:resources_found_decision_duration.contract_term }
+			set_variable = { resources_found_field_posture = constant:resources_found_posture.foreign_concession }
+			set_state_flag = resources_found_contracts_settled_for_closure
+			add_to_variable = { resources_found_foreign_pressure = constant:resources_found_decision_change.foreign_pressure_growth }
+		}
+		set_variable = { resources_found_contract_mission_field = resources_found_selected_field }
+		set_variable = { resources_found_contract_mission_partner = event_target:resources_found_contract_partner_target }
+		set_variable = { resources_found_contract_term_days = constant:resources_found_decision_duration.contract_term }
+		activate_mission = resources_found_contract_term_mission
+		country_event = { id = chaosx.nr18.6 }
+	}
+}
+
+# COUNTRY scope for a field owner completing a review or renegotiation. The
+# state-stored partner is rebound to a regular event target for the exact grant.
+resources_found_reactivate_selected_field_contract = {
+	if = {
+		limit = {
+			resources_found_country_has_valid_selected_field = yes
+			var:resources_found_selected_field = {
+				has_variable = resources_found_contract_partner
+				var:resources_found_contract_partner = { resources_found_decision_is_valid_foreign_partner = yes }
+			}
+		}
+		var:resources_found_selected_field = {
+			var:resources_found_contract_partner = { save_event_target_as = resources_found_contract_partner_target }
+		}
+		resources_found_grant_selected_field_resource_rights = yes
+		var:resources_found_selected_field = {
+			if = {
+				limit = { has_state_flag = resources_found_long_term_export_contract }
+				resources_found_begin_contract_century_qualification = yes
+			}
+		}
+	}
+}
+
+# COUNTRY scope on successful term completion.
+resources_found_complete_contract_term = {
+	if = {
+		limit = { resources_found_decision_contract_mission_context_valid = yes }
+		var:resources_found_contract_mission_field = {
+			resources_found_refresh_contract_century_qualification = yes
+			if = {
+				limit = { resources_found_contract_century_conditions_met = yes }
+				ROOT = { set_country_flag = resources_found_achievement_contract_of_century }
+				set_state_flag = resources_found_contract_century_completed
+				clr_state_flag = resources_found_contract_century_qualifying
+			}
+			resources_found_remove_field_resource_rights = yes
+			clr_state_flag = resources_found_field_contract_active
+			set_state_flag = resources_found_contract_term_fulfilled
+			set_state_flag = resources_found_contracts_pending_review
+			set_variable = { resources_found_contract_stage = constant:resources_found_contract_stage.pending_review }
+			set_variable = { resources_found_contract_review_date = global.date }
+		}
+		set_variable = { resources_found_selected_field = resources_found_contract_mission_field }
+		country_event = { id = chaosx.nr18.7 }
+	}
+	else = { resources_found_fail_contract_term = yes }
+	clear_variable = resources_found_contract_mission_field
+	clear_variable = resources_found_contract_mission_partner
+	clear_variable = resources_found_contract_term_days
+}
+
+# COUNTRY scope on expiry invalidation, transfer, occupation, suspension, or
+# closure. Rights are removed before the callback exposes renegotiation choices.
+resources_found_fail_contract_term = {
+	if = {
+		limit = { has_variable = resources_found_contract_mission_field }
+		set_variable = { resources_found_selected_field = resources_found_contract_mission_field }
+		var:resources_found_contract_mission_field = {
+			if = {
+				limit = { has_state_flag = resources_found_contract_century_qualifying }
+				clr_state_flag = resources_found_contract_century_qualifying
+				set_state_flag = resources_found_contract_century_disqualified
+			}
+			resources_found_remove_field_resource_rights = yes
+			clr_state_flag = resources_found_field_contract_active
+			set_state_flag = resources_found_contracts_pending_review
+			set_variable = { resources_found_contract_stage = constant:resources_found_contract_stage.pending_review }
+		}
+		set_country_flag = resources_found_achievement_contract_breached
+		if = {
+			limit = { resources_found_country_has_valid_selected_field = yes }
+			country_event = { id = chaosx.nr18.7 }
+		}
+	}
+	clear_variable = resources_found_contract_mission_field
+	clear_variable = resources_found_contract_mission_partner
+	clear_variable = resources_found_contract_term_days
+}
+
+# COUNTRY scope for a valid foreign candidate during the one-shot invite-bids
+# scan. The caller predefines the unscoped score temp so changes made here
+# remain available when control returns to the every_country loop.
+resources_found_score_foreign_interest_candidate = {
+	if = {
+		limit = {
+			event_target:resources_found_foreign_interest_field_target = {
+				check_variable = { resources_found_added_oil > constant:resources_found_value.zero }
+			}
+		}
+		set_temp_variable = { resources_found_foreign_interest_component = resource@oil }
+		if = {
+			limit = { check_variable = { resources_found_foreign_interest_component < constant:resources_found_value.zero } }
+			multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_value.negative_one }
+			clamp_temp_variable = { var = resources_found_foreign_interest_component min = constant:resources_found_value.zero max = constant:resources_found_foreign_interest_score.resource_deficit_cap }
+			multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.resource_deficit_per_unit }
+			add_to_temp_variable = { resources_found_foreign_interest_score = resources_found_foreign_interest_component }
+		}
+		set_temp_variable = { resources_found_foreign_interest_component = resource_imported@oil }
+		clamp_temp_variable = { var = resources_found_foreign_interest_component min = constant:resources_found_value.zero max = constant:resources_found_foreign_interest_score.resource_import_cap }
+		multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.resource_import_per_unit }
+		add_to_temp_variable = { resources_found_foreign_interest_score = resources_found_foreign_interest_component }
+		set_temp_variable = { resources_found_foreign_interest_component = resource_consumed@oil }
+		clamp_temp_variable = { var = resources_found_foreign_interest_component min = constant:resources_found_value.zero max = constant:resources_found_foreign_interest_score.resource_demand_cap }
+		multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.resource_demand_per_unit }
+		add_to_temp_variable = { resources_found_foreign_interest_score = resources_found_foreign_interest_component }
+		set_temp_variable = { resources_found_foreign_interest_component = resource_produced@oil }
+		subtract_from_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.resource_abundant_extraction_floor }
+		if = {
+			limit = { check_variable = { resources_found_foreign_interest_component > constant:resources_found_value.zero } }
+			clamp_temp_variable = { var = resources_found_foreign_interest_component min = constant:resources_found_value.zero max = constant:resources_found_foreign_interest_score.resource_abundant_extraction_cap }
+			multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.resource_abundant_extraction_penalty_per_unit }
+			subtract_from_temp_variable = { resources_found_foreign_interest_score = resources_found_foreign_interest_component }
+		}
+	}
+
+	if = {
+		limit = {
+			event_target:resources_found_foreign_interest_field_target = {
+				check_variable = { resources_found_added_aluminium > constant:resources_found_value.zero }
+			}
+		}
+		set_temp_variable = { resources_found_foreign_interest_component = resource@aluminium }
+		if = {
+			limit = { check_variable = { resources_found_foreign_interest_component < constant:resources_found_value.zero } }
+			multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_value.negative_one }
+			clamp_temp_variable = { var = resources_found_foreign_interest_component min = constant:resources_found_value.zero max = constant:resources_found_foreign_interest_score.resource_deficit_cap }
+			multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.resource_deficit_per_unit }
+			add_to_temp_variable = { resources_found_foreign_interest_score = resources_found_foreign_interest_component }
+		}
+		set_temp_variable = { resources_found_foreign_interest_component = resource_imported@aluminium }
+		clamp_temp_variable = { var = resources_found_foreign_interest_component min = constant:resources_found_value.zero max = constant:resources_found_foreign_interest_score.resource_import_cap }
+		multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.resource_import_per_unit }
+		add_to_temp_variable = { resources_found_foreign_interest_score = resources_found_foreign_interest_component }
+		set_temp_variable = { resources_found_foreign_interest_component = resource_consumed@aluminium }
+		clamp_temp_variable = { var = resources_found_foreign_interest_component min = constant:resources_found_value.zero max = constant:resources_found_foreign_interest_score.resource_demand_cap }
+		multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.resource_demand_per_unit }
+		add_to_temp_variable = { resources_found_foreign_interest_score = resources_found_foreign_interest_component }
+		set_temp_variable = { resources_found_foreign_interest_component = resource_produced@aluminium }
+		subtract_from_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.resource_abundant_extraction_floor }
+		if = {
+			limit = { check_variable = { resources_found_foreign_interest_component > constant:resources_found_value.zero } }
+			clamp_temp_variable = { var = resources_found_foreign_interest_component min = constant:resources_found_value.zero max = constant:resources_found_foreign_interest_score.resource_abundant_extraction_cap }
+			multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.resource_abundant_extraction_penalty_per_unit }
+			subtract_from_temp_variable = { resources_found_foreign_interest_score = resources_found_foreign_interest_component }
+		}
+	}
+
+	if = {
+		limit = {
+			event_target:resources_found_foreign_interest_field_target = {
+				check_variable = { resources_found_added_rubber > constant:resources_found_value.zero }
+			}
+		}
+		set_temp_variable = { resources_found_foreign_interest_component = resource@rubber }
+		if = {
+			limit = { check_variable = { resources_found_foreign_interest_component < constant:resources_found_value.zero } }
+			multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_value.negative_one }
+			clamp_temp_variable = { var = resources_found_foreign_interest_component min = constant:resources_found_value.zero max = constant:resources_found_foreign_interest_score.resource_deficit_cap }
+			multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.resource_deficit_per_unit }
+			add_to_temp_variable = { resources_found_foreign_interest_score = resources_found_foreign_interest_component }
+		}
+		set_temp_variable = { resources_found_foreign_interest_component = resource_imported@rubber }
+		clamp_temp_variable = { var = resources_found_foreign_interest_component min = constant:resources_found_value.zero max = constant:resources_found_foreign_interest_score.resource_import_cap }
+		multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.resource_import_per_unit }
+		add_to_temp_variable = { resources_found_foreign_interest_score = resources_found_foreign_interest_component }
+		set_temp_variable = { resources_found_foreign_interest_component = resource_consumed@rubber }
+		clamp_temp_variable = { var = resources_found_foreign_interest_component min = constant:resources_found_value.zero max = constant:resources_found_foreign_interest_score.resource_demand_cap }
+		multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.resource_demand_per_unit }
+		add_to_temp_variable = { resources_found_foreign_interest_score = resources_found_foreign_interest_component }
+		set_temp_variable = { resources_found_foreign_interest_component = resource_produced@rubber }
+		subtract_from_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.resource_abundant_extraction_floor }
+		if = {
+			limit = { check_variable = { resources_found_foreign_interest_component > constant:resources_found_value.zero } }
+			clamp_temp_variable = { var = resources_found_foreign_interest_component min = constant:resources_found_value.zero max = constant:resources_found_foreign_interest_score.resource_abundant_extraction_cap }
+			multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.resource_abundant_extraction_penalty_per_unit }
+			subtract_from_temp_variable = { resources_found_foreign_interest_score = resources_found_foreign_interest_component }
+		}
+	}
+
+	if = {
+		limit = {
+			event_target:resources_found_foreign_interest_field_target = {
+				check_variable = { resources_found_added_tungsten > constant:resources_found_value.zero }
+			}
+		}
+		set_temp_variable = { resources_found_foreign_interest_component = resource@tungsten }
+		if = {
+			limit = { check_variable = { resources_found_foreign_interest_component < constant:resources_found_value.zero } }
+			multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_value.negative_one }
+			clamp_temp_variable = { var = resources_found_foreign_interest_component min = constant:resources_found_value.zero max = constant:resources_found_foreign_interest_score.resource_deficit_cap }
+			multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.resource_deficit_per_unit }
+			add_to_temp_variable = { resources_found_foreign_interest_score = resources_found_foreign_interest_component }
+		}
+		set_temp_variable = { resources_found_foreign_interest_component = resource_imported@tungsten }
+		clamp_temp_variable = { var = resources_found_foreign_interest_component min = constant:resources_found_value.zero max = constant:resources_found_foreign_interest_score.resource_import_cap }
+		multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.resource_import_per_unit }
+		add_to_temp_variable = { resources_found_foreign_interest_score = resources_found_foreign_interest_component }
+		set_temp_variable = { resources_found_foreign_interest_component = resource_consumed@tungsten }
+		clamp_temp_variable = { var = resources_found_foreign_interest_component min = constant:resources_found_value.zero max = constant:resources_found_foreign_interest_score.resource_demand_cap }
+		multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.resource_demand_per_unit }
+		add_to_temp_variable = { resources_found_foreign_interest_score = resources_found_foreign_interest_component }
+		set_temp_variable = { resources_found_foreign_interest_component = resource_produced@tungsten }
+		subtract_from_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.resource_abundant_extraction_floor }
+		if = {
+			limit = { check_variable = { resources_found_foreign_interest_component > constant:resources_found_value.zero } }
+			clamp_temp_variable = { var = resources_found_foreign_interest_component min = constant:resources_found_value.zero max = constant:resources_found_foreign_interest_score.resource_abundant_extraction_cap }
+			multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.resource_abundant_extraction_penalty_per_unit }
+			subtract_from_temp_variable = { resources_found_foreign_interest_score = resources_found_foreign_interest_component }
+		}
+	}
+
+	if = {
+		limit = {
+			event_target:resources_found_foreign_interest_field_target = {
+				check_variable = { resources_found_added_steel > constant:resources_found_value.zero }
+			}
+		}
+		set_temp_variable = { resources_found_foreign_interest_component = resource@steel }
+		if = {
+			limit = { check_variable = { resources_found_foreign_interest_component < constant:resources_found_value.zero } }
+			multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_value.negative_one }
+			clamp_temp_variable = { var = resources_found_foreign_interest_component min = constant:resources_found_value.zero max = constant:resources_found_foreign_interest_score.resource_deficit_cap }
+			multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.resource_deficit_per_unit }
+			add_to_temp_variable = { resources_found_foreign_interest_score = resources_found_foreign_interest_component }
+		}
+		set_temp_variable = { resources_found_foreign_interest_component = resource_imported@steel }
+		clamp_temp_variable = { var = resources_found_foreign_interest_component min = constant:resources_found_value.zero max = constant:resources_found_foreign_interest_score.resource_import_cap }
+		multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.resource_import_per_unit }
+		add_to_temp_variable = { resources_found_foreign_interest_score = resources_found_foreign_interest_component }
+		set_temp_variable = { resources_found_foreign_interest_component = resource_consumed@steel }
+		clamp_temp_variable = { var = resources_found_foreign_interest_component min = constant:resources_found_value.zero max = constant:resources_found_foreign_interest_score.resource_demand_cap }
+		multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.resource_demand_per_unit }
+		add_to_temp_variable = { resources_found_foreign_interest_score = resources_found_foreign_interest_component }
+		set_temp_variable = { resources_found_foreign_interest_component = resource_produced@steel }
+		subtract_from_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.resource_abundant_extraction_floor }
+		if = {
+			limit = { check_variable = { resources_found_foreign_interest_component > constant:resources_found_value.zero } }
+			clamp_temp_variable = { var = resources_found_foreign_interest_component min = constant:resources_found_value.zero max = constant:resources_found_foreign_interest_score.resource_abundant_extraction_cap }
+			multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.resource_abundant_extraction_penalty_per_unit }
+			subtract_from_temp_variable = { resources_found_foreign_interest_score = resources_found_foreign_interest_component }
+		}
+	}
+
+	if = {
+		limit = {
+			event_target:resources_found_foreign_interest_field_target = {
+				check_variable = { resources_found_added_chromium > constant:resources_found_value.zero }
+			}
+		}
+		set_temp_variable = { resources_found_foreign_interest_component = resource@chromium }
+		if = {
+			limit = { check_variable = { resources_found_foreign_interest_component < constant:resources_found_value.zero } }
+			multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_value.negative_one }
+			clamp_temp_variable = { var = resources_found_foreign_interest_component min = constant:resources_found_value.zero max = constant:resources_found_foreign_interest_score.resource_deficit_cap }
+			multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.resource_deficit_per_unit }
+			add_to_temp_variable = { resources_found_foreign_interest_score = resources_found_foreign_interest_component }
+		}
+		set_temp_variable = { resources_found_foreign_interest_component = resource_imported@chromium }
+		clamp_temp_variable = { var = resources_found_foreign_interest_component min = constant:resources_found_value.zero max = constant:resources_found_foreign_interest_score.resource_import_cap }
+		multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.resource_import_per_unit }
+		add_to_temp_variable = { resources_found_foreign_interest_score = resources_found_foreign_interest_component }
+		set_temp_variable = { resources_found_foreign_interest_component = resource_consumed@chromium }
+		clamp_temp_variable = { var = resources_found_foreign_interest_component min = constant:resources_found_value.zero max = constant:resources_found_foreign_interest_score.resource_demand_cap }
+		multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.resource_demand_per_unit }
+		add_to_temp_variable = { resources_found_foreign_interest_score = resources_found_foreign_interest_component }
+		set_temp_variable = { resources_found_foreign_interest_component = resource_produced@chromium }
+		subtract_from_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.resource_abundant_extraction_floor }
+		if = {
+			limit = { check_variable = { resources_found_foreign_interest_component > constant:resources_found_value.zero } }
+			clamp_temp_variable = { var = resources_found_foreign_interest_component min = constant:resources_found_value.zero max = constant:resources_found_foreign_interest_score.resource_abundant_extraction_cap }
+			multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.resource_abundant_extraction_penalty_per_unit }
+			subtract_from_temp_variable = { resources_found_foreign_interest_score = resources_found_foreign_interest_component }
+		}
+	}
+
+	# Route score uses the strongest available route once, so a neighboring
+	# faction member does not receive several copies of the same access value.
+	if = {
+		limit = { is_neighbor_of = ROOT }
+		add_to_temp_variable = { resources_found_foreign_interest_score = constant:resources_found_foreign_interest_score.route_neighbor }
+	}
+	else_if = {
+		limit = { is_in_faction_with = ROOT }
+		add_to_temp_variable = { resources_found_foreign_interest_score = constant:resources_found_foreign_interest_score.route_faction }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_military_access_to = ROOT
+				ROOT = { has_military_access_to = PREV }
+			}
+		}
+		add_to_temp_variable = { resources_found_foreign_interest_score = constant:resources_found_foreign_interest_score.route_military_access }
+	}
+	else_if = {
+		limit = { is_on_same_continent_as = event_target:resources_found_foreign_interest_field_target }
+		add_to_temp_variable = { resources_found_foreign_interest_score = constant:resources_found_foreign_interest_score.route_same_continent }
+	}
+	else_if = {
+		limit = {
+			any_owned_state = {
+				is_owned_and_controlled_by = PREV
+				is_coastal = yes
+			}
+			OR = {
+				event_target:resources_found_foreign_interest_field_target = { is_coastal = yes }
+				AND = {
+					event_target:resources_found_foreign_interest_field_target = { is_in_home_area = yes }
+					event_target:resources_found_foreign_interest_owner_target = {
+						any_owned_state = {
+							is_owned_and_controlled_by = PREV
+							is_coastal = yes
+						}
+					}
+				}
+			}
+		}
+		add_to_temp_variable = { resources_found_foreign_interest_score = constant:resources_found_foreign_interest_score.route_maritime }
+	}
+	else = {
+		subtract_from_temp_variable = { resources_found_foreign_interest_score = constant:resources_found_foreign_interest_score.route_inaccessible_penalty }
+	}
+
+	set_temp_variable = { resources_found_foreign_interest_component = opinion@ROOT }
+	clamp_temp_variable = { var = resources_found_foreign_interest_component min = constant:resources_found_foreign_interest_score.opinion_minimum max = constant:resources_found_foreign_interest_score.opinion_maximum }
+	multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.opinion_per_point }
+	add_to_temp_variable = { resources_found_foreign_interest_score = resources_found_foreign_interest_component }
+
+	if = {
+		limit = { event_target:resources_found_foreign_interest_field_target = { is_core_of = PREV } }
+		add_to_temp_variable = { resources_found_foreign_interest_score = constant:resources_found_foreign_interest_score.field_core }
+	}
+	else_if = {
+		limit = { event_target:resources_found_foreign_interest_field_target = { is_claimed_by = PREV } }
+		add_to_temp_variable = { resources_found_foreign_interest_score = constant:resources_found_foreign_interest_score.field_claim }
+	}
+
+	if = {
+		limit = {
+			has_event_target = resources_found_foreign_interest_existing_partner_target
+			event_target:resources_found_foreign_interest_existing_partner_target = { tag = PREV }
+		}
+		add_to_temp_variable = { resources_found_foreign_interest_score = constant:resources_found_foreign_interest_score.existing_partner }
+	}
+	else_if = {
+		limit = {
+			has_event_target = resources_found_foreign_interest_existing_partner_target
+			has_war_with = event_target:resources_found_foreign_interest_existing_partner_target
+		}
+		add_to_temp_variable = { resources_found_foreign_interest_score = constant:resources_found_foreign_interest_score.hostile_partner_rivalry }
+	}
+
+	if = {
+		limit = { has_war = yes }
+		add_to_temp_variable = { resources_found_foreign_interest_score = constant:resources_found_foreign_interest_score.candidate_at_war }
+	}
+	if = {
+		limit = { is_major = yes }
+		add_to_temp_variable = { resources_found_foreign_interest_score = constant:resources_found_foreign_interest_score.candidate_major }
+	}
+	set_temp_variable = { resources_found_foreign_interest_component = num_of_factories }
+	clamp_temp_variable = { var = resources_found_foreign_interest_component min = constant:resources_found_value.zero max = constant:resources_found_foreign_interest_score.candidate_factory_cap }
+	multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.candidate_factory_per_factory }
+	add_to_temp_variable = { resources_found_foreign_interest_score = resources_found_foreign_interest_component }
+	set_temp_variable = { resources_found_foreign_interest_component = surrender_progress }
+	if = {
+		limit = {
+			check_variable = {
+				var = resources_found_foreign_interest_component
+				value = constant:resources_found_foreign_interest_score.candidate_overextension_threshold
+				compare = greater_than
+			}
+		}
+		subtract_from_temp_variable = { resources_found_foreign_interest_score = constant:resources_found_foreign_interest_score.candidate_overextension_penalty }
+	}
+}
+
+# COUNTRY scope for the owner after inviting bids. This is the only full-country
+# scan in the bid workflow. It runs once when that project completes, keeps the
+# highest qualifying candidate in a regular event target, and then preserves the
+# previous actor flag, owner pointer, field pointer, and cost-preview refresh.
+resources_found_select_foreign_interest_actor = {
+	if = {
+		limit = {
+			resources_found_country_has_valid_selected_field = yes
+			var:resources_found_selected_field = {
+				resources_found_is_active_field = yes
+				NOT = { has_state_flag = resources_found_field_closing }
+				NOT = { has_state_flag = resources_found_field_converted_to_cave_origin }
+				NOT = { has_state_flag = resources_found_field_transaction_lock }
+			}
+		}
+		save_event_target_as = resources_found_foreign_interest_owner_target
+		var:resources_found_selected_field = { save_event_target_as = resources_found_foreign_interest_field_target }
+
+		set_temp_variable = { resources_found_foreign_interest_field_score = constant:resources_found_value.zero }
+		set_temp_variable = { resources_found_foreign_interest_owner_factories = num_of_factories }
+		set_temp_variable = { resources_found_foreign_interest_owner_stability = stability }
+		set_temp_variable = { resources_found_foreign_interest_owner_surrender = surrender_progress }
+
+		event_target:resources_found_foreign_interest_field_target = {
+			set_temp_variable = { resources_found_foreign_interest_component = resources_found_total_added }
+			clamp_temp_variable = { var = resources_found_foreign_interest_component min = constant:resources_found_value.zero max = constant:resources_found_foreign_interest_score.field_total_cap }
+			multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.field_total_per_unit }
+			add_to_temp_variable = { resources_found_foreign_interest_field_score = resources_found_foreign_interest_component }
+			set_temp_variable = { resources_found_foreign_interest_component = resources_found_distinct_resource_count }
+			multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.field_resource_type }
+			add_to_temp_variable = { resources_found_foreign_interest_field_score = resources_found_foreign_interest_component }
+			set_temp_variable = { resources_found_foreign_interest_component = resources_found_developed_yield }
+			multiply_temp_variable = { resources_found_foreign_interest_component = constant:resources_found_foreign_interest_score.field_developed_yield_per_point }
+			add_to_temp_variable = { resources_found_foreign_interest_field_score = resources_found_foreign_interest_component }
+			if = {
+				limit = { has_state_flag = resources_found_globally_significant_field }
+				add_to_temp_variable = { resources_found_foreign_interest_field_score = constant:resources_found_foreign_interest_score.field_global_significance }
+			}
+			if = {
+				limit = { has_state_flag = resources_found_field_suspended }
+				subtract_from_temp_variable = { resources_found_foreign_interest_field_score = constant:resources_found_foreign_interest_score.field_suspension_penalty }
+			}
+			if = {
+				limit = { has_state_flag = resources_found_commission_active }
+				subtract_from_temp_variable = { resources_found_foreign_interest_field_score = constant:resources_found_foreign_interest_score.field_commission_penalty }
+			}
+
+			if = {
+				limit = {
+					has_variable = resources_found_concession_partner
+					var:resources_found_concession_partner = { resources_found_decision_is_valid_foreign_partner = yes }
+				}
+				var:resources_found_concession_partner = { save_event_target_as = resources_found_foreign_interest_existing_partner_target }
+			}
+			else_if = {
+				limit = {
+					has_variable = resources_found_contract_partner
+					var:resources_found_contract_partner = { resources_found_decision_is_valid_foreign_partner = yes }
+				}
+				var:resources_found_contract_partner = { save_event_target_as = resources_found_foreign_interest_existing_partner_target }
+			}
+		}
+
+		if = {
+			limit = { NOT = { is_major = yes } }
+			add_to_temp_variable = { resources_found_foreign_interest_field_score = constant:resources_found_foreign_interest_score.owner_minor_weakness }
+		}
+		if = {
+			limit = {
+				check_variable = { resources_found_foreign_interest_owner_factories < constant:resources_found_foreign_interest_score.owner_factory_weakness_threshold }
+			}
+			add_to_temp_variable = { resources_found_foreign_interest_field_score = constant:resources_found_foreign_interest_score.owner_factory_weakness }
+		}
+		if = {
+			limit = {
+				check_variable = { resources_found_foreign_interest_owner_stability < constant:resources_found_foreign_interest_score.owner_stability_weakness_threshold }
+			}
+			add_to_temp_variable = { resources_found_foreign_interest_field_score = constant:resources_found_foreign_interest_score.owner_instability }
+		}
+		if = {
+			limit = {
+				check_variable = { resources_found_foreign_interest_owner_surrender > constant:resources_found_foreign_interest_score.owner_surrender_weakness_threshold }
+			}
+			add_to_temp_variable = { resources_found_foreign_interest_field_score = constant:resources_found_foreign_interest_score.owner_surrender_weakness }
+		}
+
+		set_temp_variable = { resources_found_foreign_interest_best_score = constant:resources_found_foreign_interest_score.minimum_qualifying }
+		every_country = {
+			limit = {
+				resources_found_decision_is_valid_foreign_partner = yes
+				NOT = { has_capitulated = yes }
+			}
+			set_temp_variable = { resources_found_foreign_interest_score = resources_found_foreign_interest_field_score }
+			resources_found_score_foreign_interest_candidate = yes
+			if = {
+				limit = {
+					check_variable = {
+						var = resources_found_foreign_interest_score
+						value = constant:resources_found_foreign_interest_score.minimum_qualifying
+						compare = greater_than_or_equals
+					}
+					OR = {
+						NOT = { has_event_target = resources_found_foreign_interest_best_candidate_target }
+						check_variable = {
+							var = resources_found_foreign_interest_score
+							value = resources_found_foreign_interest_best_score
+							compare = greater_than
+						}
+					}
+				}
+				set_temp_variable = { resources_found_foreign_interest_best_score = resources_found_foreign_interest_score }
+				save_event_target_as = resources_found_foreign_interest_best_candidate_target
+			}
+		}
+
+		if = {
+			limit = { has_event_target = resources_found_foreign_interest_best_candidate_target }
+			event_target:resources_found_foreign_interest_best_candidate_target = {
+				set_country_flag = resources_found_foreign_field_actor
+				set_variable = { resources_found_foreign_interest_owner = event_target:resources_found_foreign_interest_owner_target }
+				set_variable = { resources_found_foreign_interest_field = event_target:resources_found_foreign_interest_field_target }
+				resources_found_refresh_decision_cost_previews = yes
+			}
+		}
+	}
+}
+
+# COUNTRY scope for a foreign actor.
+resources_found_foreign_raise_field_pressure = {
+	if = {
+		limit = {
+			has_variable = resources_found_foreign_interest_field
+			var:resources_found_foreign_interest_field = { resources_found_is_active_field = yes }
+		}
+		var:resources_found_foreign_interest_field = {
+			add_to_variable = { resources_found_foreign_pressure = constant:resources_found_decision_change.foreign_pressure_growth }
+			add_to_variable = { resources_found_interested_country_count = constant:resources_found_value.one }
+			set_state_flag = resources_found_foreign_interest_open
+			set_state_flag = resources_found_foreign_bid_registered
+			resources_found_refresh_field_record = yes
+		}
+	}
+}
+
+# COUNTRY scope for the bounded foreign-interest actor selected by the owner.
+resources_found_foreign_request_purchase_agreement = {
+	if = {
+		limit = { resources_found_decision_foreign_action_queue_available = yes }
+		var:resources_found_foreign_interest_field = {
+			set_state_flag = resources_found_purchase_agreement_requested
+			set_state_flag = resources_found_foreign_bid_registered
+			set_variable = { resources_found_purchase_requester = ROOT }
+			add_to_variable = { resources_found_interested_country_count = constant:resources_found_value.one }
+			OWNER = { set_country_flag = resources_found_foreign_commercial_offer_pending }
+			resources_found_refresh_field_record = yes
+		}
+	}
+}
+
+# COUNTRY scope for the bounded foreign-interest actor selected by the owner.
+resources_found_foreign_offer_development_assistance = {
+	if = {
+		limit = { resources_found_decision_foreign_action_queue_available = yes }
+		var:resources_found_foreign_interest_field = {
+			set_state_flag = resources_found_development_assistance_offered
+			set_variable = { resources_found_development_assistance_partner = ROOT }
+			add_to_variable = { resources_found_foreign_pressure = constant:resources_found_decision_change.minor }
+			OWNER = { set_country_flag = resources_found_foreign_commercial_offer_pending }
+			resources_found_refresh_field_record = yes
+		}
+	}
+}
+
+# COUNTRY scope for the bounded foreign-interest actor selected by the owner.
+resources_found_foreign_request_exclusive_rights = {
+	if = {
+		limit = { resources_found_decision_foreign_action_queue_available = yes }
+		var:resources_found_foreign_interest_field = {
+			set_state_flag = resources_found_exclusive_rights_requested
+			set_variable = { resources_found_exclusive_rights_requester = ROOT }
+			add_to_variable = { resources_found_foreign_pressure = constant:resources_found_decision_change.major }
+			OWNER = { set_country_flag = resources_found_foreign_commercial_offer_pending }
+			resources_found_refresh_field_record = yes
+		}
+	}
+}
+
+# COUNTRY scope for the bounded foreign-interest actor selected by the owner.
+resources_found_foreign_offer_access_guarantee = {
+	if = {
+		limit = { resources_found_decision_foreign_action_queue_available = yes }
+		var:resources_found_foreign_interest_field = {
+			set_state_flag = resources_found_access_guarantee_offered
+			set_variable = { resources_found_access_guarantor = ROOT }
+			set_state_flag = resources_found_foreign_security_interest
+			OWNER = { set_country_flag = resources_found_foreign_security_offer_pending }
+			resources_found_refresh_field_record = yes
+		}
+	}
+}
+
+# COUNTRY scope. Uses the same exact country scaling and real payment pipeline as
+# field projects, but completes immediately because these are bounded offers.
+resources_found_execute_foreign_interest_action = {
+	set_temp_variable = { resources_found_project_base_days = constant:resources_found_decision_duration.cave_order }
+	set_temp_variable = { resources_found_project_family = constant:resources_found_decision_family.cave }
+	resources_found_prepare_decision_project = yes
+	if = {
+		limit = { resources_found_decision_has_dynamic_project_inputs = yes }
+		clr_country_flag = resources_found_project_inputs_changed
+		resources_found_pay_decision_project_cost = yes
+		if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.foreign_purchase_request } }
+			resources_found_foreign_request_purchase_agreement = yes
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.foreign_development_offer } }
+			resources_found_foreign_offer_development_assistance = yes
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.foreign_exclusive_rights_request } }
+			resources_found_foreign_request_exclusive_rights = yes
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.foreign_access_guarantee } }
+			resources_found_foreign_offer_access_guarantee = yes
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.foreign_pressure_action } }
+			resources_found_foreign_raise_field_pressure = yes
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.foreign_smuggling_action } }
+			resources_found_foreign_open_smuggling_route = yes
+		}
+		else_if = {
+			limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.foreign_sabotage_action } }
+			resources_found_foreign_sabotage_field = yes
+		}
+	}
+	else = { set_country_flag = resources_found_project_inputs_changed }
+	resources_found_clear_decision_project_runtime = yes
+}
+
+# COUNTRY scope for a foreign actor.
+resources_found_foreign_open_smuggling_route = {
+	if = {
+		limit = { has_variable = resources_found_foreign_interest_field }
+		var:resources_found_foreign_interest_field = {
+			set_state_flag = resources_found_smuggling_network_active
+			set_variable = { resources_found_smuggling_sponsor = ROOT }
+			add_to_variable = { resources_found_foreign_pressure = constant:resources_found_decision_change.major }
+			resources_found_refresh_field_record = yes
+		}
+	}
+}
+
+# COUNTRY scope for a foreign actor.
+resources_found_foreign_sabotage_field = {
+	if = {
+		limit = { has_variable = resources_found_foreign_interest_field }
+		var:resources_found_foreign_interest_field = {
+			set_state_flag = resources_found_foreign_sabotage_active
+			set_variable = { resources_found_sabotage_sponsor = ROOT }
+			subtract_from_variable = { resources_found_developed_yield = constant:resources_found_decision_change.moderate }
+			subtract_from_variable = { resources_found_workforce_safety = constant:resources_found_decision_change.minor }
+			resources_found_refresh_field_record = yes
+			OWNER = { country_event = { id = chaosx.nr18.11 } }
+		}
+	}
+}
+
+# COUNTRY scope for a foreign actor.
+resources_found_foreign_withdraw_field_interest = {
+	if = {
+		limit = { has_variable = resources_found_foreign_interest_field }
+		var:resources_found_foreign_interest_field = {
+			subtract_from_variable = { resources_found_foreign_pressure = constant:resources_found_decision_change.moderate }
+			clr_state_flag = resources_found_purchase_agreement_requested
+			clr_state_flag = resources_found_development_assistance_offered
+			clr_state_flag = resources_found_exclusive_rights_requested
+			clr_state_flag = resources_found_access_guarantee_offered
+			clear_variable = resources_found_purchase_requester
+			clear_variable = resources_found_development_assistance_partner
+			clear_variable = resources_found_exclusive_rights_requester
+			clear_variable = resources_found_access_guarantor
+			resources_found_refresh_field_record = yes
+		}
+	}
+	clr_country_flag = resources_found_foreign_field_actor
+	clear_variable = resources_found_foreign_interest_owner
+	clear_variable = resources_found_foreign_interest_field
+}
+
+# ---------------------------------------------------------------------------
+# Staged adjacent border conflict and commission missions
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope for the owner. Requires FROM to be the selected claimant.
+resources_found_register_targeted_border_claimant = {
+	FROM = { save_event_target_as = resources_found_border_claimant_target }
+	if = {
+		limit = {
+			resources_found_country_has_valid_selected_field = yes
+			FROM = {
+				resources_found_decision_is_valid_foreign_partner = yes
+				any_owned_state = {
+					is_owned_and_controlled_by = PREV
+					any_neighbor_state = { state = var:ROOT.resources_found_selected_field }
+				}
+			}
+		}
+		set_variable = { resources_found_border_claimant_country = FROM }
+		set_variable = { resources_found_border_owner_state = resources_found_selected_field }
+		var:resources_found_selected_field = {
+			clear_variable = resources_found_dispute_history_owner
+			clear_variable = resources_found_dispute_settlement_owner
+			clear_variable = resources_found_dispute_settlement_claimant
+			clear_variable = resources_found_dispute_settlement_mode
+			clear_variable = resources_found_dispute_settlement_started_date
+			clr_state_flag = resources_found_dispute_reached_crisis_pressure
+			clr_state_flag = resources_found_dispute_reached_armed_stage
+			clr_state_flag = resources_found_dispute_border_war_fought
+			clr_state_flag = resources_found_dispute_border_transfer
+			clr_state_flag = resources_found_dispute_history_owner_changed
+			clr_state_flag = resources_found_dispute_owner_changed
+			clr_state_flag = resources_found_dispute_control_disrupted
+			clr_state_flag = resources_found_dispute_settlement_qualifying
+			clr_state_flag = resources_found_dispute_settlement_completed
+			clr_state_flag = resources_found_dispute_settlement_failed
+			clr_state_flag = resources_found_dispute_settlement_disqualified
+			clr_state_flag = resources_found_claimant_dispute_suspended_by_agreement
+			clr_state_flag = resources_found_border_arbitration_settlement
+			set_variable = { resources_found_border_claimant = event_target:resources_found_border_claimant_target }
+			set_state_flag = resources_found_mapped_border_dispute
+			set_state_flag = resources_found_claimant_military_ready
+			set_variable = { resources_found_border_stage = constant:resources_found_border_stage.competing_surveys }
+			resources_found_refresh_dispute_achievement_evidence = yes
+		}
+		FROM = {
+			random_owned_controlled_state = {
+				limit = {
+					impassable = no
+					NOT = { has_border_war = yes }
+					any_neighbor_state = { state = var:ROOT.resources_found_border_owner_state }
+				}
+				set_variable = { ROOT.resources_found_border_claimant_state = id }
+			}
+		}
+		country_event = { id = chaosx.nr18.20 }
+	}
+}
+
+# COUNTRY scope for the owner.
+resources_found_start_frontier_corridor_mission = {
+	if = {
+		limit = { resources_found_decision_border_pair_is_current = yes }
+		set_variable = { resources_found_selected_field = resources_found_border_owner_state }
+		var:resources_found_border_owner_state = {
+			set_variable = { resources_found_border_stage = constant:resources_found_border_stage.frontier_mission }
+			set_state_flag = resources_found_frontier_mission_requested
+			resources_found_refresh_dispute_achievement_evidence = yes
+		}
+		set_variable = { resources_found_frontier_mission_days = resources_found_immediate_project_days }
+		activate_mission = resources_found_frontier_corridor_mission
+	}
+	clear_variable = resources_found_immediate_project_days
+}
+
+# COUNTRY scope for the owner.
+resources_found_complete_frontier_corridor_mission = {
+	if = {
+		limit = { has_variable = resources_found_border_owner_state var:resources_found_border_owner_state = { is_owned_and_controlled_by = ROOT } }
+		set_variable = { resources_found_selected_field = resources_found_border_owner_state }
+		var:resources_found_border_owner_state = {
+			set_state_flag = resources_found_frontier_conditions_met
+			set_state_flag = resources_found_owner_border_leverage
+			set_variable = { resources_found_border_stage = constant:resources_found_border_stage.settlement }
+		}
+		country_event = { id = chaosx.nr18.23 }
+	}
+	clear_variable = resources_found_frontier_mission_days
+}
+
+# COUNTRY scope for the owner.
+resources_found_fail_frontier_corridor_mission = {
+	if = {
+		limit = { has_variable = resources_found_border_owner_state var:resources_found_border_owner_state = { is_owned_by = ROOT } }
+		set_variable = { resources_found_selected_field = resources_found_border_owner_state }
+		var:resources_found_border_owner_state = {
+			clr_state_flag = resources_found_frontier_conditions_met
+			set_variable = { resources_found_border_stage = constant:resources_found_border_stage.frontier_mission }
+		}
+		country_event = { id = chaosx.nr18.24 }
+	}
+	clear_variable = resources_found_frontier_mission_days
+}
+
+# COUNTRY scope. Both observation outcomes use the state locked when the
+# mission began, so GUI field cycling cannot redirect the result or callback.
+resources_found_complete_commission_observation = {
+	if = {
+		limit = { resources_found_decision_commission_observation_context_valid = yes }
+		set_variable = { resources_found_selected_field = resources_found_commission_observation_field }
+		var:resources_found_commission_observation_field = {
+			set_state_flag = resources_found_commission_observed_without_violation
+			subtract_from_variable = { resources_found_foreign_pressure = constant:resources_found_decision_change.minor }
+			resources_found_refresh_field_record = yes
+		}
+	}
+	clear_variable = resources_found_commission_observation_field
+	clear_variable = resources_found_commission_observation_days
+}
+
+resources_found_fail_commission_observation = {
+	if = {
+		limit = { has_variable = resources_found_commission_observation_field }
+		set_variable = { resources_found_selected_field = resources_found_commission_observation_field }
+		if = {
+			limit = { resources_found_country_has_valid_selected_field = yes }
+			country_event = { id = chaosx.nr18.31 }
+		}
+	}
+	clear_variable = resources_found_commission_observation_field
+	clear_variable = resources_found_commission_observation_days
+}
+
+# COUNTRY scope for the field owner. The field state is the owner's adjacent
+# border-war state, and the selected claimant state is the defender. The engine
+# never transfers either state automatically.
+resources_found_start_field_border_war = {
+	if = {
+		limit = { resources_found_decision_can_start_field_border_war = yes }
+		start_border_war = {
+			change_state_after_war = no
+			combat_width = constant:resources_found_border_conflict.combat_width
+			minimum_duration_in_days = constant:resources_found_border_conflict.minimum_duration_days
+			attacker = {
+				state = var:resources_found_border_owner_state
+				num_provinces = constant:resources_found_border_conflict.provinces
+				on_win = chaosx.nr18.26
+				on_lose = chaosx.nr18.27
+				on_cancel = chaosx.nr18.28
+				modifier = constant:resources_found_border_conflict.owner_modifier
+			}
+			defender = {
+				state = var:resources_found_border_claimant_state
+				num_provinces = constant:resources_found_border_conflict.provinces
+				on_win = chaosx.nr18.27
+				on_lose = chaosx.nr18.26
+				on_cancel = chaosx.nr18.28
+				modifier = constant:resources_found_border_conflict.claimant_modifier
+			}
+		}
+		if = {
+			limit = {
+				var:resources_found_border_owner_state = { has_border_war = yes }
+				var:resources_found_border_claimant_state = { has_border_war = yes }
+			}
+			set_variable = { resources_found_selected_field = resources_found_border_owner_state }
+			var:resources_found_border_owner_state = {
+				set_state_flag = resources_found_border_war_active
+				set_state_flag = resources_found_dispute_border_war_fought
+				set_state_flag = resources_found_contract_century_border_war
+				set_variable = { resources_found_border_stage = constant:resources_found_border_stage.border_war }
+				resources_found_refresh_dispute_achievement_evidence = yes
+				resources_found_refresh_contract_century_qualification = yes
+			}
+			set_country_flag = resources_found_achievement_border_war_fought
+			set_variable = { resources_found_border_war_limit_days = constant:resources_found_decision_duration.border_war_limit }
+			activate_mission = resources_found_border_war_limit_mission
+			country_event = { id = chaosx.nr18.25 }
+		}
+	}
+}
+
+# COUNTRY scope for the owner.
+resources_found_cancel_field_border_war = {
+	if = {
+		limit = { resources_found_decision_active_border_pair_is_current = yes }
+		cancel_border_war = {
+			attacker = var:resources_found_border_owner_state
+			defender = var:resources_found_border_claimant_state
+		}
+		if = {
+			limit = { has_variable = resources_found_border_owner_state }
+			set_variable = { resources_found_selected_field = resources_found_border_owner_state }
+			var:resources_found_border_owner_state = {
+				clr_state_flag = resources_found_border_war_active
+				set_variable = { resources_found_border_stage = constant:resources_found_border_stage.settlement }
+			}
+		}
+	}
+}
+
+# COUNTRY scope for either escalation side. This expands the contest without
+# converting the limited clash into a normal war.
+resources_found_escalate_field_border_war = {
+	if = {
+		limit = { resources_found_decision_active_border_pair_is_current = yes }
+		set_border_war_data = {
+			attacker = var:resources_found_border_owner_state
+			defender = var:resources_found_border_claimant_state
+			attacker_modifier = constant:resources_found_border_conflict.owner_modifier
+			defender_modifier = constant:resources_found_border_conflict.claimant_modifier
+			combat_width = constant:resources_found_border_conflict.combat_width
+		}
+		set_country_flag = resources_found_border_war_escalated
+	}
+}
+
+# COUNTRY scope after any terminal callback.
+resources_found_clear_border_conflict_runtime = {
+	clear_variable = resources_found_frontier_mission_days
+	clear_variable = resources_found_border_war_limit_days
+	clear_variable = resources_found_border_owner_state
+	clear_variable = resources_found_border_claimant_state
+	clear_variable = resources_found_border_claimant_country
+}
+
+# COUNTRY scope before the claimant-victory option transfers the field.
+resources_found_record_border_transfer_result = {
+	if = {
+		limit = { has_variable = resources_found_border_owner_state }
+		var:resources_found_border_owner_state = {
+			set_state_flag = resources_found_dispute_border_transfer
+			set_state_flag = resources_found_dispute_owner_changed
+		}
+	}
+	set_country_flag = resources_found_achievement_border_transfer_winner
+	resources_found_clear_border_conflict_runtime = yes
+}
+
+# ---------------------------------------------------------------------------
+# MTTH-driven pre-fire and active evolution paths
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope. This is the single explicit scheduler API for Event .1/.2 and
+# every decision mutation. It consumes all eight predeclared MTTH entries. No
+# global daily, weekly, or monthly country iteration is used.
+resources_found_queue_evolution_reschedule = {
+	if = {
+		limit = { NOT = { has_active_mission = resources_found_evolution_reschedule_mission } }
+		set_variable = { resources_found_evolution_reschedule_days = constant:resources_found_value.one }
+		activate_mission = resources_found_evolution_reschedule_mission
+	}
+}
+
+resources_found_execute_evolution_reschedule = {
+	clear_variable = resources_found_evolution_reschedule_days
+	resources_found_schedule_evolution_paths = yes
+}
+
+# COUNTRY scope. Each of the eight clocks owns a distinct, immutable field
+# pointer for the life of its mission. Per-path served flags provide round-robin
+# coverage across every owned and controlled Event 018 field.
+resources_found_schedule_evolution_paths = {
+	if = {
+		limit = { any_owned_state = { resources_found_is_active_field = yes } }
+		set_country_flag = resources_found_evolution_scheduler_initialized
+	}
+
+	if = {
+		limit = { NOT = { has_active_mission = resources_found_evolution_i_prefire_mission } }
+		if = {
+			limit = { has_variable = resources_found_evolution_i_prefire_field }
+			clear_variable = resources_found_evolution_i_prefire_field
+			clear_variable = resources_found_evolution_i_prefire_days
+		}
+		if = {
+			limit = { NOT = { any_owned_state = { resources_found_evolution_i_prefire_clock_candidate = yes NOT = { has_state_flag = resources_found_evolution_i_prefire_clock_served } } } }
+			every_owned_state = { clr_state_flag = resources_found_evolution_i_prefire_clock_served }
+		}
+		every_owned_state = {
+			limit = {
+				resources_found_evolution_i_prefire_clock_candidate = yes
+				NOT = { has_state_flag = resources_found_evolution_i_prefire_clock_served }
+				ROOT = { NOT = { has_variable = resources_found_evolution_i_prefire_field } }
+			}
+			set_state_flag = resources_found_evolution_i_prefire_clock_served
+			ROOT = {
+				set_variable = { resources_found_evolution_i_prefire_field = PREV }
+				set_variable = { resources_found_evolution_i_prefire_days = mtth:resources_found_evolution_i_prefire_interval }
+				activate_mission = resources_found_evolution_i_prefire_mission
+			}
+		}
+	}
+
+	if = {
+		limit = { NOT = { has_active_mission = resources_found_evolution_i_active_mission } }
+		if = {
+			limit = { has_variable = resources_found_evolution_i_active_field }
+			clear_variable = resources_found_evolution_i_active_field
+			clear_variable = resources_found_evolution_i_active_days
+		}
+		if = {
+			limit = { NOT = { any_owned_state = { resources_found_evolution_i_active_clock_candidate = yes NOT = { has_state_flag = resources_found_evolution_i_active_clock_served } } } }
+			every_owned_state = { clr_state_flag = resources_found_evolution_i_active_clock_served }
+		}
+		every_owned_state = {
+			limit = {
+				resources_found_evolution_i_active_clock_candidate = yes
+				NOT = { has_state_flag = resources_found_evolution_i_active_clock_served }
+				ROOT = { NOT = { has_variable = resources_found_evolution_i_active_field } }
+			}
+			set_state_flag = resources_found_evolution_i_active_clock_served
+			set_temp_variable = { resources_found_evolution_clock_interval = mtth:resources_found_evolution_i_active_interval }
+			ROOT = {
+				set_variable = { resources_found_evolution_i_active_field = PREV }
+				set_variable = { resources_found_evolution_i_active_days = resources_found_evolution_clock_interval }
+				activate_mission = resources_found_evolution_i_active_mission
+			}
+		}
+	}
+
+	if = {
+		limit = { NOT = { has_active_mission = resources_found_evolution_ii_prefire_mission } }
+		if = {
+			limit = { has_variable = resources_found_evolution_ii_prefire_field }
+			clear_variable = resources_found_evolution_ii_prefire_field
+			clear_variable = resources_found_evolution_ii_prefire_days
+		}
+		if = {
+			limit = { NOT = { any_owned_state = { resources_found_evolution_ii_prefire_clock_candidate = yes NOT = { has_state_flag = resources_found_evolution_ii_prefire_clock_served } } } }
+			every_owned_state = { clr_state_flag = resources_found_evolution_ii_prefire_clock_served }
+		}
+		every_owned_state = {
+			limit = {
+				resources_found_evolution_ii_prefire_clock_candidate = yes
+				NOT = { has_state_flag = resources_found_evolution_ii_prefire_clock_served }
+				ROOT = { NOT = { has_variable = resources_found_evolution_ii_prefire_field } }
+			}
+			set_state_flag = resources_found_evolution_ii_prefire_clock_served
+			ROOT = {
+				set_variable = { resources_found_evolution_ii_prefire_field = PREV }
+				set_variable = { resources_found_evolution_ii_prefire_days = mtth:resources_found_evolution_ii_prefire_interval }
+				activate_mission = resources_found_evolution_ii_prefire_mission
+			}
+		}
+	}
+
+	if = {
+		limit = { NOT = { has_active_mission = resources_found_evolution_ii_active_mission } }
+		if = {
+			limit = { has_variable = resources_found_evolution_ii_active_field }
+			clear_variable = resources_found_evolution_ii_active_field
+			clear_variable = resources_found_evolution_ii_active_days
+		}
+		if = {
+			limit = { NOT = { any_owned_state = { resources_found_evolution_ii_active_clock_candidate = yes NOT = { has_state_flag = resources_found_evolution_ii_active_clock_served } } } }
+			every_owned_state = { clr_state_flag = resources_found_evolution_ii_active_clock_served }
+		}
+		every_owned_state = {
+			limit = {
+				resources_found_evolution_ii_active_clock_candidate = yes
+				NOT = { has_state_flag = resources_found_evolution_ii_active_clock_served }
+				ROOT = { NOT = { has_variable = resources_found_evolution_ii_active_field } }
+			}
+			set_state_flag = resources_found_evolution_ii_active_clock_served
+			set_temp_variable = { resources_found_evolution_clock_interval = mtth:resources_found_evolution_ii_active_interval }
+			ROOT = {
+				set_variable = { resources_found_evolution_ii_active_field = PREV }
+				set_variable = { resources_found_evolution_ii_active_days = resources_found_evolution_clock_interval }
+				activate_mission = resources_found_evolution_ii_active_mission
+			}
+		}
+	}
+
+	if = {
+		limit = { NOT = { has_active_mission = resources_found_evolution_iii_prefire_mission } }
+		if = {
+			limit = { has_variable = resources_found_evolution_iii_prefire_field }
+			clear_variable = resources_found_evolution_iii_prefire_field
+			clear_variable = resources_found_evolution_iii_prefire_days
+		}
+		if = {
+			limit = { NOT = { any_owned_state = { resources_found_evolution_iii_prefire_clock_candidate = yes NOT = { has_state_flag = resources_found_evolution_iii_prefire_clock_served } } } }
+			every_owned_state = { clr_state_flag = resources_found_evolution_iii_prefire_clock_served }
+		}
+		every_owned_state = {
+			limit = {
+				resources_found_evolution_iii_prefire_clock_candidate = yes
+				NOT = { has_state_flag = resources_found_evolution_iii_prefire_clock_served }
+				ROOT = { NOT = { has_variable = resources_found_evolution_iii_prefire_field } }
+			}
+			set_state_flag = resources_found_evolution_iii_prefire_clock_served
+			ROOT = {
+				set_variable = { resources_found_evolution_iii_prefire_field = PREV }
+				set_variable = { resources_found_evolution_iii_prefire_days = mtth:resources_found_evolution_iii_prefire_interval }
+				activate_mission = resources_found_evolution_iii_prefire_mission
+			}
+		}
+	}
+
+	if = {
+		limit = { NOT = { has_active_mission = resources_found_evolution_iii_active_mission } }
+		if = {
+			limit = { has_variable = resources_found_evolution_iii_active_field }
+			clear_variable = resources_found_evolution_iii_active_field
+			clear_variable = resources_found_evolution_iii_active_days
+		}
+		if = {
+			limit = { NOT = { any_owned_state = { resources_found_evolution_iii_active_clock_candidate = yes NOT = { has_state_flag = resources_found_evolution_iii_active_clock_served } } } }
+			every_owned_state = { clr_state_flag = resources_found_evolution_iii_active_clock_served }
+		}
+		every_owned_state = {
+			limit = {
+				resources_found_evolution_iii_active_clock_candidate = yes
+				NOT = { has_state_flag = resources_found_evolution_iii_active_clock_served }
+				ROOT = { NOT = { has_variable = resources_found_evolution_iii_active_field } }
+			}
+			set_state_flag = resources_found_evolution_iii_active_clock_served
+			set_temp_variable = { resources_found_evolution_clock_interval = mtth:resources_found_evolution_iii_active_interval }
+			ROOT = {
+				set_variable = { resources_found_evolution_iii_active_field = PREV }
+				set_variable = { resources_found_evolution_iii_active_days = resources_found_evolution_clock_interval }
+				activate_mission = resources_found_evolution_iii_active_mission
+			}
+		}
+	}
+
+	if = {
+		limit = { NOT = { has_active_mission = resources_found_evolution_iv_prefire_mission } }
+		if = {
+			limit = { has_variable = resources_found_evolution_iv_prefire_field }
+			clear_variable = resources_found_evolution_iv_prefire_field
+			clear_variable = resources_found_evolution_iv_prefire_days
+		}
+		if = {
+			limit = { NOT = { any_owned_state = { resources_found_evolution_iv_prefire_clock_candidate = yes NOT = { has_state_flag = resources_found_evolution_iv_prefire_clock_served } } } }
+			every_owned_state = { clr_state_flag = resources_found_evolution_iv_prefire_clock_served }
+		}
+		every_owned_state = {
+			limit = {
+				resources_found_evolution_iv_prefire_clock_candidate = yes
+				NOT = { has_state_flag = resources_found_evolution_iv_prefire_clock_served }
+				ROOT = { NOT = { has_variable = resources_found_evolution_iv_prefire_field } }
+			}
+			set_state_flag = resources_found_evolution_iv_prefire_clock_served
+			ROOT = {
+				set_variable = { resources_found_evolution_iv_prefire_field = PREV }
+				set_variable = { resources_found_evolution_iv_prefire_days = mtth:resources_found_evolution_iv_prefire_interval }
+				activate_mission = resources_found_evolution_iv_prefire_mission
+			}
+		}
+	}
+
+	if = {
+		limit = { NOT = { has_active_mission = resources_found_evolution_iv_active_mission } }
+		if = {
+			limit = { has_variable = resources_found_evolution_iv_active_field }
+			clear_variable = resources_found_evolution_iv_active_field
+			clear_variable = resources_found_evolution_iv_active_days
+		}
+		if = {
+			limit = { NOT = { any_owned_state = { resources_found_evolution_iv_active_clock_candidate = yes NOT = { has_state_flag = resources_found_evolution_iv_active_clock_served } } } }
+			every_owned_state = { clr_state_flag = resources_found_evolution_iv_active_clock_served }
+		}
+		every_owned_state = {
+			limit = {
+				resources_found_evolution_iv_active_clock_candidate = yes
+				NOT = { has_state_flag = resources_found_evolution_iv_active_clock_served }
+				ROOT = { NOT = { has_variable = resources_found_evolution_iv_active_field } }
+			}
+			set_state_flag = resources_found_evolution_iv_active_clock_served
+			set_temp_variable = { resources_found_evolution_clock_interval = mtth:resources_found_evolution_iv_active_interval }
+			ROOT = {
+				set_variable = { resources_found_evolution_iv_active_field = PREV }
+				set_variable = { resources_found_evolution_iv_active_days = resources_found_evolution_clock_interval }
+				activate_mission = resources_found_evolution_iv_active_mission
+			}
+		}
+	}
+}
+
+resources_found_cancel_evolution_i_prefire_clock = {
+	clear_variable = resources_found_evolution_i_prefire_field
+	clear_variable = resources_found_evolution_i_prefire_days
+	resources_found_queue_evolution_reschedule = yes
+}
+
+resources_found_cancel_evolution_i_active_clock = {
+	clear_variable = resources_found_evolution_i_active_field
+	clear_variable = resources_found_evolution_i_active_days
+	resources_found_queue_evolution_reschedule = yes
+}
+
+resources_found_cancel_evolution_ii_prefire_clock = {
+	clear_variable = resources_found_evolution_ii_prefire_field
+	clear_variable = resources_found_evolution_ii_prefire_days
+	resources_found_queue_evolution_reschedule = yes
+}
+
+resources_found_cancel_evolution_ii_active_clock = {
+	clear_variable = resources_found_evolution_ii_active_field
+	clear_variable = resources_found_evolution_ii_active_days
+	resources_found_queue_evolution_reschedule = yes
+}
+
+resources_found_cancel_evolution_iii_prefire_clock = {
+	clear_variable = resources_found_evolution_iii_prefire_field
+	clear_variable = resources_found_evolution_iii_prefire_days
+	resources_found_queue_evolution_reschedule = yes
+}
+
+resources_found_cancel_evolution_iii_active_clock = {
+	clear_variable = resources_found_evolution_iii_active_field
+	clear_variable = resources_found_evolution_iii_active_days
+	resources_found_queue_evolution_reschedule = yes
+}
+
+resources_found_cancel_evolution_iv_prefire_clock = {
+	clear_variable = resources_found_evolution_iv_prefire_field
+	clear_variable = resources_found_evolution_iv_prefire_days
+	resources_found_queue_evolution_reschedule = yes
+}
+
+resources_found_cancel_evolution_iv_active_clock = {
+	clear_variable = resources_found_evolution_iv_active_field
+	clear_variable = resources_found_evolution_iv_active_days
+	resources_found_queue_evolution_reschedule = yes
+}
+
+resources_found_fire_evolution_i_prefire = {
+	if = {
+		limit = { has_variable = resources_found_evolution_i_prefire_field }
+		set_variable = { resources_found_selected_field = resources_found_evolution_i_prefire_field }
+		var:resources_found_evolution_i_prefire_field = { save_event_target_as = resources_found_field_state }
+		clear_variable = resources_found_evolution_i_prefire_field
+		clear_variable = resources_found_evolution_i_prefire_days
+		if = { limit = { resources_found_country_has_valid_selected_field = yes } country_event = { id = chaosx.nr18.41 } }
+	}
+	resources_found_queue_evolution_reschedule = yes
+}
+
+resources_found_fire_evolution_i_active = {
+	if = {
+		limit = { has_variable = resources_found_evolution_i_active_field }
+		set_variable = { resources_found_selected_field = resources_found_evolution_i_active_field }
+		var:resources_found_evolution_i_active_field = { save_event_target_as = resources_found_field_state }
+		clear_variable = resources_found_evolution_i_active_field
+		clear_variable = resources_found_evolution_i_active_days
+		if = { limit = { resources_found_country_has_valid_selected_field = yes } country_event = { id = chaosx.nr18.40 } }
+	}
+	resources_found_queue_evolution_reschedule = yes
+}
+
+resources_found_fire_evolution_ii_prefire = {
+	if = {
+		limit = { has_variable = resources_found_evolution_ii_prefire_field }
+		set_variable = { resources_found_selected_field = resources_found_evolution_ii_prefire_field }
+		var:resources_found_evolution_ii_prefire_field = { save_event_target_as = resources_found_field_state }
+		clear_variable = resources_found_evolution_ii_prefire_field
+		clear_variable = resources_found_evolution_ii_prefire_days
+		if = { limit = { resources_found_country_has_valid_selected_field = yes } country_event = { id = chaosx.nr18.50 } }
+	}
+	resources_found_queue_evolution_reschedule = yes
+}
+
+resources_found_fire_evolution_ii_active = {
+	if = {
+		limit = { has_variable = resources_found_evolution_ii_active_field }
+		set_variable = { resources_found_selected_field = resources_found_evolution_ii_active_field }
+		var:resources_found_evolution_ii_active_field = { save_event_target_as = resources_found_field_state }
+		clear_variable = resources_found_evolution_ii_active_field
+		clear_variable = resources_found_evolution_ii_active_days
+		if = {
+			limit = { resources_found_country_has_valid_selected_field = yes }
+			var:resources_found_selected_field = { set_state_flag = resources_found_evolution_ii_incident_chain_active }
+			if = { limit = { var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_worker_sickness_reported } } } country_event = { id = chaosx.nr18.51 } }
+			else_if = { limit = { var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_machinery_corrosion_reported } } } country_event = { id = chaosx.nr18.52 } }
+			else_if = { limit = { var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_missing_shift } } } country_event = { id = chaosx.nr18.53 } }
+			else_if = { limit = { var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_knocking_reported } } } country_event = { id = chaosx.nr18.54 } }
+			else_if = { limit = { var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_ordinary_tests_failed } } } country_event = { id = chaosx.nr18.55 } }
+			else_if = { limit = { var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_first_physical_evidence } } } country_event = { id = chaosx.nr18.56 } }
+			else_if = { limit = { var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_underground_attack } } } country_event = { id = chaosx.nr18.57 } }
+			else_if = {
+				limit = { var:resources_found_selected_field = { has_state_flag = resources_found_casualties_concealed NOT = { has_state_flag = resources_found_concealed_deaths_exposed } } }
+				country_event = { id = chaosx.nr18.58 }
+			}
+			else = {
+				var:resources_found_selected_field = {
+					set_state_flag = resources_found_evolution_ii_incident_sequence_complete
+					set_state_flag = resources_found_evolution_ii_stabilized
+					set_state_flag = resources_found_restricted_workings
+					clr_state_flag = resources_found_evolution_ii_incident_pending
+				}
+				country_event = { id = chaosx.nr18.59 }
+			}
+		}
+	}
+	resources_found_queue_evolution_reschedule = yes
+}
+
+resources_found_fire_evolution_iii_prefire = {
+	if = {
+		limit = { has_variable = resources_found_evolution_iii_prefire_field }
+		set_variable = { resources_found_selected_field = resources_found_evolution_iii_prefire_field }
+		var:resources_found_evolution_iii_prefire_field = { save_event_target_as = resources_found_field_state }
+		clear_variable = resources_found_evolution_iii_prefire_field
+		clear_variable = resources_found_evolution_iii_prefire_days
+		if = {
+			limit = { resources_found_country_has_valid_selected_field = yes }
+			var:resources_found_selected_field = {
+				set_state_flag = resources_found_evolution_ii_incident_pending
+				set_state_flag = resources_found_evolution_ii_incident_chain_active
+			}
+			country_event = { id = chaosx.nr18.60 }
+		}
+	}
+	resources_found_queue_evolution_reschedule = yes
+}
+
+resources_found_fire_evolution_iii_active = {
+	if = {
+		limit = { has_variable = resources_found_evolution_iii_active_field }
+		set_variable = { resources_found_selected_field = resources_found_evolution_iii_active_field }
+		var:resources_found_evolution_iii_active_field = { save_event_target_as = resources_found_field_state }
+		clear_variable = resources_found_evolution_iii_active_field
+		clear_variable = resources_found_evolution_iii_active_days
+		if = {
+			limit = {
+				resources_found_country_has_valid_selected_field = yes
+				var:resources_found_selected_field = {
+					has_state_flag = resources_found_evolution_ii_incident_sequence_complete
+					has_state_flag = resources_found_first_physical_evidence
+					has_state_flag = resources_found_underground_attack
+					has_state_flag = resources_found_evolution_ii_stabilized
+				}
+			}
+			if = { limit = { var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_public_breach } } } country_event = { id = chaosx.nr18.61 } }
+			else_if = { limit = { var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_settlement_attacked } } } country_event = { id = chaosx.nr18.62 } }
+			else_if = { limit = { var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_transport_line_cut } } } country_event = { id = chaosx.nr18.63 } }
+			else_if = {
+				limit = { var:resources_found_selected_field = { NOT = { has_state_flag = resources_found_city_intrusion } } }
+				var:resources_found_selected_field = { set_state_flag = resources_found_evolution_iii_surface_sequence_complete }
+				country_event = { id = chaosx.nr18.64 }
+			}
+			else = { var:resources_found_selected_field = { set_state_flag = resources_found_evolution_iii_surface_sequence_complete } }
+		}
+	}
+	resources_found_queue_evolution_reschedule = yes
+}
+
+resources_found_fire_evolution_iv_prefire = {
+	if = {
+		limit = { has_variable = resources_found_evolution_iv_prefire_field }
+		set_variable = { resources_found_selected_field = resources_found_evolution_iv_prefire_field }
+		var:resources_found_evolution_iv_prefire_field = { save_event_target_as = resources_found_field_state }
+		clear_variable = resources_found_evolution_iv_prefire_field
+		clear_variable = resources_found_evolution_iv_prefire_days
+		if = {
+			limit = {
+				resources_found_country_has_valid_selected_field = yes
+				var:resources_found_selected_field = {
+					has_state_flag = resources_found_evolution_iii_surface_sequence_complete
+					NOT = { resources_found_evolution_iv_is_permanently_blocked = yes }
+				}
+			}
+			country_event = { id = chaosx.nr18.73 }
+		}
+	}
+	resources_found_queue_evolution_reschedule = yes
+}
+
+resources_found_fire_evolution_iv_active = {
+	if = {
+		limit = { has_variable = resources_found_evolution_iv_active_field }
+		set_variable = { resources_found_selected_field = resources_found_evolution_iv_active_field }
+		var:resources_found_evolution_iv_active_field = { save_event_target_as = resources_found_field_state }
+		clear_variable = resources_found_evolution_iv_active_field
+		clear_variable = resources_found_evolution_iv_active_days
+		if = {
+			limit = {
+				resources_found_country_has_valid_selected_field = yes
+				var:resources_found_selected_field = {
+					resources_found_can_begin_evolution_iv = yes
+					has_variable = resources_found_final_breach_release_date
+					check_variable = { var = resources_found_final_breach_release_date value = global.date compare = less_than_or_equals }
+					NOT = { has_state_flag = resources_found_full_seal_requirements_met }
+				}
+			}
+			var:resources_found_selected_field = { resources_found_begin_cave_emergence = yes }
+		}
+	}
+	resources_found_queue_evolution_reschedule = yes
+}
+
+# ---------------------------------------------------------------------------
+# Cave resource, doctrine, queue, and map-objective decisions
+# ---------------------------------------------------------------------------
+
+# STATE scope from a cave-country targeted decision. The existing anchor core
+# remains authoritative for capacity and continuous control.
+resources_found_decision_begin_anchor_activation = {
+	resources_found_cave_begin_anchor_activation = yes
+}
+
+# STATE scope during the live activation window.
+resources_found_decision_accelerate_anchor_activation = {
+	if = {
+		limit = {
+			has_state_flag = resources_found_cave_anchor_activating
+			is_controlled_by = DHO
+			has_variable = resources_found_cave_anchor_activation_date
+		}
+		subtract_from_variable = { resources_found_cave_anchor_activation_date = constant:resources_found_decision_duration.anchor_acceleration }
+		set_state_flag = resources_found_cave_anchor_accelerated
+		DHO = {
+			set_temp_variable = { resources_found_anchor_acceleration_cooldown = constant:resources_found_decision_duration.cave_short }
+			set_country_flag = { flag = resources_found_anchor_acceleration_cooldown days = resources_found_anchor_acceleration_cooldown }
+		}
+	}
+}
+
+# STATE scope on a mature anchor.
+resources_found_decision_guard_feeding_chamber = {
+	if = {
+		limit = {
+			has_state_flag = resources_found_cave_anchor_active
+			NOT = { has_state_flag = resources_found_cave_anchor_disrupted }
+			is_controlled_by = DHO
+		}
+		set_state_flag = resources_found_feeding_chamber_guarded
+		add_building_construction = { type = bunker level = constant:resources_found_value.one instant_build = yes }
+		if = { limit = { NOT = { has_dynamic_modifier = { modifier = resources_found_cave_anchor_fortified } } } add_dynamic_modifier = { modifier = resources_found_cave_anchor_fortified } }
+		force_update_dynamic_modifier = yes
+	}
+}
+
+# COUNTRY scope for DHO.
+resources_found_complete_cave_project = {
+	if = {
+		limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.cave_activate_anchor } }
+		if = { limit = { has_variable = resources_found_active_response_state } var:resources_found_active_response_state = { resources_found_decision_begin_anchor_activation = yes } }
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.cave_mark_rich_state } }
+		resources_found_cave_mark_richest_reachable_state = yes
+		set_country_flag = resources_found_cave_rich_state_marked
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.cave_accelerate_anchor } }
+		if = { limit = { has_variable = resources_found_active_response_state } var:resources_found_active_response_state = { resources_found_decision_accelerate_anchor_activation = yes } }
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.cave_guard_chamber } }
+		if = { limit = { has_variable = resources_found_active_response_state } var:resources_found_active_response_state = { resources_found_decision_guard_feeding_chamber = yes } }
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.cave_replace_origin_brood } }
+		if = {
+			limit = { has_variable = resources_found_cave_origin_state }
+			var:resources_found_cave_origin_state = { resources_found_cave_spawn_war_brood_here = yes }
+			add_to_variable = { resources_found_protected_origin_allocation = constant:resources_found_value.one }
+			resources_found_cave_refresh_division_and_capacity_totals = yes
+		}
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.cave_consolidate_unfed } }
+		every_controlled_state = {
+			damage_units = {
+				state = THIS
+				limit = { tag = DHO }
+				str_damage = constant:resources_found_decision_change.consolidation_strength_loss
+				ratio = yes
+				army = yes
+				navy = no
+			}
+		}
+		set_country_flag = resources_found_unfed_broods_consolidated
+		resources_found_cave_refresh_unfed_status = yes
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.cave_deepen_link } }
+		resources_found_cave_link_nearest_anchors = yes
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.cave_phalanx_assault } }
+		set_temp_variable = { resources_found_phalanx_window_days = constant:resources_found_decision_duration.cave_short }
+		set_country_flag = { flag = resources_found_phalanx_assault_window days = resources_found_phalanx_window_days }
+		resources_found_cave_mark_strongpoint_target = yes
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.cave_burrow_approach } }
+		if = {
+			limit = { NOT = { has_global_flag = resources_found_cave_world_end } }
+			resources_found_cave_mark_transport_target = yes
+			if = {
+				limit = { has_variable = resources_found_transport_target_state }
+				var:resources_found_transport_target_state = {
+					set_state_flag = resources_found_burrow_objective_active
+				}
+				set_variable = { resources_found_burrow_objective_window_days = constant:resources_found_achievement.burrow_objective_window_days }
+				set_country_flag = resources_found_burrow_objective_window_active
+				set_country_flag = resources_found_burrow_approach_prepared
+				activate_mission = resources_found_burrow_objective_window_mission
+			}
+		}
+		else = { resources_found_cancel_burrow_objective_window = yes }
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.cave_release_raiders } }
+		set_temp_variable = { resources_found_scree_release_spawned = constant:resources_found_value.zero }
+		resources_found_cave_select_spawn_state = yes
+		if = {
+			limit = { has_event_target = resources_found_cave_spawn_state }
+			event_target:resources_found_cave_spawn_state = { resources_found_cave_spawn_scree_brood_here = yes }
+			set_temp_variable = { resources_found_scree_release_spawned = constant:resources_found_value.one }
+		}
+		resources_found_cave_refresh_division_and_capacity_totals = yes
+		resources_found_refresh_active_raiding_brood_formations = yes
+		if = {
+			limit = {
+				has_country_flag = resources_found_achievement_hills_move_route
+				check_variable = { resources_found_scree_release_spawned > constant:resources_found_value.zero }
+				check_variable = {
+					var = resources_found_active_raiding_brood_formations
+					value = constant:resources_found_achievement.rapid_raiding_broods
+					compare = greater_than_or_equals
+				}
+				NOT = { resources_found_cave_is_over_capacity = yes }
+				NOT = { has_global_flag = resources_found_cave_world_end }
+			}
+			add_to_variable = { resources_found_rapid_route_attempt_sequence = constant:resources_found_value.one }
+			set_variable = { resources_found_rapid_route_states_captured = constant:resources_found_value.zero }
+			set_variable = { resources_found_rapid_route_countries_defeated = constant:resources_found_value.zero }
+			set_temp_variable = { resources_found_rapid_route_days = constant:resources_found_decision_duration.rapid_route_window }
+			set_country_flag = { flag = resources_found_rapid_route_window_active days = resources_found_rapid_route_days }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.cave_convert_industry } }
+		resources_found_cave_convert_secure_industry = yes
+		set_country_flag = resources_found_cave_industrial_conversion_complete
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.cave_refresh_queue } }
+		resources_found_cave_recalculate_capacity = yes
+		resources_found_cave_spawn_one_if_below_capacity = yes
+		set_country_flag = resources_found_cave_queue_reviewed
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.cave_fortify_origin } }
+		resources_found_cave_fortify_origin = yes
+		set_country_flag = resources_found_cave_origin_defense_prepared
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.cave_continent_objectives } }
+		resources_found_cave_mark_remaining_continent_states = yes
+		resources_found_cave_refresh_continent_progress = yes
+		set_country_flag = resources_found_cave_continent_objectives_refreshed
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.cave_continent_verification } }
+		resources_found_cave_begin_continent_verification = yes
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.cave_world_end_preparation } }
+		resources_found_cave_prepare_foothold_candidates = yes
+		resources_found_cave_weight_foothold_candidates = yes
+		set_country_flag = resources_found_cave_world_end_preparation_complete
+	}
+	resources_found_clear_decision_project_runtime = yes
+}
+
+# ---------------------------------------------------------------------------
+# Anti-cave denial, recapture, cleanup, cooperation, and reconstruction
+# ---------------------------------------------------------------------------
+
+# STATE scope while an ordinary country still controls a threatened resource
+# state. The penalty delays the anchor window and is consumed once.
+resources_found_prepare_cave_resource_denial = {
+	if = {
+		limit = {
+			is_owned_and_controlled_by = OWNER
+			OWNER = { NOT = { is_resources_found_cave_country = yes } }
+			resources_found_state_has_standard_resource_presence = yes
+		}
+		set_state_flag = resources_found_cave_denial_prepared
+		set_variable = { resources_found_cave_denial_capacity_penalty = constant:resources_found_decision_change.denial_capacity_reduction }
+		set_state_flag = resources_found_controlled_demolition_prepared
+		if = {
+			limit = { NOT = { has_dynamic_modifier = { modifier = resources_found_denied_resource_state } } }
+			add_dynamic_modifier = { modifier = resources_found_denied_resource_state }
+		}
+		force_update_dynamic_modifier = yes
+	}
+}
+
+# COUNTRY scope for the ordinary response actor.
+resources_found_complete_anti_cave_project = {
+	if = {
+		limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.anti_cave_contracts } }
+		set_country_flag = resources_found_anti_armor_prepared
+		set_country_flag = resources_found_cave_aid_eligible
+		if = { limit = { NOT = { has_idea = resources_found_anti_cave_contracts } } add_ideas = resources_found_anti_cave_contracts }
+		add_tech_bonus = {
+			name = resources_found_anti_armor_contract_bonus
+			bonus = constant:resources_found_decision_factor.standard
+			uses = constant:resources_found_value.one
+			category = cat_anti_tank
+		}
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.anti_cave_resource_denial } }
+		if = { limit = { has_variable = resources_found_active_response_state } var:resources_found_active_response_state = { resources_found_prepare_cave_resource_denial = yes } }
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.anti_cave_anchor_cleanup } }
+		if = { limit = { has_variable = resources_found_active_response_state } var:resources_found_active_response_state = { resources_found_complete_anchor_cleanup = yes } }
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.anti_cave_share_intelligence } }
+		set_country_flag = resources_found_hard_attack_intelligence_shared
+		if = { limit = { NOT = { has_idea = resources_found_threat_cooperation } } add_ideas = resources_found_threat_cooperation }
+		add_tech_bonus = {
+			name = resources_found_shared_hard_attack_bonus
+			bonus = constant:resources_found_decision_factor.standard
+			uses = constant:resources_found_value.one
+			category = cat_anti_tank
+		}
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.anti_cave_evacuation_corridor } }
+		set_country_flag = resources_found_anti_cave_evacuation_corridor_open
+		add_opinion_modifier = { target = DHO modifier = resources_found_cave_containment_rivalry }
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.anti_cave_cooperation } }
+		set_country_flag = resources_found_threat_cooperation_active
+		if = { limit = { NOT = { has_idea = resources_found_threat_cooperation } } add_ideas = resources_found_threat_cooperation }
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.anti_cave_reconstruction } }
+		if = {
+			limit = {
+				resources_found_decision_global_reconstruction_ready = yes
+				NOT = { has_country_flag = resources_found_reconstruction_compact_refused }
+				has_country_flag = resources_found_reconstruction_compact_lead_committed
+				is_major = yes
+			}
+			set_country_flag = resources_found_reconstruction_compact_member
+			set_country_flag = resources_found_reconstruction_compact_leader
+			set_country_flag = resources_found_global_reconstruction_complete
+			set_global_flag = resources_found_reconstruction_compact_established
+		}
+		else_if = {
+			limit = {
+				resources_found_decision_global_reconstruction_ready = yes
+				NOT = { has_country_flag = resources_found_reconstruction_compact_refused }
+				has_country_flag = resources_found_reconstruction_compact_join_committed
+			}
+			set_country_flag = resources_found_reconstruction_compact_member
+			clr_country_flag = resources_found_reconstruction_compact_leader
+			set_country_flag = resources_found_global_reconstruction_complete
+			set_global_flag = resources_found_reconstruction_compact_established
+		}
+		if = {
+			limit = { has_country_flag = resources_found_global_reconstruction_complete NOT = { has_idea = resources_found_threat_cooperation } }
+			add_ideas = resources_found_threat_cooperation
+		}
+		if = {
+			limit = { has_country_flag = resources_found_global_reconstruction_complete }
+			clr_country_flag = resources_found_reconstruction_compact_join_committed
+			clr_country_flag = resources_found_reconstruction_compact_lead_committed
+		}
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.anti_cave_recapture_preparation } }
+		if = {
+			limit = { has_variable = resources_found_active_response_state }
+			set_variable = { resources_found_anchor_recapture_state = resources_found_active_response_state }
+			set_variable = { resources_found_anchor_recapture_days = constant:resources_found_decision_duration.anchor_recapture }
+			activate_mission = resources_found_liberate_activating_anchor_mission
+		}
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.anti_cave_aid } }
+		if = {
+			limit = { has_variable = resources_found_pending_project_partner }
+			var:resources_found_pending_project_partner = {
+				add_equipment_to_stockpile = { type = anti_tank_equipment amount = constant:resources_found_decision_cost.anti_cave_anti_tank }
+				add_equipment_to_stockpile = { type = support_equipment amount = constant:resources_found_decision_cost.anti_cave_support }
+				set_country_flag = resources_found_foreign_hard_attack_aid_received
+				set_country_flag = resources_found_anti_armor_prepared
+			}
+			set_country_flag = resources_found_anti_cave_aid_contributor
+		}
+	}
+	else_if = {
+		limit = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.anti_cave_state_restoration } }
+		if = {
+			limit = {
+				has_variable = resources_found_active_response_state
+				var:resources_found_active_response_state = { resources_found_decision_state_needs_post_cave_restoration = yes }
+			}
+			var:resources_found_active_response_state = {
+				remove_dynamic_modifier = { modifier = resources_found_sealed_field_scar }
+				add_building_construction = { type = infrastructure level = constant:resources_found_value.one instant_build = yes }
+				set_state_flag = resources_found_liberated_resources_restored
+				set_state_flag = resources_found_post_cave_restoration_complete
+				force_update_dynamic_modifier = yes
+			}
+			add_to_variable = { resources_found_reconstruction_contribution = constant:resources_found_value.one }
+		}
+	}
+	resources_found_clear_decision_project_runtime = yes
+	clear_variable = resources_found_pending_project_partner
+}
+
+# COUNTRY scope after a defender retakes a still-activating state.
+resources_found_complete_anchor_recapture_objective = {
+	if = {
+		limit = {
+			has_variable = resources_found_anchor_recapture_state
+			var:resources_found_anchor_recapture_state = {
+				is_controlled_by = ROOT
+				has_state_flag = resources_found_cave_cleanup_required
+			}
+		}
+		var:resources_found_anchor_recapture_state = {
+			resources_found_cave_disrupt_anchor = yes
+			set_state_flag = resources_found_anchor_activation_interrupted
+		}
+		set_country_flag = resources_found_anchor_recapture_success
+	}
+	clear_variable = resources_found_anchor_recapture_state
+	clear_variable = resources_found_anchor_recapture_days
+}
+
+# COUNTRY scope when the tuned recapture window expires.
+resources_found_fail_anchor_recapture_objective = {
+	if = {
+		limit = { has_variable = resources_found_anchor_recapture_state }
+		var:resources_found_anchor_recapture_state = { set_state_flag = resources_found_anchor_recapture_window_failed }
+	}
+	clear_variable = resources_found_anchor_recapture_state
+	clear_variable = resources_found_anchor_recapture_days
+}

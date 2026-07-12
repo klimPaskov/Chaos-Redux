@@ -202,7 +202,7 @@ initialize_event_categories = {
     add_to_array = { global.repeatable_events = 9 }   # WHITE PEACE
 	add_to_array = { global.repeatable_events = 13 }  # NATURAL DISASTERS
 	add_to_array = { global.repeatable_events = constant:random_faction_event.id }  # RANDOM FACTION
-    add_to_array = { global.repeatable_events = 18 }  # RAND RESOURCE
+	add_to_array = { global.repeatable_events = constant:resources_found_event.id }  # RESOURCES FOUND
     add_to_array = { global.repeatable_events = 19 }  # INF SPAWN
     add_to_array = { global.repeatable_events = 21 }  # RAND CW
     add_to_array = { global.repeatable_events = 28 }  # ASTEROID
@@ -532,6 +532,10 @@ evaluate_random_event_active_pool_candidate = {
 				AND = {
 					check_variable = { event_id = constant:random_faction_event.id }
 					NOT = { random_faction_has_dispatchable_context = yes }
+				}
+				AND = {
+					check_variable = { event_id = constant:resources_found_event.id }
+					NOT = { resources_found_is_eligible_discovery_owner = yes }
 				}
 				check_variable = { event_id = 6 }
 				check_variable = { event_id = 12 }

@@ -4617,6 +4617,21 @@ fire_event_by_temp_id_no_cluster = {
 		}
 	}
 	if = {
+		limit = { check_variable = { event_id = constant:resources_found_event.id } }
+		set_temp_variable = { resources_found_prefire_ready = constant:resources_found_value.zero }
+		resources_found_prepare_random_event_fire = yes
+		if = {
+			limit = {
+				OR = {
+					check_variable = { resources_found_prefire_ready < constant:resources_found_value.one }
+					NOT = { has_event_target = resources_found_prefire_owner }
+					NOT = { has_event_target = resources_found_prefire_state }
+				}
+			}
+			set_temp_variable = { event_single_fire_allowed = 0 }
+		}
+	}
+	if = {
 		limit = { check_variable = { event_id = constant:white_peace_event_log.event_id } }
 		prepare_white_peace_runtime_context = yes
 		if = {
@@ -4652,6 +4667,23 @@ fire_event_by_temp_id_no_cluster = {
 				clear_variable = random_faction_pending_history_leader
 				set_country_flag = random_faction_history_result_pending
 				country_event = { id = chaosx.nr17.1 }
+			}
+		}
+		else_if = {
+			limit = {
+				check_variable = { event_fire_record_id = constant:resources_found_event.id }
+				has_event_target = resources_found_prefire_owner
+				has_event_target = resources_found_prefire_state
+			}
+			event_target:resources_found_prefire_owner = {
+				if = {
+					limit = { event_target:resources_found_prefire_state = { resources_found_is_valid_enrichment_field = yes } }
+					country_event = { id = chaosx.nr18.2 }
+				}
+				else_if = {
+					limit = { event_target:resources_found_prefire_state = { resources_found_is_valid_new_field_state = yes } }
+					country_event = { id = chaosx.nr18.1 }
+				}
 			}
 		}
 		else = {

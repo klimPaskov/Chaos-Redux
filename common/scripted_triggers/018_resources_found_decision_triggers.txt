@@ -1,0 +1,914 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 018 DECISION AND MISSION TRIGGERS
+# ============================================================================
+# Availability, dynamic payment, exact seal preparation, border-pair safety,
+# foreign-partner validation, cave decisions, and anti-cave response gates.
+# ============================================================================
+
+resources_found_decision_has_selected_field = {
+	resources_found_country_has_valid_selected_field = yes
+	var:resources_found_selected_field = {
+		is_owned_and_controlled_by = ROOT
+		NOT = { has_state_flag = resources_found_field_transaction_lock }
+		NOT = { has_state_flag = resources_found_field_closed_permanently }
+		NOT = { has_state_flag = resources_found_field_converted_to_cave_origin }
+	}
+}
+
+# COUNTRY scope. All five project families share one exact project kind, state,
+# cost, and duration record, so only one of those family missions may own the
+# runtime at once. Contract, commission, border, recapture, and evolution clocks
+# use separate records and remain independent.
+resources_found_decision_project_queue_available = {
+	NOT = { has_country_flag = resources_found_field_project_active }
+	NOT = { has_country_flag = resources_found_trade_project_active }
+	NOT = { has_country_flag = resources_found_containment_project_active }
+	NOT = { has_country_flag = resources_found_cave_project_active }
+	NOT = { has_country_flag = resources_found_anti_cave_project_active }
+	NOT = { has_active_mission = resources_found_field_project_mission }
+	NOT = { has_active_mission = resources_found_trade_project_mission }
+	NOT = { has_active_mission = resources_found_containment_project_mission }
+	NOT = { has_active_mission = resources_found_cave_project_mission }
+	NOT = { has_active_mission = resources_found_anti_cave_project_mission }
+}
+
+# COUNTRY scope. A priced decision is shown only while its preview ledger still
+# describes the exact country and selected-field inputs used by the shared
+# calculator. The refresh control remains outside this gate so stale ledgers
+# always have a visible recovery path.
+resources_found_decision_cost_preview_context_current = {
+	has_country_flag = resources_found_decision_cost_preview_ready
+	OR = {
+		AND = {
+			num_of_factories < constant:resources_found_country_scale.small_factory_ceiling
+			check_variable = { resources_found_decision_preview_country_factor = constant:resources_found_country_factor.small_cost }
+		}
+		AND = {
+			NOT = { num_of_factories < constant:resources_found_country_scale.small_factory_ceiling }
+			is_major = yes
+			check_variable = { resources_found_decision_preview_country_factor = constant:resources_found_country_factor.major_cost }
+		}
+		AND = {
+			NOT = { num_of_factories < constant:resources_found_country_scale.small_factory_ceiling }
+			NOT = { is_major = yes }
+			num_of_factories > constant:resources_found_country_scale.large_factory_floor
+			check_variable = { resources_found_decision_preview_country_factor = constant:resources_found_country_factor.large_cost }
+		}
+		AND = {
+			NOT = { num_of_factories < constant:resources_found_country_scale.small_factory_ceiling }
+			NOT = { is_major = yes }
+			NOT = { num_of_factories > constant:resources_found_country_scale.large_factory_floor }
+			check_variable = { resources_found_decision_preview_country_factor = constant:resources_found_country_factor.standard_cost }
+		}
+	}
+	OR = {
+		AND = { has_war = yes has_country_flag = resources_found_decision_preview_war_context }
+		AND = { NOT = { has_war = yes } NOT = { has_country_flag = resources_found_decision_preview_war_context } }
+	}
+	OR = {
+		AND = {
+			NOT = { resources_found_country_has_valid_selected_field = yes }
+			NOT = { has_variable = resources_found_decision_preview_field }
+		}
+		AND = {
+			resources_found_country_has_valid_selected_field = yes
+			has_variable = resources_found_decision_preview_field
+			check_variable = { var = resources_found_selected_field value = resources_found_decision_preview_field compare = equals }
+			var:resources_found_selected_field = {
+				check_variable = { var = resources_found_excavation_depth value = ROOT.resources_found_decision_preview_excavation_depth compare = equals }
+				check_variable = { var = resources_found_breach_pressure value = ROOT.resources_found_decision_preview_breach_pressure compare = equals }
+				check_variable = { var = resources_found_subsurface_disturbance value = ROOT.resources_found_decision_preview_subsurface_disturbance compare = equals }
+				check_variable = { var = resources_found_workforce_safety value = ROOT.resources_found_decision_preview_workforce_safety compare = equals }
+				OR = {
+					AND = { resources_found_contract_is_active_and_valid = yes ROOT = { has_country_flag = resources_found_decision_preview_contract_context } }
+					AND = { NOT = { resources_found_contract_is_active_and_valid = yes } ROOT = { NOT = { has_country_flag = resources_found_decision_preview_contract_context } } }
+				}
+				OR = {
+					AND = {
+						NOT = { infrastructure > constant:resources_found_country_scale.poor_infrastructure_maximum }
+						ROOT = { has_country_flag = resources_found_decision_preview_poor_infrastructure_context }
+					}
+					AND = {
+						NOT = { infrastructure < constant:resources_found_country_scale.strong_infrastructure_minimum }
+						ROOT = { has_country_flag = resources_found_decision_preview_strong_infrastructure_context }
+					}
+					AND = {
+						infrastructure > constant:resources_found_country_scale.poor_infrastructure_maximum
+						infrastructure < constant:resources_found_country_scale.strong_infrastructure_minimum
+						ROOT = {
+							NOT = { has_country_flag = resources_found_decision_preview_poor_infrastructure_context }
+							NOT = { has_country_flag = resources_found_decision_preview_strong_infrastructure_context }
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+resources_found_decision_field_queue_available = {
+	resources_found_decision_has_selected_field = yes
+	resources_found_decision_project_queue_available = yes
+	resources_found_decision_cost_preview_context_current = yes
+}
+
+resources_found_decision_trade_queue_available = {
+	resources_found_decision_has_selected_field = yes
+	resources_found_decision_project_queue_available = yes
+	resources_found_decision_cost_preview_context_current = yes
+}
+
+resources_found_decision_foreign_action_queue_available = {
+	has_country_flag = resources_found_foreign_field_actor
+	has_variable = resources_found_foreign_interest_field
+	has_variable = resources_found_foreign_interest_owner
+	NOT = { is_resources_found_cave_country = yes }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	resources_found_decision_project_queue_available = yes
+	resources_found_decision_cost_preview_context_current = yes
+	var:resources_found_foreign_interest_field = {
+		resources_found_is_active_field = yes
+		NOT = { is_owned_by = ROOT }
+		OWNER = {
+			exists = yes
+			NOT = { is_resources_found_cave_country = yes }
+			NOT = { is_actual_nonhuman_country = yes }
+		}
+	}
+}
+
+resources_found_decision_containment_queue_available = {
+	resources_found_decision_has_selected_field = yes
+	resources_found_decision_project_queue_available = yes
+	resources_found_decision_cost_preview_context_current = yes
+}
+
+resources_found_decision_has_base_administration_inputs = {
+	resources_found_decision_cost_preview_context_current = yes
+	meta_trigger = {
+		text = { NOT = { has_political_power < [PP] } NOT = { num_of_civilian_factories < [CIV] } }
+		PP = "[?resources_found_decision_preview_1_pp|.3]"
+		CIV = "[?resources_found_decision_preview_1_civ|.0]"
+	}
+}
+
+resources_found_decision_has_base_survey_inputs = {
+	resources_found_decision_cost_preview_context_current = yes
+	meta_trigger = {
+		text = { NOT = { has_political_power < [PP] } NOT = { num_of_civilian_factories < [CIV] } NOT = { has_equipment = { support_equipment < [SUP] } } NOT = { has_equipment = { motorized_equipment < [TRUCK] } } NOT = { has_fuel < [FUEL] } }
+		PP = "[?resources_found_decision_preview_2_pp|.3]"
+		CIV = "[?resources_found_decision_preview_2_civ|.0]"
+		SUP = "[?resources_found_decision_preview_2_support|.0]"
+		TRUCK = "[?resources_found_decision_preview_2_trucks|.0]"
+		FUEL = "[?resources_found_decision_preview_2_fuel|.3]"
+	}
+}
+
+resources_found_decision_has_base_industry_inputs = {
+	resources_found_decision_cost_preview_context_current = yes
+	meta_trigger = {
+		text = { NOT = { has_political_power < [PP] } NOT = { num_of_civilian_factories < [CIV] } NOT = { has_equipment = { support_equipment < [SUP] } } NOT = { has_equipment = { motorized_equipment < [TRUCK] } } NOT = { has_equipment = { train_equipment < [TRAIN] } } NOT = { has_fuel < [FUEL] } }
+		PP = "[?resources_found_decision_preview_3_pp|.3]"
+		CIV = "[?resources_found_decision_preview_3_civ|.0]"
+		SUP = "[?resources_found_decision_preview_3_support|.0]"
+		TRUCK = "[?resources_found_decision_preview_3_trucks|.0]"
+		TRAIN = "[?resources_found_decision_preview_3_trains|.0]"
+		FUEL = "[?resources_found_decision_preview_3_fuel|.3]"
+	}
+}
+
+resources_found_decision_has_base_transport_inputs = {
+	resources_found_decision_cost_preview_context_current = yes
+	meta_trigger = {
+		text = { NOT = { has_political_power < [PP] } NOT = { num_of_civilian_factories < [CIV] } NOT = { has_equipment = { support_equipment < [SUP] } } NOT = { has_equipment = { motorized_equipment < [TRUCK] } } NOT = { has_equipment = { train_equipment < [TRAIN] } } NOT = { has_fuel < [FUEL] } }
+		PP = "[?resources_found_decision_preview_4_pp|.3]"
+		CIV = "[?resources_found_decision_preview_4_civ|.0]"
+		SUP = "[?resources_found_decision_preview_4_support|.0]"
+		TRUCK = "[?resources_found_decision_preview_4_trucks|.0]"
+		TRAIN = "[?resources_found_decision_preview_4_trains|.0]"
+		FUEL = "[?resources_found_decision_preview_4_fuel|.3]"
+	}
+}
+
+resources_found_decision_has_base_labor_inputs = {
+	resources_found_decision_cost_preview_context_current = yes
+	meta_trigger = {
+		text = { NOT = { has_political_power < [PP] } NOT = { num_of_civilian_factories < [CIV] } NOT = { has_manpower < [MP] } }
+		PP = "[?resources_found_decision_preview_5_pp|.3]"
+		CIV = "[?resources_found_decision_preview_5_civ|.0]"
+		MP = "[?resources_found_decision_preview_5_manpower|.0]"
+	}
+}
+
+resources_found_decision_has_base_security_inputs = {
+	resources_found_decision_cost_preview_context_current = yes
+	meta_trigger = {
+		text = { NOT = { has_political_power < [PP] } NOT = { command_power < [CP] } NOT = { has_manpower < [MP] } NOT = { num_of_civilian_factories < [CIV] } NOT = { has_equipment = { infantry_equipment < [INF] } } NOT = { has_equipment = { support_equipment < [SUP] } } }
+		PP = "[?resources_found_decision_preview_6_pp|.3]"
+		CP = "[?resources_found_decision_preview_6_command|.3]"
+		MP = "[?resources_found_decision_preview_6_manpower|.0]"
+		CIV = "[?resources_found_decision_preview_6_civ|.0]"
+		INF = "[?resources_found_decision_preview_6_infantry|.0]"
+		SUP = "[?resources_found_decision_preview_6_support|.0]"
+	}
+}
+
+resources_found_decision_has_base_diplomacy_inputs = {
+	resources_found_decision_cost_preview_context_current = yes
+	meta_trigger = {
+		text = { NOT = { has_political_power < [PP] } NOT = { num_of_civilian_factories < [CIV] } }
+		PP = "[?resources_found_decision_preview_7_pp|.3]"
+		CIV = "[?resources_found_decision_preview_7_civ|.0]"
+	}
+}
+
+resources_found_decision_has_base_containment_inputs = {
+	resources_found_decision_cost_preview_context_current = yes
+	meta_trigger = {
+		text = { NOT = { has_political_power < [PP] } NOT = { command_power < [CP] } NOT = { has_manpower < [MP] } NOT = { num_of_civilian_factories < [CIV] } NOT = { has_equipment = { infantry_equipment < [INF] } } NOT = { has_equipment = { support_equipment < [SUP] } } NOT = { has_equipment = { anti_tank_equipment < [AT] } } NOT = { has_equipment = { motorized_equipment < [TRUCK] } } NOT = { has_equipment = { train_equipment < [TRAIN] } } }
+		PP = "[?resources_found_decision_preview_8_pp|.3]"
+		CP = "[?resources_found_decision_preview_8_command|.3]"
+		MP = "[?resources_found_decision_preview_8_manpower|.0]"
+		CIV = "[?resources_found_decision_preview_8_civ|.0]"
+		INF = "[?resources_found_decision_preview_8_infantry|.0]"
+		SUP = "[?resources_found_decision_preview_8_support|.0]"
+		AT = "[?resources_found_decision_preview_8_anti_tank|.0]"
+		TRUCK = "[?resources_found_decision_preview_8_trucks|.0]"
+		TRAIN = "[?resources_found_decision_preview_8_trains|.0]"
+	}
+}
+
+resources_found_decision_has_base_full_seal_inputs = {
+	resources_found_decision_cost_preview_context_current = yes
+	meta_trigger = {
+		text = { NOT = { has_political_power < [PP] } NOT = { command_power < [CP] } NOT = { has_manpower < [MP] } NOT = { num_of_civilian_factories < [CIV] } NOT = { num_of_military_factories < [MIL] } NOT = { has_equipment = { infantry_equipment < [INF] } } NOT = { has_equipment = { support_equipment < [SUP] } } NOT = { has_equipment = { anti_tank_equipment < [AT] } } NOT = { has_equipment = { motorized_equipment < [TRUCK] } } NOT = { has_equipment = { train_equipment < [TRAIN] } } NOT = { has_fuel < [FUEL] } }
+		PP = "[?resources_found_decision_preview_9_pp|.3]"
+		CP = "[?resources_found_decision_preview_9_command|.3]"
+		MP = "[?resources_found_decision_preview_9_manpower|.0]"
+		CIV = "[?resources_found_decision_preview_9_civ|.0]"
+		MIL = "[?resources_found_decision_preview_9_mil|.0]"
+		INF = "[?resources_found_decision_preview_9_infantry|.0]"
+		SUP = "[?resources_found_decision_preview_9_support|.0]"
+		AT = "[?resources_found_decision_preview_9_anti_tank|.0]"
+		TRUCK = "[?resources_found_decision_preview_9_trucks|.0]"
+		TRAIN = "[?resources_found_decision_preview_9_trains|.0]"
+		FUEL = "[?resources_found_decision_preview_9_fuel|.3]"
+	}
+}
+
+resources_found_decision_has_base_cave_inputs = {
+	is_resources_found_cave_country = yes
+	resources_found_decision_cost_preview_context_current = yes
+	meta_trigger = {
+		text = { NOT = { has_political_power < [PP] } NOT = { command_power < [CP] } }
+		PP = "[?resources_found_decision_preview_11_pp|.3]"
+		CP = "[?resources_found_decision_preview_11_command|.3]"
+	}
+}
+
+resources_found_decision_has_base_anti_cave_inputs = {
+	NOT = { is_resources_found_cave_country = yes }
+	resources_found_decision_cost_preview_context_current = yes
+	meta_trigger = {
+		text = { NOT = { has_political_power < [PP] } NOT = { command_power < [CP] } NOT = { has_army_experience < [XP] } NOT = { num_of_civilian_factories < [CIV] } NOT = { num_of_military_factories < [MIL] } NOT = { has_manpower < [MP] } NOT = { has_equipment = { infantry_equipment < [INF] } } NOT = { has_equipment = { support_equipment < [SUP] } } NOT = { has_equipment = { anti_tank_equipment < [AT] } } NOT = { has_equipment = { motorized_equipment < [TRUCK] } } NOT = { has_equipment = { train_equipment < [TRAIN] } } }
+		PP = "[?resources_found_decision_preview_12_pp|.3]"
+		CP = "[?resources_found_decision_preview_12_command|.3]"
+		XP = "[?resources_found_decision_preview_12_army_xp|.3]"
+		CIV = "[?resources_found_decision_preview_12_civ|.0]"
+		MIL = "[?resources_found_decision_preview_12_mil|.0]"
+		MP = "[?resources_found_decision_preview_12_manpower|.0]"
+		INF = "[?resources_found_decision_preview_12_infantry|.0]"
+		SUP = "[?resources_found_decision_preview_12_support|.0]"
+		AT = "[?resources_found_decision_preview_12_anti_tank|.0]"
+		TRUCK = "[?resources_found_decision_preview_12_trucks|.0]"
+		TRAIN = "[?resources_found_decision_preview_12_trains|.0]"
+	}
+}
+
+resources_found_decision_has_remote_diplomacy_inputs = {
+	resources_found_decision_cost_preview_context_current = yes
+	meta_trigger = {
+		text = { NOT = { has_political_power < [PP] } NOT = { num_of_civilian_factories < [CIV] } }
+		PP = "[?resources_found_decision_preview_10_pp|.3]"
+		CIV = "[?resources_found_decision_preview_10_civ|.0]"
+	}
+}
+
+resources_found_decision_has_remote_security_inputs = {
+	resources_found_decision_cost_preview_context_current = yes
+	meta_trigger = {
+		text = { NOT = { has_political_power < [PP] } NOT = { command_power < [CP] } NOT = { has_manpower < [MP] } NOT = { num_of_civilian_factories < [CIV] } NOT = { has_equipment = { infantry_equipment < [INF] } } NOT = { has_equipment = { support_equipment < [SUP] } } }
+		PP = "[?resources_found_decision_preview_13_pp|.3]"
+		CP = "[?resources_found_decision_preview_13_command|.3]"
+		MP = "[?resources_found_decision_preview_13_manpower|.0]"
+		CIV = "[?resources_found_decision_preview_13_civ|.0]"
+		INF = "[?resources_found_decision_preview_13_infantry|.0]"
+		SUP = "[?resources_found_decision_preview_13_support|.0]"
+	}
+}
+
+# COUNTRY scope after resources_found_prepare_decision_project has populated
+# the persistent exact costs. All tokenized comparisons use meta_trigger because
+# these engine fields do not accept a variable value directly.
+resources_found_decision_has_dynamic_project_inputs = {
+	resources_found_decision_cost_preview_context_current = yes
+	check_variable = { resources_found_active_project_cost_preview_slot > constant:resources_found_value.zero }
+	check_variable = { resources_found_active_project_duration_preview_slot > constant:resources_found_value.zero }
+	meta_trigger = {
+		text = {
+			check_variable = { var = resources_found_decision_cost_pp value = resources_found_decision_preview_[COST_SLOT]_pp compare = equals }
+			check_variable = { var = resources_found_decision_cost_command value = resources_found_decision_preview_[COST_SLOT]_command compare = equals }
+			check_variable = { var = resources_found_decision_cost_army_xp value = resources_found_decision_preview_[COST_SLOT]_army_xp compare = equals }
+			check_variable = { var = resources_found_decision_cost_manpower value = resources_found_decision_preview_[COST_SLOT]_manpower compare = equals }
+			check_variable = { var = resources_found_decision_cost_civ value = resources_found_decision_preview_[COST_SLOT]_civ compare = equals }
+			check_variable = { var = resources_found_decision_cost_mil value = resources_found_decision_preview_[COST_SLOT]_mil compare = equals }
+			check_variable = { var = resources_found_decision_cost_infantry value = resources_found_decision_preview_[COST_SLOT]_infantry compare = equals }
+			check_variable = { var = resources_found_decision_cost_support value = resources_found_decision_preview_[COST_SLOT]_support compare = equals }
+			check_variable = { var = resources_found_decision_cost_anti_tank value = resources_found_decision_preview_[COST_SLOT]_anti_tank compare = equals }
+			check_variable = { var = resources_found_decision_cost_trucks value = resources_found_decision_preview_[COST_SLOT]_trucks compare = equals }
+			check_variable = { var = resources_found_decision_cost_trains value = resources_found_decision_preview_[COST_SLOT]_trains compare = equals }
+			check_variable = { var = resources_found_decision_cost_convoys value = resources_found_decision_preview_[COST_SLOT]_convoys compare = equals }
+			check_variable = { var = resources_found_decision_cost_fuel value = resources_found_decision_preview_[COST_SLOT]_fuel compare = equals }
+			check_variable = { var = resources_found_active_project_days value = resources_found_decision_duration_preview_[DURATION_SLOT]_days compare = equals }
+		}
+		COST_SLOT = "[?resources_found_active_project_cost_preview_slot|.0]"
+		DURATION_SLOT = "[?resources_found_active_project_duration_preview_slot|.0]"
+	}
+	meta_trigger = {
+		text = {
+			NOT = { has_political_power < [PP] }
+			NOT = { command_power < [CP] }
+			NOT = { has_army_experience < [XP] }
+			NOT = { has_manpower < [MP] }
+			NOT = { num_of_civilian_factories < [CIV] }
+			NOT = { num_of_military_factories < [MIL] }
+			NOT = { has_equipment = { infantry_equipment < [INF] } }
+			NOT = { has_equipment = { support_equipment < [SUP] } }
+			NOT = { has_equipment = { anti_tank_equipment < [AT] } }
+			NOT = { has_equipment = { motorized_equipment < [TRUCK] } }
+			NOT = { has_equipment = { train_equipment < [TRAIN] } }
+			NOT = { has_equipment = { convoy_1 < [CONVOY] } }
+		}
+		PP = "[?resources_found_decision_cost_pp|.3]"
+		CP = "[?resources_found_decision_cost_command|.3]"
+		XP = "[?resources_found_decision_cost_army_xp|.3]"
+		MP = "[?resources_found_decision_cost_manpower|.0]"
+		CIV = "[?resources_found_decision_cost_civ|.0]"
+		MIL = "[?resources_found_decision_cost_mil|.0]"
+		INF = "[?resources_found_decision_cost_infantry|.0]"
+		SUP = "[?resources_found_decision_cost_support|.0]"
+		AT = "[?resources_found_decision_cost_anti_tank|.0]"
+		TRUCK = "[?resources_found_decision_cost_trucks|.0]"
+		TRAIN = "[?resources_found_decision_cost_trains|.0]"
+		CONVOY = "[?resources_found_decision_cost_convoys|.0]"
+	}
+	meta_trigger = {
+		text = { NOT = { has_fuel < [FUEL] } }
+		FUEL = "[?resources_found_decision_cost_fuel_k|.3]"
+	}
+}
+
+resources_found_decision_field_can_be_developed = {
+	resources_found_decision_field_queue_available = yes
+	var:resources_found_selected_field = {
+		NOT = { has_state_flag = resources_found_field_suspended }
+		NOT = { has_state_flag = resources_found_field_closing }
+	}
+}
+
+resources_found_decision_field_has_compound_resources = {
+	resources_found_decision_field_can_be_developed = yes
+	var:resources_found_selected_field = {
+		check_variable = {
+			var = resources_found_distinct_resource_count
+			value = constant:resources_found_threshold.compound_distinct_resources
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+resources_found_decision_field_has_recorded_casualties = {
+	resources_found_decision_has_selected_field = yes
+	var:resources_found_selected_field = {
+		OR = {
+			check_variable = { resources_found_field_deaths > constant:resources_found_value.zero }
+			has_state_flag = resources_found_achievement_field_death_recorded
+			has_state_flag = resources_found_casualties_concealed
+		}
+	}
+}
+
+resources_found_decision_full_seal_visible_prerequisites_met = {
+	resources_found_decision_containment_queue_available = yes
+	var:resources_found_selected_field = {
+		resources_found_can_begin_full_seal = yes
+		has_state_flag = resources_found_field_suspended
+		has_state_flag = resources_found_closure_access_mapped
+		has_state_flag = resources_found_full_seal_engineering_prepared
+		has_state_flag = resources_found_sealed_network
+		OR = {
+			has_state_flag = resources_found_field_population_secured
+			has_state_flag = resources_found_successful_evacuation
+			has_state_flag = resources_found_lower_workings_evacuated
+		}
+		OR = {
+			has_state_flag = resources_found_perimeter_reinforced
+			has_state_flag = resources_found_countermeasure_research
+			has_state_flag = resources_found_restricted_workings
+		}
+		OR = {
+			NOT = { has_state_flag = resources_found_field_contract_active }
+			has_state_flag = resources_found_contracts_settled_for_closure
+		}
+		NOT = { has_state_flag = resources_found_hunt_mission_active }
+	}
+}
+
+resources_found_decision_full_seal_completion_still_valid = {
+	resources_found_decision_has_selected_field = yes
+	var:resources_found_selected_field = {
+		has_state_flag = resources_found_full_seal_active
+		has_state_flag = resources_found_field_suspended
+		has_state_flag = resources_found_closure_access_mapped
+		has_state_flag = resources_found_full_seal_engineering_prepared
+		has_state_flag = resources_found_sealed_network
+		OR = {
+			has_state_flag = resources_found_field_population_secured
+			has_state_flag = resources_found_successful_evacuation
+			has_state_flag = resources_found_lower_workings_evacuated
+		}
+		OR = {
+			NOT = { has_state_flag = resources_found_field_contract_active }
+			has_state_flag = resources_found_contracts_settled_for_closure
+		}
+		is_owned_and_controlled_by = ROOT
+		resources_found_resource_ledger_is_exactly_reversible = yes
+	}
+}
+
+resources_found_decision_is_valid_foreign_partner = {
+	exists = yes
+	NOT = { tag = ROOT }
+	NOT = { tag = DHO }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { has_war_with = ROOT }
+	OR = {
+		is_neighbor_of = ROOT
+		is_in_faction_with = ROOT
+		has_war = yes
+		is_major = yes
+		num_of_factories > constant:resources_found_country_scale.small_factory_ceiling
+	}
+}
+
+resources_found_decision_selected_field_has_foreign_partner = {
+	resources_found_decision_has_selected_field = yes
+	var:resources_found_selected_field = {
+		OR = {
+			resources_found_has_valid_contract_partner = yes
+			AND = {
+				has_variable = resources_found_concession_partner
+				var:resources_found_concession_partner = { resources_found_decision_is_valid_foreign_partner = yes }
+			}
+		}
+	}
+}
+
+resources_found_decision_border_pair_is_current = {
+	has_variable = resources_found_border_owner_state
+	has_variable = resources_found_border_claimant_state
+	has_variable = resources_found_border_claimant_country
+	var:resources_found_border_claimant_country = {
+		exists = yes
+		NOT = { has_war_with = ROOT }
+		NOT = { is_special_chaos_country = yes }
+		NOT = { is_actual_nonhuman_country = yes }
+	}
+	var:resources_found_border_owner_state = {
+		is_owned_and_controlled_by = ROOT
+		impassable = no
+		NOT = { has_border_war = yes }
+		any_neighbor_state = {
+			state = var:ROOT.resources_found_border_claimant_state
+			is_owned_and_controlled_by = var:ROOT.resources_found_border_claimant_country
+		}
+	}
+	var:resources_found_border_claimant_state = {
+		is_owned_and_controlled_by = var:ROOT.resources_found_border_claimant_country
+		impassable = no
+		NOT = { has_border_war = yes }
+		any_neighbor_state = { state = var:ROOT.resources_found_border_owner_state }
+	}
+}
+
+resources_found_decision_border_pair_has_forces = {
+	resources_found_decision_border_pair_is_current = yes
+	divisions_in_border_state = {
+		state = var:resources_found_border_owner_state
+		border_state = var:resources_found_border_claimant_state
+		size > constant:resources_found_value.zero
+	}
+	var:resources_found_border_claimant_country = {
+		divisions_in_state = {
+			state = var:ROOT.resources_found_border_claimant_state
+			size > constant:resources_found_value.zero
+		}
+	}
+}
+
+# COUNTRY scope after the limited clash begins. Unlike the pre-war pair
+# trigger, both exact states must still belong to the stored sides and carry
+# the live border-war state.
+resources_found_decision_active_border_pair_is_current = {
+	has_variable = resources_found_border_owner_state
+	has_variable = resources_found_border_claimant_state
+	has_variable = resources_found_border_claimant_country
+	var:resources_found_border_claimant_country = {
+		exists = yes
+		NOT = { is_special_chaos_country = yes }
+		NOT = { is_actual_nonhuman_country = yes }
+	}
+	var:resources_found_border_owner_state = {
+		is_owned_and_controlled_by = ROOT
+		has_border_war = yes
+		any_neighbor_state = { state = var:ROOT.resources_found_border_claimant_state }
+	}
+	var:resources_found_border_claimant_state = {
+		is_owned_and_controlled_by = var:ROOT.resources_found_border_claimant_country
+		has_border_war = yes
+		any_neighbor_state = { state = var:ROOT.resources_found_border_owner_state }
+	}
+}
+
+# COUNTRY scope for the owner-side border-war callbacks. The claimant receives
+# duplicate engine callbacks but never owns these three country variables.
+resources_found_border_callback_is_owner_context = {
+	has_variable = resources_found_border_owner_state
+	has_variable = resources_found_border_claimant_state
+	has_variable = resources_found_border_claimant_country
+	var:resources_found_border_owner_state = { is_owned_by = ROOT }
+	var:resources_found_border_claimant_state = { is_owned_by = var:ROOT.resources_found_border_claimant_country }
+}
+
+resources_found_decision_can_start_field_border_war = {
+	resources_found_decision_border_pair_has_forces = yes
+	resources_found_decision_has_selected_field = yes
+	var:resources_found_selected_field = {
+		resources_found_border_military_stage_ready = yes
+		NOT = { has_state_flag = resources_found_border_war_active }
+	}
+}
+
+resources_found_decision_field_ready_for_claimant = {
+	resources_found_decision_has_selected_field = yes
+	var:resources_found_selected_field = {
+		check_variable = { var = resources_found_foreign_pressure value = constant:resources_found_threshold.coercive_pressure compare = greater_than_or_equals }
+		check_variable = { var = resources_found_total_added value = constant:resources_found_threshold.border_minimum_total compare = greater_than_or_equals }
+		check_variable = { var = resources_found_interested_country_count value = constant:resources_found_threshold.border_minimum_interested_countries compare = greater_than_or_equals }
+		NOT = { resources_found_commission_is_stable = yes }
+		NOT = { has_state_flag = resources_found_field_closing }
+	}
+}
+
+resources_found_decision_baseline_closure_prerequisites_met = {
+	resources_found_decision_containment_queue_available = yes
+	var:resources_found_selected_field = {
+		resources_found_can_begin_full_seal = yes
+		has_state_flag = resources_found_field_suspended
+		has_state_flag = resources_found_closure_access_mapped
+		has_state_flag = resources_found_full_seal_engineering_prepared
+		has_state_flag = resources_found_field_population_secured
+		OR = {
+			NOT = { has_state_flag = resources_found_field_contract_active }
+			has_state_flag = resources_found_contracts_settled_for_closure
+		}
+		NOT = { has_state_flag = resources_found_disturbance_revealed }
+		NOT = { has_state_flag = resources_found_public_breach }
+	}
+}
+
+resources_found_decision_commission_compliance_met = {
+	resources_found_decision_has_selected_field = yes
+	var:resources_found_selected_field = {
+		resources_found_commission_is_stable = yes
+		is_demilitarized_zone = yes
+		bunker < constant:resources_found_decision_gate.commission_forbidden_fort_threshold
+		coastal_bunker < constant:resources_found_decision_gate.commission_forbidden_fort_threshold
+		divisions_in_state = {
+			state = var:ROOT.resources_found_selected_field
+			size < constant:resources_found_decision_gate.commission_troop_limit_divisions
+		}
+	}
+}
+
+# COUNTRY scope. The observation mission follows the state locked at launch,
+# not whichever field the player later selects in the GUI.
+resources_found_decision_commission_observation_context_valid = {
+	has_variable = resources_found_commission_observation_field
+	var:resources_found_commission_observation_field = {
+		is_owned_and_controlled_by = ROOT
+		resources_found_commission_is_stable = yes
+		is_demilitarized_zone = yes
+		bunker < constant:resources_found_decision_gate.commission_forbidden_fort_threshold
+		coastal_bunker < constant:resources_found_decision_gate.commission_forbidden_fort_threshold
+		divisions_in_state = {
+			state = var:ROOT.resources_found_commission_observation_field
+			size < constant:resources_found_decision_gate.commission_troop_limit_divisions
+		}
+	}
+}
+
+# COUNTRY scope. A contract term is valid only while the exact field still
+# stores the same partner country that was locked when the term began.
+resources_found_decision_contract_mission_context_valid = {
+	is_subject = no
+	has_variable = resources_found_contract_mission_field
+	has_variable = resources_found_contract_mission_partner
+	var:resources_found_contract_mission_partner = { exists = yes NOT = { is_special_chaos_country = yes } NOT = { is_actual_nonhuman_country = yes } }
+	var:resources_found_contract_mission_field = {
+		is_owned_and_controlled_by = ROOT
+		resources_found_contract_is_active_and_valid = yes
+		has_variable = resources_found_contract_partner
+		check_variable = { var = resources_found_contract_partner value = ROOT.resources_found_contract_mission_partner compare = equals }
+	}
+}
+
+# COUNTRY scope. A negotiated-dispute clock is bound to one exact field,
+# claimant, owner, and settlement mode. Annexation, transfer, renewed coercion,
+# border war, occupation, suspension, closure, or commission collapse cancels
+# the qualification instead of allowing a later recovered state to unlock it.
+resources_found_decision_dispute_settlement_context_valid = {
+	is_subject = no
+	has_variable = resources_found_dispute_settlement_field
+	has_variable = resources_found_dispute_settlement_claimant
+	has_variable = resources_found_dispute_settlement_mode
+	var:resources_found_dispute_settlement_claimant = {
+		exists = yes
+		NOT = { is_special_chaos_country = yes }
+		NOT = { is_actual_nonhuman_country = yes }
+	}
+	var:resources_found_dispute_settlement_field = {
+		resources_found_is_active_field = yes
+		is_owned_and_controlled_by = ROOT
+		resources_found_dispute_has_required_history = yes
+		resources_found_border_is_at_settlement = yes
+		has_state_flag = resources_found_claimant_dispute_suspended_by_agreement
+		has_state_flag = resources_found_dispute_settlement_qualifying
+		NOT = { has_state_flag = resources_found_dispute_settlement_disqualified }
+		has_variable = resources_found_dispute_settlement_owner
+		has_variable = resources_found_dispute_settlement_claimant
+		has_variable = resources_found_dispute_settlement_mode
+		check_variable = { var = resources_found_dispute_settlement_owner value = ROOT compare = equals }
+		check_variable = { var = resources_found_border_claimant value = resources_found_dispute_settlement_claimant compare = equals }
+		check_variable = { var = resources_found_dispute_settlement_claimant value = ROOT.resources_found_dispute_settlement_claimant compare = equals }
+		check_variable = { var = resources_found_dispute_settlement_mode value = ROOT.resources_found_dispute_settlement_mode compare = equals }
+		NOT = { has_state_flag = resources_found_dispute_owner_changed }
+		NOT = { has_state_flag = resources_found_dispute_control_disrupted }
+		NOT = { has_state_flag = resources_found_public_breach }
+		NOT = { has_state_flag = resources_found_field_suspended }
+		NOT = { has_state_flag = resources_found_field_closing }
+		NOT = { has_state_flag = resources_found_field_control_disrupted }
+		OR = {
+			AND = {
+				check_variable = { resources_found_dispute_settlement_mode = constant:resources_found_settlement_mode.compensation }
+				has_state_flag = resources_found_compensation_settled
+			}
+			AND = {
+				check_variable = { resources_found_dispute_settlement_mode = constant:resources_found_settlement_mode.arbitration }
+				has_state_flag = resources_found_border_arbitration_settlement
+			}
+			AND = {
+				check_variable = { resources_found_dispute_settlement_mode = constant:resources_found_settlement_mode.commission }
+				resources_found_commission_is_stable = yes
+			}
+			AND = {
+				check_variable = { resources_found_dispute_settlement_mode = constant:resources_found_settlement_mode.demilitarization }
+				has_state_flag = resources_found_demilitarized_field
+				is_demilitarized_zone = yes
+			}
+		}
+	}
+}
+
+# COUNTRY scope. Partner-targeted trade projects cancel if their immutable
+# target disappears or ceases to be a valid counterpart before completion.
+resources_found_decision_active_trade_project_partner_valid = {
+	OR = {
+		AND = {
+			NOT = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.grant_foreign_concession } }
+			NOT = { check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.sign_export_contract } }
+		}
+		AND = {
+			OR = {
+				check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.grant_foreign_concession }
+				check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.sign_export_contract }
+			}
+			has_variable = resources_found_pending_project_partner
+			var:resources_found_pending_project_partner = { resources_found_decision_is_valid_foreign_partner = yes }
+		}
+	}
+}
+
+resources_found_decision_cave_queue_available = {
+	is_resources_found_cave_country = yes
+	has_country_flag = resources_found_cave_country
+	resources_found_decision_project_queue_available = yes
+	resources_found_decision_cost_preview_context_current = yes
+}
+
+resources_found_decision_anti_cave_queue_available = {
+	NOT = { is_resources_found_cave_country = yes }
+	OR = {
+		has_global_flag = world_threat_source_resources_found_caves
+		has_global_flag = resources_found_cave_defeated
+	}
+	resources_found_decision_project_queue_available = yes
+	resources_found_decision_cost_preview_context_current = yes
+}
+
+# COUNTRY scope while the shared cave project mission owns a targeted state.
+resources_found_decision_active_cave_project_uses_state_target = {
+	OR = {
+		check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.cave_activate_anchor }
+		check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.cave_accelerate_anchor }
+		check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.cave_guard_chamber }
+	}
+}
+
+resources_found_decision_active_cave_project_state_target_valid = {
+	has_variable = resources_found_active_response_state
+	OR = {
+		AND = {
+			check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.cave_activate_anchor }
+			var:resources_found_active_response_state = { resources_found_decision_state_is_anchor_candidate = yes }
+		}
+		AND = {
+			check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.cave_accelerate_anchor }
+			var:resources_found_active_response_state = { has_state_flag = resources_found_cave_anchor_activating is_controlled_by = ROOT }
+		}
+		AND = {
+			check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.cave_guard_chamber }
+			var:resources_found_active_response_state = { has_state_flag = resources_found_cave_anchor_active NOT = { has_state_flag = resources_found_cave_anchor_disrupted } is_controlled_by = ROOT NOT = { has_state_flag = resources_found_feeding_chamber_guarded } }
+		}
+	}
+}
+
+# COUNTRY scope while the shared anti-cave project mission owns a targeted
+# denial, recapture, cleanup, or restoration state.
+resources_found_decision_active_anti_cave_project_uses_state_target = {
+	OR = {
+		check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.anti_cave_resource_denial }
+		check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.anti_cave_recapture_preparation }
+		check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.anti_cave_anchor_cleanup }
+		check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.anti_cave_state_restoration }
+	}
+}
+
+resources_found_decision_active_anti_cave_project_state_target_valid = {
+	has_variable = resources_found_active_response_state
+	OR = {
+		AND = {
+			check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.anti_cave_resource_denial }
+			var:resources_found_active_response_state = { is_owned_and_controlled_by = ROOT resources_found_state_has_standard_resource_presence = yes NOT = { has_state_flag = resources_found_cave_denial_prepared } }
+		}
+		AND = {
+			check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.anti_cave_recapture_preparation }
+			var:resources_found_active_response_state = { resources_found_decision_state_is_activating_anchor = yes }
+		}
+		AND = {
+			check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.anti_cave_anchor_cleanup }
+			var:resources_found_active_response_state = { resources_found_decision_state_needs_anchor_cleanup = yes }
+		}
+		AND = {
+			check_variable = { resources_found_active_project_kind = constant:resources_found_decision_project.anti_cave_state_restoration }
+			var:resources_found_active_response_state = { resources_found_decision_state_needs_post_cave_restoration = yes }
+		}
+	}
+}
+
+resources_found_decision_active_anti_cave_aid_target_valid = {
+	has_variable = resources_found_pending_project_partner
+	var:resources_found_pending_project_partner = {
+		exists = yes
+		NOT = { is_resources_found_cave_country = yes }
+		has_war_with = DHO
+	}
+}
+
+resources_found_decision_state_is_anchor_candidate = {
+	is_controlled_by = DHO
+	resources_found_state_can_contribute_cave_capacity = yes
+	NOT = { has_state_flag = resources_found_cave_anchor_active }
+	NOT = { has_state_flag = resources_found_cave_anchor_activating }
+}
+
+resources_found_decision_state_is_activating_anchor = {
+	is_controlled_by = DHO
+	has_state_flag = resources_found_cave_anchor_activating
+	NOT = { resources_found_is_cave_origin_state = yes }
+}
+
+resources_found_decision_state_needs_anchor_cleanup = {
+	is_owned_and_controlled_by = ROOT
+	has_state_flag = resources_found_cave_cleanup_required
+	NOT = { is_controlled_by = DHO }
+}
+
+resources_found_decision_state_needs_post_cave_restoration = {
+	is_owned_and_controlled_by = ROOT
+	has_state_flag = resources_found_cave_cleanup_complete
+	NOT = { has_state_flag = resources_found_post_cave_restoration_complete }
+	has_dynamic_modifier = { modifier = resources_found_sealed_field_scar }
+}
+
+resources_found_decision_global_reconstruction_ready = {
+	has_global_flag = resources_found_cave_defeated
+	has_global_flag = resources_found_cave_global_defeat_eligible
+	has_country_flag = resources_found_achievement_global_defeat_contributor
+	check_variable = {
+		var = resources_found_anchor_cleanup_contribution
+		value = constant:resources_found_decision_gate.reconstruction_contribution_target
+		compare = greater_than_or_equals
+	}
+	NOT = { any_state = { has_state_flag = resources_found_cave_cleanup_required } }
+	NOT = { has_global_flag = world_threat_source_resources_found_caves }
+}
+
+# STATE scope. These eight selectors are intentionally independent of the
+# human-facing selected field. Each country-level clock locks its own state.
+resources_found_evolution_i_prefire_clock_candidate = {
+	resources_found_is_active_field = yes
+	is_owned_and_controlled_by = ROOT
+	resources_found_is_evolution_i_enabled = yes
+	NOT = { has_state_flag = resources_found_evolution_i_package_applied }
+}
+
+resources_found_evolution_i_active_clock_candidate = {
+	resources_found_is_active_field = yes
+	is_owned_and_controlled_by = ROOT
+	has_state_flag = resources_found_evolution_i_package_applied
+	NOT = { has_state_flag = resources_found_evolution_ii_package_applied }
+	NOT = { has_state_flag = resources_found_evolution_iii_prefire_opening }
+}
+
+resources_found_evolution_ii_prefire_clock_candidate = {
+	resources_found_is_active_field = yes
+	is_owned_and_controlled_by = ROOT
+	resources_found_is_evolution_ii_enabled = yes
+	NOT = { has_state_flag = resources_found_evolution_ii_prefire_opening }
+	NOT = { has_state_flag = resources_found_evolution_iii_prefire_opening }
+}
+
+resources_found_evolution_ii_active_clock_candidate = {
+	resources_found_is_active_field = yes
+	is_owned_and_controlled_by = ROOT
+	OR = {
+		has_state_flag = resources_found_evolution_ii_incident_pending
+		has_state_flag = resources_found_evolution_ii_incident_chain_active
+		has_state_flag = resources_found_evolution_ii_package_applied
+	}
+	NOT = { has_state_flag = resources_found_evolution_ii_incident_sequence_complete }
+	NOT = { has_state_flag = resources_found_full_seal_active }
+}
+
+resources_found_evolution_iii_prefire_clock_candidate = {
+	resources_found_is_active_field = yes
+	is_owned_and_controlled_by = ROOT
+	resources_found_is_evolution_iii_enabled = yes
+	NOT = { has_state_flag = resources_found_evolution_iii_prefire_opening }
+	NOT = { has_state_flag = resources_found_full_seal_active }
+}
+
+resources_found_evolution_iii_active_clock_candidate = {
+	resources_found_is_active_field = yes
+	is_owned_and_controlled_by = ROOT
+	has_state_flag = resources_found_evolution_iii_prefire_opening
+	has_state_flag = resources_found_evolution_ii_incident_sequence_complete
+	has_state_flag = resources_found_first_physical_evidence
+	has_state_flag = resources_found_underground_attack
+	has_state_flag = resources_found_evolution_ii_stabilized
+	NOT = { has_state_flag = resources_found_evolution_iii_surface_sequence_complete }
+	NOT = { has_state_flag = resources_found_full_seal_active }
+}
+
+resources_found_evolution_iv_prefire_clock_candidate = {
+	resources_found_is_active_field = yes
+	is_owned_and_controlled_by = ROOT
+	resources_found_is_evolution_iv_enabled = yes
+	has_state_flag = resources_found_evolution_iii_surface_sequence_complete
+	NOT = { has_state_flag = resources_found_final_closure_window }
+	NOT = { has_state_flag = resources_found_full_seal_active }
+	NOT = { resources_found_evolution_iv_is_permanently_blocked = yes }
+}
+
+resources_found_evolution_iv_active_clock_candidate = {
+	resources_found_is_active_field = yes
+	is_owned_and_controlled_by = ROOT
+	has_state_flag = resources_found_final_closure_window
+	resources_found_can_begin_evolution_iv = yes
+	has_variable = resources_found_final_breach_release_date
+	NOT = { has_state_flag = resources_found_full_seal_requirements_met }
+	NOT = { resources_found_evolution_iv_is_permanently_blocked = yes }
+}

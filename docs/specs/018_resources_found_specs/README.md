@@ -85,4 +85,6 @@ The root `manifest.md` records file sizes, word counts, and SHA-256 checksums.
 
 ## Formal review note
 
-The supplied custom subagent briefs were read and applied as review lenses throughout this package. This session did not expose a custom-subagent execution interface, so the mandatory independently spawned `chaosx_improvement_loop_planner` pass could not literally be run. A parent-performed depth and anti-bloat review is recorded in `research/improvement_loop_review.md`. Implementation must still run the actual planner with `fork_context=false` before claiming the event complete.
+The supplied custom subagent briefs were read and applied as review lenses throughout this package. `research/improvement_loop_review.md` preserves the parent-performed planning-stage review and its original execution limitation as historical context.
+
+The mandatory independent `chaosx_improvement_loop_planner` pass later completed against the implemented Event 018 package. Its [closure handoff](../../plans/018_resources_found_plans/improvement_loop_closure_handoff.md) closes RF-018-01 through RF-018-08, confirms that RF-018-01 through RF-018-05 were promoted where they changed accepted design, and requires no new depth addendum or further planner run. The accepted optional exclusions remain outside completion scope and do not block Event 018.

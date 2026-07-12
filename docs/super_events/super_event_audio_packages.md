@@ -336,3 +336,37 @@ This file records restored, sourced, and converted super-event audio assets used
 - License: public-domain traditional composition; CC BY-SA 2.0 performance.
 - Duration: 1:50 final excerpt.
 - Conversion notes: normalized and faded while retaining the source license metadata; registered at all six settings-aware levels in both playback modes.
+
+## Event 018 Resources Found
+
+The complete source, edit, hash, loudness, and rights ledger is `docs/assets/018_resources_found/audio_manifest.md`. All three cues are unique 60-to-120-second, 44.1 kHz stereo packages registered at all six settings-aware music and sound levels. Their stable durations are `115.000000 s`, `110.000000 s`, and `109.000000 s`.
+
+### The Oth-Kesh Host Rises
+
+- Super-event ID: `82`; audio ID: `54`.
+- Music file: `music/018_resources_found/super_event_54_oth_kesh_emergence.ogg`.
+- Sound-channel file: `sound/018_resources_found/super_event_54_oth_kesh_emergence.wav`.
+- Sound definition: `chaosx_super_event_resources_found_oth_kesh_emergence_track`.
+- Source: Modest Mussorgsky, *Pictures at an Exhibition* — `IV. Bydło`, performed by Skidmore College Orchestra; Musopen public-domain recording preserved with VRTS confirmation by Wikimedia Commons.
+- Rights: public-domain composition and recording; courtesy credit retained.
+- Edit: source `00:24.000–02:18.750` plus a `0.250 s` zero tail; `1.500 s` quarter-sine fade-in, `5.000 s` quarter-sine fade-out, fixed `-2.6 dB` gain, SoXr resample to 44.1 kHz, and OGG/WAV encoding by Chaos Redux. Final duration: `115.000000 s`.
+
+### The Deep War Crosses the Seas
+
+- Super-event ID: `83`; audio ID: `55`.
+- Music file: `music/018_resources_found/super_event_55_deep_war_crosses_seas.ogg`.
+- Sound-channel file: `sound/018_resources_found/super_event_55_deep_war_crosses_seas.wav`.
+- Sound definition: `chaosx_super_event_resources_found_deep_war_crosses_seas_track`.
+- Source: Johannes Brahms, Symphony No. 1 in C minor, Op. 68 — I. `Un poco sostenuto - Allegro`; performed by the Czech National Symphony Orchestra and published as the Musopen Symphony Orchestra recording.
+- Rights: public-domain composition and recording dedicated under [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/). CC0 supplies the worldwide copyright and neighbouring-rights waiver required for redistribution and adaptation.
+- Courtesy credit: Johannes Brahms, Symphony No. 1 in C minor, Op. 68 - I. `Un poco sostenuto - Allegro`; Czech National Symphony Orchestra / Musopen Symphony Orchestra; source via Wikimedia Commons; CC0 1.0. No endorsement is implied.
+- Edit: source `08:40.000–10:29.750` plus a `0.250 s` zero tail; `1.500 s` quarter-sine fade-in, `6.000 s` quarter-sine fade-out, SoXr resample to 44.1 kHz, and OGG/WAV encoding by Chaos Redux. No compression or limiting was applied. Final duration: `110.000000 s`.
+
+### The Last Depth Is Sealed
+
+- Super-event ID: `84`; audio ID: `56`.
+- Music file: `music/018_resources_found/super_event_56_last_depth_sealed.ogg`.
+- Sound-channel file: `sound/018_resources_found/super_event_56_last_depth_sealed.wav`.
+- Sound definition: `chaosx_super_event_resources_found_last_depth_sealed_track`.
+- Required credit: Frédéric Chopin, Prelude in E minor, Op. 28 No. 4; performed by Ivan Ilić, Paris, October 2005; source via Wikimedia Commons / IMSLP. Recording licensed [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/).
+- Edit: Chaos Redux excerpted `00:00.450–01:49.200`, applied a `1.250 s` quarter-sine fade-in, `5.000 s` quarter-sine fade-out, fixed `+6.5 dB` gain, and a `0.250 s` zero tail, then encoded OGG/WAV derivatives. Final duration: `109.000000 s`. No endorsement by Ivan Ilić is implied.

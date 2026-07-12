@@ -1,0 +1,155 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 018 ON ACTIONS
+# ============================================================================
+# Marker-gated field/anchor migration and the tag-specific DHO pulse. The pulse
+# advances only the cave country's queue and timers. It does not iterate every
+# country. State geography is rescanned on ownership/control changes and at
+# explicit milestone checks rather than through a global periodic loop.
+# ============================================================================
+
+on_actions = {
+	on_state_control_changed = {
+		effect = {
+			FROM.FROM = { save_event_target_as = resources_found_changed_state }
+			ROOT = { save_event_target_as = resources_found_new_controller }
+			FROM = { save_event_target_as = resources_found_old_controller }
+			if = {
+				limit = {
+					OR = {
+						FROM.FROM = {
+							OR = {
+								has_state_flag = resources_found_field_active
+								has_state_flag = resources_found_field_closed_permanently
+								has_state_flag = resources_found_cave_origin
+								has_state_flag = resources_found_cave_anchor_activating
+								has_state_flag = resources_found_cave_anchor_active
+							}
+						}
+						ROOT = { is_resources_found_cave_country = yes }
+						FROM = { is_resources_found_cave_country = yes }
+					}
+				}
+				FROM.FROM = { resources_found_handle_state_control_change = yes }
+			}
+		}
+	}
+
+	on_daily_DHO = {
+		effect = {
+			if = {
+				limit = { has_country_flag = resources_found_cave_country }
+				resources_found_cave_daily_pulse = yes
+			}
+		}
+	}
+
+	on_war_relation_added = {
+		effect = {
+			if = {
+				limit = {
+					is_resources_found_cave_country = yes
+					FROM = { NOT = { is_resources_found_cave_country = yes } }
+				}
+				FROM = { resources_found_register_ordinary_country_cave_war = yes }
+				resources_found_cave_refresh_ai_targets = yes
+			}
+			if = {
+				limit = {
+					NOT = { is_resources_found_cave_country = yes }
+					FROM = { is_resources_found_cave_country = yes }
+				}
+				resources_found_register_ordinary_country_cave_war = yes
+				FROM = { resources_found_cave_refresh_ai_targets = yes }
+			}
+		}
+	}
+
+	on_annex = {
+		effect = {
+			FROM = { save_event_target_as = resources_found_removed_actor }
+			every_state = {
+				limit = {
+					OR = {
+						resources_found_is_active_field = yes
+						has_state_flag = resources_found_field_suspended
+					}
+					OR = {
+						AND = { has_variable = resources_found_contract_partner check_variable = { var = resources_found_contract_partner value = event_target:resources_found_removed_actor compare = equals } }
+						AND = { has_variable = resources_found_concession_partner check_variable = { var = resources_found_concession_partner value = event_target:resources_found_removed_actor compare = equals } }
+						AND = { has_variable = resources_found_commission_sponsor check_variable = { var = resources_found_commission_sponsor value = event_target:resources_found_removed_actor compare = equals } }
+						AND = { has_variable = resources_found_border_claimant check_variable = { var = resources_found_border_claimant value = event_target:resources_found_removed_actor compare = equals } }
+					}
+				}
+				resources_found_handle_removed_foreign_actor = yes
+			}
+			if = {
+				limit = { FROM = { has_country_flag = resources_found_field_system_participant } }
+				FROM = { resources_found_cleanup_removed_field_owner = yes }
+			}
+			every_state = {
+				limit = {
+					has_state_flag = resources_found_field_closed_permanently
+					has_variable = resources_found_recorded_owner
+					check_variable = { var = resources_found_recorded_owner value = event_target:resources_found_removed_actor compare = equals }
+					OWNER = { exists = yes }
+				}
+				resources_found_refresh_closed_field_identity = yes
+			}
+			if = {
+				limit = { FROM = { is_resources_found_cave_country = yes } }
+				FROM = { resources_found_cave_finish_defeat_if_valid = yes }
+			}
+		}
+	}
+
+	# Peace conferences can change ownership without changing the already-held
+	# controller. This one-shot reconciliation keeps the bounded physical field
+	# record and contract review attached to the new owner.
+	on_peaceconference_ended = {
+		effect = {
+			every_state = {
+				limit = {
+					OR = {
+						resources_found_is_active_field = yes
+						has_state_flag = resources_found_field_suspended
+						has_state_flag = resources_found_field_closed_permanently
+					}
+					OWNER = { exists = yes }
+					has_variable = resources_found_recorded_owner
+					check_variable = { var = resources_found_recorded_owner value = OWNER compare = not_equals }
+				}
+				if = {
+					limit = { has_state_flag = resources_found_field_closed_permanently }
+					resources_found_refresh_closed_field_identity = yes
+				}
+				else = { resources_found_handle_field_ownership_transfer = yes }
+			}
+		}
+	}
+
+	on_capitulation = {
+		effect = {
+			FROM = { save_event_target_as = resources_found_capitulation_winner }
+			if = {
+				limit = {
+					NOT = { is_resources_found_cave_country = yes }
+					FROM = { is_resources_found_cave_country = yes }
+				}
+				resources_found_record_prepared_major_defeat = yes
+			}
+			if = {
+				limit = { is_resources_found_cave_country = yes }
+				resources_found_cave_on_capitulation = yes
+			}
+		}
+	}
+
+	on_puppet = {
+		effect = {
+			if = {
+				limit = { is_resources_found_cave_country = yes }
+				resources_found_cave_on_puppet = yes
+			}
+		}
+	}
+}

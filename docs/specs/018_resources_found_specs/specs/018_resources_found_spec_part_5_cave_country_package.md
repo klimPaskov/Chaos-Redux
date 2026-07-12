@@ -351,6 +351,8 @@ Activation can be slowed by:
 
 Activation can be accelerated by cave focuses and adjacent active anchors.
 
+The implemented denial contract is exact. A completed controlled demolition visibly damages local output, adds 30 days to every activation attempt while the preparation remains unconsumed, and stores a one-shot capacity penalty of three. The penalty is applied only when an activation finally succeeds, is clamped at zero, and is then consumed. Recapture before activation interrupts the timer without deleting the preparation, geological reserve, or any Event 018 resource ledger. Liberation cleanup removes the denial and anchor identities through the same restoration project.
+
 ### Automatic spawning
 
 Once capacity is active, divisions appear automatically at a paced rate until active cave formations equal total available capacity plus any protected origin allocation.

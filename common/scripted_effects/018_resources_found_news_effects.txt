@@ -1,0 +1,62 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 018 NEWS EFFECTS
+# ============================================================================
+# One-shot public reports for the six dedicated news images. Regional defeat
+# and global defeat remain mutually gated by the cave lifecycle.
+# ============================================================================
+
+@RESOURCES_FOUND_NEWS_DELAY_DAYS = 1
+
+resources_found_emit_global_field_news = {
+	if = {
+		limit = { NOT = { has_global_flag = resources_found_global_field_news_fired } }
+		set_global_flag = resources_found_global_field_news_fired
+		news_event = { id = chaosx.news.84 days = @RESOURCES_FOUND_NEWS_DELAY_DAYS }
+	}
+}
+
+resources_found_emit_border_crisis_news = {
+	if = {
+		limit = { NOT = { has_global_flag = resources_found_border_crisis_news_fired } }
+		set_global_flag = resources_found_border_crisis_news_fired
+		news_event = { id = chaosx.news.85 days = @RESOURCES_FOUND_NEWS_DELAY_DAYS }
+	}
+}
+
+resources_found_emit_public_attack_news = {
+	if = {
+		limit = { NOT = { has_global_flag = resources_found_public_attack_news_fired } }
+		set_global_flag = resources_found_public_attack_news_fired
+		news_event = { id = chaosx.news.86 days = @RESOURCES_FOUND_NEWS_DELAY_DAYS }
+	}
+}
+
+resources_found_emit_cave_emergence_news = {
+	if = {
+		limit = { NOT = { has_global_flag = resources_found_cave_emergence_news_fired } }
+		set_global_flag = resources_found_cave_emergence_news_fired
+		news_event = { id = chaosx.news.87 days = @RESOURCES_FOUND_NEWS_DELAY_DAYS }
+	}
+}
+
+resources_found_emit_regional_containment_news = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = resources_found_regional_containment_news_fired }
+			NOT = { has_global_flag = resources_found_cave_global_defeat_eligible }
+		}
+		set_global_flag = resources_found_regional_containment_news_fired
+		news_event = { id = chaosx.news.88 days = @RESOURCES_FOUND_NEWS_DELAY_DAYS }
+	}
+}
+
+resources_found_emit_global_defeat_news = {
+	if = {
+		limit = {
+			has_global_flag = resources_found_cave_global_defeat_eligible
+			NOT = { has_global_flag = resources_found_global_defeat_news_fired }
+		}
+		set_global_flag = resources_found_global_defeat_news_fired
+		news_event = { id = chaosx.news.89 days = @RESOURCES_FOUND_NEWS_DELAY_DAYS }
+	}
+}
