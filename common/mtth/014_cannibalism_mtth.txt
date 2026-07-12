@@ -68,6 +68,62 @@ cannibalism_evolution_i_days = {
 	}
 }
 
+# ---------------------------------------------------------------------------
+# Targeted-decision country weights
+# ---------------------------------------------------------------------------
+# Evaluated in targeted-decision actor scope: ROOT/default is the actor and
+# FROM is the candidate country. The predicates mirror the country scorers.
+
+cannibalism_unified_target_decision_weight = {
+	base = constant:cannibalism_target_score.base
+	modifier = { factor = constant:cannibalism_target_score.invalid NOT = { cannibalism_unified_scored_target_is_valid_from_decision = yes } }
+	modifier = { add = constant:cannibalism_target_score.very_high_population_add FROM = { cannibalism_target_has_very_high_population_center = yes } }
+	modifier = { add = constant:cannibalism_target_score.high_population_add FROM = { cannibalism_target_has_high_population_center = yes } }
+	modifier = { add = constant:cannibalism_target_score.weak_supply_add FROM = { cannibalism_target_has_weak_supply = yes } }
+	modifier = { add = constant:cannibalism_target_score.existing_cell_add FROM = { cannibalism_target_has_existing_cells = yes } }
+	modifier = { add = constant:cannibalism_target_score.prison_route_add FROM = { cannibalism_target_has_prison_route = yes } }
+	modifier = { add = constant:cannibalism_target_score.port_route_add FROM = { cannibalism_target_has_port_route = yes } }
+	modifier = { add = constant:cannibalism_target_score.low_stability_add FROM = { cannibalism_target_has_low_stability = yes } }
+	modifier = { add = constant:cannibalism_target_score.rail_or_naval_route_add FROM = { cannibalism_target_has_rail_or_naval_route = yes } }
+	modifier = { add = constant:cannibalism_target_score.coalition_leader_add FROM = { cannibalism_target_is_coalition_leader = yes } }
+	modifier = { add = constant:cannibalism_target_score.current_enemy_add cannibalism_scored_target_is_current_enemy_from_decision = yes }
+	modifier = { add = constant:cannibalism_target_score.adjacency_add cannibalism_scored_target_is_adjacent_to_actor_from_decision = yes }
+	modifier = { factor = constant:cannibalism_target_score.partial_contamination_factor FROM = { cannibalism_target_has_partial_contamination = yes } }
+	modifier = { factor = constant:cannibalism_target_score.distant_reachable_factor cannibalism_scored_target_has_only_distant_route_from_decision = yes }
+	modifier = { factor = constant:cannibalism_target_score.overextension_factor cannibalism_scoring_actor_is_overextended = yes }
+}
+
+cannibalism_wendigo_target_decision_weight = {
+	base = constant:cannibalism_target_score.base
+	modifier = { factor = constant:cannibalism_target_score.invalid NOT = { cannibalism_wendigo_scored_target_is_valid_from_decision = yes } }
+	modifier = { add = constant:cannibalism_target_score.very_high_population_add FROM = { cannibalism_target_has_very_high_population_center = yes } }
+	modifier = { add = constant:cannibalism_target_score.high_population_add FROM = { cannibalism_target_has_high_population_center = yes } }
+	modifier = { add = constant:cannibalism_target_score.weak_supply_add FROM = { cannibalism_target_has_weak_supply = yes } }
+	modifier = { add = constant:cannibalism_target_score.existing_cell_add FROM = { cannibalism_target_has_existing_cells = yes } }
+	modifier = { add = constant:cannibalism_target_score.prison_route_add FROM = { cannibalism_target_has_prison_route = yes } }
+	modifier = { add = constant:cannibalism_target_score.port_route_add FROM = { cannibalism_target_has_port_route = yes } }
+	modifier = { add = constant:cannibalism_target_score.low_stability_add FROM = { cannibalism_target_has_low_stability = yes } }
+	modifier = { add = constant:cannibalism_target_score.rail_or_naval_route_add FROM = { cannibalism_target_has_rail_or_naval_route = yes } }
+	modifier = { add = constant:cannibalism_target_score.coalition_leader_add FROM = { cannibalism_target_is_coalition_leader = yes } }
+	modifier = { add = constant:cannibalism_target_score.current_enemy_add cannibalism_scored_target_is_current_enemy_from_decision = yes }
+	modifier = { add = constant:cannibalism_target_score.adjacency_add cannibalism_scored_target_is_adjacent_to_actor_from_decision = yes }
+	modifier = { add = constant:cannibalism_target_score.cold_front_add NOT = { has_country_flag = cannibalism_wendigo_transformation_locked } FROM = { cannibalism_target_has_cold_front = yes } }
+	modifier = {
+		add = constant:cannibalism_target_score.postlock_population_add
+		has_country_flag = cannibalism_wendigo_transformation_locked
+		FROM = {
+			OR = {
+				cannibalism_target_has_high_population_center = yes
+				cannibalism_target_has_very_high_population_center = yes
+			}
+		}
+	}
+	modifier = { add = constant:cannibalism_target_score.postlock_capital_add has_country_flag = cannibalism_wendigo_transformation_locked FROM = { cannibalism_target_is_coalition_leader = yes } }
+	modifier = { factor = constant:cannibalism_target_score.partial_contamination_factor FROM = { cannibalism_target_has_partial_contamination = yes } }
+	modifier = { factor = constant:cannibalism_target_score.distant_reachable_factor cannibalism_scored_target_has_only_distant_route_from_decision = yes }
+	modifier = { factor = constant:cannibalism_target_score.overextension_factor cannibalism_scoring_actor_is_overextended = yes }
+}
+
 cannibalism_evolution_ii_days = {
 	base = constant:cannibalism_evolution_mtth.base_days
 

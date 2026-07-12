@@ -468,8 +468,12 @@ country_event = {
 			modifier = { factor = constant:cannibalism_unification_ai.aligned_factor check_variable = { cannibalism_network_alignment > constant:cannibalism_unification.submission_alignment_threshold } }
 			modifier = { factor = constant:cannibalism_unification_ai.network_route_factor has_country_flag = cannibalism_network_route_alignment }
 			modifier = { factor = constant:cannibalism_unification_ai.aligned_factor has_country_flag = cannibalism_warlord_submission_preparation_open }
+			modifier = { factor = constant:cannibalism_unification_ai.aligned_factor has_country_flag = cannibalism_network_submission_prepared }
 		}
-		hidden_effect = { cannibalism_submit_current_warlord_and_retain_command = yes }
+		hidden_effect = {
+			cannibalism_clear_network_preparation_flags = yes
+			cannibalism_submit_current_warlord_and_retain_command = yes
+		}
 		custom_effect_tooltip = cannibalism_submit_retain_command_effect_tt
 	}
 
@@ -481,7 +485,10 @@ country_event = {
 			modifier = { factor = constant:cannibalism_unification_ai.weak_resistance_factor num_divisions > constant:cannibalism_unification.strong_warlord_divisions }
 			modifier = { factor = constant:cannibalism_unification_ai.aligned_factor check_variable = { cannibalism_larder < constant:cannibalism_consumption.larder_low } }
 		}
-		hidden_effect = { cannibalism_submit_current_warlord_and_surrender_warband = yes }
+		hidden_effect = {
+			cannibalism_clear_network_preparation_flags = yes
+			cannibalism_submit_current_warlord_and_surrender_warband = yes
+		}
 		custom_effect_tooltip = cannibalism_submit_surrender_warband_effect_tt
 	}
 
@@ -494,7 +501,10 @@ country_event = {
 			modifier = { factor = constant:cannibalism_unification_ai.confederate_factor has_country_flag = cannibalism_warlord_manipulation_endgame_open }
 			modifier = { factor = constant:cannibalism_unification_ai.confederate_factor has_country_flag = cannibalism_warlord_convergence_leverage_open }
 		}
-		hidden_effect = { cannibalism_bargain_current_warlord_autonomy = yes }
+		hidden_effect = {
+			cannibalism_clear_network_preparation_flags = yes
+			cannibalism_bargain_current_warlord_autonomy = yes
+		}
 		custom_effect_tooltip = cannibalism_bargain_autonomy_effect_tt
 	}
 
@@ -508,8 +518,12 @@ country_event = {
 			modifier = { factor = constant:cannibalism_unification_ai.defiance_factor has_country_flag = cannibalism_warlord_defiance_endgame_open }
 			modifier = { factor = constant:cannibalism_unification_ai.strong_resistance_factor num_divisions > constant:cannibalism_unification.strong_warlord_divisions }
 			modifier = { factor = constant:cannibalism_unification_ai.strong_resistance_factor check_variable = { cannibalism_network_alignment < constant:cannibalism_unification.resistance_alignment_threshold } }
+			modifier = { factor = constant:cannibalism_unification_ai.defiance_factor has_country_flag = cannibalism_network_resistance_prepared }
 		}
-		hidden_effect = { cannibalism_resist_unified_host = yes }
+		hidden_effect = {
+			cannibalism_clear_network_preparation_flags = yes
+			cannibalism_resist_unified_host = yes
+		}
 		custom_effect_tooltip = cannibalism_resist_unification_effect_tt
 	}
 
@@ -521,7 +535,10 @@ country_event = {
 			modifier = { factor = constant:cannibalism_unification_ai.tyrant_challenge_factor has_country_flag = cannibalism_hierarchy_personal_tyranny }
 			modifier = { factor = constant:cannibalism_unification_ai.strong_resistance_factor has_country_flag = cannibalism_network_route_defiance }
 		}
-		hidden_effect = { cannibalism_challenge_unified_host = yes }
+		hidden_effect = {
+			cannibalism_clear_network_preparation_flags = yes
+			cannibalism_challenge_unified_host = yes
+		}
 		custom_effect_tooltip = cannibalism_challenge_unification_effect_tt
 	}
 }

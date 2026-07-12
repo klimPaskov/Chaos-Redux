@@ -1,0 +1,408 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 014 TARGET-SCORING TRIGGERS
+# ============================================================================
+# Shared hard eligibility and additive/multiplicative score factors for the
+# unified and Wendigo country scorers. Scorer target triggers run in actor
+# ROOT/default scope with the candidate in FROM, matching targeted decisions.
+# Scorer score blocks run in candidate THIS/default scope with the actor in
+# FROM. The two contracts use explicitly named wrappers below.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Candidate-only eligibility and factors
+# ---------------------------------------------------------------------------
+
+cannibalism_target_country_has_usable_population = {
+	any_controlled_state = {
+		impassable = no
+		NOT = { cannibalism_state_is_unusable_larder = yes }
+		check_variable = {
+			var = state_population_k
+			value = constant:cannibalism_state_threshold.minimum_consumable_population_k
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+cannibalism_target_country_is_ordinary_human_target = {
+	exists = yes
+	NOT = { has_capitulated = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { is_cannibalism_country = yes }
+	cannibalism_target_country_has_usable_population = yes
+}
+
+cannibalism_target_has_high_population_center = {
+	any_controlled_state = {
+		impassable = no
+		NOT = { cannibalism_state_is_unusable_larder = yes }
+		check_variable = {
+			var = state_population_k
+			value = constant:cannibalism_target_score.high_population_state_k
+			compare = greater_than_or_equals
+		}
+	}
+	NOT = { cannibalism_target_has_very_high_population_center = yes }
+}
+
+cannibalism_target_has_very_high_population_center = {
+	any_controlled_state = {
+		impassable = no
+		NOT = { cannibalism_state_is_unusable_larder = yes }
+		check_variable = {
+			var = state_population_k
+			value = constant:cannibalism_target_score.very_high_population_state_k
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+cannibalism_target_has_weak_supply = {
+	any_controlled_state = {
+		impassable = no
+		NOT = { cannibalism_state_is_unusable_larder = yes }
+		OR = {
+			infrastructure < constant:cannibalism_state_threshold.low_infrastructure
+			NOT = { supply_node > 0 }
+		}
+	}
+}
+
+cannibalism_target_has_existing_cells = {
+	any_controlled_state = {
+		impassable = no
+		NOT = { cannibalism_state_is_unusable_larder = yes }
+		cannibalism_state_has_active_cell = yes
+	}
+}
+
+cannibalism_target_has_prison_route = {
+	any_controlled_state = {
+		impassable = no
+		NOT = { cannibalism_state_is_unusable_larder = yes }
+		cannibalism_state_has_prison_or_camp = yes
+	}
+}
+
+cannibalism_target_has_port_route = {
+	any_controlled_state = {
+		impassable = no
+		NOT = { cannibalism_state_is_unusable_larder = yes }
+		naval_base > 0
+	}
+}
+
+cannibalism_target_has_low_stability = {
+	has_stability < constant:cannibalism_target_score.low_stability_threshold
+}
+
+cannibalism_target_has_rail_or_naval_route = {
+	OR = {
+		cannibalism_target_has_port_route = yes
+		any_controlled_state = {
+			impassable = no
+			NOT = { cannibalism_state_is_unusable_larder = yes }
+			rail_way > 0
+		}
+	}
+}
+
+cannibalism_target_is_coalition_leader = {
+	OR = {
+		is_faction_leader = yes
+		is_in_array = { global.cannibalism_defeat_contributors = THIS }
+		has_country_flag = cannibalism_unified_coalition_command_country
+	}
+}
+
+cannibalism_target_has_cold_front = {
+	OR = {
+		check_variable = {
+			var = num_units_on_climate@cold_climate
+			value = 0
+			compare = greater_than
+		}
+		any_controlled_state = {
+			has_dynamic_modifier = { modifier = natural_disaster_winter_temperature_disruption }
+		}
+	}
+}
+
+cannibalism_target_is_postlock_population_or_capital_priority = {
+	OR = {
+		cannibalism_target_has_high_population_center = yes
+		cannibalism_target_has_very_high_population_center = yes
+		cannibalism_target_is_coalition_leader = yes
+	}
+}
+
+cannibalism_target_has_partial_contamination = {
+	cannibalism_target_country_has_usable_population = yes
+	any_controlled_state = {
+		OR = {
+			cannibalism_state_has_bioweapon_contamination = yes
+			cannibalism_state_has_chemical_contamination = yes
+			has_dynamic_modifier = { modifier = nuclear_fallout_state }
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Relationship predicates: candidate scope, scorer FROM actor
+# ---------------------------------------------------------------------------
+
+cannibalism_scored_target_is_current_enemy = {
+	has_war_with = FROM
+}
+
+cannibalism_scored_target_is_adjacent_to_actor = {
+	is_neighbor_of = FROM
+}
+
+cannibalism_scored_target_has_only_distant_route = {
+	NOT = { cannibalism_scored_target_is_current_enemy = yes }
+	NOT = { cannibalism_scored_target_is_adjacent_to_actor = yes }
+	NOT = { cannibalism_target_has_existing_cells = yes }
+	cannibalism_target_has_rail_or_naval_route = yes
+}
+
+# ---------------------------------------------------------------------------
+# Actor-only logistics predicates
+# ---------------------------------------------------------------------------
+
+cannibalism_scoring_actor_has_mature_distant_logistics = {
+	OR = {
+		AND = {
+			check_variable = {
+				var = global.cannibalism_network_reach
+				value = constant:cannibalism_target_score.mature_network_reach
+				compare = greater_than_or_equals
+			}
+			OR = {
+				has_country_flag = cannibalism_unified_global_naval_corridors_open
+				has_country_flag = cannibalism_unified_origin_island_knowledge
+				has_country_flag = cannibalism_unified_origin_march_knowledge
+				has_country_flag = cannibalism_wendigo_winter_network_active
+			}
+		}
+		has_country_flag = cannibalism_wendigo_transformation_locked
+	}
+}
+
+cannibalism_scoring_actor_is_overextended = {
+	check_variable = {
+		var = enemies^num
+		value = constant:cannibalism_target_score.overextension_enemy_count
+		compare = greater_than_or_equals
+	}
+	NOT = { cannibalism_scoring_actor_has_mature_distant_logistics = yes }
+}
+
+# ---------------------------------------------------------------------------
+# Candidate-scope reach and hard validity: candidate default, FROM actor
+# ---------------------------------------------------------------------------
+
+cannibalism_target_country_has_physical_route_from_actor = {
+	OR = {
+		has_war_with = FROM
+		is_neighbor_of = FROM
+		cannibalism_target_has_existing_cells = yes
+		AND = {
+			FROM = {
+				OR = {
+					has_country_flag = cannibalism_unified_global_naval_corridors_open
+					has_country_flag = cannibalism_unified_origin_island_knowledge
+					has_country_flag = cannibalism_wendigo_winter_network_active
+				}
+				any_controlled_state = {
+					impassable = no
+					NOT = { cannibalism_state_is_unusable_larder = yes }
+					naval_base > 0
+				}
+			}
+			cannibalism_target_has_port_route = yes
+		}
+		AND = {
+			FROM = {
+				OR = {
+					has_country_flag = cannibalism_unified_origin_march_knowledge
+					has_country_flag = cannibalism_unified_corridor_target_pool_open
+					has_country_flag = cannibalism_wendigo_frozen_corridor_open
+					has_country_flag = cannibalism_wendigo_winter_network_active
+				}
+				any_controlled_state = {
+					impassable = no
+					NOT = { cannibalism_state_is_unusable_larder = yes }
+					rail_way > 0
+				}
+			}
+			any_controlled_state = {
+				impassable = no
+				NOT = { cannibalism_state_is_unusable_larder = yes }
+				rail_way > 0
+			}
+		}
+		FROM = { has_country_flag = cannibalism_wendigo_transformation_locked }
+	}
+}
+
+cannibalism_scored_target_passes_shared_hard_gates = {
+	exists = yes
+	NOT = { tag = FROM }
+	cannibalism_target_country_is_ordinary_human_target = yes
+	NOT = { is_ally_with = FROM }
+	NOT = { is_in_faction_with = FROM }
+	NOT = { is_subject_of = FROM }
+	NOT = { has_country_flag = cannibalism_unified_cell_disruption_target }
+	NOT = { has_country_flag = cannibalism_unified_campaign_targeted }
+	NOT = { has_country_flag = cannibalism_unified_counterwar_disruption_target }
+	NOT = { has_country_flag = cannibalism_unified_enemy_front_collapsing }
+	OR = {
+		NOT = { has_country_flag = cannibalism_wendigo_terminal_hunt_target_lock }
+		AND = {
+			tag = event_target:cannibalism_wendigo_terminal_hunt_target
+			FROM = {
+				has_country_flag = cannibalism_wendigo_terminal_hunt_active
+				has_event_target = cannibalism_wendigo_terminal_hunt_target
+			}
+		}
+	}
+	NOT = { has_country_flag = cannibalism_wendigo_inherited_cell_target_lock }
+	cannibalism_target_country_has_physical_route_from_actor = yes
+	OR = {
+		FROM = { NOT = { has_country_flag = cannibalism_wendigo_terminal_hunt_active } }
+		AND = {
+			tag = event_target:cannibalism_wendigo_terminal_hunt_target
+			FROM = { has_event_target = cannibalism_wendigo_terminal_hunt_target }
+		}
+	}
+}
+
+cannibalism_unified_scored_target_is_valid = {
+	FROM = { is_cannibalism_unified_country = yes }
+	cannibalism_scored_target_passes_shared_hard_gates = yes
+}
+
+cannibalism_wendigo_scored_target_is_valid = {
+	FROM = { is_cannibalism_wendigo_hannibal_country = yes }
+	cannibalism_scored_target_passes_shared_hard_gates = yes
+}
+
+# ---------------------------------------------------------------------------
+# Actor-root hard-validity wrappers: actor ROOT, candidate FROM
+# ---------------------------------------------------------------------------
+
+cannibalism_target_country_has_physical_route_from_actor_decision = {
+	OR = {
+		FROM = { has_war_with = ROOT }
+		FROM = { is_neighbor_of = ROOT }
+		FROM = { cannibalism_target_has_existing_cells = yes }
+		AND = {
+			OR = {
+				has_country_flag = cannibalism_unified_global_naval_corridors_open
+				has_country_flag = cannibalism_unified_origin_island_knowledge
+				has_country_flag = cannibalism_wendigo_winter_network_active
+			}
+			any_controlled_state = {
+				impassable = no
+				NOT = { cannibalism_state_is_unusable_larder = yes }
+				naval_base > 0
+			}
+			FROM = { cannibalism_target_has_port_route = yes }
+		}
+		AND = {
+			OR = {
+				has_country_flag = cannibalism_unified_origin_march_knowledge
+				has_country_flag = cannibalism_unified_corridor_target_pool_open
+				has_country_flag = cannibalism_wendigo_frozen_corridor_open
+				has_country_flag = cannibalism_wendigo_winter_network_active
+			}
+			any_controlled_state = {
+				impassable = no
+				NOT = { cannibalism_state_is_unusable_larder = yes }
+				rail_way > 0
+			}
+			FROM = {
+				any_controlled_state = {
+					impassable = no
+					NOT = { cannibalism_state_is_unusable_larder = yes }
+					rail_way > 0
+				}
+			}
+		}
+		has_country_flag = cannibalism_wendigo_transformation_locked
+	}
+}
+
+cannibalism_scored_target_passes_shared_hard_gates_from_decision = {
+	exists = yes
+	NOT = { tag = FROM }
+	FROM = {
+		cannibalism_target_country_is_ordinary_human_target = yes
+		NOT = { is_ally_with = ROOT }
+		NOT = { is_in_faction_with = ROOT }
+		NOT = { is_subject_of = ROOT }
+		NOT = { has_country_flag = cannibalism_unified_cell_disruption_target }
+		NOT = { has_country_flag = cannibalism_unified_campaign_targeted }
+		NOT = { has_country_flag = cannibalism_unified_counterwar_disruption_target }
+		NOT = { has_country_flag = cannibalism_unified_enemy_front_collapsing }
+		OR = {
+			NOT = { has_country_flag = cannibalism_wendigo_terminal_hunt_target_lock }
+			AND = {
+				ROOT = { has_country_flag = cannibalism_wendigo_terminal_hunt_active }
+				ROOT = { has_event_target = cannibalism_wendigo_terminal_hunt_target }
+				tag = event_target:cannibalism_wendigo_terminal_hunt_target
+			}
+		}
+		NOT = { has_country_flag = cannibalism_wendigo_inherited_cell_target_lock }
+	}
+	cannibalism_target_country_has_physical_route_from_actor_decision = yes
+	OR = {
+		NOT = { has_country_flag = cannibalism_wendigo_terminal_hunt_active }
+		AND = {
+			has_event_target = cannibalism_wendigo_terminal_hunt_target
+			FROM = { tag = event_target:cannibalism_wendigo_terminal_hunt_target }
+		}
+	}
+}
+
+cannibalism_unified_scored_target_is_valid_from_decision = {
+	is_cannibalism_unified_country = yes
+	cannibalism_scored_target_passes_shared_hard_gates_from_decision = yes
+}
+
+cannibalism_wendigo_scored_target_is_valid_from_decision = {
+	is_cannibalism_wendigo_hannibal_country = yes
+	cannibalism_scored_target_passes_shared_hard_gates_from_decision = yes
+}
+
+# Scorer target_trigger uses the same ROOT/FROM relationship as a targeted
+# decision. These aliases make that engine contract explicit at the call site.
+cannibalism_unified_scorer_target_is_valid = {
+	cannibalism_unified_scored_target_is_valid_from_decision = yes
+}
+
+cannibalism_wendigo_scorer_target_is_valid = {
+	cannibalism_wendigo_scored_target_is_valid_from_decision = yes
+}
+
+# ---------------------------------------------------------------------------
+# Targeted-decision relationship wrappers: actor ROOT, candidate FROM
+# ---------------------------------------------------------------------------
+
+cannibalism_scored_target_is_current_enemy_from_decision = {
+	FROM = { has_war_with = ROOT }
+}
+
+cannibalism_scored_target_is_adjacent_to_actor_from_decision = {
+	FROM = { is_neighbor_of = ROOT }
+}
+
+cannibalism_scored_target_has_only_distant_route_from_decision = {
+	NOT = { cannibalism_scored_target_is_current_enemy_from_decision = yes }
+	NOT = { cannibalism_scored_target_is_adjacent_to_actor_from_decision = yes }
+	FROM = {
+		NOT = { cannibalism_target_has_existing_cells = yes }
+		cannibalism_target_has_rail_or_naval_route = yes
+	}
+}

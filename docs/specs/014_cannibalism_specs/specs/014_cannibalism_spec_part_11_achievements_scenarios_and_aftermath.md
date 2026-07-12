@@ -392,7 +392,7 @@ Icon direction:
 
 ### Registry direction
 
-Proposed next stable catalog ID: `SCN-008`, subject to final registry inspection.
+Stable catalog ID: `SCN-010`.
 
 Working public direction:
 
@@ -519,6 +519,25 @@ Setup responsibilities:
 - open relevant decisions and focus trees
 - record scenario history according to shared scenario rules
 - clear bypass flags
+
+## Implemented staged achievement tracker
+
+All 18 real achievements remain in the root Chaos Redux achievement registry. Achievements 01 through 05 are visible there from the baseline. Achievements 06 through 18 remain statically hidden in the Career Profile because the achievement schema provides only a static hidden field.
+
+A dedicated read-only decision category supplies the required campaign-stage discovery surface. It contains 18 permanently unavailable entries, uses the real completed achievement icons, and calls the exact real achievement completion trigger for each status. The tracker has no cost, effect, cooldown, completion hook, disqualifier, or AI behavior and cannot grant an achievement.
+
+Tracker discovery stages are:
+
+- 01 through 05 at Event 014 system start
+- 06 at first exploitation
+- 07 at first successful Island Host formation
+- 18 at Evolution II
+- 12 at convergence
+- 08 through 11, 13, and 15 after public reveal
+- 14 and 16 after the Wendigo merge
+- 17 when global-defeat aftermath becomes eligible.
+
+The category has its own generated 32x32 icon and 114x101 panel. The 18 entries intentionally use the matching real achievement icons because they are the same objectives.
 
 ## Defeat aftermath detail
 

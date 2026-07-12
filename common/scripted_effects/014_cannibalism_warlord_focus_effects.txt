@@ -1,9 +1,5 @@
 @cannibalism_warlord_focus_map_level = 1
 @cannibalism_warlord_focus_shared_slot = 1
-@cannibalism_warlord_focus_yield_baseline = 1.00
-@cannibalism_warlord_focus_yield_rapid = 1.25
-@cannibalism_warlord_focus_yield_managed = 0.75
-@cannibalism_warlord_focus_yield_mobile = 1.00
 
 # ============================================================================
 # CHAOS REDUX - EVENT 014 LOCAL WARLORD FOCUS EFFECTS
@@ -116,8 +112,8 @@ cannibalism_warlord_focus_reset_contracts = {
 	set_variable = { cannibalism_hierarchy = constant:cannibalism_hierarchy.undecided }
 	set_variable = { cannibalism_larder_route = constant:cannibalism_larder_route.undecided }
 	set_variable = { cannibalism_network_route = constant:cannibalism_network_route.undecided }
-	set_variable = { cannibalism_warlord_consumption_yield_factor = @cannibalism_warlord_focus_yield_baseline }
-	set_variable = { cannibalism_warlord_mobile_larder_yield_factor = @cannibalism_warlord_focus_yield_baseline }
+	set_variable = { cannibalism_warlord_consumption_yield_factor = constant:cannibalism_warlord_contract.consumption_yield_baseline }
+	set_variable = { cannibalism_warlord_mobile_larder_yield_factor = constant:cannibalism_warlord_contract.consumption_yield_baseline }
 	clear_array = cannibalism_warlord_harvested_countries
 	set_variable = { cannibalism_warlord_major_victory_count = 0 }
 	cannibalism_warlord_clear_operating_order = yes
@@ -457,14 +453,14 @@ cannibalism_warlord_focus_organize_battlefield_recovery = {
 
 cannibalism_warlord_focus_establish_larder_accounting = {
 	set_country_flag = cannibalism_warlord_larder_accounting_open
-	set_variable = { cannibalism_warlord_consumption_yield_factor = @cannibalism_warlord_focus_yield_baseline }
+	set_variable = { cannibalism_warlord_consumption_yield_factor = constant:cannibalism_warlord_contract.consumption_yield_baseline }
 }
 
 cannibalism_warlord_focus_rapid_consumption = {
 	set_country_flag = cannibalism_larder_rapid_consumption
 	set_variable = { cannibalism_larder_route = constant:cannibalism_larder_route.rapid_consumption }
 	set_country_flag = cannibalism_warlord_rapid_consumption_open
-	set_variable = { cannibalism_warlord_consumption_yield_factor = @cannibalism_warlord_focus_yield_rapid }
+	set_variable = { cannibalism_warlord_consumption_yield_factor = constant:cannibalism_warlord_contract.consumption_yield_rapid }
 	add_to_variable = { cannibalism_frenzy = constant:cannibalism_warlord_decision.frenzy_gain }
 	cannibalism_warlord_focus_refresh_meters = yes
 }
@@ -479,7 +475,7 @@ cannibalism_warlord_focus_managed_herds = {
 	set_country_flag = cannibalism_larder_managed_herds
 	set_variable = { cannibalism_larder_route = constant:cannibalism_larder_route.managed_herds }
 	set_country_flag = cannibalism_warlord_managed_herd_actions_open
-	set_variable = { cannibalism_warlord_consumption_yield_factor = @cannibalism_warlord_focus_yield_managed }
+	set_variable = { cannibalism_warlord_consumption_yield_factor = constant:cannibalism_warlord_contract.consumption_yield_managed }
 	add_to_variable = { cannibalism_frenzy = constant:cannibalism_warlord_decision.frenzy_relief }
 	cannibalism_warlord_focus_refresh_meters = yes
 }
@@ -495,7 +491,7 @@ cannibalism_warlord_focus_mobile_larder = {
 	set_variable = { cannibalism_larder_route = constant:cannibalism_larder_route.mobile_larder }
 	set_country_flag = cannibalism_warlord_mobile_larder_open
 	set_country_flag = cannibalism_warlord_mobile_larder_escort_open
-	set_variable = { cannibalism_warlord_mobile_larder_yield_factor = @cannibalism_warlord_focus_yield_mobile }
+	set_variable = { cannibalism_warlord_mobile_larder_yield_factor = constant:cannibalism_warlord_contract.consumption_yield_mobile }
 }
 
 cannibalism_warlord_focus_moving_larder = {

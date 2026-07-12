@@ -6,6 +6,8 @@
 # array at click time, avoiding unrestricted state-target enumeration.
 # ============================================================================
 
+@CANNIBALISM_WENDIGO_TERMINAL_HUNT_MISSION_DAYS = 120
+
 cannibalism_wendigo_command_category = {
 	cannibalism_designate_transformation_anchor = {
 		icon = GFX_decision_cannibalism_designate_transformation_anchor
@@ -104,8 +106,11 @@ cannibalism_wendigo_command_category = {
 			}
 		}
 		ai_will_do = {
-			base = constant:cannibalism_wendigo_ai.train_pack
-			modifier = { factor = constant:cannibalism_decision_ai.cautious_factor check_variable = { cannibalism_larder < constant:cannibalism_wendigo_countdown.minimum_larder } }
+			factor = 0
+			modifier = {
+				cannibalism_wendigo_ai_can_pay_train_pack_cost = yes
+				add = constant:cannibalism_wendigo_ai.train_pack
+			}
 		}
 	}
 
@@ -179,6 +184,156 @@ cannibalism_wendigo_command_category = {
 		}
 		ai_will_do = { base = constant:cannibalism_wendigo_ai.stabilize_countdown }
 	}
+
+	cannibalism_wendigo_launch_terminal_hunt = {
+		icon = GFX_decision_cannibalism_wendigo_launch_terminal_hunt
+		target_root_trigger = { cannibalism_wendigo_can_pay_terminal_hunt_launch_cost = yes }
+		target_trigger = {
+			cannibalism_wendigo_scored_target_is_valid_from_decision = yes
+			FROM = { cannibalism_wendigo_is_valid_terminal_hunt_target = yes }
+		}
+		visible = {
+			cannibalism_wendigo_command_is_open = yes
+			has_country_flag = cannibalism_wendigo_terminal_hunt_open
+			has_country_flag = cannibalism_wendigo_countdown_active
+			NOT = { has_country_flag = cannibalism_wendigo_transformation_broken }
+			NOT = { has_country_flag = cannibalism_wendigo_terminal_hunt_active }
+			NOT = { has_country_flag = cannibalism_wendigo_terminal_hunt_launch_cooldown }
+			cannibalism_wendigo_scored_target_is_valid_from_decision = yes
+			FROM = { cannibalism_wendigo_is_valid_terminal_hunt_target = yes }
+		}
+		available = { cannibalism_wendigo_can_pay_terminal_hunt_launch_cost = yes }
+		custom_cost_trigger = { hidden_trigger = { cannibalism_wendigo_can_pay_terminal_hunt_launch_cost = yes } }
+		custom_cost_text = cannibalism_wendigo_launch_terminal_hunt_cost_text
+		complete_effect = {
+			custom_effect_tooltip = cannibalism_wendigo_launch_terminal_hunt_effect_tt
+			hidden_effect = {
+				FROM = { save_event_target_as = cannibalism_wendigo_decision_target }
+				cannibalism_wendigo_start_terminal_hunt = yes
+			}
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				cannibalism_wendigo_ai_can_pay_terminal_hunt_launch_cost = yes
+				set_temp_variable = { cannibalism_wendigo_terminal_hunt_ai_weight = mtth:cannibalism_wendigo_target_decision_weight }
+				add = cannibalism_wendigo_terminal_hunt_ai_weight
+			}
+			modifier = {
+				factor = constant:cannibalism_focus_closure_ai.urgent_factor
+				FROM = {
+					OR = {
+						cannibalism_target_has_existing_cells = yes
+						capital_scope = { is_controlled_by = ROOT }
+					}
+				}
+			}
+		}
+	}
+
+	cannibalism_wendigo_terminal_hunt_mission = {
+		icon = GFX_decision_cannibalism_wendigo_terminal_hunt_mission
+		days_mission_timeout = @CANNIBALISM_WENDIGO_TERMINAL_HUNT_MISSION_DAYS
+		is_good = no
+		fire_only_once = no
+		activation = { has_country_flag = cannibalism_wendigo_terminal_hunt_active }
+		available = { cannibalism_wendigo_terminal_hunt_has_succeeded = yes }
+		cancel_trigger = { cannibalism_wendigo_terminal_hunt_has_failed = yes }
+		cancel_effect = {
+			custom_effect_tooltip = cannibalism_wendigo_terminal_hunt_failure_tt
+			hidden_effect = { cannibalism_resolve_wendigo_terminal_hunt_failure = yes }
+		}
+		complete_effect = {
+			custom_effect_tooltip = cannibalism_wendigo_terminal_hunt_success_tt
+			hidden_effect = { cannibalism_resolve_wendigo_terminal_hunt_success = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = cannibalism_wendigo_terminal_hunt_failure_tt
+			hidden_effect = { cannibalism_resolve_wendigo_terminal_hunt_failure = yes }
+		}
+	}
+
+	cannibalism_wendigo_press_terminal_hunt = {
+		icon = GFX_decision_cannibalism_wendigo_press_terminal_hunt
+		visible = { cannibalism_wendigo_has_valid_active_terminal_hunt_target = yes }
+		available = { cannibalism_wendigo_can_pay_terminal_hunt_press_cost = yes }
+		custom_cost_trigger = { hidden_trigger = { cannibalism_wendigo_can_pay_terminal_hunt_press_cost = yes } }
+		custom_cost_text = cannibalism_wendigo_press_terminal_hunt_cost_text
+		complete_effect = {
+			custom_effect_tooltip = cannibalism_wendigo_press_terminal_hunt_effect_tt
+			hidden_effect = { cannibalism_wendigo_press_active_terminal_hunt = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				cannibalism_wendigo_ai_should_press_terminal_hunt = yes
+				add = constant:cannibalism_focus_closure_ai.terminal_hunt_press
+			}
+		}
+	}
+
+	cannibalism_muster_wendigo_pack_from_enemy_death_receipt = {
+		icon = GFX_decision_cannibalism_muster_wendigo_pack_from_enemy_death_receipt
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			cannibalism_wendigo_command_is_open = yes
+			has_country_flag = cannibalism_wendigo_enemy_death_receipts_open
+			has_country_flag = cannibalism_wendigo_receipt_muster_open
+		}
+		target_root_trigger = { cannibalism_wendigo_can_pay_enemy_death_receipt_muster = yes }
+		target_trigger = { FROM = { cannibalism_state_can_muster_wendigo_pack_from_enemy_death_receipt = yes } }
+		available = { cannibalism_wendigo_can_pay_enemy_death_receipt_muster = yes }
+		custom_cost_trigger = { hidden_trigger = { cannibalism_wendigo_can_pay_enemy_death_receipt_muster = yes } }
+		custom_cost_text = cannibalism_muster_wendigo_pack_from_enemy_death_receipt_cost_text
+		complete_effect = {
+			custom_effect_tooltip = cannibalism_muster_wendigo_pack_from_enemy_death_receipt_effect_tt
+			hidden_effect = {
+				FROM = { save_event_target_as = cannibalism_wendigo_decision_state }
+				cannibalism_muster_wendigo_pack_from_enemy_death_receipt_effect = yes
+			}
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				cannibalism_wendigo_ai_can_pay_enemy_death_receipt_muster = yes
+				add = constant:cannibalism_focus_closure_ai.receipt_muster
+			}
+		}
+	}
+
+	cannibalism_activate_inherited_winter_cell = {
+		icon = GFX_decision_cannibalism_activate_inherited_winter_cell
+		target_root_trigger = { cannibalism_wendigo_can_pay_inherited_cell_cost = yes }
+		target_trigger = {
+			cannibalism_wendigo_scored_target_is_valid_from_decision = yes
+			FROM = { cannibalism_wendigo_is_valid_inherited_cell_target = yes }
+		}
+		visible = {
+			cannibalism_wendigo_command_is_open = yes
+			has_country_flag = cannibalism_wendigo_inherited_cell_operations_open
+			cannibalism_wendigo_scored_target_is_valid_from_decision = yes
+			FROM = { cannibalism_wendigo_is_valid_inherited_cell_target = yes }
+		}
+		available = { cannibalism_wendigo_can_pay_inherited_cell_cost = yes }
+		custom_cost_trigger = { hidden_trigger = { cannibalism_wendigo_can_pay_inherited_cell_cost = yes } }
+		custom_cost_text = cannibalism_activate_inherited_winter_cell_cost_text
+		complete_effect = {
+			custom_effect_tooltip = cannibalism_activate_inherited_winter_cell_effect_tt
+			hidden_effect = {
+				FROM = { save_event_target_as = cannibalism_wendigo_decision_target }
+				cannibalism_activate_inherited_winter_cell_effect = yes
+			}
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				cannibalism_wendigo_ai_can_pay_inherited_cell_cost = yes
+				set_temp_variable = { cannibalism_wendigo_inherited_cell_ai_weight = mtth:cannibalism_wendigo_target_decision_weight }
+				add = cannibalism_wendigo_inherited_cell_ai_weight
+			}
+		}
+	}
 }
 
 cannibalism_wendigo_counterwar_category = {
@@ -235,5 +390,25 @@ cannibalism_wendigo_counterwar_category = {
 			hidden_effect = { cannibalism_break_selected_wendigo_recruitment_site = yes }
 		}
 		ai_will_do = { base = constant:cannibalism_wendigo_ai.break_recruitment_site }
+	}
+
+	cannibalism_break_wendigo_terminal_hunt = {
+		icon = GFX_decision_cannibalism_break_wendigo_terminal_hunt
+		visible = { cannibalism_wendigo_terminal_hunt_defender_is_open = yes }
+		available = { cannibalism_can_pay_wendigo_terminal_hunt_break_cost = yes }
+		custom_cost_trigger = { hidden_trigger = { cannibalism_can_pay_wendigo_terminal_hunt_break_cost = yes } }
+		custom_cost_text = cannibalism_break_wendigo_terminal_hunt_cost_text
+		days_re_enable = constant:cannibalism_wendigo_terminal_hunt.press_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = cannibalism_break_wendigo_terminal_hunt_effect_tt
+			hidden_effect = { cannibalism_defender_break_active_terminal_hunt = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				cannibalism_can_pay_wendigo_terminal_hunt_break_cost = yes
+				add = constant:cannibalism_focus_closure_ai.terminal_hunt_defender
+			}
+		}
 	}
 }

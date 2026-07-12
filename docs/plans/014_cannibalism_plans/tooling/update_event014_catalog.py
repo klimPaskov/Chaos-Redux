@@ -15,16 +15,16 @@ EVENT_ROW = [
 	14,
 	"Cannibalism",
 	"Cannibalism begins with evidence recovered from an army at war. Burial parties vanish, ration ledgers are altered, and isolated formations report deliberate cutting and predation within their own ranks. Scarcity may explain the first crimes, but repeated methods suggest that damaged commands are protecting the perpetrators.\n\nThe crisis tests whether military institutions can restore supply, protect witnesses and the dead, and distinguish frightened soldiers from organized killers. Concealment may preserve calm while allowing the pattern to survive. Public terror may hold a front while teaching other units that predation brings rank and protection.",
-	"Ritualized Ranks\n\nScattered predation has become a shared ideology of oaths, marks, promotion, and protected membership. No common supreme command is publicly established.",
-	"The Organized Network\n\nCells in separate countries use matching ledgers, routes, prisoner practices, and operational timing. Islands, communes, foreign nodes, and warlord countries can emerge without identifying one leader.",
+	"Ritualized Ranks\n\nScattered predation has become a shared ideology of oaths, marks, promotion, and protected membership. No shared headquarters appears in the records.",
+	"The Organized Network\n\nCells in separate countries use matching ledgers, routes, prisoner practices, and operational timing. Captured records identify no common headquarters.",
 	"Hannibal Lecter Commands\n\nThe concealed command is publicly revealed, and the mature network begins unification under Hannibal Lecter.",
 	None,
 	None,
-	"The World Is the Larder\n\nThe last limits on Hannibal Lecter's command have been struck from its ledgers. Warlord armies, prison routes, silent ports, and feeding states answer a single timetable, carrying each conquest into the next.\n\nEvery country outside the Host has been named as prey. Its armies march in the certainty that each ruined city will furnish the next advance and each defeated population will be counted as supply.\n\nNo Thaw Will Come\n\nEvery transformation anchor has sealed beneath frost and butchered stone. The transformed Hannibal Lecter no longer depends on roads, seasons, or the living institutions that once confined his armies.\n\nCannibal Hosts and winter packs move together from the frozen capitals, drawing fresh strength from every population they overrun. The cold ahead of them carries no terms, accepts no surrender, and leaves no season in which the hunted can recover.",
+	"The World Is the Larder\n\nLecter's host has joined scattered feeding territories and armed kitchens into one command. Roads, farms, prisons, and conquered cities are treated as parts of a single larder, with surviving states left as prey or resistance enclaves.\n\nOrganized consumption becomes a permanent world order. Every surviving government faces the same expanding host, and the network no longer has any reason to hide.\n\nNo Thaw Will Come\n\nLecter's winter host has surrendered its last human restraints to the Wendigo form. Feeding grounds spread with the cold, and conquered communities are folded into a hunger that treats thaw, harvest, and mercy as weaknesses.\n\nAn advancing winter covers the world. The Wendigo command pursues every surviving country until organized human rule is consumed or driven into isolated refuges.",
 	"Minor Fire-Once",
 	None,
 	None,
-	"Needs Testing",
+	"Implemented",
 ]
 
 
@@ -34,7 +34,7 @@ SCENARIO_ROW = [
 	"Discipline Collapse: A wartime supply crisis has broken discipline inside selected formations. Field Hunger rises while damaged commands attempt containment before predation spreads beyond the first theaters.\n\nRitual Cells: Officer circles and hidden field kitchens have become organized ritual cells. Cult Cohesion is already visible, and several countries may begin with compromised commands.\n\nSilent Islands: Remote ports and island garrisons have fallen quiet behind broken convoy schedules. Communes begin with mature cells, exposed sea routes, and a growing risk of armed island hosts.\n\nWarlord States: Armed host countries emerge from occupied feeding grounds. Each begins with a regional command, an origin doctrine, scavenged stores, and forces raised from the territory it has seized.\n\nConvergence: Several mature host countries answer a common signal. A public convergence warning begins after launch, leaving the world time to destroy the likely hosts and sever their routes before a final authority emerges.",
 	"Discipline Collapse, Ritual Cells, Silent Islands, Warlord States, Convergence",
 	"Low: A narrow crisis begins with limited territory and forces. Containment remains possible, but delay will strengthen the cells.\n\nMedium: Several formations or theaters enter the crisis. Supply pressure, concealment, and foreign routes will demand an organized response.\n\nHigh: Mature cells and armed hosts begin with strong cohesion, severe command damage, and multiple routes across the map.\n\nMaximum: A broad international network begins with numerous theaters and host countries. Escalation is immediate, but its supply lines, leaders, territories, and convergence routes can still be attacked.",
-	"Needs Testing",
+	"Implemented",
 ]
 
 

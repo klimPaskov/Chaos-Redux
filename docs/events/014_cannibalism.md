@@ -8,15 +8,15 @@ The baseline incident and all three evolutions have separate entry paths. An evo
 
 Event 014 uses seven central values. Tuning is defined in the Event 014 script-constant files rather than repeated in events or decisions.
 
-- **Field Hunger** measures material desperation inside the affected formations. War, poor supply, isolation, casualties, and predatory policy raise it; restored logistics and humane relief reduce it.
-- **Command Integrity** measures whether officers, military police, medical services, and civilian authorities still control the affected force. Compromised formations, concealment, and terror exploitation weaken it; rotation, investigation, discipline, and witness protection restore it.
+- **Field Hunger** measures material desperation inside the affected formations. War, poor supply, isolation, casualties, and predatory policy raise it. Restored logistics and humane relief reduce it.
+- **Command Integrity** measures whether officers, military police, medical services, and civilian authorities still control the affected force. Compromised formations, concealment, and terror exploitation weaken it. Rotation, investigation, discipline, and witness protection restore it.
 - **Cult Cohesion** exists only when Evolution I is enabled and active. It measures the strength of the ritual ideology, oath groups, marks, spoils, and internal organizers.
 - **Network Reach** is a global measure derived from infected countries, warlord countries, foreign seeds, prison nodes, ports, islands, occupation nodes, rail nodes, formation nodes, and population-consumption milestones.
 - **Larder Stores** is a finite resource for cannibal countries. It decays with controlled territory and armed forces and is replenished only by eligible, ledgered population consumption or defined captures.
-- **Frenzy** measures predatory operational pressure. Starvation and consumption can raise it; it cannot substitute for Larder Stores or create free recruitment.
+- **Frenzy** measures predatory operational pressure. Starvation and consumption can raise it. It cannot substitute for Larder Stores or create free recruitment.
 - **Network Alignment** measures whether a warlord cooperates with, manipulates, or resists the concealed network and later convergence.
 
-Country and state meters are clamped by shared constants. Weekly processing is limited to countries already participating in Event 014; it does not scan every country through a world-wide daily, weekly, or monthly on-action.
+Country and state meters are clamped by shared constants. Weekly processing is limited to countries already participating in Event 014. It does not scan every country through a world-wide daily, weekly, or monthly on-action.
 
 ## Baseline crisis and responses
 
@@ -55,7 +55,7 @@ Four origins define territory, military composition, AI, decisions, and focus ov
 - **March Host** forms around a mobile land corridor and specializes in depot raids, rail sabotage, captured transport, and moving Larder doctrine.
 - **Prison Host** forms around prisons, camps, detention infrastructure, or transfer routes and specializes in lockhouse networks, prison columns, infiltration, and captured ledgers.
 
-Starting divisions and equipment scale from the originating state and current event pressure. Recruitment and reinforcement consume manpower, equipment, command capacity, and Larder Stores; Event 014 does not grant free units. The 72-focus shared warlord tree includes hierarchy, Larder economy, military, expansion, infiltration, network alignment, local-victory, and four origin-overlay families. Route-aware AI chooses coherent combinations rather than mixing mutually exclusive identities.
+Starting divisions and equipment scale from the originating state and current event pressure. Recruitment and reinforcement consume manpower, equipment, command capacity, and Larder Stores. Event 014 does not grant free units. The 72-focus shared warlord tree includes hierarchy, Larder economy, military, expansion, infiltration, network alignment, local-victory, and four origin-overlay families. Route-aware AI chooses coherent combinations rather than mixing mutually exclusive identities.
 
 Every warlord slot has seven regional name-and-portrait variants: Europe, Asia, Africa, Middle East, North America, South America, and Oceania. All 56 portraits are independent fictional compositions. They depict bald, bloodied, visibly feral male warlords in invented rough clothing and scavenged period gear, with distinct expressions, behaviors, props, origin cues, and regional names. They do not copy living ceremonial dress or an actor likeness.
 
@@ -73,9 +73,11 @@ The reveal publicly identifies Hannibal Lecter and unlocks the reveal super-even
 
 The unified country inherits territory, divisions, surviving characters, technologies, ideas, route choices, cells, and stored Larder value through explicit transfer effects. Its 108-focus tree covers convergence politics, warlord disposition, supreme hierarchy, continental Larder doctrine, army, navy, air, intelligence and cells, expansion, world counterwar, and the ordinary terminal route. Completed cannibal routes are intentionally absurd and overpowered, but they are gated by difficult progression, world hostility, finite Larder pressure, counterplay, territorial requirements, and terminal checks.
 
+Every successful absorption also calls the shared additive technology-union helper before donor cleanup and annexation. CBL and transformed ZZZ keep their existing technologies, research slots, and established mutually exclusive industry branch while gaining every other compatible researched technology token from the absorbed constituent. Autonomous, resistant, or challenging warlords transfer nothing until a later transaction actually absorbs them. Completed special-project state is outside this token-transfer contract, while the in-place ZZZ transformation preserves its own existing special-project state.
+
 ## Unified operational contracts
 
-The post-reveal tree uses three focus cadences: short focuses cost 3 focus units and take 21 days, normal focuses cost 5 units and take 35 days, and terminal focuses cost 8 units and take 56 days. This shorter post-reveal cadence is balanced by hard operational gates. Completing a focus changes a concrete decision cost, stockpile requirement, target lock, receipt cap, mission goal, operation duration, modifier strength, hostility result, or terminal proof requirement; focus flags are not treated as generic capacity rewards.
+The post-reveal tree uses three focus cadences: short focuses cost 3 focus units and take 21 days, normal focuses cost 5 units and take 35 days, and terminal focuses cost 8 units and take 56 days. This shorter post-reveal cadence is balanced by hard operational gates. Completing a focus changes a concrete decision cost, stockpile requirement, target lock, receipt cap, mission goal, operation duration, modifier strength, hostility result, or terminal proof requirement. Focus flags are not treated as generic capacity rewards.
 
 The command profile shapes absorption, governors, rival purges, continental commands, and their timetable. The Larder profile shapes storage, captured workshops, the feeding capital, all four population-consumption doctrines, exhausted-frontier abandonment, mission pacing, and battlefield receipts. Army, navy, and air profiles shape paid recruitment, operational reserves, rout and convoy receipts, enemy-front collapse, silent anchorages, and temporary combat modifiers. Cells, expansion, and counterwar shape target pools, lockouts, foreign disruption, terror ultimata, border incidents, postwar integration, coalition-command attacks, and hostility conversion.
 
@@ -87,7 +89,7 @@ Three harvest ledgers prevent repeatable receipt fabrication:
 - Paid Continental Hunts issue at most one rout receipt after rout-harvest missions open. Collapsing an enemy front spends that receipt once the rout cap is active and also places a target cooldown.
 - Paid Continental Naval Hunts issue at most one convoy-hunt receipt after the convoy tables open. Processing the receipt spends it, adds the defined Larder yield, and has its own 90-day cooldown.
 
-World Hostility is persistent pressure rather than display-only state. At 25, 50, and 75 it applies progressively stronger consumer-goods, supply, organization, political-power, and command penalties; adds command, Larder, support-equipment, fuel, equipment, truck, convoy, and airframe surcharges; and gives foreign targets increasingly strong temporary defence and organization counterpressure. The system refreshes from focus completion and paid operations and does not use a daily, weekly, or monthly world scan. Paid counterwar operations reduce Hostility, the capstone strengthens that relief, and Counterwar Conversion spends a larger mobile reserve to convert 15 Hostility into 5 Unified Authority.
+World Hostility is persistent pressure rather than display-only state. At 25, 50, and 75 it applies progressively stronger consumer-goods, supply, organization, political-power, and command penalties. It adds command, Larder, support-equipment, fuel, equipment, truck, convoy, and airframe surcharges and gives foreign targets increasingly strong temporary defence and organization counterpressure. The system refreshes from focus completion and paid operations and does not use a daily, weekly, or monthly world scan. Paid counterwar operations reduce Hostility, the capstone strengthens that relief, and Counterwar Conversion spends a larger mobile reserve to convert 15 Hostility into 5 Unified Authority.
 
 The four ordinary Last Table packages are hard gates rather than focus-completion rewards:
 
@@ -98,9 +100,13 @@ The four ordinary Last Table packages are hard gates rather than focus-completio
 
 Final Global Mobilization and Dismantle the Ordinary World retain the strict global Chaos requirement of greater than 1000 in addition to all four operational packages. The exact 208-flag consumer proof is recorded in `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_unified_focus_remediation_2026-07-12.md`.
 
-### Unified decision icon wiring
+### Unified target selection and icon coverage
 
-This remediation introduces no new art dependency. The new decisions deliberately reuse already registered Event 014 sprites: `GFX_decision_cannibalism_restore_supply_corridor` for workshop and frontier projects, `GFX_decision_cannibalism_raise_feast_cohort` for all paid origin formations, `GFX_decision_cannibalism_synchronize_warlord_attack` for enemy-front collapse and terror ultimata, `GFX_decision_cannibalism_island_ambush_convoys` for silent anchorages and convoy receipts, `GFX_decision_cannibalism_seed_foreign_formation` for border incidents, and `GFX_decision_cannibalism_humane_route_screening` for counterwar conversion. These sprites remain registered through the existing Event 014 interface files; no additional DDS or `.gfx` entry is required.
+Two country scorers, `cannibalism_unified_target_scorer` and `cannibalism_wendigo_target_scorer`, share their hard-validity factors with two MTTH decision-weight entries. Six unified targeted decisions consume `cannibalism_unified_target_decision_weight`: foreign army seeding, global campaign preparation, terror ultimata, border incidents, coalition-hub destruction, and enemy-front collapse. The Wendigo profile has distinct pre-lock and post-lock priorities.
+
+The pre-lock scored AI package is intentionally idempotent. A valid target receives its band once and newly valid targets can be added later, but the engine provides no scripted removal path, so an existing pre-lock target is not dynamically removed or re-banded when its score changes. The terminal lock applies a separate one-time post-lock escalation package. This is the accepted bounded P3 AI constraint.
+
+All 39 unified decisions use their own deterministic `GFX_decision_<decision_id>` sprite and matching `gfx/interface/decisions/014_cannibalism/decision_<decision_id>.dds`. No unified decision reuses a baseline, focus, idea, or unrelated decision icon.
 
 ## Wendigo unification
 
@@ -108,21 +114,33 @@ Event 014 discovers and preserves the existing Wendigo country rather than recre
 
 The transformed Hannibal Lecter presentation remains reveal-gated. It uses a distinct animated portrait and a visibly inhuman frozen form without borrowing living Indigenous traditions or sacred motifs. Coalition countries can identify, disrupt, assault, and destroy transformation anchors, break recruitment sites, and interfere with frozen supply corridors before the lock. Once the terminal form locks, its military package is intended to be effectively undefeatable.
 
-The pre-lock route records each distinct enemy capitulation won after the Winter Network activates. These recorded winter victories supply the countdown gate and cannot be earned from repeated state turnover. Wendigo focus training bonuses persist separately from anchor-derived capacity, so losing or rebuilding an anchor recalculates the anchor share without erasing completed training. The merge grants enough transition authority that every inherited warlord-disposition route can reach the authority gate only after completing the full pre-terminal focus progression.
+The transformation mutates the existing original ZZZ country in place. It preserves ZZZ territory, units, technologies, ideas, equipment, and Event 2 profile state, but immediately disables normal queue recruitment for the locked 16-battalion `Wendigo Pack` before the first overlay focus. Pack recruitment is paid-only after the merge. The ordinary two-Pack muster and the receipt-backed one-Pack muster both validate the complete requested batch against the shared capacity before any population or Larder transaction.
+
+The pre-lock route records each distinct enemy capitulation won after the Winter Network activates. These recorded winter victories supply the countdown gate and cannot be earned from repeated state turnover. Enemy-death receipts are bounded permission tokens. They begin from a non-retroactive snapshot, issue from each full 50,000 new casualties while the country remains an active enemy, cap at two per enemy epoch and five held receipts, and reset the sampled epoch on peace, re-war, route break, terminal lock, or receipt shutdown. A receipt muster still pays exactly 100,000 controlled usable-state population through the canonical Deaths transaction, one receipt, 200 Larder, 500 infantry equipment, and 100 support equipment to create one zero-start Pack.
+
+The existing 28-focus overlay also applies three idempotent Pack support stages, four inherited origin-template upgrades, and two inherited commander stages. `cannibalism_activate_inherited_winter_cell` is a paid targeted operation against a current enemy that already contains an inherited Event 014 cell. It creates sixty days of disruption and can add one bounded pressure contribution to the active terminal hunt, but it does not create a cell, population, Larder, equipment, a unit, or a war goal.
+
+The terminal-hunt family has four maintained surfaces: launch, the 120-day mission, paid pressure, and defender break. Success comes from target capitulation or capital control at full hunt pressure. Failure can come from defender counterpressure, timeout, route break, invalidation, or loss of all anchors. A success adds only five transformation progress, a failure removes ten, and neither path can set `world_end`. The final lock remains owned by the transformation pulse.
 
 ## Terminal routes and defeat aftermath
 
 Both world-end branches require Chaos greater than 1000, their full route prerequisites, and terminal gates. The ordinary route unifies the cannibal network into a global war machine. The Wendigo route locks the transformed winter network. Each sets the shared world-end state, begins global war, applies its own country identity and terminal package, and fires unique news, image, super-event, and licensed 44.1 kHz audio.
 
-Before terminal lock, the world can defeat the revealed command or break the Wendigo transformation. Eligible victors receive a distinct global-defeat aftermath only after the exact defeat predicates are recorded. Captured warlords and Hannibal Lecter have explicit custody or death outcomes; recovered states retain their death ledgers and reconstruction obligations. An international inspection compact, memorial work, victim identification, and long recovery prevent victory from erasing the cost of the crisis.
+Event Details exposes two independent post-reveal terminal rows. Scenario ID `6`, **The World Is the Larder**, controls only the ordinary terminal branch and maps to super-event ID `50`. Scenario ID `7`, **No Thaw Will Come**, controls only the Wendigo terminal branch and maps to super-event ID `53`. Each row is default enabled, persists its own disabled state, opens its own detail panel, and gates only its matching automatic terminal selection. Neither row is visible before `cannibalism_reveal_complete`.
+
+The four action-scene super-events and their unique audio IDs are Hannibal's reveal `49`, the ordinary world end `50`, eligible global defeat `52`, and the Wendigo world end `53`. Their registered 44.1 kHz OGG and WAV files use separate sourced recordings and separate visual compositions. ID `51` remains assigned elsewhere and is not part of Event 014.
+
+Before terminal lock, the world can defeat the revealed command or break the Wendigo transformation. Eligible victors receive a distinct global-defeat aftermath only after the exact defeat predicates are recorded. Captured warlords and Hannibal Lecter have explicit custody or death outcomes. Recovered states retain their death ledgers and reconstruction obligations. An international inspection compact, memorial work, victim identification, and long recovery prevent victory from erasing the cost of the crisis.
 
 ## Scenario, achievements, AI, and integrations
 
 Scenario `SCN-010` supports five launch types: Discipline Collapse, Ritual Cells, Silent Islands, Warlord States, and Convergence. Each launch validates its evolution settings, target country and state, special-country exclusions, coherent territorial requirements, and any reveal secrecy gate before dispatch.
 
-The event catalog row at `Events!A15:M15` records Cannibalism as `Minor Fire-Once` with an empty cluster field. Its Event Details text, three evolution entries, and both terminal descriptions mirror the corresponding in-game localisation. After the public reveal, The World Is the Larder and No Thaw Will Come appear as separate clickable world-end rows with independent automatic-selection checkboxes. The workbook status remains `Needs Testing` until the required Event 014 audits close.
+The event catalog row at `Events!A15:M15` records Cannibalism as `Minor Fire-Once` with an empty cluster field. Its Event Details text, three evolution entries, and both terminal descriptions mirror the corresponding in-game localisation. After the public reveal, The World Is the Larder and No Thaw Will Come appear as separate clickable world-end rows with independent automatic-selection checkboxes. `Events!M15` and `Scenarios!F10` both record `Implemented` after the final audit and catalog promotion.
 
-Event 014 defines 18 predicate-based achievements covering clean containment, repeated prevention, multi-front response, island recovery, reinfection, humane use of defectors, warlord play, unification, Larder progression, reveal prevention, ordinary and Wendigo defeat, both terminal routes, global burial work, and preventing an empty-state outcome. Achievement art uses separate locked, available, and completed compositions rather than recolors of one icon.
+Event 014 defines 18 predicate-based achievements covering clean containment, repeated prevention, multi-front response, island recovery, reinfection, humane use of defectors, warlord play, unification, Larder progression, reveal prevention, ordinary and Wendigo defeat, both terminal routes, global burial work, and preventing an empty-state outcome. Five baseline achievements remain visible in the normal achievement registry and thirteen late-route achievements remain statically hidden there. A separate read-only decision tracker mirrors all 18 at their correct public stages and reads the real achievement completion triggers. Tracker entries have no costs, effects, cooldowns, completion hooks, or AI behavior.
+
+Eight maintained mission families are live: supply-corridor restoration, formation rotation, investigation, prison defense, island access, network disruption, convergence interdiction, and transformation interdiction. Seven additional paid action families cover officer replacement, ritual-cell infiltration, ritual-economy disruption, silent-island reconnaissance, feeding-state liberation, submission preparation, and resistance preparation. The maintained missions preserve their targets and generation state, cap progress, and resolve full, partial, failure, timeout, and cancellation paths.
 
 The exact evidence contracts and transfer rules are documented in `docs/achievements/014_cannibalism_achievements.md`.
 
@@ -132,7 +150,7 @@ Ordinary governments, foreign responders, four warlord origins, unified command,
 
 The event log records the opening host, evolution changes, node and warlord milestones, local containment, reinfection, reveal, unification, terminal routes, global defeat, and cleanup. Event Details shows the current actor, stage, meters, response posture, network state, and legal aftermath. Pre-reveal entries use neutral language and neutral imagery. Reveal-gated surfaces switch atomically when the public flag is set.
 
-The scripted GUI presents the early crisis meters, network alerts, selected targets, cannibal command values, convergence warning, revealed command, and Wendigo transformation. Every animated surface has independently authored source frames, a sheet DDS, static fallback, preview GIF, contact sheet, manifest, and `.gfx`/`.gui` handoff.
+The scripted GUI presents the early crisis meters, network alerts, selected targets, cannibal command values, convergence warning, revealed command, and Wendigo transformation. Twelve non-portrait animated packages have independently authored source frames, sheet DDS files, static fallbacks, preview GIFs, contact sheets, manifests, and `.gfx`/`.gui` handoffs. The two animated leader packages are real frame sequences: 12 independently generated ordinary reveal frames and 16 independently generated transformed frames. Neither portrait is transform-only motion.
 
 ## Visual and audio inventory
 
@@ -153,6 +171,8 @@ The exhaustive filename-level inventory is maintained in `docs/specs/014_canniba
 
 The four super-event images are action scenes rather than posed tableaux. The reveal shows a violent convergence breaking barricades and chasing civilians under Lecter's command. The ordinary world end shows a capital overrun in motion. Global defeat shows a kinetic coalition breakthrough, opened cages, and escaping civilians. The Wendigo world end shows the transformed command leading a distorted frozen pack through a collapsing defense. Generated victims are fictional adults, and no image uses real atrocity photography or identifiable people.
 
+The final closure asset pass adds 21 distinct preregistered surfaces: 13 maintained objective/action icons, two achievement-tracker textures, four terminal-hunt icons, the receipt-backed Pack icon, and the inherited winter-cell icon. The full runtime asset tree contains 56 regional warlord portraits, 208 focus icons, 18 achievement triplets, four super-event images, and the two real-frame leader portrait sheets. A final static scan of all nine `.gfx` files that reference Event 014 found 816 texture references, 598 unique texture paths, and zero missing files.
+
 ## Principal implementation files
 
 - Entry events and escalation: `events/014_cannibalism.txt`, `events/014_cannibalism_aftermath.txt`, and the Event 014 news and super-event files.
@@ -162,6 +182,10 @@ The four super-event images are action scenes rather than posed tableaux. The re
 - Focus trees: `common/national_focus/014_cannibalism_warlord_focus.txt`, `common/national_focus/014_cannibalism_unified_focus.txt`, and `common/national_focus/014_cannibalism_wendigo_focus.txt`.
 - UI and localisation: `common/scripted_guis/014_cannibalism_scripted_gui.txt`, `interface/014_cannibalism_frontline_hunger.gui`, Event 014 `.gfx` files, and the two Event 014 English localisation files.
 - Central tuning: `common/script_constants/014_cannibalism_*.txt` and `common/mtth/014_cannibalism_mtth.txt`.
+
+## Validation boundary
+
+The final country-package re-audit reports P0/P1/P2/P3 all at zero for the frozen package. `event014_final_completion_audit_2026-07-13.md` reports completion-ready status with P0, P1, and P2 at zero and one accepted non-blocking P3 for the documented first-assignment pre-lock AI band. Documentation and filesystem validation confirm the identifiers, file sets, trigger/effect paths, asset registration, catalog promotion, and audit dispositions described above. No in-game runtime session is claimed by this documentation reconciliation.
 
 ## Future plans and extension ideas
 

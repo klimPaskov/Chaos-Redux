@@ -2,7 +2,7 @@
 
 ## Status
 
-This review applies the `chaosx_improvement_loop_planner` contract manually. The custom subagent itself was not executed because this chat environment did not expose a project subagent runner.
+Historical pre-implementation design review. Its depth boundaries remain accepted, but its implementation-status language is superseded by `package_status.md`, the two accepted closure addenda, and the final audit handoffs. The implemented closure tranche used the project improvement-loop workflow and promoted accepted behavior into the source specifications.
 
 ## Playable promise review
 
@@ -134,8 +134,8 @@ The review recommends against adding:
 
 These additions would increase maintenance without creating a distinct player decision.
 
-## Closure recommendation
+## Final disposition
 
-The design is deep enough to proceed to implementation. Broad expansion is not recommended before repository exploration confirms the existing Wendigo implementation, available tags, GUI precedents, and state-selection helpers.
+The design proceeded to implementation without the broad expansions rejected above. Repository exploration confirmed the original-ZZZ Wendigo identity, reusable tags, GUI precedents, and state-selection helpers.
 
-The remaining work is implementation, asset production, verified super-event research, focused audits, catalog alignment, and the actual mandatory custom improvement-loop execution when a subagent runner is available.
+Implementation, asset production, super-event research, catalog alignment, and the accepted focus-closure remediation are represented in the current package. Final repository completion status belongs to `package_status.md` and `event014_final_completion_audit_2026-07-13.md` rather than this historical review.

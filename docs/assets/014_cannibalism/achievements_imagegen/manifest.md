@@ -15,7 +15,7 @@ The current Event 014 campaign set has 18 purpose-built generated masters and 54
 - DDS: uncompressed one-image-level 32-bit BGRA, fully opaque
 - Completed treatment: generated subject over a dark achievement field with the package frame
 - Grey treatment: true per-pixel monochrome derived only after the completed icon exists
-- Not-eligible treatment: dimmed monochrome plus the project red-X state, derived only after the completed icon exists
+- Not-eligible treatment: an exact copy of the 64x64 RGBA grey variant with `.agents/skills/chaos-redux-event-assets/assets/achievements/overlay.png` alpha-composited on top; no brightness adjustment, darkening, filtering, recolouring, or locally redrawn X
 
 No completed icon reuses a focus, idea, decision, report, portrait, or earlier achievement composition. `014_cannibalism_stop_the_reveal` is explicitly face- and silhouette-free. The Wendigo terminal icon contains no antlers, horns, runes, regalia, feathers, sacred motif, or living-cultural claim.
 
@@ -28,6 +28,8 @@ No completed icon reuses a focus, idea, decision, report, portrait, or earlier a
 - Runtime DDS decode review: `contact_sheets/achievement_dds_decoded_contact_sheet.png`
 - Generation-output and source-hash ledger: `prompts/achievement_generation_ledger.md`
 - Reproducible processor: `process_achievement_icons.py`
+
+The processor refuses to run if the mandated overlay is missing, is not 64x64, or is not RGBA. It also verifies that every not-eligible PNG is byte-for-byte identical to the result of alpha-compositing that exact overlay over a copy of its grey variant before DDS conversion.
 
 The former 13-ID package under `static_icons_imagegen/achievements/` is superseded and inactive. Its unrelated IDs are not registered by the current Event 014 achievement GFX file, and its overlapping `no_second_table` runtime triplet has been replaced by this package's newly generated master.
 

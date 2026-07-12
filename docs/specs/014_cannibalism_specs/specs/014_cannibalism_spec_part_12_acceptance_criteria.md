@@ -88,6 +88,7 @@
 - Rewards are varied and strong.
 - AI route behavior exists.
 - Focus icons and localisation direction are complete.
+- The implemented tree has exactly 72 focuses.
 
 ## Population consumption
 
@@ -109,6 +110,8 @@
 - Unified focus tree has deep governance, Larder, military, naval, air, intelligence, expansion, coalition, and terminal branches.
 - Completed route effects are deliberately overpowered.
 - Enemy penalties, recruitment, supply, and population mechanics materially change war.
+- The implemented tree has exactly 108 focuses.
+- Successful constituent absorptions add compatible researched technologies without removing recipient technology or research slots.
 
 ## Wendigo Hannibal
 
@@ -123,6 +126,12 @@
 - Final locked route is effectively impossible to defeat.
 - Alternate world-end is stronger than ordinary world-end.
 - No new player-facing content claims authenticity for living Indigenous traditions.
+- The implemented overlay has exactly 28 focuses.
+- Original ZZZ transforms in place and retains its country package.
+- Normal queue recruitment for the locked Pack closes during the merge before the first overlay focus.
+- Both paid Pack musters validate the complete batch against shared capacity before population consumption.
+- Enemy-death receipt epochs are non-retroactive, bounded, reset across inactive-enemy periods, and cleared at shutdown.
+- Inherited winter cells and all four terminal-hunt surfaces have paid costs, AI, target locks, and bounded cleanup.
 
 ## Decisions and GUI
 
@@ -135,6 +144,8 @@
 - Active mission caps and target selection prevent clutter.
 - Every GUI button has costs, requirements, effects, tooltips, AI equivalent, and cleanup.
 - Human-only GUI does not leave AI without a path.
+- Exactly eight maintained mission families and seven added paid action families exist.
+- The 18-entry achievement tracker is read-only and uses the real achievement completion triggers.
 
 ## AI
 
@@ -145,6 +156,8 @@
 - Wendigo AI protects anchors before lock and pursues complete conquest after lock.
 - Invalid routes and targets are blocked.
 - AI does not exploit terror casually.
+- Two country scorers, two decision-weight MTTH entries, and six unified targeted-decision consumers use one shared factor model.
+- The accepted pre-lock package is idempotent and is not dynamically removed or re-banded. Post-lock targeting is a separate one-time package.
 
 ## World threat and integrations
 
@@ -164,6 +177,8 @@
 - Every super-event image is a distinct action composition with active pursuit, assault, breakthrough, or rescue. Static council, map-room, posed-army, and calm-aftermath tableaux are rejected.
 - No placeholder, default, reused, or unlicensed audio remains.
 - World-end branches require chaos above 1000.
+- The four implemented audio IDs are 49, 50, 52, and 53. ID 51 is not part of Event 014.
+- The two public terminal branches have separate post-reveal Event Details rows and persistent toggles.
 
 ## Assets
 
@@ -175,6 +190,9 @@
 - Every focus, idea, decision, category, achievement, unit, GUI state, report, news event, and super-event has asset coverage.
 - Every animated asset has separate source frames, processed frames, sheet PNG, sheet DDS, static fallback, preview GIF, manifest, and GFX handoff.
 - No animation is fabricated through transforms or filters on one still.
+- The 21-surface closure package and all 56 regional warlord portraits are present.
+- The ordinary 12-frame and transformed 16-frame portraits use independently generated source frames.
+- The final Event 014 `.gfx` scan reports zero missing runtime textures.
 
 ## Localisation and secrecy
 
@@ -197,6 +215,7 @@
 - Super-event research and audio documentation are complete.
 - Asset manifest and GFX handoff are complete.
 - Every accepted plan has a disposition.
+- Accepted behavior from both closure addenda is promoted into the source specs and current matrices. The addenda remain historical working records.
 
 ## Validation and audit
 
@@ -207,3 +226,4 @@
 - Completion auditor compares implementation against this full pack.
 - Mandatory improvement-loop planner pass is resolved before completion.
 - No simplification, fallback, placeholder, missing AI, missing localisation, missing asset, or stale doc is hidden.
+- Definition-level and filesystem validation are not represented as an in-game runtime session.

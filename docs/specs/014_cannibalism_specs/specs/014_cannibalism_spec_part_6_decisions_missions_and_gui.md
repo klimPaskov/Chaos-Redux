@@ -734,3 +734,24 @@ AI priorities:
 - target transformation anchors before ordinary fronts when terminal risk is high
 - cannibal AI spends Larder on units only when supply and territory can support them
 - Hannibal AI prioritizes absorption, coalition hubs, and high-population routes
+
+## Accepted maintained-objective closure
+
+The maintained mission layer contains exactly eight families:
+
+1. restore the supply corridor
+2. rotate compromised formations
+3. investigation
+4. hold the prison
+5. reach the island
+6. break the network
+7. stop unification
+8. stop transformation
+
+The final six use runtime durations, capped progress, persisted state or country targets, node or actor generation checks where relevant, and separate full, partial, failure, timeout, and cancellation outcomes. Objective pulse work iterates only the bounded actor and objective-country registries.
+
+Seven paid action families close the previously missing action layer: officer-chain replacement, ritual-cell infiltration, ritual-economy disruption, silent-island reconnaissance, feeding-state liberation, network-submission preparation, and network-resistance preparation. Every action has a real resource gate and payment, a cooldown or one-shot lifecycle, route-aware AI, and cleanup. None grants free units, equipment, population, or Larder.
+
+The Wendigo closure adds four terminal-hunt surfaces, one receipt-backed Pack muster, and one inherited winter-cell operation. The terminal hunt owns one persistent target and a 120-day mission. Launch, pressure, defender counterpressure, success, failure, timeout, route break, actor removal, terminal lock, and global cleanup all use the same bounded lifecycle. A hunt success adds only five transformation progress, a failure removes ten, and only the transformation pulse can apply the final lock.
+
+The read-only achievement tracker is deliberately excluded from the operational decision inventory. Its 18 entries are permanently unavailable and contain no cost, effect, cooldown, completion hook, or AI block.

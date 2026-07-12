@@ -83,15 +83,19 @@ cannibalism_wendigo_focus_preserve_pack_contract = {
 		limit = { has_template = "Wendigo Pack" }
 		set_division_force_allow_recruiting = {
 			division_template = "Wendigo Pack"
-			force_allow_recruiting = yes
+			force_allow_recruiting = no
 		}
 		set_division_template_lock = {
 			division_template = "Wendigo Pack"
 			is_locked = yes
 		}
 	}
-	add_ai_strategy = { type = template_prio id = zombies value = constant:cannibalism_wendigo_ai.train_pack }
-	add_ai_strategy = { type = role_ratio id = zombies value = constant:cannibalism_wendigo_ai.train_pack }
+	if = {
+		limit = { NOT = { has_country_flag = cannibalism_wendigo_pack_contract_ai_applied } }
+		add_ai_strategy = { type = template_prio id = zombies value = constant:cannibalism_wendigo_ai.train_pack }
+		add_ai_strategy = { type = role_ratio id = zombies value = constant:cannibalism_wendigo_ai.train_pack }
+		set_country_flag = cannibalism_wendigo_pack_contract_ai_applied
+	}
 }
 
 cannibalism_wendigo_focus_strengthen_live_anchors = {
@@ -167,15 +171,7 @@ cannibalism_wendigo_focus_add_capital_larder_workshop = {
 }
 
 cannibalism_wendigo_focus_prioritize_current_enemies = {
-	every_enemy_country = {
-		ROOT = {
-			add_ai_strategy = {
-				type = conquer
-				id = PREV
-				value = constant:cannibalism_wendigo_ai.prelock_aggression
-			}
-		}
-	}
+	cannibalism_wendigo_apply_scored_enemy_priorities = yes
 }
 
 # ---------------------------------------------------------------------------
@@ -233,6 +229,7 @@ cannibalism_wendigo_focus_raise_the_first_anchors = {
 # ---------------------------------------------------------------------------
 
 cannibalism_wendigo_focus_open_the_winter_hunt = {
+	cannibalism_wendigo_apply_scored_enemy_priorities = yes
 	add_war_support = constant:cannibalism_wendigo_focus.war_support_small
 	add_command_power = constant:cannibalism_wendigo_focus.command_power_small
 	add_tech_bonus = {
@@ -260,6 +257,7 @@ cannibalism_wendigo_focus_march_through_the_blizzard = {
 }
 
 cannibalism_wendigo_focus_count_the_winter_victories = {
+	cannibalism_initialize_wendigo_enemy_death_receipts = yes
 	set_temp_variable = { cannibalism_wendigo_focus_authority_gain = constant:cannibalism_wendigo_focus.authority_small }
 	cannibalism_wendigo_focus_apply_authority_gain = yes
 	set_temp_variable = { cannibalism_wendigo_focus_frenzy_gain = constant:cannibalism_wendigo_focus.frenzy_medium }
@@ -280,6 +278,7 @@ cannibalism_wendigo_focus_raise_the_winter_network = {
 
 cannibalism_wendigo_focus_drill_the_original_pack = {
 	cannibalism_wendigo_focus_preserve_pack_contract = yes
+	cannibalism_wendigo_apply_pack_stage_drilled = yes
 	set_temp_variable = { cannibalism_wendigo_focus_pack_capacity_gain = constant:cannibalism_wendigo_focus.pack_capacity_small }
 	cannibalism_wendigo_focus_expand_pack_capacity = yes
 	add_tech_bonus = {
@@ -292,6 +291,7 @@ cannibalism_wendigo_focus_drill_the_original_pack = {
 
 cannibalism_wendigo_focus_open_the_pack_musters = {
 	set_country_flag = cannibalism_wendigo_pack_training_open
+	set_country_flag = cannibalism_wendigo_receipt_muster_open
 	set_temp_variable = { cannibalism_wendigo_focus_pack_capacity_gain = constant:cannibalism_wendigo_focus.pack_capacity_large }
 	cannibalism_wendigo_focus_expand_pack_capacity = yes
 	add_command_power = constant:cannibalism_wendigo_focus.command_power_small
@@ -306,6 +306,7 @@ cannibalism_wendigo_focus_feed_the_anchor_guardians = {
 }
 
 cannibalism_wendigo_focus_expand_the_hunting_packs = {
+	cannibalism_wendigo_apply_pack_stage_hunting = yes
 	set_temp_variable = { cannibalism_wendigo_focus_pack_capacity_gain = constant:cannibalism_wendigo_focus.pack_capacity_large }
 	cannibalism_wendigo_focus_expand_pack_capacity = yes
 	add_political_power = constant:cannibalism_wendigo_focus.political_power_small
@@ -318,6 +319,7 @@ cannibalism_wendigo_focus_expand_the_hunting_packs = {
 }
 
 cannibalism_wendigo_focus_army_of_the_frozen_larder = {
+	cannibalism_wendigo_apply_pack_stage_frozen_larder = yes
 	set_temp_variable = { cannibalism_wendigo_focus_pack_capacity_gain = constant:cannibalism_wendigo_focus.pack_capacity_large }
 	cannibalism_wendigo_focus_expand_pack_capacity = yes
 	cannibalism_wendigo_focus_add_capital_military_workshop = yes
@@ -341,12 +343,14 @@ cannibalism_wendigo_focus_keep_the_cannibal_legions = {
 }
 
 cannibalism_wendigo_focus_retain_the_warlord_captains = {
+	cannibalism_wendigo_bind_inherited_warlord_captains = yes
 	add_command_power = constant:cannibalism_wendigo_focus.command_power_large
 	add_political_power = constant:cannibalism_wendigo_focus.political_power_small
 	add_war_support = constant:cannibalism_wendigo_focus.war_support_small
 }
 
 cannibalism_wendigo_focus_keep_the_foreign_cells = {
+	set_country_flag = cannibalism_wendigo_inherited_cell_operations_open
 	add_political_power = constant:cannibalism_wendigo_focus.political_power_medium
 	set_temp_variable = { cannibalism_wendigo_focus_authority_gain = constant:cannibalism_wendigo_focus.authority_small }
 	cannibalism_wendigo_focus_apply_authority_gain = yes
@@ -370,6 +374,9 @@ cannibalism_wendigo_focus_join_the_larder_routes = {
 }
 
 cannibalism_wendigo_focus_all_inheritances_intact = {
+	cannibalism_wendigo_apply_inherited_origin_variants = yes
+	set_country_flag = cannibalism_wendigo_captain_stage_winter_hunt
+	cannibalism_wendigo_refresh_inherited_commander_stage = yes
 	set_temp_variable = { cannibalism_wendigo_focus_authority_gain = constant:cannibalism_wendigo_focus.authority_large }
 	cannibalism_wendigo_focus_apply_authority_gain = yes
 	add_stability = constant:cannibalism_wendigo_focus.stability_medium

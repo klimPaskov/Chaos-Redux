@@ -571,6 +571,8 @@ cannibalism_initialize_global_runtime = {
 		clear_array = global.cannibalism_transformation_anchor_states
 		clear_array = global.cannibalism_defeat_contributors
 		clear_array = global.cannibalism_wendigo_victory_countries
+		clear_array = global.cannibalism_objective_countries
+		clear_array = global.cannibalism_reconstruction_participants
 		clear_array = global.cannibalism_spread_queue_id_entries
 		clear_array = global.cannibalism_spread_queue_source_country_entries
 		clear_array = global.cannibalism_spread_queue_source_state_entries
@@ -1279,6 +1281,7 @@ cannibalism_process_current_actor_pulse = {
 		cannibalism_schedule_pending_evolution_reports = yes
 		cannibalism_process_pending_evolution_reports = yes
 		cannibalism_process_current_country_mission_objectives = yes
+		cannibalism_process_current_country_objectives = yes
 		if = {
 			limit = { is_cannibalism_wendigo_hannibal_country = yes }
 			cannibalism_process_wendigo_transformation_pulse = yes
@@ -1504,6 +1507,18 @@ cannibalism_complete_global_cleanup = {
 			NOT = { has_global_flag = cannibalism_cleanup_complete }
 			NOT = { cannibalism_has_global_residue = yes }
 		}
+		if = {
+			limit = { has_event_target = cannibalism_wendigo_merge_host }
+			event_target:cannibalism_wendigo_merge_host = { cannibalism_clear_wendigo_prelock_operation_runtime = yes }
+		}
+		else_if = {
+			limit = { has_event_target = cannibalism_wendigo_terminal_hunt_target }
+			event_target:cannibalism_wendigo_terminal_hunt_target = {
+				clr_country_flag = cannibalism_wendigo_terminal_hunt_defender
+				clr_country_flag = cannibalism_wendigo_terminal_hunt_target_lock
+			}
+			clear_global_event_target = cannibalism_wendigo_terminal_hunt_target
+		}
 		set_global_flag = cannibalism_cleanup_complete
 		clr_global_flag = cannibalism_system_active
 		clr_global_flag = cannibalism_first_pulse_pending
@@ -1545,6 +1560,7 @@ cannibalism_complete_global_cleanup = {
 		clear_global_event_target = cannibalism_evolution_ii_mtth_actor
 		clear_global_event_target = cannibalism_unification_host
 		resize_array = { global.cannibalism_actor_countries = 0 }
+		resize_array = { global.cannibalism_objective_countries = 0 }
 		resize_array = { global.cannibalism_node_states = 0 }
 		resize_array = { global.cannibalism_recovery_states = 0 }
 		resize_array = { global.cannibalism_convergence_actor_countries = 0 }
@@ -1834,6 +1850,7 @@ cannibalism_open_evolution_ii = {
 			NOT = { has_global_flag = world_end }
 		}
 		set_global_flag = cannibalism_evolution_ii_active
+		set_global_flag = achievement_cannibalism_evolution_ii_visibility_open
 		set_variable = { global.cannibalism_global_stage = constant:cannibalism_global_stage.network }
 		clear_variable = global.cannibalism_evolution_ii_due_date
 		clear_variable = global.cannibalism_evolution_ii_mtth_actor_generation
@@ -1886,6 +1903,7 @@ cannibalism_begin_convergence_window = {
 			NOT = { has_global_flag = cannibalism_convergence_broken }
 		}
 		set_global_flag = cannibalism_convergence_active
+		set_global_flag = achievement_cannibalism_convergence_visibility_open
 		set_global_flag = cannibalism_unification_pending
 		clr_global_flag = cannibalism_evolution_iii_transition_due
 		set_variable = { global.cannibalism_global_stage = constant:cannibalism_global_stage.convergence }
@@ -1927,10 +1945,11 @@ cannibalism_break_convergence = {
 		clear_variable = global.cannibalism_evolution_iii_due_date
 		for_each_scope_loop = {
 			array = global.cannibalism_convergence_actor_countries
-			if = {
-				limit = { exists = yes }
-				clr_country_flag = cannibalism_convergence_participant
-			}
+				if = {
+					limit = { exists = yes }
+					clr_country_flag = cannibalism_convergence_participant
+					cannibalism_clear_network_preparation_flags = yes
+				}
 		}
 		clear_array = global.cannibalism_convergence_actor_countries
 	}
@@ -2168,6 +2187,16 @@ cannibalism_run_pulse_on_valid_anchor = {
 		for_each_scope_loop = {
 			array = global.cannibalism_actor_countries
 			cannibalism_process_current_actor_pulse = yes
+		}
+		for_each_scope_loop = {
+			array = global.cannibalism_objective_countries
+			if = {
+				limit = {
+					exists = yes
+					NOT = { is_in_array = { array = global.cannibalism_actor_countries value = THIS } }
+				}
+				cannibalism_process_current_country_objectives = yes
+			}
 		}
 		for_each_scope_loop = {
 			array = global.cannibalism_node_states

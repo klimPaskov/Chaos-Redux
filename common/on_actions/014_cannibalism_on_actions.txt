@@ -3,18 +3,31 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 014 CANNIBALISM LIFECYCLE ON ACTIONS
 # ============================================================================
-# Narrow country-lifecycle hooks transfer the single Event 014 pulse callback
-# with its remaining delay. State-control and recalled-volunteer hooks feed
-# only proven physical routes into the generation-safe spread queue. No daily,
-# weekly, or monthly world iteration is used. Retired callbacks remain
-# quarantined on their former tag and drain as no-ops if that tag later returns.
+# Narrow war-relation and country-lifecycle hooks maintain bounded Event 014
+# state and transfer the single pulse callback with its remaining delay.
+# State-control and recalled-volunteer hooks feed only proven physical routes
+# into the generation-safe spread queue. No daily, weekly, or monthly world
+# iteration is used. Retired callbacks remain quarantined on their former tag
+# and drain as no-ops if that tag later returns.
 # ============================================================================
 
 on_actions = {
+	on_war_relation_added = {
+		effect = { cannibalism_handle_wendigo_receipt_war_relation_added = yes }
+	}
+
 	on_capitulation = {
 		effect = {
 			save_event_target_as = cannibalism_wendigo_defeated_country
 			save_event_target_as = cannibalism_defeated_country
+			if = {
+				limit = { is_cannibalism_wendigo_hannibal_country = yes }
+				if = {
+					limit = { has_country_flag = cannibalism_wendigo_terminal_hunt_active }
+					cannibalism_resolve_wendigo_terminal_hunt_failure = yes
+				}
+				cannibalism_clear_wendigo_prelock_operation_runtime = yes
+			}
 			if = {
 				limit = {
 					OR = {
@@ -74,6 +87,14 @@ on_actions = {
 		effect = {
 			save_event_target_as = cannibalism_lifecycle_successor
 			FROM = {
+				if = {
+					limit = { is_cannibalism_wendigo_hannibal_country = yes }
+					if = {
+						limit = { has_country_flag = cannibalism_wendigo_terminal_hunt_active }
+						cannibalism_resolve_wendigo_terminal_hunt_failure = yes
+					}
+					cannibalism_clear_wendigo_prelock_operation_runtime = yes
+				}
 				cannibalism_invalidate_spread_entries_for_current_country_lifecycle = yes
 				if = {
 					limit = { cannibalism_current_country_owns_active_pulse_callback = yes }

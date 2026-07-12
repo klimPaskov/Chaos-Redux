@@ -285,6 +285,7 @@ cannibalism_prepare_wendigo_merge_identity = {
 		max = constant:cannibalism_meter.max
 	}
 	cannibalism_create_current_warlord_templates = yes
+	cannibalism_wendigo_focus_preserve_pack_contract = yes
 	cannibalism_open_inherited_warlord_recruitment = yes
 	cannibalism_open_wendigo_inherited_cannibal_recruitment = yes
 	if = { limit = { has_idea = cannibalism_wendigo_winter_feeding_network } remove_ideas = cannibalism_wendigo_winter_feeding_network }
@@ -673,6 +674,7 @@ cannibalism_calculate_wendigo_countdown_progress_change = {
 cannibalism_complete_wendigo_terminal_lock = {
 	if = {
 		limit = { cannibalism_wendigo_can_lock_terminal_form = yes }
+		cannibalism_clear_wendigo_prelock_operation_runtime = yes
 		set_country_flag = cannibalism_wendigo_transformation_locked
 		clr_country_flag = cannibalism_wendigo_transformation_prelock
 		clr_country_flag = cannibalism_wendigo_countdown_active
@@ -704,6 +706,8 @@ cannibalism_process_wendigo_transformation_pulse = {
 			NOT = { has_global_flag = world_end }
 		}
 		cannibalism_rebuild_wendigo_anchor_runtime = yes
+		cannibalism_process_wendigo_enemy_death_receipts = yes
+		cannibalism_wendigo_refresh_inherited_commander_stage = yes
 		cannibalism_break_wendigo_transformation_route = yes
 		cannibalism_try_start_wendigo_countdown = yes
 		if = {

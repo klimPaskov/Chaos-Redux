@@ -12,4 +12,7 @@
 | Wendigo merge | Anchor assault and evacuation | Transformation defense | Alternate global event |
 | Ordinary terminal readiness | Break Larder and capitals | Global mobilization | World-end super-event on completion |
 | Wendigo countdown | Capture anchors | Accelerate and protect | World-end super-event on lock |
+| Wendigo terminal hunt | Defender pays to build counterpressure while allies attack anchors | Actor pays to launch and press one scored enemy | Five progress on success or ten lost on failure. Never locks the world end directly |
 | Global victory | Reconstruction and trials | Remnant cells hunted | Defeat aftermath if thresholds met |
+
+The world reaction layer uses the shared world-threat state. It does not add a recurring whole-world scan. Objective responders, reconstruction participants, inherited-cell targets, receipt enemies, and terminal-hunt state use bounded registries, current-enemy loops, or one-shot effects.

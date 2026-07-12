@@ -530,6 +530,28 @@ Check for:
 - ordinary countries accessing cannibal recruitment
 - Wendigo units available without the crossover
 
+## Accepted scorer and MTTH implementation
+
+The implemented target model uses two reusable country scorers:
+
+- `cannibalism_unified_target_scorer`
+- `cannibalism_wendigo_target_scorer`
+
+Targeted decisions use two matching MTTH weights:
+
+- `cannibalism_unified_target_decision_weight`
+- `cannibalism_wendigo_target_decision_weight`
+
+Exactly six unified targeted decisions consume the unified weight: foreign army seeding, global campaign preparation, terror ultimata, border incidents, coalition-hub destruction, and enemy-front collapse. Their narrower adjacency, current-enemy, affordability, route, and cooldown gates remain hard conditions.
+
+Hard-invalid candidates are absent rather than weakly scored. The model rejects self, allies and subjects, dead or capitulated countries, Event 014 cannibal countries, actual nonhumans, unusable population, locked targets, and targets without a proved war, adjacency, inherited cell, rail, naval, or post-lock route. Valid factors include population, weak supply, cells, prisons, ports, low stability, adjacency, physical corridors, coalition command, current war, cold-front evidence, contamination, distance, and actor overextension.
+
+### Bounded P3 pre-lock strategy behavior
+
+The pre-lock Wendigo strategy package is idempotent. A valid target receives one low, medium, or high package, and later focus calls can add newly valid targets. The effects database exposes `add_ai_strategy` but no corresponding scripted removal effect. An already recorded pre-lock target is therefore not dynamically removed or re-banded if its score later changes. The transformation lock runs a separate post-lock scorer and applies a separate one-time 1000/2000/3000 escalation package. Documentation and player-facing text must not describe the pre-lock package as continuously re-scored.
+
+AI Pack training, receipt muster, inherited winter cells, hunt launch, and hunt pressure also preserve the existing 800-Larder countdown floor after payment. Duplicate Pack-contract and pre-lock target-priority writes are guarded.
+
 ## Balance validation scenarios
 
 1. Strong major power, short well-supplied war, low event chance.

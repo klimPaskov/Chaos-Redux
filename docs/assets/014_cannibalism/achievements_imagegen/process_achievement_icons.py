@@ -31,6 +31,7 @@ LIVE = ROOT / "gfx" / "achievements"
 GFX_FILE = ROOT / "interface" / "014_cannibalism_achievements.gfx"
 CONVERTER = ROOT / ".tools" / "convert_to_dds.py"
 CHROMA_HELPER = Path("C:/Users/klimp/.codex/skills/.system/imagegen/scripts/remove_chroma_key.py")
+NOT_ELIGIBLE_OVERLAY = ROOT / ".agents" / "skills" / "chaos-redux-event-assets" / "assets" / "achievements" / "overlay.png"
 SIZE = (64, 64)
 
 
@@ -128,18 +129,22 @@ def grey_icon(completed: Image.Image) -> Image.Image:
 	return grey.convert("RGBA")
 
 
-def not_eligible_icon(grey: Image.Image) -> Image.Image:
-	scale = 4
-	large = grey.resize((256, 256), Image.Resampling.NEAREST).convert("RGBA")
-	large = ImageEnhance.Brightness(large.convert("RGB")).enhance(0.58).convert("RGBA")
-	draw = ImageDraw.Draw(large, "RGBA")
-	draw.line((44, 42, 212, 214), fill=(8, 6, 6, 255), width=38)
-	draw.line((212, 42, 44, 214), fill=(8, 6, 6, 255), width=38)
-	draw.line((44, 42, 212, 214), fill=(210, 38, 42, 255), width=23)
-	draw.line((212, 42, 44, 214), fill=(210, 38, 42, 255), width=23)
-	draw.ellipse((34, 32, 54, 52), fill=(245, 78, 72, 255))
-	draw.ellipse((202, 204, 222, 224), fill=(120, 15, 18, 255))
-	return large.resize(SIZE, Image.Resampling.LANCZOS)
+def load_not_eligible_overlay() -> Image.Image:
+	if not NOT_ELIGIBLE_OVERLAY.is_file():
+		raise FileNotFoundError(f"Missing mandatory achievement overlay: {NOT_ELIGIBLE_OVERLAY}")
+	with Image.open(NOT_ELIGIBLE_OVERLAY) as opened:
+		if opened.size != SIZE:
+			raise RuntimeError(f"Mandatory achievement overlay must be {SIZE[0]}x{SIZE[1]}: {NOT_ELIGIBLE_OVERLAY}")
+		if opened.mode != "RGBA":
+			raise RuntimeError(f"Mandatory achievement overlay must be RGBA: {NOT_ELIGIBLE_OVERLAY}")
+		return opened.copy()
+
+
+def not_eligible_icon(grey: Image.Image, overlay: Image.Image) -> Image.Image:
+	grey_copy = grey.copy()
+	if grey_copy.size != SIZE or grey_copy.mode != "RGBA":
+		raise RuntimeError("Grey achievement variant must be a 64x64 RGBA image before overlay compositing")
+	return Image.alpha_composite(grey_copy, overlay)
 
 
 def convert(path: Path) -> None:
@@ -210,6 +215,7 @@ def make_contact(ids: list[str], folder: Path, suffixes: list[str], output: Path
 
 def main() -> None:
 	ids = achievement_ids()
+	overlay = load_not_eligible_overlay()
 	for directory in (ALPHA, PROCESSED, DDS_PACKAGE, CONTACT, VALIDATION.parent, LIVE):
 		directory.mkdir(parents=True, exist_ok=True)
 	missing = [achievement_id for achievement_id in ids if not (SOURCE / f"{achievement_id}_source.png").exists()]
@@ -220,7 +226,9 @@ def main() -> None:
 	for achievement_id in ids:
 		completed = completed_icon(ALPHA / f"{achievement_id}_alpha.png")
 		grey = grey_icon(completed)
-		not_eligible = not_eligible_icon(grey)
+		not_eligible = not_eligible_icon(grey, overlay)
+		if not_eligible.tobytes() != Image.alpha_composite(grey.copy(), overlay).tobytes():
+			raise RuntimeError(f"Not-eligible variant is not an exact grey-copy overlay composite: {achievement_id}")
 		completed.save(PROCESSED / f"{achievement_id}.png", optimize=True)
 		grey.save(PROCESSED / f"{achievement_id}_grey.png", optimize=True)
 		not_eligible.save(PROCESSED / f"{achievement_id}_not_eligible.png", optimize=True)

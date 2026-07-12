@@ -17,6 +17,10 @@ cannibalism_initialize_achievement_runtime = {
 	clr_global_flag = achievement_cannibalism_silent_larder_ever_reached
 	clr_global_flag = achievement_cannibalism_wendigo_merge_occurred
 	clr_global_flag = achievement_cannibalism_all_wendigo_anchors_broken_prelock
+	clr_global_flag = achievement_cannibalism_exploitation_visibility_open
+	clr_global_flag = achievement_cannibalism_island_host_visibility_open
+	clr_global_flag = achievement_cannibalism_evolution_ii_visibility_open
+	clr_global_flag = achievement_cannibalism_convergence_visibility_open
 	clr_global_flag = cannibalism_aftermath_all_states_reconstructed
 	set_variable = { global.achievement_cannibalism_warlords_formed = 0 }
 	set_variable = { global.achievement_cannibalism_former_feeding_states = 0 }
@@ -38,6 +42,7 @@ cannibalism_achievement_mark_initial_host = {
 }
 
 cannibalism_achievement_record_exploitation = {
+	set_global_flag = achievement_cannibalism_exploitation_visibility_open
 	set_country_flag = achievement_cannibalism_exploitation_ever
 	set_country_flag = cannibalism_clean_route_disqualified
 	if = {
@@ -104,6 +109,7 @@ cannibalism_achievement_record_warlord_formation = {
 			has_country_flag = cannibalism_origin_island_host
 			has_variable = cannibalism_warlord_origin_state
 		}
+		set_global_flag = achievement_cannibalism_island_host_visibility_open
 		var:cannibalism_warlord_origin_state = { set_state_flag = cannibalism_former_island_host_origin }
 	}
 }
@@ -451,6 +457,8 @@ cannibalism_execute_joint_suppression = {
 		set_country_flag = achievement_cannibalism_decisive_aid
 		set_country_flag = achievement_cannibalism_event_participant
 		cannibalism_record_current_country_as_defeat_contributor = yes
+		event_target:cannibalism_joint_suppression_target = { save_event_target_as = cannibalism_objective_country_target }
+		cannibalism_record_break_network_operation = yes
 	}
 }
 
@@ -499,6 +507,8 @@ cannibalism_execute_convergence_interdiction = {
 		set_country_flag = achievement_cannibalism_convergence_mission_started
 		set_country_flag = achievement_cannibalism_decisive_aid
 		cannibalism_record_current_country_as_defeat_contributor = yes
+		event_target:cannibalism_convergence_interdiction_target = { save_event_target_as = cannibalism_objective_country_target }
+		cannibalism_record_stop_unification_operation = yes
 	}
 }
 
@@ -545,6 +555,8 @@ cannibalism_execute_island_host_blockade = {
 		}
 		set_country_flag = achievement_cannibalism_island_host_blockaded
 		cannibalism_record_current_country_as_defeat_contributor = yes
+		event_target:cannibalism_island_host_target = { save_event_target_as = cannibalism_objective_country_target }
+		cannibalism_record_reach_island_operation = yes
 	}
 }
 
@@ -576,6 +588,8 @@ cannibalism_execute_island_host_landing = {
 		}
 		set_country_flag = achievement_cannibalism_island_host_landing
 		cannibalism_record_current_country_as_defeat_contributor = yes
+		event_target:cannibalism_island_landing_target = { save_event_target_as = cannibalism_objective_country_target }
+		cannibalism_record_reach_island_operation = yes
 	}
 }
 
@@ -678,11 +692,16 @@ cannibalism_refresh_current_country_reconstruction_idea = {
 cannibalism_initialize_global_defeat_reconstruction = {
 	set_variable = { global.achievement_cannibalism_reconstructed_states = 0 }
 	set_variable = { global.achievement_cannibalism_reconstruction_required = global.cannibalism_former_feeding_states^num }
+	clear_array = global.cannibalism_reconstruction_participants
 	for_each_scope_loop = {
 		array = global.cannibalism_defeat_contributors
 		if = {
 			limit = { exists = yes }
 			set_country_flag = cannibalism_reconstruction_participant
+			if = {
+				limit = { NOT = { is_in_array = { array = global.cannibalism_reconstruction_participants value = THIS } } }
+				add_to_array = { array = global.cannibalism_reconstruction_participants value = THIS }
+			}
 			cannibalism_refresh_current_country_reconstruction_idea = yes
 		}
 	}
@@ -692,6 +711,10 @@ cannibalism_initialize_global_defeat_reconstruction = {
 			if = {
 				limit = { exists = yes NOT = { is_cannibalism_country = yes } }
 				set_country_flag = cannibalism_reconstruction_participant
+				if = {
+					limit = { NOT = { is_in_array = { array = global.cannibalism_reconstruction_participants value = THIS } } }
+					add_to_array = { array = global.cannibalism_reconstruction_participants value = THIS }
+				}
 				cannibalism_refresh_current_country_reconstruction_idea = yes
 			}
 		}
@@ -794,6 +817,9 @@ cannibalism_ratify_international_compact = {
 		cannibalism_pay_reconstruction_cost = yes
 		set_country_flag = cannibalism_international_compact_member
 		set_country_flag = cannibalism_compact_vigilance_mission_active
+		set_variable = { cannibalism_compact_vigilance_start_date = global.date }
+		set_variable = { cannibalism_compact_vigilance_progress_days = constant:cannibalism_objective_value.zero }
+		set_variable = { cannibalism_compact_vigilance_duration = constant:cannibalism_objective_timing.compact_vigilance_days }
 		every_country = {
 			limit = {
 				exists = yes
@@ -812,12 +838,14 @@ cannibalism_complete_compact_vigilance = {
 		limit = { cannibalism_compact_vigilance_is_maintained = yes }
 		clr_country_flag = cannibalism_compact_vigilance_mission_active
 		set_country_flag = achievement_cannibalism_compact_vigilance_complete
+		cannibalism_retire_current_country_reconstruction_participation = yes
 	}
 }
 
 cannibalism_fail_compact_vigilance = {
 	clr_country_flag = cannibalism_compact_vigilance_mission_active
 	set_country_flag = cannibalism_compact_inspection_failed
+	cannibalism_retire_current_country_reconstruction_participation = yes
 }
 
 # ---------------------------------------------------------------------------

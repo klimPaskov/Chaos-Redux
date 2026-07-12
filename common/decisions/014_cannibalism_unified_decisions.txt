@@ -369,13 +369,19 @@ cannibalism_unified_war_machine_category = {
 	cannibalism_unified_collapse_enemy_front = {
 		icon = GFX_decision_cannibalism_unified_collapse_enemy_front
 		target_root_trigger = { cannibalism_unified_can_pay_enemy_front_collapse = yes }
-		target_trigger = { FROM = { cannibalism_unified_is_valid_enemy_front_target = yes } }
-		visible = { has_country_flag = cannibalism_unified_enemy_collapse_decisions_open FROM = { cannibalism_unified_is_valid_enemy_front_target = yes } }
+		target_trigger = { cannibalism_unified_scored_target_is_valid_from_decision = yes FROM = { cannibalism_unified_is_valid_enemy_front_target = yes } }
+		visible = { has_country_flag = cannibalism_unified_enemy_collapse_decisions_open cannibalism_unified_scored_target_is_valid_from_decision = yes FROM = { cannibalism_unified_is_valid_enemy_front_target = yes } }
 		available = { custom_trigger_tooltip = { tooltip = cannibalism_unified_enemy_front_collapse_requirements_tt hidden_trigger = { cannibalism_unified_can_pay_enemy_front_collapse = yes } } }
 		custom_cost_trigger = { hidden_trigger = { cannibalism_unified_can_pay_enemy_front_collapse = yes } }
 		custom_cost_text = cannibalism_unified_enemy_front_collapse_cost_text
 		complete_effect = { custom_effect_tooltip = cannibalism_unified_enemy_front_collapse_effect_tt hidden_effect = { FROM = { save_event_target_as = cannibalism_unified_decision_target } cannibalism_unified_execute_enemy_front_collapse = yes } }
-		ai_will_do = { base = constant:cannibalism_unified_decision_ai.urgent modifier = { factor = constant:cannibalism_unified_decision_ai.urgent_factor FROM = { is_major = yes } } }
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { cannibalism_unified_target_ai_weight = mtth:cannibalism_unified_target_decision_weight }
+				add = cannibalism_unified_target_ai_weight
+			}
+		}
 	}
 
 	cannibalism_unified_launch_naval_hunt = {
@@ -453,49 +459,73 @@ cannibalism_unified_global_campaign_category = {
 	cannibalism_unified_seed_major_enemy_army = {
 		icon = GFX_decision_cannibalism_unified_seed_major_enemy_army
 		target_root_trigger = { cannibalism_unified_can_pay_cell_operation = yes }
-		target_trigger = { FROM = { cannibalism_unified_is_valid_cell_target = yes } }
-		visible = { FROM = { cannibalism_unified_is_valid_cell_target = yes } }
+		target_trigger = { cannibalism_unified_scored_target_is_valid_from_decision = yes FROM = { cannibalism_unified_is_valid_cell_target = yes } }
+		visible = { cannibalism_unified_scored_target_is_valid_from_decision = yes FROM = { cannibalism_unified_is_valid_cell_target = yes } }
 		available = { custom_trigger_tooltip = { tooltip = cannibalism_unified_cell_operation_requirements_tt hidden_trigger = { cannibalism_unified_can_pay_cell_operation = yes } } }
 		custom_cost_trigger = { hidden_trigger = { cannibalism_unified_can_pay_cell_operation = yes } }
 		custom_cost_text = cannibalism_unified_cell_operation_cost_text
 		complete_effect = { custom_effect_tooltip = cannibalism_unified_cell_operation_effect_tt hidden_effect = { FROM = { save_event_target_as = cannibalism_unified_decision_target } cannibalism_unified_execute_cell_operation = yes } }
-		ai_will_do = { base = constant:cannibalism_unified_decision_ai.high modifier = { factor = constant:cannibalism_unified_decision_ai.preferred_factor check_variable = { global.cannibalism_network_reach < constant:cannibalism_meter.critical } } }
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { cannibalism_unified_target_ai_weight = mtth:cannibalism_unified_target_decision_weight }
+				add = cannibalism_unified_target_ai_weight
+			}
+		}
 	}
 
 	cannibalism_unified_prepare_global_campaign = {
 		icon = GFX_decision_cannibalism_unified_prepare_global_campaign
 		target_root_trigger = { cannibalism_unified_can_pay_campaign_operation = yes }
-		target_trigger = { FROM = { cannibalism_unified_is_valid_campaign_target = yes } }
-		visible = { FROM = { cannibalism_unified_is_valid_campaign_target = yes } }
+		target_trigger = { cannibalism_unified_scored_target_is_valid_from_decision = yes FROM = { cannibalism_unified_is_valid_campaign_target = yes } }
+		visible = { cannibalism_unified_scored_target_is_valid_from_decision = yes FROM = { cannibalism_unified_is_valid_campaign_target = yes } }
 		available = { custom_trigger_tooltip = { tooltip = cannibalism_unified_campaign_operation_requirements_tt hidden_trigger = { cannibalism_unified_can_pay_campaign_operation = yes } } }
 		custom_cost_trigger = { hidden_trigger = { cannibalism_unified_can_pay_campaign_operation = yes } }
 		custom_cost_text = cannibalism_unified_campaign_operation_cost_text
 		complete_effect = { custom_effect_tooltip = cannibalism_unified_campaign_operation_effect_tt hidden_effect = { FROM = { save_event_target_as = cannibalism_unified_decision_target } cannibalism_unified_execute_campaign_operation = yes } }
-		ai_will_do = { base = constant:cannibalism_unified_decision_ai.urgent modifier = { factor = constant:cannibalism_unified_decision_ai.cautious_factor has_war = yes } }
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { cannibalism_unified_target_ai_weight = mtth:cannibalism_unified_target_decision_weight }
+				add = cannibalism_unified_target_ai_weight
+			}
+		}
 	}
 
 	cannibalism_unified_issue_terror_ultimatum = {
 		icon = GFX_decision_cannibalism_unified_issue_terror_ultimatum
 		target_root_trigger = { cannibalism_unified_can_pay_terror_ultimatum = yes }
-		target_trigger = { FROM = { cannibalism_unified_is_valid_campaign_target = yes } }
-		visible = { has_country_flag = cannibalism_unified_terror_ultimata_open FROM = { cannibalism_unified_is_valid_campaign_target = yes } }
+		target_trigger = { cannibalism_unified_scored_target_is_valid_from_decision = yes FROM = { cannibalism_unified_is_valid_campaign_target = yes } }
+		visible = { has_country_flag = cannibalism_unified_terror_ultimata_open cannibalism_unified_scored_target_is_valid_from_decision = yes FROM = { cannibalism_unified_is_valid_campaign_target = yes } }
 		available = { custom_trigger_tooltip = { tooltip = cannibalism_unified_terror_ultimatum_requirements_tt hidden_trigger = { cannibalism_unified_can_pay_terror_ultimatum = yes } } }
 		custom_cost_trigger = { hidden_trigger = { cannibalism_unified_can_pay_terror_ultimatum = yes } }
 		custom_cost_text = cannibalism_unified_terror_ultimatum_cost_text
 		complete_effect = { custom_effect_tooltip = cannibalism_unified_terror_ultimatum_effect_tt hidden_effect = { FROM = { save_event_target_as = cannibalism_unified_decision_target } cannibalism_unified_execute_terror_ultimatum = yes } }
-		ai_will_do = { base = constant:cannibalism_unified_decision_ai.urgent modifier = { factor = constant:cannibalism_unified_decision_ai.cautious_factor has_war = yes } }
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { cannibalism_unified_target_ai_weight = mtth:cannibalism_unified_target_decision_weight }
+				add = cannibalism_unified_target_ai_weight
+			}
+		}
 	}
 
 	cannibalism_unified_provoke_border_incident = {
 		icon = GFX_decision_cannibalism_unified_provoke_border_incident
 		target_root_trigger = { cannibalism_unified_can_pay_border_incident = yes }
-		target_trigger = { FROM = { cannibalism_unified_is_valid_border_incident_target = yes } }
-		visible = { has_country_flag = cannibalism_unified_border_incident_decisions_open FROM = { cannibalism_unified_is_valid_border_incident_target = yes } }
+		target_trigger = { cannibalism_unified_scored_target_is_valid_from_decision = yes FROM = { cannibalism_unified_is_valid_border_incident_target = yes } }
+		visible = { has_country_flag = cannibalism_unified_border_incident_decisions_open cannibalism_unified_scored_target_is_valid_from_decision = yes FROM = { cannibalism_unified_is_valid_border_incident_target = yes } }
 		available = { custom_trigger_tooltip = { tooltip = cannibalism_unified_border_incident_requirements_tt hidden_trigger = { cannibalism_unified_can_pay_border_incident = yes } } }
 		custom_cost_trigger = { hidden_trigger = { cannibalism_unified_can_pay_border_incident = yes } }
 		custom_cost_text = cannibalism_unified_border_incident_cost_text
 		complete_effect = { custom_effect_tooltip = cannibalism_unified_border_incident_effect_tt hidden_effect = { FROM = { save_event_target_as = cannibalism_unified_decision_target } cannibalism_unified_execute_border_incident = yes } }
-		ai_will_do = { base = constant:cannibalism_unified_decision_ai.high modifier = { factor = constant:cannibalism_unified_decision_ai.urgent_factor FROM = { is_major = yes } } }
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { cannibalism_unified_target_ai_weight = mtth:cannibalism_unified_target_decision_weight }
+				add = cannibalism_unified_target_ai_weight
+			}
+		}
 	}
 
 	cannibalism_unified_integrate_postwar_state = {
@@ -515,13 +545,19 @@ cannibalism_unified_global_campaign_category = {
 	cannibalism_unified_destroy_coalition_hub = {
 		icon = GFX_decision_cannibalism_unified_destroy_coalition_hub
 		target_root_trigger = { cannibalism_unified_can_pay_counterwar_operation = yes }
-		target_trigger = { FROM = { cannibalism_unified_is_valid_counterwar_target = yes } }
-		visible = { FROM = { cannibalism_unified_is_valid_counterwar_target = yes } }
+		target_trigger = { cannibalism_unified_scored_target_is_valid_from_decision = yes FROM = { cannibalism_unified_is_valid_counterwar_target = yes } }
+		visible = { cannibalism_unified_scored_target_is_valid_from_decision = yes FROM = { cannibalism_unified_is_valid_counterwar_target = yes } }
 		available = { custom_trigger_tooltip = { tooltip = cannibalism_unified_counterwar_operation_requirements_tt hidden_trigger = { cannibalism_unified_can_pay_counterwar_operation = yes } } }
 		custom_cost_trigger = { hidden_trigger = { cannibalism_unified_can_pay_counterwar_operation = yes } }
 		custom_cost_text = cannibalism_unified_counterwar_operation_cost_text
 		complete_effect = { custom_effect_tooltip = cannibalism_unified_counterwar_operation_effect_tt hidden_effect = { FROM = { save_event_target_as = cannibalism_unified_decision_target } cannibalism_unified_execute_counterwar_operation = yes } }
-		ai_will_do = { base = constant:cannibalism_unified_decision_ai.urgent modifier = { factor = constant:cannibalism_unified_decision_ai.urgent_factor FROM = { is_major = yes } } }
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { cannibalism_unified_target_ai_weight = mtth:cannibalism_unified_target_decision_weight }
+				add = cannibalism_unified_target_ai_weight
+			}
+		}
 	}
 
 	cannibalism_unified_convert_counterwar_pressure = {
