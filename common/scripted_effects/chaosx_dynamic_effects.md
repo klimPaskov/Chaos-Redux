@@ -12,6 +12,8 @@ Before adding new dynamic logic, check this file and reuse an existing effect if
 - [chaosx_startup_mark_existing_scientists](#chaosx_startup_mark_existing_scientists)
 - [chaosx_startup_clear_generated_scientist_helper_flags](#chaosx_startup_clear_generated_scientist_helper_flags)
 - [call_natural_disaster](#call_natural_disaster)
+- [natural_disaster_register_relief_recipient_country](#natural_disaster_register_relief_recipient_country)
+- [natural_disaster_unregister_relief_recipient_country_if_inactive](#natural_disaster_unregister_relief_recipient_country_if_inactive)
 - [natural_disaster_transfer_pending_jobs_for_state](#natural_disaster_transfer_pending_jobs_for_state)
 - [natural_disaster_append_abnormal_history_record](#natural_disaster_append_abnormal_history_record)
 - [natural_disaster_update_abnormal_history_record](#natural_disaster_update_abnormal_history_record)
@@ -77,6 +79,9 @@ Inputs are temporary variables set immediately before the call:
 - `natural_disaster_call_family_group`: a normal or abnormal `natural_disaster_family_group.*`; leave `random` when a specific family is supplied
 - `natural_disaster_call_target_mode`: `natural_disaster_target_mode.*`
 - `natural_disaster_call_target_region`: strategic-region id for `selected_region`
+- `natural_disaster_call_origin_state_supplied`: set to `1` only after saving `natural_disaster_call_origin_state`; required for direct ashfall, lahar, and tsunami requests
+- `natural_disaster_call_origin_family`: physical cause at the supplied origin; ashfall/lahar accept volcanic eruption or massive eruption, while tsunami accepts a compatible seismic, volcanic, rupture, or ocean-impact cause
+- `natural_disaster_call_origin_medium`: `natural_disaster_origin_medium.*`; normally `none` or `land_impact`, and required as `ocean_impact` for a meteor-origin tsunami
 - `natural_disaster_call_severity`: `natural_disaster_severity.*`
 - `natural_disaster_call_sequence_mode`: `natural_disaster_sequence_mode.*`
 - `natural_disaster_call_sequence_count`: optional exact primary-impact count
@@ -96,6 +101,8 @@ Inputs are temporary variables set immediately before the call:
 - `natural_disaster_call_log_mode`: `natural_disaster_log_mode.*`
 - `natural_disaster_call_scenario_type`: Disaster Barrage family mix, validated against `natural_disaster_scenario_type.*`
 - `natural_disaster_call_scenario_intensity`: Disaster Barrage intensity, validated against `natural_disaster_scenario_intensity.*`
+- `natural_disaster_call_evolution_override_supplied` and `natural_disaster_call_evolution_override`: optionally request a specific stage from baseline through Evolution III; a stage above the current world evolution requires the scenario/debug-only manual evolution proof
+- `natural_disaster_call_manual_evolution_bypass`: permits a manual scenario or debug call to use its intensity-selected evolution without unlocking or recording that evolution globally; rejected for every other caller type
 - `natural_disaster_call_manual_abnormal_bypass`: permits an abnormal scenario to bypass only the abnormal-family cooldown; accepted only for scenario or debug callers
 - `natural_disaster_call_target_state_supplied`: set to `1` in the same effect chain after saving `natural_disaster_call_target_state`
 - `natural_disaster_call_target_country_supplied`: set to `1` in the same effect chain after saving `natural_disaster_call_target_country`
@@ -104,7 +111,10 @@ Optional regular event targets:
 
 - `natural_disaster_call_target_state` plus `natural_disaster_call_target_state_supplied = 1` for `selected_state`
 - `natural_disaster_call_target_country` plus `natural_disaster_call_target_country_supplied = 1` for `selected_country`
+- `natural_disaster_call_origin_state` plus `natural_disaster_call_origin_state_supplied = 1` for origin-dependent ashfall, lahar, or tsunami calls
 - either or both target/proof pairs for `caller_provided`
+
+`natural_disaster_call_causal_context_*`, sequence-id and segment overrides, and `natural_disaster_call_internal_chain_override` are reserved for Event 013's own persisted physical-chain continuation. Their proof is validated against the live source card, sequence, evolution, family, and target; other callers cannot use them to bypass evolution or abnormal locks.
 
 Outputs are temporary variables. A caller that needs to read them after the
 scripted effect should initialize them in its outer effect block first:
@@ -155,9 +165,63 @@ set_temp_variable = { natural_disaster_call_sequence_mode = constant:natural_dis
 call_natural_disaster = yes
 ```
 
+## natural_disaster_resolve_ordinary_family
+
+Internal Event 013 caller-scope helper for an Evolution III random request whose first abnormal draw is blocked by the global abnormal-family cooldown. It draws only from the ordinary family pool before target resolution, so the dispatcher and canonical API never promise a blocked abnormal family and never substitute one specific family for another.
+
+Input: `natural_disaster_force_ordinary_pool > 0` in the random resolver path. Output: `natural_disaster_current_family` set to one ordinary family. It does not allocate a sequence, select a target, create history, or change the cooldown. Example: `natural_disaster_resolve_ordinary_family = yes` after an unpresented random abnormal draw fails `natural_disaster_abnormal_family_is_allowed`.
+
+## natural_disaster_register_relief_recipient_country
+
+This Event 013 internal helper adds a country to the bounded foreign-relief recipient ledger when it controls at least one actionable recovery card. Chain-only warning cards and cards marked as unresolved territory do not qualify.
+
+Scope: Country.
+
+Inputs: none. The helper reads the current country's controlled states and their Event 013 card flags.
+
+Defaults: it does nothing when the country has no actionable recovery card or is already registered.
+
+Outputs and side effects:
+
+- adds `THIS` to `global.natural_disaster_relief_recipient_countries` at most once;
+- runs only from recovery-card activation or transferred-responsibility registration;
+- performs no whole-world country iteration.
+
+Example:
+
+```txt
+controller = {
+	natural_disaster_register_relief_recipient_country = yes
+}
+```
+
+## natural_disaster_unregister_relief_recipient_country_if_inactive
+
+This Event 013 internal helper removes a country from the foreign-relief recipient ledger after its last actionable recovery card leaves its control. A second qualifying card keeps the country registered.
+
+Scope: Country.
+
+Inputs: none. The helper reads the current country's controlled states and its existing ledger membership.
+
+Defaults: it does nothing when another actionable recovery card remains or the country is not registered.
+
+Outputs and side effects:
+
+- removes `THIS` from `global.natural_disaster_relief_recipient_countries` only after the last qualifying card closes or transfers away;
+- is called by ordinary card closure and former-controller transfer cleanup;
+- leaves final eligibility to the decision layer, which independently rechecks country existence, card state, war, and variant-specific requirements.
+
+Example:
+
+```txt
+controller = {
+	natural_disaster_unregister_relief_recipient_country_if_inactive = yes
+}
+```
+
 ## natural_disaster_transfer_pending_jobs_for_state
 
-This Event 013 internal helper migrates the four aligned delayed-job arrays for one active disaster state when state control changes. It preserves the sequence id and globally reserved due date, schedules replacement worker wakeups on the new responsible country, and leaves the former country's unrelated queue rows untouched.
+This Event 013 internal helper migrates all 26 aligned delayed-job snapshot arrays for one active disaster state when state control changes. It preserves the family, severity, sequence, dates, warning result, damage report, follow-up context, path context, and globally reserved due date, schedules replacement worker wakeups on the new responsible country, and leaves the former country's unrelated queue rows untouched.
 
 Scope: Former responsible country. It is called only by `natural_disaster_handle_state_control_change` from the narrow `on_state_control_changed` hook.
 

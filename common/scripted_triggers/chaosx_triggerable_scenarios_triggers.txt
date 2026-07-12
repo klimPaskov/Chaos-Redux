@@ -13,6 +13,146 @@ triggerable_scenario_can_spawn_zombie_state = {
 	}
 }
 
+# Country-scope Disaster Barrage target proofs. These mirror Event 013's hard
+# geography routes before the confirmation button is enabled; score bonuses do
+# not manufacture eligibility. Maximum Geological, Random, Full Catalogue, and
+# every Skyfall pool may begin with a land meteor, so any otherwise valid impact
+# state is enough for those branches.
+triggerable_scenario_disaster_barrage_has_geological_target = {
+	if = {
+		limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum } }
+		any_owned_state = {
+			is_controlled_by = ROOT
+			natural_disaster_is_valid_impact_state = yes
+		}
+	}
+	else = {
+		any_owned_state = {
+			is_controlled_by = ROOT
+			natural_disaster_is_valid_impact_state = yes
+			OR = {
+				natural_disaster_state_is_seismic_zone = yes
+				AND = {
+					natural_disaster_state_is_dry_slope_zone = yes
+					OR = {
+						natural_disaster_state_is_seismic_zone = yes
+						natural_disaster_state_is_drought_zone = yes
+						natural_disaster_state_is_heat_zone = yes
+						natural_disaster_state_is_arid_zone = yes
+					}
+				}
+				AND = {
+					natural_disaster_state_is_wet_slope_zone = yes
+					OR = {
+						natural_disaster_state_is_flood_exposed_zone = yes
+						natural_disaster_state_is_tropical_storm_basin = yes
+						natural_disaster_state_is_convective_storm_zone = yes
+					}
+				}
+				natural_disaster_state_is_volcanic_vent_zone = yes
+			}
+		}
+	}
+}
+
+triggerable_scenario_disaster_barrage_has_weather_target = {
+	any_owned_state = {
+		is_controlled_by = ROOT
+		natural_disaster_is_valid_impact_state = yes
+		OR = {
+			natural_disaster_state_is_flood_exposed_zone = yes
+			AND = {
+				is_coastal = yes
+				natural_disaster_state_is_tropical_storm_basin = yes
+			}
+			natural_disaster_state_is_windstorm_zone = yes
+			natural_disaster_state_is_convective_storm_zone = yes
+			natural_disaster_state_is_hail_zone = yes
+			natural_disaster_state_is_blizzard_zone = yes
+			natural_disaster_state_is_cold_zone = yes
+			AND = {
+				natural_disaster_state_is_heat_zone = yes
+				NOT = { has_state_flag = natural_disaster_heat_aftermath }
+				OWNER = {
+					NOT = { has_idea = heat_wave }
+					NOT = { has_country_flag = natural_disaster_heat_exclusion }
+				}
+			}
+			natural_disaster_state_is_drought_zone = yes
+			natural_disaster_state_is_arid_zone = yes
+			AND = {
+				natural_disaster_state_is_wildfire_fuel_zone = yes
+				OR = {
+					natural_disaster_state_is_heat_zone = yes
+					natural_disaster_state_is_drought_zone = yes
+					natural_disaster_state_is_arid_zone = yes
+					natural_disaster_state_is_windstorm_zone = yes
+					natural_disaster_state_is_convective_storm_zone = yes
+				}
+			}
+			AND = {
+				check_variable = { ROOT.triggerable_scenarios_intensity > constant:triggerable_scenario_intensity.low }
+				natural_disaster_state_is_tornado_zone = yes
+			}
+			AND = {
+				check_variable = { ROOT.triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum }
+				natural_disaster_state_is_storm_corridor_zone = yes
+			}
+		}
+	}
+}
+
+triggerable_scenario_disaster_barrage_has_random_full_target = {
+	OR = {
+		triggerable_scenario_disaster_barrage_has_geological_target = yes
+		triggerable_scenario_disaster_barrage_has_weather_target = yes
+		any_owned_state = {
+			is_controlled_by = ROOT
+			natural_disaster_is_valid_impact_state = yes
+			natural_disaster_state_is_storm_surge_coast = yes
+		}
+	}
+}
+
+triggerable_scenario_disaster_barrage_has_selected_type_target = {
+	if = {
+		limit = { check_variable = { triggerable_scenarios_disaster_barrage_type = constant:natural_disaster_scenario_type.geological_crisis } }
+		triggerable_scenario_disaster_barrage_has_geological_target = yes
+	}
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_disaster_barrage_type = constant:natural_disaster_scenario_type.weather_crisis } }
+		triggerable_scenario_disaster_barrage_has_weather_target = yes
+	}
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_disaster_barrage_type = constant:natural_disaster_scenario_type.skyfall_crisis } }
+		any_owned_state = {
+			is_controlled_by = ROOT
+			natural_disaster_is_valid_impact_state = yes
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { triggerable_scenarios_disaster_barrage_type = constant:natural_disaster_scenario_type.random_barrage }
+				check_variable = { triggerable_scenarios_disaster_barrage_type = constant:natural_disaster_scenario_type.full_catalogue }
+			}
+		}
+		if = {
+			limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum } }
+			any_owned_state = {
+				is_controlled_by = ROOT
+				natural_disaster_is_valid_impact_state = yes
+			}
+		}
+		else = {
+			triggerable_scenario_disaster_barrage_has_random_full_target = yes
+		}
+	}
+	else = {
+		always = no
+	}
+}
+
 triggerable_scenario_can_launch_selected = {
 	OR = {
 		check_variable = {
@@ -69,10 +209,7 @@ triggerable_scenario_can_launch_selected = {
 					NOT = { has_country_flag = achievement_nd_barrage_aftermath_unresolved }
 				}
 			}
-			any_owned_state = {
-				is_controlled_by = ROOT
-				natural_disaster_is_valid_impact_state = yes
-			}
+			triggerable_scenario_disaster_barrage_has_selected_type_target = yes
 		}
 		check_variable = {
 			var = triggerable_scenarios_selected

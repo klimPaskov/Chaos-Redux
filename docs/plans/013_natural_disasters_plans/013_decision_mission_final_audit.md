@@ -4,9 +4,17 @@ Final re-audit snapshot: 2026-07-10 03:57 Europe/Kyiv, after the deadline, queue
 
 Audit mode: gameplay and localisation were read-only. This report is the auditor's only edit. The bounded surface was the two former P1 blockers, the ownership/controller recovery path, and parser/scope risk in the replacement logic.
 
+## 2026-07-12 completion addendum
+
+The broader completion pass retains the bounded deadline and transfer conclusions below and adds dynamic foreign-relief discovery. Recovery-card activation registers its controller in `global.natural_disaster_relief_recipient_countries`; last-card closure removes an inactive controller; state-control transfer updates both the former and new controllers. All four relief variants target this bounded ledger and then apply their own adjacency, faction, subject, same-continent-major, positive-opinion, coastal, transport, industry, density, disease, and non-enemy predicates. This remains event-driven and does not add a periodic whole-world scan.
+
+The final archetype audit found 24 train affordability gates and 25 negative train deductions. Every one now uses vanilla's `train_equipment` archetype rather than `train_equipment_1`, so standard, civilian, and armored trains all count toward the same rolling-stock costs. Vanilla `PHI.txt` and `SOV.txt` provide the matching archetype gate plus negative stockpile-removal precedent; no Event 013 route grants a specific train model.
+
+Part 10's port-lifeline cooperation leg has one explicit engine constraint: the supported country-trigger interface does not expose a bilateral live resource-trade relationship trigger, so positive opinion is used as the relationship proxy. Faction and subject links remain separate qualifying routes. Player-facing text does not claim exact live-trade detection.
+
 ## Verdict
 
-**Clean for the bounded re-audit.** No P0, P1, P2, or P3 findings remain on the audited decision/mission deadline, transfer lifecycle, or current-controller recovery surfaces. The two former P1 blockers are closed. No fallback or design simplification was used, and no further improvement-loop planning pass is required for these fixes.
+**Clean for the bounded re-audit.** No P0, P1, P2, or P3 findings remain on the audited decision/mission deadline, transfer lifecycle, or current-controller recovery surfaces. The two former P1 blockers are closed. No fallback or design simplification was used within that bounded repair. The later foreign-relief completion pass carries the documented port-lifeline relationship proxy above; no further improvement-loop planning pass is required for these fixes.
 
 ## Severity-tagged findings
 
@@ -23,7 +31,7 @@ Audit mode: gameplay and localisation were read-only. This report is the auditor
 ### Pending-job transfer and due-date preservation
 
 - The control-change on-action preserves the documented `ROOT` new-controller, `FROM` former-controller, and `FROM.FROM` state layout at `common/on_actions/013_natural_disasters_on_actions.txt:14-29`.
-- `natural_disaster_transfer_pending_jobs_for_state` scans the former country's queue at `common/scripted_effects/013_natural_disasters_effects.txt:3925-3976`. A match captures the type, sequence id, and due date from the same dynamic index, removes that index from all four aligned arrays, and appends the unchanged state, type, sequence id, and due date to the new responsible country at `:3935-3960`.
+- `natural_disaster_transfer_pending_jobs_for_state` scans the former country's queue by dynamic index. A match captures all 26 immutable job fields, removes that index from every aligned delayed-job snapshot array, and appends the complete unchanged row to the new responsible country. This preserves state, type, family, severity, sequence, dates, warning result, report damage, follow-up, and abnormal-path context across responsibility transfer.
 - A matched row does not increment the loop index, so the row shifted into the removed index is checked next; only a non-match increments the index at `:3967-3970`. This migrates every queued row for the transferred state without skipping adjacent matches.
 - The helper does not call the reservation release or reservation allocation effects. The global sequence/day reservation therefore remains singular and unchanged.
 - The new worker delay is `persisted due date - global date`, with only an already-overdue result floored to zero at `:3950-3955`. A due-today row retains `days = 0` at `:3962-3965`, which is explicitly supported by the official `country_event` effect and has a vanilla on-action precedent in `common/on_actions/06_bftb_on_actions.txt:11`. A future row wakes after its exact remaining delay; an overdue row wakes at the earliest supported time.
@@ -45,6 +53,6 @@ Audit mode: gameplay and localisation were read-only. This report is the auditor
 
 ## Simplifications, omissions, and blockers
 
-None within the bounded re-audit. This verdict does not replace broader Event 013 completion audits outside the two former P1s and the named ownership/controller recovery surface.
+None within the original bounded deadline/transfer re-audit. In the broader relief surface, the port-lifeline cooperation leg uses positive opinion because no supported bilateral live resource-trade relationship trigger is available. This verdict does not replace the broader Event 013 completion audit or its queued live-engine scenario matrix and source-archive blocker.
 
 Skills used: `chaos-redux-subagents`, `chaos-redux-events`, `hoi4-decisions-missions`, and `chaos-redux-improvement-loop`. No skill was created or changed.

@@ -1,6 +1,6 @@
 # Event 013 Natural Disasters visual asset audit
 
-> Disposition, 2026-07-10: superseded as a gap inventory after implementation. Every accepted static, animated, achievement, report/news, abnormal-GUI, and six-role super-event identity identified below has source, processed, final DDS, manifest, registration, and live reference evidence. The audit remains as historical discovery evidence; current closure is in the asset manifest, GFX handoff, static/animation handoffs, and implementation validation notes.
+> Disposition, 2026-07-12: superseded as a historical gap inventory after implementation. At the time of the completion tranche, every accepted static, animated, achievement, report/news, abnormal-GUI, and six-role super-event identity had source, processed, final DDS, manifest, registration, and live-reference evidence. The current working tree retains the registered live assets but deletes the tracked `docs/assets/013_natural_disasters/` source archive as part of a concurrent repository-wide retention cleanup. Current closure therefore remains blocked on that external retention decision; use the implementation validation notes for the live-runtime evidence and this file only for historical discovery context.
 
 Audit date: 2026-07-09
 

@@ -1,5 +1,7 @@
 # Event 013 Natural Disasters live repository map
 
+> Superseded discovery snapshot, 2026-07-12: the fresh Event 013 controller, public API, decisions, GUI, assets, cluster, scenario, achievements, reports, news, and super-events described as absent below were implemented afterward. Event 099 is now the narrow dust-family bridge, Event 046 remains inert, and Event 051 remains separate. Use `013_event_completion_final_audit.md` and `docs/events/013_natural_disasters.md` for current implementation evidence.
+
 Date: 2026-07-09
 Mode: `chaosx_repo_explorer`, evidence-only mapping
 Design source: `docs/specs/013_natural_disasters_specs/`

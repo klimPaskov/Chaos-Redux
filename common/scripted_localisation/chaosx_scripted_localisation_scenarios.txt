@@ -829,3 +829,34 @@ defined_text = {
 		localization_key = chaosx.scenarios.zombie.impact.medium
 	}
 }
+
+defined_text = {
+	name = GetTriggerableScenarioLaunchStatus
+	text = {
+		trigger = {
+			check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.disaster_barrage }
+			has_global_flag = world_end
+		}
+		localization_key = chaosx.scenarios.launch_status.disaster_barrage.world_end
+	}
+	text = {
+		trigger = {
+			check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.disaster_barrage }
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum }
+			has_country_flag = achievement_nd_barrage_maximum_started
+			NOT = { has_country_flag = achievement_nd_barrage_maximum_ended }
+			NOT = { has_country_flag = achievement_nd_barrage_aftermath_unresolved }
+		}
+		localization_key = chaosx.scenarios.launch_status.disaster_barrage.unresolved
+	}
+	text = {
+		trigger = {
+			check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.disaster_barrage }
+			NOT = { triggerable_scenario_disaster_barrage_has_selected_type_target = yes }
+		}
+		localization_key = chaosx.scenarios.launch_status.disaster_barrage.no_target
+	}
+	text = {
+		localization_key = chaosx.scenarios.launch_status.ready
+	}
+}

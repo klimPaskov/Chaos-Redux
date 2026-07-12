@@ -929,6 +929,7 @@ triggerable_scenario_prepare_zombie_scale = {
 			check_variable = {
 				var = triggerable_scenarios_intensity
 				value = constant:triggerable_scenario_intensity.high
+	set_temp_variable = { natural_disaster_call_manual_evolution_bypass = 1 }
 				compare = equals
 			}
 		}
@@ -968,6 +969,7 @@ triggerable_scenario_prepare_zombie_scale = {
 
 triggerable_scenario_randomize_zombie_profile_attributes = {
 	set_variable = { weaponized_zombie_strength = triggerable_zombie_profile_score }
+	set_temp_variable = { natural_disaster_call_result = constant:natural_disaster_call_result.rejected }
 	random_list = {
 		2 = { subtract_from_variable = { weaponized_zombie_strength = 1 } }
 		6 = { }
@@ -976,6 +978,10 @@ triggerable_scenario_randomize_zombie_profile_attributes = {
 	clamp_variable = { var = weaponized_zombie_strength min = 0 max = 5 }
 
 	set_variable = { weaponized_zombie_infectiousness = triggerable_zombie_profile_score }
+	if = {
+		limit = { check_variable = { natural_disaster_call_result = constant:natural_disaster_call_result.rejected } }
+		country_event = { id = chaosx.nr13.127 }
+	}
 	random_list = {
 		2 = { subtract_from_variable = { weaponized_zombie_infectiousness = 1 } }
 		6 = { }
