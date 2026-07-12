@@ -43,7 +43,7 @@ The exact category `japan_chemical_campaign_category` uses a dedicated generated
 - Sprite: `GFX_decision_category_japan_chemical_campaign`
 - Final DDS: `gfx/interface/decisions/japan_chemical_campaign/decision_category_japan_chemical_campaign.dds`
 - Category wiring: `common/decisions/categories/japan_chemical_campaign_categories.txt`
-- Sprite definition: `interface/chaosx_decisions.gfx`
+- Sprite definition: `interface/chaosx_gfx_cleanup.gfx`
 - Source package: `docs/assets/shared_gfx_cleanup/`
 
 The two individual decisions continue to use `GFX_decision_generic_operation`; the category header provides the campaign's persistent visual identity.
