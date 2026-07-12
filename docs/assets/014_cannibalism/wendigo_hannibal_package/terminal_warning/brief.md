@@ -1,0 +1,22 @@
+# Wendigo Terminal Warning Seal Animation Brief
+
+- Asset: transformed terminal-warning seal
+- In-game use: post-reveal Wendigo transformation GUI, terminal countdown danger state
+- Frame size: 96 by 96
+- Frame count: 8
+- Sheet size: 768 by 96
+- Static fallback: `gfx/interface/event014_cannibalism/wendigo/wendigo_terminal_warning_seal_static.dds`
+- Animated sheet: `gfx/interface/event014_cannibalism/wendigo/wendigo_terminal_warning_seal_sheet.dds`
+- Static sprite: `GFX_cannibalism_wendigo_terminal_warning_seal_static`
+- Animated sprite: `GFX_cannibalism_wendigo_terminal_warning_seal_animated`
+- Animation rate: 8 FPS
+- Looping: yes
+- Play on show: yes
+- Anchor: center
+- Source mode: eight separate built-in image-generation outputs on flat magenta chroma-key backgrounds
+- Subject: invented industrial-flesh seal formed from a frozen steel rail ring, a split human-derived jaw, raw tendon, and frozen blood
+- Required drawn change: the rail ring, jaw, cracks, flesh, frost, blood, and inner light evolve in every frame
+- Prohibited: transform-only motion, primitive local geometry as final art, antlers, horns, animal skulls, runes, totems, borrowed sacred motifs, readable text
+- Reveal gate: only the public Event 014 reveal may expose the static or animated sprite; terminal-readiness state further controls animation visibility
+- Target GFX file: `interface/014_cannibalism.gfx`
+- Target GUI file: the parent-owned post-reveal Wendigo transformation GUI

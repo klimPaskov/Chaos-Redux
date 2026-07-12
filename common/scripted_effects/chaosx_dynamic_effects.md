@@ -134,8 +134,8 @@ Successful calls also expose regular event targets `natural_disaster_call_resolv
 Side effects:
 
 - reserves a unique delayed date for every subevent in the sequence
-- retries a bounded set of evolution-valid families against the caller's fixed target mode for every random-family request; selected state, country, and region scopes never widen during retries
-- requires immutable family geography before scoring a state, so infrastructure, resources, coast, agriculture, and prior hazard history can improve priority but cannot make an impossible family physically valid
+- opens with bounded weighted family draws, then visits the complete evolution-valid family pool once while preserving the caller's requested family group or Disaster Barrage type; selected state, country, and region scopes never widen during either pass
+- requires immutable family geography and compatible origin tuples before scoring a state, so infrastructure, resources, coast, agriculture, and prior hazard history can improve priority but cannot make an impossible family or origin physically valid
 - stores queued state scopes and metadata on each affected state's current controller
 - stores active aftermath data on affected states
 - merges a later caller-selected hit into an already open card for that exact state, with the latest sequence owning the card while accumulated recovery work and prior losses remain visible
@@ -631,6 +631,7 @@ Use this whenever a threat-specific system changes whether its own source flag s
 - `world_threat_source_mengele`
 - `world_threat_source_fury`
 - `world_threat_source_death`
+- `world_threat_source_cannibalism`
 - `world_threat_source_resources_found_caves`
 
 Future threats should follow the same pattern:
@@ -740,7 +741,7 @@ Example:
 ```txt
 set_temp_variable = { state_civilian_population_loss_requested = 25000 }
 set_temp_variable = { state_civilian_population_loss_minimum_remaining = 10000 }
-set_temp_variable = { state_civilian_population_loss_reason = constant:chaos_meter_deaths_reason.resource_field_incident }
+set_temp_variable = { state_civilian_population_loss_reason = constant:chaos_meter_deaths_reason.cannibalism_consumption }
 set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
 set_temp_variable = { state_civilian_population_loss_has_target_country = 1 }
 apply_exact_state_civilian_population_loss = yes
@@ -773,6 +774,55 @@ Example:
 
 ```txt
 completion_reward = {
-	grant_random_chaos_special_project_available_tech = yes
+grant_random_chaos_special_project_available_tech = yes
+}
+```
+
+## union_compatible_researched_technologies_from_donor
+
+This country-scope effect adds every compatible technology researched by a
+saved donor to the current recipient without removing any technology the
+recipient already owns. It iterates the donor's live `researched_techs` array,
+so it covers vanilla and mod technologies without a static allowlist.
+
+Scope: recipient country.
+
+Inputs:
+
+- required regular event target `technology_union_donor`: a valid donor
+  country saved in the same effect chain before it is annexed or removed.
+
+Outputs: none.
+
+Defaults: none. A missing donor event target is an invalid caller contract and
+is deliberately not converted into a silent fallback.
+
+Side effects:
+
+- grants each compatible donor technology missing from the recipient with
+  `popup = no`;
+- runs the granted technology's normal `on_research_complete` payload when it
+  has one;
+- preserves an existing recipient choice between `flexible_line` and
+  `streamlined_line`;
+- preserves an existing recipient choice between the concentrated and
+  dispersed industry families;
+- does not copy special-project completion, prototypes, facilities,
+  scientists, or project progress stored outside `researched_techs`.
+
+The recipient-side `has_tech` guard makes repeated calls idempotent for already
+owned technologies. The industry guards follow the approved multi-donor
+transfer pattern: mutually exclusive branches cannot coexist, so the
+recipient's established branch takes priority while every other compatible
+missing technology is added.
+
+Example:
+
+```txt
+event_target:absorbed_country = {
+	save_event_target_as = technology_union_donor
+}
+event_target:surviving_country = {
+	union_compatible_researched_technologies_from_donor = yes
 }
 ```

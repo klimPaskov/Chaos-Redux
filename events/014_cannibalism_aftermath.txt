@@ -1,0 +1,185 @@
+@CANNIBALISM_CAPTURE_COOPERATION_WEIGHT = 85
+@CANNIBALISM_CAPTURE_ESCAPE_WEIGHT = 15
+
+# ============================================================================
+# CHAOS REDUX - EVENT 014 CAPTURED CHARACTER OUTCOMES
+# ============================================================================
+# Every captured named warlord receives an explicit legal, intelligence, or
+# lethal outcome. The revealed unified leader receives a separate restrained
+# resolution before terminal lock. Neither event can expose him pre-reveal.
+# ============================================================================
+
+add_namespace = chaosx.nr14
+
+country_event = {
+	id = chaosx.nr14.80
+	title = chaosx.nr14.80.t
+	desc = chaosx.nr14.80.desc
+	picture = GFX_report_event_cannibalism_captured_warlord
+	is_triggered_only = yes
+	trigger = {
+		has_event_target = cannibalism_captured_warlord
+		event_target:cannibalism_captured_warlord = {
+			is_cannibalism_warlord_country = yes
+			NOT = { has_country_flag = cannibalism_warlord_character_outcome_recorded }
+		}
+	}
+
+	option = {
+		name = chaosx.nr14.80.f
+		trigger = {
+			event_target:cannibalism_captured_warlord = {
+				has_country_flag = cannibalism_warlord_anti_decapitation_open
+			}
+		}
+		ai_chance = { base = constant:cannibalism_international_response_cost.ai_critical }
+		hidden_effect = {
+			set_temp_variable = { cannibalism_character_outcome_selection = constant:cannibalism_character_outcome.escape }
+			cannibalism_resolve_captured_warlord_outcome = yes
+		}
+		custom_effect_tooltip = cannibalism_captured_warlord_anti_decapitation_escape_tt
+	}
+
+	option = {
+		name = chaosx.nr14.80.a
+		trigger = { event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } } }
+		ai_chance = {
+			base = constant:cannibalism_international_response_cost.ai_high
+			modifier = { factor = constant:cannibalism_international_response_cost.ai_urgent_factor has_government = democratic }
+		}
+		hidden_effect = {
+			set_temp_variable = { cannibalism_character_outcome_selection = constant:cannibalism_character_outcome.public_trial }
+			cannibalism_resolve_captured_warlord_outcome = yes
+		}
+		custom_effect_tooltip = cannibalism_captured_warlord_public_trial_tt
+	}
+
+	option = {
+		name = chaosx.nr14.80.b
+		trigger = { event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } } }
+		ai_chance = {
+			base = constant:cannibalism_international_response_cost.ai_medium
+			modifier = { factor = constant:cannibalism_international_response_cost.ai_urgent_factor is_major = yes }
+		}
+		hidden_effect = {
+			set_temp_variable = { cannibalism_character_outcome_selection = constant:cannibalism_character_outcome.international_tribunal }
+			cannibalism_resolve_captured_warlord_outcome = yes
+		}
+		custom_effect_tooltip = cannibalism_captured_warlord_tribunal_tt
+	}
+
+	option = {
+		name = chaosx.nr14.80.c
+		trigger = { event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } } }
+		ai_chance = { base = constant:cannibalism_international_response_cost.ai_medium }
+		hidden_effect = {
+			set_temp_variable = { cannibalism_character_outcome_selection = constant:cannibalism_character_outcome.local_prosecution }
+			cannibalism_resolve_captured_warlord_outcome = yes
+		}
+		custom_effect_tooltip = cannibalism_captured_warlord_local_prosecution_tt
+	}
+
+	option = {
+		name = chaosx.nr14.80.d
+		trigger = { event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } } }
+		ai_chance = {
+			base = constant:cannibalism_international_response_cost.ai_medium
+			modifier = { factor = constant:cannibalism_international_response_cost.ai_urgent_factor has_war = yes }
+		}
+		hidden_effect = {
+			random_list = {
+				@CANNIBALISM_CAPTURE_COOPERATION_WEIGHT = {
+					set_temp_variable = { cannibalism_character_outcome_selection = constant:cannibalism_character_outcome.intelligence_cooperation }
+					cannibalism_resolve_captured_warlord_outcome = yes
+				}
+				@CANNIBALISM_CAPTURE_ESCAPE_WEIGHT = {
+					set_temp_variable = { cannibalism_character_outcome_selection = constant:cannibalism_character_outcome.escape }
+					cannibalism_resolve_captured_warlord_outcome = yes
+				}
+			}
+		}
+		custom_effect_tooltip = cannibalism_captured_warlord_cooperation_tt
+	}
+
+	option = {
+		name = chaosx.nr14.80.e
+		trigger = { event_target:cannibalism_captured_warlord = { NOT = { has_country_flag = cannibalism_warlord_anti_decapitation_open } } }
+		ai_chance = {
+			base = constant:cannibalism_international_response_cost.ai_low
+			modifier = { factor = constant:cannibalism_international_response_cost.ai_urgent_factor has_government = fascism }
+		}
+		hidden_effect = {
+			set_temp_variable = { cannibalism_character_outcome_selection = constant:cannibalism_character_outcome.execution }
+			cannibalism_resolve_captured_warlord_outcome = yes
+		}
+		custom_effect_tooltip = cannibalism_captured_warlord_execution_tt
+	}
+}
+
+country_event = {
+	id = chaosx.nr14.81
+	title = chaosx.nr14.81.t
+	desc = chaosx.nr14.81.desc
+	picture = GFX_report_event_cannibalism_captured_hannibal
+	is_triggered_only = yes
+	trigger = {
+		has_global_flag = cannibalism_reveal_complete
+		NOT = { has_global_flag = world_end }
+		NOT = { has_global_flag = cannibalism_hannibal_character_outcome_recorded }
+		has_event_target = cannibalism_captured_hannibal
+		event_target:cannibalism_captured_hannibal = {
+			OR = {
+				is_cannibalism_unified_country = yes
+				is_cannibalism_wendigo_hannibal_country = yes
+			}
+			NOT = { has_country_flag = cannibalism_terminal_host_active }
+			NOT = { has_country_flag = cannibalism_wendigo_transformation_locked }
+		}
+	}
+
+	option = {
+		name = chaosx.nr14.81.a
+		ai_chance = {
+			base = constant:cannibalism_international_response_cost.ai_high
+			modifier = { factor = constant:cannibalism_international_response_cost.ai_urgent_factor has_government = democratic }
+		}
+		hidden_effect = {
+			set_temp_variable = { cannibalism_character_outcome_selection = constant:cannibalism_character_outcome.international_tribunal }
+			cannibalism_resolve_captured_hannibal_outcome = yes
+		}
+		custom_effect_tooltip = cannibalism_captured_hannibal_tribunal_tt
+	}
+
+	option = {
+		name = chaosx.nr14.81.b
+		ai_chance = { base = constant:cannibalism_international_response_cost.ai_medium }
+		hidden_effect = {
+			set_temp_variable = { cannibalism_character_outcome_selection = constant:cannibalism_character_outcome.disappearance }
+			cannibalism_resolve_captured_hannibal_outcome = yes
+		}
+		custom_effect_tooltip = cannibalism_captured_hannibal_disappearance_tt
+	}
+
+	option = {
+		name = chaosx.nr14.81.c
+		ai_chance = {
+			base = constant:cannibalism_international_response_cost.ai_low
+			modifier = { factor = constant:cannibalism_international_response_cost.ai_urgent_factor has_government = fascism }
+		}
+		hidden_effect = {
+			set_temp_variable = { cannibalism_character_outcome_selection = constant:cannibalism_character_outcome.execution }
+			cannibalism_resolve_captured_hannibal_outcome = yes
+		}
+		custom_effect_tooltip = cannibalism_captured_hannibal_execution_tt
+	}
+
+	option = {
+		name = chaosx.nr14.81.d
+		ai_chance = { base = constant:cannibalism_international_response_cost.ai_medium }
+		hidden_effect = {
+			set_temp_variable = { cannibalism_character_outcome_selection = constant:cannibalism_character_outcome.death_in_battle }
+			cannibalism_resolve_captured_hannibal_outcome = yes
+		}
+		custom_effect_tooltip = cannibalism_captured_hannibal_battle_death_tt
+	}
+}

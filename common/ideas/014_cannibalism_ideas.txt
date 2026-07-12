@@ -1,0 +1,585 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 014 CANNIBAL COUNTRY IDEAS
+# ============================================================================
+# Starting warlord burdens and origin identities. Their route upgrades are
+# swapped by the shared warlord tree; ordinary-country penalties remain in the
+# Event 014 dynamic-modifier file.
+# ============================================================================
+
+ideas = {
+	country = {
+		cannibalism_closed_muster_rolls = {
+			picture = cannibalism_closed_muster_rolls
+			allowed = { is_cannibalism_warlord_country = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				recruitable_population_factor = constant:cannibalism_warlord_order.closed_recruitable_population
+				ai_desired_divisions_factor = constant:cannibalism_warlord_order.closed_ai_divisions
+				trade_opinion_factor = constant:cannibalism_warlord_order.closed_trade_opinion
+				opinion_gain_monthly_factor = constant:cannibalism_warlord_order.closed_opinion_gain
+				send_volunteer_factor = constant:cannibalism_warlord_order.closed_volunteers
+				join_faction_tension = constant:cannibalism_warlord_order.closed_join_tension
+				lend_lease_tension = constant:cannibalism_warlord_order.closed_lend_lease_tension
+			}
+		}
+
+		cannibalism_warlord_survival_burdens = {
+			picture = cannibalism_warlord_survival_burdens
+			allowed = { is_cannibalism_warlord_country = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_attack_factor = constant:cannibalism_warlord_order.burden_army_attack
+				army_defence_factor = constant:cannibalism_warlord_order.burden_army_defence
+				army_speed_factor = constant:cannibalism_warlord_order.burden_army_speed
+				army_org_factor = constant:cannibalism_warlord_order.burden_army_organization
+				supply_consumption_factor = constant:cannibalism_warlord_order.burden_supply_consumption
+				out_of_supply_factor = constant:cannibalism_warlord_order.burden_out_of_supply
+				planning_speed = constant:cannibalism_warlord_order.burden_planning_speed
+				max_planning = constant:cannibalism_warlord_order.burden_max_planning
+				army_org_regain = constant:cannibalism_warlord_order.burden_organization_regain
+				command_power_gain_mult = constant:cannibalism_warlord_order.burden_command_power_gain
+				max_command_power = constant:cannibalism_warlord_order.burden_max_command_power
+				consumer_goods_factor = constant:cannibalism_warlord_order.burden_consumer_goods
+				production_factory_efficiency_gain_factor = constant:cannibalism_warlord_order.burden_efficiency_gain
+				production_factory_max_efficiency_factor = constant:cannibalism_warlord_order.burden_max_efficiency
+				local_resources_factor = constant:cannibalism_warlord_order.burden_local_resources
+			}
+		}
+
+		cannibalism_island_host_origin = {
+			picture = cannibalism_island_host_origin
+			allowed = { has_country_flag = cannibalism_origin_island_host }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				naval_invasion_capacity = 10
+				convoy_raiding_efficiency_factor = 0.25
+				naval_speed_factor = 0.10
+				industrial_capacity_dockyard = 0.15
+				supply_consumption_factor = 0.10
+			}
+		}
+
+		cannibalism_siege_commune_origin = {
+			picture = cannibalism_siege_commune_origin
+			allowed = { has_country_flag = cannibalism_origin_siege_commune }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_defence_factor = 0.16
+				dig_in_speed_factor = 0.35
+				max_dig_in = 4
+				production_factory_max_efficiency_factor = 0.10
+				army_speed_factor = -0.10
+			}
+		}
+
+		cannibalism_march_host_origin = {
+			picture = cannibalism_march_host_origin
+			allowed = { has_country_flag = cannibalism_origin_march_host }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_attack_factor = 0.12
+				army_speed_factor = 0.15
+				planning_speed = 0.10
+				supply_consumption_factor = 0.22
+				army_fuel_consumption_factor = 0.12
+			}
+		}
+
+		cannibalism_prison_host_origin = {
+			picture = cannibalism_prison_host_origin
+			allowed = { has_country_flag = cannibalism_origin_prison_host }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				resistance_target_on_our_occupied_states = -0.10
+				enemy_operative_detection_chance_factor = 0.20
+				army_org_factor = -0.05
+				training_time_factor = -0.10
+			}
+		}
+
+		cannibalism_archipelago_hunt = {
+			picture = cannibalism_archipelago_hunt
+			allowed = { has_country_flag = cannibalism_origin_island_host }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				naval_invasion_capacity = 20
+				convoy_raiding_efficiency_factor = 0.35
+				naval_speed_factor = 0.15
+				industrial_capacity_dockyard = 0.20
+				supply_consumption_factor = -0.08
+			}
+		}
+
+		cannibalism_city_that_eats = {
+			picture = cannibalism_city_that_eats
+			allowed = { has_country_flag = cannibalism_origin_siege_commune }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_attack_factor = 0.12
+				army_defence_factor = 0.25
+				dig_in_speed_factor = 0.50
+				max_dig_in = 6
+				production_factory_max_efficiency_factor = 0.15
+			}
+		}
+
+		cannibalism_moving_front = {
+			picture = cannibalism_moving_front
+			allowed = { has_country_flag = cannibalism_origin_march_host }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_attack_factor = 0.18
+				army_speed_factor = 0.20
+				planning_speed = 0.20
+				supply_consumption_factor = -0.08
+				army_fuel_consumption_factor = -0.10
+			}
+		}
+
+		cannibalism_lockhouse_network = {
+			picture = cannibalism_lockhouse_network
+			allowed = { has_country_flag = cannibalism_origin_prison_host }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				enemy_operative_detection_chance_factor = 0.35
+				resistance_target_on_our_occupied_states = -0.15
+				training_time_factor = -0.20
+				army_org_regain = 0.12
+				political_power_gain = 0.08
+			}
+		}
+
+		cannibalism_unified_command_burden = {
+			picture = cannibalism_unified_command_burden
+			allowed = { is_cannibalism_unified_country = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				recruitable_population_factor = constant:cannibalism_unified_idea.recruitable_population
+				army_attack_factor = constant:cannibalism_unified_idea.army_attack
+				army_org_factor = constant:cannibalism_unified_idea.army_organization
+				planning_speed = constant:cannibalism_unified_idea.planning
+				land_reinforce_rate = constant:cannibalism_unified_idea.reinforce
+				supply_consumption_factor = constant:cannibalism_unified_idea.supply_burden
+				consumer_goods_factor = constant:cannibalism_unified_idea.consumer_goods
+				trade_opinion_factor = constant:cannibalism_unified_idea.trade_opinion
+				opinion_gain_monthly_factor = constant:cannibalism_unified_idea.opinion_gain
+				ai_desired_divisions_factor = constant:cannibalism_unified_idea.ai_divisions
+			}
+		}
+
+		# --------------------------------------------------------------------
+		# Post-reveal unified route ideas. Focus rewards replace each root with
+		# its capstone, so only one disposition, hierarchy, and Larder spirit
+		# can remain active at once.
+		# --------------------------------------------------------------------
+
+		cannibalism_retained_lieutenants = {
+			picture = cannibalism_retained_lieutenants
+			allowed = {
+				is_cannibalism_unified_country = yes
+				has_global_flag = cannibalism_reveal_complete
+				NOT = { has_country_flag = cannibalism_wendigo_hannibal_country }
+			}
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_org_regain = constant:cannibalism_unified_route_idea.retained_lieutenants_org_regain
+				planning_speed = constant:cannibalism_unified_route_idea.retained_lieutenants_planning_speed
+				command_power_gain_mult = constant:cannibalism_unified_route_idea.retained_lieutenants_command_power_gain
+				max_command_power = constant:cannibalism_unified_route_idea.retained_lieutenants_max_command_power
+				political_power_gain = constant:cannibalism_unified_route_idea.retained_lieutenants_political_power_gain
+			}
+		}
+
+		cannibalism_council_of_retained_hosts = {
+			picture = cannibalism_council_of_retained_hosts
+			allowed = {
+				is_cannibalism_unified_country = yes
+				has_global_flag = cannibalism_reveal_complete
+				NOT = { has_country_flag = cannibalism_wendigo_hannibal_country }
+			}
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_org_regain = constant:cannibalism_unified_route_idea.council_retained_hosts_org_regain
+				planning_speed = constant:cannibalism_unified_route_idea.council_retained_hosts_planning_speed
+				command_power_gain_mult = constant:cannibalism_unified_route_idea.council_retained_hosts_command_power_gain
+				max_command_power = constant:cannibalism_unified_route_idea.council_retained_hosts_max_command_power
+				political_power_gain = constant:cannibalism_unified_route_idea.council_retained_hosts_political_power_gain
+			}
+		}
+
+		cannibalism_warlords_broken = {
+			picture = cannibalism_warlords_broken
+			allowed = {
+				is_cannibalism_unified_country = yes
+				has_global_flag = cannibalism_reveal_complete
+				NOT = { has_country_flag = cannibalism_wendigo_hannibal_country }
+			}
+			allowed_civil_war = { always = yes }
+			modifier = {
+				political_power_gain = constant:cannibalism_unified_route_idea.warlords_broken_political_power_gain
+				command_power_gain_mult = constant:cannibalism_unified_route_idea.warlords_broken_command_power_gain
+				stability_factor = constant:cannibalism_unified_route_idea.warlords_broken_stability
+				resistance_target_on_our_occupied_states = constant:cannibalism_unified_route_idea.warlords_broken_resistance_target
+				army_leader_cost_factor = constant:cannibalism_unified_route_idea.warlords_broken_army_leader_cost
+			}
+		}
+
+		cannibalism_authority_without_rivals = {
+			picture = cannibalism_authority_without_rivals
+			allowed = {
+				is_cannibalism_unified_country = yes
+				has_global_flag = cannibalism_reveal_complete
+				NOT = { has_country_flag = cannibalism_wendigo_hannibal_country }
+			}
+			allowed_civil_war = { always = yes }
+			modifier = {
+				political_power_gain = constant:cannibalism_unified_route_idea.authority_without_rivals_political_power_gain
+				command_power_gain_mult = constant:cannibalism_unified_route_idea.authority_without_rivals_command_power_gain
+				army_attack_factor = constant:cannibalism_unified_route_idea.authority_without_rivals_army_attack
+				stability_factor = constant:cannibalism_unified_route_idea.authority_without_rivals_stability
+				resistance_target_on_our_occupied_states = constant:cannibalism_unified_route_idea.authority_without_rivals_resistance_target
+				army_leader_cost_factor = constant:cannibalism_unified_route_idea.authority_without_rivals_army_leader_cost
+			}
+		}
+
+		cannibalism_rivals_in_chains = {
+			picture = cannibalism_rivals_in_chains
+			allowed = {
+				is_cannibalism_unified_country = yes
+				has_global_flag = cannibalism_reveal_complete
+				NOT = { has_country_flag = cannibalism_wendigo_hannibal_country }
+			}
+			allowed_civil_war = { always = yes }
+			modifier = {
+				consumer_goods_factor = constant:cannibalism_unified_route_idea.rivals_in_chains_consumer_goods
+				local_resources_factor = constant:cannibalism_unified_route_idea.rivals_in_chains_local_resources
+				compliance_growth = constant:cannibalism_unified_route_idea.rivals_in_chains_compliance_growth
+				resistance_target_on_our_occupied_states = constant:cannibalism_unified_route_idea.rivals_in_chains_resistance_target
+				political_power_gain = constant:cannibalism_unified_route_idea.rivals_in_chains_political_power_gain
+			}
+		}
+
+		cannibalism_dominion_of_chains = {
+			picture = cannibalism_dominion_of_chains
+			allowed = {
+				is_cannibalism_unified_country = yes
+				has_global_flag = cannibalism_reveal_complete
+				NOT = { has_country_flag = cannibalism_wendigo_hannibal_country }
+			}
+			allowed_civil_war = { always = yes }
+			modifier = {
+				consumer_goods_factor = constant:cannibalism_unified_route_idea.dominion_of_chains_consumer_goods
+				local_resources_factor = constant:cannibalism_unified_route_idea.dominion_of_chains_local_resources
+				compliance_growth = constant:cannibalism_unified_route_idea.dominion_of_chains_compliance_growth
+				resistance_target_on_our_occupied_states = constant:cannibalism_unified_route_idea.dominion_of_chains_resistance_target
+				political_power_gain = constant:cannibalism_unified_route_idea.dominion_of_chains_political_power_gain
+			}
+		}
+
+		cannibalism_one_command = {
+			picture = cannibalism_one_command
+			allowed = {
+				is_cannibalism_unified_country = yes
+				has_global_flag = cannibalism_reveal_complete
+				NOT = { has_country_flag = cannibalism_wendigo_hannibal_country }
+			}
+			allowed_civil_war = { always = yes }
+			modifier = {
+				planning_speed = constant:cannibalism_unified_route_idea.one_command_planning_speed
+				land_reinforce_rate = constant:cannibalism_unified_route_idea.one_command_reinforce_rate
+				army_org_factor = constant:cannibalism_unified_route_idea.one_command_army_organization
+				supply_consumption_factor = constant:cannibalism_unified_route_idea.one_command_supply_consumption
+				political_power_gain = constant:cannibalism_unified_route_idea.one_command_political_power_gain
+			}
+		}
+
+		cannibalism_single_operational_will = {
+			picture = cannibalism_single_operational_will
+			allowed = {
+				is_cannibalism_unified_country = yes
+				has_global_flag = cannibalism_reveal_complete
+				NOT = { has_country_flag = cannibalism_wendigo_hannibal_country }
+			}
+			allowed_civil_war = { always = yes }
+			modifier = {
+				planning_speed = constant:cannibalism_unified_route_idea.single_operational_will_planning_speed
+				max_planning = constant:cannibalism_unified_route_idea.single_operational_will_max_planning
+				land_reinforce_rate = constant:cannibalism_unified_route_idea.single_operational_will_reinforce_rate
+				army_org_factor = constant:cannibalism_unified_route_idea.single_operational_will_army_organization
+				supply_consumption_factor = constant:cannibalism_unified_route_idea.single_operational_will_supply_consumption
+				political_power_gain = constant:cannibalism_unified_route_idea.single_operational_will_political_power_gain
+			}
+		}
+
+		cannibalism_many_jaws = {
+			picture = cannibalism_many_jaws
+			allowed = {
+				is_cannibalism_unified_country = yes
+				has_global_flag = cannibalism_reveal_complete
+				NOT = { has_country_flag = cannibalism_wendigo_hannibal_country }
+			}
+			allowed_civil_war = { always = yes }
+			modifier = {
+				experience_gain_army_factor = constant:cannibalism_unified_route_idea.many_jaws_army_experience
+				army_org_regain = constant:cannibalism_unified_route_idea.many_jaws_org_regain
+				max_command_power = constant:cannibalism_unified_route_idea.many_jaws_max_command_power
+				planning_speed = constant:cannibalism_unified_route_idea.many_jaws_planning_speed
+				political_power_gain = constant:cannibalism_unified_route_idea.many_jaws_political_power_gain
+			}
+		}
+
+		cannibalism_confederation_under_one_name = {
+			picture = cannibalism_confederation_under_one_name
+			allowed = {
+				is_cannibalism_unified_country = yes
+				has_global_flag = cannibalism_reveal_complete
+				NOT = { has_country_flag = cannibalism_wendigo_hannibal_country }
+			}
+			allowed_civil_war = { always = yes }
+			modifier = {
+				experience_gain_army_factor = constant:cannibalism_unified_route_idea.confederation_army_experience
+				army_org_regain = constant:cannibalism_unified_route_idea.confederation_org_regain
+				max_command_power = constant:cannibalism_unified_route_idea.confederation_max_command_power
+				command_power_gain_mult = constant:cannibalism_unified_route_idea.confederation_command_power_gain
+				planning_speed = constant:cannibalism_unified_route_idea.confederation_planning_speed
+				political_power_gain = constant:cannibalism_unified_route_idea.confederation_political_power_gain
+			}
+		}
+
+		cannibalism_ritual_administration = {
+			picture = cannibalism_ritual_administration
+			allowed = {
+				is_cannibalism_unified_country = yes
+				has_global_flag = cannibalism_reveal_complete
+				NOT = { has_country_flag = cannibalism_wendigo_hannibal_country }
+			}
+			allowed_civil_war = { always = yes }
+			modifier = {
+				stability_factor = constant:cannibalism_unified_route_idea.ritual_administration_stability
+				compliance_growth = constant:cannibalism_unified_route_idea.ritual_administration_compliance_growth
+				resistance_decay = constant:cannibalism_unified_route_idea.ritual_administration_resistance_decay
+				consumer_goods_factor = constant:cannibalism_unified_route_idea.ritual_administration_consumer_goods
+				resistance_target_on_our_occupied_states = constant:cannibalism_unified_route_idea.ritual_administration_resistance_target
+			}
+		}
+
+		cannibalism_state_of_the_last_table = {
+			picture = cannibalism_state_of_the_last_table
+			allowed = {
+				is_cannibalism_unified_country = yes
+				has_global_flag = cannibalism_reveal_complete
+				NOT = { has_country_flag = cannibalism_wendigo_hannibal_country }
+			}
+			allowed_civil_war = { always = yes }
+			modifier = {
+				stability_factor = constant:cannibalism_unified_route_idea.state_last_table_stability
+				compliance_growth = constant:cannibalism_unified_route_idea.state_last_table_compliance_growth
+				resistance_decay = constant:cannibalism_unified_route_idea.state_last_table_resistance_decay
+				consumer_goods_factor = constant:cannibalism_unified_route_idea.state_last_table_consumer_goods
+				resistance_target_on_our_occupied_states = constant:cannibalism_unified_route_idea.state_last_table_resistance_target
+			}
+		}
+
+		cannibalism_rapid_continental_larder = {
+			picture = cannibalism_rapid_continental_larder
+			allowed = {
+				is_cannibalism_unified_country = yes
+				has_global_flag = cannibalism_reveal_complete
+				NOT = { has_country_flag = cannibalism_wendigo_hannibal_country }
+			}
+			allowed_civil_war = { always = yes }
+			modifier = {
+				training_time_factor = constant:cannibalism_unified_route_idea.rapid_larder_training_time
+				land_reinforce_rate = constant:cannibalism_unified_route_idea.rapid_larder_reinforce_rate
+				army_org_regain = constant:cannibalism_unified_route_idea.rapid_larder_org_regain
+				supply_consumption_factor = constant:cannibalism_unified_route_idea.rapid_larder_supply_consumption
+				production_factory_max_efficiency_factor = constant:cannibalism_unified_route_idea.rapid_larder_factory_efficiency
+			}
+		}
+
+		cannibalism_short_horizon_continent = {
+			picture = cannibalism_short_horizon_continent
+			allowed = {
+				is_cannibalism_unified_country = yes
+				has_global_flag = cannibalism_reveal_complete
+				NOT = { has_country_flag = cannibalism_wendigo_hannibal_country }
+			}
+			allowed_civil_war = { always = yes }
+			modifier = {
+				training_time_factor = constant:cannibalism_unified_route_idea.short_horizon_training_time
+				land_reinforce_rate = constant:cannibalism_unified_route_idea.short_horizon_reinforce_rate
+				army_org_regain = constant:cannibalism_unified_route_idea.short_horizon_org_regain
+				army_attack_factor = constant:cannibalism_unified_route_idea.short_horizon_army_attack
+				supply_consumption_factor = constant:cannibalism_unified_route_idea.short_horizon_supply_consumption
+				production_factory_max_efficiency_factor = constant:cannibalism_unified_route_idea.short_horizon_factory_efficiency
+			}
+		}
+
+		cannibalism_managed_continental_larder = {
+			picture = cannibalism_managed_continental_larder
+			allowed = {
+				is_cannibalism_unified_country = yes
+				has_global_flag = cannibalism_reveal_complete
+				NOT = { has_country_flag = cannibalism_wendigo_hannibal_country }
+			}
+			allowed_civil_war = { always = yes }
+			modifier = {
+				supply_consumption_factor = constant:cannibalism_unified_route_idea.managed_larder_supply_consumption
+				production_factory_max_efficiency_factor = constant:cannibalism_unified_route_idea.managed_larder_factory_efficiency
+				local_resources_factor = constant:cannibalism_unified_route_idea.managed_larder_local_resources
+				political_power_gain = constant:cannibalism_unified_route_idea.managed_larder_political_power_gain
+				consumer_goods_factor = constant:cannibalism_unified_route_idea.managed_larder_consumer_goods
+			}
+		}
+
+		cannibalism_managed_continental_reserve = {
+			picture = cannibalism_managed_continental_reserve
+			allowed = {
+				is_cannibalism_unified_country = yes
+				has_global_flag = cannibalism_reveal_complete
+				NOT = { has_country_flag = cannibalism_wendigo_hannibal_country }
+			}
+			allowed_civil_war = { always = yes }
+			modifier = {
+				supply_consumption_factor = constant:cannibalism_unified_route_idea.managed_reserve_supply_consumption
+				production_factory_max_efficiency_factor = constant:cannibalism_unified_route_idea.managed_reserve_factory_efficiency
+				local_resources_factor = constant:cannibalism_unified_route_idea.managed_reserve_local_resources
+				compliance_growth = constant:cannibalism_unified_route_idea.managed_reserve_compliance_growth
+				political_power_gain = constant:cannibalism_unified_route_idea.managed_reserve_political_power_gain
+				consumer_goods_factor = constant:cannibalism_unified_route_idea.managed_reserve_consumer_goods
+			}
+		}
+
+		cannibalism_mobile_continental_larder = {
+			picture = cannibalism_mobile_continental_larder
+			allowed = {
+				is_cannibalism_unified_country = yes
+				has_global_flag = cannibalism_reveal_complete
+				NOT = { has_country_flag = cannibalism_wendigo_hannibal_country }
+			}
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_speed_factor = constant:cannibalism_unified_route_idea.mobile_larder_army_speed
+				supply_consumption_factor = constant:cannibalism_unified_route_idea.mobile_larder_supply_consumption
+				naval_speed_factor = constant:cannibalism_unified_route_idea.mobile_larder_naval_speed
+				army_fuel_consumption_factor = constant:cannibalism_unified_route_idea.mobile_larder_army_fuel_consumption
+				navy_fuel_consumption_factor = constant:cannibalism_unified_route_idea.mobile_larder_navy_fuel_consumption
+				industrial_capacity_dockyard = constant:cannibalism_unified_route_idea.mobile_larder_dockyard_output
+			}
+		}
+
+		cannibalism_larder_that_moves = {
+			picture = cannibalism_larder_that_moves
+			allowed = {
+				is_cannibalism_unified_country = yes
+				has_global_flag = cannibalism_reveal_complete
+				NOT = { has_country_flag = cannibalism_wendigo_hannibal_country }
+			}
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_speed_factor = constant:cannibalism_unified_route_idea.larder_moves_army_speed
+				supply_consumption_factor = constant:cannibalism_unified_route_idea.larder_moves_supply_consumption
+				naval_speed_factor = constant:cannibalism_unified_route_idea.larder_moves_naval_speed
+				army_fuel_consumption_factor = constant:cannibalism_unified_route_idea.larder_moves_army_fuel_consumption
+				navy_fuel_consumption_factor = constant:cannibalism_unified_route_idea.larder_moves_navy_fuel_consumption
+				industrial_capacity_dockyard = constant:cannibalism_unified_route_idea.larder_moves_dockyard_output
+			}
+		}
+
+		cannibalism_battlefield_continental_larder = {
+			picture = cannibalism_battlefield_continental_larder
+			allowed = {
+				is_cannibalism_unified_country = yes
+				has_global_flag = cannibalism_reveal_complete
+				NOT = { has_country_flag = cannibalism_wendigo_hannibal_country }
+			}
+			allowed_civil_war = { always = yes }
+			modifier = {
+				equipment_capture_factor = constant:cannibalism_unified_route_idea.battlefield_larder_equipment_capture
+				army_attack_factor = constant:cannibalism_unified_route_idea.battlefield_larder_army_attack
+				army_org_regain = constant:cannibalism_unified_route_idea.battlefield_larder_org_regain
+				land_reinforce_rate = constant:cannibalism_unified_route_idea.battlefield_larder_reinforce_rate
+				army_defence_factor = constant:cannibalism_unified_route_idea.battlefield_larder_army_defence
+			}
+		}
+
+		cannibalism_harvest_follows_victory = {
+			picture = cannibalism_harvest_follows_victory
+			allowed = {
+				is_cannibalism_unified_country = yes
+				has_global_flag = cannibalism_reveal_complete
+				NOT = { has_country_flag = cannibalism_wendigo_hannibal_country }
+			}
+			allowed_civil_war = { always = yes }
+			modifier = {
+				equipment_capture_factor = constant:cannibalism_unified_route_idea.harvest_victory_equipment_capture
+				army_attack_factor = constant:cannibalism_unified_route_idea.harvest_victory_army_attack
+				army_org_regain = constant:cannibalism_unified_route_idea.harvest_victory_org_regain
+				land_reinforce_rate = constant:cannibalism_unified_route_idea.harvest_victory_reinforce_rate
+				army_defence_factor = constant:cannibalism_unified_route_idea.harvest_victory_army_defence
+			}
+		}
+
+		# --------------------------------------------------------------------
+		# Eligible global-defeat reconstruction ladder
+		# --------------------------------------------------------------------
+
+		cannibalism_liberated_feeding_states = {
+			picture = cannibalism_liberated_feeding_states
+			allowed = { has_country_flag = cannibalism_reconstruction_participant }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				stability_factor = constant:cannibalism_reconstruction_idea.liberated_stability
+				industrial_capacity_factory = constant:cannibalism_reconstruction_idea.liberated_factory_output
+				supply_consumption_factor = constant:cannibalism_reconstruction_idea.liberated_supply
+				recruitable_population_factor = constant:cannibalism_reconstruction_idea.liberated_recruitable
+			}
+		}
+
+		cannibalism_identification_and_burial_emergency = {
+			picture = cannibalism_identification_and_burial_emergency
+			allowed = { has_country_flag = cannibalism_reconstruction_participant }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				stability_factor = constant:cannibalism_reconstruction_idea.identification_stability
+				consumer_goods_factor = constant:cannibalism_reconstruction_idea.identification_consumer_goods
+				political_power_factor = constant:cannibalism_reconstruction_idea.identification_political_power
+			}
+		}
+
+		cannibalism_broken_military_trust = {
+			picture = cannibalism_broken_military_trust
+			allowed = { has_country_flag = cannibalism_reconstruction_participant }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_org_factor = constant:cannibalism_reconstruction_idea.trust_org
+				planning_speed = constant:cannibalism_reconstruction_idea.trust_planning
+				command_power_gain_mult = constant:cannibalism_reconstruction_idea.trust_command
+			}
+		}
+
+		cannibalism_rebuilt_supply_discipline = {
+			picture = cannibalism_rebuilt_supply_discipline
+			allowed = { has_country_flag = cannibalism_reconstruction_participant }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				supply_consumption_factor = constant:cannibalism_reconstruction_idea.rebuilt_supply
+				land_reinforce_rate = constant:cannibalism_reconstruction_idea.rebuilt_reinforce
+				industrial_capacity_factory = constant:cannibalism_reconstruction_idea.rebuilt_factory
+			}
+		}
+
+		cannibalism_permanent_vigilance = {
+			picture = cannibalism_permanent_vigilance
+			allowed = { has_country_flag = cannibalism_international_compact_member }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				stability_factor = constant:cannibalism_reconstruction_idea.vigilance_stability
+				command_power_gain_mult = constant:cannibalism_reconstruction_idea.vigilance_command
+				enemy_operative_detection_chance_factor = constant:cannibalism_reconstruction_idea.vigilance_detection
+				resistance_target_on_our_occupied_states = constant:cannibalism_reconstruction_idea.vigilance_resistance
+			}
+		}
+
+	}
+}

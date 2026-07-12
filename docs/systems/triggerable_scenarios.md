@@ -43,6 +43,7 @@ Type controls cycle scenario-specific type variables:
 - Disaster Barrage: Random Barrage, Geological Crisis, Weather Crisis, Skyfall Crisis, or Full Catalogue.
 - Africa Is One placeholder: fixed Reserved display with neutral placeholder launch event.
 - Coalition Unmasked: Regional Ring, Ideological Front, Great-Power Sponsor, Unlikely Coalition, or Random Coalition.
+- The Hunger Lines: Discipline Collapse, Ritual Cells, Silent Islands, Warlord States, or Convergence.
 
 The trigger button opens a separate confirmation window. Confirming reads the stored selected scenario, type, and intensity at launch time. Scenario launches intentionally bypass the normal automatic firing prerequisites for their source events, including chaos thresholds, prior event-state gates, route prerequisites, and super-event history flags. The launch gate only keeps impossible or conflicting launches out, such as requiring the Soviet Union to exist for Soviet Collapse and preventing most second world-end branches while `world_end` is already active. The launch button uses the same gate for click enablement and buttonstate rendering, so impossible selections are disabled and visually greyed out before the confirmation window can open.
 
@@ -109,3 +110,17 @@ Low, Medium, High, and Maximum intensity scale minor membership, major sponsorsh
 Manual launch bypasses normal Chaos, evolution, date, automatic event history, prior Event 011 completion, and pre-fire requirements. It retains the active Event 011 context guard, the surviving postwar-bloc guard, the valid human-target gate, the viable minor and major composition gates, and human-consent restrictions. An active `world_end` terminal conflict blocks launch, and an impossible coalition is never substituted.
 
 The catalog workbook records SCN-009 as `Implemented` at `Scenarios!F9`. Its name, default detail, five type labels, and four intensity descriptions mirror the final in-game localisation.
+
+### SCN-010: The Hunger Lines
+
+The Hunger Lines launches Event 014 without using the automatic wartime-origin gate. It remains unavailable during a terminal world end and when the selected profile lacks a safe ordinary source, valid state package, or conflict-free reusable warlord slots. Low Chaos, an early date, missing natural evolutions, prior Event 014 defeat, and absent wartime prerequisites do not block a manual launch.
+
+Discipline Collapse creates baseline ordinary actors and compromised theaters without opening the ritual evolution. Ritual Cells opens Evolution I and initializes Cult Cohesion across the selected countries. Silent Islands opens the network evolution, places mature island communes on real island and port states, and can form intensity-scaled Island Hosts when reusable island slots are available. Warlord States forms exact origin distributions through the canonical Island Host, Siege Commune, March Host, and Prison Host release transactions. Convergence creates three to six mature warlords and starts the normal 120-day public warning window.
+
+Every destructive state package is drawn from AI-controlled ordinary territory. The launching player retains control of the launching country. Warlord countries receive their regional identity, leader, ideas, units, equipment, decisions, AI, origin focus overlay, and reusable slot generation through the same effects used by live Event 014. Starting forces and Larder are backed by exact state-population loss through the shared Deaths ledger. The scenario does not grant free recruitment or draw Larder from contaminated, depleted, recovering, or otherwise unusable states.
+
+The Convergence profile uses a scenario contract only for the natural Chaos and accumulated-consumption prerequisites that a manual setup is designed to bypass. At least two viable warlords, two independent nodes, and a valid host must survive. Destroying that minimum breaks convergence before the reveal. The scenario contract clears on a broken convergence, either public reveal route, global cleanup, or a fresh Event 014 runtime.
+
+The public scenario name, descriptions, type labels, and intensity warnings never name the hidden leader, the Wendigo branch, or either terminal route. If the alternate host already exists, the later in-world convergence transaction may discover it through the normal guarded Event 014 route.
+
+The catalog workbook records SCN-010 at `Scenarios!A10:F10`. Its public name, five type labels, five type descriptions, and four intensity descriptions mirror the final in-game localisation. Its status remains `Needs Testing` until the Event 014 completion audit closes.

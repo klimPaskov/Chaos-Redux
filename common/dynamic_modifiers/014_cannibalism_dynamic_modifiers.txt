@@ -1,0 +1,218 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 014 CANNIBALISM DYNAMIC MODIFIERS
+# ============================================================================
+# Overview:
+# - Projects the live Field Hunger, Command Integrity, Cult Cohesion, and cell
+#   pressure meters into serious country penalties without duplicating meters.
+# - Applies one state-stage package at a time, including the long liberation
+#   and institutional recovery sequence.
+# - Applies temporary logistics, formation-screening, and terror-operation
+#   packages used by the concrete baseline objectives.
+# - All modifier variables are derived and refreshed by Event 014 effects.
+# ============================================================================
+
+cannibalism_frontline_crisis = {
+	icon = GFX_idea_cannibalism_field_disappearances
+	stability_factor = var:cannibalism_modifier_stability
+	war_support_factor = var:cannibalism_modifier_war_support
+	political_power_factor = var:cannibalism_modifier_political_power
+	army_org_factor = var:cannibalism_modifier_army_organization
+	planning_speed = var:cannibalism_modifier_planning
+	supply_consumption_factor = var:cannibalism_modifier_supply_consumption
+	recruitable_population_factor = var:cannibalism_modifier_recruitable_population
+}
+
+cannibalism_emergency_logistics_burden = {
+	icon = GFX_idea_cannibalism_emergency_logistics_command
+	consumer_goods_factor = constant:cannibalism_decision_modifier.logistics_consumer_goods
+	supply_consumption_factor = constant:cannibalism_decision_modifier.logistics_supply_consumption
+	industrial_capacity_factory = constant:cannibalism_decision_modifier.logistics_factory_output
+}
+
+cannibalism_formation_screening_burden = {
+	icon = GFX_idea_cannibalism_formation_screening
+	army_org_factor = constant:cannibalism_decision_modifier.rotation_organization
+	training_time_army_factor = constant:cannibalism_decision_modifier.rotation_training_time
+	land_reinforce_rate = constant:cannibalism_decision_modifier.rotation_reinforce_rate
+}
+
+cannibalism_terror_battalion_deployed = {
+	icon = GFX_idea_cannibalism_terror_battalion
+	army_attack_factor = constant:cannibalism_decision_modifier.terror_attack
+	breakthrough_factor = constant:cannibalism_decision_modifier.terror_breakthrough
+	army_speed_factor = constant:cannibalism_decision_modifier.terror_speed
+	supply_consumption_factor = constant:cannibalism_decision_modifier.terror_supply_consumption
+	stability_factor = constant:cannibalism_decision_modifier.terror_stability
+}
+
+# One visible operating-order surface replaces the starting survival burden.
+# Its variables are rebuilt from completed hierarchy, Larder, military, and
+# network routes by cannibalism_warlord_refresh_operating_order.
+cannibalism_warlord_operating_order = {
+	icon = GFX_idea_cannibalism_warlord_operating_order
+	army_attack_factor = var:cannibalism_warlord_order_army_attack
+	army_defence_factor = var:cannibalism_warlord_order_army_defence
+	army_speed_factor = var:cannibalism_warlord_order_army_speed
+	army_org_factor = var:cannibalism_warlord_order_army_organization
+	army_org_regain = var:cannibalism_warlord_order_organization_regain
+	planning_speed = var:cannibalism_warlord_order_planning_speed
+	max_planning = var:cannibalism_warlord_order_max_planning
+	command_power_gain_mult = var:cannibalism_warlord_order_command_power_gain
+	max_command_power = var:cannibalism_warlord_order_max_command_power
+	stability_factor = var:cannibalism_warlord_order_stability
+	political_power_gain = var:cannibalism_warlord_order_political_power
+	production_factory_efficiency_gain_factor = var:cannibalism_warlord_order_efficiency_gain
+	production_factory_max_efficiency_factor = var:cannibalism_warlord_order_max_efficiency
+	local_resources_factor = var:cannibalism_warlord_order_local_resources
+	supply_consumption_factor = var:cannibalism_warlord_order_supply_consumption
+	out_of_supply_factor = var:cannibalism_warlord_order_out_of_supply
+	training_time_factor = var:cannibalism_warlord_order_training_time
+	convoy_raiding_efficiency_factor = var:cannibalism_warlord_order_convoy_raiding
+	army_fuel_consumption_factor = var:cannibalism_warlord_order_fuel_consumption
+	resistance_target_on_our_occupied_states = var:cannibalism_warlord_order_occupation_resistance
+	enemy_operative_detection_chance_factor = var:cannibalism_warlord_order_detection
+	land_reinforce_rate = var:cannibalism_warlord_order_reinforce_rate
+}
+
+cannibalism_synchronized_warlord_attack = {
+	icon = GFX_idea_cannibalism_synchronized_warlord_attack
+	army_attack_factor = constant:cannibalism_warlord_decision.synchronized_attack
+	planning_speed = constant:cannibalism_warlord_decision.synchronized_planning
+	land_reinforce_rate = constant:cannibalism_warlord_decision.synchronized_reinforce
+	supply_consumption_factor = constant:cannibalism_warlord_decision.synchronized_supply
+}
+
+cannibalism_island_convoy_ambush_operation = {
+	icon = GFX_idea_cannibalism_island_convoy_ambush_operation
+	convoy_raiding_efficiency_factor = constant:cannibalism_warlord_decision.island_operation_convoy_raiding
+	naval_speed_factor = constant:cannibalism_warlord_decision.island_operation_naval_speed
+	supply_consumption_factor = constant:cannibalism_warlord_decision.island_operation_supply
+}
+
+cannibalism_siege_relief_ambush_operation = {
+	icon = GFX_idea_cannibalism_siege_relief_ambush_operation
+	army_defence_factor = constant:cannibalism_warlord_decision.siege_operation_defence
+	max_dig_in = constant:cannibalism_warlord_decision.siege_operation_dig_in
+	supply_consumption_factor = constant:cannibalism_warlord_decision.siege_operation_supply
+}
+
+cannibalism_march_supply_raid_operation = {
+	icon = GFX_idea_cannibalism_march_supply_raid_operation
+	army_speed_factor = constant:cannibalism_warlord_decision.march_operation_speed
+	planning_speed = constant:cannibalism_warlord_decision.march_operation_planning
+	out_of_supply_factor = constant:cannibalism_warlord_decision.march_operation_out_of_supply
+	army_fuel_consumption_factor = constant:cannibalism_warlord_decision.march_operation_fuel
+}
+
+cannibalism_warlord_resistance_to_unification = {
+	icon = GFX_idea_cannibalism_warlord_resistance_to_unification
+	army_attack_factor = constant:cannibalism_unification_ai.resistance_attack
+	army_defence_factor = constant:cannibalism_unification_ai.resistance_defence
+	army_org_factor = constant:cannibalism_unification_ai.resistance_organization
+	supply_consumption_factor = constant:cannibalism_unification_ai.resistance_supply
+}
+
+cannibalism_warlord_challenge_to_unification = {
+	icon = GFX_idea_cannibalism_warlord_challenge_to_unification
+	army_attack_factor = constant:cannibalism_unification_ai.challenge_attack
+	army_defence_factor = constant:cannibalism_unification_ai.challenge_defence
+	army_org_factor = constant:cannibalism_unification_ai.challenge_organization
+	army_speed_factor = constant:cannibalism_unification_ai.challenge_speed
+}
+
+cannibalism_island_host_blockade = {
+	icon = GFX_idea_cannibalism_island_host_blockade
+	supply_consumption_factor = constant:cannibalism_international_response_modifier.blockade_supply
+	convoy_raiding_efficiency_factor = constant:cannibalism_international_response_modifier.blockade_convoy_raiding
+	naval_speed_factor = constant:cannibalism_international_response_modifier.blockade_naval_speed
+	industrial_capacity_dockyard = constant:cannibalism_international_response_modifier.blockade_dockyard_output
+}
+
+cannibalism_island_host_landing_pressure = {
+	icon = GFX_idea_cannibalism_island_host_landing_pressure
+	army_defence_factor = constant:cannibalism_international_response_modifier.landing_defence
+	army_org_factor = constant:cannibalism_international_response_modifier.landing_organization
+	land_reinforce_rate = constant:cannibalism_international_response_modifier.landing_reinforce
+	supply_consumption_factor = constant:cannibalism_international_response_modifier.landing_supply
+}
+
+cannibalism_suspected_predation_state = {
+	icon = GFX_idea_cannibalism_field_disappearances
+	local_manpower = var:cannibalism_state_modifier_manpower
+	state_production_speed_buildings_factor = var:cannibalism_state_modifier_production
+	state_resources_factor = var:cannibalism_state_modifier_resources
+	resistance_target = var:cannibalism_state_modifier_resistance
+	local_supplies = var:cannibalism_state_modifier_supplies
+}
+
+cannibalism_compromised_garrison_state = {
+	icon = GFX_idea_cannibalism_silent_garrison
+	local_manpower = var:cannibalism_state_modifier_manpower
+	state_production_speed_buildings_factor = var:cannibalism_state_modifier_production
+	state_resources_factor = var:cannibalism_state_modifier_resources
+	resistance_target = var:cannibalism_state_modifier_resistance
+	local_supplies = var:cannibalism_state_modifier_supplies
+}
+
+cannibalism_hunting_ground_state = {
+	icon = GFX_idea_cannibalism_hunting_ground
+	local_manpower = var:cannibalism_state_modifier_manpower
+	state_production_speed_buildings_factor = var:cannibalism_state_modifier_production
+	state_resources_factor = var:cannibalism_state_modifier_resources
+	resistance_target = var:cannibalism_state_modifier_resistance
+	local_supplies = var:cannibalism_state_modifier_supplies
+}
+
+cannibalism_feeding_state = {
+	icon = GFX_idea_cannibalism_empty_village_reports
+	local_manpower = var:cannibalism_state_modifier_manpower
+	state_production_speed_buildings_factor = var:cannibalism_state_modifier_production
+	state_resources_factor = var:cannibalism_state_modifier_resources
+	resistance_target = var:cannibalism_state_modifier_resistance
+	local_supplies = var:cannibalism_state_modifier_supplies
+}
+
+cannibalism_silent_larder_state = {
+	icon = GFX_idea_cannibalism_night_transfer_zone
+	local_manpower = var:cannibalism_state_modifier_manpower
+	state_production_speed_buildings_factor = var:cannibalism_state_modifier_production
+	state_resources_factor = var:cannibalism_state_modifier_resources
+	resistance_target = var:cannibalism_state_modifier_resistance
+	local_supplies = var:cannibalism_state_modifier_supplies
+}
+
+cannibalism_liberated_emergency_state = {
+	icon = GFX_idea_cannibalism_public_truth
+	local_manpower = var:cannibalism_state_modifier_manpower
+	state_production_speed_buildings_factor = var:cannibalism_state_modifier_production
+	state_resources_factor = var:cannibalism_state_modifier_resources
+	resistance_target = var:cannibalism_state_modifier_resistance
+	local_supplies = var:cannibalism_state_modifier_supplies
+}
+
+cannibalism_identification_recovery_state = {
+	icon = GFX_idea_cannibalism_exploitation_scandal
+	local_manpower = var:cannibalism_state_modifier_manpower
+	state_production_speed_buildings_factor = var:cannibalism_state_modifier_production
+	state_resources_factor = var:cannibalism_state_modifier_resources
+	resistance_target = var:cannibalism_state_modifier_resistance
+	local_supplies = var:cannibalism_state_modifier_supplies
+}
+
+cannibalism_institutional_recovery_state = {
+	icon = GFX_idea_cannibalism_council_obedience
+	local_manpower = var:cannibalism_state_modifier_manpower
+	state_production_speed_buildings_factor = var:cannibalism_state_modifier_production
+	state_resources_factor = var:cannibalism_state_modifier_resources
+	resistance_target = var:cannibalism_state_modifier_resistance
+	local_supplies = var:cannibalism_state_modifier_supplies
+}
+
+cannibalism_long_trauma_state = {
+	icon = GFX_idea_cannibalism_ritual_hunger
+	local_manpower = var:cannibalism_state_modifier_manpower
+	state_production_speed_buildings_factor = var:cannibalism_state_modifier_production
+	state_resources_factor = var:cannibalism_state_modifier_resources
+	resistance_target = var:cannibalism_state_modifier_resistance
+	local_supplies = var:cannibalism_state_modifier_supplies
+}

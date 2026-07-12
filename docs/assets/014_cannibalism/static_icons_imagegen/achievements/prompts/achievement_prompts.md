@@ -107,9 +107,9 @@ Constraints: background must be a finished dark painted achievement tile, not gr
 Use case: stylized-concept
 Asset type: Hearts of Iron IV mod achievement icon source art, to be processed to 64x64 opaque DDS
 Primary request: Create one completed achievement icon for `014_cannibalism_hunger_of_hannibal`.
-Subject: a bronze Carthaginian war-elephant medallion above an empty campaign bowl, with a laurel shadow and ancient military austerity; symbolic Hannibal theme, no portrait likeness.
-Style/medium: compact HOI4-style painted achievement tile, dark aged metal square frame, subtle laurel/medal rim, wartime achievement texture blended with antique bronze, painterly realism.
-Composition/framing: centered elephant medallion and bowl, bold silhouette, strong value contrast, readable when reduced to 64x64, full square tile with no transparency.
+Subject: a refined blood-stained place setting beside a clipped military command map, with a dark tailored sleeve and gloved hand at the edge of the table. This is reveal-gated Hannibal Lecter imagery without a face or actor likeness.
+Style/medium: compact HOI4-style painted achievement tile, dark aged metal square frame, restrained medal rim, wartime achievement texture, painterly realism.
+Composition/framing: centered place setting and command map, bold silhouette, strong value contrast, readable when reduced to 64x64, full square tile with no transparency.
 Lighting/mood: mythic hunger, stern command, ominous restraint.
 Color palette: aged bronze, blackened steel, dark crimson shadow, bone-colored highlights.
 Constraints: no text, no letters, no numbers, no watermark, no UI labels, no modern objects, no portrait, no real person likeness, no gore, no blood, no bodies, no eating scene, no simple vector shapes, no flat placeholder.

@@ -25,10 +25,9 @@ Do not use one broad worker for the mixed package.
 
 - Gore is mandatory.
 - Important assets must be unsettling.
-- Warlord portraits depict bloody, bald men in invented rough hides, raw cloth, bone ornaments, and scavenged 1930s to 1940s military gear.
+- Warlord portraits depict bloody, bald men in invented rough hides, raw cloth, and scavenged 1930s to 1940s military gear. Produce all fifty-six distinct slot-region portraits: eight reusable slots across Europe, Asia, Africa, the Middle East, North America, South America, and Oceania. Every face is feral, bloodshot, asymmetrical, visibly crazed, and human-origin but less human-looking through severe scars, torn lips, irregular stained teeth, and predatory expression. Regional appearance may match the origin state, but clothing and props must not copy living ceremonial, sacred, tribal, Indigenous, African, or Pacific regalia.
 - Do not copy real Indigenous, African, Pacific, or religious ceremonial clothing.
 - Do not expose Hannibal's face, silhouette, symbol, or transformed identity before the reveal state.
-- Do not use historical Carthaginian imagery for Hannibal.
 - The Wendigo Hannibal package must reuse existing Chaos Redux Wendigo visual language and add no borrowed living cultural regalia.
 - Generated period scenes must use period clothing, weapons, buildings, vehicles, and photographic technology.
 - No readable generated text, watermarks, modern UI, modern objects, film stills, or reenactment visuals.
@@ -67,26 +66,26 @@ Produce six distinct images:
 
 Produce four distinct final scenes:
 
-1. Hannibal reveal among warlords.
-2. Ordinary Hannibal world-end.
-3. Wendigo Hannibal world-end.
-4. Global defeat aftermath.
+1. Hannibal Lecter commanding a violent convergence while feral warlords and cannibals break barricades and chase fleeing civilians.
+2. Ordinary Hannibal Lecter directing a capital-overrun in motion while crazed attackers sprint, climb vehicles, breach defenders, and pursue civilians and soldiers.
+3. Transformed Wendigo Hannibal Lecter leading a visibly inhuman frozen pack through shattered barricades after fleeing civilians and soldiers.
+4. A kinetic global-defeat breakthrough with cages torn open and civilians escaping while coalition forces destroy the last crazed cannibal formations.
 
-These must be separate compositions, not recolors or crop variants.
+These must be separate compositions, not recolors or crop variants. Every scene requires an obvious pursuit or rescue beat, immediate foreground action, moving figures, and a different camera/action silhouette. A static leader, council, map room, posed army, calm burial detail, or passive aftermath is unacceptable.
 
 ## Portrait package
 
 ### Generic warlords
 
-Produce 8 to 12 male-presenting portraits at 156 by 210:
+Produce exactly 56 male-presenting portraits at 156 by 210, covering all eight slots across the seven supported visual regions:
 
 - two Island Host leaders
 - two Siege Commune leaders
 - two March Host leaders
 - two Prison Host leaders
-- optional regional alternatives
+- all Europe, Asia, Africa, Middle East, North America, South America, and Oceania variants
 
-Record apparent gender presentation and require matching male regional name pools. Each portrait must remain distinct and must not resemble Hannibal.
+Record apparent gender presentation and require matching male regional name pools. Every portrait needs a unique face, pose, prop, expression, clothing silhouette, crop, and background. At least one holds a human skull in one hand and licks blood from it. Others use non-repeated active behaviors such as gnawing a bone, biting a bloodied glove, laughing through a damaged jaw, gripping a ration cleaver, clutching dog tags, or dragging a torn ration sack. Each portrait must remain distinct and must not resemble Hannibal Lecter.
 
 ### Hannibal
 
@@ -100,6 +99,8 @@ Produce:
 - GIF preview
 - contact sheet
 
+The ordinary Hannibal Lecter portrait remains human-origin but is gaunt, pallid, bloodshot, severely scarred, wet with gore, and visibly crazed, with irregular stained teeth and no actor likeness. Its twelve independently generated frames form a skull-handling action loop in which he raises a human skull and progressively licks blood from it while jaw, tongue, fingers, eyes, posture, and wet gore change.
+
 ### Wendigo Hannibal
 
 Produce:
@@ -111,6 +112,8 @@ Produce:
 - static fallback DDS
 - GIF preview
 - contact sheet
+
+The transformed Hannibal Lecter portrait is dramatically more inhuman, asymmetrical, distorted, and frenzied. Its sixteen independently generated frames use a separate predatory action beat with real changes to anatomy, jaw, eyes, limbs, frost, breath, flesh, and gore. It includes no borrowed sacred or living Indigenous motif.
 
 Do not create motion through translation, scaling, rotation, blur, recolor, opacity, glow filters, or other one-still transforms. Every meaningful frame state needs real source art.
 

@@ -2,6 +2,8 @@
 
 ## Stage 0: Local engine and source verification
 
+Read `IMPLEMENTATION_SCOPE_AND_FIDELITY.md` first. Preserve the package's specific terminology and complete game mechanics. Keep all implementation non-procedural and inside Hearts of Iron IV abstractions.
+
 Read the required offline wiki pages and current vanilla documentation. Inspect exact 1.19 Army HQ, regimental support, essential equipment, ability, unit-modifier, MIO, raid, aircraft mission, and AI patterns.
 
 Deliverable:

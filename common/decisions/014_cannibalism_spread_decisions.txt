@@ -1,0 +1,66 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 014 FOREIGN-ROUTE COUNTERPLAY
+# ============================================================================
+# Countries warned by a real inbound route can screen the named target state
+# through a resource-intensive humane reception or a cheaper coercive seal.
+# Both actions resolve through the same queued entry and cannot bypass route,
+# generation, cleanup, or one-entry-per-state rules.
+# ============================================================================
+
+cannibalism_network_alerts_category = {
+	cannibalism_humane_route_screening = {
+		icon = GFX_decision_cannibalism_humane_route_screening
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = { cannibalism_inbound_route_response_is_visible = yes }
+		target_root_trigger = { cannibalism_inbound_route_response_is_visible = yes }
+		target_trigger = { FROM = { cannibalism_inbound_state_can_be_screened = yes } }
+		available = { cannibalism_can_pay_humane_route_screening_cost = yes }
+		custom_cost_trigger = { hidden_trigger = { cannibalism_can_pay_humane_route_screening_cost = yes } }
+		custom_cost_text = cannibalism_humane_route_screening_cost_text
+		complete_effect = {
+			custom_effect_tooltip = cannibalism_humane_route_screening_effect_tt
+			hidden_effect = {
+				FROM = {
+					save_event_target_as = cannibalism_screening_state
+					set_temp_variable = { cannibalism_expected_spread_id = cannibalism_inbound_spread_id }
+				}
+				cannibalism_try_pay_humane_route_screening_cost = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:cannibalism_decision_ai.high
+			modifier = { factor = constant:cannibalism_decision_ai.preferred_factor has_government = democratic }
+			modifier = { factor = constant:cannibalism_decision_ai.preferred_factor has_country_flag = cannibalism_policy_open_emergency }
+			modifier = { factor = constant:cannibalism_decision_ai.cautious_factor has_manpower < constant:cannibalism_spread.humane_screening_manpower }
+		}
+	}
+
+	cannibalism_seal_inbound_route = {
+		icon = GFX_decision_cannibalism_seal_inbound_route
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = { cannibalism_inbound_route_response_is_visible = yes }
+		target_root_trigger = { cannibalism_inbound_route_response_is_visible = yes }
+		target_trigger = { FROM = { cannibalism_inbound_state_can_be_screened = yes } }
+		available = { cannibalism_can_pay_hard_route_screening_cost = yes }
+		custom_cost_trigger = { hidden_trigger = { cannibalism_can_pay_hard_route_screening_cost = yes } }
+		custom_cost_text = cannibalism_seal_inbound_route_cost_text
+		complete_effect = {
+			custom_effect_tooltip = cannibalism_seal_inbound_route_effect_tt
+			hidden_effect = {
+				FROM = {
+					save_event_target_as = cannibalism_screening_state
+					set_temp_variable = { cannibalism_expected_spread_id = cannibalism_inbound_spread_id }
+				}
+				cannibalism_try_pay_hard_route_screening_cost = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:cannibalism_decision_ai.medium
+			modifier = { factor = constant:cannibalism_decision_ai.preferred_factor has_government = fascism }
+			modifier = { factor = constant:cannibalism_decision_ai.preferred_factor has_country_flag = cannibalism_policy_concealment }
+			modifier = { factor = constant:cannibalism_decision_ai.cautious_factor has_government = democratic }
+		}
+	}
+}

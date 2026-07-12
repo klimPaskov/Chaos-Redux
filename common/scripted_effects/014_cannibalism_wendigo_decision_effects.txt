@@ -1,0 +1,550 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 014 WENDIGO DECISION EFFECTS
+# ============================================================================
+# Executes post-reveal anchor, winter-logistics, population-backed recruitment,
+# countdown, and counterwar actions. All population consumption uses the shared
+# Event 014 Deaths-accounted transaction. New packs start empty and reinforce
+# from the paid manpower pool and the country's existing equipment stockpile.
+# ============================================================================
+
+@CANNIBALISM_WENDIGO_DECISION_EVENT_HOURS = 1
+
+# ---------------------------------------------------------------------------
+# Shared resource helpers
+# ---------------------------------------------------------------------------
+
+cannibalism_pay_wendigo_larder_and_command_cost = {
+	set_temp_variable = { cannibalism_wendigo_cost_negative = cannibalism_wendigo_larder_cost }
+	multiply_temp_variable = { cannibalism_wendigo_cost_negative = -1 }
+	add_to_variable = { cannibalism_larder = cannibalism_wendigo_cost_negative }
+	clamp_variable = {
+		var = cannibalism_larder
+		min = constant:cannibalism_consumption.larder_min
+		max = constant:cannibalism_unification.global_larder_maximum
+	}
+	set_variable = { global.cannibalism_global_larder = cannibalism_larder }
+	set_temp_variable = { cannibalism_wendigo_cost_negative = cannibalism_wendigo_command_cost }
+	multiply_temp_variable = { cannibalism_wendigo_cost_negative = -1 }
+	add_command_power = cannibalism_wendigo_cost_negative
+}
+
+cannibalism_pay_wendigo_counterwar_cost = {
+	set_temp_variable = { cannibalism_wendigo_cost_negative = cannibalism_wendigo_counterwar_manpower_cost }
+	multiply_temp_variable = { cannibalism_wendigo_cost_negative = -1 }
+	add_manpower = cannibalism_wendigo_cost_negative
+	set_temp_variable = { cannibalism_wendigo_cost_negative = cannibalism_wendigo_counterwar_command_cost }
+	multiply_temp_variable = { cannibalism_wendigo_cost_negative = -1 }
+	add_command_power = cannibalism_wendigo_cost_negative
+	set_temp_variable = { cannibalism_wendigo_cost_negative = cannibalism_wendigo_counterwar_infantry_cost }
+	multiply_temp_variable = { cannibalism_wendigo_cost_negative = -1 }
+	add_equipment_to_stockpile = { type = infantry_equipment amount = cannibalism_wendigo_cost_negative }
+	set_temp_variable = { cannibalism_wendigo_cost_negative = cannibalism_wendigo_counterwar_support_cost }
+	multiply_temp_variable = { cannibalism_wendigo_cost_negative = -1 }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = cannibalism_wendigo_cost_negative }
+}
+
+# ---------------------------------------------------------------------------
+# Wendigo command actions
+# ---------------------------------------------------------------------------
+
+cannibalism_designate_selected_wendigo_anchor = {
+	set_temp_variable = { cannibalism_wendigo_designate_anchor_result = 0 }
+	if = {
+		limit = {
+			has_event_target = cannibalism_wendigo_decision_state
+			cannibalism_wendigo_can_pay_designate_anchor_cost = yes
+			event_target:cannibalism_wendigo_decision_state = { cannibalism_state_can_become_wendigo_anchor = yes }
+		}
+		event_target:cannibalism_wendigo_decision_state = { cannibalism_register_current_wendigo_anchor = yes }
+		if = {
+			limit = { check_variable = { cannibalism_wendigo_anchor_registration_result > 0 } }
+			set_temp_variable = { cannibalism_wendigo_larder_cost = constant:cannibalism_wendigo_decision.designate_anchor_larder }
+			set_temp_variable = { cannibalism_wendigo_command_cost = constant:cannibalism_wendigo_decision.designate_anchor_command }
+			cannibalism_pay_wendigo_larder_and_command_cost = yes
+			cannibalism_rebuild_wendigo_anchor_runtime = yes
+			set_temp_variable = { cannibalism_wendigo_designate_anchor_result = 1 }
+		}
+	}
+}
+
+cannibalism_fortify_selected_wendigo_anchor = {
+	set_temp_variable = { cannibalism_wendigo_fortify_anchor_result = 0 }
+	if = {
+		limit = {
+			has_event_target = cannibalism_wendigo_decision_state
+			cannibalism_wendigo_can_pay_fortify_anchor_cost = yes
+			event_target:cannibalism_wendigo_decision_state = { cannibalism_state_can_fortify_wendigo_anchor = yes }
+		}
+		set_temp_variable = { cannibalism_wendigo_larder_cost = constant:cannibalism_wendigo_decision.fortify_anchor_larder }
+		set_temp_variable = { cannibalism_wendigo_command_cost = constant:cannibalism_wendigo_decision.fortify_anchor_command }
+		cannibalism_pay_wendigo_larder_and_command_cost = yes
+		event_target:cannibalism_wendigo_decision_state = {
+			add_to_variable = { cannibalism_wendigo_anchor_strength = constant:cannibalism_wendigo_decision.fortify_anchor_strength }
+			clamp_variable = {
+				var = cannibalism_wendigo_anchor_strength
+				min = constant:cannibalism_wendigo_anchor.minimum_live_strength
+				max = constant:cannibalism_wendigo_anchor.maximum_strength
+			}
+		}
+		set_temp_variable = { cannibalism_wendigo_fortify_anchor_result = 1 }
+	}
+}
+
+cannibalism_feed_selected_wendigo_anchor = {
+	set_temp_variable = { cannibalism_wendigo_feed_anchor_result = 0 }
+	if = {
+		limit = {
+			has_event_target = cannibalism_wendigo_decision_state
+			cannibalism_wendigo_command_is_open = yes
+			event_target:cannibalism_wendigo_decision_state = { cannibalism_state_can_feed_wendigo_anchor = yes }
+		}
+		event_target:cannibalism_wendigo_decision_state = { save_event_target_as = cannibalism_consumption_target_state }
+		set_temp_variable = { cannibalism_consumption_exact_request_people = constant:cannibalism_wendigo_decision.feed_anchor_population_k }
+		multiply_temp_variable = { cannibalism_consumption_exact_request_people = constant:cannibalism_consumption.population_people_per_k }
+		set_temp_variable = { cannibalism_consumption_context = constant:cannibalism_consumption_mode.feeding }
+		cannibalism_prepare_consumption_context = yes
+		if = {
+			limit = {
+				check_variable = { cannibalism_consumption_result = constant:cannibalism_consumption_result.applied }
+				check_variable = {
+					var = cannibalism_population_loss_applied
+					value = cannibalism_consumption_exact_request_people
+					compare = equals
+				}
+			}
+			event_target:cannibalism_wendigo_decision_state = {
+				add_to_variable = { cannibalism_wendigo_anchor_strength = constant:cannibalism_wendigo_decision.feed_anchor_strength }
+				clamp_variable = {
+					var = cannibalism_wendigo_anchor_strength
+					min = constant:cannibalism_wendigo_anchor.minimum_live_strength
+					max = constant:cannibalism_wendigo_anchor.maximum_strength
+				}
+			}
+			add_to_variable = { cannibalism_wendigo_transformation_progress = constant:cannibalism_wendigo_decision.feed_anchor_progress }
+			clamp_variable = {
+				var = cannibalism_wendigo_transformation_progress
+				min = constant:cannibalism_wendigo_countdown.progress_min
+				max = constant:cannibalism_wendigo_countdown.progress_max
+			}
+			set_temp_variable = { cannibalism_wendigo_feed_anchor_result = 1 }
+		}
+		set_temp_variable = { cannibalism_consumption_exact_request_people = 0 }
+	}
+}
+
+cannibalism_spawn_paid_wendigo_pack_batch = {
+	set_temp_variable = { cannibalism_wendigo_pack_batch = constant:cannibalism_wendigo_decision.train_pack_batch }
+	set_temp_variable = { cannibalism_wendigo_pack_start_experience = constant:cannibalism_wendigo_decision.train_pack_start_experience }
+	set_temp_variable = { cannibalism_wendigo_pack_start_equipment = constant:cannibalism_wendigo_decision.train_pack_start_equipment }
+	set_temp_variable = { cannibalism_wendigo_pack_start_manpower = constant:cannibalism_wendigo_decision.train_pack_start_manpower }
+	meta_effect = {
+		text = {
+			create_unit = {
+				division = "name = \"Wendigo Pack\" division_template = \"Wendigo Pack\" start_experience_factor = [START_EXPERIENCE] start_equipment_factor = [START_EQUIPMENT] start_manpower_factor = [START_MANPOWER]"
+				owner = event_target:cannibalism_wendigo_decision_actor
+				count = [PACK_COUNT]
+				allow_spawning_on_enemy_provs = no
+			}
+		}
+		START_EXPERIENCE = "[?cannibalism_wendigo_pack_start_experience]"
+		START_EQUIPMENT = "[?cannibalism_wendigo_pack_start_equipment]"
+		START_MANPOWER = "[?cannibalism_wendigo_pack_start_manpower]"
+		PACK_COUNT = "[?cannibalism_wendigo_pack_batch|.0]"
+	}
+}
+
+cannibalism_train_wendigo_pack_from_selected_anchor = {
+	set_temp_variable = { cannibalism_wendigo_pack_training_result = 0 }
+	if = {
+		limit = {
+			has_event_target = cannibalism_wendigo_decision_state
+			cannibalism_wendigo_can_pay_train_pack_cost = yes
+			event_target:cannibalism_wendigo_decision_state = { cannibalism_state_can_train_wendigo_pack = yes }
+		}
+		save_event_target_as = cannibalism_wendigo_decision_actor
+		event_target:cannibalism_wendigo_decision_state = { save_event_target_as = cannibalism_consumption_target_state }
+		set_temp_variable = { cannibalism_consumption_exact_request_people = constant:cannibalism_wendigo_decision.train_pack_population_k }
+		multiply_temp_variable = { cannibalism_consumption_exact_request_people = constant:cannibalism_consumption.population_people_per_k }
+		set_temp_variable = { cannibalism_consumption_context = constant:cannibalism_consumption_mode.recruitment }
+		cannibalism_prepare_consumption_context = yes
+		if = {
+			limit = {
+				check_variable = { cannibalism_consumption_result = constant:cannibalism_consumption_result.applied }
+				check_variable = {
+					var = cannibalism_population_loss_applied
+					value = cannibalism_consumption_exact_request_people
+					compare = equals
+				}
+			}
+			set_temp_variable = { cannibalism_wendigo_larder_cost = constant:cannibalism_wendigo_decision.train_pack_larder }
+			set_temp_variable = { cannibalism_wendigo_command_cost = 0 }
+			cannibalism_pay_wendigo_larder_and_command_cost = yes
+			set_temp_variable = { cannibalism_wendigo_pack_manpower = cannibalism_population_loss_applied }
+			multiply_temp_variable = { cannibalism_wendigo_pack_manpower = constant:cannibalism_wendigo_decision.train_pack_manpower_factor }
+			round_temp_variable = cannibalism_wendigo_pack_manpower
+			add_manpower = cannibalism_wendigo_pack_manpower
+			event_target:cannibalism_wendigo_decision_state = { cannibalism_spawn_paid_wendigo_pack_batch = yes }
+			add_to_variable = { cannibalism_wendigo_trained_pack_count = constant:cannibalism_wendigo_decision.train_pack_batch }
+			set_temp_variable = { cannibalism_wendigo_pack_training_result = 1 }
+		}
+		set_temp_variable = { cannibalism_consumption_exact_request_people = 0 }
+	}
+}
+
+cannibalism_accelerate_wendigo_countdown_from_selected_anchor = {
+	set_temp_variable = { cannibalism_wendigo_acceleration_result = 0 }
+	if = {
+		limit = {
+			has_event_target = cannibalism_wendigo_decision_state
+			cannibalism_wendigo_can_pay_acceleration_cost = yes
+			event_target:cannibalism_wendigo_decision_state = { cannibalism_state_can_accelerate_wendigo_countdown = yes }
+		}
+		event_target:cannibalism_wendigo_decision_state = { save_event_target_as = cannibalism_consumption_target_state }
+		set_temp_variable = { cannibalism_consumption_exact_request_people = constant:cannibalism_wendigo_decision.accelerate_population_k }
+		multiply_temp_variable = { cannibalism_consumption_exact_request_people = constant:cannibalism_consumption.population_people_per_k }
+		set_temp_variable = { cannibalism_consumption_context = constant:cannibalism_consumption_mode.silent_larder }
+		cannibalism_prepare_consumption_context = yes
+		if = {
+			limit = {
+				check_variable = { cannibalism_consumption_result = constant:cannibalism_consumption_result.applied }
+				check_variable = {
+					var = cannibalism_population_loss_applied
+					value = cannibalism_consumption_exact_request_people
+					compare = equals
+				}
+			}
+			set_temp_variable = { cannibalism_wendigo_larder_cost = constant:cannibalism_wendigo_decision.accelerate_larder }
+			set_temp_variable = { cannibalism_wendigo_command_cost = 0 }
+			cannibalism_pay_wendigo_larder_and_command_cost = yes
+			add_to_variable = { cannibalism_wendigo_transformation_progress = constant:cannibalism_wendigo_decision.accelerate_progress }
+			clamp_variable = {
+				var = cannibalism_wendigo_transformation_progress
+				min = constant:cannibalism_wendigo_countdown.progress_min
+				max = constant:cannibalism_wendigo_countdown.progress_max
+			}
+			set_temp_variable = { cannibalism_wendigo_decision_cooldown_days = constant:cannibalism_wendigo_decision.accelerate_cooldown_days }
+			set_country_flag = { flag = cannibalism_wendigo_acceleration_cooldown days = cannibalism_wendigo_decision_cooldown_days }
+			set_temp_variable = { cannibalism_wendigo_acceleration_result = 1 }
+		}
+		set_temp_variable = { cannibalism_consumption_exact_request_people = 0 }
+	}
+}
+
+cannibalism_stabilize_wendigo_countdown_at_selected_anchor = {
+	set_temp_variable = { cannibalism_wendigo_stabilization_result = 0 }
+	if = {
+		limit = {
+			has_event_target = cannibalism_wendigo_decision_state
+			cannibalism_wendigo_can_pay_stabilization_cost = yes
+			event_target:cannibalism_wendigo_decision_state = { cannibalism_state_can_stabilize_wendigo_countdown = yes }
+		}
+		set_temp_variable = { cannibalism_wendigo_larder_cost = constant:cannibalism_wendigo_decision.stabilize_larder }
+		set_temp_variable = { cannibalism_wendigo_command_cost = constant:cannibalism_wendigo_decision.stabilize_command }
+		cannibalism_pay_wendigo_larder_and_command_cost = yes
+		subtract_from_variable = { cannibalism_wendigo_broken_anchor_count = 1 }
+		clamp_variable = { var = cannibalism_wendigo_broken_anchor_count min = 0 }
+		add_to_variable = { cannibalism_wendigo_transformation_progress = constant:cannibalism_wendigo_decision.stabilize_progress }
+		clamp_variable = {
+			var = cannibalism_wendigo_transformation_progress
+			min = constant:cannibalism_wendigo_countdown.progress_min
+			max = constant:cannibalism_wendigo_countdown.progress_max
+		}
+		event_target:cannibalism_wendigo_decision_state = {
+			add_to_variable = { cannibalism_wendigo_anchor_strength = constant:cannibalism_wendigo_decision.stabilize_anchor_strength }
+			clamp_variable = {
+				var = cannibalism_wendigo_anchor_strength
+				min = constant:cannibalism_wendigo_anchor.minimum_live_strength
+				max = constant:cannibalism_wendigo_anchor.maximum_strength
+			}
+		}
+		set_temp_variable = { cannibalism_wendigo_decision_cooldown_days = constant:cannibalism_wendigo_decision.stabilize_cooldown_days }
+		set_country_flag = { flag = cannibalism_wendigo_stabilization_cooldown days = cannibalism_wendigo_decision_cooldown_days }
+		set_temp_variable = { cannibalism_wendigo_stabilization_result = 1 }
+	}
+}
+
+cannibalism_freeze_selected_wendigo_supply_corridor = {
+	set_temp_variable = { cannibalism_wendigo_frozen_corridor_result = 0 }
+	if = {
+		limit = {
+			has_event_target = cannibalism_wendigo_decision_state
+			cannibalism_wendigo_can_pay_frozen_corridor_cost = yes
+			event_target:cannibalism_wendigo_decision_state = { cannibalism_state_can_freeze_wendigo_supply_corridor = yes }
+		}
+		save_event_target_as = cannibalism_wendigo_decision_actor
+		set_temp_variable = { cannibalism_wendigo_larder_cost = constant:cannibalism_wendigo_decision.freeze_corridor_larder }
+		set_temp_variable = { cannibalism_wendigo_command_cost = constant:cannibalism_wendigo_decision.freeze_corridor_command }
+		cannibalism_pay_wendigo_larder_and_command_cost = yes
+		set_temp_variable = { cannibalism_wendigo_decision_cooldown_days = constant:cannibalism_wendigo_decision.freeze_corridor_days }
+		event_target:cannibalism_wendigo_decision_state = {
+			set_state_flag = { flag = cannibalism_wendigo_frozen_supply_corridor_active days = cannibalism_wendigo_decision_cooldown_days }
+			add_dynamic_modifier = {
+				modifier = cannibalism_wendigo_frozen_supply_corridor
+				days = cannibalism_wendigo_decision_cooldown_days
+			}
+			every_neighbor_state = {
+				limit = { CONTROLLER = { has_war_with = event_target:cannibalism_wendigo_decision_actor } }
+				add_dynamic_modifier = {
+					modifier = cannibalism_wendigo_frozen_supply_disruption
+					days = cannibalism_wendigo_decision_cooldown_days
+				}
+			}
+		}
+		set_temp_variable = { cannibalism_wendigo_frozen_corridor_result = 1 }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Array-backed counterwar target selection and effects
+# ---------------------------------------------------------------------------
+
+cannibalism_calculate_current_counterwar_anchor_score = {
+	set_temp_variable = { cannibalism_wendigo_counterwar_anchor_score = constant:cannibalism_wendigo_decision.selection_base_score }
+	if = {
+		limit = { CONTROLLER = { has_war_with = event_target:cannibalism_wendigo_counterwar_actor } }
+		add_to_temp_variable = { cannibalism_wendigo_counterwar_anchor_score = constant:cannibalism_wendigo_decision.selection_at_war_score }
+	}
+	if = {
+		limit = { any_neighbor_state = { CONTROLLER = { tag = event_target:cannibalism_wendigo_counterwar_actor } } }
+		add_to_temp_variable = { cannibalism_wendigo_counterwar_anchor_score = constant:cannibalism_wendigo_decision.selection_adjacent_score }
+	}
+	if = {
+		limit = { has_state_flag = cannibalism_wendigo_anchor_identified }
+		add_to_temp_variable = { cannibalism_wendigo_counterwar_anchor_score = constant:cannibalism_wendigo_decision.selection_identified_score }
+	}
+	set_temp_variable = { cannibalism_wendigo_counterwar_strength_component = constant:cannibalism_wendigo_decision.selection_maximum_strength }
+	subtract_from_temp_variable = { cannibalism_wendigo_counterwar_strength_component = cannibalism_wendigo_anchor_strength }
+	add_to_temp_variable = { cannibalism_wendigo_counterwar_anchor_score = cannibalism_wendigo_counterwar_strength_component }
+}
+
+cannibalism_select_counterwar_anchor = {
+	set_temp_variable = { cannibalism_wendigo_counterwar_anchor_found = 0 }
+	set_temp_variable = { cannibalism_wendigo_counterwar_best_score = 0 }
+	save_event_target_as = cannibalism_wendigo_counterwar_actor
+	for_each_scope_loop = {
+		array = global.cannibalism_transformation_anchor_states
+		if = {
+			limit = {
+				cannibalism_current_wendigo_anchor_is_reachable_by_root = yes
+				OR = {
+					check_variable = { cannibalism_wendigo_counterwar_require_unidentified < 1 }
+					NOT = { has_state_flag = cannibalism_wendigo_anchor_identified }
+				}
+				OR = {
+					check_variable = { cannibalism_wendigo_counterwar_require_active_site < 1 }
+					NOT = { has_state_flag = cannibalism_wendigo_recruitment_site_broken }
+				}
+			}
+			cannibalism_calculate_current_counterwar_anchor_score = yes
+			if = {
+				limit = {
+					check_variable = {
+						var = cannibalism_wendigo_counterwar_anchor_score
+						value = cannibalism_wendigo_counterwar_best_score
+						compare = greater_than
+					}
+				}
+				set_temp_variable = { cannibalism_wendigo_counterwar_best_score = cannibalism_wendigo_counterwar_anchor_score }
+				set_temp_variable = { cannibalism_wendigo_counterwar_anchor_found = 1 }
+				save_event_target_as = cannibalism_wendigo_counterwar_anchor
+			}
+		}
+	}
+}
+
+cannibalism_identify_counterwar_anchor = {
+	set_temp_variable = { cannibalism_wendigo_identification_result = 0 }
+	if = {
+		limit = { cannibalism_can_identify_any_wendigo_anchor = yes }
+		set_temp_variable = { cannibalism_wendigo_counterwar_require_unidentified = 1 }
+		set_temp_variable = { cannibalism_wendigo_counterwar_require_active_site = 0 }
+		cannibalism_select_counterwar_anchor = yes
+		if = {
+			limit = {
+				check_variable = { cannibalism_wendigo_counterwar_anchor_found > 0 }
+				has_event_target = cannibalism_wendigo_counterwar_anchor
+				cannibalism_can_identify_any_wendigo_anchor = yes
+			}
+			set_temp_variable = { cannibalism_wendigo_cost_negative = constant:cannibalism_wendigo_decision.identify_political_power }
+			multiply_temp_variable = { cannibalism_wendigo_cost_negative = -1 }
+			add_political_power = cannibalism_wendigo_cost_negative
+			event_target:cannibalism_wendigo_counterwar_anchor = { set_state_flag = cannibalism_wendigo_anchor_identified }
+			set_temp_variable = { cannibalism_wendigo_decision_cooldown_days = constant:cannibalism_wendigo_decision.identify_cooldown_days }
+			set_country_flag = { flag = cannibalism_wendigo_identification_cooldown days = cannibalism_wendigo_decision_cooldown_days }
+			cannibalism_record_current_country_as_defeat_contributor = yes
+			set_temp_variable = { cannibalism_wendigo_identification_result = 1 }
+		}
+	}
+}
+
+cannibalism_apply_counterwar_anchor_damage = {
+	event_target:cannibalism_wendigo_counterwar_anchor = {
+		subtract_from_variable = { cannibalism_wendigo_anchor_strength = cannibalism_wendigo_counterwar_anchor_damage }
+		if = {
+			limit = {
+				check_variable = {
+					var = cannibalism_wendigo_anchor_strength
+					value = constant:cannibalism_wendigo_anchor.minimum_live_strength
+					compare = less_than
+				}
+			}
+			cannibalism_break_loaded_wendigo_anchor = yes
+			set_temp_variable = { cannibalism_wendigo_counterwar_anchor_destroyed = 1 }
+		}
+		else = {
+			clamp_variable = {
+				var = cannibalism_wendigo_anchor_strength
+				min = constant:cannibalism_wendigo_anchor.minimum_live_strength
+				max = constant:cannibalism_wendigo_anchor.maximum_strength
+			}
+		}
+	}
+	if = {
+		limit = {
+			check_variable = { cannibalism_wendigo_counterwar_anchor_destroyed > 0 }
+			is_ai = no
+		}
+		set_country_flag = achievement_cannibalism_wendigo_counterwar_contributor
+		set_country_flag = achievement_cannibalism_decisive_aid
+	}
+}
+
+cannibalism_assault_selected_counterwar_anchor = {
+	set_temp_variable = { cannibalism_wendigo_anchor_assault_result = 0 }
+	if = {
+		limit = { cannibalism_can_pay_wendigo_anchor_assault_cost = yes }
+		set_temp_variable = { cannibalism_wendigo_counterwar_require_unidentified = 0 }
+		set_temp_variable = { cannibalism_wendigo_counterwar_require_active_site = 0 }
+		cannibalism_select_counterwar_anchor = yes
+		if = {
+			limit = {
+				check_variable = { cannibalism_wendigo_counterwar_anchor_found > 0 }
+				has_event_target = cannibalism_wendigo_counterwar_anchor
+				cannibalism_can_pay_wendigo_anchor_assault_cost = yes
+			}
+			set_temp_variable = { cannibalism_wendigo_counterwar_manpower_cost = constant:cannibalism_wendigo_decision.assault_manpower }
+			set_temp_variable = { cannibalism_wendigo_counterwar_command_cost = constant:cannibalism_wendigo_decision.assault_command }
+			set_temp_variable = { cannibalism_wendigo_counterwar_infantry_cost = constant:cannibalism_wendigo_decision.assault_infantry_equipment }
+			set_temp_variable = { cannibalism_wendigo_counterwar_support_cost = constant:cannibalism_wendigo_decision.assault_support_equipment }
+			cannibalism_pay_wendigo_counterwar_cost = yes
+			set_temp_variable = { cannibalism_wendigo_counterwar_anchor_damage = constant:cannibalism_wendigo_decision.assault_strength_damage }
+			if = {
+				limit = { event_target:cannibalism_wendigo_counterwar_anchor = { has_state_flag = cannibalism_wendigo_anchor_identified } }
+				add_to_temp_variable = { cannibalism_wendigo_counterwar_anchor_damage = constant:cannibalism_wendigo_decision.assault_identified_bonus_damage }
+			}
+			set_temp_variable = { cannibalism_wendigo_counterwar_anchor_destroyed = 0 }
+			cannibalism_apply_counterwar_anchor_damage = yes
+			set_temp_variable = { cannibalism_wendigo_decision_cooldown_days = constant:cannibalism_wendigo_decision.assault_cooldown_days }
+			set_country_flag = { flag = cannibalism_wendigo_anchor_assault_cooldown days = cannibalism_wendigo_decision_cooldown_days }
+			if = {
+				limit = { check_variable = { cannibalism_wendigo_counterwar_anchor_destroyed > 0 } }
+				country_event = { id = chaosx.nr14.77 hours = @CANNIBALISM_WENDIGO_DECISION_EVENT_HOURS }
+			}
+			cannibalism_record_current_country_as_defeat_contributor = yes
+			set_temp_variable = { cannibalism_wendigo_anchor_assault_result = 1 }
+		}
+	}
+}
+
+cannibalism_disrupt_selected_wendigo_anchor_logistics = {
+	set_temp_variable = { cannibalism_wendigo_logistics_disruption_result = 0 }
+	if = {
+		limit = { cannibalism_can_pay_wendigo_logistics_disruption_cost = yes }
+		set_temp_variable = { cannibalism_wendigo_counterwar_require_unidentified = 0 }
+		set_temp_variable = { cannibalism_wendigo_counterwar_require_active_site = 0 }
+		cannibalism_select_counterwar_anchor = yes
+		if = {
+			limit = {
+				check_variable = { cannibalism_wendigo_counterwar_anchor_found > 0 }
+				has_event_target = cannibalism_wendigo_counterwar_anchor
+				cannibalism_can_pay_wendigo_logistics_disruption_cost = yes
+			}
+			set_temp_variable = { cannibalism_wendigo_counterwar_manpower_cost = constant:cannibalism_wendigo_decision.disrupt_manpower }
+			set_temp_variable = { cannibalism_wendigo_counterwar_command_cost = constant:cannibalism_wendigo_decision.disrupt_command }
+			set_temp_variable = { cannibalism_wendigo_counterwar_infantry_cost = 0 }
+			set_temp_variable = { cannibalism_wendigo_counterwar_support_cost = constant:cannibalism_wendigo_decision.disrupt_support_equipment }
+			cannibalism_pay_wendigo_counterwar_cost = yes
+			set_temp_variable = { cannibalism_wendigo_counterwar_anchor_damage = constant:cannibalism_wendigo_decision.disrupt_strength_damage }
+			set_temp_variable = { cannibalism_wendigo_counterwar_anchor_destroyed = 0 }
+			cannibalism_apply_counterwar_anchor_damage = yes
+			event_target:cannibalism_wendigo_merge_host = {
+				subtract_from_variable = { cannibalism_wendigo_transformation_progress = constant:cannibalism_wendigo_decision.disrupt_progress_damage }
+				clamp_variable = {
+					var = cannibalism_wendigo_transformation_progress
+					min = constant:cannibalism_wendigo_countdown.progress_min
+					max = constant:cannibalism_wendigo_countdown.progress_max
+				}
+			}
+			set_temp_variable = { cannibalism_wendigo_decision_cooldown_days = constant:cannibalism_wendigo_decision.disrupt_cooldown_days }
+			set_country_flag = { flag = cannibalism_wendigo_logistics_disruption_cooldown days = cannibalism_wendigo_decision_cooldown_days }
+			if = {
+				limit = { check_variable = { cannibalism_wendigo_counterwar_anchor_destroyed > 0 } }
+				country_event = { id = chaosx.nr14.77 hours = @CANNIBALISM_WENDIGO_DECISION_EVENT_HOURS }
+			}
+			cannibalism_record_current_country_as_defeat_contributor = yes
+			set_temp_variable = { cannibalism_wendigo_logistics_disruption_result = 1 }
+		}
+	}
+}
+
+cannibalism_break_selected_wendigo_recruitment_site = {
+	set_temp_variable = { cannibalism_wendigo_recruitment_site_break_result = 0 }
+	if = {
+		limit = { cannibalism_can_pay_wendigo_recruitment_site_break_cost = yes }
+		set_temp_variable = { cannibalism_wendigo_counterwar_require_unidentified = 0 }
+		set_temp_variable = { cannibalism_wendigo_counterwar_require_active_site = 1 }
+		cannibalism_select_counterwar_anchor = yes
+		if = {
+			limit = {
+				check_variable = { cannibalism_wendigo_counterwar_anchor_found > 0 }
+				has_event_target = cannibalism_wendigo_counterwar_anchor
+				cannibalism_can_pay_wendigo_recruitment_site_break_cost = yes
+			}
+			set_temp_variable = { cannibalism_wendigo_counterwar_manpower_cost = constant:cannibalism_wendigo_decision.break_site_manpower }
+			set_temp_variable = { cannibalism_wendigo_counterwar_command_cost = constant:cannibalism_wendigo_decision.break_site_command }
+			set_temp_variable = { cannibalism_wendigo_counterwar_infantry_cost = constant:cannibalism_wendigo_decision.break_site_infantry_equipment }
+			set_temp_variable = { cannibalism_wendigo_counterwar_support_cost = 0 }
+			cannibalism_pay_wendigo_counterwar_cost = yes
+			set_temp_variable = { cannibalism_wendigo_decision_cooldown_days = constant:cannibalism_wendigo_decision.break_site_lock_days }
+			event_target:cannibalism_wendigo_counterwar_anchor = {
+				set_state_flag = { flag = cannibalism_wendigo_recruitment_site_broken days = cannibalism_wendigo_decision_cooldown_days }
+			}
+			set_temp_variable = { cannibalism_wendigo_counterwar_anchor_damage = constant:cannibalism_wendigo_decision.break_site_strength_damage }
+			set_temp_variable = { cannibalism_wendigo_counterwar_anchor_destroyed = 0 }
+			cannibalism_apply_counterwar_anchor_damage = yes
+			set_temp_variable = { cannibalism_wendigo_decision_cooldown_days = constant:cannibalism_wendigo_decision.break_site_cooldown_days }
+			set_country_flag = { flag = cannibalism_wendigo_recruitment_site_break_cooldown days = cannibalism_wendigo_decision_cooldown_days }
+			if = {
+				limit = { check_variable = { cannibalism_wendigo_counterwar_anchor_destroyed > 0 } }
+				country_event = { id = chaosx.nr14.77 hours = @CANNIBALISM_WENDIGO_DECISION_EVENT_HOURS }
+			}
+			cannibalism_record_current_country_as_defeat_contributor = yes
+			set_temp_variable = { cannibalism_wendigo_recruitment_site_break_result = 1 }
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Successful pre-lock counterplay
+# ---------------------------------------------------------------------------
+
+cannibalism_break_wendigo_transformation_route = {
+	if = {
+		limit = {
+			is_cannibalism_wendigo_hannibal_country = yes
+			has_country_flag = cannibalism_wendigo_countdown_active
+			NOT = { has_country_flag = cannibalism_wendigo_transformation_locked }
+			check_variable = { global.cannibalism_wendigo_active_anchor_count < 1 }
+		}
+		set_country_flag = cannibalism_wendigo_transformation_broken
+		set_global_flag = cannibalism_wendigo_transformation_defeated
+		set_global_flag = achievement_cannibalism_all_wendigo_anchors_broken_prelock
+		clr_country_flag = cannibalism_wendigo_countdown_active
+		clr_country_flag = cannibalism_wendigo_terminal_route_complete
+		clr_country_flag = cannibalism_wendigo_terminal_hunt_open
+		clr_global_flag = cannibalism_wendigo_countdown_active
+		set_variable = { cannibalism_wendigo_transformation_stage = constant:cannibalism_wendigo_stage.winter_network }
+		set_variable = { cannibalism_wendigo_transformation_progress = constant:cannibalism_wendigo_countdown.progress_min }
+		country_event = { id = chaosx.nr14.76 hours = @CANNIBALISM_WENDIGO_DECISION_EVENT_HOURS }
+	}
+}

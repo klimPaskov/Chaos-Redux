@@ -8,9 +8,9 @@ The reveal must be earned. A single cult cell at high chaos is insufficient. The
 
 ## Internal identity
 
-Hannibal is created through Event 14. No separate future Hannibal event is required.
+Hannibal Lecter is created through Event 14. No separate future Hannibal event is required.
 
-He is a fictional leader and is unrelated to Hannibal Barca. The implementation and asset notes should state this clearly to prevent a sourced historical portrait or Punic visual package.
+The implementation uses an alternate-history Hannibal Lecter design. Portrait and event art should depict the character consistently without copying the likeness of a specific screen actor.
 
 The character can exist internally during Evolution II. Before the reveal:
 
@@ -109,7 +109,7 @@ If a player controls the existing Wendigo country and the alternate branch quali
 
 ### Player feeling
 
-The moment should feel like the cult network has become a state and its hidden command has stepped into public view. The tone is controlled, intelligent, and predatory. Avoid generic apocalypse wording and avoid turning Hannibal into a comic pun.
+The moment should feel like the cult network has become a state and its hidden command has stepped into public view. The strategy remains intelligent and predatory, but the visual presentation is violently unhinged: Hannibal Lecter commands a convergence already breaking barricades and chasing civilians rather than posing before a council. Avoid generic apocalypse wording and avoid turning him into a comic pun.
 
 ### Information revealed
 
@@ -131,7 +131,7 @@ The moment should feel like the cult network has become a state and its hidden c
 
 Use a normal global news event when the reveal is valid but still regional. Use a super-event when the network has several warlord countries, broad territory, or a major consumed-population total.
 
-The reveal super-event uses a unique generated image and unique licensed audio. Title, quote, button remark, and track remain research gates.
+The reveal super-event uses a unique generated action scene and unique licensed audio. The scene must show Hannibal Lecter directing visibly crazed cannibals and warlords as they breach defenses and pursue fleeing civilians. A static council, map-room tableau, calm lineup, or posed portrait is rejected. Title, quote, button remark, and track remain research gates.
 
 ## Warlord response choices
 
@@ -236,21 +236,23 @@ Hannibal should look like the person who can command the existing warlords.
 Required visual cues:
 
 - bald or closely shaven head
-- ritual scars that are distinct from generic warlords
-- blood and gore
-- layered hides, bone, scavenged officer material, and a unique command mantle
-- calculating expression
+- asymmetrical scars that are distinct from every generic warlord
+- heavy fictional blood and gore
+- layered invented rough cloth, hide repairs, scavenged officer material, and a unique ruined command silhouette
+- bloodshot mismatched eyes, irregular stained teeth, pallid damaged skin, and an ecstatic predatory expression
+- a blood-wet skull held and actively licked during the portrait loop
 - strong silhouette at 156 by 210
-- no historical Carthaginian armor or Punic symbols
 - no Wendigo traits in the ordinary portrait
+- no actor likeness
 
 ### Animated portrait behavior
 
-- 12 distinct source frames
-- slow breathing and subtle eye movement
-- shadow and blood changes drawn into the source frames
+- 12 distinct generated source frames
+- a complete skull-licking action arc: clutch, raise, tongue approach, contact, drag, apex, wet pull-away, second lap, lowering, swallow, and near-rest return
+- jaw, tongue, lips, fingers, wrists, eyes, skull angle, blood trails, shoulders, and cloth folds independently redrawn across the frames
 - static fallback
 - animation activates only after reveal
+- a transformed still, local mouth composite, or translation/scale/rotation/filter animation is rejected
 
 ### Trait direction
 

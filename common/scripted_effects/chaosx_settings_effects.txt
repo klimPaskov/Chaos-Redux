@@ -4604,13 +4604,15 @@ fire_event_by_temp_id_no_cluster = {
 		}
 	}
 	if = {
-		limit = { check_variable = { event_id = constant:random_faction_event.id } }
-		random_faction_prepare_runtime_context = yes
+		limit = { check_variable = { event_id = constant:cannibalism_event.id } }
+		set_temp_variable = { cannibalism_prefire_ready = 0 }
+		cannibalism_prepare_random_event_fire = yes
 		if = {
 			limit = {
 				OR = {
-					check_variable = { random_faction_context_ready < 1 }
-					NOT = { has_event_target = random_faction_target_country }
+					check_variable = { cannibalism_prefire_ready < 1 }
+					NOT = { has_event_target = cannibalism_first_host }
+					NOT = { has_event_target = cannibalism_initial_state }
 				}
 			}
 			set_temp_variable = { event_single_fire_allowed = 0 }
@@ -4626,6 +4628,19 @@ fire_event_by_temp_id_no_cluster = {
 					check_variable = { resources_found_prefire_ready < constant:resources_found_value.one }
 					NOT = { has_event_target = resources_found_prefire_owner }
 					NOT = { has_event_target = resources_found_prefire_state }
+				}
+			}
+			set_temp_variable = { event_single_fire_allowed = 0 }
+		}
+	}
+	if = {
+		limit = { check_variable = { event_id = constant:random_faction_event.id } }
+		random_faction_prepare_runtime_context = yes
+		if = {
+			limit = {
+				OR = {
+					check_variable = { random_faction_context_ready < 1 }
+					NOT = { has_event_target = random_faction_target_country }
 				}
 			}
 			set_temp_variable = { event_single_fire_allowed = 0 }

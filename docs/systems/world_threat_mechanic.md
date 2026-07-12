@@ -19,6 +19,7 @@ Current registered source flags:
 - `world_threat_source_mengele`
 - `world_threat_source_fury`
 - `world_threat_source_death`
+- `world_threat_source_cannibalism`
 
 Shared aggregate flag:
 
@@ -74,6 +75,8 @@ The Fury source uses `world_threat_source_fury` during its terminal world-end br
 
 The Death source uses `death_refresh_world_threat_source` in `common/scripted_effects/010_death_effects.txt`. It activates only after Death is publicly revealed by consuming a mainland state above the reveal population threshold, and clears when Death is defeated.
 
+The Cannibalism source uses `cannibalism_refresh_world_threat_source` in `common/scripted_effects/014_cannibalism_core_effects.txt`. It activates only when the Event 014 system has reached meaningful military scale through multiple warlord countries, a mature international network, the unified Host, or the merged Wendigo route. It clears after those conditions disappear or global Event 014 cleanup completes.
+
 That effect:
 
 1. recalculates total zombie strength
@@ -103,6 +106,7 @@ Shared triggers:
 - `has_world_threat_source_mengele`
 - `has_world_threat_source_fury`
 - `has_world_threat_source_death`
+- `has_world_threat_source_cannibalism`
 
 Registered world-end flags under the Mengele source:
 
@@ -124,7 +128,7 @@ Everything should fold back into the same source-counted system.
 ## Limitations
 
 - The current zombie source is refreshed from the existing zombie runtime rather than a dedicated global state-control hook. In practice that is good enough for the active zombie system, but it is still tied to zombie runtime execution rather than a universal threat bus.
-- Zombies, the Holy Realm, Fury, Death, the active Mengele laboratory-state civil war, and the Angelic Directorate clone world-end path are registered as source flags.
+- Zombies, the Holy Realm, Fury, Death, Cannibalism at meaningful military scale, the active Mengele laboratory-state civil war, and the Angelic Directorate clone world-end path are registered as source flags.
 - `world_in_threat` is intentionally just a state flag. It does not itself enforce diplomacy or AI behavior. Other systems must explicitly read it.
 
 ## Files
@@ -132,6 +136,7 @@ Everything should fold back into the same source-counted system.
 - `common/scripted_effects/chaosx_dynamic_effects.txt`
 - `common/scripted_effects/chaosx_dynamic_effects.md`
 - `common/scripted_effects/002_zombie_outbreak_effects.txt`
+- `common/scripted_effects/014_cannibalism_core_effects.txt`
 - `common/scripted_triggers/chaosx_world_threat_triggers.txt`
 - `common/on_actions/002_zombie_outbreak_on_actions.txt`
 - `common/decisions/002_zombie_outbreak_decisions.txt`

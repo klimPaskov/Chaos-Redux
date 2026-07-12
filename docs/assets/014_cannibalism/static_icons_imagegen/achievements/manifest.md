@@ -1,4 +1,8 @@
-# Event 014 Cannibalism Achievement Icon Manifest
+# Superseded Event 014 Achievement Icon Manifest
+
+Status: inactive and superseded by `docs/assets/014_cannibalism/achievements_imagegen/manifest.md`. These 13 historical IDs are not the current 18-achievement contract and must not be used as Event 014 completion evidence. The current package owns all 54 registered runtime textures, including a newly generated `014_cannibalism_no_second_table` triplet.
+
+Runtime cleanup (2026-07-12): the 36 DDS files belonging to the twelve obsolete IDs were removed from `gfx/achievements/`. The overlapping `014_cannibalism_no_second_table` triplet at that path is the independently generated current-package version. Every `Final DDS paths` entry below is historical provenance; it is not a current ownership or existence claim.
 
 Date: `2026-07-01`
 

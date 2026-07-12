@@ -1,0 +1,900 @@
+@cannibalism_unified_route_undecided = 0
+@cannibalism_unified_disposition_keep = 1
+@cannibalism_unified_disposition_break = 2
+@cannibalism_unified_disposition_chain = 3
+@cannibalism_unified_hierarchy_one_command = 1
+@cannibalism_unified_hierarchy_many_jaws = 2
+@cannibalism_unified_hierarchy_ritual = 3
+@cannibalism_unified_larder_rapid = 1
+@cannibalism_unified_larder_managed = 2
+@cannibalism_unified_larder_mobile = 3
+@cannibalism_unified_larder_battlefield = 4
+@cannibalism_unified_meter_min = 0
+@cannibalism_unified_meter_max = 100
+@cannibalism_unified_meter_small = 5
+@cannibalism_unified_meter_medium = 10
+@cannibalism_unified_meter_large = 15
+@cannibalism_unified_meter_loss = -10
+@cannibalism_unified_terminal_gate_progress = 25
+@cannibalism_unified_map_level = 1
+@cannibalism_unified_shared_slot = 1
+
+# ============================================================================
+# CHAOS REDUX - EVENT 014 UNIFIED COUNTRY FOCUS EFFECTS
+# ============================================================================
+# Reward implementation for the 108-focus CBL post-reveal tree. These effects
+# establish exact flags, route variables, staged-idea contracts, decision-family
+# contracts, and bounded map construction. They never add population, Larder,
+# manpower, equipment, divisions, templates, or OOBs. All recruitment and
+# consumption flags require costed decision implementations that call the Event
+# 014 Deaths-accounting transaction pipeline.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Shared value, construction, idea, and terminal helpers
+# ---------------------------------------------------------------------------
+
+cannibalism_unified_focus_initialize_values = {
+	if = {
+		limit = { NOT = { has_variable = cannibalism_unified_authority } }
+		set_variable = { cannibalism_unified_authority = constant:cannibalism_unification.starting_authority }
+	}
+	if = {
+		limit = { NOT = { has_variable = cannibalism_world_hostility } }
+		set_variable = { cannibalism_world_hostility = constant:cannibalism_unification.starting_world_hostility }
+	}
+	if = {
+		limit = { NOT = { has_variable = cannibalism_terminal_progress } }
+		set_variable = { cannibalism_terminal_progress = constant:cannibalism_unification.starting_terminal_progress }
+	}
+	if = {
+		limit = { NOT = { has_variable = cannibalism_unified_warlord_disposition } }
+		set_variable = { cannibalism_unified_warlord_disposition = @cannibalism_unified_route_undecided }
+	}
+	if = {
+		limit = { NOT = { has_variable = cannibalism_unified_hierarchy } }
+		set_variable = { cannibalism_unified_hierarchy = @cannibalism_unified_route_undecided }
+	}
+	if = {
+		limit = { NOT = { has_variable = cannibalism_unified_larder_method } }
+		set_variable = { cannibalism_unified_larder_method = @cannibalism_unified_route_undecided }
+	}
+}
+
+cannibalism_unified_focus_clamp_values = {
+	clamp_variable = { var = cannibalism_unified_authority min = @cannibalism_unified_meter_min max = @cannibalism_unified_meter_max }
+	clamp_variable = { var = cannibalism_world_hostility min = @cannibalism_unified_meter_min max = @cannibalism_unified_meter_max }
+	clamp_variable = { var = cannibalism_terminal_progress min = @cannibalism_unified_meter_min max = @cannibalism_unified_meter_max }
+	if = {
+		limit = { has_variable = cannibalism_frenzy }
+		clamp_variable = { var = cannibalism_frenzy min = constant:cannibalism_consumption.frenzy_min max = constant:cannibalism_consumption.frenzy_max }
+	}
+}
+
+cannibalism_unified_focus_add_capital_infrastructure = {
+	if = {
+		limit = { capital_scope = { is_owned_and_controlled_by = ROOT } }
+		capital_scope = {
+			add_building_construction = { type = infrastructure level = @cannibalism_unified_map_level instant_build = yes }
+		}
+	}
+}
+
+cannibalism_unified_focus_add_capital_defenses = {
+	if = {
+		limit = { capital_scope = { is_owned_and_controlled_by = ROOT } }
+		capital_scope = {
+			add_building_construction = { type = bunker level = @cannibalism_unified_map_level instant_build = yes }
+		}
+	}
+}
+
+cannibalism_unified_focus_add_capital_civilian_workshop = {
+	if = {
+		limit = { capital_scope = { is_owned_and_controlled_by = ROOT } }
+		capital_scope = {
+			add_extra_state_shared_building_slots = @cannibalism_unified_shared_slot
+			add_building_construction = { type = industrial_complex level = @cannibalism_unified_map_level instant_build = yes }
+		}
+	}
+}
+
+cannibalism_unified_focus_add_capital_military_workshop = {
+	if = {
+		limit = { capital_scope = { is_owned_and_controlled_by = ROOT } }
+		capital_scope = {
+			add_extra_state_shared_building_slots = @cannibalism_unified_shared_slot
+			add_building_construction = { type = arms_factory level = @cannibalism_unified_map_level instant_build = yes }
+		}
+	}
+}
+
+cannibalism_unified_focus_add_capital_airbase = {
+	if = {
+		limit = { capital_scope = { is_owned_and_controlled_by = ROOT } }
+		capital_scope = {
+			add_building_construction = { type = air_base level = @cannibalism_unified_map_level instant_build = yes }
+		}
+	}
+}
+
+cannibalism_unified_focus_add_controlled_coastal_dockyard = {
+	random_owned_controlled_state = {
+		limit = { is_coastal = yes }
+		add_extra_state_shared_building_slots = @cannibalism_unified_shared_slot
+		add_building_construction = { type = dockyard level = @cannibalism_unified_map_level instant_build = yes }
+	}
+}
+
+cannibalism_unified_focus_add_controlled_route_infrastructure = {
+	random_owned_controlled_state = {
+		add_building_construction = { type = infrastructure level = @cannibalism_unified_map_level instant_build = yes }
+	}
+}
+
+cannibalism_unified_focus_clear_disposition_ideas = {
+	remove_ideas = {
+		cannibalism_retained_lieutenants
+		cannibalism_council_of_retained_hosts
+		cannibalism_warlords_broken
+		cannibalism_authority_without_rivals
+		cannibalism_rivals_in_chains
+		cannibalism_dominion_of_chains
+	}
+}
+
+cannibalism_unified_focus_clear_hierarchy_ideas = {
+	remove_ideas = {
+		cannibalism_one_command
+		cannibalism_single_operational_will
+		cannibalism_many_jaws
+		cannibalism_confederation_under_one_name
+		cannibalism_ritual_administration
+		cannibalism_state_of_the_last_table
+	}
+}
+
+cannibalism_unified_focus_clear_larder_ideas = {
+	remove_ideas = {
+		cannibalism_rapid_continental_larder
+		cannibalism_short_horizon_continent
+		cannibalism_managed_continental_larder
+		cannibalism_managed_continental_reserve
+		cannibalism_mobile_continental_larder
+		cannibalism_larder_that_moves
+		cannibalism_battlefield_continental_larder
+		cannibalism_harvest_follows_victory
+	}
+}
+
+cannibalism_unified_focus_refresh_terminal_route = {
+	clr_country_flag = cannibalism_unified_operational_larder_package
+	clr_country_flag = cannibalism_unified_operational_army_package
+	clr_country_flag = cannibalism_unified_operational_expansion_package
+	clr_country_flag = cannibalism_unified_operational_counterwar_package
+	clr_country_flag = cannibalism_terminal_route_ready
+	clr_country_flag = cannibalism_terminal_route_complete
+	set_variable = { cannibalism_terminal_progress = @cannibalism_unified_meter_min }
+	if = {
+		limit = { cannibalism_unified_larder_package_is_operational = yes }
+		set_country_flag = cannibalism_unified_operational_larder_package
+		add_to_variable = { cannibalism_terminal_progress = constant:cannibalism_unified_operation.terminal_package_progress }
+	}
+	if = {
+		limit = { cannibalism_unified_army_package_is_operational = yes }
+		set_country_flag = cannibalism_unified_operational_army_package
+		add_to_variable = { cannibalism_terminal_progress = constant:cannibalism_unified_operation.terminal_package_progress }
+	}
+	if = {
+		limit = { cannibalism_unified_expansion_package_is_operational = yes }
+		set_country_flag = cannibalism_unified_operational_expansion_package
+		add_to_variable = { cannibalism_terminal_progress = constant:cannibalism_unified_operation.terminal_package_progress }
+	}
+	if = {
+		limit = { cannibalism_unified_counterwar_package_is_operational = yes }
+		set_country_flag = cannibalism_unified_operational_counterwar_package
+		add_to_variable = { cannibalism_terminal_progress = constant:cannibalism_unified_operation.terminal_package_progress }
+	}
+	if = {
+		limit = {
+			tag = CBL
+			has_country_flag = cannibalism_unified_country
+			has_global_flag = cannibalism_reveal_complete
+			NOT = { has_country_flag = cannibalism_wendigo_hannibal_country }
+			cannibalism_unified_all_operational_packages_are_ready = yes
+		}
+		set_country_flag = cannibalism_terminal_route_ready
+		set_country_flag = cannibalism_terminal_route_complete
+	}
+	cannibalism_unified_focus_clamp_values = yes
+}
+
+# ---------------------------------------------------------------------------
+# Opening convergence
+# ---------------------------------------------------------------------------
+
+cannibalism_unified_focus_reveal_the_command = {
+	cannibalism_unified_focus_initialize_values = yes
+	set_country_flag = cannibalism_unified_public_command_established
+	set_country_flag = cannibalism_unified_submission_decisions_open
+}
+
+cannibalism_unified_focus_summon_the_warlords = {
+	set_country_flag = cannibalism_unified_warlord_response_resolution_open
+	set_country_flag = cannibalism_unified_lieutenant_registry_open
+}
+
+cannibalism_unified_focus_choose_the_first_command_capital = {
+	set_country_flag = cannibalism_unified_capital_projects_open
+	cannibalism_unified_focus_add_capital_infrastructure = yes
+	cannibalism_unified_focus_add_capital_defenses = yes
+}
+
+cannibalism_unified_focus_audit_the_submitted_hosts = {
+	set_country_flag = cannibalism_unified_warlord_audit_open
+	set_country_flag = cannibalism_unified_hidden_hoard_investigations_open
+}
+
+cannibalism_unified_focus_bind_the_network_territories = {
+	set_country_flag = cannibalism_unified_territorial_integration_open
+	set_country_flag = cannibalism_unified_disconnected_region_management_open
+	cannibalism_unified_focus_add_controlled_route_infrastructure = yes
+}
+
+cannibalism_unified_focus_settle_the_host_question = {
+	set_country_flag = cannibalism_unified_disposition_routes_open
+	set_country_flag = cannibalism_unified_warlord_settlement_category_open
+}
+
+cannibalism_unified_focus_open_the_continental_ledger = {
+	set_country_flag = cannibalism_unified_larder_category_open
+	set_country_flag = cannibalism_unified_state_ledger_open
+	cannibalism_unified_focus_add_capital_civilian_workshop = yes
+}
+
+cannibalism_unified_focus_establish_the_first_continental_command = {
+	set_country_flag = cannibalism_unified_command_category_open
+	set_country_flag = cannibalism_unified_global_mechanic_open
+	remove_ideas = cannibalism_unified_command_burden
+	add_to_variable = { cannibalism_unified_authority = @cannibalism_unified_meter_small }
+	cannibalism_unified_focus_clamp_values = yes
+}
+
+# ---------------------------------------------------------------------------
+# Warlord disposition
+# ---------------------------------------------------------------------------
+
+cannibalism_unified_focus_keep_the_lieutenants = {
+	set_country_flag = cannibalism_unified_disposition_keep
+	set_variable = { cannibalism_unified_warlord_disposition = @cannibalism_unified_disposition_keep }
+	set_country_flag = cannibalism_unified_lieutenant_governance_open
+	cannibalism_unified_focus_clear_disposition_ideas = yes
+	add_ideas = cannibalism_retained_lieutenants
+}
+
+cannibalism_unified_focus_seat_the_regional_governors = {
+	set_country_flag = cannibalism_unified_regional_governor_assignments_open
+	set_country_flag = cannibalism_unified_governor_loyalty_missions_open
+}
+
+cannibalism_unified_focus_preserve_the_origin_commands = {
+	set_country_flag = cannibalism_unified_origin_specialists_preserved
+	set_country_flag = cannibalism_unified_regional_recruitment_open
+}
+
+cannibalism_unified_focus_arbitrate_the_captains = {
+	set_country_flag = cannibalism_unified_captain_arbitration_open
+	set_country_flag = cannibalism_unified_lieutenant_rivalry_missions_open
+}
+
+cannibalism_unified_focus_council_of_retained_hosts = {
+	set_country_flag = cannibalism_unified_retained_host_council_open
+	swap_ideas = { remove_idea = cannibalism_retained_lieutenants add_idea = cannibalism_council_of_retained_hosts }
+	add_to_variable = { cannibalism_unified_authority = @cannibalism_unified_meter_small }
+	cannibalism_unified_focus_clamp_values = yes
+}
+
+cannibalism_unified_focus_break_the_warlords = {
+	set_country_flag = cannibalism_unified_disposition_break
+	set_variable = { cannibalism_unified_warlord_disposition = @cannibalism_unified_disposition_break }
+	set_country_flag = cannibalism_unified_rival_purges_open
+	cannibalism_unified_focus_clear_disposition_ideas = yes
+	add_ideas = cannibalism_warlords_broken
+}
+
+cannibalism_unified_focus_seize_the_hidden_hoards = {
+	set_country_flag = cannibalism_unified_hoard_seizure_missions_open
+	set_country_flag = cannibalism_unified_purge_resistance_risk
+}
+
+cannibalism_unified_focus_dissolve_the_regional_commands = {
+	set_country_flag = cannibalism_unified_command_dissolution_open
+	add_to_variable = { cannibalism_unified_authority = @cannibalism_unified_meter_medium }
+	cannibalism_unified_focus_clamp_values = yes
+}
+
+cannibalism_unified_focus_appoint_the_bone_officers = {
+	set_country_flag = cannibalism_unified_bone_officer_assignments_open
+	set_country_flag = cannibalism_unified_loyal_officer_training_open
+}
+
+cannibalism_unified_focus_authority_without_rivals = {
+	set_country_flag = cannibalism_unified_direct_authority_open
+	swap_ideas = { remove_idea = cannibalism_warlords_broken add_idea = cannibalism_authority_without_rivals }
+	add_to_variable = { cannibalism_unified_authority = @cannibalism_unified_meter_large }
+	cannibalism_unified_focus_clamp_values = yes
+}
+
+cannibalism_unified_focus_chain_the_rivals = {
+	set_country_flag = cannibalism_unified_disposition_chain
+	set_variable = { cannibalism_unified_warlord_disposition = @cannibalism_unified_disposition_chain }
+	set_country_flag = cannibalism_unified_hostage_governance_open
+	cannibalism_unified_focus_clear_disposition_ideas = yes
+	add_ideas = cannibalism_rivals_in_chains
+}
+
+cannibalism_unified_focus_take_their_heirs = {
+	set_country_flag = cannibalism_unified_hostage_heir_missions_open
+	set_country_flag = cannibalism_unified_hostage_defection_risk
+}
+
+cannibalism_unified_focus_levy_hostage_tribute = {
+	set_country_flag = cannibalism_unified_hostage_tribute_open
+	set_country_flag = cannibalism_unified_tribute_failure_missions_open
+}
+
+cannibalism_unified_focus_rotate_the_hostage_governors = {
+	set_country_flag = cannibalism_unified_hostage_rotation_open
+	set_country_flag = cannibalism_unified_distant_governor_management_open
+}
+
+cannibalism_unified_focus_dominion_of_chains = {
+	set_country_flag = cannibalism_unified_chained_dominion_open
+	swap_ideas = { remove_idea = cannibalism_rivals_in_chains add_idea = cannibalism_dominion_of_chains }
+	add_to_variable = { cannibalism_unified_authority = @cannibalism_unified_meter_medium }
+	cannibalism_unified_focus_clamp_values = yes
+}
+
+# ---------------------------------------------------------------------------
+# Supreme hierarchy
+# ---------------------------------------------------------------------------
+
+cannibalism_unified_focus_one_command = {
+	set_country_flag = cannibalism_unified_hierarchy_one_command
+	set_variable = { cannibalism_unified_hierarchy = @cannibalism_unified_hierarchy_one_command }
+	set_country_flag = cannibalism_unified_central_command_decisions_open
+	set_cosmetic_tag = CBL_CENTRAL_COMMAND
+	cannibalism_unified_focus_clear_hierarchy_ideas = yes
+	add_ideas = cannibalism_one_command
+}
+
+cannibalism_unified_focus_standardize_host_ranks = {
+	set_country_flag = cannibalism_unified_rank_standardization_open
+	set_country_flag = cannibalism_unified_standard_training_missions_open
+}
+
+cannibalism_unified_focus_centralize_the_larder_quota = {
+	set_country_flag = cannibalism_unified_central_quota_decisions_open
+	add_to_variable = { cannibalism_unified_authority = @cannibalism_unified_meter_small }
+	cannibalism_unified_focus_clamp_values = yes
+}
+
+cannibalism_unified_focus_command_without_distance = {
+	set_country_flag = cannibalism_unified_remote_command_missions_open
+	set_country_flag = cannibalism_unified_distant_theater_priority_open
+}
+
+cannibalism_unified_focus_the_single_operational_will = {
+	set_country_flag = cannibalism_unified_single_will_capstone
+	swap_ideas = { remove_idea = cannibalism_one_command add_idea = cannibalism_single_operational_will }
+	add_to_variable = { cannibalism_unified_authority = @cannibalism_unified_meter_medium }
+	cannibalism_unified_focus_clamp_values = yes
+}
+
+cannibalism_unified_focus_many_jaws = {
+	set_country_flag = cannibalism_unified_hierarchy_many_jaws
+	set_variable = { cannibalism_unified_hierarchy = @cannibalism_unified_hierarchy_many_jaws }
+	set_country_flag = cannibalism_unified_regional_host_votes_open
+	set_cosmetic_tag = CBL_HOST_CONFEDERATION
+	cannibalism_unified_focus_clear_hierarchy_ideas = yes
+	add_ideas = cannibalism_many_jaws
+}
+
+cannibalism_unified_focus_charter_the_regional_hosts = {
+	set_country_flag = cannibalism_unified_host_charters_open
+	set_country_flag = cannibalism_unified_regional_army_compacts_open
+}
+
+cannibalism_unified_focus_divide_the_campaign_theaters = {
+	set_country_flag = cannibalism_unified_regional_theater_missions_open
+	set_country_flag = cannibalism_unified_theater_command_assignments_open
+}
+
+cannibalism_unified_focus_covenant_of_mutual_predation = {
+	set_country_flag = cannibalism_unified_mutual_predation_votes_open
+	set_country_flag = cannibalism_unified_host_conflict_missions_open
+}
+
+cannibalism_unified_focus_confederation_under_one_name = {
+	set_country_flag = cannibalism_unified_confederation_capstone
+	swap_ideas = { remove_idea = cannibalism_many_jaws add_idea = cannibalism_confederation_under_one_name }
+	add_to_variable = { cannibalism_unified_authority = @cannibalism_unified_meter_small }
+	cannibalism_unified_focus_clamp_values = yes
+}
+
+cannibalism_unified_focus_ritual_administration = {
+	set_country_flag = cannibalism_unified_hierarchy_ritual
+	set_variable = { cannibalism_unified_hierarchy = @cannibalism_unified_hierarchy_ritual }
+	set_country_flag = cannibalism_unified_ritual_administration_open
+	set_cosmetic_tag = CBL_RITUAL_STATE
+	cannibalism_unified_focus_clear_hierarchy_ideas = yes
+	add_ideas = cannibalism_ritual_administration
+}
+
+cannibalism_unified_focus_codify_the_feeding_law = {
+	set_country_flag = cannibalism_unified_feeding_law_decisions_open
+	set_country_flag = cannibalism_unified_law_enforcement_missions_open
+}
+
+cannibalism_unified_focus_ordain_the_punishment_tables = {
+	set_country_flag = cannibalism_unified_punishment_table_decisions_open
+	add_to_variable = { cannibalism_unified_authority = @cannibalism_unified_meter_medium }
+	cannibalism_unified_focus_clamp_values = yes
+}
+
+cannibalism_unified_focus_census_of_mouths_and_chains = {
+	set_country_flag = cannibalism_unified_ritual_census_open
+	set_country_flag = cannibalism_unified_prison_administration_projects_open
+}
+
+cannibalism_unified_focus_the_state_of_the_last_table = {
+	set_country_flag = cannibalism_unified_ritual_state_capstone
+	swap_ideas = { remove_idea = cannibalism_ritual_administration add_idea = cannibalism_state_of_the_last_table }
+	add_to_variable = { cannibalism_unified_authority = @cannibalism_unified_meter_large }
+	cannibalism_unified_focus_clamp_values = yes
+}
+
+# ---------------------------------------------------------------------------
+# Continental Larder
+# ---------------------------------------------------------------------------
+
+cannibalism_unified_focus_central_accounting = {
+	set_country_flag = cannibalism_unified_central_accounting_open
+	set_country_flag = cannibalism_unified_larder_audit_missions_open
+}
+
+cannibalism_unified_focus_classify_the_consumption_states = {
+	set_country_flag = cannibalism_unified_state_classification_open
+	set_country_flag = cannibalism_unified_consumption_stage_decisions_open
+}
+
+cannibalism_unified_focus_build_the_storage_network = {
+	set_country_flag = cannibalism_unified_storage_projects_open
+	set_country_flag = cannibalism_unified_larder_route_projects_open
+	cannibalism_unified_focus_add_controlled_route_infrastructure = yes
+}
+
+cannibalism_unified_focus_boards_of_captured_industry = {
+	set_country_flag = cannibalism_unified_captured_industry_projects_open
+	set_country_flag = cannibalism_unified_workshop_conversion_open
+	cannibalism_unified_focus_add_capital_military_workshop = yes
+}
+
+cannibalism_unified_focus_continental_larder_doctrine = {
+	set_country_flag = cannibalism_unified_larder_method_routes_open
+	set_country_flag = cannibalism_unified_larder_tradeoff_missions_open
+}
+
+cannibalism_unified_focus_burn_through_the_near_states = {
+	set_country_flag = cannibalism_unified_larder_method_rapid
+	set_variable = { cannibalism_unified_larder_method = @cannibalism_unified_larder_rapid }
+	set_country_flag = cannibalism_unified_rapid_consumption_decisions_open
+	set_country_flag = cannibalism_unified_state_exhaustion_risk
+	cannibalism_unified_focus_clear_larder_ideas = yes
+	add_ideas = cannibalism_rapid_continental_larder
+}
+
+cannibalism_unified_focus_feed_the_legion_surge = {
+	set_country_flag = cannibalism_unified_legion_surge_decisions_open
+	set_country_flag = cannibalism_unified_rapid_recruitment_cost_scaling_open
+	add_to_variable = { cannibalism_frenzy = constant:cannibalism_warlord_decision.frenzy_gain }
+	cannibalism_unified_focus_clamp_values = yes
+}
+
+cannibalism_unified_focus_exhaust_the_frontier = {
+	set_country_flag = cannibalism_unified_frontier_exhaustion_missions_open
+	set_country_flag = cannibalism_unified_exhausted_state_abandonment_open
+	add_to_variable = { cannibalism_world_hostility = @cannibalism_unified_meter_medium }
+	cannibalism_unified_focus_clamp_values = yes
+}
+
+cannibalism_unified_focus_short_horizon_continent = {
+	set_country_flag = cannibalism_unified_rapid_larder_capstone
+	swap_ideas = { remove_idea = cannibalism_rapid_continental_larder add_idea = cannibalism_short_horizon_continent }
+	set_country_flag = cannibalism_unified_short_campaign_horizon
+}
+
+cannibalism_unified_focus_preserve_the_working_herds = {
+	set_country_flag = cannibalism_unified_larder_method_managed
+	set_variable = { cannibalism_unified_larder_method = @cannibalism_unified_larder_managed }
+	set_country_flag = cannibalism_unified_managed_herd_decisions_open
+	set_country_flag = cannibalism_unified_organized_resistance_risk
+	cannibalism_unified_focus_clear_larder_ideas = yes
+	add_ideas = cannibalism_managed_continental_larder
+}
+
+cannibalism_unified_focus_rotate_the_feeding_districts = {
+	set_country_flag = cannibalism_unified_feeding_rotation_decisions_open
+	set_country_flag = cannibalism_unified_district_recovery_missions_open
+}
+
+cannibalism_unified_focus_police_the_long_harvest = {
+	set_country_flag = cannibalism_unified_long_harvest_policing_open
+	set_country_flag = cannibalism_unified_herd_revolt_missions_open
+	add_to_variable = { cannibalism_world_hostility = @cannibalism_unified_meter_small }
+	cannibalism_unified_focus_clamp_values = yes
+}
+
+cannibalism_unified_focus_managed_continental_reserve = {
+	set_country_flag = cannibalism_unified_managed_larder_capstone
+	swap_ideas = { remove_idea = cannibalism_managed_continental_larder add_idea = cannibalism_managed_continental_reserve }
+	set_country_flag = cannibalism_unified_long_campaign_horizon
+}
+
+cannibalism_unified_focus_prisoner_trains = {
+	set_country_flag = cannibalism_unified_larder_method_mobile
+	set_variable = { cannibalism_unified_larder_method = @cannibalism_unified_larder_mobile }
+	set_country_flag = cannibalism_unified_prisoner_train_decisions_open
+	set_country_flag = cannibalism_unified_transport_escort_burden
+	cannibalism_unified_focus_clear_larder_ideas = yes
+	add_ideas = cannibalism_mobile_continental_larder
+}
+
+cannibalism_unified_focus_escort_the_larder_columns = {
+	set_country_flag = cannibalism_unified_larder_column_escort_open
+	set_country_flag = cannibalism_unified_route_interdiction_missions_open
+}
+
+cannibalism_unified_focus_oceanic_hulk_routes = {
+	set_country_flag = cannibalism_unified_oceanic_hulk_routes_open
+	set_country_flag = cannibalism_unified_prison_hulk_transport_open
+	cannibalism_unified_focus_add_controlled_coastal_dockyard = yes
+}
+
+cannibalism_unified_focus_the_larder_that_moves = {
+	set_country_flag = cannibalism_unified_mobile_larder_capstone
+	swap_ideas = { remove_idea = cannibalism_mobile_continental_larder add_idea = cannibalism_larder_that_moves }
+	set_country_flag = cannibalism_unified_mobile_global_routes_open
+}
+
+cannibalism_unified_focus_mark_the_battlefield_yields = {
+	set_country_flag = cannibalism_unified_larder_method_battlefield
+	set_variable = { cannibalism_unified_larder_method = @cannibalism_unified_larder_battlefield }
+	set_country_flag = cannibalism_unified_battlefield_yield_decisions_open
+	set_country_flag = cannibalism_unified_battlefield_harvest_caps_required
+	cannibalism_unified_focus_clear_larder_ideas = yes
+	add_ideas = cannibalism_battlefield_continental_larder
+}
+
+cannibalism_unified_focus_recovery_battalions = {
+	set_country_flag = cannibalism_unified_recovery_battalion_missions_open
+	set_country_flag = cannibalism_unified_major_victory_receipts_open
+}
+
+cannibalism_unified_focus_convert_the_captured_hospitals = {
+	set_country_flag = cannibalism_unified_captured_hospital_conversion_open
+	set_country_flag = cannibalism_unified_battlefield_processing_projects_open
+}
+
+cannibalism_unified_focus_harvest_follows_victory = {
+	set_country_flag = cannibalism_unified_battlefield_larder_capstone
+	swap_ideas = { remove_idea = cannibalism_battlefield_continental_larder add_idea = cannibalism_harvest_follows_victory }
+	set_country_flag = cannibalism_unified_victory_harvest_scaling_open
+}
+
+cannibalism_unified_focus_continents_as_supply_regions = {
+	set_country_flag = cannibalism_unified_continental_supply_regions_open
+	set_country_flag = cannibalism_unified_network_anchor_capitals_open
+	cannibalism_unified_focus_add_controlled_route_infrastructure = yes
+}
+
+cannibalism_unified_focus_abolish_the_old_supply_ceiling = {
+	set_country_flag = cannibalism_unified_terminal_larder_gate
+	set_country_flag = cannibalism_unified_supply_ceiling_package_pending
+	cannibalism_unified_focus_refresh_terminal_route = yes
+}
+
+# ---------------------------------------------------------------------------
+# Army
+# ---------------------------------------------------------------------------
+
+cannibalism_unified_focus_integrate_the_warbands = {
+	set_country_flag = cannibalism_unified_warband_integration_open
+	set_country_flag = cannibalism_unified_template_conversion_missions_open
+}
+
+cannibalism_unified_focus_map_the_origin_templates = {
+	set_country_flag = cannibalism_unified_origin_template_mapping_open
+	set_country_flag = cannibalism_unified_origin_specialist_recruitment_open
+}
+
+cannibalism_unified_focus_standardize_captured_calibers = {
+	set_country_flag = cannibalism_unified_caliber_standardization_projects_open
+	set_country_flag = cannibalism_unified_captured_equipment_conversion_open
+	cannibalism_unified_focus_add_capital_military_workshop = yes
+}
+
+cannibalism_unified_focus_raise_the_cannibal_legions = {
+	set_country_flag = cannibalism_unified_cannibal_legion_recruitment_open
+	set_country_flag = cannibalism_unified_legion_cap_active
+}
+
+cannibalism_unified_focus_legion_reinforcement_tables = {
+	set_country_flag = cannibalism_unified_legion_reinforcement_open
+	set_country_flag = cannibalism_unified_legion_deaths_accounting_required
+}
+
+cannibalism_unified_focus_legions_of_the_continents = {
+	set_country_flag = cannibalism_unified_legion_theaters_open
+	set_country_flag = cannibalism_unified_legion_cap_upgraded
+}
+
+cannibalism_unified_focus_bone_guard_command = {
+	set_country_flag = cannibalism_unified_bone_guard_recruitment_open
+	set_country_flag = cannibalism_unified_bone_guard_cap_active
+}
+
+cannibalism_unified_focus_shield_the_supreme_body = {
+	set_country_flag = cannibalism_unified_leader_protection_missions_open
+	set_country_flag = cannibalism_unified_bone_guard_cap_upgraded
+	cannibalism_unified_focus_add_capital_defenses = yes
+}
+
+cannibalism_unified_focus_breach_the_enemy_capitals = {
+	set_country_flag = cannibalism_unified_capital_assault_missions_open
+	set_country_flag = cannibalism_unified_bone_guard_breach_package_pending
+}
+
+cannibalism_unified_focus_enemy_collapse_doctrine = {
+	set_country_flag = cannibalism_unified_enemy_collapse_decisions_open
+	set_country_flag = cannibalism_unified_fear_pressure_tracking_open
+}
+
+cannibalism_unified_focus_harvest_the_rout = {
+	set_country_flag = cannibalism_unified_rout_harvest_missions_open
+	set_country_flag = cannibalism_unified_rout_harvest_caps_required
+}
+
+cannibalism_unified_focus_break_the_retreating_fronts = {
+	set_country_flag = cannibalism_unified_retreat_disruption_open
+	set_country_flag = cannibalism_unified_front_cascade_missions_open
+}
+
+cannibalism_unified_focus_coordinate_the_three_armies = {
+	set_country_flag = cannibalism_unified_three_army_coordination_open
+	set_country_flag = cannibalism_unified_joint_army_operations_open
+}
+
+cannibalism_unified_focus_the_army_that_does_not_end = {
+	set_country_flag = cannibalism_unified_terminal_army_gate
+	set_country_flag = cannibalism_unified_terminal_army_package_active
+	set_country_flag = cannibalism_hannibal_terminal_trait_upgrade_pending
+	cannibalism_unified_focus_refresh_terminal_route = yes
+}
+
+# ---------------------------------------------------------------------------
+# Navy
+# ---------------------------------------------------------------------------
+
+cannibalism_unified_focus_captured_shipyards = {
+	set_country_flag = cannibalism_unified_shipyard_projects_open
+	set_country_flag = cannibalism_unified_captured_hull_conversion_open
+	cannibalism_unified_focus_add_controlled_coastal_dockyard = yes
+}
+
+cannibalism_unified_focus_raider_flotillas = {
+	set_country_flag = cannibalism_unified_raider_flotilla_decisions_open
+	set_country_flag = cannibalism_unified_raider_construction_costs_required
+}
+
+cannibalism_unified_focus_prison_hulks = {
+	set_country_flag = cannibalism_unified_prison_hulk_decisions_open
+	set_country_flag = cannibalism_unified_hulk_escort_missions_open
+}
+
+cannibalism_unified_focus_convoy_hunt_tables = {
+	set_country_flag = cannibalism_unified_convoy_hunt_missions_open
+	set_country_flag = cannibalism_unified_convoy_harvest_caps_required
+}
+
+cannibalism_unified_focus_amphibious_feeding_columns = {
+	set_country_flag = cannibalism_unified_amphibious_column_decisions_open
+	set_country_flag = cannibalism_unified_landing_corridor_missions_open
+}
+
+cannibalism_unified_focus_silent_anchorages = {
+	set_country_flag = cannibalism_unified_silent_anchorage_projects_open
+	set_country_flag = cannibalism_unified_anchorage_discovery_risk
+}
+
+cannibalism_unified_focus_island_command_network = {
+	set_country_flag = cannibalism_unified_island_integration_open
+	set_country_flag = cannibalism_unified_archipelago_command_missions_open
+}
+
+cannibalism_unified_focus_every_ocean_a_corridor = {
+	set_country_flag = cannibalism_unified_global_naval_corridors_open
+	set_country_flag = cannibalism_unified_ocean_crossing_package_pending
+}
+
+# ---------------------------------------------------------------------------
+# Air
+# ---------------------------------------------------------------------------
+
+cannibalism_unified_focus_repair_the_captured_airframes = {
+	set_country_flag = cannibalism_unified_airframe_repair_projects_open
+	set_country_flag = cannibalism_unified_airframe_stockpile_costs_required
+	cannibalism_unified_focus_add_capital_airbase = yes
+}
+
+cannibalism_unified_focus_terror_reconnaissance = {
+	set_country_flag = cannibalism_unified_terror_reconnaissance_missions_open
+	set_country_flag = cannibalism_unified_air_target_marking_open
+}
+
+cannibalism_unified_focus_interdiction_markers = {
+	set_country_flag = cannibalism_unified_supply_interdiction_missions_open
+	set_country_flag = cannibalism_unified_air_interdiction_targets_open
+}
+
+cannibalism_unified_focus_airborne_cell_insertion = {
+	set_country_flag = cannibalism_unified_airborne_cell_insertion_open
+	set_country_flag = cannibalism_unified_transport_aircraft_costs_required
+}
+
+cannibalism_unified_focus_battlefield_recovery_signals = {
+	set_country_flag = cannibalism_unified_air_recovery_signals_open
+	set_country_flag = cannibalism_unified_marked_battlefield_missions_open
+}
+
+cannibalism_unified_focus_fear_bombing_tables = {
+	set_country_flag = cannibalism_unified_fear_bombing_missions_open
+	set_country_flag = cannibalism_unified_fear_bombing_escalation_risk
+	add_to_variable = { cannibalism_world_hostility = @cannibalism_unified_meter_medium }
+	cannibalism_unified_focus_clamp_values = yes
+}
+
+cannibalism_unified_focus_skies_over_the_larder = {
+	set_country_flag = cannibalism_unified_air_network_capstone
+	set_country_flag = cannibalism_unified_air_front_collapse_package_pending
+}
+
+# ---------------------------------------------------------------------------
+# Intelligence and cells
+# ---------------------------------------------------------------------------
+
+cannibalism_unified_focus_global_courier_network = {
+	set_country_flag = cannibalism_unified_cell_category_open
+	set_country_flag = cannibalism_unified_global_courier_decisions_open
+}
+
+cannibalism_unified_focus_prison_and_port_cells = {
+	set_country_flag = cannibalism_unified_prison_port_cell_missions_open
+	set_country_flag = cannibalism_unified_foreign_cell_target_pool_open
+}
+
+cannibalism_unified_focus_corrupt_the_enemy_officers = {
+	set_country_flag = cannibalism_unified_officer_corruption_decisions_open
+	set_country_flag = cannibalism_unified_corruption_exposure_missions_open
+}
+
+cannibalism_unified_focus_perfect_the_false_surrender = {
+	set_country_flag = cannibalism_unified_false_surrender_decisions_open
+	set_country_flag = cannibalism_unified_false_surrender_failure_risk
+}
+
+cannibalism_unified_focus_sleep_beneath_retreat = {
+	set_country_flag = cannibalism_unified_retreat_cell_preservation_open
+	set_country_flag = cannibalism_unified_dormant_cell_missions_open
+}
+
+cannibalism_unified_focus_synchronize_the_uprisings = {
+	set_country_flag = cannibalism_unified_synchronized_uprising_missions_open
+	set_country_flag = cannibalism_unified_uprising_target_cap_active
+}
+
+cannibalism_unified_focus_reactivate_the_cured_networks = {
+	set_country_flag = cannibalism_unified_external_reinfection_open
+	set_country_flag = cannibalism_unified_cured_country_reactivation_missions_open
+}
+
+cannibalism_unified_focus_the_war_begins_inside = {
+	set_country_flag = cannibalism_unified_internal_front_capstone
+	set_country_flag = cannibalism_unified_prewar_cell_operations_open
+}
+
+# ---------------------------------------------------------------------------
+# Continental expansion
+# ---------------------------------------------------------------------------
+
+cannibalism_unified_focus_read_the_continental_weakness = {
+	set_country_flag = cannibalism_unified_campaign_category_open
+	set_country_flag = cannibalism_unified_dynamic_campaign_scoring_open
+}
+
+cannibalism_unified_focus_terror_ultimata = {
+	set_country_flag = cannibalism_unified_terror_ultimata_open
+	set_country_flag = cannibalism_unified_ultimatum_refusal_missions_open
+	add_to_variable = { cannibalism_world_hostility = @cannibalism_unified_meter_small }
+	cannibalism_unified_focus_clamp_values = yes
+}
+
+cannibalism_unified_focus_cell_backed_border_incidents = {
+	set_country_flag = cannibalism_unified_border_incident_decisions_open
+	set_country_flag = cannibalism_unified_incident_escalation_missions_open
+	add_to_variable = { cannibalism_world_hostility = @cannibalism_unified_meter_medium }
+	cannibalism_unified_focus_clamp_values = yes
+}
+
+cannibalism_unified_focus_host_theaters_without_borders = {
+	set_country_flag = cannibalism_unified_global_campaigns_open
+	set_country_flag = cannibalism_unified_postwar_integration_open
+	set_country_flag = cannibalism_unified_terminal_expansion_gate
+	cannibalism_unified_focus_refresh_terminal_route = yes
+}
+
+# ---------------------------------------------------------------------------
+# World-hostility counterwar
+# ---------------------------------------------------------------------------
+
+cannibalism_unified_focus_measure_world_hostility = {
+	set_country_flag = cannibalism_unified_counterwar_category_open
+	set_country_flag = cannibalism_unified_world_hostility_breakdown_open
+}
+
+cannibalism_unified_focus_break_the_relief_corridors = {
+	set_country_flag = cannibalism_unified_relief_corridor_attack_missions_open
+	set_country_flag = cannibalism_unified_corridor_target_pool_open
+}
+
+cannibalism_unified_focus_sever_the_coalition_command = {
+	set_country_flag = cannibalism_unified_coalition_command_operations_open
+	set_country_flag = cannibalism_unified_coalition_officer_targets_open
+}
+
+cannibalism_unified_focus_consume_the_counterwar = {
+	set_country_flag = cannibalism_unified_counterwar_capstone
+	set_country_flag = cannibalism_unified_counterwar_conversion_open
+	set_country_flag = cannibalism_unified_terminal_counterwar_gate
+	cannibalism_unified_focus_refresh_terminal_route = yes
+}
+
+# ---------------------------------------------------------------------------
+# Ordinary world-end. The shared terminal effect remains owned by the Event 014
+# runtime layer. This file calls it only after the same strict readiness trigger
+# and explicit greater-than-1000 Chaos test used by both terminal focuses.
+# ---------------------------------------------------------------------------
+
+cannibalism_unified_focus_final_global_mobilization = {
+	if = {
+		limit = {
+			cannibalism_can_complete_ordinary_world_end = yes
+			check_variable = { global.chaos_meter_value > constant:cannibalism_evolution_threshold.world_end_chaos }
+		}
+		set_country_flag = cannibalism_unified_final_global_mobilization_active
+		set_country_flag = cannibalism_unified_universal_enemy_decisions_open
+		set_country_flag = cannibalism_unified_terminal_consumption_preparation_open
+	}
+}
+
+cannibalism_unified_focus_dismantle_the_ordinary_world = {
+	if = {
+		limit = {
+			cannibalism_can_complete_ordinary_world_end = yes
+			check_variable = { global.chaos_meter_value > constant:cannibalism_evolution_threshold.world_end_chaos }
+			has_country_flag = cannibalism_unified_terminal_mobilization_prepared
+		}
+		set_country_flag = cannibalism_unified_world_end_focus_complete
+		cannibalism_try_start_ordinary_world_end = yes
+	}
+}

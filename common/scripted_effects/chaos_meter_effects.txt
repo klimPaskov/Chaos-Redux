@@ -156,6 +156,7 @@ initialize_chaos_meter_system = {
 		set_variable = { chaos_meter_deaths_country_cause_zombie_outbreak_decay = 0 }
 		set_variable = { chaos_meter_deaths_country_cause_death_consumption = 0 }
 		set_variable = { chaos_meter_deaths_country_cause_natural_disaster = 0 }
+		set_variable = { chaos_meter_deaths_country_cause_cannibalism_consumption = 0 }
 		set_variable = { chaos_meter_deaths_country_cause_resource_field_incident = 0 }
 		set_variable = { chaos_meter_deaths_country_cause_unknown = 0 }
 		set_variable = { chaos_meter_deaths_country_last_sequence = 0 }
@@ -763,6 +764,7 @@ initialize_chaos_meter_country_deaths_totals_rebuild = {
 		set_variable = { chaos_meter_deaths_country_cause_zombie_outbreak_decay = 0 }
 		set_variable = { chaos_meter_deaths_country_cause_death_consumption = 0 }
 		set_variable = { chaos_meter_deaths_country_cause_natural_disaster = 0 }
+		set_variable = { chaos_meter_deaths_country_cause_cannibalism_consumption = 0 }
 		set_variable = { chaos_meter_deaths_country_cause_resource_field_incident = 0 }
 		set_variable = { chaos_meter_deaths_country_cause_unknown = 0 }
 		set_variable = { chaos_meter_deaths_country_last_sequence = 0 }
@@ -998,6 +1000,16 @@ chaos_meter_add_country_deaths_cause_total = {
 				}
 			}
 			add_to_variable = { chaos_meter_deaths_country_cause_natural_disaster = chaos_deaths_country_cause_value }
+		}
+		else_if = {
+			limit = {
+				check_variable = {
+					var = chaos_deaths_country_cause_reason
+					value = constant:chaos_meter_deaths_reason.cannibalism_consumption
+					compare = equals
+				}
+			}
+			add_to_variable = { chaos_meter_deaths_country_cause_cannibalism_consumption = chaos_deaths_country_cause_value }
 		}
 		else_if = {
 			limit = {
@@ -1439,6 +1451,7 @@ rebuild_chaos_meter_deaths_view = {
     clear_array = temp_chaos_meter_deaths_unsorted_cause_zombie_outbreak_decay_entries
     clear_array = temp_chaos_meter_deaths_unsorted_cause_death_consumption_entries
 	clear_array = temp_chaos_meter_deaths_unsorted_cause_natural_disaster_entries
+	clear_array = temp_chaos_meter_deaths_unsorted_cause_cannibalism_consumption_entries
 	clear_array = temp_chaos_meter_deaths_unsorted_cause_resource_field_incident_entries
 	clear_array = temp_chaos_meter_deaths_unsorted_cause_unknown_entries
     clear_array = temp_chaos_meter_deaths_unsorted_country_entries
@@ -1559,6 +1572,10 @@ rebuild_chaos_meter_deaths_view = {
 					value = PREV.chaos_meter_deaths_country_cause_natural_disaster
 				}
 				add_to_array = {
+					array = temp_chaos_meter_deaths_unsorted_cause_cannibalism_consumption_entries
+					value = PREV.chaos_meter_deaths_country_cause_cannibalism_consumption
+				}
+				add_to_array = {
 					array = temp_chaos_meter_deaths_unsorted_cause_resource_field_incident_entries
 					value = PREV.chaos_meter_deaths_country_cause_resource_field_incident
 				}
@@ -1616,6 +1633,7 @@ rebuild_chaos_meter_deaths_view = {
 	resize_array = { array = global.chaos_meter_deaths_view_cause_zombie_outbreak_decay_entries size = chaos_deaths_view_sorted_count value = 0 }
 	resize_array = { array = global.chaos_meter_deaths_view_cause_death_consumption_entries size = chaos_deaths_view_sorted_count value = 0 }
 	resize_array = { array = global.chaos_meter_deaths_view_cause_natural_disaster_entries size = chaos_deaths_view_sorted_count value = 0 }
+	resize_array = { array = global.chaos_meter_deaths_view_cause_cannibalism_consumption_entries size = chaos_deaths_view_sorted_count value = 0 }
 	resize_array = { array = global.chaos_meter_deaths_view_cause_resource_field_incident_entries size = chaos_deaths_view_sorted_count value = 0 }
 	resize_array = { array = global.chaos_meter_deaths_view_cause_unknown_entries size = chaos_deaths_view_sorted_count value = 0 }
 	resize_array = { array = global.chaos_meter_deaths_view_country_entries size = chaos_deaths_view_sorted_count value = 0 }
@@ -1754,6 +1772,7 @@ rebuild_chaos_meter_deaths_view = {
         set_variable = { global.chaos_meter_deaths_view_cause_zombie_outbreak_decay_entries^chaos_deaths_view_write_index = temp_chaos_meter_deaths_unsorted_cause_zombie_outbreak_decay_entries^chaos_deaths_best_source_index }
         set_variable = { global.chaos_meter_deaths_view_cause_death_consumption_entries^chaos_deaths_view_write_index = temp_chaos_meter_deaths_unsorted_cause_death_consumption_entries^chaos_deaths_best_source_index }
 		set_variable = { global.chaos_meter_deaths_view_cause_natural_disaster_entries^chaos_deaths_view_write_index = temp_chaos_meter_deaths_unsorted_cause_natural_disaster_entries^chaos_deaths_best_source_index }
+		set_variable = { global.chaos_meter_deaths_view_cause_cannibalism_consumption_entries^chaos_deaths_view_write_index = temp_chaos_meter_deaths_unsorted_cause_cannibalism_consumption_entries^chaos_deaths_best_source_index }
 		set_variable = { global.chaos_meter_deaths_view_cause_resource_field_incident_entries^chaos_deaths_view_write_index = temp_chaos_meter_deaths_unsorted_cause_resource_field_incident_entries^chaos_deaths_best_source_index }
 		set_variable = { global.chaos_meter_deaths_view_cause_unknown_entries^chaos_deaths_view_write_index = temp_chaos_meter_deaths_unsorted_cause_unknown_entries^chaos_deaths_best_source_index }
         set_variable = { global.chaos_meter_deaths_view_country_entries^chaos_deaths_view_write_index = temp_chaos_meter_deaths_unsorted_country_entries^chaos_deaths_best_source_index }
@@ -2236,6 +2255,7 @@ chaos_meter_sync_open_deaths_view_country_entry = {
 				resize_array = { array = global.chaos_meter_deaths_view_cause_zombie_outbreak_decay_entries size = chaos_deaths_view_new_size value = 0 }
 				resize_array = { array = global.chaos_meter_deaths_view_cause_death_consumption_entries size = chaos_deaths_view_new_size value = 0 }
 				resize_array = { array = global.chaos_meter_deaths_view_cause_natural_disaster_entries size = chaos_deaths_view_new_size value = 0 }
+				resize_array = { array = global.chaos_meter_deaths_view_cause_cannibalism_consumption_entries size = chaos_deaths_view_new_size value = 0 }
 				resize_array = { array = global.chaos_meter_deaths_view_cause_resource_field_incident_entries size = chaos_deaths_view_new_size value = 0 }
 				resize_array = { array = global.chaos_meter_deaths_view_cause_unknown_entries size = chaos_deaths_view_new_size value = 0 }
 				resize_array = { array = global.chaos_meter_deaths_view_country_entries size = chaos_deaths_view_new_size value = 0 }
@@ -2263,6 +2283,7 @@ chaos_meter_sync_open_deaths_view_country_entry = {
 					set_variable = { global.chaos_meter_deaths_view_cause_zombie_outbreak_decay_entries^chaos_deaths_view_write_index = PREV.chaos_meter_deaths_country_cause_zombie_outbreak_decay }
 					set_variable = { global.chaos_meter_deaths_view_cause_death_consumption_entries^chaos_deaths_view_write_index = PREV.chaos_meter_deaths_country_cause_death_consumption }
 					set_variable = { global.chaos_meter_deaths_view_cause_natural_disaster_entries^chaos_deaths_view_write_index = PREV.chaos_meter_deaths_country_cause_natural_disaster }
+					set_variable = { global.chaos_meter_deaths_view_cause_cannibalism_consumption_entries^chaos_deaths_view_write_index = PREV.chaos_meter_deaths_country_cause_cannibalism_consumption }
 					set_variable = { global.chaos_meter_deaths_view_cause_resource_field_incident_entries^chaos_deaths_view_write_index = PREV.chaos_meter_deaths_country_cause_resource_field_incident }
 					set_variable = { global.chaos_meter_deaths_view_cause_unknown_entries^chaos_deaths_view_write_index = PREV.chaos_meter_deaths_country_cause_unknown }
 					set_variable = { global.chaos_meter_deaths_view_country_entries^chaos_deaths_view_write_index = chaos_deaths_log_country }
@@ -2326,6 +2347,19 @@ chaos_meter_sync_chaos_from_deaths_delta = {
             }
             multiply_temp_variable = {
                 chaos_deaths_chaos_weighted_change = constant:chaos_meter_deaths.death_consumption_chaos_weight
+            }
+        }
+        else_if = {
+            limit = {
+                has_variable = chaos_deaths_reason
+                check_variable = {
+                    var = chaos_deaths_reason
+                    value = constant:chaos_meter_deaths_reason.cannibalism_consumption
+                    compare = equals
+                }
+            }
+            multiply_temp_variable = {
+                chaos_deaths_chaos_weighted_change = constant:chaos_meter_deaths.cannibalism_consumption_chaos_weight
             }
         }
 		else_if = {

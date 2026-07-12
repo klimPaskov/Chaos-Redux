@@ -1,0 +1,438 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 014 ACHIEVEMENT, COUNTERPLAY, AND AFTERMATH TRIGGERS
+# ============================================================================
+# Defines the eighteen exact achievement contracts and the reusable gates for
+# international suppression, convergence interdiction, island rescue, and
+# post-defeat reconstruction. Manual scenario launches are intentionally
+# excluded from the campaign achievements, but never from gameplay systems.
+# ============================================================================
+
+cannibalism_achievement_campaign_is_eligible = {
+	has_global_flag = cannibalism_system_started
+	NOT = { has_global_flag = cannibalism_manual_scenario_ever_launched }
+}
+
+cannibalism_achievement_player_is_valid = {
+	is_ai = no
+	has_capitulated = no
+	cannibalism_achievement_campaign_is_eligible = yes
+}
+
+cannibalism_achievement_01_clean_first_country_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	has_country_flag = achievement_cannibalism_first_host
+	has_country_flag = cannibalism_local_victory
+	has_global_flag = cannibalism_global_victory
+	NOT = { has_country_flag = cannibalism_clean_route_disqualified }
+	NOT = { has_country_flag = achievement_cannibalism_exploitation_ever }
+	NOT = { has_global_flag = achievement_cannibalism_second_country_infected }
+	NOT = { has_global_flag = achievement_cannibalism_commune_ever_formed }
+	NOT = { has_global_flag = achievement_cannibalism_warlord_ever_formed }
+}
+
+cannibalism_achievement_02_no_second_table_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	has_global_flag = cannibalism_global_victory
+	NOT = { has_global_flag = achievement_cannibalism_second_country_infected }
+	OR = {
+		has_country_flag = achievement_cannibalism_first_host
+		has_country_flag = achievement_cannibalism_decisive_aid
+	}
+}
+
+cannibalism_achievement_03_three_front_containment_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	has_global_flag = cannibalism_global_victory
+	has_country_flag = achievement_cannibalism_joint_suppression_completed
+	check_variable = {
+		var = achievement_cannibalism_countries_suppressed
+		value = constant:cannibalism_achievement.three_country_suppressions
+		compare = greater_than_or_equals
+	}
+	NOT = { has_global_flag = achievement_cannibalism_warlord_ever_formed }
+}
+
+cannibalism_achievement_04_silent_islands_reclaimed_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	check_variable = {
+		var = achievement_cannibalism_isolated_nodes_recovered
+		value = constant:cannibalism_achievement.island_recoveries
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_achievement_05_cured_then_returned_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	has_country_flag = achievement_cannibalism_reinfection_faced
+	has_country_flag = achievement_cannibalism_reinfection_defeated
+	NOT = { has_country_flag = achievement_cannibalism_reinfection_exploitation }
+}
+
+cannibalism_achievement_06_repentant_weapon_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	has_country_flag = achievement_cannibalism_exploitation_ever
+	has_country_flag = achievement_cannibalism_exploitation_renounced
+	has_country_flag = cannibalism_public_court_martial_held
+	has_country_flag = cannibalism_local_victory
+	NOT = { has_country_flag = achievement_cannibalism_exploitation_repeated }
+	NOT = { has_country_flag = achievement_cannibalism_commune_formed_domestically }
+}
+
+cannibalism_achievement_07_break_the_island_host_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	has_country_flag = achievement_cannibalism_island_host_blockaded
+	has_country_flag = achievement_cannibalism_island_host_landing
+	has_country_flag = achievement_cannibalism_island_host_defeated
+	has_country_flag = achievement_cannibalism_island_survivors_rescued
+	has_global_flag = cannibalism_global_victory
+	NOT = { any_country = { is_cannibalism_warlord_country = yes has_country_flag = cannibalism_origin_island_host } }
+}
+
+cannibalism_achievement_08_warlord_without_master_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	is_cannibalism_warlord_country = yes
+	has_country_flag = cannibalism_resistant_warlord
+	has_country_flag = achievement_cannibalism_defiant_warlord_survived
+	is_subject = no
+	NOT = { tag = CBL }
+}
+
+cannibalism_achievement_unified_major_branch_is_complete = {
+	OR = {
+		has_country_flag = cannibalism_unified_single_will_capstone
+		has_country_flag = cannibalism_unified_confederation_capstone
+		has_country_flag = cannibalism_unified_ritual_state_capstone
+		has_country_flag = cannibalism_unified_rapid_larder_capstone
+		has_country_flag = cannibalism_unified_managed_larder_capstone
+		has_country_flag = cannibalism_unified_mobile_larder_capstone
+		has_country_flag = cannibalism_unified_battlefield_larder_capstone
+		has_country_flag = cannibalism_unified_air_network_capstone
+		has_country_flag = cannibalism_unified_internal_front_capstone
+		has_country_flag = cannibalism_unified_counterwar_capstone
+	}
+}
+
+cannibalism_achievement_09_host_of_unification_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	is_cannibalism_unified_country = yes
+	has_country_flag = achievement_cannibalism_player_unification_host
+	check_variable = {
+		var = cannibalism_integrated_named_commander_count
+		value = constant:cannibalism_achievement.retained_warlords
+		compare = greater_than_or_equals
+	}
+	cannibalism_achievement_unified_major_branch_is_complete = yes
+}
+
+cannibalism_achievement_unified_absorption_is_complete = {
+	is_cannibalism_unified_country = yes
+	NOT = { any_country = { is_cannibalism_warlord_country = yes NOT = { tag = ROOT } } }
+	NOT = { any_country = { has_country_flag = cannibalism_resistant_warlord } }
+	NOT = {
+		any_state = {
+			has_state_flag = cannibalism_commune_state
+			NOT = { is_controlled_by = ROOT }
+		}
+	}
+	check_variable = {
+		var = global.cannibalism_global_larder
+		value = constant:cannibalism_achievement.functional_larder
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = global.cannibalism_connected_route_count
+		value = constant:cannibalism_achievement.functional_routes
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_achievement_10_all_mouths_one_command_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	has_global_flag = cannibalism_reveal_complete
+	cannibalism_achievement_unified_absorption_is_complete = yes
+}
+
+cannibalism_achievement_11_continental_larder_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	is_cannibalism_unified_country = yes
+	check_variable = {
+		var = achievement_cannibalism_feeding_continent_count
+		value = constant:cannibalism_achievement.continental_feeding_continents
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = global.cannibalism_consumed_population_k
+		value = constant:cannibalism_achievement.continental_consumed_population_k
+		compare = greater_than_or_equals
+	}
+	NOT = { has_global_flag = world_end }
+}
+
+cannibalism_achievement_12_stop_the_reveal_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	has_country_flag = achievement_cannibalism_convergence_mission_won
+	has_country_flag = achievement_cannibalism_likely_host_destroyed
+	has_global_flag = cannibalism_convergence_broken_once
+	has_global_flag = cannibalism_global_victory
+	NOT = { has_global_flag = cannibalism_reveal_complete }
+	check_variable = {
+		var = global.cannibalism_network_reach
+		value = constant:cannibalism_achievement.pre_reveal_network_reach
+		compare = less_than_or_equals
+	}
+}
+
+cannibalism_achievement_13_defeat_hannibal_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	has_country_flag = cannibalism_global_defeat_contributor
+	has_global_flag = cannibalism_reveal_complete
+	has_global_flag = cannibalism_global_victory
+	has_global_flag = cannibalism_cleanup_complete
+	NOT = { has_global_flag = world_end }
+}
+
+cannibalism_achievement_14_break_the_winter_hunger_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	has_country_flag = achievement_cannibalism_wendigo_counterwar_contributor
+	has_global_flag = achievement_cannibalism_wendigo_merge_occurred
+	has_global_flag = cannibalism_wendigo_transformation_defeated
+	has_global_flag = achievement_cannibalism_all_wendigo_anchors_broken_prelock
+	has_global_flag = cannibalism_global_victory
+	NOT = { has_global_flag = cannibalism_world_end_wendigo }
+}
+
+cannibalism_achievement_15_ordinary_world_end_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	is_cannibalism_unified_country = yes
+	has_global_flag = cannibalism_world_end_ordinary
+	check_variable = { global.chaos_meter_value > constant:cannibalism_evolution_threshold.world_end_chaos }
+}
+
+cannibalism_achievement_16_wendigo_world_end_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	is_cannibalism_wendigo_hannibal_country = yes
+	has_global_flag = cannibalism_world_end_wendigo
+	check_variable = { global.chaos_meter_value > constant:cannibalism_evolution_threshold.world_end_chaos }
+}
+
+cannibalism_achievement_17_global_burial_detail_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	has_country_flag = cannibalism_global_defeat_contributor
+	has_global_flag = cannibalism_global_defeat_aftermath_eligible
+	has_global_flag = cannibalism_aftermath_all_states_reconstructed
+	has_country_flag = achievement_cannibalism_compact_vigilance_complete
+	check_variable = {
+		var = achievement_cannibalism_reconstruction_contribution
+		value = constant:cannibalism_achievement.reconstruction_contribution
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_achievement_18_no_empty_state_complete = {
+	cannibalism_achievement_player_is_valid = yes
+	has_country_flag = cannibalism_global_defeat_contributor
+	has_global_flag = cannibalism_global_victory
+	has_global_flag = achievement_cannibalism_warlord_ever_formed
+	NOT = { has_global_flag = achievement_cannibalism_silent_larder_ever_reached }
+}
+
+# ---------------------------------------------------------------------------
+# International response and convergence counterplay
+# ---------------------------------------------------------------------------
+
+cannibalism_international_response_category_is_visible = {
+	exists = yes
+	NOT = { is_cannibalism_country = yes }
+	NOT = { has_global_flag = world_end }
+	OR = {
+		AND = {
+			has_global_flag = cannibalism_system_active
+			has_global_flag = cannibalism_evolution_ii_active
+		}
+		has_global_flag = cannibalism_reconstruction_system_active
+	}
+}
+
+cannibalism_can_pay_joint_suppression_cost = {
+	has_manpower > constant:cannibalism_international_response_cost.joint_manpower
+	command_power > constant:cannibalism_international_response_cost.joint_command
+	NOT = { has_equipment = { infantry_equipment < constant:cannibalism_international_response_cost.joint_infantry } }
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_international_response_cost.joint_support } }
+	NOT = { has_equipment = { motorized_equipment_1 < constant:cannibalism_international_response_cost.joint_trucks } }
+}
+
+cannibalism_is_valid_joint_suppression_target = {
+	exists = yes
+	NOT = { tag = ROOT }
+	NOT = { has_capitulated = yes }
+	is_cannibalism_active_country = yes
+	NOT = { has_country_flag = cannibalism_reveal_host }
+}
+
+cannibalism_can_pay_convergence_interdiction_cost = {
+	has_manpower > constant:cannibalism_international_response_cost.convergence_manpower
+	command_power > constant:cannibalism_international_response_cost.convergence_command
+	NOT = { has_equipment = { infantry_equipment < constant:cannibalism_international_response_cost.convergence_infantry } }
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_international_response_cost.convergence_support } }
+	NOT = { has_equipment = { motorized_equipment_1 < constant:cannibalism_international_response_cost.convergence_trucks } }
+}
+
+cannibalism_is_likely_convergence_host = {
+	has_global_flag = cannibalism_convergence_active
+	NOT = { has_global_flag = cannibalism_reveal_complete }
+	has_event_target = cannibalism_achievement_likely_host
+	tag = event_target:cannibalism_achievement_likely_host
+	NOT = { has_capitulated = yes }
+}
+
+cannibalism_can_pay_island_blockade_cost = {
+	command_power > constant:cannibalism_international_response_cost.blockade_command
+	has_navy_experience > constant:cannibalism_international_response_cost.blockade_navy_experience
+	NOT = { has_equipment = { convoy_1 < constant:cannibalism_international_response_cost.blockade_convoys } }
+}
+
+cannibalism_is_valid_island_host_target = {
+	is_cannibalism_warlord_country = yes
+	has_country_flag = cannibalism_origin_island_host
+	NOT = { has_capitulated = yes }
+	NOT = { has_country_flag = cannibalism_island_host_under_blockade }
+}
+
+cannibalism_can_pay_island_landing_cost = {
+	has_manpower > constant:cannibalism_international_response_cost.landing_manpower
+	command_power > constant:cannibalism_international_response_cost.landing_command
+	NOT = { has_equipment = { infantry_equipment < constant:cannibalism_international_response_cost.landing_infantry } }
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_international_response_cost.landing_support } }
+	NOT = { has_equipment = { convoy_1 < constant:cannibalism_international_response_cost.landing_convoys } }
+}
+
+cannibalism_is_valid_blockaded_island_host_target = {
+	is_cannibalism_warlord_country = yes
+	has_country_flag = cannibalism_origin_island_host
+	has_country_flag = cannibalism_island_host_under_blockade
+	NOT = { has_capitulated = yes }
+}
+
+cannibalism_can_pay_island_rescue_cost = {
+	has_manpower > constant:cannibalism_international_response_cost.rescue_manpower
+	command_power > constant:cannibalism_international_response_cost.rescue_command
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_international_response_cost.rescue_support } }
+	NOT = { has_equipment = { convoy_1 < constant:cannibalism_international_response_cost.rescue_convoys } }
+}
+
+cannibalism_state_is_valid_island_rescue_target = {
+	has_state_flag = cannibalism_former_island_host_origin
+	NOT = { has_state_flag = cannibalism_island_survivors_rescued }
+	is_controlled_by = ROOT
+	OR = {
+		has_state_flag = cannibalism_recovery_active
+		has_state_flag = cannibalism_state_stabilized
+	}
+	NOT = { cannibalism_state_has_active_cell = yes }
+	check_variable = {
+		var = state_population_k
+		value = constant:cannibalism_international_response_cost.rescue_population_floor_k
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_state_recovery_supply_is_maintained = {
+	OR = { is_island_state = yes is_coastal = yes }
+	CONTROLLER = {
+		exists = yes
+		has_capitulated = no
+		NOT = { has_country_flag = cannibalism_supply_corridor_failed }
+		NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_decision_cost.logistics_support } }
+		OR = {
+			AND = {
+				PREV = { OR = { is_island_state = yes is_coastal = yes } }
+				NOT = { has_equipment = { convoy_1 < constant:cannibalism_decision_cost.logistics_convoy_reserve } }
+			}
+			AND = {
+				PREV = { is_island_state = no }
+				NOT = { has_equipment = { train_equipment_1 < constant:cannibalism_decision_cost.logistics_train_reserve } }
+			}
+		}
+	}
+	OR = { infrastructure > 0 naval_base > 0 supply_node > 0 }
+}
+
+# ---------------------------------------------------------------------------
+# Eligible global-defeat reconstruction
+# ---------------------------------------------------------------------------
+
+cannibalism_reconstruction_category_is_visible = {
+	has_global_flag = cannibalism_reconstruction_system_active
+	has_country_flag = cannibalism_reconstruction_participant
+	NOT = { has_global_flag = world_end }
+}
+
+cannibalism_state_is_former_feeding_state = {
+	has_state_flag = cannibalism_former_feeding_state
+	is_in_array = { array = global.cannibalism_former_feeding_states value = THIS }
+}
+
+cannibalism_state_can_begin_aftermath_identification = {
+	cannibalism_state_is_former_feeding_state = yes
+	is_owned_and_controlled_by = ROOT
+	has_state_flag = cannibalism_state_stabilized
+	NOT = { has_state_flag = cannibalism_aftermath_identification_complete }
+}
+
+cannibalism_state_can_rebuild_aftermath_institutions = {
+	cannibalism_state_is_former_feeding_state = yes
+	is_owned_and_controlled_by = ROOT
+	has_state_flag = cannibalism_aftermath_identification_complete
+	NOT = { has_state_flag = cannibalism_aftermath_institutions_complete }
+}
+
+cannibalism_state_can_complete_aftermath_memorial = {
+	cannibalism_state_is_former_feeding_state = yes
+	is_owned_and_controlled_by = ROOT
+	has_state_flag = cannibalism_aftermath_institutions_complete
+	NOT = { has_state_flag = cannibalism_aftermath_reconstruction_complete }
+}
+
+cannibalism_can_pay_aftermath_identification_cost = {
+	has_manpower > constant:cannibalism_reconstruction.identification_manpower
+	command_power > constant:cannibalism_reconstruction.identification_command
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_reconstruction.identification_support } }
+}
+
+cannibalism_can_pay_aftermath_institution_cost = {
+	has_manpower > constant:cannibalism_reconstruction.institution_manpower
+	command_power > constant:cannibalism_reconstruction.institution_command
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_reconstruction.institution_support } }
+	NOT = { has_equipment = { motorized_equipment_1 < constant:cannibalism_reconstruction.institution_trucks } }
+	NOT = { has_equipment = { train_equipment_1 < constant:cannibalism_reconstruction.institution_trains } }
+}
+
+cannibalism_can_pay_aftermath_memorial_cost = {
+	has_manpower > constant:cannibalism_reconstruction.memorial_manpower
+	command_power > constant:cannibalism_reconstruction.memorial_command
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_reconstruction.memorial_support } }
+}
+
+cannibalism_country_has_unfinished_aftermath_state = {
+	any_owned_state = {
+		cannibalism_state_is_former_feeding_state = yes
+		NOT = { has_state_flag = cannibalism_aftermath_reconstruction_complete }
+	}
+}
+
+cannibalism_can_ratify_international_compact = {
+	cannibalism_reconstruction_category_is_visible = yes
+	NOT = { has_country_flag = cannibalism_international_compact_member }
+	NOT = { cannibalism_country_has_unfinished_aftermath_state = yes }
+	command_power > constant:cannibalism_reconstruction.compact_command
+	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_reconstruction.compact_support } }
+	NOT = { has_equipment = { convoy_1 < constant:cannibalism_reconstruction.compact_convoys } }
+	NOT = { has_equipment = { train_equipment_1 < constant:cannibalism_reconstruction.compact_trains } }
+}
+
+cannibalism_compact_vigilance_is_maintained = {
+	has_country_flag = cannibalism_international_compact_member
+	NOT = { has_country_flag = cannibalism_compact_inspection_failed }
+	NOT = { cannibalism_country_has_unfinished_aftermath_state = yes }
+	NOT = { has_global_flag = world_end }
+}

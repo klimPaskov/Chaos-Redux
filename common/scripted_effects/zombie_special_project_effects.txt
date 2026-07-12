@@ -2630,6 +2630,17 @@ weaponized_zombie_refresh_country_leader = {
             name = weaponized_zombie_leader_name_infected_horde
         }
     }
+	# Event 014 owns the revealed transformed identity. Any legitimate generic
+	# profile refresh must finish by restoring its public name and portrait.
+	if = {
+		limit = {
+			has_global_flag = cannibalism_reveal_complete
+			has_country_flag = cannibalism_wendigo_hannibal_country
+		}
+		if = { limit = { has_character = ZZZ_leader } retire_character = ZZZ_leader }
+		set_country_leader_portrait = { portrait = "GFX_portrait_ZZZ_hannibal_wendigo" }
+		set_country_leader_name = { name = ZZZ_hannibal_wendigo_name }
+	}
 }
 
 weaponized_zombie_unlock_profiled_template = {

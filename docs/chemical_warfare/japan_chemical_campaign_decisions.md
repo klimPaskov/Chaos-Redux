@@ -38,13 +38,17 @@ The decisions are state-targeted and only appear for Japan while it is at war wi
 
 ## Icons and UI Wiring
 
-No new icon assets are required for this iteration.
+The exact category `japan_chemical_campaign_category` uses a dedicated generated category icon:
 
-- Decision icon currently uses: `GFX_decision_generic_operation`
-- File using the icon: `common/decisions/japan_chemical_campaign_decisions.txt`
+- Sprite: `GFX_decision_category_japan_chemical_campaign`
+- Final DDS: `gfx/interface/decisions/japan_chemical_campaign/decision_category_japan_chemical_campaign.dds`
+- Category wiring: `common/decisions/categories/japan_chemical_campaign_categories.txt`
+- Sprite definition: `interface/chaosx_decisions.gfx`
+- Source package: `docs/assets/shared_gfx_cleanup/`
+
+The two individual decisions continue to use `GFX_decision_generic_operation`; the category header provides the campaign's persistent visual identity.
+
 - Localisation keys are in: `localisation/english/chaosx_decisions_l_english.yml`
-
-If custom art is added later, place sprite definitions in a dedicated decision `.gfx` file under `interface/` and replace decision `icon` tokens accordingly.
 
 ## Future Plans
 

@@ -1,0 +1,357 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 014 TRIGGERABLE-SCENARIO TRIGGERS
+# ============================================================================
+# Manual scenario gates bypass the random event's war, date, chaos, and
+# evolution prerequisites. They block only terminal conflicts, missing safe
+# country/state scopes, or insufficient reusable warlord/map capacity.
+# ============================================================================
+
+cannibalism_scenario_valid_source_country = {
+	exists = yes
+	uses_normal_civilian_systems = yes
+	NOT = { has_capitulated = yes }
+	NOT = { cannibalism_is_ineligible_special_country = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { is_cannibalism_country = yes }
+	num_of_controlled_states > 0
+	any_controlled_state = { cannibalism_state_is_valid_origin = yes }
+}
+
+cannibalism_scenario_valid_new_actor_country = {
+	cannibalism_scenario_valid_source_country = yes
+	NOT = { is_cannibalism_active_country = yes }
+}
+
+cannibalism_scenario_valid_destructive_host_country = {
+	cannibalism_scenario_valid_new_actor_country = yes
+	is_ai = yes
+}
+
+cannibalism_scenario_valid_target_state = {
+	cannibalism_state_is_valid_origin = yes
+	NOT = { cannibalism_state_has_active_cell = yes }
+	NOT = { has_state_flag = cannibalism_recovery_active }
+	NOT = { has_state_flag = cannibalism_scenario_reserved_state }
+	NOT = { cannibalism_state_is_unusable_larder = yes }
+	CONTROLLER = { cannibalism_scenario_valid_destructive_host_country = yes }
+}
+
+cannibalism_scenario_state_has_siege_package = {
+	OR = {
+		victory_points > constant:cannibalism_state_threshold.siege_victory_points
+		bunker > 0
+		industrial_complex > 0
+		arms_factory > 0
+	}
+}
+
+cannibalism_scenario_state_has_march_package = {
+	OR = {
+		rail_way > 0
+		infrastructure > constant:cannibalism_state_threshold.critical_infrastructure
+	}
+}
+
+cannibalism_scenario_state_can_seed_island_host = {
+	cannibalism_scenario_valid_target_state = yes
+	is_island_state = yes
+	naval_base > 0
+	check_variable = {
+		var = state_population_k
+		value = constant:cannibalism_scenario_scale.formation_minimum_population_k
+		compare = greater_than_or_equals
+	}
+	NOT = { cannibalism_state_has_prison_or_camp = yes }
+}
+
+cannibalism_scenario_state_can_seed_siege_commune = {
+	cannibalism_scenario_valid_target_state = yes
+	NOT = { is_island_state = yes }
+	cannibalism_scenario_state_has_siege_package = yes
+	NOT = { cannibalism_state_has_prison_or_camp = yes }
+	check_variable = {
+		var = state_population_k
+		value = constant:cannibalism_scenario_scale.formation_minimum_population_k
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_scenario_state_can_seed_march_host = {
+	cannibalism_scenario_valid_target_state = yes
+	NOT = { is_island_state = yes }
+	NOT = { cannibalism_state_has_prison_or_camp = yes }
+	NOT = { cannibalism_scenario_state_has_siege_package = yes }
+	cannibalism_scenario_state_has_march_package = yes
+	check_variable = {
+		var = state_population_k
+		value = constant:cannibalism_scenario_scale.formation_minimum_population_k
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_scenario_state_can_seed_prison_host = {
+	cannibalism_scenario_valid_target_state = yes
+	NOT = { is_island_state = yes }
+	NOT = { cannibalism_state_has_prison_or_camp = yes }
+	NOT = { cannibalism_scenario_state_has_siege_package = yes }
+	NOT = { cannibalism_scenario_state_has_march_package = yes }
+	check_variable = {
+		var = state_population_k
+		value = constant:cannibalism_scenario_scale.formation_minimum_population_k
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_scenario_has_one_island_slot = {
+	OR = { cannibalism_slot_cba_available = yes cannibalism_slot_cbb_available = yes }
+}
+
+cannibalism_scenario_has_two_island_slots = {
+	cannibalism_slot_cba_available = yes
+	cannibalism_slot_cbb_available = yes
+}
+
+cannibalism_scenario_has_one_siege_slot = {
+	OR = { cannibalism_slot_cbc_available = yes cannibalism_slot_cbd_available = yes }
+}
+
+cannibalism_scenario_has_two_siege_slots = {
+	cannibalism_slot_cbc_available = yes
+	cannibalism_slot_cbd_available = yes
+}
+
+cannibalism_scenario_has_one_march_slot = {
+	OR = { cannibalism_slot_cbe_available = yes cannibalism_slot_cbf_available = yes }
+}
+
+cannibalism_scenario_has_one_prison_slot = {
+	OR = { cannibalism_slot_cbg_available = yes cannibalism_slot_cbh_available = yes }
+}
+
+cannibalism_prefire_state_can_seed_island_host = {
+	cannibalism_scenario_state_can_seed_island_host = yes
+	CONTROLLER = { NOT = { tag = event_target:cannibalism_first_host } }
+}
+
+cannibalism_prefire_state_can_seed_siege_commune = {
+	cannibalism_scenario_state_can_seed_siege_commune = yes
+	CONTROLLER = { NOT = { tag = event_target:cannibalism_first_host } }
+}
+
+cannibalism_prefire_state_can_seed_march_host = {
+	cannibalism_scenario_state_can_seed_march_host = yes
+	CONTROLLER = { NOT = { tag = event_target:cannibalism_first_host } }
+}
+
+cannibalism_scenario_warlord_states_capacity_is_available = {
+	NOT = { has_global_flag = cannibalism_convergence_active }
+	OR = {
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.low }
+			cannibalism_scenario_has_one_siege_slot = yes
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_siege_commune = yes }
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.medium }
+			cannibalism_scenario_has_one_island_slot = yes
+			cannibalism_scenario_has_one_siege_slot = yes
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_island_host = yes }
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_siege_commune = yes }
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.high }
+			cannibalism_scenario_has_one_island_slot = yes
+			cannibalism_scenario_has_one_siege_slot = yes
+			cannibalism_scenario_has_one_march_slot = yes
+			cannibalism_scenario_has_one_prison_slot = yes
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_island_host = yes }
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_siege_commune = yes }
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_march_host = yes }
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_prison_host = yes }
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum }
+			cannibalism_scenario_has_two_island_slots = yes
+			cannibalism_scenario_has_two_siege_slots = yes
+			cannibalism_scenario_has_one_march_slot = yes
+			cannibalism_scenario_has_one_prison_slot = yes
+			any_state = { count = 2 cannibalism_scenario_state_can_seed_island_host = yes }
+			any_state = { count = 2 cannibalism_scenario_state_can_seed_siege_commune = yes }
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_march_host = yes }
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_prison_host = yes }
+		}
+	}
+}
+
+cannibalism_scenario_convergence_capacity_is_available = {
+	NOT = { has_global_flag = cannibalism_convergence_active }
+	NOT = { has_global_flag = cannibalism_reveal_complete }
+	OR = {
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.low }
+			cannibalism_scenario_has_one_island_slot = yes
+			cannibalism_scenario_has_one_siege_slot = yes
+			cannibalism_scenario_has_one_march_slot = yes
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_island_host = yes }
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_siege_commune = yes }
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_march_host = yes }
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.medium }
+			cannibalism_scenario_has_one_island_slot = yes
+			cannibalism_scenario_has_one_siege_slot = yes
+			cannibalism_scenario_has_one_march_slot = yes
+			cannibalism_scenario_has_one_prison_slot = yes
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_island_host = yes }
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_siege_commune = yes }
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_march_host = yes }
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_prison_host = yes }
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.high }
+			cannibalism_scenario_has_two_island_slots = yes
+			cannibalism_scenario_has_one_siege_slot = yes
+			cannibalism_scenario_has_one_march_slot = yes
+			cannibalism_scenario_has_one_prison_slot = yes
+			any_state = { count = 2 cannibalism_scenario_state_can_seed_island_host = yes }
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_siege_commune = yes }
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_march_host = yes }
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_prison_host = yes }
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum }
+			cannibalism_scenario_has_two_island_slots = yes
+			cannibalism_scenario_has_two_siege_slots = yes
+			cannibalism_scenario_has_one_march_slot = yes
+			cannibalism_scenario_has_one_prison_slot = yes
+			any_state = { count = 2 cannibalism_scenario_state_can_seed_island_host = yes }
+			any_state = { count = 2 cannibalism_scenario_state_can_seed_siege_commune = yes }
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_march_host = yes }
+			any_state = { count = 1 cannibalism_scenario_state_can_seed_prison_host = yes }
+		}
+	}
+}
+
+# The automatic Evolution III pre-fire opening always uses the deliberately
+# small convergence package: one Island Host, one Siege Commune, and one March
+# Host. It must prove that all three distinct map origins and reusable slots are
+# available before the fire-once dispatcher commits the evolved opening.
+cannibalism_prefire_evolution_iii_capacity_is_available = {
+	NOT = { has_global_flag = cannibalism_convergence_active }
+	NOT = { has_global_flag = cannibalism_reveal_complete }
+	NOT = { has_global_flag = world_end }
+	cannibalism_scenario_has_one_island_slot = yes
+	cannibalism_scenario_has_one_siege_slot = yes
+	cannibalism_scenario_has_one_march_slot = yes
+	any_state = { count = 1 cannibalism_prefire_state_can_seed_island_host = yes }
+	any_state = { count = 1 cannibalism_prefire_state_can_seed_siege_commune = yes }
+	any_state = { count = 1 cannibalism_prefire_state_can_seed_march_host = yes }
+}
+
+cannibalism_scenario_has_required_island_states = {
+	OR = {
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.low }
+			any_state = { count = constant:cannibalism_scenario_scale.low_states cannibalism_scenario_state_can_seed_island_host = yes }
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.medium }
+			any_state = { count = constant:cannibalism_scenario_scale.medium_states cannibalism_scenario_state_can_seed_island_host = yes }
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.high }
+			any_state = { count = constant:cannibalism_scenario_scale.high_states cannibalism_scenario_state_can_seed_island_host = yes }
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum }
+			any_state = { count = constant:cannibalism_scenario_scale.maximum_states cannibalism_scenario_state_can_seed_island_host = yes }
+		}
+	}
+}
+
+cannibalism_scenario_has_required_actor_capacity = {
+	OR = {
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.low }
+			OR = {
+				cannibalism_scenario_valid_source_country = yes
+				any_country = { count = constant:cannibalism_scenario_scale.low_countries is_ai = yes cannibalism_scenario_valid_source_country = yes }
+			}
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.medium }
+			OR = {
+				AND = {
+					cannibalism_scenario_valid_source_country = yes
+					any_country = { count = constant:cannibalism_scenario_scale.medium_additional_countries is_ai = yes cannibalism_scenario_valid_source_country = yes NOT = { tag = ROOT } }
+				}
+				any_country = { count = constant:cannibalism_scenario_scale.medium_countries is_ai = yes cannibalism_scenario_valid_source_country = yes }
+			}
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.high }
+			OR = {
+				AND = {
+					cannibalism_scenario_valid_source_country = yes
+					any_country = { count = constant:cannibalism_scenario_scale.high_additional_countries is_ai = yes cannibalism_scenario_valid_source_country = yes NOT = { tag = ROOT } }
+				}
+				any_country = { count = constant:cannibalism_scenario_scale.high_countries is_ai = yes cannibalism_scenario_valid_source_country = yes }
+			}
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum }
+			OR = {
+				AND = {
+					cannibalism_scenario_valid_source_country = yes
+					any_country = { count = constant:cannibalism_scenario_scale.maximum_additional_countries is_ai = yes cannibalism_scenario_valid_source_country = yes NOT = { tag = ROOT } }
+				}
+				any_country = { count = constant:cannibalism_scenario_scale.maximum_countries is_ai = yes cannibalism_scenario_valid_source_country = yes }
+			}
+		}
+	}
+}
+
+cannibalism_scenario_convergence_contract_holds = {
+	has_global_flag = cannibalism_scenario_convergence_contract
+	check_variable = {
+		var = global.cannibalism_warlord_count
+		value = constant:cannibalism_scenario_scale.convergence_contract_minimum_warlords
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = global.cannibalism_independent_node_count
+		value = constant:cannibalism_scenario_scale.convergence_contract_minimum_nodes
+		compare = greater_than_or_equals
+	}
+	any_country = { cannibalism_is_viable_unification_host = yes }
+}
+
+cannibalism_scenario_can_launch = {
+	NOT = { has_global_flag = world_end }
+	OR = {
+		cannibalism_scenario_valid_source_country = yes
+		any_country = { cannibalism_scenario_valid_source_country = yes }
+	}
+	OR = {
+		AND = {
+			check_variable = { triggerable_scenarios_cannibalism_type = constant:cannibalism_scenario.type_discipline_collapse }
+			cannibalism_scenario_has_required_actor_capacity = yes
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_cannibalism_type = constant:cannibalism_scenario.type_ritual_cells }
+			cannibalism_scenario_has_required_actor_capacity = yes
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_cannibalism_type = constant:cannibalism_scenario.type_silent_islands }
+			cannibalism_scenario_has_required_island_states = yes
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_cannibalism_type = constant:cannibalism_scenario.type_warlord_states }
+			cannibalism_scenario_warlord_states_capacity_is_available = yes
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_cannibalism_type = constant:cannibalism_scenario.type_convergence }
+			cannibalism_scenario_convergence_capacity_is_available = yes
+		}
+	}
+}
