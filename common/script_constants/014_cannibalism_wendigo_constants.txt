@@ -1,0 +1,279 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 014 WENDIGO CONVERGENCE CONSTANTS
+# ============================================================================
+# Shared tuning for deterministic live-Wendigo selection, structural merge,
+# transformation anchors, the pre-lock countdown, route decisions, AI, and
+# the locked terminal package. All population loss still uses the canonical
+# Event 014 Deaths-accounted consumption transaction.
+# ============================================================================
+
+cannibalism_wendigo_stage = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	prelock = 1
+	winter_network = 2
+	locked = 3
+}
+
+cannibalism_wendigo_merge = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_host_score = 10
+	human_host_score = 10000
+	division_score = 10
+	controlled_state_score = 6
+	controlled_population_score_per_million = 5
+	population_k_per_million = 1000
+	maximum_host_score = 100000
+	starting_progress = 0
+	authority_transition_gain = 20
+	reveal_world_tension = 50
+}
+
+cannibalism_wendigo_anchor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	initial_target = 3
+	minimum_for_countdown = 3
+	maximum = 6
+	base_score = 10
+	capital_score = 10000
+	population_score_divisor = 100
+	coastal_score = 20
+	naval_base_score = 25
+	supply_node_score = 30
+	rail_score = 15
+	initial_strength = 50
+	maximum_strength = 100
+	minimum_live_strength = 1
+	minimum_creation_population_k = 500
+	feeding_population_k = 250
+	loss_progress_penalty = 20
+	broken_anchor_recovery_days = 365
+}
+
+cannibalism_wendigo_countdown = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	progress_min = 0
+	progress_max = 100
+	weekly_base = 1
+	progress_per_anchor = 0.25
+	progress_per_winter_victory = 0.05
+	maximum_victory_progress = 1.5
+	progress_per_controlled_capital = 0.5
+	larder_high = 1200
+	larder_bonus = 0.5
+	consumed_population_k = 8000
+	consumption_bonus = 0.5
+	broken_anchor_penalty = 1
+	maximum_broken_penalty = 3
+	network_reach_gate = 85
+	controlled_states_gate = 20
+	consumed_population_k_gate = 10000
+	minimum_winter_victories = 5
+	winter_victory_increment = 1
+	minimum_authority = 80
+	minimum_larder = 800
+}
+
+cannibalism_wendigo_idea = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	conjoined_attack = 0.20
+	conjoined_defence = 0.15
+	conjoined_organization = 0.15
+	conjoined_reinforce = 0.06
+	conjoined_supply = -0.20
+	conjoined_stability = -0.15
+	conjoined_resistance = 0.20
+
+	winter_attack = 0.35
+	winter_defence = 0.30
+	winter_speed = 0.20
+	winter_recovery = 0.30
+	winter_supply = -0.35
+	winter_attrition = -0.50
+	winter_enemy_attrition = 0.30
+
+	locked_attack = 3.00
+	locked_defence = 3.00
+	locked_organization = 2.00
+	locked_breakthrough = 3.00
+	locked_speed = 1.00
+	locked_recovery = 3.00
+	locked_reinforce = 1.00
+	locked_supply = -0.99
+	locked_out_of_supply = -1.00
+	locked_attrition = -1.00
+	locked_surrender = 1.00
+	locked_surrender_offset = 1.00
+	locked_no_supply_grace = 10000
+	locked_conscription = 1.00
+	locked_training = -0.95
+	locked_equipment_capture = 1.00
+	locked_attack_speed = 5.00
+	locked_resistance = -1.00
+	locked_compliance = 3.00
+}
+
+cannibalism_wendigo_anchor_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	local_supply = 0.35
+	local_org = 0.25
+	enemy_attrition = 0.30
+	local_manpower = -0.10
+	local_resistance = 0.25
+	broken_supply = -0.50
+	broken_damage = -0.40
+	broken_resistance = -0.50
+	frozen_corridor_supply = 0.25
+	frozen_corridor_org = 0.15
+	frozen_enemy_supply = -0.35
+	frozen_enemy_org = -0.25
+}
+
+cannibalism_wendigo_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	protect_anchor = 500
+	designate_anchor = 280
+	feed_anchor = 240
+	train_pack = 220
+	freeze_corridor = 190
+	accelerate_countdown = 180
+	stabilize_countdown = 210
+	identify_anchor = 160
+	attack_anchor_enemy = 320
+	disrupt_anchor_enemy = 230
+	break_recruitment_site = 260
+	counterwar_positive_score = 0.10
+	avoid_empty_state = -500
+	prelock_aggression = 250
+	postlock_aggression = 2000
+}
+
+cannibalism_wendigo_leader = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	command_attack = 0.25
+	command_defence = 0.25
+	command_organization = 0.20
+	command_supply = -0.25
+	command_reinforce = 0.10
+	winter_attack = 0.40
+	winter_speed = 0.20
+	winter_recovery = 0.35
+	winter_attrition = -0.50
+	terminal_attack = 1.00
+	terminal_defence = 1.00
+	terminal_organization = 0.75
+	terminal_recovery = 1.00
+	terminal_reinforce = 0.50
+}
+
+cannibalism_wendigo_decision = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	designate_anchor_larder = 300
+	designate_anchor_command = 40
+	designate_anchor_command_gate = 39.99
+	fortify_anchor_larder = 180
+	fortify_anchor_command = 25
+	fortify_anchor_command_gate = 24.99
+	fortify_anchor_strength = 20
+	feed_anchor_population_k = 250
+	feed_anchor_minimum_population_k = 255
+	feed_anchor_strength = 15
+	feed_anchor_progress = 3
+	train_pack_population_k = 160
+	train_pack_minimum_population_k = 165
+	train_pack_larder = 240
+	train_pack_manpower_factor = 0.50
+	train_pack_batch = 2
+	train_pack_start_experience = 0.75
+	train_pack_start_equipment = 0
+	train_pack_start_manpower = 0
+	train_pack_base_cap = 12
+	train_pack_cap_per_anchor = 4
+	accelerate_population_k = 500
+	accelerate_minimum_population_k = 505
+	accelerate_larder = 400
+	accelerate_progress = 10
+	accelerate_cooldown_days = 90
+	stabilize_larder = 260
+	stabilize_command = 30
+	stabilize_command_gate = 29.99
+	stabilize_anchor_strength = 10
+	stabilize_progress = 4
+	stabilize_cooldown_days = 60
+	freeze_corridor_larder = 220
+	freeze_corridor_command = 30
+	freeze_corridor_command_gate = 29.99
+	freeze_corridor_days = 60
+	identify_political_power = 25
+	identify_political_power_gate = 24.99
+	identify_cooldown_days = 30
+	assault_manpower = 10000
+	assault_manpower_gate = 9999
+	assault_command = 35
+	assault_command_gate = 34.99
+	assault_infantry_equipment = 500
+	assault_infantry_equipment_gate = 499
+	assault_support_equipment = 100
+	assault_support_equipment_gate = 99
+	assault_strength_damage = 25
+	assault_identified_bonus_damage = 10
+	assault_cooldown_days = 60
+	disrupt_manpower = 5000
+	disrupt_manpower_gate = 4999
+	disrupt_command = 25
+	disrupt_command_gate = 24.99
+	disrupt_support_equipment = 50
+	disrupt_support_equipment_gate = 49
+	disrupt_strength_damage = 10
+	disrupt_progress_damage = 8
+	disrupt_cooldown_days = 45
+	break_site_manpower = 7500
+	break_site_manpower_gate = 7499
+	break_site_command = 30
+	break_site_command_gate = 29.99
+	break_site_infantry_equipment = 300
+	break_site_infantry_equipment_gate = 299
+	break_site_strength_damage = 15
+	break_site_lock_days = 120
+	break_site_cooldown_days = 75
+	selection_base_score = 10
+	selection_at_war_score = 1000
+	selection_adjacent_score = 500
+	selection_identified_score = 250
+	selection_maximum_strength = 100
+}

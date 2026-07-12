@@ -1,0 +1,150 @@
+@CANNIBALISM_CAPTURE_OUTCOME_EVENT_HOURS = 1
+
+# ============================================================================
+# CHAOS REDUX - EVENT 014 CANNIBALISM LIFECYCLE ON ACTIONS
+# ============================================================================
+# Narrow country-lifecycle hooks transfer the single Event 014 pulse callback
+# with its remaining delay. State-control and recalled-volunteer hooks feed
+# only proven physical routes into the generation-safe spread queue. No daily,
+# weekly, or monthly world iteration is used. Retired callbacks remain
+# quarantined on their former tag and drain as no-ops if that tag later returns.
+# ============================================================================
+
+on_actions = {
+	on_capitulation = {
+		effect = {
+			save_event_target_as = cannibalism_wendigo_defeated_country
+			save_event_target_as = cannibalism_defeated_country
+			if = {
+				limit = {
+					OR = {
+						is_cannibalism_warlord_country = yes
+						is_cannibalism_unified_country = yes
+						is_cannibalism_wendigo_hannibal_country = yes
+					}
+				}
+				if = {
+					limit = { is_cannibalism_warlord_country = yes }
+					cannibalism_achievement_record_likely_host_defeat = yes
+					cannibalism_achievement_record_island_host_defeat = yes
+					if = {
+						limit = {
+							NOT = { has_country_flag = cannibalism_warlord_character_outcome_recorded }
+							FROM = { exists = yes }
+						}
+						save_event_target_as = cannibalism_captured_warlord
+						FROM = { country_event = { id = chaosx.nr14.80 hours = @CANNIBALISM_CAPTURE_OUTCOME_EVENT_HOURS } }
+					}
+				}
+				if = {
+					limit = {
+						has_global_flag = cannibalism_reveal_complete
+						NOT = { has_global_flag = world_end }
+						NOT = { has_global_flag = cannibalism_hannibal_character_outcome_recorded }
+						OR = {
+							is_cannibalism_unified_country = yes
+							is_cannibalism_wendigo_hannibal_country = yes
+						}
+						NOT = { has_country_flag = cannibalism_terminal_host_active }
+						NOT = { has_country_flag = cannibalism_wendigo_transformation_locked }
+						FROM = { exists = yes }
+					}
+					save_event_target_as = cannibalism_captured_hannibal
+					FROM = { country_event = { id = chaosx.nr14.81 hours = @CANNIBALISM_CAPTURE_OUTCOME_EVENT_HOURS } }
+				}
+				every_enemy_country = {
+					cannibalism_record_current_country_as_defeat_contributor = yes
+				}
+			}
+			every_enemy_country = {
+				cannibalism_record_wendigo_winter_victory = yes
+				cannibalism_record_warlord_major_victory_harvest = yes
+				cannibalism_unified_record_distinct_enemy_capitulation = yes
+			}
+			cannibalism_invalidate_spread_entries_for_current_country_lifecycle = yes
+			if = {
+				limit = { cannibalism_current_country_owns_active_pulse_callback = yes }
+				FROM = { save_event_target_as = cannibalism_lifecycle_successor }
+				cannibalism_rehome_current_pulse_callback = yes
+			}
+		}
+	}
+
+	on_annex = {
+		effect = {
+			save_event_target_as = cannibalism_lifecycle_successor
+			FROM = {
+				cannibalism_invalidate_spread_entries_for_current_country_lifecycle = yes
+				if = {
+					limit = { cannibalism_current_country_owns_active_pulse_callback = yes }
+					cannibalism_rehome_current_pulse_callback = yes
+				}
+				if = {
+					limit = {
+						is_cannibalism_reusable_warlord_slot_country = yes
+						has_country_flag = cannibalism_warlord_slot_in_use
+					}
+					cannibalism_begin_current_warlord_slot_release = yes
+				}
+			}
+		}
+	}
+
+	on_civil_war_end_before_annexation = {
+		effect = {
+			FROM = { cannibalism_invalidate_spread_entries_for_current_country_lifecycle = yes }
+		}
+	}
+
+	on_civil_war_end = {
+		effect = {
+			save_event_target_as = cannibalism_lifecycle_successor
+			FROM = {
+				cannibalism_invalidate_spread_entries_for_current_country_lifecycle = yes
+				if = {
+					limit = { cannibalism_current_country_owns_active_pulse_callback = yes }
+					cannibalism_rehome_current_pulse_callback = yes
+				}
+			}
+		}
+	}
+
+	on_puppet = {
+		effect = { cannibalism_reconcile_current_country_spread_lifecycle = yes }
+	}
+
+	on_release_as_free = {
+		effect = { cannibalism_reconcile_current_country_spread_lifecycle = yes }
+	}
+
+	on_release_as_puppet = {
+		effect = { cannibalism_reconcile_current_country_spread_lifecycle = yes }
+	}
+
+	on_subject_free = {
+		effect = { cannibalism_reconcile_current_country_spread_lifecycle = yes }
+	}
+
+	on_subject_annexed = {
+		effect = { cannibalism_invalidate_spread_entries_for_current_country_lifecycle = yes }
+	}
+
+	on_state_control_changed = {
+		effect = {
+			FROM.FROM = { cannibalism_invalidate_spread_entries_for_current_state_lifecycle = yes }
+			cannibalism_handle_state_control_recovery = yes
+			cannibalism_try_enqueue_occupation_turnover_from_control_change = yes
+			cannibalism_try_enqueue_conquest_from_control_change = yes
+		}
+	}
+
+	on_naval_invasion = {
+		effect = { cannibalism_try_enqueue_convoy_from_naval_invasion = yes }
+	}
+
+	on_recall_volunteers = {
+		effect = {
+			cannibalism_try_enqueue_volunteer_return = yes
+		}
+	}
+}

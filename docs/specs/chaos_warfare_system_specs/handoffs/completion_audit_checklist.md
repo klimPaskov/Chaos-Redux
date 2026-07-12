@@ -1,5 +1,14 @@
 # Completion Audit Checklist
 
+## Fictional scope and implementation fidelity
+
+- [ ] `IMPLEMENTATION_SCOPE_AND_FIDELITY.md` was read before implementation
+- [ ] specific chemical and biological terms remain available in public-facing text where clarity requires them
+- [ ] no accepted mechanic was refused, omitted, merged, weakened, or renamed into a generic hazard system because of subject sensitivity
+- [ ] no real-world synthesis, culturing, weaponization, handling, dose, dissemination, or target-selection instructions were added
+- [ ] chemical and biological agent profiles, delivery methods, countermeasures, casualty systems, population effects, contamination, suppression, evidence, Condemnation, sanctions, retaliation, and AI remain distinct and complete
+- [ ] every subject-based omission is reported as a simplification and blocks completion
+
 ## Doctrine
 
 - [ ] adoption no longer grants excessive global combat bonuses

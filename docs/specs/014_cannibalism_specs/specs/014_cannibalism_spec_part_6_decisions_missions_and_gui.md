@@ -682,7 +682,7 @@ GUI buttons must use the same balance logic as decisions. They cannot bypass cos
 - 12 source frames
 - 156 by 210 each
 - 1872 by 210 horizontal sheet
-- slow breathing, eye movement, blood and shadow changes drawn into distinct source frames
+- complete feral skull-licking action with jaw, tongue, fingers, wrists, eyes, skull angle, blood, shoulders, and cloth independently redrawn across the sequence
 - no transform-only motion
 
 ### Wendigo Hannibal portrait
@@ -690,8 +690,9 @@ GUI buttons must use the same balance logic as decisions. They cannot bypass cos
 - 16 source frames
 - 156 by 210 each
 - 2496 by 210 sheet
-- supernatural cold, breath, flesh, and shadow progression
+- separate asymmetric predatory crouch, lunge, claw reach, jaw-unhinging apex, recoil, swallow spasm, and tense return with anatomy, ice, breath, flesh, blood, and shadow independently redrawn
 - preserve identity across frames
+- no merely recolored or ice-skinned human portrait
 
 ### Unification seal
 

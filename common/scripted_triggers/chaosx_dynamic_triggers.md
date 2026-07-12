@@ -33,6 +33,9 @@ Current coverage includes:
 - active Fury actor countries
 - `DTH` / original `DTH` / countries with the Death country marker
 - `DHO` / original `DHO` / countries with the Event 018 cave-country marker
+- Event 014 cannibal warlord countries
+- the unified Event 014 country
+- the transformed Event 014 Wendigo country
 
 ## is_actual_nonhuman_country
 
@@ -47,3 +50,4 @@ Current coverage includes:
 - `ZIN`
 - `DTH` / original `DTH` / countries with the Death country marker
 - `DHO` / original `DHO` / countries with the Event 018 cave-country marker
+- the transformed Event 014 Wendigo country; ordinary cannibal warlords and the ordinary unified country remain human

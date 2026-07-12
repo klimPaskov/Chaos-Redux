@@ -531,14 +531,14 @@ If the main outbreak opens a fresh continental front and actually borders an AZL
 
 #### League assets
 
-No new league-specific sprites are required by the current implementation.
+The League category uses a dedicated sprite:
 
-The system reuses existing decision icons such as:
+- `GFX_decision_category_anti_zombie_league`
+- `gfx/interface/decisions/002_zombie_outbreak/categories/decision_category_anti_zombie_league.dds`
 
-- `GFX_decision_generic_operation`
-- `GFX_decision_generic_prepare_civil_war`
-- `GFX_decision_generic_research`
-- `GFX_decision_generic_nationalism`
+Event 002 also assigns dedicated category identities to outbreak prevention, weaponized-zombie operations, and each of the seven weaponized creator profiles. Their final DDS files live under `gfx/interface/decisions/002_zombie_outbreak/categories/`; source PNGs, processed PNGs, the contact sheet, manifest, and `.gfx` handoff live under `docs/assets/002_zombie_outbreak/`.
+
+The two cure categories retain the existing `GFX_decision_category_zombies_cure` identity because it is already custom and directly represents their shared cure workflow.
 
 ### 7. Main horde collapse, succession, and shutdown
 

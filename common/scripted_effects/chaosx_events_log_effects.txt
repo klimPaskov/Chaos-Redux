@@ -232,11 +232,38 @@ events_log_set_default_actor_for_current_event = {
 	}
 	else_if = {
 		limit = {
+			check_variable = { event_id = constant:cannibalism_event.id }
+			has_event_target = cannibalism_first_host
+			event_target:cannibalism_first_host = { exists = yes }
+		}
+		event_target:cannibalism_first_host = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		set_temp_variable = { events_log_default_has_actor = 1 }
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:cannibalism_event.id }
+			has_event_target = cannibalism_latest_actor
+			event_target:cannibalism_latest_actor = { exists = yes }
+		}
+		event_target:cannibalism_latest_actor = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		set_temp_variable = { events_log_default_has_actor = 1 }
+	}
+	else_if = {
+		limit = {
 			check_variable = { event_id = constant:random_faction_event.id }
 			has_event_target = random_faction_target_country
 			event_target:random_faction_target_country = { exists = yes }
 		}
 		event_target:random_faction_target_country = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		set_temp_variable = { events_log_default_has_actor = 1 }
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:resources_found_event.id }
+			has_event_target = resources_found_prefire_owner
+			event_target:resources_found_prefire_owner = { exists = yes }
+		}
+		event_target:resources_found_prefire_owner = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
 		set_temp_variable = { events_log_default_has_actor = 1 }
 	}
 	else_if = {
@@ -254,15 +281,6 @@ events_log_set_default_actor_for_current_event = {
 			event_target:natural_disaster_log_actor = { exists = yes }
 		}
 		event_target:natural_disaster_log_actor = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
-		set_temp_variable = { events_log_default_has_actor = 1 }
-	}
-	else_if = {
-		limit = {
-			check_variable = { event_id = constant:resources_found_event.id }
-			has_event_target = resources_found_prefire_owner
-			event_target:resources_found_prefire_owner = { exists = yes }
-		}
-		event_target:resources_found_prefire_owner = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
 		set_temp_variable = { events_log_default_has_actor = 1 }
 	}
 	else_if = {
@@ -1539,6 +1557,25 @@ events_log_rebuild_open_event_details_view = {
 			set_temp_variable = { events_log_event_detail_preview_tier = constant:natural_disaster_event.evolution_iii_tier }
 			set_temp_variable = { events_log_event_detail_preview_stage = constant:natural_disaster_event.evolution_iii_stage }
 			events_log_add_event_detail_evolution_preview = yes
+		}
+
+		if = {
+			limit = { check_variable = { var = event_id value = constant:cannibalism_event.id compare = equals } }
+			set_temp_variable = { events_log_event_detail_preview_type = constant:cannibalism_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:cannibalism_event.evolution_i_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:cannibalism_event.evolution_i_stage }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:cannibalism_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:cannibalism_event.evolution_ii_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:cannibalism_event.evolution_ii_stage }
+			events_log_add_event_detail_evolution_preview = yes
+			if = {
+				limit = { has_global_flag = cannibalism_reveal_complete }
+				set_temp_variable = { events_log_event_detail_preview_type = constant:cannibalism_event.evolution_type }
+				set_temp_variable = { events_log_event_detail_preview_tier = constant:cannibalism_event.evolution_iii_tier }
+				set_temp_variable = { events_log_event_detail_preview_stage = constant:cannibalism_event.evolution_iii_stage }
+				events_log_add_event_detail_evolution_preview = yes
+			}
 		}
 
 		if = {
@@ -3294,6 +3331,13 @@ rebuild_events_log_events_view = {
 				limit = {
 					check_variable = { event_id = constant:secret_alliance_event.id }
 					NOT = { secret_alliance_automatic_event_is_available = yes }
+				}
+				set_temp_variable = { events_log_events_live_weight = -1 }
+			}
+			if = {
+				limit = {
+					check_variable = { event_id = constant:cannibalism_event.id }
+					NOT = { cannibalism_automatic_event_is_available = yes }
 				}
 				set_temp_variable = { events_log_events_live_weight = -1 }
 			}

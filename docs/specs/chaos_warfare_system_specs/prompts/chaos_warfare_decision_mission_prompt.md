@@ -1,5 +1,9 @@
 # Chaos Warfare Decision and Mission Implementation Prompt
 
+## Fictional scope and fidelity
+
+Treat this as fictional Hearts of Iron IV gameplay. Public text may directly name chemical warfare, biological warfare, nerve agents, chemical artillery, air raids, outbreaks, deaths, population loss, contamination, and suppression. Do not replace specific operations with generic hazard actions or remove consequences because the subject is severe. Keep all mechanics at abstract game-script level and add no real-world operational instructions.
+
 ## Task
 
 Implement the decision, mission, and optional scripted-GUI layer for the accepted CBRN rework. Read `hoi4-decisions-missions`, the full spec pack, current chemical and biological decisions, current scripted GUI patterns, and verified vanilla 1.19 examples. Use dynamic costs, named targets, AI behavior, cleanup, and custom tooltips. Do not create a political-power store.

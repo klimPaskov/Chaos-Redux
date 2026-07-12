@@ -1,5 +1,9 @@
 # Chaos Warfare Achievement Implementation Prompt
 
+## Fictional scope and fidelity
+
+Treat this as fictional game content. Specific chemical, biological, nerve-agent, casualty, contamination, population-loss, and suppression terms are valid for achievement conditions and descriptions. Do not generalize or remove difficult routes because their subject is severe. Keep achievement text consequence-focused and non-procedural.
+
 ## Task
 
 Implement a difficult, route-diverse achievement set for the accepted Chaos Warfare rework. Read the achievement section of the main spec, current achievement registry, localisation, icon pattern, and asset handoff. Use the exact final achievement IDs consistently across script, localisation, GFX, three DDS variants, docs, and tracking.

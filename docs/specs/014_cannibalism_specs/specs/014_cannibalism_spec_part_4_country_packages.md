@@ -20,6 +20,13 @@ Required tag capacity:
 
 The eight warlord slots should be reusable after a country is fully eliminated and cleaned up, provided no history, character, flag, decision, focus, or global target still references the old incarnation.
 
+Each slot has a distinct portrait for Europe, Asia, Africa, the Middle East,
+North America, South America, and Oceania. The actual origin state's stored
+region chooses the portrait and male name pool together. That region and
+portrait must survive submission and commander reconstruction at unification.
+An unsupported or missing region prevents formation instead of selecting a
+generic face.
+
 A released slot must record:
 
 - origin country
@@ -57,16 +64,18 @@ Every pre-unification country receives one generated male warlord.
 
 - bald head
 - blood on skin, clothing, hands, or mouth
-- physically intimidating and visibly scarred
+- physically intimidating, visibly scarred, feral, and deranged rather than merely stern
+- less conventionally human-looking through grounded human-origin traits such as pallor, bloodshot eyes, asymmetry, damaged ears, irregular teeth, extreme posture, and predatory expression
 - rough hides, raw cloth, bone ornaments, scavenged webbing, damaged helmets, prison garments, or torn period uniforms
 - period-compatible weapon or command prop when composition allows
+- at least one of the 56 regional portraits must hold a skull and visibly lick a dark-crimson smear from it; the other portraits need different behaviors and props rather than repeating that pose
 - no modern objects
 - no readable text
 - no real Indigenous, African, Pacific, or religious ceremonial regalia
 - no resemblance to Hannibal
 - no supernatural antlers, elongated limbs, glowing eyes, or Wendigo traits
 
-The user requires primitive tribal clothing. The art direction should satisfy the intended savage visual through invented materials and post-collapse scavenging while avoiding a copy of any living culture.
+The art direction uses invented rough survival clothing and post-collapse scavenging. It must not describe the clothing as tribal, copy a living culture, or borrow sacred and ceremonial motifs.
 
 ### Name direction
 
@@ -591,7 +600,7 @@ Final name research and localisation can use Hannibal after reveal. The map name
 
 ### Leader
 
-Hannibal is a fictional male leader created by Event 14. He is not Hannibal Barca and must not use a historical portrait.
+Hannibal Lecter is the male leader created by Event 14. The alternate-history portrait must remain consistent across the ordinary and transformed routes without copying a specific screen actor.
 
 Portrait direction:
 

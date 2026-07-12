@@ -482,6 +482,10 @@ refresh_world_threat_state = {
         limit = { has_global_flag = world_threat_source_death }
         add_to_variable = { global.world_threat_source_count = 1 }
     }
+    if = {
+        limit = { has_global_flag = world_threat_source_cannibalism }
+        add_to_variable = { global.world_threat_source_count = 1 }
+    }
 	if = {
 		limit = { has_global_flag = world_threat_source_resources_found_caves }
 		add_to_variable = { global.world_threat_source_count = 1 }
@@ -555,6 +559,58 @@ grant_random_chaos_special_project_available_tech = {
 				complete_special_project = { project = sp:sp_cw_soman_program show_modifiers = no }
 				set_technology = { sarin = 1 soman = 1 }
 				set_country_flag = chaos_random_special_project_granted
+			}
+		}
+	}
+}
+
+###############################################################################################################
+
+# Public country-scope additive technology union. See
+# chaosx_dynamic_effects.md for the donor contract and compatibility rules.
+union_compatible_researched_technologies_from_donor = {
+	for_each_loop = {
+		array = event_target:technology_union_donor.researched_techs
+		value = technology_union_entry
+		if = {
+			limit = {
+				NOT = { has_tech = var:technology_union_entry }
+				if = {
+					limit = { check_variable = { technology_union_entry = token:flexible_line } }
+					NOT = { has_tech = streamlined_line }
+				}
+				else_if = {
+					limit = { check_variable = { technology_union_entry = token:streamlined_line } }
+					NOT = { has_tech = flexible_line }
+				}
+				else_if = {
+					limit = {
+						OR = {
+							check_variable = { technology_union_entry = token:concentrated_industry }
+							check_variable = { technology_union_entry = token:concentrated_industry2 }
+							check_variable = { technology_union_entry = token:concentrated_industry3 }
+							check_variable = { technology_union_entry = token:concentrated_industry4 }
+							check_variable = { technology_union_entry = token:concentrated_industry5 }
+						}
+					}
+					NOT = { has_tech = dispersed_industry }
+				}
+				else_if = {
+					limit = {
+						OR = {
+							check_variable = { technology_union_entry = token:dispersed_industry }
+							check_variable = { technology_union_entry = token:dispersed_industry2 }
+							check_variable = { technology_union_entry = token:dispersed_industry3 }
+							check_variable = { technology_union_entry = token:dispersed_industry4 }
+							check_variable = { technology_union_entry = token:dispersed_industry5 }
+						}
+					}
+					NOT = { has_tech = concentrated_industry }
+				}
+			}
+			set_technology = {
+				var:technology_union_entry = 1
+				popup = no
 			}
 		}
 	}

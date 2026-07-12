@@ -276,10 +276,11 @@ Role:
 
 Image direction:
 
-- Hannibal at the center of a massive cannibal army and feeding-state landscape
+- a capital overrun in motion as visibly crazed cannibals sprint, climb, breach barricades, and chase civilians while Hannibal Lecter directs the assault
 - explicit gore
-- strong central composition
+- strong diagonal action and foreground-to-background pursuit readable at 457 by 328
 - no readable generated text
+- no static army lineup, throne pose, map-room tableau, or calm aftermath
 
 Quote direction:
 
@@ -300,8 +301,9 @@ Role:
 
 Image direction:
 
-- Wendigo Hannibal in frozen ruins with transformed armies
+- transformed Hannibal Lecter leading a dramatically inhuman frozen pack through a collapsing barricade after fleeing civilians and soldiers
 - explicit gore and cold body horror
+- distinct lunging, climbing, and pursuit action rather than a posed monster lineup or a snow-filtered ordinary scene
 - no borrowed living cultural regalia
 
 Quote direction:
@@ -349,12 +351,13 @@ Small regional containment does not create a global treaty or super-event.
 
 Role:
 
-- reflective global victory with severe cost
+- kinetic global breakthrough and rescue with severe cost
 
 Image direction:
 
-- liberated feeding capital, recovery teams, surviving prisoners, and ruined warlord symbols
-- gore can remain visible, but the emotional center is survival and identification of the dead
+- coalition troops break through an active feeding compound while cages are opened, civilians and prisoners escape, and the last cannibal defenders are destroyed in motion
+- gore remains visible, but the emotional center is immediate rescue, survival, and the first recovery teams entering behind the assault
+- the scene must read as an unfolding victory at 457 by 328, not a calm aftermath lineup or posed memorial tableau
 
 Quote direction:
 

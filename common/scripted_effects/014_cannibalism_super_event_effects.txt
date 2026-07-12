@@ -1,0 +1,272 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 014 CANNIBALISM SUPER-EVENT AND TERMINAL EFFECTS
+# ============================================================================
+# Publishes the researched reveal, ordinary world-end, Wendigo world-end, and
+# eligible global-defeat aftermath packages through the shared settings-aware
+# super-event player. Reveal text and audio are hard-gated behind the public
+# reveal flag. The ordinary terminal effect also resolves remaining AI Hosts
+# without transferring control away from any surviving human country.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Historical defeat contributors
+# ---------------------------------------------------------------------------
+
+cannibalism_record_current_country_as_defeat_contributor = {
+	if = {
+		limit = {
+			exists = yes
+			NOT = { is_cannibalism_warlord_country = yes }
+			NOT = { is_cannibalism_unified_country = yes }
+			NOT = { is_cannibalism_wendigo_hannibal_country = yes }
+			NOT = { is_in_array = { array = global.cannibalism_defeat_contributors value = THIS } }
+		}
+		add_to_array = { array = global.cannibalism_defeat_contributors value = THIS }
+		set_country_flag = cannibalism_global_defeat_contributor
+	}
+}
+
+cannibalism_refresh_global_defeat_contributor_count = {
+	set_temp_variable = { cannibalism_live_defeat_contributor_count = 0 }
+	for_each_scope_loop = {
+		array = global.cannibalism_defeat_contributors
+		if = {
+			limit = {
+				exists = yes
+				has_country_flag = cannibalism_global_defeat_contributor
+			}
+			add_to_temp_variable = { cannibalism_live_defeat_contributor_count = 1 }
+		}
+	}
+	set_variable = { global.cannibalism_global_defeat_contributor_count = cannibalism_live_defeat_contributor_count }
+}
+
+# ---------------------------------------------------------------------------
+# Shared settings-aware emitters
+# ---------------------------------------------------------------------------
+
+cannibalism_emit_reveal_super_event = {
+	if = {
+		limit = {
+			has_global_flag = cannibalism_reveal_complete
+			NOT = { has_global_flag = cannibalism_reveal_super_event_emitted }
+		}
+		set_global_flag = cannibalism_reveal_super_event_emitted
+		set_temp_variable = { cannibalism_super_event_visible_days = constant:cannibalism_event.visible_days }
+		set_global_flag = {
+			flag = super_event_visible
+			days = cannibalism_super_event_visible_days
+			value = constant:cannibalism_event.super_event_reveal
+		}
+		set_variable = { global.current_super_event_audio_id = constant:cannibalism_event.super_event_reveal }
+		every_country = {
+			limit = { is_ai = no }
+			play_current_super_event_audio = yes
+		}
+	}
+}
+
+cannibalism_emit_ordinary_world_end_super_event = {
+	if = {
+		limit = {
+			has_global_flag = cannibalism_reveal_complete
+			has_global_flag = cannibalism_world_end_ordinary
+			has_global_flag = world_end
+			NOT = { has_global_flag = cannibalism_ordinary_world_end_super_event_emitted }
+		}
+		set_global_flag = cannibalism_ordinary_world_end_super_event_emitted
+		set_temp_variable = { cannibalism_super_event_visible_days = constant:cannibalism_event.visible_days }
+		set_global_flag = {
+			flag = super_event_visible
+			days = cannibalism_super_event_visible_days
+			value = constant:cannibalism_event.super_event_world_end
+		}
+		set_variable = { global.current_super_event_audio_id = constant:cannibalism_event.super_event_world_end }
+		every_country = {
+			limit = { is_ai = no }
+			play_current_super_event_audio = yes
+		}
+	}
+}
+
+cannibalism_emit_global_defeat_aftermath_super_event = {
+	if = {
+		limit = {
+			has_global_flag = cannibalism_global_defeat_aftermath_eligible
+			has_global_flag = cannibalism_reveal_complete
+			NOT = { has_global_flag = world_end }
+			NOT = { has_global_flag = cannibalism_global_defeat_aftermath_emitted }
+		}
+		set_global_flag = cannibalism_global_defeat_aftermath_emitted
+		set_temp_variable = { cannibalism_super_event_visible_days = constant:cannibalism_event.visible_days }
+		set_global_flag = {
+			flag = super_event_visible
+			days = cannibalism_super_event_visible_days
+			value = constant:cannibalism_event.super_event_defeat
+		}
+		set_variable = { global.current_super_event_audio_id = constant:cannibalism_event.super_event_defeat }
+		every_country = {
+			limit = { is_ai = no }
+			play_current_super_event_audio = yes
+		}
+	}
+}
+
+cannibalism_trigger_wendigo_world_end_super_event = {
+	if = {
+		limit = {
+			has_global_flag = cannibalism_reveal_complete
+			has_global_flag = cannibalism_world_end_wendigo
+			has_global_flag = world_end
+			NOT = { has_global_flag = cannibalism_wendigo_world_end_super_event_emitted }
+		}
+		set_global_flag = cannibalism_wendigo_world_end_super_event_emitted
+		set_temp_variable = { cannibalism_super_event_visible_days = constant:cannibalism_event.visible_days }
+		set_global_flag = {
+			flag = super_event_visible
+			days = cannibalism_super_event_visible_days
+			value = constant:cannibalism_event.super_event_wendigo_world_end
+		}
+		set_variable = { global.current_super_event_audio_id = constant:cannibalism_event.super_event_wendigo_world_end }
+		every_country = {
+			limit = { is_ai = no }
+			play_current_super_event_audio = yes
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Ordinary terminal route
+# ---------------------------------------------------------------------------
+
+cannibalism_activate_terminal_global_war = {
+	save_event_target_as = cannibalism_terminal_global_actor
+	if = { limit = { is_in_faction = yes } leave_faction = yes }
+	every_country = {
+		limit = {
+			exists = yes
+			NOT = { tag = event_target:cannibalism_terminal_global_actor }
+			NOT = { has_capitulated = yes }
+		}
+		event_target:cannibalism_terminal_global_actor = {
+			if = {
+				limit = { is_cannibalism_wendigo_hannibal_country = yes }
+				add_ai_strategy = { type = conquer id = PREV value = constant:cannibalism_ai_strategy.wendigo_terminal_conquest }
+				add_ai_strategy = { type = antagonize id = PREV value = constant:cannibalism_ai_strategy.wendigo_terminal_conquest }
+				add_ai_strategy = { type = front_unit_request id = PREV value = constant:cannibalism_ai_strategy.wendigo_terminal_front }
+			}
+			else = {
+				add_ai_strategy = { type = conquer id = PREV value = constant:cannibalism_ai_strategy.hannibal_terminal_conquest }
+				add_ai_strategy = { type = antagonize id = PREV value = constant:cannibalism_ai_strategy.hannibal_terminal_conquest }
+				add_ai_strategy = { type = front_unit_request id = PREV value = constant:cannibalism_ai_strategy.hannibal_terminal_front }
+			}
+			if = {
+				limit = {
+					NOT = { has_war_with = PREV }
+					NOT = { has_wargoal_against = PREV }
+				}
+				create_wargoal = { type = annex_everything target = PREV expire = 0 }
+			}
+			if = {
+				limit = {
+					NOT = { has_war_with = PREV }
+					can_declare_war_on = PREV
+				}
+				declare_war_on = { target = PREV type = annex_everything }
+			}
+		}
+	}
+}
+
+cannibalism_integrate_terminal_ai_warlords = {
+	clear_temp_array = cannibalism_terminal_ai_warlords
+	for_each_scope_loop = {
+		array = global.cannibalism_actor_countries
+		if = {
+			limit = {
+				exists = yes
+				is_cannibalism_warlord_country = yes
+				is_ai = yes
+				NOT = { tag = CBL }
+				NOT = { has_capitulated = yes }
+			}
+			add_to_temp_array = { cannibalism_terminal_ai_warlords = THIS }
+		}
+		else_if = {
+			limit = {
+				exists = yes
+				is_cannibalism_warlord_country = yes
+				is_ai = no
+				NOT = { tag = CBL }
+				NOT = { has_capitulated = yes }
+			}
+			set_country_flag = cannibalism_terminal_player_resistance
+		}
+	}
+	for_each_scope_loop = {
+		array = cannibalism_terminal_ai_warlords
+		set_country_flag = cannibalism_pending_absorption
+		set_temp_variable = { cannibalism_requested_warlord_disposition = constant:cannibalism_warlord_disposition.retained_commander }
+		set_temp_variable = { cannibalism_integration_larder_factor = constant:cannibalism_unification.command_submission_larder_factor }
+		cannibalism_absorb_current_warlord_into_unified_host = yes
+		if = {
+			limit = { check_variable = { cannibalism_absorption_result < 1 } }
+			set_global_flag = cannibalism_terminal_integration_incomplete
+		}
+	}
+	clear_temp_array = cannibalism_terminal_ai_warlords
+}
+
+cannibalism_try_start_ordinary_world_end = {
+	if = {
+		limit = {
+			cannibalism_can_complete_ordinary_world_end = yes
+			has_country_flag = cannibalism_unified_world_end_focus_complete
+			has_country_flag = cannibalism_terminal_route_complete
+			has_global_flag = cannibalism_reveal_complete
+			NOT = { has_country_flag = cannibalism_wendigo_hannibal_country }
+			NOT = { has_global_flag = cannibalism_world_end_ordinary }
+		}
+		save_global_event_target_as = cannibalism_unification_host
+		cannibalism_integrate_terminal_ai_warlords = yes
+		set_country_flag = cannibalism_terminal_host_active
+		set_country_flag = cannibalism_unified_universal_enemy_decisions_open
+		set_country_flag = cannibalism_unified_terminal_consumption_open
+		set_country_flag = cannibalism_unified_global_absorption_open
+		set_global_flag = world_end
+		set_global_flag = world_end_cannibalism
+		set_global_flag = cannibalism_world_end_ordinary
+		set_variable = { global.cannibalism_global_stage = constant:cannibalism_global_stage.ordinary_world_end }
+		random_faction_cleanup_after_world_end = yes
+		cannibalism_activate_terminal_global_war = yes
+		add_country_leader_trait = cannibalism_hannibal_terminal_command
+		set_temp_variable = { cannibalism_chaos_change = constant:cannibalism_delta.world_end_chaos }
+		set_temp_variable = { cannibalism_chaos_reason = constant:chaos_meter_history_reason.special.cannibalism_world_end }
+		cannibalism_apply_chaos_change = yes
+		cannibalism_emit_ordinary_world_end_super_event = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Eligible defeat aftermath
+# ---------------------------------------------------------------------------
+
+cannibalism_try_start_global_defeat_aftermath = {
+	set_variable = { global.cannibalism_global_defeat_duration_days = global.date }
+	subtract_from_variable = { global.cannibalism_global_defeat_duration_days = global.cannibalism_system_start_date }
+	cannibalism_refresh_global_defeat_contributor_count = yes
+	if = {
+		limit = { cannibalism_global_defeat_aftermath_is_eligible = yes }
+		set_global_flag = cannibalism_global_defeat_aftermath_eligible
+		set_global_flag = cannibalism_reconstruction_system_active
+		for_each_scope_loop = {
+			array = global.cannibalism_defeat_contributors
+			if = {
+				limit = { exists = yes }
+				set_country_flag = cannibalism_reconstruction_participant
+			}
+		}
+		cannibalism_initialize_global_defeat_reconstruction = yes
+		cannibalism_emit_global_defeat_aftermath_super_event = yes
+	}
+}

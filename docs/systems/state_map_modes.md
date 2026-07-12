@@ -54,23 +54,28 @@ This keeps the feature dynamic and easy to extend. Any future civilian-death sou
 - Map mode constants: `common/script_constants/state_map_modes_constants.txt`
 - Reusable map mode triggers: `common/scripted_triggers/chaosx_dynamic_triggers.txt`
 - Tooltip scripted localisation: `common/scripted_localisation/chaosx_scripted_localisation_map_modes.txt`
-- Shared strip sprite definitions: `interface/mapmodes_interface.gfx`
+- Shared-strip and scripted-map-mode sprite definitions: `interface/mapmodes_interface.gfx`
 - English localisation: `localisation/english/chaosx_map_modes_l_english.yml`
 
-## Icons needed
+## Map mode icons
 
-The button icons come from the shared vanilla-style strip:
+The shared vanilla-style strips contain `19` frames at `20x18` pixels per frame:
 
 - `gfx/interface/mapmode/mapmode_buttons_deselected_small.dds`
 - `gfx/interface/mapmode/mapmode_buttons_selected_small.dds`
 
-Chaos Redux extends those strips to `20` frames in:
+Chaos Redux uses vanilla's otherwise blank frame `18` for civilian deaths and appends frame `19` for contamination. The strip definitions therefore remain at `noOfFrames = 19`.
 
-- `interface/mapmodes_interface.gfx`
+Scripted map modes do not resolve those shared-strip positions directly. They require the exact per-mode sprite names defined in `interface/mapmodes_interface.gfx`:
 
-Vanilla already occupies the first `18` small-strip frames, including hidden deployment and nudger slots, so the two scripted Chaos Redux map modes must use appended frames after the vanilla strip.
+- `GFX_mapmode_buttons_deselected_small_deaths_state_map_mode`
+- `GFX_mapmode_buttons_selected_small_deaths_state_map_mode`
+- `GFX_mapmode_buttons_deselected_small_contaminated_states_map_mode`
+- `GFX_mapmode_buttons_selected_small_contaminated_states_map_mode`
 
-Current slot assignment:
+Their dedicated `20x18` DDS files live under `gfx/interface/mapmode/custom/`. Source and processed PNG copies are recorded under `docs/assets/shared_gfx_cleanup/`.
 
-- Strip sprite `19`: `deaths_state_map_mode`
-- Strip sprite `20`: `contaminated_states_map_mode`
+Current strip-source assignment:
+
+- Frame `18`: `deaths_state_map_mode`
+- Frame `19`: `contaminated_states_map_mode`

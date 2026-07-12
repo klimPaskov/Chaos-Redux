@@ -1,0 +1,808 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 014 WARLORD DECISION EFFECTS
+# ============================================================================
+# Performs exact Deaths-backed state consumption and recruitment. Scripted
+# units begin with no generated manpower or equipment; the exact population
+# transaction fills the manpower pool and existing stockpiles reinforce them.
+# ============================================================================
+
+cannibalism_pay_current_warlord_larder_cost = {
+	if = {
+		limit = { has_country_flag = cannibalism_inherited_warlord_recruitment_open }
+		set_temp_variable = { cannibalism_unified_larder_cost = cannibalism_warlord_larder_cost }
+		cannibalism_unified_pay_current_larder_cost = yes
+	}
+	else = {
+		set_temp_variable = { cannibalism_warlord_larder_cost_negative = cannibalism_warlord_larder_cost }
+		multiply_temp_variable = { cannibalism_warlord_larder_cost_negative = constant:cannibalism_unified_profile.minus_one }
+		add_to_variable = { cannibalism_larder = cannibalism_warlord_larder_cost_negative }
+		clamp_variable = {
+			var = cannibalism_larder
+			min = constant:cannibalism_consumption.larder_min
+			max = constant:cannibalism_consumption.larder_max
+		}
+	}
+}
+
+cannibalism_register_selected_state_to_current_warlord = {
+	if = {
+		limit = {
+			has_event_target = cannibalism_warlord_recruitment_state
+			has_event_target = cannibalism_warlord_recruitment_actor
+			event_target:cannibalism_warlord_recruitment_state = { is_controlled_by = event_target:cannibalism_warlord_recruitment_actor }
+		}
+		event_target:cannibalism_warlord_recruitment_actor = { save_event_target_as = cannibalism_node_source_actor }
+		event_target:cannibalism_warlord_recruitment_state = {
+			if = {
+				limit = { NOT = { has_state_flag = cannibalism_active_node } }
+				set_temp_variable = { cannibalism_new_node_type = constant:cannibalism_node_type.warlord }
+				set_temp_variable = { cannibalism_new_node_strength = constant:cannibalism_opening.network_cell_strength }
+				set_temp_variable = { cannibalism_new_node_stage = constant:cannibalism_state_stage.feeding_state }
+				cannibalism_register_current_state_node = yes
+			}
+			else_if = {
+				limit = { NOT = { is_in_array = { array = global.cannibalism_node_states value = THIS } } }
+				add_to_array = { array = global.cannibalism_node_states value = THIS }
+			}
+			if = {
+				limit = { NOT = { has_state_flag = cannibalism_warlord_state } }
+				set_state_flag = cannibalism_warlord_state
+				event_target:cannibalism_warlord_recruitment_actor = { add_to_variable = { cannibalism_warlord_slot_reference_count = 1 } }
+			}
+			set_variable = { cannibalism_warlord_slot_index = event_target:cannibalism_warlord_recruitment_actor.cannibalism_warlord_slot_index }
+			set_variable = { cannibalism_warlord_slot_generation = event_target:cannibalism_warlord_recruitment_actor.cannibalism_warlord_slot_generation }
+			set_variable = { cannibalism_node_source_country = event_target:cannibalism_warlord_recruitment_actor }
+			set_variable = { cannibalism_node_source_country_generation = event_target:cannibalism_warlord_recruitment_actor.cannibalism_actor_generation }
+		}
+	}
+}
+
+cannibalism_spawn_warlord_recruitment_template_1 = {
+	meta_effect = {
+		text = {
+			create_unit = {
+				division = "name = \"Scavenger Warband\" division_template = \"Scavenger Warband\" start_experience_factor = [START_EXPERIENCE] start_equipment_factor = [START_EQUIPMENT] start_manpower_factor = [START_MANPOWER]"
+				owner = event_target:cannibalism_warlord_recruitment_actor
+				allow_spawning_on_enemy_provs = no
+			}
+		}
+		START_EXPERIENCE = "[?cannibalism_warlord_unit_start_experience]"
+		START_EQUIPMENT = "[?cannibalism_warlord_unit_start_equipment]"
+		START_MANPOWER = "[?cannibalism_warlord_unit_start_manpower]"
+	}
+}
+
+cannibalism_spawn_warlord_recruitment_template_2 = {
+	meta_effect = {
+		text = {
+			create_unit = {
+				division = "name = \"Feast Cohort\" division_template = \"Feast Cohort\" start_experience_factor = [START_EXPERIENCE] start_equipment_factor = [START_EQUIPMENT] start_manpower_factor = [START_MANPOWER]"
+				owner = event_target:cannibalism_warlord_recruitment_actor
+				allow_spawning_on_enemy_provs = no
+			}
+		}
+		START_EXPERIENCE = "[?cannibalism_warlord_unit_start_experience]"
+		START_EQUIPMENT = "[?cannibalism_warlord_unit_start_equipment]"
+		START_MANPOWER = "[?cannibalism_warlord_unit_start_manpower]"
+	}
+}
+
+cannibalism_spawn_warlord_recruitment_template_4 = {
+	meta_effect = {
+		text = {
+			create_unit = {
+				division = "name = \"Bone Guard\" division_template = \"Bone Guard\" start_experience_factor = [START_EXPERIENCE] start_equipment_factor = [START_EQUIPMENT] start_manpower_factor = [START_MANPOWER]"
+				owner = event_target:cannibalism_warlord_recruitment_actor
+				allow_spawning_on_enemy_provs = no
+			}
+		}
+		START_EXPERIENCE = "[?cannibalism_warlord_unit_start_experience]"
+		START_EQUIPMENT = "[?cannibalism_warlord_unit_start_equipment]"
+		START_MANPOWER = "[?cannibalism_warlord_unit_start_manpower]"
+	}
+}
+
+cannibalism_spawn_warlord_recruitment_template_5 = {
+	meta_effect = {
+		text = {
+			create_unit = {
+				division = "name = \"Network Cadre\" division_template = \"Network Cadre\" start_experience_factor = [START_EXPERIENCE] start_equipment_factor = [START_EQUIPMENT] start_manpower_factor = [START_MANPOWER]"
+				owner = event_target:cannibalism_warlord_recruitment_actor
+				allow_spawning_on_enemy_provs = no
+			}
+		}
+		START_EXPERIENCE = "[?cannibalism_warlord_unit_start_experience]"
+		START_EQUIPMENT = "[?cannibalism_warlord_unit_start_equipment]"
+		START_MANPOWER = "[?cannibalism_warlord_unit_start_manpower]"
+	}
+}
+
+cannibalism_spawn_warlord_recruitment_template_11 = {
+	meta_effect = {
+		text = { create_unit = { division = "name = \"Island Reavers\" division_template = \"Island Reavers\" start_experience_factor = [START_EXPERIENCE] start_equipment_factor = [START_EQUIPMENT] start_manpower_factor = [START_MANPOWER]" owner = event_target:cannibalism_warlord_recruitment_actor allow_spawning_on_enemy_provs = no } }
+		START_EXPERIENCE = "[?cannibalism_warlord_unit_start_experience]"
+		START_EQUIPMENT = "[?cannibalism_warlord_unit_start_equipment]"
+		START_MANPOWER = "[?cannibalism_warlord_unit_start_manpower]"
+	}
+}
+
+cannibalism_spawn_warlord_recruitment_template_12 = {
+	meta_effect = {
+		text = { create_unit = { division = "name = \"Siege Eaters\" division_template = \"Siege Eaters\" start_experience_factor = [START_EXPERIENCE] start_equipment_factor = [START_EQUIPMENT] start_manpower_factor = [START_MANPOWER]" owner = event_target:cannibalism_warlord_recruitment_actor allow_spawning_on_enemy_provs = no } }
+		START_EXPERIENCE = "[?cannibalism_warlord_unit_start_experience]"
+		START_EQUIPMENT = "[?cannibalism_warlord_unit_start_equipment]"
+		START_MANPOWER = "[?cannibalism_warlord_unit_start_manpower]"
+	}
+}
+
+cannibalism_spawn_warlord_recruitment_template_13 = {
+	meta_effect = {
+		text = { create_unit = { division = "name = \"March Predation Column\" division_template = \"March Predation Column\" start_experience_factor = [START_EXPERIENCE] start_equipment_factor = [START_EQUIPMENT] start_manpower_factor = [START_MANPOWER]" owner = event_target:cannibalism_warlord_recruitment_actor allow_spawning_on_enemy_provs = no } }
+		START_EXPERIENCE = "[?cannibalism_warlord_unit_start_experience]"
+		START_EQUIPMENT = "[?cannibalism_warlord_unit_start_equipment]"
+		START_MANPOWER = "[?cannibalism_warlord_unit_start_manpower]"
+	}
+}
+
+cannibalism_spawn_warlord_recruitment_template_14 = {
+	meta_effect = {
+		text = { create_unit = { division = "name = \"Lockhouse Column\" division_template = \"Lockhouse Column\" start_experience_factor = [START_EXPERIENCE] start_equipment_factor = [START_EQUIPMENT] start_manpower_factor = [START_MANPOWER]" owner = event_target:cannibalism_warlord_recruitment_actor allow_spawning_on_enemy_provs = no } }
+		START_EXPERIENCE = "[?cannibalism_warlord_unit_start_experience]"
+		START_EQUIPMENT = "[?cannibalism_warlord_unit_start_equipment]"
+		START_MANPOWER = "[?cannibalism_warlord_unit_start_manpower]"
+	}
+}
+
+cannibalism_prepare_current_warlord_origin_specialist_template = {
+	if = {
+		limit = { has_country_flag = cannibalism_origin_island_host }
+		set_temp_variable = { cannibalism_warlord_origin_template = constant:cannibalism_recruitment_template.island_reavers }
+	}
+	else_if = {
+		limit = { has_country_flag = cannibalism_origin_siege_commune }
+		set_temp_variable = { cannibalism_warlord_origin_template = constant:cannibalism_recruitment_template.siege_eaters }
+	}
+	else_if = {
+		limit = { has_country_flag = cannibalism_origin_march_host }
+		set_temp_variable = { cannibalism_warlord_origin_template = constant:cannibalism_recruitment_template.march_column }
+	}
+	else = {
+		set_temp_variable = { cannibalism_warlord_origin_template = constant:cannibalism_recruitment_template.prison_column }
+	}
+}
+
+cannibalism_prepare_warlord_recruitment_contract = {
+	set_temp_variable = { cannibalism_warlord_unit_start_experience = constant:cannibalism_warlord_decision.unit_start_experience }
+	set_temp_variable = { cannibalism_warlord_unit_start_equipment = constant:cannibalism_warlord_decision.unit_start_equipment }
+	set_temp_variable = { cannibalism_warlord_unit_start_manpower = constant:cannibalism_warlord_decision.unit_start_manpower }
+	set_temp_variable = { cannibalism_warlord_recruitment_cooldown_days = constant:cannibalism_warlord_decision.recruitment_state_cooldown_days }
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_survival_order_open }
+		add_to_temp_variable = { cannibalism_warlord_unit_start_experience = constant:cannibalism_warlord_contract.recruit_experience_small }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_origin_defense_open }
+		add_to_temp_variable = { cannibalism_warlord_unit_start_experience = constant:cannibalism_warlord_contract.recruit_experience_small }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_capital_repairs_open }
+		subtract_from_temp_variable = { cannibalism_warlord_recruitment_cooldown_days = constant:cannibalism_warlord_contract.recruitment_cooldown_reduction_small }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_lieutenant_assignments_open }
+		add_to_temp_variable = { cannibalism_warlord_unit_start_experience = constant:cannibalism_warlord_contract.recruit_experience_medium }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_hierarchy_routes_open }
+		subtract_from_temp_variable = { cannibalism_warlord_recruitment_cooldown_days = constant:cannibalism_warlord_contract.recruitment_cooldown_reduction_small }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_officer_training_open }
+		add_to_temp_variable = { cannibalism_warlord_unit_start_experience = constant:cannibalism_warlord_contract.recruit_experience_large }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_distributed_recruitment_open }
+		subtract_from_temp_variable = { cannibalism_warlord_recruitment_cooldown_days = constant:cannibalism_warlord_contract.recruitment_cooldown_reduction_large }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_workshop_conversion_open }
+		subtract_from_temp_variable = { cannibalism_warlord_recruitment_cooldown_days = constant:cannibalism_warlord_contract.recruitment_cooldown_reduction_medium }
+	}
+	if = {
+		limit = {
+			has_country_flag = cannibalism_warlord_personal_guard_doctrine_open
+			check_variable = { cannibalism_warlord_recruitment_template = constant:cannibalism_recruitment_template.bone_guard }
+		}
+		add_to_temp_variable = { cannibalism_warlord_unit_start_experience = constant:cannibalism_warlord_contract.recruit_experience_elite }
+	}
+	if = {
+		limit = {
+			has_country_flag = cannibalism_warlord_leader_protection_open
+			check_variable = { cannibalism_warlord_recruitment_template = constant:cannibalism_recruitment_template.bone_guard }
+		}
+		add_to_temp_variable = { cannibalism_warlord_unit_start_experience = constant:cannibalism_warlord_contract.recruit_experience_large }
+	}
+	if = {
+		limit = {
+			has_country_flag = cannibalism_warlord_penal_column_actions_open
+			check_variable = { cannibalism_warlord_recruitment_template = constant:cannibalism_recruitment_template.origin_specialist }
+		}
+		add_to_temp_variable = { cannibalism_warlord_unit_start_experience = constant:cannibalism_warlord_contract.recruit_experience_large }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_tyrant_doctrine_open }
+		add_to_temp_variable = { cannibalism_warlord_unit_start_experience = constant:cannibalism_warlord_contract.recruit_experience_large }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_council_doctrine_open }
+		add_to_temp_variable = { cannibalism_warlord_unit_start_experience = constant:cannibalism_warlord_contract.recruit_experience_medium }
+		subtract_from_temp_variable = { cannibalism_warlord_recruitment_cooldown_days = constant:cannibalism_warlord_contract.recruitment_cooldown_reduction_small }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_confederacy_doctrine_open }
+		subtract_from_temp_variable = { cannibalism_warlord_recruitment_cooldown_days = constant:cannibalism_warlord_contract.recruitment_cooldown_reduction_medium }
+	}
+	clamp_temp_variable = {
+		var = cannibalism_warlord_unit_start_experience
+		min = constant:cannibalism_warlord_decision.unit_start_experience
+		max = constant:cannibalism_warlord_contract.recruit_experience_maximum
+	}
+	clamp_temp_variable = {
+		var = cannibalism_warlord_recruitment_cooldown_days
+		min = constant:cannibalism_warlord_contract.recruitment_cooldown_minimum
+		max = constant:cannibalism_warlord_decision.recruitment_state_cooldown_days
+	}
+}
+
+cannibalism_spawn_selected_warlord_recruitment_unit = {
+	if = {
+		limit = { check_variable = { cannibalism_warlord_recruitment_template = constant:cannibalism_recruitment_template.origin_specialist } }
+		event_target:cannibalism_warlord_recruitment_actor = { cannibalism_prepare_current_warlord_origin_specialist_template = yes }
+		meta_effect = {
+			text = { cannibalism_spawn_warlord_recruitment_template_[TEMPLATE] = yes }
+			TEMPLATE = "[?cannibalism_warlord_origin_template|.0]"
+		}
+	}
+	else = {
+		meta_effect = {
+			text = { cannibalism_spawn_warlord_recruitment_template_[TEMPLATE] = yes }
+			TEMPLATE = "[?cannibalism_warlord_recruitment_template|.0]"
+		}
+	}
+}
+
+cannibalism_record_current_warlord_recruitment = {
+	add_to_variable = { cannibalism_warlord_units_raised = 1 }
+	if = {
+		limit = { check_variable = { cannibalism_warlord_recruitment_template = constant:cannibalism_recruitment_template.scavenger_warband } }
+		add_to_variable = { cannibalism_scavenger_warbands_raised = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { cannibalism_warlord_recruitment_template = constant:cannibalism_recruitment_template.feast_cohort } }
+		add_to_variable = { cannibalism_feast_cohorts_raised = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { cannibalism_warlord_recruitment_template = constant:cannibalism_recruitment_template.origin_specialist } }
+		add_to_variable = { cannibalism_origin_specialists_raised = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { cannibalism_warlord_recruitment_template = constant:cannibalism_recruitment_template.bone_guard } }
+		add_to_variable = { cannibalism_bone_guard_raised = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { cannibalism_warlord_recruitment_template = constant:cannibalism_recruitment_template.network_cadre } }
+		add_to_variable = { cannibalism_network_cadres_raised = 1 }
+	}
+}
+
+cannibalism_execute_warlord_recruitment_transaction = {
+	set_temp_variable = { cannibalism_warlord_recruitment_result = 0 }
+	cannibalism_prepare_warlord_recruitment_contract = yes
+	if = {
+		limit = {
+			has_event_target = cannibalism_warlord_recruitment_state
+			check_variable = { cannibalism_warlord_recruitment_population_k > 0 }
+			check_variable = { cannibalism_warlord_larder_cost > 0 }
+		}
+		save_event_target_as = cannibalism_warlord_recruitment_actor
+		event_target:cannibalism_warlord_recruitment_state = { save_event_target_as = cannibalism_consumption_target_state }
+		set_temp_variable = { cannibalism_consumption_exact_request_people = cannibalism_warlord_recruitment_population_k }
+		multiply_temp_variable = { cannibalism_consumption_exact_request_people = constant:cannibalism_consumption.population_people_per_k }
+		set_temp_variable = { cannibalism_consumption_context = constant:cannibalism_consumption_mode.recruitment }
+		cannibalism_prepare_consumption_context = yes
+		if = {
+			limit = {
+				check_variable = { cannibalism_consumption_result = constant:cannibalism_consumption_result.applied }
+				check_variable = {
+					var = cannibalism_population_loss_applied
+					value = cannibalism_consumption_exact_request_people
+					compare = equals
+				}
+			}
+			if = {
+				limit = { is_cannibalism_warlord_country = yes }
+				cannibalism_register_selected_state_to_current_warlord = yes
+			}
+			cannibalism_pay_current_warlord_larder_cost = yes
+			set_temp_variable = { cannibalism_warlord_recruitment_manpower = cannibalism_population_loss_applied }
+			multiply_temp_variable = { cannibalism_warlord_recruitment_manpower = constant:cannibalism_warlord_decision.recruitment_manpower_factor }
+			round_temp_variable = cannibalism_warlord_recruitment_manpower
+			add_manpower = cannibalism_warlord_recruitment_manpower
+			if = {
+				limit = { check_variable = { cannibalism_warlord_recruitment_template < constant:cannibalism_recruitment_template.emergency_reinforcement } }
+				event_target:cannibalism_warlord_recruitment_state = { cannibalism_spawn_selected_warlord_recruitment_unit = yes }
+				cannibalism_record_current_warlord_recruitment = yes
+			}
+			if = {
+				limit = { has_country_flag = cannibalism_warlord_workshop_conversion_open }
+				set_temp_variable = { cannibalism_warlord_recovered_infantry = constant:cannibalism_warlord_contract.workshop_recovery_infantry }
+				add_equipment_to_stockpile = { type = infantry_equipment amount = cannibalism_warlord_recovered_infantry }
+			}
+			if = {
+				limit = {
+					has_country_flag = cannibalism_warlord_survival_order_open
+					check_variable = { cannibalism_warlord_recruitment_template = constant:cannibalism_recruitment_template.emergency_reinforcement }
+				}
+				add_to_variable = { cannibalism_frenzy = constant:cannibalism_warlord_decision.frenzy_relief }
+				add_to_variable = { cannibalism_command_integrity = constant:cannibalism_warlord_decision.command_integrity_gain }
+			}
+			if = {
+				limit = {
+					has_country_flag = cannibalism_warlord_purge_decisions_open
+					check_variable = { cannibalism_warlord_recruitment_template = constant:cannibalism_recruitment_template.bone_guard }
+				}
+				add_to_variable = { cannibalism_frenzy = constant:cannibalism_warlord_contract.rapid_frenzy_gain }
+				add_to_variable = { cannibalism_command_integrity = constant:cannibalism_warlord_contract.provincial_integrity_gain }
+			}
+			clamp_variable = { var = cannibalism_frenzy min = constant:cannibalism_consumption.frenzy_min max = constant:cannibalism_consumption.frenzy_max }
+			clamp_variable = { var = cannibalism_command_integrity min = constant:cannibalism_meter.min max = constant:cannibalism_meter.max }
+			event_target:cannibalism_warlord_recruitment_state = {
+				set_state_flag = { flag = cannibalism_recruitment_cooldown days = cannibalism_warlord_recruitment_cooldown_days }
+			}
+			set_temp_variable = { cannibalism_warlord_recruitment_result = 1 }
+		}
+		set_temp_variable = { cannibalism_consumption_exact_request_people = 0 }
+	}
+}
+
+cannibalism_apply_warlord_consumption_contracts = {
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_larder_inventory_open }
+		add_to_variable = { cannibalism_larder = constant:cannibalism_warlord_contract.larder_inventory_gain }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_larder_accounting_open }
+		add_to_variable = { cannibalism_larder = constant:cannibalism_warlord_contract.larder_accounting_gain }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_prisoner_ledger_open }
+		add_to_variable = { cannibalism_network_alignment = constant:cannibalism_warlord_contract.prisoner_ledger_alignment_gain }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_provincial_servants_open }
+		add_to_variable = { cannibalism_command_integrity = constant:cannibalism_warlord_contract.provincial_integrity_gain }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_rapid_consumption_open }
+		add_to_variable = { cannibalism_frenzy = constant:cannibalism_warlord_contract.rapid_frenzy_gain }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_managed_herd_actions_open }
+		add_to_variable = { cannibalism_frenzy = constant:cannibalism_warlord_contract.managed_frenzy_relief }
+		if = {
+			limit = { has_event_target = cannibalism_warlord_recruitment_state }
+			event_target:cannibalism_warlord_recruitment_state = {
+				add_to_variable = { cannibalism_node_strength = constant:cannibalism_warlord_contract.feeding_district_strength_gain }
+				clamp_variable = { var = cannibalism_node_strength min = constant:cannibalism_network.min max = constant:cannibalism_network.max }
+			}
+		}
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_mobile_larder_open }
+		add_to_variable = { cannibalism_command_integrity = constant:cannibalism_warlord_contract.provincial_integrity_gain }
+	}
+	if = {
+		limit = {
+			has_country_flag = cannibalism_warlord_state_exhaustion_risk
+			has_event_target = cannibalism_warlord_recruitment_state
+		}
+		event_target:cannibalism_warlord_recruitment_state = {
+			add_to_variable = { cannibalism_consumption_actions = constant:cannibalism_warlord_contract.state_exhaustion_action_increment }
+		}
+	}
+	clamp_variable = { var = cannibalism_larder min = constant:cannibalism_consumption.larder_min max = constant:cannibalism_consumption.larder_max }
+	clamp_variable = { var = cannibalism_frenzy min = constant:cannibalism_consumption.frenzy_min max = constant:cannibalism_consumption.frenzy_max }
+	clamp_variable = { var = cannibalism_network_alignment min = constant:cannibalism_consumption.alignment_min max = constant:cannibalism_consumption.alignment_max }
+	clamp_variable = { var = cannibalism_command_integrity min = constant:cannibalism_meter.min max = constant:cannibalism_meter.max }
+}
+
+cannibalism_consume_selected_state_for_larder = {
+	set_temp_variable = { cannibalism_warlord_consumption_result = 0 }
+	if = {
+		limit = { has_event_target = cannibalism_warlord_recruitment_state }
+		save_event_target_as = cannibalism_warlord_recruitment_actor
+		event_target:cannibalism_warlord_recruitment_state = { save_event_target_as = cannibalism_consumption_target_state }
+		set_temp_variable = { cannibalism_consumption_context = constant:cannibalism_consumption_mode.feeding }
+		cannibalism_prepare_consumption_context = yes
+		if = {
+			limit = { check_variable = { cannibalism_consumption_result = constant:cannibalism_consumption_result.applied } }
+			cannibalism_register_selected_state_to_current_warlord = yes
+			cannibalism_apply_warlord_consumption_contracts = yes
+			set_temp_variable = { cannibalism_warlord_consumption_result = 1 }
+		}
+	}
+}
+
+cannibalism_pay_warlord_operation_cost = {
+	set_temp_variable = { cannibalism_warlord_operation_larder_cost_negative = cannibalism_warlord_operation_larder_cost }
+	multiply_temp_variable = { cannibalism_warlord_operation_larder_cost_negative = -1 }
+	add_to_variable = { cannibalism_larder = cannibalism_warlord_operation_larder_cost_negative }
+	clamp_variable = { var = cannibalism_larder min = constant:cannibalism_consumption.larder_min max = constant:cannibalism_consumption.larder_max }
+	add_command_power = cannibalism_warlord_operation_command_spend
+}
+
+cannibalism_intensify_selected_feeding_district = {
+	set_temp_variable = { cannibalism_warlord_intensification_result = 0 }
+	if = {
+		limit = {
+			has_event_target = cannibalism_warlord_recruitment_state
+			cannibalism_warlord_can_pay_intensification_cost = yes
+			event_target:cannibalism_warlord_recruitment_state = { cannibalism_state_can_be_intensified_by_current_warlord = yes }
+		}
+		add_command_power = constant:cannibalism_warlord_decision.intensification_command_spend
+		save_event_target_as = cannibalism_warlord_recruitment_actor
+		event_target:cannibalism_warlord_recruitment_state = { save_event_target_as = cannibalism_consumption_target_state }
+		set_temp_variable = { cannibalism_consumption_context = constant:cannibalism_consumption_mode.silent_larder }
+		cannibalism_prepare_consumption_context = yes
+		if = {
+			limit = { check_variable = { cannibalism_consumption_result = constant:cannibalism_consumption_result.applied } }
+			cannibalism_register_selected_state_to_current_warlord = yes
+			cannibalism_apply_warlord_consumption_contracts = yes
+			if = {
+				limit = {
+					has_country_flag = cannibalism_warlord_feeding_districts_open
+					has_event_target = cannibalism_warlord_recruitment_state
+				}
+				event_target:cannibalism_warlord_recruitment_state = {
+					add_to_variable = { cannibalism_node_strength = constant:cannibalism_warlord_contract.feeding_district_strength_gain }
+					clamp_variable = { var = cannibalism_node_strength min = constant:cannibalism_network.min max = constant:cannibalism_network.max }
+				}
+			}
+			if = {
+				limit = { has_country_flag = cannibalism_warlord_council_votes_open }
+				add_to_variable = { cannibalism_frenzy = constant:cannibalism_warlord_contract.council_frenzy_relief }
+				add_to_variable = { cannibalism_network_alignment = constant:cannibalism_warlord_contract.operation_alignment_gain_small }
+				clamp_variable = { var = cannibalism_frenzy min = constant:cannibalism_consumption.frenzy_min max = constant:cannibalism_consumption.frenzy_max }
+				clamp_variable = { var = cannibalism_network_alignment min = constant:cannibalism_consumption.alignment_min max = constant:cannibalism_consumption.alignment_max }
+			}
+			set_temp_variable = { cannibalism_warlord_intensification_result = 1 }
+		}
+	}
+}
+
+cannibalism_abandon_selected_exhausted_state = {
+	set_temp_variable = { cannibalism_warlord_abandon_result = 0 }
+	if = {
+		limit = {
+			has_event_target = cannibalism_warlord_abandon_state
+			cannibalism_warlord_can_pay_abandon_cost = yes
+			event_target:cannibalism_warlord_abandon_state = { cannibalism_state_can_be_abandoned_by_current_warlord = yes }
+			has_variable = cannibalism_warlord_former_owner
+			var:cannibalism_warlord_former_owner = { exists = yes NOT = { tag = ROOT } }
+		}
+		add_command_power = constant:cannibalism_warlord_decision.abandon_command_spend
+		save_event_target_as = cannibalism_warlord_abandon_actor
+		event_target:cannibalism_warlord_abandon_state = {
+			set_temp_variable = { cannibalism_expected_node_id = cannibalism_node_id }
+			set_temp_variable = { cannibalism_expected_node_generation = cannibalism_node_generation }
+			cannibalism_begin_current_state_recovery = yes
+			if = {
+				limit = { is_core_of = event_target:cannibalism_warlord_abandon_actor }
+				remove_state_core = event_target:cannibalism_warlord_abandon_actor
+			}
+			clr_state_flag = cannibalism_warlord_state
+			clr_state_flag = cannibalism_commune_state
+			clr_state_flag = cannibalism_network_node
+			clear_variable = cannibalism_warlord_slot_index
+			clear_variable = cannibalism_warlord_slot_generation
+		}
+		subtract_from_variable = { cannibalism_warlord_slot_reference_count = 1 }
+		clamp_variable = { var = cannibalism_warlord_slot_reference_count min = 0 max = constant:cannibalism_slot.maximum }
+		var:cannibalism_warlord_former_owner = { transfer_state = event_target:cannibalism_warlord_abandon_state }
+		set_temp_variable = { cannibalism_warlord_abandon_result = 1 }
+	}
+}
+
+cannibalism_align_current_warlord_ranks = {
+	if = {
+		limit = { cannibalism_warlord_can_pay_align_cost = yes }
+		set_temp_variable = { cannibalism_warlord_operation_larder_cost = constant:cannibalism_warlord_decision.align_larder_cost }
+		set_temp_variable = { cannibalism_warlord_operation_command_spend = constant:cannibalism_warlord_decision.align_command_spend }
+		cannibalism_pay_warlord_operation_cost = yes
+		add_to_variable = { cannibalism_network_alignment = constant:cannibalism_warlord_decision.align_alignment_gain }
+		if = {
+			limit = { has_country_flag = cannibalism_warlord_courier_routes_open }
+			add_to_variable = { cannibalism_network_alignment = constant:cannibalism_warlord_contract.operation_alignment_gain_medium }
+		}
+		if = {
+			limit = { has_country_flag = cannibalism_warlord_submission_preparation_open }
+			add_to_variable = { cannibalism_network_alignment = constant:cannibalism_warlord_contract.operation_alignment_gain_medium }
+		}
+		add_to_variable = { cannibalism_frenzy = constant:cannibalism_warlord_decision.align_frenzy_change }
+		clamp_variable = { var = cannibalism_network_alignment min = constant:cannibalism_consumption.alignment_min max = constant:cannibalism_consumption.alignment_max }
+		clamp_variable = { var = cannibalism_frenzy min = constant:cannibalism_consumption.frenzy_min max = constant:cannibalism_consumption.frenzy_max }
+	}
+}
+
+cannibalism_apply_synchronized_attack_to_current_warlord = {
+	set_temp_variable = { cannibalism_warlord_operation_larder_cost = constant:cannibalism_warlord_decision.synchronized_larder_cost }
+	set_temp_variable = { cannibalism_warlord_operation_command_spend = constant:cannibalism_warlord_decision.synchronized_command_spend }
+	cannibalism_pay_warlord_operation_cost = yes
+	add_to_variable = { cannibalism_network_alignment = constant:cannibalism_warlord_decision.synchronized_alignment_gain }
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_courier_routes_open }
+		add_to_variable = { cannibalism_network_alignment = constant:cannibalism_warlord_contract.operation_alignment_gain_small }
+	}
+	clamp_variable = { var = cannibalism_network_alignment min = constant:cannibalism_consumption.alignment_min max = constant:cannibalism_consumption.alignment_max }
+	set_temp_variable = { cannibalism_synchronized_operation_days = constant:cannibalism_warlord_decision.synchronized_operation_days }
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_commune_absorption_open }
+		add_to_temp_variable = { cannibalism_synchronized_operation_days = constant:cannibalism_warlord_contract.operation_duration_medium }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_shared_roads_open }
+		add_to_temp_variable = { cannibalism_synchronized_operation_days = constant:cannibalism_warlord_contract.operation_duration_small }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_convergence_leverage_open }
+		add_to_temp_variable = { cannibalism_synchronized_operation_days = constant:cannibalism_warlord_contract.operation_duration_medium }
+	}
+	add_dynamic_modifier = { modifier = cannibalism_synchronized_warlord_attack days = cannibalism_synchronized_operation_days }
+}
+
+cannibalism_synchronize_attack_with_target_warlord = {
+	set_temp_variable = { cannibalism_warlord_synchronized_attack_result = 0 }
+	if = {
+		limit = {
+			has_event_target = cannibalism_warlord_synchronized_partner
+			cannibalism_warlord_can_pay_synchronized_attack_cost = yes
+			event_target:cannibalism_warlord_synchronized_partner = { cannibalism_is_valid_synchronized_warlord_partner = yes }
+		}
+		cannibalism_apply_synchronized_attack_to_current_warlord = yes
+		event_target:cannibalism_warlord_synchronized_partner = {
+			cannibalism_apply_synchronized_attack_to_current_warlord = yes
+		}
+		set_temp_variable = { cannibalism_warlord_synchronized_attack_result = 1 }
+	}
+}
+
+cannibalism_prepare_warlord_origin_operation_contract = {
+	set_temp_variable = { cannibalism_origin_operation_duration_bonus = 0 }
+	set_temp_variable = { cannibalism_origin_operation_larder_recovery = 0 }
+	set_temp_variable = { cannibalism_origin_operation_infantry_recovery = 0 }
+	set_temp_variable = { cannibalism_origin_operation_support_recovery = 0 }
+	set_temp_variable = { cannibalism_origin_operation_convoy_recovery = 0 }
+	set_temp_variable = { cannibalism_origin_operation_truck_recovery = 0 }
+	set_temp_variable = { cannibalism_origin_operation_train_recovery = 0 }
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_raid_decisions_open }
+		add_to_temp_variable = { cannibalism_origin_operation_duration_bonus = constant:cannibalism_warlord_contract.operation_duration_small }
+		add_to_temp_variable = { cannibalism_origin_operation_larder_recovery = constant:cannibalism_warlord_contract.operation_larder_recovery_small }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_shared_roads_open }
+		add_to_temp_variable = { cannibalism_origin_operation_duration_bonus = constant:cannibalism_warlord_contract.operation_duration_small }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_mobile_larder_escort_open }
+		add_to_temp_variable = { cannibalism_origin_operation_duration_bonus = constant:cannibalism_warlord_contract.operation_duration_small }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_supply_targeting_open }
+		add_to_temp_variable = { cannibalism_origin_operation_duration_bonus = constant:cannibalism_warlord_contract.operation_duration_small }
+		add_to_temp_variable = { cannibalism_origin_operation_larder_recovery = constant:cannibalism_warlord_contract.operation_larder_recovery_small }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_predatory_corridors_open }
+		add_to_temp_variable = { cannibalism_origin_operation_duration_bonus = constant:cannibalism_warlord_contract.operation_duration_medium }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_hidden_anchorages_open }
+		add_to_temp_variable = { cannibalism_origin_operation_duration_bonus = constant:cannibalism_warlord_contract.operation_duration_medium }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_landing_operations_open }
+		add_to_temp_variable = { cannibalism_origin_operation_duration_bonus = constant:cannibalism_warlord_contract.operation_duration_small }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_island_endgame_open }
+		add_to_temp_variable = { cannibalism_origin_operation_duration_bonus = constant:cannibalism_warlord_contract.operation_duration_large }
+		add_to_temp_variable = { cannibalism_origin_operation_convoy_recovery = constant:cannibalism_warlord_contract.island_convoy_recovery }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_tunnel_operations_open }
+		add_to_temp_variable = { cannibalism_origin_operation_duration_bonus = constant:cannibalism_warlord_contract.operation_duration_medium }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_relief_ambush_open }
+		add_to_temp_variable = { cannibalism_origin_operation_duration_bonus = constant:cannibalism_warlord_contract.operation_duration_medium }
+		add_to_temp_variable = { cannibalism_origin_operation_larder_recovery = constant:cannibalism_warlord_contract.operation_larder_recovery_medium }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_siege_endgame_open }
+		add_to_temp_variable = { cannibalism_origin_operation_duration_bonus = constant:cannibalism_warlord_contract.operation_duration_large }
+		add_to_temp_variable = { cannibalism_origin_operation_support_recovery = constant:cannibalism_warlord_contract.operation_support_recovery }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_depot_raids_open }
+		add_to_temp_variable = { cannibalism_origin_operation_larder_recovery = constant:cannibalism_warlord_contract.operation_larder_recovery_medium }
+		add_to_temp_variable = { cannibalism_origin_operation_truck_recovery = constant:cannibalism_warlord_contract.march_truck_recovery }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_rail_sabotage_open }
+		add_to_temp_variable = { cannibalism_origin_operation_duration_bonus = constant:cannibalism_warlord_contract.operation_duration_medium }
+		add_to_temp_variable = { cannibalism_origin_operation_train_recovery = constant:cannibalism_warlord_contract.march_train_recovery }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_march_endgame_open }
+		add_to_temp_variable = { cannibalism_origin_operation_duration_bonus = constant:cannibalism_warlord_contract.operation_duration_large }
+	}
+	if = {
+		limit = { has_country_flag = cannibalism_warlord_prison_depot_raids_open }
+		add_to_temp_variable = { cannibalism_origin_operation_larder_recovery = constant:cannibalism_warlord_contract.operation_larder_recovery_medium }
+		add_to_temp_variable = { cannibalism_origin_operation_infantry_recovery = constant:cannibalism_warlord_contract.workshop_recovery_infantry }
+	}
+}
+
+cannibalism_apply_warlord_origin_operation_recovery = {
+	if = {
+		limit = { check_variable = { cannibalism_origin_operation_larder_recovery > 0 } }
+		add_to_variable = { cannibalism_larder = cannibalism_origin_operation_larder_recovery }
+		clamp_variable = { var = cannibalism_larder min = constant:cannibalism_consumption.larder_min max = constant:cannibalism_consumption.larder_max }
+	}
+	if = {
+		limit = { check_variable = { cannibalism_origin_operation_infantry_recovery > 0 } }
+		add_equipment_to_stockpile = { type = infantry_equipment amount = cannibalism_origin_operation_infantry_recovery }
+	}
+	if = {
+		limit = { check_variable = { cannibalism_origin_operation_support_recovery > 0 } }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = cannibalism_origin_operation_support_recovery }
+	}
+	if = {
+		limit = { check_variable = { cannibalism_origin_operation_convoy_recovery > 0 } }
+		add_equipment_to_stockpile = { type = convoy_1 amount = cannibalism_origin_operation_convoy_recovery }
+	}
+	if = {
+		limit = { check_variable = { cannibalism_origin_operation_truck_recovery > 0 } }
+		add_equipment_to_stockpile = { type = motorized_equipment_1 amount = cannibalism_origin_operation_truck_recovery }
+	}
+	if = {
+		limit = { check_variable = { cannibalism_origin_operation_train_recovery > 0 } }
+		add_equipment_to_stockpile = { type = train_equipment_1 amount = cannibalism_origin_operation_train_recovery }
+	}
+}
+
+cannibalism_record_warlord_major_victory_harvest = {
+	if = {
+		limit = {
+			is_cannibalism_warlord_country = yes
+			has_country_flag = cannibalism_warlord_battlefield_harvest_open
+			has_event_target = cannibalism_defeated_country
+			event_target:cannibalism_defeated_country = { exists = yes }
+			NOT = {
+				is_in_array = {
+					array = cannibalism_warlord_harvested_countries
+					value = event_target:cannibalism_defeated_country
+				}
+			}
+		}
+		add_to_array = {
+			array = cannibalism_warlord_harvested_countries
+			value = event_target:cannibalism_defeated_country
+		}
+		add_to_variable = { cannibalism_larder = constant:cannibalism_warlord_contract.major_victory_larder_gain }
+		set_temp_variable = { cannibalism_warlord_major_victory_infantry = constant:cannibalism_warlord_contract.major_victory_infantry_recovery }
+		set_temp_variable = { cannibalism_warlord_major_victory_support = constant:cannibalism_warlord_contract.major_victory_support_recovery }
+		add_equipment_to_stockpile = { type = infantry_equipment amount = cannibalism_warlord_major_victory_infantry }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = cannibalism_warlord_major_victory_support }
+		add_to_variable = { cannibalism_warlord_major_victory_count = constant:cannibalism_warlord_contract.major_victory_count_increment }
+		clamp_variable = { var = cannibalism_larder min = constant:cannibalism_consumption.larder_min max = constant:cannibalism_consumption.larder_max }
+	}
+}
+
+cannibalism_begin_island_convoy_ambush_operation = {
+	if = {
+		limit = { cannibalism_warlord_can_pay_island_operation_cost = yes }
+		cannibalism_prepare_warlord_origin_operation_contract = yes
+		set_temp_variable = { cannibalism_warlord_operation_larder_cost = constant:cannibalism_warlord_decision.island_operation_larder_cost }
+		set_temp_variable = { cannibalism_warlord_operation_command_spend = constant:cannibalism_warlord_decision.island_operation_command_spend }
+		cannibalism_pay_warlord_operation_cost = yes
+		set_temp_variable = { cannibalism_origin_operation_days = constant:cannibalism_warlord_decision.island_operation_days }
+		add_to_temp_variable = { cannibalism_origin_operation_days = cannibalism_origin_operation_duration_bonus }
+		add_dynamic_modifier = { modifier = cannibalism_island_convoy_ambush_operation days = cannibalism_origin_operation_days }
+		cannibalism_apply_warlord_origin_operation_recovery = yes
+	}
+}
+
+cannibalism_begin_siege_relief_ambush_operation = {
+	if = {
+		limit = { cannibalism_warlord_can_pay_siege_operation_cost = yes }
+		cannibalism_prepare_warlord_origin_operation_contract = yes
+		set_temp_variable = { cannibalism_warlord_operation_larder_cost = constant:cannibalism_warlord_decision.siege_operation_larder_cost }
+		set_temp_variable = { cannibalism_warlord_operation_command_spend = constant:cannibalism_warlord_decision.siege_operation_command_spend }
+		cannibalism_pay_warlord_operation_cost = yes
+		set_temp_variable = { cannibalism_origin_operation_days = constant:cannibalism_warlord_decision.siege_operation_days }
+		add_to_temp_variable = { cannibalism_origin_operation_days = cannibalism_origin_operation_duration_bonus }
+		add_dynamic_modifier = { modifier = cannibalism_siege_relief_ambush_operation days = cannibalism_origin_operation_days }
+		cannibalism_apply_warlord_origin_operation_recovery = yes
+	}
+}
+
+cannibalism_begin_march_supply_raid_operation = {
+	if = {
+		limit = { cannibalism_warlord_can_pay_march_operation_cost = yes }
+		cannibalism_prepare_warlord_origin_operation_contract = yes
+		set_temp_variable = { cannibalism_warlord_operation_larder_cost = constant:cannibalism_warlord_decision.march_operation_larder_cost }
+		set_temp_variable = { cannibalism_warlord_operation_command_spend = constant:cannibalism_warlord_decision.march_operation_command_spend }
+		cannibalism_pay_warlord_operation_cost = yes
+		set_temp_variable = { cannibalism_origin_operation_days = constant:cannibalism_warlord_decision.march_operation_days }
+		add_to_temp_variable = { cannibalism_origin_operation_days = cannibalism_origin_operation_duration_bonus }
+		add_dynamic_modifier = { modifier = cannibalism_march_supply_raid_operation days = cannibalism_origin_operation_days }
+		cannibalism_apply_warlord_origin_operation_recovery = yes
+	}
+}
+
+cannibalism_infiltrate_selected_prisoner_transfer = {
+	set_temp_variable = { cannibalism_prison_transfer_result = 0 }
+	set_temp_variable = { cannibalism_prison_transfer_source_found = 0 }
+	if = {
+		limit = {
+			has_event_target = cannibalism_spread_target_state
+			cannibalism_warlord_can_pay_prison_operation_cost = yes
+			event_target:cannibalism_spread_target_state = { cannibalism_state_has_prisoner_transfer_route_from_root = yes }
+		}
+		save_event_target_as = cannibalism_spread_source_country
+		event_target:cannibalism_spread_target_state = {
+			CONTROLLER = { save_event_target_as = cannibalism_spread_target_country }
+			random_neighbor_state = {
+				limit = { is_controlled_by = ROOT }
+				save_event_target_as = cannibalism_spread_source_state
+				set_temp_variable = { cannibalism_prison_transfer_source_found = 1 }
+			}
+		}
+		if = {
+			limit = { check_variable = { cannibalism_prison_transfer_source_found > 0 } }
+			cannibalism_prepare_warlord_origin_operation_contract = yes
+			set_temp_variable = { cannibalism_spread_route = constant:cannibalism_spread_route.prisoner_transfer }
+			cannibalism_enqueue_spread_entry = yes
+			if = {
+				limit = { check_variable = { cannibalism_spread_enqueue_result > 0 } }
+				set_temp_variable = { cannibalism_warlord_operation_larder_cost = constant:cannibalism_warlord_decision.prison_operation_larder_cost }
+				set_temp_variable = { cannibalism_warlord_operation_command_spend = constant:cannibalism_warlord_decision.prison_operation_command_spend }
+				cannibalism_pay_warlord_operation_cost = yes
+				cannibalism_apply_warlord_origin_operation_recovery = yes
+				if = {
+					limit = { has_country_flag = cannibalism_warlord_transfer_infiltration_open }
+					add_to_variable = { global.cannibalism_network_reach = constant:cannibalism_warlord_contract.operation_network_reach_gain }
+				}
+				if = {
+					limit = { has_country_flag = cannibalism_warlord_prison_endgame_open }
+					add_to_variable = { global.cannibalism_network_reach = constant:cannibalism_warlord_contract.operation_network_reach_gain }
+					add_to_variable = { cannibalism_network_alignment = constant:cannibalism_warlord_contract.operation_alignment_gain_small }
+				}
+				if = {
+					limit = {
+						has_country_flag = cannibalism_warlord_officer_corruption_open
+						has_event_target = cannibalism_spread_target_country
+					}
+					event_target:cannibalism_spread_target_country = {
+						add_stability = constant:cannibalism_warlord_contract.officer_corruption_stability
+					}
+				}
+				clamp_variable = { var = global.cannibalism_network_reach min = constant:cannibalism_network.min max = constant:cannibalism_network.max }
+				clamp_variable = { var = cannibalism_network_alignment min = constant:cannibalism_consumption.alignment_min max = constant:cannibalism_consumption.alignment_max }
+				set_temp_variable = { cannibalism_prison_transfer_result = 1 }
+			}
+		}
+	}
+}

@@ -1,0 +1,436 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 014 FOREIGN-SPREAD TRIGGERS
+# ============================================================================
+# Validates the nine-array spread ledger, the exact per-state inbound identity,
+# physical route provenance, and click-time screening affordability. The queue
+# is authoritative; flags and counts are only identity-checked caches.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Queue shape and row-status predicates
+# ---------------------------------------------------------------------------
+
+cannibalism_spread_queue_arrays_are_aligned = {
+	check_variable = {
+		var = global.cannibalism_spread_queue_source_country_entries^num
+		value = global.cannibalism_spread_queue_id_entries^num
+		compare = equals
+	}
+	check_variable = {
+		var = global.cannibalism_spread_queue_source_state_entries^num
+		value = global.cannibalism_spread_queue_id_entries^num
+		compare = equals
+	}
+	check_variable = {
+		var = global.cannibalism_spread_queue_target_country_entries^num
+		value = global.cannibalism_spread_queue_id_entries^num
+		compare = equals
+	}
+	check_variable = {
+		var = global.cannibalism_spread_queue_target_state_entries^num
+		value = global.cannibalism_spread_queue_id_entries^num
+		compare = equals
+	}
+	check_variable = {
+		var = global.cannibalism_spread_queue_route_entries^num
+		value = global.cannibalism_spread_queue_id_entries^num
+		compare = equals
+	}
+	check_variable = {
+		var = global.cannibalism_spread_queue_source_generation_entries^num
+		value = global.cannibalism_spread_queue_id_entries^num
+		compare = equals
+	}
+	check_variable = {
+		var = global.cannibalism_spread_queue_due_date_entries^num
+		value = global.cannibalism_spread_queue_id_entries^num
+		compare = equals
+	}
+	check_variable = {
+		var = global.cannibalism_spread_queue_status_entries^num
+		value = global.cannibalism_spread_queue_id_entries^num
+		compare = equals
+	}
+}
+
+cannibalism_loaded_spread_status_is_live = {
+	OR = {
+		check_variable = { global.cannibalism_spread_queue_status_entries^cannibalism_spread_queue_index = constant:cannibalism_spread_status.queued }
+		check_variable = { global.cannibalism_spread_queue_status_entries^cannibalism_spread_queue_index = constant:cannibalism_spread_status.in_transit }
+	}
+}
+
+cannibalism_spread_route_value_is_valid = {
+	check_variable = {
+		var = cannibalism_spread_route
+		value = constant:cannibalism_spread_route.none
+		compare = greater_than
+	}
+	check_variable = {
+		var = cannibalism_spread_route
+		value = constant:cannibalism_spread_route.survivor
+		compare = less_than_or_equals
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Source, target, and route context
+# ---------------------------------------------------------------------------
+
+cannibalism_spread_source_country_is_valid = {
+	exists = yes
+	OR = {
+		is_cannibalism_active_country = yes
+		AND = {
+			has_country_flag = cannibalism_local_victory
+			check_variable = { cannibalism_spread_route = constant:cannibalism_spread_route.survivor }
+		}
+	}
+	has_variable = cannibalism_actor_generation
+	NOT = { has_capitulated = yes }
+	NOT = { has_country_flag = cannibalism_country_cleanup_complete }
+	NOT = { has_global_flag = cannibalism_cleanup_complete }
+}
+
+cannibalism_state_is_spread_recovery_blocked = {
+	has_state_flag = cannibalism_recovery_active
+}
+
+cannibalism_spread_target_country_is_valid = {
+	exists = yes
+	NOT = { has_capitulated = yes }
+	NOT = { is_cannibalism_country = yes }
+	NOT = { cannibalism_is_ineligible_special_country = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { has_country_flag = cannibalism_country_cleanup_complete }
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = cannibalism_cleanup_complete }
+}
+
+cannibalism_spread_target_state_is_valid = {
+	has_event_target = cannibalism_spread_target_country
+	is_controlled_by = event_target:cannibalism_spread_target_country
+	impassable = no
+	NOT = { cannibalism_state_is_unusable_larder = yes }
+	NOT = { cannibalism_state_is_spread_recovery_blocked = yes }
+	NOT = { has_state_flag = cannibalism_spread_inbound_active }
+	NOT = { has_state_flag = cannibalism_spread_warning_event_open }
+}
+
+cannibalism_spread_source_state_matches_route = {
+	has_event_target = cannibalism_spread_source_country
+	impassable = no
+	NOT = { cannibalism_state_is_unusable_larder = yes }
+	OR = {
+		AND = {
+			check_variable = { cannibalism_spread_route = constant:cannibalism_spread_route.retreat }
+			is_controlled_by = event_target:cannibalism_spread_source_country
+			has_state_flag = cannibalism_active_node
+			NOT = { cannibalism_state_is_spread_recovery_blocked = yes }
+		}
+		AND = {
+			check_variable = { cannibalism_spread_route = constant:cannibalism_spread_route.prisoner_transfer }
+			is_controlled_by = event_target:cannibalism_spread_source_country
+		}
+		AND = {
+			check_variable = { cannibalism_spread_route = constant:cannibalism_spread_route.convoy }
+			is_controlled_by = event_target:cannibalism_spread_source_country
+			has_state_flag = cannibalism_active_node
+			OR = {
+				check_variable = { cannibalism_node_type = constant:cannibalism_node_type.port }
+				check_variable = { cannibalism_node_type = constant:cannibalism_node_type.island_commune }
+			}
+			is_coastal = yes
+			naval_base > 0
+			NOT = { cannibalism_state_is_spread_recovery_blocked = yes }
+		}
+		AND = {
+			check_variable = { cannibalism_spread_route = constant:cannibalism_spread_route.volunteer_return }
+			is_controlled_by = event_target:cannibalism_spread_source_country
+			has_state_flag = cannibalism_active_node
+			NOT = { cannibalism_state_is_spread_recovery_blocked = yes }
+		}
+		AND = {
+			check_variable = { cannibalism_spread_route = constant:cannibalism_spread_route.occupation_turnover }
+			has_state_flag = cannibalism_recovery_active
+		}
+		AND = {
+			check_variable = { cannibalism_spread_route = constant:cannibalism_spread_route.deliberate_seed }
+			is_controlled_by = event_target:cannibalism_spread_source_country
+		}
+		AND = {
+			check_variable = { cannibalism_spread_route = constant:cannibalism_spread_route.conquest }
+			is_controlled_by = event_target:cannibalism_spread_source_country
+		}
+		AND = {
+			check_variable = { cannibalism_spread_route = constant:cannibalism_spread_route.survivor }
+			is_controlled_by = event_target:cannibalism_spread_source_country
+		}
+	}
+}
+
+cannibalism_spread_context_is_valid = {
+	has_global_flag = cannibalism_evolution_ii_active
+	NOT = { has_global_flag = cannibalism_global_victory }
+	NOT = { has_global_flag = cannibalism_cleanup_complete }
+	has_event_target = cannibalism_spread_source_country
+	has_event_target = cannibalism_spread_source_state
+	has_event_target = cannibalism_spread_target_country
+	has_event_target = cannibalism_spread_target_state
+	cannibalism_spread_route_value_is_valid = yes
+	event_target:cannibalism_spread_source_country = {
+		cannibalism_spread_source_country_is_valid = yes
+		NOT = { tag = event_target:cannibalism_spread_target_country }
+	}
+	event_target:cannibalism_spread_target_country = {
+		cannibalism_spread_target_country_is_valid = yes
+	}
+	event_target:cannibalism_spread_source_state = {
+		cannibalism_spread_source_state_matches_route = yes
+	}
+	event_target:cannibalism_spread_target_state = {
+		cannibalism_spread_target_state_is_valid = yes
+	}
+}
+
+cannibalism_state_is_automatic_border_spread_source = {
+	is_controlled_by = ROOT
+	has_state_flag = cannibalism_active_node
+	NOT = { cannibalism_state_is_spread_recovery_blocked = yes }
+	any_neighbor_state = {
+		cannibalism_state_is_automatic_border_spread_target = yes
+	}
+}
+
+cannibalism_state_is_automatic_border_spread_target = {
+	CONTROLLER = {
+		cannibalism_spread_target_country_is_valid = yes
+		NOT = { tag = ROOT }
+		has_war_with = ROOT
+	}
+	impassable = no
+	NOT = { cannibalism_state_is_unusable_larder = yes }
+	NOT = { cannibalism_state_is_spread_recovery_blocked = yes }
+	NOT = { has_state_flag = cannibalism_spread_inbound_active }
+	NOT = { has_state_flag = cannibalism_spread_warning_event_open }
+}
+
+# The row loader sets four context-loaded temp flags so an invalid scope-array
+# entry cannot reuse a regular event target left by an earlier row.
+cannibalism_loaded_spread_entry_is_valid = {
+	check_variable = { cannibalism_spread_source_country_context_loaded > 0 }
+	check_variable = { cannibalism_spread_source_state_context_loaded > 0 }
+	check_variable = { cannibalism_spread_target_country_context_loaded > 0 }
+	check_variable = { cannibalism_spread_target_state_context_loaded > 0 }
+	check_variable = { cannibalism_expected_spread_id > 0 }
+	cannibalism_loaded_spread_status_is_live = yes
+	cannibalism_spread_route_value_is_valid = yes
+	event_target:cannibalism_spread_source_country = {
+		cannibalism_spread_source_country_is_valid = yes
+		check_variable = {
+			var = cannibalism_actor_generation
+			value = cannibalism_spread_source_generation
+			compare = equals
+		}
+	}
+	event_target:cannibalism_spread_source_state = {
+		cannibalism_spread_source_state_matches_route = yes
+	}
+	event_target:cannibalism_spread_target_country = {
+		cannibalism_spread_target_country_is_valid = yes
+	}
+	event_target:cannibalism_spread_target_state = {
+		is_controlled_by = event_target:cannibalism_spread_target_country
+		has_state_flag = cannibalism_spread_inbound_active
+		has_variable = cannibalism_inbound_spread_id
+		has_variable = cannibalism_inbound_spread_route
+		has_variable = cannibalism_inbound_spread_source_country
+		has_variable = cannibalism_inbound_spread_source_generation
+		check_variable = {
+			var = cannibalism_inbound_spread_id
+			value = cannibalism_expected_spread_id
+			compare = equals
+		}
+		check_variable = {
+			var = cannibalism_inbound_spread_route
+			value = cannibalism_spread_route
+			compare = equals
+		}
+		check_variable = {
+			var = cannibalism_inbound_spread_source_country
+			value = event_target:cannibalism_spread_source_country
+			compare = equals
+		}
+		check_variable = {
+			var = cannibalism_inbound_spread_source_generation
+			value = cannibalism_spread_source_generation
+			compare = equals
+		}
+		impassable = no
+		NOT = { cannibalism_state_is_unusable_larder = yes }
+		NOT = { cannibalism_state_is_spread_recovery_blocked = yes }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Targeted counterplay
+# ---------------------------------------------------------------------------
+
+cannibalism_inbound_state_can_be_screened = {
+	is_controlled_by = ROOT
+	has_state_flag = cannibalism_spread_inbound_active
+	has_variable = cannibalism_inbound_spread_id
+	check_variable = { cannibalism_inbound_spread_id > 0 }
+	NOT = { has_state_flag = cannibalism_spread_screening_active }
+	NOT = { cannibalism_state_is_spread_recovery_blocked = yes }
+}
+
+cannibalism_screening_state_matches_expected_spread = {
+	is_controlled_by = ROOT
+	has_state_flag = cannibalism_spread_inbound_active
+	has_variable = cannibalism_inbound_spread_id
+	has_variable = cannibalism_inbound_spread_route
+	has_variable = cannibalism_inbound_spread_source_country
+	has_variable = cannibalism_inbound_spread_source_generation
+	check_variable = {
+		var = cannibalism_inbound_spread_id
+		value = cannibalism_expected_spread_id
+		compare = equals
+	}
+	NOT = { has_state_flag = cannibalism_spread_screening_active }
+	NOT = { cannibalism_state_is_spread_recovery_blocked = yes }
+	OR = {
+		NOT = { has_state_flag = cannibalism_spread_warning_event_open }
+		AND = {
+			has_variable = cannibalism_warning_expected_spread_id
+			check_variable = {
+				var = cannibalism_warning_expected_spread_id
+				value = cannibalism_inbound_spread_id
+				compare = equals
+			}
+		}
+	}
+}
+
+cannibalism_inbound_route_response_is_visible = {
+	exists = yes
+	NOT = { is_cannibalism_country = yes }
+	NOT = { cannibalism_is_ineligible_special_country = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	any_controlled_state = {
+		cannibalism_inbound_state_can_be_screened = yes
+	}
+}
+
+cannibalism_can_pay_humane_route_screening_cost = {
+	cannibalism_inbound_route_response_is_visible = yes
+	check_variable = {
+		var = manpower
+		value = constant:cannibalism_spread.humane_screening_manpower
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = command_power
+		value = constant:cannibalism_spread.humane_screening_command
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = num_equipment@support_equipment
+		value = constant:cannibalism_spread.humane_screening_support
+		compare = greater_than_or_equals
+	}
+}
+
+cannibalism_can_pay_hard_route_screening_cost = {
+	cannibalism_inbound_route_response_is_visible = yes
+	check_variable = {
+		var = manpower
+		value = constant:cannibalism_spread.hard_screening_manpower
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = command_power
+		value = constant:cannibalism_spread.hard_screening_command
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = num_equipment@support_equipment
+		value = constant:cannibalism_spread.hard_screening_support
+		compare = greater_than_or_equals
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Deliberate physical operations
+# ---------------------------------------------------------------------------
+
+cannibalism_state_has_deliberate_seed_route_from_root = {
+	has_global_flag = cannibalism_evolution_ii_active
+	ROOT = {
+		is_cannibalism_country = yes
+		has_country_flag = cannibalism_warlord_foreign_cell_open
+		NOT = { has_capitulated = yes }
+	}
+	CONTROLLER = {
+		cannibalism_spread_target_country_is_valid = yes
+		NOT = { tag = ROOT }
+	}
+	impassable = no
+	NOT = { cannibalism_state_is_unusable_larder = yes }
+	NOT = { cannibalism_state_is_spread_recovery_blocked = yes }
+	NOT = { has_state_flag = cannibalism_spread_inbound_active }
+	NOT = { has_state_flag = cannibalism_spread_warning_event_open }
+	NOT = { cannibalism_state_has_active_cell = yes }
+	OR = {
+		any_neighbor_state = { is_controlled_by = ROOT impassable = no }
+		AND = {
+			is_coastal = yes
+			naval_base > 0
+			ROOT = {
+				any_controlled_state = { is_coastal = yes naval_base > 0 impassable = no }
+				check_variable = {
+					var = num_equipment@convoy
+					value = constant:cannibalism_spread.seed_convoy_cost
+					compare = greater_than_or_equals
+				}
+			}
+		}
+	}
+}
+
+cannibalism_state_has_prisoner_transfer_route_from_root = {
+	has_global_flag = cannibalism_evolution_ii_active
+	ROOT = { cannibalism_warlord_can_pay_prison_operation_cost = yes }
+	CONTROLLER = {
+		cannibalism_spread_target_country_is_valid = yes
+		NOT = { tag = ROOT }
+	}
+	impassable = no
+	NOT = { cannibalism_state_is_unusable_larder = yes }
+	NOT = { cannibalism_state_is_spread_recovery_blocked = yes }
+	NOT = { has_state_flag = cannibalism_spread_inbound_active }
+	NOT = { has_state_flag = cannibalism_spread_warning_event_open }
+	NOT = { cannibalism_state_has_active_cell = yes }
+	any_neighbor_state = { is_controlled_by = ROOT impassable = no }
+}
+
+cannibalism_warlord_can_pay_deliberate_seed_cost = {
+	cannibalism_warlord_command_is_open = yes
+	has_global_flag = cannibalism_evolution_ii_active
+	has_country_flag = cannibalism_warlord_foreign_cell_open
+	check_variable = {
+		var = cannibalism_larder
+		value = constant:cannibalism_spread.seed_larder_cost
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = command_power
+		value = constant:cannibalism_spread.seed_command_cost
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = num_equipment@support_equipment
+		value = constant:cannibalism_spread.seed_support_cost
+		compare = greater_than_or_equals
+	}
+}

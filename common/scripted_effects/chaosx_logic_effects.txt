@@ -163,6 +163,7 @@ initialize_event_categories = {
     add_to_array = { global.fire_once_events = 10 }  # DEATH
     add_to_array = { global.fire_once_events = 11 }  # SECRET ALLIANCE
     add_to_array = { global.fire_once_events = 12 }  # AFRICA IS ONE PLACEHOLDER
+	add_to_array = { global.fire_once_events = constant:cannibalism_event.id }  # CANNIBALISM
     add_to_array = { global.fire_once_events = 15 }  # UTOPIAN MANIFESTO
     add_to_array = { global.fire_once_events = 16 }  # BRILLIANT SCIENTIST
     add_to_array = { global.fire_once_events = 20 }  # BLACK DEATH
@@ -497,8 +498,8 @@ evaluate_random_event_active_pool_candidate = {
 	# Input: temp variable event_id
 	# Output: temp variable event_active_pool_candidate_is_valid
 	set_temp_variable = { event_active_pool_candidate_is_valid = 1 }
-	get_event_type = yes
 	set_temp_variable = { event_type = constant:event_system_event_type.unknown }
+	get_event_type = yes
 
 	if = {
 		limit = {
@@ -528,6 +529,10 @@ evaluate_random_event_active_pool_candidate = {
 				AND = {
 					check_variable = { event_id = constant:secret_alliance_event.id }
 					NOT = { secret_alliance_automatic_event_is_available = yes }
+				}
+				AND = {
+					check_variable = { event_id = constant:cannibalism_event.id }
+					NOT = { cannibalism_automatic_event_is_available = yes }
 				}
 				AND = {
 					check_variable = { event_id = constant:random_faction_event.id }
@@ -741,6 +746,7 @@ on_major_event_global_pacing_update = {
 }
 
 on_event_cluster_global_pacing_update = {
+	set_temp_variable = { event_cluster_type_value = constant:event_cluster_type.repeatable }
 	get_event_cluster_type = yes
 	if = {
 		limit = {
@@ -750,7 +756,6 @@ on_event_cluster_global_pacing_update = {
 				compare = equals
 			}
 		}
-	set_temp_variable = { event_cluster_type_value = constant:event_cluster_type.repeatable }
 		on_major_event_global_pacing_update = yes
 	}
 	else = {

@@ -18,7 +18,7 @@ Trigger:
 
 Tone:
 
-- controlled, intelligent, predatory, and military
+- strategically intelligent, visibly unhinged, predatory, violent, and military
 
 Title direction:
 
@@ -42,7 +42,10 @@ Button remark direction:
 
 Image:
 
-- generated Hannibal centered among assembled warlords, explicit gore
+- generated Hannibal Lecter directing a convergence already smashing through barricades while crazed cannibals and warlords chase fleeing civilians
+- the commander's gaunt bald, elongated, asymmetrical, pallid, torn-eared, feral face and ruined scavenged clothing must match the reveal-gated portrait identity without copying an actor
+- explicit fictional blood and gore, strong diagonal motion, multiple action depths, and a camera angle distinct from every other package
+- reject a static council, assembled-warrior lineup, map room, speech, throne pose, or calm portrait
 
 Audio:
 
@@ -73,7 +76,9 @@ Button remark direction:
 
 Image:
 
-- generated ordinary Hannibal directing a global army across feeding-state ruins
+- generated ordinary Hannibal Lecter directing a capital overrun as cannibals sprint, climb, breach, and pursue civilians through feeding-state ruins
+- preserve the same revealed portrait identity and ruined scavenged command clothing rather than substituting a composed grey-haired officer or screen likeness
+- the overrun must read instantly at 457 by 328; reject a posed army or distant landscape tableau
 
 Audio:
 
@@ -105,7 +110,9 @@ Button remark direction:
 
 Image:
 
-- generated transformed Hannibal in frozen ruins with cannibal and Wendigo armies, explicit body horror
+- generated transformed Hannibal Lecter lunging at the head of an inhuman frozen pack that breaks through a barricade after fleeing civilians and soldiers
+- retain recognizable continuity with the ordinary elongated face, scars, eyes, and damaged teeth beneath the transformed anatomy
+- explicit fictional body horror and cold gore, no borrowed living cultural or sacred motif, and no posed monster lineup or snow-filtered ordinary composition
 
 Audio:
 
@@ -124,7 +131,7 @@ Trigger:
 
 Tone:
 
-- survival, identification, burial, duty, and irreversible cost
+- kinetic rescue, survival, identification, duty, and irreversible cost
 
 Quote direction:
 
@@ -136,7 +143,8 @@ Button remark direction:
 
 Image:
 
-- generated liberated capital with recovery teams, prisoners, burial work, and ruined Host symbols
+- generated coalition breakthrough into an active feeding compound, cages being opened, civilians and prisoners escaping, recovery teams moving in, and the last cannibal defenders being destroyed
+- the emotional center is rescue in motion; reject a calm burial lineup, passive aftermath, or posed victory photograph
 
 Audio:
 

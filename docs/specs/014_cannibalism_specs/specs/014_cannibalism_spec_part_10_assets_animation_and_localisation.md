@@ -85,42 +85,48 @@ Target size: 457 by 328.
 
 Use only when the reveal meets super-event scale.
 
-- Hannibal centered among kneeling or assembled warlords
-- network maps, prisoners, banners, and military columns in the background
-- explicit gore
-- ordinary human form
+- Hannibal Lecter visibly commands a violent convergence in progress
+- feral warlords and cannibal formations smash through a barricade and chase fleeing civilians across the frame
+- the composition uses running figures, lunging attackers, overturned vehicles, active gunfire, and immediate foreground danger rather than an assembled council tableau
+- explicit moving gore and ordinary human-origin horror
 
 ### Ordinary world-end
 
-- Hannibal directing a global cannibal army
-- feeding-state landscape and collapsing conventional army
-- distinct from reveal image
-- explicit mass horror
+- Hannibal Lecter directs a global cannibal army while it overruns a capital in motion
+- crazed attackers sprint, climb vehicles, breach defensive lines, and pursue fleeing civilians and soldiers
+- the feeding-state landscape and collapsing conventional army are visible inside the action
+- the composition is distinct from the reveal image and uses explicit mass horror
 
 ### Wendigo world-end
 
-- transformed Wendigo Hannibal centered in frozen ruins
-- Wendigo and cannibal forces together
-- cold body horror and gore
-- entirely separate source art
+- transformed Wendigo Hannibal Lecter leads the charge through shattered frozen barricades
+- visibly inhuman Wendigo and cannibal packs sprint after fleeing civilians and soldiers
+- asymmetrical predatory motion, cold body horror, flying debris, and active gore dominate the scene
+- entirely separate source art with no borrowed sacred or living Indigenous motifs
 
 ### Global defeat aftermath
 
-- survivors, recovery teams, prisoners, ruined Host banners, and burial work
-- cost and memory rather than clean triumph
-- visible gore remains appropriate
+- the last cannibal formations are destroyed during an active coalition breakthrough
+- rescue teams tear open cages while civilians run through the breach and crazed attackers fight or pursue them
+- ruined Host banners, gunfire, collapsing barricades, and visible gore preserve the cost of victory
+- the image is kinetic final-battle action rather than a calm cleanup or burial tableau
+
+All four super-event scenes require obvious direction of movement, foreground and background action, at least one visible pursuit or rescue beat, and a different camera angle and action silhouette. Static leaders addressing crowds, standing over maps, or posing before passive armies are rejected.
 
 ## Generic warlord portraits
 
 Target size: 156 by 210.
 
-Minimum production:
+Required production:
 
-- two Island Host candidates
-- two Siege Commune candidates
-- two March Host candidates
-- two Prison Host candidates
-- four optional regional alternatives for replay variety
+- eight reusable slot identities, two for each of the four origin archetypes
+- seven visual-region variants for every slot: Europe, Asia, Africa, Middle East, North America, South America, and Oceania
+- fifty-six distinct final portraits in total
+- the eight unsuffixed runtime paths serve as the European variants and are independently regenerated with the rest of the matrix
+- every submitted warlord retains his exact slot-region portrait after unification
+
+States outside those seven supported HOI4 continent scopes cannot form a
+warlord country. There is no generic portrait fallback.
 
 Every portrait:
 
@@ -129,9 +135,13 @@ Every portrait:
 - blood and gore
 - rough invented hides and raw cloth
 - scavenged period military pieces
-- strong identity at portrait size
+- feral, bloodshot, asymmetrical, visibly crazed identity at portrait size
+- irregular stained teeth, torn lips, severe scars, or other non-supernatural human alteration
+- a unique pose, prop, expression, clothing silhouette, crop, and background
 - no Hannibal resemblance
-- no supernatural elements
+- no literal supernatural anatomy
+
+At least one warlord holds a human skull in one hand and licks blood from it. Other portraits use distinct active behaviors such as gnawing a bone, biting a bloodied glove, laughing through a damaged jaw, gripping a ration cleaver, clutching stolen dog tags, or dragging a torn ration sack. No behavior, prop, face, or pose is reused across the fifty-six portraits.
 
 The manifest records apparent gender presentation and requires male regional name pools.
 
@@ -140,10 +150,10 @@ The manifest records apparent gender presentation and requires male regional nam
 ### Ordinary static portrait
 
 - final 156 by 210 DDS
-- calculating expression
+- gaunt, pallid, bloodshot, feral, visibly crazed expression
 - unique mantle and scars
-- gore
-- no Carthaginian symbolism
+- severe wet gore, irregular stained teeth, torn lips, and human-origin facial damage
+- Hannibal Lecter without a specific screen actor likeness
 
 ### Ordinary animated portrait
 
@@ -153,13 +163,14 @@ The manifest records apparent gender presentation and requires male regional nam
 - static fallback
 - review GIF
 - contact sheet
-- slow breathing, eye movement, shadow, and blood progression drawn per frame
+- a real skull-handling action beat in which Hannibal Lecter raises a human skull and progressively licks blood from it
+- jaw, tongue, fingers, eyes, wet gore, posture, and expression change through separately generated source frames
 
 ### Wendigo static portrait
 
 - transformed Hannibal
 - maintain facial identity
-- stronger gore and cold body horror
+- dramatically less-human, distorted, frenzied anatomy with stronger gore and cold body horror
 - no borrowed cultural regalia
 
 ### Wendigo animated portrait
@@ -170,7 +181,7 @@ The manifest records apparent gender presentation and requires male regional nam
 - static fallback
 - review GIF
 - contact sheet
-- frost, breath, flesh, and shadow progression drawn per frame
+- a distinct predatory action beat with asymmetrical jaw, limbs, eyes, frost, breath, flesh, gore, and shadow progression drawn in separate source frames
 
 ## Flags
 

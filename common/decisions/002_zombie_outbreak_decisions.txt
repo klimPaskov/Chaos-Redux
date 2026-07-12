@@ -385,7 +385,13 @@ chaosx_weaponized_zombie_cure_category = {
 	}
 	develop_weaponized_zombie_wendigo_counterstrain = {
 		icon = GFX_decision_generic_research
-		visible = { any_country = { is_live_weaponized_zombie_profile_country = yes has_country_flag = weaponized_zombie_type_wendigo } }
+		visible = {
+			any_country = {
+				is_live_weaponized_zombie_profile_country = yes
+				has_country_flag = weaponized_zombie_type_wendigo
+				NOT = { has_country_flag = cannibalism_wendigo_transformation_locked }
+			}
+		}
 		available = { NOT = { has_idea = searching_for_cure } }
 		cost = constant:triggerable_scenario_cure.counterstrain_cost
 		days_remove = constant:triggerable_scenario_cure.counterstrain_days
@@ -2414,7 +2420,7 @@ chaosx_outbreak_prevention_category = {
     }
 
     revoke_migration_restrictions = {
-        icon = GFX_decision_generic_democracy
+		icon = GFX_decision_zombie_lift_migration_restrictions
 
         visible = {
             has_country_flag = migration_restricted

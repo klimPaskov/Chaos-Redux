@@ -51,7 +51,7 @@ These are regular event targets and only persist during the operation completion
 
 ## Icons
 
-The operation has a new GFX definition and new copied placeholder assets:
+The operation uses dedicated generated biological-operation art:
 
 - Sprite: `GFX_operations_plant_bioweapon`
 - Sprite: `GFX_operations_plant_bioweapon_map`
@@ -59,7 +59,13 @@ The operation has a new GFX definition and new copied placeholder assets:
 - Main icon: `gfx/interface/operations/chaosx_bioweapon/plant_bioweapon.dds`
 - Map icon: `gfx/interface/operations/chaosx_bioweapon/map/plant_bioweapon_map.dds`
 
-The placeholder files are copied from vanilla targeted-sabotage operation art. They can be replaced later without changing script references.
+Each custom operation phase also has a dedicated large scene and small phase icon:
+
+- `GFX_phase_bioweapon_plant_reservoir` / `GFX_phase_bioweapon_plant_reservoir_small`
+- `GFX_phase_bioweapon_seed_medical_chain` / `GFX_phase_bioweapon_seed_medical_chain_small`
+- `GFX_phase_bioweapon_contaminate_transport_hub` / `GFX_phase_bioweapon_contaminate_transport_hub_small`
+
+Final phase DDS files live under `gfx/interface/operations/chaosx_bioweapon/phases/` and `phases_small/`. Source PNGs, processed PNGs, the contact sheet, manifest entries, and sprite handoff are recorded in `docs/assets/shared_gfx_cleanup/`.
 
 ## Localisation
 

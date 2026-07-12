@@ -48,6 +48,10 @@ initialize_triggerable_scenarios_settings = {
 		set_variable = { triggerable_scenarios_secret_alliance_type = constant:secret_alliance_scenario_type.random_coalition }
 	}
 	if = {
+		limit = { NOT = { has_variable = triggerable_scenarios_cannibalism_type } }
+		set_variable = { triggerable_scenarios_cannibalism_type = constant:cannibalism_scenario.type_discipline_collapse }
+	}
+	if = {
 		limit = { NOT = { has_variable = triggerable_scenarios_sort_mode } }
 		set_variable = { triggerable_scenarios_sort_mode = constant:triggerable_scenario_sort_mode.id }
 	}
@@ -130,6 +134,14 @@ triggerable_scenarios_initialize_registry = {
 		array = global.triggerable_scenario_all_name_sort_values
 		value = constant:triggerable_scenario_sort_value.coalition_unmasked_name
 	}
+	add_to_array = {
+		array = global.triggerable_scenario_all_ids
+		value = constant:triggerable_scenario_id.cannibalism
+	}
+	add_to_array = {
+		array = global.triggerable_scenario_all_name_sort_values
+		value = constant:triggerable_scenario_sort_value.cannibalism_name
+	}
 }
 
 triggerable_scenarios_rebuild_view = {
@@ -199,6 +211,14 @@ triggerable_scenarios_rebuild_view = {
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.cannibalism
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.cannibalism_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
 			value = constant:triggerable_scenario_id.world_in_fury
 		}
 		add_to_array = {
@@ -235,6 +255,14 @@ triggerable_scenarios_rebuild_view = {
 		add_to_array = {
 			array = global.triggerable_scenario_view_name_sort_values
 			value = constant:triggerable_scenario_sort_value.world_in_fury_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.cannibalism
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.cannibalism_name
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
@@ -297,6 +325,14 @@ triggerable_scenarios_rebuild_view = {
 		limit = {
 			check_variable = { triggerable_scenarios_sort_mode = constant:triggerable_scenario_sort_mode.id }
 			has_country_flag = triggerable_scenarios_sort_descending
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.cannibalism
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.cannibalism_name
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
@@ -443,6 +479,14 @@ triggerable_scenarios_rebuild_view = {
 		add_to_array = {
 			array = global.triggerable_scenario_view_name_sort_values
 			value = constant:triggerable_scenario_sort_value.coalition_unmasked_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.cannibalism
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.cannibalism_name
 		}
 	}
 }
@@ -538,6 +582,11 @@ select_triggerable_scenario_africa = {
 select_triggerable_scenario_coalition_unmasked = {
 	initialize_triggerable_scenarios_settings = yes
 	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.coalition_unmasked }
+}
+
+select_triggerable_scenario_cannibalism = {
+	initialize_triggerable_scenarios_settings = yes
+	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.cannibalism }
 }
 
 set_triggerable_scenario_intensity_low = {
@@ -652,6 +701,14 @@ triggerable_scenario_type_previous = {
 			set_variable = { triggerable_scenarios_secret_alliance_type = constant:secret_alliance_scenario_type.random_coalition }
 		}
 	}
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.cannibalism } }
+		subtract_from_variable = { triggerable_scenarios_cannibalism_type = 1 }
+		if = {
+			limit = { check_variable = { triggerable_scenarios_cannibalism_type < constant:cannibalism_scenario.type_minimum } }
+			set_variable = { triggerable_scenarios_cannibalism_type = constant:cannibalism_scenario.type_maximum }
+		}
+	}
 }
 
 triggerable_scenario_type_next = {
@@ -714,6 +771,14 @@ triggerable_scenario_type_next = {
 		if = {
 			limit = { check_variable = { triggerable_scenarios_secret_alliance_type > constant:secret_alliance_scenario_type.random_coalition } }
 			set_variable = { triggerable_scenarios_secret_alliance_type = constant:secret_alliance_scenario_type.regional_ring }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.cannibalism } }
+		add_to_variable = { triggerable_scenarios_cannibalism_type = 1 }
+		if = {
+			limit = { check_variable = { triggerable_scenarios_cannibalism_type > constant:cannibalism_scenario.type_maximum } }
+			set_variable = { triggerable_scenarios_cannibalism_type = constant:cannibalism_scenario.type_minimum }
 		}
 	}
 }
@@ -816,6 +881,16 @@ trigger_selected_chaosx_scenario = {
 		}
 		trigger_secret_alliance_coalition_unmasked_scenario = yes
 	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = triggerable_scenario_launch_id
+				value = constant:triggerable_scenario_id.cannibalism
+				compare = equals
+			}
+		}
+		trigger_cannibalism_scenario = yes
+	}
 	if = {
 		limit = { has_country_flag = triggerable_scenario_preserved_event_timer }
 		set_variable = { event_timer_days = triggerable_scenario_preserved_event_timer_days }
@@ -854,6 +929,7 @@ trigger_disaster_barrage_scenario = {
 	set_temp_variable = { natural_disaster_call_scenario_type = triggerable_scenarios_disaster_barrage_type }
 	set_temp_variable = { natural_disaster_call_scenario_intensity = triggerable_scenarios_intensity }
 	set_temp_variable = { natural_disaster_call_evolution_override_supplied = 1 }
+	set_temp_variable = { natural_disaster_call_manual_evolution_bypass = 1 }
 	if = {
 		limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.low } }
 		set_temp_variable = { natural_disaster_call_evolution_override = constant:natural_disaster_event.evolution_i_stage }
@@ -893,6 +969,7 @@ trigger_disaster_barrage_scenario = {
 		set_temp_variable = { natural_disaster_call_manual_abnormal_bypass = 1 }
 	}
 
+	set_temp_variable = { natural_disaster_call_result = constant:natural_disaster_call_result.rejected }
 	call_natural_disaster = yes
 	if = {
 		limit = {
@@ -900,6 +977,10 @@ trigger_disaster_barrage_scenario = {
 			check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum }
 		}
 		natural_disaster_achievement_begin_maximum_barrage = yes
+	}
+	if = {
+		limit = { check_variable = { natural_disaster_call_result = constant:natural_disaster_call_result.rejected } }
+		country_event = { id = chaosx.nr13.127 }
 	}
 	if = {
 		limit = { has_country_flag = triggerable_scenario_added_abnormal_access }
@@ -929,7 +1010,6 @@ triggerable_scenario_prepare_zombie_scale = {
 			check_variable = {
 				var = triggerable_scenarios_intensity
 				value = constant:triggerable_scenario_intensity.high
-	set_temp_variable = { natural_disaster_call_manual_evolution_bypass = 1 }
 				compare = equals
 			}
 		}
@@ -969,7 +1049,6 @@ triggerable_scenario_prepare_zombie_scale = {
 
 triggerable_scenario_randomize_zombie_profile_attributes = {
 	set_variable = { weaponized_zombie_strength = triggerable_zombie_profile_score }
-	set_temp_variable = { natural_disaster_call_result = constant:natural_disaster_call_result.rejected }
 	random_list = {
 		2 = { subtract_from_variable = { weaponized_zombie_strength = 1 } }
 		6 = { }
@@ -978,10 +1057,6 @@ triggerable_scenario_randomize_zombie_profile_attributes = {
 	clamp_variable = { var = weaponized_zombie_strength min = 0 max = 5 }
 
 	set_variable = { weaponized_zombie_infectiousness = triggerable_zombie_profile_score }
-	if = {
-		limit = { check_variable = { natural_disaster_call_result = constant:natural_disaster_call_result.rejected } }
-		country_event = { id = chaosx.nr13.127 }
-	}
 	random_list = {
 		2 = { subtract_from_variable = { weaponized_zombie_infectiousness = 1 } }
 		6 = { }
@@ -1643,7 +1718,11 @@ apply_weaponized_zombie_counterstrain_research = {
 				limit = { check_variable = { global.weaponized_zombie_wendigo_counterstrain > 99 } }
 				set_global_flag = weaponized_zombie_wendigo_counterstrain_ready
 				every_country = {
-					limit = { is_live_weaponized_zombie_profile_country = yes has_country_flag = weaponized_zombie_type_wendigo }
+					limit = {
+						is_live_weaponized_zombie_profile_country = yes
+						has_country_flag = weaponized_zombie_type_wendigo
+						NOT = { has_country_flag = cannibalism_wendigo_transformation_locked }
+					}
 					add_timed_idea = { idea = weaponized_zombie_counterstrain_exposed days = constant:triggerable_scenario_cure.counterstrain_finish_days }
 				}
 				set_variable = { global.weaponized_zombie_wendigo_counterstrain = 0 }
@@ -1655,7 +1734,11 @@ apply_weaponized_zombie_counterstrain_research = {
 				limit = { check_variable = { weaponized_zombie_wendigo_counterstrain > 99 } }
 				set_country_flag = weaponized_zombie_wendigo_counterstrain_ready
 				every_country = {
-					limit = { is_live_weaponized_zombie_profile_country = yes has_country_flag = weaponized_zombie_type_wendigo }
+					limit = {
+						is_live_weaponized_zombie_profile_country = yes
+						has_country_flag = weaponized_zombie_type_wendigo
+						NOT = { has_country_flag = cannibalism_wendigo_transformation_locked }
+					}
 					add_timed_idea = { idea = weaponized_zombie_counterstrain_exposed days = constant:triggerable_scenario_cure.counterstrain_finish_days }
 				}
 				set_variable = { weaponized_zombie_wendigo_counterstrain = 0 }

@@ -68,7 +68,7 @@
 
 - At least eight reusable tag slots are available or an equivalent safe strategy exists.
 - Four origin archetypes are implemented.
-- Generic warlord portraits are bloody, bald, male-presenting, and use invented rough clothing.
+- Generic warlord portraits are bloody, bald, male-presenting, feral, visibly crazed, less human-looking, and use invented rough clothing.
 - Warlord names come from matching regional male pools.
 - No portrait or name mismatch exists.
 - Warlords have starting politics, ideas, units, equipment, focus access, decisions, AI, and assets.
@@ -161,6 +161,7 @@
 - Wendigo world-end super-event exists.
 - Defeat aftermath super-event exists only for a global costly war.
 - Every super-event has unique image, quote research, remark research, audio track, audio ID, and documentation.
+- Every super-event image is a distinct action composition with active pursuit, assault, breakthrough, or rescue. Static council, map-room, posed-army, and calm-aftermath tableaux are rejected.
 - No placeholder, default, reused, or unlicensed audio remains.
 - World-end branches require chaos above 1000.
 
@@ -168,8 +169,8 @@
 
 - Gore is present across major images, portraits, and icons.
 - Real atrocity photography is not used as final fictional art.
-- Generic warlord portrait pool is complete.
-- Hannibal and Wendigo Hannibal portraits are complete.
+- All fifty-six regional warlord portraits are complete, distinct in face, pose, prop, expression, clothing silhouette, crop, and background, wired by the actual origin state's region, and retained for submitted commanders. At least one visibly holds a skull and licks blood from it.
+- Hannibal Lecter and Wendigo Hannibal Lecter portraits are complete, substantially less human and more crazed than ordinary leader art, and use real independently generated action frames.
 - Flags exist in all engine sizes.
 - Every focus, idea, decision, category, achievement, unit, GUI state, report, news event, and super-event has asset coverage.
 - Every animated asset has separate source frames, processed frames, sheet PNG, sheet DDS, static fallback, preview GIF, manifest, and GFX handoff.

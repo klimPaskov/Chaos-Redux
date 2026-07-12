@@ -1,0 +1,299 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 014 CANNIBALISM SCRIPTED LOCALISATION
+# ============================================================================
+# Pre-reveal decision text exposes only meters and coordination evidence that
+# the current evolution has made public. No concealed identity is named here.
+# ============================================================================
+
+defined_text = {
+	name = GetCannibalismContainmentStatus
+	text = {
+		trigger = { has_global_flag = cannibalism_evolution_ii_active }
+		localisation_key = cannibalism_containment_status_network
+	}
+	text = {
+		trigger = { has_global_flag = cannibalism_evolution_i_active }
+		localisation_key = cannibalism_containment_status_ritual
+	}
+	text = {
+		localisation_key = cannibalism_containment_status_baseline
+	}
+}
+
+defined_text = {
+	name = GetCannibalismRationAuditCost
+	text = {
+		trigger = { var:cannibalism_primary_theater_state = { is_island_state = yes } }
+		localisation_key = cannibalism_ration_audit_cost_island
+	}
+	text = {
+		localisation_key = cannibalism_ration_audit_cost_land
+	}
+}
+
+defined_text = {
+	name = GetCannibalismLogisticsCost
+	text = {
+		trigger = { var:cannibalism_primary_theater_state = { is_island_state = yes } }
+		localisation_key = cannibalism_logistics_cost_island
+	}
+	text = {
+		localisation_key = cannibalism_logistics_cost_land
+	}
+}
+
+# Warning events read the source from the inbound state. Arrival and
+# reinfection events read the durable source from the receiving country.
+defined_text = {
+	name = GetCannibalismSpreadSourceName
+	text = {
+		trigger = { has_variable = cannibalism_inbound_spread_source_country }
+		localisation_key = cannibalism_spread_source_inbound
+	}
+	text = {
+		trigger = { has_variable = cannibalism_external_infection_source }
+		localisation_key = cannibalism_spread_source_external
+	}
+}
+
+# Both stored route variables use the same eight-value route enum. Every event
+# that calls this selector is gated by a live, validated spread entry.
+defined_text = {
+	name = GetCannibalismSpreadRouteLabel
+	text = {
+		trigger = {
+			OR = {
+				AND = { has_variable = cannibalism_inbound_spread_route check_variable = { cannibalism_inbound_spread_route = constant:cannibalism_spread_route.retreat } }
+				AND = { has_variable = cannibalism_external_infection_route check_variable = { cannibalism_external_infection_route = constant:cannibalism_spread_route.retreat } }
+			}
+		}
+		localisation_key = cannibalism_spread_route_retreat
+	}
+	text = {
+		trigger = {
+			OR = {
+				AND = { has_variable = cannibalism_inbound_spread_route check_variable = { cannibalism_inbound_spread_route = constant:cannibalism_spread_route.prisoner_transfer } }
+				AND = { has_variable = cannibalism_external_infection_route check_variable = { cannibalism_external_infection_route = constant:cannibalism_spread_route.prisoner_transfer } }
+			}
+		}
+		localisation_key = cannibalism_spread_route_prisoner_transfer
+	}
+	text = {
+		trigger = {
+			OR = {
+				AND = { has_variable = cannibalism_inbound_spread_route check_variable = { cannibalism_inbound_spread_route = constant:cannibalism_spread_route.convoy } }
+				AND = { has_variable = cannibalism_external_infection_route check_variable = { cannibalism_external_infection_route = constant:cannibalism_spread_route.convoy } }
+			}
+		}
+		localisation_key = cannibalism_spread_route_convoy
+	}
+	text = {
+		trigger = {
+			OR = {
+				AND = { has_variable = cannibalism_inbound_spread_route check_variable = { cannibalism_inbound_spread_route = constant:cannibalism_spread_route.volunteer_return } }
+				AND = { has_variable = cannibalism_external_infection_route check_variable = { cannibalism_external_infection_route = constant:cannibalism_spread_route.volunteer_return } }
+			}
+		}
+		localisation_key = cannibalism_spread_route_volunteer_return
+	}
+	text = {
+		trigger = {
+			OR = {
+				AND = { has_variable = cannibalism_inbound_spread_route check_variable = { cannibalism_inbound_spread_route = constant:cannibalism_spread_route.occupation_turnover } }
+				AND = { has_variable = cannibalism_external_infection_route check_variable = { cannibalism_external_infection_route = constant:cannibalism_spread_route.occupation_turnover } }
+			}
+		}
+		localisation_key = cannibalism_spread_route_occupation_turnover
+	}
+	text = {
+		trigger = {
+			OR = {
+				AND = { has_variable = cannibalism_inbound_spread_route check_variable = { cannibalism_inbound_spread_route = constant:cannibalism_spread_route.deliberate_seed } }
+				AND = { has_variable = cannibalism_external_infection_route check_variable = { cannibalism_external_infection_route = constant:cannibalism_spread_route.deliberate_seed } }
+			}
+		}
+		localisation_key = cannibalism_spread_route_deliberate_seed
+	}
+	text = {
+		trigger = {
+			OR = {
+				AND = { has_variable = cannibalism_inbound_spread_route check_variable = { cannibalism_inbound_spread_route = constant:cannibalism_spread_route.conquest } }
+				AND = { has_variable = cannibalism_external_infection_route check_variable = { cannibalism_external_infection_route = constant:cannibalism_spread_route.conquest } }
+			}
+		}
+		localisation_key = cannibalism_spread_route_conquest
+	}
+	text = {
+		trigger = {
+			OR = {
+				AND = { has_variable = cannibalism_inbound_spread_route check_variable = { cannibalism_inbound_spread_route = constant:cannibalism_spread_route.survivor } }
+				AND = { has_variable = cannibalism_external_infection_route check_variable = { cannibalism_external_infection_route = constant:cannibalism_spread_route.survivor } }
+			}
+		}
+		localisation_key = cannibalism_spread_route_survivor
+	}
+}
+
+defined_text = {
+	name = GetCannibalismWarlordName
+	text = { trigger = { check_variable = { cannibalism_warlord_name_index = constant:cannibalism_warlord_name.europe_1 } } localisation_key = cannibalism_warlord_name_europe_1 }
+	text = { trigger = { check_variable = { cannibalism_warlord_name_index = constant:cannibalism_warlord_name.europe_2 } } localisation_key = cannibalism_warlord_name_europe_2 }
+	text = { trigger = { check_variable = { cannibalism_warlord_name_index = constant:cannibalism_warlord_name.europe_3 } } localisation_key = cannibalism_warlord_name_europe_3 }
+	text = { trigger = { check_variable = { cannibalism_warlord_name_index = constant:cannibalism_warlord_name.europe_4 } } localisation_key = cannibalism_warlord_name_europe_4 }
+	text = { trigger = { check_variable = { cannibalism_warlord_name_index = constant:cannibalism_warlord_name.asia_1 } } localisation_key = cannibalism_warlord_name_asia_1 }
+	text = { trigger = { check_variable = { cannibalism_warlord_name_index = constant:cannibalism_warlord_name.asia_2 } } localisation_key = cannibalism_warlord_name_asia_2 }
+	text = { trigger = { check_variable = { cannibalism_warlord_name_index = constant:cannibalism_warlord_name.asia_3 } } localisation_key = cannibalism_warlord_name_asia_3 }
+	text = { trigger = { check_variable = { cannibalism_warlord_name_index = constant:cannibalism_warlord_name.asia_4 } } localisation_key = cannibalism_warlord_name_asia_4 }
+	text = { trigger = { check_variable = { cannibalism_warlord_name_index = constant:cannibalism_warlord_name.africa_1 } } localisation_key = cannibalism_warlord_name_africa_1 }
+	text = { trigger = { check_variable = { cannibalism_warlord_name_index = constant:cannibalism_warlord_name.africa_2 } } localisation_key = cannibalism_warlord_name_africa_2 }
+	text = { trigger = { check_variable = { cannibalism_warlord_name_index = constant:cannibalism_warlord_name.africa_3 } } localisation_key = cannibalism_warlord_name_africa_3 }
+	text = { trigger = { check_variable = { cannibalism_warlord_name_index = constant:cannibalism_warlord_name.africa_4 } } localisation_key = cannibalism_warlord_name_africa_4 }
+	text = { trigger = { check_variable = { cannibalism_warlord_name_index = constant:cannibalism_warlord_name.middle_east_1 } } localisation_key = cannibalism_warlord_name_middle_east_1 }
+	text = { trigger = { check_variable = { cannibalism_warlord_name_index = constant:cannibalism_warlord_name.middle_east_2 } } localisation_key = cannibalism_warlord_name_middle_east_2 }
+	text = { trigger = { check_variable = { cannibalism_warlord_name_index = constant:cannibalism_warlord_name.middle_east_3 } } localisation_key = cannibalism_warlord_name_middle_east_3 }
+	text = { trigger = { check_variable = { cannibalism_warlord_name_index = constant:cannibalism_warlord_name.middle_east_4 } } localisation_key = cannibalism_warlord_name_middle_east_4 }
+	text = { trigger = { check_variable = { cannibalism_warlord_name_index = constant:cannibalism_warlord_name.north_america_1 } } localisation_key = cannibalism_warlord_name_north_america_1 }
+	text = { trigger = { check_variable = { cannibalism_warlord_name_index = constant:cannibalism_warlord_name.north_america_2 } } localisation_key = cannibalism_warlord_name_north_america_2 }
+	text = { trigger = { check_variable = { cannibalism_warlord_name_index = constant:cannibalism_warlord_name.north_america_3 } } localisation_key = cannibalism_warlord_name_north_america_3 }
+	text = { trigger = { check_variable = { cannibalism_warlord_name_index = constant:cannibalism_warlord_name.north_america_4 } } localisation_key = cannibalism_warlord_name_north_america_4 }
+	text = { trigger = { check_variable = { cannibalism_warlord_name_index = constant:cannibalism_warlord_name.south_america_1 } } localisation_key = cannibalism_warlord_name_south_america_1 }
+	text = { trigger = { check_variable = { cannibalism_warlord_name_index = constant:cannibalism_warlord_name.south_america_2 } } localisation_key = cannibalism_warlord_name_south_america_2 }
+	text = { trigger = { check_variable = { cannibalism_warlord_name_index = constant:cannibalism_warlord_name.south_america_3 } } localisation_key = cannibalism_warlord_name_south_america_3 }
+	text = { trigger = { check_variable = { cannibalism_warlord_name_index = constant:cannibalism_warlord_name.south_america_4 } } localisation_key = cannibalism_warlord_name_south_america_4 }
+	text = { trigger = { check_variable = { cannibalism_warlord_name_index = constant:cannibalism_warlord_name.oceania_1 } } localisation_key = cannibalism_warlord_name_oceania_1 }
+	text = { trigger = { check_variable = { cannibalism_warlord_name_index = constant:cannibalism_warlord_name.oceania_2 } } localisation_key = cannibalism_warlord_name_oceania_2 }
+	text = { trigger = { check_variable = { cannibalism_warlord_name_index = constant:cannibalism_warlord_name.oceania_3 } } localisation_key = cannibalism_warlord_name_oceania_3 }
+	text = { trigger = { check_variable = { cannibalism_warlord_name_index = constant:cannibalism_warlord_name.oceania_4 } } localisation_key = cannibalism_warlord_name_oceania_4 }
+	text = { localisation_key = cannibalism_warlord_name_unknown }
+}
+
+defined_text = {
+	name = GetCannibalismWarlordCountryName
+	text = { trigger = { check_variable = { cannibalism_warlord_origin = constant:cannibalism_origin.island_host } } localisation_key = cannibalism_warlord_map_name_island }
+	text = { trigger = { check_variable = { cannibalism_warlord_origin = constant:cannibalism_origin.siege_commune } } localisation_key = cannibalism_warlord_map_name_siege }
+	text = { trigger = { check_variable = { cannibalism_warlord_origin = constant:cannibalism_origin.march_host } } localisation_key = cannibalism_warlord_map_name_march }
+	text = { trigger = { check_variable = { cannibalism_warlord_origin = constant:cannibalism_origin.prison_host } } localisation_key = cannibalism_warlord_map_name_prison }
+	text = { localisation_key = cannibalism_warlord_map_name_dormant }
+}
+
+defined_text = {
+	name = GetCannibalismWarlordCountryAdjective
+	text = { trigger = { has_variable = cannibalism_warlord_origin_state } localisation_key = cannibalism_warlord_map_adjective }
+	text = { localisation_key = cannibalism_warlord_map_adjective_dormant }
+}
+
+defined_text = {
+	name = GetCannibalismWarlordPartyName
+	text = { trigger = { check_variable = { cannibalism_warlord_origin = constant:cannibalism_origin.island_host } } localisation_key = cannibalism_warlord_party_island }
+	text = { trigger = { check_variable = { cannibalism_warlord_origin = constant:cannibalism_origin.siege_commune } } localisation_key = cannibalism_warlord_party_siege }
+	text = { trigger = { check_variable = { cannibalism_warlord_origin = constant:cannibalism_origin.march_host } } localisation_key = cannibalism_warlord_party_march }
+	text = { trigger = { check_variable = { cannibalism_warlord_origin = constant:cannibalism_origin.prison_host } } localisation_key = cannibalism_warlord_party_prison }
+	text = { localisation_key = cannibalism_warlord_party_dormant }
+}
+
+defined_text = {
+	name = GetCannibalismWarlordPartyLongName
+	text = { trigger = { check_variable = { cannibalism_warlord_origin = constant:cannibalism_origin.island_host } } localisation_key = cannibalism_warlord_party_island_long }
+	text = { trigger = { check_variable = { cannibalism_warlord_origin = constant:cannibalism_origin.siege_commune } } localisation_key = cannibalism_warlord_party_siege_long }
+	text = { trigger = { check_variable = { cannibalism_warlord_origin = constant:cannibalism_origin.march_host } } localisation_key = cannibalism_warlord_party_march_long }
+	text = { trigger = { check_variable = { cannibalism_warlord_origin = constant:cannibalism_origin.prison_host } } localisation_key = cannibalism_warlord_party_prison_long }
+	text = { localisation_key = cannibalism_warlord_party_dormant_long }
+}
+
+defined_text = {
+	name = GetCannibalismWarlordCommandStatus
+	text = {
+		trigger = { has_global_flag = cannibalism_evolution_ii_active }
+		localisation_key = cannibalism_warlord_command_status_network
+	}
+	text = { localisation_key = cannibalism_warlord_command_status_local }
+}
+
+# Internal meta-effect tokens bind every reusable slot to the visual region of
+# its actual origin state. The same pair is retained when a submitted warlord
+# is reconstructed as a named CBL commander after the reveal.
+defined_text = {
+	name = GetCannibalismWarlordPortraitSlotToken
+	text = { trigger = { check_variable = { cannibalism_warlord_slot_index = constant:cannibalism_slot.cba } } localisation_key = cannibalism_internal_portrait_slot_cba }
+	text = { trigger = { check_variable = { cannibalism_warlord_slot_index = constant:cannibalism_slot.cbb } } localisation_key = cannibalism_internal_portrait_slot_cbb }
+	text = { trigger = { check_variable = { cannibalism_warlord_slot_index = constant:cannibalism_slot.cbc } } localisation_key = cannibalism_internal_portrait_slot_cbc }
+	text = { trigger = { check_variable = { cannibalism_warlord_slot_index = constant:cannibalism_slot.cbd } } localisation_key = cannibalism_internal_portrait_slot_cbd }
+	text = { trigger = { check_variable = { cannibalism_warlord_slot_index = constant:cannibalism_slot.cbe } } localisation_key = cannibalism_internal_portrait_slot_cbe }
+	text = { trigger = { check_variable = { cannibalism_warlord_slot_index = constant:cannibalism_slot.cbf } } localisation_key = cannibalism_internal_portrait_slot_cbf }
+	text = { trigger = { check_variable = { cannibalism_warlord_slot_index = constant:cannibalism_slot.cbg } } localisation_key = cannibalism_internal_portrait_slot_cbg }
+	text = { trigger = { check_variable = { cannibalism_warlord_slot_index = constant:cannibalism_slot.cbh } } localisation_key = cannibalism_internal_portrait_slot_cbh }
+}
+
+defined_text = {
+	name = GetCannibalismWarlordPortraitRegionToken
+	text = { trigger = { check_variable = { cannibalism_warlord_region = constant:cannibalism_region.europe } } localisation_key = cannibalism_internal_portrait_region_europe }
+	text = { trigger = { check_variable = { cannibalism_warlord_region = constant:cannibalism_region.asia } } localisation_key = cannibalism_internal_portrait_region_asia }
+	text = { trigger = { check_variable = { cannibalism_warlord_region = constant:cannibalism_region.africa } } localisation_key = cannibalism_internal_portrait_region_africa }
+	text = { trigger = { check_variable = { cannibalism_warlord_region = constant:cannibalism_region.middle_east } } localisation_key = cannibalism_internal_portrait_region_middle_east }
+	text = { trigger = { check_variable = { cannibalism_warlord_region = constant:cannibalism_region.north_america } } localisation_key = cannibalism_internal_portrait_region_north_america }
+	text = { trigger = { check_variable = { cannibalism_warlord_region = constant:cannibalism_region.south_america } } localisation_key = cannibalism_internal_portrait_region_south_america }
+	text = { trigger = { check_variable = { cannibalism_warlord_region = constant:cannibalism_region.oceania } } localisation_key = cannibalism_internal_portrait_region_oceania }
+}
+
+defined_text = {
+	name = GetCannibalismIntegratedOriginTraitToken
+	text = { trigger = { check_variable = { cannibalism_warlord_origin = constant:cannibalism_origin.island_host } } localisation_key = cannibalism_internal_origin_trait_token_island }
+	text = { trigger = { check_variable = { cannibalism_warlord_origin = constant:cannibalism_origin.siege_commune } } localisation_key = cannibalism_internal_origin_trait_token_siege }
+	text = { trigger = { check_variable = { cannibalism_warlord_origin = constant:cannibalism_origin.march_host } } localisation_key = cannibalism_internal_origin_trait_token_march }
+	text = { localisation_key = cannibalism_internal_origin_trait_token_prison }
+}
+
+defined_text = {
+	name = GetCannibalismIntegratedPersonalityTraitToken
+	text = { trigger = { check_variable = { cannibalism_warlord_personality = constant:cannibalism_personality.hoarder } } localisation_key = cannibalism_internal_personality_trait_token_hoarder }
+	text = { trigger = { check_variable = { cannibalism_warlord_personality = constant:cannibalism_personality.feast_captain } } localisation_key = cannibalism_internal_personality_trait_token_feast_captain }
+	text = { trigger = { check_variable = { cannibalism_warlord_personality = constant:cannibalism_personality.charismatic_initiator } } localisation_key = cannibalism_internal_personality_trait_token_charismatic_initiator }
+	text = { trigger = { check_variable = { cannibalism_warlord_personality = constant:cannibalism_personality.suspicious_tyrant } } localisation_key = cannibalism_internal_personality_trait_token_suspicious_tyrant }
+	text = { trigger = { check_variable = { cannibalism_warlord_personality = constant:cannibalism_personality.network_disciple } } localisation_key = cannibalism_internal_personality_trait_token_network_disciple }
+	text = { localisation_key = cannibalism_internal_personality_trait_token_defiant_mouth }
+}
+
+defined_text = {
+	name = GetCannibalismActiveMissionSummary
+	text = { trigger = { has_country_flag = cannibalism_logistics_mission_active } localisation_key = cannibalism_gui_active_mission_logistics }
+	text = { trigger = { has_country_flag = cannibalism_rotation_mission_active } localisation_key = cannibalism_gui_active_mission_rotation }
+	text = { trigger = { has_country_flag = cannibalism_island_host_landing_active } localisation_key = cannibalism_gui_active_mission_island }
+	text = { trigger = { has_global_flag = cannibalism_convergence_active } localisation_key = cannibalism_gui_active_mission_convergence }
+	text = { localisation_key = cannibalism_gui_active_mission_none }
+}
+
+defined_text = {
+	name = GetCannibalismCountryStageLabel
+	text = { trigger = { check_variable = { cannibalism_country_stage = constant:cannibalism_country_stage.active_baseline } } localisation_key = cannibalism_gui_stage_baseline }
+	text = { trigger = { check_variable = { cannibalism_country_stage = constant:cannibalism_country_stage.ritual_cell } } localisation_key = cannibalism_gui_stage_ritual }
+	text = { trigger = { check_variable = { cannibalism_country_stage = constant:cannibalism_country_stage.network_node } } localisation_key = cannibalism_gui_stage_network }
+	text = { trigger = { check_variable = { cannibalism_country_stage = constant:cannibalism_country_stage.commune_territory } } localisation_key = cannibalism_gui_stage_commune }
+	text = { trigger = { check_variable = { cannibalism_country_stage = constant:cannibalism_country_stage.warlord_country } } localisation_key = cannibalism_gui_stage_warlord }
+	text = { trigger = { check_variable = { cannibalism_country_stage = constant:cannibalism_country_stage.externally_reinfected } } localisation_key = cannibalism_gui_stage_reinfected }
+	text = { localisation_key = cannibalism_gui_stage_uncertain }
+}
+
+defined_text = {
+	name = GetCannibalismNodeTypeLabel
+	text = { trigger = { check_variable = { cannibalism_node_type = constant:cannibalism_node_type.formation } } localisation_key = cannibalism_gui_node_formation }
+	text = { trigger = { check_variable = { cannibalism_node_type = constant:cannibalism_node_type.prison } } localisation_key = cannibalism_gui_node_prison }
+	text = { trigger = { check_variable = { cannibalism_node_type = constant:cannibalism_node_type.port } } localisation_key = cannibalism_gui_node_port }
+	text = { trigger = { check_variable = { cannibalism_node_type = constant:cannibalism_node_type.island_commune } } localisation_key = cannibalism_gui_node_island }
+	text = { trigger = { check_variable = { cannibalism_node_type = constant:cannibalism_node_type.occupation } } localisation_key = cannibalism_gui_node_occupation }
+	text = { trigger = { check_variable = { cannibalism_node_type = constant:cannibalism_node_type.rail } } localisation_key = cannibalism_gui_node_rail }
+	text = { trigger = { check_variable = { cannibalism_node_type = constant:cannibalism_node_type.warlord } } localisation_key = cannibalism_gui_node_warlord }
+	text = { localisation_key = cannibalism_gui_node_unknown }
+}
+
+defined_text = {
+	name = GetCannibalismSelectedNetworkTarget
+	text = { trigger = { has_variable = cannibalism_network_gui_selected_country } localisation_key = cannibalism_gui_selected_country }
+	text = { trigger = { has_variable = cannibalism_network_gui_selected_state } localisation_key = cannibalism_gui_selected_state }
+	text = { localisation_key = cannibalism_gui_selected_none }
+}
+
+defined_text = {
+	name = GetCannibalismNetworkSortLabel
+	text = { trigger = { check_variable = { cannibalism_network_gui_sort = constant:cannibalism_gui_sort.newest_first } } localisation_key = cannibalism_gui_sort_newest }
+	text = { localisation_key = cannibalism_gui_sort_oldest }
+}

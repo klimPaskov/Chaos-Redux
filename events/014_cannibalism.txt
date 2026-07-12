@@ -1,0 +1,654 @@
+add_namespace = chaosx.nr14
+
+# ============================================================================
+# CHAOS REDUX - EVENT 014 CANNIBALISM
+# ============================================================================
+# The fire-once dispatcher consumes the prepared host/state transaction. Public
+# reports remain grounded in military evidence until the separate Evolution III
+# reveal path explicitly authorizes the concealed identity.
+# ============================================================================
+
+# Canonical fire-once entry.
+country_event = {
+	id = chaosx.nr14.1
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		cannibalism_begin_from_prefire_context = yes
+	}
+}
+
+# Opening incident: wartime institutional collapse, before ritual ideology.
+country_event = {
+	id = chaosx.nr14.2
+	title = chaosx.nr14.2.t
+	desc = chaosx.nr14.2.d
+	picture = GFX_report_event_cannibalism_field_discovery
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr14.2.a
+		ai_chance = {
+			base = constant:cannibalism_policy_effect.ai_open_base
+			modifier = { factor = constant:cannibalism_event_ai.democratic_factor has_government = democratic }
+			modifier = { factor = constant:cannibalism_event_ai.high_integrity_factor check_variable = { cannibalism_command_integrity > constant:cannibalism_meter.guarded } }
+		}
+		hidden_effect = { cannibalism_choose_open_emergency_policy = yes }
+		custom_effect_tooltip = cannibalism_open_emergency_effect_tt
+	}
+
+	option = {
+		name = chaosx.nr14.2.b
+		ai_chance = {
+			base = constant:cannibalism_policy_effect.ai_conceal_base
+			modifier = { factor = constant:cannibalism_event_ai.authoritarian_factor OR = { has_government = fascism has_government = neutrality } }
+			modifier = { factor = constant:cannibalism_event_ai.low_integrity_factor check_variable = { cannibalism_command_integrity < constant:cannibalism_meter.guarded } }
+		}
+		hidden_effect = { cannibalism_choose_concealment_policy = yes }
+		custom_effect_tooltip = cannibalism_concealment_effect_tt
+	}
+
+	option = {
+		name = chaosx.nr14.2.c
+		ai_chance = {
+			base = constant:cannibalism_policy_effect.ai_exploitation_base
+			modifier = { factor = constant:cannibalism_event_ai.authoritarian_factor OR = { has_government = fascism has_government = communism } }
+			modifier = { factor = constant:cannibalism_event_ai.low_integrity_factor check_variable = { cannibalism_command_integrity < constant:cannibalism_meter.guarded } }
+			modifier = { factor = constant:cannibalism_event_ai.exploitation_route_factor has_stability < constant:cannibalism_event_ai.unstable_threshold }
+		}
+		hidden_effect = { cannibalism_choose_exploitation_policy = yes }
+		custom_effect_tooltip = cannibalism_exploitation_effect_tt
+	}
+}
+
+# Ticketed, self-scheduling pulse. This event never iterates over the world.
+country_event = {
+	id = chaosx.nr14.10
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		cannibalism_run_pulse = yes
+	}
+}
+
+# Evolution I: repeated practices have become an ideology of membership.
+country_event = {
+	id = chaosx.nr14.20
+	title = chaosx.nr14.20.t
+	desc = chaosx.nr14.20.d
+	picture = GFX_report_event_cannibalism_burial_party
+	is_triggered_only = yes
+	trigger = {
+		is_cannibalism_active_country = yes
+		has_country_flag = cannibalism_evolution_i_report_scheduled
+		has_variable = cannibalism_evolution_i_report_generation
+		has_variable = cannibalism_actor_generation
+		check_variable = {
+			var = cannibalism_evolution_i_report_generation
+			value = cannibalism_actor_generation
+			compare = equals
+		}
+	}
+
+	immediate = {
+		clr_country_flag = cannibalism_evolution_i_report_scheduled
+		clear_variable = cannibalism_evolution_i_report_generation
+		clear_variable = cannibalism_evolution_i_report_due_date
+		set_country_flag = cannibalism_evolution_i_report_received
+	}
+
+	option = {
+		name = chaosx.nr14.20.a
+		ai_chance = {
+			base = constant:cannibalism_event_ai.ritual_purge_base
+			modifier = { factor = constant:cannibalism_event_ai.clean_route_factor has_country_flag = cannibalism_policy_open_emergency }
+			modifier = { factor = constant:cannibalism_event_ai.disfavored_route_factor has_country_flag = cannibalism_policy_exploitation }
+		}
+		hidden_effect = { cannibalism_choose_ritual_purge_response = yes }
+		custom_effect_tooltip = cannibalism_ritual_purge_effect_tt
+	}
+
+	option = {
+		name = chaosx.nr14.20.b
+		ai_chance = {
+			base = constant:cannibalism_event_ai.ritual_investigation_base
+			modifier = { factor = constant:cannibalism_event_ai.concealment_route_factor has_country_flag = cannibalism_policy_concealment }
+			modifier = { factor = constant:cannibalism_event_ai.high_integrity_factor check_variable = { cannibalism_command_integrity > constant:cannibalism_meter.guarded } }
+		}
+		hidden_effect = { cannibalism_choose_ritual_investigation_response = yes }
+		custom_effect_tooltip = cannibalism_ritual_investigation_effect_tt
+	}
+
+	option = {
+		name = chaosx.nr14.20.c
+		ai_chance = {
+			base = constant:cannibalism_event_ai.ritual_appropriation_base
+			modifier = { factor = constant:cannibalism_event_ai.exploitation_route_factor has_country_flag = cannibalism_policy_exploitation }
+			modifier = { factor = constant:cannibalism_event_ai.low_integrity_factor check_variable = { cannibalism_command_integrity < constant:cannibalism_meter.guarded } }
+			modifier = { factor = constant:cannibalism_event_ai.disfavored_route_factor has_country_flag = cannibalism_policy_open_emergency }
+		}
+		hidden_effect = { cannibalism_choose_ritual_appropriation_response = yes }
+		custom_effect_tooltip = cannibalism_ritual_appropriation_effect_tt
+	}
+}
+
+# Evolution II: independent cells show coordinated logistics and methods.
+country_event = {
+	id = chaosx.nr14.21
+	title = chaosx.nr14.21.t
+	desc = chaosx.nr14.21.d
+	picture = GFX_report_event_cannibalism_ration_kitchen
+	is_triggered_only = yes
+	trigger = {
+		is_cannibalism_active_country = yes
+		has_country_flag = cannibalism_evolution_i_report_received
+		cannibalism_current_country_has_ritual_response = yes
+		has_country_flag = cannibalism_evolution_ii_report_scheduled
+		has_variable = cannibalism_evolution_ii_report_generation
+		has_variable = cannibalism_actor_generation
+		check_variable = {
+			var = cannibalism_evolution_ii_report_generation
+			value = cannibalism_actor_generation
+			compare = equals
+		}
+	}
+
+	immediate = {
+		clr_country_flag = cannibalism_evolution_ii_report_scheduled
+		clear_variable = cannibalism_evolution_ii_report_generation
+		clear_variable = cannibalism_evolution_ii_report_due_date
+		set_country_flag = cannibalism_evolution_ii_report_received
+	}
+
+	option = {
+		name = chaosx.nr14.21.a
+		ai_chance = {
+			base = constant:cannibalism_event_ai.network_disclosure_base
+			modifier = { factor = constant:cannibalism_event_ai.clean_route_factor has_country_flag = cannibalism_policy_open_emergency }
+			modifier = { factor = constant:cannibalism_event_ai.democratic_factor has_government = democratic }
+			modifier = { factor = constant:cannibalism_event_ai.disfavored_route_factor has_country_flag = cannibalism_policy_exploitation }
+		}
+		hidden_effect = { cannibalism_choose_network_disclosure_response = yes }
+		custom_effect_tooltip = cannibalism_network_disclosure_effect_tt
+	}
+
+	option = {
+		name = chaosx.nr14.21.b
+		ai_chance = {
+			base = constant:cannibalism_event_ai.network_cordon_base
+			modifier = { factor = constant:cannibalism_event_ai.concealment_route_factor has_country_flag = cannibalism_policy_concealment }
+			modifier = { factor = constant:cannibalism_event_ai.high_integrity_factor check_variable = { cannibalism_command_integrity > constant:cannibalism_meter.guarded } }
+		}
+		hidden_effect = { cannibalism_choose_network_cordon_response = yes }
+		custom_effect_tooltip = cannibalism_network_cordon_effect_tt
+	}
+
+	option = {
+		name = chaosx.nr14.21.c
+		ai_chance = {
+			base = constant:cannibalism_event_ai.network_exploitation_base
+			modifier = { factor = constant:cannibalism_event_ai.exploitation_route_factor has_country_flag = cannibalism_policy_exploitation }
+			modifier = { factor = constant:cannibalism_event_ai.exploitation_route_factor has_country_flag = cannibalism_ritual_response_appropriation }
+			modifier = { factor = constant:cannibalism_event_ai.low_integrity_factor check_variable = { cannibalism_command_integrity < constant:cannibalism_meter.guarded } }
+			modifier = { factor = constant:cannibalism_event_ai.disfavored_route_factor has_country_flag = cannibalism_policy_open_emergency }
+		}
+		hidden_effect = { cannibalism_choose_network_exploitation_response = yes }
+		custom_effect_tooltip = cannibalism_network_exploitation_effect_tt
+	}
+}
+
+# Evolution II Host emergence. The former controller may stay with the lawful
+# state or, if human, transfer control to the newly formed Host. This surface
+# contains no Evolution III identity information.
+country_event = {
+	id = chaosx.nr14.30
+	title = chaosx.nr14.30.t
+	desc = chaosx.nr14.30.d
+	picture = GFX_report_event_cannibalism_warlord_emergence
+	is_triggered_only = yes
+	trigger = {
+		has_event_target = cannibalism_warlord_new_country
+		event_target:cannibalism_warlord_new_country = {
+			exists = yes
+			is_cannibalism_warlord_country = yes
+		}
+	}
+	option = {
+		name = chaosx.nr14.30.a
+		ai_chance = { base = constant:cannibalism_event_ai.warlord_emergence_remain }
+		add_stability = constant:cannibalism_warlord_creation.emergence_stability_hit
+		add_war_support = constant:cannibalism_warlord_creation.emergence_war_support_gain
+		set_country_flag = cannibalism_resisted_warlord_emergence
+		custom_effect_tooltip = cannibalism_warlord_emergence_remain_tt
+	}
+
+	option = {
+		name = chaosx.nr14.30.b
+		trigger = { is_ai = no }
+		ai_chance = { base = constant:cannibalism_event_ai.warlord_emergence_switch }
+		hidden_effect = {
+			event_target:cannibalism_warlord_new_country = {
+				set_country_flag = cannibalism_player_selected_warlord
+				ROOT = { cannibalism_achievement_capture_current_player_ledger = yes }
+				cannibalism_achievement_apply_captured_player_ledger = yes
+				change_tag_from = ROOT
+			}
+		}
+		custom_effect_tooltip = cannibalism_warlord_emergence_switch_tt
+	}
+}
+
+# A verified foreign route is in transit. The named state can be screened
+# before the queued entry resolves; this warning never identifies a supreme
+# organizer or other Evolution III information.
+country_event = {
+	id = chaosx.nr14.60
+	title = chaosx.nr14.60.t
+	desc = chaosx.nr14.60.d
+	picture = GFX_report_event_cannibalism_foreign_route_warning
+	is_triggered_only = yes
+	trigger = {
+		has_country_flag = cannibalism_foreign_route_warning_active
+		has_event_target = cannibalism_spread_target_state
+		event_target:cannibalism_spread_target_state = {
+			is_controlled_by = ROOT
+			has_state_flag = cannibalism_spread_inbound_active
+		}
+	}
+	immediate = {
+		event_target:cannibalism_spread_target_state = {
+			if = {
+				limit = {
+					is_controlled_by = ROOT
+					has_state_flag = cannibalism_spread_inbound_active
+					has_variable = cannibalism_inbound_spread_id
+					check_variable = { cannibalism_inbound_spread_id > 0 }
+					NOT = { has_state_flag = cannibalism_spread_warning_event_open }
+				}
+				set_variable = { cannibalism_warning_expected_spread_id = cannibalism_inbound_spread_id }
+				set_state_flag = cannibalism_spread_warning_event_open
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr14.60.a
+		trigger = { cannibalism_can_pay_humane_route_screening_cost = yes }
+		ai_chance = {
+			base = constant:cannibalism_decision_ai.high
+			modifier = { factor = constant:cannibalism_decision_ai.preferred_factor has_government = democratic }
+		}
+		hidden_effect = {
+			set_temp_variable = { cannibalism_expected_spread_id = 0 }
+			event_target:cannibalism_spread_target_state = {
+				save_event_target_as = cannibalism_screening_state
+				if = {
+					limit = { has_variable = cannibalism_warning_expected_spread_id }
+					set_temp_variable = { cannibalism_expected_spread_id = cannibalism_warning_expected_spread_id }
+				}
+			}
+			cannibalism_try_pay_humane_route_screening_cost = yes
+			cannibalism_close_spread_warning_instance = yes
+		}
+		custom_effect_tooltip = cannibalism_humane_route_screening_effect_tt
+	}
+
+	option = {
+		name = chaosx.nr14.60.b
+		trigger = { cannibalism_can_pay_hard_route_screening_cost = yes }
+		ai_chance = {
+			base = constant:cannibalism_decision_ai.medium
+			modifier = { factor = constant:cannibalism_decision_ai.preferred_factor OR = { has_government = fascism has_government = neutrality } }
+			modifier = { factor = constant:cannibalism_decision_ai.cautious_factor has_government = democratic }
+		}
+		hidden_effect = {
+			set_temp_variable = { cannibalism_expected_spread_id = 0 }
+			event_target:cannibalism_spread_target_state = {
+				save_event_target_as = cannibalism_screening_state
+				if = {
+					limit = { has_variable = cannibalism_warning_expected_spread_id }
+					set_temp_variable = { cannibalism_expected_spread_id = cannibalism_warning_expected_spread_id }
+				}
+			}
+			cannibalism_try_pay_hard_route_screening_cost = yes
+			cannibalism_close_spread_warning_instance = yes
+		}
+		custom_effect_tooltip = cannibalism_seal_inbound_route_effect_tt
+	}
+
+	option = {
+		name = chaosx.nr14.60.c
+		ai_chance = { base = constant:cannibalism_decision_ai.low }
+		hidden_effect = {
+			set_temp_variable = { cannibalism_expected_spread_id = 0 }
+			event_target:cannibalism_spread_target_state = {
+				save_event_target_as = cannibalism_screening_state
+				if = {
+					limit = { has_variable = cannibalism_warning_expected_spread_id }
+					set_temp_variable = { cannibalism_expected_spread_id = cannibalism_warning_expected_spread_id }
+				}
+			}
+			cannibalism_close_spread_warning_instance = yes
+		}
+		custom_effect_tooltip = cannibalism_foreign_route_unanswered_tt
+	}
+}
+
+# A country activated or reactivated by a real external route chooses its
+# public response. This is the external-reinfection entry, not a second firing
+# of the fire-once random event.
+country_event = {
+	id = chaosx.nr14.61
+	title = chaosx.nr14.61.t
+	desc = {
+		trigger = { has_country_flag = cannibalism_external_reinfection_active }
+		text = chaosx.nr14.61.reinfection.d
+	}
+	desc = {
+		trigger = { NOT = { has_country_flag = cannibalism_external_reinfection_active } }
+		text = chaosx.nr14.61.d
+	}
+	picture = GFX_report_event_cannibalism_external_reinfection
+	is_triggered_only = yes
+	trigger = {
+		is_cannibalism_active_ordinary_country = yes
+		has_country_flag = cannibalism_external_spread_new_actor
+		has_event_target = cannibalism_spread_target_state
+	}
+
+	option = {
+		name = chaosx.nr14.61.a
+		ai_chance = {
+			base = constant:cannibalism_policy_effect.ai_open_base
+			modifier = { factor = constant:cannibalism_event_ai.democratic_factor has_government = democratic }
+			modifier = { factor = constant:cannibalism_event_ai.high_integrity_factor check_variable = { cannibalism_command_integrity > constant:cannibalism_meter.guarded } }
+		}
+		hidden_effect = {
+			cannibalism_choose_open_emergency_policy = yes
+			clr_country_flag = cannibalism_external_spread_new_actor
+			clr_country_flag = cannibalism_external_reinfection_active
+		}
+		custom_effect_tooltip = cannibalism_open_emergency_effect_tt
+	}
+
+	option = {
+		name = chaosx.nr14.61.b
+		ai_chance = {
+			base = constant:cannibalism_policy_effect.ai_conceal_base
+			modifier = { factor = constant:cannibalism_event_ai.authoritarian_factor OR = { has_government = fascism has_government = neutrality } }
+			modifier = { factor = constant:cannibalism_event_ai.low_integrity_factor check_variable = { cannibalism_command_integrity < constant:cannibalism_meter.guarded } }
+		}
+		hidden_effect = {
+			cannibalism_choose_concealment_policy = yes
+			clr_country_flag = cannibalism_external_spread_new_actor
+			clr_country_flag = cannibalism_external_reinfection_active
+		}
+		custom_effect_tooltip = cannibalism_concealment_effect_tt
+	}
+
+	option = {
+		name = chaosx.nr14.61.c
+		ai_chance = {
+			base = constant:cannibalism_policy_effect.ai_exploitation_base
+			modifier = { factor = constant:cannibalism_event_ai.authoritarian_factor OR = { has_government = fascism has_government = communism } }
+			modifier = { factor = constant:cannibalism_event_ai.exploitation_route_factor has_stability < constant:cannibalism_event_ai.unstable_threshold }
+		}
+		hidden_effect = {
+			cannibalism_choose_exploitation_policy = yes
+			clr_country_flag = cannibalism_external_spread_new_actor
+			clr_country_flag = cannibalism_external_reinfection_active
+		}
+		custom_effect_tooltip = cannibalism_exploitation_effect_tt
+	}
+}
+
+# An already-active country failed to stop a second external route.
+country_event = {
+	id = chaosx.nr14.62
+	title = chaosx.nr14.62.t
+	desc = chaosx.nr14.62.d
+	picture = GFX_report_event_cannibalism_external_reinfection
+	is_triggered_only = yes
+	trigger = {
+		is_cannibalism_active_ordinary_country = yes
+		has_event_target = cannibalism_spread_target_state
+	}
+
+	option = {
+		name = chaosx.nr14.62.a
+		clr_country_flag = cannibalism_external_spread_arrived
+		custom_effect_tooltip = cannibalism_external_spread_arrival_tt
+	}
+}
+
+# Public Evolution III reveal. The effect that creates CBL sets the reveal
+# flag before this event can be queued, so the character and image cannot leak
+# through an early event preview.
+country_event = {
+	id = chaosx.nr14.70
+	title = chaosx.nr14.70.t
+	desc = chaosx.nr14.70.d
+	picture = GFX_report_event_cannibalism_public_reveal
+	is_triggered_only = yes
+	trigger = {
+		is_cannibalism_unified_country = yes
+		has_global_flag = cannibalism_reveal_complete
+		has_character = CBL_hannibal
+	}
+
+	option = {
+		name = chaosx.nr14.70.a
+		custom_effect_tooltip = cannibalism_public_reveal_effect_tt
+	}
+}
+
+# Every surviving pre-reveal warlord chooses a disposition. Players retain
+# their country on autonomy, resistance, or challenge; submitting players are
+# moved to CBL before annexation.
+country_event = {
+	id = chaosx.nr14.71
+	title = chaosx.nr14.71.t
+	desc = chaosx.nr14.71.desc
+	picture = GFX_report_event_cannibalism_warlord_submission
+	is_triggered_only = yes
+	trigger = {
+		is_cannibalism_warlord_country = yes
+		has_country_flag = cannibalism_pending_absorption
+		has_global_flag = cannibalism_reveal_complete
+		cannibalism_has_valid_unification_destination = yes
+	}
+
+	option = {
+		name = chaosx.nr14.71.a
+		trigger = { cannibalism_current_warlord_can_submit_without_displacing_player = yes }
+		ai_chance = {
+			base = constant:cannibalism_unification_ai.submit_command_base
+			modifier = { factor = constant:cannibalism_unification_ai.aligned_factor check_variable = { cannibalism_network_alignment > constant:cannibalism_unification.submission_alignment_threshold } }
+			modifier = { factor = constant:cannibalism_unification_ai.network_route_factor has_country_flag = cannibalism_network_route_alignment }
+			modifier = { factor = constant:cannibalism_unification_ai.aligned_factor has_country_flag = cannibalism_warlord_submission_preparation_open }
+		}
+		hidden_effect = { cannibalism_submit_current_warlord_and_retain_command = yes }
+		custom_effect_tooltip = cannibalism_submit_retain_command_effect_tt
+	}
+
+	option = {
+		name = chaosx.nr14.71.b
+		trigger = { cannibalism_current_warlord_can_submit_without_displacing_player = yes }
+		ai_chance = {
+			base = constant:cannibalism_unification_ai.surrender_base
+			modifier = { factor = constant:cannibalism_unification_ai.weak_resistance_factor num_divisions > constant:cannibalism_unification.strong_warlord_divisions }
+			modifier = { factor = constant:cannibalism_unification_ai.aligned_factor check_variable = { cannibalism_larder < constant:cannibalism_consumption.larder_low } }
+		}
+		hidden_effect = { cannibalism_submit_current_warlord_and_surrender_warband = yes }
+		custom_effect_tooltip = cannibalism_submit_surrender_warband_effect_tt
+	}
+
+	option = {
+		name = chaosx.nr14.71.c
+		ai_chance = {
+			base = constant:cannibalism_unification_ai.autonomy_base
+			modifier = { factor = constant:cannibalism_unification_ai.confederate_factor has_country_flag = cannibalism_hierarchy_pack_confederacy }
+			modifier = { factor = constant:cannibalism_unification_ai.confederate_factor has_country_flag = cannibalism_network_route_manipulation }
+			modifier = { factor = constant:cannibalism_unification_ai.confederate_factor has_country_flag = cannibalism_warlord_manipulation_endgame_open }
+			modifier = { factor = constant:cannibalism_unification_ai.confederate_factor has_country_flag = cannibalism_warlord_convergence_leverage_open }
+		}
+		hidden_effect = { cannibalism_bargain_current_warlord_autonomy = yes }
+		custom_effect_tooltip = cannibalism_bargain_autonomy_effect_tt
+	}
+
+	option = {
+		name = chaosx.nr14.71.d
+		ai_chance = {
+			base = constant:cannibalism_unification_ai.resist_base
+			modifier = { factor = constant:cannibalism_unification_ai.defiance_factor has_country_flag = cannibalism_network_route_defiance }
+			modifier = { factor = constant:cannibalism_unification_ai.defiance_factor has_country_flag = cannibalism_warlord_anti_absorption_open }
+			modifier = { factor = constant:cannibalism_unification_ai.defiance_factor has_country_flag = cannibalism_warlord_independent_fortification_open }
+			modifier = { factor = constant:cannibalism_unification_ai.defiance_factor has_country_flag = cannibalism_warlord_defiance_endgame_open }
+			modifier = { factor = constant:cannibalism_unification_ai.strong_resistance_factor num_divisions > constant:cannibalism_unification.strong_warlord_divisions }
+			modifier = { factor = constant:cannibalism_unification_ai.strong_resistance_factor check_variable = { cannibalism_network_alignment < constant:cannibalism_unification.resistance_alignment_threshold } }
+		}
+		hidden_effect = { cannibalism_resist_unified_host = yes }
+		custom_effect_tooltip = cannibalism_resist_unification_effect_tt
+	}
+
+	option = {
+		name = chaosx.nr14.71.e
+		trigger = { cannibalism_current_warlord_can_challenge_active_unifier = yes }
+		ai_chance = {
+			base = constant:cannibalism_unification_ai.challenge_base
+			modifier = { factor = constant:cannibalism_unification_ai.tyrant_challenge_factor has_country_flag = cannibalism_hierarchy_personal_tyranny }
+			modifier = { factor = constant:cannibalism_unification_ai.strong_resistance_factor has_country_flag = cannibalism_network_route_defiance }
+		}
+		hidden_effect = { cannibalism_challenge_unified_host = yes }
+		custom_effect_tooltip = cannibalism_challenge_unification_effect_tt
+	}
+}
+
+# Alternate Evolution III reveal. The exact live original-ZZZ Wendigo country
+# has already been transformed in place before this player-facing event fires.
+country_event = {
+	id = chaosx.nr14.72
+	title = chaosx.nr14.72.t
+	desc = chaosx.nr14.72.d
+	picture = GFX_report_event_cannibalism_wendigo_reveal
+	is_triggered_only = yes
+	trigger = {
+		is_cannibalism_wendigo_hannibal_country = yes
+		has_global_flag = cannibalism_reveal_complete
+		has_country_flag = cannibalism_wendigo_transformation_prelock
+		has_character = ZZZ_hannibal_wendigo
+	}
+
+	option = {
+		name = chaosx.nr14.72.a
+		custom_effect_tooltip = cannibalism_wendigo_public_reveal_effect_tt
+	}
+}
+
+# A non-Wendigo controller has captured or otherwise severed a registered
+# transformation anchor before the terminal lock.
+country_event = {
+	id = chaosx.nr14.73
+	title = chaosx.nr14.73.t
+	desc = chaosx.nr14.73.d
+	picture = GFX_report_event_cannibalism_wendigo_anchor_broken
+	is_triggered_only = yes
+	trigger = {
+		has_global_flag = cannibalism_reveal_complete
+		has_global_flag = cannibalism_wendigo_route_active
+		NOT = { has_global_flag = world_end }
+		NOT = { is_cannibalism_wendigo_hannibal_country = yes }
+	}
+
+	option = {
+		name = chaosx.nr14.73.a
+		custom_effect_tooltip = cannibalism_wendigo_anchor_broken_effect_tt
+	}
+}
+
+# Stage 2 remains defeatable: the live Wendigo and Event 14 logistics systems
+# have fused, but transformation anchors are still vulnerable.
+country_event = {
+	id = chaosx.nr14.74
+	title = chaosx.nr14.74.t
+	desc = chaosx.nr14.74.d
+	picture = GFX_report_event_cannibalism_wendigo_winter_network
+	is_triggered_only = yes
+	trigger = {
+		has_global_flag = cannibalism_reveal_complete
+		is_cannibalism_wendigo_hannibal_country = yes
+		has_country_flag = cannibalism_wendigo_winter_network_active
+		NOT = { has_country_flag = cannibalism_wendigo_transformation_locked }
+	}
+
+	option = {
+		name = chaosx.nr14.74.a
+		custom_effect_tooltip = cannibalism_wendigo_winter_network_effect_tt
+	}
+}
+
+# The public transformation countdown begins only after every route, chaos,
+# territory, population, victory, Larder, and anchor gate has been met.
+country_event = {
+	id = chaosx.nr14.75
+	title = chaosx.nr14.75.t
+	desc = chaosx.nr14.75.d
+	picture = GFX_report_event_cannibalism_wendigo_countdown
+	is_triggered_only = yes
+	trigger = {
+		has_global_flag = cannibalism_reveal_complete
+		is_cannibalism_wendigo_hannibal_country = yes
+		has_country_flag = cannibalism_wendigo_countdown_active
+		NOT = { has_country_flag = cannibalism_wendigo_transformation_locked }
+	}
+
+	option = {
+		name = chaosx.nr14.75.a
+		custom_effect_tooltip = cannibalism_wendigo_countdown_effect_tt
+	}
+}
+
+# Destroying every active anchor during the countdown permanently closes the
+# terminal transformation while preserving the merged country as a major,
+# nonterminal campaign threat.
+country_event = {
+	id = chaosx.nr14.76
+	title = chaosx.nr14.76.t
+	desc = chaosx.nr14.76.d
+	picture = GFX_report_event_cannibalism_wendigo_transformation_broken
+	is_triggered_only = yes
+	trigger = {
+		has_global_flag = cannibalism_reveal_complete
+		is_cannibalism_wendigo_hannibal_country = yes
+		has_country_flag = cannibalism_wendigo_transformation_broken
+		NOT = { has_global_flag = world_end }
+	}
+
+	option = {
+		name = chaosx.nr14.76.a
+		custom_effect_tooltip = cannibalism_wendigo_transformation_broken_effect_tt
+	}
+}
+
+# The country that paid for and completed a destructive anchor operation gets
+# direct confirmation; the array is compacted by the next Event 14 pulse.
+country_event = {
+	id = chaosx.nr14.77
+	title = chaosx.nr14.77.t
+	desc = chaosx.nr14.77.d
+	picture = GFX_report_event_cannibalism_wendigo_anchor_assault
+	is_triggered_only = yes
+	trigger = {
+		has_global_flag = cannibalism_reveal_complete
+		has_global_flag = cannibalism_wendigo_route_active
+		NOT = { has_global_flag = world_end }
+		NOT = { is_cannibalism_wendigo_hannibal_country = yes }
+	}
+
+	option = {
+		name = chaosx.nr14.77.a
+		custom_effect_tooltip = cannibalism_wendigo_anchor_assault_success_effect_tt
+	}
+}

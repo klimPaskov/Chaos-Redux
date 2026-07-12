@@ -1,0 +1,273 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 014 SCRIPTED GUI
+# ============================================================================
+# Human-facing status surfaces only. All gameplay actions remain decisions or
+# scripted pulses, so AI follows the same costs and no GUI click can bypass a
+# mission, cooldown, population transaction, or Deaths record.
+# Event targets are deliberately absent from every GUI block.
+# ============================================================================
+
+scripted_gui = {
+	cannibalism_early_header_scripted_gui = {
+		context_type = decision_category
+		window_name = "cannibalism_early_header_window"
+
+		visible = {
+			is_ai = no
+			NOT = { has_global_flag = cannibalism_reveal_complete }
+			NOT = { has_global_flag = cannibalism_global_victory }
+			OR = {
+				has_country_flag = cannibalism_country_active
+				has_country_flag = cannibalism_external_route_warning_active
+			}
+		}
+
+		effects = {
+			cannibalism_early_animation_toggle_click = { cannibalism_gui_toggle_animations = yes }
+			cannibalism_network_open_click = { cannibalism_gui_open_network_view = yes }
+		}
+
+		triggers = {
+			cannibalism_cult_cohesion_meter_visible = { has_global_flag = cannibalism_evolution_i_active }
+			cannibalism_cult_cohesion_value_visible = { has_global_flag = cannibalism_evolution_i_active }
+			cannibalism_primary_state_card_visible = { has_variable = cannibalism_primary_theater_state }
+			cannibalism_primary_state_text_visible = { has_variable = cannibalism_primary_theater_state }
+			cannibalism_network_open_visible = {
+				has_global_flag = cannibalism_evolution_ii_active
+				NOT = { has_global_flag = cannibalism_reveal_complete }
+			}
+			cannibalism_network_open_click_enabled = { has_global_flag = cannibalism_evolution_ii_active }
+			cannibalism_early_warning_animated_visible = {
+				NOT = { has_country_flag = cannibalism_gui_animations_disabled }
+				OR = {
+					check_variable = { cannibalism_field_hunger > constant:cannibalism_meter.severe }
+					check_variable = { cannibalism_command_integrity < constant:cannibalism_meter.quiet }
+				}
+			}
+			cannibalism_early_warning_static_visible = {
+				has_country_flag = cannibalism_gui_animations_disabled
+				OR = {
+					check_variable = { cannibalism_field_hunger > constant:cannibalism_meter.severe }
+					check_variable = { cannibalism_command_integrity < constant:cannibalism_meter.quiet }
+				}
+			}
+			cannibalism_cult_emblem_animated_visible = {
+				has_global_flag = cannibalism_evolution_i_active
+				NOT = { has_country_flag = cannibalism_gui_animations_disabled }
+			}
+			cannibalism_cult_emblem_static_visible = {
+				has_global_flag = cannibalism_evolution_i_active
+				has_country_flag = cannibalism_gui_animations_disabled
+			}
+		}
+
+		ai_enabled = { always = no }
+	}
+
+	cannibalism_network_scripted_gui = {
+		context_type = player_context
+		parent_window_token = top_bar
+		window_name = "cannibalism_network_window"
+		dirty = cannibalism_network_gui_dirty
+
+		visible = {
+			is_ai = no
+			has_country_flag = cannibalism_network_gui_open
+			has_global_flag = cannibalism_evolution_ii_active
+			NOT = { has_global_flag = cannibalism_reveal_complete }
+			NOT = { has_global_flag = cannibalism_global_victory }
+			NOT = { has_global_flag = world_end }
+		}
+
+		effects = {
+			cannibalism_network_close_click = { cannibalism_gui_close_network_view = yes }
+			cannibalism_network_animation_toggle_click = { cannibalism_gui_toggle_animations = yes }
+			cannibalism_network_refresh_click = { cannibalism_gui_rebuild_network_view = yes }
+			cannibalism_network_sort_click = { cannibalism_gui_toggle_network_sort = yes }
+			cannibalism_network_tab_domestic_click = {
+				set_variable = { cannibalism_network_gui_tab = constant:cannibalism_gui_tab.domestic_cells }
+				cannibalism_gui_rebuild_network_view = yes
+			}
+			cannibalism_network_tab_islands_click = {
+				set_variable = { cannibalism_network_gui_tab = constant:cannibalism_gui_tab.islands_and_communes }
+				cannibalism_gui_rebuild_network_view = yes
+			}
+			cannibalism_network_tab_foreign_click = {
+				set_variable = { cannibalism_network_gui_tab = constant:cannibalism_gui_tab.foreign_links }
+				cannibalism_gui_rebuild_network_view = yes
+			}
+			cannibalism_network_tab_warlords_click = {
+				set_variable = { cannibalism_network_gui_tab = constant:cannibalism_gui_tab.warlord_states }
+				cannibalism_gui_rebuild_network_view = yes
+			}
+			cannibalism_network_tab_counter_click = {
+				set_variable = { cannibalism_network_gui_tab = constant:cannibalism_gui_tab.countermeasures }
+				cannibalism_gui_rebuild_network_view = yes
+			}
+			cannibalism_network_country_entry_select_click = { ROOT = { cannibalism_gui_select_country_entry = yes } }
+			cannibalism_network_state_entry_select_click = { ROOT = { cannibalism_gui_select_state_entry = yes } }
+		}
+
+		triggers = {
+			cannibalism_network_threads_animated_visible = { NOT = { has_country_flag = cannibalism_gui_animations_disabled } }
+			cannibalism_network_threads_static_visible = { has_country_flag = cannibalism_gui_animations_disabled }
+			cannibalism_island_alert_animated_visible = {
+				NOT = { has_country_flag = cannibalism_gui_animations_disabled }
+				check_variable = { cannibalism_network_gui_tab = constant:cannibalism_gui_tab.islands_and_communes }
+				check_variable = { global.cannibalism_independent_node_count > constant:cannibalism_gui_value.zero }
+			}
+			cannibalism_island_alert_static_visible = {
+				has_country_flag = cannibalism_gui_animations_disabled
+				check_variable = { cannibalism_network_gui_tab = constant:cannibalism_gui_tab.islands_and_communes }
+				check_variable = { global.cannibalism_independent_node_count > constant:cannibalism_gui_value.zero }
+			}
+			cannibalism_selected_target_card_visible = {
+				OR = { has_variable = cannibalism_network_gui_selected_country has_variable = cannibalism_network_gui_selected_state }
+			}
+			cannibalism_selected_target_text_visible = {
+				OR = { has_variable = cannibalism_network_gui_selected_country has_variable = cannibalism_network_gui_selected_state }
+			}
+			cannibalism_selected_country_flag_visible = { has_variable = cannibalism_network_gui_selected_country }
+			cannibalism_selected_target_overlay_animated_visible = {
+				NOT = { has_country_flag = cannibalism_gui_animations_disabled }
+				OR = { has_variable = cannibalism_network_gui_selected_country has_variable = cannibalism_network_gui_selected_state }
+			}
+			cannibalism_selected_target_overlay_static_visible = {
+				has_country_flag = cannibalism_gui_animations_disabled
+				OR = { has_variable = cannibalism_network_gui_selected_country has_variable = cannibalism_network_gui_selected_state }
+			}
+			cannibalism_network_country_entry_select_click_enabled = { always = yes }
+			cannibalism_network_state_entry_select_click_enabled = { always = yes }
+		}
+
+		dynamic_lists = {
+			cannibalism_network_country_dynamic_list = {
+				array = cannibalism_network_gui_country_entries
+				value = cannibalism_network_gui_country
+				index = cannibalism_network_gui_country_index
+				change_scope = yes
+				entry_container = "cannibalism_network_country_entry"
+				country_scope_entry_container = "cannibalism_network_country_entry"
+			}
+			cannibalism_network_state_dynamic_list = {
+				array = cannibalism_network_gui_state_entries
+				value = cannibalism_network_gui_state
+				index = cannibalism_network_gui_state_index
+				change_scope = yes
+				entry_container = "cannibalism_network_state_entry"
+			}
+		}
+
+		properties = {
+			cannibalism_network_country_entry_flag = { image = "[This.GetFlag]" }
+			cannibalism_selected_country_flag = { image = "[?cannibalism_network_gui_selected_country.GetFlag]" }
+		}
+
+		ai_enabled = { always = no }
+	}
+
+	cannibalism_warlord_command_scripted_gui = {
+		context_type = decision_category
+		window_name = "cannibalism_warlord_command_window"
+		visible = {
+			is_ai = no
+			is_cannibalism_warlord_country = yes
+			NOT = { has_global_flag = cannibalism_reveal_complete }
+			NOT = { has_global_flag = world_end }
+		}
+		effects = { cannibalism_warlord_animation_toggle_click = { cannibalism_gui_toggle_animations = yes } }
+		triggers = {
+			cannibalism_alignment_meter_visible = { has_global_flag = cannibalism_evolution_ii_active }
+			cannibalism_alignment_value_visible = { has_global_flag = cannibalism_evolution_ii_active }
+			cannibalism_warlord_route_animated_visible = { NOT = { has_country_flag = cannibalism_gui_animations_disabled } }
+			cannibalism_warlord_route_static_visible = { has_country_flag = cannibalism_gui_animations_disabled }
+			cannibalism_larder_glow_animated_visible = {
+				NOT = { has_country_flag = cannibalism_gui_animations_disabled }
+				OR = {
+					check_variable = { cannibalism_larder < constant:cannibalism_consumption.larder_low }
+					check_variable = { cannibalism_larder > constant:cannibalism_consumption.larder_abundant }
+				}
+			}
+			cannibalism_larder_glow_static_visible = {
+				has_country_flag = cannibalism_gui_animations_disabled
+				OR = {
+					check_variable = { cannibalism_larder < constant:cannibalism_consumption.larder_low }
+					check_variable = { cannibalism_larder > constant:cannibalism_consumption.larder_abundant }
+				}
+			}
+			cannibalism_frenzy_border_animated_visible = {
+				NOT = { has_country_flag = cannibalism_gui_animations_disabled }
+				check_variable = { cannibalism_frenzy > constant:cannibalism_meter.severe }
+			}
+			cannibalism_frenzy_border_static_visible = {
+				has_country_flag = cannibalism_gui_animations_disabled
+				check_variable = { cannibalism_frenzy > constant:cannibalism_meter.severe }
+			}
+		}
+		ai_enabled = { always = no }
+	}
+
+	cannibalism_revealed_command_scripted_gui = {
+		context_type = decision_category
+		window_name = "cannibalism_revealed_command_window"
+		visible = {
+			is_ai = no
+			has_global_flag = cannibalism_reveal_complete
+			is_cannibalism_unified_country = yes
+			NOT = { has_global_flag = cannibalism_wendigo_route_active }
+			NOT = { has_global_flag = world_end }
+		}
+		effects = { cannibalism_revealed_animation_toggle_click = { cannibalism_gui_toggle_animations = yes } }
+		triggers = {
+			cannibalism_revealed_portrait_animated_visible = { NOT = { has_country_flag = cannibalism_gui_animations_disabled } }
+			cannibalism_revealed_portrait_static_visible = { has_country_flag = cannibalism_gui_animations_disabled }
+			cannibalism_unification_seal_animated_visible = { NOT = { has_country_flag = cannibalism_gui_animations_disabled } }
+			cannibalism_unification_seal_static_visible = { has_country_flag = cannibalism_gui_animations_disabled }
+			cannibalism_ordinary_terminal_frame_animated_visible = {
+				has_country_flag = cannibalism_terminal_route_ready
+				NOT = { has_country_flag = cannibalism_gui_animations_disabled }
+			}
+			cannibalism_ordinary_terminal_frame_static_visible = {
+				has_country_flag = cannibalism_terminal_route_ready
+				has_country_flag = cannibalism_gui_animations_disabled
+			}
+			cannibalism_terminal_progress_text_visible = { has_country_flag = cannibalism_terminal_route_ready }
+		}
+		ai_enabled = { always = no }
+	}
+
+	cannibalism_wendigo_command_scripted_gui = {
+		context_type = decision_category
+		window_name = "cannibalism_wendigo_command_window"
+		visible = {
+			is_ai = no
+			has_global_flag = cannibalism_reveal_complete
+			has_global_flag = cannibalism_wendigo_route_active
+			is_cannibalism_wendigo_hannibal_country = yes
+			NOT = { has_global_flag = world_end }
+		}
+		effects = { cannibalism_wendigo_animation_toggle_click = { cannibalism_gui_toggle_animations = yes } }
+		triggers = {
+			cannibalism_wendigo_portrait_animated_visible = { NOT = { has_country_flag = cannibalism_gui_animations_disabled } }
+			cannibalism_wendigo_portrait_static_visible = { has_country_flag = cannibalism_gui_animations_disabled }
+			cannibalism_wendigo_anchor_pulse_animated_visible = {
+				NOT = { has_country_flag = cannibalism_gui_animations_disabled }
+				check_variable = { global.cannibalism_wendigo_active_anchor_count > constant:cannibalism_gui_value.zero }
+			}
+			cannibalism_wendigo_anchor_pulse_static_visible = {
+				has_country_flag = cannibalism_gui_animations_disabled
+				check_variable = { global.cannibalism_wendigo_active_anchor_count > constant:cannibalism_gui_value.zero }
+			}
+			cannibalism_wendigo_terminal_frame_animated_visible = {
+				has_country_flag = cannibalism_wendigo_countdown_active
+				NOT = { has_country_flag = cannibalism_gui_animations_disabled }
+			}
+			cannibalism_wendigo_terminal_frame_static_visible = {
+				has_country_flag = cannibalism_wendigo_countdown_active
+				has_country_flag = cannibalism_gui_animations_disabled
+			}
+			cannibalism_wendigo_terminal_text_visible = { has_country_flag = cannibalism_wendigo_countdown_active }
+		}
+		ai_enabled = { always = no }
+	}
+}
