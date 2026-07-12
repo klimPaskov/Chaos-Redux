@@ -1,0 +1,143 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 018 HISTORY PAYLOAD EFFECTS
+# ============================================================================
+# Binds field-specific facts to the generic event-history sequence without
+# broadening every generic history row. Parallel arrays retain the exact field
+# state, rolled resource, latest addition, total Event 018 ledger, and whether
+# the firing enriched a persistent field. Evolution wrappers preserve each
+# field's physical state while appending only the first global chronology row
+# for each of the four Event 018 tiers.
+# ============================================================================
+
+# STATE scope after the Event 018 opening or enrichment event has executed.
+resources_found_bind_history_sequence = {
+	set_temp_variable = { resources_found_history_was_enrichment = constant:resources_found_value.zero }
+	if = {
+		limit = {
+			check_variable = {
+				var = resources_found_discovery_count
+				value = constant:resources_found_value.one
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { resources_found_history_was_enrichment = constant:resources_found_value.one }
+	}
+	add_to_array = { array = global.resources_found_history_sequence_entries value = global.events_log_history_sequence index = 0 }
+	add_to_array = { array = global.resources_found_history_state_entries value = THIS index = 0 }
+	add_to_array = { array = global.resources_found_history_resource_entries value = resources_found_last_resource_type index = 0 }
+	add_to_array = { array = global.resources_found_history_amount_entries value = resources_found_last_resource_amount index = 0 }
+	add_to_array = { array = global.resources_found_history_total_entries value = resources_found_total_added index = 0 }
+	add_to_array = { array = global.resources_found_history_enrichment_entries value = resources_found_history_was_enrichment index = 0 }
+}
+
+# COUNTRY scope. Resolves the payload for the selected history occurrence, or
+# the latest occurrence when Event Details was opened from the catalog tab.
+resources_found_load_open_history_payload = {
+	clear_variable = resources_found_history_detail_state
+	clear_variable = resources_found_history_detail_resource
+	clear_variable = resources_found_history_detail_amount
+	clear_variable = resources_found_history_detail_total
+	clear_variable = resources_found_history_detail_was_enrichment
+	clr_country_flag = resources_found_history_payload_loaded
+	set_temp_variable = { resources_found_history_target_sequence = constant:resources_found_value.zero }
+	if = {
+		limit = {
+			check_variable = { var = events_log_history_selected_event_id value = constant:resources_found_event.id compare = equals }
+			check_variable = { events_log_history_selected_sequence > constant:resources_found_value.zero }
+		}
+		set_temp_variable = { resources_found_history_target_sequence = events_log_history_selected_sequence }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = global.events_log_open_event_detail_entries^num value = constant:resources_found_value.zero compare = greater_than }
+			check_variable = { var = global.events_log_open_event_detail_entries^0 value = constant:resources_found_event.id compare = equals }
+			check_variable = { global.events_log_open_event_detail_sequence_entries^0 > constant:resources_found_value.zero }
+		}
+		set_temp_variable = { resources_found_history_target_sequence = global.events_log_open_event_detail_sequence_entries^0 }
+	}
+	if = {
+		limit = { check_variable = { resources_found_history_target_sequence > constant:resources_found_value.zero } }
+		set_temp_variable = { resources_found_history_payload_index = constant:resources_found_value.zero }
+		while_loop_effect = {
+			limit = {
+				check_variable = {
+					var = resources_found_history_payload_index
+					value = global.resources_found_history_sequence_entries^num
+					compare = less_than
+				}
+				NOT = { has_country_flag = resources_found_history_payload_loaded }
+			}
+			if = {
+				limit = {
+					check_variable = {
+						var = global.resources_found_history_sequence_entries^resources_found_history_payload_index
+						value = resources_found_history_target_sequence
+						compare = equals
+					}
+				}
+				set_variable = { resources_found_history_detail_state = global.resources_found_history_state_entries^resources_found_history_payload_index }
+				set_variable = { resources_found_history_detail_resource = global.resources_found_history_resource_entries^resources_found_history_payload_index }
+				set_variable = { resources_found_history_detail_amount = global.resources_found_history_amount_entries^resources_found_history_payload_index }
+				set_variable = { resources_found_history_detail_total = global.resources_found_history_total_entries^resources_found_history_payload_index }
+				set_variable = { resources_found_history_detail_was_enrichment = global.resources_found_history_enrichment_entries^resources_found_history_payload_index }
+				set_country_flag = resources_found_history_payload_loaded
+			}
+			add_to_temp_variable = { resources_found_history_payload_index = constant:resources_found_value.one }
+		}
+	}
+}
+
+# STATE scope. Inputs are the temporary stage and tier values set by wrappers.
+resources_found_record_field_evolution_from_temp = {
+	set_temp_variable = { events_log_evolution_event_id = constant:resources_found_event.id }
+	set_temp_variable = { events_log_evolution_type = constant:resources_found_event.evolution_type }
+	set_temp_variable = { events_log_evolution_stage = resources_found_evolution_log_stage }
+	set_temp_variable = { events_log_evolution_tier = resources_found_evolution_log_tier }
+	set_temp_variable = { events_log_evolution_has_actor = constant:resources_found_value.zero }
+	if = {
+		limit = { OWNER = { exists = yes } }
+		OWNER = { save_event_target_as = events_log_evolution_actor }
+		set_temp_variable = { events_log_evolution_has_actor = constant:resources_found_value.one }
+	}
+	record_events_log_evolution_entry = yes
+}
+
+resources_found_record_evolution_i_from_field = {
+	if = {
+		limit = { NOT = { has_global_flag = resources_found_evolution_i_chronology_recorded } }
+		set_global_flag = resources_found_evolution_i_chronology_recorded
+		set_temp_variable = { resources_found_evolution_log_stage = constant:resources_found_event.evolution_i_stage }
+		set_temp_variable = { resources_found_evolution_log_tier = constant:resources_found_event.evolution_i_tier }
+		resources_found_record_field_evolution_from_temp = yes
+	}
+}
+
+resources_found_record_evolution_ii_from_field = {
+	if = {
+		limit = { NOT = { has_global_flag = resources_found_evolution_ii_chronology_recorded } }
+		set_global_flag = resources_found_evolution_ii_chronology_recorded
+		set_temp_variable = { resources_found_evolution_log_stage = constant:resources_found_event.evolution_ii_stage }
+		set_temp_variable = { resources_found_evolution_log_tier = constant:resources_found_event.evolution_ii_tier }
+		resources_found_record_field_evolution_from_temp = yes
+	}
+}
+
+resources_found_record_evolution_iii_from_field = {
+	if = {
+		limit = { NOT = { has_global_flag = resources_found_evolution_iii_chronology_recorded } }
+		set_global_flag = resources_found_evolution_iii_chronology_recorded
+		set_temp_variable = { resources_found_evolution_log_stage = constant:resources_found_event.evolution_iii_stage }
+		set_temp_variable = { resources_found_evolution_log_tier = constant:resources_found_event.evolution_iii_tier }
+		resources_found_record_field_evolution_from_temp = yes
+	}
+}
+
+resources_found_record_evolution_iv_from_field = {
+	if = {
+		limit = { NOT = { has_global_flag = resources_found_evolution_iv_chronology_recorded } }
+		set_global_flag = resources_found_evolution_iv_chronology_recorded
+		set_temp_variable = { resources_found_evolution_log_stage = constant:resources_found_event.evolution_iv_stage }
+		set_temp_variable = { resources_found_evolution_log_tier = constant:resources_found_event.evolution_iv_tier }
+		resources_found_record_field_evolution_from_temp = yes
+	}
+}

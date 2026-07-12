@@ -3241,6 +3241,24 @@ defined_text = {
 	}
 }
 
+
+defined_text = {
+	name = GetChaosMeterDeathsViewTooltipResourceFieldIncidentLine
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.chaos_meter_deaths_view_cause_resource_field_incident_entries^chaos_deaths_index
+				value = 0
+				compare = greater_than
+			}
+		}
+		localization_key = chaos_meter.window.deaths.entry.tooltip.line.resource_field_incident
+	}
+	text = {
+		localization_key = chaos_meter.window.deaths.entry.tooltip.line.none
+	}
+}
+
 defined_text = {
 	name = GetChaosMeterDeathsViewTooltipUnknownLine
 	text = {
@@ -3735,6 +3753,16 @@ defined_text = {
 			localization_key = chaos_meter.deaths.cause.natural_disaster
 		}
 		text = {
+			trigger = {
+				check_variable = {
+					var = chaos_meter_deaths_selected_last_reason
+					value = constant:chaos_meter_deaths_reason.resource_field_incident
+					compare = equals
+				}
+			}
+			localization_key = chaos_meter.deaths.cause.resource_field_incident
+		}
+		text = {
 			localization_key = chaos_meter.deaths.cause.unknown
 		}
 }
@@ -3897,6 +3925,16 @@ defined_text = {
 				}
 			}
 			localization_key = chaos_meter.deaths.cause.natural_disaster
+		}
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.chaos_meter_deaths_detail_reason_entries^chaos_deaths_detail_index
+					value = constant:chaos_meter_deaths_reason.resource_field_incident
+					compare = equals
+				}
+			}
+			localization_key = chaos_meter.deaths.cause.resource_field_incident
 		}
 		text = {
 			localization_key = chaos_meter.deaths.cause.unknown

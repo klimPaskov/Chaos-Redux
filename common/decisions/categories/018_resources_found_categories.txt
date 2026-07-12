@@ -1,0 +1,110 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 018 DECISION CATEGORIES
+# ============================================================================
+# A compact selected-field category owns the core values and selection header.
+# Trade, containment, cave, and anti-cave categories appear only in their live
+# phases so the system does not become a permanent wall of irrelevant actions.
+# ============================================================================
+
+@RESOURCES_FOUND_FIELD_CATEGORY_PRIORITY = 96
+@RESOURCES_FOUND_TRADE_CATEGORY_PRIORITY = 92
+@RESOURCES_FOUND_CONTAINMENT_CATEGORY_PRIORITY = 94
+@RESOURCES_FOUND_CAVE_CATEGORY_PRIORITY = 97
+@RESOURCES_FOUND_ANTI_CAVE_CATEGORY_PRIORITY = 95
+
+resources_found_field_management_category = {
+	icon = GFX_decision_category_resources_found_field
+	picture = GFX_decision_cat_picture_resources_found_field
+	visible = {
+		NOT = { has_global_flag = resources_found_cave_world_end }
+		OR = {
+			any_owned_state = { resources_found_is_active_field = yes }
+			resources_found_gui_has_closed_field_history = yes
+		}
+	}
+	visible_when_empty = yes
+	scripted_gui = resources_found_field_scripted_gui
+	priority = @RESOURCES_FOUND_FIELD_CATEGORY_PRIORITY
+}
+
+resources_found_trade_and_security_category = {
+	icon = GFX_decision_category_resources_found_trade
+	picture = GFX_decision_cat_picture_resources_found_trade
+	visible = {
+		OR = {
+			has_country_flag = resources_found_foreign_field_actor
+			any_owned_state = {
+				resources_found_is_active_field = yes
+				OR = {
+					has_state_flag = resources_found_field_contract_active
+					has_state_flag = resources_found_foreign_interest_open
+					check_variable = { var = resources_found_foreign_pressure value = constant:resources_found_threshold.commercial_interest_pressure compare = greater_than_or_equals }
+				}
+			}
+		}
+	}
+	visible_when_empty = no
+	priority = @RESOURCES_FOUND_TRADE_CATEGORY_PRIORITY
+}
+
+resources_found_containment_category = {
+	icon = GFX_decision_category_resources_found_containment
+	picture = GFX_decision_cat_picture_resources_found_containment
+	visible = {
+		any_owned_state = {
+			resources_found_is_active_field = yes
+			OR = {
+				has_state_flag = resources_found_disturbance_revealed
+				has_state_flag = resources_found_breach_revealed
+				has_state_flag = resources_found_full_seal_active
+			}
+		}
+	}
+	visible_when_empty = yes
+	priority = @RESOURCES_FOUND_CONTAINMENT_CATEGORY_PRIORITY
+}
+
+resources_found_cave_brood_network_category = {
+	icon = GFX_decision_category_resources_found_cave
+	picture = GFX_decision_cat_picture_resources_found_cave
+	visible = {
+		is_resources_found_cave_country = yes
+		has_country_flag = resources_found_cave_country
+	}
+	visible_when_empty = yes
+	priority = @RESOURCES_FOUND_CAVE_CATEGORY_PRIORITY
+}
+
+resources_found_anti_cave_response_category = {
+	icon = GFX_decision_category_resources_found_anti_cave
+	picture = GFX_decision_cat_picture_resources_found_anti_cave
+	visible = {
+		NOT = { is_resources_found_cave_country = yes }
+		OR = {
+			AND = {
+				has_global_flag = world_threat_source_resources_found_caves
+				OR = {
+					has_war_with = DHO
+					any_neighbor_country = { is_resources_found_cave_country = yes }
+					has_country_flag = resources_found_cave_aid_eligible
+				}
+			}
+			AND = {
+				has_global_flag = resources_found_cave_defeated
+				OR = {
+					has_country_flag = resources_found_achievement_global_defeat_contributor
+					has_country_flag = resources_found_global_reconstruction_complete
+				}
+			}
+		}
+	}
+	visible_when_empty = yes
+	priority = @RESOURCES_FOUND_ANTI_CAVE_CATEGORY_PRIORITY
+}
+
+# Internal owner for activated MTTH clock missions. Mission-level `visible`
+# does not hide missions, so the category itself is permanently non-rendered.
+resources_found_hidden_clock_category = {
+	visible = { always = no }
+	visible_when_empty = no
+}

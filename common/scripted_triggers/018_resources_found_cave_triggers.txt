@@ -1,0 +1,268 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 018 OTH-KESH CAVE TRIGGERS
+# ============================================================================
+# Focus validity, target geography, origin-continent membership, terminal-route
+# wrappers, and concrete campaign-experience gates. The core field/evolution,
+# ledger, capacity, and exact terminal input contracts remain in the Event 018
+# core trigger file.
+# ============================================================================
+
+is_resources_found_cave_country = {
+	OR = {
+		original_tag = DHO
+		has_country_flag = resources_found_cave_country
+	}
+}
+
+resources_found_state_is_valid_continent_member = {
+	impassable = no
+	OR = {
+		is_island_state = no
+		any_neighbor_state = { impassable = no }
+	}
+	NOT = { has_state_flag = resources_found_continent_excluded }
+	OWNER = { exists = yes }
+	CONTROLLER = { exists = yes }
+}
+
+resources_found_state_on_cave_origin_continent = {
+	OR = {
+		AND = {
+			DHO = { check_variable = { resources_found_cave_origin_continent = constant:resources_found_continent.europe } }
+			is_on_continent = europe
+		}
+		AND = {
+			DHO = { check_variable = { resources_found_cave_origin_continent = constant:resources_found_continent.north_america } }
+			is_on_continent = north_america
+		}
+		AND = {
+			DHO = { check_variable = { resources_found_cave_origin_continent = constant:resources_found_continent.south_america } }
+			is_on_continent = south_america
+		}
+		AND = {
+			DHO = { check_variable = { resources_found_cave_origin_continent = constant:resources_found_continent.australia } }
+			is_on_continent = australia
+		}
+		AND = {
+			DHO = { check_variable = { resources_found_cave_origin_continent = constant:resources_found_continent.africa } }
+			is_on_continent = africa
+		}
+		AND = {
+			DHO = { check_variable = { resources_found_cave_origin_continent = constant:resources_found_continent.asia } }
+			is_on_continent = asia
+		}
+		AND = {
+			DHO = { check_variable = { resources_found_cave_origin_continent = constant:resources_found_continent.middle_east } }
+			is_on_continent = middle_east
+		}
+	}
+}
+
+resources_found_state_is_valid_distant_foothold = {
+	resources_found_state_is_valid_continent_member = yes
+	NOT = { resources_found_state_on_cave_origin_continent = yes }
+	NOT = { has_state_flag = resources_found_cave_origin }
+	resources_found_state_has_standard_resource_presence = yes
+	is_owned_and_controlled_by = OWNER
+	OWNER = {
+		NOT = { is_resources_found_cave_country = yes }
+		NOT = { is_actual_nonhuman_country = yes }
+		check_variable = { num_owned_states > constant:resources_found_value.one }
+	}
+}
+
+resources_found_cave_has_secondary_capital_candidate = {
+	is_resources_found_cave_country = yes
+	any_owned_state = {
+		NOT = { resources_found_is_cave_origin_state = yes }
+		has_state_flag = resources_found_cave_anchor_active
+		is_controlled_by = ROOT
+		resources_found_state_can_contribute_cave_capacity = yes
+	}
+}
+
+resources_found_cave_has_three_rich_anchors = {
+	is_resources_found_cave_country = yes
+	has_variable = resources_found_active_anchor_count
+	check_variable = { resources_found_active_anchor_count > constant:resources_found_cave_runtime.two }
+}
+
+resources_found_cave_has_rich_reachable_state = {
+	is_resources_found_cave_country = yes
+	OR = {
+		has_variable = resources_found_rich_target_state
+		any_neighbor_country = {
+			exists = yes
+			NOT = { is_resources_found_cave_country = yes }
+			any_owned_state = {
+				resources_found_state_has_standard_resource_presence = yes
+				any_neighbor_state = { is_owned_by = DHO }
+			}
+		}
+	}
+}
+
+resources_found_cave_has_fought_piercing_enemy = {
+	has_country_flag = cave_enemy_piercing_observed
+}
+
+resources_found_cave_has_urban_campaign = {
+	OR = {
+		has_country_flag = cave_urban_combat_observed
+		any_controlled_state = {
+			NOT = { resources_found_is_cave_origin_state = yes }
+			OR = {
+				has_state_category = city
+				has_state_category = large_city
+				has_state_category = metropolis
+				has_state_category = megalopolis
+			}
+		}
+	}
+}
+
+# STATE scope. Burrow objectives are exact enemy-held operational targets, not
+# generic transport states. The defender check is sampled before the approach
+# window begins and preserved by a historical state flag.
+resources_found_cave_is_burrow_objective_candidate = {
+	impassable = no
+	NOT = { is_controlled_by = DHO }
+	any_neighbor_state = {
+		is_controlled_by = DHO
+		has_state_flag = resources_found_cave_anchor_active
+		NOT = { has_state_flag = resources_found_cave_anchor_disrupted }
+	}
+	OR = {
+		is_capital = yes
+		supply_node > constant:resources_found_value.zero
+		bunker > constant:resources_found_value.two
+		coastal_bunker > constant:resources_found_value.two
+	}
+	CONTROLLER = {
+		exists = yes
+		NOT = { is_resources_found_cave_country = yes }
+		divisions_in_state = {
+			state = PREV
+			size > constant:resources_found_achievement.burrow_objective_defender_floor
+		}
+	}
+}
+
+# DHO country scope. The preparation project and target selector share this
+# exact gate, so a project cannot begin against a broader class of state than
+# the state that can later be snapshotted for the achievement window.
+resources_found_cave_has_burrow_objective_candidate = {
+	any_controlled_state = {
+		has_state_flag = resources_found_cave_anchor_active
+		NOT = { has_state_flag = resources_found_cave_anchor_disrupted }
+		any_neighbor_state = { resources_found_cave_is_burrow_objective_candidate = yes }
+	}
+}
+
+# DHO country scope. The marked state, route, mission, and World-End exclusion
+# all remain live for the exact action window.
+resources_found_cave_burrow_objective_context_valid = {
+	is_resources_found_cave_country = yes
+	has_country_flag = resources_found_cave_country
+	has_country_flag = resources_found_burrow_objective_window_active
+	has_active_mission = resources_found_burrow_objective_window_mission
+	has_variable = resources_found_transport_target_state
+	NOT = { has_global_flag = resources_found_cave_world_end }
+	var:resources_found_transport_target_state = {
+		has_state_flag = resources_found_burrow_objective_active
+		has_state_flag = resources_found_burrow_objective_defended_at_start
+		has_state_flag = resources_found_cave_transport_objective
+	}
+}
+
+resources_found_cave_has_battle_analysis = {
+	has_country_flag = resources_found_first_battle_analyzed
+}
+
+resources_found_cave_has_suffered_air_attack = {
+	has_country_flag = cave_hostile_air_power_observed
+}
+
+resources_found_cave_first_neighbor_ring_broken = {
+	OR = {
+		check_variable = { resources_found_active_anchor_count > constant:resources_found_value.zero }
+		num_of_controlled_states > constant:resources_found_cave_runtime.one
+	}
+}
+
+resources_found_cave_has_industrial_belt_objective = {
+	any_controlled_state = {
+		NOT = { resources_found_is_cave_origin_state = yes }
+		OR = {
+			industrial_complex > constant:resources_found_cave_runtime.two
+			arms_factory > constant:resources_found_cave_runtime.two
+			dockyard > constant:resources_found_cave_runtime.two
+		}
+	}
+}
+
+resources_found_cave_has_taken_continental_capital = {
+	has_country_flag = cave_continental_capital_taken_in_war
+}
+
+resources_found_cave_is_near_continent_control = {
+	has_country_flag = resources_found_continent_registry_ready
+	has_variable = resources_found_continent_remaining_state_count
+	check_variable = {
+		var = resources_found_continent_remaining_state_count
+		value = constant:resources_found_world_end.near_control_remaining_states
+		compare = less_than_or_equals
+	}
+}
+
+resources_found_cave_controls_origin_continent = {
+	resources_found_world_end_exact_continent_inputs_valid = yes
+}
+
+resources_found_cave_world_end_route_available = {
+	is_resources_found_cave_country = yes
+	resources_found_is_evolution_iv_enabled = yes
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = world_end_disabled }
+	resources_found_world_end_exact_continent_inputs_valid = yes
+}
+
+resources_found_cave_has_cross_continent_candidate = {
+	is_resources_found_cave_country = yes
+	any_state = { resources_found_state_is_valid_distant_foothold = yes }
+}
+
+resources_found_cave_world_end_verified = {
+	has_country_flag = resources_found_world_end_verification_complete
+	resources_found_world_end_origin_inputs_valid = yes
+	resources_found_world_end_exact_continent_inputs_valid = yes
+	resources_found_world_end_foothold_inputs_valid = yes
+	resources_found_is_evolution_iv_enabled = yes
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = world_end_disabled }
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:resources_found_world_end.chaos_gate
+		compare = greater_than
+	}
+}
+
+resources_found_cave_has_capacity_deficit = {
+	has_variable = resources_found_total_brood_capacity
+	has_variable = resources_found_active_brood_divisions
+	check_variable = {
+		var = resources_found_active_brood_divisions
+		value = resources_found_total_brood_capacity
+		compare = less_than
+	}
+}
+
+resources_found_cave_is_over_capacity = {
+	has_variable = resources_found_total_brood_capacity
+	has_variable = resources_found_active_brood_divisions
+	check_variable = {
+		var = resources_found_active_brood_divisions
+		value = resources_found_total_brood_capacity
+		compare = greater_than
+	}
+}

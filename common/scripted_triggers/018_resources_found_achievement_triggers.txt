@@ -1,0 +1,232 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 018 ACHIEVEMENT TRIGGERS
+# ============================================================================
+# Final-state predicates for the fifteen Event 018 achievements. Historical
+# route facts are recorded by field, cave, decision, and cleanup effects; these
+# triggers never infer a past choice from an unrelated current modifier.
+# ============================================================================
+
+resources_found_achievement_is_ordinary_field_country = {
+	NOT = { is_resources_found_cave_country = yes }
+	has_country_flag = resources_found_achievement_started_ordinary_country
+	NOT = { has_country_flag = resources_found_cave_player_continuation_chosen }
+}
+
+resources_found_achievement_one_vein_market = {
+	resources_found_achievement_is_ordinary_field_country = yes
+	any_owned_state = {
+		resources_found_is_active_field = yes
+		is_owned_and_controlled_by = ROOT
+		OR = {
+			check_variable = { var = resources_found_added_oil value = constant:resources_found_achievement.one_vein_minimum compare = greater_than_or_equals }
+			check_variable = { var = resources_found_added_aluminium value = constant:resources_found_achievement.one_vein_minimum compare = greater_than_or_equals }
+			check_variable = { var = resources_found_added_rubber value = constant:resources_found_achievement.one_vein_minimum compare = greater_than_or_equals }
+			check_variable = { var = resources_found_added_tungsten value = constant:resources_found_achievement.one_vein_minimum compare = greater_than_or_equals }
+			check_variable = { var = resources_found_added_steel value = constant:resources_found_achievement.one_vein_minimum compare = greater_than_or_equals }
+			check_variable = { var = resources_found_added_chromium value = constant:resources_found_achievement.one_vein_minimum compare = greater_than_or_equals }
+		}
+	}
+}
+
+resources_found_achievement_all_resources_one_state = {
+	resources_found_achievement_is_ordinary_field_country = yes
+	any_owned_state = {
+		resources_found_is_active_field = yes
+		is_owned_and_controlled_by = ROOT
+		check_variable = { resources_found_added_oil > constant:resources_found_value.zero }
+		check_variable = { resources_found_added_aluminium > constant:resources_found_value.zero }
+		check_variable = { resources_found_added_rubber > constant:resources_found_value.zero }
+		check_variable = { resources_found_added_tungsten > constant:resources_found_value.zero }
+		check_variable = { resources_found_added_steel > constant:resources_found_value.zero }
+		check_variable = { resources_found_added_chromium > constant:resources_found_value.zero }
+		NOT = { has_state_flag = resources_found_field_converted_to_cave_origin }
+	}
+}
+
+resources_found_achievement_every_worker_home = {
+	resources_found_achievement_is_ordinary_field_country = yes
+	has_country_flag = resources_found_achievement_every_worker_home
+}
+
+resources_found_achievement_full_seal_evolution_three = {
+	resources_found_achievement_is_ordinary_field_country = yes
+	has_country_flag = resources_found_achievement_full_seal_evolution_three
+	NOT = { has_country_flag = resources_found_cave_player_continuation_chosen }
+}
+
+# STATE scope. This is the live predicate sampled for the entire immutable
+# long-term export review. Historical failures are latched by the matching
+# refresh effect, so restoring a value before expiry cannot recover the term.
+resources_found_contract_century_conditions_met = {
+	resources_found_is_active_field = yes
+	has_state_flag = resources_found_contract_century_qualifying
+	has_state_flag = resources_found_long_term_export_contract
+	has_state_flag = resources_found_field_contract_active
+	has_variable = resources_found_contract_century_owner
+	is_owned_and_controlled_by = var:resources_found_contract_century_owner
+	var:resources_found_contract_century_owner = {
+		exists = yes
+		is_subject = no
+		NOT = { is_resources_found_cave_country = yes }
+	}
+	resources_found_contract_is_active_and_valid = yes
+	check_variable = {
+		var = resources_found_developed_yield
+		value = constant:resources_found_achievement.industrial_yield
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = resources_found_workforce_safety
+		value = constant:resources_found_achievement.managed_safety
+		compare = greater_than_or_equals
+	}
+	check_variable = { resources_found_foreign_pressure < constant:resources_found_achievement.pressure_below_crisis }
+	NOT = { has_state_flag = resources_found_public_breach }
+	NOT = { has_state_flag = resources_found_contract_century_border_war }
+	NOT = { has_state_flag = resources_found_contract_century_disqualified }
+	NOT = { has_state_flag = resources_found_field_suspended }
+	NOT = { has_state_flag = resources_found_field_closing }
+	NOT = { has_state_flag = resources_found_field_control_disrupted }
+	NOT = { has_state_flag = resources_found_field_converted_to_cave_origin }
+}
+
+# STATE scope. Both facts are historical and claimant-specific; a severe field
+# dispute cannot be manufactured by starting an agreement after a quiet claim.
+resources_found_dispute_has_required_history = {
+	resources_found_is_active_field = yes
+	has_variable = resources_found_border_claimant
+	has_variable = resources_found_dispute_history_owner
+	is_owned_by = var:resources_found_dispute_history_owner
+	var:resources_found_border_claimant = {
+		exists = yes
+		NOT = { is_special_chaos_country = yes }
+		NOT = { is_actual_nonhuman_country = yes }
+	}
+	has_state_flag = resources_found_dispute_reached_crisis_pressure
+	has_state_flag = resources_found_dispute_reached_armed_stage
+	NOT = { has_state_flag = resources_found_dispute_border_war_fought }
+	NOT = { has_state_flag = resources_found_dispute_border_transfer }
+	NOT = { has_state_flag = resources_found_dispute_history_owner_changed }
+	NOT = { has_state_flag = resources_found_border_claimant_removed }
+}
+
+resources_found_achievement_contract_of_century = {
+	resources_found_achievement_is_ordinary_field_country = yes
+	has_country_flag = resources_found_achievement_contract_of_century
+}
+
+resources_found_achievement_resolve_field_dispute = {
+	resources_found_achievement_is_ordinary_field_country = yes
+	has_country_flag = resources_found_achievement_resolve_field_dispute
+}
+
+resources_found_achievement_thirty_from_below = {
+	NOT = { is_resources_found_cave_country = yes }
+	NOT = { has_country_flag = resources_found_cave_player_continuation_chosen }
+	has_country_flag = resources_found_achievement_cave_breach_owner_or_controller
+	check_variable = { var = resources_found_recorded_cave_starting_divisions value = constant:resources_found_achievement.maximum_starting_divisions compare = equals }
+	has_global_flag = resources_found_cave_defeated
+	NOT = { has_global_flag = resources_found_cave_global_defeat_eligible }
+	exists = yes
+	is_subject = no
+	has_capitulated = no
+	has_variable = resources_found_achievement_starting_capital
+	var:resources_found_achievement_starting_capital = { is_controlled_by = ROOT }
+}
+
+resources_found_achievement_last_shaft_closed = {
+	NOT = { is_resources_found_cave_country = yes }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { has_country_flag = resources_found_cave_player_continuation_chosen }
+	has_country_flag = resources_found_achievement_regional_defeat_contributor
+	has_country_flag = resources_found_achievement_mature_anchor_cleanup_contributor
+	has_global_flag = resources_found_cave_defeated
+	NOT = { has_global_flag = resources_found_cave_global_defeat_eligible }
+	check_variable = { var = resources_found_mature_anchor_cleanup_contribution value = constant:resources_found_achievement.minimum_regional_anchors compare = greater_than_or_equals }
+	NOT = {
+		any_state = {
+			OR = {
+				has_state_flag = resources_found_cave_anchor_active
+				has_state_flag = resources_found_cave_anchor_disrupted
+				has_state_flag = resources_found_cave_anchor_activating
+				has_state_flag = resources_found_cave_cleanup_required
+			}
+		}
+	}
+	NOT = { has_global_flag = world_threat_source_resources_found_caves }
+}
+
+resources_found_achievement_ten_from_one_state = {
+	is_resources_found_cave_country = yes
+	has_country_flag = resources_found_cave_player_continuation_chosen
+	has_country_flag = resources_found_achievement_ten_from_one_state
+}
+
+resources_found_achievement_no_men_no_guns = {
+	is_resources_found_cave_country = yes
+	has_country_flag = resources_found_cave_player_continuation_chosen
+	check_variable = { var = resources_found_active_brood_divisions value = constant:resources_found_achievement.large_cave_army compare = greater_than_or_equals }
+	check_variable = { var = resources_found_active_anchor_count value = constant:resources_found_achievement.large_cave_anchor_count compare = greater_than_or_equals }
+	NOT = { has_global_flag = resources_found_cave_world_end }
+}
+
+resources_found_achievement_moving_mountain = {
+	is_resources_found_cave_country = yes
+	has_country_flag = resources_found_cave_player_continuation_chosen
+	has_country_flag = resources_found_achievement_moving_mountain_route
+	has_country_flag = resources_found_achievement_prepared_major_defeated
+	NOT = { has_country_flag = resources_found_origin_lost_during_qualifying_war }
+	NOT = { has_global_flag = resources_found_cave_world_end }
+}
+
+resources_found_achievement_front_has_a_floor = {
+	is_resources_found_cave_country = yes
+	has_country_flag = resources_found_cave_player_continuation_chosen
+	has_country_flag = resources_found_achievement_front_has_floor_route
+	has_country_flag = resources_found_achievement_burrow_objective_captured
+	NOT = { has_global_flag = resources_found_cave_world_end }
+}
+
+resources_found_achievement_hills_begin_to_move = {
+	is_resources_found_cave_country = yes
+	has_country_flag = resources_found_cave_player_continuation_chosen
+	has_country_flag = resources_found_achievement_hills_move_route
+	has_country_flag = resources_found_achievement_hills_begin_to_move_completed
+	NOT = { has_global_flag = resources_found_cave_world_end }
+}
+
+resources_found_achievement_continental_appetite = {
+	is_resources_found_cave_country = yes
+	has_country_flag = resources_found_cave_player_continuation_chosen
+	has_global_flag = resources_found_cave_world_end
+	has_global_flag = resources_found_world_end_super_event_fired
+	has_country_flag = resources_found_origin_continent_consumed
+	has_country_flag = resources_found_world_end_verification_complete
+	check_variable = { resources_found_world_end_footholds_created > constant:resources_found_value.zero }
+}
+
+resources_found_achievement_ground_quiet_again = {
+	NOT = { is_resources_found_cave_country = yes }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { has_country_flag = resources_found_cave_player_continuation_chosen }
+	has_country_flag = resources_found_achievement_global_defeat_contributor
+	has_country_flag = resources_found_global_reconstruction_complete
+	has_global_flag = resources_found_cave_defeated
+	has_global_flag = resources_found_world_end_super_event_fired
+	has_global_flag = resources_found_cave_global_defeat_eligible
+	has_global_flag = resources_found_global_defeat_super_event_fired
+	NOT = {
+		any_state = {
+			OR = {
+				has_state_flag = resources_found_cave_anchor_active
+				has_state_flag = resources_found_cave_anchor_disrupted
+				has_state_flag = resources_found_cave_anchor_activating
+				has_state_flag = resources_found_cave_cleanup_required
+			}
+		}
+	}
+	NOT = { any_state = { is_owned_by = DHO } }
+	NOT = { has_global_flag = world_threat_source_resources_found_caves }
+}

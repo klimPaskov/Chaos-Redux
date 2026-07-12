@@ -1,0 +1,253 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 018 STATE MODIFIERS
+# ============================================================================
+# Field output stages, commission limits, public breach damage, cave anchors,
+# denial, and cleanup scars. Effects refresh these by lifecycle state so only one
+# field-output stage is active at a time.
+# ============================================================================
+
+@DORMANT_RESOURCES = -0.80
+@DORMANT_BUILD_SPEED = -0.05
+@SURVEYED_RESOURCES = -0.55
+@SURVEYED_SLOTS = 0.05
+@OPERATING_RESOURCES = -0.25
+@OPERATING_SLOTS = 0.10
+@OPERATING_BUILD_SPEED = 0.05
+@INDUSTRIAL_RESOURCES = 0.05
+@INDUSTRIAL_SLOTS = 0.15
+@INDUSTRIAL_BUILD_SPEED = 0.10
+@MAX_EXTRACTION_RESOURCES = 0.20
+@MAX_EXTRACTION_FACTORIES = -0.05
+@MAX_EXTRACTION_MANPOWER = -0.05
+@MAX_EXTRACTION_BUILD_SPEED = 0.10
+@SUSPENDED_RESOURCES = -0.95
+@SUSPENDED_BUILD_SPEED = -0.10
+@CORRIDOR_RESOURCES = 0.15
+@CORRIDOR_SLOTS = 0.20
+@CORRIDOR_SUPPLIES = 0.15
+@CORRIDOR_BUILD_SPEED = 0.15
+@COMMISSION_RESOURCES = -0.15
+@COMMISSION_SUPPLIES = -0.10
+@COMMISSION_BUILD_SPEED = -0.15
+@BREACH_RESOURCES = -0.35
+@BREACH_FACTORIES = -0.20
+@BREACH_MANPOWER = -0.15
+@BREACH_SUPPLIES = -0.25
+@BREACH_ORG = -0.20
+@BREACH_SUPPLY_IMPACT = 0.25
+@BREACH_ATTRITION = 0.10
+@BREACH_BUILD_SPEED = -0.35
+@ORIGIN_RESOURCES = -1.00
+@ORIGIN_FACTORIES = -0.75
+@ORIGIN_MANPOWER = -1.00
+@ORIGIN_SUPPLIES = 0.30
+@ORIGIN_ORG = 0.25
+@ORIGIN_SUPPLY_IMPACT = -0.25
+@ORIGIN_SPEED = -0.10
+@ORIGIN_ENEMY_ATTRITION = 0.20
+@ORIGIN_ENEMY_SUPPLIES = -0.25
+@ORIGIN_BUILD_SPEED = -0.60
+@ANCHOR_ACTIVATING_RESOURCES = -0.25
+@ANCHOR_ACTIVATING_FACTORIES = -0.10
+@ANCHOR_ACTIVATING_SUPPLIES = -0.10
+@ANCHOR_ACTIVATING_BUILD_SPEED = -0.20
+@ANCHOR_ACTIVE_RESOURCES = -1.00
+@ANCHOR_ACTIVE_FACTORIES = -0.60
+@ANCHOR_ACTIVE_MANPOWER = -0.60
+@ANCHOR_ACTIVE_SUPPLIES = 0.20
+@ANCHOR_ACTIVE_ORG = 0.15
+@ANCHOR_ACTIVE_SUPPLY_IMPACT = -0.15
+@ANCHOR_ACTIVE_ENEMY_ATTRITION = 0.10
+@ANCHOR_ACTIVE_ENEMY_SUPPLIES = -0.15
+@ANCHOR_ACTIVE_BUILD_SPEED = -0.45
+@ANCHOR_FORTIFIED_SUPPLIES = 0.30
+@ANCHOR_FORTIFIED_ORG = 0.25
+@ANCHOR_FORTIFIED_ATTRITION = -0.10
+@ANCHOR_FORTIFIED_ENEMY_ATTRITION = 0.20
+@ANCHOR_FORTIFIED_ENEMY_SUPPLIES = -0.25
+@ANCHOR_FORTIFIED_BUILD_SPEED = -0.25
+@DENIED_RESOURCES = -0.75
+@DENIED_FACTORIES = -0.15
+@DENIED_SUPPLIES = -0.15
+@DENIED_BUILD_SPEED = -0.30
+@BURROW_INFILTRATION_RESOURCES = -0.15
+@BURROW_INFILTRATION_SUPPLIES = -0.25
+@BURROW_INFILTRATION_ORG = -0.15
+@BURROW_INFILTRATION_SUPPLY_IMPACT = 0.15
+@BURROW_INFILTRATION_BUILD_SPEED = -0.20
+@CLEANUP_RESOURCES = -0.20
+@CLEANUP_FACTORIES = -0.10
+@CLEANUP_MANPOWER = -0.05
+@CLEANUP_SUPPLIES = -0.05
+@CLEANUP_BUILD_SPEED = -0.15
+@SEALED_SCAR_RESOURCES = -0.10
+@SEALED_SCAR_FACTORIES = -0.05
+@SEALED_SCAR_SLOTS = -0.05
+@SEALED_SCAR_BUILD_SPEED = -0.10
+
+resources_found_field_dormant = {
+	icon = GFX_idea_resources_found_field_dormant
+	enable = { always = yes }
+	local_resources_factor = @DORMANT_RESOURCES
+	state_production_speed_buildings_factor = @DORMANT_BUILD_SPEED
+}
+
+resources_found_field_surveyed = {
+	icon = GFX_idea_resources_found_field_surveyed
+	enable = { always = yes }
+	local_resources_factor = @SURVEYED_RESOURCES
+	local_building_slots_factor = @SURVEYED_SLOTS
+}
+
+resources_found_field_operating = {
+	icon = GFX_idea_resources_found_field_operating
+	enable = { always = yes }
+	local_resources_factor = @OPERATING_RESOURCES
+	local_building_slots_factor = @OPERATING_SLOTS
+	state_production_speed_buildings_factor = @OPERATING_BUILD_SPEED
+}
+
+resources_found_field_industrial = {
+	icon = GFX_idea_resources_found_field_industrial
+	enable = { always = yes }
+	local_resources_factor = @INDUSTRIAL_RESOURCES
+	local_building_slots_factor = @INDUSTRIAL_SLOTS
+	state_production_speed_buildings_factor = @INDUSTRIAL_BUILD_SPEED
+}
+
+resources_found_field_maximum_extraction = {
+	icon = GFX_idea_resources_found_field_maximum_extraction
+	enable = { always = yes }
+	local_resources_factor = @MAX_EXTRACTION_RESOURCES
+	local_factories = @MAX_EXTRACTION_FACTORIES
+	local_manpower = @MAX_EXTRACTION_MANPOWER
+	state_production_speed_buildings_factor = @MAX_EXTRACTION_BUILD_SPEED
+}
+
+resources_found_field_suspended = {
+	icon = GFX_idea_resources_found_field_suspended
+	enable = { always = yes }
+	local_resources_factor = @SUSPENDED_RESOURCES
+	state_production_speed_buildings_factor = @SUSPENDED_BUILD_SPEED
+}
+
+resources_found_compound_corridor = {
+	icon = GFX_idea_resources_found_compound_corridor
+	enable = { always = yes }
+	local_resources_factor = @CORRIDOR_RESOURCES
+	local_building_slots_factor = @CORRIDOR_SLOTS
+	local_supplies = @CORRIDOR_SUPPLIES
+	state_production_speed_buildings_factor = @CORRIDOR_BUILD_SPEED
+}
+
+resources_found_demilitarized_commission = {
+	icon = GFX_idea_resources_found_demilitarized_commission
+	enable = { always = yes }
+	local_resources_factor = @COMMISSION_RESOURCES
+	local_supplies = @COMMISSION_SUPPLIES
+	state_production_speed_buildings_factor = @COMMISSION_BUILD_SPEED
+}
+
+resources_found_public_breach = {
+	icon = GFX_idea_resources_found_public_breach
+	enable = { always = yes }
+	attacker_modifier = yes
+	local_resources_factor = @BREACH_RESOURCES
+	local_factories = @BREACH_FACTORIES
+	local_manpower = @BREACH_MANPOWER
+	local_supplies = @BREACH_SUPPLIES
+	local_org_regain = @BREACH_ORG
+	local_supply_impact_factor = @BREACH_SUPPLY_IMPACT
+	attrition_for_controller = @BREACH_ATTRITION
+	state_production_speed_buildings_factor = @BREACH_BUILD_SPEED
+}
+
+resources_found_cave_origin_chamber = {
+	icon = GFX_idea_resources_found_cave_origin_chamber
+	enable = { always = yes }
+	attacker_modifier = yes
+	local_resources_factor = @ORIGIN_RESOURCES
+	local_factories = @ORIGIN_FACTORIES
+	local_manpower = @ORIGIN_MANPOWER
+	local_supplies = @ORIGIN_SUPPLIES
+	local_org_regain = @ORIGIN_ORG
+	local_supply_impact_factor = @ORIGIN_SUPPLY_IMPACT
+	army_speed_factor_for_controller = @ORIGIN_SPEED
+	enemy_attrition = @ORIGIN_ENEMY_ATTRITION
+	enemy_local_supplies = @ORIGIN_ENEMY_SUPPLIES
+	state_production_speed_buildings_factor = @ORIGIN_BUILD_SPEED
+}
+
+resources_found_cave_anchor_activating = {
+	icon = GFX_idea_resources_found_cave_anchor_activating
+	enable = { always = yes }
+	local_resources_factor = @ANCHOR_ACTIVATING_RESOURCES
+	local_factories = @ANCHOR_ACTIVATING_FACTORIES
+	local_supplies = @ANCHOR_ACTIVATING_SUPPLIES
+	state_production_speed_buildings_factor = @ANCHOR_ACTIVATING_BUILD_SPEED
+}
+
+resources_found_cave_anchor_active = {
+	icon = GFX_idea_resources_found_cave_anchor_active
+	enable = { always = yes }
+	attacker_modifier = yes
+	local_resources_factor = @ANCHOR_ACTIVE_RESOURCES
+	local_factories = @ANCHOR_ACTIVE_FACTORIES
+	local_manpower = @ANCHOR_ACTIVE_MANPOWER
+	local_supplies = @ANCHOR_ACTIVE_SUPPLIES
+	local_org_regain = @ANCHOR_ACTIVE_ORG
+	local_supply_impact_factor = @ANCHOR_ACTIVE_SUPPLY_IMPACT
+	enemy_attrition = @ANCHOR_ACTIVE_ENEMY_ATTRITION
+	enemy_local_supplies = @ANCHOR_ACTIVE_ENEMY_SUPPLIES
+	state_production_speed_buildings_factor = @ANCHOR_ACTIVE_BUILD_SPEED
+}
+
+resources_found_cave_anchor_fortified = {
+	icon = GFX_idea_resources_found_cave_anchor_fortified
+	enable = { always = yes }
+	attacker_modifier = yes
+	local_supplies = @ANCHOR_FORTIFIED_SUPPLIES
+	local_org_regain = @ANCHOR_FORTIFIED_ORG
+	attrition_for_controller = @ANCHOR_FORTIFIED_ATTRITION
+	enemy_attrition = @ANCHOR_FORTIFIED_ENEMY_ATTRITION
+	enemy_local_supplies = @ANCHOR_FORTIFIED_ENEMY_SUPPLIES
+	state_production_speed_buildings_factor = @ANCHOR_FORTIFIED_BUILD_SPEED
+}
+
+resources_found_denied_resource_state = {
+	icon = GFX_idea_resources_found_denied_resource_state
+	enable = { always = yes }
+	local_resources_factor = @DENIED_RESOURCES
+	local_factories = @DENIED_FACTORIES
+	local_supplies = @DENIED_SUPPLIES
+	state_production_speed_buildings_factor = @DENIED_BUILD_SPEED
+}
+
+resources_found_burrow_infiltration = {
+	icon = GFX_idea_cave_burrow_war_doctrine
+	enable = { always = yes }
+	local_resources_factor = @BURROW_INFILTRATION_RESOURCES
+	local_supplies = @BURROW_INFILTRATION_SUPPLIES
+	local_org_regain = @BURROW_INFILTRATION_ORG
+	local_supply_impact_factor = @BURROW_INFILTRATION_SUPPLY_IMPACT
+	state_production_speed_buildings_factor = @BURROW_INFILTRATION_BUILD_SPEED
+}
+
+resources_found_anchor_cleanup = {
+	icon = GFX_idea_resources_found_anchor_cleanup
+	enable = { always = yes }
+	local_resources_factor = @CLEANUP_RESOURCES
+	local_factories = @CLEANUP_FACTORIES
+	local_manpower = @CLEANUP_MANPOWER
+	local_supplies = @CLEANUP_SUPPLIES
+	state_production_speed_buildings_factor = @CLEANUP_BUILD_SPEED
+}
+
+resources_found_sealed_field_scar = {
+	icon = GFX_idea_resources_found_sealed_field_scar
+	enable = { always = yes }
+	local_resources_factor = @SEALED_SCAR_RESOURCES
+	local_factories = @SEALED_SCAR_FACTORIES
+	local_building_slots_factor = @SEALED_SCAR_SLOTS
+	state_production_speed_buildings_factor = @SEALED_SCAR_BUILD_SPEED
+}

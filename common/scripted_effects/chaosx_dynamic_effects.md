@@ -631,6 +631,7 @@ Use this whenever a threat-specific system changes whether its own source flag s
 - `world_threat_source_mengele`
 - `world_threat_source_fury`
 - `world_threat_source_death`
+- `world_threat_source_resources_found_caves`
 
 Future threats should follow the same pattern:
 
@@ -690,6 +691,62 @@ TIB = {
 	register_crisis_rescue_target = yes
 }
 apply_crisis_rescue_event_weight_adjustments = yes
+```
+
+## apply_exact_state_civilian_population_loss
+
+This state-scope effect applies one exact, clamped civilian population loss. It
+is the shared transaction for systems that must remove real state population
+and report the same applied amount even when the optional Deaths display is
+disabled. With Deaths enabled it delegates both population removal and logging
+to `chaos_meter_register_deaths`; with Deaths disabled, or when logging is
+explicitly suppressed, it applies the identical negative state-manpower delta
+directly. Callers must derive rewards, costs, and cumulative totals only from
+the returned applied value.
+
+Inputs:
+
+- `state_civilian_population_loss_requested`: requested people to remove.
+- `state_civilian_population_loss_minimum_remaining`: protected population
+  floor in people; defaults to `0`.
+- `state_civilian_population_loss_reason`: Deaths reason ID; defaults to the
+  shared unknown reason.
+- `state_civilian_population_loss_log_deaths`: `1` to use the Deaths API when
+  enabled, `0` to apply an unlogged transaction; defaults to `1`.
+- `state_civilian_population_loss_target_country`: optional country scope used
+  by the Deaths ledger; defaults to the state's owner.
+- `state_civilian_population_loss_has_target_country`: set to `1` when the
+  supplied target is valid; defaults to `1` with the owner target.
+
+Outputs:
+
+- `state_civilian_population_loss_applied`: the rounded number of people
+  actually removed after the real-population floor is enforced.
+- `state_civilian_population_loss_result`: `1` when a positive loss was
+  applied, otherwise `0`.
+
+Side effects:
+
+- can update the shared Deaths totals, history, country cause totals, and state
+  civilian-death total;
+- always removes the returned applied amount from the current state's real
+  population exactly once;
+- uses temporary helper variables prefixed
+  `state_civilian_population_loss_` and the public `chaos_deaths_*` Deaths API
+  inputs.
+
+Example:
+
+```txt
+set_temp_variable = { state_civilian_population_loss_requested = 25000 }
+set_temp_variable = { state_civilian_population_loss_minimum_remaining = 10000 }
+set_temp_variable = { state_civilian_population_loss_reason = constant:chaos_meter_deaths_reason.resource_field_incident }
+set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
+set_temp_variable = { state_civilian_population_loss_has_target_country = 1 }
+apply_exact_state_civilian_population_loss = yes
+ROOT = {
+	add_to_variable = { my_actual_loss_total = state_civilian_population_loss_applied }
+}
 ```
 
 ## grant_random_chaos_special_project_available_tech

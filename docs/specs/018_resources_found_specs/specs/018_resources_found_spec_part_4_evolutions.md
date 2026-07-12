@@ -14,7 +14,7 @@ The event must preserve three different concepts:
 - **Evolution stage** changes the event’s scale or rules.
 - **Incident sequence** is the gradual chain of symptoms, attacks, and public consequences that unfolds inside an evolution.
 
-Ordinary baseline stages must not be logged as evolutions. Each evolution stage is logged once per field or once per event-wide milestone according to the final implementation design. An active field can progress through Evolution I, II, III, and IV over time. A first firing at a higher enabled evolution begins with a stronger opening, but it must still introduce later horror through a readable sequence.
+Ordinary baseline stages must not be logged as evolutions. The shared Event Details chronology records each Evolution I to IV tier once as an event-wide milestone. The first qualifying field supplies the actor and state context. Later fields retain their own physical progression and history without appending another shared chronology row. An active field can progress through Evolution I, II, III, and IV over time. A first firing at a higher enabled evolution begins with a stronger opening, but it must still introduce later horror through a readable sequence.
 
 ## Evolution pacing
 
@@ -579,7 +579,7 @@ This exclusion is mandatory. The starting army already represents the resources 
 
 ### Starting army scaling
 
-The starting army should range from a credible minimum to a hard cap of about 30 divisions.
+The starting army ranges from a credible minimum to a hard cap of 30 divisions.
 
 A suitable design range is:
 
@@ -603,7 +603,7 @@ The opening strength should use a combined exploitation score based on:
 
 High Workforce Safety, successful evacuation, sealed galleries, and reduced active works can lower the opening score. The cap remains 30.
 
-The exact formula belongs to implementation and should be centralized in tuning constants or a documented helper.
+The accepted exact formula, score bands, mitigation caps, and deterministic regression fixture are maintained in `matrices/tuning_and_balance_framework.md`. The implementation centralizes them in script constants and `resources_found_calculate_cave_starting_strength`.
 
 ### Immediate war behavior
 
@@ -628,4 +628,4 @@ Disabling a later evolution must not strand the player in an unwinnable precedin
 
 ## Evolution acceptance standard
 
-The evolution chain is complete when every stage has both a pre-fire opening and an active-field entry, uses dynamic pacing, changes player actions, records one shared evolution entry, respects enable settings, preserves the promised closure route, and hands Evolution IV into a full cave-country package rather than a one-event enemy spawn.
+The evolution chain is complete when every stage has both a pre-fire opening and an active-field entry, uses dynamic pacing, changes player actions, records exactly one shared Event Details entry per event-wide tier while preserving later fields' local history, respects enable settings, preserves the promised closure route, and hands Evolution IV into a full cave-country package rather than a one-event enemy spawn.

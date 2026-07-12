@@ -12,6 +12,7 @@ The registered clusters are:
 - **Peace** (`constant:event_cluster_id.peace = 4`): settlements, ceasefires, exhaustion, negotiations, and related de-escalation shocks.
 - **Natural Disasters** (`constant:event_cluster_id.natural_disasters = 5`): repeated Event 013 disaster seasons that grow from local incidents into varied, regional, and abnormal sequences as chaos rises.
 - **Formables** (`constant:event_cluster_id.formables = 6`): reserved cluster for future formable-event work.
+- **Economy (pos)** (`constant:event_cluster_id.economy_positive = 7`): beneficial economic shocks with persistent development choices, represented by the repeatable Resources Found field system.
 
 ## Runtime Flow
 
@@ -54,6 +55,8 @@ Important constants:
 - `event_cluster_natural_disasters.cooldown_days = 120`
 - `event_cluster_formables.unlock_tier = 0`
 - `event_cluster_formables.cooldown_days = 120`
+- `event_cluster_economy_positive.unlock_tier = 0`
+- `event_cluster_economy_positive.cooldown_days = 120`
 - `event_cluster_roll.minimum` and `event_cluster_roll.maximum` define the shared percentile roll range
 - `event_cluster_roll_chance_default.*` defines tier-based cluster roll chance
 - `event_cluster_member_participation.*` defines member participation chance
@@ -80,10 +83,13 @@ Current membership:
 | Natural Disasters | Event 13, Regional Cascades season | High | 60% optional participation from Rising Chaos, tier 2 |
 | Natural Disasters | Event 13, Abnormal Paths season | Severe | 35% optional participation from Chaos, tier 3 |
 | Formables | Event 12, Africa Is One | Low | Reserved placeholder member |
+| Economy (pos) | Event 18, Resources Found | Medium | Required repeatable member |
 
 When Event 17 is queued as a Diplomatic Panic member, its normal pre-fire helper builds the weighted eligible-minor pool and saves its own `random_faction_target_country`. The cluster route does not prefer the current player or reuse another member's actor as the Event 17 target.
 
 The Natural Disasters rows are logical Event 013 season slots. They are not Event 046, 051, 099, 043, or 120 members. When Event 013 is the selected trigger event, only the first matching slot is promoted to required status. Later duplicate slots keep their optional participation rolls. Every slot that fires calls the Event 013 public API and creates one Event 013 history row for that genuine season. The cluster itself retains one separate cluster history row and uses the first prepared affected country as its actor. Each logical slot persists its exact target state and country, evolution, severity, presentation policies, and scaling context before it enters the pending queue, so overlapping cluster launches cannot borrow another slot's disaster context.
+
+Resources Found is the single Economy (pos) member. The cluster uses the same Event 018 pre-fire preparation as ordinary automatic firing, so it chooses one valid owner and exact owned/controlled state before dispatch. A fresh discovery and a repeat enrichment are both valid outcomes. The cluster remains Medium danger even when an enabled evolution later deepens that field, because cluster danger classifies the beneficial economic entry rather than revealing its hidden escalation paths.
 
 ## Member Order And Cooldown
 

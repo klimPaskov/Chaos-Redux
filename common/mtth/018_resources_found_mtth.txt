@@ -1,0 +1,105 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 018 RESOURCES FOUND MTTH VARIABLES
+# ============================================================================
+# Country-scope pre-fire entries pace the first eligible discovery. State-scope
+# active entries pace repeat discoveries/incidents after a field exists. Callers
+# select the entry only after the corresponding evolution-setting trigger passes.
+# Consume with `mtth:resources_found_*_interval`.
+# ============================================================================
+
+resources_found_evolution_i_prefire_interval = {
+	base = constant:resources_found_mtth.evolution_i_prefire_days
+	modifier = {
+		factor = constant:resources_found_mtth_factor.chaos_high
+		OR = {
+			has_global_flag = { flag = chaos_tier value = constant:resources_found_chaos_tier.high }
+			has_global_flag = { flag = chaos_tier value = constant:resources_found_chaos_tier.severe }
+		}
+	}
+	modifier = { factor = constant:resources_found_mtth_factor.chaos_extreme has_global_flag = { flag = chaos_tier value = constant:resources_found_chaos_tier.extreme } }
+	modifier = { factor = constant:resources_found_mtth_factor.war has_war = yes }
+	modifier = { factor = constant:resources_found_mtth_factor.small_country num_of_factories < constant:resources_found_country_scale.small_factory_ceiling }
+	modifier = { factor = constant:resources_found_mtth_factor.major_country is_major = yes }
+}
+
+resources_found_evolution_i_active_interval = {
+	base = constant:resources_found_mtth.evolution_i_active_days
+	modifier = { factor = constant:resources_found_mtth_factor.high_yield check_variable = { resources_found_developed_yield > constant:resources_found_field_value.band_4 } }
+	modifier = { factor = constant:resources_found_mtth_factor.repeat_discovery check_variable = { resources_found_discovery_count > constant:resources_found_value.one } }
+	modifier = { factor = constant:resources_found_mtth_factor.compound_field has_state_flag = resources_found_compound_field }
+	modifier = { factor = constant:resources_found_mtth_factor.suspension has_state_flag = resources_found_field_suspended }
+	modifier = { factor = constant:resources_found_mtth_factor.restricted_workings has_state_flag = resources_found_restricted_workings }
+}
+
+resources_found_evolution_ii_prefire_interval = {
+	base = constant:resources_found_mtth.evolution_ii_prefire_days
+	modifier = {
+		factor = constant:resources_found_mtth_factor.chaos_high
+		OR = {
+			has_global_flag = { flag = chaos_tier value = constant:resources_found_chaos_tier.high }
+			has_global_flag = { flag = chaos_tier value = constant:resources_found_chaos_tier.severe }
+		}
+	}
+	modifier = { factor = constant:resources_found_mtth_factor.chaos_extreme has_global_flag = { flag = chaos_tier value = constant:resources_found_chaos_tier.extreme } }
+	modifier = { factor = constant:resources_found_mtth_factor.war has_war = yes }
+	modifier = { factor = constant:resources_found_mtth_factor.small_country num_of_factories < constant:resources_found_country_scale.small_factory_ceiling }
+	modifier = { factor = constant:resources_found_mtth_factor.major_country is_major = yes }
+}
+
+resources_found_evolution_ii_active_interval = {
+	base = constant:resources_found_mtth.evolution_ii_active_days
+	modifier = { factor = constant:resources_found_mtth_factor.deep_excavation check_variable = { resources_found_excavation_depth > constant:resources_found_field_value.band_4 } }
+	modifier = { factor = constant:resources_found_mtth_factor.maximum_extraction check_variable = { resources_found_developed_yield > constant:resources_found_field_value.band_5 } }
+	modifier = { factor = constant:resources_found_mtth_factor.low_safety check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 } }
+	modifier = { factor = constant:resources_found_mtth_factor.high_safety check_variable = { resources_found_workforce_safety > constant:resources_found_field_value.band_4 } }
+	modifier = { factor = constant:resources_found_mtth_factor.suspension has_state_flag = resources_found_field_suspended }
+	modifier = { factor = constant:resources_found_mtth_factor.inspection has_state_flag = resources_found_commission_active }
+}
+
+resources_found_evolution_iii_prefire_interval = {
+	base = constant:resources_found_mtth.evolution_iii_prefire_days
+	modifier = {
+		factor = constant:resources_found_mtth_factor.chaos_high
+		OR = {
+			has_global_flag = { flag = chaos_tier value = constant:resources_found_chaos_tier.high }
+			has_global_flag = { flag = chaos_tier value = constant:resources_found_chaos_tier.severe }
+		}
+	}
+	modifier = { factor = constant:resources_found_mtth_factor.chaos_extreme has_global_flag = { flag = chaos_tier value = constant:resources_found_chaos_tier.extreme } }
+	modifier = { factor = constant:resources_found_mtth_factor.war has_war = yes }
+	modifier = { factor = constant:resources_found_mtth_factor.major_country is_major = yes }
+}
+
+resources_found_evolution_iii_active_interval = {
+	base = constant:resources_found_mtth.evolution_iii_active_days
+	modifier = { factor = constant:resources_found_mtth_factor.extreme_excavation check_variable = { resources_found_excavation_depth > constant:resources_found_field_value.band_5 } }
+	modifier = { factor = constant:resources_found_mtth_factor.high_disturbance check_variable = { resources_found_subsurface_disturbance > constant:resources_found_field_value.band_4 } }
+	modifier = { factor = constant:resources_found_mtth_factor.critical_disturbance check_variable = { resources_found_subsurface_disturbance > constant:resources_found_field_value.band_5 } }
+	modifier = { factor = constant:resources_found_mtth_factor.field_deaths check_variable = { resources_found_field_deaths > constant:resources_found_value.zero } }
+	modifier = { factor = constant:resources_found_mtth_factor.full_seal_active has_state_flag = resources_found_full_seal_active }
+}
+
+resources_found_evolution_iv_prefire_interval = {
+	base = constant:resources_found_mtth.evolution_iv_prefire_days
+	modifier = {
+		factor = constant:resources_found_mtth_factor.chaos_high
+		OR = {
+			has_global_flag = { flag = chaos_tier value = constant:resources_found_chaos_tier.high }
+			has_global_flag = { flag = chaos_tier value = constant:resources_found_chaos_tier.severe }
+		}
+	}
+	modifier = { factor = constant:resources_found_mtth_factor.chaos_extreme has_global_flag = { flag = chaos_tier value = constant:resources_found_chaos_tier.extreme } }
+	modifier = { factor = constant:resources_found_mtth_factor.war has_war = yes }
+	modifier = { factor = constant:resources_found_mtth_factor.major_country is_major = yes }
+}
+
+resources_found_evolution_iv_active_interval = {
+	base = constant:resources_found_mtth.evolution_iv_active_days
+	modifier = { factor = constant:resources_found_mtth_factor.high_breach check_variable = { resources_found_breach_pressure > constant:resources_found_field_value.band_4 } }
+	modifier = { factor = constant:resources_found_mtth_factor.critical_breach check_variable = { resources_found_breach_pressure > constant:resources_found_field_value.band_5 } }
+	modifier = { factor = constant:resources_found_mtth_factor.failed_seal has_state_flag = resources_found_failed_full_seal }
+	modifier = { factor = constant:resources_found_mtth_factor.successful_hunts check_variable = { resources_found_successful_hunts > constant:resources_found_value.zero } }
+	modifier = { factor = constant:resources_found_mtth_factor.evacuation has_state_flag = resources_found_successful_evacuation }
+	modifier = { factor = constant:resources_found_mtth_factor.compressed_opening has_state_flag = resources_found_compressed_opening }
+	modifier = { factor = constant:resources_found_mtth_factor.full_seal_active has_state_flag = resources_found_full_seal_active }
+}

@@ -415,6 +415,8 @@ The three doctrine routes are mutually exclusive at their main commitment point.
 
 The player can still unlock one support template from another doctrine through a late adaptation focus, but cannot gain every doctrine capstone.
 
+The implemented doctrine rewards use one cumulative spirit per chosen route rather than stacking disconnected bonuses. Stone Phalanx swaps from its base doctrine into cumulative Interlocking Carapaces and then cumulative Great-Gun resistance. Burrow War swaps into a cumulative Urban Cellar package tied to the prepared transport objective. Scree Tide swaps into cumulative Split Great Broods and then cumulative Lighter Plates, changing spawn pacing and formation preference while retaining an armor and cohesion tradeoff. Every swap is idempotent and applies to future automatic spawning and the route's AI objectives.
+
 ## Lane 5: Adaptation and enemy study
 
 ### Purpose
@@ -458,6 +460,8 @@ The shared capstone lets the player choose one final adaptation package based on
 - air-attack resilience
 
 The choice should be exclusive or costly enough to preserve counterplay.
+
+The implemented adaptation contract permits one dense-plate or open-joint route. Each route remains one cumulative spirit as Surface Senses and then Sky-Hardened adaptation are added. Dense plates retain the Stone spawn preference and a speed cost. Open joints retain the Scree spawn preference and an armor or defense cost. The capstone removes lower stages before adding the final stage, so completion cannot collect both routes or duplicate the earlier rewards.
 
 ## Lane 6: Continental expansion and consumption
 

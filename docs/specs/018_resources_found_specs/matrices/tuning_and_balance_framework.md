@@ -226,47 +226,48 @@ Small countries need scaled alternatives through longer duration, foreign aid, o
 
 ## Starting cave-army model
 
-The exact formula should be documented and centralized. A conceptual score can use the following contributors.
+The implemented score is centralized in `resources_found_strength` and `resources_found_strength_factor`, with calculation owned by `resources_found_calculate_cave_starting_strength`.
+
+The score is clamped to `0..120`. Starting divisions are `6 + floor(score / 5)`, hard-capped at 30. The unavoidable direct Evolution III package is normalized by subtracting its 720-resource floor before resource tonnage is scored.
 
 ### Positive score contributors
 
-| Contributor | Suggested influence |
-| --- | --- |
-| Every full baseline-sized 100 resource units added by Event 018 | Major contribution |
-| Each distinct resource type | Moderate contribution |
-| Each repeat discovery | Moderate contribution |
-| Maximum Developed Yield reached | Moderate to major contribution |
-| Maximum Excavation Depth reached | Major contribution |
-| Months under maximum extraction | Small recurring contribution |
-| Event 018 field deaths | Moderate recurring contribution with cap |
-| Failed full seal | Major contribution |
-| Military exploitation during Evolution III | Major contribution |
-| Unsealed surface nests at breach | Moderate contribution |
+| Contributor | Implemented score |
+| --- | ---: |
+| Event 018 resource tonnage above the 720-resource package floor | `(resources - 720) / 100 * 0.50` |
+| Each distinct standard resource | `0.25` |
+| Each discovery after the first | `2.50` |
+| Maximum Developed Yield reached | `yield * 0.25` |
+| Maximum Excavation Depth reached | `depth * 0.25` |
+| Each recorded 30-day maximum-extraction month, capped at 18 months | `1.25` |
+| Event 018 field deaths | `deaths / 10000 * 2.00` |
+| Failed full seal | `12.00` |
+| Military exploitation during Evolution III | `14.00` |
+| Unsealed surface nest at breach | `5.00` |
 
 ### Negative score contributors
 
-| Contributor | Suggested influence |
-| --- | --- |
-| High Workforce Safety maintained | Small to moderate reduction |
-| Successful evacuation | Reduces civilian feeding and exposed population contribution |
-| Sealed access networks | Moderate reduction |
-| Long suspension before breach | Moderate reduction |
-| Successful hunts | Small reduction per major success |
+| Contributor | Implemented reduction |
+| --- | ---: |
+| Workforce Safety above 40 | `(safety - 40) * 0.20` |
+| Successful evacuation | `8.00` |
+| Sealed access network | `7.00` |
+| Each 90 days of completed or live suspension, capped at three periods | `4.00` |
+| Each successful hunt, capped at four | `2.50` |
+
+Maximum-extraction and suspension durations include completed intervals plus a still-live interval at breach. Starting strength is calculated once, persisted on the origin and DHO, and never recalculated from later captured states.
 
 ### Mapping score to divisions
 
-The score should map into a smooth 6 to 30 range. It should not jump from 10 to 25 because one value crossed a narrow threshold.
+| Score | Opening divisions | Exploitation profile |
+| --- | ---: | --- |
+| `0` to below `25` | 6 to 10 | Minimal qualifying breach |
+| `25` to below `65` | 11 to 18 | Developed or dangerous field |
+| `65` to below `95` | 19 to 24 | Heavily exploited field |
+| `95` to below `120` | 25 to 29 | Extreme, repeated, or military exploitation |
+| `120` after the clamp | 30 | Capped extreme |
 
-Suggested bands:
-
-| Exploitation severity | Opening divisions |
-| --- | --- |
-| Minimal qualifying breach | 6 to 10 |
-| Developed and dangerous | 11 to 18 |
-| Heavily exploited | 19 to 24 |
-| Extreme all-resource or repeated exploitation | 25 to 30 |
-
-The result is rounded to an integer and capped at 30.
+The deterministic regression fixture is: direct package low/high `8/8`, protected breach `6`, developed `15`, dangerous developed `18`, heavy `20`, rich unmitigated `21`, failed-seal heavy `23`, mitigated rich history `13`, extreme military `26`, extreme repeated `28`, and capped extreme `30`.
 
 ## Cave division balance
 

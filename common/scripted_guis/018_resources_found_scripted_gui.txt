@@ -1,0 +1,176 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 018 SELECTED FIELD PANEL
+# ============================================================================
+# Compact player-only state view attached to the field-management category.
+# Subsurface Disturbance and Breach Pressure remain absent until that selected
+# field reveals Evolution II and Evolution III respectively.
+# ============================================================================
+
+scripted_gui = {
+	resources_found_field_scripted_gui = {
+		context_type = decision_category
+		window_name = "resources_found_field_window"
+
+		visible = {
+			is_ai = no
+			OR = {
+				any_owned_state = { resources_found_is_active_field = yes }
+				resources_found_gui_has_closed_field_history = yes
+			}
+		}
+
+		effects = {
+			resources_found_gui_previous_click = { resources_found_gui_select_previous_field = yes }
+			resources_found_gui_next_click = { resources_found_gui_select_next_field = yes }
+			resources_found_gui_goto_click = { resources_found_gui_goto_selected_field = yes }
+			resources_found_gui_history_click = { resources_found_gui_toggle_closed_history = yes }
+			resources_found_gui_animation_click = {
+				if = {
+					limit = { has_country_flag = resources_found_animations_disabled }
+					clr_country_flag = resources_found_animations_disabled
+				}
+				else = { set_country_flag = resources_found_animations_disabled }
+			}
+		}
+
+		triggers = {
+			resources_found_gui_state_visible = {
+				resources_found_country_has_valid_selected_field = yes
+				OR = {
+					NOT = { has_country_flag = resources_found_gui_closed_history_view }
+					NOT = { resources_found_gui_has_closed_field_history = yes }
+				}
+			}
+			resources_found_gui_closed_state_visible = {
+				has_country_flag = resources_found_gui_closed_history_view
+				resources_found_gui_has_closed_field_history = yes
+			}
+			resources_found_gui_selection_visible = {
+				resources_found_country_has_valid_selected_field = yes
+				OR = {
+					NOT = { has_country_flag = resources_found_gui_closed_history_view }
+					NOT = { resources_found_gui_has_closed_field_history = yes }
+				}
+			}
+			resources_found_gui_closed_selection_visible = {
+				has_country_flag = resources_found_gui_closed_history_view
+				resources_found_gui_has_closed_field_history = yes
+			}
+			resources_found_gui_disturbance_visible = {
+				resources_found_country_has_valid_selected_field = yes
+				var:resources_found_selected_field = { has_state_flag = resources_found_disturbance_revealed }
+			}
+			resources_found_gui_breach_visible = {
+				resources_found_country_has_valid_selected_field = yes
+				var:resources_found_selected_field = { has_state_flag = resources_found_breach_revealed }
+			}
+			resources_found_gui_seal_animated_visible = {
+				resources_found_country_has_valid_selected_field = yes
+				NOT = { has_country_flag = resources_found_animations_disabled }
+				var:resources_found_selected_field = {
+					NOT = { has_state_flag = resources_found_field_suspended }
+					NOT = { has_state_flag = resources_found_full_seal_active }
+					NOT = { has_state_flag = resources_found_breach_revealed }
+					NOT = { has_state_flag = resources_found_disturbance_revealed }
+					check_variable = { var = resources_found_workforce_safety value = constant:resources_found_field_value.band_3 compare = greater_than_or_equals }
+				}
+			}
+			resources_found_gui_seal_static_visible = {
+				resources_found_country_has_valid_selected_field = yes
+				has_country_flag = resources_found_animations_disabled
+				var:resources_found_selected_field = {
+					NOT = { has_state_flag = resources_found_field_suspended }
+					NOT = { has_state_flag = resources_found_full_seal_active }
+					NOT = { has_state_flag = resources_found_breach_revealed }
+					NOT = { has_state_flag = resources_found_disturbance_revealed }
+					check_variable = { var = resources_found_workforce_safety value = constant:resources_found_field_value.band_3 compare = greater_than_or_equals }
+				}
+			}
+			resources_found_gui_unsafe_animated_visible = {
+				resources_found_country_has_valid_selected_field = yes
+				NOT = { has_country_flag = resources_found_animations_disabled }
+				var:resources_found_selected_field = {
+					NOT = { has_state_flag = resources_found_field_suspended }
+					NOT = { has_state_flag = resources_found_full_seal_active }
+					NOT = { has_state_flag = resources_found_breach_revealed }
+					NOT = { has_state_flag = resources_found_disturbance_revealed }
+					check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 }
+				}
+			}
+			resources_found_gui_unsafe_static_visible = {
+				resources_found_country_has_valid_selected_field = yes
+				has_country_flag = resources_found_animations_disabled
+				var:resources_found_selected_field = {
+					NOT = { has_state_flag = resources_found_field_suspended }
+					NOT = { has_state_flag = resources_found_full_seal_active }
+					NOT = { has_state_flag = resources_found_breach_revealed }
+					NOT = { has_state_flag = resources_found_disturbance_revealed }
+					check_variable = { resources_found_workforce_safety < constant:resources_found_field_value.band_3 }
+				}
+			}
+			resources_found_gui_disturbance_animated_visible = {
+				resources_found_country_has_valid_selected_field = yes
+				NOT = { has_country_flag = resources_found_animations_disabled }
+				var:resources_found_selected_field = {
+					has_state_flag = resources_found_disturbance_revealed
+					NOT = { has_state_flag = resources_found_breach_revealed }
+					NOT = { has_state_flag = resources_found_full_seal_active }
+				}
+			}
+			resources_found_gui_disturbance_static_visible = {
+				resources_found_country_has_valid_selected_field = yes
+				has_country_flag = resources_found_animations_disabled
+				var:resources_found_selected_field = {
+					has_state_flag = resources_found_disturbance_revealed
+					NOT = { has_state_flag = resources_found_breach_revealed }
+					NOT = { has_state_flag = resources_found_full_seal_active }
+				}
+			}
+			resources_found_gui_breach_animated_visible = {
+				resources_found_country_has_valid_selected_field = yes
+				NOT = { has_country_flag = resources_found_animations_disabled }
+				var:resources_found_selected_field = {
+					has_state_flag = resources_found_breach_revealed
+					NOT = { has_state_flag = resources_found_full_seal_active }
+				}
+			}
+			resources_found_gui_breach_static_visible = {
+				resources_found_country_has_valid_selected_field = yes
+				has_country_flag = resources_found_animations_disabled
+				var:resources_found_selected_field = {
+					has_state_flag = resources_found_breach_revealed
+					NOT = { has_state_flag = resources_found_full_seal_active }
+				}
+			}
+			resources_found_gui_sealing_animated_visible = {
+				resources_found_country_has_valid_selected_field = yes
+				NOT = { has_country_flag = resources_found_animations_disabled }
+				var:resources_found_selected_field = { has_state_flag = resources_found_full_seal_active }
+			}
+			resources_found_gui_sealing_static_visible = {
+				resources_found_country_has_valid_selected_field = yes
+				has_country_flag = resources_found_animations_disabled
+				var:resources_found_selected_field = { has_state_flag = resources_found_full_seal_active }
+			}
+			resources_found_gui_suspended_visible = {
+				resources_found_country_has_valid_selected_field = yes
+				var:resources_found_selected_field = {
+					has_state_flag = resources_found_field_suspended
+					NOT = { has_state_flag = resources_found_full_seal_active }
+				}
+			}
+			resources_found_gui_closed_disturbance_visible = {
+				has_country_flag = resources_found_gui_closed_history_view
+				resources_found_gui_has_closed_field_history = yes
+				var:resources_found_last_closed_field = { has_state_flag = resources_found_disturbance_revealed }
+			}
+			resources_found_gui_closed_breach_visible = {
+				has_country_flag = resources_found_gui_closed_history_view
+				resources_found_gui_has_closed_field_history = yes
+				var:resources_found_last_closed_field = { has_state_flag = resources_found_breach_revealed }
+			}
+		}
+
+		ai_enabled = { always = no }
+	}
+}

@@ -333,6 +333,8 @@ A defeated regional threat can leave a small number of cleanup events about seal
 
 A structured defeat aftermath is appropriate only when the cave country became global or near-global, consumed much of a continent, created cross-continent footholds, or caused severe worldwide losses.
 
+The implemented classifier treats Event 018 world end or any created cross-continent foothold as global evidence. A complete origin-continent conquest can also qualify only when the cave campaign lasted at least 365 days. The 75-percent continental milestone remains a progression event and never authorizes global aftermath by itself. Another active world-end identity blocks the Event 018 classifier unless it is the Event 018 cave terminal state.
+
 ### Defeat super-event
 
 A defeat super-event can fire when:
@@ -359,6 +361,8 @@ Surviving countries can create a post-crisis compact focused on:
 - monitoring of abandoned resource basins
 
 This can become a shared decision or tech-sharing system only if the cave war was truly global. A short regional incident should not create a new world order.
+
+The reconstruction choice is offered once per eligible survivor only after that country completed at least three anchor-cleanup contributions, no cleanup site remains, and no live cave threat exists. Join, lead, and refuse are mutually exclusive. Completing the chosen commitment cannot reopen the choice event.
 
 ### Lasting consequences
 

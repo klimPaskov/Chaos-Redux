@@ -1,0 +1,428 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 018 DECISION AND MISSION CONSTANTS
+# ============================================================================
+# Central tuning for the selected-field project queue, diplomacy, containment,
+# border conflict, cave decisions, and anti-cave response. Gameplay helpers
+# consume these values through explicit constant:category.key access.
+# ============================================================================
+
+resources_found_decision_profile = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	administration = 1
+	survey = 2
+	industry = 3
+	transport = 4
+	labor = 5
+	security = 6
+	diplomacy = 7
+	containment = 8
+	full_seal = 9
+	cave = 10
+	anti_cave = 11
+}
+
+# Stable storage slots for the exact cost preview ledger. Field and remote
+# diplomacy use separate slots because only field projects inherit field risk.
+resources_found_decision_preview_slot = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	administration_field = 1
+	survey_field = 2
+	industry_field = 3
+	transport_field = 4
+	labor_field = 5
+	security_field = 6
+	diplomacy_field = 7
+	containment_field = 8
+	full_seal_field = 9
+	diplomacy_remote = 10
+	cave = 11
+	anti_cave = 12
+	security_remote = 13
+}
+
+# Stable storage slots for exact computed project durations. Field-context
+# projects inherit the selected field's country, risk, safety, contract,
+# occupation, and infrastructure factors. Remote projects use country and war
+# factors only. Full-seal durations have dedicated slots because that profile
+# has an additional small-country duration factor.
+resources_found_decision_duration_preview_slot = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	field_14 = 1
+	field_60_full_seal = 2
+	field_75 = 3
+	field_90 = 4
+	field_120 = 5
+	field_150 = 6
+	field_180 = 7
+	field_210 = 8
+	field_240 = 9
+	field_360_full_seal = 10
+	remote_1 = 11
+	remote_45 = 12
+	remote_90 = 13
+	remote_120 = 14
+	remote_150 = 15
+	remote_180 = 16
+}
+
+resources_found_decision_family = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	field = 1
+	trade = 2
+	containment = 3
+	cave = 4
+	anti_cave = 5
+}
+
+resources_found_decision_project = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	establish_national_authority = 1
+	charter_domestic_operators = 2
+	create_international_commission = 3
+	strategic_reserve = 4
+	grant_foreign_concession = 5
+	sign_export_contract = 6
+	geological_appraisal = 10
+	deeper_test = 11
+	map_basin = 12
+	open_primary_works = 13
+	extend_corridor = 14
+	install_machinery = 15
+	build_processing = 16
+	expand_settlement = 17
+	integrated_corridor = 18
+	unified_compound_authority = 19
+	split_resource_concessions = 20
+	recruit_regional_labor = 21
+	rotate_crews = 22
+	reinforce_shafts = 23
+	field_hospital = 24
+	compensate_families = 25
+	conceal_casualties = 26
+	test_air_water = 27
+	evacuate_lower_workings = 28
+	underground_sweep = 29
+	scientific_military_survey = 30
+	regulated_output = 31
+	maximum_shifts = 32
+	wartime_requisition = 33
+	concession_surge = 34
+	emergency_suspension = 35
+	invite_strategic_bids = 36
+	balance_buyers = 37
+	reserve_domestic_output = 38
+	renegotiate_concession = 39
+	nationalize_field = 40
+	settle_compensation = 41
+	organize_field_guards = 42
+	counter_foreign_surveys = 43
+	break_smuggling_network = 44
+	prepare_demolition = 45
+	invite_border_arbitration = 46
+	reinforce_field_administration = 47
+	restore_commission_compliance = 48
+	reinforce_perimeter = 49
+	hunt_surface_packs = 50
+	clear_urban_district = 51
+	evacuate_field_settlements = 52
+	evacuate_state_center = 53
+	request_hard_attack_aid = 54
+	seal_access_network = 55
+	partial_closure = 56
+	full_seal = 57
+	emergency_seal = 58
+	baseline_exact_closure = 59
+	restricted_stabilization = 60
+	transfer_review = 61
+	contract_review = 62
+	secure_transport_corridor = 63
+	reactivate_suspended_field = 64
+	name_border_claimant = 65
+	secure_frontier_corridor = 66
+	negotiate_demilitarized_field = 67
+	dissolve_international_commission = 68
+	start_limited_border_war = 69
+	escalate_limited_border_war = 77
+	foreign_purchase_request = 70
+	foreign_development_offer = 71
+	foreign_exclusive_rights_request = 72
+	foreign_access_guarantee = 73
+	foreign_pressure_action = 74
+	foreign_smuggling_action = 75
+	foreign_sabotage_action = 76
+	cave_activate_anchor = 99
+	cave_mark_rich_state = 100
+	cave_accelerate_anchor = 101
+	cave_guard_chamber = 102
+	cave_replace_origin_brood = 103
+	cave_consolidate_unfed = 104
+	cave_deepen_link = 105
+	cave_phalanx_assault = 106
+	cave_burrow_approach = 107
+	cave_release_raiders = 108
+	cave_convert_industry = 109
+	cave_refresh_queue = 110
+	cave_fortify_origin = 111
+	cave_continent_objectives = 112
+	cave_continent_verification = 113
+	cave_world_end_preparation = 114
+	anti_cave_contracts = 120
+	anti_cave_resource_denial = 121
+	anti_cave_anchor_cleanup = 122
+	anti_cave_share_intelligence = 123
+	anti_cave_evacuation_corridor = 124
+	anti_cave_cooperation = 125
+	anti_cave_reconstruction = 126
+	anti_cave_recapture_preparation = 127
+	anti_cave_aid = 128
+	anti_cave_state_restoration = 129
+}
+
+resources_found_decision_duration = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	administration = 75
+	survey = 90
+	industry = 180
+	transport = 210
+	labor = 90
+	security = 75
+	diplomacy = 90
+	containment = 90
+	partial_closure = 240
+	full_seal = 360
+	emergency_seal = 60
+	cave_short = 45
+	cave_order = 1
+	cave_project = 150
+	anti_cave = 120
+	reconstruction = 180
+	contract_term = 365
+	commission_observation = 180
+	frontier_objective = 150
+	border_war_limit = 240
+	border_war_minimum = 14
+	anchor_acceleration = 15
+	anchor_recapture = 30
+	rapid_route_window = 180
+}
+
+resources_found_decision_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	administration_pp = 35
+	administration_civ = 2
+	survey_pp = 30
+	survey_civ = 2
+	survey_support = 50
+	survey_trucks = 40
+	survey_fuel = 500
+	industry_pp = 50
+	industry_civ = 5
+	industry_support = 200
+	industry_trucks = 150
+	industry_trains = 5
+	industry_fuel = 2000
+	transport_pp = 45
+	transport_civ = 6
+	transport_support = 100
+	transport_trucks = 200
+	transport_trains = 10
+	transport_fuel = 1500
+	labor_pp = 25
+	labor_civ = 2
+	labor_manpower = 3000
+	security_pp = 35
+	security_civ = 2
+	security_manpower = 5000
+	security_infantry = 500
+	security_support = 100
+	security_command = 8
+	diplomacy_pp = 40
+	diplomacy_civ = 2
+	containment_pp = 55
+	containment_civ = 6
+	containment_manpower = 5000
+	containment_infantry = 600
+	containment_support = 300
+	containment_anti_tank = 150
+	containment_trucks = 180
+	containment_trains = 8
+	containment_command = 15
+	full_seal_pp = 100
+	full_seal_civ = 12
+	full_seal_mil = 4
+	full_seal_manpower = 10000
+	full_seal_infantry = 1000
+	full_seal_support = 600
+	full_seal_anti_tank = 300
+	full_seal_trucks = 400
+	full_seal_trains = 20
+	full_seal_fuel = 6000
+	full_seal_command = 25
+	cave_pp = 25
+	cave_command = 15
+	anti_cave_pp = 50
+	anti_cave_civ = 4
+	anti_cave_mil = 3
+	anti_cave_manpower = 5000
+	anti_cave_infantry = 500
+	anti_cave_support = 300
+	anti_cave_anti_tank = 300
+	anti_cave_trucks = 120
+	anti_cave_trains = 6
+	anti_cave_command = 15
+	anti_cave_army_xp = 10
+}
+
+resources_found_decision_change = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minor = 5
+	moderate = 10
+	major = 20
+	severe = 30
+	appraisal_yield = 10
+	deeper_test_yield = 15
+	deeper_test_depth = 15
+	primary_works_yield = 25
+	primary_works_depth = 10
+	machinery_yield = 20
+	machinery_depth = 15
+	processing_yield = 15
+	settlement_safety = 15
+	rotation_yield_loss = 10
+	rotation_safety = 15
+	reinforcement_safety = 20
+	hospital_safety = 10
+	maximum_yield = 25
+	maximum_safety_loss = 20
+	maximum_depth = 20
+	maximum_disturbance = 15
+	suspension_disturbance_loss = 10
+	suspension_breach_loss = 10
+	perimeter_breach_loss = 15
+	hunt_breach_loss = 20
+	access_breach_loss = 15
+	access_depth_loss = 10
+	foreign_pressure_relief = 15
+	foreign_pressure_growth = 15
+	border_pressure_growth = 10
+	denial_capacity_reduction = 3
+	consolidation_strength_loss = 0.10
+}
+
+resources_found_decision_gate = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	minimum_divisions = 1
+	minimum_hard_attack_preparation = 1
+	minimum_factory_burden = 1
+	border_provinces = 4
+	border_combat_width = 80
+	commission_troop_limit_divisions = 3
+	commission_forbidden_fort_threshold = 1
+	cleanup_contribution_target = 3
+	reconstruction_contribution_target = 3
+}
+
+resources_found_decision_factor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	standard = 1.00
+	low_risk = 0.85
+	high_risk = 1.20
+	critical_risk = 1.40
+	field_low = 0.85
+	field_high = 1.20
+	field_extreme = 1.40
+	war_cost = 1.15
+	war_duration = 1.20
+	occupation_cost = 1.25
+	occupation_duration = 1.40
+	low_safety_duration = 1.20
+	high_safety_duration = 0.90
+	emergency_duration = 0.70
+	active_contract_duration = 0.90
+	small_full_seal_cost = 0.55
+	small_full_seal_duration = 1.50
+}
+
+resources_found_decision_burden = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	field_consumer_goods = 0.05
+	trade_consumer_goods = 0.03
+	containment_consumer_goods = 0.10
+	anti_cave_consumer_goods = 0.08
+	field_factory_output = -0.03
+	containment_factory_output = -0.08
+	anti_cave_factory_output = -0.10
+}
+
+resources_found_decision_ai = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	never = 0
+	very_low = 15
+	low = 35
+	medium = 70
+	high = 120
+	urgent = 220
+	critical = 400
+}
+
+resources_found_border_conflict = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	combat_width = 80
+	minimum_duration_days = 14
+	provinces = 4
+	owner_modifier = 0.05
+	claimant_modifier = 0.05
+}

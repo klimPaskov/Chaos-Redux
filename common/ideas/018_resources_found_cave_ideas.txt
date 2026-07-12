@@ -1,0 +1,473 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 018 FIELD, CAVE, AND COUNTERMEASURE IDEAS
+# ============================================================================
+# Persistent national spirits for the Oth-Kesh lifecycle and ordinary-country
+# counterplay. State-level field and anchor effects live in the matching dynamic
+# modifier file so their map ownership can be cleaned independently.
+# ============================================================================
+
+@CARAPACE_ORG = 0.08
+@CARAPACE_DEFENCE = 0.12
+@CARAPACE_ATTACK = 0.08
+@SLOW_BLOOD_SPEED = -0.35
+@SLOW_BLOOD_ORG_REGAIN = -0.15
+@SLOW_BLOOD_PLANNING = -0.10
+@RESOURCE_BORN_RECRUITABLE = -1.00
+@RESOURCE_BORN_DIVISION_DESIRE = -1000
+@RESOURCE_BORN_EXPERIENCE = -1.00
+@SURFACE_STARVATION_SUPPLY = 0.30
+@SURFACE_STARVATION_MORALE = -0.15
+@SURFACE_STARVATION_OUT_OF_SUPPLY = 0.25
+@UNTRANSLATABLE_TENSION = 100.0
+@UNTRANSLATABLE_EXTERNAL_FACTOR = -100.0
+@UNTRANSLATABLE_RESOURCE_MARKET = -1.00
+@UNTRANSLATABLE_OPINION_GAIN = -10.0
+@UNTRANSLATABLE_ALLY_FACTOR = -100
+@UNTRANSLATABLE_ECONOMY_LOCK = 10.00
+@UNTRANSLATABLE_PRODUCTION_LOCK = -10.00
+@UNTRANSLATABLE_SURRENDER = 0.35
+@ONE_MAW_MAX_PLANNING = 0.15
+@ONE_MAW_PLANNING = 0.12
+@ONE_MAW_ORG = 0.08
+@ONE_MAW_SUPPLY = 0.05
+@MANY_CHAMBERS_ORG_REGAIN = 0.18
+@MANY_CHAMBERS_SUPPLY = -0.12
+@MANY_CHAMBERS_PLANNING = -0.05
+@HOARD_VEINS_DEFENCE = 0.15
+@HOARD_VEINS_MORALE = 0.12
+@HOARD_VEINS_SPEED = -0.08
+@STONE_ATTACK = 0.12
+@STONE_PLANNING = 0.15
+@STONE_DEFENCE = 0.10
+@STONE_SPEED = -0.10
+@STONE_INTERLOCKING_ATTACK = 0.12
+@STONE_INTERLOCKING_PLANNING = 0.15
+@STONE_INTERLOCKING_ORG = 0.08
+@STONE_INTERLOCKING_DEFENCE = 0.22
+@STONE_INTERLOCKING_SPEED = -0.18
+@STONE_INTERLOCKING_SUPPLY = 0.08
+@STONE_GREAT_GUN_ATTACK = 0.16
+@STONE_GREAT_GUN_PLANNING = 0.15
+@STONE_GREAT_GUN_ORG = 0.14
+@STONE_GREAT_GUN_DEFENCE = 0.32
+@STONE_GREAT_GUN_SPEED = -0.23
+@STONE_GREAT_GUN_SUPPLY = 0.08
+@BURROW_ATTACK = 0.08
+@BURROW_SUPPLY = -0.15
+@BURROW_PLANNING = 0.15
+@BURROW_DEFENCE = -0.05
+@BURROW_URBAN_CELLAR_ATTACK = 0.13
+@BURROW_URBAN_CELLAR_PLANNING = 0.25
+@BURROW_URBAN_CELLAR_SUPPLY = -0.23
+@BURROW_URBAN_CELLAR_DEFENCE = -0.08
+@SCREE_SPEED = 0.25
+@SCREE_PLANNING = 0.10
+@SCREE_ORG = -0.05
+@SCREE_DEFENCE = -0.05
+@SCREE_SPLIT_SPEED = 0.33
+@SCREE_SPLIT_PLANNING = 0.10
+@SCREE_SPLIT_ORG = -0.09
+@SCREE_SPLIT_DEFENCE = -0.10
+@SCREE_SPLIT_SUPPLY = 0.05
+@SCREE_LIGHTER_SPEED = 0.45
+@SCREE_LIGHTER_PLANNING = 0.10
+@SCREE_LIGHTER_ORG = -0.09
+@SCREE_LIGHTER_ORG_REGAIN = 0.08
+@SCREE_LIGHTER_DEFENCE = -0.18
+@SCREE_LIGHTER_SUPPLY = 0.05
+@DENSE_PLATE_ORG = 0.10
+@DENSE_PLATE_DEFENCE = 0.08
+@DENSE_PLATE_SPEED = -0.12
+@OPEN_JOINT_SPEED = 0.18
+@OPEN_JOINT_ORG_REGAIN = 0.10
+@OPEN_JOINT_DEFENCE = -0.08
+@SURFACE_SENSES_PLANNING = 0.12
+@SURFACE_SENSES_MAX_PLANNING = 0.10
+@SURFACE_SENSES_RECON = 0.15
+@SKY_HARDENED_AIR_PENALTY = -0.20
+@DENSE_SKY_HARDENED_DEFENCE = 0.16
+@OPEN_SKY_HARDENED_DEFENCE = 0.00
+@UNFED_ATTACK = -0.25
+@UNFED_DEFENCE = -0.25
+@UNFED_ORG = -0.30
+@UNFED_MORALE = -0.35
+@UNFED_SPEED = -0.20
+@ORIGIN_CRISIS_STABILITY = -0.35
+@ORIGIN_CRISIS_WAR_SUPPORT = -0.20
+@ORIGIN_CRISIS_ORG = -0.20
+@ORIGIN_CRISIS_PLANNING = -0.25
+@ORIGIN_CRISIS_SUPPLY = 0.20
+@WORLD_BELOW_ATTACK = 0.30
+@WORLD_BELOW_DEFENCE = 0.25
+@WORLD_BELOW_ORG_REGAIN = 0.25
+@WORLD_BELOW_SPEED = 0.15
+@WORLD_BELOW_SUPPLY = -0.25
+@WORLD_BELOW_AGGRESSION = 1000
+@ANTI_CAVE_HARD_ATTACK = 0.15
+@ANTI_CAVE_PIERCING = 0.12
+@ANTI_CAVE_ARMY_ATTACK = 0.05
+@ANTI_CAVE_EFFICIENCY_COST = -0.05
+@COOPERATION_HARD_ATTACK = 0.08
+@COOPERATION_PIERCING = 0.08
+@COOPERATION_PLANNING = 0.08
+@COOPERATION_RESEARCH = 0.10
+
+ideas = {
+	country = {
+		cave_mineral_carapaces = {
+			picture = cave_mineral_carapaces
+			allowed = { original_tag = DHO }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_org_factor = @CARAPACE_ORG
+				army_defence_factor = @CARAPACE_DEFENCE
+				army_attack_factor = @CARAPACE_ATTACK
+			}
+		}
+
+		cave_slow_blood = {
+			picture = cave_slow_blood
+			allowed = { original_tag = DHO }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_speed_factor = @SLOW_BLOOD_SPEED
+				army_org_regain = @SLOW_BLOOD_ORG_REGAIN
+				planning_speed = @SLOW_BLOOD_PLANNING
+			}
+		}
+
+		cave_resource_born_broods = {
+			picture = cave_resource_born_broods
+			allowed = { original_tag = DHO }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				recruitable_population_factor = @RESOURCE_BORN_RECRUITABLE
+				ai_desired_divisions_factor = @RESOURCE_BORN_DIVISION_DESIRE
+				experience_gain_army = @RESOURCE_BORN_EXPERIENCE
+			}
+		}
+
+		cave_surface_starvation = {
+			picture = cave_surface_starvation
+			allowed = { original_tag = DHO }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				supply_consumption_factor = @SURFACE_STARVATION_SUPPLY
+				army_morale_factor = @SURFACE_STARVATION_MORALE
+				out_of_supply_factor = @SURFACE_STARVATION_OUT_OF_SUPPLY
+			}
+		}
+
+		cave_untranslatable_command = {
+			picture = cave_untranslatable_command
+			allowed = { original_tag = DHO }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				lend_lease_tension = @UNTRANSLATABLE_TENSION
+				send_volunteers_tension = @UNTRANSLATABLE_TENSION
+				send_volunteer_factor = @UNTRANSLATABLE_EXTERNAL_FACTOR
+				trade_opinion_factor = @UNTRANSLATABLE_EXTERNAL_FACTOR
+				resources_to_market_factor = @UNTRANSLATABLE_RESOURCE_MARKET
+				opinion_gain_monthly_factor = @UNTRANSLATABLE_OPINION_GAIN
+				join_faction_tension = @UNTRANSLATABLE_TENSION
+				ai_get_ally_desire_factor = @UNTRANSLATABLE_ALLY_FACTOR
+				ai_join_ally_desire_factor = @UNTRANSLATABLE_ALLY_FACTOR
+				consumer_goods_factor = @UNTRANSLATABLE_ECONOMY_LOCK
+				production_speed_buildings_factor = @UNTRANSLATABLE_PRODUCTION_LOCK
+				production_factory_max_efficiency_factor = @UNTRANSLATABLE_PRODUCTION_LOCK
+				surrender_limit = @UNTRANSLATABLE_SURRENDER
+			}
+		}
+
+		cave_one_maw_command = {
+			picture = cave_one_maw_command
+			allowed = { original_tag = DHO }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				max_planning = @ONE_MAW_MAX_PLANNING
+				planning_speed = @ONE_MAW_PLANNING
+				army_org_factor = @ONE_MAW_ORG
+				supply_consumption_factor = @ONE_MAW_SUPPLY
+			}
+		}
+
+		cave_many_chambers_command = {
+			picture = cave_many_chambers_command
+			allowed = { original_tag = DHO }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_org_regain = @MANY_CHAMBERS_ORG_REGAIN
+				supply_consumption_factor = @MANY_CHAMBERS_SUPPLY
+				planning_speed = @MANY_CHAMBERS_PLANNING
+			}
+		}
+
+		cave_hoard_the_veins_command = {
+			picture = cave_hoard_the_veins_command
+			allowed = { original_tag = DHO }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_defence_factor = @HOARD_VEINS_DEFENCE
+				army_morale_factor = @HOARD_VEINS_MORALE
+				army_speed_factor = @HOARD_VEINS_SPEED
+			}
+		}
+
+		cave_stone_phalanx_doctrine = {
+			picture = cave_stone_phalanx_doctrine
+			allowed = { original_tag = DHO }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_attack_factor = @STONE_ATTACK
+				planning_speed = @STONE_PLANNING
+				army_defence_factor = @STONE_DEFENCE
+				army_speed_factor = @STONE_SPEED
+			}
+		}
+
+		cave_interlocking_carapaces_adaptation = {
+			picture = cave_stone_phalanx_doctrine
+			allowed = { original_tag = DHO }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_attack_factor = @STONE_INTERLOCKING_ATTACK
+				planning_speed = @STONE_INTERLOCKING_PLANNING
+				army_org_factor = @STONE_INTERLOCKING_ORG
+				army_defence_factor = @STONE_INTERLOCKING_DEFENCE
+				army_speed_factor = @STONE_INTERLOCKING_SPEED
+				supply_consumption_factor = @STONE_INTERLOCKING_SUPPLY
+			}
+		}
+
+		cave_great_gun_resistance = {
+			picture = cave_stone_phalanx_doctrine
+			allowed = { original_tag = DHO }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_attack_factor = @STONE_GREAT_GUN_ATTACK
+				planning_speed = @STONE_GREAT_GUN_PLANNING
+				army_org_factor = @STONE_GREAT_GUN_ORG
+				army_defence_factor = @STONE_GREAT_GUN_DEFENCE
+				army_speed_factor = @STONE_GREAT_GUN_SPEED
+				supply_consumption_factor = @STONE_GREAT_GUN_SUPPLY
+			}
+		}
+
+		cave_burrow_war_doctrine = {
+			picture = cave_burrow_war_doctrine
+			allowed = { original_tag = DHO }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_attack_factor = @BURROW_ATTACK
+				supply_consumption_factor = @BURROW_SUPPLY
+				planning_speed = @BURROW_PLANNING
+				army_defence_factor = @BURROW_DEFENCE
+			}
+		}
+
+		cave_urban_cellar_networks_adaptation = {
+			picture = cave_burrow_war_doctrine
+			allowed = { original_tag = DHO }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_attack_factor = @BURROW_URBAN_CELLAR_ATTACK
+				planning_speed = @BURROW_URBAN_CELLAR_PLANNING
+				supply_consumption_factor = @BURROW_URBAN_CELLAR_SUPPLY
+				army_defence_factor = @BURROW_URBAN_CELLAR_DEFENCE
+			}
+		}
+
+		cave_scree_tide_doctrine = {
+			picture = cave_scree_tide_doctrine
+			allowed = { original_tag = DHO }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_speed_factor = @SCREE_SPEED
+				planning_speed = @SCREE_PLANNING
+				army_org_factor = @SCREE_ORG
+				army_defence_factor = @SCREE_DEFENCE
+			}
+		}
+
+		cave_split_broods_adaptation = {
+			picture = cave_scree_tide_doctrine
+			allowed = { original_tag = DHO }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_speed_factor = @SCREE_SPLIT_SPEED
+				planning_speed = @SCREE_SPLIT_PLANNING
+				army_org_factor = @SCREE_SPLIT_ORG
+				army_defence_factor = @SCREE_SPLIT_DEFENCE
+				supply_consumption_factor = @SCREE_SPLIT_SUPPLY
+			}
+		}
+
+		cave_lighter_plates_adaptation = {
+			picture = cave_scree_tide_doctrine
+			allowed = { original_tag = DHO }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_speed_factor = @SCREE_LIGHTER_SPEED
+				planning_speed = @SCREE_LIGHTER_PLANNING
+				army_org_factor = @SCREE_LIGHTER_ORG
+				army_org_regain = @SCREE_LIGHTER_ORG_REGAIN
+				army_defence_factor = @SCREE_LIGHTER_DEFENCE
+				supply_consumption_factor = @SCREE_LIGHTER_SUPPLY
+			}
+		}
+
+		cave_dense_plate_adaptation = {
+			picture = cave_dense_plate_adaptation
+			allowed = { original_tag = DHO }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_org_factor = @DENSE_PLATE_ORG
+				army_defence_factor = @DENSE_PLATE_DEFENCE
+				army_speed_factor = @DENSE_PLATE_SPEED
+			}
+		}
+
+		cave_open_joint_adaptation = {
+			picture = cave_open_joint_adaptation
+			allowed = { original_tag = DHO }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_speed_factor = @OPEN_JOINT_SPEED
+				army_org_regain = @OPEN_JOINT_ORG_REGAIN
+				army_defence_factor = @OPEN_JOINT_DEFENCE
+			}
+		}
+
+		cave_dense_surface_senses_adaptation = {
+			picture = cave_surface_senses_adaptation
+			allowed = { original_tag = DHO }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_org_factor = @DENSE_PLATE_ORG
+				army_defence_factor = @DENSE_PLATE_DEFENCE
+				army_speed_factor = @DENSE_PLATE_SPEED
+				planning_speed = @SURFACE_SENSES_PLANNING
+				max_planning = @SURFACE_SENSES_MAX_PLANNING
+				recon_factor = @SURFACE_SENSES_RECON
+			}
+		}
+
+		cave_open_surface_senses_adaptation = {
+			picture = cave_surface_senses_adaptation
+			allowed = { original_tag = DHO }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_speed_factor = @OPEN_JOINT_SPEED
+				army_org_regain = @OPEN_JOINT_ORG_REGAIN
+				army_defence_factor = @OPEN_JOINT_DEFENCE
+				planning_speed = @SURFACE_SENSES_PLANNING
+				max_planning = @SURFACE_SENSES_MAX_PLANNING
+				recon_factor = @SURFACE_SENSES_RECON
+			}
+		}
+
+		cave_dense_sky_hardened_adaptation = {
+			picture = cave_sky_hardened_adaptation
+			allowed = { original_tag = DHO }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_org_factor = @DENSE_PLATE_ORG
+				army_defence_factor = @DENSE_SKY_HARDENED_DEFENCE
+				army_speed_factor = @DENSE_PLATE_SPEED
+				planning_speed = @SURFACE_SENSES_PLANNING
+				max_planning = @SURFACE_SENSES_MAX_PLANNING
+				recon_factor = @SURFACE_SENSES_RECON
+				air_superiority_bonus_in_combat = @SKY_HARDENED_AIR_PENALTY
+			}
+		}
+
+		cave_open_sky_hardened_adaptation = {
+			picture = cave_sky_hardened_adaptation
+			allowed = { original_tag = DHO }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_speed_factor = @OPEN_JOINT_SPEED
+				army_org_regain = @OPEN_JOINT_ORG_REGAIN
+				army_defence_factor = @OPEN_SKY_HARDENED_DEFENCE
+				planning_speed = @SURFACE_SENSES_PLANNING
+				max_planning = @SURFACE_SENSES_MAX_PLANNING
+				recon_factor = @SURFACE_SENSES_RECON
+				air_superiority_bonus_in_combat = @SKY_HARDENED_AIR_PENALTY
+			}
+		}
+
+		cave_unfed_broods = {
+			picture = cave_unfed_broods
+			allowed = { original_tag = DHO }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_attack_factor = @UNFED_ATTACK
+				army_defence_factor = @UNFED_DEFENCE
+				army_org_factor = @UNFED_ORG
+				army_morale_factor = @UNFED_MORALE
+				army_speed_factor = @UNFED_SPEED
+			}
+		}
+
+		cave_origin_command_crisis = {
+			picture = cave_origin_command_crisis
+			allowed = { original_tag = DHO }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				stability_factor = @ORIGIN_CRISIS_STABILITY
+				war_support_factor = @ORIGIN_CRISIS_WAR_SUPPORT
+				army_org_factor = @ORIGIN_CRISIS_ORG
+				planning_speed = @ORIGIN_CRISIS_PLANNING
+				supply_consumption_factor = @ORIGIN_CRISIS_SUPPLY
+			}
+		}
+
+		cave_world_below_network = {
+			picture = cave_world_below_network
+			allowed = { original_tag = DHO }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_attack_factor = @WORLD_BELOW_ATTACK
+				army_defence_factor = @WORLD_BELOW_DEFENCE
+				army_org_regain = @WORLD_BELOW_ORG_REGAIN
+				army_speed_factor = @WORLD_BELOW_SPEED
+				supply_consumption_factor = @WORLD_BELOW_SUPPLY
+				ai_focus_aggressive_factor = @WORLD_BELOW_AGGRESSION
+			}
+		}
+
+		resources_found_anti_cave_contracts = {
+			picture = resources_found_anti_cave_contracts
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			equipment_bonus = {
+				anti_tank_equipment = {
+					hard_attack = @ANTI_CAVE_HARD_ATTACK
+					ap_attack = @ANTI_CAVE_PIERCING
+					instant = yes
+				}
+			}
+			modifier = {
+				army_attack_factor = @ANTI_CAVE_ARMY_ATTACK
+				production_factory_max_efficiency_factor = @ANTI_CAVE_EFFICIENCY_COST
+			}
+		}
+
+		resources_found_threat_cooperation = {
+			picture = resources_found_threat_cooperation
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			equipment_bonus = {
+				anti_tank_equipment = {
+					hard_attack = @COOPERATION_HARD_ATTACK
+					ap_attack = @COOPERATION_PIERCING
+					instant = yes
+				}
+			}
+			modifier = {
+				planning_speed = @COOPERATION_PLANNING
+				research_sharing_per_country_bonus_factor = @COOPERATION_RESEARCH
+			}
+		}
+	}
+}
