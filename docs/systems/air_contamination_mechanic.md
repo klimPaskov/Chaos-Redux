@@ -76,7 +76,7 @@ At `75%` contamination (`constant:air_contamination_threshold_bp.winter_75`), th
 	- fallout modifiers are applied globally,
 	- state categories degrade over time toward wasteland.
 - Final Silence forces contamination to exactly `100%` and locks future contamination changes at that value for the terminal branch.
-- `1000%` (`100000 bp`): triggers world-end scenario event `chaosx.nr2.9` (`Fallout`).
+- `1000%` (`100000 bp`): triggers world-end scenario event `chaosx_contamination.12` (`Fallout`).
 
 One-time global threshold news events are fired from `events/chemical_warfare_events.txt` (`chaosx_contamination.1` to `.6`) for:
 
@@ -127,15 +127,19 @@ Hidden evidence is excluded from the list and detail snapshot until it is disclo
 
 ## World-End Integration
 
-A new hidden event was added:
+A triggered terminal event owns the live Fallout transition:
 
-- `events/chaosx_events.txt` -> `country_event = { id = chaosx.nr2.9 }`
+- `events/chemical_warfare_events.txt` -> `country_event = { id = chaosx_contamination.12 }`
 
 It sets:
 
 - `world_end`,
 - `world_end_fallout`,
 - `super_event_visible = 4` (30 days).
+
+The public event catalog continues to associate Fallout with Event 2's world-end namespace. Event Details therefore shows Fallout as its own Event 2 row beside Zombie Apocalypse. Its checkbox gates the Fallout terminal event independently from Event 2 and the zombie ending.
+
+The central `air_contamination_apply_delta_bp` effect calls `air_contamination_try_fire_fallout_world_end` after each contamination change. The dispatcher preserves the existing contamination threshold, master world-end guards, Fallout scenario toggle, and super-event path. Re-enabling Fallout while contamination already meets the threshold runs the same dispatcher immediately.
 
 ## Icons and GFX Wiring
 

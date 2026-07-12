@@ -36,6 +36,16 @@ The Event Logs window tracks fired automatic events in a dedicated popup and exp
 - Sort options: `By Event ID`, `By Fired`, `By Weight`. `By Fired` hides events with zero logged firings.
 - The `Events` tab rebuilds when a new event is logged while the tab is open, keeping live weights and fired counts current.
 
+## Event Details world-end catalog
+
+- The shared Event Details popup places **World End Scenarios** below the evolution preview.
+- The list contains one row per public terminal branch owned by the selected event. Event 2 and Event 14 each demonstrate independent multi-row behavior.
+- Each row shows its title, owner event, and enabled or active status. Clicking it opens the dedicated world-end scenario details popup.
+- The scenario checkbox writes only to `global.disabled_world_end_scenarios`. It does not change `global.disabled_events`, evolution state, or sibling scenario state.
+- A disabled entry is excluded at its natural automatic terminal readiness gate. Existing Chaos, world-state, route, and super-event conditions remain authoritative.
+- Hidden easter-egg terminal branches never enter the public view arrays and receive no Event Details row or control.
+- Full registry, wiring, text, and asset ownership is documented in `docs/systems/events_log_world_end_scenarios.md`.
+
 ## Evolutions tab behavior
 - Logs registered evolution entries, including all three Event 17 stages after they actually unlock.
 - Zombie evolution logs are written only for the main zombie country (`tag = ZZZ`), not for dynamic outbreak tags.
@@ -108,6 +118,13 @@ Selected and open Event Details secondary-actor state:
 - `global.events_log_open_event_detail_secondary_actor_entries`
 - `global.events_log_open_event_detail_has_secondary_actor_entries`
 
+World-end registry and Event Details state:
+
+- `global.world_end_scenario_registry_*_entries`
+- `global.disabled_world_end_scenarios`
+- `global.events_log_event_detail_world_end_*_entries`
+- `events_log_selected_world_end_*`
+
 Source evolution arrays:
 - `global.events_log_evolution_sequence_entries`
 - `global.events_log_evolution_date_entries`
@@ -163,7 +180,7 @@ These are defined in:
 - `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
 
 ## Interactions with existing systems
-- `common/scripted_effects/chaosx_events_log_effects.txt` owns Event Logs history/evolution record insertion, actor sanitizing, default actor mapping, popup state, tab rebuilds, shared event-details rebuilds, and event-detail evolution preview rows.
+- `common/scripted_effects/chaosx_events_log_effects.txt` owns Event Logs history/evolution record insertion, actor sanitizing, default actor mapping, popup state, tab rebuilds, shared event-details rebuilds, event-detail evolution preview rows, and the public world-end registry/view state.
 - `common/scripted_effects/chaosx_logic_effects.txt` still owns random-event selection, type handling, timers, and the fired-event handlers that call the Event Logs recorders.
 - `common/scripted_effects/chaosx_settings_effects.txt` still owns settings controls and event firing helpers, but should not collect new Event Logs history/evolution display logic.
 - Scripted GUI click routing stays in `common/scripted_guis/chaosx_scripted_gui_events_log.txt`.
@@ -186,6 +203,7 @@ Current assets used:
 - Flag frame: `GFX_diplo_countrylist_flag_frame`
 - Tab/button sprites: `GFX_sort_button_100x29`, `GFX_chaosx_sort_button_100x29_2`
 - Arrow sprites: `GFX_chaosx_arrow_left`, `GFX_chaosx_arrow_right`
+- World-end row background and checkbox sprites: `GFX_chaosx_chaos_meter_entry`, `GFX_chaosx_checkbox_checked`, `GFX_chaosx_checkbox_unchecked`
 
 If new icon art is needed, keep art in:
 - `gfx/interface/`

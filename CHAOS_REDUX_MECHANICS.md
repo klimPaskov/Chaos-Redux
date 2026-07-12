@@ -337,7 +337,8 @@ This represents the logical conclusion of the campaign and prevents indefinite g
 ### Key Rules
 
 - **Trigger Condition**: Chaos > 1000  
-- **Scenario Selection**: Based on world state (e.g., zombie apocalypse if outbreak dominates, or other endgame disasters depending on conditions).  
+- **Scenario Selection**: Based on world state (e.g., zombie apocalypse if outbreak dominates, or other endgame disasters depending on conditions).
+- **Per-Scenario Control**: Public event-owned endings can be enabled or disabled independently from their owner event in Event Details. A disabled ending is skipped by its automatic readiness path, while enabled sibling endings remain eligible.
 - **Event Freeze**: Automatic event firing stops across the world.
 - **Purpose**: Ensures campaigns reach a dramatic, conclusive end and prevents late-game slowdown.
 - **Super Event**: Each world end scenario has a custom super event.
@@ -366,6 +367,8 @@ The event logs window tracks what has happened and what can still happen.
 - Each event row has a quick toggle button to enable/disable that event.
 
 Any row in **History**, **Evolutions**, **Events**, or **Clusters** can be clicked to open a separate detail window.
+
+Event Details places **World End Scenarios** below the evolution preview. Each public terminal branch owned by that event has its own clickable row, status, details view, and persistent checkbox. Events with several public endings show several independently controlled rows. Hidden easter-egg endings do not appear in this catalog or its controls.
 
 <!-- IMAGE PLACEHOLDER: Events tab with filter/sort/toggle controls -->
 <!-- IMAGE PLACEHOLDER: Multiple event detail windows opened at once -->

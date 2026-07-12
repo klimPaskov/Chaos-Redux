@@ -132,6 +132,8 @@ Disabled evolutions do not record entries because the record effects require the
 
 `The World in Fury` is separate from the triggerable scenario. It starts only from a prepared Fury actor that has completed the world-end focus path, passes terminal readiness through no-neutral-map doctrine, major status, broad state control, or no remaining valid neighbors, is not in an extreme unresolved occupation crisis unless the final route is unlocked, and the global chaos meter has reached World Collapse.
 
+Event Details lists The World in Fury beneath the evolution preview. Its checkbox removes only this terminal branch from automatic readiness; Event 7 and its ordinary Fury progression remain enabled.
+
 When it begins, the branch:
 
 - sets `world_end`, `world_end_fury`, `fury_world_end_active`, `fury_world_end_started`, and `world_threat_source_fury`

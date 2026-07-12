@@ -210,6 +210,21 @@ The normal contract is:
 6. stop or gate incompatible future systems and branches
 7. document the end-state in the event doc, and spreadsheet
 
+Classify every terminal branch as public or hidden/easter-egg before wiring Event Details.
+
+For every public terminal branch, complete the Event Details contract in the same implementation pass:
+
+1. Give the branch a stable scenario registry entry and the owning event ID.
+2. Create one row per branch. If one event has several public terminal branches, do not collapse them into one event-level row.
+3. Give each row its own default-enabled persistent toggle state. Rebuilding or reopening Event Details must not reset it, and toggling one branch must not change sibling branches or the parent event.
+4. Add player-facing title and details text that explains the premise and terminal state without listing raw effects, hidden variables, secret conditions, or implementation state.
+5. Wire the row, selection, toggle, and detail-panel clicks through the shared Event Details behavior. Add availability or status text when it helps the player understand why a public branch cannot currently be selected, without exposing hidden logic.
+6. Make automatic world-end selection read the branch toggle. A disabled branch is skipped as a candidate without disabling its owning event, suppressing enabled sibling branches, bypassing the 1000+ Chaos gate, or changing the normal world-state selection rules.
+7. Keep the scenario-specific global flag and matching super-event visibility, text, image, and audio linkage distinct for that branch.
+8. Align the public event doc and spreadsheet-facing world-end fields with the same title, premise, terminal state, and branch count.
+
+Hidden or easter-egg world-end scenarios may retain a stable internal registry identity with hidden visibility, but they must stay out of the projected public Event Details rows, title/detail selectors, toggles, status controls, public docs, and spreadsheet-facing public fields. Their terminal flagging, chaos gate, selection logic, and super-event wiring still follow the normal world-end contract.
+
 ## Triggerable scenarios
 
 Triggerable scenarios are manual sandbox or challenge setups launched from the Chaos Redux settings UI. They are separate from the normal random-event timer, chaos-tier eligibility, evolution pacing, and automatic source-event prerequisites.
@@ -409,6 +424,8 @@ Required detail-view plumbing:
   - `interface/chaosx_events_log_popup.gui`
 
 Do not hardcode one-off GUI behavior if it should be reusable by later events.
+
+Public world-end rows are part of the shared Event Details data path. In `common/scripted_effects/chaosx_events_log_effects.txt`, register them through `initialize_world_end_scenario_registry`, rebuild them with `events_log_rebuild_event_detail_world_end_scenarios`, persist disabled scenario IDs in `global.disabled_world_end_scenarios`, and toggle the selected row through `events_log_toggle_selected_world_end_scenario_disabled`. Keep automatic branch gates in `common/scripted_triggers/chaosx_world_end_scenario_triggers.txt`. Route row, selection, and detail clicks through `common/scripted_guis/chaosx_scripted_gui_events_log.txt`. Keep titles, details, and status selectors in the existing Event Details scripted-localisation and GUI-localisation files. Change `interface/chaosx_events_log_popup.gui` only when the shared row or detail layout itself needs a reusable control.
 
 When it's impossible for an event to fire due to conditions (the actor country doesn't exist, prerequisite not fulfilled, etc), always show `N/A` in the event list in place of a `0` for the weight.
 
@@ -680,13 +697,15 @@ Before closing an event task, verify:
 6. Event log actor mapping is updated if needed.
 7. Evolution logging and preview wiring are updated if relevant.
 8. Triggerable scenario registry, launch gates, type controls, intensity controls, localisation, documentation, and bypass cleanup are updated if relevant.
-9. If the event has a super-event, `chaos-redux-super-events` has been used for quote, remark, audio, and presentation planning.
-10. Supporting decisions, ideas, AI, country setup, or exclusions are updated if relevant.
-11. `docs/events/` is updated.
-12. `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is updated.
-13. If assets are required, `chaos-redux-event-assets` has been used.
-14. Generated assets are resized, converted to DDS 32 bit unsigned BGRB 8.8.8.8, moved into the correct folders, wired in `.gfx`, and recorded in an asset manifest.
-15. Spec-mapped mechanics, routes, countries, decisions, achievements, assets, and super-events are implemented or clearly reported as blocked, merged, renamed, skipped, or simplified.
-16. Dynamic values, concrete costs, mechanic visibility, decision category filtering, and effect strength are checked where the spec calls for them.
-17. Focus trees preserve route structure, focus filters, varied rewards, idea lifecycles, route-specific AI, and visible branch payoffs where relevant.
-18. New fighting countries have dynamic starting forces, template assumptions, equipment and manpower handling, and reinforcement pathways.
+9. Every public terminal branch has its own stable Event Details registry row, owner event ID, independent default-enabled persistent toggle, clickable details, useful status handling where relevant, and automatic selection gate. Multiple public branches for one event remain independently controllable.
+10. Hidden or easter-egg terminal branches are absent from public Event Details controls, public docs, and spreadsheet-facing public fields. Every terminal branch still preserves its scenario-specific flag, matching super-event linkage, 1000+ Chaos gate, world-state selection rules, and `world_end` guard.
+11. If the event has a super-event, `chaos-redux-super-events` has been used for quote, remark, audio, and presentation planning.
+12. Supporting decisions, ideas, AI, country setup, or exclusions are updated if relevant.
+13. `docs/events/` is updated.
+14. `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is updated.
+15. If assets are required, `chaos-redux-event-assets` has been used.
+16. Generated assets are resized, converted to DDS 32 bit unsigned BGRB 8.8.8.8, moved into the correct folders, wired in `.gfx`, and recorded in an asset manifest.
+17. Spec-mapped mechanics, routes, countries, decisions, achievements, assets, and super-events are implemented or clearly reported as blocked, merged, renamed, skipped, or simplified.
+18. Dynamic values, concrete costs, mechanic visibility, decision category filtering, and effect strength are checked where the spec calls for them.
+19. Focus trees preserve route structure, focus filters, varied rewards, idea lifecycles, route-specific AI, and visible branch payoffs where relevant.
+20. New fighting countries have dynamic starting forces, template assumptions, equipment and manpower handling, and reinforcement pathways.

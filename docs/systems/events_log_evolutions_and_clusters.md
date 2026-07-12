@@ -46,6 +46,9 @@ The zombie outbreak event has authored gameplay text in the event-details window
 	   - logged actor country link,
 	   - a portrait panel only when that evolution family has an authored portrait mapping or an intentional placeholder treatment for the selected stage,
 	   - stage-specific modifier breakdown for the zombie horde.
+21. Beneath the evolution preview, Event Details rebuilds a public world-end list from the stable scenario registry for the selected owner event.
+22. Each terminal branch has one clickable row and one persistent checkbox. Multiple branches owned by the same event remain separate, and hidden easter-egg branches are filtered before view rows are built.
+23. Clicking a world-end row opens the scenario details popup; toggling it changes only that scenario's automatic eligibility and rebuilds the selected event's rows.
 
 Evolution rows use the specific stage title for that milestone, such as `Triangular Incident` or `Four Fronts`, and keep generic type labels only as fallback text.
 
@@ -158,7 +161,7 @@ Sprites currently used:
 - `GFX_fury_leader_flame_overlay_animated`
 
 New art required:
-- None for the current event/evolution detail implementation. Evolution details use the portrait layout only when `has_events_log_selected_evolution_authored_portrait` resolves true for the selected evolution type and stage. Fury deliberately uses vanilla's `GFX_portrait_unknown` missing portrait with the existing `GFX_fury_leader_flame_overlay_animated` overlay. Soviet Collapse secession and high-chaos evolution details use `GFX_soviet_collapse_evolution_portraits_animated`, a portrait-sized loop of the existing Soviet Collapse portrait set. Death's island-report and mainland-reveal evolutions use the normal Zol portrait, while Last Shores and whole-world-consumed use the animated world-end Zol portrait. Stages without a portrait treatment keep the wide text body.
+- None for the current event, evolution, or world-end catalog implementation. Evolution details use the portrait layout only when `has_events_log_selected_evolution_authored_portrait` resolves true for the selected evolution type and stage. Fury deliberately uses vanilla's `GFX_portrait_unknown` missing portrait with the existing `GFX_fury_leader_flame_overlay_animated` overlay. Soviet Collapse secession and high-chaos evolution details use `GFX_soviet_collapse_evolution_portraits_animated`, a portrait-sized loop of the existing Soviet Collapse portrait set. Death's island-report and mainland-reveal evolutions use the normal Zol portrait, while Last Shores and whole-world-consumed use the animated world-end Zol portrait. Stages without a portrait treatment keep the wide text body. World-end rows reuse the existing event-log row background and checkbox sprites.
 
 Evolution enable checks:
 - `is_current_evolution_enabled` checks both the player disable toggle and, when `events_log_evolution_tier` is set, whether the campaign has reached that chaos tier. Event-specific record helpers should set `events_log_evolution_tier` before calling it, and should only set their recorded flags after the entry actually records.

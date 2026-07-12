@@ -167,7 +167,7 @@ Definitions, visible requirements, and icon triplets are documented in `docs/ach
 - scripted GUI: `common/scripted_guis/018_resources_found_scripted_gui.txt`, `interface/018_resources_found.gui`, and `interface/018_resources_found.gfx`;
 - English text: `localisation/english/018_random_resource_l_english.yml` and `localisation/english/018_resources_found_system_l_english.yml`;
 - scripted text: `common/scripted_localisation/018_resources_found_scripted_localisation.txt` plus the shared Event Details, settings, and super-event selectors;
-- shared integrations: event dispatcher, cluster 7, Event Details/log, Deaths cause 16, world threat, terminal progression, news, achievements, music, and sound registries;
+- shared integrations: event dispatcher, cluster 7, Event Details/log, the clickable World Opens Below world-end row and independent automatic-selection checkbox, Deaths cause 16, world threat, terminal progression, news, achievements, music, and sound registries;
 - catalog: `docs/spreadsheets/chaos_redux_events_catalog.xlsx`.
 
 ## Asset wiring
