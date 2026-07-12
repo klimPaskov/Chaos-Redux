@@ -76,14 +76,14 @@ Current membership:
 | Peace | Event 9, White Peace | Low | Required member when selected or manually queued |
 | Natural Disasters | Event 13, opening local season | Low | Required first logical slot |
 | Natural Disasters | Event 13, additional early season | Low | 85% optional participation from tier 0 |
-| Natural Disasters | Event 13, varied season | Medium | 60% optional participation from tier 2 |
-| Natural Disasters | Event 13, regional season | High | 60% optional participation from tier 3 |
-| Natural Disasters | Event 13, abnormal season | Severe | 35% optional participation from tier 4 |
+| Natural Disasters | Event 13, Wider Disaster Seasons varied season | Medium | 60% optional participation from Gathering Storm, tier 1 |
+| Natural Disasters | Event 13, Regional Cascades season | High | 60% optional participation from Rising Chaos, tier 2 |
+| Natural Disasters | Event 13, Abnormal Paths season | Severe | 35% optional participation from Chaos, tier 3 |
 | Formables | Event 12, Africa Is One | Low | Reserved placeholder member |
 
 When Event 17 is queued as a Diplomatic Panic member, its normal pre-fire helper builds the weighted eligible-minor pool and saves its own `random_faction_target_country`. The cluster route does not prefer the current player or reuse another member's actor as the Event 17 target.
 
-The Natural Disasters rows are logical Event 013 season slots. They are not Event 046, 051, 099, 043, or 120 members. When Event 013 is the selected trigger event, only the first matching slot is promoted to required status. Later duplicate slots keep their optional participation rolls. Every slot that fires calls the Event 013 public API and creates one Event 013 history row for that genuine season. The cluster itself retains one separate cluster history row and uses the first prepared affected country as its actor.
+The Natural Disasters rows are logical Event 013 season slots. They are not Event 046, 051, 099, 043, or 120 members. When Event 013 is the selected trigger event, only the first matching slot is promoted to required status. Later duplicate slots keep their optional participation rolls. Every slot that fires calls the Event 013 public API and creates one Event 013 history row for that genuine season. The cluster itself retains one separate cluster history row and uses the first prepared affected country as its actor. Each logical slot persists its exact target state and country, evolution, severity, presentation policies, and scaling context before it enters the pending queue, so overlapping cluster launches cannot borrow another slot's disaster context.
 
 ## Member Order And Cooldown
 

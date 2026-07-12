@@ -113,11 +113,19 @@ scripted effect should initialize them in its outer effect block first:
 - `natural_disaster_call_reject_reason`: the exact validation failure
 - `natural_disaster_call_sequence_id`: allocated sequence id, or `0`
 - `natural_disaster_call_primary_job_count`: queued primary impacts
+- `natural_disaster_call_skipped_primary_count`: planned primary impacts omitted because their fixed target domain contained no valid pair
+- `natural_disaster_call_resolved_primary_family`: the first successfully scheduled `natural_disaster_family.*`, or `0`
+- `natural_disaster_call_has_resolved_primary_state`: proof that `natural_disaster_call_resolved_primary_state` was saved by this call
+- `natural_disaster_call_has_resolved_primary_country`: proof that `natural_disaster_call_resolved_primary_country` was saved by this call
+- `natural_disaster_call_resolved_target_region`: echoes the supplied strategic-region id only for a successful `selected_region` call
+
+Successful calls also expose regular event targets `natural_disaster_call_resolved_primary_state` and `natural_disaster_call_resolved_primary_country`. Callers must test the matching numeric proof output because a regular event target from an earlier request can still exist in the same effect chain. These outputs always describe the first scheduled primary hit, never the last retry or last hit in a multi-impact sequence.
 
 Side effects:
 
 - reserves a unique delayed date for every subevent in the sequence
-- retries a bounded set of evolution-valid family and state pairs for random-valid and random-family selected-country targeting before returning a no-target rejection
+- retries a bounded set of evolution-valid families against the caller's fixed target mode for every random-family request; selected state, country, and region scopes never widen during retries
+- requires immutable family geography before scoring a state, so infrastructure, resources, coast, agriculture, and prior hazard history can improve priority but cannot make an impossible family physically valid
 - stores queued state scopes and metadata on each affected state's current controller
 - stores active aftermath data on affected states
 - merges a later caller-selected hit into an already open card for that exact state, with the latest sequence owning the card while accumulated recovery work and prior losses remain visible
@@ -125,14 +133,15 @@ Side effects:
 - may create one Event 013 history row according to `natural_disaster_call_log_mode`
 - resets all public inputs after the call so a second request cannot inherit them
 
-Validation is fail-closed. Unknown enums, conflicting specific family and family-group selectors, invalid scaling or sequence counts, missing or unproved target scopes, unproven hostile/deity calls, invalid scenario metadata, and unauthorized abnormal bypasses return `rejected` with a stable reject reason and queue no work. A call that finds no eligible target restores the global sequence counter and leaves the caller's last accepted sequence id, anchor flag, and hit counts unchanged.
+Validation is fail-closed. Unknown enums, conflicting specific family and family-group selectors, invalid scaling or sequence counts, missing or unproved target scopes, physically incompatible states, unproven hostile/deity calls, invalid scenario metadata, and unauthorized abnormal bypasses return `rejected` with a stable reject reason and queue no work. A specific family is never substituted. A call that finds no eligible target restores the global sequence counter and leaves the caller's last accepted sequence id, anchor flag, and hit counts unchanged.
 
 Example:
 
 ```txt
 GER = {
+	set_temp_variable = { natural_disaster_current_family = constant:natural_disaster_family.earthquake }
 	random_owned_controlled_state = {
-		limit = { natural_disaster_is_valid_impact_state = yes }
+		limit = { natural_disaster_is_valid_family_target = yes }
 		save_event_target_as = natural_disaster_call_target_state
 	}
 }

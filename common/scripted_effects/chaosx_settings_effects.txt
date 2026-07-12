@@ -4582,6 +4582,13 @@ fire_event_by_temp_id_no_cluster = {
 		if = {
 			limit = { check_variable = { natural_disaster_prefire_ready < 1 } }
 			set_temp_variable = { event_single_fire_allowed = 0 }
+			if = {
+				limit = {
+					has_variable = automatic_event_firing_context
+					check_variable = { automatic_event_firing_context > 0 }
+				}
+				calculate_next_timer_value = yes
+			}
 		}
 	}
 	if = {
@@ -4645,6 +4652,10 @@ fire_event_by_temp_id_no_cluster = {
 			}
 		}
 		else = {
+			if = {
+				limit = { check_variable = { event_fire_record_id = constant:natural_disaster_event.id } }
+				set_country_flag = natural_disaster_dispatcher_history_owned
+			}
 			meta_effect = {
 				text = {
 					country_event = {

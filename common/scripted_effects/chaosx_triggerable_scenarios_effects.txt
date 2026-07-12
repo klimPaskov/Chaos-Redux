@@ -853,6 +853,23 @@ trigger_disaster_barrage_scenario = {
 	set_temp_variable = { natural_disaster_call_log_mode = constant:natural_disaster_log_mode.scenario_history }
 	set_temp_variable = { natural_disaster_call_scenario_type = triggerable_scenarios_disaster_barrage_type }
 	set_temp_variable = { natural_disaster_call_scenario_intensity = triggerable_scenarios_intensity }
+	set_temp_variable = { natural_disaster_call_evolution_override_supplied = 1 }
+	if = {
+		limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.low } }
+		set_temp_variable = { natural_disaster_call_evolution_override = constant:natural_disaster_event.evolution_i_stage }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.medium }
+				check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.high }
+			}
+		}
+		set_temp_variable = { natural_disaster_call_evolution_override = constant:natural_disaster_event.evolution_ii_stage }
+	}
+	else = {
+		set_temp_variable = { natural_disaster_call_evolution_override = constant:natural_disaster_event.evolution_iii_stage }
+	}
 
 	if = {
 		limit = { check_variable = { triggerable_scenarios_disaster_barrage_type = constant:natural_disaster_scenario_type.full_catalogue } }
