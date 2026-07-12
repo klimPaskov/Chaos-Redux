@@ -168,29 +168,11 @@ Dead necrotic and demonic zombie outcomes also no longer resolve into obedient c
 - The outbreak runtime now prunes all nonmatching zombie templates and pushes type-specific AI template priorities, so an `Infected Horde` trains infected zombie divisions, a `Demonic Zombie Horde` trains demonic zombie divisions, and so on.
 - Armor is no longer granted purely by disease family for the ordinary outbreak families. It only appears on the hardened outbreak path when both strength and durability resolve high enough.
 - `Wendigo Pack` sits outside the normal successful outbreak ladder: it is always armored, always hostile, and only appears when the project catastrophically fails at completion.
-- The Wendigo super event now records the actual originating country instead of using a placeholder source token, and the super-event remark is fully wired for slot `6`.
-- The Wendigo super event now also uses its own dedicated sound asset on the super-event sound-output path: `sound/002_zombie_outbreak/super_event_6_wendigo.wav`.
 - A necrotic or extra-scientific zombie profile with a dead or transformed life state and at least four extreme mutation picks now guarantees the catastrophic Wendigo completion failure if no other Wendigo already exists in the campaign.
 - Zombies marked `zombies-only` can only target zombie-controlled states and can earn the `Fight Fire With Fire` achievement.
 - Independent weaponized outbreaks are excluded from the base zombie auto-merge rules in `common/on_actions/002_zombie_outbreak_on_actions.txt`.
 - Creator-friendly zombies store their protected creator in outbreak-local diplomacy state and can later lose that protection through an unannounced field-control failure event.
 - Weaponized outbreak leader names are now type-based (`Undead Horde`, `Necrotic Horde`, `Demonic Zombie Horde`, etc.) rather than behavior-profile titles.
-
-## Wendigo world-end branch
-
-If a `Wendigo Pack` survives into `chaos_tier = 5`, it can now force its own world-end scenario.
-
-The Wendigo itself now comes from a completion failure, not from a normal successful result.
-When that happens, the incident spawns in a controlled state with a `biowarfare_facility`, uses the dedicated armored Wendigo battalion, and scales its initial division count upward by `+5` for each current chaos tier.
-
-The later world-end check is dynamic and continent-based:
-
-- the zombie must be a weaponized Wendigo outbreak country
-- the global chaos meter must already be in the world-end tier
-- the Wendigo must control at least `85%` of one continent and be missing no more than `3` states there
-
-Once that threshold is met, the outbreak gains the `Wendigo Ascendancy` idea, fires the Wendigo super event, and sets the campaign end-state to `world_end_wendigo`.
-This is separate from the ordinary `Zombie Apocalypse` branch and reflects a project-ending catastrophe becoming the dominant terminal threat on the map.
 
 ## Event chain
 

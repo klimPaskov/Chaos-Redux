@@ -4430,6 +4430,22 @@ air_contamination_sync_chaos_from_delta = {
     }
 }
 
+air_contamination_try_fire_fallout_world_end = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = world_end }
+			NOT = { has_global_flag = world_end_disabled }
+			world_end_fallout_scenario_enabled = yes
+			check_variable = {
+				var = global.air_contamination_bp
+				value = constant:air_contamination_threshold_bp.world_end_1000
+				compare = greater_than_or_equals
+			}
+		}
+		country_event = { id = chaosx_contamination.12 }
+	}
+}
+
 air_contamination_apply_delta_bp = {
     set_temp_variable = { air_contamination_previous_bp = global.air_contamination_bp }
     add_to_variable = { global.air_contamination_bp = air_contamination_delta_bp }
@@ -4464,6 +4480,7 @@ air_contamination_apply_delta_bp = {
     air_contamination_sync_chaos_from_delta = yes
     air_contamination_refresh_values = yes
     air_contamination_update_threshold_flags = yes
+	air_contamination_try_fire_fallout_world_end = yes
 }
 
 air_contamination_clear_country_pressure_ideas = {

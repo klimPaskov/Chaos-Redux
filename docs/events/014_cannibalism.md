@@ -120,7 +120,7 @@ Before terminal lock, the world can defeat the revealed command or break the Wen
 
 Scenario `SCN-010` supports five launch types: Discipline Collapse, Ritual Cells, Silent Islands, Warlord States, and Convergence. Each launch validates its evolution settings, target country and state, special-country exclusions, coherent territorial requirements, and any reveal secrecy gate before dispatch.
 
-The event catalog row at `Events!A15:M15` records Cannibalism as `Minor Fire-Once` with an empty cluster field. Its Event Details text, three evolution entries, and both terminal descriptions mirror the corresponding in-game localisation. The workbook status remains `Needs Testing` until the required Event 014 audits close.
+The event catalog row at `Events!A15:M15` records Cannibalism as `Minor Fire-Once` with an empty cluster field. Its Event Details text, three evolution entries, and both terminal descriptions mirror the corresponding in-game localisation. After the public reveal, The World Is the Larder and No Thaw Will Come appear as separate clickable world-end rows with independent automatic-selection checkboxes. The workbook status remains `Needs Testing` until the required Event 014 audits close.
 
 Event 014 defines 18 predicate-based achievements covering clean containment, repeated prevention, multi-front response, island recovery, reinfection, humane use of defectors, warlord play, unification, Larder progression, reveal prevention, ordinary and Wendigo defeat, both terminal routes, global burial work, and preventing an empty-state outcome. Achievement art uses separate locked, available, and completed compositions rather than recolors of one icon.
 

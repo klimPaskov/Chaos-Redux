@@ -1181,6 +1181,20 @@ scripted_gui = {
 				set_variable = { events_log_selected_evolution_stage = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index }
 				events_log_toggle_selected_evolution_disabled = yes
 			}
+
+			events_log_world_end_entry_open_details_button_click = {
+				events_log_open_selected_world_end_scenario_detail = yes
+			}
+
+			events_log_world_end_toggle_enabled_button_click = {
+				events_log_select_world_end_scenario_from_row = yes
+				events_log_toggle_selected_world_end_scenario_disabled = yes
+			}
+
+			events_log_world_end_toggle_disabled_button_click = {
+				events_log_select_world_end_scenario_from_row = yes
+				events_log_toggle_selected_world_end_scenario_disabled = yes
+			}
 		}
 
 		triggers = {
@@ -1348,6 +1362,34 @@ scripted_gui = {
 			events_log_event_detail_evolutions_empty_visible = {
 				check_variable = { global.events_log_event_detail_evolution_stage_entries^num < 1 }
 			}
+			events_log_event_detail_world_end_header_visible = {
+				check_variable = { global.events_log_event_detail_world_end_scenario_id_entries^num > 0 }
+			}
+			events_log_event_detail_world_end_list_visible = {
+				check_variable = { global.events_log_event_detail_world_end_scenario_id_entries^num > 0 }
+			}
+			events_log_event_detail_world_end_empty_visible = {
+				check_variable = { global.events_log_event_detail_world_end_scenario_id_entries^num < 1 }
+				OR = {
+					NOT = { check_variable = { event_id = constant:cannibalism_event.id } }
+					has_global_flag = cannibalism_reveal_complete
+				}
+			}
+			events_log_world_end_entry_open_details_button_click_enabled = {
+				always = yes
+			}
+			events_log_world_end_toggle_enabled_button_visible = {
+				check_variable = { var = global.events_log_event_detail_world_end_enabled_entries^events_log_event_detail_world_end_index value = 0 compare = less_than_or_equals }
+			}
+			events_log_world_end_toggle_disabled_button_visible = {
+				check_variable = { var = global.events_log_event_detail_world_end_enabled_entries^events_log_event_detail_world_end_index value = 0 compare = greater_than }
+			}
+			events_log_world_end_toggle_enabled_button_click_enabled = {
+				check_variable = { var = global.events_log_event_detail_world_end_active_entries^events_log_event_detail_world_end_index value = 1 compare = less_than }
+			}
+			events_log_world_end_toggle_disabled_button_click_enabled = {
+				check_variable = { var = global.events_log_event_detail_world_end_active_entries^events_log_event_detail_world_end_index value = 1 compare = less_than }
+			}
 		}
 
 		dynamic_lists = {
@@ -1364,11 +1406,67 @@ scripted_gui = {
 				change_scope = no
 				entry_container = "events_log_event_detail_evolution_entry"
 			}
+			events_log_event_detail_world_end_dynamic_list = {
+				array = global.events_log_event_detail_world_end_scenario_id_entries
+				value = events_log_event_detail_world_end_scenario_id
+				index = events_log_event_detail_world_end_index
+				change_scope = no
+				entry_container = "events_log_event_detail_world_end_entry"
+			}
 		}
 
 		properties = {
 			events_log_event_detail_actor_flag = {
 				image = "[?global.events_log_open_event_detail_actor_entries^events_log_open_event_detail_index.GetFlag]"
+			}
+		}
+
+		ai_enabled = {
+			always = no
+		}
+	}
+
+	events_log_popup_world_end_scenario_details_gui = {
+		context_type = player_context
+		parent_window_token = top_bar
+		window_name = "events_log_world_end_scenario_details_window"
+
+		visible = {
+			has_country_flag = events_log_window_open
+			has_country_flag = events_log_event_details_open
+			has_country_flag = events_log_world_end_scenario_details_open
+			check_variable = { events_log_selected_world_end_scenario_id > 0 }
+		}
+
+		effects = {
+			events_log_world_end_scenario_details_close_button_click = {
+				events_log_close_world_end_scenario_details_view = yes
+			}
+
+			events_log_world_end_scenario_details_toggle_enabled_button_click = {
+				events_log_toggle_selected_world_end_scenario_disabled = yes
+			}
+
+			events_log_world_end_scenario_details_toggle_disabled_button_click = {
+				events_log_toggle_selected_world_end_scenario_disabled = yes
+			}
+		}
+
+		triggers = {
+			events_log_world_end_scenario_details_close_button_click_enabled = {
+				always = yes
+			}
+			events_log_world_end_scenario_details_toggle_enabled_button_visible = {
+				check_variable = { events_log_selected_world_end_enabled < 1 }
+			}
+			events_log_world_end_scenario_details_toggle_disabled_button_visible = {
+				check_variable = { events_log_selected_world_end_enabled > 0 }
+			}
+			events_log_world_end_scenario_details_toggle_enabled_button_click_enabled = {
+				check_variable = { events_log_selected_world_end_active < 1 }
+			}
+			events_log_world_end_scenario_details_toggle_disabled_button_click_enabled = {
+				check_variable = { events_log_selected_world_end_active < 1 }
 			}
 		}
 
