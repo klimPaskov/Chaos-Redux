@@ -19,6 +19,36 @@
 
 @CHAOS_CW_ROW = 12
 
+# Technology ai_will_do values do not document script-constant support in the
+# installed engine documentation. Keep this file-local mirror aligned with the
+# cbrn_protection_ai research table in cbrn_system_constants.txt.
+@CBRN_PROTECTION_RESEARCH_BASE = 0.75
+@CBRN_PROTECTION_RESEARCH_BASIC_BASE = 1.25
+@CBRN_PROTECTION_RESEARCH_THREAT_FACTOR = 4
+@CBRN_PROTECTION_RESEARCH_SHORTAGE_FACTOR = 3
+@CBRN_PROTECTION_RESEARCH_CIVIL_DEFENCE_FACTOR = 2.50
+@CBRN_PROTECTION_RESEARCH_CONTAMINATION_FACTOR = 4
+@CBRN_PROTECTION_RESEARCH_PROGRAM_FACTOR = 1.75
+@CBRN_PROTECTION_RESEARCH_DOCTRINE_FACTOR = 1.50
+@CBRN_PROTECTION_RESEARCH_LIMITED_FACTOR = 0.60
+@CBRN_PROTECTION_RESEARCH_PREPARED_FACTOR = 2
+@CBRN_PROTECTION_RESEARCH_MILITARY_FIRST_FACTOR = 3
+
+@CBRN_PROTECTION_TECH_COST_STANDARD = 1
+@CBRN_PROTECTION_TECH_COST_ADVANCED = 1.25
+@CBRN_PROTECTION_PATH_COST_COEFF = 1
+@CBRN_PROTECTION_YEAR_1918 = 1918
+@CBRN_PROTECTION_YEAR_1936 = 1936
+@CBRN_PROTECTION_YEAR_1937 = 1937
+@CBRN_PROTECTION_YEAR_1939 = 1939
+@CBRN_PROTECTION_YEAR_1940 = 1940
+@CBRN_PROTECTION_YEAR_1941 = 1941
+@CBRN_PROTECTION_YEAR_1942 = 1942
+@CBRN_GAS_MASK_ROW = 8
+@CBRN_DECONTAMINATION_ROW = 14
+@CBRN_INSTRUMENT_ROW = 16
+@CBRN_APPLIED_PROTECTION_ROW = 18
+
 technologies = {
 
 
@@ -921,79 +951,280 @@ technologies = {
     }
 
     # Gas Mask Technologies
-    advanced_gas_masks = {
-        research_cost = 1
-        start_year = 1940
+	advanced_gas_masks = {
+		research_cost = @CBRN_PROTECTION_TECH_COST_STANDARD
+		start_year = @CBRN_PROTECTION_YEAR_1940
 
-        categories = {
-            chemical_warfare_tech
-            gas_masks_tech
-        }
+		dependencies = {
+			improved_gas_masks = @CBRN_PROTECTION_PATH_COST_COEFF
+		}
 
-        folder = {
-            name = chemical_warfare_folder
-            position = { x = @1940CW y = 8 }
-        }
+		enable_equipments = {
+			gas_mask_equipment_3
+		}
 
-        ai_will_do = {
-            factor = 1
-        }
-        special_project_specialization = { specialization_cw }
-    }
+		path = {
+			leads_to_tech = sealed_assault_protection
+			research_cost_coeff = @CBRN_PROTECTION_PATH_COST_COEFF
+		}
 
-    improved_gas_masks = {
-        research_cost = 1
-        start_year = 1936
+		categories = {
+			chemical_warfare_tech
+			gas_masks_tech
+		}
 
-        path = {
-            leads_to_tech = advanced_gas_masks
-            research_cost_coeff = 1
-        }
+		folder = {
+			name = chemical_warfare_folder
+			position = { x = @1940CW y = @CBRN_GAS_MASK_ROW }
+		}
 
-        categories = {
-            chemical_warfare_tech
-            gas_masks_tech
-        }
+		ai_will_do = {
+			factor = @CBRN_PROTECTION_RESEARCH_BASE
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_THREAT_FACTOR cbrn_country_has_public_chemical_emergency = yes }
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_SHORTAGE_FACTOR cbrn_country_has_military_mask_shortage = yes }
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_PROGRAM_FACTOR cbrn_country_has_program = yes }
+		}
+		special_project_specialization = { specialization_cw }
+	}
 
-        folder = {
-            name = chemical_warfare_folder
-            position = { x = @1936CW y = 8 }
-        }
+	sealed_assault_protection = {
+		research_cost = @CBRN_PROTECTION_TECH_COST_ADVANCED
+		start_year = @CBRN_PROTECTION_YEAR_1942
 
-        ai_will_do = {
-            factor = 1
-        }
-        special_project_specialization = { specialization_cw }
-    }
+		dependencies = {
+			advanced_gas_masks = @CBRN_PROTECTION_PATH_COST_COEFF
+		}
 
-    basic_gas_masks = {
-        research_cost = 1
-        start_year = 1918
-        on_research_complete = {
-            unlock_tactic = tactic_gas_mask_defense
-            chem_sync_chemical_tactic_preferred_weight_ideas = yes
-        }
+		enable_equipments = {
+			gas_mask_equipment_4
+		}
 
-        path = {
-            leads_to_tech = improved_gas_masks
-            research_cost_coeff = 1
-        }
+		allow = {
+			ROOT = {
+				has_doctrine = chaos_warfare
+			}
+		}
 
-        categories = {
-            chemical_warfare_tech
-            gas_masks_tech
-        }
+		categories = {
+			chemical_warfare_tech
+			gas_masks_tech
+		}
 
-        folder = {
-            name = chemical_warfare_folder
-            position = { x = @1918CW_WIND_GASMASK y = 8 }
-        }
+		folder = {
+			name = chemical_warfare_folder
+			position = { x = @1942CW y = @CBRN_GAS_MASK_ROW }
+		}
 
-        ai_will_do = {
-            factor = 1
-        }
-        special_project_specialization = { specialization_cw }
-    }
+		ai_will_do = {
+			factor = @CBRN_PROTECTION_RESEARCH_BASE
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_THREAT_FACTOR cbrn_country_has_public_chemical_emergency = yes }
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_SHORTAGE_FACTOR cbrn_country_has_military_mask_shortage = yes }
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_MILITARY_FIRST_FACTOR cbrn_profile_is_military_first = yes }
+		}
+		special_project_specialization = { specialization_cw specialization_land }
+	}
+
+	improved_gas_masks = {
+		research_cost = @CBRN_PROTECTION_TECH_COST_STANDARD
+		start_year = @CBRN_PROTECTION_YEAR_1936
+
+		dependencies = {
+			basic_gas_masks = @CBRN_PROTECTION_PATH_COST_COEFF
+		}
+
+		enable_equipments = {
+			gas_mask_equipment_2
+		}
+
+		path = {
+			leads_to_tech = advanced_gas_masks
+			research_cost_coeff = @CBRN_PROTECTION_PATH_COST_COEFF
+		}
+
+		categories = {
+			chemical_warfare_tech
+			gas_masks_tech
+		}
+
+		folder = {
+			name = chemical_warfare_folder
+			position = { x = @1936CW y = @CBRN_GAS_MASK_ROW }
+		}
+
+		ai_will_do = {
+			factor = @CBRN_PROTECTION_RESEARCH_BASIC_BASE
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_THREAT_FACTOR cbrn_country_has_public_chemical_emergency = yes }
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_SHORTAGE_FACTOR cbrn_country_has_military_mask_shortage = yes }
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_CIVIL_DEFENCE_FACTOR cbrn_profile_is_mass_civil_defence = yes }
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_LIMITED_FACTOR cbrn_profile_is_limited_or_minimal = yes }
+		}
+		special_project_specialization = { specialization_cw }
+	}
+
+	basic_gas_masks = {
+		research_cost = @CBRN_PROTECTION_TECH_COST_STANDARD
+		start_year = @CBRN_PROTECTION_YEAR_1918
+
+		enable_equipments = {
+			gas_mask_equipment_1
+		}
+
+		on_research_complete = {
+			unlock_tactic = tactic_gas_mask_defense
+			chem_sync_chemical_tactic_preferred_weight_ideas = yes
+		}
+
+		path = {
+			leads_to_tech = improved_gas_masks
+			research_cost_coeff = @CBRN_PROTECTION_PATH_COST_COEFF
+		}
+
+		categories = {
+			chemical_warfare_tech
+			gas_masks_tech
+		}
+
+		folder = {
+			name = chemical_warfare_folder
+			position = { x = @1918CW_WIND_GASMASK y = @CBRN_GAS_MASK_ROW }
+		}
+
+		ai_will_do = {
+			factor = @CBRN_PROTECTION_RESEARCH_BASIC_BASE
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_THREAT_FACTOR cbrn_country_has_public_chemical_emergency = yes }
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_SHORTAGE_FACTOR cbrn_country_has_military_mask_shortage = yes }
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_CIVIL_DEFENCE_FACTOR cbrn_profile_is_mass_civil_defence = yes }
+		}
+		special_project_specialization = { specialization_cw }
+	}
+
+	# Applied Protective Systems
+	civil_defence_fitting_and_registration = {
+		research_cost = @CBRN_PROTECTION_TECH_COST_STANDARD
+		start_year = @CBRN_PROTECTION_YEAR_1936
+
+		dependencies = {
+			basic_gas_masks = @CBRN_PROTECTION_PATH_COST_COEFF
+		}
+
+		path = {
+			leads_to_tech = military_filter_standardization
+			research_cost_coeff = @CBRN_PROTECTION_PATH_COST_COEFF
+		}
+
+		categories = {
+			chemical_warfare_tech
+			gas_masks_tech
+		}
+
+		folder = {
+			name = chemical_warfare_folder
+			position = { x = @1936CW y = @CBRN_APPLIED_PROTECTION_ROW }
+		}
+
+		ai_will_do = {
+			factor = @CBRN_PROTECTION_RESEARCH_BASE
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_CIVIL_DEFENCE_FACTOR cbrn_profile_is_mass_civil_defence = yes }
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_PREPARED_FACTOR cbrn_profile_is_prepared_power = yes }
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_THREAT_FACTOR cbrn_country_has_public_chemical_emergency = yes }
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_LIMITED_FACTOR cbrn_profile_is_military_first = yes }
+		}
+		special_project_specialization = { specialization_cw }
+	}
+
+	military_filter_standardization = {
+		research_cost = @CBRN_PROTECTION_TECH_COST_STANDARD
+		start_year = @CBRN_PROTECTION_YEAR_1937
+
+		dependencies = {
+			improved_gas_masks = @CBRN_PROTECTION_PATH_COST_COEFF
+			civil_defence_fitting_and_registration = @CBRN_PROTECTION_PATH_COST_COEFF
+		}
+
+		path = {
+			leads_to_tech = rapid_filter_replacement
+			research_cost_coeff = @CBRN_PROTECTION_PATH_COST_COEFF
+		}
+
+		categories = {
+			chemical_warfare_tech
+			gas_masks_tech
+		}
+
+		folder = {
+			name = chemical_warfare_folder
+			position = { x = @1937CW y = @CBRN_APPLIED_PROTECTION_ROW }
+		}
+
+		ai_will_do = {
+			factor = @CBRN_PROTECTION_RESEARCH_BASE
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_SHORTAGE_FACTOR cbrn_country_has_military_mask_shortage = yes }
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_THREAT_FACTOR cbrn_country_has_public_chemical_emergency = yes }
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_PROGRAM_FACTOR cbrn_country_has_program = yes }
+		}
+		special_project_specialization = { specialization_cw specialization_land }
+	}
+
+	rapid_filter_replacement = {
+		research_cost = @CBRN_PROTECTION_TECH_COST_STANDARD
+		start_year = @CBRN_PROTECTION_YEAR_1940
+
+		dependencies = {
+			advanced_gas_masks = @CBRN_PROTECTION_PATH_COST_COEFF
+			military_filter_standardization = @CBRN_PROTECTION_PATH_COST_COEFF
+		}
+
+		path = {
+			leads_to_tech = vehicle_overpressure_and_sealed_compartments
+			research_cost_coeff = @CBRN_PROTECTION_PATH_COST_COEFF
+		}
+
+		categories = {
+			chemical_warfare_tech
+			gas_masks_tech
+		}
+
+		folder = {
+			name = chemical_warfare_folder
+			position = { x = @1940CW y = @CBRN_APPLIED_PROTECTION_ROW }
+		}
+
+		ai_will_do = {
+			factor = @CBRN_PROTECTION_RESEARCH_BASE
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_SHORTAGE_FACTOR cbrn_country_has_mask_replacement_backlog = yes }
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_THREAT_FACTOR cbrn_country_has_public_chemical_emergency = yes }
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_CONTAMINATION_FACTOR cbrn_country_controls_chemical_contamination = yes }
+		}
+		special_project_specialization = { specialization_cw specialization_land }
+	}
+
+	vehicle_overpressure_and_sealed_compartments = {
+		research_cost = @CBRN_PROTECTION_TECH_COST_ADVANCED
+		start_year = @CBRN_PROTECTION_YEAR_1942
+
+		dependencies = {
+			rapid_filter_replacement = @CBRN_PROTECTION_PATH_COST_COEFF
+		}
+
+		categories = {
+			chemical_warfare_tech
+			gas_masks_tech
+		}
+
+		folder = {
+			name = chemical_warfare_folder
+			position = { x = @1942CW y = @CBRN_APPLIED_PROTECTION_ROW }
+		}
+
+		ai_will_do = {
+			factor = @CBRN_PROTECTION_RESEARCH_BASE
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_DOCTRINE_FACTOR has_doctrine = chaos_warfare }
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_MILITARY_FIRST_FACTOR cbrn_profile_is_military_first = yes }
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_THREAT_FACTOR cbrn_country_has_public_chemical_emergency = yes }
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_LIMITED_FACTOR cbrn_profile_is_limited_or_minimal = yes }
+		}
+		special_project_specialization = { specialization_cw specialization_land }
+	}
 
     # Wind Detection Technologies
     portable_anemometer = {
@@ -1065,4 +1296,203 @@ technologies = {
         }
         special_project_specialization = { specialization_cw specialization_air }
     }
+
+	# Decontamination Equipment Technologies
+	field_decontamination_kits = {
+		research_cost = @CBRN_PROTECTION_TECH_COST_STANDARD
+		start_year = @CBRN_PROTECTION_YEAR_1936
+
+		enable_equipments = {
+			decontamination_equipment_1
+		}
+
+		path = {
+			leads_to_tech = mobile_wash_columns
+			research_cost_coeff = @CBRN_PROTECTION_PATH_COST_COEFF
+		}
+
+		categories = {
+			chemical_warfare_tech
+			decontamination_tech
+		}
+
+		folder = {
+			name = chemical_warfare_folder
+			position = { x = @1936CW y = @CBRN_DECONTAMINATION_ROW }
+		}
+
+		ai_will_do = {
+			factor = @CBRN_PROTECTION_RESEARCH_BASE
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_CONTAMINATION_FACTOR cbrn_country_controls_chemical_contamination = yes }
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_THREAT_FACTOR cbrn_country_has_public_chemical_emergency = yes }
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_PROGRAM_FACTOR cbrn_country_has_program = yes }
+		}
+		special_project_specialization = { specialization_cw specialization_land }
+	}
+
+	mobile_wash_columns = {
+		research_cost = @CBRN_PROTECTION_TECH_COST_STANDARD
+		start_year = @CBRN_PROTECTION_YEAR_1939
+
+		dependencies = {
+			field_decontamination_kits = @CBRN_PROTECTION_PATH_COST_COEFF
+		}
+
+		enable_equipments = {
+			decontamination_equipment_2
+		}
+
+		path = {
+			leads_to_tech = rapid_decontamination_plants
+			research_cost_coeff = @CBRN_PROTECTION_PATH_COST_COEFF
+		}
+
+		categories = {
+			chemical_warfare_tech
+			decontamination_tech
+		}
+
+		folder = {
+			name = chemical_warfare_folder
+			position = { x = @1939CW y = @CBRN_DECONTAMINATION_ROW }
+		}
+
+		ai_will_do = {
+			factor = @CBRN_PROTECTION_RESEARCH_BASE
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_CONTAMINATION_FACTOR cbrn_country_controls_chemical_contamination = yes }
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_THREAT_FACTOR cbrn_country_has_public_chemical_emergency = yes }
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_PROGRAM_FACTOR cbrn_country_has_program = yes }
+		}
+		special_project_specialization = { specialization_cw specialization_land }
+	}
+
+	rapid_decontamination_plants = {
+		research_cost = @CBRN_PROTECTION_TECH_COST_STANDARD
+		start_year = @CBRN_PROTECTION_YEAR_1942
+
+		dependencies = {
+			mobile_wash_columns = @CBRN_PROTECTION_PATH_COST_COEFF
+		}
+
+		enable_equipments = {
+			decontamination_equipment_3
+		}
+
+		categories = {
+			chemical_warfare_tech
+			decontamination_tech
+		}
+
+		folder = {
+			name = chemical_warfare_folder
+			position = { x = @1942CW y = @CBRN_DECONTAMINATION_ROW }
+		}
+
+		ai_will_do = {
+			factor = @CBRN_PROTECTION_RESEARCH_BASE
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_CONTAMINATION_FACTOR cbrn_country_controls_chemical_contamination = yes }
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_THREAT_FACTOR cbrn_country_has_public_chemical_emergency = yes }
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_DOCTRINE_FACTOR has_doctrine = chaos_warfare }
+		}
+		special_project_specialization = { specialization_cw specialization_land }
+	}
+
+	# CBRN Instrument Technologies
+	chemical_detection_paper = {
+		research_cost = @CBRN_PROTECTION_TECH_COST_STANDARD
+		start_year = @CBRN_PROTECTION_YEAR_1936
+
+		enable_equipments = {
+			cbrn_instrument_equipment_1
+		}
+
+		path = {
+			leads_to_tech = mobile_sampling_laboratories
+			research_cost_coeff = @CBRN_PROTECTION_PATH_COST_COEFF
+		}
+
+		categories = {
+			chemical_warfare_tech
+			cbrn_instruments_tech
+		}
+
+		folder = {
+			name = chemical_warfare_folder
+			position = { x = @1936CW y = @CBRN_INSTRUMENT_ROW }
+		}
+
+		ai_will_do = {
+			factor = @CBRN_PROTECTION_RESEARCH_BASE
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_THREAT_FACTOR cbrn_country_has_public_chemical_emergency = yes }
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_PROGRAM_FACTOR cbrn_country_has_program = yes }
+		}
+		special_project_specialization = { specialization_cw specialization_land }
+	}
+
+	mobile_sampling_laboratories = {
+		research_cost = @CBRN_PROTECTION_TECH_COST_STANDARD
+		start_year = @CBRN_PROTECTION_YEAR_1939
+
+		dependencies = {
+			chemical_detection_paper = @CBRN_PROTECTION_PATH_COST_COEFF
+		}
+
+		enable_equipments = {
+			cbrn_instrument_equipment_2
+		}
+
+		path = {
+			leads_to_tech = theater_cbrn_command_set
+			research_cost_coeff = @CBRN_PROTECTION_PATH_COST_COEFF
+		}
+
+		categories = {
+			chemical_warfare_tech
+			cbrn_instruments_tech
+		}
+
+		folder = {
+			name = chemical_warfare_folder
+			position = { x = @1939CW y = @CBRN_INSTRUMENT_ROW }
+		}
+
+		ai_will_do = {
+			factor = @CBRN_PROTECTION_RESEARCH_BASE
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_THREAT_FACTOR cbrn_country_has_public_chemical_emergency = yes }
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_CONTAMINATION_FACTOR cbrn_country_controls_chemical_contamination = yes }
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_PROGRAM_FACTOR cbrn_country_has_program = yes }
+		}
+		special_project_specialization = { specialization_cw specialization_land }
+	}
+
+	theater_cbrn_command_set = {
+		research_cost = @CBRN_PROTECTION_TECH_COST_STANDARD
+		start_year = @CBRN_PROTECTION_YEAR_1941
+
+		dependencies = {
+			mobile_sampling_laboratories = @CBRN_PROTECTION_PATH_COST_COEFF
+		}
+
+		enable_equipments = {
+			cbrn_instrument_equipment_3
+		}
+
+		categories = {
+			chemical_warfare_tech
+			cbrn_instruments_tech
+		}
+
+		folder = {
+			name = chemical_warfare_folder
+			position = { x = @1941CW y = @CBRN_INSTRUMENT_ROW }
+		}
+
+		ai_will_do = {
+			factor = @CBRN_PROTECTION_RESEARCH_BASE
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_THREAT_FACTOR cbrn_country_has_public_chemical_emergency = yes }
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_CONTAMINATION_FACTOR cbrn_country_controls_chemical_contamination = yes }
+			modifier = { factor = @CBRN_PROTECTION_RESEARCH_DOCTRINE_FACTOR has_doctrine = chaos_warfare }
+		}
+		special_project_specialization = { specialization_cw specialization_land }
+	}
 }

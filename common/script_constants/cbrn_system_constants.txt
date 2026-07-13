@@ -702,4 +702,460 @@ cbrn_scheduler = {
 	contamination_maximum_days = 720
 	evidence_expiry_minimum_days = 30
 	evidence_expiry_maximum_days = 730
+	protection_maintenance_days = 365
+	mask_snapshot_refresh_guard_days = 1
+}
+
+cbrn_protection_program_profile = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	mass_civil_defence = 1
+	large_prepared_power = 2
+	military_first_large = 3
+	industrial_reserve = 4
+	limited_program = 5
+	military_first = 6
+	prepared_frontier = 7
+	prepared_industrial = 8
+	first_world_war_legacy = 9
+	civil_defence_reserve = 10
+	commonwealth_program = 11
+	exposed_secondary = 12
+	scandinavian_program = 13
+	fragmented_chinese_program = 14
+	minimal_program = 15
+}
+
+cbrn_mask_scale = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	civilian_crates_per_population_k = 1
+	military_crates_per_manpower_k = 10
+	percent_multiplier = 100
+	minimum_action_crates = 1
+	issue_increment_of_need = 0.25
+	shortage_warning_days = 30
+}
+
+cbrn_mask_model_quality = {
+	schema = {
+		any_key = yes
+		data = {
+			{
+				any_key = yes
+				data = fixed_point
+			}
+		}
+	}
+
+	basic = {
+		respiratory = 55
+		skin = 5
+		warning = 10
+		filter_life = 55
+	}
+	reconditioned = {
+		respiratory = 38.5
+		skin = 3.5
+		warning = 7
+		filter_life = 38.5
+	}
+	improved = {
+		respiratory = 75
+		skin = 20
+		warning = 30
+		filter_life = 72
+	}
+	advanced = {
+		respiratory = 90
+		skin = 55
+		warning = 65
+		filter_life = 88
+	}
+	sealed = {
+		respiratory = 100
+		skin = 85
+		warning = 80
+		filter_life = 94
+	}
+}
+
+cbrn_mask_composite = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	choking_respiratory_weight = 1.00
+	blister_respiratory_weight = 0.35
+	blister_skin_weight = 0.65
+}
+
+cbrn_mask_distribution = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	priority_target = 0.50
+	priority_target_percent = 50
+	full_target = 0.95
+	full_target_percent = 95
+	emergency_target = 0.35
+	emergency_target_percent = 35
+	emergency_cost_mult = 0.60
+	emergency_wastage_mult = 1.30
+	emergency_effectiveness_mult = 0.65
+	urban_or_capital_cost_mult = 1.20
+	low_infrastructure_cost_mult = 1.25
+	active_combat_cost_mult = 1.35
+	occupied_non_core_cost_mult = 1.50
+	civil_defence_cost_mult = 0.82
+	registration_cost_mult = 0.85
+	full_distribution_minimum_infrastructure = 1
+	control_transfer_survival_mult = 0.80
+	occupied_transfer_survival_mult = 0.65
+	registered_warning_bonus = 10
+	civil_defence_warning_bonus = 10
+	minimum_effective_coverage = 0
+	maximum_effective_coverage = 100
+}
+
+cbrn_mask_filters = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	condition_full = 100
+	condition_minimum = 0
+	condition_maximum = 100
+	annual_basic_storage_loss = 0.02
+	annual_reconditioned_storage_loss = 0.05
+	annual_improved_storage_loss = 0.01
+	annual_advanced_storage_loss = 0.005
+	annual_sealed_storage_loss = 0.0025
+	annual_distributed_crate_loss = 0.02
+	standing_issue_condition_loss = 8
+	active_posture_condition_loss = 12
+	chemical_exposure_condition_loss = 25
+	persistent_exposure_condition_loss = 40
+	replacement_crate_ratio = 0.18
+	emergency_condition = 65
+	recondition_recovery_ratio = 0.45
+	recondition_reliability_mult = 0.70
+	recondition_action_max = 2000
+	chemical_exposure_crate_loss_ratio = 0.08
+	persistent_exposure_crate_loss_ratio = 0.15
+	strategic_raid_crate_loss_ratio = 0.20
+}
+
+cbrn_protection_decision_timing = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	establish_reserve_days = 90
+	register_population_days = 60
+	issue_field_army_days = 14
+	priority_distribution_days = 21
+	full_distribution_days = 45
+	replace_filters_days = 14
+	recondition_masks_days = 30
+	occupied_distribution_days = 30
+	export_masks_days = 14
+	convert_industry_days = 90
+	import_masks_days = 21
+	license_design_days = 30
+	simplify_filters_days = 45
+	protect_hospitals_days = 7
+	move_to_shelters_days = 3
+	emergency_distribution_reenable_days = 45
+	state_distribution_reenable_days = 60
+	filter_replacement_reenable_days = 30
+	occupied_distribution_reenable_days = 90
+	export_reenable_days = 60
+	procurement_reenable_days = 120
+	allied_request_signal_days = 120
+	response_reenable_days = 14
+	response_effect_days = 14
+	emergency_distribution_disruption_days = 14
+	simplified_filter_program_days = 365
+}
+
+cbrn_protection_decision_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	establish_reserve_pp = 35
+	establish_reserve_factories = 2
+	establish_reserve_support = 50
+	register_population_pp = 40
+	register_population_factories = 2
+	register_population_support = 40
+	register_population_manpower_gate = 5000
+	register_population_manpower_spend = -5000
+	registration_fitting_loss_ratio = 0.02
+	registration_fitting_loss_max = 500
+	issue_field_army_pp = 10
+	issue_field_army_factories = 1
+	issue_field_army_support = 10
+	priority_distribution_pp = 15
+	priority_distribution_factories = 1
+	full_distribution_pp = 30
+	full_distribution_factories = 3
+	emergency_distribution_pp = 10
+	replace_filters_pp = 10
+	replace_filters_factories = 1
+	recondition_masks_pp = 10
+	recondition_masks_factories = 1
+	recondition_masks_support = 50
+	occupied_distribution_pp = 25
+	occupied_distribution_factories = 2
+	export_masks_pp = 15
+	export_masks_factories = 1
+	export_masks_crates = 500
+	convert_industry_pp = 30
+	convert_industry_factories = 3
+	convert_industry_support = 250
+	convert_industry_basic_crates = 1000
+	import_masks_pp = 25
+	import_masks_factories = 2
+	import_masks_crates = 500
+	license_design_pp = 35
+	license_design_factories = 1
+	license_design_bonus = 0.50
+	license_design_uses = 1
+	simplify_filters_pp = 20
+	simplify_filters_factories = 2
+	simplify_filters_support = 150
+	simplify_filters_basic_crates = 800
+	protect_hospitals_pp = 10
+	protect_hospitals_factories = 1
+	protect_hospitals_mask_ratio = 0.03
+	protect_hospitals_mask_min = 10
+	protect_hospitals_mask_max = 400
+	protect_hospitals_support_ratio = 0.01
+	protect_hospitals_support_min = 20
+	protect_hospitals_support_max = 300
+	move_to_shelters_pp = 10
+	move_to_shelters_factories = 2
+	move_to_shelters_support_ratio = 0.005
+	move_to_shelters_support_min = 15
+	move_to_shelters_support_max = 150
+	move_to_shelters_train_ratio = 0.001
+	move_to_shelters_train_min = 2
+	move_to_shelters_train_max = 20
+	sound_alarm_pp = 0
+	keep_industry_operating_pp = 5
+}
+
+cbrn_protection_program_effect = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	reserve_distribution_cost_mult = 0.92
+	reserve_storage_loss_mult = 0.75
+	reserve_readiness_gain = 5
+	registration_readiness_gain = 5
+	import_readiness_gain = 2
+	license_readiness_gain = 2
+	occupied_distribution_target = 0.50
+	occupied_distribution_target_percent = 50
+	occupied_distribution_cost_mult = 1.15
+	occupied_resistance_change = -2
+	occupied_compliance_change = 1
+	simplified_distribution_cost_mult = 0.80
+	simplified_distribution_effectiveness_mult = 0.82
+	simplified_filter_condition = 75
+	simplified_issue_filter_condition = 80
+	defective_batch_chance = 20
+	defective_batch_safe_chance = 80
+	defective_batch_loss_ratio = 0.25
+	defective_batch_readiness_loss = -2
+	protective_aid_compliance_credit = 4
+}
+
+cbrn_protection_technology_effect = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	filter_standardization_consumption_mult = 0.85
+	civil_registration_distribution_cost_mult = 0.85
+	rapid_filter_replacement_cost_mult = 0.70
+	armored_delivery_friendly_risk_mult = 0.60
+}
+
+cbrn_protection_response = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	alarm_warning_bonus = 20
+	alarm_local_factories = -0.15
+	alarm_army_speed = -0.05
+	shelter_exposed_fraction_mult = 0.55
+	shelter_local_factories = -0.25
+	shelter_army_speed = -0.08
+	hospital_medical_bonus = 25
+	hospital_medical_saturation_mult = 0.65
+	hospital_local_supplies = 0.05
+	industry_exposed_fraction_mult = 1.30
+	industry_local_factories = 0.20
+	emergency_distribution_local_factories = -0.12
+	emergency_distribution_army_speed = -0.03
+	default_alert_days = 7
+	minimum_alert_days = 1
+	maximum_alert_days = 30
+}
+
+cbrn_protection_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_program = 1
+	base_military = 2
+	base_civilian = 1
+	base_response = 8
+	base_procurement = 1
+	major_factor = 1.50
+	at_war_factor = 1.50
+	chemical_enemy_factor = 4
+	contaminated_state_factor = 3
+	capital_factor = 3
+	high_population_factor = 2
+	industrial_state_factor = 2
+	occupied_state_factor = 0.60
+	mass_civil_defence_factor = 3
+	prepared_power_factor = 2
+	military_first_civilian_factor = 0.55
+	military_first_army_factor = 3
+	industrial_reserve_factor = 2
+	limited_program_factor = 0.75
+	minimal_program_factor = 0.25
+	low_stock_factor = 3
+	frontline_shortage_factor = 4
+	home_shortage_factor = 0.35
+	field_shortage_civilian_factor = 0.10
+	export_surplus_factor = 1.50
+	export_shortage_factor = 0
+	alert_factor = 5
+	high_population_k = 2500
+	export_minimum_reserve = 1500
+	military_shortage_threshold = 50
+	replacement_backlog_threshold = 250
+	research_base = 0.75
+	research_basic_protection_base = 1.25
+	research_threat_factor = 4
+	research_shortage_factor = 3
+	research_civil_defence_factor = 2.50
+	research_contamination_factor = 4
+	research_program_factor = 1.75
+	research_doctrine_factor = 1.50
+	research_limited_program_factor = 0.60
+}
+
+cbrn_protection_ai_target = {
+	schema = {
+		any_key = yes
+		data = {
+			{
+				any_key = yes
+				data = fixed_point
+			}
+		}
+	}
+
+	default = { military_coverage = 50 reserve_ratio = 0.10 }
+	mass_civil_defence = { military_coverage = 95 reserve_ratio = 0.75 }
+	prepared_power = { military_coverage = 90 reserve_ratio = 0.50 }
+	military_first = { military_coverage = 95 reserve_ratio = 0.40 }
+	industrial_reserve = { military_coverage = 85 reserve_ratio = 0.60 }
+	civil_defence_network = { military_coverage = 85 reserve_ratio = 0.45 }
+	exposed_or_fragmented = { military_coverage = 75 reserve_ratio = 0.25 }
+	limited_program = { military_coverage = 70 reserve_ratio = 0.20 }
+	minimal_program = { military_coverage = 50 reserve_ratio = 0.10 }
+}
+
+cbrn_specialist_equipment_quality = {
+	schema = {
+		any_key = yes
+		data = {
+			{
+				any_key = yes
+				data = fixed_point
+			}
+		}
+	}
+
+	decontamination = {
+		field = 40
+		mobile = 70
+		rapid = 95
+	}
+	instruments = {
+		field = 35
+		mobile = 68
+		theater = 95
+	}
+}
+
+cbrn_starting_masks = {
+	schema = {
+		any_key = yes
+		data = {
+			{
+				any_key = yes
+				data = fixed_point
+			}
+		}
+	}
+
+	ENG = { basic = 26000 improved = 19000 military_issue_target = 1.50 civilian_distribution_target = 0.70 registration = 1 }
+	FRA = { basic = 16000 improved = 8000 military_issue_target = 1.40 civilian_distribution_target = 0.28 registration = 1 }
+	GER = { basic = 16000 improved = 10000 military_issue_target = 1.50 civilian_distribution_target = 0.20 registration = 0 }
+	SOV = { basic = 24000 improved = 0 military_issue_target = 1.40 civilian_distribution_target = 0.04 registration = 0 }
+	USA = { basic = 14000 improved = 0 military_issue_target = 1.20 civilian_distribution_target = 0.03 registration = 0 }
+	ITA = { basic = 10000 improved = 0 military_issue_target = 1.10 civilian_distribution_target = 0.07 registration = 0 }
+	JAP = { basic = 11000 improved = 0 military_issue_target = 1.20 civilian_distribution_target = 0.05 registration = 0 }
+	POL = { basic = 8000 improved = 0 military_issue_target = 1.30 civilian_distribution_target = 0.15 registration = 0 }
+	CZE = { basic = 3500 improved = 2000 military_issue_target = 1.30 civilian_distribution_target = 0.20 registration = 1 }
+	BEL = { basic = 2500 improved = 1000 military_issue_target = 1.20 civilian_distribution_target = 0.18 registration = 1 }
+	HOL = { basic = 2500 improved = 1000 military_issue_target = 1.10 civilian_distribution_target = 0.18 registration = 1 }
+	CAN = { basic = 3000 improved = 0 military_issue_target = 1.20 civilian_distribution_target = 0.08 registration = 0 }
+	AST = { basic = 2500 improved = 0 military_issue_target = 1.20 civilian_distribution_target = 0.08 registration = 0 }
+	NZL = { basic = 700 improved = 0 military_issue_target = 1.20 civilian_distribution_target = 0.08 registration = 0 }
+	SAF = { basic = 1400 improved = 0 military_issue_target = 1.00 civilian_distribution_target = 0.05 registration = 0 }
+	ROM = { basic = 2000 improved = 0 military_issue_target = 1.00 civilian_distribution_target = 0.05 registration = 0 }
+	YUG = { basic = 2000 improved = 0 military_issue_target = 1.00 civilian_distribution_target = 0.04 registration = 0 }
+	TUR = { basic = 2000 improved = 0 military_issue_target = 1.00 civilian_distribution_target = 0.03 registration = 0 }
+	SPR = { basic = 1000 improved = 0 military_issue_target = 0.80 civilian_distribution_target = 0.01 registration = 0 }
+	CHI = { basic = 2500 improved = 0 military_issue_target = 0.60 civilian_distribution_target = 0.005 registration = 0 }
+	BUL = { basic = 1200 improved = 0 military_issue_target = 0.90 civilian_distribution_target = 0.03 registration = 0 }
+	HUN = { basic = 1400 improved = 0 military_issue_target = 1.00 civilian_distribution_target = 0.04 registration = 0 }
+	GRE = { basic = 1000 improved = 0 military_issue_target = 0.90 civilian_distribution_target = 0.03 registration = 0 }
+	RAJ = { basic = 1500 improved = 0 military_issue_target = 0.80 civilian_distribution_target = 0.003 registration = 0 }
+	AUS = { basic = 1600 improved = 0 military_issue_target = 1.10 civilian_distribution_target = 0.10 registration = 1 }
+	POR = { basic = 900 improved = 0 military_issue_target = 0.80 civilian_distribution_target = 0.03 registration = 0 }
+	SWE = { basic = 2000 improved = 0 military_issue_target = 1.10 civilian_distribution_target = 0.08 registration = 1 }
+	NOR = { basic = 1000 improved = 0 military_issue_target = 1.00 civilian_distribution_target = 0.08 registration = 1 }
+	DEN = { basic = 900 improved = 0 military_issue_target = 1.00 civilian_distribution_target = 0.08 registration = 1 }
+	FIN = { basic = 1200 improved = 0 military_issue_target = 1.00 civilian_distribution_target = 0.05 registration = 0 }
 }

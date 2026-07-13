@@ -1,0 +1,252 @@
+# ============================================================================
+# CHAOS REDUX - CBRN PROTECTIVE-EQUIPMENT PRODUCTION AI
+# ============================================================================
+# Overview:
+# - Starts respirator production only after a real program, shortage, chemical
+#   threat/use signal, allied request, or Chaos Warfare posture exists.
+# - Stops minimum-factory pressure after the profile-specific military,
+#   reserve, replacement, and civilian-distribution targets are satisfied.
+# - Maps the accepted 4-10 percent mask-production band to non-overlapping
+#   military-factory ranges because ai_strategy values cannot be dynamic.
+# - Uses archetype production factors for route/profile differentiation.
+#
+# NOTE: ai_strategy.value does not parse script constants in this context, so
+# all values are centralized as file-local constants.
+# ============================================================================
+
+@CBRN_MASK_PRODUCTION_FACTOR_BASE = 50
+@CBRN_MASK_PRODUCTION_FACTOR_MASS_CIVIL = 40
+@CBRN_MASK_PRODUCTION_FACTOR_PREPARED = 30
+@CBRN_MASK_PRODUCTION_FACTOR_MILITARY_FIRST = 25
+@CBRN_MASK_PRODUCTION_FACTOR_INDUSTRIAL = 35
+@CBRN_MASK_PRODUCTION_FACTOR_CIVIL_NETWORK = 30
+@CBRN_MASK_PRODUCTION_FACTOR_EXPOSED = 15
+@CBRN_MASK_PRODUCTION_FACTOR_LIMITED = 5
+@CBRN_MASK_PRODUCTION_FACTOR_URGENT = 70
+
+@CBRN_MASK_MIN_FACTORIES_10_TO_24 = 1
+@CBRN_MASK_MIN_FACTORIES_25_TO_49 = 2
+@CBRN_MASK_MIN_FACTORIES_50_TO_74 = 4
+@CBRN_MASK_MIN_FACTORIES_75_TO_99 = 6
+@CBRN_MASK_MIN_FACTORIES_100_PLUS = 8
+
+@CBRN_MASK_FACTORY_BAND_10_LOWER_EXCLUSIVE = 9
+@CBRN_MASK_FACTORY_BAND_10_TO_24_UPPER_EXCLUSIVE = 25
+@CBRN_MASK_FACTORY_BAND_25_LOWER_EXCLUSIVE = 24
+@CBRN_MASK_FACTORY_BAND_25_TO_49_UPPER_EXCLUSIVE = 50
+@CBRN_MASK_FACTORY_BAND_50_LOWER_EXCLUSIVE = 49
+@CBRN_MASK_FACTORY_BAND_50_TO_74_UPPER_EXCLUSIVE = 75
+@CBRN_MASK_FACTORY_BAND_75_LOWER_EXCLUSIVE = 74
+@CBRN_MASK_FACTORY_BAND_75_TO_99_UPPER_EXCLUSIVE = 100
+@CBRN_MASK_FACTORY_BAND_100_LOWER_EXCLUSIVE = 99
+
+cbrn_mask_production_base = {
+	allowed = { always = yes }
+	enable = { cbrn_country_should_produce_masks = yes }
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_factor
+		id = gas_mask_equipment
+		value = @CBRN_MASK_PRODUCTION_FACTOR_BASE
+	}
+}
+
+cbrn_mask_production_mass_civil_profile = {
+	allowed = { always = yes }
+	enable = {
+		cbrn_country_should_produce_masks = yes
+		cbrn_profile_is_mass_civil_defence = yes
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_factor
+		id = gas_mask_equipment
+		value = @CBRN_MASK_PRODUCTION_FACTOR_MASS_CIVIL
+	}
+}
+
+cbrn_mask_production_prepared_profile = {
+	allowed = { always = yes }
+	enable = {
+		cbrn_country_should_produce_masks = yes
+		cbrn_profile_is_prepared_power = yes
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_factor
+		id = gas_mask_equipment
+		value = @CBRN_MASK_PRODUCTION_FACTOR_PREPARED
+	}
+}
+
+cbrn_mask_production_military_first_profile = {
+	allowed = { always = yes }
+	enable = {
+		cbrn_country_should_produce_masks = yes
+		cbrn_profile_is_military_first = yes
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_factor
+		id = gas_mask_equipment
+		value = @CBRN_MASK_PRODUCTION_FACTOR_MILITARY_FIRST
+	}
+}
+
+cbrn_mask_production_industrial_profile = {
+	allowed = { always = yes }
+	enable = {
+		cbrn_country_should_produce_masks = yes
+		cbrn_profile_is_industrial_reserve = yes
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_factor
+		id = gas_mask_equipment
+		value = @CBRN_MASK_PRODUCTION_FACTOR_INDUSTRIAL
+	}
+}
+
+cbrn_mask_production_civil_network_profile = {
+	allowed = { always = yes }
+	enable = {
+		cbrn_country_should_produce_masks = yes
+		cbrn_profile_is_civil_defence_network = yes
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_factor
+		id = gas_mask_equipment
+		value = @CBRN_MASK_PRODUCTION_FACTOR_CIVIL_NETWORK
+	}
+}
+
+cbrn_mask_production_exposed_profile = {
+	allowed = { always = yes }
+	enable = {
+		cbrn_country_should_produce_masks = yes
+		cbrn_profile_is_exposed_or_fragmented = yes
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_factor
+		id = gas_mask_equipment
+		value = @CBRN_MASK_PRODUCTION_FACTOR_EXPOSED
+	}
+}
+
+cbrn_mask_production_limited_profile = {
+	allowed = { always = yes }
+	enable = {
+		cbrn_country_should_produce_masks = yes
+		cbrn_profile_is_limited_program = yes
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_factor
+		id = gas_mask_equipment
+		value = @CBRN_MASK_PRODUCTION_FACTOR_LIMITED
+	}
+}
+
+cbrn_mask_production_urgent = {
+	allowed = { always = yes }
+	enable = {
+		cbrn_country_should_produce_masks = yes
+		cbrn_country_has_urgent_mask_production_need = yes
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_factor
+		id = gas_mask_equipment
+		value = @CBRN_MASK_PRODUCTION_FACTOR_URGENT
+	}
+}
+
+cbrn_mask_minimum_factories_10_to_24 = {
+	allowed = { always = yes }
+	enable = {
+		cbrn_country_should_produce_masks = yes
+		num_of_military_factories > @CBRN_MASK_FACTORY_BAND_10_LOWER_EXCLUSIVE
+		num_of_military_factories < @CBRN_MASK_FACTORY_BAND_10_TO_24_UPPER_EXCLUSIVE
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_min_factories_archetype
+		id = gas_mask_equipment
+		value = @CBRN_MASK_MIN_FACTORIES_10_TO_24
+	}
+}
+
+cbrn_mask_minimum_factories_25_to_49 = {
+	allowed = { always = yes }
+	enable = {
+		cbrn_country_should_produce_masks = yes
+		num_of_military_factories > @CBRN_MASK_FACTORY_BAND_25_LOWER_EXCLUSIVE
+		num_of_military_factories < @CBRN_MASK_FACTORY_BAND_25_TO_49_UPPER_EXCLUSIVE
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_min_factories_archetype
+		id = gas_mask_equipment
+		value = @CBRN_MASK_MIN_FACTORIES_25_TO_49
+	}
+}
+
+cbrn_mask_minimum_factories_50_to_74 = {
+	allowed = { always = yes }
+	enable = {
+		cbrn_country_should_produce_masks = yes
+		num_of_military_factories > @CBRN_MASK_FACTORY_BAND_50_LOWER_EXCLUSIVE
+		num_of_military_factories < @CBRN_MASK_FACTORY_BAND_50_TO_74_UPPER_EXCLUSIVE
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_min_factories_archetype
+		id = gas_mask_equipment
+		value = @CBRN_MASK_MIN_FACTORIES_50_TO_74
+	}
+}
+
+cbrn_mask_minimum_factories_75_to_99 = {
+	allowed = { always = yes }
+	enable = {
+		cbrn_country_should_produce_masks = yes
+		num_of_military_factories > @CBRN_MASK_FACTORY_BAND_75_LOWER_EXCLUSIVE
+		num_of_military_factories < @CBRN_MASK_FACTORY_BAND_75_TO_99_UPPER_EXCLUSIVE
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_min_factories_archetype
+		id = gas_mask_equipment
+		value = @CBRN_MASK_MIN_FACTORIES_75_TO_99
+	}
+}
+
+cbrn_mask_minimum_factories_100_plus = {
+	allowed = { always = yes }
+	enable = {
+		cbrn_country_should_produce_masks = yes
+		num_of_military_factories > @CBRN_MASK_FACTORY_BAND_100_LOWER_EXCLUSIVE
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_min_factories_archetype
+		id = gas_mask_equipment
+		value = @CBRN_MASK_MIN_FACTORIES_100_PLUS
+	}
+}

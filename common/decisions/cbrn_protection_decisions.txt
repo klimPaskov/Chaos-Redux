@@ -1,0 +1,662 @@
+# ============================================================================
+# CHAOS REDUX - CBRN PROTECTIVE-EQUIPMENT AND CIVIL-DEFENCE DECISIONS
+# ============================================================================
+# Overview:
+# - Builds and services national respirator reserves with real projects,
+#   equipment costs, cooldowns, and differentiated AI priorities.
+# - Distributes masks to exact states using population-scaled ledgers.
+# - Exposes chemical-raid response cards only for a verified exact-state alert;
+#   aircraft presence and idle chemical capability never qualify.
+# ============================================================================
+
+cbrn_program_management_category = {
+	cbrn_establish_national_respirator_reserve = {
+		icon = GFX_decision_cbrn_establish_national_respirator_reserve
+		cost = constant:cbrn_protection_decision_cost.establish_reserve_pp
+		days_remove = constant:cbrn_protection_decision_timing.establish_reserve_days
+		modifier = { civilian_factory_use = constant:cbrn_protection_decision_cost.establish_reserve_factories }
+		visible = {
+			cbrn_protection_program_category_visible = yes
+			NOT = { has_country_flag = cbrn_national_respirator_reserve }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_establish_national_respirator_reserve_requirements_tt
+				hidden_trigger = { cbrn_can_establish_national_respirator_reserve = yes }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { cbrn_can_establish_national_respirator_reserve = yes } }
+		custom_cost_text = cbrn_establish_national_respirator_reserve_extra_cost
+		complete_effect = {
+			custom_effect_tooltip = cbrn_establish_national_respirator_reserve_begin_tt
+			hidden_effect = { cbrn_begin_national_respirator_reserve = yes }
+		}
+		remove_effect = {
+			custom_effect_tooltip = cbrn_establish_national_respirator_reserve_complete_tt
+			hidden_effect = { cbrn_complete_national_respirator_reserve = yes }
+		}
+		cancel_trigger = { OR = { NOT = { exists = yes } has_capitulated = yes } }
+		ai_will_do = {
+			base = constant:cbrn_protection_ai.base_program
+			modifier = { factor = constant:cbrn_protection_ai.major_factor is_major = yes }
+			modifier = { factor = constant:cbrn_protection_ai.chemical_enemy_factor has_enemy_used_chemical_weapons = yes }
+			modifier = { factor = constant:cbrn_protection_ai.mass_civil_defence_factor cbrn_profile_is_mass_civil_defence = yes }
+			modifier = { factor = constant:cbrn_protection_ai.prepared_power_factor cbrn_profile_is_prepared_power = yes }
+			modifier = { factor = constant:cbrn_protection_ai.minimal_program_factor cbrn_profile_is_limited_or_minimal = yes }
+		}
+	}
+
+	cbrn_register_and_fit_population = {
+		icon = GFX_decision_cbrn_register_and_fit_population
+		cost = constant:cbrn_protection_decision_cost.register_population_pp
+		days_remove = constant:cbrn_protection_decision_timing.register_population_days
+		modifier = { civilian_factory_use = constant:cbrn_protection_decision_cost.register_population_factories }
+		visible = {
+			has_country_flag = cbrn_national_respirator_reserve
+			NOT = { has_country_flag = cbrn_population_registered_and_fitted }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_register_and_fit_population_requirements_tt
+				hidden_trigger = { cbrn_can_register_and_fit_population = yes }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { cbrn_can_register_and_fit_population = yes } }
+		custom_cost_text = cbrn_register_and_fit_population_extra_cost
+		complete_effect = {
+			custom_effect_tooltip = cbrn_register_and_fit_population_begin_tt
+			hidden_effect = { cbrn_begin_population_registration = yes }
+		}
+		remove_effect = {
+			custom_effect_tooltip = cbrn_register_and_fit_population_complete_tt
+			hidden_effect = { cbrn_complete_population_registration = yes }
+		}
+		cancel_trigger = { OR = { NOT = { exists = yes } has_capitulated = yes } }
+		ai_will_do = {
+			base = constant:cbrn_protection_ai.base_civilian
+			modifier = { factor = constant:cbrn_protection_ai.mass_civil_defence_factor cbrn_profile_is_mass_civil_defence = yes }
+			modifier = { factor = constant:cbrn_protection_ai.prepared_power_factor cbrn_profile_is_prepared_power = yes }
+			modifier = { factor = constant:cbrn_protection_ai.military_first_civilian_factor cbrn_profile_is_military_first = yes }
+			modifier = { factor = constant:cbrn_protection_ai.chemical_enemy_factor has_enemy_used_chemical_weapons = yes }
+		}
+	}
+
+	cbrn_issue_masks_to_field_army = {
+		icon = GFX_decision_cbrn_issue_masks_to_field_army
+		cost = constant:cbrn_protection_decision_cost.issue_field_army_pp
+		days_remove = constant:cbrn_protection_decision_timing.issue_field_army_days
+		days_re_enable = constant:cbrn_protection_decision_timing.filter_replacement_reenable_days
+		modifier = { civilian_factory_use = constant:cbrn_protection_decision_cost.issue_field_army_factories }
+		visible = { cbrn_protection_program_category_visible = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_issue_masks_to_field_army_requirements_tt
+				hidden_trigger = { cbrn_can_issue_masks_to_field_army = yes }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { cbrn_can_issue_masks_to_field_army = yes } }
+		custom_cost_text = cbrn_issue_masks_to_field_army_extra_cost
+		complete_effect = {
+			custom_effect_tooltip = cbrn_issue_masks_to_field_army_begin_tt
+			hidden_effect = { cbrn_begin_field_army_mask_issue = yes }
+		}
+		remove_effect = {
+			custom_effect_tooltip = cbrn_issue_masks_to_field_army_complete_tt
+			hidden_effect = { cbrn_complete_field_army_mask_issue = yes }
+		}
+		cancel_trigger = { OR = { NOT = { exists = yes } has_capitulated = yes } }
+		ai_will_do = {
+			base = constant:cbrn_protection_ai.base_military
+			modifier = { factor = constant:cbrn_protection_ai.at_war_factor has_war = yes }
+			modifier = { factor = constant:cbrn_protection_ai.military_first_army_factor cbrn_profile_is_military_first = yes }
+			modifier = { factor = constant:cbrn_protection_ai.chemical_enemy_factor has_enemy_used_chemical_weapons = yes }
+			modifier = {
+				factor = constant:cbrn_protection_ai.frontline_shortage_factor
+				check_variable = { cbrn_military_mask_coverage < constant:cbrn_protection_band.medium }
+			}
+		}
+	}
+
+	cbrn_replace_military_mask_filters = {
+		icon = GFX_decision_cbrn_replace_military_mask_filters
+		cost = constant:cbrn_protection_decision_cost.replace_filters_pp
+		days_remove = constant:cbrn_protection_decision_timing.replace_filters_days
+		days_re_enable = constant:cbrn_protection_decision_timing.filter_replacement_reenable_days
+		modifier = { civilian_factory_use = constant:cbrn_protection_decision_cost.replace_filters_factories }
+		visible = {
+			has_variable = cbrn_military_mask_crates
+			check_variable = { cbrn_military_mask_crates > constant:cbrn_math.zero }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_replace_military_mask_filters_requirements_tt
+				hidden_trigger = { cbrn_can_replace_military_mask_filters = yes }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { cbrn_can_replace_military_mask_filters = yes } }
+		custom_cost_text = cbrn_replace_military_mask_filters_extra_cost
+		complete_effect = { custom_effect_tooltip = cbrn_replace_military_mask_filters_begin_tt }
+		remove_effect = {
+			custom_effect_tooltip = cbrn_replace_military_mask_filters_complete_tt
+			hidden_effect = { cbrn_replace_military_mask_filters = yes }
+		}
+		cancel_trigger = { OR = { NOT = { exists = yes } has_capitulated = yes } }
+		ai_will_do = {
+			base = constant:cbrn_protection_ai.base_military
+			modifier = { factor = constant:cbrn_protection_ai.at_war_factor has_war = yes }
+			modifier = { factor = constant:cbrn_protection_ai.chemical_enemy_factor has_enemy_used_chemical_weapons = yes }
+		}
+	}
+
+	cbrn_recondition_old_masks = {
+		icon = GFX_decision_cbrn_recondition_old_masks
+		cost = constant:cbrn_protection_decision_cost.recondition_masks_pp
+		days_remove = constant:cbrn_protection_decision_timing.recondition_masks_days
+		days_re_enable = constant:cbrn_protection_decision_timing.filter_replacement_reenable_days
+		modifier = { civilian_factory_use = constant:cbrn_protection_decision_cost.recondition_masks_factories }
+		visible = {
+			OR = {
+				check_variable = { cbrn_reconditionable_mask_cache > constant:cbrn_math.zero }
+				check_variable = { cbrn_mask_replacement_demand > constant:cbrn_math.zero }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_recondition_old_masks_requirements_tt
+				hidden_trigger = { cbrn_can_recondition_damaged_masks = yes }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { cbrn_can_recondition_damaged_masks = yes } }
+		custom_cost_text = cbrn_recondition_old_masks_extra_cost
+		complete_effect = {
+			custom_effect_tooltip = cbrn_recondition_old_masks_begin_tt
+			hidden_effect = { cbrn_begin_mask_reconditioning = yes }
+		}
+		remove_effect = {
+			custom_effect_tooltip = cbrn_recondition_old_masks_complete_tt
+			hidden_effect = { cbrn_complete_mask_reconditioning = yes }
+		}
+		cancel_trigger = { OR = { NOT = { exists = yes } has_capitulated = yes } }
+		ai_will_do = {
+			base = constant:cbrn_protection_ai.base_procurement
+			modifier = { factor = constant:cbrn_protection_ai.low_stock_factor cbrn_country_needs_imported_masks = yes }
+			modifier = { factor = constant:cbrn_protection_ai.industrial_reserve_factor cbrn_profile_is_industrial_reserve = yes }
+		}
+	}
+
+	cbrn_convert_civilian_mask_industry = {
+		icon = GFX_decision_cbrn_convert_civilian_mask_industry
+		cost = constant:cbrn_protection_decision_cost.convert_industry_pp
+		days_remove = constant:cbrn_protection_decision_timing.convert_industry_days
+		days_re_enable = constant:cbrn_protection_decision_timing.procurement_reenable_days
+		modifier = { civilian_factory_use = constant:cbrn_protection_decision_cost.convert_industry_factories }
+		visible = { has_tech = basic_gas_masks }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_convert_civilian_mask_industry_requirements_tt
+				hidden_trigger = { cbrn_can_convert_civilian_mask_industry = yes }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { cbrn_can_convert_civilian_mask_industry = yes } }
+		custom_cost_text = cbrn_convert_civilian_mask_industry_extra_cost
+		complete_effect = {
+			custom_effect_tooltip = cbrn_convert_civilian_mask_industry_begin_tt
+			hidden_effect = { cbrn_begin_civilian_mask_industry_conversion = yes }
+		}
+		remove_effect = {
+			custom_effect_tooltip = cbrn_convert_civilian_mask_industry_complete_tt
+			hidden_effect = { cbrn_complete_civilian_mask_industry_conversion = yes }
+		}
+		cancel_trigger = { OR = { NOT = { exists = yes } has_capitulated = yes } }
+		ai_will_do = {
+			base = constant:cbrn_protection_ai.base_procurement
+			modifier = { factor = constant:cbrn_protection_ai.low_stock_factor cbrn_country_needs_imported_masks = yes }
+			modifier = { factor = constant:cbrn_protection_ai.industrial_reserve_factor cbrn_profile_is_industrial_reserve = yes }
+			modifier = { factor = constant:cbrn_protection_ai.chemical_enemy_factor has_enemy_used_chemical_weapons = yes }
+		}
+	}
+
+	cbrn_simplify_filters_for_mass_issue = {
+		icon = GFX_decision_cbrn_simplify_filters_for_mass_issue
+		cost = constant:cbrn_protection_decision_cost.simplify_filters_pp
+		days_remove = constant:cbrn_protection_decision_timing.simplify_filters_days
+		modifier = { civilian_factory_use = constant:cbrn_protection_decision_cost.simplify_filters_factories }
+		visible = {
+			has_tech = basic_gas_masks
+			NOT = { has_country_flag = cbrn_simplified_filter_program_active }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_simplify_filters_for_mass_issue_requirements_tt
+				hidden_trigger = { cbrn_can_simplify_filters_for_mass_issue = yes }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { cbrn_can_simplify_filters_for_mass_issue = yes } }
+		custom_cost_text = cbrn_simplify_filters_for_mass_issue_extra_cost
+		complete_effect = {
+			custom_effect_tooltip = cbrn_simplify_filters_for_mass_issue_begin_tt
+			hidden_effect = { cbrn_begin_simplified_filter_program = yes }
+		}
+		remove_effect = {
+			custom_effect_tooltip = cbrn_simplify_filters_for_mass_issue_complete_tt
+			hidden_effect = { cbrn_complete_simplified_filter_program = yes }
+		}
+		cancel_trigger = { OR = { NOT = { exists = yes } has_capitulated = yes } }
+		ai_will_do = {
+			base = constant:cbrn_protection_ai.base_procurement
+			modifier = { factor = constant:cbrn_protection_ai.mass_civil_defence_factor cbrn_profile_is_mass_civil_defence = yes }
+			modifier = { factor = constant:cbrn_protection_ai.at_war_factor has_war = yes }
+			modifier = { factor = constant:cbrn_protection_ai.low_stock_factor cbrn_country_needs_imported_masks = yes }
+		}
+	}
+
+	cbrn_export_protective_equipment = {
+		icon = GFX_decision_cbrn_export_protective_equipment
+		target_array = ROOT.allies
+		cost = constant:cbrn_protection_decision_cost.export_masks_pp
+		days_remove = constant:cbrn_protection_decision_timing.export_masks_days
+		days_re_enable = constant:cbrn_protection_decision_timing.export_reenable_days
+		modifier = { civilian_factory_use = constant:cbrn_protection_decision_cost.export_masks_factories }
+		visible = { FROM = { cbrn_target_can_receive_exported_masks = yes } }
+		target_root_trigger = {
+			cbrn_protection_program_category_visible = yes
+			cbrn_country_has_exportable_mask_stock = yes
+			NOT = { num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.export_masks_factories }
+		}
+		target_trigger = { FROM = { cbrn_target_can_receive_exported_masks = yes } }
+		available = {
+			cbrn_country_has_exportable_mask_stock = yes
+			FROM = { cbrn_target_can_receive_exported_masks = yes }
+		}
+		complete_effect = { custom_effect_tooltip = cbrn_export_protective_equipment_begin_tt }
+		remove_effect = {
+			custom_effect_tooltip = cbrn_export_protective_equipment_complete_tt
+			hidden_effect = {
+				FROM = { save_event_target_as = cbrn_protection_trade_partner }
+				cbrn_export_masks_to_protection_partner = yes
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { exists = yes }
+				NOT = { cbrn_country_has_exportable_mask_stock = yes }
+				FROM = { NOT = { cbrn_target_can_receive_exported_masks = yes } }
+			}
+		}
+		ai_will_do = {
+			base = constant:cbrn_protection_ai.base_procurement
+			modifier = { factor = constant:cbrn_protection_ai.export_surplus_factor cbrn_country_has_exportable_mask_stock = yes }
+			modifier = { factor = constant:cbrn_protection_ai.export_shortage_factor cbrn_country_needs_imported_masks = yes }
+		}
+	}
+
+	cbrn_import_protective_equipment = {
+		icon = GFX_decision_cbrn_import_protective_equipment
+		target_array = ROOT.allies
+		cost = constant:cbrn_protection_decision_cost.import_masks_pp
+		days_remove = constant:cbrn_protection_decision_timing.import_masks_days
+		days_re_enable = constant:cbrn_protection_decision_timing.procurement_reenable_days
+		modifier = { civilian_factory_use = constant:cbrn_protection_decision_cost.import_masks_factories }
+		visible = { FROM = { cbrn_target_can_supply_imported_masks = yes } }
+		target_root_trigger = {
+			cbrn_protection_program_category_visible = yes
+			cbrn_country_needs_imported_masks = yes
+			NOT = { num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.import_masks_factories }
+		}
+		target_trigger = { FROM = { cbrn_target_can_supply_imported_masks = yes } }
+		available = {
+			cbrn_country_needs_imported_masks = yes
+			FROM = { cbrn_target_can_supply_imported_masks = yes }
+		}
+		complete_effect = { custom_effect_tooltip = cbrn_import_protective_equipment_begin_tt }
+		remove_effect = {
+			custom_effect_tooltip = cbrn_import_protective_equipment_complete_tt
+			hidden_effect = {
+				FROM = { save_event_target_as = cbrn_protection_trade_partner }
+				cbrn_import_masks_from_protection_partner = yes
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { exists = yes }
+				FROM = { NOT = { cbrn_target_can_supply_imported_masks = yes } }
+			}
+		}
+		ai_will_do = {
+			base = constant:cbrn_protection_ai.base_procurement
+			modifier = { factor = constant:cbrn_protection_ai.low_stock_factor cbrn_country_needs_imported_masks = yes }
+			modifier = { factor = constant:cbrn_protection_ai.chemical_enemy_factor has_enemy_used_chemical_weapons = yes }
+		}
+	}
+
+	cbrn_license_foreign_respirator_design = {
+		icon = GFX_decision_cbrn_license_foreign_respirator_design
+		target_array = ROOT.allies
+		cost = constant:cbrn_protection_decision_cost.license_design_pp
+		days_remove = constant:cbrn_protection_decision_timing.license_design_days
+		modifier = { civilian_factory_use = constant:cbrn_protection_decision_cost.license_design_factories }
+		visible = {
+			NOT = { has_country_flag = cbrn_foreign_respirator_license_acquired }
+			FROM = { cbrn_target_can_license_respirator_design = yes }
+		}
+		target_root_trigger = {
+			cbrn_protection_program_category_visible = yes
+			NOT = { has_country_flag = cbrn_foreign_respirator_license_acquired }
+			NOT = { num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.license_design_factories }
+		}
+		target_trigger = { FROM = { cbrn_target_can_license_respirator_design = yes } }
+		available = { FROM = { cbrn_target_can_license_respirator_design = yes } }
+		complete_effect = { custom_effect_tooltip = cbrn_license_foreign_respirator_design_begin_tt }
+		remove_effect = {
+			custom_effect_tooltip = cbrn_license_foreign_respirator_design_complete_tt
+			hidden_effect = {
+				FROM = { save_event_target_as = cbrn_protection_trade_partner }
+				cbrn_license_respirator_design_from_partner = yes
+				set_country_flag = cbrn_foreign_respirator_license_acquired
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { exists = yes }
+				FROM = { NOT = { cbrn_target_can_license_respirator_design = yes } }
+			}
+		}
+		ai_will_do = {
+			base = constant:cbrn_protection_ai.base_procurement
+			modifier = { factor = constant:cbrn_protection_ai.prepared_power_factor cbrn_profile_is_prepared_power = yes }
+			modifier = { factor = constant:cbrn_protection_ai.major_factor is_major = yes }
+		}
+	}
+}
+
+cbrn_civil_defence_category = {
+	cbrn_priority_state_mask_issue = {
+		icon = GFX_decision_cbrn_priority_state_mask_issue
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = constant:cbrn_protection_decision_cost.priority_distribution_pp
+		days_remove = constant:cbrn_protection_decision_timing.priority_distribution_days
+		days_re_enable = constant:cbrn_protection_decision_timing.state_distribution_reenable_days
+		modifier = { civilian_factory_use = constant:cbrn_protection_decision_cost.priority_distribution_factories }
+		visible = { cbrn_civil_defence_category_visible = yes }
+		target_root_trigger = {
+			cbrn_civil_defence_category_visible = yes
+			has_country_flag = cbrn_national_respirator_reserve
+			cbrn_country_has_any_mask_stock = yes
+			NOT = { num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.priority_distribution_factories }
+		}
+		target_trigger = { FROM = { cbrn_state_can_receive_priority_masks = yes } }
+		available = {
+			cbrn_country_has_any_mask_stock = yes
+			FROM = { cbrn_state_can_receive_priority_masks = yes }
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_priority_state_mask_issue_begin_tt
+			hidden_effect = {
+				FROM = {
+					set_temp_variable = { cbrn_project_duration_days = constant:cbrn_protection_decision_timing.priority_distribution_days }
+					cbrn_begin_state_protection_project = yes
+				}
+			}
+		}
+		remove_effect = {
+			custom_effect_tooltip = cbrn_priority_state_mask_issue_complete_tt
+			hidden_effect = { FROM = { cbrn_complete_priority_state_distribution = yes } }
+		}
+		cancel_trigger = { OR = { NOT = { exists = yes } FROM = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = { hidden_effect = { FROM = { cbrn_end_state_protection_project = yes } } }
+		ai_will_do = {
+			base = constant:cbrn_protection_ai.base_civilian
+			modifier = { factor = constant:cbrn_protection_ai.capital_factor FROM = { is_capital = yes } }
+			modifier = { factor = constant:cbrn_protection_ai.high_population_factor FROM = { state_population_k > constant:cbrn_protection_ai.high_population_k } }
+			modifier = { factor = constant:cbrn_protection_ai.industrial_state_factor FROM = { OR = { industrial_complex > constant:cbrn_math.zero arms_factory > constant:cbrn_math.zero dockyard > constant:cbrn_math.zero } } }
+			modifier = { factor = constant:cbrn_protection_ai.mass_civil_defence_factor cbrn_profile_is_mass_civil_defence = yes }
+			modifier = { factor = constant:cbrn_protection_ai.military_first_civilian_factor cbrn_profile_is_military_first = yes }
+			modifier = { factor = constant:cbrn_protection_ai.field_shortage_civilian_factor cbrn_country_has_military_mask_shortage = yes }
+		}
+	}
+
+	cbrn_full_state_mask_distribution = {
+		icon = GFX_decision_cbrn_full_state_mask_distribution
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = constant:cbrn_protection_decision_cost.full_distribution_pp
+		days_remove = constant:cbrn_protection_decision_timing.full_distribution_days
+		days_re_enable = constant:cbrn_protection_decision_timing.state_distribution_reenable_days
+		modifier = { civilian_factory_use = constant:cbrn_protection_decision_cost.full_distribution_factories }
+		visible = { cbrn_civil_defence_category_visible = yes }
+		target_root_trigger = {
+			cbrn_civil_defence_category_visible = yes
+			has_country_flag = cbrn_national_respirator_reserve
+			has_country_flag = cbrn_population_registered_and_fitted
+			cbrn_country_has_any_mask_stock = yes
+			NOT = { num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.full_distribution_factories }
+		}
+		target_trigger = { FROM = { cbrn_state_can_receive_full_distribution = yes } }
+		available = {
+			cbrn_country_has_any_mask_stock = yes
+			FROM = { cbrn_state_can_receive_full_distribution = yes }
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_full_state_mask_distribution_begin_tt
+			hidden_effect = {
+				FROM = {
+					set_temp_variable = { cbrn_project_duration_days = constant:cbrn_protection_decision_timing.full_distribution_days }
+					cbrn_begin_state_protection_project = yes
+				}
+			}
+		}
+		remove_effect = {
+			custom_effect_tooltip = cbrn_full_state_mask_distribution_complete_tt
+			hidden_effect = { FROM = { cbrn_complete_full_state_distribution = yes } }
+		}
+		cancel_trigger = { OR = { NOT = { exists = yes } FROM = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = { hidden_effect = { FROM = { cbrn_end_state_protection_project = yes } } }
+		ai_will_do = {
+			base = constant:cbrn_protection_ai.base_civilian
+			modifier = { factor = constant:cbrn_protection_ai.capital_factor FROM = { is_capital = yes } }
+			modifier = { factor = constant:cbrn_protection_ai.high_population_factor FROM = { state_population_k > constant:cbrn_protection_ai.high_population_k } }
+			modifier = { factor = constant:cbrn_protection_ai.mass_civil_defence_factor cbrn_profile_is_mass_civil_defence = yes }
+			modifier = { factor = constant:cbrn_protection_ai.home_shortage_factor cbrn_profile_is_military_first = yes }
+			modifier = { factor = constant:cbrn_math.zero cbrn_country_has_military_mask_shortage = yes }
+		}
+	}
+
+	cbrn_emergency_state_mask_distribution = {
+		icon = GFX_decision_cbrn_emergency_state_mask_distribution
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = constant:cbrn_protection_decision_cost.emergency_distribution_pp
+		days_re_enable = constant:cbrn_protection_decision_timing.emergency_distribution_reenable_days
+		visible = { cbrn_country_has_public_chemical_emergency = yes }
+		target_root_trigger = {
+			cbrn_country_has_public_chemical_emergency = yes
+			cbrn_country_has_any_mask_stock = yes
+		}
+		target_trigger = { FROM = { cbrn_state_can_receive_emergency_masks = yes } }
+		available = {
+			cbrn_country_has_any_mask_stock = yes
+			FROM = { cbrn_state_can_receive_emergency_masks = yes }
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_emergency_state_mask_distribution_complete_tt
+			hidden_effect = { FROM = { cbrn_complete_emergency_state_distribution = yes } }
+		}
+		ai_will_do = {
+			base = constant:cbrn_protection_ai.base_response
+			modifier = { factor = constant:cbrn_protection_ai.alert_factor FROM = { has_state_flag = cbrn_chemical_raid_alert_active } }
+			modifier = { factor = constant:cbrn_protection_ai.contaminated_state_factor FROM = { cbrn_state_has_chemical_contamination = yes } }
+			modifier = { factor = constant:cbrn_protection_ai.capital_factor FROM = { is_capital = yes } }
+		}
+	}
+
+	cbrn_replace_state_mask_filters = {
+		icon = GFX_decision_cbrn_replace_state_mask_filters
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = constant:cbrn_protection_decision_cost.replace_filters_pp
+		days_remove = constant:cbrn_protection_decision_timing.replace_filters_days
+		days_re_enable = constant:cbrn_protection_decision_timing.filter_replacement_reenable_days
+		modifier = { civilian_factory_use = constant:cbrn_protection_decision_cost.replace_filters_factories }
+		visible = { cbrn_civil_defence_category_visible = yes }
+		target_root_trigger = {
+			cbrn_civil_defence_category_visible = yes
+			cbrn_country_has_any_mask_stock = yes
+			NOT = { num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.replace_filters_factories }
+		}
+		target_trigger = { FROM = { cbrn_state_can_replace_civilian_filters = yes } }
+		available = {
+			cbrn_country_has_any_mask_stock = yes
+			FROM = { cbrn_state_can_replace_civilian_filters = yes }
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_replace_state_mask_filters_begin_tt
+			hidden_effect = {
+				FROM = {
+					set_temp_variable = { cbrn_project_duration_days = constant:cbrn_protection_decision_timing.replace_filters_days }
+					cbrn_begin_state_protection_project = yes
+				}
+			}
+		}
+		remove_effect = {
+			custom_effect_tooltip = cbrn_replace_state_mask_filters_complete_tt
+			hidden_effect = { FROM = { cbrn_complete_state_filter_replacement = yes } }
+		}
+		cancel_trigger = { OR = { NOT = { exists = yes } FROM = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = { hidden_effect = { FROM = { cbrn_end_state_protection_project = yes } } }
+		ai_will_do = {
+			base = constant:cbrn_protection_ai.base_civilian
+			modifier = { factor = constant:cbrn_protection_ai.chemical_enemy_factor has_enemy_used_chemical_weapons = yes }
+			modifier = { factor = constant:cbrn_protection_ai.contaminated_state_factor FROM = { cbrn_state_has_chemical_contamination = yes } }
+		}
+	}
+
+	cbrn_supply_occupied_population = {
+		icon = GFX_decision_cbrn_supply_occupied_population
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = constant:cbrn_protection_decision_cost.occupied_distribution_pp
+		days_remove = constant:cbrn_protection_decision_timing.occupied_distribution_days
+		days_re_enable = constant:cbrn_protection_decision_timing.occupied_distribution_reenable_days
+		modifier = { civilian_factory_use = constant:cbrn_protection_decision_cost.occupied_distribution_factories }
+		visible = { cbrn_civil_defence_category_visible = yes }
+		target_root_trigger = {
+			cbrn_civil_defence_category_visible = yes
+			cbrn_country_has_any_mask_stock = yes
+			NOT = { num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.occupied_distribution_factories }
+		}
+		target_trigger = { FROM = { cbrn_state_can_receive_occupied_masks = yes } }
+		available = {
+			cbrn_country_has_any_mask_stock = yes
+			FROM = { cbrn_state_can_receive_occupied_masks = yes }
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_supply_occupied_population_begin_tt
+			hidden_effect = {
+				FROM = {
+					set_temp_variable = { cbrn_project_duration_days = constant:cbrn_protection_decision_timing.occupied_distribution_days }
+					cbrn_begin_state_protection_project = yes
+				}
+			}
+		}
+		remove_effect = {
+			custom_effect_tooltip = cbrn_supply_occupied_population_complete_tt
+			hidden_effect = { FROM = { cbrn_complete_occupied_state_distribution = yes } }
+		}
+		cancel_trigger = { OR = { NOT = { exists = yes } FROM = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = { hidden_effect = { FROM = { cbrn_end_state_protection_project = yes } } }
+		ai_will_do = {
+			base = constant:cbrn_protection_ai.base_civilian
+			modifier = { factor = constant:cbrn_protection_ai.occupied_state_factor always = yes }
+			modifier = { factor = constant:cbrn_protection_ai.contaminated_state_factor FROM = { cbrn_state_has_chemical_contamination = yes } }
+			modifier = { factor = constant:cbrn_protection_ai.high_population_factor FROM = { state_population_k > constant:cbrn_protection_ai.high_population_k } }
+		}
+	}
+
+	cbrn_protect_hospitals_and_utilities = {
+		icon = GFX_decision_cbrn_protect_hospitals_and_utilities
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = constant:cbrn_protection_decision_cost.protect_hospitals_pp
+		days_re_enable = constant:cbrn_protection_decision_timing.response_reenable_days
+		visible = { any_controlled_state = { has_state_flag = cbrn_chemical_raid_alert_active } }
+		target_root_trigger = { any_controlled_state = { has_state_flag = cbrn_chemical_raid_alert_active } }
+		target_trigger = { FROM = { cbrn_state_can_protect_hospitals_and_utilities = yes } }
+		available = { FROM = { cbrn_state_can_protect_hospitals_and_utilities = yes } }
+		complete_effect = {
+			custom_effect_tooltip = cbrn_protect_hospitals_and_utilities_complete_tt
+			hidden_effect = { FROM = { cbrn_apply_hospital_utility_protection = yes } }
+		}
+		ai_will_do = {
+			base = constant:cbrn_protection_ai.base_response
+			modifier = { factor = constant:cbrn_protection_ai.alert_factor FROM = { has_state_flag = cbrn_chemical_raid_alert_active } }
+			modifier = { factor = constant:cbrn_protection_ai.capital_factor FROM = { is_capital = yes } }
+			modifier = { factor = constant:cbrn_protection_ai.high_population_factor FROM = { state_population_k > constant:cbrn_protection_ai.high_population_k } }
+		}
+	}
+
+	cbrn_move_civilians_to_shelters = {
+		icon = GFX_decision_cbrn_move_civilians_to_shelters
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = constant:cbrn_protection_decision_cost.move_to_shelters_pp
+		days_re_enable = constant:cbrn_protection_decision_timing.response_reenable_days
+		visible = { any_controlled_state = { has_state_flag = cbrn_chemical_raid_alert_active } }
+		target_root_trigger = { any_controlled_state = { has_state_flag = cbrn_chemical_raid_alert_active } }
+		target_trigger = { FROM = { cbrn_state_can_move_civilians_to_shelters = yes } }
+		available = { FROM = { cbrn_state_can_move_civilians_to_shelters = yes } }
+		complete_effect = {
+			custom_effect_tooltip = cbrn_move_civilians_to_shelters_complete_tt
+			hidden_effect = { FROM = { cbrn_apply_civilian_shelter_movement = yes } }
+		}
+		ai_will_do = {
+			base = constant:cbrn_protection_ai.base_response
+			modifier = { factor = constant:cbrn_protection_ai.alert_factor FROM = { has_state_flag = cbrn_chemical_raid_alert_active } }
+			modifier = { factor = constant:cbrn_protection_ai.high_population_factor FROM = { state_population_k > constant:cbrn_protection_ai.high_population_k } }
+			modifier = { factor = constant:cbrn_protection_ai.capital_factor FROM = { is_capital = yes } }
+		}
+	}
+
+	cbrn_sound_chemical_alarm = {
+		icon = GFX_decision_cbrn_sound_chemical_alarm
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = constant:cbrn_protection_decision_cost.sound_alarm_pp
+		days_re_enable = constant:cbrn_protection_decision_timing.response_reenable_days
+		visible = { any_controlled_state = { has_state_flag = cbrn_chemical_raid_alert_active } }
+		target_root_trigger = { any_controlled_state = { has_state_flag = cbrn_chemical_raid_alert_active } }
+		target_trigger = { FROM = { cbrn_state_can_sound_chemical_alarm = yes } }
+		available = { FROM = { cbrn_state_can_sound_chemical_alarm = yes } }
+		complete_effect = {
+			custom_effect_tooltip = cbrn_sound_chemical_alarm_complete_tt
+			hidden_effect = { FROM = { cbrn_apply_chemical_alarm = yes } }
+		}
+		ai_will_do = {
+			base = constant:cbrn_protection_ai.base_response
+			modifier = { factor = constant:cbrn_protection_ai.alert_factor FROM = { has_state_flag = cbrn_chemical_raid_alert_active } }
+			modifier = { factor = constant:cbrn_protection_ai.capital_factor FROM = { is_capital = yes } }
+		}
+	}
+
+	cbrn_keep_industry_operating = {
+		icon = GFX_decision_cbrn_keep_industry_operating
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = constant:cbrn_protection_decision_cost.keep_industry_operating_pp
+		days_re_enable = constant:cbrn_protection_decision_timing.response_reenable_days
+		visible = { any_controlled_state = { has_state_flag = cbrn_chemical_raid_alert_active } }
+		target_root_trigger = { any_controlled_state = { has_state_flag = cbrn_chemical_raid_alert_active } }
+		target_trigger = { FROM = { cbrn_state_can_keep_industry_operating = yes } }
+		available = { FROM = { cbrn_state_can_keep_industry_operating = yes } }
+		complete_effect = {
+			custom_effect_tooltip = cbrn_keep_industry_operating_complete_tt
+			hidden_effect = { FROM = { cbrn_apply_industrial_continuity_order = yes } }
+		}
+		ai_will_do = {
+			base = constant:cbrn_protection_ai.base_response
+			modifier = { factor = constant:cbrn_protection_ai.alert_factor FROM = { has_state_flag = cbrn_chemical_raid_alert_active } }
+			modifier = { factor = constant:cbrn_protection_ai.industrial_state_factor FROM = { OR = { industrial_complex > constant:cbrn_math.zero arms_factory > constant:cbrn_math.zero dockyard > constant:cbrn_math.zero } } }
+			modifier = { factor = constant:cbrn_protection_ai.home_shortage_factor FROM = { state_population_k > constant:cbrn_protection_ai.high_population_k } }
+		}
+	}
+}

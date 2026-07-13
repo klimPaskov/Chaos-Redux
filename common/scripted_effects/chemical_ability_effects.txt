@@ -1251,8 +1251,38 @@ chem_apply_combined_weather_terrain_penalties = {
 }
 
 
-# Gas mask damage reductions are defined in `common/script_constants/chemical_warfare_constants.txt`
-# (see `chem_mask_reduction`).
+# Gas-mask damage reduction is capped in
+# `common/script_constants/chemical_warfare_constants.txt`. The protection
+# value itself comes from the shared CBRN field-issue snapshot.
+
+chem_set_equipment_backed_mask_reduction = {
+	set_temp_variable = { var = chem_mask_reduction_fraction value = 0 }
+	set_temp_variable = { var = chem_mask_respiratory_value value = 0 }
+	set_temp_variable = { var = chem_mask_skin_value value = 0 }
+	OWNER = {
+		if = {
+			limit = { has_variable = cbrn_military_respiratory_protection }
+			set_temp_variable = { var = chem_mask_respiratory_value value = cbrn_military_respiratory_protection }
+		}
+		if = {
+			limit = { has_variable = cbrn_military_skin_protection }
+			set_temp_variable = { var = chem_mask_skin_value value = cbrn_military_skin_protection }
+		}
+	}
+	if = {
+		limit = { check_variable = { var = chem_mask_blister_bonus value = 0 compare = greater_than } }
+		set_temp_variable = { var = chem_mask_reduction_fraction value = chem_mask_respiratory_value }
+		multiply_temp_variable = { var = chem_mask_reduction_fraction value = constant:cbrn_mask_composite.blister_respiratory_weight }
+		multiply_temp_variable = { var = chem_mask_skin_value value = constant:cbrn_mask_composite.blister_skin_weight }
+		add_to_temp_variable = { var = chem_mask_reduction_fraction value = chem_mask_skin_value }
+	}
+	else = {
+		set_temp_variable = { var = chem_mask_reduction_fraction value = chem_mask_respiratory_value }
+		multiply_temp_variable = { var = chem_mask_reduction_fraction value = constant:cbrn_mask_composite.choking_respiratory_weight }
+	}
+	divide_temp_variable = { var = chem_mask_reduction_fraction value = constant:cbrn_math.percent_divisor }
+	clamp_temp_variable = { var = chem_mask_reduction_fraction min = constant:cbrn_math.zero max = constant:chem_mask_reduction.maximum }
+}
 
 chem_apply_mask_mitigation = {
     if = {
@@ -1260,32 +1290,19 @@ chem_apply_mask_mitigation = {
         set_temp_variable = { var = chem_mask_org value = 0 }
         set_temp_variable = { var = chem_mask_str value = 0 }
         if = {
-            limit = { OWNER = { has_tech = advanced_gas_masks } }
-            set_temp_variable = { var = chem_mask_org value = chem_org_damage }
-            multiply_temp_variable = { var = chem_mask_org value = constant:chem_mask_reduction.advanced }
-            multiply_temp_variable = { var = chem_mask_org value = -1 }
-            set_temp_variable = { var = chem_mask_str value = chem_str_damage }
-            multiply_temp_variable = { var = chem_mask_str value = constant:chem_mask_reduction.advanced }
-            multiply_temp_variable = { var = chem_mask_str value = -1 }
+            limit = { chem_active_cylinder_type_is_blister = yes }
+            set_temp_variable = { var = chem_mask_blister_bonus value = 1 }
         }
-        else_if = {
-            limit = { OWNER = { has_tech = improved_gas_masks } }
-            set_temp_variable = { var = chem_mask_org value = chem_org_damage }
-            multiply_temp_variable = { var = chem_mask_org value = constant:chem_mask_reduction.improved }
-            multiply_temp_variable = { var = chem_mask_org value = -1 }
-            set_temp_variable = { var = chem_mask_str value = chem_str_damage }
-            multiply_temp_variable = { var = chem_mask_str value = constant:chem_mask_reduction.improved }
-            multiply_temp_variable = { var = chem_mask_str value = -1 }
-        }
-        else_if = {
-            limit = { OWNER = { has_tech = basic_gas_masks } }
-            set_temp_variable = { var = chem_mask_org value = chem_org_damage }
-            multiply_temp_variable = { var = chem_mask_org value = constant:chem_mask_reduction.basic }
-            multiply_temp_variable = { var = chem_mask_org value = -1 }
-            set_temp_variable = { var = chem_mask_str value = chem_str_damage }
-            multiply_temp_variable = { var = chem_mask_str value = constant:chem_mask_reduction.basic }
-            multiply_temp_variable = { var = chem_mask_str value = -1 }
-        }
+		else = {
+			set_temp_variable = { var = chem_mask_blister_bonus value = 0 }
+		}
+		chem_set_equipment_backed_mask_reduction = yes
+		set_temp_variable = { var = chem_mask_org value = chem_org_damage }
+		multiply_temp_variable = { var = chem_mask_org value = chem_mask_reduction_fraction }
+		multiply_temp_variable = { var = chem_mask_org value = -1 }
+		set_temp_variable = { var = chem_mask_str value = chem_str_damage }
+		multiply_temp_variable = { var = chem_mask_str value = chem_mask_reduction_fraction }
+		multiply_temp_variable = { var = chem_mask_str value = -1 }
         if = {
             limit = { OWNER = { has_tech = dimercaprol } }
             set_temp_variable = { var = chem_dimercaprol_org value = chem_org_damage }
@@ -2299,33 +2316,13 @@ chem_update_phosgene_preview = {
 chem_apply_mask_preview_modifiers = {
     set_temp_variable = { var = chem_mask_org_preview value = 0 }
     set_temp_variable = { var = chem_mask_str_preview value = 0 }
-    if = {
-        limit = { OWNER = { has_tech = advanced_gas_masks } }
-        set_temp_variable = { var = chem_mask_org_preview value = chem_org_damage_preview }
-        multiply_temp_variable = { var = chem_mask_org_preview value = constant:chem_mask_reduction.advanced }
-        multiply_temp_variable = { var = chem_mask_org_preview value = -1 }
-        set_temp_variable = { var = chem_mask_str_preview value = chem_str_damage_preview }
-        multiply_temp_variable = { var = chem_mask_str_preview value = constant:chem_mask_reduction.advanced }
-        multiply_temp_variable = { var = chem_mask_str_preview value = -1 }
-    }
-    else_if = {
-        limit = { OWNER = { has_tech = improved_gas_masks } }
-        set_temp_variable = { var = chem_mask_org_preview value = chem_org_damage_preview }
-        multiply_temp_variable = { var = chem_mask_org_preview value = constant:chem_mask_reduction.improved }
-        multiply_temp_variable = { var = chem_mask_org_preview value = -1 }
-        set_temp_variable = { var = chem_mask_str_preview value = chem_str_damage_preview }
-        multiply_temp_variable = { var = chem_mask_str_preview value = constant:chem_mask_reduction.improved }
-        multiply_temp_variable = { var = chem_mask_str_preview value = -1 }
-    }
-    else_if = {
-        limit = { OWNER = { has_tech = basic_gas_masks } }
-        set_temp_variable = { var = chem_mask_org_preview value = chem_org_damage_preview }
-        multiply_temp_variable = { var = chem_mask_org_preview value = constant:chem_mask_reduction.basic }
-        multiply_temp_variable = { var = chem_mask_org_preview value = -1 }
-        set_temp_variable = { var = chem_mask_str_preview value = chem_str_damage_preview }
-        multiply_temp_variable = { var = chem_mask_str_preview value = constant:chem_mask_reduction.basic }
-        multiply_temp_variable = { var = chem_mask_str_preview value = -1 }
-    }
+	chem_set_equipment_backed_mask_reduction = yes
+	set_temp_variable = { var = chem_mask_org_preview value = chem_org_damage_preview }
+	multiply_temp_variable = { var = chem_mask_org_preview value = chem_mask_reduction_fraction }
+	multiply_temp_variable = { var = chem_mask_org_preview value = -1 }
+	set_temp_variable = { var = chem_mask_str_preview value = chem_str_damage_preview }
+	multiply_temp_variable = { var = chem_mask_str_preview value = chem_mask_reduction_fraction }
+	multiply_temp_variable = { var = chem_mask_str_preview value = -1 }
     if = {
         limit = { OWNER = { has_tech = dimercaprol } }
         set_temp_variable = { var = chem_dimercaprol_org_preview value = chem_org_damage_preview }
