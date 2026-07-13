@@ -1,0 +1,303 @@
+# ============================================================================
+# CHAOS REDUX - CBRN ARMY HEADQUARTERS ABILITIES
+# ============================================================================
+# Overview:
+# - Exposes seven Army HQ company-gated CBRN commander abilities.
+# - Native cost charges the light-order minimum; scripted effects debit the
+#   exact standard/mass remainder and real operating stock.
+# - The one-hour native wrapper starts bounded preparation and upkeep chains.
+# - State selection, payload dispatch, and exposure remain exact downstream
+#   adapters and are never approximated by these abilities.
+# ============================================================================
+
+# Ability cost, duration, and cooldown do not reliably parse script constants
+# in this schema, so these values are file-local mirrors of Stage 4 tuning.
+# Native ability cost uses the 0-to-1 command-power scale (`0.20` = 20 CP),
+# while scripted trigger/effect command-power values use the 0-to-100 scale.
+@CBRN_HQ_PREPARE_NATIVE_COST = 0.20
+@CBRN_HQ_PROTECTIVE_NATIVE_COST = 0.10
+@CBRN_HQ_DECON_NATIVE_COST = 0.10
+@CBRN_HQ_SEAL_AREA_NATIVE_COST = 0.10
+@CBRN_HQ_ANTIDOTE_NATIVE_COST = 0.10
+@CBRN_HQ_INFECTION_NATIVE_COST = 0.15
+@CBRN_HQ_OVERMATCH_NATIVE_COST = 0.50
+@CBRN_HQ_NATIVE_WRAPPER_HOURS = 1
+@CBRN_HQ_PREPARE_COOLDOWN_HOURS = 2160
+@CBRN_HQ_PROTECTIVE_COOLDOWN_HOURS = 336
+@CBRN_HQ_DECON_COOLDOWN_HOURS = 720
+@CBRN_HQ_SEAL_AREA_COOLDOWN_HOURS = 720
+@CBRN_HQ_ANTIDOTE_COOLDOWN_HOURS = 720
+@CBRN_HQ_INFECTION_COOLDOWN_HOURS = 1080
+@CBRN_HQ_OVERMATCH_COOLDOWN_HOURS = 4320
+
+ability = {
+	cbrn_prepare_chemical_offensive = {
+		name = CBRN_PREPARE_CHEMICAL_OFFENSIVE_NAME
+		desc = CBRN_PREPARE_CHEMICAL_OFFENSIVE_DESC
+		icon = GFX_ability_cbrn_prepare_chemical_offensive
+		sound_effect = ability_local_command
+		type = army_leader
+		requires_deployed_hq = yes
+
+		allowed = {
+			custom_trigger_tooltip = {
+				tooltip = CBRN_PREPARE_CHEMICAL_OFFENSIVE_TRIGGER_TT
+				cbrn_hq_can_activate_prepare_chemical_offensive = yes
+			}
+		}
+
+		ai_will_do = {
+			factor = constant:cbrn_hq_ai.disabled
+			modifier = {
+				add = constant:cbrn_hq_ai.valid_context_add
+				cbrn_hq_can_activate_prepare_chemical_offensive = yes
+			}
+			modifier = {
+				add = constant:cbrn_hq_ai.high_readiness_add
+				FROM = { cbrn_country_has_full_readiness = yes }
+			}
+		}
+
+		cost = @CBRN_HQ_PREPARE_NATIVE_COST
+		duration = @CBRN_HQ_NATIVE_WRAPPER_HOURS
+		cooldown = @CBRN_HQ_PREPARE_COOLDOWN_HOURS
+
+		one_time_effect = {
+			custom_effect_tooltip = CBRN_PREPARE_CHEMICAL_OFFENSIVE_EFFECT_TT
+			hidden_effect = { cbrn_hq_start_prepare_chemical_offensive = yes }
+		}
+	}
+
+	cbrn_theater_protective_posture = {
+		name = CBRN_THEATER_PROTECTIVE_POSTURE_NAME
+		desc = CBRN_THEATER_PROTECTIVE_POSTURE_DESC
+		icon = GFX_ability_cbrn_theater_protective_posture
+		sound_effect = ability_local_reserves
+		type = army_leader
+		requires_deployed_hq = yes
+
+		allowed = {
+			custom_trigger_tooltip = {
+				tooltip = CBRN_THEATER_PROTECTIVE_POSTURE_TRIGGER_TT
+				cbrn_hq_can_activate_theater_protective_posture = yes
+			}
+		}
+
+		ai_will_do = {
+			factor = constant:cbrn_hq_ai.disabled
+			modifier = {
+				add = constant:cbrn_hq_ai.valid_context_add
+				cbrn_hq_can_activate_theater_protective_posture = yes
+			}
+			modifier = {
+				add = constant:cbrn_hq_ai.urgent_context_add
+				FROM = {
+					OR = {
+						cbrn_country_has_public_chemical_emergency = yes
+						cbrn_country_controls_chemical_contamination = yes
+						cbrn_country_faces_enemy_chemical_capability = yes
+					}
+				}
+			}
+		}
+
+		cost = @CBRN_HQ_PROTECTIVE_NATIVE_COST
+		duration = @CBRN_HQ_NATIVE_WRAPPER_HOURS
+		cooldown = @CBRN_HQ_PROTECTIVE_COOLDOWN_HOURS
+
+		one_time_effect = {
+			custom_effect_tooltip = CBRN_THEATER_PROTECTIVE_POSTURE_EFFECT_TT
+			hidden_effect = { cbrn_hq_start_theater_protective_posture = yes }
+		}
+	}
+
+	cbrn_decontamination_corridor = {
+		name = CBRN_DECONTAMINATION_CORRIDOR_NAME
+		desc = CBRN_DECONTAMINATION_CORRIDOR_DESC
+		icon = GFX_ability_cbrn_decontamination_corridor
+		sound_effect = ability_local_command
+		type = army_leader
+		requires_deployed_hq = yes
+
+		allowed = {
+			custom_trigger_tooltip = {
+				tooltip = CBRN_DECONTAMINATION_CORRIDOR_TRIGGER_TT
+				cbrn_hq_can_activate_decontamination_corridor = yes
+			}
+		}
+
+		ai_will_do = {
+			factor = constant:cbrn_hq_ai.disabled
+			modifier = {
+				add = constant:cbrn_hq_ai.valid_context_add
+				cbrn_hq_can_activate_decontamination_corridor = yes
+			}
+			modifier = {
+				add = constant:cbrn_hq_ai.urgent_context_add
+				FROM = { cbrn_country_controls_chemical_contamination = yes }
+			}
+		}
+
+		cost = @CBRN_HQ_DECON_NATIVE_COST
+		duration = @CBRN_HQ_NATIVE_WRAPPER_HOURS
+		cooldown = @CBRN_HQ_DECON_COOLDOWN_HOURS
+
+		one_time_effect = {
+			custom_effect_tooltip = CBRN_DECONTAMINATION_CORRIDOR_EFFECT_TT
+			hidden_effect = { cbrn_hq_start_decontamination_corridor = yes }
+		}
+	}
+
+	cbrn_seal_operational_area = {
+		name = CBRN_SEAL_OPERATIONAL_AREA_NAME
+		desc = CBRN_SEAL_OPERATIONAL_AREA_DESC
+		icon = GFX_ability_cbrn_seal_operational_area
+		sound_effect = ability_local_reserves
+		type = army_leader
+		requires_deployed_hq = yes
+
+		allowed = {
+			custom_trigger_tooltip = {
+				tooltip = CBRN_SEAL_OPERATIONAL_AREA_TRIGGER_TT
+				cbrn_hq_can_activate_seal_operational_area = yes
+			}
+		}
+
+		ai_will_do = {
+			factor = constant:cbrn_hq_ai.disabled
+			modifier = {
+				add = constant:cbrn_hq_ai.valid_context_add
+				cbrn_hq_can_activate_seal_operational_area = yes
+			}
+			modifier = {
+				add = constant:cbrn_hq_ai.urgent_context_add
+				FROM = {
+					OR = {
+						cbrn_country_controls_chemical_contamination = yes
+						has_active_biowarfare_outbreak = yes
+					}
+				}
+			}
+		}
+
+		cost = @CBRN_HQ_SEAL_AREA_NATIVE_COST
+		duration = @CBRN_HQ_NATIVE_WRAPPER_HOURS
+		cooldown = @CBRN_HQ_SEAL_AREA_COOLDOWN_HOURS
+
+		one_time_effect = {
+			custom_effect_tooltip = CBRN_SEAL_OPERATIONAL_AREA_EFFECT_TT
+			hidden_effect = { cbrn_hq_start_seal_operational_area = yes }
+		}
+	}
+
+	cbrn_mass_antidote_response = {
+		name = CBRN_MASS_ANTIDOTE_RESPONSE_NAME
+		desc = CBRN_MASS_ANTIDOTE_RESPONSE_DESC
+		icon = GFX_ability_cbrn_mass_antidote_response
+		sound_effect = ability_local_reserves
+		type = army_leader
+		requires_deployed_hq = yes
+
+		allowed = {
+			custom_trigger_tooltip = {
+				tooltip = CBRN_MASS_ANTIDOTE_RESPONSE_TRIGGER_TT
+				cbrn_hq_can_activate_mass_antidote_response = yes
+			}
+		}
+
+		ai_will_do = {
+			factor = constant:cbrn_hq_ai.disabled
+			modifier = {
+				add = constant:cbrn_hq_ai.valid_context_add
+				cbrn_hq_can_activate_mass_antidote_response = yes
+			}
+			modifier = {
+				add = constant:cbrn_hq_ai.urgent_context_add
+				FROM = { cbrn_country_has_public_chemical_emergency = yes }
+			}
+		}
+
+		cost = @CBRN_HQ_ANTIDOTE_NATIVE_COST
+		duration = @CBRN_HQ_NATIVE_WRAPPER_HOURS
+		cooldown = @CBRN_HQ_ANTIDOTE_COOLDOWN_HOURS
+
+		one_time_effect = {
+			custom_effect_tooltip = CBRN_MASS_ANTIDOTE_RESPONSE_EFFECT_TT
+			hidden_effect = { cbrn_hq_start_mass_antidote_response = yes }
+		}
+	}
+
+	cbrn_seal_infection_corridor = {
+		name = CBRN_SEAL_INFECTION_CORRIDOR_NAME
+		desc = CBRN_SEAL_INFECTION_CORRIDOR_DESC
+		icon = GFX_ability_cbrn_seal_infection_corridor
+		sound_effect = ability_local_reserves
+		type = army_leader
+		requires_deployed_hq = yes
+
+		allowed = {
+			custom_trigger_tooltip = {
+				tooltip = CBRN_SEAL_INFECTION_CORRIDOR_TRIGGER_TT
+				cbrn_hq_can_activate_seal_infection_corridor = yes
+			}
+		}
+
+		ai_will_do = {
+			factor = constant:cbrn_hq_ai.disabled
+			modifier = {
+				add = constant:cbrn_hq_ai.valid_context_add
+				cbrn_hq_can_activate_seal_infection_corridor = yes
+			}
+			modifier = {
+				add = constant:cbrn_hq_ai.urgent_context_add
+				FROM = { has_active_biowarfare_outbreak = yes }
+			}
+		}
+
+		cost = @CBRN_HQ_INFECTION_NATIVE_COST
+		duration = @CBRN_HQ_NATIVE_WRAPPER_HOURS
+		cooldown = @CBRN_HQ_INFECTION_COOLDOWN_HOURS
+
+		one_time_effect = {
+			custom_effect_tooltip = CBRN_SEAL_INFECTION_CORRIDOR_EFFECT_TT
+			hidden_effect = { cbrn_hq_start_seal_infection_corridor = yes }
+		}
+	}
+
+	cbrn_combined_overmatch = {
+		name = CBRN_COMBINED_OVERMATCH_NAME
+		desc = CBRN_COMBINED_OVERMATCH_DESC
+		icon = GFX_ability_cbrn_combined_overmatch
+		sound_effect = ability_local_command
+		type = army_leader
+		requires_deployed_hq = yes
+
+		allowed = {
+			custom_trigger_tooltip = {
+				tooltip = CBRN_COMBINED_OVERMATCH_TRIGGER_TT
+				cbrn_hq_can_activate_combined_overmatch = yes
+			}
+		}
+
+		ai_will_do = {
+			factor = constant:cbrn_hq_ai.disabled
+			modifier = {
+				add = constant:cbrn_hq_ai.valid_context_add
+				cbrn_hq_can_activate_combined_overmatch = yes
+			}
+			modifier = {
+				add = constant:cbrn_hq_ai.capstone_add
+				FROM = { cbrn_country_has_full_readiness = yes }
+			}
+		}
+
+		cost = @CBRN_HQ_OVERMATCH_NATIVE_COST
+		duration = @CBRN_HQ_NATIVE_WRAPPER_HOURS
+		cooldown = @CBRN_HQ_OVERMATCH_COOLDOWN_HOURS
+
+		one_time_effect = {
+			custom_effect_tooltip = CBRN_COMBINED_OVERMATCH_EFFECT_TT
+			hidden_effect = { cbrn_hq_start_combined_overmatch = yes }
+		}
+	}
+}

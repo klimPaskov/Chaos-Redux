@@ -1,0 +1,139 @@
+# ============================================================================
+# CHAOS REDUX - CBRN ARMY HEADQUARTERS STATUS TRAITS
+# ============================================================================
+# Overview:
+# - Provides timed, player-readable preparation and active-order states for
+#   CBRN Army HQ abilities.
+# - Uses only narrow current-version unit-leader modifiers. CBRN exposure,
+#   cleanup, containment, evidence, and death effects remain pipeline-owned.
+# - Traits cannot be earned or assigned manually and have no commander weight.
+# ============================================================================
+
+@CBRN_HQ_TRAIT_NO_WEIGHT = 0
+@CBRN_HQ_OFFENSIVE_PLANNING = 0.05
+@CBRN_HQ_OFFENSIVE_MAX_PLANNING = 0.05
+@CBRN_HQ_OFFENSIVE_SUPPLY = 0.10
+@CBRN_HQ_PROTECTIVE_SPEED = -0.05
+@CBRN_HQ_PROTECTIVE_ATTACK = -0.03
+@CBRN_HQ_PROTECTIVE_MOVING_ORG = -0.05
+@CBRN_HQ_PROTECTIVE_WOUNDED = -0.10
+@CBRN_HQ_PROTECTIVE_SUPPLY = 0.08
+@CBRN_HQ_DECON_SPEED = -0.03
+@CBRN_HQ_DECON_SUPPLY = 0.05
+@CBRN_HQ_SEAL_SPEED = -0.05
+@CBRN_HQ_SEAL_SUPPLY = 0.05
+@CBRN_HQ_ANTIDOTE_WOUNDED = -0.20
+@CBRN_HQ_ANTIDOTE_SICKNESS = -0.20
+@CBRN_HQ_ANTIDOTE_SUPPLY = 0.08
+@CBRN_HQ_INFECTION_SPEED = -0.05
+@CBRN_HQ_INFECTION_SICKNESS = -0.25
+@CBRN_HQ_INFECTION_SUPPLY = 0.10
+@CBRN_HQ_OVERMATCH_PLANNING = 0.08
+@CBRN_HQ_OVERMATCH_MAX_PLANNING = 0.05
+@CBRN_HQ_OVERMATCH_SPEED = -0.03
+@CBRN_HQ_OVERMATCH_WOUNDED = -0.15
+@CBRN_HQ_OVERMATCH_SICKNESS = -0.15
+@CBRN_HQ_OVERMATCH_SUPPLY = 0.20
+
+leader_traits = {
+	cbrn_hq_preparing_operation = {
+		type = { land }
+		trait_type = status_trait
+		gain_xp = { always = no }
+		new_commander_weight = { factor = @CBRN_HQ_TRAIT_NO_WEIGHT }
+	}
+
+	cbrn_hq_active_chemical_offensive = {
+		type = { land }
+		trait_type = status_trait
+		gain_xp = { always = no }
+		new_commander_weight = { factor = @CBRN_HQ_TRAIT_NO_WEIGHT }
+
+		modifier = {
+			planning_speed = @CBRN_HQ_OFFENSIVE_PLANNING
+			max_planning = @CBRN_HQ_OFFENSIVE_MAX_PLANNING
+			supply_consumption_factor = @CBRN_HQ_OFFENSIVE_SUPPLY
+		}
+	}
+
+	cbrn_hq_active_protective_posture = {
+		type = { land }
+		trait_type = status_trait
+		gain_xp = { always = no }
+		new_commander_weight = { factor = @CBRN_HQ_TRAIT_NO_WEIGHT }
+
+		modifier = {
+			army_speed_factor = @CBRN_HQ_PROTECTIVE_SPEED
+			army_attack_factor = @CBRN_HQ_PROTECTIVE_ATTACK
+			org_loss_when_moving = @CBRN_HQ_PROTECTIVE_MOVING_ORG
+			wounded_chance_factor = @CBRN_HQ_PROTECTIVE_WOUNDED
+			supply_consumption_factor = @CBRN_HQ_PROTECTIVE_SUPPLY
+		}
+	}
+
+	cbrn_hq_active_decontamination_corridor = {
+		type = { land }
+		trait_type = status_trait
+		gain_xp = { always = no }
+		new_commander_weight = { factor = @CBRN_HQ_TRAIT_NO_WEIGHT }
+
+		modifier = {
+			army_speed_factor = @CBRN_HQ_DECON_SPEED
+			supply_consumption_factor = @CBRN_HQ_DECON_SUPPLY
+		}
+	}
+
+	cbrn_hq_active_sealed_operational_area = {
+		type = { land }
+		trait_type = status_trait
+		gain_xp = { always = no }
+		new_commander_weight = { factor = @CBRN_HQ_TRAIT_NO_WEIGHT }
+
+		modifier = {
+			army_speed_factor = @CBRN_HQ_SEAL_SPEED
+			supply_consumption_factor = @CBRN_HQ_SEAL_SUPPLY
+		}
+	}
+
+	cbrn_hq_active_antidote_response = {
+		type = { land }
+		trait_type = status_trait
+		gain_xp = { always = no }
+		new_commander_weight = { factor = @CBRN_HQ_TRAIT_NO_WEIGHT }
+
+		modifier = {
+			wounded_chance_factor = @CBRN_HQ_ANTIDOTE_WOUNDED
+			sickness_chance = @CBRN_HQ_ANTIDOTE_SICKNESS
+			supply_consumption_factor = @CBRN_HQ_ANTIDOTE_SUPPLY
+		}
+	}
+
+	cbrn_hq_active_infection_corridor = {
+		type = { land }
+		trait_type = status_trait
+		gain_xp = { always = no }
+		new_commander_weight = { factor = @CBRN_HQ_TRAIT_NO_WEIGHT }
+
+		modifier = {
+			army_speed_factor = @CBRN_HQ_INFECTION_SPEED
+			sickness_chance = @CBRN_HQ_INFECTION_SICKNESS
+			supply_consumption_factor = @CBRN_HQ_INFECTION_SUPPLY
+		}
+	}
+
+	cbrn_hq_active_combined_overmatch = {
+		type = { land }
+		trait_type = status_trait
+		gain_xp = { always = no }
+		new_commander_weight = { factor = @CBRN_HQ_TRAIT_NO_WEIGHT }
+
+		modifier = {
+			planning_speed = @CBRN_HQ_OVERMATCH_PLANNING
+			max_planning = @CBRN_HQ_OVERMATCH_MAX_PLANNING
+			army_speed_factor = @CBRN_HQ_OVERMATCH_SPEED
+			wounded_chance_factor = @CBRN_HQ_OVERMATCH_WOUNDED
+			sickness_chance = @CBRN_HQ_OVERMATCH_SICKNESS
+			supply_consumption_factor = @CBRN_HQ_OVERMATCH_SUPPLY
+		}
+	}
+}

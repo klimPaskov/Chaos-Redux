@@ -1,0 +1,367 @@
+# ============================================================================
+# CHAOS REDUX - CBRN ARMY HEADQUARTERS BOUNDED EVENT CHAINS
+# ============================================================================
+# Overview:
+# - Converts paid commander preparation into one exact active HQ posture.
+# - Debits a finite number of weekly upkeep installments while the order and
+#   required HQ companies remain valid.
+# - Clears operation state and restores committed medical/manpower capacity
+#   through targeted delayed events without any global periodic iteration.
+# - Never chooses a state, dispatches payload, or records CBRN exposure.
+# ============================================================================
+
+add_namespace = cbrn_hq
+
+# Shared preparation completion dispatcher. The persistent operation code
+# prevents a delayed event from being mistaken for another CBRN posture.
+unit_leader_event = {
+	id = cbrn_hq.1
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				check_variable = {
+					var = cbrn_hq_operation_code
+					value = constant:cbrn_hq_operation.prepare_chemical_offensive
+					compare = equals
+				}
+			}
+			if = {
+				limit = { cbrn_hq_prepare_command_is_valid = yes }
+				remove_unit_leader_trait = cbrn_hq_preparing_operation
+				set_variable = { cbrn_hq_upkeep_ticks_remaining = constant:cbrn_hq_timing.prepare_upkeep_ticks }
+				set_temp_variable = { cbrn_hq_active_days = constant:cbrn_hq_timing.prepare_active }
+				add_timed_unit_leader_trait = {
+					trait = cbrn_hq_active_chemical_offensive
+					days = cbrn_hq_active_days
+				}
+				cbrn_hq_schedule_next_upkeep_tick = yes
+			}
+			else = { cbrn_hq_stop_operation_benefits = yes }
+		}
+		else_if = {
+			limit = {
+				check_variable = {
+					var = cbrn_hq_operation_code
+					value = constant:cbrn_hq_operation.theater_protective_posture
+					compare = equals
+				}
+			}
+			if = {
+				limit = { cbrn_hq_protective_command_is_valid = yes }
+				remove_unit_leader_trait = cbrn_hq_preparing_operation
+				set_variable = { cbrn_hq_upkeep_ticks_remaining = constant:cbrn_hq_timing.protective_upkeep_ticks }
+				set_temp_variable = { cbrn_hq_active_days = constant:cbrn_hq_timing.protective_active }
+				add_timed_unit_leader_trait = {
+					trait = cbrn_hq_active_protective_posture
+					days = cbrn_hq_active_days
+				}
+				cbrn_hq_schedule_next_upkeep_tick = yes
+			}
+			else = { cbrn_hq_stop_operation_benefits = yes }
+		}
+		else_if = {
+			limit = {
+				check_variable = {
+					var = cbrn_hq_operation_code
+					value = constant:cbrn_hq_operation.decontamination_corridor
+					compare = equals
+				}
+			}
+			if = {
+				limit = { cbrn_hq_decon_command_is_valid = yes }
+				remove_unit_leader_trait = cbrn_hq_preparing_operation
+				set_variable = { cbrn_hq_upkeep_ticks_remaining = constant:cbrn_hq_timing.decon_upkeep_ticks }
+				set_temp_variable = { cbrn_hq_active_days = constant:cbrn_hq_timing.decon_active }
+				add_timed_unit_leader_trait = {
+					trait = cbrn_hq_active_decontamination_corridor
+					days = cbrn_hq_active_days
+				}
+				cbrn_hq_schedule_next_upkeep_tick = yes
+			}
+			else = { cbrn_hq_stop_operation_benefits = yes }
+		}
+		else_if = {
+			limit = {
+				check_variable = {
+					var = cbrn_hq_operation_code
+					value = constant:cbrn_hq_operation.seal_operational_area
+					compare = equals
+				}
+			}
+			if = {
+				limit = { cbrn_hq_seal_area_command_is_valid = yes }
+				remove_unit_leader_trait = cbrn_hq_preparing_operation
+				set_variable = { cbrn_hq_upkeep_ticks_remaining = constant:cbrn_hq_timing.seal_area_upkeep_ticks }
+				set_temp_variable = { cbrn_hq_active_days = constant:cbrn_hq_timing.seal_area_active }
+				add_timed_unit_leader_trait = {
+					trait = cbrn_hq_active_sealed_operational_area
+					days = cbrn_hq_active_days
+				}
+				cbrn_hq_schedule_next_upkeep_tick = yes
+			}
+			else = { cbrn_hq_stop_operation_benefits = yes }
+		}
+		else_if = {
+			limit = {
+				check_variable = {
+					var = cbrn_hq_operation_code
+					value = constant:cbrn_hq_operation.mass_antidote_response
+					compare = equals
+				}
+			}
+			if = {
+				limit = { cbrn_hq_antidote_command_is_valid = yes }
+				remove_unit_leader_trait = cbrn_hq_preparing_operation
+				set_variable = { cbrn_hq_upkeep_ticks_remaining = constant:cbrn_hq_timing.antidote_upkeep_ticks }
+				set_temp_variable = { cbrn_hq_active_days = constant:cbrn_hq_timing.antidote_active }
+				add_timed_unit_leader_trait = {
+					trait = cbrn_hq_active_antidote_response
+					days = cbrn_hq_active_days
+				}
+				cbrn_hq_schedule_next_upkeep_tick = yes
+			}
+			else = { cbrn_hq_stop_operation_benefits = yes }
+		}
+		else_if = {
+			limit = {
+				check_variable = {
+					var = cbrn_hq_operation_code
+					value = constant:cbrn_hq_operation.seal_infection_corridor
+					compare = equals
+				}
+			}
+			if = {
+				limit = { cbrn_hq_infection_command_is_valid = yes }
+				remove_unit_leader_trait = cbrn_hq_preparing_operation
+				set_variable = { cbrn_hq_upkeep_ticks_remaining = constant:cbrn_hq_timing.infection_upkeep_ticks }
+				set_temp_variable = { cbrn_hq_active_days = constant:cbrn_hq_timing.infection_active }
+				add_timed_unit_leader_trait = {
+					trait = cbrn_hq_active_infection_corridor
+					days = cbrn_hq_active_days
+				}
+				cbrn_hq_schedule_next_upkeep_tick = yes
+			}
+			else = { cbrn_hq_stop_operation_benefits = yes }
+		}
+		else_if = {
+			limit = {
+				check_variable = {
+					var = cbrn_hq_operation_code
+					value = constant:cbrn_hq_operation.combined_overmatch
+					compare = equals
+				}
+			}
+			if = {
+				limit = { cbrn_hq_overmatch_command_is_valid = yes }
+				remove_unit_leader_trait = cbrn_hq_preparing_operation
+				set_variable = { cbrn_hq_upkeep_ticks_remaining = constant:cbrn_hq_timing.overmatch_upkeep_ticks }
+				set_temp_variable = { cbrn_hq_active_days = constant:cbrn_hq_timing.overmatch_active }
+				add_timed_unit_leader_trait = {
+					trait = cbrn_hq_active_combined_overmatch
+					days = cbrn_hq_active_days
+				}
+				cbrn_hq_schedule_next_upkeep_tick = yes
+			}
+			else = { cbrn_hq_stop_operation_benefits = yes }
+		}
+	}
+}
+
+# Shared weekly upkeep dispatcher. Exact tick budgets prevent stale delayed
+# events from crossing the operation's planned end date.
+unit_leader_event = {
+	id = cbrn_hq.2
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				check_variable = {
+					var = cbrn_hq_upkeep_ticks_remaining
+					value = constant:cbrn_math.zero
+					compare = greater_than
+				}
+				check_variable = {
+					var = cbrn_hq_operation_code
+					value = constant:cbrn_hq_operation.prepare_chemical_offensive
+					compare = equals
+				}
+			}
+			if = {
+				limit = {
+					has_trait = cbrn_hq_active_chemical_offensive
+					cbrn_hq_prepare_command_is_valid = yes
+					cbrn_hq_can_pay_prepare_upkeep = yes
+				}
+				cbrn_hq_debit_prepare_upkeep = yes
+				cbrn_hq_complete_upkeep_tick = yes
+			}
+			else = { cbrn_hq_fail_upkeep = yes }
+		}
+		else_if = {
+			limit = {
+				check_variable = { var = cbrn_hq_upkeep_ticks_remaining value = constant:cbrn_math.zero compare = greater_than }
+				check_variable = { var = cbrn_hq_operation_code value = constant:cbrn_hq_operation.theater_protective_posture compare = equals }
+			}
+			if = {
+				limit = {
+					has_trait = cbrn_hq_active_protective_posture
+					cbrn_hq_protective_command_is_valid = yes
+					cbrn_hq_can_pay_protective_upkeep = yes
+				}
+				cbrn_hq_debit_protective_upkeep = yes
+				cbrn_hq_complete_upkeep_tick = yes
+			}
+			else = { cbrn_hq_fail_upkeep = yes }
+		}
+		else_if = {
+			limit = {
+				check_variable = { var = cbrn_hq_upkeep_ticks_remaining value = constant:cbrn_math.zero compare = greater_than }
+				check_variable = { var = cbrn_hq_operation_code value = constant:cbrn_hq_operation.decontamination_corridor compare = equals }
+			}
+			if = {
+				limit = {
+					has_trait = cbrn_hq_active_decontamination_corridor
+					cbrn_hq_decon_command_is_valid = yes
+					cbrn_hq_can_pay_decon_upkeep = yes
+				}
+				cbrn_hq_debit_decon_upkeep = yes
+				cbrn_hq_complete_upkeep_tick = yes
+			}
+			else = { cbrn_hq_fail_upkeep = yes }
+		}
+		else_if = {
+			limit = {
+				check_variable = { var = cbrn_hq_upkeep_ticks_remaining value = constant:cbrn_math.zero compare = greater_than }
+				check_variable = { var = cbrn_hq_operation_code value = constant:cbrn_hq_operation.seal_operational_area compare = equals }
+			}
+			if = {
+				limit = {
+					has_trait = cbrn_hq_active_sealed_operational_area
+					cbrn_hq_seal_area_command_is_valid = yes
+					cbrn_hq_can_pay_seal_area_upkeep = yes
+				}
+				cbrn_hq_debit_seal_area_upkeep = yes
+				cbrn_hq_complete_upkeep_tick = yes
+			}
+			else = { cbrn_hq_fail_upkeep = yes }
+		}
+		else_if = {
+			limit = {
+				check_variable = { var = cbrn_hq_upkeep_ticks_remaining value = constant:cbrn_math.zero compare = greater_than }
+				check_variable = { var = cbrn_hq_operation_code value = constant:cbrn_hq_operation.mass_antidote_response compare = equals }
+			}
+			if = {
+				limit = {
+					has_trait = cbrn_hq_active_antidote_response
+					cbrn_hq_antidote_command_is_valid = yes
+					cbrn_hq_can_pay_antidote_upkeep = yes
+				}
+				cbrn_hq_debit_antidote_upkeep = yes
+				cbrn_hq_complete_upkeep_tick = yes
+			}
+			else = { cbrn_hq_fail_upkeep = yes }
+		}
+		else_if = {
+			limit = {
+				check_variable = { var = cbrn_hq_upkeep_ticks_remaining value = constant:cbrn_math.zero compare = greater_than }
+				check_variable = { var = cbrn_hq_operation_code value = constant:cbrn_hq_operation.seal_infection_corridor compare = equals }
+			}
+			if = {
+				limit = {
+					has_trait = cbrn_hq_active_infection_corridor
+					cbrn_hq_infection_command_is_valid = yes
+					cbrn_hq_can_pay_infection_upkeep = yes
+				}
+				cbrn_hq_debit_infection_upkeep = yes
+				cbrn_hq_complete_upkeep_tick = yes
+			}
+			else = { cbrn_hq_fail_upkeep = yes }
+		}
+		else_if = {
+			limit = {
+				check_variable = { var = cbrn_hq_upkeep_ticks_remaining value = constant:cbrn_math.zero compare = greater_than }
+				check_variable = { var = cbrn_hq_operation_code value = constant:cbrn_hq_operation.combined_overmatch compare = equals }
+			}
+			if = {
+				limit = {
+					has_trait = cbrn_hq_active_combined_overmatch
+					cbrn_hq_overmatch_command_is_valid = yes
+					cbrn_hq_can_pay_overmatch_upkeep = yes
+				}
+				cbrn_hq_debit_overmatch_upkeep = yes
+				cbrn_hq_complete_upkeep_tick = yes
+			}
+			else = { cbrn_hq_fail_upkeep = yes }
+		}
+	}
+}
+
+# Planned operation end. A persistent operation code blocks a newer posture
+# until this event, so this cleanup cannot collide with a later operation.
+unit_leader_event = {
+	id = cbrn_hq.3
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		cbrn_hq_clear_operation_state = yes
+	}
+}
+
+# Medical capacity restoration by committed force band.
+country_event = {
+	id = cbrn_hq.20
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		add_to_variable = { cbrn_medical_capacity = constant:cbrn_hq_commitment.light_medical }
+		clamp_variable = { var = cbrn_medical_capacity min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+	}
+}
+
+country_event = {
+	id = cbrn_hq.21
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		add_to_variable = { cbrn_medical_capacity = constant:cbrn_hq_commitment.standard_medical }
+		clamp_variable = { var = cbrn_medical_capacity min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+	}
+}
+
+country_event = {
+	id = cbrn_hq.22
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		add_to_variable = { cbrn_medical_capacity = constant:cbrn_hq_commitment.mass_medical }
+		clamp_variable = { var = cbrn_medical_capacity min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+	}
+}
+
+# Reserved cordon manpower restoration by committed force band.
+country_event = {
+	id = cbrn_hq.23
+	hidden = yes
+	is_triggered_only = yes
+	immediate = { add_manpower = constant:cbrn_hq_commitment.light_manpower }
+}
+
+country_event = {
+	id = cbrn_hq.24
+	hidden = yes
+	is_triggered_only = yes
+	immediate = { add_manpower = constant:cbrn_hq_commitment.standard_manpower }
+}
+
+country_event = {
+	id = cbrn_hq.25
+	hidden = yes
+	is_triggered_only = yes
+	immediate = { add_manpower = constant:cbrn_hq_commitment.mass_manpower }
+}
