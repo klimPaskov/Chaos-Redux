@@ -24,12 +24,12 @@ Status vocabulary: `queued`, `in progress`, `implemented`, `verified`, `verified
 | ID | Accepted requirement | Required evidence | Status |
 | --- | --- | --- | --- |
 | S01-01 | National program loop covers establishment, protection, delivery, HQ preparation, use/exploitation, and aftermath. | Program decisions, equipment, HQ, delivery, response, AI, and docs all connected. | queued |
-| S01-02 | Persistent national values cover Chemical Readiness, policy, military/civil protection, filters, decon, medical response, biosecurity, surveillance, containment, weaponization, attribution control, evidence, and Condemnation context. | Central constants, documented variables/flags, scripted localisation. | queued |
-| S01-03 | State values cover chemical contamination class/intensity/duration, outbreak agent/stage/intensity, medical saturation, evidence, protection, and responsible actor memory. | State helpers and cleanup contracts. | queued |
+| S01-02 | Persistent national values cover Chemical Readiness, policy, military/civil protection, filters, decon, medical response, biosecurity, surveillance, containment, weaponization, attribution control, evidence, and Condemnation context. | Central constants, documented variables/flags, scripted localisation. | in progress; Stage 1 national core implemented, equipment/bio/UI values queued |
+| S01-03 | State values cover chemical contamination class/intensity/duration, outbreak agent/stage/intensity, medical saturation, evidence, protection, and responsible actor memory. | State helpers and cleanup contracts. | in progress; chemical contamination/evidence ownership implemented, outbreak and persistent actor records queued |
 | S01-04 | Army/order values cover selected HQ, preparation, protected posture, forecast, delivery profile, affected force, and cleanup corridor. | HQ companies/abilities and order-scoped helpers. | queued |
 | S01-05 | Readiness bands gate content and are capped by milestones, equipment, and institutions rather than free accumulation. | Readiness constants/triggers, decisions, doctrine integration, UI. | queued |
-| S01-06 | Choking, blister, nerve, incapacitating/malodor, and biological profiles remain mechanically distinct. | Profile constants and scenario results. | queued |
-| S01-07 | Shared exposure resolves payload, conditions, protection, disruption, deaths, contamination, medical saturation, evidence, attribution, and Condemnation in one sequence. | One public chemical exposure entry point called by every route. | queued |
+| S01-06 | Choking, blister, nerve, incapacitating/malodor, and biological profiles remain mechanically distinct. | Profile constants and scenario results. | in progress; chemical profiles implemented, biological profiles and scenario results queued |
+| S01-07 | Shared exposure resolves payload, conditions, protection, disruption, deaths, contamination, medical saturation, evidence, attribution, and Condemnation in one sequence. | One public chemical exposure entry point called by every route. | in progress; fail-closed calculator implemented, route migration and single dispatcher queued |
 | S01-08 | Counterplay and failure states include friendly blowback, accidents, medical collapse, political rupture, and doctrine lock-in. | Effects/events/AI and tests. | queued |
 
 ### Spec 02: doctrine architecture
@@ -123,12 +123,12 @@ Status vocabulary: `queued`, `in progress`, `implemented`, `verified`, `verified
 
 | ID | Accepted requirement | Required evidence | Status |
 | --- | --- | --- | --- |
-| S09-01 | One unified action record owns actor, victim, target state, route, agent, payload, exposure, deaths, contamination, evidence, attribution, and consequence context. | Documented helper contract and call-site audit. | queued |
+| S09-01 | One unified action record owns actor, victim, target state, route, agent, payload, exposure, deaths, contamination, evidence, attribution, and consequence context. | Documented helper contract and call-site audit. | in progress; action contract implemented, live call-site audit queued |
 | S09-02 | Deaths use shared tracker, valid population caps, source labels, and continuing-death aggregation without duplicate registration. | Chaos Meter adapter and tests. | queued |
 | S09-03 | Air Cleanliness receives contamination-class contributions once, including biological contribution where mapped. | Adapter and dirty-file-safe integration. | queued |
 | S09-04 | Chemical, biological, atrocity, and coverup Condemnation buckets remain distinct. | Source adapters/constants/UI. | queued |
 | S09-05 | Attribution progresses from latent through suspected/probable/confirmed; delayed confirmation does not double-charge. | Evidence ledger and events. | queued |
-| S09-06 | Confirmed use retains a floor; retaliation and doctrine mitigation modify impact according to accepted rules. | Condemnation calculation and scenarios. | queued |
+| S09-06 | Confirmed use retains a floor; retaliation and doctrine mitigation modify impact according to accepted rules. | Condemnation calculation and scenarios. | in progress; calculator and floors implemented, live consequence scenarios queued |
 | S09-07 | Inspection demand, protective aid, retaliation policy, arms embargo, humanitarian carve-out, evidence sharing, decon mission, and ally shielding exist. | Decisions/events/AI/localisation. | queued |
 | S09-08 | Sanctions affect practical CBRN production/import/support while humanitarian aid can exempt defensive goods. | Condemnation/sanctions integration. | queued |
 | S09-09 | Cleanup removes stale scopes, targets, flags, arrays, and temporary operation state. | Cleanup helper and long-chain scenarios. | queued |
@@ -180,7 +180,7 @@ Status vocabulary: `queued`, `in progress`, `implemented`, `verified`, `verified
 | `chemical_agent_delivery_matrix.md` | Agent-by-route eligibility, payload class, persistence, evidence, and target effects; no invented delivery support. | queued |
 | `biological_agent_countermeasure_matrix.md` | Agent properties and countermeasure effectiveness/tradeoffs. | queued |
 | `gas_mask_starting_stockpile_matrix.md` | Country bands, Britain strongest, population conversion, confidence notes, no identical major bundles. | queued |
-| `contamination_deaths_condemnation_balance_matrix.md` | Route/agent base bands and multipliers feed central constants and scenario expectations. | queued |
+| `contamination_deaths_condemnation_balance_matrix.md` | Route/agent base bands and multipliers feed central constants and scenario expectations. | in progress; Stage 1 chemical profiles centralized, scenario validation queued |
 | `country_program_and_designer_matrix.md` | Country posture, start package, research, production, use policy, and designer assignment. | queued |
 | `ai_behavior_matrix.md` | Trigger/action/stop conditions for production, HQ, operations, response, sanctions, and safety. | queued |
 
@@ -210,12 +210,12 @@ New Stage 1 code ownership is intentionally UI-independent:
 
 | File | Owned contract | Status |
 | --- | --- | --- |
-| `common/script_constants/cbrn_system_constants.txt` | Shared fixed-point profile, protection, evidence, attribution, cleanup, and scheduler tuning. | queued |
-| `common/scripted_effects/cbrn_exposure_effects.txt` | Public chemical action-record/exposure entry point, route adapters, consequence dispatch, and cleanup. | queued |
-| `common/scripted_effects/cbrn_protection_effects.txt` | National, force, and state protection inputs and bounded protection outputs. | queued |
+| `common/script_constants/cbrn_system_constants.txt` | Shared fixed-point profile, protection, evidence, attribution, cleanup, and scheduler tuning. | implemented |
+| `common/scripted_effects/cbrn_exposure_effects.txt` | Public chemical action-record/exposure calculator and validation, with later route adapters and consequence dispatch. | implemented for Stage 1 calculator/validator; adapters and dispatch queued |
+| `common/scripted_effects/cbrn_protection_effects.txt` | National initialization/readiness/policy and bounded layered protection outputs; later equipment helpers provide real coverage inputs. | implemented for Stage 1 core; equipment integration queued |
 | `common/scripted_effects/cbrn_hq_effects.txt` | Army/order preparation state contracts; initially helper-only until HQ content is added. | queued |
-| `common/scripted_triggers/cbrn_triggers.txt` | Readiness, policy, protection, payload, attribution, and valid-target gates. | queued |
-| `common/scripted_effects/chaosx_dynamic_effects.md` | Public helper documentation: scope, inputs, outputs, defaults, side effects, cleanup, and examples. | queued |
+| `common/scripted_triggers/cbrn_triggers.txt` | Readiness, policy, protection, payload, attribution, and valid-target gates. | implemented |
+| `common/scripted_effects/chaosx_dynamic_effects.md` | Public helper documentation: scope, inputs, outputs, defaults, side effects, cleanup, and examples. | implemented for Stage 1 helpers |
 
 Legacy public identifiers remain available until every internal and external caller is migrated. Compatibility wrappers may translate old arguments into the shared record, but they may not retain an independent exposure, death, contamination, evidence, or Condemnation calculator.
 
@@ -241,7 +241,7 @@ Legacy public identifiers remain available until every internal and external cal
 | Stage | Exit evidence | Status |
 | --- | --- | --- |
 | 0 | Engine/source note, exact-air result, no gameplay edit. | verified; commit `938738e6` |
-| 1 | Constants, persistent-state ownership, documented helper contracts, migration plan, no UI dependency. | in progress |
+| 1 | Constants, persistent-state ownership, documented helper contracts, migration plan, no UI dependency. | implemented; static contract audit passed, live integration belongs to later stages |
 | 2 | Producible protection equipment, technology, issue/coverage/filter/distribution/start-reserve system; all existing chemical routes honor it. | queued |
 | 3 | Consolidated regimental roles and Chaos Assault Battalion; legacy compatibility and template AI. | queued |
 | 4 | Six HQ companies and mapped abilities with costs, duration, cooldown, shortage, AI, cleanup. | queued |

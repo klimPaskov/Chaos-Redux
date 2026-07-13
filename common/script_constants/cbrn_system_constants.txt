@@ -1,0 +1,705 @@
+# ============================================================================
+# CHAOS REDUX - SHARED CBRN SYSTEM CONSTANTS
+# ============================================================================
+# Overview:
+# - Defines the shared CBRN data-model enums and bounded tuning tables.
+# - Owns Chemical Readiness, policy, contamination, evidence, attribution,
+#   protection, agent-class, route-profile, and exposure-output constants.
+# - Keeps exact-state air raids distinct from the unsupported continuous-air
+#   mission route. The latter is a recognized rejection value only.
+# - Biological agent identities are reserved for the later biological stage;
+#   weaponized zombies retain a separate weapon class and source label.
+# ============================================================================
+
+cbrn_math = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	zero = 0
+	one = 1
+	percent_divisor = 100
+}
+
+cbrn_proof = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	missing = 0
+	supplied = 1
+}
+
+cbrn_weapon_class = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	chemical = 1
+	biological = 2
+	weaponized_zombie = 3
+}
+
+cbrn_agent_class = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	choking = 1
+	blister = 2
+	nerve = 3
+	incapacitating = 4
+	biological = 5
+	weaponized_zombie = 6
+}
+
+cbrn_agent = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	chlorine = 101
+	phosgene = 102
+	mustard = 201
+	lewisite = 202
+	tabun = 301
+	sarin = 302
+	soman = 303
+	malodor = 401
+	behavioral = 402
+	anthrax = 501
+	plague = 502
+	tularemia = 503
+	smallpox = 504
+	weaponized_zombie = 601
+}
+
+cbrn_delivery_route = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	cylinder_release = 1
+	projector_barrage = 2
+	artillery_fire_plan = 3
+	armored_delivery = 4
+	chemical_air_raid = 5
+	strategic_chemical_raid = 6
+	covert_operation = 7
+	nerve_suppression = 8
+	continuous_air_mission = 9
+	biological_raid = 20
+	biological_battlefield = 21
+	biological_sabotage = 22
+	stockpile_accident = 30
+	doomsday_release = 40
+}
+
+cbrn_operation_severity = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	local = 1
+	prepared = 2
+	persistent = 3
+	strategic = 4
+	mass_casualty = 5
+	doomsday = 6
+}
+
+cbrn_use_policy = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	unset = 0
+	defensive_preparation = 1
+	retaliation_authority = 2
+	limited_battlefield_authority = 3
+	strategic_release_authority = 4
+	unrestricted_chaos_warfare = 5
+}
+
+cbrn_readiness_band = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	program_on_paper = 0
+	limited_local_use = 1
+	operational_use = 2
+	integrated_theater_use = 3
+	full_chaos_warfare = 4
+}
+
+cbrn_contamination_class = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	trace = 1
+	local = 2
+	serious = 3
+	severe = 4
+	catastrophic = 5
+}
+
+cbrn_attribution_state = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	unknown = 0
+	suspected = 1
+	probable = 2
+	confirmed = 3
+}
+
+cbrn_source_label = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	chemical_battlefield_exposure = 101
+	chemical_strategic_raid = 102
+	persistent_chemical_contamination = 103
+	nerve_suppression = 104
+	biological_attack = 201
+	deliberate_outbreak = 202
+	biological_stockpile_accident = 203
+	outbreak_continuation = 204
+	cbrn_doomsday_release = 301
+	weaponized_zombie_release = 401
+}
+
+cbrn_action_result = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	rejected = 0
+	accepted = 1
+}
+
+cbrn_action_reject_reason = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	invalid_actor = 1
+	missing_target_state = 2
+	invalid_weapon_class = 3
+	invalid_agent_class = 4
+	invalid_agent = 5
+	agent_class_mismatch = 6
+	invalid_delivery_route = 7
+	unsupported_continuous_air_route = 8
+	invalid_severity = 9
+	payload_not_consumed = 10
+	protection_not_resolved = 11
+	conditions_not_resolved = 12
+	invalid_payload_values = 13
+	agent_route_mismatch = 14
+}
+
+cbrn_meter = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum = 0
+	maximum = 100
+}
+
+cbrn_readiness = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	default_value = 0
+	default_cap = 19
+	limited_threshold = 20
+	operational_threshold = 40
+	integrated_threshold = 60
+	full_threshold = 80
+	limited_cap = 39
+	operational_cap = 59
+	integrated_cap = 79
+	full_cap = 100
+}
+
+cbrn_capacity_default = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	decontamination = 0
+	medical = 0
+	biological_security = 0
+	attribution_control = 0
+	command_integration = 0
+}
+
+cbrn_contamination_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	trace = 1
+	local = 10
+	serious = 25
+	severe = 50
+	catastrophic = 75
+	maximum = 100
+}
+
+cbrn_evidence_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	suspected = 20
+	probable = 45
+	confirmed = 75
+	maximum = 100
+}
+
+cbrn_attribution_public_mult = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	unknown = 0.10
+	suspected = 0.25
+	probable = 0.60
+	confirmed = 1.00
+}
+
+cbrn_protection_band = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	low = 25
+	medium = 50
+	high = 75
+	very_high = 90
+	advanced_support = 75
+}
+
+cbrn_protection_weight = {
+	schema = {
+		any_key = yes
+		data = {
+			{
+				any_key = yes
+				data = fixed_point
+			}
+		}
+	}
+
+	choking = {
+		respiratory = 0.55
+		skin = 0.05
+		antidote = 0.00
+		decontamination = 0.10
+		medical = 0.15
+		warning = 0.15
+	}
+	blister = {
+		respiratory = 0.10
+		skin = 0.35
+		antidote = 0.00
+		decontamination = 0.25
+		medical = 0.20
+		warning = 0.10
+	}
+	nerve = {
+		respiratory = 0.25
+		skin = 0.20
+		antidote = 0.25
+		decontamination = 0.15
+		medical = 0.10
+		warning = 0.05
+	}
+	incapacitating = {
+		respiratory = 0.45
+		skin = 0.05
+		antidote = 0.00
+		decontamination = 0.10
+		medical = 0.15
+		warning = 0.25
+	}
+}
+
+cbrn_protection_casualty_mult = {
+	schema = {
+		any_key = yes
+		data = {
+			{
+				any_key = yes
+				data = fixed_point
+			}
+		}
+	}
+
+	choking = {
+		unprotected = 1.00
+		low = 0.75
+		medium = 0.45
+		high = 0.25
+		very_high = 0.12
+		advanced_floor = 0.06
+	}
+	blister = {
+		unprotected = 1.00
+		low = 0.92
+		medium = 0.80
+		high = 0.60
+		very_high = 0.42
+		advanced_floor = 0.15
+	}
+	nerve = {
+		unprotected = 1.00
+		low = 0.88
+		medium = 0.70
+		high = 0.48
+		very_high = 0.32
+		advanced_floor = 0.10
+	}
+	incapacitating = {
+		unprotected = 1.00
+		low = 0.80
+		medium = 0.60
+		high = 0.40
+		very_high = 0.20
+		advanced_floor = 0.10
+	}
+}
+
+cbrn_protection_output = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	disruption_minimum_mult = 0.10
+	contamination_minimum_mult = 0.20
+	disruption_protection_factor = 0.75
+	contamination_decon_factor = 0.60
+}
+
+cbrn_agent_class_profile = {
+	schema = {
+		any_key = yes
+		data = {
+			{
+				any_key = yes
+				data = fixed_point
+			}
+		}
+	}
+
+	choking = {
+		disruption_mult = 1.00
+		contamination_mult = 0.40
+		medical_mult = 0.80
+		evidence_mult = 1.00
+		condemnation_mult = 1.00
+		duration_mult = 0.40
+		tactical_lethality = 0.000040
+		strategic_lethality = 0.000120
+	}
+	blister = {
+		disruption_mult = 0.80
+		contamination_mult = 1.50
+		medical_mult = 1.30
+		evidence_mult = 1.00
+		condemnation_mult = 1.40
+		duration_mult = 1.50
+		tactical_lethality = 0.000030
+		strategic_lethality = 0.000080
+	}
+	nerve = {
+		disruption_mult = 1.40
+		contamination_mult = 0.80
+		medical_mult = 1.50
+		evidence_mult = 1.10
+		condemnation_mult = 2.00
+		duration_mult = 0.80
+		tactical_lethality = 0.000150
+		strategic_lethality = 0.000400
+	}
+	incapacitating = {
+		disruption_mult = 1.10
+		contamination_mult = 0.20
+		medical_mult = 0.40
+		evidence_mult = 0.80
+		condemnation_mult = 0.80
+		duration_mult = 0.20
+		tactical_lethality = 0.000003
+		strategic_lethality = 0.000003
+	}
+}
+
+cbrn_chemical_agent_profile = {
+	schema = {
+		any_key = yes
+		data = {
+			{
+				any_key = yes
+				data = fixed_point
+			}
+		}
+	}
+
+	chlorine = {
+		potency_mult = 0.75
+		persistence_mult = 0.50
+		evidence_mult = 1.20
+	}
+	phosgene = {
+		potency_mult = 1.00
+		persistence_mult = 0.45
+		evidence_mult = 1.10
+	}
+	mustard = {
+		potency_mult = 0.90
+		persistence_mult = 1.50
+		evidence_mult = 1.20
+	}
+	lewisite = {
+		potency_mult = 1.10
+		persistence_mult = 1.30
+		evidence_mult = 1.20
+	}
+	tabun = {
+		potency_mult = 0.90
+		persistence_mult = 0.80
+		evidence_mult = 1.20
+	}
+	sarin = {
+		potency_mult = 1.10
+		persistence_mult = 0.70
+		evidence_mult = 1.20
+	}
+	soman = {
+		potency_mult = 1.20
+		persistence_mult = 1.00
+		evidence_mult = 1.25
+	}
+	malodor = {
+		potency_mult = 0.40
+		persistence_mult = 0.20
+		evidence_mult = 0.80
+	}
+	behavioral = {
+		potency_mult = 0.25
+		persistence_mult = 0.10
+		evidence_mult = 1.00
+	}
+}
+
+cbrn_route_profile = {
+	schema = {
+		any_key = yes
+		data = {
+			{
+				any_key = yes
+				data = fixed_point
+			}
+		}
+	}
+
+	cylinder_release = {
+		base_disruption = 0.15
+		civilian_exposed_fraction = 0.005
+		contamination_points = 3
+		medical_points = 3
+		evidence_points = 30
+		condemnation_base = 4
+		duration_days = 5
+	}
+	projector_barrage = {
+		base_disruption = 0.20
+		civilian_exposed_fraction = 0.010
+		contamination_points = 10
+		medical_points = 6
+		evidence_points = 40
+		condemnation_base = 5.5
+		duration_days = 10
+	}
+	artillery_fire_plan = {
+		base_disruption = 0.28
+		civilian_exposed_fraction = 0.0225
+		contamination_points = 12
+		medical_points = 10
+		evidence_points = 50
+		condemnation_base = 7
+		duration_days = 18
+	}
+	armored_delivery = {
+		base_disruption = 0.22
+		civilian_exposed_fraction = 0.0055
+		contamination_points = 8
+		medical_points = 6
+		evidence_points = 45
+		condemnation_base = 6
+		duration_days = 10
+	}
+	chemical_air_raid = {
+		base_disruption = 0.28
+		civilian_exposed_fraction = 0.070
+		contamination_points = 35
+		medical_points = 20
+		evidence_points = 75
+		condemnation_base = 20
+		duration_days = 45
+	}
+	strategic_chemical_raid = {
+		base_disruption = 0.40
+		civilian_exposed_fraction = 0.125
+		contamination_points = 55
+		medical_points = 35
+		evidence_points = 100
+		condemnation_base = 35
+		duration_days = 90
+	}
+	covert_operation = {
+		base_disruption = 0.10
+		civilian_exposed_fraction = 0.002
+		contamination_points = 5
+		medical_points = 3
+		evidence_points = 15
+		condemnation_base = 15
+		duration_days = 10
+	}
+	nerve_suppression = {
+		base_disruption = 0.35
+		civilian_exposed_fraction = 0.060
+		contamination_points = 15
+		medical_points = 30
+		evidence_points = 70
+		condemnation_base = 15
+		duration_days = 30
+	}
+}
+
+cbrn_action_input_bounds = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	payload_ratio_min = 0
+	payload_ratio_max = 1
+	dose_mult_min = 0
+	dose_mult_max = 3.00
+	condition_mult_min = 0.25
+	condition_mult_max = 2.00
+	command_mult_min = 0.50
+	command_mult_max = 1.25
+	target_density_mult_min = 0.25
+	target_density_mult_max = 2.00
+	evidence_mult_min = 0.25
+	evidence_mult_max = 2.00
+	condemnation_mult_min = 0.50
+	condemnation_mult_max = 3.00
+	friendly_risk_min = 0
+	friendly_risk_max = 1
+}
+
+cbrn_action_output_bounds = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	disruption_max = 0.60
+	military_death_fraction_max = 0.01
+	civilian_exposed_fraction_max = 0.80
+	civilian_death_fraction_max = 0.08
+	contamination_points_max = 100
+	medical_points_max = 100
+	evidence_points_max = 100
+	condemnation_base_max = 500
+	duration_days_max = 720
+	friendly_risk_max = 1
+}
+
+cbrn_friendly_risk = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	forecast_reduction_factor = 0.60
+	command_reduction_factor = 0.40
+}
+
+cbrn_episode_death_cap = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	tactical_chemical = 0.0015
+	strategic_chemical = 0.0075
+	catastrophic_nerve = 0.0150
+	serious_biological = 0.0250
+	catastrophic_biological = 0.0800
+}
+
+cbrn_doctrine_condemnation = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_mult = 0.70
+	maximum_mult = 1.00
+	confirmed_strategic_floor = 20
+	confirmed_mass_casualty_floor = 35
+}
+
+cbrn_scheduler = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	contamination_minimum_days = 1
+	contamination_maximum_days = 720
+	evidence_expiry_minimum_days = 30
+	evidence_expiry_maximum_days = 730
+}

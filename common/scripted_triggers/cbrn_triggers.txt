@@ -1,0 +1,399 @@
+# ============================================================================
+# CHAOS REDUX - SHARED CBRN SCRIPTED TRIGGERS
+# ============================================================================
+# Overview:
+# - Provides country readiness and use-policy gates.
+# - Provides lazy state contamination/evidence gates.
+# - Validates the temporary action-record contract before exposure resolution.
+# - Recognizes but rejects the unsupported continuous-air mission route.
+# ============================================================================
+
+cbrn_country_has_program = {
+	OR = {
+		has_country_flag = cbrn_program_established
+		has_doctrine = chaos_warfare
+	}
+}
+
+cbrn_country_has_limited_readiness = {
+	has_variable = chemical_readiness
+	check_variable = {
+		var = chemical_readiness
+		value = constant:cbrn_readiness.limited_threshold
+		compare = greater_than_or_equals
+	}
+}
+
+cbrn_country_has_operational_readiness = {
+	has_variable = chemical_readiness
+	check_variable = {
+		var = chemical_readiness
+		value = constant:cbrn_readiness.operational_threshold
+		compare = greater_than_or_equals
+	}
+}
+
+cbrn_country_has_integrated_readiness = {
+	has_variable = chemical_readiness
+	check_variable = {
+		var = chemical_readiness
+		value = constant:cbrn_readiness.integrated_threshold
+		compare = greater_than_or_equals
+	}
+}
+
+cbrn_country_has_full_readiness = {
+	has_variable = chemical_readiness
+	check_variable = {
+		var = chemical_readiness
+		value = constant:cbrn_readiness.full_threshold
+		compare = greater_than_or_equals
+	}
+}
+
+cbrn_policy_is_defensive_preparation = {
+	check_variable = {
+		var = cbrn_use_policy
+		value = constant:cbrn_use_policy.defensive_preparation
+		compare = equals
+	}
+}
+
+cbrn_policy_is_retaliation_authority = {
+	check_variable = {
+		var = cbrn_use_policy
+		value = constant:cbrn_use_policy.retaliation_authority
+		compare = equals
+	}
+}
+
+cbrn_policy_allows_battlefield_use = {
+	OR = {
+		check_variable = {
+			var = cbrn_use_policy
+			value = constant:cbrn_use_policy.limited_battlefield_authority
+			compare = greater_than_or_equals
+		}
+		AND = {
+			cbrn_policy_is_retaliation_authority = yes
+			has_country_flag = cbrn_retaliation_authorized
+		}
+	}
+}
+
+cbrn_policy_allows_strategic_use = {
+	check_variable = {
+		var = cbrn_use_policy
+		value = constant:cbrn_use_policy.strategic_release_authority
+		compare = greater_than_or_equals
+	}
+}
+
+cbrn_policy_allows_extreme_use = {
+	check_variable = {
+		var = cbrn_use_policy
+		value = constant:cbrn_use_policy.unrestricted_chaos_warfare
+		compare = equals
+	}
+}
+
+cbrn_state_has_chemical_contamination = {
+	has_variable = cbrn_chemical_contamination
+	check_variable = {
+		var = cbrn_chemical_contamination
+		value = constant:cbrn_contamination_threshold.trace
+		compare = greater_than_or_equals
+	}
+}
+
+cbrn_state_has_serious_chemical_contamination = {
+	has_variable = cbrn_chemical_contamination
+	check_variable = {
+		var = cbrn_chemical_contamination
+		value = constant:cbrn_contamination_threshold.serious
+		compare = greater_than_or_equals
+	}
+}
+
+cbrn_state_has_severe_medical_saturation = {
+	has_variable = cbrn_medical_saturation
+	check_variable = {
+		var = cbrn_medical_saturation
+		value = constant:cbrn_protection_band.high
+		compare = greater_than_or_equals
+	}
+}
+
+cbrn_state_attribution_is_suspected = {
+	has_variable = cbrn_evidence_quality
+	check_variable = {
+		var = cbrn_evidence_quality
+		value = constant:cbrn_evidence_threshold.suspected
+		compare = greater_than_or_equals
+	}
+}
+
+cbrn_state_attribution_is_probable = {
+	has_variable = cbrn_evidence_quality
+	check_variable = {
+		var = cbrn_evidence_quality
+		value = constant:cbrn_evidence_threshold.probable
+		compare = greater_than_or_equals
+	}
+}
+
+cbrn_state_attribution_is_confirmed = {
+	has_variable = cbrn_evidence_quality
+	check_variable = {
+		var = cbrn_evidence_quality
+		value = constant:cbrn_evidence_threshold.confirmed
+		compare = greater_than_or_equals
+	}
+}
+
+cbrn_action_actor_is_valid = {
+	exists = yes
+}
+
+cbrn_action_target_state_is_valid = {
+	has_variable = cbrn_action_target_state_supplied
+	check_variable = {
+		var = cbrn_action_target_state_supplied
+		value = constant:cbrn_proof.supplied
+		compare = equals
+	}
+	has_event_target = cbrn_action_target_state
+}
+
+cbrn_action_weapon_class_is_chemical = {
+	has_variable = cbrn_action_weapon_class
+	check_variable = {
+		var = cbrn_action_weapon_class
+		value = constant:cbrn_weapon_class.chemical
+		compare = equals
+	}
+}
+
+cbrn_action_agent_class_is_chemical = {
+	OR = {
+		check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.choking compare = equals }
+		check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.blister compare = equals }
+		check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.nerve compare = equals }
+		check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.incapacitating compare = equals }
+	}
+}
+
+cbrn_action_agent_is_valid_chemical = {
+	OR = {
+		check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.chlorine compare = equals }
+		check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.phosgene compare = equals }
+		check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.mustard compare = equals }
+		check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.lewisite compare = equals }
+		check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.tabun compare = equals }
+		check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.sarin compare = equals }
+		check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.soman compare = equals }
+		check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.malodor compare = equals }
+		check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.behavioral compare = equals }
+	}
+}
+
+cbrn_action_agent_matches_class = {
+	OR = {
+		AND = {
+			check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.choking compare = equals }
+			OR = {
+				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.chlorine compare = equals }
+				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.phosgene compare = equals }
+			}
+		}
+		AND = {
+			check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.blister compare = equals }
+			OR = {
+				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.mustard compare = equals }
+				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.lewisite compare = equals }
+			}
+		}
+		AND = {
+			check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.nerve compare = equals }
+			OR = {
+				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.tabun compare = equals }
+				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.sarin compare = equals }
+				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.soman compare = equals }
+			}
+		}
+		AND = {
+			check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.incapacitating compare = equals }
+			OR = {
+				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.malodor compare = equals }
+				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.behavioral compare = equals }
+			}
+		}
+	}
+}
+
+cbrn_action_delivery_route_is_recognized = {
+	OR = {
+		check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.cylinder_release compare = equals }
+		check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.projector_barrage compare = equals }
+		check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.artillery_fire_plan compare = equals }
+		check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.armored_delivery compare = equals }
+		check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.chemical_air_raid compare = equals }
+		check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.strategic_chemical_raid compare = equals }
+		check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.covert_operation compare = equals }
+		check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.nerve_suppression compare = equals }
+		check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.continuous_air_mission compare = equals }
+	}
+}
+
+cbrn_action_delivery_route_is_supported = {
+	cbrn_action_delivery_route_is_recognized = yes
+	NOT = {
+		check_variable = {
+			var = cbrn_action_delivery_route
+			value = constant:cbrn_delivery_route.continuous_air_mission
+			compare = equals
+		}
+	}
+}
+
+cbrn_action_agent_is_eligible_for_route = {
+	OR = {
+		AND = {
+			OR = {
+				check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.cylinder_release compare = equals }
+				check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.projector_barrage compare = equals }
+			}
+			OR = {
+				check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.choking compare = equals }
+				check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.blister compare = equals }
+				check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.incapacitating compare = equals }
+				AND = {
+					check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.nerve compare = equals }
+					check_variable = { var = cbrn_action_late_agent_route_authorized value = constant:cbrn_proof.supplied compare = equals }
+				}
+			}
+		}
+		AND = {
+			OR = {
+				check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.artillery_fire_plan compare = equals }
+				check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.armored_delivery compare = equals }
+			}
+			OR = {
+				check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.choking compare = equals }
+				check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.blister compare = equals }
+				check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.incapacitating compare = equals }
+				AND = {
+					check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.nerve compare = equals }
+					check_variable = { var = cbrn_action_late_agent_route_authorized value = constant:cbrn_proof.supplied compare = equals }
+				}
+			}
+		}
+		AND = {
+			OR = {
+				check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.chemical_air_raid compare = equals }
+				check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.strategic_chemical_raid compare = equals }
+			}
+			OR = {
+				check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.choking compare = equals }
+				check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.blister compare = equals }
+				check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.incapacitating compare = equals }
+				AND = {
+					check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.nerve compare = equals }
+					check_variable = { var = cbrn_action_late_agent_route_authorized value = constant:cbrn_proof.supplied compare = equals }
+				}
+			}
+		}
+		AND = {
+			check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.covert_operation compare = equals }
+			cbrn_action_agent_class_is_chemical = yes
+		}
+		AND = {
+			check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.nerve_suppression compare = equals }
+			check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.nerve compare = equals }
+		}
+	}
+}
+
+cbrn_action_severity_is_valid = {
+	check_variable = {
+		var = cbrn_action_severity
+		value = constant:cbrn_operation_severity.local
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = cbrn_action_severity
+		value = constant:cbrn_operation_severity.doomsday
+		compare = less_than_or_equals
+	}
+}
+
+cbrn_action_payload_debit_is_valid = {
+	has_variable = cbrn_action_payload_consumed_proof
+	check_variable = {
+		var = cbrn_action_payload_consumed_proof
+		value = constant:cbrn_proof.supplied
+		compare = equals
+	}
+	has_variable = cbrn_action_payload_required
+	check_variable = { cbrn_action_payload_required > constant:cbrn_math.zero }
+	has_variable = cbrn_action_payload_consumed
+	check_variable = { cbrn_action_payload_consumed > constant:cbrn_math.zero }
+}
+
+cbrn_action_protection_is_resolved = {
+	has_variable = cbrn_action_protection_resolved_proof
+	check_variable = {
+		var = cbrn_action_protection_resolved_proof
+		value = constant:cbrn_proof.supplied
+		compare = equals
+	}
+	has_variable = cbrn_action_effective_protection
+	has_variable = cbrn_action_casualty_mult
+	has_variable = cbrn_action_disruption_mult
+	has_variable = cbrn_action_contamination_mult
+}
+
+cbrn_action_conditions_are_resolved = {
+	has_variable = cbrn_action_conditions_resolved_proof
+	check_variable = {
+		var = cbrn_action_conditions_resolved_proof
+		value = constant:cbrn_proof.supplied
+		compare = equals
+	}
+	has_variable = cbrn_action_weather_mult
+	check_variable = { cbrn_action_weather_mult > constant:cbrn_math.zero }
+	has_variable = cbrn_action_terrain_mult
+	check_variable = { cbrn_action_terrain_mult > constant:cbrn_math.zero }
+	has_variable = cbrn_action_target_density_mult
+	check_variable = { cbrn_action_target_density_mult > constant:cbrn_math.zero }
+	has_variable = cbrn_action_command_mult
+	check_variable = { cbrn_action_command_mult > constant:cbrn_math.zero }
+	has_variable = cbrn_action_evidence_control_mult
+	check_variable = { cbrn_action_evidence_control_mult > constant:cbrn_math.zero }
+	has_variable = cbrn_action_context_condemnation_mult
+	check_variable = { cbrn_action_context_condemnation_mult > constant:cbrn_math.zero }
+	has_variable = cbrn_action_doctrine_condemnation_mult
+	check_variable = { cbrn_action_doctrine_condemnation_mult > constant:cbrn_math.zero }
+	has_variable = cbrn_action_forecast_confidence
+	has_variable = cbrn_action_command_integration
+	has_variable = cbrn_action_base_friendly_risk
+}
+
+cbrn_chemical_action_static_metadata_is_valid = {
+	cbrn_action_actor_is_valid = yes
+	cbrn_action_target_state_is_valid = yes
+	cbrn_action_weapon_class_is_chemical = yes
+	cbrn_action_agent_class_is_chemical = yes
+	cbrn_action_agent_is_valid_chemical = yes
+	cbrn_action_agent_matches_class = yes
+	cbrn_action_delivery_route_is_supported = yes
+	cbrn_action_agent_is_eligible_for_route = yes
+	cbrn_action_severity_is_valid = yes
+}
+
+cbrn_chemical_action_metadata_is_valid = {
+	cbrn_chemical_action_static_metadata_is_valid = yes
+	cbrn_action_payload_debit_is_valid = yes
+	cbrn_action_protection_is_resolved = yes
+	cbrn_action_conditions_are_resolved = yes
+}
