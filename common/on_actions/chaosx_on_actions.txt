@@ -13,6 +13,25 @@ on_actions = {
 		}
 	}
 
+	# ROOT is the new controller, FROM is the old controller, and FROM.FROM is
+	# the transferred state. Distributed masks remain in the state, suffer
+	# turnover/occupation loss, and never return to either national reserve.
+	on_state_control_changed = {
+		effect = {
+			if = {
+				limit = {
+					FROM.FROM = {
+						has_variable = cbrn_civilian_mask_crates
+						check_variable = { cbrn_civilian_mask_crates > constant:cbrn_math.zero }
+					}
+				}
+				ROOT = { save_event_target_as = cbrn_new_state_controller }
+				FROM = { save_event_target_as = cbrn_old_state_controller }
+				FROM.FROM = { cbrn_transfer_state_civilian_mask_ledger = yes }
+			}
+		}
+	}
+
 	# on_weekly = {
 	# 	effect = {
 	# 		if = {

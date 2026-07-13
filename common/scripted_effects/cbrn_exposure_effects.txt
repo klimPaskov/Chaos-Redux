@@ -32,6 +32,7 @@ cbrn_reset_action_outputs = {
 	set_temp_variable = { cbrn_action_attribution_state = constant:cbrn_attribution_state.unknown }
 	set_temp_variable = { cbrn_action_condemnation_base = constant:cbrn_math.zero }
 	set_temp_variable = { cbrn_action_friendly_exposure_risk = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_vehicle_sealing_applied = constant:cbrn_proof.missing }
 	set_temp_variable = { cbrn_action_source_label = constant:cbrn_source_label.none }
 }
 
@@ -311,6 +312,14 @@ cbrn_calculate_chemical_action_outputs = {
 	clamp_temp_variable = { var = cbrn_action_forecast_confidence_local min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
 	clamp_temp_variable = { var = cbrn_action_command_integration_local min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
 	clamp_temp_variable = { var = cbrn_action_base_friendly_risk_local min = constant:cbrn_action_input_bounds.friendly_risk_min max = constant:cbrn_action_input_bounds.friendly_risk_max }
+	if = {
+		limit = {
+			has_tech = vehicle_overpressure_and_sealed_compartments
+			check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.armored_delivery compare = equals }
+		}
+		multiply_temp_variable = { cbrn_action_base_friendly_risk_local = constant:cbrn_protection_technology_effect.armored_delivery_friendly_risk_mult }
+		set_temp_variable = { cbrn_action_vehicle_sealing_applied = constant:cbrn_proof.supplied }
+	}
 
 	set_temp_variable = { cbrn_action_dose_mult = cbrn_action_payload_ratio }
 	multiply_temp_variable = { cbrn_action_dose_mult = cbrn_action_weather_mult_local }
@@ -323,7 +332,7 @@ cbrn_calculate_chemical_action_outputs = {
 	set_temp_variable = { cbrn_action_disruption = cbrn_route_base_disruption }
 	multiply_temp_variable = { cbrn_action_disruption = cbrn_class_disruption_mult }
 	multiply_temp_variable = { cbrn_action_disruption = cbrn_action_dose_mult }
-	multiply_temp_variable = { cbrn_action_disruption = cbrn_action_disruption_mult }
+	multiply_temp_variable = { cbrn_action_disruption = cbrn_action_military_disruption_mult }
 	clamp_temp_variable = { var = cbrn_action_disruption min = constant:cbrn_math.zero max = constant:cbrn_action_output_bounds.disruption_max }
 
 	set_temp_variable = { cbrn_action_lethality = cbrn_class_tactical_lethality }
@@ -334,16 +343,26 @@ cbrn_calculate_chemical_action_outputs = {
 
 	set_temp_variable = { cbrn_action_military_death_fraction = cbrn_action_lethality }
 	multiply_temp_variable = { cbrn_action_military_death_fraction = cbrn_action_dose_mult }
-	multiply_temp_variable = { cbrn_action_military_death_fraction = cbrn_action_casualty_mult }
+	multiply_temp_variable = { cbrn_action_military_death_fraction = cbrn_action_military_casualty_mult }
 	clamp_temp_variable = { var = cbrn_action_military_death_fraction min = constant:cbrn_math.zero max = constant:cbrn_action_output_bounds.military_death_fraction_max }
 
 	set_temp_variable = { cbrn_action_civilian_exposed_fraction = cbrn_route_civilian_exposed_fraction }
 	multiply_temp_variable = { cbrn_action_civilian_exposed_fraction = cbrn_action_dose_mult }
+	set_temp_variable = { cbrn_action_civilian_response_exposure_mult = constant:cbrn_math.one }
+	if = {
+		limit = { event_target:cbrn_action_target_state = { has_state_flag = cbrn_civilians_moved_to_shelters } }
+		multiply_temp_variable = { cbrn_action_civilian_response_exposure_mult = constant:cbrn_protection_response.shelter_exposed_fraction_mult }
+	}
+	if = {
+		limit = { event_target:cbrn_action_target_state = { has_state_flag = cbrn_industry_ordered_to_continue } }
+		multiply_temp_variable = { cbrn_action_civilian_response_exposure_mult = constant:cbrn_protection_response.industry_exposed_fraction_mult }
+	}
+	multiply_temp_variable = { cbrn_action_civilian_exposed_fraction = cbrn_action_civilian_response_exposure_mult }
 	clamp_temp_variable = { var = cbrn_action_civilian_exposed_fraction min = constant:cbrn_math.zero max = constant:cbrn_action_output_bounds.civilian_exposed_fraction_max }
 
 	set_temp_variable = { cbrn_action_civilian_death_fraction = cbrn_action_civilian_exposed_fraction }
 	multiply_temp_variable = { cbrn_action_civilian_death_fraction = cbrn_action_lethality }
-	multiply_temp_variable = { cbrn_action_civilian_death_fraction = cbrn_action_casualty_mult }
+	multiply_temp_variable = { cbrn_action_civilian_death_fraction = cbrn_action_civilian_casualty_mult }
 	set_temp_variable = { cbrn_action_death_cap = constant:cbrn_episode_death_cap.tactical_chemical }
 	if = {
 		limit = {
@@ -362,7 +381,7 @@ cbrn_calculate_chemical_action_outputs = {
 	multiply_temp_variable = { cbrn_action_contamination_points = cbrn_class_contamination_mult }
 	multiply_temp_variable = { cbrn_action_contamination_points = cbrn_agent_persistence_mult }
 	multiply_temp_variable = { cbrn_action_contamination_points = cbrn_action_dose_mult }
-	multiply_temp_variable = { cbrn_action_contamination_points = cbrn_action_contamination_mult }
+	multiply_temp_variable = { cbrn_action_contamination_points = cbrn_action_civilian_contamination_mult }
 	clamp_temp_variable = { var = cbrn_action_contamination_points min = constant:cbrn_math.zero max = constant:cbrn_action_output_bounds.contamination_points_max }
 
 	set_temp_variable = { cbrn_action_contamination_duration_days = cbrn_route_duration_days }
@@ -375,7 +394,11 @@ cbrn_calculate_chemical_action_outputs = {
 	set_temp_variable = { cbrn_action_medical_saturation_points = cbrn_route_medical_points }
 	multiply_temp_variable = { cbrn_action_medical_saturation_points = cbrn_class_medical_mult }
 	multiply_temp_variable = { cbrn_action_medical_saturation_points = cbrn_action_dose_mult }
-	multiply_temp_variable = { cbrn_action_medical_saturation_points = cbrn_action_casualty_mult }
+	multiply_temp_variable = { cbrn_action_medical_saturation_points = cbrn_action_civilian_casualty_mult }
+	if = {
+		limit = { event_target:cbrn_action_target_state = { has_state_flag = cbrn_hospitals_utilities_secured } }
+		multiply_temp_variable = { cbrn_action_medical_saturation_points = constant:cbrn_protection_response.hospital_medical_saturation_mult }
+	}
 	clamp_temp_variable = { var = cbrn_action_medical_saturation_points min = constant:cbrn_math.zero max = constant:cbrn_action_output_bounds.medical_points_max }
 
 	set_temp_variable = { cbrn_action_evidence_points = cbrn_route_evidence_points }
@@ -642,6 +665,14 @@ cbrn_reset_action_context = {
 	set_temp_variable = { cbrn_action_payload_consumed = constant:cbrn_math.zero }
 	set_temp_variable = { cbrn_action_payload_consumed_proof = constant:cbrn_proof.missing }
 	set_temp_variable = { cbrn_action_protection_resolved_proof = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_action_military_effective_protection = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_military_casualty_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_military_disruption_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_military_contamination_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_civilian_effective_protection = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_civilian_casualty_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_civilian_disruption_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_civilian_contamination_mult = constant:cbrn_math.one }
 	set_temp_variable = { cbrn_action_conditions_resolved_proof = constant:cbrn_proof.missing }
 	set_temp_variable = { cbrn_action_weather_mult = constant:cbrn_math.zero }
 	set_temp_variable = { cbrn_action_terrain_mult = constant:cbrn_math.zero }

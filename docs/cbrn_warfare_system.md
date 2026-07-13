@@ -8,9 +8,15 @@ The accepted design source is `docs/specs/chaos_warfare_system_specs/`. Working 
 
 ## Current implementation boundary
 
-The shared Stage 1 data model exists. It defines Chemical Readiness, policy, capacities, contamination and attribution classes, protection layers, agent and route profiles, and a fail-closed chemical action-record calculator. It is intentionally not connected to live delivery routes until real payload debit and protection equipment exist. Existing chemical and biological gameplay remains authoritative during this transition.
+The shared Stage 1 data model defines Chemical Readiness, policy, capacities, contamination and attribution classes, protection layers, agent and route profiles, and a fail-closed chemical action-record calculator.
 
-The shared calculator accepts exact-state chemical air raids. It rejects continuous ordinary-air missions because the installed engine exposes no verified eligible-activity hook. Idle chemical-capable aircraft cannot enter the new exposure path.
+The Stage 2 protective-equipment layer adds four producible respirator/protective-set models, one non-producible reconditioned model, three decontamination models, three instrument models, their technology branches, real national reserves, model-specific military issue, population-scaled state distribution, fitting, filter condition, loss, replacement, reconditioning, transfer cleanup, starting profiles, production AI, decisions, event handling, localisation, and type-specific assets. Existing chemical abilities now read equipment-backed respiratory and skin protection instead of treating technology ownership as protection.
+
+Medical response remains an institutional capacity backed by support equipment, trucks, field hospitals, and mapped treatment technologies. No unsupported standalone medical-equipment archetype is introduced.
+
+The new data model is intentionally not connected to a live chemical delivery route until a later adapter proves real payload debit, equipment-backed protection, verified conditions, and an exact target state. Existing chemical and biological delivery remains authoritative during this transition.
+
+The shared calculator accepts exact-state chemical air raids. Stage 2 exposes exact-state protection-response preparation only after a verified alert. It rejects continuous ordinary-air missions because the installed engine exposes no verified eligible-activity hook. Idle chemical-capable aircraft cannot enter the new exposure path.
 
 ## Final gameplay loop
 
@@ -79,12 +85,24 @@ Ordinary biological warfare will use separate profiles for anthrax, plague, tula
 | Protection/readiness effects | `common/scripted_effects/cbrn_protection_effects.txt` |
 | Exposure/action effects | `common/scripted_effects/cbrn_exposure_effects.txt` |
 | Helper contract evidence | `docs/plans/chaos_warfare_system_plans/2026-07-13_stage_1_shared_data_model.md` |
+| Protective equipment | `common/units/equipment/cbrn_protective_equipment.txt` |
+| Protective technology | `common/technologies/chaosx_technologies.txt` |
+| Protection decisions | `common/decisions/cbrn_protection_decisions.txt` |
+| Protection decision effects | `common/scripted_effects/cbrn_protection_decision_effects.txt` |
+| Protection triggers | `common/scripted_triggers/cbrn_protection_triggers.txt` |
+| Starting profiles | `common/scripted_effects/cbrn_starting_protection_effects.txt` |
+| Protection production AI | `common/ai_strategy/cbrn_protection_production.txt` |
+| Maintenance/events | `events/cbrn_protection_events.txt` |
+| Stage 2 sprites | `interface/cbrn_protection.gfx` |
+| Stage 2 implementation evidence | `docs/plans/chaos_warfare_system_plans/2026-07-13_stage_2_protective_equipment.md` |
 
-Later stages add the mapped equipment, technology, units, HQ, doctrine, decisions, AI, designers, UI, achievements, assets, and consequence dispatcher.
+Later stages add the mapped units, Army Headquarters layer, doctrine, officer corps, route adapters, payloads, biological lifecycle, designers, full scripted GUI, achievements, and consequence dispatcher.
 
 ## Asset registry
 
-Stage 1 adds no player-visible identifier and therefore references no icon or sprite. Before each visible stage is implemented, stable gameplay and sprite identifiers must be registered and produced through `chaos-redux-event-assets`; animation also requires `chaos-redux-frame-animation`.
+Stage 2 assets live under `docs/assets/chaos_warfare_system/stage_2_protective_equipment/`. `interface/cbrn_protection.gfx` registers purpose-built final DDS art for eleven technologies, fourteen equipment/model cards, two decision categories, nineteen decisions, five exact-state response modifiers, and the defective-reconditioned-batch report event. No placeholder or cross-type resized substitute is used.
+
+Before each later visible stage is implemented, stable gameplay and sprite identifiers must be registered and produced through `chaos-redux-event-assets`; animation also requires `chaos-redux-frame-animation`.
 
 The complete required families are:
 
@@ -104,7 +122,6 @@ Working sources belong under `docs/assets/chaos_warfare_system/`. Final DDS path
 
 ## Future implementation stages
 
-- producible protection and differentiated starting reserves
 - consolidated regimental support and protected assault battalion
 - Army Headquarters companies and abilities
 - doctrine, technologies, officer corps, and command roles

@@ -1,0 +1,67 @@
+# ============================================================================
+# CHAOS REDUX - CBRN PROTECTION MAINTENANCE EVENTS
+# ============================================================================
+# Overview:
+# - Runs one self-scheduled annual maintenance job only for countries that
+#   explicitly establish or inherit a protective program.
+# - Applies reserve storage loss and condition/replacement loss to issued and
+#   distributed equipment without any all-country daily, weekly, or monthly
+#   on-action pulse.
+# - Stops itself when the country has no program and no protected stock.
+# ============================================================================
+
+add_namespace = cbrn_protection
+
+country_event = {
+	id = cbrn_protection.1
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		cbrn_refresh_country_mask_snapshot = yes
+		if = {
+			limit = {
+				OR = {
+					cbrn_country_has_program = yes
+					check_variable = { cbrn_mask_reserve_crates > constant:cbrn_math.zero }
+					check_variable = { cbrn_military_mask_crates > constant:cbrn_math.zero }
+					check_variable = { cbrn_civilian_mask_total_crates > constant:cbrn_math.zero }
+				}
+			}
+			cbrn_apply_annual_mask_storage_loss = yes
+			set_temp_variable = { cbrn_mask_loss_fraction = constant:cbrn_math.zero }
+			set_temp_variable = { cbrn_mask_condition_loss = constant:cbrn_mask_filters.standing_issue_condition_loss }
+			cbrn_apply_military_mask_loss = yes
+			every_controlled_state = {
+				limit = {
+					has_variable = cbrn_civilian_mask_crates
+					check_variable = { cbrn_civilian_mask_crates > constant:cbrn_math.zero }
+				}
+				set_temp_variable = { cbrn_mask_loss_fraction = constant:cbrn_mask_filters.annual_distributed_crate_loss }
+				set_temp_variable = { cbrn_mask_condition_loss = constant:cbrn_mask_filters.standing_issue_condition_loss }
+				cbrn_apply_state_civilian_mask_loss = yes
+			}
+			cbrn_refresh_country_mask_snapshot = yes
+			set_temp_variable = { cbrn_protection_maintenance_delay = constant:cbrn_scheduler.protection_maintenance_days }
+			country_event = { id = cbrn_protection.1 days = cbrn_protection_maintenance_delay }
+		}
+		else = {
+			clr_country_flag = cbrn_protection_maintenance_active
+		}
+	}
+}
+
+country_event = {
+	id = cbrn_protection.2
+	title = cbrn_protection.2.t
+	desc = cbrn_protection.2.desc
+	picture = GFX_report_event_cbrn_defective_reconditioned_batch
+	is_triggered_only = yes
+
+	option = {
+		name = cbrn_protection.2.a
+		custom_effect_tooltip = cbrn_protection.2.a.tt
+		hidden_effect = { cbrn_resolve_defective_reconditioned_batch = yes }
+		ai_chance = { base = constant:cbrn_math.percent_divisor }
+	}
+}

@@ -1,10 +1,12 @@
 # Chemical warfare on_actions:
-# - Leader-daily tooltip/state-dispersal updates for active cylinder abilities.
+# - Relevant-country field-protection snapshots plus leader-daily tooltip and
+#   state-dispersal updates for active cylinder abilities.
 # - Livens support combat contamination (daily) + condemnation updates on combat resolution.
 # - Chemical tank-shell support contamination + condemnation hooks.
 # - Chaos battalion frontline contamination/casualty effects while actively in combat.
-# - Ground-combat heat tracking for chemical air-bomb gating.
-# - Weekly chemical air-bomb contamination/condemnation processing.
+# - Exact-state chemical-air-raid handling remains adapter driven; this file
+#   does not estimate ordinary-air activity or run periodic air contamination.
+# - The shared exposure pipeline rejects the unsupported continuous-air route.
 on_actions = {
 	on_startup = {
 		effect = {
@@ -51,6 +53,27 @@ on_actions = {
 
 	on_army_leader_daily = {
 		effect = {
+			FROM = {
+				if = {
+					limit = {
+						NOT = { has_country_flag = cbrn_mask_snapshot_refreshed_today }
+						OR = {
+							cbrn_country_has_program = yes
+							has_country_flag = cbrn_national_respirator_reserve
+							has_tech = basic_gas_masks
+							has_equipment = { gas_mask_equipment > constant:cbrn_math.zero }
+							check_variable = { cbrn_military_mask_crates > constant:cbrn_math.zero }
+						}
+					}
+					cbrn_refresh_country_mask_snapshot = yes
+					set_temp_variable = { cbrn_mask_snapshot_refresh_guard_days = constant:cbrn_scheduler.mask_snapshot_refresh_guard_days }
+					set_country_flag = {
+						flag = cbrn_mask_snapshot_refreshed_today
+						days = cbrn_mask_snapshot_refresh_guard_days
+					}
+				}
+			}
+
 			if = {
 				limit = {
 					OR = {

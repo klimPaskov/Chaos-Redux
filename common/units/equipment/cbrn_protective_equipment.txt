@@ -1,0 +1,286 @@
+# ============================================================================
+# CHAOS REDUX - CBRN PROTECTIVE EQUIPMENT
+# ============================================================================
+# Overview:
+# - Defines producible gas-mask crates, decontamination equipment, and CBRN
+#   instruments used by national allocation and specialist-unit systems.
+# - Research unlocks models; protection is calculated from actual equipment,
+#   issue, distribution, quality, filters, and training rather than technology.
+# - Equipment database fields use file-scoped constants because these fields do
+#   not accept shared script-constant tokens in the installed engine schema.
+# ============================================================================
+
+@cbrn_equipment_priority = 30
+@cbrn_reconditioned_priority = 5
+@cbrn_lend_lease_cost = 1
+
+@cbrn_equipment_year_1918 = 1918
+@cbrn_equipment_year_1936 = 1936
+@cbrn_equipment_year_1940 = 1940
+@cbrn_equipment_year_1942 = 1942
+
+@cbrn_visual_level_0 = 0
+@cbrn_visual_level_1 = 1
+@cbrn_visual_level_2 = 2
+@cbrn_visual_level_3 = 3
+
+@gas_mask_basic_ic = 0.20
+@gas_mask_improved_ic = 0.27
+@gas_mask_advanced_ic = 0.36
+@gas_mask_sealed_ic = 0.50
+@gas_mask_basic_reliability = 0.70
+@gas_mask_reconditioned_reliability = 0.49
+@gas_mask_improved_reliability = 0.82
+@gas_mask_advanced_reliability = 0.90
+@gas_mask_sealed_reliability = 0.94
+
+@decon_field_ic = 4.50
+@decon_mobile_ic = 7.50
+@decon_rapid_ic = 11.00
+@decon_field_reliability = 0.72
+@decon_mobile_reliability = 0.82
+@decon_rapid_reliability = 0.90
+
+@instrument_field_ic = 2.50
+@instrument_mobile_ic = 5.00
+@instrument_theater_ic = 8.00
+@instrument_field_reliability = 0.70
+@instrument_mobile_reliability = 0.82
+@instrument_theater_reliability = 0.90
+
+@cbrn_resource_low = 1
+@cbrn_resource_medium = 2
+@cbrn_resource_high = 3
+
+equipments = {
+	gas_mask_equipment = {
+		year = @cbrn_equipment_year_1918
+		is_archetype = yes
+		picture = archetype_gas_mask_equipment
+		is_buildable = no
+		type = {
+			support
+			gas_mask_equipment
+		}
+		interface_category = interface_category_land
+		group_by = archetype
+		priority = @cbrn_equipment_priority
+		lend_lease_cost = @cbrn_lend_lease_cost
+		build_cost_ic = @gas_mask_basic_ic
+		reliability = @gas_mask_basic_reliability
+		can_license = yes
+		can_be_lend_leased = { always = yes }
+	}
+
+	gas_mask_equipment_1 = {
+		year = @cbrn_equipment_year_1918
+		archetype = gas_mask_equipment
+		visual_level = @cbrn_visual_level_0
+		active = no
+		is_buildable = yes
+		priority = @cbrn_equipment_priority
+		build_cost_ic = @gas_mask_basic_ic
+		reliability = @gas_mask_basic_reliability
+		resources = {
+			steel = @cbrn_resource_low
+			rubber = @cbrn_resource_low
+		}
+	}
+
+	gas_mask_equipment_reconditioned = {
+		year = @cbrn_equipment_year_1918
+		archetype = gas_mask_equipment
+		parent = gas_mask_equipment_1
+		visual_level = @cbrn_visual_level_0
+		active = yes
+		is_buildable = no
+		priority = @cbrn_reconditioned_priority
+		build_cost_ic = @gas_mask_basic_ic
+		reliability = @gas_mask_reconditioned_reliability
+		can_be_lend_leased = { always = no }
+	}
+
+	gas_mask_equipment_2 = {
+		year = @cbrn_equipment_year_1936
+		archetype = gas_mask_equipment
+		parent = gas_mask_equipment_1
+		visual_level = @cbrn_visual_level_1
+		active = no
+		is_buildable = yes
+		priority = @cbrn_equipment_priority
+		build_cost_ic = @gas_mask_improved_ic
+		reliability = @gas_mask_improved_reliability
+		resources = {
+			steel = @cbrn_resource_low
+			rubber = @cbrn_resource_low
+		}
+	}
+
+	gas_mask_equipment_3 = {
+		year = @cbrn_equipment_year_1940
+		archetype = gas_mask_equipment
+		parent = gas_mask_equipment_2
+		visual_level = @cbrn_visual_level_2
+		active = no
+		is_buildable = yes
+		priority = @cbrn_equipment_priority
+		build_cost_ic = @gas_mask_advanced_ic
+		reliability = @gas_mask_advanced_reliability
+		resources = {
+			steel = @cbrn_resource_low
+			rubber = @cbrn_resource_medium
+		}
+	}
+
+	gas_mask_equipment_4 = {
+		year = @cbrn_equipment_year_1942
+		archetype = gas_mask_equipment
+		parent = gas_mask_equipment_3
+		visual_level = @cbrn_visual_level_3
+		active = no
+		is_buildable = yes
+		priority = @cbrn_equipment_priority
+		build_cost_ic = @gas_mask_sealed_ic
+		reliability = @gas_mask_sealed_reliability
+		resources = {
+			steel = @cbrn_resource_low
+			rubber = @cbrn_resource_medium
+			chromium = @cbrn_resource_low
+		}
+	}
+
+	decontamination_equipment = {
+		year = @cbrn_equipment_year_1918
+		is_archetype = yes
+		picture = archetype_decontamination_equipment
+		is_buildable = no
+		type = {
+			support
+			decontamination_equipment
+		}
+		interface_category = interface_category_land
+		group_by = archetype
+		priority = @cbrn_equipment_priority
+		lend_lease_cost = @cbrn_lend_lease_cost
+		build_cost_ic = @decon_field_ic
+		reliability = @decon_field_reliability
+		can_license = yes
+		can_be_lend_leased = { always = yes }
+	}
+
+	decontamination_equipment_1 = {
+		year = @cbrn_equipment_year_1918
+		archetype = decontamination_equipment
+		visual_level = @cbrn_visual_level_0
+		active = no
+		is_buildable = yes
+		priority = @cbrn_equipment_priority
+		build_cost_ic = @decon_field_ic
+		reliability = @decon_field_reliability
+		resources = {
+			steel = @cbrn_resource_medium
+			rubber = @cbrn_resource_low
+		}
+	}
+
+	decontamination_equipment_2 = {
+		year = @cbrn_equipment_year_1936
+		archetype = decontamination_equipment
+		parent = decontamination_equipment_1
+		visual_level = @cbrn_visual_level_1
+		active = no
+		is_buildable = yes
+		priority = @cbrn_equipment_priority
+		build_cost_ic = @decon_mobile_ic
+		reliability = @decon_mobile_reliability
+		resources = {
+			steel = @cbrn_resource_high
+			rubber = @cbrn_resource_medium
+			aluminium = @cbrn_resource_low
+		}
+	}
+
+	decontamination_equipment_3 = {
+		year = @cbrn_equipment_year_1940
+		archetype = decontamination_equipment
+		parent = decontamination_equipment_2
+		visual_level = @cbrn_visual_level_2
+		active = no
+		is_buildable = yes
+		priority = @cbrn_equipment_priority
+		build_cost_ic = @decon_rapid_ic
+		reliability = @decon_rapid_reliability
+		resources = {
+			steel = @cbrn_resource_high
+			rubber = @cbrn_resource_medium
+			chromium = @cbrn_resource_low
+		}
+	}
+
+	cbrn_instrument_equipment = {
+		year = @cbrn_equipment_year_1918
+		is_archetype = yes
+		picture = archetype_cbrn_instrument_equipment
+		is_buildable = no
+		type = {
+			support
+			cbrn_instrument_equipment
+		}
+		interface_category = interface_category_land
+		group_by = archetype
+		priority = @cbrn_equipment_priority
+		lend_lease_cost = @cbrn_lend_lease_cost
+		build_cost_ic = @instrument_field_ic
+		reliability = @instrument_field_reliability
+		can_license = yes
+		can_be_lend_leased = { always = yes }
+	}
+
+	cbrn_instrument_equipment_1 = {
+		year = @cbrn_equipment_year_1918
+		archetype = cbrn_instrument_equipment
+		visual_level = @cbrn_visual_level_0
+		active = no
+		is_buildable = yes
+		priority = @cbrn_equipment_priority
+		build_cost_ic = @instrument_field_ic
+		reliability = @instrument_field_reliability
+		resources = {
+			aluminium = @cbrn_resource_low
+			steel = @cbrn_resource_low
+		}
+	}
+
+	cbrn_instrument_equipment_2 = {
+		year = @cbrn_equipment_year_1936
+		archetype = cbrn_instrument_equipment
+		parent = cbrn_instrument_equipment_1
+		visual_level = @cbrn_visual_level_1
+		active = no
+		is_buildable = yes
+		priority = @cbrn_equipment_priority
+		build_cost_ic = @instrument_mobile_ic
+		reliability = @instrument_mobile_reliability
+		resources = {
+			aluminium = @cbrn_resource_medium
+			steel = @cbrn_resource_low
+		}
+	}
+
+	cbrn_instrument_equipment_3 = {
+		year = @cbrn_equipment_year_1940
+		archetype = cbrn_instrument_equipment
+		parent = cbrn_instrument_equipment_2
+		visual_level = @cbrn_visual_level_2
+		active = no
+		is_buildable = yes
+		priority = @cbrn_equipment_priority
+		build_cost_ic = @instrument_theater_ic
+		reliability = @instrument_theater_reliability
+		resources = {
+			aluminium = @cbrn_resource_medium
+			steel = @cbrn_resource_medium
+			chromium = @cbrn_resource_low
+		}
+	}
+}
