@@ -1,0 +1,334 @@
+# ============================================================================
+# CHAOS REDUX - SHARED CBRN PROTECTION EFFECTS
+# ============================================================================
+# Overview:
+# - Owns initialization and clamping for national CBRN capacity values.
+# - Applies readiness changes only inside the current institutional cap.
+# - Resolves respiratory, skin, antidote, decontamination, medical, and warning
+#   layers into agent-class-specific casualty, disruption, and contamination
+#   multipliers.
+# - Does not infer equipment coverage. Stage 2 equipment/issue helpers must
+#   supply all six protection layers and then call the calculator.
+# ============================================================================
+
+cbrn_initialize_country_data = {
+	if = {
+		limit = { NOT = { has_variable = chemical_readiness_cap } }
+		set_variable = { chemical_readiness_cap = constant:cbrn_readiness.default_cap }
+	}
+	if = {
+		limit = { NOT = { has_variable = chemical_readiness } }
+		set_variable = { chemical_readiness = constant:cbrn_readiness.default_value }
+	}
+	if = {
+		limit = { NOT = { has_variable = cbrn_use_policy } }
+		set_variable = { cbrn_use_policy = constant:cbrn_use_policy.defensive_preparation }
+	}
+	if = {
+		limit = { NOT = { has_variable = cbrn_decontamination_capacity } }
+		set_variable = { cbrn_decontamination_capacity = constant:cbrn_capacity_default.decontamination }
+	}
+	if = {
+		limit = { NOT = { has_variable = cbrn_medical_capacity } }
+		set_variable = { cbrn_medical_capacity = constant:cbrn_capacity_default.medical }
+	}
+	if = {
+		limit = { NOT = { has_variable = cbrn_biological_security } }
+		set_variable = { cbrn_biological_security = constant:cbrn_capacity_default.biological_security }
+	}
+	if = {
+		limit = { NOT = { has_variable = cbrn_attribution_control } }
+		set_variable = { cbrn_attribution_control = constant:cbrn_capacity_default.attribution_control }
+	}
+	if = {
+		limit = { NOT = { has_variable = cbrn_command_integration } }
+		set_variable = { cbrn_command_integration = constant:cbrn_capacity_default.command_integration }
+	}
+
+	clamp_variable = { var = chemical_readiness_cap min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+	clamp_variable = { var = chemical_readiness min = constant:cbrn_meter.minimum max = chemical_readiness_cap }
+	clamp_variable = { var = cbrn_decontamination_capacity min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+	clamp_variable = { var = cbrn_medical_capacity min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+	clamp_variable = { var = cbrn_biological_security min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+	clamp_variable = { var = cbrn_attribution_control min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+	clamp_variable = { var = cbrn_command_integration min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+}
+
+cbrn_set_use_policy = {
+	set_temp_variable = { cbrn_policy_change_accepted = constant:cbrn_proof.missing }
+	if = {
+		limit = {
+			has_variable = cbrn_requested_use_policy
+			check_variable = {
+				var = cbrn_requested_use_policy
+				value = constant:cbrn_use_policy.defensive_preparation
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = cbrn_requested_use_policy
+				value = constant:cbrn_use_policy.unrestricted_chaos_warfare
+				compare = less_than_or_equals
+			}
+		}
+		set_variable = { cbrn_use_policy = cbrn_requested_use_policy }
+		set_temp_variable = { cbrn_policy_change_accepted = constant:cbrn_proof.supplied }
+		if = {
+			limit = { NOT = { cbrn_policy_is_retaliation_authority = yes } }
+			clr_country_flag = cbrn_retaliation_authorized
+		}
+	}
+}
+
+cbrn_set_chemical_readiness_cap = {
+	cbrn_initialize_country_data = yes
+	if = {
+		limit = { has_variable = cbrn_requested_readiness_cap }
+		set_variable = { chemical_readiness_cap = cbrn_requested_readiness_cap }
+		clamp_variable = { var = chemical_readiness_cap min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+		clamp_variable = { var = chemical_readiness min = constant:cbrn_meter.minimum max = chemical_readiness_cap }
+	}
+}
+
+cbrn_modify_chemical_readiness = {
+	cbrn_initialize_country_data = yes
+	if = {
+		limit = { has_variable = cbrn_readiness_delta }
+		add_to_variable = { chemical_readiness = cbrn_readiness_delta }
+		clamp_variable = { var = chemical_readiness min = constant:cbrn_meter.minimum max = chemical_readiness_cap }
+	}
+}
+
+cbrn_reset_protection_outputs = {
+	set_temp_variable = { cbrn_action_effective_protection = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_casualty_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_disruption_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_contamination_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_protection_resolved_proof = constant:cbrn_proof.missing }
+}
+
+cbrn_set_protection_weights_from_agent_class = {
+	set_temp_variable = { cbrn_protection_weight_respiratory = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_protection_weight_skin = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_protection_weight_antidote = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_protection_weight_decontamination = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_protection_weight_medical = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_protection_weight_warning = constant:cbrn_math.zero }
+
+	if = {
+		limit = { check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.choking compare = equals } }
+		set_temp_variable = { cbrn_protection_weight_respiratory = constant:cbrn_protection_weight.choking.respiratory }
+		set_temp_variable = { cbrn_protection_weight_skin = constant:cbrn_protection_weight.choking.skin }
+		set_temp_variable = { cbrn_protection_weight_antidote = constant:cbrn_protection_weight.choking.antidote }
+		set_temp_variable = { cbrn_protection_weight_decontamination = constant:cbrn_protection_weight.choking.decontamination }
+		set_temp_variable = { cbrn_protection_weight_medical = constant:cbrn_protection_weight.choking.medical }
+		set_temp_variable = { cbrn_protection_weight_warning = constant:cbrn_protection_weight.choking.warning }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.blister compare = equals } }
+		set_temp_variable = { cbrn_protection_weight_respiratory = constant:cbrn_protection_weight.blister.respiratory }
+		set_temp_variable = { cbrn_protection_weight_skin = constant:cbrn_protection_weight.blister.skin }
+		set_temp_variable = { cbrn_protection_weight_antidote = constant:cbrn_protection_weight.blister.antidote }
+		set_temp_variable = { cbrn_protection_weight_decontamination = constant:cbrn_protection_weight.blister.decontamination }
+		set_temp_variable = { cbrn_protection_weight_medical = constant:cbrn_protection_weight.blister.medical }
+		set_temp_variable = { cbrn_protection_weight_warning = constant:cbrn_protection_weight.blister.warning }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.nerve compare = equals } }
+		set_temp_variable = { cbrn_protection_weight_respiratory = constant:cbrn_protection_weight.nerve.respiratory }
+		set_temp_variable = { cbrn_protection_weight_skin = constant:cbrn_protection_weight.nerve.skin }
+		set_temp_variable = { cbrn_protection_weight_antidote = constant:cbrn_protection_weight.nerve.antidote }
+		set_temp_variable = { cbrn_protection_weight_decontamination = constant:cbrn_protection_weight.nerve.decontamination }
+		set_temp_variable = { cbrn_protection_weight_medical = constant:cbrn_protection_weight.nerve.medical }
+		set_temp_variable = { cbrn_protection_weight_warning = constant:cbrn_protection_weight.nerve.warning }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.incapacitating compare = equals } }
+		set_temp_variable = { cbrn_protection_weight_respiratory = constant:cbrn_protection_weight.incapacitating.respiratory }
+		set_temp_variable = { cbrn_protection_weight_skin = constant:cbrn_protection_weight.incapacitating.skin }
+		set_temp_variable = { cbrn_protection_weight_antidote = constant:cbrn_protection_weight.incapacitating.antidote }
+		set_temp_variable = { cbrn_protection_weight_decontamination = constant:cbrn_protection_weight.incapacitating.decontamination }
+		set_temp_variable = { cbrn_protection_weight_medical = constant:cbrn_protection_weight.incapacitating.medical }
+		set_temp_variable = { cbrn_protection_weight_warning = constant:cbrn_protection_weight.incapacitating.warning }
+	}
+}
+
+cbrn_set_casualty_mult_from_protection = {
+	set_temp_variable = { cbrn_action_casualty_mult = constant:cbrn_math.one }
+
+	if = {
+		limit = { check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.choking compare = equals } }
+		if = {
+			limit = {
+				check_variable = { var = cbrn_action_effective_protection value = constant:cbrn_protection_band.very_high compare = greater_than_or_equals }
+				check_variable = { var = cbrn_protection_decontamination_local value = constant:cbrn_protection_band.advanced_support compare = greater_than_or_equals }
+				check_variable = { var = cbrn_protection_medical_local value = constant:cbrn_protection_band.advanced_support compare = greater_than_or_equals }
+			}
+			set_temp_variable = { cbrn_action_casualty_mult = constant:cbrn_protection_casualty_mult.choking.advanced_floor }
+		}
+		else_if = {
+			limit = { check_variable = { var = cbrn_action_effective_protection value = constant:cbrn_protection_band.very_high compare = greater_than_or_equals } }
+			set_temp_variable = { cbrn_action_casualty_mult = constant:cbrn_protection_casualty_mult.choking.very_high }
+		}
+		else_if = {
+			limit = { check_variable = { var = cbrn_action_effective_protection value = constant:cbrn_protection_band.high compare = greater_than_or_equals } }
+			set_temp_variable = { cbrn_action_casualty_mult = constant:cbrn_protection_casualty_mult.choking.high }
+		}
+		else_if = {
+			limit = { check_variable = { var = cbrn_action_effective_protection value = constant:cbrn_protection_band.medium compare = greater_than_or_equals } }
+			set_temp_variable = { cbrn_action_casualty_mult = constant:cbrn_protection_casualty_mult.choking.medium }
+		}
+		else_if = {
+			limit = { check_variable = { var = cbrn_action_effective_protection value = constant:cbrn_protection_band.low compare = greater_than_or_equals } }
+			set_temp_variable = { cbrn_action_casualty_mult = constant:cbrn_protection_casualty_mult.choking.low }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.blister compare = equals } }
+		if = {
+			limit = {
+				check_variable = { var = cbrn_action_effective_protection value = constant:cbrn_protection_band.very_high compare = greater_than_or_equals }
+				check_variable = { var = cbrn_protection_decontamination_local value = constant:cbrn_protection_band.advanced_support compare = greater_than_or_equals }
+				check_variable = { var = cbrn_protection_medical_local value = constant:cbrn_protection_band.advanced_support compare = greater_than_or_equals }
+			}
+			set_temp_variable = { cbrn_action_casualty_mult = constant:cbrn_protection_casualty_mult.blister.advanced_floor }
+		}
+		else_if = {
+			limit = { check_variable = { var = cbrn_action_effective_protection value = constant:cbrn_protection_band.very_high compare = greater_than_or_equals } }
+			set_temp_variable = { cbrn_action_casualty_mult = constant:cbrn_protection_casualty_mult.blister.very_high }
+		}
+		else_if = {
+			limit = { check_variable = { var = cbrn_action_effective_protection value = constant:cbrn_protection_band.high compare = greater_than_or_equals } }
+			set_temp_variable = { cbrn_action_casualty_mult = constant:cbrn_protection_casualty_mult.blister.high }
+		}
+		else_if = {
+			limit = { check_variable = { var = cbrn_action_effective_protection value = constant:cbrn_protection_band.medium compare = greater_than_or_equals } }
+			set_temp_variable = { cbrn_action_casualty_mult = constant:cbrn_protection_casualty_mult.blister.medium }
+		}
+		else_if = {
+			limit = { check_variable = { var = cbrn_action_effective_protection value = constant:cbrn_protection_band.low compare = greater_than_or_equals } }
+			set_temp_variable = { cbrn_action_casualty_mult = constant:cbrn_protection_casualty_mult.blister.low }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.nerve compare = equals } }
+		if = {
+			limit = {
+				check_variable = { var = cbrn_action_effective_protection value = constant:cbrn_protection_band.very_high compare = greater_than_or_equals }
+				check_variable = { var = cbrn_protection_decontamination_local value = constant:cbrn_protection_band.advanced_support compare = greater_than_or_equals }
+				check_variable = { var = cbrn_protection_medical_local value = constant:cbrn_protection_band.advanced_support compare = greater_than_or_equals }
+			}
+			set_temp_variable = { cbrn_action_casualty_mult = constant:cbrn_protection_casualty_mult.nerve.advanced_floor }
+		}
+		else_if = {
+			limit = { check_variable = { var = cbrn_action_effective_protection value = constant:cbrn_protection_band.very_high compare = greater_than_or_equals } }
+			set_temp_variable = { cbrn_action_casualty_mult = constant:cbrn_protection_casualty_mult.nerve.very_high }
+		}
+		else_if = {
+			limit = { check_variable = { var = cbrn_action_effective_protection value = constant:cbrn_protection_band.high compare = greater_than_or_equals } }
+			set_temp_variable = { cbrn_action_casualty_mult = constant:cbrn_protection_casualty_mult.nerve.high }
+		}
+		else_if = {
+			limit = { check_variable = { var = cbrn_action_effective_protection value = constant:cbrn_protection_band.medium compare = greater_than_or_equals } }
+			set_temp_variable = { cbrn_action_casualty_mult = constant:cbrn_protection_casualty_mult.nerve.medium }
+		}
+		else_if = {
+			limit = { check_variable = { var = cbrn_action_effective_protection value = constant:cbrn_protection_band.low compare = greater_than_or_equals } }
+			set_temp_variable = { cbrn_action_casualty_mult = constant:cbrn_protection_casualty_mult.nerve.low }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.incapacitating compare = equals } }
+		if = {
+			limit = {
+				check_variable = { var = cbrn_action_effective_protection value = constant:cbrn_protection_band.very_high compare = greater_than_or_equals }
+				check_variable = { var = cbrn_protection_decontamination_local value = constant:cbrn_protection_band.advanced_support compare = greater_than_or_equals }
+				check_variable = { var = cbrn_protection_medical_local value = constant:cbrn_protection_band.advanced_support compare = greater_than_or_equals }
+			}
+			set_temp_variable = { cbrn_action_casualty_mult = constant:cbrn_protection_casualty_mult.incapacitating.advanced_floor }
+		}
+		else_if = {
+			limit = { check_variable = { var = cbrn_action_effective_protection value = constant:cbrn_protection_band.very_high compare = greater_than_or_equals } }
+			set_temp_variable = { cbrn_action_casualty_mult = constant:cbrn_protection_casualty_mult.incapacitating.very_high }
+		}
+		else_if = {
+			limit = { check_variable = { var = cbrn_action_effective_protection value = constant:cbrn_protection_band.high compare = greater_than_or_equals } }
+			set_temp_variable = { cbrn_action_casualty_mult = constant:cbrn_protection_casualty_mult.incapacitating.high }
+		}
+		else_if = {
+			limit = { check_variable = { var = cbrn_action_effective_protection value = constant:cbrn_protection_band.medium compare = greater_than_or_equals } }
+			set_temp_variable = { cbrn_action_casualty_mult = constant:cbrn_protection_casualty_mult.incapacitating.medium }
+		}
+		else_if = {
+			limit = { check_variable = { var = cbrn_action_effective_protection value = constant:cbrn_protection_band.low compare = greater_than_or_equals } }
+			set_temp_variable = { cbrn_action_casualty_mult = constant:cbrn_protection_casualty_mult.incapacitating.low }
+		}
+	}
+}
+
+cbrn_calculate_action_protection = {
+	cbrn_reset_protection_outputs = yes
+	if = {
+		limit = {
+			cbrn_action_agent_class_is_chemical = yes
+			has_variable = cbrn_protection_respiratory
+			has_variable = cbrn_protection_skin
+			has_variable = cbrn_protection_antidote
+			has_variable = cbrn_protection_decontamination
+			has_variable = cbrn_protection_medical
+			has_variable = cbrn_protection_warning
+		}
+		set_temp_variable = { cbrn_protection_respiratory_local = cbrn_protection_respiratory }
+		set_temp_variable = { cbrn_protection_skin_local = cbrn_protection_skin }
+		set_temp_variable = { cbrn_protection_antidote_local = cbrn_protection_antidote }
+		set_temp_variable = { cbrn_protection_decontamination_local = cbrn_protection_decontamination }
+		set_temp_variable = { cbrn_protection_medical_local = cbrn_protection_medical }
+		set_temp_variable = { cbrn_protection_warning_local = cbrn_protection_warning }
+
+		clamp_temp_variable = { var = cbrn_protection_respiratory_local min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+		clamp_temp_variable = { var = cbrn_protection_skin_local min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+		clamp_temp_variable = { var = cbrn_protection_antidote_local min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+		clamp_temp_variable = { var = cbrn_protection_decontamination_local min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+		clamp_temp_variable = { var = cbrn_protection_medical_local min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+		clamp_temp_variable = { var = cbrn_protection_warning_local min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+
+		cbrn_set_protection_weights_from_agent_class = yes
+
+		set_temp_variable = { cbrn_protection_weighted_layer = cbrn_protection_respiratory_local }
+		multiply_temp_variable = { cbrn_protection_weighted_layer = cbrn_protection_weight_respiratory }
+		add_to_temp_variable = { cbrn_action_effective_protection = cbrn_protection_weighted_layer }
+		set_temp_variable = { cbrn_protection_weighted_layer = cbrn_protection_skin_local }
+		multiply_temp_variable = { cbrn_protection_weighted_layer = cbrn_protection_weight_skin }
+		add_to_temp_variable = { cbrn_action_effective_protection = cbrn_protection_weighted_layer }
+		set_temp_variable = { cbrn_protection_weighted_layer = cbrn_protection_antidote_local }
+		multiply_temp_variable = { cbrn_protection_weighted_layer = cbrn_protection_weight_antidote }
+		add_to_temp_variable = { cbrn_action_effective_protection = cbrn_protection_weighted_layer }
+		set_temp_variable = { cbrn_protection_weighted_layer = cbrn_protection_decontamination_local }
+		multiply_temp_variable = { cbrn_protection_weighted_layer = cbrn_protection_weight_decontamination }
+		add_to_temp_variable = { cbrn_action_effective_protection = cbrn_protection_weighted_layer }
+		set_temp_variable = { cbrn_protection_weighted_layer = cbrn_protection_medical_local }
+		multiply_temp_variable = { cbrn_protection_weighted_layer = cbrn_protection_weight_medical }
+		add_to_temp_variable = { cbrn_action_effective_protection = cbrn_protection_weighted_layer }
+		set_temp_variable = { cbrn_protection_weighted_layer = cbrn_protection_warning_local }
+		multiply_temp_variable = { cbrn_protection_weighted_layer = cbrn_protection_weight_warning }
+		add_to_temp_variable = { cbrn_action_effective_protection = cbrn_protection_weighted_layer }
+		clamp_temp_variable = { var = cbrn_action_effective_protection min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+
+		cbrn_set_casualty_mult_from_protection = yes
+
+		set_temp_variable = { cbrn_action_disruption_reduction = cbrn_action_effective_protection }
+		divide_temp_variable = { cbrn_action_disruption_reduction = constant:cbrn_math.percent_divisor }
+		multiply_temp_variable = { cbrn_action_disruption_reduction = constant:cbrn_protection_output.disruption_protection_factor }
+		set_temp_variable = { cbrn_action_disruption_mult = constant:cbrn_math.one }
+		subtract_from_temp_variable = { cbrn_action_disruption_mult = cbrn_action_disruption_reduction }
+		clamp_temp_variable = { var = cbrn_action_disruption_mult min = constant:cbrn_protection_output.disruption_minimum_mult max = constant:cbrn_math.one }
+
+		set_temp_variable = { cbrn_action_contamination_reduction = cbrn_protection_decontamination_local }
+		divide_temp_variable = { cbrn_action_contamination_reduction = constant:cbrn_math.percent_divisor }
+		multiply_temp_variable = { cbrn_action_contamination_reduction = constant:cbrn_protection_output.contamination_decon_factor }
+		set_temp_variable = { cbrn_action_contamination_mult = constant:cbrn_math.one }
+		subtract_from_temp_variable = { cbrn_action_contamination_mult = cbrn_action_contamination_reduction }
+		clamp_temp_variable = { var = cbrn_action_contamination_mult min = constant:cbrn_protection_output.contamination_minimum_mult max = constant:cbrn_math.one }
+
+		set_temp_variable = { cbrn_action_protection_resolved_proof = constant:cbrn_proof.supplied }
+	}
+}

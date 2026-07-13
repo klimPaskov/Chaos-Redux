@@ -30,6 +30,15 @@ Before adding new dynamic logic, check this file and reuse an existing effect if
 - [count_dynamic_major_weight_pool_events](#count_dynamic_major_weight_pool_events)
 - [calculate_dynamic_major_weight_gain](#calculate_dynamic_major_weight_gain)
 - [apply_dynamic_major_weight_gain_after_minor](#apply_dynamic_major_weight_gain_after_minor)
+- [cbrn_initialize_country_data](#cbrn_initialize_country_data)
+- [cbrn_set_use_policy](#cbrn_set_use_policy)
+- [cbrn_set_chemical_readiness_cap](#cbrn_set_chemical_readiness_cap)
+- [cbrn_modify_chemical_readiness](#cbrn_modify_chemical_readiness)
+- [cbrn_calculate_action_protection](#cbrn_calculate_action_protection)
+- [cbrn_prepare_chemical_action_record](#cbrn_prepare_chemical_action_record)
+- [cbrn_apply_state_contamination_delta_internal](#cbrn_apply_state_contamination_delta_internal)
+- [cbrn_apply_state_evidence_delta_internal](#cbrn_apply_state_evidence_delta_internal)
+- [cbrn_reset_action_context](#cbrn_reset_action_context)
 
 ## chaosx_apply_startup_history_grants
 
@@ -825,4 +834,244 @@ event_target:absorbed_country = {
 event_target:surviving_country = {
 	union_compatible_researched_technologies_from_donor = yes
 }
+```
+
+## cbrn_initialize_country_data
+
+Initializes and clamps the persistent national CBRN data model without iterating other countries.
+
+Scope: country.
+
+Inputs: none.
+
+Defaults: Chemical Readiness `0`, readiness cap `19`, defensive-preparation policy, and zero decontamination, medical, biological-security, attribution-control, and command-integration capacity.
+
+Outputs: persistent country variables `chemical_readiness`, `chemical_readiness_cap`, `cbrn_use_policy`, `cbrn_decontamination_capacity`, `cbrn_medical_capacity`, `cbrn_biological_security`, `cbrn_attribution_control`, and `cbrn_command_integration`.
+
+Side effects: existing values are preserved and clamped; readiness is additionally clamped to the current cap. It does not establish a program, grant equipment, or schedule a pulse.
+
+Example:
+
+```txt
+cbrn_initialize_country_data = yes
+```
+
+## cbrn_set_use_policy
+
+Sets the national CBRN use-policy enum after validating the requested value.
+
+Scope: country.
+
+Input: temporary `cbrn_requested_use_policy`, from `constant:cbrn_use_policy.*`.
+
+Defaults: invalid or absent requests change nothing.
+
+Output: temporary proof `cbrn_policy_change_accepted` and persistent `cbrn_use_policy` on success.
+
+Side effects: leaving retaliation policy clears `cbrn_retaliation_authorized`. Decision costs, cooldowns, institutions, and stockpile gates remain caller responsibilities.
+
+Example:
+
+```txt
+set_temp_variable = { cbrn_requested_use_policy = constant:cbrn_use_policy.limited_battlefield_authority }
+cbrn_set_use_policy = yes
+```
+
+## cbrn_set_chemical_readiness_cap
+
+Sets an institutional Chemical Readiness cap and immediately brings current readiness inside it.
+
+Scope: country.
+
+Input: temporary `cbrn_requested_readiness_cap`.
+
+Defaults: an absent input changes nothing; country data is initialized first.
+
+Outputs: persistent `chemical_readiness_cap` and possibly reduced `chemical_readiness`.
+
+Side effects: both values are bounded to 0 through 100. Milestone, institution, equipment, and HQ callers own the requested cap.
+
+Example:
+
+```txt
+set_temp_variable = { cbrn_requested_readiness_cap = constant:cbrn_readiness.operational_cap }
+cbrn_set_chemical_readiness_cap = yes
+```
+
+## cbrn_modify_chemical_readiness
+
+Adds a signed readiness change without allowing the value to exceed its institutional cap or fall below zero.
+
+Scope: country.
+
+Input: temporary `cbrn_readiness_delta`.
+
+Defaults: an absent input changes nothing; country data is initialized first.
+
+Output: persistent `chemical_readiness`.
+
+Side effects: none outside the current country.
+
+Example:
+
+```txt
+set_temp_variable = { cbrn_readiness_delta = 5 }
+cbrn_modify_chemical_readiness = yes
+```
+
+## cbrn_calculate_action_protection
+
+Resolves six equipment- and institution-backed protection layers into chemical-agent-class multipliers.
+
+Scope: the attacker country or the enclosing effect chain; the helper uses temporary variables only.
+
+Required temporary inputs:
+
+- `cbrn_action_agent_class`
+- `cbrn_protection_respiratory`
+- `cbrn_protection_skin`
+- `cbrn_protection_antidote`
+- `cbrn_protection_decontamination`
+- `cbrn_protection_medical`
+- `cbrn_protection_warning`
+
+Defaults: missing inputs or a non-chemical class leave the proof missing and return unprotected multipliers.
+
+Outputs:
+
+- `cbrn_action_effective_protection`, 0 through 100
+- `cbrn_action_casualty_mult`
+- `cbrn_action_disruption_mult`
+- `cbrn_action_contamination_mult`
+- `cbrn_action_protection_resolved_proof`
+
+Side effects: none. The helper does not infer stockpile or issued coverage and does not consume filters. Stage 2 prepares its six inputs from real equipment and state/force coverage.
+
+Example:
+
+```txt
+set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.nerve }
+set_temp_variable = { cbrn_protection_respiratory = 80 }
+set_temp_variable = { cbrn_protection_skin = 70 }
+set_temp_variable = { cbrn_protection_antidote = 60 }
+set_temp_variable = { cbrn_protection_decontamination = 75 }
+set_temp_variable = { cbrn_protection_medical = 75 }
+set_temp_variable = { cbrn_protection_warning = 65 }
+cbrn_calculate_action_protection = yes
+```
+
+## cbrn_prepare_chemical_action_record
+
+Validates and calculates the normalized temporary record for one deliberate chemical action. It is the future shared route interface, not a payload or consequence effect by itself.
+
+Scope: attacker country.
+
+Required regular event target and proof:
+
+- `cbrn_action_target_state`
+- `cbrn_action_target_state_supplied = constant:cbrn_proof.supplied`
+
+Required temporary metadata:
+
+- `cbrn_action_weapon_class`
+- `cbrn_action_agent_class`
+- `cbrn_action_agent`
+- `cbrn_action_delivery_route`
+- `cbrn_action_severity`
+
+Nerve use through cylinder, projector, artillery, armored delivery, or air delivery additionally requires `cbrn_action_late_agent_route_authorized = constant:cbrn_proof.supplied`, set only by the mapped late technology/doctrine gate. Nerve Suppression accepts nerve agents only.
+
+Required payload inputs: positive `cbrn_action_payload_required`, positive `cbrn_action_payload_consumed`, and `cbrn_action_payload_consumed_proof`. The proof is valid only after a real CBRN payload-debit helper removes equipment.
+
+Required protection inputs: outputs and proof from `cbrn_calculate_action_protection`.
+
+Required condition inputs and proof: `cbrn_action_weather_mult`, `cbrn_action_terrain_mult`, `cbrn_action_target_density_mult`, `cbrn_action_command_mult`, `cbrn_action_evidence_control_mult`, `cbrn_action_context_condemnation_mult`, `cbrn_action_doctrine_condemnation_mult`, `cbrn_action_forecast_confidence`, `cbrn_action_command_integration`, `cbrn_action_base_friendly_risk`, and `cbrn_action_conditions_resolved_proof`. The context multiplier carries retaliation and target-relationship effects; the doctrine multiplier is independently clamped to `0.70` through `1.00` and cannot alter evidence or attribution.
+
+Defaults: none. Validation is fail-closed. The continuous ordinary-air route returns `unsupported_continuous_air_route`; no neutral condition or idle-aircraft estimator is substituted.
+
+Outputs include `cbrn_action_result`, `cbrn_action_reject_reason`, victim event target/proof when known, payload ratio, dose, disruption, military and civilian death fractions, exposed share, contamination points/duration, medical burden, evidence, attribution, Condemnation base, friendly risk, and source label.
+
+Side effects: no persistent gameplay mutation. Rejected calls return zero consequence outputs. Accepted calls still require one later dispatcher to apply and record consequences.
+
+Example:
+
+```txt
+random_owned_controlled_state = {
+	save_event_target_as = cbrn_action_target_state
+}
+set_temp_variable = { cbrn_action_target_state_supplied = constant:cbrn_proof.supplied }
+set_temp_variable = { cbrn_action_weapon_class = constant:cbrn_weapon_class.chemical }
+set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.choking }
+set_temp_variable = { cbrn_action_agent = constant:cbrn_agent.chlorine }
+set_temp_variable = { cbrn_action_delivery_route = constant:cbrn_delivery_route.cylinder_release }
+set_temp_variable = { cbrn_action_severity = constant:cbrn_operation_severity.local }
+# The real route adapter must set payload, protection, and condition inputs/proofs here.
+cbrn_prepare_chemical_action_record = yes
+```
+
+## cbrn_apply_state_contamination_delta_internal
+
+Internal state-scope mutation used only by the future single consequence dispatcher.
+
+Inputs: temporary `cbrn_state_contamination_delta` and optional positive `cbrn_state_contamination_duration_input`.
+
+Defaults: no delta means no severity change. A new duration extends to the longer active duration rather than adding a second independent timer.
+
+Outputs: previous/new contamination values and classes in `cbrn_state_previous_contamination_value`, `cbrn_state_previous_contamination_class`, `cbrn_state_new_contamination_value`, and `cbrn_state_new_contamination_class`.
+
+Side effects: updates lazy state variables `cbrn_chemical_contamination`, `cbrn_chemical_contamination_class`, and `cbrn_chemical_contamination_duration_days`; clears them below Trace. It does not register deaths, Air Cleanliness, Condemnation, or a scheduler by itself.
+
+Example:
+
+```txt
+event_target:cbrn_action_target_state = {
+	set_temp_variable = { cbrn_state_contamination_delta = cbrn_action_contamination_points }
+	set_temp_variable = { cbrn_state_contamination_duration_input = cbrn_action_contamination_duration_days }
+	cbrn_apply_state_contamination_delta_internal = yes
+}
+```
+
+## cbrn_apply_state_evidence_delta_internal
+
+Internal state-scope evidence mutation for the future single consequence dispatcher.
+
+Input: temporary `cbrn_state_evidence_delta`.
+
+Defaults: no input changes nothing.
+
+Outputs: temporary `cbrn_state_attribution_output`; persistent `cbrn_evidence_quality` and `cbrn_attribution_state` when applicable.
+
+Side effects: evidence is clamped to 0 through 100. Values below Suspected remain latent while the public attribution state is cleared. It does not add Condemnation or expose latent responsibility by itself.
+
+Example:
+
+```txt
+event_target:cbrn_action_target_state = {
+	set_temp_variable = { cbrn_state_evidence_delta = cbrn_action_evidence_points }
+	cbrn_apply_state_evidence_delta_internal = yes
+}
+```
+
+## cbrn_reset_action_context
+
+Invalidates all public chemical-action proof variables and zeroes metadata/outputs after every consumer has finished reading one action record.
+
+Scope: the enclosing effect chain.
+
+Inputs: none.
+
+Defaults: none.
+
+Outputs: action variables reset to their `none`, zero, rejected, or missing-proof constants.
+
+Side effects: regular event targets are not manually cleared because they expire with the chain; reset proofs prevent stale targets from being accepted within a reused chain.
+
+Example:
+
+```txt
+if = {
+	limit = { check_variable = { var = cbrn_action_result value = constant:cbrn_action_result.accepted compare = equals } }
+	# Apply the one shared consequence dispatcher.
+}
+cbrn_reset_action_context = yes
 ```
