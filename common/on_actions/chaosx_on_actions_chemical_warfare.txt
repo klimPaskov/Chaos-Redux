@@ -3,7 +3,7 @@
 #   state-dispersal updates for active cylinder abilities.
 # - Livens support combat contamination (daily) + condemnation updates on combat resolution.
 # - Chemical tank-shell support contamination + condemnation hooks.
-# - Chaos battalion frontline contamination/casualty effects while actively in combat.
+# - Chaos Assault Battalions are protected formations and never release payload passively.
 # - Exact-state chemical-air-raid handling remains adapter driven; this file
 #   does not estimate ordinary-air activity or run periodic air contamination.
 # - The shared exposure pipeline rejects the unsupported continuous-air route.
@@ -117,16 +117,9 @@ on_actions = {
 						chem_livens_support_apply_state_dispersal = yes
 					}
 
-					if = {
-						limit = {
-							check_variable = { num_battalions_with_type@chaos_battalion > 0 }
-							FROM = {
-								has_doctrine = chaos_warfare
-								has_country_flag = chaos_battalion_unlocked
-							}
-						}
-						chaos_battalion_apply_state_dispersal = yes
-					}
+					# Chaos Assault Battalions are protected formations, not passive
+					# release triggers. Chemical support must prove and debit an
+					# explicitly selected operation payload before dispatch.
 				}
 			}
 		}
@@ -163,16 +156,6 @@ on_actions = {
 						limit = { chem_leader_has_chemical_tank_support_battalions = yes }
 						chem_tank_shell_register_combat_condemnation_won = yes
 					}
-					if = {
-						limit = {
-							check_variable = { num_battalions_with_type@chaos_battalion > 0 }
-							FROM = {
-								has_doctrine = chaos_warfare
-								has_country_flag = chaos_battalion_unlocked
-							}
-						}
-						chaos_battalion_register_combat_condemnation_won = yes
-					}
 				}
 			}
 		}
@@ -208,16 +191,6 @@ on_actions = {
 					if = {
 						limit = { chem_leader_has_chemical_tank_support_battalions = yes }
 						chem_tank_shell_register_combat_condemnation_lost = yes
-					}
-					if = {
-						limit = {
-							check_variable = { num_battalions_with_type@chaos_battalion > 0 }
-							FROM = {
-								has_doctrine = chaos_warfare
-								has_country_flag = chaos_battalion_unlocked
-							}
-						}
-						chaos_battalion_register_combat_condemnation_lost = yes
 					}
 				}
 			}

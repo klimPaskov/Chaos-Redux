@@ -11,6 +11,7 @@
 @1936CW = 3
 @1936CW_LIVENS = 5
 @1937CW = 4
+@1938CW = 5
 @1939CW = 7
 @1940CW = 8
 @1940CW_LIVENS = 9
@@ -48,6 +49,15 @@
 @CBRN_DECONTAMINATION_ROW = 14
 @CBRN_INSTRUMENT_ROW = 16
 @CBRN_APPLIED_PROTECTION_ROW = 18
+@CBRN_PROJECTOR_TECH_BONUS = 0.10
+@CHAOS_ASSAULT_TECH_COST = 1
+@CHAOS_ASSAULT_PATH_COST = 1
+@CHAOS_ASSAULT_AI_DISABLED = 0
+@CHAOS_ASSAULT_BASE_YEAR = 1938
+@CHAOS_ASSAULT_COMPAT_YEAR = 1939
+@CHAOS_ASSAULT_IMPROVED_YEAR = 1942
+@CHAOS_ASSAULT_IMPROVED_BREAKTHROUGH = 0.10
+@CHAOS_ASSAULT_IMPROVED_ORGANISATION = 3
 
 technologies = {
 
@@ -187,22 +197,20 @@ technologies = {
         special_project_specialization = { specialization_biowarfare }
     }
 
-    # Hidden unlock technology for Chaos Warfare doctrine reward.
+    # Doctrine-only Chaos Assault Battalion technologies. The public IDs are
+    # retained for compatibility, but none can be researched directly.
     chaos_battalion_tech = {
-        allow = {
-            always = no
-        }
-
-        research_cost = 1
-        start_year = 1936
+        allow = { always = no }
+        research_cost = @CHAOS_ASSAULT_TECH_COST
+        start_year = @CHAOS_ASSAULT_BASE_YEAR
 
         enable_subunits = {
             chaos_battalion
         }
 
         path = {
-            leads_to_tech = chaos_battalion_1939
-            research_cost_coeff = 1
+            leads_to_tech = chaos_battalion_1942
+            research_cost_coeff = @CHAOS_ASSAULT_PATH_COST
         }
 
         categories = {
@@ -211,63 +219,39 @@ technologies = {
 
         folder = {
             name = chemical_warfare_folder
-            position = { x = @1936CW y = @CHAOS_CW_ROW }
+            position = { x = @1938CW y = @CHAOS_CW_ROW }
         }
 
-        ai_will_do = {
-            factor = 0
-        }
-        special_project_specialization = { specialization_cw }
+        ai_will_do = { factor = @CHAOS_ASSAULT_AI_DISABLED }
+        special_project_specialization = { specialization_cw specialization_land }
     }
 
+    # Hidden no-bonus alias retained so legacy technology references resolve.
     chaos_battalion_1939 = {
-        research_cost = 1
-        start_year = 1939
+        allow = { always = no }
+        research_cost = @CHAOS_ASSAULT_TECH_COST
+        start_year = @CHAOS_ASSAULT_COMPAT_YEAR
 
         dependencies = {
-            chaos_battalion_tech = 1
+            chaos_battalion_tech = @CHAOS_ASSAULT_PATH_COST
         }
 
-        path = {
-            leads_to_tech = chaos_battalion_1942
-            research_cost_coeff = 1
-        }
-
-        chaos_battalion = {
-            soft_attack = 0.25
-            breakthrough = 0.25
-            hard_attack = 0.15
-            defense = 0.05
-        }
-
-        categories = {
-            chemical_warfare_tech
-        }
-
-        folder = {
-            name = chemical_warfare_folder
-            position = { x = @1939CW y = @CHAOS_CW_ROW }
-        }
-
-        ai_will_do = {
-            factor = 1
-        }
-        special_project_specialization = { specialization_cw }
+        ai_will_do = { factor = @CHAOS_ASSAULT_AI_DISABLED }
+        special_project_specialization = { specialization_cw specialization_land }
     }
 
     chaos_battalion_1942 = {
-        research_cost = 1
-        start_year = 1942
+        allow = { always = no }
+        research_cost = @CHAOS_ASSAULT_TECH_COST
+        start_year = @CHAOS_ASSAULT_IMPROVED_YEAR
 
         dependencies = {
-            chaos_battalion_1939 = 1
+            chaos_battalion_tech = @CHAOS_ASSAULT_PATH_COST
         }
 
         chaos_battalion = {
-            soft_attack = 0.30
-            breakthrough = 0.30
-            hard_attack = 0.20
-            defense = 0.10
+            breakthrough = @CHAOS_ASSAULT_IMPROVED_BREAKTHROUGH
+            max_organisation = @CHAOS_ASSAULT_IMPROVED_ORGANISATION
         }
 
         categories = {
@@ -279,10 +263,8 @@ technologies = {
             position = { x = @1942CW y = @CHAOS_CW_ROW }
         }
 
-        ai_will_do = {
-            factor = 1
-        }
-        special_project_specialization = { specialization_cw }
+        ai_will_do = { factor = @CHAOS_ASSAULT_AI_DISABLED }
+        special_project_specialization = { specialization_cw specialization_land }
     }
 
     # Bioweapon stockpile safety technologies
@@ -418,6 +400,11 @@ technologies = {
         research_cost = 1
         start_year = 1940
 
+        path = {
+            leads_to_tech = field_epidemiology_teams
+            research_cost_coeff = 1
+        }
+
         dependencies = {
             rapid_outbreak_response = 1
         }
@@ -460,6 +447,10 @@ technologies = {
             livens_projector_equipment_1
         }
 
+        enable_subunits = {
+            cbrn_chemical_projector_battery
+        }
+
         path = {
             leads_to_tech = improved_livens_projector
             research_cost_coeff = 1
@@ -498,13 +489,6 @@ technologies = {
         enable_equipments = {
             chemical_chlorine_payload_cylinder_1
         }
-        enable_subunits = {
-            livens_projector_support_chlorine
-            light_chemical_tank_support_chlorine
-            medium_chemical_tank_support_chlorine
-            heavy_chemical_tank_support_chlorine
-        }
-
         path = {
             leads_to_tech = phosgene
             research_cost_coeff = 1
@@ -542,13 +526,6 @@ technologies = {
         enable_equipments = {
             chemical_phosgene_payload_cylinder_1
         }
-        enable_subunits = {
-            livens_projector_support_phosgene
-            light_chemical_tank_support_phosgene
-            medium_chemical_tank_support_phosgene
-            heavy_chemical_tank_support_phosgene
-        }
-
         dependencies = {
             chlorine_gas = 1
         }
@@ -585,13 +562,6 @@ technologies = {
         enable_equipments = {
             chemical_mustard_payload_cylinder_1
         }
-        enable_subunits = {
-            livens_projector_support_mustard
-            light_chemical_tank_support_mustard
-            medium_chemical_tank_support_mustard
-            heavy_chemical_tank_support_mustard
-        }
-
         path = {
             leads_to_tech = lewisite
             research_cost_coeff = 1
@@ -628,13 +598,6 @@ technologies = {
         enable_equipments = {
             chemical_lewisite_payload_cylinder_1
         }
-        enable_subunits = {
-            livens_projector_support_lewisite
-            light_chemical_tank_support_lewisite
-            medium_chemical_tank_support_lewisite
-            heavy_chemical_tank_support_lewisite
-        }
-
         dependencies = {
             mustard_gas = 1
         }
@@ -727,13 +690,6 @@ technologies = {
         enable_equipments = {
             chemical_sarin_payload_cylinder_1
         }
-        enable_subunits = {
-            livens_projector_support_sarin
-            light_chemical_tank_support_sarin
-            medium_chemical_tank_support_sarin
-            heavy_chemical_tank_support_sarin
-        }
-
         path = {
             leads_to_tech = soman
             research_cost_coeff = 1
@@ -781,13 +737,6 @@ technologies = {
         enable_equipments = {
             chemical_soman_payload_cylinder_1
         }
-        enable_subunits = {
-            livens_projector_support_soman
-            light_chemical_tank_support_soman
-            medium_chemical_tank_support_soman
-            heavy_chemical_tank_support_soman
-        }
-
         dependencies = {
             sarin = 1
         }
@@ -820,41 +769,11 @@ technologies = {
         research_cost = 2
         start_year = 1936
 
-        livens_projector_support_chlorine = {
-            soft_attack = 0.10
-            hard_attack = 0.10
-            defense = 0.10
-            breakthrough = 0.10
-        }
-        livens_projector_support_phosgene = {
-            soft_attack = 0.10
-            hard_attack = 0.10
-            defense = 0.10
-            breakthrough = 0.10
-        }
-        livens_projector_support_mustard = {
-            soft_attack = 0.10
-            hard_attack = 0.10
-            defense = 0.10
-            breakthrough = 0.10
-        }
-        livens_projector_support_lewisite = {
-            soft_attack = 0.10
-            hard_attack = 0.10
-            defense = 0.10
-            breakthrough = 0.10
-        }
-        livens_projector_support_sarin = {
-            soft_attack = 0.10
-            hard_attack = 0.10
-            defense = 0.10
-            breakthrough = 0.10
-        }
-        livens_projector_support_soman = {
-            soft_attack = 0.10
-            hard_attack = 0.10
-            defense = 0.10
-            breakthrough = 0.10
+        cbrn_chemical_projector_battery = {
+            soft_attack = @CBRN_PROJECTOR_TECH_BONUS
+            hard_attack = @CBRN_PROJECTOR_TECH_BONUS
+            defense = @CBRN_PROJECTOR_TECH_BONUS
+            breakthrough = @CBRN_PROJECTOR_TECH_BONUS
         }
 
         enable_equipments = {
@@ -890,41 +809,11 @@ technologies = {
         research_cost = 3
         start_year = 1940
 
-        livens_projector_support_chlorine = {
-            soft_attack = 0.10
-            hard_attack = 0.10
-            defense = 0.10
-            breakthrough = 0.10
-        }
-        livens_projector_support_phosgene = {
-            soft_attack = 0.10
-            hard_attack = 0.10
-            defense = 0.10
-            breakthrough = 0.10
-        }
-        livens_projector_support_mustard = {
-            soft_attack = 0.10
-            hard_attack = 0.10
-            defense = 0.10
-            breakthrough = 0.10
-        }
-        livens_projector_support_lewisite = {
-            soft_attack = 0.10
-            hard_attack = 0.10
-            defense = 0.10
-            breakthrough = 0.10
-        }
-        livens_projector_support_sarin = {
-            soft_attack = 0.10
-            hard_attack = 0.10
-            defense = 0.10
-            breakthrough = 0.10
-        }
-        livens_projector_support_soman = {
-            soft_attack = 0.10
-            hard_attack = 0.10
-            defense = 0.10
-            breakthrough = 0.10
+        cbrn_chemical_projector_battery = {
+            soft_attack = @CBRN_PROJECTOR_TECH_BONUS
+            hard_attack = @CBRN_PROJECTOR_TECH_BONUS
+            defense = @CBRN_PROJECTOR_TECH_BONUS
+            breakthrough = @CBRN_PROJECTOR_TECH_BONUS
         }
 
         enable_equipments = {
@@ -1306,6 +1195,10 @@ technologies = {
 			decontamination_equipment_1
 		}
 
+		enable_subunits = {
+			cbrn_gas_mask_decon_detachment
+		}
+
 		path = {
 			leads_to_tech = mobile_wash_columns
 			research_cost_coeff = @CBRN_PROTECTION_PATH_COST_COEFF
@@ -1404,6 +1297,10 @@ technologies = {
 
 		enable_equipments = {
 			cbrn_instrument_equipment_1
+		}
+
+		enable_subunits = {
+			cbrn_chemical_recon_detachment
 		}
 
 		path = {

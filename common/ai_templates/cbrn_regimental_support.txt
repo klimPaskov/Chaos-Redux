@@ -1,0 +1,127 @@
+# ============================================================================
+# CHAOS REDUX - CBRN REGIMENTAL SUPPORT AI TEMPLATES
+# ============================================================================
+# Overview:
+# - Defines dedicated roles for protected, chemical-assault, armored-delivery,
+#   and containment formations without replacing any vanilla role template.
+# - Every target is country-gated by its unlocks, complete standing-equipment
+#   bill and, for offensive roles, current use policy and real payload stock.
+# - Target templates describe standing formations only. They never authorize
+#   or dispatch an exposure operation.
+# ============================================================================
+
+@CBRN_AI_TEMPLATE_ROLE_WEIGHT = 1
+@CBRN_AI_TEMPLATE_NORMAL_PRIORITY = 1
+@CBRN_AI_TEMPLATE_ELITE_PRIORITY = 2
+@CBRN_AI_TEMPLATE_INCLUDED = 1
+@CBRN_AI_TEMPLATE_PROTECTED_INFANTRY = 9
+@CBRN_AI_TEMPLATE_ASSAULT_INFANTRY = 6
+@CBRN_AI_TEMPLATE_ASSAULT_CHAOS = 3
+@CBRN_AI_TEMPLATE_ARMORED_MEDIUM = 3
+@CBRN_AI_TEMPLATE_ARMORED_MOTORIZED = 7
+@CBRN_AI_TEMPLATE_CONTAINMENT_INFANTRY = 9
+
+cbrn_protected_infantry_templates = {
+	blocked_for = { ZZZ }
+	role = cbrn_protected_infantry
+
+	upgrade_prio = { factor = @CBRN_AI_TEMPLATE_ROLE_WEIGHT }
+
+	cbrn_protected_infantry_9 = {
+		reinforce_prio = @CBRN_AI_TEMPLATE_NORMAL_PRIORITY
+		upgrade_prio = { factor = @CBRN_AI_TEMPLATE_ROLE_WEIGHT }
+		enable = { cbrn_country_can_field_protected_template = yes }
+		can_upgrade_in_field = { cbrn_country_has_protected_template_stock = yes }
+
+		target_template = {
+			regimental_support = {
+				cbrn_gas_mask_decon_detachment = @CBRN_AI_TEMPLATE_INCLUDED
+				cbrn_chemical_recon_detachment = @CBRN_AI_TEMPLATE_INCLUDED
+			}
+
+			regiments = {
+				infantry = @CBRN_AI_TEMPLATE_PROTECTED_INFANTRY
+			}
+		}
+	}
+}
+
+cbrn_chemical_assault_templates = {
+	blocked_for = { ZZZ }
+	role = cbrn_chemical_assault
+
+	upgrade_prio = { factor = @CBRN_AI_TEMPLATE_ROLE_WEIGHT }
+
+	cbrn_chemical_assault_9 = {
+		reinforce_prio = @CBRN_AI_TEMPLATE_ELITE_PRIORITY
+		upgrade_prio = { factor = @CBRN_AI_TEMPLATE_ROLE_WEIGHT }
+		enable = { cbrn_country_can_field_chemical_assault_template = yes }
+		can_upgrade_in_field = { cbrn_country_has_chemical_assault_template_stock = yes }
+
+		target_template = {
+			regimental_support = {
+				cbrn_gas_mask_decon_detachment = @CBRN_AI_TEMPLATE_INCLUDED
+				cbrn_hazard_pioneer_detachment = @CBRN_AI_TEMPLATE_INCLUDED
+				cbrn_chemical_projector_battery = @CBRN_AI_TEMPLATE_INCLUDED
+			}
+
+			regiments = {
+				infantry = @CBRN_AI_TEMPLATE_ASSAULT_INFANTRY
+				chaos_battalion = @CBRN_AI_TEMPLATE_ASSAULT_CHAOS
+			}
+		}
+	}
+}
+
+cbrn_armored_assault_templates = {
+	blocked_for = { ZZZ }
+	role = cbrn_armored_assault
+
+	upgrade_prio = { factor = @CBRN_AI_TEMPLATE_ROLE_WEIGHT }
+
+	cbrn_medium_armored_assault_10 = {
+		reinforce_prio = @CBRN_AI_TEMPLATE_ELITE_PRIORITY
+		upgrade_prio = { factor = @CBRN_AI_TEMPLATE_ROLE_WEIGHT }
+		enable = { cbrn_country_can_field_armored_delivery_template = yes }
+		can_upgrade_in_field = { cbrn_country_has_armored_delivery_template_stock = yes }
+
+		target_template = {
+			regimental_support = {
+				cbrn_gas_mask_decon_detachment = @CBRN_AI_TEMPLATE_INCLUDED
+				cbrn_chemical_recon_detachment = @CBRN_AI_TEMPLATE_INCLUDED
+				cbrn_medium_armored_delivery_detachment = @CBRN_AI_TEMPLATE_INCLUDED
+			}
+
+			regiments = {
+				medium_armor = @CBRN_AI_TEMPLATE_ARMORED_MEDIUM
+				motorized = @CBRN_AI_TEMPLATE_ARMORED_MOTORIZED
+			}
+		}
+	}
+}
+
+cbrn_containment_templates = {
+	blocked_for = { ZZZ }
+	role = cbrn_containment
+
+	upgrade_prio = { factor = @CBRN_AI_TEMPLATE_ROLE_WEIGHT }
+
+	cbrn_containment_infantry_9 = {
+		reinforce_prio = @CBRN_AI_TEMPLATE_NORMAL_PRIORITY
+		upgrade_prio = { factor = @CBRN_AI_TEMPLATE_ROLE_WEIGHT }
+		enable = { cbrn_country_can_field_containment_template = yes }
+		can_upgrade_in_field = { cbrn_country_has_containment_template_stock = yes }
+
+		target_template = {
+			regimental_support = {
+				cbrn_gas_mask_decon_detachment = @CBRN_AI_TEMPLATE_INCLUDED
+				cbrn_field_epidemiology_detachment = @CBRN_AI_TEMPLATE_INCLUDED
+				cbrn_medical_countermeasure_detachment = @CBRN_AI_TEMPLATE_INCLUDED
+			}
+
+			regiments = {
+				infantry = @CBRN_AI_TEMPLATE_CONTAINMENT_INFANTRY
+			}
+		}
+	}
+}

@@ -1,6 +1,6 @@
 # chaosx_dynamic_triggers
 
-This file documents reusable dynamic scripted triggers from `common/scripted_triggers/chaosx_dynamic_triggers.txt`. The point of these triggers is to keep complex trigger logic centralized so events can call one reusable block instead of duplicating large script chunks.
+This file documents reusable dynamic scripted triggers under `common/scripted_triggers/`. The point of these triggers is to keep complex trigger logic centralized so events, decisions, AI, and system adapters can call one reusable block instead of duplicating large script chunks.
 
 ## Reuse guidance
 
@@ -21,6 +21,7 @@ Before adding new dynamic trigger logic, check this file and reuse an existing t
 - [CBRN state distribution gates](#cbrn-state-distribution-gates)
 - [CBRN exact-state response gates](#cbrn-exact-state-response-gates)
 - [CBRN allied procurement and AI profiles](#cbrn-allied-procurement-and-ai-profiles)
+- [CBRN regimental support and AI gates](#cbrn-regimental-support-and-ai-gates)
 
 ## is_desert_state
 
@@ -321,5 +322,50 @@ Example:
 modifier = {
 	factor = constant:cbrn_protection_ai.mass_civil_defence_factor
 	cbrn_profile_is_mass_civil_defence = yes
+}
+```
+
+## CBRN regimental support and AI gates
+
+These country-scope, side-effect-free triggers are defined in `cbrn_regimental_support_triggers.txt`. They use actual technology, policy, equipment stock, contamination, and outbreak state. Missing technology, equipment, or context fails closed. They do not infer per-division fulfillment, alter templates, authorize use, reserve payload, or dispatch exposure.
+
+### Complete standing-template stock gates
+
+- `cbrn_country_has_any_chemical_payload_stock`: true when at least one supported chemical payload model has positive real stock. This is a production/readiness signal only; positive stock is not use authorization.
+- `cbrn_country_has_protected_template_stock`: requires the full standing bill for one nine-infantry protected target, including infantry equipment, masks, decon, instruments, support equipment, and trucks.
+- `cbrn_country_has_chemical_assault_template_stock`: requires the full standing bill for six infantry, three Chaos Assault Battalions, mask/decon, Hazard Pioneer, and Projector support.
+- `cbrn_country_has_armored_delivery_template_stock`: requires the full standing bill for three medium-armor and seven motorized battalions plus mask/decon, recon, and medium armored-delivery support, including the flame-role chassis subset.
+- `cbrn_country_has_containment_template_stock`: requires the full standing bill for nine infantry plus mask/decon, epidemiology, and medical support.
+
+Inputs: current country equipment stock. Defaults: absent or insufficient stock returns false. Output: boolean only. Side effects: none.
+
+### Template eligibility gates
+
+- `cbrn_country_can_field_protected_template`: requires both defensive support unlocks, a complete stock set, and a CBRN program, Chaos Warfare doctrine, or real public emergency.
+- `cbrn_country_can_field_chemical_assault_template`: requires all three unit unlocks, battlefield-use policy, positive chemical payload stock, and a complete standing set.
+- `cbrn_country_can_field_armored_delivery_template`: requires armored-delivery and sealed-crew unlocks, a current medium-tank chassis path, battlefield-use policy, positive chemical payload stock, and a complete standing set.
+- `cbrn_country_can_field_containment_template`: requires epidemiology and mobile-hospital unlocks, a complete standing set, and an actual domestic/neighbor outbreak, public chemical emergency, or controlled contaminated state.
+
+Inputs: technology, policy, actual stock, outbreak, and contamination state. Defaults: false. Output: boolean only. Side effects: none. Offensive eligibility remains distinct from operation eligibility; the later adapter must still select and debit the exact payload before exposure.
+
+### Production signals
+
+- `cbrn_country_should_produce_regimental_decon`: field-decon technology plus a real program, emergency, contamination, or outbreak signal; actual nonhuman countries are excluded.
+- `cbrn_country_should_produce_regimental_instruments`: detection technology plus the same bounded signals and exclusion.
+- `cbrn_country_has_urgent_regimental_support_need`: true for a public chemical emergency, controlled contamination, or domestic/neighbor outbreak.
+
+Inputs: technology and current system state. Defaults: false. Output: boolean only. Side effects: none. These feed AI strategies directly and create no periodic country iteration.
+
+Example:
+
+```txt
+cbrn_ai_chemical_assault_ratio = {
+	enable = { cbrn_country_can_field_chemical_assault_template = yes }
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = role_ratio
+		id = cbrn_chemical_assault
+		value = 2
+	}
 }
 ```
