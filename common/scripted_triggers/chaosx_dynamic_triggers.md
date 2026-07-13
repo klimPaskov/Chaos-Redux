@@ -369,3 +369,96 @@ cbrn_ai_chemical_assault_ratio = {
 	}
 }
 ```
+
+## CBRN Army Headquarters triggers
+
+These side-effect-free triggers are defined in `cbrn_hq_triggers.txt`. Character-scope triggers read the current army command and use `OWNER` for its country. They do not estimate the fill ratio of a deployed HQ company; exact HQ composition and national operating stock are separate checks.
+
+### Force bands and exact HQ composition
+
+- `cbrn_hq_force_is_light`: fewer than 100 affected battalions.
+- `cbrn_hq_force_is_standard`: 100 through 199 affected battalions.
+- `cbrn_hq_force_is_mass`: at least 200 affected battalions.
+- `cbrn_hq_has_operations_section`, `cbrn_hq_has_intelligence_weather_cell`, `cbrn_hq_has_protective_logistics_section`, `cbrn_hq_has_mobile_decontamination_column`, `cbrn_hq_has_medical_countermeasure_directorate`, and `cbrn_hq_has_biological_security_section`: exact `num_battalions_with_type@...` checks for one named HQ-only company.
+- `cbrn_hq_has_strict_overmatch_combination`: Operations plus Protective Logistics plus Mobile Decontamination.
+- `cbrn_hq_has_no_preparation_or_active_posture`: no preparation/active trait and no persistent operation code. The operation code deliberately blocks a newer posture until planned cleanup even after early supply failure.
+
+Scope: character. Defaults: missing command/company is false. Outputs: boolean only.
+
+### Owner context and command-validity gates
+
+The owner-context triggers are `cbrn_hq_owner_has_chemical_operation_context`, `cbrn_hq_owner_has_protective_context`, `cbrn_hq_owner_has_decontamination_context`, `cbrn_hq_owner_has_sealed_area_context`, `cbrn_hq_owner_has_antidote_context`, `cbrn_hq_owner_has_infection_context`, and `cbrn_hq_owner_has_overmatch_context`. They require the accepted policy, readiness, payload, emergency, contamination, outbreak, or capstone state for their operation.
+
+`cbrn_hq_command_is_deployed` requires a non-army-group, non-border-war commander with assigned divisions. The seven composite command-validity triggers add exact company composition and owner context:
+
+- `cbrn_hq_prepare_command_is_valid`
+- `cbrn_hq_protective_command_is_valid`
+- `cbrn_hq_decon_command_is_valid`
+- `cbrn_hq_seal_area_command_is_valid`
+- `cbrn_hq_antidote_command_is_valid`
+- `cbrn_hq_infection_command_is_valid`
+- `cbrn_hq_overmatch_command_is_valid`
+
+These are reused at activation, preparation completion, and weekly upkeep so removing a required HQ company or losing the relevant context fails closed.
+
+### Exact activation and upkeep resource gates
+
+Each activation trigger branches on the current force band and includes the full command-power gate. Its paired upkeep trigger reads the force band stored when the order was accepted, preventing later army reorganization from lowering the commitment.
+
+`cbrn_hq_country_has_issued_filter_ledger` is a country-scope, side-effect-free prerequisite requiring a positive military-issued mask ledger and an initialized military filter-condition ledger. Missing values fail closed.
+
+The nine country-scope filter-affordability triggers require that ledger plus enough condition for one exact operation/force-band debit. Each selects the base threshold without `military_filter_standardization` or the exact technology-reduced threshold with it:
+
+- `cbrn_hq_country_can_pay_prepare_light_filters`
+- `cbrn_hq_country_can_pay_prepare_standard_filters`
+- `cbrn_hq_country_can_pay_prepare_mass_filters`
+- `cbrn_hq_country_can_pay_protective_light_filters`
+- `cbrn_hq_country_can_pay_protective_standard_filters`
+- `cbrn_hq_country_can_pay_protective_mass_filters`
+- `cbrn_hq_country_can_pay_overmatch_light_filters`
+- `cbrn_hq_country_can_pay_overmatch_standard_filters`
+- `cbrn_hq_country_can_pay_overmatch_mass_filters`
+
+Inputs are the persistent military-issued mask count, filter condition, and technology state. Defaults are fail-closed for absent masks, absent condition, or insufficient condition. Outputs are boolean only; there are no side effects.
+
+| Operation | Activation trigger and exact owner resources | Upkeep trigger and exact owner resources |
+| --- | --- | --- |
+| Chemical fire plan | `cbrn_hq_can_pay_prepare_activation`: command power, masks, exact issued-filter condition, instruments, support equipment | `cbrn_hq_can_pay_prepare_upkeep`: masks, instruments, support equipment |
+| Protective posture | `cbrn_hq_can_pay_protective_activation`: command power, masks, exact issued-filter condition, support equipment | `cbrn_hq_can_pay_protective_upkeep`: masks, exact issued-filter condition, support equipment |
+| Decontamination corridor | `cbrn_hq_can_pay_decon_activation`: command power, decontamination equipment, trucks, masks, support equipment, fuel | `cbrn_hq_can_pay_decon_upkeep`: decontamination equipment, trucks, masks, support equipment, fuel |
+| Sealed operational area | `cbrn_hq_can_pay_seal_area_activation`: command power, support equipment, manpower | `cbrn_hq_can_pay_seal_area_upkeep`: support equipment |
+| Antidote response | `cbrn_hq_can_pay_antidote_activation`: command power, support equipment, masks, Medical Capacity | `cbrn_hq_can_pay_antidote_upkeep`: support equipment, masks |
+| Infection corridor | `cbrn_hq_can_pay_infection_activation`: command power, support equipment, decontamination equipment, instruments, masks, manpower, Medical Capacity | `cbrn_hq_can_pay_infection_upkeep`: support equipment, decontamination equipment, instruments, masks |
+| Combined overmatch | `cbrn_hq_can_pay_overmatch_activation`: command power, support equipment, decontamination equipment, instruments, masks, exact issued-filter condition, trucks, fuel, Medical Capacity | `cbrn_hq_can_pay_overmatch_upkeep`: support equipment, decontamination equipment, instruments, masks, exact issued-filter condition, trucks, fuel |
+
+`cbrn_hq_committed_force_is_light`, `cbrn_hq_committed_force_is_standard`, and `cbrn_hq_committed_force_is_mass` read the stored force-band enum. Filter wear is a bounded condition loss, not a fictitious stockpile: every mapped activation or upkeep requires both issued masks and the full exact condition debit before the matching effect can run. Scope is character, `OWNER` supplies the country resource checks, missing or insufficient resources return false, output is boolean only, and these triggers have no side effects.
+
+The seven public ability gates combine command validity, no existing commitment, and full activation resources:
+
+- `cbrn_hq_can_activate_prepare_chemical_offensive`
+- `cbrn_hq_can_activate_theater_protective_posture`
+- `cbrn_hq_can_activate_decontamination_corridor`
+- `cbrn_hq_can_activate_seal_operational_area`
+- `cbrn_hq_can_activate_mass_antidote_response`
+- `cbrn_hq_can_activate_seal_infection_corridor`
+- `cbrn_hq_can_activate_combined_overmatch`
+
+Scope: character. Defaults: insufficient or absent resources return false. Outputs: boolean only. These checks use national reserve stock because current 1.19 script exposes no exact fulfillment query for one named deployed HQ support company; no aggregate-army estimator is retained.
+
+### Baseline AI HQ template gates
+
+- `cbrn_country_can_field_protected_hq`: Protective Logistics and Medical unlocks plus one complete protected-HQ standing bill.
+- `cbrn_country_can_field_chemical_fireplan_hq`: Operations/Weather unlocks, operational readiness, battlefield-use policy, positive payload stock, and one complete fire-plan-HQ standing bill.
+- `cbrn_country_can_field_contaminated_theater_hq`: decontamination unlock, actual controlled contamination, and one complete contaminated-theater-HQ standing bill.
+- `cbrn_country_can_field_biological_containment_hq`: Biosecurity/Medical unlocks, an active outbreak, and one complete biological-containment-HQ standing bill.
+- `cbrn_country_can_field_overmatch_hq`: Theater technology, full readiness, battlefield-use policy, positive payload stock, and the complete four-slot capstone-HQ bill.
+
+Scope: country. The common base bill is 420 infantry equipment: four vanilla infantry battalions at 100 each plus 20 for the mandatory vanilla HQ staff. Defaults: missing unlock, context, or stock returns false. Side effects: none. Stage 10 may differentiate country preferences, but these safety and supply gates remain authoritative.
+
+Example:
+
+```txt
+allowed = {
+	cbrn_hq_can_activate_mass_antidote_response = yes
+}
+```

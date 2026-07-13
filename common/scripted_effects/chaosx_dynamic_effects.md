@@ -1371,3 +1371,60 @@ Example:
 ```txt
 chaosx_apply_starting_cbrn_mask_profiles = yes
 ```
+
+## CBRN Army Headquarters operation effects
+
+These effects are defined in `cbrn_hq_effects.txt`. Character-scope effects expect a deployed army commander; `OWNER` is that commander's country. They never select a state, choose an agent, consume an unspecified payload, or call the shared exposure pipeline.
+
+### Operation-state and preparation helpers
+
+| Effect | Purpose, inputs, outputs, and side effects |
+| --- | --- |
+| `cbrn_hq_reset_operating_package` | Character-scope internal initializer with no required input. Sets every temporary operating-debit field—masks, filter wear, decontamination equipment, instruments, support equipment, trucks, fuel, medical capacity, and manpower—to zero before a package setter fills the applicable fields. It changes no persistent value or stock by itself. |
+| `cbrn_hq_set_committed_force_band` | Character scope. Reads exact `num_battalions` through the force-band triggers and stores the light, standard, or mass enum in `cbrn_hq_committed_force_band`. Missing/invalid army size falls into the mass fail-safe only after the activation trigger has established a deployed command. |
+| `cbrn_hq_stop_operation_benefits` | Character scope. Removes every CBRN preparation/active status trait but deliberately retains the operation code and commitments until planned cleanup. This prevents a stale delayed event from crossing into a newer operation. |
+| `cbrn_hq_clear_operation_state` | Character scope. Calls the benefit cleanup and clears operation code, committed force band, and remaining upkeep ticks. It is reserved for the planned final event. |
+| `cbrn_hq_calculate_preparation_days` | Character scope. Required temporary inputs: base, minimum, and maximum preparation days. Reads owner Chemical Readiness, applies the centralized readiness multiplier, rounds, and clamps into the accepted range. |
+| `cbrn_hq_apply_operations_section_preparation_discount` | Character scope. Inputs: calculated preparation plus the same minimum and maximum temporary bounds. Applies the Operations Section's ten-percent preparation reduction, then reclamps and rounds. Call only for abilities that require that company. |
+| `cbrn_hq_apply_high_protection_preparation_discount` | Character scope. Refreshes the owner's real military-mask snapshot and applies the accepted five-percent preparation reduction only at the high-protection threshold, then reclamps. It does not change exposure protection itself. |
+| `cbrn_hq_commit_preparation` | Character scope. Required temporary inputs: calculated preparation, active duration, full/native command-power costs, and an activation operating package. Stores the force band, debits the scripted CP remainder and real stores, applies the timed preparation trait, and schedules bounded preparation/final-cleanup events. Medical/manpower commitments recover on their planned date even if active benefits end early. |
+
+### Model-aware operating-stock debit helpers
+
+- `cbrn_hq_debit_decontamination_stock_oldest_first`: country scope; input `cbrn_hq_family_debit_requested`; outputs completed and remaining family debit; removes decontamination models 1 through 3 oldest-first.
+- `cbrn_hq_debit_instrument_stock_oldest_first`: country scope; same contract for instrument models 1 through 3.
+- `cbrn_hq_debit_command_power_remainder`: character scope; inputs full and native CP costs; subtracts only the non-native remainder from `OWNER` after clamping at zero.
+- `cbrn_hq_debit_operating_package`: character scope; reads temporary mask, military-filter-condition, decon, instrument, support, truck, fuel, medical, and manpower amounts. It uses model-aware family helpers, routes every positive assigned filter debit through `cbrn_apply_military_mask_loss`, records the exact post-technology condition consumed in `cbrn_hq_filter_condition_consumption_total`, writes the other consumption ledgers, commits medical/manpower capacity, and schedules exact restoration events. The public and upkeep triggers fail closed unless the full issued-filter debit is affordable; zero inputs are no-ops.
+
+### Activation and weekly package setters
+
+Each setter resets all package fields before selecting the exact light, standard, or mass table. Activation setters also supply preparation, active duration, native CP, and full CP inputs. Weekly setters contain no medical or manpower recommitment.
+
+| Operation | Activation setter | Weekly setter |
+| --- | --- | --- |
+| Chemical fire plan | `cbrn_hq_set_prepare_activation_package` | `cbrn_hq_set_prepare_upkeep_package` |
+| Protective posture | `cbrn_hq_set_protective_activation_package` | `cbrn_hq_set_protective_upkeep_package` |
+| Decontamination corridor | `cbrn_hq_set_decon_activation_package` | `cbrn_hq_set_decon_upkeep_package` |
+| Sealed operational area | `cbrn_hq_set_seal_area_activation_package` | `cbrn_hq_set_seal_area_upkeep_package` |
+| Antidote response | `cbrn_hq_set_antidote_activation_package` | `cbrn_hq_set_antidote_upkeep_package` |
+| Infection corridor | `cbrn_hq_set_infection_activation_package` | `cbrn_hq_set_infection_upkeep_package` |
+| Combined overmatch | `cbrn_hq_set_overmatch_activation_package` | `cbrn_hq_set_overmatch_upkeep_package` |
+
+### Public ability-start effects
+
+`cbrn_hq_start_prepare_chemical_offensive`, `cbrn_hq_start_theater_protective_posture`, `cbrn_hq_start_decontamination_corridor`, `cbrn_hq_start_seal_operational_area`, `cbrn_hq_start_mass_antidote_response`, `cbrn_hq_start_seal_infection_corridor`, and `cbrn_hq_start_combined_overmatch` are CHARACTER-scope one-time ability adapters. Their matching activation trigger must be checked first. Each stores a stable operation enum, selects the exact force-band package, calculates preparation, commits stock/CP, and schedules `cbrn_hq.1`. The two offensive preparations apply both the Operations Section and high-protection preparation adjustments. None dispatches exposure.
+
+Example:
+
+```txt
+allowed = { cbrn_hq_can_activate_theater_protective_posture = yes }
+one_time_effect = {
+	hidden_effect = { cbrn_hq_start_theater_protective_posture = yes }
+}
+```
+
+### Bounded upkeep effects
+
+`cbrn_hq_debit_prepare_upkeep`, `cbrn_hq_debit_protective_upkeep`, `cbrn_hq_debit_decon_upkeep`, `cbrn_hq_debit_seal_area_upkeep`, `cbrn_hq_debit_antidote_upkeep`, `cbrn_hq_debit_infection_upkeep`, and `cbrn_hq_debit_overmatch_upkeep` select and debit one paid weekly installment from the force band stored at activation. The caller must first pass the corresponding upkeep trigger. Army reorganization after activation cannot reduce that package.
+
+`cbrn_hq_schedule_next_upkeep_tick` schedules `cbrn_hq.2` only while the persistent finite tick budget is positive. `cbrn_hq_complete_upkeep_tick` decrements that budget and schedules the next tick when required. `cbrn_hq_fail_upkeep` removes active benefits and the tick budget while retaining the operation commitment until its already scheduled final cleanup. These targeted chains create no periodic country iteration.

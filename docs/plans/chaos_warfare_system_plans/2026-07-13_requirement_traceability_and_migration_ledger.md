@@ -26,7 +26,7 @@ Status vocabulary: `queued`, `in progress`, `implemented`, `verified`, `verified
 | S01-01 | National program loop covers establishment, protection, delivery, HQ preparation, use/exploitation, and aftermath. | Program decisions, equipment, HQ, delivery, response, AI, and docs all connected. | queued |
 | S01-02 | Persistent national values cover Chemical Readiness, policy, military/civil protection, filters, decon, medical response, biosecurity, surveillance, containment, weaponization, attribution control, evidence, and Condemnation context. | Central constants, documented variables/flags, scripted localisation. | in progress; Stage 1 national core implemented, equipment/bio/UI values queued |
 | S01-03 | State values cover chemical contamination class/intensity/duration, outbreak agent/stage/intensity, medical saturation, evidence, protection, and responsible actor memory. | State helpers and cleanup contracts. | in progress; chemical contamination/evidence ownership implemented, outbreak and persistent actor records queued |
-| S01-04 | Army/order values cover selected HQ, preparation, protected posture, forecast, delivery profile, affected force, and cleanup corridor. | HQ companies/abilities and order-scoped helpers. | queued |
+| S01-04 | Army/order values cover selected HQ, preparation, protected posture, forecast, delivery profile, affected force, and cleanup corridor. | HQ companies/abilities and order-scoped helpers. | in progress; Stage 4 implements exact deployed-company gates, affected-force commitment, preparation, active posture, finite upkeep, and cleanup identity, while selected-state/agent/route adapters remain Stages 6 to 8 |
 | S01-05 | Readiness bands gate content and are capped by milestones, equipment, and institutions rather than free accumulation. | Readiness constants/triggers, decisions, doctrine integration, UI. | queued |
 | S01-06 | Choking, blister, nerve, incapacitating/malodor, and biological profiles remain mechanically distinct. | Profile constants and scenario results. | in progress; chemical profiles implemented, biological profiles and scenario results queued |
 | S01-07 | Shared exposure resolves payload, conditions, protection, disruption, deaths, contamination, medical saturation, evidence, attribution, and Condemnation in one sequence. | One public chemical exposure entry point called by every route. | in progress; fail-closed calculator implemented, route migration and single dispatcher queued |
@@ -48,9 +48,9 @@ Status vocabulary: `queued`, `in progress`, `implemented`, `verified`, `verified
 
 | ID | Accepted requirement | Required evidence | Status |
 | --- | --- | --- | --- |
-| S03-01 | Six HQ companies exist: Operations Section, Intelligence/Weather Cell, Protective Logistics, Mobile Decon, Medical Directorate, Biological Security. | `cbrn_hq_support` definitions, icons, tech, AI. | queued |
-| S03-02 | HQ companies use current 1.19 Army HQ schema, essential equipment, deployed-leader modifiers, and shortage scaling. | Definitions plus vanilla-pattern review. | queued |
-| S03-03 | At least six mapped HQ abilities exist with cost, duration, cooldown, company gate, affected-force scaling, AI use, and cleanup. | Abilities/effects/triggers/scenarios. | queued |
+| S03-01 | Six HQ companies exist: Operations Section, Intelligence/Weather Cell, Protective Logistics, Mobile Decon, Medical Directorate, Biological Security. | `cbrn_hq_support` definitions, icons, tech, AI. | implemented and source-audited; all six definitions, unlocks, exact bills, final counters, baseline AI, and localisation are wired, while live designer/shortage scenarios remain Stage 14 |
+| S03-02 | HQ companies use current 1.19 Army HQ schema, essential equipment, deployed-leader modifiers, and shortage scaling. | Definitions plus vanilla-pattern review. | implemented and source-audited against installed 1.19 HQ definitions; native essential/need scaling is used and the unsupported exact per-company fill query is disclosed without an estimator, while live designer/shortage scenarios remain Stage 14 |
+| S03-03 | At least six mapped HQ abilities exist with cost, duration, cooldown, company gate, affected-force scaling, AI use, and cleanup. | Abilities/effects/triggers/scenarios. | implemented and source-audited; seven abilities use exact company/context gates, stored force-band CP and stock packages, fail-closed issued-filter affordability, bounded preparation/upkeep/cleanup, final icons, baseline AI, and honest downstream adapters, while live Stage 14 scenarios remain open |
 | S03-04 | Ten regimental roles exist: masks/decon, recon, pioneer, projector, ammunition, armored delivery, suppression, epidemiology, medical, biosecurity assault. | Regimental unit file, designer visibility, tech, icons, AI. | implemented and source-audited; all ten role families, three armored chassis variants, final art, localisation, and baseline AI are wired |
 | S03-05 | Regimental roles occupy the regimental row and do not masquerade as ordinary support. | Unit definitions and designer inspection. | implemented; all definitions use the 1.19 regimental-support group/category contract |
 | S03-06 | Essential-equipment shortage removes or scales powerful scripted benefits. | `essential`, `need`, scripted gates, shortage scenario. | in progress; native standing-equipment shortage scaling is implemented, operation-level payload bands remain Stage 6 |
@@ -60,7 +60,7 @@ Status vocabulary: `queued`, `in progress`, `implemented`, `verified`, `verified
 | ID | Accepted requirement | Required evidence | Status |
 | --- | --- | --- | --- |
 | S04-01 | Four producible gas-mask models provide progression from basic mask to sealed set. | Equipment, tech, enum, art, localisation, production AI. | verified; Stage 2 equipment, model progression, art, localisation, and differentiated production AI are committed in `cc72b1239` |
-| S04-02 | Producible decontamination equipment and CBRN instruments support HQ and regimental roles. | Equipment, enum, needs, AI. | in progress; equipment families and regimental needs/AI are wired, HQ consumers remain Stage 4 |
+| S04-02 | Producible decontamination equipment and CBRN instruments support HQ and regimental roles. | Equipment, enum, needs, AI. | implemented for standing HQ/regimental bills and model-aware operation consumption; final live supply scenarios remain Stage 14 |
 | S04-03 | Strategic payload, shell lots, armored-delivery stores, and air-payload lots are real consumable equipment where mapped. | Equipment and route consumption. | queued |
 | S04-04 | Biological payloads remain agent-specific and stockpile safety uses actual stock. | Equipment, projects, accidents, raids/operations. | queued |
 | S04-05 | Protective, detection/forecast, decon, delivery, medical, and biosecurity technology branches are complete and AI-aware. | Tech tree, AI, GFX, localisation. | in progress; protective equipment and Stage 3 support unlocks are wired, later delivery/medical/bio lifecycle integration remains |
@@ -100,14 +100,14 @@ Status vocabulary: `queued`, `in progress`, `implemented`, `verified`, `verified
 
 | ID | Accepted requirement | Required evidence | Status |
 | --- | --- | --- | --- |
-| S07-01 | Military coverage uses issued mask crates, protective clothing/model, filters, training, warning, and medical support. | Coverage helper and division/HQ issue model. | in progress; real military issue/model/filter inputs and division equipment needs are wired, HQ posture and medical response remain later stages |
+| S07-01 | Military coverage uses issued mask crates, protective clothing/model, filters, training, warning, and medical support. | Coverage helper and division/HQ issue model. | in progress; real military issue/model/filter inputs, division needs, HQ protective posture costs, filter wear, and medical commitments are wired, while final exposure-specific HQ protection is integrated with route migration |
 | S07-02 | Civilian state coverage is population-scaled and consumes crate-equivalent stock plus administration/time. | Formula constants, state decisions, stock changes. | verified; population-scaled state issue and exact stock removal are committed in `cc72b1239` |
 | S07-03 | National reserve, registration/fitting, priority-city issue, full distribution, alert distribution, replacement, reconditioning, occupation supply, and exports exist. | Decision family and AI. | implemented; Stage 2 decision families and AI cover the mapped reserve/distribution lifecycle |
 | S07-04 | Emergency issue wastes stock; collection/reconditioning cannot create infinite masks. | Constants and exploit scenario. | verified; waste/recovery bounds and raw-versus-effective distribution accounting were audited in Stage 2 |
 | S07-05 | Filter storage loss, alert use, exposure use, and civilian consumption require replacement. | Targeted scheduler/exposure calls and stock ledger. | implemented; loss and replacement are targeted/self-scheduled with exposure consumption routed through shared protection helpers |
 | S07-06 | Starting stock follows the accepted matrix, Britain is strongest, and all totals are documented as gameplay tuning with honest confidence. | Startup constants/effects and docs. | verified; thirty differentiated profiles are committed, with Britain strongest at 45,000 crates and confidence disclosed as gameplay tuning |
 | S07-07 | Mask protection reduces every chemical death path, including suppression and continuing contamination. | Shared protection dependency audit. | in progress; shared exposure consumes applied protection, remaining legacy/suppression/continuing route migration belongs to Stages 6, 8, and 9 |
-| S07-08 | Protective posture has a real tempo/opportunity cost. | HQ ability/unit modifiers and scenario. | queued |
+| S07-08 | Protective posture has a real tempo/opportunity cost. | HQ ability/unit modifiers and scenario. | implemented in source through force-band CP, masks, filter wear, support upkeep, supply burden, -5% movement, and -3% attack; Stage 14 live scenario remains open |
 
 ### Spec 08: suppression, occupation, and nerve agents
 
@@ -174,9 +174,9 @@ Status vocabulary: `queued`, `in progress`, `implemented`, `verified`, `verified
 | Matrix | Non-negotiable implementation use | Status |
 | --- | --- | --- |
 | `doctrine_and_tech_matrix.md` | Gates, burden, unlocks, permanent/operational targets, risks, dates, and consistency gates drive doctrine/tech definitions. | queued |
-| `hq_and_ability_matrix.md` | Exact six HQ companies and ability gates/cost/duration/cooldown/equipment/AI mapping. | queued |
+| `hq_and_ability_matrix.md` | Exact six HQ companies and ability gates/cost/duration/cooldown/equipment/AI mapping. | implemented and source-audited; definitions, seven abilities, strict capstone composition, costs, durations, cooldowns, equipment, exact filter/manpower commitments, final assets, and baseline AI are wired, while live Stage 14 scenarios remain open |
 | `regimental_support_matrix.md` | Exact ten division-layer roles, grouping, incompatibilities, and role identity. | implemented and source-audited; consolidated and retained compatibility definitions share the required exclusions |
-| `subunit_equipment_matrix.md` | Essential/secondary equipment and shortage behavior for every HQ/regimental/line role. | in progress; regimental and Chaos Assault bills are implemented, HQ bills remain Stage 4 |
+| `subunit_equipment_matrix.md` | Essential/secondary equipment and shortage behavior for every HQ/regimental/line role. | implemented in source for HQ, regimental, and Chaos Assault standing bills with native essential/need shortage scaling; live designer/shortage scenarios remain Stage 14 |
 | `chemical_agent_delivery_matrix.md` | Agent-by-route eligibility, payload class, persistence, evidence, and target effects; no invented delivery support. | queued |
 | `biological_agent_countermeasure_matrix.md` | Agent properties and countermeasure effectiveness/tradeoffs. | queued |
 | `gas_mask_starting_stockpile_matrix.md` | Country bands, Britain strongest, population conversion, confidence notes, no identical major bundles. | verified; Stage 2 uses all thirty profiles and records the tuning/confidence rationale |
@@ -213,7 +213,7 @@ New Stage 1 code ownership is intentionally UI-independent:
 | `common/script_constants/cbrn_system_constants.txt` | Shared fixed-point profile, protection, evidence, attribution, cleanup, and scheduler tuning. | implemented |
 | `common/scripted_effects/cbrn_exposure_effects.txt` | Public chemical action-record/exposure calculator and validation, with later route adapters and consequence dispatch. | implemented for Stage 1 calculator/validator; adapters and dispatch queued |
 | `common/scripted_effects/cbrn_protection_effects.txt` | National initialization/readiness/policy and bounded layered protection outputs; later equipment helpers provide real coverage inputs. | implemented for Stage 1 core; equipment integration queued |
-| `common/scripted_effects/cbrn_hq_effects.txt` | Army/order preparation state contracts; initially helper-only until HQ content is added. | queued |
+| `common/scripted_effects/cbrn_hq_effects.txt` | Army/order preparation state contracts; initially helper-only until HQ content is added. | implemented for Stage 4 activation, committed force band, real stock/filter/capacity/manpower debit, finite upkeep, and cleanup; payload/state consequence dispatch remains later-stage-owned |
 | `common/scripted_triggers/cbrn_triggers.txt` | Readiness, policy, protection, payload, attribution, and valid-target gates. | implemented |
 | `common/scripted_effects/chaosx_dynamic_effects.md` | Public helper documentation: scope, inputs, outputs, defaults, side effects, cleanup, and examples. | implemented for Stage 1 helpers |
 
@@ -244,7 +244,7 @@ Legacy public identifiers remain available until every internal and external cal
 | 1 | Constants, persistent-state ownership, documented helper contracts, migration plan, no UI dependency. | implemented; static contract audit passed, live integration belongs to later stages |
 | 2 | Producible protection equipment, technology, issue/coverage/filter/distribution/start-reserve system; all existing chemical routes honor it. | implemented and audited; commit `cc72b1239` |
 | 3 | Consolidated regimental roles and Chaos Assault Battalion; legacy compatibility and template AI. | implemented and source-audited; final rendered/live package scenarios remain Stage 14 and are not yet claimed |
-| 4 | Six HQ companies and mapped abilities with costs, duration, cooldown, shortage, AI, cleanup. | queued |
+| 4 | Six HQ companies and mapped abilities with costs, duration, cooldown, shortage, AI, cleanup. | implemented and source-audited; gameplay, AI, final assets, localisation, docs, exact operating lifecycle, and the follow-up filter-affordability audit are complete, while live scenarios remain Stage 14 |
 | 5 | Doctrine, milestones, four tracks, hidden tech, officer corps, traits, icons, localisation, balance audit. | queued |
 | 6 | All chemical delivery routes migrated to shared exposure; exact-state raids; no continuous estimator. | queued |
 | 7 | Distinct biological lifecycle, operations, accidents, facilities, countermeasures, evidence; zombie boundary. | queued |

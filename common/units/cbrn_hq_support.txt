@@ -1,0 +1,416 @@
+# ============================================================================
+# CHAOS REDUX - CBRN ARMY HEADQUARTERS SUPPORT
+# ============================================================================
+# Overview:
+# - Defines the six theater-layer CBRN companies for the 1.19 Army HQ system.
+# - Mirrors vanilla HQ-only placement and uses matching essential/need tables.
+# - Enables commander abilities; exact activation and upkeep stock is handled
+#   by cbrn_hq_triggers/effects rather than an aggregate army-stock estimator.
+# - CBRN-specific exposure, cleanup, and containment remain shared-pipeline
+#   behavior and are not approximated with broad generic combat modifiers.
+# ============================================================================
+
+@CBRN_HQ_WIDTH = 0
+@CBRN_HQ_TRAINING = 120
+@CBRN_HQ_ORGANISATION = 30
+@CBRN_HQ_MORALE = 0.05
+@CBRN_HQ_STRENGTH = 1
+@CBRN_HQ_DEPLOYMENT_COST = 1
+@CBRN_HQ_WEIGHT = 0.10
+@CBRN_HQ_PRIORITY_OPERATIONS = 420
+@CBRN_HQ_PRIORITY_INTELLIGENCE = 410
+@CBRN_HQ_PRIORITY_PROTECTION = 400
+@CBRN_HQ_PRIORITY_DECONTAMINATION = 390
+@CBRN_HQ_PRIORITY_MEDICAL = 380
+@CBRN_HQ_PRIORITY_BIOSECURITY = 370
+@CBRN_HQ_AI_PRIORITY_OPERATIONS = 180
+@CBRN_HQ_AI_PRIORITY_INTELLIGENCE = 170
+@CBRN_HQ_AI_PRIORITY_PROTECTION = 175
+@CBRN_HQ_AI_PRIORITY_DECONTAMINATION = 165
+@CBRN_HQ_AI_PRIORITY_MEDICAL = 160
+@CBRN_HQ_AI_PRIORITY_BIOSECURITY = 155
+
+@CBRN_HQ_OPERATIONS_MANPOWER = 350
+@CBRN_HQ_OPERATIONS_SUPPORT = 60
+@CBRN_HQ_OPERATIONS_MASKS = 30
+@CBRN_HQ_OPERATIONS_INSTRUMENTS = 20
+@CBRN_HQ_OPERATIONS_PLANNING = 0.04
+
+@CBRN_HQ_INTELLIGENCE_MANPOWER = 275
+@CBRN_HQ_INTELLIGENCE_SUPPORT = 50
+@CBRN_HQ_INTELLIGENCE_INSTRUMENTS = 30
+@CBRN_HQ_INTELLIGENCE_TRUCKS = 10
+@CBRN_HQ_INTELLIGENCE_RECON = 0.10
+
+@CBRN_HQ_PROTECTION_MANPOWER = 400
+@CBRN_HQ_PROTECTION_SUPPORT = 80
+@CBRN_HQ_PROTECTION_MASKS = 80
+@CBRN_HQ_PROTECTION_TRUCKS = 30
+
+@CBRN_HQ_DECON_MANPOWER = 550
+@CBRN_HQ_DECON_DECON = 100
+@CBRN_HQ_DECON_TRUCKS = 60
+@CBRN_HQ_DECON_MASKS = 40
+@CBRN_HQ_DECON_SUPPORT = 50
+
+@CBRN_HQ_MEDICAL_MANPOWER = 400
+@CBRN_HQ_MEDICAL_SUPPORT = 70
+@CBRN_HQ_MEDICAL_TRUCKS = 25
+@CBRN_HQ_MEDICAL_MASKS = 30
+@CBRN_HQ_MEDICAL_WOUNDED = -0.10
+@CBRN_HQ_MEDICAL_SICKNESS = -0.10
+
+@CBRN_HQ_BIOSECURITY_MANPOWER = 450
+@CBRN_HQ_BIOSECURITY_SUPPORT = 60
+@CBRN_HQ_BIOSECURITY_INSTRUMENTS = 40
+@CBRN_HQ_BIOSECURITY_DECON = 40
+@CBRN_HQ_BIOSECURITY_TRUCKS = 25
+@CBRN_HQ_BIOSECURITY_RECON = 0.05
+@CBRN_HQ_BIOSECURITY_SICKNESS = -0.10
+
+sub_units = {
+	cbrn_hq_operations_section = {
+		abbreviation = "CBRNO"
+		sprite = infantry
+		map_icon_category = infantry
+		priority = @CBRN_HQ_PRIORITY_OPERATIONS
+		ai_priority = @CBRN_HQ_AI_PRIORITY_OPERATIONS
+		active = no
+		affects_speed = no
+
+		type = {
+			infantry
+			support
+		}
+
+		group = support
+
+		categories = {
+			category_support_battalions
+			category_divisional_support_battalions
+			category_army
+		}
+
+		deployed_leader_modifiers = {
+			planning_speed = @CBRN_HQ_OPERATIONS_PLANNING
+		}
+
+		enable_ability = {
+			cbrn_prepare_chemical_offensive
+			cbrn_combined_overmatch
+		}
+
+		regimental = no
+		combat_width = @CBRN_HQ_WIDTH
+		allow_in_army_hq = yes
+		allow_in_non_army_hq = no
+		required_dlc = { "Thunder at Our Gates" }
+
+		max_strength = @CBRN_HQ_STRENGTH
+		max_organisation = @CBRN_HQ_ORGANISATION
+		default_morale = @CBRN_HQ_MORALE
+		manpower = @CBRN_HQ_OPERATIONS_MANPOWER
+		deployment_cost = @CBRN_HQ_DEPLOYMENT_COST
+		training_time = @CBRN_HQ_TRAINING
+		weight = @CBRN_HQ_WEIGHT
+		can_be_parachuted = no
+
+		essential = {
+			support_equipment
+			gas_mask_equipment
+			cbrn_instrument_equipment
+		}
+
+		need = {
+			support_equipment = @CBRN_HQ_OPERATIONS_SUPPORT
+			gas_mask_equipment = @CBRN_HQ_OPERATIONS_MASKS
+			cbrn_instrument_equipment = @CBRN_HQ_OPERATIONS_INSTRUMENTS
+		}
+	}
+
+	cbrn_hq_intelligence_weather_cell = {
+		abbreviation = "CBRNW"
+		sprite = infantry
+		map_icon_category = infantry
+		priority = @CBRN_HQ_PRIORITY_INTELLIGENCE
+		ai_priority = @CBRN_HQ_AI_PRIORITY_INTELLIGENCE
+		active = no
+		affects_speed = no
+
+		type = {
+			infantry
+			support
+		}
+
+		group = support
+
+		categories = {
+			category_support_battalions
+			category_divisional_support_battalions
+			category_army
+		}
+
+		deployed_leader_modifiers = {
+			recon_factor = @CBRN_HQ_INTELLIGENCE_RECON
+		}
+
+		enable_ability = { cbrn_seal_operational_area }
+
+		regimental = no
+		combat_width = @CBRN_HQ_WIDTH
+		allow_in_army_hq = yes
+		allow_in_non_army_hq = no
+		required_dlc = { "Thunder at Our Gates" }
+
+		max_strength = @CBRN_HQ_STRENGTH
+		max_organisation = @CBRN_HQ_ORGANISATION
+		default_morale = @CBRN_HQ_MORALE
+		manpower = @CBRN_HQ_INTELLIGENCE_MANPOWER
+		deployment_cost = @CBRN_HQ_DEPLOYMENT_COST
+		training_time = @CBRN_HQ_TRAINING
+		weight = @CBRN_HQ_WEIGHT
+		can_be_parachuted = no
+		transport = motorized_equipment
+
+		essential = {
+			support_equipment
+			cbrn_instrument_equipment
+			motorized_equipment
+		}
+
+		need = {
+			support_equipment = @CBRN_HQ_INTELLIGENCE_SUPPORT
+			cbrn_instrument_equipment = @CBRN_HQ_INTELLIGENCE_INSTRUMENTS
+			motorized_equipment = @CBRN_HQ_INTELLIGENCE_TRUCKS
+		}
+	}
+
+	cbrn_hq_protective_logistics_section = {
+		abbreviation = "CBRNP"
+		sprite = infantry
+		map_icon_category = infantry
+		priority = @CBRN_HQ_PRIORITY_PROTECTION
+		ai_priority = @CBRN_HQ_AI_PRIORITY_PROTECTION
+		active = no
+		affects_speed = no
+
+		type = {
+			infantry
+			support
+		}
+
+		group = support
+
+		categories = {
+			category_support_battalions
+			category_divisional_support_battalions
+			category_army
+		}
+
+		enable_ability = { cbrn_theater_protective_posture }
+
+		regimental = no
+		combat_width = @CBRN_HQ_WIDTH
+		allow_in_army_hq = yes
+		allow_in_non_army_hq = no
+		required_dlc = { "Thunder at Our Gates" }
+
+		max_strength = @CBRN_HQ_STRENGTH
+		max_organisation = @CBRN_HQ_ORGANISATION
+		default_morale = @CBRN_HQ_MORALE
+		manpower = @CBRN_HQ_PROTECTION_MANPOWER
+		deployment_cost = @CBRN_HQ_DEPLOYMENT_COST
+		training_time = @CBRN_HQ_TRAINING
+		weight = @CBRN_HQ_WEIGHT
+		can_be_parachuted = no
+		transport = motorized_equipment
+
+		essential = {
+			support_equipment
+			gas_mask_equipment
+			motorized_equipment
+		}
+
+		need = {
+			support_equipment = @CBRN_HQ_PROTECTION_SUPPORT
+			gas_mask_equipment = @CBRN_HQ_PROTECTION_MASKS
+			motorized_equipment = @CBRN_HQ_PROTECTION_TRUCKS
+		}
+	}
+
+	cbrn_hq_mobile_decontamination_column = {
+		abbreviation = "CBRND"
+		sprite = infantry
+		map_icon_category = infantry
+		priority = @CBRN_HQ_PRIORITY_DECONTAMINATION
+		ai_priority = @CBRN_HQ_AI_PRIORITY_DECONTAMINATION
+		active = no
+		affects_speed = no
+
+		type = {
+			infantry
+			support
+		}
+
+		group = support
+
+		categories = {
+			category_support_battalions
+			category_divisional_support_battalions
+			category_army
+		}
+
+		enable_ability = { cbrn_decontamination_corridor }
+
+		regimental = no
+		combat_width = @CBRN_HQ_WIDTH
+		allow_in_army_hq = yes
+		allow_in_non_army_hq = no
+		required_dlc = { "Thunder at Our Gates" }
+
+		max_strength = @CBRN_HQ_STRENGTH
+		max_organisation = @CBRN_HQ_ORGANISATION
+		default_morale = @CBRN_HQ_MORALE
+		manpower = @CBRN_HQ_DECON_MANPOWER
+		deployment_cost = @CBRN_HQ_DEPLOYMENT_COST
+		training_time = @CBRN_HQ_TRAINING
+		weight = @CBRN_HQ_WEIGHT
+		can_be_parachuted = no
+		transport = motorized_equipment
+
+		essential = {
+			decontamination_equipment
+			motorized_equipment
+			gas_mask_equipment
+			support_equipment
+		}
+
+		need = {
+			decontamination_equipment = @CBRN_HQ_DECON_DECON
+			motorized_equipment = @CBRN_HQ_DECON_TRUCKS
+			gas_mask_equipment = @CBRN_HQ_DECON_MASKS
+			support_equipment = @CBRN_HQ_DECON_SUPPORT
+		}
+	}
+
+	cbrn_hq_medical_countermeasure_directorate = {
+		abbreviation = "CBRNM"
+		sprite = infantry
+		map_icon_category = infantry
+		priority = @CBRN_HQ_PRIORITY_MEDICAL
+		ai_priority = @CBRN_HQ_AI_PRIORITY_MEDICAL
+		active = no
+		affects_speed = no
+
+		type = {
+			infantry
+			support
+		}
+
+		group = support
+
+		categories = {
+			category_support_battalions
+			category_divisional_support_battalions
+			category_army
+		}
+
+		deployed_leader_modifiers = {
+			wounded_chance_factor = @CBRN_HQ_MEDICAL_WOUNDED
+			sickness_chance = @CBRN_HQ_MEDICAL_SICKNESS
+		}
+
+		enable_ability = { cbrn_mass_antidote_response }
+
+		regimental = no
+		combat_width = @CBRN_HQ_WIDTH
+		allow_in_army_hq = yes
+		allow_in_non_army_hq = no
+		required_dlc = { "Thunder at Our Gates" }
+
+		max_strength = @CBRN_HQ_STRENGTH
+		max_organisation = @CBRN_HQ_ORGANISATION
+		default_morale = @CBRN_HQ_MORALE
+		manpower = @CBRN_HQ_MEDICAL_MANPOWER
+		deployment_cost = @CBRN_HQ_DEPLOYMENT_COST
+		training_time = @CBRN_HQ_TRAINING
+		weight = @CBRN_HQ_WEIGHT
+		can_be_parachuted = no
+		transport = motorized_equipment
+
+		essential = {
+			support_equipment
+			motorized_equipment
+			gas_mask_equipment
+		}
+
+		need = {
+			support_equipment = @CBRN_HQ_MEDICAL_SUPPORT
+			motorized_equipment = @CBRN_HQ_MEDICAL_TRUCKS
+			gas_mask_equipment = @CBRN_HQ_MEDICAL_MASKS
+		}
+	}
+
+	cbrn_hq_biological_security_section = {
+		abbreviation = "CBRNB"
+		sprite = infantry
+		map_icon_category = infantry
+		priority = @CBRN_HQ_PRIORITY_BIOSECURITY
+		ai_priority = @CBRN_HQ_AI_PRIORITY_BIOSECURITY
+		active = no
+		affects_speed = no
+
+		type = {
+			infantry
+			support
+		}
+
+		group = support
+
+		categories = {
+			category_support_battalions
+			category_divisional_support_battalions
+			category_army
+		}
+
+		deployed_leader_modifiers = {
+			recon_factor = @CBRN_HQ_BIOSECURITY_RECON
+			sickness_chance = @CBRN_HQ_BIOSECURITY_SICKNESS
+		}
+
+		enable_ability = {
+			cbrn_seal_operational_area
+			cbrn_seal_infection_corridor
+		}
+
+		regimental = no
+		combat_width = @CBRN_HQ_WIDTH
+		allow_in_army_hq = yes
+		allow_in_non_army_hq = no
+		required_dlc = { "Thunder at Our Gates" }
+
+		max_strength = @CBRN_HQ_STRENGTH
+		max_organisation = @CBRN_HQ_ORGANISATION
+		default_morale = @CBRN_HQ_MORALE
+		manpower = @CBRN_HQ_BIOSECURITY_MANPOWER
+		deployment_cost = @CBRN_HQ_DEPLOYMENT_COST
+		training_time = @CBRN_HQ_TRAINING
+		weight = @CBRN_HQ_WEIGHT
+		can_be_parachuted = no
+		transport = motorized_equipment
+
+		essential = {
+			support_equipment
+			cbrn_instrument_equipment
+			decontamination_equipment
+			motorized_equipment
+		}
+
+		need = {
+			support_equipment = @CBRN_HQ_BIOSECURITY_SUPPORT
+			cbrn_instrument_equipment = @CBRN_HQ_BIOSECURITY_INSTRUMENTS
+			decontamination_equipment = @CBRN_HQ_BIOSECURITY_DECON
+			motorized_equipment = @CBRN_HQ_BIOSECURITY_TRUCKS
+		}
+	}
+}

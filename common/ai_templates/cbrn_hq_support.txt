@@ -1,0 +1,107 @@
+# ============================================================================
+# CHAOS REDUX - CBRN ARMY HEADQUARTERS AI TEMPLATES
+# ============================================================================
+# Overview:
+# - Extends the vanilla hq_role with five specialized CBRN Army HQ targets.
+# - Every target requires exact unlocks and its complete standing-equipment
+#   bill, including four infantry battalions and the mandatory HQ staff.
+# - Context-gated templates do not dispatch payload or exposure operations.
+# ============================================================================
+
+@CBRN_HQ_AI_ROLE_WEIGHT = 1
+@CBRN_HQ_AI_REINFORCE_PRIORITY = 2
+@CBRN_HQ_AI_INCLUDED = 1
+@CBRN_HQ_AI_INFANTRY_BATTALIONS = 4
+
+cbrn_hq_templates = {
+	blocked_for = { ZZZ }
+	role = hq_role
+
+	upgrade_prio = { factor = @CBRN_HQ_AI_ROLE_WEIGHT }
+
+	cbrn_protected_hq = {
+		reinforce_prio = @CBRN_HQ_AI_REINFORCE_PRIORITY
+		upgrade_prio = { factor = @CBRN_HQ_AI_ROLE_WEIGHT }
+		enable = { cbrn_country_can_field_protected_hq = yes }
+		can_upgrade_in_field = { cbrn_country_can_field_protected_hq = yes }
+
+		target_template = {
+			support = {
+				hq_support_company = @CBRN_HQ_AI_INCLUDED
+				cbrn_hq_protective_logistics_section = @CBRN_HQ_AI_INCLUDED
+				cbrn_hq_medical_countermeasure_directorate = @CBRN_HQ_AI_INCLUDED
+			}
+
+			regiments = { infantry = @CBRN_HQ_AI_INFANTRY_BATTALIONS }
+		}
+	}
+
+	cbrn_chemical_fireplan_hq = {
+		reinforce_prio = @CBRN_HQ_AI_REINFORCE_PRIORITY
+		upgrade_prio = { factor = @CBRN_HQ_AI_ROLE_WEIGHT }
+		enable = { cbrn_country_can_field_chemical_fireplan_hq = yes }
+		can_upgrade_in_field = { cbrn_country_can_field_chemical_fireplan_hq = yes }
+
+		target_template = {
+			support = {
+				hq_support_company = @CBRN_HQ_AI_INCLUDED
+				cbrn_hq_operations_section = @CBRN_HQ_AI_INCLUDED
+				cbrn_hq_intelligence_weather_cell = @CBRN_HQ_AI_INCLUDED
+			}
+
+			regiments = { infantry = @CBRN_HQ_AI_INFANTRY_BATTALIONS }
+		}
+	}
+
+	cbrn_contaminated_theater_hq = {
+		reinforce_prio = @CBRN_HQ_AI_REINFORCE_PRIORITY
+		upgrade_prio = { factor = @CBRN_HQ_AI_ROLE_WEIGHT }
+		enable = { cbrn_country_can_field_contaminated_theater_hq = yes }
+		can_upgrade_in_field = { cbrn_country_can_field_contaminated_theater_hq = yes }
+
+		target_template = {
+			support = {
+				hq_support_company = @CBRN_HQ_AI_INCLUDED
+				cbrn_hq_operations_section = @CBRN_HQ_AI_INCLUDED
+				cbrn_hq_mobile_decontamination_column = @CBRN_HQ_AI_INCLUDED
+			}
+
+			regiments = { infantry = @CBRN_HQ_AI_INFANTRY_BATTALIONS }
+		}
+	}
+
+	cbrn_biological_containment_hq = {
+		reinforce_prio = @CBRN_HQ_AI_REINFORCE_PRIORITY
+		upgrade_prio = { factor = @CBRN_HQ_AI_ROLE_WEIGHT }
+		enable = { cbrn_country_can_field_biological_containment_hq = yes }
+		can_upgrade_in_field = { cbrn_country_can_field_biological_containment_hq = yes }
+
+		target_template = {
+			support = {
+				hq_support_company = @CBRN_HQ_AI_INCLUDED
+				cbrn_hq_biological_security_section = @CBRN_HQ_AI_INCLUDED
+				cbrn_hq_medical_countermeasure_directorate = @CBRN_HQ_AI_INCLUDED
+			}
+
+			regiments = { infantry = @CBRN_HQ_AI_INFANTRY_BATTALIONS }
+		}
+	}
+
+	cbrn_overmatch_hq = {
+		reinforce_prio = @CBRN_HQ_AI_REINFORCE_PRIORITY
+		upgrade_prio = { factor = @CBRN_HQ_AI_ROLE_WEIGHT }
+		enable = { cbrn_country_can_field_overmatch_hq = yes }
+		can_upgrade_in_field = { cbrn_country_can_field_overmatch_hq = yes }
+
+		target_template = {
+			support = {
+				hq_support_company = @CBRN_HQ_AI_INCLUDED
+				cbrn_hq_operations_section = @CBRN_HQ_AI_INCLUDED
+				cbrn_hq_protective_logistics_section = @CBRN_HQ_AI_INCLUDED
+				cbrn_hq_mobile_decontamination_column = @CBRN_HQ_AI_INCLUDED
+			}
+
+			regiments = { infantry = @CBRN_HQ_AI_INFANTRY_BATTALIONS }
+		}
+	}
+}
