@@ -1,107 +1,54 @@
-# Chaos Warfare: Extermination Columns Implementation
+# Chaos Warfare: Extermination Columns and Chaos Assault Battalions
 
 ## Overview
-This mechanic adds a Chaos Warfare infantry-track subdoctrine (`extermination_columns`) that grants broad infantry combat buffs, unlocks a new special sub-unit (`chaos_battalion`) at mastery level 3, and escalates frontline contamination pressure while that unit is actively fighting.
 
-## What Was Implemented
-1. Added a new infantry subdoctrine definition:
-- File: `common/doctrines/subdoctrines/land/chaos_warfare_infantry_subdoctrines.txt`
-- Track: `infantry`
-- Subdoctrine: `extermination_columns`
-- Mastery/reward values are implemented from `docs/spreadsheets/doctrines.xlsx`.
+Extermination Columns is the Chaos Warfare infantry track that grants the doctrine-only Chaos Assault Battalion. The battalion is a protected special-forces line formation for deliberate assaults through fortified, urban, forest, jungle, and marsh terrain. It is not an autonomous chemical or biological release system.
 
-2. Added a new special sub-unit:
-- File: `common/units/chaos_battalion.txt`
-- Sub-unit key: `chaos_battalion`
-- Unlock state: `active = no` by default, enabled by researching `chaos_battalion_tech`.
-- Role: extreme soft attack and breakthrough, with very low survivability and reliability.
-- Terrain profile: asymmetric chemical-assault profile.
-  - Strong: `fort`, `urban`, `forest`, `jungle`, `marsh`.
-  - Weak (explicit debuffs): `plains`, `desert`, `hills`, `mountain`, `river`, `amphibious`.
-- Equipment burden:
-  - `infantry_equipment`
-  - `support_equipment`
-  - `motorized_equipment`
-  - `light_tank_flame_chassis`
-  - Chemical cylinders: chlorine/phosgene/mustard/lewisite/sarin/soman (tabun remains a tech gateway, not direct equipment)
-  - Bioweapon bombs: anthrax/plague/tularemia
+Numbered spec 08 governs the doctrine boundary: Extermination Columns does not unlock camp or genocide infrastructure. Doctrine may reduce the Condemnation impact of an otherwise valid chemical action, but it does not erase evidence, attribution, deaths, contamination, medical saturation, or confirmed-use history.
 
-3. Added doctrine-unlocked tech chain for chaos battalion progression:
-- File: `common/technologies/chaosx_technologies.txt`
-- Base tech: `chaos_battalion_tech` (visible in tree, non-researchable, granted directly by mastery 3)
-- Upgrade techs: `chaos_battalion_1939`, `chaos_battalion_1942`
-- Purpose: once mastery grants the base unlock, later upgrades improve the `chaos_battalion` sub-unit directly.
+## Current formation contract
 
-4. Added combat contamination/casualty behavior:
-- File: `common/scripted_effects/chemical_infantry_effects.txt`
-- Core effect: `chaos_battalion_apply_state_dispersal`
-- While in combat, leaders with chaos battalions apply strong state contamination through the existing chemical contamination pipeline.
-- Combat-state damage scales with chaos battalion density (more chaos battalions per engaged division increases damage pressure).
-- The same contamination burst now explicitly damages enemy units and also causes friendly-fire collateral to non-enemy units in the affected state.
-- Low-probability biowarfare outbreak trigger was added to the same combat-confirmed state loop:
-  - Runs only on contested states where chaos battalion combat contribution is already confirmed.
-  - Uses existing disease effects (`apply_tularemia_contamination`, `apply_anthrax_contamination`, `apply_plague_contamination`).
-  - Skips states already marked as `bioweapon_contaminated` to avoid repeat outbreak stacking.
-- Mastery 5 integration:
-  - Reward sets `chaos_battalion_terminal_contagion_unlocked`.
-  - Effect multiplies contamination severity, casualty damage, and condemnation pressure for terminal mode.
+The stable public subunit identifier is `chaos_battalion`. Its definition lives in `common/units/cbrn_regimental_support.txt`; `common/units/chaos_battalion.txt` is retained only as a compatibility pointer.
 
-5. Hooked the behavior into existing chemical combat on_actions:
-- File: `common/on_actions/chaosx_on_actions_chemical_warfare.txt`
-- Trigger paths: `on_army_leader_daily`, `on_army_leader_won_combat`, `on_army_leader_lost_combat`
-- Conditions include:
-  - `num_units_in_combat > 0`
-  - owner has chemical weapon tech
-  - owner has Chaos Warfare selected and `chaos_battalion_unlocked`
-  - active leader has chaos battalions
-- Won/lost combat now registers additional chaos-specific condemnation scaled by offensive chaos battalion participation.
+The fully equipped formation has:
 
-6. Added required localisation and doctrine icon registration:
-- `localisation/english/chaosx_doctrines_l_english.yml`
-- `localisation/english/chaosx_units_l_english.yml`
-- `localisation/english/chaosx_technologies_l_english.yml`
-- `interface/chaosx_doctrines.gfx`
-- `interface/chaosx_subuniticons.gfx`
+- 2 combat width, 25 strength, 28 organization, and 1,050 manpower;
+- special-forces classification and a 180-day training requirement;
+- 0.32 supply use and an asymmetric assault profile;
+- positive attack in forest, jungle, marsh, urban, and fort terrain;
+- penalties in plains, desert, mountains, river crossings, and amphibious assaults.
 
-## System Interaction Notes
-- Uses the existing chemical contamination variable/modifier stack (`chem_apply_state_contamination`) so contamination stacking/expiry behavior remains consistent with current chemical systems.
-- Uses existing `on_army_leader_daily` flow already used by Livens and chemical tank-shell systems.
-- Does not add new `on_weekly`/global sweep loops.
+Each battalion requires 170 infantry equipment, 70 support equipment, 100 gas-mask crates, 60 decontamination sets, 15 CBRN instruments, and 30 trucks. All six archetypes are `essential`, so missing equipment reduces the formation's native contribution through the engine's reinforcement and shortage system.
 
-## Icons Needed
-Registering is complete. Replace placeholder textures with final art files at:
+The battalion deliberately has no standing chemical cylinder, shell lot, nerve-agent store, or biological bomb requirement. Its presence in a division never creates contamination, casualties, outbreaks, evidence, or Condemnation. Any later operation involving the formation must reserve and consume a selected payload before calling the shared exposure pipeline.
 
-1. Chaos battalion large counter icon:
-- Path: `gfx/interface/counters/divisions_large/unit_chaos_battalion_icon.dds`
-- GFX key: `GFX_unit_chaos_battalion_icon_medium`
-- GFX file: `interface/chaosx_subuniticons.gfx`
+## Technology and doctrine ownership
 
-2. Chaos battalion on-map small counter icon:
-- Path: `gfx/interface/counters/divisions_small/onmap_unit_chaos_battalion_icon.dds`
-- GFX key: `GFX_unit_chaos_battalion_icon_medium_white`
-- GFX file: `interface/chaosx_subuniticons.gfx`
+- `chaos_battalion_tech` is the hidden doctrine-only base unlock.
+- `chaos_battalion_1939` remains a hidden no-bonus compatibility alias.
+- `chaos_battalion_1942` is the doctrine-only improvement and grants only the matrix-mapped organization and breakthrough bonuses.
+- Stage 5 owns final Extermination Columns mastery pacing, prerequisites, doctrine balance, and Condemnation mitigation.
 
-3. Extermination Columns doctrine icon (optional dedicated art; currently reuses Chaos Warfare art):
-- Path: `gfx/interface/doctrines/icons/doctrine_extermination_columns.dds` (planned)
-- GFX key: `GFX_doctrine_extermination_columns_medium`
-- GFX file: `interface/chaosx_doctrines.gfx`
+The old passive daily/combat release hooks are disconnected in `common/on_actions/chaosx_on_actions_chemical_warfare.txt`. Legacy helper identifiers remain resolvable until the Stage 6 route migration proves that no external caller depends on them.
 
-4. Chaos battalion base tech icon:
-- Path: `gfx/interface/technologies/chaos_battalion.dds`
-- GFX key: `GFX_chaos_battalion_tech_medium`
-- GFX file: `interface/chaosx_techtree.gfx`
+## AI use
 
-5. Chaos battalion 1939 tech icon:
-- Path: `gfx/interface/technologies/chaos_battalion2.dds`
-- GFX key: `GFX_chaos_battalion_1939_medium`
-- GFX file: `interface/chaosx_techtree.gfx`
+The baseline `cbrn_chemical_assault` role in `common/ai_templates/cbrn_regimental_support.txt` may include Chaos Assault Battalions only after the doctrine unlock, use-policy gate, protective-equipment bill, and real chemical-payload stock signal are all satisfied. Stage 10 owns country-specific route preferences and target-aware force ratios.
 
-6. Chaos battalion 1942 tech icon:
-- Path: `gfx/interface/technologies/chaos_battalion3.dds`
-- GFX key: `GFX_chaos_battalion_1942_medium`
-- GFX file: `interface/chaosx_techtree.gfx`
+## Assets
 
-## Future Plans / Suggestions
-1. Add explicit doctrine tooltips for contamination dose/duration scaling by mastery level to improve player readability.
-2. Add AI template weighting so countries with Chaos Warfare actively field `chaos_battalion` when stockpiles support it.
-3. Add an optional risk event chain for chaos battalion mishandling (friendly contamination incidents) to reinforce high-risk doctrine identity.
+Final registered assets are:
+
+- `gfx/interface/counters/divisions_large/unit_chaos_battalion_icon.dds`
+- `gfx/interface/counters/divisions_small/onmap_unit_chaos_battalion_icon.dds`
+- `gfx/interface/technologies/chaos_battalion.dds`
+- `gfx/interface/technologies/chaos_battalion3.dds`
+
+The counter sprites are registered in `interface/chaosx_subuniticons.gfx`; the technology sprites are registered in `interface/chaosx_techtree.gfx`. Source masters, processed files, contact sheets, and the asset manifest belong to `docs/assets/chaos_warfare_system/stage_3_regimental_support/`.
+
+## Future integration
+
+- Stage 5 completes the doctrine track and officer-corps integration without broad permanent-stat stacking.
+- Stage 6 migrates every chemical delivery route to exact payload reservation, consumption, and shared exposure.
+- Stage 9 removes the remaining doctrine/genocide cross-links and implements targeted nerve-agent suppression as an independent consequence-heavy operation.
+- Stage 10 validates differentiated AI force use and production against representative country profiles.

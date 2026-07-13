@@ -1,0 +1,912 @@
+# ============================================================================
+# CHAOS REDUX - CBRN REGIMENTAL SUPPORT AND CHAOS ASSAULT BATTALION
+# ============================================================================
+# Overview:
+# - Defines the consolidated division-layer CBRN roles for the 1.19
+#   regimental-support system.
+# - Uses essential equipment and ordinary reinforcement for native shortage
+#   scaling. Selected chemical and biological payloads remain operation-level
+#   stores and are not duplicated in standing unit needs.
+# - Retains the public chaos_battalion identifier while replacing its old
+#   universal-arsenal profile with a protected assault battalion.
+# - All unit-definition tuning is file-local because these schema fields do
+#   not document script-constant token support.
+# ============================================================================
+
+@CBRN_REGIMENTAL_WIDTH = 0
+@CBRN_REGIMENTAL_TRAINING = 120
+@CBRN_REGIMENTAL_DEFAULT_MORALE = 0.20
+@CBRN_REGIMENTAL_WEIGHT = 0.10
+@CBRN_PRIORITY_DEFENSIVE = 300
+@CBRN_PRIORITY_RECON = 310
+@CBRN_PRIORITY_SPECIALIST = 320
+@CBRN_PRIORITY_LOGISTICS = 330
+@CBRN_PRIORITY_OFFENSIVE = 340
+@CBRN_PRIORITY_ARMORED = 350
+@CBRN_PRIORITY_OCCUPATION = 280
+@CBRN_AI_PRIORITY_PROTECTION = 180
+@CBRN_AI_PRIORITY_RECON = 170
+@CBRN_AI_PRIORITY_PIONEER = 165
+@CBRN_AI_PRIORITY_PROJECTOR = 120
+@CBRN_AI_PRIORITY_ARMORED = 115
+@CBRN_AI_PRIORITY_LOGISTICS = 110
+@CBRN_AI_PRIORITY_MEDICAL = 145
+@CBRN_AI_PRIORITY_EPIDEMIOLOGY = 140
+@CBRN_AI_PRIORITY_BIOSECURITY = 100
+@CBRN_AI_PRIORITY_OCCUPATION = 60
+
+@CBRN_MASK_DECON_MANPOWER = 320
+@CBRN_MASK_DECON_ORG = 8
+@CBRN_MASK_DECON_STRENGTH = 0.30
+@CBRN_MASK_DECON_SUPPLY = 0.05
+@CBRN_MASK_DECON_MASKS = 100
+@CBRN_MASK_DECON_DECON = 10
+@CBRN_MASK_DECON_SUPPORT = 30
+
+@CBRN_RECON_MANPOWER = 220
+@CBRN_RECON_ORG = 8
+@CBRN_RECON_STRENGTH = 0.25
+@CBRN_RECON_SUPPLY = 0.06
+@CBRN_RECON_VALUE = 1.25
+@CBRN_RECON_MASKS = 20
+@CBRN_RECON_INSTRUMENTS = 30
+@CBRN_RECON_SUPPORT = 40
+@CBRN_RECON_TRUCKS = 10
+
+@CBRN_PIONEER_MANPOWER = 400
+@CBRN_PIONEER_ORG = 8
+@CBRN_PIONEER_STRENGTH = 0.40
+@CBRN_PIONEER_SUPPLY = 0.08
+@CBRN_PIONEER_MASKS = 55
+@CBRN_PIONEER_DECON = 45
+@CBRN_PIONEER_INSTRUMENTS = 10
+@CBRN_PIONEER_SUPPORT = 55
+@CBRN_PIONEER_TRUCKS = 20
+@CBRN_PIONEER_FORT_ATTACK = 0.08
+@CBRN_PIONEER_FORT_MOVEMENT = 0.05
+@CBRN_PIONEER_URBAN_ATTACK = 0.08
+
+@CBRN_PROJECTOR_MANPOWER = 320
+@CBRN_PROJECTOR_ORG = 3
+@CBRN_PROJECTOR_STRENGTH = 0.30
+@CBRN_PROJECTOR_SUPPLY = 0.10
+@CBRN_PROJECTOR_MASKS = 30
+@CBRN_PROJECTOR_DECON = 15
+@CBRN_PROJECTOR_INSTRUMENTS = 8
+@CBRN_PROJECTOR_SUPPORT = 30
+@CBRN_PROJECTOR_EQUIPMENT = 24
+@CBRN_PROJECTOR_SOFT_ATTACK = -0.60
+@CBRN_PROJECTOR_HARD_ATTACK = -0.70
+@CBRN_PROJECTOR_DEFENSE = -0.70
+@CBRN_PROJECTOR_BREAKTHROUGH = -0.55
+
+@CBRN_AMMUNITION_TRAIN_MANPOWER = 400
+@CBRN_AMMUNITION_TRAIN_ORG = 3
+@CBRN_AMMUNITION_TRAIN_STRENGTH = 0.40
+@CBRN_AMMUNITION_TRAIN_SUPPLY = 0.14
+@CBRN_AMMUNITION_TRAIN_MASKS = 30
+@CBRN_AMMUNITION_TRAIN_DECON = 20
+@CBRN_AMMUNITION_TRAIN_INSTRUMENTS = 8
+@CBRN_AMMUNITION_TRAIN_SUPPORT = 45
+@CBRN_AMMUNITION_TRAIN_TRUCKS = 55
+
+@CBRN_ARMORED_MANPOWER = 320
+@CBRN_ARMORED_ORG = 8
+@CBRN_ARMORED_STRENGTH = 0.55
+@CBRN_ARMORED_SUPPLY = 0.10
+@CBRN_ARMORED_MASKS = 25
+@CBRN_ARMORED_DECON = 15
+@CBRN_ARMORED_INSTRUMENTS = 8
+@CBRN_ARMORED_SUPPORT = 30
+@CBRN_ARMORED_CHASSIS = 15
+@CBRN_ARMORED_SOFT_ATTACK = -0.40
+@CBRN_ARMORED_HARD_ATTACK = -0.65
+@CBRN_ARMORED_DEFENSE = -0.65
+@CBRN_ARMORED_BREAKTHROUGH = -0.40
+@CBRN_ARMORED_ARMOR = -0.65
+@CBRN_ARMORED_FUEL_MULT = 0.25
+
+@CBRN_NERVE_SUPPRESSION_MANPOWER = 400
+@CBRN_NERVE_SUPPRESSION_ORG = 3
+@CBRN_NERVE_SUPPRESSION_STRENGTH = 0.40
+@CBRN_NERVE_SUPPRESSION_SUPPLY = 0.12
+@CBRN_NERVE_SUPPRESSION_VALUE = 4
+@CBRN_NERVE_SUPPRESSION_MASKS = 40
+@CBRN_NERVE_SUPPRESSION_DECON = 30
+@CBRN_NERVE_SUPPRESSION_INSTRUMENTS = 15
+@CBRN_NERVE_SUPPRESSION_SUPPORT = 40
+@CBRN_NERVE_SUPPRESSION_TRUCKS = 20
+
+@CBRN_EPIDEMIOLOGY_MANPOWER = 340
+@CBRN_EPIDEMIOLOGY_ORG = 8
+@CBRN_EPIDEMIOLOGY_STRENGTH = 0.30
+@CBRN_EPIDEMIOLOGY_SUPPLY = 0.08
+@CBRN_EPIDEMIOLOGY_MASKS = 30
+@CBRN_EPIDEMIOLOGY_INSTRUMENTS = 30
+@CBRN_EPIDEMIOLOGY_SUPPORT = 30
+@CBRN_EPIDEMIOLOGY_TRUCKS = 20
+
+@CBRN_MEDICAL_MANPOWER = 360
+@CBRN_MEDICAL_ORG = 8
+@CBRN_MEDICAL_STRENGTH = 0.40
+@CBRN_MEDICAL_SUPPLY = 0.08
+@CBRN_MEDICAL_MASKS = 30
+@CBRN_MEDICAL_SUPPORT = 50
+@CBRN_MEDICAL_TRUCKS = 15
+
+@CBRN_BIOSECURITY_MANPOWER = 420
+@CBRN_BIOSECURITY_ORG = 8
+@CBRN_BIOSECURITY_STRENGTH = 0.50
+@CBRN_BIOSECURITY_SUPPLY = 0.12
+@CBRN_BIOSECURITY_MASKS = 65
+@CBRN_BIOSECURITY_DECON = 60
+@CBRN_BIOSECURITY_INSTRUMENTS = 30
+@CBRN_BIOSECURITY_SUPPORT = 65
+@CBRN_BIOSECURITY_TRUCKS = 20
+@CBRN_BIOSECURITY_URBAN_ATTACK = 0.05
+@CBRN_BIOSECURITY_FORT_ATTACK = 0.05
+
+@CHAOS_ASSAULT_WIDTH = 2
+@CHAOS_ASSAULT_STRENGTH = 25
+@CHAOS_ASSAULT_ORG = 28
+@CHAOS_ASSAULT_MORALE = 0.24
+@CHAOS_ASSAULT_MANPOWER = 1050
+@CHAOS_ASSAULT_TRAINING = 180
+@CHAOS_ASSAULT_SUPPRESSION = 1
+@CHAOS_ASSAULT_WEIGHT = 0.70
+@CHAOS_ASSAULT_SUPPLY = 0.32
+@CHAOS_ASSAULT_SOFT_ATTACK = 0.50
+@CHAOS_ASSAULT_BREAKTHROUGH = 1
+@CHAOS_ASSAULT_DEFENSE = -0.50
+@CHAOS_ASSAULT_FOREST_ATTACK = 0.08
+@CHAOS_ASSAULT_JUNGLE_ATTACK = 0.10
+@CHAOS_ASSAULT_MARSH_ATTACK = 0.08
+@CHAOS_ASSAULT_URBAN_ATTACK = 0.10
+@CHAOS_ASSAULT_FORT_ATTACK = 0.12
+@CHAOS_ASSAULT_FORT_MOVEMENT = 0.05
+@CHAOS_ASSAULT_PLAINS_ATTACK = -0.05
+@CHAOS_ASSAULT_DESERT_ATTACK = -0.10
+@CHAOS_ASSAULT_MOUNTAIN_ATTACK = -0.08
+@CHAOS_ASSAULT_RIVER_ATTACK = -0.08
+@CHAOS_ASSAULT_AMPHIBIOUS_ATTACK = -0.15
+@CHAOS_ASSAULT_INFANTRY = 170
+@CHAOS_ASSAULT_SUPPORT = 70
+@CHAOS_ASSAULT_MASKS = 100
+@CHAOS_ASSAULT_DECON = 60
+@CHAOS_ASSAULT_INSTRUMENTS = 15
+@CHAOS_ASSAULT_TRUCKS = 30
+@CHAOS_ASSAULT_PRIORITY = 680
+@CHAOS_ASSAULT_AI_PRIORITY = 280
+
+sub_units = {
+	cbrn_gas_mask_decon_detachment = {
+		abbreviation = "GMD"
+		sprite = cbrn_gas_mask_decon_detachment
+		map_icon_category = infantry
+		priority = @CBRN_PRIORITY_DEFENSIVE
+		ai_priority = @CBRN_AI_PRIORITY_PROTECTION
+		active = no
+		affects_speed = no
+
+		type = { infantry support }
+		group = support
+		allowed_battalion_groups = { infantry mobile combat_support mobile_combat_support armor armor_combat_support }
+
+		categories = {
+			category_support_battalions
+			category_regimental_support_battalions
+			category_cbrn_regimental_support
+			category_cbrn_primary_protection
+			category_army
+		}
+
+		divisional = no
+		combat_width = @CBRN_REGIMENTAL_WIDTH
+		manpower = @CBRN_MASK_DECON_MANPOWER
+		training_time = @CBRN_REGIMENTAL_TRAINING
+		max_organisation = @CBRN_MASK_DECON_ORG
+		default_morale = @CBRN_REGIMENTAL_DEFAULT_MORALE
+		max_strength = @CBRN_MASK_DECON_STRENGTH
+		weight = @CBRN_REGIMENTAL_WEIGHT
+		supply_consumption = @CBRN_MASK_DECON_SUPPLY
+		can_be_parachuted = yes
+
+		essential = {
+			gas_mask_equipment
+			decontamination_equipment
+			support_equipment
+		}
+
+		need = {
+			gas_mask_equipment = @CBRN_MASK_DECON_MASKS
+			decontamination_equipment = @CBRN_MASK_DECON_DECON
+			support_equipment = @CBRN_MASK_DECON_SUPPORT
+		}
+
+		same_support_type = cbrn_primary_protection
+	}
+
+	cbrn_chemical_recon_detachment = {
+		abbreviation = "CRD"
+		sprite = cbrn_chemical_recon_detachment
+		map_icon_category = infantry
+		priority = @CBRN_PRIORITY_RECON
+		ai_priority = @CBRN_AI_PRIORITY_RECON
+		active = no
+		affects_speed = no
+
+		type = { infantry support }
+		group = support
+		allowed_battalion_groups = { infantry mobile combat_support mobile_combat_support armor armor_combat_support }
+
+		categories = {
+			category_support_battalions
+			category_regimental_support_battalions
+			category_cbrn_regimental_support
+			category_cbrn_reconnaissance
+			category_recon
+			category_army
+		}
+
+		divisional = no
+		combat_width = @CBRN_REGIMENTAL_WIDTH
+		manpower = @CBRN_RECON_MANPOWER
+		training_time = @CBRN_REGIMENTAL_TRAINING
+		max_organisation = @CBRN_RECON_ORG
+		default_morale = @CBRN_REGIMENTAL_DEFAULT_MORALE
+		max_strength = @CBRN_RECON_STRENGTH
+		weight = @CBRN_REGIMENTAL_WEIGHT
+		supply_consumption = @CBRN_RECON_SUPPLY
+		recon = @CBRN_RECON_VALUE
+		can_be_parachuted = yes
+		transport = motorized_equipment
+
+		essential = {
+			gas_mask_equipment
+			cbrn_instrument_equipment
+			support_equipment
+			motorized_equipment
+		}
+
+		need = {
+			gas_mask_equipment = @CBRN_RECON_MASKS
+			cbrn_instrument_equipment = @CBRN_RECON_INSTRUMENTS
+			support_equipment = @CBRN_RECON_SUPPORT
+			motorized_equipment = @CBRN_RECON_TRUCKS
+		}
+
+		same_support_type = cbrn_chemical_reconnaissance
+	}
+
+	cbrn_hazard_pioneer_detachment = {
+		abbreviation = "HPD"
+		sprite = cbrn_hazard_pioneer_detachment
+		map_icon_category = infantry
+		priority = @CBRN_PRIORITY_SPECIALIST
+		ai_priority = @CBRN_AI_PRIORITY_PIONEER
+		active = no
+		affects_speed = no
+
+		type = { infantry support }
+		group = support
+		allowed_battalion_groups = { infantry mobile combat_support mobile_combat_support armor armor_combat_support }
+
+		categories = {
+			category_support_battalions
+			category_regimental_support_battalions
+			category_cbrn_regimental_support
+			category_cbrn_engineer_support
+			category_army
+		}
+
+		divisional = no
+		combat_width = @CBRN_REGIMENTAL_WIDTH
+		manpower = @CBRN_PIONEER_MANPOWER
+		training_time = @CBRN_REGIMENTAL_TRAINING
+		max_organisation = @CBRN_PIONEER_ORG
+		default_morale = @CBRN_REGIMENTAL_DEFAULT_MORALE
+		max_strength = @CBRN_PIONEER_STRENGTH
+		weight = @CBRN_REGIMENTAL_WEIGHT
+		supply_consumption = @CBRN_PIONEER_SUPPLY
+		can_be_parachuted = no
+		transport = motorized_equipment
+
+		fort = { attack = @CBRN_PIONEER_FORT_ATTACK movement = @CBRN_PIONEER_FORT_MOVEMENT }
+		urban = { attack = @CBRN_PIONEER_URBAN_ATTACK }
+
+		essential = {
+			gas_mask_equipment
+			decontamination_equipment
+			cbrn_instrument_equipment
+			support_equipment
+			motorized_equipment
+		}
+
+		need = {
+			gas_mask_equipment = @CBRN_PIONEER_MASKS
+			decontamination_equipment = @CBRN_PIONEER_DECON
+			cbrn_instrument_equipment = @CBRN_PIONEER_INSTRUMENTS
+			support_equipment = @CBRN_PIONEER_SUPPORT
+			motorized_equipment = @CBRN_PIONEER_TRUCKS
+		}
+
+		same_support_type = cbrn_hazard_pioneer
+	}
+
+	cbrn_chemical_projector_battery = {
+		abbreviation = "CPB"
+		sprite = cbrn_chemical_projector_battery
+		map_icon_category = infantry
+		priority = @CBRN_PRIORITY_OFFENSIVE
+		ai_priority = @CBRN_AI_PRIORITY_PROJECTOR
+		active = no
+		affects_speed = no
+		is_artillery_brigade = yes
+
+		type = { infantry support }
+		group = support
+		allowed_battalion_groups = { infantry mobile combat_support mobile_combat_support armor armor_combat_support }
+
+		categories = {
+			category_support_battalions
+			category_regimental_support_battalions
+			category_regimental_support_artillery
+			category_cbrn_regimental_support
+			category_cbrn_offensive_delivery
+			category_chemical_support_companies
+			category_army
+		}
+
+		divisional = no
+		combat_width = @CBRN_REGIMENTAL_WIDTH
+		manpower = @CBRN_PROJECTOR_MANPOWER
+		training_time = @CBRN_REGIMENTAL_TRAINING
+		max_organisation = @CBRN_PROJECTOR_ORG
+		default_morale = @CBRN_REGIMENTAL_DEFAULT_MORALE
+		max_strength = @CBRN_PROJECTOR_STRENGTH
+		weight = @CBRN_REGIMENTAL_WEIGHT
+		supply_consumption = @CBRN_PROJECTOR_SUPPLY
+		can_be_parachuted = no
+
+		soft_attack = @CBRN_PROJECTOR_SOFT_ATTACK
+		hard_attack = @CBRN_PROJECTOR_HARD_ATTACK
+		defense = @CBRN_PROJECTOR_DEFENSE
+		breakthrough = @CBRN_PROJECTOR_BREAKTHROUGH
+
+		essential = {
+			gas_mask_equipment
+			decontamination_equipment
+			cbrn_instrument_equipment
+			support_equipment
+			livens_projector_chassis
+		}
+
+		need = {
+			gas_mask_equipment = @CBRN_PROJECTOR_MASKS
+			decontamination_equipment = @CBRN_PROJECTOR_DECON
+			cbrn_instrument_equipment = @CBRN_PROJECTOR_INSTRUMENTS
+			support_equipment = @CBRN_PROJECTOR_SUPPORT
+			livens_projector_chassis = @CBRN_PROJECTOR_EQUIPMENT
+		}
+
+		same_support_type = cbrn_offensive_delivery
+	}
+
+	cbrn_chemical_ammunition_train = {
+		abbreviation = "CAT"
+		sprite = cbrn_chemical_ammunition_train
+		map_icon_category = infantry
+		priority = @CBRN_PRIORITY_LOGISTICS
+		ai_priority = @CBRN_AI_PRIORITY_LOGISTICS
+		active = no
+		affects_speed = no
+
+		type = { infantry support }
+		group = support
+		allowed_battalion_groups = { infantry mobile combat_support mobile_combat_support armor armor_combat_support }
+
+		categories = {
+			category_support_battalions
+			category_regimental_support_battalions
+			category_cbrn_regimental_support
+			category_cbrn_artillery_logistics
+			category_army
+		}
+
+		divisional = no
+		combat_width = @CBRN_REGIMENTAL_WIDTH
+		manpower = @CBRN_AMMUNITION_TRAIN_MANPOWER
+		training_time = @CBRN_REGIMENTAL_TRAINING
+		max_organisation = @CBRN_AMMUNITION_TRAIN_ORG
+		default_morale = @CBRN_REGIMENTAL_DEFAULT_MORALE
+		max_strength = @CBRN_AMMUNITION_TRAIN_STRENGTH
+		weight = @CBRN_REGIMENTAL_WEIGHT
+		supply_consumption = @CBRN_AMMUNITION_TRAIN_SUPPLY
+		can_be_parachuted = no
+		transport = motorized_equipment
+
+		essential = {
+			gas_mask_equipment
+			decontamination_equipment
+			cbrn_instrument_equipment
+			support_equipment
+			motorized_equipment
+		}
+
+		need = {
+			gas_mask_equipment = @CBRN_AMMUNITION_TRAIN_MASKS
+			decontamination_equipment = @CBRN_AMMUNITION_TRAIN_DECON
+			cbrn_instrument_equipment = @CBRN_AMMUNITION_TRAIN_INSTRUMENTS
+			support_equipment = @CBRN_AMMUNITION_TRAIN_SUPPORT
+			motorized_equipment = @CBRN_AMMUNITION_TRAIN_TRUCKS
+		}
+
+		same_support_type = cbrn_chemical_ammunition_train
+	}
+
+	cbrn_light_armored_delivery_detachment = {
+		abbreviation = "LCD"
+		sprite = cbrn_light_armored_delivery_detachment
+		map_icon_category = armored
+		priority = @CBRN_PRIORITY_ARMORED
+		ai_priority = @CBRN_AI_PRIORITY_ARMORED
+		active = no
+		affects_speed = no
+
+		type = { armor support }
+		group = support
+		allowed_battalion_groups = { armor mobile_combat_support armor_combat_support }
+
+		categories = {
+			category_front_line
+			category_support_battalions
+			category_regimental_support_battalions
+			category_cbrn_regimental_support
+			category_cbrn_offensive_delivery
+			category_chemical_support_companies
+			category_chemical_tank_support_companies
+			category_tanks
+			category_all_armor
+			category_army
+		}
+
+		divisional = no
+		combat_width = @CBRN_REGIMENTAL_WIDTH
+		manpower = @CBRN_ARMORED_MANPOWER
+		training_time = @CBRN_REGIMENTAL_TRAINING
+		max_organisation = @CBRN_ARMORED_ORG
+		default_morale = @CBRN_REGIMENTAL_DEFAULT_MORALE
+		max_strength = @CBRN_ARMORED_STRENGTH
+		weight = @CBRN_REGIMENTAL_WEIGHT
+		supply_consumption = @CBRN_ARMORED_SUPPLY
+		own_equipment_fuel_consumption_mult = @CBRN_ARMORED_FUEL_MULT
+		can_be_parachuted = no
+
+		soft_attack = @CBRN_ARMORED_SOFT_ATTACK
+		hard_attack = @CBRN_ARMORED_HARD_ATTACK
+		defense = @CBRN_ARMORED_DEFENSE
+		breakthrough = @CBRN_ARMORED_BREAKTHROUGH
+		armor_value = @CBRN_ARMORED_ARMOR
+
+		essential = {
+			gas_mask_equipment
+			decontamination_equipment
+			cbrn_instrument_equipment
+			support_equipment
+			light_tank_flame_chassis
+		}
+
+		need = {
+			gas_mask_equipment = @CBRN_ARMORED_MASKS
+			decontamination_equipment = @CBRN_ARMORED_DECON
+			cbrn_instrument_equipment = @CBRN_ARMORED_INSTRUMENTS
+			support_equipment = @CBRN_ARMORED_SUPPORT
+			light_tank_flame_chassis = @CBRN_ARMORED_CHASSIS
+		}
+
+		same_support_type = cbrn_offensive_delivery
+		same_support_type = flame
+	}
+
+	cbrn_medium_armored_delivery_detachment = {
+		abbreviation = "ACM"
+		sprite = cbrn_medium_armored_delivery_detachment
+		map_icon_category = armored
+		priority = @CBRN_PRIORITY_ARMORED
+		ai_priority = @CBRN_AI_PRIORITY_ARMORED
+		active = no
+		affects_speed = no
+
+		type = { armor support }
+		group = support
+		allowed_battalion_groups = { armor mobile_combat_support armor_combat_support }
+
+		categories = {
+			category_front_line
+			category_support_battalions
+			category_regimental_support_battalions
+			category_cbrn_regimental_support
+			category_cbrn_offensive_delivery
+			category_chemical_support_companies
+			category_chemical_tank_support_companies
+			category_tanks
+			category_all_armor
+			category_army
+		}
+
+		divisional = no
+		combat_width = @CBRN_REGIMENTAL_WIDTH
+		manpower = @CBRN_ARMORED_MANPOWER
+		training_time = @CBRN_REGIMENTAL_TRAINING
+		max_organisation = @CBRN_ARMORED_ORG
+		default_morale = @CBRN_REGIMENTAL_DEFAULT_MORALE
+		max_strength = @CBRN_ARMORED_STRENGTH
+		weight = @CBRN_REGIMENTAL_WEIGHT
+		supply_consumption = @CBRN_ARMORED_SUPPLY
+		own_equipment_fuel_consumption_mult = @CBRN_ARMORED_FUEL_MULT
+		can_be_parachuted = no
+
+		soft_attack = @CBRN_ARMORED_SOFT_ATTACK
+		hard_attack = @CBRN_ARMORED_HARD_ATTACK
+		defense = @CBRN_ARMORED_DEFENSE
+		breakthrough = @CBRN_ARMORED_BREAKTHROUGH
+		armor_value = @CBRN_ARMORED_ARMOR
+
+		essential = {
+			gas_mask_equipment
+			decontamination_equipment
+			cbrn_instrument_equipment
+			support_equipment
+			medium_tank_flame_chassis
+		}
+
+		need = {
+			gas_mask_equipment = @CBRN_ARMORED_MASKS
+			decontamination_equipment = @CBRN_ARMORED_DECON
+			cbrn_instrument_equipment = @CBRN_ARMORED_INSTRUMENTS
+			support_equipment = @CBRN_ARMORED_SUPPORT
+			medium_tank_flame_chassis = @CBRN_ARMORED_CHASSIS
+		}
+
+		same_support_type = cbrn_offensive_delivery
+		same_support_type = flame
+	}
+
+	cbrn_heavy_armored_delivery_detachment = {
+		abbreviation = "HCD"
+		sprite = cbrn_heavy_armored_delivery_detachment
+		map_icon_category = armored
+		priority = @CBRN_PRIORITY_ARMORED
+		ai_priority = @CBRN_AI_PRIORITY_ARMORED
+		active = no
+		affects_speed = no
+
+		type = { armor support }
+		group = support
+		allowed_battalion_groups = { armor mobile_combat_support armor_combat_support }
+
+		categories = {
+			category_front_line
+			category_support_battalions
+			category_regimental_support_battalions
+			category_cbrn_regimental_support
+			category_cbrn_offensive_delivery
+			category_chemical_support_companies
+			category_chemical_tank_support_companies
+			category_tanks
+			category_all_armor
+			category_army
+		}
+
+		divisional = no
+		combat_width = @CBRN_REGIMENTAL_WIDTH
+		manpower = @CBRN_ARMORED_MANPOWER
+		training_time = @CBRN_REGIMENTAL_TRAINING
+		max_organisation = @CBRN_ARMORED_ORG
+		default_morale = @CBRN_REGIMENTAL_DEFAULT_MORALE
+		max_strength = @CBRN_ARMORED_STRENGTH
+		weight = @CBRN_REGIMENTAL_WEIGHT
+		supply_consumption = @CBRN_ARMORED_SUPPLY
+		own_equipment_fuel_consumption_mult = @CBRN_ARMORED_FUEL_MULT
+		can_be_parachuted = no
+
+		soft_attack = @CBRN_ARMORED_SOFT_ATTACK
+		hard_attack = @CBRN_ARMORED_HARD_ATTACK
+		defense = @CBRN_ARMORED_DEFENSE
+		breakthrough = @CBRN_ARMORED_BREAKTHROUGH
+		armor_value = @CBRN_ARMORED_ARMOR
+
+		essential = {
+			gas_mask_equipment
+			decontamination_equipment
+			cbrn_instrument_equipment
+			support_equipment
+			heavy_tank_flame_chassis
+		}
+
+		need = {
+			gas_mask_equipment = @CBRN_ARMORED_MASKS
+			decontamination_equipment = @CBRN_ARMORED_DECON
+			cbrn_instrument_equipment = @CBRN_ARMORED_INSTRUMENTS
+			support_equipment = @CBRN_ARMORED_SUPPORT
+			heavy_tank_flame_chassis = @CBRN_ARMORED_CHASSIS
+		}
+
+		same_support_type = cbrn_offensive_delivery
+		same_support_type = flame
+	}
+
+	cbrn_nerve_suppression_detachment = {
+		abbreviation = "NSD"
+		sprite = cbrn_nerve_suppression_detachment
+		map_icon_category = infantry
+		priority = @CBRN_PRIORITY_OCCUPATION
+		ai_priority = @CBRN_AI_PRIORITY_OCCUPATION
+		active = no
+		affects_speed = no
+
+		type = { infantry support }
+		group = support
+		allowed_battalion_groups = { infantry mobile combat_support mobile_combat_support }
+
+		categories = {
+			category_support_battalions
+			category_regimental_support_battalions
+			category_cbrn_regimental_support
+			category_cbrn_offensive_delivery
+			category_cbrn_occupation_support
+			category_army
+		}
+
+		divisional = no
+		combat_width = @CBRN_REGIMENTAL_WIDTH
+		manpower = @CBRN_NERVE_SUPPRESSION_MANPOWER
+		training_time = @CBRN_REGIMENTAL_TRAINING
+		max_organisation = @CBRN_NERVE_SUPPRESSION_ORG
+		default_morale = @CBRN_REGIMENTAL_DEFAULT_MORALE
+		max_strength = @CBRN_NERVE_SUPPRESSION_STRENGTH
+		weight = @CBRN_REGIMENTAL_WEIGHT
+		supply_consumption = @CBRN_NERVE_SUPPRESSION_SUPPLY
+		suppression = @CBRN_NERVE_SUPPRESSION_VALUE
+		can_be_parachuted = no
+		transport = motorized_equipment
+
+		essential = {
+			gas_mask_equipment
+			decontamination_equipment
+			cbrn_instrument_equipment
+			support_equipment
+			motorized_equipment
+		}
+
+		need = {
+			gas_mask_equipment = @CBRN_NERVE_SUPPRESSION_MASKS
+			decontamination_equipment = @CBRN_NERVE_SUPPRESSION_DECON
+			cbrn_instrument_equipment = @CBRN_NERVE_SUPPRESSION_INSTRUMENTS
+			support_equipment = @CBRN_NERVE_SUPPRESSION_SUPPORT
+			motorized_equipment = @CBRN_NERVE_SUPPRESSION_TRUCKS
+		}
+
+		same_support_type = cbrn_offensive_delivery
+	}
+
+	cbrn_field_epidemiology_detachment = {
+		abbreviation = "FEQ"
+		sprite = cbrn_field_epidemiology_detachment
+		map_icon_category = infantry
+		priority = @CBRN_PRIORITY_DEFENSIVE
+		ai_priority = @CBRN_AI_PRIORITY_EPIDEMIOLOGY
+		active = no
+		affects_speed = no
+
+		type = { infantry support }
+		group = support
+		allowed_battalion_groups = { infantry mobile combat_support mobile_combat_support armor armor_combat_support }
+
+		categories = {
+			category_support_battalions
+			category_regimental_support_battalions
+			category_cbrn_regimental_support
+			category_cbrn_biosecurity_support
+			category_army
+		}
+
+		divisional = no
+		combat_width = @CBRN_REGIMENTAL_WIDTH
+		manpower = @CBRN_EPIDEMIOLOGY_MANPOWER
+		training_time = @CBRN_REGIMENTAL_TRAINING
+		max_organisation = @CBRN_EPIDEMIOLOGY_ORG
+		default_morale = @CBRN_REGIMENTAL_DEFAULT_MORALE
+		max_strength = @CBRN_EPIDEMIOLOGY_STRENGTH
+		weight = @CBRN_REGIMENTAL_WEIGHT
+		supply_consumption = @CBRN_EPIDEMIOLOGY_SUPPLY
+		can_be_parachuted = no
+		transport = motorized_equipment
+
+		essential = {
+			gas_mask_equipment
+			cbrn_instrument_equipment
+			support_equipment
+			motorized_equipment
+		}
+
+		need = {
+			gas_mask_equipment = @CBRN_EPIDEMIOLOGY_MASKS
+			cbrn_instrument_equipment = @CBRN_EPIDEMIOLOGY_INSTRUMENTS
+			support_equipment = @CBRN_EPIDEMIOLOGY_SUPPORT
+			motorized_equipment = @CBRN_EPIDEMIOLOGY_TRUCKS
+		}
+
+		same_support_type = cbrn_field_epidemiology
+	}
+
+	cbrn_medical_countermeasure_detachment = {
+		abbreviation = "MED"
+		sprite = cbrn_medical_countermeasure_detachment
+		map_icon_category = infantry
+		priority = @CBRN_PRIORITY_DEFENSIVE
+		ai_priority = @CBRN_AI_PRIORITY_MEDICAL
+		active = no
+		affects_speed = no
+
+		type = { infantry support }
+		group = support
+		allowed_battalion_groups = { infantry mobile combat_support mobile_combat_support armor armor_combat_support }
+
+		categories = {
+			category_support_battalions
+			category_regimental_support_battalions
+			category_cbrn_regimental_support
+			category_cbrn_medical_support
+			category_army
+		}
+
+		divisional = no
+		combat_width = @CBRN_REGIMENTAL_WIDTH
+		manpower = @CBRN_MEDICAL_MANPOWER
+		training_time = @CBRN_REGIMENTAL_TRAINING
+		max_organisation = @CBRN_MEDICAL_ORG
+		default_morale = @CBRN_REGIMENTAL_DEFAULT_MORALE
+		max_strength = @CBRN_MEDICAL_STRENGTH
+		weight = @CBRN_REGIMENTAL_WEIGHT
+		supply_consumption = @CBRN_MEDICAL_SUPPLY
+		can_be_parachuted = no
+		transport = motorized_equipment
+
+		essential = {
+			gas_mask_equipment
+			support_equipment
+			motorized_equipment
+		}
+
+		need = {
+			gas_mask_equipment = @CBRN_MEDICAL_MASKS
+			support_equipment = @CBRN_MEDICAL_SUPPORT
+			motorized_equipment = @CBRN_MEDICAL_TRUCKS
+		}
+
+		same_support_type = field_hospital
+	}
+
+	cbrn_biosecurity_assault_detachment = {
+		abbreviation = "BSA"
+		sprite = cbrn_biosecurity_assault_detachment
+		map_icon_category = infantry
+		priority = @CBRN_PRIORITY_LOGISTICS
+		ai_priority = @CBRN_AI_PRIORITY_BIOSECURITY
+		active = no
+		affects_speed = no
+
+		type = { infantry support }
+		group = support
+		allowed_battalion_groups = { infantry mobile combat_support mobile_combat_support armor armor_combat_support }
+
+		categories = {
+			category_support_battalions
+			category_regimental_support_battalions
+			category_cbrn_regimental_support
+			category_cbrn_biosecurity_support
+			category_army
+		}
+
+		divisional = no
+		combat_width = @CBRN_REGIMENTAL_WIDTH
+		manpower = @CBRN_BIOSECURITY_MANPOWER
+		training_time = @CBRN_REGIMENTAL_TRAINING
+		max_organisation = @CBRN_BIOSECURITY_ORG
+		default_morale = @CBRN_REGIMENTAL_DEFAULT_MORALE
+		max_strength = @CBRN_BIOSECURITY_STRENGTH
+		weight = @CBRN_REGIMENTAL_WEIGHT
+		supply_consumption = @CBRN_BIOSECURITY_SUPPLY
+		can_be_parachuted = no
+		transport = motorized_equipment
+
+		urban = { attack = @CBRN_BIOSECURITY_URBAN_ATTACK }
+		fort = { attack = @CBRN_BIOSECURITY_FORT_ATTACK }
+
+		essential = {
+			gas_mask_equipment
+			decontamination_equipment
+			cbrn_instrument_equipment
+			support_equipment
+			motorized_equipment
+		}
+
+		need = {
+			gas_mask_equipment = @CBRN_BIOSECURITY_MASKS
+			decontamination_equipment = @CBRN_BIOSECURITY_DECON
+			cbrn_instrument_equipment = @CBRN_BIOSECURITY_INSTRUMENTS
+			support_equipment = @CBRN_BIOSECURITY_SUPPORT
+			motorized_equipment = @CBRN_BIOSECURITY_TRUCKS
+		}
+
+		same_support_type = cbrn_biosecurity_assault
+		same_support_type = field_hospital
+	}
+
+	chaos_battalion = {
+		abbreviation = "CAB"
+		sprite = chaos_battalion
+		map_icon_category = infantry
+		special_forces = yes
+		priority = @CHAOS_ASSAULT_PRIORITY
+		ai_priority = @CHAOS_ASSAULT_AI_PRIORITY
+		active = no
+		affects_speed = no
+
+		type = { infantry }
+		group = infantry
+
+		categories = {
+			category_front_line
+			category_light_infantry
+			category_all_infantry
+			category_army
+			category_special_forces
+			category_special_forces_leg_infantry
+			category_cbrn_assault_battalions
+		}
+
+		combat_width = @CHAOS_ASSAULT_WIDTH
+		max_strength = @CHAOS_ASSAULT_STRENGTH
+		max_organisation = @CHAOS_ASSAULT_ORG
+		default_morale = @CHAOS_ASSAULT_MORALE
+		manpower = @CHAOS_ASSAULT_MANPOWER
+		training_time = @CHAOS_ASSAULT_TRAINING
+		suppression = @CHAOS_ASSAULT_SUPPRESSION
+		weight = @CHAOS_ASSAULT_WEIGHT
+		supply_consumption = @CHAOS_ASSAULT_SUPPLY
+		soft_attack = @CHAOS_ASSAULT_SOFT_ATTACK
+		breakthrough = @CHAOS_ASSAULT_BREAKTHROUGH
+		defense = @CHAOS_ASSAULT_DEFENSE
+
+		forest = { attack = @CHAOS_ASSAULT_FOREST_ATTACK }
+		jungle = { attack = @CHAOS_ASSAULT_JUNGLE_ATTACK }
+		marsh = { attack = @CHAOS_ASSAULT_MARSH_ATTACK }
+		urban = { attack = @CHAOS_ASSAULT_URBAN_ATTACK }
+		fort = { attack = @CHAOS_ASSAULT_FORT_ATTACK movement = @CHAOS_ASSAULT_FORT_MOVEMENT }
+		plains = { attack = @CHAOS_ASSAULT_PLAINS_ATTACK }
+		desert = { attack = @CHAOS_ASSAULT_DESERT_ATTACK }
+		mountain = { attack = @CHAOS_ASSAULT_MOUNTAIN_ATTACK }
+		river = { attack = @CHAOS_ASSAULT_RIVER_ATTACK }
+		amphibious = { attack = @CHAOS_ASSAULT_AMPHIBIOUS_ATTACK }
+
+		essential = {
+			infantry_equipment
+			support_equipment
+			gas_mask_equipment
+			decontamination_equipment
+			cbrn_instrument_equipment
+			motorized_equipment
+		}
+
+		need = {
+			infantry_equipment = @CHAOS_ASSAULT_INFANTRY
+			support_equipment = @CHAOS_ASSAULT_SUPPORT
+			gas_mask_equipment = @CHAOS_ASSAULT_MASKS
+			decontamination_equipment = @CHAOS_ASSAULT_DECON
+			cbrn_instrument_equipment = @CHAOS_ASSAULT_INSTRUMENTS
+			motorized_equipment = @CHAOS_ASSAULT_TRUCKS
+		}
+	}
+}

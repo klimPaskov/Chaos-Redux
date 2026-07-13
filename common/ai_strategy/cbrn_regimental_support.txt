@@ -1,0 +1,121 @@
+# ============================================================================
+# CHAOS REDUX - CBRN REGIMENTAL SUPPORT BASELINE AI
+# ============================================================================
+# Overview:
+# - Assigns bounded ratios to the dedicated CBRN template roles only while the
+#   corresponding complete template gate remains valid.
+# - Prioritizes decontamination and instrument production after a real program,
+#   emergency, contamination, or outbreak signal; urgent signals add pressure.
+# - Full route and country-profile differentiation is owned by Stage 10.
+# ============================================================================
+
+@CBRN_AI_ROLE_PROTECTED_RATIO = 6
+@CBRN_AI_ROLE_CHEMICAL_ASSAULT_RATIO = 2
+@CBRN_AI_ROLE_ARMORED_ASSAULT_RATIO = 1
+@CBRN_AI_ROLE_CONTAINMENT_RATIO = 2
+@CBRN_AI_DECON_PRODUCTION_FACTOR = 25
+@CBRN_AI_INSTRUMENT_PRODUCTION_FACTOR = 20
+@CBRN_AI_URGENT_DECON_PRODUCTION_FACTOR = 40
+@CBRN_AI_URGENT_INSTRUMENT_PRODUCTION_FACTOR = 40
+
+cbrn_ai_protected_formation_ratio = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = { cbrn_country_can_field_protected_template = yes }
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = role_ratio
+		id = cbrn_protected_infantry
+		value = @CBRN_AI_ROLE_PROTECTED_RATIO
+	}
+}
+
+cbrn_ai_chemical_assault_ratio = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = { cbrn_country_can_field_chemical_assault_template = yes }
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = role_ratio
+		id = cbrn_chemical_assault
+		value = @CBRN_AI_ROLE_CHEMICAL_ASSAULT_RATIO
+	}
+}
+
+cbrn_ai_armored_assault_ratio = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = { cbrn_country_can_field_armored_delivery_template = yes }
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = role_ratio
+		id = cbrn_armored_assault
+		value = @CBRN_AI_ROLE_ARMORED_ASSAULT_RATIO
+	}
+}
+
+cbrn_ai_containment_formation_ratio = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = { cbrn_country_can_field_containment_template = yes }
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = role_ratio
+		id = cbrn_containment
+		value = @CBRN_AI_ROLE_CONTAINMENT_RATIO
+	}
+}
+
+cbrn_ai_decontamination_equipment_production = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = { cbrn_country_should_produce_regimental_decon = yes }
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_factor
+		id = decontamination_equipment
+		value = @CBRN_AI_DECON_PRODUCTION_FACTOR
+	}
+}
+
+cbrn_ai_instrument_equipment_production = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = { cbrn_country_should_produce_regimental_instruments = yes }
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_factor
+		id = cbrn_instrument_equipment
+		value = @CBRN_AI_INSTRUMENT_PRODUCTION_FACTOR
+	}
+}
+
+cbrn_ai_urgent_decontamination_equipment_production = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = {
+		cbrn_country_should_produce_regimental_decon = yes
+		cbrn_country_has_urgent_regimental_support_need = yes
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_factor
+		id = decontamination_equipment
+		value = @CBRN_AI_URGENT_DECON_PRODUCTION_FACTOR
+	}
+}
+
+cbrn_ai_urgent_instrument_equipment_production = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = {
+		cbrn_country_should_produce_regimental_instruments = yes
+		cbrn_country_has_urgent_regimental_support_need = yes
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_factor
+		id = cbrn_instrument_equipment
+		value = @CBRN_AI_URGENT_INSTRUMENT_PRODUCTION_FACTOR
+	}
+}
