@@ -1,0 +1,68 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 PACKAGE PLANNER TRIGGERS
+# ============================================================================
+# Shared predicates for the package-specific readiness triggers. Static tag,
+# anchor, readiness, and reservation-group checks remain in the generated-by-
+# hand package registry so every accepted row is independently auditable.
+# ============================================================================
+
+is_independence_wave_candidate_anchor_available = {
+	owner = {
+		exists = yes
+		controls_state = PREV
+		NOT = { is_soviet_collapse_active_origin_country = yes }
+	}
+	NOT = { controller = { is_soviet_collapse_active_origin_country = yes } }
+	NOT = { is_liberation_release_current_reserved_state = yes }
+	NOT = { is_liberation_release_current_protected_state = yes }
+}
+
+# COUNTRY scope. The package registry grants the content-ready flag only after
+# identity, setup, forces, command, mechanics, AI, focus/overlay, localisation,
+# and required assets are wired. Active provenance from another release system
+# makes the tag ineligible even when it is temporarily absent from the map. An
+# ended origin is cleared by that origin's cleanup path and may be created again
+# later.
+is_independence_wave_candidate_tag_available = {
+	exists = no
+	has_country_flag = independence_wave_package_content_ready
+	NOT = { is_liberation_release_current_reserved_country = yes }
+	NOT = {
+		has_variable = independence_wave_last_rejected_plan_id
+		check_variable = {
+			var = independence_wave_last_rejected_plan_id
+			value = global.liberation_plan_id
+			compare = equals
+		}
+	}
+	NOT = { has_country_flag = soviet_collapse_active_origin }
+	NOT = { check_variable = { liberation_origin = constant:liberation_origin.soviet_collapse } }
+	NOT = { has_country_flag = independence_wave_active_origin }
+}
+
+is_independence_wave_high_chaos_pool_open = {
+	check_variable = {
+		var = independence_wave_wave_chaos_band
+		value = constant:independence_wave_planner.high_chaos_pool_minimum_band
+		compare = greater_than_or_equals
+	}
+}
+
+has_independence_wave_remaining_plan_slot = {
+	check_variable = {
+		var = global.independence_wave_plan_selected_count
+		value = global.independence_wave_plan_target_count
+		compare = less_than
+	}
+}
+
+independence_wave_plan_metadata_arrays_are_aligned = {
+	check_variable = { var = global.independence_wave_plan_selected_package_ids^num value = global.independence_wave_plan_selected_count compare = equals }
+	check_variable = { var = global.independence_wave_plan_selected_regions^num value = global.independence_wave_plan_selected_count compare = equals }
+	check_variable = { var = global.independence_wave_plan_selected_hosts^num value = global.independence_wave_plan_selected_count compare = equals }
+	check_variable = { var = global.independence_wave_plan_country_row_indices^num value = global.independence_wave_plan_selected_count compare = equals }
+	check_variable = { var = global.independence_wave_plan_selected_depths^num value = global.independence_wave_plan_selected_count compare = equals }
+	check_variable = { var = global.independence_wave_plan_selected_archetypes^num value = global.independence_wave_plan_selected_count compare = equals }
+	check_variable = { var = global.independence_wave_plan_selected_dispositions^num value = global.independence_wave_plan_selected_count compare = equals }
+	check_variable = { var = global.independence_wave_plan_selected_registered_tag_statuses^num value = global.independence_wave_plan_selected_count compare = equals }
+}

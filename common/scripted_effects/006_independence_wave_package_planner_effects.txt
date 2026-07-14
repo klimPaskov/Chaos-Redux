@@ -1,0 +1,453 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 SYNCHRONIZED PACKAGE PLANNER
+# ============================================================================
+# Overview:
+# - Captures the exact automatic count, territory, and force package by chaos.
+# - Opens one candidate transaction at a time inside the shared frozen plan.
+# - Reserves the host before the candidate, and the unique anchor before any
+#   optional compact or extended state.
+# - Trims unavailable optional territory without sacrificing a valid anchor.
+# - Commits package metadata only after the complete candidate is valid.
+# - Makes no ownership change; execution begins only after the shared plan is
+#   locked and revalidated.
+# ============================================================================
+
+independence_wave_capture_wave_tuning = {
+	set_temp_variable = { independence_wave_wave_chaos_band = constant:independence_wave_chaos_band.calm_world }
+	set_temp_variable = { independence_wave_wave_target_count = constant:independence_wave_count.calm_world }
+	set_temp_variable = { independence_wave_wave_territory_level = constant:liberation_territory_level.compact }
+	set_temp_variable = { independence_wave_wave_force_level = constant:liberation_force_level.fragile }
+	if = {
+		limit = { has_global_flag = { flag = chaos_tier value = 5 } }
+		set_temp_variable = { independence_wave_wave_chaos_band = constant:independence_wave_chaos_band.world_collapse }
+		set_temp_variable = { independence_wave_wave_target_count = constant:independence_wave_count.world_collapse }
+		set_temp_variable = { independence_wave_wave_territory_level = constant:liberation_territory_level.extended }
+		set_temp_variable = { independence_wave_wave_force_level = constant:liberation_force_level.high_chaos }
+	}
+	else_if = {
+		limit = { has_global_flag = { flag = chaos_tier value = 4 } }
+		set_temp_variable = { independence_wave_wave_chaos_band = constant:independence_wave_chaos_band.totalen_chaos }
+		set_temp_variable = { independence_wave_wave_target_count = constant:independence_wave_count.totalen_chaos }
+		set_temp_variable = { independence_wave_wave_territory_level = constant:liberation_territory_level.extended }
+		set_temp_variable = { independence_wave_wave_force_level = constant:liberation_force_level.armed }
+	}
+	else_if = {
+		limit = { has_global_flag = { flag = chaos_tier value = 3 } }
+		set_temp_variable = { independence_wave_wave_chaos_band = constant:independence_wave_chaos_band.chaos_tier }
+		set_temp_variable = { independence_wave_wave_target_count = constant:independence_wave_count.chaos_tier }
+		set_temp_variable = { independence_wave_wave_territory_level = constant:liberation_territory_level.extended }
+		set_temp_variable = { independence_wave_wave_force_level = constant:liberation_force_level.armed }
+	}
+	else_if = {
+		limit = { has_global_flag = { flag = chaos_tier value = 2 } }
+		set_temp_variable = { independence_wave_wave_chaos_band = constant:independence_wave_chaos_band.rising_chaos }
+		set_temp_variable = { independence_wave_wave_target_count = constant:independence_wave_count.rising_chaos }
+		set_temp_variable = { independence_wave_wave_territory_level = constant:liberation_territory_level.compact }
+		set_temp_variable = { independence_wave_wave_force_level = constant:liberation_force_level.viable }
+	}
+	else_if = {
+		limit = { has_global_flag = { flag = chaos_tier value = 1 } }
+		set_temp_variable = { independence_wave_wave_chaos_band = constant:independence_wave_chaos_band.gathering_storm }
+		set_temp_variable = { independence_wave_wave_target_count = constant:independence_wave_count.gathering_storm }
+		set_temp_variable = { independence_wave_wave_territory_level = constant:liberation_territory_level.compact }
+		set_temp_variable = { independence_wave_wave_force_level = constant:liberation_force_level.viable }
+	}
+}
+
+independence_wave_begin_plan_contribution = {
+	independence_wave_capture_wave_tuning = yes
+	set_variable = { global.independence_wave_plan_selected_count = constant:independence_wave_planner.no_candidates }
+	set_variable = { global.independence_wave_plan_attempt_count = constant:independence_wave_planner.no_candidates }
+	set_variable = { global.independence_wave_plan_country_row_start = global.liberation_plan_countries^num }
+	set_variable = { global.independence_wave_plan_state_row_start = global.liberation_plan_states^num }
+	set_variable = { global.independence_wave_plan_target_count = independence_wave_wave_target_count }
+	set_variable = { global.independence_wave_plan_chaos_band = independence_wave_wave_chaos_band }
+	clear_array = global.independence_wave_plan_trimmed_package_ids
+	clear_array = global.independence_wave_plan_trimmed_states
+	clear_array = global.independence_wave_plan_trim_reasons
+	clear_array = global.independence_wave_plan_selected_package_ids
+	clear_array = global.independence_wave_plan_selected_regions
+	clear_array = global.independence_wave_plan_selected_hosts
+	clear_array = global.independence_wave_plan_country_row_indices
+	clear_array = global.independence_wave_plan_selected_depths
+	clear_array = global.independence_wave_plan_selected_archetypes
+	clear_array = global.independence_wave_plan_selected_dispositions
+	clear_array = global.independence_wave_plan_selected_registered_tag_statuses
+}
+
+# Inputs: event targets `liberation_candidate_country`,
+# `liberation_candidate_anchor`, and `liberation_candidate_primary_host`; plus
+# temporary package id, reservation group, region, depth, archetype,
+# disposition, territory level, and force level.
+independence_wave_begin_package_reservation = {
+	add_to_variable = { global.independence_wave_plan_attempt_count = constant:independence_wave_plan.loop_increment }
+	set_temp_variable = { independence_wave_candidate_country_reserved = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { independence_wave_candidate_anchor_reserved = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { independence_wave_candidate_highest_territory = constant:liberation_territory_level.anchor }
+	set_temp_variable = { liberation_candidate_state_row_start = global.liberation_plan_states^num }
+	set_temp_variable = { liberation_candidate_plan_owner = constant:liberation_plan_owner.independence_wave }
+	set_temp_variable = { liberation_candidate_package_id = independence_wave_candidate_package_id }
+	set_temp_variable = { liberation_candidate_reservation_group = independence_wave_candidate_reservation_group }
+	set_temp_variable = { liberation_candidate_territory_level = independence_wave_candidate_requested_territory }
+	set_temp_variable = { liberation_candidate_force_level = independence_wave_candidate_force_level }
+	set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none }
+	set_temp_variable = { independence_wave_setup_package_id = independence_wave_candidate_package_id }
+	independence_wave_probe_force_package_mapping = yes
+	if = {
+		limit = { NOT = { has_ready_independence_wave_force_package_mapping_probe = yes } }
+		set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.package_unready }
+	}
+	else_if = {
+		limit = {
+			has_event_target = liberation_candidate_country
+			has_event_target = liberation_candidate_anchor
+			has_event_target = liberation_candidate_primary_host
+		}
+		event_target:liberation_candidate_primary_host = {
+			liberation_release_select_and_reserve_host_state = yes
+		}
+	}
+	else = {
+		set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.invalid_scope }
+	}
+	if = {
+		limit = { check_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none } }
+		liberation_release_add_country_reservation = yes
+		if = {
+			limit = { check_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none } }
+			set_temp_variable = { independence_wave_candidate_country_reserved = constant:independence_wave_planner.selected }
+		}
+	}
+}
+
+# Reads `liberation_candidate_state_host` and returns a temporary boolean.
+# The protected remnant consumes no loss slot, so one owned state is removed
+# from the host's loss ceiling before the next reservation is considered.
+independence_wave_measure_candidate_host_loss_capacity = {
+	set_temp_variable = { independence_wave_host_can_lose_state = constant:independence_wave_planner.no_candidates }
+	if = {
+		limit = { has_event_target = liberation_candidate_state_host }
+		event_target:liberation_candidate_state_host = {
+			set_temp_variable = { independence_wave_host_loss_ceiling = num_owned_states }
+			subtract_from_temp_variable = { independence_wave_host_loss_ceiling = constant:liberation_release_limit.one }
+			if = {
+				limit = {
+					check_variable = {
+						var = liberation_release_planned_loss_count
+						value = independence_wave_host_loss_ceiling
+						compare = less_than
+					}
+				}
+				set_temp_variable = { independence_wave_host_can_lose_state = constant:independence_wave_planner.selected }
+			}
+		}
+	}
+}
+
+# STATE scope. The package wrapper calls this exactly once for its unique
+# anchor after `independence_wave_begin_package_reservation`.
+independence_wave_reserve_candidate_anchor = {
+	if = {
+		limit = {
+			check_variable = { independence_wave_candidate_country_reserved = constant:independence_wave_planner.selected }
+			check_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none }
+		}
+		owner = { save_event_target_as = liberation_candidate_state_host }
+		independence_wave_measure_candidate_host_loss_capacity = yes
+		if = {
+			limit = { check_variable = { independence_wave_host_can_lose_state = constant:independence_wave_planner.selected } }
+			set_temp_variable = { liberation_candidate_state_role = constant:liberation_plan_state_role.anchor }
+			liberation_release_add_state_reservation = yes
+			if = {
+				limit = { check_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none } }
+				set_temp_variable = { independence_wave_candidate_anchor_reserved = constant:independence_wave_planner.selected }
+			}
+		}
+		else = { set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.host_survival } }
+	}
+}
+
+# STATE scope. Compact states are optional beyond the unique anchor. A failed
+# reservation is recorded as a trim and cannot invalidate the candidate.
+independence_wave_try_candidate_compact_state = {
+	if = {
+		limit = {
+			check_variable = { independence_wave_candidate_anchor_reserved = constant:independence_wave_planner.selected }
+			check_variable = { var = independence_wave_candidate_requested_territory value = constant:liberation_territory_level.compact compare = greater_than_or_equals }
+		}
+		owner = { save_event_target_as = liberation_candidate_state_host }
+		set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none }
+		event_target:liberation_candidate_state_host = { liberation_release_select_and_reserve_host_state = yes }
+		if = {
+			limit = { check_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none } }
+			independence_wave_measure_candidate_host_loss_capacity = yes
+			if = {
+				limit = { check_variable = { independence_wave_host_can_lose_state = constant:independence_wave_planner.selected } }
+				set_temp_variable = { liberation_candidate_state_role = constant:liberation_plan_state_role.compact }
+				liberation_release_add_state_reservation = yes
+			}
+			else = { set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.host_survival } }
+		}
+		if = {
+			limit = { check_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none } }
+			set_temp_variable = { independence_wave_candidate_highest_territory = constant:liberation_territory_level.compact }
+		}
+		else = { independence_wave_record_optional_state_trim = yes }
+	}
+}
+
+# STATE scope. Extended territory is always trimmed before the compact set.
+independence_wave_try_candidate_extended_state = {
+	if = {
+		limit = {
+			check_variable = { independence_wave_candidate_anchor_reserved = constant:independence_wave_planner.selected }
+			check_variable = { independence_wave_candidate_requested_territory = constant:liberation_territory_level.extended }
+		}
+		owner = { save_event_target_as = liberation_candidate_state_host }
+		set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none }
+		event_target:liberation_candidate_state_host = { liberation_release_select_and_reserve_host_state = yes }
+		if = {
+			limit = { check_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none } }
+			independence_wave_measure_candidate_host_loss_capacity = yes
+			if = {
+				limit = { check_variable = { independence_wave_host_can_lose_state = constant:independence_wave_planner.selected } }
+				set_temp_variable = { liberation_candidate_state_role = constant:liberation_plan_state_role.extended }
+				liberation_release_add_state_reservation = yes
+			}
+			else = { set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.host_survival } }
+		}
+		if = {
+			limit = { check_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none } }
+			set_temp_variable = { independence_wave_candidate_highest_territory = constant:liberation_territory_level.extended }
+		}
+		else = { independence_wave_record_optional_state_trim = yes }
+	}
+}
+
+# STATE scope. The failed optional state is auditable, then its unused host
+# protection is removed and candidate processing continues.
+independence_wave_record_optional_state_trim = {
+	add_to_array = { array = global.independence_wave_plan_trimmed_package_ids value = independence_wave_candidate_package_id }
+	add_to_array = { array = global.independence_wave_plan_trimmed_states value = THIS }
+	add_to_array = { array = global.independence_wave_plan_trim_reasons value = liberation_candidate_reject_reason }
+	liberation_release_cleanup_unused_host_reservations = yes
+	set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none }
+}
+
+# Inputs: package id, region, depth, disposition, registered-tag boolean, and
+# `liberation_candidate_primary_host`. Output: candidate allocation weight.
+# Current-plan novelty and prior-wave memory are both recomputed before every
+# draw, so a package selected earlier in the same wave immediately changes the
+# remaining distribution.
+independence_wave_calculate_candidate_allocation_weight = {
+	set_temp_variable = { independence_wave_candidate_weight = constant:independence_wave_allocation_factor.zero }
+	set_temp_variable = { independence_wave_candidate_earliest_band = constant:independence_wave_chaos_band.world_collapse }
+	set_temp_variable = { independence_wave_candidate_dispatch_id = independence_wave_candidate_package_id }
+	round_temp_variable = independence_wave_candidate_dispatch_id
+	meta_effect = {
+		text = {
+			set_temp_variable = {
+				independence_wave_candidate_earliest_band = constant:independence_wave_package_earliest_band.p[PACKAGE_ID]
+			}
+		}
+		PACKAGE_ID = "[?independence_wave_candidate_dispatch_id|.0]"
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = independence_wave_wave_chaos_band
+				value = independence_wave_candidate_earliest_band
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { independence_wave_candidate_weight = constant:independence_wave_allocation_weight.base }
+		if = {
+			limit = { check_variable = { independence_wave_candidate_uses_registered_tag = constant:independence_wave_planner.selected } }
+			add_to_temp_variable = { independence_wave_candidate_weight = constant:independence_wave_allocation_weight.registered_tag }
+		}
+		if = {
+			limit = {
+				NOT = { is_in_array = { array = global.independence_wave_plan_selected_regions value = independence_wave_candidate_region } }
+			}
+			add_to_temp_variable = { independence_wave_candidate_weight = constant:independence_wave_allocation_weight.new_region }
+		}
+		if = {
+			limit = {
+				has_event_target = liberation_candidate_primary_host
+				event_target:liberation_candidate_primary_host = {
+					NOT = { is_in_array = { array = global.independence_wave_plan_selected_hosts value = THIS } }
+				}
+			}
+			add_to_temp_variable = { independence_wave_candidate_weight = constant:independence_wave_allocation_weight.new_host }
+		}
+		if = {
+			limit = { is_in_array = { array = global.independence_wave_previous_wave_package_ids value = independence_wave_candidate_package_id } }
+			subtract_from_temp_variable = { independence_wave_candidate_weight = constant:independence_wave_allocation_weight.prior_package_penalty }
+		}
+		if = {
+			limit = { is_in_array = { array = global.independence_wave_previous_wave_regions value = independence_wave_candidate_region } }
+			subtract_from_temp_variable = { independence_wave_candidate_weight = constant:independence_wave_allocation_weight.prior_region_penalty }
+		}
+		if = {
+			limit = {
+				has_event_target = liberation_candidate_primary_host
+				event_target:liberation_candidate_primary_host = {
+					is_in_array = { array = global.independence_wave_previous_wave_hosts value = THIS }
+				}
+			}
+			subtract_from_temp_variable = { independence_wave_candidate_weight = constant:independence_wave_allocation_weight.prior_host_penalty }
+		}
+		if = {
+			limit = {
+				check_variable = { independence_wave_candidate_depth = constant:independence_wave_package_depth.signature }
+				check_variable = {
+					var = independence_wave_wave_chaos_band
+					value = constant:independence_wave_planner.high_chaos_pool_minimum_band
+					compare = less_than
+				}
+			}
+			subtract_from_temp_variable = { independence_wave_candidate_weight = constant:independence_wave_allocation_weight.signature_low_chaos_penalty }
+		}
+		if = {
+			limit = {
+				check_variable = { independence_wave_candidate_disposition = constant:independence_wave_pool_disposition.high_chaos_only }
+				is_independence_wave_high_chaos_pool_open = yes
+			}
+			add_to_temp_variable = { independence_wave_candidate_weight = constant:independence_wave_allocation_weight.high_chaos_bonus }
+		}
+		if = {
+			limit = {
+				check_variable = { independence_wave_wave_chaos_band = constant:independence_wave_chaos_band.world_collapse }
+				check_variable = { independence_wave_candidate_earliest_band = constant:independence_wave_chaos_band.totalen_chaos }
+			}
+			multiply_temp_variable = { independence_wave_candidate_weight = constant:independence_wave_allocation_factor.world_collapse_rarity }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = independence_wave_candidate_weight
+					value = constant:independence_wave_allocation_weight.minimum
+					compare = less_than
+				}
+			}
+			set_temp_variable = { independence_wave_candidate_weight = constant:independence_wave_allocation_weight.minimum }
+		}
+	}
+}
+
+independence_wave_finish_package_reservation = {
+	if = {
+		limit = {
+			check_variable = { independence_wave_candidate_country_reserved = constant:independence_wave_planner.selected }
+			check_variable = { independence_wave_candidate_anchor_reserved = constant:independence_wave_planner.selected }
+			check_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none }
+		}
+		set_temp_variable = { independence_wave_candidate_country_row = global.liberation_plan_countries^num }
+		subtract_from_temp_variable = { independence_wave_candidate_country_row = constant:independence_wave_plan.loop_increment }
+		set_variable = { global.liberation_plan_territory_levels^independence_wave_candidate_country_row = independence_wave_candidate_highest_territory }
+		event_target:liberation_candidate_country = {
+			set_country_flag = independence_wave_pending_package
+			clear_variable = independence_wave_last_rejected_plan_id
+			set_variable = { independence_wave_pending_plan_id = global.liberation_plan_id }
+			set_variable = { independence_wave_pending_package_id = independence_wave_candidate_package_id }
+			set_variable = { independence_wave_pending_region = independence_wave_candidate_region }
+			set_variable = { independence_wave_pending_depth = independence_wave_candidate_depth }
+			set_variable = { independence_wave_pending_archetype = independence_wave_candidate_archetype }
+			set_variable = { independence_wave_pending_disposition = independence_wave_candidate_disposition }
+			clr_country_flag = independence_wave_pending_uses_registered_tag
+			if = {
+				limit = { check_variable = { independence_wave_candidate_uses_registered_tag = constant:independence_wave_planner.selected } }
+				set_country_flag = independence_wave_pending_uses_registered_tag
+			}
+		}
+		add_to_variable = { global.independence_wave_plan_selected_count = constant:independence_wave_plan.loop_increment }
+		add_to_array = { array = global.independence_wave_plan_selected_package_ids value = independence_wave_candidate_package_id }
+		add_to_array = { array = global.independence_wave_plan_selected_regions value = independence_wave_candidate_region }
+		add_to_array = { array = global.independence_wave_plan_selected_hosts value = event_target:liberation_candidate_primary_host }
+		add_to_array = { array = global.independence_wave_plan_country_row_indices value = independence_wave_candidate_country_row }
+		add_to_array = { array = global.independence_wave_plan_selected_depths value = independence_wave_candidate_depth }
+		add_to_array = { array = global.independence_wave_plan_selected_archetypes value = independence_wave_candidate_archetype }
+		add_to_array = { array = global.independence_wave_plan_selected_dispositions value = independence_wave_candidate_disposition }
+		add_to_array = { array = global.independence_wave_plan_selected_registered_tag_statuses value = independence_wave_candidate_uses_registered_tag }
+		liberation_release_cleanup_unused_host_reservations = yes
+	}
+	else = {
+		if = {
+			limit = { check_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none } }
+			set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.missing_anchor }
+		}
+		if = {
+			limit = { check_variable = { independence_wave_candidate_country_reserved = constant:independence_wave_planner.selected } }
+			liberation_release_rollback_candidate_reservation = yes
+		}
+		else = { liberation_release_cleanup_unused_host_reservations = yes }
+		if = {
+			limit = { has_event_target = liberation_candidate_country }
+			event_target:liberation_candidate_country = {
+				set_variable = { independence_wave_last_rejected_plan_id = global.liberation_plan_id }
+			}
+		}
+		set_temp_variable = { liberation_rejected_package_id = independence_wave_candidate_package_id }
+		set_temp_variable = { liberation_reject_reason = liberation_candidate_reject_reason }
+		liberation_release_record_rejection = yes
+	}
+}
+
+independence_wave_clear_pending_package_metadata = {
+	clr_country_flag = independence_wave_pending_package
+	clear_variable = independence_wave_pending_plan_id
+	clear_variable = independence_wave_pending_package_id
+	clear_variable = independence_wave_pending_region
+	clear_variable = independence_wave_pending_depth
+	clear_variable = independence_wave_pending_archetype
+	clear_variable = independence_wave_pending_disposition
+	clr_country_flag = independence_wave_pending_uses_registered_tag
+}
+
+# Copies the committed selection into the repeat-memory arrays before the
+# shared transaction clears its current-wave metadata.
+independence_wave_commit_previous_wave_memory = {
+	clear_array = global.independence_wave_previous_wave_package_ids
+	clear_array = global.independence_wave_previous_wave_regions
+	clear_array = global.independence_wave_previous_wave_hosts
+	for_each_loop = {
+		array = global.independence_wave_plan_selected_package_ids
+		value = independence_wave_memory_package_id
+		add_to_array = { array = global.independence_wave_previous_wave_package_ids value = independence_wave_memory_package_id }
+	}
+	for_each_loop = {
+		array = global.independence_wave_plan_selected_regions
+		value = independence_wave_memory_region
+		add_to_array = { array = global.independence_wave_previous_wave_regions value = independence_wave_memory_region }
+	}
+	for_each_scope_loop = {
+		array = global.independence_wave_plan_selected_hosts
+		add_to_array = { array = global.independence_wave_previous_wave_hosts value = THIS }
+	}
+	set_variable = { global.independence_wave_previous_wave_date = global.date }
+}
+
+# Must run before a shared-plan abort clears the country array.
+independence_wave_clear_plan_contribution = {
+	for_each_scope_loop = {
+		array = global.liberation_plan_countries
+		limit = {
+			has_country_flag = independence_wave_pending_package
+			check_variable = { var = independence_wave_pending_plan_id value = global.liberation_plan_id compare = equals }
+		}
+		independence_wave_clear_pending_package_metadata = yes
+	}
+	set_variable = { global.independence_wave_plan_selected_count = constant:independence_wave_planner.no_candidates }
+	set_variable = { global.independence_wave_plan_attempt_count = constant:independence_wave_planner.no_candidates }
+	clear_array = global.independence_wave_plan_trimmed_package_ids
+	clear_array = global.independence_wave_plan_trimmed_states
+	clear_array = global.independence_wave_plan_trim_reasons
+	clear_array = global.independence_wave_plan_selected_package_ids
+	clear_array = global.independence_wave_plan_selected_regions
+	clear_array = global.independence_wave_plan_selected_hosts
+	clear_array = global.independence_wave_plan_country_row_indices
+	clear_array = global.independence_wave_plan_selected_depths
+	clear_array = global.independence_wave_plan_selected_archetypes
+	clear_array = global.independence_wave_plan_selected_dispositions
+	clear_array = global.independence_wave_plan_selected_registered_tag_statuses
+}
