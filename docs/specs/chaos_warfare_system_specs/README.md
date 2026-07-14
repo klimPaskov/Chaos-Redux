@@ -4,17 +4,9 @@
 
 This package redesigns Chaos Warfare as a complete chemical, biological, radiological, and contamination command system for Chaos Redux. It is a planning and implementation handoff. It does not contain gameplay code.
 
-`IMPLEMENTATION_SCOPE_AND_FIDELITY.md` defines the interpretation boundary for implementation. The package is fictional game design, public-facing text may remain direct and specific, and every accepted mechanic must be implemented without safety-based simplification. Realism must stay at game-system level and must not become real-world procedural guidance.
-
 The design integrates the existing Chaos Redux chemical warfare, biological warfare, Air Cleanliness, Deaths, Condemnation, outbreak, genocide-discovery, special project, doctrine, aircraft designer, unit template, decision, and AI systems with the Hearts of Iron IV 1.19 Army Headquarters and regimental support model.
 
 ## Package map
-
-### Implementation framing
-
-- `IMPLEMENTATION_SCOPE_AND_FIDELITY.md`
-
-This file controls interpretation only. It does not override or reduce the numbered specifications, matrices, balance tables, or specialist prompts.
 
 ### Specifications
 
@@ -45,11 +37,11 @@ The `prompts/` folder contains bounded handoffs for assets, achievements, decisi
 
 ### Handoffs
 
-The `handoffs/` folder maps implementation surfaces, staged work, the fictional-scope fidelity audit, a manual improvement-loop pass, a completion audit, and limitations.
+The `handoffs/` folder maps implementation surfaces, staged work, a manual improvement-loop pass, a completion audit, and limitations.
 
 ## Core design outcome
 
-Chaos Warfare becomes a high-power doctrine with specific, detailed logistics and counterplay. Its strongest effects require protective equipment, payloads, specialist units, headquarters support, favorable conditions, and command preparation. Chemical and biological use can win battles and destroy regions, but it also causes casualties, contamination, outbreak risk, equipment exhaustion, friendly exposure, public evidence, Condemnation, sanctions, and retaliatory escalation.
+Chaos Warfare becomes a high-power doctrine with real logistics and counterplay. Its strongest effects require protective equipment, payloads, specialist units, headquarters support, favorable conditions, and command preparation. Chemical and biological use can win battles and destroy regions, but it also causes casualties, contamination, outbreak risk, equipment exhaustion, friendly exposure, public evidence, Condemnation, sanctions, and retaliatory escalation.
 
 The doctrine no longer grants broad, stacked attack bonuses as its main identity. It changes what the player can build, assign, prepare, deliver, defend against, conceal, clean up, and politically survive.
 

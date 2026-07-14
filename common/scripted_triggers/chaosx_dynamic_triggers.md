@@ -23,6 +23,7 @@ Before adding new dynamic trigger logic, check this file and reuse an existing t
 - [CBRN allied procurement and AI profiles](#cbrn-allied-procurement-and-ai-profiles)
 - [CBRN regimental support and AI gates](#cbrn-regimental-support-and-ai-gates)
 - [CBRN payload-logistics triggers](#cbrn-payload-logistics-triggers)
+- [CBRN designer trait triggers](#cbrn-designer-trait-triggers)
 - [CBRN chemical-air raid reservation triggers](#cbrn-chemical-air-raid-reservation-triggers)
 - [Chaos Warfare doctrine triggers](#chaos-warfare-doctrine-triggers)
 - [CBRN Army Headquarters triggers](#cbrn-army-headquarters-triggers)
@@ -396,6 +397,40 @@ if = {
 		cbrn_action_payload_stock_is_sufficient = yes
 	}
 	cbrn_try_debit_action_payload = yes
+}
+```
+
+## CBRN designer trait triggers
+
+These country-scope, side-effect-free triggers are defined in `cbrn_designer_triggers.txt`. Each trigger searches the country's Military Industrial Organizations, includes an organization that later became invisible, verifies the exact CBRN organization token, and then requires the named trait to be completed. Merely having a trait in the tree, having it available, or owning another organization with a same-named trait never passes the check.
+
+Chemical Munitions Combine queries:
+
+- `cbrn_designer_has_stable_choking_fill` checks `cbrn_munitions_stable_choking_fill`;
+- `cbrn_designer_has_persistent_agent_formulation` checks `cbrn_munitions_persistent_agent_formulation`;
+- `cbrn_designer_has_rapid_front_distribution` checks `cbrn_munitions_rapid_front_distribution`;
+- `cbrn_designer_has_standardized_fuzes` checks `cbrn_munitions_standardized_fuzes`;
+- `cbrn_designer_has_high_output_filling_complex` checks `cbrn_munitions_high_output_filling_complex`.
+
+Aerosol and Air Delivery Bureau queries:
+
+- `cbrn_designer_has_lightweight_payload_assemblies` checks `cbrn_aerosol_lightweight_payload_assemblies`;
+- `cbrn_designer_has_sealed_bomb_bay_interfaces` checks `cbrn_aerosol_sealed_bomb_bay_interfaces`;
+- `cbrn_designer_has_controlled_dispersal` checks `cbrn_aerosol_controlled_dispersal`;
+- `cbrn_designer_has_long_range_payload` checks `cbrn_aerosol_long_range_payload`;
+- `cbrn_designer_has_precision_release` checks `cbrn_aerosol_precision_release`.
+
+Scope: country only. Inputs: the country's loaded MIO instances and their completed-trait state. Defaults: false when the organization was not instantiated or the trait is absent or incomplete; calls outside country scope violate the helper contract. Output: boolean only. Side effects: none; these checks do not complete traits, assign an MIO to a task, alter equipment, change evidence, or modify Condemnation.
+
+Example:
+
+```txt
+if = {
+	limit = {
+		cbrn_designer_has_persistent_agent_formulation = yes
+		check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.blister compare = equals }
+	}
+	multiply_temp_variable = { cbrn_action_contamination_points = constant:cbrn_munitions_designer_effect.persistent_contamination_mult }
 }
 ```
 

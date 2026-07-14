@@ -35,13 +35,3 @@ List of all the existing and upcoming events: <https://docs.google.com/spreadshe
 ## Contributing
 
 Do you want to become a tester/contributor? Read [CONTRIBUTING.md](CONTRIBUTING.md)
-
-## Coding-agent MCP support
-
-This repository has an optional project-scoped [HOI4 Agent Tools MCP](docs/systems/hoi4_agent_tools_mcp_integration.md) registration for focus trees, scripted GUIs, maps, and event chains.
-
-1. Install or upgrade it: `npm install --global hoi4-agent-tools@1.2.0`.
-2. Replace the machine-specific paths in `.codex/hoi4-agent-tools-chaos-redux.json` if this checkout moved.
-3. Restart Codex and confirm `codex mcp list` shows `hoi4_agent_tools`; call `hoi4.mods` to select `chaos_redux`.
-
-Use the existing owner skill for the task. The MCP renders offline evidence and never launches HOI4; see the integration guide for permissions, generated-data paths, writes, and troubleshooting.

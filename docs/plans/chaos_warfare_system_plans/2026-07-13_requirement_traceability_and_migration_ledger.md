@@ -142,7 +142,7 @@ Status vocabulary: `queued`, `in progress`, `implemented`, `verified`, `verified
 | S10-03 | AI target scoring accounts for war state, strategic value, protection, weather, retaliation, evidence, stock, safety, and self-harm. | Scoring helpers and route tests. | queued |
 | S10-04 | Britain, France, Germany, USSR, USA, Italy, Japan, and the four defensive European profiles start differently. | Startup profiles, reserves, tech, AI. | queued |
 | S10-05 | Minor countries can access viable defensive CBRN content without offensive overinvestment. | Minor profiles and three scenarios. | queued |
-| S10-06 | Six designer families exist and use current MIO schema; country assignments are differentiated. | MIO definitions, AI selection, icons/loc. | queued |
+| S10-06 | Six designer families exist and use current MIO schema; country assignments are differentiated. | MIO definitions, AI selection, icons/loc. | in progress; Chemical Munitions Combine and Aerosol and Air Delivery Bureau use the verified 1.19 MIO schema, exact custom payload archetypes, completed-trait queries, bounded scripted effects, differentiated baseline AI weights, final localisation, and independent wired icons. Four families, country-specific assignments, live AI selection, and the two disclosed unsupported/proxy airframe directions remain unresolved. |
 | S10-07 | Seven major and at least three minor AI validation profiles are recorded. | Stage 14 report. | queued |
 
 ### Spec 11: balance, consistency, and validation
@@ -181,7 +181,7 @@ Status vocabulary: `queued`, `in progress`, `implemented`, `verified`, `verified
 | `biological_agent_countermeasure_matrix.md` | Agent properties and countermeasure effectiveness/tradeoffs. | queued |
 | `gas_mask_starting_stockpile_matrix.md` | Country bands, Britain strongest, population conversion, confidence notes, no identical major bundles. | verified; Stage 2 uses all thirty profiles and records the tuning/confidence rationale |
 | `contamination_deaths_condemnation_balance_matrix.md` | Route/agent base bands and multipliers feed central constants and scenario expectations. | in progress; Stage 1 chemical profiles centralized, scenario validation queued |
-| `country_program_and_designer_matrix.md` | Country posture, start package, research, production, use policy, and designer assignment. | queued |
+| `country_program_and_designer_matrix.md` | Country posture, start package, research, production, use policy, and designer assignment. | in progress; the two Stage 6 offensive designer families and baseline country/profile preferences are present. Protective, decontamination, biological, and medical families, country-specific assignments, full posture integration, and exact resolution of module-specific weight/agility/range directions remain open. |
 | `ai_behavior_matrix.md` | Trigger/action/stop conditions for production, HQ, operations, response, sanctions, and safety. | queued |
 
 ## Specialist-prompt gates

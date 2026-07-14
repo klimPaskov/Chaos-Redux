@@ -26,5 +26,6 @@ Visual checks:
 - Processed PNGs were viewed at exact 64x64.
 - Runtime DDS files were decoded with FFmpeg and viewed at exact 64x64.
 - Checkerboard review sheet: `../contact_sheets/stage_6_chemical_designers_checkerboard.png`.
+- Parent integration reviewed the checkerboard contact sheet at original resolution and confirmed that the two silhouettes remain distinct and legible at runtime size.
 
-No unresolved art or format blocker remains. The only handoff uncertainty is the parent-owned target `.gfx` filename, which was not included in the asset prompt and was intentionally left untouched.
+No unresolved art, format, or sprite-registration blocker remains. Parent integration registers both exact names and paths in `interface/cbrn_designers.gfx`.

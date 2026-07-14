@@ -116,31 +116,6 @@ chem_set_chaos_division_spirit_chemical_modifiers = {
     }
 }
 
-chem_try_grant_chemical_operations_trait_from_academy_spirit = {
-    if = {
-        limit = {
-            FROM = { has_idea = chemical_operations_academy_spirit }
-            is_army_leader = yes
-            NOT = { has_trait = chemical_operations_commander }
-        }
-        randomize_temp_variable = {
-            var = chem_operations_academy_trait_roll
-            min = 0
-            max = 100
-        }
-        if = {
-            limit = {
-                check_variable = {
-                    var = chem_operations_academy_trait_roll
-                    value = constant:chem_chaos_warfare_spirit.academy.chemical_operations_trait_gain_chance
-                    compare = less_than
-                }
-            }
-            add_unit_leader_trait = chemical_operations_commander
-        }
-    }
-}
-
 chem_refund_chemical_ability_command_power = {
     chem_set_chaos_army_spirit_ability_modifiers = yes
     if = {

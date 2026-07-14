@@ -1,0 +1,508 @@
+# ============================================================================
+# CHAOS REDUX - AIR WINTER PRE-FALLOUT RESPONSE EFFECTS
+# ============================================================================
+# Owns exact resource payment, state project completion, infrastructure locks,
+# population transfer, and terminal event handoff for the response decisions.
+# COUNTRY effects that consume a state target expect that target in FROM.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Exact payment helpers
+# ---------------------------------------------------------------------------
+
+# Supported scope: COUNTRY. Input: temporary air_winter_response_payment.
+air_winter_response_pay_support_equipment = {
+	multiply_temp_variable = { air_winter_response_payment = constant:air_winter_runtime.negative_one }
+	add_equipment_to_stockpile = { type = support_equipment amount = air_winter_response_payment }
+}
+
+# Supported scope: COUNTRY. Input: temporary air_winter_response_payment.
+air_winter_response_pay_infantry_equipment = {
+	multiply_temp_variable = { air_winter_response_payment = constant:air_winter_runtime.negative_one }
+	add_equipment_to_stockpile = { type = infantry_equipment amount = air_winter_response_payment }
+}
+
+# Supported scope: COUNTRY. Input: temporary air_winter_response_payment.
+air_winter_response_pay_motorized_equipment = {
+	multiply_temp_variable = { air_winter_response_payment = constant:air_winter_runtime.negative_one }
+	add_equipment_to_stockpile = { type = motorized_equipment amount = air_winter_response_payment }
+}
+
+# Supported scope: COUNTRY. Input: temporary air_winter_response_payment.
+air_winter_response_pay_trains = {
+	multiply_temp_variable = { air_winter_response_payment = constant:air_winter_runtime.negative_one }
+	add_equipment_to_stockpile = { type = train_equipment amount = air_winter_response_payment }
+}
+
+# Supported scope: COUNTRY. Input: temporary air_winter_response_payment.
+air_winter_response_pay_convoys = {
+	multiply_temp_variable = { air_winter_response_payment = constant:air_winter_runtime.negative_one }
+	add_equipment_to_stockpile = { type = convoy_1 amount = air_winter_response_payment }
+}
+
+# Supported scope: COUNTRY. Input: temporary air_winter_response_payment.
+air_winter_response_pay_fuel = {
+	multiply_temp_variable = { air_winter_response_payment = constant:air_winter_runtime.negative_one }
+	add_fuel = air_winter_response_payment
+}
+
+# Supported scope: COUNTRY. Input: temporary air_winter_response_payment.
+air_winter_response_pay_manpower = {
+	multiply_temp_variable = { air_winter_response_payment = constant:air_winter_runtime.negative_one }
+	add_manpower = air_winter_response_payment
+}
+
+# Supported scope: COUNTRY. Input: temporary air_winter_response_payment.
+air_winter_response_pay_command = {
+	multiply_temp_variable = { air_winter_response_payment = constant:air_winter_runtime.negative_one }
+	add_command_power = air_winter_response_payment
+}
+
+# Supported scope: COUNTRY. Input: temporary air_winter_response_payment.
+air_winter_response_pay_stability = {
+	multiply_temp_variable = { air_winter_response_payment = constant:air_winter_runtime.negative_one }
+	add_stability = air_winter_response_payment
+}
+
+# Supported scope: COUNTRY. Input: temporary air_winter_response_payment.
+air_winter_response_pay_war_support = {
+	multiply_temp_variable = { air_winter_response_payment = constant:air_winter_runtime.negative_one }
+	add_war_support = air_winter_response_payment
+}
+
+# ---------------------------------------------------------------------------
+# Action payment profiles
+# ---------------------------------------------------------------------------
+
+# Supported scope: COUNTRY
+air_winter_response_pay_designation = {
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.designate_reception_command }
+	air_winter_response_pay_command = yes
+}
+
+# Supported scope: COUNTRY
+air_winter_response_pay_respirators = {
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.mask_support }
+	air_winter_response_pay_support_equipment = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.mask_infantry }
+	air_winter_response_pay_infantry_equipment = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.mask_stability }
+	air_winter_response_pay_stability = yes
+}
+
+# Supported scope: COUNTRY. Civilian factories are reserved by the decision.
+air_winter_response_pay_clinics = {
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.clinic_support }
+	air_winter_response_pay_support_equipment = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.clinic_manpower }
+	air_winter_response_pay_manpower = yes
+}
+
+# Supported scope: COUNTRY
+air_winter_response_pay_samplers = {
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.sampling_support }
+	air_winter_response_pay_support_equipment = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.sampling_motorized }
+	air_winter_response_pay_motorized_equipment = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.sampling_command }
+	air_winter_response_pay_command = yes
+}
+
+# Supported scope: COUNTRY. Civilian factories are reserved by the decision.
+air_winter_response_pay_crop_trials = {
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.crop_support }
+	air_winter_response_pay_support_equipment = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.crop_motorized }
+	air_winter_response_pay_motorized_equipment = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.crop_fuel }
+	air_winter_response_pay_fuel = yes
+}
+
+# Supported scope: COUNTRY
+air_winter_response_pay_ash_clearance = {
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.ash_motorized }
+	air_winter_response_pay_motorized_equipment = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.ash_manpower }
+	air_winter_response_pay_manpower = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.ash_command }
+	air_winter_response_pay_command = yes
+}
+
+# Supported scope: COUNTRY
+air_winter_response_pay_rail_protection = {
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.rail_trains }
+	air_winter_response_pay_trains = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.rail_support }
+	air_winter_response_pay_support_equipment = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.rail_manpower }
+	air_winter_response_pay_manpower = yes
+}
+
+# Supported scope: COUNTRY
+air_winter_response_pay_airbase_closure = {
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.airbase_fuel }
+	air_winter_response_pay_fuel = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.airbase_command }
+	air_winter_response_pay_command = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.airbase_war_support }
+	air_winter_response_pay_war_support = yes
+}
+
+# Supported scope: COUNTRY
+air_winter_response_pay_evacuation_plan = {
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.planning_trains }
+	air_winter_response_pay_trains = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.planning_support }
+	air_winter_response_pay_support_equipment = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.planning_command }
+	air_winter_response_pay_command = yes
+}
+
+# Supported scope: COUNTRY
+air_winter_response_pay_shelter_law = {
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.shelter_support }
+	air_winter_response_pay_support_equipment = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.shelter_manpower }
+	air_winter_response_pay_manpower = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.shelter_stability }
+	air_winter_response_pay_stability = yes
+}
+
+# Supported scope: COUNTRY. Civilian factories are reserved by the decision.
+air_winter_response_pay_greenhouse_refuge = {
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.greenhouse_support }
+	air_winter_response_pay_support_equipment = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.greenhouse_motorized }
+	air_winter_response_pay_motorized_equipment = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.greenhouse_fuel }
+	air_winter_response_pay_fuel = yes
+}
+
+# Supported scope: COUNTRY
+air_winter_response_pay_controlled_evacuation = {
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.controlled_evacuation_trains }
+	air_winter_response_pay_trains = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.controlled_evacuation_convoys }
+	air_winter_response_pay_convoys = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.controlled_evacuation_manpower }
+	air_winter_response_pay_manpower = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.controlled_evacuation_stability }
+	air_winter_response_pay_stability = yes
+}
+
+# Supported scope: COUNTRY
+air_winter_response_pay_triage = {
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.triage_support }
+	air_winter_response_pay_support_equipment = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.triage_manpower }
+	air_winter_response_pay_manpower = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.triage_command }
+	air_winter_response_pay_command = yes
+}
+
+# Supported scope: COUNTRY
+air_winter_response_pay_abandonment_vote = {
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.abandonment_command }
+	air_winter_response_pay_command = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.abandonment_stability }
+	air_winter_response_pay_stability = yes
+}
+
+# Supported scope: COUNTRY
+air_winter_response_pay_bunker_seal = {
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.bunker_support }
+	air_winter_response_pay_support_equipment = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.bunker_infantry }
+	air_winter_response_pay_infantry_equipment = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.bunker_stability }
+	air_winter_response_pay_stability = yes
+}
+
+# Supported scope: COUNTRY
+air_winter_response_pay_final_evacuation = {
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.final_evacuation_trains }
+	air_winter_response_pay_trains = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.final_evacuation_convoys }
+	air_winter_response_pay_convoys = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.final_evacuation_support }
+	air_winter_response_pay_support_equipment = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.final_evacuation_manpower }
+	air_winter_response_pay_manpower = yes
+}
+
+# Supported scope: COUNTRY
+air_winter_response_pay_decontamination = {
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.decontamination_support }
+	air_winter_response_pay_support_equipment = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.decontamination_motorized }
+	air_winter_response_pay_motorized_equipment = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.decontamination_fuel }
+	air_winter_response_pay_fuel = yes
+	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.decontamination_command }
+	air_winter_response_pay_command = yes
+}
+
+# ---------------------------------------------------------------------------
+# Shared state project lifecycle
+# ---------------------------------------------------------------------------
+
+# Supported scope: STATE. Input: temporary air_winter_response_project_cooldown.
+air_winter_response_finish_state_project = {
+	set_variable = { air_winter_response_cooldown = air_winter_response_project_cooldown }
+	clr_state_flag = air_winter_response_project_active
+	air_winter_normalize_state_ledger = yes
+	air_winter_calculate_survival_value = yes
+}
+
+# Supported scope: STATE
+air_winter_response_cancel_state_project = {
+	clr_state_flag = air_winter_response_project_active
+}
+
+# Supported scope: COUNTRY. FROM must be the eligible reception STATE.
+air_winter_response_designate_reception_state = {
+	air_winter_response_pay_designation = yes
+	clear_array = air_winter_reception_states
+	add_to_array = {
+		array = air_winter_reception_states
+		value = FROM
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Phase 1 and 2 results
+# ---------------------------------------------------------------------------
+
+# Supported scope: STATE
+air_winter_response_complete_respirators = {
+	air_winter_normalize_state_ledger = yes
+	subtract_from_variable = { air_winter_exposure = constant:air_winter_response_result.mask_exposure_reduction }
+	subtract_from_variable = { air_winter_disease_pressure = constant:air_winter_response_result.mask_disease_reduction }
+	add_to_variable = { air_winter_adaptation = constant:air_winter_response_result.mask_adaptation_gain }
+	set_state_flag = air_winter_masks_distributed
+	set_temp_variable = { air_winter_response_project_cooldown = constant:air_winter_response_timing.early_state_cooldown_months }
+	air_winter_response_finish_state_project = yes
+}
+
+# Supported scope: STATE
+air_winter_response_complete_clinics = {
+	air_winter_normalize_state_ledger = yes
+	subtract_from_variable = { air_winter_disease_pressure = constant:air_winter_response_result.clinic_disease_reduction }
+	add_to_variable = { air_winter_shelter_capacity = constant:air_winter_response_result.clinic_shelter_gain }
+	add_to_variable = { air_winter_recovery = constant:air_winter_response_result.clinic_recovery_gain }
+	set_state_flag = air_winter_respiratory_clinic
+	set_temp_variable = { air_winter_response_project_cooldown = constant:air_winter_response_timing.early_state_cooldown_months }
+	air_winter_response_finish_state_project = yes
+}
+
+# Supported scope: STATE
+air_winter_response_complete_samplers = {
+	air_winter_normalize_state_ledger = yes
+	add_to_variable = { air_winter_adaptation = constant:air_winter_response_result.sampling_adaptation_gain }
+	add_to_variable = { air_winter_reclamation = constant:air_winter_response_result.sampling_reclamation_gain }
+	set_state_flag = air_winter_sampling_stations
+	set_temp_variable = { air_winter_response_project_cooldown = constant:air_winter_response_timing.early_state_cooldown_months }
+	air_winter_response_finish_state_project = yes
+}
+
+# Supported scope: STATE
+air_winter_response_complete_crop_trials = {
+	air_winter_normalize_state_ledger = yes
+	add_to_variable = { air_winter_food_reserve = constant:air_winter_response_result.crop_food_gain }
+	add_to_variable = { air_winter_adaptation = constant:air_winter_response_result.crop_adaptation_gain }
+	subtract_from_variable = { air_winter_water_security = constant:air_winter_response_result.crop_water_cost }
+	set_state_flag = air_winter_protected_crop_trials
+	set_temp_variable = { air_winter_response_project_cooldown = constant:air_winter_response_timing.early_state_cooldown_months }
+	air_winter_response_finish_state_project = yes
+}
+
+# ---------------------------------------------------------------------------
+# Phase 3 results
+# ---------------------------------------------------------------------------
+
+# Supported scope: STATE
+air_winter_response_complete_ash_clearance = {
+	air_winter_normalize_state_ledger = yes
+	subtract_from_variable = { air_winter_building_damage_pressure = constant:air_winter_response_result.ash_building_pressure_reduction }
+	subtract_from_variable = { air_winter_category_damage = constant:air_winter_response_result.ash_category_damage_reduction }
+	add_to_variable = { air_winter_reclamation = constant:air_winter_response_result.ash_reclamation_gain }
+	add_to_variable = { air_winter_exposure = constant:air_winter_response_result.ash_worker_risk_exposure }
+	set_state_flag = air_winter_ash_clearance_completed
+	set_temp_variable = { air_winter_response_project_cooldown = constant:air_winter_response_timing.infrastructure_state_cooldown_months }
+	air_winter_response_finish_state_project = yes
+}
+
+# Supported scope: STATE
+air_winter_response_complete_rail_protection = {
+	air_winter_normalize_state_ledger = yes
+	subtract_from_variable = { air_winter_building_damage_pressure = constant:air_winter_response_result.rail_building_pressure_reduction }
+	add_to_variable = { air_winter_reclamation = constant:air_winter_response_result.rail_reclamation_gain }
+	set_variable = { air_winter_rail_protection_months = constant:air_winter_response_timing.rail_protection_months }
+	if = {
+		limit = { NOT = { has_dynamic_modifier = { modifier = air_winter_rail_protection_state } } }
+		add_dynamic_modifier = { modifier = air_winter_rail_protection_state }
+	}
+	set_state_flag = air_winter_rail_protection_completed
+	set_temp_variable = { air_winter_response_project_cooldown = constant:air_winter_response_timing.infrastructure_state_cooldown_months }
+	air_winter_response_finish_state_project = yes
+}
+
+# Supported scope: STATE. Damage equals the current total airbase level.
+air_winter_response_complete_airbase_closure = {
+	air_winter_normalize_state_ledger = yes
+	set_temp_variable = { air_winter_response_airbase_damage = building_level@air_base }
+	meta_effect = {
+		text = { damage_building = { type = air_base damage = [AIR_WINTER_AIRBASE_DAMAGE] } }
+		AIR_WINTER_AIRBASE_DAMAGE = "[?air_winter_response_airbase_damage|.2]"
+	}
+	set_variable = { air_winter_airbase_closure_months = constant:air_winter_response_timing.airbase_closure_months }
+	if = {
+		limit = { NOT = { has_dynamic_modifier = { modifier = air_winter_airbase_closure_state } } }
+		add_dynamic_modifier = { modifier = air_winter_airbase_closure_state }
+	}
+	subtract_from_variable = { air_winter_exposure = constant:air_winter_response_result.airbase_exposure_reduction }
+	subtract_from_variable = { air_winter_building_damage_pressure = constant:air_winter_response_result.airbase_building_pressure_reduction }
+	set_state_flag = air_winter_airbase_closure_completed
+	set_temp_variable = { air_winter_response_project_cooldown = constant:air_winter_response_timing.infrastructure_state_cooldown_months }
+	air_winter_response_finish_state_project = yes
+}
+
+# Supported scope: STATE
+air_winter_response_complete_evacuation_plan = {
+	air_winter_normalize_state_ledger = yes
+	add_to_variable = { air_winter_adaptation = constant:air_winter_response_result.planning_adaptation_gain }
+	add_to_variable = { air_winter_shelter_capacity = constant:air_winter_response_result.planning_shelter_gain }
+	set_state_flag = air_winter_evacuation_plan_completed
+	set_temp_variable = { air_winter_response_project_cooldown = constant:air_winter_response_timing.infrastructure_state_cooldown_months }
+	air_winter_response_finish_state_project = yes
+}
+
+# ---------------------------------------------------------------------------
+# Phase 4 results
+# ---------------------------------------------------------------------------
+
+# Supported scope: STATE
+air_winter_response_complete_shelter_law = {
+	air_winter_normalize_state_ledger = yes
+	add_to_variable = { air_winter_shelter_capacity = constant:air_winter_response_result.shelter_capacity_gain }
+	add_to_variable = { air_winter_adaptation = constant:air_winter_response_result.shelter_adaptation_gain }
+	add_to_variable = { air_winter_refugee_pressure = constant:air_winter_response_result.shelter_refugee_pressure_gain }
+	set_state_flag = air_winter_emergency_shelter_law
+	set_temp_variable = { air_winter_response_project_cooldown = constant:air_winter_response_timing.severe_state_cooldown_months }
+	air_winter_response_finish_state_project = yes
+}
+
+# Supported scope: STATE
+air_winter_response_complete_greenhouse_refuge = {
+	air_winter_normalize_state_ledger = yes
+	add_to_variable = { air_winter_food_reserve = constant:air_winter_response_result.greenhouse_food_gain }
+	subtract_from_variable = { air_winter_water_security = constant:air_winter_response_result.greenhouse_water_cost }
+	add_to_variable = { air_winter_reclamation = constant:air_winter_response_result.greenhouse_reclamation_gain }
+	set_state_flag = air_winter_greenhouse_refuge
+	set_temp_variable = { air_winter_response_project_cooldown = constant:air_winter_response_timing.severe_state_cooldown_months }
+	air_winter_response_finish_state_project = yes
+}
+
+# Supported scope: COUNTRY. FROM must be the source STATE. The reception array
+# contains exactly one state because designation clears it before insertion.
+air_winter_response_complete_controlled_evacuation = {
+	FROM = { save_event_target_as = air_winter_response_state }
+	event_target:air_winter_response_state = {
+		air_winter_normalize_state_ledger = yes
+		set_temp_variable = { air_winter_response_population_transfer = state_population }
+		multiply_temp_variable = { air_winter_response_population_transfer = constant:air_winter_response_result.controlled_evacuation_population_share }
+		round_temp_variable = air_winter_response_population_transfer
+		set_temp_variable = { air_winter_response_population_loss = air_winter_response_population_transfer }
+		multiply_temp_variable = { air_winter_response_population_loss = constant:air_winter_runtime.negative_one }
+		add_manpower = air_winter_response_population_loss
+		subtract_from_variable = { air_winter_refugee_pressure = constant:air_winter_response_result.controlled_evacuation_source_pressure_reduction }
+		set_state_flag = air_winter_controlled_evacuation_completed
+		set_temp_variable = { air_winter_response_project_cooldown = constant:air_winter_response_timing.severe_state_cooldown_months }
+		air_winter_response_finish_state_project = yes
+	}
+	for_each_scope_loop = {
+		array = air_winter_reception_states
+		air_winter_normalize_state_ledger = yes
+		add_manpower = air_winter_response_population_transfer
+		add_to_variable = { air_winter_refugee_pressure = constant:air_winter_response_result.controlled_evacuation_receiver_pressure }
+		air_winter_normalize_state_ledger = yes
+		air_winter_calculate_survival_value = yes
+	}
+}
+
+# Supported scope: STATE
+air_winter_response_complete_triage = {
+	air_winter_normalize_state_ledger = yes
+	subtract_from_variable = { air_winter_disease_pressure = constant:air_winter_response_result.triage_disease_reduction }
+	add_to_variable = { air_winter_recovery = constant:air_winter_response_result.triage_recovery_gain }
+	subtract_from_variable = { air_winter_food_reserve = constant:air_winter_response_result.triage_food_cost }
+	set_state_flag = air_winter_state_triage_completed
+	set_temp_variable = { air_winter_response_project_cooldown = constant:air_winter_response_timing.severe_state_cooldown_months }
+	air_winter_response_finish_state_project = yes
+}
+
+# ---------------------------------------------------------------------------
+# Phase 5 results and terminal event handoff
+# ---------------------------------------------------------------------------
+
+# Supported scope: COUNTRY. FROM must be the source STATE.
+air_winter_response_complete_abandonment_vote = {
+	FROM = {
+		save_event_target_as = air_winter_response_state
+		air_winter_normalize_state_ledger = yes
+		set_state_flag = air_winter_abandonment_vote_completed
+		set_temp_variable = { air_winter_response_project_cooldown = constant:air_winter_response_timing.terminal_state_cooldown_months }
+		air_winter_response_finish_state_project = yes
+	}
+	country_event = { id = chaosx.fallout.201 }
+}
+
+# Supported scope: STATE
+air_winter_response_complete_bunker_seal = {
+	air_winter_normalize_state_ledger = yes
+	subtract_from_variable = { air_winter_exposure = constant:air_winter_response_result.bunker_exposure_reduction }
+	add_to_variable = { air_winter_shelter_capacity = constant:air_winter_response_result.bunker_shelter_gain }
+	add_to_variable = { air_winter_refugee_pressure = constant:air_winter_response_result.bunker_refugee_pressure_gain }
+	set_state_flag = air_winter_bunker_sealed
+	set_temp_variable = { air_winter_response_project_cooldown = constant:air_winter_response_timing.terminal_state_cooldown_months }
+	air_winter_response_finish_state_project = yes
+}
+
+# Supported scope: COUNTRY. FROM must be the source STATE. The reception array
+# contains exactly one state because designation clears it before insertion.
+air_winter_response_complete_final_evacuation = {
+	FROM = { save_event_target_as = air_winter_response_state }
+	event_target:air_winter_response_state = {
+		air_winter_normalize_state_ledger = yes
+		set_temp_variable = { air_winter_response_population_transfer = state_population }
+		multiply_temp_variable = { air_winter_response_population_transfer = constant:air_winter_response_result.final_evacuation_population_share }
+		round_temp_variable = air_winter_response_population_transfer
+		set_temp_variable = { air_winter_response_population_loss = air_winter_response_population_transfer }
+		multiply_temp_variable = { air_winter_response_population_loss = constant:air_winter_runtime.negative_one }
+		add_manpower = air_winter_response_population_loss
+		subtract_from_variable = { air_winter_refugee_pressure = constant:air_winter_response_result.final_evacuation_source_pressure_reduction }
+		set_state_flag = air_winter_final_evacuation_completed
+		set_temp_variable = { air_winter_response_project_cooldown = constant:air_winter_response_timing.terminal_state_cooldown_months }
+		air_winter_response_finish_state_project = yes
+	}
+	for_each_scope_loop = {
+		array = air_winter_reception_states
+		air_winter_normalize_state_ledger = yes
+		add_manpower = air_winter_response_population_transfer
+		add_to_variable = { air_winter_refugee_pressure = constant:air_winter_response_result.final_evacuation_receiver_pressure }
+		air_winter_normalize_state_ledger = yes
+		air_winter_calculate_survival_value = yes
+	}
+}
+
+# Supported scope: COUNTRY. FROM must be the source STATE.
+air_winter_response_complete_decontamination = {
+	FROM = {
+		save_event_target_as = air_winter_response_state
+		air_winter_normalize_state_ledger = yes
+		set_state_flag = air_winter_decontamination_attempted
+		set_temp_variable = { air_winter_response_project_cooldown = constant:air_winter_response_timing.terminal_state_cooldown_months }
+		air_winter_response_finish_state_project = yes
+	}
+	country_event = { id = chaosx.fallout.202 }
+}

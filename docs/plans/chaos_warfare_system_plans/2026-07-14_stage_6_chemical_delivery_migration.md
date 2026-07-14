@@ -2,7 +2,7 @@
 
 Status: in progress; the overall Chaos Warfare goal remains incomplete
 
-Current tranche: the equipment, payload-profile, exact-debit, shared-dispatch, defender-shock, targeted-recovery, sanctions-recognition, exact CAS/tactical chemical-module eligibility, class-specific native raid reservation, five-band raid outcome accounting, no-release attempt consequences, and matching asset foundation are implemented. No new ground or air release route is active yet, and the idempotent legacy stock migration has no caller while old consumers remain. Exact-state condition adapters, active route decisions/raids, remaining legacy retirement, AI, designers, and specialist audits remain open.
+Current tranche: the equipment, payload-profile, exact-debit, shared-dispatch, defender-shock, targeted-recovery, sanctions-recognition, exact CAS/tactical chemical-module eligibility, class-specific native raid reservation, five-band raid outcome accounting, no-release attempt consequences, two generic chemical-delivery MIO families, and matching asset foundations are implemented or under final review. No new ground or air release route is active yet, and the idempotent legacy stock migration has no caller while old consumers remain. Exact-state condition adapters, active route decisions/raids, remaining legacy retirement, route AI, four designer families, differentiated country assignments, two disclosed designer-proxy decisions, and specialist audits remain open.
 
 ## Accepted sources and conflict resolution
 
@@ -101,6 +101,13 @@ Interim legacy shutdown completed before replacement activation: `chemical_sarin
 - Produce independent final equipment models, route icons, decision/category icons, raid assets, designer icons, and first-use/adaptation icons through the Chaos Redux asset workflow. No placeholders, resized cross-type substitutes, or reused visible concepts are accepted.
 - Write final English localisation for equipment, profiles, decisions, missions, raids, outcomes, consequence warnings, tooltips, AI-facing requirements, and migration. Keep all tuning-sensitive values synchronized with constants.
 - Update the chemical-warfare system documentation, dynamic-helper references, asset manifests, migration ledger, and implementation surface map.
+
+Supported designer foundation under review:
+
+- Chemical Munitions Combine targets only `chemical_agent_payload` and `chemical_artillery_ammunition`; its completed-trait checks feed shell conversion, profile timing, contamination duration/intensity, evidence, and exact native production/reliability tradeoffs.
+- Aerosol and Air Delivery Bureau targets only the four prepared chemical-air payload archetypes; its completed-trait checks feed exact air-payload timing, outcome-band, civilian-exposure, contamination, and friendly-risk calculations.
+- Both generic organization icons have independent source, processed, archive, runtime, prompt, manifest, contact-sheet, and validation artifacts and are wired through `interface/cbrn_designers.gfx`.
+- Current MIO equipment filters cannot require an assigned aircraft variant to carry one specific chemical rack. No ordinary CAS or tactical-bomber bonus is used. Lightweight Installation and Long-Range Payload currently have route/payload proxy mappings; those fallbacks remain unaccepted pending explicit user direction and cannot satisfy the stage gate as written.
 
 ### 9. Validation and audits
 

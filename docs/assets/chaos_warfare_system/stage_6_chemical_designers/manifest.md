@@ -26,11 +26,11 @@ Chaos Redux reference assets inspected before generation: `.agents/skills/chaos-
 - Archive/runtime DDS SHA-256: `504a34fbb2f5359deb4f066fb4b6b5ba640815290d4ea4b7bde36ab86dae4edf`
 - DDS dimensions/format: 64x64, legacy one-level uncompressed 32-bit BGRA/B8G8R8A8, 16,512 bytes
 - Sprite name supplied by parent: `GFX_cbrn_chemical_munitions_combine`
-- Suggested `.gfx` file: parent-selected existing CBRN designer sprite file; exact target was not supplied and no `.gfx` file was edited
+- Sprite registration: `interface/cbrn_designers.gfx`
 - Related localisation key: parent-owned; not changed in this asset-only task
 - Transparency evidence: alpha min/max 0/255; 1,095 transparent pixels; 770 partially transparent pixels; 2,231 opaque pixels; no detected opaque magenta residue
 - Visual identity: amber, oxidized steel, muted olive; capped chemical shell and shell-filling carousel, sealed reagent canister, and heavy factory gear; no text, national/company logo, skull, or modern biohazard symbol
-- Status: `complete` / handed off for parent `.gfx` wiring
+- Status: `complete` / wired
 
 ## Asset: `cbrn_aerosol_air_delivery_bureau`
 
@@ -50,11 +50,11 @@ Chaos Redux reference assets inspected before generation: `.agents/skills/chaos-
 - Archive/runtime DDS SHA-256: `9653875f1eef0ff6010c0ff078aa94e01afed7d01a1a518831f9886cb1db4732`
 - DDS dimensions/format: 64x64, legacy one-level uncompressed 32-bit BGRA/B8G8R8A8, 16,512 bytes
 - Sprite name supplied by parent: `GFX_cbrn_aerosol_air_delivery_bureau`
-- Suggested `.gfx` file: parent-selected existing CBRN designer sprite file; exact target was not supplied and no `.gfx` file was edited
+- Sprite registration: `interface/cbrn_designers.gfx`
 - Related localisation key: parent-owned; not changed in this asset-only task
 - Transparency evidence: alpha min/max 0/255; 2,234 transparent pixels; 805 partially transparent pixels; 1,057 opaque pixels; no detected opaque magenta residue
 - Visual identity: slate blue, brass, muted silver; winged sealed dispersal rack, precision manifold/nozzle, and controlled aerosol fan; no text, national/company logo, skull, modern biohazard symbol, or reused bomb-lock silhouette
-- Status: `complete` / handed off for parent `.gfx` wiring
+- Status: `complete` / wired
 
 ## Shared processing and validation
 
@@ -67,3 +67,4 @@ Chaos Redux reference assets inspected before generation: `.agents/skills/chaos-
 - Identity: each archive/runtime pair is byte-identical; the two final DDS SHA-256 hashes are distinct.
 - Review contact sheet: `contact_sheets/stage_6_chemical_designers_checkerboard.png`
 - Exact validation record: `notes/validation.md`
+- Runtime sprite registration: `interface/cbrn_designers.gfx`

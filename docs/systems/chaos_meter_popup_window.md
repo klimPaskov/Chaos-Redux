@@ -93,7 +93,7 @@ When condemnation values change, background country effects mark the view dirty.
 The `Deaths` tab shows:
 
 - text summary lines for the global totals at the top,
-- chaos generated from deaths using `1 chaos per 1,000,000 deaths`,
+- chaos generated from deaths at a base rate of `1 chaos per 1,000,000 deaths`, with cause-specific weights such as `0.10` for contaminated winter exposure,
 - most recent recorded deaths change,
 - a separator and a scrollable country totals list below the summary block.
 
@@ -166,6 +166,13 @@ Deaths view arrays:
 - `global.chaos_meter_deaths_view_change_entries`
 - `global.chaos_meter_deaths_view_total_entries`
 - `global.chaos_meter_deaths_view_reason_entries`
+- `global.chaos_meter_deaths_view_cause_air_winter_exposure_entries`
+
+Contaminated winter exposure follows the shared per-cause aggregation path:
+
+- `chaos_meter_deaths_country_cause_air_winter_exposure` stores the country total.
+- `temp_chaos_meter_deaths_unsorted_cause_air_winter_exposure_entries` carries that total through sorted rebuilds.
+- `global.chaos_meter_deaths_view_cause_air_winter_exposure_entries` supplies the country-row tooltip.
 
 ## Integration Notes
 
@@ -173,6 +180,7 @@ Deaths view arrays:
 - Direct settings-based value writes (`update_actual_chaos_meter`) also write to history.
 - Disable/reenable settings transitions that change current value also write to history.
 - Deaths are registered through `chaos_meter_register_deaths`, which also synchronizes chaos gain from death milestones.
+- Contaminated winter exposure is Deaths reason `17` and uses `chaos_meter_deaths.air_winter_exposure_chaos_weight = 0.10` during chaos synchronization.
 - Country totals shown in the deaths tab are maintained on country-scoped variables and legacy raw logs are backfilled through bounded rebuild chunks when needed.
 
 ## Icons and GFX Wiring

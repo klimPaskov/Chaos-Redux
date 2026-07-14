@@ -14,7 +14,7 @@ Use this skill for any Chaos Redux event work, including:
 
 Repository-wide reading and style rules live in `AGENTS.md`. This skill only adds the Chaos Redux event-specific implementation contract.
 
-For long chains, optionally use the read-only `hoi4.event_inspect`, `hoi4.event_render`, and `hoi4.event_compare` tools to map entry points, branches, state and scope flow, impact, and structural changes. Event-owned GUI surfaces may also use `hoi4.gui_inspect` and `hoi4.gui_render`; linked artifacts are evidence, while source review and this skill remain authoritative.
+For long chains, optionally use the read-only `hoi4.event_inspect`, `hoi4.event_render`, and `hoi4.event_compare` tools to map entry points, branches, state and scope flow, impact, and structural changes. Event-owned GUI surfaces may also use `hoi4.gui_inspect` and `hoi4.gui_render`.
 
 When an event implementation creates broad visible text, spawn `chaosx_localisation_auditor` before completion. When an event needs repeated dynamic logic across events, decisions, focuses, evolutions, logs, or GUI, use `chaosx_scripted_system_architect` before duplicating logic.
 

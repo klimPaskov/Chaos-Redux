@@ -1,6 +1,6 @@
 ---
 name: blender-pdx-modeling
-description: Build a true volumetric Blender character or unit model from an uploaded photo or image reference, using imagegen only to make a 2D concept sheet first and Blender MCP to create real 3D mesh geometry, armature/bone structure, materials, scale checks, and inspection renders. Use when the user asks Codex to analyze a photo, recreate a reference in Blender, make a PDX/HOI4-style model, create a rigged unit model, or prepare a model workflow for later PDX mesh export and Chaos Redux in-game wiring.
+description: Build a true volumetric Blender character or unit model from an uploaded reference or an imagegen-created concept sheet, using imagegen for 2D reference development and Blender MCP to create real 3D mesh geometry, armature/bone structure, materials, scale checks, and inspection renders. Use when the user asks Codex to analyze a reference, generate a reference for modeling, recreate a reference in Blender, make a PDX/HOI4-style model, create a rigged unit model, or prepare a model workflow for later PDX mesh export and Chaos Redux in-game wiring.
 ---
 
 # Blender PDX Modeling
@@ -11,7 +11,11 @@ Create a real 3D Blender model. Do not finish with a billboard, image plane, spr
 
 Use imagegen only to create a concept/reference image. Never use the generated image as the final model geometry or as a texture pasted onto a flat surface.
 
-If no photo or reference image is available, ask the user to upload one before modeling. If the user wants a PDX/HOI4-compatible unit, always import a vanilla model first and read scale, facing, origin, and armature structure from it.
+For humanoid PDX units, build the main body, head, hands, and clothing from connected edited topology: duplicate and substantially edit the measured vanilla mesh, or create a manually modeled connected base mesh and sculpt/retopologize it. Do not use collections of ellipsoids, lofts, cylinders, cubes, or other parametric parts as the finished anatomy or primary garments. Procedural geometry is limited to small attached details such as buckles, pouches, straps, seams, teeth, claws, and hardware.
+
+When the user explicitly requests a from-scratch model, do not duplicate or edit a vanilla mesh for the final asset. Use the vanilla asset only for measured scale, facing, origin, and rig-reference facts; author the final base topology manually and keep it connected through the torso, neck, head, limbs, and major garment surfaces.
+
+If no user-supplied photo or reference image is available, generate a suitable 2D concept/model sheet with imagegen before modeling. Do not stop to ask for a reference solely because it is missing. Save the generated sheet as the visual source of truth, inspect it, and state that it is an agent-generated reference. If the user wants a PDX/HOI4-compatible unit, always import a vanilla model first and read scale, facing, origin, and armature structure from it.
 
 Do not report a simplified proxy, primitive mannequin, toy-like blockout, or loosely themed placeholder as complete. If the result does not visibly match the supplied concept/reference in silhouette, anatomy, clothing layers, surface condition, and material read, delete or clearly mark the failed attempt and keep iterating. Completion requires a model that would be reasonable to hand to a human artist for polish/export, not merely a technically rigged arrangement of primitives.
 
@@ -22,12 +26,14 @@ For PDX/HOI4 work, read [Blender PDX Modeling](references/blender-pdx-modeling.m
 ## Workflow
 
 1. Inspect inputs.
-   - Confirm the uploaded image role: main reference, style reference, or supporting reference.
-   - If the request is vague, infer the target object from the image and state the modeling target briefly.
+   - Confirm the supplied image role: main reference, style reference, or supporting reference.
+   - If no image is supplied, infer the target from the request and prepare an imagegen brief for a reference sheet instead of asking the user to upload one.
+   - State the modeling target briefly and record whether the reference is user-supplied or agent-generated.
 
 2. Create a 2D concept reference with imagegen.
-   - Use the uploaded photo as visual guidance when available.
+   - Use the uploaded photo as visual guidance when available; otherwise generate the reference from the user's brief.
    - Ask imagegen for a clean model sheet or concept reference: front view, side/back cues if possible, neutral pose, readable silhouette, material callouts.
+   - For a missing reference, use the built-in imagegen tool by default, save the selected output into the project when it will be used by the project, and never use the sheet as final model geometry or as a texture pasted onto a flat surface.
    - Save or locate the generated image for visual inspection, but do not import it as final geometry.
 
 3. Prepare Blender through MCP.
@@ -46,7 +52,7 @@ For PDX/HOI4 work, read [Blender PDX Modeling](references/blender-pdx-modeling.m
    - Model side and back surfaces, not just the camera-facing view.
    - Use bevels, smoothing, modifiers, sculpt-like mesh deformation, separate detail meshes, or joined mesh parts as appropriate.
    - Use real Blender materials and UV/image textures only as surface detail on real mesh, never as a substitute for geometry.
-   - For humanoid PDX units, prefer a measured vanilla mesh or armature-compatible base mesh over assembling the main body from spheres, cones, and cylinders. Primitives are acceptable only as temporary scaffolding or small accessories; they are not acceptable as the finished body, face, clothing, or hands.
+   - For humanoid PDX units, duplicate the measured vanilla mesh or another connected armature-compatible base, then reshape it with BMesh/sculpt/vertex edits and add layered garment topology over it. Keep the edited body, face, hands, and main clothing as coherent surfaces; use temporary primitives only as guides and delete or replace them before validation.
    - Build clothing as layered, fitted, damaged garments with believable hems, seams, collars, cuffs, wrinkles, tears, and thickness. Do not represent clothing with a few flat-looking triangles or generic tubes.
    - Build faces, hands, claws, wounds, teeth, and exposed bones as integrated anatomy. They must not look like loose blobs, decals floating off the body, or disconnected props.
    - Use procedural materials, UV painting, or texture maps to create meaningful surface variation. Do not claim "proper textures" when the result only has flat diffuse colors or generic noise.
@@ -75,6 +81,7 @@ Stop and correct the scene before reporting completion if any of these are true:
 - The model only looks correct from the front.
 - Scale, facing, origin, or bone structure were guessed instead of measured from the imported reference.
 - The mesh has no real limbs/body volume, no back/side detail, or no usable armature relationship.
+- The main anatomy or primary clothing is assembled from independent primitive/parametric parts instead of connected edited topology.
 - The imagegen output is being used as the model instead of as a reference.
 - The model is mostly primitive spheres, cylinders, cones, cubes, or disconnected accessory pieces.
 - The model looks simplified, toy-like, mannequin-like, or visibly unlike the concept/reference.

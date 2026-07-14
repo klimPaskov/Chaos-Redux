@@ -40,6 +40,7 @@ Before adding new dynamic logic, check this file and reuse an existing effect if
 - [cbrn_apply_state_evidence_delta_internal](#cbrn_apply_state_evidence_delta_internal)
 - [cbrn_reset_action_context](#cbrn_reset_action_context)
 - [CBRN payload logistics](#cbrn-payload-logistics)
+- [CBRN designer module unlocks](#cbrn-designer-module-unlocks)
 - [CBRN chemical-air raid reservation](#cbrn-chemical-air-raid-reservation)
 - [cbrn_dispatch_failed_chemical_air_raid_attempt](#cbrn_dispatch_failed_chemical_air_raid_attempt)
 - [cbrn_dispatch_chemical_action_record](#cbrn_dispatch_chemical_action_record)
@@ -1054,7 +1055,7 @@ The public action-record wrapper owns these private temporary calculators:
 | `cbrn_set_chemical_agent_profile_from_action` | Applies the distinct chlorine, phosgene, mustard, lewisite, tabun, sarin, soman, malodor, or behavioral-agent potency, persistence, evidence, and source-profile values. |
 | `cbrn_set_action_source_label` | Chooses battlefield, persistent-contamination, strategic-raid, or nerve-suppression source classification from the validated route and severity. |
 | `cbrn_set_action_attribution_from_evidence` | Converts the current episode evidence score into unknown, suspected, probable, or confirmed attribution without changing evidence. |
-| `cbrn_calculate_chemical_action_outputs` | Combines payload ratio, conditions, protection, route, class, agent, response choices, doctrine-only Condemnation mitigation, and confirmed-use floors into the normalized action outputs. |
+| `cbrn_calculate_chemical_action_outputs` | Combines payload ratio, conditions, protection, route, class, agent, response choices, completed exact CBRN designer traits, doctrine-only Condemnation mitigation, and confirmed-use floors into the normalized action outputs. Stable Choking Fill lowers choking artillery dose; Persistent Agent Formulation increases blister contamination, duration, and evidence; Standardized Fuzes increases artillery evidence; Sealed Bomb-Bay Interfaces lowers chemical-air friendly risk; Precision Release lowers chemical-air civilian exposure and contamination. Lightweight and Long-Range Payload effects live on exact installed rack variants rather than this country-scope calculator. Designer traits never reduce evidence or Condemnation. |
 
 Scope: attacker country/enclosing effect chain. Inputs are the temporary metadata and proof contract documented for `cbrn_prepare_chemical_action_record`. Defaults are fail closed: the reset helper runs first, and missing or invalid inputs leave a rejected record. Outputs are temporary only. Side effects: none; even the doctrine multiplier changes only Condemnation, while evidence, attribution, deaths, contamination, and confirmed-use history are untouched.
 
@@ -1142,8 +1143,8 @@ These country-scope effects are defined in `cbrn_payload_effects.txt`. They keep
 | `cbrn_initialize_payload_logistics` | Country scope. No inputs. Initializes persistent shell and air profile variables to `cbrn_agent.none`; creates no equipment. |
 | `cbrn_set_default_payload_requirement_for_action` | Country/enclosing action chain. Reads `cbrn_action_delivery_route`; writes the centralized positive route cost and resets consumed amount/proof. Unknown routes remain at zero. |
 | `cbrn_try_debit_action_payload` | Country scope. Requires validated chemical metadata, unlocked agent, ready matching profile, and exact stock at least equal to `cbrn_action_payload_required`. Debits the exact strategic-agent model, shared shell lot, or class-specific air lot and then writes consumed amount/proof. A failed gate removes nothing. |
-| `cbrn_change_shell_filling_profile` | Country scope. Requires temporary `cbrn_requested_payload_agent`, its unlock, a different current profile, and no active shell reconfiguration. Applies the centralized switch loss to prepared shell stock, stores the new agent, sets the timed line-change flag, and returns `cbrn_payload_profile_change_accepted`. |
-| `cbrn_change_air_payload_profile` | Same contract for the air line. Wastage is removed only from the old class-specific air payload stock and the longer air reconfiguration delay is applied. |
+| `cbrn_change_shell_filling_profile` | Country scope. Requires temporary `cbrn_requested_payload_agent`, its unlock, a different current profile, and no active shell reconfiguration. Applies the centralized switch loss to prepared shell stock, stores the new agent, sets the timed line-change flag, and returns `cbrn_payload_profile_change_accepted`. Completed Rapid Front Distribution multiplies the delay by 0.80 before rounding. |
+| `cbrn_change_air_payload_profile` | Same contract for the air line. Wastage is removed only from the old class-specific air payload stock and the longer air reconfiguration delay is applied. Completed Controlled Dispersal multiplies that delay by 1.15 before rounding. |
 | `cbrn_convert_selected_agent_to_shell_lots` | Country scope. Requires a selected ready shell profile and temporary positive `cbrn_payload_conversion_requested`. Clamps the input to exact selected-agent stock, debits that stock, applies the class-specific recovery ratio, adds shell lots, and returns completed proof plus actual input/output. |
 | `cbrn_convert_selected_agent_to_air_payload_lots` | Same conversion contract for the selected air agent. Requires Chemical Air Interdiction and adds only the matching choking, blister, nerve, or incapacitating air lot. |
 | `cbrn_migrate_legacy_payload_stockpiles` | Country scope, idempotent. Converts each legacy cylinder and experimental bomb model to its exact strategic-agent lot at the centralized save-preserving recovery ratio, selects deterministic initial profiles from recovered stock, and sets one migration flag. It must run only after every legacy consumer has moved to the shared pipeline. |
@@ -1157,7 +1158,7 @@ These country-scope effects are defined in `cbrn_payload_effects.txt`. They keep
 | `cbrn_remove_shell_profile_wastage_internal` / `cbrn_remove_air_profile_wastage_internal` | Apply bounded prepared-stock losses during profile changes without touching strategic agent stock. |
 | `cbrn_read_selected_shell_agent_stock_internal` / `cbrn_read_selected_air_agent_stock_internal` | Read exact selected strategic-agent availability for conversion; unknown profiles return zero. |
 | `cbrn_debit_selected_shell_agent_stock_internal` / `cbrn_debit_selected_air_agent_stock_internal` | Remove the exact conversion input selected by the persistent profile. |
-| `cbrn_set_shell_conversion_recovery_internal` | Select the choking, blister, nerve, or incapacitating shell-filling recovery ratio. |
+| `cbrn_set_shell_conversion_recovery_internal` | Selects the choking, blister, nerve, or incapacitating shell-filling recovery ratio. Completed Stable Choking Fill multiplies chlorine or phosgene recovery by 1.05 and clamps the result to the valid zero-through-one range. |
 | `cbrn_add_selected_air_payload_output_internal` | Adds only the class-specific air payload output that matches the selected agent. |
 
 Example:
@@ -1170,11 +1171,33 @@ cbrn_set_default_payload_requirement_for_action = yes
 cbrn_try_debit_action_payload = yes
 ```
 
+## CBRN designer module unlocks
+
+These country-scope effects are defined in `cbrn_designer_effects.txt`. They grant hidden, unresearchable technologies that enable exact agent-specific Lightweight, Long-Range, or combined aircraft rack modules. A grant creates no equipment and affects no aircraft design that does not install the unlocked module.
+
+| Effect | Inputs, defaults, outputs, and side effects |
+| --- | --- |
+| `cbrn_unlock_lightweight_aerosol_modules_for_available_agents` | Country scope. Intended for the Lightweight Payload Assemblies trait `on_complete` block. It checks each regular agent technology and both special projects, then grants only the corresponding hidden Lightweight module technologies. Missing agent access does nothing. The caller supplies the just-completed trait proof. |
+| `cbrn_unlock_long_range_aerosol_modules_for_available_agents` | Country scope. Intended for the Long-Range Payload trait `on_complete` block. It grants exact Long-Range modules for available agents. When Lightweight Payload Assemblies was also completed, it additionally grants exact combined modules. Missing agent access does nothing. |
+| `cbrn_sync_aerosol_designer_module_unlocks` | Country scope, idempotent. Reads both completed MIO traits and reruns the relevant direction helpers. Each chlorine, phosgene, mustard, lewisite, Tabun, Sarin, and Soman technology calls this after research so a trait completed earlier cannot bypass the agent gate. |
+| `cbrn_unlock_malodor_aerosol_modules_after_project` | Country scope. Called only by the completed Malodor project output. Reads completed designer traits and grants the exact Malodor variant technologies without depending on whether the project-completed trigger has updated during its own output block. |
+| `cbrn_unlock_behavioral_aerosol_modules_after_project` | Same contract for the completed Behavioral-Agent project and its exact rack variants. |
+
+The hidden technology family is defined in `cbrn_aerosol_module_variant_technologies.txt`. Separate technology IDs preserve an exact AND gate between one agent and one physical rack direction. The module variants are defined in `chemical_air_bomb_variant_modules.txt`: Lightweight changes only that rack's weight, agility burden, and payload volume; Long-Range changes only the installed rack's range and maneuver burden; combined modules compose both. No helper applies a country modifier, ordinary-aircraft bonus, strategic dose proxy, friendly-risk proxy, or periodic unlock pulse.
+
+Example from an agent technology:
+
+```txt
+on_research_complete = {
+	cbrn_sync_aerosol_designer_module_unlocks = yes
+}
+```
+
 ## CBRN chemical-air raid reservation
 
 `cbrn_resolve_chemical_air_raid_reservation` is the country-scope public reservation effect in `cbrn_chemical_raid_effects.txt`. It may be called only from a native raid outcome whose raid type reserved exactly 120 units of the matching choking, blister, nerve, or incapacitating air-payload archetype through `essential_equipment`. Native collection is the debit; the helper must not call `cbrn_try_debit_action_payload` a second time.
 
-Required temporary inputs are exact `cbrn_raid_agent` and one `cbrn_raid_engine_outcome` code for failure, limited success, success, or critical success. The effect first resets the shared action context, copies the exact raid agent into it, records the chemical-air route, derives the agent class, splits the engine failure result evenly between accepted Aborted and Failed outcomes, selects the centralized consumption and intended-dose bands, refunds the exact unused class-specific model, and records positive net consumption with native-reservation proof. Partial, successful, and catastrophic results additionally return a positive release-efficiency multiplier and release proof. Aborted and failed results return zero release efficiency and no release proof.
+Required temporary inputs are exact `cbrn_raid_agent` and one `cbrn_raid_engine_outcome` code for failure, limited success, success, or critical success. The effect first resets the shared action context, copies the exact raid agent into it, records the chemical-air route, derives the agent class, splits the engine failure result evenly between accepted Aborted and Failed outcomes, selects the centralized consumption and intended-dose bands, refunds the exact unused class-specific model, and records positive net consumption with native-reservation proof. Completed Controlled Dispersal narrows only the partial dose band to 0.45-0.60 and the catastrophic band to 1.15-1.30; payload consumption is unchanged. Partial, successful, and catastrophic results additionally return a positive release-efficiency multiplier and release proof. Aborted and failed results return zero release efficiency and no release proof.
 
 Defaults: fail closed. An invalid agent or engine result leaves missing reservation proof and performs no refund. Outputs are temporary `cbrn_raid_result`, consumption/dose values, refund, reservation proof, release proof, and the shared action payload/release fields. Side effects are limited to returning unused payload stock; this effect does not select weather or terrain, resolve protection, contaminate a state, create deaths, add evidence, or apply Condemnation.
 
