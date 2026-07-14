@@ -927,6 +927,19 @@ Final PNG assets must be converted to DDS using the repository's standard DDS co
 
 The output must be compatible with Chaos Redux's expected 32-bit BGRA or B8G8R8A8-style DDS workflow.
 
+Prefer `.tools/convert_to_dds.py`. If a retained custom mechanical processor must write uncompressed BGRA DDS directly, mirror that converter's `write_bgra_dds` layout exactly instead of inventing another header layout.
+
+For a standard legacy, one-level, uncompressed BGRA DDS, require all of the following:
+
+- a 128-byte file header in total: `DDS ` magic at byte 0, `DDS_HEADER` size `124` at byte 4, and 11 reserved dwords before the pixel-format block
+- `DDS_PIXELFORMAT` at byte 76 with size `32`, flags `65` (`RGB | ALPHAPIXELS`), fourCC `0`, bit count `32`, and BGRA masks `0x00FF0000`, `0x0000FF00`, `0x000000FF`, and `0xFF000000`
+- `DDSCAPS_TEXTURE` (`0x1000`) at byte 108
+- no mipmaps unless the target asset deliberately requires them
+
+Validate each uncompressed one-level BGRA output by checking the declared width and height, exact file length `128 + width * height * 4`, actual alpha-byte minimum and maximum against the asset's intended transparency, and successful registration of the final path in `.gfx`. Dimension and alpha checks alone are insufficient: reject shifted pixel-format blocks, missing texture caps, or any other malformed header even when an image decoder can report plausible dimensions.
+
+If a processing script is retained as provenance, rerun it after correcting its DDS writer and validate every DDS it produces, not only the asset that exposed the defect.
+
 If conversion fails, stop and report the error. Do not invent another conversion route unless the user approves it.
 
 After conversion, confirm that:
@@ -1044,3 +1057,4 @@ Before finishing, confirm:
 15. No final asset remains only in a temporary folder.
 16. Focus, idea, national spirit, officer corps spirit, decision, decision category, achievement, and tech icons were treated as separate asset types. No idea or decision icon is only a resized, cropped, recolored, padded, or lightly edited focus icon.
 17. Every animated asset used `chaos-redux-frame-animation`, has real source frames, has a static fallback, and has no transform-only final motion.
+18. Every uncompressed one-level BGRA DDS passes the complete legacy-header, exact-length, declared-dimension, actual-alpha, and `.gfx` path checks from section 24.
