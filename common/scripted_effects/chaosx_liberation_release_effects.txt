@@ -3,7 +3,8 @@
 # ============================================================================
 # Overview:
 # - Owns the shared frozen-plan lifecycle for Event 005 and Event 006.
-# - Stores exact country, state, host, protected-state, and rejection ledgers.
+# - Stores exact country, state, host, protected-state, original-capital, and
+#   rejection ledgers.
 # - Performs mutation-free lock validation and a final live revalidation before
 #   either event may change ownership.
 # - Does not select Event 006 packages or execute event-specific country setup;
@@ -67,6 +68,7 @@ liberation_release_clear_plan_arrays = {
 	clear_array = global.liberation_plan_hosts
 	clear_array = global.liberation_plan_host_owned_state_snapshots
 	clear_array = global.liberation_plan_host_protected_states
+	clear_array = global.liberation_plan_host_original_capitals
 	clear_array = global.liberation_plan_rejected_package_ids
 	clear_array = global.liberation_plan_rejection_reasons
 }
@@ -81,6 +83,7 @@ liberation_release_reset_plan = {
 		clr_global_flag = liberation_release_plan_includes_event6
 		clr_global_flag = liberation_release_joint_plan_executed
 		clr_global_flag = liberation_release_execution_started
+		clr_global_flag = liberation_release_capital_restore_failed
 		set_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.idle }
 		clear_variable = global.liberation_plan_id
 		clear_variable = global.liberation_plan_mode
@@ -110,6 +113,7 @@ liberation_release_begin_plan = {
 		clr_global_flag = liberation_release_plan_includes_event6
 		clr_global_flag = liberation_release_joint_plan_executed
 		clr_global_flag = liberation_release_execution_started
+		clr_global_flag = liberation_release_capital_restore_failed
 		clear_variable = global.liberation_plan_last_failure
 		if = {
 			limit = { NOT = { has_variable = global.liberation_next_plan_id } }
@@ -168,6 +172,30 @@ liberation_release_enter_allocation_phase = {
 liberation_release_record_rejection = {
 	add_to_array = { array = global.liberation_plan_rejected_package_ids value = liberation_rejected_package_id }
 	add_to_array = { array = global.liberation_plan_rejection_reasons value = liberation_reject_reason }
+}
+
+# Reads event target `liberation_candidate_state_host` and returns the
+# temporary boolean `liberation_candidate_host_has_loss_capacity`. The host's
+# protected remnant consumes the final owned-state slot.
+liberation_release_measure_candidate_host_loss_capacity = {
+	set_temp_variable = { liberation_candidate_host_has_loss_capacity = constant:liberation_release_limit.minimum }
+	if = {
+		limit = { has_event_target = liberation_candidate_state_host }
+		event_target:liberation_candidate_state_host = {
+			set_temp_variable = { liberation_candidate_host_loss_ceiling = num_owned_states }
+			subtract_from_temp_variable = { liberation_candidate_host_loss_ceiling = constant:liberation_release_limit.one }
+			if = {
+				limit = {
+					check_variable = {
+						var = liberation_release_planned_loss_count
+						value = liberation_candidate_host_loss_ceiling
+						compare = less_than
+					}
+				}
+				set_temp_variable = { liberation_candidate_host_has_loss_capacity = constant:liberation_release_limit.one }
+			}
+		}
+	}
 }
 
 # ---------------------------------------------------------------------------
@@ -290,6 +318,9 @@ liberation_release_reserve_host_state = {
 			add_to_array = { array = global.liberation_plan_hosts value = THIS }
 			add_to_array = { array = global.liberation_plan_host_owned_state_snapshots value = liberation_host_owned_state_snapshot }
 			add_to_array = { array = global.liberation_plan_host_protected_states value = event_target:liberation_candidate_protected_state }
+			capital_scope = {
+				add_to_array = { array = global.liberation_plan_host_original_capitals value = THIS }
+			}
 			set_country_flag = liberation_release_plan_host
 			set_variable = { liberation_release_plan_id = global.liberation_plan_id }
 			set_variable = { liberation_release_planned_loss_count = constant:liberation_release_limit.minimum }
@@ -633,6 +664,10 @@ liberation_release_cleanup_unused_host_reservations = {
 			}
 			remove_from_array = {
 				array = global.liberation_plan_host_protected_states
+				index = liberation_rollback_host_index
+			}
+			remove_from_array = {
+				array = global.liberation_plan_host_original_capitals
 				index = liberation_rollback_host_index
 			}
 		}
@@ -1188,6 +1223,59 @@ liberation_release_lock_plan = {
 		else = {
 			set_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.aborted }
 		}
+	}
+}
+
+# Restores the capital snapshot for every host if a locked plan is cancelled
+# before execution begins. This makes capital preparation reversible even when
+# a later host fails relocation or final live validation.
+liberation_release_restore_host_capitals_before_execution = {
+	clr_global_flag = liberation_release_capital_restore_failed
+	if = {
+		limit = {
+			NOT = { has_global_flag = liberation_release_execution_started }
+			liberation_release_host_arrays_are_aligned = yes
+		}
+		set_temp_variable = { liberation_host_capital_restore_index = constant:liberation_release_limit.minimum }
+		while_loop_effect = {
+			limit = {
+				check_variable = { var = liberation_host_capital_restore_index value = global.liberation_plan_hosts^num compare = less_than }
+			}
+			var:global.liberation_plan_hosts^liberation_host_capital_restore_index = { save_event_target_as = liberation_host_capital_restore_country }
+			var:global.liberation_plan_host_original_capitals^liberation_host_capital_restore_index = { save_event_target_as = liberation_host_capital_restore_state }
+			if = {
+				limit = {
+					has_event_target = liberation_host_capital_restore_country
+					has_event_target = liberation_host_capital_restore_state
+					event_target:liberation_host_capital_restore_country = { exists = yes }
+					event_target:liberation_host_capital_restore_state = { is_owned_by = event_target:liberation_host_capital_restore_country }
+				}
+				event_target:liberation_host_capital_restore_country = {
+					if = {
+						limit = { NOT = { capital_scope = { state = event_target:liberation_host_capital_restore_state } } }
+						set_capital = {
+							state = event_target:liberation_host_capital_restore_state
+							remember_old_capital = no
+						}
+						if = {
+							limit = { NOT = { capital_scope = { state = event_target:liberation_host_capital_restore_state } } }
+							set_global_flag = liberation_release_capital_restore_failed
+						}
+						else = {
+							clear_variable = liberation_release_last_protected_capital
+							clear_variable = liberation_release_last_capital_relocation_date
+						}
+					}
+				}
+			}
+			else = {
+				set_global_flag = liberation_release_capital_restore_failed
+			}
+			add_to_temp_variable = { liberation_host_capital_restore_index = constant:liberation_release_limit.one }
+		}
+	}
+	else = {
+		set_global_flag = liberation_release_capital_restore_failed
 	}
 }
 

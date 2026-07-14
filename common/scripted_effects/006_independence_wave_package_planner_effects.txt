@@ -427,6 +427,92 @@ independence_wave_commit_previous_wave_memory = {
 	set_variable = { global.independence_wave_previous_wave_date = global.date }
 }
 
+# Freezes the public, post-commit summary before the shared plan can be reset
+# for another incident. The presentation ledger contains no package ids or
+# hidden route data; it records only facts visible on the map at release.
+independence_wave_commit_wave_history = {
+	if = {
+		limit = { NOT = { has_variable = global.independence_wave_total_waves } }
+		set_variable = { global.independence_wave_total_waves = constant:independence_wave_planner.no_candidates }
+	}
+	add_to_variable = { global.independence_wave_total_waves = constant:independence_wave_plan.loop_increment }
+	set_variable = { global.independence_wave_presentation_wave_number = global.independence_wave_total_waves }
+	set_variable = { global.independence_wave_presentation_country_count = global.independence_wave_plan_selected_count }
+	set_variable = { global.independence_wave_presentation_chaos_band = global.independence_wave_plan_chaos_band }
+
+	clear_temp_array = independence_wave_presentation_unique_regions
+	for_each_loop = {
+		array = global.independence_wave_plan_selected_regions
+		value = independence_wave_presentation_region
+		if = {
+			limit = {
+				NOT = {
+					is_in_array = {
+						array = independence_wave_presentation_unique_regions
+						value = independence_wave_presentation_region
+					}
+				}
+			}
+			add_to_temp_array = {
+				independence_wave_presentation_unique_regions = independence_wave_presentation_region
+			}
+		}
+	}
+	set_variable = { global.independence_wave_presentation_region_count = independence_wave_presentation_unique_regions^num }
+	clear_temp_array = independence_wave_presentation_unique_regions
+
+	clear_temp_array = independence_wave_presentation_unique_hosts
+	for_each_scope_loop = {
+		array = global.independence_wave_plan_selected_hosts
+		if = {
+			limit = {
+				NOT = {
+					is_in_array = {
+						array = independence_wave_presentation_unique_hosts
+						value = THIS
+					}
+				}
+			}
+			add_to_temp_array = { independence_wave_presentation_unique_hosts = THIS }
+		}
+	}
+	set_variable = { global.independence_wave_presentation_host_count = independence_wave_presentation_unique_hosts^num }
+	clear_temp_array = independence_wave_presentation_unique_hosts
+
+	set_variable = { global.independence_wave_presentation_armed_count = constant:independence_wave_planner.no_candidates }
+	for_each_loop = {
+		array = global.independence_wave_plan_country_row_indices
+		value = independence_wave_presentation_country_row
+		set_temp_variable = {
+			independence_wave_presentation_force_level = global.liberation_plan_force_levels^independence_wave_presentation_country_row
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = independence_wave_presentation_force_level
+					value = constant:liberation_force_level.armed
+					compare = greater_than_or_equals
+				}
+			}
+			add_to_variable = {
+				global.independence_wave_presentation_armed_count = constant:independence_wave_plan.loop_increment
+			}
+		}
+	}
+
+	set_variable = { global.independence_wave_presentation_preexisting_network_count = global.independence_wave_network_member_country_entries^num }
+	subtract_from_variable = {
+		global.independence_wave_presentation_preexisting_network_count = global.independence_wave_plan_selected_count
+	}
+	clamp_variable = {
+		var = global.independence_wave_presentation_preexisting_network_count
+		min = constant:independence_wave_planner.no_candidates
+		max = constant:liberation_release_limit.maximum_event6_packages
+	}
+	set_variable = { global.independence_wave_presentation_date = global.date }
+	independence_wave_commit_previous_wave_memory = yes
+}
+
 # Must run before a shared-plan abort clears the country array.
 independence_wave_clear_plan_contribution = {
 	for_each_scope_loop = {

@@ -1,9 +1,67 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 006 SCRIPTED LOCALISATION
 # ============================================================================
-# Resolves the researched starting-force profile into the same localized name
-# used when defining and spawning its division template.
+# Resolves committed wave-summary facts and the researched starting-force
+# profile. Presentation text never reads transient planner inputs.
 # ============================================================================
+
+defined_text = {
+	name = GetIndependenceWavePresentationArmedText
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.independence_wave_presentation_armed_count
+				value = constant:independence_wave_planner.no_candidates
+				compare = greater_than
+			}
+		}
+		localisation_key = independence_wave_presentation_armed_present
+	}
+	text = { localisation_key = independence_wave_presentation_armed_absent }
+}
+
+defined_text = {
+	name = GetIndependenceWavePresentationRegionText
+	text = {
+		trigger = {
+			check_variable = {
+				global.independence_wave_presentation_region_count = constant:independence_wave_plan.loop_increment
+			}
+		}
+		localisation_key = independence_wave_presentation_region_single
+	}
+	text = { localisation_key = independence_wave_presentation_region_multiple }
+}
+
+defined_text = {
+	name = GetIndependenceWavePresentationHostText
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.independence_wave_presentation_host_count
+				value = global.independence_wave_presentation_country_count
+				compare = less_than
+			}
+		}
+		localisation_key = independence_wave_presentation_host_concentrated
+	}
+	text = { localisation_key = independence_wave_presentation_host_distributed }
+}
+
+defined_text = {
+	name = GetIndependenceWavePresentationNetworkText
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.independence_wave_presentation_preexisting_network_count
+				value = constant:independence_wave_planner.no_candidates
+				compare = greater_than
+			}
+		}
+		localisation_key = independence_wave_presentation_network_returned
+	}
+	text = { localisation_key = independence_wave_presentation_network_first }
+}
 
 defined_text = {
 	name = GetIndependenceWaveForceTemplateName
