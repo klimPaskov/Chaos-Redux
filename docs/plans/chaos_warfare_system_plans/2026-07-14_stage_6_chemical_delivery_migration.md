@@ -2,7 +2,7 @@
 
 Status: in progress; the overall Chaos Warfare goal remains incomplete
 
-Current tranche: the equipment, payload-profile, exact-debit, shared-dispatch, defender-shock, targeted-recovery, sanctions-recognition, and asset foundation is implemented. No new ground or air release route is active yet, and the idempotent legacy stock migration has no caller while old consumers remain. Route decisions, exact air raids, legacy retirement, AI, designers, and specialist audits remain open.
+Current tranche: the equipment, payload-profile, exact-debit, shared-dispatch, defender-shock, targeted-recovery, sanctions-recognition, class-specific native raid reservation, five-band raid outcome accounting, and matching asset foundation are implemented. No new ground or air release route is active yet, and the idempotent legacy stock migration has no caller while old consumers remain. Exact-state condition adapters, active route decisions/raids, failed-attempt consequences, legacy retirement, AI, designers, and specialist audits remain open.
 
 ## Accepted sources and conflict resolution
 
@@ -16,7 +16,7 @@ The user explicitly confirmed that doctrine may reduce Condemnation impact. The 
 - Raid `essential_equipment` is collected when the raid is created. Outcome effects may return unused payload to the actor, producing explicit net-consumption bands without a second debit.
 - No verified current-version hook proves that an ordinary continuous air mission with a chemical module is presently executing eligible activity. Continuous-air contamination remains disabled. No estimator, aircraft-presence proxy, front-heat proxy, or region-wide contamination fallback will be retained.
 - Vanilla's current `divisions_in_state` trigger accepts a scoped state (`state = PREV`) or a state-valued variable and can filter a specific subunit. Ground operations can therefore prove that the required projector, ammunition-train, or armored-delivery formation is physically present in a friendly state adjacent to the selected target. Army Headquarters abilities still do not expose an exact command-assignment relationship, so the engine cannot prove that the particular prepared headquarters commands that particular border. The Headquarters remains the theater authorization layer and the adjacent formation remains the delivery layer; no stronger association may be claimed.
-- Current state-decision scope exposes no verified live weather or province-terrain trigger. `is_fighting_in_weather`, `is_fighting_in_terrain`, and `temperature` are documented for combatant scope, while state structure can prove only state category, buildings, supply nodes, ports, airfields, victory points, population, and control. No forecast estimator, structure-as-terrain substitution, or neutral condition fallback may be activated without explicit approval.
+- Current selected-state decision and raid scopes expose no verified live target-weather or province-terrain trigger. `is_fighting_in_weather`, `is_fighting_in_terrain`, and `temperature` are documented for combatant scope, while state structure can prove only state category, buildings, supply nodes, ports, airfields, victory points, population, and control. No forecast estimator, structure-as-terrain substitution, or neutral condition fallback may be activated without explicit approval.
 - Combat tactics expose no verified activation effect capable of consuming payload before dispatch. The legacy Chemical Barrage tactic remains weight zero and fail-closed.
 - Strategic-bomber eligibility will not be added unless an exact local current-version module/mission precedent is verified. Chemical air modules remain limited to the verified CAS/tactical surface.
 
@@ -31,7 +31,7 @@ The user explicitly confirmed that doctrine may reduce Condemnation impact. The 
 
 ### 1. Central payload and route model
 
-- Add nine distinct producible strategic-agent models under one formation-compatible archetype, one filled-shell model, and four class-specific prepared-air-payload models, with stable categories, script-enum registration, production costs, reliability, storage risk, and model progression where mapped. Exact operations must continue to select and debit one exact strategic agent even though formation reinforcement uses the common archetype.
+- Add nine distinct producible strategic-agent models under one formation-compatible archetype, one filled-shell model, and four class-specific prepared-air-payload archetypes/models, with stable categories, script-enum registration, production costs, reliability, storage risk, and model progression where mapped. Exact operations must continue to select and debit one exact strategic agent even though formation reinforcement uses the common archetype.
 - Centralize strategic-payload-to-shell and strategic-payload-to-air conversion losses, route payload costs, raid reserve quantities, outcome salvage bands, cooldowns, profile-change delay/wastage, AI weights, and consequence limits in Stage 6 script constants.
 - Add country-selected shell-filling and air-payload profiles. A profile selects one agent/class at a time; changing it incurs a real delay and wastage before new operations may use the profile.
 - Update Projector Battery, Chemical Ammunition Train, and Armored Delivery Detachment equipment requirements where the accepted matrix requires essential delivery hardware. Operational payload remains a national debit/reservation so a battalion cannot create free exposure.
@@ -69,6 +69,8 @@ The user explicitly confirmed that doctrine may reduce Condemnation impact. The 
   - catastrophic/critical: 100 percent payload use, 110–140 percent dose, extreme evidence and consequences.
 - Every exposing result dispatches against `var:target_state`. No result may contaminate an arbitrary state or whole air region.
 - Idle chemical-capable aircraft and ordinary continuous missions never call the exposure system.
+
+Reservation/outcome foundation completed before activation: native `essential_equipment` now has one exact archetype per agent class; the shared helper maps four engine outcomes to five accepted results, refunds unused stock, records net consumption, and separates consumed payload from delivered-dose efficiency. Active raid IDs remain unwired until the approved weather/terrain condition policy is available.
 
 ### 6. Legacy route retirement
 

@@ -6,7 +6,7 @@ This system provides the shared logistics and consequence contract used by every
 
 Doctrine may reduce the Condemnation impact of an accepted action. That reduction applies only to Condemnation. It does not reduce payload expenditure, protection failure, disruption, deaths, contamination, medical saturation, mask loss, evidence, attribution, confirmed-use history, treaty response, or first-exposure adaptation. Confirmed strategic and mass-casualty actions retain public-harm floors after doctrine is applied.
 
-The current implementation establishes the shared core. Ground operations, explicit air raids, biological actions, and nerve-agent suppression are separate delivery adapters and remain pending until their exact route gates are implemented and validated.
+The current implementation establishes the shared core plus native chemical-air payload reservation and outcome accounting. Ground releases, exact-state air exposure, biological actions, and nerve-agent suppression remain separate delivery adapters until their exact route and condition gates are implemented and validated.
 
 ## Source-of-truth map
 
@@ -59,7 +59,7 @@ Changing the shell profile takes 21 days and discards 25 percent of already fill
 
 ### Prepared air payload lots
 
-`chemical_air_payload` is the archetype. Prepared stock is kept in four class-specific models: choking, blister, nerve, and incapacitating. The persistent `cbrn_air_payload_agent` still records the exact agent. Both the exact profile and matching class stock are required for an air action.
+`chemical_air_payload` is the shared production category. Prepared stock is divided into four class-specific archetypes and models: choking, blister, nerve, and incapacitating. This lets a raid's native `essential_equipment` reserve the exact class instead of drawing an unrelated payload from one common archetype. The persistent `cbrn_air_payload_agent` still records the exact agent. Both the exact profile and matching class stock are required for an air action.
 
 Changing the air profile takes 28 days and discards 20 percent of prepared stock. Converting strategic agent to air payload retains 82.5 percent. An aircraft module or idle chemical-capable aircraft never consumes this equipment and never proves release.
 
@@ -111,6 +111,22 @@ The default national operation costs are centrally tuned:
 
 The figures are gameplay tuning and do not claim a precise historical tonnage conversion.
 
+## Native chemical-air reservation and outcomes
+
+Each explicit chemical-air raid reserves 120 units from exactly one class archetype through native `essential_equipment`. Native collection is the real debit. The shared raid helper then refunds only the unused model and records the resulting net consumption; it never performs a second stock debit.
+
+The engine exposes four outcome blocks, while the accepted design has five results. The failure block is therefore split evenly between Aborted and Failed. All bands are centralized:
+
+| Result | Net payload consumption | Intended delivered dose |
+| --- | ---: | ---: |
+| Aborted | 10-25% | none |
+| Failed | 40-80% | none |
+| Partial | 70-100% | 35-65% |
+| Success | 100% | 100% |
+| Catastrophic success | 100% | 110-140% |
+
+Consumption and delivered dose are intentionally separate. `cbrn_action_release_efficiency_mult` reconciles them before the shared exposure calculation, so a partial operation does not fabricate a full release merely because most of the reserved payload was lost or expended. Aborted and failed attempts cannot enter exposure because they return no release proof. This reservation subsystem is not yet wired to active raid IDs: live weather/terrain inputs still require the explicit policy recorded under Engine boundaries.
+
 ## Consequence dispatch
 
 An accepted record is applied to the selected state once.
@@ -151,7 +167,7 @@ The migration helper is deliberately not called while legacy delivery consumers 
 - Current 1.19 documentation exposes `divisions_in_state` with a scoped state, so ground adapters can prove an exact mapped route formation in a friendly state adjacent to the selected enemy state.
 - The available scopes do not prove that a particular active Army Headquarters commands that adjacent formation. Headquarters therefore remains the theater authorization and preparation layer; the adjacent formation remains the delivery proof. This distinction must remain visible in route documentation.
 - No verified current-version hook proves eligible activity by an ordinary continuous air mission. The continuous-air route is rejected fail-closed. No aircraft-presence, mission-assignment, or idle-module estimator is retained.
-- Current state-targeted decision scope exposes no verified live weather or state-terrain trigger. Ground condition handling remains unresolved until an accepted, disclosed model or a verified engine hook is selected. Density and fortification can be read from state structure, but they must not be described as terrain or weather.
+- Current selected-state decision and raid scopes expose no verified live target-weather or state-terrain trigger. Ground and explicit-air condition handling remain unresolved until an accepted, disclosed model or a verified engine hook is selected. Density and fortification can be read from state structure, but they must not be described as terrain or weather.
 
 ## Assets
 
@@ -163,8 +179,10 @@ Registered runtime sprite IDs:
 - one `GFX_<agent>_agent_lot_1_medium` sprite for each of the nine strategic models;
 - `GFX_archetype_chemical_artillery_ammunition_medium`;
 - `GFX_chemical_shell_lot_1_medium`;
-- `GFX_archetype_chemical_air_payload_medium`;
-- one medium sprite for each of the four air-payload classes; and
+- `GFX_archetype_chemical_air_payload_medium` for the shared production category;
+- one independent `GFX_archetype_<class>_chemical_air_payload_medium` sprite for each of the four exact reservation archetypes;
+- one medium sprite for each of the four air-payload classes;
+- `GFX_raid_type_icon_cbrn_chemical_air_operation` for the explicit selected-state operation; and
 - `GFX_idea_cbrn_first_chemical_shock`.
 
 Equipment DDS files live in `gfx/interface/technologies/stage_6_chemical_delivery/equipment/`. The first-exposure idea DDS lives in `gfx/interface/ideas/stage_6_chemical_delivery/`.
@@ -175,7 +193,7 @@ The following work is intentionally not represented as complete:
 
 - exact-state cylinder, projector, artillery, and armored operations with route-specific formation proof, costs, preparation, cooldown, cleanup, and AI;
 - an accepted and disclosed ground condition model or a newly verified live weather/terrain hook;
-- explicit selected-state chemical air raids and their outcome bands;
+- active selected-state chemical air raid IDs, failed-attempt consequences, and the accepted weather/terrain condition adapter; native reservation and outcome bands are already implemented;
 - chemical aircraft modules and verified CAS/tactical eligibility;
 - retirement of legacy route effects followed by activation of idempotent stock migration;
 - biological-agent logistics, incubation, spread, detection, treatment, accidents, and containment;
