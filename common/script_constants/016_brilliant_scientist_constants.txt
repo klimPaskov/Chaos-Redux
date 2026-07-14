@@ -1,0 +1,923 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 BRILLIANT SCIENTIST CONSTANTS
+# ============================================================================
+# Event-owned identifiers and tuning for Doctor Warren Kruger, the Directorate
+# values, fifteen four-stage project families, evolution pacing, foreign
+# pressure, laboratory-state formation, project-derived forces, temporal debt,
+# origin evidence, and both terminal commitments. Gameplay files consume these
+# values through constant:brilliant_scientist_* accessors.
+#
+# Event 020 owns world-end scenario 10. Concurrent Event 015 wiring occupies
+# visible super-events through 89, so Event 016 reserves world-end scenarios
+# 11-12 and visible super-events 90-95. Shared registries must be updated by
+# their owning files after a fresh collision scan.
+# ============================================================================
+
+brilliant_scientist_event = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	id = 16
+	evolution_type = 16
+	evolution_i_stage = 1
+	evolution_ii_stage = 2
+	evolution_iii_stage = 3
+	evolution_iv_stage = 4
+	evolution_i_tier = 1
+	evolution_ii_tier = 2
+	evolution_iii_tier = 3
+	evolution_iv_tier = 4
+	project_family_count = 15
+	project_stage_count = 4
+	super_event_count = 6
+	achievement_count = 17
+}
+
+brilliant_scientist_value = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	invalid = -1
+	zero = 0
+	one = 1
+	two = 2
+	three = 3
+	four = 4
+	five = 5
+	six = 6
+	ten = 10
+	maximum = 100
+}
+
+brilliant_scientist_recruitment_posture = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	public_compact = 1
+	secret_directorate = 2
+}
+
+# Parent-owned advisor/scientist trait files consume these exact modifiers.
+# The advisor value is binding and must be the sole Event 016 +100% country
+# research-speed source. If a specific trait field rejects constant: tokens,
+# its owner must mirror the value through a named file-scoped @ constant.
+brilliant_scientist_identity = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	advisor_research_speed_factor = 1.0
+	special_project_speed_factor = 1.0
+	scientist_breakthrough_bonus_factor = 1.0
+	scientist_research_bonus_factor = 1.0
+	scientist_xp_gain_factor = 2.0
+	facility_supply_consumption_factor = -0.5
+}
+
+# One-shot fire selection is intentionally weighted rather than uniform. The
+# pool is rebuilt only when the fire-once resolver asks for Event 016.
+brilliant_scientist_host_selection = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	minimum_core_states = 2
+	base_weight = 4
+	minimum_weight = 1
+	maximum_weight = 40
+	research_slots_three_bonus = 3
+	research_slots_four_bonus = 4
+	research_slots_five_bonus = 5
+	electronics_technology_bonus = 3
+	computing_technology_bonus = 4
+	technological_gap_bonus = 6
+	factory_gate_low = 10
+	factory_gate_high = 30
+	factory_low_bonus = 2
+	factory_high_bonus = 4
+	urban_state_bonus = 3
+	major_bonus = 3
+	war_pressure_bonus = 3
+	special_project_facility_bonus = 6
+	centralized_government_bonus = 2
+	democratic_government_bonus = 1
+	chaos_high_bonus = 3
+	chaos_extreme_bonus = 5
+	science_chaos_history_bonus = 4
+}
+
+# A player-only rejection route uses its own pool. This selector happens before
+# Kruger receives nationality or either fixed role and therefore must never call
+# the atomic post-appointment transfer contract.
+brilliant_scientist_send_away_selection = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	base_weight = 3
+	minimum_weight = 1
+	maximum_weight = 50
+	welcome_refugees_bonus = 12
+	same_faction_bonus = 10
+	ally_bonus = 8
+	ideological_compatibility_bonus = 7
+	ideological_rival_bonus = 4
+	neighbor_bonus = 5
+	technological_pressure_bonus = 6
+	major_bonus = 5
+	special_project_facility_bonus = 9
+	war_pressure_bonus = 3
+}
+
+brilliant_scientist_measure = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	minimum = 0
+	maximum = 100
+	band_low = 25
+	band_moderate = 50
+	band_high = 75
+	band_extreme = 90
+	public_mandate = 65
+	public_dependence = 25
+	public_exposure = 20
+	public_capacity = 30
+	public_independent_capacity = 15
+	public_grievance = 5
+	secret_mandate = 45
+	secret_dependence = 45
+	secret_exposure = 10
+	secret_capacity = 35
+	secret_independent_capacity = 5
+	secret_grievance = 15
+}
+
+brilliant_scientist_measure_delta = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minor = 5
+	moderate = 10
+	major = 20
+	extreme = 30
+}
+
+brilliant_scientist_control = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base = 100
+	mandate_factor = 0.25
+	dependence_factor = 0.45
+	exposure_factor = 0.20
+	independent_capacity_factor = 0.45
+	grievance_factor = 0.25
+	stable_minimum = 70
+	strained_minimum = 50
+	compromised_minimum = 30
+	minimum = 0
+	maximum = 100
+}
+
+brilliant_scientist_project_family = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	computation = 1
+	electronics = 2
+	materials = 3
+	rocketry = 4
+	high_energy = 5
+	biomedical = 6
+	teleportation = 7
+	cloning = 8
+	robotics = 9
+	paleogenetics = 10
+	xenobiological_synthesis = 11
+	biological_weapons = 12
+	alien_arms = 13
+	temporal = 14
+	singularity = 15
+	max_exclusive = 16
+}
+
+brilliant_scientist_project_stage = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	theory = 1
+	prototype = 2
+	deployment = 3
+	weaponization = 4
+	max_exclusive = 5
+}
+
+# Visible capacity occupied while a project stage is active. Suspended projects
+# retain half their burden; dismantled projects release it and keep history.
+brilliant_scientist_project_capacity = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	theory = 10
+	prototype = 20
+	deployment = 35
+	weaponization = 50
+	suspended_factor = 0.50
+	minimum = 0
+	maximum = 100
+}
+
+# Baseline real burdens. The cost loader applies the family profile below and
+# returns whole-number temporary values for decisions/missions. Factory values
+# are reservations for the construction/research duration, not instant grants.
+brilliant_scientist_project_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	theory_civilian_factories = 1
+	theory_military_factories = 0
+	theory_support_equipment = 100
+	theory_trucks = 0
+	theory_trains = 0
+	theory_fuel = 0
+	theory_manpower = 250
+	theory_army_xp = 0
+	theory_air_xp = 0
+	theory_navy_xp = 0
+	theory_political_power = 50
+	theory_resource_units = 2
+	prototype_civilian_factories = 2
+	prototype_military_factories = 1
+	prototype_support_equipment = 250
+	prototype_trucks = 20
+	prototype_trains = 0
+	prototype_fuel = 500
+	prototype_manpower = 500
+	prototype_army_xp = 5
+	prototype_air_xp = 5
+	prototype_navy_xp = 5
+	prototype_political_power = 75
+	prototype_resource_units = 4
+	deployment_civilian_factories = 4
+	deployment_military_factories = 3
+	deployment_support_equipment = 750
+	deployment_trucks = 100
+	deployment_trains = 10
+	deployment_fuel = 2500
+	deployment_manpower = 2000
+	deployment_army_xp = 15
+	deployment_air_xp = 15
+	deployment_navy_xp = 15
+	deployment_political_power = 100
+	deployment_resource_units = 6
+	weaponization_civilian_factories = 6
+	weaponization_military_factories = 5
+	weaponization_support_equipment = 1500
+	weaponization_trucks = 250
+	weaponization_trains = 25
+	weaponization_fuel = 7500
+	weaponization_manpower = 5000
+	weaponization_army_xp = 30
+	weaponization_air_xp = 30
+	weaponization_navy_xp = 30
+	weaponization_political_power = 150
+	weaponization_resource_units = 10
+}
+
+# Family burden profiles multiply the stage baselines. XP factors deliberately
+# zero irrelevant branches instead of charging all three XP pools.
+brilliant_scientist_project_profile = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	computation_factory = 0.80
+	computation_equipment = 0.80
+	computation_fuel = 0.20
+	computation_manpower = 0.70
+	computation_pp = 0.90
+	computation_army_xp = 0
+	computation_air_xp = 0
+	computation_navy_xp = 0
+	computation_resource = 0.80
+	electronics_factory = 1.00
+	electronics_equipment = 1.00
+	electronics_fuel = 0.50
+	electronics_manpower = 0.80
+	electronics_pp = 0.90
+	electronics_army_xp = 0.50
+	electronics_air_xp = 0.75
+	electronics_navy_xp = 0.50
+	electronics_resource = 1.20
+	materials_factory = 1.20
+	materials_equipment = 0.80
+	materials_fuel = 0.40
+	materials_manpower = 1.00
+	materials_pp = 0.90
+	materials_army_xp = 0
+	materials_air_xp = 0
+	materials_navy_xp = 0
+	materials_resource = 1.50
+	rocketry_factory = 1.30
+	rocketry_equipment = 1.10
+	rocketry_fuel = 1.50
+	rocketry_manpower = 0.90
+	rocketry_pp = 1.00
+	rocketry_army_xp = 0.25
+	rocketry_air_xp = 1.00
+	rocketry_navy_xp = 0
+	rocketry_resource = 1.30
+	high_energy_factory = 1.50
+	high_energy_equipment = 1.00
+	high_energy_fuel = 0.80
+	high_energy_manpower = 0.80
+	high_energy_pp = 1.20
+	high_energy_army_xp = 0
+	high_energy_air_xp = 0
+	high_energy_navy_xp = 0
+	high_energy_resource = 1.80
+	biomedical_factory = 0.90
+	biomedical_equipment = 1.20
+	biomedical_fuel = 0.20
+	biomedical_manpower = 1.30
+	biomedical_pp = 1.20
+	biomedical_army_xp = 0.25
+	biomedical_air_xp = 0
+	biomedical_navy_xp = 0
+	biomedical_resource = 0.70
+	teleportation_factory = 1.50
+	teleportation_equipment = 1.20
+	teleportation_fuel = 1.20
+	teleportation_manpower = 0.80
+	teleportation_pp = 1.20
+	teleportation_army_xp = 0.50
+	teleportation_air_xp = 0.50
+	teleportation_navy_xp = 0
+	teleportation_resource = 1.60
+	cloning_factory = 1.10
+	cloning_equipment = 1.30
+	cloning_fuel = 0.30
+	cloning_manpower = 1.50
+	cloning_pp = 1.30
+	cloning_army_xp = 0.75
+	cloning_air_xp = 0
+	cloning_navy_xp = 0
+	cloning_resource = 0.80
+	robotics_factory = 1.40
+	robotics_equipment = 1.50
+	robotics_fuel = 0.80
+	robotics_manpower = 0.70
+	robotics_pp = 1.10
+	robotics_army_xp = 1.00
+	robotics_air_xp = 0.25
+	robotics_navy_xp = 0
+	robotics_resource = 1.50
+	paleogenetics_factory = 1.00
+	paleogenetics_equipment = 1.30
+	paleogenetics_fuel = 0.60
+	paleogenetics_manpower = 1.60
+	paleogenetics_pp = 1.30
+	paleogenetics_army_xp = 1.00
+	paleogenetics_air_xp = 0
+	paleogenetics_navy_xp = 0
+	paleogenetics_resource = 0.70
+	xenobiological_synthesis_factory = 1.20
+	xenobiological_synthesis_equipment = 1.40
+	xenobiological_synthesis_fuel = 0.50
+	xenobiological_synthesis_manpower = 1.40
+	xenobiological_synthesis_pp = 1.40
+	xenobiological_synthesis_army_xp = 1.00
+	xenobiological_synthesis_air_xp = 0
+	xenobiological_synthesis_navy_xp = 0
+	xenobiological_synthesis_resource = 1.10
+	biological_weapons_factory = 1.10
+	biological_weapons_equipment = 1.40
+	biological_weapons_fuel = 0.30
+	biological_weapons_manpower = 1.20
+	biological_weapons_pp = 1.60
+	biological_weapons_army_xp = 0.75
+	biological_weapons_air_xp = 0
+	biological_weapons_navy_xp = 0
+	biological_weapons_resource = 0.90
+	alien_arms_factory = 1.50
+	alien_arms_equipment = 1.50
+	alien_arms_fuel = 1.00
+	alien_arms_manpower = 0.80
+	alien_arms_pp = 1.40
+	alien_arms_army_xp = 0.75
+	alien_arms_air_xp = 0.75
+	alien_arms_navy_xp = 0.50
+	alien_arms_resource = 2.00
+	temporal_factory = 1.60
+	temporal_equipment = 1.20
+	temporal_fuel = 1.00
+	temporal_manpower = 0.80
+	temporal_pp = 1.50
+	temporal_army_xp = 0.50
+	temporal_air_xp = 0.50
+	temporal_navy_xp = 0
+	temporal_resource = 1.70
+	singularity_factory = 2.00
+	singularity_equipment = 1.80
+	singularity_fuel = 2.00
+	singularity_manpower = 1.20
+	singularity_pp = 2.00
+	singularity_army_xp = 1.00
+	singularity_air_xp = 1.00
+	singularity_navy_xp = 1.00
+	singularity_resource = 2.50
+}
+
+# Baseline days for every family and all four persistent stages.
+brilliant_scientist_project_duration = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	computation_theory = 120
+	computation_prototype = 180
+	computation_deployment = 270
+	computation_weaponization = 360
+	electronics_theory = 120
+	electronics_prototype = 210
+	electronics_deployment = 300
+	electronics_weaponization = 390
+	materials_theory = 150
+	materials_prototype = 240
+	materials_deployment = 330
+	materials_weaponization = 420
+	rocketry_theory = 180
+	rocketry_prototype = 270
+	rocketry_deployment = 390
+	rocketry_weaponization = 540
+	high_energy_theory = 240
+	high_energy_prototype = 360
+	high_energy_deployment = 540
+	high_energy_weaponization = 720
+	biomedical_theory = 150
+	biomedical_prototype = 240
+	biomedical_deployment = 330
+	biomedical_weaponization = 450
+	teleportation_theory = 240
+	teleportation_prototype = 360
+	teleportation_deployment = 540
+	teleportation_weaponization = 720
+	cloning_theory = 210
+	cloning_prototype = 330
+	cloning_deployment = 480
+	cloning_weaponization = 660
+	robotics_theory = 180
+	robotics_prototype = 300
+	robotics_deployment = 450
+	robotics_weaponization = 600
+	paleogenetics_theory = 210
+	paleogenetics_prototype = 330
+	paleogenetics_deployment = 480
+	paleogenetics_weaponization = 660
+	xenobiological_synthesis_theory = 240
+	xenobiological_synthesis_prototype = 390
+	xenobiological_synthesis_deployment = 570
+	xenobiological_synthesis_weaponization = 750
+	biological_weapons_theory = 180
+	biological_weapons_prototype = 300
+	biological_weapons_deployment = 450
+	biological_weapons_weaponization = 600
+	alien_arms_theory = 270
+	alien_arms_prototype = 420
+	alien_arms_deployment = 600
+	alien_arms_weaponization = 780
+	temporal_theory = 360
+	temporal_prototype = 540
+	temporal_deployment = 720
+	temporal_weaponization = 900
+	singularity_theory = 720
+	singularity_prototype = 900
+	singularity_deployment = 1080
+	singularity_weaponization = 900
+}
+
+brilliant_scientist_evolution_mtth = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	evolution_i_prefire_days = 720
+	evolution_i_active_days = 420
+	evolution_ii_prefire_days = 960
+	evolution_ii_active_days = 600
+	evolution_iii_prefire_days = 1080
+	evolution_iii_active_days = 720
+	evolution_iv_prefire_days = 1440
+	evolution_iv_active_days = 900
+}
+
+brilliant_scientist_evolution_mtth_factor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	chaos_high = 0.80
+	chaos_extreme = 0.60
+	public_compact = 0.90
+	secret_directorate = 1.10
+	mandate_high = 0.85
+	dependence_high = 0.80
+	exposure_high = 0.75
+	advanced_project = 0.75
+	active_crisis = 0.65
+	stabilization = 1.35
+	low_capacity = 1.20
+}
+
+brilliant_scientist_foreign = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	interest_minimum = 0
+	interest_maximum = 100
+	observe_gate = 20
+	invitation_gate = 30
+	joint_lab_gate = 35
+	protection_gate = 40
+	theft_gate = 45
+	sabotage_gate = 55
+	extraction_gate = 65
+	assassination_gate = 75
+	base_weight = 10
+	major_weight = 20
+	neighbor_weight = 15
+	faction_weight = 12
+	high_exposure_weight = 25
+	advanced_project_weight = 30
+	at_war_weight_factor = 0.50
+}
+
+brilliant_scientist_facility = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	minimum_primary_score = 30
+	minimum_secondary_score = 20
+	primary_base_weight = 4
+	secondary_base_weight = 3
+	minimum_weight = 1
+	maximum_weight = 36
+	infrastructure_moderate_gate = 2
+	infrastructure_strong_gate = 4
+	infrastructure_moderate_bonus = 2
+	infrastructure_strong_bonus = 3
+	civilian_factory_present_bonus = 2
+	civilian_factory_cluster_gate = 3
+	civilian_factory_cluster_bonus = 3
+	military_factory_present_bonus = 2
+	military_factory_cluster_gate = 3
+	military_factory_cluster_bonus = 3
+	town_bonus = 1
+	city_bonus = 3
+	large_city_bonus = 4
+	metropolis_bonus = 5
+	megalopolis_bonus = 6
+	population_moderate_gate = 1000000
+	population_high_gate = 5000000
+	population_moderate_bonus = 2
+	population_high_bonus = 4
+	capital_victory_point_proxy_bonus = 4
+	supply_node_bonus = 4
+	railway_bonus = 2
+	anti_air_bonus = 1
+	land_fort_bonus = 2
+	coastal_fort_bonus = 2
+	special_project_building_bonus = 6
+	public_urban_bonus = 4
+	public_transport_bonus = 3
+	secret_defense_bonus = 5
+	secret_nonurban_bonus = 3
+	border_risk_penalty = 3
+	interior_isolation_bonus = 3
+	coastal_exposure_penalty = 2
+	secondary_network_bonus = 4
+	secondary_security_bonus = 2
+	capital_score = 20
+	core_score = 10
+	industrial_score = 15
+	infrastructure_score = 10
+	air_access_score = 5
+	coastal_access_score = 5
+	isolated_security_score = 10
+	occupied_penalty = 100
+	primary_type = 1
+	secondary_type = 2
+	temporal_anchor_type = 3
+	singularity_core_type = 4
+}
+
+brilliant_scientist_formation = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_origin_states = 2
+	charter_minimum_states = 2
+	enclave_minimum_states = 2
+	rebellion_minimum_states = 3
+	multi_site_minimum_states = 4
+	takeover_minimum_states = 4
+	host_retained_states = 3
+	host_retained_factories = 5
+	minimum_territory_score = 50
+	multi_site_territory_score = 90
+	rebellion_score = 70
+	charter_score = 55
+	enclave_score = 45
+	takeover_score = 90
+	state_score = 10
+	facility_state_score = 20
+	core_state_score = 10
+	connected_state_score = 10
+	project_stage_score = 5
+	independent_capacity_factor = 0.50
+	grievance_factor = 0.35
+	dependence_factor = 0.25
+	mandate_factor = 0.15
+}
+
+brilliant_scientist_institutional_capture = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	dependence_minimum = 90
+	control_maximum = 29
+	warned_incidents_minimum = 3
+	captured_domains_minimum = 4
+	statewide_domains_minimum = 1
+	sovereign_science_authorities_minimum = 1
+}
+
+brilliant_scientist_force = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	conventional_cap = 12
+	clone_cap = 8
+	robot_cap = 8
+	paleogenetic_cap = 6
+	xenobiological_cap = 6
+	portal_cap = 4
+	temporal_cap = 3
+	exotic_cap = 4
+	biological_cap = 4
+	theory_scale = 0
+	prototype_scale = 0.25
+	deployment_scale = 0.60
+	weaponization_scale = 1.00
+	minimum_equipment_ratio = 0.50
+	maximum_equipment_ratio = 1.00
+	maximum_spawn_ratio = 0.50
+}
+
+brilliant_scientist_accident = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum = 0
+	maximum = 100
+	minor_threshold = 25
+	major_threshold = 50
+	severe_threshold = 75
+	catastrophic_threshold = 90
+	theory_stage_factor = 0.50
+	prototype_stage_factor = 1.00
+	deployment_stage_factor = 1.25
+	weaponization_stage_factor = 1.60
+	low_exposure_factor = 0.75
+	high_exposure_factor = 1.25
+	suspended_factor = 0.50
+	damaged_factor = 1.50
+}
+
+brilliant_scientist_temporal = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	synchronization_minimum = 0
+	synchronization_maximum = 100
+	debt_minimum = 0
+	debt_maximum = 100
+	debt_warning = 40
+	debt_severe = 70
+	debt_critical = 90
+	information_sync_cost = 15
+	object_sync_cost = 25
+	bounded_unit_sync_cost = 40
+	information_debt_gain = 15
+	object_debt_gain = 25
+	bounded_unit_debt_gain = 40
+	stabilization_days = 180
+	stabilization_debt_reduction = 30
+	stabilization_capacity_cost = 100
+	authentication_evidence_minimum = 2
+	anchor_evidence_minimum = 3
+	maximum_uses_per_target = 1
+	persistent_scar_gain = 1
+}
+
+# Callers bind one stable integer identifier for each named crisis, component,
+# leader, or bounded unit target. Values are never reused for a different
+# semantic target; the persistent used-target array stores these exact IDs.
+brilliant_scientist_temporal_target = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	minimum = 1
+	maximum = 2147483647
+}
+
+brilliant_scientist_origin = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	extraterrestrial_provenance = 1
+	temporal_displacement = 2
+	manufactured_continuity = 3
+	unresolved_origin = 4
+	independent_evidence_minimum = 3
+	authenticated_sources_minimum = 2
+	public_proof_minimum = 4
+}
+
+brilliant_scientist_terminal_commitment = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	laboratory_world = 1
+	strategic_singularity = 2
+}
+
+brilliant_scientist_singularity = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	theory_days = 720
+	component_research_days = 720
+	core_construction_days = 1080
+	delivery_construction_days = 720
+	arming_days = 365
+	component_count = 6
+	components_required = 6
+	minimum_facilities = 3
+	surrender_progress_threshold = 0.75
+	minimum_live_command_nodes = 2
+	minimum_power_links = 2
+	disarmament_hold_days = 180
+	chaos_history_reason = 216
+}
+
+brilliant_scientist_singularity_component = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	command_core = 1
+	power_link = 2
+	containment_lattice = 3
+	temporal_authenticator = 4
+	delivery_architecture = 5
+	fail_deadly_governor = 6
+	maximum_exclusive = 7
+}
+
+brilliant_scientist_singularity_arming_state = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	dormant = 0
+	theory = 1
+	components = 2
+	construction = 3
+	arming = 4
+	armed = 5
+	disarming = 6
+	verified_nonterminal = 7
+	terminal = 8
+}
+
+brilliant_scientist_lab_world = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_world_control_ratio = 0.75
+	minimum_integrated_state_ratio = 0.90
+	maximum_major_opposition = 0
+	minimum_administration_score = 90
+	minimum_submission_score = 90
+}
+
+brilliant_scientist_world_end = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	laboratory_world = 11
+	strategic_singularity = 12
+}
+
+brilliant_scientist_super_event = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	international_recognition = 90
+	kruger_state_formation = 91
+	global_kruger_threat = 92
+	laboratory_world = 93
+	strategic_singularity = 94
+	qualifying_defeat = 95
+}
+
+brilliant_scientist_achievement = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	borrowed_century = 1
+	every_door = 2
+	public_method = 3
+	the_one_who_left = 4
+	clean_break = 5
+	approve_everything = 6
+	the_former_host = 7
+	combined_arms_redefined = 8
+	clever_girl = 9
+	the_machine_continues = 10
+	population_one = 11
+	yesterday_sent_help = 12
+	not_from_here = 13
+	no_second_sun = 14
+	the_last_calculation = 15
+	the_world_is_the_laboratory = 16
+	ordinary_people_won = 17
+}
