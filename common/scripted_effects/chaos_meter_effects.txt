@@ -43,11 +43,14 @@ initialize_chaos_meter_system = {
     set_variable = { global.air_contamination_fallout_states = 0 }
     set_variable = { global.air_contamination_chem_bp = 0 }
     set_variable = { global.air_contamination_fallout_bp = 0 }
+	set_variable = { global.air_contamination_natural_source_reservoir_bp = constant:air_contamination_natural_source.zero }
+	set_variable = { global.air_contamination_natural_source_bp = constant:air_contamination_natural_source.zero }
     set_variable = { global.air_contamination_decay_bp = 0 }
     set_variable = { global.air_contamination_last_delta_bp = 0 }
     set_variable = { global.air_contamination_last_nuke_bp = 0 }
     set_variable = { global.air_contamination_chem_percent = 0 }
     set_variable = { global.air_contamination_fallout_percent = 0 }
+	set_variable = { global.air_contamination_natural_source_percent = constant:air_contamination_natural_source.zero }
     set_variable = { global.air_contamination_decay_percent = 0 }
     set_variable = { global.air_contamination_last_delta_percent = 0 }
     set_variable = { global.air_contamination_last_nuke_percent = 0 }
@@ -523,6 +526,7 @@ toggle_air_cleanliness_system_disabled = {
         set_variable = { global.air_contamination_fallout_states = 0 }
         set_variable = { global.air_contamination_chem_bp = 0 }
 		set_variable = { global.air_contamination_fallout_bp = 0 }
+		set_variable = { global.air_contamination_natural_source_bp = constant:air_contamination_natural_source.zero }
 		set_variable = { global.air_contamination_decay_bp = 0 }
 		set_variable = { global.air_contamination_last_delta_bp = 0 }
 		set_variable = { global.air_contamination_last_nuke_bp = 0 }
@@ -4264,6 +4268,8 @@ air_contamination_refresh_values = {
     divide_variable = { global.air_contamination_chem_percent = 100 }
     set_variable = { global.air_contamination_fallout_percent = global.air_contamination_fallout_bp }
     divide_variable = { global.air_contamination_fallout_percent = 100 }
+	set_variable = { global.air_contamination_natural_source_percent = global.air_contamination_natural_source_bp }
+	divide_variable = { global.air_contamination_natural_source_percent = constant:air_contamination_natural_source.basis_points_per_percent }
     set_variable = { global.air_contamination_decay_percent = global.air_contamination_decay_bp }
     divide_variable = { global.air_contamination_decay_percent = 100 }
     set_variable = { global.air_contamination_last_delta_percent = global.air_contamination_last_delta_bp }
@@ -5055,6 +5061,7 @@ air_contamination_monthly_update = {
 		limit = { NOT = { has_variable = global.air_contamination_chaos_buffer_bp } }
 		set_variable = { global.air_contamination_chaos_buffer_bp = 0 }
 	}
+	air_contamination_prepare_natural_source_monthly = yes
 
 	# Air Winter consumes the completed contamination-state counts from the
 	# previous monthly pass before this pass rebuilds them below.
@@ -5217,9 +5224,11 @@ air_contamination_monthly_update = {
         }
         set_variable = { global.air_contamination_chem_bp = air_monthly_chem_bp }
         set_variable = { global.air_contamination_fallout_bp = air_monthly_fallout_bp }
+		set_variable = { global.air_contamination_natural_source_bp = air_monthly_natural_bp }
 
         set_temp_variable = { air_contamination_delta_bp = air_monthly_chem_bp }
         add_to_temp_variable = { air_contamination_delta_bp = air_monthly_fallout_bp }
+		add_to_temp_variable = { air_contamination_delta_bp = air_monthly_natural_bp }
 
         if = {
             limit = { NOT = { has_global_flag = air_contamination_irreversible } }
@@ -5277,6 +5286,7 @@ air_contamination_monthly_update = {
         set_variable = { global.air_contamination_fallout_states = 0 }
         set_variable = { global.air_contamination_chem_bp = 0 }
         set_variable = { global.air_contamination_fallout_bp = 0 }
+		set_variable = { global.air_contamination_natural_source_bp = constant:air_contamination_natural_source.zero }
         set_variable = { global.air_contamination_decay_bp = 0 }
         set_variable = { global.air_contamination_last_delta_bp = 0 }
         set_variable = { global.air_contamination_last_nuke_bp = 0 }

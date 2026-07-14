@@ -22,9 +22,12 @@ On monthly host tick (`on_monthly`), `air_contamination_monthly_update` runs and
 
 - Chemical contaminated state (`chem_state_contamination`): `+1 bp` each (`+0.01%`).
 - Irradiated fallout state (`nuclear_fallout_state`): `+3 bp` per current fallout intensity (`+0.03%` per intensity, up to `+0.21%` at the current intensity cap).
-- Natural recovery (when not irreversible): `-35 bp` monthly (`-0.35%`).
+- Large wildfire smoke and volcanic ash: a decaying severity-scaled reservoir, limited to `+4 bp` monthly (`+0.04%`).
+- Natural recovery while reversible: `-3 bp` below 25%, `-2 bp` from 25%, `-1 bp` from 50%, and `-0.5 bp` from 75%.
 
 Biological outbreak states do not add air contamination. They remain part of the biological warfare and deaths systems, but they are excluded from Air Cleanliness growth.
+
+Regional or stronger wildfires contribute. Volcanic eruptions, ashfall, and massive eruptions contribute at every resolved severity. Each physical Event 013 impact is registered once by state, sequence, impact index, and family. The reservoir loses `0.25 bp` of monthly pressure after each host tick, which lets widespread ash linger without allowing the natural source to scale without limit. See `docs/air_cleanliness_natural_sources.md`.
 
 The computed delta is applied through `air_contamination_apply_delta_bp`.
 
@@ -107,6 +110,7 @@ The contamination tab displays:
 
 - contamination %, cleanliness %, monthly net delta,
 - natural recovery amount,
+- wildfire-smoke and volcanic-ash contribution,
 - chemical/irradiated state counts and contribution,
 - one consolidated contamination stage status line,
 - winter state,
@@ -155,6 +159,7 @@ The central `air_contamination_apply_delta_bp` effect calls `air_contamination_t
 - Condemnation list and detail view use `GFX_flag_small2` and `GFX_diplo_countrylist_flag_frame` for country flags, plus `GFX_mini_tooltip` for the detail-view diplomacy button.
 - Treaty news event uses existing report image:
   - `GFX_report_event_generic_sign_treaty2` (no new sprite required).
+- Natural smoke and ash uses the existing monthly model line and requires no icon or sprite registration.
 
 ## Future Plans
 

@@ -53,7 +53,7 @@ The optional variables `air_winter_minimum_phase`, `air_winter_pressure_modifier
 
 ## Pressure and survival ledgers
 
-Global pressure begins with `global.air_contamination_bp / 100`. It adds bounded pressure from fallout states, chemical contamination states, Air Cleanliness thresholds, and Final Silence. Global mitigation is subtracted before clamping.
+Global pressure begins with `global.air_contamination_bp / 100`. That total includes the small capped wildfire-smoke and volcanic-ash contribution documented in `docs/air_cleanliness_natural_sources.md`. It adds bounded pressure from fallout states, chemical contamination states, Air Cleanliness thresholds, and Final Silence. Global mitigation is subtracted before clamping.
 
 Local pressure adds nuclear fallout, nuclear intensity, chemical contamination, urban density, weak infrastructure, occupation disruption, and adjacency to phase 4 through 6. Adaptation, food, shelter, reclamation, and relief routes reduce pressure. Runtime pressure does not infer geography or climate.
 

@@ -39,6 +39,14 @@ Air Cleanliness is split into four readable layers.
 | Fallout exposure | State variable | Shows radiation and dust danger | Deaths, mutations, wasteland drift, shelter demand |
 | Recovery infrastructure | Country and state | Gives players agency before collapse | Filters, shelters, greenhouse agriculture, decontamination, evacuation |
 
+## Natural atmospheric sources
+
+Large wildfire smoke, volcanic eruptions, ashfall, and massive-eruption aftermath contribute to global Air Contamination through Event 013 physical impacts. Wildfire contributions begin at regional severity. Volcanic and ash families can contribute at every resolved severity because their smallest values remain negligible.
+
+All natural sources feed one decaying global reservoir with a hard `4 bp` monthly ceiling, equal to `0.04 percent` Air Contamination. No number of affected states may raise that monthly contribution above the ceiling. The reservoir must use physical impact identity to reject duplicate registration, include regional spread and chained ash impacts, and decay through the existing host-owned monthly Air Cleanliness update. It must not add another periodic world iterator.
+
+Natural sources may reinforce an existing atmospheric crisis, but they are not a fast independent route to Fallout. Chemical contamination and nuclear fallout remain the dominant sustained sources.
+
 ## Global atmospheric thresholds
 
 The existing basis-point thresholds remain, but each threshold now activates visible gameplay.

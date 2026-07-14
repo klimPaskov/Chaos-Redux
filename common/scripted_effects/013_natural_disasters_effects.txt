@@ -8899,6 +8899,7 @@ natural_disaster_apply_neighbor_impact = {
 		set_variable = { natural_disaster_foreign_relief_status = constant:natural_disaster_relief_status.none }
 	}
 	set_variable = { natural_disaster_sequence_id = nd_parent_sequence_id }
+	set_variable = { natural_disaster_impact_index = nd_parent_impact_index }
 	set_variable = { natural_disaster_family = natural_disaster_current_family }
 	set_variable = { natural_disaster_primary_family = natural_disaster_current_family }
 	set_variable = { natural_disaster_sequence_origin_family = nd_parent_origin_family }
@@ -8938,6 +8939,7 @@ natural_disaster_apply_neighbor_impact = {
 	set_temp_variable = { natural_disaster_current_severity = natural_disaster_neighbor_severity }
 	natural_disaster_prepare_warning_route_profile = yes
 	natural_disaster_prepare_severity_profile = yes
+	air_contamination_register_natural_disaster_source = yes
 	set_temp_variable = { natural_disaster_damage_points = natural_disaster_neighbor_damage_points }
 	set_temp_variable = { nd_effect_death_scale = 0 }
 	set_temp_variable = { nd_effect_building_scale = 0 }
@@ -8957,6 +8959,7 @@ natural_disaster_apply_neighbor_impact = {
 }
 
 natural_disaster_apply_regional_spread = {
+	set_temp_variable = { nd_parent_impact_index = natural_disaster_impact_index }
 	set_temp_variable = { natural_disaster_active_origin_saved = 0 }
 	set_temp_variable = { natural_disaster_active_origin_family = constant:natural_disaster_family.random }
 	set_temp_variable = { natural_disaster_sequence_path_basin = constant:natural_disaster_path_basin.none }
@@ -9085,6 +9088,7 @@ natural_disaster_execute_repeated_impact = {
 	natural_disaster_prepare_family_profile = yes
 	natural_disaster_prepare_warning_route_profile = yes
 	natural_disaster_prepare_severity_profile = yes
+	air_contamination_register_natural_disaster_source = yes
 	set_temp_variable = { nd_effect_death_scale = 0 }
 	set_temp_variable = { nd_effect_building_scale = 0 }
 	natural_disaster_apply_population_loss = yes
@@ -9267,6 +9271,7 @@ natural_disaster_execute_impact = {
 			}
 			natural_disaster_prepare_warning_route_profile = yes
 			natural_disaster_prepare_severity_profile = yes
+			air_contamination_register_natural_disaster_source = yes
 			clr_state_flag = natural_disaster_warning_active
 			clr_state_flag = natural_disaster_warning_scheduled
 			clr_state_flag = natural_disaster_impact_scheduled
