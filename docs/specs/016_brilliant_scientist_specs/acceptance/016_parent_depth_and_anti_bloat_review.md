@@ -1,8 +1,10 @@
 # Event 016 parent depth and anti-bloat review
 
+> Historical pre-planner review. Its open questions were resolved by the improvement addendum and the 2026-07-14 parent dispositions in `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md`.
+
 ## Review status
 
-This is a parent-level design review performed after the ten-part source spec was assembled. It does not replace the project-mandated `chaosx_improvement_loop_planner` pass. That subagent could not be invoked in this chat interface because no project-subagent execution tool was exposed. The exact planner prompt is included in the package and is the first unresolved step in the continuation handoff.
+This parent-level design review was performed after the ten-part source spec was assembled. The required later planner pass has since run and received a complete disposition.
 
 ## Feature promise
 
@@ -82,7 +84,7 @@ Clones, robots, dinosaurs, monsters, portal forces, and temporal units remain br
 
 The package gives tone and information direction. It does not flood the source spec with copy that may become stale during implementation.
 
-## Remaining questions for the mandatory planner
+## Questions resolved by the mandatory planner and parent disposition
 
 The external improvement-loop pass should answer:
 
@@ -99,8 +101,8 @@ The external improvement-loop pass should answer:
 
 ## Parent recommendation
 
-Do not add another broad mechanic before the mandatory planner pass. The current design is already large and connected. Any new addition should solve a specific identified gap rather than expand the event for spectacle.
+Do not add another broad mechanic before the accepted R2, R3, R4, R5, and R7 contracts are implemented. Any new addition should solve a specific implementation finding rather than expand the event for spectacle.
 
 ## Current closure judgment
 
-The design is complete enough to enter the mandatory planner and audit sequence. It is not process-closed because those project-required subagent passes have not run in this interface.
+The design is reconciled and process-closed for implementation entry. Gameplay remains unimplemented.

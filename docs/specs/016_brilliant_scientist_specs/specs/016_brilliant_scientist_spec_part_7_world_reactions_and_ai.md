@@ -1,5 +1,9 @@
 # 016 Brilliant Scientist spec, part 7: world reactions and AI
 
+## Binding reconciliation, 2026-07-14
+
+AI must evaluate paleogenetics and xenobiological synthesis as separate production and supply systems. It may choose host takeover only after the full institutional-capture contract is already true. Temporal AI uses bounded crisis targets, begins stabilization at route-specific debt bands, and attacks identified anchors only after evidence and authentication work. AI locks at most one origin conclusion and publicizes it only with sufficient evidence. Terminal doctrine changes require the full disarmament or consolidation transition and cannot oscillate from short-term score changes.
+
 ## World-reaction purpose
 
 Kruger becomes internationally important only after his work produces evidence worth acting on. Foreign reactions should grow from the host's visible scientific lead, public fame, exposed facilities, project prototypes, and weapon use.

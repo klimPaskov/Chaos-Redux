@@ -1,5 +1,9 @@
 # 016 Brilliant Scientist spec, part 1: core event
 
+## Binding reconciliation, 2026-07-14
+
+The live event remains a placeholder. This document specifies planned behavior. Host takeover is available only after rare, proven institutional capture across multiple national domains and is never enabled by failed territory selection. Mandate, Dependence, Exposure, and Project Capacity are visible. Independent Capacity and Grievance are hidden causal state. The event retains exactly seventeen achievements and six mapped super-event packages.
+
 ## Event identity
 
 | Field | Design |
@@ -51,7 +55,7 @@ Normal eligibility:
 - Is not a subject unless the subject has enough internal autonomy and the implementation can guarantee a meaningful host response.
 - Is not an actual nonhuman country.
 - Is not another fixed-purpose special chaos country whose mechanics would make a human scientific appointment incoherent.
-- Has at least three controlled core states or an approved territorial fallback that leaves both host and breakaway playable.
+- Has enough controlled core territory for the appointment and at least one valid primary laboratory state. Later territorial secession must independently satisfy its own viability rules; failure to do so never grants host-takeover eligibility.
 - Has at least one valid state that can become the primary laboratory site.
 - Has not already hosted, expelled, killed, transferred, or lost Kruger through this campaign.
 - Is not already in a terminal world-end state.

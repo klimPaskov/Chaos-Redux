@@ -1,5 +1,9 @@
 # 016 Brilliant Scientist spec, part 5: Kruger State country package
 
+## Binding reconciliation, 2026-07-14
+
+Host takeover is an institutional-capture origin only. It requires permitted sovereign science, extreme Dependence, visibly compromised or lost government control, multiple warned incidents, control of several independent national domains, and at least one state-wide control domain. Territory invalidity is irrelevant to takeover eligibility. A nonviable split resolves through the independently valid defection, confinement, non-country crisis, charter, enclave, or rebellion outcomes. The country package must preserve distinct paleogenetic and xenobiological supply systems and temporal anchor and debt state.
+
 ## Country role
 
 The Kruger State is a conditional event-created country. It exists only when Doctor Warren Kruger receives territory through a peaceful charter, seizes a laboratory network, survives a failed removal attempt, or replaces a host government through the rare takeover route.
@@ -101,12 +105,16 @@ Rules:
 
 Extreme Dependence and institutional infiltration can let Kruger take the entire host rather than secede.
 
-This route is valid when:
+This route is valid only when:
 
-- A territorial split would create invalid or trivial countries.
-- Kruger controls the military command network, machine administration, clone replacements, or temporal continuity.
-- The host government has failed a major control crisis.
-- Evolution III or IV permits the route.
+- Evolution III or IV permits sovereign science.
+- Dependence is in its extreme band and government Control is visibly compromised or lost.
+- Campaign history proves Kruger control across several independent domains, such as military command, civil administration, communications and logistics, laboratory security, clone replacement, machine administration, or temporal authority.
+- At least one control domain is state-wide. A private laboratory guard is insufficient.
+- Multiple visible incidents warned the host about institutional capture.
+- The sovereign Kruger route is active and the confrontation was not rerolled after another formation mode failed.
+
+Territorial invalidity never grants this route. It only removes an invalid territorial outcome from the separately evaluated resolution set.
 
 The takeover should use a country transformation or cosmetic identity rather than creating a duplicate tag with all territory.
 

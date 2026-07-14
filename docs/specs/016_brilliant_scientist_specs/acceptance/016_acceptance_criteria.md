@@ -1,5 +1,19 @@
 # Event 016 acceptance criteria
 
+## Binding parent-disposition checks
+
+- [ ] Exactly six mapped super-event packages exist: international recognition, state formation, global threat, Laboratory World, Strategic Singularity, and qualifying defeat.
+- [ ] Exactly seventeen achievement keys exist, including distinct `public_method` and `clean_break` conditions.
+- [ ] Mandate, Dependence, Exposure, and Project Capacity are visible; only Independent Capacity and Grievance are hidden causal state.
+- [ ] Host takeover requires extreme Dependence, compromised Control, several warned incidents, multi-domain institutional capture, and at least one state-wide domain.
+- [ ] Host takeover is never granted because territorial selection failed, the host is small, or a tag would be inconvenient.
+- [ ] Paleogenetics and xenobiological synthesis have separate facilities, production, supply, units, failures, AI, and counters, converging only through Synthesis.
+- [ ] Every temporal action has a bounded target, synchronization-capacity cost, temporal-debt increase, per-target use record, AI rule, and evidence-gated opposing countermeasure.
+- [ ] Temporal debt does not passively decay; stabilization disables temporal actions and exposes a meaningful window; anchor loss blocks linked actions.
+- [ ] A campaign locks at most one conclusion among extraterrestrial provenance, temporal displacement, manufactured continuity, and unresolved origin.
+- [ ] Public extraterrestrial proof requires independent evidence; transformation alone never satisfies it.
+- [ ] Laboratory World and Strategic Singularity cannot fire in one campaign and require their full commitment-transition rules.
+
 ## Status rule
 
 Event 16 may be marked Reworked only when every required surface below is complete or explicitly removed from the accepted source spec. A working popup, a loading game, or a partial Kruger State does not satisfy completion.
@@ -215,6 +229,8 @@ Event 16 may be marked Reworked only when every required surface below is comple
 ## Achievements
 
 - [ ] All 17 planned working achievements have final keys, localisation, tracking, disqualifiers, and icons.
+- [ ] `public_method` unlocks from public governance, publication, and replication while Kruger remains active under a binding public compact.
+- [ ] `clean_break` unlocks from a later safe end to Kruger's exclusive control while an institutional legacy survives.
 - [ ] Triggerable or debug shortcuts disqualify relevant achievements.
 - [ ] Former-host, foreign-recruitment, project-force, singularity, and aftermath conditions are tracked accurately.
 - [ ] No achievement unlocks only because Event 16 fired.

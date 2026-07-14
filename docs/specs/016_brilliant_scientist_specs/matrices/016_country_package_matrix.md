@@ -1,5 +1,9 @@
 # Event 016 Kruger State country-package matrix
 
+## Binding reconciliation
+
+Host takeover is an institutional-capture origin and never a territorial fallback. The country package inherits paleogenetic and xenobiological forces and supply systems separately, preserves temporal debt and anchor state, and cannot carry contradictory origin proof or terminal commitment flags.
+
 ## Formation matrix
 
 | Surface | Peaceful charter | Violent rebellion | Partial enclave | Host takeover |
@@ -66,9 +70,10 @@
 | --- | --- | --- | --- | --- |
 | Clone | Medical capacity, equipment, food proxy | Growth infrastructure and education | Aid or captured agriculture | Growth collapse and unrest |
 | Robot | Power, rare metals, factories | Automated industry and reactors | Resource trade or seizure | Frame attrition and network failure |
-| Bestiary | Feed, handlers, containment | Breeding reserves and handler corps | Agricultural protectorates | Escape and ecological damage |
+| Paleogenetics | Feed, land, handlers, transport, veterinary capacity | Breeding reserves, hatcheries, transport pens, handler schools | Agricultural and reserve access | Escape, breeding collapse, habitat damage, ecological spread |
+| Xenobiological synthesis | Medical capacity, reagents, power, control infrastructure, containment | Growth vats, medical fabrication, control centers, sealed cells | Reagent and power access | Mutation, control loss, unauthorized reproduction, autonomous nest |
 | Portal | Power, terminals, materials | Linked depots and hardened rings | Foreign terminal concessions | Enclave isolation or breach |
-| Temporal | Energy, computation, paradox | Synchronization bureau | Captured data or allied observers | Timeline crisis |
+| Temporal | Energy, computation, synchronization capacity, temporal debt | Synchronization bureau, anchors, authenticated ledgers | Captured data or allied observers | Timeline scar, anchor loss, or authentication crisis |
 | Alien arms | Exotic material and elite production | Material synthesis | Artifact seizure | Elite force exhaustion |
 | Biological | Medical safety and delivery | Containment and production | Foreign samples or facilities | Outbreak and condemnation |
 | Mixed synthesis | Every specialized supply | Project-caste economy | Submission network | Overload and internal conflict |

@@ -9,12 +9,18 @@ Read:
 - `.agents/skills/hoi4-decisions-missions/SKILL.md`
 - `.agents/skills/hoi4-focus-trees/SKILL.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
+- `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md`
+- `docs/plans/016_brilliant_scientist_plans/016_brilliant_scientist_resume_packet.md`
 - All Event 16 source specs and matrices under `docs/specs/016_brilliant_scientist_specs/`
 - Existing Chaos Redux dynamic effects, triggers, constants, event-log helpers, world-threat helpers, special-project helpers, character patterns, and selected-target decision patterns
 
 ## Architecture goal
 
 Design and, where narrow and safe, implement reusable Event 16 helpers before the parent duplicates logic across events, decisions, focuses, country setup, GUI, and evolutions.
+
+This is the exact next implementation-preparation step. Freeze contracts first. Preserve exactly seventeen achievements and six mapped super-event roles. Treat R2, R3, R4, R5, and R7 as binding and R1 and R6 as rejected.
+
+Preserve concurrent Event 020 world-end ID 10 and visible super-event IDs 85 to 87. Event 016 uses world-end scenario IDs 11 and 12 and visible super-event IDs 88 to 93 in the fixed six-role order from the source-of-truth map. Re-scan before any live shared-registry edit.
 
 ## Required helper families
 
@@ -30,10 +36,12 @@ Design and, where narrow and safe, implement reusable Event 16 helpers before th
 - Calculate and change Scientific Mandate.
 - Calculate and change Institutional Dependence.
 - Calculate and change Security Exposure.
-- Calculate project capacity.
+- Calculate visible Project Capacity.
 - Derive broad Government Control status.
 - Derive hidden Independent Capacity without exposing its exact value.
 - Track Grievance.
+
+Mandate, Dependence, Exposure, and Project Capacity are visible. Only Independent Capacity and Grievance remain hidden causal state.
 
 ### Facility and project lifecycle
 
@@ -43,6 +51,25 @@ Design and, where narrow and safe, implement reusable Event 16 helpers before th
 - Read project stages.
 - Advance, suspend, damage, dismantle, publish, steal, and inherit project stages.
 - Calculate project costs, accident pressure, foreign interest, and rebellion contribution.
+- Keep paleogenetic and xenobiological stage, facility, production, supply, failure, and countermeasure state separate until an explicit Synthesis convergence.
+
+### Institutional capture
+
+- Evaluate takeover only from permitted sovereign science, extreme Dependence, compromised Control, several warned incidents, several independent captured national domains, and at least one state-wide domain.
+- Never grant takeover because territory is invalid, the host is small, or country creation is inconvenient.
+- Preserve a distinct `origin_takeover` consolidation state without creating a duplicate portfolio or focus tree.
+
+### Temporal debt and evidence
+
+- Spend synchronization capacity and add temporal debt for every meaningful temporal action.
+- Bind each action to a named crisis, project component, leader, or bounded unit package and record per-target use.
+- Prevent passive debt decay. Stabilization lowers debt while disabling actions, occupying the facility, and exposing a weakness window.
+- Track persistent scars, evidence, authentication, anchor discovery and loss, ledger capture, and linked-action blocking.
+
+### Origin conclusions
+
+- Lock at most one of extraterrestrial provenance, temporal displacement, manufactured continuity, or unresolved origin.
+- Gate public proof on independent evidence. Transformation alone cannot set extraterrestrial provenance.
 
 ### Evolution and logging
 
@@ -70,6 +97,7 @@ Design and, where narrow and safe, implement reusable Event 16 helpers before th
 
 - Refresh a Kruger-specific source inside the shared world-threat framework.
 - Calculate singularity component and arming state.
+- Enforce the mutual commitment lock between Laboratory World and Strategic Singularity, including verified disarmament before Laboratory World consolidation and permanent cancellation after either terminal firing.
 - On valid terminal firing, calculate the chaos deficit to above 1000, add it through a documented source, then call the existing world-end pipeline.
 - Clean all Event 16 missions, targets, and active categories after world end.
 

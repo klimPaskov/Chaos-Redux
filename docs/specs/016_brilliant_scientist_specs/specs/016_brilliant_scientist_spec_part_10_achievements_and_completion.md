@@ -1,5 +1,9 @@
 # 016 Brilliant Scientist spec, part 10: achievements and completion
 
+## Binding reconciliation, 2026-07-14
+
+Exactly seventeen achievements are required. `016_brilliant_scientist_public_method` and `016_brilliant_scientist_clean_break` remain separate: the former proves public governance, publication, and independent replication while Kruger remains active under a binding public compact; the latter proves a later safe end to Kruger's exclusive control through retirement, dismissal, exile, or settlement while preserving the institutional legacy. `not_from_here` requires locked extraterrestrial provenance and public proof. `yesterday_sent_help` requires a real crisis, bounded recovery, temporal debt, and completed stabilization. Laboratory World requires a verified nonterminal singularity state, not merely absence of firing.
+
 ## Achievement philosophy
 
 Event 16 achievements should reward difficult campaign stories, portfolio mastery, safe institutional play, risky control, foreign competition, project-army use, defeat of a global threat, and terminal failure. The event firing or simple recruitment should never unlock an achievement by itself.
@@ -93,14 +97,14 @@ A normal host country.
 
 Challenge:
 
-Complete the public scientific settlement with low Dependence, a functioning independent replication network, and no Weaponized forbidden project.
+Establish public scientific governance with low Dependence, a functioning independent replication network, and no Weaponized forbidden project while Kruger remains active under a binding public compact.
 
 Required conditions:
 
 - Public appointment or later public-governance reform.
 - Publish the Kruger Method.
 - Complete at least three independent replication missions.
-- Keep Kruger employed or retire him peacefully.
+- Keep Kruger active under the binding public compact when the achievement unlocks.
 - No violent rebellion.
 - No offensive biological weapon use.
 
@@ -404,14 +408,16 @@ Hidden.
 
 Challenge:
 
-Complete the rare alien-origin evidence chain and publicly prove a nonhuman Kruger origin or transformation.
+Complete the rare extraterrestrial-provenance evidence chain and publish conclusive proof of Kruger's extraterrestrial origin.
 
 Required conditions:
 
+- Extraterrestrial provenance is the campaign's one locked origin conclusion.
 - Alien technology, exotic material, biological evidence, or related event chain.
 - Several independent evidence sources.
 - Public reveal decision.
 - Evidence is not merely rumor or one failed test.
+- Clone, machine, temporal, xenobiological, or synthesis transformation alone does not qualify.
 
 Difficulty:
 
@@ -506,7 +512,7 @@ Required conditions:
 - Overwhelming world control threshold.
 - Global chaos above terminal threshold.
 - Laboratory World flag set.
-- Singularity not fired.
+- Singularity disarmed or dismantled and automatic fail-deadly disabled under a verified nonterminal state.
 
 Difficulty:
 
@@ -569,7 +575,7 @@ Human, clone, and machine hands rebuilding a laboratory together, composed for 6
 | Teleportation, cloning, time, monsters, biological weapons, alien guns | Part 3 project portfolio |
 | Foreign invitation, theft, sabotage, protection, assassination | Evolution II and part 7 |
 | Dangerous science dilemma | Evolution III |
-| Removal difficulty based on prior power | Parts 1, 2, and 4 hidden capacity model |
+| Removal difficulty based on prior power | Parts 1, 2, and 4 hidden Independent Capacity model |
 | Project-derived rebellion armies | Parts 3, 5, and 6 |
 | Full Kruger State focus tree | Part 6 |
 | World conquest | Evolution IV and part 6 expansion lane |

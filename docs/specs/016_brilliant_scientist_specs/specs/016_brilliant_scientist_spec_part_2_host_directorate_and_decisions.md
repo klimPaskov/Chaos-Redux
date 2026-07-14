@@ -1,5 +1,9 @@
 # 016 Brilliant Scientist spec, part 2: host directorate and decisions
 
+## Binding reconciliation, 2026-07-14
+
+The Directorate must show Mandate, Dependence, Exposure, and Project Capacity. Only Independent Capacity and Grievance remain hidden, with concrete incidents and warnings exposing their consequences. Temporal decisions use synchronization capacity and temporal debt. Each action has a bounded named target, a per-target use record, persistent scars where severe, and evidence-gated counterplay through authentication, observation, anchor discovery, ledger capture, and stabilization. Host takeover is never a territory-resolution action.
+
 ## Management purpose
 
 The host-country system should let the player convert Kruger's impossible intellect into research, projects, weapons, institutions, or a new state. It should remain focused enough to understand without becoming a universal science simulator.

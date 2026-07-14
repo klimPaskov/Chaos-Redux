@@ -1,5 +1,13 @@
 # 016 Brilliant Scientist spec, part 3: project portfolio
 
+## Binding reconciliation, 2026-07-14
+
+Paleogenetics and xenobiological synthesis are separate project families. Paleogenetics reconstructs extinct terrestrial organisms through reserves, hatcheries, pens, handlers, feed, land, transport, and veterinary capacity; its roles, failures, and counters concern restored creatures. Xenobiological synthesis deliberately designs organisms through vats, medical fabrication, control centers, reagents, power, containment, and a selected chemical, neural, machine-linked, or researched control method; its roles, failures, and counters concern engineered organisms and their control channel. They converge only through explicit Synthesis.
+
+Temporal mechanics replace the loose paradox-pressure label with temporal debt. Every meaningful action consumes synchronization capacity, adds non-passive debt, records a bounded target use, and may leave a persistent scar. Stabilization reduces debt while disabling temporal actions, occupying the facility, and exposing a counterplay window. Evidence, authentication, anchor sites, and ledgers gate opposing actions.
+
+Origin evidence may lock exactly one campaign conclusion: extraterrestrial provenance, temporal displacement, manufactured continuity, or unresolved. Public proof is evidence-gated, and later transformation never proves extraterrestrial origin by itself. Strategic Singularity and Laboratory World use mutually exclusive terminal commitments.
+
 ## Portfolio role
 
 Kruger's projects are the main record of what the host enabled and what a later Kruger State inherits. The portfolio should create hard choices rather than a checklist where every project is completed in one campaign.

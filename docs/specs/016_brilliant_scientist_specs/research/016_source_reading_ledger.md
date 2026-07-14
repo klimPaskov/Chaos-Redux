@@ -1,5 +1,9 @@
 # Event 016 source reading ledger
 
+## 2026-07-14 curation note
+
+The documentation-curation pass additionally read the complete Event 016 spec and plan source set, the required offline wiki pages, relevant vanilla documentation, and direct vanilla precedents for multi-role scientists, special projects, decision-category GUI binding, country transition, and achievements. The original imported-source ledger below is retained as historical provenance. Current Event 016 documentation integrity is recorded separately in `package_checksums.sha256`.
+
 Every uploaded project source file listed below was read in full before the specification was written. The CSV catalogs were read directly rather than through spreadsheet tooling, matching the event-planning instruction. The hashes make the reading claim reproducible against the exact supplied files.
 
 | File | Lines | Bytes | SHA-256 | Reading status |
@@ -49,4 +53,4 @@ After the uploaded source pass, the current `klimPaskov/Chaos-Redux` repository 
 
 ## Process limitation
 
-The project requires a mandatory near-completion run of `chaosx_improvement_loop_planner`. This chat environment did not expose a project-subagent invocation tool. The exact prompt is included in `prompts/016_brilliant_scientist_improvement_loop_planner_prompt.md`, and the continuation handoff begins at that unresolved process step. The full source reading itself is complete.
+The required improvement-loop planner later ran. Its addendum received a complete parent disposition on 2026-07-14. The historical prompt remains in the package but is superseded for continuation.

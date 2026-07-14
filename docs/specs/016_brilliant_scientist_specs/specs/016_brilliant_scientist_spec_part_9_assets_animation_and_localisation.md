@@ -1,5 +1,9 @@
 # 016 Brilliant Scientist spec, part 9: assets, animation, and localisation
 
+## Binding reconciliation, 2026-07-14
+
+The severe portrait inventory has exactly five animation packages: clone, machine, temporal, xenobiological or alien, and synthesis. The combined xenobiological-or-alien package depicts the campaign conclusion actually proven; transformation alone cannot imply extraterrestrial provenance. The super-event inventory is exactly six, and the achievement inventory is exactly seventeen three-state icon sets. All remain planned and currently unproduced and unwired.
+
 ## Visual identity purpose
 
 Kruger's appearance is part of the mechanic. His portrait should communicate the stage and dominant project route before the player opens a long tooltip. The event also needs distinct visual families for projects, facilities, host governance, the Kruger State, super-events, decisions, focuses, ideas, achievements, and custom UI states.
@@ -105,8 +109,7 @@ Severe route identities use animated portraits.
 | Clone Kruger | Different Kruger bodies enter alignment, breathe independently, or exchange focus | Personal continuity through replication |
 | Machine-linked Kruger | Real source frames show interface lights, mechanical movement, eye focus, and machine response | Authority distributed into the network |
 | Temporal Continuum Kruger | Real source frames show age, position, or duplicate-state changes designed per frame | Several temporal versions share authority |
-| Xenobiological Kruger | Real source frames show controlled anatomical changes and living equipment | Biological transformation or nonhuman synthesis |
-| Alien-revealed Kruger | Real source frames show a stable nonhuman state and unfamiliar light behavior | Origin or transformation becomes public |
+| Xenobiological or alien Kruger | Real source frames show controlled anatomical changes or a stable unfamiliar state selected from the locked campaign conclusion | Engineered transformation or evidence-proven extraterrestrial provenance; transformation alone never implies alien origin |
 | Synthesis Kruger | Real source frames combine selected project features without visual clutter | Several systems integrated under one identity |
 
 Animation rules:

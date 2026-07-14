@@ -1,5 +1,7 @@
 # Localisation audit prompt for Event 016 Brilliant Scientist
 
+Use the binding origin-conclusion and visible-state contracts from `016_source_of_truth_map.md`.
+
 Spawn `chaosx_localisation_auditor` with `fork_context=false` after a substantial implementation tranche and again before completion.
 
 Read:
@@ -21,12 +23,13 @@ Check:
 - Broken scripted localisation and dynamic actor references.
 - Consistency of `Doctor Warren Kruger` across advisor, scientist, leader, event, GUI, project, and country surfaces.
 - Host, recipient, former-host, laboratory-state, foreign-actor, project-family, route, country-name, and singularity-stage dynamic text.
-- Value formatting for Mandate, Dependence, Exposure, Capacity, and status breakdowns.
+- Value formatting for visible Mandate, Dependence, Exposure, Project Capacity, and status breakdowns. Do not expose exact Independent Capacity or Grievance arithmetic.
 - Custom trigger tooltips for project, facility, security, formation, and disarmament requirements.
 - Icon-first costs and readable long-requirement summaries.
-- Route-specific tone for human, clone, machine, temporal, bestiary, alien, and synthesis content.
+- Route-specific tone for human, clone, machine, temporal, paleogenetic, xenobiological, extraterrestrial-provenance, and synthesis content.
 - Hidden route and variable spoilers.
 - Early alien-origin overstatement.
+- Contradictions among extraterrestrial provenance, temporal displacement, manufactured continuity, and unresolved origin; later transformation must not be written as alien proof.
 - Event Details and workbook mirror text containing mechanical effects.
 - Cross-surface mismatch between events, decisions, focuses, GUI, super-events, achievements, docs, and catalog.
 - Unresearched working labels, quotes, remarks, slogans, or audio titles copied into final super-event localisation.

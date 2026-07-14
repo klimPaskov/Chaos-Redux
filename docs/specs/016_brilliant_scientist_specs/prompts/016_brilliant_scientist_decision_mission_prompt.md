@@ -1,5 +1,7 @@
 # Decision and mission implementation prompt for Event 016 Brilliant Scientist
 
+Apply the binding R2, R3, R4, R5, and R7 contracts from `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md`.
+
 Read:
 
 - `docs/specs/016_brilliant_scientist_specs/specs/016_brilliant_scientist_spec_part_2_host_directorate_and_decisions.md`
@@ -52,11 +54,13 @@ Implement invitation, assistant recruitment, archive theft, sabotage, extraction
 
 ## Kruger State actions
 
-Implement route-specific production and administration for clone, robot, bestiary, portal, temporal, exotic, biological, diplomacy, recruitment, expansion, integration, and singularity systems. Force generation must use facilities, equipment, resources, and time. No uncapped weekly divisions.
+Implement route-specific production and administration for clone, robot, paleogenetic, xenobiological, portal, temporal, exotic, biological, diplomacy, recruitment, expansion, integration, and singularity systems. Paleogenetic and xenobiological forces require separate facilities, supply, failures, and counters. Force generation must use facilities, equipment, resources, and time. No uncapped weekly divisions.
 
 ## Dynamic presentation
 
 Expose Mandate, Dependence, Exposure, Project Capacity, Control status, project stages, facility state, and broad singularity arming state through scripted localisation, category headers, tooltips, or the approved GUI.
+
+Keep only Independent Capacity and Grievance hidden. Add temporal observation, authentication, anchor discovery, bounded recovery, per-target use records, ledger capture, and stabilization. Add an institutional-capture audit action or tooltip that cannot turn failed territory selection into takeover eligibility. Enforce terminal commitment transitions in decisions and missions.
 
 Use icon-first cost text. For long requirement lists, show a short status and a detailed custom tooltip. Name laboratory states and required regions. Do not expose raw trigger blocks.
 

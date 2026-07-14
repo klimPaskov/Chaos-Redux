@@ -1,5 +1,7 @@
 # Completion-audit prompt for Event 016 Brilliant Scientist
 
+Audit against the binding R1 through R7 dispositions in `016_source_of_truth_map.md`, not the rejected historical recommendations.
+
 Spawn `chaosx_event_completion_auditor` with `fork_context=false` after implementation, asset wiring, documentation, workbook alignment, and all accepted addenda are resolved.
 
 Read:
@@ -27,10 +29,10 @@ Report completion by:
 - Kruger State tag, map, economy, politics, military, technology, classification, and playability.
 - Focus-tree route coverage, depth, rewards, icons, localisation, and AI.
 - Project-derived forces and production constraints.
-- Super-events, image, quote, remark, unique audio, settings-aware wiring, and documentation.
+- Exactly six super-events, each with image, quote or text research, remark, unique audio, settings-aware wiring, and documentation.
 - World-threat, Laboratory World, Strategic Singularity, Fallout threshold sequence, and cleanup.
 - Defeat aftermath.
-- Achievements and icon triplets.
+- Exactly seventeen achievements and 51 final icon DDS files, with distinct `public_method` and `clean_break` conditions.
 - Event log, Event Details, docs, catalog, and workbook alignment.
 - Asset manifests, animation frame packages, and static fallbacks.
 - Accepted plans and their disposition.
@@ -55,6 +57,11 @@ Do not mark complete when any of these remain:
 - Catalog or workbook wording is stale.
 - An accepted addendum remains unresolved.
 - A fallback or simplification is hidden.
+- Host takeover can occur from failed territory selection instead of proven institutional capture.
+- Paleogenetics and xenobiological synthesis share a generic production, supply, failure, or counter system.
+- Temporal actions lack bounded targets, debt, use records, anchors, authentication, stabilization, or evidence-gated counterplay.
+- A campaign can hold contradictory origin conclusions, or transformation unlocks extraterrestrial proof.
+- Laboratory World and Strategic Singularity lack a mutually exclusive commitment transition.
 
 ## Output
 

@@ -7,22 +7,28 @@
 | Event slug | `brilliant_scientist` |
 | Scientist | Doctor Warren Kruger |
 | Entry classification | Minor fire-once |
-| Source status | Full source-spec draft |
-| Package date | 2026-07-10 |
+| Source status | Reconciled implementation specification |
+| Package date | 2026-07-14 |
 | Intended spec root | `docs/specs/016_brilliant_scientist_specs/` |
-| Planning state | Source design complete, mandatory external subagent closure pass not executed in this interface |
+| Planning state | Improvement addendum disposition complete; implementation not started |
 | Cluster | None |
 | World-end capability | Yes, conditional late branch |
 | Custom country | Kruger State, working public label |
 | Custom UI | Kruger Directorate, working interface label |
+| Super-event text research | Complete for all six retained packages |
+| Visual asset status | Not produced or wired |
+| Audio status | Research in progress at the documentation-freeze cutoff |
+| World-end reservations | `11` Laboratory World, `12` Strategic Singularity |
+| Visible super-event reservations | `88` recognition, `89` formation, `90` threat, `91` Laboratory World, `92` Singularity, `93` defeat |
 
 ## Source-of-truth order
 
 1. The user's Event 16 brief.
-2. The specification files in this package.
-3. Accepted improvement addenda that are later promoted into these specs.
-4. The project-wide skills and `AGENTS.md`.
-5. Current implementation files as evidence of existing behavior, not as permission to shrink the design.
+2. `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md`, including parent dispositions R1 through R7.
+3. The reconciled specification files in this package.
+4. Promoted portions of the improvement addendum. Rejected R1 and R6 recommendations are historical evidence only.
+5. The project-wide skills and `AGENTS.md`.
+6. Current implementation files as evidence of existing behavior, not as permission to shrink the design.
 
 ## Design dispositions
 
@@ -39,23 +45,25 @@
 | Let the terminal device ignore world-end rules | No. It forces chaos above the existing terminal threshold before firing the world-end branch. |
 | Add an Evolution V | No. World Collapse is a terminal gate, not an additional evolution stage. |
 | Put Event 16 in the planned Research cluster | No. The user explicitly placed it in no cluster. |
-| Keep the catalog's separate `Crazy Scientist` idea | No. It should be folded into Event 16 or marked superseded. |
+| Keep the catalog's separate `Crazy Scientist` idea | No. It is absorbed and redesigned inside Event 16; the standalone concept is superseded. |
+| Remove international recognition from the super-event set | No. Keep it as a thresholded conditional package. |
+| Reduce the achievement set | No. Preserve exactly seventeen distinct achievements. |
+| Expose Directorate state | Mandate, Dependence, Exposure, and Project Capacity are visible. Independent Capacity and Grievance remain hidden. |
 
 ## File status legend
 
-- `complete`: design surface is fully specified for implementation.
+- `specified`: design surface is reconciled and ready for implementation, but is not implemented.
 - `research_gate`: implementation depends on source verification or licensing.
-- `process_blocked`: design is present, but a project-mandated agent pass could not be run in this interface.
+- `blocked`: a required implementation, research, asset, audio, or integration dependency is absent.
 - `implementation_only`: intentionally left to the implementation agent, such as final focus coordinates and exact script IDs.
 
 ## Package integrity summary
 
-- Markdown files: `43`.
-- Markdown words: `60803`.
-- Markdown bytes: `430745`.
-- Compact goal prompt characters: `4000`.
+- Package file counts and sizes are intentionally not frozen because the reconciled pack includes linked plan, event-doc, asset-manifest, and super-event-research surfaces.
 - Source-reading ledger entries: `30`.
 - Achievement working keys: `17`.
+- Super-event packages: `6`.
+- Severe portrait animation families: `5`.
 - Integrity ledger: `package_checksums.sha256`.
 
-The checksum ledger covers every package file except itself. The final ZIP is tested after creation.
+The checksum ledger covers the reconciled Event 016 documentation source set listed in its header, except the ledger itself. No ZIP or implementation-readiness claim is made.

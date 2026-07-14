@@ -1,5 +1,9 @@
 # Event 016 repository inspection notes
 
+## Reverification, 2026-07-14
+
+The Event 016 gameplay footprint remains the same placeholder baseline described below. The repository contains no implemented Directorate, persistent Warren Kruger character, staged project portfolio, temporal-debt system, Kruger State country package, Event 016 focus tree, Event 016 achievements, or wired Event 016 asset and super-event packages. The reconciled design must therefore be described as planned, never implemented.
+
 ## Current event script
 
 The live event is currently a two-step placeholder.

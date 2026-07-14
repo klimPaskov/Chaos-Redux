@@ -1,5 +1,9 @@
 # Event 016 decision and mission map
 
+## Binding reconciliation
+
+Project Capacity is visible. Independent Capacity and Grievance are hidden. The decision system must include evidence-gated temporal observation, record authentication, anchor discovery, bounded recovery, per-target use records, ledger capture, and stabilization that disables temporal actions while active. It must also audit institutional-capture eligibility and terminal commitment transitions. Paleogenetic and xenobiological force production are separate decision families.
+
 ## Host decision categories
 
 | Phase | Family | Example actions | Main costs | Main values | AI rule |
@@ -50,7 +54,8 @@
 | State stabilization | Repair, power, rail, supply, staff | Factories, equipment, trains, time | Solves opening weaknesses |
 | Clone growth | Begin cycle, mature unit, grant status | Medical capacity, food proxy, equipment, time | Bounded population and units |
 | Robot production | Build frames, repair, isolate nodes | Factories, power, rare resources | Bounded robot force and automation |
-| Bestiary | Breed, train, relocate, contain | Food proxy, handlers, support equipment | Creature units and ecological risk |
+| Paleogenetics | Breed, train, relocate, contain restored species | Feed, land, handlers, transport, veterinary capacity | Dinosaur or megafauna units and ecological risk |
+| Xenobiological synthesis | Grow, select control method, condition, deploy, contain | Medical capacity, reagents, power, control infrastructure | Designed-organism units and control-channel risk |
 | Portal network | Link terminals, transit, raid, close link | Power, advanced materials, security | Strategic movement and vulnerability |
 | Temporal system | Forecast, recover, duplicate, close paradox | Synchronization capacity, paradox | Limited recovery and future information |
 | Exotic arms | Produce elite support and field projectors | Rare material, energy, factories | High-quality limited force |
@@ -86,6 +91,6 @@
 | Robot force | Military factories, power, rare materials, support equipment |
 | Creature force | Medical capacity, handlers, support equipment, food proxy |
 | Portal operation | Energy, terminal capacity, advanced materials |
-| Temporal action | Synchronization capacity, paradox, one-time flags |
+| Temporal action | Synchronization capacity, temporal debt, bounded target record, anchor availability |
 | Biological use | Stockpile, aircraft or delivery, condemnation, deaths, contamination |
 | Singularity | Several facilities, strategic materials, energy, years, world-threat exposure |

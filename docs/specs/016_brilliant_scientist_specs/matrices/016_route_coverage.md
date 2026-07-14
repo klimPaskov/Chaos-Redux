@@ -1,5 +1,11 @@
 # Event 016 requirement and route coverage
 
+> This matrix records specification coverage only. Every row marked `Complete` means the design requirement was covered in the source pack; it does not mean gameplay, localisation, AI, assets, audio, or spreadsheet work exists. Implementation is pending for the entire Event 016 package beyond the live placeholder baseline.
+
+## Binding reconciliation
+
+Route coverage preserves six mapped super-event packages and exactly seventeen achievements, including distinct `public_method` and `clean_break` outcomes. Host takeover is an evidence-gated institutional-capture route rather than a fallback. Paleogenetics and xenobiological production remain distinct until Synthesis, origin conclusions are mutually exclusive or unresolved, temporal play carries debt and counterplay, and Laboratory World cannot coexist with Strategic Singularity.
+
 ## User brief coverage
 
 | User requirement | Spec location | Status |
@@ -66,7 +72,8 @@
 | Replicated sovereignty | Clone rights or hierarchy | Growth and biological production | Clone corps | Clone asylum or submission | Settlement and replicated administration | Replicated nation or empire |
 | Machine ascendancy | Network rule | Automated industry | Robot corps | Machine compacts or coercion | Automated occupation | Machine world route |
 | Temporal Continuum | Prime or council | Synchronization network | Temporal guard and recovery | Future intelligence and paradox diplomacy | Temporal reach | Continuum or escape |
-| Bestiary and xenobiological | Handler or biological hierarchy | Breeding and containment | Dinosaurs and monsters | Fear, trade, or ecological threat | Resource and habitat seizure | Biological empire |
+| Paleogenetics | Handler corps or restoration authority | Reserves, hatcheries, pens | Dinosaurs and megafauna | Prestige, intimidation, or ecological threat | Feed, land, transport, reserve seizure | Restored-species state |
+| Xenobiological synthesis | Control-center or biological hierarchy | Vats, fabrication, containment | Designed monsters and specialists | Fear, medical leverage, adaptive war | Reagent, power, control-network seizure | Engineered biological empire |
 | Synthesis | Project-caste system | Mixed project economy | Several project families | Flexible or coercive | Project-specific integration | Synthesis world order |
 | Global submission | Kruger personal or route state | Global facility network | Dominant project army | Submission faction | Facility seizure and subject systems | Laboratory World |
 | Strategic singularity | Any sovereign extreme route | Multi-site terminal program | Deterrent and delivery | Coercion | Protect components | Fallout world end |

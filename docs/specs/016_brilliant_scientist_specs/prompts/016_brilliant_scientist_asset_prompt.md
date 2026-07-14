@@ -1,5 +1,7 @@
 # Asset production prompt for Event 016 Brilliant Scientist
 
+The binding inventory is six super-event images, seventeen achievement icon triplets, and five severe portrait animation packages. All are required; none is currently produced or wired.
+
 Use this prompt with the correct narrow Chaos Redux asset subagents. Spawn every project subagent with `fork_context=false`.
 
 ## Source design
@@ -49,7 +51,7 @@ At minimum:
 - Focus icon families for the 85 to 115 focus tree.
 - Idea and spirit icons for every staged institution.
 - Decision icons for facilities, projects, security, foreign actions, confrontation, armies, integration, and singularity.
-- All 16 achievement icon triplets.
+- All 17 achievement icon triplets, for 51 final DDS files.
 - Base and implemented route flags at 82x52, 41x26, and 10x7.
 - Kruger faction emblem.
 - Report scenes at 210x176 with the repository sepia report-card treatment.

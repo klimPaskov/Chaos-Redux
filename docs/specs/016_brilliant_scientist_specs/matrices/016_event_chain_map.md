@@ -1,5 +1,9 @@
 # Event 016 event-chain map
 
+## Binding reconciliation
+
+The chain retains six mapped super-event packages and seventeen achievements. Host takeover requires proven multi-domain institutional capture and is never selected because territorial secession failed. Temporal actions create debt and anchor counterplay. One campaign-specific origin conclusion may lock, or the chain remains unresolved. Laboratory World and Strategic Singularity use mutually exclusive commitment locks.
+
 ## Core state flow
 
 ```text
@@ -74,7 +78,7 @@ Kruger State or takeover
 | Successful removal | Dead, confined, retired, or exiled | Keeps replicated knowledge only | Archives, assistants, foreign race, rare continuity hook |
 | Partial enclave | Kruger leader of small country | Local territorial crisis | Survival focus branch and possible later expansion |
 | Violent rebellion | Kruger leader of project state | Former-host war and recovery category | Full country package and focus tree |
-| Host takeover | Kruger leader of transformed host | Original government replaced | Full Kruger route without invalid territorial split |
+| Host takeover | Kruger leader of transformed host | Proven multi-domain institutional capture replaces the government | `origin_takeover` consolidation opening in the full Kruger route |
 
 ## Actor and log ownership
 
