@@ -1,6 +1,6 @@
 # Asset production prompt for Event 016 Brilliant Scientist
 
-The binding inventory is six super-event images, seventeen achievement icon triplets, and five severe portrait animation packages. All are required; none is currently produced or wired.
+The binding inventory is six super-event images, seventeen achievement icon triplets, and five severe portrait animation package families. All remain required. Stage 0 alone is complete and registered. Every super-event image, achievement icon, later portrait source and runtime file, severe animation package, flag, project icon, UI asset, report image, and news image remains unproduced and unwired.
 
 Use this prompt with the correct narrow Chaos Redux asset subagents. Spawn every project subagent with `fork_context=false`.
 
@@ -27,17 +27,21 @@ Use `chaosx_asset_source_researcher` only when an asset must depict real histori
 
 ## Base Kruger portrait
 
-The stage 0 portrait must use `portrait_generic_biowarfare_europe_male_01` as the approved visual base, copied into an Event 16 asset source path and renamed for Doctor Warren Kruger. Do not replace this user-specified base with a newly generated face. Preserve the source, document its origin, and create event-scoped processed outputs.
+Do not recreate Stage 0. The approved `portrait_generic_biowarfare_europe_male_01` source, immutable Event 016 copy, processed leader and advisor PNGs, runtime leader and advisor DDS files, and sprite registrations are complete. Preserve the established face and use the registered identifiers `GFX_portrait_KRG_doctor_warren_kruger_stage_0` and `GFX_idea_doctor_warren_kruger_stage_0` as the identity baseline.
+
+The external redistribution rights of the copied base remain unresolved because the tracked source has no standalone licence metadata. Internal Event 016 use is explicitly user-authorized. Do not describe the base as public domain or externally cleared.
 
 Create synchronized portrait states for:
 
-- Stage 0 appointment.
+- Stage 0 appointment, already complete and used as the identity reference.
 - Stage I national figure.
 - Stage II international target.
 - Stage III forbidden science, with route hints.
 - Stage IV clone, machine, temporal, xenobiological or alien, and synthesis variants.
 
 Leader portrait target is 156x210. Advisor and scientist surfaces must be composed for their verified UI sizes rather than blindly resizing the leader portrait.
+
+Stage I through IV static and animated sprite contracts are pre-registered in `interface/016_brilliant_scientist.gfx`. Registration is a filename contract, not evidence that those assets exist. Produce the exact missing files named by the live contracts and do not rename the sprites without parent approval.
 
 ## Required visual families
 

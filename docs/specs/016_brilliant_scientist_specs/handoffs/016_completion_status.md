@@ -4,7 +4,9 @@
 
 The mandatory improvement-loop addendum was produced and received a complete parent disposition. R2, R3, R4, R5, and R7 are promoted. R1 and R6 are rejected. The reconciled source of truth preserves exactly seventeen achievements and all six mapped super-event packages.
 
-Documentation planning is process-closed for implementation entry. Gameplay implementation is not started beyond the pre-existing placeholder event, idea, localisation, registration, and news surfaces. No Event 016 asset, animation, super-event image, quote, audio track, achievement entry, country package, focus tree, decision system, project system, or spreadsheet alignment has been produced or wired.
+Documentation planning is process-closed for implementation entry. Event 016 remains default-disabled and gameplay implementation is incomplete. The live entry event still uses the pre-existing placeholder flow, while other implementation work remains outside the completion boundary of this documentation pass.
+
+Presentation work has advanced in two bounded tranches. Six-package text and audio research is complete, and the six final Event 016-owned OGGs use visible IDs `90` through `95`. The exact stage-0 leader and advisor DDS files are complete and registered in `interface/016_brilliant_scientist.gfx`. All super-event images, later portrait source art and runtime files, severe animation packages, achievement icons, flags, project art, UI art, final descriptions, and shared presentation wiring remain incomplete.
 
 The exact continuation state is in `docs/plans/016_brilliant_scientist_plans/016_brilliant_scientist_resume_packet.md`. The next implementation action is the bounded scripted-system architecture pass, followed by Tranche 1 host selection and the persistent Kruger lifecycle.
 
@@ -27,16 +29,16 @@ The source design is complete at the parent-planning level. It contains no inten
 
 The package specifies exactly seventeen working achievements. The parent rejected the proposed merge because `public_method` and `clean_break` test distinct outcomes.
 
-Six-package super-event title, button, and quotation research is complete and sourced. Final descriptions, images, audio, live identifiers, localisation, triggers, and settings-aware wiring remain incomplete.
+Six-package super-event title, button, quotation, and audio research is complete and sourced. The Event 016-owned OGGs are complete. Final descriptions, images, localisation, triggers, shared music and sound definitions, settings-aware playback, and live presentation wiring remain incomplete.
 
-## Work not performed
+## Current incomplete work
 
-- No gameplay files were modified.
-- No localisation files were modified.
-- No spreadsheet was modified.
-- No visual or audio asset was generated, sourced, converted, or wired.
-- No final super-event quote, cultural remark, title, or music track was selected.
-- No implementation validation was claimed.
+- Gameplay is incomplete and Event 016 remains default-disabled.
+- Final localisation and spreadsheet alignment are incomplete.
+- The stage-0 portrait sprites are registered, but final character assignment and later portrait-state wiring remain incomplete.
+- Stage I through IV portrait art and every severe animation package remain unproduced.
+- Super-event images and shared audio playback wiring remain incomplete.
+- No gameplay completion validation is claimed.
 
 These are implementation tasks rather than omissions from the planning package.
 
@@ -51,4 +53,8 @@ The earlier blocker was cleared when `chaosx_improvement_loop_planner` produced 
 - Full parent-authored source specification: complete.
 - Prompt and continuation package: complete.
 - Mandatory project-subagent closure pass: complete and dispositioned.
-- Gameplay implementation: not started by this planning task.
+- Super-event text research: complete for six packages.
+- Super-event audio research and Event 016-owned OGGs: complete for IDs `90` through `95`.
+- Kruger stage-0 source, leader DDS, advisor DDS, and sprite registration: complete.
+- Later visual assets and shared presentation wiring: incomplete.
+- Gameplay implementation: incomplete and default-disabled.

@@ -2,7 +2,9 @@
 
 Research exactly six mapped packages. International recognition and qualifying defeat are conditional at runtime but still require complete text, image, unique audio, source, licence, localisation, documentation, and wiring handoffs.
 
-Use visible super-event reservations 88 through 93 in this order: recognition, formation, global threat, Laboratory World, Strategic Singularity, qualifying defeat. Do not use Event 020 slots 85 through 87. Laboratory World and Strategic Singularity use world-end scenario IDs 11 and 12.
+Use visible super-event reservations 90 through 95 in this order: recognition, formation, global threat, Laboratory World, Strategic Singularity, qualifying defeat. Live Event 015 wiring occupies visible IDs 85 through 89. Laboratory World and Strategic Singularity use world-end scenario IDs 11 and 12.
+
+Text and audio research are complete for all six packages. The final Event 016-owned OGGs are exactly `115.000000` seconds, Ogg Vorbis, `44,100 Hz`, stereo, and use the role-preserving filenames under `music/016_brilliant_scientist/` for IDs 90 through 95. Do not repeat audio selection, download, rights research, mastering, or conversion unless a concrete evidence defect is found. Super-event images, final descriptions, localisation, shared music and sound definitions, settings-aware playback, event triggers, and presentation wiring remain incomplete.
 
 Use `chaosx_super_event_text_researcher`, `chaosx_super_event_audio_researcher`, and the appropriate image subagent. Spawn each with `fork_context=false` and pass only the narrow brief it needs.
 
@@ -50,9 +52,9 @@ Final titles also require deliberate research and selection. Avoid generic apoca
 
 ## Audio research
 
-For every retained package, select a unique real musical track unless the user explicitly approves a named reuse.
+The unique track selection and Event 016-owned OGG production are complete for every retained package. Use `docs/super_events/016_brilliant_scientist_super_event_audio_research.md` and its handoff as the authoritative audio record.
 
-Required documentation:
+Preserve the completed documentation fields:
 
 - Title.
 - Composer or creator.
@@ -87,6 +89,6 @@ Target size is 457x328. Use strong central composition, period-authentic visual 
 
 ## Research note
 
-Create or update `docs/super_events/016_brilliant_scientist_super_event_research.md` with all candidates, selections, sources, licenses, image directions, final paths, IDs, blockers, and implementation notes.
+Preserve `docs/super_events/016_brilliant_scientist_super_event_research.md` for the selected text package and `docs/super_events/016_brilliant_scientist_super_event_audio_research.md` for final audio. Update only image directions, final image paths, IDs, blockers, and implementation notes that change during the remaining work.
 
 Do not edit localisation, events, GFX, GUI, sound definitions, or spreadsheets. The main agent owns final wiring.

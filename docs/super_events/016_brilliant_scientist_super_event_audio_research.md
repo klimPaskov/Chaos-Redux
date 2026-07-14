@@ -166,7 +166,7 @@ Chopin's B-flat-minor nocturne is reflective without reading as a clean victory 
 
 All six files are Ogg Vorbis, exactly `115.000000 s`, `44,100 Hz`, stereo, and carry source, author/performer, license, license URL, and edit-notice Vorbis comments.
 
-The 2026-07-14 collision repair moved the six final OGGs by role from the superseded 88-through-93 paths to IDs 90 through 95 with `git mv` only. Their encoded-file hashes, decoded-PCM hashes, byte counts, stream properties, and embedded role tags are unchanged.
+The 2026-07-14 collision repair in commit `0e8c6f8e` moved the six final OGGs by role from the superseded ID 88 through 93 paths to IDs 90 through 95 with `git mv` only. Their encoded-file hashes, decoded-PCM hashes, byte counts, stream properties, and embedded role tags are unchanged.
 
 | ID | Bytes | Integrated loudness | True peak | LRA | OGG SHA-256 | Decoded PCM SHA-256 |
 | ---: | ---: | ---: | ---: | ---: | --- | --- |

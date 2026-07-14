@@ -22,6 +22,10 @@ The controlling design sources are:
 
 No gameplay, localisation, GUI, GFX, image, audio, spreadsheet, specification, or shared-registry file is authorized by this note. Sources were checked on 14 July 2026.
 
+## Follow-up integration status, 2026-07-14
+
+The selected text remains unchanged. Parent-assigned visible IDs are 90 recognition, 91 formation, 92 global threat, 93 Laboratory World, 94 Strategic Singularity, and 95 qualifying defeat. Separate audio research and all six Event 016-owned OGGs are complete. Images, final descriptions, localisation, triggers, shared music and sound definitions, settings-aware playback, and presentation wiring remain incomplete.
+
 ## Rights and confidence legend
 
 - **PD-US, explicit** means the host identifies the underlying text or collection as public domain in the United States.
@@ -295,17 +299,17 @@ The Truman excerpt is unusually exact for this branch. It speaks about controlli
 
 ## Implementation handoff notes
 
-1. No live super-event slot, numeric audio ID, localisation key, sprite name, or scripted-localisation accessor is assigned here. The parent must register those identifiers against the repository's current shared surfaces.
+1. This text-research pass did not assign live identifiers. The parent later assigned visible and audio IDs 90 through 95. Shared localisation keys, sprite names, scripted-localisation accessors, and presentation registration remain parent-owned.
 2. The six provisional package roles are `international_recognition`, `kruger_state_formation`, `global_kruger_threat`, `laboratory_world`, `strategic_singularity`, and `defeat_aftermath`. These are documentation handles, not permission to invent live IDs from them.
 3. International recognition and defeat aftermath require strict conditional gates. They are retained packages, not automatic events.
 4. Formation can use the common selected button. Route-sensitive buttons are optional only if the implementation already supports a clean dynamic description and button mapping.
 5. Laboratory World and Strategic Singularity must retain mutually exclusive commitment and cleanup paths. The selected text assumes the R7 interpretation stated in this note.
 6. Quotations should be copied exactly from the selected display excerpts. Attribution lines can omit edition detail in the UI, but the full edition record must remain in documentation.
-7. Image direction, source images, final DDS paths, GFX identifiers, audio selection, audio rights, final OGG paths, and sound identifiers are outside this text-only assignment. Their absence is not permission to use placeholders or reuse one package's asset in another.
+7. Image direction, source images, final DDS paths, GFX identifiers, and sound identifiers are outside this text-only assignment. Audio selection, rights research, and final OGG production later completed in the dedicated audio package. Missing images and wiring are not permission to use placeholders or reuse one package's asset in another.
 8. Final descriptions still need a separate writing and localisation implementation pass. They should describe visible world state, not counters, thresholds, plan history, or hidden route logic.
 
 ## Research status
 
 All six retained packages have a selected title, selected quote, selected button, at least two title backups, at least two quote backups, and at least two button backups. Every sourced candidate has a direct source link, attribution confidence, rights note, contextual fit, and risk assessment. Original candidates are identified as original rather than given invented provenance.
 
-No text-source blocker remains. No fallback, placeholder, package removal, or collapse was used. Visual, audio, implementation, and localisation work remains deliberately outside scope.
+No text-source blocker remains. No fallback, placeholder, package removal, or collapse was used. Audio later completed in its dedicated package. Visual, implementation, and localisation work remains deliberately outside this text-research scope.

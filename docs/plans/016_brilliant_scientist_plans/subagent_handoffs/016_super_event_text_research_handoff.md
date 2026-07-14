@@ -4,6 +4,10 @@ Date: 2026-07-14
 
 Mode: bounded text research and documentation patch. No gameplay, localisation, GUI, GFX, image, audio, spreadsheet, specification, or shared-registry edit was authorized or made.
 
+## Follow-up reconciliation, 2026-07-14
+
+The selected text remains unchanged. Event 016 now uses visible IDs 90 recognition, 91 formation, 92 global threat, 93 Laboratory World, 94 Strategic Singularity, and 95 qualifying defeat. Six final Event 016-owned OGGs and their audio research are complete. Images, final descriptions, localisation, triggers, shared playback definitions, and presentation wiring remain incomplete.
+
 ## Result
 
 The six-package Event 016 text research assignment is complete. The full evidence and candidate matrix is in `docs/super_events/016_brilliant_scientist_super_event_research.md`.
@@ -56,11 +60,11 @@ After this patch:
 
 ## Parent-owned next actions
 
-1. Register live super-event slots, localisation keys, quote attribution keys, dynamic description mappings, sprite names, audio IDs, and settings-aware playback identifiers against the current shared registries.
+1. Register visible slots and audio IDs 90 through 95, localisation keys, quote attribution keys, dynamic description mappings, sprite names, and settings-aware playback identifiers against the current shared registries.
 2. Implement the conditional trigger gates. Recognition must not fire from Evolution II alone. Defeat must not fire for an ordinary local loss.
 3. Preserve the R7 commitment split and cleanup. Laboratory World must cancel Singularity. Singularity firing must permanently prevent Laboratory World and enter Fallout after raising chaos above the threshold.
 4. Decide whether formation uses the selected common button or the optional route-sensitive button set. Do not create route-sensitive keys unless the scripted-localisation mapping is also implemented.
-5. Route image and audio work to their dedicated Event 016 asset and audio researchers. No placeholder or reused package asset is authorized by this handoff.
+5. Route the six missing images to the dedicated Event 016 asset worker. Preserve the completed audio research and Event 016-owned OGGs. No placeholder or reused package asset is authorized by this handoff.
 6. Write and wire the final descriptions in a separate implementation pass. The descriptions must show visible world state and must not expose counters, thresholds, or plan history.
 
 ## Meaningful review performed
@@ -84,7 +88,7 @@ No in-game, localisation-render, audio, image, or GUI validation was performed b
 
 No simplification or fallback was used within the text-research scope. No text-source blocker remains.
 
-Images, audio, live IDs, final descriptions, localisation wiring, event triggers, and settings-aware playback remain unimplemented because they are explicitly outside this subagent's authority. Those outstanding implementation surfaces must not be mistaken for completed super-event packages.
+Images, final descriptions, localisation wiring, event triggers, shared playback definitions, and settings-aware playback remain unimplemented because they are explicitly outside this subagent's authority. The completed audio research, Event 016-owned OGGs, and fixed IDs do not by themselves complete any super-event package.
 
 ## Skills used
 

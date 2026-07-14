@@ -2,7 +2,7 @@
 
 ## Implementation status
 
-Event 016 is currently a placeholder. The live event selects a narrow host pool, applies a `+50%` research idea, and fires an opening news event. The full system described below is the accepted implementation target, not current gameplay.
+Event 016 remains default-disabled and gameplay-incomplete. The live entry event still selects a narrow host pool, applies a `+50%` research idea, and fires an opening news event. The full system described below is the accepted implementation target, not completed gameplay.
 
 The controlling source is `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md` and the ten-part specification under `docs/specs/016_brilliant_scientist_specs/`.
 
@@ -21,7 +21,18 @@ The controlling source is `docs/plans/016_brilliant_scientist_plans/016_source_o
 - Achievements: exactly seventeen.
 - Super-event packages: exactly six.
 
-Shared reservations are world-end scenario 11 for Laboratory World, world-end scenario 12 for Strategic Singularity, and visible super-event IDs 88 through 93 for recognition, formation, threat, Laboratory World, Strategic Singularity, and defeat in that order. Concurrent Event 020 owns world-end ID 10 and visible IDs 85 through 87.
+Shared reservations are world-end scenario 11 for Laboratory World and world-end scenario 12 for Strategic Singularity. The exact visible mapping is:
+
+| Visible ID | Role |
+| ---: | --- |
+| 90 | International recognition |
+| 91 | Kruger State formation |
+| 92 | Global Kruger threat |
+| 93 | Laboratory World |
+| 94 | Strategic Singularity |
+| 95 | Qualifying defeat aftermath |
+
+Live Event 015 wiring occupies visible IDs 85 through 89. Event 020 separately declares world-end ID 10 and visible IDs 85 through 87 in its own constants. Its visible overlap with Event 015 is external to Event 016.
 
 ## Planned lifecycle
 
@@ -82,13 +93,17 @@ Automatic fail-deadly or deliberate global-use doctrine blocks Laboratory World 
 
 Six super-event packages are planned for recognition, formation, global threat, Laboratory World, Strategic Singularity, and qualifying defeat. Recognition and defeat are conditional at runtime but remain full production packages.
 
+Text and audio research is complete for all six packages. Six role-distinct Event 016-owned OGGs exist at IDs 90 through 95. Every OGG is exactly `115.000000` seconds, Ogg Vorbis, `44,100 Hz`, stereo. Shared music, sound, settings, event, GUI, and localisation wiring remains incomplete, and all six super-event images are missing.
+
 Five severe Kruger portrait animation packages are planned for clone, machine, temporal, xenobiological or alien, and synthesis outcomes. Every animated package requires separate source frames, a static fallback, frame sheet, DDS, preview, contact sheet, manifest, and GFX handoff.
+
+Stage 0 is complete from the exact `portrait_generic_biowarfare_europe_male_01` base. The runtime leader or scientist DDS and `65x67` advisor DDS are registered as `GFX_portrait_KRG_doctor_warren_kruger_stage_0` and `GFX_idea_doctor_warren_kruger_stage_0`. Stage I through IV static and animated sprite contracts are pre-registered, but their referenced later assets and state wiring remain missing. The copied base is explicitly authorized for internal mod use, while external redistribution rights remain unresolved.
 
 Exactly seventeen achievements require completed, grey, and not-eligible icons, for 51 final DDS files.
 
 ## Icon and sprite plan
 
-No listed sprite is currently registered. Stable final identifiers must be reserved before asset production.
+Stage-0 portrait sprites and later portrait filename contracts are registered in `interface/016_brilliant_scientist.gfx`. Only the stage-0 files exist. Every other listed family still needs stable production, registration where absent, and final wiring.
 
 | Family | Planned path | Planned registration |
 | --- | --- | --- |
@@ -115,14 +130,14 @@ Biological-weapon work must reuse the existing biowarfare, contamination, Deaths
 ## Current blockers
 
 - Scripted-system contracts have not yet been frozen by the architect handoff.
-- Gameplay, AI, localisation, country, focus, project, and achievement implementation is absent.
-- Visual assets, animation packages, and image wiring are absent.
-- Super-event text research is complete, but images, live identifiers, localisation, and wiring are absent.
-- Audio research is not complete at this documentation cutoff.
+- Gameplay, AI, localisation, country, focus, project, and achievement implementation is incomplete, and Event 016 remains default-disabled.
+- Stage I through IV portrait assets, every severe animation package, flags, icons, UI art, report art, news art, super-event images, and visual state wiring remain absent.
+- Super-event text and Event 016-owned audio are complete, but final descriptions, images, localisation, triggers, shared playback definitions, and presentation wiring are absent.
+- Character assignment for the registered stage-0 sprites remains part of the incomplete gameplay lifecycle.
 - Workbook alignment is blocked on final in-game wording.
 
 ## Future plans
 
-After the architecture handoff, implement in reviewed tranches: random-event and Kruger foundation, Directorate, projects, evolutions and Event Details, Kruger State and focus tree, terminal systems and super-events, then achievements, assets, localisation, docs, workbook, audits, and final enablement.
+After the architecture handoff, implement in reviewed tranches: random-event and Kruger foundation, Directorate, projects, evolutions and Event Details, Kruger State and focus tree, terminal systems and super-events, then achievements, missing assets, localisation, docs, workbook, audits, and final enablement. Preserve the completed stage-0 portrait package and completed Event 016-owned OGGs.
 
 Another improvement-loop pass is appropriate only after the accepted addendum is implemented and new evidence shows a distinct shallow or disconnected mechanic.

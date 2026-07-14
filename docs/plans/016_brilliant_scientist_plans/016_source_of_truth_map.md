@@ -32,7 +32,9 @@ Event 016 remains a placeholder:
 - `events/_chaosx_news.txt` contains the existing opening news event.
 - Event 16 is registered in the fire-once system and has base event-name and log-name mappings.
 
-The repository does not yet contain the planned persistent Warren Kruger character, Directorate, project portfolio, temporal-debt system, origin conclusions, Kruger State package, Event 016 focus tree, AI package, achievements, final Event 016 visual assets, or wired Event 016 super-events.
+Event 016 remains outside the default-enabled allowlist and gameplay implementation is incomplete. Concurrent gameplay work does not change that completion boundary. The entry event, final lifecycle, Directorate, portfolio, country, focus, AI, achievement, localisation, spreadsheet, and terminal systems still require implementation and audit before any completion claim.
+
+Two bounded presentation tranches are complete. Six final Event 016-owned OGGs exist at visible IDs `90` through `95`. The exact stage-0 leader or scientist DDS and advisor DDS exist and are registered in `interface/016_brilliant_scientist.gfx`. Later portrait sprite contracts are pre-registered, but their source art and runtime files do not exist.
 
 ## Binding parent dispositions
 
@@ -63,22 +65,22 @@ The hidden values require concrete warning incidents and readable consequences. 
 
 ### Shared ID reservations
 
-The 2026-07-14 whole-worktree collision scan found that concurrent Event 020 owns world-end scenario ID 10 and visible super-event IDs 85, 86, and 87. Event 016 reserves:
+The current shared selectors assign visible IDs 85 through 89 to Event 015. Event 016 therefore uses:
 
 | Identifier | Event 016 assignment |
 | --- | --- |
 | World-end scenario 11 | Laboratory World |
 | World-end scenario 12 | Strategic Singularity and its Event 016 Fallout presentation |
-| Visible super-event 88 | International recognition |
-| Visible super-event 89 | Kruger State formation |
-| Visible super-event 90 | Global Kruger threat |
-| Visible super-event 91 | Laboratory World |
-| Visible super-event 92 | Strategic Singularity |
-| Visible super-event 93 | Qualifying defeat aftermath |
+| Visible super-event 90 | International recognition |
+| Visible super-event 91 | Kruger State formation |
+| Visible super-event 92 | Global Kruger threat |
+| Visible super-event 93 | Laboratory World |
+| Visible super-event 94 | Strategic Singularity |
+| Visible super-event 95 | Qualifying defeat aftermath |
 
-The earlier integration-map proposal of world-end IDs 10 and 11 plus visible slots 85 to 90 is superseded. Re-scan immediately before live registration because the shared registry is active concurrent work.
+The earlier Event 016 proposals of world-end IDs 10 and 11 plus visible slots 85 through 90, and later visible slots 88 through 93, are superseded. Re-scan immediately before live registration because the shared registry is active concurrent work.
 
-The exact-assignment audit found no competing owner outside Event 016 documentation for world-end registry IDs 11 and 12 or visible super-event IDs 88 through 93. Existing `chaosx.triggerable_scenarios.11` content and Event 020's `triggerable_scenario_id = 12` use the separate triggerable-scenario namespace and do not collide with `world_end_scenario_id`. These are documentation reservations only; the live world-end registry and shared super-event selectors remain unchanged.
+The exact-assignment audit found no competing live or shared-registry owner for Event 016 visible IDs 90 through 95. Event 020 separately declares world-end ID 10 and visible IDs 85 through 87 in `common/script_constants/020_black_plague_constants.txt`. Its visible-ID overlap with Event 015 is an external collision and is not the reason Event 016 uses 90 through 95. Existing triggerable-scenario slots 11 and 12 belong to a separate namespace and do not collide with `world_end_scenario_id`. Event 016 live world-end and shared presentation wiring remains incomplete.
 
 ### Achievements
 
@@ -114,7 +116,9 @@ Exactly five packages are planned:
 | `016_brilliant_scientist_improvement_loop_addendum.md` | Closed | R2, R3, R4, R5, and R7 promoted. R1 and R6 rejected. Do not run another planner pass until promoted work is implemented or new implementation evidence creates a distinct gap. |
 | `subagent_handoffs/016_repo_integration_map.md` | Accepted evidence | Controls implementation touchpoints, ordering, and current placeholder evidence. Its achievement count, visible-state wording, and shared ID reservations were reconciled. |
 | `subagent_handoffs/016_vanilla_engine_precedents.md` | Accepted evidence | Controls known engine precedents and confirms the seventeen-achievement registry footprint of 17 blocks, 34 localisation keys, and 51 DDS files. |
-| `subagent_handoffs/016_super_event_text_research_handoff.md` | Accepted text research | All six retained packages have selected text and evidence. This does not complete images, audio, localisation, IDs, triggers, or wiring. |
+| `subagent_handoffs/016_super_event_text_research_handoff.md` | Accepted text research | All six retained packages have selected text and evidence. This does not complete images, final descriptions, localisation, triggers, shared playback, or presentation wiring. Audio later completed in its dedicated package. |
+| `subagent_handoffs/016_super_event_audio_research_handoff.md` | Accepted audio research and Event 016-owned files | Six licensed, role-distinct OGGs are complete at IDs 90 through 95. Shared music, sound, settings, event, GUI, and localisation wiring remains parent-owned. |
+| `subagent_handoffs/016_base_portrait_source_handoff.md` | Accepted stage-0 asset package | The exact base, runtime leader or scientist DDS, and 65x67 advisor DDS are complete. Their two sprites were registered in commit `43125d91a`. Character assignment and later portrait assets remain incomplete. |
 | `acceptance/016_parent_depth_and_anti_bloat_review.md` | Historical | Its questions were resolved by the improvement addendum and parent disposition. |
 | `prompts/016_brilliant_scientist_improvement_loop_planner_prompt.md` | Superseded | Retained as process evidence. Do not use for current continuation. |
 | `handoffs/016_mandatory_continuation_prompt.md` | Superseded | Replaced by `016_brilliant_scientist_resume_packet.md`. |
@@ -127,17 +131,18 @@ The unnumbered `Crazy Scientist` idea is absorbed and redesigned inside Event 01
 
 ## Asset, audio, and wiring status
 
-| Surface | Status at source freeze | Evidence and next owner |
+| Surface | Status at follow-up reconciliation | Evidence and next owner |
 | --- | --- | --- |
 | Super-event text | Research complete for six packages | `docs/super_events/016_brilliant_scientist_super_event_research.md` and its handoff |
 | Super-event images | Not produced and not wired | Image and asset subagents, then parent-owned GFX wiring |
-| Super-event audio | Research in progress at the curation cutoff | Audio research handoff must name sources, rights, final OGG paths, and proposed identifiers before parent wiring |
-| Kruger portraits and animations | Not produced and not wired | Five severe packages plus static stages remain required |
+| Super-event audio | Research and six Event 016-owned OGGs complete | Commit `0e8c6f8e` preserves the role mapping at IDs 90 through 95. Shared music, sound, settings, event, GUI, and localisation wiring is absent |
+| Kruger stage 0 | Source, leader or scientist DDS, advisor DDS, and sprite registration complete | Exact base `portrait_generic_biowarfare_europe_male_01`. Registered sprites are `GFX_portrait_KRG_doctor_warren_kruger_stage_0` and `GFX_idea_doctor_warren_kruger_stage_0` |
+| Kruger stages I through IV | Sprite contracts pre-registered, assets missing | Static source art, runtime DDS files, severe source frames, fallbacks, sheets, previews, contact sheets, and state wiring remain required |
 | UI, report, news, focus, idea, decision, project, unit, technology, and flag art | Not produced and not wired | `docs/assets/016_brilliant_scientist/manifest.md` records the planned inventory |
 | Achievement icons | Not produced and not wired | Seventeen triplets, 51 final DDS files |
-| Interface and GFX registration | Not implemented | No Event 016-owned interface or GFX file exists |
+| Event 016-owned GFX registration | Stage-0 sprites and later portrait filename contracts registered | Registration does not prove later assets exist or complete character and GUI state wiring |
 
-Source-audio candidates that may appear in the working tree are research inputs, not final accepted or wired assets. Their presence does not change the status above without the audio handoff and final registration evidence.
+The final OGGs are accepted Event 016-owned assets, not research candidates. Their presence does not complete shared playback or the six super-event packages. The copied stage-0 portrait base is user-authorized for internal mod use. Its external redistribution rights remain unresolved and must not be described as cleared.
 
 ## Spreadsheet status
 
@@ -151,4 +156,4 @@ The architect must return exact helper, constant, event-target, scope, cleanup, 
 
 ## Completion boundary
 
-This source freeze completes documentation reconciliation only. Event 016 is not implemented, ready to enable, asset-complete, audio-complete, localisation-complete, workbook-aligned, audited, or ready for a gameplay completion claim.
+This source freeze and follow-up complete documentation reconciliation only. Event 016 is not implemented, ready to enable, visually complete, localisation-complete, workbook-aligned, audited, or ready for a gameplay completion claim. Audio research and Event 016-owned OGG production are complete, but shared playback wiring is not.

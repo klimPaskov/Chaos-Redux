@@ -4,9 +4,9 @@ Date: 2026-07-14
 
 ## Status
 
-This is a planning and reconciliation manifest. The Doctor Warren Kruger stage-0 source package, shared scientist or leader portrait, and advisor portrait are produced and handed off but are not registered or wired. All other Event 016 visual assets remain unproduced and unwired.
+This is a planning and reconciliation manifest. The Doctor Warren Kruger stage-0 source package, shared scientist or leader portrait, and advisor portrait are produced and registered in `interface/016_brilliant_scientist.gfx`. Their final character assignment remains part of the incomplete gameplay lifecycle. Stage I through IV static and animated sprite contracts are pre-registered, but all referenced later assets remain unproduced. All other Event 016 visual assets remain unproduced and unwired.
 
-Super-event text and audio research are complete for all six packages. Six final Event 016-owned OGG files are ready under `music/016_brilliant_scientist/` at visible IDs 90 through 95. Shared music definitions, sound wrappers, and settings-aware playback remain parent-owned and unwired.
+Super-event text and audio research are complete for all six packages. Six final Event 016-owned OGG files are ready under `music/016_brilliant_scientist/` at visible IDs 90 through 95. Commit `0e8c6f8e` performed the role-preserving rename to those IDs. Shared music definitions, sound wrappers, settings-aware playback, event triggers, GUI, and localisation remain parent-owned and unwired.
 
 ## Fixed inventory
 
@@ -16,11 +16,11 @@ Super-event text and audio research are complete for all six packages. Six final
 | Achievement completed icons | 17 | 0 | Unwired |
 | Achievement grey icons | 17 | 0 | Unwired |
 | Achievement not-eligible icons | 17 | 0 | Unwired |
-| Severe Kruger portrait animations | 5 | 0 | Unwired |
-| Severe Kruger static fallbacks | 5 | 0 | Unwired |
-| Kruger stage-0 scientist or leader portrait | 1 | 1 | Handed off, unwired |
-| Kruger stage-0 advisor portrait | 1 | 1 | Handed off, unwired |
-| Kruger stages I through III portrait states | Specification-defined | 0 | Unwired |
+| Severe Kruger portrait animation families | 5 | 0 | Sprite contracts registered, assets and state wiring missing |
+| Severe Kruger static fallbacks | 5 | 0 | Sprite contracts registered, assets and state wiring missing |
+| Kruger stage-0 scientist or leader portrait | 1 | 1 | Registered, character assignment pending |
+| Kruger stage-0 advisor portrait | 1 | 1 | Registered, character assignment pending |
+| Kruger stages I through III portrait states | Specification-defined | 0 | Sprite contracts registered, assets and state wiring missing |
 | Kruger State base and route flag triplets | Specification-defined | 0 | Unwired |
 | Directorate UI art | Specification-defined | 0 | Unwired |
 | Report and news images | Specification-defined | 0 | Unwired |
@@ -44,12 +44,12 @@ Super-event text and audio research are complete for all six packages. Six final
 
 | Asset | Use | Processed PNG | Final DDS | Dimensions and encoding | Proposed sprite | Target GFX | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| Doctor Warren Kruger stage-0 scientist or leader portrait | Special-project scientist `large` portrait and later leader portrait | `docs/assets/016_brilliant_scientist/processed_png/portraits/leader_doctor_warren_kruger_stage_0.png` | `gfx/leaders/KRG/leader_doctor_warren_kruger_stage_0.dds` | `156x210`, exact BGRA DDS copy with eight mip levels | `GFX_portrait_KRG_doctor_warren_kruger_stage_0` | `interface/016_brilliant_scientist.gfx` | `handed_off` |
-| Doctor Warren Kruger stage-0 advisor portrait | Advisor or theorist `small` portrait | `docs/assets/016_brilliant_scientist/processed_png/portraits/idea_doctor_warren_kruger_stage_0.png` | `gfx/interface/ideas/016_brilliant_scientist/idea_doctor_warren_kruger_stage_0.dds` | `65x67`, legacy one-level uncompressed BGRA DDS | `GFX_idea_doctor_warren_kruger_stage_0` | `interface/016_brilliant_scientist.gfx` | `handed_off` |
+| Doctor Warren Kruger stage-0 scientist or leader portrait | Special-project scientist `large` portrait and later leader portrait | `docs/assets/016_brilliant_scientist/processed_png/portraits/leader_doctor_warren_kruger_stage_0.png` | `gfx/leaders/KRG/leader_doctor_warren_kruger_stage_0.dds` | `156x210`, exact BGRA DDS copy with eight mip levels | `GFX_portrait_KRG_doctor_warren_kruger_stage_0` | `interface/016_brilliant_scientist.gfx` | `complete_registered` |
+| Doctor Warren Kruger stage-0 advisor portrait | Advisor or theorist `small` portrait | `docs/assets/016_brilliant_scientist/processed_png/portraits/idea_doctor_warren_kruger_stage_0.png` | `gfx/interface/ideas/016_brilliant_scientist/idea_doctor_warren_kruger_stage_0.dds` | `65x67`, legacy one-level uncompressed BGRA DDS | `GFX_idea_doctor_warren_kruger_stage_0` | `interface/016_brilliant_scientist.gfx` | `complete_registered` |
 
 The runtime large DDS is byte-identical to the approved tracked source and has SHA-256 `5D0CF3F973B6099DB895C96A6FED9544F30873076985DDF885032793C5183075`. The advisor DDS has SHA-256 `487F5D52167543FAFB998A103C1576321AC1DE67FFFDCF804F3B3AAF55122503`. Vanilla scientist characters use one `portraits = { army = { large = ... small = ... } }` family. The `156x210` large portrait therefore serves the scientist and later leader surfaces without a redundant second scientist DDS. The advisor derivative uses the verified vanilla `65x67` small-character surface rather than a guessed `64x64` icon.
 
-GFX and character wiring details are in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_base_portrait_source_handoff.md`.
+GFX and character wiring details are in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_base_portrait_source_handoff.md`. Commit `43125d91a` registered the two stage-0 sprites. The later Stage I through IV names currently registered in `interface/016_brilliant_scientist.gfx` are filename contracts only. No referenced later portrait DDS or animated sheet exists yet.
 
 ## Six super-event packages
 
@@ -115,6 +115,7 @@ Every final audio package needs source URL, author or performer, work and record
 ## Blockers
 
 - Visible super-event IDs 90 to 95 and world-end scenario IDs 11 and 12 are reserved. Their live shared-registry entries are not implemented.
-- Image and animation production has not started.
+- Later image and animation production has not started. Stage 0 is the completed exception.
 - Final OGGs are ready, but parent-owned shared music and optional sound-channel wiring remain absent.
-- Parent-owned GFX, GUI, character, achievement, music, sound, localisation, and gameplay wiring is absent.
+- Stage-0 GFX registration is complete, and later portrait contracts are pre-registered. Character assignment, later portrait files, GUI state wiring, achievement wiring, shared music and sound wiring, localisation, and gameplay wiring remain absent.
+- External redistribution rights for the copied stage-0 base remain unresolved. Internal Event 016 use is explicitly user-authorized.
