@@ -1,134 +1,72 @@
 # US Special Chemical Projects
 
-## Overview
+## Purpose and current status
 
-This mechanic adds two United States-only special projects under the existing chemical warfare specialization:
+The United States has two country-gated chemical special projects:
 
 1. `sp_cw_malodor_bomb_program`
 2. `sp_cw_aphrodisiac_bomb_program`
 
-Both projects unlock bomber-delivered chemical raids rather than frontline chemical support tools.
+The second stable identifier is retained for compatibility, but final player text identifies its payload as an experimental Behavioral Agent. Both concepts belong to the incapacitating-agent family. They are disruption weapons, not zero-consequence alternatives to lethal agents: every attempted operation can create evidence, and every confirmed release enters the shared Chemical Condemnation pipeline. Integrated CBRN Command may reduce only the Condemnation impact.
 
-These are implemented as short-duration disruption weapons, not high-casualty killers. The malodor concept is meant to break cohesion and foul operations, while the aphrodisiac concept is meant to destabilize discipline, coordination, and planning inside the target zone.
+The production and aircraft-design foundation is implemented. The selected-state release routes are not active yet. Their direct legacy raid definitions are fail-closed until they can consume exact native payload reservations and use the shared exposure record without a weather or terrain fallback.
 
-Unlike lethal chemical raids, both special-project payloads are tuned to add no international condemnation.
+## Unlock and logistics flow
 
-## Gameplay Flow
+1. `Lewisite` permits the Malodor Bomb Program.
+2. `Tabun (GA)` and the completed Malodor project permit the Behavioral-Agent project.
+3. Malodor completion unlocks `chem_air_bomb_malodor`, `malodor_agent_lot_1`, and the retained compatibility model `malodor_bomb_1`.
+4. Behavioral-Agent completion unlocks `chem_air_bomb_behavioral`, `behavioral_agent_lot_1`, and the retained compatibility model `aphrodisiac_bomb_1`.
+5. The exact strategic-agent lot can be converted into the incapacitating air-payload class only when the selected air profile and line-change gates permit it.
+6. The matching rack may be fitted only to CAS and tactical-bomber designs. Strategic bombers are not eligible.
+7. A future active raid must prove the exact matching module, profile, 120-unit native payload reservation, policy, readiness, selected state, and accepted condition inputs before release.
 
-1. USA researches into the chemical branch normally.
-2. `Lewisite` unlocks the `Malodor Bomb Program`.
-3. `Tabun (GA)` plus completion of the malodor project unlocks the `Aphrodisiac Bomb Program`.
-4. Completing a project immediately enables production of its dedicated bomb payload.
-5. The payload is then consumed by a raid in the existing `Chemical Raids` category.
+The two compatibility bomb models remain enabled only because old consumers have not all been retired. The idempotent payload-stock migration must not run until those references are gone.
 
-## Implemented Effects
+## Stable raid identifiers
 
-### Malodor Bomb
+- `chemical_malodor_strike`
+- `chemical_aphrodisiac_strike`
 
-- Raid key: `chemical_malodor_strike`
-- Equipment key: `malodor_bomb_1`
-- Immediate hit:
-  - province-level organization damage with no strength loss
-- Temporary state disruption:
-  - `-20%` attack
-  - `-30%` defense
-  - `-35%` movement
-  - `-20%` breakthrough
-  - `-30%` org recovery
-  - `-60%` max entrenchment
-  - strong dig-in-speed penalty
-  - occupation disruption through `required_garrison_factor` and `resistance_target`
-  - sortie disruption through `air_mission_efficiency` and `air_accidents_factor`
-- Contamination:
-  - only a very small short-lived contamination layer
+Both IDs remain parse-safe but currently have `always = no` in `visible`, `available`, and `launchable`. Their legacy direct outcomes bypass the shared exposure record and therefore cannot be launched. Final replacements must preserve these IDs or provide explicit compatibility wrappers.
 
-### Aphrodisiac Bomb
+## Accepted outcome identity
 
-- Raid key: `chemical_aphrodisiac_strike`
-- Equipment key: `aphrodisiac_bomb_1`
-- Temporary state disruption:
-  - `+10%` attack
-  - `+15%` breakthrough
-  - `-25%` defense
-  - `-50%` coordination
-  - `-50%` reinforce rate
-  - `-60%` max planning
-  - `-50%` max entrenchment
-  - `-40%` org recovery
-  - minor occupation disruption
+Malodor emphasizes evacuation pressure, cohesion loss, entrenchment disruption, movement disruption, occupation-control strain, and sortie preparation. Behavioral Agent emphasizes uncertain command breakdown, coordination loss, reinforcement disorder, planning loss, and resilience penalties. Neither profile is permitted to claim immunity from evidence or Condemnation.
 
-## Engine Limits And Approximations
+For either route:
 
-- Direct province/state combat retreat forcing is not exposed cleanly through raid outcomes.
-- Canceling an already-running attack from the struck province is not exposed as a reliable raid/script effect.
-- Because of that, the current implementation approximates these requests through:
-  - large immediate org shock for the malodor bomb
-  - short-duration entrenchment, defense, reinforce, planning, and org-recovery penalties
+- Aborted attempts consume 10–25 percent of the reserved payload and leave a small latent evidence trace.
+- Failed attempts consume 40–80 percent, create no target exposure, and establish at least the aircraft-wreckage evidence floor.
+- Partial, successful, and catastrophic outcomes must pass through the shared exposure calculator and exact-state consequence dispatcher.
+- No-release outcomes create no deaths, contamination, medical saturation, mask loss, treaty-use record, confirmed-use history, or chemical-use achievement.
 
-If you want the retreat/cancel behavior pushed harder later, the best follow-up is probably a more aggressive org-shock pass or a combat-event approximation, but that should be discussed first rather than added as a hidden fallback.
+## Engine boundaries
 
-## Files Added Or Updated
+The current raid scope proves target state, actor, victim, aircraft/module eligibility, interception, air defence, intelligence, air superiority, and native essential-equipment reservation. It does not expose a verified live target-state weather or terrain trigger. The active release route therefore remains fail-closed pending an explicit user decision on a disclosed forecast model or a verified engine hook. No neutral multiplier, deployed-aircraft estimator, continuous-mission approximation, or idle-aircraft contamination path is retained.
 
-- `common/script_constants/chemical_warfare_constants.txt`
-- `common/dynamic_modifiers/chemical_special_raid_modifiers.txt`
-- `common/scripted_effects/chemical_warfare_effects.txt`
-- `common/special_projects/projects/chemical_special_projects.txt`
-- `common/units/equipment/chemical_special_bombs.txt`
-- `common/raids/chemical_special_raids.txt`
-- `common/raids/categories/chaosx_raid_categories.txt`
-- `common/script_enums.txt`
-- `interface/special_projects/biowarfare.gfx`
-- `interface/chaosx_equipment.gfx`
-- `interface/chaosx_ideas.gfx`
-- `localisation/english/chaosx_special_projects_l_english.yml`
-- `localisation/english/chaosx_raids_l_english.yml`
-- `localisation/english/chaosx_equipment_l_english.yml`
-- `localisation/english/chaosx_abilities_l_english.yml`
+Direct forced retreat and cancellation of an already-running attack are also not exposed as reliable raid effects. No substitute has been retained for those behaviors.
 
-## Icon Wiring
+## Files and identifiers
 
-The following custom assets are required by this feature set. Final art can overwrite the placeholder files in place without renaming any code keys:
+- Projects: `common/special_projects/projects/chemical_special_projects.txt`
+- Exact modules: `common/units/equipment/modules/chemical_air_bomb_modules.txt`
+- Strategic and air payload equipment: `common/units/equipment/cbrn_payload_equipment.txt`
+- Native reservation and failed-attempt accounting: `common/scripted_effects/cbrn_chemical_raid_effects.txt`
+- Legacy fail-closed raids: `common/raids/chemical_special_raids.txt`
+- Equipment GFX: `interface/chaosx_equipment.gfx`
+- Localisation: `localisation/english/chaosx_special_projects_l_english.yml`, `localisation/english/chaosx_equipment_l_english.yml`, and `localisation/english/chaosx_raids_l_english.yml`
 
-- Special project icon, malodor:
-  - file: `gfx/interface/special_project/project_icons/sp_malodor_bomb.dds`
-  - registered in: `interface/special_projects/biowarfare.gfx`
-  - sprite: `GFX_sp_malodor_bomb`
-  - status: placeholder already created
-- Special project icon, aphrodisiac:
-  - file: `gfx/interface/special_project/project_icons/sp_aphrodisiac_bomb.dds`
-  - registered in: `interface/special_projects/biowarfare.gfx`
-  - sprite: `GFX_sp_aphrodisiac_bomb`
-  - status: placeholder already created
-- Equipment icon, malodor:
-  - file: `gfx/interface/technologies/malodor_bomb_equipment.dds`
-  - registered in: `interface/chaosx_equipment.gfx`
-  - sprite: `GFX_malodor_bomb_equipment_medium`
-  - used by: raid equipment icon and equipment UI
-  - status: placeholder already created
-- Equipment icon, aphrodisiac:
-  - file: `gfx/interface/technologies/aphrodisiac_bomb_equipment.dds`
-  - registered in: `interface/chaosx_equipment.gfx`
-  - sprite: `GFX_aphrodisiac_bomb_equipment_medium`
-  - used by: raid equipment icon and equipment UI
-  - status: placeholder already created
-- State modifier icon, malodor:
-  - file: `gfx/interface/ideas/idea_malodor_raid_state.dds`
-  - registered in: `interface/chaosx_ideas.gfx`
-  - sprite: `GFX_idea_malodor_raid_state`
-  - used by: `chem_state_malodor_disruption`
-  - status: placeholder already created
-- State modifier icon, aphrodisiac:
-  - file: `gfx/interface/ideas/idea_aphrodisiac_raid_state.dds`
-  - registered in: `interface/chaosx_ideas.gfx`
-  - sprite: `GFX_idea_aphrodisiac_raid_state`
-  - used by: `chem_state_aphrodisiac_disruption`
-  - status: placeholder already created
+## Assets and unresolved visual work
 
-No additional custom art is currently required for the prototype reward popups. Those reward entries intentionally use the vanilla generic `GFX_PLACEHOLDER_sp_project_picture`.
+The Malodor and Behavioral-Agent aircraft racks have independent type-correct module icons with source PNG, processed PNG, runtime DDS, archive DDS, contact sheet, manifest, and GFX wiring under `docs/assets/chaos_warfare_system/stage_6_chemical_air_modules/`. Their runtime sprites are `GFX_EMI_chem_air_bomb_malodor` and `GFX_EMI_chem_air_bomb_behavioral`; neither reuses a generic bomb-lock or another agent's concept.
 
-## Future Work
+The older project pictures, standalone bomb-equipment icons, and state-modifier icons still include legacy placeholder or prototype assets. They are unresolved and cannot be counted as final package art. The special-project reward definitions also still reference `GFX_PLACEHOLDER_sp_project_picture`. All of those surfaces require dedicated final assets before completion.
 
-1. Decide whether these projects should remain USA-only forever or become unlockable for a tiny set of late-game chemical powers through espionage or capture.
-2. Revisit raid AI so the USA values these payloads differently against entrenched fronts, occupied territory, and air-base-heavy regions.
-3. If the engine surface proves reliable, test whether the sortie disruption should move from general `air_mission_efficiency` into a more airbase-specific state penalty set.
-4. If you want stronger battlefield identity, add dedicated raid pictures, sounds, and event/news hooks for first use.
+## Remaining implementation
+
+1. Replace the fail-closed raid bodies with exact selected-state shared-pipeline routes after the condition-input decision is resolved.
+2. Retire the compatibility bomb consumers, run exact stock migration, and remove duplicate active equipment families.
+3. Rebuild the Malodor and Behavioral state effects through shared calculated outputs rather than legacy direct formulas.
+4. Run live aircraft-designer and exact-module raid-eligibility scenarios.
+5. Add route-aware US AI, final project/reward/raid/state art, final sounds where mapped, localisation audit, decision/raid audit, balance scenarios, and completion audit.

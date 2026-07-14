@@ -78,11 +78,14 @@ Aircraft eligibility foundation completed before activation: all seven standard 
 
 No-release consequence foundation completed before activation: Aborted and Failed outcomes keep zero release proof, retain exact native payload loss, and call a one-shot path that can add exact-state evidence, cumulative attribution, separate attempt history, and doctrine-mitigated Condemnation. The path cannot call exposure or write casualties, contamination, medical saturation, mask loss, treaty use, confirmed-use history, or a chemical-use achievement. A separate Condemnation proof prevents no-release attempts from masquerading as actual unconventional-weapon use.
 
+Interim legacy shutdown completed before replacement activation: `chemical_sarin_strike`, `chemical_sarin_rocket_strike`, `chemical_soman_strike`, `chemical_soman_rocket_strike`, `chemical_malodor_strike`, and `chemical_aphrodisiac_strike` are retained as stable parse/save identifiers but fail closed in `visible`, `available`, and `launchable`. Their direct outcome bodies bypass payload-class reservation and the shared record, so none may be exposed to the player or AI during migration.
+
 ### 6. Legacy route retirement
 
 - Remove passive daily cylinder dispersal, Livens/projector contamination, chemical-tank contamination, attacker First Use effects, and ground-operations heat registration from on-actions.
 - Make legacy cylinder commander abilities inert compatibility wrappers or redirect them only into the prepared headquarters path. They may not grant free general-wide attack buffs or emit exposure directly.
 - Make the old chemical-air estimator event and helper cleanup-only compatibility surfaces with no self-scheduling, region scan, aircraft-presence inference, or contamination effect.
+- Keep every direct legacy Sarin, Soman, Malodor, and Behavioral-Agent raid ID fail-closed until its body is replaced by the exact selected-state reservation and shared consequence contract.
 - Keep the automatic Chemical Barrage tactic at zero weight until an exact activation/debit adapter exists.
 
 ### 7. Route-aware AI and differentiated profiles

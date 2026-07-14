@@ -135,6 +135,8 @@ Consumption and delivered dose are intentionally separate. `cbrn_action_release_
 
 This reservation subsystem is not yet wired to active raid IDs: live weather/terrain inputs still require the explicit policy recorded under Engine boundaries.
 
+The six retained direct raid IDs are therefore migration-only surfaces: `chemical_sarin_strike`, `chemical_sarin_rocket_strike`, `chemical_soman_strike`, `chemical_soman_rocket_strike`, `chemical_malodor_strike`, and `chemical_aphrodisiac_strike`. Each has an explicit `always = no` gate in `visible`, `available`, and `launchable`. This triple gate prevents both player and AI access while preserving stable identifiers for the replacement pass. None of their legacy outcome blocks is an accepted exposure adapter.
+
 ## Consequence dispatch
 
 An accepted record is applied to the selected state once.
@@ -167,7 +169,7 @@ Compliance actions recognize strategic-agent lots, filled shells, prepared air p
 
 `cbrn_migrate_legacy_payload_stockpiles` is idempotent and converts legacy cylinders, malodor bombs, and behavioral bombs to their exact strategic-agent lots at the centralized recovery ratio. It also chooses an initial shell and air profile when none exists.
 
-The migration helper is deliberately not called while legacy delivery consumers remain active. Until each old route is retired, doctrine reserves, AI readiness checks, and sanctions accept both old and new stock. Activating migration earlier would remove equipment still referenced by legacy mechanics.
+The migration helper is deliberately not called while legacy delivery consumers remain active. The six legacy direct raids are already fail-closed, but other old route consumers still reference compatibility equipment. Until each old route is retired, doctrine reserves, AI readiness checks, and sanctions accept both old and new stock. Activating migration earlier would remove equipment still referenced by legacy mechanics.
 
 ## Engine boundaries
 
@@ -206,7 +208,7 @@ The following work is intentionally not represented as complete:
 - an accepted and disclosed ground condition model or a newly verified live weather/terrain hook;
 - active selected-state chemical air raid IDs and the accepted weather/terrain condition adapter; native reservation, outcome bands, and no-release attempt consequences are already implemented;
 - live aircraft-designer and raid-eligibility scenarios for the implemented exact CAS/tactical modules;
-- retirement of legacy route effects followed by activation of idempotent stock migration;
+- replacement of the six fail-closed legacy raid bodies, retirement of remaining legacy route effects, and only then activation of idempotent stock migration;
 - biological-agent logistics, incubation, spread, detection, treatment, accidents, and containment;
 - equipment-backed nerve-agent suppression with resistance trauma and severe consequence floors;
 - mapped equipment designers, route-aware country AI profiles, achievements, final localisation, and specialist completion audits.
