@@ -41,6 +41,7 @@ Before adding new dynamic logic, check this file and reuse an existing effect if
 - [cbrn_reset_action_context](#cbrn_reset_action_context)
 - [CBRN payload logistics](#cbrn-payload-logistics)
 - [CBRN chemical-air raid reservation](#cbrn-chemical-air-raid-reservation)
+- [cbrn_dispatch_failed_chemical_air_raid_attempt](#cbrn_dispatch_failed_chemical_air_raid_attempt)
 - [cbrn_dispatch_chemical_action_record](#cbrn_dispatch_chemical_action_record)
 - [CBRN equipment snapshots and protection resolution](#cbrn-equipment-snapshots-and-protection-resolution)
 - [chem_set_equipment_backed_mask_reduction](#chem_set_equipment_backed_mask_reduction)
@@ -1189,6 +1190,28 @@ if = {
 	limit = { cbrn_chemical_air_raid_reservation_is_resolved = yes }
 	# Continue through the exact-state condition and protection adapter.
 }
+```
+
+## cbrn_dispatch_failed_chemical_air_raid_attempt
+
+Records one resolved Aborted or Failed chemical-air raid attempt without fabricating a release. This public country-scope effect lives in `cbrn_chemical_raid_effects.txt`.
+
+Required inputs: a successful `cbrn_resolve_chemical_air_raid_reservation` result with positive native payload consumption, an Aborted or Failed no-release result, supplied exact-target proof, and regular event target `cbrn_action_target_state`.
+
+Defaults: fail closed. Missing reservation proof, a release-bearing outcome, missing target proof, zero payload consumption, or an already supplied attempt-dispatch proof produces no mutation. The reservation helper and `cbrn_reset_action_context` invalidate the one-shot proof before a later attempt.
+
+Outputs: supplied `cbrn_raid_attempt_dispatch_proof`, actual state evidence applied after the failed-aircraft floor, cumulative attribution, and separate actor/state attempted-operation history. Aborted attempts add a small latent evidence value; Failed attempts establish at least the centralized aircraft-wreckage evidence floor.
+
+Side effects: schedules the existing targeted state evidence-decay job and adds chemical Condemnation at the cumulative visibility level. Integrated CBRN Command modifies only the attempt's Condemnation base. The one-shot no-release proof prevents the shared Condemnation helper from recording repeat use, a non-use-pledge breach, a stockpile-restriction breach, recent weapon use, or `used_unconventional_weapon`. This path does not calculate exposure, damage units, create civilian or military deaths, contaminate the target, add medical saturation, consume masks or filters, grant chemical-use achievements, record confirmed chemical use, or notify treaty systems.
+
+Example after native reservation resolution and exact target preservation:
+
+```txt
+if = {
+	limit = { cbrn_chemical_air_raid_result_has_no_release = yes }
+	cbrn_dispatch_failed_chemical_air_raid_attempt = yes
+}
+cbrn_reset_action_context = yes
 ```
 
 ## cbrn_dispatch_chemical_action_record

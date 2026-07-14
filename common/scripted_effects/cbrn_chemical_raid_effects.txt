@@ -10,9 +10,13 @@
 # - Keeps payload consumption separate from delivered-dose efficiency so a
 #   partial raid can consume most of its reservation without fabricating a
 #   full target release.
-# - These helpers do not select weather or terrain, resolve protection, apply
-#   exposure, or dispatch consequences. The exact-state adapter must supply
-#   those proofs before calling the shared exposure pipeline.
+# - Records aborted/failed exact-state attempts through a dedicated evidence
+#   and Condemnation path that cannot create target exposure or confirmed-use
+#   history.
+# - Reservation helpers do not select weather or terrain, resolve protection,
+#   or dispatch exposure. The dedicated no-release path is limited to evidence
+#   and Condemnation; an exact-state release adapter must supply every remaining
+#   proof before calling the shared exposure pipeline.
 # - Country scope is required. Public callers supply cbrn_raid_agent and one
 #   engine-outcome code from a native raid block whose raid type reserves
 #   exactly the matching class archetype.
@@ -242,5 +246,158 @@ cbrn_resolve_chemical_air_raid_reservation = {
 			set_temp_variable = { cbrn_action_payload_consumed_proof = constant:cbrn_proof.supplied }
 			set_temp_variable = { cbrn_raid_reservation_proof = constant:cbrn_proof.supplied }
 		}
+	}
+}
+
+cbrn_chemical_air_raid_set_attempt_consequences_internal = {
+	set_temp_variable = { cbrn_raid_attempt_evidence_points = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_raid_attempt_evidence_floor = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_raid_attempt_condemnation_base = constant:cbrn_math.zero }
+
+	if = {
+		limit = { check_variable = { var = cbrn_raid_result value = constant:cbrn_chemical_raid_result.aborted compare = equals } }
+		set_temp_variable = { cbrn_raid_attempt_evidence_points = constant:cbrn_chemical_raid_outcome.aborted_evidence_points }
+		set_temp_variable = { cbrn_raid_attempt_condemnation_base = constant:cbrn_chemical_raid_outcome.aborted_condemnation_base }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_raid_result value = constant:cbrn_chemical_raid_result.failed compare = equals } }
+		set_temp_variable = { cbrn_raid_attempt_evidence_points = constant:cbrn_chemical_raid_outcome.failed_evidence_points }
+		set_temp_variable = { cbrn_raid_attempt_evidence_floor = constant:cbrn_chemical_raid_outcome.crash_evidence_floor }
+		set_temp_variable = { cbrn_raid_attempt_condemnation_base = constant:cbrn_chemical_raid_outcome.failed_condemnation_base }
+	}
+}
+
+cbrn_chemical_air_raid_apply_attempt_evidence_internal = {
+	set_temp_variable = { cbrn_action_evidence_applied = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_attribution_state = constant:cbrn_attribution_state.unknown }
+	set_temp_variable = { cbrn_raid_attempt_evidence_decay_days = constant:cbrn_chemical_dispatch.evidence_decay_days }
+	round_temp_variable = cbrn_raid_attempt_evidence_decay_days
+
+	event_target:cbrn_action_target_state = {
+		cbrn_refresh_state_attribution = yes
+		set_temp_variable = { cbrn_raid_attempt_existing_evidence = constant:cbrn_math.zero }
+		if = {
+			limit = { has_variable = cbrn_evidence_quality }
+			set_temp_variable = { cbrn_raid_attempt_existing_evidence = cbrn_evidence_quality }
+		}
+
+		set_temp_variable = { cbrn_raid_attempt_projected_evidence = cbrn_raid_attempt_existing_evidence }
+		add_to_temp_variable = { cbrn_raid_attempt_projected_evidence = cbrn_raid_attempt_evidence_points }
+		if = {
+			limit = { check_variable = { var = cbrn_raid_attempt_projected_evidence value = cbrn_raid_attempt_evidence_floor compare = less_than } }
+			set_temp_variable = { cbrn_raid_attempt_projected_evidence = cbrn_raid_attempt_evidence_floor }
+		}
+		clamp_temp_variable = {
+			var = cbrn_raid_attempt_projected_evidence
+			min = constant:cbrn_chemical_dispatch.state_evidence_minimum
+			max = constant:cbrn_chemical_dispatch.state_evidence_maximum
+		}
+
+		set_temp_variable = { cbrn_state_evidence_delta = cbrn_raid_attempt_projected_evidence }
+		set_temp_variable = { cbrn_raid_attempt_existing_evidence_negative = cbrn_raid_attempt_existing_evidence }
+		multiply_temp_variable = { cbrn_raid_attempt_existing_evidence_negative = constant:cbrn_payload_math.negation_multiplier }
+		add_to_temp_variable = { cbrn_state_evidence_delta = cbrn_raid_attempt_existing_evidence_negative }
+		clamp_temp_variable = {
+			var = cbrn_state_evidence_delta
+			min = constant:cbrn_math.zero
+			max = constant:cbrn_chemical_dispatch.state_evidence_maximum
+		}
+		set_temp_variable = { cbrn_action_evidence_applied = cbrn_state_evidence_delta }
+		cbrn_apply_state_evidence_delta_internal = yes
+		set_temp_variable = { cbrn_action_attribution_state = cbrn_state_attribution_output }
+
+		if = {
+			limit = { check_variable = { cbrn_state_evidence_delta > constant:cbrn_math.zero } }
+			set_variable = { cbrn_evidence_decay_due_day = global.num_days }
+			add_to_variable = { cbrn_evidence_decay_due_day = cbrn_raid_attempt_evidence_decay_days }
+			state_event = { id = cbrn_delivery.3 days = cbrn_raid_attempt_evidence_decay_days }
+		}
+
+		set_variable = { cbrn_last_chemical_attempt_actor = event_target:cbrn_action_actor }
+		set_variable = { cbrn_last_chemical_attempt_date = global.num_days }
+		set_variable = { cbrn_last_chemical_attempt_agent = cbrn_action_agent }
+		set_variable = { cbrn_last_chemical_attempt_agent_class = cbrn_action_agent_class }
+		set_variable = { cbrn_last_chemical_attempt_result = cbrn_raid_result }
+		set_variable = { cbrn_last_chemical_attempt_payload_consumed = cbrn_action_payload_consumed }
+		set_variable = { cbrn_last_chemical_attempt_evidence_applied = cbrn_action_evidence_applied }
+	}
+}
+
+cbrn_chemical_air_raid_apply_attempt_condemnation_internal = {
+	cbrn_set_doctrine_condemnation_mult_from_country = yes
+	set_temp_variable = { condemnation_source_type = constant:condemnation_source.chemical }
+	set_temp_variable = { condemnation_base_gain = cbrn_raid_attempt_condemnation_base }
+	multiply_temp_variable = { condemnation_base_gain = cbrn_action_doctrine_condemnation_mult }
+	set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.hidden }
+	set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.minor }
+	set_temp_variable = { condemnation_civilian_deaths = constant:cbrn_math.zero }
+	set_temp_variable = { condemnation_contamination_value = constant:cbrn_math.zero }
+	set_temp_variable = { condemnation_context_type = constant:condemnation_context.chemical_air_strike }
+	set_temp_variable = { condemnation_source_is_no_release_attempt = constant:condemnation_tier.concern }
+
+	if = {
+		limit = { check_variable = { var = cbrn_action_attribution_state value = constant:cbrn_attribution_state.suspected compare = equals } }
+		set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.suspected }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_attribution_state value = constant:cbrn_attribution_state.probable compare = equals } }
+		set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.discovered }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_attribution_state value = constant:cbrn_attribution_state.confirmed compare = equals } }
+		set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+	}
+
+	if = {
+		limit = { has_event_target = cbrn_action_victim_country }
+		set_temp_variable = { condemnation_victim_country = event_target:cbrn_action_victim_country }
+	}
+	condemnation_add_source = yes
+}
+
+cbrn_chemical_air_raid_record_attempt_history_internal = {
+	if = {
+		limit = { NOT = { has_variable = cbrn_chemical_air_attempt_count } }
+		set_variable = { cbrn_chemical_air_attempt_count = constant:cbrn_math.zero }
+	}
+	add_to_variable = { cbrn_chemical_air_attempt_count = constant:cbrn_math.one }
+	set_variable = { cbrn_last_chemical_attempt_date = global.num_days }
+	set_variable = { cbrn_last_chemical_attempt_agent = cbrn_action_agent }
+	set_variable = { cbrn_last_chemical_attempt_agent_class = cbrn_action_agent_class }
+	set_variable = { cbrn_last_chemical_attempt_result = cbrn_raid_result }
+	set_variable = { cbrn_last_chemical_attempt_payload_consumed = cbrn_action_payload_consumed }
+	set_variable = { cbrn_last_chemical_attempt_evidence_applied = cbrn_action_evidence_applied }
+	set_variable = { cbrn_last_chemical_attempt_attribution_state = cbrn_action_attribution_state }
+	set_variable = { cbrn_last_chemical_attempt_target_state = event_target:cbrn_action_target_state }
+	if = {
+		limit = { has_event_target = cbrn_action_victim_country }
+		set_variable = { cbrn_last_chemical_attempt_victim_country = event_target:cbrn_action_victim_country }
+	}
+}
+
+cbrn_dispatch_failed_chemical_air_raid_attempt = {
+	if = {
+		limit = {
+			cbrn_chemical_air_raid_reservation_is_resolved = yes
+			cbrn_chemical_air_raid_result_has_no_release = yes
+			cbrn_action_target_state_is_valid = yes
+			NOT = { check_variable = { var = cbrn_raid_attempt_dispatch_proof value = constant:cbrn_proof.supplied compare = equals } }
+		}
+		set_temp_variable = { cbrn_raid_attempt_dispatch_proof = constant:cbrn_proof.supplied }
+		save_event_target_as = cbrn_action_actor
+		event_target:cbrn_action_target_state = {
+			if = {
+				limit = { CONTROLLER = { exists = yes } }
+				CONTROLLER = { save_event_target_as = cbrn_action_victim_country }
+			}
+		}
+		if = {
+			limit = { has_event_target = cbrn_action_victim_country }
+			set_temp_variable = { cbrn_action_victim_country_supplied = constant:cbrn_proof.supplied }
+		}
+		cbrn_chemical_air_raid_set_attempt_consequences_internal = yes
+		cbrn_chemical_air_raid_apply_attempt_evidence_internal = yes
+		cbrn_chemical_air_raid_apply_attempt_condemnation_internal = yes
+		cbrn_chemical_air_raid_record_attempt_history_internal = yes
 	}
 }
