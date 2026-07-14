@@ -2,7 +2,7 @@
 
 Status: in progress; the overall Chaos Warfare goal remains incomplete
 
-Current tranche: the equipment, payload-profile, exact-debit, shared-dispatch, defender-shock, targeted-recovery, sanctions-recognition, class-specific native raid reservation, five-band raid outcome accounting, and matching asset foundation are implemented. No new ground or air release route is active yet, and the idempotent legacy stock migration has no caller while old consumers remain. Exact-state condition adapters, active route decisions/raids, failed-attempt consequences, legacy retirement, AI, designers, and specialist audits remain open.
+Current tranche: the equipment, payload-profile, exact-debit, shared-dispatch, defender-shock, targeted-recovery, sanctions-recognition, exact CAS/tactical chemical-module eligibility, class-specific native raid reservation, five-band raid outcome accounting, no-release attempt consequences, and matching asset foundation are implemented. No new ground or air release route is active yet, and the idempotent legacy stock migration has no caller while old consumers remain. Exact-state condition adapters, active route decisions/raids, remaining legacy retirement, AI, designers, and specialist audits remain open.
 
 ## Accepted sources and conflict resolution
 
@@ -73,6 +73,10 @@ The user explicitly confirmed that doctrine may reduce Condemnation impact. The 
 Reservation/outcome foundation completed before activation: native `essential_equipment` now has one exact archetype per agent class; the shared helper maps four engine outcomes to five accepted results, refunds unused stock, records net consumption, and separates consumed payload from delivered-dose efficiency. Active raid IDs remain unwired until the approved weather/terrain condition policy is available.
 
 Unsupported continuous-air estimator retired: army combat no longer creates `chem_air_ground_ops_heat`; the deployed-aircraft/region estimator and its tuning tables are removed. The stable `chemical_air_bomb.1` event is retained only as a one-shot cleanup endpoint for a previously queued tick and cannot calculate exposure or reschedule itself.
+
+Aircraft eligibility foundation completed before activation: all seven standard agents have exact CAS/tactical payload-rack modules, including the previously unreachable Tabun rack. The Malodor and experimental Behavioral-Agent projects unlock their own exact modules. Ordinary mission attack is capped at a modest value and never substitutes for raid execution; strategic bombers remain unsupported.
+
+No-release consequence foundation completed before activation: Aborted and Failed outcomes keep zero release proof, retain exact native payload loss, and call a one-shot path that can add exact-state evidence, cumulative attribution, separate attempt history, and doctrine-mitigated Condemnation. The path cannot call exposure or write casualties, contamination, medical saturation, mask loss, treaty use, confirmed-use history, or a chemical-use achievement. A separate Condemnation proof prevents no-release attempts from masquerading as actual unconventional-weapon use.
 
 ### 6. Legacy route retirement
 

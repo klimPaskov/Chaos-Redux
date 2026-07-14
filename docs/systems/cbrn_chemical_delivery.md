@@ -6,7 +6,7 @@ This system provides the shared logistics and consequence contract used by every
 
 Doctrine may reduce the Condemnation impact of an accepted action. That reduction applies only to Condemnation. It does not reduce payload expenditure, protection failure, disruption, deaths, contamination, medical saturation, mask loss, evidence, attribution, confirmed-use history, treaty response, or first-exposure adaptation. Confirmed strategic and mass-casualty actions retain public-harm floors after doctrine is applied.
 
-The current implementation establishes the shared core plus native chemical-air payload reservation and outcome accounting. Ground releases, exact-state air exposure, biological actions, and nerve-agent suppression remain separate delivery adapters until their exact route and condition gates are implemented and validated.
+The current implementation establishes the shared core, exact chemical-air design eligibility, native payload reservation/outcome accounting, and a dedicated no-release attempt path. Ground releases, exact-state air exposure, biological actions, and nerve-agent suppression remain separate delivery adapters until their exact route and condition gates are implemented and validated.
 
 ## Source-of-truth map
 
@@ -62,6 +62,12 @@ Changing the shell profile takes 21 days and discards 25 percent of already fill
 `chemical_air_payload` is the shared production category. Prepared stock is divided into four class-specific archetypes and models: choking, blister, nerve, and incapacitating. This lets a raid's native `essential_equipment` reserve the exact class instead of drawing an unrelated payload from one common archetype. The persistent `cbrn_air_payload_agent` still records the exact agent. Both the exact profile and matching class stock are required for an air action.
 
 Changing the air profile takes 28 days and discards 20 percent of prepared stock. Converting strategic agent to air payload retains 82.5 percent. An aircraft module or idle chemical-capable aircraft never consumes this equipment and never proves release.
+
+### Chemical aircraft modules
+
+Chemical payload racks are exact-agent aircraft-design components for CAS and tactical bombers. The standard family covers Chlorine, Phosgene, Mustard, Lewisite, Tabun, Sarin, and Soman; the two US special projects unlock separate Malodor and experimental Behavioral-Agent racks. Strategic bombers are not eligible because no accepted current module precedent supports that route.
+
+The module identifies a design that can contribute to the matching selected-state raid. It adds production cost, loaded weight, and agility loss while keeping ordinary ground-attack value between 1 and 4. That conventional mission stat is not chemical exposure. A matching module, agent profile, class payload reserve, policy, readiness, and explicit raid outcome are all separate requirements. Idle aircraft and ordinary CAS or logistics missions never call the exposure pipeline.
 
 ## Standing formation loads
 
@@ -125,7 +131,9 @@ The engine exposes four outcome blocks, while the accepted design has five resul
 | Success | 100% | 100% |
 | Catastrophic success | 100% | 110-140% |
 
-Consumption and delivered dose are intentionally separate. `cbrn_action_release_efficiency_mult` reconciles them before the shared exposure calculation, so a partial operation does not fabricate a full release merely because most of the reserved payload was lost or expended. Aborted and failed attempts cannot enter exposure because they return no release proof. This reservation subsystem is not yet wired to active raid IDs: live weather/terrain inputs still require the explicit policy recorded under Engine boundaries.
+Consumption and delivered dose are intentionally separate. `cbrn_action_release_efficiency_mult` reconciles them before the shared exposure calculation, so a partial operation does not fabricate a full release merely because most of the reserved payload was lost or expended. Aborted and failed attempts cannot enter exposure because they return no release proof. `cbrn_dispatch_failed_chemical_air_raid_attempt` instead records only exact-state evidence, cumulative attribution, separate attempted-operation history, and Condemnation. A Failed result establishes at least 35 evidence from recovered aircraft or payload wreckage; an Aborted result adds 8 latent evidence. Neither path creates deaths, contamination, medical saturation, mask loss, treaty use, a chemical-use achievement, or confirmed-use history. Doctrine scales only the 2-point Aborted or 8-point Failed Condemnation base.
+
+This reservation subsystem is not yet wired to active raid IDs: live weather/terrain inputs still require the explicit policy recorded under Engine boundaries.
 
 ## Consequence dispatch
 
@@ -188,14 +196,16 @@ Registered runtime sprite IDs:
 
 Equipment DDS files live in `gfx/interface/technologies/stage_6_chemical_delivery/equipment/`. The first-exposure idea DDS lives in `gfx/interface/ideas/stage_6_chemical_delivery/`.
 
+The nine exact aircraft-module packages live under `docs/assets/chaos_warfare_system/stage_6_chemical_air_modules/`. Every package has an independent 1448×1086 source PNG, a 56×42 processed RGBA PNG, a matching 56×42 32-bit BGRA DDS archive copy, and an identical runtime DDS under `gfx/interface/equipmentdesigner/planes/modules/stage_6_chemical_air/`. `interface/chaosx_equipment.gfx` registers `GFX_EMI_chem_air_bomb_<agent>` for Chlorine, Phosgene, Mustard, Lewisite, Tabun, Sarin, Soman, Malodor, and Behavioral Agent. The nine runtime files have nine unique hashes; none reuses the generic bomb-lock icon or another agent's module art.
+
 ## Pending implementation and future depth
 
 The following work is intentionally not represented as complete:
 
 - exact-state cylinder, projector, artillery, and armored operations with route-specific formation proof, costs, preparation, cooldown, cleanup, and AI;
 - an accepted and disclosed ground condition model or a newly verified live weather/terrain hook;
-- active selected-state chemical air raid IDs, failed-attempt consequences, and the accepted weather/terrain condition adapter; native reservation and outcome bands are already implemented;
-- chemical aircraft modules and verified CAS/tactical eligibility;
+- active selected-state chemical air raid IDs and the accepted weather/terrain condition adapter; native reservation, outcome bands, and no-release attempt consequences are already implemented;
+- live aircraft-designer and raid-eligibility scenarios for the implemented exact CAS/tactical modules;
 - retirement of legacy route effects followed by activation of idempotent stock migration;
 - biological-agent logistics, incubation, spread, detection, treatment, accidents, and containment;
 - equipment-backed nerve-agent suppression with resistance trauma and severe consequence floors;
