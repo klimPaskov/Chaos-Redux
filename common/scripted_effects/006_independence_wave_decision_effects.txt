@@ -1,0 +1,500 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 INDEPENDENCE WAVE DECISION EFFECTS
+# ============================================================================
+# Overview:
+# - Applies auditable five-value, former-host, patron, network, and league
+#   transactions for DM-01 through DM-59.
+# - Consumes real material resources through reusable cost palettes.
+# - Publishes bounded state targets for integration and future-wave support.
+# - Removes decision-layer missions and state when Event 006 origin ends.
+# - Never creates a free repeatable unit or performs a periodic world scan.
+# ============================================================================
+
+# Inputs: five temporary `independence_wave_decision_*_delta` values.
+independence_wave_decision_apply_country_deltas = {
+	set_temp_variable = { independence_wave_value_delta = independence_wave_decision_legitimacy_delta }
+	independence_wave_change_legitimacy = yes
+	set_temp_variable = { independence_wave_value_delta = independence_wave_decision_recognition_delta }
+	independence_wave_change_recognition = yes
+	set_temp_variable = { independence_wave_value_delta = independence_wave_decision_capacity_delta }
+	independence_wave_change_capacity = yes
+	set_temp_variable = { independence_wave_value_delta = independence_wave_decision_security_delta }
+	independence_wave_change_security = yes
+	set_temp_variable = { independence_wave_value_delta = independence_wave_decision_instability_delta }
+	independence_wave_change_instability = yes
+}
+
+# Inputs: eight temporary bilateral deltas.
+independence_wave_decision_apply_host_deltas = {
+	set_temp_variable = { independence_wave_host_claim_delta = independence_wave_decision_host_claim_delta }
+	set_temp_variable = { independence_wave_hostility_delta = independence_wave_decision_hostility_delta }
+	set_temp_variable = { independence_wave_host_obligations_delta = independence_wave_decision_host_obligations_delta }
+	set_temp_variable = { independence_wave_property_delta = independence_wave_decision_property_delta }
+	set_temp_variable = { independence_wave_population_delta = independence_wave_decision_population_delta }
+	set_temp_variable = { independence_wave_border_delta = independence_wave_decision_border_delta }
+	set_temp_variable = { independence_wave_host_pressure_delta = independence_wave_decision_host_pressure_delta }
+	set_temp_variable = { independence_wave_reconquest_fear_delta = independence_wave_decision_reconquest_fear_delta }
+	independence_wave_change_host_relation = yes
+}
+
+# Inputs: five temporary league deltas.
+independence_wave_decision_apply_league_deltas = {
+	set_temp_variable = { independence_wave_league_cohesion_delta = independence_wave_decision_league_cohesion_delta }
+	set_temp_variable = { independence_wave_league_common_cause_delta = independence_wave_decision_league_common_cause_delta }
+	set_temp_variable = { independence_wave_league_patron_capture_delta = independence_wave_decision_league_patron_capture_delta }
+	set_temp_variable = { independence_wave_league_shared_reserve_delta = independence_wave_decision_league_reserve_delta }
+	set_temp_variable = { independence_wave_league_member_confidence_delta = independence_wave_decision_league_confidence_delta }
+	independence_wave_change_league_values = yes
+}
+
+independence_wave_decision_pay_administration_light = {
+	add_command_power = constant:independence_wave_decision_cost.command_power_light_spend
+	add_manpower = constant:independence_wave_decision_cost.manpower_light_spend
+}
+
+independence_wave_decision_pay_administration_standard = {
+	add_command_power = constant:independence_wave_decision_cost.command_power_standard_spend
+	add_manpower = constant:independence_wave_decision_cost.manpower_standard_spend
+}
+
+# Landlocked actors spend trains, while actors with a convoy reserve spend
+# convoys. Every caller also pays command attention.
+independence_wave_decision_pay_diplomatic_light = {
+	add_command_power = constant:independence_wave_decision_cost.command_power_light_spend
+	if = {
+		limit = { has_equipment = { convoy > constant:independence_wave_decision_cost.convoy_light } }
+		add_equipment_to_stockpile = {
+			type = convoy
+			amount = constant:independence_wave_decision_cost.convoy_light_spend
+		}
+	}
+	else = {
+		add_equipment_to_stockpile = {
+			type = train_equipment
+			amount = constant:independence_wave_decision_cost.train_light_spend
+		}
+	}
+}
+
+independence_wave_decision_pay_diplomatic_standard = {
+	add_command_power = constant:independence_wave_decision_cost.command_power_standard_spend
+	if = {
+		limit = { has_equipment = { convoy > constant:independence_wave_decision_cost.convoy_standard } }
+		add_equipment_to_stockpile = {
+			type = convoy
+			amount = constant:independence_wave_decision_cost.convoy_standard_spend
+		}
+	}
+	else = {
+		add_equipment_to_stockpile = {
+			type = train_equipment
+			amount = constant:independence_wave_decision_cost.train_standard_spend
+		}
+	}
+}
+
+independence_wave_decision_pay_security_light = {
+	add_command_power = constant:independence_wave_decision_cost.command_power_light_spend
+	add_equipment_to_stockpile = {
+		type = infantry_equipment
+		amount = constant:independence_wave_decision_cost.infantry_light_spend
+	}
+	add_equipment_to_stockpile = {
+		type = support_equipment
+		amount = constant:independence_wave_decision_cost.support_light_spend
+	}
+}
+
+independence_wave_decision_pay_security_standard = {
+	add_manpower = constant:independence_wave_decision_cost.manpower_standard_spend
+	army_experience = constant:independence_wave_decision_cost.army_experience_standard_spend
+	add_equipment_to_stockpile = {
+		type = infantry_equipment
+		amount = constant:independence_wave_decision_cost.infantry_standard_spend
+	}
+	add_equipment_to_stockpile = {
+		type = support_equipment
+		amount = constant:independence_wave_decision_cost.support_standard_spend
+	}
+}
+
+independence_wave_decision_pay_security_major = {
+	add_manpower = constant:independence_wave_decision_cost.manpower_major_spend
+	army_experience = constant:independence_wave_decision_cost.army_experience_major_spend
+	add_equipment_to_stockpile = {
+		type = infantry_equipment
+		amount = constant:independence_wave_decision_cost.infantry_major_spend
+	}
+	add_equipment_to_stockpile = {
+		type = support_equipment
+		amount = constant:independence_wave_decision_cost.support_major_spend
+	}
+}
+
+# Creates the DM-22 emergency formations from the researched opening-force
+# template at the persisted origin anchor. The decision pays the major security
+# package first; the factors below deliberately keep the two formations
+# understrength so their created manpower and equipment do not exceed that
+# material commitment. This effect is called once per origin generation.
+independence_wave_decision_raise_emergency_formations = {
+	if = {
+		limit = {
+			has_country_flag = independence_wave_force_package_applied
+			has_variable = independence_wave_anchor_state
+		}
+		set_temp_variable = { independence_wave_decision_emergency_experience = constant:independence_wave_decision_force.emergency_experience_factor }
+		set_temp_variable = { independence_wave_decision_emergency_equipment = constant:independence_wave_decision_force.emergency_equipment_factor }
+		set_temp_variable = { independence_wave_decision_emergency_manpower = constant:independence_wave_decision_force.emergency_manpower_factor }
+		set_temp_variable = { independence_wave_decision_emergency_count = constant:independence_wave_decision_force.emergency_division_count }
+		set_temp_variable = { independence_wave_decision_emergency_unit_id = constant:independence_wave_decision_force.emergency_unit_id }
+		meta_effect = {
+			text = {
+				var:independence_wave_anchor_state = {
+					create_unit = {
+						division = "division_template = \"[IW_TEMPLATE]\" start_experience_factor = [IW_EXPERIENCE] start_equipment_factor = [IW_EQUIPMENT] start_manpower_factor = [IW_MANPOWER]"
+						owner = ROOT
+						allow_spawning_on_enemy_provs = no
+						count = [IW_COUNT]
+						id = [IW_ID]
+					}
+				}
+			}
+			IW_TEMPLATE = "[This.GetIndependenceWaveForceTemplateName]"
+			IW_EXPERIENCE = "[?independence_wave_decision_emergency_experience|.2]"
+			IW_EQUIPMENT = "[?independence_wave_decision_emergency_equipment|.2]"
+			IW_MANPOWER = "[?independence_wave_decision_emergency_manpower|.2]"
+			IW_COUNT = "[?independence_wave_decision_emergency_count|.0]"
+			IW_ID = "[?independence_wave_decision_emergency_unit_id|.0]"
+		}
+	}
+}
+
+# Demobilizes only the formations created by DM-22 and refunds their remaining
+# manpower and equipment. The fixed unit id is local to the owner and is never
+# reused by another Event 006 action.
+independence_wave_decision_demobilize_emergency_formations = {
+	set_temp_variable = { independence_wave_decision_emergency_unit_id = constant:independence_wave_decision_force.emergency_unit_id }
+	meta_effect = {
+		text = {
+			delete_unit = {
+				id = [IW_ID]
+				disband = yes
+			}
+		}
+		IW_ID = "[?independence_wave_decision_emergency_unit_id|.0]"
+	}
+	clr_country_flag = independence_wave_emergency_units_raised
+	clr_country_flag = independence_wave_emergency_formations_active
+}
+
+independence_wave_decision_pay_strategic = {
+	add_stability = constant:independence_wave_decision_cost.stability_standard_spend
+	add_war_support = constant:independence_wave_decision_cost.war_support_minor_spend
+	independence_wave_decision_pay_diplomatic_standard = yes
+}
+
+# Input: FROM is the targeted patron's capital state. Callers set channel,
+# influence, and aid deltas before invoking this effect.
+independence_wave_decision_register_targeted_patron_channel = {
+	FROM = {
+		owner = { save_event_target_as = independence_wave_action_patron }
+	}
+	set_temp_variable = { independence_wave_patron_channel = independence_wave_decision_patron_channel }
+	set_temp_variable = { independence_wave_patron_influence_delta = independence_wave_decision_patron_influence_delta }
+	set_temp_variable = { independence_wave_patron_aid_delta = independence_wave_decision_patron_aid_delta }
+	independence_wave_register_patron_channel = yes
+}
+
+# Input: temporary `independence_wave_decision_patron_reduction_delta`.
+independence_wave_decision_reduce_all_patron_influence = {
+	if = {
+		limit = { independence_wave_patron_arrays_are_aligned = yes }
+		set_temp_variable = { independence_wave_decision_patron_index = constant:independence_wave_plan.first_array_index }
+		while_loop_effect = {
+			limit = {
+				check_variable = {
+					var = independence_wave_decision_patron_index
+					value = independence_wave_patron_country_entries^num
+					compare = less_than
+				}
+			}
+			add_to_variable = {
+				independence_wave_patron_influence_entries^independence_wave_decision_patron_index = independence_wave_decision_patron_reduction_delta
+			}
+			set_temp_variable = { independence_wave_patron_row = independence_wave_decision_patron_index }
+			independence_wave_clamp_patron_row = yes
+			add_to_temp_variable = { independence_wave_decision_patron_index = constant:independence_wave_plan.loop_increment }
+		}
+		independence_wave_refresh_strongest_patron = yes
+		independence_wave_refresh_idea_lifecycles = yes
+	}
+}
+
+# Input: FROM is the selected patron's capital state and the reduction delta is
+# temporary. Only the matching current-generation row is changed.
+independence_wave_decision_reduce_targeted_patron_influence = {
+	FROM = { owner = { save_event_target_as = independence_wave_decision_selected_patron } }
+	if = {
+		limit = { independence_wave_patron_arrays_are_aligned = yes }
+		set_temp_variable = { independence_wave_decision_patron_index = constant:independence_wave_plan.first_array_index }
+		while_loop_effect = {
+			limit = {
+				check_variable = {
+					var = independence_wave_decision_patron_index
+					value = independence_wave_patron_country_entries^num
+					compare = less_than
+				}
+			}
+			set_temp_variable = { independence_wave_decision_patron_generation = independence_wave_patron_owner_generation_entries^independence_wave_decision_patron_index }
+			var:independence_wave_patron_country_entries^independence_wave_decision_patron_index = {
+				if = {
+					limit = {
+						tag = event_target:independence_wave_decision_selected_patron
+						check_variable = {
+							var = independence_wave_decision_patron_generation
+							value = ROOT.independence_wave_generation_id
+							compare = equals
+						}
+					}
+					ROOT = {
+						add_to_variable = {
+							independence_wave_patron_influence_entries^independence_wave_decision_patron_index = independence_wave_decision_patron_reduction_delta
+						}
+						set_temp_variable = { independence_wave_patron_row = independence_wave_decision_patron_index }
+						independence_wave_clamp_patron_row = yes
+					}
+				}
+			}
+			add_to_temp_variable = { independence_wave_decision_patron_index = constant:independence_wave_plan.loop_increment }
+		}
+		independence_wave_refresh_strongest_patron = yes
+		independence_wave_refresh_idea_lifecycles = yes
+	}
+}
+
+# Consumes the first safe surplus channel and records exactly one reserve
+# contribution. No channel can be counted twice.
+independence_wave_decision_contribute_safe_reserve = {
+	if = {
+		limit = { has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_major } }
+		add_equipment_to_stockpile = {
+			type = infantry_equipment
+			amount = constant:independence_wave_decision_cost.infantry_standard_spend
+		}
+		set_temp_variable = { independence_wave_decision_reserve_gain = constant:independence_wave_decision_effect.league_reserve_standard }
+	}
+	else_if = {
+		limit = { has_equipment = { train_equipment > constant:independence_wave_decision_cost.train_major } }
+		add_equipment_to_stockpile = {
+			type = train_equipment
+			amount = constant:independence_wave_decision_cost.train_standard_spend
+		}
+		set_temp_variable = { independence_wave_decision_reserve_gain = constant:independence_wave_decision_effect.league_reserve_light }
+	}
+	else_if = {
+		limit = { has_equipment = { convoy > constant:independence_wave_decision_cost.convoy_major } }
+		add_equipment_to_stockpile = {
+			type = convoy
+			amount = constant:independence_wave_decision_cost.convoy_standard_spend
+		}
+		set_temp_variable = { independence_wave_decision_reserve_gain = constant:independence_wave_decision_effect.league_reserve_light }
+	}
+	else = {
+		add_fuel = constant:independence_wave_decision_cost.fuel_standard_spend
+		set_temp_variable = { independence_wave_decision_reserve_gain = constant:independence_wave_decision_effect.league_reserve_light }
+	}
+	set_temp_variable = { independence_wave_decision_league_cohesion_delta = constant:independence_wave_decision_effect.league_minor }
+	set_temp_variable = { independence_wave_decision_league_common_cause_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_league_patron_capture_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_league_reserve_delta = independence_wave_decision_reserve_gain }
+	set_temp_variable = { independence_wave_decision_league_confidence_delta = constant:independence_wave_decision_effect.league_minor }
+	independence_wave_decision_apply_league_deltas = yes
+	set_temp_variable = { independence_wave_member_contribution_delta = independence_wave_decision_reserve_gain }
+	set_temp_variable = { independence_wave_member_confidence_delta = constant:independence_wave_decision_effect.league_minor }
+	independence_wave_change_own_league_record = yes
+}
+
+# State scope. Adds one durable integration result and marks the state against
+# repeat use by the current country.
+independence_wave_decision_integrate_settled_state = {
+	if = {
+		limit = {
+			is_controlled_by = ROOT
+			NOT = { is_core_of = ROOT }
+			NOT = {
+				AND = {
+					has_state_flag = independence_wave_dm52_integrated_by@ROOT
+					check_variable = { var = independence_wave_dm52_generation@ROOT value = ROOT.independence_wave_generation_id compare = equals }
+				}
+			}
+		}
+		add_core_of = ROOT
+		set_state_flag = independence_wave_dm52_integrated_by@ROOT
+		set_variable = { independence_wave_dm52_generation@ROOT = ROOT.independence_wave_generation_id }
+		set_state_flag = independence_wave_integrated_origin_region
+		add_building_construction = {
+			type = infrastructure
+			level = constant:independence_wave_decision_effect.construction_infrastructure
+			instant_build = yes
+		}
+	}
+}
+
+# State scope. Formables use a longer mission and a separate one-time marker.
+independence_wave_decision_integrate_formable_member_state = {
+	if = {
+		limit = {
+			is_controlled_by = ROOT
+			NOT = { is_core_of = ROOT }
+			NOT = {
+				AND = {
+					has_state_flag = independence_wave_dm56_integrated_by@ROOT
+					check_variable = { var = independence_wave_dm56_generation@ROOT value = ROOT.independence_wave_generation_id compare = equals }
+				}
+			}
+		}
+		add_core_of = ROOT
+		set_state_flag = independence_wave_dm56_integrated_by@ROOT
+		set_variable = { independence_wave_dm56_generation@ROOT = ROOT.independence_wave_generation_id }
+		add_building_construction = {
+			type = infrastructure
+			level = constant:independence_wave_decision_effect.construction_infrastructure
+			instant_build = yes
+		}
+	}
+}
+
+# State scope. The wave planner consumes this bounded array on its next plan.
+independence_wave_decision_publish_breakaway_sponsorship = {
+	if = {
+		limit = { is_valid_independence_wave_breakaway_sponsorship_state = yes }
+		set_state_flag = independence_wave_dm57_sponsorship_active
+		set_variable = { independence_wave_sponsoring_country = ROOT }
+		set_variable = { independence_wave_sponsorship_generation = ROOT.independence_wave_generation_id }
+		if = {
+			limit = { NOT = { is_in_array = { array = global.independence_wave_sponsored_breakaway_states value = THIS } } }
+			add_to_array = { array = global.independence_wave_sponsored_breakaway_states value = THIS }
+		}
+	}
+}
+
+# The selected-family formable registry must consume this request and perform
+# its family-specific tag/cosmetic-tag, member-consent, and cleanup transaction.
+# This effect deliberately does not invent a fallback tag.
+independence_wave_decision_request_selected_formable_commit = {
+	if = {
+		limit = {
+			can_independence_wave_prepare_formable = yes
+			has_country_flag = independence_wave_formation_congress_complete
+			NOT = { has_country_flag = independence_wave_formable_commit_pending }
+		}
+		set_country_flag = independence_wave_formable_commit_pending
+		set_variable = { independence_wave_formable_commit_request_date = global.date }
+	}
+}
+
+# Parent integration hook: call before or from `independence_wave_end_active_origin`.
+independence_wave_cleanup_decision_layer = {
+	if = {
+		limit = { has_country_flag = independence_wave_emergency_formations_active }
+		independence_wave_decision_demobilize_emergency_formations = yes
+	}
+	remove_mission = independence_wave_secure_provisional_capital
+	remove_mission = independence_wave_establish_revenue_service
+	remove_mission = independence_wave_register_population
+	remove_mission = independence_wave_hold_first_assembly
+	remove_mission = independence_wave_confirm_traditional_authority
+	remove_mission = independence_wave_establish_treasury_and_currency
+	remove_mission = independence_wave_integrate_militias
+	remove_mission = independence_wave_form_border_guards
+	remove_mission = independence_wave_professionalize_army
+	remove_mission = independence_wave_prepare_reclamation_defense
+	remove_mission = independence_wave_build_permanent_foreign_service
+	remove_mission = independence_wave_balance_patrons
+	remove_mission = independence_wave_convene_founding_congress
+	remove_mission = independence_wave_challenge_league_leadership
+	remove_mission = independence_wave_convene_formation_congress
+	remove_mission = independence_wave_coordinate_reclamation_fronts
+	remove_mission = independence_wave_transform_league_charter
+
+	clr_country_flag = independence_wave_dm01_capital_secured
+	clr_country_flag = independence_wave_dm01_capital_failed
+	clr_country_flag = independence_wave_dm02_revenue_service_established
+	clr_country_flag = independence_wave_dm02_salary_crisis
+	clr_country_flag = independence_wave_dm03_population_registered
+	clr_country_flag = independence_wave_dm03_registration_failed
+	clr_country_flag = independence_wave_dm04_first_assembly_held
+	clr_country_flag = independence_wave_constitutional_route_open
+	clr_country_flag = independence_wave_dm04_assembly_failed
+	clr_country_flag = independence_wave_dm05_traditional_authority_confirmed
+	clr_country_flag = independence_wave_traditional_route_open
+	clr_country_flag = independence_wave_dm05_authority_failed
+	clr_country_flag = independence_wave_dm06_local_service_complete
+	clr_country_flag = independence_wave_dm07_exiles_recalled
+	clr_country_flag = independence_wave_dm08_host_officials_resolved
+	clr_country_flag = independence_wave_dm10_treasury_complete
+	clr_country_flag = independence_wave_dm10_inflation_crisis
+	clr_country_flag = independence_wave_arms_limit_offer_available
+	clr_country_flag = independence_wave_host_autonomy_offer_available
+	clr_country_flag = independence_wave_dm15_foreign_service_overrun
+	clr_country_flag = independence_wave_dm17_militias_integrated
+	clr_country_flag = independence_wave_dm17_warlord_crisis
+	clr_country_flag = independence_wave_dm19_officers_recalled
+	clr_country_flag = independence_wave_dm20_border_guards_formed
+	clr_country_flag = independence_wave_dm20_border_guard_abuses
+	clr_country_flag = independence_wave_dm23_professionalization_failed
+	clr_country_flag = independence_wave_dm25_property_settled
+	clr_country_flag = independence_wave_dm26_citizenship_settled
+	clr_country_flag = independence_wave_dm27_claims_renounced
+	clr_country_flag = independence_wave_dm30_reclamation_defense_ready
+	clr_country_flag = independence_wave_dm30_reclamation_surprise
+	clr_country_flag = independence_wave_dm34_base_rights_granted
+	clr_country_flag = independence_wave_dm35_balancing_complete
+	clr_country_flag = independence_wave_dm35_patron_retaliation
+	clr_country_flag = independence_wave_foreign_interference_evidence
+	clr_country_flag = independence_wave_dm45_congress_contribution_complete
+	clr_country_flag = independence_wave_dm45_congress_contribution_failed
+	clr_country_flag = independence_wave_dm47_leadership_won
+	clr_country_flag = independence_wave_dm47_leadership_lost
+	clr_country_flag = independence_wave_dm54_formation_congress_failed
+	clr_country_flag = independence_wave_dm58_reclamation_front_complete
+	clr_country_flag = independence_wave_dm58_reclamation_front_failed
+	clr_country_flag = independence_wave_reclamation_front_ready
+	clr_country_flag = independence_wave_radical_charter_member
+	clr_country_flag = independence_wave_dm59_charter_vote_failed
+	clr_country_flag = independence_wave_revenue_service_ready
+	clr_country_flag = independence_wave_foreign_service_ready
+	clr_country_flag = independence_wave_professional_army_ready
+	clr_country_flag = independence_wave_formable_discovered
+	clr_country_flag = independence_wave_formation_congress_complete
+	clr_country_flag = independence_wave_formable_commit_pending
+	clr_country_flag = independence_wave_radical_charter_transformed
+	clr_country_flag = independence_wave_emergency_units_raised
+	clr_country_flag = independence_wave_emergency_formations_active
+	clr_country_flag = independence_wave_arms_limit_treaty_active
+	clr_country_flag = independence_wave_concession_active
+	clr_country_flag = independence_wave_client_future_chosen
+	clr_country_flag = independence_wave_unlock_first_assembly
+	clr_country_flag = independence_wave_unlock_traditional_authority
+	clr_country_flag = independence_wave_unlock_foreign_service
+	clr_country_flag = independence_wave_unlock_professional_army
+	clr_country_flag = independence_wave_unlock_forced_host_recognition
+	clr_country_flag = independence_wave_unlock_patron_client_route
+	clr_country_flag = independence_wave_unlock_league_congress
+	clr_country_flag = independence_wave_unlock_border_ambitions
+	clr_country_flag = independence_wave_unlock_formable_discovery
+	clr_country_flag = independence_wave_unlock_high_chaos_actions
+	clr_country_flag = independence_wave_charter_proposal_defensive_congress
+	clr_country_flag = independence_wave_charter_proposal_development_compact
+	clr_country_flag = independence_wave_charter_proposal_sovereign_equality
+	clr_country_flag = independence_wave_charter_proposal_armed_liberation
+	clr_country_flag = independence_wave_charter_proposal_radical_revisionist
+
+	clear_variable = independence_wave_professionalization_tier
+	clear_variable = independence_wave_patron_balance_count
+	clear_variable = independence_wave_formable_commit_request_date
+	clear_variable = independence_wave_last_recognition_campaign_date
+	clear_variable = independence_wave_last_reserve_contribution_date
+	clear_variable = independence_wave_last_leadership_challenge_date
+	clear_variable = independence_wave_last_border_operation_date
+}
