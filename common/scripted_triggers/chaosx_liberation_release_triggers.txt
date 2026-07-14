@@ -29,6 +29,32 @@ is_liberation_release_plan_executing = {
 	check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.executing }
 }
 
+can_liberation_release_reset_plan = {
+	OR = {
+		NOT = { has_variable = global.liberation_plan_phase }
+		check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.idle }
+		check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.committed }
+		check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.aborted }
+	}
+}
+
+has_valid_liberation_release_call = {
+	check_variable = { var = liberation_call_mode value = constant:liberation_plan_mode.automatic compare = greater_than_or_equals }
+	check_variable = { var = liberation_call_mode value = constant:liberation_plan_mode.triggerable_scenario compare = less_than_or_equals }
+	OR = {
+		check_variable = { liberation_call_plan_owner = constant:liberation_plan_owner.soviet_collapse }
+		check_variable = { liberation_call_plan_owner = constant:liberation_plan_owner.independence_wave }
+		check_variable = { liberation_call_plan_owner = constant:liberation_plan_owner.joint }
+	}
+	check_variable = { var = liberation_call_expected_country_count value = constant:liberation_release_limit.minimum compare = greater_than }
+	check_variable = { var = liberation_call_expected_country_count value = constant:liberation_release_limit.maximum_event6_packages compare = less_than_or_equals }
+}
+
+can_liberation_release_begin_plan = {
+	can_liberation_release_reset_plan = yes
+	has_valid_liberation_release_call = yes
+}
+
 # Reads the temporary `liberation_candidate_plan_owner` supplied by a package
 # publisher. A row may only enter a plan that declared the corresponding event
 # as a participant.
@@ -53,7 +79,8 @@ is_independence_wave_active_origin_country = {
 
 is_soviet_collapse_active_origin_country = {
 	exists = yes
-	has_country_flag = soviet_collapse_event_created_republic
+	has_country_flag = soviet_collapse_active_origin
+	check_variable = { liberation_origin = constant:liberation_origin.soviet_collapse }
 	NOT = { has_country_flag = independence_wave_active_origin }
 }
 
