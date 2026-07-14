@@ -1,5 +1,7 @@
 # Temporary continuation prompt, not part of the event specification
 
+> Superseded 2026-07-14. Do not use this prompt to rerun the improvement planner. Continue from `docs/plans/016_brilliant_scientist_plans/016_brilliant_scientist_resume_packet.md`; the next action is the scripted-system architecture pass.
+
 Continue the Chaos Redux Event 16 `Brilliant Scientist` planning and implementation handoff from the exact stopping point below. Do not restart the design, summarize away completed material, or rewrite finished sections unless the mandatory planner finds a concrete defect.
 
 ## Exact stopping point
@@ -8,9 +10,9 @@ The complete parent-authored source-spec package has been written under:
 
 `docs/specs/016_brilliant_scientist_specs/`
 
-The source reading, repository inspection, historical research, ten-part specification, matrices, acceptance criteria, balance review, anti-bloat review, prompt suite, routing plan, and package documentation are complete. The next unresolved action is the project-mandated near-completion pass by `chaosx_improvement_loop_planner` with `fork_context=false`.
+The source reading, repository inspection, historical research, ten-part specification, matrices, acceptance criteria, balance review, anti-bloat review, prompt suite, routing plan, and package documentation were complete at this historical stopping point. The later planner pass and parent disposition have since closed this step.
 
-The previous interface had no project-subagent invocation tool. Do not treat the parent anti-bloat review as a substitute for that required pass.
+At this historical stopping point, the previous interface had no project-subagent invocation tool. The required pass later ran and was dispositioned.
 
 ## Completed files
 
@@ -122,7 +124,7 @@ Do not claim the planning process closed until these steps are complete.
 - Laboratory World follows the normal world-end threshold.
 - Event 16 has no cluster.
 - The blank `Crazy Scientist` catalog concept is absorbed or retired rather than implemented as a duplicate chain.
-- Final super-event titles, remarks, quotes, and music remain blocked until sourced and verified.
+- At this historical cutoff, final super-event text and music were blocked. Six-package text research later completed; audio and live wiring remained outstanding at the documentation freeze.
 - Severe animations require real per-frame source art, frame sheets, static fallbacks, previews, manifests, and wiring handoffs.
 - Do not create final art from transformed copies of one still.
 - Do not use political power or command power as the default cost model.
@@ -136,7 +138,7 @@ Do not claim the planning process closed until these steps are complete.
 
 ## Achievement count requiring planner disposition
 
-The completed package contains seventeen working achievements. The initial target was sixteen, but the final route map produced seventeen distinct nontrivial achievements. The mandatory planner must either confirm all seventeen or recommend a named merge or removal with a concrete anti-bloat reason. Do not reduce the set silently.
+The completed package contains seventeen working achievements. The parent later rejected the proposed merge and confirmed all seventeen, including distinct `public_method` and `clean_break` conditions.
 
 ## Source-reading status to preserve
 

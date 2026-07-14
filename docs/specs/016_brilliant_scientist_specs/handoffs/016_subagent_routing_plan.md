@@ -4,32 +4,13 @@ All project custom subagents must be spawned with `fork_context=false`. Each pro
 
 The parent remains responsible for integration, source-of-truth decisions, validation, plan disposition, and completion claims.
 
-## Immediate planning closure
+## Planning closure
 
-### 1. Mandatory improvement-loop planner
-
-Spawn `chaosx_improvement_loop_planner` first with:
-
-`prompts/016_brilliant_scientist_improvement_loop_planner_prompt.md`
-
-This is the unresolved mandatory near-completion pass required by the event-planning skill. The planner must inspect the complete spec pack and return either:
-
-- a focused expansion addendum that identifies a real remaining depth gap, or
-- a closure handoff explaining why further expansion would add bloat.
-
-Any addendum must receive one explicit disposition before planning closes: promoted into the specs, queued with a reason, rejected with a reason, or blocked. Do not stack another planner pass while that disposition remains unresolved.
-
-### 2. Documentation curator
-
-After the planner result has a disposition, spawn `chaosx_documentation_curator` with:
-
-`prompts/016_brilliant_scientist_documentation_curator_prompt.md`
-
-The curator should reconcile the planner output with the package, record the source-of-truth map, and mark any superseded or queued material. It must not alter gameplay files or the spreadsheet.
+The improvement-loop planner and documentation-curator passes are complete. Their result and parent dispositions are recorded in `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md`. Do not rerun either pass before implementation creates new evidence. The exact current continuation state is `docs/plans/016_brilliant_scientist_plans/016_brilliant_scientist_resume_packet.md`.
 
 ## Architecture and implementation preparation
 
-### 3. Scripted-system architect
+### 1. Scripted-system architect
 
 Before broad implementation, spawn `chaosx_scripted_system_architect` with:
 
@@ -37,7 +18,7 @@ Before broad implementation, spawn `chaosx_scripted_system_architect` with:
 
 Priority outputs are the unique Kruger ownership lifecycle, transfer and cleanup helpers, Directorate values, project-history state, evolution logging context, project-derived rebellion package, dynamic cost helpers, and shared tuning plan. Small reusable helpers may be patched only when implementation has begun and direct call sites are available.
 
-### 4. Repo explorer only when uncertainty remains
+### 2. Repo explorer only when uncertainty remains
 
 `chaosx_repo_explorer` is not a ritual preflight. Use it only if the implementation parent still lacks exact file locations, a vanilla precedent, special-project field support, animated portrait wiring precedent, country-tag safety, or a reusable event-log pattern. Pass a bounded search question and a report path under `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/`.
 
@@ -98,13 +79,13 @@ Spawn separately:
 - `chaosx_super_event_text_researcher` for quotes, attribution, title and remark research
 - `chaosx_super_event_audio_researcher` for unique licensed music, source verification, conversion, and documentation
 
-Use `prompts/016_brilliant_scientist_super_event_prompt.md`. Final super-event titles, button text, quotes, and audio remain blocked until these research handoffs exist.
+Use `prompts/016_brilliant_scientist_super_event_prompt.md`. Six-package title, button, and quotation research is complete. Audio, images, final descriptions, localisation, live identifiers, and wiring remain blocked until their dedicated handoffs and implementation exist.
 
 ## Documentation, catalog, and final audit
 
-### 12. Achievement implementation and audit
+### 10. Achievement implementation and audit
 
-Use `prompts/016_brilliant_scientist_achievement_prompt.md`. Resolve the planned set of seventeen working achievements during the mandatory planner pass. Do not silently reduce the list because the original estimate was sixteen.
+Use `prompts/016_brilliant_scientist_achievement_prompt.md`. Implement exactly seventeen working achievements. `public_method` and `clean_break` remain separate.
 
 ### 13. Documentation curation
 

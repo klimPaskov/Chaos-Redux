@@ -1,5 +1,9 @@
 # 016 Brilliant Scientist spec, part 4: evolutions and event chain
 
+## Binding reconciliation, 2026-07-14
+
+International recognition remains a conditional super-event package. Evolution II alone is insufficient; a verified global-relevance threshold is required. Host takeover is a rare institutional-capture culmination, not an alternative selected because a territorial split is invalid. The chain must also resolve one evidence-gated origin conclusion or preserve the unresolved state, and must record temporal debt, anchors, stabilization, and terminal commitment transitions where those routes are active.
+
 ## Evolution structure
 
 Event 16 has four true evolutions. Ordinary appointment, laboratory growth, project approval, and confrontation remain baseline progression.

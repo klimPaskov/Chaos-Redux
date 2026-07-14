@@ -1,5 +1,9 @@
 # Event 016 AI behavior matrix
 
+## Binding reconciliation
+
+AI treats paleogenetics and xenobiological synthesis as distinct production, supply, operational, failure, and countermeasure systems. Host takeover is considered only after the full institutional-capture contract is already true. Temporal actions require bounded crisis targets and debt capacity; stabilization and anchor counterplay are evidence-gated. AI locks one origin conclusion at most and holds a terminal commitment until the required disarmament or consolidation transition is complete.
+
 ## Host AI
 
 | Situation | Appointment | Governance | Project plan | Security | Resolution |
@@ -25,7 +29,8 @@
 | Nuclear race | High energy | No materials or security |
 | Heavy casualties | Biomedical | Medical system disabled or route forbids investment |
 | Manpower shortage | Cloning or robotics | No growth or factory capacity |
-| Difficult terrain | Bestiary or portal | No containment or power |
+| Difficult terrain, transport shortage, or intimidation need | Paleogenetics | No feed, reserve land, handlers, veterinary capacity, or transport |
+| Fortified war or laboratory-defense need | Xenobiological synthesis | No medical fabrication, reagents, power, containment, or viable control method |
 | Strategic mobility | Teleportation | Terminals cannot be defended |
 | Intelligence disadvantage | Computation or temporal | Paradox or network compromise |
 | Desperation | Biological, monster, alien, singularity | Ordinary AI lacks ideology and threat gate |
@@ -90,7 +95,7 @@
 | Dinosaurs | Breakthrough and rough-terrain shock | Heavy air and anti-armor zones without support |
 | Monsters | Fortification break, facility defense, panic | Uncontrolled spread without handlers |
 | Portal units | Strategic raids, reinforce enclaves, seize facilities | Exposing undefended terminals |
-| Temporal units | Protect critical sites, recover elite losses | Spending paradox on routine battles |
+| Temporal units | Protect critical sites, recover one bounded crisis loss | Spending synchronization capacity or temporal debt on routine battles |
 | Exotic-arm units | Elite spearhead and leader guard | Attrition and low-value garrison use |
 | Biological force | Strategic crisis and denial | Casual use when condemnation or self-contamination is ruinous |
 
@@ -118,7 +123,7 @@ AI should not declare simultaneous wars beyond its supply and project capacity b
 | Delivery active | Use deterrence and submission demands |
 | Armed, strong | Preserve as deterrent unless deliberate-use route |
 | Armed, near capitulation | Trigger failsafe unless surrender or temporal escape override |
-| Armed, world conquest complete | Use only if route requires, Laboratory World remains alternative |
+| Armed, world conquest complete | Disarm and enter verified nonterminal control before Laboratory World consolidation, or remain committed to Singularity |
 
 ## Anti-snowball AI brakes
 

@@ -20,7 +20,7 @@ Required alignment:
 - Conditional world-end wording that matches the implemented Laboratory World and Strategic Singularity routes.
 - Cluster field remains blank.
 - Status becomes Reworked only after implementation and completion audit.
-- Any separate unnumbered `Crazy Scientist` row or note is marked according to the accepted absorption or redesign disposition.
+- Any separate unnumbered `Crazy Scientist` row or note is marked absorbed and redesigned inside Event 16; its standalone concept is superseded.
 
 Do not guess missing wording. Mark cells blocked or needing review when final in-game text is absent. Do not edit gameplay, localisation, documentation, assets, or other spreadsheets.
 

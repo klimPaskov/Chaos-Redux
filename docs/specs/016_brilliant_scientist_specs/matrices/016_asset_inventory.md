@@ -1,5 +1,9 @@
 # Event 016 asset inventory
 
+## Binding reconciliation
+
+> Planning inventory only. No listed Event 016 visual asset is currently produced, converted, registered, or wired. Binding totals are six super-event packages, seventeen three-state achievement icon sets, and five severe portrait animation packages.
+
 ## Portraits and character assets
 
 | Asset | Type | Size | Source mode | Animation | Use |
@@ -24,7 +28,7 @@
 | Project breakthrough reports | 8 to 15 | 210x176 | Generated period documentary | Report-card script, sepia |
 | Accident and security reports | 8 to 12 | 210x176 | Generated period documentary | Report-card script, sepia |
 | News images | 6 to 10 | 397x153 | Generated period press | Black and white |
-| Super-event images | 5 to 6 | 457x328 | Generated fictional high-chaos | Super-event processing |
+| Super-event images | 6 | 457x328 | Generated fictional high-chaos | Recognition, formation, threat, Laboratory World, Singularity, and qualifying defeat packages |
 | Defeat and remnants | 3 to 6 | Report or news size | Generated period documentary | Match target surface |
 
 ## UI asset family
@@ -52,7 +56,7 @@
 | Decision icons | 32x32 | 30 to 45 | Simplified silhouettes |
 | Decision category icons | Verify existing | 8 to 10 | Own category compositions |
 | Tech and special-project icons | 64x64 and 132x52 where needed | 25 to 45 | Stage and prototype families |
-| Achievement completed icons | 64x64 | 16 | Plus grey and not-eligible variants |
+| Achievement completed icons | 64x64 | 17 | Plus grey and not-eligible variants, for 51 final DDS files |
 | Focus filter icons | Verify existing | 10 to 12 | Route taxonomy |
 | Faction emblem | Verify existing | 1 to 3 | Kruger bloc and possible commonwealth variant |
 
@@ -77,7 +81,7 @@ Create only route variants that are implemented. Validate TGA origin and orienta
 | Clone Kruger portrait | 156x210 | 8 to 12 | 4 to 6 | Yes | Stage IV clone static |
 | Machine Kruger portrait | 156x210 | 8 to 12 | 4 to 6 | Yes | Stage IV machine static |
 | Temporal Kruger portrait | 156x210 | 10 to 16 | 4 to 6 | Yes | Stage IV temporal static |
-| Xenobiological Kruger portrait | 156x210 | 8 to 12 | 3 to 5 | Yes | Stage IV xeno static |
+| Xenobiological or alien Kruger portrait | 156x210 | 8 to 12 | 3 to 5 | Yes | Stage IV static selected from the locked campaign conclusion |
 | Synthesis Kruger portrait | 156x210 | 10 to 16 | 3 to 5 | Yes | Stage IV synthesis static |
 | Control warning frame | UI-defined | 6 to 10 | 4 to 8 | Yes | Critical static frame |
 | Active project marker | UI-defined | 6 to 8 | 4 to 6 | Yes | Active static marker |

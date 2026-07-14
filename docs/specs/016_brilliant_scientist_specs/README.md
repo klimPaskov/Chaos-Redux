@@ -1,10 +1,20 @@
 # Event 016 Brilliant Scientist planning package
 
+> Reconciled 2026-07-14. The binding disposition and implementation-status map is `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md`. Gameplay implementation remains a placeholder and has not begun.
+
 This package expands Event ID `16`, `Brilliant Scientist`, into a full source specification for Chaos Redux.
 
 Doctor Warren Kruger begins as an impossible scientific gift. A host country may recruit him openly, hide him inside a military laboratory, or send him away. Recruitment gives the promised extreme research advantage, including a deliberate `+100%` research speed anchor and an exceptional special-project scientist available across every project field. The real campaign begins after that choice. Universities compete for access, ministries build policy around one man, foreign powers attempt recruitment and sabotage, and a growing portfolio of impossible projects changes both Kruger and the state that funds him.
 
 The event can remain a powerful scientific success story. It can become a secret-state bargain. It can also create the Kruger State, a project-built breakaway country whose territory, army, politics, focus routes, and final strategic weapon are determined by the projects approved by the former host.
+
+## Source-freeze companions
+
+- `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md` records binding dispositions and authority.
+- `docs/plans/016_brilliant_scientist_plans/016_brilliant_scientist_resume_packet.md` records the exact continuation point.
+- `docs/events/016_brilliant_scientist.md` separates the live placeholder from planned mechanics.
+- `docs/assets/016_brilliant_scientist/manifest.md` records visual and audio production status.
+- `docs/super_events/016_brilliant_scientist_super_event_research.md` contains the completed six-package text research.
 
 ## Package map
 
@@ -42,7 +52,7 @@ The event can remain a powerful scientific success story. It can become a secret
 | `prompts/016_brilliant_scientist_country_focus_prompt.md` | Kruger State country package and focus-tree implementation handoff |
 | `prompts/016_brilliant_scientist_scripted_system_architect_prompt.md` | Reusable helper, constant, event-target, and lifecycle architecture handoff |
 | `prompts/016_brilliant_scientist_localisation_auditor_prompt.md` | Localisation and scripted-localisation audit handoff |
-| `prompts/016_brilliant_scientist_improvement_loop_planner_prompt.md` | Mandatory final depth and anti-bloat pass prompt |
+| `prompts/016_brilliant_scientist_improvement_loop_planner_prompt.md` | Superseded planner prompt retained as process evidence; do not rerun while its disposition is resolved |
 | `prompts/016_brilliant_scientist_completion_auditor_prompt.md` | Final source-spec versus implementation audit prompt |
 | `prompts/016_brilliant_scientist_documentation_curator_prompt.md` | Documentation reconciliation, source-of-truth, and plan-disposition handoff |
 | `prompts/016_brilliant_scientist_spreadsheet_prompt.md` | Final event-catalog workbook alignment handoff |
@@ -70,7 +80,9 @@ The event can remain a powerful scientific success story. It can become a secret
 - Kruger rebellion strength and starting forces are derived from approved projects, facilities, authority, dependence, security, and chaos state.
 - Clone, robot, dinosaur, monster, portal, temporal, biological, and exotic-army outcomes are mechanically distinct.
 - The terminal capitulation weapon may fire from any starting chaos tier only by first pushing global chaos over the normal world-end threshold and then entering the existing terminal pipeline.
-- Super-event titles, button remarks, quotes, and final audio remain research-gated until verified by the super-event research roles.
+- Six-package super-event title, quotation, and button research is complete. Final descriptions, images, audio, live identifiers, localisation, triggers, and wiring remain blocked on their dedicated implementation and research passes.
 - All severe portrait animations use real per-frame source artwork, a frame sheet, and a static fallback.
-- The blank catalog idea `Crazy Scientist` should be absorbed into Event 16 or explicitly retired so the two concepts do not duplicate each other.
+- The unnumbered catalog idea `Crazy Scientist` is absorbed and redesigned inside Event 16. Its standalone concept is superseded. The spreadsheet row remains a post-localisation alignment task and must not recreate a second event.
+- Mandate, Dependence, Exposure, and Project Capacity are visible player-facing state. Only Independent Capacity and Grievance are hidden causal state.
+- Exactly seventeen achievements and exactly six mapped super-event packages remain required.
 - The event remains outside event clusters unless the user later changes that catalog decision.

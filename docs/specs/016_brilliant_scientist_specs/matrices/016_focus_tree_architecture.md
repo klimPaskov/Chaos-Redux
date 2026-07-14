@@ -1,5 +1,9 @@
 # Event 016 Kruger State focus-tree architecture
 
+## Binding reconciliation
+
+The Bestiary lane splits into paleogenetic and xenobiological production, units, failures, supply, counters, and capstones, converging only through Synthesis. The temporal lane uses debt, synchronization capacity, anchors, authentication, and stabilization. Laboratory World and Strategic Singularity are mutually exclusive terminal commitments with distinct counterplay.
+
 ## High-level lane diagram
 
 ```text
@@ -43,13 +47,14 @@ The diagram is a route guide, not a final coordinate map.
 | Human technocracy | Civil service, assembly, law, citizenship | Public institutions, recognition, integration | Limits Kruger personal rule | Scientific commonwealth | Laboratory coup or institutional split |
 | Clone sovereignty | Growth, legal status, education, officers | Clone population and bounded army growth | Citizen, cohort, copy hierarchy | Replicated nation | Clone revolt or identity crisis |
 | Machine ascendancy | Nodes, automation, legal status, continuity | Robot army, automated production, machine government | Human partnership or replacement | Machine state | Network schism or paralysis |
-| Temporal Continuum | Authentication, paradox, authority | Forecast, recovery, duplicate leadership | Prime versus council | Continuum state | Timeline civil war |
+| Temporal Continuum | Authentication, debt, anchors, stabilization, authority | Bounded forecast and recovery | Prime versus council | Continuum state | Timeline scar, anchor loss, or civil war |
 | Synthesis | Project-caste coordination | Mixed units and combined systems | Compromise or hierarchy among types | Kruger Synthesis | Project-caste conflict |
 | Laboratory economy | Repair, production, supply, facilities | Route-specific industry decisions | Supports every route | Global laboratory network | Experimental supply collapse |
 | Conventional security | Guards, defectors, engineers, counterintelligence | Reliable ordinary army and facility defense | Command choice affects government | Unified security state | Project armies in rivalry |
 | Robot corps | Frames, factories, repair, command | Robot templates and production | Machine rights and control | Army of Machines | Node capture or resource collapse |
 | Clone corps | Growth, training, officers, settlement | Clone templates and growth cycles | Clone legal status | Replicated host | Growth collapse |
-| Bestiary | Breeding, handlers, control, ecology | Dinosaur and monster units | Biological caste or controlled use | Dinosaur Host or Engineered Legion | Escape and ecology crisis |
+| Paleogenetics | Reserves, hatcheries, pens, handlers, ecology | Dinosaur and megafauna units | Restoration, reserve policy, or shock doctrine | Dinosaur Host | Escape, breeding collapse, habitat damage |
+| Xenobiological synthesis | Growth vats, fabrication, control methods, containment | Designed monster and specialist units | Biological caste or controlled use | Engineered Legion | Mutation, control loss, autonomous nest |
 | Quantum transit | Terminals, power, linking, raids | Portal supply and strategic movement | Enables multi-site state | Global portal network | Terminal compromise |
 | Temporal military | Forecast, recovery, guard, time machine | Bounded temporal actions | Continuum government | Controlled time machine | Paradox crisis |
 | Exotic energy | Reactors, weapons, delivery, hardening | Elite arms and strategic systems | Deterrent or coercion policy | Strategic arsenal | Reactor and component catastrophe |

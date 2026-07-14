@@ -1,5 +1,21 @@
 # Event 016 Brilliant Scientist improvement-loop addendum
 
+## Parent disposition, 2026-07-14
+
+This addendum has been reviewed and dispositioned. It is retained as design evidence, but its rejected recommendations do not control implementation. The promoted material has been folded into the specification package and summarized in `016_source_of_truth_map.md`.
+
+| ID | Disposition | Binding result |
+| --- | --- | --- |
+| R1 | Rejected | Keep the thresholded international-recognition super-event. It remains one of exactly six mapped Event 016 super-event packages. |
+| R2 | Promoted | Host takeover is a rare, proven institutional-capture route and never a territorial, technical, or implementation fallback. |
+| R3 | Promoted | Paleogenetics and xenobiological synthesis retain distinct production, battlefield, failure, supply, and countermeasure identities. |
+| R4 | Promoted | Temporal play uses synchronization capacity, temporal debt, bounded targets, use records, anchors, authentication, stabilization, persistent scars, and evidence-gated counterplay. |
+| R5 | Promoted | Each campaign may conclude extraterrestrial provenance, temporal displacement, manufactured continuity, or unresolved origin. Conclusions are mutually exclusive and public proof is evidence-gated. |
+| R6 | Rejected | Preserve exactly seventeen achievements. `public_method` and `clean_break` test different campaign outcomes and remain separate. |
+| R7 | Promoted | Laboratory World and Strategic Singularity use mutually exclusive commitment locks and different late-game play and counterplay. |
+
+The original R1 and R6 recommendation bodies below are superseded historical proposals. Any count or instruction derived from them, including five super-events or sixteen achievements, is nonbinding.
+
 ## Status and scope
 
 This is the required focused improvement addendum for Event 016. It is not an implementation handoff and it does not claim that gameplay is complete.
@@ -22,17 +38,17 @@ Useful precedents include the multi-specialization scientist definition for `SOV
 
 | ID | Review question | Recommendation | Parent disposition required |
 | --- | --- | --- | --- |
-| R1 | International-recognition super-event | Remove the super-event slot. Keep a thresholded major news event and country reactions. | Promote, reject, queue, or block |
-| R2 | Host takeover | Keep it as a rare institutional-capture route. It is not a territorial or technical fallback. | Promote, reject, queue, or block |
-| R3 | Paleogenetics versus xenobiological monsters | Keep both and enforce separate production, battlefield, failure, and countermeasure identities. | Promote, reject, queue, or block |
-| R4 | Temporal counterplay | Add a bounded temporal-debt, anchor-site, authentication, and stabilization contract. | Promote, reject, queue, or block |
-| R5 | Alien origin | Use mutually exclusive campaign conclusions with no universal canon. A campaign may also remain unresolved. | Promote, reject, queue, or block |
-| R6 | Seventeen achievements | Reduce to sixteen by merging `clean_break` into `public_method`. | Promote, reject, queue, or block |
-| R7 | Singularity versus Laboratory World | Keep both, then lock them into different terminal commitments and counterplay loops. | Promote, reject, queue, or block |
+| R1 | International-recognition super-event | Remove the super-event slot. Keep a thresholded major news event and country reactions. | Rejected |
+| R2 | Host takeover | Keep it as a rare institutional-capture route. It is not a territorial or technical fallback. | Promoted |
+| R3 | Paleogenetics versus xenobiological monsters | Keep both and enforce separate production, battlefield, failure, and countermeasure identities. | Promoted |
+| R4 | Temporal counterplay | Add a bounded temporal-debt, anchor-site, authentication, and stabilization contract. | Promoted |
+| R5 | Alien origin | Use mutually exclusive campaign conclusions with no universal canon. A campaign may also remain unresolved. | Promoted |
+| R6 | Seventeen achievements | Reduce to sixteen by merging `clean_break` into `public_method`. | Rejected |
+| R7 | Singularity versus Laboratory World | Keep both, then lock them into different terminal commitments and counterplay loops. | Promoted |
 
-## R1. International recognition becomes a major news threshold
+## R1. International recognition becomes a major news threshold [rejected]
 
-### Decision
+### Historical recommendation, rejected
 
 Do not give international recognition a full super-event package.
 
@@ -251,9 +267,9 @@ Remains valid when no evidence family reaches its proof threshold. Rumors and on
 - Nonhuman transformation alone cannot unlock the alien-origin achievement.
 - The unresolved state remains fully playable.
 
-## R6. Merge the safe-route achievements and retain sixteen
+## R6. Merge the safe-route achievements and retain sixteen [rejected]
 
-### Decision
+### Historical recommendation, rejected
 
 Retire the working key `016_brilliant_scientist_clean_break` and merge its distinctive conditions into `016_brilliant_scientist_public_method`.
 
@@ -368,7 +384,7 @@ If accepted, promote the recommendations into these sources.
 | R6 | Part 10. Asset inventory, route coverage, acceptance criteria, achievement prompt, asset prompt, completion prompt, README, manifest, completion status, and package checksums. |
 | R7 | Parts 3, 4, 6, 7, 8, and 10. Event-chain map, focus architecture, AI matrix, route coverage, acceptance criteria, super-event prompt, scripted-system prompt, achievement prompt, and completion prompt. |
 
-After promotion, reconcile cross-file counts and labels. The package should say sixteen achievements, four required super-events plus one conditional defeat super-event, five severe portrait animation families, and no international-recognition super-event.
+After disposition, the reconciled package retains exactly seventeen achievements, exactly six mapped super-event packages, and five severe portrait animation families. The international-recognition and qualifying-defeat super-events remain conditional at runtime but still require complete research, image, audio, localisation, and wiring packages.
 
 ## Fallback, simplification, and omission disposition
 

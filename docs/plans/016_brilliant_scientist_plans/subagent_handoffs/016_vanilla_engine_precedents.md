@@ -639,11 +639,11 @@ Custom achievement art is filename-driven rather than registered through a `.gfx
 
 Vanilla's `american_prometheus` triplet is a direct filename precedent.
 
-If the Event 016 specification retains 16 achievements, completion requires:
+The reconciled Event 016 specification retains exactly 17 achievements. Completion requires:
 
-- 16 achievement blocks in the existing registry;
-- 32 English localisation keys (`<ID>_NAME` and `<ID>_DESC`);
-- 48 final DDS files;
+- 17 achievement blocks in the existing registry;
+- 34 English localisation keys (`<ID>_NAME` and `<ID>_DESC`);
+- 51 final DDS files;
 - stable route/project/formation/terminal flags or variables for `happened`;
 - triggers that remain valid if the scientist changes nationality;
 - an achievement audit confirming every trigger is attainable and mutually exclusive routes are represented intentionally.
@@ -715,7 +715,7 @@ Before claiming Event 016 complete, the parent implementation should prove:
 - large portrait/custom-GUI animation is wired from real frames;
 - any static advisor/scientist portrait compromise has explicit user approval;
 - every super-event slot, text mapping, image, audio variant, station entry, wrapper, and cleanup path exists;
-- all 16 specified achievements have attainable triggers, 32 localisation keys, and 48 DDS files;
+- all 17 specified achievements have attainable triggers, 34 localisation keys, and 51 DDS files;
 - terminal effects clean decisions, projects, targets, audio, GUI state, and transient flags without erasing achievement facts;
 - event log, evolutions, event-details UI, docs, and spreadsheet wording match the final in-game localisation.
 

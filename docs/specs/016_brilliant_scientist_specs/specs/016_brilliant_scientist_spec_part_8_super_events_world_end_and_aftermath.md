@@ -1,5 +1,13 @@
 # 016 Brilliant Scientist spec, part 8: super-events, world end, and aftermath
 
+## Binding reconciliation, 2026-07-14
+
+Exactly six mapped super-event packages remain required: thresholded international recognition, Kruger State formation, global threat, Laboratory World, Strategic Singularity, and qualifying defeat aftermath. International recognition and defeat are conditional at runtime, but neither package may be omitted from research, art, audio, localisation, documentation, or wiring.
+
+Laboratory World requires overwhelming control plus functioning global integration and administration. Strategic Singularity remains a preventable component-and-disarmament race. Their commitment locks are mutually exclusive. Temporal anchor counterplay and the mutually exclusive campaign-origin conclusion must remain consistent in terminal and aftermath text.
+
+Reserved world-end scenario IDs are 11 for Laboratory World and 12 for Strategic Singularity. Reserved visible super-event IDs are 88 recognition, 89 formation, 90 threat, 91 Laboratory World, 92 Strategic Singularity, and 93 qualifying defeat. Event 020 owns world-end ID 10 and visible IDs 85 to 87.
+
 ## Super-event philosophy
 
 Event 16 can produce several campaign-scale moments. Each super-event must mark a real threshold, use a unique final track, and receive complete image, text, quote, audio, trigger, documentation, and settings-aware playback wiring.

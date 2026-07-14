@@ -1,5 +1,7 @@
 # Achievement implementation prompt for Event 016 Brilliant Scientist
 
+The parent disposition is final: implement exactly seventeen achievements. `public_method` and `clean_break` remain distinct. Do not rerun or reinterpret the rejected merge proposal.
+
 Read:
 
 - `docs/specs/016_brilliant_scientist_specs/specs/016_brilliant_scientist_spec_part_10_achievements_and_completion.md`
@@ -30,7 +32,7 @@ Implement the full 17-achievement working set. Working labels are not final loca
 - `016_brilliant_scientist_the_world_is_the_laboratory`
 - `016_brilliant_scientist_ordinary_people_won`
 
-The source spec currently lists 17 working keys because the final survivor-rights achievement is deliberately included in addition to the first 16-count estimate. The mandatory improvement-loop planner must decide whether to keep all 17 or merge one overlapping challenge. Do not silently drop one. Record the disposition.
+The source spec lists exactly 17 binding working keys. The parent rejected the proposed merge. Do not drop, rename, or combine one without a later explicit parent disposition.
 
 ## Implementation requirements
 
@@ -63,11 +65,13 @@ Use the single Chaos Redux achievement registry and exact root achievement filen
 - Dinosaur participation in a major-capital capture.
 - Machine-majority government after biological Kruger continuity ends.
 - Clone citizen status and absence of slavery or revolt.
-- Temporal action that materially saves a critical site.
-- Alien-origin evidence from several independent sources.
+- Temporal action that materially saves a bounded crisis target, records temporal debt, and is followed by successful stabilization.
+- Locked extraterrestrial provenance from several independent sources plus public proof; transformation alone does not qualify.
 - Player nuclear and thermonuclear use disqualifier.
 - Singularity construction, arming, disarmament, or firing.
-- Laboratory World terminal state without singularity firing.
+- Laboratory World terminal state after verified nonterminal singularity disarmament, not merely absence of firing.
+
+`public_method` proves public governance, publication, and independent replication while Kruger remains active under a binding public compact. `clean_break` proves a later safe retirement, dismissal, exile, or settlement that ends his exclusive control while preserving an institutional legacy.
 - Global-threat duration and rights-respecting defeat settlement.
 
 An achievement cannot unlock merely because Event 16 fired, Kruger was appointed, or a route focus was clicked. Verify the full campaign condition.

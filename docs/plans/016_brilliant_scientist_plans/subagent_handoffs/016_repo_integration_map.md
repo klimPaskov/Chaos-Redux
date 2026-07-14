@@ -316,13 +316,13 @@ Add the matching keys to localisation/english/chaosx_gui_l_english.yml. The prem
 
 #### Stable world-end IDs
 
-common/script_constants/world_end_scenario_registry_constants.txt is append-only and save-facing. Existing scenario IDs are 1 through 9. Reserve:
+common/script_constants/world_end_scenario_registry_constants.txt is append-only and save-facing. Concurrent Event 020 reserves scenario ID 10. Event 016 therefore reserves:
 
-- world_end_scenario_id.laboratory_world = 10
-- world_end_scenario_id.strategic_singularity = 11
+- world_end_scenario_id.laboratory_world = 11
+- world_end_scenario_id.strategic_singularity = 12
 - world_end_scenario_owner_event.brilliant_scientist = 16
 
-Do not renumber any existing scenario. Add the super-event mappings only after the six Event 016 super-event IDs have been reserved against current concurrent work.
+Do not renumber any existing scenario. The earlier Event 016 proposal of IDs 10 and 11 is superseded by the whole-worktree collision scan dated 2026-07-14.
 
 #### Registry rows and activation
 
@@ -507,12 +507,13 @@ The GUI exposes:
 - visible Mandate;
 - visible Dependence;
 - visible Exposure;
+- visible Project Capacity;
 - project and facility state;
 - foreign contacts and operations;
 - sovereignty/confrontation state;
 - Strategic Singularity state when unlocked.
 
-Capacity and Grievance remain hidden gameplay variables but must have player-readable consequences and tooltips where specified.
+Independent Capacity and Grievance remain hidden causal variables but must have player-readable consequences and tooltips. Project Capacity is visible.
 
 Gameplay belongs in decisions and scripted effects. The GUI may display and invoke valid actions, but AI must use the same effects through decisions/event weights rather than GUI clicks.
 
@@ -727,7 +728,7 @@ Required working keys:
 16. 016_brilliant_scientist_the_world_is_the_laboratory
 17. 016_brilliant_scientist_ordinary_people_won
 
-The spec's icon estimate says sixteen, but the implementation prompt and accepted completion requirement list seventeen working keys. The seventeenth achievement must be retained unless the parent explicitly accepts and records a merge; it must never be silently dropped.
+The parent rejected the proposed merge. Exactly seventeen working keys are binding. `public_method` and `clean_break` remain distinct achievements and neither may be silently dropped.
 
 Concrete precedent:
 
@@ -768,13 +769,18 @@ Shared registration surfaces:
 - the repository super-event sound asset registry
 - common/scripted_effects/chaosx_settings_effects.txt audio playback helpers
 
-Current inspected super-event references use IDs 1 to 22, 28 to 56, 59 to 77, and 82 to 84. The apparent holes 23 to 27, 57 to 58, 78 to 81, and 85 upward are not reservations.
+The 2026-07-14 whole-worktree collision scan found concurrent Event 020 reservations at 85, 86, and 87. The earlier Event 016 proposal of 85 to 90 is superseded. Event 016 reserves this contiguous block in the established package order:
 
-Safest proposed contiguous block:
+| Visible super-event ID | Event 016 role |
+| ---: | --- |
+| 88 | International recognition |
+| 89 | Kruger State formation |
+| 90 | Global Kruger threat |
+| 91 | Laboratory World |
+| 92 | Strategic Singularity |
+| 93 | Qualifying defeat aftermath |
 
-- 85 to 90
-
-This block is proposed, not reserved. The main agent must re-scan all shared super-event selectors, GFX, music, sound, settings, specs, and concurrent work immediately before allocation. Once accepted, record the exact role-to-ID map in the Event 016 plan/spec and world-end registry constants.
+Re-scan all shared super-event selectors, GFX, music, sound, settings, specs, and concurrent work immediately before live registration. Do not reuse Event 020 IDs 85 to 87.
 
 Each role needs a unique image and track. Generic audio is forbidden. Use:
 
@@ -875,7 +881,7 @@ The following files are high-collision shared surfaces. The Event 016 implemente
 | common/scripted_effects/chaosx_settings_effects.txt | Prefire and scoped dispatch; shared super-event audio only as needed |
 | common/scripted_effects/chaosx_events_log_effects.txt | Actor, four preview rows, world-end registry and active mapping, Events-tab impossible state |
 | common/scripted_localisation/chaosx_scripted_localisation_events_log.txt | Complete Event 016 evolution/detail/history/world-end routing |
-| common/script_constants/world_end_scenario_registry_constants.txt | Append scenario IDs 10 and 11, owner 16, final super-event IDs |
+| common/script_constants/world_end_scenario_registry_constants.txt | Append scenario IDs 11 and 12, owner 16, and super-event mappings 91 and 92 |
 | common/scripted_effects/chaosx_dynamic_effects.txt and .md | Threat source and only genuinely cross-event helpers |
 | common/scripted_triggers/chaosx_dynamic_triggers.txt and .md | Special/nonhuman classification |
 | common/scripted_triggers/chaosx_world_threat_triggers.txt | Event 016 world-threat source |
@@ -950,7 +956,8 @@ Most important collision risks:
 ### Tranche 0: reservations and contracts
 
 - Re-scan KRG, event/news namespace IDs, super-event IDs, cosmetic tags, sprite names, technology/project IDs, unit/equipment IDs, and achievement keys.
-- Reserve world-end scenario IDs 10 and 11.
+- Preserve Event 020 scenario ID 10 and reserve Event 016 world-end scenario IDs 11 and 12.
+- Preserve Event 020 super-event IDs 85 to 87 and reserve Event 016 IDs 88 to 93 in the fixed six-role order.
 - Decide and document the source-aware canonical Fallout adapter.
 - Freeze Event 016 constants categories, persistent flags, event targets, and helper contracts.
 - Merge accepted architectural decisions into the Event 016 source spec where needed.
@@ -965,7 +972,7 @@ Most important collision risks:
 ### Tranche 2: directorate and ordinary host loop
 
 - Implement variables, staged ideas, decisions, missions, targeted clocks, scripted GUI, tooltips, and AI.
-- Deliver visible Mandate/Dependence/Exposure and hidden Capacity/Grievance consequences.
+- Deliver visible Mandate, Dependence, Exposure, and Project Capacity plus hidden Independent Capacity and Grievance consequences.
 - Implement safe removal, foreign transfer, assassination/security, publication, replication, and ordinary resolution.
 
 ### Tranche 3: project portfolio and world interaction
@@ -1014,7 +1021,7 @@ Most important collision risks:
 These are not permission to guess:
 
 - Final KRG tag confirmation against the whole enabled load order.
-- Final six super-event ID reservations and role mapping; 85 to 90 is only the safest current proposal.
+- Event 016 reservations are fixed at world-end IDs 11 and 12 plus super-event IDs 88 to 93. Re-scan for later concurrent collisions before live registration.
 - Exact event/news sub-ID plan beyond the fixed chaosx.nr16.1 root.
 - Exact route cosmetic-tag tokens and sprite names.
 - Exact character-transfer strategy when Kruger changes countries or becomes KRG leader.
@@ -1023,7 +1030,7 @@ These are not permission to guess:
 - Final mapping of existing biowarfare projects into the Event 016 portfolio.
 - Exact project/technology/unit/equipment identifiers and balance values.
 - Exact country-state derivation rules for the four KRG formation modes.
-- Final disposition of any apparent achievement-count inconsistency; all seventeen keys remain required until explicitly changed.
+- Achievement count is resolved at exactly seventeen; `public_method` and `clean_break` are distinct.
 - Final asset source location for portrait_generic_biowarfare_europe_male_01.
 - Final workbook ownership window.
 

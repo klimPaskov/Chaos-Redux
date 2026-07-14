@@ -1,5 +1,7 @@
 # Kruger State country and focus implementation prompt
 
+Apply the binding institutional-capture, split project-family, temporal-debt, origin-conclusion, and terminal-commitment contracts from `016_source_of_truth_map.md`.
+
 Read:
 
 - `docs/specs/016_brilliant_scientist_specs/specs/016_brilliant_scientist_spec_part_5_kruger_state_country_package.md`
@@ -38,7 +40,7 @@ Implement:
 - Special-chaos and actual-nonhuman classification at the correct route state.
 - Full AI and cleanup.
 
-Do not release an empty or invalid tag. Do not transfer third-party controlled states. Do not destroy a small host through a peaceful charter. Use defection, takeover, or enclave alternatives when a clean split is impossible.
+Do not release an empty or invalid tag. Do not transfer third-party controlled states. Do not destroy a small host through a peaceful charter. When a clean split is impossible, evaluate defection, confinement, non-country crisis, charter, or enclave on their own conditions. Takeover remains available only when the full institutional-capture contract was independently satisfied; it is never a fallback.
 
 ## Focus tree
 
@@ -51,7 +53,8 @@ Required branches:
 - Human technocracy.
 - Replicated sovereignty when cloning is valid.
 - Machine ascendancy when robotics is valid.
-- Temporal Continuum when time research is valid.
+- Temporal Continuum when time research, debt, anchor, authentication, and stabilization state support it.
+- Separate paleogenetic and xenobiological openers, facilities, production, units, failures, counters, and capstones, converging only through Synthesis.
 - Synthesis when several portfolios are valid.
 - Laboratory economy.
 - Conventional security.
@@ -59,7 +62,7 @@ Required branches:
 - Diplomacy and intelligence.
 - Expansion and postwar integration.
 - Evolution IV world conquest.
-- Strategic singularity.
+- Strategic Singularity and Laboratory World as mutually exclusive commitments with verified transition locks.
 - Crisis and failure branches.
 
 Political choices must change economy, military, diplomacy, leaders, flags, laws, and integration. Project branches stay hidden or unavailable without inherited stages. Rewards should unlock decisions, missions, units, advisors, buildings, technology, facilities, claims, war goals, diplomacy, and identity. Tiny modifiers and new-idea filler are unacceptable.

@@ -1,5 +1,7 @@
 # Mandatory improvement-loop prompt for Event 016 Brilliant Scientist
 
+> Superseded 2026-07-14. The planner ran and produced `docs/plans/016_brilliant_scientist_plans/016_brilliant_scientist_improvement_loop_addendum.md`. Its R1 through R7 recommendations received a complete parent disposition in `016_source_of_truth_map.md`. Do not rerun this prompt until the promoted material is implemented or a new implementation finding creates a distinct depth gap.
+
 Spawn `chaosx_improvement_loop_planner` with `fork_context=false`.
 
 ## Exact current state

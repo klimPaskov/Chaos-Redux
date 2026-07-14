@@ -1,5 +1,9 @@
 # Super-event research prompt for Event 016 Brilliant Scientist
 
+Research exactly six mapped packages. International recognition and qualifying defeat are conditional at runtime but still require complete text, image, unique audio, source, licence, localisation, documentation, and wiring handoffs.
+
+Use visible super-event reservations 88 through 93 in this order: recognition, formation, global threat, Laboratory World, Strategic Singularity, qualifying defeat. Do not use Event 020 slots 85 through 87. Laboratory World and Strategic Singularity use world-end scenario IDs 11 and 12.
+
 Use `chaosx_super_event_text_researcher`, `chaosx_super_event_audio_researcher`, and the appropriate image subagent. Spawn each with `fork_context=false` and pass only the narrow brief it needs.
 
 ## Source design
@@ -20,7 +24,7 @@ Read:
 5. Strategic Singularity and Fallout terminal event.
 6. Defeat aftermath, conditional on a long global crisis.
 
-The implementation may omit the international-recognition or defeat package if the accepted planner concludes the threshold is not worth a full super-event. Do not omit state formation, global threat when conditions are reached, or the two terminal packages.
+Do not omit or merge any package. The parent rejected removal of international recognition. Runtime conditions determine whether recognition or defeat appears in a campaign; they do not reduce the production inventory.
 
 ## Text research
 

@@ -1,5 +1,11 @@
 # 016 Brilliant Scientist spec, part 6: Kruger State focus tree
 
+## Binding reconciliation, 2026-07-14
+
+The broad Bestiary lane splits into separate paleogenetic and xenobiological openers, facilities, production decisions, units, supply burdens, failures, counters, and capstones. It converges only through Synthesis. The temporal lane uses debt, synchronization capacity, anchors, authentication, bounded recovery targets, stabilization, and persistent scars.
+
+Laboratory World is the conquest, submission, integration, and global-administration ending. Strategic Singularity is the vulnerable multi-year component race and denied-victory ending. Fail-deadly or deliberate global-use doctrine blocks Laboratory World while armed. Laboratory World consolidation requires disarmament and verified nonterminal control. Singularity firing permanently prevents Laboratory World; Laboratory World firing cancels singularity construction, arming, and activation.
+
 ## Tree purpose
 
 The Kruger State needs a large bespoke focus tree because it is expected to survive, fight, develop several project systems, and possibly become a global threat. The tree should feel like a state built from inherited experiments rather than a normal country with scientific names pasted over generic rewards.
@@ -530,9 +536,9 @@ Capstone choices:
 
 The `Endless Army` fantasy should mean a powerful renewable pathway constrained by real production, not an uncapped weekly unit spawn.
 
-## Bestiary, dinosaur, and monster branch
+## Paleogenetics and xenobiological synthesis branches
 
-Availability scales with paleogenetics and xenobiological projects.
+The branches share only a visual lane before splitting. Paleogenetics scales from restored terrestrial species and its handler and reserve economy. Xenobiological synthesis scales from designed organisms, medical fabrication, containment, and the selected control method.
 
 Focus groups:
 

@@ -1,5 +1,7 @@
 # Animation production prompt for Event 016 Brilliant Scientist
 
+Produce exactly five severe portrait packages: clone, machine, temporal, xenobiological or alien, and synthesis. The combined xenobiological-or-alien package follows the locked campaign conclusion; transformation alone must not imply extraterrestrial provenance.
+
 Use this prompt with `chaosx_generated_event_art` for portraits and `chaosx_icon_artist` for small UI animation. Spawn with `fork_context=false` and require the `chaos-redux-frame-animation` skill.
 
 ## Source design

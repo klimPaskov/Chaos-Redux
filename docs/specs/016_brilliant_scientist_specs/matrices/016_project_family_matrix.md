@@ -1,5 +1,9 @@
 # Event 016 project-family matrix
 
+## Binding reconciliation
+
+Paleogenetics and xenobiological synthesis are separate at every stage and may converge only through Synthesis. Temporal mechanics use synchronization capacity, temporal debt, bounded targets, use records, anchors, ledgers, authentication, stabilization, and persistent scars. Origin evidence may lock one campaign conclusion or remain unresolved. Strategic Singularity is a terminal commitment distinct from Laboratory World.
+
 ## Stage matrix
 
 | Family | Theory | Prototype | Deployment | Weaponization or Autonomy | Breakaway inheritance | Main countermeasure |
@@ -13,11 +17,11 @@
 | Teleportation | Transit model | Inert-matter transfer | Linked facility transport | Portal raids and strategic delivery | Portal units and multi-site rebellion | Terminal security, power denial, dual control |
 | Cloning | Tissue and body replication | First viable body | Clone cadres and replacement system | Clone army and Kruger continuity | Clone divisions and population route | Growth-site control, identity records, amnesty |
 | Robotics and AI | Machine reasoning | Autonomous device or frame | Robot support and automation | Robot army and distributed command | Robot formations, automated industry | Power denial, network isolation, electronic warfare |
-| Paleogenetics | Genetic reconstruction | Restored organism | Large creatures and breeding | Dinosaur or megafauna army | Dinosaur shock units and bestiary route | Feed denial, breeding-site capture, anti-armor |
-| Xenobiological synthesis | Designed anatomy | Engineered organism | Monster support and labor | Obedient or self-breeding war organisms | Monster units and laboratory guardians | Identify control method, destroy breeding and command |
+| Paleogenetics | Extinct terrestrial reconstruction | Restored organism | Reserve, hatchery, handler, and transport network | Dinosaur or megafauna army | Reconnaissance, rough-terrain transport, intimidation, shock | Feed and handler denial, air attack, anti-armor, transport interdiction, reserve capture |
+| Xenobiological synthesis | Modular anatomy and artificial tissue | Engineered organism with selected control method | Vats, medical fabrication, control center, sealed containment | Controlled specialist assault or autonomous nest risk | Laboratory defense, tunneling, fort breaking, sensing, adaptive support | Identify and break control method, destroy growth labs, isolate command, protect handlers |
 | Biological weapons | Disease model and defense | Laboratory strain or vaccine | Existing biowarfare systems | Adaptive pathogen or fail-deadly release | Stockpiles, contaminated assault, strong defense | Quarantine, vaccine, safe stockpile seizure |
 | Alien arms | Exotic material and principles | One alien weapon or shield | Elite equipment and energy arms | Strategic field projectors | Exotic guard and xeno route | Material denial, interface specialists, protection |
-| Temporal mechanics | Time measurement and prediction | Short information or object transfer | Forecast, recovery, displacement | Duplicate units and Kruger continuity | Temporal units and Continuum route | Destroy synchronization, paradox pressure |
+| Temporal mechanics | Time measurement and prediction | Short bounded information or object transfer | Forecast, one-use recovery, displacement | Scarred continuity under debt and anchor limits | Temporal guard and Continuum route | Authenticate records, identify and disable anchors, capture ledgers, exploit stabilization |
 | Strategic singularity | Terminal mechanism | Local catastrophic proof | Core and delivery construction | Armed final device | Deterrent, conquest weapon, failsafe | Component raids, disarmament, surrender agreement |
 
 ## Core prerequisites and synergies
