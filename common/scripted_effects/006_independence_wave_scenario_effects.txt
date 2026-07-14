@@ -1,0 +1,1217 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 TRIGGERABLE SCENARIO EFFECTS
+# ============================================================================
+# Overview:
+# - Implements SCN-008 as one Event 006 frozen-plan transaction.
+# - Attempts the same 149 current-map-bound packages at every intensity.
+# - Ranks anchor uniqueness first, then research readiness and package depth.
+# - Preserves content-readiness, living-tag, host-remnant, unique-anchor, and
+#   Event 005-origin safety gates.
+# - Applies type behavior only after the synchronized release commits.
+# - Stores an inspectable package/rejection ledger for the scenario summary.
+# ============================================================================
+
+independence_wave_scenario_initialize_settings = {
+	if = {
+		limit = { NOT = { has_variable = triggerable_scenarios_independence_wave_type } }
+		set_variable = { triggerable_scenarios_independence_wave_type = constant:independence_wave_scenario_type.sovereign_scatter }
+	}
+	if = {
+		limit = { NOT = { has_variable = triggerable_scenarios_independence_wave_belligerence_rule } }
+		set_variable = { triggerable_scenarios_independence_wave_belligerence_rule = constant:independence_wave_scenario_belligerence_rule.former_hosts }
+	}
+}
+
+# The one generic Type control exposes six type families. While Universal
+# Belligerence is selected, the same control walks its three bounded rules
+# before advancing to the next family.
+independence_wave_scenario_type_previous = {
+	independence_wave_scenario_initialize_settings = yes
+	if = {
+		limit = {
+			check_variable = { triggerable_scenarios_independence_wave_type = constant:independence_wave_scenario_type.universal_belligerence }
+			check_variable = {
+				var = triggerable_scenarios_independence_wave_belligerence_rule
+				value = constant:independence_wave_scenario_belligerence_rule.minimum
+				compare = greater_than
+			}
+		}
+		subtract_from_variable = { triggerable_scenarios_independence_wave_belligerence_rule = constant:independence_wave_scenario_registry.one }
+	}
+	else = {
+		subtract_from_variable = { triggerable_scenarios_independence_wave_type = constant:independence_wave_scenario_registry.one }
+		if = {
+			limit = {
+				check_variable = {
+					var = triggerable_scenarios_independence_wave_type
+					value = constant:independence_wave_scenario_type.minimum
+					compare = less_than
+				}
+			}
+			set_variable = { triggerable_scenarios_independence_wave_type = constant:independence_wave_scenario_type.maximum }
+		}
+		if = {
+			limit = { check_variable = { triggerable_scenarios_independence_wave_type = constant:independence_wave_scenario_type.universal_belligerence } }
+			set_variable = { triggerable_scenarios_independence_wave_belligerence_rule = constant:independence_wave_scenario_belligerence_rule.maximum }
+		}
+	}
+}
+
+independence_wave_scenario_type_next = {
+	independence_wave_scenario_initialize_settings = yes
+	if = {
+		limit = {
+			check_variable = { triggerable_scenarios_independence_wave_type = constant:independence_wave_scenario_type.universal_belligerence }
+			check_variable = {
+				var = triggerable_scenarios_independence_wave_belligerence_rule
+				value = constant:independence_wave_scenario_belligerence_rule.maximum
+				compare = less_than
+			}
+		}
+		add_to_variable = { triggerable_scenarios_independence_wave_belligerence_rule = constant:independence_wave_scenario_registry.one }
+	}
+	else = {
+		add_to_variable = { triggerable_scenarios_independence_wave_type = constant:independence_wave_scenario_registry.one }
+		if = {
+			limit = {
+				check_variable = {
+					var = triggerable_scenarios_independence_wave_type
+					value = constant:independence_wave_scenario_type.maximum
+					compare = greater_than
+				}
+			}
+			set_variable = { triggerable_scenarios_independence_wave_type = constant:independence_wave_scenario_type.minimum }
+		}
+		if = {
+			limit = { check_variable = { triggerable_scenarios_independence_wave_type = constant:independence_wave_scenario_type.universal_belligerence } }
+			set_variable = { triggerable_scenarios_independence_wave_belligerence_rule = constant:independence_wave_scenario_belligerence_rule.minimum }
+		}
+	}
+}
+
+# Outputs are temporary wave and country-value values consumed by the scenario
+# allocator and post-commit setup. Candidate count never changes here.
+independence_wave_scenario_set_intensity_tuning = {
+	set_temp_variable = { independence_wave_wave_target_count = constant:independence_wave_scenario_registry.bound_package_count }
+	set_temp_variable = { independence_wave_wave_chaos_band = constant:independence_wave_chaos_band.calm_world }
+	set_temp_variable = { independence_wave_wave_territory_level = constant:liberation_territory_level.anchor }
+	set_temp_variable = { independence_wave_wave_force_level = constant:liberation_force_level.fragile }
+	set_temp_variable = { independence_wave_scenario_legitimacy_delta = constant:independence_wave_scenario_country_value.low_legitimacy }
+	set_temp_variable = { independence_wave_scenario_recognition_delta = constant:independence_wave_scenario_country_value.low_recognition }
+	set_temp_variable = { independence_wave_scenario_capacity_delta = constant:independence_wave_scenario_country_value.low_capacity }
+	set_temp_variable = { independence_wave_scenario_security_delta = constant:independence_wave_scenario_country_value.low_security }
+	set_temp_variable = { independence_wave_scenario_instability_delta = constant:independence_wave_scenario_country_value.low_instability }
+
+	if = {
+		limit = { check_variable = { global.independence_wave_scenario_last_intensity = constant:triggerable_scenario_intensity.medium } }
+		set_temp_variable = { independence_wave_wave_chaos_band = constant:independence_wave_chaos_band.rising_chaos }
+		set_temp_variable = { independence_wave_wave_territory_level = constant:liberation_territory_level.compact }
+		set_temp_variable = { independence_wave_wave_force_level = constant:liberation_force_level.viable }
+		set_temp_variable = { independence_wave_scenario_legitimacy_delta = constant:independence_wave_scenario_country_value.medium_legitimacy }
+		set_temp_variable = { independence_wave_scenario_recognition_delta = constant:independence_wave_scenario_country_value.medium_recognition }
+		set_temp_variable = { independence_wave_scenario_capacity_delta = constant:independence_wave_scenario_country_value.medium_capacity }
+		set_temp_variable = { independence_wave_scenario_security_delta = constant:independence_wave_scenario_country_value.medium_security }
+		set_temp_variable = { independence_wave_scenario_instability_delta = constant:independence_wave_scenario_country_value.medium_instability }
+	}
+	else_if = {
+		limit = { check_variable = { global.independence_wave_scenario_last_intensity = constant:triggerable_scenario_intensity.high } }
+		set_temp_variable = { independence_wave_wave_chaos_band = constant:independence_wave_chaos_band.totalen_chaos }
+		set_temp_variable = { independence_wave_wave_territory_level = constant:liberation_territory_level.extended }
+		set_temp_variable = { independence_wave_wave_force_level = constant:liberation_force_level.armed }
+		set_temp_variable = { independence_wave_scenario_legitimacy_delta = constant:independence_wave_scenario_country_value.high_legitimacy }
+		set_temp_variable = { independence_wave_scenario_recognition_delta = constant:independence_wave_scenario_country_value.high_recognition }
+		set_temp_variable = { independence_wave_scenario_capacity_delta = constant:independence_wave_scenario_country_value.high_capacity }
+		set_temp_variable = { independence_wave_scenario_security_delta = constant:independence_wave_scenario_country_value.high_security }
+		set_temp_variable = { independence_wave_scenario_instability_delta = constant:independence_wave_scenario_country_value.high_instability }
+	}
+	else_if = {
+		limit = { check_variable = { global.independence_wave_scenario_last_intensity = constant:triggerable_scenario_intensity.maximum } }
+		set_temp_variable = { independence_wave_wave_chaos_band = constant:independence_wave_chaos_band.world_collapse }
+		set_temp_variable = { independence_wave_wave_territory_level = constant:liberation_territory_level.extended }
+		set_temp_variable = { independence_wave_wave_force_level = constant:liberation_force_level.high_chaos }
+		set_temp_variable = { independence_wave_scenario_legitimacy_delta = constant:independence_wave_scenario_country_value.maximum_legitimacy }
+		set_temp_variable = { independence_wave_scenario_recognition_delta = constant:independence_wave_scenario_country_value.maximum_recognition }
+		set_temp_variable = { independence_wave_scenario_capacity_delta = constant:independence_wave_scenario_country_value.maximum_capacity }
+		set_temp_variable = { independence_wave_scenario_security_delta = constant:independence_wave_scenario_country_value.maximum_security }
+		set_temp_variable = { independence_wave_scenario_instability_delta = constant:independence_wave_scenario_country_value.maximum_instability }
+	}
+
+	# Great Partition advances the territorial package by one tier before any
+	# state is reserved. The ordinary intensity ladder remains authoritative,
+	# while the partition type consumes more optional territory where the same
+	# unique-anchor and host-remnant proofs permit it.
+	if = {
+		limit = {
+			check_variable = { global.independence_wave_scenario_last_type = constant:independence_wave_scenario_type.great_partition }
+			check_variable = { independence_wave_wave_territory_level = constant:liberation_territory_level.anchor }
+		}
+		set_temp_variable = { independence_wave_wave_territory_level = constant:liberation_territory_level.compact }
+	}
+	else_if = {
+		limit = {
+			check_variable = { global.independence_wave_scenario_last_type = constant:independence_wave_scenario_type.great_partition }
+			check_variable = { independence_wave_wave_territory_level = constant:liberation_territory_level.compact }
+		}
+		set_temp_variable = { independence_wave_wave_territory_level = constant:liberation_territory_level.extended }
+	}
+}
+
+# Deterministic priority: unique reservation groups, then resolved research,
+# then signature/regional/basic package depth, then stable package ID.
+independence_wave_scenario_rebuild_ranked_registry = {
+	clear_array = global.independence_wave_scenario_ranked_package_ids
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_093 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_001 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_002 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_004 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_009 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_014 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_026 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_029 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_033 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_041 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_045 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_051 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_052 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_057 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_070 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_071 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_072 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_130 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_136 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_173 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_180 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_012 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_015 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_017 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_030 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_048 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_050 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_053 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_005 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_006 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_013 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_019 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_020 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_038 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_064 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_065 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_066 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_078 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_083 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_085 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_089 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_101 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_171 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_182 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_184 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_185 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_007 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_016 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_018 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_027 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_028 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_037 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_042 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_054 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_062 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_067 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_068 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_069 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_076 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_086 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_131 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_132 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_133 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_172 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_196 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_011 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_055 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_091 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_183 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_058 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_008 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_039 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_040 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_060 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_170 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_192 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_073 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_121 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_126 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_134 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_135 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_166 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_169 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_010 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_021 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_022 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_167 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_074 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_193 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_059 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_150 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_197 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_081 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_082 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_108 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_175 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_177 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_110 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_111 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_137 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_138 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_139 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_151 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_155 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_198 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_036 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_152 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_154 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_156 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_179 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_200 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_201 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_203 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_204 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_034 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_035 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_043 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_023 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_044 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_046 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_113 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_115 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_119 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_145 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_147 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_024 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_025 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_031 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_047 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_114 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_148 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_149 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_161 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_140 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_141 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_142 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_143 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_158 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_159 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_162 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_164 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_144 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_097 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_098 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_095 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_099 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_106 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_107 }
+	add_to_array = { array = global.independence_wave_scenario_ranked_package_ids value = constant:independence_wave_package_id.iw_100 }
+}
+
+# Input: temporary independence_wave_scenario_dispatch_package_id.
+# The registry contains only current-map-bound packages with load/reserve
+# publishers. Numeric branching supplies the zero padding used by their names.
+independence_wave_scenario_load_dispatch_package = {
+	if = {
+		limit = {
+			check_variable = {
+				var = independence_wave_scenario_dispatch_package_id
+				value = constant:independence_wave_scenario_registry.two_digit_threshold
+				compare = less_than
+			}
+		}
+		meta_effect = {
+			text = { independence_wave_load_package_iw_00[PACKAGE_ID] = yes }
+			PACKAGE_ID = "[?independence_wave_scenario_dispatch_package_id|.0]"
+		}
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = independence_wave_scenario_dispatch_package_id
+				value = constant:independence_wave_scenario_registry.three_digit_threshold
+				compare = less_than
+			}
+		}
+		meta_effect = {
+			text = { independence_wave_load_package_iw_0[PACKAGE_ID] = yes }
+			PACKAGE_ID = "[?independence_wave_scenario_dispatch_package_id|.0]"
+		}
+	}
+	else = {
+		meta_effect = {
+			text = { independence_wave_load_package_iw_[PACKAGE_ID] = yes }
+			PACKAGE_ID = "[?independence_wave_scenario_dispatch_package_id|.0]"
+		}
+	}
+}
+
+independence_wave_scenario_reserve_dispatch_package = {
+	if = {
+		limit = {
+			check_variable = {
+				var = independence_wave_scenario_dispatch_package_id
+				value = constant:independence_wave_scenario_registry.two_digit_threshold
+				compare = less_than
+			}
+		}
+		meta_effect = {
+			text = { independence_wave_reserve_package_iw_00[PACKAGE_ID] = yes }
+			PACKAGE_ID = "[?independence_wave_scenario_dispatch_package_id|.0]"
+		}
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = independence_wave_scenario_dispatch_package_id
+				value = constant:independence_wave_scenario_registry.three_digit_threshold
+				compare = less_than
+			}
+		}
+		meta_effect = {
+			text = { independence_wave_reserve_package_iw_0[PACKAGE_ID] = yes }
+			PACKAGE_ID = "[?independence_wave_scenario_dispatch_package_id|.0]"
+		}
+	}
+	else = {
+		meta_effect = {
+			text = { independence_wave_reserve_package_iw_[PACKAGE_ID] = yes }
+			PACKAGE_ID = "[?independence_wave_scenario_dispatch_package_id|.0]"
+		}
+	}
+}
+
+# Attempts every bound registry row. Unready content is recorded rather than
+# reserved; living tags and territorial failures pass through the shared
+# reservation API so their precise rejection reason is preserved.
+independence_wave_scenario_attempt_ranked_packages = {
+	for_each_loop = {
+		array = global.independence_wave_scenario_ranked_package_ids
+		value = independence_wave_scenario_dispatch_package_id
+		independence_wave_scenario_load_dispatch_package = yes
+		if = {
+			limit = {
+				has_event_target = liberation_candidate_country
+				event_target:liberation_candidate_country = { has_country_flag = independence_wave_package_content_ready }
+			}
+			set_temp_variable = { independence_wave_scenario_rejection_count_before = global.liberation_plan_rejected_package_ids^num }
+			independence_wave_scenario_reserve_dispatch_package = yes
+			if = {
+				limit = {
+					check_variable = {
+						var = global.liberation_plan_rejected_package_ids^num
+						value = independence_wave_scenario_rejection_count_before
+						compare = greater_than
+					}
+				}
+				add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = event_target:liberation_candidate_country }
+			}
+		}
+		else = {
+			add_to_variable = { global.independence_wave_plan_attempt_count = constant:independence_wave_scenario_registry.one }
+			set_temp_variable = { liberation_rejected_package_id = independence_wave_scenario_dispatch_package_id }
+			set_temp_variable = { liberation_reject_reason = constant:liberation_plan_reject_reason.package_unready }
+			liberation_release_record_rejection = yes
+			if = {
+				limit = { has_event_target = liberation_candidate_country }
+				add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = event_target:liberation_candidate_country }
+			}
+		}
+	}
+}
+
+independence_wave_allocate_scenario_packages = {
+	clr_global_flag = independence_wave_plan_contribution_ready
+	clr_global_flag = independence_wave_plan_exact_count_failed
+	if = {
+		limit = {
+			check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.allocating }
+			check_variable = { global.liberation_plan_mode = constant:liberation_plan_mode.triggerable_scenario }
+			check_variable = { global.liberation_plan_owner = constant:liberation_plan_owner.independence_wave }
+			has_global_flag = liberation_release_plan_includes_event6
+		}
+		independence_wave_begin_plan_contribution = yes
+		independence_wave_scenario_set_intensity_tuning = yes
+		set_variable = { global.independence_wave_plan_target_count = constant:independence_wave_scenario_registry.bound_package_count }
+		set_variable = { global.independence_wave_plan_chaos_band = independence_wave_wave_chaos_band }
+		independence_wave_scenario_rebuild_ranked_registry = yes
+		independence_wave_scenario_attempt_ranked_packages = yes
+
+		set_variable = { global.independence_wave_plan_target_count = global.independence_wave_plan_selected_count }
+		set_variable = { global.liberation_plan_expected_country_count = global.independence_wave_plan_selected_count }
+		if = {
+			limit = {
+				check_variable = {
+					var = global.independence_wave_plan_selected_count
+					value = constant:independence_wave_scenario_registry.no_packages
+					compare = greater_than
+				}
+				independence_wave_plan_metadata_arrays_are_aligned = yes
+			}
+			set_global_flag = independence_wave_plan_contribution_ready
+		}
+		else = {
+			set_global_flag = independence_wave_plan_exact_count_failed
+			set_variable = { global.liberation_plan_last_failure = constant:liberation_plan_reject_reason.insufficient_pool }
+		}
+	}
+	else = {
+		set_global_flag = independence_wave_plan_exact_count_failed
+		set_variable = { global.liberation_plan_last_failure = constant:liberation_plan_reject_reason.stale_plan }
+	}
+}
+
+independence_wave_scenario_apply_intensity_values = {
+	set_temp_variable = { independence_wave_value_delta = independence_wave_scenario_legitimacy_delta }
+	independence_wave_change_legitimacy = yes
+	set_temp_variable = { independence_wave_value_delta = independence_wave_scenario_recognition_delta }
+	independence_wave_change_recognition = yes
+	set_temp_variable = { independence_wave_value_delta = independence_wave_scenario_capacity_delta }
+	independence_wave_change_capacity = yes
+	set_temp_variable = { independence_wave_value_delta = independence_wave_scenario_security_delta }
+	independence_wave_change_security = yes
+	set_temp_variable = { independence_wave_value_delta = independence_wave_scenario_instability_delta }
+	independence_wave_change_instability = yes
+
+	if = {
+		limit = {
+			check_variable = {
+				var = global.independence_wave_scenario_last_intensity
+				value = constant:triggerable_scenario_intensity.high
+				compare = greater_than_or_equals
+			}
+		}
+		set_country_flag = independence_wave_scenario_ambition_accelerated
+	}
+	if = {
+		limit = { check_variable = { global.independence_wave_scenario_last_intensity = constant:triggerable_scenario_intensity.maximum } }
+		set_country_flag = independence_wave_high_chaos_lane_open
+		set_country_flag = independence_wave_world_collapse_ambition
+		set_country_flag = independence_wave_scenario_hidden_formables_discoverable
+	}
+}
+
+independence_wave_scenario_set_host_relation_deltas_to_zero = {
+	set_temp_variable = { independence_wave_host_claim_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_hostility_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_host_obligations_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_property_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_population_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_border_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_host_pressure_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_reconquest_fear_delta = constant:independence_wave_value.minimum }
+}
+
+independence_wave_scenario_mark_current_release = {
+	set_country_flag = independence_wave_scenario_origin
+	set_variable = { independence_wave_scenario_plan_id = global.independence_wave_scenario_last_plan_id }
+	set_variable = { independence_wave_scenario_type = global.independence_wave_scenario_last_type }
+	set_variable = { independence_wave_scenario_intensity = global.independence_wave_scenario_last_intensity }
+	set_variable = { independence_wave_scenario_belligerence_rule = global.independence_wave_scenario_last_belligerence_rule }
+	add_to_array = { array = global.independence_wave_scenario_country_entries value = THIS }
+	independence_wave_scenario_apply_intensity_values = yes
+
+	if = {
+		limit = {
+			OR = {
+				check_variable = { global.independence_wave_scenario_last_type = constant:independence_wave_scenario_type.sovereign_scatter }
+				check_variable = { global.independence_wave_scenario_last_type = constant:independence_wave_scenario_type.wars_of_separation }
+				check_variable = { global.independence_wave_scenario_last_type = constant:independence_wave_scenario_type.universal_belligerence }
+				check_variable = { global.independence_wave_scenario_last_type = constant:independence_wave_scenario_type.great_partition }
+			}
+			is_in_faction = yes
+		}
+		leave_faction = yes
+	}
+
+	if = {
+		limit = { check_variable = { global.independence_wave_scenario_last_type = constant:independence_wave_scenario_type.sovereign_scatter } }
+		set_country_flag = independence_wave_scenario_sovereign_scatter
+		set_variable = { independence_wave_scenario_ai_seed = constant:independence_wave_scenario_ai_seed.survival }
+	}
+	else_if = {
+		limit = { check_variable = { global.independence_wave_scenario_last_type = constant:independence_wave_scenario_type.common_congress } }
+		set_country_flag = independence_wave_scenario_common_congress
+		set_variable = { independence_wave_scenario_ai_seed = constant:independence_wave_scenario_ai_seed.congress }
+		set_variable = { independence_wave_network_standing = constant:independence_wave_scenario_network.congress_standing }
+		independence_wave_register_network_member = yes
+		independence_wave_register_league_founder = yes
+	}
+	else_if = {
+		limit = { check_variable = { global.independence_wave_scenario_last_type = constant:independence_wave_scenario_type.wars_of_separation } }
+		set_country_flag = independence_wave_scenario_war_of_separation
+		set_variable = { independence_wave_scenario_ai_seed = constant:independence_wave_scenario_ai_seed.separation }
+		independence_wave_scenario_set_host_relation_deltas_to_zero = yes
+		set_temp_variable = { independence_wave_host_claim_delta = constant:independence_wave_scenario_country_value.separation_claim }
+		set_temp_variable = { independence_wave_hostility_delta = constant:independence_wave_scenario_country_value.separation_hostility }
+		independence_wave_change_host_relation = yes
+		set_temp_variable = { independence_wave_value_delta = constant:independence_wave_scenario_country_value.separation_security }
+		independence_wave_change_security = yes
+	}
+	else_if = {
+		limit = { check_variable = { global.independence_wave_scenario_last_type = constant:independence_wave_scenario_type.universal_belligerence } }
+		set_country_flag = independence_wave_scenario_universal_belligerence
+		set_variable = { independence_wave_scenario_ai_seed = constant:independence_wave_scenario_ai_seed.belligerence }
+		independence_wave_scenario_set_host_relation_deltas_to_zero = yes
+		set_temp_variable = { independence_wave_hostility_delta = constant:independence_wave_scenario_country_value.universal_hostility }
+		independence_wave_change_host_relation = yes
+		set_temp_variable = { independence_wave_value_delta = constant:independence_wave_scenario_country_value.universal_security }
+		independence_wave_change_security = yes
+	}
+	else_if = {
+		limit = { check_variable = { global.independence_wave_scenario_last_type = constant:independence_wave_scenario_type.patron_worlds } }
+		set_country_flag = independence_wave_scenario_patron_world
+		set_variable = { independence_wave_scenario_ai_seed = constant:independence_wave_scenario_ai_seed.patron }
+	}
+	else_if = {
+		limit = { check_variable = { global.independence_wave_scenario_last_type = constant:independence_wave_scenario_type.great_partition } }
+		set_country_flag = independence_wave_scenario_great_partition
+		set_variable = { independence_wave_scenario_ai_seed = constant:independence_wave_scenario_ai_seed.partition }
+		if = {
+			limit = { has_country_flag = independence_wave_ambition_family_registered }
+			set_country_flag = independence_wave_regional_ambition_open
+		}
+		independence_wave_scenario_set_host_relation_deltas_to_zero = yes
+		set_temp_variable = { independence_wave_host_claim_delta = constant:independence_wave_scenario_country_value.partition_claim }
+		set_temp_variable = { independence_wave_border_delta = constant:independence_wave_scenario_country_value.partition_border_progress }
+		independence_wave_change_host_relation = yes
+		set_temp_variable = { independence_wave_value_delta = constant:independence_wave_scenario_country_value.partition_instability }
+		independence_wave_change_instability = yes
+	}
+}
+
+independence_wave_scenario_prepare_all_releases = {
+	clear_array = global.independence_wave_scenario_country_entries
+	for_each_loop = {
+		array = global.independence_wave_plan_country_row_indices
+		value = independence_wave_scenario_country_row
+		var:global.liberation_plan_countries^independence_wave_scenario_country_row = {
+			independence_wave_scenario_mark_current_release = yes
+		}
+	}
+}
+
+independence_wave_scenario_form_common_congress = {
+	set_variable = { global.independence_wave_league_cohesion = constant:independence_wave_scenario_network.congress_cohesion }
+	set_variable = { global.independence_wave_league_common_cause = constant:independence_wave_scenario_network.congress_common_cause }
+	set_variable = { global.independence_wave_league_patron_capture = constant:independence_wave_scenario_network.congress_patron_capture }
+	set_variable = { global.independence_wave_league_member_confidence = constant:independence_wave_scenario_network.congress_member_confidence }
+	set_variable = { global.independence_wave_league_shared_reserve = constant:independence_wave_scenario_network.congress_shared_reserve_low }
+	set_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.consultative_league }
+	set_variable = { global.independence_wave_league_route = constant:independence_wave_league_route.undecided }
+	set_global_flag = independence_wave_consultative_league_active
+
+	if = {
+		limit = { check_variable = { global.independence_wave_scenario_last_intensity = constant:triggerable_scenario_intensity.medium } }
+		set_variable = { global.independence_wave_league_shared_reserve = constant:independence_wave_scenario_network.congress_shared_reserve_medium }
+	}
+	else_if = {
+		limit = { check_variable = { global.independence_wave_scenario_last_intensity = constant:triggerable_scenario_intensity.high } }
+		set_variable = { global.independence_wave_league_shared_reserve = constant:independence_wave_scenario_network.congress_shared_reserve_high }
+		set_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.formal_league }
+		set_variable = { global.independence_wave_league_route = constant:independence_wave_league_route.defensive_congress }
+		clr_global_flag = independence_wave_consultative_league_active
+		set_global_flag = independence_wave_formal_league_active
+	}
+	else_if = {
+		limit = { check_variable = { global.independence_wave_scenario_last_intensity = constant:triggerable_scenario_intensity.maximum } }
+		set_variable = { global.independence_wave_league_shared_reserve = constant:independence_wave_scenario_network.congress_shared_reserve_maximum }
+		set_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.formal_league }
+		set_variable = { global.independence_wave_league_route = constant:independence_wave_league_route.sovereign_equality }
+		clr_global_flag = independence_wave_consultative_league_active
+		set_global_flag = independence_wave_formal_league_active
+	}
+
+	for_each_scope_loop = {
+		array = global.independence_wave_scenario_country_entries
+		independence_wave_register_league_member = yes
+	}
+	set_variable = { global.independence_wave_scenario_league_member_count = global.independence_wave_scenario_country_entries^num }
+}
+
+# Current scope: one released scenario country.
+independence_wave_scenario_select_patron = {
+	save_event_target_as = independence_wave_scenario_patron_recipient
+	save_event_target_as = independence_wave_scenario_selected_patron
+	var:independence_wave_anchor_state = { save_event_target_as = independence_wave_scenario_patron_anchor }
+	if = {
+		limit = { has_government = democratic }
+		random_country = {
+			limit = {
+				exists = yes
+				is_major = yes
+				has_government = democratic
+				NOT = { tag = event_target:independence_wave_scenario_patron_recipient }
+				capital_scope = {
+					distance_to = {
+						value < constant:independence_wave_scenario_distance.nearby_patron
+						target = event_target:independence_wave_scenario_patron_anchor
+					}
+				}
+			}
+			save_event_target_as = independence_wave_scenario_selected_patron
+		}
+	}
+	else_if = {
+		limit = { has_government = communism }
+		random_country = {
+			limit = {
+				exists = yes
+				is_major = yes
+				has_government = communism
+				NOT = { tag = event_target:independence_wave_scenario_patron_recipient }
+				capital_scope = {
+					distance_to = {
+						value < constant:independence_wave_scenario_distance.nearby_patron
+						target = event_target:independence_wave_scenario_patron_anchor
+					}
+				}
+			}
+			save_event_target_as = independence_wave_scenario_selected_patron
+		}
+	}
+	else_if = {
+		limit = { has_government = fascism }
+		random_country = {
+			limit = {
+				exists = yes
+				is_major = yes
+				has_government = fascism
+				NOT = { tag = event_target:independence_wave_scenario_patron_recipient }
+				capital_scope = {
+					distance_to = {
+						value < constant:independence_wave_scenario_distance.nearby_patron
+						target = event_target:independence_wave_scenario_patron_anchor
+					}
+				}
+			}
+			save_event_target_as = independence_wave_scenario_selected_patron
+		}
+	}
+	else = {
+		random_country = {
+			limit = {
+				exists = yes
+				is_major = yes
+				has_government = neutrality
+				NOT = { tag = event_target:independence_wave_scenario_patron_recipient }
+				capital_scope = {
+					distance_to = {
+						value < constant:independence_wave_scenario_distance.nearby_patron
+						target = event_target:independence_wave_scenario_patron_anchor
+					}
+				}
+			}
+			save_event_target_as = independence_wave_scenario_selected_patron
+		}
+	}
+	if = {
+		limit = {
+			event_target:independence_wave_scenario_selected_patron = { tag = event_target:independence_wave_scenario_patron_recipient }
+		}
+		random_country = {
+			limit = {
+				exists = yes
+				is_major = yes
+				NOT = { tag = event_target:independence_wave_scenario_patron_recipient }
+				capital_scope = {
+					distance_to = {
+						value < constant:independence_wave_scenario_distance.nearby_patron
+						target = event_target:independence_wave_scenario_patron_anchor
+					}
+				}
+			}
+			save_event_target_as = independence_wave_scenario_selected_patron
+		}
+	}
+	if = {
+		limit = {
+			event_target:independence_wave_scenario_selected_patron = { tag = event_target:independence_wave_scenario_patron_recipient }
+		}
+		random_country = {
+			limit = {
+				exists = yes
+				is_major = yes
+				NOT = { tag = event_target:independence_wave_scenario_patron_recipient }
+			}
+			save_event_target_as = independence_wave_scenario_selected_patron
+		}
+	}
+
+	if = {
+		limit = {
+			has_event_target = independence_wave_scenario_selected_patron
+			event_target:independence_wave_scenario_selected_patron = { NOT = { tag = event_target:independence_wave_scenario_patron_recipient } }
+		}
+		set_temp_variable = { independence_wave_patron_influence_delta = constant:independence_wave_scenario_patron.base_influence }
+		set_temp_variable = { independence_wave_patron_aid_delta = constant:independence_wave_scenario_patron.base_aid }
+		if = {
+			limit = { check_variable = { global.independence_wave_scenario_last_intensity = constant:triggerable_scenario_intensity.high } }
+			add_to_temp_variable = { independence_wave_patron_influence_delta = constant:independence_wave_scenario_patron.high_influence_bonus }
+			add_to_temp_variable = { independence_wave_patron_aid_delta = constant:independence_wave_scenario_patron.high_aid_bonus }
+		}
+		else_if = {
+			limit = { check_variable = { global.independence_wave_scenario_last_intensity = constant:triggerable_scenario_intensity.maximum } }
+			add_to_temp_variable = { independence_wave_patron_influence_delta = constant:independence_wave_scenario_patron.maximum_influence_bonus }
+			add_to_temp_variable = { independence_wave_patron_aid_delta = constant:independence_wave_scenario_patron.maximum_aid_bonus }
+		}
+		set_temp_variable = { independence_wave_patron_channel = constant:independence_wave_patron_channel.trade_shipping }
+		if = {
+			limit = { has_government = democratic }
+			set_temp_variable = { independence_wave_patron_channel = constant:independence_wave_patron_channel.recognition }
+		}
+		else_if = {
+			limit = { has_government = communism }
+			set_temp_variable = { independence_wave_patron_channel = constant:independence_wave_patron_channel.ideological_organization }
+		}
+		else_if = {
+			limit = { has_government = fascism }
+			set_temp_variable = { independence_wave_patron_channel = constant:independence_wave_patron_channel.arms }
+		}
+		event_target:independence_wave_scenario_selected_patron = { save_event_target_as = independence_wave_action_patron }
+		independence_wave_register_patron_channel = yes
+		set_variable = { independence_wave_scenario_patron = event_target:independence_wave_scenario_selected_patron }
+		set_country_flag = independence_wave_scenario_patron_assigned
+		set_temp_variable = { independence_wave_value_delta = constant:independence_wave_scenario_country_value.patron_recognition }
+		independence_wave_change_recognition = yes
+		set_temp_variable = { independence_wave_value_delta = constant:independence_wave_scenario_country_value.patron_capacity }
+		independence_wave_change_capacity = yes
+	}
+	else = {
+		set_country_flag = independence_wave_scenario_patron_unavailable
+	}
+}
+
+independence_wave_scenario_assign_patrons = {
+	for_each_scope_loop = {
+		array = global.independence_wave_scenario_country_entries
+		independence_wave_scenario_select_patron = yes
+	}
+}
+
+# Current scope: one released country. The surviving former host attacks with a
+# reconquest goal, keeping the new state in the defensive role. Subject hosts
+# cannot open an independent war and instead seed a regional threat mission.
+independence_wave_scenario_start_host_war = {
+	save_event_target_as = independence_wave_scenario_war_actor
+	var:independence_wave_former_host = { save_event_target_as = independence_wave_scenario_war_host }
+	set_temp_variable = { independence_wave_scenario_war_started = constant:independence_wave_scenario_registry.no_packages }
+	if = {
+		limit = {
+			has_event_target = independence_wave_scenario_war_host
+			event_target:independence_wave_scenario_war_host = {
+				exists = yes
+				is_subject = no
+				NOT = { has_war_with = event_target:independence_wave_scenario_war_actor }
+			}
+		}
+		event_target:independence_wave_scenario_war_host = {
+			declare_war_on = {
+				target = event_target:independence_wave_scenario_war_actor
+				type = annex_everything
+			}
+			if = {
+				limit = { has_war_with = event_target:independence_wave_scenario_war_actor }
+				set_temp_variable = { independence_wave_scenario_war_started = constant:independence_wave_scenario_registry.one }
+			}
+		}
+	}
+	if = {
+		limit = { check_variable = { independence_wave_scenario_war_started = constant:independence_wave_scenario_registry.one } }
+		add_to_variable = { global.independence_wave_scenario_active_war_count = constant:independence_wave_scenario_registry.one }
+		set_country_flag = independence_wave_scenario_host_war_active
+	}
+	else = {
+		set_country_flag = independence_wave_scenario_regional_threat_mission
+	}
+}
+
+independence_wave_scenario_start_all_host_wars = {
+	for_each_scope_loop = {
+		array = global.independence_wave_scenario_country_entries
+		independence_wave_scenario_start_host_war = yes
+	}
+}
+
+independence_wave_scenario_start_neighbor_release_war = {
+	save_event_target_as = independence_wave_scenario_war_actor
+	save_event_target_as = independence_wave_scenario_war_target
+	random_neighbor_country = {
+		limit = {
+			exists = yes
+			has_country_flag = independence_wave_scenario_origin
+			check_variable = { independence_wave_scenario_plan_id = global.independence_wave_scenario_last_plan_id }
+			NOT = { has_country_flag = independence_wave_scenario_belligerence_targeted }
+			NOT = { has_war_with = event_target:independence_wave_scenario_war_actor }
+		}
+		save_event_target_as = independence_wave_scenario_war_target
+	}
+	if = {
+		limit = {
+			has_event_target = independence_wave_scenario_war_target
+			event_target:independence_wave_scenario_war_target = { NOT = { tag = event_target:independence_wave_scenario_war_actor } }
+		}
+		event_target:independence_wave_scenario_war_target = { set_country_flag = independence_wave_scenario_belligerence_targeted }
+		event_target:independence_wave_scenario_war_actor = {
+			declare_war_on = {
+				target = event_target:independence_wave_scenario_war_target
+				type = annex_everything
+			}
+			if = {
+				limit = { has_war_with = event_target:independence_wave_scenario_war_target }
+				add_to_variable = { global.independence_wave_scenario_active_war_count = constant:independence_wave_scenario_registry.one }
+			}
+		}
+	}
+	else = { set_country_flag = independence_wave_scenario_regional_threat_mission }
+}
+
+independence_wave_scenario_start_nearby_nonleague_war = {
+	save_event_target_as = independence_wave_scenario_war_actor
+	save_event_target_as = independence_wave_scenario_war_target
+	var:independence_wave_anchor_state = { save_event_target_as = independence_wave_scenario_war_anchor }
+	random_country = {
+		limit = {
+			exists = yes
+			is_subject = no
+			NOT = { is_in_faction = yes }
+			NOT = { has_country_flag = independence_wave_scenario_origin }
+			NOT = { has_country_flag = independence_wave_league_member }
+			NOT = { has_country_flag = independence_wave_scenario_belligerence_targeted }
+			NOT = { tag = event_target:independence_wave_scenario_war_actor }
+			NOT = { has_war_with = event_target:independence_wave_scenario_war_actor }
+			capital_scope = {
+				distance_to = {
+					value < constant:independence_wave_scenario_distance.nearby_belligerent
+					target = event_target:independence_wave_scenario_war_anchor
+				}
+			}
+		}
+		save_event_target_as = independence_wave_scenario_war_target
+	}
+	if = {
+		limit = {
+			has_event_target = independence_wave_scenario_war_target
+			event_target:independence_wave_scenario_war_target = { NOT = { tag = event_target:independence_wave_scenario_war_actor } }
+		}
+		event_target:independence_wave_scenario_war_target = { set_country_flag = independence_wave_scenario_belligerence_targeted }
+		event_target:independence_wave_scenario_war_actor = {
+			declare_war_on = {
+				target = event_target:independence_wave_scenario_war_target
+				type = annex_everything
+			}
+			if = {
+				limit = { has_war_with = event_target:independence_wave_scenario_war_target }
+				add_to_variable = { global.independence_wave_scenario_active_war_count = constant:independence_wave_scenario_registry.one }
+			}
+		}
+	}
+	else = { set_country_flag = independence_wave_scenario_regional_threat_mission }
+}
+
+independence_wave_scenario_start_universal_belligerence = {
+	if = {
+		limit = { check_variable = { global.independence_wave_scenario_last_belligerence_rule = constant:independence_wave_scenario_belligerence_rule.former_hosts } }
+		independence_wave_scenario_start_all_host_wars = yes
+	}
+	else_if = {
+		limit = { check_variable = { global.independence_wave_scenario_last_belligerence_rule = constant:independence_wave_scenario_belligerence_rule.neighboring_releases } }
+		for_each_scope_loop = {
+			array = global.independence_wave_scenario_country_entries
+			independence_wave_scenario_start_neighbor_release_war = yes
+		}
+	}
+	else_if = {
+		limit = { check_variable = { global.independence_wave_scenario_last_belligerence_rule = constant:independence_wave_scenario_belligerence_rule.nearby_nonleague } }
+		for_each_scope_loop = {
+			array = global.independence_wave_scenario_country_entries
+			independence_wave_scenario_start_nearby_nonleague_war = yes
+		}
+	}
+}
+
+independence_wave_scenario_apply_type = {
+	set_variable = { global.independence_wave_scenario_active_war_count = constant:independence_wave_scenario_registry.no_packages }
+	set_variable = { global.independence_wave_scenario_league_member_count = constant:independence_wave_scenario_registry.no_packages }
+	if = {
+		limit = { check_variable = { global.independence_wave_scenario_last_type = constant:independence_wave_scenario_type.common_congress } }
+		independence_wave_scenario_form_common_congress = yes
+	}
+	else_if = {
+		limit = { check_variable = { global.independence_wave_scenario_last_type = constant:independence_wave_scenario_type.wars_of_separation } }
+		independence_wave_scenario_start_all_host_wars = yes
+	}
+	else_if = {
+		limit = { check_variable = { global.independence_wave_scenario_last_type = constant:independence_wave_scenario_type.universal_belligerence } }
+		independence_wave_scenario_start_universal_belligerence = yes
+	}
+	else_if = {
+		limit = { check_variable = { global.independence_wave_scenario_last_type = constant:independence_wave_scenario_type.patron_worlds } }
+		independence_wave_scenario_assign_patrons = yes
+	}
+}
+
+independence_wave_scenario_reset_summary = {
+	clear_array = global.independence_wave_scenario_released_package_ids
+	clear_array = global.independence_wave_scenario_blocked_package_ids
+	clear_array = global.independence_wave_scenario_blocked_reasons
+	clear_array = global.independence_wave_scenario_blocked_country_entries
+	clear_array = global.independence_wave_scenario_country_entries
+	set_variable = { global.independence_wave_scenario_released_count = constant:independence_wave_scenario_registry.no_packages }
+	set_variable = { global.independence_wave_scenario_bound_blocked_count = constant:independence_wave_scenario_registry.no_packages }
+	set_variable = { global.independence_wave_scenario_disabled_unbound_count = constant:independence_wave_scenario_registry.disabled_unbound_package_count }
+	set_variable = { global.independence_wave_scenario_blocked_count = constant:independence_wave_scenario_registry.disabled_unbound_package_count }
+	set_variable = { global.independence_wave_scenario_host_count = constant:independence_wave_scenario_registry.no_packages }
+	set_variable = { global.independence_wave_scenario_league_member_count = constant:independence_wave_scenario_registry.no_packages }
+	set_variable = { global.independence_wave_scenario_active_war_count = constant:independence_wave_scenario_registry.no_packages }
+}
+
+# The installed map provides no exact, accepted anchor for these 57 registry
+# rows. They remain visible in the ledger and cannot enter the allocator.
+independence_wave_scenario_append_unbound_registry_rows = {
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_003 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = ACX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_032 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = BFX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_049 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = BWX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_056 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = EVE }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_061 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = CIX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_063 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = CKX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_075 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = CWX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_077 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = CYX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_079 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = DAX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_080 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = DBX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_084 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = DFX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_087 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = DIX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_088 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = DJX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_090 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = DLX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_092 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = DNX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_094 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = DPX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_096 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = DRX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_102 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = DXX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_103 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = DYX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_104 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = DZX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_105 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = EAX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_109 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = EEX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_112 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = EHX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_116 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = ELX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_117 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = EMX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_118 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = ENX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_120 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = ORO }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_122 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = ERX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_123 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = ESX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_124 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = ETX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_125 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = EUX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_127 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = EWX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_128 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = EXX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_129 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = EYX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_146 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = FPX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_153 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = FWX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_157 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = GAX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_160 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = GDX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_163 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = GGX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_165 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = GIX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_168 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = GLX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_174 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = GRX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_176 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = GTX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_178 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = GVX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_181 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = GYX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_186 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = HDX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_187 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = HEX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_188 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = HFX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_189 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = HGX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_190 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = HHX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_191 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = MAY }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_194 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = MIS }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_195 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = HMX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_199 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = HQX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_202 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = HTX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_205 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = HWX }
+	add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = constant:independence_wave_package_id.iw_206 }
+	add_to_array = { array = global.independence_wave_scenario_blocked_country_entries value = HXX }
+	while_loop_effect = {
+		limit = {
+			check_variable = {
+				var = global.independence_wave_scenario_blocked_reasons^num
+				value = global.independence_wave_scenario_blocked_package_ids^num
+				compare = less_than
+			}
+		}
+		add_to_array = { array = global.independence_wave_scenario_blocked_reasons value = constant:independence_wave_scenario_reject_reason.unbound_current_map }
+	}
+}
+
+independence_wave_scenario_freeze_summary = {
+	clear_array = global.independence_wave_scenario_released_package_ids
+	clear_array = global.independence_wave_scenario_blocked_package_ids
+	clear_array = global.independence_wave_scenario_blocked_reasons
+	set_variable = { global.independence_wave_scenario_host_count = constant:independence_wave_scenario_registry.no_packages }
+	if = {
+		limit = {
+			has_variable = global.independence_wave_scenario_last_plan_id
+			check_variable = {
+				var = global.independence_wave_scenario_last_plan_id
+				value = global.liberation_plan_id
+				compare = equals
+			}
+			check_variable = { global.liberation_plan_owner = constant:liberation_plan_owner.independence_wave }
+		}
+		for_each_loop = {
+			array = global.independence_wave_plan_selected_package_ids
+			value = independence_wave_scenario_summary_package_id
+			add_to_array = { array = global.independence_wave_scenario_released_package_ids value = independence_wave_scenario_summary_package_id }
+		}
+		for_each_loop = {
+			array = global.liberation_plan_rejected_package_ids
+			value = independence_wave_scenario_summary_package_id
+			add_to_array = { array = global.independence_wave_scenario_blocked_package_ids value = independence_wave_scenario_summary_package_id }
+		}
+		for_each_loop = {
+			array = global.liberation_plan_rejection_reasons
+			value = independence_wave_scenario_summary_reason
+			add_to_array = { array = global.independence_wave_scenario_blocked_reasons value = independence_wave_scenario_summary_reason }
+		}
+		set_variable = { global.independence_wave_scenario_host_count = global.liberation_plan_hosts^num }
+	}
+	set_variable = { global.independence_wave_scenario_released_count = global.independence_wave_scenario_released_package_ids^num }
+	set_variable = { global.independence_wave_scenario_bound_blocked_count = global.independence_wave_scenario_blocked_package_ids^num }
+	set_variable = { global.independence_wave_scenario_disabled_unbound_count = constant:independence_wave_scenario_registry.disabled_unbound_package_count }
+	independence_wave_scenario_append_unbound_registry_rows = yes
+	set_variable = { global.independence_wave_scenario_blocked_count = global.independence_wave_scenario_blocked_package_ids^num }
+	set_variable = { global.independence_wave_scenario_territory_level = independence_wave_wave_territory_level }
+	set_variable = { global.independence_wave_scenario_force_level = independence_wave_wave_force_level }
+	set_variable = { global.independence_wave_scenario_summary_date = global.date }
+}
+
+independence_wave_trigger_scenario = {
+	independence_wave_scenario_initialize_settings = yes
+	independence_wave_scenario_reset_summary = yes
+	clr_global_flag = independence_wave_scenario_committed
+	clr_global_flag = independence_wave_scenario_failed
+	clear_variable = global.independence_wave_scenario_last_plan_id
+	clear_variable = global.independence_wave_scenario_last_failure
+	clear_variable = global.independence_wave_execution_last_failure
+	independence_wave_scenario_set_intensity_tuning = yes
+
+	set_temp_variable = { liberation_call_mode = constant:liberation_plan_mode.triggerable_scenario }
+	set_temp_variable = { liberation_call_plan_owner = constant:liberation_plan_owner.independence_wave }
+	set_temp_variable = { liberation_call_expected_country_count = constant:independence_wave_scenario_registry.bound_package_count }
+	liberation_release_begin_plan = yes
+	if = {
+		limit = {
+			check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.collecting }
+			check_variable = { global.liberation_plan_mode = constant:liberation_plan_mode.triggerable_scenario }
+			check_variable = { global.liberation_plan_owner = constant:liberation_plan_owner.independence_wave }
+		}
+		set_variable = { global.independence_wave_scenario_last_plan_id = global.liberation_plan_id }
+		liberation_release_enter_allocation_phase = yes
+	}
+	if = {
+		limit = { check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.allocating } }
+		independence_wave_allocate_scenario_packages = yes
+	}
+	if = {
+		limit = { has_global_flag = independence_wave_plan_contribution_ready }
+		independence_wave_execute_standalone_frozen_plan = yes
+	}
+	if = {
+		limit = {
+			check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.committed }
+			NOT = { has_global_flag = independence_wave_execution_failed }
+		}
+		set_global_flag = independence_wave_scenario_committed
+		clear_variable = global.independence_wave_scenario_last_failure
+		independence_wave_scenario_set_intensity_tuning = yes
+		independence_wave_scenario_prepare_all_releases = yes
+		independence_wave_scenario_apply_type = yes
+		independence_wave_scenario_freeze_summary = yes
+		country_event = { id = chaosx.nr6.2 }
+		country_event = { id = chaosx.triggerable_scenarios.80 days = 1 }
+	}
+	else = {
+		set_global_flag = independence_wave_scenario_failed
+		if = {
+			limit = { has_variable = global.independence_wave_execution_last_failure }
+			set_variable = { global.independence_wave_scenario_last_failure = global.independence_wave_execution_last_failure }
+		}
+		else_if = {
+			limit = { has_variable = global.liberation_plan_last_failure }
+			set_variable = { global.independence_wave_scenario_last_failure = global.liberation_plan_last_failure }
+		}
+		else = {
+			set_variable = { global.independence_wave_scenario_last_failure = constant:liberation_plan_reject_reason.unsafe_instantiation }
+		}
+		independence_wave_scenario_set_intensity_tuning = yes
+		independence_wave_scenario_freeze_summary = yes
+		if = {
+			limit = {
+				OR = {
+					check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.collecting }
+					check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.allocating }
+					check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.locked }
+				}
+				NOT = { has_global_flag = liberation_release_execution_started }
+			}
+			independence_wave_clear_plan_contribution = yes
+			liberation_release_abort_plan = yes
+		}
+		country_event = { id = chaosx.triggerable_scenarios.80 days = 1 }
+	}
+}
