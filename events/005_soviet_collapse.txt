@@ -31,11 +31,18 @@ country_event = {
         if = {
             limit = {
                 SOV = { exists = yes }
-                NOT = { has_global_flag = soviet_collapse_active }
-                NOT = { has_global_flag = soviet_collapse_triggerable_scenario_suppressed_fire_once }
+				SOV = { has_country_flag = soviet_collapse_joint_opening_presentation_pending }
             }
             SOV = { country_event = { id = chaosx.nr5.2 } }
         }
+		else_if = {
+			limit = {
+				SOV = { exists = yes }
+				NOT = { has_global_flag = soviet_collapse_active }
+				NOT = { has_global_flag = soviet_collapse_triggerable_scenario_suppressed_fire_once }
+			}
+			SOV = { country_event = { id = chaosx.nr5.2 } }
+		}
     }
 }
 
@@ -49,6 +56,12 @@ country_event = {
 
     immediate = {
         if = {
+			limit = { has_country_flag = soviet_collapse_joint_opening_presentation_pending }
+			clr_country_flag = soviet_collapse_joint_opening_presentation_pending
+			set_country_flag = soviet_collapse_joint_opening_presentation_delivered
+			news_event = { id = chaosx.news.5 days = 2 }
+		}
+		else_if = {
             limit = { NOT = { has_global_flag = soviet_collapse_active } }
             soviet_collapse_initialize_crisis_values = yes
             soviet_collapse_release_initial_republics = yes

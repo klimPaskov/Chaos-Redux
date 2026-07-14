@@ -1623,6 +1623,7 @@ event_cluster_prepare_event013_pending_contexts = {
 
 event_cluster_prepare_runtime_context = {
 	set_temp_variable = { event_cluster_runtime_ready = 1 }
+	set_temp_variable = { liberations_joint_dispatch_result = constant:liberations_joint_result.not_requested }
 	event_cluster_initialize_pending_context_rows = yes
 
     if = {
@@ -1671,6 +1672,28 @@ event_cluster_prepare_runtime_context = {
 			}
 		}
 		event_cluster_prepare_event013_pending_contexts = yes
+	}
+	if = {
+		limit = {
+			check_variable = { event_cluster_runtime_ready > 0 }
+			check_variable = {
+				var = event_cluster_id
+				value = constant:event_cluster_id.liberations
+				compare = equals
+			}
+			liberations_joint_cluster_selected_both_members = yes
+		}
+		liberations_joint_prepare_and_execute_incident = yes
+		if = {
+			limit = {
+				NOT = {
+					check_variable = {
+						liberations_joint_dispatch_result = constant:liberations_joint_result.committed
+					}
+				}
+			}
+			set_temp_variable = { event_cluster_runtime_ready = 0 }
+		}
 	}
 }
 
@@ -1731,6 +1754,17 @@ fire_event_cluster_by_temp_id = {
                 set_temp_variable = { event_cluster_fired = 1 }
                 set_temp_variable = { event_cluster_trigger_result = 1 }
             }
+			if = {
+				limit = {
+					check_variable = {
+						liberations_joint_dispatch_result = constant:liberations_joint_result.cancelled
+					}
+				}
+				# Consume the selected clustered incident without dispatching either
+				# member. This is an atomic cancellation, not a standalone fallback.
+				set_temp_variable = { event_cluster_fired = 1 }
+				set_temp_variable = { event_cluster_trigger_result = 0 }
+			}
         }
     }
 }

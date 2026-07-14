@@ -19,7 +19,7 @@ The coordinator does not decide which Independence Wave package is eligible and 
 2. `liberation_release_begin_plan` allocates a monotonically increasing plan ID, clears stale transient marks, and starts the `collecting` phase.
 3. A joint Liberations incident marks both Event 005 and Event 006 as participants. Event 005 publishes its exact provisional footprint first.
 4. `liberation_release_enter_allocation_phase` opens state and package allocation.
-5. Each affected host reserves one protected state. Multiple packages drawing from the same host must reuse that exact protection row.
+5. Each affected host reserves one protected state and snapshots its original capital. Multiple packages drawing from the same host must reuse that exact protection row.
 6. Country rows and exact state rows enter aligned global arrays. A publisher may add rows only for an event declared as a plan participant. Each state records its package, owning event, target country, original host and controller, and territory role.
 7. Rejected candidates enter aligned package and reason ledgers for deterministic reroll and later diagnostic reporting.
 8. `liberation_release_lock_plan` validates the complete array set, exact count, unique reservation state, living-tag exclusion, anchor ownership, and host survival before changing the phase to `locked`.
@@ -28,7 +28,7 @@ The coordinator does not decide which Independence Wave package is eligible and 
 
 ## Host-survival contract
 
-Every distinct host has one row in `global.liberation_plan_hosts`, an owned-state snapshot, one protected-state row, and a computed planned-loss count. A plan is valid only when both the snapshot and the live owned-state count are greater than the number of unique planned losses. The protected state must remain owned by its host and cannot appear in the release-state array.
+Every distinct host has one row in `global.liberation_plan_hosts`, an owned-state snapshot, one protected-state row, one original-capital row, and a computed planned-loss count. These four host arrays must remain aligned. A plan is valid only when both the snapshot and the live owned-state count are greater than the number of unique planned losses. The protected state must remain owned by its host and cannot appear in the release-state array.
 
 The shared host-reservation effect applies this deterministic protection order:
 
@@ -37,6 +37,8 @@ The shared host-reservation effect applies this deterministic protection order:
 3. Another owned state paired with an explicit capital relocation plan.
 
 A one-state host cannot provide its only state. Optional territory is removed before the package itself is rejected.
+
+Capital preparation remains inside the pre-ownership transaction boundary. If a relocation fails, final live validation rejects the plan, or another pre-execution condition cancels the incident, `liberation_release_restore_host_capitals_before_execution` restores every host from the original-capital ledger before reservation cleanup. A restoration failure raises `liberation_release_capital_restore_failed` rather than silently claiming a clean rollback.
 
 Candidate construction is transactional. The planner records the current state-row tail before it begins a package. If an optional or compact claim fails, it removes the failed tail and retries with a smaller footprint. If no valid anchor remains, it removes the complete candidate country row, clears its scope marks, decrements every affected host loss count, and removes any host-protection row that no accepted candidate still uses.
 

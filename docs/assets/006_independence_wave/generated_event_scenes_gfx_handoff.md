@@ -1,8 +1,8 @@
 # Event 006 generated event-scene GFX handoff
 
-## Registration target
+## Registered sprites
 
-Suggested file: `interface/006_independence_wave.gfx`. These are proposed deterministic names because no final sprite identifiers were registered when production began.
+Runtime file: `interface/006_independence_wave_event_pictures.gfx`. The deterministic handoff names are now registered unchanged.
 
 ```txt
 spriteTypes = {
@@ -24,4 +24,4 @@ spriteTypes = {
 - ASSET-005: super-event titled `The League of New States`; the final super-event slot remains owned by the main implementation.
 - ASSET-006: super-event titled `Every Border a Casus Belli`; the final super-event slot remains owned by the main implementation.
 
-No `.gfx`, `.gui`, event, localisation, scripted-localisation, spreadsheet, or spec file was edited by the asset tranche. The main agent must bind the proposed sprite names to the final event pictures and super-event slots and update this handoff if implementation chooses different stable identifiers.
+`chaosx.nr6.2` uses `GFX_report_event_006_asset_001_wave_summary`. The host, recognition, league-news, and two super-event sprites remain registered and await their owning gameplay incidents; registration does not claim that those later incidents are wired.

@@ -18,6 +18,8 @@ The shared Liberations coordinator owns the transaction lifecycle:
 6. If a host capital is a frozen release row, move it to that host's protected state before ownership changes.
 7. Execute all accepted rows in one effect chain and commit only after every Event 006 country initializes.
 
+`chaosx.nr6.1` is the hidden repeatable dispatcher. On a standalone firing it captures tuning, opens the shared plan, allocates the exact automatic count, executes the frozen Event 006 contribution, and dispatches the public report only after commit. During a joint Liberations firing it consumes `independence_wave_joint_presentation_pending` and presents the already committed result without planning or releasing a second time. Any standalone failure before ownership mutation restores the original-capital ledger, clears Event 006 reservations, and aborts without a report. A failure after execution begins is recorded as non-rollbackable and is never presented as success.
+
 The automatic wave counts are 3, 4, 5, 7, and 10. World Collapse remains at 10; its force level, instability, package rarity, and regional ambition change instead of its country count.
 
 ## Origin separation
@@ -84,6 +86,8 @@ Runtime sprites are registered in `interface/006_independence_wave.gfx`. The ide
 - `independence_wave_post_release_instability`;
 - `independence_wave_league_membership`;
 - `independence_wave_founding_identity`.
+
+Generated report, news, and super-event scenes are registered in `interface/006_independence_wave_event_pictures.gfx`. The committed wave report uses `GFX_report_event_006_asset_001_wave_summary`; its displayed wave, country, region, host, armed-state, and earlier-network facts are copied into a presentation ledger before the plan can be reset.
 
 Final source, processed PNG, DDS, provenance, contact-sheet, and animation records live under `docs/assets/006_independence_wave/`. Animated league, route, and high-chaos pieces require genuine frame sequences plus static fallbacks and are wired through the same interface file and the relevant scripted GUI surface.
 

@@ -1,0 +1,71 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 005 / EVENT 006 LIBERATIONS COLLISION TRIGGERS
+# ============================================================================
+# Read-only contracts for the synchronized cluster incident and Event 005's
+# contribution metadata. The shared coordinator remains authoritative for
+# country, state, host, anchor, and lifecycle validation.
+# ============================================================================
+
+liberations_joint_cluster_selected_both_members = {
+	is_in_array = {
+		array = temp_event_cluster_firing_order_event_id_entries
+		value = constant:liberations_joint_member.soviet_collapse
+	}
+	is_in_array = {
+		array = temp_event_cluster_firing_order_event_id_entries
+		value = constant:liberations_joint_member.independence_wave
+	}
+}
+
+can_liberations_joint_prepare_incident = {
+	SOV = { exists = yes }
+	NOT = { has_global_flag = soviet_collapse_active }
+	NOT = { has_global_flag = independence_wave_joint_presentation_pending }
+	SOV = { NOT = { has_country_flag = soviet_collapse_joint_opening_presentation_pending } }
+	can_liberation_release_reset_plan = yes
+	liberations_joint_cluster_selected_both_members = yes
+}
+
+soviet_collapse_joint_plan_metadata_arrays_are_aligned = {
+	check_variable = {
+		var = global.soviet_collapse_joint_plan_selected_countries^num
+		value = global.soviet_collapse_joint_plan_selected_count
+		compare = equals
+	}
+	check_variable = {
+		var = global.soviet_collapse_joint_plan_selected_package_ids^num
+		value = global.soviet_collapse_joint_plan_selected_count
+		compare = equals
+	}
+	check_variable = {
+		var = global.soviet_collapse_joint_plan_selected_families^num
+		value = global.soviet_collapse_joint_plan_selected_count
+		compare = equals
+	}
+	check_variable = {
+		var = global.soviet_collapse_joint_plan_country_row_indices^num
+		value = global.soviet_collapse_joint_plan_selected_count
+		compare = equals
+	}
+	check_variable = {
+		var = global.soviet_collapse_joint_plan_pressure_major_classes^num
+		value = global.soviet_collapse_joint_plan_selected_count
+		compare = equals
+	}
+	check_variable = {
+		var = global.soviet_collapse_joint_plan_pressure_regional_classes^num
+		value = global.soviet_collapse_joint_plan_selected_count
+		compare = equals
+	}
+}
+
+soviet_collapse_joint_current_candidate_not_rejected = {
+	NOT = {
+		has_variable = soviet_collapse_joint_last_rejected_plan_id
+		check_variable = {
+			var = soviet_collapse_joint_last_rejected_plan_id
+			value = global.liberation_plan_id
+			compare = equals
+		}
+	}
+}

@@ -1,17 +1,49 @@
 add_namespace = chaosx.nr6
 
+# Canonical repeatable entry. A joint-cluster presentation always takes
+# priority and cannot allocate a second wave. Standalone calls present only
+# after the frozen plan has reached the committed phase.
 country_event = {
 	id = chaosx.nr6.1
-	title = chaosx.nr6.1.t
-	desc = chaosx.nr6.1.d
-
 	hidden = yes
 	is_triggered_only = yes
-	fire_only_once = yes
 
-	trigger = { always = no }
+	immediate = {
+		if = {
+			limit = { has_global_flag = independence_wave_joint_presentation_pending }
+			clr_global_flag = independence_wave_joint_presentation_pending
+			set_global_flag = independence_wave_joint_presentation_delivered
+			country_event = { id = chaosx.nr6.2 }
+		}
+		else = {
+			independence_wave_prepare_and_execute_standalone_incident = yes
+			if = {
+				limit = { has_global_flag = independence_wave_standalone_incident_committed }
+				country_event = { id = chaosx.nr6.2 }
+			}
+		}
+	}
+}
+
+# Public wave report. Every displayed figure was frozen at commit, so delayed
+# cluster delivery cannot expose a later planner's transient values.
+country_event = {
+	id = chaosx.nr6.2
+	title = chaosx.nr6.2.t
+	desc = chaosx.nr6.2.d
+	picture = GFX_report_event_006_asset_001_wave_summary
+	is_triggered_only = yes
+
+	trigger = {
+		check_variable = {
+			var = global.independence_wave_presentation_country_count
+			value = constant:independence_wave_count.calm_world
+			compare = greater_than_or_equals
+		}
+	}
 
 	option = {
-		name = chaosx.nr6.1.a
+		name = chaosx.nr6.2.a
+		set_variable = { global.independence_wave_last_presentation_date = global.date }
 	}
 }
