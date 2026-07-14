@@ -1,0 +1,468 @@
+# ============================================================================
+# CHAOS REDUX - SHARED CBRN CHEMICAL CONSEQUENCE DISPATCH
+# ============================================================================
+# Overview:
+# - Consumes one accepted chemical action record after exact payload debit.
+# - Applies exact-state unit disruption, military strength loss, civilian
+#   deaths, contamination, medical saturation, mask losses, evidence,
+#   attribution, Condemnation, treaty memory, and persistent history once.
+# - Keeps doctrine mitigation confined to the Condemnation base calculated by
+#   cbrn_prepare_chemical_action_record. It never reduces evidence, deaths,
+#   contamination, medical burden, attribution, or confirmed-use history.
+# - Schedules state-scoped cleanup and recovery events. It adds no broad
+#   country or state periodic pulse.
+# - Continuous ordinary-air missions cannot reach this dispatcher because the
+#   shared action validator rejects that route without a verified engine hook.
+# ============================================================================
+
+cbrn_dispatch_set_source_and_context = {
+	set_temp_variable = { cbrn_action_source_label = constant:cbrn_source_label.chemical_battlefield_exposure }
+	set_temp_variable = { cbrn_action_condemnation_context = constant:condemnation_context.chemical_combat }
+
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.chemical_air_raid compare = equals }
+				check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.strategic_chemical_raid compare = equals }
+			}
+		}
+		set_temp_variable = { cbrn_action_source_label = constant:cbrn_source_label.chemical_strategic_raid }
+		set_temp_variable = { cbrn_action_condemnation_context = constant:condemnation_context.chemical_air_strike }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.nerve_suppression compare = equals } }
+		set_temp_variable = { cbrn_action_source_label = constant:cbrn_source_label.nerve_suppression }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.blister compare = equals }
+				check_variable = { var = cbrn_action_severity value = constant:cbrn_operation_severity.persistent compare = greater_than_or_equals }
+			}
+		}
+		set_temp_variable = { cbrn_action_source_label = constant:cbrn_source_label.persistent_chemical_contamination }
+	}
+
+	if = {
+		limit = { check_variable = { var = cbrn_action_severity value = constant:cbrn_operation_severity.doomsday compare = equals } }
+		set_temp_variable = { cbrn_action_source_label = constant:cbrn_source_label.cbrn_doomsday_release }
+		set_temp_variable = { cbrn_action_condemnation_context = constant:condemnation_context.chemical_doomsday }
+	}
+}
+
+cbrn_dispatch_set_evidence_floor = {
+	set_temp_variable = { cbrn_action_evidence_floor = constant:cbrn_math.zero }
+
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.blister compare = equals }
+				check_variable = { var = cbrn_action_severity value = constant:cbrn_operation_severity.persistent compare = greater_than_or_equals }
+			}
+		}
+		set_temp_variable = { cbrn_action_evidence_floor = constant:cbrn_chemical_dispatch.persistent_evidence_floor }
+	}
+
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.strategic_chemical_raid compare = equals }
+				check_variable = { var = cbrn_action_severity value = constant:cbrn_operation_severity.strategic compare = greater_than_or_equals }
+			}
+		}
+		set_temp_variable = { cbrn_action_evidence_floor = constant:cbrn_chemical_dispatch.strategic_evidence_floor }
+	}
+
+	if = {
+		limit = { check_variable = { var = cbrn_action_severity value = constant:cbrn_operation_severity.mass_casualty compare = greater_than_or_equals } }
+		set_temp_variable = { cbrn_action_evidence_floor = constant:cbrn_chemical_dispatch.mass_casualty_evidence_floor }
+	}
+
+	if = {
+		limit = { check_variable = { var = cbrn_action_evidence_floor_override value = cbrn_action_evidence_floor compare = greater_than } }
+		set_temp_variable = { cbrn_action_evidence_floor = cbrn_action_evidence_floor_override }
+	}
+}
+
+cbrn_dispatch_apply_first_exposure_shock = {
+	set_temp_variable = { cbrn_first_exposure_shock_applied = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_prior_world_confirmed_use = constant:cbrn_proof.missing }
+	if = {
+		limit = { cbrn_world_has_confirmed_chemical_use = yes }
+		set_temp_variable = { cbrn_prior_world_confirmed_use = constant:cbrn_proof.supplied }
+	}
+
+	if = {
+		limit = {
+			has_event_target = cbrn_action_victim_country
+			event_target:cbrn_action_victim_country = {
+				NOT = { has_country_flag = cbrn_chemical_exposure_awareness }
+			}
+		}
+		set_temp_variable = { cbrn_first_use_disruption_mult = constant:cbrn_chemical_first_use.disruption_mult }
+		set_temp_variable = { cbrn_first_use_military_casualty_mult = constant:cbrn_chemical_first_use.military_casualty_mult }
+		set_temp_variable = { cbrn_first_use_civilian_casualty_mult = constant:cbrn_chemical_first_use.civilian_casualty_mult }
+
+		if = {
+			limit = { check_variable = { var = cbrn_prior_world_confirmed_use value = constant:cbrn_proof.supplied compare = equals } }
+			set_temp_variable = { cbrn_first_use_disruption_mult = constant:cbrn_chemical_first_use.global_awareness_disruption_mult }
+			set_temp_variable = { cbrn_first_use_military_casualty_mult = constant:cbrn_chemical_first_use.global_awareness_military_casualty_mult }
+			set_temp_variable = { cbrn_first_use_civilian_casualty_mult = constant:cbrn_chemical_first_use.global_awareness_civilian_casualty_mult }
+		}
+
+		if = {
+			limit = { check_variable = { var = cbrn_action_military_effective_protection value = constant:cbrn_chemical_first_use.high_protection_threshold compare = greater_than_or_equals } }
+			set_temp_variable = { cbrn_first_use_disruption_mult = constant:cbrn_chemical_first_use.protected_disruption_mult }
+			set_temp_variable = { cbrn_first_use_military_casualty_mult = constant:cbrn_chemical_first_use.protected_military_casualty_mult }
+		}
+		if = {
+			limit = { check_variable = { var = cbrn_action_civilian_effective_protection value = constant:cbrn_chemical_first_use.high_protection_threshold compare = greater_than_or_equals } }
+			set_temp_variable = { cbrn_first_use_civilian_casualty_mult = constant:cbrn_chemical_first_use.protected_civilian_casualty_mult }
+		}
+
+		multiply_temp_variable = { cbrn_action_disruption = cbrn_first_use_disruption_mult }
+		multiply_temp_variable = { cbrn_action_military_death_fraction = cbrn_first_use_military_casualty_mult }
+		multiply_temp_variable = { cbrn_action_civilian_death_fraction = cbrn_first_use_civilian_casualty_mult }
+		clamp_temp_variable = { var = cbrn_action_disruption min = constant:cbrn_math.zero max = constant:cbrn_action_output_bounds.disruption_max }
+		clamp_temp_variable = { var = cbrn_action_military_death_fraction min = constant:cbrn_math.zero max = constant:cbrn_action_output_bounds.military_death_fraction_max }
+		clamp_temp_variable = { var = cbrn_action_civilian_death_fraction min = constant:cbrn_math.zero max = constant:cbrn_action_output_bounds.civilian_death_fraction_max }
+
+		set_temp_variable = { cbrn_first_use_shock_days = constant:cbrn_chemical_first_use.shock_days }
+		round_temp_variable = cbrn_first_use_shock_days
+		event_target:cbrn_action_victim_country = {
+			set_country_flag = cbrn_chemical_exposure_awareness
+			set_variable = { cbrn_first_chemical_exposure_date = global.num_days }
+			add_timed_idea = {
+				idea = cbrn_first_chemical_shock_idea
+				days = cbrn_first_use_shock_days
+			}
+		}
+		set_temp_variable = { cbrn_first_exposure_shock_applied = constant:cbrn_proof.supplied }
+	}
+}
+
+cbrn_dispatch_apply_unit_damage = {
+	if = {
+		limit = {
+			OR = {
+				check_variable = { cbrn_action_disruption > constant:cbrn_math.zero }
+				check_variable = { cbrn_action_military_death_fraction > constant:cbrn_math.zero }
+			}
+		}
+		event_target:cbrn_action_target_state = {
+			damage_units = {
+				state = THIS
+				limit = { has_war_with = event_target:cbrn_action_actor }
+				org_damage = cbrn_action_disruption
+				str_damage = cbrn_action_military_death_fraction
+				ratio = yes
+				army = yes
+			}
+		}
+	}
+
+	set_temp_variable = { cbrn_friendly_org_damage = cbrn_action_disruption }
+	multiply_temp_variable = { cbrn_friendly_org_damage = cbrn_action_friendly_exposure_risk }
+	multiply_temp_variable = { cbrn_friendly_org_damage = constant:cbrn_chemical_dispatch.friendly_org_damage_mult }
+	clamp_temp_variable = { var = cbrn_friendly_org_damage min = constant:cbrn_math.zero max = constant:cbrn_chemical_dispatch.friendly_damage_max }
+
+	set_temp_variable = { cbrn_friendly_strength_damage = cbrn_action_military_death_fraction }
+	multiply_temp_variable = { cbrn_friendly_strength_damage = cbrn_action_friendly_exposure_risk }
+	multiply_temp_variable = { cbrn_friendly_strength_damage = constant:cbrn_chemical_dispatch.friendly_strength_damage_mult }
+	clamp_temp_variable = { var = cbrn_friendly_strength_damage min = constant:cbrn_math.zero max = constant:cbrn_chemical_dispatch.friendly_damage_max }
+
+	if = {
+		limit = {
+			OR = {
+				check_variable = { cbrn_friendly_org_damage > constant:cbrn_math.zero }
+				check_variable = { cbrn_friendly_strength_damage > constant:cbrn_math.zero }
+			}
+		}
+		event_target:cbrn_action_target_state = {
+			damage_units = {
+				state = THIS
+				limit = {
+					OR = {
+						tag = event_target:cbrn_action_actor
+						is_in_faction_with = event_target:cbrn_action_actor
+					}
+				}
+				org_damage = cbrn_friendly_org_damage
+				str_damage = cbrn_friendly_strength_damage
+				ratio = yes
+				army = yes
+			}
+		}
+	}
+}
+
+cbrn_dispatch_apply_mask_losses = {
+	if = {
+		limit = { check_variable = { cbrn_action_contamination_points > constant:cbrn_math.zero } }
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.chemical_air_raid compare = equals }
+					check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.strategic_chemical_raid compare = equals }
+				}
+			}
+			cbrn_apply_strategic_raid_mask_losses = yes
+		}
+		else_if = {
+			limit = {
+				OR = {
+					check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.blister compare = equals }
+					check_variable = { var = cbrn_action_severity value = constant:cbrn_operation_severity.persistent compare = greater_than_or_equals }
+				}
+			}
+			cbrn_apply_persistent_chemical_mask_losses = yes
+		}
+		else = {
+			cbrn_apply_standard_chemical_mask_losses = yes
+		}
+
+		if = {
+			limit = { CONTROLLER = { exists = yes } }
+			CONTROLLER = { cbrn_apply_military_mask_loss = yes }
+		}
+	}
+}
+
+cbrn_dispatch_apply_state_consequences = {
+	set_temp_variable = { cbrn_action_civilian_deaths = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_dispatch_current_day = global.num_days }
+	set_temp_variable = { cbrn_medical_recovery_days_local = constant:cbrn_chemical_dispatch.medical_recovery_days }
+	set_temp_variable = { cbrn_evidence_decay_days_local = constant:cbrn_chemical_dispatch.evidence_decay_days }
+	round_temp_variable = cbrn_medical_recovery_days_local
+	round_temp_variable = cbrn_evidence_decay_days_local
+
+	event_target:cbrn_action_target_state = {
+		if = {
+			limit = { check_variable = { cbrn_action_civilian_death_fraction > constant:cbrn_math.zero } }
+			set_temp_variable = { chaos_state_deaths_percent = cbrn_action_civilian_death_fraction }
+			set_temp_variable = { chaos_state_deaths_mult = constant:cbrn_math.one }
+			set_temp_variable = { chaos_state_deaths_cap_factor = constant:chaos_meter_state_death_dynamic.chemical_cap_factor }
+			set_temp_variable = { chaos_state_deaths_exact_percent = constant:cbrn_proof.supplied }
+			set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.chemical_attack }
+			chaos_meter_register_state_civilian_deaths_percent = yes
+			set_temp_variable = { cbrn_action_civilian_deaths = chaos_deaths_change }
+		}
+
+		if = {
+			limit = {
+				check_variable = { cbrn_action_contamination_points > constant:cbrn_math.zero }
+				check_variable = { cbrn_action_contamination_duration_days > constant:cbrn_math.zero }
+			}
+			set_temp_variable = { cbrn_state_contamination_delta = cbrn_action_contamination_points }
+			set_temp_variable = { cbrn_state_contamination_duration_input = cbrn_action_contamination_duration_days }
+			cbrn_apply_state_contamination_delta_internal = yes
+
+			set_temp_variable = { chem_dose_each = cbrn_action_contamination_points }
+			multiply_temp_variable = { chem_dose_each = constant:cbrn_chemical_dispatch.legacy_contamination_strength_per_point }
+			set_temp_variable = { chem_state_duration_add = cbrn_action_contamination_duration_days }
+			set_temp_variable = { cbrn_shared_dispatch_duration_cap = cbrn_action_contamination_duration_days }
+			if = {
+				limit = {
+					has_variable = chem_state_contamination_expiry_day
+					check_variable = { var = chem_state_contamination_expiry_day value = cbrn_dispatch_current_day compare = greater_than }
+				}
+				set_temp_variable = { cbrn_existing_contamination_days = chem_state_contamination_expiry_day }
+				set_temp_variable = { cbrn_dispatch_current_day_negative = cbrn_dispatch_current_day }
+				multiply_temp_variable = { cbrn_dispatch_current_day_negative = constant:cbrn_payload_math.negation_multiplier }
+				add_to_temp_variable = { cbrn_existing_contamination_days = cbrn_dispatch_current_day_negative }
+				add_to_temp_variable = { cbrn_shared_dispatch_duration_cap = cbrn_existing_contamination_days }
+			}
+			clamp_temp_variable = { var = cbrn_shared_dispatch_duration_cap min = constant:cbrn_scheduler.contamination_minimum_days max = constant:cbrn_scheduler.contamination_maximum_days }
+			set_temp_variable = { cbrn_shared_dispatch_guard = constant:cbrn_proof.supplied }
+			chem_apply_state_contamination = yes
+			set_temp_variable = { cbrn_shared_dispatch_guard = constant:cbrn_proof.missing }
+
+			set_variable = { cbrn_chemical_contamination_expiry_day = chem_state_contamination_expiry_day }
+			set_temp_variable = { cbrn_contamination_cleanup_days = chem_state_contamination_expiry_day }
+			set_temp_variable = { cbrn_dispatch_current_day_negative = cbrn_dispatch_current_day }
+			multiply_temp_variable = { cbrn_dispatch_current_day_negative = constant:cbrn_payload_math.negation_multiplier }
+			add_to_temp_variable = { cbrn_contamination_cleanup_days = cbrn_dispatch_current_day_negative }
+			clamp_temp_variable = { var = cbrn_contamination_cleanup_days min = constant:cbrn_scheduler.contamination_minimum_days max = constant:cbrn_scheduler.contamination_maximum_days }
+			round_temp_variable = cbrn_contamination_cleanup_days
+			state_event = { id = cbrn_delivery.1 days = cbrn_contamination_cleanup_days }
+		}
+
+		if = {
+			limit = { check_variable = { cbrn_action_medical_saturation_points > constant:cbrn_math.zero } }
+			if = {
+				limit = { NOT = { has_variable = cbrn_medical_saturation } }
+				set_variable = { cbrn_medical_saturation = constant:cbrn_math.zero }
+			}
+			add_to_variable = { cbrn_medical_saturation = cbrn_action_medical_saturation_points }
+			clamp_variable = { var = cbrn_medical_saturation min = constant:cbrn_chemical_dispatch.state_medical_minimum max = constant:cbrn_chemical_dispatch.state_medical_maximum }
+			set_variable = { cbrn_medical_recovery_due_day = cbrn_dispatch_current_day }
+			add_to_variable = { cbrn_medical_recovery_due_day = cbrn_medical_recovery_days_local }
+			state_event = { id = cbrn_delivery.2 days = cbrn_medical_recovery_days_local }
+		}
+
+		set_temp_variable = { cbrn_state_evidence_delta = cbrn_action_evidence_points }
+		set_temp_variable = { cbrn_state_existing_evidence = constant:cbrn_math.zero }
+		if = {
+			limit = { has_variable = cbrn_evidence_quality }
+			set_temp_variable = { cbrn_state_existing_evidence = cbrn_evidence_quality }
+		}
+		set_temp_variable = { cbrn_state_projected_evidence = cbrn_state_existing_evidence }
+		add_to_temp_variable = { cbrn_state_projected_evidence = cbrn_state_evidence_delta }
+		if = {
+			limit = { check_variable = { var = cbrn_state_projected_evidence value = cbrn_action_evidence_floor compare = less_than } }
+			set_temp_variable = { cbrn_state_projected_evidence = cbrn_action_evidence_floor }
+		}
+		clamp_temp_variable = { var = cbrn_state_projected_evidence min = constant:cbrn_chemical_dispatch.state_evidence_minimum max = constant:cbrn_chemical_dispatch.state_evidence_maximum }
+		set_temp_variable = { cbrn_state_evidence_delta = cbrn_state_projected_evidence }
+		set_temp_variable = { cbrn_state_existing_evidence_negative = cbrn_state_existing_evidence }
+		multiply_temp_variable = { cbrn_state_existing_evidence_negative = constant:cbrn_payload_math.negation_multiplier }
+		add_to_temp_variable = { cbrn_state_evidence_delta = cbrn_state_existing_evidence_negative }
+		clamp_temp_variable = { var = cbrn_state_evidence_delta min = constant:cbrn_math.zero max = constant:cbrn_chemical_dispatch.state_evidence_maximum }
+		set_temp_variable = { cbrn_action_evidence_applied = cbrn_state_evidence_delta }
+		cbrn_apply_state_evidence_delta_internal = yes
+		set_temp_variable = { cbrn_action_attribution_state = cbrn_state_attribution_output }
+
+		if = {
+			limit = { check_variable = { cbrn_state_evidence_delta > constant:cbrn_math.zero } }
+			set_variable = { cbrn_evidence_decay_due_day = cbrn_dispatch_current_day }
+			add_to_variable = { cbrn_evidence_decay_due_day = cbrn_evidence_decay_days_local }
+			state_event = { id = cbrn_delivery.3 days = cbrn_evidence_decay_days_local }
+		}
+
+		if = {
+			limit = { check_variable = { var = cbrn_action_attribution_state value = constant:cbrn_attribution_state.confirmed compare = equals } }
+			set_state_flag = cbrn_confirmed_chemical_use_history
+		}
+
+		set_variable = { cbrn_last_chemical_actor = event_target:cbrn_action_actor }
+		set_variable = { cbrn_last_chemical_action_date = cbrn_dispatch_current_day }
+		set_variable = { cbrn_last_chemical_agent = cbrn_action_agent }
+		set_variable = { cbrn_last_chemical_agent_class = cbrn_action_agent_class }
+		set_variable = { cbrn_last_chemical_delivery_route = cbrn_action_delivery_route }
+		set_variable = { cbrn_last_chemical_severity = cbrn_action_severity }
+		set_variable = { cbrn_last_chemical_source_label = cbrn_action_source_label }
+		set_variable = { cbrn_last_chemical_evidence_applied = cbrn_action_evidence_applied }
+		cbrn_dispatch_apply_mask_losses = yes
+	}
+}
+
+cbrn_dispatch_apply_condemnation = {
+	set_temp_variable = { condemnation_source_type = constant:condemnation_source.chemical }
+	set_temp_variable = { condemnation_base_gain = cbrn_action_condemnation_base }
+	set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.hidden }
+	set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.minor }
+	set_temp_variable = { condemnation_civilian_deaths = cbrn_action_civilian_deaths }
+	set_temp_variable = { condemnation_contamination_value = cbrn_action_contamination_points }
+	set_temp_variable = { condemnation_context_type = cbrn_action_condemnation_context }
+
+	if = {
+		limit = { check_variable = { var = cbrn_action_attribution_state value = constant:cbrn_attribution_state.suspected compare = equals } }
+		set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.suspected }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_attribution_state value = constant:cbrn_attribution_state.probable compare = equals } }
+		set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.discovered }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_attribution_state value = constant:cbrn_attribution_state.confirmed compare = equals } }
+		set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+	}
+
+	if = {
+		limit = { check_variable = { var = cbrn_action_severity value = constant:cbrn_operation_severity.prepared compare = equals } }
+		set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.combat }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = cbrn_action_severity value = constant:cbrn_operation_severity.persistent compare = greater_than_or_equals }
+			check_variable = { var = cbrn_action_severity value = constant:cbrn_operation_severity.mass_casualty compare = less_than }
+		}
+		set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.major }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_severity value = constant:cbrn_operation_severity.mass_casualty compare = equals } }
+		set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.mass_death }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_severity value = constant:cbrn_operation_severity.doomsday compare = equals } }
+		set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.doomsday }
+	}
+
+	if = {
+		limit = {
+			check_variable = { var = cbrn_action_attribution_state value = constant:cbrn_attribution_state.confirmed compare = equals }
+			check_variable = { var = cbrn_action_severity value = constant:cbrn_operation_severity.mass_casualty compare = greater_than_or_equals }
+		}
+		clamp_temp_variable = { var = condemnation_base_gain min = constant:cbrn_doctrine_condemnation.confirmed_mass_casualty_floor max = constant:cbrn_action_output_bounds.condemnation_base_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = cbrn_action_attribution_state value = constant:cbrn_attribution_state.confirmed compare = equals }
+			check_variable = { var = cbrn_action_severity value = constant:cbrn_operation_severity.strategic compare = greater_than_or_equals }
+		}
+		clamp_temp_variable = { var = condemnation_base_gain min = constant:cbrn_doctrine_condemnation.confirmed_strategic_floor max = constant:cbrn_action_output_bounds.condemnation_base_max }
+	}
+
+	if = {
+		limit = { has_event_target = cbrn_action_victim_country }
+		set_temp_variable = { condemnation_victim_country = event_target:cbrn_action_victim_country }
+	}
+	condemnation_add_source = yes
+
+	if = {
+		limit = { check_variable = { var = cbrn_action_attribution_state value = constant:cbrn_attribution_state.confirmed compare = equals } }
+		set_global_flag = cbrn_world_confirmed_chemical_use
+		set_country_flag = cbrn_confirmed_chemical_use_history
+		air_cleanliness_treaty_on_unconventional_use = yes
+		if = {
+			limit = { has_event_target = cbrn_action_victim_country }
+			event_target:cbrn_action_victim_country = { set_country_flag = cbrn_confirmed_chemical_attack_victim_history }
+		}
+	}
+}
+
+cbrn_dispatch_record_actor_history = {
+	if = {
+		limit = { NOT = { has_variable = cbrn_chemical_action_count } }
+		set_variable = { cbrn_chemical_action_count = constant:cbrn_math.zero }
+	}
+	add_to_variable = { cbrn_chemical_action_count = constant:cbrn_math.one }
+	set_variable = { cbrn_last_chemical_action_date = global.num_days }
+	set_variable = { cbrn_last_chemical_agent = cbrn_action_agent }
+	set_variable = { cbrn_last_chemical_agent_class = cbrn_action_agent_class }
+	set_variable = { cbrn_last_chemical_delivery_route = cbrn_action_delivery_route }
+	set_variable = { cbrn_last_chemical_severity = cbrn_action_severity }
+	set_variable = { cbrn_last_chemical_source_label = cbrn_action_source_label }
+	set_variable = { cbrn_last_chemical_target_state = event_target:cbrn_action_target_state }
+	set_variable = { cbrn_last_chemical_civilian_deaths = cbrn_action_civilian_deaths }
+	set_variable = { cbrn_last_chemical_contamination_points = cbrn_action_contamination_points }
+	set_variable = { cbrn_last_chemical_evidence_points = cbrn_action_evidence_applied }
+	set_variable = { cbrn_last_chemical_attribution_state = cbrn_action_attribution_state }
+	if = {
+		limit = { has_event_target = cbrn_action_victim_country }
+		set_variable = { cbrn_last_chemical_victim_country = event_target:cbrn_action_victim_country }
+	}
+	set_country_flag = achievement_used_chemical_ability
+}
+
+cbrn_dispatch_chemical_action_record = {
+	if = {
+		limit = {
+			check_variable = { var = cbrn_action_result value = constant:cbrn_action_result.accepted compare = equals }
+			check_variable = { var = cbrn_action_payload_consumed_proof value = constant:cbrn_proof.supplied compare = equals }
+			check_variable = { cbrn_action_payload_consumed > constant:cbrn_math.zero }
+			check_variable = { var = cbrn_action_target_state_supplied value = constant:cbrn_proof.supplied compare = equals }
+			has_event_target = cbrn_action_target_state
+			NOT = { check_variable = { var = cbrn_action_dispatch_proof value = constant:cbrn_proof.supplied compare = equals } }
+		}
+		set_temp_variable = { cbrn_action_dispatch_proof = constant:cbrn_proof.supplied }
+		save_event_target_as = cbrn_action_actor
+		cbrn_dispatch_set_source_and_context = yes
+		cbrn_dispatch_apply_first_exposure_shock = yes
+		cbrn_dispatch_apply_unit_damage = yes
+		cbrn_dispatch_set_evidence_floor = yes
+		cbrn_dispatch_apply_state_consequences = yes
+		cbrn_dispatch_apply_condemnation = yes
+		cbrn_dispatch_record_actor_history = yes
+	}
+}

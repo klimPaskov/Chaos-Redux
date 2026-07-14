@@ -401,7 +401,7 @@ AI participants with active pairs gain fatigue equal to `1 + 25%` of the pair's 
 | Decision | Concrete cost and duration | Result |
 | --- | --- | --- |
 | Accept inspections | `180` days of `+5%` consumer goods and `-15%` encryption | `+12` decay credit and `10%` hidden-evidence disclosure per targeted pulse |
-| Destroy chemical stockpiles | Removes `75%` of each of seven chemical cylinder stocks and creates a `365` day chemical-use restriction | `+20` decay credit and stockpile-destruction state |
+| Destroy chemical stockpiles | Removes `75%` of every strategic chemical-agent lot, filled-shell lot, prepared air-payload lot, and each of the seven legacy cylinder stocks, then creates a `365` day chemical-use restriction | `+20` decay credit and stockpile-destruction state |
 | Destroy biological stockpiles | Removes `75%` of anthrax, plague, tularemia, smallpox, and weaponized-zombie bomb stocks and creates a `365` day biological-use restriction | `+25` decay credit and source-specific stockpile-destruction state |
 | Dismantle restricted sites | Clears controlled restricted chemical, Auschwitz or SS experiment, and Japanese biowarfare-atrocity site flags and marks the sites destroyed | `+22` decay credit and site-dismantlement state |
 | Pay compensation | `12 + 4 x current tier` convoys, `500` infantry equipment, `12%` fuel, then `180` days of `+7%` consumer goods and `-4%` factory output | Transfers convoy and equipment compensation to the last victim when valid and adds `+18` decay credit |

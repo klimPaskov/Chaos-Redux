@@ -1,0 +1,290 @@
+# ============================================================================
+# CHAOS REDUX - CBRN CHEMICAL PAYLOAD EQUIPMENT
+# ============================================================================
+# Overview:
+# - Defines producible strategic agent lots, filled chemical shell lots, and
+#   class-specific air payload lots.
+# - Strategic lots share one archetype so offensive support formations can
+#   reinforce from any selected agent without agent-by-agent unit duplication.
+# - Agent models remain distinct stockpile entries. Scripted operations debit
+#   the exact selected agent or class lot before exposure can be dispatched.
+# - Reliability represents handling and storage integrity, not toxic potency.
+# ============================================================================
+
+@CBRN_PAYLOAD_PRIORITY = 35
+@CBRN_PAYLOAD_LEND_LEASE_COST = 1
+@CBRN_PAYLOAD_YEAR_1918 = 1918
+@CBRN_PAYLOAD_YEAR_1937 = 1937
+@CBRN_PAYLOAD_YEAR_1939 = 1939
+@CBRN_PAYLOAD_YEAR_1941 = 1941
+@CBRN_PAYLOAD_VISUAL_LEVEL_0 = 0
+@CBRN_PAYLOAD_VISUAL_LEVEL_1 = 1
+@CBRN_PAYLOAD_VISUAL_LEVEL_2 = 2
+
+@CBRN_CHLORINE_LOT_IC = 0.50
+@CBRN_PHOSGENE_LOT_IC = 0.80
+@CBRN_MUSTARD_LOT_IC = 1.00
+@CBRN_LEWISITE_LOT_IC = 1.50
+@CBRN_TABUN_LOT_IC = 2.20
+@CBRN_SARIN_LOT_IC = 2.50
+@CBRN_SOMAN_LOT_IC = 3.00
+@CBRN_MALODOR_LOT_IC = 0.65
+@CBRN_BEHAVIORAL_LOT_IC = 1.20
+
+@CBRN_CHLORINE_LOT_RELIABILITY = 0.78
+@CBRN_PHOSGENE_LOT_RELIABILITY = 0.74
+@CBRN_MUSTARD_LOT_RELIABILITY = 0.68
+@CBRN_LEWISITE_LOT_RELIABILITY = 0.62
+@CBRN_TABUN_LOT_RELIABILITY = 0.52
+@CBRN_SARIN_LOT_RELIABILITY = 0.46
+@CBRN_SOMAN_LOT_RELIABILITY = 0.42
+@CBRN_MALODOR_LOT_RELIABILITY = 0.82
+@CBRN_BEHAVIORAL_LOT_RELIABILITY = 0.60
+
+@CBRN_SHELL_LOT_IC = 0.85
+@CBRN_SHELL_LOT_RELIABILITY = 0.64
+@CBRN_AIR_CHOKING_IC = 1.10
+@CBRN_AIR_BLISTER_IC = 1.45
+@CBRN_AIR_NERVE_IC = 2.80
+@CBRN_AIR_INCAPACITATING_IC = 1.25
+@CBRN_AIR_CHOKING_RELIABILITY = 0.72
+@CBRN_AIR_BLISTER_RELIABILITY = 0.64
+@CBRN_AIR_NERVE_RELIABILITY = 0.48
+@CBRN_AIR_INCAPACITATING_RELIABILITY = 0.68
+
+@CBRN_RESOURCE_LOW = 1
+@CBRN_RESOURCE_MEDIUM = 2
+@CBRN_RESOURCE_HIGH = 3
+
+equipments = {
+	chemical_agent_payload = {
+		year = @CBRN_PAYLOAD_YEAR_1918
+		is_archetype = yes
+		picture = archetype_chemical_agent_payload
+		is_buildable = no
+		type = {
+			support
+			chemical_agent_payload
+		}
+		interface_category = interface_category_land
+		group_by = archetype
+		priority = @CBRN_PAYLOAD_PRIORITY
+		lend_lease_cost = @CBRN_PAYLOAD_LEND_LEASE_COST
+		build_cost_ic = @CBRN_CHLORINE_LOT_IC
+		reliability = @CBRN_CHLORINE_LOT_RELIABILITY
+		can_license = no
+		can_be_lend_leased = { always = no }
+	}
+
+	chlorine_agent_lot_1 = {
+		year = @CBRN_PAYLOAD_YEAR_1918
+		archetype = chemical_agent_payload
+		visual_level = @CBRN_PAYLOAD_VISUAL_LEVEL_0
+		active = no
+		is_buildable = yes
+		priority = @CBRN_PAYLOAD_PRIORITY
+		build_cost_ic = @CBRN_CHLORINE_LOT_IC
+		reliability = @CBRN_CHLORINE_LOT_RELIABILITY
+		resources = { steel = @CBRN_RESOURCE_LOW }
+	}
+
+	phosgene_agent_lot_1 = {
+		year = @CBRN_PAYLOAD_YEAR_1918
+		archetype = chemical_agent_payload
+		parent = chlorine_agent_lot_1
+		visual_level = @CBRN_PAYLOAD_VISUAL_LEVEL_1
+		active = no
+		is_buildable = yes
+		priority = @CBRN_PAYLOAD_PRIORITY
+		build_cost_ic = @CBRN_PHOSGENE_LOT_IC
+		reliability = @CBRN_PHOSGENE_LOT_RELIABILITY
+		resources = { steel = @CBRN_RESOURCE_LOW rubber = @CBRN_RESOURCE_LOW }
+	}
+
+	mustard_agent_lot_1 = {
+		year = @CBRN_PAYLOAD_YEAR_1918
+		archetype = chemical_agent_payload
+		visual_level = @CBRN_PAYLOAD_VISUAL_LEVEL_0
+		active = no
+		is_buildable = yes
+		priority = @CBRN_PAYLOAD_PRIORITY
+		build_cost_ic = @CBRN_MUSTARD_LOT_IC
+		reliability = @CBRN_MUSTARD_LOT_RELIABILITY
+		resources = { steel = @CBRN_RESOURCE_LOW rubber = @CBRN_RESOURCE_LOW tungsten = @CBRN_RESOURCE_LOW }
+	}
+
+	lewisite_agent_lot_1 = {
+		year = @CBRN_PAYLOAD_YEAR_1937
+		archetype = chemical_agent_payload
+		parent = mustard_agent_lot_1
+		visual_level = @CBRN_PAYLOAD_VISUAL_LEVEL_1
+		active = no
+		is_buildable = yes
+		priority = @CBRN_PAYLOAD_PRIORITY
+		build_cost_ic = @CBRN_LEWISITE_LOT_IC
+		reliability = @CBRN_LEWISITE_LOT_RELIABILITY
+		resources = { steel = @CBRN_RESOURCE_LOW rubber = @CBRN_RESOURCE_LOW tungsten = @CBRN_RESOURCE_MEDIUM }
+	}
+
+	tabun_agent_lot_1 = {
+		year = @CBRN_PAYLOAD_YEAR_1937
+		archetype = chemical_agent_payload
+		visual_level = @CBRN_PAYLOAD_VISUAL_LEVEL_0
+		active = no
+		is_buildable = yes
+		priority = @CBRN_PAYLOAD_PRIORITY
+		build_cost_ic = @CBRN_TABUN_LOT_IC
+		reliability = @CBRN_TABUN_LOT_RELIABILITY
+		resources = { steel = @CBRN_RESOURCE_LOW rubber = @CBRN_RESOURCE_MEDIUM tungsten = @CBRN_RESOURCE_MEDIUM }
+	}
+
+	sarin_agent_lot_1 = {
+		year = @CBRN_PAYLOAD_YEAR_1939
+		archetype = chemical_agent_payload
+		parent = tabun_agent_lot_1
+		visual_level = @CBRN_PAYLOAD_VISUAL_LEVEL_1
+		active = no
+		is_buildable = yes
+		priority = @CBRN_PAYLOAD_PRIORITY
+		build_cost_ic = @CBRN_SARIN_LOT_IC
+		reliability = @CBRN_SARIN_LOT_RELIABILITY
+		resources = { steel = @CBRN_RESOURCE_LOW rubber = @CBRN_RESOURCE_HIGH tungsten = @CBRN_RESOURCE_MEDIUM }
+	}
+
+	soman_agent_lot_1 = {
+		year = @CBRN_PAYLOAD_YEAR_1941
+		archetype = chemical_agent_payload
+		parent = sarin_agent_lot_1
+		visual_level = @CBRN_PAYLOAD_VISUAL_LEVEL_2
+		active = no
+		is_buildable = yes
+		priority = @CBRN_PAYLOAD_PRIORITY
+		build_cost_ic = @CBRN_SOMAN_LOT_IC
+		reliability = @CBRN_SOMAN_LOT_RELIABILITY
+		resources = { steel = @CBRN_RESOURCE_LOW rubber = @CBRN_RESOURCE_HIGH tungsten = @CBRN_RESOURCE_HIGH chromium = @CBRN_RESOURCE_LOW }
+	}
+
+	malodor_agent_lot_1 = {
+		year = @CBRN_PAYLOAD_YEAR_1937
+		archetype = chemical_agent_payload
+		visual_level = @CBRN_PAYLOAD_VISUAL_LEVEL_0
+		active = no
+		is_buildable = yes
+		priority = @CBRN_PAYLOAD_PRIORITY
+		build_cost_ic = @CBRN_MALODOR_LOT_IC
+		reliability = @CBRN_MALODOR_LOT_RELIABILITY
+		resources = { steel = @CBRN_RESOURCE_LOW rubber = @CBRN_RESOURCE_LOW }
+	}
+
+	behavioral_agent_lot_1 = {
+		year = @CBRN_PAYLOAD_YEAR_1939
+		archetype = chemical_agent_payload
+		parent = malodor_agent_lot_1
+		visual_level = @CBRN_PAYLOAD_VISUAL_LEVEL_1
+		active = no
+		is_buildable = yes
+		priority = @CBRN_PAYLOAD_PRIORITY
+		build_cost_ic = @CBRN_BEHAVIORAL_LOT_IC
+		reliability = @CBRN_BEHAVIORAL_LOT_RELIABILITY
+		resources = { steel = @CBRN_RESOURCE_LOW rubber = @CBRN_RESOURCE_MEDIUM tungsten = @CBRN_RESOURCE_LOW }
+	}
+
+	chemical_artillery_ammunition = {
+		year = @CBRN_PAYLOAD_YEAR_1937
+		is_archetype = yes
+		picture = archetype_chemical_artillery_ammunition
+		is_buildable = no
+		type = {
+			support
+			artillery
+			chemical_shell_lot
+		}
+		interface_category = interface_category_land
+		group_by = archetype
+		priority = @CBRN_PAYLOAD_PRIORITY
+		lend_lease_cost = @CBRN_PAYLOAD_LEND_LEASE_COST
+		build_cost_ic = @CBRN_SHELL_LOT_IC
+		reliability = @CBRN_SHELL_LOT_RELIABILITY
+		can_license = no
+		can_be_lend_leased = { always = no }
+	}
+
+	chemical_shell_lot_1 = {
+		year = @CBRN_PAYLOAD_YEAR_1937
+		archetype = chemical_artillery_ammunition
+		visual_level = @CBRN_PAYLOAD_VISUAL_LEVEL_0
+		active = no
+		is_buildable = yes
+		priority = @CBRN_PAYLOAD_PRIORITY
+		build_cost_ic = @CBRN_SHELL_LOT_IC
+		reliability = @CBRN_SHELL_LOT_RELIABILITY
+		resources = { steel = @CBRN_RESOURCE_MEDIUM tungsten = @CBRN_RESOURCE_LOW }
+	}
+
+	chemical_air_payload = {
+		year = @CBRN_PAYLOAD_YEAR_1937
+		is_archetype = yes
+		picture = archetype_chemical_air_payload
+		is_buildable = no
+		type = {
+			support
+			chemical_air_payload
+		}
+		interface_category = interface_category_air
+		group_by = archetype
+		priority = @CBRN_PAYLOAD_PRIORITY
+		lend_lease_cost = @CBRN_PAYLOAD_LEND_LEASE_COST
+		build_cost_ic = @CBRN_AIR_CHOKING_IC
+		reliability = @CBRN_AIR_CHOKING_RELIABILITY
+		can_license = no
+		can_be_lend_leased = { always = no }
+	}
+
+	choking_chemical_air_payload_lot_1 = {
+		year = @CBRN_PAYLOAD_YEAR_1937
+		archetype = chemical_air_payload
+		visual_level = @CBRN_PAYLOAD_VISUAL_LEVEL_0
+		active = no
+		is_buildable = yes
+		priority = @CBRN_PAYLOAD_PRIORITY
+		build_cost_ic = @CBRN_AIR_CHOKING_IC
+		reliability = @CBRN_AIR_CHOKING_RELIABILITY
+		resources = { steel = @CBRN_RESOURCE_MEDIUM rubber = @CBRN_RESOURCE_LOW }
+	}
+
+	blister_chemical_air_payload_lot_1 = {
+		year = @CBRN_PAYLOAD_YEAR_1937
+		archetype = chemical_air_payload
+		visual_level = @CBRN_PAYLOAD_VISUAL_LEVEL_0
+		active = no
+		is_buildable = yes
+		priority = @CBRN_PAYLOAD_PRIORITY
+		build_cost_ic = @CBRN_AIR_BLISTER_IC
+		reliability = @CBRN_AIR_BLISTER_RELIABILITY
+		resources = { steel = @CBRN_RESOURCE_MEDIUM rubber = @CBRN_RESOURCE_MEDIUM tungsten = @CBRN_RESOURCE_LOW }
+	}
+
+	nerve_chemical_air_payload_lot_1 = {
+		year = @CBRN_PAYLOAD_YEAR_1939
+		archetype = chemical_air_payload
+		visual_level = @CBRN_PAYLOAD_VISUAL_LEVEL_1
+		active = no
+		is_buildable = yes
+		priority = @CBRN_PAYLOAD_PRIORITY
+		build_cost_ic = @CBRN_AIR_NERVE_IC
+		reliability = @CBRN_AIR_NERVE_RELIABILITY
+		resources = { steel = @CBRN_RESOURCE_MEDIUM rubber = @CBRN_RESOURCE_HIGH tungsten = @CBRN_RESOURCE_HIGH chromium = @CBRN_RESOURCE_LOW }
+	}
+
+	incapacitating_chemical_air_payload_lot_1 = {
+		year = @CBRN_PAYLOAD_YEAR_1937
+		archetype = chemical_air_payload
+		visual_level = @CBRN_PAYLOAD_VISUAL_LEVEL_0
+		active = no
+		is_buildable = yes
+		priority = @CBRN_PAYLOAD_PRIORITY
+		build_cost_ic = @CBRN_AIR_INCAPACITATING_IC
+		reliability = @CBRN_AIR_INCAPACITATING_RELIABILITY
+		resources = { steel = @CBRN_RESOURCE_MEDIUM rubber = @CBRN_RESOURCE_MEDIUM }
+	}
+}

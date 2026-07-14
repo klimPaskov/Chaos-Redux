@@ -155,8 +155,13 @@ cbrn_country_faces_enemy_chemical_capability = {
 }
 
 cbrn_world_has_confirmed_chemical_use = {
-	any_country = {
-		check_variable = { condemnation_chemical > constant:cbrn_math.zero }
+	OR = {
+		has_global_flag = cbrn_world_confirmed_chemical_use
+		# Compatibility for saves whose public chemical record predates the
+		# shared dispatcher flag.
+		any_country = {
+			check_variable = { condemnation_chemical > constant:cbrn_math.zero }
+		}
 	}
 }
 

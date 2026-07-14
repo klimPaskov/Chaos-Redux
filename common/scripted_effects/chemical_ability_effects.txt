@@ -484,6 +484,17 @@ chem_apply_state_contamination = {
     multiply_temp_variable = { var = chem_max_duration_days value = constant:chem_state.core.duration_scale }
     round_temp_variable = chem_max_duration_days
     clamp_temp_variable = { var = chem_max_duration_days min = 1 max = 9999 }
+	# Shared CBRN records own their exact duration and immediate Deaths entry.
+	# Legacy callers retain the original cap and registration behavior.
+	if = {
+		limit = {
+			check_variable = { var = cbrn_shared_dispatch_guard value = constant:cbrn_proof.supplied compare = equals }
+			check_variable = { cbrn_shared_dispatch_duration_cap > 0 }
+		}
+		set_temp_variable = { var = chem_max_duration_days value = cbrn_shared_dispatch_duration_cap }
+		round_temp_variable = chem_max_duration_days
+		clamp_temp_variable = { var = chem_max_duration_days min = 1 max = 9999 }
+	}
 
     set_temp_variable = { var = chem_existing_strength value = chem_state_contamination_strength }
     set_temp_variable = { var = chem_existing_expiry value = chem_state_contamination_expiry_day }
@@ -543,7 +554,14 @@ chem_apply_state_contamination = {
     add_dynamic_modifier = { modifier = chem_state_contamination days = chem_days_left }
     force_update_dynamic_modifier = yes
 
-    chem_register_state_civilian_deaths = yes
+	if = {
+		limit = {
+			NOT = {
+				check_variable = { var = cbrn_shared_dispatch_guard value = constant:cbrn_proof.supplied compare = equals }
+			}
+		}
+		chem_register_state_civilian_deaths = yes
+	}
     # log = "CHEM_STATE: contaminated [THIS.GetName] ([THIS.GetID]) strength=[?chem_state_contamination_strength|.4] supplies=[?chem_state_contamination_supplies|.4] atk=[?chem_state_contamination_attack|.4] brk=[?chem_state_contamination_breakthrough|.4] days=[?chem_days_left|0]"
 }
 

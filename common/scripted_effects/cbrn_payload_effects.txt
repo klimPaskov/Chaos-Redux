@@ -1,0 +1,771 @@
+# ============================================================================
+# CHAOS REDUX - CBRN PAYLOAD EFFECTS
+# ============================================================================
+# Overview:
+# - Owns selected shell and air profiles, strategic-payload conversion,
+#   route-specific payload requirements, exact stock debits, and one-time
+#   legacy stock migration.
+# - Country scope is required. Action helpers consume the temporary action
+#   record created by cbrn_reset_action_context.
+# - cbrn_try_debit_action_payload supplies the payload proof only after the
+#   exact equipment removal succeeds. Callers must treat a missing proof as a
+#   rejected operation and must not dispatch exposure.
+# - Profile changes impose a real delay and discard a bounded part of prepared
+#   stock. They never alter evidence, attribution, casualties, contamination,
+#   medical load, Condemnation history, or confirmed-use records.
+# ============================================================================
+
+cbrn_initialize_payload_logistics = {
+	if = {
+		limit = { NOT = { has_variable = cbrn_shell_filling_agent } }
+		set_variable = { cbrn_shell_filling_agent = constant:cbrn_agent.none }
+	}
+	if = {
+		limit = { NOT = { has_variable = cbrn_air_payload_agent } }
+		set_variable = { cbrn_air_payload_agent = constant:cbrn_agent.none }
+	}
+}
+
+cbrn_set_default_payload_requirement_for_action = {
+	set_temp_variable = { cbrn_action_payload_required = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_payload_consumed = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_payload_consumed_proof = constant:cbrn_proof.missing }
+
+	if = {
+		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.cylinder_release compare = equals } }
+		set_temp_variable = { cbrn_action_payload_required = constant:cbrn_payload_route_cost.cylinder_release }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.projector_barrage compare = equals } }
+		set_temp_variable = { cbrn_action_payload_required = constant:cbrn_payload_route_cost.projector_barrage }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.artillery_fire_plan compare = equals } }
+		set_temp_variable = { cbrn_action_payload_required = constant:cbrn_payload_route_cost.artillery_fire_plan }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.armored_delivery compare = equals } }
+		set_temp_variable = { cbrn_action_payload_required = constant:cbrn_payload_route_cost.armored_delivery }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.chemical_air_raid compare = equals } }
+		set_temp_variable = { cbrn_action_payload_required = constant:cbrn_payload_route_cost.chemical_air_raid }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.strategic_chemical_raid compare = equals } }
+		set_temp_variable = { cbrn_action_payload_required = constant:cbrn_payload_route_cost.strategic_chemical_raid }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.covert_operation compare = equals } }
+		set_temp_variable = { cbrn_action_payload_required = constant:cbrn_payload_route_cost.covert_operation }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.nerve_suppression compare = equals } }
+		set_temp_variable = { cbrn_action_payload_required = constant:cbrn_payload_route_cost.nerve_suppression }
+	}
+}
+
+cbrn_debit_strategic_agent_lots_internal = {
+	set_temp_variable = { cbrn_payload_debit_model_matched = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_payload_debit_amount = cbrn_action_payload_required }
+	multiply_temp_variable = { cbrn_payload_debit_amount = constant:cbrn_payload_math.negation_multiplier }
+
+	if = {
+		limit = { check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.chlorine compare = equals } }
+		add_equipment_to_stockpile = { type = chlorine_agent_lot_1 amount = cbrn_payload_debit_amount }
+		set_temp_variable = { cbrn_payload_debit_model_matched = constant:cbrn_proof.supplied }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.phosgene compare = equals } }
+		add_equipment_to_stockpile = { type = phosgene_agent_lot_1 amount = cbrn_payload_debit_amount }
+		set_temp_variable = { cbrn_payload_debit_model_matched = constant:cbrn_proof.supplied }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.mustard compare = equals } }
+		add_equipment_to_stockpile = { type = mustard_agent_lot_1 amount = cbrn_payload_debit_amount }
+		set_temp_variable = { cbrn_payload_debit_model_matched = constant:cbrn_proof.supplied }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.lewisite compare = equals } }
+		add_equipment_to_stockpile = { type = lewisite_agent_lot_1 amount = cbrn_payload_debit_amount }
+		set_temp_variable = { cbrn_payload_debit_model_matched = constant:cbrn_proof.supplied }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.tabun compare = equals } }
+		add_equipment_to_stockpile = { type = tabun_agent_lot_1 amount = cbrn_payload_debit_amount }
+		set_temp_variable = { cbrn_payload_debit_model_matched = constant:cbrn_proof.supplied }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.sarin compare = equals } }
+		add_equipment_to_stockpile = { type = sarin_agent_lot_1 amount = cbrn_payload_debit_amount }
+		set_temp_variable = { cbrn_payload_debit_model_matched = constant:cbrn_proof.supplied }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.soman compare = equals } }
+		add_equipment_to_stockpile = { type = soman_agent_lot_1 amount = cbrn_payload_debit_amount }
+		set_temp_variable = { cbrn_payload_debit_model_matched = constant:cbrn_proof.supplied }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.malodor compare = equals } }
+		add_equipment_to_stockpile = { type = malodor_agent_lot_1 amount = cbrn_payload_debit_amount }
+		set_temp_variable = { cbrn_payload_debit_model_matched = constant:cbrn_proof.supplied }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.behavioral compare = equals } }
+		add_equipment_to_stockpile = { type = behavioral_agent_lot_1 amount = cbrn_payload_debit_amount }
+		set_temp_variable = { cbrn_payload_debit_model_matched = constant:cbrn_proof.supplied }
+	}
+}
+
+cbrn_debit_shell_lots_internal = {
+	set_temp_variable = { cbrn_payload_debit_amount = cbrn_action_payload_required }
+	multiply_temp_variable = { cbrn_payload_debit_amount = constant:cbrn_payload_math.negation_multiplier }
+	add_equipment_to_stockpile = { type = chemical_shell_lot_1 amount = cbrn_payload_debit_amount }
+	set_temp_variable = { cbrn_payload_debit_model_matched = constant:cbrn_proof.supplied }
+}
+
+cbrn_debit_air_payload_lots_internal = {
+	set_temp_variable = { cbrn_payload_debit_model_matched = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_payload_debit_amount = cbrn_action_payload_required }
+	multiply_temp_variable = { cbrn_payload_debit_amount = constant:cbrn_payload_math.negation_multiplier }
+
+	if = {
+		limit = { check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.choking compare = equals } }
+		add_equipment_to_stockpile = { type = choking_chemical_air_payload_lot_1 amount = cbrn_payload_debit_amount }
+		set_temp_variable = { cbrn_payload_debit_model_matched = constant:cbrn_proof.supplied }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.blister compare = equals } }
+		add_equipment_to_stockpile = { type = blister_chemical_air_payload_lot_1 amount = cbrn_payload_debit_amount }
+		set_temp_variable = { cbrn_payload_debit_model_matched = constant:cbrn_proof.supplied }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.nerve compare = equals } }
+		add_equipment_to_stockpile = { type = nerve_chemical_air_payload_lot_1 amount = cbrn_payload_debit_amount }
+		set_temp_variable = { cbrn_payload_debit_model_matched = constant:cbrn_proof.supplied }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.incapacitating compare = equals } }
+		add_equipment_to_stockpile = { type = incapacitating_chemical_air_payload_lot_1 amount = cbrn_payload_debit_amount }
+		set_temp_variable = { cbrn_payload_debit_model_matched = constant:cbrn_proof.supplied }
+	}
+}
+
+cbrn_try_debit_action_payload = {
+	set_temp_variable = { cbrn_action_payload_consumed = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_payload_consumed_proof = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_payload_debit_model_matched = constant:cbrn_proof.missing }
+
+	if = {
+		limit = {
+			cbrn_chemical_action_static_metadata_is_valid = yes
+			cbrn_action_agent_is_unlocked = yes
+			cbrn_action_payload_profile_is_ready = yes
+			cbrn_action_payload_stock_is_sufficient = yes
+		}
+		if = {
+			limit = { cbrn_action_uses_strategic_agent_lots = yes }
+			cbrn_debit_strategic_agent_lots_internal = yes
+		}
+		else_if = {
+			limit = { cbrn_action_uses_shell_lots = yes }
+			cbrn_debit_shell_lots_internal = yes
+		}
+		else_if = {
+			limit = { cbrn_action_uses_air_payload_lots = yes }
+			cbrn_debit_air_payload_lots_internal = yes
+		}
+
+		if = {
+			limit = { check_variable = { var = cbrn_payload_debit_model_matched value = constant:cbrn_proof.supplied compare = equals } }
+			set_temp_variable = { cbrn_action_payload_consumed = cbrn_action_payload_required }
+			set_temp_variable = { cbrn_action_payload_consumed_proof = constant:cbrn_proof.supplied }
+		}
+	}
+}
+
+cbrn_remove_shell_profile_wastage_internal = {
+	set_temp_variable = { cbrn_payload_profile_available = num_equipment@chemical_shell_lot_1 }
+	set_temp_variable = { cbrn_payload_profile_retained = cbrn_payload_profile_available }
+	multiply_temp_variable = { cbrn_payload_profile_retained = constant:cbrn_payload_conversion.shell_profile_switch_recovery }
+	set_temp_variable = { cbrn_payload_profile_loss = cbrn_payload_profile_available }
+	subtract_from_temp_variable = { cbrn_payload_profile_loss = cbrn_payload_profile_retained }
+	round_temp_variable = cbrn_payload_profile_loss
+	if = {
+		limit = { check_variable = { var = cbrn_payload_profile_loss value = constant:cbrn_math.zero compare = greater_than } }
+		multiply_temp_variable = { cbrn_payload_profile_loss = constant:cbrn_payload_math.negation_multiplier }
+		add_equipment_to_stockpile = { type = chemical_shell_lot_1 amount = cbrn_payload_profile_loss }
+	}
+}
+
+cbrn_remove_air_profile_wastage_internal = {
+	set_temp_variable = { cbrn_payload_profile_available = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_payload_profile_old_class = constant:cbrn_agent_class.none }
+
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.chlorine compare = equals }
+				check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.phosgene compare = equals }
+			}
+		}
+		set_temp_variable = { cbrn_payload_profile_old_class = constant:cbrn_agent_class.choking }
+		set_temp_variable = { cbrn_payload_profile_available = num_equipment@choking_chemical_air_payload_lot_1 }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.mustard compare = equals }
+				check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.lewisite compare = equals }
+			}
+		}
+		set_temp_variable = { cbrn_payload_profile_old_class = constant:cbrn_agent_class.blister }
+		set_temp_variable = { cbrn_payload_profile_available = num_equipment@blister_chemical_air_payload_lot_1 }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.tabun compare = equals }
+				check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.sarin compare = equals }
+				check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.soman compare = equals }
+			}
+		}
+		set_temp_variable = { cbrn_payload_profile_old_class = constant:cbrn_agent_class.nerve }
+		set_temp_variable = { cbrn_payload_profile_available = num_equipment@nerve_chemical_air_payload_lot_1 }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.malodor compare = equals }
+				check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.behavioral compare = equals }
+			}
+		}
+		set_temp_variable = { cbrn_payload_profile_old_class = constant:cbrn_agent_class.incapacitating }
+		set_temp_variable = { cbrn_payload_profile_available = num_equipment@incapacitating_chemical_air_payload_lot_1 }
+	}
+
+	set_temp_variable = { cbrn_payload_profile_retained = cbrn_payload_profile_available }
+	multiply_temp_variable = { cbrn_payload_profile_retained = constant:cbrn_payload_conversion.air_profile_switch_recovery }
+	set_temp_variable = { cbrn_payload_profile_loss = cbrn_payload_profile_available }
+	subtract_from_temp_variable = { cbrn_payload_profile_loss = cbrn_payload_profile_retained }
+	round_temp_variable = cbrn_payload_profile_loss
+
+	if = {
+		limit = { check_variable = { var = cbrn_payload_profile_loss value = constant:cbrn_math.zero compare = greater_than } }
+		multiply_temp_variable = { cbrn_payload_profile_loss = constant:cbrn_payload_math.negation_multiplier }
+		if = {
+			limit = { check_variable = { var = cbrn_payload_profile_old_class value = constant:cbrn_agent_class.choking compare = equals } }
+			add_equipment_to_stockpile = { type = choking_chemical_air_payload_lot_1 amount = cbrn_payload_profile_loss }
+		}
+		else_if = {
+			limit = { check_variable = { var = cbrn_payload_profile_old_class value = constant:cbrn_agent_class.blister compare = equals } }
+			add_equipment_to_stockpile = { type = blister_chemical_air_payload_lot_1 amount = cbrn_payload_profile_loss }
+		}
+		else_if = {
+			limit = { check_variable = { var = cbrn_payload_profile_old_class value = constant:cbrn_agent_class.nerve compare = equals } }
+			add_equipment_to_stockpile = { type = nerve_chemical_air_payload_lot_1 amount = cbrn_payload_profile_loss }
+		}
+		else_if = {
+			limit = { check_variable = { var = cbrn_payload_profile_old_class value = constant:cbrn_agent_class.incapacitating compare = equals } }
+			add_equipment_to_stockpile = { type = incapacitating_chemical_air_payload_lot_1 amount = cbrn_payload_profile_loss }
+		}
+	}
+}
+
+cbrn_change_shell_filling_profile = {
+	cbrn_initialize_payload_logistics = yes
+	set_temp_variable = { cbrn_payload_profile_change_accepted = constant:cbrn_proof.missing }
+	if = {
+		limit = {
+			NOT = { has_country_flag = cbrn_shell_profile_change_in_progress }
+			cbrn_requested_payload_agent_is_unlocked = yes
+			check_variable = { var = cbrn_shell_filling_agent value = cbrn_requested_payload_agent compare = not_equals }
+		}
+		if = {
+			limit = { check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.none compare = not_equals } }
+			cbrn_remove_shell_profile_wastage_internal = yes
+		}
+		set_variable = { cbrn_shell_filling_agent = cbrn_requested_payload_agent }
+		set_temp_variable = { cbrn_payload_profile_change_days = constant:cbrn_payload_profile_timing.shell_change_days }
+		set_country_flag = { flag = cbrn_shell_profile_change_in_progress days = cbrn_payload_profile_change_days }
+		set_temp_variable = { cbrn_payload_profile_change_accepted = constant:cbrn_proof.supplied }
+	}
+}
+
+cbrn_change_air_payload_profile = {
+	cbrn_initialize_payload_logistics = yes
+	set_temp_variable = { cbrn_payload_profile_change_accepted = constant:cbrn_proof.missing }
+	if = {
+		limit = {
+			NOT = { has_country_flag = cbrn_air_profile_change_in_progress }
+			cbrn_requested_payload_agent_is_unlocked = yes
+			check_variable = { var = cbrn_air_payload_agent value = cbrn_requested_payload_agent compare = not_equals }
+		}
+		if = {
+			limit = { check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.none compare = not_equals } }
+			cbrn_remove_air_profile_wastage_internal = yes
+		}
+		set_variable = { cbrn_air_payload_agent = cbrn_requested_payload_agent }
+		set_temp_variable = { cbrn_payload_profile_change_days = constant:cbrn_payload_profile_timing.air_change_days }
+		set_country_flag = { flag = cbrn_air_profile_change_in_progress days = cbrn_payload_profile_change_days }
+		set_temp_variable = { cbrn_payload_profile_change_accepted = constant:cbrn_proof.supplied }
+	}
+}
+
+cbrn_read_selected_shell_agent_stock_internal = {
+	set_temp_variable = { cbrn_payload_source_available = constant:cbrn_math.zero }
+	if = {
+		limit = { check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.chlorine compare = equals } }
+		set_temp_variable = { cbrn_payload_source_available = num_equipment@chlorine_agent_lot_1 }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.phosgene compare = equals } }
+		set_temp_variable = { cbrn_payload_source_available = num_equipment@phosgene_agent_lot_1 }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.mustard compare = equals } }
+		set_temp_variable = { cbrn_payload_source_available = num_equipment@mustard_agent_lot_1 }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.lewisite compare = equals } }
+		set_temp_variable = { cbrn_payload_source_available = num_equipment@lewisite_agent_lot_1 }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.tabun compare = equals } }
+		set_temp_variable = { cbrn_payload_source_available = num_equipment@tabun_agent_lot_1 }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.sarin compare = equals } }
+		set_temp_variable = { cbrn_payload_source_available = num_equipment@sarin_agent_lot_1 }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.soman compare = equals } }
+		set_temp_variable = { cbrn_payload_source_available = num_equipment@soman_agent_lot_1 }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.malodor compare = equals } }
+		set_temp_variable = { cbrn_payload_source_available = num_equipment@malodor_agent_lot_1 }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.behavioral compare = equals } }
+		set_temp_variable = { cbrn_payload_source_available = num_equipment@behavioral_agent_lot_1 }
+	}
+}
+
+cbrn_debit_selected_shell_agent_stock_internal = {
+	set_temp_variable = { cbrn_payload_source_debit = cbrn_payload_conversion_input }
+	multiply_temp_variable = { cbrn_payload_source_debit = constant:cbrn_payload_math.negation_multiplier }
+	if = {
+		limit = { check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.chlorine compare = equals } }
+		add_equipment_to_stockpile = { type = chlorine_agent_lot_1 amount = cbrn_payload_source_debit }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.phosgene compare = equals } }
+		add_equipment_to_stockpile = { type = phosgene_agent_lot_1 amount = cbrn_payload_source_debit }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.mustard compare = equals } }
+		add_equipment_to_stockpile = { type = mustard_agent_lot_1 amount = cbrn_payload_source_debit }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.lewisite compare = equals } }
+		add_equipment_to_stockpile = { type = lewisite_agent_lot_1 amount = cbrn_payload_source_debit }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.tabun compare = equals } }
+		add_equipment_to_stockpile = { type = tabun_agent_lot_1 amount = cbrn_payload_source_debit }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.sarin compare = equals } }
+		add_equipment_to_stockpile = { type = sarin_agent_lot_1 amount = cbrn_payload_source_debit }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.soman compare = equals } }
+		add_equipment_to_stockpile = { type = soman_agent_lot_1 amount = cbrn_payload_source_debit }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.malodor compare = equals } }
+		add_equipment_to_stockpile = { type = malodor_agent_lot_1 amount = cbrn_payload_source_debit }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.behavioral compare = equals } }
+		add_equipment_to_stockpile = { type = behavioral_agent_lot_1 amount = cbrn_payload_source_debit }
+	}
+}
+
+cbrn_set_shell_conversion_recovery_internal = {
+	set_temp_variable = { cbrn_payload_conversion_recovery = constant:cbrn_payload_conversion.incapacitating_to_shell_recovery }
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.chlorine compare = equals }
+				check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.phosgene compare = equals }
+			}
+		}
+		set_temp_variable = { cbrn_payload_conversion_recovery = constant:cbrn_payload_conversion.choking_to_shell_recovery }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.mustard compare = equals }
+				check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.lewisite compare = equals }
+			}
+		}
+		set_temp_variable = { cbrn_payload_conversion_recovery = constant:cbrn_payload_conversion.blister_to_shell_recovery }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.tabun compare = equals }
+				check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.sarin compare = equals }
+				check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.soman compare = equals }
+			}
+		}
+		set_temp_variable = { cbrn_payload_conversion_recovery = constant:cbrn_payload_conversion.nerve_to_shell_recovery }
+	}
+}
+
+cbrn_convert_selected_agent_to_shell_lots = {
+	set_temp_variable = { cbrn_payload_conversion_completed = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_payload_conversion_input = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_payload_conversion_output = constant:cbrn_math.zero }
+	if = {
+		limit = {
+			has_tech = chemical_artillery_shells
+			NOT = { has_country_flag = cbrn_shell_profile_change_in_progress }
+			has_variable = cbrn_payload_conversion_requested
+			check_variable = { var = cbrn_payload_conversion_requested value = constant:cbrn_payload_conversion.minimum_input compare = greater_than_or_equals }
+			check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.none compare = not_equals }
+		}
+		cbrn_read_selected_shell_agent_stock_internal = yes
+		set_temp_variable = { cbrn_payload_conversion_input = cbrn_payload_conversion_requested }
+		clamp_temp_variable = { var = cbrn_payload_conversion_input min = constant:cbrn_math.zero max = cbrn_payload_source_available }
+		round_temp_variable = cbrn_payload_conversion_input
+		if = {
+			limit = { check_variable = { var = cbrn_payload_conversion_input value = constant:cbrn_math.zero compare = greater_than } }
+			cbrn_set_shell_conversion_recovery_internal = yes
+			set_temp_variable = { cbrn_payload_conversion_output = cbrn_payload_conversion_input }
+			multiply_temp_variable = { cbrn_payload_conversion_output = cbrn_payload_conversion_recovery }
+			round_temp_variable = cbrn_payload_conversion_output
+			if = {
+				limit = { check_variable = { var = cbrn_payload_conversion_output value = constant:cbrn_math.zero compare = greater_than } }
+				cbrn_debit_selected_shell_agent_stock_internal = yes
+				add_equipment_to_stockpile = { type = chemical_shell_lot_1 amount = cbrn_payload_conversion_output }
+				set_temp_variable = { cbrn_payload_conversion_completed = constant:cbrn_proof.supplied }
+			}
+		}
+	}
+}
+
+cbrn_read_selected_air_agent_stock_internal = {
+	set_temp_variable = { cbrn_payload_source_available = constant:cbrn_math.zero }
+	if = {
+		limit = { check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.chlorine compare = equals } }
+		set_temp_variable = { cbrn_payload_source_available = num_equipment@chlorine_agent_lot_1 }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.phosgene compare = equals } }
+		set_temp_variable = { cbrn_payload_source_available = num_equipment@phosgene_agent_lot_1 }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.mustard compare = equals } }
+		set_temp_variable = { cbrn_payload_source_available = num_equipment@mustard_agent_lot_1 }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.lewisite compare = equals } }
+		set_temp_variable = { cbrn_payload_source_available = num_equipment@lewisite_agent_lot_1 }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.tabun compare = equals } }
+		set_temp_variable = { cbrn_payload_source_available = num_equipment@tabun_agent_lot_1 }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.sarin compare = equals } }
+		set_temp_variable = { cbrn_payload_source_available = num_equipment@sarin_agent_lot_1 }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.soman compare = equals } }
+		set_temp_variable = { cbrn_payload_source_available = num_equipment@soman_agent_lot_1 }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.malodor compare = equals } }
+		set_temp_variable = { cbrn_payload_source_available = num_equipment@malodor_agent_lot_1 }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.behavioral compare = equals } }
+		set_temp_variable = { cbrn_payload_source_available = num_equipment@behavioral_agent_lot_1 }
+	}
+}
+
+cbrn_debit_selected_air_agent_stock_internal = {
+	set_temp_variable = { cbrn_payload_source_debit = cbrn_payload_conversion_input }
+	multiply_temp_variable = { cbrn_payload_source_debit = constant:cbrn_payload_math.negation_multiplier }
+	if = {
+		limit = { check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.chlorine compare = equals } }
+		add_equipment_to_stockpile = { type = chlorine_agent_lot_1 amount = cbrn_payload_source_debit }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.phosgene compare = equals } }
+		add_equipment_to_stockpile = { type = phosgene_agent_lot_1 amount = cbrn_payload_source_debit }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.mustard compare = equals } }
+		add_equipment_to_stockpile = { type = mustard_agent_lot_1 amount = cbrn_payload_source_debit }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.lewisite compare = equals } }
+		add_equipment_to_stockpile = { type = lewisite_agent_lot_1 amount = cbrn_payload_source_debit }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.tabun compare = equals } }
+		add_equipment_to_stockpile = { type = tabun_agent_lot_1 amount = cbrn_payload_source_debit }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.sarin compare = equals } }
+		add_equipment_to_stockpile = { type = sarin_agent_lot_1 amount = cbrn_payload_source_debit }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.soman compare = equals } }
+		add_equipment_to_stockpile = { type = soman_agent_lot_1 amount = cbrn_payload_source_debit }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.malodor compare = equals } }
+		add_equipment_to_stockpile = { type = malodor_agent_lot_1 amount = cbrn_payload_source_debit }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.behavioral compare = equals } }
+		add_equipment_to_stockpile = { type = behavioral_agent_lot_1 amount = cbrn_payload_source_debit }
+	}
+}
+
+cbrn_add_selected_air_payload_output_internal = {
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.chlorine compare = equals }
+				check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.phosgene compare = equals }
+			}
+		}
+		add_equipment_to_stockpile = { type = choking_chemical_air_payload_lot_1 amount = cbrn_payload_conversion_output }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.mustard compare = equals }
+				check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.lewisite compare = equals }
+			}
+		}
+		add_equipment_to_stockpile = { type = blister_chemical_air_payload_lot_1 amount = cbrn_payload_conversion_output }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.tabun compare = equals }
+				check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.sarin compare = equals }
+				check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.soman compare = equals }
+			}
+		}
+		add_equipment_to_stockpile = { type = nerve_chemical_air_payload_lot_1 amount = cbrn_payload_conversion_output }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.malodor compare = equals }
+				check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.behavioral compare = equals }
+			}
+		}
+		add_equipment_to_stockpile = { type = incapacitating_chemical_air_payload_lot_1 amount = cbrn_payload_conversion_output }
+	}
+}
+
+cbrn_convert_selected_agent_to_air_payload_lots = {
+	set_temp_variable = { cbrn_payload_conversion_completed = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_payload_conversion_input = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_payload_conversion_output = constant:cbrn_math.zero }
+	if = {
+		limit = {
+			has_tech = chemical_air_interdiction
+			NOT = { has_country_flag = cbrn_air_profile_change_in_progress }
+			has_variable = cbrn_payload_conversion_requested
+			check_variable = { var = cbrn_payload_conversion_requested value = constant:cbrn_payload_conversion.minimum_input compare = greater_than_or_equals }
+			check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.none compare = not_equals }
+		}
+		cbrn_read_selected_air_agent_stock_internal = yes
+		set_temp_variable = { cbrn_payload_conversion_input = cbrn_payload_conversion_requested }
+		clamp_temp_variable = { var = cbrn_payload_conversion_input min = constant:cbrn_math.zero max = cbrn_payload_source_available }
+		round_temp_variable = cbrn_payload_conversion_input
+		if = {
+			limit = { check_variable = { var = cbrn_payload_conversion_input value = constant:cbrn_math.zero compare = greater_than } }
+			set_temp_variable = { cbrn_payload_conversion_output = cbrn_payload_conversion_input }
+			multiply_temp_variable = { cbrn_payload_conversion_output = constant:cbrn_payload_conversion.strategic_to_air_recovery }
+			round_temp_variable = cbrn_payload_conversion_output
+			if = {
+				limit = { check_variable = { var = cbrn_payload_conversion_output value = constant:cbrn_math.zero compare = greater_than } }
+				cbrn_debit_selected_air_agent_stock_internal = yes
+				cbrn_add_selected_air_payload_output_internal = yes
+				set_temp_variable = { cbrn_payload_conversion_completed = constant:cbrn_proof.supplied }
+			}
+		}
+	}
+}
+
+cbrn_migrate_legacy_payload_stockpiles = {
+	if = {
+		limit = { NOT = { has_country_flag = cbrn_legacy_payload_stockpiles_migrated } }
+		cbrn_initialize_payload_logistics = yes
+
+		set_temp_variable = { cbrn_payload_legacy_stock = num_equipment@chemical_chlorine_payload_cylinder_1 }
+		if = {
+			limit = { check_variable = { var = cbrn_payload_legacy_stock value = constant:cbrn_math.zero compare = greater_than } }
+			set_temp_variable = { cbrn_payload_legacy_remove = cbrn_payload_legacy_stock }
+			multiply_temp_variable = { cbrn_payload_legacy_remove = constant:cbrn_payload_math.negation_multiplier }
+			set_temp_variable = { cbrn_payload_legacy_recovered = cbrn_payload_legacy_stock }
+			multiply_temp_variable = { cbrn_payload_legacy_recovered = constant:cbrn_payload_conversion.legacy_stock_recovery }
+			round_temp_variable = cbrn_payload_legacy_recovered
+			add_equipment_to_stockpile = { type = chemical_chlorine_payload_cylinder_1 amount = cbrn_payload_legacy_remove }
+			add_equipment_to_stockpile = { type = chlorine_agent_lot_1 amount = cbrn_payload_legacy_recovered }
+		}
+
+		set_temp_variable = { cbrn_payload_legacy_stock = num_equipment@chemical_phosgene_payload_cylinder_1 }
+		if = {
+			limit = { check_variable = { var = cbrn_payload_legacy_stock value = constant:cbrn_math.zero compare = greater_than } }
+			set_temp_variable = { cbrn_payload_legacy_remove = cbrn_payload_legacy_stock }
+			multiply_temp_variable = { cbrn_payload_legacy_remove = constant:cbrn_payload_math.negation_multiplier }
+			set_temp_variable = { cbrn_payload_legacy_recovered = cbrn_payload_legacy_stock }
+			multiply_temp_variable = { cbrn_payload_legacy_recovered = constant:cbrn_payload_conversion.legacy_stock_recovery }
+			round_temp_variable = cbrn_payload_legacy_recovered
+			add_equipment_to_stockpile = { type = chemical_phosgene_payload_cylinder_1 amount = cbrn_payload_legacy_remove }
+			add_equipment_to_stockpile = { type = phosgene_agent_lot_1 amount = cbrn_payload_legacy_recovered }
+		}
+
+		set_temp_variable = { cbrn_payload_legacy_stock = num_equipment@chemical_mustard_payload_cylinder_1 }
+		if = {
+			limit = { check_variable = { var = cbrn_payload_legacy_stock value = constant:cbrn_math.zero compare = greater_than } }
+			set_temp_variable = { cbrn_payload_legacy_remove = cbrn_payload_legacy_stock }
+			multiply_temp_variable = { cbrn_payload_legacy_remove = constant:cbrn_payload_math.negation_multiplier }
+			set_temp_variable = { cbrn_payload_legacy_recovered = cbrn_payload_legacy_stock }
+			multiply_temp_variable = { cbrn_payload_legacy_recovered = constant:cbrn_payload_conversion.legacy_stock_recovery }
+			round_temp_variable = cbrn_payload_legacy_recovered
+			add_equipment_to_stockpile = { type = chemical_mustard_payload_cylinder_1 amount = cbrn_payload_legacy_remove }
+			add_equipment_to_stockpile = { type = mustard_agent_lot_1 amount = cbrn_payload_legacy_recovered }
+		}
+
+		set_temp_variable = { cbrn_payload_legacy_stock = num_equipment@chemical_lewisite_payload_cylinder_1 }
+		if = {
+			limit = { check_variable = { var = cbrn_payload_legacy_stock value = constant:cbrn_math.zero compare = greater_than } }
+			set_temp_variable = { cbrn_payload_legacy_remove = cbrn_payload_legacy_stock }
+			multiply_temp_variable = { cbrn_payload_legacy_remove = constant:cbrn_payload_math.negation_multiplier }
+			set_temp_variable = { cbrn_payload_legacy_recovered = cbrn_payload_legacy_stock }
+			multiply_temp_variable = { cbrn_payload_legacy_recovered = constant:cbrn_payload_conversion.legacy_stock_recovery }
+			round_temp_variable = cbrn_payload_legacy_recovered
+			add_equipment_to_stockpile = { type = chemical_lewisite_payload_cylinder_1 amount = cbrn_payload_legacy_remove }
+			add_equipment_to_stockpile = { type = lewisite_agent_lot_1 amount = cbrn_payload_legacy_recovered }
+		}
+
+		set_temp_variable = { cbrn_payload_legacy_stock = num_equipment@chemical_tabun_payload_cylinder_1 }
+		if = {
+			limit = { check_variable = { var = cbrn_payload_legacy_stock value = constant:cbrn_math.zero compare = greater_than } }
+			set_temp_variable = { cbrn_payload_legacy_remove = cbrn_payload_legacy_stock }
+			multiply_temp_variable = { cbrn_payload_legacy_remove = constant:cbrn_payload_math.negation_multiplier }
+			set_temp_variable = { cbrn_payload_legacy_recovered = cbrn_payload_legacy_stock }
+			multiply_temp_variable = { cbrn_payload_legacy_recovered = constant:cbrn_payload_conversion.legacy_stock_recovery }
+			round_temp_variable = cbrn_payload_legacy_recovered
+			add_equipment_to_stockpile = { type = chemical_tabun_payload_cylinder_1 amount = cbrn_payload_legacy_remove }
+			add_equipment_to_stockpile = { type = tabun_agent_lot_1 amount = cbrn_payload_legacy_recovered }
+		}
+
+		set_temp_variable = { cbrn_payload_legacy_stock = num_equipment@chemical_sarin_payload_cylinder_1 }
+		if = {
+			limit = { check_variable = { var = cbrn_payload_legacy_stock value = constant:cbrn_math.zero compare = greater_than } }
+			set_temp_variable = { cbrn_payload_legacy_remove = cbrn_payload_legacy_stock }
+			multiply_temp_variable = { cbrn_payload_legacy_remove = constant:cbrn_payload_math.negation_multiplier }
+			set_temp_variable = { cbrn_payload_legacy_recovered = cbrn_payload_legacy_stock }
+			multiply_temp_variable = { cbrn_payload_legacy_recovered = constant:cbrn_payload_conversion.legacy_stock_recovery }
+			round_temp_variable = cbrn_payload_legacy_recovered
+			add_equipment_to_stockpile = { type = chemical_sarin_payload_cylinder_1 amount = cbrn_payload_legacy_remove }
+			add_equipment_to_stockpile = { type = sarin_agent_lot_1 amount = cbrn_payload_legacy_recovered }
+		}
+
+		set_temp_variable = { cbrn_payload_legacy_stock = num_equipment@chemical_soman_payload_cylinder_1 }
+		if = {
+			limit = { check_variable = { var = cbrn_payload_legacy_stock value = constant:cbrn_math.zero compare = greater_than } }
+			set_temp_variable = { cbrn_payload_legacy_remove = cbrn_payload_legacy_stock }
+			multiply_temp_variable = { cbrn_payload_legacy_remove = constant:cbrn_payload_math.negation_multiplier }
+			set_temp_variable = { cbrn_payload_legacy_recovered = cbrn_payload_legacy_stock }
+			multiply_temp_variable = { cbrn_payload_legacy_recovered = constant:cbrn_payload_conversion.legacy_stock_recovery }
+			round_temp_variable = cbrn_payload_legacy_recovered
+			add_equipment_to_stockpile = { type = chemical_soman_payload_cylinder_1 amount = cbrn_payload_legacy_remove }
+			add_equipment_to_stockpile = { type = soman_agent_lot_1 amount = cbrn_payload_legacy_recovered }
+		}
+
+		set_temp_variable = { cbrn_payload_legacy_stock = num_equipment@malodor_bomb_1 }
+		if = {
+			limit = { check_variable = { var = cbrn_payload_legacy_stock value = constant:cbrn_math.zero compare = greater_than } }
+			set_temp_variable = { cbrn_payload_legacy_remove = cbrn_payload_legacy_stock }
+			multiply_temp_variable = { cbrn_payload_legacy_remove = constant:cbrn_payload_math.negation_multiplier }
+			set_temp_variable = { cbrn_payload_legacy_recovered = cbrn_payload_legacy_stock }
+			multiply_temp_variable = { cbrn_payload_legacy_recovered = constant:cbrn_payload_conversion.legacy_stock_recovery }
+			round_temp_variable = cbrn_payload_legacy_recovered
+			add_equipment_to_stockpile = { type = malodor_bomb_1 amount = cbrn_payload_legacy_remove }
+			add_equipment_to_stockpile = { type = malodor_agent_lot_1 amount = cbrn_payload_legacy_recovered }
+		}
+
+		set_temp_variable = { cbrn_payload_legacy_stock = num_equipment@aphrodisiac_bomb_1 }
+		if = {
+			limit = { check_variable = { var = cbrn_payload_legacy_stock value = constant:cbrn_math.zero compare = greater_than } }
+			set_temp_variable = { cbrn_payload_legacy_remove = cbrn_payload_legacy_stock }
+			multiply_temp_variable = { cbrn_payload_legacy_remove = constant:cbrn_payload_math.negation_multiplier }
+			set_temp_variable = { cbrn_payload_legacy_recovered = cbrn_payload_legacy_stock }
+			multiply_temp_variable = { cbrn_payload_legacy_recovered = constant:cbrn_payload_conversion.legacy_stock_recovery }
+			round_temp_variable = cbrn_payload_legacy_recovered
+			add_equipment_to_stockpile = { type = aphrodisiac_bomb_1 amount = cbrn_payload_legacy_remove }
+			add_equipment_to_stockpile = { type = behavioral_agent_lot_1 amount = cbrn_payload_legacy_recovered }
+		}
+
+		if = {
+			limit = { check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.none compare = equals } }
+			if = {
+				limit = { check_variable = { var = num_equipment@soman_agent_lot_1 value = constant:cbrn_math.zero compare = greater_than } }
+				set_variable = { cbrn_shell_filling_agent = constant:cbrn_agent.soman }
+			}
+			else_if = {
+				limit = { check_variable = { var = num_equipment@sarin_agent_lot_1 value = constant:cbrn_math.zero compare = greater_than } }
+				set_variable = { cbrn_shell_filling_agent = constant:cbrn_agent.sarin }
+			}
+			else_if = {
+				limit = { check_variable = { var = num_equipment@tabun_agent_lot_1 value = constant:cbrn_math.zero compare = greater_than } }
+				set_variable = { cbrn_shell_filling_agent = constant:cbrn_agent.tabun }
+			}
+			else_if = {
+				limit = { check_variable = { var = num_equipment@lewisite_agent_lot_1 value = constant:cbrn_math.zero compare = greater_than } }
+				set_variable = { cbrn_shell_filling_agent = constant:cbrn_agent.lewisite }
+			}
+			else_if = {
+				limit = { check_variable = { var = num_equipment@mustard_agent_lot_1 value = constant:cbrn_math.zero compare = greater_than } }
+				set_variable = { cbrn_shell_filling_agent = constant:cbrn_agent.mustard }
+			}
+			else_if = {
+				limit = { check_variable = { var = num_equipment@phosgene_agent_lot_1 value = constant:cbrn_math.zero compare = greater_than } }
+				set_variable = { cbrn_shell_filling_agent = constant:cbrn_agent.phosgene }
+			}
+			else_if = {
+				limit = { check_variable = { var = num_equipment@chlorine_agent_lot_1 value = constant:cbrn_math.zero compare = greater_than } }
+				set_variable = { cbrn_shell_filling_agent = constant:cbrn_agent.chlorine }
+			}
+			else_if = {
+				limit = { check_variable = { var = num_equipment@behavioral_agent_lot_1 value = constant:cbrn_math.zero compare = greater_than } }
+				set_variable = { cbrn_shell_filling_agent = constant:cbrn_agent.behavioral }
+			}
+			else_if = {
+				limit = { check_variable = { var = num_equipment@malodor_agent_lot_1 value = constant:cbrn_math.zero compare = greater_than } }
+				set_variable = { cbrn_shell_filling_agent = constant:cbrn_agent.malodor }
+			}
+		}
+
+		if = {
+			limit = { check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.none compare = equals } }
+			set_variable = { cbrn_air_payload_agent = cbrn_shell_filling_agent }
+		}
+		set_country_flag = cbrn_legacy_payload_stockpiles_migrated
+	}
+}
