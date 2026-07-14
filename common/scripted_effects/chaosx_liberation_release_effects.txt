@@ -1,0 +1,997 @@
+# ============================================================================
+# CHAOS REDUX - LIBERATIONS RELEASE COORDINATOR EFFECTS
+# ============================================================================
+# Overview:
+# - Owns the shared frozen-plan lifecycle for Event 005 and Event 006.
+# - Stores exact country, state, host, protected-state, and rejection ledgers.
+# - Performs mutation-free lock validation and a final live revalidation before
+#   either event may change ownership.
+# - Does not select Event 006 packages or execute event-specific country setup;
+#   those remain in the owning event's files.
+# - Never performs broad periodic world iteration.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Plan cleanup and lifecycle
+# ---------------------------------------------------------------------------
+
+liberation_release_clear_plan_scope_marks = {
+	for_each_scope_loop = {
+		array = global.liberation_plan_states
+		clr_state_flag = liberation_release_reserved_state
+		clear_variable = liberation_release_plan_id
+		clear_variable = liberation_release_package_id
+		clear_variable = liberation_release_plan_owner
+		clear_variable = liberation_release_state_role
+		clear_variable = liberation_release_original_owner
+		clear_variable = liberation_release_original_controller
+		clear_variable = liberation_release_target_country
+	}
+	for_each_scope_loop = {
+		array = global.liberation_plan_host_protected_states
+		clr_state_flag = liberation_release_protected_host_state
+		clear_variable = liberation_release_plan_id
+		clear_variable = liberation_release_protected_host
+	}
+	for_each_scope_loop = {
+		array = global.liberation_plan_hosts
+		clr_country_flag = liberation_release_plan_host
+		clear_variable = liberation_release_plan_id
+		clear_variable = liberation_release_planned_loss_count
+		clear_variable = liberation_release_protected_state
+	}
+	for_each_scope_loop = {
+		array = global.liberation_plan_countries
+		clr_country_flag = liberation_release_reserved_country
+		clear_variable = liberation_release_plan_id
+		clear_variable = liberation_release_plan_owner
+		clear_variable = liberation_release_package_id
+	}
+}
+
+liberation_release_clear_plan_arrays = {
+	clear_array = global.liberation_plan_package_ids
+	clear_array = global.liberation_plan_country_owners
+	clear_array = global.liberation_plan_countries
+	clear_array = global.liberation_plan_anchor_states
+	clear_array = global.liberation_plan_primary_hosts
+	clear_array = global.liberation_plan_reservation_groups
+	clear_array = global.liberation_plan_territory_levels
+	clear_array = global.liberation_plan_force_levels
+	clear_array = global.liberation_plan_states
+	clear_array = global.liberation_plan_state_package_ids
+	clear_array = global.liberation_plan_state_country_owners
+	clear_array = global.liberation_plan_state_target_countries
+	clear_array = global.liberation_plan_state_hosts
+	clear_array = global.liberation_plan_state_roles
+	clear_array = global.liberation_plan_hosts
+	clear_array = global.liberation_plan_host_owned_state_snapshots
+	clear_array = global.liberation_plan_host_protected_states
+	clear_array = global.liberation_plan_rejected_package_ids
+	clear_array = global.liberation_plan_rejection_reasons
+}
+
+liberation_release_reset_plan = {
+	liberation_release_clear_plan_scope_marks = yes
+	liberation_release_clear_plan_arrays = yes
+	clr_global_flag = liberation_release_plan_valid
+	clr_global_flag = liberation_release_plan_includes_event5
+	clr_global_flag = liberation_release_plan_includes_event6
+	clr_global_flag = liberation_release_joint_plan_executed
+	clr_global_flag = liberation_release_execution_started
+	set_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.idle }
+	clear_variable = global.liberation_plan_id
+	clear_variable = global.liberation_plan_mode
+	clear_variable = global.liberation_plan_owner
+	clear_variable = global.liberation_plan_expected_country_count
+	clear_variable = global.liberation_plan_started_date
+	clear_variable = global.liberation_plan_committed_date
+	clear_variable = global.liberation_plan_source_country
+	clear_variable = global.liberation_plan_last_failure
+}
+
+# Inputs (temporary variables):
+# - liberation_call_mode
+# - liberation_call_expected_country_count
+# - liberation_call_plan_owner (Soviet Collapse, Independence Wave, or joint)
+liberation_release_begin_plan = {
+	liberation_release_clear_plan_scope_marks = yes
+	liberation_release_clear_plan_arrays = yes
+	clr_global_flag = liberation_release_plan_valid
+	clr_global_flag = liberation_release_plan_includes_event5
+	clr_global_flag = liberation_release_plan_includes_event6
+	clr_global_flag = liberation_release_joint_plan_executed
+	clr_global_flag = liberation_release_execution_started
+	clear_variable = global.liberation_plan_last_failure
+	if = {
+		limit = { NOT = { has_variable = global.liberation_next_plan_id } }
+		set_variable = { global.liberation_next_plan_id = constant:liberation_release_limit.minimum }
+	}
+	add_to_variable = { global.liberation_next_plan_id = constant:liberation_release_limit.one }
+	set_variable = { global.liberation_plan_id = global.liberation_next_plan_id }
+	set_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.collecting }
+	set_variable = { global.liberation_plan_mode = liberation_call_mode }
+	set_variable = { global.liberation_plan_owner = liberation_call_plan_owner }
+	set_variable = { global.liberation_plan_expected_country_count = liberation_call_expected_country_count }
+	set_variable = { global.liberation_plan_started_date = global.date }
+	set_variable = { global.liberation_plan_source_country = THIS }
+	if = {
+		limit = {
+			OR = {
+				check_variable = { liberation_call_plan_owner = constant:liberation_plan_owner.soviet_collapse }
+				check_variable = { liberation_call_plan_owner = constant:liberation_plan_owner.joint }
+			}
+		}
+		set_global_flag = liberation_release_plan_includes_event5
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = { liberation_call_plan_owner = constant:liberation_plan_owner.independence_wave }
+				check_variable = { liberation_call_plan_owner = constant:liberation_plan_owner.joint }
+			}
+		}
+		set_global_flag = liberation_release_plan_includes_event6
+	}
+	if = {
+		limit = {
+			NOT = {
+				OR = {
+					has_global_flag = liberation_release_plan_includes_event5
+					has_global_flag = liberation_release_plan_includes_event6
+				}
+			}
+		}
+		set_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.aborted }
+	}
+}
+
+liberation_release_enter_allocation_phase = {
+	if = {
+		limit = {
+			check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.collecting }
+			OR = {
+				has_global_flag = liberation_release_plan_includes_event5
+				has_global_flag = liberation_release_plan_includes_event6
+			}
+		}
+		set_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.allocating }
+	}
+}
+
+# Inputs: liberation_rejected_package_id and liberation_reject_reason.
+liberation_release_record_rejection = {
+	add_to_array = { array = global.liberation_plan_rejected_package_ids value = liberation_rejected_package_id }
+	add_to_array = { array = global.liberation_plan_rejection_reasons value = liberation_reject_reason }
+}
+
+# ---------------------------------------------------------------------------
+# Host, country, and exact-state reservations
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope. Selects the accepted host-survival priority (existing row,
+# owned/controlled capital, owned core, then owned state) and reserves it.
+# Output: liberation_candidate_reject_reason.
+liberation_release_select_and_reserve_host_state = {
+	save_event_target_as = liberation_candidate_host
+	set_temp_variable = { liberation_host_protection_source = constant:liberation_host_protection_source.none }
+	if = {
+		limit = {
+			is_in_array = { array = global.liberation_plan_hosts value = THIS }
+			has_variable = liberation_release_protected_state
+			check_variable = { var = liberation_release_plan_id value = global.liberation_plan_id compare = equals }
+		}
+		var:liberation_release_protected_state = { save_event_target_as = liberation_candidate_protected_state }
+		set_temp_variable = { liberation_host_protection_source = constant:liberation_host_protection_source.existing }
+	}
+	else_if = {
+		limit = {
+			capital_scope = {
+				is_owned_by = PREV
+				is_controlled_by = PREV
+				NOT = { is_liberation_release_current_reserved_state = yes }
+				NOT = { is_liberation_release_current_protected_state = yes }
+			}
+		}
+		capital_scope = { save_event_target_as = liberation_candidate_protected_state }
+		set_temp_variable = { liberation_host_protection_source = constant:liberation_host_protection_source.capital }
+	}
+	else_if = {
+		limit = {
+			any_owned_state = {
+				is_core_of = PREV
+				NOT = { is_liberation_release_current_reserved_state = yes }
+				NOT = { is_liberation_release_current_protected_state = yes }
+			}
+		}
+		random_owned_state = {
+			limit = {
+				is_core_of = PREV
+				NOT = { is_liberation_release_current_reserved_state = yes }
+				NOT = { is_liberation_release_current_protected_state = yes }
+			}
+			save_event_target_as = liberation_candidate_protected_state
+		}
+		set_temp_variable = { liberation_host_protection_source = constant:liberation_host_protection_source.owned_core }
+	}
+	else_if = {
+		limit = {
+			any_owned_state = {
+				NOT = { is_liberation_release_current_reserved_state = yes }
+				NOT = { is_liberation_release_current_protected_state = yes }
+			}
+		}
+		random_owned_state = {
+			limit = {
+				NOT = { is_liberation_release_current_reserved_state = yes }
+				NOT = { is_liberation_release_current_protected_state = yes }
+			}
+			save_event_target_as = liberation_candidate_protected_state
+		}
+		set_temp_variable = { liberation_host_protection_source = constant:liberation_host_protection_source.owned_state }
+	}
+	if = {
+		limit = { NOT = { check_variable = { liberation_host_protection_source = constant:liberation_host_protection_source.none } } }
+		liberation_release_reserve_host_state = yes
+	}
+	else = {
+		set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.host_survival }
+	}
+}
+
+# Inputs (event targets): liberation_candidate_host and
+# liberation_candidate_protected_state. Output: liberation_candidate_reject_reason.
+liberation_release_reserve_host_state = {
+	set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.invalid_scope }
+	if = {
+		limit = {
+			is_liberation_release_plan_open = yes
+			has_event_target = liberation_candidate_host
+			has_event_target = liberation_candidate_protected_state
+			event_target:liberation_candidate_host = {
+				exists = yes
+				is_in_array = { array = global.liberation_plan_hosts value = THIS }
+				has_country_flag = liberation_release_plan_host
+				check_variable = { var = liberation_release_plan_id value = global.liberation_plan_id compare = equals }
+				check_variable = { var = liberation_release_protected_state value = event_target:liberation_candidate_protected_state compare = equals }
+			}
+			event_target:liberation_candidate_protected_state = {
+				is_owned_by = event_target:liberation_candidate_host
+				is_liberation_release_current_protected_state = yes
+			}
+		}
+		set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none }
+	}
+	else_if = {
+		limit = {
+			is_liberation_release_plan_open = yes
+			has_event_target = liberation_candidate_host
+			has_event_target = liberation_candidate_protected_state
+			event_target:liberation_candidate_host = {
+				exists = yes
+				NOT = { is_in_array = { array = global.liberation_plan_hosts value = THIS } }
+			}
+			event_target:liberation_candidate_protected_state = {
+				is_owned_by = event_target:liberation_candidate_host
+				NOT = { is_liberation_release_current_reserved_state = yes }
+				NOT = { is_liberation_release_current_protected_state = yes }
+			}
+		}
+		event_target:liberation_candidate_host = {
+			set_temp_variable = { liberation_host_owned_state_snapshot = constant:liberation_release_limit.minimum }
+			every_owned_state = {
+				add_to_temp_variable = { liberation_host_owned_state_snapshot = constant:liberation_release_limit.one }
+			}
+			add_to_array = { array = global.liberation_plan_hosts value = THIS }
+			add_to_array = { array = global.liberation_plan_host_owned_state_snapshots value = liberation_host_owned_state_snapshot }
+			add_to_array = { array = global.liberation_plan_host_protected_states value = event_target:liberation_candidate_protected_state }
+			set_country_flag = liberation_release_plan_host
+			set_variable = { liberation_release_plan_id = global.liberation_plan_id }
+			set_variable = { liberation_release_planned_loss_count = constant:liberation_release_limit.minimum }
+			set_variable = { liberation_release_protected_state = event_target:liberation_candidate_protected_state }
+		}
+		event_target:liberation_candidate_protected_state = {
+			set_state_flag = liberation_release_protected_host_state
+			set_variable = { liberation_release_plan_id = global.liberation_plan_id }
+			set_variable = { liberation_release_protected_host = event_target:liberation_candidate_host }
+		}
+		set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none }
+	}
+	else_if = {
+		limit = { NOT = { is_liberation_release_plan_open = yes } }
+		set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.stale_plan }
+	}
+	else_if = {
+		limit = {
+			has_event_target = liberation_candidate_host
+			event_target:liberation_candidate_host = {
+				is_in_array = { array = global.liberation_plan_hosts value = THIS }
+			}
+		}
+		set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.protected_state_mismatch }
+	}
+}
+
+# Inputs:
+# - event targets liberation_candidate_country, liberation_candidate_anchor,
+#   and liberation_candidate_primary_host
+# - temporary variables liberation_candidate_package_id,
+#   liberation_candidate_plan_owner, liberation_candidate_reservation_group,
+#   liberation_candidate_territory_level, liberation_candidate_force_level
+# Output: liberation_candidate_reject_reason.
+liberation_release_add_country_reservation = {
+	set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.invalid_scope }
+	if = {
+		limit = {
+			is_liberation_release_plan_open = yes
+			is_liberation_release_candidate_owner_allowed = yes
+			has_event_target = liberation_candidate_country
+			has_event_target = liberation_candidate_anchor
+			has_event_target = liberation_candidate_primary_host
+			event_target:liberation_candidate_country = {
+				NOT = { exists = yes }
+				NOT = { is_in_array = { array = global.liberation_plan_countries value = THIS } }
+			}
+			NOT = { is_in_array = { array = global.liberation_plan_package_ids value = liberation_candidate_package_id } }
+			event_target:liberation_candidate_anchor = {
+				is_owned_by = event_target:liberation_candidate_primary_host
+				NOT = { is_liberation_release_current_reserved_state = yes }
+				NOT = { is_liberation_release_current_protected_state = yes }
+			}
+			event_target:liberation_candidate_primary_host = {
+				has_country_flag = liberation_release_plan_host
+				check_variable = { var = liberation_release_plan_id value = global.liberation_plan_id compare = equals }
+			}
+			OR = {
+				check_variable = { liberation_candidate_reservation_group = constant:liberation_release_limit.minimum }
+				NOT = { is_in_array = { array = global.liberation_plan_reservation_groups value = liberation_candidate_reservation_group } }
+			}
+		}
+		add_to_array = { array = global.liberation_plan_package_ids value = liberation_candidate_package_id }
+		add_to_array = { array = global.liberation_plan_country_owners value = liberation_candidate_plan_owner }
+		add_to_array = { array = global.liberation_plan_countries value = event_target:liberation_candidate_country }
+		add_to_array = { array = global.liberation_plan_anchor_states value = event_target:liberation_candidate_anchor }
+		add_to_array = { array = global.liberation_plan_primary_hosts value = event_target:liberation_candidate_primary_host }
+		add_to_array = { array = global.liberation_plan_reservation_groups value = liberation_candidate_reservation_group }
+		add_to_array = { array = global.liberation_plan_territory_levels value = liberation_candidate_territory_level }
+		add_to_array = { array = global.liberation_plan_force_levels value = liberation_candidate_force_level }
+		event_target:liberation_candidate_country = {
+			set_country_flag = liberation_release_reserved_country
+			set_variable = { liberation_release_plan_id = global.liberation_plan_id }
+			set_variable = { liberation_release_plan_owner = liberation_candidate_plan_owner }
+			set_variable = { liberation_release_package_id = liberation_candidate_package_id }
+		}
+		set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none }
+	}
+	else_if = {
+		limit = { NOT = { is_liberation_release_plan_open = yes } }
+		set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.stale_plan }
+	}
+	else_if = {
+		limit = { is_in_array = { array = global.liberation_plan_package_ids value = liberation_candidate_package_id } }
+		set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.package_already_selected }
+	}
+	else_if = {
+		limit = {
+			has_event_target = liberation_candidate_country
+			event_target:liberation_candidate_country = { exists = yes }
+		}
+		set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.living_tag }
+	}
+	else_if = {
+		limit = {
+			has_event_target = liberation_candidate_anchor
+			event_target:liberation_candidate_anchor = { is_liberation_release_current_protected_state = yes }
+		}
+		set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.host_survival }
+	}
+	else_if = {
+		limit = {
+			has_event_target = liberation_candidate_anchor
+			event_target:liberation_candidate_anchor = { is_liberation_release_current_reserved_state = yes }
+		}
+		set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.state_reserved }
+	}
+	else_if = {
+		limit = {
+			NOT = { check_variable = { liberation_candidate_reservation_group = constant:liberation_release_limit.minimum } }
+			is_in_array = { array = global.liberation_plan_reservation_groups value = liberation_candidate_reservation_group }
+		}
+		set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.reservation_group_taken }
+	}
+}
+
+# STATE scope. Inputs are event targets liberation_candidate_country and
+# liberation_candidate_state_host plus liberation_candidate_package_id,
+# liberation_candidate_plan_owner, and liberation_candidate_state_role.
+# Output: liberation_candidate_reject_reason.
+liberation_release_add_state_reservation = {
+	set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.invalid_scope }
+	if = {
+		limit = {
+			is_liberation_release_plan_open = yes
+			is_liberation_release_candidate_owner_allowed = yes
+			has_event_target = liberation_candidate_country
+			has_event_target = liberation_candidate_state_host
+			is_liberation_release_state_available_for_reservation = yes
+			is_owned_by = event_target:liberation_candidate_state_host
+			event_target:liberation_candidate_state_host = {
+				has_country_flag = liberation_release_plan_host
+				has_variable = liberation_release_planned_loss_count
+				check_variable = { var = liberation_release_plan_id value = global.liberation_plan_id compare = equals }
+			}
+			event_target:liberation_candidate_country = {
+				is_in_array = { array = global.liberation_plan_countries value = THIS }
+				has_country_flag = liberation_release_reserved_country
+				check_variable = { var = liberation_release_plan_id value = global.liberation_plan_id compare = equals }
+				check_variable = { var = liberation_release_plan_owner value = liberation_candidate_plan_owner compare = equals }
+				check_variable = { var = liberation_release_package_id value = liberation_candidate_package_id compare = equals }
+			}
+		}
+		add_to_array = { array = global.liberation_plan_states value = THIS }
+		add_to_array = { array = global.liberation_plan_state_package_ids value = liberation_candidate_package_id }
+		add_to_array = { array = global.liberation_plan_state_country_owners value = liberation_candidate_plan_owner }
+		add_to_array = { array = global.liberation_plan_state_target_countries value = event_target:liberation_candidate_country }
+		add_to_array = { array = global.liberation_plan_state_hosts value = event_target:liberation_candidate_state_host }
+		add_to_array = { array = global.liberation_plan_state_roles value = liberation_candidate_state_role }
+		set_state_flag = liberation_release_reserved_state
+		set_variable = { liberation_release_plan_id = global.liberation_plan_id }
+		set_variable = { liberation_release_package_id = liberation_candidate_package_id }
+		set_variable = { liberation_release_plan_owner = liberation_candidate_plan_owner }
+		set_variable = { liberation_release_state_role = liberation_candidate_state_role }
+		set_variable = { liberation_release_original_owner = event_target:liberation_candidate_state_host }
+		set_variable = { liberation_release_original_controller = CONTROLLER }
+		set_variable = { liberation_release_target_country = event_target:liberation_candidate_country }
+		event_target:liberation_candidate_state_host = {
+			add_to_variable = { liberation_release_planned_loss_count = constant:liberation_release_limit.one }
+		}
+		set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none }
+	}
+	else_if = {
+		limit = { NOT = { is_liberation_release_plan_open = yes } }
+		set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.stale_plan }
+	}
+	else_if = {
+		limit = { is_liberation_release_current_protected_state = yes }
+		set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.host_survival }
+	}
+	else_if = {
+		limit = { is_liberation_release_current_reserved_state = yes }
+		set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.state_reserved }
+	}
+}
+
+# Removes the most recently appended state row. Candidate planners call this
+# only while their own provisional state rows remain at the tail of every
+# aligned state array.
+liberation_release_rollback_last_state_reservation = {
+	if = {
+		limit = {
+			check_variable = {
+				var = global.liberation_plan_states^num
+				value = constant:liberation_release_limit.minimum
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { liberation_rollback_state_index = global.liberation_plan_states^num }
+		subtract_from_temp_variable = { liberation_rollback_state_index = constant:liberation_release_limit.one }
+		var:global.liberation_plan_states^liberation_rollback_state_index = {
+			save_event_target_as = liberation_rollback_state
+		}
+		var:global.liberation_plan_state_hosts^liberation_rollback_state_index = {
+			save_event_target_as = liberation_rollback_state_host
+		}
+		if = {
+			limit = { has_event_target = liberation_rollback_state }
+			event_target:liberation_rollback_state = {
+				clr_state_flag = liberation_release_reserved_state
+				clear_variable = liberation_release_plan_id
+				clear_variable = liberation_release_package_id
+				clear_variable = liberation_release_plan_owner
+				clear_variable = liberation_release_state_role
+				clear_variable = liberation_release_original_owner
+				clear_variable = liberation_release_original_controller
+				clear_variable = liberation_release_target_country
+			}
+		}
+		if = {
+			limit = { has_event_target = liberation_rollback_state_host }
+			event_target:liberation_rollback_state_host = {
+				subtract_from_variable = { liberation_release_planned_loss_count = constant:liberation_release_limit.one }
+				if = {
+					limit = {
+						check_variable = {
+							var = liberation_release_planned_loss_count
+							value = constant:liberation_release_limit.minimum
+							compare = less_than
+						}
+					}
+					set_variable = { liberation_release_planned_loss_count = constant:liberation_release_limit.minimum }
+				}
+			}
+		}
+		remove_from_array = { array = global.liberation_plan_states }
+		remove_from_array = { array = global.liberation_plan_state_package_ids }
+		remove_from_array = { array = global.liberation_plan_state_country_owners }
+		remove_from_array = { array = global.liberation_plan_state_target_countries }
+		remove_from_array = { array = global.liberation_plan_state_hosts }
+		remove_from_array = { array = global.liberation_plan_state_roles }
+	}
+}
+
+# Input: liberation_candidate_state_row_start, captured before the candidate's
+# first state is appended.
+liberation_release_rollback_candidate_state_reservations = {
+	while_loop_effect = {
+		limit = {
+			check_variable = {
+				var = global.liberation_plan_states^num
+				value = liberation_candidate_state_row_start
+				compare = greater_than
+			}
+		}
+		liberation_release_rollback_last_state_reservation = yes
+	}
+}
+
+# Removes the most recently appended country row and its reservation marks.
+liberation_release_rollback_last_country_reservation = {
+	if = {
+		limit = {
+			check_variable = {
+				var = global.liberation_plan_countries^num
+				value = constant:liberation_release_limit.minimum
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { liberation_rollback_country_index = global.liberation_plan_countries^num }
+		subtract_from_temp_variable = { liberation_rollback_country_index = constant:liberation_release_limit.one }
+		var:global.liberation_plan_countries^liberation_rollback_country_index = {
+			clr_country_flag = liberation_release_reserved_country
+			clear_variable = liberation_release_plan_id
+			clear_variable = liberation_release_plan_owner
+			clear_variable = liberation_release_package_id
+		}
+		remove_from_array = { array = global.liberation_plan_package_ids }
+		remove_from_array = { array = global.liberation_plan_country_owners }
+		remove_from_array = { array = global.liberation_plan_countries }
+		remove_from_array = { array = global.liberation_plan_anchor_states }
+		remove_from_array = { array = global.liberation_plan_primary_hosts }
+		remove_from_array = { array = global.liberation_plan_reservation_groups }
+		remove_from_array = { array = global.liberation_plan_territory_levels }
+		remove_from_array = { array = global.liberation_plan_force_levels }
+	}
+}
+
+# Removes host-protection rows that no accepted country row references and that
+# have no remaining provisional state losses. The reverse index walk preserves
+# alignment while removing arbitrary unused rows.
+liberation_release_cleanup_unused_host_reservations = {
+	set_temp_variable = { liberation_rollback_host_index = global.liberation_plan_hosts^num }
+	while_loop_effect = {
+		limit = {
+			check_variable = {
+				var = liberation_rollback_host_index
+				value = constant:liberation_release_limit.minimum
+				compare = greater_than
+			}
+		}
+		subtract_from_temp_variable = { liberation_rollback_host_index = constant:liberation_release_limit.one }
+		var:global.liberation_plan_hosts^liberation_rollback_host_index = {
+			save_event_target_as = liberation_rollback_host
+		}
+		var:global.liberation_plan_host_protected_states^liberation_rollback_host_index = {
+			save_event_target_as = liberation_rollback_protected_state
+		}
+		if = {
+			limit = {
+				has_event_target = liberation_rollback_host
+				NOT = { is_in_array = { array = global.liberation_plan_primary_hosts value = event_target:liberation_rollback_host } }
+				event_target:liberation_rollback_host = {
+					check_variable = {
+						var = liberation_release_planned_loss_count
+						value = constant:liberation_release_limit.minimum
+						compare = equals
+					}
+				}
+			}
+			event_target:liberation_rollback_host = {
+				clr_country_flag = liberation_release_plan_host
+				clear_variable = liberation_release_plan_id
+				clear_variable = liberation_release_planned_loss_count
+				clear_variable = liberation_release_protected_state
+			}
+			if = {
+				limit = { has_event_target = liberation_rollback_protected_state }
+				event_target:liberation_rollback_protected_state = {
+					clr_state_flag = liberation_release_protected_host_state
+					clear_variable = liberation_release_plan_id
+					clear_variable = liberation_release_protected_host
+				}
+			}
+			remove_from_array = {
+				array = global.liberation_plan_hosts
+				index = liberation_rollback_host_index
+			}
+			remove_from_array = {
+				array = global.liberation_plan_host_owned_state_snapshots
+				index = liberation_rollback_host_index
+			}
+			remove_from_array = {
+				array = global.liberation_plan_host_protected_states
+				index = liberation_rollback_host_index
+			}
+		}
+	}
+}
+
+# Candidate planners capture liberation_candidate_state_row_start before
+# reserving states, then call this effect when optional-state trimming cannot
+# preserve a valid anchor. The candidate country row must still be last.
+liberation_release_rollback_candidate_reservation = {
+	liberation_release_rollback_candidate_state_reservations = yes
+	liberation_release_rollback_last_country_reservation = yes
+	liberation_release_cleanup_unused_host_reservations = yes
+}
+
+# ---------------------------------------------------------------------------
+# Frozen-plan validation and commit barrier
+# ---------------------------------------------------------------------------
+
+liberation_release_validate_country_rows = {
+	set_temp_variable = { liberation_validation_index = constant:liberation_release_limit.minimum }
+	while_loop_effect = {
+		limit = {
+			check_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.none }
+			check_variable = { var = liberation_validation_index value = global.liberation_plan_package_ids^num compare = less_than }
+		}
+		var:global.liberation_plan_countries^liberation_validation_index = {
+			save_event_target_as = liberation_validation_country
+		}
+		var:global.liberation_plan_anchor_states^liberation_validation_index = {
+			save_event_target_as = liberation_validation_anchor
+		}
+		var:global.liberation_plan_primary_hosts^liberation_validation_index = {
+			save_event_target_as = liberation_validation_primary_host
+		}
+		set_temp_variable = { liberation_validation_row_owner = global.liberation_plan_country_owners^liberation_validation_index }
+		set_temp_variable = { liberation_validation_row_package = global.liberation_plan_package_ids^liberation_validation_index }
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_event_target = liberation_validation_country }
+					NOT = { has_event_target = liberation_validation_anchor }
+					NOT = { has_event_target = liberation_validation_primary_host }
+					NOT = {
+						OR = {
+							check_variable = { liberation_validation_row_owner = constant:liberation_plan_owner.soviet_collapse }
+							check_variable = { liberation_validation_row_owner = constant:liberation_plan_owner.independence_wave }
+						}
+					}
+				}
+			}
+			set_temp_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.invalid_scope }
+		}
+		if = {
+			limit = {
+				check_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.none }
+				NOT = {
+					event_target:liberation_validation_country = {
+						has_country_flag = liberation_release_reserved_country
+						check_variable = { var = liberation_release_plan_id value = global.liberation_plan_id compare = equals }
+						check_variable = { var = liberation_release_plan_owner value = liberation_validation_row_owner compare = equals }
+						check_variable = { var = liberation_release_package_id value = liberation_validation_row_package compare = equals }
+					}
+				}
+			}
+			set_temp_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.invalid_scope }
+		}
+		if = {
+			limit = {
+				check_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.none }
+				event_target:liberation_validation_country = { exists = yes }
+			}
+			set_temp_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.living_tag }
+		}
+		if = {
+			limit = {
+				check_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.none }
+				NOT = {
+						event_target:liberation_validation_anchor = {
+							is_liberation_release_current_reserved_state = yes
+							NOT = { is_liberation_release_current_protected_state = yes }
+							check_variable = { liberation_release_state_role = constant:liberation_plan_state_role.anchor }
+							check_variable = { var = liberation_release_package_id value = liberation_validation_row_package compare = equals }
+							check_variable = { var = liberation_release_plan_owner value = liberation_validation_row_owner compare = equals }
+							check_variable = { var = liberation_release_target_country value = event_target:liberation_validation_country compare = equals }
+						is_owned_by = event_target:liberation_validation_primary_host
+					}
+				}
+			}
+			set_temp_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.missing_anchor }
+		}
+		if = {
+			limit = { check_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.none } }
+			set_temp_variable = { liberation_validation_anchor_count = constant:liberation_release_limit.minimum }
+			for_each_scope_loop = {
+				array = global.liberation_plan_states
+				limit = {
+					check_variable = { var = liberation_release_target_country value = event_target:liberation_validation_country compare = equals }
+					check_variable = { var = liberation_release_state_role value = constant:liberation_plan_state_role.anchor compare = equals }
+				}
+				add_to_temp_variable = { liberation_validation_anchor_count = constant:liberation_release_limit.one }
+			}
+			if = {
+				limit = {
+					NOT = {
+						check_variable = {
+							var = liberation_validation_anchor_count
+							value = constant:liberation_release_limit.one
+							compare = equals
+						}
+					}
+				}
+				set_temp_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.missing_anchor }
+			}
+		}
+		if = {
+			limit = {
+				check_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.none }
+				NOT = {
+					event_target:liberation_validation_primary_host = {
+						has_country_flag = liberation_release_plan_host
+						check_variable = { var = liberation_release_plan_id value = global.liberation_plan_id compare = equals }
+					}
+				}
+			}
+			set_temp_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.host_survival }
+		}
+		add_to_temp_variable = { liberation_validation_index = constant:liberation_release_limit.one }
+	}
+}
+
+liberation_release_validate_state_rows = {
+	set_temp_variable = { liberation_validation_index = constant:liberation_release_limit.minimum }
+	while_loop_effect = {
+		limit = {
+			check_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.none }
+			check_variable = { var = liberation_validation_index value = global.liberation_plan_states^num compare = less_than }
+		}
+		var:global.liberation_plan_states^liberation_validation_index = {
+			save_event_target_as = liberation_validation_state
+		}
+		var:global.liberation_plan_state_hosts^liberation_validation_index = {
+			save_event_target_as = liberation_validation_state_host
+		}
+		var:global.liberation_plan_state_target_countries^liberation_validation_index = {
+			save_event_target_as = liberation_validation_state_target
+		}
+		set_temp_variable = { liberation_validation_state_package = global.liberation_plan_state_package_ids^liberation_validation_index }
+		set_temp_variable = { liberation_validation_state_owner = global.liberation_plan_state_country_owners^liberation_validation_index }
+		set_temp_variable = { liberation_validation_state_role = global.liberation_plan_state_roles^liberation_validation_index }
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_event_target = liberation_validation_state }
+					NOT = { has_event_target = liberation_validation_state_host }
+					NOT = { has_event_target = liberation_validation_state_target }
+				}
+			}
+			set_temp_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.invalid_scope }
+		}
+		if = {
+			limit = {
+				check_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.none }
+				NOT = {
+					event_target:liberation_validation_state = {
+						is_liberation_release_current_reserved_state = yes
+						NOT = { is_liberation_release_current_protected_state = yes }
+						is_owned_by = event_target:liberation_validation_state_host
+						check_variable = { var = liberation_release_package_id value = liberation_validation_state_package compare = equals }
+						check_variable = { var = liberation_release_plan_owner value = liberation_validation_state_owner compare = equals }
+						check_variable = { var = liberation_release_state_role value = liberation_validation_state_role compare = equals }
+						check_variable = { var = liberation_release_original_owner value = event_target:liberation_validation_state_host compare = equals }
+						check_variable = { var = liberation_release_target_country value = event_target:liberation_validation_state_target compare = equals }
+					}
+				}
+			}
+			set_temp_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.state_reserved }
+		}
+		add_to_temp_variable = { liberation_validation_index = constant:liberation_release_limit.one }
+	}
+}
+
+liberation_release_validate_host_rows = {
+	set_temp_variable = { liberation_validation_index = constant:liberation_release_limit.minimum }
+	while_loop_effect = {
+		limit = {
+			check_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.none }
+			check_variable = { var = liberation_validation_index value = global.liberation_plan_hosts^num compare = less_than }
+		}
+		var:global.liberation_plan_hosts^liberation_validation_index = {
+			save_event_target_as = liberation_validation_host
+		}
+		var:global.liberation_plan_host_protected_states^liberation_validation_index = {
+			save_event_target_as = liberation_validation_protected_state
+		}
+		set_temp_variable = { liberation_validation_host_snapshot = global.liberation_plan_host_owned_state_snapshots^liberation_validation_index }
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_event_target = liberation_validation_host }
+					NOT = { has_event_target = liberation_validation_protected_state }
+				}
+			}
+			set_temp_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.invalid_scope }
+		}
+		if = {
+			limit = { check_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.none } }
+			set_temp_variable = { liberation_validation_host_owned_states = constant:liberation_release_limit.minimum }
+			event_target:liberation_validation_host = {
+				every_owned_state = {
+					add_to_temp_variable = { liberation_validation_host_owned_states = constant:liberation_release_limit.one }
+				}
+				set_temp_variable = { liberation_validation_host_planned_losses = liberation_release_planned_loss_count }
+			}
+			set_temp_variable = { liberation_validation_computed_losses = constant:liberation_release_limit.minimum }
+			for_each_scope_loop = {
+				array = global.liberation_plan_states
+				limit = {
+					check_variable = { var = liberation_release_original_owner value = event_target:liberation_validation_host compare = equals }
+				}
+				add_to_temp_variable = { liberation_validation_computed_losses = constant:liberation_release_limit.one }
+			}
+			if = {
+				limit = {
+					OR = {
+						NOT = { check_variable = { var = liberation_validation_host_owned_states value = liberation_validation_host_planned_losses compare = greater_than } }
+						NOT = { check_variable = { var = liberation_validation_host_snapshot value = liberation_validation_host_planned_losses compare = greater_than } }
+						NOT = { check_variable = { var = liberation_validation_computed_losses value = liberation_validation_host_planned_losses compare = equals } }
+					}
+				}
+				set_temp_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.host_survival }
+			}
+			if = {
+				limit = {
+					check_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.none }
+					NOT = {
+						event_target:liberation_validation_host = {
+							has_country_flag = liberation_release_plan_host
+							check_variable = { var = liberation_release_plan_id value = global.liberation_plan_id compare = equals }
+							check_variable = { var = liberation_release_protected_state value = event_target:liberation_validation_protected_state compare = equals }
+						}
+					}
+				}
+				set_temp_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.protected_state_mismatch }
+			}
+			if = {
+				limit = {
+					check_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.none }
+					NOT = {
+						event_target:liberation_validation_protected_state = {
+							is_liberation_release_current_protected_state = yes
+							is_owned_by = event_target:liberation_validation_host
+						}
+					}
+				}
+				set_temp_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.protected_state_mismatch }
+			}
+		}
+		add_to_temp_variable = { liberation_validation_index = constant:liberation_release_limit.one }
+	}
+}
+
+liberation_release_validate_plan = {
+	set_temp_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.none }
+	if = {
+		limit = {
+			NOT = {
+				OR = {
+					check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.allocating }
+					check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.locked }
+				}
+			}
+		}
+		set_temp_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.stale_plan }
+	}
+	if = {
+		limit = {
+			check_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.none }
+			NOT = {
+				check_variable = {
+					var = global.liberation_plan_expected_country_count
+					value = constant:liberation_release_limit.minimum
+					compare = greater_than
+				}
+			}
+		}
+		set_temp_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.insufficient_pool }
+	}
+	if = {
+		limit = {
+			check_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.none }
+			NOT = { liberation_release_all_plan_arrays_are_aligned = yes }
+		}
+		set_temp_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.aligned_array_failure }
+	}
+	if = {
+		limit = {
+			check_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.none }
+			NOT = {
+				check_variable = {
+					var = global.liberation_plan_package_ids^num
+					value = global.liberation_plan_expected_country_count
+					compare = equals
+				}
+			}
+		}
+		set_temp_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.insufficient_pool }
+	}
+	if = {
+		limit = { check_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.none } }
+		liberation_release_validate_country_rows = yes
+	}
+	if = {
+		limit = { check_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.none } }
+		liberation_release_validate_state_rows = yes
+	}
+	if = {
+		limit = { check_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.none } }
+		liberation_release_validate_host_rows = yes
+	}
+	set_variable = { global.liberation_plan_last_failure = liberation_plan_validation_failure }
+	if = {
+		limit = { check_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.none } }
+		set_global_flag = liberation_release_plan_valid
+	}
+	else = {
+		clr_global_flag = liberation_release_plan_valid
+	}
+}
+
+liberation_release_lock_plan = {
+	if = {
+		limit = { check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.allocating } }
+		liberation_release_validate_plan = yes
+		if = {
+			limit = { has_global_flag = liberation_release_plan_valid }
+			set_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.locked }
+		}
+		else = {
+			set_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.aborted }
+		}
+	}
+}
+
+liberation_release_begin_execution = {
+	if = {
+		limit = { is_liberation_release_plan_locked = yes }
+		liberation_release_validate_plan = yes
+		if = {
+			limit = { liberation_release_locked_plan_is_valid = yes }
+			set_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.executing }
+			set_global_flag = liberation_release_execution_started
+		}
+		else = {
+			set_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.aborted }
+			clr_global_flag = liberation_release_plan_valid
+		}
+	}
+}
+
+liberation_release_commit_plan = {
+	if = {
+		limit = { is_liberation_release_plan_executing = yes }
+		set_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.committed }
+		set_variable = { global.liberation_plan_committed_date = global.date }
+		set_global_flag = liberation_release_joint_plan_executed
+		liberation_release_clear_plan_scope_marks = yes
+	}
+}
+
+liberation_release_abort_plan = {
+	set_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.aborted }
+	clr_global_flag = liberation_release_plan_valid
+	clr_global_flag = liberation_release_execution_started
+	liberation_release_clear_plan_scope_marks = yes
+}

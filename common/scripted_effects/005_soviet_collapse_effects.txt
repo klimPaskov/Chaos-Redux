@@ -2884,42 +2884,20 @@ soviet_collapse_release_terminal_ordinary_republics = {
             value = THIS
         }
     }
-    every_country = {
-        limit = {
-            exists = yes
-            is_subject_of = SOV
-            NOT = { tag = SOV }
-            NOT = { has_country_flag = soviet_collapse_breakaway }
-            NOT = { is_in_array = { array = global.soviet_collapse_terminal_release_candidates value = THIS } }
-        }
-        add_to_array = {
-            array = global.soviet_collapse_terminal_release_candidates
-            value = THIS
-        }
-    }
     for_each_scope_loop = {
         array = global.soviet_collapse_terminal_release_candidates
         if = {
             limit = { exists = no }
             soviet_collapse_release_scope_from_soviet_collapse_owner = yes
-            set_country_flag = soviet_collapse_event_created_republic
-            soviet_collapse_setup_breakaway_country = yes
-            soviet_collapse_load_event_created_focus_tree = yes
-        }
-        if = {
-            limit = {
-                exists = yes
-                is_subject_of = SOV
+            if = {
+                limit = {
+                    exists = yes
+                    NOT = { has_country_flag = independence_wave_active_origin }
+                }
+                set_country_flag = soviet_collapse_event_created_republic
+                soviet_collapse_setup_breakaway_country = yes
+                soviet_collapse_load_event_created_focus_tree = yes
             }
-            SOV = { set_autonomy = { target = PREV autonomy_state = autonomy_free } }
-            set_global_flag = soviet_collapse_terminal_subject_freed_report_pending
-        }
-        if = {
-            limit = {
-                exists = yes
-                NOT = { has_country_flag = soviet_collapse_breakaway }
-            }
-            soviet_collapse_setup_breakaway_country = yes
         }
     }
     clear_array = global.soviet_collapse_terminal_release_candidates
@@ -2946,35 +2924,26 @@ soviet_collapse_release_terminal_internal_republics = {
     every_possible_country = {
         limit = {
             NOT = { tag = SOV }
+            NOT = { has_country_flag = independence_wave_active_origin }
             NOT = { has_country_flag = soviet_collapse_breakaway }
             is_soviet_collapse_internal_republic_focus_tree_tag = yes
-            OR = {
-                AND = {
-                    exists = no
-                    any_state = {
-                        is_core_of = PREV
-                        OR = {
-                            has_state_flag = soviet_collapse_original_union_state
-                            is_owned_by = SOV
-                            is_controlled_by = SOV
-                            owner = { is_subject_of = SOV }
-                            controller = { is_subject_of = SOV }
-                            owner = { has_country_flag = soviet_collapse_breakaway }
-                            controller = { has_country_flag = soviet_collapse_breakaway }
-                            owner = { has_country_flag = soviet_collapse_event_created_republic }
-                            controller = { has_country_flag = soviet_collapse_event_created_republic }
-                            owner = { has_country_flag = soviet_collapse_high_chaos_successor }
-                            controller = { has_country_flag = soviet_collapse_high_chaos_successor }
-                        }
-                    }
-                }
-                AND = {
-                    exists = yes
-                    is_subject_of = SOV
-                    any_state = {
-                        is_core_of = PREV
-                    }
-                }
+			exists = no
+			any_state = {
+				is_core_of = PREV
+				is_soviet_collapse_state_free_of_independence_wave_origin = yes
+				OR = {
+					has_state_flag = soviet_collapse_original_union_state
+					is_owned_by = SOV
+					is_controlled_by = SOV
+					owner = { is_subject_of = SOV }
+					controller = { is_subject_of = SOV }
+					owner = { has_country_flag = soviet_collapse_breakaway }
+					controller = { has_country_flag = soviet_collapse_breakaway }
+					owner = { has_country_flag = soviet_collapse_event_created_republic }
+					controller = { has_country_flag = soviet_collapse_event_created_republic }
+					owner = { has_country_flag = soviet_collapse_high_chaos_successor }
+					controller = { has_country_flag = soviet_collapse_high_chaos_successor }
+				}
             }
         }
         add_to_array = {
@@ -2987,24 +2956,15 @@ soviet_collapse_release_terminal_internal_republics = {
         if = {
             limit = { exists = no }
             soviet_collapse_release_scope_from_soviet_collapse_owner = yes
-            set_country_flag = soviet_collapse_event_created_republic
-            soviet_collapse_setup_breakaway_country = yes
-            soviet_collapse_load_event_created_focus_tree = yes
-        }
-        if = {
-            limit = {
-                exists = yes
-                is_subject_of = SOV
+            if = {
+                limit = {
+                    exists = yes
+                    NOT = { has_country_flag = independence_wave_active_origin }
+                }
+                set_country_flag = soviet_collapse_event_created_republic
+                soviet_collapse_setup_breakaway_country = yes
+                soviet_collapse_load_event_created_focus_tree = yes
             }
-            SOV = { set_autonomy = { target = PREV autonomy_state = autonomy_free } }
-            set_global_flag = soviet_collapse_terminal_subject_freed_report_pending
-        }
-        if = {
-            limit = {
-                exists = yes
-                NOT = { has_country_flag = soviet_collapse_breakaway }
-            }
-            soviet_collapse_setup_breakaway_country = yes
         }
     }
     clear_array = global.soviet_collapse_terminal_release_candidates
@@ -3141,6 +3101,7 @@ soviet_collapse_force_terminal_all_possible_core_countries = {
             exists = no
             any_state = {
                 is_core_of = PREV
+				is_soviet_collapse_state_free_of_independence_wave_origin = yes
                 OR = {
                     has_state_flag = soviet_collapse_original_union_state
                     is_owned_by = SOV
@@ -3161,40 +3122,12 @@ soviet_collapse_force_terminal_all_possible_core_countries = {
             limit = {
                 exists = yes
                 NOT = { has_country_flag = soviet_collapse_breakaway }
+                NOT = { has_country_flag = independence_wave_active_origin }
             }
             set_country_flag = soviet_collapse_event_created_republic
             soviet_collapse_setup_breakaway_country = yes
             soviet_collapse_load_event_created_focus_tree = yes
         }
-    }
-    every_possible_country = {
-        limit = {
-            NOT = { tag = SOV }
-            exists = yes
-            NOT = { has_country_flag = soviet_collapse_breakaway }
-            any_state = {
-                is_core_of = PREV
-                OR = {
-                    has_state_flag = soviet_collapse_original_union_state
-                    is_owned_by = SOV
-                    is_controlled_by = SOV
-                    owner = { is_subject_of = SOV }
-                    controller = { is_subject_of = SOV }
-                    owner = { has_country_flag = soviet_collapse_breakaway }
-                    controller = { has_country_flag = soviet_collapse_breakaway }
-                    owner = { has_country_flag = soviet_collapse_event_created_republic }
-                    controller = { has_country_flag = soviet_collapse_event_created_republic }
-                    owner = { has_country_flag = soviet_collapse_high_chaos_successor }
-                    controller = { has_country_flag = soviet_collapse_high_chaos_successor }
-                }
-            }
-        }
-        if = {
-            limit = { is_subject_of = SOV }
-            SOV = { set_autonomy = { target = PREV autonomy_state = autonomy_free } }
-            set_global_flag = soviet_collapse_terminal_subject_freed_report_pending
-        }
-        soviet_collapse_setup_breakaway_country = yes
     }
 }
 
@@ -3220,10 +3153,10 @@ soviet_collapse_free_terminal_soviet_subjects = {
         limit = {
             exists = yes
             NOT = { tag = SOV }
+            NOT = { has_country_flag = independence_wave_active_origin }
         }
         SOV = { set_autonomy = { target = PREV autonomy_state = autonomy_free } }
         set_global_flag = soviet_collapse_terminal_subject_freed_report_pending
-        soviet_collapse_setup_breakaway_country = yes
     }
 }
 
@@ -3279,19 +3212,32 @@ soviet_collapse_ensure_terminal_breakaway_has_units = {
 }
 
 soviet_collapse_release_scope_from_soviet_collapse_owner = {
+	if = {
+		limit = {
+			exists = no
+			NOT = { has_country_flag = independence_wave_active_origin }
+			NOT = { is_liberation_release_current_reserved_country = yes }
+		}
     save_event_target_as = soviet_collapse_dynamic_release_target
     if = {
         limit = {
             exists = no
             any_state = {
                 is_core_of = PREV
+				is_soviet_collapse_state_free_of_independence_wave_origin = yes
                 OR = {
                     is_owned_by = SOV
                     is_controlled_by = SOV
                 }
             }
         }
-        SOV = { release = event_target:soviet_collapse_dynamic_release_target }
+		SOV = {
+			release = event_target:soviet_collapse_dynamic_release_target
+			if = {
+				limit = { event_target:soviet_collapse_dynamic_release_target = { is_subject_of = SOV } }
+				set_autonomy = { target = event_target:soviet_collapse_dynamic_release_target autonomy_state = autonomy_free }
+			}
+		}
     }
     if = {
         limit = {
@@ -3305,8 +3251,16 @@ soviet_collapse_release_scope_from_soviet_collapse_owner = {
             limit = {
                 is_core_of = PREV
                 has_state_flag = soviet_collapse_original_union_state
+				is_soviet_collapse_state_free_of_independence_wave_origin = yes
             }
-            owner = { release = event_target:soviet_collapse_dynamic_release_target }
+			owner = {
+				save_event_target_as = soviet_collapse_dynamic_release_host
+				release = event_target:soviet_collapse_dynamic_release_target
+				if = {
+					limit = { event_target:soviet_collapse_dynamic_release_target = { is_subject_of = event_target:soviet_collapse_dynamic_release_host } }
+					set_autonomy = { target = event_target:soviet_collapse_dynamic_release_target autonomy_state = autonomy_free }
+				}
+			}
         }
     }
     if = {
@@ -3325,6 +3279,7 @@ soviet_collapse_release_scope_from_soviet_collapse_owner = {
         random_state = {
             limit = {
                 is_core_of = PREV
+				is_soviet_collapse_state_free_of_independence_wave_origin = yes
                 OR = {
                     owner = { has_country_flag = soviet_collapse_breakaway }
                     owner = { has_country_flag = soviet_collapse_event_created_republic }
@@ -3332,7 +3287,14 @@ soviet_collapse_release_scope_from_soviet_collapse_owner = {
                     owner = { is_subject_of = SOV }
                 }
             }
-            owner = { release = event_target:soviet_collapse_dynamic_release_target }
+			owner = {
+				save_event_target_as = soviet_collapse_dynamic_release_host
+				release = event_target:soviet_collapse_dynamic_release_target
+				if = {
+					limit = { event_target:soviet_collapse_dynamic_release_target = { is_subject_of = event_target:soviet_collapse_dynamic_release_host } }
+					set_autonomy = { target = event_target:soviet_collapse_dynamic_release_target autonomy_state = autonomy_free }
+				}
+			}
         }
     }
     if = {
@@ -3351,6 +3313,7 @@ soviet_collapse_release_scope_from_soviet_collapse_owner = {
         random_state = {
             limit = {
                 is_core_of = PREV
+				is_soviet_collapse_state_free_of_independence_wave_origin = yes
                 OR = {
                     controller = { has_country_flag = soviet_collapse_breakaway }
                     controller = { has_country_flag = soviet_collapse_event_created_republic }
@@ -3358,9 +3321,17 @@ soviet_collapse_release_scope_from_soviet_collapse_owner = {
                     controller = { is_subject_of = SOV }
                 }
             }
-            controller = { release = event_target:soviet_collapse_dynamic_release_target }
+			controller = {
+				save_event_target_as = soviet_collapse_dynamic_release_host
+				release = event_target:soviet_collapse_dynamic_release_target
+				if = {
+					limit = { event_target:soviet_collapse_dynamic_release_target = { is_subject_of = event_target:soviet_collapse_dynamic_release_host } }
+					set_autonomy = { target = event_target:soviet_collapse_dynamic_release_target autonomy_state = autonomy_free }
+				}
+			}
         }
     }
+}
 }
 
 soviet_collapse_prepare_highest_chaos_terminal_successors = {
@@ -4180,12 +4151,12 @@ soviet_collapse_apply_terminal_reclamation_front = {
             id = FROM
             value = constant:soviet_collapse_selected_target_aftermath.reclamation_conquer_ai_weight
         }
-        add_ai_strategy = {
-            type = antagonize
-            id = FROM
-            value = constant:soviet_collapse_selected_target_aftermath.reclamation_antagonize_ai_weight
-        }
-    }
+		add_ai_strategy = {
+			type = antagonize
+			id = FROM
+			value = constant:soviet_collapse_selected_target_aftermath.reclamation_antagonize_ai_weight
+		}
+	}
 }
 
 # Target-country scope. Reset both desks before clearing the target-side owner
@@ -4638,25 +4609,34 @@ soviet_collapse_record_dominant_release_cause = {
 }
 
 soviet_collapse_setup_breakaway_country = {
-    soviet_collapse_ensure_emergency_equipment_variants = yes
-    soviet_collapse_ensure_republic_country_component_variables = yes
-    if = {
-        limit = { NOT = { has_country_flag = soviet_collapse_breakaway } }
-        soviet_collapse_apply_breakaway_setup_package = yes
-    }
-    if = {
-        limit = {
-            NOT = { has_country_flag = soviet_collapse_regional_focus_tree_loaded }
-            NOT = { has_country_flag = soviet_collapse_high_chaos_successor }
-            OR = {
-                is_soviet_collapse_base_republic_tag = yes
-                is_soviet_collapse_internal_republic_focus_tree_tag = yes
-                tag = MOL
-            }
-        }
-        soviet_collapse_load_event_created_focus_tree = yes
-        set_country_flag = soviet_collapse_regional_focus_tree_loaded
-    }
+	if = {
+		limit = {
+			NOT = { has_country_flag = independence_wave_active_origin }
+			OR = {
+				has_country_flag = soviet_collapse_event_created_republic
+				has_country_flag = soviet_collapse_high_chaos_successor
+			}
+		}
+		soviet_collapse_ensure_emergency_equipment_variants = yes
+		soviet_collapse_ensure_republic_country_component_variables = yes
+		if = {
+			limit = { NOT = { has_country_flag = soviet_collapse_breakaway } }
+			soviet_collapse_apply_breakaway_setup_package = yes
+		}
+		if = {
+			limit = {
+				NOT = { has_country_flag = soviet_collapse_regional_focus_tree_loaded }
+				NOT = { has_country_flag = soviet_collapse_high_chaos_successor }
+				OR = {
+					is_soviet_collapse_base_republic_tag = yes
+					is_soviet_collapse_internal_republic_focus_tree_tag = yes
+					tag = MOL
+				}
+			}
+			soviet_collapse_load_event_created_focus_tree = yes
+			set_country_flag = soviet_collapse_regional_focus_tree_loaded
+		}
+	}
 }
 
 soviet_collapse_set_breakaway_category_display_values = {
@@ -9062,6 +9042,8 @@ soviet_collapse_apply_ukr_outside_old_map_settlement = {
 soviet_collapse_load_event_created_focus_tree = {
     if = {
         limit = {
+            has_country_flag = soviet_collapse_event_created_republic
+            NOT = { has_country_flag = independence_wave_active_origin }
             NOT = { has_country_flag = soviet_collapse_regional_focus_tree_loaded }
         }
         soviet_collapse_ensure_emergency_equipment_variants = yes
@@ -13073,8 +13055,14 @@ soviet_collapse_apply_focus_high_chaos_identity = {
 }
 
 soviet_collapse_setup_southern_republic_if_valid = {
-    set_country_flag = soviet_collapse_event_created_republic
-    soviet_collapse_setup_breakaway_country = yes
+    if = {
+        limit = {
+            exists = yes
+            NOT = { has_country_flag = independence_wave_active_origin }
+        }
+        set_country_flag = soviet_collapse_event_created_republic
+        soviet_collapse_setup_breakaway_country = yes
+    }
 }
 
 soviet_collapse_randomize_single_person_leader_name = {
@@ -24094,25 +24082,15 @@ soviet_collapse_release_event_target_progressive_republic = {
                 NOT = { is_soviet_collapse_pressure_successor_spawn_tag = yes }
             }
             soviet_collapse_release_scope_from_soviet_collapse_owner = yes
-            set_country_flag = soviet_collapse_event_created_republic
-            soviet_collapse_setup_breakaway_country = yes
-            soviet_collapse_load_event_created_focus_tree = yes
-        }
-        if = {
-            limit = {
-                exists = yes
-                is_subject_of = SOV
-                NOT = { is_soviet_collapse_pressure_successor_spawn_tag = yes }
+            if = {
+                limit = {
+                    exists = yes
+                    NOT = { has_country_flag = independence_wave_active_origin }
+                }
+                set_country_flag = soviet_collapse_event_created_republic
+                soviet_collapse_setup_breakaway_country = yes
+                soviet_collapse_load_event_created_focus_tree = yes
             }
-            SOV = { set_autonomy = { target = PREV autonomy_state = autonomy_free } }
-        }
-        if = {
-            limit = {
-                exists = yes
-                NOT = { has_country_flag = soviet_collapse_breakaway }
-                NOT = { has_country_flag = soviet_collapse_high_chaos_successor }
-            }
-            soviet_collapse_setup_breakaway_country = yes
         }
     }
 }
@@ -24735,19 +24713,27 @@ soviet_collapse_release_first_year_backlog_republics = {
         if = {
             limit = { KAZ = { exists = no } }
             release = KAZ
-            KAZ = { set_country_flag = soviet_collapse_event_created_republic }
-        }
-        if = {
-            limit = { KAZ = { exists = yes is_subject_of = SOV } }
-            set_autonomy = { target = KAZ autonomy_state = autonomy_free }
-        }
-        KAZ = {
-            soviet_collapse_setup_breakaway_country = yes
             if = {
-                limit = { has_country_flag = soviet_collapse_event_created_republic }
-                soviet_collapse_load_event_created_focus_tree = yes
+                limit = {
+                    KAZ = {
+                        exists = yes
+                        NOT = { has_country_flag = independence_wave_active_origin }
+                    }
+                }
+                KAZ = { set_country_flag = soviet_collapse_event_created_republic }
             }
         }
+        if = {
+			limit = { KAZ = { exists = yes is_subject_of = SOV has_country_flag = soviet_collapse_event_created_republic } }
+            set_autonomy = { target = KAZ autonomy_state = autonomy_free }
+        }
+		if = {
+			limit = { KAZ = { has_country_flag = soviet_collapse_event_created_republic } }
+			KAZ = {
+				soviet_collapse_setup_breakaway_country = yes
+				soviet_collapse_load_event_created_focus_tree = yes
+			}
+		}
         soviet_collapse_maybe_show_union_unmade_super_event = yes
     }
 }
@@ -24759,24 +24745,15 @@ soviet_collapse_release_selected_first_wave_republics = {
         if = {
             limit = { exists = no }
             soviet_collapse_release_scope_from_soviet_collapse_owner = yes
-            set_country_flag = soviet_collapse_event_created_republic
-            soviet_collapse_setup_breakaway_country = yes
-            soviet_collapse_load_event_created_focus_tree = yes
-        }
-        if = {
-            limit = {
-                exists = yes
-                is_subject_of = SOV
+            if = {
+                limit = {
+                    exists = yes
+                    NOT = { has_country_flag = independence_wave_active_origin }
+                }
+                set_country_flag = soviet_collapse_event_created_republic
+                soviet_collapse_setup_breakaway_country = yes
+                soviet_collapse_load_event_created_focus_tree = yes
             }
-            SOV = { set_autonomy = { target = PREV autonomy_state = autonomy_free } }
-        }
-        if = {
-            limit = {
-                exists = yes
-                NOT = { has_country_flag = soviet_collapse_breakaway }
-                NOT = { has_country_flag = soviet_collapse_high_chaos_successor }
-            }
-            soviet_collapse_setup_breakaway_country = yes
         }
     }
 }
@@ -24792,25 +24769,15 @@ soviet_collapse_release_selected_progressive_republics = {
                 NOT = { is_soviet_collapse_pressure_successor_spawn_tag = yes }
             }
             soviet_collapse_release_scope_from_soviet_collapse_owner = yes
-            set_country_flag = soviet_collapse_event_created_republic
-            soviet_collapse_setup_breakaway_country = yes
-            soviet_collapse_load_event_created_focus_tree = yes
-        }
-        if = {
-            limit = {
-                exists = yes
-                is_subject_of = SOV
-                NOT = { is_soviet_collapse_pressure_successor_spawn_tag = yes }
+            if = {
+                limit = {
+                    exists = yes
+                    NOT = { has_country_flag = independence_wave_active_origin }
+                }
+                set_country_flag = soviet_collapse_event_created_republic
+                soviet_collapse_setup_breakaway_country = yes
+                soviet_collapse_load_event_created_focus_tree = yes
             }
-            SOV = { set_autonomy = { target = PREV autonomy_state = autonomy_free } }
-        }
-        if = {
-            limit = {
-                exists = yes
-                NOT = { has_country_flag = soviet_collapse_breakaway }
-                NOT = { has_country_flag = soviet_collapse_high_chaos_successor }
-            }
-            soviet_collapse_setup_breakaway_country = yes
         }
     }
 }
@@ -25169,19 +25136,25 @@ soviet_collapse_release_initial_republics = {
         if = {
             limit = { KAZ = { exists = no } }
             release = KAZ
-            KAZ = { set_country_flag = soviet_collapse_event_created_republic }
+            if = {
+                limit = {
+                    KAZ = {
+                        exists = yes
+                        NOT = { has_country_flag = independence_wave_active_origin }
+                    }
+                }
+                KAZ = { set_country_flag = soviet_collapse_event_created_republic }
+            }
         }
         if = {
-            limit = { KAZ = { exists = yes is_subject_of = SOV } }
+			limit = { KAZ = { exists = yes is_subject_of = SOV has_country_flag = soviet_collapse_event_created_republic } }
             set_autonomy = { target = KAZ autonomy_state = autonomy_free }
         }
     }
 
     if = {
         limit = {
-            KAZ = {
-                exists = yes
-            }
+			KAZ = { has_country_flag = soviet_collapse_event_created_republic }
         }
         KAZ = { soviet_collapse_setup_breakaway_country = yes }
         if = {

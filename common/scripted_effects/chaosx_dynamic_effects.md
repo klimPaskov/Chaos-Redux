@@ -27,6 +27,7 @@ Before adding new dynamic logic, check this file and reuse an existing effect if
 - [get_random_sea_region](#get_random_sea_region)
 - [refresh_world_threat_state](#refresh_world_threat_state)
 - [grant_random_chaos_special_project_available_tech](#grant_random_chaos_special_project_available_tech)
+- [Liberations release coordinator](#liberations-release-coordinator)
 - [apply_crisis_rescue_event_weight_adjustments](#apply_crisis_rescue_event_weight_adjustments)
 - [evaluate_random_event_active_pool_candidate](#evaluate_random_event_active_pool_candidate)
 - [count_dynamic_major_weight_pool_events](#count_dynamic_major_weight_pool_events)
@@ -738,6 +739,37 @@ else = {
 	clr_global_flag = world_threat_source_my_threat
 }
 refresh_world_threat_state = yes
+```
+
+## Liberations release coordinator
+
+These reusable transaction effects live in `common/scripted_effects/chaosx_liberation_release_effects.txt`. They coordinate exact releases between Event 005 Soviet Collapse and Event 006 Independence Wave without allowing either event to inherit the other's origin, tree, mechanics, or AI.
+
+Scope: the incident's coordinating country. Host reservation effects change to the supplied host scope, country reservation effects read regular event targets, and `liberation_release_add_state_reservation` is called in the exact state scope.
+
+Required temporary inputs for `liberation_release_begin_plan`:
+
+- `liberation_call_mode`: one `liberation_plan_mode.*` value.
+- `liberation_call_expected_country_count`: the exact combined country-row count; zero and partial plans fail closed.
+- `liberation_call_plan_owner`: Event 005, Event 006, or the joint owner enum.
+
+Candidate publishers supply `liberation_candidate_package_id`, `liberation_candidate_plan_owner`, `liberation_candidate_reservation_group`, `liberation_candidate_territory_level`, `liberation_candidate_force_level`, and the regular event targets `liberation_candidate_country`, `liberation_candidate_anchor`, and `liberation_candidate_primary_host`. State rows additionally use `liberation_candidate_state_host` and `liberation_candidate_state_role`. Before appending a candidate's state rows, save `global.liberation_plan_states^num` as temporary `liberation_candidate_state_row_start` so `liberation_release_rollback_candidate_reservation` can remove only that tail.
+
+Outputs: temporary `liberation_candidate_reject_reason` after host, country, or state reservation; global `liberation_plan_last_failure` after validation; aligned global country, state, host, and rejection ledgers; and phase/validity flags read by the execution barrier. There are no permissive defaults: a missing owner, event target, anchor, positive expected count, participant flag, or array alignment rejects or aborts the plan.
+
+Side effects: reserves one surviving state for each host, marks absent target tags and exact states with the current plan ID, records original owners/controllers, increments per-host planned losses, and clears every transient scope mark on commit or abort. It does not select packages, release a country, transfer a state, create units, or apply Event 005/Event 006 content. Candidate rollback is valid only while that candidate owns the aligned array tail.
+
+Example:
+
+```txt
+set_temp_variable = { liberation_call_mode = constant:liberation_plan_mode.cluster_joint }
+set_temp_variable = { liberation_call_expected_country_count = combined_release_count }
+set_temp_variable = { liberation_call_plan_owner = constant:liberation_plan_owner.joint }
+liberation_release_begin_plan = yes
+liberation_release_enter_allocation_phase = yes
+# Event 005 publishes its frozen rows, then Event 006 publishes and rerolls.
+liberation_release_lock_plan = yes
+liberation_release_begin_execution = yes
 ```
 
 ## apply_crisis_rescue_event_weight_adjustments
