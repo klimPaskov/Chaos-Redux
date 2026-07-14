@@ -4,22 +4,22 @@ Status: six final, unique, licensed audio packages are ready for parent integrat
 
 This research retains all six required packages. The rejected R1 removal is not applied. Laboratory World and Strategic Singularity remain separate world-end packages with the binding R7 distinction: Laboratory World is administrative conquest and integration, while Strategic Singularity is a vulnerable multi-year denied-victory device that raises chaos above the shared threshold and then commits canonical Fallout.
 
-The parent supplied audio/super-event IDs 88 through 93 after a live collision scan in which Event 020 retained IDs 85 through 87. The audio researcher did not reserve IDs and did not edit shared registries. World-end scenario IDs 11 and 12 were likewise supplied by the parent for Laboratory World and Strategic Singularity.
+The earlier parent reservation of audio/super-event IDs 88 through 93 is superseded because live Event 015 wiring occupies visible slots 85 through 89. A fresh parent collision scan assigns Event 016 exactly IDs 90 through 95. The audio researcher did not reserve IDs and did not edit shared registries. World-end scenario IDs 11 and 12 remain assigned to Laboratory World and Strategic Singularity.
 
 ## Final package map
 
 | ID | Package | Work and recording | Composition rights | Recording rights | Confidence | Final file |
 | ---: | --- | --- | --- | --- | --- | --- |
-| 88 | International recognition | Claude Debussy, *Première Arabesque*; Patrizia Prati, live piano, Madrid, 17 May 2016 | Public domain | CC BY-SA 4.0 | High | `music/016_brilliant_scientist/super_event_88_international_recognition.ogg` |
-| 89 | Kruger State formation | Johannes Brahms, *Academic Festival Overture*, Op. 80; Skidmore College Orchestra / Musopen | Public domain | Worldwide public-domain dedication with unconditional fallback grant | High | `music/016_brilliant_scientist/super_event_89_kruger_state_formation.ogg` |
-| 90 | Global Kruger threat | Richard Wagner, *Ride of the Valkyries*; Ulm Philharmonic, James Allen Gähres conducting, 3 June 2014 | Public domain | EFF Open Audio License 1.0 | High | `music/016_brilliant_scientist/super_event_90_global_kruger_threat.ogg` |
-| 91 | Laboratory World | Johan Halvorsen, *Passacaglia on a Theme by Handel*; Roxana Pavel Goldstein and Elias Goldstein | Public domain | CC BY-SA 2.0 | High | `music/016_brilliant_scientist/super_event_91_laboratory_world.ogg` |
-| 92 | Strategic Singularity | Gustav Mahler, Symphony No. 5, II. *Stürmisch bewegt, mit größter Vehemenz*; Peabody Symphony Orchestra | Public domain | CC0 1.0 | High | `music/016_brilliant_scientist/super_event_92_strategic_singularity.ogg` |
-| 93 | Qualifying defeat aftermath | Frédéric Chopin, Nocturne No. 1 in B-flat minor, Op. 9 No. 1; Vadim Chaimovich | Public domain | CC0 1.0 | High | `music/016_brilliant_scientist/super_event_93_qualifying_defeat_aftermath.ogg` |
+| 90 | International recognition | Claude Debussy, *Première Arabesque*; Patrizia Prati, live piano, Madrid, 17 May 2016 | Public domain | CC BY-SA 4.0 | High | `music/016_brilliant_scientist/super_event_90_international_recognition.ogg` |
+| 91 | Kruger State formation | Johannes Brahms, *Academic Festival Overture*, Op. 80; Skidmore College Orchestra / Musopen | Public domain | Worldwide public-domain dedication with unconditional fallback grant | High | `music/016_brilliant_scientist/super_event_91_kruger_state_formation.ogg` |
+| 92 | Global Kruger threat | Richard Wagner, *Ride of the Valkyries*; Ulm Philharmonic, James Allen Gähres conducting, 3 June 2014 | Public domain | EFF Open Audio License 1.0 | High | `music/016_brilliant_scientist/super_event_92_global_kruger_threat.ogg` |
+| 93 | Laboratory World | Johan Halvorsen, *Passacaglia on a Theme by Handel*; Roxana Pavel Goldstein and Elias Goldstein | Public domain | CC BY-SA 2.0 | High | `music/016_brilliant_scientist/super_event_93_laboratory_world.ogg` |
+| 94 | Strategic Singularity | Gustav Mahler, Symphony No. 5, II. *Stürmisch bewegt, mit größter Vehemenz*; Peabody Symphony Orchestra | Public domain | CC0 1.0 | High | `music/016_brilliant_scientist/super_event_94_strategic_singularity.ogg` |
+| 95 | Qualifying defeat aftermath | Frédéric Chopin, Nocturne No. 1 in B-flat minor, Op. 9 No. 1; Vadim Chaimovich | Public domain | CC0 1.0 | High | `music/016_brilliant_scientist/super_event_95_qualifying_defeat_aftermath.ogg` |
 
 No generated sound, ambience substitute, commercial game or film score, placeholder, or reused final track is present.
 
-## Audio ID 88: international recognition
+## Audio ID 90: international recognition
 
 ### Selection and fit
 
@@ -43,7 +43,7 @@ Debussy's *Première Arabesque* gives the recognition package intelligence, publ
 - Required credit: “Claude Debussy, *Première Arabesque*, performed by Patrizia Prati at the Museum of Romanticism, Madrid, 17 May 2016; source via Wikimedia Commons; CC BY-SA 4.0. Edited, faded, gain-adjusted, resampled, and excerpted by Chaos Redux. No endorsement is implied.”
 - The edited OGG is tagged and distributed under CC BY-SA 4.0.
 
-## Audio ID 89: Kruger State formation
+## Audio ID 91: Kruger State formation
 
 ### Selection and fit
 
@@ -66,7 +66,7 @@ Brahms wrote the *Academic Festival Overture* in response to an honorary doctora
 - Processing: fixed `+0.50 dB` gain, `1.00 s` quarter-sine fade-in, `6.00 s` quarter-sine fade-out, SoXr resample to `44,100 Hz`, and `0.250 s` zero tail. No compression or limiting. The lower integrated level is intentional because the solemn opening has `18.1 LU` of natural range and a peak-limited fixed-gain pass was used instead of compression.
 - Courtesy credit: “Johannes Brahms, *Academic Festival Overture*, Op. 80; Skidmore College Orchestra; recording supplied by Musopen and preserved by Wikimedia Commons; public domain. Edited by Chaos Redux; the edit is dedicated under CC0 1.0.”
 
-## Audio ID 90: global Kruger threat
+## Audio ID 92: global Kruger threat
 
 ### Selection and fit
 
@@ -90,7 +90,7 @@ The 2014 Ulm performance of *Ride of the Valkyries* supplies organized momentum,
 - Required credit: “(O) Ulm Philharmonic; James Allen Gähres, conductor; Richard Wagner, *Ride of the Valkyries*; CCU Einsteinsaal, Ulm, 3 June 2014; source record via Sphinxdutroène and Wikimedia Commons; EFF Open Audio License 1.0. Excerpted, faded, gain-adjusted, resampled, and retagged by Chaos Redux.”
 - The edited OGG carries the title, author/performer, source, license, license URL, and modification notice in Vorbis comments and remains under EFF Open Audio License 1.0.
 
-## Audio ID 91: Laboratory World
+## Audio ID 93: Laboratory World
 
 ### Selection and fit
 
@@ -114,7 +114,7 @@ Halvorsen's passacaglia builds a controlled, repeating structure through tightly
 - Required credit: “Johan Halvorsen, *Passacaglia on a Theme by Handel*; Roxana Pavel Goldstein, violin, and Elias Goldstein, viola; Al Goldstein collection / Pandora Music / ibiblio; source via Wikimedia Commons; CC BY-SA 2.0. Edited, faded, gain-adjusted, and excerpted by Chaos Redux. No endorsement is implied.”
 - The edited OGG is tagged and distributed under CC BY-SA 2.0.
 
-## Audio ID 92: Strategic Singularity
+## Audio ID 94: Strategic Singularity
 
 ### Selection and fit
 
@@ -139,7 +139,7 @@ Mahler's second movement is turbulent, unstable, and repeatedly driven back into
 - Processing: initial silence removed, fixed `-0.80 dB` gain, `0.75 s` quarter-sine fade-in, `6.00 s` quarter-sine fade-out, SoXr `44,100 Hz` pass, and `0.250 s` zero tail. No compression or limiting.
 - Courtesy credit: “Gustav Mahler, Symphony No. 5, II. *Stürmisch bewegt, mit größter Vehemenz*; Peabody Symphony Orchestra; source via Archive.org and Wikimedia Commons; CC0 1.0. Edited by Chaos Redux; the edit is also dedicated under CC0 1.0.”
 
-## Audio ID 93: qualifying defeat aftermath
+## Audio ID 95: qualifying defeat aftermath
 
 ### Selection and fit
 
@@ -166,14 +166,16 @@ Chopin's B-flat-minor nocturne is reflective without reading as a clean victory 
 
 All six files are Ogg Vorbis, exactly `115.000000 s`, `44,100 Hz`, stereo, and carry source, author/performer, license, license URL, and edit-notice Vorbis comments.
 
+The 2026-07-14 collision repair moved the six final OGGs by role from the superseded 88-through-93 paths to IDs 90 through 95 with `git mv` only. Their encoded-file hashes, decoded-PCM hashes, byte counts, stream properties, and embedded role tags are unchanged.
+
 | ID | Bytes | Integrated loudness | True peak | LRA | OGG SHA-256 | Decoded PCM SHA-256 |
 | ---: | ---: | ---: | ---: | ---: | --- | --- |
-| 88 | `2,503,537` | `-19.7 LUFS` | `-3.8 dBTP` | `9.5 LU` | `c2db8fa30ed1576f6c68545ef62dd122f004ff193fe22a9de4406d6fa672a248` | `a9fb17954170c46ae07e43ec0855695622da6379eb22269c9a131bf73495fca5` |
-| 89 | `2,106,125` | `-24.0 LUFS` | `-2.3 dBTP` | `18.1 LU` | `f0d37937dff3cd605c71afe5fced67d31fdb2775142c84c13f8a70d4ad06f8be` | `4fc368f50e45b0d53e1aaf1173d22fc9f93c4463d2c115c458b670c5c4b89dcc` |
-| 90 | `2,679,741` | `-19.8 LUFS` | `-5.5 dBTP` | `6.7 LU` | `286dfd0339dda76bdc368240e523c0e87286f03816e92089031c3941c2bc8b60` | `63d78a2a9e91bdd92ef7f1de1631e30955fee26b0415de9f37b0302e990ea1c8` |
-| 91 | `2,568,036` | `-20.9 LUFS` | `-2.9 dBTP` | `9.9 LU` | `e333ba54bb4e2e5508360b207352d912b187a38ede8bf2dbe309c9f32d4bffb1` | `19768496c0cef73aed84f58905accc65413578588bccd8bc694f9fda1d404db6` |
-| 92 | `2,175,203` | `-21.1 LUFS` | `-2.2 dBTP` | `19.3 LU` | `2665fcb7605ae84cad2a6729ce338adfa169123b16499dcf8891ad18526991d0` | `42184a290b133bb0c4be5e44f1dec88adf234cad233729ce2a74ebd178f4ad27` |
-| 93 | `1,367,211` | `-20.5 LUFS` | `-5.1 dBTP` | `12.5 LU` | `42d9cb2173ef4024d1c8f9a9ab140b0f8cc2cd53f1c1a4009ee982b9f0983b7d` | `79067976db4efdeb2254ce79268b25ffdb18f98e9a1236eeba828b76bb5b59be` |
+| 90 | `2,503,537` | `-19.7 LUFS` | `-3.8 dBTP` | `9.5 LU` | `c2db8fa30ed1576f6c68545ef62dd122f004ff193fe22a9de4406d6fa672a248` | `a9fb17954170c46ae07e43ec0855695622da6379eb22269c9a131bf73495fca5` |
+| 91 | `2,106,125` | `-24.0 LUFS` | `-2.3 dBTP` | `18.1 LU` | `f0d37937dff3cd605c71afe5fced67d31fdb2775142c84c13f8a70d4ad06f8be` | `4fc368f50e45b0d53e1aaf1173d22fc9f93c4463d2c115c458b670c5c4b89dcc` |
+| 92 | `2,679,741` | `-19.8 LUFS` | `-5.5 dBTP` | `6.7 LU` | `286dfd0339dda76bdc368240e523c0e87286f03816e92089031c3941c2bc8b60` | `63d78a2a9e91bdd92ef7f1de1631e30955fee26b0415de9f37b0302e990ea1c8` |
+| 93 | `2,568,036` | `-20.9 LUFS` | `-2.9 dBTP` | `9.9 LU` | `e333ba54bb4e2e5508360b207352d912b187a38ede8bf2dbe309c9f32d4bffb1` | `19768496c0cef73aed84f58905accc65413578588bccd8bc694f9fda1d404db6` |
+| 94 | `2,175,203` | `-21.1 LUFS` | `-2.2 dBTP` | `19.3 LU` | `2665fcb7605ae84cad2a6729ce338adfa169123b16499dcf8891ad18526991d0` | `42184a290b133bb0c4be5e44f1dec88adf234cad233729ce2a74ebd178f4ad27` |
+| 95 | `1,367,211` | `-20.5 LUFS` | `-5.1 dBTP` | `12.5 LU` | `42d9cb2173ef4024d1c8f9a9ab140b0f8cc2cd53f1c1a4009ee982b9f0983b7d` | `79067976db4efdeb2254ce79268b25ffdb18f98e9a1236eeba828b76bb5b59be` |
 
 The six encoded hashes and six decoded-PCM hashes are mutually unique. A repository-wide source-byte comparison found no preserved source recording duplicated outside the Event 016 archive. A title and performer search found only the Event 013 research rejection of a different, ambiguously licensed 1921 Edison *Ride of the Valkyries* recording; the selected 2014 Ulm recording is a separate performance with explicit open terms.
 
@@ -190,7 +192,7 @@ The current framework uses one mastered file per audio ID and six definition-lev
 | `_2_5` | `3.33` |
 | `_3_0` | `4.00` |
 
-For every ID from 88 through 93, the parent should add `chaosx_super_event_<ID>_<suffix>` music definitions pointing to the corresponding Event 016 OGG. The representative radio-station entry should use the `_1_5` music definition with zero chance, following the existing pattern. If the parent enables sound-channel playback, it should render a WAV from the preserved source with the same documented filter chain and add `chaosx_super_event_<ID>_sound_<suffix>` wrappers; transcoding the lossy final OGG back to WAV is not recommended.
+For every ID from 90 through 95, the parent should add `chaosx_super_event_<ID>_<suffix>` music definitions pointing to the corresponding Event 016 OGG. The representative radio-station entry should use the `_1_5` music definition with zero chance, following the existing pattern. If the parent enables sound-channel playback, it should render a WAV from the preserved source with the same documented filter chain and add `chaosx_super_event_<ID>_sound_<suffix>` wrappers; transcoding the lossy final OGG back to WAV is not recommended.
 
 ## Rights risks rejected during selection
 

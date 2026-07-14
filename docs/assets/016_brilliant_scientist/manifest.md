@@ -6,7 +6,7 @@ Date: 2026-07-14
 
 This is a planning and reconciliation manifest. The Doctor Warren Kruger stage-0 source package, shared scientist or leader portrait, and advisor portrait are produced and handed off but are not registered or wired. All other Event 016 visual assets remain unproduced and unwired.
 
-Super-event text research is complete for all six packages. Audio research is in progress at this manifest cutoff. Source-audio candidates are not final assets and do not establish accepted tracks, final OGG files, live IDs, sound wrappers, or settings-aware playback.
+Super-event text and audio research are complete for all six packages. Six final Event 016-owned OGG files are ready under `music/016_brilliant_scientist/` at visible IDs 90 through 95. Shared music definitions, sound wrappers, and settings-aware playback remain parent-owned and unwired.
 
 ## Fixed inventory
 
@@ -55,14 +55,16 @@ GFX and character wiring details are in `docs/plans/016_brilliant_scientist_plan
 
 | Visible ID | Role | Text status | Image status | Audio status | Live wiring |
 | ---: | --- | --- | --- | --- | --- |
-| 90 | International recognition | Selected and sourced | Missing | Research in progress | Missing |
-| 91 | Kruger State formation | Selected and sourced | Missing | Research in progress | Missing |
-| 92 | Global Kruger threat | Selected and sourced | Missing | Research in progress | Missing |
-| 93 | Laboratory World | Selected and sourced | Missing | Research in progress | Missing |
-| 94 | Strategic Singularity | Selected and sourced | Missing | Research in progress | Missing |
-| 95 | Qualifying defeat aftermath | Selected and sourced | Missing | Research in progress | Missing |
+| 90 | International recognition | Selected and sourced | Missing | Final OGG ready | Missing |
+| 91 | Kruger State formation | Selected and sourced | Missing | Final OGG ready | Missing |
+| 92 | Global Kruger threat | Selected and sourced | Missing | Final OGG ready | Missing |
+| 93 | Laboratory World | Selected and sourced | Missing | Final OGG ready | Missing |
+| 94 | Strategic Singularity | Selected and sourced | Missing | Final OGG ready | Missing |
+| 95 | Qualifying defeat aftermath | Selected and sourced | Missing | Final OGG ready | Missing |
 
 Text evidence: `docs/super_events/016_brilliant_scientist_super_event_research.md`.
+
+Audio evidence and exact final paths: `docs/super_events/016_brilliant_scientist_super_event_audio_research.md` and `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_super_event_audio_research_handoff.md`.
 
 International recognition and defeat are conditional at runtime. They remain required production packages.
 
@@ -114,5 +116,5 @@ Every final audio package needs source URL, author or performer, work and record
 
 - Visible super-event IDs 90 to 95 and world-end scenario IDs 11 and 12 are reserved. Their live shared-registry entries are not implemented.
 - Image and animation production has not started.
-- Audio research has not returned its final handoff at this cutoff.
+- Final OGGs are ready, but parent-owned shared music and optional sound-channel wiring remain absent.
 - Parent-owned GFX, GUI, character, achievement, music, sound, localisation, and gameplay wiring is absent.
