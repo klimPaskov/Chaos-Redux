@@ -23,6 +23,7 @@
 @CBRN_AI_ASSAULT_SUPPORT_MIN_EXCLUSIVE = 324
 @CBRN_AI_ASSAULT_TRUCKS_MIN_EXCLUSIVE = 109
 @CBRN_AI_ASSAULT_PROJECTORS_MIN_EXCLUSIVE = 23
+@CBRN_AI_ASSAULT_PAYLOAD_MIN_EXCLUSIVE = 59
 @CBRN_AI_ARMOR_MASKS_MIN_EXCLUSIVE = 144
 @CBRN_AI_ARMOR_DECON_MIN_EXCLUSIVE = 24
 @CBRN_AI_ARMOR_INSTRUMENTS_MIN_EXCLUSIVE = 37
@@ -30,6 +31,7 @@
 @CBRN_AI_ARMOR_TRUCKS_MIN_EXCLUSIVE = 359
 @CBRN_AI_ARMOR_MEDIUM_CHASSIS_MIN_EXCLUSIVE = 149
 @CBRN_AI_ARMOR_FLAME_CHASSIS_MIN_EXCLUSIVE = 14
+@CBRN_AI_ARMOR_PAYLOAD_MIN_EXCLUSIVE = 59
 @CBRN_AI_CONTAINMENT_INFANTRY_MIN_EXCLUSIVE = 899
 @CBRN_AI_CONTAINMENT_MASKS_MIN_EXCLUSIVE = 159
 @CBRN_AI_CONTAINMENT_DECON_MIN_EXCLUSIVE = 9
@@ -39,10 +41,22 @@
 
 cbrn_country_has_any_chemical_payload_stock = {
 	OR = {
+		has_equipment = { chlorine_agent_lot_1 > @CBRN_AI_ANY_PAYLOAD_MIN_EXCLUSIVE }
+		has_equipment = { phosgene_agent_lot_1 > @CBRN_AI_ANY_PAYLOAD_MIN_EXCLUSIVE }
+		has_equipment = { mustard_agent_lot_1 > @CBRN_AI_ANY_PAYLOAD_MIN_EXCLUSIVE }
+		has_equipment = { lewisite_agent_lot_1 > @CBRN_AI_ANY_PAYLOAD_MIN_EXCLUSIVE }
+		has_equipment = { tabun_agent_lot_1 > @CBRN_AI_ANY_PAYLOAD_MIN_EXCLUSIVE }
+		has_equipment = { sarin_agent_lot_1 > @CBRN_AI_ANY_PAYLOAD_MIN_EXCLUSIVE }
+		has_equipment = { soman_agent_lot_1 > @CBRN_AI_ANY_PAYLOAD_MIN_EXCLUSIVE }
+		has_equipment = { malodor_agent_lot_1 > @CBRN_AI_ANY_PAYLOAD_MIN_EXCLUSIVE }
+		has_equipment = { behavioral_agent_lot_1 > @CBRN_AI_ANY_PAYLOAD_MIN_EXCLUSIVE }
+		# Legacy stock remains a valid readiness signal until the idempotent
+		# migration runs after every old consumer has been retired.
 		has_equipment = { chemical_chlorine_payload_cylinder_1 > @CBRN_AI_ANY_PAYLOAD_MIN_EXCLUSIVE }
 		has_equipment = { chemical_phosgene_payload_cylinder_1 > @CBRN_AI_ANY_PAYLOAD_MIN_EXCLUSIVE }
 		has_equipment = { chemical_mustard_payload_cylinder_1 > @CBRN_AI_ANY_PAYLOAD_MIN_EXCLUSIVE }
 		has_equipment = { chemical_lewisite_payload_cylinder_1 > @CBRN_AI_ANY_PAYLOAD_MIN_EXCLUSIVE }
+		has_equipment = { chemical_tabun_payload_cylinder_1 > @CBRN_AI_ANY_PAYLOAD_MIN_EXCLUSIVE }
 		has_equipment = { chemical_sarin_payload_cylinder_1 > @CBRN_AI_ANY_PAYLOAD_MIN_EXCLUSIVE }
 		has_equipment = { chemical_soman_payload_cylinder_1 > @CBRN_AI_ANY_PAYLOAD_MIN_EXCLUSIVE }
 	}
@@ -76,6 +90,7 @@ cbrn_country_has_chemical_assault_template_stock = {
 	has_equipment = { support_equipment > @CBRN_AI_ASSAULT_SUPPORT_MIN_EXCLUSIVE }
 	has_equipment = { motorized_equipment > @CBRN_AI_ASSAULT_TRUCKS_MIN_EXCLUSIVE }
 	has_equipment = { livens_projector_chassis > @CBRN_AI_ASSAULT_PROJECTORS_MIN_EXCLUSIVE }
+	has_equipment = { chemical_agent_payload > @CBRN_AI_ASSAULT_PAYLOAD_MIN_EXCLUSIVE }
 }
 
 cbrn_country_can_field_chemical_assault_template = {
@@ -95,6 +110,7 @@ cbrn_country_has_armored_delivery_template_stock = {
 	has_equipment = { motorized_equipment > @CBRN_AI_ARMOR_TRUCKS_MIN_EXCLUSIVE }
 	has_equipment = { medium_tank_chassis > @CBRN_AI_ARMOR_MEDIUM_CHASSIS_MIN_EXCLUSIVE }
 	has_equipment = { medium_tank_flame_chassis > @CBRN_AI_ARMOR_FLAME_CHASSIS_MIN_EXCLUSIVE }
+	has_equipment = { chemical_agent_payload > @CBRN_AI_ARMOR_PAYLOAD_MIN_EXCLUSIVE }
 }
 
 cbrn_country_can_field_armored_delivery_template = {

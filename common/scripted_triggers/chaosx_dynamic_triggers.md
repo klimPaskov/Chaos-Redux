@@ -209,7 +209,7 @@ Inputs are live equipment, snapshot, ledger, and controlled-state queries. Outpu
 ### Production signals and stop conditions
 
 - `cbrn_country_faces_enemy_chemical_capability`: a current enemy has researched a choking, blister, or nerve agent.
-- `cbrn_world_has_confirmed_chemical_use`: at least one existing country has positive public chemical Condemnation.
+- `cbrn_world_has_confirmed_chemical_use`: the shared dispatcher has recorded confirmed chemical use, or an older save contains at least one country with positive public chemical Condemnation.
 - `cbrn_country_has_priority_civilian_protection_gap` and `cbrn_country_has_full_civilian_protection_gap`: a controlled core state's effective coverage remains below its corresponding target.
 - `cbrn_country_has_mask_production_signal`: reserve program, allied request, Chaos Warfare posture, enemy capability/use, public world use, or an exact controlled-state alert.
 - `cbrn_country_below_mask_ai_target`: military coverage, reserve plus replacement stock, or eligible civilian distribution remains below the current profile target.
@@ -333,10 +333,10 @@ These country-scope, side-effect-free triggers are defined in `cbrn_regimental_s
 
 ### Complete standing-template stock gates
 
-- `cbrn_country_has_any_chemical_payload_stock`: true when at least one supported chemical payload model has positive real stock. This is a production/readiness signal only; positive stock is not use authorization.
+- `cbrn_country_has_any_chemical_payload_stock`: true when at least one strategic chlorine, phosgene, mustard, lewisite, tabun, sarin, soman, malodor, or behavioral lot has positive real stock. Legacy cylinders remain accepted only during the bounded migration window. This is a production/readiness signal, not use authorization.
 - `cbrn_country_has_protected_template_stock`: requires the full standing bill for one nine-infantry protected target, including infantry equipment, masks, decon, instruments, support equipment, and trucks.
-- `cbrn_country_has_chemical_assault_template_stock`: requires the full standing bill for six infantry, three Chaos Assault Battalions, mask/decon, Hazard Pioneer, and Projector support.
-- `cbrn_country_has_armored_delivery_template_stock`: requires the full standing bill for three medium-armor and seven motorized battalions plus mask/decon, recon, and medium armored-delivery support, including the flame-role chassis subset.
+- `cbrn_country_has_chemical_assault_template_stock`: requires the full standing bill for six infantry, three Chaos Assault Battalions, mask/decon, Hazard Pioneer, and Projector support, including the projector's standing strategic-agent payload load.
+- `cbrn_country_has_armored_delivery_template_stock`: requires the full standing bill for three medium-armor and seven motorized battalions plus mask/decon, recon, and medium armored-delivery support, including the flame-role chassis and standing strategic-agent payload loads.
 - `cbrn_country_has_containment_template_stock`: requires the full standing bill for nine infantry plus mask/decon, epidemiology, and medical support.
 
 Inputs: current country equipment stock. Defaults: absent or insufficient stock returns false. Output: boolean only. Side effects: none.
@@ -372,6 +372,31 @@ cbrn_ai_chemical_assault_ratio = {
 }
 ```
 
+## CBRN payload-logistics triggers
+
+These country-scope, side-effect-free triggers are defined in `cbrn_payload_triggers.txt`. They validate one temporary chemical-action record or one requested filling profile. Missing technology, a mismatched profile, a line-change lock, insufficient exact stock, or an unsupported route returns false and removes nothing.
+
+- `cbrn_action_agent_is_unlocked` and `cbrn_requested_payload_agent_is_unlocked`: map each exact strategic agent to its technology or completed special project.
+- `cbrn_action_uses_strategic_agent_lots`, `cbrn_action_uses_shell_lots`, and `cbrn_action_uses_air_payload_lots`: classify the action route into exactly one stock family.
+- `cbrn_shell_profile_matches_action` and `cbrn_air_profile_matches_action`: require the persistent line profile to match the exact action agent and require the relevant reconfiguration lock to be absent.
+- `cbrn_action_payload_profile_is_ready`: combines route family, matching profile, and the required shell- or air-delivery technology. Strategic lots need no filling-line profile.
+- `cbrn_action_payload_stock_is_sufficient`: requires positive route demand and enough exact strategic-agent stock, shared shell lots, or class-specific air payload lots for the action.
+
+Inputs are the temporary `cbrn_action_*` metadata and the persistent shell/air profile state. Outputs are boolean only. These triggers never set payload-consumption proof; only `cbrn_try_debit_action_payload` may do that after an exact equipment removal.
+
+Example:
+
+```txt
+if = {
+	limit = {
+		cbrn_action_agent_is_unlocked = yes
+		cbrn_action_payload_profile_is_ready = yes
+		cbrn_action_payload_stock_is_sufficient = yes
+	}
+	cbrn_try_debit_action_payload = yes
+}
+```
+
 ## Chaos Warfare doctrine triggers
 
 These country-scope, side-effect-free triggers are defined in `cbrn_doctrine_triggers.txt`, except for the one explicitly state-scoped cleanup target. Missing doctrine state, stock, variables, flags, technology, formations, or project proof fails closed unless an absent state is named as an accepted adoption route.
@@ -395,7 +420,7 @@ Scope is country; outputs are boolean only; no trigger starts a mission, removes
 
 - `cbrn_chaos_warfare_has_post_adoption_mask_production`: cumulative gas-mask production is strictly above the persistent adoption baseline. Missing baseline fails.
 - `cbrn_chaos_warfare_has_protective_foundation_reserve`: at least 500 live masks.
-- `cbrn_chaos_warfare_has_operational_payload_reserve`: at least 100 units of one supported chlorine, phosgene, mustard, lewisite, tabun, sarin, or soman payload.
+- `cbrn_chaos_warfare_has_operational_payload_reserve`: at least 100 units of one supported chlorine, phosgene, mustard, lewisite, tabun, sarin, soman, malodor, or behavioral strategic-agent lot; legacy cylinders remain accepted until migration.
 - `cbrn_chaos_warfare_has_strategic_payload_reserve`: at least 250 of one supported payload.
 - `cbrn_chaos_warfare_has_terminal_payload_reserve`: at least 500 of one supported payload.
 - `cbrn_chaos_warfare_has_delivery_track_mastery_two`: Hazard Assault, Contaminant Fire, or Toxic Armor mastery 2.

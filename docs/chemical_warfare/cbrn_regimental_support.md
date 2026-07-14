@@ -4,7 +4,7 @@
 
 CBRN regimental support is the division layer of the conditional warfare system. Army Headquarters owns theater preparation and abilities; these units put protection, reconnaissance, decontamination, delivery organization, medical response, and biosecurity inside individual divisions.
 
-Standing formations and operational payload are separate. A company may carry respirators, decontamination equipment, instruments, support equipment, trucks, projectors, or a flame-role chassis as ordinary reinforced equipment. It does not carry every possible agent. Chemical and biological operations select, reserve, and consume the exact payload before calling the shared exposure pipeline.
+Standing formation loads and operational expenditure are separate. Offensive delivery companies carry a generic strategic-agent or filled-shell archetype alongside respirators, decontamination equipment, instruments, support equipment, trucks, projectors, or a flame-role chassis. That standing load creates native shortage scaling but does not identify the agent released. Chemical operations must still select, reserve, and consume the exact national payload before calling the shared exposure pipeline.
 
 Doctrine may reduce the Condemnation increment produced by a valid operation. It does not reduce or erase evidence, attribution, deaths, contamination, medical saturation, or confirmed-use history.
 
@@ -32,7 +32,7 @@ The three armored definitions are chassis variants of one role, not separate age
 
 The regimental definitions use the current 1.19 contract: `group = support`, `allowed_battalion_groups`, `category_regimental_support_battalions`, `divisional = no`, `essential`, and `need`. Native reinforcement therefore scales the unit's ordinary statistics when its essential standing equipment is missing.
 
-The exact fully equipped bills and centralized values are in `common/units/cbrn_regimental_support.txt`. They follow the accepted manpower, organization, strength, supply, and equipment bands from the package matrices. The Chaos Assault Battalion consumes infantry equipment, support equipment, masks, decontamination equipment, instruments, and trucks; it has no chemical or biological payload need.
+The exact fully equipped bills and centralized values are in `common/units/cbrn_regimental_support.txt`. They follow the accepted manpower, organization, strength, supply, and equipment bands from the package matrices. The Projector Battery carries 60 strategic-agent lots, the Chemical Ammunition Train carries 120 filled shell lots, each Armored Delivery Detachment carries 60 strategic-agent lots, and the Nerve Suppression Detachment carries 40 strategic-agent lots. The Chaos Assault Battalion consumes infantry equipment, support equipment, masks, decontamination equipment, instruments, and trucks; it has no chemical or biological payload need.
 
 The engine does not expose a division trigger for the fulfillment ratio of one named essential archetype, and one `need` block cannot express “one selected payload class from several alternatives.” No estimator is used. Operation adapters instead validate country/order preparation and exact selected payload stock, apply the accepted 0/25/55/80/100 scripted-effect bands, debit payload, and only then dispatch exposure.
 

@@ -1,0 +1,149 @@
+# ============================================================================
+# CHAOS REDUX - CBRN CHEMICAL DELIVERY CONSTANTS
+# ============================================================================
+# Overview:
+# - Centralizes payload conversion, delivery expenditure, profile changes,
+#   exact-state consequence dispatch, first-use shock, raid outcomes, and AI
+#   tuning for the shared chemical-delivery system.
+# - Equipment database values remain file-scoped in the equipment definition;
+#   all scripted gameplay values live here.
+# - Conversion and outcome values are gameplay tuning. Historical confidence
+#   is low because the abstract "lot" represents handling, filling, transport,
+#   and mission preparation rather than a fixed historical mass.
+# ============================================================================
+
+cbrn_payload_math = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	negation_multiplier = -1
+}
+
+cbrn_payload_route_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	cylinder_release = 40
+	projector_barrage = 70
+	artillery_fire_plan = 120
+	armored_delivery = 80
+	chemical_air_raid = 120
+	strategic_chemical_raid = 240
+	covert_operation = 20
+	nerve_suppression = 40
+}
+
+cbrn_payload_conversion = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	choking_to_shell_recovery = 0.85
+	blister_to_shell_recovery = 0.80
+	nerve_to_shell_recovery = 0.725
+	incapacitating_to_shell_recovery = 0.85
+	strategic_to_air_recovery = 0.825
+	legacy_stock_recovery = 1.00
+	shell_profile_switch_recovery = 0.75
+	air_profile_switch_recovery = 0.80
+	minimum_input = 1
+}
+
+cbrn_payload_profile_timing = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	shell_change_days = 21
+	air_change_days = 28
+}
+
+cbrn_chemical_raid_outcome = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	aborted_consumption_min = 0.10
+	aborted_consumption_max = 0.25
+	failed_consumption_min = 0.40
+	failed_consumption_max = 0.80
+	partial_consumption_min = 0.70
+	partial_consumption_max = 1.00
+	partial_dose_min = 0.35
+	partial_dose_max = 0.65
+	success_consumption = 1.00
+	success_dose = 1.00
+	catastrophic_consumption = 1.00
+	catastrophic_dose_min = 1.10
+	catastrophic_dose_max = 1.40
+	trace_friendly_risk_max = 0.05
+	crash_evidence_floor = 35
+	catastrophic_evidence_floor = 90
+}
+
+cbrn_chemical_first_use = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	shock_days = 14
+	disruption_mult = 1.20
+	military_casualty_mult = 1.15
+	civilian_casualty_mult = 1.10
+	protected_disruption_mult = 1.08
+	protected_military_casualty_mult = 1.05
+	protected_civilian_casualty_mult = 1.04
+	high_protection_threshold = 75
+	global_awareness_disruption_mult = 1.10
+	global_awareness_military_casualty_mult = 1.08
+	global_awareness_civilian_casualty_mult = 1.06
+	shock_army_org_regain = -0.03
+	shock_planning_speed = -0.05
+}
+
+cbrn_chemical_dispatch = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	legacy_contamination_strength_per_point = -0.008
+	state_medical_minimum = 0
+	state_medical_maximum = 100
+	state_evidence_minimum = 0
+	state_evidence_maximum = 100
+	friendly_org_damage_mult = 0.20
+	friendly_strength_damage_mult = 0.20
+	friendly_damage_max = 0.10
+	persistent_evidence_floor = 45
+	strategic_evidence_floor = 75
+	mass_casualty_evidence_floor = 90
+	medical_recovery_days = 30
+	medical_recovery_step = 20
+	evidence_decay_days = 180
+	evidence_decay_step = 20
+}
+
+cbrn_chemical_delivery_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_conversion = 1
+	low_payload_factor = 4
+	high_condemnation_factor = 0.20
+	retaliation_factor = 3
+	existential_factor = 4
+	aggressive_profile_factor = 2
+	defensive_first_use_factor = 0
+	payload_reserve_operations = 3
+}

@@ -39,6 +39,8 @@ Before adding new dynamic logic, check this file and reuse an existing effect if
 - [cbrn_apply_state_contamination_delta_internal](#cbrn_apply_state_contamination_delta_internal)
 - [cbrn_apply_state_evidence_delta_internal](#cbrn_apply_state_evidence_delta_internal)
 - [cbrn_reset_action_context](#cbrn_reset_action_context)
+- [CBRN payload logistics](#cbrn-payload-logistics)
+- [cbrn_dispatch_chemical_action_record](#cbrn_dispatch_chemical_action_record)
 - [CBRN equipment snapshots and protection resolution](#cbrn-equipment-snapshots-and-protection-resolution)
 - [chem_set_equipment_backed_mask_reduction](#chem_set_equipment_backed_mask_reduction)
 - [CBRN military issue and state distribution](#cbrn-military-issue-and-state-distribution)
@@ -991,7 +993,7 @@ cbrn_calculate_action_protection = yes
 
 ## cbrn_prepare_chemical_action_record
 
-Validates and calculates the normalized temporary record for one deliberate chemical action. It is the future shared route interface, not a payload or consequence effect by itself.
+Validates and calculates the normalized temporary record for one deliberate chemical action. It is the shared route interface, not a payload or consequence effect by itself.
 
 Scope: attacker country.
 
@@ -1012,7 +1014,7 @@ Nerve use through cylinder, projector, artillery, armored delivery, or air deliv
 
 Required payload inputs: positive `cbrn_action_payload_required`, positive `cbrn_action_payload_consumed`, and `cbrn_action_payload_consumed_proof`. The proof is valid only after a real CBRN payload-debit helper removes equipment.
 
-Required protection inputs: outputs and proof from `cbrn_calculate_action_protection`.
+Required protection inputs: outputs and proof from `cbrn_resolve_action_target_protection`.
 
 Required condition inputs and proof: `cbrn_action_weather_mult`, `cbrn_action_terrain_mult`, `cbrn_action_target_density_mult`, `cbrn_action_command_mult`, `cbrn_action_evidence_control_mult`, `cbrn_action_context_condemnation_mult`, a positive `cbrn_action_doctrine_condemnation_mult` validation value, `cbrn_action_forecast_confidence`, `cbrn_action_command_integration`, `cbrn_action_base_friendly_risk`, and `cbrn_action_conditions_resolved_proof`. The context multiplier carries retaliation and target-relationship effects. Immediately after validation, the public wrapper overwrites the doctrine value from the attacker country's Integrated CBRN Command mastery and clamps it to `0.70` through `1.00`; route adapters cannot select a different doctrine discount.
 
@@ -1020,7 +1022,7 @@ Defaults: none. Validation is fail-closed. The continuous ordinary-air route ret
 
 Outputs include `cbrn_action_result`, `cbrn_action_reject_reason`, victim event target/proof when known, payload ratio, dose, disruption, military and civilian death fractions, exposed share, contamination points/duration, medical burden, evidence, attribution, Condemnation base, friendly risk, `cbrn_action_vehicle_sealing_applied`, and source label. The vehicle-sealing proof is set only when the attacker has `vehicle_overpressure_and_sealed_compartments` and the verified route is armored delivery; it reduces friendly crew exposure without changing target harm, evidence, attribution, or Condemnation.
 
-Side effects: no persistent gameplay mutation. Rejected calls return zero consequence outputs. Accepted calls still require one later dispatcher to apply and record consequences.
+Side effects: no persistent gameplay mutation. Rejected calls return zero consequence outputs. Accepted calls must immediately pass to `cbrn_dispatch_chemical_action_record` before the action context is reset.
 
 Example:
 
@@ -1062,7 +1064,7 @@ cbrn_prepare_chemical_action_record = yes
 
 ## cbrn_apply_state_contamination_delta_internal
 
-Internal state-scope mutation used only by the future single consequence dispatcher.
+Internal state-scope mutation used by the single consequence dispatcher and exact-state decontamination responses.
 
 Inputs: temporary `cbrn_state_contamination_delta` and optional positive `cbrn_state_contamination_duration_input`.
 
@@ -1084,7 +1086,7 @@ event_target:cbrn_action_target_state = {
 
 ## cbrn_apply_state_evidence_delta_internal
 
-Internal state-scope evidence mutation for the future single consequence dispatcher.
+Internal state-scope evidence mutation for the single consequence dispatcher and later evidence-resolution actions.
 
 Input: temporary `cbrn_state_evidence_delta`.
 
@@ -1113,7 +1115,7 @@ Inputs: none.
 
 Defaults: none.
 
-Outputs: action variables reset to their `none`, zero, rejected, or missing-proof constants.
+Outputs: action variables reset to their `none`, zero, rejected, or missing-proof constants, including the one-shot dispatch proof and optional evidence-floor override.
 
 Side effects: regular event targets are not manually cleared because they expire with the chain; reset proofs prevent stale targets from being accepted within a reused chain.
 
@@ -1122,7 +1124,80 @@ Example:
 ```txt
 if = {
 	limit = { check_variable = { var = cbrn_action_result value = constant:cbrn_action_result.accepted compare = equals } }
-	# Apply the one shared consequence dispatcher.
+	cbrn_dispatch_chemical_action_record = yes
+}
+cbrn_reset_action_context = yes
+```
+
+## CBRN payload logistics
+
+These country-scope effects are defined in `cbrn_payload_effects.txt`. They keep the strategic-agent, shell-filling, and air-payload ledgers separate and supply `cbrn_action_payload_consumed_proof` only after exact equipment removal. Missing technology, mismatched profile, insufficient stock, an unsupported route, or an in-progress line change fails closed and creates no exposure.
+
+### Public payload effects
+
+| Effect | Inputs, defaults, outputs, and side effects |
+| --- | --- |
+| `cbrn_initialize_payload_logistics` | Country scope. No inputs. Initializes persistent shell and air profile variables to `cbrn_agent.none`; creates no equipment. |
+| `cbrn_set_default_payload_requirement_for_action` | Country/enclosing action chain. Reads `cbrn_action_delivery_route`; writes the centralized positive route cost and resets consumed amount/proof. Unknown routes remain at zero. |
+| `cbrn_try_debit_action_payload` | Country scope. Requires validated chemical metadata, unlocked agent, ready matching profile, and exact stock at least equal to `cbrn_action_payload_required`. Debits the exact strategic-agent model, shared shell lot, or class-specific air lot and then writes consumed amount/proof. A failed gate removes nothing. |
+| `cbrn_change_shell_filling_profile` | Country scope. Requires temporary `cbrn_requested_payload_agent`, its unlock, a different current profile, and no active shell reconfiguration. Applies the centralized switch loss to prepared shell stock, stores the new agent, sets the timed line-change flag, and returns `cbrn_payload_profile_change_accepted`. |
+| `cbrn_change_air_payload_profile` | Same contract for the air line. Wastage is removed only from the old class-specific air payload stock and the longer air reconfiguration delay is applied. |
+| `cbrn_convert_selected_agent_to_shell_lots` | Country scope. Requires a selected ready shell profile and temporary positive `cbrn_payload_conversion_requested`. Clamps the input to exact selected-agent stock, debits that stock, applies the class-specific recovery ratio, adds shell lots, and returns completed proof plus actual input/output. |
+| `cbrn_convert_selected_agent_to_air_payload_lots` | Same conversion contract for the selected air agent. Requires Chemical Air Interdiction and adds only the matching choking, blister, nerve, or incapacitating air lot. |
+| `cbrn_migrate_legacy_payload_stockpiles` | Country scope, idempotent. Converts each legacy cylinder and experimental bomb model to its exact strategic-agent lot at the centralized save-preserving recovery ratio, selects deterministic initial profiles from recovered stock, and sets one migration flag. It must run only after every legacy consumer has moved to the shared pipeline. |
+
+### Internal payload helpers
+
+| Helper | Private responsibility |
+| --- | --- |
+| `cbrn_debit_strategic_agent_lots_internal` | Removes the exact chlorine, phosgene, mustard, lewisite, tabun, sarin, soman, malodor, or behavioral lot selected by action metadata. |
+| `cbrn_debit_shell_lots_internal` / `cbrn_debit_air_payload_lots_internal` | Remove the route's shell lot or exact class-specific air lot after public stock validation. |
+| `cbrn_remove_shell_profile_wastage_internal` / `cbrn_remove_air_profile_wastage_internal` | Apply bounded prepared-stock losses during profile changes without touching strategic agent stock. |
+| `cbrn_read_selected_shell_agent_stock_internal` / `cbrn_read_selected_air_agent_stock_internal` | Read exact selected strategic-agent availability for conversion; unknown profiles return zero. |
+| `cbrn_debit_selected_shell_agent_stock_internal` / `cbrn_debit_selected_air_agent_stock_internal` | Remove the exact conversion input selected by the persistent profile. |
+| `cbrn_set_shell_conversion_recovery_internal` | Select the choking, blister, nerve, or incapacitating shell-filling recovery ratio. |
+| `cbrn_add_selected_air_payload_output_internal` | Adds only the class-specific air payload output that matches the selected agent. |
+
+Example:
+
+```txt
+cbrn_reset_action_context = yes
+set_temp_variable = { cbrn_action_delivery_route = constant:cbrn_delivery_route.artillery_fire_plan }
+# Set the remaining static action metadata.
+cbrn_set_default_payload_requirement_for_action = yes
+cbrn_try_debit_action_payload = yes
+```
+
+## cbrn_dispatch_chemical_action_record
+
+Consumes one accepted chemical action record exactly once. The public country-scope effect lives in `cbrn_consequence_effects.txt`.
+
+Required inputs: an accepted result from `cbrn_prepare_chemical_action_record`, positive consumed payload with supplied debit proof, supplied exact-target proof, and regular event target `cbrn_action_target_state`. Route adapters may optionally set `cbrn_action_evidence_floor_override` for an engine-proven outcome such as recovered aircraft wreckage. The override can raise evidence only.
+
+Defaults: fail closed. A rejected record, missing target, missing payload proof, zero consumption, or an already supplied `cbrn_action_dispatch_proof` produces no mutation. Continuous ordinary-air missions never become accepted records.
+
+Outputs: supplied one-shot dispatch proof, raw exact civilian deaths returned by the shared Deaths helper, actual evidence delta after absolute floors, cumulative attribution, and inspectable actor/state history variables.
+
+Side effects:
+
+- applies dynamic `damage_units` organisation and strength ratios only to armies in the exact selected state; hostile and bounded friendly/blowback limits are separate;
+- lets the existing country-casualty tracker record exact engine military losses instead of inventing an estimated death count;
+- removes civilian population and writes one immediate chemical Deaths record from the calculated exact fraction;
+- accumulates CBRN contamination and updates the legacy `chem_state_contamination` modifier under a guard that prevents duplicate immediate deaths, so existing continuing-death and Air Cleanliness systems see the same state;
+- adds medical saturation, consumes civilian and military mask/filter stocks, applies cumulative evidence and attribution floors, and schedules state-scoped expiry/recovery/decay events;
+- applies Condemnation with cumulative visibility, raw civilian deaths, contamination, severity, victim, strategic/mass-casualty floors, sanctions, and confirmed treaty breach;
+- records permanent confirmed-use history. Doctrine can reduce only the Condemnation base before the public floor; it never changes the other outputs;
+- applies first-exposure multipliers to the affected state and a short defender adaptation idea. Prior world use and real protection reduce this shock without benefiting the attacker.
+
+Internal helpers are `cbrn_dispatch_set_source_and_context`, `cbrn_dispatch_set_evidence_floor`, `cbrn_dispatch_apply_first_exposure_shock`, `cbrn_dispatch_apply_unit_damage`, `cbrn_dispatch_apply_mask_losses`, `cbrn_dispatch_apply_state_consequences`, `cbrn_dispatch_apply_condemnation`, and `cbrn_dispatch_record_actor_history`. They share the validated temporary record and must not be called directly by route adapters.
+
+Example:
+
+```txt
+cbrn_prepare_chemical_action_record = yes
+if = {
+	limit = { check_variable = { var = cbrn_action_result value = constant:cbrn_action_result.accepted compare = equals } }
+	cbrn_dispatch_chemical_action_record = yes
 }
 cbrn_reset_action_context = yes
 ```

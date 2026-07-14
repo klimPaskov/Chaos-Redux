@@ -7,10 +7,9 @@
 # - Resolves one normalized set of disruption, military-death fraction,
 #   civilian exposure/death fraction, contamination, duration, medical burden,
 #   evidence, attribution, Condemnation base, and friendly-exposure risk.
-# - Does not dispatch those outputs to Deaths, Air Cleanliness, Condemnation,
-#   modifiers, or event logs yet. Stage 6 route adapters and the Stage 8
-#   consequence dispatcher will consume this contract once, after real payload
-#   debit. This prevents duplicate legacy effects during migration.
+# - The Stage 6 consequence dispatcher consumes an accepted record once, after
+#   real payload debit, and forwards these outputs to units, states, Deaths,
+#   Air Cleanliness, evidence, Condemnation, treaty memory, and history.
 # - Continuous ordinary-air missions are recognized only so they can be
 #   rejected explicitly. Exact-state chemical air raids are supported routes.
 # ============================================================================
@@ -29,6 +28,7 @@ cbrn_reset_action_outputs = {
 	set_temp_variable = { cbrn_action_contamination_duration_days = constant:cbrn_math.zero }
 	set_temp_variable = { cbrn_action_medical_saturation_points = constant:cbrn_math.zero }
 	set_temp_variable = { cbrn_action_evidence_points = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_evidence_applied = constant:cbrn_math.zero }
 	set_temp_variable = { cbrn_action_attribution_state = constant:cbrn_attribution_state.unknown }
 	set_temp_variable = { cbrn_action_condemnation_base = constant:cbrn_math.zero }
 	set_temp_variable = { cbrn_action_friendly_exposure_risk = constant:cbrn_math.zero }
@@ -700,6 +700,8 @@ cbrn_reset_action_context = {
 	set_temp_variable = { cbrn_action_payload_required = constant:cbrn_math.zero }
 	set_temp_variable = { cbrn_action_payload_consumed = constant:cbrn_math.zero }
 	set_temp_variable = { cbrn_action_payload_consumed_proof = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_action_dispatch_proof = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_action_evidence_floor_override = constant:cbrn_math.zero }
 	set_temp_variable = { cbrn_action_protection_resolved_proof = constant:cbrn_proof.missing }
 	set_temp_variable = { cbrn_action_military_effective_protection = constant:cbrn_math.zero }
 	set_temp_variable = { cbrn_action_military_casualty_mult = constant:cbrn_math.one }
