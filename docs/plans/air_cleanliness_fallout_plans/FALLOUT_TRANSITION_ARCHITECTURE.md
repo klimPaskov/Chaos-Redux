@@ -4,6 +4,14 @@
 
 Create one reusable aftermath framework that can be called by gradual Air collapse, Final Silence, a concentrated nuclear exchange, chemical or biological terminal events, and the manual Fallout scenario. Every caller supplies cause and intensity. Every caller enters the same validated blackout, state grading, world rewrite, player handoff, and post-Fallout campaign state.
 
+## Live implementation boundary
+
+This document records both the required architecture and the current implementation boundary. The source specifications under `docs/specs/air_cleanliness_fallout_specs/` remain design authority.
+
+The live foundation includes the request envelope, host coordinator, schema-v4 migration gate, blackout phase events, world snapshot, state grading, population loss, physical collapse helpers, partial old-world diplomacy cleanup, deterministic provisional government classification, player-first reservation planning, a generation-bound pre-allocation conflict inventory, a separate post-allocation proof contract, two-pass player commit preflight, ready-target commit, exact-signature retry recovery, and persisted commit reconstruction.
+
+The transition is not complete. General successor allocation, country-package producers, focus-package producers, player-successor materialization, and candidate-choice UI are not implemented. A player can be committed only to an already existing target with current-transition packages and an exact valid reservation. Immediate `is_ai` observation after `change_tag_from` remains statically unresolved. The old-world diplomacy proof gate is also unresolved. Map return therefore remains intentionally fail closed.
+
 ## Namespace and ownership
 
 All Fallout events are defined in `events/fallout_world_end_events.txt` under `add_namespace = chaosx.fallout`.
@@ -57,6 +65,8 @@ Caller examples:
 - behavior: cause memory changes state grading and successor weighting
 
 ## Core helpers
+
+The helper headings below describe the required end-state contracts. They are not a claim that every named helper is present. Live phase work is currently split across `fallout_apply_transition_phase_*` effects. In particular, no active `fallout_select_successors`, `fallout_apply_country_packages`, package-generation producer, or player materialization effect exists.
 
 ### `fallout_request_aftermath`
 
@@ -149,6 +159,12 @@ Calculates grade and survival value for every valid state. The state pass can be
 
 Applies one-time population, building, category, resource, supply, and province memory effects from the stored grade.
 
+### `fallout_classify_country_government`
+
+Classifier schema 1 assigns one deterministic provisional origin archetype before ownership changes. State signals come from the Fallout snapshot and the completed state rewrite. The fixed specificity order resolves eleven live archetypes. Machine Protocol stays future-only until its machine-survival inputs have real producers. A partial machine claim or any unmatched surviving country raises error 16 and keeps the blackout active.
+
+This step does not change politics or activate successor content. A future allocator must still choose and apply the final archetype package, regional layer, country-memory layer, focus content, leaders, units, decisions, diplomacy, and AI.
+
 ### `fallout_reset_old_world_diplomacy`
 
 Ends or remaps incompatible relationships only after snapshot capture and before successor diplomacy begins.
@@ -156,6 +172,10 @@ Ends or remaps incompatible relationships only after snapshot capture and before
 ### `fallout_select_successors`
 
 Builds candidate pools from state clusters, old governments, tag availability, matrix rules, and player reservation.
+
+Live boundary: `fallout_build_successor_conflict_ledger` implements the generation-bound inventory that must precede this helper. It records every live country, every possible country scope, every state, player reservations, known event-package ownership, and exact safe-candidate membership. A separate schema-1 output contract consumes that frozen inventory, requires a resolution for every input conflict, and validates unique assigned countries, unique capitals, exact live-landholder coverage, current package layers, origin states, and cleanup ownership. The guarded finalizer is the only setter for `fallout_successor_allocation_complete`.
+
+No allocator calls the transaction initializer or finalizer. No assignment or package producer exists. The transition therefore remains in survivor allocation.
 
 ### `fallout_apply_country_packages`
 
@@ -197,6 +217,19 @@ It must:
 - record a clear development error marker
 
 After destructive rewrite begins, the system must finish or enter a dedicated recovery routine. It cannot restore a partially rewritten world from incomplete memory.
+
+## Live save migration boundary
+
+The current schema is version 4 and migration is deliberately fail closed.
+
+- A completed old Fallout save is promoted non-destructively to the completed schema-v4 state.
+- Only the exact schema-3 map-return-error signature is recovered. It must already be in the map-return phase with map return blocked, transition error set, error code `map_postcondition_failed`, and error count one.
+- Every other incomplete schema 1 through 3 state remains under blackout with schema migration blocked.
+- An incomplete terminal save with no schema also remains under blackout with schema migration blocked.
+- Migration does not treat a missing `fallout_transition_destructive_started` flag as proof that a legacy state is safe to restart.
+- No generic pre-destructive restart and no legacy altered-grade replay are active behavior.
+
+This narrow recovery rule prevents the current transition from mixing its snapshot and phase ledgers with an ambiguous legacy rewrite.
 
 ## Blackout GUI
 
@@ -323,9 +356,10 @@ Survival inputs:
 3. Add winter and infrastructure collapse damage.
 4. Subtract shelter, adaptation, food, and remoteness survival factors.
 5. Apply cause-specific floors and caps.
-6. Clamp grade from 0 to 6.
-7. Calculate a separate survival value from 0 to 100.
-8. Set state class and candidate flags.
+6. Clamp the monotonic physical-damage grade from 0 to 5.
+7. Record altered biosphere as a separate fictional high-Chaos subtype so it cannot reduce or reorder physical severity.
+8. Calculate a separate survival value from 0 to 100.
+9. Set state class and candidate flags.
 
 Do not derive successor viability from grade alone. A badly damaged remote state can still support a small survivor package, while a dense destroyed city can have high symbolic value but low survival value.
 
@@ -356,7 +390,7 @@ For each grade, define one-time consequences.
 - limited viable capitals
 - special survivor or abandonment package
 
-### Grades 5 and 6
+### Grade 5 and the altered biosphere subtype
 
 - wasteland or terminal exclusion status
 - very low ordinary population
@@ -364,7 +398,7 @@ For each grade, define one-time consequences.
 - salvage, expedition, and sealed-zone content
 - special fictional packages only under explicit gates
 
-All state population loss goes through the shared Deaths system with an aggregate transition reason and state-level records.
+All state population loss goes through the shared Deaths system with reason `chaos_meter_deaths_reason.fallout_aftermath`, numeric reason `19`, and state-level records.
 
 ## Old-world diplomacy reset
 
@@ -395,6 +429,8 @@ Preferred policy:
 
 The exact effect order must follow official local documentation and vanilla precedents.
 
+Live status: `fallout_reset_old_world_diplomacy` handles a subset of the required relationships, but the full reset postcondition remains unproven. The transition must not advance through government sorting or reveal the map until every required diplomacy surface has a supported reset and validation pair.
+
 ## Country survival and fragmentation
 
 Country survival score inputs:
@@ -423,12 +459,26 @@ The player is never silently assigned to a dead or invalid tag.
 
 ## Player continuation
 
+### Live commit path and blockers
+
+The snapshot records each human country, original identity, source anchor, former capital, and owned-state origin memory. Player reservation planning runs before the generation-bound conflict inventory is built, so reserved player states are excluded before any successor allocation is permitted. The inventory also excludes every state with human ownership or control and every state whose owner or controller has known live event-package ownership.
+
+`fallout_player_primary_target_is_commit_ready` allows only an existing same-country or AI target with country and focus packages from the current transition generation. The target must own survivable territory. Its actual capital must be the exact state reserved for that player, remain owned and controlled by the target, remain able to host a government, and retain the matching reservation origin and generation.
+
+`fallout_preflight_player_commit_targets` performs a global two-pass preflight over existing commits and proposed targets before any switch occurs. It proves that every snapshotted player has one ready and unique target. `fallout_commit_current_player_primary_target` then writes the final target, commit generation, durable assignment origin, and durable assignment generation before an optional `change_tag_from`. Retry logic permits re-entry only for an exact single recoverable error signature, clears only those errors, can rebuild a cleared reservation from the durable assignment ledger, and revalidates every commit and cross-player assignment before map return.
+
+This is a real commit path for already materialized, current-generation targets. It is not a materialization or package-production path. No active effect creates a missing player successor, applies the required country and focus packages with their transition generations, fills a candidate list, presents a candidate-choice UI, or completes general successor allocation. When planning cannot preserve a valid existing country, `fallout_player_materialization_required` is set and the transition remains blocked.
+
+Static inspection cannot prove that `change_tag_from` makes the destination observe `is_ai = no` immediately in the same effect chain. The commit effect checks that condition immediately after the switch and fails closed if it is not yet visible. No Hearts of Iron IV run was authorized, so this timing remains unresolved.
+
+### Required continuation priority
+
 Priority order:
 
 1. Continue as the old government when it has a valid surviving package.
 2. Continue as the strongest direct successor holding the old capital or largest protected population.
 3. Offer a small list of valid successor candidates tied to the former player territory.
-4. Use a deterministic fallback only if the player does not choose within the configured time.
+4. Materialize an emergency council from the nearest survivable state or largest refugee cluster when the source spec's no-obvious-successor case applies.
 
 Candidate rows should show direction only until final localisation exists:
 
@@ -461,6 +511,8 @@ The plan must test:
 
 Player reservations are resolved before general successor assignment.
 
+The ordering exists in the live phase skeleton. General successor assignment, package production, player materialization, and candidate-choice UI do not.
+
 ## Post-transition handoff
 
 The transition ends with a short stabilization period:
@@ -484,7 +536,9 @@ Do not start every war, focus event, and flavour incident on the reveal day.
 - state grading is deterministic
 - every state is processed once
 - every active country has a valid package
-- player continuation is valid
+- every player continuation is materially created, assigned, committed, and collision-free
 - old wars and subjects do not survive accidentally
 - post-Fallout systems start only after validation
 - every direct caller reaches the same transition framework
+
+These are release gates. They are not all satisfied by the current implementation.

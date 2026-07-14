@@ -11,7 +11,7 @@ Two corrections are binding:
 - Event 015 owns visible super-event slots 85 through 89. Event 016 uses 90 recognition, 91 formation, 92 threat, 93 Laboratory World, 94 Strategic Singularity, and 95 defeat. Earlier Event 016 planning references to 88 through 93 are superseded.
 - Event 016 world-end selector IDs remain 11 for Laboratory World and 12 for Strategic Singularity. These are triggerable-scenario selector values, not visible super-event IDs.
 
-No shared Fallout gameplay file should be edited merely to create a second terminal system. Section “Strategic Singularity and canonical Fallout” defines the required source-aware bridge.
+No shared Fallout gameplay file should be edited merely to create a second terminal system. The section named `Strategic Singularity and the dedicated Fallout system` defines the required request bridge.
 
 ## Reference evidence
 
@@ -347,21 +347,21 @@ The lifecycle files are concurrent implementation work. Event 016 integration de
 - **Unique rewards:** exact project ID plus one suffix: <code>_reward_false_arming_order</code>, <code>_reward_power_cascade</code>, <code>_reward_lattice_failure</code>, <code>_reward_contradictory_authentication</code>, <code>_reward_targeting_breach</code>, and <code>_reward_unauthorized_activation</code>, respectively.
 - **AI:** never expose before prerequisites; weak KRG delays and stabilizes; construction AI defends all components; armed strong KRG uses deterrence unless its route permits deliberate use; near-capitulation failsafe remains blocked by survivable surrender or temporal escape.
 
-## Strategic Singularity and canonical Fallout
+## Strategic Singularity and the dedicated Fallout system
 
-The Singularity must enter the existing Fallout world-end pipeline only after satisfying the normal chaos and contamination thresholds. It must not create a parallel Fallout state, duplicate world-end cleanup, directly force a visible terminal while below threshold, or overwrite generic Fallout’s audio/picture for unrelated causes.
+The Singularity must request the independent Fallout world-end system without creating a parallel terminal state or duplicating world-end cleanup. Event 016 owns super-event `94` as the Strategic Singularity presentation. Fallout separately owns its full-screen blackout, `chaosx.fallout` transition events, request ledger, world rewrite, audio wrappers, and final files.
 
 Required bridge:
 
-1. <code>brilliant_scientist_prepare_singularity_terminal_commit</code> verifies the six components, armed/live-command/fail-deadly state, KRG ownership, selector 12, and absence of another world end. It records regular event target <code>brilliant_scientist_terminal_source_actor</code>.
-2. It calculates the deficit to <code>constant:chaos_meter_tier_range.tier_final.plus</code> and calls the canonical <code>add_chaos_meter_value</code> path with history reason <code>constant:brilliant_scientist_singularity.chaos_history_reason</code> = 216.
-3. Set short-lived global context flag <code>brilliant_scientist_singularity_fallout_pending</code>.
-4. Calculate the remaining air-contamination delta to <code>constant:air_contamination_threshold_bp.world_end_1000</code> and call <code>air_contamination_apply_delta_bp</code>. That canonical effect refreshes contamination/chaos and invokes the existing Fallout threshold event.
-5. The source-aware terminal adapter selects visible super-event/audio 94 only when the pending flag and verified Event 016 source actor are present. Generic Fallout keeps its current visible/audio selection.
-6. The canonical event still owns <code>world_end</code>, <code>world_end_fallout</code>, and common cleanup. The Event 016 branch additionally records <code>world_end_strategic_singularity</code> and the Event 016 terminal-fired marker.
-7. Clear the pending flag and source context on success, cancellation, disarmament, invalid ownership, or any aborted threshold attempt.
+1. <code>brilliant_scientist_prepare_singularity_terminal_commit</code> verifies the six components, armed and fail-deadly state, live command network, KRG ownership, selector 12, and absence of another world end. It records regular event target <code>brilliant_scientist_terminal_source_actor</code>.
+2. It calculates the deficit to <code>constant:chaos_meter_tier_range.tier_final.plus</code> and calls <code>add_chaos_meter_value</code> with history reason <code>constant:brilliant_scientist_singularity.chaos_history_reason</code> = 216.
+3. Event 016 shows and records super-event `94` through its own settings-aware super-event package.
+4. Event 016 supplies a parent-approved Fallout request source, a Fallout request intensity, and the verified actor context, then calls <code>fallout_request_aftermath</code>.
+5. The Fallout coordinator validates the request and owns <code>world_end</code>, <code>world_end_fallout</code>, the blackout GUI, the <code>chaosx.fallout.*</code> sequence, and common rewrite cleanup.
+6. Event 016 records <code>world_end_strategic_singularity</code> and its terminal-fired marker only after the Fallout request is accepted.
+7. Event 016 clears its request context on success, cancellation, disarmament, invalid ownership, and every aborted attempt.
 
-The exact adapter placement is parent-owned because it touches the shared Fallout terminal. This map intentionally does not edit that file.
+The exact Event 016 request-source mapping is parent-owned because the current Fallout source enum has no Event 016-specific entry. This map intentionally does not edit the dedicated Fallout files.
 
 ## New technology, unit, and equipment registry
 
@@ -454,7 +454,7 @@ The scan cannot guarantee compatibility with arbitrary user-enabled mods outside
 5. Add the seven operational technologies, seven units, six new equipment archetype/type pairs, script-enum entries, production burdens, caps, AI, icons, and localisation.
 6. Integrate Event 016 biological calls with the accepted canonical lifecycle API.
 7. Add only the narrow Event 030/Event 036 cross-event flags if those exact outcomes are implemented.
-8. Route Singularity through the parent-owned canonical Fallout adapter and corrected visible super-event 94.
+8. Route Singularity through the parent-owned request bridge into `fallout_request_aftermath` while keeping visible super-event 94 as Event 016 presentation.
 9. Run project, country-package, decision/mission, localisation, event-completion, and asset audits before claiming Event 016 completion.
 
 This handoff contains no gameplay implementation and creates no fallback. The remaining work is explicit implementation work, not an omitted substitute.

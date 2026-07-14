@@ -1,0 +1,259 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 019 MUSTER BOARD SHARED ACTION TRIGGERS
+# ============================================================================
+# These gates are the single availability contract for the movable Muster
+# Board, ordinary-country decisions, and AI dispatch. Gameplay effects repeat
+# their critical ledger/resource checks before payment so stale UI state cannot
+# create a free action or mutate a resolved lot.
+# ============================================================================
+
+infantry_spawn_muster_board_is_available = {
+	infantry_spawn_country_is_active = yes
+	infantry_spawn_has_evolution_iii = yes
+	NOT = { is_infantry_spawn_derivative_country = yes }
+	NOT = { has_country_flag = infantry_spawn_derivative_creation_in_progress }
+	NOT = { has_global_flag = world_end }
+}
+
+infantry_spawn_muster_board_selected_family_index_is_valid = {
+	has_variable = infantry_spawn_muster_gui_selected_family_view_index
+	check_variable = { infantry_spawn_muster_gui_selected_family_view_index > constant:infantry_spawn_muster_gui_value.invalid_index }
+	check_variable = { var = infantry_spawn_muster_gui_selected_family_view_index value = infantry_spawn_muster_gui_family_id_entries^num compare = less_than }
+}
+
+# ---------------------------------------------------------------------------
+# Selected-lot action parity
+# ---------------------------------------------------------------------------
+
+infantry_spawn_can_execute_selected_lot_audit = {
+	infantry_spawn_can_audit_generation = yes
+	infantry_spawn_selected_lot_is_unresolved = yes
+	NOT = { infantry_spawn_selected_lot_is_anomalous = yes }
+	check_variable = { infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index = constant:infantry_spawn_lot_state.auditing }
+	check_variable = { var = army_experience value = constant:infantry_spawn_request_cost.base_army_experience compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@support_equipment value = constant:infantry_spawn_request_cost.base_support_equipment compare = greater_than_or_equals }
+}
+
+infantry_spawn_can_execute_selected_lot_territorial_assignment = {
+	infantry_spawn_can_assign_territorial_role = yes
+	check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_state.training compare = less_than }
+	NOT = { has_country_flag = infantry_spawn_audit_decision_running }
+	check_variable = { var = num_equipment@support_equipment value = constant:infantry_spawn_request_cost.base_support_equipment compare = greater_than_or_equals }
+}
+
+infantry_spawn_can_execute_selected_lot_training = {
+	infantry_spawn_management_is_available = yes
+	infantry_spawn_selected_lot_is_unresolved = yes
+	NOT = { infantry_spawn_selected_lot_is_anomalous = yes }
+	check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_state.training compare = less_than }
+	NOT = { has_country_flag = infantry_spawn_audit_decision_running }
+	NOT = { has_country_flag = infantry_spawn_training_cycle_running }
+	check_variable = { var = num_equipment@infantry_equipment value = constant:infantry_spawn_request_cost.base_infantry_equipment compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@support_equipment value = constant:infantry_spawn_request_cost.base_support_equipment compare = greater_than_or_equals }
+}
+
+infantry_spawn_can_execute_selected_lot_standardization = {
+	infantry_spawn_can_standardize_selected_lot = yes
+	check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_state.training compare = less_than }
+	check_variable = { var = infantry_spawn_lot_profile_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_family.armored_reserve_group compare = less_than }
+	NOT = { has_country_flag = infantry_spawn_audit_decision_running }
+	NOT = { has_country_flag = infantry_spawn_standardization_running }
+	check_variable = { var = num_equipment@infantry_equipment value = constant:infantry_spawn_request_cost.base_infantry_equipment compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@support_equipment value = constant:infantry_spawn_request_cost.base_support_equipment compare = greater_than_or_equals }
+}
+
+infantry_spawn_can_execute_selected_lot_specialist_preservation = {
+	infantry_spawn_has_evolution_i = yes
+	infantry_spawn_can_demobilize_selected_lot = yes
+	NOT = { infantry_spawn_selected_lot_is_anomalous = yes }
+	check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_state.training compare = less_than }
+	check_variable = { infantry_spawn_lot_support_count_entries^infantry_spawn_selected_lot_index > 0 }
+	NOT = { has_country_flag = infantry_spawn_audit_decision_running }
+	NOT = { has_country_flag = infantry_spawn_specialist_preservation_running }
+	NOT = { has_country_flag = infantry_spawn_demobilization_running }
+	check_variable = { var = num_equipment@support_equipment value = constant:infantry_spawn_request_cost.base_support_equipment compare = greater_than_or_equals }
+}
+
+infantry_spawn_can_execute_selected_lot_demobilization = {
+	infantry_spawn_can_demobilize_selected_lot = yes
+	check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_state.training compare = less_than }
+	NOT = { has_country_flag = infantry_spawn_audit_decision_running }
+	NOT = { has_country_flag = infantry_spawn_demobilization_running }
+	NOT = { has_country_flag = infantry_spawn_specialist_preservation_running }
+}
+
+infantry_spawn_can_execute_selected_lot_emergency_integration = {
+	infantry_spawn_can_emergency_integrate_selected_lot = yes
+	check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_state.training compare = less_than }
+	NOT = { has_country_flag = infantry_spawn_audit_decision_running }
+}
+
+# ---------------------------------------------------------------------------
+# Paid request parity
+# ---------------------------------------------------------------------------
+
+infantry_spawn_can_begin_paid_request = {
+	infantry_spawn_can_request_formation = yes
+	infantry_spawn_country_has_eligible_state = yes
+}
+
+infantry_spawn_can_pay_field_request = {
+	infantry_spawn_can_begin_paid_request = yes
+	check_variable = { var = army_experience value = infantry_spawn_request_field_xp_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@infantry_equipment value = infantry_spawn_request_field_infantry_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@support_equipment value = infantry_spawn_request_field_support_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@motorized_equipment value = infantry_spawn_request_field_truck_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@train_equipment value = infantry_spawn_request_field_train_cost compare = greater_than_or_equals }
+	check_variable = { var = fuel_k value = infantry_spawn_request_field_fuel_cost_k compare = greater_than_or_equals }
+	check_variable = { var = manpower value = infantry_spawn_request_field_manpower_cost compare = greater_than_or_equals }
+}
+
+infantry_spawn_can_pay_mobile_reserve_request = {
+	infantry_spawn_can_begin_paid_request = yes
+	check_variable = { var = army_experience value = infantry_spawn_request_mobile_xp_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@infantry_equipment value = infantry_spawn_request_mobile_infantry_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@support_equipment value = infantry_spawn_request_mobile_support_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@motorized_equipment value = infantry_spawn_request_mobile_truck_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@train_equipment value = infantry_spawn_request_mobile_train_cost compare = greater_than_or_equals }
+	check_variable = { var = fuel_k value = infantry_spawn_request_mobile_fuel_cost_k compare = greater_than_or_equals }
+	check_variable = { var = manpower value = infantry_spawn_request_mobile_manpower_cost compare = greater_than_or_equals }
+}
+
+infantry_spawn_can_pay_territorial_request = {
+	infantry_spawn_can_begin_paid_request = yes
+	check_variable = { var = army_experience value = infantry_spawn_request_territorial_xp_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@infantry_equipment value = infantry_spawn_request_territorial_infantry_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@support_equipment value = infantry_spawn_request_territorial_support_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@motorized_equipment value = infantry_spawn_request_territorial_truck_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@train_equipment value = infantry_spawn_request_territorial_train_cost compare = greater_than_or_equals }
+	check_variable = { var = fuel_k value = infantry_spawn_request_territorial_fuel_cost_k compare = greater_than_or_equals }
+	check_variable = { var = manpower value = infantry_spawn_request_territorial_manpower_cost compare = greater_than_or_equals }
+}
+
+infantry_spawn_can_pay_specialist_request = {
+	infantry_spawn_can_begin_paid_request = yes
+	check_variable = { var = army_experience value = infantry_spawn_request_specialist_xp_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@infantry_equipment value = infantry_spawn_request_specialist_infantry_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@support_equipment value = infantry_spawn_request_specialist_support_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@motorized_equipment value = infantry_spawn_request_specialist_truck_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@train_equipment value = infantry_spawn_request_specialist_train_cost compare = greater_than_or_equals }
+	check_variable = { var = fuel_k value = infantry_spawn_request_specialist_fuel_cost_k compare = greater_than_or_equals }
+	check_variable = { var = manpower value = infantry_spawn_request_specialist_manpower_cost compare = greater_than_or_equals }
+}
+
+infantry_spawn_can_pay_numbers_request = {
+	infantry_spawn_has_evolution_iii = yes
+	infantry_spawn_can_begin_paid_request = yes
+	check_variable = { var = army_experience value = infantry_spawn_request_numbers_xp_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@infantry_equipment value = infantry_spawn_request_numbers_infantry_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@support_equipment value = infantry_spawn_request_numbers_support_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@motorized_equipment value = infantry_spawn_request_numbers_truck_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@train_equipment value = infantry_spawn_request_numbers_train_cost compare = greater_than_or_equals }
+	check_variable = { var = fuel_k value = infantry_spawn_request_numbers_fuel_cost_k compare = greater_than_or_equals }
+	check_variable = { var = manpower value = infantry_spawn_request_numbers_manpower_cost compare = greater_than_or_equals }
+}
+
+infantry_spawn_can_pay_discipline_request = {
+	infantry_spawn_has_evolution_iii = yes
+	infantry_spawn_can_begin_paid_request = yes
+	check_variable = { var = army_experience value = infantry_spawn_request_discipline_xp_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@infantry_equipment value = infantry_spawn_request_discipline_infantry_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@support_equipment value = infantry_spawn_request_discipline_support_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@motorized_equipment value = infantry_spawn_request_discipline_truck_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@train_equipment value = infantry_spawn_request_discipline_train_cost compare = greater_than_or_equals }
+	check_variable = { var = fuel_k value = infantry_spawn_request_discipline_fuel_cost_k compare = greater_than_or_equals }
+	check_variable = { var = manpower value = infantry_spawn_request_discipline_manpower_cost compare = greater_than_or_equals }
+}
+
+infantry_spawn_can_pay_firepower_request = {
+	infantry_spawn_has_evolution_iii = yes
+	infantry_spawn_can_begin_paid_request = yes
+	check_variable = { var = army_experience value = infantry_spawn_request_firepower_xp_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@infantry_equipment value = infantry_spawn_request_firepower_infantry_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@support_equipment value = infantry_spawn_request_firepower_support_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@motorized_equipment value = infantry_spawn_request_firepower_truck_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@train_equipment value = infantry_spawn_request_firepower_train_cost compare = greater_than_or_equals }
+	check_variable = { var = fuel_k value = infantry_spawn_request_firepower_fuel_cost_k compare = greater_than_or_equals }
+	check_variable = { var = manpower value = infantry_spawn_request_firepower_manpower_cost compare = greater_than_or_equals }
+}
+
+infantry_spawn_can_pay_mobility_request = {
+	infantry_spawn_has_evolution_iii = yes
+	infantry_spawn_can_begin_paid_request = yes
+	check_variable = { var = army_experience value = infantry_spawn_request_mobility_xp_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@infantry_equipment value = infantry_spawn_request_mobility_infantry_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@support_equipment value = infantry_spawn_request_mobility_support_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@motorized_equipment value = infantry_spawn_request_mobility_truck_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@train_equipment value = infantry_spawn_request_mobility_train_cost compare = greater_than_or_equals }
+	check_variable = { var = fuel_k value = infantry_spawn_request_mobility_fuel_cost_k compare = greater_than_or_equals }
+	check_variable = { var = manpower value = infantry_spawn_request_mobility_manpower_cost compare = greater_than_or_equals }
+}
+
+infantry_spawn_can_pay_anything_request = {
+	infantry_spawn_has_evolution_iii = yes
+	infantry_spawn_can_begin_paid_request = yes
+	check_variable = { var = army_experience value = infantry_spawn_request_anything_xp_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@infantry_equipment value = infantry_spawn_request_anything_infantry_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@support_equipment value = infantry_spawn_request_anything_support_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@motorized_equipment value = infantry_spawn_request_anything_truck_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@train_equipment value = infantry_spawn_request_anything_train_cost compare = greater_than_or_equals }
+	check_variable = { var = fuel_k value = infantry_spawn_request_anything_fuel_cost_k compare = greater_than_or_equals }
+	check_variable = { var = manpower value = infantry_spawn_request_anything_manpower_cost compare = greater_than_or_equals }
+}
+
+# ---------------------------------------------------------------------------
+# Selected anomalous-family action parity
+# ---------------------------------------------------------------------------
+
+infantry_spawn_can_execute_selected_family_reinforcement = {
+	infantry_spawn_can_request_anomalous_formation = yes
+	infantry_spawn_muster_board_selected_family_index_is_valid = yes
+	OR = {
+		check_variable = { infantry_spawn_muster_gui_family_can_train_entries^infantry_spawn_muster_gui_selected_family_view_index > 0 }
+		check_variable = { infantry_spawn_muster_gui_family_can_spawn_entries^infantry_spawn_muster_gui_selected_family_view_index > 0 }
+	}
+}
+
+infantry_spawn_can_open_selected_family_cantonment = {
+	infantry_spawn_muster_board_selected_family_index_is_valid = yes
+	check_variable = { infantry_spawn_muster_gui_family_cantonment_entries^infantry_spawn_muster_gui_selected_family_view_index = 0 }
+	NOT = { has_political_power < constant:infantry_spawn_family_management_cost.cantonment_political_power }
+	NOT = { command_power < constant:infantry_spawn_family_management_cost.cantonment_command_power }
+	check_variable = { var = num_equipment@support_equipment value = constant:infantry_spawn_family_management_cost.cantonment_support_equipment compare = greater_than_or_equals }
+}
+
+infantry_spawn_can_appoint_selected_family_liaison = {
+	infantry_spawn_muster_board_selected_family_index_is_valid = yes
+	check_variable = { infantry_spawn_muster_gui_family_liaison_entries^infantry_spawn_muster_gui_selected_family_view_index = 0 }
+	NOT = { has_political_power < constant:infantry_spawn_family_management_cost.liaison_political_power }
+	NOT = { command_power < constant:infantry_spawn_family_management_cost.liaison_command_power }
+}
+
+infantry_spawn_can_issue_selected_family_restricted_deployment = {
+	infantry_spawn_muster_board_selected_family_index_is_valid = yes
+	check_variable = { infantry_spawn_muster_gui_family_restricted_entries^infantry_spawn_muster_gui_selected_family_view_index = 0 }
+	NOT = { command_power < constant:infantry_spawn_family_management_cost.restricted_command_power }
+	check_variable = { var = army_experience value = constant:infantry_spawn_family_management_cost.restricted_army_experience compare = greater_than_or_equals }
+}
+
+infantry_spawn_can_sustain_selected_family = {
+	infantry_spawn_muster_board_selected_family_index_is_valid = yes
+	check_variable = { infantry_spawn_muster_gui_family_can_sustain_entries^infantry_spawn_muster_gui_selected_family_view_index > 0 }
+	check_variable = { infantry_spawn_muster_gui_family_sustained_entries^infantry_spawn_muster_gui_selected_family_view_index = 0 }
+}
+
+infantry_spawn_can_seal_selected_family_breach = {
+	infantry_spawn_muster_board_selected_family_index_is_valid = yes
+	check_variable = { infantry_spawn_muster_gui_family_contained_entries^infantry_spawn_muster_gui_selected_family_view_index = 0 }
+	check_variable = { var = infantry_spawn_muster_gui_family_pressure_entries^infantry_spawn_muster_gui_selected_family_view_index value = constant:infantry_spawn_family_pressure.strained compare = greater_than_or_equals }
+	NOT = { has_political_power < constant:infantry_spawn_family_management_cost.containment_political_power }
+	NOT = { command_power < constant:infantry_spawn_family_management_cost.containment_command_power }
+	check_variable = { var = num_equipment@support_equipment value = constant:infantry_spawn_family_management_cost.containment_support_equipment compare = greater_than_or_equals }
+}
+
+infantry_spawn_can_disperse_selected_anomalous_lot = {
+	infantry_spawn_muster_board_selected_family_index_is_valid = yes
+	check_variable = { infantry_spawn_muster_gui_family_lot_count_entries^infantry_spawn_muster_gui_selected_family_view_index > 0 }
+	NOT = { command_power < constant:infantry_spawn_family_management_cost.dispersal_command_power }
+	check_variable = { var = num_equipment@support_equipment value = constant:infantry_spawn_family_management_cost.dispersal_support_equipment compare = greater_than_or_equals }
+}

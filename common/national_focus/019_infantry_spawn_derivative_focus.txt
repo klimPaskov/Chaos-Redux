@@ -1,0 +1,922 @@
+@infantry_spawn_derivative_focus_short = 3
+@infantry_spawn_derivative_focus_standard = 5
+@infantry_spawn_derivative_focus_long = 7
+
+# ============================================================================
+# CHAOS REDUX - EVENT 019 DERIVATIVE COUNTRY FOCUS TREE
+# ============================================================================
+# Thirty shared focuses cover opening survival, three hierarchy routes,
+# sustainment, doctrine, and bounded expansion. Five family-gated focuses for
+# each of zombies, ghosts, and golems bring every identity family to exactly
+# thirty-five visible focus-scale pieces. Generic vanilla icons are deliberate
+# final references until the parent Event 019 asset pass registers bespoke art.
+# ============================================================================
+
+focus_tree = {
+	id = infantry_spawn_derivative_focus_tree
+
+	country = {
+		factor = constant:infantry_spawn_derivative_ai_weight.none
+		modifier = {
+			add = constant:infantry_spawn_derivative_ai_weight.urgent
+			is_infantry_spawn_derivative_country = yes
+		}
+	}
+
+	default = no
+	reset_on_civilwar = no
+	continuous_focus_position = { x = 3000 y = 2000 }
+	initial_show_position = { focus = infantry_spawn_derivative_hold_the_first_ground }
+
+	# ------------------------------------------------------------------------
+	# Opening survival: 5
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = infantry_spawn_derivative_hold_the_first_ground
+		icon = GFX_goal_generic_position_armies
+		x = 12
+		y = 0
+		cost = @infantry_spawn_derivative_focus_short
+		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_STABILITY }
+		available = { infantry_spawn_derivative_package_is_active = yes }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_hold_the_first_ground_tt
+			hidden_effect = {
+				add_stability = constant:infantry_spawn_derivative_reward.stability_small
+				add_war_support = constant:infantry_spawn_derivative_reward.war_support_small
+				set_country_flag = infantry_spawn_derivative_first_ground_held
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.urgent modifier = { factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor has_war = yes } }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_count_the_surviving_host
+		icon = GFX_goal_generic_small_arms
+		x = 12
+		y = 1
+		cost = @infantry_spawn_derivative_focus_short
+		prerequisite = { focus = infantry_spawn_derivative_hold_the_first_ground }
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_INTERNAL_AFFAIRS }
+		available = { infantry_spawn_derivative_package_is_active = yes }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_count_the_surviving_host_tt
+			hidden_effect = {
+				add_political_power = constant:infantry_spawn_derivative_reward.political_power_small
+				set_country_flag = infantry_spawn_derivative_host_counted
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.high }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_inventory_the_seized_districts
+		icon = GFX_goal_generic_construct_infrastructure
+		x = 12
+		y = 2
+		cost = @infantry_spawn_derivative_focus_short
+		prerequisite = { focus = infantry_spawn_derivative_count_the_surviving_host }
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		available = { infantry_spawn_derivative_package_is_active = yes }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_inventory_the_seized_districts_tt
+			hidden_effect = {
+				if = { limit = { infantry_spawn_derivative_is_zombie = yes } add_equipment_to_stockpile = { type = infantry_equipment amount = constant:infantry_spawn_derivative_reward.infantry_equipment_small } }
+				if = { limit = { infantry_spawn_derivative_is_ghost = yes } add_command_power = constant:infantry_spawn_derivative_reward.command_power_small }
+				if = { limit = { infantry_spawn_derivative_is_golem = yes } add_equipment_to_stockpile = { type = coal_golem_equipment_1 amount = constant:infantry_spawn_derivative_reward.coal_golem_equipment_small } }
+				set_country_flag = infantry_spawn_derivative_district_inventory_complete
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.high }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_restore_a_chain_of_orders
+		icon = GFX_goal_generic_army_doctrines
+		x = 12
+		y = 3
+		cost = @infantry_spawn_derivative_focus_standard
+		prerequisite = { focus = infantry_spawn_derivative_inventory_the_seized_districts }
+		search_filters = { FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_POLITICAL_CHARACTER }
+		available = { infantry_spawn_derivative_package_is_active = yes }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_restore_a_chain_of_orders_tt
+			hidden_effect = {
+				add_command_power = constant:infantry_spawn_derivative_reward.command_power_small
+				army_experience = constant:infantry_spawn_derivative_reward.army_experience_small
+				set_country_flag = infantry_spawn_derivative_chain_of_orders_restored
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.urgent }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_name_the_future_host
+		icon = GFX_goal_generic_political_pressure
+		x = 12
+		y = 4
+		cost = @infantry_spawn_derivative_focus_standard
+		prerequisite = { focus = infantry_spawn_derivative_restore_a_chain_of_orders }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNAL_AFFAIRS }
+		available = { infantry_spawn_derivative_package_is_active = yes }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_name_the_future_host_tt
+			hidden_effect = {
+				add_political_power = constant:infantry_spawn_derivative_reward.political_power_medium
+				set_country_flag = infantry_spawn_derivative_hierarchy_choice_open
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.urgent }
+	}
+
+	# ------------------------------------------------------------------------
+	# Hierarchy routes: 9
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = infantry_spawn_derivative_crown_the_claimant
+		icon = GFX_goal_generic_political_pressure
+		x = 3
+		y = 5
+		cost = @infantry_spawn_derivative_focus_standard
+		prerequisite = { focus = infantry_spawn_derivative_name_the_future_host }
+		mutually_exclusive = { focus = infantry_spawn_derivative_convene_the_host_council focus = infantry_spawn_derivative_obey_the_family_instinct }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MILITARY_CHARACTER }
+		available = { infantry_spawn_derivative_package_is_active = yes }
+		completion_reward = { custom_effect_tooltip = infantry_spawn_derivative_crown_the_claimant_tt hidden_effect = { infantry_spawn_derivative_choose_claimant_route = yes } }
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.standard modifier = { factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor check_variable = { infantry_spawn_derivative_claimant_archetype > constant:infantry_spawn_derivative_package_value.zero } } }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_assign_command_estates
+		icon = GFX_goal_generic_construct_infrastructure
+		x = 3
+		y = 6
+		cost = @infantry_spawn_derivative_focus_short
+		prerequisite = { focus = infantry_spawn_derivative_crown_the_claimant }
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		available = { infantry_spawn_derivative_package_is_active = yes }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_assign_command_estates_tt
+			hidden_effect = {
+				add_political_power = constant:infantry_spawn_derivative_reward.political_power_small
+				set_country_flag = infantry_spawn_derivative_command_estates_assigned
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.high }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_one_voice_over_the_host
+		icon = GFX_goal_generic_major_war
+		x = 3
+		y = 7
+		cost = @infantry_spawn_derivative_focus_standard
+		prerequisite = { focus = infantry_spawn_derivative_assign_command_estates }
+		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_ARMY_XP }
+		available = { infantry_spawn_derivative_package_is_active = yes }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_one_voice_over_the_host_tt
+			hidden_effect = {
+				add_command_power = constant:infantry_spawn_derivative_reward.command_power_medium
+				add_war_support = constant:infantry_spawn_derivative_reward.war_support_small
+				set_country_flag = infantry_spawn_derivative_claimant_command_consolidated
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.urgent }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_convene_the_host_council
+		icon = GFX_goal_generic_improve_relations
+		x = 12
+		y = 5
+		cost = @infantry_spawn_derivative_focus_standard
+		prerequisite = { focus = infantry_spawn_derivative_name_the_future_host }
+		mutually_exclusive = { focus = infantry_spawn_derivative_crown_the_claimant focus = infantry_spawn_derivative_obey_the_family_instinct }
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNAL_AFFAIRS }
+		available = { infantry_spawn_derivative_package_is_active = yes }
+		completion_reward = { custom_effect_tooltip = infantry_spawn_derivative_convene_the_host_council_tt hidden_effect = { infantry_spawn_derivative_choose_collective_route = yes } }
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.standard modifier = { factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor has_war = yes } }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_bind_the_district_councils
+		icon = GFX_goal_generic_construct_infrastructure
+		x = 12
+		y = 6
+		cost = @infantry_spawn_derivative_focus_short
+		prerequisite = { focus = infantry_spawn_derivative_convene_the_host_council }
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		available = { infantry_spawn_derivative_package_is_active = yes }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_bind_the_district_councils_tt
+			hidden_effect = {
+				add_stability = constant:infantry_spawn_derivative_reward.stability_small
+				set_country_flag = infantry_spawn_derivative_district_councils_bound
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.high }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_no_host_abandoned
+		icon = GFX_goal_generic_position_armies
+		x = 12
+		y = 7
+		cost = @infantry_spawn_derivative_focus_standard
+		prerequisite = { focus = infantry_spawn_derivative_bind_the_district_councils }
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_MANPOWER }
+		available = { infantry_spawn_derivative_package_is_active = yes }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_no_host_abandoned_tt
+			hidden_effect = {
+				add_stability = constant:infantry_spawn_derivative_reward.stability_small
+				add_command_power = constant:infantry_spawn_derivative_reward.command_power_small
+				set_country_flag = infantry_spawn_derivative_collective_command_consolidated
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.urgent modifier = { factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor has_war = yes } }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_obey_the_family_instinct
+		icon = GFX_goal_generic_propaganda
+		x = 21
+		y = 5
+		cost = @infantry_spawn_derivative_focus_standard
+		prerequisite = { focus = infantry_spawn_derivative_name_the_future_host }
+		mutually_exclusive = { focus = infantry_spawn_derivative_crown_the_claimant focus = infantry_spawn_derivative_convene_the_host_council }
+		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_POLITICAL }
+		available = { infantry_spawn_derivative_package_is_active = yes }
+		completion_reward = { custom_effect_tooltip = infantry_spawn_derivative_obey_the_family_instinct_tt hidden_effect = { infantry_spawn_derivative_choose_species_route = yes } }
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.standard modifier = { factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor is_actual_nonhuman_country = yes } }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_mark_the_family_domain
+		icon = GFX_goal_generic_demand_territory
+		x = 21
+		y = 6
+		cost = @infantry_spawn_derivative_focus_short
+		prerequisite = { focus = infantry_spawn_derivative_obey_the_family_instinct }
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_INDUSTRY }
+		available = { infantry_spawn_derivative_package_is_active = yes }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_mark_the_family_domain_tt
+			hidden_effect = {
+				add_war_support = constant:infantry_spawn_derivative_reward.war_support_small
+				set_country_flag = infantry_spawn_derivative_family_domain_marked
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.high }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_end_the_old_chain_of_rule
+		icon = GFX_goal_generic_major_war
+		x = 21
+		y = 7
+		cost = @infantry_spawn_derivative_focus_standard
+		prerequisite = { focus = infantry_spawn_derivative_mark_the_family_domain }
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_WAR_SUPPORT }
+		available = { infantry_spawn_derivative_package_is_active = yes }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_end_the_old_chain_of_rule_tt
+			hidden_effect = {
+				add_war_support = constant:infantry_spawn_derivative_reward.war_support_medium
+				army_experience = constant:infantry_spawn_derivative_reward.army_experience_small
+				set_country_flag = infantry_spawn_derivative_species_command_consolidated
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.urgent }
+	}
+
+	# ------------------------------------------------------------------------
+	# Sustainment: 6
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = infantry_spawn_derivative_mark_the_muster_depots
+		icon = GFX_goal_generic_construct_infrastructure
+		x = 29
+		y = 5
+		cost = @infantry_spawn_derivative_focus_short
+		prerequisite = { focus = infantry_spawn_derivative_name_the_future_host }
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		available = { infantry_spawn_derivative_package_is_active = yes }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_mark_the_muster_depots_tt
+			hidden_effect = {
+				set_country_flag = infantry_spawn_derivative_depot_operations_unlocked
+				add_political_power = constant:infantry_spawn_derivative_reward.political_power_small
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.high }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_reopen_captured_workshops
+		icon = GFX_goal_generic_small_arms
+		x = 29
+		y = 6
+		cost = @infantry_spawn_derivative_focus_short
+		prerequisite = { focus = infantry_spawn_derivative_mark_the_muster_depots }
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		available = { infantry_spawn_derivative_package_is_active = yes }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_reopen_captured_workshops_tt
+			hidden_effect = {
+				if = { limit = { infantry_spawn_derivative_is_zombie = yes } add_equipment_to_stockpile = { type = infantry_equipment amount = constant:infantry_spawn_derivative_reward.infantry_equipment_medium } }
+				if = { limit = { infantry_spawn_derivative_is_ghost = yes } add_political_power = constant:infantry_spawn_derivative_reward.political_power_medium }
+				if = { limit = { infantry_spawn_derivative_is_golem = yes } add_equipment_to_stockpile = { type = coal_golem_equipment_1 amount = constant:infantry_spawn_derivative_reward.coal_golem_equipment_medium } }
+				set_country_flag = infantry_spawn_derivative_captured_workshops_open
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.high }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_open_the_living_corridor
+		icon = GFX_goal_generic_construct_infrastructure
+		x = 29
+		y = 7
+		cost = @infantry_spawn_derivative_focus_standard
+		prerequisite = { focus = infantry_spawn_derivative_reopen_captured_workshops }
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_MANPOWER }
+		available = { infantry_spawn_derivative_package_is_active = yes }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_open_the_living_corridor_tt
+			hidden_effect = {
+				set_country_flag = infantry_spawn_derivative_sustainment_site_operations_unlocked
+				add_command_power = constant:infantry_spawn_derivative_reward.command_power_small
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.high }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_count_every_obligation
+		icon = GFX_goal_generic_army_motorized
+		x = 29
+		y = 8
+		cost = @infantry_spawn_derivative_focus_standard
+		prerequisite = { focus = infantry_spawn_derivative_open_the_living_corridor }
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_MANPOWER }
+		available = { infantry_spawn_derivative_package_is_active = yes }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_count_every_obligation_tt
+			hidden_effect = {
+				set_country_flag = infantry_spawn_derivative_family_sustainment_unlocked
+				if = { limit = { NOT = { has_idea = infantry_spawn_derivative_sustainment_network } } add_ideas = infantry_spawn_derivative_sustainment_network }
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.urgent }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_quiet_the_fragmented_columns
+		icon = GFX_goal_generic_army_doctrines
+		x = 29
+		y = 9
+		cost = @infantry_spawn_derivative_focus_standard
+		prerequisite = { focus = infantry_spawn_derivative_count_every_obligation }
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_ARMY_XP }
+		available = { infantry_spawn_derivative_package_is_active = yes }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_quiet_the_fragmented_columns_tt
+			hidden_effect = {
+				set_country_flag = infantry_spawn_derivative_fragmentation_operations_unlocked
+				add_stability = constant:infantry_spawn_derivative_reward.stability_small
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.high }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_outlast_the_former_state
+		icon = GFX_goal_generic_position_armies
+		x = 29
+		y = 10
+		cost = @infantry_spawn_derivative_focus_long
+		prerequisite = { focus = infantry_spawn_derivative_quiet_the_fragmented_columns }
+		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_STABILITY }
+		available = { infantry_spawn_derivative_package_is_active = yes }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_outlast_the_former_state_tt
+			hidden_effect = {
+				set_country_flag = infantry_spawn_derivative_command_net_operations_unlocked
+				add_war_support = constant:infantry_spawn_derivative_reward.war_support_medium
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.urgent modifier = { factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor infantry_spawn_derivative_has_live_former_parent = yes } }
+	}
+
+	# ------------------------------------------------------------------------
+	# Military method: 5
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = infantry_spawn_derivative_make_an_army_of_the_host
+		icon = GFX_goal_generic_army_doctrines
+		x = 12
+		y = 9
+		cost = @infantry_spawn_derivative_focus_standard
+		prerequisite = { focus = infantry_spawn_derivative_one_voice_over_the_host focus = infantry_spawn_derivative_no_host_abandoned focus = infantry_spawn_derivative_end_the_old_chain_of_rule }
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		available = { infantry_spawn_derivative_package_is_active = yes }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_make_an_army_of_the_host_tt
+			hidden_effect = {
+				army_experience = constant:infantry_spawn_derivative_reward.army_experience_medium
+				set_country_flag = infantry_spawn_derivative_doctrine_choice_open
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.urgent }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_concentrate_the_host
+		icon = GFX_goal_generic_position_armies
+		x = 7
+		y = 10
+		cost = @infantry_spawn_derivative_focus_standard
+		prerequisite = { focus = infantry_spawn_derivative_make_an_army_of_the_host }
+		mutually_exclusive = { focus = infantry_spawn_derivative_scatter_the_bands focus = infantry_spawn_derivative_arm_the_captured_auxiliaries }
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		available = { infantry_spawn_derivative_package_is_active = yes }
+		completion_reward = { custom_effect_tooltip = infantry_spawn_derivative_concentrate_the_host_tt hidden_effect = { infantry_spawn_derivative_choose_concentrated_doctrine = yes } }
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.standard modifier = { factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor infantry_spawn_derivative_has_claimant_route = yes } }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_scatter_the_bands
+		icon = GFX_goal_generic_army_motorized
+		x = 12
+		y = 10
+		cost = @infantry_spawn_derivative_focus_standard
+		prerequisite = { focus = infantry_spawn_derivative_make_an_army_of_the_host }
+		mutually_exclusive = { focus = infantry_spawn_derivative_concentrate_the_host focus = infantry_spawn_derivative_arm_the_captured_auxiliaries }
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MANPOWER }
+		available = { infantry_spawn_derivative_package_is_active = yes }
+		completion_reward = { custom_effect_tooltip = infantry_spawn_derivative_scatter_the_bands_tt hidden_effect = { infantry_spawn_derivative_choose_scattered_doctrine = yes } }
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.standard modifier = { factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor infantry_spawn_derivative_has_collective_route = yes } }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_arm_the_captured_auxiliaries
+		icon = GFX_goal_generic_small_arms
+		x = 17
+		y = 10
+		cost = @infantry_spawn_derivative_focus_standard
+		prerequisite = { focus = infantry_spawn_derivative_make_an_army_of_the_host }
+		mutually_exclusive = { focus = infantry_spawn_derivative_concentrate_the_host focus = infantry_spawn_derivative_scatter_the_bands }
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_INDUSTRY }
+		available = { infantry_spawn_derivative_package_is_active = yes }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_arm_the_captured_auxiliaries_tt
+			hidden_effect = {
+				infantry_spawn_derivative_choose_captured_auxiliaries_doctrine = yes
+				add_equipment_to_stockpile = { type = infantry_equipment amount = constant:infantry_spawn_derivative_reward.infantry_equipment_small }
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.standard modifier = { factor = constant:infantry_spawn_derivative_ai_weight.preferred_factor infantry_spawn_derivative_has_species_route = yes } }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_a_method_fit_for_the_host
+		icon = GFX_goal_generic_army_doctrines
+		x = 12
+		y = 11
+		cost = @infantry_spawn_derivative_focus_long
+		prerequisite = { focus = infantry_spawn_derivative_concentrate_the_host focus = infantry_spawn_derivative_scatter_the_bands focus = infantry_spawn_derivative_arm_the_captured_auxiliaries }
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_WAR_SUPPORT }
+		available = { infantry_spawn_derivative_package_is_active = yes }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_a_method_fit_for_the_host_tt
+			hidden_effect = {
+				add_command_power = constant:infantry_spawn_derivative_reward.command_power_medium
+				add_war_support = constant:infantry_spawn_derivative_reward.war_support_small
+				set_country_flag = infantry_spawn_derivative_military_method_complete
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.urgent }
+	}
+
+	# ------------------------------------------------------------------------
+	# Expansion and integration: 5
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = infantry_spawn_derivative_read_the_neighboring_frontiers
+		icon = GFX_goal_generic_demand_territory
+		x = 12
+		y = 12
+		cost = @infantry_spawn_derivative_focus_short
+		prerequisite = { focus = infantry_spawn_derivative_a_method_fit_for_the_host }
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		available = { infantry_spawn_derivative_package_is_active = yes }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_read_the_neighboring_frontiers_tt
+			hidden_effect = {
+				set_country_flag = infantry_spawn_derivative_frontier_intelligence_complete
+				add_political_power = constant:infantry_spawn_derivative_reward.political_power_small
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.high }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_issue_the_submission_terms
+		icon = GFX_goal_generic_political_pressure
+		x = 12
+		y = 13
+		cost = @infantry_spawn_derivative_focus_standard
+		prerequisite = { focus = infantry_spawn_derivative_read_the_neighboring_frontiers }
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
+		available = { infantry_spawn_derivative_package_is_active = yes }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_issue_the_submission_terms_tt
+			hidden_effect = {
+				set_country_flag = infantry_spawn_derivative_submission_operations_unlocked
+				add_war_support = constant:infantry_spawn_derivative_reward.war_support_small
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.high modifier = { factor = constant:infantry_spawn_derivative_ai_weight.avoid_factor has_war = yes } }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_absorb_the_conquered_districts
+		icon = GFX_goal_generic_construct_infrastructure
+		x = 12
+		y = 14
+		cost = @infantry_spawn_derivative_focus_standard
+		prerequisite = { focus = infantry_spawn_derivative_issue_the_submission_terms }
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_STABILITY }
+		available = { infantry_spawn_derivative_package_is_active = yes }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_absorb_the_conquered_districts_tt
+			hidden_effect = {
+				set_country_flag = infantry_spawn_derivative_integration_operations_unlocked
+				add_stability = constant:infantry_spawn_derivative_reward.stability_small
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.high }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_turn_the_host_outward
+		icon = GFX_goal_generic_major_war
+		x = 12
+		y = 15
+		cost = @infantry_spawn_derivative_focus_standard
+		prerequisite = { focus = infantry_spawn_derivative_absorb_the_conquered_districts }
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_ARMY_XP }
+		available = { infantry_spawn_derivative_package_is_active = yes }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_turn_the_host_outward_tt
+			hidden_effect = {
+				army_experience = constant:infantry_spawn_derivative_reward.army_experience_medium
+				set_country_flag = infantry_spawn_derivative_outward_campaign_ready
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.high }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_become_the_regional_predator
+		icon = GFX_goal_generic_major_war
+		x = 12
+		y = 16
+		cost = @infantry_spawn_derivative_focus_long
+		prerequisite = { focus = infantry_spawn_derivative_turn_the_host_outward }
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_WAR_SUPPORT }
+		available = { infantry_spawn_derivative_package_is_active = yes }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_become_the_regional_predator_tt
+			hidden_effect = {
+				set_country_flag = infantry_spawn_derivative_regional_predator_ambition
+				infantry_spawn_derivative_check_regional_predator = yes
+				add_war_support = constant:infantry_spawn_derivative_reward.war_support_medium
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.urgent }
+	}
+
+	# ------------------------------------------------------------------------
+	# Zombie identity overlay: 5
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = infantry_spawn_derivative_zombie_scavenge_the_abandoned_barracks
+		icon = GFX_goal_generic_small_arms
+		x = -3
+		y = 9
+		cost = @infantry_spawn_derivative_focus_short
+		prerequisite = { focus = infantry_spawn_derivative_name_the_future_host }
+		allow_branch = { infantry_spawn_derivative_is_zombie = yes }
+		available = { infantry_spawn_derivative_is_zombie = yes }
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_MANPOWER }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_zombie_scavenge_the_abandoned_barracks_tt
+			hidden_effect = {
+				add_equipment_to_stockpile = { type = infantry_equipment amount = constant:infantry_spawn_derivative_reward.infantry_equipment_medium }
+				set_country_flag = infantry_spawn_derivative_zombie_barracks_scavenged
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.high }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_zombie_number_the_devouring_bands
+		icon = GFX_goal_generic_position_armies
+		x = -3
+		y = 10
+		cost = @infantry_spawn_derivative_focus_short
+		prerequisite = { focus = infantry_spawn_derivative_zombie_scavenge_the_abandoned_barracks }
+		allow_branch = { infantry_spawn_derivative_is_zombie = yes }
+		available = { infantry_spawn_derivative_is_zombie = yes }
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_ARMY_XP }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_zombie_number_the_devouring_bands_tt
+			hidden_effect = {
+				army_experience = constant:infantry_spawn_derivative_reward.army_experience_small
+				add_command_power = constant:infantry_spawn_derivative_reward.command_power_small
+				set_country_flag = infantry_spawn_derivative_zombie_bands_numbered
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.high }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_zombie_teach_the_base_dead_to_muster
+		icon = GFX_goal_generic_army_doctrines
+		x = -3
+		y = 11
+		cost = @infantry_spawn_derivative_focus_standard
+		prerequisite = { focus = infantry_spawn_derivative_zombie_number_the_devouring_bands }
+		allow_branch = { infantry_spawn_derivative_is_zombie = yes }
+		available = { infantry_spawn_derivative_is_zombie = yes }
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_ARMY_XP }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_zombie_teach_the_base_dead_to_muster_tt
+			hidden_effect = {
+				set_country_flag = infantry_spawn_derivative_zombie_training_operation_unlocked
+				army_experience = constant:infantry_spawn_derivative_reward.army_experience_small
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.urgent }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_zombie_keep_the_hunger_in_column
+		icon = GFX_goal_generic_army_motorized
+		x = -3
+		y = 12
+		cost = @infantry_spawn_derivative_focus_standard
+		prerequisite = { focus = infantry_spawn_derivative_zombie_teach_the_base_dead_to_muster }
+		allow_branch = { infantry_spawn_derivative_is_zombie = yes }
+		available = { infantry_spawn_derivative_is_zombie = yes }
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_zombie_keep_the_hunger_in_column_tt
+			hidden_effect = {
+				set_country_flag = infantry_spawn_derivative_zombie_hunger_disciplined
+				add_stability = constant:infantry_spawn_derivative_reward.stability_small
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.high }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_zombie_a_realm_of_base_dead
+		icon = GFX_goal_generic_major_war
+		x = -3
+		y = 13
+		cost = @infantry_spawn_derivative_focus_long
+		prerequisite = { focus = infantry_spawn_derivative_zombie_keep_the_hunger_in_column }
+		allow_branch = { infantry_spawn_derivative_is_zombie = yes }
+		available = { infantry_spawn_derivative_is_zombie = yes }
+		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_MANPOWER }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_zombie_a_realm_of_base_dead_tt
+			hidden_effect = {
+				set_country_flag = infantry_spawn_derivative_zombie_identity_complete
+				add_war_support = constant:infantry_spawn_derivative_reward.war_support_medium
+				add_command_power = constant:infantry_spawn_derivative_reward.command_power_medium
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.urgent }
+	}
+
+	# ------------------------------------------------------------------------
+	# Ghost identity overlay: 5
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = infantry_spawn_derivative_ghost_mark_the_first_anchors
+		icon = GFX_goal_generic_construct_infrastructure
+		x = 35
+		y = 11
+		cost = @infantry_spawn_derivative_focus_short
+		prerequisite = { focus = infantry_spawn_derivative_name_the_future_host }
+		allow_branch = { infantry_spawn_derivative_is_ghost = yes }
+		available = { infantry_spawn_derivative_is_ghost = yes }
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_MANPOWER }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_ghost_mark_the_first_anchors_tt
+			hidden_effect = {
+				add_political_power = constant:infantry_spawn_derivative_reward.political_power_small
+				set_country_flag = infantry_spawn_derivative_ghost_anchors_marked
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.high }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_ghost_call_a_second_procession
+		icon = GFX_goal_generic_position_armies
+		x = 35
+		y = 12
+		cost = @infantry_spawn_derivative_focus_standard
+		prerequisite = { focus = infantry_spawn_derivative_ghost_mark_the_first_anchors }
+		allow_branch = { infantry_spawn_derivative_is_ghost = yes }
+		available = { infantry_spawn_derivative_is_ghost = yes }
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_ARMY_XP }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_ghost_call_a_second_procession_tt
+			hidden_effect = {
+				set_country_flag = infantry_spawn_derivative_ghost_manifestation_operation_unlocked
+				add_command_power = constant:infantry_spawn_derivative_reward.command_power_small
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.urgent }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_ghost_bind_the_procession_to_place
+		icon = GFX_goal_generic_army_doctrines
+		x = 35
+		y = 13
+		cost = @infantry_spawn_derivative_focus_standard
+		prerequisite = { focus = infantry_spawn_derivative_ghost_call_a_second_procession }
+		allow_branch = { infantry_spawn_derivative_is_ghost = yes }
+		available = { infantry_spawn_derivative_is_ghost = yes }
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_ghost_bind_the_procession_to_place_tt
+			hidden_effect = {
+				set_country_flag = infantry_spawn_derivative_ghost_procession_anchored
+				add_stability = constant:infantry_spawn_derivative_reward.stability_small
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.high }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_ghost_thin_the_hunger_for_life
+		icon = GFX_goal_generic_improve_relations
+		x = 35
+		y = 14
+		cost = @infantry_spawn_derivative_focus_long
+		prerequisite = { focus = infantry_spawn_derivative_ghost_bind_the_procession_to_place }
+		allow_branch = { infantry_spawn_derivative_is_ghost = yes }
+		available = { infantry_spawn_derivative_is_ghost = yes }
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_MANPOWER }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_ghost_thin_the_hunger_for_life_tt
+			hidden_effect = {
+				set_country_flag = infantry_spawn_derivative_ghost_decline_managed
+				add_stability = constant:infantry_spawn_derivative_reward.stability_medium
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.urgent }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_ghost_a_pale_dominion
+		icon = GFX_goal_generic_major_war
+		x = 35
+		y = 15
+		cost = @infantry_spawn_derivative_focus_long
+		prerequisite = { focus = infantry_spawn_derivative_ghost_thin_the_hunger_for_life }
+		allow_branch = { infantry_spawn_derivative_is_ghost = yes }
+		available = { infantry_spawn_derivative_is_ghost = yes }
+		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_ghost_a_pale_dominion_tt
+			hidden_effect = {
+				set_country_flag = infantry_spawn_derivative_ghost_identity_complete
+				add_war_support = constant:infantry_spawn_derivative_reward.war_support_medium
+				add_command_power = constant:infantry_spawn_derivative_reward.command_power_medium
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.urgent }
+	}
+
+	# ------------------------------------------------------------------------
+	# Golem identity overlay: 5
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = infantry_spawn_derivative_golem_recover_the_broken_coal
+		icon = GFX_goal_generic_build_tank
+		x = 41
+		y = 5
+		cost = @infantry_spawn_derivative_focus_short
+		prerequisite = { focus = infantry_spawn_derivative_name_the_future_host }
+		allow_branch = { infantry_spawn_derivative_is_golem = yes }
+		available = { infantry_spawn_derivative_is_golem = yes }
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_ARMY_XP }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_golem_recover_the_broken_coal_tt
+			hidden_effect = {
+				add_equipment_to_stockpile = { type = coal_golem_equipment_1 amount = constant:infantry_spawn_derivative_reward.coal_golem_equipment_medium }
+				set_country_flag = infantry_spawn_derivative_golem_coal_recovered
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.high }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_golem_reconstruct_the_binding_marks
+		icon = GFX_goal_generic_army_doctrines
+		x = 41
+		y = 6
+		cost = @infantry_spawn_derivative_focus_standard
+		prerequisite = { focus = infantry_spawn_derivative_golem_recover_the_broken_coal }
+		allow_branch = { infantry_spawn_derivative_is_golem = yes }
+		available = { infantry_spawn_derivative_is_golem = yes }
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_golem_reconstruct_the_binding_marks_tt
+			hidden_effect = {
+				set_country_flag = infantry_spawn_derivative_golem_binding_operation_unlocked
+				army_experience = constant:infantry_spawn_derivative_reward.army_experience_small
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.urgent }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_golem_turn_workshops_into_foundries
+		icon = GFX_goal_generic_construct_infrastructure
+		x = 41
+		y = 7
+		cost = @infantry_spawn_derivative_focus_standard
+		prerequisite = { focus = infantry_spawn_derivative_golem_reconstruct_the_binding_marks }
+		allow_branch = { infantry_spawn_derivative_is_golem = yes }
+		available = { infantry_spawn_derivative_is_golem = yes }
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_golem_turn_workshops_into_foundries_tt
+			hidden_effect = {
+				add_equipment_to_stockpile = { type = coal_golem_equipment_1 amount = constant:infantry_spawn_derivative_reward.coal_golem_equipment_small }
+				set_country_flag = infantry_spawn_derivative_golem_foundries_open
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.high }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_golem_share_the_living_pattern
+		icon = GFX_goal_generic_improve_relations
+		x = 41
+		y = 8
+		cost = @infantry_spawn_derivative_focus_standard
+		prerequisite = { focus = infantry_spawn_derivative_golem_turn_workshops_into_foundries }
+		allow_branch = { infantry_spawn_derivative_is_golem = yes }
+		available = { infantry_spawn_derivative_is_golem = yes }
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_MANPOWER }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_golem_share_the_living_pattern_tt
+			hidden_effect = {
+				add_stability = constant:infantry_spawn_derivative_reward.stability_medium
+				set_country_flag = infantry_spawn_derivative_golem_pattern_shared
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.high }
+	}
+
+	focus = {
+		id = infantry_spawn_derivative_golem_a_march_of_living_stone
+		icon = GFX_goal_generic_major_war
+		x = 41
+		y = 9
+		cost = @infantry_spawn_derivative_focus_long
+		prerequisite = { focus = infantry_spawn_derivative_golem_share_the_living_pattern }
+		allow_branch = { infantry_spawn_derivative_is_golem = yes }
+		available = { infantry_spawn_derivative_is_golem = yes }
+		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_ARMY_XP }
+		completion_reward = {
+			custom_effect_tooltip = infantry_spawn_derivative_golem_a_march_of_living_stone_tt
+			hidden_effect = {
+				set_country_flag = infantry_spawn_derivative_golem_identity_complete
+				add_war_support = constant:infantry_spawn_derivative_reward.war_support_medium
+				add_command_power = constant:infantry_spawn_derivative_reward.command_power_medium
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_derivative_ai_weight.urgent }
+	}
+}

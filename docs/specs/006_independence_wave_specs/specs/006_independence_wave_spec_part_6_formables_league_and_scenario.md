@@ -546,13 +546,13 @@ The exact tone changes by charter:
 
 Final title: **The League of New States**
 
-Final description direction and approved text are recorded in `research/006_super_event_text_research.md`. The text presents a ratified charter, permanent council, arbitration, mutual aid, collective resistance, and the diplomatic fact that the new states can act together.
+Final description direction and approved text are recorded in `research/006_super_event_text_research.md`. The verified text presents a ratified charter, chosen league leadership, arbitration, mutual aid, collective resistance, and the league's capacity to bargain and coordinate action for its members.
 
 Final button: **Small states, one covenant.**
 
 Final quote excerpt: **“A general association of nations must be formed under specific covenants…”** Woodrow Wilson, Fourteen Points, Point XIV, 8 January 1918.
 
-Selected music: Jeremiah Clarke, **A Trumpet Voluntary**, London Brass Players recording. Use the approved 110-second segment and rights record in `research/006_super_event_audio_research.md`.
+Selected music: Jeremiah Clarke, **A Trumpet Voluntary**, London Brass Players recording. The selection and 110-second edit plan remain accepted, but the exact recording is blocked for United States redistribution. Do not process or wire audio ID `6001` without permission or a waiver. Reopening recording selection requires explicit user approval.
 
 ### Image direction
 
@@ -605,13 +605,13 @@ Generated alternate-history period scene. Possible subjects include a synchroniz
 
 Final title: **Every Border a Casus Belli**
 
-Final description direction and approved text are recorded in `research/006_super_event_text_research.md`. The text describes coordinated claims, ultimatums, arms shipments, mobilization schedules, and simultaneous war risk.
+Final description direction and approved text are recorded in `research/006_super_event_text_research.md`. The verified route-neutral text describes coordinated claims, ultimatums, arms shipments, border-command timetables, mutual military support, and simultaneous war risk without assuming that a league congress caused every eligible outcome.
 
 Final button: **They have sown the wind.**
 
 Final quote: **“For they have sown the wind, and they shall reap the whirlwind.”** Hosea 8:7, King James Version.
 
-Selected music: Pyotr Ilyich Tchaikovsky, **1812 Overture**, United States Marine Band recording. Use the approved final 110-second segment and public-domain rights record in `research/006_super_event_audio_research.md`.
+Selected music: Pyotr Ilyich Tchaikovsky, **1812 Overture**, United States Marine Band recording. The source and its United States federal public-domain basis are verified and preserved. Use the precise final 110-second interval and production record in `research/006_super_event_audio_research.md`.
 
 ## Triggerable scenario
 

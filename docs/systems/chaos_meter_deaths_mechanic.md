@@ -25,14 +25,16 @@ Deaths are currently registered from:
 4. Biowarfare contamination application (anthrax/plague/tularemia/smallpox) and monthly outbreak state effects.
 5. Nuclear and thermonuclear strikes.
 6. Genocide crisis camp, gulag, experiment-site, biowarfare experiment-site, and restricted chemical site monthly processing.
+7. Event 20 Black Plague state mortality through the exact state-population transaction.
+8. Fallout's one-time grade-based state loss through the same exact state-population transaction.
 
 Nuclear and thermonuclear strikes also add direct chaos through the shared nuclear-use ladder documented in `docs/systems/nuclear_chaos_ladder.md`; that direct gain is separate from any later deaths-to-chaos contribution.
 
 ## State Population Impact
 
-When a death source is marked as civilian/state-linked, the state scope receives a negative `add_manpower` delta.
+When a death source is marked as civilian/state-linked, the shared transaction applies one negative state-scope `add_manpower` delta. Because the engine also credits recruitable manpower when this effect is negative, the transaction snapshots the state's owner and distinct controller, measures their actual `manpower_k` change, and removes only an observed positive credit. This decreases real state population without deliberately granting military reserves and remains safe for occupied states without assuming which country the engine credits.
 
-This decreases state population directly rather than only changing recruitable manpower modifiers.
+The official effect surface exposes no population-only replacement. If an engine build does not expose its recruitable credit through `manpower_k` in the same effect chain, the script does not guess an amount or recipient; this residual engine behavior remains a validation risk rather than a hidden compensation assumption.
 
 ## UI Integration (Chaos Meter)
 
@@ -61,6 +63,9 @@ Primary scripted effects:
 - `chaos_meter_sync_chaos_from_deaths_delta`
 - `rebuild_chaos_meter_deaths_view`
 - `process_chaos_meter_country_deaths_totals_rebuild`
+- `apply_state_population_loss_without_recruitable_manpower_gain`
+- `apply_exact_state_civilian_population_loss`
+- `fallout_apply_state_population_loss`
 
 Country totals are now maintained on country-scoped variables and the deaths view backfills legacy saves through bounded chunked rebuild passes instead of scanning the full raw history in one UI refresh.
 
@@ -82,6 +87,8 @@ Genocide crisis helpers:
 - `genocide_apply_monthly_restricted_chemical_site_effects`
 
 These helpers route state population loss through the same Chaos Meter Deaths pipeline used by chemical and biological contamination systems.
+
+Fallout uses Deaths reason `19`, `fallout_aftermath`. Its recorded losses use the normal `1` chaos per `1,000,000` deaths conversion. The exact transaction still removes state population when the optional Deaths display is disabled.
 
 ## Icons and GFX Wiring
 

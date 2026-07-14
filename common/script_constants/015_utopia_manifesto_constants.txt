@@ -1,0 +1,622 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 15: THE UTOPIA MANIFESTO
+# ============================================================================
+# Central tuning and enumerations for candidate selection, the four-value
+# Ledger, Necessary Ground cases, stewardship, the league, formation proofs,
+# evolutions, and paid growth. Runtime helpers live in the matching scripted
+# trigger and scripted effect files.
+# ============================================================================
+
+utopia_manifesto_event = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	id = 15
+	event_type = 3
+	evolution_type = 15
+}
+
+utopia_manifesto_math = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	zero = 0
+	one = 1
+	negative_one = -1
+}
+
+utopia_manifesto_route = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	unresolved = 0
+	consent_of_households = 1
+	common_table = 2
+	guardians_of_measure = 3
+	closed_island = 4
+	joke_understood = 5
+}
+
+utopia_manifesto_evolution = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	glosses_in_the_margin = 1
+	necessary_shores = 2
+	cities_of_one_measure = 3
+	nowhere_made_law = 4
+	perfect_island = 5
+}
+
+utopia_manifesto_candidate_class = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	human_generic = 1
+	ai_generic = 2
+	approved_registry = 3
+}
+
+utopia_manifesto_geography = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	unset = 0
+	existing_island = 1
+	coastal_island = 2
+	inland_island = 3
+	archipelago_network = 4
+	leased_island = 5
+}
+
+utopia_manifesto_candidate_limits = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	maximum_total_factories = 36
+	weak_factory_ceiling = 12
+	small_state_ceiling = 5
+	low_research_ceiling = 3
+	extensive_subject_count = 3
+	dominant_faction_member_threshold = 2
+	extensive_occupation_count = 5
+	subject_occupation_count = 2
+	subject_candidate_subject_ceiling = 1
+	ticket_minimum = 1
+	ticket_maximum = 60
+	mature_generic_focus_count = 2
+}
+
+utopia_manifesto_candidate_thresholds = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	maximum_surrender_progress = 0.70
+	weak_infrastructure_average = 3.00
+	recent_industrial_growth_penalty_threshold = 5.00
+}
+
+utopia_manifesto_candidate_score = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	base = 10
+	weak_factory = 15
+	small_state = 10
+	low_research = 5
+	weak_infrastructure = 10
+	secure_capital = 5
+	independent = 5
+	no_faction = 5
+	coastal_or_island = 10
+	inland_island = 10
+	migration_pressure = 10
+	housing_pressure = 10
+	trade_pressure = 5
+	defensive_war_penalty = 10
+	subject_penalty = 15
+	occupation_penalty = 5
+	subject_network_penalty = 10
+	major_guarantor_penalty = 5
+	recent_industrial_growth_penalty = 10
+}
+
+utopia_manifesto_ledger_limits = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	minimum = 0
+	maximum = 100
+	band_two = 20
+	band_three = 40
+	band_four = 60
+	band_five = 80
+	neutral = 50
+	choice = 0
+	compulsory_service = 100
+}
+
+utopia_manifesto_ledger_band = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	one = 1
+	two = 2
+	three = 3
+	four = 4
+	five = 5
+}
+
+utopia_manifesto_ledger_defaults = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	need = 45
+	plenty = 35
+	concord = 40
+	assignment = 20
+	reserve = 15
+}
+
+utopia_manifesto_ledger_contribution = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	weak_industry_need = 15
+	weak_industry_plenty = -10
+	strong_industry_need = -10
+	strong_industry_plenty = 15
+	poor_infrastructure_need = 10
+	poor_infrastructure_plenty = -5
+	war_need = 15
+	war_concord = -10
+	occupation_need = 10
+	occupation_concord = -10
+	secure_capital_need = -5
+	secure_capital_concord = 5
+	institutional_concord = 10
+	institutional_assignment = -5
+	authoritarian_concord = -10
+	authoritarian_assignment = 15
+	subject_need = 5
+	subject_concord = -5
+	migration_need = 10
+	migration_concord = -5
+	housing_need = 10
+	trade_need = 5
+	trade_plenty = -5
+}
+
+utopia_manifesto_reserve_band = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	empty_stores = 1
+	emergency_stores = 2
+	seasonal_reserve = 3
+	one_year_security = 4
+	two_year_security = 5
+	surplus_commonwealth = 6
+	band_two = 15
+	band_three = 30
+	band_four = 50
+	band_five = 70
+	band_six = 90
+}
+
+utopia_manifesto_calling_family = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	provisioning = 1
+	workshops = 2
+	civic_works = 3
+	learning_and_care = 4
+	maritime_and_settlement = 5
+	defense_and_watches = 6
+}
+
+utopia_manifesto_calling_method = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	unset = 0
+	open_call = 1
+	guaranteed_placement = 2
+	assignment_quota = 3
+	emergency_levy = 4
+}
+
+utopia_manifesto_calling_limits = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	severity_minimum = 0
+	severity_maximum = 100
+	shortage_threshold = 40
+	critical_threshold = 70
+	emergency_levy_extension_limit = 3
+}
+
+utopia_manifesto_case_type = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	port_access = 1
+	defensive_corridor = 2
+	essential_resource = 3
+	settlement_and_housing = 4
+	island_or_capital_refuge = 5
+	reconstruction_zone = 6
+	island_project_lease = 7
+}
+
+utopia_manifesto_island_project_limits = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	single_site_required_states = 1
+	archipelago_required_states = 3
+	lease_initial_days = 2190
+	lease_renewal_days = 1095
+	lease_counteroffer_days = 730
+}
+
+utopia_manifesto_case_stage = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	claim = 1
+	assessment = 2
+	offer = 3
+	stewardship = 4
+	resolved = 5
+	renounced = 6
+}
+
+utopia_manifesto_case_method = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	unset = 0
+	purchase = 1
+	long_supply_contract = 2
+	lease = 3
+	joint_administration = 4
+	association = 5
+	ultimatum = 6
+	unilateral_enforcement = 7
+	renunciation = 8
+	settlement_agreement = 9
+}
+
+utopia_manifesto_case_limits = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	integrity_minimum = 0
+	integrity_maximum = 100
+	local_support_minimum = 0
+	local_support_maximum = 100
+	domestic_alternative_required = 1
+	offer_required = 1
+	minimum_peaceful_attempts_before_ultimatum = 2
+	default_expiry_days = 180
+	mature_limited_expiry_days = 120
+	mature_expansion_expiry_days = 240
+	mature_integrity_adjustment = 10
+	stewardship_minimum_integrity = 60
+	stewardship_minimum_local_support = 50
+	stewardship_required_checks = 2
+	default_integrity = 50
+	default_local_support = 40
+	offer_support_gain = 5
+	counteroffer_integrity_gain = 5
+	domestic_review_integrity_gain = 5
+	suppressed_solution_integrity_loss = 15
+	state_relevance_integrity_gain = 10
+	capital_state_integrity_loss = 10
+	peaceful_ladder_skip_integrity_loss = 10
+	refusal_support_loss = 5
+	ultimatum_integrity_loss = 15
+	ultimatum_support_loss = 15
+	provision_integrity_gain = 5
+	provision_support_gain = 5
+	peaceful_deficit_relief = -20
+	long_supply_initial_relief = -8
+	long_supply_completion_relief = -12
+	long_supply_failure_reversal = 8
+	association_initial_relief = -6
+	association_completion_relief = -14
+	association_failure_reversal = 6
+	settlement_agreement_initial_relief = -8
+	settlement_agreement_completion_relief = -12
+	settlement_agreement_failure_reversal = 8
+	domestic_solution_relief = -30
+	domestic_partial_relief = -12
+	stewardship_deficit_relief = -10
+	completed_stewardship_relief = -30
+	relevant_population_floor_k = 250
+	settlement_population_floor_k = 500
+	relevant_building_floor = 0
+	relevant_infrastructure_floor = 0
+	port_level_floor = 0
+	corridor_infrastructure_floor = 1
+	reconstruction_infrastructure_ceiling = 3
+	relevant_resource_floor = 4
+}
+
+utopia_manifesto_state_modifier_value = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	lease_supply = 0.10
+	lease_resources = 0.05
+	joint_supply = 0.05
+	joint_construction = 0.10
+	settlement_supply = 0.10
+	settlement_construction = 0.10
+	long_supply_resources = 0.10
+	association_resources = 0.05
+	association_resistance = -0.05
+	provision_supply = 0.15
+	route_construction = 0.15
+	charter_resources = 0.10
+	charter_resistance = -0.05
+	assigned_supply = 0.10
+	assigned_resistance = 0.10
+	stewardship_supply = -0.05
+	stewardship_resistance = 0.05
+	integrated_resources = 0.15
+	integrated_construction = 0.15
+}
+
+utopia_manifesto_decision_phase = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	locked = 0
+	foundations = 1
+	callings = 2
+	reserves = 3
+	districts = 4
+	necessary_ground = 5
+	league = 6
+	route = 7
+	formation = 8
+	mature = 9
+}
+
+utopia_manifesto_growth_tier = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	foundation = 1
+	network = 2
+	capstone = 3
+}
+
+utopia_manifesto_military_formation = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	unset = 0
+	citizen_watch = 1
+	worker_defense = 2
+	engineer_corps = 3
+	service_formation = 4
+	professional_guard = 5
+	league_defense = 6
+	auxiliary_column = 7
+	commonwealth_guard = 8
+}
+
+utopia_manifesto_league_limits = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	cohesion_minimum = 0
+	cohesion_maximum = 100
+	cohesion_default = 40
+	entry_concord = 40
+	entry_plenty = 30
+	stable_cohesion = 50
+	strong_cohesion = 70
+	collapse_cohesion = 20
+	minimum_formation_network = 1
+	small_places_compact_network = 2
+	regional_proclamation_network = 3
+	formal_defense_members = 3
+	formal_defense_shared_actions = 2
+	formal_defense_votes = 1
+	failure_limit = 3
+}
+
+utopia_manifesto_league_change = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	entry = 5
+	refusal = -5
+	aid = 5
+	reserve = 5
+	defense = 5
+	sponsor = 10
+	exit = -15
+	failure = -10
+}
+
+utopia_manifesto_formation_limits = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	minimum_plenty = 40
+	minimum_concord = 50
+	voluntary_concord = 70
+	voluntary_assignment_maximum = 20
+	council_plenty = 60
+	council_concord = 60
+	planned_plenty = 70
+	planned_assignment = 60
+	closed_assignment = 80
+	closed_reserve = 70
+	practical_concord = 70
+	practical_assignment_maximum = 30
+}
+
+utopia_manifesto_dynamic_cost_base = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	military_manpower = 500
+	military_infantry_equipment = 300
+	military_support_equipment = 30
+	military_army_experience = 5
+	institutional_manpower = 250
+	institutional_support_equipment = 20
+	institutional_political_power = 35
+}
+
+utopia_manifesto_dynamic_cost_per_state = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	military_manpower = 100
+	military_infantry_equipment = 50
+	military_support_equipment = 5
+	military_army_experience = 1
+	institutional_manpower = 50
+	institutional_support_equipment = 5
+	institutional_political_power = 2
+}
+
+utopia_manifesto_growth_limits = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	minimum_tier = 1
+	maximum_tier = 3
+	military_units_per_batch = 1
+	military_capacity_base = 12
+	military_capacity_per_controlled_state = 2
+	military_capacity_per_chartered_district = 1
+	military_capacity_maximum = 36
+	institutional_plenty_per_tier = 5
+	institutional_concord_per_tier = 5
+	institutional_need_reduction_per_tier = 5
+}
+
+utopia_manifesto_unit_quality = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	household_guard_start_experience_factor = 0.10
+}
+
+utopia_manifesto_durations = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	recent_transformation_days = 365
+	case_default_days = 180
+	emergency_levy_days = 90
+	stewardship_review_days = 120
+	league_refusal_memory_days = 365
+}
+
+utopia_manifesto_evolution_pacing = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_days = 90.00
+	route_consent_factor = 1.00
+	route_common_table_factor = 0.95
+	route_guardians_factor = 0.90
+	route_closed_factor = 1.10
+	route_joke_factor = 0.85
+	need_low_factor = 1.15
+	need_high_factor = 0.85
+	plenty_low_factor = 1.10
+	plenty_high_factor = 0.90
+	concord_low_factor = 1.15
+	concord_high_factor = 0.85
+	assignment_choice_factor = 1.05
+	assignment_planned_factor = 0.95
+	stage_one_factor = 1.00
+	stage_two_factor = 1.15
+	stage_three_factor = 1.30
+}

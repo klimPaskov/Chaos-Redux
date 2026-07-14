@@ -420,7 +420,7 @@ Choice direction:
 
 - renounce
 - convert to treaty
-- preserve claim
+- close the case while refusing restitution, recorded as a conduct breach
 
 ### The natural right hardens
 

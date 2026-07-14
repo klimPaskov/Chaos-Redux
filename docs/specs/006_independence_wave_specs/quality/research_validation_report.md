@@ -4,7 +4,7 @@ Validation date: 2026-07-10
 
 ## Result
 
-The research-complete Event 6 package passed **258 targeted checks**. These checks cover package coverage, tag policy, map anchoring, source references, research dispositions, super-event source packages, the wave ladder, cross-file mirrors, prompt completeness, CSV integrity, and package navigation.
+The 2026-07-10 research baseline passed **258 targeted checks**. These checks cover package coverage, tag policy, baseline map anchoring, source references, research dispositions, the wave ladder, cross-file mirrors, prompt completeness, CSV integrity, and package navigation. The 2026-07-14 implementation reconciliation supersedes the baseline's installed-map and audio-rights assumptions where stated below.
 
 ## Coverage totals
 
@@ -54,6 +54,17 @@ Every package points to a valid reservation group and valid source IDs. A restri
 
 Numeric state IDs remain a dated public baseline. The named geographic anchor, overlap group, compact-release rule, and host-survival rule are binding. Implementation must rebind the IDs to the installed game and current map overrides.
 
+### Installed-map reconciliation, 2026-07-14
+
+- All **206** packages were evaluated against the installed 1,081-state map.
+- **149** packages are bound and **57** remain unbound.
+- The bindings reference **205** distinct installed state IDs, all of which exist.
+- All **111** accepted reservation groups still cover all 206 packages exactly once.
+- The collision ledger contains **14** rows: 12 same-group overlaps, one cross-group automatic blocker at state 354 Trabzon, and one cross-group route exclusion at state 441 Kashmir.
+- No fallback or nearby broad-state substitution was used.
+
+The machine-readable result is under `../../../plans/006_independence_wave_plans/package_bindings/`. The two cross-group findings remain explicit implementation decisions.
+
 ## Super-event checks
 
 The production prompt and research files contain two distinct approved packages:
@@ -61,14 +72,15 @@ The production prompt and research files contain two distinct approved packages:
 1. **The League of New States**
    - original button text recorded
    - Woodrow Wilson Point XIV excerpt and attribution recorded
-   - Jeremiah Clarke recording, segment, rights note, final path, and suggested audio ID recorded
+   - Jeremiah Clarke musical selection, segment, reserved path, and suggested audio ID recorded
+   - the exact London Brass Players recording is blocked because United States redistribution rights were not verified
 
 2. **Every Border a Casus Belli**
    - original button allusion recorded
    - Hosea 8:7 King James Version quote and attribution recorded
-   - Tchaikovsky United States Marine Band recording, segment, rights note, final path, and suggested audio ID recorded
+   - Tchaikovsky United States Marine Band recording, segment, rights basis, preserved source checksum, final path, and suggested audio ID recorded
 
-The two final OGG paths and suggested IDs are distinct. Both selected segments are 110 seconds.
+The two reserved OGG paths and suggested IDs are distinct. Both selected edit plans use 110-second segments. Only `6002` has a cleared and preserved source for later production.
 
 ## Package integrity checks
 
@@ -76,19 +88,19 @@ The two final OGG paths and suggested IDs are distinct. Both selected segments a
 - All package text files decode as UTF-8.
 - Every path listed in the README exists.
 - The goal prompt remains inside the required 3,500 to 4,000 character range.
-- No actionable open-research marker, pending source-selection note, unsourced final quote, or not-ready historical placeholder remains.
+- No package-disposition or quote-source placeholder remains. The later `6001` recording-rights verification is an explicit blocker, not a hidden source assumption.
 - New research prose avoids em dashes and semicolons.
 
 ## Remaining boundary
 
-The remaining tasks are implementation and production work:
+The remaining tasks are implementation, production, and explicit blocker resolution:
 
-- installed-build state rebinding
-- a final current-repository and installed-game collision scan
+- choose the state-level exclusion behavior for Trabzon and Kashmir without silently changing reservation groups
 - Clausewitz implementation
 - final ordinary localisation
 - visual asset sourcing and generation
-- audio download, trimming, conversion, checksum, and wiring
+- obtain rights clearance for the accepted `6001` recording, or ask the user before reopening selection
+- trim, convert, checksum, and wire the verified `6002` source
 - gameplay, AI, map, scenario, focus, decision, GUI, and super-event validation
 
-These tasks use completed research handoffs. They are not open design-research questions.
+The map and tag scans are complete for the 2026-07-14 snapshot and must be repeated only if the installed build or registries change. No fallback recording is authorized.

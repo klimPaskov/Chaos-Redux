@@ -113,18 +113,24 @@ on_actions = {
 
 	on_civil_war_end_before_annexation = {
 		effect = {
-			FROM = { cannibalism_invalidate_spread_entries_for_current_country_lifecycle = yes }
+			if = {
+				limit = { fallout_world_rewrite_callbacks_are_allowed = yes }
+				FROM = { cannibalism_invalidate_spread_entries_for_current_country_lifecycle = yes }
+			}
 		}
 	}
 
 	on_civil_war_end = {
 		effect = {
-			save_event_target_as = cannibalism_lifecycle_successor
-			FROM = {
-				cannibalism_invalidate_spread_entries_for_current_country_lifecycle = yes
-				if = {
-					limit = { cannibalism_current_country_owns_active_pulse_callback = yes }
-					cannibalism_rehome_current_pulse_callback = yes
+			if = {
+				limit = { fallout_world_rewrite_callbacks_are_allowed = yes }
+				save_event_target_as = cannibalism_lifecycle_successor
+				FROM = {
+					cannibalism_invalidate_spread_entries_for_current_country_lifecycle = yes
+					if = {
+						limit = { cannibalism_current_country_owns_active_pulse_callback = yes }
+						cannibalism_rehome_current_pulse_callback = yes
+					}
 				}
 			}
 		}
@@ -143,7 +149,12 @@ on_actions = {
 	}
 
 	on_subject_free = {
-		effect = { cannibalism_reconcile_current_country_spread_lifecycle = yes }
+		effect = {
+			if = {
+				limit = { NOT = { has_global_flag = fallout_transition_active } }
+				cannibalism_reconcile_current_country_spread_lifecycle = yes
+			}
+		}
 	}
 
 	on_subject_annexed = {
@@ -152,10 +163,13 @@ on_actions = {
 
 	on_state_control_changed = {
 		effect = {
-			FROM.FROM = { cannibalism_invalidate_spread_entries_for_current_state_lifecycle = yes }
-			cannibalism_handle_state_control_recovery = yes
-			cannibalism_try_enqueue_occupation_turnover_from_control_change = yes
-			cannibalism_try_enqueue_conquest_from_control_change = yes
+			if = {
+				limit = { fallout_world_rewrite_callbacks_are_allowed = yes }
+				FROM.FROM = { cannibalism_invalidate_spread_entries_for_current_state_lifecycle = yes }
+				cannibalism_handle_state_control_recovery = yes
+				cannibalism_try_enqueue_occupation_turnover_from_control_change = yes
+				cannibalism_try_enqueue_conquest_from_control_change = yes
+			}
 		}
 	}
 
@@ -165,7 +179,10 @@ on_actions = {
 
 	on_recall_volunteers = {
 		effect = {
-			cannibalism_try_enqueue_volunteer_return = yes
+			if = {
+				limit = { NOT = { has_global_flag = fallout_transition_active } }
+				cannibalism_try_enqueue_volunteer_return = yes
+			}
 		}
 	}
 }

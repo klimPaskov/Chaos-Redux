@@ -1,0 +1,249 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 019 CLAIMANT CRISIS EFFECTS
+# ============================================================================
+# Resolves exact-character one-state takeovers and failed coups, restores the
+# claimant-controlled ledger rows that remain with the parent tag, and leaves
+# the territorial revolt transfer to the separately verified handoff path.
+# ============================================================================
+
+infantry_spawn_find_selected_claimant_character = {
+	set_temp_variable = { infantry_spawn_selected_claimant_character_found = 0 }
+	set_temp_variable = { infantry_spawn_selected_claimant_uid = infantry_spawn_claimant_uid_entries^infantry_spawn_selected_claimant_index }
+	every_unit_leader = {
+		limit = {
+			meta_trigger = {
+				text = { has_id = [CLAIMANT_ID] }
+				CLAIMANT_ID = "[?infantry_spawn_selected_claimant_uid|.0]"
+			}
+		}
+		save_event_target_as = infantry_spawn_selected_claimant_character
+		set_temp_variable = { infantry_spawn_selected_claimant_character_found = 1 }
+	}
+}
+
+infantry_spawn_restore_selected_claimant_lot_control = {
+	set_temp_variable = { infantry_spawn_selected_claimant_uid = infantry_spawn_claimant_uid_entries^infantry_spawn_selected_claimant_index }
+	set_temp_variable = { infantry_spawn_claimant_restore_lot_index = 0 }
+	while_loop_effect = {
+		limit = { check_variable = { var = infantry_spawn_claimant_restore_lot_index value = infantry_spawn_lot_uid_entries^num compare = less_than } }
+		if = {
+			limit = { check_variable = { var = infantry_spawn_lot_claimant_uid_entries^infantry_spawn_claimant_restore_lot_index value = infantry_spawn_selected_claimant_uid compare = equals } }
+			set_variable = { infantry_spawn_lot_status_entries^infantry_spawn_claimant_restore_lot_index = infantry_spawn_lot_previous_status_entries^infantry_spawn_claimant_restore_lot_index }
+			set_variable = { infantry_spawn_lot_command_owner_entries^infantry_spawn_claimant_restore_lot_index = constant:infantry_spawn_command_owner.state }
+			set_variable = { infantry_spawn_lot_claimant_uid_entries^infantry_spawn_claimant_restore_lot_index = 0 }
+		}
+		add_to_temp_variable = { infantry_spawn_claimant_restore_lot_index = 1 }
+	}
+	set_temp_variable = { infantry_spawn_claimant_restore_unit_index = 0 }
+	while_loop_effect = {
+		limit = { check_variable = { var = infantry_spawn_claimant_restore_unit_index value = infantry_spawn_unit_uid_entries^num compare = less_than } }
+		if = {
+			limit = { check_variable = { var = infantry_spawn_unit_claimant_uid_entries^infantry_spawn_claimant_restore_unit_index value = infantry_spawn_selected_claimant_uid compare = equals } }
+			set_variable = { infantry_spawn_unit_status_entries^infantry_spawn_claimant_restore_unit_index = infantry_spawn_unit_previous_status_entries^infantry_spawn_claimant_restore_unit_index }
+			set_variable = { infantry_spawn_unit_claimant_uid_entries^infantry_spawn_claimant_restore_unit_index = 0 }
+			var:infantry_spawn_unit_scope_entries^infantry_spawn_claimant_restore_unit_index = {
+				set_variable = { infantry_spawn_event19_unit_status = infantry_spawn_event19_previous_unit_status }
+				set_variable = { infantry_spawn_event19_claimant_uid = 0 }
+			}
+		}
+		add_to_temp_variable = { infantry_spawn_claimant_restore_unit_index = 1 }
+	}
+	set_variable = { infantry_spawn_claimant_loyal_lot_count_entries^infantry_spawn_selected_claimant_index = 0 }
+}
+
+infantry_spawn_refresh_claimant_presence_flags = {
+	clr_country_flag = infantry_spawn_claimant_one_active
+	clr_country_flag = infantry_spawn_claimant_two_active
+	clr_country_flag = infantry_spawn_claimant_three_active
+	clamp_variable = { var = infantry_spawn_active_claimant_count min = 0 max = constant:infantry_spawn_event.maximum_claimants }
+	if = {
+		limit = { check_variable = { infantry_spawn_active_claimant_count = 1 } }
+		set_country_flag = infantry_spawn_claimant_one_active
+	}
+	else_if = {
+		limit = { check_variable = { infantry_spawn_active_claimant_count = 2 } }
+		set_country_flag = infantry_spawn_claimant_two_active
+	}
+	else_if = {
+		limit = { check_variable = { infantry_spawn_active_claimant_count > 2 } }
+		set_country_flag = infantry_spawn_claimant_three_active
+	}
+	if = {
+		limit = { check_variable = { infantry_spawn_active_claimant_count < 1 } }
+		clr_country_flag = infantry_spawn_claimant_system_active
+		clr_country_flag = infantry_spawn_claimant_demand_pending
+		clr_country_flag = infantry_spawn_claimant_revolt_warning_active
+	}
+}
+
+infantry_spawn_clear_claimant_crisis_state = {
+	clr_country_flag = infantry_spawn_claimant_demand_pending
+	clr_country_flag = infantry_spawn_claimant_revolt_warning_active
+	clear_variable = infantry_spawn_claimant_revolt_warning_index
+	clear_variable = infantry_spawn_claimant_revolt_due_date
+}
+
+infantry_spawn_apply_selected_claimant_archetype_idea = {
+	set_temp_variable = { infantry_spawn_selected_claimant_archetype = infantry_spawn_claimant_archetype_entries^infantry_spawn_selected_claimant_index }
+	if = {
+		limit = { check_variable = { infantry_spawn_selected_claimant_archetype = constant:infantry_spawn_claimant_archetype.quartermaster_sovereign } }
+		add_ideas = infantry_spawn_claimant_quartermaster_sovereign
+	}
+	else_if = {
+		limit = { check_variable = { infantry_spawn_selected_claimant_archetype = constant:infantry_spawn_claimant_archetype.field_prophet } }
+		add_ideas = infantry_spawn_claimant_field_prophet
+	}
+	else_if = {
+		limit = { check_variable = { infantry_spawn_selected_claimant_archetype = constant:infantry_spawn_claimant_archetype.barracks_tribune } }
+		add_ideas = infantry_spawn_claimant_barracks_tribune
+	}
+	else_if = {
+		limit = { check_variable = { infantry_spawn_selected_claimant_archetype = constant:infantry_spawn_claimant_archetype.iron_saint } }
+		add_ideas = infantry_spawn_claimant_iron_saint
+	}
+	else = { add_ideas = infantry_spawn_claimant_hollow_marshal }
+}
+
+infantry_spawn_refresh_active_claimant_archetype_ideas = {
+	remove_ideas = infantry_spawn_claimant_quartermaster_sovereign
+	remove_ideas = infantry_spawn_claimant_field_prophet
+	remove_ideas = infantry_spawn_claimant_barracks_tribune
+	remove_ideas = infantry_spawn_claimant_iron_saint
+	remove_ideas = infantry_spawn_claimant_hollow_marshal
+	set_temp_variable = { infantry_spawn_claimant_refresh_index = 0 }
+	while_loop_effect = {
+		limit = { check_variable = { var = infantry_spawn_claimant_refresh_index value = infantry_spawn_claimant_uid_entries^num compare = less_than } }
+		if = {
+			limit = { check_variable = { var = infantry_spawn_claimant_status_entries^infantry_spawn_claimant_refresh_index value = constant:infantry_spawn_claimant_status.retired compare = less_than } }
+			set_variable = { infantry_spawn_selected_claimant_index = infantry_spawn_claimant_refresh_index }
+			infantry_spawn_apply_selected_claimant_archetype_idea = yes
+		}
+		add_to_temp_variable = { infantry_spawn_claimant_refresh_index = 1 }
+	}
+	infantry_spawn_select_primary_claimant = yes
+}
+
+infantry_spawn_promote_selected_claimant_character = {
+	set_temp_variable = { infantry_spawn_selected_claimant_archetype = infantry_spawn_claimant_archetype_entries^infantry_spawn_selected_claimant_index }
+	retire_country_leader = yes
+	if = {
+		limit = { check_variable = { infantry_spawn_selected_claimant_archetype = constant:infantry_spawn_claimant_archetype.quartermaster_sovereign } }
+		set_politics = { ruling_party = neutrality elections_allowed = no }
+		event_target:infantry_spawn_selected_claimant_character = {
+			add_country_leader_role = {
+				promote_leader = yes
+				country_leader = { ideology = oligarchism expire = "1965.1.1.1" }
+			}
+		}
+	}
+	else_if = {
+		limit = { check_variable = { infantry_spawn_selected_claimant_archetype = constant:infantry_spawn_claimant_archetype.field_prophet } }
+		set_politics = { ruling_party = fascism elections_allowed = no }
+		event_target:infantry_spawn_selected_claimant_character = {
+			add_country_leader_role = {
+				promote_leader = yes
+				country_leader = { ideology = fascism_ideology expire = "1965.1.1.1" }
+			}
+		}
+	}
+	else_if = {
+		limit = { check_variable = { infantry_spawn_selected_claimant_archetype = constant:infantry_spawn_claimant_archetype.barracks_tribune } }
+		set_politics = { ruling_party = democratic elections_allowed = yes }
+		event_target:infantry_spawn_selected_claimant_character = {
+			add_country_leader_role = {
+				promote_leader = yes
+				country_leader = { ideology = conservatism expire = "1965.1.1.1" }
+			}
+		}
+	}
+	else_if = {
+		limit = { check_variable = { infantry_spawn_selected_claimant_archetype = constant:infantry_spawn_claimant_archetype.iron_saint } }
+		set_politics = { ruling_party = communism elections_allowed = no }
+		event_target:infantry_spawn_selected_claimant_character = {
+			add_country_leader_role = {
+				promote_leader = yes
+				country_leader = { ideology = marxism expire = "1965.1.1.1" }
+			}
+		}
+	}
+	else = {
+		set_politics = { ruling_party = neutrality elections_allowed = no }
+		event_target:infantry_spawn_selected_claimant_character = {
+			add_country_leader_role = {
+				promote_leader = yes
+				country_leader = { ideology = despotism expire = "1965.1.1.1" }
+			}
+		}
+	}
+}
+
+infantry_spawn_retire_other_claimant_commanders = {
+	set_temp_variable = { infantry_spawn_winning_claimant_index = infantry_spawn_selected_claimant_index }
+	set_temp_variable = { infantry_spawn_claimant_retire_index = 0 }
+	while_loop_effect = {
+		limit = { check_variable = { var = infantry_spawn_claimant_retire_index value = infantry_spawn_claimant_uid_entries^num compare = less_than } }
+		if = {
+			limit = { NOT = { check_variable = { var = infantry_spawn_claimant_retire_index value = infantry_spawn_winning_claimant_index compare = equals } } }
+			set_variable = { infantry_spawn_selected_claimant_index = infantry_spawn_claimant_retire_index }
+			infantry_spawn_restore_selected_claimant_lot_control = yes
+			set_temp_variable = { infantry_spawn_other_claimant_uid = infantry_spawn_claimant_uid_entries^infantry_spawn_claimant_retire_index }
+			meta_effect = {
+				text = { remove_unit_leader = [CLAIMANT_ID] }
+				CLAIMANT_ID = "[?infantry_spawn_other_claimant_uid|.0]"
+			}
+			set_variable = { infantry_spawn_claimant_status_entries^infantry_spawn_claimant_retire_index = constant:infantry_spawn_claimant_status.retired }
+		}
+		add_to_temp_variable = { infantry_spawn_claimant_retire_index = 1 }
+	}
+	set_variable = { infantry_spawn_selected_claimant_index = infantry_spawn_winning_claimant_index }
+}
+
+infantry_spawn_execute_selected_claimant_takeover = {
+	if = {
+		limit = { infantry_spawn_selected_claimant_index_is_valid = yes }
+		infantry_spawn_find_selected_claimant_character = yes
+		if = {
+			limit = { check_variable = { infantry_spawn_selected_claimant_character_found > 0 } }
+			infantry_spawn_restore_selected_claimant_lot_control = yes
+			infantry_spawn_retire_other_claimant_commanders = yes
+			set_variable = { infantry_spawn_claimant_status_entries^infantry_spawn_selected_claimant_index = constant:infantry_spawn_claimant_status.takeover }
+			set_variable = { infantry_spawn_active_claimant_count = 0 }
+			infantry_spawn_clear_claimant_crisis_state = yes
+			infantry_spawn_refresh_claimant_presence_flags = yes
+			infantry_spawn_promote_selected_claimant_character = yes
+			infantry_spawn_apply_selected_claimant_archetype_idea = yes
+			set_country_flag = infantry_spawn_claimant_takeover_complete
+			set_country_flag = infantry_spawn_claimant_history
+			add_ideas = infantry_spawn_claimant_takeover_regime
+			add_to_variable = { global.infantry_spawn_total_claimant_takeovers = 1 }
+			infantry_spawn_recalculate_country_pressure = yes
+			if = { limit = { is_ai = no } country_event = { id = chaosx.nr19.203 } }
+		}
+		else = {
+			set_country_flag = infantry_spawn_claimant_identity_creation_failure
+			infantry_spawn_mark_ledger_invariant_failure = yes
+		}
+	}
+}
+
+infantry_spawn_execute_selected_claimant_failed_coup = {
+	if = {
+		limit = { infantry_spawn_selected_claimant_index_is_valid = yes }
+		set_temp_variable = { infantry_spawn_selected_claimant_uid = infantry_spawn_claimant_uid_entries^infantry_spawn_selected_claimant_index }
+		infantry_spawn_restore_selected_claimant_lot_control = yes
+		meta_effect = {
+			text = { remove_unit_leader = [CLAIMANT_ID] }
+			CLAIMANT_ID = "[?infantry_spawn_selected_claimant_uid|.0]"
+		}
+		set_variable = { infantry_spawn_claimant_status_entries^infantry_spawn_selected_claimant_index = constant:infantry_spawn_claimant_status.arrested }
+		subtract_from_variable = { infantry_spawn_active_claimant_count = 1 }
+		infantry_spawn_refresh_active_claimant_archetype_ideas = yes
+		infantry_spawn_clear_claimant_crisis_state = yes
+		infantry_spawn_refresh_claimant_presence_flags = yes
+		set_temp_variable = { infantry_spawn_failed_coup_aftermath_days = constant:infantry_spawn_timer.failed_coup_aftermath_days }
+		add_timed_idea = { idea = infantry_spawn_failed_coup_aftermath days = infantry_spawn_failed_coup_aftermath_days }
+		add_to_variable = { global.infantry_spawn_total_claimant_failed_coups = 1 }
+		infantry_spawn_recalculate_country_pressure = yes
+		if = { limit = { is_ai = no } country_event = { id = chaosx.nr19.204 } }
+	}
+}

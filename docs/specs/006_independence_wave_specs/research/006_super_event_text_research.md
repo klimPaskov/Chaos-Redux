@@ -2,6 +2,8 @@
 
 Research completed: 2026-07-10
 
+Description verification promoted: 2026-07-14
+
 The two required super-event text packages are approved for implementation. The titles, descriptions, buttons, and quote excerpts below are final research recommendations. The main implementation agent may adjust punctuation or dynamic country names for UI fit, but it should not replace the sourced quote without a new source note.
 
 ## Super-event 1, league formation
@@ -12,7 +14,9 @@ The two required super-event text packages are approved for implementation. The 
 
 **Final description:**
 
-Delegates from the newest states have ratified a common charter and selected a permanent council. The signatories promise arbitration, mutual aid, and collective resistance to any former host or foreign patron that attempts to extinguish a member. Governments that dismissed the breakaways as temporary disturbances must now deal with an institution able to speak, bargain, and mobilize in their name.
+Delegates from the newest states have ratified a common charter and chosen the league's leadership. The signatories promise arbitration, mutual aid, and collective resistance to any former host or foreign patron that attempts to extinguish a member.
+
+The league can speak for its members, bargain in their name, and coordinate shared aid or mobilization.
 
 **Final button:** Small states, one covenant.
 
@@ -38,7 +42,9 @@ The button is original Event 6 wording and has no external quotation dependency.
 
 **Final description:**
 
-The league's congress has ceased to limit itself to recognition and defense. Member governments are coordinating claims, ultimatums, arms shipments, and mobilization schedules across several regions. A principle that once protected fragile states has become a method for creating new fronts, and former hosts are preparing for wars that may begin on the same day.
+New-state governments coordinate claims, ultimatums, arms shipments, and mobilization schedules across several regions. Their border commands follow shared timetables, and governments pledge arms or troops to support one another's territorial demands.
+
+Former hosts reinforce several fronts as they prepare for wars that may begin on the same day.
 
 **Final button:** They have sown the wind.
 
@@ -61,3 +67,5 @@ The league formation super-event uses one broad package so every valid charter c
 ## Copyright and quotation control
 
 Both selected quotes are short. No modern song lyric, film line, game line, or protected literary passage is used. The descriptions and buttons are original package text. The implementation must preserve attribution in the research documentation even when the in-game quote line uses the compact super-event format.
+
+The 2026-07-14 verification confirmed the selected source wording and attribution. It also recommended ASCII omission marks for font coverage. That punctuation-only recommendation is not promoted here because the approved quote strings are unchanged in this reconciliation.

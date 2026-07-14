@@ -23,6 +23,19 @@ The public index is a discovery baseline, not the final engine authority. The im
 
 The binding result is in `research/006_package_research_resolution.csv` and the expanded candidate registry.
 
+## Installed-registry reconciliation, 2026-07-14
+
+The reserved and reused tags were scanned again against the installed game and current mod checkout:
+
+- all **78** reused tags are registered.
+- all **128** reserved new Event 6 tags remain unique and end in `X`.
+- collisions between the 128 reserved tags and the installed or mod country-tag registries: **0**.
+- collisions between the 128 reserved tags and current three-character cosmetic-tag keys: **0**.
+- parsed installed and mod country-tag registry: **487** three-character tags.
+- parsed current cosmetic-tag surface: **9** three-character keys.
+
+This closes the implementation-time collision placeholder for the 2026-07-14 snapshot. It does not register the 128 tags and does not replace the package identity review required when content is assigned.
+
 ## Benin and Biafra separation
 
 `BIA` remains assigned only to `IW-107`, the Biafran regional package. `IW-096`, the Edo Kingdom of Benin, uses the new Event 6 tag `DRX`. These are distinct identities and must not share one country tag. Their overlap is handled by `RG-NIGERIA-COARSE`, which permits only one automatic package from the coarse Nigeria state group unless the installed map provides distinct substates.
@@ -33,6 +46,6 @@ Registered tags in the former Soviet and imperial Russian regions may also appea
 
 Current Event 5 custom tags such as `OGB`, `IUL`, `MRC`, `FEV`, `SZA`, `UWD`, and the other Event 5 successors remain separate. Event 6 does not reuse those custom identities unless a future accepted package explicitly maps one and preserves origin separation.
 
-## Implementation recheck
+## Future-change recheck
 
-Before creating any country file, the implementation agent must run a repository-wide and installed-game collision scan. If a reserved `X` tag has become occupied after this audit, assign another unused `??X` tag, update every Event 6 matrix and asset filename, and record the change. This is a version-binding check, not an unresolved research question.
+Repeat the repository-wide and installed-game collision scan if the installed build, country-tag registries, or cosmetic-tag registries change after 2026-07-14. If a reserved `X` tag becomes occupied, stop and reconcile the accepted package binding across every Event 6 matrix and asset filename before registration. Do not silently rename a tag in one implementation file.

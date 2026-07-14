@@ -42,12 +42,15 @@ on_actions = {
 	on_leave_faction = {
 		effect = {
 			if = {
-				limit = { has_country_flag = random_faction_four_doors_candidate }
-				clr_country_flag = random_faction_four_doors_candidate
-			}
-			if = {
-				limit = { random_faction_current_country_has_tracked_state = yes }
-				random_faction_cleanup_after_country_lifecycle_change = yes
+				limit = { NOT = { has_global_flag = fallout_transition_active } }
+				if = {
+					limit = { has_country_flag = random_faction_four_doors_candidate }
+					clr_country_flag = random_faction_four_doors_candidate
+				}
+				if = {
+					limit = { random_faction_current_country_has_tracked_state = yes }
+					random_faction_cleanup_after_country_lifecycle_change = yes
+				}
 			}
 		}
 	}
@@ -75,8 +78,11 @@ on_actions = {
 	on_uncapitulation = {
 		effect = {
 			if = {
-				limit = { random_faction_current_country_has_tracked_state = yes }
-				random_faction_cleanup_after_country_lifecycle_change = yes
+				limit = { fallout_world_rewrite_callbacks_are_allowed = yes }
+				if = {
+					limit = { random_faction_current_country_has_tracked_state = yes }
+					random_faction_cleanup_after_country_lifecycle_change = yes
+				}
 			}
 		}
 	}
@@ -113,7 +119,10 @@ on_actions = {
 	on_subject_free = {
 		effect = {
 			if = {
-				limit = { random_faction_current_country_has_tracked_state = yes }
+				limit = {
+					NOT = { has_global_flag = fallout_transition_active }
+					random_faction_current_country_has_tracked_state = yes
+				}
 				random_faction_cleanup_after_country_lifecycle_change = yes
 			}
 		}
@@ -156,10 +165,13 @@ on_actions = {
 
 	on_government_exiled = {
 		effect = {
-			random_faction_disqualify_current_target_achievement_ledgers = yes
 			if = {
-				limit = { random_faction_current_country_has_tracked_state = yes }
-				random_faction_cleanup_after_country_lifecycle_change = yes
+				limit = { fallout_world_rewrite_callbacks_are_allowed = yes }
+				random_faction_disqualify_current_target_achievement_ledgers = yes
+				if = {
+					limit = { random_faction_current_country_has_tracked_state = yes }
+					random_faction_cleanup_after_country_lifecycle_change = yes
+				}
 			}
 		}
 	}
@@ -168,6 +180,7 @@ on_actions = {
 		effect = {
 			if = {
 				limit = {
+					fallout_world_rewrite_callbacks_are_allowed = yes
 					random_faction_current_country_has_tracked_state = yes
 					NOT = { random_faction_country_base_valid = yes }
 				}
@@ -179,8 +192,11 @@ on_actions = {
 
 	on_state_control_changed = {
 		effect = {
-			FROM.FROM = { save_event_target_as = random_faction_frontier_lost_state }
-			FROM = { random_faction_break_frontier_commitment_on_state_loss = yes }
+			if = {
+				limit = { fallout_world_rewrite_callbacks_are_allowed = yes }
+				FROM.FROM = { save_event_target_as = random_faction_frontier_lost_state }
+				FROM = { random_faction_break_frontier_commitment_on_state_loss = yes }
+			}
 		}
 	}
 

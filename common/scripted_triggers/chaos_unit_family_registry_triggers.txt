@@ -1,0 +1,92 @@
+# ============================================================================
+# CHAOS REDUX - OPT-IN CHAOS UNIT FAMILY REGISTRY TRIGGERS
+# ============================================================================
+# The registry is an aligned global table. Providers append one row through
+# chaos_unit_family_register_current_provider and consumers dispatch through
+# the stored provider id. A malformed row is an invariant failure, never a
+# reason to substitute another family.
+# ============================================================================
+
+chaos_unit_family_registry_is_aligned = {
+	check_variable = { var = global.chaos_unit_family_id_entries^num value = global.chaos_unit_family_provider_id_entries^num compare = equals }
+	check_variable = { var = global.chaos_unit_family_id_entries^num value = global.chaos_unit_family_source_event_id_entries^num compare = equals }
+	check_variable = { var = global.chaos_unit_family_id_entries^num value = global.chaos_unit_family_availability_mode_entries^num compare = equals }
+	check_variable = { var = global.chaos_unit_family_id_entries^num value = global.chaos_unit_family_event19_lot_policy_entries^num compare = equals }
+	check_variable = { var = global.chaos_unit_family_id_entries^num value = global.chaos_unit_family_derivative_profile_entries^num compare = equals }
+	check_variable = { var = global.chaos_unit_family_id_entries^num value = global.chaos_unit_family_sustainment_profile_entries^num compare = equals }
+	check_variable = { var = global.chaos_unit_family_id_entries^num value = global.chaos_unit_family_containment_profile_entries^num compare = equals }
+	check_variable = { var = global.chaos_unit_family_id_entries^num value = global.chaos_unit_family_ai_class_entries^num compare = equals }
+	check_variable = { var = global.chaos_unit_family_id_entries^num value = global.chaos_unit_family_visual_profile_entries^num compare = equals }
+	check_variable = { var = global.chaos_unit_family_id_entries^num value = global.chaos_unit_family_cleanup_profile_entries^num compare = equals }
+	check_variable = { var = global.chaos_unit_family_id_entries^num value = global.chaos_unit_family_parent_isolation_profile_entries^num compare = equals }
+	check_variable = { var = global.chaos_unit_family_id_entries^num value = global.chaos_unit_family_spawn_weight_entries^num compare = equals }
+	check_variable = { var = global.chaos_unit_family_id_entries^num value = global.chaos_unit_family_contract_version_entries^num compare = equals }
+}
+
+chaos_unit_family_current_row_is_enabled = {
+	check_variable = {
+		var = global.chaos_unit_family_availability_mode_entries^chaos_unit_family_registry_index
+		value = constant:chaos_unit_family_availability.disabled
+		compare = greater_than
+	}
+}
+
+chaos_unit_family_current_row_allows_event19_family_lot = {
+	OR = {
+		check_variable = {
+			var = global.chaos_unit_family_event19_lot_policy_entries^chaos_unit_family_registry_index
+			value = constant:chaos_unit_family_event19_lot_policy.family_only
+			compare = equals
+		}
+		check_variable = {
+			var = global.chaos_unit_family_event19_lot_policy_entries^chaos_unit_family_registry_index
+			value = constant:chaos_unit_family_event19_lot_policy.both
+			compare = equals
+		}
+	}
+}
+
+chaos_unit_family_current_row_allows_event19_ordinary_mix = {
+	OR = {
+		check_variable = {
+			var = global.chaos_unit_family_event19_lot_policy_entries^chaos_unit_family_registry_index
+			value = constant:chaos_unit_family_event19_lot_policy.ordinary_mix
+			compare = equals
+		}
+		check_variable = {
+			var = global.chaos_unit_family_event19_lot_policy_entries^chaos_unit_family_registry_index
+			value = constant:chaos_unit_family_event19_lot_policy.both
+			compare = equals
+		}
+	}
+}
+
+chaos_unit_family_current_row_can_train = {
+	OR = {
+		check_variable = {
+			var = global.chaos_unit_family_availability_mode_entries^chaos_unit_family_registry_index
+			value = constant:chaos_unit_family_availability.trainable
+			compare = equals
+		}
+		check_variable = {
+			var = global.chaos_unit_family_availability_mode_entries^chaos_unit_family_registry_index
+			value = constant:chaos_unit_family_availability.trainable_and_spawnable
+			compare = equals
+		}
+	}
+}
+
+chaos_unit_family_current_row_can_spawn = {
+	OR = {
+		check_variable = {
+			var = global.chaos_unit_family_availability_mode_entries^chaos_unit_family_registry_index
+			value = constant:chaos_unit_family_availability.spawn_only
+			compare = equals
+		}
+		check_variable = {
+			var = global.chaos_unit_family_availability_mode_entries^chaos_unit_family_registry_index
+			value = constant:chaos_unit_family_availability.trainable_and_spawnable
+			compare = equals
+		}
+	}
+}

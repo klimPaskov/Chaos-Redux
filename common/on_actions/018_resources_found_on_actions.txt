@@ -10,26 +10,29 @@
 on_actions = {
 	on_state_control_changed = {
 		effect = {
-			FROM.FROM = { save_event_target_as = resources_found_changed_state }
-			ROOT = { save_event_target_as = resources_found_new_controller }
-			FROM = { save_event_target_as = resources_found_old_controller }
 			if = {
-				limit = {
-					OR = {
-						FROM.FROM = {
-							OR = {
-								has_state_flag = resources_found_field_active
-								has_state_flag = resources_found_field_closed_permanently
-								has_state_flag = resources_found_cave_origin
-								has_state_flag = resources_found_cave_anchor_activating
-								has_state_flag = resources_found_cave_anchor_active
+				limit = { fallout_world_rewrite_callbacks_are_allowed = yes }
+				FROM.FROM = { save_event_target_as = resources_found_changed_state }
+				ROOT = { save_event_target_as = resources_found_new_controller }
+				FROM = { save_event_target_as = resources_found_old_controller }
+				if = {
+					limit = {
+						OR = {
+							FROM.FROM = {
+								OR = {
+									has_state_flag = resources_found_field_active
+									has_state_flag = resources_found_field_closed_permanently
+									has_state_flag = resources_found_cave_origin
+									has_state_flag = resources_found_cave_anchor_activating
+									has_state_flag = resources_found_cave_anchor_active
+								}
 							}
+							ROOT = { is_resources_found_cave_country = yes }
+							FROM = { is_resources_found_cave_country = yes }
 						}
-						ROOT = { is_resources_found_cave_country = yes }
-						FROM = { is_resources_found_cave_country = yes }
 					}
+					FROM.FROM = { resources_found_handle_state_control_change = yes }
 				}
-				FROM.FROM = { resources_found_handle_state_control_change = yes }
 			}
 		}
 	}
@@ -107,22 +110,25 @@ on_actions = {
 	# record and contract review attached to the new owner.
 	on_peaceconference_ended = {
 		effect = {
-			every_state = {
-				limit = {
-					OR = {
-						resources_found_is_active_field = yes
-						has_state_flag = resources_found_field_suspended
-						has_state_flag = resources_found_field_closed_permanently
+			if = {
+				limit = { fallout_world_rewrite_callbacks_are_allowed = yes }
+				every_state = {
+					limit = {
+						OR = {
+							resources_found_is_active_field = yes
+							has_state_flag = resources_found_field_suspended
+							has_state_flag = resources_found_field_closed_permanently
+						}
+						OWNER = { exists = yes }
+						has_variable = resources_found_recorded_owner
+						check_variable = { var = resources_found_recorded_owner value = OWNER compare = not_equals }
 					}
-					OWNER = { exists = yes }
-					has_variable = resources_found_recorded_owner
-					check_variable = { var = resources_found_recorded_owner value = OWNER compare = not_equals }
+					if = {
+						limit = { has_state_flag = resources_found_field_closed_permanently }
+						resources_found_refresh_closed_field_identity = yes
+					}
+					else = { resources_found_handle_field_ownership_transfer = yes }
 				}
-				if = {
-					limit = { has_state_flag = resources_found_field_closed_permanently }
-					resources_found_refresh_closed_field_identity = yes
-				}
-				else = { resources_found_handle_field_ownership_transfer = yes }
 			}
 		}
 	}

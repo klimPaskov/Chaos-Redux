@@ -19,7 +19,7 @@ The following official game documentation was used as the higher authority:
 
 ## Exact thermonuclear province sweep
 
-Verdict: exact native per-province strike semantics are proven through a verified province ledger. Bounded execution cost is not yet proven.
+Verdict: exact native per-province call construction and installed-map coverage are proven. Runtime acceptance and bounded execution cost are not proven.
 
 The engine does not expose `every_province`. That absence does not require a state-level substitute. The accepted manual-scenario plan explicitly permits a supported expansion of a verified province list into nuclear effects.
 
@@ -27,9 +27,9 @@ The exact route is:
 
 1. Build a stable ledger from the installed map data.
 2. Include only province ids that appear in a valid state `provinces` block and whose `map/definition.csv` type is `land`.
-3. Store the ledger in script data and iterate it with the documented array loop effects.
+3. Expand the ledger into inclusive `for_loop_effect` ranges.
 4. Pass each ledger value to the native `launch_nuke` effect with `nuke_type = thermonuclear_bomb`.
-5. Advance a persistent batch cursor and begin the seven-day countdown only after the final ledger entry is struck.
+5. Advance a persistent batch cursor and begin the seven-day countdown only after issued, observed, state-count, and state-sum barriers all pass.
 
 Current map audit:
 
@@ -41,13 +41,17 @@ Current map audit:
 
 This route produces 10,154 actual thermonuclear launch calls. It does not use one strike per state, province modifiers, or variable-only fallout. The engine does not enumerate the provinces itself. The ledger is a version-pinned expansion of installed map data, while every result is still produced by the native `launch_nuke` effect.
 
+The dormant implementation is split into 41 bounded effects. Batches 0 through 39 contain 250 exact ids. Batch 40 contains 154. Re-expanding all 533 emitted ranges produced 10,154 unique ids with zero order mismatches against the canonical ledger.
+
+Installed-map hashes and the independent audit format are recorded in `FALLOUT_MANUAL_PROVINCE_SWEEP_PROOF.md`. The canonical sorted valid-id hash is `A0F5504AEA22EC76D8C687228C9A4BF485B255C2F8CA9E7DB8A62CFB8D259949`.
+
 Engine evidence:
 
 - `effects_documentation.md`, `launch_nuke`, accepts a province target and an explicit `nuke_type`.
 - `effects_documentation.md`, `add_to_array`, `for_each_loop`, and `for_loop_effect`, support scalar province-id storage and deterministic iteration.
 - Vanilla `common/raids/nuclear_raids.txt` passes a variable-backed province id to `launch_nuke` and sets `nuke_type = thermonuclear_bomb`.
 
-The ledger must be regenerated and reviewed if Chaos Redux adds a map override or the installed game map changes. The scenario remains blocked from release until a bounded batch implementation proves that every ledger entry is struck exactly once and that the ordinary `on_nuke_drop` pipeline can be safely aggregated for the sweep.
+The ledger must be regenerated and reviewed if Chaos Redux adds a map override or the installed game map changes. The public scenario remains blocked until runtime review proves that every scripted launch is accepted, that the native callback occurs once inside the guarded window, and that 250 calls per batch are bounded.
 
 ## Exact seven-day delay
 
@@ -55,13 +59,13 @@ Verdict: proven, provided the delayed event is owned by a country guaranteed to 
 
 `effects_documentation.md`, `country_event`, defines `days` as an exact delay and treats months separately as 30 days. Vanilla `events/AAT_Denmark.txt` repeatedly uses `country_event = { id = ... days = 7 }`.
 
-The manual Fallout scenario will schedule the coordinator event with `days = 7` and no random delay after the final strike batch completes. Persistent completion and countdown flags prevent the sweep from restarting after save recovery. The offline Event modding reference notes that delayed country events stop counting while their target country does not exist, so the coordinator must remain alive through the countdown.
+The dormant substrate schedules `chaosx.fallout.903` with `days = 7` and no random delay after the complete sweep verifier passes. It also stores the start day and exact end day. Only the engine-scheduled callback may submit the request. The host daily coordinator never submits or reschedules the countdown because an integer day cannot preserve the starting hour. Lost coordinator ownership and a callback after the stored end day fail closed. The offline Event modding reference notes that delayed country events stop counting while their target country does not exist, so recipient survival remains a runtime-sensitive property.
 
 ## Host authority and idempotency
 
 Verdict: single-execution simulation authority is proven. Literal multiplayer lobby-host authority is not exposed by the documented script surface.
 
-`common/on_actions/chaosx_on_actions_chaos_meter.txt` owns a single monthly path with the project-defined `is_global_host` country flag. Startup assigns that flag to one human country, and the project uses it as a deterministic simulation coordinator. No official trigger or scripted-GUI surface was found for identifying the actual network lobby host. Fallout extends the existing coordinator route and does not add another global daily, weekly, or monthly country iteration.
+`common/on_actions/chaosx_on_actions_chaos_meter.txt` owns a single host-scoped daily path with the project-defined `is_global_host` country flag. Startup assigns that flag to one human country, and the project uses it as a deterministic simulation coordinator. No official trigger or scripted-GUI surface was found for identifying the actual network lobby host. Fallout extends the existing coordinator route and does not add another recurring world iteration.
 
 All request sources write to one global request ledger. The coordinator accepts the first valid request, records cause and intensity, and rejects duplicate transition starts. Manual, terminal-event, and Air Contamination callers do not own their own rewrite chains.
 
@@ -94,24 +98,84 @@ Multiplayer clients read the synchronized phase ledger and receive the same scri
 
 ## Blackout GUI and input control
 
-Verdict: full-screen cover, sequential text, mouse-modal blocking, save recovery, and host sequencing are proven. Complete keyboard interception is not proven.
+Verdict: static evidence proves only that a non-transparent top-layer blocker can intercept pointer hits on controls beneath its own layer. Complete pointer priority over every hardcoded popup, complete keyboard capture, shortcut suppression, native exclusive input, pause control, and all-resolution coverage are not proven.
 
-A player-context scripted GUI can attach a full-screen container to the base interface. A non-transparent full-screen element prevents pointer interaction with elements behind it. Visibility and text selection can read synchronized global variables, so save-load restores the active beat without relying on a nonexistent `on_load` recovery hook. Only the project simulation coordinator advances the beat and performs rewrite effects.
+The official scripted-GUI schema binds `window_name` to an independent `containerWindowType`. The current `interface/fallout_world_end.gui` blackout root uses `windowType`, so its scripted-GUI binding is not structurally proven. Its fixed `10000` by `10000` blocker is not proof of coverage at every supported resolution. Root parentlessness places a structurally valid scripted GUI over most UI, but it does not prove priority over every hardcoded popup.
 
-Neither the official scripted-GUI documentation nor the offline Interface modding reference exposes a modal, exclusive-input, keyboard-capture, or pause-game script property. Individual buttons can define shortcuts, but the references do not prove that a scripted GUI can suppress every hardcoded keyboard action.
+The official schema exposes context, window binding, parent attachment, visibility, effects, triggers, properties, dynamic lists, dirty updates, and AI controls. It exposes no modal, exclusive-input, keyboard-capture, shortcut-suppression, or pause surface. Vanilla `interface/frontend_friends_view.gui` describes an `event_trap` used with hardcoded `SetExclusive` to block input outside a native popup. `SetExclusive` is not exposed to scripted GUI.
 
-This is an engine-sensitive blocker for the literal interpretation of all-input blocking. The implementation must not claim complete keyboard lock without a proven engine surface. Mouse-modal blackout and gameplay-system locks can still be built, but using them as a substitute for total keyboard interception requires an explicit user decision.
+Visibility and sequential text can be re-evaluated from synchronized global state only after the container binding is structurally valid. This can recover visual beat state. It cannot restore exclusive-input state because scripted GUI exposes no such state. The project-defined `is_global_host` remains a deterministic simulation coordinator rather than a proven literal lobby host, and it cannot suppress client-local keyboard input.
+
+Converting the blackout root to a full-screen independent `containerWindowType` with percentage sizing is only a possible fallback for broader pointer coverage. It requires explicit user approval before any GUI change. It would not prove total pointer priority, keyboard capture, shortcut suppression, native exclusive input, or pause control. Pointer-only behavior is not approved as a substitute for the required blackout.
 
 ## Dynamic successor allocation
 
-Verdict: the creation effect is proven. Conflict-free allocation still requires the live ledger.
+Verdict: the creation effect is documented, and the generation-bound pre-allocation inventory and separate post-allocation proof contract pass static structural review. Runtime validity, conflict-free successor selection, and materialization are not proven.
 
-`create_dynamic_country` is documented in `effects_documentation.md`. It can create a country from a selected original or copy tag and run initialization effects. Fallout may use it only after the live conflict ledger records occupied tags, active event countries, reserved player identity, and selected successor packages. The 99-successor matrix remains a candidate pool.
+`create_dynamic_country` is documented in `effects_documentation.md`. It can create a country from a selected original or copy tag and run initialization effects. Fallout may use it only after the live conflict inventory records occupied countries, possible country scopes, known active event packages, player reservations, and exact safe-candidate states.
+
+Derived inventory schema 1 records each current country, each possible country scope, and each state for the active transition generation. Current-row validation checks identity, original tag, capital consistency, human control, known package ownership, player reservations, and candidate membership. It never treats a possible country scope as a materialized country. It does not select a Fallout package, regional package, final package archetype, conflict result, or cleanup owner.
+
+Successor allocation schema 1 records which inventory generation was consumed and validates the output world instead of requiring frozen owner rows to remain live. Static checks require a conflict-resolution receipt for every frozen country, unique assigned country scopes, unique assigned capital states, exact live-landholder coverage, current country, focus, archetype, regional, and country-memory package generations, exact capital ownership and control, valid origin states, and cleanup ownership. The guarded finalizer is the only setter for `fallout_successor_allocation_complete`. No allocator calls it, so the proof remains fail closed.
+
+The ledger's remaining engine-sensitive properties are dynamic-country membership in `game:all_possible_countries`, behavior of absent possible-country scopes, persistent `original_tag` storage, unusual dynamic or exile capital behavior, comparison and save behavior for scope-valued variables, and collection membership after tag mutation. The known package-ownership predicate is a reviewed snapshot, not an automatically complete registry. It must be re-audited before any ownership or tag mutation. The 99-successor matrix remains a candidate pool.
+
+## Old-world diplomacy reset
+
+Verdict: the documented engine can clear and validate a large proven subset. A complete exact reset is not proven.
+
+The implemented coordinator transaction uses official effects for these surfaces:
+
+- `end_exile` for governments in exile
+- `recall_volunteers_from` for volunteers
+- `cancel_purchase_contract` inside `every_purchase_contract`
+- `set_collaboration` with zero value
+- `remove_civil_war_target` followed by `white_peace`
+- `white_peace` for remaining wars
+- `end_puppet` from the actual overlord scope
+- `dismantle_faction`
+- `diplomatic_relation` with `active = no` for guarantees, military access, docking rights, non-aggression pacts, and embargoes
+
+Official validation triggers prove the absence of wars, civil-war links, factions, subjects, exiles, guarantees, military access, non-aggression pacts, embargoes, volunteers, collaboration values, purchase contracts, and active peace conferences. Docking-rights removal is an official effect with vanilla precedent, but no documented trigger validates the result.
+
+The following exact inverses are absent from official documentation:
+
+- active lend lease
+- ordinary resource imports and trade routes
+- intelligence agencies, operatives, networks, decryption, and static intel
+- expeditionary-force return
+- market-access removal
+- active peace-conference termination
+
+Expeditionary forces and market access can be detected. The transaction records a blocker when either is present. A peace conference can be detected and causes the reset to wait. Lend lease, ordinary trade, and the full intelligence state have neither a complete documented enumerator nor an exact reset effect. The approved Kaiserreich reference removes market access through a relation token, but no official or vanilla proof was found. That precedent is recorded but not treated as engine proof.
+
+`fallout_old_world_diplomacy_full_reset_is_verified` requires explicit verified flags for every required surface. Map return cannot pass while any proof is missing. This is deliberate fail-closed behavior, not a substitute mechanic.
+
+Primary anchors are `effects_documentation.md` entries for `diplomatic_relation`, `dismantle_faction`, `end_exile`, `end_puppet`, `every_other_country`, `every_purchase_contract`, `recall_volunteers_from`, `remove_civil_war_target`, `set_collaboration`, `cancel_purchase_contract`, and `white_peace`. Validation uses the corresponding entries in `triggers_documentation.md`, including `civilwar_target`, `has_collaboration`, `has_market_access_with`, `has_military_access_to`, `has_non_aggression_pact_with`, `has_volunteers_amount_from`, `has_war_with`, `is_in_peace_conference`, and `received_expeditionary_forces`.
+
+## Player continuation transaction
+
+Verdict: the engine surfaces for snapshot, state reservation, materialization, capital assignment, and individual player switching are proven. Exact multi-client commit behavior and literal lobby ownership are not proven.
+
+The transition snapshots every human-controlled country once with `is_ai = no`. It records the country scope, database id, capital state, original player-owned states, transition generation, and a source-anchor state. Original player states are reserved before the general successor pool is built. The former capital is preferred when it remains owned. Otherwise the lowest state id provides a deterministic source anchor.
+
+The live conflict ledger separately records every existing country, `game:all_possible_countries`, player-reserved states, and unreserved hostable states. A nonexistent static country in `game:all_possible_countries` is not treated as materializable by that fact alone. It needs an explicit release package or a documented dynamic-country creation route.
+
+Official collections and array effects prove the ledger surfaces. `transfer_state`, `set_capital`, and `create_dynamic_country` prove the materialization primitives. Vanilla player-preservation chains prove `change_tag_from` for one player. Official country-tag aliases permit a variable-backed origin alias when a different successor must take over a player.
+
+The current implementation only plans the proven surviving-tag branch. It reserves the former capital when hostable, otherwise the highest-survival owned state with the lowest state id as the final tie breaker. Fragmented, refuge, altered-transformation, and emergency-council branches remain uncommitted until their candidates are genuinely materialized and packaged. The continuation ledger does not claim completion in those cases.
+
+No documented script surface distinguishes separate people sharing one cooperative country. `is_ai = no` identifies the human-controlled country scope. It does not identify individual co-op seats. An absent player can have a successor reserved, but scripted reassignment while disconnected is not proven. Vanilla proves individual tag switches, not several simultaneous multiplayer switches or save recovery during the commit barrier.
+
+Map return requires equal snapshot, planned, and committed player counts, unique target verification, a valid package and focus layer on every destination, a hostable owned and controlled capital, a finished successor allocation, a clean diplomacy ledger, a complete state rewrite, and a zero transition-error count. The blackout remains active when any item fails.
 
 ## Open proof obligations
 
 - Preserve the recorded normal-map runtime observation checklist without claiming that its visual checks were performed.
 - Measure entity density and strike-batch execution cost on the current map.
-- Record whether a verified hardcoded modal surface exists for complete keyboard blocking. None was found in the documented script interfaces.
+- Prove a structurally valid all-resolution blackout binding and complete priority over every required hardcoded popup.
+- Record whether a scripted surface exists for native exclusive input, complete keyboard capture, shortcut suppression, or pause control. None was found in the documented scripted-GUI schema.
 - Record that no documented literal lobby-host trigger exists. `is_global_host` is a project simulation coordinator.
 - Re-run the province-ledger audit after any map-version change.
+- Resolve or explicitly redesign lend lease, ordinary trade, intelligence, docking validation, market access, and expeditionary return before enabling map reveal.
+- Prove multiplayer continuation across distinct human countries, cooperative seats, disconnects, and save recovery before claiming host-authoritative player handoff.

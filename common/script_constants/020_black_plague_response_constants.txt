@@ -1,0 +1,442 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 020 BLACK PLAGUE RESPONSE CONSTANTS
+# ============================================================================
+# Central tuning for state-selected Black Plague response projects, response
+# capacity, persistent lanes, country countermeasure progress, and Doctor Wu's
+# clinical bridge. Equipment, manpower, fuel, and transport costs are scaled by
+# the selected state's civilian population; political power is never used as a
+# stored response currency.
+# ============================================================================
+
+black_plague_response_value = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	zero = 0
+	one = 1
+	negative_one = -1
+	percent = 0.01
+	weekly_days = 7
+	minimum_population_scale = 0.75
+	standard_population_scale = 1
+	large_population_scale = 1.5
+	metropolitan_population_scale = 2
+	population_band_one_k = 1000
+	population_band_two_k = 5000
+	population_band_three_k = 10000
+	minimum_progress_gain = 1
+	maximum_progress_gain = 4
+	minimum_capacity = 4
+	maximum_capacity = 14
+	base_capacity = 6
+	capacity_industry_step = 2
+	capacity_countermeasure_step = 2
+	capacity_instability_penalty = 2
+	capacity_civilian_factories_one = 15
+	capacity_civilian_factories_two = 30
+	capacity_civilian_factories_three = 60
+	capacity_countermeasure_threshold = 40
+	capacity_stability_threshold = 0.40
+	failed_mobilization_cooldown_days = 14
+}
+
+black_plague_response_lane = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	civil = 1
+	quarantine = 2
+	cordon = 3
+	treatment = 4
+}
+
+black_plague_response_project = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	clean_city_rats = 1
+	seal_food_stores = 2
+	clear_sewers = 3
+	flea_control = 4
+	purge_transport = 5
+	demolish_lost_blocks = 6
+	emergency_hospitals = 7
+	quarantine = 8
+	cordon = 9
+	treatment_reserves = 10
+	purge_liberated_warrens = 11
+	countermeasure_program = 12
+	doctor_wu_protocol = 13
+}
+
+black_plague_response_duration = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	clean_city_rats = 35
+	seal_food_stores = 28
+	clear_sewers = 56
+	flea_control = 21
+	purge_transport = 35
+	demolish_lost_blocks = 56
+	emergency_hospitals = 56
+	quarantine = 14
+	cordon = 21
+	treatment_reserves = 7
+	purge_liberated_warrens = 70
+	countermeasure_setup = 90
+	doctor_wu_protocol = 14
+	clean_city_rats_cooldown = 60
+	seal_food_stores_cooldown = 90
+	clear_sewers_cooldown = 120
+	flea_control_cooldown = 42
+	purge_transport_cooldown = 70
+	quarantine_cooldown = 60
+	cordon_cooldown = 120
+	treatment_reserves_cooldown = 21
+	seal_food_stores_sustain = 90
+	clear_sewers_sustain = 180
+	flea_control_sustain = 60
+	purge_transport_sustain = 70
+	hidden_nest_duration = 180
+	displacement_duration = 180
+	treatment_relief_duration = 21
+}
+
+black_plague_response_factories = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	clean_city_rats = 3
+	seal_food_stores = 2
+	clear_sewers = 4
+	flea_control = 2
+	purge_transport = 3
+	demolish_lost_blocks = 6
+	emergency_hospitals_setup = 4
+	emergency_hospitals_persistent = 2
+	quarantine_setup = 2
+	cordon_setup = 2
+	treatment_reserves = 1
+	purge_liberated_warrens = 5
+	countermeasure_setup = 6
+	countermeasure_persistent = 3
+	doctor_wu_protocol = 2
+}
+
+black_plague_response_burden = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	clean_city_rats = 2
+	seal_food_stores = 1
+	clear_sewers = 3
+	flea_control = 1
+	purge_transport = 2
+	demolish_lost_blocks = 5
+	emergency_hospitals_setup = 3
+	emergency_hospitals_persistent = 2
+	quarantine = 2
+	cordon = 3
+	treatment_reserves = 1
+	purge_liberated_warrens = 4
+	countermeasure = 4
+	doctor_wu_protocol = 1
+}
+
+black_plague_response_cost_clean_city_rats = {
+	schema = { any_key = yes data = fixed_point }
+	manpower = 4000
+	support_equipment = 120
+	motorized_equipment = 60
+	fuel = 1000
+	stability = 0.01
+}
+
+black_plague_response_cost_seal_food_stores = {
+	schema = { any_key = yes data = fixed_point }
+	manpower = 2000
+	support_equipment = 60
+	motorized_equipment = 30
+	fuel = 500
+	stability = 0.01
+}
+
+black_plague_response_cost_clear_sewers = {
+	schema = { any_key = yes data = fixed_point }
+	manpower = 7000
+	support_equipment = 200
+	motorized_equipment = 100
+	fuel = 1500
+	stability = 0.01
+}
+
+black_plague_response_cost_flea_control = {
+	schema = { any_key = yes data = fixed_point }
+	manpower = 3000
+	support_equipment = 100
+	motorized_equipment = 50
+	fuel = 500
+}
+
+black_plague_response_cost_purge_transport = {
+	schema = { any_key = yes data = fixed_point }
+	manpower = 4000
+	support_equipment = 100
+	motorized_equipment = 60
+	trains = 6
+	convoys = 10
+	fuel = 2500
+	command_power = 10
+	war_support = 0.01
+}
+
+black_plague_response_cost_demolish_lost_blocks = {
+	schema = { any_key = yes data = fixed_point }
+	manpower = 12000
+	support_equipment = 300
+	motorized_equipment = 150
+	trains = 4
+	fuel = 5000
+	command_power = 25
+	stability = 0.05
+	war_support = 0.03
+}
+
+black_plague_response_cost_emergency_hospitals = {
+	schema = { any_key = yes data = fixed_point }
+	manpower = 6000
+	support_equipment = 250
+	motorized_equipment = 120
+	trains = 4
+	fuel = 1500
+}
+
+black_plague_response_cost_quarantine = {
+	schema = { any_key = yes data = fixed_point }
+	manpower = 3000
+	support_equipment = 80
+	motorized_equipment = 40
+	fuel = 1000
+	command_power = 10
+	stability = 0.02
+	war_support = 0.01
+}
+
+black_plague_response_cost_cordon = {
+	schema = { any_key = yes data = fixed_point }
+	manpower = 8000
+	infantry_equipment = 500
+	support_equipment = 200
+	motorized_equipment = 100
+	fuel = 5000
+	command_power = 30
+	stability = 0.02
+	war_support = 0.02
+}
+
+black_plague_response_cost_treatment_reserves = {
+	schema = { any_key = yes data = fixed_point }
+	manpower = 1000
+	support_equipment = 80
+	motorized_equipment = 40
+	fuel = 500
+}
+
+black_plague_response_cost_purge_liberated_warrens = {
+	schema = { any_key = yes data = fixed_point }
+	manpower = 12000
+	infantry_equipment = 500
+	support_equipment = 300
+	motorized_equipment = 200
+	trains = 6
+	fuel = 8000
+	command_power = 25
+	stability = 0.02
+	war_support = 0.02
+}
+
+black_plague_response_cost_countermeasure = {
+	schema = { any_key = yes data = fixed_point }
+	manpower = 10000
+	support_equipment = 250
+	motorized_equipment = 100
+	trains = 5
+	fuel = 2500
+}
+
+black_plague_response_cost_doctor_wu = {
+	schema = { any_key = yes data = fixed_point }
+	manpower = 1000
+	support_equipment = 50
+	motorized_equipment = 25
+	fuel = 1000
+}
+
+black_plague_response_threshold = {
+	schema = { any_key = yes data = fixed_point }
+	clean_city_rats_infestation = 40
+	seal_food_stores_pressure = 20
+	clear_sewers_infestation = 35
+	clear_sewers_entrenched_infestation = 80
+	flea_control_mortality = 20
+	flea_control_infestation = 30
+	demolish_infestation = 70
+	demolish_load = 75
+	treatment_mortality = 15
+	treatment_coverage_ceiling = 80
+	warren_infestation = 60
+	countermeasure_hospital_discount = 40
+	countermeasure_spread_bonus = 60
+	countermeasure_cleanup_bonus = 80
+	countermeasure_completion = 100
+	cleanup_attempts_required = 2
+}
+
+black_plague_response_result = {
+	schema = { any_key = yes data = fixed_point }
+	clean_rats_infestation = 30
+	clean_rats_load = 5
+	clean_rats_spread = 10
+	clean_rats_mortality = 5
+	clean_rats_containment = 8
+	clean_rats_partial_infestation = 15
+	clean_rats_partial_spread = 4
+	clean_rats_partial_containment = 3
+	clean_rats_adjacent_exposure = 8
+	clean_rats_adjacent_infestation = 5
+	seal_infestation = 12
+	seal_spread = 8
+	seal_exposure = 6
+	seal_relapse = 4
+	seal_weekly_infestation = 2
+	seal_weekly_spread = 2
+	clear_sewers_infestation = 35
+	clear_sewers_load = 12
+	clear_sewers_spread = 10
+	clear_sewers_relapse = 15
+	clear_sewers_containment = 8
+	clear_sewers_partial_infestation = 20
+	clear_sewers_partial_load = 6
+	clear_sewers_partial_spread = 5
+	clear_sewers_partial_relapse_gain = 10
+	clear_sewers_weekly_infestation = 2
+	clear_sewers_weekly_relapse = 2
+	flea_mortality = 18
+	flea_treatment = 20
+	flea_load = 4
+	flea_infestation = 10
+	flea_relapse = 10
+	flea_weekly_mortality = 3
+	flea_weekly_treatment = 2
+	transport_infestation = 20
+	transport_spread = 18
+	transport_exposure = 12
+	transport_relapse = 6
+	transport_weekly_infestation = 2
+	transport_weekly_spread = 3
+	transport_internal_route_factor = 0.45
+	transport_port_route_factor = 0.50
+	demolish_infestation = 45
+	demolish_load = 30
+	demolish_spread = 25
+	demolish_mortality = 10
+	demolish_containment = 15
+	demolish_relapse = 20
+	demolish_receiver_exposure = 5
+	demolish_failed_receiver_exposure = 20
+	hospital_treatment = 30
+	hospital_mortality = 18
+	hospital_containment = 12
+	hospital_load = 5
+	hospital_countermeasure = 4
+	hospital_weekly_treatment = 8
+	hospital_weekly_containment = 5
+	hospital_weekly_mortality = 3
+	quarantine_containment = 15
+	quarantine_spread = 18
+	quarantine_exposure = 8
+	quarantine_infestation = 3
+	quarantine_weekly_containment = 7
+	quarantine_weekly_spread = 5
+	quarantine_route_factor = 0.55
+	quarantine_unsupported_mortality = 2
+	cordon_containment = 25
+	cordon_spread = 20
+	cordon_exposure = 10
+	cordon_infestation = 8
+	cordon_weekly_containment = 10
+	cordon_weekly_spread = 8
+	cordon_weekly_infestation = 2
+	cordon_route_factor = 0.35
+	treatment_mortality = 15
+	treatment_coverage = 25
+	treatment_load = 5
+	treatment_containment = 5
+	treatment_relapse = 5
+	warren_infestation = 60
+	warren_load = 25
+	warren_spread = 25
+	warren_exposure = 20
+	warren_relapse = 25
+	warren_containment = 25
+	warren_countermeasure = 5
+	warren_weekly_infestation = 2
+	warren_weekly_relapse = 2
+	doctor_wu_countermeasure = 30
+	doctor_wu_treatment = 35
+	doctor_wu_mortality = 20
+	doctor_wu_containment = 10
+	accelerated_cleanup_factor = 1.25
+	hospital_cost_factor = 0.80
+	spread_reduction_factor = 1.25
+	cleanup_reduction_factor = 1.25
+}
+
+black_plague_response_penalty = {
+	schema = { any_key = yes data = fixed_point }
+	sealed_store_resources = -0.05
+	sealed_store_supply = -0.10
+	transport_supply = -0.15
+	transport_movement = -0.05
+	transport_construction = -0.10
+	quarantine_resources = -0.10
+	quarantine_supply = -0.15
+	quarantine_movement = -0.10
+	quarantine_construction = -0.15
+	cordon_supply = -0.10
+	cordon_movement = -0.15
+	cordon_construction = -0.10
+	clear_sewers_infrastructure_damage = 0.50
+	demolition_resistance_gain = 10
+	demolition_compliance_loss = 10
+	military_force_strength = 0.40
+	military_force_organization = 0.30
+}
+
+black_plague_countermeasure_progress = {
+	schema = { any_key = yes data = fixed_point }
+	setup_completion_gain = 10
+	weekly_base = 1
+	hospital_bonus = 1
+	severe_crisis_bonus = 1
+	foreign_exchange_bonus = 1
+	war_penalty = 1
+	low_stability_penalty = 1
+	weaponization_penalty = 1
+	low_stability_threshold = 0.40
+}

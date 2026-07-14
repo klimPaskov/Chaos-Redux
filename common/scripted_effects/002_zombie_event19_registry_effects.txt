@@ -1,0 +1,165 @@
+# ============================================================================
+# EVENT 002 PROVIDER - EVENT 019 BASE ZOMBIE FAMILY
+# ============================================================================
+# This file reuses only the base battalion token. It does not call Zombie
+# Outbreak setup, recruitment profiles, mutation, league, evolution, or world-
+# end effects.
+# ============================================================================
+
+chaos_unit_family_provider_501_register = {
+	set_temp_variable = { chaos_unit_family_register_id = constant:event19_zombie_family.family_id }
+	set_temp_variable = { chaos_unit_family_register_provider_id = constant:event19_zombie_family.provider_id }
+	set_temp_variable = { chaos_unit_family_register_source_event_id = constant:event19_zombie_family.source_event_id }
+	set_temp_variable = { chaos_unit_family_register_availability_mode = constant:chaos_unit_family_availability.trainable_and_spawnable }
+	set_temp_variable = { chaos_unit_family_register_event19_lot_policy = constant:chaos_unit_family_event19_lot_policy.family_only }
+	set_temp_variable = { chaos_unit_family_register_derivative_profile = constant:event19_zombie_family.derivative_profile }
+	set_temp_variable = { chaos_unit_family_register_sustainment_profile = constant:event19_zombie_family.sustainment_profile }
+	set_temp_variable = { chaos_unit_family_register_containment_profile = constant:event19_zombie_family.containment_profile }
+	set_temp_variable = { chaos_unit_family_register_ai_class = constant:event19_zombie_family.ai_class }
+	set_temp_variable = { chaos_unit_family_register_visual_profile = constant:event19_zombie_family.visual_profile }
+	set_temp_variable = { chaos_unit_family_register_cleanup_profile = constant:event19_zombie_family.cleanup_profile }
+	set_temp_variable = { chaos_unit_family_register_parent_isolation_profile = constant:event19_zombie_family.parent_isolation_profile }
+	set_temp_variable = { chaos_unit_family_register_spawn_weight = constant:event19_zombie_family.spawn_weight }
+	set_temp_variable = { chaos_unit_family_register_contract_version = constant:chaos_unit_family_registry.contract_version }
+	chaos_unit_family_register_current_provider = yes
+}
+
+chaos_unit_family_provider_501_event19_evaluate_eligibility = {
+	set_temp_variable = { chaos_unit_family_candidate_eligible = 0 }
+	set_temp_variable = { chaos_unit_family_candidate_native = 0 }
+	if = {
+		limit = { OR = { is_zombie_outbreak_country = yes has_country_flag = infantry_spawn_zombie_derivative } }
+		set_temp_variable = { chaos_unit_family_candidate_eligible = 1 }
+		set_temp_variable = { chaos_unit_family_candidate_native = 1 }
+	}
+	else_if = {
+		limit = { infantry_spawn_has_evolution_iv = yes }
+		set_temp_variable = { chaos_unit_family_candidate_eligible = 1 }
+	}
+}
+
+chaos_unit_family_provider_501_event19_build_template = {
+	meta_effect = {
+		text = {
+			division_template = {
+				name = "Unbidden Muster [TEMPLATE_UID]"
+				is_locked = yes
+				force_allow_recruiting = no
+				priority = 0
+				regiments = {
+					zombies = { x = 0 y = 0 }
+					zombies = { x = 0 y = 1 }
+					zombies = { x = 0 y = 2 }
+					zombies = { x = 0 y = 3 }
+				}
+			}
+		}
+		TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
+	}
+	set_temp_variable = { infantry_spawn_provider_component_count = constant:event19_zombie_family.template_battalions }
+	set_temp_variable = { infantry_spawn_provider_component_profile = constant:event19_zombie_family.family_id }
+	infantry_spawn_append_provider_combat_column_manifest = yes
+}
+
+chaos_unit_family_provider_501_event19_spawn_unit = {
+	infantry_spawn_spawn_current_template_unit = yes
+}
+
+chaos_unit_family_provider_501_event19_reconcile_sustainment = {
+	set_temp_variable = { infantry_spawn_provider_component_count = constant:event19_zombie_family.template_battalions }
+	set_temp_variable = { infantry_spawn_provider_resource_profile = constant:infantry_spawn_equipment_family.infantry_equipment }
+	set_temp_variable = { infantry_spawn_provider_resource_per_battalion = constant:event19_zombie_family.infantry_equipment_per_battalion }
+	set_temp_variable = { infantry_spawn_provider_manpower_per_battalion = constant:event19_zombie_family.manpower_per_battalion }
+	infantry_spawn_record_provider_unit_obligations = yes
+}
+
+# Event 19 registry-management contract. Base zombies are the only zombie
+# family exposed as trainable; this path authorizes their exact generated
+# template and never unlocks a mutated or weaponized zombie battalion.
+chaos_unit_family_provider_501_event19_evaluate_management = {
+	set_temp_variable = { infantry_spawn_family_provider_can_train = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_can_spawn = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_can_sustain = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_uses_training = 1 }
+	if = {
+		limit = {
+			NOT = { is_in_array = { array = infantry_spawn_trainable_family_ids value = constant:event19_zombie_family.family_id } }
+			infantry_spawn_country_has_eligible_state = yes
+			check_variable = { var = army_experience value = constant:event19_zombie_family.training_army_experience_cost compare = greater_than_or_equals }
+			check_variable = { var = num_equipment@infantry_equipment value = constant:event19_zombie_family.training_infantry_equipment_cost compare = greater_than_or_equals }
+			check_variable = { var = manpower value = constant:event19_zombie_family.training_manpower_cost compare = greater_than_or_equals }
+		}
+		set_temp_variable = { infantry_spawn_family_provider_can_train = 1 }
+	}
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_family_live_division_count > 0 }
+			check_variable = { var = num_equipment@infantry_equipment value = constant:event19_zombie_family.sustainment_infantry_equipment_cost compare = greater_than_or_equals }
+			check_variable = { var = manpower value = constant:event19_zombie_family.sustainment_manpower_cost compare = greater_than_or_equals }
+		}
+		set_temp_variable = { infantry_spawn_family_provider_can_sustain = 1 }
+	}
+}
+
+chaos_unit_family_provider_501_event19_pay_management_action = {
+	set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.train_or_spawn }
+			check_variable = { infantry_spawn_family_provider_can_train > 0 }
+		}
+		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
+		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:event19_zombie_family.training_army_experience_cost }
+		army_experience = infantry_spawn_family_provider_negative_cost
+		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
+		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:event19_zombie_family.training_infantry_equipment_cost }
+		add_equipment_to_stockpile = { type = infantry_equipment amount = infantry_spawn_family_provider_negative_cost }
+		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
+		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:event19_zombie_family.training_manpower_cost }
+		add_manpower = infantry_spawn_family_provider_negative_cost
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 1 }
+	}
+	else_if = {
+		limit = {
+			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.sustainment }
+			check_variable = { infantry_spawn_family_provider_can_sustain > 0 }
+		}
+		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
+		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:event19_zombie_family.sustainment_infantry_equipment_cost }
+		add_equipment_to_stockpile = { type = infantry_equipment amount = infantry_spawn_family_provider_negative_cost }
+		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
+		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:event19_zombie_family.sustainment_manpower_cost }
+		add_manpower = infantry_spawn_family_provider_negative_cost
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 1 }
+	}
+}
+
+chaos_unit_family_provider_501_event19_refund_management_action = {
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_family_provider_payment_succeeded > 0 }
+			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.train_or_spawn }
+		}
+		add_army_experience = constant:event19_zombie_family.training_army_experience_cost
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:event19_zombie_family.training_infantry_equipment_cost }
+		add_manpower = constant:event19_zombie_family.training_manpower_cost
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
+	}
+	else_if = {
+		limit = {
+			check_variable = { infantry_spawn_family_provider_payment_succeeded > 0 }
+			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.sustainment }
+		}
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:event19_zombie_family.sustainment_infantry_equipment_cost }
+		add_manpower = constant:event19_zombie_family.sustainment_manpower_cost
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
+	}
+}
+
+chaos_unit_family_provider_501_event19_setup_derivative = {
+	infantry_spawn_setup_zombie_derivative_identity = yes
+}
+
+chaos_unit_family_provider_501_event19_cleanup = {
+	infantry_spawn_cleanup_current_family_lot = yes
+}

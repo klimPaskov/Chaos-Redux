@@ -21,12 +21,13 @@ can_launch_standard_unconventional_air_raid_against = {
 }
 
 is_biowarfare_contaminated_state = {
-    OR = {
-        has_dynamic_modifier = { modifier = anthrax_contaminated_state }
-        has_dynamic_modifier = { modifier = plague_contaminated_state }
-        has_dynamic_modifier = { modifier = tularemia_contaminated_state }
-        has_dynamic_modifier = { modifier = smallpox_contaminated_state }
-    }
+	OR = {
+		has_dynamic_modifier = { modifier = anthrax_contaminated_state }
+		has_dynamic_modifier = { modifier = plague_contaminated_state }
+		has_dynamic_modifier = { modifier = tularemia_contaminated_state }
+		has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+		black_plague_state_is_established = yes
+	}
 }
 
 has_active_biowarfare_outbreak = {
@@ -88,29 +89,32 @@ has_smallpox_outbreak_in_border_proximity_from = {
 }
 
 has_plague_outbreak_in_border_proximity_from = {
-    FROM = {
-        any_controlled_state = {
-            has_dynamic_modifier = { modifier = plague_contaminated_state }
-            OR = {
-                any_neighbor_state = {
-                    is_controlled_by = ROOT
-                }
-                AND = {
-                    NOT = {
-                        any_neighbor_state = {
-                            is_controlled_by = ROOT
-                        }
-                    }
-                    any_neighbor_state = {
-                        is_controlled_by = PREV.PREV
-                        any_neighbor_state = {
-                            is_controlled_by = ROOT
-                        }
-                    }
-                }
-            }
-        }
-    }
+	FROM = {
+		any_controlled_state = {
+			OR = {
+				has_dynamic_modifier = { modifier = plague_contaminated_state }
+				black_plague_state_is_established = yes
+			}
+			OR = {
+				any_neighbor_state = {
+					is_controlled_by = ROOT
+				}
+				AND = {
+					NOT = {
+						any_neighbor_state = {
+							is_controlled_by = ROOT
+						}
+					}
+					any_neighbor_state = {
+						is_controlled_by = PREV.PREV
+						any_neighbor_state = {
+							is_controlled_by = ROOT
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 has_neighbor_with_active_biowarfare_outbreak = {
@@ -389,25 +393,39 @@ mapmode_state_has_chemical_contamination = {
     has_dynamic_modifier = { modifier = chem_state_contamination }
 }
 
+mapmode_state_has_legacy_disease_contamination = {
+	OR = {
+		has_dynamic_modifier = { modifier = anthrax_contaminated_state }
+		has_dynamic_modifier = { modifier = plague_contaminated_state }
+		has_dynamic_modifier = { modifier = tularemia_contaminated_state }
+		has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+	}
+}
+
 mapmode_state_has_disease_contamination = {
-    OR = {
-        has_dynamic_modifier = { modifier = anthrax_contaminated_state }
-        has_dynamic_modifier = { modifier = plague_contaminated_state }
-        has_dynamic_modifier = { modifier = tularemia_contaminated_state }
-        has_dynamic_modifier = { modifier = smallpox_contaminated_state }
-    }
+	OR = {
+		mapmode_state_has_legacy_disease_contamination = yes
+		AND = {
+			black_plague_state_is_established = yes
+			black_plague_state_is_visible_to_mapmode_player = yes
+		}
+	}
 }
 
 mapmode_state_has_nuclear_contamination = {
-    has_dynamic_modifier = { modifier = nuclear_fallout_state }
+	has_dynamic_modifier = { modifier = nuclear_fallout_state }
 }
 
 mapmode_state_has_tracked_contamination = {
-    OR = {
-        mapmode_state_has_chemical_contamination = yes
-        mapmode_state_has_disease_contamination = yes
-        mapmode_state_has_nuclear_contamination = yes
-    }
+	OR = {
+		mapmode_state_has_chemical_contamination = yes
+		mapmode_state_has_disease_contamination = yes
+		mapmode_state_has_nuclear_contamination = yes
+		AND = {
+			black_plague_state_is_tracked = yes
+			black_plague_state_is_visible_to_mapmode_player = yes
+		}
+	}
 }
 
 mapmode_state_has_civilian_death_history = {

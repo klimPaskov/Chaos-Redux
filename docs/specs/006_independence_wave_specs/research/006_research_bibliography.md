@@ -638,7 +638,7 @@ The full machine-readable register is `research/006_source_register.csv`. It cov
 - Source: https://commons.wikimedia.org/wiki/File:CC0-CH_-_London_Brass_Players_-_A_Trumpet_Voluntary_-_Jeremiah_Clarke_-_Columbia-dx1536-cax10357.flac
 - Design use: League formation super-event music
 - Confidence: high
-- Rights or caution: Commons marks the work public domain and provides Ogg transcode
+- Rights or caution: The composition is public domain. The exact 1948 recording, released in 1949, lacks verified United States redistribution clearance and must not be processed or wired without permission or a waiver.
 
 ### AUD-DANGER: 1812 Overture, Op. 49
 

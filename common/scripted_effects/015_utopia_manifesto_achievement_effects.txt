@@ -1,0 +1,254 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 015 UTOPIA MANIFESTO ACHIEVEMENT LIFECYCLE
+# ============================================================================
+# Bounded country-scope history for achievements that cannot be proved from a
+# present-state trigger. War relations register exact attackers in country
+# arrays. Capitulation or annexation then resolves only those recorded pairs.
+# No periodic all-country on action is used.
+#
+# Public effects:
+# - utopia_manifesto_initialize_achievement_lifecycle
+# - utopia_manifesto_clear_achievement_lifecycle
+# - utopia_manifesto_register_defensive_war_challenges
+# - utopia_manifesto_resolve_recorded_attacker_defeat
+# - utopia_manifesto_refresh_territorial_achievement_history
+# ============================================================================
+
+utopia_manifesto_initialize_achievement_lifecycle = {
+	utopia_manifesto_clear_achievement_lifecycle = yes
+	clr_country_flag = utopia_manifesto_achievement_origin_landlocked
+	if = {
+		limit = { has_country_flag = utopia_manifesto_geography_inland_island }
+		set_country_flag = utopia_manifesto_achievement_origin_landlocked
+	}
+}
+
+utopia_manifesto_clear_achievement_lifecycle = {
+	save_event_target_as = utopia_manifesto_achievement_cleanup_actor
+	for_each_scope_loop = {
+		array = utopia_manifesto_recorded_attackers
+		if = {
+			limit = { exists = yes }
+			remove_from_array = {
+				array = utopia_manifesto_event15_defenders
+				value = event_target:utopia_manifesto_achievement_cleanup_actor
+			}
+		}
+	}
+	clear_array = utopia_manifesto_recorded_attackers
+	clear_array = utopia_manifesto_stronger_challenge_attackers
+	clear_array = utopia_manifesto_reserve_challenge_attackers
+	clear_array = utopia_manifesto_inland_challenge_attackers
+	clear_array = utopia_manifesto_closed_challenge_attackers
+	clear_array = utopia_manifesto_event15_defenders
+	clr_country_flag = utopia_manifesto_achievement_origin_landlocked
+}
+
+# Country scope is the Event 015 defender. The on-action caller supplies
+# `event_target:utopia_manifesto_war_attacker` and
+# `event_target:utopia_manifesto_war_defender`.
+utopia_manifesto_register_defensive_war_challenges = {
+	if = {
+		limit = {
+			has_country_flag = utopia_manifesto_accepted
+			event_target:utopia_manifesto_war_attacker = { exists = yes }
+		}
+		if = {
+			limit = {
+				NOT = {
+					is_in_array = {
+						array = utopia_manifesto_recorded_attackers
+						value = event_target:utopia_manifesto_war_attacker
+					}
+				}
+			}
+			add_to_array = {
+				array = utopia_manifesto_recorded_attackers
+				value = event_target:utopia_manifesto_war_attacker
+			}
+		}
+		event_target:utopia_manifesto_war_attacker = {
+			if = {
+				limit = {
+					NOT = {
+						is_in_array = {
+							array = utopia_manifesto_event15_defenders
+							value = event_target:utopia_manifesto_war_defender
+						}
+					}
+				}
+				add_to_array = {
+					array = utopia_manifesto_event15_defenders
+					value = event_target:utopia_manifesto_war_defender
+				}
+			}
+		}
+		if = {
+			limit = {
+				event_target:utopia_manifesto_war_attacker = {
+					OR = {
+						is_major = yes
+						is_in_faction = yes
+					}
+				}
+			}
+			if = {
+				limit = {
+					alliance_strength_ratio < constant:utopia_manifesto_achievement_war.stronger_enemy_ratio
+					NOT = {
+						is_in_array = {
+							array = utopia_manifesto_stronger_challenge_attackers
+							value = event_target:utopia_manifesto_war_attacker
+						}
+					}
+				}
+				add_to_array = {
+					array = utopia_manifesto_stronger_challenge_attackers
+					value = event_target:utopia_manifesto_war_attacker
+				}
+			}
+			if = {
+				limit = {
+					has_country_flag = utopia_manifesto_two_year_reserve
+					utopia_manifesto_reserve_is_secure = yes
+					NOT = {
+						is_in_array = {
+							array = utopia_manifesto_reserve_challenge_attackers
+							value = event_target:utopia_manifesto_war_attacker
+						}
+					}
+				}
+				add_to_array = {
+					array = utopia_manifesto_reserve_challenge_attackers
+					value = event_target:utopia_manifesto_war_attacker
+				}
+			}
+			if = {
+				limit = {
+					has_country_flag = utopia_manifesto_achievement_origin_landlocked
+					has_country_flag = utopia_manifesto_achievement_inland_island_path
+					has_country_flag = utopia_manifesto_island_project_complete
+					has_country_flag = utopia_manifesto_inland_island_rail_ring
+					capital_scope = { is_controlled_by = event_target:utopia_manifesto_war_defender }
+					NOT = {
+						is_in_array = {
+							array = utopia_manifesto_inland_challenge_attackers
+							value = event_target:utopia_manifesto_war_attacker
+						}
+					}
+				}
+				add_to_array = {
+					array = utopia_manifesto_inland_challenge_attackers
+					value = event_target:utopia_manifesto_war_attacker
+				}
+			}
+			if = {
+				limit = {
+					has_country_flag = utopia_manifesto_route_closed_island
+					has_country_flag = utopia_manifesto_route_capstone_closed_island
+					has_country_flag = utopia_manifesto_separation_project_complete
+					has_country_flag = utopia_manifesto_defense_proof_complete
+					NOT = {
+						is_in_array = {
+							array = utopia_manifesto_closed_challenge_attackers
+							value = event_target:utopia_manifesto_war_attacker
+						}
+					}
+				}
+				add_to_array = {
+					array = utopia_manifesto_closed_challenge_attackers
+					value = event_target:utopia_manifesto_war_attacker
+				}
+			}
+		}
+	}
+}
+
+# Country scope is the capitulated or annexed attacker. The caller supplies
+# `event_target:utopia_manifesto_defeated_attacker`. Each reverse-array member
+# is a defender that was recorded when this war relation began.
+utopia_manifesto_resolve_recorded_attacker_defeat = {
+	for_each_scope_loop = {
+		array = utopia_manifesto_event15_defenders
+		if = {
+			limit = {
+				exists = yes
+				has_country_flag = utopia_manifesto_accepted
+				has_capitulated = no
+			}
+			save_event_target_as = utopia_manifesto_defense_actor
+			if = {
+				limit = {
+					is_in_array = {
+						array = utopia_manifesto_stronger_challenge_attackers
+						value = event_target:utopia_manifesto_defeated_attacker
+					}
+				}
+				utopia_manifesto_record_achievement_stronger_attacker_defeated = yes
+			}
+			if = {
+				limit = {
+					is_in_array = {
+						array = utopia_manifesto_reserve_challenge_attackers
+						value = event_target:utopia_manifesto_defeated_attacker
+					}
+				}
+				utopia_manifesto_record_achievement_reserve_challenge_survived = yes
+			}
+			if = {
+				limit = {
+					is_in_array = {
+						array = utopia_manifesto_inland_challenge_attackers
+						value = event_target:utopia_manifesto_defeated_attacker
+					}
+					has_country_flag = utopia_manifesto_inland_island_rail_ring
+					utopia_manifesto_reserve_is_secure = yes
+					capital_scope = { is_controlled_by = event_target:utopia_manifesto_defense_actor }
+				}
+				utopia_manifesto_record_achievement_inland_supply_challenge_survived = yes
+			}
+			if = {
+				limit = {
+					is_in_array = {
+						array = utopia_manifesto_closed_challenge_attackers
+						value = event_target:utopia_manifesto_defeated_attacker
+					}
+				}
+				utopia_manifesto_record_achievement_closed_major_war_survived = yes
+			}
+			remove_from_array = {
+				array = utopia_manifesto_recorded_attackers
+				value = event_target:utopia_manifesto_defeated_attacker
+			}
+			remove_from_array = {
+				array = utopia_manifesto_stronger_challenge_attackers
+				value = event_target:utopia_manifesto_defeated_attacker
+			}
+			remove_from_array = {
+				array = utopia_manifesto_reserve_challenge_attackers
+				value = event_target:utopia_manifesto_defeated_attacker
+			}
+			remove_from_array = {
+				array = utopia_manifesto_inland_challenge_attackers
+				value = event_target:utopia_manifesto_defeated_attacker
+			}
+			remove_from_array = {
+				array = utopia_manifesto_closed_challenge_attackers
+				value = event_target:utopia_manifesto_defeated_attacker
+			}
+		}
+	}
+	clear_array = utopia_manifesto_event15_defenders
+}
+
+utopia_manifesto_refresh_territorial_achievement_history = {
+	if = {
+		limit = {
+			has_country_flag = utopia_manifesto_accepted
+			has_country_flag = utopia_manifesto_achievement_origin_landlocked
+			NOT = { has_country_flag = utopia_manifesto_island_variant_selected }
+			utopia_manifesto_country_has_coast = yes
+		}
+		utopia_manifesto_record_achievement_early_coast_acquisition = yes
+	}
+}

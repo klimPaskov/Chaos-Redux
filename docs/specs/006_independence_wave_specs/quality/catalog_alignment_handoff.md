@@ -63,7 +63,7 @@ The event has two threshold-based super-event roles:
 - formation of a meaningful league or coalition among Event 6 states
 - emergence of a dangerous coordinated bloc, extreme high-chaos wave, or similarly global milestone
 
-Ordinary waves do not receive super-events. The two milestone titles, text, buttons, quotes, and audio selections are approved in the research files. Images and final audio files remain production work.
+Ordinary waves do not receive super-events. The two milestone titles, text, buttons, quotes, and musical selections are approved in the research files. Images and the cleared `6002` final audio remain production work. The exact `6001` recording is blocked for United States redistribution and must remain unwired until permission or a waiver clears it.
 
 ### Triggerable scenario proposal
 

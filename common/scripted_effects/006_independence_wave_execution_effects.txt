@@ -55,11 +55,13 @@ independence_wave_validate_execution_metadata = {
 						NOT = { has_event_target = independence_wave_execution_former_host }
 						NOT = { check_variable = { var = global.liberation_plan_country_owners^independence_wave_execution_country_row value = constant:liberation_plan_owner.independence_wave compare = equals } }
 						NOT = { check_variable = { var = global.liberation_plan_package_ids^independence_wave_execution_country_row value = independence_wave_execution_package_id compare = equals } }
+						NOT = { has_independence_wave_runtime_package_adapter_for_execution_id = yes }
 						NOT = {
 							event_target:independence_wave_execution_country = {
 								exists = no
 								has_country_flag = independence_wave_package_content_ready
 								is_liberation_release_current_reserved_country = yes
+								is_independence_wave_runtime_package_preflight_ready = yes
 							}
 						}
 						NOT = { event_target:independence_wave_execution_anchor = { is_liberation_release_current_reserved_state = yes is_owned_by = event_target:independence_wave_execution_former_host } }
@@ -216,36 +218,177 @@ independence_wave_transfer_frozen_states = {
 	}
 }
 
-independence_wave_initialize_frozen_countries = {
+# Input: `independence_wave_execution_package_index`. Publishes the exact frozen
+# country, anchor, former host, package values, and setup event targets used by
+# every initialization pass.
+independence_wave_load_frozen_country_execution_context = {
+	set_temp_variable = { independence_wave_execution_country_row = global.independence_wave_plan_country_row_indices^independence_wave_execution_package_index }
+	var:global.liberation_plan_countries^independence_wave_execution_country_row = { save_event_target_as = independence_wave_execution_country }
+	var:global.liberation_plan_anchor_states^independence_wave_execution_country_row = { save_event_target_as = independence_wave_execution_anchor }
+	var:global.liberation_plan_primary_hosts^independence_wave_execution_country_row = { save_event_target_as = independence_wave_execution_former_host }
+	set_temp_variable = { independence_wave_setup_package_id = global.independence_wave_plan_selected_package_ids^independence_wave_execution_package_index }
+	set_temp_variable = { independence_wave_setup_region = global.independence_wave_plan_selected_regions^independence_wave_execution_package_index }
+	set_temp_variable = { independence_wave_setup_depth = global.independence_wave_plan_selected_depths^independence_wave_execution_package_index }
+	set_temp_variable = { independence_wave_setup_archetype = global.independence_wave_plan_selected_archetypes^independence_wave_execution_package_index }
+	set_temp_variable = { independence_wave_setup_territory_level = global.liberation_plan_territory_levels^independence_wave_execution_country_row }
+	set_temp_variable = { independence_wave_setup_force_level = global.liberation_plan_force_levels^independence_wave_execution_country_row }
+	set_temp_variable = { independence_wave_setup_chaos_band = global.independence_wave_plan_chaos_band }
+	event_target:independence_wave_execution_former_host = { save_event_target_as = independence_wave_setup_former_host }
+	event_target:independence_wave_execution_anchor = { save_event_target_as = independence_wave_setup_anchor_state }
+}
+
+# Pass 1: prepare reversible origin state, then apply the exact package. Package
+# setup must prove before any shared Event 006 registry or history row is opened.
+independence_wave_prepare_frozen_country_packages = {
+	set_temp_variable = { independence_wave_execution_prepared_count = constant:independence_wave_planner.no_candidates }
 	set_temp_variable = { independence_wave_execution_package_index = constant:independence_wave_plan.first_array_index }
-	set_temp_variable = { independence_wave_execution_initialized_count = constant:independence_wave_planner.no_candidates }
 	while_loop_effect = {
-		limit = {
-			check_variable = { var = independence_wave_execution_package_index value = global.independence_wave_plan_selected_count compare = less_than }
-		}
-		set_temp_variable = { independence_wave_execution_country_row = global.independence_wave_plan_country_row_indices^independence_wave_execution_package_index }
-		var:global.liberation_plan_countries^independence_wave_execution_country_row = { save_event_target_as = independence_wave_execution_country }
-		var:global.liberation_plan_anchor_states^independence_wave_execution_country_row = { save_event_target_as = independence_wave_execution_anchor }
-		var:global.liberation_plan_primary_hosts^independence_wave_execution_country_row = { save_event_target_as = independence_wave_execution_former_host }
-		set_temp_variable = { independence_wave_setup_package_id = global.independence_wave_plan_selected_package_ids^independence_wave_execution_package_index }
-		set_temp_variable = { independence_wave_setup_region = global.independence_wave_plan_selected_regions^independence_wave_execution_package_index }
-		set_temp_variable = { independence_wave_setup_depth = global.independence_wave_plan_selected_depths^independence_wave_execution_package_index }
-		set_temp_variable = { independence_wave_setup_archetype = global.independence_wave_plan_selected_archetypes^independence_wave_execution_package_index }
-		set_temp_variable = { independence_wave_setup_territory_level = global.liberation_plan_territory_levels^independence_wave_execution_country_row }
-		set_temp_variable = { independence_wave_setup_force_level = global.liberation_plan_force_levels^independence_wave_execution_country_row }
-		set_temp_variable = { independence_wave_setup_chaos_band = global.independence_wave_plan_chaos_band }
-		event_target:independence_wave_execution_former_host = { save_event_target_as = independence_wave_setup_former_host }
-		event_target:independence_wave_execution_anchor = { save_event_target_as = independence_wave_setup_anchor_state }
+		limit = { check_variable = { var = independence_wave_execution_package_index value = global.independence_wave_plan_selected_count compare = less_than } }
+		independence_wave_load_frozen_country_execution_context = yes
 		event_target:independence_wave_execution_country = {
 			set_capital = event_target:independence_wave_execution_anchor
-			independence_wave_initialize_country_origin = yes
+			set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_planner.no_candidates }
+			independence_wave_prepare_country_origin = yes
 			if = {
-				limit = { is_independence_wave_active_country = yes }
+				limit = { has_country_flag = independence_wave_origin_prepared }
+				independence_wave_dispatch_package_setup = yes
+			}
+			if = {
+				limit = {
+					has_country_flag = independence_wave_origin_prepared
+					has_country_flag = independence_wave_package_setup_complete
+					check_variable = { independence_wave_package_setup_success = constant:independence_wave_planner.selected }
+				}
+				add_to_temp_variable = { independence_wave_execution_prepared_count = constant:independence_wave_plan.loop_increment }
+			}
+		}
+		add_to_temp_variable = { independence_wave_execution_package_index = constant:independence_wave_plan.loop_increment }
+	}
+}
+
+# Pass 2: publish only reversible active, network, and former-host registry rows.
+independence_wave_activate_frozen_country_origins = {
+	set_temp_variable = { independence_wave_execution_activated_count = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { independence_wave_execution_package_index = constant:independence_wave_plan.first_array_index }
+	while_loop_effect = {
+		limit = { check_variable = { var = independence_wave_execution_package_index value = global.independence_wave_plan_selected_count compare = less_than } }
+		independence_wave_load_frozen_country_execution_context = yes
+		event_target:independence_wave_execution_country = {
+			independence_wave_activate_prepared_country_origin = yes
+			if = {
+				limit = { has_country_flag = independence_wave_origin_activation_ready }
+				add_to_temp_variable = { independence_wave_execution_activated_count = constant:independence_wave_plan.loop_increment }
+			}
+		}
+		add_to_temp_variable = { independence_wave_execution_package_index = constant:independence_wave_plan.loop_increment }
+	}
+}
+
+# Pass 3: prove the complete package against its live registry membership. No
+# history, released-package memory, or evolution delivery has occurred yet.
+independence_wave_validate_frozen_country_packages = {
+	set_temp_variable = { independence_wave_execution_validated_count = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { independence_wave_execution_package_index = constant:independence_wave_plan.first_array_index }
+	while_loop_effect = {
+		limit = { check_variable = { var = independence_wave_execution_package_index value = global.independence_wave_plan_selected_count compare = less_than } }
+		independence_wave_load_frozen_country_execution_context = yes
+		event_target:independence_wave_execution_country = {
+			clr_country_flag = independence_wave_origin_package_validated
+			set_temp_variable = { independence_wave_package_final_validation_success = constant:independence_wave_planner.no_candidates }
+			independence_wave_dispatch_package_final_validation = yes
+			if = {
+				limit = { check_variable = { independence_wave_package_final_validation_success = constant:independence_wave_planner.selected } }
+				set_country_flag = independence_wave_origin_package_validated
+				add_to_temp_variable = { independence_wave_execution_validated_count = constant:independence_wave_plan.loop_increment }
+			}
+		}
+		add_to_temp_variable = { independence_wave_execution_package_index = constant:independence_wave_plan.loop_increment }
+	}
+}
+
+# Pass 4: after all packages validate, append durable origin history, apply the
+# frozen evolutions, and clear reservation metadata.
+independence_wave_commit_frozen_country_origins = {
+	set_temp_variable = { independence_wave_execution_initialized_count = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { independence_wave_execution_package_index = constant:independence_wave_plan.first_array_index }
+	while_loop_effect = {
+		limit = { check_variable = { var = independence_wave_execution_package_index value = global.independence_wave_plan_selected_count compare = less_than } }
+		independence_wave_load_frozen_country_execution_context = yes
+		event_target:independence_wave_execution_country = {
+			independence_wave_commit_prepared_country_origin = yes
+			if = {
+				limit = { has_country_flag = independence_wave_origin_committed }
 				add_to_temp_variable = { independence_wave_execution_initialized_count = constant:independence_wave_plan.loop_increment }
 				independence_wave_clear_pending_package_metadata = yes
 			}
 		}
 		add_to_temp_variable = { independence_wave_execution_package_index = constant:independence_wave_plan.loop_increment }
+	}
+}
+
+# Used only before the durable origin-commit pass. Ownership cannot be rolled
+# back after release, but package, registry, and pending metadata can still be
+# removed without leaving a false Event 006 origin record.
+independence_wave_cleanup_uncommitted_frozen_country_origins = {
+	set_temp_variable = { independence_wave_execution_package_index = constant:independence_wave_plan.first_array_index }
+	while_loop_effect = {
+		limit = { check_variable = { var = independence_wave_execution_package_index value = global.independence_wave_plan_selected_count compare = less_than } }
+		independence_wave_load_frozen_country_execution_context = yes
+		event_target:independence_wave_execution_country = {
+			if = {
+				limit = {
+					OR = {
+						has_country_flag = independence_wave_origin_prepared
+						has_country_flag = independence_wave_origin_activation_ready
+						has_country_flag = independence_wave_package_setup_complete
+					}
+				}
+				independence_wave_reset_current_generation = yes
+			}
+			independence_wave_clear_pending_package_metadata = yes
+		}
+		add_to_temp_variable = { independence_wave_execution_package_index = constant:independence_wave_plan.loop_increment }
+	}
+}
+
+# Four-pass synchronized initializer used by standalone, joint-cluster, and
+# all-countries scenario execution. A durable commit begins only after every
+# exact package has prepared, activated, and validated.
+independence_wave_initialize_frozen_countries = {
+	set_temp_variable = { independence_wave_execution_initialized_count = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { independence_wave_execution_prepared_count = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { independence_wave_execution_activated_count = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { independence_wave_execution_validated_count = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { independence_wave_execution_origin_commit_started = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { independence_wave_execution_generation_snapshot_exists = constant:independence_wave_planner.no_candidates }
+	if = {
+		limit = { has_variable = global.independence_wave_next_generation_id }
+		set_temp_variable = { independence_wave_execution_generation_snapshot_exists = constant:independence_wave_planner.selected }
+		set_temp_variable = { independence_wave_execution_generation_snapshot = global.independence_wave_next_generation_id }
+	}
+
+	independence_wave_prepare_frozen_country_packages = yes
+	if = {
+		limit = { check_variable = { var = independence_wave_execution_prepared_count value = global.independence_wave_plan_selected_count compare = equals } }
+		independence_wave_activate_frozen_country_origins = yes
+	}
+	if = {
+		limit = { check_variable = { var = independence_wave_execution_activated_count value = global.independence_wave_plan_selected_count compare = equals } }
+		independence_wave_validate_frozen_country_packages = yes
+	}
+	if = {
+		limit = { check_variable = { var = independence_wave_execution_validated_count value = global.independence_wave_plan_selected_count compare = equals } }
+		set_temp_variable = { independence_wave_execution_origin_commit_started = constant:independence_wave_planner.selected }
+		independence_wave_commit_frozen_country_origins = yes
+	}
+	if = {
+		limit = { check_variable = { independence_wave_execution_origin_commit_started = constant:independence_wave_planner.no_candidates } }
+		independence_wave_cleanup_uncommitted_frozen_country_origins = yes
+		if = {
+			limit = { check_variable = { independence_wave_execution_generation_snapshot_exists = constant:independence_wave_planner.selected } }
+			set_variable = { global.independence_wave_next_generation_id = independence_wave_execution_generation_snapshot }
+		}
+		else = { clear_variable = global.independence_wave_next_generation_id }
 	}
 }
 

@@ -1,0 +1,45 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 020 BLACK PLAGUE RESPONSE MODIFIERS
+# ============================================================================
+# Economic and logistical costs that remain active while local containment
+# measures operate. One country modifier consumes the recomputed persistent
+# civilian-factory commitment; state modifiers carry local tradeoffs.
+# ============================================================================
+
+black_plague_persistent_response_burden = {
+	enable = { always = yes }
+	remove_trigger = { always = no }
+	civilian_factory_use = black_plague_response_persistent_factory_use
+}
+
+black_plague_sealed_food_stores = {
+	enable = { always = yes }
+	remove_trigger = { always = no }
+	local_resources_factor = constant:black_plague_response_penalty.sealed_store_resources
+	local_supplies = constant:black_plague_response_penalty.sealed_store_supply
+}
+
+black_plague_transport_purge = {
+	enable = { always = yes }
+	remove_trigger = { always = no }
+	local_supplies = constant:black_plague_response_penalty.transport_supply
+	army_speed_factor_for_controller = constant:black_plague_response_penalty.transport_movement
+	state_production_speed_buildings_factor = constant:black_plague_response_penalty.transport_construction
+}
+
+black_plague_quarantine_state = {
+	enable = { always = yes }
+	remove_trigger = { always = no }
+	local_resources_factor = constant:black_plague_response_penalty.quarantine_resources
+	local_supplies = constant:black_plague_response_penalty.quarantine_supply
+	army_speed_factor_for_controller = constant:black_plague_response_penalty.quarantine_movement
+	state_production_speed_buildings_factor = constant:black_plague_response_penalty.quarantine_construction
+}
+
+black_plague_cordon_state = {
+	enable = { always = yes }
+	remove_trigger = { always = no }
+	local_supplies = constant:black_plague_response_penalty.cordon_supply
+	army_speed_factor_for_controller = constant:black_plague_response_penalty.cordon_movement
+	state_production_speed_buildings_factor = constant:black_plague_response_penalty.cordon_construction
+}

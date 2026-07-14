@@ -1,0 +1,206 @@
+add_namespace = chaosx.nr19
+
+# ============================================================================
+# CHAOS REDUX - EVENT 019 INFANTRY SPAWN
+# ============================================================================
+# .1 is the preserved hidden Minor Repeatable entry point. The generation,
+# accounting, management, evolution, claimant, and derivative systems live in
+# scripted effects; this file owns player reports and the bounded country pulse.
+# ============================================================================
+
+country_event = {
+	id = chaosx.nr19.1
+	title = chaosx.nr19.1.t
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		infantry_spawn_fire_manifestation = yes
+	}
+}
+
+# Country manifestation report. Scripted localisation selects the applicable
+# baseline/evolved direction and current generation facts.
+country_event = {
+	id = chaosx.nr19.2
+	title = chaosx.nr19.2.t
+	desc = chaosx.nr19.2.d
+	picture = GFX_report_event_infantry_spawn
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr19.2.a
+		trigger = { NOT = { has_country_flag = infantry_spawn_prefire_opening_pending } }
+		ai_chance = { base = 100 }
+	}
+
+	option = {
+		name = chaosx.nr19.2.b
+		trigger = { has_country_flag = infantry_spawn_prefire_opening_pending }
+		infantry_spawn_execute_prefire_evolution_iii_initial_draw = yes
+		ai_chance = {
+			base = constant:infantry_spawn_prefire_opening.draw_ai_base
+			modifier = {
+				factor = constant:infantry_spawn_prefire_opening.draw_ai_war_factor
+				has_war = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr19.2.c
+		trigger = { has_country_flag = infantry_spawn_prefire_opening_pending }
+		infantry_spawn_decline_prefire_evolution_iii_initial_draw = yes
+		ai_chance = {
+			base = constant:infantry_spawn_prefire_opening.decline_ai_base
+			modifier = {
+				factor = constant:infantry_spawn_prefire_opening.decline_ai_war_factor
+				has_war = yes
+			}
+		}
+	}
+}
+
+# Active-event evolution reports. Pre-fire evolved openings fold their stage
+# direction into .2 rather than displaying every prior milestone separately.
+country_event = {
+	id = chaosx.nr19.101
+	title = chaosx.nr19.101.t
+	desc = chaosx.nr19.101.d
+	picture = GFX_report_event_infantry_spawn_evolution_i
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr19.101.a
+		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr19.102
+	title = chaosx.nr19.102.t
+	desc = chaosx.nr19.102.d
+	picture = GFX_report_event_infantry_spawn_evolution_ii
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr19.102.a
+		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr19.103
+	title = chaosx.nr19.103.t
+	desc = chaosx.nr19.103.d
+	picture = GFX_report_event_infantry_spawn_evolution_iii
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr19.103.a
+		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr19.104
+	title = chaosx.nr19.104.t
+	desc = chaosx.nr19.104.d
+	picture = GFX_report_event_infantry_spawn_evolution_iv
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr19.104.a
+		ai_chance = { base = 100 }
+	}
+}
+
+# A stable claimant commander has appeared and taken custody of at least one
+# recorded Event 19 lot.
+country_event = {
+	id = chaosx.nr19.200
+	title = chaosx.nr19.200.t
+	desc = chaosx.nr19.200.d
+	picture = GFX_report_event_infantry_spawn_evolution_iii
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr19.200.a
+		ai_chance = { base = 100 }
+	}
+}
+
+# The same response effects are called by claimant decisions and the Muster
+# Board. This event is the immediate player-facing path; AI uses the scripted
+# response selector and never bypasses affordability checks.
+country_event = {
+	id = chaosx.nr19.201
+	title = chaosx.nr19.201.t
+	desc = chaosx.nr19.201.d
+	picture = GFX_report_event_infantry_spawn_evolution_iii
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr19.201.a
+		trigger = { infantry_spawn_selected_claimant_demand_can_be_paid = yes }
+		infantry_spawn_accept_selected_claimant_demand = yes
+		ai_chance = { base = 50 }
+	}
+
+	option = {
+		name = chaosx.nr19.201.b
+		infantry_spawn_refuse_selected_claimant_demand = yes
+		ai_chance = { base = 50 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr19.202
+	title = chaosx.nr19.202.t
+	desc = chaosx.nr19.202.d
+	picture = GFX_report_event_infantry_spawn_evolution_iii
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr19.202.a
+		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr19.203
+	title = chaosx.nr19.203.t
+	desc = chaosx.nr19.203.d
+	picture = GFX_report_event_infantry_spawn_evolution_iii
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr19.203.a
+		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr19.204
+	title = chaosx.nr19.204.t
+	desc = chaosx.nr19.204.d
+	picture = GFX_report_event_infantry_spawn_evolution_iii
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr19.204.a
+		ai_chance = { base = 100 }
+	}
+}
+
+# Delayed country-specific audit/AI/cleanup pulse. It reschedules itself only
+# while Event 19 country state remains active.
+country_event = {
+	id = chaosx.nr19.900
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		infantry_spawn_run_country_pulse = yes
+	}
+}

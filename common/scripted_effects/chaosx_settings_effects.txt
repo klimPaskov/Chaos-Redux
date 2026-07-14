@@ -4655,8 +4655,37 @@ fire_event_by_temp_id_no_cluster = {
 		}
 	}
 	if = {
-		limit = { check_variable = { event_id = 15 } }
-		set_temp_variable = { event_single_fire_allowed = 0 }
+		limit = { check_variable = { event_id = constant:utopia_manifesto_event.id } }
+		utopia_manifesto_prepare_random_event_fire = yes
+		if = {
+			limit = {
+				OR = {
+					check_variable = { utopia_manifesto_prefire_candidate_class = constant:utopia_manifesto_candidate_class.none }
+					NOT = { has_event_target = utopia_manifesto_prefire_actor }
+				}
+			}
+			set_temp_variable = { event_single_fire_allowed = 0 }
+		}
+	}
+	if = {
+		limit = { check_variable = { event_id = constant:brilliant_scientist_event.id } }
+		set_temp_variable = { brilliant_scientist_prefire_ready = constant:brilliant_scientist_value.zero }
+		brilliant_scientist_prepare_random_event_fire = yes
+		if = {
+			limit = {
+				OR = {
+					check_variable = { brilliant_scientist_prefire_ready < constant:brilliant_scientist_value.one }
+					NOT = { has_event_target = brilliant_scientist_prefire_host }
+					AND = {
+						has_event_target = brilliant_scientist_prefire_host
+						event_target:brilliant_scientist_prefire_host = {
+							NOT = { brilliant_scientist_is_eligible_host = yes }
+						}
+					}
+				}
+			}
+			set_temp_variable = { event_single_fire_allowed = constant:brilliant_scientist_value.zero }
+		}
 	}
 	if = {
 		limit = {
@@ -4699,6 +4728,34 @@ fire_event_by_temp_id_no_cluster = {
 					limit = { event_target:resources_found_prefire_state = { resources_found_is_valid_new_field_state = yes } }
 					country_event = { id = chaosx.nr18.1 }
 				}
+			}
+		}
+		else_if = {
+			limit = {
+				check_variable = { event_fire_record_id = constant:utopia_manifesto_event.id }
+				has_event_target = utopia_manifesto_prefire_actor
+				event_target:utopia_manifesto_prefire_actor = { exists = yes }
+			}
+			event_target:utopia_manifesto_prefire_actor = {
+				country_event = { id = chaosx.nr15.1 }
+			}
+		}
+		else_if = {
+			limit = {
+				check_variable = { event_fire_record_id = constant:brilliant_scientist_event.id }
+				has_event_target = brilliant_scientist_prefire_host
+				event_target:brilliant_scientist_prefire_host = {
+					brilliant_scientist_is_eligible_host = yes
+				}
+			}
+			set_temp_variable = { brilliant_scientist_dispatch_evolution_stage = brilliant_scientist_prefire_evolution_stage }
+			set_temp_variable = { brilliant_scientist_dispatch_evolution_tier = brilliant_scientist_prefire_evolution_tier }
+			event_target:brilliant_scientist_prefire_host = {
+				set_variable = { brilliant_scientist_prefire_evolution_stage = brilliant_scientist_dispatch_evolution_stage }
+				set_variable = { brilliant_scientist_prefire_evolution_tier = brilliant_scientist_dispatch_evolution_tier }
+				set_country_flag = brilliant_scientist_opening_chain_active
+				set_country_flag = brilliant_scientist_prefire_opening_pending
+				country_event = { id = chaosx.nr16.1 }
 			}
 		}
 		else = {

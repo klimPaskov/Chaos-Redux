@@ -19,15 +19,18 @@ on_actions = {
 	on_state_control_changed = {
 		effect = {
 			if = {
-				limit = {
-					FROM.FROM = {
-						has_variable = cbrn_civilian_mask_crates
-						check_variable = { cbrn_civilian_mask_crates > constant:cbrn_math.zero }
+				limit = { fallout_world_rewrite_callbacks_are_allowed = yes }
+				if = {
+					limit = {
+						FROM.FROM = {
+							has_variable = cbrn_civilian_mask_crates
+							check_variable = { cbrn_civilian_mask_crates > constant:cbrn_math.zero }
+						}
 					}
+					ROOT = { save_event_target_as = cbrn_new_state_controller }
+					FROM = { save_event_target_as = cbrn_old_state_controller }
+					FROM.FROM = { cbrn_transfer_state_civilian_mask_ledger = yes }
 				}
-				ROOT = { save_event_target_as = cbrn_new_state_controller }
-				FROM = { save_event_target_as = cbrn_old_state_controller }
-				FROM.FROM = { cbrn_transfer_state_civilian_mask_ledger = yes }
 			}
 		}
 	}

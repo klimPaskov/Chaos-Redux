@@ -1,0 +1,308 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 019 INFANTRY SPAWN TRIGGERS
+# ============================================================================
+# Country/state eligibility, evolution state, management gates, claimant and
+# derivative safety, generic registry access, scenario setup, and AI parity.
+# Persistent table alignment lives in 019_infantry_spawn_ledger_triggers.txt.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Country and state eligibility
+# ---------------------------------------------------------------------------
+
+infantry_spawn_country_has_eligible_state = {
+	any_controlled_state = { infantry_spawn_state_is_eligible = yes }
+}
+
+infantry_spawn_country_can_receive_generation = {
+	exists = yes
+	NOT = { has_country_flag = infantry_spawn_processing_deferred }
+	NOT = { has_country_flag = infantry_spawn_defeat_cleanup_in_progress }
+	NOT = { has_country_flag = infantry_spawn_ledger_invariant_failure }
+	infantry_spawn_country_has_eligible_state = yes
+}
+
+infantry_spawn_state_is_eligible = {
+	impassable = no
+	CONTROLLER = { exists = yes }
+	NOT = { has_state_flag = infantry_spawn_selected_for_current_generation }
+}
+
+infantry_spawn_country_is_active = {
+	has_country_flag = infantry_spawn_participant
+	NOT = { has_country_flag = infantry_spawn_country_cleanup_complete }
+	NOT = { has_country_flag = infantry_spawn_defeat_cleanup_in_progress }
+	NOT = { has_country_flag = infantry_spawn_ledger_invariant_failure }
+}
+
+infantry_spawn_country_can_continue_pulse = {
+	exists = yes
+	infantry_spawn_country_is_active = yes
+	OR = {
+		check_variable = { infantry_spawn_active_lot_count > 0 }
+		has_country_flag = infantry_spawn_claimant_system_active
+		has_country_flag = infantry_spawn_anomalous_registry_active
+		is_infantry_spawn_derivative_country = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Generation and evolution lifecycle
+# ---------------------------------------------------------------------------
+
+infantry_spawn_has_unresolved_generation = {
+	OR = {
+		check_variable = { infantry_spawn_unresolved_generation_count > 0 }
+		has_country_flag = infantry_spawn_generation_audit_active
+		has_country_flag = infantry_spawn_generation_stacked
+	}
+}
+
+infantry_spawn_normal_automatic_generation_is_enabled = {
+	NOT = { has_global_flag = infantry_spawn_evolution_iii_active }
+	NOT = { has_country_flag = infantry_spawn_automatic_generation_suppressed }
+}
+
+infantry_spawn_has_evolution_i = {
+	OR = {
+		has_global_flag = infantry_spawn_evolution_i_active
+		has_country_flag = infantry_spawn_scenario_force_evolution_i
+	}
+}
+
+infantry_spawn_has_evolution_ii = {
+	OR = {
+		has_global_flag = infantry_spawn_evolution_ii_active
+		has_country_flag = infantry_spawn_scenario_force_evolution_ii
+	}
+}
+
+infantry_spawn_has_evolution_iii = {
+	OR = {
+		has_global_flag = infantry_spawn_evolution_iii_active
+		has_country_flag = infantry_spawn_scenario_force_evolution_iii
+	}
+}
+
+infantry_spawn_has_evolution_iv = {
+	OR = {
+		has_global_flag = infantry_spawn_evolution_iv_active
+		has_country_flag = infantry_spawn_scenario_force_evolution_iv
+	}
+}
+
+infantry_spawn_control_is_low = {
+	check_variable = { infantry_spawn_muster_control < constant:infantry_spawn_control.low }
+}
+
+infantry_spawn_control_is_strong = {
+	NOT = { check_variable = { infantry_spawn_muster_control < constant:infantry_spawn_control.strong } }
+}
+
+infantry_spawn_congestion_is_severe = {
+	NOT = { check_variable = { infantry_spawn_army_congestion < constant:infantry_spawn_congestion.severe } }
+}
+
+# ---------------------------------------------------------------------------
+# Selected-lot and management gates
+# ---------------------------------------------------------------------------
+
+infantry_spawn_selected_lot_index_is_valid = {
+	has_variable = infantry_spawn_selected_lot_index
+	check_variable = { infantry_spawn_selected_lot_index > constant:infantry_spawn_event.invalid_index }
+	check_variable = { var = infantry_spawn_selected_lot_index value = infantry_spawn_lot_uid_entries^num compare = less_than }
+	check_variable = {
+		var = infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index
+		value = constant:infantry_spawn_lot_state.demobilized
+		compare = less_than
+	}
+}
+
+infantry_spawn_selected_lot_is_unresolved = {
+	infantry_spawn_selected_lot_index_is_valid = yes
+	check_variable = {
+		var = infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index
+		value = constant:infantry_spawn_lot_state.integrated
+		compare = less_than
+	}
+}
+
+infantry_spawn_selected_lot_is_anomalous = {
+	infantry_spawn_selected_lot_index_is_valid = yes
+	check_variable = { infantry_spawn_lot_family_id_entries^infantry_spawn_selected_lot_index > 0 }
+}
+
+infantry_spawn_selected_lot_has_claimant = {
+	infantry_spawn_selected_lot_index_is_valid = yes
+	check_variable = { infantry_spawn_lot_claimant_uid_entries^infantry_spawn_selected_lot_index > 0 }
+}
+
+infantry_spawn_management_is_available = {
+	infantry_spawn_country_is_active = yes
+	infantry_spawn_all_ledgers_are_aligned = yes
+	NOT = { has_country_flag = division_template_lock_event_active }
+	NOT = { has_country_flag = infantry_spawn_management_temporarily_locked }
+	NOT = { has_country_flag = infantry_spawn_derivative_creation_in_progress }
+}
+
+infantry_spawn_can_audit_generation = {
+	infantry_spawn_management_is_available = yes
+	has_country_flag = infantry_spawn_generation_audit_active
+	NOT = { has_country_flag = infantry_spawn_audit_decision_running }
+}
+
+infantry_spawn_can_assign_territorial_role = {
+	infantry_spawn_management_is_available = yes
+	infantry_spawn_selected_lot_is_unresolved = yes
+	NOT = { infantry_spawn_selected_lot_is_anomalous = yes }
+}
+
+infantry_spawn_can_standardize_selected_lot = {
+	infantry_spawn_management_is_available = yes
+	infantry_spawn_selected_lot_is_unresolved = yes
+	NOT = { infantry_spawn_selected_lot_is_anomalous = yes }
+	NOT = { infantry_spawn_selected_lot_has_claimant = yes }
+}
+
+infantry_spawn_can_demobilize_selected_lot = {
+	infantry_spawn_management_is_available = yes
+	infantry_spawn_selected_lot_is_unresolved = yes
+	NOT = { has_country_flag = infantry_spawn_selected_lot_demobilization_pending }
+}
+
+infantry_spawn_can_emergency_integrate_selected_lot = {
+	infantry_spawn_management_is_available = yes
+	infantry_spawn_selected_lot_is_unresolved = yes
+	has_war = yes
+	NOT = { infantry_spawn_selected_lot_is_anomalous = yes }
+}
+
+infantry_spawn_can_request_formation = {
+	infantry_spawn_management_is_available = yes
+	infantry_spawn_has_evolution_ii = yes
+	NOT = { has_country_flag = infantry_spawn_request_cooldown }
+	check_variable = { var = infantry_spawn_army_congestion value = constant:infantry_spawn_congestion.critical compare = less_than }
+}
+
+infantry_spawn_can_request_anomalous_formation = {
+	infantry_spawn_can_request_formation = yes
+	infantry_spawn_has_evolution_iv = yes
+	has_country_flag = infantry_spawn_anomalous_registry_active
+	chaos_unit_family_registry_is_aligned = yes
+	check_variable = { global.chaos_unit_family_id_entries^num > 0 }
+	check_variable = { var = infantry_spawn_anomalous_saturation value = constant:infantry_spawn_saturation.breach compare = less_than }
+}
+
+# ---------------------------------------------------------------------------
+# Claimants
+# ---------------------------------------------------------------------------
+
+infantry_spawn_has_active_claimant = {
+	OR = {
+		has_country_flag = infantry_spawn_claimant_one_active
+		has_country_flag = infantry_spawn_claimant_two_active
+		has_country_flag = infantry_spawn_claimant_three_active
+	}
+}
+
+infantry_spawn_primary_claimant_is_critical = {
+	has_country_flag = infantry_spawn_claimant_one_active
+	check_variable = {
+		var = infantry_spawn_claimant_one_influence
+		value = constant:infantry_spawn_claimant.revolt_threshold
+		compare = greater_than_or_equals
+	}
+}
+
+infantry_spawn_country_is_microstate = {
+	num_of_controlled_states < constant:infantry_spawn_claimant.autonomous_state_minimum
+}
+
+infantry_spawn_claimant_can_create_territorial_revolt = {
+	infantry_spawn_primary_claimant_is_critical = yes
+	NOT = { infantry_spawn_country_is_microstate = yes }
+	check_variable = {
+		var = infantry_spawn_claimant_one_loyal_unit_count
+		value = constant:infantry_spawn_claimant.loyal_lot_minimum
+		compare = greater_than_or_equals
+	}
+}
+
+infantry_spawn_claimant_must_use_takeover_or_coup = {
+	infantry_spawn_primary_claimant_is_critical = yes
+	infantry_spawn_country_is_microstate = yes
+}
+
+# ---------------------------------------------------------------------------
+# Generic anomalous-family row access
+# ---------------------------------------------------------------------------
+
+infantry_spawn_current_registry_family_is_available = {
+	chaos_unit_family_registry_is_aligned = yes
+	chaos_unit_family_current_row_is_enabled = yes
+	chaos_unit_family_current_row_allows_event19_family_lot = yes
+	chaos_unit_family_current_row_can_spawn = yes
+}
+
+infantry_spawn_current_registry_family_is_trainable = {
+	chaos_unit_family_registry_is_aligned = yes
+	chaos_unit_family_current_row_is_enabled = yes
+	chaos_unit_family_current_row_can_train = yes
+}
+
+# ---------------------------------------------------------------------------
+# Derivative-country identity and parent isolation
+# ---------------------------------------------------------------------------
+
+is_infantry_spawn_derivative_country = {
+	has_country_flag = infantry_spawn_derivative_country
+	OR = {
+		has_country_flag = infantry_spawn_zombie_derivative
+		has_country_flag = infantry_spawn_ghost_derivative
+		has_country_flag = infantry_spawn_golem_derivative
+	}
+}
+
+is_infantry_spawn_nonhuman_derivative_country = {
+	has_country_flag = infantry_spawn_nonhuman_derivative
+	is_infantry_spawn_derivative_country = yes
+}
+
+infantry_spawn_derivative_is_parent_isolated = {
+	is_infantry_spawn_derivative_country = yes
+	NOT = { has_country_flag = zombie_outbreak_dynamic_country }
+	NOT = { has_country_flag = weaponized_zombies_completed }
+	NOT = { has_country_flag = death_country }
+	NOT = { has_country_flag = resources_found_cave_country }
+	NOT = { has_country_flag = kmb_coal_golem_template_created }
+	NOT = { original_tag = ZZZ }
+	NOT = { original_tag = DTH }
+}
+
+infantry_spawn_derivative_can_expand = {
+	is_infantry_spawn_derivative_country = yes
+	NOT = { has_capitulated = yes }
+	NOT = { has_country_flag = infantry_spawn_derivative_defeated }
+	any_neighbor_country = {
+		exists = yes
+		NOT = { is_infantry_spawn_derivative_country = yes }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Triggerable scenario
+# ---------------------------------------------------------------------------
+
+infantry_spawn_scenario_is_active = {
+	has_global_flag = infantry_spawn_triggerable_scenario_active
+}
+
+infantry_spawn_scenario_type_is_valid = {
+	check_variable = { var = global.infantry_spawn_scenario_type value = constant:infantry_spawn_scenario.minimum_type compare = greater_than_or_equals }
+	check_variable = { var = global.infantry_spawn_scenario_type value = constant:infantry_spawn_scenario.maximum_type compare = less_than_or_equals }
+}
+
+infantry_spawn_scenario_intensity_is_valid = {
+	check_variable = { var = global.infantry_spawn_scenario_intensity value = constant:infantry_spawn_scenario.minimum_intensity compare = greater_than_or_equals }
+	check_variable = { var = global.infantry_spawn_scenario_intensity value = constant:infantry_spawn_scenario.maximum_intensity compare = less_than_or_equals }
+}

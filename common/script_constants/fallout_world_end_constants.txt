@@ -1,0 +1,448 @@
+# ============================================================================
+# CHAOS REDUX - FALLOUT WORLD END CONSTANTS
+# ============================================================================
+# Shared identities and tuning for the Fallout request coordinator, blackout
+# transition, deterministic state grading, and first rewrite pass. Manual
+# province-sweep constants remain in the dedicated manual scenario file.
+# ============================================================================
+
+fallout_world_end_schema = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	version = 4
+	legacy_map_return_error_version = 3
+	audio_generation = 1
+	legacy_altered_grade = 6
+}
+
+# The conflict inventory is derived and can be rebuilt without migrating the
+# destructive world-transition schema.
+fallout_successor_inventory_schema = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	version = 1
+}
+
+# Government classification is derived from the frozen country and state
+# snapshot. Its schema can advance without changing the destructive rewrite.
+fallout_government_classifier_schema = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	version = 1
+}
+
+# Post-allocation proof is separate from the frozen pre-allocation conflict
+# inventory because real allocation changes tags, capitals, and ownership.
+fallout_successor_allocation_schema = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	version = 1
+}
+
+fallout_transition_error_code = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	peace_conference_active = 1
+	unprovable_diplomacy_surface = 2
+	player_source_anchor_missing = 3
+	player_candidate_missing = 4
+	player_assignment_collision = 5
+	player_commit_incomplete = 6
+	successor_allocation_incomplete = 7
+	state_rewrite_incomplete = 8
+	old_world_diplomacy_incomplete = 9
+	map_postcondition_failed = 10
+	schema_migration_after_destruction = 11
+	legacy_schema_state_unproven = 12
+	player_reservation_changed_after_allocation = 13
+	player_tag_switch_failed = 14
+	successor_inventory_invalid = 15
+	government_archetype_unresolved = 16
+}
+
+fallout_player_continuation_branch = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	surviving_tag = 1
+	fragmented_tag = 2
+	refuge_government = 3
+	altered_transformation = 4
+	emergency_council = 5
+}
+
+fallout_player_continuation_status = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	snapshotted = 1
+	primary_reserved = 2
+	materialized = 3
+	choice_pending = 4
+	choice_submitted = 5
+	committed = 6
+	error = 7
+}
+
+fallout_diplomacy_memory_type = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	war = 1
+	civil_war = 2
+	guarantee = 3
+	military_access = 4
+	docking_rights = 5
+	non_aggression_pact = 6
+	embargo = 7
+	collaboration = 8
+	volunteers = 9
+	subject = 10
+	faction = 11
+	purchase_contract = 12
+	market_access = 13
+}
+
+fallout_snapshot_limit = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	maximum_database_id = 1000000
+}
+
+fallout_request_source = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	gradual_air_collapse = 1
+	final_silence = 2
+	chemical_saturation = 3
+	biological_follow_through = 4
+	mixed_terminal = 5
+	manual_thermonuclear = 6
+	legacy_fallout = 7
+}
+
+fallout_request_intensity = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	standard = 1
+	severe = 2
+	terminal = 3
+	maximum = 4
+}
+
+fallout_transition_phase = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	snapshot = 1
+	state_grading = 2
+	population_loss = 3
+	physical_collapse = 4
+	government_sorting = 5
+	survivor_allocation = 6
+	player_continuation = 7
+	map_return = 8
+	complete = 9
+	legacy_active = 90
+}
+
+fallout_transition_timing = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	beat_hours = 3
+	recovery_watch_days = 1
+	manual_countdown_days = 7
+}
+
+fallout_runtime = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	zero = 0
+	one = 1
+	negative_one = -1
+	population_scale = 1000
+	percentage_scale = 0.01
+	minimum_remaining_population = 1
+}
+
+fallout_state_grade = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	remote_refuge = 0
+	scarred_province = 1
+	ash_zone = 2
+	dead_city = 3
+	wasteland = 4
+	vitrified_zone = 5
+	maximum = 5
+}
+
+# Altered biosphere is a fictional high-Chaos overlay. It is deliberately
+# separate from the monotonic physical-damage grade.
+fallout_state_subtype = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	altered_biosphere = 1
+}
+
+fallout_grade_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	scarred_province = 8
+	ash_zone = 18
+	dead_city = 31
+	wasteland = 46
+	vitrified_zone = 64
+	altered_biosphere = 58
+	maximum_score = 100
+}
+
+fallout_grade_weight = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	request_intensity = 4
+	final_silence = 18
+	chemical_saturation = 13
+	biological_follow_through = 15
+	mixed_terminal = 22
+	manual_native_strike = 55
+	nuclear_fallout_base = 12
+	nuclear_fallout_intensity = 5
+	air_winter_phase = 4
+	chemical_state = 10
+	biological_state = 10
+	city = 4
+	large_city = 7
+	metropolis = 10
+	megalopolis = 13
+	industrial_center = 6
+	major_industrial_center = 10
+	remote_category_relief = -5
+	high_adaptation_relief = -6
+	high_shelter_relief = -6
+}
+
+fallout_grade_trigger = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	industrial_center_factories = 6
+	major_industrial_center_factories = 14
+	high_adaptation = 65
+	high_shelter = 65
+}
+
+fallout_population_loss_percent = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	remote_refuge = 3
+	scarred_province = 8
+	ash_zone = 18
+	dead_city = 38
+	wasteland = 62
+	vitrified_zone = 88
+}
+
+fallout_building_damage = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	remote_refuge = 0.05
+	scarred_province = 0.15
+	ash_zone = 0.30
+	dead_city = 0.55
+	wasteland = 0.80
+	vitrified_zone = 1.00
+}
+
+fallout_state_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	grade_1_local_manpower = -0.08
+	grade_1_local_supplies = -0.08
+	grade_1_supply_impact = 0.05
+	grade_1_attrition = 0.03
+	grade_1_speed = -0.04
+	grade_1_repair = -0.10
+	grade_1_resources = -0.06
+
+	grade_2_local_manpower = -0.20
+	grade_2_local_supplies = -0.22
+	grade_2_supply_impact = 0.16
+	grade_2_attrition = 0.08
+	grade_2_speed = -0.10
+	grade_2_repair = -0.24
+	grade_2_resources = -0.15
+
+	grade_3_local_manpower = -0.38
+	grade_3_local_supplies = -0.42
+	grade_3_supply_impact = 0.32
+	grade_3_attrition = 0.16
+	grade_3_speed = -0.18
+	grade_3_repair = -0.42
+	grade_3_resources = -0.30
+
+	grade_4_local_manpower = -0.62
+	grade_4_local_supplies = -0.68
+	grade_4_supply_impact = 0.55
+	grade_4_attrition = 0.28
+	grade_4_speed = -0.30
+	grade_4_repair = -0.68
+	grade_4_resources = -0.52
+
+	grade_5_local_manpower = -0.88
+	grade_5_local_supplies = -0.90
+	grade_5_supply_impact = 0.82
+	grade_5_attrition = 0.45
+	grade_5_speed = -0.48
+	grade_5_repair = -0.90
+	grade_5_resources = -0.82
+
+	altered_local_manpower = -0.12
+	altered_local_supplies = -0.10
+	altered_supply_impact = 0.08
+	altered_attrition = 0.08
+	altered_speed = -0.05
+	altered_repair = -0.10
+	altered_resources = -0.08
+}
+
+fallout_survival_value = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum = 0
+	maximum = 100
+	government_minimum = 25
+	successor_minimum = 18
+	player_emergency_minimum = 1
+	grade_penalty = 16
+	manual_strike_penalty = 18
+	nuclear_fallout_penalty = 12
+	chemical_penalty = 8
+	biological_penalty = 8
+	winter_exposure_factor = 0.15
+	adaptation_factor = 0.08
+	shelter_factor = 0.10
+	food_factor = 0.10
+	reclamation_factor = 0.08
+	coastal_bonus = 3
+	supply_node_bonus = 5
+	infrastructure_per_level = 2
+	railway_per_level = 1
+	damaged_factory_penalty = 1
+	high_population_threshold_k = 3000
+	very_high_population_threshold_k = 8000
+	high_population_penalty = 4
+	very_high_population_penalty = 8
+	active_war_penalty = 5
+}
+
+fallout_government_archetype = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	continuity_government = 1
+	bunker_authority = 2
+	warlord_command = 3
+	food_compact = 4
+	maritime_remnant = 5
+	quarantine_state = 6
+	scavenger_syndicate = 7
+	nomad_convoy = 8
+	machine_protocol = 9
+	technate = 10
+	mutant_polity = 11
+	religious_refuge = 12
+	upper_bound = 13
+}
+
+fallout_government_classifier_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	high_food_reserve = 60
+	high_shelter_capacity = 60
+	high_adaptation = 60
+	high_reclamation = 60
+	minimum_nomad_hostable_states = 2
+	minimum_mobility_rail_levels = 2
+	minimum_technical_infrastructure = 3
+	minimum_technical_industry = 6
+	minimum_military_factories = 3
+	minimum_military_air_base = 3
+	minimum_salvage_industry = 4
+}

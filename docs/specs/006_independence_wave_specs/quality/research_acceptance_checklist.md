@@ -2,6 +2,8 @@
 
 Audit date: 2026-07-10
 
+Implementation reconciliation: 2026-07-14
+
 ## Candidate coverage
 
 - [x] 206 candidate rows exist in the original and expanded registry.
@@ -37,15 +39,18 @@ Audit date: 2026-07-10
 - [x] Ten Level 3 dossiers are complete.
 - [x] League formation title, description, button, quote, and attribution are approved.
 - [x] Dangerous bloc title, description, button, quote, and attribution are approved.
-- [x] Two unique public-domain recordings are selected.
-- [x] Source duration, rights, segment, final path, and suggested audio ID are documented.
+- [x] Two distinct musical selections, segment plans, final paths, and suggested audio IDs are documented.
+- [x] The `6002` United States Marine Band source, rights basis, checksum, and exact segment are verified.
+- [ ] The exact `6001` London Brass Players recording has United States redistribution clearance.
 
 ## Remaining implementation checks
 
-- [ ] Rebind public state IDs to the installed game and current mod overrides.
-- [ ] Rerun the repository and installed-game tag scan at implementation time.
+- [x] Reconcile all 206 packages against the installed game and current mod overrides. The dated result is in `../../../plans/006_independence_wave_plans/package_bindings/006_current_installed_map_binding_audit.md`.
+- [x] Rerun the repository and installed-game tag scan. The dated result is recorded in `../research/006_tag_collision_and_reuse_audit.md`.
+- [ ] Resolve the Trabzon automatic cross-group collision and the Kashmir route exclusion without broadening the accepted package dispositions.
 - [ ] Produce and document all final visual assets.
-- [ ] Download, trim, convert, checksum, and wire both selected recordings.
+- [ ] Obtain permission or a waiver for `6001`, or obtain user approval before reopening its recording selection.
+- [ ] Trim, convert, checksum, and wire the verified `6002` source.
 - [ ] Validate release safety, AI, focus, decision, scenario, and super-event behavior in the implemented mod.
 
-The unchecked items are implementation and production work. They are not open historical or source-research questions.
+The unchecked items are implementation, production, or explicit rights gates. No replacement recording or fallback package is authorized by this checklist.

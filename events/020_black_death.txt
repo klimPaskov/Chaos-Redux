@@ -1,100 +1,34 @@
 add_namespace = chaosx.nr20
 
-##############################################################################################################
-#    ##    ## ########      #######    #####
-#    ###   ## ##     ##    ##     ##  ##   ##
-#    ####  ## ##     ##           ## ##     ##
-#    ## ## ## ########      #######  ##     ##
-#    ##  #### ##   ##      ##        ##     ##
-#    ##   ### ##    ##     ##         ##   ##
-#    ##    ## ##     ##    #########   #####
-##############################################################################################################
-#   ######                                 ######
-#   #     # #        ##    ####  #    #    #     # ######   ##   ##### #    #
-#   #     # #       #  #  #    # #   #     #     # #       #  #    #   #    #
-#   ######  #      #    # #      ####      #     # #####  #    #   #   ######
-#   #     # #      ###### #      #  #      #     # #      ######   #   #    #
-#   #     # #      #    # #    # #   #     #     # #      #    #   #   #    #
-#   ######  ###### #    #  ####  #    #    ######  ###### #    #   #   #    #
-
-##############################################################################################################
+# ============================================================================
+# CHAOS REDUX - EVENT 020 BLACK PLAGUE ENTRY AND RUNTIME
+# ============================================================================
+# The root remains chaosx.nr20.1 for the shared event dispatcher. It delegates
+# every natural start to one canonical weighted-origin effect. Event .900 is the
+# generation- and due-day-guarded state-owned scheduler callback; it is never a
+# world-iterating periodic on_action.
+# ============================================================================
 
 country_event = {
-    id = chaosx.nr20.1
-    title = chaosx.nr20.1.t
+	id = chaosx.nr20.1
+	hidden = yes
+	is_triggered_only = yes
 
-    hidden = yes
-    is_triggered_only = yes
+	immediate = {
+		hidden_effect = {
+			black_plague_start_natural_outbreak = yes
+		}
+	}
+}
 
-    immediate = {
-        hidden_effect = {
-            random_list = {
-                10 = {
-                    set_variable = { global.black_death_continent = 1 }
-                    every_country = {
-                        limit = { capital_scope = { is_on_continent = europe } }
-                        add_timed_idea = {
-                            idea = black_death
-                            days = 365
-                        }
-                    }
-                } 10 = {
-                    set_variable = { global.black_death_continent = 2 }
-                    every_country = {
-                        limit = { capital_scope = { is_on_continent = middle_east } }
-                        add_timed_idea = {
-                            idea = black_death
-                            days = 365
-                        }
-                    }
-                } 10 = {
-                    set_variable = { global.black_death_continent = 3 }
-                    every_country = {
-                        limit = { capital_scope = { is_on_continent = asia } }
-                        add_timed_idea = {
-                            idea = black_death
-                            days = 365
-                        }
-                    }
-                } 10 = {
-                    set_variable = { global.black_death_continent = 4 }
-                    every_country = {
-                        limit = { capital_scope = { is_on_continent = africa } }
-                        add_timed_idea = {
-                            idea = black_death
-                            days = 365
-                        }
-                    }
-                } 10 = {
-                    set_variable = { global.black_death_continent = 5 }
-                    every_country = {
-                        limit = { capital_scope = { is_on_continent = australia } }
-                        add_timed_idea = {
-                            idea = black_death
-                            days = 365
-                        }
-                    }
-                } 10 = {
-                    set_variable = { global.black_death_continent = 6 }
-                    every_country = {
-                        limit = { capital_scope = { is_on_continent = north_america } }
-                        add_timed_idea = {
-                            idea = black_death
-                            days = 365
-                        }
-                    }
-                } 10 = {
-                    set_variable = { global.black_death_continent = 7 }
-                    every_country = {
-                        limit = { capital_scope = { is_on_continent = south_america } }
-                        add_timed_idea = {
-                            idea = black_death
-                            days = 365
-                        }
-                    }
-                }
-            }
-            news_event = { id = chaosx.news.21 days = 2 }
-        }
-    }
+state_event = {
+	id = chaosx.nr20.900
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = {
+			black_plague_run_scheduled_callback = yes
+		}
+	}
 }

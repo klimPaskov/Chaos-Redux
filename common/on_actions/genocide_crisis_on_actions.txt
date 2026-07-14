@@ -19,10 +19,13 @@ on_actions = {
 	on_state_control_changed = {
 		effect = {
 			if = {
-				limit = { exists = yes }
-				camp_rework_initialize_country_variables = yes
+				limit = { fallout_world_rewrite_callbacks_are_allowed = yes }
+				if = {
+					limit = { exists = yes }
+					camp_rework_initialize_country_variables = yes
+				}
+				genocide_on_state_control_changed = yes
 			}
-			genocide_on_state_control_changed = yes
 		}
 	}
 
@@ -40,37 +43,40 @@ on_actions = {
 
 	on_subject_free = {
 		effect = {
-			remove_ideas = raj_colonial_labor_burden
-			remove_ideas = fr_north_africa_labor_burden
-			remove_ideas = congo_concession_labor_burden
-			FROM = {
-				if = {
-					limit = {
-						exists = yes
-						OR = {
-							has_active_camp_network = yes
-							check_variable = { camp_evidence_states^num > 0 }
-						}
-					}
-					set_country_flag = camp_rework_crisis_exposed
-					camp_rework_freeze_expansion_for_reform = yes
+			if = {
+				limit = { fallout_world_rewrite_callbacks_are_allowed = yes }
+				remove_ideas = raj_colonial_labor_burden
+				remove_ideas = fr_north_africa_labor_burden
+				remove_ideas = congo_concession_labor_burden
+				FROM = {
 					if = {
-						limit = { original_tag = ENG }
-						add_to_variable = { colonial_legitimacy_damage = constant:camp_rework_colonial.accountability_major }
+						limit = {
+							exists = yes
+							OR = {
+								has_active_camp_network = yes
+								check_variable = { camp_evidence_states^num > 0 }
+							}
+						}
+						set_country_flag = camp_rework_crisis_exposed
+						camp_rework_freeze_expansion_for_reform = yes
+						if = {
+							limit = { original_tag = ENG }
+							add_to_variable = { colonial_legitimacy_damage = constant:camp_rework_colonial.accountability_major }
+						}
+						else_if = {
+							limit = { OR = { original_tag = FRA tag = VIC } }
+							add_to_variable = { refugee_pressure = constant:camp_rework_colonial.accountability_major }
+						}
+						else_if = {
+							limit = { original_tag = BEL }
+							add_to_variable = { postwar_accountability_pressure = constant:camp_rework_colonial.accountability_major }
+						}
+						else = {
+							add_to_variable = { camp_policy_evidence = constant:camp_rework_country_value.evidence_major }
+						}
+						camp_rework_expose_first_colonial_evidence = yes
+						camp_rework_update_colonial_country_monthly_bridge = yes
 					}
-					else_if = {
-						limit = { OR = { original_tag = FRA tag = VIC } }
-						add_to_variable = { refugee_pressure = constant:camp_rework_colonial.accountability_major }
-					}
-					else_if = {
-						limit = { original_tag = BEL }
-						add_to_variable = { postwar_accountability_pressure = constant:camp_rework_colonial.accountability_major }
-					}
-					else = {
-						add_to_variable = { camp_policy_evidence = constant:camp_rework_country_value.evidence_major }
-					}
-					camp_rework_expose_first_colonial_evidence = yes
-					camp_rework_update_colonial_country_monthly_bridge = yes
 				}
 			}
 		}
@@ -94,6 +100,7 @@ on_actions = {
 		effect = {
 			if = {
 				limit = {
+					fallout_world_rewrite_callbacks_are_allowed = yes
 					OR = {
 						has_active_camp_network = yes
 						check_variable = { camp_evidence_states^num > 0 }
@@ -103,11 +110,15 @@ on_actions = {
 				camp_rework_freeze_expansion_for_reform = yes
 			}
 			if = {
-				limit = { has_country_flag = camp_repression_ledger_open }
+				limit = {
+					fallout_world_rewrite_callbacks_are_allowed = yes
+					has_country_flag = camp_repression_ledger_open
+				}
 				camp_rework_close_ledger = yes
 			}
 			if = {
 				limit = {
+					fallout_world_rewrite_callbacks_are_allowed = yes
 					OR = {
 						has_active_camp_network = yes
 						has_visible_camp_reform_work = yes

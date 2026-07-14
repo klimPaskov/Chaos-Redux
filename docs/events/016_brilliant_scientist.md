@@ -2,11 +2,13 @@
 
 ## Implementation status
 
-Event 016 remains default-disabled and gameplay-incomplete. The live entry event still selects a narrow host pool, applies a `+50%` research idea, and fires an opening news event. The full system described below is the accepted implementation target, not completed gameplay.
+Event 016 remains default-disabled while the complete package is assembled and audited. The opening incident and shared scripted architecture are implemented: the dispatcher resolves one weighted valid host, the player can appoint Doctor Warren Kruger publicly or secretly or forward his unrecruited application once, and AI always appoints him. Both appointment routes create the same fixed character, grant his non-dismissable national-advisor role with exactly `+100%` research speed, add him as a level-five scientist in all six special-project fields, initialize the Directorate state, preserve the chosen host for the event log, and prevent a second opening reward.
+
+The architecture and identifier maps are frozen in the accepted handoffs under `docs/plans/016_brilliant_scientist_plans/`. The Directorate, project portfolio, evolution, containment, Kruger State, terminal, achievement, and presentation tranches remain under implementation; this document does not claim the whole event is complete.
 
 The controlling source is `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md` and the ten-part specification under `docs/specs/016_brilliant_scientist_specs/`.
 
-## Planned event identity
+## Event identity
 
 - Event ID: `16`.
 - Entry root: `chaosx.nr16.1`.
@@ -34,11 +36,15 @@ Shared reservations are world-end scenario 11 for Laboratory World and world-end
 
 Live Event 015 wiring occupies visible IDs 85 through 89. Event 020 separately declares world-end ID 10 and visible IDs 85 through 87 in its own constants. Its visible overlap with Event 015 is external to Event 016.
 
-## Planned lifecycle
+## Implemented opening lifecycle
 
-The random-event dispatcher must select and preserve an eligible host before dispatch so the event log records the correct actor. The host receives one persistent Warren Kruger identity used as event actor, advisor, special-project scientist, and possible later leader. Transfer, dismissal, confinement, death, rebellion, country formation, and terminal cleanup must never leave an unintended second full-power Kruger.
+The random-event dispatcher selects and preserves an eligible host before dispatch so the event log records the correct actor. Eligibility rejects countries that do not exist, are subjects, have too little viable core territory, are in civil war, have already handled the opening, or already own Kruger. The weighted pool responds to research capacity, industrial scale, facilities, government, war pressure, and relevant Chaos Redux history without iterating over every country on a recurring on action.
 
-AI accepts the initial appointment. A player may appoint Kruger publicly, place him in a secret military program, or send him to another valid host. The host focus tree remains intact. Event 016 operates through events, decisions, projects, ideas, missions, and the Directorate interface.
+The selected country sees the minor report event `chaosx.nr16.2`. A player may appoint Kruger publicly, place him in a secret military programme, or forward his still-unrecruited application to one prevalidated weighted recipient. AI has zero weight for referral and always selects one of the two appointment routes. A recipient sees `chaosx.nr16.3` and cannot forward him again.
+
+Appointment is an atomic transaction around the single token `KRG_warren_kruger`. It creates that token once, changes nationality once, adds one advisor role and one scientist role, assigns level five in nuclear, naval, aeronautics, land warfare, biowarfare, and chemical warfare, records the posture and host, initializes the causal state, resolves the global fire-once gate, and rebinds the event-log actor. The advisor cannot be fired, so the `+100%` reward cannot be dismissed and reacquired. Later transfers must reject an active-project scientist and remove the existing roles before nationality and role ownership move.
+
+The public and secret options differ in Directorate posture and AI preference, not research power. The opening reveals no alien or temporal origin and fires no major news event or super-event. The host focus tree remains intact.
 
 ## Directorate state
 
@@ -97,7 +103,7 @@ Text and audio research is complete for all six packages. Six role-distinct Even
 
 Five severe Kruger portrait animation packages are planned for clone, machine, temporal, xenobiological or alien, and synthesis outcomes. Every animated package requires separate source frames, a static fallback, frame sheet, DDS, preview, contact sheet, manifest, and GFX handoff.
 
-Stage 0 is complete from the exact `portrait_generic_biowarfare_europe_male_01` base. The runtime leader or scientist DDS and `65x67` advisor DDS are registered as `GFX_portrait_KRG_doctor_warren_kruger_stage_0` and `GFX_idea_doctor_warren_kruger_stage_0`. Stage I through IV static and animated sprite contracts are pre-registered, but their referenced later assets and state wiring remain missing. The copied base is explicitly authorized for internal mod use, while external redistribution rights remain unresolved.
+Stage 0 is complete from the exact `portrait_generic_biowarfare_europe_male_01` base. The runtime leader or scientist DDS and `65x67` advisor DDS are registered as `GFX_portrait_KRG_doctor_warren_kruger_stage_0` and `GFX_idea_doctor_warren_kruger_stage_0`, and the character definition consumes both. A dedicated `210x176` opening report composition derived from the same approved identity is being finalized for `chaosx.nr16.2` and `.3`; the portrait sprite itself is not treated as a report-event substitute. Stage I through IV static and animated sprite contracts are pre-registered, but their referenced later assets and state wiring remain missing. The copied base is explicitly authorized for internal mod use, while external redistribution rights remain unresolved.
 
 Exactly seventeen achievements require completed, grey, and not-eligible icons, for 51 final DDS files.
 
@@ -129,15 +135,13 @@ Biological-weapon work must reuse the existing biowarfare, contamination, Deaths
 
 ## Current blockers
 
-- Scripted-system contracts have not yet been frozen by the architect handoff.
-- Gameplay, AI, localisation, country, focus, project, and achievement implementation is incomplete, and Event 016 remains default-disabled.
+- Gameplay beyond the opening incident, AI beyond the opening choice, Directorate completion, project completion, evolutions, foreign operations, containment, country, focus, terminal, and achievement implementation remain incomplete, so Event 016 remains default-disabled.
 - Stage I through IV portrait assets, every severe animation package, flags, icons, UI art, report art, news art, super-event images, and visual state wiring remain absent.
 - Super-event text and Event 016-owned audio are complete, but final descriptions, images, localisation, triggers, shared playback definitions, and presentation wiring are absent.
-- Character assignment for the registered stage-0 sprites remains part of the incomplete gameplay lifecycle.
 - Workbook alignment is blocked on final in-game wording.
 
 ## Future plans
 
-After the architecture handoff, implement in reviewed tranches: random-event and Kruger foundation, Directorate, projects, evolutions and Event Details, Kruger State and focus tree, terminal systems and super-events, then achievements, missing assets, localisation, docs, workbook, audits, and final enablement. Preserve the completed stage-0 portrait package and completed Event 016-owned OGGs.
+Complete the remaining work in reviewed tranches: Directorate and projects; evolutions, foreign operations, and Event Details; containment and the Kruger State; the national focus tree; terminal systems and super-events; achievements and remaining assets; then localisation, documentation, workbook alignment, all mapped audits, and final enablement. Preserve the completed opening transaction, accepted architecture, stage-0 identity, and Event 016-owned OGGs.
 
 Another improvement-loop pass is appropriate only after the accepted addendum is implemented and new evidence shows a distinct shallow or disconnected mechanic.

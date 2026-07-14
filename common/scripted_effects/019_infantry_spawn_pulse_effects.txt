@@ -1,0 +1,35 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 019 INFANTRY SPAWN PULSE ORCHESTRATOR
+# ============================================================================
+# COUNTRY scope. The delayed event exists only while a country owns unresolved
+# Event 19 lots, a claimant, an anomalous registry presence, or a derivative
+# lifecycle. It is not a global recurring on_action.
+# ============================================================================
+
+infantry_spawn_run_country_pulse = {
+	clr_country_flag = infantry_spawn_audit_pulse_scheduled
+	if = {
+		limit = { infantry_spawn_country_can_continue_pulse = yes }
+		infantry_spawn_validate_all_ledgers = yes
+		if = {
+			limit = { NOT = { has_country_flag = infantry_spawn_ledger_invariant_failure } }
+			infantry_spawn_run_country_management_pulse = yes
+			infantry_spawn_recalculate_country_pressure = yes
+			infantry_spawn_run_claimant_pulse = yes
+			if = {
+				limit = { has_country_flag = infantry_spawn_claimant_system_active }
+				infantry_spawn_refresh_active_claimant_archetype_ideas = yes
+			}
+			if = {
+				limit = {
+					has_idea = infantry_spawn_claimant_emergency_command
+					NOT = { has_country_flag = infantry_spawn_claimant_emergency_powers }
+				}
+				remove_ideas = infantry_spawn_claimant_emergency_command
+			}
+			infantry_spawn_maybe_advance_global_evolution = yes
+		}
+		infantry_spawn_schedule_country_pulse = yes
+	}
+	else = { infantry_spawn_apply_staged_ideas = yes }
+}

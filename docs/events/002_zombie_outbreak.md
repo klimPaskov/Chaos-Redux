@@ -19,7 +19,7 @@ It covers:
 - convoy-limited island evacuation requests
 - special-country exclusions for zombies, dynamic zombies, and `ZIN`
 
-Fallout is cataloged as an Event 2 public world-end branch even though its live terminal transition is `chaosx_contamination.12` in the contamination namespace. It keeps the established Event 2 super-event presentation and documentation ownership without inventing a second event definition.
+Fallout is an independent unnumbered world-end system. It has no Event 2 event, catalog, presentation, asset, or audio ownership.
 
 ## Main Files
 
@@ -96,7 +96,6 @@ The outbreak namespace currently uses these IDs:
 - `chaosx.nr2.6`: dynamic rear-area zombie outbreak
 - `chaosx.nr2.7`: Anti-Zombie League formation invitation
 - `chaosx.nr2.8`: zombie apocalypse world-end branch
-- `chaosx_contamination.12`: fallout world-end branch, catalog-owned by Event 2
 - `chaosx.nr2.10`: emergency island refugee convoy request
 - `chaosx.nr2.12`: postwar survivor compact announcement
 - `chaosx.nr2.13`: annual Day of the Buried memorial
@@ -667,7 +666,7 @@ When that happens:
 
 `chaosx.nr2.13` is the annual remembrance event. It repeats every `365` days for countries that were ever at war with zombies and grants `10` political power each year.
 
-### 9. Public world-end branches: `chaosx.nr2.8` and `chaosx_contamination.12`
+### 9. Public world-end branch: `chaosx.nr2.8`
 
 #### `chaosx.nr2.8`: zombie apocalypse
 
@@ -697,15 +696,7 @@ Current coastal breakout tuning:
 - transfers those states to `ZZZ`
 - spawns `24` `Brainzz Horde` divisions in each breakout state
 
-#### `chaosx_contamination.12`: fallout
-
-This is the air-contamination collapse world-end event. It is not a zombie outbreak event, but the public event catalog associates it with Event 2 and it retains the established Event 2 super-event presentation.
-
-`air_contamination_apply_delta_bp` calls `air_contamination_try_fire_fallout_world_end` after every contamination change. Reaching the terminal contamination threshold fires the event automatically when no world end is active, the master world-end system is enabled, and Fallout's independent scenario checkbox is enabled. Re-enabling Fallout at or above the threshold performs the same readiness check immediately.
-
-The fallout super-event uses image sprite `GFX_super_event_fallout`, DDS file `gfx/super_events/002_zombie_outbreak/super_event_fallout.dds`, audio ID `4`, music file `music/002_zombie_outbreak/super_event_4_fallout.ogg`, and sound definition `chaosx_super_event_fallout_track`. The image source and conversion notes are recorded in `docs/assets/fallout_super_event/manifest.md`. Audio source, license, duration, and conversion notes are recorded in `docs/super_events/super_event_audio_packages.md`.
-
-Event Details lists Zombie Apocalypse and Fallout as separate clickable rows under Event 2. Each row has its own persistent checkbox. Disabling one branch removes only that branch from its automatic terminal readiness path and does not disable Event 2 or the other public ending.
+The independent Fallout system is documented in `docs/systems/air_contamination_mechanic.md` and the `docs/specs/air_cleanliness_fallout_specs/` package. Its dedicated event namespace, blackout GUI, assets, and audio are outside the Zombie Outbreak contract.
 
 ### 10. Refugee evacuation subevent: `chaosx.nr2.10`
 
@@ -947,7 +938,6 @@ Mapped in `common/scripted_localisation/chaosx_scripted_localisation_super_event
 - slot `1`: zombie outbreak
 - slot `2`: Anti-Zombie League formation
 - slot `3`: zombie apocalypse world-end
-- slot `4`: fallout air-contamination collapse
 - slot `5`: final zombie defeat
 
 Sprite definitions live in `interface/chaosx_super_events.gfx`.
@@ -965,7 +955,6 @@ Existing outbreak-related assets already used by the system:
 - `gfx/super_events/002_zombie_outbreak/super_event_zombies.dds`
 - `gfx/super_events/002_zombie_outbreak/super_event_azl.dds`
 - `gfx/super_events/002_zombie_outbreak/super_event_zombie_apocalypse.dds`
-- `gfx/super_events/002_zombie_outbreak/super_event_fallout.dds`
 
 Audio assets:
 
@@ -978,9 +967,6 @@ Audio assets:
 - slot `3`, zombie apocalypse:
   - music file: `music/002_zombie_outbreak/super_event_3_zombie_apocalypse.ogg`
   - sound definition: `chaosx_super_event_zombie_apocalypse_track`
-- slot `4`, fallout:
-  - music file: `music/002_zombie_outbreak/super_event_4_fallout.ogg`
-  - sound definition: `chaosx_super_event_fallout_track`
 - slot `5`, final zombie defeat:
   - music file: `music/002_zombie_outbreak/super_event_5_zombies_defeat.ogg`
   - sound definition: `chaosx_super_event_zombies_defeat_track`

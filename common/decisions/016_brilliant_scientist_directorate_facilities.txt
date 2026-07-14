@@ -1,0 +1,551 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 BRILLIANT SCIENTIST DIRECTORATE FACILITIES
+# ============================================================================
+# Primary-campus investment, prototype expansion, a player-selected secondary
+# laboratory, relocation request, hardening, and native repair mobilization.
+# ============================================================================
+
+brilliant_scientist_directorate_category = {
+	brilliant_scientist_formalize_primary_research_campus = {
+		icon = GFX_decision_generic_construction
+		visible = {
+			brilliant_scientist_is_current_host = yes
+			has_country_flag = brilliant_scientist_directorate_institution_established
+			brilliant_scientist_primary_facility_is_valid = yes
+			NOT = { has_country_flag = brilliant_scientist_primary_campus_established }
+		}
+		available = {
+			NOT = { has_country_flag = brilliant_scientist_facility_action_in_progress }
+			has_equipment = { support_equipment > constant:brilliant_scientist_directorate_cost.primary_campus_support_gate }
+			has_equipment = { motorized_equipment > constant:brilliant_scientist_directorate_cost.primary_campus_truck_gate }
+			has_fuel > constant:brilliant_scientist_directorate_cost.primary_campus_fuel_gate
+		}
+		cost = constant:brilliant_scientist_directorate_cost.primary_campus_pp
+		days_remove = constant:brilliant_scientist_directorate_timing.primary_campus_days
+		fire_only_once = yes
+		highlight_states = {
+			highlight_state_targets = { state = event_target:brilliant_scientist_primary_facility }
+			highlight_color_before_active = 2
+			highlight_color_while_active = 3
+		}
+		modifier = {
+			consumer_goods_factor = constant:brilliant_scientist_directorate_modifier.construction_medium_consumer_goods
+			production_factory_efficiency_gain_factor = constant:brilliant_scientist_directorate_modifier.construction_medium_efficiency
+		}
+		complete_effect = {
+			set_country_flag = brilliant_scientist_facility_action_in_progress
+			add_equipment_to_stockpile = {
+				type = support_equipment
+				amount = constant:brilliant_scientist_directorate_cost.primary_campus_support_spend
+			}
+			add_equipment_to_stockpile = {
+				type = motorized_equipment
+				amount = constant:brilliant_scientist_directorate_cost.primary_campus_truck_spend
+			}
+			add_fuel = constant:brilliant_scientist_directorate_cost.primary_campus_fuel_spend
+		}
+		cancel_if_not_visible = yes
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_is_current_host = yes }
+				NOT = { brilliant_scientist_primary_facility_is_valid = yes }
+			}
+		}
+		cancel_effect = { clr_country_flag = brilliant_scientist_facility_action_in_progress }
+		remove_effect = {
+			clr_country_flag = brilliant_scientist_facility_action_in_progress
+			set_country_flag = brilliant_scientist_primary_campus_established
+			set_country_flag = brilliant_scientist_facility_network_invested
+			add_dynamic_modifier = { modifier = brilliant_scientist_facility_network }
+			event_target:brilliant_scientist_primary_facility = {
+				add_building_construction = {
+					type = infrastructure
+					level = constant:brilliant_scientist_directorate_building.one_level
+					instant_build = yes
+				}
+			}
+			custom_effect_tooltip = brilliant_scientist_primary_campus_effect_tt
+			hidden_effect = {
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.minor }
+				brilliant_scientist_change_mandate = yes
+				brilliant_scientist_change_dependence = yes
+				brilliant_scientist_change_exposure = yes
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.moderate }
+				brilliant_scientist_change_project_capacity = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_directorate_ai.high
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.cautious_factor has_war = yes }
+		}
+	}
+
+	brilliant_scientist_expand_primary_prototype_works = {
+		icon = GFX_decision_generic_industry
+		visible = {
+			brilliant_scientist_is_current_host = yes
+			has_country_flag = brilliant_scientist_primary_campus_established
+			brilliant_scientist_primary_facility_is_valid = yes
+			NOT = { has_country_flag = brilliant_scientist_primary_prototype_works_expanded }
+		}
+		available = {
+			NOT = { has_country_flag = brilliant_scientist_facility_action_in_progress }
+			check_variable = { brilliant_scientist_project_deployment_count > constant:brilliant_scientist_directorate_value.zero }
+			has_equipment = { support_equipment > constant:brilliant_scientist_directorate_cost.prototype_works_support_gate }
+			has_equipment = { motorized_equipment > constant:brilliant_scientist_directorate_cost.prototype_works_truck_gate }
+			has_fuel > constant:brilliant_scientist_directorate_cost.prototype_works_fuel_gate
+			num_of_available_civilian_factories > constant:brilliant_scientist_directorate_value.zero
+		}
+		cost = constant:brilliant_scientist_directorate_cost.prototype_works_pp
+		days_remove = constant:brilliant_scientist_directorate_timing.prototype_works_days
+		fire_only_once = yes
+		highlight_states = {
+			highlight_state_targets = { state = event_target:brilliant_scientist_primary_facility }
+			highlight_color_before_active = 2
+			highlight_color_while_active = 3
+		}
+		modifier = {
+			consumer_goods_factor = constant:brilliant_scientist_directorate_modifier.construction_heavy_consumer_goods
+			production_factory_efficiency_gain_factor = constant:brilliant_scientist_directorate_modifier.construction_heavy_efficiency
+		}
+		complete_effect = {
+			set_country_flag = brilliant_scientist_facility_action_in_progress
+			add_equipment_to_stockpile = {
+				type = support_equipment
+				amount = constant:brilliant_scientist_directorate_cost.prototype_works_support_spend
+			}
+			add_equipment_to_stockpile = {
+				type = motorized_equipment
+				amount = constant:brilliant_scientist_directorate_cost.prototype_works_truck_spend
+			}
+			add_fuel = constant:brilliant_scientist_directorate_cost.prototype_works_fuel_spend
+		}
+		cancel_if_not_visible = yes
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_is_current_host = yes }
+				NOT = { brilliant_scientist_primary_facility_is_valid = yes }
+			}
+		}
+		cancel_effect = { clr_country_flag = brilliant_scientist_facility_action_in_progress }
+		remove_effect = {
+			clr_country_flag = brilliant_scientist_facility_action_in_progress
+			set_country_flag = brilliant_scientist_primary_prototype_works_expanded
+			event_target:brilliant_scientist_primary_facility = {
+				add_extra_state_shared_building_slots = constant:brilliant_scientist_directorate_building.one_shared_slot
+				add_building_construction = {
+					type = arms_factory
+					level = constant:brilliant_scientist_directorate_building.one_level
+					instant_build = yes
+				}
+			}
+			custom_effect_tooltip = brilliant_scientist_prototype_works_effect_tt
+			hidden_effect = {
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.moderate }
+				brilliant_scientist_change_project_capacity = yes
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.minor }
+				brilliant_scientist_change_dependence = yes
+				brilliant_scientist_change_exposure = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_directorate_ai.medium
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.preferred_factor brilliant_scientist_has_low_project_capacity = yes }
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.cautious_factor has_war = yes }
+		}
+	}
+
+	brilliant_scientist_establish_secondary_laboratory = {
+		icon = GFX_decision_generic_construction
+		state_target = any_owned_state
+		on_map_mode = map_and_decisions_view
+		target_root_trigger = {
+			brilliant_scientist_is_current_host = yes
+			has_country_flag = brilliant_scientist_primary_campus_established
+			has_country_flag = brilliant_scientist_research_cohort_recruited
+			NOT = { has_country_flag = brilliant_scientist_secondary_laboratory_established }
+		}
+		target_trigger = {
+			FROM = {
+				brilliant_scientist_is_valid_secondary_facility_state = yes
+				is_fully_controlled_by = ROOT
+				infrastructure > constant:brilliant_scientist_directorate_building.prepared_site_infrastructure_gate
+				OR = {
+					industrial_complex > constant:brilliant_scientist_directorate_building.prepared_site_building_gate
+					arms_factory > constant:brilliant_scientist_directorate_building.prepared_site_building_gate
+				}
+				OR = {
+					is_in_home_area = yes
+					supply_node > constant:brilliant_scientist_directorate_building.prepared_site_building_gate
+				}
+			}
+		}
+		visible = {
+			brilliant_scientist_is_current_host = yes
+			has_country_flag = brilliant_scientist_primary_campus_established
+			has_country_flag = brilliant_scientist_research_cohort_recruited
+			NOT = { has_country_flag = brilliant_scientist_secondary_laboratory_established }
+		}
+		available = {
+			NOT = { has_country_flag = brilliant_scientist_facility_action_in_progress }
+			has_equipment = { support_equipment > constant:brilliant_scientist_directorate_cost.secondary_laboratory_support_gate }
+			has_equipment = { motorized_equipment > constant:brilliant_scientist_directorate_cost.secondary_laboratory_truck_gate }
+			has_fuel > constant:brilliant_scientist_directorate_cost.secondary_laboratory_fuel_gate
+			num_of_available_civilian_factories > constant:brilliant_scientist_directorate_value.zero
+		}
+		cost = constant:brilliant_scientist_directorate_cost.secondary_laboratory_pp
+		days_remove = constant:brilliant_scientist_directorate_timing.secondary_laboratory_days
+		modifier = {
+			consumer_goods_factor = constant:brilliant_scientist_directorate_modifier.construction_heavy_consumer_goods
+			production_factory_efficiency_gain_factor = constant:brilliant_scientist_directorate_modifier.construction_heavy_efficiency
+		}
+		complete_effect = {
+			set_country_flag = brilliant_scientist_facility_action_in_progress
+			add_equipment_to_stockpile = {
+				type = support_equipment
+				amount = constant:brilliant_scientist_directorate_cost.secondary_laboratory_support_spend
+			}
+			add_equipment_to_stockpile = {
+				type = motorized_equipment
+				amount = constant:brilliant_scientist_directorate_cost.secondary_laboratory_truck_spend
+			}
+			add_fuel = constant:brilliant_scientist_directorate_cost.secondary_laboratory_fuel_spend
+		}
+		cancel_if_not_visible = yes
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_is_current_host = yes }
+				FROM = {
+					NOT = {
+						brilliant_scientist_is_valid_secondary_facility_state = yes
+						is_fully_controlled_by = ROOT
+						infrastructure > constant:brilliant_scientist_directorate_building.prepared_site_infrastructure_gate
+						OR = {
+							industrial_complex > constant:brilliant_scientist_directorate_building.prepared_site_building_gate
+							arms_factory > constant:brilliant_scientist_directorate_building.prepared_site_building_gate
+						}
+						OR = {
+							is_in_home_area = yes
+							supply_node > constant:brilliant_scientist_directorate_building.prepared_site_building_gate
+						}
+					}
+				}
+			}
+		}
+		cancel_effect = { clr_country_flag = brilliant_scientist_facility_action_in_progress }
+		remove_effect = {
+			clr_country_flag = brilliant_scientist_facility_action_in_progress
+			if = {
+				limit = { has_event_target = brilliant_scientist_secondary_facility }
+				event_target:brilliant_scientist_secondary_facility = { clr_state_flag = brilliant_scientist_secondary_facility }
+				clear_global_event_target = brilliant_scientist_secondary_facility
+			}
+			FROM = {
+				set_state_flag = brilliant_scientist_secondary_facility
+				set_variable = { brilliant_scientist_facility_type = constant:brilliant_scientist_facility.secondary_type }
+				save_global_event_target_as = brilliant_scientist_secondary_facility
+				add_building_construction = {
+					type = infrastructure
+					level = constant:brilliant_scientist_directorate_building.one_level
+					instant_build = yes
+				}
+			}
+			set_country_flag = brilliant_scientist_secondary_laboratory_established
+			set_country_flag = brilliant_scientist_facility_network_invested
+			add_dynamic_modifier = { modifier = brilliant_scientist_facility_network }
+			custom_effect_tooltip = brilliant_scientist_secondary_laboratory_effect_tt
+			hidden_effect = {
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.moderate }
+				brilliant_scientist_change_project_capacity = yes
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.minor }
+				brilliant_scientist_change_mandate = yes
+				brilliant_scientist_change_dependence = yes
+				brilliant_scientist_change_exposure = yes
+				brilliant_scientist_change_independent_capacity = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_directorate_ai.high
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.cautious_factor has_war = yes }
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.preferred_factor brilliant_scientist_has_low_project_capacity = yes }
+		}
+	}
+
+	brilliant_scientist_relocate_primary_laboratory = {
+		icon = GFX_decision_generic_operation
+		state_target = any_owned_state
+		on_map_mode = map_only
+		target_root_trigger = {
+			brilliant_scientist_is_current_host = yes
+			has_country_flag = brilliant_scientist_primary_campus_established
+			has_event_target = brilliant_scientist_primary_facility
+			NOT = { has_country_flag = brilliant_scientist_primary_relocation_recent }
+			NOT = { has_country_flag = brilliant_scientist_directorate_relocation_requested }
+		}
+		target_trigger = {
+			FROM = {
+				brilliant_scientist_is_valid_primary_facility_state = yes
+				is_fully_controlled_by = ROOT
+				NOT = { has_state_flag = brilliant_scientist_primary_facility }
+				infrastructure > constant:brilliant_scientist_directorate_building.prepared_site_infrastructure_gate
+				OR = {
+					industrial_complex > constant:brilliant_scientist_directorate_building.prepared_site_building_gate
+					arms_factory > constant:brilliant_scientist_directorate_building.prepared_site_building_gate
+				}
+				OR = {
+					is_in_home_area = yes
+					AND = {
+						naval_base > constant:brilliant_scientist_directorate_building.port_route_naval_base_gate
+						ROOT = { convoy > constant:brilliant_scientist_directorate_cost.relocation_convoy_gate }
+					}
+				}
+			}
+		}
+		visible = {
+			brilliant_scientist_is_current_host = yes
+			has_country_flag = brilliant_scientist_primary_campus_established
+			has_event_target = brilliant_scientist_primary_facility
+			NOT = { has_country_flag = brilliant_scientist_primary_relocation_recent }
+			NOT = { has_country_flag = brilliant_scientist_directorate_relocation_requested }
+		}
+		available = {
+			NOT = { has_country_flag = brilliant_scientist_facility_action_in_progress }
+			has_equipment = { motorized_equipment > constant:brilliant_scientist_directorate_cost.relocation_truck_gate }
+			has_fuel > constant:brilliant_scientist_directorate_cost.relocation_fuel_gate
+			OR = {
+				FROM = { is_in_home_area = yes }
+				AND = {
+					FROM = { naval_base > constant:brilliant_scientist_directorate_building.port_route_naval_base_gate }
+					convoy > constant:brilliant_scientist_directorate_cost.relocation_convoy_gate
+				}
+			}
+		}
+		cost = constant:brilliant_scientist_directorate_cost.relocation_pp
+		days_remove = constant:brilliant_scientist_directorate_timing.relocation_days
+		modifier = {
+			consumer_goods_factor = constant:brilliant_scientist_directorate_modifier.construction_medium_consumer_goods
+			production_factory_efficiency_gain_factor = constant:brilliant_scientist_directorate_modifier.construction_medium_efficiency
+		}
+		complete_effect = {
+			set_country_flag = brilliant_scientist_facility_action_in_progress
+			clr_country_flag = brilliant_scientist_directorate_relocation_land_route
+			clr_country_flag = brilliant_scientist_directorate_relocation_sea_route
+			if = {
+				limit = { FROM = { is_in_home_area = yes } }
+				set_country_flag = brilliant_scientist_directorate_relocation_land_route
+			}
+			else = {
+				set_country_flag = brilliant_scientist_directorate_relocation_sea_route
+				add_equipment_to_stockpile = {
+					type = convoy_1
+					amount = constant:brilliant_scientist_directorate_cost.relocation_convoy_spend
+				}
+			}
+			add_equipment_to_stockpile = {
+				type = motorized_equipment
+				amount = constant:brilliant_scientist_directorate_cost.relocation_truck_spend
+			}
+			add_fuel = constant:brilliant_scientist_directorate_cost.relocation_fuel_spend
+		}
+		cancel_if_not_visible = yes
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_is_current_host = yes }
+				NOT = { has_event_target = brilliant_scientist_primary_facility }
+				FROM = {
+					NOT = {
+						brilliant_scientist_is_valid_primary_facility_state = yes
+						is_fully_controlled_by = ROOT
+						infrastructure > constant:brilliant_scientist_directorate_building.prepared_site_infrastructure_gate
+						OR = {
+							industrial_complex > constant:brilliant_scientist_directorate_building.prepared_site_building_gate
+							arms_factory > constant:brilliant_scientist_directorate_building.prepared_site_building_gate
+						}
+					}
+				}
+				AND = {
+					has_country_flag = brilliant_scientist_directorate_relocation_land_route
+					FROM = { NOT = { is_in_home_area = yes } }
+				}
+				AND = {
+					has_country_flag = brilliant_scientist_directorate_relocation_sea_route
+					FROM = { NOT = { naval_base > constant:brilliant_scientist_directorate_building.port_route_naval_base_gate } }
+				}
+			}
+		}
+		cancel_effect = {
+			clr_country_flag = brilliant_scientist_facility_action_in_progress
+			clr_country_flag = brilliant_scientist_directorate_relocation_land_route
+			clr_country_flag = brilliant_scientist_directorate_relocation_sea_route
+		}
+		remove_effect = {
+			clr_country_flag = brilliant_scientist_facility_action_in_progress
+			set_country_flag = brilliant_scientist_directorate_relocation_requested
+			set_temp_variable = { brilliant_scientist_directorate_cooldown_days = constant:brilliant_scientist_directorate_timing.relocation_cooldown_days }
+			set_country_flag = { flag = brilliant_scientist_primary_relocation_recent days = brilliant_scientist_directorate_cooldown_days }
+			set_variable = { brilliant_scientist_directorate_relocation_mandate_snapshot = brilliant_scientist_mandate }
+			set_variable = { brilliant_scientist_directorate_relocation_exposure_snapshot = brilliant_scientist_exposure }
+			set_variable = { brilliant_scientist_directorate_relocation_dependence_snapshot = brilliant_scientist_dependence }
+			set_variable = { brilliant_scientist_directorate_relocation_capacity_snapshot = brilliant_scientist_project_capacity }
+			set_variable = { brilliant_scientist_directorate_relocation_independent_capacity_snapshot = brilliant_scientist_independent_capacity }
+			set_variable = { brilliant_scientist_directorate_relocation_grievance_snapshot = brilliant_scientist_grievance }
+			set_variable = { brilliant_scientist_directorate_relocation_prototype_count_snapshot = brilliant_scientist_project_prototype_count }
+			set_variable = { brilliant_scientist_directorate_relocation_deployment_count_snapshot = brilliant_scientist_project_deployment_count }
+			set_variable = { brilliant_scientist_directorate_relocation_weaponization_count_snapshot = brilliant_scientist_project_weaponization_count }
+			if = {
+				limit = { has_war = yes }
+				set_country_flag = brilliant_scientist_directorate_relocation_requested_under_fire
+			}
+			else = { clr_country_flag = brilliant_scientist_directorate_relocation_requested_under_fire }
+			if = {
+				limit = { has_event_target = brilliant_scientist_relocation_requested_origin }
+				clear_global_event_target = brilliant_scientist_relocation_requested_origin
+			}
+			if = {
+				limit = { has_event_target = brilliant_scientist_relocation_requested_destination }
+				clear_global_event_target = brilliant_scientist_relocation_requested_destination
+			}
+			event_target:brilliant_scientist_primary_facility = {
+				save_global_event_target_as = brilliant_scientist_relocation_requested_origin
+			}
+			FROM = {
+				save_global_event_target_as = brilliant_scientist_relocation_requested_destination
+			}
+			custom_effect_tooltip = brilliant_scientist_primary_relocation_effect_tt
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_directorate_ai.low
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.preferred_factor has_war = yes }
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.cautious_factor brilliant_scientist_control_is_stable = yes }
+		}
+	}
+
+	brilliant_scientist_harden_primary_laboratory = {
+		icon = GFX_decision_generic_construction
+		visible = {
+			brilliant_scientist_is_current_host = yes
+			has_country_flag = brilliant_scientist_primary_campus_established
+			brilliant_scientist_primary_facility_is_valid = yes
+			NOT = { has_country_flag = brilliant_scientist_primary_laboratory_hardened }
+		}
+		available = {
+			NOT = { has_country_flag = brilliant_scientist_facility_action_in_progress }
+			has_equipment = { support_equipment > constant:brilliant_scientist_directorate_cost.hardening_support_gate }
+			has_equipment = { infantry_equipment > constant:brilliant_scientist_directorate_cost.hardening_infantry_gate }
+		}
+		cost = constant:brilliant_scientist_directorate_cost.hardening_pp
+		days_remove = constant:brilliant_scientist_directorate_timing.hardening_days
+		fire_only_once = yes
+		highlight_states = {
+			highlight_state_targets = { state = event_target:brilliant_scientist_primary_facility }
+			highlight_color_before_active = 2
+			highlight_color_while_active = 3
+		}
+		modifier = {
+			consumer_goods_factor = constant:brilliant_scientist_directorate_modifier.construction_medium_consumer_goods
+			production_factory_efficiency_gain_factor = constant:brilliant_scientist_directorate_modifier.construction_medium_efficiency
+		}
+		complete_effect = {
+			set_country_flag = brilliant_scientist_facility_action_in_progress
+			add_equipment_to_stockpile = {
+				type = support_equipment
+				amount = constant:brilliant_scientist_directorate_cost.hardening_support_spend
+			}
+			add_equipment_to_stockpile = {
+				type = infantry_equipment
+				amount = constant:brilliant_scientist_directorate_cost.hardening_infantry_spend
+			}
+		}
+		cancel_if_not_visible = yes
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_is_current_host = yes }
+				NOT = { brilliant_scientist_primary_facility_is_valid = yes }
+			}
+		}
+		cancel_effect = { clr_country_flag = brilliant_scientist_facility_action_in_progress }
+		remove_effect = {
+			clr_country_flag = brilliant_scientist_facility_action_in_progress
+			set_country_flag = brilliant_scientist_primary_laboratory_hardened
+			event_target:brilliant_scientist_primary_facility = {
+				add_building_construction = {
+					type = anti_air_building
+					level = constant:brilliant_scientist_directorate_building.one_level
+					instant_build = yes
+				}
+				add_building_construction = {
+					type = bunker
+					level = constant:brilliant_scientist_directorate_building.one_level
+					instant_build = yes
+				}
+			}
+			custom_effect_tooltip = brilliant_scientist_primary_hardening_effect_tt
+			hidden_effect = {
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.minor }
+				brilliant_scientist_change_dependence = yes
+				brilliant_scientist_change_project_capacity = yes
+				multiply_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_directorate_value.negative_one }
+				brilliant_scientist_change_exposure = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_directorate_ai.medium
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.preferred_factor has_war = yes }
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.preferred_factor brilliant_scientist_has_high_exposure = yes }
+		}
+	}
+
+	brilliant_scientist_mobilize_primary_laboratory_repairs = {
+		icon = GFX_decision_generic_construction
+		visible = {
+			brilliant_scientist_is_current_host = yes
+			has_country_flag = brilliant_scientist_primary_campus_established
+			brilliant_scientist_primary_facility_is_valid = yes
+			has_damaged_buildings = yes
+		}
+		available = {
+			NOT = { has_country_flag = brilliant_scientist_facility_action_in_progress }
+			has_equipment = { support_equipment > constant:brilliant_scientist_directorate_cost.repair_support_gate }
+			has_equipment = { motorized_equipment > constant:brilliant_scientist_directorate_cost.repair_truck_gate }
+		}
+		cost = constant:brilliant_scientist_directorate_cost.repair_pp
+		days_remove = constant:brilliant_scientist_directorate_timing.repair_days
+		days_re_enable = constant:brilliant_scientist_directorate_timing.repair_reenable_days
+		highlight_states = {
+			highlight_state_targets = { state = event_target:brilliant_scientist_primary_facility }
+			highlight_color_before_active = 2
+			highlight_color_while_active = 3
+		}
+		modifier = {
+			consumer_goods_factor = constant:brilliant_scientist_directorate_modifier.construction_light_consumer_goods
+			repair_speed_factor = constant:brilliant_scientist_directorate_modifier.repair_speed
+		}
+		complete_effect = {
+			set_country_flag = brilliant_scientist_facility_action_in_progress
+			add_equipment_to_stockpile = {
+				type = support_equipment
+				amount = constant:brilliant_scientist_directorate_cost.repair_support_spend
+			}
+			add_equipment_to_stockpile = {
+				type = motorized_equipment
+				amount = constant:brilliant_scientist_directorate_cost.repair_truck_spend
+			}
+		}
+		cancel_if_not_visible = yes
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_is_current_host = yes }
+				NOT = { brilliant_scientist_primary_facility_is_valid = yes }
+			}
+		}
+		cancel_effect = { clr_country_flag = brilliant_scientist_facility_action_in_progress }
+		remove_effect = {
+			clr_country_flag = brilliant_scientist_facility_action_in_progress
+			custom_effect_tooltip = brilliant_scientist_primary_repairs_effect_tt
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_directorate_ai.high
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.preferred_factor has_war = yes }
+		}
+	}
+}

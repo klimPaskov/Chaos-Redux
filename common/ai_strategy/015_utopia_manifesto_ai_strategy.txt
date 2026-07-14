@@ -1,0 +1,288 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 015 UTOPIA MANIFESTO AI STRATEGIES
+# ============================================================================
+# Country-generic strategies for whichever Event 015 actor receives the
+# replacement tree. Route setters and the public Ledger band triggers own
+# activation; every strategy aborts as soon as its defining state ends.
+# ============================================================================
+
+@utopia_ai_strategy_low = 30
+@utopia_ai_strategy_moderate = 60
+@utopia_ai_strategy_high = 100
+@utopia_ai_strategy_war_caution = -100
+@utopia_ai_strategy_war_moderate = -60
+@utopia_ai_strategy_war_restraint = -160
+@utopia_ai_strategy_war_crisis = -220
+@utopia_ai_strategy_war_escalation = 60
+
+utopia_manifesto_foundation_restraint = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = utopia_manifesto_accepted
+		NOT = {
+			OR = {
+				has_country_flag = utopia_manifesto_route_consent_of_households
+				has_country_flag = utopia_manifesto_route_common_table
+				has_country_flag = utopia_manifesto_route_guardians_of_measure
+				has_country_flag = utopia_manifesto_route_closed_island
+				has_country_flag = utopia_manifesto_route_joke_understood
+			}
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @utopia_ai_strategy_war_restraint
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @utopia_ai_strategy_moderate
+	}
+}
+
+utopia_manifesto_consent_route_strategy = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = utopia_manifesto_route_consent_of_households
+		NOT = { has_country_flag = utopia_manifesto_commonwealth_formed }
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @utopia_ai_strategy_war_restraint
+	}
+	ai_strategy = {
+		type = build_building
+		id = industrial_complex
+		value = @utopia_ai_strategy_high
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @utopia_ai_strategy_moderate
+	}
+}
+
+utopia_manifesto_common_table_route_strategy = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = utopia_manifesto_route_common_table
+		NOT = { has_country_flag = utopia_manifesto_constitutional_crisis }
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @utopia_ai_strategy_war_caution
+	}
+	ai_strategy = {
+		type = build_building
+		id = industrial_complex
+		value = @utopia_ai_strategy_high
+	}
+	ai_strategy = {
+		type = build_building
+		id = arms_factory
+		value = @utopia_ai_strategy_moderate
+	}
+	ai_strategy = {
+		type = send_volunteers_desire
+		value = @utopia_ai_strategy_low
+	}
+}
+
+utopia_manifesto_guardians_route_strategy = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = utopia_manifesto_route_guardians_of_measure
+		NOT = { has_country_flag = utopia_manifesto_constitutional_crisis }
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @utopia_ai_strategy_war_caution
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @utopia_ai_strategy_high
+	}
+	ai_strategy = {
+		type = build_building
+		id = industrial_complex
+		value = @utopia_ai_strategy_high
+	}
+}
+
+utopia_manifesto_closed_island_route_strategy = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = utopia_manifesto_route_closed_island
+		NOT = { utopia_manifesto_has_valid_escalation_case = yes }
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @utopia_ai_strategy_war_moderate
+	}
+	ai_strategy = {
+		type = build_army
+		value = @utopia_ai_strategy_high
+	}
+	ai_strategy = {
+		type = build_building
+		id = arms_factory
+		value = @utopia_ai_strategy_high
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @utopia_ai_strategy_moderate
+	}
+}
+
+utopia_manifesto_closed_island_valid_case_escalation = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = utopia_manifesto_route_closed_island
+		utopia_manifesto_has_valid_escalation_case = yes
+		NOT = { has_country_flag = utopia_manifesto_constitutional_crisis }
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @utopia_ai_strategy_war_escalation
+	}
+	ai_strategy = {
+		type = build_army
+		value = @utopia_ai_strategy_high
+	}
+}
+
+utopia_manifesto_joke_understood_route_strategy = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = utopia_manifesto_route_joke_understood
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @utopia_ai_strategy_war_restraint
+	}
+	ai_strategy = {
+		type = build_building
+		id = industrial_complex
+		value = @utopia_ai_strategy_high
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @utopia_ai_strategy_moderate
+	}
+}
+
+utopia_manifesto_low_plenty_recovery_strategy = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = utopia_manifesto_accepted
+		utopia_manifesto_plenty_is_low = yes
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @utopia_ai_strategy_war_restraint
+	}
+	ai_strategy = {
+		type = build_building
+		id = industrial_complex
+		value = @utopia_ai_strategy_high
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @utopia_ai_strategy_high
+	}
+}
+
+utopia_manifesto_high_need_recovery_strategy = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = utopia_manifesto_accepted
+		utopia_manifesto_need_is_high = yes
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @utopia_ai_strategy_war_restraint
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @utopia_ai_strategy_high
+	}
+}
+
+utopia_manifesto_low_concord_restraint_strategy = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = utopia_manifesto_accepted
+		utopia_manifesto_concord_is_low = yes
+		NOT = { has_country_flag = utopia_manifesto_route_closed_island }
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @utopia_ai_strategy_war_crisis
+	}
+}
+
+utopia_manifesto_constitutional_crisis_strategy = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = utopia_manifesto_constitutional_crisis
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = avoid_starting_wars
+		value = @utopia_ai_strategy_war_crisis
+	}
+	ai_strategy = {
+		type = build_building
+		id = infrastructure
+		value = @utopia_ai_strategy_high
+	}
+}
+
+utopia_manifesto_mature_commonwealth_strategy = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = utopia_manifesto_commonwealth_formed
+		NOT = { has_country_flag = utopia_manifesto_constitutional_crisis }
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = build_army
+		value = @utopia_ai_strategy_moderate
+	}
+	ai_strategy = {
+		type = build_building
+		id = industrial_complex
+		value = @utopia_ai_strategy_high
+	}
+	ai_strategy = {
+		type = send_volunteers_desire
+		value = @utopia_ai_strategy_moderate
+	}
+}

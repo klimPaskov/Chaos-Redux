@@ -192,7 +192,7 @@ Use the data-driven scenario UI, confirmation flow, type control, four-stop slid
 
 ## Super-events and achievements
 
-Implement the league formation and dangerous coordinated bloc super-events from the approved text and audio research. Produce the two images and audio files, preserve attribution, and complete all localisation, GFX, sound, and playback wiring. Normal waves do not receive super-events.
+Implement the league formation and dangerous coordinated bloc super-events from the approved text and corrected audio research. Produce both images. Produce and wire the cleared `6002` audio package, preserve attribution, and keep `6001` absent unless permission or a waiver clears the exact accepted recording. Reopening recording selection requires explicit user approval. Normal waves do not receive super-events.
 
 Implement every achievement in `matrices/006_achievement_matrix.csv`, including tracking, disqualifiers, localisation, icons, docs, origin checks, and scenario restrictions.
 

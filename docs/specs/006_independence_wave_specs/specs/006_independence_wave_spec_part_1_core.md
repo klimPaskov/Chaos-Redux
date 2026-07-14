@@ -218,6 +218,14 @@ The state anchor matrix uses a public 763-state baseline and named reservation g
 
 The source and identity decision remains binding when an ID changes. State rebinding cannot broaden an opening map, erase a host remnant, merge distinct communities, or convert a formable into an automatic country.
 
+### Current installed-map binding layer, 2026-07-14
+
+The dated implementation layer in `../../../plans/006_independence_wave_plans/package_bindings/` evaluates all 206 accepted packages against the installed 1,081-state map. It binds 149 packages, leaves 57 unbound, references 205 existing state IDs, and preserves all 111 accepted reservation groups. The package CSV, reservation-group CSV, collision CSV, and audit are the current numeric binding authority for that installed snapshot. The accepted identity, disposition, and map rules in this specification remain the design authority.
+
+The 14 collision rows contain 12 same-group overlaps already governed by maximum-one and trimming rules. Two cross-group findings remain unresolved implementation gates. Lazistan and Pontus both claim state 354 Trabzon while retaining distinct accepted reservation groups. Their automatic selection needs an explicit state-level mutual exclusion. The route-only Himalayan confederation overlaps the automatic Kashmir package on state 441, so that route must consume or exclude the active Kashmir reservation. Neither finding authorizes a silent group merge or a broader map grant.
+
+The current registry scan confirms all 78 reused tags are registered and all 128 reserved new `X` tags remain collision-free in the installed and mod registries. That result must be repeated if the relevant registries change.
+
 ## Repeatable memory
 
 The event remembers previous waves.

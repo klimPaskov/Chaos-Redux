@@ -1,0 +1,3544 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 015 UTOPIA MANIFESTO FOCUS TREE
+# ============================================================================
+# Full replacement tree loaded only for the Event 015 actor.
+# The tree is organized into an opening survey, five political readings,
+# route-sensitive support institutions, constitutional correction, formation,
+# and post-formation play. Focus rewards call the Event 015 helper kernel so
+# that the four-value Ledger and decision systems remain centrally tuned.
+# ============================================================================
+
+@utopia_focus_short = 5
+@utopia_focus_standard = 10
+@utopia_focus_long = 15
+@utopia_tree_actor_priority = 100
+
+@utopia_ai_hidden = 1
+@utopia_ai_low = 5
+@utopia_ai_normal = 10
+@utopia_ai_elevated = 12
+@utopia_ai_assertive = 14
+@utopia_ai_strong = 18
+@utopia_ai_high = 20
+@utopia_ai_urgent = 40
+@utopia_ai_double = 2
+@utopia_ai_route_bonus = 20
+@utopia_ai_route_avoid_factor = 0.1
+@utopia_ai_disabled_factor = 0
+
+focus_tree = {
+	id = utopia_manifesto_tree
+
+	country = {
+		factor = @utopia_ai_disabled_factor
+		modifier = {
+			add = @utopia_tree_actor_priority
+			has_country_flag = utopia_manifesto_accepted
+		}
+	}
+
+	default = no
+	reset_on_civilwar = no
+	continuous_focus_position = { x = 26 y = 30 }
+	initial_show_position = { x = 32 y = 0 }
+
+	# ------------------------------------------------------------------------
+	# OPENING SURVEY AND FOUNDING INSTITUTIONS
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = utopia_manifesto_recover_the_manuscript
+		icon = GFX_goal_utopia_found_manuscript
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 32
+		y = 0
+		cost = @utopia_focus_short
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_manuscript_recovered
+			if = {
+				limit = { NOT = { utopia_manifesto_has_found_manifesto_idea_stage = yes } }
+				add_ideas = utopia_manifesto_found_manifesto
+			}
+			set_temp_variable = { utopia_manifesto_decision_phase_input = constant:utopia_manifesto_decision_phase.foundations }
+			utopia_manifesto_set_decision_phase = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_urgent }
+	}
+
+	focus = {
+		id = utopia_manifesto_a_public_edition
+		icon = GFX_goal_utopia_public_reading
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_RESEARCH }
+		x = 32
+		y = 1
+		cost = @utopia_focus_short
+		prerequisite = { focus = utopia_manifesto_recover_the_manuscript }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_public_edition
+			set_country_flag = utopia_manifesto_public_debate_preserved
+			set_country_flag = utopia_manifesto_public_debate_proven
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_urgent }
+	}
+
+	focus = {
+		id = utopia_manifesto_count_houses_and_hands
+		icon = GFX_goal_utopia_household_census
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
+		x = 32
+		y = 2
+		cost = @utopia_focus_short
+		prerequisite = { focus = utopia_manifesto_a_public_edition }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_foundation_survey_complete
+			if = {
+				limit = { NOT = { utopia_manifesto_has_unmeasured_country_idea_stage = yes } }
+				add_ideas = utopia_manifesto_unmeasured_country
+			}
+			utopia_manifesto_unlock_district_decisions = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_urgent }
+	}
+
+	focus = {
+		id = utopia_manifesto_the_first_common_store
+		icon = GFX_goal_utopia_storehouse
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 28
+		y = 3
+		cost = @utopia_focus_short
+		prerequisite = { focus = utopia_manifesto_count_houses_and_hands }
+		available = { utopia_manifesto_can_pay_institutional_growth_foundation = yes }
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.foundation }
+			utopia_manifesto_apply_paid_institutional_growth = yes
+			set_country_flag = utopia_manifesto_first_common_store
+			utopia_manifesto_unlock_reserve_decisions = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_urgent }
+	}
+
+	focus = {
+		id = utopia_manifesto_agriculture_for_all
+		icon = GFX_goal_utopia_grain
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_INDUSTRY }
+		x = 34
+		y = 3
+		cost = @utopia_focus_short
+		prerequisite = { focus = utopia_manifesto_count_houses_and_hands }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_agricultural_training
+			utopia_manifesto_unlock_calling_decisions = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_convene_the_interpretive_congress
+		icon = GFX_goal_utopia_four_readings
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		x = 32
+		y = 4
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_the_first_common_store }
+		prerequisite = { focus = utopia_manifesto_agriculture_for_all }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_interpretive_congress_convened
+			set_country_flag = utopia_manifesto_criticism_permitted
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_urgent }
+	}
+
+	focus = {
+		id = utopia_manifesto_an_interim_charter
+		icon = GFX_goal_utopia_guild_charter
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 36
+		y = 4
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_the_first_common_store }
+		prerequisite = { focus = utopia_manifesto_agriculture_for_all }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_interim_charter
+			if = {
+				limit = { NOT = { utopia_manifesto_has_inherited_order_idea_stage = yes } }
+				add_ideas = utopia_manifesto_inherited_order
+			}
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_the_country_as_a_question
+		icon = GFX_goal_utopia_country_that_can_be_read
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 28
+		y = 5
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_convene_the_interpretive_congress }
+		prerequisite = { focus = utopia_manifesto_an_interim_charter }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_route_congress_open
+			set_temp_variable = { utopia_manifesto_decision_phase_input = constant:utopia_manifesto_decision_phase.callings }
+			utopia_manifesto_set_decision_phase = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_urgent }
+	}
+
+	# ------------------------------------------------------------------------
+	# POLITICAL ROUTE A - CONSENT OF HOUSEHOLDS
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = utopia_manifesto_household_gives_consent
+		icon = GFX_goal_utopia_assemblies
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 22
+		y = 6
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_the_country_as_a_question }
+		mutually_exclusive = {
+			focus = utopia_manifesto_nothing_private_in_necessity
+			focus = utopia_manifesto_country_measured
+			focus = utopia_manifesto_one_island_one_measure
+			focus = utopia_manifesto_read_island_as_a_mirror
+		}
+		bypass = { has_country_flag = utopia_manifesto_crisis_corrected_by_consent }
+
+		completion_reward = {
+			utopia_manifesto_set_consent_of_households_route = yes
+			utopia_manifesto_commit_current_route_identity = yes
+			set_country_flag = utopia_manifesto_local_charters_enabled
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = {
+			factor = @utopia_ai_normal
+			modifier = {
+				add = @utopia_ai_route_bonus
+				utopia_manifesto_ai_prefers_consent_route = yes
+			}
+			modifier = {
+				factor = @utopia_ai_route_avoid_factor
+				utopia_manifesto_ai_avoids_consent_route = yes
+			}
+		}
+	}
+
+	focus = {
+		id = utopia_manifesto_free_callings
+		icon = GFX_goal_utopia_useful_arts
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_RESEARCH }
+		x = 10
+		y = 7
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_household_gives_consent }
+		available = { has_country_flag = utopia_manifesto_route_consent_of_households }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_free_callings
+			utopia_manifesto_unlock_calling_decisions = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_municipal_charters
+		icon = GFX_goal_utopia_guild_charter
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 12
+		y = 7
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_household_gives_consent }
+		available = { has_country_flag = utopia_manifesto_route_consent_of_households }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_municipal_charters
+			utopia_manifesto_unlock_district_decisions = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_paid_public_lectures
+		icon = GFX_goal_utopia_learning
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_STABILITY }
+		x = 11
+		y = 8
+		cost = @utopia_focus_short
+		prerequisite = { focus = utopia_manifesto_free_callings }
+		available = { has_country_flag = utopia_manifesto_route_consent_of_households }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_public_lectures_funded
+			set_country_flag = utopia_manifesto_public_education_proven
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_normal }
+	}
+
+	focus = {
+		id = utopia_manifesto_transparent_store_accounts
+		icon = GFX_goal_utopia_auditors
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_INDUSTRY }
+		x = 13
+		y = 8
+		cost = @utopia_focus_short
+		prerequisite = { focus = utopia_manifesto_municipal_charters }
+		available = { has_country_flag = utopia_manifesto_route_consent_of_households }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_transparent_store_accounts
+			utopia_manifesto_rotate_common_store_network = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_normal }
+	}
+
+	focus = {
+		id = utopia_manifesto_independent_need_review
+		icon = GFX_goal_utopia_just_war
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 9
+		y = 9
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_paid_public_lectures }
+		available = { has_country_flag = utopia_manifesto_route_consent_of_households }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_independent_need_review
+			utopia_manifesto_unlock_necessary_ground_decisions = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_cooperative_land_trusts
+		icon = GFX_goal_utopia_settlement_charter
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 11
+		y = 9
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_transparent_store_accounts }
+		available = {
+			has_country_flag = utopia_manifesto_route_consent_of_households
+			utopia_manifesto_can_pay_institutional_growth_foundation = yes
+		}
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.foundation }
+			utopia_manifesto_apply_paid_institutional_growth = yes
+			set_country_flag = utopia_manifesto_cooperative_land_trusts
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_constitution_of_provision
+		icon = GFX_goal_utopia_living_commonwealth
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 11
+		y = 10
+		cost = @utopia_focus_long
+		prerequisite = { focus = utopia_manifesto_independent_need_review }
+		prerequisite = { focus = utopia_manifesto_cooperative_land_trusts }
+		available = { has_country_flag = utopia_manifesto_route_consent_of_households }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_constitution_of_provision
+			set_country_flag = utopia_manifesto_coercive_case_tools_blocked
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_voluntary_commonwealth_league
+		icon = GFX_goal_utopia_friends
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 18
+		y = 11
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_constitution_of_provision }
+		available = { has_country_flag = utopia_manifesto_route_consent_of_households }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_voluntary_league_charter
+			utopia_manifesto_unlock_league_decisions = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_normal }
+	}
+
+	focus = {
+		id = utopia_manifesto_commonwealth_by_consent
+		icon = GFX_goal_utopia_living_commonwealth
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 20
+		y = 12
+		cost = @utopia_focus_long
+		prerequisite = { focus = utopia_manifesto_voluntary_commonwealth_league }
+		available = {
+			has_country_flag = utopia_manifesto_route_consent_of_households
+			utopia_manifesto_can_pay_institutional_growth_network = yes
+		}
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.network }
+			utopia_manifesto_apply_paid_institutional_growth = yes
+			set_country_flag = utopia_manifesto_route_capstone_consent
+			utopia_manifesto_apply_route_institution_final = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+			utopia_manifesto_refresh_formation_proof = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	# ------------------------------------------------------------------------
+	# POLITICAL ROUTE B - COMMON TABLE
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = utopia_manifesto_nothing_private_in_necessity
+		icon = GFX_goal_utopia_grain
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 24
+		y = 6
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_the_country_as_a_question }
+		mutually_exclusive = {
+			focus = utopia_manifesto_household_gives_consent
+			focus = utopia_manifesto_country_measured
+			focus = utopia_manifesto_one_island_one_measure
+			focus = utopia_manifesto_read_island_as_a_mirror
+		}
+		bypass = { has_country_flag = utopia_manifesto_crisis_corrected_by_councils }
+
+		completion_reward = {
+			utopia_manifesto_set_common_table_route = yes
+			utopia_manifesto_commit_current_route_identity = yes
+			set_country_flag = utopia_manifesto_property_transition_started
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = {
+			factor = @utopia_ai_normal
+			modifier = {
+				add = @utopia_ai_route_bonus
+				utopia_manifesto_ai_prefers_common_table_route = yes
+			}
+			modifier = {
+				factor = @utopia_ai_route_avoid_factor
+				utopia_manifesto_ai_avoids_common_table_route = yes
+			}
+		}
+	}
+
+	focus = {
+		id = utopia_manifesto_councils_of_callings
+		icon = GFX_goal_utopia_councils
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_POLITICAL }
+		x = 14
+		y = 7
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_nothing_private_in_necessity }
+		available = { has_country_flag = utopia_manifesto_route_common_table }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_calling_councils
+			utopia_manifesto_unlock_calling_decisions = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_the_common_table
+		icon = GFX_goal_utopia_bread_boards
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 16
+		y = 7
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_nothing_private_in_necessity }
+		available = { has_country_flag = utopia_manifesto_route_common_table }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_common_table_provision
+			utopia_manifesto_unlock_reserve_decisions = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_social_workshops
+		icon = GFX_goal_utopia_workshops
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH }
+		x = 15
+		y = 8
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_councils_of_callings }
+		available = {
+			has_country_flag = utopia_manifesto_route_common_table
+			utopia_manifesto_can_pay_institutional_growth_foundation = yes
+		}
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.foundation }
+			utopia_manifesto_apply_paid_institutional_growth = yes
+			set_country_flag = utopia_manifesto_social_workshops
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_council_property_transition
+		icon = GFX_goal_utopia_common_administration
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 17
+		y = 8
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_the_common_table }
+		available = { has_country_flag = utopia_manifesto_route_common_table }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_council_property_transition
+			utopia_manifesto_unlock_district_decisions = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_normal }
+	}
+
+	focus = {
+		id = utopia_manifesto_delegates_under_recall
+		icon = GFX_goal_utopia_assemblies
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 17
+		y = 9
+		cost = @utopia_focus_short
+		prerequisite = { focus = utopia_manifesto_social_workshops }
+		available = { has_country_flag = utopia_manifesto_route_common_table }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_delegates_under_recall
+			set_country_flag = utopia_manifesto_household_councils_proven
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_normal }
+	}
+
+	focus = {
+		id = utopia_manifesto_congress_of_communes
+		icon = GFX_goal_utopia_councils
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 19
+		y = 9
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_council_property_transition }
+		available = { has_country_flag = utopia_manifesto_route_common_table }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_congress_of_communes
+			utopia_manifesto_unlock_league_decisions = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_council_autonomy
+		icon = GFX_goal_utopia_ring_councils
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 19
+		y = 10
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_delegates_under_recall }
+		prerequisite = { focus = utopia_manifesto_congress_of_communes }
+		mutually_exclusive = { focus = utopia_manifesto_emergency_central_plan }
+		available = { has_country_flag = utopia_manifesto_route_common_table }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_council_autonomy
+			utopia_manifesto_apply_route_institution_mitigation = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = {
+			factor = @utopia_ai_normal
+			modifier = {
+				add = @utopia_ai_route_bonus
+				NOT = { has_war = yes }
+			}
+		}
+	}
+
+	focus = {
+		id = utopia_manifesto_emergency_central_plan
+		icon = GFX_goal_utopia_measures
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 21
+		y = 10
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_delegates_under_recall }
+		prerequisite = { focus = utopia_manifesto_congress_of_communes }
+		mutually_exclusive = { focus = utopia_manifesto_council_autonomy }
+		available = { has_country_flag = utopia_manifesto_route_common_table }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_emergency_central_plan
+			utopia_manifesto_apply_route_institution_failure = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.medium }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = {
+			factor = @utopia_ai_low
+			modifier = {
+				add = @utopia_ai_route_bonus
+				has_war = yes
+			}
+		}
+	}
+
+	focus = {
+		id = utopia_manifesto_union_of_tables
+		icon = GFX_goal_utopia_store_state
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 20
+		y = 11
+		cost = @utopia_focus_long
+		prerequisite = {
+			focus = utopia_manifesto_council_autonomy
+			focus = utopia_manifesto_emergency_central_plan
+		}
+		available = {
+			has_country_flag = utopia_manifesto_route_common_table
+			utopia_manifesto_can_pay_institutional_growth_network = yes
+		}
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.network }
+			utopia_manifesto_apply_paid_institutional_growth = yes
+			set_country_flag = utopia_manifesto_route_capstone_common_table
+			utopia_manifesto_apply_route_institution_final = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+			utopia_manifesto_refresh_formation_proof = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	# ------------------------------------------------------------------------
+	# POLITICAL ROUTE C - GUARDIANS OF MEASURE
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = utopia_manifesto_country_measured
+		icon = GFX_goal_utopia_measures
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_RESEARCH }
+		x = 26
+		y = 6
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_the_country_as_a_question }
+		mutually_exclusive = {
+			focus = utopia_manifesto_household_gives_consent
+			focus = utopia_manifesto_nothing_private_in_necessity
+			focus = utopia_manifesto_one_island_one_measure
+			focus = utopia_manifesto_read_island_as_a_mirror
+		}
+		bypass = { has_country_flag = utopia_manifesto_crisis_corrected_by_measure }
+
+		completion_reward = {
+			utopia_manifesto_set_guardians_of_measure_route = yes
+			utopia_manifesto_commit_current_route_identity = yes
+			set_country_flag = utopia_manifesto_expert_board_authority
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.medium }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = {
+			factor = @utopia_ai_normal
+			modifier = {
+				add = @utopia_ai_route_bonus
+				utopia_manifesto_ai_prefers_guardians_route = yes
+			}
+			modifier = {
+				factor = @utopia_ai_route_avoid_factor
+				utopia_manifesto_ai_avoids_guardians_route = yes
+			}
+		}
+	}
+
+	focus = {
+		id = utopia_manifesto_standard_houses
+		icon = GFX_goal_utopia_guarded_settlement
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 18
+		y = 7
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_country_measured }
+		available = {
+			has_country_flag = utopia_manifesto_route_guardians_of_measure
+			utopia_manifesto_can_pay_institutional_growth_foundation = yes
+		}
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.foundation }
+			utopia_manifesto_apply_paid_institutional_growth = yes
+			set_country_flag = utopia_manifesto_standard_houses
+			utopia_manifesto_unlock_district_decisions = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_tables_of_need
+		icon = GFX_goal_utopia_need
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH }
+		x = 20
+		y = 7
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_country_measured }
+		available = { has_country_flag = utopia_manifesto_route_guardians_of_measure }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_tables_of_need
+			utopia_manifesto_unlock_calling_decisions = yes
+			utopia_manifesto_unlock_reserve_decisions = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_board_of_measure
+		icon = GFX_goal_utopia_auditors
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_RESEARCH }
+		x = 19
+		y = 8
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_standard_houses }
+		prerequisite = { focus = utopia_manifesto_tables_of_need }
+		available = { has_country_flag = utopia_manifesto_route_guardians_of_measure }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_board_of_measure
+			set_country_flag = utopia_manifesto_planner_legitimacy_review
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_shortage_forecasting
+		icon = GFX_goal_utopia_registers
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
+		x = 21
+		y = 9
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_board_of_measure }
+		available = { has_country_flag = utopia_manifesto_route_guardians_of_measure }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_shortage_forecasting
+			utopia_manifesto_rotate_common_store_network = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_cities_in_series
+		icon = GFX_goal_utopia_ring_councils
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH }
+		x = 24
+		y = 9
+		cost = @utopia_focus_long
+		prerequisite = { focus = utopia_manifesto_board_of_measure }
+		available = {
+			has_country_flag = utopia_manifesto_route_guardians_of_measure
+			utopia_manifesto_can_pay_institutional_growth_network = yes
+		}
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.network }
+			utopia_manifesto_apply_paid_institutional_growth = yes
+			set_country_flag = utopia_manifesto_cities_in_series
+			set_country_flag = utopia_manifesto_city_network_proven
+			utopia_manifesto_unlock_district_decisions = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_useful_freedom
+		icon = GFX_goal_utopia_mercy
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 23
+		y = 10
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_shortage_forecasting }
+		prerequisite = { focus = utopia_manifesto_cities_in_series }
+		mutually_exclusive = { focus = utopia_manifesto_exact_obedience }
+		available = { has_country_flag = utopia_manifesto_route_guardians_of_measure }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_useful_freedom
+			set_country_flag = utopia_manifesto_planner_appeals_protected
+			utopia_manifesto_apply_route_institution_mitigation = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = {
+			factor = @utopia_ai_normal
+			modifier = {
+				add = @utopia_ai_route_bonus
+				utopia_manifesto_ai_prefers_consent_route = yes
+			}
+			modifier = {
+				factor = @utopia_ai_route_avoid_factor
+				utopia_manifesto_ai_avoids_consent_route = yes
+			}
+		}
+	}
+
+	focus = {
+		id = utopia_manifesto_exact_obedience
+		icon = GFX_goal_utopia_boundaries
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 25
+		y = 10
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_shortage_forecasting }
+		prerequisite = { focus = utopia_manifesto_cities_in_series }
+		mutually_exclusive = { focus = utopia_manifesto_useful_freedom }
+		available = { has_country_flag = utopia_manifesto_route_guardians_of_measure }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_exact_obedience
+			set_country_flag = utopia_manifesto_exact_obedience_imposed
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.medium }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = {
+			factor = @utopia_ai_low
+			modifier = {
+				add = @utopia_ai_route_bonus
+				has_war = yes
+			}
+		}
+	}
+
+	focus = {
+		id = utopia_manifesto_technical_missions
+		icon = GFX_goal_utopia_engineers
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
+		x = 24
+		y = 11
+		cost = @utopia_focus_standard
+		prerequisite = {
+			focus = utopia_manifesto_useful_freedom
+			focus = utopia_manifesto_exact_obedience
+		}
+		available = { has_country_flag = utopia_manifesto_route_guardians_of_measure }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_technical_missions
+			utopia_manifesto_unlock_league_decisions = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_normal }
+	}
+
+	focus = {
+		id = utopia_manifesto_perfect_measure
+		icon = GFX_goal_utopia_hard_maps
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 23
+		y = 12
+		cost = @utopia_focus_long
+		prerequisite = { focus = utopia_manifesto_technical_missions }
+		available = {
+			has_country_flag = utopia_manifesto_route_guardians_of_measure
+			utopia_manifesto_can_pay_institutional_growth_capstone = yes
+		}
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.capstone }
+			utopia_manifesto_apply_paid_institutional_growth = yes
+			set_country_flag = utopia_manifesto_route_capstone_guardians
+			utopia_manifesto_apply_route_institution_final = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+			utopia_manifesto_refresh_formation_proof = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	# ------------------------------------------------------------------------
+	# POLITICAL ROUTE D - CLOSED ISLAND
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = utopia_manifesto_one_island_one_measure
+		icon = GFX_goal_utopia_island_discipline
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		x = 28
+		y = 6
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_the_country_as_a_question }
+		mutually_exclusive = {
+			focus = utopia_manifesto_household_gives_consent
+			focus = utopia_manifesto_nothing_private_in_necessity
+			focus = utopia_manifesto_country_measured
+			focus = utopia_manifesto_read_island_as_a_mirror
+		}
+		bypass = { has_country_flag = utopia_manifesto_crisis_corrected_by_separation }
+
+		completion_reward = {
+			utopia_manifesto_set_closed_island_route = yes
+			utopia_manifesto_commit_current_route_identity = yes
+			set_country_flag = utopia_manifesto_service_registration
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.medium }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = {
+			factor = @utopia_ai_normal
+			modifier = {
+				add = @utopia_ai_route_bonus
+				utopia_manifesto_ai_prefers_closed_island_route = yes
+			}
+			modifier = {
+				factor = @utopia_ai_route_avoid_factor
+				utopia_manifesto_ai_avoids_closed_island_route = yes
+			}
+		}
+	}
+
+	focus = {
+		id = utopia_manifesto_households_of_service
+		icon = GFX_goal_utopia_labor_register
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_WAR_SUPPORT }
+		x = 24
+		y = 7
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_one_island_one_measure }
+		available = {
+			has_country_flag = utopia_manifesto_route_closed_island
+			utopia_manifesto_can_pay_military_growth_foundation = yes
+		}
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.foundation }
+			set_temp_variable = { utopia_manifesto_military_formation_input = constant:utopia_manifesto_military_formation.service_formation }
+			utopia_manifesto_apply_paid_military_growth = yes
+			set_country_flag = utopia_manifesto_households_of_service
+			utopia_manifesto_unlock_calling_decisions = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.medium }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_the_closed_store
+		icon = GFX_goal_utopia_winter_reserve
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_WAR_SUPPORT }
+		x = 22
+		y = 7
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_one_island_one_measure }
+		available = {
+			has_country_flag = utopia_manifesto_route_closed_island
+			utopia_manifesto_can_pay_institutional_growth_foundation = yes
+		}
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.foundation }
+			utopia_manifesto_apply_paid_institutional_growth = yes
+			set_country_flag = utopia_manifesto_closed_store
+			utopia_manifesto_unlock_reserve_decisions = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_penal_works
+		icon = GFX_goal_utopia_boundary_posts
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_WAR_SUPPORT }
+		x = 24
+		y = 8
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_households_of_service }
+		available = {
+			has_country_flag = utopia_manifesto_route_closed_island
+			utopia_manifesto_can_pay_institutional_growth_foundation = yes
+		}
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.foundation }
+			utopia_manifesto_apply_paid_institutional_growth = yes
+			set_country_flag = utopia_manifesto_penal_works
+			set_country_flag = utopia_manifesto_conduct_penal_labor
+			set_country_flag = utopia_manifesto_penal_labour_used
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.medium }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_auxiliary_contracts
+		icon = GFX_goal_utopia_reinforcement_paths
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_WAR_SUPPORT }
+		x = 28
+		y = 8
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_households_of_service }
+		available = { has_country_flag = utopia_manifesto_route_closed_island }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_auxiliary_contracts_unlocked
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_natural_right_of_need
+		icon = GFX_goal_utopia_needful_land
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_WAR_SUPPORT }
+		x = 26
+		y = 8
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_the_closed_store }
+		available = { has_country_flag = utopia_manifesto_route_closed_island }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_natural_right_doctrine
+			utopia_manifesto_unlock_necessary_ground_decisions = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.medium }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_assigned_colonies
+		icon = GFX_goal_utopia_guarded_settlement
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_MANPOWER }
+		x = 26
+		y = 9
+		cost = @utopia_focus_long
+		prerequisite = { focus = utopia_manifesto_penal_works }
+		prerequisite = { focus = utopia_manifesto_natural_right_of_need }
+		available = { has_country_flag = utopia_manifesto_route_closed_island }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_assigned_colonies
+			set_country_flag = utopia_manifesto_conduct_assigned_colony
+			utopia_manifesto_unlock_stewardship_decisions = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.medium }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_cut_the_channel
+		icon = GFX_goal_utopia_island_compact
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_WAR_SUPPORT }
+		x = 27
+		y = 10
+		cost = @utopia_focus_long
+		prerequisite = { focus = utopia_manifesto_auxiliary_contracts }
+		prerequisite = { focus = utopia_manifesto_assigned_colonies }
+		available = {
+			has_country_flag = utopia_manifesto_route_closed_island
+			utopia_manifesto_can_pay_institutional_growth_capstone = yes
+		}
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.capstone }
+			utopia_manifesto_apply_paid_institutional_growth = yes
+			set_country_flag = utopia_manifesto_channel_separation_project
+			set_country_flag = utopia_manifesto_separation_project_complete
+			utopia_manifesto_prepare_island_variant = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.medium }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_perfect_island
+		icon = GFX_goal_utopia_bounds_state
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		x = 27
+		y = 11
+		cost = @utopia_focus_long
+		prerequisite = { focus = utopia_manifesto_cut_the_channel }
+		available = {
+			has_country_flag = utopia_manifesto_route_closed_island
+			utopia_manifesto_can_pay_military_growth_capstone = yes
+		}
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.capstone }
+			set_temp_variable = { utopia_manifesto_military_formation_input = constant:utopia_manifesto_military_formation.service_formation }
+			utopia_manifesto_apply_paid_military_growth = yes
+			set_country_flag = utopia_manifesto_route_capstone_closed_island
+			utopia_manifesto_apply_route_institution_final = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.medium }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+			utopia_manifesto_refresh_formation_proof = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	# ------------------------------------------------------------------------
+	# HIDDEN POLITICAL ROUTE E - THE JOKE UNDERSTOOD
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = utopia_manifesto_read_island_as_a_mirror
+		icon = GFX_goal_utopia_four_readings
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 30
+		y = 6
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_the_country_as_a_question }
+		mutually_exclusive = {
+			focus = utopia_manifesto_household_gives_consent
+			focus = utopia_manifesto_nothing_private_in_necessity
+			focus = utopia_manifesto_country_measured
+			focus = utopia_manifesto_one_island_one_measure
+		}
+		bypass = { has_country_flag = utopia_manifesto_crisis_corrected_by_revision }
+		allow_branch = {
+			OR = {
+				utopia_manifesto_can_reveal_joke_understood = yes
+				has_country_flag = utopia_manifesto_crisis_corrected_by_revision
+			}
+		}
+		available = {
+			OR = {
+				utopia_manifesto_can_reveal_joke_understood = yes
+				has_country_flag = utopia_manifesto_crisis_corrected_by_revision
+			}
+		}
+
+		completion_reward = {
+			utopia_manifesto_set_joke_understood_route = yes
+			utopia_manifesto_commit_current_route_identity = yes
+			set_country_flag = utopia_manifesto_textual_infallibility_rejected
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = {
+			factor = @utopia_ai_hidden
+			modifier = {
+				add = @utopia_ai_route_bonus
+				utopia_manifesto_ai_prefers_joke_understood_route = yes
+			}
+			modifier = {
+				factor = @utopia_ai_route_avoid_factor
+				utopia_manifesto_ai_avoids_joke_understood_route = yes
+			}
+		}
+	}
+
+	focus = {
+		id = utopia_manifesto_institutions_that_can_be_left
+		icon = GFX_goal_utopia_renunciation
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 34
+		y = 8
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_read_island_as_a_mirror }
+		allow_branch = {
+			OR = {
+				utopia_manifesto_can_reveal_joke_understood = yes
+				has_country_flag = utopia_manifesto_route_joke_understood
+			}
+		}
+		available = { has_country_flag = utopia_manifesto_route_joke_understood }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_lawful_institutional_exit
+			set_country_flag = utopia_manifesto_policy_sunset_review
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_a_mixed_commonwealth
+		icon = GFX_goal_utopia_adaptation
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 32
+		y = 8
+		cost = @utopia_focus_standard
+		prerequisite = {
+			focus = utopia_manifesto_read_island_as_a_mirror
+			focus = utopia_manifesto_admit_the_book_was_a_question
+		}
+		allow_branch = {
+			OR = {
+				utopia_manifesto_can_reveal_joke_understood = yes
+				has_country_flag = utopia_manifesto_route_joke_understood
+			}
+		}
+		available = {
+			has_country_flag = utopia_manifesto_route_joke_understood
+			utopia_manifesto_can_pay_institutional_growth_foundation = yes
+		}
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.foundation }
+			utopia_manifesto_apply_paid_institutional_growth = yes
+			set_country_flag = utopia_manifesto_mixed_property_settlement
+			set_country_flag = utopia_manifesto_mixed_property_proven
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_sunset_clauses
+		icon = GFX_goal_utopia_auditors
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 32
+		y = 9
+		cost = @utopia_focus_short
+		prerequisite = { focus = utopia_manifesto_institutions_that_can_be_left }
+		allow_branch = { has_country_flag = utopia_manifesto_route_joke_understood }
+		available = { has_country_flag = utopia_manifesto_route_joke_understood }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_sunset_clauses
+			utopia_manifesto_apply_route_institution_mitigation = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_normal }
+	}
+
+	focus = {
+		id = utopia_manifesto_satire_in_government
+		icon = GFX_goal_utopia_public_reading
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 29
+		y = 9
+		cost = @utopia_focus_short
+		prerequisite = { focus = utopia_manifesto_a_mixed_commonwealth }
+		allow_branch = { has_country_flag = utopia_manifesto_route_joke_understood }
+		available = { has_country_flag = utopia_manifesto_route_joke_understood }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_satire_protected
+			set_country_flag = utopia_manifesto_criticism_permitted
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_normal }
+	}
+
+	focus = {
+		id = utopia_manifesto_public_audit
+		icon = GFX_goal_utopia_auditors
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 31
+		y = 10
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_sunset_clauses }
+		prerequisite = { focus = utopia_manifesto_satire_in_government }
+		allow_branch = { has_country_flag = utopia_manifesto_route_joke_understood }
+		available = { has_country_flag = utopia_manifesto_route_joke_understood }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_public_audit
+			set_country_flag = utopia_manifesto_false_cases_may_be_abandoned
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_reform_without_paradise
+		icon = GFX_goal_utopia_paper_utopia
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 30
+		y = 11
+		cost = @utopia_focus_long
+		prerequisite = { focus = utopia_manifesto_public_audit }
+		allow_branch = { has_country_flag = utopia_manifesto_route_joke_understood }
+		available = {
+			has_country_flag = utopia_manifesto_route_joke_understood
+			utopia_manifesto_can_pay_institutional_growth_network = yes
+		}
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.network }
+			utopia_manifesto_apply_paid_institutional_growth = yes
+			set_country_flag = utopia_manifesto_reform_without_paradise
+			utopia_manifesto_unlock_league_decisions = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_good_place_that_admits_its_limits
+		icon = GFX_goal_utopia_new_utopia
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 31
+		y = 12
+		cost = @utopia_focus_long
+		prerequisite = { focus = utopia_manifesto_reform_without_paradise }
+		allow_branch = { has_country_flag = utopia_manifesto_route_joke_understood }
+		available = {
+			has_country_flag = utopia_manifesto_route_joke_understood
+			utopia_manifesto_can_pay_institutional_growth_network = yes
+		}
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.network }
+			utopia_manifesto_apply_paid_institutional_growth = yes
+			set_country_flag = utopia_manifesto_route_capstone_joke
+			utopia_manifesto_apply_route_institution_final = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+			utopia_manifesto_refresh_formation_proof = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	# ------------------------------------------------------------------------
+	# SHARED BRANCH - CALLINGS AND EDUCATION
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = utopia_manifesto_every_hand_knows_the_soil
+		icon = GFX_goal_utopia_grain
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_INDUSTRY }
+		x = 36
+		y = 6
+		cost = @utopia_focus_short
+		prerequisite = { focus = utopia_manifesto_agriculture_for_all }
+		prerequisite = { focus = utopia_manifesto_the_country_as_a_question }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_every_hand_knows_soil
+			utopia_manifesto_unlock_calling_decisions = yes
+			set_temp_variable = { utopia_manifesto_decision_phase_input = constant:utopia_manifesto_decision_phase.reserves }
+			utopia_manifesto_set_decision_phase = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_schools_of_calling
+		icon = GFX_goal_utopia_colleges
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_MANPOWER }
+		x = 44
+		y = 7
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_every_hand_knows_the_soil }
+		available = { utopia_manifesto_can_pay_institutional_growth_foundation = yes }
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.foundation }
+			utopia_manifesto_apply_paid_institutional_growth = yes
+			set_country_flag = utopia_manifesto_schools_of_calling
+			set_country_flag = utopia_manifesto_public_education_proven
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_work_where_needed
+		icon = GFX_goal_utopia_labor_register
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_INDUSTRY }
+		x = 46
+		y = 7
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_every_hand_knows_the_soil }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_guaranteed_placement_unlocked
+			utopia_manifesto_unlock_calling_decisions = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_learn_a_second_trade
+		icon = GFX_goal_utopia_second_trade
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_MANPOWER }
+		x = 44
+		y = 8
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_schools_of_calling }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_second_trade_program
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_normal }
+	}
+
+	focus = {
+		id = utopia_manifesto_emergency_calling_review
+		icon = GFX_goal_utopia_registers
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_STABILITY }
+		x = 46
+		y = 8
+		cost = @utopia_focus_short
+		prerequisite = { focus = utopia_manifesto_work_where_needed }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_emergency_calling_review
+			set_country_flag = utopia_manifesto_emergency_levy_requires_expiry
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_normal }
+	}
+
+	focus = {
+		id = utopia_manifesto_six_hours_and_the_evening_lecture
+		icon = GFX_goal_utopia_six_hours
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_STABILITY }
+		x = 42
+		y = 9
+		cost = @utopia_focus_long
+		prerequisite = { focus = utopia_manifesto_learn_a_second_trade }
+		available = { utopia_manifesto_can_adopt_short_workday = yes }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_six_hour_workday
+			set_country_flag = utopia_manifesto_public_lectures_funded
+			set_country_flag = utopia_manifesto_public_education_proven
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_normal }
+	}
+
+	focus = {
+		id = utopia_manifesto_a_nation_of_many_skills
+		icon = GFX_goal_utopia_all_useful_arts
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_MANPOWER }
+		x = 43
+		y = 10
+		cost = @utopia_focus_long
+		prerequisite = { focus = utopia_manifesto_six_hours_and_the_evening_lecture }
+		prerequisite = { focus = utopia_manifesto_emergency_calling_review }
+		available = { utopia_manifesto_can_pay_institutional_growth_network = yes }
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.network }
+			utopia_manifesto_apply_paid_institutional_growth = yes
+			set_country_flag = utopia_manifesto_many_skills_network
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+			utopia_manifesto_refresh_formation_proof = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	# ------------------------------------------------------------------------
+	# SHARED BRANCH - COMMON STORES AND PRODUCTIVE ABUNDANCE
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = utopia_manifesto_the_capital_store
+		icon = GFX_goal_utopia_storehouse_spine
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 18
+		y = 6
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_the_first_common_store }
+		prerequisite = { focus = utopia_manifesto_the_country_as_a_question }
+		available = { utopia_manifesto_can_pay_institutional_growth_foundation = yes }
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.foundation }
+			utopia_manifesto_apply_paid_institutional_growth = yes
+			set_country_flag = utopia_manifesto_capital_store_complete
+			utopia_manifesto_unlock_reserve_decisions = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_regional_storehouses
+		icon = GFX_goal_utopia_local_storehouses
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 0
+		y = 7
+		cost = @utopia_focus_long
+		prerequisite = { focus = utopia_manifesto_the_capital_store }
+		available = { utopia_manifesto_can_pay_institutional_growth_network = yes }
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.network }
+			utopia_manifesto_apply_paid_institutional_growth = yes
+			set_country_flag = utopia_manifesto_regional_storehouse_network
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_useful_industry
+		icon = GFX_goal_utopia_workshops
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH }
+		x = -2
+		y = 7
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_the_capital_store }
+		available = { utopia_manifesto_can_pay_institutional_growth_foundation = yes }
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.foundation }
+			utopia_manifesto_apply_paid_institutional_growth = yes
+			set_country_flag = utopia_manifesto_useful_industry
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_rotate_old_stores
+		icon = GFX_goal_utopia_rotation
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 2
+		y = 8
+		cost = @utopia_focus_short
+		prerequisite = { focus = utopia_manifesto_regional_storehouses }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_store_rotation_protocol
+			utopia_manifesto_rotate_common_store_network = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_normal }
+	}
+
+	focus = {
+		id = utopia_manifesto_release_emergency_stores
+		icon = GFX_goal_utopia_crisis_rations
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_INDUSTRY }
+		x = 0
+		y = 8
+		cost = @utopia_focus_short
+		prerequisite = { focus = utopia_manifesto_useful_industry }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_emergency_store_release
+			utopia_manifesto_unlock_reserve_decisions = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_two_years_against_hunger
+		icon = GFX_goal_utopia_winter_reserve
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = -2
+		y = 9
+		cost = @utopia_focus_long
+		prerequisite = { focus = utopia_manifesto_rotate_old_stores }
+		prerequisite = { focus = utopia_manifesto_useful_industry }
+		available = { utopia_manifesto_can_secure_two_year_reserve = yes }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_two_year_reserve
+			utopia_manifesto_complete_common_store_network = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+			utopia_manifesto_refresh_formation_proof = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_surplus_beyond_the_shore
+		icon = GFX_goal_utopia_surplus
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 0
+		y = 10
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_two_years_against_hunger }
+		prerequisite = { focus = utopia_manifesto_release_emergency_stores }
+		available = { utopia_manifesto_has_exportable_surplus = yes }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_surplus_aid_enabled
+			utopia_manifesto_unlock_league_decisions = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+			utopia_manifesto_refresh_formation_proof = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_normal }
+	}
+
+	# ------------------------------------------------------------------------
+	# SHARED BRANCH - GARDEN SETTLEMENTS AND THE ISLAND PROJECT
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = utopia_manifesto_homes_near_work
+		icon = GFX_goal_utopia_settlement_charter
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 16
+		y = 6
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_count_houses_and_hands }
+		prerequisite = { focus = utopia_manifesto_the_country_as_a_question }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_homes_near_work
+			utopia_manifesto_unlock_district_decisions = yes
+			set_temp_variable = { utopia_manifesto_decision_phase_input = constant:utopia_manifesto_decision_phase.districts }
+			utopia_manifesto_set_decision_phase = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_rail_road_and_common_ground
+		icon = GFX_goal_utopia_routes
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 2
+		y = 7
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_homes_near_work }
+		available = { utopia_manifesto_can_pay_institutional_growth_foundation = yes }
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.foundation }
+			utopia_manifesto_apply_paid_institutional_growth = yes
+			set_country_flag = utopia_manifesto_common_transport_ground
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_a_ring_of_social_cities
+		icon = GFX_goal_utopia_ring_councils
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH }
+		x = 4
+		y = 7
+		cost = @utopia_focus_long
+		prerequisite = { focus = utopia_manifesto_homes_near_work }
+		available = { utopia_manifesto_can_pay_institutional_growth_network = yes }
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.network }
+			utopia_manifesto_apply_paid_institutional_growth = yes
+			set_country_flag = utopia_manifesto_social_city_ring
+			utopia_manifesto_unlock_district_decisions = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_choose_the_island
+		icon = GFX_goal_utopia_island_compact
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 4
+		y = 8
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_rail_road_and_common_ground }
+		prerequisite = { focus = utopia_manifesto_a_ring_of_social_cities }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_island_variant_choice_open
+			utopia_manifesto_prepare_island_variant = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_the_existing_island
+		icon = GFX_goal_utopia_harbors
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 7
+		y = 9
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_choose_the_island }
+		mutually_exclusive = {
+			focus = utopia_manifesto_the_archipelago_network
+			focus = utopia_manifesto_the_leased_island
+			focus = utopia_manifesto_the_coastal_refuge
+			focus = utopia_manifesto_the_inland_island
+		}
+		available = {
+			has_country_flag = utopia_manifesto_island_variant_choice_open
+			utopia_manifesto_can_select_existing_island_variant = yes
+		}
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_geography_variant_input = constant:utopia_manifesto_geography.existing_island }
+			utopia_manifesto_commit_island_variant = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_the_archipelago_network
+		icon = GFX_goal_utopia_archipelago_network
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 5
+		y = 9
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_choose_the_island }
+		mutually_exclusive = {
+			focus = utopia_manifesto_the_existing_island
+			focus = utopia_manifesto_the_leased_island
+			focus = utopia_manifesto_the_coastal_refuge
+			focus = utopia_manifesto_the_inland_island
+		}
+		available = {
+			has_country_flag = utopia_manifesto_island_variant_choice_open
+			utopia_manifesto_can_select_archipelago_network_variant = yes
+		}
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_geography_variant_input = constant:utopia_manifesto_geography.archipelago_network }
+			utopia_manifesto_commit_island_variant = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = {
+			factor = @utopia_ai_strong
+			modifier = {
+				factor = @utopia_ai_double
+				utopia_manifesto_reserve_is_secure = yes
+			}
+		}
+	}
+
+	focus = {
+		id = utopia_manifesto_the_leased_island
+		icon = GFX_goal_utopia_leased_island
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 9
+		y = 10
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_choose_the_island }
+		mutually_exclusive = {
+			focus = utopia_manifesto_the_existing_island
+			focus = utopia_manifesto_the_archipelago_network
+			focus = utopia_manifesto_the_coastal_refuge
+			focus = utopia_manifesto_the_inland_island
+		}
+		available = {
+			has_country_flag = utopia_manifesto_island_variant_choice_open
+			utopia_manifesto_can_select_leased_island_variant = yes
+		}
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_geography_variant_input = constant:utopia_manifesto_geography.leased_island }
+			utopia_manifesto_commit_island_variant = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = {
+			factor = @utopia_ai_normal
+			modifier = {
+				factor = @utopia_ai_double
+				NOT = { utopia_manifesto_can_select_existing_island_variant = yes }
+				NOT = { utopia_manifesto_can_select_archipelago_network_variant = yes }
+			}
+		}
+	}
+
+	focus = {
+		id = utopia_manifesto_the_coastal_refuge
+		icon = GFX_goal_utopia_coastal_routes
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 3
+		y = 9
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_choose_the_island }
+		mutually_exclusive = {
+			focus = utopia_manifesto_the_existing_island
+			focus = utopia_manifesto_the_archipelago_network
+			focus = utopia_manifesto_the_leased_island
+			focus = utopia_manifesto_the_inland_island
+		}
+		available = {
+			has_country_flag = utopia_manifesto_island_variant_choice_open
+			utopia_manifesto_can_select_coastal_refuge_variant = yes
+		}
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_geography_variant_input = constant:utopia_manifesto_geography.coastal_island }
+			utopia_manifesto_commit_island_variant = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_assertive }
+	}
+
+	focus = {
+		id = utopia_manifesto_the_inland_island
+		icon = GFX_goal_utopia_landlocked_stores
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 1
+		y = 9
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_choose_the_island }
+		mutually_exclusive = {
+			focus = utopia_manifesto_the_existing_island
+			focus = utopia_manifesto_the_archipelago_network
+			focus = utopia_manifesto_the_leased_island
+			focus = utopia_manifesto_the_coastal_refuge
+		}
+		available = {
+			has_country_flag = utopia_manifesto_island_variant_choice_open
+			utopia_manifesto_can_select_inland_island_variant = yes
+		}
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_geography_variant_input = constant:utopia_manifesto_geography.inland_island }
+			utopia_manifesto_commit_island_variant = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_elevated }
+	}
+
+	focus = {
+		id = utopia_manifesto_build_the_island
+		icon = GFX_goal_utopia_guarded_settlement
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		x = 7
+		y = 11
+		cost = @utopia_focus_long
+		prerequisite = {
+			focus = utopia_manifesto_the_existing_island
+			focus = utopia_manifesto_the_archipelago_network
+			focus = utopia_manifesto_the_leased_island
+			focus = utopia_manifesto_the_coastal_refuge
+			focus = utopia_manifesto_the_inland_island
+		}
+		available = {
+			utopia_manifesto_can_pay_institutional_growth_capstone = yes
+			utopia_manifesto_selected_island_variant_site_is_ready = yes
+		}
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.capstone }
+			utopia_manifesto_apply_paid_institutional_growth = yes
+			set_country_flag = utopia_manifesto_island_project_built
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_the_island_made_real
+		icon = GFX_goal_utopia_island_compact
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 15
+		y = 12
+		cost = @utopia_focus_long
+		prerequisite = { focus = utopia_manifesto_build_the_island }
+		available = { utopia_manifesto_island_project_proof_met = yes }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_island_project_complete
+			utopia_manifesto_clear_inherited_order_idea_stages = yes
+			utopia_manifesto_found_garden_district_network = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+			utopia_manifesto_refresh_formation_proof = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	# ------------------------------------------------------------------------
+	# SHARED BRANCH - DEFENSE WITHOUT WASTE
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = utopia_manifesto_the_citizen_watch
+		icon = GFX_goal_utopia_household_guard
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_WAR_SUPPORT }
+		x = 38
+		y = 6
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_an_interim_charter }
+		prerequisite = { focus = utopia_manifesto_the_country_as_a_question }
+		available = { utopia_manifesto_can_pay_military_growth_foundation = yes }
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.foundation }
+			if = {
+				limit = { has_country_flag = utopia_manifesto_route_common_table }
+				set_temp_variable = { utopia_manifesto_military_formation_input = constant:utopia_manifesto_military_formation.worker_defense }
+			}
+			else = {
+				set_temp_variable = { utopia_manifesto_military_formation_input = constant:utopia_manifesto_military_formation.citizen_watch }
+			}
+			utopia_manifesto_apply_paid_military_growth = yes
+			set_country_flag = utopia_manifesto_citizen_watch
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_engineers_before_generals
+		icon = GFX_goal_utopia_engineers
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_WAR_SUPPORT }
+		x = 48
+		y = 7
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_the_citizen_watch }
+		available = { utopia_manifesto_can_pay_military_growth_foundation = yes }
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.foundation }
+			set_temp_variable = { utopia_manifesto_military_formation_input = constant:utopia_manifesto_military_formation.engineer_corps }
+			utopia_manifesto_apply_paid_military_growth = yes
+			set_country_flag = utopia_manifesto_engineer_defense
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_a_small_army_well_housed
+		icon = GFX_goal_utopia_defensive_drill
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_WAR_SUPPORT }
+		x = 50
+		y = 7
+		cost = @utopia_focus_long
+		prerequisite = { focus = utopia_manifesto_the_citizen_watch }
+		available = { utopia_manifesto_can_pay_military_growth_network = yes }
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.network }
+			set_temp_variable = { utopia_manifesto_military_formation_input = constant:utopia_manifesto_military_formation.professional_guard }
+			utopia_manifesto_apply_paid_military_growth = yes
+			set_country_flag = utopia_manifesto_small_professional_army
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_no_glory_in_the_field
+		icon = GFX_goal_utopia_no_glory
+		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_STABILITY }
+		x = 48
+		y = 8
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_engineers_before_generals }
+		mutually_exclusive = { focus = utopia_manifesto_necessary_victory }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_defensive_war_doctrine
+			set_country_flag = utopia_manifesto_strict_war_authorization
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = {
+			factor = @utopia_ai_high
+			modifier = {
+				factor = @utopia_ai_disabled_factor
+				has_country_flag = utopia_manifesto_route_closed_island
+			}
+		}
+	}
+
+	focus = {
+		id = utopia_manifesto_foreign_hands_in_our_wars
+		icon = GFX_goal_utopia_reinforcement_paths
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_WAR_SUPPORT }
+		x = 52
+		y = 8
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_a_small_army_well_housed }
+		available = { utopia_manifesto_has_valid_auxiliary_source = yes }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_auxiliary_contracts_unlocked
+			set_country_flag = utopia_manifesto_conduct_used_auxiliaries
+			set_country_flag = utopia_manifesto_auxiliary_dependency_active
+			utopia_manifesto_begin_auxiliary_dependency = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = {
+			factor = @utopia_ai_low
+			modifier = {
+				add = @utopia_ai_route_bonus
+				has_country_flag = utopia_manifesto_route_closed_island
+			}
+			modifier = {
+				add = @utopia_ai_route_bonus
+				has_war = yes
+			}
+		}
+	}
+
+	focus = {
+		id = utopia_manifesto_necessary_victory
+		icon = GFX_goal_utopia_necessary_war
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_WAR_SUPPORT }
+		x = 50
+		y = 8
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_a_small_army_well_housed }
+		mutually_exclusive = { focus = utopia_manifesto_no_glory_in_the_field }
+		available = { utopia_manifesto_has_valid_escalation_case = yes }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_necessary_victory_doctrine
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = {
+			factor = @utopia_ai_low
+			modifier = {
+				add = @utopia_ai_route_bonus
+				has_country_flag = utopia_manifesto_route_closed_island
+			}
+		}
+	}
+
+	focus = {
+		id = utopia_manifesto_end_the_auxiliary_contract
+		icon = GFX_goal_utopia_renunciation
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_STABILITY }
+		x = 52
+		y = 9
+		cost = @utopia_focus_short
+		prerequisite = { focus = utopia_manifesto_foreign_hands_in_our_wars }
+
+		completion_reward = {
+			clr_country_flag = utopia_manifesto_auxiliary_dependency_active
+			set_country_flag = utopia_manifesto_auxiliary_contract_ended
+			utopia_manifesto_resolve_auxiliary_dependency = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_normal }
+	}
+
+	focus = {
+		id = utopia_manifesto_commonwealth_defense_compact
+		icon = GFX_goal_utopia_guard_ledger
+		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_MANPOWER }
+		x = 50
+		y = 9
+		cost = @utopia_focus_long
+		prerequisite = {
+			focus = utopia_manifesto_no_glory_in_the_field
+			focus = utopia_manifesto_necessary_victory
+		}
+		prerequisite = { focus = utopia_manifesto_a_small_army_well_housed }
+		available = { utopia_manifesto_can_pay_military_growth_capstone = yes }
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.capstone }
+			set_temp_variable = { utopia_manifesto_military_formation_input = constant:utopia_manifesto_military_formation.league_defense }
+			utopia_manifesto_apply_paid_military_growth = yes
+			set_country_flag = utopia_manifesto_defense_compact_ready
+			set_country_flag = utopia_manifesto_defense_proof_complete
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+			utopia_manifesto_refresh_formation_proof = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	# ------------------------------------------------------------------------
+	# SHARED BRANCH - FOREIGN COMMONWEALTH
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = utopia_manifesto_show_the_stores
+		icon = GFX_goal_utopia_neighbors
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 20
+		y = 6
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_the_first_common_store }
+		prerequisite = { focus = utopia_manifesto_the_country_as_a_question }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_foreign_store_observers
+			utopia_manifesto_unlock_league_decisions = yes
+			set_temp_variable = { utopia_manifesto_decision_phase_input = constant:utopia_manifesto_decision_phase.league }
+			utopia_manifesto_set_decision_phase = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_normal }
+	}
+
+	focus = {
+		id = utopia_manifesto_offer_the_first_surplus
+		icon = GFX_goal_utopia_foreign_aid
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 6
+		y = 7
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_show_the_stores }
+		available = { utopia_manifesto_has_exportable_surplus = yes }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_first_surplus_offered
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_normal }
+	}
+
+	focus = {
+		id = utopia_manifesto_houses_across_borders
+		icon = GFX_goal_utopia_friends
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 8
+		y = 7
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_show_the_stores }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_cross_border_municipal_partnerships
+			set_country_flag = utopia_manifesto_voluntary_migration_corridors
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_normal }
+	}
+
+	focus = {
+		id = utopia_manifesto_a_league_of_small_places
+		icon = GFX_goal_utopia_league
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 8
+		y = 8
+		cost = @utopia_focus_long
+		prerequisite = { focus = utopia_manifesto_offer_the_first_surplus }
+		prerequisite = { focus = utopia_manifesto_houses_across_borders }
+		available = { utopia_manifesto_has_eligible_league_partner = yes }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_small_places_compact_framework
+			utopia_manifesto_unlock_league_decisions = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_common_reserve_council
+		icon = GFX_goal_utopia_aid_corridors
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		x = 15
+		y = 9
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_a_league_of_small_places }
+		available = { utopia_manifesto_can_pay_institutional_growth_network = yes }
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.network }
+			utopia_manifesto_apply_paid_institutional_growth = yes
+			set_country_flag = utopia_manifesto_common_reserve_council
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_mutual_defense_without_mastery
+		icon = GFX_goal_utopia_no_secret_empire
+		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_POLITICAL }
+		x = 13
+		y = 9
+		cost = @utopia_focus_long
+		prerequisite = { focus = utopia_manifesto_a_league_of_small_places }
+		available = {
+			utopia_manifesto_can_pay_military_growth_network = yes
+			utopia_manifesto_has_defense_compact_partner = yes
+		}
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.network }
+			set_temp_variable = { utopia_manifesto_military_formation_input = constant:utopia_manifesto_military_formation.league_defense }
+			utopia_manifesto_apply_paid_military_growth = yes
+			set_country_flag = utopia_manifesto_mutual_defense_without_mastery
+			set_country_flag = utopia_manifesto_member_sovereignty_protected
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_the_regional_commonwealth
+		icon = GFX_goal_utopia_storehouses_abroad
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 15
+		y = 10
+		cost = @utopia_focus_long
+		prerequisite = { focus = utopia_manifesto_common_reserve_council }
+		prerequisite = { focus = utopia_manifesto_mutual_defense_without_mastery }
+		available = { utopia_manifesto_super_event_network_threshold_met = yes }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_regional_commonwealth
+			set_country_flag = utopia_manifesto_regional_commonwealth_objective_complete
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+			utopia_manifesto_refresh_formation_proof = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	# ------------------------------------------------------------------------
+	# SHARED BRANCH - NECESSARY GROUND
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = utopia_manifesto_survey_what_we_lack
+		icon = GFX_goal_utopia_prove_need
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 34
+		y = 6
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_count_houses_and_hands }
+		prerequisite = { focus = utopia_manifesto_the_country_as_a_question }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_need_case_surveys
+			utopia_manifesto_unlock_necessary_ground_decisions = yes
+			set_temp_variable = { utopia_manifesto_decision_phase_input = constant:utopia_manifesto_decision_phase.necessary_ground }
+			utopia_manifesto_set_decision_phase = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_survey_domestic_alternatives
+		icon = GFX_goal_utopia_survey_idle_soil
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 38
+		y = 7
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_survey_what_we_lack }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_domestic_alternatives_required
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_ask_before_we_demand
+		icon = GFX_goal_utopia_arbitration_tables
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 42
+		y = 7
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_survey_what_we_lack }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_peaceful_offer_ladder
+			set_country_flag = utopia_manifesto_purchase_lease_joint_rule_enabled
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_ground_held_in_trust
+		icon = GFX_goal_utopia_settlement_charter
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 38
+		y = 8
+		cost = @utopia_focus_long
+		prerequisite = { focus = utopia_manifesto_survey_domestic_alternatives }
+		prerequisite = { focus = utopia_manifesto_ask_before_we_demand }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_ground_held_in_trust
+			utopia_manifesto_unlock_stewardship_decisions = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_the_limit_of_need
+		icon = GFX_goal_utopia_need_not_conquest
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 40
+		y = 8
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_ask_before_we_demand }
+		mutually_exclusive = { focus = utopia_manifesto_the_natural_right }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_claim_expiry_required
+			set_country_flag = utopia_manifesto_false_case_renunciation
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = {
+			factor = @utopia_ai_high
+			modifier = {
+				factor = @utopia_ai_disabled_factor
+				has_country_flag = utopia_manifesto_route_closed_island
+			}
+		}
+	}
+
+	focus = {
+		id = utopia_manifesto_the_natural_right
+		icon = GFX_goal_utopia_necessary_war
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_WAR_SUPPORT }
+		x = 42
+		y = 8
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_ask_before_we_demand }
+		mutually_exclusive = { focus = utopia_manifesto_the_limit_of_need }
+		available = { utopia_manifesto_can_take_coercive_need_fork = yes }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_coercive_case_escalation
+			set_country_flag = utopia_manifesto_ultimatum_requires_case_integrity
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.medium }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = {
+			factor = @utopia_ai_low
+			modifier = {
+				add = @utopia_ai_route_bonus
+				has_country_flag = utopia_manifesto_route_closed_island
+			}
+		}
+	}
+
+	focus = {
+		id = utopia_manifesto_the_first_associate
+		icon = GFX_goal_utopia_common_administration
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 40
+		y = 9
+		cost = @utopia_focus_long
+		prerequisite = { focus = utopia_manifesto_ground_held_in_trust }
+		prerequisite = {
+			focus = utopia_manifesto_the_limit_of_need
+			focus = utopia_manifesto_the_natural_right
+		}
+		available = {
+			utopia_manifesto_has_resolved_first_need_case = yes
+			has_country_flag = utopia_manifesto_first_associate_recognized
+		}
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_first_external_case_resolved
+			set_temp_variable = { utopia_manifesto_decision_phase_input = constant:utopia_manifesto_decision_phase.route }
+			utopia_manifesto_set_decision_phase = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+			utopia_manifesto_refresh_formation_proof = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_a_commonwealth_of_places
+		icon = GFX_goal_utopia_friends
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 41
+		y = 10
+		cost = @utopia_focus_long
+		prerequisite = { focus = utopia_manifesto_the_first_associate }
+		available = { utopia_manifesto_has_valid_associate_network = yes }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_commonwealth_of_places
+			utopia_manifesto_unlock_league_decisions = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+			utopia_manifesto_refresh_formation_proof = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	# ------------------------------------------------------------------------
+	# SHARED BRANCH - STEWARDSHIP AND STATUS
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = utopia_manifesto_stewardship_obligations
+		icon = GFX_goal_utopia_common_administration
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 35
+		y = 9
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_ground_held_in_trust }
+		available = { utopia_manifesto_has_stewardship_obligation = yes }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_stewardship_obligations
+			utopia_manifesto_unlock_stewardship_decisions = yes
+			utopia_manifesto_begin_stewardship_burden = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_emergency_provision
+		icon = GFX_goal_utopia_crisis_rations
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 33
+		y = 10
+		cost = @utopia_focus_short
+		prerequisite = { focus = utopia_manifesto_stewardship_obligations }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_stewardship_emergency_provision
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_urgent }
+	}
+
+	focus = {
+		id = utopia_manifesto_restore_the_route
+		icon = GFX_goal_utopia_routes
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 35
+		y = 10
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_stewardship_obligations }
+		available = { utopia_manifesto_can_pay_institutional_growth_foundation = yes }
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.foundation }
+			utopia_manifesto_apply_paid_institutional_growth = yes
+			set_country_flag = utopia_manifesto_stewardship_route_restored
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_convene_the_local_charter
+		icon = GFX_goal_utopia_settlement_charter
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 32
+		y = 11
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_emergency_provision }
+		prerequisite = { focus = utopia_manifesto_restore_the_route }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_stewardship_charter_convened
+			set_country_flag = utopia_manifesto_local_status_review_required
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_the_charter_period
+		icon = GFX_goal_utopia_registers
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 28
+		y = 12
+		cost = @utopia_focus_long
+		prerequisite = { focus = utopia_manifesto_convene_the_local_charter }
+		available = { utopia_manifesto_stewardship_charter_period_met = yes }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_stewardship_charter_period_complete
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_status_by_consent
+		icon = GFX_goal_utopia_assemblies
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 20
+		y = 13
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_the_charter_period }
+		available = { utopia_manifesto_stewardship_status_vote_ready = yes }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_stewardship_status_vote_enabled
+			utopia_manifesto_resolve_stewardship_burden = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+			utopia_manifesto_refresh_formation_proof = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	# ------------------------------------------------------------------------
+	# TEMPORARY CONSTITUTIONAL CRISIS AND ROUTE CORRECTION
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = utopia_manifesto_the_founding_crisis
+		icon = GFX_goal_utopia_crisis_rations
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 32
+		y = 6
+		cost = @utopia_focus_short
+		prerequisite = { focus = utopia_manifesto_the_country_as_a_question }
+		allow_branch = { has_country_flag = utopia_manifesto_constitutional_crisis }
+		available = { has_country_flag = utopia_manifesto_constitutional_crisis }
+
+		completion_reward = {
+			utopia_manifesto_enter_constitutional_crisis = yes
+			set_country_flag = utopia_manifesto_crisis_branch_entered
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_urgent }
+	}
+
+	focus = {
+		id = utopia_manifesto_restore_consent
+		icon = GFX_goal_utopia_assemblies
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 34
+		y = 7
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_the_founding_crisis }
+		mutually_exclusive = {
+			focus = utopia_manifesto_empower_the_councils
+			focus = utopia_manifesto_give_the_surveyors_authority
+			focus = utopia_manifesto_seal_the_island
+			focus = utopia_manifesto_admit_the_book_was_a_question
+		}
+		allow_branch = { has_country_flag = utopia_manifesto_constitutional_crisis }
+		available = { has_country_flag = utopia_manifesto_constitutional_crisis }
+
+		completion_reward = {
+			utopia_manifesto_set_consent_of_households_route = yes
+			utopia_manifesto_commit_current_route_identity = yes
+			set_country_flag = utopia_manifesto_crisis_corrected_by_consent
+			unlock_national_focus = utopia_manifesto_household_gives_consent
+			utopia_manifesto_resolve_constitutional_crisis = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = {
+			factor = @utopia_ai_normal
+			modifier = {
+				add = @utopia_ai_route_bonus
+				utopia_manifesto_ai_prefers_consent_route = yes
+			}
+			modifier = {
+				factor = @utopia_ai_route_avoid_factor
+				utopia_manifesto_ai_avoids_consent_route = yes
+			}
+		}
+	}
+
+	focus = {
+		id = utopia_manifesto_empower_the_councils
+		icon = GFX_goal_utopia_councils
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 28
+		y = 7
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_the_founding_crisis }
+		mutually_exclusive = {
+			focus = utopia_manifesto_restore_consent
+			focus = utopia_manifesto_give_the_surveyors_authority
+			focus = utopia_manifesto_seal_the_island
+			focus = utopia_manifesto_admit_the_book_was_a_question
+		}
+		allow_branch = { has_country_flag = utopia_manifesto_constitutional_crisis }
+		available = { has_country_flag = utopia_manifesto_constitutional_crisis }
+
+		completion_reward = {
+			utopia_manifesto_set_common_table_route = yes
+			utopia_manifesto_commit_current_route_identity = yes
+			set_country_flag = utopia_manifesto_crisis_corrected_by_councils
+			unlock_national_focus = utopia_manifesto_nothing_private_in_necessity
+			utopia_manifesto_resolve_constitutional_crisis = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = {
+			factor = @utopia_ai_normal
+			modifier = {
+				add = @utopia_ai_route_bonus
+				utopia_manifesto_ai_prefers_common_table_route = yes
+			}
+			modifier = {
+				factor = @utopia_ai_route_avoid_factor
+				utopia_manifesto_ai_avoids_common_table_route = yes
+			}
+		}
+	}
+
+	focus = {
+		id = utopia_manifesto_give_the_surveyors_authority
+		icon = GFX_goal_utopia_measures
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		x = 26
+		y = 7
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_the_founding_crisis }
+		mutually_exclusive = {
+			focus = utopia_manifesto_restore_consent
+			focus = utopia_manifesto_empower_the_councils
+			focus = utopia_manifesto_seal_the_island
+			focus = utopia_manifesto_admit_the_book_was_a_question
+		}
+		allow_branch = { has_country_flag = utopia_manifesto_constitutional_crisis }
+		available = { has_country_flag = utopia_manifesto_constitutional_crisis }
+
+		completion_reward = {
+			utopia_manifesto_set_guardians_of_measure_route = yes
+			utopia_manifesto_commit_current_route_identity = yes
+			set_country_flag = utopia_manifesto_crisis_corrected_by_measure
+			unlock_national_focus = utopia_manifesto_country_measured
+			utopia_manifesto_resolve_constitutional_crisis = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.small }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = {
+			factor = @utopia_ai_normal
+			modifier = {
+				add = @utopia_ai_route_bonus
+				utopia_manifesto_ai_prefers_guardians_route = yes
+			}
+			modifier = {
+				factor = @utopia_ai_route_avoid_factor
+				utopia_manifesto_ai_avoids_guardians_route = yes
+			}
+		}
+	}
+
+	focus = {
+		id = utopia_manifesto_seal_the_island
+		icon = GFX_goal_utopia_island_discipline
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+		x = 40
+		y = 7
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_the_founding_crisis }
+		mutually_exclusive = {
+			focus = utopia_manifesto_restore_consent
+			focus = utopia_manifesto_empower_the_councils
+			focus = utopia_manifesto_give_the_surveyors_authority
+			focus = utopia_manifesto_admit_the_book_was_a_question
+		}
+		allow_branch = { has_country_flag = utopia_manifesto_constitutional_crisis }
+		available = { has_country_flag = utopia_manifesto_constitutional_crisis }
+
+		completion_reward = {
+			utopia_manifesto_set_closed_island_route = yes
+			utopia_manifesto_commit_current_route_identity = yes
+			set_country_flag = utopia_manifesto_crisis_corrected_by_separation
+			unlock_national_focus = utopia_manifesto_one_island_one_measure
+			utopia_manifesto_resolve_constitutional_crisis = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.medium }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = {
+			factor = @utopia_ai_normal
+			modifier = {
+				add = @utopia_ai_route_bonus
+				utopia_manifesto_ai_prefers_closed_island_route = yes
+			}
+			modifier = {
+				factor = @utopia_ai_route_avoid_factor
+				utopia_manifesto_ai_avoids_closed_island_route = yes
+			}
+		}
+	}
+
+	focus = {
+		id = utopia_manifesto_admit_the_book_was_a_question
+		icon = GFX_goal_utopia_paper_utopia
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 36
+		y = 7
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_the_founding_crisis }
+		mutually_exclusive = {
+			focus = utopia_manifesto_restore_consent
+			focus = utopia_manifesto_empower_the_councils
+			focus = utopia_manifesto_give_the_surveyors_authority
+			focus = utopia_manifesto_seal_the_island
+		}
+		allow_branch = { utopia_manifesto_can_reveal_joke_understood = yes }
+		available = {
+			has_country_flag = utopia_manifesto_constitutional_crisis
+			utopia_manifesto_can_reveal_joke_understood = yes
+		}
+
+		completion_reward = {
+			utopia_manifesto_set_joke_understood_route = yes
+			utopia_manifesto_commit_current_route_identity = yes
+			set_country_flag = utopia_manifesto_crisis_corrected_by_revision
+			unlock_national_focus = utopia_manifesto_read_island_as_a_mirror
+			utopia_manifesto_resolve_constitutional_crisis = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = {
+			factor = @utopia_ai_hidden
+			modifier = {
+				add = @utopia_ai_route_bonus
+				utopia_manifesto_ai_prefers_joke_understood_route = yes
+			}
+			modifier = {
+				factor = @utopia_ai_route_avoid_factor
+				utopia_manifesto_ai_avoids_joke_understood_route = yes
+			}
+		}
+	}
+
+	focus = {
+		id = utopia_manifesto_a_settled_interim_charter
+		icon = GFX_goal_utopia_guild_charter
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 30
+		y = 8
+		cost = @utopia_focus_short
+		prerequisite = {
+			focus = utopia_manifesto_restore_consent
+			focus = utopia_manifesto_empower_the_councils
+			focus = utopia_manifesto_give_the_surveyors_authority
+			focus = utopia_manifesto_seal_the_island
+			focus = utopia_manifesto_admit_the_book_was_a_question
+		}
+		allow_branch = { has_country_flag = utopia_manifesto_constitutional_crisis_resolved }
+		available = { has_country_flag = utopia_manifesto_constitutional_crisis_resolved }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_interim_charter_settled
+			set_temp_variable = { utopia_manifesto_decision_phase_input = constant:utopia_manifesto_decision_phase.route }
+			utopia_manifesto_set_decision_phase = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_urgent }
+	}
+
+	# ------------------------------------------------------------------------
+	# FORMATION PROOF AND POST-FORMATION PLAY
+	# ------------------------------------------------------------------------
+
+	focus = {
+		id = utopia_manifesto_proof_of_the_commonwealth
+		icon = GFX_goal_utopia_proclamation
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 23
+		y = 13
+		cost = @utopia_focus_long
+		prerequisite = {
+			focus = utopia_manifesto_commonwealth_by_consent
+			focus = utopia_manifesto_union_of_tables
+			focus = utopia_manifesto_perfect_measure
+			focus = utopia_manifesto_perfect_island
+			focus = utopia_manifesto_good_place_that_admits_its_limits
+		}
+		prerequisite = {
+			focus = utopia_manifesto_the_island_made_real
+			focus = utopia_manifesto_a_ring_of_social_cities
+		}
+		prerequisite = { focus = utopia_manifesto_the_first_associate }
+		available = { utopia_manifesto_can_form_current_route = yes }
+
+		completion_reward = {
+			utopia_manifesto_refresh_formation_proof = yes
+			utopia_manifesto_unlock_formation_decisions = yes
+			set_country_flag = utopia_manifesto_formation_proof_presented
+			set_temp_variable = { utopia_manifesto_decision_phase_input = constant:utopia_manifesto_decision_phase.formation }
+			utopia_manifesto_set_decision_phase = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_urgent }
+	}
+
+	focus = {
+		id = utopia_manifesto_the_regional_proclamation
+		icon = GFX_goal_utopia_proclamation
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 23
+		y = 14
+		cost = @utopia_focus_standard
+		prerequisite = { focus = utopia_manifesto_proof_of_the_commonwealth }
+		available = {
+			has_country_flag = utopia_manifesto_commonwealth_formed
+			utopia_manifesto_super_event_network_threshold_met = yes
+		}
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_regional_proclamation_ready
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_integrate_the_ring
+		icon = GFX_goal_utopia_ring_councils
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 20
+		y = 14
+		cost = @utopia_focus_long
+		prerequisite = { focus = utopia_manifesto_proof_of_the_commonwealth }
+		available = {
+			has_country_flag = utopia_manifesto_commonwealth_formed
+			utopia_manifesto_can_pay_institutional_growth_network = yes
+		}
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.network }
+			utopia_manifesto_apply_paid_institutional_growth = yes
+			set_country_flag = utopia_manifesto_ring_integrated
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_small }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_the_second_generation
+		icon = GFX_goal_utopia_learning
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_STABILITY }
+		x = 25
+		y = 14
+		cost = @utopia_focus_long
+		prerequisite = { focus = utopia_manifesto_proof_of_the_commonwealth }
+		available = { has_country_flag = utopia_manifesto_commonwealth_formed }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_second_generation
+			utopia_manifesto_advance_current_route_succession = yes
+			utopia_manifesto_clear_found_manifesto_idea_stages = yes
+			utopia_manifesto_clear_unmeasured_country_idea_stages = yes
+			utopia_manifesto_clear_inherited_order_idea_stages = yes
+			set_temp_variable = { utopia_manifesto_decision_phase_input = constant:utopia_manifesto_decision_phase.mature }
+			utopia_manifesto_set_decision_phase = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_a_rule_for_need
+		icon = GFX_goal_utopia_need_not_conquest
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 27
+		y = 14
+		cost = @utopia_focus_long
+		prerequisite = { focus = utopia_manifesto_proof_of_the_commonwealth }
+		available = { has_country_flag = utopia_manifesto_commonwealth_formed }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_mature_need_law
+			if = {
+				limit = { has_country_flag = utopia_manifesto_route_closed_island }
+				set_country_flag = utopia_manifesto_case_expansion_law
+				clr_country_flag = utopia_manifesto_case_limit_law
+			}
+			else = {
+				set_country_flag = utopia_manifesto_case_limit_law
+				clr_country_flag = utopia_manifesto_case_expansion_law
+			}
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+
+	focus = {
+		id = utopia_manifesto_beyond_the_founders_island
+		icon = GFX_goal_utopia_storehouses_abroad
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 21
+		y = 15
+		cost = @utopia_focus_long
+		prerequisite = { focus = utopia_manifesto_integrate_the_ring }
+		prerequisite = { focus = utopia_manifesto_the_second_generation }
+		available = { has_country_flag = utopia_manifesto_commonwealth_formed }
+
+		completion_reward = {
+			set_country_flag = utopia_manifesto_beyond_founders_island
+			utopia_manifesto_unlock_league_decisions = yes
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_normal }
+	}
+
+	focus = {
+		id = utopia_manifesto_the_commonwealth_at_war
+		icon = GFX_goal_utopia_guard_ledger
+		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_MANPOWER }
+		x = 27
+		y = 15
+		cost = @utopia_focus_long
+		prerequisite = { focus = utopia_manifesto_the_second_generation }
+		prerequisite = { focus = utopia_manifesto_a_rule_for_need }
+		available = {
+			has_country_flag = utopia_manifesto_commonwealth_formed
+			utopia_manifesto_can_pay_military_growth_capstone = yes
+		}
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.capstone }
+			set_temp_variable = { utopia_manifesto_military_formation_input = constant:utopia_manifesto_military_formation.commonwealth_guard }
+			utopia_manifesto_apply_paid_military_growth = yes
+			set_country_flag = utopia_manifesto_mature_war_rules
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.zero }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.negative_tiny }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_narrative_delta.tiny }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+		}
+
+		ai_will_do = {
+			factor = @utopia_ai_normal
+			modifier = {
+				add = @utopia_ai_route_bonus
+				has_war = yes
+			}
+		}
+	}
+
+	focus = {
+		id = utopia_manifesto_plenty_in_an_age_of_chaos
+		icon = GFX_goal_utopia_manifesto_survives
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		x = 22
+		y = 16
+		cost = @utopia_focus_long
+		prerequisite = { focus = utopia_manifesto_beyond_the_founders_island }
+		prerequisite = { focus = utopia_manifesto_the_commonwealth_at_war }
+		available = {
+			has_country_flag = utopia_manifesto_commonwealth_formed
+			utopia_manifesto_can_pay_institutional_growth_capstone = yes
+		}
+
+		completion_reward = {
+			set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_tier.capstone }
+			utopia_manifesto_apply_paid_institutional_growth = yes
+			set_country_flag = utopia_manifesto_mature_commonwealth
+			set_country_flag = utopia_manifesto_plenty_survives_chaos
+			set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_narrative_delta.negative_medium }
+			set_temp_variable = { utopia_manifesto_plenty_delta = constant:utopia_manifesto_narrative_delta.medium }
+			set_temp_variable = { utopia_manifesto_concord_delta = constant:utopia_manifesto_narrative_delta.small }
+			set_temp_variable = { utopia_manifesto_assignment_delta = constant:utopia_manifesto_math.zero }
+			utopia_manifesto_apply_prepared_ledger_delta = yes
+			utopia_manifesto_refresh_formation_proof = yes
+		}
+
+		ai_will_do = { factor = @utopia_ai_high }
+	}
+ }

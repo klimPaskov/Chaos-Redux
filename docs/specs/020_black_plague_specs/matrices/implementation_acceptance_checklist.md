@@ -30,7 +30,7 @@ A completion auditor should mark each item Complete, Partial, Blocked, or Missin
 - [ ] city rat clearing, granary and warehouse sealing, sewer and burrow clearance, shelter treatment, transport-hub vermin purge, and infested-block demolition are implemented
 - [ ] global strain, country, state, and list views align
 - [ ] mapmode refreshes on every relevant transition
-- [ ] every established Black Plague state uses a black base colour when Black Plague is selected
+- [ ] every established Black Plague state visible to the mapmode player uses a black base colour regardless of the shared board's selected disease tab
 - [ ] phase, containment, weaponized, and rat-control information remains readable through outlines, icons, patterns, and tooltips
 - [ ] prepared, exposed, infected, contained, recovery, and cured actions change dynamically
 - [ ] costs use equipment, transport, factories, units, supply, stability, war support, and other fitting sacrifices

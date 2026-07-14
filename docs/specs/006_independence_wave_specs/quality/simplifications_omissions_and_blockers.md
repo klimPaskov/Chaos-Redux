@@ -2,7 +2,7 @@
 
 ## Planning scope
 
-This package is a source specification. It does not contain gameplay implementation, final localisation, produced visual assets, produced audio, or an edited event catalog workbook.
+This package is a source specification. It does not contain complete gameplay implementation, final localisation, produced visual assets, final audio derivatives, or an edited event catalog workbook. The verified original `6002` source is preserved under the Event 6 documentation asset tree, but it is not a game-ready derivative.
 
 The planning output was not shortened or reduced to a quick outline. It contains seven specification parts, nine original matrix CSVs, four design diagrams, twelve research deliverables, seven implementation and production prompts, a 206-package candidate registry, fourteen regional overlays, forty-eight formable families, fifty-nine decision and mission entries, twenty-four AI profiles, forty-eight asset families, and sixteen achievements.
 
@@ -26,11 +26,11 @@ The following items are implementation or production work. Their design and sour
 
 ### Tags
 
-Every candidate has a resolved registered or reserved tag in the tag audit and package resolution matrix. All new Event 6 tags are unique and end in `X`. The dated audit found no collision with the current Chaos Redux registry or the public vanilla baseline. A final installed-game and repository scan remains a version-binding implementation check.
+Every candidate has a resolved registered or reserved tag in the tag audit and package resolution matrix. All new Event 6 tags are unique and end in `X`. The 2026-07-14 scan found all 78 reused tags registered and no collision for any of the 128 reserved new tags. This result is binding for that registry snapshot and must be repeated if the installed or mod registries change.
 
 ### State IDs and borders
 
-Every package has a public-baseline state ID or an explicit no-unique-state outcome, a named anchor, and a reservation group. Coarse-map packages are restricted to conditional, formable, specific-community, or scenario use. The installed game and mod state files must rebind the dated public IDs and confirm capitals, cores, claims, and host remnants.
+Every package has a public-baseline state ID or an explicit no-unique-state outcome, a named anchor, and a reservation group. Coarse-map packages are restricted to conditional, formable, specific-community, or scenario use. The 2026-07-14 installed-map binding leaves 149 packages bound and 57 unbound. Its 14 collision rows include one unresolved automatic conflict at Trabzon and one required route exclusion at Kashmir. Runtime capital and host-remnant protection still must be calculated from the live world state.
 
 ### Final focus count and layout
 
@@ -46,7 +46,7 @@ All titles and labels in the source specification are working labels. Event text
 
 ### Super-event production
 
-Final titles, descriptions, buttons, short sourced quotes, attribution, two unique public-domain recordings, segment plans, and final path direction are approved. The OGG files, super-event images, sound definitions, GFX, localisation wiring, and settings-aware playback remain production work.
+Final titles, corrected descriptions, buttons, short sourced quotes, attribution, two musical selections, segment plans, and final path direction are approved. The exact `6001` London Brass Players recording is blocked for United States redistribution. It must not be processed or wired without permission or a waiver. The `6002` United States Marine Band source is verified and preserved, but its OGG and WAV derivatives, super-event images, sound definitions, GFX, localisation wiring, and settings-aware playback remain production work.
 
 ### Visual assets
 
@@ -62,14 +62,12 @@ No Clausewitz files were edited. No parser, game load, live scenario, focus-tree
 
 ## Research status
 
-The design-level research blockers are closed. Every package has a final research disposition and source packet. Packages that are unsafe on the coarse map are intentionally restricted rather than left vague. Final asset provenance, installed-map rebinding, and implementation validation remain separate tasks.
+Every package has a final research disposition and source packet. Packages that are unsafe on the current map are intentionally restricted or unbound rather than replaced by broad geography. Installed-map rebinding and the current tag scan are complete for the 2026-07-14 snapshot. Final asset provenance, the `6001` rights blocker, the two cross-group reservation decisions, and implementation validation remain explicit tasks.
 
-## Subagent blocker
+## Subagent status
 
-The project defines custom Codex subagents, but this environment exposed no custom subagent execution tool. No custom subagent was actually spawned. Their instructions were fully read, applied to the package structure, and converted into bounded ready-to-run briefs.
-
-The manual improvement-loop review does not substitute for the required implementation-stage audits. The named auditors must still be run after their corresponding gameplay surfaces exist.
+Bounded Event 6 map, architecture, collision, asset, and super-event research handoffs are stored under `../../../plans/006_independence_wave_plans/`. Their promotion, queue, blocker, supersession, rejection, and unresolved states are recorded in `../../../plans/006_independence_wave_plans/006_source_of_truth_map.md`. The manual improvement-loop review and research handoffs do not substitute for the required implementation-stage audits. The named auditors must still be run after their corresponding gameplay surfaces exist.
 
 ## Packaging status
 
-No source file supplied by the project was skipped or left partially read. No generated specification part was truncated for speed. The final ZIP contains the complete planning package present in this folder at packaging time.
+The 2026-07-10 package manifest is reconciled in the same change as the promoted documentation. Plan artifacts and preserved source media remain outside that specification-package checksum boundary.

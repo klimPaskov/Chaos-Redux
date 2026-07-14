@@ -1,0 +1,115 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 015 COMMONWEALTH LEDGER SCRIPTED GUI
+# ============================================================================
+# Provides four player-facing pages for the Ledger overview, national callings,
+# stores and settlements, and Necessary Ground with associates. Gameplay actions
+# remain in the mapped decision families so costs, duration, AI, and cleanup stay
+# identical for visible and AI-controlled countries.
+# ============================================================================
+
+scripted_gui = {
+	utopia_manifesto_ledger_scripted_gui = {
+		context_type = decision_category
+		window_name = "utopia_manifesto_ledger_container"
+
+		ai_enabled = { always = no }
+		visible = {
+			is_ai = no
+			has_country_flag = utopia_manifesto_ledger_visible
+		}
+
+		effects = {
+			utopia_ledger_refresh_button_click = {
+				utopia_manifesto_refresh_ledger = yes
+				utopia_manifesto_refresh_stewardship_proof = yes
+				utopia_manifesto_refresh_league_state = yes
+				utopia_manifesto_refresh_formation_proof = yes
+			}
+			utopia_ledger_tab_overview_button_click = {
+				set_country_flag = utopia_manifesto_ledger_tab_overview
+				clr_country_flag = utopia_manifesto_ledger_tab_callings
+				clr_country_flag = utopia_manifesto_ledger_tab_stores
+				clr_country_flag = utopia_manifesto_ledger_tab_ground
+			}
+			utopia_ledger_tab_callings_button_click = {
+				clr_country_flag = utopia_manifesto_ledger_tab_overview
+				set_country_flag = utopia_manifesto_ledger_tab_callings
+				clr_country_flag = utopia_manifesto_ledger_tab_stores
+				clr_country_flag = utopia_manifesto_ledger_tab_ground
+			}
+			utopia_ledger_tab_stores_button_click = {
+				clr_country_flag = utopia_manifesto_ledger_tab_overview
+				clr_country_flag = utopia_manifesto_ledger_tab_callings
+				set_country_flag = utopia_manifesto_ledger_tab_stores
+				clr_country_flag = utopia_manifesto_ledger_tab_ground
+			}
+			utopia_ledger_tab_ground_button_click = {
+				clr_country_flag = utopia_manifesto_ledger_tab_overview
+				clr_country_flag = utopia_manifesto_ledger_tab_callings
+				clr_country_flag = utopia_manifesto_ledger_tab_stores
+				set_country_flag = utopia_manifesto_ledger_tab_ground
+			}
+		}
+
+		triggers = {
+			utopia_ledger_refresh_button_click_enabled = {
+				has_country_flag = utopia_manifesto_ledger_visible
+			}
+			utopia_ledger_tab_overview_button_click_enabled = { always = yes }
+			utopia_ledger_tab_callings_button_click_enabled = { always = yes }
+			utopia_ledger_tab_stores_button_click_enabled = { always = yes }
+			utopia_ledger_tab_ground_button_click_enabled = { always = yes }
+
+			utopia_ledger_overview_panel_visible = {
+				OR = {
+					has_country_flag = utopia_manifesto_ledger_tab_overview
+					AND = {
+						NOT = { has_country_flag = utopia_manifesto_ledger_tab_callings }
+						NOT = { has_country_flag = utopia_manifesto_ledger_tab_stores }
+						NOT = { has_country_flag = utopia_manifesto_ledger_tab_ground }
+					}
+				}
+			}
+			utopia_ledger_callings_panel_visible = { has_country_flag = utopia_manifesto_ledger_tab_callings }
+			utopia_ledger_stores_panel_visible = { has_country_flag = utopia_manifesto_ledger_tab_stores }
+			utopia_ledger_ground_panel_visible = { has_country_flag = utopia_manifesto_ledger_tab_ground }
+
+			utopia_ledger_need_warning_visible = {
+				OR = {
+					utopia_manifesto_need_is_high = yes
+					utopia_manifesto_plenty_is_low = yes
+					has_country_flag = utopia_manifesto_constitutional_crisis
+				}
+			}
+			utopia_ledger_seal_visible = {
+				NOR = {
+					has_country_flag = utopia_manifesto_identity_household_congress_emblem
+					has_country_flag = utopia_manifesto_identity_common_tables_emblem
+					has_country_flag = utopia_manifesto_identity_network_directorate_emblem
+					has_country_flag = utopia_manifesto_identity_island_hierarchy_emblem
+					has_country_flag = utopia_manifesto_identity_plural_compact_emblem
+				}
+			}
+			utopia_ledger_household_congress_emblem_visible = {
+				has_country_flag = utopia_manifesto_identity_household_congress_emblem
+			}
+			utopia_ledger_common_tables_emblem_visible = {
+				has_country_flag = utopia_manifesto_identity_common_tables_emblem
+			}
+			utopia_ledger_network_directorate_emblem_visible = {
+				has_country_flag = utopia_manifesto_identity_network_directorate_emblem
+			}
+			utopia_ledger_island_hierarchy_emblem_visible = {
+				has_country_flag = utopia_manifesto_identity_island_hierarchy_emblem
+			}
+			utopia_ledger_plural_compact_emblem_visible = {
+				has_country_flag = utopia_manifesto_identity_plural_compact_emblem
+			}
+			utopia_ledger_reserve_fill_visible = { has_variable = utopia_reserve_band }
+			utopia_ledger_formation_ready_seal_visible = {
+				utopia_manifesto_can_form_current_route = yes
+				NOT = { has_country_flag = utopia_manifesto_commonwealth_formed }
+			}
+		}
+	}
+}

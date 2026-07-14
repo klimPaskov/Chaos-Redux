@@ -187,6 +187,8 @@ brilliant_scientist_prepare_host_selection_weight = {
 				has_facility_specialization = specialization_air
 				has_facility_specialization = specialization_land
 				has_facility_specialization = specialization_naval
+				has_facility_specialization = specialization_biowarfare
+				has_facility_specialization = specialization_cw
 			}
 		}
 		add_to_temp_variable = { brilliant_scientist_host_selection_weight = constant:brilliant_scientist_host_selection.special_project_facility_bonus }
@@ -362,6 +364,8 @@ brilliant_scientist_prepare_send_away_selection_weight = {
 				has_facility_specialization = specialization_air
 				has_facility_specialization = specialization_land
 				has_facility_specialization = specialization_naval
+				has_facility_specialization = specialization_biowarfare
+				has_facility_specialization = specialization_cw
 			}
 		}
 		add_to_temp_variable = { brilliant_scientist_send_away_selection_weight = constant:brilliant_scientist_send_away_selection.special_project_facility_bonus }
@@ -2304,6 +2308,110 @@ brilliant_scientist_load_project_cost_and_duration = {
 # Fixed-character role and atomic transfer contracts
 # ---------------------------------------------------------------------------
 
+# COUNTRY scope on the final accepting host. The opening history row is
+# recorded by the shared dispatcher. Human choice resolves after that row;
+# AI choice can resolve before it, so the pending flag is consumed by whichever
+# side of that ordering runs second.
+brilliant_scientist_finalize_pending_prefire_opening = {
+	if = {
+		limit = { has_country_flag = brilliant_scientist_prefire_opening_pending }
+		brilliant_scientist_record_prefire_evolved_opening = yes
+		clr_country_flag = brilliant_scientist_prefire_opening_pending
+	}
+}
+
+# COUNTRY scope. Input: temporary brilliant_scientist_recruitment_posture.
+# Output: temporary brilliant_scientist_opening_appointment_committed.
+# This is the only first-recruit path for the fixed Kruger token.
+brilliant_scientist_appoint_kruger_from_opening = {
+	set_temp_variable = { brilliant_scientist_opening_appointment_committed = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_opening_history_was_ready = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = { has_global_flag = brilliant_scientist_history_actor_rebind_pending }
+		set_temp_variable = { brilliant_scientist_opening_history_was_ready = constant:brilliant_scientist_value.one }
+	}
+	if = {
+		limit = {
+			brilliant_scientist_is_eligible_host = yes
+			NOT = { has_global_flag = brilliant_scientist_event_resolved }
+			NOT = { has_global_flag = brilliant_scientist_character_transaction_lock }
+			NOT = { has_country_flag = brilliant_scientist_character_transaction_lock }
+			NOT = {
+				any_country = {
+					has_character = KRG_warren_kruger
+				}
+			}
+			OR = {
+				check_variable = { brilliant_scientist_recruitment_posture = constant:brilliant_scientist_recruitment_posture.public_compact }
+				check_variable = { brilliant_scientist_recruitment_posture = constant:brilliant_scientist_recruitment_posture.secret_directorate }
+			}
+		}
+		set_global_flag = brilliant_scientist_character_transaction_lock
+		set_country_flag = brilliant_scientist_character_transaction_lock
+		recruit_character = KRG_warren_kruger
+		KRG_warren_kruger = {
+			set_character_flag = brilliant_scientist_personal_recruited
+			set_character_flag = brilliant_scientist_personal_active
+		}
+		set_variable = { brilliant_scientist_appointment_date = global.date }
+		brilliant_scientist_initialize_host_state = yes
+		brilliant_scientist_add_kruger_roles = yes
+		brilliant_scientist_refresh_kruger_continuity_state = yes
+		set_country_flag = brilliant_scientist_appointment_completed
+		if = {
+			limit = { check_variable = { brilliant_scientist_opening_history_was_ready > constant:brilliant_scientist_value.zero } }
+			brilliant_scientist_finalize_pending_prefire_opening = yes
+		}
+		clr_country_flag = brilliant_scientist_opening_chain_active
+		clr_country_flag = brilliant_scientist_character_transaction_lock
+		clr_global_flag = brilliant_scientist_character_transaction_lock
+		set_temp_variable = { brilliant_scientist_opening_appointment_committed = constant:brilliant_scientist_value.one }
+	}
+}
+
+# COUNTRY scope on the rejecting human host. The regular recipient target is
+# chosen before the option is shown and is validated again before any state is
+# mutated. Kruger has not been recruited yet, so this is not a nationality or
+# role transfer and cannot duplicate the fixed character.
+brilliant_scientist_forward_opening_to_selected_recipient = {
+	set_temp_variable = { brilliant_scientist_opening_forward_committed = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = {
+			is_ai = no
+			NOT = { has_global_flag = brilliant_scientist_event_resolved }
+			has_event_target = brilliant_scientist_send_away_recipient
+			event_target:brilliant_scientist_send_away_recipient = {
+				brilliant_scientist_is_valid_initial_send_away_recipient = yes
+			}
+			NOT = {
+				any_country = {
+					has_character = KRG_warren_kruger
+				}
+			}
+		}
+		set_temp_variable = { brilliant_scientist_forward_opening_stage = brilliant_scientist_prefire_evolution_stage }
+		set_temp_variable = { brilliant_scientist_forward_opening_tier = brilliant_scientist_prefire_evolution_tier }
+		set_temp_variable = { brilliant_scientist_rejection_memory_days = constant:brilliant_scientist_opening_duration.rejection_memory_days }
+		set_country_flag = brilliant_scientist_host_rejected_permanently
+		set_country_flag = brilliant_scientist_kruger_redirected
+		set_country_flag = {
+			flag = brilliant_scientist_rejection_memory
+			days = brilliant_scientist_rejection_memory_days
+		}
+		clr_country_flag = brilliant_scientist_opening_chain_active
+		clr_country_flag = brilliant_scientist_prefire_opening_pending
+		event_target:brilliant_scientist_send_away_recipient = {
+			set_variable = { brilliant_scientist_prefire_evolution_stage = brilliant_scientist_forward_opening_stage }
+			set_variable = { brilliant_scientist_prefire_evolution_tier = brilliant_scientist_forward_opening_tier }
+			set_country_flag = brilliant_scientist_received_initial_referral
+			set_country_flag = brilliant_scientist_opening_chain_active
+			set_country_flag = brilliant_scientist_prefire_opening_pending
+			country_event = { id = chaosx.nr16.3 }
+		}
+		set_temp_variable = { brilliant_scientist_opening_forward_committed = constant:brilliant_scientist_value.one }
+	}
+}
+
 # COUNTRY scope. The parent-owned trait `brilliant_scientist_research_director`
 # must contain exactly research_speed_factor = 1.0 and no other Event 016 idea
 # may repeat that modifier. Public and secret recruitment use this same role.
@@ -2314,6 +2422,7 @@ brilliant_scientist_add_kruger_roles = {
 			slot = theorist
 			ledger = army
 			cost = constant:brilliant_scientist_value.zero
+			can_be_fired = no
 			idea_token = brilliant_scientist_warren_kruger_advisor
 			traits = {
 				brilliant_scientist_research_director

@@ -7,6 +7,7 @@ The update covers:
 - A new `Miscellaneous` menu entry below `Advanced Settings`.
 - Super-event playback channel selection between music and sound.
 - Super-event audio volume selection with a stepped slider covering the explicit multiplier tiers.
+- A dedicated Fallout system checkbox that is independent from numbered events.
 - A `Harder Crises for Players` checkbox for reusable Non-AI Crisis Pressure.
 - Direct keyboard entry for event IDs after clicking the event ID box.
 - A reset confirmation popup for `Reset All Settings`.
@@ -27,7 +28,8 @@ The update covers:
 - `2.0x`
 - `2.5x`
 - `3.0x`
-4. Default values are:
+4. `Disable Fallout` toggles the dedicated Fallout world-end route through the shared disabled-scenario ledger. An active Fallout transition cannot be disabled.
+5. Default values are:
 - Audio mode: `Sound`
 - Audio volume: `1.5x`
 - Harder Crises for Players: enabled
@@ -54,13 +56,14 @@ Behavior:
 - `1.5x` preserves the previous loudness as the default volume tier.
 - `Sound` is now the default playback channel for new saves and for `Reset All Settings`.
 
+The Fallout blackout is not an ordinary super-event audio ID. `fallout_play_blackout_audio` reads the same playback-channel and volume preferences, then selects Fallout-owned wrappers from `music/fallout_world_end_music.asset` or `sound/fallout_world_end_sound.asset`.
+
 Current song routing:
 - The script now builds `chaosx_super_event_<id>_<volume_suffix>` dynamically through `meta_effect`.
 - Sound-channel playback builds `chaosx_super_event_<id>_sound_<volume_suffix>` the same way.
 - Current audio ID `1` uses the initial outbreak track definitions.
 - Current audio ID `2` uses the Alliance of Man track definitions.
 - Current audio ID `3` uses the zombie apocalypse track definitions.
-- Current audio ID `4` uses the fallout track definitions.
 - Current audio ID `5` uses the zombie-threat-defeated track definitions.
 - Current audio ID `6` uses the Wendigo track definitions.
 - Current audio ID `7` uses the Buddha Mandate track definitions.
@@ -180,6 +183,9 @@ This change also includes:
 - `interface/chaosx.gui`
 - `music/chaosx_super_event_music.asset`
 - `sound/chaosx_sound.asset`
+- `common/scripted_effects/fallout_world_end_effects.txt`
+- `music/fallout_world_end_music.asset`
+- `sound/fallout_world_end_sound.asset`
 - `common/scripted_localisation/chaosx_scripted_localisation_settings.txt`
 - `localisation/english/chaosx_gui_l_english.yml`
 
@@ -215,7 +221,6 @@ Audio assets used:
   - `music/002_zombie_outbreak/super_event_3_zombie_apocalypse.ogg`
   - `music/002_zombie_outbreak/super_event_5_zombies_defeat.ogg`
   - `music/002_zombie_outbreak/super_event_6_wendigo.ogg`
-  - `music/002_zombie_outbreak/super_event_4_fallout.ogg`
   - `music/003_holy_realm/super_event_7_buddha_mandate.ogg`
   - `music/003_holy_realm/super_event_8_final_silence.ogg`
   - `music/003_holy_realm/super_event_9_final_silence_thermonuclear.ogg`
@@ -231,7 +236,6 @@ Audio assets used:
   - `sound/002_zombie_outbreak/super_event_3_zombie_apocalypse.wav`
   - `sound/002_zombie_outbreak/super_event_5_zombies_defeat.wav`
   - `sound/002_zombie_outbreak/super_event_6_wendigo.wav`
-  - `sound/002_zombie_outbreak/super_event_4_fallout.wav`
   - `sound/003_holy_realm/super_event_7_buddha_mandate.wav`
   - `sound/003_holy_realm/super_event_8_final_silence.wav`
   - `sound/003_holy_realm/super_event_9_final_silence_thermonuclear.wav`
@@ -240,6 +244,11 @@ Audio assets used:
   - `sound/003_holy_realm/super_event_28_mandala_of_nations.wav`
   - `sound/003_holy_realm/super_event_12_angel_directorate.wav`
   - `sound/003_holy_realm/super_event_13_angelic_world_order.wav`
+- Dedicated Fallout blackout sources:
+  - `music/fallout_world_end/fallout_world_end_blackout.ogg`
+  - `sound/fallout_world_end/fallout_world_end_blackout.wav`
+  - music wrappers: `fallout_world_end_blackout_0_5` through `fallout_world_end_blackout_3_0`
+  - sound wrappers: `fallout_world_end_blackout_sound_0_5` through `fallout_world_end_blackout_sound_3_0`
 - Audio source and license documentation:
   - `docs/super_events/super_event_audio_packages.md`
 

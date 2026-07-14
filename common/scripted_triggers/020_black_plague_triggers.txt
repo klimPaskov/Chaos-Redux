@@ -1,0 +1,448 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 020 BLACK PLAGUE TRIGGERS
+# ============================================================================
+# State and country predicates for origin eligibility, canonical disease
+# phases, established-state rendering, lifecycle transitions, spread routes,
+# human/nonhuman ownership, cleanup, and the event-owned runtime registry.
+# ============================================================================
+
+black_plague_country_is_human_host = {
+	exists = yes
+	uses_normal_civilian_systems = yes
+	NOT = { is_special_chaos_country = yes }
+	NOT = { has_country_flag = black_plague_rat_country }
+	NOT = { has_country_flag = black_plague_rat_king_country }
+}
+
+black_plague_controller_is_rat_country = {
+	CONTROLLER = {
+		OR = {
+			has_country_flag = black_plague_rat_country
+			has_country_flag = black_plague_rat_king_country
+		}
+	}
+}
+
+black_plague_state_has_meaningful_land_connection = {
+	is_island_state = no
+	any_neighbor_state = {
+		impassable = no
+		NOT = { has_state_category = wasteland }
+		NOT = { has_state_category = enclave }
+		check_variable = { state_population_k > 0 }
+	}
+}
+
+black_plague_state_is_valid_origin = {
+	impassable = no
+	black_plague_state_has_meaningful_land_connection = yes
+	NOT = { has_state_category = wasteland }
+	NOT = { has_state_category = enclave }
+	NOT = { has_state_category = tiny_island }
+	NOT = { has_state_category = small_island }
+	NOT = { has_state_category = large_island }
+	check_variable = {
+		var = state_population_k
+		value = constant:black_plague_origin.minimum_population_k
+		compare = greater_than_or_equals
+	}
+	NOT = { black_plague_state_is_tracked = yes }
+	NOT = { has_state_flag = black_plague_monitoring_memory }
+	OWNER = { black_plague_country_is_human_host = yes }
+	CONTROLLER = { black_plague_country_is_human_host = yes }
+}
+
+black_plague_has_valid_origin = {
+	any_state = { black_plague_state_is_valid_origin = yes }
+}
+
+black_plague_automatic_event_is_available = {
+	NOT = { has_global_flag = black_plague_system_started }
+	NOT = { has_global_flag = black_plague_terminal_takeover_complete }
+	NOT = { has_global_flag = world_end }
+	black_plague_has_valid_origin = yes
+}
+
+black_plague_state_can_receive_exposure = {
+	impassable = no
+	NOT = { has_state_category = wasteland }
+	NOT = { has_state_category = enclave }
+	check_variable = { state_population_k > 0 }
+	OR = {
+		CONTROLLER = { black_plague_country_is_human_host = yes }
+		black_plague_controller_is_rat_country = yes
+	}
+}
+
+black_plague_state_can_receive_ordinary_exposure = {
+	black_plague_state_can_receive_exposure = yes
+	NOT = { has_state_flag = black_plague_monitoring_memory }
+	NOT = { black_plague_state_is_rat_controlled = yes }
+}
+
+black_plague_state_is_tracked = {
+	OR = {
+		AND = {
+			has_variable = black_plague_phase
+			check_variable = { black_plague_phase > constant:black_plague_phase.clear }
+		}
+		has_state_flag = black_plague_monitoring_memory
+	}
+}
+
+black_plague_state_is_threatened = {
+	check_variable = { black_plague_phase = constant:black_plague_phase.threatened }
+}
+
+black_plague_state_is_incubating = {
+	check_variable = { black_plague_phase = constant:black_plague_phase.incubating }
+}
+
+black_plague_state_is_infected = {
+	check_variable = { black_plague_phase = constant:black_plague_phase.infected }
+}
+
+black_plague_state_is_severe = {
+	check_variable = { black_plague_phase = constant:black_plague_phase.severe_crisis }
+}
+
+black_plague_state_is_collapsed = {
+	check_variable = { black_plague_phase = constant:black_plague_phase.collapsed }
+}
+
+black_plague_state_is_contained = {
+	check_variable = { black_plague_phase = constant:black_plague_phase.contained }
+}
+
+black_plague_state_is_recovering = {
+	check_variable = { black_plague_phase = constant:black_plague_phase.recovery }
+}
+
+black_plague_state_is_cured = {
+	check_variable = { black_plague_phase = constant:black_plague_phase.cured }
+}
+
+black_plague_state_is_rat_controlled = {
+	check_variable = { black_plague_phase = constant:black_plague_phase.rat_controlled }
+}
+
+black_plague_state_is_established = {
+	OR = {
+		black_plague_state_is_incubating = yes
+		black_plague_state_is_infected = yes
+		black_plague_state_is_severe = yes
+		black_plague_state_is_collapsed = yes
+		black_plague_state_is_contained = yes
+		black_plague_state_is_recovering = yes
+		black_plague_state_is_rat_controlled = yes
+	}
+}
+
+black_plague_state_has_public_weaponized_provenance = {
+	check_variable = { black_plague_provenance = constant:black_plague_provenance.weaponized }
+	has_state_flag = black_plague_weaponization_publicly_attributed
+}
+
+black_plague_state_is_publicly_visible = {
+	OR = {
+		has_state_flag = black_plague_publicly_recognized
+		black_plague_state_has_public_weaponized_provenance = yes
+		black_plague_state_is_rat_controlled = yes
+	}
+}
+
+black_plague_state_is_visible_to_mapmode_player = {
+	OR = {
+		black_plague_state_is_publicly_visible = yes
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+	}
+}
+
+black_plague_state_details_are_visible_to_mapmode_player = {
+	OR = {
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+	}
+}
+
+black_plague_state_emits_spread = {
+	CONTROLLER = { exists = yes }
+	OR = {
+		black_plague_state_is_incubating = yes
+		black_plague_state_is_infected = yes
+		black_plague_state_is_severe = yes
+		black_plague_state_is_collapsed = yes
+		black_plague_state_is_contained = yes
+		black_plague_state_is_rat_controlled = yes
+	}
+}
+
+black_plague_state_has_strategic_transport = {
+	OR = {
+		supply_node > 0
+		naval_base > 0
+		any_province_building_level = {
+			province = { all_provinces = yes }
+			building = rail_way
+			level > 0
+		}
+	}
+}
+
+black_plague_state_has_army_presence = {
+	any_state_division = { always = yes }
+}
+
+black_plague_state_has_refugee_pressure = {
+	OR = {
+		has_state_flag = black_plague_refugee_pressure
+		has_state_flag = natural_disaster_refugee_pressure
+		has_state_flag = natural_disaster_refugee_disease_pending
+	}
+}
+
+black_plague_state_is_occupied_or_disrupted = {
+	OR = {
+		NOT = { is_owned_and_controlled_by = OWNER }
+		has_resistance = yes
+		resistance_target > constant:black_plague_origin.high_resistance_threshold
+	}
+}
+
+black_plague_state_has_weak_local_capacity = {
+	OR = {
+		infrastructure < constant:black_plague_origin.poor_infrastructure_threshold
+		has_state_category = pastoral
+		has_state_category = rural
+		AND = {
+			industrial_complex < constant:black_plague_origin.low_industry_threshold
+			arms_factory < constant:black_plague_origin.low_industry_threshold
+		}
+		NOT = { has_state_flag = field_hospitals_deployed }
+	}
+}
+
+black_plague_country_has_strong_prevention = {
+	OR = {
+		has_bio_outbreak_prevention_tier_3 = yes
+		has_country_flag = hygiene_measures_enforced
+		has_country_flag = quarantine_protocols_active
+		has_country_flag = borders_completely_closed
+	}
+}
+
+black_plague_state_should_become_infected = {
+	black_plague_state_is_incubating = yes
+	OR = {
+		check_variable = {
+			var = black_plague_phase_days
+			value = black_plague_incubation_target_days
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = black_plague_load
+			value = constant:black_plague_threshold.public_infection_load
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = black_plague_mortality_pressure
+			value = constant:black_plague_threshold.public_infection_mortality
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+black_plague_state_should_enter_severe_crisis = {
+	black_plague_state_is_infected = yes
+	OR = {
+		check_variable = {
+			var = black_plague_load
+			value = constant:black_plague_threshold.severe_load
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = black_plague_mortality_pressure
+			value = constant:black_plague_threshold.severe_mortality
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+black_plague_state_should_collapse = {
+	black_plague_state_is_severe = yes
+	OR = {
+		AND = {
+			check_variable = {
+				var = black_plague_load
+				value = constant:black_plague_threshold.collapse_load
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = black_plague_containment
+				value = constant:black_plague_threshold.collapse_containment_ceiling
+				compare = less_than
+			}
+		}
+		check_variable = {
+			var = black_plague_mortality_pressure
+			value = constant:black_plague_threshold.collapse_mortality
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+black_plague_state_should_be_contained = {
+	OR = {
+		black_plague_state_is_incubating = yes
+		black_plague_state_is_infected = yes
+		black_plague_state_is_severe = yes
+		black_plague_state_is_collapsed = yes
+	}
+	check_variable = {
+		var = black_plague_containment
+		value = constant:black_plague_threshold.containment_minimum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = black_plague_load
+		value = constant:black_plague_threshold.containment_load_ceiling
+		compare = less_than
+	}
+	check_variable = {
+		var = black_plague_spread_pressure
+		value = black_plague_containment
+		compare = less_than
+	}
+}
+
+black_plague_state_should_begin_recovery = {
+	black_plague_state_is_contained = yes
+	check_variable = {
+		var = black_plague_phase_days
+		value = constant:black_plague_timing.contained_hold_days
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = black_plague_load
+		value = constant:black_plague_threshold.recovery_load_ceiling
+		compare = less_than
+	}
+	check_variable = {
+		var = black_plague_spread_pressure
+		value = constant:black_plague_threshold.recovery_spread_ceiling
+		compare = less_than
+	}
+}
+
+black_plague_state_should_relapse = {
+	OR = {
+		black_plague_state_is_contained = yes
+		black_plague_state_is_recovering = yes
+	}
+	OR = {
+		check_variable = {
+			var = black_plague_incoming_exposure
+			value = constant:black_plague_threshold.relapse_exposure
+			compare = greater_than_or_equals
+		}
+		AND = {
+			check_variable = {
+				var = black_plague_relapse_risk
+				value = constant:black_plague_threshold.relapse_risk
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = black_plague_spread_pressure
+				value = black_plague_containment
+				compare = greater_than_or_equals
+			}
+		}
+	}
+}
+
+black_plague_state_can_be_cured = {
+	black_plague_state_is_recovering = yes
+	check_variable = {
+		var = black_plague_phase_days
+		value = constant:black_plague_timing.recovery_hold_days
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = black_plague_load
+		value = constant:black_plague_threshold.cure_load_ceiling
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = black_plague_incoming_exposure
+		value = constant:black_plague_threshold.cure_exposure_ceiling
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = black_plague_rat_infestation
+		value = constant:black_plague_threshold.cure_rat_ceiling
+		compare = less_than_or_equals
+	}
+	has_state_flag = black_plague_cleanup_complete
+	CONTROLLER = {
+		check_variable = {
+			var = black_plague_countermeasure_progress
+			value = constant:black_plague_value.maximum
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+black_plague_state_is_valid_adjacent_target = {
+	black_plague_state_can_receive_ordinary_exposure = yes
+	NOT = { state = event_target:black_plague_spread_source_state }
+}
+
+black_plague_state_is_valid_transport_target = {
+	black_plague_state_can_receive_ordinary_exposure = yes
+	black_plague_state_has_strategic_transport = yes
+	NOT = { state = event_target:black_plague_spread_source_state }
+	CONTROLLER = { tag = event_target:black_plague_spread_source_controller }
+	event_target:black_plague_spread_source_controller = {
+		has_railway_connection = {
+			start_state = event_target:black_plague_spread_source_state
+			target_state = PREV
+		}
+	}
+}
+
+black_plague_state_is_valid_overseas_port_target = {
+	black_plague_state_can_receive_ordinary_exposure = yes
+	is_coastal = yes
+	naval_base > 0
+	NOT = { state = event_target:black_plague_spread_source_state }
+}
+
+# STATE scope. The engine does not expose civilian convoy destinations or a
+# queryable docking-rights relation. Evolution II therefore requires direct,
+# destination-specific naval contact: one port controller currently has ships
+# in the other endpoint. This proves physical cross-port contact without using
+# continent, faction, access, war, or convoy-inventory proxies.
+black_plague_state_has_verified_maritime_contact_from_source = {
+	black_plague_state_is_valid_overseas_port_target = yes
+	event_target:black_plague_spread_source_controller = {
+		exists = yes
+	}
+	CONTROLLER = {
+		exists = yes
+	}
+	OR = {
+		event_target:black_plague_spread_source_controller = {
+			ships_in_state_ports = {
+				state = PREV
+				size > 0
+			}
+		}
+		CONTROLLER = {
+			ships_in_state_ports = {
+				state = event_target:black_plague_spread_source_state
+				size > 0
+			}
+		}
+	}
+}

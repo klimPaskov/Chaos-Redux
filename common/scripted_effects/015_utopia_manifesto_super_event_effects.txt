@@ -1,0 +1,68 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 015 UTOPIA MANIFESTO SUPER-EVENT EFFECTS
+# ============================================================================
+# Publishes the regional proclamation only after the shared kernel proves both
+# commonwealth formation and a meaningful external network. The five political
+# interpretations retain distinct final art and description slots while using
+# the same verified text quotation and uniquely licensed music recording.
+# ============================================================================
+
+utopia_manifesto_emit_regional_proclamation = {
+	if = {
+		limit = {
+			has_country_flag = utopia_manifesto_commonwealth_formed
+			has_country_flag = utopia_manifesto_regional_proclamation_ready
+			has_country_flag = utopia_manifesto_regional_commonwealth_objective_complete
+			utopia_manifesto_has_regional_proclamation_network = yes
+			utopia_manifesto_is_not_trivial_subject = yes
+			NOT = { has_country_flag = utopia_manifesto_regional_proclamation_fired }
+		}
+		set_temp_variable = { utopia_manifesto_super_event_visible_days = constant:utopia_manifesto_super_event.visible_days }
+		if = {
+			limit = { utopia_manifesto_is_consent_of_households_route = yes }
+			set_global_flag = {
+				flag = super_event_visible
+				days = utopia_manifesto_super_event_visible_days
+				value = constant:utopia_manifesto_super_event.consent_display
+			}
+		}
+		else_if = {
+			limit = { utopia_manifesto_is_common_table_route = yes }
+			set_global_flag = {
+				flag = super_event_visible
+				days = utopia_manifesto_super_event_visible_days
+				value = constant:utopia_manifesto_super_event.common_table_display
+			}
+		}
+		else_if = {
+			limit = { utopia_manifesto_is_guardians_of_measure_route = yes }
+			set_global_flag = {
+				flag = super_event_visible
+				days = utopia_manifesto_super_event_visible_days
+				value = constant:utopia_manifesto_super_event.guardians_display
+			}
+		}
+		else_if = {
+			limit = { utopia_manifesto_is_closed_island_route = yes }
+			set_global_flag = {
+				flag = super_event_visible
+				days = utopia_manifesto_super_event_visible_days
+				value = constant:utopia_manifesto_super_event.closed_island_display
+			}
+		}
+		else_if = {
+			limit = { utopia_manifesto_is_joke_understood_route = yes }
+			set_global_flag = {
+				flag = super_event_visible
+				days = utopia_manifesto_super_event_visible_days
+				value = constant:utopia_manifesto_super_event.joke_understood_display
+			}
+		}
+		set_country_flag = utopia_manifesto_regional_proclamation_fired
+		set_variable = { global.current_super_event_audio_id = constant:utopia_manifesto_super_event.audio }
+		every_country = {
+			limit = { is_ai = no }
+			play_current_super_event_audio = yes
+		}
+	}
+}

@@ -62,6 +62,16 @@ Global flags:
 | `fallout_manual_scenario_active` | manual launch owns the current request | clear after transition begins |
 | `fallout_synthetic_strike_batch` | suppresses per-strike log and diplomatic spam | clear immediately after strike pass |
 
+## Transition ledger schemas
+
+| Ledger | Live schema | Contract |
+| --- | --- | --- |
+| Fallout world transition | 4 | fail-closed save recovery and phase ownership |
+| Government classifier | 1 | frozen-input signal aggregation and provisional archetype |
+| Successor pre-allocation inventory | 1 | live countries, possible-country scopes, states, reservations, and package conflicts |
+| Successor allocation output | 1 | consumed source receipt, unique assignments, package layers, conflicts, capitals, and cleanup |
+| Manual province sweep runtime | 2 | generation-bound batch, verifier, and exact seven-day callback provenance |
+
 ## State winter values
 
 | Proposed name | Type | Range | Role |
@@ -78,10 +88,13 @@ Global flags:
 | `air_winter_category_damage` | variable | 0 to configured cap | sustained category degradation progress |
 | `air_winter_building_damage_pressure` | variable | 0 to configured cap | bounded building loss progress |
 | `air_winter_population_loss_memory` | variable | 0 and above | cumulative winter deaths for map and events |
-| `fallout_state_grade` | variable | 0 to 6 | world rewrite severity class |
+| `fallout_state_grade` | variable | 0 to 5 | monotonic physical-damage severity class |
+| `fallout_state_subtype` | variable | 0 to 1 | separate fictional altered-biosphere overlay |
+| `fallout_survival_value` | variable | 0 to 100 | independent continuation and successor viability ledger |
 | `fallout_state_survival_value` | variable | 0 to 100 | successor viability and player choice score |
 | `fallout_state_direct_strike_count` | variable | 0 and above | manual or live direct-strike memory |
 | `fallout_state_cause_mask` | variable or flags | implementation-defined | cause memory for regional content |
+| `fallout_pretransition_air_winter_original_category` | variable | Air Winter category enum | frozen category memory for Fallout classification |
 
 State flags:
 
@@ -116,6 +129,12 @@ Do not store true or false state as numeric variables unless an engine surface r
 | `fallout_country_region_overlay` | variable | regional enum |
 | `fallout_country_memory_overlay` | variable | memory package enum |
 | `fallout_country_package_version` | variable | migration and audit version |
+| `fallout_government_archetype` | variable | provisional classifier identity and later final package identity |
+| `fallout_government_classifier_generation` | variable | binds classification to the active transition |
+| `fallout_government_classifier_schema_version` | variable | binds classification to classifier schema 1 |
+| `fallout_successor_assignment_generation` | variable | binds the final assignment row to the active transition |
+| `fallout_successor_conflict_result` | variable | records the reviewed tag-conflict outcome |
+| `fallout_successor_cleanup_owner` | scope variable | records the country that owns assignment cleanup |
 
 Country flags:
 

@@ -1,0 +1,368 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 BRILLIANT SCIENTIST GENERIC PROJECT BOARD
+# ============================================================================
+# Generic selection-driven orchestration only. The project tranche owns all
+# native project IDs, family decisions, rewards, incidents, technologies, and
+# units. These controls never advance an active project stage.
+# ============================================================================
+
+brilliant_scientist_directorate_category = {
+	brilliant_scientist_approve_selected_project = {
+		icon = GFX_decision_generic_research
+		visible = {
+			brilliant_scientist_is_current_host = yes
+			has_country_flag = brilliant_scientist_directorate_project_selection_ready
+			NOT = { has_country_flag = brilliant_scientist_directorate_selected_project_active }
+			NOT = { has_country_flag = brilliant_scientist_directorate_selected_project_suspended }
+			NOT = { has_country_flag = brilliant_scientist_directorate_project_approval_requested }
+			NOT = { has_country_flag = brilliant_scientist_directorate_project_cancellation_requested }
+		}
+		available = {
+			NOT = { has_country_flag = brilliant_scientist_project_board_action_in_progress }
+			check_variable = {
+				var = brilliant_scientist_directorate_selected_project_family
+				value = constant:brilliant_scientist_project_family.none
+				compare = greater_than
+			}
+			check_variable = {
+				var = brilliant_scientist_directorate_selected_project_family
+				value = constant:brilliant_scientist_project_family.max_exclusive
+				compare = less_than
+			}
+			check_variable = {
+				var = brilliant_scientist_directorate_selected_project_stage
+				value = constant:brilliant_scientist_project_stage.none
+				compare = greater_than
+			}
+			check_variable = {
+				var = brilliant_scientist_directorate_selected_project_stage
+				value = constant:brilliant_scientist_project_stage.max_exclusive
+				compare = less_than
+			}
+		}
+		cost = constant:brilliant_scientist_directorate_cost.project_approval_pp
+		days_remove = constant:brilliant_scientist_directorate_timing.project_approval_days
+		modifier = { consumer_goods_factor = constant:brilliant_scientist_directorate_modifier.construction_light_consumer_goods }
+		complete_effect = {
+			set_country_flag = brilliant_scientist_project_board_action_in_progress
+			set_variable = { brilliant_scientist_directorate_locked_project_family = brilliant_scientist_directorate_selected_project_family }
+			set_variable = { brilliant_scientist_directorate_locked_project_stage = brilliant_scientist_directorate_selected_project_stage }
+		}
+		cancel_if_not_visible = yes
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_is_current_host = yes }
+				NOT = { has_country_flag = brilliant_scientist_directorate_project_selection_ready }
+				check_variable = {
+					var = brilliant_scientist_directorate_selected_project_family
+					value = brilliant_scientist_directorate_locked_project_family
+					compare = not_equals
+				}
+				check_variable = {
+					var = brilliant_scientist_directorate_selected_project_stage
+					value = brilliant_scientist_directorate_locked_project_stage
+					compare = not_equals
+				}
+			}
+		}
+		cancel_effect = {
+			clr_country_flag = brilliant_scientist_project_board_action_in_progress
+			clear_variable = brilliant_scientist_directorate_locked_project_family
+			clear_variable = brilliant_scientist_directorate_locked_project_stage
+		}
+		remove_effect = {
+			clr_country_flag = brilliant_scientist_project_board_action_in_progress
+			set_variable = { brilliant_scientist_directorate_approved_project_family = brilliant_scientist_directorate_locked_project_family }
+			set_variable = { brilliant_scientist_directorate_approved_project_stage = brilliant_scientist_directorate_locked_project_stage }
+			clear_variable = brilliant_scientist_directorate_locked_project_family
+			clear_variable = brilliant_scientist_directorate_locked_project_stage
+			set_country_flag = brilliant_scientist_directorate_project_approval_requested
+			custom_effect_tooltip = brilliant_scientist_project_approval_effect_tt
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_directorate_ai.medium
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.preferred_factor brilliant_scientist_has_high_project_capacity = yes }
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.cautious_factor brilliant_scientist_control_is_compromised = yes }
+		}
+	}
+
+	brilliant_scientist_suspend_selected_project = {
+		icon = GFX_decision_generic_operation
+		visible = {
+			brilliant_scientist_is_current_host = yes
+			has_country_flag = brilliant_scientist_directorate_project_selection_ready
+			has_country_flag = brilliant_scientist_directorate_selected_project_active
+			NOT = { has_country_flag = brilliant_scientist_directorate_native_project_suspend_requested }
+		}
+		available = { NOT = { has_country_flag = brilliant_scientist_project_board_action_in_progress } }
+		complete_effect = {
+			set_temp_variable = { brilliant_scientist_project_family = brilliant_scientist_directorate_selected_project_family }
+			brilliant_scientist_suspend_project = yes
+			set_variable = { brilliant_scientist_directorate_project_command_family = brilliant_scientist_directorate_selected_project_family }
+			set_variable = { brilliant_scientist_directorate_project_command_stage = brilliant_scientist_directorate_selected_project_stage }
+			clr_country_flag = brilliant_scientist_directorate_selected_project_active
+			set_country_flag = brilliant_scientist_directorate_selected_project_suspended
+			set_country_flag = brilliant_scientist_directorate_native_project_suspend_requested
+			custom_effect_tooltip = brilliant_scientist_project_suspension_effect_tt
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_directorate_ai.low
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.strong_factor has_country_flag = brilliant_scientist_directorate_selected_project_damaged }
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.preferred_factor brilliant_scientist_control_is_compromised = yes }
+		}
+	}
+
+	brilliant_scientist_resume_selected_project = {
+		icon = GFX_decision_generic_operation
+		visible = {
+			brilliant_scientist_is_current_host = yes
+			has_country_flag = brilliant_scientist_directorate_project_selection_ready
+			has_country_flag = brilliant_scientist_directorate_selected_project_suspended
+			NOT = { has_country_flag = brilliant_scientist_directorate_native_project_resume_requested }
+		}
+		available = {
+			NOT = { has_country_flag = brilliant_scientist_project_board_action_in_progress }
+			NOT = { has_country_flag = brilliant_scientist_directorate_selected_project_damaged }
+		}
+		cost = constant:brilliant_scientist_directorate_cost.project_resume_pp
+		complete_effect = {
+			set_temp_variable = { brilliant_scientist_project_family = brilliant_scientist_directorate_selected_project_family }
+			brilliant_scientist_resume_project = yes
+			set_variable = { brilliant_scientist_directorate_project_command_family = brilliant_scientist_directorate_selected_project_family }
+			set_variable = { brilliant_scientist_directorate_project_command_stage = brilliant_scientist_directorate_selected_project_stage }
+			clr_country_flag = brilliant_scientist_directorate_selected_project_suspended
+			set_country_flag = brilliant_scientist_directorate_selected_project_active
+			set_country_flag = brilliant_scientist_directorate_native_project_resume_requested
+			custom_effect_tooltip = brilliant_scientist_project_resumption_effect_tt
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_directorate_ai.high
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.cautious_factor has_war = yes }
+		}
+	}
+
+	brilliant_scientist_cancel_selected_project = {
+		icon = GFX_decision_generic_political_discourse
+		visible = {
+			brilliant_scientist_is_current_host = yes
+			has_country_flag = brilliant_scientist_directorate_project_selection_ready
+			OR = {
+				has_country_flag = brilliant_scientist_directorate_selected_project_active
+				has_country_flag = brilliant_scientist_directorate_selected_project_suspended
+			}
+			NOT = { has_country_flag = brilliant_scientist_directorate_project_cancellation_requested }
+		}
+		available = { NOT = { has_country_flag = brilliant_scientist_project_board_action_in_progress } }
+		cost = constant:brilliant_scientist_directorate_cost.project_cancel_pp
+		complete_effect = {
+			set_variable = { brilliant_scientist_directorate_project_command_family = brilliant_scientist_directorate_selected_project_family }
+			set_variable = { brilliant_scientist_directorate_project_command_stage = brilliant_scientist_directorate_selected_project_stage }
+			set_temp_variable = { brilliant_scientist_project_family = brilliant_scientist_directorate_selected_project_family }
+			brilliant_scientist_dismantle_project = yes
+			clr_country_flag = brilliant_scientist_directorate_selected_project_active
+			clr_country_flag = brilliant_scientist_directorate_selected_project_suspended
+			set_country_flag = brilliant_scientist_directorate_project_cancellation_requested
+			custom_effect_tooltip = brilliant_scientist_project_cancellation_effect_tt
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_directorate_ai.low
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.strong_factor brilliant_scientist_control_is_lost = yes }
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.preferred_factor has_country_flag = brilliant_scientist_directorate_selected_project_damaged }
+		}
+	}
+
+	brilliant_scientist_commission_independent_replication = {
+		icon = GFX_decision_generic_operation
+		visible = {
+			brilliant_scientist_is_current_host = yes
+			has_country_flag = brilliant_scientist_directorate_project_selection_ready
+			has_country_flag = brilliant_scientist_directorate_selected_project_active
+			has_country_flag = brilliant_scientist_directorate_selected_project_replicable
+			NOT = { has_country_flag = brilliant_scientist_directorate_selected_project_replicated }
+		}
+		available = {
+			NOT = { has_country_flag = brilliant_scientist_project_board_action_in_progress }
+			has_equipment = { support_equipment > constant:brilliant_scientist_directorate_cost.independent_replication_support_gate }
+			has_equipment = { motorized_equipment > constant:brilliant_scientist_directorate_cost.independent_replication_truck_gate }
+			has_fuel > constant:brilliant_scientist_directorate_cost.independent_replication_fuel_gate
+			check_variable = {
+				var = brilliant_scientist_directorate_selected_project_family
+				value = constant:brilliant_scientist_project_family.none
+				compare = greater_than
+			}
+			check_variable = {
+				var = brilliant_scientist_directorate_selected_project_family
+				value = constant:brilliant_scientist_project_family.max_exclusive
+				compare = less_than
+			}
+			check_variable = {
+				var = brilliant_scientist_directorate_selected_project_stage
+				value = constant:brilliant_scientist_project_stage.none
+				compare = greater_than
+			}
+			check_variable = {
+				var = brilliant_scientist_directorate_selected_project_stage
+				value = constant:brilliant_scientist_project_stage.max_exclusive
+				compare = less_than
+			}
+		}
+		cost = constant:brilliant_scientist_directorate_cost.independent_replication_pp
+		days_remove = constant:brilliant_scientist_directorate_timing.independent_replication_days
+		modifier = {
+			consumer_goods_factor = constant:brilliant_scientist_directorate_modifier.construction_heavy_consumer_goods
+			production_factory_efficiency_gain_factor = constant:brilliant_scientist_directorate_modifier.construction_heavy_efficiency
+		}
+		complete_effect = {
+			set_country_flag = brilliant_scientist_project_board_action_in_progress
+			set_variable = { brilliant_scientist_directorate_locked_project_family = brilliant_scientist_directorate_selected_project_family }
+			set_variable = { brilliant_scientist_directorate_locked_project_stage = brilliant_scientist_directorate_selected_project_stage }
+			add_equipment_to_stockpile = {
+				type = support_equipment
+				amount = constant:brilliant_scientist_directorate_cost.independent_replication_support_spend
+			}
+			add_equipment_to_stockpile = {
+				type = motorized_equipment
+				amount = constant:brilliant_scientist_directorate_cost.independent_replication_truck_spend
+			}
+			add_fuel = constant:brilliant_scientist_directorate_cost.independent_replication_fuel_spend
+		}
+		cancel_if_not_visible = yes
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_is_current_host = yes }
+				NOT = { has_country_flag = brilliant_scientist_directorate_project_selection_ready }
+				has_country_flag = brilliant_scientist_directorate_selected_project_suspended
+				check_variable = {
+					var = brilliant_scientist_directorate_selected_project_family
+					value = brilliant_scientist_directorate_locked_project_family
+					compare = not_equals
+				}
+				check_variable = {
+					var = brilliant_scientist_directorate_selected_project_stage
+					value = brilliant_scientist_directorate_locked_project_stage
+					compare = not_equals
+				}
+			}
+		}
+		cancel_effect = {
+			clr_country_flag = brilliant_scientist_project_board_action_in_progress
+			clear_variable = brilliant_scientist_directorate_locked_project_family
+			clear_variable = brilliant_scientist_directorate_locked_project_stage
+		}
+		remove_effect = {
+			clr_country_flag = brilliant_scientist_project_board_action_in_progress
+			set_temp_variable = { brilliant_scientist_project_family = brilliant_scientist_directorate_locked_project_family }
+			set_temp_variable = { brilliant_scientist_requested_project_stage = brilliant_scientist_directorate_locked_project_stage }
+			brilliant_scientist_replicate_project_to_requested_stage = yes
+			set_variable = { brilliant_scientist_directorate_replication_completed_family = brilliant_scientist_directorate_locked_project_family }
+			set_variable = { brilliant_scientist_directorate_replication_completed_stage = brilliant_scientist_directorate_locked_project_stage }
+			clear_variable = brilliant_scientist_directorate_locked_project_family
+			clear_variable = brilliant_scientist_directorate_locked_project_stage
+			clr_country_flag = brilliant_scientist_directorate_selected_project_replicable
+			set_country_flag = brilliant_scientist_directorate_selected_project_replicated
+			set_country_flag = brilliant_scientist_directorate_replication_completed
+			custom_effect_tooltip = brilliant_scientist_independent_replication_effect_tt
+			hidden_effect = {
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.moderate }
+				brilliant_scientist_change_independent_capacity = yes
+				multiply_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_directorate_value.negative_one }
+				brilliant_scientist_change_dependence = yes
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.minor }
+				brilliant_scientist_change_project_capacity = yes
+				brilliant_scientist_change_exposure = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_directorate_ai.high
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.preferred_factor has_country_flag = brilliant_scientist_priority_distributed_replication_selected }
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.strong_factor brilliant_scientist_has_low_independent_capacity = yes }
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.cautious_factor has_war = yes }
+		}
+	}
+
+	brilliant_scientist_publish_verified_methods = {
+		icon = GFX_decision_generic_research
+		visible = {
+			brilliant_scientist_is_current_host = yes
+			has_country_flag = brilliant_scientist_directorate_project_selection_ready
+			has_country_flag = brilliant_scientist_directorate_selected_project_active
+			has_country_flag = brilliant_scientist_directorate_selected_project_replicated
+			has_country_flag = brilliant_scientist_directorate_selected_project_publishable
+			NOT = { has_country_flag = brilliant_scientist_directorate_selected_project_published }
+		}
+		available = {
+			NOT = { has_country_flag = brilliant_scientist_project_board_action_in_progress }
+			check_variable = {
+				var = brilliant_scientist_directorate_selected_project_family
+				value = constant:brilliant_scientist_project_family.none
+				compare = greater_than
+			}
+			check_variable = {
+				var = brilliant_scientist_directorate_selected_project_family
+				value = constant:brilliant_scientist_project_family.max_exclusive
+				compare = less_than
+			}
+		}
+		cost = constant:brilliant_scientist_directorate_cost.publication_pp
+		days_remove = constant:brilliant_scientist_directorate_timing.publication_days
+		modifier = {
+			consumer_goods_factor = constant:brilliant_scientist_directorate_modifier.construction_medium_consumer_goods
+			production_factory_efficiency_gain_factor = constant:brilliant_scientist_directorate_modifier.construction_medium_efficiency
+		}
+		complete_effect = {
+			set_country_flag = brilliant_scientist_project_board_action_in_progress
+			set_variable = { brilliant_scientist_directorate_locked_project_family = brilliant_scientist_directorate_selected_project_family }
+			set_variable = { brilliant_scientist_directorate_locked_project_stage = brilliant_scientist_directorate_selected_project_stage }
+		}
+		cancel_if_not_visible = yes
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_is_current_host = yes }
+				NOT = { has_country_flag = brilliant_scientist_directorate_project_selection_ready }
+				check_variable = {
+					var = brilliant_scientist_directorate_selected_project_family
+					value = brilliant_scientist_directorate_locked_project_family
+					compare = not_equals
+				}
+			}
+		}
+		cancel_effect = {
+			clr_country_flag = brilliant_scientist_project_board_action_in_progress
+			clear_variable = brilliant_scientist_directorate_locked_project_family
+			clear_variable = brilliant_scientist_directorate_locked_project_stage
+		}
+		remove_effect = {
+			clr_country_flag = brilliant_scientist_project_board_action_in_progress
+			set_temp_variable = { brilliant_scientist_project_family = brilliant_scientist_directorate_locked_project_family }
+			brilliant_scientist_publish_project = yes
+			set_variable = { brilliant_scientist_directorate_publication_completed_family = brilliant_scientist_directorate_locked_project_family }
+			set_variable = { brilliant_scientist_directorate_publication_completed_stage = brilliant_scientist_directorate_locked_project_stage }
+			clear_variable = brilliant_scientist_directorate_locked_project_family
+			clear_variable = brilliant_scientist_directorate_locked_project_stage
+			clr_country_flag = brilliant_scientist_directorate_selected_project_publishable
+			set_country_flag = brilliant_scientist_directorate_selected_project_published
+			set_country_flag = brilliant_scientist_directorate_publication_completed
+			set_country_flag = brilliant_scientist_public_reputation_established
+			set_country_flag = brilliant_scientist_research_advantage_exposed
+			custom_effect_tooltip = brilliant_scientist_publication_effect_tt
+			hidden_effect = {
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.moderate }
+				brilliant_scientist_change_mandate = yes
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.major }
+				brilliant_scientist_change_exposure = yes
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.moderate }
+				multiply_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_directorate_value.negative_one }
+				brilliant_scientist_change_dependence = yes
+				brilliant_scientist_change_grievance = yes
+				set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.minor }
+				brilliant_scientist_change_project_capacity = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_directorate_ai.low
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.strong_factor has_country_flag = brilliant_scientist_public_compact }
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.preferred_factor has_government = democratic }
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.cautious_factor brilliant_scientist_has_high_exposure = yes }
+		}
+	}
+}

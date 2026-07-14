@@ -16,9 +16,13 @@ The shared Liberations coordinator owns the transaction lifecycle:
 4. Trim optional territory before rejecting a package.
 5. Revalidate aligned rows, ownership, host survival, and exact counts at lock.
 6. If a host capital is a frozen release row, move it to that host's protected state before ownership changes.
-7. Execute all accepted rows in one effect chain and commit only after every Event 006 country initializes.
+7. Prove that every selected dormant tag has an exact runtime adapter, audited history laws and command roster, and the content-ready flag before ownership changes.
+8. Release and transfer all accepted rows in one effect chain.
+9. Prepare every country-local package, publish reversible active/network/host registries, validate every live package, and only then append durable origin history and evolution delivery.
 
 `chaosx.nr6.1` is the hidden repeatable dispatcher. On a standalone firing it captures tuning, opens the shared plan, allocates the exact automatic count, executes the frozen Event 006 contribution, and dispatches the public report only after commit. During a joint Liberations firing it consumes `independence_wave_joint_presentation_pending` and presents the already committed result without planning or releasing a second time. Any standalone failure before ownership mutation restores the original-capital ledger, clears Event 006 reservations, and aborts without a report. A failure after execution begins is recorded as non-rollbackable and is never presented as success.
+
+The package initializer is a four-pass incident transaction. A failed preparation, activation, or validation pass removes package and live-registry state for every row and restores the generation counter before any durable history is opened. Ownership cannot be reversed safely after engine release, so the pre-release adapter proof makes package setup deterministic and a post-release failure is terminal rather than silently downgraded. The same adapter is used by standalone waves, joint Event 5/Event 6 execution, and SCN-008.
 
 The automatic wave counts are 3, 4, 5, 7, and 10. World Collapse remains at 10; its force level, instability, package rarity, and regional ambition change instead of its country count.
 
@@ -95,7 +99,7 @@ Final source, processed PNG, DDS, provenance, contact-sheet, and animation recor
 
 - Shared transaction: `common/scripted_effects/chaosx_liberation_release_effects.txt` and matching triggers/constants.
 - Country mechanics: `common/scripted_effects/006_independence_wave_effects.txt`, matching triggers/constants, and `common/ideas/006_independence_wave_ideas.txt`.
-- Package allocation and execution: `common/scripted_effects/006_independence_wave_package_*` and `006_independence_wave_execution_effects.txt`.
+- Package allocation and execution: `common/scripted_effects/006_independence_wave_package_*`, `006_independence_wave_package_dispatch_effects.txt`, and `006_independence_wave_execution_effects.txt`.
 - Event delivery, evolutions, Event Details, logs, scenario, focus, decisions, AI, formables, achievements, localisation, super-events, and asset registration are recorded here as their plan-scoped commits land.
 
 ## Future depth after accepted implementation

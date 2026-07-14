@@ -2252,6 +2252,356 @@ unique_id = chaos_redux_achievements
 }
 
 #############################
+# EVENT 015 - UTOPIA MANIFESTO ACHIEVEMENTS
+#############################
+
+utopia_manifesto_no_place_but_home = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_utopia_manifesto_no_place_but_home_tooltip
+			is_ai = no
+			has_country_flag = utopia_manifesto_accepted
+			has_country_flag = utopia_manifesto_commonwealth_formed
+			has_country_flag = utopia_manifesto_identity_voluntary_commonwealth
+			has_cosmetic_tag = UTOPIA_MANIFESTO_VOLUNTARY_COMMONWEALTH
+			OR = {
+				has_country_flag = utopia_manifesto_island_project_complete
+				has_country_flag = utopia_manifesto_ring_integrated
+			}
+			NOT = { has_country_flag = utopia_manifesto_achievement_disqualifier_offensive_war }
+			NOT = { has_country_flag = utopia_manifesto_case_ultimatum_issued }
+			NOT = { has_country_flag = utopia_manifesto_achievement_disqualifier_coercive_case }
+			NOT = { has_country_flag = utopia_manifesto_assigned_colonies }
+			NOT = { has_country_flag = utopia_manifesto_conduct_assigned_colony }
+		}
+	}
+}
+
+utopia_manifesto_need_not_greed = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_utopia_manifesto_need_not_greed_tooltip
+			is_ai = no
+			has_country_flag = utopia_manifesto_accepted
+			has_country_flag = utopia_manifesto_achievement_peaceful_cases_proven
+			has_country_flag = utopia_manifesto_achievement_obsolete_case_renounced
+			NOT = { has_country_flag = utopia_manifesto_achievement_disqualifier_unrelated_case_annexation }
+		}
+	}
+}
+
+utopia_manifesto_every_calling_chosen = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_utopia_manifesto_every_calling_chosen_tooltip
+			is_ai = no
+			has_country_flag = utopia_manifesto_accepted
+			OR = {
+				has_country_flag = utopia_manifesto_route_consent_of_households
+				has_country_flag = utopia_manifesto_route_joke_understood
+			}
+			has_country_flag = utopia_manifesto_achievement_callings_sustained
+			NOT = { has_country_flag = utopia_manifesto_calling_provisioning_shortage }
+			NOT = { has_country_flag = utopia_manifesto_calling_workshops_shortage }
+			NOT = { has_country_flag = utopia_manifesto_calling_civic_works_shortage }
+			NOT = { has_country_flag = utopia_manifesto_calling_learning_and_care_shortage }
+			NOT = { has_country_flag = utopia_manifesto_calling_maritime_and_settlement_shortage }
+			NOT = { has_country_flag = utopia_manifesto_calling_defense_and_watches_shortage }
+			check_variable = {
+				var = utopia_assignment
+				value = constant:utopia_manifesto_formation_limits.voluntary_assignment_maximum
+				compare = less_than
+			}
+			check_variable = {
+				var = utopia_concord
+				value = constant:utopia_manifesto_formation_limits.voluntary_concord
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = utopia_plenty
+				value = constant:utopia_manifesto_formation_limits.council_plenty
+				compare = greater_than_or_equals
+			}
+			NOT = { has_country_flag = utopia_manifesto_achievement_disqualifier_assignment_overreach }
+		}
+	}
+}
+
+utopia_manifesto_two_year_table = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_utopia_manifesto_two_year_table_tooltip
+			is_ai = no
+			has_country_flag = utopia_manifesto_accepted
+			has_country_flag = utopia_manifesto_two_year_reserve
+			has_country_flag = utopia_manifesto_achievement_reserve_challenge_survived
+			check_variable = {
+				var = utopia_reserve_band
+				value = constant:utopia_manifesto_reserve_band.two_year_security
+				compare = greater_than_or_equals
+			}
+			NOT = { has_country_flag = utopia_manifesto_achievement_disqualifier_reserve_reset }
+		}
+	}
+}
+
+utopia_manifesto_archipelago_of_small_places = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_utopia_manifesto_archipelago_of_small_places_tooltip
+			is_ai = no
+			has_country_flag = utopia_manifesto_accepted
+			has_country_flag = utopia_manifesto_commonwealth_formed
+			has_country_flag = utopia_manifesto_achievement_five_member_league_proven
+			is_subject = no
+			NOT = { has_country_flag = utopia_manifesto_route_closed_island }
+			NOT = { has_country_flag = utopia_manifesto_achievement_disqualifier_league_member_annexed }
+			NOT = { has_country_flag = utopia_manifesto_achievement_disqualifier_league_coercion }
+		}
+	}
+}
+
+utopia_manifesto_inland_island = {
+	hidden = yes
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_utopia_manifesto_inland_island_tooltip
+			is_ai = no
+			has_country_flag = utopia_manifesto_accepted
+			has_country_flag = utopia_manifesto_achievement_origin_landlocked
+			has_country_flag = utopia_manifesto_achievement_inland_island_path
+			has_country_flag = utopia_manifesto_island_project_complete
+			has_country_flag = utopia_manifesto_commonwealth_formed
+			has_country_flag = utopia_manifesto_identity_formed
+			has_country_flag = utopia_manifesto_achievement_inland_supply_challenge_survived
+			NOT = { has_country_flag = utopia_manifesto_achievement_disqualifier_early_coast }
+		}
+	}
+}
+
+utopia_manifesto_gold_for_common_use = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_utopia_manifesto_gold_for_common_use_tooltip
+			is_ai = no
+			has_country_flag = utopia_manifesto_accepted
+			has_country_flag = utopia_manifesto_achievement_common_use_financed_provision
+			OR = {
+				has_country_flag = utopia_manifesto_luxury_public_rebuke
+				has_country_flag = utopia_manifesto_luxury_stock_pledged
+				has_country_flag = utopia_manifesto_luxury_reserve_preserved
+			}
+			check_variable = {
+				var = utopia_plenty
+				value = constant:utopia_manifesto_formation_limits.planned_plenty
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = utopia_need
+				value = constant:utopia_manifesto_ledger_limits.band_four
+				compare = less_than
+			}
+			NOT = { has_country_flag = utopia_manifesto_calling_provisioning_shortage }
+		}
+	}
+}
+
+utopia_manifesto_the_joke_understood = {
+	hidden = yes
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_utopia_manifesto_the_joke_understood_tooltip
+			is_ai = no
+			has_country_flag = utopia_manifesto_accepted
+			has_country_flag = utopia_manifesto_route_joke_understood
+			has_country_flag = utopia_manifesto_hidden_humanist_proven
+			has_country_flag = utopia_manifesto_public_debate_preserved
+			has_country_flag = utopia_manifesto_public_debate_proven
+			has_country_flag = utopia_manifesto_identity_practical_commonwealth
+			has_cosmetic_tag = UTOPIA_MANIFESTO_PRACTICAL_COMMONWEALTH
+			has_country_flag = utopia_manifesto_consensual_partner_proven
+			has_idea = utopia_manifesto_garden_district_network_final
+			NOT = { has_country_flag = utopia_manifesto_penal_labour_used }
+			NOT = { has_country_flag = utopia_manifesto_assigned_colonies }
+			NOT = { has_country_flag = utopia_manifesto_conduct_assigned_colony }
+			NOT = { has_country_flag = utopia_manifesto_conduct_censorship }
+			NOT = { has_country_flag = utopia_manifesto_conduct_margins_censored }
+			NOT = { has_country_flag = utopia_manifesto_official_commentary_only }
+			NOT = { has_country_flag = utopia_manifesto_book_banned_after_failure }
+		}
+	}
+}
+
+utopia_manifesto_consent_of_the_governed = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_utopia_manifesto_consent_of_the_governed_tooltip
+			is_ai = no
+			has_country_flag = utopia_manifesto_accepted
+			OR = {
+				has_country_flag = utopia_manifesto_route_consent_of_households
+				has_country_flag = utopia_manifesto_route_joke_understood
+			}
+			has_country_flag = utopia_manifesto_achievement_status_votes_proven
+			has_country_flag = utopia_manifesto_commonwealth_formed
+			NOT = { has_country_flag = utopia_manifesto_achievement_disqualifier_repeated_status_vote }
+			NOT = { has_country_flag = utopia_manifesto_assigned_colonies }
+			NOT = { has_country_flag = utopia_manifesto_conduct_assigned_colony }
+			NOT = { has_country_flag = utopia_manifesto_achievement_disqualifier_colonial_repression }
+		}
+	}
+}
+
+utopia_manifesto_the_perfect_measure = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_utopia_manifesto_the_perfect_measure_tooltip
+			is_ai = no
+			has_country_flag = utopia_manifesto_accepted
+			has_country_flag = utopia_manifesto_route_guardians_of_measure
+			has_country_flag = utopia_manifesto_identity_planned_utopia
+			has_cosmetic_tag = UTOPIA_MANIFESTO_PLANNED_UTOPIA
+			has_country_flag = utopia_manifesto_achievement_five_district_roles_proven
+			check_variable = {
+				var = utopia_plenty
+				value = constant:utopia_manifesto_formation_limits.planned_plenty
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = utopia_concord
+				value = constant:utopia_manifesto_formation_limits.minimum_concord
+				compare = greater_than_or_equals
+			}
+			NOT = { has_country_flag = utopia_manifesto_data_scandal }
+			NOT = { has_country_flag = utopia_manifesto_assignment_revolt }
+		}
+	}
+}
+
+utopia_manifesto_closed_circle = {
+	hidden = yes
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_utopia_manifesto_closed_circle_tooltip
+			is_ai = no
+			has_country_flag = utopia_manifesto_accepted
+			has_country_flag = utopia_manifesto_route_closed_island
+			has_country_flag = utopia_manifesto_identity_closed_island
+			has_cosmetic_tag = UTOPIA_MANIFESTO_CLOSED_ISLAND
+			has_country_flag = utopia_manifesto_route_capstone_closed_island
+			has_country_flag = utopia_manifesto_separation_project_complete
+			has_country_flag = utopia_manifesto_achievement_closed_major_war_survived
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:chaos_meter_tier_range.tier_final.min
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = utopia_reserve_band
+				value = constant:utopia_manifesto_reserve_band.surplus_commonwealth
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = utopia_assignment
+				value = constant:utopia_manifesto_formation_limits.closed_assignment
+				compare = greater_than_or_equals
+			}
+			NOT = { has_country_flag = utopia_manifesto_achievement_disqualifier_island_reopened }
+			NOT = { has_country_flag = utopia_manifesto_achievement_disqualifier_regime_collapsed }
+		}
+	}
+}
+
+utopia_manifesto_no_foreign_hands = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_utopia_manifesto_no_foreign_hands_tooltip
+			is_ai = no
+			has_country_flag = utopia_manifesto_accepted
+			has_country_flag = utopia_manifesto_achievement_stronger_attacker_defeated
+			NOT = { has_country_flag = utopia_manifesto_achievement_disqualifier_auxiliaries_hired }
+			NOT = { has_country_flag = utopia_manifesto_auxiliary_dependency_active }
+			NOT = { has_country_flag = utopia_manifesto_conduct_used_auxiliaries }
+			NOT = { has_country_flag = utopia_manifesto_achievement_disqualifier_auxiliary_abuse }
+		}
+	}
+}
+
+utopia_manifesto_the_stores_remain = {
+	hidden = yes
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_utopia_manifesto_the_stores_remain_tooltip
+			is_ai = no
+			has_country_flag = utopia_manifesto_accepted
+			has_country_flag = utopia_manifesto_crisis_branch_entered
+			has_country_flag = utopia_manifesto_achievement_crisis_recovery_proven
+			has_country_flag = utopia_manifesto_commonwealth_formed
+			has_country_flag = utopia_manifesto_identity_formed
+			check_variable = {
+				var = utopia_plenty
+				value = constant:utopia_manifesto_formation_limits.minimum_plenty
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = utopia_concord
+				value = constant:utopia_manifesto_formation_limits.minimum_concord
+				compare = greater_than_or_equals
+			}
+			OR = {
+				has_idea = utopia_manifesto_common_store_network
+				has_idea = utopia_manifesto_common_store_network_mitigated
+				has_idea = utopia_manifesto_common_store_network_final
+			}
+			NOT = { has_country_flag = utopia_manifesto_institutions_abandoned }
+			NOT = { has_country_flag = utopia_manifesto_achievement_disqualifier_total_repeal }
+		}
+	}
+}
+
+utopia_manifesto_no_one_in_chains = {
+	possible = { custom_override_tooltip = { tooltip = achievement_available_as_any_tag_tooltip always = yes } }
+	happened = {
+		custom_override_tooltip = {
+			tooltip = achievement_utopia_manifesto_no_one_in_chains_tooltip
+			is_ai = no
+			has_country_flag = utopia_manifesto_accepted
+			OR = {
+				has_country_flag = utopia_manifesto_route_consent_of_households
+				has_country_flag = utopia_manifesto_route_common_table
+				has_country_flag = utopia_manifesto_route_joke_understood
+			}
+			has_country_flag = utopia_manifesto_commonwealth_formed
+			has_country_flag = utopia_manifesto_identity_formed
+			OR = {
+				has_country_flag = utopia_manifesto_first_associate_recognized
+				has_country_flag = utopia_manifesto_partner_autonomy_retained
+			}
+			NOT = { has_country_flag = utopia_manifesto_penal_labour_used }
+			NOT = { has_country_flag = utopia_manifesto_assigned_colonies }
+			NOT = { has_country_flag = utopia_manifesto_conduct_assigned_colony }
+			NOT = { has_country_flag = utopia_manifesto_conduct_household_confined }
+			NOT = { has_country_flag = utopia_manifesto_achievement_disqualifier_forced_households }
+			NOT = { has_country_flag = utopia_manifesto_achievement_disqualifier_forced_relocation }
+			NOT = { has_country_flag = utopia_manifesto_achievement_disqualifier_colonial_repression }
+		}
+	}
+}
+
+#############################
 # EVENT 011 - SECRET ALLIANCE ACHIEVEMENTS
 #############################
 

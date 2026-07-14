@@ -176,8 +176,8 @@ initialize_event_categories = {
     add_to_array = { global.fire_once_events = 11 }  # SECRET ALLIANCE
     add_to_array = { global.fire_once_events = 12 }  # AFRICA IS ONE PLACEHOLDER
 	add_to_array = { global.fire_once_events = constant:cannibalism_event.id }  # CANNIBALISM
-    add_to_array = { global.fire_once_events = 15 }  # UTOPIAN MANIFESTO
-    add_to_array = { global.fire_once_events = 16 }  # BRILLIANT SCIENTIST
+	add_to_array = { global.fire_once_events = constant:utopia_manifesto_event.id }  # UTOPIA MANIFESTO
+	add_to_array = { global.fire_once_events = constant:brilliant_scientist_event.id }  # BRILLIANT SCIENTIST
     add_to_array = { global.fire_once_events = 20 }  # BLACK DEATH
     add_to_array = { global.fire_once_events = 22 }  # 1391 (JEWS MASSACRE)
     add_to_array = { global.fire_once_events = 23 }  # SOV NUKES
@@ -537,7 +537,14 @@ evaluate_random_event_active_pool_candidate = {
 					check_variable = { event_id = constant:white_peace_event_log.event_id }
 					NOT = { is_white_peace_automatic_event_available = yes }
 				}
-				check_variable = { event_id = 15 }
+				AND = {
+					check_variable = { event_id = constant:utopia_manifesto_event.id }
+					NOT = { utopia_manifesto_automatic_event_is_available = yes }
+				}
+				AND = {
+					check_variable = { event_id = constant:brilliant_scientist_event.id }
+					NOT = { brilliant_scientist_automatic_event_is_available = yes }
+				}
 				AND = {
 					check_variable = { event_id = constant:secret_alliance_event.id }
 					NOT = { secret_alliance_automatic_event_is_available = yes }

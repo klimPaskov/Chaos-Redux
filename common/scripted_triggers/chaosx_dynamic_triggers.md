@@ -52,6 +52,8 @@ Current coverage includes:
 - Event 014 cannibal warlord countries
 - the unified Event 014 country
 - the transformed Event 014 Wendigo country
+- Event 019 derivative countries, including dynamically created claimant-led
+  and family-host actors
 
 ## is_actual_nonhuman_country
 
@@ -67,6 +69,8 @@ Current coverage includes:
 - `DTH` / original `DTH` / countries with the Death country marker
 - `DHO` / original `DHO` / countries with the Event 018 cave-country marker
 - the transformed Event 014 Wendigo country; ordinary cannibal warlords and the ordinary unified country remain human
+- Event 019 derivatives carrying the nonhuman marker; claimant-only human
+  breakaways remain special without being classified as nonhuman
 
 ## cbrn_country_has_program
 

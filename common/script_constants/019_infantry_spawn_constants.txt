@@ -1,0 +1,1241 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 019 INFANTRY SPAWN CONSTANTS
+# ============================================================================
+# Shared identifiers and tuning for muster generations, state coverage,
+# formation lots, equipment accounting, management, claimants, anomalous
+# families, AI, exploit protection, and Event Log integration.
+#
+# Derivative-country focus and scenario-specific tuning live in their own
+# Event 019 constant files so those packages can be balanced independently.
+# ============================================================================
+
+infantry_spawn_event = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	id = 19
+	evolution_type = 19
+	evolution_i_tier = 1
+	evolution_ii_tier = 2
+	evolution_iii_tier = 3
+	evolution_iv_tier = 4
+	evolution_i_stage = 1
+	evolution_ii_stage = 2
+	evolution_iii_stage = 3
+	evolution_iv_stage = 4
+	visible_days = 14
+	maximum_claimants = 3
+	claimant_portrait_count = 20
+	audit_pulse_days = 7
+	ai_pulse_days = 7
+	cleanup_pulse_days = 30
+	generation_uid_seed = 190000
+	lot_uid_seed = 1900000
+	template_uid_seed = 2900000
+	unit_uid_seed = 3900000
+	obligation_uid_seed = 4900000
+	claimant_uid_seed = 5900000
+	delete_cohort_id_seed = 190000000
+	unknown_engine_location = 0
+	invalid_index = -1
+	first_index = 0
+}
+
+# Global evolution pacing is date-driven by active Event 19 country pulses.
+# A due check performs one bounded world-context sample, then either advances
+# the next stage or schedules another MTTH attempt. No recurring world on_action
+# is required.
+infantry_spawn_evolution_mtth = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	base_days = 90
+	retry_days = 30
+	minimum_days = 21
+	maximum_days = 180
+}
+
+infantry_spawn_evolution_mtth_factor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	war = 0.80
+	low_control = 0.85
+	severe_congestion = 0.75
+	stacked_generation = 0.80
+	high_chaos = 0.70
+	well_managed = 1.15
+}
+
+infantry_spawn_evolution_requirement = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	evolution_i_score = 3
+	evolution_i_generations = 2
+	evolution_i_formations = 20
+	evolution_i_participants = 8
+	evolution_i_war_share = 0.20
+	evolution_i_management_outcomes = 4
+
+	evolution_ii_score = 4
+	evolution_ii_generations = 4
+	evolution_ii_formations = 60
+	evolution_ii_integrated_lots = 15
+	evolution_ii_severe_congestion_countries = 3
+	evolution_ii_war_share = 0.30
+
+	evolution_iii_score = 4
+	evolution_iii_generations = 6
+	evolution_iii_formations = 110
+	evolution_iii_requests = 12
+	evolution_iii_severe_congestion_countries = 5
+	evolution_iii_low_control_countries = 5
+
+	evolution_iv_score = 5
+	evolution_iv_generations = 8
+	evolution_iv_formations = 180
+	evolution_iv_requests = 30
+	evolution_iv_anomalous_preservation_countries = 4
+	evolution_iv_claimant_crises = 4
+	evolution_iv_minimum_registry_entries = 1
+}
+
+infantry_spawn_evolution_score = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	chaos_tier = 2
+	generation_history = 1
+	formation_history = 1
+	participant_spread = 1
+	war_pressure = 1
+	management_history = 1
+	integrated_formations = 1
+	severe_congestion = 1
+	low_control = 1
+	request_history = 1
+	claimant_history = 1
+	anomalous_preservation = 1
+	registry_ready = 1
+}
+
+infantry_spawn_evolution_entry = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	organized_control_gain = 6
+	arsenal_control_gain = 2
+	arsenal_congestion_gain = 4
+	command_fracture_control_loss = 8
+	command_fracture_congestion_gain = 6
+	anomalous_control_loss = 4
+	anomalous_saturation_gain = 8
+}
+
+infantry_spawn_stage = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	inactive = 0
+	baseline = 1
+	organized_muster = 2
+	arsenal_lottery = 3
+	command_fracture = 4
+	anomalous_muster = 5
+	closed = 6
+}
+
+infantry_spawn_lot_family = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	local_rifle_cadre = 101
+	irregular_column = 102
+	mounted_patrol = 103
+	light_gun_brigade = 104
+	support_rich_reserve = 105
+	garrison_shell = 106
+	line_infantry_regiment = 201
+	gun_line_group = 202
+	mobile_reserve = 203
+	engineer_reserve = 204
+	anti_armor_detachment = 205
+	air_defense_reserve = 206
+	composite_territorial_division = 207
+	armored_reserve_group = 301
+	mechanized_column = 302
+	motor_rifle_formation = 303
+	assault_gun_group = 304
+	armored_car_screen = 305
+	air_mobile_detachment = 306
+	amphibious_reserve = 307
+	heavy_support_formation = 308
+	single_arm_curiosity = 309
+	fully_random = 400
+	registered_anomalous = 500
+}
+
+infantry_spawn_lot_state = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	inactive = 0
+	auditing = 1
+	revealed = 2
+	isolated = 3
+	training = 4
+	integrated = 5
+	territorial = 6
+	standardized = 7
+	claimant_controlled = 8
+	anomalous_containment = 9
+	demobilizing = 10
+	demobilized = 11
+	transferred = 12
+	destroyed = 13
+	revolted = 14
+}
+
+infantry_spawn_training_state = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	improvised = 1
+	minimally_drilled = 2
+	partially_trained = 3
+	serviceable = 4
+	field_ready = 5
+}
+
+infantry_spawn_material_quality = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	skeletal = 1
+	poor = 2
+	mixed = 3
+	serviceable = 4
+	exceptional = 5
+}
+
+infantry_spawn_coherence = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	catastrophic = 1
+	absurd = 2
+	strained = 3
+	coherent = 4
+}
+
+infantry_spawn_equipment_state = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	skeletal = 1
+	understrength = 2
+	mixed_issue = 3
+	substantially_equipped = 4
+	finite_prototype = 5
+	family_sustainment = 6
+}
+
+infantry_spawn_supply_burden = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	light = 1
+	ordinary = 2
+	heavy = 3
+	locally_impossible = 4
+}
+
+infantry_spawn_command_owner = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	state = 0
+	local_authority = 1
+	claimant_one = 2
+	claimant_two = 3
+	claimant_three = 4
+	family_collective = 5
+}
+
+infantry_spawn_request_mode = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	field_reinforcement = 1
+	mobile_reserve = 2
+	territorial_defense = 3
+	specialist = 4
+	unrestricted = 5
+	numbers = 6
+	discipline = 7
+	firepower = 8
+	mobility = 9
+	anything = 10
+	anomalous = 11
+}
+
+infantry_spawn_ai_profile = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	professionalizer = 1
+	territorialist = 2
+	wartime_opportunist = 3
+	gambler = 4
+	panic_demobilizer = 5
+	claimant_appeaser = 6
+	counter_command_state = 7
+	anomalous_exploiter = 8
+	anomalous_containment_state = 9
+}
+
+infantry_spawn_claimant_archetype = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	quartermaster_sovereign = 1
+	field_prophet = 2
+	barracks_tribune = 3
+	iron_saint = 4
+	hollow_marshal = 5
+}
+
+infantry_spawn_claimant_demand = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	formal_appointment = 1
+	equipment_share = 2
+	autonomous_district = 3
+	another_formation = 4
+	political_seat = 5
+	emergency_powers = 6
+}
+
+infantry_spawn_coverage_threshold = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	small = 5
+	regional = 15
+	medium = 35
+	large = 70
+	minimum_selected_states = 1
+}
+
+infantry_spawn_coverage = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	asymptotic_share = 0.25
+	variable_share = 0.75
+	decay_scale_states = 30
+}
+
+infantry_spawn_state_weight = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	base = 4
+	capital = 8
+	core = 3
+	industrial = 2
+	major_industrial = 4
+	supply_hub = 5
+	rail = 3
+	port = 3
+	major_port = 3
+	urban = 3
+	high_population = 3
+	front = 4
+	occupied = 1
+	resistance_penalty = 3
+	island_penalty = 2
+	minimum = 1
+	maximum = 32
+}
+
+infantry_spawn_state_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	industrial = 2
+	major_industrial = 5
+	major_port = 3
+	high_population_k = 1000
+	low_infrastructure = 3
+	high_resistance = 30
+}
+
+infantry_spawn_lot_limit = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	baseline_typical = 6
+	organized_typical = 7
+	arsenal_typical = 9
+	command_fracture_small = 2
+	command_fracture_typical = 8
+	command_fracture_large = 12
+	maximum_pool_weight_per_state = 32
+}
+
+infantry_spawn_baseline_weight = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	local_rifle_cadre = 34
+	irregular_column = 18
+	mounted_patrol = 13
+	light_gun_brigade = 12
+	support_rich_reserve = 9
+	garrison_shell = 14
+	war_combat_bonus = 8
+	industry_specialist_bonus = 7
+	remote_irregular_bonus = 7
+	occupied_unreliable_bonus = 8
+	stacked_weak_bonus = 10
+	high_control_coherent_bonus = 8
+}
+
+infantry_spawn_family_size = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	local_rifle_combat = 6
+	irregular_combat = 4
+	mounted_combat = 4
+	light_gun_combat = 7
+	light_gun_infantry = 5
+	light_gun_artillery = 2
+	support_rich_combat = 4
+	support_rich_support = 3
+	garrison_combat = 2
+	line_infantry_combat = 8
+	gun_line_infantry = 6
+	gun_line_artillery = 2
+	mobile_reserve_combat = 6
+	engineer_reserve_combat = 6
+	anti_armor_infantry = 5
+	anti_armor_line = 1
+	air_defense_infantry = 5
+	air_defense_line = 1
+	composite_infantry = 5
+	composite_cavalry = 3
+	armored_reserve_tanks = 4
+	armored_reserve_mechanized = 2
+	mechanized_column_combat = 5
+	motor_rifle_combat = 7
+	assault_gun_infantry = 3
+	assault_gun_artillery = 4
+	armored_car_screen_combat = 6
+	air_mobile_infantry = 3
+	amphibious_reserve_combat = 4
+	heavy_support_infantry = 3
+	single_arm_combat = 5
+}
+
+infantry_spawn_context_weight = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minor = 3
+	moderate = 6
+	major = 10
+	front = 7
+	industry = 8
+	population = 6
+	remote = 7
+	stacked = 9
+	high_control = 8
+	low_control = 8
+}
+
+infantry_spawn_readiness = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	improvised_experience = 0.05
+	partial_experience = 0.15
+	serviceable_experience = 0.25
+}
+
+infantry_spawn_organized_weight = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	line_infantry_regiment = 27
+	gun_line_group = 15
+	mobile_reserve = 15
+	engineer_reserve = 13
+	anti_armor_detachment = 10
+	air_defense_reserve = 10
+	composite_territorial_division = 10
+}
+
+infantry_spawn_arsenal_weight = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	armored_reserve_group = 14
+	mechanized_column = 15
+	motor_rifle_formation = 18
+	assault_gun_group = 10
+	armored_car_screen = 10
+	air_mobile_detachment = 5
+	amphibious_reserve = 8
+	heavy_support_formation = 10
+	single_arm_curiosity = 10
+}
+
+infantry_spawn_control = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum = 0
+	maximum = 100
+	opening_base = 45
+	opening_stability_factor = 25
+	opening_war_penalty = 7
+	audit_success = 12
+	standardization_success = 10
+	territorial_assignment = 5
+	controlled_demobilization = 6
+	emergency_integration_penalty = 8
+	stacked_muster_penalty = 14
+	request_penalty = 3
+	failed_mission_penalty = 9
+	claimant_concession_penalty = 6
+	revolt_penalty = 25
+	anomalous_uncontrolled_penalty = 8
+	low = 25
+	guarded = 45
+	strong = 70
+	exceptional = 85
+}
+
+infantry_spawn_congestion = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum = 0
+	maximum = 100
+	division_capacity_per_state = 2
+	base_capacity = 2
+	division_pressure_scale = 100
+	active_lot_pressure = 2.5
+	unresolved_generation_pressure = 8
+	stacked_muster_pressure = 15
+	heavy_supply_lot_pressure = 4
+	impossible_supply_lot_pressure = 8
+	request_pressure = 5
+	claimant_lot_pressure = 4
+	anomalous_family_pressure = 5
+	audit_relief = 5
+	territorial_relief = 7
+	standardization_relief = 10
+	demobilization_relief = 12
+	rail_corridor_relief = 8
+	low = 25
+	strained = 45
+	severe = 70
+	critical = 85
+}
+
+infantry_spawn_accounting = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	manpower_liability_per_battalion = 500
+	equipment_debt_per_battalion = 45
+	support_debt_per_company = 20
+	fuel_debt_per_mobile_battalion = 40
+	prototype_debt_per_battalion = 90
+	anomalous_debt_per_battalion = 100
+	war_equipment_fill = 0.65
+	peace_equipment_fill = 0.45
+	organized_equipment_fill_bonus = 0.15
+	arsenal_equipment_fill_bonus = 0.10
+	minimum_equipment_fill = 0.20
+	maximum_equipment_fill = 0.90
+	demobilization_salvage_share = 0.30
+	cannibalization_salvage_share = 0.45
+	standardization_loss_share = 0.15
+}
+
+infantry_spawn_timer = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	audit_base_days = 70
+	audit_minimum_days = 28
+	audit_large_country_bonus_days = 28
+	audit_war_penalty_days = 14
+	audit_stacked_penalty_days = 14
+	standardization_days = 56
+	demobilization_days = 35
+	training_cycle_days = 70
+	rail_corridor_days = 42
+	officer_search_days = 56
+	request_base_cooldown_days = 28
+	request_cooldown_per_prior_request_days = 14
+	claimant_demand_days = 30
+	claimant_emergency_power_days = 90
+	failed_coup_aftermath_days = 90
+	containment_days = 56
+	derivative_revolt_warning_days = 21
+}
+
+infantry_spawn_request_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_army_experience = 8
+	base_infantry_equipment = 350
+	base_support_equipment = 35
+	base_trucks = 20
+	base_trains = 1
+	base_fuel = 250
+	base_manpower_liability = 1200
+	state_scale = 0.03
+	event_division_scale = 0.04
+	congestion_scale = 0.0125
+	prior_request_scale = 0.35
+	war_discount = 0.15
+	discipline_experience_multiplier = 1.50
+	discipline_support_multiplier = 1.25
+	numbers_equipment_multiplier = 1.25
+	numbers_manpower_multiplier = 1.50
+	firepower_equipment_multiplier = 1.50
+	mobility_fuel_multiplier = 1.75
+	anything_risk_multiplier = 1.50
+	anomalous_cost_multiplier = 2.00
+}
+
+infantry_spawn_random_template = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_combat_battalions = 1
+	maximum_combat_battalions = 25
+	maximum_support_companies = 5
+	weak_tail_weight = 8
+	light_weight = 28
+	full_weight = 40
+	heavy_weight = 17
+	bloated_tail_weight = 7
+	coherent_base_weight = 35
+	strained_base_weight = 35
+	absurd_base_weight = 22
+	catastrophic_base_weight = 8
+	control_weight_per_point = 0.35
+	congestion_weight_per_point = 0.35
+	request_risk_per_prior_request = 4
+	maximum_equipment_families = 12
+	maximum_mobility_mismatch = 100
+}
+
+infantry_spawn_quality_weight = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	baseline_skeletal = 22
+	baseline_poor = 43
+	baseline_mixed = 28
+	baseline_serviceable = 7
+	organized_skeletal = 6
+	organized_poor = 28
+	organized_mixed = 44
+	organized_serviceable = 20
+	organized_exceptional = 2
+	arsenal_skeletal = 5
+	arsenal_poor = 22
+	arsenal_mixed = 38
+	arsenal_serviceable = 30
+	arsenal_exceptional = 5
+}
+
+infantry_spawn_supply_weight = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	baseline_light = 35
+	baseline_ordinary = 50
+	baseline_heavy = 13
+	baseline_impossible = 2
+	organized_light = 20
+	organized_ordinary = 55
+	organized_heavy = 22
+	organized_impossible = 3
+	arsenal_light = 8
+	arsenal_ordinary = 37
+	arsenal_heavy = 45
+	arsenal_impossible = 10
+}
+
+infantry_spawn_coherence_weight = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	baseline_catastrophic = 10
+	baseline_absurd = 20
+	baseline_strained = 45
+	baseline_coherent = 25
+	organized_catastrophic = 4
+	organized_absurd = 12
+	organized_strained = 42
+	organized_coherent = 42
+	arsenal_catastrophic = 8
+	arsenal_absurd = 22
+	arsenal_strained = 42
+	arsenal_coherent = 28
+	control_shift = 8
+	congestion_shift = 8
+}
+
+infantry_spawn_claimant = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	influence_minimum = 0
+	influence_maximum = 100
+	appearance_base_chance = 8
+	appearance_low_control_bonus = 12
+	appearance_high_congestion_bonus = 14
+	appearance_anything_request_bonus = 10
+	appearance_stacked_bonus = 8
+	formal_appointment_gain = 12
+	equipment_share_gain = 10
+	autonomous_district_gain = 18
+	another_formation_gain = 14
+	political_seat_gain = 16
+	emergency_powers_gain = 25
+	counter_command_loss = 15
+	discredit_loss = 10
+	retirement_loss = 100
+	revolt_threshold = 75
+	takeover_threshold = 85
+	rival_threshold = 45
+	autonomous_state_minimum = 2
+	loyal_lot_minimum = 1
+}
+
+infantry_spawn_saturation = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum = 0
+	maximum = 100
+	per_anomalous_division = 3
+	per_active_family = 7
+	per_uncontained_lot = 6
+	per_claimant_lot = 5
+	per_request = 8
+	sustainment_gain = 2
+	cantonment_relief = 8
+	restricted_deployment_relief = 5
+	containment_success_relief = 12
+	trace = 20
+	embedded = 45
+	dominant = 70
+	breach = 85
+	derivative_minimum_family_divisions = 2
+}
+
+infantry_spawn_derivative_strength = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_stability = 0.25
+	base_war_support = 0.80
+	starting_political_power = 50
+	starting_command_power = 20
+	starting_army_experience = 15
+	starting_equipment_share = 0.20
+	former_parent_priority = 100
+	adjacent_weak_priority = 60
+	unreachable_target_weight = 0
+	parent_relative_power_ceiling = 0.65
+	opening_supply_days = 90
+	ghost_population_decline_interval_days = 90
+	ghost_population_decline_share = 0.0025
+	ghost_wasteland_pressure_per_cycle = 2
+	ghost_wasteland_threshold = 100
+	golem_reinforcement_days = 120
+	zombie_reinforcement_days = 45
+	ghost_reinforcement_days = 90
+}
+
+infantry_spawn_performance = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	state_pool_attempt_multiplier = 4
+	state_pool_minimum_attempts = 8
+	claimant_scan_maximum = 3
+}
+
+infantry_spawn_component_kind = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	combat = 1
+	support = 2
+}
+
+infantry_spawn_component_token = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	light_armor = 5
+	light_sp_artillery_brigade = 13
+	anti_air_brigade = 20
+	anti_tank_brigade = 21
+	artillery_brigade = 22
+	infantry = 24
+	irregular_infantry = 33
+	amphibious_mechanized = 35
+	armored_car = 36
+	cavalry = 38
+	motorized = 41
+	mechanized = 42
+	anti_air_support = 101
+	anti_tank_support = 102
+	artillery_support = 103
+	engineer = 107
+	field_hospital = 112
+	helicopter_brigade = 117
+	logistics_company = 119
+	recon = 125
+	signal_company = 135
+}
+
+infantry_spawn_equipment_family = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	manpower = 0
+	infantry_equipment = 1
+	artillery_equipment = 2
+	support_equipment = 3
+	motorized_equipment = 4
+	armored_car_equipment = 5
+	mechanized_equipment = 6
+	helicopter_equipment = 7
+	amphibious_mechanized_equipment = 8
+	tank_equipment = 9
+	fuel = 10
+	train = 11
+	coal_golem_equipment = 12
+	light_tank_chassis = 13
+	light_tank_artillery_chassis = 14
+	anti_tank_equipment = 15
+	anti_air_equipment = 16
+	rocket_artillery_equipment = 17
+}
+
+infantry_spawn_component_need = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	infantry_manpower = 1000
+	infantry_equipment = 100
+	irregular_manpower = 1000
+	irregular_infantry_equipment = 80
+	cavalry_manpower = 1000
+	cavalry_infantry_equipment = 120
+	artillery_manpower = 500
+	artillery_equipment = 24
+	motorized_manpower = 1200
+	motorized_infantry_equipment = 100
+	motorized_trucks = 35
+	mechanized_manpower = 1200
+	mechanized_infantry_equipment = 100
+	mechanized_equipment = 40
+	light_armor_manpower = 500
+	light_armor_equipment = 60
+	light_sp_artillery_manpower = 500
+	light_sp_artillery_equipment = 40
+	armored_car_manpower = 500
+	armored_car_equipment = 60
+	amphibious_mechanized_manpower = 1200
+	amphibious_mechanized_infantry_equipment = 100
+	amphibious_mechanized_equipment = 50
+	anti_tank_brigade_manpower = 500
+	anti_tank_brigade_equipment = 36
+	anti_air_brigade_manpower = 500
+	anti_air_brigade_equipment = 36
+	engineer_manpower = 300
+	engineer_infantry_equipment = 10
+	engineer_support_equipment = 30
+	recon_manpower = 500
+	recon_infantry_equipment = 40
+	recon_support_equipment = 10
+	artillery_support_manpower = 300
+	artillery_support_equipment = 12
+	anti_tank_support_manpower = 300
+	anti_tank_support_equipment = 24
+	anti_air_support_manpower = 300
+	anti_air_support_equipment = 20
+	logistics_manpower = 500
+	logistics_support_equipment = 20
+	logistics_trucks = 10
+	field_hospital_manpower = 500
+	field_hospital_support_equipment = 30
+	field_hospital_trucks = 20
+	signal_manpower = 500
+	signal_support_equipment = 20
+	signal_trucks = 10
+	helicopter_support_manpower = 500
+	helicopter_support_equipment = 15
+	helicopter_equipment = 15
+	motorized_fuel = 40
+	mechanized_fuel = 70
+	light_armor_fuel = 80
+	light_sp_artillery_fuel = 70
+	armored_car_fuel = 30
+	amphibious_mechanized_fuel = 60
+	helicopter_support_fuel = 100
+}
+
+infantry_spawn_initial_factor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	skeletal_equipment = 0.20
+	poor_equipment = 0.40
+	mixed_equipment = 0.60
+	serviceable_equipment = 0.75
+	exceptional_equipment = 0.90
+	skeletal_manpower = 0.35
+	poor_manpower = 0.50
+	mixed_manpower = 0.65
+	serviceable_manpower = 0.80
+	exceptional_manpower = 0.95
+}
+
+infantry_spawn_prototype_package = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	stockpile_share = 0.25
+	minimum_item = 1
+}
+
+infantry_spawn_units_per_state = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum = 1
+	maximum = 3
+	baseline_one_weight = 88
+	baseline_two_weight = 12
+	organized_one_weight = 72
+	organized_two_weight = 28
+	arsenal_one_weight = 45
+	arsenal_two_weight = 40
+	arsenal_three_weight = 15
+	high_capacity_factor = 1.75
+	front_factor = 1.50
+	severe_congestion_factor = 2.00
+	stacked_shell_factor = 1.50
+}
+
+infantry_spawn_mobility_mismatch = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	moderate = 35
+	severe = 70
+	maximum = 100
+}
+
+infantry_spawn_obligation_state = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	outstanding = 1
+	servicing = 2
+	settled = 3
+	forfeited = 4
+	transferred = 5
+}
+
+infantry_spawn_generation_status = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	open = 1
+	audited = 2
+	resolved = 3
+	archived = 4
+}
+
+infantry_spawn_template_status = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	locked = 1
+	spawn_only = 2
+	trainable_locked = 3
+	integrated = 4
+	retired = 5
+}
+
+infantry_spawn_recruitment_mode = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	locked_pending = 1
+	spawn_only = 2
+	base_zombie_authorized = 3
+	ordinary_integrated = 4
+}
+
+infantry_spawn_unit_status = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	active = 1
+	claimant_loyal = 2
+	transfer_staged = 3
+	transferred_out = 4
+	demobilized = 5
+	destroyed = 6
+	stale = 7
+}
+
+infantry_spawn_generation_profile = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	baseline = 1
+	organized = 2
+	arsenal = 3
+	command_fracture = 4
+	anomalous = 5
+	scenario = 6
+}
+
+# Evolution III countries encountered for the first time receive a bounded
+# opening choice instead of the ordinary automatic wave. These values tune the
+# AI pressure and the cost of refusing the draw while already at war.
+infantry_spawn_prefire_opening = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	draw_ai_base = 60
+	draw_ai_war_factor = 4
+	decline_ai_base = 40
+	decline_ai_war_factor = 0.25
+	war_decline_control_loss = 4
+	war_decline_congestion_gain = 3
+	success_control_gain = 1
+}
+
+infantry_spawn_factor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	disabled = 0
+	tenth = 0.10
+	quarter = 0.25
+	one_third = 0.35
+	half = 0.50
+	three_quarters = 0.75
+	standard = 1.00
+	modest = 1.25
+	strong = 1.50
+	double = 2.00
+	triple = 3.00
+}
+
+infantry_spawn_idea = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	control_low_org = -0.08
+	control_low_training = 0.15
+	control_low_command_power = -0.15
+	control_low_planning = -0.10
+	control_guarded_org = -0.03
+	control_guarded_training = 0.05
+	control_strong_planning = 0.05
+	control_strong_reinforce = 0.02
+	control_exceptional_org = 0.05
+	control_exceptional_planning = 0.10
+	control_exceptional_reinforce = 0.03
+	control_exceptional_training = -0.10
+	congestion_strained_supply = 0.10
+	congestion_strained_speed = -0.03
+	congestion_strained_training = 0.05
+	congestion_severe_supply = 0.25
+	congestion_severe_org = -0.10
+	congestion_severe_reinforce = -0.05
+	congestion_severe_speed = -0.08
+	congestion_severe_training = 0.15
+	congestion_severe_fuel = 0.10
+	congestion_critical_supply = 0.50
+	congestion_critical_org = -0.20
+	congestion_critical_reinforce = -0.10
+	congestion_critical_speed = -0.15
+	congestion_critical_training = 0.30
+	congestion_critical_planning = -0.25
+	congestion_critical_consumer_goods = 0.05
+	debt_modest_consumer_goods = 0.01
+	debt_modest_efficiency_gain = -0.03
+	debt_severe_consumer_goods = 0.03
+	debt_severe_efficiency_gain = -0.08
+	debt_severe_output = -0.05
+	debt_critical_consumer_goods = 0.06
+	debt_critical_efficiency_gain = -0.15
+	debt_critical_output = -0.10
+	debt_critical_repair = -0.15
+	officer_burden_command_power = -0.20
+	officer_burden_planning = -0.10
+	training_saturation_training = 0.25
+	training_saturation_org = -0.05
+	supply_allocation_supply = 0.20
+	supply_allocation_speed = -0.05
+}
+
+infantry_spawn_debt_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	modest = 1000
+	severe = 5000
+	critical = 15000
+}

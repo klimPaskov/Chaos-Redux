@@ -1,0 +1,119 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 015: UTOPIA MANIFESTO DECISION CATEGORIES
+# ============================================================================
+# Phased decision surfaces for the Commonwealth Ledger. Gameplay and target
+# logic live in common/decisions/015_utopia_manifesto_decisions.txt.
+# ============================================================================
+
+@utopia_manifesto_category_priority_ledger = 90
+@utopia_manifesto_category_priority_district = 89
+@utopia_manifesto_category_priority_island = 88
+@utopia_manifesto_category_priority_necessary_ground = 87
+@utopia_manifesto_category_priority_stewardship = 86
+@utopia_manifesto_category_priority_league = 85
+@utopia_manifesto_category_priority_defense = 84
+@utopia_manifesto_category_priority_governance = 83
+@utopia_manifesto_category_priority_formation = 82
+
+utopia_manifesto_ledger_category = {
+	icon = GFX_decision_category_utopia_ledger
+	allowed = { always = yes }
+	visible = {
+		utopia_manifesto_has_ledger = yes
+		utopia_manifesto_decision_phase_has_reached_foundations = yes
+	}
+	priority = @utopia_manifesto_category_priority_ledger
+}
+
+utopia_manifesto_district_category = {
+	icon = GFX_decision_category_utopia_district
+	allowed = { always = yes }
+	visible = {
+		utopia_manifesto_has_ledger = yes
+		utopia_manifesto_district_decisions_are_unlocked = yes
+	}
+	priority = @utopia_manifesto_category_priority_district
+}
+
+utopia_manifesto_island_category = {
+	icon = GFX_decision_category_utopia_island
+	allowed = { always = yes }
+	visible = {
+		utopia_manifesto_has_ledger = yes
+		utopia_manifesto_decision_phase_has_reached_districts = yes
+		has_completed_focus = utopia_manifesto_choose_the_island
+	}
+	priority = @utopia_manifesto_category_priority_island
+}
+
+utopia_manifesto_necessary_ground_category = {
+	icon = GFX_decision_category_utopia_necessary_ground
+	allowed = { always = yes }
+	visible = {
+		utopia_manifesto_has_ledger = yes
+		utopia_manifesto_necessary_ground_decisions_are_unlocked = yes
+	}
+	priority = @utopia_manifesto_category_priority_necessary_ground
+}
+
+utopia_manifesto_stewardship_category = {
+	icon = GFX_decision_category_utopia_stewardship
+	allowed = { always = yes }
+	visible = {
+		utopia_manifesto_has_ledger = yes
+		utopia_manifesto_stewardship_decisions_are_unlocked = yes
+	}
+	priority = @utopia_manifesto_category_priority_stewardship
+}
+
+utopia_manifesto_league_category = {
+	icon = GFX_decision_category_utopia_league
+	allowed = { always = yes }
+	visible = {
+		utopia_manifesto_has_ledger = yes
+		utopia_manifesto_league_decisions_are_unlocked = yes
+	}
+	priority = @utopia_manifesto_category_priority_league
+}
+
+utopia_manifesto_defense_category = {
+	icon = GFX_decision_category_utopia_defense
+	allowed = { always = yes }
+	visible = {
+		utopia_manifesto_has_ledger = yes
+		utopia_manifesto_decision_phase_has_reached_districts = yes
+		OR = {
+			has_completed_focus = utopia_manifesto_the_citizen_watch
+			has_country_flag = utopia_manifesto_citizen_watch
+			has_country_flag = utopia_manifesto_auxiliary_contracts_unlocked
+		}
+	}
+	priority = @utopia_manifesto_category_priority_defense
+}
+
+utopia_manifesto_governance_category = {
+	icon = GFX_decision_category_utopia_governance
+	allowed = { always = yes }
+	visible = {
+		utopia_manifesto_has_ledger = yes
+		OR = {
+			utopia_manifesto_decision_phase_has_reached_route = yes
+			utopia_manifesto_has_active_constitutional_crisis = yes
+		}
+	}
+	priority = @utopia_manifesto_category_priority_governance
+}
+
+utopia_manifesto_formation_category = {
+	icon = GFX_decision_category_utopia_formation
+	allowed = { always = yes }
+	visible = {
+		utopia_manifesto_has_ledger = yes
+		utopia_manifesto_decision_phase_has_reached_formation = yes
+		OR = {
+			utopia_manifesto_formation_decisions_are_unlocked = yes
+			has_country_flag = utopia_manifesto_formation_proven
+		}
+	}
+	priority = @utopia_manifesto_category_priority_formation
+}

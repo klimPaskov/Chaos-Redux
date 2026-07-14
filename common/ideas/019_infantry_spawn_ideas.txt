@@ -1,0 +1,259 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 019 INFANTRY SPAWN IDEAS
+# ============================================================================
+# Staged visible military burdens for Muster Control, Army Congestion,
+# equipment debt, officer reassignment, training saturation, and supply
+# allocation. Scripted effects keep only one stage of each family active.
+# ============================================================================
+
+ideas = {
+	country = {
+		infantry_spawn_control_low = {
+			picture = infantry_spawn_muster_control
+			allowed = { infantry_spawn_country_is_active = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_org_factor = constant:infantry_spawn_idea.control_low_org
+				training_time_factor = constant:infantry_spawn_idea.control_low_training
+				command_power_gain_mult = constant:infantry_spawn_idea.control_low_command_power
+				planning_speed = constant:infantry_spawn_idea.control_low_planning
+			}
+		}
+
+		infantry_spawn_control_guarded = {
+			picture = infantry_spawn_muster_control
+			allowed = { infantry_spawn_country_is_active = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_org_factor = constant:infantry_spawn_idea.control_guarded_org
+				training_time_factor = constant:infantry_spawn_idea.control_guarded_training
+			}
+		}
+
+		infantry_spawn_control_strong = {
+			picture = infantry_spawn_muster_control
+			allowed = { infantry_spawn_country_is_active = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				planning_speed = constant:infantry_spawn_idea.control_strong_planning
+				land_reinforce_rate = constant:infantry_spawn_idea.control_strong_reinforce
+			}
+		}
+
+		infantry_spawn_control_exceptional = {
+			picture = infantry_spawn_muster_control
+			allowed = { infantry_spawn_country_is_active = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_org_factor = constant:infantry_spawn_idea.control_exceptional_org
+				planning_speed = constant:infantry_spawn_idea.control_exceptional_planning
+				land_reinforce_rate = constant:infantry_spawn_idea.control_exceptional_reinforce
+				training_time_factor = constant:infantry_spawn_idea.control_exceptional_training
+			}
+		}
+
+		infantry_spawn_congestion_strained = {
+			picture = infantry_spawn_army_congestion
+			allowed = { infantry_spawn_country_is_active = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				supply_consumption_factor = constant:infantry_spawn_idea.congestion_strained_supply
+				army_speed_factor = constant:infantry_spawn_idea.congestion_strained_speed
+				training_time_factor = constant:infantry_spawn_idea.congestion_strained_training
+			}
+		}
+
+		infantry_spawn_congestion_severe = {
+			picture = infantry_spawn_army_congestion
+			allowed = { infantry_spawn_country_is_active = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				supply_consumption_factor = constant:infantry_spawn_idea.congestion_severe_supply
+				army_org_factor = constant:infantry_spawn_idea.congestion_severe_org
+				land_reinforce_rate = constant:infantry_spawn_idea.congestion_severe_reinforce
+				army_speed_factor = constant:infantry_spawn_idea.congestion_severe_speed
+				training_time_factor = constant:infantry_spawn_idea.congestion_severe_training
+				army_fuel_consumption_factor = constant:infantry_spawn_idea.congestion_severe_fuel
+			}
+		}
+
+		infantry_spawn_congestion_critical = {
+			picture = infantry_spawn_army_congestion
+			allowed = { infantry_spawn_country_is_active = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				supply_consumption_factor = constant:infantry_spawn_idea.congestion_critical_supply
+				army_org_factor = constant:infantry_spawn_idea.congestion_critical_org
+				land_reinforce_rate = constant:infantry_spawn_idea.congestion_critical_reinforce
+				army_speed_factor = constant:infantry_spawn_idea.congestion_critical_speed
+				training_time_factor = constant:infantry_spawn_idea.congestion_critical_training
+				planning_speed = constant:infantry_spawn_idea.congestion_critical_planning
+				consumer_goods_factor = constant:infantry_spawn_idea.congestion_critical_consumer_goods
+			}
+		}
+
+		infantry_spawn_equipment_debt_modest = {
+			picture = infantry_spawn_equipment_debt
+			allowed = { infantry_spawn_country_is_active = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				consumer_goods_factor = constant:infantry_spawn_idea.debt_modest_consumer_goods
+				production_factory_efficiency_gain_factor = constant:infantry_spawn_idea.debt_modest_efficiency_gain
+			}
+		}
+
+		infantry_spawn_equipment_debt_severe = {
+			picture = infantry_spawn_equipment_debt
+			allowed = { infantry_spawn_country_is_active = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				consumer_goods_factor = constant:infantry_spawn_idea.debt_severe_consumer_goods
+				production_factory_efficiency_gain_factor = constant:infantry_spawn_idea.debt_severe_efficiency_gain
+				industrial_capacity_factory = constant:infantry_spawn_idea.debt_severe_output
+			}
+		}
+
+		infantry_spawn_equipment_debt_critical = {
+			picture = infantry_spawn_equipment_debt
+			allowed = { infantry_spawn_country_is_active = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				consumer_goods_factor = constant:infantry_spawn_idea.debt_critical_consumer_goods
+				production_factory_efficiency_gain_factor = constant:infantry_spawn_idea.debt_critical_efficiency_gain
+				industrial_capacity_factory = constant:infantry_spawn_idea.debt_critical_output
+				repair_speed_factor = constant:infantry_spawn_idea.debt_critical_repair
+			}
+		}
+
+		infantry_spawn_officer_reassignment_burden = {
+			picture = infantry_spawn_command_confusion
+			allowed = { infantry_spawn_country_is_active = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				command_power_gain_mult = constant:infantry_spawn_idea.officer_burden_command_power
+				planning_speed = constant:infantry_spawn_idea.officer_burden_planning
+			}
+		}
+
+		infantry_spawn_training_ground_saturation = {
+			picture = infantry_spawn_training_saturation
+			allowed = { infantry_spawn_country_is_active = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				training_time_factor = constant:infantry_spawn_idea.training_saturation_training
+				army_org_factor = constant:infantry_spawn_idea.training_saturation_org
+			}
+		}
+
+		infantry_spawn_supply_allocation_strain = {
+			picture = infantry_spawn_supply_strain
+			allowed = { infantry_spawn_country_is_active = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				supply_consumption_factor = constant:infantry_spawn_idea.supply_allocation_supply
+				army_speed_factor = constant:infantry_spawn_idea.supply_allocation_speed
+			}
+		}
+
+		infantry_spawn_recognized_claimant_command = {
+			picture = infantry_spawn_claimant_command
+			allowed = { infantry_spawn_country_is_active = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				command_power_gain_mult = constant:infantry_spawn_claimant_idea.recognized_command_power
+				planning_speed = constant:infantry_spawn_claimant_idea.recognized_planning
+				army_org_factor = constant:infantry_spawn_claimant_idea.recognized_org
+			}
+		}
+
+		infantry_spawn_claimant_in_government = {
+			picture = infantry_spawn_claimant_command
+			allowed = { infantry_spawn_country_is_active = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				political_power_gain = constant:infantry_spawn_claimant_idea.government_political_power
+				stability_factor = constant:infantry_spawn_claimant_idea.government_stability
+				command_power_gain_mult = constant:infantry_spawn_claimant_idea.government_command_power
+			}
+		}
+
+		infantry_spawn_claimant_emergency_command = {
+			picture = infantry_spawn_claimant_command
+			allowed = { has_country_flag = infantry_spawn_claimant_emergency_powers }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_org_factor = constant:infantry_spawn_claimant_idea.emergency_org
+				planning_speed = constant:infantry_spawn_claimant_idea.emergency_planning
+				land_reinforce_rate = constant:infantry_spawn_claimant_idea.emergency_reinforce
+				stability_factor = constant:infantry_spawn_claimant_idea.emergency_stability
+			}
+		}
+
+		infantry_spawn_claimant_takeover_regime = {
+			picture = infantry_spawn_claimant_command
+			allowed = { has_country_flag = infantry_spawn_claimant_takeover_complete }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_org_factor = constant:infantry_spawn_claimant_idea.takeover_org
+				planning_speed = constant:infantry_spawn_claimant_idea.takeover_planning
+				command_power_gain_mult = constant:infantry_spawn_claimant_idea.takeover_command_power
+			}
+		}
+
+		infantry_spawn_failed_coup_aftermath = {
+			picture = infantry_spawn_command_confusion
+			allowed_civil_war = { always = yes }
+			modifier = {
+				stability_factor = constant:infantry_spawn_claimant_idea.coup_stability
+				war_support_factor = constant:infantry_spawn_claimant_idea.coup_war_support
+				command_power_gain_mult = constant:infantry_spawn_claimant_idea.coup_command_power
+			}
+		}
+
+		infantry_spawn_claimant_quartermaster_sovereign = {
+			picture = infantry_spawn_claimant_command
+			allowed_civil_war = { always = yes }
+			modifier = {
+				supply_consumption_factor = constant:infantry_spawn_claimant_idea.quartermaster_supply
+				production_factory_efficiency_gain_factor = constant:infantry_spawn_claimant_idea.quartermaster_efficiency
+			}
+		}
+
+		infantry_spawn_claimant_field_prophet = {
+			picture = infantry_spawn_claimant_command
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_attack_factor = constant:infantry_spawn_claimant_idea.prophet_attack
+				planning_speed = constant:infantry_spawn_claimant_idea.prophet_planning
+				stability_factor = constant:infantry_spawn_claimant_idea.prophet_stability
+			}
+		}
+
+		infantry_spawn_claimant_barracks_tribune = {
+			picture = infantry_spawn_claimant_command
+			allowed_civil_war = { always = yes }
+			modifier = {
+				land_reinforce_rate = constant:infantry_spawn_claimant_idea.tribune_reinforce
+				army_org_factor = constant:infantry_spawn_claimant_idea.tribune_org
+			}
+		}
+
+		infantry_spawn_claimant_iron_saint = {
+			picture = infantry_spawn_claimant_command
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_defence_factor = constant:infantry_spawn_claimant_idea.saint_defense
+				max_dig_in_factor = constant:infantry_spawn_claimant_idea.saint_entrenchment
+			}
+		}
+
+		infantry_spawn_claimant_hollow_marshal = {
+			picture = infantry_spawn_claimant_command
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_speed_factor = constant:infantry_spawn_claimant_idea.marshal_speed
+				coordination_bonus = constant:infantry_spawn_claimant_idea.marshal_coordination
+			}
+		}
+	}
+}

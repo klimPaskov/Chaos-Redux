@@ -1,0 +1,44 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 019 INFANTRY SPAWN MTTH VARIABLES
+# ============================================================================
+# Country-scope delay used to date the next global evolution eligibility
+# sample. The first active Event 19 country whose pulse reaches the global due
+# date performs the bounded sample and moves the date forward. This avoids a
+# recurring world on_action while preserving mean-time pacing.
+# ============================================================================
+
+infantry_spawn_evolution_interval = {
+	base = constant:infantry_spawn_evolution_mtth.base_days
+	modifier = {
+		factor = constant:infantry_spawn_evolution_mtth_factor.war
+		has_war = yes
+	}
+	modifier = {
+		factor = constant:infantry_spawn_evolution_mtth_factor.low_control
+		infantry_spawn_control_is_low = yes
+	}
+	modifier = {
+		factor = constant:infantry_spawn_evolution_mtth_factor.severe_congestion
+		infantry_spawn_congestion_is_severe = yes
+	}
+	modifier = {
+		factor = constant:infantry_spawn_evolution_mtth_factor.stacked_generation
+		has_country_flag = infantry_spawn_generation_stacked
+	}
+	modifier = {
+		factor = constant:infantry_spawn_evolution_mtth_factor.high_chaos
+		check_variable = {
+			var = global.chaos_meter_value
+			value = constant:chaos_meter_tier_range.tier_3.min
+			compare = greater_than_or_equals
+		}
+	}
+	modifier = {
+		factor = constant:infantry_spawn_evolution_mtth_factor.well_managed
+		check_variable = {
+			var = infantry_spawn_muster_control
+			value = constant:infantry_spawn_control.strong
+			compare = greater_than_or_equals
+		}
+	}
+}
