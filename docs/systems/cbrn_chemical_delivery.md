@@ -167,6 +167,7 @@ The migration helper is deliberately not called while legacy delivery consumers 
 - Current 1.19 documentation exposes `divisions_in_state` with a scoped state, so ground adapters can prove an exact mapped route formation in a friendly state adjacent to the selected enemy state.
 - The available scopes do not prove that a particular active Army Headquarters commands that adjacent formation. Headquarters therefore remains the theater authorization and preparation layer; the adjacent formation remains the delivery proof. This distinction must remain visible in route documentation.
 - No verified current-version hook proves eligible activity by an ordinary continuous air mission. The continuous-air route is rejected fail-closed. No aircraft-presence, mission-assignment, or idle-module estimator is retained.
+- The former combat-heat/deployed-aircraft estimator has been removed from army combat hooks. Its stable event ID now only clears legacy heat/flag state and never reschedules or dispatches exposure.
 - Current selected-state decision and raid scopes expose no verified live target-weather or state-terrain trigger. Ground and explicit-air condition handling remain unresolved until an accepted, disclosed model or a verified engine hook is selected. Density and fortification can be read from state structure, but they must not be described as terrain or weather.
 
 ## Assets

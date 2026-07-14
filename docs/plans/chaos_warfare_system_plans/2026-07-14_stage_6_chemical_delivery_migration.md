@@ -72,6 +72,8 @@ The user explicitly confirmed that doctrine may reduce Condemnation impact. The 
 
 Reservation/outcome foundation completed before activation: native `essential_equipment` now has one exact archetype per agent class; the shared helper maps four engine outcomes to five accepted results, refunds unused stock, records net consumption, and separates consumed payload from delivered-dose efficiency. Active raid IDs remain unwired until the approved weather/terrain condition policy is available.
 
+Unsupported continuous-air estimator retired: army combat no longer creates `chem_air_ground_ops_heat`; the deployed-aircraft/region estimator and its tuning tables are removed. The stable `chemical_air_bomb.1` event is retained only as a one-shot cleanup endpoint for a previously queued tick and cannot calculate exposure or reschedule itself.
+
 ### 6. Legacy route retirement
 
 - Remove passive daily cylinder dispersal, Livens/projector contamination, chemical-tank contamination, attacker First Use effects, and ground-operations heat registration from on-actions.
