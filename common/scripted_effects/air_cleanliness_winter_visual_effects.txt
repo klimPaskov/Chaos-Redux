@@ -1,16 +1,23 @@
 # ============================================================================
 # CHAOS REDUX - AIR WINTER NORMAL-MAP VISUAL LIFECYCLE
 # ============================================================================
-# Technical proof surface for the ordinary-map entity route. The proof is
-# deliberately limited to one reviewed state and one stable entity id. It must
-# pass the recorded visual gate before final regional climate assets are wired.
+# The original one-state proof remains as a legacy migration target. The live
+# regional route uses five deterministic IDs per state, replaces active slots
+# on every existing monthly pulse, and performs no additional world iterator.
 #
 # Public effect:
 # - air_winter_refresh_normal_map_proof_entity
+# - air_winter_destroy_normal_map_proof_entity
+# - air_winter_prepare_regional_visual_cycle
+# - air_winter_refresh_regional_visuals
+# - air_winter_destroy_regional_visuals
 #
-# Scope: any synchronized gameplay scope.
-# Inputs: state 64 variable air_winter_phase.
-# Side effects: creates, replaces, or destroys entity id 8600064.
+# Scope: synchronized COUNTRY for cycle preparation, STATE for regional slots,
+# and any synchronized gameplay scope for legacy proof cleanup.
+# Inputs: authoritative state phase, presentation class, recovery trend, peak
+# phase memory, fallout memory, food resilience, and visual schema version.
+# Side effects: replaces or destroys five deterministic regional entity slots
+# per state. Legacy migration may destroy proof entity id 8600064.
 # ============================================================================
 
 @AIR_WINTER_NORMAL_MAP_PROOF_ENTITY_ID = 8600064
@@ -38,4 +45,448 @@ air_winter_refresh_normal_map_proof_entity = {
 	else = {
 		destroy_entity = @AIR_WINTER_NORMAL_MAP_PROOF_ENTITY_ID
 	}
+}
+
+# Supported scope: any synchronized gameplay scope. Administrative cleanup
+# must not depend on state 64 being visited by another monthly pass.
+air_winter_destroy_normal_map_proof_entity = {
+	destroy_entity = @AIR_WINTER_NORMAL_MAP_PROOF_ENTITY_ID
+}
+
+# ---------------------------------------------------------------------------
+# Regional five-slot lifecycle
+# ---------------------------------------------------------------------------
+
+# Supported scope: COUNTRY (the synchronized monthly host). The state schema is
+# checked independently inside each existing state update.
+air_winter_prepare_regional_visual_cycle = {
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = global.air_winter_visual_schema_version }
+				NOT = { check_variable = { global.air_winter_visual_schema_version = constant:air_winter_visual_schema.version } }
+			}
+		}
+		air_winter_destroy_normal_map_proof_entity = yes
+		set_variable = { global.air_winter_visual_schema_version = constant:air_winter_visual_schema.version }
+	}
+}
+
+# Supported scope: STATE. Computes stable literal-safe IDs and centralized
+# placement values. No generated entity ID is stored in persistent state.
+air_winter_visual_prepare_state_ids = {
+	set_temp_variable = { air_winter_visual_state_id = THIS.id }
+
+	set_temp_variable = { air_winter_visual_ground_id = constant:air_winter_visual_entity_id.ground_base }
+	add_to_temp_variable = { air_winter_visual_ground_id = air_winter_visual_state_id }
+	set_temp_variable = { air_winter_visual_primary_particle_id = constant:air_winter_visual_entity_id.primary_particle_base }
+	add_to_temp_variable = { air_winter_visual_primary_particle_id = air_winter_visual_state_id }
+	set_temp_variable = { air_winter_visual_secondary_particle_id = constant:air_winter_visual_entity_id.secondary_particle_base }
+	add_to_temp_variable = { air_winter_visual_secondary_particle_id = air_winter_visual_state_id }
+	set_temp_variable = { air_winter_visual_dead_vegetation_id = constant:air_winter_visual_entity_id.dead_vegetation_base }
+	add_to_temp_variable = { air_winter_visual_dead_vegetation_id = air_winter_visual_state_id }
+	set_temp_variable = { air_winter_visual_hydrology_id = constant:air_winter_visual_entity_id.hydrology_base }
+	add_to_temp_variable = { air_winter_visual_hydrology_id = air_winter_visual_state_id }
+
+	set_temp_variable = { air_winter_visual_ground_z = constant:air_winter_visual_render.ground_z }
+	set_temp_variable = { air_winter_visual_ground_scale = constant:air_winter_visual_render.ground_scale }
+	set_temp_variable = { air_winter_visual_particle_z = constant:air_winter_visual_render.particle_z }
+	set_temp_variable = { air_winter_visual_particle_scale = constant:air_winter_visual_render.particle_scale }
+	set_temp_variable = { air_winter_visual_prop_z = constant:air_winter_visual_render.prop_z }
+	set_temp_variable = { air_winter_visual_prop_scale = constant:air_winter_visual_render.prop_scale }
+	set_temp_variable = { air_winter_visual_minimum_zoom = constant:air_winter_visual_render.minimum_zoom }
+}
+
+# Supported scope: any. Input: temporary air_winter_visual_selected_entity_id.
+# meta_effect emits the documented literal destroy form.
+air_winter_visual_destroy_selected_entity = {
+	meta_effect = {
+		text = { destroy_entity = [ENTITY_ID] }
+		ENTITY_ID = "[?air_winter_visual_selected_entity_id|.0]"
+	}
+}
+
+# Supported scope: STATE. These slot helpers assume prepare_state_ids ran.
+air_winter_visual_destroy_ground_slot = {
+	set_temp_variable = { air_winter_visual_selected_entity_id = air_winter_visual_ground_id }
+	air_winter_visual_destroy_selected_entity = yes
+	clr_state_flag = air_winter_visual_ground_present
+}
+
+air_winter_visual_destroy_primary_particle_slot = {
+	set_temp_variable = { air_winter_visual_selected_entity_id = air_winter_visual_primary_particle_id }
+	air_winter_visual_destroy_selected_entity = yes
+	clr_state_flag = air_winter_visual_primary_particle_present
+}
+
+air_winter_visual_destroy_secondary_particle_slot = {
+	set_temp_variable = { air_winter_visual_selected_entity_id = air_winter_visual_secondary_particle_id }
+	air_winter_visual_destroy_selected_entity = yes
+	clr_state_flag = air_winter_visual_secondary_particle_present
+}
+
+air_winter_visual_destroy_dead_vegetation_slot = {
+	set_temp_variable = { air_winter_visual_selected_entity_id = air_winter_visual_dead_vegetation_id }
+	air_winter_visual_destroy_selected_entity = yes
+	clr_state_flag = air_winter_visual_dead_vegetation_present
+}
+
+air_winter_visual_destroy_hydrology_slot = {
+	set_temp_variable = { air_winter_visual_selected_entity_id = air_winter_visual_hydrology_id }
+	air_winter_visual_destroy_selected_entity = yes
+	clr_state_flag = air_winter_visual_hydrology_present
+}
+
+# Supported scope: STATE. Administrative and schema cleanup is unconditional
+# because the deterministic IDs remain reconstructible without stored handles.
+air_winter_destroy_regional_visuals = {
+	air_winter_visual_prepare_state_ids = yes
+	air_winter_visual_destroy_ground_slot = yes
+	air_winter_visual_destroy_primary_particle_slot = yes
+	air_winter_visual_destroy_secondary_particle_slot = yes
+	air_winter_visual_destroy_dead_vegetation_slot = yes
+	air_winter_visual_destroy_hydrology_slot = yes
+	clear_variable = air_winter_visual_schema_version
+}
+
+# Supported scope: STATE. Class and phase are validated by the caller before
+# the numeric entity alias is emitted.
+air_winter_visual_create_ground = {
+	meta_effect = {
+		text = {
+			create_entity = {
+				entity = air_winter_class_[CLASS]_phase_[PHASE]_entity
+				id = [ENTITY_ID]
+				state = [STATE_ID]
+				z = [Z]
+				scale = [SCALE]
+				min_zoom = [MIN_ZOOM]
+			}
+		}
+		CLASS = "[?air_winter_presentation_class|.0]"
+		PHASE = "[?air_winter_phase|.0]"
+		ENTITY_ID = "[?air_winter_visual_ground_id|.0]"
+		STATE_ID = "[?air_winter_visual_state_id|.0]"
+		Z = "[?air_winter_visual_ground_z|.0]"
+		SCALE = "[?air_winter_visual_ground_scale|.0]"
+		MIN_ZOOM = "[?air_winter_visual_minimum_zoom|.0]"
+	}
+	set_state_flag = air_winter_visual_ground_present
+}
+
+# Supported scope: STATE. Inputs: temporary selected entity ID and weather-kind
+# enum. Every branch names a dedicated Fallout-owned particle wrapper.
+air_winter_visual_create_selected_particle = {
+	if = {
+		limit = { check_variable = { air_winter_visual_selected_weather_kind = constant:air_winter_visual_weather_kind.snow_frost_mild } }
+		meta_effect = {
+			text = { create_entity = { entity = air_winter_snow_frost_mild_entity id = [ENTITY_ID] state = [STATE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
+			ENTITY_ID = "[?air_winter_visual_selected_entity_id|.0]"
+			STATE_ID = "[?air_winter_visual_state_id|.0]"
+			Z = "[?air_winter_visual_particle_z|.0]"
+			SCALE = "[?air_winter_visual_particle_scale|.0]"
+			MIN_ZOOM = "[?air_winter_visual_minimum_zoom|.0]"
+		}
+	}
+	else_if = {
+		limit = { check_variable = { air_winter_visual_selected_weather_kind = constant:air_winter_visual_weather_kind.snow_frost_severe } }
+		meta_effect = {
+			text = { create_entity = { entity = air_winter_snow_frost_severe_entity id = [ENTITY_ID] state = [STATE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
+			ENTITY_ID = "[?air_winter_visual_selected_entity_id|.0]"
+			STATE_ID = "[?air_winter_visual_state_id|.0]"
+			Z = "[?air_winter_visual_particle_z|.0]"
+			SCALE = "[?air_winter_visual_particle_scale|.0]"
+			MIN_ZOOM = "[?air_winter_visual_minimum_zoom|.0]"
+		}
+	}
+	else_if = {
+		limit = { check_variable = { air_winter_visual_selected_weather_kind = constant:air_winter_visual_weather_kind.cold_rain_mist_mild } }
+		meta_effect = {
+			text = { create_entity = { entity = air_winter_cold_rain_mist_mild_entity id = [ENTITY_ID] state = [STATE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
+			ENTITY_ID = "[?air_winter_visual_selected_entity_id|.0]"
+			STATE_ID = "[?air_winter_visual_state_id|.0]"
+			Z = "[?air_winter_visual_particle_z|.0]"
+			SCALE = "[?air_winter_visual_particle_scale|.0]"
+			MIN_ZOOM = "[?air_winter_visual_minimum_zoom|.0]"
+		}
+	}
+	else_if = {
+		limit = { check_variable = { air_winter_visual_selected_weather_kind = constant:air_winter_visual_weather_kind.cold_rain_mist_severe } }
+		meta_effect = {
+			text = { create_entity = { entity = air_winter_cold_rain_mist_severe_entity id = [ENTITY_ID] state = [STATE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
+			ENTITY_ID = "[?air_winter_visual_selected_entity_id|.0]"
+			STATE_ID = "[?air_winter_visual_state_id|.0]"
+			Z = "[?air_winter_visual_particle_z|.0]"
+			SCALE = "[?air_winter_visual_particle_scale|.0]"
+			MIN_ZOOM = "[?air_winter_visual_minimum_zoom|.0]"
+		}
+	}
+	else_if = {
+		limit = { check_variable = { air_winter_visual_selected_weather_kind = constant:air_winter_visual_weather_kind.ash_dirty_snow_mild } }
+		meta_effect = {
+			text = { create_entity = { entity = air_winter_ash_dirty_snow_mild_entity id = [ENTITY_ID] state = [STATE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
+			ENTITY_ID = "[?air_winter_visual_selected_entity_id|.0]"
+			STATE_ID = "[?air_winter_visual_state_id|.0]"
+			Z = "[?air_winter_visual_particle_z|.0]"
+			SCALE = "[?air_winter_visual_particle_scale|.0]"
+			MIN_ZOOM = "[?air_winter_visual_minimum_zoom|.0]"
+		}
+	}
+	else_if = {
+		limit = { check_variable = { air_winter_visual_selected_weather_kind = constant:air_winter_visual_weather_kind.ash_dirty_snow_severe } }
+		meta_effect = {
+			text = { create_entity = { entity = air_winter_ash_dirty_snow_severe_entity id = [ENTITY_ID] state = [STATE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
+			ENTITY_ID = "[?air_winter_visual_selected_entity_id|.0]"
+			STATE_ID = "[?air_winter_visual_state_id|.0]"
+			Z = "[?air_winter_visual_particle_z|.0]"
+			SCALE = "[?air_winter_visual_particle_scale|.0]"
+			MIN_ZOOM = "[?air_winter_visual_minimum_zoom|.0]"
+		}
+	}
+	else_if = {
+		limit = { check_variable = { air_winter_visual_selected_weather_kind = constant:air_winter_visual_weather_kind.ash_dirty_snow_terminal } }
+		meta_effect = {
+			text = { create_entity = { entity = air_winter_ash_dirty_snow_terminal_entity id = [ENTITY_ID] state = [STATE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
+			ENTITY_ID = "[?air_winter_visual_selected_entity_id|.0]"
+			STATE_ID = "[?air_winter_visual_state_id|.0]"
+			Z = "[?air_winter_visual_particle_z|.0]"
+			SCALE = "[?air_winter_visual_particle_scale|.0]"
+			MIN_ZOOM = "[?air_winter_visual_minimum_zoom|.0]"
+		}
+	}
+	else_if = {
+		limit = { check_variable = { air_winter_visual_selected_weather_kind = constant:air_winter_visual_weather_kind.thaw_flood_mild } }
+		meta_effect = {
+			text = { create_entity = { entity = air_winter_thaw_flood_mild_entity id = [ENTITY_ID] state = [STATE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
+			ENTITY_ID = "[?air_winter_visual_selected_entity_id|.0]"
+			STATE_ID = "[?air_winter_visual_state_id|.0]"
+			Z = "[?air_winter_visual_particle_z|.0]"
+			SCALE = "[?air_winter_visual_particle_scale|.0]"
+			MIN_ZOOM = "[?air_winter_visual_minimum_zoom|.0]"
+		}
+	}
+	else_if = {
+		limit = { check_variable = { air_winter_visual_selected_weather_kind = constant:air_winter_visual_weather_kind.thaw_flood_severe } }
+		meta_effect = {
+			text = { create_entity = { entity = air_winter_thaw_flood_severe_entity id = [ENTITY_ID] state = [STATE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
+			ENTITY_ID = "[?air_winter_visual_selected_entity_id|.0]"
+			STATE_ID = "[?air_winter_visual_state_id|.0]"
+			Z = "[?air_winter_visual_particle_z|.0]"
+			SCALE = "[?air_winter_visual_particle_scale|.0]"
+			MIN_ZOOM = "[?air_winter_visual_minimum_zoom|.0]"
+		}
+	}
+}
+
+# Supported scope: STATE. Outputs two temporary weather-kind enums. This is the
+# reviewed regional matrix. Warm classes keep rain and ash instead of receiving
+# universal snow.
+air_winter_visual_select_weather = {
+	set_temp_variable = { air_winter_visual_primary_weather_kind = constant:air_winter_visual_weather_kind.none }
+	set_temp_variable = { air_winter_visual_secondary_weather_kind = constant:air_winter_visual_weather_kind.none }
+
+	if = {
+		limit = { air_winter_presentation_is_boreal = yes }
+		if = { limit = { OR = { air_winter_is_phase_1 = yes air_winter_is_phase_2 = yes } } set_temp_variable = { air_winter_visual_primary_weather_kind = constant:air_winter_visual_weather_kind.snow_frost_mild } }
+		else = { set_temp_variable = { air_winter_visual_primary_weather_kind = constant:air_winter_visual_weather_kind.snow_frost_severe } }
+	}
+	else_if = {
+		limit = { air_winter_presentation_is_maritime = yes }
+		if = { limit = { OR = { air_winter_is_phase_1 = yes air_winter_is_phase_2 = yes } } set_temp_variable = { air_winter_visual_primary_weather_kind = constant:air_winter_visual_weather_kind.cold_rain_mist_mild } }
+		else_if = { limit = { OR = { air_winter_is_phase_3 = yes air_winter_is_phase_4 = yes } } set_temp_variable = { air_winter_visual_primary_weather_kind = constant:air_winter_visual_weather_kind.cold_rain_mist_severe } }
+		else_if = { limit = { air_winter_is_phase_5 = yes } set_temp_variable = { air_winter_visual_primary_weather_kind = constant:air_winter_visual_weather_kind.snow_frost_mild } }
+		else = { set_temp_variable = { air_winter_visual_primary_weather_kind = constant:air_winter_visual_weather_kind.snow_frost_severe } }
+	}
+	else_if = {
+		limit = { air_winter_presentation_is_mediterranean = yes }
+		if = { limit = { OR = { air_winter_is_phase_1 = yes air_winter_is_phase_2 = yes } } set_temp_variable = { air_winter_visual_primary_weather_kind = constant:air_winter_visual_weather_kind.cold_rain_mist_mild } }
+		else_if = { limit = { NOT = { air_winter_is_phase_6 = yes } } set_temp_variable = { air_winter_visual_primary_weather_kind = constant:air_winter_visual_weather_kind.cold_rain_mist_severe } }
+		else = { set_temp_variable = { air_winter_visual_primary_weather_kind = constant:air_winter_visual_weather_kind.snow_frost_mild } }
+	}
+	else_if = {
+		limit = { air_winter_presentation_is_arid = yes }
+		if = { limit = { OR = { air_winter_is_phase_3 = yes air_winter_is_phase_4 = yes } } set_temp_variable = { air_winter_visual_primary_weather_kind = constant:air_winter_visual_weather_kind.ash_dirty_snow_mild } }
+		else_if = { limit = { air_winter_is_phase_5 = yes } set_temp_variable = { air_winter_visual_primary_weather_kind = constant:air_winter_visual_weather_kind.ash_dirty_snow_severe } }
+		else_if = { limit = { air_winter_is_phase_6 = yes } set_temp_variable = { air_winter_visual_primary_weather_kind = constant:air_winter_visual_weather_kind.ash_dirty_snow_terminal } }
+	}
+	else_if = {
+		limit = { OR = { air_winter_presentation_is_tropical = yes air_winter_presentation_is_equatorial = yes } }
+		if = { limit = { OR = { air_winter_is_phase_1 = yes air_winter_is_phase_2 = yes } } set_temp_variable = { air_winter_visual_primary_weather_kind = constant:air_winter_visual_weather_kind.cold_rain_mist_mild } }
+		else = { set_temp_variable = { air_winter_visual_primary_weather_kind = constant:air_winter_visual_weather_kind.cold_rain_mist_severe } }
+	}
+	else_if = {
+		limit = { air_winter_presentation_is_highland = yes }
+		if = { limit = { OR = { air_winter_is_phase_1 = yes air_winter_is_phase_2 = yes } } set_temp_variable = { air_winter_visual_primary_weather_kind = constant:air_winter_visual_weather_kind.snow_frost_mild } }
+		else = { set_temp_variable = { air_winter_visual_primary_weather_kind = constant:air_winter_visual_weather_kind.snow_frost_severe } }
+	}
+	else_if = {
+		limit = { air_winter_presentation_is_oceanic = yes }
+		if = { limit = { OR = { air_winter_is_phase_1 = yes air_winter_is_phase_2 = yes } } set_temp_variable = { air_winter_visual_primary_weather_kind = constant:air_winter_visual_weather_kind.cold_rain_mist_mild } }
+		else_if = { limit = { OR = { air_winter_is_phase_3 = yes air_winter_is_phase_4 = yes } } set_temp_variable = { air_winter_visual_primary_weather_kind = constant:air_winter_visual_weather_kind.cold_rain_mist_severe } }
+		else = { set_temp_variable = { air_winter_visual_primary_weather_kind = constant:air_winter_visual_weather_kind.snow_frost_mild } }
+	}
+	else_if = {
+		limit = { air_winter_presentation_is_polar = yes }
+		if = { limit = { air_winter_is_phase_1 = yes } set_temp_variable = { air_winter_visual_primary_weather_kind = constant:air_winter_visual_weather_kind.snow_frost_mild } }
+		else = { set_temp_variable = { air_winter_visual_primary_weather_kind = constant:air_winter_visual_weather_kind.snow_frost_severe } }
+	}
+
+	if = {
+		limit = { NOT = { air_winter_presentation_is_arid = yes } }
+		if = { limit = { air_winter_is_phase_4 = yes } set_temp_variable = { air_winter_visual_secondary_weather_kind = constant:air_winter_visual_weather_kind.ash_dirty_snow_mild } }
+		else_if = { limit = { air_winter_is_phase_5 = yes } set_temp_variable = { air_winter_visual_secondary_weather_kind = constant:air_winter_visual_weather_kind.ash_dirty_snow_severe } }
+		else_if = { limit = { air_winter_is_phase_6 = yes } set_temp_variable = { air_winter_visual_secondary_weather_kind = constant:air_winter_visual_weather_kind.ash_dirty_snow_terminal } }
+	}
+
+	# Local fallout contributes mild ash to an otherwise empty secondary slot in
+	# phases 1-3 for every regional class. Visible runoff may replace it below.
+	if = {
+		limit = {
+			check_variable = { air_winter_visual_secondary_weather_kind = constant:air_winter_visual_weather_kind.none }
+			has_dynamic_modifier = { modifier = nuclear_fallout_state }
+			check_variable = {
+				var = air_winter_phase
+				value = constant:air_winter_phase.hard_freeze
+				compare = less_than_or_equals
+			}
+		}
+		set_temp_variable = { air_winter_visual_secondary_weather_kind = constant:air_winter_visual_weather_kind.ash_dirty_snow_mild }
+	}
+
+	# Recovery runoff occupies the otherwise empty second channel through phase
+	# 3. At phases 4-6 the required ash channel remains visible and the regional
+	# thaw prop carries the recovery signal.
+	if = {
+		limit = {
+			air_winter_visual_thaw_is_eligible = yes
+			check_variable = {
+				var = air_winter_phase
+				value = constant:air_winter_phase.hard_freeze
+				compare = less_than_or_equals
+			}
+		}
+		if = {
+			limit = { air_winter_visual_thaw_is_severe = yes }
+			set_temp_variable = { air_winter_visual_secondary_weather_kind = constant:air_winter_visual_weather_kind.thaw_flood_severe }
+		}
+		else = { set_temp_variable = { air_winter_visual_secondary_weather_kind = constant:air_winter_visual_weather_kind.thaw_flood_mild } }
+	}
+}
+
+air_winter_visual_create_dead_vegetation = {
+	meta_effect = {
+		text = { create_entity = { entity = air_winter_class_[CLASS]_dead_vegetation_entity id = [ENTITY_ID] state = [STATE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
+		CLASS = "[?air_winter_presentation_class|.0]"
+		ENTITY_ID = "[?air_winter_visual_dead_vegetation_id|.0]"
+		STATE_ID = "[?air_winter_visual_state_id|.0]"
+		Z = "[?air_winter_visual_prop_z|.0]"
+		SCALE = "[?air_winter_visual_prop_scale|.0]"
+		MIN_ZOOM = "[?air_winter_visual_minimum_zoom|.0]"
+	}
+	set_state_flag = air_winter_visual_dead_vegetation_present
+}
+
+air_winter_visual_create_frozen_water = {
+	meta_effect = {
+		text = { create_entity = { entity = air_winter_class_[CLASS]_frozen_water_entity id = [ENTITY_ID] state = [STATE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
+		CLASS = "[?air_winter_presentation_class|.0]"
+		ENTITY_ID = "[?air_winter_visual_hydrology_id|.0]"
+		STATE_ID = "[?air_winter_visual_state_id|.0]"
+		Z = "[?air_winter_visual_prop_z|.0]"
+		SCALE = "[?air_winter_visual_prop_scale|.0]"
+		MIN_ZOOM = "[?air_winter_visual_minimum_zoom|.0]"
+	}
+	set_state_flag = air_winter_visual_hydrology_present
+}
+
+air_winter_visual_create_thaw_flood = {
+	meta_effect = {
+		text = { create_entity = { entity = air_winter_class_[CLASS]_thaw_flood_entity id = [ENTITY_ID] state = [STATE_ID] z = [Z] scale = [SCALE] min_zoom = [MIN_ZOOM] } }
+		CLASS = "[?air_winter_presentation_class|.0]"
+		ENTITY_ID = "[?air_winter_visual_hydrology_id|.0]"
+		STATE_ID = "[?air_winter_visual_state_id|.0]"
+		Z = "[?air_winter_visual_prop_z|.0]"
+		SCALE = "[?air_winter_visual_prop_scale|.0]"
+		MIN_ZOOM = "[?air_winter_visual_minimum_zoom|.0]"
+	}
+	set_state_flag = air_winter_visual_hydrology_present
+}
+
+# Supported scope: STATE. Called exactly once at the end of the existing
+# monthly state update. Desired slots are replaced using stable IDs, and stale
+# slots are destroyed without creating a second state scan.
+air_winter_refresh_regional_visuals = {
+	air_winter_visual_prepare_state_ids = yes
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = air_winter_visual_schema_version }
+				NOT = { check_variable = { air_winter_visual_schema_version = constant:air_winter_visual_schema.version } }
+			}
+		}
+		air_winter_destroy_regional_visuals = yes
+		air_winter_visual_prepare_state_ids = yes
+		set_variable = { air_winter_visual_schema_version = constant:air_winter_visual_schema.version }
+	}
+
+	if = {
+		limit = { air_winter_visual_has_active_class_phase = yes }
+		air_winter_visual_create_ground = yes
+		air_winter_visual_select_weather = yes
+
+		if = {
+			limit = { check_variable = { air_winter_visual_primary_weather_kind > constant:air_winter_visual_weather_kind.none } }
+			set_temp_variable = { air_winter_visual_selected_entity_id = air_winter_visual_primary_particle_id }
+			set_temp_variable = { air_winter_visual_selected_weather_kind = air_winter_visual_primary_weather_kind }
+			air_winter_visual_create_selected_particle = yes
+			set_state_flag = air_winter_visual_primary_particle_present
+		}
+		else_if = {
+			limit = { has_state_flag = air_winter_visual_primary_particle_present }
+			air_winter_visual_destroy_primary_particle_slot = yes
+		}
+
+		if = {
+			limit = { check_variable = { air_winter_visual_secondary_weather_kind > constant:air_winter_visual_weather_kind.none } }
+			set_temp_variable = { air_winter_visual_selected_entity_id = air_winter_visual_secondary_particle_id }
+			set_temp_variable = { air_winter_visual_selected_weather_kind = air_winter_visual_secondary_weather_kind }
+			air_winter_visual_create_selected_particle = yes
+			set_state_flag = air_winter_visual_secondary_particle_present
+		}
+		else_if = {
+			limit = { has_state_flag = air_winter_visual_secondary_particle_present }
+			air_winter_visual_destroy_secondary_particle_slot = yes
+		}
+
+		if = {
+			limit = { air_winter_visual_dead_vegetation_is_eligible = yes }
+			air_winter_visual_create_dead_vegetation = yes
+		}
+		else_if = {
+			limit = { has_state_flag = air_winter_visual_dead_vegetation_present }
+			air_winter_visual_destroy_dead_vegetation_slot = yes
+		}
+
+		if = {
+			limit = { air_winter_visual_thaw_is_eligible = yes }
+			air_winter_visual_create_thaw_flood = yes
+		}
+		else_if = {
+			limit = { air_winter_visual_frozen_water_is_eligible = yes }
+			air_winter_visual_create_frozen_water = yes
+		}
+		else_if = {
+			limit = { has_state_flag = air_winter_visual_hydrology_present }
+			air_winter_visual_destroy_hydrology_slot = yes
+		}
+	}
+	else = {
+		if = { limit = { has_state_flag = air_winter_visual_ground_present } air_winter_visual_destroy_ground_slot = yes }
+		if = { limit = { has_state_flag = air_winter_visual_primary_particle_present } air_winter_visual_destroy_primary_particle_slot = yes }
+		if = { limit = { has_state_flag = air_winter_visual_secondary_particle_present } air_winter_visual_destroy_secondary_particle_slot = yes }
+		if = { limit = { has_state_flag = air_winter_visual_dead_vegetation_present } air_winter_visual_destroy_dead_vegetation_slot = yes }
+		if = { limit = { has_state_flag = air_winter_visual_hydrology_present } air_winter_visual_destroy_hydrology_slot = yes }
+	}
+
+	set_variable = { air_winter_visual_schema_version = constant:air_winter_visual_schema.version }
 }

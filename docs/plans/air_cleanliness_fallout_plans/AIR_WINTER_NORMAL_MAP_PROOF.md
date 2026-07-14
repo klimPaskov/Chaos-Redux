@@ -1,46 +1,53 @@
 # Air Winter Normal-Map Proof Gate
 
-Status: the documented normal-map entity route is proven for a one-state implementation. Runtime visual observation is outside this proof and is not claimed.
+Status: the ordinary-map entity route is statically supported and the dedicated regional lifecycle is wired. Runtime creation, placement, layering, visibility, cleanup, multiplayer behavior, and performance have not been observed because HOI4 was not launched.
 
-## Proof boundary
+## Legacy proof
 
-The first proof uses:
+The first bounded proof used state 64, literal entity id `8600064`, the package entity `air_winter_normal_map_proof_entity`, and a temporary vanilla light-snow particle. It established these script surfaces before final asset production:
 
-- state 64 as the single reviewed placement state
-- entity id `8600064` as the single reserved proof slot
-- `air_winter_normal_map_proof_entity` as a particle-only entity definition
-- the vanilla light-snow particle as temporary proof material
-- `air_winter_refresh_normal_map_proof_entity` as the idempotent lifecycle helper
+- state-centered `create_entity`
+- replacement by a stable literal id
+- explicit `destroy_entity` cleanup
 - `min_zoom = 1100`, matching the approved Kaiserreich ambient-object precedent
-- `air_winter_normal_map_grade_proof_gui` as a non-interactive cold-grade test
-- `mapicons_container` as the unproven parent attachment intended to keep the grade on the map layer rather than over ordinary interface windows
+- reconstruction from the existing monthly coordinator pulse
 
-This is not final climate art. It establishes the engine-supported route before dedicated snow, frost, rain, ash, vegetation, frozen-water, dim-light, and thaw assets are created.
+The monthly proof-entity creation call has been removed. Visual schema migration and global reset retain explicit destruction of its literal id. The proof asset is not part of the regional presentation.
 
-## Runtime observation boundary
+## Promoted regional route
 
-1. The entity appears at the state position on the ordinary political and terrain maps when state 64 has Air Winter phase 1 or higher.
-2. It remains legible without hiding state borders, units, supply icons, or province selection.
-3. The zoom threshold removes it before world-scale clutter becomes visible.
-4. Repeated coordinator refreshes replace the same entity id instead of stacking particles.
-5. Returning state 64 to phase 0 destroys the proof entity.
-6. A save made while the entity is active reconstructs the same slot on the first resumed Air Winter coordinator pulse.
-7. Other mapmodes and open windows remain readable.
-8. The particle does not produce unwanted weather audio.
-9. The cold grade covers the map at supported resolutions and UI scales.
-10. The grade remains behind top bars, tabs, popups, and other ordinary interface windows.
-11. Unit counters, state borders, map icons, and selection remain readable and clickable.
-12. Hiding the proof condition removes the grade without leaving a stale interface layer.
+The dedicated route now supplies:
 
-## Engine limits preserved
+- all nine reviewed presentation classes
+- phases 1 through 6, with phase 0 clearing every active slot
+- two simultaneous weather channels for snow or rain plus ash
+- regional ground dimming, frost, cold wetness, soot, and desaturation
+- dead vegetation linked to phase and food damage
+- class-specific frozen water
+- peak-memory recovery thaw and runoff
+- deterministic state ids, schema migration, save reconstruction, state reset, and deferred global cleanup
+- one synchronized call inside the existing monthly state pass
 
-- The entity is centered on the state. It does not conform to state borders.
-- The effect does not change native weather, snow cover, terrain normals, vegetation, water shaders, or lighting.
-- Runtime-created entity serialization is undocumented. Recovery is supplied by idempotent reconstruction on the existing coordinator pulse.
-- The entity id range is not documented by the engine. The proof id is reserved by this package and must not be reused.
-- `parent_window_window` is documented but explicitly marked as a surface that may not work. The `mapicons_container` attachment therefore remains a proof candidate, not an accepted implementation.
-- The proof grade uses a hand-authored solid RGBA texture. It is not final cold, soot, or ultraviolet art.
+The detailed engine and collision evidence is in `AIR_WINTER_REGIONAL_VISUAL_WIRING_PROOF.md`. Asset ownership, matrices, counts, source frames, and final paths are in `docs/assets/air_cleanliness_fallout/regional_map_visuals/`.
 
-## Promotion rule
+## Remaining runtime observation gate
 
-The documented `create_entity` and `destroy_entity` route, the stable replacement id, the state scope, the existing monthly reconstruction call, and the approved Kaiserreich normal-mapped entity precedent are sufficient to begin final regional asset production. The temporary vanilla particle must be replaced by dedicated Air Winter asset families, the entity-id ledger must be expanded, and state presentation classes must be rolled out in reviewed regional batches. The twelve runtime observations above remain unobserved and cannot be reported as passing evidence.
+Before ordinary-map runtime presentation can be called complete, observe:
+
+1. all nine classes at phases 1, 4, and 6 on ordinary political and terrain maps
+2. absence of universal snow in desert, tropical, equatorial, and ordinary oceanic states
+3. state centering, z order, scale, borders, counters, icons, and province selection
+4. primary and secondary particle combinations at near, medium, and far zoom
+5. phase escalation, downward recovery, thaw, phase 0, disable, state reset, and global reset
+6. save-load reconstruction without duplicate entities
+7. multiplayer synchronization and late-join presentation
+8. world-scale entity and particle performance
+9. particle atlas playback, density, culling, and absence of unwanted audio
+
+## Grade and static boundary
+
+The registered full-screen grade plates are not promoted. The proof parent `mapicons_container`, interface order, click-through behavior, supported resolutions, UI scales, mapmode interaction, and multiplayer visibility remain unproven.
+
+The registered static accessibility alternatives also remain unwired because no approved player setting selects them. They are not used as a fallback for the animated route.
+
+Regional phase materials already carry the dim-light cue, so the ordinary map does not depend on the unproven full-screen grade.
