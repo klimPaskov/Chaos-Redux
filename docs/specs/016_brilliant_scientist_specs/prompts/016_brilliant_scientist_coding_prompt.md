@@ -15,7 +15,7 @@ Read `AGENTS.md`, all relevant repository skills, all ten spec parts, all matric
 - Player can appoint publicly, appoint secretly, or send him to another valid country.
 - Accepted appointment grants the deliberate `+100%` research-speed anchor.
 - Kruger is one synchronized advisor, event actor, UI subject, possible leader, and exceptional scientist across every special-project field.
-- The stage 0 portrait is copied from `portrait_generic_biowarfare_europe_male_01` and renamed for Kruger.
+- The stage-0 source package, leader or scientist DDS, advisor DDS, and sprite registrations are complete from `portrait_generic_biowarfare_europe_male_01`. Preserve the exact registered identity and wire it to the persistent character without recreating or renaming it.
 - Early text does not confirm alien origin.
 
 ## Host system
@@ -46,15 +46,15 @@ Build the 85 to 115 focus tree from the architecture. Include survival, politics
 
 Implement foreign invitation, recruitment, theft, sabotage, extraction, assassination, protection, joint laboratories, public challenge, countermeasure, and containment systems.
 
-Set a Kruger world-threat source only when actual existential conditions exist. Implement all six mapped super-event packages with complete researched text, images, unique verified audio, settings-aware playback, and documentation. Recognition and defeat are conditional at runtime, not optional packages.
+Set a Kruger world-threat source only when actual existential conditions exist. Implement all six mapped super-event packages at visible IDs `90` through `95` with the completed researched text and Event 016-owned OGGs, new images, settings-aware playback, and documentation. Recognition and defeat are conditional at runtime, not optional packages. Preserve world-end scenario IDs `11` and `12`.
 
 Implement Laboratory World through the normal chaos-over-1000 terminal contract. Implement Strategic Singularity as a multi-year, multi-component project. Enforce the mutually exclusive commitment lock and verified disarmament or consolidation transitions. When Singularity validly fires, first add the chaos deficit needed to exceed 1000, record consequences, then call the normal Fallout world-end pipeline. Provide intelligence, raids, anchor and component counterplay, disarmament, surrender, and fast-victory counterplay.
 
 ## Assets, localisation, achievements, and docs
 
-Produce and wire every required static and animated asset. Severe animations require real source frames, frame sheets, static fallbacks, previews, manifests, and GFX handoffs. Do not use placeholders or transformed-still animation.
+Produce and wire every required static and animated asset that remains missing. Stage 0 is complete and registered. Later sprite contracts are pre-registered but their assets do not exist. Severe animations require real source frames, frame sheets, static fallbacks, previews, manifests, and GFX handoffs. Do not use placeholders or transformed-still animation.
 
-Write final localisation from the direction in the spec. Keep Event Details free of mechanics and hidden spoilers. Treat all unresearched super-event titles, quotes, remarks, and audio as blockers.
+Write final localisation from the direction in the spec. Keep Event Details free of mechanics and hidden spoilers. Use the completed super-event title, quote, remark, and audio research. Treat missing final descriptions, images, localisation, triggers, shared playback definitions, and presentation wiring as blockers.
 
 Implement exactly seventeen achievements with full tracking, disqualifiers, icon triplets, localisation, and docs. Keep `public_method` and `clean_break` distinct.
 

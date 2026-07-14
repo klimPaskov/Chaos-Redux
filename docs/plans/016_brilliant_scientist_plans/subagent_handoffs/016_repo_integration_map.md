@@ -6,9 +6,20 @@ This is the bounded, read-only repository map requested for Event 016. It identi
 
 The accepted Event 016 specification package under docs/specs/016_brilliant_scientist_specs is the design source of truth. This handoff is an implementation map, not a replacement specification.
 
+## Follow-up reconciliation, 2026-07-14
+
+Event 016 remains default-disabled and gameplay-incomplete. The original implementation snapshot below remains useful baseline evidence, but these later facts control presentation integration:
+
+- Event 015 occupies visible super-event IDs 85 through 89.
+- Event 016 uses visible IDs 90 recognition, 91 formation, 92 global threat, 93 Laboratory World, 94 Strategic Singularity, and 95 qualifying defeat.
+- Event 016 world-end IDs remain 11 and 12.
+- Six final Event 016-owned OGGs are complete at IDs 90 through 95. Shared music, sound, settings, event, GUI, and localisation wiring remains absent.
+- The exact stage-0 leader or scientist DDS and advisor DDS are complete and registered. Stage I through IV sprite contracts are pre-registered, but the referenced later assets remain missing.
+- Event 020 separately declares world-end ID 10 and visible IDs 85 through 87 in its own constants. Its visible overlap with Event 015 is external to Event 016.
+
 ## Executive verdict
 
-Event 016 is currently only a three-file placeholder. A complete implementation cannot be produced by expanding the entry event and idea alone. The accepted design is a cross-system package spanning the random-event dispatcher, four evolution records, a persistent character/scientist, a decision-led directorate, fifteen project families, a conditional country, a large focus tree, custom forces, two world-end scenarios, six super-events, seventeen achievements, assets, documentation, and workbook alignment.
+At the original map snapshot, Event 016 was only a three-file placeholder. The entry event remains incomplete, and a complete implementation cannot be produced by expanding the entry event and idea alone. The accepted design is a cross-system package spanning the random-event dispatcher, four evolution records, a persistent character/scientist, a decision-led directorate, fifteen project families, a conditional country, a large focus tree, custom forces, two world-end scenarios, six super-events, seventeen achievements, assets, documentation, and workbook alignment.
 
 Two architecture problems must be resolved before ordinary content work:
 
@@ -68,7 +79,7 @@ KRG has no match in the repository or vanilla country-tag/country/history files 
 | common/scripted_localisation/chaosx_scripted_localisation_debug.txt | Event ID 16 already maps to chaosx.event_name.16 | No new route is needed for the base event-name lookup |
 | common/scripted_localisation/chaosx_scripted_localisation_events_log.txt | Event 16 already has base source-name mappings, but no evolution/detail/world-end package | Extend all applicable Event 016 evolution, detail, selected-row, history, portrait, and world-end selectors |
 
-There are no live Warren Kruger character definitions, Event 016 directorate decisions, Event 016 projects, KRG country package, KRG focus tree, Event 016 AI, project units, achievements, Event 016 super-events, or final Event 016 asset registrations.
+At the original map snapshot there were no live Warren Kruger character definitions, Event 016 directorate decisions, Event 016 projects, KRG country package, KRG focus tree, Event 016 AI, project units, achievements, Event 016 super-events, or final Event 016 asset registrations. The later stage-0 GFX registration and pre-registered portrait contracts supersede only the asset-registration portion of that snapshot. They do not prove gameplay or later asset completion.
 
 ## Recommended Event 016-owned files
 
@@ -462,7 +473,7 @@ Add Event 016 scientist traits in common/scientist_traits/016_brilliant_scientis
 
 When Kruger becomes a ruler, use add_country_leader_role on the same character when the engine permits the needed transfer. Do not create a second visible Kruger. Persistent lookup should rely on the character flag and current ownership, not an uncleaned global event target.
 
-The specified base visual is derived from portrait_generic_biowarfare_europe_male_01. The asset worker must locate and copy the actual vanilla or DLC source asset, record provenance, and create Event 016-owned final files before registration.
+The specified base visual is complete from the exact `portrait_generic_biowarfare_europe_male_01` source. The preserved source package, `156x210` runtime leader or scientist DDS, `65x67` advisor DDS, provenance record, hashes, and two stage-0 sprite registrations now exist. External redistribution rights remain unresolved, while internal Event 016 use is explicitly user-authorized.
 
 ### 7. Ideas and staged identity
 
@@ -477,7 +488,7 @@ The Event 016 idea lifecycle must:
 - remove or transform the host package correctly on transfer, removal, KRG formation, takeover, death, and defeat;
 - keep tuning in Event 016 script constants.
 
-Register idea/advisor sprites in interface/016_brilliant_scientist.gfx. Do not reuse a focus icon as an idea icon.
+The stage-0 leader or scientist and advisor sprites are registered in `interface/016_brilliant_scientist.gfx`. Later portrait contracts are also pre-registered, but their referenced files remain missing. Do not reuse a focus icon as an idea icon and do not treat pre-registration as completed asset production.
 
 ### 8. Host directorate decisions and scripted GUI
 
@@ -769,20 +780,20 @@ Shared registration surfaces:
 - the repository super-event sound asset registry
 - common/scripted_effects/chaosx_settings_effects.txt audio playback helpers
 
-The 2026-07-14 whole-worktree collision scan found concurrent Event 020 reservations at 85, 86, and 87. The earlier Event 016 proposal of 85 to 90 is superseded. Event 016 reserves this contiguous block in the established package order:
+Live Event 015 wiring occupies IDs 85 through 89. The earlier Event 016 proposals of 85 through 90 and 88 through 93 are superseded. Event 016 uses this contiguous block in the established package order:
 
 | Visible super-event ID | Event 016 role |
 | ---: | --- |
-| 88 | International recognition |
-| 89 | Kruger State formation |
-| 90 | Global Kruger threat |
-| 91 | Laboratory World |
-| 92 | Strategic Singularity |
-| 93 | Qualifying defeat aftermath |
+| 90 | International recognition |
+| 91 | Kruger State formation |
+| 92 | Global Kruger threat |
+| 93 | Laboratory World |
+| 94 | Strategic Singularity |
+| 95 | Qualifying defeat aftermath |
 
-Re-scan all shared super-event selectors, GFX, music, sound, settings, specs, and concurrent work immediately before live registration. Do not reuse Event 020 IDs 85 to 87.
+Re-scan all shared super-event selectors, GFX, music, sound, settings, specs, and concurrent work immediately before live registration. Event 020 separately declares IDs 85 through 87 in its own constants, which overlap Event 015 and require resolution outside Event 016.
 
-Each role needs a unique image and track. Generic audio is forbidden. Use:
+Each role needs a unique image and track. The six Event 016-owned tracks are complete at IDs 90 through 95. Their shared playback definitions and the six unique images remain missing. Generic audio is forbidden. Use:
 
 - global.current_super_event_audio_id;
 - play_current_super_event_audio;
@@ -802,7 +813,7 @@ The terminal roles must use their distinct Event 016 IDs even though Strategic S
 
 The final inventory is docs/specs/016_brilliant_scientist_specs/matrices/016_asset_inventory.md. Key required families are:
 
-- Kruger stage 0 and stages I to IV;
+- completed and registered Kruger stage 0, plus missing stages I to IV.
 - route-specific clone, machine, temporal, xenobiological, and synthesis stage-IV portraits;
 - advisor and scientist portrait families;
 - directorate background, profile frames, visible meters, control states, project/facility/contact cards, sovereignty panel, and singularity indicator;
@@ -822,7 +833,7 @@ Recommended asset roots:
 - gfx/flags/, gfx/flags/medium/, and gfx/flags/small/
 - gfx/achievements/
 
-Register stable sprite names in interface/016_brilliant_scientist.gfx before requesting production when possible.
+Stable stage I through IV static and animated sprite contracts are pre-registered in `interface/016_brilliant_scientist.gfx`. Asset workers must produce the exact missing files named by those contracts and must not infer that registration means the assets exist.
 
 Animation ownership:
 
@@ -881,7 +892,7 @@ The following files are high-collision shared surfaces. The Event 016 implemente
 | common/scripted_effects/chaosx_settings_effects.txt | Prefire and scoped dispatch; shared super-event audio only as needed |
 | common/scripted_effects/chaosx_events_log_effects.txt | Actor, four preview rows, world-end registry and active mapping, Events-tab impossible state |
 | common/scripted_localisation/chaosx_scripted_localisation_events_log.txt | Complete Event 016 evolution/detail/history/world-end routing |
-| common/script_constants/world_end_scenario_registry_constants.txt | Append scenario IDs 11 and 12, owner 16, and super-event mappings 91 and 92 |
+| common/script_constants/world_end_scenario_registry_constants.txt | Append scenario IDs 11 and 12, owner 16, and super-event mappings 93 and 94 |
 | common/scripted_effects/chaosx_dynamic_effects.txt and .md | Threat source and only genuinely cross-event helpers |
 | common/scripted_triggers/chaosx_dynamic_triggers.txt and .md | Special/nonhuman classification |
 | common/scripted_triggers/chaosx_world_threat_triggers.txt | Event 016 world-threat source |
@@ -895,7 +906,7 @@ The following files are high-collision shared surfaces. The Event 016 implemente
 | common/script_enums.txt | Every new equipment bonus type |
 | common/countries/cosmetic.txt | KRG route cosmetics |
 | common/achievements/chaos_redux_achievements.txt | Seventeen entries in the one registry |
-| interface/chaosx_super_events.gfx | Six final sprites after ID reservation |
+| interface/chaosx_super_events.gfx | Six final sprites for visible IDs 90 through 95 |
 | common/scripted_localisation/chaosx_scripted_localisation_super_events.txt | Six full selector routes |
 | music/chaosx_super_event_music.asset and .txt | Six final tracks |
 | localisation/english/chaosx_gui_l_english.yml | Details/evolutions/world-end/super-event shared keys |
@@ -920,7 +931,7 @@ Subagent boundaries:
 - Decision/mission worker: directorate and foreign decision surfaces within fixed effects/contracts.
 - Country/focus worker: KRG package, focus tree, route AI, units where granted.
 - Asset workers: source, generated, processed, DDS, manifest, contact sheet, preview, and handoff; no final shared GFX wiring.
-- Super-event research workers: text/audio research and license/source evidence; no shared selector reservation.
+- Super-event text and audio research workers: completed their bounded research and Event 016-owned audio outputs. They did not implement shared selectors or playback wiring.
 - Spreadsheet worker: post-implementation workbook alignment only.
 - Auditors: report or narrow in-scope fixes according to parent-granted mode; they do not redefine the accepted design.
 
@@ -957,7 +968,7 @@ Most important collision risks:
 
 - Re-scan KRG, event/news namespace IDs, super-event IDs, cosmetic tags, sprite names, technology/project IDs, unit/equipment IDs, and achievement keys.
 - Preserve Event 020 scenario ID 10 and reserve Event 016 world-end scenario IDs 11 and 12.
-- Preserve Event 020 super-event IDs 85 to 87 and reserve Event 016 IDs 88 to 93 in the fixed six-role order.
+- Preserve Event 016 IDs 90 to 95 in the fixed six-role order. Event 015 occupies 85 through 89. Treat Event 020's separate 85 through 87 declarations as an external overlap to report, not as the Event 016 allocation reason.
 - Decide and document the source-aware canonical Fallout adapter.
 - Freeze Event 016 constants categories, persistent flags, event targets, and helper contracts.
 - Merge accepted architectural decisions into the Event 016 source spec where needed.
@@ -997,8 +1008,8 @@ Most important collision risks:
 ### Tranche 6: terminal systems and super-events
 
 - Implement world-threat gates, Laboratory World, Strategic Singularity, source-aware canonical Fallout, Deaths/Condemnation/Chaos consequences, aftermath, two world-end registry rows, and six final super-events.
-- Allocate super-event IDs only after a fresh collision scan.
-- Finish audio licenses/source docs and settings-aware playback.
+- Preserve the collision-audited Event 016 IDs 90 through 95 and re-scan before shared registration.
+- Preserve the completed audio licences, source docs, and Event 016-owned OGGs. Finish shared settings-aware playback.
 
 ### Tranche 7: achievements, assets, docs, and workbook
 
@@ -1021,7 +1032,7 @@ Most important collision risks:
 These are not permission to guess:
 
 - Final KRG tag confirmation against the whole enabled load order.
-- Event 016 reservations are fixed at world-end IDs 11 and 12 plus super-event IDs 88 to 93. Re-scan for later concurrent collisions before live registration.
+- Event 016 reservations are fixed at world-end IDs 11 and 12 plus visible super-event IDs 90 to 95. Re-scan for later concurrent collisions before live registration.
 - Exact event/news sub-ID plan beyond the fixed chaosx.nr16.1 root.
 - Exact route cosmetic-tag tokens and sprite names.
 - Exact character-transfer strategy when Kruger changes countries or becomes KRG leader.
@@ -1031,7 +1042,7 @@ These are not permission to guess:
 - Exact project/technology/unit/equipment identifiers and balance values.
 - Exact country-state derivation rules for the four KRG formation modes.
 - Achievement count is resolved at exactly seventeen; `public_method` and `clean_break` are distinct.
-- Final asset source location for portrait_generic_biowarfare_europe_male_01.
+- External redistribution status for the completed `portrait_generic_biowarfare_europe_male_01` copy. Internal Event 016 use is user-authorized.
 - Final workbook ownership window.
 
 ## Completion boundary

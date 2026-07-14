@@ -10,16 +10,16 @@
 | Source status | Reconciled implementation specification |
 | Package date | 2026-07-14 |
 | Intended spec root | `docs/specs/016_brilliant_scientist_specs/` |
-| Planning state | Improvement addendum disposition complete; implementation not started |
+| Planning state | Improvement addendum disposition complete, gameplay incomplete, default-disabled |
 | Cluster | None |
 | World-end capability | Yes, conditional late branch |
 | Custom country | Kruger State, working public label |
 | Custom UI | Kruger Directorate, working interface label |
 | Super-event text research | Complete for all six retained packages |
-| Visual asset status | Not produced or wired |
-| Audio status | Research in progress at the documentation-freeze cutoff |
+| Visual asset status | Stage-0 leader and advisor portraits complete and registered, later visual assets missing, later sprite contracts pre-registered only |
+| Audio status | Research and six Event 016-owned OGGs complete, shared music, sound, settings, event, and localisation wiring absent |
 | World-end reservations | `11` Laboratory World, `12` Strategic Singularity |
-| Visible super-event reservations | `88` recognition, `89` formation, `90` threat, `91` Laboratory World, `92` Singularity, `93` defeat |
+| Visible super-event reservations | `90` recognition, `91` formation, `92` threat, `93` Laboratory World, `94` Singularity, `95` defeat |
 
 ## Source-of-truth order
 
@@ -59,11 +59,11 @@
 
 ## Package integrity summary
 
-- Package file counts and sizes are intentionally not frozen because the reconciled pack includes linked plan, event-doc, asset-manifest, and super-event-research surfaces.
+- Package file counts and sizes are intentionally not frozen because linked plan, event-doc, asset-manifest, and super-event-research surfaces live outside this directory.
 - Source-reading ledger entries: `30`.
 - Achievement working keys: `17`.
 - Super-event packages: `6`.
 - Severe portrait animation families: `5`.
 - Integrity ledger: `package_checksums.sha256`.
 
-The checksum ledger covers the reconciled Event 016 documentation source set listed in its header, except the ledger itself. No ZIP or implementation-readiness claim is made.
+The checksum ledger preserves the established 53-entry reconciled Event 016 documentation source set named in its header. It uses repository-relative paths in the existing order and excludes the ledger itself. No ZIP or implementation-readiness claim is made.

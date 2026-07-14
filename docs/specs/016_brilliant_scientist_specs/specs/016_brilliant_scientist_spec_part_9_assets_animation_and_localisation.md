@@ -2,7 +2,9 @@
 
 ## Binding reconciliation, 2026-07-14
 
-The severe portrait inventory has exactly five animation packages: clone, machine, temporal, xenobiological or alien, and synthesis. The combined xenobiological-or-alien package depicts the campaign conclusion actually proven; transformation alone cannot imply extraterrestrial provenance. The super-event inventory is exactly six, and the achievement inventory is exactly seventeen three-state icon sets. All remain planned and currently unproduced and unwired.
+The severe portrait inventory has exactly five animation package families: clone, machine, temporal, xenobiological or alien, and synthesis. The combined xenobiological-or-alien family contains mutually exclusive evidence-gated subvariants and depicts the campaign conclusion actually proven. Transformation alone cannot imply extraterrestrial provenance. The super-event inventory is exactly six, and the achievement inventory is exactly seventeen three-state icon sets.
+
+Stage 0 is complete from the exact approved `portrait_generic_biowarfare_europe_male_01` base. Its runtime leader or scientist DDS and `65x67` advisor DDS are registered as `GFX_portrait_KRG_doctor_warren_kruger_stage_0` and `GFX_idea_doctor_warren_kruger_stage_0`. Stage I through IV sprite contracts are pre-registered, but their source art, runtime files, static fallbacks, animation sheets, previews, contact sheets, and state wiring remain missing. All other visual families in this part remain unproduced and unwired.
 
 ## Visual identity purpose
 

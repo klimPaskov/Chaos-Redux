@@ -4,7 +4,7 @@ Date: 2026-07-14
 
 ## Resume state
 
-Event 016 is design-reconciled and ready for implementation preparation. Gameplay remains the pre-existing placeholder. Do not restart planning and do not rerun the improvement-loop planner.
+Event 016 is design-reconciled and remains default-disabled. Gameplay implementation is incomplete. Do not restart planning and do not rerun the improvement-loop planner.
 
 ## Read first
 
@@ -30,8 +30,9 @@ Event 016 is design-reconciled and ready for implementation preparation. Gamepla
 - Lock one origin conclusion or preserve unresolved origin.
 - Enforce mutually exclusive Laboratory World and Strategic Singularity commitments.
 - Treat the standalone `Crazy Scientist` catalog concept as absorbed and superseded.
-- Preserve Event 020 world-end ID 10 and super-event IDs 85 to 87.
-- Use Event 016 world-end IDs 11 and 12 plus visible super-event IDs 88 to 93 in the six-role order recorded in the source-of-truth map.
+- Use Event 016 world-end IDs 11 and 12.
+- Use visible Event 016 IDs 90 recognition, 91 formation, 92 global threat, 93 Laboratory World, 94 Strategic Singularity, and 95 qualifying defeat.
+- Treat Event 015's live use of 85 through 89 as the current collision boundary. Event 020 separately declares world-end ID 10 and visible IDs 85 through 87 in its own constants. That external overlap with Event 015 does not control the Event 016 assignment.
 
 ## Current repository baseline
 
@@ -39,7 +40,8 @@ Event 016 is design-reconciled and ready for implementation preparation. Gamepla
 - The current idea grants `+50%`, not the fixed planned `+100%` opening anchor.
 - Placeholder localisation and an opening news event exist.
 - Event 16 is registered but remains outside the final default-enabled allowlist.
-- No planned Directorate, project portfolio, Kruger State, focus tree, achievements, or final wired asset and super-event package exists.
+- No completed Directorate, project portfolio, Kruger State, focus tree, achievement, or final wired super-event package exists.
+- Event 016 remains outside the final default-enabled allowlist.
 
 ## Exact next action
 
@@ -55,7 +57,7 @@ The handoff must freeze:
 - temporal debt, target-use, anchor, ledger, and stabilization state
 - mutually exclusive origin conclusions
 - terminal commitment transitions and the canonical Fallout source adapter
-- shared ID constants for world-end scenarios 11 and 12 and visible super-events 88 to 93
+- shared ID constants for world-end scenarios 11 and 12 and visible super-events 90 to 95
 - constants, scopes, event targets, cleanup, and intended call sites
 
 After parent review, begin Tranche 1. Do not enable Event 16 by default during that tranche.
@@ -64,8 +66,11 @@ After parent review, begin Tranche 1. Do not enable Event 16 by default during t
 
 - Six-package super-event text research is complete.
 - Super-event images are absent.
-- Audio research is not complete at this packet cutoff.
-- All Event 016 portraits, animation packages, icons, flags, and UI art are absent and unwired.
+- Six-package audio research and all six Event 016-owned OGGs are complete. Every file is `115.000000` seconds, Ogg Vorbis, `44,100 Hz`, stereo. Shared music, sound, settings, event, GUI, and localisation wiring is absent.
+- Stage 0 is complete from the exact `portrait_generic_biowarfare_europe_male_01` base. The leader or scientist DDS and `65x67` advisor DDS are registered as `GFX_portrait_KRG_doctor_warren_kruger_stage_0` and `GFX_idea_doctor_warren_kruger_stage_0`.
+- Stage I through IV portrait sprite contracts are pre-registered, but all referenced later assets, severe source-frame packages, static fallbacks, previews, contact sheets, and state wiring remain missing.
+- Achievement icons, flags, UI art, project art, report images, news images, and super-event images remain absent and unwired.
+- External redistribution rights for the copied stage-0 base remain unresolved. Internal Event 016 use is explicitly user-authorized.
 - Final localisation and spreadsheet alignment are blocked on implementation wording.
 
 ## Do not do
@@ -76,9 +81,10 @@ After parent review, begin Tranche 1. Do not enable Event 16 by default during t
 - Do not make transformation prove alien origin.
 - Do not let one campaign fire both terminal endings.
 - Do not reduce achievements or super-event packages.
-- Do not use placeholder or generic final assets or audio.
+- Do not replace the completed stage-0 identity or final Event 016 OGGs with placeholders or generic substitutes.
+- Do not treat pre-registered later portrait sprites as completed assets.
 - Do not edit the catalog workbook before final localisation exists.
 
 ## Completion boundary
 
-The next session begins implementation preparation. It does not begin from a complete Event 016 system, and it must not describe the source pack as implemented.
+The next session continues implementation preparation from a documentation-reconciled package with complete Event 016-owned audio files and a complete registered stage-0 portrait package. It does not begin from a complete Event 016 system, and it must not describe the source pack as implemented.

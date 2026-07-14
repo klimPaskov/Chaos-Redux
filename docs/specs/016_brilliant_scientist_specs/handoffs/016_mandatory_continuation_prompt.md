@@ -1,6 +1,6 @@
 # Temporary continuation prompt, not part of the event specification
 
-> Superseded 2026-07-14. Do not use this prompt to rerun the improvement planner. Continue from `docs/plans/016_brilliant_scientist_plans/016_brilliant_scientist_resume_packet.md`; the next action is the scripted-system architecture pass.
+> Superseded 2026-07-14. Do not use this prompt to rerun the improvement planner. Continue from `docs/plans/016_brilliant_scientist_plans/016_brilliant_scientist_resume_packet.md`. The current source-of-truth correction assigns visible Event 016 IDs `90` through `95`, records complete six-package audio research and OGG production, and records the completed and registered stage-0 portrait package. Gameplay remains incomplete and default-disabled.
 
 Continue the Chaos Redux Event 16 `Brilliant Scientist` planning and implementation handoff from the exact stopping point below. Do not restart the design, summarize away completed material, or rewrite finished sections unless the mandatory planner finds a concrete defect.
 
@@ -124,7 +124,7 @@ Do not claim the planning process closed until these steps are complete.
 - Laboratory World follows the normal world-end threshold.
 - Event 16 has no cluster.
 - The blank `Crazy Scientist` catalog concept is absorbed or retired rather than implemented as a duplicate chain.
-- At this historical cutoff, final super-event text and music were blocked. Six-package text research later completed; audio and live wiring remained outstanding at the documentation freeze.
+- At this historical cutoff, final super-event text and music were blocked. Six-package text and audio research later completed, and final Event 016-owned OGGs now exist at IDs `90` through `95`. Images, final descriptions, localisation, shared playback, and live presentation wiring remain outstanding.
 - Severe animations require real per-frame source art, frame sheets, static fallbacks, previews, manifests, and wiring handoffs.
 - Do not create final art from transformed copies of one still.
 - Do not use political power or command power as the default cost model.

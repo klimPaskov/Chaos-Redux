@@ -1,6 +1,6 @@
 # Event 016 super-event audio research handoff
 
-Status: complete for the audio-research and Event 016-owned OGG scope. The subagent commit hash is supplied in the parent return because a commit cannot include its own hash.
+Status: complete for the audio-research and Event 016-owned OGG scope. Commit `0e8c6f8e` performed the role-preserving rename to final IDs 90 through 95 without re-encoding or retagging.
 
 ## Delivered package
 
@@ -77,6 +77,6 @@ The quieter integrated level for ID 91 preserves the large natural range of the 
 
 No shared music asset, station, sound, localisation, GUI, gameplay, specification, workbook, or catalog file was edited. No numeric reservation was made by this subagent; filenames use the IDs later supplied by the parent. No sound-channel WAV was requested or produced in the OGG-only subtask.
 
-Parent-owned Event 016 specs, source-of-truth maps, prompts, and integration handoffs still contain the superseded 88-through-93 reservation. They were outside this audio-owned follow-up and specification edits were explicitly forbidden; the parent must reconcile them to 90 through 95 before final integration.
+The follow-up documentation reconciliation records IDs 90 through 95 across the Event 016 specification, prompts, source-of-truth map, resume packet, integration map, event documentation, and status handoffs. The historical 88-through-93 paths remain relevant only as rename provenance in audio-owned evidence.
 
 There is no rights, source-download, mastering, or Event 016-owned file blocker. Shared wiring and any WAV mirror remain parent-owned integration work, not a fallback or simplification of the delivered audio-research scope.

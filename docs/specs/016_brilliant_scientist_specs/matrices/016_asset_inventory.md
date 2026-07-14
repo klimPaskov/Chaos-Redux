@@ -2,13 +2,13 @@
 
 ## Binding reconciliation
 
-> Planning inventory only. No listed Event 016 visual asset is currently produced, converted, registered, or wired. Binding totals are six super-event packages, seventeen three-state achievement icon sets, and five severe portrait animation packages.
+> Planning inventory with current status. The exact stage-0 `156x210` leader or scientist DDS and `65x67` advisor DDS are produced and registered as `GFX_portrait_KRG_doctor_warren_kruger_stage_0` and `GFX_idea_doctor_warren_kruger_stage_0`. Stage I through IV sprite contracts are pre-registered, but their source art and runtime files are missing. Every other listed visual asset remains unproduced and unwired. Binding totals remain six super-event packages, seventeen three-state achievement icon sets, and five severe portrait animation package families.
 
 ## Portraits and character assets
 
 | Asset | Type | Size | Source mode | Animation | Use |
 | --- | --- | ---: | --- | --- | --- |
-| Kruger stage 0 leader | Portrait | 156x210 | Approved base copy from `portrait_generic_biowarfare_europe_male_01` | Static | Initial and safe route leader |
+| Kruger stage 0 leader | Portrait | 156x210 | Completed approved base copy from `portrait_generic_biowarfare_europe_male_01` | Static, registered | Initial and safe route leader or scientist |
 | Kruger stage I | Portrait | 156x210 | Generated fictional variant | Static | National ascendancy |
 | Kruger stage II | Portrait | 156x210 | Generated fictional variant | Static | International contest |
 | Kruger stage III route variants | Portrait | 156x210 | Generated fictional variants | Static fallback | Forbidden science |

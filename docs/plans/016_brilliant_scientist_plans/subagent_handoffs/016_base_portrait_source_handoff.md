@@ -8,6 +8,15 @@ This handoff completes the bounded source and static-output tranche for Doctor W
 
 No generated or alternate face was used. No placeholder or fallback was introduced.
 
+## Parent integration update, 2026-07-14
+
+Commit `43125d91a` registered both stage-0 outputs in `interface/016_brilliant_scientist.gfx` with the proposed stable names:
+
+- `GFX_portrait_KRG_doctor_warren_kruger_stage_0`
+- `GFX_idea_doctor_warren_kruger_stage_0`
+
+The stage-0 source and runtime package is therefore complete and registered. Final assignment to the persistent character remains gameplay work. Stage I through IV static and animated sprite contracts were later pre-registered, but the referenced later assets do not exist and are not completed by this handoff.
+
 ## Authoritative source
 
 | Field | Evidence |
@@ -97,7 +106,7 @@ The main agent must confirm the final portrait scope while implementing the char
 
 ## Remaining parent work and risks
 
-- Add the two sprite definitions to `interface/016_brilliant_scientist.gfx` and wire the character portrait block. This subagent did not edit either surface.
+- Wire the registered stage-0 sprites into the final persistent character portrait block and verify every ownership or role transition uses them until a completed later stage is active.
 - The source's external redistribution rights are unresolved because no standalone licence metadata exists. This does not block the user-authorized in-repository Event 016 use, but it must remain explicit in any external asset ledger.
-- Stages I through IV, severe animations, custom UI crops, event-picture crops, and all other Event 016 art remain outside this bounded tranche.
+- Stages I through IV, severe animations, custom UI crops, event-picture crops, and all other Event 016 art remain outside this bounded tranche. Their pre-registered sprite names are contracts only.
 - No simplification or fallback was used within the assigned stage-0 source package.

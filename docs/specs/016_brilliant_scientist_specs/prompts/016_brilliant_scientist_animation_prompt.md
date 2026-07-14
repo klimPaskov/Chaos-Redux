@@ -2,6 +2,8 @@
 
 Produce exactly five severe portrait packages: clone, machine, temporal, xenobiological or alien, and synthesis. The combined xenobiological-or-alien package follows the locked campaign conclusion; transformation alone must not imply extraterrestrial provenance.
 
+Stage 0 is complete and registered. Stage I through IV static and animated sprite contracts are pre-registered, but their referenced assets remain missing. Treat those live names as fixed output contracts. The xenobiological-or-alien family has mutually exclusive evidence-gated xenobiological and alien-revealed outputs inside one package family.
+
 Use this prompt with `chaosx_generated_event_art` for portraits and `chaosx_icon_artist` for small UI animation. Spawn with `fork_context=false` and require the `chaos-redux-frame-animation` skill.
 
 ## Source design

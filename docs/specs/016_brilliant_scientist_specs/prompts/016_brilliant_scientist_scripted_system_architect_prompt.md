@@ -20,7 +20,7 @@ Design and, where narrow and safe, implement reusable Event 16 helpers before th
 
 This is the exact next implementation-preparation step. Freeze contracts first. Preserve exactly seventeen achievements and six mapped super-event roles. Treat R2, R3, R4, R5, and R7 as binding and R1 and R6 as rejected.
 
-Preserve concurrent Event 020 world-end ID 10 and visible super-event IDs 85 to 87. Event 016 uses world-end scenario IDs 11 and 12 and visible super-event IDs 88 to 93 in the fixed six-role order from the source-of-truth map. Re-scan before any live shared-registry edit.
+Event 016 uses world-end scenario IDs 11 and 12. Its fixed visible super-event IDs are 90 recognition, 91 formation, 92 global threat, 93 Laboratory World, 94 Strategic Singularity, and 95 qualifying defeat. Live Event 015 wiring occupies visible IDs 85 through 89. Event 020 separately declares world-end ID 10 and visible IDs 85 through 87 in its own constants, which is an external overlap with Event 015 rather than an Event 016 reservation constraint. Re-scan before any live shared-registry edit.
 
 ## Required helper families
 

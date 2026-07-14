@@ -1,6 +1,6 @@
 # Event 016 Brilliant Scientist planning package
 
-> Reconciled 2026-07-14. The binding disposition and implementation-status map is `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md`. Gameplay implementation remains a placeholder and has not begun.
+> Reconciled 2026-07-14. The binding disposition and implementation-status map is `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md`. Event 016 remains default-disabled and gameplay-incomplete. The stage-0 portrait package and all six Event 016-owned audio packages are complete at file level, with the remaining wiring limits recorded below.
 
 This package expands Event ID `16`, `Brilliant Scientist`, into a full source specification for Chaos Redux.
 
@@ -15,6 +15,8 @@ The event can remain a powerful scientific success story. It can become a secret
 - `docs/events/016_brilliant_scientist.md` separates the live placeholder from planned mechanics.
 - `docs/assets/016_brilliant_scientist/manifest.md` records visual and audio production status.
 - `docs/super_events/016_brilliant_scientist_super_event_research.md` contains the completed six-package text research.
+- `docs/super_events/016_brilliant_scientist_super_event_audio_research.md` contains the completed six-package audio research and final OGG manifest.
+- `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_base_portrait_source_handoff.md` records the completed stage-0 source and runtime package.
 
 ## Package map
 
@@ -80,7 +82,8 @@ The event can remain a powerful scientific success story. It can become a secret
 - Kruger rebellion strength and starting forces are derived from approved projects, facilities, authority, dependence, security, and chaos state.
 - Clone, robot, dinosaur, monster, portal, temporal, biological, and exotic-army outcomes are mechanically distinct.
 - The terminal capitulation weapon may fire from any starting chaos tier only by first pushing global chaos over the normal world-end threshold and then entering the existing terminal pipeline.
-- Six-package super-event title, quotation, and button research is complete. Final descriptions, images, audio, live identifiers, localisation, triggers, and wiring remain blocked on their dedicated implementation and research passes.
+- Six-package super-event title, quotation, button, and audio research is complete. Final Event 016-owned OGGs use visible IDs `90` through `95`. Final descriptions, images, localisation, triggers, shared music and sound definitions, settings-aware playback, and live presentation wiring remain incomplete.
+- The stage-0 leader and advisor DDS files are complete and registered as `GFX_portrait_KRG_doctor_warren_kruger_stage_0` and `GFX_idea_doctor_warren_kruger_stage_0`. Later portrait sprite contracts are pre-registered, but their source art, runtime files, static fallbacks, animation packages, and state wiring remain missing.
 - All severe portrait animations use real per-frame source artwork, a frame sheet, and a static fallback.
 - The unnumbered catalog idea `Crazy Scientist` is absorbed and redesigned inside Event 16. Its standalone concept is superseded. The spreadsheet row remains a post-localisation alignment task and must not recreate a second event.
 - Mandate, Dependence, Exposure, and Project Capacity are visible player-facing state. Only Independent Capacity and Grievance are hidden causal state.

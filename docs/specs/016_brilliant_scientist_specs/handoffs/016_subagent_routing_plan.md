@@ -58,7 +58,7 @@ Spawn `chaosx_generated_event_art` for fictional portraits, report and news scen
 
 `prompts/016_brilliant_scientist_asset_prompt.md`
 
-Kruger is fictional, so generated portrait work is appropriate. Any supplied vanilla portrait copy is a visual starting point rather than a real-person source claim.
+Kruger is fictional, so generated later-stage portrait work is appropriate. Stage 0 is already complete from the exact approved `portrait_generic_biowarfare_europe_male_01` base and must not be recreated. Use its preserved source and registered runtime sprites to maintain identity.
 
 ### 9. Icon and frame-animation work
 
@@ -79,7 +79,7 @@ Spawn separately:
 - `chaosx_super_event_text_researcher` for quotes, attribution, title and remark research
 - `chaosx_super_event_audio_researcher` for unique licensed music, source verification, conversion, and documentation
 
-Use `prompts/016_brilliant_scientist_super_event_prompt.md`. Six-package title, button, and quotation research is complete. Audio, images, final descriptions, localisation, live identifiers, and wiring remain blocked until their dedicated handoffs and implementation exist.
+Use `prompts/016_brilliant_scientist_super_event_prompt.md`. Six-package title, button, quotation, and audio research is complete. Six final Event 016-owned OGGs are ready at IDs `90` through `95`. Images, final descriptions, localisation, shared music and sound definitions, settings-aware playback, and live presentation wiring remain blocked until their dedicated handoffs and implementation exist.
 
 ## Documentation, catalog, and final audit
 

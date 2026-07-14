@@ -6,7 +6,7 @@ Exactly six mapped super-event packages remain required: thresholded internation
 
 Laboratory World requires overwhelming control plus functioning global integration and administration. Strategic Singularity remains a preventable component-and-disarmament race. Their commitment locks are mutually exclusive. Temporal anchor counterplay and the mutually exclusive campaign-origin conclusion must remain consistent in terminal and aftermath text.
 
-Reserved world-end scenario IDs are 11 for Laboratory World and 12 for Strategic Singularity. Reserved visible super-event IDs are 88 recognition, 89 formation, 90 threat, 91 Laboratory World, 92 Strategic Singularity, and 93 qualifying defeat. Event 020 owns world-end ID 10 and visible IDs 85 to 87.
+Reserved world-end scenario IDs are 11 for Laboratory World and 12 for Strategic Singularity. Reserved visible super-event IDs are 90 recognition, 91 formation, 92 threat, 93 Laboratory World, 94 Strategic Singularity, and 95 qualifying defeat. Live Event 015 wiring occupies visible IDs 85 through 89. Event 020 separately declares world-end ID 10 and visible IDs 85 through 87 in its own constants. That external Event 015 and Event 020 overlap does not control the Event 016 assignment.
 
 ## Super-event philosophy
 
