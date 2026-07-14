@@ -2,13 +2,15 @@
 # CHAOS REDUX - AIR WINTER EVENT EFFECTS
 # ============================================================================
 # Public contract:
+#   air_winter_event_prepare_candidate_cycle = yes (COUNTRY/host before pass)
 #   air_winter_schedule_phase_event = yes  (STATE during the monthly pass)
+#   air_winter_dispatch_phase_events = yes  (COUNTRY/host after the pass)
 #   air_winter_event_refresh_state = yes   (STATE after an event choice)
 #   air_winter_event_apply_deaths = yes    (STATE with temp death percent)
 #
-# The scheduler never iterates countries or states. It is called from the one
-# existing monthly state pass and records country-level phase memory before it
-# fires a visible event. The host's stable state iteration resolves ties.
+# The scheduler adds no country or state scan. It records candidates during the
+# existing monthly state pass, compares them by score and state id, then uses a
+# bounded owner array for post-pass dispatch.
 # ============================================================================
 
 # Timed flag durations reject script-constant and variable tokens on some
@@ -75,6 +77,28 @@ air_winter_event_reconcile_pending_chain = {
 	}
 }
 
+# Supported scope: COUNTRY. Used only when ownership changed after a visible
+# event opened. It never touches a newer owner's delayed chain.
+air_winter_event_reject_stale_choice = {
+	if = {
+		limit = {
+			has_event_target = air_winter_event_state
+			has_event_target = air_winter_event_country
+			event_target:air_winter_event_state = {
+				has_state_flag = air_winter_pending_delayed_result
+				has_variable = air_winter_pending_event_owner
+				check_variable = {
+					var = air_winter_pending_event_owner
+					value = event_target:air_winter_event_country
+					compare = equals
+				}
+			}
+		}
+		event_target:air_winter_event_state = { air_winter_event_cancel_pending_chain = yes }
+	}
+	country_event = { id = chaosx.fallout.203 }
+}
+
 # Supported scope: STATE
 air_winter_event_refresh_state = {
 	air_winter_normalize_state_ledger = yes
@@ -101,6 +125,10 @@ air_winter_event_clear_country_memory = {
 	clr_country_flag = air_winter_event_seen_phase_6
 	clr_country_flag = air_winter_memory_abandonment_refused
 	clear_variable = air_winter_recovery_event_count
+	clear_variable = air_winter_event_candidate_state
+	clear_variable = air_winter_event_candidate_id
+	clear_variable = air_winter_event_candidate_score
+	clear_variable = air_winter_event_candidate_cycle_id
 }
 
 # Supported scope: STATE
@@ -217,7 +245,22 @@ air_winter_event_apply_deaths = {
 	set_temp_variable = { air_winter_event_death_percent = constant:air_winter_event_runtime.zero }
 }
 
+# Supported scope: COUNTRY. Clears the bounded dispatch ledger before the
+# existing monthly state pass begins.
+air_winter_event_prepare_candidate_cycle = {
+	clear_array = global.air_winter_event_candidate_countries
+}
+
+# Supported scope: COUNTRY
+air_winter_event_clear_candidate = {
+	clear_variable = air_winter_event_candidate_state
+	clear_variable = air_winter_event_candidate_id
+	clear_variable = air_winter_event_candidate_score
+	clear_variable = air_winter_event_candidate_cycle_id
+}
+
 # Supported scope: STATE. Called once from the existing monthly state pass.
+# It records one deterministic candidate per owner and never fires directly.
 air_winter_schedule_phase_event = {
 	set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.none }
 	if = {
@@ -393,7 +436,6 @@ air_winter_schedule_phase_event = {
 							check_variable = { air_winter_recovery_event_count < constant:air_winter_event_runtime.recovery_arc_cap }
 						}
 					}
-					add_to_variable = { air_winter_recovery_event_count = constant:air_winter_event_runtime.one }
 					set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.recovery }
 				}
 			}
@@ -401,50 +443,123 @@ air_winter_schedule_phase_event = {
 
 		if = {
 			limit = { check_variable = { air_winter_selected_event_id > constant:air_winter_event_id.none } }
+			set_temp_variable = { air_winter_event_candidate_state_id = THIS.id }
+			set_temp_variable = { air_winter_event_candidate_score_value = air_winter_phase }
+			multiply_temp_variable = { air_winter_event_candidate_score_value = constant:air_winter_event_runtime.candidate_phase_weight }
+			set_temp_variable = { air_winter_event_candidate_pressure_score = air_winter_pressure }
+			multiply_temp_variable = { air_winter_event_candidate_pressure_score = constant:air_winter_event_runtime.candidate_pressure_weight }
+			add_to_temp_variable = { air_winter_event_candidate_score_value = air_winter_event_candidate_pressure_score }
 			if = {
-				limit = { NOT = { check_variable = { air_winter_selected_event_id = constant:air_winter_event_id.recovery } } }
-				if = {
-					limit = { air_winter_is_phase_1 = yes }
-					OWNER = { set_country_flag = air_winter_event_seen_phase_1 }
-				}
-				else_if = {
-					limit = { air_winter_is_phase_2 = yes }
-					OWNER = { set_country_flag = air_winter_event_seen_phase_2 }
-				}
-				else_if = {
-					limit = { air_winter_is_phase_3 = yes }
-					OWNER = { set_country_flag = air_winter_event_seen_phase_3 }
-				}
-				else_if = {
-					limit = { air_winter_is_phase_4 = yes }
-					OWNER = { set_country_flag = air_winter_event_seen_phase_4 }
-				}
-				else_if = {
-					limit = { air_winter_is_phase_5 = yes }
-					OWNER = { set_country_flag = air_winter_event_seen_phase_5 }
-				}
-				else_if = {
-					limit = { air_winter_is_phase_6 = yes }
-					OWNER = { set_country_flag = air_winter_event_seen_phase_6 }
-				}
+				limit = { check_variable = { air_winter_selected_event_id = constant:air_winter_event_id.recovery } }
+				set_temp_variable = { air_winter_event_candidate_score_value = constant:air_winter_event_runtime.candidate_recovery_base }
+				add_to_temp_variable = { air_winter_event_candidate_score_value = air_winter_event_candidate_pressure_score }
 			}
-			save_event_target_as = air_winter_event_state
 			OWNER = {
-				save_event_target_as = air_winter_event_country
-				set_country_flag = {
-					flag = air_winter_event_cooldown
-					days = @AIR_WINTER_EVENT_COUNTRY_COOLDOWN_DAYS
-				}
-			}
-			meta_effect = {
-				text = {
-					OWNER = {
-						country_event = { id = chaosx.fallout.[AIR_WINTER_EVENT_ID] }
+				if = {
+					limit = {
+						OR = {
+							NOT = { has_variable = air_winter_event_candidate_cycle_id }
+							NOT = {
+								check_variable = {
+									var = air_winter_event_candidate_cycle_id
+									value = global.air_winter_cycle_id
+									compare = equals
+								}
+							}
+							check_variable = {
+								var = air_winter_event_candidate_score_value
+								value = air_winter_event_candidate_score
+								compare = greater_than
+							}
+							AND = {
+								check_variable = {
+									var = air_winter_event_candidate_score_value
+									value = air_winter_event_candidate_score
+									compare = equals
+								}
+								check_variable = {
+									var = air_winter_event_candidate_state_id
+									value = air_winter_event_candidate_state
+									compare = less_than
+								}
+							}
+						}
 					}
+					set_variable = { air_winter_event_candidate_state = air_winter_event_candidate_state_id }
+					set_variable = { air_winter_event_candidate_id = air_winter_selected_event_id }
+					set_variable = { air_winter_event_candidate_score = air_winter_event_candidate_score_value }
+					set_variable = { air_winter_event_candidate_cycle_id = global.air_winter_cycle_id }
 				}
-				AIR_WINTER_EVENT_ID = "[?air_winter_selected_event_id|.0]"
+				if = {
+					limit = {
+						NOT = {
+							is_in_array = {
+								array = global.air_winter_event_candidate_countries
+								value = THIS
+							}
+						}
+					}
+					add_to_array = { array = global.air_winter_event_candidate_countries value = THIS }
+				}
 			}
 		}
 	}
 	set_temp_variable = { air_winter_selected_event_id = constant:air_winter_event_id.none }
+	set_temp_variable = { air_winter_event_candidate_state_id = constant:air_winter_event_runtime.zero }
+	set_temp_variable = { air_winter_event_candidate_score_value = constant:air_winter_event_runtime.zero }
+	set_temp_variable = { air_winter_event_candidate_pressure_score = constant:air_winter_event_runtime.zero }
+}
+
+# Supported scope: COUNTRY (the existing host country). Iterates only the
+# bounded country array collected during the existing state pass.
+air_winter_dispatch_phase_events = {
+	for_each_scope_loop = {
+		array = global.air_winter_event_candidate_countries
+		if = {
+			limit = {
+				has_global_flag = air_winter_cycle_open
+				exists = yes
+				NOT = { has_country_flag = air_winter_event_cooldown }
+				has_variable = air_winter_event_candidate_state
+				has_variable = air_winter_event_candidate_id
+				has_variable = air_winter_event_candidate_cycle_id
+				check_variable = {
+					var = air_winter_event_candidate_cycle_id
+					value = global.air_winter_cycle_id
+					compare = equals
+				}
+				check_variable = { air_winter_event_candidate_id > constant:air_winter_event_id.none }
+				var:air_winter_event_candidate_state = {
+					air_winter_state_is_valid = yes
+					is_owned_by = PREV
+				}
+			}
+			save_event_target_as = air_winter_event_country
+			var:air_winter_event_candidate_state = { save_event_target_as = air_winter_event_state }
+			if = {
+				limit = { check_variable = { air_winter_event_candidate_id = constant:air_winter_event_id.recovery } }
+				add_to_variable = { air_winter_recovery_event_count = constant:air_winter_event_runtime.one }
+			}
+			else = {
+				var:air_winter_event_candidate_state = {
+					if = { limit = { air_winter_is_phase_1 = yes } OWNER = { set_country_flag = air_winter_event_seen_phase_1 } }
+					else_if = { limit = { air_winter_is_phase_2 = yes } OWNER = { set_country_flag = air_winter_event_seen_phase_2 } }
+					else_if = { limit = { air_winter_is_phase_3 = yes } OWNER = { set_country_flag = air_winter_event_seen_phase_3 } }
+					else_if = { limit = { air_winter_is_phase_4 = yes } OWNER = { set_country_flag = air_winter_event_seen_phase_4 } }
+					else_if = { limit = { air_winter_is_phase_5 = yes } OWNER = { set_country_flag = air_winter_event_seen_phase_5 } }
+					else_if = { limit = { air_winter_is_phase_6 = yes } OWNER = { set_country_flag = air_winter_event_seen_phase_6 } }
+				}
+			}
+			set_country_flag = {
+				flag = air_winter_event_cooldown
+				days = @AIR_WINTER_EVENT_COUNTRY_COOLDOWN_DAYS
+			}
+			meta_effect = {
+				text = { country_event = { id = chaosx.fallout.[AIR_WINTER_EVENT_ID] } }
+				AIR_WINTER_EVENT_ID = "[?air_winter_event_candidate_id|.0]"
+			}
+		}
+		air_winter_event_clear_candidate = yes
+	}
+	clear_array = global.air_winter_event_candidate_countries
 }

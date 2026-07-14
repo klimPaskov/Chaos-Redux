@@ -180,13 +180,13 @@ air_winter_response_pay_greenhouse_refuge = {
 
 # Supported scope: COUNTRY
 air_winter_response_pay_controlled_evacuation = {
-	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.controlled_evacuation_trains }
+	set_temp_variable = { air_winter_response_payment = air_winter_controlled_evacuation_train_cost }
 	air_winter_response_pay_trains = yes
-	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.controlled_evacuation_convoys }
+	set_temp_variable = { air_winter_response_payment = air_winter_controlled_evacuation_convoy_cost }
 	air_winter_response_pay_convoys = yes
-	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.controlled_evacuation_manpower }
+	set_temp_variable = { air_winter_response_payment = air_winter_controlled_evacuation_manpower_cost }
 	air_winter_response_pay_manpower = yes
-	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.controlled_evacuation_stability }
+	set_temp_variable = { air_winter_response_payment = air_winter_controlled_evacuation_stability_cost }
 	air_winter_response_pay_stability = yes
 }
 
@@ -220,13 +220,13 @@ air_winter_response_pay_bunker_seal = {
 
 # Supported scope: COUNTRY
 air_winter_response_pay_final_evacuation = {
-	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.final_evacuation_trains }
+	set_temp_variable = { air_winter_response_payment = air_winter_final_evacuation_train_cost }
 	air_winter_response_pay_trains = yes
-	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.final_evacuation_convoys }
+	set_temp_variable = { air_winter_response_payment = air_winter_final_evacuation_convoy_cost }
 	air_winter_response_pay_convoys = yes
-	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.final_evacuation_support }
+	set_temp_variable = { air_winter_response_payment = air_winter_final_evacuation_support_cost }
 	air_winter_response_pay_support_equipment = yes
-	set_temp_variable = { air_winter_response_payment = constant:air_winter_response_cost.final_evacuation_manpower }
+	set_temp_variable = { air_winter_response_payment = air_winter_final_evacuation_manpower_cost }
 	air_winter_response_pay_manpower = yes
 }
 
@@ -246,26 +246,694 @@ air_winter_response_pay_decontamination = {
 # Shared state project lifecycle
 # ---------------------------------------------------------------------------
 
+# Supported scope: COUNTRY. Clears the current population-scaled evacuation
+# quote. A quote is rebuilt only for the country's selected priority state and
+# its lowest-id valid reception state.
+air_winter_response_clear_evacuation_cache = {
+	clr_country_flag = air_winter_evacuation_cache_valid
+	clear_variable = air_winter_evacuation_cache_source_state
+	clear_variable = air_winter_evacuation_cache_receiver_state
+	clear_variable = air_winter_evacuation_cache_source_population_k
+	clear_variable = air_winter_evacuation_cache_receiver_population_k
+	clear_variable = air_winter_evacuation_cache_receiver_pressure
+	clear_variable = air_winter_evacuation_cache_cycle_id
+	clear_variable = air_winter_controlled_evacuation_population_transfer_k
+	clear_variable = air_winter_controlled_evacuation_population_transfer_people
+	clear_variable = air_winter_controlled_evacuation_train_cost
+	clear_variable = air_winter_controlled_evacuation_convoy_cost
+	clear_variable = air_winter_controlled_evacuation_manpower_cost
+	clear_variable = air_winter_controlled_evacuation_stability_cost
+	clear_variable = air_winter_controlled_evacuation_receiver_pressure_gain
+	clear_variable = air_winter_controlled_evacuation_receiver_pressure_after
+	clear_variable = air_winter_controlled_evacuation_source_pressure_relief
+	clear_variable = air_winter_final_evacuation_population_transfer_k
+	clear_variable = air_winter_final_evacuation_population_transfer_people
+	clear_variable = air_winter_final_evacuation_train_cost
+	clear_variable = air_winter_final_evacuation_convoy_cost
+	clear_variable = air_winter_final_evacuation_support_cost
+	clear_variable = air_winter_final_evacuation_manpower_cost
+	clear_variable = air_winter_final_evacuation_receiver_pressure_gain
+	clear_variable = air_winter_final_evacuation_receiver_pressure_after
+	clear_variable = air_winter_final_evacuation_source_pressure_relief
+}
+
+# Supported scope: STATE. Rebuilds one country quote from the selected source
+# population and the designated receiver's current population and pressure.
+# Temporary variables deliberately carry arithmetic across the local scopes.
+air_winter_response_refresh_state_evacuation_cache = {
+	save_event_target_as = air_winter_evacuation_cache_source
+	set_temp_variable = { air_winter_evacuation_source_state_id = THIS.id }
+	OWNER = {
+		save_event_target_as = air_winter_evacuation_cache_owner
+		air_winter_response_clear_evacuation_cache = yes
+	}
+
+	if = {
+		limit = {
+			air_winter_state_is_valid = yes
+			has_state_flag = air_winter_response_priority_target
+			has_variable = air_winter_response_priority_owner
+			check_variable = {
+				var = air_winter_response_priority_owner
+				value = event_target:air_winter_evacuation_cache_owner
+				compare = equals
+			}
+			is_owned_by = event_target:air_winter_evacuation_cache_owner
+			is_controlled_by = event_target:air_winter_evacuation_cache_owner
+			check_variable = { state_population_k > constant:air_winter_runtime.zero }
+			event_target:air_winter_evacuation_cache_owner = {
+				has_variable = air_winter_response_priority_state
+				check_variable = {
+					var = air_winter_response_priority_state
+					value = air_winter_evacuation_source_state_id
+					compare = equals
+				}
+			}
+		}
+
+		set_temp_variable = {
+			air_winter_evacuation_selected_receiver_state = constant:air_winter_response_evacuation.state_id_selection_sentinel
+		}
+		event_target:air_winter_evacuation_cache_owner = {
+			for_each_scope_loop = {
+				array = air_winter_reception_states
+				if = {
+					limit = {
+						has_state_flag = air_winter_response_reception_target
+						has_variable = air_winter_response_reception_owner
+						check_variable = {
+							var = air_winter_response_reception_owner
+							value = event_target:air_winter_evacuation_cache_owner
+							compare = equals
+						}
+						is_owned_by = event_target:air_winter_evacuation_cache_owner
+						is_controlled_by = event_target:air_winter_evacuation_cache_owner
+						air_winter_response_is_reception_state = yes
+						NOT = { state = event_target:air_winter_evacuation_cache_source }
+					}
+					set_temp_variable = { air_winter_evacuation_receiver_candidate_state = THIS.id }
+					if = {
+						limit = {
+							check_variable = {
+								var = air_winter_evacuation_receiver_candidate_state
+								value = air_winter_evacuation_selected_receiver_state
+								compare = less_than
+							}
+						}
+						set_temp_variable = {
+							air_winter_evacuation_selected_receiver_state = air_winter_evacuation_receiver_candidate_state
+						}
+					}
+				}
+			}
+		}
+
+		if = {
+			limit = {
+				check_variable = {
+					var = air_winter_evacuation_selected_receiver_state
+					value = constant:air_winter_response_evacuation.state_id_selection_sentinel
+					compare = less_than
+				}
+			}
+
+			set_temp_variable = { air_winter_evacuation_source_population_k = state_population_k }
+
+			set_temp_variable = { air_winter_controlled_evacuation_transfer_k = air_winter_evacuation_source_population_k }
+			multiply_temp_variable = {
+				air_winter_controlled_evacuation_transfer_k = constant:air_winter_response_result.controlled_evacuation_population_share
+			}
+			set_temp_variable = { air_winter_controlled_evacuation_transfer_people = air_winter_controlled_evacuation_transfer_k }
+			multiply_temp_variable = {
+				air_winter_controlled_evacuation_transfer_people = constant:air_winter_response_evacuation.population_people_per_k
+			}
+			round_temp_variable = air_winter_controlled_evacuation_transfer_people
+
+			set_temp_variable = { air_winter_final_evacuation_transfer_k = air_winter_evacuation_source_population_k }
+			multiply_temp_variable = {
+				air_winter_final_evacuation_transfer_k = constant:air_winter_response_result.final_evacuation_population_share
+			}
+			set_temp_variable = { air_winter_final_evacuation_transfer_people = air_winter_final_evacuation_transfer_k }
+			multiply_temp_variable = {
+				air_winter_final_evacuation_transfer_people = constant:air_winter_response_evacuation.population_people_per_k
+			}
+			round_temp_variable = air_winter_final_evacuation_transfer_people
+
+			set_temp_variable = { air_winter_controlled_evacuation_trains = air_winter_controlled_evacuation_transfer_k }
+			divide_temp_variable = {
+				air_winter_controlled_evacuation_trains = constant:air_winter_response_evacuation.population_k_per_train
+			}
+			add_to_temp_variable = {
+				air_winter_controlled_evacuation_trains = constant:air_winter_response_evacuation.ceil_rounding_offset
+			}
+			round_temp_variable = air_winter_controlled_evacuation_trains
+			if = {
+				limit = { check_variable = { air_winter_controlled_evacuation_trains < constant:air_winter_runtime.one } }
+				set_temp_variable = { air_winter_controlled_evacuation_trains = constant:air_winter_runtime.one }
+			}
+
+			set_temp_variable = { air_winter_controlled_evacuation_stability = air_winter_controlled_evacuation_transfer_k }
+			divide_temp_variable = {
+				air_winter_controlled_evacuation_stability = constant:air_winter_response_evacuation.controlled_stability_population_k_per_percent
+			}
+			multiply_temp_variable = {
+				air_winter_controlled_evacuation_stability = constant:air_winter_response_evacuation.controlled_stability_percent_unit
+			}
+			clamp_temp_variable = {
+				var = air_winter_controlled_evacuation_stability
+				min = constant:air_winter_response_evacuation.controlled_stability_minimum
+				max = constant:air_winter_response_evacuation.controlled_stability_maximum
+			}
+
+			set_temp_variable = { air_winter_controlled_evacuation_convoys = air_winter_controlled_evacuation_transfer_k }
+			divide_temp_variable = {
+				air_winter_controlled_evacuation_convoys = constant:air_winter_response_evacuation.population_k_per_convoy
+			}
+			add_to_temp_variable = {
+				air_winter_controlled_evacuation_convoys = constant:air_winter_response_evacuation.ceil_rounding_offset
+			}
+			round_temp_variable = air_winter_controlled_evacuation_convoys
+			if = {
+				limit = { check_variable = { air_winter_controlled_evacuation_convoys < constant:air_winter_runtime.one } }
+				set_temp_variable = { air_winter_controlled_evacuation_convoys = constant:air_winter_runtime.one }
+			}
+
+			set_temp_variable = { air_winter_controlled_evacuation_staff = air_winter_controlled_evacuation_transfer_k }
+			multiply_temp_variable = {
+				air_winter_controlled_evacuation_staff = constant:air_winter_response_evacuation.administrative_staff_per_population_k
+			}
+			round_temp_variable = air_winter_controlled_evacuation_staff
+			if = {
+				limit = {
+					check_variable = {
+						var = air_winter_controlled_evacuation_staff
+						value = constant:air_winter_response_evacuation.minimum_administrative_staff
+						compare = less_than
+					}
+				}
+				set_temp_variable = {
+					air_winter_controlled_evacuation_staff = constant:air_winter_response_evacuation.minimum_administrative_staff
+				}
+			}
+
+			set_temp_variable = { air_winter_final_evacuation_trains = air_winter_final_evacuation_transfer_k }
+			divide_temp_variable = {
+				air_winter_final_evacuation_trains = constant:air_winter_response_evacuation.population_k_per_train
+			}
+			add_to_temp_variable = {
+				air_winter_final_evacuation_trains = constant:air_winter_response_evacuation.ceil_rounding_offset
+			}
+			round_temp_variable = air_winter_final_evacuation_trains
+			if = {
+				limit = { check_variable = { air_winter_final_evacuation_trains < constant:air_winter_runtime.one } }
+				set_temp_variable = { air_winter_final_evacuation_trains = constant:air_winter_runtime.one }
+			}
+
+			set_temp_variable = { air_winter_final_evacuation_convoys = air_winter_final_evacuation_transfer_k }
+			divide_temp_variable = {
+				air_winter_final_evacuation_convoys = constant:air_winter_response_evacuation.population_k_per_convoy
+			}
+			add_to_temp_variable = {
+				air_winter_final_evacuation_convoys = constant:air_winter_response_evacuation.ceil_rounding_offset
+			}
+			round_temp_variable = air_winter_final_evacuation_convoys
+			if = {
+				limit = { check_variable = { air_winter_final_evacuation_convoys < constant:air_winter_runtime.one } }
+				set_temp_variable = { air_winter_final_evacuation_convoys = constant:air_winter_runtime.one }
+			}
+
+			set_temp_variable = { air_winter_final_evacuation_support = air_winter_final_evacuation_transfer_k }
+			divide_temp_variable = {
+				air_winter_final_evacuation_support = constant:air_winter_response_evacuation.population_k_per_support_equipment
+			}
+			add_to_temp_variable = {
+				air_winter_final_evacuation_support = constant:air_winter_response_evacuation.ceil_rounding_offset
+			}
+			round_temp_variable = air_winter_final_evacuation_support
+			if = {
+				limit = { check_variable = { air_winter_final_evacuation_support < constant:air_winter_runtime.one } }
+				set_temp_variable = { air_winter_final_evacuation_support = constant:air_winter_runtime.one }
+			}
+
+			set_temp_variable = { air_winter_final_evacuation_staff = air_winter_final_evacuation_transfer_k }
+			multiply_temp_variable = {
+				air_winter_final_evacuation_staff = constant:air_winter_response_evacuation.administrative_staff_per_population_k
+			}
+			round_temp_variable = air_winter_final_evacuation_staff
+			if = {
+				limit = {
+					check_variable = {
+						var = air_winter_final_evacuation_staff
+						value = constant:air_winter_response_evacuation.minimum_administrative_staff
+						compare = less_than
+					}
+				}
+				set_temp_variable = {
+					air_winter_final_evacuation_staff = constant:air_winter_response_evacuation.minimum_administrative_staff
+				}
+			}
+
+			set_temp_variable = {
+				air_winter_controlled_evacuation_source_relief = constant:air_winter_response_result.controlled_evacuation_population_share
+			}
+			multiply_temp_variable = {
+				air_winter_controlled_evacuation_source_relief = constant:air_winter_response_evacuation.source_pressure_relief_per_population_share
+			}
+			set_temp_variable = {
+				air_winter_final_evacuation_source_relief = constant:air_winter_response_result.final_evacuation_population_share
+			}
+			multiply_temp_variable = {
+				air_winter_final_evacuation_source_relief = constant:air_winter_response_evacuation.source_pressure_relief_per_population_share
+			}
+
+			event_target:air_winter_evacuation_cache_owner = {
+				set_variable = { air_winter_evacuation_cache_source_state = air_winter_evacuation_source_state_id }
+				set_variable = { air_winter_evacuation_cache_receiver_state = air_winter_evacuation_selected_receiver_state }
+				set_variable = { air_winter_evacuation_cache_source_population_k = air_winter_evacuation_source_population_k }
+				var:air_winter_evacuation_cache_receiver_state = {
+					set_temp_variable = { air_winter_evacuation_receiver_population_k = state_population_k }
+					if = {
+						limit = {
+							check_variable = {
+								var = air_winter_evacuation_receiver_population_k
+								value = constant:air_winter_response_evacuation.receiver_population_floor_k
+								compare = less_than
+							}
+						}
+						set_temp_variable = {
+							air_winter_evacuation_receiver_population_k = constant:air_winter_response_evacuation.receiver_population_floor_k
+						}
+					}
+					set_temp_variable = { air_winter_evacuation_receiver_pressure = constant:air_winter_runtime.zero }
+					if = {
+						limit = { has_variable = air_winter_refugee_pressure }
+						set_temp_variable = { air_winter_evacuation_receiver_pressure = air_winter_refugee_pressure }
+					}
+				}
+			}
+
+			set_temp_variable = { air_winter_controlled_evacuation_pressure_gain = air_winter_controlled_evacuation_transfer_k }
+			divide_temp_variable = { air_winter_controlled_evacuation_pressure_gain = air_winter_evacuation_receiver_population_k }
+			multiply_temp_variable = {
+				air_winter_controlled_evacuation_pressure_gain = constant:air_winter_response_evacuation.receiver_pressure_per_population_ratio
+			}
+			set_temp_variable = { air_winter_controlled_evacuation_pressure_after = air_winter_evacuation_receiver_pressure }
+			add_to_temp_variable = {
+				air_winter_controlled_evacuation_pressure_after = air_winter_controlled_evacuation_pressure_gain
+			}
+
+			set_temp_variable = { air_winter_final_evacuation_pressure_gain = air_winter_final_evacuation_transfer_k }
+			divide_temp_variable = { air_winter_final_evacuation_pressure_gain = air_winter_evacuation_receiver_population_k }
+			multiply_temp_variable = {
+				air_winter_final_evacuation_pressure_gain = constant:air_winter_response_evacuation.receiver_pressure_per_population_ratio
+			}
+			set_temp_variable = { air_winter_final_evacuation_pressure_after = air_winter_evacuation_receiver_pressure }
+			add_to_temp_variable = {
+				air_winter_final_evacuation_pressure_after = air_winter_final_evacuation_pressure_gain
+			}
+
+			event_target:air_winter_evacuation_cache_owner = {
+				set_variable = { air_winter_evacuation_cache_receiver_population_k = air_winter_evacuation_receiver_population_k }
+				set_variable = { air_winter_evacuation_cache_receiver_pressure = air_winter_evacuation_receiver_pressure }
+				set_variable = { air_winter_evacuation_cache_cycle_id = global.air_winter_cycle_id }
+				set_variable = { air_winter_controlled_evacuation_population_transfer_k = air_winter_controlled_evacuation_transfer_k }
+				set_variable = { air_winter_controlled_evacuation_population_transfer_people = air_winter_controlled_evacuation_transfer_people }
+				set_variable = { air_winter_controlled_evacuation_train_cost = air_winter_controlled_evacuation_trains }
+				set_variable = { air_winter_controlled_evacuation_convoy_cost = air_winter_controlled_evacuation_convoys }
+				set_variable = { air_winter_controlled_evacuation_manpower_cost = air_winter_controlled_evacuation_staff }
+				set_variable = { air_winter_controlled_evacuation_stability_cost = air_winter_controlled_evacuation_stability }
+				set_variable = { air_winter_controlled_evacuation_receiver_pressure_gain = air_winter_controlled_evacuation_pressure_gain }
+				set_variable = { air_winter_controlled_evacuation_receiver_pressure_after = air_winter_controlled_evacuation_pressure_after }
+				set_variable = { air_winter_controlled_evacuation_source_pressure_relief = air_winter_controlled_evacuation_source_relief }
+				set_variable = { air_winter_final_evacuation_population_transfer_k = air_winter_final_evacuation_transfer_k }
+				set_variable = { air_winter_final_evacuation_population_transfer_people = air_winter_final_evacuation_transfer_people }
+				set_variable = { air_winter_final_evacuation_train_cost = air_winter_final_evacuation_trains }
+				set_variable = { air_winter_final_evacuation_convoy_cost = air_winter_final_evacuation_convoys }
+				set_variable = { air_winter_final_evacuation_support_cost = air_winter_final_evacuation_support }
+				set_variable = { air_winter_final_evacuation_manpower_cost = air_winter_final_evacuation_staff }
+				set_variable = { air_winter_final_evacuation_receiver_pressure_gain = air_winter_final_evacuation_pressure_gain }
+				set_variable = { air_winter_final_evacuation_receiver_pressure_after = air_winter_final_evacuation_pressure_after }
+				set_variable = { air_winter_final_evacuation_source_pressure_relief = air_winter_final_evacuation_source_relief }
+				set_country_flag = air_winter_evacuation_cache_valid
+			}
+		}
+	}
+}
+
+# Supported scope: COUNTRY. Called once when a monthly Air Winter cycle opens.
+air_winter_response_prepare_evacuation_cache_cycle = {
+	clear_array = global.air_winter_evacuation_cache_countries
+}
+
+# Supported scope: STATE. Adds only the current priority owner to the bounded
+# cache refresh ledger. This helper performs no country or state iteration.
+air_winter_response_register_priority_cache_owner = {
+	if = {
+		limit = {
+			air_winter_state_is_valid = yes
+			has_state_flag = air_winter_response_priority_target
+			has_variable = air_winter_response_priority_owner
+			is_owned_by = var:air_winter_response_priority_owner
+			is_controlled_by = var:air_winter_response_priority_owner
+			var:air_winter_response_priority_owner = {
+				NOT = { has_country_flag = air_winter_response_project_active }
+			}
+		}
+		var:air_winter_response_priority_owner = {
+			if = {
+				limit = {
+					NOT = {
+						is_in_array = {
+							array = global.air_winter_evacuation_cache_countries
+							value = THIS
+						}
+					}
+				}
+				add_to_array = {
+					array = global.air_winter_evacuation_cache_countries
+					value = THIS
+				}
+			}
+		}
+	}
+}
+
+# Supported scope: COUNTRY (the existing monthly host). Refreshes only the
+# bounded set of countries that own a selected priority state.
+air_winter_response_refresh_evacuation_cache_cycle = {
+	for_each_scope_loop = {
+		array = global.air_winter_evacuation_cache_countries
+		if = {
+			limit = { NOT = { has_country_flag = air_winter_response_project_active } }
+			save_event_target_as = air_winter_evacuation_refresh_owner
+			if = {
+				limit = {
+					has_variable = air_winter_response_priority_state
+					var:air_winter_response_priority_state = {
+						has_state_flag = air_winter_response_priority_target
+						has_variable = air_winter_response_priority_owner
+						check_variable = {
+							var = air_winter_response_priority_owner
+							value = event_target:air_winter_evacuation_refresh_owner
+							compare = equals
+						}
+						is_owned_by = event_target:air_winter_evacuation_refresh_owner
+						is_controlled_by = event_target:air_winter_evacuation_refresh_owner
+					}
+				}
+				var:air_winter_response_priority_state = {
+					air_winter_response_refresh_state_evacuation_cache = yes
+				}
+			}
+			else = { air_winter_response_clear_evacuation_cache = yes }
+		}
+	}
+	clear_array = global.air_winter_evacuation_cache_countries
+}
+
+# Supported scope: STATE. ROOT must be the country starting the targeted card.
+air_winter_response_start_state_project = {
+	set_state_flag = air_winter_response_project_active
+	set_variable = { air_winter_response_project_owner = ROOT }
+	ROOT = {
+		set_country_flag = air_winter_response_project_active
+		set_variable = { air_winter_response_active_project_state = PREV.id }
+	}
+}
+
+# Supported scope: COUNTRY. FROM must be the selected source STATE and the
+# country's controlled evacuation quote must be valid at decision start.
+air_winter_response_start_controlled_evacuation = {
+	air_winter_response_pay_controlled_evacuation = yes
+	FROM = {
+		set_state_flag = air_winter_controlled_evacuation_project
+		set_state_flag = air_winter_evacuation_project_quote_locked
+		set_variable = { air_winter_evacuation_project_receiver_state = ROOT.air_winter_evacuation_cache_receiver_state }
+		set_variable = { air_winter_evacuation_project_population_transfer_k = ROOT.air_winter_controlled_evacuation_population_transfer_k }
+		set_variable = { air_winter_evacuation_project_population_transfer_people = ROOT.air_winter_controlled_evacuation_population_transfer_people }
+		set_variable = { air_winter_evacuation_project_receiver_pressure_gain = ROOT.air_winter_controlled_evacuation_receiver_pressure_gain }
+		set_variable = { air_winter_evacuation_project_source_pressure_relief = ROOT.air_winter_controlled_evacuation_source_pressure_relief }
+		set_variable = { air_winter_evacuation_project_receiver_pressure_limit = constant:air_winter_response_evacuation.receiver_pressure_ceiling }
+		subtract_from_variable = { air_winter_evacuation_project_receiver_pressure_limit = ROOT.air_winter_controlled_evacuation_receiver_pressure_gain }
+		set_variable = { air_winter_evacuation_project_quote_cycle_id = ROOT.air_winter_evacuation_cache_cycle_id }
+		set_variable = { air_winter_evacuation_project_source_population_k = ROOT.air_winter_evacuation_cache_source_population_k }
+		air_winter_response_start_state_project = yes
+	}
+}
+
+# Supported scope: COUNTRY. FROM must be the selected source STATE and the
+# country's final evacuation quote must be valid at decision start.
+air_winter_response_start_final_evacuation = {
+	air_winter_response_pay_final_evacuation = yes
+	FROM = {
+		set_state_flag = air_winter_final_evacuation_project
+		set_state_flag = air_winter_evacuation_project_quote_locked
+		set_variable = { air_winter_evacuation_project_receiver_state = ROOT.air_winter_evacuation_cache_receiver_state }
+		set_variable = { air_winter_evacuation_project_population_transfer_k = ROOT.air_winter_final_evacuation_population_transfer_k }
+		set_variable = { air_winter_evacuation_project_population_transfer_people = ROOT.air_winter_final_evacuation_population_transfer_people }
+		set_variable = { air_winter_evacuation_project_receiver_pressure_gain = ROOT.air_winter_final_evacuation_receiver_pressure_gain }
+		set_variable = { air_winter_evacuation_project_source_pressure_relief = ROOT.air_winter_final_evacuation_source_pressure_relief }
+		set_variable = { air_winter_evacuation_project_receiver_pressure_limit = constant:air_winter_response_evacuation.receiver_pressure_ceiling }
+		subtract_from_variable = { air_winter_evacuation_project_receiver_pressure_limit = ROOT.air_winter_final_evacuation_receiver_pressure_gain }
+		set_variable = { air_winter_evacuation_project_quote_cycle_id = ROOT.air_winter_evacuation_cache_cycle_id }
+		set_variable = { air_winter_evacuation_project_source_population_k = ROOT.air_winter_evacuation_cache_source_population_k }
+		air_winter_response_start_state_project = yes
+	}
+}
+
+# Supported scope: STATE. Clears both sides of the one-country project lock.
+air_winter_response_release_state_project = {
+	set_temp_variable = { air_winter_response_released_state_id = THIS.id }
+	if = {
+		limit = { has_variable = air_winter_response_project_owner }
+		var:air_winter_response_project_owner = {
+			clr_country_flag = air_winter_response_project_active
+			clear_variable = air_winter_response_active_project_state
+		}
+	}
+	else = {
+		OWNER = {
+			if = {
+				limit = {
+					has_country_flag = air_winter_response_project_active
+					has_variable = air_winter_response_active_project_state
+					check_variable = {
+						var = air_winter_response_active_project_state
+						value = air_winter_response_released_state_id
+						compare = equals
+					}
+				}
+				clr_country_flag = air_winter_response_project_active
+				clear_variable = air_winter_response_active_project_state
+			}
+		}
+	}
+	clear_variable = air_winter_response_project_owner
+	clr_state_flag = air_winter_response_project_active
+	clr_state_flag = air_winter_controlled_evacuation_project
+	clr_state_flag = air_winter_final_evacuation_project
+	clr_state_flag = air_winter_evacuation_project_quote_locked
+	clear_variable = air_winter_evacuation_project_receiver_state
+	clear_variable = air_winter_evacuation_project_population_transfer_k
+	clear_variable = air_winter_evacuation_project_population_transfer_people
+	clear_variable = air_winter_evacuation_project_receiver_pressure_gain
+	clear_variable = air_winter_evacuation_project_receiver_pressure_limit
+	clear_variable = air_winter_evacuation_project_source_pressure_relief
+	clear_variable = air_winter_evacuation_project_quote_cycle_id
+	clear_variable = air_winter_evacuation_project_source_population_k
+}
+
+# Supported scope: STATE. Repairs cancellation if ownership or control changed
+# before the targeted decision engine removed the project.
+air_winter_response_reconcile_state_project = {
+	if = {
+		limit = {
+			has_state_flag = air_winter_response_project_active
+			OR = {
+				NOT = { has_variable = air_winter_response_project_owner }
+				NOT = { is_owned_by = var:air_winter_response_project_owner }
+				NOT = { is_controlled_by = var:air_winter_response_project_owner }
+			}
+		}
+		air_winter_response_release_state_project = yes
+	}
+}
+
+# Supported scope: STATE. Keeps priority and reception ledgers aligned with
+# present ownership and control, including save recovery after a transfer.
+air_winter_response_reconcile_state_designations = {
+	if = {
+		limit = {
+			has_state_flag = air_winter_response_priority_target
+			OR = {
+				NOT = { has_variable = air_winter_response_priority_owner }
+				NOT = { air_winter_state_is_valid = yes }
+				NOT = { air_winter_is_active = yes }
+				NOT = { is_owned_by = var:air_winter_response_priority_owner }
+				NOT = { is_controlled_by = var:air_winter_response_priority_owner }
+			}
+		}
+		set_temp_variable = { air_winter_response_designation_state_id = THIS.id }
+		if = {
+			limit = { has_variable = air_winter_response_priority_owner }
+			var:air_winter_response_priority_owner = {
+				air_winter_response_clear_evacuation_cache = yes
+				if = {
+					limit = {
+						check_variable = {
+							var = air_winter_response_priority_state
+							value = air_winter_response_designation_state_id
+							compare = equals
+						}
+					}
+					clear_variable = air_winter_response_priority_state
+				}
+			}
+		}
+		clr_state_flag = air_winter_response_priority_target
+		clear_variable = air_winter_response_priority_owner
+	}
+	if = {
+		limit = {
+			has_state_flag = air_winter_response_reception_target
+			OR = {
+				NOT = { has_variable = air_winter_response_reception_owner }
+				NOT = { air_winter_response_is_reception_state = yes }
+				NOT = { is_owned_by = var:air_winter_response_reception_owner }
+				NOT = { is_controlled_by = var:air_winter_response_reception_owner }
+			}
+		}
+		if = {
+			limit = { has_variable = air_winter_response_reception_owner }
+			var:air_winter_response_reception_owner = {
+				air_winter_response_clear_evacuation_cache = yes
+				remove_from_array = { array = air_winter_reception_states value = PREV }
+			}
+		}
+		clr_state_flag = air_winter_response_reception_target
+		clear_variable = air_winter_response_reception_owner
+	}
+	set_temp_variable = { air_winter_response_designation_state_id = constant:air_winter_runtime.zero }
+}
+
+# Supported scope: COUNTRY. FROM must be an owned and controlled active STATE.
+air_winter_response_designate_priority_state = {
+	if = {
+		limit = { has_variable = air_winter_response_priority_state }
+		var:air_winter_response_priority_state = {
+			if = {
+				limit = {
+					has_variable = air_winter_response_priority_owner
+					check_variable = {
+						var = air_winter_response_priority_owner
+						value = ROOT
+						compare = equals
+					}
+				}
+				clr_state_flag = air_winter_response_priority_target
+				clear_variable = air_winter_response_priority_owner
+			}
+		}
+	}
+	set_variable = { air_winter_response_priority_state = FROM.id }
+	FROM = {
+		set_state_flag = air_winter_response_priority_target
+		set_variable = { air_winter_response_priority_owner = ROOT }
+		air_winter_response_refresh_state_evacuation_cache = yes
+	}
+}
+
+# Supported scope: STATE. Pending result metadata exists only while a terminal
+# response popup is waiting for a choice.
+air_winter_response_clear_pending_result = {
+	clr_state_flag = air_winter_response_pending_abandonment_vote
+	clr_state_flag = air_winter_response_pending_decontamination
+	clear_variable = air_winter_response_pending_owner
+}
+
+# Supported scope: STATE. Ownership transfer invalidates an unresolved result.
+air_winter_response_reconcile_pending_result = {
+	if = {
+		limit = {
+			OR = {
+				has_state_flag = air_winter_response_pending_abandonment_vote
+				has_state_flag = air_winter_response_pending_decontamination
+			}
+			OR = {
+				NOT = { has_variable = air_winter_response_pending_owner }
+				NOT = { is_owned_by = var:air_winter_response_pending_owner }
+				NOT = { is_controlled_by = var:air_winter_response_pending_owner }
+			}
+		}
+		air_winter_response_clear_pending_result = yes
+	}
+}
+
+# Supported scope: COUNTRY. A stale response never mutates the transferred
+# state. Matching metadata is cleared without refunding a completed project.
+air_winter_response_reject_stale_choice = {
+	if = {
+		limit = {
+			has_event_target = air_winter_response_state
+			event_target:air_winter_response_state = {
+				has_variable = air_winter_response_pending_owner
+				check_variable = {
+					var = air_winter_response_pending_owner
+					value = ROOT
+					compare = equals
+				}
+			}
+		}
+		event_target:air_winter_response_state = { air_winter_response_clear_pending_result = yes }
+	}
+	country_event = { id = chaosx.fallout.203 }
+}
+
 # Supported scope: STATE. Input: temporary air_winter_response_project_cooldown.
 air_winter_response_finish_state_project = {
 	set_variable = { air_winter_response_cooldown = air_winter_response_project_cooldown }
-	clr_state_flag = air_winter_response_project_active
+	air_winter_response_release_state_project = yes
 	air_winter_normalize_state_ledger = yes
 	air_winter_calculate_survival_value = yes
 }
 
 # Supported scope: STATE
 air_winter_response_cancel_state_project = {
-	clr_state_flag = air_winter_response_project_active
+	air_winter_response_release_state_project = yes
 }
 
 # Supported scope: COUNTRY. FROM must be the eligible reception STATE.
 air_winter_response_designate_reception_state = {
 	air_winter_response_pay_designation = yes
+	for_each_scope_loop = {
+		array = air_winter_reception_states
+		if = {
+			limit = {
+				has_variable = air_winter_response_reception_owner
+				check_variable = {
+					var = air_winter_response_reception_owner
+					value = ROOT
+					compare = equals
+				}
+			}
+			clr_state_flag = air_winter_response_reception_target
+			clear_variable = air_winter_response_reception_owner
+		}
+	}
 	clear_array = air_winter_reception_states
 	add_to_array = {
 		array = air_winter_reception_states
 		value = FROM
+	}
+	FROM = {
+		set_state_flag = air_winter_response_reception_target
+		set_variable = { air_winter_response_reception_owner = ROOT }
+	}
+	if = {
+		limit = { has_variable = air_winter_response_priority_state }
+		var:air_winter_response_priority_state = {
+			air_winter_response_refresh_state_evacuation_cache = yes
+		}
 	}
 }
 
@@ -403,31 +1071,40 @@ air_winter_response_complete_greenhouse_refuge = {
 	air_winter_response_finish_state_project = yes
 }
 
-# Supported scope: COUNTRY. FROM must be the source STATE. The reception array
-# contains exactly one state because designation clears it before insertion.
+# Supported scope: COUNTRY. FROM must be the source STATE. The project snapshot
+# preserves the paid population transfer and receiver even if the monthly quote
+# changes while the timed decision is active.
 air_winter_response_complete_controlled_evacuation = {
-	FROM = { save_event_target_as = air_winter_response_state }
-	event_target:air_winter_response_state = {
-		air_winter_normalize_state_ledger = yes
-		set_temp_variable = { air_winter_response_population_transfer = state_population }
-		multiply_temp_variable = { air_winter_response_population_transfer = constant:air_winter_response_result.controlled_evacuation_population_share }
-		round_temp_variable = air_winter_response_population_transfer
-		set_temp_variable = { air_winter_response_population_loss = air_winter_response_population_transfer }
-		multiply_temp_variable = { air_winter_response_population_loss = constant:air_winter_runtime.negative_one }
-		add_manpower = air_winter_response_population_loss
-		subtract_from_variable = { air_winter_refugee_pressure = constant:air_winter_response_result.controlled_evacuation_source_pressure_reduction }
-		set_state_flag = air_winter_controlled_evacuation_completed
-		set_temp_variable = { air_winter_response_project_cooldown = constant:air_winter_response_timing.severe_state_cooldown_months }
-		air_winter_response_finish_state_project = yes
+	if = {
+		limit = { air_winter_response_controlled_evacuation_project_is_valid = yes }
+		FROM = {
+			save_event_target_as = air_winter_response_state
+			set_temp_variable = { air_winter_response_population_transfer_people = air_winter_evacuation_project_population_transfer_people }
+			set_temp_variable = { air_winter_response_receiver_pressure_gain = air_winter_evacuation_project_receiver_pressure_gain }
+			air_winter_normalize_state_ledger = yes
+			set_temp_variable = { air_winter_response_population_loss = air_winter_response_population_transfer_people }
+			multiply_temp_variable = { air_winter_response_population_loss = constant:air_winter_runtime.negative_one }
+			add_manpower = air_winter_response_population_loss
+			subtract_from_variable = { air_winter_refugee_pressure = air_winter_evacuation_project_source_pressure_relief }
+			set_state_flag = air_winter_controlled_evacuation_completed
+			air_winter_normalize_state_ledger = yes
+			air_winter_calculate_survival_value = yes
+			var:air_winter_evacuation_project_receiver_state = {
+				air_winter_normalize_state_ledger = yes
+				add_manpower = air_winter_response_population_transfer_people
+				add_to_variable = { air_winter_refugee_pressure = air_winter_response_receiver_pressure_gain }
+				air_winter_normalize_state_ledger = yes
+				air_winter_calculate_survival_value = yes
+			}
+			# The offline effect reference records that negative state add_manpower
+			# credits the removed population to recruitable manpower. Remove that
+			# engine credit at country scope after the balanced state transfer.
+			ROOT = { add_manpower = air_winter_response_population_loss }
+			set_temp_variable = { air_winter_response_project_cooldown = constant:air_winter_response_timing.severe_state_cooldown_months }
+			air_winter_response_finish_state_project = yes
+		}
 	}
-	for_each_scope_loop = {
-		array = air_winter_reception_states
-		air_winter_normalize_state_ledger = yes
-		add_manpower = air_winter_response_population_transfer
-		add_to_variable = { air_winter_refugee_pressure = constant:air_winter_response_result.controlled_evacuation_receiver_pressure }
-		air_winter_normalize_state_ledger = yes
-		air_winter_calculate_survival_value = yes
-	}
+	else = { FROM = { air_winter_response_cancel_state_project = yes } }
 }
 
 # Supported scope: STATE
@@ -451,6 +1128,8 @@ air_winter_response_complete_abandonment_vote = {
 		save_event_target_as = air_winter_response_state
 		air_winter_normalize_state_ledger = yes
 		set_state_flag = air_winter_abandonment_vote_completed
+		set_state_flag = air_winter_response_pending_abandonment_vote
+		set_variable = { air_winter_response_pending_owner = ROOT }
 		set_temp_variable = { air_winter_response_project_cooldown = constant:air_winter_response_timing.terminal_state_cooldown_months }
 		air_winter_response_finish_state_project = yes
 	}
@@ -468,31 +1147,38 @@ air_winter_response_complete_bunker_seal = {
 	air_winter_response_finish_state_project = yes
 }
 
-# Supported scope: COUNTRY. FROM must be the source STATE. The reception array
-# contains exactly one state because designation clears it before insertion.
+# Supported scope: COUNTRY. FROM must be the source STATE. The paid project
+# snapshot is the sole source for the delayed migration result.
 air_winter_response_complete_final_evacuation = {
-	FROM = { save_event_target_as = air_winter_response_state }
-	event_target:air_winter_response_state = {
-		air_winter_normalize_state_ledger = yes
-		set_temp_variable = { air_winter_response_population_transfer = state_population }
-		multiply_temp_variable = { air_winter_response_population_transfer = constant:air_winter_response_result.final_evacuation_population_share }
-		round_temp_variable = air_winter_response_population_transfer
-		set_temp_variable = { air_winter_response_population_loss = air_winter_response_population_transfer }
-		multiply_temp_variable = { air_winter_response_population_loss = constant:air_winter_runtime.negative_one }
-		add_manpower = air_winter_response_population_loss
-		subtract_from_variable = { air_winter_refugee_pressure = constant:air_winter_response_result.final_evacuation_source_pressure_reduction }
-		set_state_flag = air_winter_final_evacuation_completed
-		set_temp_variable = { air_winter_response_project_cooldown = constant:air_winter_response_timing.terminal_state_cooldown_months }
-		air_winter_response_finish_state_project = yes
+	if = {
+		limit = { air_winter_response_final_evacuation_project_is_valid = yes }
+		FROM = {
+			save_event_target_as = air_winter_response_state
+			set_temp_variable = { air_winter_response_population_transfer_people = air_winter_evacuation_project_population_transfer_people }
+			set_temp_variable = { air_winter_response_receiver_pressure_gain = air_winter_evacuation_project_receiver_pressure_gain }
+			air_winter_normalize_state_ledger = yes
+			set_temp_variable = { air_winter_response_population_loss = air_winter_response_population_transfer_people }
+			multiply_temp_variable = { air_winter_response_population_loss = constant:air_winter_runtime.negative_one }
+			add_manpower = air_winter_response_population_loss
+			subtract_from_variable = { air_winter_refugee_pressure = air_winter_evacuation_project_source_pressure_relief }
+			set_state_flag = air_winter_final_evacuation_completed
+			air_winter_normalize_state_ledger = yes
+			air_winter_calculate_survival_value = yes
+			var:air_winter_evacuation_project_receiver_state = {
+				air_winter_normalize_state_ledger = yes
+				add_manpower = air_winter_response_population_transfer_people
+				add_to_variable = { air_winter_refugee_pressure = air_winter_response_receiver_pressure_gain }
+				air_winter_normalize_state_ledger = yes
+				air_winter_calculate_survival_value = yes
+			}
+			# Neutralize the recruitable-manpower credit produced by the source
+			# state's negative add_manpower operation.
+			ROOT = { add_manpower = air_winter_response_population_loss }
+			set_temp_variable = { air_winter_response_project_cooldown = constant:air_winter_response_timing.terminal_state_cooldown_months }
+			air_winter_response_finish_state_project = yes
+		}
 	}
-	for_each_scope_loop = {
-		array = air_winter_reception_states
-		air_winter_normalize_state_ledger = yes
-		add_manpower = air_winter_response_population_transfer
-		add_to_variable = { air_winter_refugee_pressure = constant:air_winter_response_result.final_evacuation_receiver_pressure }
-		air_winter_normalize_state_ledger = yes
-		air_winter_calculate_survival_value = yes
-	}
+	else = { FROM = { air_winter_response_cancel_state_project = yes } }
 }
 
 # Supported scope: COUNTRY. FROM must be the source STATE.
@@ -501,6 +1187,8 @@ air_winter_response_complete_decontamination = {
 		save_event_target_as = air_winter_response_state
 		air_winter_normalize_state_ledger = yes
 		set_state_flag = air_winter_decontamination_attempted
+		set_state_flag = air_winter_response_pending_decontamination
+		set_variable = { air_winter_response_pending_owner = ROOT }
 		set_temp_variable = { air_winter_response_project_cooldown = constant:air_winter_response_timing.terminal_state_cooldown_months }
 		air_winter_response_finish_state_project = yes
 	}

@@ -9,6 +9,7 @@ air_winter_response_timing = {
 	schema = { any_key = yes data = fixed_point }
 
 	designate_reception_days_reenable = 7
+	designate_priority_days_reenable = 1
 	mask_distribution_days = 21
 	clinic_conversion_days = 45
 	air_sampling_days = 30
@@ -85,11 +86,6 @@ air_winter_response_cost = {
 	greenhouse_fuel = 3000
 	greenhouse_civilian_factories = 4
 
-	controlled_evacuation_trains = 20
-	controlled_evacuation_convoys = 25
-	controlled_evacuation_manpower = 5000
-	controlled_evacuation_stability = 0.01
-
 	triage_support = 300
 	triage_manpower = 3000
 	triage_command = 20
@@ -101,11 +97,6 @@ air_winter_response_cost = {
 	bunker_infantry = 1000
 	bunker_stability = 0.03
 
-	final_evacuation_trains = 40
-	final_evacuation_convoys = 50
-	final_evacuation_support = 200
-	final_evacuation_manpower = 5000
-
 	decontamination_support = 300
 	decontamination_motorized = 150
 	decontamination_fuel = 5000
@@ -115,6 +106,34 @@ air_winter_response_cost = {
 	minimum_stability_for_medium_cost = 0.20
 	minimum_stability_for_heavy_cost = 0.30
 	minimum_war_support_for_closure = 0.10
+}
+
+air_winter_response_evacuation = {
+	schema = { any_key = yes data = fixed_point }
+
+	# Population arithmetic stays in thousands until the final add_manpower
+	# effect, matching the official overflow-safe state_population_k guidance.
+	population_k_per_train = 75
+	population_k_per_convoy = 50
+	population_k_per_support_equipment = 10
+	administrative_staff_per_population_k = 2.5
+	minimum_administrative_staff = 500
+	ceil_rounding_offset = 0.499
+	population_people_per_k = 1000
+	controlled_stability_population_k_per_percent = 250
+	controlled_stability_percent_unit = 0.01
+	controlled_stability_minimum = 0.005
+	controlled_stability_maximum = 0.05
+
+	# A receiving state absorbs pressure in proportion to its own population.
+	receiver_population_floor_k = 100
+	receiver_pressure_per_population_ratio = 50
+	receiver_pressure_ceiling = 90
+	source_pressure_relief_per_population_share = 100
+
+	# Used only while selecting the lowest valid state id from the one-entry
+	# reception ledger. It is not a gameplay value.
+	state_id_selection_sentinel = 100000
 }
 
 air_winter_response_result = {
@@ -161,8 +180,6 @@ air_winter_response_result = {
 	greenhouse_reclamation_gain = 12
 
 	controlled_evacuation_population_share = 0.15
-	controlled_evacuation_receiver_pressure = 15
-	controlled_evacuation_source_pressure_reduction = 10
 
 	triage_disease_reduction = 20
 	triage_recovery_gain = 10
@@ -173,8 +190,6 @@ air_winter_response_result = {
 	bunker_refugee_pressure_gain = 15
 
 	final_evacuation_population_share = 0.35
-	final_evacuation_receiver_pressure = 30
-	final_evacuation_source_pressure_reduction = 20
 	abandonment_hold_minimum_survival = 40
 
 	decontamination_exposure_reduction = 35
@@ -211,4 +226,10 @@ air_winter_response_ai = {
 	terminal_abandonment_factor = 0.25
 	high_population_k = 1000
 	critical_survival = 25
+	priority_pressure_weight = 1
+	priority_exposure_weight = 0.5
+	ash_clearance_minimum_survival = 50
+	airbase_closure_maximum_ai_level = 2
+	evacuation_reserve_trains = 40
+	evacuation_reserve_convoys = 50
 }

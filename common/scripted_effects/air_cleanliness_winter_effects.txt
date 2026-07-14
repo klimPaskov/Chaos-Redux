@@ -26,11 +26,17 @@ air_winter_initialize_global = {
 	if = { limit = { NOT = { has_variable = global.air_winter_unclassified_state_count } } set_variable = { global.air_winter_unclassified_state_count = constant:air_winter_runtime.zero } }
 	if = { limit = { NOT = { has_variable = global.air_winter_population_exposed } } set_variable = { global.air_winter_population_exposed = constant:air_winter_runtime.zero } }
 	if = { limit = { NOT = { has_variable = global.air_winter_peak_phase } } set_variable = { global.air_winter_peak_phase = constant:air_winter_phase.clear } }
+	if = { limit = { NOT = { has_variable = global.air_winter_cycle_id } } set_variable = { global.air_winter_cycle_id = constant:air_winter_runtime.zero } }
+	if = { limit = { NOT = { has_variable = global.air_winter_cycle_contamination_bp_snapshot } } set_variable = { global.air_winter_cycle_contamination_bp_snapshot = constant:air_winter_runtime.zero } }
+	if = { limit = { NOT = { has_variable = global.air_winter_cycle_air_delta_bp_snapshot } } set_variable = { global.air_winter_cycle_air_delta_bp_snapshot = constant:air_winter_runtime.zero } }
+	if = { limit = { NOT = { has_variable = global.air_winter_cycle_chemical_states_snapshot } } set_variable = { global.air_winter_cycle_chemical_states_snapshot = constant:air_winter_runtime.zero } }
+	if = { limit = { NOT = { has_variable = global.air_winter_cycle_fallout_states_snapshot } } set_variable = { global.air_winter_cycle_fallout_states_snapshot = constant:air_winter_runtime.zero } }
 }
 
 # Supported scope: COUNTRY (the existing host country)
 air_winter_begin_monthly_cycle = {
 	air_winter_initialize_global = yes
+	air_winter_prepare_regional_visual_cycle = yes
 
 	if = {
 		limit = {
@@ -47,6 +53,32 @@ air_winter_begin_monthly_cycle = {
 		}
 
 		set_variable = { global.air_winter_last_prepare_date = global.date }
+		add_to_variable = { global.air_winter_cycle_id = constant:air_winter_runtime.one }
+		set_global_flag = air_winter_cycle_open
+		air_winter_event_prepare_candidate_cycle = yes
+		air_winter_response_prepare_evacuation_cache_cycle = yes
+
+		set_variable = { global.air_winter_cycle_contamination_bp_snapshot = constant:air_winter_runtime.zero }
+		set_variable = { global.air_winter_cycle_air_delta_bp_snapshot = constant:air_winter_runtime.zero }
+		set_variable = { global.air_winter_cycle_chemical_states_snapshot = constant:air_winter_runtime.zero }
+		set_variable = { global.air_winter_cycle_fallout_states_snapshot = constant:air_winter_runtime.zero }
+		if = {
+			limit = { has_variable = global.air_contamination_bp }
+			set_variable = { global.air_winter_cycle_contamination_bp_snapshot = global.air_contamination_bp }
+		}
+		if = {
+			limit = { has_variable = global.air_contamination_last_delta_bp }
+			set_variable = { global.air_winter_cycle_air_delta_bp_snapshot = global.air_contamination_last_delta_bp }
+		}
+		if = {
+			limit = { has_variable = global.air_contamination_chem_states }
+			set_variable = { global.air_winter_cycle_chemical_states_snapshot = global.air_contamination_chem_states }
+		}
+		if = {
+			limit = { has_variable = global.air_contamination_fallout_states }
+			set_variable = { global.air_winter_cycle_fallout_states_snapshot = global.air_contamination_fallout_states }
+		}
+
 		set_variable = { global.air_winter_valid_state_count = constant:air_winter_runtime.zero }
 		set_variable = { global.air_winter_active_state_count = constant:air_winter_runtime.zero }
 		set_variable = { global.air_winter_severe_state_count = constant:air_winter_runtime.zero }
@@ -57,18 +89,18 @@ air_winter_begin_monthly_cycle = {
 
 		if = {
 			limit = { air_winter_system_enabled = yes }
-			set_variable = { global.air_winter_pressure = global.air_contamination_bp }
+			set_variable = { global.air_winter_pressure = global.air_winter_cycle_contamination_bp_snapshot }
 			divide_variable = { global.air_winter_pressure = constant:air_winter_global.pressure_bp_divisor }
 
 			if = {
-				limit = { has_variable = global.air_contamination_fallout_states }
-				set_temp_variable = { air_winter_global_fallout_pressure = global.air_contamination_fallout_states }
+				limit = { check_variable = { global.air_winter_cycle_fallout_states_snapshot > constant:air_winter_runtime.zero } }
+				set_temp_variable = { air_winter_global_fallout_pressure = global.air_winter_cycle_fallout_states_snapshot }
 				multiply_temp_variable = { air_winter_global_fallout_pressure = constant:air_winter_global.fallout_state_pressure }
 				add_to_variable = { global.air_winter_pressure = air_winter_global_fallout_pressure }
 			}
 			if = {
-				limit = { has_variable = global.air_contamination_chem_states }
-				set_temp_variable = { air_winter_global_chemical_pressure = global.air_contamination_chem_states }
+				limit = { check_variable = { global.air_winter_cycle_chemical_states_snapshot > constant:air_winter_runtime.zero } }
+				set_temp_variable = { air_winter_global_chemical_pressure = global.air_winter_cycle_chemical_states_snapshot }
 				multiply_temp_variable = { air_winter_global_chemical_pressure = constant:air_winter_global.chemical_state_pressure }
 				add_to_variable = { global.air_winter_pressure = air_winter_global_chemical_pressure }
 			}
@@ -107,10 +139,9 @@ air_winter_begin_monthly_cycle = {
 			}
 			if = {
 				limit = {
-					has_variable = global.air_contamination_last_delta_bp
-					check_variable = { global.air_contamination_last_delta_bp < constant:air_winter_runtime.zero }
+					check_variable = { global.air_winter_cycle_air_delta_bp_snapshot < constant:air_winter_runtime.zero }
 				}
-				set_temp_variable = { air_winter_negative_air_delta = global.air_contamination_last_delta_bp }
+				set_temp_variable = { air_winter_negative_air_delta = global.air_winter_cycle_air_delta_bp_snapshot }
 				multiply_temp_variable = { air_winter_negative_air_delta = constant:air_winter_runtime.negative_one }
 				divide_temp_variable = { air_winter_negative_air_delta = constant:air_winter_global.negative_delta_bp_divisor }
 				add_to_variable = { global.air_winter_recovery_pressure = air_winter_negative_air_delta }
@@ -136,18 +167,27 @@ air_winter_begin_monthly_cycle = {
 air_winter_finalize_monthly_cycle = {
 	if = {
 		limit = {
+			has_global_flag = air_winter_cycle_open
+			has_variable = global.air_winter_cycle_id
+			has_variable = global.air_winter_last_prepare_date
+			check_variable = {
+				var = global.air_winter_last_prepare_date
+				value = global.date
+				compare = equals
+			}
 			OR = {
-				NOT = { has_variable = global.air_winter_last_finalize_date }
+				NOT = { has_variable = global.air_winter_last_finalize_cycle_id }
 				NOT = {
 					check_variable = {
-						var = global.air_winter_last_finalize_date
-						value = global.date
+						var = global.air_winter_last_finalize_cycle_id
+						value = global.air_winter_cycle_id
 						compare = equals
 					}
 				}
 			}
 		}
 		set_variable = { global.air_winter_last_finalize_date = global.date }
+		set_variable = { global.air_winter_last_finalize_cycle_id = global.air_winter_cycle_id }
 		set_variable = { global.air_winter_severe_state_share = constant:air_winter_runtime.zero }
 
 		if = {
@@ -195,6 +235,9 @@ air_winter_finalize_monthly_cycle = {
 			set_global_flag = air_winter_has_unclassified_states
 		}
 		else = { clr_global_flag = air_winter_has_unclassified_states }
+
+		clr_global_flag = air_winter_reset_states_on_next_cycle
+		clr_global_flag = air_winter_cycle_open
 	}
 }
 
@@ -204,7 +247,7 @@ air_winter_finalize_monthly_cycle = {
 
 # Supported scope: STATE. The authoritative typed state-ID ledger may write
 # air_winter_presentation_class directly, then call this validator. A missing or
-# invalid value remains visibly unclassified; no geographic fallback is used.
+# invalid value remains visibly unclassified. No geographic fallback is used.
 air_winter_refresh_presentation_class = {
 	if = {
 		limit = {
@@ -414,6 +457,7 @@ air_winter_initialize_state = {
 		set_variable = { air_winter_phase = constant:air_winter_phase.clear }
 		set_variable = { air_winter_target_phase = constant:air_winter_phase.clear }
 		set_variable = { air_winter_trend = constant:air_winter_trend.stable }
+		set_variable = { air_winter_peak_phase_memory = constant:air_winter_phase.clear }
 		set_variable = { air_winter_phase_months = constant:air_winter_runtime.zero }
 		set_variable = { air_winter_recovery_months = constant:air_winter_runtime.zero }
 		set_variable = { air_winter_recovery = constant:air_winter_ledger.minimum }
@@ -494,6 +538,7 @@ air_winter_normalize_state_ledger = {
 	if = { limit = { NOT = { has_variable = air_winter_phase } } set_variable = { air_winter_phase = constant:air_winter_phase.clear } }
 	if = { limit = { NOT = { has_variable = air_winter_target_phase } } set_variable = { air_winter_target_phase = air_winter_phase } }
 	if = { limit = { NOT = { has_variable = air_winter_trend } } set_variable = { air_winter_trend = constant:air_winter_trend.stable } }
+	if = { limit = { NOT = { has_variable = air_winter_peak_phase_memory } } set_variable = { air_winter_peak_phase_memory = air_winter_phase } }
 	if = { limit = { NOT = { has_variable = air_winter_phase_months } } set_variable = { air_winter_phase_months = constant:air_winter_runtime.zero } }
 	if = { limit = { NOT = { has_variable = air_winter_recovery_months } } set_variable = { air_winter_recovery_months = constant:air_winter_runtime.zero } }
 	if = { limit = { NOT = { has_variable = air_winter_recovery } } set_variable = { air_winter_recovery = constant:air_winter_ledger.minimum } }
@@ -523,6 +568,7 @@ air_winter_normalize_state_ledger = {
 	clamp_variable = { var = air_winter_phase min = constant:air_winter_phase.clear max = constant:air_winter_phase.maximum }
 	clamp_variable = { var = air_winter_target_phase min = constant:air_winter_phase.clear max = constant:air_winter_phase.maximum }
 	clamp_variable = { var = air_winter_trend min = constant:air_winter_trend.recovering max = constant:air_winter_trend.worsening }
+	clamp_variable = { var = air_winter_peak_phase_memory min = constant:air_winter_phase.clear max = constant:air_winter_phase.maximum }
 	clamp_variable = { var = air_winter_phase_months min = constant:air_winter_runtime.zero }
 	clamp_variable = { var = air_winter_recovery_months min = constant:air_winter_runtime.zero }
 	clamp_variable = { var = air_winter_exposure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
@@ -587,7 +633,7 @@ air_winter_calculate_state_pressure = {
 		add_to_variable = { air_winter_pressure = constant:air_winter_pressure.occupation_disruption }
 	}
 	if = {
-		limit = { any_neighbor_state = { air_winter_is_severe = yes } }
+		limit = { any_neighbor_state = { air_winter_was_severe_at_cycle_start = yes } }
 		add_to_variable = { air_winter_pressure = constant:air_winter_pressure.severe_neighbor }
 	}
 	if = {
@@ -870,6 +916,24 @@ air_winter_advance_phase = {
 		}
 	}
 	else = { set_variable = { air_winter_recovery_months = constant:air_winter_runtime.zero } }
+
+	if = {
+		limit = {
+			check_variable = { air_winter_previous_phase = constant:air_winter_phase.clear }
+			check_variable = { air_winter_phase = constant:air_winter_phase.dimming }
+		}
+		set_variable = { air_winter_peak_phase_memory = air_winter_phase }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = air_winter_phase
+				value = air_winter_peak_phase_memory
+				compare = greater_than
+			}
+		}
+		set_variable = { air_winter_peak_phase_memory = air_winter_phase }
+	}
 
 	if = {
 		limit = { has_state_flag = air_winter_phase_changed_this_tick }
@@ -1521,60 +1585,126 @@ air_winter_aggregate_state = {
 # Public state update and cleanup contract
 # ---------------------------------------------------------------------------
 
+# Supported scope: COUNTRY. The persistent registry is populated only from the
+# existing monthly state pass and bounds full administrative reset work to
+# countries that have actually owned an Air Winter state.
+air_winter_register_country_for_reset = {
+	if = {
+		limit = {
+			exists = yes
+			NOT = {
+				is_in_array = {
+					array = global.air_winter_registered_countries
+					value = THIS
+				}
+			}
+		}
+		add_to_array = {
+			array = global.air_winter_registered_countries
+			value = THIS
+		}
+	}
+}
+
 # Supported scope: STATE. The caller must have run begin for global.date.
 air_winter_update_state = {
 	# Presentation is independent of gameplay validity, so the host's existing
 	# every_state pass also classifies impassable and otherwise excluded states.
 	air_winter_refresh_presentation_class_from_ledger = yes
-
 	if = {
-		limit = { air_winter_state_is_valid = yes }
+		limit = {
+			has_global_flag = air_winter_reset_states_on_next_cycle
+			has_global_flag = air_winter_cycle_open
+			has_variable = global.air_winter_cycle_id
+		}
+		air_winter_reset_state = yes
+		set_variable = { air_winter_last_update_cycle_id = global.air_winter_cycle_id }
+		set_variable = { air_winter_last_update_date = global.date }
+	}
+	else = {
+		if = {
+			limit = { owner = { exists = yes } }
+			OWNER = { air_winter_register_country_for_reset = yes }
+		}
+		air_winter_response_reconcile_state_project = yes
+
 		if = {
 			limit = {
+				air_winter_state_is_valid = yes
+				has_global_flag = air_winter_cycle_open
+				has_variable = global.air_winter_cycle_id
+			}
+			if = {
+				limit = {
+					OR = {
+						NOT = { has_variable = air_winter_last_update_cycle_id }
+						NOT = {
+							check_variable = {
+								var = air_winter_last_update_cycle_id
+								value = global.air_winter_cycle_id
+								compare = equals
+							}
+						}
+					}
+				}
+				air_winter_initialize_state = yes
+				air_winter_normalize_state_ledger = yes
+				air_winter_event_reconcile_pending_chain = yes
+				air_winter_response_reconcile_pending_result = yes
+				air_winter_refresh_presentation_class = yes
+				if = {
+					limit = { air_winter_system_enabled = yes }
+					air_winter_tick_state_cooldowns = yes
+					air_winter_calculate_state_pressure = yes
+					air_winter_calculate_target_phase = yes
+					air_winter_advance_phase = yes
+					air_winter_update_survival_ledgers = yes
+					air_winter_calculate_survival_value = yes
+					air_winter_update_building_damage = yes
+					air_winter_update_category_damage = yes
+					air_winter_apply_state_population_loss = yes
+					air_winter_apply_phase_modifier = yes
+					air_winter_apply_disease_modifier = yes
+					air_winter_schedule_phase_event = yes
+					clr_state_flag = air_winter_suspended
+				}
+				else = {
+					air_winter_suspend_state = yes
+					air_winter_calculate_survival_value = yes
+				}
+				air_winter_aggregate_state = yes
+				set_variable = { air_winter_last_update_cycle_id = global.air_winter_cycle_id }
+				set_variable = { air_winter_last_update_date = global.date }
+			}
+		}
+		else_if = {
+			limit = {
+				has_state_flag = air_winter_initialized
+				has_global_flag = air_winter_cycle_open
+				has_variable = global.air_winter_cycle_id
 				OR = {
-					NOT = { has_variable = air_winter_last_update_date }
+					NOT = { has_variable = air_winter_last_update_cycle_id }
 					NOT = {
 						check_variable = {
-							var = air_winter_last_update_date
-							value = global.date
+							var = air_winter_last_update_cycle_id
+							value = global.air_winter_cycle_id
 							compare = equals
 						}
 					}
 				}
 			}
-			air_winter_initialize_state = yes
-			air_winter_normalize_state_ledger = yes
-			air_winter_event_reconcile_pending_chain = yes
-			air_winter_refresh_presentation_class = yes
-			if = {
-				limit = { air_winter_system_enabled = yes }
-				air_winter_tick_state_cooldowns = yes
-				air_winter_calculate_state_pressure = yes
-				air_winter_calculate_target_phase = yes
-				air_winter_advance_phase = yes
-				air_winter_update_survival_ledgers = yes
-				air_winter_calculate_survival_value = yes
-				air_winter_update_building_damage = yes
-				air_winter_update_category_damage = yes
-				air_winter_apply_state_population_loss = yes
-				air_winter_apply_phase_modifier = yes
-				air_winter_apply_disease_modifier = yes
-				air_winter_schedule_phase_event = yes
-				clr_state_flag = air_winter_suspended
-			}
-			else = {
-				air_winter_suspend_state = yes
-				air_winter_calculate_survival_value = yes
-			}
-			air_winter_aggregate_state = yes
+			air_winter_event_cancel_pending_chain = yes
+			air_winter_suspend_state = yes
+			set_variable = { air_winter_last_update_cycle_id = global.air_winter_cycle_id }
 			set_variable = { air_winter_last_update_date = global.date }
 		}
 	}
-	else_if = {
-		limit = { has_state_flag = air_winter_initialized }
-		air_winter_event_cancel_pending_chain = yes
-		air_winter_suspend_state = yes
-	}
+	# Phase, survival, shelter, ownership, and control mutations above are
+	# authoritative for this cycle. Reconcile from those final values before
+	# admitting an owner to the bounded cache-refresh ledger.
+	air_winter_response_reconcile_state_designations = yes
+	air_winter_response_register_priority_cache_owner = yes
+	air_winter_refresh_regional_visuals = yes
 }
 
 # Supported scope: STATE
@@ -1612,7 +1742,7 @@ air_winter_suspend_state = {
 	set_state_flag = air_winter_suspended
 }
 
-# Supported scope: STATE. Explicit administrative restoration only; the normal
+# Supported scope: STATE. Explicit administrative restoration only. The normal
 # lifecycle never guesses whether another system owns a later category change.
 air_winter_restore_recorded_category = {
 	if = {
@@ -1635,10 +1765,13 @@ air_winter_restore_recorded_category = {
 
 # Supported scope: STATE. Does not restore a degraded category automatically.
 air_winter_reset_state = {
+	air_winter_destroy_regional_visuals = yes
 	air_winter_clear_runtime_modifiers = yes
+	air_winter_response_cancel_state_project = yes
 	clear_variable = air_winter_phase
 	clear_variable = air_winter_target_phase
 	clear_variable = air_winter_trend
+	clear_variable = air_winter_peak_phase_memory
 	clear_variable = air_winter_previous_phase
 	clear_variable = air_winter_phase_months
 	clear_variable = air_winter_recovery_months
@@ -1665,6 +1798,8 @@ air_winter_reset_state = {
 	clear_variable = air_winter_category_damage
 	clear_variable = air_winter_category_cooldown
 	clear_variable = air_winter_response_cooldown
+	clear_variable = air_winter_response_priority_owner
+	clear_variable = air_winter_response_reception_owner
 	clear_variable = air_winter_rail_protection_months
 	clear_variable = air_winter_airbase_closure_months
 	clear_variable = air_winter_population_loss_memory
@@ -1673,6 +1808,7 @@ air_winter_reset_state = {
 	clear_variable = air_winter_last_phase_change_date
 	clear_variable = air_winter_last_building_loss_date
 	clear_variable = air_winter_last_category_change_date
+	clear_variable = air_winter_last_update_cycle_id
 	clear_variable = air_winter_last_update_date
 	clear_variable = air_winter_original_category
 	clr_state_flag = air_winter_initialized
@@ -1685,6 +1821,8 @@ air_winter_reset_state = {
 	clr_state_flag = air_winter_original_category_recorded
 	clr_state_flag = air_winter_water_profile_initialized
 	clr_state_flag = air_winter_response_project_active
+	clr_state_flag = air_winter_response_priority_target
+	clr_state_flag = air_winter_response_reception_target
 	clr_state_flag = air_winter_masks_distributed
 	clr_state_flag = air_winter_respiratory_clinic
 	clr_state_flag = air_winter_sampling_stations
@@ -1702,18 +1840,50 @@ air_winter_reset_state = {
 	clr_state_flag = air_winter_final_evacuation_completed
 	clr_state_flag = air_winter_decontamination_attempted
 	air_winter_event_clear_state_memory = yes
+	air_winter_response_clear_pending_result = yes
 }
 
 # Supported scope: COUNTRY. Clears only the calling country's Air Winter
 # reception and event memory. This helper deliberately performs no iterator.
 air_winter_reset_country = {
+	if = {
+		limit = { has_variable = air_winter_response_active_project_state }
+		var:air_winter_response_active_project_state = { air_winter_response_cancel_state_project = yes }
+	}
+	if = {
+		limit = { has_variable = air_winter_response_priority_state }
+		var:air_winter_response_priority_state = {
+			clr_state_flag = air_winter_response_priority_target
+			clear_variable = air_winter_response_priority_owner
+		}
+	}
+	for_each_scope_loop = {
+		array = air_winter_reception_states
+		clr_state_flag = air_winter_response_reception_target
+		clear_variable = air_winter_response_reception_owner
+	}
 	clear_array = air_winter_reception_states
+	clear_variable = air_winter_response_active_project_state
+	clear_variable = air_winter_response_priority_state
+	clr_country_flag = air_winter_response_project_active
+	air_winter_response_clear_evacuation_cache = yes
 	air_winter_event_clear_country_memory = yes
 }
 
-# Supported scope: COUNTRY (the existing host country). Performs no state loop.
+# Supported scope: COUNTRY (the existing host country). Registered countries
+# are reset through a bounded array. State cleanup is deferred to the next
+# existing monthly state pass, so this helper adds no world iterator.
 air_winter_reset_global = {
 	air_winter_reset_country = yes
+	for_each_scope_loop = {
+		array = global.air_winter_registered_countries
+		# Country scopes remain valid while a tag is absent from the map. Clearing
+		# every registered entry prevents stale memory from returning on release.
+		air_winter_reset_country = yes
+	}
+	clear_array = global.air_winter_registered_countries
+	air_winter_destroy_normal_map_proof_entity = yes
+	set_global_flag = air_winter_reset_states_on_next_cycle
 	clear_variable = global.air_winter_pressure
 	clear_variable = global.air_winter_recovery_pressure
 	clear_variable = global.air_winter_valid_state_count
@@ -1724,8 +1894,17 @@ air_winter_reset_global = {
 	clear_variable = global.air_winter_population_exposed
 	clear_variable = global.air_winter_peak_phase
 	clear_variable = global.air_winter_severe_state_share
+	clear_variable = global.air_winter_cycle_contamination_bp_snapshot
+	clear_variable = global.air_winter_cycle_air_delta_bp_snapshot
+	clear_variable = global.air_winter_cycle_chemical_states_snapshot
+	clear_variable = global.air_winter_cycle_fallout_states_snapshot
 	clear_variable = global.air_winter_last_prepare_date
 	clear_variable = global.air_winter_last_finalize_date
+	clear_variable = global.air_winter_last_finalize_cycle_id
+	clear_variable = global.air_winter_visual_schema_version
+	clear_array = global.air_winter_event_candidate_countries
+	clear_array = global.air_winter_evacuation_cache_countries
+	clr_global_flag = air_winter_cycle_open
 	clr_global_flag = air_winter_active
 	clr_global_flag = air_winter_severe
 	clr_global_flag = air_winter_terminal_states_present

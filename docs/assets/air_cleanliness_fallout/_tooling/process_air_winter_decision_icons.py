@@ -45,6 +45,12 @@ ASSETS = [
         (52, 40),
         "decision category icon",
     ),
+    Asset(
+        "decision_air_winter_response_priority",
+        "GFX_decision_air_winter_response_priority",
+        (32, 32),
+        "decision icon",
+    ),
     Asset("decision_air_winter_reception", "GFX_decision_air_winter_reception", (32, 32), "decision icon"),
     Asset("decision_air_winter_respirators", "GFX_decision_air_winter_respirators", (32, 32), "decision icon"),
     Asset("decision_air_winter_clinics", "GFX_decision_air_winter_clinics", (32, 32), "decision icon"),
@@ -79,7 +85,7 @@ def validate_backend() -> None:
     actual = sha256_file(APPROVED_TEXCONV)
     if actual != APPROVED_TEXCONV_SHA256:
         raise RuntimeError(
-            f"Approved texconv hash mismatch: {actual}; expected {APPROVED_TEXCONV_SHA256}"
+            f"Approved texconv hash mismatch: {actual}. Expected {APPROVED_TEXCONV_SHA256}"
         )
 
 
@@ -163,7 +169,7 @@ def parse_dds(path: Path) -> dict[str, object]:
     expected_size = 128 + width * height * 4
     if len(raw) != expected_size:
         raise RuntimeError(
-            f"Unexpected DDS byte size for {path}: {len(raw)}; expected {expected_size}"
+            f"Unexpected DDS byte size for {path}: {len(raw)}. Expected {expected_size}"
         )
     return {
         "width": width,
@@ -210,7 +216,7 @@ def make_contact_sheet() -> None:
     meta_font = load_font(11)
     draw.text(
         (18, 14),
-        "Air Winter decision icons — DDS-decoded alpha and native-size review",
+        "Air Winter decision icons: DDS-decoded alpha and native-size review",
         font=title_font,
         fill=(236, 240, 245),
     )
@@ -270,7 +276,7 @@ def require_exact_inventory(label: str, actual: set[str], expected: set[str]) ->
     missing = sorted(expected - actual)
     extra = sorted(actual - expected)
     if missing or extra:
-        raise RuntimeError(f"{label} inventory mismatch; missing={missing}; extra={extra}")
+        raise RuntimeError(f"{label} inventory mismatch. Missing={missing}. Extra={extra}")
 
 
 def main() -> None:

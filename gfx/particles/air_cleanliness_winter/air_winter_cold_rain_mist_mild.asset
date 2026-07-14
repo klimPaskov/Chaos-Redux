@@ -1,0 +1,84 @@
+# ============================================================================
+# CHAOS REDUX - AIR WINTER COLD_RAIN_MIST_MILD PARTICLE
+# ============================================================================
+# Fallout-owned ordinary-map particle using four separately authored frames.
+# ============================================================================
+
+particle = {
+	name = "air_winter_cold_rain_mist_mild_file"
+	subsystem = {
+		name = "air_winter_cold_rain_mist_mild"
+		max_amount = 90
+		slave_particles = 0
+		emitter_type = "sphere"
+		sphere_emitter_radius = { 18.000 17.000 }
+		sphere_emitter_yaw = { 0.000 180.000 }
+		sphere_emitter_pitch = { 0.000 0.000 }
+		invert = no
+		trail = no
+		local_space = no
+		billboard = yes
+		hide = no
+		texture = {
+			file = "gfx/particles/air_cleanliness_winter/air_winter_cold_rain_mist_atlas.dds"
+			x = 4
+			y = 1
+			shader = "ParticleAlphaBlend"
+		}
+		color = {
+			x = 145.000
+			y = 181.000
+			z = 207.000
+			alpha = 125.000,air_winter_particle_fade
+		}
+		position = {
+			x = 0.000
+			y = 14.000
+			z = 2.000
+		}
+		start = 0.000
+		duration = -1.000
+		emitter_yaw = { 0.000 0.000 }
+		emitter_pitch = { 0.000 0.000 }
+		velocity_pitch = { -58.000 8.000 }
+		velocity_yaw = { -20.000 16.000 }
+		velocity = { 8.500 2.000 }
+		life = { 1.800 0.500 }
+		emission = 21.000
+		size = { 1.550 0.700 }
+		rotation = { 0.000 180.000 }
+		rotation_speed = { -18.000 36.000 }
+		force = air_winter_sidewind,air_winter_turbulence
+	}
+	animation = {
+		name = "air_winter_particle_fade"
+		start = 0.000
+		duration = 1.000
+		repeat = no
+		minValue = 0.000
+		maxValue = 1.000
+		curve = { 0.000 0.000 0.120 0.800 0.760 0.920 1.000 0.000 }
+		op = "MUL"
+		time = "life"
+	}
+	force = {
+		type = "planar"
+		name = "air_winter_sidewind"
+		position = { 0.000 0.000 0.000 }
+		direction = { -1.000 0.000 0.250 }
+		local_force = yes
+		yaw = 0.000
+		division = 16
+		amount = -0.650
+	}
+	force = {
+		type = "turbulence"
+		name = "air_winter_turbulence"
+		position = { 0.000 0.000 0.000 }
+		direction = { 0.000 1.000 0.000 }
+		local_force = yes
+		yaw = 0.000
+		division = 16
+		amount = 0.700
+	}
+}

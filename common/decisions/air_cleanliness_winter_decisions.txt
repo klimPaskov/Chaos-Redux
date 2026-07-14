@@ -7,6 +7,65 @@
 # ============================================================================
 
 air_winter_response_category = {
+	# -----------------------------------------------------------------------
+	# Single-state response priority
+	# -----------------------------------------------------------------------
+
+	air_winter_designate_response_priority = {
+		icon = GFX_decision_air_winter_response_priority
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		days_re_enable = constant:air_winter_response_timing.designate_priority_days_reenable
+
+		target_root_trigger = { air_winter_response_category_is_visible = yes }
+		visible = {
+			air_winter_response_category_is_visible = yes
+			any_controlled_state = {
+				is_owned_by = ROOT
+				air_winter_state_is_valid = yes
+				air_winter_is_active = yes
+			}
+		}
+		available = {
+			air_winter_response_category_is_visible = yes
+			NOT = { has_country_flag = air_winter_response_project_active }
+		}
+		target_trigger = {
+			FROM = {
+				custom_trigger_tooltip = {
+					tooltip = air_winter_designate_response_priority_requirements_tt
+					hidden_trigger = { air_winter_response_priority_state_is_available = yes }
+				}
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = air_winter_designate_response_priority_effect_tt
+			hidden_effect = { air_winter_response_designate_priority_state = yes }
+		}
+		ai_will_do = {
+			base = constant:air_winter_response_ai.base_early
+			modifier = { factor = 0 air_winter_has_valid_priority_state = yes }
+			modifier = { factor = constant:air_winter_response_ai.capital_factor FROM = { is_capital = yes } }
+			modifier = { factor = constant:air_winter_response_ai.high_population_factor FROM = { check_variable = { var = state_population_k value = constant:air_winter_response_ai.high_population_k compare = greater_than_or_equals } } }
+			modifier = { factor = constant:air_winter_response_ai.critical_survival_factor FROM = { check_variable = { var = air_winter_survival_value value = constant:air_winter_response_ai.critical_survival compare = less_than_or_equals } } }
+		}
+	}
+
+	air_winter_response_priority_summary = {
+		icon = GFX_decision_air_winter_response_priority
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		target_root_trigger = { air_winter_has_valid_priority_state = yes }
+		visible = { air_winter_has_valid_priority_state = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = air_winter_response_priority_summary_locked_tt
+				always = no
+			}
+		}
+		target_trigger = { FROM = { air_winter_response_is_priority_target = yes } }
+		ai_will_do = { base = 0 }
+	}
 
 	# -----------------------------------------------------------------------
 	# Reception state designation
@@ -21,7 +80,10 @@ air_winter_response_category = {
 		target_root_trigger = { air_winter_response_category_is_visible = yes }
 		visible = {
 			air_winter_response_category_is_visible = yes
-			any_controlled_state = { air_winter_response_is_reception_state = yes }
+			any_controlled_state = {
+				is_owned_by = ROOT
+				air_winter_response_is_reception_state = yes
+			}
 		}
 		available = { air_winter_response_category_is_visible = yes }
 		target_trigger = {
@@ -50,6 +112,7 @@ air_winter_response_category = {
 		}
 		ai_will_do = {
 			base = constant:air_winter_response_ai.base_early
+			modifier = { factor = 0 air_winter_has_valid_reception_state = yes }
 			modifier = { factor = constant:air_winter_response_ai.capital_factor FROM = { is_capital = yes } }
 			modifier = {
 				factor = constant:air_winter_response_ai.high_population_factor
@@ -59,6 +122,22 @@ air_winter_response_category = {
 			modifier = { factor = constant:air_winter_response_ai.war_strain_factor has_war = yes }
 			modifier = { factor = constant:air_winter_response_ai.resource_strain_factor air_winter_response_country_is_resource_strained = yes }
 		}
+	}
+
+	air_winter_reception_state_summary = {
+		icon = GFX_decision_air_winter_reception
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		target_root_trigger = { air_winter_has_valid_reception_state = yes }
+		visible = { air_winter_has_valid_reception_state = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = air_winter_reception_state_summary_locked_tt
+				always = no
+			}
+		}
+		target_trigger = { FROM = { air_winter_response_is_designated_reception_state = yes } }
+		ai_will_do = { base = 0 }
 	}
 
 	# -----------------------------------------------------------------------
@@ -72,7 +151,7 @@ air_winter_response_category = {
 		days_remove = constant:air_winter_response_timing.mask_distribution_days
 		days_re_enable = constant:air_winter_response_timing.early_reenable_days
 		target_root_trigger = { air_winter_response_category_is_visible = yes }
-		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_phase_1_or_2 = yes } }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_1_or_2 = yes } }
 		available = { air_winter_response_category_is_visible = yes }
 		target_trigger = {
 			FROM = {
@@ -90,7 +169,7 @@ air_winter_response_category = {
 		}
 		custom_cost_trigger = { air_winter_response_can_pay_respirators = yes }
 		custom_cost_text = air_winter_distribute_respirator_kits_cost
-		complete_effect = { hidden_effect = { air_winter_response_pay_respirators = yes FROM = { set_state_flag = air_winter_response_project_active } } }
+		complete_effect = { hidden_effect = { air_winter_response_pay_respirators = yes FROM = { air_winter_response_start_state_project = yes } } }
 		cancel_trigger = { air_winter_response_project_should_cancel = yes }
 		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
 		remove_effect = { custom_effect_tooltip = air_winter_distribute_respirator_kits_effect_tt hidden_effect = { FROM = { air_winter_response_complete_respirators = yes } } }
@@ -112,7 +191,7 @@ air_winter_response_category = {
 		days_re_enable = constant:air_winter_response_timing.early_reenable_days
 		modifier = { civilian_factory_use = constant:air_winter_response_cost.clinic_civilian_factories }
 		target_root_trigger = { air_winter_response_category_is_visible = yes }
-		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_phase_1_or_2 = yes } }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_1_or_2 = yes } }
 		available = { air_winter_response_category_is_visible = yes }
 		target_trigger = {
 			FROM = {
@@ -131,7 +210,7 @@ air_winter_response_category = {
 		}
 		custom_cost_trigger = { air_winter_response_can_pay_clinics = yes }
 		custom_cost_text = air_winter_convert_respiratory_clinics_cost
-		complete_effect = { hidden_effect = { air_winter_response_pay_clinics = yes FROM = { set_state_flag = air_winter_response_project_active } } }
+		complete_effect = { hidden_effect = { air_winter_response_pay_clinics = yes FROM = { air_winter_response_start_state_project = yes } } }
 		cancel_trigger = { air_winter_response_project_should_cancel = yes }
 		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
 		remove_effect = { custom_effect_tooltip = air_winter_convert_respiratory_clinics_effect_tt hidden_effect = { FROM = { air_winter_response_complete_clinics = yes } } }
@@ -152,7 +231,7 @@ air_winter_response_category = {
 		days_remove = constant:air_winter_response_timing.air_sampling_days
 		days_re_enable = constant:air_winter_response_timing.early_reenable_days
 		target_root_trigger = { air_winter_response_category_is_visible = yes }
-		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_phase_1_or_2 = yes } }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_1_or_2 = yes } }
 		available = { air_winter_response_category_is_visible = yes }
 		target_trigger = {
 			FROM = {
@@ -170,7 +249,7 @@ air_winter_response_category = {
 		}
 		custom_cost_trigger = { air_winter_response_can_pay_samplers = yes }
 		custom_cost_text = air_winter_station_roof_samplers_cost
-		complete_effect = { hidden_effect = { air_winter_response_pay_samplers = yes FROM = { set_state_flag = air_winter_response_project_active } } }
+		complete_effect = { hidden_effect = { air_winter_response_pay_samplers = yes FROM = { air_winter_response_start_state_project = yes } } }
 		cancel_trigger = { air_winter_response_project_should_cancel = yes }
 		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
 		remove_effect = { custom_effect_tooltip = air_winter_station_roof_samplers_effect_tt hidden_effect = { FROM = { air_winter_response_complete_samplers = yes } } }
@@ -192,7 +271,7 @@ air_winter_response_category = {
 		days_re_enable = constant:air_winter_response_timing.early_reenable_days
 		modifier = { civilian_factory_use = constant:air_winter_response_cost.crop_civilian_factories }
 		target_root_trigger = { air_winter_response_category_is_visible = yes }
-		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_phase_1_or_2 = yes } }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_1_or_2 = yes } }
 		available = { air_winter_response_category_is_visible = yes }
 		target_trigger = {
 			FROM = {
@@ -211,7 +290,7 @@ air_winter_response_category = {
 		}
 		custom_cost_trigger = { air_winter_response_can_pay_crop_trials = yes }
 		custom_cost_text = air_winter_protect_crop_trials_cost
-		complete_effect = { hidden_effect = { air_winter_response_pay_crop_trials = yes FROM = { set_state_flag = air_winter_response_project_active } } }
+		complete_effect = { hidden_effect = { air_winter_response_pay_crop_trials = yes FROM = { air_winter_response_start_state_project = yes } } }
 		cancel_trigger = { air_winter_response_project_should_cancel = yes }
 		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
 		remove_effect = { custom_effect_tooltip = air_winter_protect_crop_trials_effect_tt hidden_effect = { FROM = { air_winter_response_complete_crop_trials = yes } } }
@@ -236,7 +315,7 @@ air_winter_response_category = {
 		days_remove = constant:air_winter_response_timing.ash_clearance_days
 		days_re_enable = constant:air_winter_response_timing.infrastructure_reenable_days
 		target_root_trigger = { air_winter_response_category_is_visible = yes }
-		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_phase_3 = yes } }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_3 = yes } }
 		available = { air_winter_response_category_is_visible = yes }
 		target_trigger = {
 			FROM = {
@@ -255,7 +334,7 @@ air_winter_response_category = {
 		}
 		custom_cost_trigger = { air_winter_response_can_pay_ash_clearance = yes }
 		custom_cost_text = air_winter_clear_ash_routes_cost
-		complete_effect = { hidden_effect = { air_winter_response_pay_ash_clearance = yes FROM = { set_state_flag = air_winter_response_project_active } } }
+		complete_effect = { hidden_effect = { air_winter_response_pay_ash_clearance = yes FROM = { air_winter_response_start_state_project = yes } } }
 		cancel_trigger = { air_winter_response_project_should_cancel = yes }
 		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
 		remove_effect = { custom_effect_tooltip = air_winter_clear_ash_routes_effect_tt hidden_effect = { FROM = { air_winter_response_complete_ash_clearance = yes } } }
@@ -263,7 +342,7 @@ air_winter_response_category = {
 			base = constant:air_winter_response_ai.base_infrastructure
 			modifier = { factor = constant:air_winter_response_ai.capital_factor FROM = { is_capital = yes } }
 			modifier = { factor = constant:air_winter_response_ai.high_population_factor FROM = { check_variable = { var = state_population_k value = constant:air_winter_response_ai.high_population_k compare = greater_than_or_equals } } }
-			modifier = { factor = constant:air_winter_response_ai.critical_survival_factor FROM = { check_variable = { var = air_winter_survival_value value = constant:air_winter_response_ai.critical_survival compare = less_than_or_equals } } }
+			modifier = { factor = 0 FROM = { check_variable = { air_winter_survival_value < constant:air_winter_response_ai.ash_clearance_minimum_survival } } }
 			modifier = { factor = constant:air_winter_response_ai.war_strain_factor has_war = yes }
 			modifier = { factor = constant:air_winter_response_ai.resource_strain_factor air_winter_response_country_is_resource_strained = yes }
 		}
@@ -276,7 +355,7 @@ air_winter_response_category = {
 		days_remove = constant:air_winter_response_timing.rail_protection_days
 		days_re_enable = constant:air_winter_response_timing.infrastructure_reenable_days
 		target_root_trigger = { air_winter_response_category_is_visible = yes }
-		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_phase_3 = yes } }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_3 = yes } }
 		available = { air_winter_response_category_is_visible = yes }
 		target_trigger = {
 			FROM = {
@@ -295,7 +374,7 @@ air_winter_response_category = {
 		}
 		custom_cost_trigger = { air_winter_response_can_pay_rail_protection = yes }
 		custom_cost_text = air_winter_protect_rail_corridors_cost
-		complete_effect = { hidden_effect = { air_winter_response_pay_rail_protection = yes FROM = { set_state_flag = air_winter_response_project_active } } }
+		complete_effect = { hidden_effect = { air_winter_response_pay_rail_protection = yes FROM = { air_winter_response_start_state_project = yes } } }
 		cancel_trigger = { air_winter_response_project_should_cancel = yes }
 		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
 		remove_effect = { custom_effect_tooltip = air_winter_protect_rail_corridors_effect_tt hidden_effect = { FROM = { air_winter_response_complete_rail_protection = yes } } }
@@ -316,7 +395,7 @@ air_winter_response_category = {
 		days_remove = constant:air_winter_response_timing.airbase_closure_days
 		days_re_enable = constant:air_winter_response_timing.infrastructure_reenable_days
 		target_root_trigger = { air_winter_response_category_is_visible = yes }
-		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_phase_3 = yes } }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_3 = yes } }
 		available = { air_winter_response_category_is_visible = yes }
 		target_trigger = {
 			FROM = {
@@ -335,16 +414,15 @@ air_winter_response_category = {
 		}
 		custom_cost_trigger = { air_winter_response_can_pay_airbase_closure = yes }
 		custom_cost_text = air_winter_close_exposed_airfields_cost
-		complete_effect = { hidden_effect = { air_winter_response_pay_airbase_closure = yes FROM = { set_state_flag = air_winter_response_project_active } } }
+		complete_effect = { hidden_effect = { air_winter_response_pay_airbase_closure = yes FROM = { air_winter_response_start_state_project = yes } } }
 		cancel_trigger = { air_winter_response_project_should_cancel = yes }
 		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
 		remove_effect = { custom_effect_tooltip = air_winter_close_exposed_airfields_effect_tt hidden_effect = { FROM = { air_winter_response_complete_airbase_closure = yes } } }
 		ai_will_do = {
 			base = constant:air_winter_response_ai.base_infrastructure
-			modifier = { factor = constant:air_winter_response_ai.capital_factor FROM = { is_capital = yes } }
-			modifier = { factor = constant:air_winter_response_ai.high_population_factor FROM = { check_variable = { var = state_population_k value = constant:air_winter_response_ai.high_population_k compare = greater_than_or_equals } } }
-			modifier = { factor = constant:air_winter_response_ai.critical_survival_factor FROM = { check_variable = { var = air_winter_survival_value value = constant:air_winter_response_ai.critical_survival compare = less_than_or_equals } } }
-			modifier = { factor = constant:air_winter_response_ai.war_strain_factor has_war = yes }
+			modifier = { factor = 0 has_war = yes }
+			modifier = { factor = 0 FROM = { is_capital = yes } }
+			modifier = { factor = 0 FROM = { air_base > constant:air_winter_response_ai.airbase_closure_maximum_ai_level } }
 			modifier = { factor = constant:air_winter_response_ai.resource_strain_factor air_winter_response_country_is_resource_strained = yes }
 		}
 	}
@@ -356,7 +434,7 @@ air_winter_response_category = {
 		days_remove = constant:air_winter_response_timing.evacuation_plan_days
 		days_re_enable = constant:air_winter_response_timing.infrastructure_reenable_days
 		target_root_trigger = { air_winter_response_category_is_visible = yes }
-		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_phase_3 = yes } }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_3 = yes } }
 		available = { air_winter_response_category_is_visible = yes }
 		target_trigger = {
 			FROM = {
@@ -374,7 +452,7 @@ air_winter_response_category = {
 		}
 		custom_cost_trigger = { air_winter_response_can_pay_evacuation_plan = yes }
 		custom_cost_text = air_winter_prepare_evacuation_ledger_cost
-		complete_effect = { hidden_effect = { air_winter_response_pay_evacuation_plan = yes FROM = { set_state_flag = air_winter_response_project_active } } }
+		complete_effect = { hidden_effect = { air_winter_response_pay_evacuation_plan = yes FROM = { air_winter_response_start_state_project = yes } } }
 		cancel_trigger = { air_winter_response_project_should_cancel = yes }
 		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
 		remove_effect = { custom_effect_tooltip = air_winter_prepare_evacuation_ledger_effect_tt hidden_effect = { FROM = { air_winter_response_complete_evacuation_plan = yes } } }
@@ -399,7 +477,7 @@ air_winter_response_category = {
 		days_remove = constant:air_winter_response_timing.shelter_law_days
 		days_re_enable = constant:air_winter_response_timing.severe_reenable_days
 		target_root_trigger = { air_winter_response_category_is_visible = yes }
-		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_phase_4 = yes } }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_4 = yes } }
 		available = { air_winter_response_category_is_visible = yes }
 		target_trigger = {
 			FROM = {
@@ -417,7 +495,7 @@ air_winter_response_category = {
 		}
 		custom_cost_trigger = { air_winter_response_can_pay_shelter_law = yes }
 		custom_cost_text = air_winter_enact_emergency_shelter_law_cost
-		complete_effect = { hidden_effect = { air_winter_response_pay_shelter_law = yes FROM = { set_state_flag = air_winter_response_project_active } } }
+		complete_effect = { hidden_effect = { air_winter_response_pay_shelter_law = yes FROM = { air_winter_response_start_state_project = yes } } }
 		cancel_trigger = { air_winter_response_project_should_cancel = yes }
 		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
 		remove_effect = { custom_effect_tooltip = air_winter_enact_emergency_shelter_law_effect_tt hidden_effect = { FROM = { air_winter_response_complete_shelter_law = yes } } }
@@ -439,7 +517,7 @@ air_winter_response_category = {
 		days_re_enable = constant:air_winter_response_timing.severe_reenable_days
 		modifier = { civilian_factory_use = constant:air_winter_response_cost.greenhouse_civilian_factories }
 		target_root_trigger = { air_winter_response_category_is_visible = yes }
-		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_phase_4 = yes } }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_4 = yes } }
 		available = { air_winter_response_category_is_visible = yes }
 		target_trigger = {
 			FROM = {
@@ -458,7 +536,7 @@ air_winter_response_category = {
 		}
 		custom_cost_trigger = { air_winter_response_can_pay_greenhouse_refuge = yes }
 		custom_cost_text = air_winter_convert_greenhouse_refuge_cost
-		complete_effect = { hidden_effect = { air_winter_response_pay_greenhouse_refuge = yes FROM = { set_state_flag = air_winter_response_project_active } } }
+		complete_effect = { hidden_effect = { air_winter_response_pay_greenhouse_refuge = yes FROM = { air_winter_response_start_state_project = yes } } }
 		cancel_trigger = { air_winter_response_project_should_cancel = yes }
 		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
 		remove_effect = { custom_effect_tooltip = air_winter_convert_greenhouse_refuge_effect_tt hidden_effect = { FROM = { air_winter_response_complete_greenhouse_refuge = yes } } }
@@ -479,7 +557,7 @@ air_winter_response_category = {
 		days_remove = constant:air_winter_response_timing.controlled_evacuation_days
 		days_re_enable = constant:air_winter_response_timing.severe_reenable_days
 		target_root_trigger = { air_winter_response_category_is_visible = yes }
-		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_phase_4 = yes } }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_4 = yes } }
 		available = { air_winter_response_category_is_visible = yes air_winter_has_valid_reception_state = yes }
 		target_trigger = {
 			custom_trigger_tooltip = {
@@ -496,8 +574,13 @@ air_winter_response_category = {
 		}
 		custom_cost_trigger = { air_winter_response_can_pay_controlled_evacuation = yes }
 		custom_cost_text = air_winter_controlled_evacuation_cost
-		complete_effect = { hidden_effect = { air_winter_response_pay_controlled_evacuation = yes FROM = { set_state_flag = air_winter_response_project_active } } }
-		cancel_trigger = { OR = { air_winter_response_project_should_cancel = yes NOT = { air_winter_has_valid_different_reception_state = yes } } }
+		complete_effect = { hidden_effect = { air_winter_response_start_controlled_evacuation = yes } }
+		cancel_trigger = {
+			OR = {
+				air_winter_response_project_should_cancel = yes
+				NOT = { air_winter_response_controlled_evacuation_project_is_valid = yes }
+			}
+		}
 		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
 		remove_effect = { custom_effect_tooltip = air_winter_controlled_evacuation_effect_tt hidden_effect = { air_winter_response_complete_controlled_evacuation = yes } }
 		ai_will_do = {
@@ -518,7 +601,7 @@ air_winter_response_category = {
 		days_remove = constant:air_winter_response_timing.state_triage_days
 		days_re_enable = constant:air_winter_response_timing.severe_reenable_days
 		target_root_trigger = { air_winter_response_category_is_visible = yes }
-		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_phase_4 = yes } }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_4 = yes } }
 		available = { air_winter_response_category_is_visible = yes }
 		target_trigger = {
 			FROM = {
@@ -537,7 +620,7 @@ air_winter_response_category = {
 		}
 		custom_cost_trigger = { air_winter_response_can_pay_triage = yes }
 		custom_cost_text = air_winter_state_medical_triage_cost
-		complete_effect = { hidden_effect = { air_winter_response_pay_triage = yes FROM = { set_state_flag = air_winter_response_project_active } } }
+		complete_effect = { hidden_effect = { air_winter_response_pay_triage = yes FROM = { air_winter_response_start_state_project = yes } } }
 		cancel_trigger = { air_winter_response_project_should_cancel = yes }
 		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
 		remove_effect = { custom_effect_tooltip = air_winter_state_medical_triage_effect_tt hidden_effect = { FROM = { air_winter_response_complete_triage = yes } } }
@@ -562,7 +645,7 @@ air_winter_response_category = {
 		days_remove = constant:air_winter_response_timing.abandonment_vote_days
 		days_re_enable = constant:air_winter_response_timing.terminal_reenable_days
 		target_root_trigger = { air_winter_response_category_is_visible = yes }
-		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_phase_5 = yes } }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_5 = yes } }
 		available = { air_winter_response_category_is_visible = yes }
 		target_trigger = {
 			FROM = {
@@ -579,7 +662,7 @@ air_winter_response_category = {
 		}
 		custom_cost_trigger = { air_winter_response_can_pay_abandonment_vote = yes }
 		custom_cost_text = air_winter_hold_abandonment_vote_cost
-		complete_effect = { hidden_effect = { air_winter_response_pay_abandonment_vote = yes FROM = { set_state_flag = air_winter_response_project_active } } }
+		complete_effect = { hidden_effect = { air_winter_response_pay_abandonment_vote = yes FROM = { air_winter_response_start_state_project = yes } } }
 		cancel_trigger = { air_winter_response_project_should_cancel = yes }
 		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
 		remove_effect = { custom_effect_tooltip = air_winter_hold_abandonment_vote_effect_tt hidden_effect = { air_winter_response_complete_abandonment_vote = yes } }
@@ -601,7 +684,7 @@ air_winter_response_category = {
 		days_remove = constant:air_winter_response_timing.bunker_closure_days
 		days_re_enable = constant:air_winter_response_timing.terminal_reenable_days
 		target_root_trigger = { air_winter_response_category_is_visible = yes }
-		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_phase_5 = yes } }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_5 = yes } }
 		available = { air_winter_response_category_is_visible = yes }
 		target_trigger = {
 			FROM = {
@@ -620,7 +703,7 @@ air_winter_response_category = {
 		}
 		custom_cost_trigger = { air_winter_response_can_pay_bunker_seal = yes }
 		custom_cost_text = air_winter_seal_bunker_doors_cost
-		complete_effect = { hidden_effect = { air_winter_response_pay_bunker_seal = yes FROM = { set_state_flag = air_winter_response_project_active } } }
+		complete_effect = { hidden_effect = { air_winter_response_pay_bunker_seal = yes FROM = { air_winter_response_start_state_project = yes } } }
 		cancel_trigger = { air_winter_response_project_should_cancel = yes }
 		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
 		remove_effect = { custom_effect_tooltip = air_winter_seal_bunker_doors_effect_tt hidden_effect = { FROM = { air_winter_response_complete_bunker_seal = yes } } }
@@ -641,7 +724,7 @@ air_winter_response_category = {
 		days_remove = constant:air_winter_response_timing.final_evacuation_days
 		days_re_enable = constant:air_winter_response_timing.terminal_reenable_days
 		target_root_trigger = { air_winter_response_category_is_visible = yes }
-		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_phase_5 = yes } }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_5 = yes } }
 		available = { air_winter_response_category_is_visible = yes air_winter_has_valid_reception_state = yes }
 		target_trigger = {
 			custom_trigger_tooltip = {
@@ -658,8 +741,13 @@ air_winter_response_category = {
 		}
 		custom_cost_trigger = { air_winter_response_can_pay_final_evacuation = yes }
 		custom_cost_text = air_winter_final_evacuation_cost
-		complete_effect = { hidden_effect = { air_winter_response_pay_final_evacuation = yes FROM = { set_state_flag = air_winter_response_project_active } } }
-		cancel_trigger = { OR = { air_winter_response_project_should_cancel = yes NOT = { air_winter_has_valid_different_reception_state = yes } } }
+		complete_effect = { hidden_effect = { air_winter_response_start_final_evacuation = yes } }
+		cancel_trigger = {
+			OR = {
+				air_winter_response_project_should_cancel = yes
+				NOT = { air_winter_response_final_evacuation_project_is_valid = yes }
+			}
+		}
 		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
 		remove_effect = { custom_effect_tooltip = air_winter_final_evacuation_effect_tt hidden_effect = { air_winter_response_complete_final_evacuation = yes } }
 		ai_will_do = {
@@ -680,7 +768,7 @@ air_winter_response_category = {
 		days_remove = constant:air_winter_response_timing.decontamination_days
 		days_re_enable = constant:air_winter_response_timing.terminal_reenable_days
 		target_root_trigger = { air_winter_response_category_is_visible = yes }
-		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_phase_5 = yes } }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_5 = yes } }
 		available = { air_winter_response_category_is_visible = yes }
 		target_trigger = {
 			FROM = {
@@ -697,7 +785,7 @@ air_winter_response_category = {
 		}
 		custom_cost_trigger = { air_winter_response_can_pay_decontamination = yes }
 		custom_cost_text = air_winter_decontamination_gamble_cost
-		complete_effect = { hidden_effect = { air_winter_response_pay_decontamination = yes FROM = { set_state_flag = air_winter_response_project_active } } }
+		complete_effect = { hidden_effect = { air_winter_response_pay_decontamination = yes FROM = { air_winter_response_start_state_project = yes } } }
 		cancel_trigger = { air_winter_response_project_should_cancel = yes }
 		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
 		remove_effect = { custom_effect_tooltip = air_winter_decontamination_gamble_effect_tt hidden_effect = { air_winter_response_complete_decontamination = yes } }

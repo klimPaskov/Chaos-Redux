@@ -8,22 +8,20 @@ Replace the current random-state winter pulse with a persistent state system tha
 
 The host-owned `air_contamination_monthly_update` remains the only global monthly entry point for Air Cleanliness.
 
-The monthly call should be divided into ordered helpers:
+The implemented monthly order is:
 
-1. initialize missing global and state values
-2. count live contamination sources
-3. calculate the global contamination delta
-4. apply global contamination and Chaos synchronization
-5. calculate global winter forcing and recovery force
-6. update every valid state once
-7. aggregate phase counts and exposed population
-8. apply global status flags and threshold transitions
-9. select a bounded set of flavour incidents
-10. update treaty and relief systems
-11. evaluate gradual Fallout eligibility and request pressure
-12. refresh cached UI values
+1. prepare capped natural contamination sources
+2. open one monotonic Air Winter cycle and snapshot completed contamination inputs
+3. update every state once inside the existing world pass, ending each state update with its bounded ordinary-map visual refresh
+4. aggregate phase counts and exposed population during that pass
+5. register event and evacuation owners during that pass
+6. rebuild evacuation quotes from the bounded priority-owner array
+7. dispatch one deterministic event candidate per eligible owner from the bounded event-owner array
+8. finalize global Air Winter flags and aggregates once
 
 No second full-state monthly loop should be introduced for winter. Building damage, deaths, phase changes, category damage, and flavour candidate scoring must occur inside the single state pass or through arrays built during that pass.
+
+The cycle snapshots, one-update guards, neighbor opening-state reads, score and state-id tie rules, and finalization guard are recorded in `AIR_WINTER_MONTHLY_DETERMINISM_PROOF.md`.
 
 ## Valid state set
 
@@ -399,7 +397,7 @@ During the monthly state pass, build candidate arrays for:
 - local government breakdown
 - fictional mutant emergence
 
-After the pass, select a small global number based on severity and player relevance. Do not fire one event per affected state.
+After the pass, dispatch at most one candidate per eligible owner. Each owner has a 46-day cooldown and each state competes through a deterministic severity score with the lowest state id resolving equal scores. This prevents one event per affected state while preserving independent human and AI country pacing. The human campaign target remains 90 to 180 meaningful events across the full Fallout scheduler over ten years, not 90 to 180 Air Winter phase popups alone.
 
 Player priority:
 
@@ -424,7 +422,7 @@ Every incident family defines:
 
 ## Mitigation and response
 
-The response system should be a staged decision category, not a permanent store.
+The response system is a staged decision category, not a permanent store. It has one priority selector, one reception selector, two read-only summaries, and sixteen timed projects. One state project can be active per country.
 
 Early actions:
 
@@ -449,7 +447,9 @@ Severe actions:
 - evacuate government functions
 - seal a terminal zone
 
-Costs should use equipment, trains, convoys, fuel, manpower, civilian factory burden, stability, war support, and local control where relevant. Political power may support administrative actions but cannot be the only cost palette.
+Costs use equipment, trains, convoys, fuel, manpower, civilian factory burden, stability, war support, and local control where relevant. Political power is not used as the response store.
+
+Controlled and final evacuation quotes derive from the selected source population and the lowest-id valid reception state. Population formula work stays in `state_population_k`. A single conversion creates the exact people count used by the delayed state-population transaction. The quote locks transport, support, staff, stability, receiver pressure, and source pressure values when the project begins. The detailed scope and engine proof is in `AIR_WINTER_RESPONSE_DECISION_PROOF.md`.
 
 ## AI behavior
 

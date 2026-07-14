@@ -27,9 +27,12 @@ The implementation is distributed across:
 
 1. `air_winter_begin_monthly_cycle = yes` before the existing `every_state` block.
 2. `air_winter_update_state = yes` once inside that existing block.
-3. `air_winter_finalize_monthly_cycle = yes` after the block.
+3. `air_winter_response_refresh_evacuation_cache_cycle = yes` after the block.
+4. `air_winter_dispatch_phase_events = yes` after quote refresh.
+5. `air_winter_finalize_monthly_cycle = yes` after bounded dispatch.
+6. `air_winter_refresh_normal_map_proof_entity = yes` after finalization.
 
-The Air Winter helpers do not create another state or country iterator. Their date guards make repeated calls on the same date idempotent. Global pressure reads the completed contamination-state counts from the preceding monthly pass before the host rebuilds those counts.
+The Air Winter helpers do not create another state-wide or country-wide iterator. Post-pass work enters only owner arrays assembled during the existing state pass. The monotonic cycle id, per-state cycle id, and finalization cycle id make repeated calls idempotent. Global pressure reads a snapshot of the completed contamination-state counts from the preceding monthly pass before the host rebuilds those counts. Severe-neighbor pressure reads the opening state of every neighbor regardless of iterator order.
 
 When ordinary Air Cleanliness is disabled, runtime phase and disease modifiers are removed while persistent state history remains available. `air_contamination_final_silence_locked` keeps Air Winter enabled under the existing Air Cleanliness contract.
 
@@ -55,7 +58,7 @@ The optional variables `air_winter_minimum_phase`, `air_winter_pressure_modifier
 
 Global pressure begins with `global.air_contamination_bp / 100`. That total includes the small capped wildfire-smoke and volcanic-ash contribution documented in `docs/air_cleanliness_natural_sources.md`. It adds bounded pressure from fallout states, chemical contamination states, Air Cleanliness thresholds, and Final Silence. Global mitigation is subtracted before clamping.
 
-Local pressure adds nuclear fallout, nuclear intensity, chemical contamination, urban density, weak infrastructure, occupation disruption, and adjacency to phase 4 through 6. Adaptation, food, shelter, reclamation, and relief routes reduce pressure. Runtime pressure does not infer geography or climate.
+Local pressure adds nuclear fallout, nuclear intensity, chemical contamination, urban density, weak infrastructure, occupation disruption, and adjacency to phase 4 through 6. The severe-neighbor check reads the opening snapshot for the current cycle. A neighbor already processed on `global.date` exposes `air_winter_previous_phase`, while an unprocessed neighbor exposes its current phase. State iteration order therefore cannot change adjacency pressure. Adaptation, food, shelter, reclamation, and relief routes reduce pressure. Runtime pressure does not infer geography or climate.
 
 The persistent state ledgers are:
 
@@ -130,24 +133,25 @@ Death reason 17 is integrated into the reason schema, country cause totals, deta
 
 ### Operations and response decisions
 
-The response category provides 17 state-target actions. Sixteen are timed projects. They cover reception-state designation, respirators, clinics, air sampling, crop protection, ash-route clearance, rail protection, airfield closure, evacuation planning, shelter law, greenhouse refuge, controlled evacuation, medical triage, abandonment vote, bunker sealing, final evacuation, and mass decontamination.
+The response category contains twenty state-target decision blocks. One selects the response-priority state, one selects the reception state, two show read-only designation summaries, and sixteen are timed projects. The operational layer covers respirators, clinics, air sampling, crop protection, ash-route clearance, rail protection, airfield closure, evacuation planning, shelter law, greenhouse refuge, controlled evacuation, medical triage, abandonment vote, bunker sealing, final evacuation, and mass decontamination.
 
-Costs use exact affordability triggers and exact payment effects. Timed projects set a state lock on selection, clear it on completion, and clear it on cancellation. AI weights respond to population, survival, war strain, resource strain, infrastructure role, and prior planning. Cooldowns and completion flags prevent reward loops.
+Costs use exact affordability triggers and exact payment effects. Timed projects set both a state lock and a one-country lock on selection, then clear both on completion, cancellation, or reset. AI weights respond to population, survival, war strain, resource strain, infrastructure role, and prior planning. Cooldowns and completion flags prevent reward loops.
 
-Controlled and final evacuations subtract and add the same rounded state-population amount. The state-population route is documented, while its recruitable-manpower side effect remains unobserved and is not claimed. The exact observation plan is in `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_RESPONSE_DECISION_PROOF.md`.
+Controlled and final evacuations derive their transfer, transport, equipment, staff, stability, and pressure quote from source and receiver population. Formula work uses overflow-safe `state_population_k`. The transfer converts to people and rounds once before the quote is cached. The paid values, source, and receiver are locked for the delayed result. Source and receiver receive equal and opposite state-population changes. A country-scope deduction neutralizes the recruitable-manpower credit documented for negative state `add_manpower`. That compensation is statically supported but remains unobserved and is not claimed as a runtime guarantee. The proof is in `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_RESPONSE_DECISION_PROOF.md`.
 
 The abandonment vote fires `chaosx.fallout.201`. Mass decontamination fires `chaosx.fallout.202`. Decontamination succeeds only when the selected state meets the disclosed Survival, Adaptation, and Water Security thresholds. Failure applies state damage and registers civilian losses through the Deaths system.
 
 ## Event pilot and scheduler
 
-`events/fallout_world_end_events.txt` owns the namespace `chaosx.fallout`. The current Air Winter pilot contains 32 manually authored event blocks:
+`events/fallout_world_end_events.txt` owns the namespace `chaosx.fallout`. The current Air Winter pilot contains 33 manually authored event blocks:
 
 - 30 phase, regional, crisis, delayed-result, government, and recovery blocks.
 - 2 terminal response result blocks for abandonment and decontamination.
+- 1 stale-choice recovery block.
 
 The pilot covers every phase, all nine presentation classes through regional routing, city, food, transport, shelter, disease, government continuity, recovery, and several delayed deterministic results. Event text uses state names and government-aware authority terms.
 
-`air_winter_schedule_phase_event` runs from the existing monthly state update. It applies one country event per worsening phase, a 46-day country cooldown, one recovery arc cap, and reviewed regional routing. A missed phase remains eligible after the cooldown expires. It saves regular event targets and uses `meta_effect` to inject the selected numeric event ID. No second country or state iterator is introduced.
+`air_winter_schedule_phase_event` runs from the existing monthly state update. It records one deterministic candidate per owner using score and lowest-state-id tie resolution. A bounded post-pass owner array dispatches one country event per worsening phase, a 46-day country cooldown, one recovery arc cap, and reviewed regional routing. A missed phase remains eligible after the cooldown expires. Dispatch saves regular event targets and uses `meta_effect` to inject the selected numeric event ID. No second country-wide or state-wide iterator is introduced.
 
 Delayed events retain their originating state target through the event chain. Their event triggers require the saved state to remain owned by the saved country and require a live branch flag. State reset or ownership change cancels the branch and its stored owner. Country phase memories, cooldown flags, and recovery counts are cleared separately through `air_winter_reset_country`.
 
@@ -169,18 +173,22 @@ Their files are:
 - `interface/mapmodes_interface.gfx`
 - `gfx/interface/mapmode/custom/air_winter_*`
 
-The normal-map route has a bounded state 64 proof. A scripted effect creates and removes a dedicated state-bound entity that uses the vanilla `snow_small_particle` entity. A proof GUI drives the effect manually. Official effect signatures and an approved normal-mapped entity precedent establish the ordinary-map route. This is not final regional presentation, and no runtime visual observation is claimed.
+The retired state-64 proof established stable state-bound entity creation and cleanup before final art production. The live route uses five deterministic slots per state inside the existing monthly state update. It creates one class-and-phase ground mesh, primary and secondary weather entities, dead vegetation when regional phase or food damage requires it, and one frozen-water or thaw entity. Warm classes retain rain, ash, frost, wetness, and runoff rather than receiving universal snow. No runtime visual observation is claimed.
 
 Proof files are:
 
 - `gfx/entities/air_cleanliness_winter_proof.asset`
 - `common/scripted_effects/air_cleanliness_winter_visual_effects.txt`
+- `common/script_constants/air_cleanliness_winter_visual_constants.txt`
+- `gfx/entities/air_cleanliness_winter_regional_visuals.asset`
+- `gfx/entities/air_cleanliness_winter_regional_particles.asset`
 - `common/scripted_guis/air_cleanliness_winter_visual_proof_scripted_gui.txt`
 - `interface/air_cleanliness_winter_visual_proof.gfx`
 - `interface/air_cleanliness_winter_visual_proof.gui`
 - `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_NORMAL_MAP_PROOF.md`
+- `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_REGIONAL_VISUAL_WIRING_PROOF.md`
 
-Regional snow, frost, cold rain, ash, dead vegetation, frozen water, dim light, and thaw remain pending. Universal snow and a mapmode-only substitute are not approved.
+Regional snow, frost, cold rain, ash, dead vegetation, frozen water, phase-material dim light, and thaw are wired. The full-screen grade and static accessibility setting remain unpromoted because their UI and selection surfaces are not proven.
 
 ## Visual assets and sprite registry
 
@@ -192,7 +200,10 @@ All current final Air Winter art is Fallout-owned and uses dedicated paths.
 | Disease modifier | `GFX_air_winter_disease_pressure_state` | `gfx/interface/air_cleanliness_winter/modifiers/air_winter_disease_pressure_state.dds` | `interface/air_cleanliness_winter.gfx` |
 | Report events | `GFX_report_event_air_winter_phase_1` through `GFX_report_event_air_winter_phase_6`, plus `GFX_report_event_air_winter_recovery` | `gfx/event_pictures/fallout/air_winter/` | `interface/air_cleanliness_winter.gfx` |
 | Map mode buttons | Selected and deselected sprites for phase, exposure, and survival | `gfx/interface/mapmode/custom/` | `interface/mapmodes_interface.gfx` |
-| Response decisions | `GFX_decision_air_winter_*` | `gfx/interface/air_cleanliness_winter/decisions/` | Pending registration in `interface/air_cleanliness_winter.gfx` |
+| Response decisions | `GFX_decision_air_winter_*` | `gfx/interface/air_cleanliness_winter/decisions/` | `interface/air_cleanliness_winter.gfx` |
+| Regional ground and props | `air_winter_class_<class>_phase_<phase>_entity` and class prop aliases | `gfx/models/air_cleanliness_winter/regional/` | `gfx/entities/air_cleanliness_winter_regional_visuals.asset` |
+| Regional weather | Snow, cold-rain, ash, and thaw particle entities | `gfx/particles/air_cleanliness_winter/` | `gfx/entities/air_cleanliness_winter_regional_particles.asset` |
+| Registered grade and static alternatives | `GFX_air_winter_regional_*` | `gfx/interface/air_cleanliness_winter/regional_grades/` and regional static textures | `interface/air_cleanliness_winter_regional_visuals.gfx` |
 
 Sources, processed PNGs, contact sheets, provenance, and handoffs live under `docs/assets/air_cleanliness_fallout/`. The central manifest is `docs/assets/air_cleanliness_fallout/manifest.md`.
 
@@ -200,8 +211,8 @@ Sources, processed PNGs, contact sheets, provenance, and handoffs live under `do
 
 - `air_winter_suspend_state` removes runtime phase pressure while preserving long-term state ledgers.
 - `air_winter_reset_state` removes runtime variables, response state, phase modifiers, event memories, and state flags. It preserves the reviewed numeric presentation assignment.
-- `air_winter_reset_country` clears the calling country's reception-state array and country event memory without an iterator.
-- `air_winter_reset_global` invokes the country reset for the existing host and clears Air Winter global state without performing a state loop.
+- `air_winter_reset_country` clears the calling country's bounded reception-state array and country event memory without a world iterator.
+- `air_winter_reset_global` resets the existing host and every country retained in the bounded owner registry. It clears transient candidate arrays and requests state cleanup during the next existing monthly state pass. The monotonic cycle id is retained so old state stamps cannot collide with a restarted cycle.
 - Category restoration is explicit and must run before reset when the caller has confirmed category ownership.
 
 ## Engine-sensitive proof status
@@ -210,10 +221,12 @@ The proof set is:
 
 - `docs/plans/air_cleanliness_fallout_plans/ENGINE_SURFACE_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_STATE_LEDGER_INTEGRATION_PROOF.md`
+- `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_MONTHLY_DETERMINISM_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_EVENT_SCHEDULER_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_MODIFIER_AND_DEATHS_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_RESPONSE_DECISION_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_NORMAL_MAP_PROOF.md`
+- `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_REGIONAL_VISUAL_WIRING_PROOF.md`
 
 Static documentation and vanilla precedents support the implemented script surfaces. Runtime behavior remains unobserved for normal-map presentation, controller-side attrition, meta-generated event dispatch, delayed regular event-target retention, timed response decisions, state-population migration side effects, and dynamic localisation rendering. Those observations are not claimed as passing evidence.
 
@@ -226,15 +239,15 @@ Implemented in the Air Winter tranche:
 - Building, supply, operations, disease, and category consequences.
 - Exact 1081-state regional classification.
 - Three winter map modes.
-- Thirty-two manually authored Air Winter pilot events.
-- Seventeen response decisions with AI, costs, cooldowns, outcomes, and cleanup.
-- Dedicated modifier, report-event, and map-mode assets.
+- Thirty-three manually authored Air Winter pilot events.
+- Twenty response decision blocks with AI, dynamic costs where state scale applies, one-country ownership, cooldowns, outcomes, and cleanup.
+- Dedicated modifier, report-event, map-mode, and response-decision assets.
+- Dedicated nine-class regional ground, two-channel weather, vegetation, frozen-water, and thaw assets with a synchronized five-slot lifecycle.
 - Static engine proof documents and audit hooks.
 
 Incomplete and not claimed:
 
-- Final regional normal-map visuals. The documented route is proven, while its visual runtime checklist remains unobserved.
-- Dedicated decision icon registration until the current asset tranche completes.
+- Runtime proof for regional ordinary-map placement, layering, animation, save reconstruction, multiplayer behavior, and performance. The full-screen grade and static accessibility setting also remain unwired.
 - Fallout request coordinator and request ownership cleanup.
 - Fallout full-screen blackout, input blocking, recovery, authority, and sound.
 - Manual thermonuclear scenario and exact every-valid-province strike ledger.
@@ -246,8 +259,8 @@ Incomplete and not claimed:
 
 ## Future plans and extension suggestions
 
-1. Implement distinct regional normal-map packages for the nine presentation classes and phase transitions, including thaw cleanup, through the documented state entity route.
-2. Preserve the normal-map runtime observation checklist and do not report its visual items as tested.
+1. Preserve the normal-map runtime observation checklist and do not report its visual items as tested.
+2. Promote the full-screen grade or static accessibility setting only after its interface parent, click behavior, selection rule, and performance contract are proven.
 3. Use event memory from the Air Winter pilot as an input to the Fallout cause-memory and successor schedulers.
 4. Connect evacuation reception states and refugee pressure to post-rewrite migration without adding another world iterator.
 5. Expand Air Winter event depth only after the pilot audit and accepted improvement addendum are resolved.
