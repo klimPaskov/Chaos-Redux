@@ -40,7 +40,7 @@ The commander’s exact `num_battalions` selects the band:
 - standard: 100 through 199;
 - mass: 200 or more.
 
-Chemical Readiness modifies preparation: below 40 takes 150 percent, 40–59 is baseline, 60–79 takes 85 percent, and 80–100 takes 75 percent. The Operations Section shortens Prepare Chemical Offensive and Combined CBRN Overmatch by ten percent, and those two preparations receive a further five-percent reduction at 90 or more military respiratory protection. Every result is rounded and clamped to the ability range.
+Chemical Readiness modifies preparation: below 40 takes 150 percent, 40–59 is baseline, 60–79 takes 85 percent, and 80–100 takes 75 percent. The Operations Section shortens Prepare Chemical Offensive and Combined CBRN Overmatch by ten percent, and those two preparations receive a further five-percent reduction at 90 or more military respiratory protection. Theater Contamination Doctrine then multiplies only those two offensive preparation times by 0.90; Terminal Hazard Doctrine multiplies them by 0.80. Every result is rounded and clamped to the ability range.
 
 | Ability | Preparation | Active | Cooldown | Full command power by band |
 | --- | ---: | ---: | ---: | ---: |
@@ -56,7 +56,7 @@ Operating packages are centralized in `common/script_constants/cbrn_hq_constants
 
 Prepare Chemical Offensive and Combined CBRN Overmatch require a positive supported chemical-payload stock signal, but they do not remove an arbitrary generic payload. The delivery adapter must reserve and consume the player-selected agent before calling the shared exposure pipeline.
 
-The doctrine-gated `chemical_operations_commander` trait reduces preparation for all seven CBRN HQ abilities by ten percent after the normal readiness, Operations Section, and high-protection adjustments. It grants no release ability and does not reduce equipment, Command Power, upkeep, duration, or cooldown.
+The doctrine-gated `chemical_operations_commander` trait reduces preparation for all seven CBRN HQ abilities by ten percent after the normal readiness, Operations Section, and high-protection adjustments. The mutually exclusive offensive doctrine multiplier applies after that commander adjustment and only to Prepare Chemical Offensive and Combined CBRN Overmatch. Neither effect grants release authority or reduces equipment, Command Power, upkeep, duration, or cooldown.
 
 ## Doctrine and technology wiring
 
@@ -82,7 +82,7 @@ The baseline AI extends vanilla `hq_role` with five targets rather than replacin
 - biological-containment HQ: HQ staff, Biosecurity, Medical Countermeasure;
 - overmatch HQ: HQ staff, Operations, Protective Logistics, Mobile Decontamination.
 
-Every target requires exact unlocks, relevant policy/context, and a complete standing bill. The common infantry-equipment bill is 420: four vanilla infantry battalions at 100 each plus 20 for the mandatory HQ staff. Ability AI is disabled by default and gains positive weight only when the full player-equivalent activation trigger passes. Offensive AI cannot prepare under defensive-only policy or without supported payload stock. Country-profile differentiation remains a later AI stage; these safety and supply gates remain authoritative.
+Every target requires exact unlocks, relevant policy/context, and a complete standing bill. The common infantry-equipment bill is 420: four vanilla infantry battalions at 100 each plus 20 for the mandatory HQ staff. Ability AI is disabled by default and gains positive weight only when the full player-equivalent activation trigger passes. Theater Contamination and Terminal Hazard add offensive-preparation weight only after that trigger succeeds. Offensive AI cannot prepare under defensive-only policy or without supported payload stock. Country-profile differentiation remains a later AI stage; these safety and supply gates remain authoritative.
 
 ## Verified engine limits
 
