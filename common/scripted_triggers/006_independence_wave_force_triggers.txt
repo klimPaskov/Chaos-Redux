@@ -1,0 +1,91 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 DYNAMIC STARTING FORCE TRIGGERS
+# ============================================================================
+# Validation and profile classifiers for the generation-locked opening force
+# package. These triggers never create units or mutate the release plan.
+# ============================================================================
+
+has_valid_independence_wave_force_profile = {
+	check_variable = {
+		var = independence_wave_force_profile
+		value = constant:independence_wave_force_profile.territorial_defense
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = independence_wave_force_profile
+		value = constant:independence_wave_force_profile.foreign_volunteers
+		compare = less_than_or_equals
+	}
+}
+
+has_valid_independence_wave_military_tradition = {
+	check_variable = {
+		var = independence_wave_military_tradition
+		value = constant:independence_wave_value.minimum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = independence_wave_military_tradition
+		value = constant:independence_wave_value.maximum
+		compare = less_than_or_equals
+	}
+}
+
+has_independence_wave_mobile_force_profile = {
+	OR = {
+		check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.regular_defectors }
+		check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.mounted_mobile }
+		check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.desert_nomadic }
+		check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.foreign_volunteers }
+	}
+}
+
+has_independence_wave_artillery_force_profile = {
+	OR = {
+		check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.industrial_security }
+		check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.regular_defectors }
+		check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.foreign_volunteers }
+	}
+}
+
+has_independence_wave_coastal_force_profile = {
+	check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.coastal_maritime }
+}
+
+has_independence_wave_force_package_for_current_generation = {
+	has_variable = independence_wave_force_package_generation_id
+	check_variable = {
+		var = independence_wave_force_package_generation_id
+		value = independence_wave_generation_id
+		compare = equals
+	}
+}
+
+has_independence_wave_reinforcement_program = {
+	has_variable = independence_wave_reinforcement_pathway_count
+	check_variable = {
+		var = independence_wave_reinforcement_pathway_count
+		value = constant:independence_wave_force_research.minimum_reinforcement_pathways
+		compare = greater_than_or_equals
+	}
+}
+
+can_apply_independence_wave_force_package = {
+	is_independence_wave_active_country = yes
+	has_valid_independence_wave_force_profile = yes
+	has_valid_independence_wave_military_tradition = yes
+	has_independence_wave_reinforcement_program = yes
+	has_country_flag = independence_wave_command_roster_ready
+	has_variable = independence_wave_generation_id
+	has_variable = independence_wave_origin_chaos_band
+	has_event_target = independence_wave_setup_former_host
+	has_event_target = independence_wave_setup_anchor_state
+	event_target:independence_wave_setup_former_host = {
+		exists = yes
+		NOT = { tag = ROOT }
+	}
+	event_target:independence_wave_setup_anchor_state = {
+		is_owned_and_controlled_by = ROOT
+	}
+	NOT = { has_independence_wave_force_package_for_current_generation = yes }
+}

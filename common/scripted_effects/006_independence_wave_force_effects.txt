@@ -1,0 +1,847 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 DYNAMIC STARTING FORCE EFFECTS
+# ============================================================================
+# Overview:
+# - Snapshots every accepted starting-force input after synchronized release.
+# - Builds a bounded budget and tier-specific division, equipment, experience,
+#   logistics, officer, and military-influence outputs.
+# - Defines one researched profile template and creates the opening force once
+#   per Event 006 generation at the frozen anchor.
+# - Transfers only explicitly approved small naval or air fractions and never
+#   transfers host land units or general stockpiles.
+# - Records all inputs and outputs for Event Details, balancing, and audits.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Reinforcement pathway registry
+# ---------------------------------------------------------------------------
+
+independence_wave_clear_reinforcement_pathways = {
+	clr_country_flag = independence_wave_reinforce_integrate_militias
+	clr_country_flag = independence_wave_reinforce_regional_guards
+	clr_country_flag = independence_wave_reinforce_secure_depots
+	clr_country_flag = independence_wave_reinforce_convert_defectors
+	clr_country_flag = independence_wave_reinforce_volunteer_corridors
+	clr_country_flag = independence_wave_reinforce_league_cadres
+	clr_country_flag = independence_wave_reinforce_factory_rail_guards
+	clr_country_flag = independence_wave_reinforce_terrain_units
+	clr_country_flag = independence_wave_reinforce_foreign_arms
+	clr_country_flag = independence_wave_reinforce_professional_officers
+	clr_country_flag = independence_wave_reinforce_capital_border_defense
+	set_variable = { independence_wave_reinforcement_pathway_count = constant:independence_wave_force_budget.minimum }
+}
+
+independence_wave_add_reinforce_integrate_militias = {
+	if = { limit = { NOT = { has_country_flag = independence_wave_reinforce_integrate_militias } } set_country_flag = independence_wave_reinforce_integrate_militias add_to_variable = { independence_wave_reinforcement_pathway_count = constant:independence_wave_plan.loop_increment } }
+}
+independence_wave_add_reinforce_regional_guards = {
+	if = { limit = { NOT = { has_country_flag = independence_wave_reinforce_regional_guards } } set_country_flag = independence_wave_reinforce_regional_guards add_to_variable = { independence_wave_reinforcement_pathway_count = constant:independence_wave_plan.loop_increment } }
+}
+independence_wave_add_reinforce_secure_depots = {
+	if = { limit = { NOT = { has_country_flag = independence_wave_reinforce_secure_depots } } set_country_flag = independence_wave_reinforce_secure_depots add_to_variable = { independence_wave_reinforcement_pathway_count = constant:independence_wave_plan.loop_increment } }
+}
+independence_wave_add_reinforce_convert_defectors = {
+	if = { limit = { NOT = { has_country_flag = independence_wave_reinforce_convert_defectors } } set_country_flag = independence_wave_reinforce_convert_defectors add_to_variable = { independence_wave_reinforcement_pathway_count = constant:independence_wave_plan.loop_increment } }
+}
+independence_wave_add_reinforce_volunteer_corridors = {
+	if = { limit = { NOT = { has_country_flag = independence_wave_reinforce_volunteer_corridors } } set_country_flag = independence_wave_reinforce_volunteer_corridors add_to_variable = { independence_wave_reinforcement_pathway_count = constant:independence_wave_plan.loop_increment } }
+}
+independence_wave_add_reinforce_league_cadres = {
+	if = { limit = { NOT = { has_country_flag = independence_wave_reinforce_league_cadres } } set_country_flag = independence_wave_reinforce_league_cadres add_to_variable = { independence_wave_reinforcement_pathway_count = constant:independence_wave_plan.loop_increment } }
+}
+independence_wave_add_reinforce_factory_rail_guards = {
+	if = { limit = { NOT = { has_country_flag = independence_wave_reinforce_factory_rail_guards } } set_country_flag = independence_wave_reinforce_factory_rail_guards add_to_variable = { independence_wave_reinforcement_pathway_count = constant:independence_wave_plan.loop_increment } }
+}
+independence_wave_add_reinforce_terrain_units = {
+	if = { limit = { NOT = { has_country_flag = independence_wave_reinforce_terrain_units } } set_country_flag = independence_wave_reinforce_terrain_units add_to_variable = { independence_wave_reinforcement_pathway_count = constant:independence_wave_plan.loop_increment } }
+}
+independence_wave_add_reinforce_foreign_arms = {
+	if = { limit = { NOT = { has_country_flag = independence_wave_reinforce_foreign_arms } } set_country_flag = independence_wave_reinforce_foreign_arms add_to_variable = { independence_wave_reinforcement_pathway_count = constant:independence_wave_plan.loop_increment } }
+}
+independence_wave_add_reinforce_professional_officers = {
+	if = { limit = { NOT = { has_country_flag = independence_wave_reinforce_professional_officers } } set_country_flag = independence_wave_reinforce_professional_officers add_to_variable = { independence_wave_reinforcement_pathway_count = constant:independence_wave_plan.loop_increment } }
+}
+independence_wave_add_reinforce_capital_border_defense = {
+	if = { limit = { NOT = { has_country_flag = independence_wave_reinforce_capital_border_defense } } set_country_flag = independence_wave_reinforce_capital_border_defense add_to_variable = { independence_wave_reinforcement_pathway_count = constant:independence_wave_plan.loop_increment } }
+}
+
+# ---------------------------------------------------------------------------
+# Input snapshot
+# ---------------------------------------------------------------------------
+
+independence_wave_collect_force_inputs = {
+	set_temp_variable = { independence_wave_force_population_k = constant:independence_wave_force_budget.minimum }
+	set_temp_variable = { independence_wave_force_owned_states = num_owned_states }
+	set_temp_variable = { independence_wave_force_factory_count = num_of_factories }
+	set_temp_variable = { independence_wave_force_military_factory_count = num_of_military_factories }
+	set_temp_variable = { independence_wave_force_naval_factory_count = num_of_naval_factories }
+	set_temp_variable = { independence_wave_force_infrastructure_score = constant:independence_wave_force_budget.minimum }
+	set_temp_variable = { independence_wave_force_railway_states = constant:independence_wave_force_budget.minimum }
+	set_temp_variable = { independence_wave_force_port_levels = constant:independence_wave_force_budget.minimum }
+	set_temp_variable = { independence_wave_force_supply_nodes = constant:independence_wave_force_budget.minimum }
+	set_temp_variable = { independence_wave_force_minimum_railway_level = constant:independence_wave_force_budget.minimum_railway_level }
+	every_owned_state = {
+		add_to_temp_variable = { independence_wave_force_population_k = state_population_k }
+		add_to_temp_variable = { independence_wave_force_infrastructure_score = infrastructure_level }
+		add_to_temp_variable = { independence_wave_force_port_levels = building_level@naval_base }
+		add_to_temp_variable = { independence_wave_force_supply_nodes = num_of_supply_nodes }
+		if = {
+			limit = {
+				meta_trigger = {
+					text = {
+						has_railway_level = {
+							level = [IW_RAIL_LEVEL]
+							state = THIS
+						}
+					}
+					IW_RAIL_LEVEL = "[?independence_wave_force_minimum_railway_level|.0]"
+				}
+			}
+			add_to_temp_variable = { independence_wave_force_railway_states = constant:independence_wave_plan.loop_increment }
+		}
+	}
+
+	set_temp_variable = { independence_wave_force_host_divisions = constant:independence_wave_force_budget.minimum }
+	set_temp_variable = { independence_wave_force_host_surrender = constant:independence_wave_force_budget.minimum }
+	set_temp_variable = { independence_wave_force_host_at_war = constant:independence_wave_planner.no_candidates }
+	event_target:independence_wave_setup_former_host = {
+		set_temp_variable = { independence_wave_force_host_divisions = num_divisions }
+		set_temp_variable = { independence_wave_force_host_surrender = surrender_progress }
+		if = {
+			limit = { has_war = yes }
+			set_temp_variable = { independence_wave_force_host_at_war = constant:independence_wave_planner.selected }
+		}
+	}
+
+	set_temp_variable = { independence_wave_force_chaos_band = independence_wave_origin_chaos_band }
+	set_temp_variable = { independence_wave_force_legitimacy_input = independence_wave_legitimacy }
+	set_temp_variable = { independence_wave_force_tradition_input = independence_wave_military_tradition }
+	set_temp_variable = { independence_wave_force_patron_input = independence_wave_strongest_patron_influence }
+	set_temp_variable = { independence_wave_force_network_input = independence_wave_network_standing }
+
+	set_variable = { independence_wave_opening_population_k = independence_wave_force_population_k }
+	set_variable = { independence_wave_opening_factory_count = independence_wave_force_factory_count }
+	set_variable = { independence_wave_opening_infrastructure_score = independence_wave_force_infrastructure_score }
+	set_variable = { independence_wave_opening_railway_state_count = independence_wave_force_railway_states }
+	set_variable = { independence_wave_opening_port_level_count = independence_wave_force_port_levels }
+	set_variable = { independence_wave_opening_supply_node_count = independence_wave_force_supply_nodes }
+	set_variable = { independence_wave_opening_host_division_count = independence_wave_force_host_divisions }
+	set_variable = { independence_wave_opening_host_surrender_progress = independence_wave_force_host_surrender }
+	clr_country_flag = independence_wave_opening_host_was_at_war
+	if = {
+		limit = { check_variable = { independence_wave_force_host_at_war = constant:independence_wave_planner.selected } }
+		set_country_flag = independence_wave_opening_host_was_at_war
+	}
+	set_variable = { independence_wave_opening_patron_support = independence_wave_force_patron_input }
+	set_variable = { independence_wave_opening_network_support = independence_wave_force_network_input }
+}
+
+# ---------------------------------------------------------------------------
+# Budget and output calculation
+# ---------------------------------------------------------------------------
+
+independence_wave_calculate_force_budget = {
+	set_temp_variable = { independence_wave_force_budget_score = constant:independence_wave_force_tier.fragile_budget }
+	if = {
+		limit = { check_variable = { independence_wave_force_level = constant:liberation_force_level.viable } }
+		set_temp_variable = { independence_wave_force_budget_score = constant:independence_wave_force_tier.viable_budget }
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_force_level = constant:liberation_force_level.armed } }
+		set_temp_variable = { independence_wave_force_budget_score = constant:independence_wave_force_tier.armed_budget }
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_force_level = constant:liberation_force_level.high_chaos } }
+		set_temp_variable = { independence_wave_force_budget_score = constant:independence_wave_force_tier.high_chaos_budget }
+	}
+
+	set_temp_variable = { independence_wave_force_population_component = independence_wave_force_population_k }
+	divide_temp_variable = { independence_wave_force_population_component = constant:independence_wave_force_budget.population_divisor_k }
+	clamp_temp_variable = {
+		var = independence_wave_force_population_component
+		min = constant:independence_wave_force_budget.minimum
+		max = constant:independence_wave_force_budget.population_component_maximum
+	}
+
+	set_temp_variable = { independence_wave_force_factory_component = independence_wave_force_factory_count }
+	multiply_temp_variable = { independence_wave_force_factory_component = constant:independence_wave_force_budget.factory_multiplier }
+	clamp_temp_variable = {
+		var = independence_wave_force_factory_component
+		min = constant:independence_wave_force_budget.minimum
+		max = constant:independence_wave_force_budget.factory_component_maximum
+	}
+
+	set_temp_variable = { independence_wave_force_infrastructure_component = independence_wave_force_infrastructure_score }
+	divide_temp_variable = { independence_wave_force_infrastructure_component = constant:independence_wave_force_budget.infrastructure_divisor }
+	clamp_temp_variable = {
+		var = independence_wave_force_infrastructure_component
+		min = constant:independence_wave_force_budget.minimum
+		max = constant:independence_wave_force_budget.infrastructure_component_maximum
+	}
+
+	set_temp_variable = { independence_wave_force_transport_component = independence_wave_force_railway_states }
+	multiply_temp_variable = { independence_wave_force_transport_component = constant:independence_wave_force_budget.railway_state_multiplier }
+	set_temp_variable = { independence_wave_force_port_component = independence_wave_force_port_levels }
+	multiply_temp_variable = { independence_wave_force_port_component = constant:independence_wave_force_budget.port_level_multiplier }
+	add_to_temp_variable = { independence_wave_force_transport_component = independence_wave_force_port_component }
+	set_temp_variable = { independence_wave_force_supply_component = independence_wave_force_supply_nodes }
+	multiply_temp_variable = { independence_wave_force_supply_component = constant:independence_wave_force_budget.supply_node_multiplier }
+	add_to_temp_variable = { independence_wave_force_transport_component = independence_wave_force_supply_component }
+	clamp_temp_variable = {
+		var = independence_wave_force_transport_component
+		min = constant:independence_wave_force_budget.minimum
+		max = constant:independence_wave_force_budget.transport_component_maximum
+	}
+
+	set_temp_variable = { independence_wave_force_host_force_component = independence_wave_force_host_divisions }
+	divide_temp_variable = { independence_wave_force_host_force_component = constant:independence_wave_force_budget.host_division_divisor }
+	clamp_temp_variable = {
+		var = independence_wave_force_host_force_component
+		min = constant:independence_wave_force_budget.minimum
+		max = constant:independence_wave_force_budget.host_force_component_maximum
+	}
+
+	set_temp_variable = { independence_wave_force_host_weakness_component = independence_wave_force_host_surrender }
+	multiply_temp_variable = { independence_wave_force_host_weakness_component = constant:independence_wave_force_budget.host_surrender_multiplier }
+	if = {
+		limit = { check_variable = { independence_wave_force_host_at_war = constant:independence_wave_planner.selected } }
+		add_to_temp_variable = { independence_wave_force_host_weakness_component = constant:independence_wave_force_budget.host_war_bonus }
+	}
+	if = {
+		limit = { independence_wave_force_host_divisions < constant:independence_wave_force_budget.host_weak_army_division_ceiling }
+		add_to_temp_variable = { independence_wave_force_host_weakness_component = constant:independence_wave_force_budget.host_weak_army_bonus }
+	}
+	clamp_temp_variable = {
+		var = independence_wave_force_host_weakness_component
+		min = constant:independence_wave_force_budget.minimum
+		max = constant:independence_wave_force_budget.host_weakness_component_maximum
+	}
+
+	set_temp_variable = { independence_wave_force_chaos_component = independence_wave_force_chaos_band }
+	multiply_temp_variable = { independence_wave_force_chaos_component = constant:independence_wave_force_budget.chaos_band_multiplier }
+	set_temp_variable = { independence_wave_force_legitimacy_component = independence_wave_force_legitimacy_input }
+	divide_temp_variable = { independence_wave_force_legitimacy_component = constant:independence_wave_force_budget.legitimacy_divisor }
+	set_temp_variable = { independence_wave_force_tradition_component = independence_wave_force_tradition_input }
+	divide_temp_variable = { independence_wave_force_tradition_component = constant:independence_wave_force_budget.military_tradition_divisor }
+	set_temp_variable = { independence_wave_force_patron_component = independence_wave_force_patron_input }
+	divide_temp_variable = { independence_wave_force_patron_component = constant:independence_wave_force_budget.patron_support_divisor }
+	set_temp_variable = { independence_wave_force_network_component = independence_wave_force_network_input }
+	divide_temp_variable = { independence_wave_force_network_component = constant:independence_wave_force_budget.network_support_divisor }
+	clamp_temp_variable = {
+		var = independence_wave_force_network_component
+		min = constant:independence_wave_force_budget.network_component_minimum
+		max = constant:independence_wave_force_budget.network_component_maximum
+	}
+	set_temp_variable = { independence_wave_force_territory_component = independence_wave_force_owned_states }
+	multiply_temp_variable = { independence_wave_force_territory_component = constant:independence_wave_force_budget.territory_state_multiplier }
+	clamp_temp_variable = {
+		var = independence_wave_force_territory_component
+		min = constant:independence_wave_force_budget.minimum
+		max = constant:independence_wave_force_budget.territory_component_maximum
+	}
+
+	add_to_temp_variable = { independence_wave_force_budget_score = independence_wave_force_population_component }
+	add_to_temp_variable = { independence_wave_force_budget_score = independence_wave_force_factory_component }
+	add_to_temp_variable = { independence_wave_force_budget_score = independence_wave_force_infrastructure_component }
+	add_to_temp_variable = { independence_wave_force_budget_score = independence_wave_force_transport_component }
+	add_to_temp_variable = { independence_wave_force_budget_score = independence_wave_force_host_force_component }
+	add_to_temp_variable = { independence_wave_force_budget_score = independence_wave_force_host_weakness_component }
+	add_to_temp_variable = { independence_wave_force_budget_score = independence_wave_force_chaos_component }
+	add_to_temp_variable = { independence_wave_force_budget_score = independence_wave_force_legitimacy_component }
+	add_to_temp_variable = { independence_wave_force_budget_score = independence_wave_force_tradition_component }
+	add_to_temp_variable = { independence_wave_force_budget_score = independence_wave_force_patron_component }
+	add_to_temp_variable = { independence_wave_force_budget_score = independence_wave_force_network_component }
+	add_to_temp_variable = { independence_wave_force_budget_score = independence_wave_force_territory_component }
+
+	if = { limit = { check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.industrial_security } } add_to_temp_variable = { independence_wave_force_budget_score = constant:independence_wave_force_profile_budget.industrial_security } }
+	else_if = { limit = { check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.regular_defectors } } add_to_temp_variable = { independence_wave_force_budget_score = constant:independence_wave_force_profile_budget.regular_defectors } }
+	else_if = { limit = { check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.mountain_frontier } } add_to_temp_variable = { independence_wave_force_budget_score = constant:independence_wave_force_profile_budget.mountain_frontier } }
+	else_if = { limit = { check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.coastal_maritime } } add_to_temp_variable = { independence_wave_force_budget_score = constant:independence_wave_force_profile_budget.coastal_maritime } }
+	else_if = { limit = { check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.mounted_mobile } } add_to_temp_variable = { independence_wave_force_budget_score = constant:independence_wave_force_profile_budget.mounted_mobile } }
+	else_if = { limit = { check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.desert_nomadic } } add_to_temp_variable = { independence_wave_force_budget_score = constant:independence_wave_force_profile_budget.desert_nomadic } }
+	else_if = { limit = { check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.river_jungle } } add_to_temp_variable = { independence_wave_force_budget_score = constant:independence_wave_force_profile_budget.river_jungle } }
+	else_if = { limit = { check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.foreign_volunteers } } add_to_temp_variable = { independence_wave_force_budget_score = constant:independence_wave_force_profile_budget.foreign_volunteers } }
+
+	clamp_temp_variable = { var = independence_wave_force_budget_score min = constant:independence_wave_force_budget.minimum }
+	set_variable = { independence_wave_opening_force_budget = independence_wave_force_budget_score }
+}
+
+independence_wave_calculate_force_outputs = {
+	set_temp_variable = { independence_wave_force_division_count = independence_wave_force_budget_score }
+	divide_temp_variable = { independence_wave_force_division_count = constant:independence_wave_force_budget.division_budget_divisor }
+	round_temp_variable = independence_wave_force_division_count
+
+	set_temp_variable = { independence_wave_force_equipment_factor = constant:independence_wave_force_tier.fragile_equipment_factor }
+	set_temp_variable = { independence_wave_force_experience_factor = constant:independence_wave_force_tier.fragile_experience_factor }
+	set_variable = { independence_wave_military_influence = constant:independence_wave_military_influence.fragile_start }
+	if = {
+		limit = { check_variable = { independence_wave_force_level = constant:liberation_force_level.viable } }
+		set_temp_variable = { independence_wave_force_equipment_factor = constant:independence_wave_force_tier.viable_equipment_factor }
+		set_temp_variable = { independence_wave_force_experience_factor = constant:independence_wave_force_tier.viable_experience_factor }
+		set_variable = { independence_wave_military_influence = constant:independence_wave_military_influence.viable_start }
+		set_variable = { independence_wave_command_lifecycle = constant:independence_wave_lifecycle_stage.mitigated }
+		clamp_temp_variable = {
+			var = independence_wave_force_division_count
+			min = constant:independence_wave_force_tier.viable_division_minimum
+			max = constant:independence_wave_force_tier.viable_division_maximum
+		}
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_force_level = constant:liberation_force_level.armed } }
+		set_temp_variable = { independence_wave_force_equipment_factor = constant:independence_wave_force_tier.armed_equipment_factor }
+		set_temp_variable = { independence_wave_force_experience_factor = constant:independence_wave_force_tier.armed_experience_factor }
+		set_variable = { independence_wave_military_influence = constant:independence_wave_military_influence.armed_start }
+		set_variable = { independence_wave_command_lifecycle = constant:independence_wave_lifecycle_stage.route_institution }
+		clamp_temp_variable = {
+			var = independence_wave_force_division_count
+			min = constant:independence_wave_force_tier.armed_division_minimum
+			max = constant:independence_wave_force_tier.armed_division_maximum
+		}
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_force_level = constant:liberation_force_level.high_chaos } }
+		set_temp_variable = { independence_wave_force_equipment_factor = constant:independence_wave_force_tier.high_chaos_equipment_factor }
+		set_temp_variable = { independence_wave_force_experience_factor = constant:independence_wave_force_tier.high_chaos_experience_factor }
+		set_variable = { independence_wave_military_influence = constant:independence_wave_military_influence.high_chaos_start }
+		set_country_flag = independence_wave_military_guardianship_active
+		clamp_temp_variable = {
+			var = independence_wave_force_division_count
+			min = constant:independence_wave_force_tier.high_chaos_division_minimum
+			max = constant:independence_wave_force_tier.high_chaos_division_maximum
+		}
+	}
+	else = {
+		clamp_temp_variable = {
+			var = independence_wave_force_division_count
+			min = constant:independence_wave_force_tier.fragile_division_minimum
+			max = constant:independence_wave_force_tier.fragile_division_maximum
+		}
+	}
+
+	if = { limit = { check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.industrial_security } } add_to_variable = { independence_wave_military_influence = constant:independence_wave_military_influence.industrial_guard_bonus } }
+	else_if = { limit = { check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.regular_defectors } } add_to_variable = { independence_wave_military_influence = constant:independence_wave_military_influence.regular_defector_bonus } }
+	else_if = { limit = { check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.foreign_volunteers } } add_to_variable = { independence_wave_military_influence = constant:independence_wave_military_influence.foreign_volunteer_bonus } }
+	clamp_variable = {
+		var = independence_wave_military_influence
+		min = constant:independence_wave_military_influence.minimum
+		max = constant:independence_wave_military_influence.maximum
+	}
+
+	set_temp_variable = { independence_wave_force_infantry_stockpile = independence_wave_force_division_count }
+	multiply_temp_variable = { independence_wave_force_infantry_stockpile = constant:independence_wave_force_profile_stockpile.base_infantry_per_division }
+	set_temp_variable = { independence_wave_force_infantry_reserve = independence_wave_force_division_count }
+	multiply_temp_variable = { independence_wave_force_infantry_reserve = constant:independence_wave_force_profile_stockpile.reserve_infantry_per_division }
+	add_to_temp_variable = { independence_wave_force_infantry_stockpile = independence_wave_force_infantry_reserve }
+	set_temp_variable = { independence_wave_force_support_stockpile = independence_wave_force_division_count }
+	multiply_temp_variable = { independence_wave_force_support_stockpile = constant:independence_wave_force_profile_stockpile.base_support_per_division }
+	set_temp_variable = { independence_wave_force_artillery_stockpile = constant:independence_wave_force_budget.minimum }
+	if = {
+		limit = { has_independence_wave_artillery_force_profile = yes }
+		set_temp_variable = { independence_wave_force_artillery_stockpile = independence_wave_force_division_count }
+		multiply_temp_variable = { independence_wave_force_artillery_stockpile = constant:independence_wave_force_profile_stockpile.base_artillery_per_division }
+	}
+
+	set_temp_variable = { independence_wave_force_train_stockpile = independence_wave_force_railway_states }
+	multiply_temp_variable = { independence_wave_force_train_stockpile = constant:independence_wave_force_profile_stockpile.train_per_railway_state }
+	set_temp_variable = { independence_wave_force_train_supply_component = independence_wave_force_supply_nodes }
+	multiply_temp_variable = { independence_wave_force_train_supply_component = constant:independence_wave_force_profile_stockpile.train_per_supply_node }
+	add_to_temp_variable = { independence_wave_force_train_stockpile = independence_wave_force_train_supply_component }
+	add_to_temp_variable = { independence_wave_force_train_stockpile = constant:independence_wave_force_profile_stockpile.train_base }
+	clamp_temp_variable = {
+		var = independence_wave_force_train_stockpile
+		min = constant:independence_wave_force_profile_stockpile.train_base
+		max = constant:independence_wave_force_profile_stockpile.train_maximum
+	}
+
+	set_temp_variable = { independence_wave_force_truck_stockpile = independence_wave_force_division_count }
+	multiply_temp_variable = { independence_wave_force_truck_stockpile = constant:independence_wave_force_profile_stockpile.base_trucks_per_division }
+	set_temp_variable = { independence_wave_force_truck_factory_component = independence_wave_force_factory_count }
+	multiply_temp_variable = { independence_wave_force_truck_factory_component = constant:independence_wave_force_profile_stockpile.truck_per_factory }
+	add_to_temp_variable = { independence_wave_force_truck_stockpile = independence_wave_force_truck_factory_component }
+	add_to_temp_variable = { independence_wave_force_truck_stockpile = constant:independence_wave_force_profile_stockpile.truck_base }
+	if = { limit = { check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.mounted_mobile } } add_to_temp_variable = { independence_wave_force_truck_stockpile = constant:independence_wave_force_profile_stockpile.mounted_truck_bonus } }
+	else_if = { limit = { check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.desert_nomadic } } add_to_temp_variable = { independence_wave_force_truck_stockpile = constant:independence_wave_force_profile_stockpile.desert_truck_bonus } }
+	clamp_temp_variable = {
+		var = independence_wave_force_truck_stockpile
+		min = constant:independence_wave_force_profile_stockpile.truck_base
+		max = constant:independence_wave_force_profile_stockpile.truck_maximum
+	}
+
+	set_temp_variable = { independence_wave_force_convoy_stockpile = constant:independence_wave_force_budget.minimum }
+	if = {
+		limit = { independence_wave_force_port_levels > constant:independence_wave_force_budget.minimum }
+		set_temp_variable = { independence_wave_force_convoy_stockpile = independence_wave_force_port_levels }
+		multiply_temp_variable = { independence_wave_force_convoy_stockpile = constant:independence_wave_force_profile_stockpile.coastal_convoy_per_port_level }
+		if = {
+			limit = { has_independence_wave_coastal_force_profile = yes }
+			add_to_temp_variable = { independence_wave_force_convoy_stockpile = constant:independence_wave_force_profile_stockpile.coastal_convoy_base }
+		}
+		clamp_temp_variable = {
+			var = independence_wave_force_convoy_stockpile
+			min = constant:independence_wave_force_budget.minimum
+			max = constant:independence_wave_force_profile_stockpile.convoy_maximum
+		}
+	}
+
+	if = {
+		limit = { check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.industrial_security } }
+		add_to_temp_variable = { independence_wave_force_infantry_stockpile = constant:independence_wave_force_profile_stockpile.industrial_infantry_bonus }
+		add_to_temp_variable = { independence_wave_force_support_stockpile = constant:independence_wave_force_profile_stockpile.industrial_support_bonus }
+		add_to_temp_variable = { independence_wave_force_artillery_stockpile = constant:independence_wave_force_profile_stockpile.industrial_artillery_bonus }
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.regular_defectors } }
+		add_to_temp_variable = { independence_wave_force_infantry_stockpile = constant:independence_wave_force_profile_stockpile.regular_infantry_bonus }
+		add_to_temp_variable = { independence_wave_force_support_stockpile = constant:independence_wave_force_profile_stockpile.regular_support_bonus }
+		add_to_temp_variable = { independence_wave_force_artillery_stockpile = constant:independence_wave_force_profile_stockpile.regular_artillery_bonus }
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.mountain_frontier } }
+		add_to_temp_variable = { independence_wave_force_support_stockpile = constant:independence_wave_force_profile_stockpile.mountain_support_bonus }
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.river_jungle } }
+		add_to_temp_variable = { independence_wave_force_support_stockpile = constant:independence_wave_force_profile_stockpile.river_support_bonus }
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.foreign_volunteers } }
+		add_to_temp_variable = { independence_wave_force_infantry_stockpile = constant:independence_wave_force_profile_stockpile.volunteer_infantry_bonus }
+		add_to_temp_variable = { independence_wave_force_support_stockpile = constant:independence_wave_force_profile_stockpile.volunteer_support_bonus }
+		add_to_temp_variable = { independence_wave_force_artillery_stockpile = constant:independence_wave_force_profile_stockpile.volunteer_artillery_bonus }
+	}
+
+	set_temp_variable = { independence_wave_force_fuel_stockpile = independence_wave_force_truck_stockpile }
+	multiply_temp_variable = { independence_wave_force_fuel_stockpile = constant:independence_wave_force_profile_stockpile.fuel_per_truck }
+	add_to_temp_variable = { independence_wave_force_fuel_stockpile = constant:independence_wave_force_profile_stockpile.fuel_base }
+	if = {
+		limit = { has_independence_wave_mobile_force_profile = yes }
+		add_to_temp_variable = { independence_wave_force_fuel_stockpile = constant:independence_wave_force_profile_stockpile.fuel_mobile_bonus }
+	}
+
+	round_temp_variable = independence_wave_force_infantry_stockpile
+	round_temp_variable = independence_wave_force_support_stockpile
+	round_temp_variable = independence_wave_force_artillery_stockpile
+	round_temp_variable = independence_wave_force_train_stockpile
+	round_temp_variable = independence_wave_force_truck_stockpile
+	round_temp_variable = independence_wave_force_convoy_stockpile
+	round_temp_variable = independence_wave_force_fuel_stockpile
+
+	set_variable = { independence_wave_opening_division_count = independence_wave_force_division_count }
+	set_variable = { independence_wave_opening_equipment_factor = independence_wave_force_equipment_factor }
+	set_variable = { independence_wave_opening_experience_factor = independence_wave_force_experience_factor }
+	set_variable = { independence_wave_opening_infantry_stockpile = independence_wave_force_infantry_stockpile }
+	set_variable = { independence_wave_opening_support_stockpile = independence_wave_force_support_stockpile }
+	set_variable = { independence_wave_opening_artillery_stockpile = independence_wave_force_artillery_stockpile }
+	set_variable = { independence_wave_opening_train_stockpile = independence_wave_force_train_stockpile }
+	set_variable = { independence_wave_opening_truck_stockpile = independence_wave_force_truck_stockpile }
+	set_variable = { independence_wave_opening_convoy_stockpile = independence_wave_force_convoy_stockpile }
+	set_variable = { independence_wave_opening_fuel_stockpile = independence_wave_force_fuel_stockpile }
+}
+
+# ---------------------------------------------------------------------------
+# Profile templates
+# ---------------------------------------------------------------------------
+
+independence_wave_define_force_template = {
+	if = {
+		limit = {
+			check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.territorial_defense }
+			NOT = { has_country_flag = independence_wave_template_territorial_defense_created }
+		}
+		meta_effect = {
+			text = {
+				division_template = {
+					name = "[IW_TEMPLATE]"
+					priority = 1
+					regiments = {
+						infantry = { x = 0 y = 0 }
+						infantry = { x = 0 y = 1 }
+						infantry = { x = 0 y = 2 }
+						infantry = { x = 1 y = 0 }
+						infantry = { x = 1 y = 1 }
+						infantry = { x = 1 y = 2 }
+					}
+					support = { engineer = { x = 0 y = 0 } }
+				}
+			}
+			IW_TEMPLATE = "[This.GetIndependenceWaveForceTemplateName]"
+		}
+		set_country_flag = independence_wave_template_territorial_defense_created
+	}
+	else_if = {
+		limit = {
+			check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.industrial_security }
+			NOT = { has_country_flag = independence_wave_template_industrial_security_created }
+		}
+		meta_effect = {
+			text = {
+				division_template = {
+					name = "[IW_TEMPLATE]"
+					priority = 1
+					regiments = {
+						infantry = { x = 0 y = 0 }
+						infantry = { x = 0 y = 1 }
+						infantry = { x = 0 y = 2 }
+						infantry = { x = 1 y = 0 }
+						infantry = { x = 1 y = 1 }
+						artillery_brigade = { x = 1 y = 2 }
+					}
+					support = {
+						engineer = { x = 0 y = 0 }
+						artillery = { x = 0 y = 1 }
+					}
+				}
+			}
+			IW_TEMPLATE = "[This.GetIndependenceWaveForceTemplateName]"
+		}
+		set_country_flag = independence_wave_template_industrial_security_created
+	}
+	else_if = {
+		limit = {
+			check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.regular_defectors }
+			NOT = { has_country_flag = independence_wave_template_regular_defectors_created }
+		}
+		meta_effect = {
+			text = {
+				division_template = {
+					name = "[IW_TEMPLATE]"
+					priority = 1
+					regiments = {
+						infantry = { x = 0 y = 0 }
+						infantry = { x = 0 y = 1 }
+						infantry = { x = 0 y = 2 }
+						infantry = { x = 1 y = 0 }
+						infantry = { x = 1 y = 1 }
+						infantry = { x = 1 y = 2 }
+						artillery_brigade = { x = 2 y = 0 }
+					}
+					support = {
+						artillery = { x = 0 y = 0 }
+						recon = { x = 0 y = 1 }
+					}
+				}
+			}
+			IW_TEMPLATE = "[This.GetIndependenceWaveForceTemplateName]"
+		}
+		set_country_flag = independence_wave_template_regular_defectors_created
+	}
+	else_if = {
+		limit = {
+			check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.mountain_frontier }
+			NOT = { has_country_flag = independence_wave_template_mountain_frontier_created }
+		}
+		meta_effect = {
+			text = {
+				division_template = {
+					name = "[IW_TEMPLATE]"
+					priority = 1
+					regiments = {
+						infantry = { x = 0 y = 0 }
+						infantry = { x = 0 y = 1 }
+						infantry = { x = 0 y = 2 }
+						infantry = { x = 1 y = 0 }
+						infantry = { x = 1 y = 1 }
+						infantry = { x = 1 y = 2 }
+					}
+					support = {
+						engineer = { x = 0 y = 0 }
+						recon = { x = 0 y = 1 }
+					}
+				}
+			}
+			IW_TEMPLATE = "[This.GetIndependenceWaveForceTemplateName]"
+		}
+		set_country_flag = independence_wave_template_mountain_frontier_created
+	}
+	else_if = {
+		limit = {
+			check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.coastal_maritime }
+			NOT = { has_country_flag = independence_wave_template_coastal_maritime_created }
+		}
+		meta_effect = {
+			text = {
+				division_template = {
+					name = "[IW_TEMPLATE]"
+					priority = 1
+					regiments = {
+						infantry = { x = 0 y = 0 }
+						infantry = { x = 0 y = 1 }
+						infantry = { x = 0 y = 2 }
+						infantry = { x = 1 y = 0 }
+						infantry = { x = 1 y = 1 }
+						infantry = { x = 1 y = 2 }
+					}
+					support = { engineer = { x = 0 y = 0 } }
+				}
+			}
+			IW_TEMPLATE = "[This.GetIndependenceWaveForceTemplateName]"
+		}
+		set_country_flag = independence_wave_template_coastal_maritime_created
+	}
+	else_if = {
+		limit = {
+			check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.mounted_mobile }
+			NOT = { has_country_flag = independence_wave_template_mounted_mobile_created }
+		}
+		meta_effect = {
+			text = {
+				division_template = {
+					name = "[IW_TEMPLATE]"
+					priority = 1
+					regiments = {
+						cavalry = { x = 0 y = 0 }
+						cavalry = { x = 0 y = 1 }
+						cavalry = { x = 0 y = 2 }
+						cavalry = { x = 1 y = 0 }
+						infantry = { x = 1 y = 1 }
+						infantry = { x = 1 y = 2 }
+					}
+					support = { recon = { x = 0 y = 0 } }
+				}
+			}
+			IW_TEMPLATE = "[This.GetIndependenceWaveForceTemplateName]"
+		}
+		set_country_flag = independence_wave_template_mounted_mobile_created
+	}
+	else_if = {
+		limit = {
+			check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.desert_nomadic }
+			NOT = { has_country_flag = independence_wave_template_desert_nomadic_created }
+		}
+		meta_effect = {
+			text = {
+				division_template = {
+					name = "[IW_TEMPLATE]"
+					priority = 1
+					regiments = {
+						cavalry = { x = 0 y = 0 }
+						cavalry = { x = 0 y = 1 }
+						cavalry = { x = 0 y = 2 }
+						infantry = { x = 1 y = 0 }
+						infantry = { x = 1 y = 1 }
+						infantry = { x = 1 y = 2 }
+					}
+					support = { recon = { x = 0 y = 0 } }
+				}
+			}
+			IW_TEMPLATE = "[This.GetIndependenceWaveForceTemplateName]"
+		}
+		set_country_flag = independence_wave_template_desert_nomadic_created
+	}
+	else_if = {
+		limit = {
+			check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.river_jungle }
+			NOT = { has_country_flag = independence_wave_template_river_jungle_created }
+		}
+		meta_effect = {
+			text = {
+				division_template = {
+					name = "[IW_TEMPLATE]"
+					priority = 1
+					regiments = {
+						infantry = { x = 0 y = 0 }
+						infantry = { x = 0 y = 1 }
+						infantry = { x = 0 y = 2 }
+						infantry = { x = 1 y = 0 }
+						infantry = { x = 1 y = 1 }
+						infantry = { x = 1 y = 2 }
+					}
+					support = {
+						engineer = { x = 0 y = 0 }
+						recon = { x = 0 y = 1 }
+					}
+				}
+			}
+			IW_TEMPLATE = "[This.GetIndependenceWaveForceTemplateName]"
+		}
+		set_country_flag = independence_wave_template_river_jungle_created
+	}
+	else_if = {
+		limit = {
+			check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.foreign_volunteers }
+			NOT = { has_country_flag = independence_wave_template_foreign_volunteers_created }
+		}
+		meta_effect = {
+			text = {
+				division_template = {
+					name = "[IW_TEMPLATE]"
+					priority = 1
+					regiments = {
+						infantry = { x = 0 y = 0 }
+						infantry = { x = 0 y = 1 }
+						infantry = { x = 0 y = 2 }
+						infantry = { x = 1 y = 0 }
+						infantry = { x = 1 y = 1 }
+						infantry = { x = 1 y = 2 }
+						artillery_brigade = { x = 2 y = 0 }
+					}
+					support = {
+						artillery = { x = 0 y = 0 }
+						engineer = { x = 0 y = 1 }
+					}
+				}
+			}
+			IW_TEMPLATE = "[This.GetIndependenceWaveForceTemplateName]"
+		}
+		set_country_flag = independence_wave_template_foreign_volunteers_created
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Materialization
+# ---------------------------------------------------------------------------
+
+independence_wave_create_opening_divisions = {
+	meta_effect = {
+		text = {
+			event_target:independence_wave_setup_anchor_state = {
+				create_unit = {
+					division = "division_template = \"[IW_TEMPLATE]\" start_experience_factor = [IW_EXPERIENCE] start_equipment_factor = [IW_EQUIPMENT] start_manpower_factor = [IW_MANPOWER]"
+					owner = ROOT
+					allow_spawning_on_enemy_provs = no
+					count = [IW_COUNT]
+				}
+			}
+		}
+		IW_TEMPLATE = "[This.GetIndependenceWaveForceTemplateName]"
+		IW_EXPERIENCE = "[?independence_wave_force_experience_factor|.2]"
+		IW_EQUIPMENT = "[?independence_wave_force_equipment_factor|.2]"
+		IW_MANPOWER = "[?independence_wave_force_manpower_factor|.2]"
+		IW_COUNT = "[?independence_wave_force_division_count|.0]"
+	}
+}
+
+independence_wave_add_opening_stockpiles = {
+	add_equipment_to_stockpile = {
+		type = infantry_equipment_1
+		amount = independence_wave_force_infantry_stockpile
+	}
+	add_equipment_to_stockpile = {
+		type = support_equipment_1
+		amount = independence_wave_force_support_stockpile
+	}
+	if = {
+		limit = { independence_wave_force_artillery_stockpile > constant:independence_wave_force_budget.minimum }
+		add_equipment_to_stockpile = {
+			type = artillery_equipment_1
+			amount = independence_wave_force_artillery_stockpile
+		}
+	}
+	add_equipment_to_stockpile = {
+		type = train_equipment_1
+		amount = independence_wave_force_train_stockpile
+	}
+	add_equipment_to_stockpile = {
+		type = motorized_equipment_1
+		amount = independence_wave_force_truck_stockpile
+	}
+	if = {
+		limit = { independence_wave_force_convoy_stockpile > constant:independence_wave_force_budget.minimum }
+		add_equipment_to_stockpile = {
+			type = convoy_1
+			amount = independence_wave_force_convoy_stockpile
+		}
+	}
+	add_fuel = var:independence_wave_force_fuel_stockpile
+}
+
+independence_wave_inherit_opening_technology_and_slots = {
+	inherit_technology = event_target:independence_wave_setup_former_host
+	if = {
+		limit = { amount_research_slots < constant:independence_wave_force_research.minimum_slots }
+		set_research_slots = constant:independence_wave_force_research.minimum_slots
+	}
+	if = {
+		limit = {
+			amount_research_slots < constant:independence_wave_force_research.industrial_slots
+			independence_wave_force_factory_count > constant:independence_wave_force_research.industrial_factory_gate
+		}
+		set_research_slots = constant:independence_wave_force_research.industrial_slots
+	}
+}
+
+independence_wave_transfer_approved_opening_air_and_navy = {
+	save_event_target_as = independence_wave_force_recipient
+	set_temp_variable = { independence_wave_force_zero_transfer_ratio = constant:independence_wave_force_inheritance.zero }
+	if = {
+		limit = {
+			has_country_flag = independence_wave_force_navy_inheritance_enabled
+			check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.armed compare = greater_than_or_equals }
+			independence_wave_force_port_levels > constant:independence_wave_force_budget.minimum
+		}
+		set_temp_variable = { independence_wave_force_navy_ratio = constant:independence_wave_force_inheritance.armed_navy_ratio }
+		if = {
+			limit = { check_variable = { independence_wave_force_level = constant:liberation_force_level.high_chaos } }
+			set_temp_variable = { independence_wave_force_navy_ratio = constant:independence_wave_force_inheritance.high_chaos_navy_ratio }
+		}
+		event_target:independence_wave_setup_former_host = {
+			meta_effect = {
+				text = {
+					transfer_units_fraction = {
+						target = event_target:independence_wave_force_recipient
+						size = [IW_ZERO_RATIO]
+						stockpile_ratio = [IW_ZERO_RATIO]
+						army_ratio = [IW_ZERO_RATIO]
+						navy_ratio = [IW_NAVY_RATIO]
+						air_ratio = [IW_ZERO_RATIO]
+						keep_unit_leaders_trigger = { always = yes }
+					}
+				}
+				IW_ZERO_RATIO = "[?independence_wave_force_zero_transfer_ratio|.2]"
+				IW_NAVY_RATIO = "[?independence_wave_force_navy_ratio|.2]"
+			}
+		}
+		set_country_flag = independence_wave_force_navy_inheritance_complete
+	}
+	if = {
+		limit = {
+			has_country_flag = independence_wave_force_air_inheritance_enabled
+			check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.armed compare = greater_than_or_equals }
+		}
+		set_temp_variable = { independence_wave_force_air_ratio = constant:independence_wave_force_inheritance.armed_air_ratio }
+		if = {
+			limit = { check_variable = { independence_wave_force_level = constant:liberation_force_level.high_chaos } }
+			set_temp_variable = { independence_wave_force_air_ratio = constant:independence_wave_force_inheritance.high_chaos_air_ratio }
+		}
+		event_target:independence_wave_setup_former_host = {
+			meta_effect = {
+				text = {
+					transfer_units_fraction = {
+						target = event_target:independence_wave_force_recipient
+						size = [IW_ZERO_RATIO]
+						stockpile_ratio = [IW_ZERO_RATIO]
+						army_ratio = [IW_ZERO_RATIO]
+						navy_ratio = [IW_ZERO_RATIO]
+						air_ratio = [IW_AIR_RATIO]
+						keep_unit_leaders_trigger = { always = yes }
+					}
+				}
+				IW_ZERO_RATIO = "[?independence_wave_force_zero_transfer_ratio|.2]"
+				IW_AIR_RATIO = "[?independence_wave_force_air_ratio|.2]"
+			}
+		}
+		set_country_flag = independence_wave_force_air_inheritance_complete
+	}
+}
+
+# Public entry point. Package setup must assign a researched profile, military
+# tradition, commander roster, and at least three reinforcement pathways first.
+independence_wave_apply_dynamic_starting_force = {
+	set_temp_variable = { independence_wave_force_application_success = constant:independence_wave_planner.no_candidates }
+	if = {
+		limit = { can_apply_independence_wave_force_package = yes }
+		independence_wave_collect_force_inputs = yes
+		independence_wave_calculate_force_budget = yes
+		independence_wave_calculate_force_outputs = yes
+		set_temp_variable = { independence_wave_force_manpower_factor = constant:independence_wave_force_tier.manpower_factor }
+		independence_wave_inherit_opening_technology_and_slots = yes
+		independence_wave_define_force_template = yes
+		independence_wave_create_opening_divisions = yes
+		independence_wave_add_opening_stockpiles = yes
+		independence_wave_transfer_approved_opening_air_and_navy = yes
+		set_variable = { independence_wave_force_package_generation_id = independence_wave_generation_id }
+		set_country_flag = independence_wave_force_package_applied
+		independence_wave_refresh_country_state = yes
+		set_temp_variable = { independence_wave_force_application_success = constant:independence_wave_planner.selected }
+	}
+}
