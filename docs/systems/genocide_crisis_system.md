@@ -44,6 +44,8 @@ Recurring harm is owned by the registered monthly state processor. Decisions and
 
 The player-facing Deaths summary continues to group camp, forced-labor, gulag, chemical-site, and biological-site losses through the existing reason mappings.
 
+Terminal Hazard Doctrine can increase an existing camp network's resolved death multiplier by 1.25 only while the stored responsible country also maintains Unrestricted Chaos Warfare. The calculation still begins from the camp system's own buildings, escalation, policy, site, and country-program inputs and retains its 3.50 cap. This integration cannot create or unlock a camp, extermination building, experiment site, restricted chemical site, or occupation law, and it does not modify evidence, discovery, resistance, Condemnation, or the responsible-country record.
+
 ## Chemical and Biological Killing Methods
 
 Radicalized networks can develop abstract chemical and biological killing capacity. The method layer is a strategic pressure system, not an operational recipe.

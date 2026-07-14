@@ -9,7 +9,7 @@ Use this skill when a task touches decisions, missions, timed objectives, decisi
 
 This skill is for implementation and cleanup. For broader Chaos Redux event wiring, use `chaos-redux-events`. For focus trees, use `hoi4-focus-trees`. For visual assets, use `chaos-redux-event-assets`.
 
-When a decision or mission owns scripted GUI surfaces, optionally use `hoi4.gui_inspect` and `hoi4.gui_render` to inspect linked layout, states, clipping, click regions, localisation overflow, sprites, fonts, and animation placement. Use `hoi4.gui_rewrite` only for a GUI change inside the current decision scope; keep gameplay validation and balance review here.
+When a decision or mission owns scripted GUI surfaces, use `hoi4.gui_inspect` and `hoi4.gui_render` to inspect linked layout, states, clipping, click regions, localisation overflow, sprites, fonts, and animation placement. Use `hoi4.gui_rewrite` only for a GUI change inside the current decision scope; keep gameplay validation and balance review here.
 
 For large or reworked decision systems, spawn `chaosx_decision_mission_auditor` after implementation and before completion. The subagent is patch-capable by default inside the current task scope. It should audit objective quality, costs, tooltips, AI validity, cleanup, duplicate missions, route integration, fairy-dust rewards, exploit risk, localisation, and balance evidence. It may directly patch small decision, mission, tooltip, dynamic localisation, AI, cleanup, cooldown, visibility, and existing formable requirement issues when the fix is local and clearly safer.
 

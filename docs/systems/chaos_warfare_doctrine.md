@@ -128,8 +128,10 @@ The Theater Contamination Doctrine spirit multiplies this output by 1.25. The ef
 The Army Command slot contains three mutually exclusive postures:
 
 - Controlled Retaliation Doctrine: +1 percent army organization, +10 maximum Command Power, 5 percent lower military mask/filter consumption, 15 percent lower friendly exposure risk for prepared actions, and 15 percent better evidence recovery when the country is the victim. It never suppresses attacker evidence.
-- Theater Contamination Doctrine: +5 percent planning speed, -5 percent attrition, +5 percent supply consumption, +5 percent prepared dose, and +25 percent exact-state cleanup output.
-- Terminal Hazard Doctrine: +5 percent army attack, +3 percent coordination, +10 percent supply consumption, +10 percent operational effect, +15 percent deaths, and +25 percent Condemnation. Evidence and attribution remain unchanged.
+- Theater Contamination Doctrine: +5 percent planning speed, -5 percent attrition, +5 percent supply consumption, +10 percent prepared dose, +15 percent contamination points, +10 percent contamination duration, 10 percent faster offensive CBRN Headquarters preparation, and +25 percent exact-state cleanup output.
+- Terminal Hazard Doctrine: +5 percent army attack, +3 percent coordination, +10 percent supply consumption, +15 percent prepared operational effect, +25 percent resulting military and civilian deaths, +25 percent contamination points, +15 percent contamination duration, +20 percent medical saturation, 20 percent faster offensive CBRN Headquarters preparation, and a 0.80 Condemnation-impact multiplier before unchanged public-harm floors. Evidence and attribution remain unchanged.
+
+Terminal Hazard also multiplies the already resolved death rate of an independently active camp network by 1.25 while Unrestricted Chaos Warfare remains authorized. The hook runs only inside the camp system's existing state death calculation and uses its stored responsible-country pointer. It does not create, reveal, authorize, or unlock a camp, extermination building, experiment site, restricted chemical site, or occupation law, and it does not alter camp evidence, discovery, resistance, trauma, Condemnation, or responsibility records.
 
 The Division Command slot contains three mutually exclusive postures:
 
@@ -148,7 +150,7 @@ The `chemical_operations_commander` leader trait costs 500 and requires Chaos Wa
 
 ## AI behavior
 
-AI adoption and track preference use actual program profiles, industry, war, enemy chemical use, and explicit route flags. Ordinary defensive democracies receive a strong first-use penalty. Limited and strategic first-use policies start at zero weight unless an accepted aggressive route/profile adds weight. Unrestricted policy starts at zero and requires an explicit unrestricted route; nonhuman countries receive zero weight.
+AI adoption and track preference use actual program profiles, industry, war, enemy chemical use, and explicit route flags. Ordinary defensive democracies receive a strong first-use penalty. Limited and strategic first-use policies start at zero weight unless an accepted aggressive route/profile adds weight; Theater Contamination adds further first-use weight only after those exact gates pass. Unrestricted policy starts at zero and requires an explicit unrestricted route; Terminal Hazard adds further unrestricted-use weight only within that route. The two offensive Headquarters abilities receive matching posture-specific weight only after their full activation trigger passes. Nonhuman countries receive zero weight.
 
 Officer-corps and high-command choices use the same defensive, battlefield, logistics, and outbreak profiles. Nonhuman AI receives zero selection weight for these institutional appointments and spirits. Every HQ ability retains the full player-equivalent composition, readiness, policy, stock, and Command Power gate. AI receives no hidden payload, readiness, or contamination shortcut.
 
