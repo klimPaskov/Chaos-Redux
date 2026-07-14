@@ -22,6 +22,8 @@ Before adding new dynamic trigger logic, check this file and reuse an existing t
 - [CBRN exact-state response gates](#cbrn-exact-state-response-gates)
 - [CBRN allied procurement and AI profiles](#cbrn-allied-procurement-and-ai-profiles)
 - [CBRN regimental support and AI gates](#cbrn-regimental-support-and-ai-gates)
+- [Chaos Warfare doctrine triggers](#chaos-warfare-doctrine-triggers)
+- [CBRN Army Headquarters triggers](#cbrn-army-headquarters-triggers)
 
 ## is_desert_state
 
@@ -370,6 +372,89 @@ cbrn_ai_chemical_assault_ratio = {
 }
 ```
 
+## Chaos Warfare doctrine triggers
+
+These country-scope, side-effect-free triggers are defined in `cbrn_doctrine_triggers.txt`, except for the one explicitly state-scoped cleanup target. Missing doctrine state, stock, variables, flags, technology, formations, or project proof fails closed unless an absent state is named as an accepted adoption route.
+
+### Adoption and establishment
+
+- `cbrn_chaos_warfare_has_agent_technology`: true for at least one supported choking, blister, or nerve-agent technology.
+- `cbrn_chaos_warfare_has_completed_chemical_project`: true for one accepted completed chemical special-project flag.
+- `cbrn_chaos_warfare_has_historical_program_profile`: true for a mapped preparedness, military, industrial, or civil-defence starting profile.
+- `cbrn_chaos_warfare_adoption_capable`: accepts Basic Gas Masks plus an agent, a completed chemical project, established CBRN command, mapped historical profile, or explicit scenario override.
+- `cbrn_chaos_warfare_ai_has_viable_program`: adoption capability plus a major, industrial, war, enemy-use, accepted profile, or explicit aggressive-route signal; actual nonhuman countries fail.
+- `cbrn_chaos_warfare_has_establishment_stock`: at least 500 masks, 50 decontamination equipment, and 100 support equipment.
+- `cbrn_chaos_warfare_has_fielded_operations_hq`: positive exact `num_battalions_with_type@cbrn_hq_operations_section`.
+- `cbrn_chaos_warfare_has_fielded_protected_formation`: positive exact `num_battalions_with_type@cbrn_gas_mask_decon_detachment`.
+- `cbrn_chaos_warfare_establishment_requirements_met`: adopted doctrine plus all stock and fielded-formation proofs above.
+- `cbrn_can_begin_hazard_assault_training`: Hazard Assault active, protected formation fielded, no active training mission, 100 masks, and 10 Army Experience.
+
+Scope is country; outputs are boolean only; no trigger starts a mission, removes stock, or grants mastery.
+
+### Institutional proof and state cleanup
+
+- `cbrn_chaos_warfare_has_post_adoption_mask_production`: cumulative gas-mask production is strictly above the persistent adoption baseline. Missing baseline fails.
+- `cbrn_chaos_warfare_has_protective_foundation_reserve`: at least 500 live masks.
+- `cbrn_chaos_warfare_has_operational_payload_reserve`: at least 100 units of one supported chlorine, phosgene, mustard, lewisite, tabun, sarin, or soman payload.
+- `cbrn_chaos_warfare_has_strategic_payload_reserve`: at least 250 of one supported payload.
+- `cbrn_chaos_warfare_has_terminal_payload_reserve`: at least 500 of one supported payload.
+- `cbrn_chaos_warfare_has_delivery_track_mastery_two`: Hazard Assault, Contaminant Fire, or Toxic Armor mastery 2.
+- `cbrn_chaos_warfare_has_two_tracks_mastery_three`: any two of the four accepted tracks at mastery 3.
+- `cbrn_chaos_warfare_has_all_tracks_active`: all four accepted subdoctrines currently active.
+- `cbrn_chaos_warfare_has_any_track_mastery_five`: any accepted track at mastery 5.
+- `cbrn_chaos_warfare_has_advanced_protection`: Advanced Gas Masks, Sealed Assault Protection, or explicit equivalent-project flag.
+- `cbrn_can_claim_protective_foundation`, `cbrn_can_claim_delivery_integration`, `cbrn_can_claim_theater_exploitation`, and `cbrn_can_claim_terminal_command`: exact one-time institutional gates described in `docs/systems/chaos_warfare_doctrine.md`.
+- `cbrn_country_has_active_decontamination_corridor`: country has at least one army leader with the active corridor trait.
+- `cbrn_state_can_receive_theater_decontamination`: state-scoped target gate requiring ROOT control, actual chemical contamination, and no active assignment lock.
+
+These triggers read exact current stock, persistent history, native mastery, formation counts, readiness-policy state, and selected-state contamination. They do not infer production lines, fabricate payload, choose a random state, or mutate a ledger.
+
+Example:
+
+```txt
+target_trigger = {
+	FROM = { cbrn_state_can_receive_theater_decontamination = yes }
+}
+```
+
+### Doctrine-only technology gates
+
+The following country-scope triggers return true only when the named non-researchable technology is still absent and all mapped mastery, institution, project, protection, policy, chassis, agent, or prerequisite technology is present:
+
+- `cbrn_can_grant_chaos_assault_battalion`
+- `cbrn_can_grant_hazard_pioneer_formation`
+- `cbrn_can_grant_improved_chaos_assault_equipment`
+- `cbrn_can_grant_chemical_artillery_shells`
+- `cbrn_can_grant_armored_agent_delivery`
+- `cbrn_can_grant_sealed_tank_crews`
+- `cbrn_can_grant_persistent_agent_shell_filling`
+- `cbrn_can_grant_nerve_agent_suppression`
+- `cbrn_can_grant_biological_security_assault`
+- `cbrn_can_grant_mobile_decontamination_columns`
+- `cbrn_can_grant_chemical_air_interdiction`
+- `cbrn_can_grant_theater_cbrn_headquarters`
+
+### Policy and AI gates
+
+- `cbrn_doctrine_policy_change_is_available`: Chaos Warfare adopted and no active 90-day reassessment lock.
+- `cbrn_can_set_defensive_preparation_policy`: policy-change gate and not already defensive.
+- `cbrn_can_set_retaliation_authority_policy`: policy-change gate, not already retaliation, 5 Command Power, and readiness 10.
+- `cbrn_can_set_limited_battlefield_policy`: Delivery Integration, 15 Command Power, readiness 40, operational payload reserve, and not already limited.
+- `cbrn_can_set_strategic_release_policy`: Theater Exploitation, 25 Command Power, readiness 65, strategic payload reserve, and not already strategic.
+- `cbrn_can_set_unrestricted_policy`: Terminal Command, 40 Command Power, readiness 85, terminal payload reserve, and not already at extreme-use policy.
+- `cbrn_ai_route_allows_first_use`: explicit first-use/unrestricted route, high-chaos Soviet successor, or mapped Japan-China chemical campaign context.
+- `cbrn_ai_route_allows_unrestricted_use`: explicit unrestricted route or high-chaos Soviet successor.
+- `cbrn_ai_has_defensive_cbrn_profile`: mass civil defence, prepared power, civil-defence network, or an ordinary democratic country without an accepted first-use route.
+- `cbrn_ai_has_battlefield_cbrn_profile`: military-first profile or accepted first-use route.
+
+These triggers provide differentiated weights only. They do not bypass institutions, readiness, Command Power, payload stock, operation cost, cooldown, or shared consequence accounting.
+
+Example:
+
+```txt
+available = { cbrn_can_set_limited_battlefield_policy = yes }
+```
+
 ## CBRN Army Headquarters triggers
 
 These side-effect-free triggers are defined in `cbrn_hq_triggers.txt`. Character-scope triggers read the current army command and use `OWNER` for its country. They do not estimate the fill ratio of a deployed HQ company; exact HQ composition and national operating stock are separate checks.
@@ -443,7 +528,9 @@ The seven public ability gates combine command validity, no existing commitment,
 - `cbrn_hq_can_activate_seal_infection_corridor`
 - `cbrn_hq_can_activate_combined_overmatch`
 
-Scope: character. Defaults: insufficient or absent resources return false. Outputs: boolean only. These checks use national reserve stock because current 1.19 script exposes no exact fulfillment query for one named deployed HQ support company; no aggregate-army estimator is retained.
+Protective Posture and Mass Antidote Response additionally require Protective Foundation; Prepare Chemical Offensive requires Delivery Integration; Decontamination Corridor and Seal Operational Area require Theater Exploitation; Seal Infection Corridor requires Theater Exploitation plus Integrated Command mastery 4; Combined Overmatch requires Terminal CBRN Command.
+
+Scope: character. Defaults: insufficient institution or resources return false. Outputs: boolean only. These checks use national reserve stock because current 1.19 script exposes no exact fulfillment query for one named deployed HQ support company; no aggregate-army estimator is retained.
 
 ### Baseline AI HQ template gates
 

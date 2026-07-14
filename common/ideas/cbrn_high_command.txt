@@ -1,0 +1,98 @@
+# ============================================================================
+# CHAOS REDUX - GENERIC CBRN HIGH COMMAND
+# ============================================================================
+# Overview:
+# - Adds four doctrine-gated institutional high-command offices without
+#   inventing historical characters.
+# - Uses current vanilla high-command idea structure and custom role portraits.
+# - AI selection follows defensive, battlefield, logistics, and outbreak needs.
+# ============================================================================
+
+ideas = {
+	high_command = {
+		cbrn_operations_director = {
+			ledger = army
+			picture = cbrn_operations_director
+			allowed = { always = yes }
+			available = {
+				custom_trigger_tooltip = {
+					tooltip = cbrn_operations_director_requirements_tt
+					hidden_trigger = {
+						has_country_flag = cbrn_milestone_protective_foundation
+						cbrn_chaos_warfare_has_fielded_operations_hq = yes
+					}
+				}
+			}
+			traits = { cbrn_operations_director_trait }
+			ai_will_do = {
+				factor = constant:cbrn_doctrine_ai.high_command_base
+				modifier = { factor = constant:cbrn_doctrine_ai.nonhuman_factor is_actual_nonhuman_country = yes }
+				modifier = { factor = constant:cbrn_doctrine_ai.prepared_profile_factor cbrn_profile_is_prepared_power = yes }
+				modifier = { factor = constant:cbrn_doctrine_ai.military_profile_factor cbrn_profile_is_military_first = yes }
+			}
+		}
+
+		cbrn_civil_defence_coordinator = {
+			ledger = army
+			picture = cbrn_civil_defence_coordinator
+			allowed = { always = yes }
+			available = {
+				custom_trigger_tooltip = {
+					tooltip = cbrn_civil_defence_coordinator_requirements_tt
+					hidden_trigger = {
+						has_country_flag = cbrn_milestone_protective_foundation
+						cbrn_chaos_warfare_has_fielded_protected_formation = yes
+					}
+				}
+			}
+			traits = { cbrn_civil_defence_coordinator_trait }
+			ai_will_do = {
+				factor = constant:cbrn_doctrine_ai.high_command_base
+				modifier = { factor = constant:cbrn_doctrine_ai.nonhuman_factor is_actual_nonhuman_country = yes }
+				modifier = { factor = constant:cbrn_doctrine_ai.defensive_profile_factor cbrn_ai_has_defensive_cbrn_profile = yes }
+			}
+		}
+
+		cbrn_chemical_logistics_inspector = {
+			ledger = army
+			picture = cbrn_chemical_logistics_inspector
+			allowed = { always = yes }
+			available = {
+				custom_trigger_tooltip = {
+					tooltip = cbrn_chemical_logistics_inspector_requirements_tt
+					hidden_trigger = {
+						has_country_flag = cbrn_milestone_delivery_integration
+						has_country_flag = cbrn_combat_support_mastery_two
+					}
+				}
+			}
+			traits = { cbrn_chemical_logistics_inspector_trait }
+			ai_will_do = {
+				factor = constant:cbrn_doctrine_ai.high_command_base
+				modifier = { factor = constant:cbrn_doctrine_ai.nonhuman_factor is_actual_nonhuman_country = yes }
+				modifier = { factor = constant:cbrn_doctrine_ai.military_profile_factor cbrn_ai_has_battlefield_cbrn_profile = yes }
+			}
+		}
+
+		cbrn_biological_security_director = {
+			ledger = army
+			picture = cbrn_biological_security_director
+			allowed = { always = yes }
+			available = {
+				custom_trigger_tooltip = {
+					tooltip = cbrn_biological_security_director_requirements_tt
+					hidden_trigger = {
+						has_country_flag = cbrn_operations_mastery_four
+						has_tech = field_epidemiology_teams
+					}
+				}
+			}
+			traits = { cbrn_biological_security_director_trait }
+			ai_will_do = {
+				factor = constant:cbrn_doctrine_ai.high_command_base
+				modifier = { factor = constant:cbrn_doctrine_ai.nonhuman_factor is_actual_nonhuman_country = yes }
+				modifier = { factor = constant:cbrn_doctrine_ai.prepared_profile_factor has_active_biowarfare_outbreak = yes }
+			}
+		}
+	}
+}

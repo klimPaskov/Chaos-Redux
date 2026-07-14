@@ -1,7 +1,14 @@
-# Chaos Warfare officer corps spirits.
-# Adds doctrine-gated army, division command, and air force command spirit options
-# that integrate with chemical ability and combat-effect scripted systems.
-@chem_division_barrage_preferred_weight_factor = 1.0
+# ============================================================================
+# CHAOS REDUX - CHAOS WARFARE OFFICER CORPS SPIRITS
+# ============================================================================
+# Overview:
+# - Provides three mutually exclusive army-command postures and three mutually
+#   exclusive division-command postures for the Chaos Warfare institution.
+# - Doctrine mastery and institutional milestones gate every posture.
+# - Legacy academy and air-spirit identifiers remain inert for save migration.
+# - Delivery, protection, cleanup, evidence, casualty, and Condemnation
+#   interactions are resolved by the shared CBRN scripted systems.
+# ============================================================================
 
 ideas = {
 	army_spirit = {
@@ -9,102 +16,246 @@ ideas = {
 			ledger = army
 			picture = chemical_command_reagent_optimization_spirit
 			available = {
-				has_doctrine = chaos_warfare
+				custom_trigger_tooltip = {
+					tooltip = cbrn_controlled_retaliation_spirit_requirements_tt
+					hidden_trigger = {
+						has_doctrine = chaos_warfare
+						has_country_flag = cbrn_milestone_protective_foundation
+					}
+				}
 			}
 			modifier = {
+				army_org_factor = constant:cbrn_doctrine_spirit.controlled_retaliation.army_org_factor
+				max_command_power = constant:cbrn_doctrine_spirit.controlled_retaliation.max_command_power
 				custom_modifier_tooltip = chemical_command_reagent_optimization_spirit_tt
-
-				unit_livens_projector_support_design_cost_factor = -1
-				unit_livens_projector_support_chlorine_design_cost_factor = -1
-				unit_livens_projector_support_phosgene_design_cost_factor = -1
-				unit_livens_projector_support_mustard_design_cost_factor = -1
-				unit_livens_projector_support_lewisite_design_cost_factor = -1
-				unit_livens_projector_support_sarin_design_cost_factor = -1
-				unit_livens_projector_support_soman_design_cost_factor = -1
-
-				unit_light_chemical_tank_support_chlorine_design_cost_factor = -1
-				unit_medium_chemical_tank_support_chlorine_design_cost_factor = -1
-				unit_heavy_chemical_tank_support_chlorine_design_cost_factor = -1
-				unit_light_chemical_tank_support_phosgene_design_cost_factor = -1
-				unit_medium_chemical_tank_support_phosgene_design_cost_factor = -1
-				unit_heavy_chemical_tank_support_phosgene_design_cost_factor = -1
-				unit_light_chemical_tank_support_mustard_design_cost_factor = -1
-				unit_medium_chemical_tank_support_mustard_design_cost_factor = -1
-				unit_heavy_chemical_tank_support_mustard_design_cost_factor = -1
-				unit_light_chemical_tank_support_lewisite_design_cost_factor = -1
-				unit_medium_chemical_tank_support_lewisite_design_cost_factor = -1
-				unit_heavy_chemical_tank_support_lewisite_design_cost_factor = -1
-				unit_light_chemical_tank_support_sarin_design_cost_factor = -1
-				unit_medium_chemical_tank_support_sarin_design_cost_factor = -1
-				unit_heavy_chemical_tank_support_sarin_design_cost_factor = -1
-				unit_light_chemical_tank_support_soman_design_cost_factor = -1
-				unit_medium_chemical_tank_support_soman_design_cost_factor = -1
-				unit_heavy_chemical_tank_support_soman_design_cost_factor = -1
-
-				unit_chaos_battalion_design_cost_factor = -1
 			}
 			ai_will_do = {
-				base = 1
+				factor = constant:cbrn_doctrine_ai.officer_corps_base
 				modifier = {
-					factor = 0
+					factor = constant:cbrn_doctrine_ai.officer_corps_unavailable_factor
 					NOT = { has_dlc = "No Step Back" }
 				}
+				modifier = { factor = constant:cbrn_doctrine_ai.nonhuman_factor is_actual_nonhuman_country = yes }
 				modifier = {
-					factor = 3
-					has_doctrine = chaos_warfare
+					factor = constant:cbrn_doctrine_ai.defensive_profile_factor
+					cbrn_ai_has_defensive_cbrn_profile = yes
 				}
 			}
 		}
-	}
 
-	academy_spirit = {
-		chemical_operations_academy_spirit = {
+		cbrn_theater_contamination_doctrine_spirit = {
 			ledger = army
-			picture = chemical_operations_academy_spirit
+			picture = cbrn_theater_contamination_doctrine_spirit
+			available = {
+				custom_trigger_tooltip = {
+					tooltip = cbrn_theater_contamination_spirit_requirements_tt
+					hidden_trigger = { has_country_flag = cbrn_milestone_theater_exploitation }
+				}
+			}
 			modifier = {
-				custom_modifier_tooltip = chemical_operations_academy_spirit_tt
+				planning_speed = constant:cbrn_doctrine_spirit.theater_contamination.planning_speed
+				attrition = constant:cbrn_doctrine_spirit.theater_contamination.attrition
+				supply_consumption_factor = constant:cbrn_doctrine_spirit.theater_contamination.supply_consumption_factor
+				custom_modifier_tooltip = cbrn_theater_contamination_doctrine_spirit_tt
 			}
 			ai_will_do = {
-				base = 0
+				factor = constant:cbrn_doctrine_ai.officer_corps_base
 				modifier = {
-					factor = 0
+					factor = constant:cbrn_doctrine_ai.officer_corps_unavailable_factor
 					NOT = { has_dlc = "No Step Back" }
 				}
+				modifier = { factor = constant:cbrn_doctrine_ai.nonhuman_factor is_actual_nonhuman_country = yes }
 				modifier = {
-					factor = 0
-					original_tag = JAP
+					factor = constant:cbrn_doctrine_ai.military_profile_factor
+					cbrn_ai_has_battlefield_cbrn_profile = yes
 				}
-				modifier = {
-					add = constant:chem_ability_ai.trait_weight.academy_spirit
-					NOT = { original_tag = JAP }
-					has_enemy_chemical_condemnation_very_high = yes
-					OR = {
-						has_tech = chlorine_gas
-						has_tech = phosgene
-						has_tech = mustard_gas
-						has_tech = lewisite
-						has_tech = sarin
-						has_tech = soman
+			}
+		}
+
+		cbrn_terminal_hazard_doctrine_spirit = {
+			ledger = army
+			picture = cbrn_terminal_hazard_doctrine_spirit
+			available = {
+				custom_trigger_tooltip = {
+					tooltip = cbrn_terminal_hazard_spirit_requirements_tt
+					hidden_trigger = {
+						has_country_flag = cbrn_milestone_terminal_command
+						cbrn_policy_allows_extreme_use = yes
 					}
+				}
+			}
+			modifier = {
+				army_attack_factor = constant:cbrn_doctrine_spirit.terminal_hazard.army_attack_factor
+				coordination_bonus = constant:cbrn_doctrine_spirit.terminal_hazard.coordination_bonus
+				supply_consumption_factor = constant:cbrn_doctrine_spirit.terminal_hazard.supply_consumption_factor
+				custom_modifier_tooltip = cbrn_terminal_hazard_doctrine_spirit_tt
+			}
+			ai_will_do = {
+				factor = constant:cbrn_doctrine_ai.officer_corps_base
+				modifier = {
+					factor = constant:cbrn_doctrine_ai.officer_corps_unavailable_factor
+					OR = {
+						NOT = { has_dlc = "No Step Back" }
+						NOT = { cbrn_ai_route_allows_unrestricted_use = yes }
+					}
+				}
+				modifier = { factor = constant:cbrn_doctrine_ai.nonhuman_factor is_actual_nonhuman_country = yes }
+				modifier = {
+					factor = constant:cbrn_doctrine_ai.military_profile_factor
+					cbrn_ai_route_allows_unrestricted_use = yes
 				}
 			}
 		}
 	}
 
 	division_command_spirit = {
+		cbrn_mask_discipline_spirit = {
+			ledger = army
+			picture = cbrn_mask_discipline_spirit
+			available = {
+				custom_trigger_tooltip = {
+					tooltip = cbrn_mask_discipline_spirit_requirements_tt
+					hidden_trigger = { has_country_flag = cbrn_infantry_mastery_one }
+				}
+			}
+			modifier = {
+				army_org_factor = constant:cbrn_doctrine_spirit.mask_discipline.army_org_factor
+				org_loss_when_moving = constant:cbrn_doctrine_spirit.mask_discipline.org_loss_when_moving
+				custom_modifier_tooltip = cbrn_mask_discipline_spirit_tt
+			}
+			ai_will_do = {
+				factor = constant:cbrn_doctrine_ai.officer_corps_base
+				modifier = {
+					factor = constant:cbrn_doctrine_ai.officer_corps_unavailable_factor
+					NOT = { has_dlc = "No Step Back" }
+				}
+				modifier = { factor = constant:cbrn_doctrine_ai.nonhuman_factor is_actual_nonhuman_country = yes }
+				modifier = {
+					factor = constant:cbrn_doctrine_ai.defensive_profile_factor
+					cbrn_ai_has_defensive_cbrn_profile = yes
+				}
+			}
+		}
+
+		cbrn_hazard_assault_cadres_spirit = {
+			ledger = army
+			picture = cbrn_hazard_assault_cadres_spirit
+			available = {
+				custom_trigger_tooltip = {
+					tooltip = cbrn_hazard_assault_cadres_spirit_requirements_tt
+					hidden_trigger = {
+						has_country_flag = cbrn_infantry_mastery_three
+						has_tech = chaos_battalion_tech
+					}
+				}
+			}
+			modifier = {
+				special_forces_cap = constant:cbrn_doctrine_spirit.hazard_assault_cadres.special_forces_cap
+				experience_gain_army_factor = constant:cbrn_doctrine_spirit.hazard_assault_cadres.experience_gain_army_factor
+				modifier_army_sub_unit_chaos_battalion_attack_factor = constant:cbrn_doctrine_spirit.hazard_assault_cadres.unit_attack_factor
+				modifier_army_sub_unit_chaos_battalion_defence_factor = constant:cbrn_doctrine_spirit.hazard_assault_cadres.unit_defence_factor
+				modifier_army_sub_unit_cbrn_hazard_pioneer_detachment_attack_factor = constant:cbrn_doctrine_spirit.hazard_assault_cadres.unit_attack_factor
+				modifier_army_sub_unit_cbrn_hazard_pioneer_detachment_defence_factor = constant:cbrn_doctrine_spirit.hazard_assault_cadres.unit_defence_factor
+				custom_modifier_tooltip = cbrn_hazard_assault_cadres_spirit_tt
+			}
+			ai_will_do = {
+				factor = constant:cbrn_doctrine_ai.officer_corps_base
+				modifier = {
+					factor = constant:cbrn_doctrine_ai.officer_corps_unavailable_factor
+					NOT = { has_dlc = "No Step Back" }
+				}
+				modifier = { factor = constant:cbrn_doctrine_ai.nonhuman_factor is_actual_nonhuman_country = yes }
+				modifier = {
+					factor = constant:cbrn_doctrine_ai.military_profile_factor
+					cbrn_ai_has_battlefield_cbrn_profile = yes
+				}
+			}
+		}
+
 		chemical_division_contamination_command_spirit = {
 			ledger = army
 			picture = chemical_division_contamination_command_spirit
 			available = {
-				has_doctrine = chaos_warfare
+				custom_trigger_tooltip = {
+					tooltip = cbrn_contaminant_fire_coordination_spirit_requirements_tt
+					hidden_trigger = { has_country_flag = cbrn_combat_support_mastery_two }
+				}
 			}
 			modifier = {
+				army_artillery_attack_factor = constant:cbrn_doctrine_spirit.contaminant_fire_coordination.army_artillery_attack_factor
 				custom_modifier_tooltip = chemical_division_contamination_command_spirit_tt
-				tactic_chemical_barrage_preferred_weight_factor = @chem_division_barrage_preferred_weight_factor
+			}
+			equipment_bonus = {
+				livens_projector_chassis = {
+					instant = yes
+					reliability = constant:cbrn_doctrine_spirit.contaminant_fire_coordination.equipment_reliability
+				}
+			}
+			equipment_bonus = {
+				chemical_chlorine_payload_cylinder = {
+					instant = yes
+					reliability = constant:cbrn_doctrine_spirit.contaminant_fire_coordination.equipment_reliability
+				}
+			}
+			equipment_bonus = {
+				chemical_phosgene_payload_cylinder = {
+					instant = yes
+					reliability = constant:cbrn_doctrine_spirit.contaminant_fire_coordination.equipment_reliability
+				}
+			}
+			equipment_bonus = {
+				chemical_mustard_payload_cylinder = {
+					instant = yes
+					reliability = constant:cbrn_doctrine_spirit.contaminant_fire_coordination.equipment_reliability
+				}
+			}
+			equipment_bonus = {
+				chemical_lewisite_payload_cylinder = {
+					instant = yes
+					reliability = constant:cbrn_doctrine_spirit.contaminant_fire_coordination.equipment_reliability
+				}
+			}
+			equipment_bonus = {
+				chemical_tabun_payload_cylinder = {
+					instant = yes
+					reliability = constant:cbrn_doctrine_spirit.contaminant_fire_coordination.equipment_reliability
+				}
+			}
+			equipment_bonus = {
+				chemical_sarin_payload_cylinder = {
+					instant = yes
+					reliability = constant:cbrn_doctrine_spirit.contaminant_fire_coordination.equipment_reliability
+				}
+			}
+			equipment_bonus = {
+				chemical_soman_payload_cylinder = {
+					instant = yes
+					reliability = constant:cbrn_doctrine_spirit.contaminant_fire_coordination.equipment_reliability
+				}
 			}
 			ai_will_do = {
-				factor = 0
+				factor = constant:cbrn_doctrine_ai.officer_corps_base
+				modifier = {
+					factor = constant:cbrn_doctrine_ai.officer_corps_unavailable_factor
+					NOT = { has_dlc = "No Step Back" }
+				}
+				modifier = { factor = constant:cbrn_doctrine_ai.nonhuman_factor is_actual_nonhuman_country = yes }
+				modifier = {
+					factor = constant:cbrn_doctrine_ai.military_profile_factor
+					cbrn_ai_has_battlefield_cbrn_profile = yes
+				}
 			}
+		}
+	}
+
+	# Compatibility-only identifiers. No replacement mechanic is hidden here.
+	academy_spirit = {
+		chemical_operations_academy_spirit = {
+			ledger = army
+			picture = chemical_operations_academy_spirit
+			visible = { always = no }
+			available = { always = no }
+			ai_will_do = { factor = constant:cbrn_math.zero }
 		}
 	}
 
@@ -112,24 +263,9 @@ ideas = {
 		chemical_air_deep_strike_spirit = {
 			ledger = air
 			picture = chemical_air_deep_strike_spirit
-			available = {
-				has_air_force_command = yes
-				has_doctrine = chaos_warfare
-			}
-			modifier = {
-				custom_modifier_tooltip = chemical_air_deep_strike_spirit_tt
-			}
-			ai_will_do = {
-				base = 1
-				modifier = {
-					factor = 0
-					NOT = { has_dlc = "No Step Back" }
-				}
-				modifier = {
-					factor = 3
-					has_doctrine = chaos_warfare
-				}
-			}
+			visible = { always = no }
+			available = { always = no }
+			ai_will_do = { factor = constant:cbrn_math.zero }
 		}
 	}
 }

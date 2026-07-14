@@ -1159,7 +1159,7 @@ tactic_sf_ambush = { #countered by mouse holing
 @CHEM_SHELLING_TACTIC_ATTACKER = 0.25
 @CHEM_SHELLING_TACTIC_DEFENDER = -0.35
 
-@CHEM_BARRAGE_TACTIC_BASE = 6
+@CHEM_BARRAGE_TACTIC_BASE = 1
 @CHEM_BARRAGE_TACTIC_ATTACKER_MOVE = -0.12
 @CHEM_BARRAGE_TACTIC_ATTACKER = 0.45
 @CHEM_BARRAGE_TACTIC_DEFENDER = -0.58
@@ -1222,8 +1222,18 @@ tactic_chemical_barrage = {
 	trigger = {
 		is_attacker = yes
 		phase = no
+		has_variable = cbrn_prepared_chemical_barrage_payload_consumed
+		check_variable = {
+			var = cbrn_prepared_chemical_barrage_payload_consumed
+			value = constant:cbrn_proof.supplied
+			compare = equals
+		}
 		OWNER = {
 			has_doctrine = chaos_warfare
+			has_country_flag = cbrn_milestone_delivery_integration
+			cbrn_country_has_operational_readiness = yes
+			cbrn_policy_allows_battlefield_use = yes
+			cbrn_country_has_any_chemical_payload_stock = yes
 			OR = {
 				has_tech = chlorine_gas
 				has_tech = phosgene
@@ -1239,14 +1249,6 @@ tactic_chemical_barrage = {
 
 	base = {
 		factor = @CHEM_BARRAGE_TACTIC_BASE
-		modifier = {
-			add = 2
-			has_trait = offensive_doctrine
-		}
-		modifier = {
-			add = 2
-			has_trait = aggressive_assaulter
-		}
 	}
 
 	picture = gas_attack

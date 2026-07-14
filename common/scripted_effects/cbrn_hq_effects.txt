@@ -134,6 +134,19 @@ cbrn_hq_apply_operations_section_preparation_discount = {
 	round_temp_variable = cbrn_hq_preparation_days
 }
 
+cbrn_hq_apply_operations_commander_preparation_discount = {
+	if = {
+		limit = { has_trait = chemical_operations_commander }
+		multiply_temp_variable = { cbrn_hq_preparation_days = constant:cbrn_doctrine_leader.operations_commander_preparation_mult }
+		clamp_temp_variable = {
+			var = cbrn_hq_preparation_days
+			min = cbrn_hq_preparation_min
+			max = cbrn_hq_preparation_max
+		}
+		round_temp_variable = cbrn_hq_preparation_days
+	}
+}
+
 cbrn_hq_debit_decontamination_stock_oldest_first = {
 	set_temp_variable = { cbrn_hq_family_debit_remaining = cbrn_hq_family_debit_requested }
 	clamp_temp_variable = { var = cbrn_hq_family_debit_remaining min = constant:cbrn_math.zero }
@@ -733,6 +746,7 @@ cbrn_hq_start_prepare_chemical_offensive = {
 	cbrn_hq_calculate_preparation_days = yes
 	cbrn_hq_apply_operations_section_preparation_discount = yes
 	cbrn_hq_apply_high_protection_preparation_discount = yes
+	cbrn_hq_apply_operations_commander_preparation_discount = yes
 	cbrn_hq_commit_preparation = yes
 	unit_leader_event = { id = cbrn_hq.1 days = cbrn_hq_preparation_days }
 }
@@ -741,6 +755,7 @@ cbrn_hq_start_theater_protective_posture = {
 	set_variable = { cbrn_hq_operation_code = constant:cbrn_hq_operation.theater_protective_posture }
 	cbrn_hq_set_protective_activation_package = yes
 	cbrn_hq_calculate_preparation_days = yes
+	cbrn_hq_apply_operations_commander_preparation_discount = yes
 	cbrn_hq_commit_preparation = yes
 	unit_leader_event = { id = cbrn_hq.1 days = cbrn_hq_preparation_days }
 }
@@ -749,6 +764,7 @@ cbrn_hq_start_decontamination_corridor = {
 	set_variable = { cbrn_hq_operation_code = constant:cbrn_hq_operation.decontamination_corridor }
 	cbrn_hq_set_decon_activation_package = yes
 	cbrn_hq_calculate_preparation_days = yes
+	cbrn_hq_apply_operations_commander_preparation_discount = yes
 	cbrn_hq_commit_preparation = yes
 	unit_leader_event = { id = cbrn_hq.1 days = cbrn_hq_preparation_days }
 }
@@ -757,6 +773,7 @@ cbrn_hq_start_seal_operational_area = {
 	set_variable = { cbrn_hq_operation_code = constant:cbrn_hq_operation.seal_operational_area }
 	cbrn_hq_set_seal_area_activation_package = yes
 	cbrn_hq_calculate_preparation_days = yes
+	cbrn_hq_apply_operations_commander_preparation_discount = yes
 	cbrn_hq_commit_preparation = yes
 	unit_leader_event = { id = cbrn_hq.1 days = cbrn_hq_preparation_days }
 }
@@ -765,6 +782,7 @@ cbrn_hq_start_mass_antidote_response = {
 	set_variable = { cbrn_hq_operation_code = constant:cbrn_hq_operation.mass_antidote_response }
 	cbrn_hq_set_antidote_activation_package = yes
 	cbrn_hq_calculate_preparation_days = yes
+	cbrn_hq_apply_operations_commander_preparation_discount = yes
 	cbrn_hq_commit_preparation = yes
 	unit_leader_event = { id = cbrn_hq.1 days = cbrn_hq_preparation_days }
 }
@@ -773,6 +791,7 @@ cbrn_hq_start_seal_infection_corridor = {
 	set_variable = { cbrn_hq_operation_code = constant:cbrn_hq_operation.seal_infection_corridor }
 	cbrn_hq_set_infection_activation_package = yes
 	cbrn_hq_calculate_preparation_days = yes
+	cbrn_hq_apply_operations_commander_preparation_discount = yes
 	cbrn_hq_commit_preparation = yes
 	unit_leader_event = { id = cbrn_hq.1 days = cbrn_hq_preparation_days }
 }
@@ -783,6 +802,7 @@ cbrn_hq_start_combined_overmatch = {
 	cbrn_hq_calculate_preparation_days = yes
 	cbrn_hq_apply_operations_section_preparation_discount = yes
 	cbrn_hq_apply_high_protection_preparation_discount = yes
+	cbrn_hq_apply_operations_commander_preparation_discount = yes
 	cbrn_hq_commit_preparation = yes
 	unit_leader_event = { id = cbrn_hq.1 days = cbrn_hq_preparation_days }
 }

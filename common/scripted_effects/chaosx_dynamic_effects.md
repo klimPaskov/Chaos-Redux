@@ -46,6 +46,8 @@ Before adding new dynamic logic, check this file and reuse an existing effect if
 - [CBRN protection decision effects](#cbrn-protection-decision-effects)
 - [CBRN exact-state raid response adapter](#cbrn-exact-state-raid-response-adapter)
 - [CBRN starting protection profiles](#cbrn-starting-protection-profiles)
+- [Chaos Warfare doctrine effects](#chaos-warfare-doctrine-effects)
+- [CBRN Army Headquarters operation effects](#cbrn-army-headquarters-operation-effects)
 
 ## chaosx_apply_startup_history_grants
 
@@ -1012,7 +1014,7 @@ Required payload inputs: positive `cbrn_action_payload_required`, positive `cbrn
 
 Required protection inputs: outputs and proof from `cbrn_calculate_action_protection`.
 
-Required condition inputs and proof: `cbrn_action_weather_mult`, `cbrn_action_terrain_mult`, `cbrn_action_target_density_mult`, `cbrn_action_command_mult`, `cbrn_action_evidence_control_mult`, `cbrn_action_context_condemnation_mult`, `cbrn_action_doctrine_condemnation_mult`, `cbrn_action_forecast_confidence`, `cbrn_action_command_integration`, `cbrn_action_base_friendly_risk`, and `cbrn_action_conditions_resolved_proof`. The context multiplier carries retaliation and target-relationship effects; the doctrine multiplier is independently clamped to `0.70` through `1.00` and cannot alter evidence or attribution.
+Required condition inputs and proof: `cbrn_action_weather_mult`, `cbrn_action_terrain_mult`, `cbrn_action_target_density_mult`, `cbrn_action_command_mult`, `cbrn_action_evidence_control_mult`, `cbrn_action_context_condemnation_mult`, a positive `cbrn_action_doctrine_condemnation_mult` validation value, `cbrn_action_forecast_confidence`, `cbrn_action_command_integration`, `cbrn_action_base_friendly_risk`, and `cbrn_action_conditions_resolved_proof`. The context multiplier carries retaliation and target-relationship effects. Immediately after validation, the public wrapper overwrites the doctrine value from the attacker country's Integrated CBRN Command mastery and clamps it to `0.70` through `1.00`; route adapters cannot select a different doctrine discount.
 
 Defaults: none. Validation is fail-closed. The continuous ordinary-air route returns `unsupported_continuous_air_route`; no neutral condition or idle-aircraft estimator is substituted.
 
@@ -1249,7 +1251,7 @@ Scope: country for military; state for civilian. Inputs: current issued/distribu
 
 ### cbrn_apply_military_mask_loss and cbrn_apply_state_civilian_mask_loss
 
-Apply explicit exposure/storage loss to issued military or distributed civilian stock. `military_filter_standardization` reduces both crate loss and filter-condition loss by the accepted 15 percent for military and civilian ledgers.
+Apply explicit exposure/storage loss to issued military or distributed civilian stock. `military_filter_standardization` reduces both crate loss and filter-condition loss by the accepted 15 percent for military and civilian ledgers. Controlled Retaliation Doctrine and Mask Discipline apply their separate military-only consumption multipliers; they do not reduce civilian loss or exposure consequences.
 
 Scope: country or state respectively. Inputs: temporary `cbrn_mask_loss_fraction` and `cbrn_mask_condition_loss`. Defaults: values are clamped to safe ranges. Outputs: model ledgers, filter condition, and replacement demand. Side effects: civilian loss also updates the controller's aggregate distributed totals; no lost equipment returns to stock.
 
@@ -1372,6 +1374,107 @@ Example:
 chaosx_apply_starting_cbrn_mask_profiles = yes
 ```
 
+## Chaos Warfare doctrine effects
+
+These country-scope effects are defined in `cbrn_doctrine_effects.txt`. They own institution, policy, mastery-record, technology-grant, and migration state. They never choose or consume a chemical payload and never dispatch exposure.
+
+### Institutional value helpers
+
+| Effect | Inputs, defaults, outputs, and side effects |
+| --- | --- |
+| `cbrn_doctrine_raise_readiness_to_minimum` | Country scope. Optional temporary input `cbrn_doctrine_requested_readiness_minimum`; absent input is a no-op. Initializes CBRN data, raises readiness only when below the request, and clamps to the current readiness cap. |
+| `cbrn_doctrine_raise_decontamination_to_minimum` | Country scope. Optional temporary input `cbrn_doctrine_requested_decontamination_minimum`; absent input is a no-op. Initializes data, raises capacity only when below the request, and clamps to 0-100. |
+| `cbrn_doctrine_apply_institutional_band` | Country scope. Optional temporary inputs `cbrn_doctrine_requested_readiness_cap` and `cbrn_doctrine_requested_readiness_minimum`. Applies whichever values exist through the shared readiness helpers; missing values do nothing. |
+| `cbrn_doctrine_pay_command_power` | Country scope. Optional temporary input `cbrn_doctrine_command_power_cost`. Negates and debits that amount; callers must pass an affordability trigger first. Missing input is a no-op. |
+
+Example:
+
+```txt
+set_temp_variable = { cbrn_doctrine_requested_readiness_cap = constant:cbrn_doctrine_readiness.protective_foundation_cap }
+set_temp_variable = { cbrn_doctrine_requested_readiness_minimum = constant:cbrn_doctrine_readiness.protective_foundation_minimum }
+cbrn_doctrine_apply_institutional_band = yes
+```
+
+### Adoption, establishment, and training
+
+| Effect | Purpose and side effects |
+| --- | --- |
+| `cbrn_chaos_warfare_adopt` | Initializes the country model, records adoption/program/command flags and cumulative mask-production baseline, closes offensive authority, removes the legacy Concentration unlock, applies the 39/10 adoption band, unlocks Operations HQ plus Gas Mask/Decon support, and activates the bounded establishment mission. The public doctrine gate must pass first. |
+| `cbrn_complete_chaos_warfare_establishment` | Records successful establishment, opens institutional authority, raises readiness to 20 and decontamination capacity to 20. The mission or remediation decision owns the exact stock/formation trigger. |
+| `cbrn_fail_chaos_warfare_establishment` | Records failure, retains closed offensive authority, restores Defensive Preparation policy, and lowers readiness to at most 9 without removing the doctrine. |
+| `cbrn_remediate_chaos_warfare_establishment` | Calls the successful-establishment effect after the delayed decision has re-proved every requirement and paid its costs. |
+| `cbrn_begin_hazard_assault_training` | Requires the public training trigger. Debits 100 masks oldest-first and 10 Army Experience, records actual mask consumption, grants 0.25 daily Hazard Assault mastery for 30 days, and activates the matching mission. Because installed `add_daily_mastery` documentation demonstrates literal numeric fields only, the centralized amount and duration variables are rendered into that block through `meta_effect`; no parser support for direct variable tokens is assumed. It creates no exposure. |
+
+Example:
+
+```txt
+available = { cbrn_can_begin_hazard_assault_training = yes }
+complete_effect = { hidden_effect = { cbrn_begin_hazard_assault_training = yes } }
+```
+
+### Exact-state decontamination
+
+`cbrn_apply_theater_decontamination_assignment` is state scoped. The caller must pass `cbrn_state_can_receive_theater_decontamination`. It refreshes the exact state's contamination class, selects 10/8/5/3 cleanup points for Trace-or-Local/Serious/Severe/Catastrophic, applies the Theater Contamination Doctrine 1.25 multiplier when present, calls `cbrn_apply_state_contamination_delta_internal`, records only the actual removed amount on the controller, and applies a 28-day state lock. Missing or clean state input produces no useful cleanup. It never alters evidence, attribution, deaths, Condemnation, or use history.
+
+Example:
+
+```txt
+FROM = {
+	cbrn_apply_theater_decontamination_assignment = yes
+}
+```
+
+### Institutional claim effects
+
+The four claim effects are country scoped and must be preceded by their corresponding `cbrn_can_claim_*` trigger. They set one persistent milestone, apply its readiness cap/minimum, and retry every doctrine-only technology whose independent gate is now true.
+
+| Effect | Additional result |
+| --- | --- |
+| `cbrn_claim_protective_foundation` | Raises decontamination capacity to 30 and unlocks the Intelligence/Weather HQ Cell and Chemical Recon Detachment. |
+| `cbrn_claim_delivery_integration` | Applies the 74/45 band and opens mapped offensive-HQ gates. |
+| `cbrn_claim_theater_exploitation` | Applies the 89/65 band and opens exact-state theater gates. |
+| `cbrn_claim_terminal_command` | Applies the 100/85 capstone band. |
+
+### Doctrine technology grants and commissions
+
+`cbrn_grant_available_doctrine_technologies` is a country-scope idempotent dispatcher. It evaluates every `cbrn_can_grant_*` trigger and silently grants only eligible Hazard Pioneer, Chaos Assault, Improved Chaos Assault, Chemical Artillery Shells, Armored Agent Delivery, Mobile Decontamination Columns, Chemical Air Interdiction, and Theater CBRN Headquarters technologies. A failed gate produces no grant. It does not grant Sealed Tank Crews, Persistent Agent Shell Filling, Nerve Suppression, or Biological Security Assault, which require explicit paid commissions.
+
+The four country-scope commission completion effects are `cbrn_commission_sealed_tank_crews`, `cbrn_commission_persistent_agent_shell_filling`, `cbrn_commission_nerve_agent_suppression`, and `cbrn_commission_biological_security_assault`. Each rechecks its exact grant trigger and silently grants only its named technology. Missing prerequisites at completion fail closed; Political Power and Command Power are owned by the decision. In particular, the nerve-suppression commission requires the explicit occupation-policy authorization flag; no Chaos Warfare use-policy tier supplies it.
+
+Example:
+
+```txt
+remove_effect = {
+	hidden_effect = { cbrn_commission_sealed_tank_crews = yes }
+}
+```
+
+### Track and mastery record effects
+
+These country-scope effects translate current native doctrine state into stable flags used by institutions, policy, HQ, AI, and migration. They have no temporary inputs. Repeated calls are idempotent except that mapped technology dispatchers may grant a newly eligible technology.
+
+- Adoption records: `cbrn_record_hazard_assault_adoption`, `cbrn_record_toxic_armored_adoption`, `cbrn_record_contaminant_fire_support_adoption`, and `cbrn_record_integrated_command_adoption`. Contaminant Fire additionally unlocks its ammunition train; Integrated Command unlocks Operations HQ.
+- Hazard Assault rewards: `cbrn_record_infantry_mastery_one`, `cbrn_record_infantry_mastery_two`, `cbrn_record_infantry_mastery_three`, `cbrn_record_infantry_mastery_four`, and `cbrn_record_infantry_mastery_five`.
+- Toxic Armor rewards: `cbrn_record_armor_mastery_one`, `cbrn_record_armor_mastery_two`, `cbrn_record_armor_mastery_three`, `cbrn_record_armor_mastery_four`, and `cbrn_record_armor_mastery_five`.
+- Contaminant Fire rewards: `cbrn_record_combat_support_mastery_one`, `cbrn_record_combat_support_mastery_two`, `cbrn_record_combat_support_mastery_three`, `cbrn_record_combat_support_mastery_four`, and `cbrn_record_combat_support_mastery_five`. Levels 3-5 retain stable legacy operation flags while following the accepted payload pipeline.
+- Integrated Command rewards: `cbrn_record_operations_mastery_one`, `cbrn_record_operations_mastery_two`, `cbrn_record_operations_mastery_three`, `cbrn_record_operations_mastery_four`, and `cbrn_record_operations_mastery_five`. These unlock mapped HQ companies, raise decontamination capacity at level 3, and retry doctrine technology grants.
+- Native track completion records: `cbrn_record_native_infantry_track_complete`, `cbrn_record_native_combat_support_track_complete`, `cbrn_record_native_armor_track_complete`, and `cbrn_record_native_operations_track_complete`.
+
+### Policy, Condemnation, and migration
+
+`cbrn_change_chaos_warfare_use_policy` is country scoped. Required temporary inputs are those of `cbrn_set_use_policy` plus `cbrn_policy_command_power_cost`. When the shared setter accepts the request, it debits Command Power, applies a 90-day reassessment flag, updates peak policy, and records reached policy-history flags. Rejected policy input causes no debit or history change. It never sets `cbrn_nerve_suppression_policy_authorized`; the later CBRN Coercive Security occupation-policy surface owns that authorization.
+
+`cbrn_set_doctrine_condemnation_mult_from_country` is country scoped and writes temporary `cbrn_action_doctrine_condemnation_mult` as 1.00, 0.90, 0.80, or 0.70 from Integrated Command mastery. The non-baseline values read the canonical `chem_integrated_operations.condemnation_mult` ladder also used by not-yet-migrated chemical and biological adapters, preventing parallel tuning tables during route migration. It clamps to the shared doctrine floor/ceiling and changes no persistent state. The helper is Condemnation-only and never touches evidence, attribution, deaths, contamination, medical saturation, domestic penalties, use counters, or history.
+
+`cbrn_migrate_legacy_chaos_warfare` is an idempotent country-scope compatibility effect. For countries with Chaos Warfare, it initializes the model, removes the legacy Concentration unlock, reconstructs adoption and mastery flags from native doctrine state, restores the appropriate readiness cap, and retries legitimate doctrine technology grants. New games call it from `on_startup`; because that on-action does not run when a save is loaded, an old doctrine holder lacking `cbrn_chaos_warfare_adopted` receives the one-time zero-cost `cbrn_convene_institutional_review` decision instead. It does not auto-claim cross-track institutions, fabricate stock/formation proof, or grant a delivery consequence.
+
+Example:
+
+```txt
+cbrn_set_doctrine_condemnation_mult_from_country = yes
+# temporary cbrn_action_doctrine_condemnation_mult is now ready for the shared record
+```
+
 ## CBRN Army Headquarters operation effects
 
 These effects are defined in `cbrn_hq_effects.txt`. Character-scope effects expect a deployed army commander; `OWNER` is that commander's country. They never select a state, choose an agent, consume an unspecified payload, or call the shared exposure pipeline.
@@ -1387,6 +1490,7 @@ These effects are defined in `cbrn_hq_effects.txt`. Character-scope effects expe
 | `cbrn_hq_calculate_preparation_days` | Character scope. Required temporary inputs: base, minimum, and maximum preparation days. Reads owner Chemical Readiness, applies the centralized readiness multiplier, rounds, and clamps into the accepted range. |
 | `cbrn_hq_apply_operations_section_preparation_discount` | Character scope. Inputs: calculated preparation plus the same minimum and maximum temporary bounds. Applies the Operations Section's ten-percent preparation reduction, then reclamps and rounds. Call only for abilities that require that company. |
 | `cbrn_hq_apply_high_protection_preparation_discount` | Character scope. Refreshes the owner's real military-mask snapshot and applies the accepted five-percent preparation reduction only at the high-protection threshold, then reclamps. It does not change exposure protection itself. |
+| `cbrn_hq_apply_operations_commander_preparation_discount` | Character scope. Inputs: calculated preparation plus minimum/maximum bounds. Applies the doctrine-gated commander's ten-percent reduction only when the leader has `chemical_operations_commander`, then reclamps and rounds. It changes no cost, duration, cooldown, or exposure output. |
 | `cbrn_hq_commit_preparation` | Character scope. Required temporary inputs: calculated preparation, active duration, full/native command-power costs, and an activation operating package. Stores the force band, debits the scripted CP remainder and real stores, applies the timed preparation trait, and schedules bounded preparation/final-cleanup events. Medical/manpower commitments recover on their planned date even if active benefits end early. |
 
 ### Model-aware operating-stock debit helpers
