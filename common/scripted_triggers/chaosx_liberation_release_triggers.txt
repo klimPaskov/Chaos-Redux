@@ -1,0 +1,164 @@
+# ============================================================================
+# CHAOS REDUX - LIBERATIONS RELEASE COORDINATOR TRIGGERS
+# ============================================================================
+# Shared, read-only contracts for the Event 005/Event 006 frozen release plan,
+# origin separation, state reservations, and commit barrier.
+# ============================================================================
+
+is_liberation_release_plan_open = {
+	OR = {
+		check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.collecting }
+		check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.allocating }
+	}
+}
+
+is_liberation_release_plan_active = {
+	OR = {
+		is_liberation_release_plan_open = yes
+		check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.locked }
+		check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.executing }
+	}
+}
+
+is_liberation_release_plan_locked = {
+	check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.locked }
+	has_global_flag = liberation_release_plan_valid
+}
+
+is_liberation_release_plan_executing = {
+	check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.executing }
+}
+
+# Reads the temporary `liberation_candidate_plan_owner` supplied by a package
+# publisher. A row may only enter a plan that declared the corresponding event
+# as a participant.
+is_liberation_release_candidate_owner_allowed = {
+	OR = {
+		AND = {
+			check_variable = { liberation_candidate_plan_owner = constant:liberation_plan_owner.soviet_collapse }
+			has_global_flag = liberation_release_plan_includes_event5
+		}
+		AND = {
+			check_variable = { liberation_candidate_plan_owner = constant:liberation_plan_owner.independence_wave }
+			has_global_flag = liberation_release_plan_includes_event6
+		}
+	}
+}
+
+is_independence_wave_active_origin_country = {
+	exists = yes
+	has_country_flag = independence_wave_active_origin
+	check_variable = { liberation_origin = constant:liberation_origin.independence_wave }
+}
+
+is_soviet_collapse_active_origin_country = {
+	exists = yes
+	has_country_flag = soviet_collapse_event_created_republic
+	NOT = { has_country_flag = independence_wave_active_origin }
+}
+
+is_liberation_release_current_reserved_country = {
+	is_liberation_release_plan_active = yes
+	OR = {
+		is_in_array = { array = global.liberation_plan_countries value = THIS }
+		AND = {
+			has_country_flag = liberation_release_reserved_country
+			has_variable = liberation_release_plan_id
+			check_variable = {
+				var = liberation_release_plan_id
+				value = global.liberation_plan_id
+				compare = equals
+			}
+		}
+	}
+}
+
+is_liberation_release_current_reserved_state = {
+	has_state_flag = liberation_release_reserved_state
+	has_variable = liberation_release_plan_id
+	check_variable = {
+		var = liberation_release_plan_id
+		value = global.liberation_plan_id
+		compare = equals
+	}
+}
+
+is_liberation_release_current_protected_state = {
+	has_state_flag = liberation_release_protected_host_state
+	has_variable = liberation_release_plan_id
+	check_variable = {
+		var = liberation_release_plan_id
+		value = global.liberation_plan_id
+		compare = equals
+	}
+}
+
+is_liberation_release_state_available_for_reservation = {
+	owner = { exists = yes }
+	NOT = { is_liberation_release_current_reserved_state = yes }
+	NOT = { is_liberation_release_current_protected_state = yes }
+}
+
+liberation_release_country_arrays_are_aligned = {
+	check_variable = { var = global.liberation_plan_country_owners^num value = global.liberation_plan_package_ids^num compare = equals }
+	check_variable = { var = global.liberation_plan_countries^num value = global.liberation_plan_package_ids^num compare = equals }
+	check_variable = { var = global.liberation_plan_anchor_states^num value = global.liberation_plan_package_ids^num compare = equals }
+	check_variable = { var = global.liberation_plan_primary_hosts^num value = global.liberation_plan_package_ids^num compare = equals }
+	check_variable = { var = global.liberation_plan_reservation_groups^num value = global.liberation_plan_package_ids^num compare = equals }
+	check_variable = { var = global.liberation_plan_territory_levels^num value = global.liberation_plan_package_ids^num compare = equals }
+	check_variable = { var = global.liberation_plan_force_levels^num value = global.liberation_plan_package_ids^num compare = equals }
+}
+
+liberation_release_state_arrays_are_aligned = {
+	check_variable = { var = global.liberation_plan_state_package_ids^num value = global.liberation_plan_states^num compare = equals }
+	check_variable = { var = global.liberation_plan_state_country_owners^num value = global.liberation_plan_states^num compare = equals }
+	check_variable = { var = global.liberation_plan_state_target_countries^num value = global.liberation_plan_states^num compare = equals }
+	check_variable = { var = global.liberation_plan_state_hosts^num value = global.liberation_plan_states^num compare = equals }
+	check_variable = { var = global.liberation_plan_state_roles^num value = global.liberation_plan_states^num compare = equals }
+}
+
+liberation_release_host_arrays_are_aligned = {
+	check_variable = { var = global.liberation_plan_host_owned_state_snapshots^num value = global.liberation_plan_hosts^num compare = equals }
+	check_variable = { var = global.liberation_plan_host_protected_states^num value = global.liberation_plan_hosts^num compare = equals }
+}
+
+liberation_release_rejection_arrays_are_aligned = {
+	check_variable = { var = global.liberation_plan_rejection_reasons^num value = global.liberation_plan_rejected_package_ids^num compare = equals }
+}
+
+liberation_release_all_plan_arrays_are_aligned = {
+	liberation_release_country_arrays_are_aligned = yes
+	liberation_release_state_arrays_are_aligned = yes
+	liberation_release_host_arrays_are_aligned = yes
+	liberation_release_rejection_arrays_are_aligned = yes
+}
+
+can_liberation_release_lock_plan = {
+	check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.allocating }
+	check_variable = {
+		var = global.liberation_plan_expected_country_count
+		value = constant:liberation_release_limit.minimum
+		compare = greater_than
+	}
+	liberation_release_all_plan_arrays_are_aligned = yes
+	check_variable = {
+		var = global.liberation_plan_package_ids^num
+		value = global.liberation_plan_expected_country_count
+		compare = equals
+	}
+}
+
+liberation_release_locked_plan_is_valid = {
+	is_liberation_release_plan_locked = yes
+	check_variable = {
+		var = global.liberation_plan_expected_country_count
+		value = constant:liberation_release_limit.minimum
+		compare = greater_than
+	}
+	liberation_release_all_plan_arrays_are_aligned = yes
+	check_variable = {
+		var = global.liberation_plan_package_ids^num
+		value = global.liberation_plan_expected_country_count
+		compare = equals
+	}
+}

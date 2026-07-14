@@ -5,6 +5,16 @@
 # Soviet mission board, and foreign intervention layer.
 # ============================================================================
 
+# Event 005 may inspect former-union geography owned by many countries. States
+# held by an active Event 006 creation are never valid Soviet Collapse release
+# material, even when an old former-union marker or a shared core remains.
+is_soviet_collapse_state_free_of_independence_wave_origin = {
+	NOT = { owner = { has_country_flag = independence_wave_active_origin } }
+	NOT = { controller = { has_country_flag = independence_wave_active_origin } }
+	NOT = { is_liberation_release_current_reserved_state = yes }
+	NOT = { is_liberation_release_current_protected_state = yes }
+}
+
 is_soviet_collapse_active = {
 	has_global_flag = soviet_collapse_active
 	NOT = { has_global_flag = soviet_collapse_triggerable_scenario_systems_disabled }
@@ -2654,6 +2664,8 @@ is_soviet_collapse_base_republic_without_kazakhstan_tag = {
 }
 
 is_soviet_collapse_progressive_release_candidate = {
+	NOT = { has_country_flag = independence_wave_active_origin }
+	NOT = { is_liberation_release_current_reserved_country = yes }
 	OR = {
 		is_soviet_collapse_base_republic_without_kazakhstan_tag = yes
 		AND = {
@@ -2684,131 +2696,103 @@ is_soviet_collapse_progressive_release_candidate = {
 	NOT = { is_in_array = { array = global.soviet_collapse_first_wave_republics value = THIS } }
 	NOT = { has_country_flag = soviet_collapse_moscow_federated_subject }
 	NOT = { has_country_flag = soviet_collapse_republic_once_released }
-	OR = {
-		AND = {
-			exists = no
-			any_state = {
-				is_core_of = PREV
-				OR = {
-					has_state_flag = soviet_collapse_original_union_state
-					is_owned_by = SOV
-					is_controlled_by = SOV
-					owner = { is_subject_of = SOV }
-					controller = { is_subject_of = SOV }
-					owner = { has_country_flag = soviet_collapse_breakaway }
-					controller = { has_country_flag = soviet_collapse_breakaway }
-					owner = { has_country_flag = soviet_collapse_event_created_republic }
-					controller = { has_country_flag = soviet_collapse_event_created_republic }
-					owner = { has_country_flag = soviet_collapse_high_chaos_successor }
-					controller = { has_country_flag = soviet_collapse_high_chaos_successor }
-				}
-			}
-		}
-		AND = {
-			exists = yes
-			is_subject_of = SOV
+	exists = no
+	any_state = {
+		is_core_of = PREV
+		is_soviet_collapse_state_free_of_independence_wave_origin = yes
+		OR = {
+			has_state_flag = soviet_collapse_original_union_state
+			is_owned_by = SOV
+			is_controlled_by = SOV
+			owner = { is_subject_of = SOV }
+			controller = { is_subject_of = SOV }
+			owner = { has_country_flag = soviet_collapse_breakaway }
+			controller = { has_country_flag = soviet_collapse_breakaway }
+			owner = { has_country_flag = soviet_collapse_event_created_republic }
+			controller = { has_country_flag = soviet_collapse_event_created_republic }
+			owner = { has_country_flag = soviet_collapse_high_chaos_successor }
+			controller = { has_country_flag = soviet_collapse_high_chaos_successor }
 		}
 	}
 }
 
 is_soviet_collapse_terminal_base_republic_candidate = {
 	is_soviet_collapse_base_republic_tag = yes
+	NOT = { has_country_flag = independence_wave_active_origin }
+	NOT = { is_liberation_release_current_reserved_country = yes }
 	NOT = { has_country_flag = soviet_collapse_breakaway }
 	NOT = { has_country_flag = soviet_collapse_republic_once_released }
-	OR = {
-		AND = {
-			exists = no
-			any_state = {
-				is_core_of = PREV
-				OR = {
-					has_state_flag = soviet_collapse_original_union_state
-					is_owned_by = SOV
-					is_controlled_by = SOV
-					owner = { is_subject_of = SOV }
-					controller = { is_subject_of = SOV }
-					owner = { has_country_flag = soviet_collapse_breakaway }
-					controller = { has_country_flag = soviet_collapse_breakaway }
-					owner = { has_country_flag = soviet_collapse_event_created_republic }
-					controller = { has_country_flag = soviet_collapse_event_created_republic }
-					owner = { has_country_flag = soviet_collapse_high_chaos_successor }
-					controller = { has_country_flag = soviet_collapse_high_chaos_successor }
-				}
-			}
-		}
-		AND = {
-			exists = yes
-			is_subject_of = SOV
-			any_state = {
-				is_core_of = PREV
-			}
+	exists = no
+	any_state = {
+		is_core_of = PREV
+		is_soviet_collapse_state_free_of_independence_wave_origin = yes
+		OR = {
+			has_state_flag = soviet_collapse_original_union_state
+			is_owned_by = SOV
+			is_controlled_by = SOV
+			owner = { is_subject_of = SOV }
+			controller = { is_subject_of = SOV }
+			owner = { has_country_flag = soviet_collapse_breakaway }
+			controller = { has_country_flag = soviet_collapse_breakaway }
+			owner = { has_country_flag = soviet_collapse_event_created_republic }
+			controller = { has_country_flag = soviet_collapse_event_created_republic }
+			owner = { has_country_flag = soviet_collapse_high_chaos_successor }
+			controller = { has_country_flag = soviet_collapse_high_chaos_successor }
 		}
 	}
 }
 
 is_soviet_collapse_dynamic_union_progressive_release_candidate = {
 	NOT = { tag = SOV }
+	NOT = { has_country_flag = independence_wave_active_origin }
+	NOT = { is_liberation_release_current_reserved_country = yes }
 	NOT = { is_soviet_collapse_pressure_successor_spawn_tag = yes }
 	NOT = { has_country_flag = soviet_collapse_republic_once_released }
 	is_soviet_collapse_internal_republic_focus_tree_tag = yes
 	has_soviet_collapse_dynamic_follow_on_release_pressure = yes
-	OR = {
-		AND = {
-			exists = no
-			any_state = {
-				is_core_of = PREV
-				OR = {
-					has_state_flag = soviet_collapse_original_union_state
-					is_owned_by = SOV
-					is_controlled_by = SOV
-					owner = { is_subject_of = SOV }
-					controller = { is_subject_of = SOV }
-					owner = { has_country_flag = soviet_collapse_breakaway }
-					controller = { has_country_flag = soviet_collapse_breakaway }
-					owner = { has_country_flag = soviet_collapse_event_created_republic }
-					controller = { has_country_flag = soviet_collapse_event_created_republic }
-					owner = { has_country_flag = soviet_collapse_high_chaos_successor }
-					controller = { has_country_flag = soviet_collapse_high_chaos_successor }
-				}
-			}
-		}
-		AND = {
-			exists = yes
-			is_subject_of = SOV
-			any_state = {
-				is_core_of = PREV
-			}
+	exists = no
+	any_state = {
+		is_core_of = PREV
+		is_soviet_collapse_state_free_of_independence_wave_origin = yes
+		OR = {
+			has_state_flag = soviet_collapse_original_union_state
+			is_owned_by = SOV
+			is_controlled_by = SOV
+			owner = { is_subject_of = SOV }
+			controller = { is_subject_of = SOV }
+			owner = { has_country_flag = soviet_collapse_breakaway }
+			controller = { has_country_flag = soviet_collapse_breakaway }
+			owner = { has_country_flag = soviet_collapse_event_created_republic }
+			controller = { has_country_flag = soviet_collapse_event_created_republic }
+			owner = { has_country_flag = soviet_collapse_high_chaos_successor }
+			controller = { has_country_flag = soviet_collapse_high_chaos_successor }
 		}
 	}
 }
 
 is_soviet_collapse_first_wave_release_candidate = {
 	is_soviet_collapse_base_republic_tag = yes
+	NOT = { has_country_flag = independence_wave_active_origin }
+	NOT = { is_liberation_release_current_reserved_country = yes }
 	NOT = { is_in_array = { array = global.soviet_collapse_first_wave_republics value = THIS } }
 	NOT = { has_country_flag = soviet_collapse_moscow_federated_subject }
 	NOT = { has_country_flag = soviet_collapse_republic_once_released }
-	OR = {
-		AND = {
-			exists = no
-			any_state = {
-				is_core_of = PREV
-				OR = {
-					has_state_flag = soviet_collapse_original_union_state
-					is_owned_by = SOV
-					is_controlled_by = SOV
-					owner = { is_subject_of = SOV }
-					controller = { is_subject_of = SOV }
-					owner = { has_country_flag = soviet_collapse_breakaway }
-					controller = { has_country_flag = soviet_collapse_breakaway }
-					owner = { has_country_flag = soviet_collapse_event_created_republic }
-					controller = { has_country_flag = soviet_collapse_event_created_republic }
-					owner = { has_country_flag = soviet_collapse_high_chaos_successor }
-					controller = { has_country_flag = soviet_collapse_high_chaos_successor }
-				}
-			}
-		}
-		AND = {
-			exists = yes
-			is_subject_of = SOV
+	exists = no
+	any_state = {
+		is_core_of = PREV
+		is_soviet_collapse_state_free_of_independence_wave_origin = yes
+		OR = {
+			has_state_flag = soviet_collapse_original_union_state
+			is_owned_by = SOV
+			is_controlled_by = SOV
+			owner = { is_subject_of = SOV }
+			controller = { is_subject_of = SOV }
+			owner = { has_country_flag = soviet_collapse_breakaway }
+			controller = { has_country_flag = soviet_collapse_breakaway }
+			owner = { has_country_flag = soviet_collapse_event_created_republic }
+			controller = { has_country_flag = soviet_collapse_event_created_republic }
+			owner = { has_country_flag = soviet_collapse_high_chaos_successor }
+			controller = { has_country_flag = soviet_collapse_high_chaos_successor }
 		}
 	}
 }
@@ -2943,6 +2927,9 @@ is_soviet_collapse_pressure_successor_spawn_tag = {
 }
 
 is_soviet_collapse_pressure_successor_progressive_candidate = {
+	exists = no
+	NOT = { has_country_flag = independence_wave_active_origin }
+	NOT = { is_liberation_release_current_reserved_country = yes }
 	has_soviet_collapse_pressure_successor_follow_on_release_pressure = yes
 	OR = {
 		AND = {
@@ -3133,6 +3120,7 @@ is_soviet_collapse_cascade_priority_progressive_release_candidate = {
 }
 
 is_soviet_collapse_breakaway_country = {
+	NOT = { has_country_flag = independence_wave_active_origin }
 	OR = {
 		has_country_flag = soviet_collapse_breakaway
 		has_country_flag = soviet_collapse_event_created_republic
