@@ -12,6 +12,8 @@ Before adding new dynamic logic, check this file and reuse an existing effect if
 - [chaosx_startup_mark_existing_scientists](#chaosx_startup_mark_existing_scientists)
 - [chaosx_startup_clear_generated_scientist_helper_flags](#chaosx_startup_clear_generated_scientist_helper_flags)
 - [call_natural_disaster](#call_natural_disaster)
+- [air_contamination_register_natural_disaster_source](#air_contamination_register_natural_disaster_source)
+- [air_contamination_prepare_natural_source_monthly](#air_contamination_prepare_natural_source_monthly)
 - [natural_disaster_register_relief_recipient_country](#natural_disaster_register_relief_recipient_country)
 - [natural_disaster_unregister_relief_recipient_country_if_inactive](#natural_disaster_unregister_relief_recipient_country_if_inactive)
 - [natural_disaster_transfer_pending_jobs_for_state](#natural_disaster_transfer_pending_jobs_for_state)
@@ -186,6 +188,59 @@ set_temp_variable = { natural_disaster_call_target_state_supplied = 1 }
 set_temp_variable = { natural_disaster_call_severity = constant:natural_disaster_severity.severe }
 set_temp_variable = { natural_disaster_call_sequence_mode = constant:natural_disaster_sequence_mode.single }
 call_natural_disaster = yes
+```
+
+## air_contamination_register_natural_disaster_source
+
+Purpose: Register a very small wildfire-smoke or volcanic-ash contribution after Event 013 resolves a physical impact. The effect lives in `common/scripted_effects/air_cleanliness_natural_source_effects.txt`.
+
+Scope: State.
+
+Inputs:
+
+- `natural_disaster_current_family` temporary variable
+- `natural_disaster_current_severity` temporary variable
+- state variables `natural_disaster_sequence_id` and `natural_disaster_impact_index`
+
+Defaults: Unsupported families, wildfires below regional severity, disabled Air Cleanliness, and the Final Silence lock add nothing.
+
+Outputs and side effects:
+
+- Adds the severity-scaled amount to `global.air_contamination_natural_source_reservoir_bp`.
+- Clamps the reservoir from zero through `constant:air_contamination_natural_source.monthly_cap_bp`.
+- Records the contributing sequence, impact index, and family on the state so the same physical impact cannot register twice.
+
+Example:
+
+```txt
+natural_disaster_prepare_family_profile = yes
+natural_disaster_prepare_severity_profile = yes
+air_contamination_register_natural_disaster_source = yes
+```
+
+## air_contamination_prepare_natural_source_monthly
+
+Purpose: Expose the current smoke-and-ash reservoir to the existing host-owned monthly Air Contamination calculation, then dissipate it once.
+
+Scope: Country, called by the current host coordinator.
+
+Inputs: Persistent global natural-source reservoir and the current `global.date`.
+
+Defaults: Missing reservoir and contribution variables initialize to zero.
+
+Outputs and side effects:
+
+- Writes the current contribution to `global.air_contamination_natural_source_bp`.
+- Outputs `air_monthly_natural_bp` as a temporary variable for the caller.
+- Reduces the reservoir by `constant:air_contamination_natural_source.monthly_decay_bp`.
+- Uses `global.air_contamination_natural_source_last_tick_date` to prevent a second decay on the same date.
+- Exposes zero current contribution while Final Silence is locked, while the hidden reservoir still decays.
+
+Example:
+
+```txt
+air_contamination_prepare_natural_source_monthly = yes
+add_to_temp_variable = { air_contamination_delta_bp = air_monthly_natural_bp }
 ```
 
 ## natural_disaster_resolve_ordinary_family

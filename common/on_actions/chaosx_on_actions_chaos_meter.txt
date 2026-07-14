@@ -6,70 +6,78 @@
 
 on_actions = {
 
-    # Chaos Meter Daily Update
-    on_daily = {
-        effect = {
-            if = {
-                limit = { # Ensure it runs only once
-                    any_country = { has_country_flag = is_global_host }
-                    has_country_flag = is_global_host
-                    is_ai = no
-                    NOT = { has_global_flag = settings_chaos_meter_disabled }
-                }
-                chaos_meter_daily_update = yes
-            }
-            else_if = { # In case tag switch was made
-                limit = {
-                    any_country = { has_country_flag = is_global_host }
-                    NOT = { has_country_flag = is_global_host }
-                    is_ai = no
-                    NOT = { has_global_flag = settings_chaos_meter_disabled }
-                }
-                every_country = {
-                    limit = { has_country_flag = is_global_host }
-                    clr_country_flag = is_global_host
-                }
-                set_country_flag = is_global_host
-            }
-            else_if = { # In case there is no player controlled country (spectator mode compatibility in the future maybe)
-                limit = {
-                    NOT = { any_country = { has_country_flag = is_global_host } }
-                    NOT = { has_country_flag = is_global_host }
-                    is_ai = yes
-                    NOT = { has_global_flag = settings_chaos_meter_disabled }
-                }
-                if = {
-                    limit = { NOT = { has_country_flag = is_global_host } }
-                    set_country_flag = is_global_host
-                }
+	# Chaos Meter Daily Update
+	on_daily = {
+		effect = {
+			if = {
+				limit = { # Ensure it runs only once
+					any_country = { has_country_flag = is_global_host }
+					has_country_flag = is_global_host
+					is_ai = no
+				}
+				if = {
+					limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+					chaos_meter_daily_update = yes
+				}
+			}
+			else_if = { # In case tag switch was made
+				limit = {
+					any_country = { has_country_flag = is_global_host }
+					NOT = { has_country_flag = is_global_host }
+					is_ai = no
+				}
+				every_country = {
+					limit = { has_country_flag = is_global_host }
+					clr_country_flag = is_global_host
+				}
+				set_country_flag = is_global_host
+			}
+			else_if = { # In case there is no player controlled country
+				limit = {
+					NOT = { any_country = { has_country_flag = is_global_host } }
+					NOT = { has_country_flag = is_global_host }
+					is_ai = yes
+				}
+				if = {
+					limit = { NOT = { has_country_flag = is_global_host } }
+					set_country_flag = is_global_host
+				}
 
-                chaos_meter_daily_update = yes
-            }
+				if = {
+					limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+					chaos_meter_daily_update = yes
+				}
+			}
+		}
+	}
 
-        }
-    }
-
-    # Monthly decay
-    on_monthly = {
-        effect = {
-            if = {
-                limit = { # Ensure it runs only once
-                    any_country = { has_country_flag = is_global_host }
-                    has_country_flag = is_global_host
-                    is_ai = no
-                    NOT = { has_global_flag = settings_chaos_meter_disabled }
-                }
+	# Monthly updates
+	on_monthly = {
+		effect = {
+			if = {
+				limit = {
+					any_country = { has_country_flag = is_global_host }
+					has_country_flag = is_global_host
+				}
 				air_contamination_monthly_update = yes
+			}
+			if = {
+				limit = { # Ensure it runs only once
+					any_country = { has_country_flag = is_global_host }
+					has_country_flag = is_global_host
+					is_ai = no
+					NOT = { has_global_flag = settings_chaos_meter_disabled }
+				}
 				genocide_initialize_system_if_needed = yes
 				genocide_monthly_global_pulse = yes
-                set_temp_variable = { chaos_change = constant:chaos_meter_delta.world_state.monthly_decay }
-                set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.world_state.monthly_decay }
-                set_temp_variable = { chaos_history_reason_custom = 1 }
-                add_chaos_meter_value = yes
-                log = "CHAOS METER: Monthly decay"
-            }
-        }
-    }
+				set_temp_variable = { chaos_change = constant:chaos_meter_delta.world_state.monthly_decay }
+				set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.world_state.monthly_decay }
+				set_temp_variable = { chaos_history_reason_custom = 1 }
+				add_chaos_meter_value = yes
+				log = "CHAOS METER: Monthly decay"
+			}
+		}
+	}
 
     # Chaos Meter On Actions
     on_war_relation_added = {
