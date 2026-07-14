@@ -2,7 +2,9 @@
 
 Research completed: 2026-07-10
 
-Two unique musical recordings with documented public-domain status are selected. The source and rights research is complete. Download, trimming, loudness normalization, 44.1 kHz conversion, game placement, sound definitions, and playback wiring remain asset and implementation work.
+Rights verification reconciled: 2026-07-14
+
+Two distinct musical selections remain accepted. Their recording-rights status is not equal. The exact `6001` London Brass Players recording is blocked for United States redistribution. The `6002` United States Marine Band source is verified on its stated United States federal public-domain basis and preserved locally. No substitute recording has been selected.
 
 ## Super-event 1, league formation
 
@@ -16,7 +18,7 @@ Two unique musical recordings with documented public-domain status are selected.
 
 **Source duration:** 167.573 seconds, displayed as 2 minutes 48 seconds.
 
-**Rights:** Wikimedia Commons marks the work public domain and free of known copyright and neighboring-right restrictions. An Ogg Vorbis transcode is available on the source page.
+**Rights:** The Clarke composition is public domain. The accepted 1948 recording, released in 1949, does not have a verified United States public-domain tag, CC0 dedication, or rights-holder permission. The Commons page requires a United States public-domain basis, and the reviewed evidence does not supply one. Do not download, process, or wire this recording.
 
 **Selected in-game segment:** 00:23 to 02:13, 110 seconds.
 
@@ -27,6 +29,8 @@ Two unique musical recordings with documented public-domain status are selected.
 **Suggested audio ID:** `6001`, subject to the implementation collision check.
 
 **Fit:** The brass and organ ceremonial character supports a treaty proclamation, public institution, and new diplomatic order without sounding like a victory march for one country.
+
+**Blocker:** Unblocking requires permission or a waiver that covers United States redistribution of this exact recording. Reopening the selection requires explicit user approval. The accepted editorial plan and reserved identifiers remain held, not production-ready.
 
 ## Super-event 2, dangerous coordinated bloc
 
@@ -44,7 +48,7 @@ Two unique musical recordings with documented public-domain status are selected.
 
 **Rights:** Wikimedia Commons marks the composition public domain. It also marks the transcription, performance, and recording public domain as a work made by United States federal employees in official duties.
 
-**Selected in-game segment:** 10:45 to 12:35, 110 seconds.
+**Selected in-game segment:** Final 110 seconds, precisely 10:44.641 to 12:34.641.
 
 **Edit plan:** Preserve the original source. Trim the final 110 seconds, apply a 1.5 second fade-in and 2 second fade-out, control the loudest peaks so the cue does not overwhelm the super-event UI, and export at 44.1 kHz Ogg Vorbis.
 
@@ -54,6 +58,19 @@ Two unique musical recordings with documented public-domain status are selected.
 
 **Fit:** The final escalation communicates organized military confidence and a widening war. It is reserved for the frightening coordinated threshold and cannot play for an ordinary release wave.
 
-## Required production handoff
+**Preserved source:** `../../../assets/006_independence_wave/super_events/audio/source/1812_Overture_-_United_States_Marine_Band.opus`
 
-The audio worker must preserve source downloads under the Event 6 documentation asset tree, record the exact downloaded file and checksum, create the two final OGG files, verify 44.1 kHz sample rate and duration, add the unique music and sound wrappers, update the settings-aware audio helper, and add both rows to the music track list. A different track is allowed only if a source or rights problem is discovered and documented.
+**Preserved-source checksum:** SHA-256 `93c141a2e5782385e8a9b53f5f622afcb604da6f361fe1ca2e160ea4bfe92d3d`, 12,999,461 bytes. The local SHA-1 matches the Commons original.
+
+## Production handoff status
+
+The cleared `6002` derivative has been produced from the preserved source,
+post-encode verified, and registered through the unique music and sound wrapper
+families. Its exact measurements and checksums are recorded in
+`../../../assets/006_independence_wave/super_events/audio/production_manifest.md`.
+The final dangerous-bloc firing effect must still assign audio ID `6002` before
+calling the settings-aware playback helper. `6001` remains unwired until its
+blocker is cleared. A different recording is not authorized without explicit
+user approval.
+
+Full evidence and production details are in `../../../plans/006_independence_wave_plans/super_event_research/006_super_event_audio_verification.md`.
