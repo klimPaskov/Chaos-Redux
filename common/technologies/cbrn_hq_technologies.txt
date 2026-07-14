@@ -1,19 +1,76 @@
 # ============================================================================
-# CHAOS REDUX - CBRN ARMY HEADQUARTERS TECHNOLOGY
+# CHAOS REDUX - CBRN ARMY HEADQUARTERS AND AIR-COORDINATION TECHNOLOGIES
 # ============================================================================
 # Overview:
-# - Defines the doctrine-only Theater CBRN Headquarters capstone gate.
-# - The technology cannot be researched; Operations mastery grants it directly.
-# - It exposes no substitute unlock path outside the accepted doctrine chain.
+# - Defines doctrine-only Mobile Decontamination Columns, Chemical Air
+#   Interdiction, and Theater CBRN Headquarters gates.
+# - These technologies cannot be researched; Operations mastery grants them
+#   directly through the centralized doctrine helper.
+# - Chemical Air Interdiction is an eligibility marker for an explicit
+#   selected-state operation. It creates no continuous-air mission effect.
+# - No technology exposes a substitute unlock path outside the accepted
+#   doctrine chain.
 # ============================================================================
 
 @CBRN_HQ_TECH_COST = 1
+@CBRN_MOBILE_DECON_TECH_YEAR = 1939
+@CBRN_CHEMICAL_AIR_TECH_YEAR = 1940
 @CBRN_HQ_TECH_YEAR = 1942
+@CBRN_MOBILE_DECON_TECH_X = 8
+@CBRN_CHEMICAL_AIR_TECH_X = 10
 @CBRN_HQ_TECH_X = 14
 @CBRN_HQ_TECH_Y = 24
+@CBRN_DOCTRINE_COORDINATION_TECH_Y = 26
 @CBRN_HQ_TECH_AI_DISABLED = 0
 
 technologies = {
+	mobile_decontamination_columns = {
+		allow = { always = no }
+		research_cost = @CBRN_HQ_TECH_COST
+		start_year = @CBRN_MOBILE_DECON_TECH_YEAR
+
+		enable_subunits = {
+			cbrn_hq_mobile_decontamination_column
+		}
+
+		categories = {
+			chemical_warfare_tech
+			decontamination_tech
+		}
+
+		folder = {
+			name = chemical_warfare_folder
+			position = { x = @CBRN_MOBILE_DECON_TECH_X y = @CBRN_DOCTRINE_COORDINATION_TECH_Y }
+		}
+
+		ai_will_do = { factor = @CBRN_HQ_TECH_AI_DISABLED }
+		special_project_specialization = { specialization_cw specialization_land }
+	}
+
+	chemical_air_interdiction = {
+		allow = { always = no }
+		research_cost = @CBRN_HQ_TECH_COST
+		start_year = @CBRN_CHEMICAL_AIR_TECH_YEAR
+
+		# Stage 6 consumes this marker only from an explicit selected-state raid
+		# or prepared operation that debits payload before exposure dispatch.
+		# Ordinary air missions and idle chemical-capable aircraft receive no
+		# contamination hook from this technology.
+
+		categories = {
+			chemical_warfare_tech
+			air_equipment
+		}
+
+		folder = {
+			name = chemical_warfare_folder
+			position = { x = @CBRN_CHEMICAL_AIR_TECH_X y = @CBRN_DOCTRINE_COORDINATION_TECH_Y }
+		}
+
+		ai_will_do = { factor = @CBRN_HQ_TECH_AI_DISABLED }
+		special_project_specialization = { specialization_cw specialization_air }
+	}
+
 	theater_cbrn_headquarters = {
 		allow = { always = no }
 		research_cost = @CBRN_HQ_TECH_COST

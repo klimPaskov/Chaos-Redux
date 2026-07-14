@@ -101,6 +101,8 @@ Target file: `interface/chaosx_traits.gfx`. One transparent `23x33` sprite.
 
 Target file: `interface/cbrn_doctrine.gfx`. Every DDS is an independent transparent `32x32` one-frame icon. The source concepts were separately generated for decision-scale readability.
 
+The parent supplied the exact sprite id, runtime DDS path, source path, and processed path for the institutional-review asset.
+
 | Sprite id | Exact texture path | Related decision/mission |
 |---|---|---|
 | `GFX_decision_cbrn_chaos_warfare_establishment_mission` | `gfx/interface/decisions/stage_5_chaos_warfare/cbrn_chaos_warfare_establishment_mission.dds` | cbrn_chaos_warfare_establishment_mission |
@@ -120,6 +122,7 @@ Target file: `interface/cbrn_doctrine.gfx`. Every DDS is an independent transpar
 | `GFX_decision_cbrn_commission_nerve_suppression` | `gfx/interface/decisions/stage_5_chaos_warfare/cbrn_commission_nerve_suppression.dds` | cbrn_commission_nerve_suppression |
 | `GFX_decision_cbrn_commission_biological_security_assault` | `gfx/interface/decisions/stage_5_chaos_warfare/cbrn_commission_biological_security_assault.dds` | cbrn_commission_biological_security_assault |
 | `GFX_decision_cbrn_assign_decontamination_corridor` | `gfx/interface/decisions/stage_5_chaos_warfare/cbrn_assign_decontamination_corridor.dds` | cbrn_assign_decontamination_corridor |
+| `GFX_decision_cbrn_convene_institutional_review` | `gfx/interface/decisions/stage_5_chaos_warfare/cbrn_convene_institutional_review.dds` | cbrn_convene_institutional_review |
 
 Representative copy pattern:
 
@@ -136,6 +139,15 @@ spriteType = {
 	texturefile = "gfx/interface/decisions/stage_5_chaos_warfare/cbrn_assign_decontamination_corridor.dds"
 }
 ```
+
+```text
+spriteType = {
+	name = "GFX_decision_cbrn_convene_institutional_review"
+	texturefile = "gfx/interface/decisions/stage_5_chaos_warfare/cbrn_convene_institutional_review.dds"
+}
+```
+
+Package source: `source_png/decisions/cbrn_convene_institutional_review_source.png`; alpha master: `source_png/decisions/cbrn_convene_institutional_review_master.png`; processed preview: `processed_png/decisions/cbrn_convene_institutional_review.png`. The source is an independent built-in `$imagegen` capture, keyed from `#ff00ff` because the olive/teal subject conflicted with green keying. No `.gfx` file was edited here.
 
 ## Decision-category icon
 
@@ -156,18 +168,18 @@ spriteType = {
 
 ## Doctrine technology icons
 
-Target file: `interface/chaosx_techtree.gfx`. Both DDS files are independent transparent `64x64` one-frame technology icons.
+Target file: `interface/cbrn_doctrine.gfx`. Both DDS files are independent transparent `64x64` one-frame technology icons.
 
 | Sprite id | Exact texture path | Related technology |
 |---|---|---|
-| `GFX_mobile_cbrn_decontamination_columns_medium` | `gfx/interface/technologies/stage_5_chaos_warfare/cbrn_mobile_decontamination_columns.dds` | cbrn_mobile_decontamination_columns |
-| `GFX_chemical_air_interdiction_medium` | `gfx/interface/technologies/stage_5_chaos_warfare/cbrn_chemical_air_interdiction.dds` | cbrn_chemical_air_interdiction |
+| `GFX_mobile_decontamination_columns_medium` | `gfx/interface/technologies/stage_5_chaos_warfare/cbrn_mobile_decontamination_columns.dds` | mobile_decontamination_columns |
+| `GFX_chemical_air_interdiction_medium` | `gfx/interface/technologies/stage_5_chaos_warfare/cbrn_chemical_air_interdiction.dds` | chemical_air_interdiction |
 
 Copy pattern:
 
 ```text
 spriteType = {
-	name = "GFX_mobile_cbrn_decontamination_columns_medium"
+	name = "GFX_mobile_decontamination_columns_medium"
 	texturefile = "gfx/interface/technologies/stage_5_chaos_warfare/cbrn_mobile_decontamination_columns.dds"
 }
 ```

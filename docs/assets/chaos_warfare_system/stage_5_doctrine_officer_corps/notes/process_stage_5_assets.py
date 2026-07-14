@@ -69,7 +69,6 @@ def save_dds(image: Image.Image, path: Path) -> None:
         0,
         0,
         0,
-        0,
         32,
         65,
         0,
@@ -78,6 +77,7 @@ def save_dds(image: Image.Image, path: Path) -> None:
         0x0000FF00,
         0x000000FF,
         0xFF000000,
+        0x00001000,
         0,
         0,
         0,
@@ -184,7 +184,7 @@ MILESTONES = ["protective_foundation", "delivery_integration", "theater_exploita
 SPIRITS = ["controlled_retaliation_doctrine", "theater_contamination_doctrine", "terminal_hazard_doctrine", "mask_discipline", "hazard_assault_cadres", "contaminant_fire_coordination"]
 ROLES = ["cbrn_operations_director", "civil_defence_coordinator", "chemical_logistics_inspector", "biological_security_director"]
 DECISIONS = [
-    "cbrn_chaos_warfare_establishment_mission", "cbrn_complete_delayed_establishment", "cbrn_claim_protective_foundation", "cbrn_claim_delivery_integration", "cbrn_claim_theater_exploitation", "cbrn_claim_terminal_command", "cbrn_hazard_assault_training", "cbrn_set_defensive_preparation_policy", "cbrn_set_retaliation_authority_policy", "cbrn_set_limited_battlefield_policy", "cbrn_set_strategic_release_policy", "cbrn_set_unrestricted_policy", "cbrn_commission_sealed_tank_crews", "cbrn_commission_persistent_shell_filling", "cbrn_commission_nerve_suppression", "cbrn_commission_biological_security_assault", "cbrn_assign_decontamination_corridor"
+    "cbrn_chaos_warfare_establishment_mission", "cbrn_complete_delayed_establishment", "cbrn_claim_protective_foundation", "cbrn_claim_delivery_integration", "cbrn_claim_theater_exploitation", "cbrn_claim_terminal_command", "cbrn_hazard_assault_training", "cbrn_set_defensive_preparation_policy", "cbrn_set_retaliation_authority_policy", "cbrn_set_limited_battlefield_policy", "cbrn_set_strategic_release_policy", "cbrn_set_unrestricted_policy", "cbrn_commission_sealed_tank_crews", "cbrn_commission_persistent_shell_filling", "cbrn_commission_nerve_suppression", "cbrn_commission_biological_security_assault", "cbrn_assign_decontamination_corridor", "cbrn_convene_institutional_review"
 ]
 
 

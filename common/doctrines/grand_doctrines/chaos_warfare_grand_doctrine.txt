@@ -1,60 +1,112 @@
 # ============================================================================
 # CHAOS REDUX - CHAOS WARFARE GRAND DOCTRINE
 # ============================================================================
-# Adds the Chaos Warfare grand doctrine to the land doctrine folder.
+# Overview:
+# - Makes Chaos Warfare conditional on an actual protective, agent, command,
+#   historical-program, or scenario capability.
+# - Initializes the national CBRN institution and its bounded establishment
+#   mission without granting broad army attack bonuses.
+# - Native track milestones record completion only; cross-track institutional
+#   milestones are enforced by exact country decisions.
 # ============================================================================
 
-# mastery 500, infantry
-# mastery 500, armor
-# mastery 500, combat_support
-# mastery 500, operations
-
-@CHEM_SUPPORT_COMPANY_SOFT_ATTACK = 0.20
-@CHEM_SUPPORT_COMPANY_BREAKTHROUGH = 0.20
-@CHEM_SUPPORT_COMPANY_DEFENSE = 0.20
+# Static doctrine fields do not document script-constant support. These
+# file-local parser values mirror common/script_constants/cbrn_doctrine_constants.txt.
+@CBRN_CHAOS_WARFARE_XP_COST = 100
+@CBRN_CHAOS_WARFARE_PLANNING_SPEED = 0.05
+@CBRN_CHAOS_WARFARE_AI_BASE = 0.20
+@CBRN_CHAOS_WARFARE_AI_NONHUMAN = 0
+@CBRN_CHAOS_WARFARE_AI_VIABLE_PROGRAM = 4.00
+@CBRN_CHAOS_WARFARE_AI_PREPARED_PROFILE = 2.00
+@CBRN_CHAOS_WARFARE_AI_MILITARY_PROFILE = 2.50
+@CBRN_CHAOS_WARFARE_AI_INDUSTRIAL_PROFILE = 1.75
+@CBRN_CHAOS_WARFARE_AI_ENEMY_USE = 3.00
+@CBRN_CHAOS_WARFARE_AI_WAR = 1.50
+@CBRN_CHAOS_WARFARE_AI_ORDINARY_DEMOCRATIC = 0.25
+@CBRN_CHAOS_WARFARE_AI_MINIMAL_PROFILE = 0.15
 
 chaos_warfare = {
-    folder = land
+	folder = land
 
-    name = GRAND_DOCTRINE_CHAOS_WARFARE
-    description = GRAND_DOCTRINE_CHAOS_WARFARE_DESC
-    icon = GFX_doctrine_chaos_warfare_medium
-    available = {
-        always = yes
-    }
-    visible = {
-        always = yes
-    }
+	name = GRAND_DOCTRINE_CHAOS_WARFARE
+	description = GRAND_DOCTRINE_CHAOS_WARFARE_DESC
+	icon = GFX_doctrine_chaos_warfare_medium
+	available = { cbrn_chaos_warfare_adoption_capable = yes }
+	visible = { always = yes }
 
-    xp_cost = 100
-    xp_type = army
+	xp_cost = @CBRN_CHAOS_WARFARE_XP_COST
+	xp_type = army
 
-    ai_will_do = {
-        base = 1
-    }
+	ai_will_do = {
+		base = @CBRN_CHAOS_WARFARE_AI_BASE
+		modifier = {
+			factor = @CBRN_CHAOS_WARFARE_AI_NONHUMAN
+			is_actual_nonhuman_country = yes
+		}
+		modifier = {
+			factor = @CBRN_CHAOS_WARFARE_AI_VIABLE_PROGRAM
+			cbrn_chaos_warfare_ai_has_viable_program = yes
+		}
+		modifier = {
+			factor = @CBRN_CHAOS_WARFARE_AI_PREPARED_PROFILE
+			OR = {
+				cbrn_profile_is_prepared_power = yes
+				cbrn_profile_is_mass_civil_defence = yes
+			}
+		}
+		modifier = {
+			factor = @CBRN_CHAOS_WARFARE_AI_MILITARY_PROFILE
+			cbrn_profile_is_military_first = yes
+		}
+		modifier = {
+			factor = @CBRN_CHAOS_WARFARE_AI_INDUSTRIAL_PROFILE
+			cbrn_profile_is_industrial_reserve = yes
+		}
+		modifier = {
+			factor = @CBRN_CHAOS_WARFARE_AI_ENEMY_USE
+			has_enemy_used_chemical_weapons = yes
+		}
+		modifier = {
+			factor = @CBRN_CHAOS_WARFARE_AI_WAR
+			has_war = yes
+		}
+		modifier = {
+			factor = @CBRN_CHAOS_WARFARE_AI_ORDINARY_DEMOCRATIC
+			has_government = democratic
+			NOT = { cbrn_ai_route_allows_first_use = yes }
+			NOT = { has_enemy_used_chemical_weapons = yes }
+		}
+		modifier = {
+			factor = @CBRN_CHAOS_WARFARE_AI_MINIMAL_PROFILE
+			cbrn_profile_is_limited_or_minimal = yes
+		}
+	}
 
-    tracks = {
-        infantry
-        combat_support
-        armor
-        operations
-    }
+	tracks = {
+		infantry
+		combat_support
+		armor
+		operations
+	}
 
-    category_chemical_support_companies = {
-        soft_attack = @CHEM_SUPPORT_COMPANY_SOFT_ATTACK
-        breakthrough = @CHEM_SUPPORT_COMPANY_BREAKTHROUGH
-        defense = @CHEM_SUPPORT_COMPANY_DEFENSE
-    }
-    enable_tactic = tactic_chemical_barrage
+	planning_speed = @CBRN_CHAOS_WARFARE_PLANNING_SPEED
 
-    milestones = {
-        {
-        }
-        {
-        }
-        {
-        }
-        {
-        }
-    }
+	enable_tactic = tactic_chemical_barrage
+
+	effect = { cbrn_chaos_warfare_adopt = yes }
+
+	milestones = {
+		{
+			effect = { cbrn_record_native_infantry_track_complete = yes }
+		}
+		{
+			effect = { cbrn_record_native_combat_support_track_complete = yes }
+		}
+		{
+			effect = { cbrn_record_native_armor_track_complete = yes }
+		}
+		{
+			effect = { cbrn_record_native_operations_track_complete = yes }
+		}
+	}
 }

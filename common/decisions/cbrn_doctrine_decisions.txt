@@ -1,0 +1,507 @@
+# ============================================================================
+# CHAOS REDUX - CHAOS WARFARE DOCTRINE DECISIONS AND MISSION
+# ============================================================================
+# Overview:
+# - Enforces the ninety-day establishment proof and exact remediation path.
+# - Claims four cross-track institutional milestones without periodic polling.
+# - Exposes the five-step use-policy ladder and four prerequisite-sensitive
+#   doctrine-technology commissions.
+# - AI escalation is route-aware; ordinary defensive democracies receive no
+#   first-use or unrestricted policy weight.
+# ============================================================================
+
+# Timed flag fields require file-local literals. Mirrors
+# cbrn_doctrine_timing.theater_cleanup_assignment_days.
+@CBRN_DOCTRINE_THEATER_CLEANUP_ASSIGNMENT_DAYS = 28
+
+cbrn_operations_category = {
+	cbrn_convene_institutional_review = {
+		icon = GFX_decision_cbrn_convene_institutional_review
+		cost = constant:cbrn_math.zero
+		visible = {
+			has_doctrine = chaos_warfare
+			NOT = { has_country_flag = cbrn_chaos_warfare_adopted }
+		}
+		available = { always = yes }
+		complete_effect = {
+			custom_effect_tooltip = cbrn_convene_institutional_review_effect_tt
+			hidden_effect = { cbrn_migrate_legacy_chaos_warfare = yes }
+		}
+		ai_will_do = { base = constant:cbrn_doctrine_ai.institutional_review_base }
+	}
+
+	cbrn_chaos_warfare_establishment_mission = {
+		icon = GFX_decision_cbrn_chaos_warfare_establishment_mission
+		allowed = { always = no }
+		visible = { has_doctrine = chaos_warfare }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = constant:cbrn_doctrine_timing.establishment_mission_days
+		cancel_trigger = { cbrn_chaos_warfare_establishment_requirements_met = yes }
+		cancel_effect = {
+			custom_effect_tooltip = cbrn_chaos_warfare_establishment_success_tt
+			hidden_effect = { cbrn_complete_chaos_warfare_establishment = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = cbrn_chaos_warfare_establishment_failure_tt
+			hidden_effect = { cbrn_fail_chaos_warfare_establishment = yes }
+		}
+		ai_will_do = { base = constant:cbrn_math.zero }
+	}
+
+	cbrn_complete_delayed_establishment = {
+		icon = GFX_decision_cbrn_complete_delayed_establishment
+		cost = constant:cbrn_doctrine_establishment.remediation_pp_cost
+		days_remove = constant:cbrn_doctrine_timing.remediation_days
+		visible = {
+			has_country_flag = cbrn_doctrine_establishment_failed
+			NOT = { has_country_flag = cbrn_doctrine_establishment_complete }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_complete_delayed_establishment_requirements_tt
+				hidden_trigger = {
+					cbrn_chaos_warfare_establishment_requirements_met = yes
+					NOT = { command_power < constant:cbrn_doctrine_establishment.remediation_command_power_cost }
+				}
+			}
+		}
+		complete_effect = {
+			set_country_flag = cbrn_doctrine_remediation_active
+			set_temp_variable = { cbrn_doctrine_command_power_cost = constant:cbrn_doctrine_establishment.remediation_command_power_cost }
+			cbrn_doctrine_pay_command_power = yes
+		}
+		remove_effect = {
+			clr_country_flag = cbrn_doctrine_remediation_active
+			custom_effect_tooltip = cbrn_complete_delayed_establishment_complete_tt
+			hidden_effect = { cbrn_remediate_chaos_warfare_establishment = yes }
+		}
+		cancel_trigger = { NOT = { cbrn_chaos_warfare_establishment_requirements_met = yes } }
+		cancel_effect = { clr_country_flag = cbrn_doctrine_remediation_active }
+		ai_will_do = {
+			base = constant:cbrn_doctrine_ai.establishment_remediation_base
+			modifier = { factor = constant:cbrn_doctrine_ai.prepared_profile_factor cbrn_profile_is_prepared_power = yes }
+			modifier = { factor = constant:cbrn_doctrine_ai.military_profile_factor cbrn_profile_is_military_first = yes }
+		}
+	}
+
+	cbrn_begin_hazard_assault_training = {
+		icon = GFX_decision_cbrn_hazard_assault_training
+		cost = constant:cbrn_math.zero
+		days_re_enable = constant:cbrn_doctrine_timing.hazard_assault_training_reenable_days
+		visible = {
+			has_doctrine = extermination_columns
+			has_country_flag = cbrn_infantry_track_active
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_begin_hazard_assault_training_requirements_tt
+				hidden_trigger = { cbrn_can_begin_hazard_assault_training = yes }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_begin_hazard_assault_training_effect_tt
+			hidden_effect = { cbrn_begin_hazard_assault_training = yes }
+		}
+		ai_will_do = {
+			base = constant:cbrn_doctrine_ai.hazard_assault_training_base
+			modifier = { factor = constant:cbrn_doctrine_ai.prepared_profile_factor cbrn_ai_has_defensive_cbrn_profile = yes }
+			modifier = { factor = constant:cbrn_doctrine_ai.military_profile_factor cbrn_ai_has_battlefield_cbrn_profile = yes }
+		}
+	}
+
+	cbrn_hazard_assault_training_mission = {
+		icon = GFX_decision_cbrn_hazard_assault_training
+		allowed = { always = no }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = constant:cbrn_doctrine_timing.hazard_assault_training_days
+		timeout_effect = {
+			set_country_flag = cbrn_hazard_assault_training_completed_once
+			custom_effect_tooltip = cbrn_hazard_assault_training_complete_tt
+		}
+		ai_will_do = { base = constant:cbrn_math.zero }
+	}
+
+	cbrn_assign_decontamination_corridor = {
+		icon = GFX_decision_cbrn_assign_decontamination_corridor
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = constant:cbrn_math.zero
+		visible = { has_country_flag = cbrn_milestone_theater_exploitation }
+		target_root_trigger = {
+			cbrn_country_has_active_decontamination_corridor = yes
+			NOT = { has_country_flag = cbrn_hq_decontamination_assignment_committed }
+		}
+		target_trigger = { FROM = { cbrn_state_can_receive_theater_decontamination = yes } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_assign_decontamination_corridor_requirements_tt
+				hidden_trigger = {
+					cbrn_country_has_active_decontamination_corridor = yes
+					NOT = { has_country_flag = cbrn_hq_decontamination_assignment_committed }
+					FROM = { cbrn_state_can_receive_theater_decontamination = yes }
+				}
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_assign_decontamination_corridor_effect_tt
+			hidden_effect = {
+				set_country_flag = {
+					flag = cbrn_hq_decontamination_assignment_committed
+					days = @CBRN_DOCTRINE_THEATER_CLEANUP_ASSIGNMENT_DAYS
+				}
+				FROM = { cbrn_apply_theater_decontamination_assignment = yes }
+			}
+		}
+		ai_will_do = {
+			base = constant:cbrn_doctrine_ai.theater_cleanup_assignment_base
+			modifier = {
+				factor = constant:cbrn_doctrine_ai.theater_cleanup_serious_factor
+				FROM = { cbrn_state_has_serious_chemical_contamination = yes }
+			}
+			modifier = {
+				factor = constant:cbrn_doctrine_ai.theater_cleanup_severe_factor
+				FROM = {
+					check_variable = {
+						var = cbrn_chemical_contamination
+						value = constant:cbrn_contamination_threshold.severe
+						compare = greater_than_or_equals
+					}
+				}
+			}
+		}
+	}
+
+	cbrn_claim_protective_foundation = {
+		icon = GFX_decision_cbrn_claim_protective_foundation
+		cost = constant:cbrn_math.zero
+		visible = {
+			has_country_flag = cbrn_doctrine_establishment_complete
+			NOT = { has_country_flag = cbrn_milestone_protective_foundation }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_claim_protective_foundation_requirements_tt
+				hidden_trigger = { cbrn_can_claim_protective_foundation = yes }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_claim_protective_foundation_complete_tt
+			hidden_effect = { cbrn_claim_protective_foundation = yes }
+		}
+		ai_will_do = { base = constant:cbrn_doctrine_ai.milestone_claim_base }
+	}
+
+	cbrn_claim_delivery_integration = {
+		icon = GFX_decision_cbrn_claim_delivery_integration
+		cost = constant:cbrn_math.zero
+		visible = {
+			has_country_flag = cbrn_milestone_protective_foundation
+			NOT = { has_country_flag = cbrn_milestone_delivery_integration }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_claim_delivery_integration_requirements_tt
+				hidden_trigger = { cbrn_can_claim_delivery_integration = yes }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_claim_delivery_integration_complete_tt
+			hidden_effect = { cbrn_claim_delivery_integration = yes }
+		}
+		ai_will_do = { base = constant:cbrn_doctrine_ai.milestone_claim_base }
+	}
+
+	cbrn_claim_theater_exploitation = {
+		icon = GFX_decision_cbrn_claim_theater_exploitation
+		cost = constant:cbrn_math.zero
+		visible = {
+			has_country_flag = cbrn_milestone_delivery_integration
+			NOT = { has_country_flag = cbrn_milestone_theater_exploitation }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_claim_theater_exploitation_requirements_tt
+				hidden_trigger = { cbrn_can_claim_theater_exploitation = yes }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_claim_theater_exploitation_complete_tt
+			hidden_effect = { cbrn_claim_theater_exploitation = yes }
+		}
+		ai_will_do = { base = constant:cbrn_doctrine_ai.milestone_claim_base }
+	}
+
+	cbrn_claim_terminal_command = {
+		icon = GFX_decision_cbrn_claim_terminal_command
+		cost = constant:cbrn_math.zero
+		visible = {
+			has_country_flag = cbrn_milestone_theater_exploitation
+			NOT = { has_country_flag = cbrn_milestone_terminal_command }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_claim_terminal_command_requirements_tt
+				hidden_trigger = { cbrn_can_claim_terminal_command = yes }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_claim_terminal_command_complete_tt
+			hidden_effect = { cbrn_claim_terminal_command = yes }
+		}
+		ai_will_do = { base = constant:cbrn_doctrine_ai.milestone_claim_base }
+	}
+
+	cbrn_set_defensive_preparation_policy = {
+		icon = GFX_decision_cbrn_set_defensive_preparation_policy
+		cost = constant:cbrn_doctrine_policy_pp_cost.defensive_preparation
+		visible = { has_doctrine = chaos_warfare }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_set_defensive_preparation_policy_requirements_tt
+				hidden_trigger = { cbrn_can_set_defensive_preparation_policy = yes }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_set_defensive_preparation_policy_effect_tt
+			hidden_effect = {
+				set_temp_variable = { cbrn_requested_use_policy = constant:cbrn_use_policy.defensive_preparation }
+				set_temp_variable = { cbrn_policy_command_power_cost = constant:cbrn_doctrine_policy_command_power_cost.defensive_preparation }
+				cbrn_change_chaos_warfare_use_policy = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:cbrn_doctrine_ai.defensive_policy_base
+			modifier = { factor = constant:cbrn_doctrine_ai.defensive_profile_factor cbrn_ai_has_defensive_cbrn_profile = yes }
+		}
+	}
+
+	cbrn_set_retaliation_authority_policy = {
+		icon = GFX_decision_cbrn_set_retaliation_authority_policy
+		cost = constant:cbrn_doctrine_policy_pp_cost.retaliation_authority
+		visible = { has_doctrine = chaos_warfare }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_set_retaliation_authority_policy_requirements_tt
+				hidden_trigger = { cbrn_can_set_retaliation_authority_policy = yes }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_set_retaliation_authority_policy_effect_tt
+			hidden_effect = {
+				set_temp_variable = { cbrn_requested_use_policy = constant:cbrn_use_policy.retaliation_authority }
+				set_temp_variable = { cbrn_policy_command_power_cost = constant:cbrn_doctrine_policy_command_power_cost.retaliation_authority }
+				cbrn_change_chaos_warfare_use_policy = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:cbrn_doctrine_ai.retaliation_policy_base
+			modifier = { factor = constant:cbrn_doctrine_ai.retaliation_enemy_use_factor has_enemy_used_chemical_weapons = yes }
+		}
+	}
+
+	cbrn_set_limited_battlefield_policy = {
+		icon = GFX_decision_cbrn_set_limited_battlefield_policy
+		cost = constant:cbrn_doctrine_policy_pp_cost.limited_battlefield_authority
+		visible = { has_country_flag = cbrn_milestone_delivery_integration }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_set_limited_battlefield_policy_requirements_tt
+				hidden_trigger = { cbrn_can_set_limited_battlefield_policy = yes }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_set_limited_battlefield_policy_effect_tt
+			hidden_effect = {
+				set_temp_variable = { cbrn_requested_use_policy = constant:cbrn_use_policy.limited_battlefield_authority }
+				set_temp_variable = { cbrn_policy_command_power_cost = constant:cbrn_doctrine_policy_command_power_cost.limited_battlefield_authority }
+				cbrn_change_chaos_warfare_use_policy = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:cbrn_doctrine_ai.limited_policy_base
+			modifier = { add = constant:cbrn_doctrine_ai.aggressive_route_add cbrn_ai_route_allows_first_use = yes }
+			modifier = { add = constant:cbrn_doctrine_ai.theater_first_use_add has_idea = cbrn_theater_contamination_doctrine_spirit }
+			modifier = { factor = constant:cbrn_doctrine_ai.controlled_first_use_factor has_idea = chemical_command_reagent_optimization_spirit }
+			modifier = { factor = constant:cbrn_doctrine_ai.nonhuman_factor is_actual_nonhuman_country = yes }
+		}
+	}
+
+	cbrn_set_strategic_release_policy = {
+		icon = GFX_decision_cbrn_set_strategic_release_policy
+		cost = constant:cbrn_doctrine_policy_pp_cost.strategic_release_authority
+		visible = { has_country_flag = cbrn_milestone_theater_exploitation }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_set_strategic_release_policy_requirements_tt
+				hidden_trigger = { cbrn_can_set_strategic_release_policy = yes }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_set_strategic_release_policy_effect_tt
+			hidden_effect = {
+				set_temp_variable = { cbrn_requested_use_policy = constant:cbrn_use_policy.strategic_release_authority }
+				set_temp_variable = { cbrn_policy_command_power_cost = constant:cbrn_doctrine_policy_command_power_cost.strategic_release_authority }
+				cbrn_change_chaos_warfare_use_policy = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:cbrn_doctrine_ai.strategic_policy_base
+			modifier = { add = constant:cbrn_doctrine_ai.aggressive_route_add cbrn_ai_route_allows_first_use = yes }
+			modifier = { add = constant:cbrn_doctrine_ai.theater_first_use_add has_idea = cbrn_theater_contamination_doctrine_spirit }
+			modifier = { factor = constant:cbrn_doctrine_ai.controlled_first_use_factor has_idea = chemical_command_reagent_optimization_spirit }
+			modifier = { factor = constant:cbrn_doctrine_ai.nonhuman_factor is_actual_nonhuman_country = yes }
+		}
+	}
+
+	cbrn_set_unrestricted_policy = {
+		icon = GFX_decision_cbrn_set_unrestricted_policy
+		cost = constant:cbrn_doctrine_policy_pp_cost.unrestricted_chaos_warfare
+		visible = { has_country_flag = cbrn_milestone_terminal_command }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_set_unrestricted_policy_requirements_tt
+				hidden_trigger = { cbrn_can_set_unrestricted_policy = yes }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_set_unrestricted_policy_effect_tt
+			hidden_effect = {
+				set_temp_variable = { cbrn_requested_use_policy = constant:cbrn_use_policy.unrestricted_chaos_warfare }
+				set_temp_variable = { cbrn_policy_command_power_cost = constant:cbrn_doctrine_policy_command_power_cost.unrestricted_chaos_warfare }
+				cbrn_change_chaos_warfare_use_policy = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:cbrn_doctrine_ai.unrestricted_policy_base
+			modifier = { add = constant:cbrn_doctrine_ai.unrestricted_route_add cbrn_ai_route_allows_unrestricted_use = yes }
+			modifier = { add = constant:cbrn_doctrine_ai.terminal_unrestricted_add has_idea = cbrn_terminal_hazard_doctrine_spirit }
+			modifier = { factor = constant:cbrn_doctrine_ai.controlled_first_use_factor has_idea = chemical_command_reagent_optimization_spirit }
+			modifier = { factor = constant:cbrn_doctrine_ai.nonhuman_factor is_actual_nonhuman_country = yes }
+		}
+	}
+
+	cbrn_commission_sealed_tank_crews = {
+		icon = GFX_decision_cbrn_commission_sealed_tank_crews
+		cost = constant:cbrn_doctrine_technology_commission.pp_cost
+		days_remove = constant:cbrn_doctrine_timing.technology_commission_days
+		visible = { has_country_flag = cbrn_armor_mastery_one NOT = { has_tech = sealed_tank_crews } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_commission_sealed_tank_crews_requirements_tt
+				hidden_trigger = {
+					cbrn_can_grant_sealed_tank_crews = yes
+					NOT = { command_power < constant:cbrn_doctrine_technology_commission.command_power_cost }
+				}
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_technology_commission_commitment_tt
+			hidden_effect = {
+				set_temp_variable = { cbrn_doctrine_command_power_cost = constant:cbrn_doctrine_technology_commission.command_power_cost }
+				cbrn_doctrine_pay_command_power = yes
+			}
+		}
+		remove_effect = {
+			custom_effect_tooltip = cbrn_commission_sealed_tank_crews_complete_tt
+			hidden_effect = { cbrn_commission_sealed_tank_crews = yes }
+		}
+		cancel_trigger = { NOT = { cbrn_can_grant_sealed_tank_crews = yes } }
+		ai_will_do = { base = constant:cbrn_doctrine_ai.technology_commission_base }
+	}
+
+	cbrn_commission_persistent_shell_filling = {
+		icon = GFX_decision_cbrn_commission_persistent_shell_filling
+		cost = constant:cbrn_doctrine_technology_commission.pp_cost
+		days_remove = constant:cbrn_doctrine_timing.technology_commission_days
+		visible = { has_country_flag = cbrn_combat_support_mastery_four NOT = { has_tech = persistent_agent_shell_filling } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_commission_persistent_shell_filling_requirements_tt
+				hidden_trigger = {
+					cbrn_can_grant_persistent_agent_shell_filling = yes
+					NOT = { command_power < constant:cbrn_doctrine_technology_commission.command_power_cost }
+				}
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_technology_commission_commitment_tt
+			hidden_effect = {
+				set_temp_variable = { cbrn_doctrine_command_power_cost = constant:cbrn_doctrine_technology_commission.command_power_cost }
+				cbrn_doctrine_pay_command_power = yes
+			}
+		}
+		remove_effect = {
+			custom_effect_tooltip = cbrn_commission_persistent_shell_filling_complete_tt
+			hidden_effect = { cbrn_commission_persistent_agent_shell_filling = yes }
+		}
+		cancel_trigger = { NOT = { cbrn_can_grant_persistent_agent_shell_filling = yes } }
+		ai_will_do = { base = constant:cbrn_doctrine_ai.technology_commission_base }
+	}
+
+	cbrn_commission_nerve_suppression = {
+		icon = GFX_decision_cbrn_commission_nerve_suppression
+		cost = constant:cbrn_doctrine_technology_commission.pp_cost
+		days_remove = constant:cbrn_doctrine_timing.technology_commission_days
+		visible = { has_country_flag = cbrn_armor_mastery_three NOT = { has_tech = nerve_agent_suppression_formation } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_commission_nerve_suppression_requirements_tt
+				hidden_trigger = {
+					cbrn_can_grant_nerve_agent_suppression = yes
+					NOT = { command_power < constant:cbrn_doctrine_technology_commission.command_power_cost }
+				}
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_technology_commission_commitment_tt
+			hidden_effect = {
+				set_temp_variable = { cbrn_doctrine_command_power_cost = constant:cbrn_doctrine_technology_commission.command_power_cost }
+				cbrn_doctrine_pay_command_power = yes
+			}
+		}
+		remove_effect = {
+			custom_effect_tooltip = cbrn_commission_nerve_suppression_complete_tt
+			hidden_effect = { cbrn_commission_nerve_agent_suppression = yes }
+		}
+		cancel_trigger = { NOT = { cbrn_can_grant_nerve_agent_suppression = yes } }
+		ai_will_do = {
+			base = constant:cbrn_doctrine_ai.unrestricted_policy_base
+			modifier = { add = constant:cbrn_doctrine_ai.aggressive_route_add cbrn_ai_route_allows_first_use = yes }
+			modifier = { factor = constant:cbrn_doctrine_ai.nonhuman_factor is_actual_nonhuman_country = yes }
+		}
+	}
+
+	cbrn_commission_biological_security_assault = {
+		icon = GFX_decision_cbrn_commission_biological_security_assault
+		cost = constant:cbrn_doctrine_technology_commission.pp_cost
+		days_remove = constant:cbrn_doctrine_timing.technology_commission_days
+		visible = { has_country_flag = cbrn_operations_mastery_four NOT = { has_tech = biological_security_assault_formation } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_commission_biological_security_assault_requirements_tt
+				hidden_trigger = {
+					cbrn_can_grant_biological_security_assault = yes
+					NOT = { command_power < constant:cbrn_doctrine_technology_commission.command_power_cost }
+				}
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_technology_commission_commitment_tt
+			hidden_effect = {
+				set_temp_variable = { cbrn_doctrine_command_power_cost = constant:cbrn_doctrine_technology_commission.command_power_cost }
+				cbrn_doctrine_pay_command_power = yes
+			}
+		}
+		remove_effect = {
+			custom_effect_tooltip = cbrn_commission_biological_security_assault_complete_tt
+			hidden_effect = { cbrn_commission_biological_security_assault = yes }
+		}
+		cancel_trigger = { NOT = { cbrn_can_grant_biological_security_assault = yes } }
+		ai_will_do = {
+			base = constant:cbrn_doctrine_ai.technology_commission_base
+			modifier = { factor = constant:cbrn_doctrine_ai.prepared_profile_factor has_active_biowarfare_outbreak = yes }
+		}
+	}
+}

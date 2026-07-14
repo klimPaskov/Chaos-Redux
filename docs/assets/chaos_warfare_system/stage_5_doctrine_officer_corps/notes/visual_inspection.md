@@ -12,6 +12,7 @@ Review results:
 - The prepared-command trait remains a narrow badge silhouette at 23x33.
 - The `cbrn_hazard_assault_training` decision shows protected troops in a controlled hazard-field exercise, distinct from the other decisions.
 - The `cbrn_assign_decontamination_corridor` decision shows a selected route/state being washed down by a mobile column, distinct from Hazard Assault Training and from the category icon.
+- The `cbrn_convene_institutional_review` decision shows a sealed institutional-review ledger with a restrained gas-mask/readiness stamp, brass closure, and inspection tabs; it is independently generated, distinct from the route, policy, and doctrine decision concepts, and remains readable at 32x32.
 - The `cbrn_chemical_operations_category` icon uses a horizontal sealed command desk/map composition at 52x40 and is not a doctrine medallion or a 32x32 decision.
 - `cbrn_mobile_decontamination_columns` reads as a truck-mounted wash corridor with hoses and spray hardware, distinct from the HQ support command-case identity.
 - `cbrn_chemical_air_interdiction` reads as deliberate air-ground planning against a selected state, with aircraft, payload canister, and exact-state target marker; it is not a passive air-region contamination icon.

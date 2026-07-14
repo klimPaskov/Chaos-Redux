@@ -1,0 +1,470 @@
+# ============================================================================
+# CHAOS REDUX - CHAOS WARFARE DOCTRINE TRIGGERS
+# ============================================================================
+# Overview:
+# - Provides exact adoption, establishment, institutional milestone, policy,
+#   doctrine-only technology, advisor, and route-aware AI gates.
+# - Reads current mastery, fielded subunit counts, equipment stock, cumulative
+#   production, and persistent order history without periodic polling.
+# - Does not infer active production lines or continuous-air mission activity.
+# ============================================================================
+
+cbrn_chaos_warfare_has_agent_technology = {
+	OR = {
+		has_tech = chlorine_gas
+		has_tech = phosgene
+		has_tech = mustard_gas
+		has_tech = lewisite
+		has_tech = tabun
+		has_tech = sarin
+		has_tech = soman
+	}
+}
+
+cbrn_chaos_warfare_has_completed_chemical_project = {
+	OR = {
+		is_special_project_completed = sp:sp_cw_malodor_bomb_program
+		is_special_project_completed = sp:sp_cw_aphrodisiac_bomb_program
+		is_special_project_completed = sp:sp_cw_sarin_program
+		is_special_project_completed = sp:sp_cw_soman_program
+	}
+}
+
+cbrn_chaos_warfare_has_historical_program_profile = {
+	has_variable = cbrn_protection_program_profile
+	check_variable = {
+		var = cbrn_protection_program_profile
+		value = constant:cbrn_protection_program_profile.none
+		compare = greater_than
+	}
+}
+
+cbrn_chaos_warfare_adoption_capable = {
+	OR = {
+		AND = {
+			has_tech = basic_gas_masks
+			cbrn_chaos_warfare_has_agent_technology = yes
+		}
+		cbrn_chaos_warfare_has_completed_chemical_project = yes
+		has_country_flag = cbrn_command_established
+		cbrn_chaos_warfare_has_historical_program_profile = yes
+		has_country_flag = cbrn_chaos_warfare_scenario_override
+	}
+}
+
+cbrn_chaos_warfare_ai_has_viable_program = {
+	cbrn_chaos_warfare_adoption_capable = yes
+	NOT = { is_actual_nonhuman_country = yes }
+	OR = {
+		is_major = yes
+		num_of_military_factories > 4
+		has_enemy_used_chemical_weapons = yes
+		cbrn_profile_is_mass_civil_defence = yes
+		cbrn_profile_is_prepared_power = yes
+		cbrn_profile_is_military_first = yes
+		cbrn_profile_is_industrial_reserve = yes
+		has_country_flag = cbrn_chaos_warfare_first_use_ai_route
+		has_country_flag = cbrn_chaos_warfare_unrestricted_ai_route
+		has_country_flag = soviet_collapse_high_chaos_successor
+	}
+}
+
+cbrn_chaos_warfare_has_establishment_stock = {
+	NOT = {
+		has_equipment = {
+			gas_mask_equipment < constant:cbrn_doctrine_establishment.mask_reserve
+		}
+	}
+	NOT = {
+		has_equipment = {
+			decontamination_equipment < constant:cbrn_doctrine_establishment.decontamination_reserve
+		}
+	}
+	NOT = {
+		has_equipment = {
+			support_equipment < constant:cbrn_doctrine_establishment.support_equipment_reserve
+		}
+	}
+}
+
+cbrn_chaos_warfare_has_fielded_operations_hq = {
+	check_variable = { num_battalions_with_type@cbrn_hq_operations_section > 0 }
+}
+
+cbrn_chaos_warfare_has_fielded_protected_formation = {
+	check_variable = { num_battalions_with_type@cbrn_gas_mask_decon_detachment > 0 }
+}
+
+cbrn_country_has_active_decontamination_corridor = {
+	any_army_leader = {
+		has_trait = cbrn_hq_active_decontamination_corridor
+	}
+}
+
+cbrn_state_can_receive_theater_decontamination = {
+	is_controlled_by = ROOT
+	cbrn_state_has_chemical_contamination = yes
+	NOT = { has_state_flag = cbrn_hq_decontamination_corridor_assigned }
+}
+
+cbrn_chaos_warfare_establishment_requirements_met = {
+	has_doctrine = chaos_warfare
+	cbrn_chaos_warfare_has_establishment_stock = yes
+	cbrn_chaos_warfare_has_fielded_operations_hq = yes
+	cbrn_chaos_warfare_has_fielded_protected_formation = yes
+}
+
+cbrn_can_begin_hazard_assault_training = {
+	has_doctrine = chaos_warfare
+	has_doctrine = extermination_columns
+	has_country_flag = cbrn_infantry_track_active
+	cbrn_chaos_warfare_has_fielded_protected_formation = yes
+	NOT = { has_active_mission = cbrn_hazard_assault_training_mission }
+	NOT = {
+		has_equipment = {
+			gas_mask_equipment < constant:cbrn_doctrine_training.hazard_assault_mask_cost
+		}
+	}
+	NOT = { has_army_experience < constant:cbrn_doctrine_training.hazard_assault_army_xp_cost }
+}
+
+cbrn_chaos_warfare_has_post_adoption_mask_production = {
+	has_variable = cbrn_doctrine_mask_production_baseline
+	check_variable = {
+		var = total_equipment_produced_gas_mask_equipment
+		value = cbrn_doctrine_mask_production_baseline
+		compare = greater_than
+	}
+}
+
+cbrn_chaos_warfare_has_protective_foundation_reserve = {
+	NOT = {
+		has_equipment = {
+			gas_mask_equipment < constant:cbrn_doctrine_institution.protective_mask_reserve
+		}
+	}
+}
+
+cbrn_chaos_warfare_has_operational_payload_reserve = {
+	OR = {
+		NOT = { has_equipment = { chemical_chlorine_payload_cylinder_1 < constant:cbrn_doctrine_institution.delivery_payload_reserve } }
+		NOT = { has_equipment = { chemical_phosgene_payload_cylinder_1 < constant:cbrn_doctrine_institution.delivery_payload_reserve } }
+		NOT = { has_equipment = { chemical_mustard_payload_cylinder_1 < constant:cbrn_doctrine_institution.delivery_payload_reserve } }
+		NOT = { has_equipment = { chemical_lewisite_payload_cylinder_1 < constant:cbrn_doctrine_institution.delivery_payload_reserve } }
+		NOT = { has_equipment = { chemical_tabun_payload_cylinder_1 < constant:cbrn_doctrine_institution.delivery_payload_reserve } }
+		NOT = { has_equipment = { chemical_sarin_payload_cylinder_1 < constant:cbrn_doctrine_institution.delivery_payload_reserve } }
+		NOT = { has_equipment = { chemical_soman_payload_cylinder_1 < constant:cbrn_doctrine_institution.delivery_payload_reserve } }
+	}
+}
+
+cbrn_chaos_warfare_has_strategic_payload_reserve = {
+	OR = {
+		NOT = { has_equipment = { chemical_chlorine_payload_cylinder_1 < constant:cbrn_doctrine_policy_payload_reserve.strategic_release_authority } }
+		NOT = { has_equipment = { chemical_phosgene_payload_cylinder_1 < constant:cbrn_doctrine_policy_payload_reserve.strategic_release_authority } }
+		NOT = { has_equipment = { chemical_mustard_payload_cylinder_1 < constant:cbrn_doctrine_policy_payload_reserve.strategic_release_authority } }
+		NOT = { has_equipment = { chemical_lewisite_payload_cylinder_1 < constant:cbrn_doctrine_policy_payload_reserve.strategic_release_authority } }
+		NOT = { has_equipment = { chemical_tabun_payload_cylinder_1 < constant:cbrn_doctrine_policy_payload_reserve.strategic_release_authority } }
+		NOT = { has_equipment = { chemical_sarin_payload_cylinder_1 < constant:cbrn_doctrine_policy_payload_reserve.strategic_release_authority } }
+		NOT = { has_equipment = { chemical_soman_payload_cylinder_1 < constant:cbrn_doctrine_policy_payload_reserve.strategic_release_authority } }
+	}
+}
+
+cbrn_chaos_warfare_has_terminal_payload_reserve = {
+	OR = {
+		NOT = { has_equipment = { chemical_chlorine_payload_cylinder_1 < constant:cbrn_doctrine_policy_payload_reserve.unrestricted_chaos_warfare } }
+		NOT = { has_equipment = { chemical_phosgene_payload_cylinder_1 < constant:cbrn_doctrine_policy_payload_reserve.unrestricted_chaos_warfare } }
+		NOT = { has_equipment = { chemical_mustard_payload_cylinder_1 < constant:cbrn_doctrine_policy_payload_reserve.unrestricted_chaos_warfare } }
+		NOT = { has_equipment = { chemical_lewisite_payload_cylinder_1 < constant:cbrn_doctrine_policy_payload_reserve.unrestricted_chaos_warfare } }
+		NOT = { has_equipment = { chemical_tabun_payload_cylinder_1 < constant:cbrn_doctrine_policy_payload_reserve.unrestricted_chaos_warfare } }
+		NOT = { has_equipment = { chemical_sarin_payload_cylinder_1 < constant:cbrn_doctrine_policy_payload_reserve.unrestricted_chaos_warfare } }
+		NOT = { has_equipment = { chemical_soman_payload_cylinder_1 < constant:cbrn_doctrine_policy_payload_reserve.unrestricted_chaos_warfare } }
+	}
+}
+
+cbrn_chaos_warfare_has_delivery_track_mastery_two = {
+	OR = {
+		has_mastery_level = { amount = 2 sub_doctrine = extermination_columns }
+		has_mastery_level = { amount = 2 sub_doctrine = contaminant_firebases }
+		has_mastery_level = { amount = 2 sub_doctrine = chemical_suppression }
+	}
+}
+
+cbrn_chaos_warfare_has_two_tracks_mastery_three = {
+	OR = {
+		AND = {
+			has_mastery_level = { amount = 3 sub_doctrine = extermination_columns }
+			has_mastery_level = { amount = 3 sub_doctrine = contaminant_firebases }
+		}
+		AND = {
+			has_mastery_level = { amount = 3 sub_doctrine = extermination_columns }
+			has_mastery_level = { amount = 3 sub_doctrine = chemical_suppression }
+		}
+		AND = {
+			has_mastery_level = { amount = 3 sub_doctrine = extermination_columns }
+			has_mastery_level = { amount = 3 sub_doctrine = integrated_chemical_operations }
+		}
+		AND = {
+			has_mastery_level = { amount = 3 sub_doctrine = contaminant_firebases }
+			has_mastery_level = { amount = 3 sub_doctrine = chemical_suppression }
+		}
+		AND = {
+			has_mastery_level = { amount = 3 sub_doctrine = contaminant_firebases }
+			has_mastery_level = { amount = 3 sub_doctrine = integrated_chemical_operations }
+		}
+		AND = {
+			has_mastery_level = { amount = 3 sub_doctrine = chemical_suppression }
+			has_mastery_level = { amount = 3 sub_doctrine = integrated_chemical_operations }
+		}
+	}
+}
+
+cbrn_chaos_warfare_has_all_tracks_active = {
+	has_doctrine = extermination_columns
+	has_doctrine = contaminant_firebases
+	has_doctrine = chemical_suppression
+	has_doctrine = integrated_chemical_operations
+}
+
+cbrn_chaos_warfare_has_any_track_mastery_five = {
+	OR = {
+		has_mastery_level = { amount = 5 sub_doctrine = extermination_columns }
+		has_mastery_level = { amount = 5 sub_doctrine = contaminant_firebases }
+		has_mastery_level = { amount = 5 sub_doctrine = chemical_suppression }
+		has_mastery_level = { amount = 5 sub_doctrine = integrated_chemical_operations }
+	}
+}
+
+cbrn_chaos_warfare_has_advanced_protection = {
+	OR = {
+		has_tech = advanced_gas_masks
+		has_tech = sealed_assault_protection
+		has_country_flag = cbrn_advanced_protection_project_equivalent
+	}
+}
+
+cbrn_can_claim_protective_foundation = {
+	has_doctrine = chaos_warfare
+	has_country_flag = cbrn_doctrine_establishment_complete
+	NOT = { has_country_flag = cbrn_milestone_protective_foundation }
+	cbrn_chaos_warfare_has_post_adoption_mask_production = yes
+	cbrn_chaos_warfare_has_protective_foundation_reserve = yes
+	cbrn_chaos_warfare_has_fielded_operations_hq = yes
+}
+
+cbrn_can_claim_delivery_integration = {
+	has_country_flag = cbrn_milestone_protective_foundation
+	NOT = { has_country_flag = cbrn_milestone_delivery_integration }
+	cbrn_chaos_warfare_has_delivery_track_mastery_two = yes
+	cbrn_chaos_warfare_has_operational_payload_reserve = yes
+	has_country_flag = cbrn_doctrine_protected_order_issued
+}
+
+cbrn_can_claim_theater_exploitation = {
+	has_country_flag = cbrn_milestone_delivery_integration
+	NOT = { has_country_flag = cbrn_milestone_theater_exploitation }
+	cbrn_chaos_warfare_has_two_tracks_mastery_three = yes
+	check_variable = {
+		var = cbrn_decontamination_capacity
+		value = constant:cbrn_doctrine_institution.theater_decontamination_capacity
+		compare = greater_than_or_equals
+	}
+	check_variable = { num_battalions_with_type@cbrn_hq_intelligence_weather_cell > 0 }
+}
+
+cbrn_can_claim_terminal_command = {
+	has_country_flag = cbrn_milestone_theater_exploitation
+	NOT = { has_country_flag = cbrn_milestone_terminal_command }
+	cbrn_chaos_warfare_has_all_tracks_active = yes
+	cbrn_chaos_warfare_has_any_track_mastery_five = yes
+	check_variable = {
+		var = cbrn_use_policy
+		value = constant:cbrn_doctrine_institution.advanced_policy_floor
+		compare = greater_than_or_equals
+	}
+	cbrn_chaos_warfare_has_advanced_protection = yes
+}
+
+cbrn_can_grant_chaos_assault_battalion = {
+	has_country_flag = cbrn_infantry_mastery_three
+	has_country_flag = cbrn_milestone_theater_exploitation
+	NOT = { has_tech = chaos_battalion_tech }
+}
+
+cbrn_can_grant_hazard_pioneer_formation = {
+	has_country_flag = cbrn_infantry_mastery_two
+	NOT = { has_tech = hazard_pioneer_formation }
+}
+
+cbrn_can_grant_improved_chaos_assault_equipment = {
+	has_country_flag = cbrn_infantry_mastery_five
+	has_country_flag = cbrn_milestone_theater_exploitation
+	has_tech = chaos_battalion_tech
+	NOT = { has_tech = chaos_battalion_1942 }
+}
+
+cbrn_can_grant_chemical_artillery_shells = {
+	has_country_flag = cbrn_combat_support_mastery_three
+	NOT = { has_tech = chemical_artillery_shells }
+}
+
+cbrn_can_grant_armored_agent_delivery = {
+	has_country_flag = cbrn_armor_mastery_two
+	NOT = { has_tech = armored_agent_delivery }
+}
+
+cbrn_can_grant_sealed_tank_crews = {
+	has_country_flag = cbrn_armor_mastery_one
+	has_tech = improved_gas_masks
+	NOT = { has_tech = sealed_tank_crews }
+}
+
+cbrn_can_grant_persistent_agent_shell_filling = {
+	has_country_flag = cbrn_combat_support_mastery_four
+	has_tech = chemical_artillery_shells
+	OR = {
+		has_tech = mustard_gas
+		has_tech = lewisite
+	}
+	NOT = { has_tech = persistent_agent_shell_filling }
+}
+
+cbrn_can_grant_nerve_agent_suppression = {
+	has_country_flag = cbrn_armor_mastery_three
+	has_tech = armored_agent_delivery
+	OR = {
+		is_special_project_completed = sp:sp_cw_sarin_program
+		is_special_project_completed = sp:sp_cw_soman_program
+	}
+	cbrn_chaos_warfare_has_advanced_protection = yes
+	has_country_flag = cbrn_nerve_suppression_policy_authorized
+	NOT = { has_tech = nerve_agent_suppression_formation }
+}
+
+cbrn_can_grant_biological_security_assault = {
+	has_country_flag = cbrn_operations_mastery_four
+	has_tech = field_epidemiology_teams
+	has_tech = sealed_containment_laboratories
+	NOT = { has_tech = biological_security_assault_formation }
+}
+
+cbrn_can_grant_mobile_decontamination_columns = {
+	has_country_flag = cbrn_operations_mastery_three
+	NOT = { has_tech = mobile_decontamination_columns }
+}
+
+cbrn_can_grant_chemical_air_interdiction = {
+	has_country_flag = cbrn_operations_mastery_four
+	NOT = { has_tech = chemical_air_interdiction }
+}
+
+cbrn_can_grant_theater_cbrn_headquarters = {
+	has_country_flag = cbrn_milestone_terminal_command
+	NOT = { has_tech = theater_cbrn_headquarters }
+}
+
+cbrn_doctrine_policy_change_is_available = {
+	has_doctrine = chaos_warfare
+	NOT = { has_country_flag = cbrn_doctrine_policy_reassessment }
+}
+
+cbrn_can_set_defensive_preparation_policy = {
+	cbrn_doctrine_policy_change_is_available = yes
+	NOT = { cbrn_policy_is_defensive_preparation = yes }
+}
+
+cbrn_can_set_retaliation_authority_policy = {
+	cbrn_doctrine_policy_change_is_available = yes
+	NOT = { cbrn_policy_is_retaliation_authority = yes }
+	NOT = { command_power < constant:cbrn_doctrine_policy_command_power_cost.retaliation_authority }
+	check_variable = {
+		var = chemical_readiness
+		value = constant:cbrn_doctrine_policy_readiness.retaliation_authority
+		compare = greater_than_or_equals
+	}
+}
+
+cbrn_can_set_limited_battlefield_policy = {
+	cbrn_doctrine_policy_change_is_available = yes
+	has_country_flag = cbrn_milestone_delivery_integration
+	NOT = { command_power < constant:cbrn_doctrine_policy_command_power_cost.limited_battlefield_authority }
+	check_variable = {
+		var = chemical_readiness
+		value = constant:cbrn_doctrine_policy_readiness.limited_battlefield_authority
+		compare = greater_than_or_equals
+	}
+	cbrn_chaos_warfare_has_operational_payload_reserve = yes
+	NOT = {
+		check_variable = {
+			var = cbrn_use_policy
+			value = constant:cbrn_use_policy.limited_battlefield_authority
+			compare = equals
+		}
+	}
+}
+
+cbrn_can_set_strategic_release_policy = {
+	cbrn_doctrine_policy_change_is_available = yes
+	has_country_flag = cbrn_milestone_theater_exploitation
+	NOT = { command_power < constant:cbrn_doctrine_policy_command_power_cost.strategic_release_authority }
+	check_variable = {
+		var = chemical_readiness
+		value = constant:cbrn_doctrine_policy_readiness.strategic_release_authority
+		compare = greater_than_or_equals
+	}
+	cbrn_chaos_warfare_has_strategic_payload_reserve = yes
+	NOT = {
+		check_variable = {
+			var = cbrn_use_policy
+			value = constant:cbrn_use_policy.strategic_release_authority
+			compare = equals
+		}
+	}
+}
+
+cbrn_can_set_unrestricted_policy = {
+	cbrn_doctrine_policy_change_is_available = yes
+	has_country_flag = cbrn_milestone_terminal_command
+	NOT = { command_power < constant:cbrn_doctrine_policy_command_power_cost.unrestricted_chaos_warfare }
+	check_variable = {
+		var = chemical_readiness
+		value = constant:cbrn_doctrine_policy_readiness.unrestricted_chaos_warfare
+		compare = greater_than_or_equals
+	}
+	cbrn_chaos_warfare_has_terminal_payload_reserve = yes
+	NOT = { cbrn_policy_allows_extreme_use = yes }
+}
+
+cbrn_ai_route_allows_first_use = {
+	OR = {
+		has_country_flag = cbrn_chaos_warfare_first_use_ai_route
+		has_country_flag = cbrn_chaos_warfare_unrestricted_ai_route
+		has_country_flag = soviet_collapse_high_chaos_successor
+		is_japan_china_chemical_campaign_war = yes
+	}
+}
+
+cbrn_ai_route_allows_unrestricted_use = {
+	OR = {
+		has_country_flag = cbrn_chaos_warfare_unrestricted_ai_route
+		has_country_flag = soviet_collapse_high_chaos_successor
+	}
+}
+
+cbrn_ai_has_defensive_cbrn_profile = {
+	OR = {
+		cbrn_profile_is_mass_civil_defence = yes
+		cbrn_profile_is_prepared_power = yes
+		cbrn_profile_is_civil_defence_network = yes
+		AND = {
+			has_government = democratic
+			NOT = { cbrn_ai_route_allows_first_use = yes }
+		}
+	}
+}
+
+cbrn_ai_has_battlefield_cbrn_profile = {
+	OR = {
+		cbrn_profile_is_military_first = yes
+		cbrn_ai_route_allows_first_use = yes
+	}
+}

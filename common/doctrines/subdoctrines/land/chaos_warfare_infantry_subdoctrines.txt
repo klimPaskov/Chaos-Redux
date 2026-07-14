@@ -1,170 +1,121 @@
 # ============================================================================
-# CHAOS REDUX - CHAOS WARFARE INFANTRY SUBDOCTRINES
+# CHAOS REDUX - HAZARD ASSAULT FORMATIONS
 # ============================================================================
-# Adds Chaos Warfare-specific infantry-track subdoctrines and mastery rewards.
-# Current scope:
-# - extermination_columns
+# The compatibility ID extermination_columns now represents protected hazard
+# infantry. Rewards are equipment-backed unlocks and modest unit-specific
+# retention values, never broad army attack stacks.
 # ============================================================================
 
-@EXTERMINATION_COLUMNS_ACTIVATION_INF_SOFT_ATTACK = 0.05
-@EXTERMINATION_COLUMNS_ACTIVATION_INF_BREAKTHROUGH = 0.05
-@EXTERMINATION_COLUMNS_ACTIVATION_INF_DEFENSE = 0.05
-@EXTERMINATION_COLUMNS_ACTIVATION_INF_RECOVERY = 0.05
-@EXTERMINATION_COLUMNS_ACTIVATION_LIGHT_INF_MAX_ORG = 10
-@EXTERMINATION_COLUMNS_ACTIVATION_LIGHT_INF_RELIABILITY = 0.08
-@EXTERMINATION_COLUMNS_ACTIVATION_SF_SOFT_ATTACK = 0.10
-@EXTERMINATION_COLUMNS_ACTIVATION_SF_BREAKTHROUGH = 0.10
-
-@EXTERMINATION_COLUMNS_M1_INF_SOFT_ATTACK = 0.10
-@EXTERMINATION_COLUMNS_M1_INF_BREAKTHROUGH = 0.15
-@EXTERMINATION_COLUMNS_M1_INF_DEFENSE = 0.05
-@EXTERMINATION_COLUMNS_M1_NIGHT_ATTACK = 0.10
-@EXTERMINATION_COLUMNS_M1_ARMY_ORG_FACTOR = 0.05
-
-@EXTERMINATION_COLUMNS_M2_INF_SUPPLY = -0.08
-@EXTERMINATION_COLUMNS_M2_INF_RECOVERY = 0.12
-@EXTERMINATION_COLUMNS_M2_LIGHT_INF_MAX_ORG = 10
-@EXTERMINATION_COLUMNS_M2_LIGHT_INF_RELIABILITY = 0.08
-@EXTERMINATION_COLUMNS_M2_REINFORCE_RATE = 0.04
-
-@EXTERMINATION_COLUMNS_M4_INF_SOFT_ATTACK = 0.10
-@EXTERMINATION_COLUMNS_M4_INF_BREAKTHROUGH = 0.10
-@EXTERMINATION_COLUMNS_M4_SF_SOFT_ATTACK = 0.25
-@EXTERMINATION_COLUMNS_M4_SF_BREAKTHROUGH = 0.25
-@EXTERMINATION_COLUMNS_M4_ENEMY_ATTRITION = 0.15
-@EXTERMINATION_COLUMNS_M4_ARMY_ATTACK_FACTOR = 0.05
-
-@EXTERMINATION_COLUMNS_M5_INF_SOFT_ATTACK = 0.10
-@EXTERMINATION_COLUMNS_M5_INF_BREAKTHROUGH = 0.10
-@EXTERMINATION_COLUMNS_M5_INF_MAX_ORG = 10
-@EXTERMINATION_COLUMNS_M5_PLANNING_SPEED = 0.15
-@EXTERMINATION_COLUMNS_M5_COORDINATION_BONUS = 0.10
-@EXTERMINATION_COLUMNS_TECH_LEVEL = 1
+# Static doctrine fields use file-local parser values. They mirror the
+# corresponding cbrn_doctrine_cost, mastery, modifier, and AI constants.
+@CBRN_HAZARD_ASSAULT_XP_COST = 100
+@CBRN_HAZARD_ASSAULT_AI_BASE = 1.00
+@CBRN_HAZARD_ASSAULT_AI_UNAVAILABLE = 0
+@CBRN_HAZARD_ASSAULT_AI_COMMITTED = 2.00
+@CBRN_HAZARD_ASSAULT_MASTERY_MULT = 4.00
+@CBRN_HAZARD_ASSAULT_REWARD_THRESHOLD = 100
+@CBRN_HAZARD_ASSAULT_ADOPTION_BREAKTHROUGH = 0.03
+@CBRN_HAZARD_ASSAULT_M1_RELIABILITY = 0.05
+@CBRN_HAZARD_ASSAULT_M2_SUPPLY = -0.05
+@CBRN_HAZARD_ASSAULT_M4_BREAKTHROUGH = 0.03
+@CBRN_HAZARD_ASSAULT_M5_BREAKTHROUGH = 0.07
 
 extermination_columns = {
-    track = infantry
-    name = SUBDOCTRINE_EXTERMINATION_COLUMNS
-    description = SUBDOCTRINE_EXTERMINATION_COLUMNS_DESC
-    icon = GFX_doctrine_extermination_columns_medium
+	track = infantry
+	name = SUBDOCTRINE_EXTERMINATION_COLUMNS
+	description = SUBDOCTRINE_EXTERMINATION_COLUMNS_DESC
+	icon = GFX_doctrine_extermination_columns_medium
+	reward_gfx = GFX_cbrn_doctrine_hazard_assault_reward_strip
 
-    xp_cost = 100
-    xp_type = army
+	xp_cost = @CBRN_HAZARD_ASSAULT_XP_COST
+	xp_type = army
 
-    available = {
-        has_doctrine = chaos_warfare
-    }
+	available = { has_doctrine = chaos_warfare }
+	visible = { always = yes }
 
-    visible = {
-        always = yes
-    }
+	ai_will_do = {
+		base = @CBRN_HAZARD_ASSAULT_AI_BASE
+		modifier = {
+			factor = @CBRN_HAZARD_ASSAULT_AI_UNAVAILABLE
+			NOT = { has_doctrine = chaos_warfare }
+		}
+		modifier = {
+			factor = @CBRN_HAZARD_ASSAULT_AI_COMMITTED
+			OR = {
+				cbrn_profile_is_mass_civil_defence = yes
+				cbrn_profile_is_prepared_power = yes
+			}
+		}
+	}
 
-    ai_will_do = {
-        base = 1
+	mastery = {
+		multiplier = @CBRN_HAZARD_ASSAULT_MASTERY_MULT
+		sub_units = {
+			cbrn_gas_mask_decon_detachment
+			cbrn_chemical_recon_detachment
+			cbrn_hazard_pioneer_detachment
+			chaos_battalion
+		}
+	}
 
-        modifier = {
-            factor = 0
-            NOT = { has_doctrine = chaos_warfare }
-        }
+	category_cbrn_assault_battalions = {
+		breakthrough = @CBRN_HAZARD_ASSAULT_ADOPTION_BREAKTHROUGH
+	}
 
-        modifier = {
-            factor = 2
-            is_major = yes
-        }
-    }
+	effect = { cbrn_record_hazard_assault_adoption = yes }
 
-    mastery = {
-        multiplier = 1.75
-        categories = {
-            category_all_infantry
-            category_special_forces
-        }
-    }
+	rewards = {
+		contagion_assault_drills = {
+			mastery = @CBRN_HAZARD_ASSAULT_REWARD_THRESHOLD
+			category_cbrn_primary_protection = {
+				reliability = @CBRN_HAZARD_ASSAULT_M1_RELIABILITY
+			}
+			effect = {
+				set_country_flag = cbrn_mask_discipline_unlocked
+				cbrn_record_infantry_mastery_one = yes
+			}
+		}
 
-    # ACTIVATION EFFECTS
-    category_all_infantry = {
-        soft_attack = @EXTERMINATION_COLUMNS_ACTIVATION_INF_SOFT_ATTACK
-        breakthrough = @EXTERMINATION_COLUMNS_ACTIVATION_INF_BREAKTHROUGH
-        defense = @EXTERMINATION_COLUMNS_ACTIVATION_INF_DEFENSE
-        default_morale = @EXTERMINATION_COLUMNS_ACTIVATION_INF_RECOVERY
-    }
+		sacrificial_march_columns = {
+			mastery = @CBRN_HAZARD_ASSAULT_REWARD_THRESHOLD
+			category_cbrn_engineer_support = {
+				supply_consumption = @CBRN_HAZARD_ASSAULT_M2_SUPPLY
+			}
+			effect = {
+				set_country_flag = cbrn_contaminated_terrain_movement_unlocked
+				cbrn_record_infantry_mastery_two = yes
+			}
+		}
 
-    category_light_infantry = {
-        max_organisation = @EXTERMINATION_COLUMNS_ACTIVATION_LIGHT_INF_MAX_ORG
-        reliability = @EXTERMINATION_COLUMNS_ACTIVATION_LIGHT_INF_RELIABILITY
-    }
+		unlock_chaos_battalion = {
+			mastery = @CBRN_HAZARD_ASSAULT_REWARD_THRESHOLD
+			effect = {
+				cbrn_record_infantry_mastery_three = yes
+				custom_effect_tooltip = extermination_columns_chaos_battalion_unlocked_tt
+			}
+		}
 
-    category_special_forces = {
-        soft_attack = @EXTERMINATION_COLUMNS_ACTIVATION_SF_SOFT_ATTACK
-        breakthrough = @EXTERMINATION_COLUMNS_ACTIVATION_SF_BREAKTHROUGH
-    }
+		ruinwave_battlecells = {
+			mastery = @CBRN_HAZARD_ASSAULT_REWARD_THRESHOLD
+			category_cbrn_assault_battalions = {
+				breakthrough = @CBRN_HAZARD_ASSAULT_M4_BREAKTHROUGH
+			}
+			effect = {
+				set_country_flag = cbrn_shock_exploitation_unlocked
+				cbrn_record_infantry_mastery_four = yes
+			}
+		}
 
-    rewards = {
-        contagion_assault_drills = {
-            category_all_infantry = {
-                soft_attack = @EXTERMINATION_COLUMNS_M1_INF_SOFT_ATTACK
-                breakthrough = @EXTERMINATION_COLUMNS_M1_INF_BREAKTHROUGH
-                defense = @EXTERMINATION_COLUMNS_M1_INF_DEFENSE
-            }
-
-            land_night_attack = @EXTERMINATION_COLUMNS_M1_NIGHT_ATTACK
-            army_org_factor = @EXTERMINATION_COLUMNS_M1_ARMY_ORG_FACTOR
-        }
-
-        sacrificial_march_columns = {
-            category_all_infantry = {
-                supply_consumption = @EXTERMINATION_COLUMNS_M2_INF_SUPPLY
-                default_morale = @EXTERMINATION_COLUMNS_M2_INF_RECOVERY
-            }
-
-            category_light_infantry = {
-                max_organisation = @EXTERMINATION_COLUMNS_M2_LIGHT_INF_MAX_ORG
-                reliability = @EXTERMINATION_COLUMNS_M2_LIGHT_INF_RELIABILITY
-            }
-
-            land_reinforce_rate = @EXTERMINATION_COLUMNS_M2_REINFORCE_RATE
-        }
-
-        unlock_chaos_battalion = {
-            effect = {
-				set_technology = { chaos_battalion_tech = @EXTERMINATION_COLUMNS_TECH_LEVEL }
-                set_country_flag = chaos_battalion_unlocked
-                custom_effect_tooltip = extermination_columns_chaos_battalion_unlocked_tt
-            }
-        }
-
-        ruinwave_battlecells = {
-            category_all_infantry = {
-                soft_attack = @EXTERMINATION_COLUMNS_M4_INF_SOFT_ATTACK
-                breakthrough = @EXTERMINATION_COLUMNS_M4_INF_BREAKTHROUGH
-            }
-
-            category_special_forces = {
-                soft_attack = @EXTERMINATION_COLUMNS_M4_SF_SOFT_ATTACK
-                breakthrough = @EXTERMINATION_COLUMNS_M4_SF_BREAKTHROUGH
-            }
-
-            enemy_attrition = @EXTERMINATION_COLUMNS_M4_ENEMY_ATTRITION
-            army_attack_factor = @EXTERMINATION_COLUMNS_M4_ARMY_ATTACK_FACTOR
-
-            effect = {
-            }
-        }
-
-        terminal_contagion_offensive = {
-            category_all_infantry = {
-                soft_attack = @EXTERMINATION_COLUMNS_M5_INF_SOFT_ATTACK
-                breakthrough = @EXTERMINATION_COLUMNS_M5_INF_BREAKTHROUGH
-                max_organisation = @EXTERMINATION_COLUMNS_M5_INF_MAX_ORG
-            }
-
-            planning_speed = @EXTERMINATION_COLUMNS_M5_PLANNING_SPEED
-            coordination_bonus = @EXTERMINATION_COLUMNS_M5_COORDINATION_BONUS
-
-            effect = {
-				set_technology = { chaos_battalion_1942 = @EXTERMINATION_COLUMNS_TECH_LEVEL }
-                set_country_flag = chaos_battalion_terminal_contagion_unlocked
-                custom_effect_tooltip = extermination_columns_terminal_contagion_unlocked_tt
-            }
-        }
-    }
+		terminal_contagion_offensive = {
+			mastery = @CBRN_HAZARD_ASSAULT_REWARD_THRESHOLD
+			category_cbrn_assault_battalions = {
+				breakthrough = @CBRN_HAZARD_ASSAULT_M5_BREAKTHROUGH
+			}
+			effect = {
+				set_country_flag = cbrn_terminal_hazard_operation_unlocked
+				cbrn_record_infantry_mastery_five = yes
+				custom_effect_tooltip = extermination_columns_terminal_contagion_unlocked_tt
+			}
+		}
+	}
 }

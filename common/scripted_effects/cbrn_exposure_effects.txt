@@ -327,6 +327,14 @@ cbrn_calculate_chemical_action_outputs = {
 	multiply_temp_variable = { cbrn_action_dose_mult = cbrn_action_target_density_mult_local }
 	multiply_temp_variable = { cbrn_action_dose_mult = cbrn_action_command_mult_local }
 	multiply_temp_variable = { cbrn_action_dose_mult = cbrn_agent_potency_mult }
+	if = {
+		limit = { has_idea = cbrn_theater_contamination_doctrine_spirit }
+		multiply_temp_variable = { cbrn_action_dose_mult = constant:cbrn_doctrine_spirit.theater_contamination.delivery_dose_mult }
+	}
+	if = {
+		limit = { has_idea = cbrn_terminal_hazard_doctrine_spirit }
+		multiply_temp_variable = { cbrn_action_dose_mult = constant:cbrn_doctrine_spirit.terminal_hazard.operational_effect_mult }
+	}
 	clamp_temp_variable = { var = cbrn_action_dose_mult min = constant:cbrn_action_input_bounds.dose_mult_min max = constant:cbrn_action_input_bounds.dose_mult_max }
 
 	set_temp_variable = { cbrn_action_disruption = cbrn_route_base_disruption }
@@ -344,6 +352,10 @@ cbrn_calculate_chemical_action_outputs = {
 	set_temp_variable = { cbrn_action_military_death_fraction = cbrn_action_lethality }
 	multiply_temp_variable = { cbrn_action_military_death_fraction = cbrn_action_dose_mult }
 	multiply_temp_variable = { cbrn_action_military_death_fraction = cbrn_action_military_casualty_mult }
+	if = {
+		limit = { has_idea = cbrn_terminal_hazard_doctrine_spirit }
+		multiply_temp_variable = { cbrn_action_military_death_fraction = constant:cbrn_doctrine_spirit.terminal_hazard.casualty_mult }
+	}
 	clamp_temp_variable = { var = cbrn_action_military_death_fraction min = constant:cbrn_math.zero max = constant:cbrn_action_output_bounds.military_death_fraction_max }
 
 	set_temp_variable = { cbrn_action_civilian_exposed_fraction = cbrn_route_civilian_exposed_fraction }
@@ -363,6 +375,10 @@ cbrn_calculate_chemical_action_outputs = {
 	set_temp_variable = { cbrn_action_civilian_death_fraction = cbrn_action_civilian_exposed_fraction }
 	multiply_temp_variable = { cbrn_action_civilian_death_fraction = cbrn_action_lethality }
 	multiply_temp_variable = { cbrn_action_civilian_death_fraction = cbrn_action_civilian_casualty_mult }
+	if = {
+		limit = { has_idea = cbrn_terminal_hazard_doctrine_spirit }
+		multiply_temp_variable = { cbrn_action_civilian_death_fraction = constant:cbrn_doctrine_spirit.terminal_hazard.casualty_mult }
+	}
 	set_temp_variable = { cbrn_action_death_cap = constant:cbrn_episode_death_cap.tactical_chemical }
 	if = {
 		limit = {
@@ -405,6 +421,13 @@ cbrn_calculate_chemical_action_outputs = {
 	multiply_temp_variable = { cbrn_action_evidence_points = cbrn_class_evidence_mult }
 	multiply_temp_variable = { cbrn_action_evidence_points = cbrn_agent_evidence_mult }
 	multiply_temp_variable = { cbrn_action_evidence_points = cbrn_action_evidence_control_mult_local }
+	if = {
+		limit = {
+			has_event_target = cbrn_action_victim_country
+			event_target:cbrn_action_victim_country = { has_idea = chemical_command_reagent_optimization_spirit }
+		}
+		multiply_temp_variable = { cbrn_action_evidence_points = constant:cbrn_doctrine_spirit.controlled_retaliation.victim_evidence_recovery_mult }
+	}
 	clamp_temp_variable = { var = cbrn_action_evidence_points min = constant:cbrn_math.zero max = constant:cbrn_action_output_bounds.evidence_points_max }
 	cbrn_set_action_attribution_from_evidence = yes
 
@@ -412,6 +435,10 @@ cbrn_calculate_chemical_action_outputs = {
 	multiply_temp_variable = { cbrn_action_condemnation_base = cbrn_class_condemnation_mult }
 	multiply_temp_variable = { cbrn_action_condemnation_base = cbrn_action_context_condemnation_mult_local }
 	multiply_temp_variable = { cbrn_action_condemnation_base = cbrn_action_doctrine_condemnation_mult_local }
+	if = {
+		limit = { has_idea = cbrn_terminal_hazard_doctrine_spirit }
+		multiply_temp_variable = { cbrn_action_condemnation_base = constant:cbrn_doctrine_spirit.terminal_hazard.condemnation_mult }
+	}
 	if = {
 		limit = {
 			check_variable = { var = cbrn_action_attribution_state value = constant:cbrn_attribution_state.confirmed compare = equals }
@@ -445,6 +472,10 @@ cbrn_calculate_chemical_action_outputs = {
 	set_temp_variable = { cbrn_action_friendly_exposure_risk = cbrn_action_base_friendly_risk_local }
 	multiply_temp_variable = { cbrn_action_friendly_exposure_risk = cbrn_action_forecast_risk_mult }
 	multiply_temp_variable = { cbrn_action_friendly_exposure_risk = cbrn_action_command_risk_mult }
+	if = {
+		limit = { has_idea = chemical_command_reagent_optimization_spirit }
+		multiply_temp_variable = { cbrn_action_friendly_exposure_risk = constant:cbrn_doctrine_spirit.controlled_retaliation.friendly_exposure_risk_mult }
+	}
 	clamp_temp_variable = { var = cbrn_action_friendly_exposure_risk min = constant:cbrn_action_input_bounds.friendly_risk_min max = constant:cbrn_action_output_bounds.friendly_risk_max }
 }
 
@@ -522,6 +553,11 @@ cbrn_prepare_chemical_action_record = {
 			limit = { has_event_target = cbrn_action_victim_country }
 			set_temp_variable = { cbrn_action_victim_country_supplied = constant:cbrn_proof.supplied }
 		}
+		# Doctrine mitigation is owned here so every accepted delivery route uses
+		# the same Condemnation-only multiplier. Adapters still provide a positive
+		# proof value for fail-closed condition validation, but cannot select a
+		# different doctrine discount.
+		cbrn_set_doctrine_condemnation_mult_from_country = yes
 		cbrn_calculate_chemical_action_outputs = yes
 		set_temp_variable = { cbrn_action_result = constant:cbrn_action_result.accepted }
 	}

@@ -56,11 +56,21 @@ Operating packages are centralized in `common/script_constants/cbrn_hq_constants
 
 Prepare Chemical Offensive and Combined CBRN Overmatch require a positive supported chemical-payload stock signal, but they do not remove an arbitrary generic payload. The delivery adapter must reserve and consume the player-selected agent before calling the shared exposure pipeline.
 
+The doctrine-gated `chemical_operations_commander` trait reduces preparation for all seven CBRN HQ abilities by ten percent after the normal readiness, Operations Section, and high-protection adjustments. It grants no release ability and does not reduce equipment, Command Power, upkeep, duration, or cooldown.
+
 ## Doctrine and technology wiring
 
-Integrated Chemical Operations owns the five doctrine companies. Each mastery reward unlocks its mapped company, and Theater Intelligence Overmatch also grants the non-researchable `theater_cbrn_headquarters` technology. Mobile CBRN Hospitals owns the medical directorate.
+Integrated CBRN Command owns the five doctrine companies. Each mastery reward unlocks its mapped company. Counter-Contamination Routing grants the non-researchable `mobile_decontamination_columns` technology, Air-Surface CBRN Link grants the `chemical_air_interdiction` eligibility marker, and Theater Intelligence Overmatch qualifies the non-researchable `theater_cbrn_headquarters` technology. Mobile CBRN Hospitals owns the medical directorate.
+
+Delivery Integration's protected-order history is recorded only when Theater Protective Posture completes preparation successfully. Starting the ability, paying its activation package, or later failing preparation does not satisfy the institutional proof.
 
 Combined CBRN Overmatch follows the stricter matrix composition: Theater CBRN Headquarters plus Operations, Protective Logistics, and Mobile Decontamination. This occupies the mandatory HQ staff slot plus three CBRN support slots and fits the verified four-slot Army HQ.
+
+## Exact-state decontamination assignment
+
+While at least one commander has an active Decontamination Corridor and Theater Exploitation is established, `cbrn_assign_decontamination_corridor` can target one controlled state with actual chemical contamination. The assignment removes 10 points from Trace/Local contamination, 8 from Serious, 5 from Severe, or 3 from Catastrophic, records the amount actually removed through the state ledger, and applies a 28-day state and national assignment lock. Theater Contamination Doctrine multiplies cleanup output by 1.25.
+
+The assignment never clears evidence, attribution, deaths, Condemnation, or confirmed-use history. The national lock is the conservative current-version binding: commander abilities do not expose a stable selected-state pointer, so no unsupported random-state, capital-state, or multi-state substitute is used.
 
 ## AI behavior
 
@@ -77,7 +87,7 @@ Every target requires exact unlocks, relevant policy/context, and a complete sta
 ## Verified engine limits
 
 - Current 1.19 script can query exact HQ company presence but cannot query the fulfillment percentage of one named support company inside the deployed HQ. Native `essential`/`need` scaling handles company statistics, while abilities use exact national reserve gates and real debits. No aggregate-army fill estimator is retained.
-- A commander ability exposes no selected-state target. Decontamination and cordon abilities therefore apply only honest order-level status here. Exact cleanup, output, resistance, spread, evidence, and containment changes must come from a player-selected state adapter. No random, capital-state, every-state, or country-wide substitute is used.
+- A commander ability exposes no selected-state target. Decontamination therefore uses the separate player-selected assignment above; cordon resistance, spread, evidence, and containment changes still require their own later exact-state adapters. No random, capital-state, every-state, or country-wide substitute is used.
 - The Army HQ surface is DLC-owned. No non-HQ fallback company or hidden ordinary-division substitute is provided.
 - Ordinary continuously assigned chemical-capable aircraft receive no contamination hook here. Only a verified eligible-activity hook may add that behavior later; idle aircraft can never contaminate a region.
 
@@ -102,7 +112,7 @@ No runtime asset may be a placeholder or a resized cross-type substitute.
 Required later-stage integration:
 
 - reserve and debit the exact selected chemical agent and delivery lot before a prepared order can dispatch exposure;
-- attach decontamination and cordon benefits to exact selected-state decisions/adapters;
+- attach cordon, resistance, spread, evidence, and containment benefits to exact selected-state decisions/adapters while retaining the implemented decontamination assignment;
 - attach Biosecurity and Infection Corridor to distinct-agent detection, incubation, spread, containment, and treatment;
 - extend route-aware country AI profiles while preserving hard safety gates;
 - migrate legacy ability and company identifiers without losing active or unlocked state;

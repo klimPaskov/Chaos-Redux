@@ -1,178 +1,115 @@
 # ============================================================================
-# CHAOS REDUX - CHAOS WARFARE ARMOR SUBDOCTRINES
+# CHAOS REDUX - TOXIC ARMORED WARFARE
 # ============================================================================
-# Adds Chaos Warfare-specific armor-track subdoctrines and mastery rewards.
-# Current scope:
-# - chemical_suppression
+# The compatibility ID chemical_suppression now represents sealed crews,
+# close armored delivery, and explicitly costed nerve-suppression operations.
+# It grants no occupation law or genocide infrastructure.
 # ============================================================================
 
-@CHEM_SUPPRESSION_ACTIVATION_TANK_BREAKTHROUGH = 0.15
-@CHEM_SUPPRESSION_ACTIVATION_TANK_SUPPRESSION = 0.20
-@CHEM_SUPPRESSION_ACTIVATION_INF_SUPPRESSION = 0.06
-@CHEM_SUPPRESSION_ACTIVATION_INF_DEFENSE = 0.03
-
-@CHEM_SUPPRESSION_M1_TANK_SUPPRESSION = 0.50
-@CHEM_SUPPRESSION_M1_CHEM_TANK_SUPPORT_SUPPRESSION = 1.00
-@CHEM_SUPPRESSION_M1_INF_SUPPRESSION = 0.10
-@CHEM_SUPPRESSION_M1_INF_DEFENSE = 0.05
-@CHEM_SUPPRESSION_M1_GARRISON_DAMAGE_REDUCTION = -0.15
-
-@CHEM_SUPPRESSION_M2_CHEM_TANK_SUPPORT_MAX_ORG = 15
-@CHEM_SUPPRESSION_M2_CHEM_TANK_SUPPORT_MORALE = 0.15
-@CHEM_SUPPRESSION_M2_COORDINATION_BONUS = 0.05
-@CHEM_SUPPRESSION_M2_INF_MAX_ORG = 5
-@CHEM_SUPPRESSION_M2_INF_SOFT_ATTACK = 0.03
-
-@CHEM_SUPPRESSION_M3_INF_SUPPRESSION = 0.50
-@CHEM_SUPPRESSION_M3_CHEM_TANK_SUPPORT_SUPPRESSION = 2.00
-
-@CHEM_SUPPRESSION_M4_ARMOR_SUPPLY = -0.10
-@CHEM_SUPPRESSION_M4_ARMOR_BREAKTHROUGH = 0.10
-@CHEM_SUPPRESSION_M4_CHEM_TANK_SUPPORT_SUPPLY = -0.50
-@CHEM_SUPPRESSION_M4_CHEM_TANK_SUPPORT_RELIABILITY = 0.15
-@CHEM_SUPPRESSION_M4_INF_SUPPLY = -0.02
-@CHEM_SUPPRESSION_M4_INF_DEFENSE = 0.04
-
-@CHEM_SUPPRESSION_M5_PLANNING_SPEED = 0.20
-@CHEM_SUPPRESSION_M5_COORDINATION_BONUS = 0.05
-@CHEM_SUPPRESSION_M5_INITIATIVE = 0.03
-@CHEM_SUPPRESSION_M5_TANK_BREAKTHROUGH = 0.15
-@CHEM_SUPPRESSION_M5_TANK_SOFT_ATTACK = 0.15
-@CHEM_SUPPRESSION_M5_TANK_HARD_ATTACK = 0.15
-@CHEM_SUPPRESSION_M5_CHEM_TANK_SUPPORT_INITIATIVE = 0.05
-@CHEM_SUPPRESSION_M5_CHEM_TANK_SUPPORT_RELIABILITY = 0.10
-@CHEM_SUPPRESSION_M5_ARMY_MORALE = 0.10
+# Static doctrine fields use file-local parser values. They mirror the
+# corresponding cbrn_doctrine_cost, mastery, modifier, and AI constants.
+@CBRN_TOXIC_ARMOR_XP_COST = 100
+@CBRN_TOXIC_ARMOR_AI_BASE = 1.00
+@CBRN_TOXIC_ARMOR_AI_UNAVAILABLE = 0
+@CBRN_TOXIC_ARMOR_AI_COMMITTED = 2.00
+@CBRN_TOXIC_ARMOR_MASTERY_MULT = 6.00
+@CBRN_TOXIC_ARMOR_REWARD_THRESHOLD = 100
+@CBRN_TOXIC_ARMOR_ADOPTION_BREAKTHROUGH = 0.03
+@CBRN_TOXIC_ARMOR_M1_RELIABILITY = 0.03
+@CBRN_TOXIC_ARMOR_M4_SUPPLY = -0.05
+@CBRN_TOXIC_ARMOR_M5_COORDINATION = 0.01
 
 chemical_suppression = {
-    track = armor
-    name = SUBDOCTRINE_CHEMICAL_SUPPRESSION
-    description = SUBDOCTRINE_CHEMICAL_SUPPRESSION_DESC
-    icon = GFX_doctrine_chemical_suppression_medium
+	track = armor
+	name = SUBDOCTRINE_CHEMICAL_SUPPRESSION
+	description = SUBDOCTRINE_CHEMICAL_SUPPRESSION_DESC
+	icon = GFX_doctrine_chemical_suppression_medium
+	reward_gfx = GFX_cbrn_doctrine_toxic_armor_reward_strip
 
-    xp_cost = 100
-    xp_type = army
+	xp_cost = @CBRN_TOXIC_ARMOR_XP_COST
+	xp_type = army
 
-    available = {
-        has_doctrine = chaos_warfare
-    }
+	available = { has_doctrine = chaos_warfare }
+	visible = { always = yes }
 
-    visible = {
-        always = yes
-    }
+	ai_will_do = {
+		base = @CBRN_TOXIC_ARMOR_AI_BASE
+		modifier = {
+			factor = @CBRN_TOXIC_ARMOR_AI_UNAVAILABLE
+			NOT = { has_doctrine = chaos_warfare }
+		}
+		modifier = {
+			factor = @CBRN_TOXIC_ARMOR_AI_COMMITTED
+			OR = {
+				cbrn_profile_is_military_first = yes
+				cbrn_ai_route_allows_first_use = yes
+			}
+		}
+	}
 
-    ai_will_do = {
-        base = 1
+	mastery = {
+		multiplier = @CBRN_TOXIC_ARMOR_MASTERY_MULT
+		sub_units = {
+			cbrn_light_armored_delivery_detachment
+			cbrn_medium_armored_delivery_detachment
+			cbrn_heavy_armored_delivery_detachment
+			cbrn_nerve_suppression_detachment
+		}
+	}
 
-        modifier = {
-            factor = 0
-            NOT = { has_doctrine = chaos_warfare }
-        }
+	category_chemical_tank_support_companies = {
+		breakthrough = @CBRN_TOXIC_ARMOR_ADOPTION_BREAKTHROUGH
+	}
 
-        modifier = {
-            factor = 2
-            is_major = yes
-        }
-    }
+	effect = { cbrn_record_toxic_armored_adoption = yes }
 
-    # ACTIVATION EFFECTS
-    category_tanks = {
-        breakthrough = @CHEM_SUPPRESSION_ACTIVATION_TANK_BREAKTHROUGH
-        suppression = @CHEM_SUPPRESSION_ACTIVATION_TANK_SUPPRESSION
-    }
+	rewards = {
+		adamsite_emission_cells = {
+			mastery = @CBRN_TOXIC_ARMOR_REWARD_THRESHOLD
+			category_chemical_tank_support_companies = {
+				reliability = @CBRN_TOXIC_ARMOR_M1_RELIABILITY
+			}
+			effect = {
+				set_country_flag = cbrn_sealed_crew_compartments_unlocked
+				cbrn_record_armor_mastery_one = yes
+			}
+		}
 
-    category_all_infantry = {
-        suppression = @CHEM_SUPPRESSION_ACTIVATION_INF_SUPPRESSION
-        defense = @CHEM_SUPPRESSION_ACTIVATION_INF_DEFENSE
-    }
+		armored_chemical_support_liaison = {
+			mastery = @CBRN_TOXIC_ARMOR_REWARD_THRESHOLD
+			effect = {
+				set_country_flag = cbrn_armored_agent_delivery_operations_unlocked
+				cbrn_record_armor_mastery_two = yes
+			}
+		}
 
-    rewards = {
-        adamsite_emission_cells = {
-            category_tanks = {
-                suppression = @CHEM_SUPPRESSION_M1_TANK_SUPPRESSION
-            }
+		zyklon_b_saturation_drills = {
+			mastery = @CBRN_TOXIC_ARMOR_REWARD_THRESHOLD
+			effect = {
+				set_country_flag = cbrn_mobile_nerve_suppression_operations_unlocked
+				cbrn_record_armor_mastery_three = yes
+				custom_effect_tooltip = chemical_suppression_nerve_operations_unlocked_tt
+			}
+		}
 
-            category_chemical_tank_support_companies = {
-                suppression = @CHEM_SUPPRESSION_M1_CHEM_TANK_SUPPORT_SUPPRESSION
-            }
+		sealed_pressure_logistics = {
+			mastery = @CBRN_TOXIC_ARMOR_REWARD_THRESHOLD
+			category_chemical_tank_support_companies = {
+				supply_consumption = @CBRN_TOXIC_ARMOR_M4_SUPPLY
+			}
+			effect = {
+				set_country_flag = cbrn_protected_breakthrough_logistics_unlocked
+				cbrn_record_armor_mastery_four = yes
+			}
+		}
 
-            category_all_infantry = {
-                suppression = @CHEM_SUPPRESSION_M1_INF_SUPPRESSION
-                defense = @CHEM_SUPPRESSION_M1_INF_DEFENSE
-            }
-
-            resistance_damage_to_garrison = @CHEM_SUPPRESSION_M1_GARRISON_DAMAGE_REDUCTION
-
-            effect = {
-                set_country_flag = chaos_adamsite_emission_unlocked
-                custom_effect_tooltip = chemical_suppression_adamsite_unlocked_tt
-            }
-        }
-
-        armored_chemical_support_liaison = {
-            category_chemical_tank_support_companies = {
-                max_organisation = @CHEM_SUPPRESSION_M2_CHEM_TANK_SUPPORT_MAX_ORG
-                default_morale = @CHEM_SUPPRESSION_M2_CHEM_TANK_SUPPORT_MORALE
-            }
-
-            coordination_bonus = @CHEM_SUPPRESSION_M2_COORDINATION_BONUS
-
-            category_all_infantry = {
-                max_organisation = @CHEM_SUPPRESSION_M2_INF_MAX_ORG
-                soft_attack = @CHEM_SUPPRESSION_M2_INF_SOFT_ATTACK
-            }
-        }
-
-        zyklon_b_saturation_drills = {
-            category_chemical_tank_support_companies = {
-                suppression = @CHEM_SUPPRESSION_M3_CHEM_TANK_SUPPORT_SUPPRESSION
-            }
-
-            category_all_infantry = {
-                suppression = @CHEM_SUPPRESSION_M3_INF_SUPPRESSION
-            }
-
-            effect = {
-                set_country_flag = concentration_occupation_law_unlocked
-                custom_effect_tooltip = chemical_suppression_concentration_unlocked_tt
-            }
-        }
-
-        sealed_pressure_logistics = {
-            category_all_armor = {
-                supply_consumption = @CHEM_SUPPRESSION_M4_ARMOR_SUPPLY
-                breakthrough = @CHEM_SUPPRESSION_M4_ARMOR_BREAKTHROUGH
-            }
-
-            category_chemical_tank_support_companies = {
-                supply_consumption = @CHEM_SUPPRESSION_M4_CHEM_TANK_SUPPORT_SUPPLY
-                reliability = @CHEM_SUPPRESSION_M4_CHEM_TANK_SUPPORT_RELIABILITY
-            }
-
-            category_all_infantry = {
-                supply_consumption = @CHEM_SUPPRESSION_M4_INF_SUPPLY
-                defense = @CHEM_SUPPRESSION_M4_INF_DEFENSE
-            }
-        }
-
-        catastrophic_shock_breakthrough = {
-            planning_speed = @CHEM_SUPPRESSION_M5_PLANNING_SPEED
-            coordination_bonus = @CHEM_SUPPRESSION_M5_COORDINATION_BONUS
-            category_army = {
-                initiative = @CHEM_SUPPRESSION_M5_INITIATIVE
-            }
-
-            category_tanks = {
-                breakthrough = @CHEM_SUPPRESSION_M5_TANK_BREAKTHROUGH
-                soft_attack = @CHEM_SUPPRESSION_M5_TANK_SOFT_ATTACK
-                hard_attack = @CHEM_SUPPRESSION_M5_TANK_HARD_ATTACK
-            }
-
-            category_chemical_tank_support_companies = {
-                initiative = @CHEM_SUPPRESSION_M5_CHEM_TANK_SUPPORT_INITIATIVE
-                reliability = @CHEM_SUPPRESSION_M5_CHEM_TANK_SUPPORT_RELIABILITY
-            }
-
-            army_morale = @CHEM_SUPPRESSION_M5_ARMY_MORALE
-        }
-    }
+		catastrophic_shock_breakthrough = {
+			mastery = @CBRN_TOXIC_ARMOR_REWARD_THRESHOLD
+			coordination_bonus = @CBRN_TOXIC_ARMOR_M5_COORDINATION
+			effect = {
+				set_country_flag = cbrn_catastrophic_shock_operation_unlocked
+				cbrn_record_armor_mastery_five = yes
+			}
+		}
+	}
 }
