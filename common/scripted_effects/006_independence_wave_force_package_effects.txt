@@ -1,0 +1,372 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 FORCE PACKAGE RUNTIME DISPATCHER
+# ============================================================================
+# Overview:
+# - Probes p1 through p206 through one dynamic meta-effect lookup.
+# - Decodes exact reinforcement and inheritance masks with structural constants.
+# - Exposes a temporary, non-mutating readiness contract for pre-transfer checks.
+# - Loads profile, military tradition, accepted path flags, inheritance flags,
+#   and research sensitivity into a country only after the probe validates.
+# - Never marks a command roster ready and never materializes starting forces.
+# ============================================================================
+
+# Clears only the force mapping state owned by this dispatcher.
+independence_wave_clear_force_package_mapping_runtime = {
+	clr_country_flag = independence_wave_force_mapping_loaded
+	clr_country_flag = independence_wave_force_mapping_research_sensitive
+	clr_country_flag = independence_wave_force_navy_inheritance_enabled
+	clr_country_flag = independence_wave_force_air_inheritance_enabled
+	clear_variable = independence_wave_force_mapping_revision
+	clear_variable = independence_wave_force_mapping_package_id
+	clear_variable = independence_wave_force_profile
+	clear_variable = independence_wave_military_tradition
+	independence_wave_clear_reinforcement_pathways = yes
+}
+
+# Decodes the probed masks into temporary booleans and a pathway count.
+# Descending subtraction is exact for the non-negative integer masks.
+independence_wave_decode_force_package_probe_masks = {
+	set_temp_variable = { independence_wave_force_package_probe_reinforcement_residue = independence_wave_force_package_probe_reinforcement_mask }
+	set_temp_variable = { independence_wave_force_package_probe_reinforcement_pathway_count = constant:independence_wave_force_package_runtime.false_value }
+	set_temp_variable = { independence_wave_force_package_probe_path_integrate_militias = constant:independence_wave_force_package_runtime.false_value }
+	set_temp_variable = { independence_wave_force_package_probe_path_regional_guards = constant:independence_wave_force_package_runtime.false_value }
+	set_temp_variable = { independence_wave_force_package_probe_path_secure_depots = constant:independence_wave_force_package_runtime.false_value }
+	set_temp_variable = { independence_wave_force_package_probe_path_convert_defectors = constant:independence_wave_force_package_runtime.false_value }
+	set_temp_variable = { independence_wave_force_package_probe_path_volunteer_corridors = constant:independence_wave_force_package_runtime.false_value }
+	set_temp_variable = { independence_wave_force_package_probe_path_league_cadres = constant:independence_wave_force_package_runtime.false_value }
+	set_temp_variable = { independence_wave_force_package_probe_path_factory_rail_guards = constant:independence_wave_force_package_runtime.false_value }
+	set_temp_variable = { independence_wave_force_package_probe_path_terrain_units = constant:independence_wave_force_package_runtime.false_value }
+	set_temp_variable = { independence_wave_force_package_probe_path_foreign_arms = constant:independence_wave_force_package_runtime.false_value }
+	set_temp_variable = { independence_wave_force_package_probe_path_professional_officers = constant:independence_wave_force_package_runtime.false_value }
+	set_temp_variable = { independence_wave_force_package_probe_path_capital_border_defense = constant:independence_wave_force_package_runtime.false_value }
+
+	if = {
+		limit = {
+			check_variable = {
+				var = independence_wave_force_package_probe_reinforcement_residue
+				value = constant:independence_wave_force_package_reinforcement_bit.capital_border_defense
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { independence_wave_force_package_probe_path_capital_border_defense = constant:independence_wave_force_package_runtime.true_value }
+		subtract_from_temp_variable = {
+			independence_wave_force_package_probe_reinforcement_residue = constant:independence_wave_force_package_reinforcement_bit.capital_border_defense
+		}
+		add_to_temp_variable = { independence_wave_force_package_probe_reinforcement_pathway_count = constant:independence_wave_force_package_runtime.true_value }
+	}
+
+	if = {
+		limit = {
+			check_variable = {
+				var = independence_wave_force_package_probe_reinforcement_residue
+				value = constant:independence_wave_force_package_reinforcement_bit.professional_officers
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { independence_wave_force_package_probe_path_professional_officers = constant:independence_wave_force_package_runtime.true_value }
+		subtract_from_temp_variable = {
+			independence_wave_force_package_probe_reinforcement_residue = constant:independence_wave_force_package_reinforcement_bit.professional_officers
+		}
+		add_to_temp_variable = { independence_wave_force_package_probe_reinforcement_pathway_count = constant:independence_wave_force_package_runtime.true_value }
+	}
+
+	if = {
+		limit = {
+			check_variable = {
+				var = independence_wave_force_package_probe_reinforcement_residue
+				value = constant:independence_wave_force_package_reinforcement_bit.foreign_arms
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { independence_wave_force_package_probe_path_foreign_arms = constant:independence_wave_force_package_runtime.true_value }
+		subtract_from_temp_variable = {
+			independence_wave_force_package_probe_reinforcement_residue = constant:independence_wave_force_package_reinforcement_bit.foreign_arms
+		}
+		add_to_temp_variable = { independence_wave_force_package_probe_reinforcement_pathway_count = constant:independence_wave_force_package_runtime.true_value }
+	}
+
+	if = {
+		limit = {
+			check_variable = {
+				var = independence_wave_force_package_probe_reinforcement_residue
+				value = constant:independence_wave_force_package_reinforcement_bit.terrain_units
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { independence_wave_force_package_probe_path_terrain_units = constant:independence_wave_force_package_runtime.true_value }
+		subtract_from_temp_variable = {
+			independence_wave_force_package_probe_reinforcement_residue = constant:independence_wave_force_package_reinforcement_bit.terrain_units
+		}
+		add_to_temp_variable = { independence_wave_force_package_probe_reinforcement_pathway_count = constant:independence_wave_force_package_runtime.true_value }
+	}
+
+	if = {
+		limit = {
+			check_variable = {
+				var = independence_wave_force_package_probe_reinforcement_residue
+				value = constant:independence_wave_force_package_reinforcement_bit.factory_rail_guards
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { independence_wave_force_package_probe_path_factory_rail_guards = constant:independence_wave_force_package_runtime.true_value }
+		subtract_from_temp_variable = {
+			independence_wave_force_package_probe_reinforcement_residue = constant:independence_wave_force_package_reinforcement_bit.factory_rail_guards
+		}
+		add_to_temp_variable = { independence_wave_force_package_probe_reinforcement_pathway_count = constant:independence_wave_force_package_runtime.true_value }
+	}
+
+	if = {
+		limit = {
+			check_variable = {
+				var = independence_wave_force_package_probe_reinforcement_residue
+				value = constant:independence_wave_force_package_reinforcement_bit.league_cadres
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { independence_wave_force_package_probe_path_league_cadres = constant:independence_wave_force_package_runtime.true_value }
+		subtract_from_temp_variable = {
+			independence_wave_force_package_probe_reinforcement_residue = constant:independence_wave_force_package_reinforcement_bit.league_cadres
+		}
+		add_to_temp_variable = { independence_wave_force_package_probe_reinforcement_pathway_count = constant:independence_wave_force_package_runtime.true_value }
+	}
+
+	if = {
+		limit = {
+			check_variable = {
+				var = independence_wave_force_package_probe_reinforcement_residue
+				value = constant:independence_wave_force_package_reinforcement_bit.volunteer_corridors
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { independence_wave_force_package_probe_path_volunteer_corridors = constant:independence_wave_force_package_runtime.true_value }
+		subtract_from_temp_variable = {
+			independence_wave_force_package_probe_reinforcement_residue = constant:independence_wave_force_package_reinforcement_bit.volunteer_corridors
+		}
+		add_to_temp_variable = { independence_wave_force_package_probe_reinforcement_pathway_count = constant:independence_wave_force_package_runtime.true_value }
+	}
+
+	if = {
+		limit = {
+			check_variable = {
+				var = independence_wave_force_package_probe_reinforcement_residue
+				value = constant:independence_wave_force_package_reinforcement_bit.convert_defectors
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { independence_wave_force_package_probe_path_convert_defectors = constant:independence_wave_force_package_runtime.true_value }
+		subtract_from_temp_variable = {
+			independence_wave_force_package_probe_reinforcement_residue = constant:independence_wave_force_package_reinforcement_bit.convert_defectors
+		}
+		add_to_temp_variable = { independence_wave_force_package_probe_reinforcement_pathway_count = constant:independence_wave_force_package_runtime.true_value }
+	}
+
+	if = {
+		limit = {
+			check_variable = {
+				var = independence_wave_force_package_probe_reinforcement_residue
+				value = constant:independence_wave_force_package_reinforcement_bit.secure_depots
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { independence_wave_force_package_probe_path_secure_depots = constant:independence_wave_force_package_runtime.true_value }
+		subtract_from_temp_variable = {
+			independence_wave_force_package_probe_reinforcement_residue = constant:independence_wave_force_package_reinforcement_bit.secure_depots
+		}
+		add_to_temp_variable = { independence_wave_force_package_probe_reinforcement_pathway_count = constant:independence_wave_force_package_runtime.true_value }
+	}
+
+	if = {
+		limit = {
+			check_variable = {
+				var = independence_wave_force_package_probe_reinforcement_residue
+				value = constant:independence_wave_force_package_reinforcement_bit.regional_guards
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { independence_wave_force_package_probe_path_regional_guards = constant:independence_wave_force_package_runtime.true_value }
+		subtract_from_temp_variable = {
+			independence_wave_force_package_probe_reinforcement_residue = constant:independence_wave_force_package_reinforcement_bit.regional_guards
+		}
+		add_to_temp_variable = { independence_wave_force_package_probe_reinforcement_pathway_count = constant:independence_wave_force_package_runtime.true_value }
+	}
+
+	if = {
+		limit = {
+			check_variable = {
+				var = independence_wave_force_package_probe_reinforcement_residue
+				value = constant:independence_wave_force_package_reinforcement_bit.integrate_militias
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { independence_wave_force_package_probe_path_integrate_militias = constant:independence_wave_force_package_runtime.true_value }
+		subtract_from_temp_variable = {
+			independence_wave_force_package_probe_reinforcement_residue = constant:independence_wave_force_package_reinforcement_bit.integrate_militias
+		}
+		add_to_temp_variable = { independence_wave_force_package_probe_reinforcement_pathway_count = constant:independence_wave_force_package_runtime.true_value }
+	}
+
+	set_temp_variable = { independence_wave_force_package_probe_inheritance_residue = independence_wave_force_package_probe_inheritance_mask }
+	set_temp_variable = { independence_wave_force_package_probe_inherit_navy = constant:independence_wave_force_package_runtime.false_value }
+	set_temp_variable = { independence_wave_force_package_probe_inherit_air = constant:independence_wave_force_package_runtime.false_value }
+
+	if = {
+		limit = {
+			check_variable = {
+				var = independence_wave_force_package_probe_inheritance_residue
+				value = constant:independence_wave_force_package_inheritance_bit.air
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { independence_wave_force_package_probe_inherit_air = constant:independence_wave_force_package_runtime.true_value }
+		subtract_from_temp_variable = {
+			independence_wave_force_package_probe_inheritance_residue = constant:independence_wave_force_package_inheritance_bit.air
+		}
+	}
+
+	if = {
+		limit = {
+			check_variable = {
+				var = independence_wave_force_package_probe_inheritance_residue
+				value = constant:independence_wave_force_package_inheritance_bit.navy
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { independence_wave_force_package_probe_inherit_navy = constant:independence_wave_force_package_runtime.true_value }
+		subtract_from_temp_variable = {
+			independence_wave_force_package_probe_inheritance_residue = constant:independence_wave_force_package_inheritance_bit.navy
+		}
+	}
+}
+
+# Non-mutating pre-transfer probe.
+# Input: temporary independence_wave_setup_package_id.
+# Outputs are temporary independence_wave_force_package_probe_* values.
+independence_wave_probe_force_package_mapping = {
+	set_temp_variable = { independence_wave_force_package_probe_ready = constant:independence_wave_force_package_runtime.false_value }
+	set_temp_variable = { independence_wave_force_package_probe_package_id = independence_wave_setup_package_id }
+	round_temp_variable = independence_wave_force_package_probe_package_id
+	set_temp_variable = { independence_wave_force_package_probe_profile = constant:independence_wave_force_package_runtime.false_value }
+	set_temp_variable = { independence_wave_force_package_probe_military_tradition = constant:independence_wave_force_package_runtime.false_value }
+	set_temp_variable = { independence_wave_force_package_probe_reinforcement_mask = constant:independence_wave_force_package_runtime.false_value }
+	set_temp_variable = { independence_wave_force_package_probe_inheritance_mask = constant:independence_wave_force_package_runtime.false_value }
+	set_temp_variable = { independence_wave_force_package_probe_research_sensitive = constant:independence_wave_force_package_runtime.false_value }
+
+	if = {
+		limit = { has_valid_independence_wave_force_package_probe_id = yes }
+		meta_effect = {
+			text = {
+				set_temp_variable = {
+					independence_wave_force_package_probe_profile = constant:independence_wave_force_package_profile.p[PACKAGE_ID]
+				}
+				set_temp_variable = {
+					independence_wave_force_package_probe_military_tradition = constant:independence_wave_force_package_military_tradition.p[PACKAGE_ID]
+				}
+				set_temp_variable = {
+					independence_wave_force_package_probe_reinforcement_mask = constant:independence_wave_force_package_reinforcement_mask.p[PACKAGE_ID]
+				}
+				set_temp_variable = {
+					independence_wave_force_package_probe_inheritance_mask = constant:independence_wave_force_package_inheritance_mask.p[PACKAGE_ID]
+				}
+				set_temp_variable = {
+					independence_wave_force_package_probe_research_sensitive = constant:independence_wave_force_package_research_sensitive.p[PACKAGE_ID]
+				}
+			}
+			PACKAGE_ID = "[?independence_wave_force_package_probe_package_id|.0]"
+		}
+	}
+
+	independence_wave_decode_force_package_probe_masks = yes
+	if = {
+		limit = { has_valid_independence_wave_force_package_mapping_probe = yes }
+		set_temp_variable = { independence_wave_force_package_probe_ready = constant:independence_wave_force_package_runtime.true_value }
+	}
+}
+
+# Applies only the five path bits validated by the probe. Each call uses the
+# existing idempotent pathway helper, which owns its flag and count update.
+independence_wave_apply_force_package_probe_paths = {
+	if = {
+		limit = { check_variable = { independence_wave_force_package_probe_path_integrate_militias = constant:independence_wave_force_package_runtime.true_value } }
+		independence_wave_add_reinforce_integrate_militias = yes
+	}
+	if = {
+		limit = { check_variable = { independence_wave_force_package_probe_path_regional_guards = constant:independence_wave_force_package_runtime.true_value } }
+		independence_wave_add_reinforce_regional_guards = yes
+	}
+	if = {
+		limit = { check_variable = { independence_wave_force_package_probe_path_secure_depots = constant:independence_wave_force_package_runtime.true_value } }
+		independence_wave_add_reinforce_secure_depots = yes
+	}
+	if = {
+		limit = { check_variable = { independence_wave_force_package_probe_path_convert_defectors = constant:independence_wave_force_package_runtime.true_value } }
+		independence_wave_add_reinforce_convert_defectors = yes
+	}
+	if = {
+		limit = { check_variable = { independence_wave_force_package_probe_path_volunteer_corridors = constant:independence_wave_force_package_runtime.true_value } }
+		independence_wave_add_reinforce_volunteer_corridors = yes
+	}
+	if = {
+		limit = { check_variable = { independence_wave_force_package_probe_path_league_cadres = constant:independence_wave_force_package_runtime.true_value } }
+		independence_wave_add_reinforce_league_cadres = yes
+	}
+	if = {
+		limit = { check_variable = { independence_wave_force_package_probe_path_factory_rail_guards = constant:independence_wave_force_package_runtime.true_value } }
+		independence_wave_add_reinforce_factory_rail_guards = yes
+	}
+	if = {
+		limit = { check_variable = { independence_wave_force_package_probe_path_terrain_units = constant:independence_wave_force_package_runtime.true_value } }
+		independence_wave_add_reinforce_terrain_units = yes
+	}
+	if = {
+		limit = { check_variable = { independence_wave_force_package_probe_path_foreign_arms = constant:independence_wave_force_package_runtime.true_value } }
+		independence_wave_add_reinforce_foreign_arms = yes
+	}
+	if = {
+		limit = { check_variable = { independence_wave_force_package_probe_path_professional_officers = constant:independence_wave_force_package_runtime.true_value } }
+		independence_wave_add_reinforce_professional_officers = yes
+	}
+	if = {
+		limit = { check_variable = { independence_wave_force_package_probe_path_capital_border_defense = constant:independence_wave_force_package_runtime.true_value } }
+		independence_wave_add_reinforce_capital_border_defense = yes
+	}
+}
+
+# Public mutating loader.
+# Call on an initialized active Event 006 country whose persistent package ID
+# already matches temporary independence_wave_setup_package_id in the 1..206 set.
+independence_wave_load_force_package_mapping = {
+	independence_wave_clear_force_package_mapping_runtime = yes
+	independence_wave_probe_force_package_mapping = yes
+
+	if = {
+		limit = { has_ready_independence_wave_force_package_mapping_probe = yes }
+		set_variable = {
+			independence_wave_force_mapping_revision = constant:independence_wave_force_package_runtime.mapping_revision
+		}
+		set_variable = { independence_wave_force_mapping_package_id = independence_wave_force_package_probe_package_id }
+		set_variable = { independence_wave_force_profile = independence_wave_force_package_probe_profile }
+		set_variable = { independence_wave_military_tradition = independence_wave_force_package_probe_military_tradition }
+		independence_wave_apply_force_package_probe_paths = yes
+
+		if = {
+			limit = { check_variable = { independence_wave_force_package_probe_inherit_navy = constant:independence_wave_force_package_runtime.true_value } }
+			set_country_flag = independence_wave_force_navy_inheritance_enabled
+		}
+		if = {
+			limit = { check_variable = { independence_wave_force_package_probe_inherit_air = constant:independence_wave_force_package_runtime.true_value } }
+			set_country_flag = independence_wave_force_air_inheritance_enabled
+		}
+		if = {
+			limit = { check_variable = { independence_wave_force_package_probe_research_sensitive = constant:independence_wave_force_package_runtime.true_value } }
+			set_country_flag = independence_wave_force_mapping_research_sensitive
+		}
+
+		if = {
+			limit = { has_valid_independence_wave_loaded_force_package_mapping = yes }
+			set_country_flag = independence_wave_force_mapping_loaded
+		}
+		else = {
+			independence_wave_clear_force_package_mapping_runtime = yes
+		}
+	}
+}
