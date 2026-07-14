@@ -7,6 +7,8 @@ description: Use when designing, implementing, auditing, or fixing Hearts of Iro
 
 Use this skill when a task touches national focus trees, focus-tree loading, focus effects, focus layout, focus localisation, focus icons, focus AI, focus-tree documentation, or event-created country trees.
 
+For complex tree cleanup or creation, optionally use `hoi4.focus_inspect`, `hoi4.focus_render`, and `hoi4.focus_rewrite` for structural inspection, deterministic layout evidence, lint findings, comparison, and an in-scope rewrite. Keep the design, source review, localisation, AI, and final audit in this skill; do not require the tool for small edits.
+
 This skill is the detailed focus-tree source of truth for `AGENTS.md`. Keep the root `AGENTS.md` concise and put reusable focus-tree design, implementation, audit, and completion standards here.
 
 Use this skill together with:

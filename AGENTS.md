@@ -53,6 +53,10 @@ Use HOI4 vanilla as the main example set.
 
 If Chaos Redux already has a pattern for the same thing, follow that over vanilla for consistency, but still take a look at a vanilla implementation.
 
+### Shared MCP support infrastructure
+
+The project-scoped `hoi4-agent-tools` MCP server is optional support for coding agents. Follow the existing skill that owns the task; there is no central MCP skill or router. Use the installed `hoi4.focus_*`, `hoi4.gui_*`, `hoi4.map_*`, and `hoi4.event_*` tools when they improve inspection, rendering, comparison, or confidence. Read-only tools may inspect source and create linked artifacts without changing gameplay files. Write-capable tools perform dry-run planning and review, apply through the shared transaction engine, post-validate, and retain rollback/recovery data. The Event Chain Viewer and any Technology Tree Viewer are read-only; the installed v1.2.0 package currently has no Technology Tree Viewer, so report that limitation instead of inventing a wrapper. Scripted GUI Studio renders offline and never launches, controls, or captures HOI4. Artifacts are evidence; HOI4 source files remain authoritative. Report unsupported or uncertain analysis honestly. MCP use does not remove the required wiki, vanilla documentation, source review, skill, spec, plan, audit, or handoff requirements, and failure of an optional tool is not automatically a blocker unless the task depends on it.
+
 ### Mod References Beyond Vanilla
 
 If vanilla examples are insufficient or unclear, you are allowed to inspect well known large mods for additional reference.
