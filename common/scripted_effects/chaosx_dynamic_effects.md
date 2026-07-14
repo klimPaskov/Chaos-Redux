@@ -34,6 +34,8 @@ Before adding new dynamic logic, check this file and reuse an existing effect if
 - [calculate_dynamic_major_weight_gain](#calculate_dynamic_major_weight_gain)
 - [apply_dynamic_major_weight_gain_after_minor](#apply_dynamic_major_weight_gain_after_minor)
 - [cbrn_initialize_country_data](#cbrn_initialize_country_data)
+- [apply_state_population_loss_without_recruitable_manpower_gain](#apply_state_population_loss_without_recruitable_manpower_gain)
+- [apply_exact_state_civilian_population_loss](#apply_exact_state_civilian_population_loss)
 - [cbrn_set_use_policy](#cbrn_set_use_policy)
 - [cbrn_set_chemical_readiness_cap](#cbrn_set_chemical_readiness_cap)
 - [cbrn_modify_chemical_readiness](#cbrn_modify_chemical_readiness)
@@ -804,6 +806,55 @@ TIB = {
 apply_crisis_rescue_event_weight_adjustments = yes
 ```
 
+## apply_state_population_loss_without_recruitable_manpower_gain
+
+This internal state-scope transaction removes real state population without
+leaving the recruitable-manpower credit that the engine attaches to a negative
+state-scope `add_manpower` effect. It snapshots the legal owner's and, when
+different, the controller's `manpower_k`, performs the single state mutation,
+then removes only a positive manpower delta observed in those pools. The
+correction is measured from the transaction itself and is clamped to the
+requested loss; it does not assume whether an occupied state credits its owner
+or controller.
+
+Input:
+
+- `state_population_transaction_loss`: positive population loss in people. The
+  helper clamps and rounds it before use.
+- `state_population_transaction_contract_supplied`: one-shot proof set to `1`
+  immediately before the call. The helper clears it after use, so an omitted
+  input cannot inherit a previous transaction in the same effect chain.
+
+Output:
+
+- `state_population_transaction_reconciled_gain`: total recruitable-manpower
+  credit removed from the owner and distinct controller. A caller that reads
+  this temporary output after return must initialize it in the enclosing effect
+  before the call.
+
+Side effects:
+
+- applies one negative state-scope `add_manpower` mutation;
+- may apply a compensating negative country-scope `add_manpower` to the owner,
+  controller, or both when their measured manpower pool increased;
+- uses temporary variables prefixed `state_population_transaction_`.
+
+The official script surface exposes no population-only state mutation. The
+engine documentation also does not identify which country receives an occupied
+state's recruitable credit. Measuring both relevant pools is therefore the
+strongest deterministic scripted transaction available; if the engine does not
+surface a credit through `manpower_k` in the same effect chain, no unobserved
+amount is guessed or removed.
+
+Example:
+
+```txt
+set_temp_variable = { state_population_transaction_loss = 25000 }
+set_temp_variable = { state_population_transaction_reconciled_gain = 0 }
+set_temp_variable = { state_population_transaction_contract_supplied = 1 }
+apply_state_population_loss_without_recruitable_manpower_gain = yes
+```
+
 ## apply_exact_state_civilian_population_loss
 
 This state-scope effect applies one exact, clamped civilian population loss. It
@@ -811,30 +862,36 @@ is the shared transaction for systems that must remove real state population
 and report the same applied amount even when the optional Deaths display is
 disabled. With Deaths enabled it delegates both population removal and logging
 to `chaos_meter_register_deaths`; with Deaths disabled, or when logging is
-explicitly suppressed, it applies the identical negative state-manpower delta
-directly. Callers must derive rewards, costs, and cumulative totals only from
-the returned applied value.
+explicitly suppressed, it invokes the same population-only transaction
+directly. Both routes reconcile any observed recruitable-manpower credit.
+Callers must derive rewards, costs, and cumulative totals only from the returned
+applied value.
+
+Every input is required on every invocation. The one-shot proof is cleared on
+return so repeated calls cannot inherit a prior caller's optional values.
 
 Inputs:
 
 - `state_civilian_population_loss_requested`: requested people to remove.
 - `state_civilian_population_loss_minimum_remaining`: protected population
-  floor in people; defaults to `0`.
-- `state_civilian_population_loss_reason`: Deaths reason ID; defaults to the
-  shared unknown reason.
+  floor in people. Negative values are clamped to `0`.
+- `state_civilian_population_loss_reason`: Deaths reason ID.
 - `state_civilian_population_loss_log_deaths`: `1` to use the Deaths API when
-  enabled, `0` to apply an unlogged transaction; defaults to `1`.
-- `state_civilian_population_loss_target_country`: optional country scope used
-  by the Deaths ledger; defaults to the state's owner.
+  enabled, `0` to apply an unlogged transaction.
+- `state_civilian_population_loss_target_country`: country scope used by the
+  Deaths ledger.
 - `state_civilian_population_loss_has_target_country`: set to `1` when the
-  supplied target is valid; defaults to `1` with the owner target.
+  supplied target is valid.
+- `state_civilian_population_loss_contract_supplied`: one-shot proof set to `1`
+  immediately before the call.
 
 Outputs:
 
 - `state_civilian_population_loss_applied`: the rounded number of people
   actually removed after the real-population floor is enforced.
 - `state_civilian_population_loss_result`: `1` when a positive loss was
-  applied, otherwise `0`.
+  applied, otherwise `0`. Callers that read either temporary output must
+  initialize both in the enclosing effect before the call.
 
 Side effects:
 
@@ -842,6 +899,8 @@ Side effects:
   civilian-death total;
 - always removes the returned applied amount from the current state's real
   population exactly once;
+- reconciles owner/controller recruitable-manpower gains through
+  `apply_state_population_loss_without_recruitable_manpower_gain`;
 - uses temporary helper variables prefixed
   `state_civilian_population_loss_` and the public `chaos_deaths_*` Deaths API
   inputs.
@@ -854,6 +913,9 @@ set_temp_variable = { state_civilian_population_loss_minimum_remaining = 10000 }
 set_temp_variable = { state_civilian_population_loss_reason = constant:chaos_meter_deaths_reason.cannibalism_consumption }
 set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
 set_temp_variable = { state_civilian_population_loss_has_target_country = 1 }
+set_temp_variable = { state_civilian_population_loss_applied = 0 }
+set_temp_variable = { state_civilian_population_loss_result = 0 }
+set_temp_variable = { state_civilian_population_loss_contract_supplied = 1 }
 apply_exact_state_civilian_population_loss = yes
 ROOT = {
 	add_to_variable = { my_actual_loss_total = state_civilian_population_loss_applied }

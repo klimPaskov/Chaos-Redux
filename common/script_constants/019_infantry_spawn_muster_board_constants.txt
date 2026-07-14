@@ -1,0 +1,150 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 019 MUSTER BOARD AND ANOMALOUS MANAGEMENT CONSTANTS
+# ============================================================================
+# UI state, bounded history display, registry-action costs, family-pressure
+# bands, and AI selection weights. Provider-specific resource transactions stay
+# in the provider files registered through chaos_unit_family_registry.
+# ============================================================================
+
+infantry_spawn_muster_gui_tab = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	overview = 1
+	formation_lots = 2
+	command = 3
+	anomalous_registry = 4
+	generation_history = 5
+}
+
+infantry_spawn_muster_gui_value = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	zero = 0
+	one = 1
+	invalid_index = -1
+	maximum_history_rows = 12
+	maximum_lot_rows = 40
+}
+
+infantry_spawn_family_sustainment_state = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	dormant = 0
+	unsupported = 1
+	strained = 2
+	sustained = 3
+}
+
+infantry_spawn_family_management_action = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	train_or_spawn = 1
+	cantonment = 2
+	liaison = 3
+	restricted_deployment = 4
+	sustainment = 5
+	containment = 6
+	dispersal = 7
+}
+
+infantry_spawn_family_management_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	cantonment_political_power = 35
+	cantonment_command_power = 10
+	cantonment_support_equipment = 60
+	liaison_political_power = 25
+	liaison_command_power = 10
+	restricted_command_power = 20
+	restricted_army_experience = 8
+	containment_political_power = 60
+	containment_command_power = 30
+	containment_support_equipment = 120
+	dispersal_command_power = 20
+	dispersal_support_equipment = 75
+}
+
+infantry_spawn_family_management_duration = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	cantonment_days = 180
+	liaison_days = 180
+	restricted_deployment_days = 120
+	sustainment_days = 90
+	containment_days = 56
+	breach_warning_days = 21
+}
+
+# Every family provider owns its material cost. This generic overhead is paid
+# in addition and rises with same-generation requests, preventing a cheap
+# provider from becoming an unlimited reroll or saturation bypass.
+infantry_spawn_family_request_overhead = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_political_power = 10
+	political_power_per_prior_request = 5
+	base_command_power = 5
+	command_power_per_prior_request = 2
+	base_cooldown_days = 35
+	cooldown_days_per_prior_request = 7
+}
+
+infantry_spawn_family_pressure = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	per_live_division = 8
+	per_unresolved_lot = 12
+	claimant_multiplier = 1.50
+	trace = 20
+	strained = 45
+	critical = 70
+	breach = 85
+	cantonment_relief = 18
+	restricted_relief = 12
+	sustainment_relief = 8
+	containment_relief = 25
+}
+
+infantry_spawn_family_management_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	disabled = 0
+	low = 10
+	standard = 35
+	high = 70
+	urgent = 100
+	critical_pressure_bonus = 80
+	breach_pressure_bonus = 140
+	war_spawn_bonus = 50
+	peace_training_bonus = 35
+	low_control_containment_bonus = 40
+	high_congestion_dispersal_bonus = 60
+}

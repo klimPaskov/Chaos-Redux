@@ -16,6 +16,10 @@ All route, focus, event, decision, achievement, country, faction, and super-even
 
 The added research layer contains a 206-row resolution matrix, state reservation groups, tag collision audit, ten signature dossiers, a sensitive-identity disposition ledger, final super-event text research, final audio research, and a source register. `research/006_research_completion_report.md` is the entry point.
 
+## Implementation reconciliation
+
+The dated implementation bridge is recorded in `../../plans/006_independence_wave_plans/006_source_of_truth_map.md`. The matching restart point is `../../plans/006_independence_wave_plans/006_independence_wave_resume_packet.md`. These plan documents do not replace the seven accepted specification parts. They bind the accepted package identities and dispositions to the installed 2026-07-14 map and registry snapshot, and they record unresolved production gates.
+
 ## Package map
 
 ### Specifications
@@ -87,4 +91,4 @@ The added research layer contains a 206-row resolution matrix, state reservation
 
 The seven files under `specs/` are the event design source. The CSV matrices are authoritative registries for broad coverage and should be read alongside the relevant spec part. The prompt files translate the source design into bounded implementation, asset, research, audit, and catalog tasks.
 
-The research-complete package assigns a resolved registered or reserved tag to every candidate, provides a dated public state-ID anchor baseline and reservation group, closes every candidate research disposition, and approves both super-event text and audio source packages. Installed-game state rebinding, a final repository collision scan, final localisation outside the approved super-event text, asset production, audio conversion, focus coordinates, and gameplay validation remain implementation work. Every new Event 6 tag ends in `X`.
+The research-complete package assigns a resolved registered or reserved tag to every candidate, provides a dated public state-ID anchor baseline and reservation group, closes every candidate research disposition, and approves both super-event text packages and both musical selections. The 2026-07-14 reconciliation evaluates all 206 packages against the installed map, confirms all 128 reserved new tags are collision-free in the current registries, and preserves the accepted dispositions. It leaves 149 packages bound and 57 unbound. The exact `6001` London Brass Players recording is blocked for United States redistribution until permission or a waiver is obtained. Final localisation outside the approved super-event text, asset production, audio conversion, focus coordinates, gameplay implementation, and gameplay validation remain. Every new Event 6 tag ends in `X`.

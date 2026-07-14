@@ -110,57 +110,90 @@ scripted_map_modes = {
 	contaminated_states_map_mode = {
 		top = {
 			type = state
+			thickness = yes
 			color = {
 				FROM = {
-					mapmode_state_has_tracked_contamination = yes
+					black_plague_state_is_tracked = yes
+					black_plague_state_is_visible_to_mapmode_player = yes
 				}
 				FROM = {
-					set_temp_variable = { red = 0 }
-					set_temp_variable = { green = 0 }
-					set_temp_variable = { blue = 0 }
-					set_temp_variable = { alpha = 0 }
-					set_temp_variable = { thickness = constant:state_map_modes_contamination.single_thickness }
-					set_temp_variable = { mapmode_contamination_type_count = 0 }
+					set_temp_variable = { red = constant:state_map_modes_contamination.black_plague_border_threatened_red }
+					set_temp_variable = { green = constant:state_map_modes_contamination.black_plague_border_threatened_green }
+					set_temp_variable = { blue = constant:state_map_modes_contamination.black_plague_border_threatened_blue }
+					set_temp_variable = { alpha = constant:state_map_modes_contamination.black_plague_border_alpha }
+					set_temp_variable = { thickness = constant:state_map_modes_contamination.black_plague_border_thin }
 
 					if = {
-						limit = { mapmode_state_has_chemical_contamination = yes }
-						set_temp_variable = { alpha = constant:state_map_modes_contamination.single_alpha }
-						add_to_temp_variable = { red = constant:state_map_modes_contamination.chemical_red }
-						add_to_temp_variable = { green = constant:state_map_modes_contamination.chemical_green }
-						add_to_temp_variable = { blue = constant:state_map_modes_contamination.chemical_blue }
-						add_to_temp_variable = { mapmode_contamination_type_count = 1 }
+						limit = { black_plague_state_is_incubating = yes }
+						set_temp_variable = { red = constant:state_map_modes_contamination.black_plague_border_incubating_red }
+						set_temp_variable = { green = constant:state_map_modes_contamination.black_plague_border_incubating_green }
+						set_temp_variable = { blue = constant:state_map_modes_contamination.black_plague_border_incubating_blue }
+						set_temp_variable = { thickness = constant:state_map_modes_contamination.black_plague_border_medium }
 					}
-					if = {
-						limit = { mapmode_state_has_disease_contamination = yes }
-						set_temp_variable = { alpha = constant:state_map_modes_contamination.single_alpha }
-						add_to_temp_variable = { red = constant:state_map_modes_contamination.disease_red }
-						add_to_temp_variable = { green = constant:state_map_modes_contamination.disease_green }
-						add_to_temp_variable = { blue = constant:state_map_modes_contamination.disease_blue }
-						add_to_temp_variable = { mapmode_contamination_type_count = 1 }
+					else_if = {
+						limit = { black_plague_state_is_infected = yes }
+						set_temp_variable = { red = constant:state_map_modes_contamination.black_plague_border_infected_red }
+						set_temp_variable = { green = constant:state_map_modes_contamination.black_plague_border_infected_green }
+						set_temp_variable = { blue = constant:state_map_modes_contamination.black_plague_border_infected_blue }
+						set_temp_variable = { thickness = constant:state_map_modes_contamination.black_plague_border_medium }
 					}
-					if = {
-						limit = { mapmode_state_has_nuclear_contamination = yes }
-						set_temp_variable = { alpha = constant:state_map_modes_contamination.single_alpha }
-						add_to_temp_variable = { red = constant:state_map_modes_contamination.nuclear_red }
-						add_to_temp_variable = { green = constant:state_map_modes_contamination.nuclear_green }
-						add_to_temp_variable = { blue = constant:state_map_modes_contamination.nuclear_blue }
-						add_to_temp_variable = { mapmode_contamination_type_count = 1 }
+					else_if = {
+						limit = { black_plague_state_is_severe = yes }
+						set_temp_variable = { red = constant:state_map_modes_contamination.black_plague_border_severe_red }
+						set_temp_variable = { green = constant:state_map_modes_contamination.black_plague_border_severe_green }
+						set_temp_variable = { blue = constant:state_map_modes_contamination.black_plague_border_severe_blue }
+						set_temp_variable = { thickness = constant:state_map_modes_contamination.black_plague_border_heavy }
+						set_temp_variable = { highlighted = constant:state_map_modes_contamination.highlighted }
 					}
-
-					clamp_temp_variable = { var = red min = 0 max = 1 }
-					clamp_temp_variable = { var = green min = 0 max = 1 }
-					clamp_temp_variable = { var = blue min = 0 max = 1 }
-
-					if = {
-						limit = { check_variable = { mapmode_contamination_type_count > 1 } }
-						set_temp_variable = { alpha = constant:state_map_modes_contamination.multi_alpha }
-						set_temp_variable = { thickness = constant:state_map_modes_contamination.multi_thickness }
-						set_temp_variable = { highlighted = 1 }
-
-						if = {
-							limit = { check_variable = { mapmode_contamination_type_count > 2 } }
-							set_temp_variable = { thickness = constant:state_map_modes_contamination.extreme_thickness }
+					else_if = {
+						limit = { black_plague_state_is_collapsed = yes }
+						set_temp_variable = { red = constant:state_map_modes_contamination.black_plague_border_collapsed_red }
+						set_temp_variable = { green = constant:state_map_modes_contamination.black_plague_border_collapsed_green }
+						set_temp_variable = { blue = constant:state_map_modes_contamination.black_plague_border_collapsed_blue }
+						set_temp_variable = { thickness = constant:state_map_modes_contamination.black_plague_border_terminal }
+						set_temp_variable = { highlighted = constant:state_map_modes_contamination.highlighted }
+					}
+					else_if = {
+						limit = { black_plague_state_is_contained = yes }
+						set_temp_variable = { red = constant:state_map_modes_contamination.black_plague_border_contained_red }
+						set_temp_variable = { green = constant:state_map_modes_contamination.black_plague_border_contained_green }
+						set_temp_variable = { blue = constant:state_map_modes_contamination.black_plague_border_contained_blue }
+						set_temp_variable = { thickness = constant:state_map_modes_contamination.black_plague_border_heavy }
+					}
+					else_if = {
+						limit = { black_plague_state_is_recovering = yes }
+						set_temp_variable = { red = constant:state_map_modes_contamination.black_plague_border_recovery_red }
+						set_temp_variable = { green = constant:state_map_modes_contamination.black_plague_border_recovery_green }
+						set_temp_variable = { blue = constant:state_map_modes_contamination.black_plague_border_recovery_blue }
+						set_temp_variable = { thickness = constant:state_map_modes_contamination.black_plague_border_medium }
+					}
+					else_if = {
+						limit = {
+							OR = {
+								black_plague_state_is_cured = yes
+								has_state_flag = black_plague_monitoring_memory
+							}
 						}
+						set_temp_variable = { red = constant:state_map_modes_contamination.black_plague_border_cured_red }
+						set_temp_variable = { green = constant:state_map_modes_contamination.black_plague_border_cured_green }
+						set_temp_variable = { blue = constant:state_map_modes_contamination.black_plague_border_cured_blue }
+					}
+
+					if = {
+						limit = { black_plague_state_has_public_weaponized_provenance = yes }
+						set_temp_variable = { red = constant:state_map_modes_contamination.black_plague_border_weaponized_red }
+						set_temp_variable = { green = constant:state_map_modes_contamination.black_plague_border_weaponized_green }
+						set_temp_variable = { blue = constant:state_map_modes_contamination.black_plague_border_weaponized_blue }
+						set_temp_variable = { highlighted = constant:state_map_modes_contamination.highlighted }
+					}
+
+					if = {
+						limit = { black_plague_state_is_rat_controlled = yes }
+						set_temp_variable = { red = constant:state_map_modes_contamination.black_plague_border_rat_controlled_red }
+						set_temp_variable = { green = constant:state_map_modes_contamination.black_plague_border_rat_controlled_green }
+						set_temp_variable = { blue = constant:state_map_modes_contamination.black_plague_border_rat_controlled_blue }
+						set_temp_variable = { thickness = constant:state_map_modes_contamination.black_plague_border_terminal }
+						set_temp_variable = { highlighted = constant:state_map_modes_contamination.highlighted }
 					}
 				}
 				always = yes
@@ -168,13 +201,94 @@ scripted_map_modes = {
 		}
 
 		bottom = {
-			type = country
-			thickness = yes
+			type = state
 			color = {
-				set_temp_variable = { red = constant:state_map_modes_contamination.background_red }
-				set_temp_variable = { green = constant:state_map_modes_contamination.background_green }
-				set_temp_variable = { blue = constant:state_map_modes_contamination.background_blue }
-				set_temp_variable = { alpha = constant:state_map_modes_contamination.background_alpha }
+				FROM = {
+					set_temp_variable = { red = constant:state_map_modes_contamination.background_red }
+					set_temp_variable = { green = constant:state_map_modes_contamination.background_green }
+					set_temp_variable = { blue = constant:state_map_modes_contamination.background_blue }
+					set_temp_variable = { alpha = constant:state_map_modes_contamination.background_alpha }
+					set_temp_variable = { mapmode_contamination_type_count = constant:state_map_modes_contamination.type_count_none }
+
+					if = {
+						limit = {
+							black_plague_state_is_established = yes
+							black_plague_state_is_visible_to_mapmode_player = yes
+						}
+						set_temp_variable = { red = constant:state_map_modes_contamination.black_plague_base_red }
+						set_temp_variable = { green = constant:state_map_modes_contamination.black_plague_base_green }
+						set_temp_variable = { blue = constant:state_map_modes_contamination.black_plague_base_blue }
+						set_temp_variable = { alpha = constant:state_map_modes_contamination.black_plague_base_alpha }
+					}
+					else = {
+						set_temp_variable = { red = constant:state_map_modes_contamination.channel_minimum }
+						set_temp_variable = { green = constant:state_map_modes_contamination.channel_minimum }
+						set_temp_variable = { blue = constant:state_map_modes_contamination.channel_minimum }
+
+						if = {
+							limit = { mapmode_state_has_chemical_contamination = yes }
+							add_to_temp_variable = { red = constant:state_map_modes_contamination.chemical_red }
+							add_to_temp_variable = { green = constant:state_map_modes_contamination.chemical_green }
+							add_to_temp_variable = { blue = constant:state_map_modes_contamination.chemical_blue }
+							add_to_temp_variable = { mapmode_contamination_type_count = constant:state_map_modes_contamination.type_count_increment }
+						}
+						if = {
+							limit = { mapmode_state_has_legacy_disease_contamination = yes }
+							add_to_temp_variable = { red = constant:state_map_modes_contamination.disease_red }
+							add_to_temp_variable = { green = constant:state_map_modes_contamination.disease_green }
+							add_to_temp_variable = { blue = constant:state_map_modes_contamination.disease_blue }
+							add_to_temp_variable = { mapmode_contamination_type_count = constant:state_map_modes_contamination.type_count_increment }
+						}
+						if = {
+							limit = { mapmode_state_has_nuclear_contamination = yes }
+							add_to_temp_variable = { red = constant:state_map_modes_contamination.nuclear_red }
+							add_to_temp_variable = { green = constant:state_map_modes_contamination.nuclear_green }
+							add_to_temp_variable = { blue = constant:state_map_modes_contamination.nuclear_blue }
+							add_to_temp_variable = { mapmode_contamination_type_count = constant:state_map_modes_contamination.type_count_increment }
+						}
+						if = {
+							limit = {
+								black_plague_state_is_threatened = yes
+								black_plague_state_is_visible_to_mapmode_player = yes
+							}
+							add_to_temp_variable = { red = constant:state_map_modes_contamination.black_plague_threatened_red }
+							add_to_temp_variable = { green = constant:state_map_modes_contamination.black_plague_threatened_green }
+							add_to_temp_variable = { blue = constant:state_map_modes_contamination.black_plague_threatened_blue }
+							add_to_temp_variable = { mapmode_contamination_type_count = constant:state_map_modes_contamination.type_count_increment }
+						}
+						if = {
+							limit = {
+								black_plague_state_is_visible_to_mapmode_player = yes
+								OR = {
+									black_plague_state_is_cured = yes
+									has_state_flag = black_plague_monitoring_memory
+								}
+							}
+							add_to_temp_variable = { red = constant:state_map_modes_contamination.black_plague_monitored_red }
+							add_to_temp_variable = { green = constant:state_map_modes_contamination.black_plague_monitored_green }
+							add_to_temp_variable = { blue = constant:state_map_modes_contamination.black_plague_monitored_blue }
+							add_to_temp_variable = { mapmode_contamination_type_count = constant:state_map_modes_contamination.type_count_increment }
+						}
+
+						if = {
+							limit = { check_variable = { mapmode_contamination_type_count > constant:state_map_modes_contamination.type_count_none } }
+							set_temp_variable = { alpha = constant:state_map_modes_contamination.single_alpha }
+							clamp_temp_variable = { var = red min = constant:state_map_modes_contamination.channel_minimum max = constant:state_map_modes_contamination.channel_maximum }
+							clamp_temp_variable = { var = green min = constant:state_map_modes_contamination.channel_minimum max = constant:state_map_modes_contamination.channel_maximum }
+							clamp_temp_variable = { var = blue min = constant:state_map_modes_contamination.channel_minimum max = constant:state_map_modes_contamination.channel_maximum }
+						}
+						else = {
+							set_temp_variable = { red = constant:state_map_modes_contamination.background_red }
+							set_temp_variable = { green = constant:state_map_modes_contamination.background_green }
+							set_temp_variable = { blue = constant:state_map_modes_contamination.background_blue }
+						}
+						if = {
+							limit = { check_variable = { mapmode_contamination_type_count > constant:state_map_modes_contamination.type_count_increment } }
+							set_temp_variable = { alpha = constant:state_map_modes_contamination.multi_alpha }
+							set_temp_variable = { highlighted = constant:state_map_modes_contamination.highlighted }
+						}
+					}
+				}
 				always = yes
 			}
 		}

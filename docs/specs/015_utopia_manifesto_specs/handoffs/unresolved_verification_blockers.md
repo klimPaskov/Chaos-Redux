@@ -52,19 +52,40 @@ Required resolution:
 
 ## Asset production
 
-No final art, DDS, TGA, animation frames, or contact sheets were produced.
+Most final icon, flag, report/news, GUI, and animation packages now exist under `docs/assets/015_utopia_manifesto/` and their runtime folders. The source audit dated `2026-07-14` confirms preserved OpenAI `image_gen` masters, prompts, processed previews, final DDS files, and SHA-256 records for the installed opening report, boundary-crisis news image, and two legacy super-event images.
+
+The current route-specific super-event image package remains blocked. `interface/015_utopia_manifesto_super_event.gfx` and display slots `96`-`100` require five DDS files that do not exist:
+
+- `gfx/super_events/015_utopia_manifesto/super_event_015_consent_of_households.dds`
+- `gfx/super_events/015_utopia_manifesto/super_event_015_common_table.dds`
+- `gfx/super_events/015_utopia_manifesto/super_event_015_guardians_of_measure.dds`
+- `gfx/super_events/015_utopia_manifesto/super_event_015_closed_island.dds`
+- `gfx/super_events/015_utopia_manifesto/super_event_015_joke_understood.dds`
+
+Prompts exist for all five, but no generated source PNG, processed PNG, package DDS, runtime DDS, or checksum record exists. The two installed legacy super-event images do not satisfy these route sprites.
 
 Required resolution:
 
-- run the bounded asset prompts after sprite names stabilize
+- generate each of the five route-specific masters from its recorded prompt
+- preserve each source PNG, process to `457x328`, export each final DDS, and add source/final checksums and sprite rows to the manifest
+- do not silently reuse either legacy super-event image as a fallback
 
 ## Super-event research package
 
-No final title, quote, cultural remark, audio track, license verification, or converted OGG was produced.
+Text and audio research are complete and integrated.
+
+- title and cultural remark: original Chaos Redux wording, documented in `docs/super_events/015_utopia_manifesto_super_event_text_research.md`
+- main quote: exact closing sentence from Thomas More's *Utopia*, Gilbert Burnet translation, verified against the Project Gutenberg primary text and public-domain compatible
+- audio: Brahms, *Symphony No. 3 in F major, Op. 90*, III. *Poco allegretto*, Musopen Symphony Orchestra
+- recording rights: file-specific CC0 1.0 Universal; source file matches the Commons SHA-1 and byte size
+- runtime: exclusive playback audio ID `57`, final `116 s` OGG and WAV, six music helpers, six sound wrappers, and display slots `96`-`100`
+- catalogue: active row in `music/chaosx_music_track_list.html`
+- uniqueness: no matching cue under any other event in the current `54`-OGG and `52`-WAV scan; the only WAV match is the expected Event 015 mirror
 
 Required resolution:
 
-- run the text and audio subagents
+- no text-source, audio-source, licence, attribution, or uniqueness action remains
+- finish the five blocked route-specific images before calling the overall super-event package complete
 
 ## Workbook
 

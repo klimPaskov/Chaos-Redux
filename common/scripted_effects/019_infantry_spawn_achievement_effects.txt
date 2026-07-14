@@ -1,0 +1,1006 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 019 ACHIEVEMENT TRACKING EFFECTS
+# ============================================================================
+# Exact generation, lot, unit, obligation, claimant, derivative, rail, and
+# scenario history for the Event 019 achievement set.
+#
+# Public hooks are documented in the achievement handoff. The four battle
+# achievements share one exact-division input contract. The public
+# on_army_leader_won_combat callback cannot satisfy that contract because it
+# exposes only the unit leader and owner country, never the participating
+# division. This file therefore contains no country-level battle fallback.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Generated-formation identity and technology-gate history
+# ---------------------------------------------------------------------------
+
+# Inputs: infantry_spawn_current_unit_uid and
+# infantry_spawn_achievement_current_technology_gate.
+infantry_spawn_achievement_register_current_pretechnology_gate = {
+	set_temp_variable = { infantry_spawn_achievement_gate_pair_exists = constant:infantry_spawn_achievement_value.zero }
+	set_temp_variable = { infantry_spawn_achievement_gate_scan_index = constant:infantry_spawn_event.first_index }
+	while_loop_effect = {
+		limit = {
+			check_variable = { infantry_spawn_achievement_gate_pair_exists = constant:infantry_spawn_achievement_value.zero }
+			check_variable = { var = infantry_spawn_achievement_gate_scan_index value = infantry_spawn_achievement_pretech_unit_uid_entries^num compare = less_than }
+		}
+		if = {
+			limit = {
+				check_variable = { var = infantry_spawn_achievement_pretech_unit_uid_entries^infantry_spawn_achievement_gate_scan_index value = infantry_spawn_current_unit_uid compare = equals }
+				check_variable = { var = infantry_spawn_achievement_pretech_gate_entries^infantry_spawn_achievement_gate_scan_index value = infantry_spawn_achievement_current_technology_gate compare = equals }
+			}
+			set_temp_variable = { infantry_spawn_achievement_gate_pair_exists = constant:infantry_spawn_achievement_value.one }
+		}
+		add_to_temp_variable = { infantry_spawn_achievement_gate_scan_index = constant:infantry_spawn_achievement_value.one }
+	}
+	if = {
+		limit = { check_variable = { infantry_spawn_achievement_gate_pair_exists = constant:infantry_spawn_achievement_value.zero } }
+		add_to_array = { array = infantry_spawn_achievement_pretech_unit_uid_entries value = infantry_spawn_current_unit_uid }
+		add_to_array = { array = infantry_spawn_achievement_pretech_gate_entries value = infantry_spawn_achievement_current_technology_gate }
+	}
+}
+
+# Expects infantry_spawn_unit_registry_current_equipment_profile.
+infantry_spawn_achievement_register_current_equipment_profile_gate = {
+	if = {
+		limit = {
+			check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.infantry_equipment compare = equals }
+			NOT = { has_tech = infantry_weapons }
+		}
+		set_temp_variable = { infantry_spawn_achievement_current_technology_gate = constant:infantry_spawn_achievement_technology_gate.infantry_weapons }
+		infantry_spawn_achievement_register_current_pretechnology_gate = yes
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.motorized compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.motorized_artillery compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.motorized_rocket_artillery compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.motorized_anti_air compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.motorized_anti_tank compare = equals }
+			}
+			NOT = { has_tech = motorised_infantry }
+		}
+		set_temp_variable = { infantry_spawn_achievement_current_technology_gate = constant:infantry_spawn_achievement_technology_gate.motorised_infantry }
+		infantry_spawn_achievement_register_current_pretechnology_gate = yes
+	}
+	if = {
+		limit = {
+			check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.mechanized compare = equals }
+			NOT = { has_tech = mechanised_infantry }
+		}
+		set_temp_variable = { infantry_spawn_achievement_current_technology_gate = constant:infantry_spawn_achievement_technology_gate.mechanised_infantry }
+		infantry_spawn_achievement_register_current_pretechnology_gate = yes
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.armored_car compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.armored_car_recon compare = equals }
+			}
+			NOT = { has_tech = armored_car1 }
+		}
+		set_temp_variable = { infantry_spawn_achievement_current_technology_gate = constant:infantry_spawn_achievement_technology_gate.armored_car }
+		infantry_spawn_achievement_register_current_pretechnology_gate = yes
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.artillery compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.motorized_artillery compare = equals }
+			}
+			NOT = { has_tech = gw_artillery }
+		}
+		set_temp_variable = { infantry_spawn_achievement_current_technology_gate = constant:infantry_spawn_achievement_technology_gate.artillery }
+		infantry_spawn_achievement_register_current_pretechnology_gate = yes
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.rocket_artillery compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.motorized_rocket_artillery compare = equals }
+			}
+			NOT = { has_tech = rocket_artillery }
+		}
+		set_temp_variable = { infantry_spawn_achievement_current_technology_gate = constant:infantry_spawn_achievement_technology_gate.rocket_artillery }
+		infantry_spawn_achievement_register_current_pretechnology_gate = yes
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.anti_air compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.motorized_anti_air compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.light_sp_anti_air compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.medium_sp_anti_air compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.heavy_sp_anti_air compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.modern_sp_anti_air compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.super_heavy_sp_anti_air compare = equals }
+			}
+			NOT = { has_tech = interwar_antiair }
+		}
+		set_temp_variable = { infantry_spawn_achievement_current_technology_gate = constant:infantry_spawn_achievement_technology_gate.anti_air }
+		infantry_spawn_achievement_register_current_pretechnology_gate = yes
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.anti_tank compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.motorized_anti_tank compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.light_tank_destroyer compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.medium_tank_destroyer compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.heavy_tank_destroyer compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.super_heavy_tank_destroyer compare = equals }
+			}
+			NOT = { has_tech = interwar_antitank }
+		}
+		set_temp_variable = { infantry_spawn_achievement_current_technology_gate = constant:infantry_spawn_achievement_technology_gate.anti_tank }
+		infantry_spawn_achievement_register_current_pretechnology_gate = yes
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.light_armor compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.light_sp_anti_air compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.light_sp_artillery compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.light_tank_destroyer compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.light_armor_recon compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.airborne_armor compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.light_flame_armor compare = equals }
+			}
+			NOT = { OR = { has_tech = basic_light_tank_chassis has_tech = basic_light_tank } }
+		}
+		set_temp_variable = { infantry_spawn_achievement_current_technology_gate = constant:infantry_spawn_achievement_technology_gate.light_armor }
+		infantry_spawn_achievement_register_current_pretechnology_gate = yes
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.medium_armor compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.medium_sp_anti_air compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.medium_sp_artillery compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.medium_tank_destroyer compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.medium_flame_armor compare = equals }
+			}
+			NOT = { OR = { has_tech = basic_medium_tank_chassis has_tech = basic_medium_tank } }
+		}
+		set_temp_variable = { infantry_spawn_achievement_current_technology_gate = constant:infantry_spawn_achievement_technology_gate.medium_armor }
+		infantry_spawn_achievement_register_current_pretechnology_gate = yes
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.heavy_armor compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.heavy_sp_anti_air compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.heavy_sp_artillery compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.heavy_tank_destroyer compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.heavy_flame_armor compare = equals }
+			}
+			NOT = { OR = { has_tech = basic_heavy_tank_chassis has_tech = basic_heavy_tank } }
+		}
+		set_temp_variable = { infantry_spawn_achievement_current_technology_gate = constant:infantry_spawn_achievement_technology_gate.heavy_armor }
+		infantry_spawn_achievement_register_current_pretechnology_gate = yes
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.modern_armor compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.modern_sp_anti_air compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.modern_sp_artillery compare = equals }
+			}
+			NOT = { OR = { has_tech = main_battle_tank_chassis has_tech = main_battle_tank } }
+		}
+		set_temp_variable = { infantry_spawn_achievement_current_technology_gate = constant:infantry_spawn_achievement_technology_gate.modern_armor }
+		infantry_spawn_achievement_register_current_pretechnology_gate = yes
+	}
+	if = {
+		limit = {
+			check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.amphibious_armor compare = equals }
+			NOT = { OR = { has_tech = amphibious_tank_chassis has_tech = amphibious_tank } }
+		}
+		set_temp_variable = { infantry_spawn_achievement_current_technology_gate = constant:infantry_spawn_achievement_technology_gate.amphibious_armor }
+		infantry_spawn_achievement_register_current_pretechnology_gate = yes
+	}
+	if = {
+		limit = {
+			check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.amphibious_mechanized compare = equals }
+			NOT = { has_tech = amphibious_mechanized_infantry }
+		}
+		set_temp_variable = { infantry_spawn_achievement_current_technology_gate = constant:infantry_spawn_achievement_technology_gate.amphibious_mechanized }
+		infantry_spawn_achievement_register_current_pretechnology_gate = yes
+	}
+	if = {
+		limit = {
+			check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.helicopter compare = equals }
+			NOT = { is_special_project_completed = sp:sp_air_helicopter }
+		}
+		set_temp_variable = { infantry_spawn_achievement_current_technology_gate = constant:infantry_spawn_achievement_technology_gate.helicopter }
+		infantry_spawn_achievement_register_current_pretechnology_gate = yes
+	}
+	if = {
+		limit = {
+			check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.land_cruiser compare = equals }
+			NOT = { is_special_project_completed = sp:sp_land_land_cruiser }
+		}
+		set_temp_variable = { infantry_spawn_achievement_current_technology_gate = constant:infantry_spawn_achievement_technology_gate.land_cruiser }
+		infantry_spawn_achievement_register_current_pretechnology_gate = yes
+	}
+	if = {
+		limit = {
+			check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.super_heavy_artillery compare = equals }
+			NOT = { is_special_project_completed = sp:sp_land_super_heavy_howitzer }
+		}
+		set_temp_variable = { infantry_spawn_achievement_current_technology_gate = constant:infantry_spawn_achievement_technology_gate.super_heavy_artillery }
+		infantry_spawn_achievement_register_current_pretechnology_gate = yes
+	}
+	if = {
+		limit = {
+			check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.self_propelled_super_heavy_artillery compare = equals }
+			NOT = { is_special_project_completed = sp:sp_land_self_propelled_super_heavy_howitzer }
+		}
+		set_temp_variable = { infantry_spawn_achievement_current_technology_gate = constant:infantry_spawn_achievement_technology_gate.self_propelled_super_heavy_artillery }
+		infantry_spawn_achievement_register_current_pretechnology_gate = yes
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.super_heavy_armor compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.super_heavy_sp_anti_air compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.super_heavy_sp_artillery compare = equals }
+				check_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = constant:infantry_spawn_unit_registry_equipment_profile.super_heavy_tank_destroyer compare = equals }
+			}
+			NOT = { OR = { has_tech = super_heavy_tank_chassis has_tech = super_heavy_tank } }
+		}
+		set_temp_variable = { infantry_spawn_achievement_current_technology_gate = constant:infantry_spawn_achievement_technology_gate.super_heavy_armor }
+		infantry_spawn_achievement_register_current_pretechnology_gate = yes
+	}
+}
+
+# Country scope. Call after an exact Event 019 division has been captured in
+# infantry_spawn_current_live_division. It is idempotent and may be called a
+# second time after the Evolution III registry finishes scoring its manifest.
+infantry_spawn_achievement_register_current_generated_division = {
+	if = {
+		limit = {
+			has_event_target = infantry_spawn_current_live_division
+			check_variable = { infantry_spawn_current_unit_uid > constant:infantry_spawn_achievement_value.zero }
+		}
+		set_country_flag = infantry_spawn_event19_achievement_history
+
+		if = {
+			limit = { check_variable = { infantry_spawn_need_light_tank_chassis > constant:infantry_spawn_achievement_value.zero } NOT = { OR = { has_tech = basic_light_tank_chassis has_tech = basic_light_tank } } }
+			set_temp_variable = { infantry_spawn_achievement_current_technology_gate = constant:infantry_spawn_achievement_technology_gate.light_armor }
+			infantry_spawn_achievement_register_current_pretechnology_gate = yes
+		}
+		if = {
+			limit = { check_variable = { infantry_spawn_need_mechanized_equipment > constant:infantry_spawn_achievement_value.zero } NOT = { has_tech = mechanised_infantry } }
+			set_temp_variable = { infantry_spawn_achievement_current_technology_gate = constant:infantry_spawn_achievement_technology_gate.mechanised_infantry }
+			infantry_spawn_achievement_register_current_pretechnology_gate = yes
+		}
+		if = {
+			limit = { check_variable = { infantry_spawn_need_armored_car_equipment > constant:infantry_spawn_achievement_value.zero } NOT = { has_tech = armored_car1 } }
+			set_temp_variable = { infantry_spawn_achievement_current_technology_gate = constant:infantry_spawn_achievement_technology_gate.armored_car }
+			infantry_spawn_achievement_register_current_pretechnology_gate = yes
+		}
+		if = {
+			limit = { check_variable = { infantry_spawn_need_amphibious_mechanized_equipment > constant:infantry_spawn_achievement_value.zero } NOT = { has_tech = amphibious_mechanized_infantry } }
+			set_temp_variable = { infantry_spawn_achievement_current_technology_gate = constant:infantry_spawn_achievement_technology_gate.amphibious_mechanized }
+			infantry_spawn_achievement_register_current_pretechnology_gate = yes
+		}
+		if = {
+			limit = { check_variable = { infantry_spawn_need_helicopter_equipment > constant:infantry_spawn_achievement_value.zero } NOT = { is_special_project_completed = sp:sp_air_helicopter } }
+			set_temp_variable = { infantry_spawn_achievement_current_technology_gate = constant:infantry_spawn_achievement_technology_gate.helicopter }
+			infantry_spawn_achievement_register_current_pretechnology_gate = yes
+		}
+		if = {
+			limit = { check_variable = { infantry_spawn_need_artillery_equipment > constant:infantry_spawn_achievement_value.zero } NOT = { has_tech = gw_artillery } }
+			set_temp_variable = { infantry_spawn_achievement_current_technology_gate = constant:infantry_spawn_achievement_technology_gate.artillery }
+			infantry_spawn_achievement_register_current_pretechnology_gate = yes
+		}
+		if = {
+			limit = { check_variable = { infantry_spawn_need_anti_tank_equipment > constant:infantry_spawn_achievement_value.zero } NOT = { has_tech = interwar_antitank } }
+			set_temp_variable = { infantry_spawn_achievement_current_technology_gate = constant:infantry_spawn_achievement_technology_gate.anti_tank }
+			infantry_spawn_achievement_register_current_pretechnology_gate = yes
+		}
+		if = {
+			limit = { check_variable = { infantry_spawn_need_anti_air_equipment > constant:infantry_spawn_achievement_value.zero } NOT = { has_tech = interwar_antiair } }
+			set_temp_variable = { infantry_spawn_achievement_current_technology_gate = constant:infantry_spawn_achievement_technology_gate.anti_air }
+			infantry_spawn_achievement_register_current_pretechnology_gate = yes
+		}
+
+		set_temp_variable = { infantry_spawn_achievement_manifest_scan_index = constant:infantry_spawn_event.first_index }
+		while_loop_effect = {
+			limit = { check_variable = { var = infantry_spawn_achievement_manifest_scan_index value = infantry_spawn_unit_registry_manifest_equipment_profiles^num compare = less_than } }
+			set_temp_variable = { var = infantry_spawn_unit_registry_current_equipment_profile value = infantry_spawn_unit_registry_manifest_equipment_profiles^infantry_spawn_achievement_manifest_scan_index }
+			infantry_spawn_achievement_register_current_equipment_profile_gate = yes
+			add_to_temp_variable = { infantry_spawn_achievement_manifest_scan_index = constant:infantry_spawn_achievement_value.one }
+		}
+	}
+}
+
+# Inputs: infantry_spawn_achievement_target_lot_uid. Call before any sanctioned
+# template unlock, standardization, recombination, or replacement.
+infantry_spawn_achievement_disqualify_units_in_current_lot = {
+	set_temp_variable = { infantry_spawn_achievement_unit_scan_index = constant:infantry_spawn_event.first_index }
+	while_loop_effect = {
+		limit = { check_variable = { var = infantry_spawn_achievement_unit_scan_index value = infantry_spawn_unit_uid_entries^num compare = less_than } }
+		if = {
+			limit = { check_variable = { var = infantry_spawn_unit_lot_uid_entries^infantry_spawn_achievement_unit_scan_index value = infantry_spawn_achievement_target_lot_uid compare = equals } }
+			set_temp_variable = { infantry_spawn_achievement_disqualified_unit_uid = infantry_spawn_unit_uid_entries^infantry_spawn_achievement_unit_scan_index }
+			if = {
+				limit = { NOT = { is_in_array = { array = infantry_spawn_achievement_composition_disqualified_unit_uid_entries value = infantry_spawn_achievement_disqualified_unit_uid } } }
+				add_to_array = { array = infantry_spawn_achievement_composition_disqualified_unit_uid_entries value = infantry_spawn_achievement_disqualified_unit_uid }
+			}
+		}
+		add_to_temp_variable = { infantry_spawn_achievement_unit_scan_index = constant:infantry_spawn_achievement_value.one }
+	}
+}
+
+# Call after a successful lot integration while infantry_spawn_lot_row_index
+# still identifies the exact row.
+infantry_spawn_achievement_record_current_lot_integration = {
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_lot_row_index > constant:infantry_spawn_event.invalid_index }
+			check_variable = { var = infantry_spawn_lot_profile_entries^infantry_spawn_lot_row_index value = constant:infantry_spawn_unit_registry_lot_profile.evolution_iii_random compare = equals }
+		}
+		set_temp_variable = { infantry_spawn_achievement_integrated_random_lot_uid = infantry_spawn_lot_uid_entries^infantry_spawn_lot_row_index }
+		if = {
+			limit = { NOT = { is_in_array = { array = infantry_spawn_achievement_integrated_random_lot_uids value = infantry_spawn_achievement_integrated_random_lot_uid } } }
+			add_to_array = { array = infantry_spawn_achievement_integrated_random_lot_uids value = infantry_spawn_achievement_integrated_random_lot_uid }
+		}
+	}
+}
+
+# Call only after successful supervised demobilization, never specialist
+# preservation or a generic delete-unit cleanup.
+infantry_spawn_achievement_record_supervised_demobilized_lot = {
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_teardown_failed = constant:infantry_spawn_achievement_value.zero }
+			check_variable = { infantry_spawn_teardown_specialist_only = constant:infantry_spawn_achievement_value.zero }
+			check_variable = { infantry_spawn_teardown_target_lot_uid > constant:infantry_spawn_achievement_value.zero }
+			NOT = { is_in_array = { array = infantry_spawn_achievement_supervised_demobilized_lot_uids value = infantry_spawn_teardown_target_lot_uid } }
+		}
+		add_to_array = { array = infantry_spawn_achievement_supervised_demobilized_lot_uids value = infantry_spawn_teardown_target_lot_uid }
+	}
+}
+
+# Persistent disqualifier hooks. They are intentionally narrow and are called
+# by the system that owns the corresponding exploit or revolt path.
+infantry_spawn_achievement_mark_forced_setup = {
+	set_country_flag = infantry_spawn_achievement_forced_setup_used
+}
+
+infantry_spawn_achievement_mark_debug_completion = {
+	set_country_flag = infantry_spawn_achievement_debug_completion_used
+}
+
+infantry_spawn_achievement_mark_claimant_or_derivative_revolt = {
+	set_country_flag = infantry_spawn_achievement_revolt_history
+}
+
+infantry_spawn_achievement_mark_parent_event_merge = {
+	set_country_flag = infantry_spawn_achievement_parent_event_merge_used
+}
+
+infantry_spawn_achievement_mark_emergency_integration = {
+	set_country_flag = infantry_spawn_achievement_emergency_integration_used
+}
+
+infantry_spawn_achievement_mark_teardown_invariant_failure = {
+	set_country_flag = infantry_spawn_achievement_teardown_invariant_failure
+}
+
+# ---------------------------------------------------------------------------
+# Exact generation closeout audits
+# ---------------------------------------------------------------------------
+
+# Input: infantry_spawn_achievement_closeout_generation_uid.
+infantry_spawn_achievement_audit_closeout_generation = {
+	set_temp_variable = { infantry_spawn_achievement_closeout_generation_row = constant:infantry_spawn_event.invalid_index }
+	set_temp_variable = { infantry_spawn_lookup_generation_uid = infantry_spawn_achievement_closeout_generation_uid }
+	infantry_spawn_find_generation_row = yes
+	if = {
+		limit = { check_variable = { infantry_spawn_generation_row_index > constant:infantry_spawn_event.invalid_index } }
+		set_temp_variable = { infantry_spawn_achievement_closeout_generation_row = infantry_spawn_generation_row_index }
+		set_temp_variable = { infantry_spawn_achievement_closeout_generation_unit_count = infantry_spawn_generation_unit_count_entries^infantry_spawn_generation_row_index }
+	}
+	else = {
+		set_temp_variable = { infantry_spawn_achievement_closeout_generation_unit_count = constant:infantry_spawn_achievement_value.zero }
+	}
+
+	set_temp_variable = { infantry_spawn_achievement_closeout_has_unresolved_lot = constant:infantry_spawn_achievement_value.zero }
+	set_temp_variable = { infantry_spawn_achievement_closeout_has_unresolved_obligation = constant:infantry_spawn_achievement_value.zero }
+	set_temp_variable = { infantry_spawn_achievement_closeout_integrated_unit_count = constant:infantry_spawn_achievement_value.zero }
+	set_temp_variable = { infantry_spawn_achievement_closeout_all_lots_supervised_demobilized = constant:infantry_spawn_achievement_value.one }
+	set_temp_variable = { infantry_spawn_achievement_closeout_all_units_demobilized = constant:infantry_spawn_achievement_value.one }
+
+	set_temp_variable = { infantry_spawn_achievement_lot_scan_index = constant:infantry_spawn_event.first_index }
+	while_loop_effect = {
+		limit = { check_variable = { var = infantry_spawn_achievement_lot_scan_index value = infantry_spawn_lot_uid_entries^num compare = less_than } }
+		if = {
+			limit = { check_variable = { var = infantry_spawn_lot_generation_uid_entries^infantry_spawn_achievement_lot_scan_index value = infantry_spawn_achievement_closeout_generation_uid compare = equals } }
+			set_temp_variable = { infantry_spawn_achievement_closeout_lot_uid = infantry_spawn_lot_uid_entries^infantry_spawn_achievement_lot_scan_index }
+			if = {
+				limit = {
+					OR = {
+						check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_achievement_lot_scan_index value = constant:infantry_spawn_lot_state.auditing compare = equals }
+						check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_achievement_lot_scan_index value = constant:infantry_spawn_lot_state.revealed compare = equals }
+						check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_achievement_lot_scan_index value = constant:infantry_spawn_lot_state.isolated compare = equals }
+						check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_achievement_lot_scan_index value = constant:infantry_spawn_lot_state.training compare = equals }
+						check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_achievement_lot_scan_index value = constant:infantry_spawn_lot_state.claimant_controlled compare = equals }
+						check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_achievement_lot_scan_index value = constant:infantry_spawn_lot_state.anomalous_containment compare = equals }
+						check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_achievement_lot_scan_index value = constant:infantry_spawn_lot_state.demobilizing compare = equals }
+						check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_achievement_lot_scan_index value = constant:infantry_spawn_lot_state.revolted compare = equals }
+					}
+				}
+				set_temp_variable = { infantry_spawn_achievement_closeout_has_unresolved_lot = constant:infantry_spawn_achievement_value.one }
+			}
+			if = {
+				limit = {
+					OR = {
+						check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_achievement_lot_scan_index value = constant:infantry_spawn_lot_state.integrated compare = equals }
+						check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_achievement_lot_scan_index value = constant:infantry_spawn_lot_state.standardized compare = equals }
+					}
+				}
+				add_to_temp_variable = { var = infantry_spawn_achievement_closeout_integrated_unit_count value = infantry_spawn_lot_unit_count_entries^infantry_spawn_achievement_lot_scan_index }
+			}
+			if = {
+				limit = {
+					OR = {
+						NOT = { check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_achievement_lot_scan_index value = constant:infantry_spawn_lot_state.demobilized compare = equals } }
+						NOT = { is_in_array = { array = infantry_spawn_achievement_supervised_demobilized_lot_uids value = infantry_spawn_achievement_closeout_lot_uid } }
+					}
+				}
+				set_temp_variable = { infantry_spawn_achievement_closeout_all_lots_supervised_demobilized = constant:infantry_spawn_achievement_value.zero }
+			}
+		}
+		add_to_temp_variable = { infantry_spawn_achievement_lot_scan_index = constant:infantry_spawn_achievement_value.one }
+	}
+
+	set_temp_variable = { infantry_spawn_achievement_unit_scan_index = constant:infantry_spawn_event.first_index }
+	while_loop_effect = {
+		limit = { check_variable = { var = infantry_spawn_achievement_unit_scan_index value = infantry_spawn_unit_uid_entries^num compare = less_than } }
+		if = {
+			limit = {
+				check_variable = { var = infantry_spawn_unit_generation_uid_entries^infantry_spawn_achievement_unit_scan_index value = infantry_spawn_achievement_closeout_generation_uid compare = equals }
+				NOT = { check_variable = { var = infantry_spawn_unit_status_entries^infantry_spawn_achievement_unit_scan_index value = constant:infantry_spawn_unit_status.demobilized compare = equals } }
+			}
+			set_temp_variable = { infantry_spawn_achievement_closeout_all_units_demobilized = constant:infantry_spawn_achievement_value.zero }
+		}
+		add_to_temp_variable = { infantry_spawn_achievement_unit_scan_index = constant:infantry_spawn_achievement_value.one }
+	}
+
+	set_temp_variable = { infantry_spawn_achievement_obligation_scan_index = constant:infantry_spawn_event.first_index }
+	while_loop_effect = {
+		limit = { check_variable = { var = infantry_spawn_achievement_obligation_scan_index value = infantry_spawn_obligation_uid_entries^num compare = less_than } }
+		if = {
+			limit = {
+				check_variable = { var = infantry_spawn_obligation_generation_uid_entries^infantry_spawn_achievement_obligation_scan_index value = infantry_spawn_achievement_closeout_generation_uid compare = equals }
+				OR = {
+					check_variable = { var = infantry_spawn_obligation_status_entries^infantry_spawn_achievement_obligation_scan_index value = constant:infantry_spawn_obligation_state.outstanding compare = equals }
+					check_variable = { var = infantry_spawn_obligation_status_entries^infantry_spawn_achievement_obligation_scan_index value = constant:infantry_spawn_obligation_state.servicing compare = equals }
+					check_variable = { var = infantry_spawn_obligation_outstanding_amount_entries^infantry_spawn_achievement_obligation_scan_index value = constant:infantry_spawn_achievement_threshold.unresolved_debt_epsilon compare = greater_than_or_equals }
+				}
+			}
+			set_temp_variable = { infantry_spawn_achievement_closeout_has_unresolved_obligation = constant:infantry_spawn_achievement_value.one }
+		}
+		add_to_temp_variable = { infantry_spawn_achievement_obligation_scan_index = constant:infantry_spawn_achievement_value.one }
+	}
+}
+
+# Country scope. Call inside infantry_spawn_close_resolved_generations directly
+# after a row becomes resolved, while infantry_spawn_closeout_generation_uid is
+# still the row being closed.
+infantry_spawn_achievement_evaluate_closed_generation = {
+	set_country_flag = infantry_spawn_event19_achievement_history
+	set_temp_variable = { infantry_spawn_achievement_closeout_generation_uid = infantry_spawn_closeout_generation_uid }
+	if = {
+		limit = { check_variable = { infantry_spawn_achievement_closeout_generation_uid < constant:infantry_spawn_achievement_value.one } }
+		set_temp_variable = { infantry_spawn_achievement_closeout_generation_uid = infantry_spawn_last_closed_generation_uid }
+	}
+	infantry_spawn_achievement_audit_closeout_generation = yes
+
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_achievement_closeout_generation_row > constant:infantry_spawn_event.invalid_index }
+			check_variable = { var = infantry_spawn_achievement_closeout_generation_unit_count value = constant:infantry_spawn_achievement_threshold.very_large_generation_units compare = greater_than_or_equals }
+			check_variable = { infantry_spawn_achievement_closeout_has_unresolved_lot = constant:infantry_spawn_achievement_value.zero }
+			check_variable = { infantry_spawn_achievement_closeout_has_unresolved_obligation = constant:infantry_spawn_achievement_value.zero }
+			check_variable = { var = infantry_spawn_muster_control value = constant:infantry_spawn_achievement_threshold.high_control compare = greater_than_or_equals }
+			check_variable = { var = infantry_spawn_army_congestion value = constant:infantry_spawn_achievement_threshold.low_congestion_exclusive compare = less_than }
+			NOT = { has_country_flag = infantry_spawn_claimant_takeover_complete }
+			NOT = { has_country_flag = infantry_spawn_achievement_revolt_history }
+			NOT = { has_country_flag = infantry_spawn_achievement_forced_setup_used }
+			NOT = { has_country_flag = infantry_spawn_achievement_debug_completion_used }
+		}
+		set_country_flag = infantry_spawn_achievement_every_rifle_accounted_for_ready
+	}
+
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_achievement_closeout_generation_row > constant:infantry_spawn_event.invalid_index }
+			check_variable = { var = infantry_spawn_achievement_closeout_generation_unit_count value = constant:infantry_spawn_achievement_threshold.large_generation_units compare = greater_than_or_equals }
+			check_variable = { var = infantry_spawn_achievement_closeout_integrated_unit_count value = constant:infantry_spawn_achievement_threshold.train_integrated_units compare = greater_than_or_equals }
+			check_variable = { var = infantry_spawn_achievement_rail_generation_uid value = infantry_spawn_achievement_closeout_generation_uid compare = equals }
+			has_country_flag = infantry_spawn_achievement_rail_attempt_active
+			has_country_flag = infantry_spawn_achievement_rail_corridor_verified
+			NOT = { has_country_flag = infantry_spawn_achievement_rail_corridor_failed }
+			NOT = { has_country_flag = infantry_spawn_achievement_emergency_integration_used }
+			infantry_spawn_achievement_rail_connection_is_live = yes
+		}
+		set_country_flag = infantry_spawn_achievement_no_room_on_the_train_ready
+		clr_country_flag = infantry_spawn_achievement_rail_attempt_active
+	}
+
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_achievement_closeout_generation_row > constant:infantry_spawn_event.invalid_index }
+			check_variable = { var = infantry_spawn_achievement_closeout_generation_unit_count value = constant:infantry_spawn_achievement_threshold.very_large_generation_units compare = greater_than_or_equals }
+			check_variable = { infantry_spawn_achievement_closeout_all_lots_supervised_demobilized = constant:infantry_spawn_achievement_value.one }
+			check_variable = { infantry_spawn_achievement_closeout_all_units_demobilized = constant:infantry_spawn_achievement_value.one }
+			check_variable = { infantry_spawn_achievement_closeout_has_unresolved_obligation = constant:infantry_spawn_achievement_value.zero }
+			check_variable = { var = infantry_spawn_muster_control value = constant:infantry_spawn_achievement_threshold.high_control compare = greater_than_or_equals }
+			NOT = { has_country_flag = infantry_spawn_achievement_revolt_history }
+			NOT = { has_country_flag = infantry_spawn_claimant_takeover_complete }
+			NOT = { has_country_flag = infantry_spawn_achievement_emergency_integration_used }
+			NOT = { has_country_flag = infantry_spawn_achievement_teardown_invariant_failure }
+			NOT = { has_country_flag = infantry_spawn_achievement_forced_setup_used }
+			NOT = { has_country_flag = infantry_spawn_achievement_debug_completion_used }
+		}
+		set_country_flag = infantry_spawn_achievement_quiet_demobilisation_ready
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Rail-corridor continuity for No Room on the Train
+# ---------------------------------------------------------------------------
+
+# Call after the rail mission has captured its exact lot row and target state.
+infantry_spawn_achievement_start_rail_proof = {
+	if = {
+		limit = { check_variable = { infantry_spawn_lot_row_index > constant:infantry_spawn_event.invalid_index } }
+		set_variable = { infantry_spawn_achievement_rail_generation_uid = infantry_spawn_lot_generation_uid_entries^infantry_spawn_lot_row_index }
+		set_variable = { infantry_spawn_achievement_rail_target_state = infantry_spawn_lot_origin_state_entries^infantry_spawn_lot_row_index }
+		set_country_flag = infantry_spawn_achievement_rail_attempt_active
+		clr_country_flag = infantry_spawn_achievement_rail_corridor_verified
+		clr_country_flag = infantry_spawn_achievement_rail_corridor_failed
+		if = {
+			limit = { NOT = { infantry_spawn_achievement_rail_connection_is_live = yes } }
+			set_country_flag = infantry_spawn_achievement_rail_corridor_failed
+		}
+	}
+}
+
+# Call on the successful mission branch before the target-state variable is
+# cleared. A controlled state without a real railway connection is not proof.
+infantry_spawn_achievement_complete_rail_proof = {
+	if = {
+		limit = {
+			has_country_flag = infantry_spawn_achievement_rail_attempt_active
+			infantry_spawn_achievement_rail_connection_is_live = yes
+		}
+		set_country_flag = infantry_spawn_achievement_rail_corridor_verified
+	}
+	else = {
+		set_country_flag = infantry_spawn_achievement_rail_corridor_failed
+	}
+}
+
+infantry_spawn_achievement_mark_rail_proof_failure = {
+	if = {
+		limit = { has_country_flag = infantry_spawn_achievement_rail_attempt_active }
+		set_country_flag = infantry_spawn_achievement_rail_corridor_failed
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Claimant takeover, derivative defeat, and scenario history
+# ---------------------------------------------------------------------------
+
+# Call immediately after the exact selected claimant character is promoted.
+infantry_spawn_achievement_register_claimant_takeover = {
+	if = {
+		limit = {
+			has_event_target = infantry_spawn_selected_claimant_character
+			event_target:infantry_spawn_selected_claimant_character = { is_country_leader = yes }
+		}
+		set_country_flag = infantry_spawn_event19_achievement_history
+		set_country_flag = infantry_spawn_achievement_claimant_takeover_started
+		clr_country_flag = infantry_spawn_achievement_claimant_major_victory
+		set_temp_variable = { infantry_spawn_achievement_claimant_survival_days = constant:infantry_spawn_achievement_threshold.claimant_survival_days }
+		set_country_flag = { flag = infantry_spawn_achievement_claimant_survival_pending days = infantry_spawn_achievement_claimant_survival_days }
+		set_variable = { infantry_spawn_achievement_takeover_claimant_character = event_target:infantry_spawn_selected_claimant_character }
+	}
+}
+
+# Winner-country scope; the on-action caller supplies
+# infantry_spawn_achievement_defeated_country.
+infantry_spawn_achievement_record_claimant_major_victory = {
+	if = {
+		limit = {
+			has_event_target = infantry_spawn_achievement_defeated_country
+			has_country_flag = infantry_spawn_achievement_claimant_takeover_started
+			infantry_spawn_achievement_claimant_is_still_country_leader = yes
+			event_target:infantry_spawn_achievement_defeated_country = {
+				exists = yes
+				is_major = yes
+			}
+		}
+		set_country_flag = infantry_spawn_achievement_claimant_major_victory
+	}
+}
+
+# Losing-derivative scope. The on-action caller supplies
+# infantry_spawn_achievement_derivative_winner. The derivative package also
+# calls this at the start of its defeat effect; without the winner target that
+# second call safely does nothing.
+infantry_spawn_achievement_record_current_derivative_defeat = {
+	save_event_target_as = infantry_spawn_achievement_defeated_derivative
+	if = {
+		limit = {
+			has_event_target = infantry_spawn_achievement_derivative_winner
+			is_infantry_spawn_derivative_country = yes
+			infantry_spawn_derivative_is_parent_isolated = yes
+			has_variable = infantry_spawn_derivative_former_parent
+		}
+		event_target:infantry_spawn_achievement_derivative_winner = {
+			if = {
+				limit = {
+					is_ai = no
+					NOT = { is_infantry_spawn_derivative_country = yes }
+					event_target:infantry_spawn_achievement_defeated_derivative = {
+						has_country_flag = infantry_spawn_zombie_derivative
+						check_variable = { var = infantry_spawn_derivative_family_id value = constant:event19_zombie_family.family_id compare = equals }
+					}
+				}
+				set_country_flag = infantry_spawn_achievement_zombie_derivative_defeated
+				set_variable = { infantry_spawn_achievement_zombie_derivative_country_id = event_target:infantry_spawn_achievement_defeated_derivative.id }
+			}
+			if = {
+				limit = {
+					is_ai = no
+					NOT = { is_infantry_spawn_derivative_country = yes }
+					event_target:infantry_spawn_achievement_defeated_derivative = {
+						has_country_flag = infantry_spawn_ghost_derivative
+						check_variable = { var = infantry_spawn_derivative_family_id value = constant:event19_ghost_family.family_id compare = equals }
+					}
+					OR = {
+						NOT = { has_variable = infantry_spawn_achievement_zombie_derivative_country_id }
+						NOT = { check_variable = { var = infantry_spawn_achievement_zombie_derivative_country_id value = event_target:infantry_spawn_achievement_defeated_derivative.id compare = equals } }
+					}
+				}
+				set_country_flag = infantry_spawn_achievement_ghost_derivative_defeated
+				set_variable = { infantry_spawn_achievement_ghost_derivative_country_id = event_target:infantry_spawn_achievement_defeated_derivative.id }
+			}
+			if = {
+				limit = {
+					is_ai = no
+					NOT = { is_infantry_spawn_derivative_country = yes }
+					event_target:infantry_spawn_achievement_defeated_derivative = {
+						has_country_flag = infantry_spawn_golem_derivative
+						check_variable = { var = infantry_spawn_derivative_family_id value = constant:event19_golem_family.family_id compare = equals }
+					}
+					OR = {
+						NOT = { has_variable = infantry_spawn_achievement_zombie_derivative_country_id }
+						NOT = { check_variable = { var = infantry_spawn_achievement_zombie_derivative_country_id value = event_target:infantry_spawn_achievement_defeated_derivative.id compare = equals } }
+					}
+					OR = {
+						NOT = { has_variable = infantry_spawn_achievement_ghost_derivative_country_id }
+						NOT = { check_variable = { var = infantry_spawn_achievement_ghost_derivative_country_id value = event_target:infantry_spawn_achievement_defeated_derivative.id compare = equals } }
+					}
+				}
+				set_country_flag = infantry_spawn_achievement_golem_derivative_defeated
+				set_variable = { infantry_spawn_achievement_golem_derivative_country_id = event_target:infantry_spawn_achievement_defeated_derivative.id }
+			}
+		}
+	}
+}
+
+# Starting player-country scope. Call after global scenario type and intensity
+# have been frozen but before temporary setup bypass flags are cleared.
+infantry_spawn_achievement_register_scenario_launch = {
+	if = {
+		limit = {
+			infantry_spawn_scenario_type_is_valid = yes
+			infantry_spawn_scenario_intensity_is_valid = yes
+		}
+		set_country_flag = infantry_spawn_event19_achievement_history
+		set_country_flag = infantry_spawn_achievement_scenario_launched
+		set_country_flag = infantry_spawn_achievement_forced_setup_used
+		set_variable = { infantry_spawn_achievement_scenario_start_country_id = THIS.id }
+		set_variable = { infantry_spawn_achievement_scenario_type = global.infantry_spawn_scenario_type }
+		set_variable = { infantry_spawn_achievement_scenario_intensity = global.infantry_spawn_scenario_intensity }
+		set_temp_variable = { infantry_spawn_achievement_scenario_survival_days = constant:infantry_spawn_achievement_threshold.scenario_survival_days }
+		set_country_flag = { flag = infantry_spawn_achievement_scenario_survival_pending days = infantry_spawn_achievement_scenario_survival_days }
+		clr_country_flag = infantry_spawn_achievement_scenario_victory
+		clr_country_flag = infantry_spawn_achievement_scenario_world_end_seen
+		clr_country_flag = infantry_spawn_achievement_scenario_intensity_changed
+		clr_country_flag = infantry_spawn_achievement_scenario_tag_switched
+		clr_country_flag = infantry_spawn_achievement_scenario_tracking_complete
+	}
+}
+
+infantry_spawn_achievement_mark_scenario_intensity_changed = {
+	if = {
+		limit = { has_country_flag = infantry_spawn_achievement_scenario_launched }
+		set_country_flag = infantry_spawn_achievement_scenario_intensity_changed
+		set_country_flag = infantry_spawn_achievement_scenario_tracking_complete
+	}
+}
+
+infantry_spawn_achievement_mark_scenario_tag_switch = {
+	if = {
+		limit = { has_country_flag = infantry_spawn_achievement_scenario_launched }
+		set_country_flag = infantry_spawn_achievement_scenario_tag_switched
+		set_country_flag = infantry_spawn_achievement_scenario_tracking_complete
+	}
+}
+
+# Winner-country scope; the caller supplies the exact defeated scenario actor.
+# Scenario actor setup must persist its starting-country ID.
+infantry_spawn_achievement_record_scenario_actor_victory = {
+	set_temp_variable = { infantry_spawn_achievement_scenario_winner_country_id = THIS.id }
+	if = {
+		limit = {
+			has_event_target = infantry_spawn_achievement_defeated_country
+			infantry_spawn_achievement_scenario_history_is_maximum_crisis = yes
+			event_target:infantry_spawn_achievement_defeated_country = {
+				has_country_flag = infantry_spawn_scenario_actor
+				has_variable = infantry_spawn_scenario_origin_country_id
+				check_variable = { var = infantry_spawn_scenario_origin_country_id value = infantry_spawn_achievement_scenario_winner_country_id compare = equals }
+			}
+		}
+		set_country_flag = infantry_spawn_achievement_scenario_victory
+		set_country_flag = infantry_spawn_achievement_scenario_tracking_complete
+	}
+}
+
+# Public Event 019 country-pulse hook. It never iterates over other countries.
+infantry_spawn_achievement_country_pulse = {
+	if = {
+		limit = {
+			has_country_flag = infantry_spawn_achievement_rail_attempt_active
+			NOT = { infantry_spawn_achievement_rail_connection_is_live = yes }
+		}
+		set_country_flag = infantry_spawn_achievement_rail_corridor_failed
+	}
+	if = {
+		limit = { has_country_flag = infantry_spawn_achievement_scenario_launched }
+		if = {
+			limit = { is_ai = yes }
+			set_country_flag = infantry_spawn_achievement_scenario_tag_switched
+			set_country_flag = infantry_spawn_achievement_scenario_tracking_complete
+		}
+		if = {
+			limit = { has_global_flag = world_end }
+			set_country_flag = infantry_spawn_achievement_scenario_world_end_seen
+			set_country_flag = infantry_spawn_achievement_scenario_tracking_complete
+		}
+		if = {
+			limit = {
+				has_global_flag = infantry_spawn_triggerable_scenario_active
+				OR = {
+					NOT = { check_variable = { var = global.infantry_spawn_scenario_type value = infantry_spawn_achievement_scenario_type compare = equals } }
+					NOT = { check_variable = { var = global.infantry_spawn_scenario_intensity value = infantry_spawn_achievement_scenario_intensity compare = equals } }
+				}
+			}
+			set_country_flag = infantry_spawn_achievement_scenario_intensity_changed
+			set_country_flag = infantry_spawn_achievement_scenario_tracking_complete
+		}
+		if = {
+			limit = { NOT = { has_country_flag = infantry_spawn_achievement_scenario_survival_pending } }
+			set_country_flag = infantry_spawn_achievement_scenario_tracking_complete
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Exact-division battle contract (deliberately not called by public on-actions)
+# ---------------------------------------------------------------------------
+
+# Input: event_target:infantry_spawn_achievement_battle_division.
+# Outputs the exact ledger row, original signature fields, and a validity bit.
+infantry_spawn_achievement_prepare_exact_battle_division = {
+	set_temp_variable = { infantry_spawn_achievement_exact_division_is_valid = constant:infantry_spawn_achievement_value.zero }
+	set_temp_variable = { infantry_spawn_achievement_exact_unit_row = constant:infantry_spawn_event.invalid_index }
+	if = {
+		limit = {
+			has_event_target = infantry_spawn_achievement_battle_division
+			event_target:infantry_spawn_achievement_battle_division = {
+				has_variable = infantry_spawn_event19_generated_identity
+				has_variable = infantry_spawn_event19_unit_uid
+				has_variable = infantry_spawn_event19_generation_uid
+				has_variable = infantry_spawn_event19_lot_uid
+				has_variable = infantry_spawn_event19_template_uid
+				check_variable = { var = infantry_spawn_event19_generated_identity value = constant:infantry_spawn_achievement_value.one compare = equals }
+			}
+		}
+		set_temp_variable = { infantry_spawn_achievement_exact_unit_uid = event_target:infantry_spawn_achievement_battle_division.infantry_spawn_event19_unit_uid }
+		set_temp_variable = { infantry_spawn_achievement_exact_generation_uid = event_target:infantry_spawn_achievement_battle_division.infantry_spawn_event19_generation_uid }
+		set_temp_variable = { infantry_spawn_achievement_exact_lot_uid = event_target:infantry_spawn_achievement_battle_division.infantry_spawn_event19_lot_uid }
+		set_temp_variable = { infantry_spawn_achievement_exact_template_uid = event_target:infantry_spawn_achievement_battle_division.infantry_spawn_event19_template_uid }
+		set_temp_variable = { infantry_spawn_achievement_exact_lot_profile = event_target:infantry_spawn_achievement_battle_division.infantry_spawn_event19_lot_profile }
+		set_temp_variable = { infantry_spawn_achievement_exact_combat_component_count = event_target:infantry_spawn_achievement_battle_division.infantry_spawn_event19_combat_component_count }
+		set_temp_variable = { infantry_spawn_lookup_unit_uid = infantry_spawn_achievement_exact_unit_uid }
+		infantry_spawn_find_unit_row = yes
+		set_temp_variable = { infantry_spawn_achievement_exact_unit_row = infantry_spawn_unit_row_index }
+		if = {
+			limit = {
+				check_variable = { infantry_spawn_achievement_exact_unit_row > constant:infantry_spawn_event.invalid_index }
+				check_variable = { var = infantry_spawn_unit_generation_uid_entries^infantry_spawn_achievement_exact_unit_row value = infantry_spawn_achievement_exact_generation_uid compare = equals }
+				check_variable = { var = infantry_spawn_unit_lot_uid_entries^infantry_spawn_achievement_exact_unit_row value = infantry_spawn_achievement_exact_lot_uid compare = equals }
+				check_variable = { var = infantry_spawn_unit_template_uid_entries^infantry_spawn_achievement_exact_unit_row value = infantry_spawn_achievement_exact_template_uid compare = equals }
+				check_variable = { var = infantry_spawn_unit_status_entries^infantry_spawn_achievement_exact_unit_row value = constant:infantry_spawn_unit_status.active compare = equals }
+				is_in_array = { array = infantry_spawn_unit_scope_entries value = event_target:infantry_spawn_achievement_battle_division }
+				NOT = { is_in_array = { array = infantry_spawn_achievement_composition_disqualified_unit_uid_entries value = infantry_spawn_achievement_exact_unit_uid } }
+			}
+			set_temp_variable = { infantry_spawn_achievement_exact_division_is_valid = constant:infantry_spawn_achievement_value.one }
+		}
+	}
+}
+
+# Uses the immutable component ledger and verifies that every generated token
+# still exists in the exact live division's current template. It detects
+# removals and sanctioned replacement hooks; the remaining engine limitation
+# around switching to a different superset template is documented in handoff.
+infantry_spawn_achievement_scan_exact_division_signature = {
+	clear_temp_array = infantry_spawn_achievement_exact_distinct_combat_tokens
+	set_temp_variable = { infantry_spawn_achievement_exact_signature_is_present = constant:infantry_spawn_achievement_value.one }
+	set_temp_variable = { infantry_spawn_achievement_babel_has_camelry = constant:infantry_spawn_achievement_value.zero }
+	set_temp_variable = { infantry_spawn_achievement_babel_has_bicycle = constant:infantry_spawn_achievement_value.zero }
+	set_temp_variable = { infantry_spawn_achievement_babel_has_amphibious_tank = constant:infantry_spawn_achievement_value.zero }
+	set_temp_variable = { infantry_spawn_achievement_babel_has_flame_element = constant:infantry_spawn_achievement_value.zero }
+	set_temp_variable = { infantry_spawn_achievement_babel_has_artillery = constant:infantry_spawn_achievement_value.zero }
+	set_temp_variable = { infantry_spawn_achievement_babel_has_engineers = constant:infantry_spawn_achievement_value.zero }
+	set_temp_variable = { infantry_spawn_achievement_component_scan_index = constant:infantry_spawn_event.first_index }
+	while_loop_effect = {
+		limit = { check_variable = { var = infantry_spawn_achievement_component_scan_index value = infantry_spawn_template_component_template_uid_entries^num compare = less_than } }
+		if = {
+			limit = { check_variable = { var = infantry_spawn_template_component_template_uid_entries^infantry_spawn_achievement_component_scan_index value = infantry_spawn_achievement_exact_template_uid compare = equals } }
+			set_temp_variable = { infantry_spawn_achievement_current_component_token_id = infantry_spawn_template_component_unit_profile_entries^infantry_spawn_achievement_component_scan_index }
+			if = {
+				limit = {
+					check_variable = { var = infantry_spawn_template_component_slot_kind_entries^infantry_spawn_achievement_component_scan_index value = constant:infantry_spawn_unit_registry_slot_kind.combat compare = equals }
+					NOT = { is_in_array = { array = infantry_spawn_achievement_exact_distinct_combat_tokens value = infantry_spawn_achievement_current_component_token_id } }
+				}
+				add_to_temp_array = { array = infantry_spawn_achievement_exact_distinct_combat_tokens value = infantry_spawn_achievement_current_component_token_id }
+			}
+
+			set_temp_variable = { infantry_spawn_unit_registry_current_provider_id = infantry_spawn_achievement_current_component_token_id }
+			infantry_spawn_unit_registry_dispatch_static_token = yes
+			event_target:infantry_spawn_achievement_battle_division = {
+				if = {
+					limit = {
+						NOT = {
+							meta_trigger = {
+								text = { division_has_battalion_in_template = [UNIT_TOKEN] }
+								UNIT_TOKEN = "[?infantry_spawn_unit_registry_current_static_token.GetTokenKey]"
+							}
+						}
+					}
+					set_temp_variable = { infantry_spawn_achievement_exact_signature_is_present = constant:infantry_spawn_achievement_value.zero }
+				}
+			}
+
+			if = {
+				limit = { check_variable = { var = infantry_spawn_achievement_current_component_token_id value = constant:infantry_spawn_unit_registry_token_id.camelry compare = equals } }
+				set_temp_variable = { infantry_spawn_achievement_babel_has_camelry = constant:infantry_spawn_achievement_value.one }
+			}
+			if = {
+				limit = { check_variable = { var = infantry_spawn_achievement_current_component_token_id value = constant:infantry_spawn_unit_registry_token_id.bicycle_battalion compare = equals } }
+				set_temp_variable = { infantry_spawn_achievement_babel_has_bicycle = constant:infantry_spawn_achievement_value.one }
+			}
+			if = {
+				limit = {
+					OR = {
+						check_variable = { var = infantry_spawn_achievement_current_component_token_id value = constant:infantry_spawn_unit_registry_token_id.amphibious_armor compare = equals }
+						check_variable = { var = infantry_spawn_achievement_current_component_token_id value = constant:infantry_spawn_unit_registry_token_id.amphibious_light_armor compare = equals }
+						check_variable = { var = infantry_spawn_achievement_current_component_token_id value = constant:infantry_spawn_unit_registry_token_id.amphibious_medium_armor compare = equals }
+						check_variable = { var = infantry_spawn_achievement_current_component_token_id value = constant:infantry_spawn_unit_registry_token_id.amphibious_heavy_armor compare = equals }
+					}
+				}
+				set_temp_variable = { infantry_spawn_achievement_babel_has_amphibious_tank = constant:infantry_spawn_achievement_value.one }
+			}
+			if = {
+				limit = {
+					OR = {
+						check_variable = { var = infantry_spawn_achievement_current_component_token_id value = constant:infantry_spawn_unit_registry_token_id.light_flame_tank compare = equals }
+						check_variable = { var = infantry_spawn_achievement_current_component_token_id value = constant:infantry_spawn_unit_registry_token_id.medium_flame_tank compare = equals }
+						check_variable = { var = infantry_spawn_achievement_current_component_token_id value = constant:infantry_spawn_unit_registry_token_id.heavy_flame_tank compare = equals }
+					}
+				}
+				set_temp_variable = { infantry_spawn_achievement_babel_has_flame_element = constant:infantry_spawn_achievement_value.one }
+			}
+			if = {
+				limit = { check_variable = { var = infantry_spawn_achievement_current_component_token_id value = constant:infantry_spawn_unit_registry_token_id.artillery_brigade compare = equals } }
+				set_temp_variable = { infantry_spawn_achievement_babel_has_artillery = constant:infantry_spawn_achievement_value.one }
+			}
+			if = {
+				limit = { check_variable = { var = infantry_spawn_achievement_current_component_token_id value = constant:infantry_spawn_unit_registry_token_id.engineer compare = equals } }
+				set_temp_variable = { infantry_spawn_achievement_babel_has_engineers = constant:infantry_spawn_achievement_value.one }
+			}
+		}
+		add_to_temp_variable = { infantry_spawn_achievement_component_scan_index = constant:infantry_spawn_achievement_value.one }
+	}
+	set_temp_variable = { infantry_spawn_achievement_exact_distinct_component_count = infantry_spawn_achievement_exact_distinct_combat_tokens^num }
+}
+
+infantry_spawn_achievement_check_exact_unit_pretechnology_gate = {
+	set_temp_variable = { infantry_spawn_achievement_exact_unit_has_locked_gate = constant:infantry_spawn_achievement_value.zero }
+	set_temp_variable = { infantry_spawn_achievement_gate_scan_index = constant:infantry_spawn_event.first_index }
+	while_loop_effect = {
+		limit = {
+			check_variable = { infantry_spawn_achievement_exact_unit_has_locked_gate = constant:infantry_spawn_achievement_value.zero }
+			check_variable = { var = infantry_spawn_achievement_gate_scan_index value = infantry_spawn_achievement_pretech_unit_uid_entries^num compare = less_than }
+		}
+		if = {
+			limit = { check_variable = { var = infantry_spawn_achievement_pretech_unit_uid_entries^infantry_spawn_achievement_gate_scan_index value = infantry_spawn_achievement_exact_unit_uid compare = equals } }
+			set_temp_variable = { infantry_spawn_achievement_current_technology_gate = infantry_spawn_achievement_pretech_gate_entries^infantry_spawn_achievement_gate_scan_index }
+			if = {
+				limit = { infantry_spawn_achievement_current_technology_gate_is_still_locked = yes }
+				set_temp_variable = { infantry_spawn_achievement_exact_unit_has_locked_gate = constant:infantry_spawn_achievement_value.one }
+			}
+		}
+		add_to_temp_variable = { infantry_spawn_achievement_gate_scan_index = constant:infantry_spawn_achievement_value.one }
+	}
+}
+
+# Country scope. Inputs are the exact division event target and the three
+# centralized significance measurements described by the scripted trigger.
+# No installed public on-action can supply these inputs; an exact combat bridge
+# may call this effect later without changing the achievement contracts.
+infantry_spawn_achievement_record_exact_division_significant_victory = {
+	if = {
+		limit = { infantry_spawn_achievement_significant_battle_inputs_are_valid = yes }
+		infantry_spawn_achievement_prepare_exact_battle_division = yes
+		if = {
+			limit = { check_variable = { infantry_spawn_achievement_exact_division_is_valid = constant:infantry_spawn_achievement_value.one } }
+			infantry_spawn_achievement_scan_exact_division_signature = yes
+			infantry_spawn_achievement_check_exact_unit_pretechnology_gate = yes
+
+			if = {
+				limit = {
+					check_variable = { infantry_spawn_achievement_exact_signature_is_present = constant:infantry_spawn_achievement_value.one }
+					check_variable = { var = infantry_spawn_achievement_exact_combat_component_count value = constant:infantry_spawn_achievement_value.one compare = equals }
+				}
+				set_country_flag = infantry_spawn_achievement_one_battalion_wonder_ready
+			}
+
+			if = {
+				limit = {
+					check_variable = { infantry_spawn_achievement_exact_signature_is_present = constant:infantry_spawn_achievement_value.one }
+					check_variable = { var = infantry_spawn_achievement_exact_lot_profile value = constant:infantry_spawn_unit_registry_lot_profile.evolution_iii_random compare = equals }
+					check_variable = { var = infantry_spawn_achievement_exact_distinct_component_count value = constant:infantry_spawn_achievement_threshold.combined_arms_distinct_component_types compare = greater_than_or_equals }
+				}
+				set_country_flag = infantry_spawn_achievement_combined_arms_accident_ready
+			}
+
+			if = {
+				limit = {
+					check_variable = { infantry_spawn_achievement_exact_signature_is_present = constant:infantry_spawn_achievement_value.one }
+					check_variable = { infantry_spawn_achievement_exact_unit_has_locked_gate = constant:infantry_spawn_achievement_value.one }
+					event_target:infantry_spawn_achievement_battle_division = {
+						check_variable = { var = infantry_spawn_event19_pretechnology_formation value = constant:infantry_spawn_achievement_value.one compare = equals }
+					}
+				}
+				set_country_flag = infantry_spawn_achievement_borrowed_future_ready
+			}
+
+			if = {
+				limit = {
+					check_variable = { infantry_spawn_achievement_exact_signature_is_present = constant:infantry_spawn_achievement_value.one }
+					check_variable = { var = infantry_spawn_achievement_exact_lot_profile value = constant:infantry_spawn_unit_registry_lot_profile.evolution_iii_random compare = equals }
+					check_variable = { infantry_spawn_achievement_babel_has_camelry = constant:infantry_spawn_achievement_value.one }
+					check_variable = { infantry_spawn_achievement_babel_has_bicycle = constant:infantry_spawn_achievement_value.one }
+					check_variable = { infantry_spawn_achievement_babel_has_amphibious_tank = constant:infantry_spawn_achievement_value.one }
+					check_variable = { infantry_spawn_achievement_babel_has_flame_element = constant:infantry_spawn_achievement_value.one }
+					check_variable = { infantry_spawn_achievement_babel_has_artillery = constant:infantry_spawn_achievement_value.one }
+					check_variable = { infantry_spawn_achievement_babel_has_engineers = constant:infantry_spawn_achievement_value.one }
+				}
+				set_country_flag = infantry_spawn_achievement_barracks_of_babel_ready
+			}
+		}
+	}
+}

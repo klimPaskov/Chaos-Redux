@@ -1,0 +1,175 @@
+# ============================================================================
+# CHAOS REDUX - FALLOUT MANUAL SCENARIO TRIGGERS
+# ============================================================================
+# Validation for the dormant exact-province thermonuclear sweep, its bounded
+# batch cursor, native on-action observer, and exact seven-day handoff.
+# ============================================================================
+
+# Supported scope: COUNTRY
+fallout_manual_current_country_is_coordinator = {
+	has_event_target = fallout_manual_sweep_coordinator
+	tag = event_target:fallout_manual_sweep_coordinator
+}
+
+# Supported scope: COUNTRY
+fallout_manual_selected_intensity_is_valid = {
+	has_variable = global.fallout_manual_selected_intensity
+	check_variable = {
+		var = global.fallout_manual_selected_intensity
+		value = constant:fallout_manual_sweep.minimum_intensity
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = global.fallout_manual_selected_intensity
+		value = constant:fallout_manual_sweep.maximum_intensity
+		compare = less_than_or_equals
+	}
+}
+
+# Supported scope: COUNTRY
+fallout_manual_runtime_schema_is_current = {
+	has_variable = global.fallout_manual_schema_version
+	check_variable = {
+		var = global.fallout_manual_schema_version
+		value = constant:fallout_manual_schema.version
+		compare = equals
+	}
+}
+
+# Supported scope: COUNTRY
+fallout_manual_sweep_can_begin = {
+	exists = yes
+	fallout_request_ledger_is_free = yes
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = fallout_manual_scenario_active }
+	NOT = { has_global_flag = fallout_manual_sweep_active }
+	NOT = { has_global_flag = fallout_manual_countdown_active }
+	NOT = { has_global_flag = fallout_manual_request_sent }
+}
+
+# Supported scope: COUNTRY
+fallout_manual_batch_cursor_is_valid = {
+	check_variable = {
+		var = global.fallout_manual_next_batch
+		value = constant:fallout_manual_sweep.first_batch_index
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = global.fallout_manual_next_batch
+		value = constant:fallout_manual_sweep.total_batches
+		compare = less_than
+	}
+}
+
+# Supported scope: COUNTRY
+fallout_manual_native_nuke_belongs_to_sweep = {
+	has_global_flag = fallout_manual_scenario_active
+	has_global_flag = fallout_manual_sweep_active
+	has_global_flag = fallout_synthetic_strike_batch
+	has_global_flag = fallout_manual_batch_launch_window
+	NOT = { has_global_flag = fallout_manual_sweep_error }
+	fallout_manual_runtime_schema_is_current = yes
+	check_variable = { global.fallout_manual_status = constant:fallout_manual_status.sweeping }
+	has_country_flag = fallout_manual_synthetic_launcher
+	fallout_manual_current_country_is_coordinator = yes
+}
+
+# Supported scope: COUNTRY
+fallout_manual_batch_event_is_valid = {
+	has_global_flag = fallout_manual_scenario_active
+	has_global_flag = fallout_manual_sweep_active
+	has_global_flag = fallout_manual_batch_event_scheduled
+	has_variable = global.fallout_manual_generation
+	has_variable = global.fallout_manual_scheduled_batch_generation
+	NOT = { has_global_flag = fallout_manual_sweep_error }
+	fallout_manual_runtime_schema_is_current = yes
+	check_variable = { global.fallout_manual_status = constant:fallout_manual_status.sweeping }
+	check_variable = {
+		var = global.fallout_manual_scheduled_batch_generation
+		value = global.fallout_manual_generation
+		compare = equals
+	}
+	fallout_manual_current_country_is_coordinator = yes
+	fallout_manual_batch_cursor_is_valid = yes
+}
+
+# Supported scope: COUNTRY
+fallout_manual_verifier_event_is_valid = {
+	has_global_flag = fallout_manual_scenario_active
+	has_global_flag = fallout_manual_sweep_active
+	has_global_flag = fallout_manual_verifier_event_scheduled
+	has_variable = global.fallout_manual_generation
+	has_variable = global.fallout_manual_verifier_retry_count
+	has_variable = global.fallout_manual_scheduled_verifier_attempt
+	has_variable = global.fallout_manual_scheduled_verifier_generation
+	NOT = { has_global_flag = fallout_manual_sweep_error }
+	fallout_manual_runtime_schema_is_current = yes
+	check_variable = { global.fallout_manual_status = constant:fallout_manual_status.verifying }
+	check_variable = {
+		var = global.fallout_manual_scheduled_verifier_generation
+		value = global.fallout_manual_generation
+		compare = equals
+	}
+	fallout_manual_current_country_is_coordinator = yes
+	check_variable = {
+		var = global.fallout_manual_next_batch
+		value = constant:fallout_manual_sweep.total_batches
+		compare = equals
+	}
+}
+
+# Supported scope: COUNTRY
+fallout_manual_static_and_observed_counts_match = {
+	check_variable = {
+		var = global.fallout_manual_issued_strike_count
+		value = constant:fallout_manual_sweep.expected_province_strikes
+		compare = equals
+	}
+	check_variable = {
+		var = global.fallout_manual_observed_strike_count
+		value = constant:fallout_manual_sweep.expected_province_strikes
+		compare = equals
+	}
+	check_variable = {
+		var = global.fallout_manual_unique_struck_state_count
+		value = constant:fallout_manual_sweep.expected_struck_states
+		compare = equals
+	}
+	check_variable = {
+		var = global.fallout_manual_state_strike_sum
+		value = constant:fallout_manual_sweep.expected_province_strikes
+		compare = equals
+	}
+	check_variable = {
+		var = global.fallout_manual_struck_states^num
+		value = constant:fallout_manual_sweep.expected_struck_states
+		compare = equals
+	}
+}
+
+# Supported scope: COUNTRY
+fallout_manual_countdown_callback_is_valid = {
+	has_global_flag = fallout_manual_scenario_active
+	has_global_flag = fallout_manual_native_sweep_complete
+	has_global_flag = fallout_manual_countdown_active
+	has_global_flag = fallout_manual_countdown_event_scheduled
+	has_variable = global.fallout_manual_generation
+	has_variable = global.fallout_manual_countdown_start_day
+	has_variable = global.fallout_manual_countdown_end_day
+	has_variable = global.fallout_manual_scheduled_countdown_generation
+	NOT = { has_global_flag = fallout_manual_request_sent }
+	NOT = { has_global_flag = fallout_manual_sweep_error }
+	fallout_manual_runtime_schema_is_current = yes
+	check_variable = { global.fallout_manual_status = constant:fallout_manual_status.countdown }
+	check_variable = {
+		var = global.fallout_manual_scheduled_countdown_generation
+		value = global.fallout_manual_generation
+		compare = equals
+	}
+	fallout_manual_current_country_is_coordinator = yes
+	check_variable = {
+		var = global.num_days
+		value = global.fallout_manual_countdown_end_day
+		compare = equals
+	}
+}

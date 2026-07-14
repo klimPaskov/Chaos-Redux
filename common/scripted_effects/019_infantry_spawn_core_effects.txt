@@ -1,0 +1,462 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 019 INFANTRY SPAWN CORE EFFECTS
+# ============================================================================
+# Owns smooth diminishing coverage, weighted state selection without
+# replacement, compatibility-pool selection, country pressure, and global
+# repeatable dispatch. Formation construction lives in the generation file;
+# stable identity and accounting live in the ledger file.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Diminishing territorial coverage
+# ---------------------------------------------------------------------------
+
+infantry_spawn_calculate_selected_state_target = {
+	# selected = round(N * (asymptotic + variable / (1 + (N - 1) / scale)))
+	set_temp_variable = { infantry_spawn_coverage_decay = infantry_spawn_eligible_state_count }
+	subtract_from_temp_variable = { infantry_spawn_coverage_decay = 1 }
+	divide_temp_variable = { infantry_spawn_coverage_decay = constant:infantry_spawn_coverage.decay_scale_states }
+	add_to_temp_variable = { infantry_spawn_coverage_decay = 1 }
+	set_temp_variable = { infantry_spawn_current_coverage_share = constant:infantry_spawn_coverage.variable_share }
+	divide_temp_variable = { infantry_spawn_current_coverage_share = infantry_spawn_coverage_decay }
+	add_to_temp_variable = { infantry_spawn_current_coverage_share = constant:infantry_spawn_coverage.asymptotic_share }
+	set_temp_variable = { infantry_spawn_selected_state_target = infantry_spawn_eligible_state_count }
+	multiply_temp_variable = { infantry_spawn_selected_state_target = infantry_spawn_current_coverage_share }
+	round_temp_variable = infantry_spawn_selected_state_target
+	clamp_temp_variable = {
+		var = infantry_spawn_selected_state_target
+		min = constant:infantry_spawn_coverage_threshold.minimum_selected_states
+		max = infantry_spawn_eligible_state_count
+	}
+}
+
+infantry_spawn_score_current_state = {
+	set_temp_variable = { infantry_spawn_current_state_weight = constant:infantry_spawn_state_weight.base }
+	if = {
+		limit = { is_capital = yes }
+		add_to_temp_variable = { infantry_spawn_current_state_weight = constant:infantry_spawn_state_weight.capital }
+	}
+	if = {
+		limit = { is_core_of = event_target:infantry_spawn_state_controller }
+		add_to_temp_variable = { infantry_spawn_current_state_weight = constant:infantry_spawn_state_weight.core }
+	}
+	else = {
+		add_to_temp_variable = { infantry_spawn_current_state_weight = constant:infantry_spawn_state_weight.occupied }
+		if = {
+			limit = { resistance > constant:infantry_spawn_state_threshold.high_resistance }
+			subtract_from_temp_variable = { infantry_spawn_current_state_weight = constant:infantry_spawn_state_weight.resistance_penalty }
+		}
+	}
+	if = {
+		limit = { industrial_complex > constant:infantry_spawn_state_threshold.industrial }
+		add_to_temp_variable = { infantry_spawn_current_state_weight = constant:infantry_spawn_state_weight.industrial }
+	}
+	if = {
+		limit = { industrial_complex > constant:infantry_spawn_state_threshold.major_industrial }
+		add_to_temp_variable = { infantry_spawn_current_state_weight = constant:infantry_spawn_state_weight.major_industrial }
+	}
+	if = {
+		limit = { supply_node > 0 }
+		add_to_temp_variable = { infantry_spawn_current_state_weight = constant:infantry_spawn_state_weight.supply_hub }
+	}
+	if = {
+		limit = { rail_way > 0 }
+		add_to_temp_variable = { infantry_spawn_current_state_weight = constant:infantry_spawn_state_weight.rail }
+	}
+	if = {
+		limit = { naval_base > 0 }
+		add_to_temp_variable = { infantry_spawn_current_state_weight = constant:infantry_spawn_state_weight.port }
+	}
+	if = {
+		limit = { naval_base > constant:infantry_spawn_state_threshold.major_port }
+		add_to_temp_variable = { infantry_spawn_current_state_weight = constant:infantry_spawn_state_weight.major_port }
+	}
+	if = {
+		limit = { OR = { terrain = urban state_population_k > constant:infantry_spawn_state_threshold.high_population_k } }
+		add_to_temp_variable = { infantry_spawn_current_state_weight = constant:infantry_spawn_state_weight.high_population }
+	}
+	if = {
+		limit = { is_island_state = yes }
+		subtract_from_temp_variable = { infantry_spawn_current_state_weight = constant:infantry_spawn_state_weight.island_penalty }
+	}
+	if = {
+		limit = {
+			event_target:infantry_spawn_state_controller = { has_war = yes }
+			any_neighbor_state = {
+				CONTROLLER = { has_war_with = event_target:infantry_spawn_state_controller }
+			}
+		}
+		add_to_temp_variable = { infantry_spawn_current_state_weight = constant:infantry_spawn_state_weight.front }
+	}
+	round_temp_variable = infantry_spawn_current_state_weight
+	clamp_temp_variable = {
+		var = infantry_spawn_current_state_weight
+		min = constant:infantry_spawn_state_weight.minimum
+		max = constant:infantry_spawn_state_weight.maximum
+	}
+}
+
+infantry_spawn_build_weighted_state_pool = {
+	clear_temp_array = infantry_spawn_weighted_state_pool
+	set_temp_variable = { infantry_spawn_eligible_state_count = 0 }
+	every_controlled_state = {
+		limit = { infantry_spawn_state_is_eligible = yes }
+		CONTROLLER = { save_event_target_as = infantry_spawn_state_controller }
+		infantry_spawn_score_current_state = yes
+		set_temp_variable = { infantry_spawn_state_weight_copy_index = 0 }
+		while_loop_effect = {
+			limit = { check_variable = { var = infantry_spawn_state_weight_copy_index value = infantry_spawn_current_state_weight compare = less_than } }
+			add_to_temp_array = { infantry_spawn_weighted_state_pool = THIS }
+			add_to_temp_variable = { infantry_spawn_state_weight_copy_index = 1 }
+		}
+		add_to_temp_variable = { infantry_spawn_eligible_state_count = 1 }
+	}
+	if = {
+		limit = { check_variable = { infantry_spawn_eligible_state_count > 0 } }
+		infantry_spawn_calculate_selected_state_target = yes
+	}
+}
+
+infantry_spawn_remove_current_state_from_weighted_pool = {
+	while_loop_effect = {
+		limit = { is_in_array = { array = infantry_spawn_weighted_state_pool value = THIS } }
+		remove_from_temp_array = { array = infantry_spawn_weighted_state_pool value = THIS }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Evolution and compatibility-pool selection
+# ---------------------------------------------------------------------------
+
+infantry_spawn_choose_current_generation_profile = {
+	set_temp_variable = { infantry_spawn_current_evolution_stage = constant:infantry_spawn_stage.baseline }
+	set_temp_variable = { infantry_spawn_current_generation_profile = constant:infantry_spawn_generation_profile.baseline }
+	if = {
+		limit = { infantry_spawn_has_evolution_ii = yes }
+		set_temp_variable = { infantry_spawn_current_evolution_stage = constant:infantry_spawn_stage.arsenal_lottery }
+		set_temp_variable = { infantry_spawn_current_generation_profile = constant:infantry_spawn_generation_profile.arsenal }
+	}
+	else_if = {
+		limit = { infantry_spawn_has_evolution_i = yes }
+		set_temp_variable = { infantry_spawn_current_evolution_stage = constant:infantry_spawn_stage.organized_muster }
+		set_temp_variable = { infantry_spawn_current_generation_profile = constant:infantry_spawn_generation_profile.organized }
+	}
+}
+
+infantry_spawn_evaluate_current_registry_row = {
+	set_temp_variable = {
+		infantry_spawn_current_registry_provider_id = global.chaos_unit_family_provider_id_entries^chaos_unit_family_registry_index
+	}
+	meta_effect = {
+		text = { chaos_unit_family_provider_[PROVIDER]_event19_evaluate_eligibility = yes }
+		PROVIDER = "[?infantry_spawn_current_registry_provider_id|.0]"
+	}
+}
+
+infantry_spawn_select_native_registered_family = {
+	set_temp_variable = { infantry_spawn_selected_registry_index = constant:infantry_spawn_event.invalid_index }
+	set_temp_variable = { infantry_spawn_native_registry_total_weight = 0 }
+	if = {
+		limit = { chaos_unit_family_registry_is_aligned = yes }
+		set_temp_variable = { chaos_unit_family_registry_index = constant:infantry_spawn_event.first_index }
+		while_loop_effect = {
+			limit = { check_variable = { var = chaos_unit_family_registry_index value = global.chaos_unit_family_id_entries^num compare = less_than } }
+			if = {
+				limit = {
+					chaos_unit_family_current_row_is_enabled = yes
+					chaos_unit_family_current_row_allows_event19_family_lot = yes
+					chaos_unit_family_current_row_can_spawn = yes
+				}
+				infantry_spawn_evaluate_current_registry_row = yes
+				if = {
+					limit = { check_variable = { chaos_unit_family_candidate_native > 0 } }
+					add_to_temp_variable = {
+						infantry_spawn_native_registry_total_weight = global.chaos_unit_family_spawn_weight_entries^chaos_unit_family_registry_index
+					}
+				}
+			}
+			add_to_temp_variable = { chaos_unit_family_registry_index = 1 }
+		}
+	}
+	else = { infantry_spawn_mark_ledger_invariant_failure = yes }
+
+	if = {
+		limit = { check_variable = { infantry_spawn_native_registry_total_weight > 0 } }
+		set_temp_variable = { infantry_spawn_native_registry_roll_max = infantry_spawn_native_registry_total_weight }
+		add_to_temp_variable = { infantry_spawn_native_registry_roll_max = 1 }
+		set_temp_variable_to_random = {
+			var = infantry_spawn_native_registry_roll
+			min = 1
+			max = infantry_spawn_native_registry_roll_max
+			integer = yes
+		}
+		set_temp_variable = { chaos_unit_family_registry_index = constant:infantry_spawn_event.first_index }
+		while_loop_effect = {
+			limit = {
+				check_variable = { infantry_spawn_selected_registry_index < constant:infantry_spawn_event.first_index }
+				check_variable = { var = chaos_unit_family_registry_index value = global.chaos_unit_family_id_entries^num compare = less_than }
+			}
+			if = {
+				limit = {
+					chaos_unit_family_current_row_is_enabled = yes
+					chaos_unit_family_current_row_allows_event19_family_lot = yes
+					chaos_unit_family_current_row_can_spawn = yes
+				}
+				infantry_spawn_evaluate_current_registry_row = yes
+				if = {
+					limit = { check_variable = { chaos_unit_family_candidate_native > 0 } }
+					set_temp_variable = {
+						infantry_spawn_native_registry_current_weight = global.chaos_unit_family_spawn_weight_entries^chaos_unit_family_registry_index
+					}
+					if = {
+						limit = { check_variable = { var = infantry_spawn_native_registry_roll value = infantry_spawn_native_registry_current_weight compare = greater_than } }
+						subtract_from_temp_variable = { infantry_spawn_native_registry_roll = infantry_spawn_native_registry_current_weight }
+					}
+					else = { set_temp_variable = { infantry_spawn_selected_registry_index = chaos_unit_family_registry_index } }
+				}
+			}
+			add_to_temp_variable = { chaos_unit_family_registry_index = 1 }
+		}
+	}
+
+	if = {
+		limit = { check_variable = { infantry_spawn_selected_registry_index > constant:infantry_spawn_event.invalid_index } }
+		set_temp_variable = { chaos_unit_family_registry_index = infantry_spawn_selected_registry_index }
+		set_temp_variable = { infantry_spawn_current_family_id = global.chaos_unit_family_id_entries^infantry_spawn_selected_registry_index }
+		set_temp_variable = { infantry_spawn_current_registry_provider_id = global.chaos_unit_family_provider_id_entries^infantry_spawn_selected_registry_index }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Pressure and participant pulse
+# ---------------------------------------------------------------------------
+
+infantry_spawn_recalculate_country_pressure = {
+	set_temp_variable = { infantry_spawn_division_capacity = num_of_controlled_states }
+	multiply_temp_variable = { infantry_spawn_division_capacity = constant:infantry_spawn_congestion.division_capacity_per_state }
+	add_to_temp_variable = { infantry_spawn_division_capacity = constant:infantry_spawn_congestion.base_capacity }
+	set_variable = { infantry_spawn_army_congestion = infantry_spawn_active_division_count }
+	multiply_variable = { infantry_spawn_army_congestion = constant:infantry_spawn_congestion.division_pressure_scale }
+	divide_variable = {
+		var = infantry_spawn_army_congestion
+		value = infantry_spawn_division_capacity
+		if_zero = constant:infantry_spawn_congestion.maximum
+	}
+	set_temp_variable = { infantry_spawn_lot_pressure = infantry_spawn_active_lot_count }
+	multiply_temp_variable = { infantry_spawn_lot_pressure = constant:infantry_spawn_congestion.active_lot_pressure }
+	add_to_variable = { infantry_spawn_army_congestion = infantry_spawn_lot_pressure }
+	set_temp_variable = { infantry_spawn_generation_pressure = infantry_spawn_unresolved_generation_count }
+	multiply_temp_variable = { infantry_spawn_generation_pressure = constant:infantry_spawn_congestion.unresolved_generation_pressure }
+	add_to_variable = { infantry_spawn_army_congestion = infantry_spawn_generation_pressure }
+	if = {
+		limit = { has_country_flag = infantry_spawn_generation_stacked }
+		add_to_variable = { infantry_spawn_army_congestion = constant:infantry_spawn_congestion.stacked_muster_pressure }
+	}
+	clamp_variable = {
+		var = infantry_spawn_army_congestion
+		min = constant:infantry_spawn_congestion.minimum
+		max = constant:infantry_spawn_congestion.maximum
+	}
+	infantry_spawn_recalculate_anomalous_saturation = yes
+	infantry_spawn_apply_staged_ideas = yes
+}
+
+infantry_spawn_schedule_country_pulse = {
+	if = {
+		limit = {
+			infantry_spawn_country_can_continue_pulse = yes
+			NOT = { has_country_flag = infantry_spawn_audit_pulse_scheduled }
+		}
+		set_country_flag = infantry_spawn_audit_pulse_scheduled
+		set_temp_variable = { infantry_spawn_audit_delay_days = constant:infantry_spawn_event.audit_pulse_days }
+		country_event = { id = chaosx.nr19.900 days = infantry_spawn_audit_delay_days }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Country and global generation dispatch
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope. Shared by ordinary paid requests, claimant requisitions, and
+# Evolution IV family actions. The latest row may be reused only while it is
+# still open or audited. A request made after closeout creates a new country-
+# scoped request generation instead of mutating the resolved history record.
+# Outputs: infantry_spawn_request_context_ready and the current generation
+# temporaries. Also saves infantry_spawn_generation_country for this chain.
+infantry_spawn_prepare_request_generation_context = {
+	set_temp_variable = { infantry_spawn_request_context_ready = 0 }
+	infantry_spawn_initialize_country_system = yes
+	infantry_spawn_validate_all_ledgers = yes
+	if = {
+		limit = {
+			infantry_spawn_all_ledgers_are_aligned = yes
+			infantry_spawn_country_has_eligible_state = yes
+		}
+		set_temp_variable = { infantry_spawn_request_generation_is_reusable = 0 }
+		if = {
+			limit = { check_variable = { infantry_spawn_generation_uid_entries^num > 0 } }
+			set_temp_variable = { infantry_spawn_generation_row_index = infantry_spawn_generation_uid_entries^num }
+			subtract_from_temp_variable = { infantry_spawn_generation_row_index = 1 }
+			if = {
+				limit = {
+					OR = {
+						check_variable = { infantry_spawn_generation_status_entries^infantry_spawn_generation_row_index = constant:infantry_spawn_generation_status.open }
+						check_variable = { infantry_spawn_generation_status_entries^infantry_spawn_generation_row_index = constant:infantry_spawn_generation_status.audited }
+					}
+				}
+				set_temp_variable = { infantry_spawn_request_generation_is_reusable = 1 }
+				set_temp_variable = { infantry_spawn_current_generation_uid = infantry_spawn_generation_uid_entries^infantry_spawn_generation_row_index }
+				set_temp_variable = { infantry_spawn_current_evolution_stage = infantry_spawn_generation_evolution_stage_entries^infantry_spawn_generation_row_index }
+				set_temp_variable = { infantry_spawn_current_generation_profile = infantry_spawn_generation_profile_entries^infantry_spawn_generation_row_index }
+				set_temp_variable = { infantry_spawn_current_eligible_state_count = infantry_spawn_generation_eligible_state_count_entries^infantry_spawn_generation_row_index }
+				set_temp_variable = { infantry_spawn_current_selected_state_count = infantry_spawn_generation_selected_state_count_entries^infantry_spawn_generation_row_index }
+				set_temp_variable = { infantry_spawn_current_generation_lot_count = infantry_spawn_generation_lot_count_entries^infantry_spawn_generation_row_index }
+				set_temp_variable = { infantry_spawn_current_generation_unit_count = infantry_spawn_generation_unit_count_entries^infantry_spawn_generation_row_index }
+				set_temp_variable = { infantry_spawn_current_generation_status = constant:infantry_spawn_generation_status.open }
+				set_variable = { infantry_spawn_generation_status_entries^infantry_spawn_generation_row_index = constant:infantry_spawn_generation_status.open }
+			}
+		}
+		if = {
+			limit = { check_variable = { infantry_spawn_request_generation_is_reusable = 0 } }
+			add_to_variable = { infantry_spawn_generation = 1 }
+			add_to_variable = { infantry_spawn_unresolved_generation_count = 1 }
+			set_variable = { infantry_spawn_request_count_generation = 0 }
+			set_temp_variable = { infantry_spawn_current_evolution_stage = constant:infantry_spawn_stage.arsenal_lottery }
+			set_temp_variable = { infantry_spawn_current_generation_profile = constant:infantry_spawn_generation_profile.arsenal }
+			if = {
+				limit = { infantry_spawn_has_evolution_iii = yes }
+				set_temp_variable = { infantry_spawn_current_evolution_stage = constant:infantry_spawn_stage.command_fracture }
+				set_temp_variable = { infantry_spawn_current_generation_profile = constant:infantry_spawn_generation_profile.command_fracture }
+			}
+			if = {
+				limit = { infantry_spawn_has_evolution_iv = yes }
+				set_temp_variable = { infantry_spawn_current_evolution_stage = constant:infantry_spawn_stage.anomalous_muster }
+				set_temp_variable = { infantry_spawn_current_generation_profile = constant:infantry_spawn_generation_profile.anomalous }
+			}
+			set_variable = { infantry_spawn_country_stage = infantry_spawn_current_evolution_stage }
+			infantry_spawn_build_weighted_state_pool = yes
+			infantry_spawn_allocate_generation_uid = yes
+			set_temp_variable = { infantry_spawn_current_eligible_state_count = infantry_spawn_eligible_state_count }
+			set_temp_variable = { infantry_spawn_current_selected_state_count = 0 }
+			set_temp_variable = { infantry_spawn_current_generation_lot_count = 0 }
+			set_temp_variable = { infantry_spawn_current_generation_unit_count = 0 }
+			set_temp_variable = { infantry_spawn_current_generation_status = constant:infantry_spawn_generation_status.open }
+			infantry_spawn_append_current_generation_row = yes
+			clear_temp_array = infantry_spawn_weighted_state_pool
+		}
+		if = {
+			limit = { NOT = { has_country_flag = infantry_spawn_ledger_invariant_failure } }
+			set_country_flag = infantry_spawn_generation_audit_active
+			save_event_target_as = infantry_spawn_generation_country
+			set_temp_variable = { infantry_spawn_request_context_ready = 1 }
+		}
+	}
+}
+
+infantry_spawn_begin_country_generation = {
+	infantry_spawn_initialize_country_system = yes
+	infantry_spawn_validate_all_ledgers = yes
+	if = {
+		limit = { NOT = { has_country_flag = infantry_spawn_ledger_invariant_failure } }
+		if = {
+			limit = { infantry_spawn_has_unresolved_generation = yes }
+			set_country_flag = infantry_spawn_generation_stacked
+			subtract_from_variable = { infantry_spawn_muster_control = constant:infantry_spawn_control.stacked_muster_penalty }
+		}
+		else = { clr_country_flag = infantry_spawn_generation_stacked }
+
+		add_to_variable = { infantry_spawn_generation = 1 }
+		add_to_variable = { infantry_spawn_unresolved_generation_count = 1 }
+		set_variable = { infantry_spawn_request_count_generation = 0 }
+		set_country_flag = infantry_spawn_generation_audit_active
+		infantry_spawn_choose_current_generation_profile = yes
+		set_variable = { infantry_spawn_country_stage = infantry_spawn_current_evolution_stage }
+		infantry_spawn_build_weighted_state_pool = yes
+		infantry_spawn_allocate_generation_uid = yes
+		set_temp_variable = { infantry_spawn_current_eligible_state_count = infantry_spawn_eligible_state_count }
+		set_temp_variable = { infantry_spawn_current_selected_state_count = 0 }
+		set_temp_variable = { infantry_spawn_current_generation_lot_count = 0 }
+		set_temp_variable = { infantry_spawn_current_generation_unit_count = 0 }
+		set_temp_variable = { infantry_spawn_current_generation_status = constant:infantry_spawn_generation_status.open }
+		infantry_spawn_append_current_generation_row = yes
+		infantry_spawn_select_native_registered_family = yes
+		save_event_target_as = infantry_spawn_generation_country
+
+		while_loop_effect = {
+			limit = {
+				check_variable = { var = infantry_spawn_current_selected_state_count value = infantry_spawn_selected_state_target compare = less_than }
+				check_variable = { infantry_spawn_weighted_state_pool^num > 0 }
+				NOT = { has_country_flag = infantry_spawn_ledger_invariant_failure }
+			}
+			random_scope_in_array = {
+				array = infantry_spawn_weighted_state_pool
+				save_event_target_as = infantry_spawn_current_origin_state
+				infantry_spawn_remove_current_state_from_weighted_pool = yes
+				event_target:infantry_spawn_generation_country = {
+					set_temp_variable = { infantry_spawn_current_state_processed = 0 }
+					if = {
+						limit = { check_variable = { infantry_spawn_selected_registry_index > constant:infantry_spawn_event.invalid_index } }
+						set_temp_variable = { chaos_unit_family_registry_index = infantry_spawn_selected_registry_index }
+						set_temp_variable = { infantry_spawn_current_family_id = global.chaos_unit_family_id_entries^infantry_spawn_selected_registry_index }
+						set_temp_variable = { infantry_spawn_current_registry_provider_id = global.chaos_unit_family_provider_id_entries^infantry_spawn_selected_registry_index }
+						infantry_spawn_process_selected_registered_state = yes
+					}
+					else = { infantry_spawn_process_selected_ordinary_state = yes }
+					if = {
+						limit = { check_variable = { infantry_spawn_current_state_processed > 0 } }
+						add_to_temp_variable = { infantry_spawn_current_selected_state_count = 1 }
+					}
+				}
+			}
+		}
+		clear_temp_array = infantry_spawn_weighted_state_pool
+		set_temp_variable = { infantry_spawn_current_generation_status = constant:infantry_spawn_generation_status.open }
+		infantry_spawn_update_current_generation_totals = yes
+		infantry_spawn_recalculate_country_pressure = yes
+		infantry_spawn_schedule_country_pulse = yes
+	}
+}
+
+infantry_spawn_initialize_command_fracture_entry = {
+	infantry_spawn_initialize_country_system = yes
+	set_country_flag = infantry_spawn_automatic_generation_suppressed
+	set_country_flag = infantry_spawn_claimant_system_active
+	set_country_flag = infantry_spawn_muster_board_available
+	set_variable = { infantry_spawn_country_stage = constant:infantry_spawn_stage.command_fracture }
+	if = {
+		limit = { infantry_spawn_has_evolution_iv = yes }
+		set_country_flag = infantry_spawn_anomalous_registry_active
+		set_variable = { infantry_spawn_country_stage = constant:infantry_spawn_stage.anomalous_muster }
+	}
+	infantry_spawn_recalculate_country_pressure = yes
+	infantry_spawn_schedule_country_pulse = yes
+}
+
+infantry_spawn_fire_manifestation = {
+	infantry_spawn_initialize_global_system = yes
+	infantry_spawn_initialize_evolution_telemetry = yes
+	infantry_spawn_maybe_advance_global_evolution = yes
+	add_to_variable = { global.infantry_spawn_generation = 1 }
+	set_global_flag = infantry_spawn_system_started
+	set_global_flag = infantry_spawn_event_has_fired
+	set_temp_variable = { infantry_spawn_countries_processed_this_generation = 0 }
+	set_temp_variable = { infantry_spawn_formations_before_generation = global.infantry_spawn_total_formations }
+	every_country = {
+		limit = { infantry_spawn_country_can_receive_generation = yes }
+		infantry_spawn_initialize_country_system = yes
+		infantry_spawn_apply_prefire_evolution_entry = yes
+		if = {
+			limit = { infantry_spawn_has_evolution_iii = yes }
+			infantry_spawn_initialize_command_fracture_entry = yes
+		}
+		else = { infantry_spawn_begin_country_generation = yes }
+		if = {
+			limit = { is_ai = no }
+			country_event = { id = chaosx.nr19.2 days = 1 }
+		}
+		add_to_temp_variable = { infantry_spawn_countries_processed_this_generation = 1 }
+	}
+	set_variable = { global.infantry_spawn_last_generation_country_count = infantry_spawn_countries_processed_this_generation }
+	set_variable = { global.infantry_spawn_last_generation_formation_count = global.infantry_spawn_total_formations }
+	subtract_from_variable = { global.infantry_spawn_last_generation_formation_count = infantry_spawn_formations_before_generation }
+}

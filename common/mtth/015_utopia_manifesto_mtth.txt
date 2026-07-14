@@ -1,0 +1,52 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 015 UTOPIA MANIFESTO MTTH VARIABLES
+# ============================================================================
+# Country-scope entries pace actor-specific incidents and enabled evolutions.
+# Callers assign `mtth:utopia_manifesto_*_interval` to a temporary delay and
+# schedule a delayed country event. No global daily, weekly, or monthly scan is
+# used.
+# ============================================================================
+
+utopia_manifesto_incident_interval = {
+	base = constant:utopia_manifesto_narrative_mtth.incident_days
+	modifier = { factor = constant:utopia_manifesto_narrative_mtth_factor.war has_war = yes }
+	modifier = { factor = constant:utopia_manifesto_narrative_mtth_factor.severe_need check_variable = { utopia_need > constant:utopia_manifesto_narrative_threshold.need_high } }
+	modifier = { factor = constant:utopia_manifesto_narrative_mtth_factor.low_plenty check_variable = { utopia_plenty < constant:utopia_manifesto_narrative_threshold.plenty_low } }
+	modifier = { factor = constant:utopia_manifesto_narrative_mtth_factor.low_concord check_variable = { utopia_concord < constant:utopia_manifesto_narrative_threshold.concord_low } }
+	modifier = { factor = constant:utopia_manifesto_narrative_mtth_factor.high_assignment check_variable = { utopia_assignment > constant:utopia_manifesto_narrative_threshold.assignment_high } }
+	modifier = { factor = constant:utopia_manifesto_narrative_mtth_factor.constitutional_crisis has_country_flag = utopia_manifesto_constitutional_crisis }
+	modifier = { factor = constant:utopia_manifesto_narrative_mtth_factor.formed_commonwealth has_country_flag = utopia_manifesto_commonwealth_formed }
+}
+
+utopia_manifesto_evolution_i_interval = {
+	base = constant:utopia_manifesto_narrative_mtth.evolution_i_days
+	modifier = { factor = constant:utopia_manifesto_narrative_mtth_factor.war has_war = yes }
+	modifier = { factor = constant:utopia_manifesto_narrative_mtth_factor.low_concord check_variable = { utopia_concord < constant:utopia_manifesto_narrative_threshold.concord_low } }
+}
+
+utopia_manifesto_evolution_ii_interval = {
+	base = constant:utopia_manifesto_narrative_mtth.evolution_ii_days
+	modifier = { factor = constant:utopia_manifesto_narrative_mtth_factor.war has_war = yes }
+	modifier = { factor = constant:utopia_manifesto_narrative_mtth_factor.severe_need check_variable = { utopia_need > constant:utopia_manifesto_narrative_threshold.need_high } }
+	modifier = { factor = constant:utopia_manifesto_narrative_mtth_factor.low_plenty check_variable = { utopia_plenty < constant:utopia_manifesto_narrative_threshold.plenty_low } }
+}
+
+utopia_manifesto_evolution_iii_interval = {
+	base = constant:utopia_manifesto_narrative_mtth.evolution_iii_days
+	modifier = { factor = constant:utopia_manifesto_narrative_mtth_factor.low_concord check_variable = { utopia_concord < constant:utopia_manifesto_narrative_threshold.concord_low } }
+	modifier = { factor = constant:utopia_manifesto_narrative_mtth_factor.constitutional_crisis has_country_flag = utopia_manifesto_constitutional_crisis }
+}
+
+utopia_manifesto_evolution_iv_interval = {
+	base = constant:utopia_manifesto_narrative_mtth.evolution_iv_days
+	modifier = { factor = constant:utopia_manifesto_narrative_mtth_factor.war has_war = yes }
+	modifier = { factor = constant:utopia_manifesto_narrative_mtth_factor.high_assignment check_variable = { utopia_assignment > constant:utopia_manifesto_narrative_threshold.assignment_high } }
+}
+
+utopia_manifesto_evolution_v_interval = {
+	base = constant:utopia_manifesto_narrative_mtth.evolution_v_days
+	modifier = { factor = constant:utopia_manifesto_narrative_mtth_factor.war has_war = yes }
+	modifier = { factor = constant:utopia_manifesto_narrative_mtth_factor.severe_need check_variable = { utopia_need > constant:utopia_manifesto_narrative_threshold.need_high } }
+	modifier = { factor = constant:utopia_manifesto_narrative_mtth_factor.low_plenty check_variable = { utopia_plenty < constant:utopia_manifesto_narrative_threshold.plenty_low } }
+	modifier = { factor = constant:utopia_manifesto_narrative_mtth_factor.constitutional_crisis has_country_flag = utopia_manifesto_constitutional_crisis }
+}

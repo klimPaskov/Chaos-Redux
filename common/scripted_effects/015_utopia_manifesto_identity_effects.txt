@@ -1,0 +1,780 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 015 UTOPIA MANIFESTO IDENTITY EFFECTS
+# ============================================================================
+# Country-scope API for staged institutions, parties, cosmetic identities,
+# institutional leaders, succession, and durable achievement evidence.
+#
+# Public integration effects:
+# - utopia_manifesto_initialize_identity_package
+# - utopia_manifesto_commit_current_route_identity
+# - utopia_manifesto_form_current_route_identity
+# - utopia_manifesto_advance_current_route_succession
+#
+# Formation delegates proof and lifecycle state to the central Event 015
+# formation helper. It changes only politics, leader presentation, and the
+# cosmetic identity. It never annexes league members, transfers states, adds
+# cores, restores reserves, creates units, or refunds formation costs.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Initialization and staged route institutions
+# ---------------------------------------------------------------------------
+
+utopia_manifesto_clear_route_institution_identity_flags = {
+	clr_country_flag = utopia_manifesto_institution_household_assembly
+	clr_country_flag = utopia_manifesto_institution_council_of_callings
+	clr_country_flag = utopia_manifesto_institution_board_of_measure
+	clr_country_flag = utopia_manifesto_institution_first_steward_regime
+	clr_country_flag = utopia_manifesto_institution_humanist_cabinet
+	clr_country_flag = utopia_manifesto_humanist_party_declared
+}
+
+utopia_manifesto_clear_formed_identity_flags = {
+	clr_country_flag = utopia_manifesto_identity_voluntary_commonwealth
+	clr_country_flag = utopia_manifesto_identity_council_union
+	clr_country_flag = utopia_manifesto_identity_planned_utopia
+	clr_country_flag = utopia_manifesto_identity_closed_island
+	clr_country_flag = utopia_manifesto_identity_practical_commonwealth
+	clr_country_flag = utopia_manifesto_identity_household_congress_emblem
+	clr_country_flag = utopia_manifesto_identity_common_tables_emblem
+	clr_country_flag = utopia_manifesto_identity_network_directorate_emblem
+	clr_country_flag = utopia_manifesto_identity_island_hierarchy_emblem
+	clr_country_flag = utopia_manifesto_identity_plural_compact_emblem
+}
+
+utopia_manifesto_clear_succession_identity_flags = {
+	clr_country_flag = utopia_manifesto_identity_successor_installed
+	clr_country_flag = utopia_manifesto_successor_commonwealth_council
+	clr_country_flag = utopia_manifesto_successor_rotating_congress
+	clr_country_flag = utopia_manifesto_successor_college_of_measure
+	clr_country_flag = utopia_manifesto_successor_directorate_of_service
+	clr_country_flag = utopia_manifesto_successor_constitutional_election
+}
+
+utopia_manifesto_clear_identity_achievement_tracking = {
+	clr_country_flag = utopia_manifesto_achievement_peaceful_cases_proven
+	clr_country_flag = utopia_manifesto_achievement_obsolete_case_renounced
+	clr_country_flag = utopia_manifesto_achievement_callings_sustained
+	clr_country_flag = utopia_manifesto_achievement_reserve_challenge_survived
+	clr_country_flag = utopia_manifesto_achievement_five_member_league_proven
+	clr_country_flag = utopia_manifesto_achievement_inland_supply_challenge_survived
+	clr_country_flag = utopia_manifesto_achievement_common_use_financed_provision
+	clr_country_flag = utopia_manifesto_achievement_status_votes_proven
+	clr_country_flag = utopia_manifesto_achievement_five_district_roles_proven
+	clr_country_flag = utopia_manifesto_achievement_district_role_market_garden
+	clr_country_flag = utopia_manifesto_achievement_district_role_industrial_housing
+	clr_country_flag = utopia_manifesto_achievement_district_role_rail_junction
+	clr_country_flag = utopia_manifesto_achievement_district_role_refugee_municipality
+	clr_country_flag = utopia_manifesto_achievement_district_role_provision_ring
+	clr_country_flag = utopia_manifesto_achievement_closed_major_war_survived
+	clr_country_flag = utopia_manifesto_achievement_stronger_attacker_defeated
+	clr_country_flag = utopia_manifesto_achievement_crisis_recovery_proven
+	clr_country_flag = utopia_manifesto_achievement_disqualifier_offensive_war
+	clr_country_flag = utopia_manifesto_achievement_disqualifier_unrelated_case_annexation
+	clr_country_flag = utopia_manifesto_achievement_disqualifier_assignment_overreach
+	clr_country_flag = utopia_manifesto_achievement_disqualifier_reserve_reset
+	clr_country_flag = utopia_manifesto_achievement_disqualifier_league_member_annexed
+	clr_country_flag = utopia_manifesto_achievement_disqualifier_early_coast
+	clr_country_flag = utopia_manifesto_achievement_disqualifier_repeated_status_vote
+	clr_country_flag = utopia_manifesto_achievement_disqualifier_island_reopened
+	clr_country_flag = utopia_manifesto_achievement_disqualifier_regime_collapsed
+	clr_country_flag = utopia_manifesto_achievement_disqualifier_auxiliaries_hired
+	clr_country_flag = utopia_manifesto_achievement_disqualifier_forced_relocation
+	clr_country_flag = utopia_manifesto_achievement_disqualifier_total_repeal
+	clr_country_flag = utopia_manifesto_achievement_disqualifier_auxiliary_abuse
+	clr_country_flag = utopia_manifesto_achievement_disqualifier_coercive_case
+	clr_country_flag = utopia_manifesto_achievement_disqualifier_colonial_repression
+	clr_country_flag = utopia_manifesto_achievement_disqualifier_forced_households
+	clr_country_flag = utopia_manifesto_achievement_disqualifier_league_coercion
+	clr_country_flag = utopia_manifesto_achievement_disqualifier_stale_claim
+	clear_array = utopia_manifesto_achievement_peaceful_case_targets
+	clear_array = utopia_manifesto_achievement_status_vote_targets
+	set_variable = { utopia_manifesto_achievement_peaceful_case_count = constant:utopia_manifesto_narrative_count.zero }
+	set_variable = { utopia_manifesto_achievement_status_vote_count = constant:utopia_manifesto_narrative_count.zero }
+}
+
+utopia_manifesto_initialize_identity_package = {
+	if = {
+		limit = { NOT = { has_country_flag = utopia_manifesto_identity_package_initialized } }
+		utopia_manifesto_clear_route_institution_identity_flags = yes
+		utopia_manifesto_clear_formed_identity_flags = yes
+		utopia_manifesto_clear_succession_identity_flags = yes
+		utopia_manifesto_clear_identity_achievement_tracking = yes
+		clr_country_flag = utopia_manifesto_route_institution_established
+		clr_country_flag = utopia_manifesto_identity_formed
+		set_country_flag = utopia_manifesto_identity_package_initialized
+	}
+}
+
+# Terminal disable policy: the original country tag and owned forces remain.
+# Event 15 characters retire, its cosmetic identity drops, and its staged
+# political/achievement state is removed. Route party names are supplied by
+# the cosmetic identities, so dropping the cosmetic tag restores the original
+# recipient's country-specific party localisation without mutating it.
+utopia_manifesto_teardown_identity_package = {
+	remove_country_leader_role = { character = utopia_manifesto_household_assembly ideology = socialism }
+	remove_country_leader_role = { character = utopia_manifesto_commonwealth_council ideology = socialism }
+	remove_country_leader_role = { character = utopia_manifesto_council_of_callings ideology = anarchist_communism }
+	remove_country_leader_role = { character = utopia_manifesto_rotating_congress ideology = anarchist_communism }
+	remove_country_leader_role = { character = utopia_manifesto_board_of_measure ideology = oligarchism }
+	remove_country_leader_role = { character = utopia_manifesto_college_of_measure ideology = oligarchism }
+	remove_country_leader_role = { character = utopia_manifesto_stewardship_council ideology = fascism_ideology }
+	remove_country_leader_role = { character = utopia_manifesto_directorate_of_service ideology = fascism_ideology }
+	retire_character = utopia_manifesto_household_assembly
+	retire_character = utopia_manifesto_commonwealth_council
+	retire_character = utopia_manifesto_council_of_callings
+	retire_character = utopia_manifesto_rotating_congress
+	retire_character = utopia_manifesto_board_of_measure
+	retire_character = utopia_manifesto_college_of_measure
+	retire_character = utopia_manifesto_stewardship_council
+	retire_character = utopia_manifesto_directorate_of_service
+	retire_character = utopia_manifesto_interpreter
+	retire_character = utopia_manifesto_general_provisioner
+	retire_character = utopia_manifesto_secretary_of_callings
+	retire_character = utopia_manifesto_surveyor_of_shores
+	retire_character = utopia_manifesto_civic_engineer
+	retire_character = utopia_manifesto_keeper_of_stores
+	retire_character = utopia_manifesto_league_envoy
+	retire_character = utopia_manifesto_advocate_of_limits
+	retire_character = utopia_manifesto_public_auditor
+	retire_character = utopia_manifesto_constitutional_jurist
+	retire_character = utopia_manifesto_council_organizer
+	retire_character = utopia_manifesto_social_workshop_planner
+	retire_character = utopia_manifesto_chief_surveyor
+	retire_character = utopia_manifesto_standards_engineer
+	retire_character = utopia_manifesto_steward_of_service
+	retire_character = utopia_manifesto_contract_broker
+	drop_cosmetic_tag = yes
+	utopia_manifesto_clear_route_institution_identity_flags = yes
+	utopia_manifesto_clear_formed_identity_flags = yes
+	utopia_manifesto_clear_succession_identity_flags = yes
+	utopia_manifesto_clear_identity_achievement_tracking = yes
+	clr_country_flag = utopia_manifesto_route_institution_established
+	clr_country_flag = utopia_manifesto_identity_formed
+	clr_country_flag = utopia_manifesto_identity_package_initialized
+}
+
+utopia_manifesto_name_current_party_humanist = {
+	set_country_flag = utopia_manifesto_humanist_party_declared
+}
+
+utopia_manifesto_commit_current_route_identity = {
+	utopia_manifesto_clear_route_institution_identity_flags = yes
+	clr_country_flag = utopia_manifesto_route_institution_established
+	utopia_manifesto_clear_found_manifesto_idea_stages = yes
+	if = {
+		limit = {
+			OR = {
+				has_idea = utopia_manifesto_unmeasured_country
+				has_idea = utopia_manifesto_unmeasured_country_mitigated
+				has_idea = utopia_manifesto_unmeasured_country_failure
+			}
+		}
+		utopia_manifesto_finalize_public_administration = yes
+	}
+	utopia_manifesto_apply_route_property_settlement = yes
+	if = {
+		limit = { has_country_flag = utopia_manifesto_route_consent_of_households }
+		set_country_flag = utopia_manifesto_institution_household_assembly
+	}
+	else_if = {
+		limit = { has_country_flag = utopia_manifesto_route_common_table }
+		set_country_flag = utopia_manifesto_institution_council_of_callings
+	}
+	else_if = {
+		limit = { has_country_flag = utopia_manifesto_route_guardians_of_measure }
+		set_country_flag = utopia_manifesto_institution_board_of_measure
+	}
+	else_if = {
+		limit = { has_country_flag = utopia_manifesto_route_closed_island }
+		set_country_flag = utopia_manifesto_institution_first_steward_regime
+	}
+	else_if = {
+		limit = { has_country_flag = utopia_manifesto_route_joke_understood }
+		set_country_flag = utopia_manifesto_institution_humanist_cabinet
+		utopia_manifesto_name_current_party_humanist = yes
+	}
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = utopia_manifesto_institution_household_assembly
+				has_country_flag = utopia_manifesto_institution_council_of_callings
+				has_country_flag = utopia_manifesto_institution_board_of_measure
+				has_country_flag = utopia_manifesto_institution_first_steward_regime
+				has_country_flag = utopia_manifesto_institution_humanist_cabinet
+			}
+		}
+		set_country_flag = utopia_manifesto_route_institution_established
+		utopia_manifesto_apply_route_institution_founding = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Final route identities
+# ---------------------------------------------------------------------------
+
+utopia_manifesto_form_voluntary_commonwealth_identity = {
+	set_politics = {
+		ruling_party = democratic
+		elections_allowed = yes
+		election_frequency = constant:utopia_manifesto_identity.election_frequency_months
+	}
+	add_country_leader_role = {
+		character = utopia_manifesto_household_assembly
+		promote_leader = yes
+		country_leader = {
+			ideology = socialism
+			traits = { popular_figurehead }
+		}
+	}
+	set_cosmetic_tag = UTOPIA_MANIFESTO_VOLUNTARY_COMMONWEALTH
+	set_country_flag = utopia_manifesto_identity_voluntary_commonwealth
+	set_country_flag = utopia_manifesto_identity_household_congress_emblem
+}
+
+utopia_manifesto_form_council_union_identity = {
+	set_politics = {
+		ruling_party = communism
+		elections_allowed = no
+	}
+	add_country_leader_role = {
+		character = utopia_manifesto_council_of_callings
+		promote_leader = yes
+		country_leader = {
+			ideology = anarchist_communism
+			traits = { captain_of_industry }
+		}
+	}
+	set_cosmetic_tag = UTOPIA_MANIFESTO_COUNCIL_UNION
+	set_country_flag = utopia_manifesto_identity_council_union
+	set_country_flag = utopia_manifesto_identity_common_tables_emblem
+}
+
+utopia_manifesto_form_planned_utopia_identity = {
+	set_politics = {
+		ruling_party = neutrality
+		elections_allowed = no
+	}
+	add_country_leader_role = {
+		character = utopia_manifesto_board_of_measure
+		promote_leader = yes
+		country_leader = {
+			ideology = oligarchism
+			traits = { captain_of_industry }
+		}
+	}
+	set_cosmetic_tag = UTOPIA_MANIFESTO_PLANNED_UTOPIA
+	set_country_flag = utopia_manifesto_identity_planned_utopia
+	set_country_flag = utopia_manifesto_identity_network_directorate_emblem
+}
+
+utopia_manifesto_form_closed_island_identity = {
+	set_politics = {
+		ruling_party = fascism
+		elections_allowed = no
+	}
+	add_country_leader_role = {
+		character = utopia_manifesto_stewardship_council
+		promote_leader = yes
+		country_leader = {
+			ideology = fascism_ideology
+			traits = { prince_of_terror }
+		}
+	}
+	set_cosmetic_tag = UTOPIA_MANIFESTO_CLOSED_ISLAND
+	set_country_flag = utopia_manifesto_identity_closed_island
+	set_country_flag = utopia_manifesto_identity_island_hierarchy_emblem
+}
+
+utopia_manifesto_form_practical_commonwealth_identity = {
+	utopia_manifesto_name_current_party_humanist = yes
+	set_politics = {
+		elections_allowed = yes
+		election_frequency = constant:utopia_manifesto_identity.election_frequency_months
+	}
+	set_cosmetic_tag = UTOPIA_MANIFESTO_PRACTICAL_COMMONWEALTH
+	set_country_flag = utopia_manifesto_identity_practical_commonwealth
+	set_country_flag = utopia_manifesto_identity_plural_compact_emblem
+}
+
+utopia_manifesto_form_current_route_identity = {
+	utopia_manifesto_complete_formation = yes
+	if = {
+		limit = {
+			has_country_flag = utopia_manifesto_commonwealth_formed
+			has_country_flag = utopia_manifesto_formation_proof_met
+			NOT = { has_country_flag = utopia_manifesto_identity_formed }
+		}
+		utopia_manifesto_clear_formed_identity_flags = yes
+		utopia_manifesto_clear_succession_identity_flags = yes
+		if = {
+			limit = { has_country_flag = utopia_manifesto_route_consent_of_households }
+			utopia_manifesto_form_voluntary_commonwealth_identity = yes
+		}
+		else_if = {
+			limit = { has_country_flag = utopia_manifesto_route_common_table }
+			utopia_manifesto_form_council_union_identity = yes
+		}
+		else_if = {
+			limit = { has_country_flag = utopia_manifesto_route_guardians_of_measure }
+			utopia_manifesto_form_planned_utopia_identity = yes
+		}
+		else_if = {
+			limit = { has_country_flag = utopia_manifesto_route_closed_island }
+			utopia_manifesto_form_closed_island_identity = yes
+		}
+		else_if = {
+			limit = { has_country_flag = utopia_manifesto_route_joke_understood }
+			utopia_manifesto_form_practical_commonwealth_identity = yes
+		}
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = utopia_manifesto_identity_voluntary_commonwealth
+					has_country_flag = utopia_manifesto_identity_council_union
+					has_country_flag = utopia_manifesto_identity_planned_utopia
+					has_country_flag = utopia_manifesto_identity_closed_island
+					has_country_flag = utopia_manifesto_identity_practical_commonwealth
+				}
+			}
+			set_country_flag = utopia_manifesto_identity_formed
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Second-generation succession
+# ---------------------------------------------------------------------------
+
+utopia_manifesto_install_commonwealth_council_successor = {
+	remove_country_leader_role = {
+		character = utopia_manifesto_household_assembly
+		ideology = socialism
+	}
+	add_country_leader_role = {
+		character = utopia_manifesto_commonwealth_council
+		promote_leader = yes
+		country_leader = {
+			ideology = socialism
+			traits = { compassionate_gentleman }
+		}
+	}
+	set_politics = {
+		ruling_party = democratic
+		elections_allowed = yes
+		election_frequency = constant:utopia_manifesto_identity.election_frequency_months
+	}
+	set_country_flag = utopia_manifesto_successor_commonwealth_council
+}
+
+utopia_manifesto_install_rotating_congress_successor = {
+	remove_country_leader_role = {
+		character = utopia_manifesto_council_of_callings
+		ideology = anarchist_communism
+	}
+	add_country_leader_role = {
+		character = utopia_manifesto_rotating_congress
+		promote_leader = yes
+		country_leader = {
+			ideology = anarchist_communism
+			traits = { silent_workhorse }
+		}
+	}
+	set_country_flag = utopia_manifesto_successor_rotating_congress
+}
+
+utopia_manifesto_install_college_of_measure_successor = {
+	remove_country_leader_role = {
+		character = utopia_manifesto_board_of_measure
+		ideology = oligarchism
+	}
+	add_country_leader_role = {
+		character = utopia_manifesto_college_of_measure
+		promote_leader = yes
+		country_leader = {
+			ideology = oligarchism
+			traits = { war_industrialist }
+		}
+	}
+	set_country_flag = utopia_manifesto_successor_college_of_measure
+}
+
+utopia_manifesto_install_directorate_of_service_successor = {
+	remove_country_leader_role = {
+		character = utopia_manifesto_stewardship_council
+		ideology = fascism_ideology
+	}
+	add_country_leader_role = {
+		character = utopia_manifesto_directorate_of_service
+		promote_leader = yes
+		country_leader = {
+			ideology = fascism_ideology
+			traits = { fortification_engineer }
+		}
+	}
+	set_country_flag = utopia_manifesto_successor_directorate_of_service
+}
+
+utopia_manifesto_install_constitutional_election_successor = {
+	set_politics = {
+		elections_allowed = yes
+		election_frequency = constant:utopia_manifesto_identity.election_frequency_months
+	}
+	set_country_flag = utopia_manifesto_successor_constitutional_election
+}
+
+utopia_manifesto_advance_current_route_succession = {
+	if = {
+		limit = {
+			has_country_flag = utopia_manifesto_identity_formed
+			has_country_flag = utopia_manifesto_second_generation
+			NOT = { has_country_flag = utopia_manifesto_identity_successor_installed }
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_identity_voluntary_commonwealth }
+			utopia_manifesto_install_commonwealth_council_successor = yes
+		}
+		else_if = {
+			limit = { has_country_flag = utopia_manifesto_identity_council_union }
+			utopia_manifesto_install_rotating_congress_successor = yes
+		}
+		else_if = {
+			limit = { has_country_flag = utopia_manifesto_identity_planned_utopia }
+			utopia_manifesto_install_college_of_measure_successor = yes
+		}
+		else_if = {
+			limit = { has_country_flag = utopia_manifesto_identity_closed_island }
+			utopia_manifesto_install_directorate_of_service_successor = yes
+		}
+		else_if = {
+			limit = { has_country_flag = utopia_manifesto_identity_practical_commonwealth }
+			utopia_manifesto_install_constitutional_election_successor = yes
+		}
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = utopia_manifesto_successor_commonwealth_council
+					has_country_flag = utopia_manifesto_successor_rotating_congress
+					has_country_flag = utopia_manifesto_successor_college_of_measure
+					has_country_flag = utopia_manifesto_successor_directorate_of_service
+					has_country_flag = utopia_manifesto_successor_constitutional_election
+				}
+			}
+			set_country_flag = utopia_manifesto_identity_successor_installed
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Durable achievement evidence
+# ---------------------------------------------------------------------------
+
+# Call once for each completed Need case before the central case runtime is
+# cleared. The country array prevents one target from satisfying the distinct-
+# case requirement more than once.
+utopia_manifesto_record_achievement_peaceful_case_resolution = {
+	if = {
+		limit = { has_variable = utopia_manifesto_case_target_id }
+		set_temp_variable = { utopia_manifesto_achievement_case_target_input = utopia_manifesto_case_target_id }
+	}
+	if = {
+		limit = { has_variable = utopia_manifesto_case_method }
+		set_temp_variable = { utopia_manifesto_achievement_case_method_input = utopia_manifesto_case_method }
+	}
+	if = {
+		limit = {
+			has_variable = utopia_manifesto_achievement_case_target_input
+			has_variable = utopia_manifesto_achievement_case_method_input
+			OR = {
+				check_variable = { utopia_manifesto_achievement_case_method_input = constant:utopia_manifesto_case_method.purchase }
+				check_variable = { utopia_manifesto_achievement_case_method_input = constant:utopia_manifesto_case_method.long_supply_contract }
+				check_variable = { utopia_manifesto_achievement_case_method_input = constant:utopia_manifesto_case_method.lease }
+				check_variable = { utopia_manifesto_achievement_case_method_input = constant:utopia_manifesto_case_method.settlement_agreement }
+				check_variable = { utopia_manifesto_achievement_case_method_input = constant:utopia_manifesto_case_method.joint_administration }
+				check_variable = { utopia_manifesto_achievement_case_method_input = constant:utopia_manifesto_case_method.association }
+				has_country_flag = utopia_manifesto_case_closed_for_domestic_alternative
+			}
+			NOT = {
+				is_in_array = {
+					array = utopia_manifesto_achievement_peaceful_case_targets
+					value = utopia_manifesto_achievement_case_target_input
+				}
+			}
+		}
+		add_to_array = {
+			array = utopia_manifesto_achievement_peaceful_case_targets
+			value = utopia_manifesto_achievement_case_target_input
+		}
+		set_variable = { utopia_manifesto_achievement_peaceful_case_count = utopia_manifesto_achievement_peaceful_case_targets^num }
+		if = {
+			limit = {
+				check_variable = {
+					var = utopia_manifesto_achievement_peaceful_case_count
+					value = constant:utopia_manifesto_achievement_requirement.peaceful_case_count
+					compare = greater_than_or_equals
+				}
+			}
+			set_country_flag = utopia_manifesto_achievement_peaceful_cases_proven
+		}
+	}
+	set_temp_variable = { utopia_manifesto_achievement_case_target_input = constant:utopia_manifesto_narrative_count.zero }
+	set_temp_variable = { utopia_manifesto_achievement_case_method_input = constant:utopia_manifesto_case_method.none }
+}
+
+utopia_manifesto_record_achievement_obsolete_case_renunciation = {
+	if = {
+		limit = { has_country_flag = utopia_manifesto_case_renounced_when_need_ended }
+		set_country_flag = utopia_manifesto_achievement_obsolete_case_renounced
+	}
+}
+
+# Called only by the successful end of the sustained Choice/Concord/Plenty
+# mission. Rechecking the live Ledger prevents a stale mission flag from being
+# awarded after the qualifying state has already collapsed.
+utopia_manifesto_record_achievement_callings_sustained = {
+	if = {
+		limit = { utopia_manifesto_calling_sustainment_conditions_met = yes }
+		set_country_flag = utopia_manifesto_achievement_callings_sustained
+	}
+}
+
+# Called after the severe supply-test mission finishes successfully.
+utopia_manifesto_record_achievement_reserve_challenge_survived = {
+	if = {
+		limit = {
+			has_country_flag = utopia_manifesto_two_year_reserve
+			check_variable = {
+				var = utopia_reserve_band
+				value = constant:utopia_manifesto_reserve_band.two_year_security
+				compare = greater_than_or_equals
+			}
+			NOT = { has_country_flag = utopia_manifesto_achievement_disqualifier_reserve_reset }
+		}
+		set_country_flag = utopia_manifesto_achievement_reserve_challenge_survived
+	}
+}
+
+# Refresh after league membership, reserve, or defense arrays change.
+utopia_manifesto_refresh_achievement_league_proofs = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = utopia_manifesto_route_closed_island }
+			is_subject = no
+			check_variable = {
+				var = utopia_manifesto_league_member_count
+				value = constant:utopia_manifesto_achievement_requirement.league_member_count
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = utopia_manifesto_league_reserve_count
+				value = constant:utopia_manifesto_narrative_count.zero
+				compare = greater_than
+			}
+			check_variable = {
+				var = utopia_manifesto_league_defense_count
+				value = constant:utopia_manifesto_narrative_count.zero
+				compare = greater_than
+			}
+			NOT = { has_country_flag = utopia_manifesto_achievement_disqualifier_league_member_annexed }
+		}
+		set_country_flag = utopia_manifesto_achievement_five_member_league_proven
+	}
+}
+
+# Called after the Inland Island supply challenge, not merely when the project
+# is selected or built.
+utopia_manifesto_record_achievement_inland_supply_challenge_survived = {
+	if = {
+		limit = {
+			has_country_flag = utopia_manifesto_achievement_inland_island_path
+			has_country_flag = utopia_manifesto_island_project_complete
+			NOT = { has_country_flag = utopia_manifesto_achievement_disqualifier_early_coast }
+		}
+		set_country_flag = utopia_manifesto_achievement_inland_supply_challenge_survived
+	}
+}
+
+# Called after emergency imports or public provision are actually paid for.
+utopia_manifesto_record_achievement_common_use_financed_provision = {
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = utopia_manifesto_luxury_public_rebuke
+				has_country_flag = utopia_manifesto_luxury_stock_pledged
+				has_country_flag = utopia_manifesto_luxury_reserve_preserved
+			}
+			OR = {
+				has_country_flag = utopia_manifesto_emergency_store_release
+				has_country_flag = utopia_manifesto_store_foreign_support_requested
+				has_country_flag = utopia_manifesto_stewardship_emergency_provision
+				has_country_flag = utopia_manifesto_surplus_traded_for_need
+			}
+		}
+		set_country_flag = utopia_manifesto_achievement_common_use_financed_provision
+	}
+}
+
+# Call before the current case target is cleared. Repeating a vote for a target
+# already in the array permanently disqualifies the achievement.
+utopia_manifesto_record_achievement_status_vote = {
+	if = {
+		limit = {
+			has_variable = utopia_manifesto_case_target_id
+			OR = {
+				has_country_flag = utopia_manifesto_route_consent_of_households
+				has_country_flag = utopia_manifesto_route_joke_understood
+			}
+			has_country_flag = utopia_manifesto_stewardship_status_vote_enabled
+			has_country_flag = utopia_manifesto_partner_autonomy_retained
+		}
+		if = {
+			limit = {
+				is_in_array = {
+					array = utopia_manifesto_achievement_status_vote_targets
+					value = utopia_manifesto_case_target_id
+				}
+			}
+			set_country_flag = utopia_manifesto_achievement_disqualifier_repeated_status_vote
+		}
+		else = {
+			add_to_array = {
+				array = utopia_manifesto_achievement_status_vote_targets
+				value = utopia_manifesto_case_target_id
+			}
+			set_variable = { utopia_manifesto_achievement_status_vote_count = utopia_manifesto_achievement_status_vote_targets^num }
+			if = {
+				limit = {
+					check_variable = {
+						var = utopia_manifesto_achievement_status_vote_count
+						value = constant:utopia_manifesto_achievement_requirement.status_vote_count
+						compare = greater_than_or_equals
+					}
+				}
+				set_country_flag = utopia_manifesto_achievement_status_votes_proven
+			}
+		}
+	}
+}
+
+utopia_manifesto_refresh_achievement_planned_district_proof = {
+	if = {
+		limit = {
+			has_country_flag = utopia_manifesto_route_guardians_of_measure
+			has_country_flag = utopia_manifesto_achievement_district_role_market_garden
+			has_country_flag = utopia_manifesto_achievement_district_role_industrial_housing
+			has_country_flag = utopia_manifesto_achievement_district_role_rail_junction
+			has_country_flag = utopia_manifesto_achievement_district_role_refugee_municipality
+			has_country_flag = utopia_manifesto_achievement_district_role_provision_ring
+		}
+		set_country_flag = utopia_manifesto_achievement_five_district_roles_proven
+	}
+}
+
+# These three helpers are called only after the owning mission/on-action has
+# verified the historical challenge. They deliberately do not infer victory
+# from a transient at-war trigger.
+utopia_manifesto_record_achievement_closed_major_war_survived = {
+	if = {
+		limit = {
+			has_country_flag = utopia_manifesto_route_closed_island
+			has_country_flag = utopia_manifesto_separation_project_complete
+			has_country_flag = utopia_manifesto_defense_proof_complete
+		}
+		set_country_flag = utopia_manifesto_achievement_closed_major_war_survived
+	}
+}
+
+utopia_manifesto_record_achievement_stronger_attacker_defeated = {
+	if = {
+		limit = { has_country_flag = utopia_manifesto_accepted }
+		set_country_flag = utopia_manifesto_achievement_stronger_attacker_defeated
+	}
+}
+
+utopia_manifesto_record_achievement_crisis_recovery = {
+	if = {
+		limit = {
+			has_country_flag = utopia_manifesto_crisis_branch_entered
+			OR = {
+				has_country_flag = utopia_manifesto_crisis_corrected_by_consent
+				has_country_flag = utopia_manifesto_crisis_corrected_by_councils
+				has_country_flag = utopia_manifesto_crisis_corrected_by_measure
+				has_country_flag = utopia_manifesto_crisis_corrected_by_revision
+				has_country_flag = utopia_manifesto_crisis_corrected_by_separation
+			}
+			check_variable = {
+				var = utopia_plenty
+				value = constant:utopia_manifesto_formation_limits.minimum_plenty
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = utopia_concord
+				value = constant:utopia_manifesto_formation_limits.minimum_concord
+				compare = greater_than_or_equals
+			}
+			OR = {
+				has_idea = utopia_manifesto_common_store_network
+				has_idea = utopia_manifesto_common_store_network_mitigated
+				has_idea = utopia_manifesto_common_store_network_final
+			}
+			NOT = { has_country_flag = utopia_manifesto_institutions_abandoned }
+			NOT = { has_country_flag = utopia_manifesto_achievement_disqualifier_total_repeal }
+		}
+		set_country_flag = utopia_manifesto_achievement_crisis_recovery_proven
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Permanent disqualifiers; never call the initialization effect on route swap
+# ---------------------------------------------------------------------------
+
+utopia_manifesto_record_achievement_offensive_war = {
+	set_country_flag = utopia_manifesto_achievement_disqualifier_offensive_war
+}
+
+utopia_manifesto_record_achievement_unrelated_case_annexation = {
+	set_country_flag = utopia_manifesto_achievement_disqualifier_unrelated_case_annexation
+}
+
+utopia_manifesto_record_achievement_assignment_overreach = {
+	set_country_flag = utopia_manifesto_achievement_disqualifier_assignment_overreach
+}
+
+utopia_manifesto_record_achievement_reserve_reset = {
+	set_country_flag = utopia_manifesto_achievement_disqualifier_reserve_reset
+}
+
+utopia_manifesto_record_achievement_league_member_annexation = {
+	set_country_flag = utopia_manifesto_achievement_disqualifier_league_member_annexed
+}
+
+utopia_manifesto_record_achievement_early_coast_acquisition = {
+	if = {
+		limit = {
+			has_country_flag = utopia_manifesto_accepted
+			has_country_flag = utopia_manifesto_achievement_origin_landlocked
+			NOT = { has_country_flag = utopia_manifesto_island_variant_selected }
+		}
+		set_country_flag = utopia_manifesto_achievement_disqualifier_early_coast
+	}
+}
+
+utopia_manifesto_record_achievement_island_reopened = {
+	set_country_flag = utopia_manifesto_achievement_disqualifier_island_reopened
+}
+
+utopia_manifesto_record_achievement_regime_collapse = {
+	set_country_flag = utopia_manifesto_achievement_disqualifier_regime_collapsed
+}
+
+utopia_manifesto_record_achievement_auxiliaries_hired = {
+	set_country_flag = utopia_manifesto_achievement_disqualifier_auxiliaries_hired
+}
+
+utopia_manifesto_record_achievement_forced_relocation = {
+	set_country_flag = utopia_manifesto_achievement_disqualifier_forced_relocation
+}
+
+utopia_manifesto_record_achievement_total_repeal = {
+	set_country_flag = utopia_manifesto_achievement_disqualifier_total_repeal
+}

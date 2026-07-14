@@ -1,0 +1,143 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 019 CLAIMANT DECISIONS
+# ============================================================================
+# Human and AI decisions call the same claimant response effects used by the
+# scripted GUI. Costs are deducted inside those effects after revalidation.
+# ============================================================================
+
+infantry_spawn_claimant_category = {
+	infantry_spawn_recognize_claimant = {
+		icon = GFX_decision_infantry_spawn_claimant_recognize
+		visible = {
+			infantry_spawn_selected_claimant_index_is_valid = yes
+			NOT = { has_country_flag = infantry_spawn_claimant_demand_pending }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = infantry_spawn_recognize_claimant_requirements_tt
+				hidden_trigger = { infantry_spawn_can_recognize_selected_claimant = yes }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { infantry_spawn_can_recognize_selected_claimant = yes } }
+		custom_cost_text = infantry_spawn_recognize_claimant_cost_text
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_recognize_claimant_effect_tt
+			hidden_effect = { infantry_spawn_recognize_selected_claimant = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_claimant_ai.medium
+			modifier = { factor = constant:infantry_spawn_claimant_ai.preferred_factor infantry_spawn_control_is_low = yes }
+			modifier = { factor = constant:infantry_spawn_claimant_ai.cautious_factor infantry_spawn_control_is_strong = yes }
+		}
+	}
+
+	infantry_spawn_accept_claimant_demand = {
+		icon = GFX_decision_infantry_spawn_claimant_accept_demand
+		visible = {
+			has_country_flag = infantry_spawn_claimant_demand_pending
+			infantry_spawn_selected_claimant_index_is_valid = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = infantry_spawn_accept_claimant_demand_requirements_tt
+				hidden_trigger = { infantry_spawn_selected_claimant_demand_can_be_paid = yes }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { infantry_spawn_selected_claimant_demand_can_be_paid = yes } }
+		custom_cost_text = infantry_spawn_accept_claimant_demand_cost_text
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_accept_claimant_demand_effect_tt
+			hidden_effect = { infantry_spawn_accept_selected_claimant_demand = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_claimant_ai.high
+			modifier = { factor = constant:infantry_spawn_claimant_ai.preferred_factor infantry_spawn_control_is_low = yes }
+			modifier = { factor = constant:infantry_spawn_claimant_ai.cautious_factor infantry_spawn_control_is_strong = yes }
+		}
+	}
+
+	infantry_spawn_refuse_claimant_demand = {
+		icon = GFX_decision_infantry_spawn_claimant_refuse_demand
+		visible = {
+			has_country_flag = infantry_spawn_claimant_demand_pending
+			infantry_spawn_selected_claimant_index_is_valid = yes
+		}
+		available = { always = yes }
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_refuse_claimant_demand_effect_tt
+			hidden_effect = { infantry_spawn_refuse_selected_claimant_demand = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_claimant_ai.low
+			modifier = { factor = constant:infantry_spawn_claimant_ai.preferred_factor infantry_spawn_control_is_strong = yes }
+		}
+	}
+
+	infantry_spawn_counter_command_claimant = {
+		icon = GFX_decision_infantry_spawn_claimant_counter_command
+		visible = { infantry_spawn_selected_claimant_index_is_valid = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = infantry_spawn_counter_command_requirements_tt
+				hidden_trigger = { infantry_spawn_can_counter_command_selected_claimant = yes }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { infantry_spawn_can_counter_command_selected_claimant = yes } }
+		custom_cost_text = infantry_spawn_counter_command_cost_text
+		days_re_enable = constant:infantry_spawn_timer.officer_search_days
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_counter_command_effect_tt
+			hidden_effect = { infantry_spawn_counter_command_selected_claimant = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_claimant_ai.medium
+			modifier = { factor = constant:infantry_spawn_claimant_ai.preferred_factor has_country_flag = infantry_spawn_claimant_revolt_warning_active }
+		}
+	}
+
+	infantry_spawn_discredit_claimant = {
+		icon = GFX_decision_infantry_spawn_claimant_discredit
+		visible = { infantry_spawn_selected_claimant_index_is_valid = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = infantry_spawn_discredit_claimant_requirements_tt
+				hidden_trigger = { infantry_spawn_can_discredit_selected_claimant = yes }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { infantry_spawn_can_discredit_selected_claimant = yes } }
+		custom_cost_text = infantry_spawn_discredit_claimant_cost_text
+		days_re_enable = constant:infantry_spawn_timer.officer_search_days
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_discredit_claimant_effect_tt
+			hidden_effect = { infantry_spawn_discredit_selected_claimant = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_claimant_ai.medium
+			modifier = { factor = constant:infantry_spawn_claimant_ai.preferred_factor infantry_spawn_control_is_strong = yes }
+		}
+	}
+
+	infantry_spawn_arrest_claimant = {
+		icon = GFX_decision_infantry_spawn_claimant_arrest
+		visible = {
+			infantry_spawn_selected_claimant_index_is_valid = yes
+			has_country_flag = infantry_spawn_claimant_revolt_warning_active
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = infantry_spawn_arrest_claimant_requirements_tt
+				hidden_trigger = { infantry_spawn_can_arrest_selected_claimant = yes }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { infantry_spawn_can_arrest_selected_claimant = yes } }
+		custom_cost_text = infantry_spawn_arrest_claimant_cost_text
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_arrest_claimant_effect_tt
+			hidden_effect = { infantry_spawn_arrest_selected_claimant = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_claimant_ai.urgent
+			modifier = { factor = constant:infantry_spawn_claimant_ai.cautious_factor check_variable = { infantry_spawn_muster_control < constant:infantry_spawn_claimant_state_package.takeover_influence } }
+		}
+	}
+}

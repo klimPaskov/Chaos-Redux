@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Event Details window includes a **World End Scenarios** section below the evolution preview. It is a public catalog of terminal branches owned by the selected numbered event. Each terminal branch occupies one row, so events with more than one public ending keep separate details and separate enable state.
+The Event Details window includes a **World End Scenarios** section below the evolution preview. It is a public catalog of terminal branches owned by the selected numbered event. Each terminal branch occupies one row, so events with more than one public ending keep separate details and separate enable state. The shared registry also stores unnumbered terminal systems with owner event `none`. Those entries retain stable toggle and active-state identities without appearing under an unrelated numbered event.
 
 This document and the live registry are the integration source of truth. They supersede partial implementation handoffs that described only Event 14 entries as public-details ready.
 
@@ -13,7 +13,6 @@ Clicking a row opens a movable scenario-details window. The row and detail view 
 | Owner event | Scenario | Linked super-event presentation |
 |---|---|---|
 | Event 2, Zombie Outbreak | Zombie Apocalypse | Zombie Apocalypse |
-| Event 2, Zombie Outbreak | Fallout | Fallout |
 | Event 3, The Holy Realm | The Final Silence | The Final Silence |
 | Event 7, Fury | The World in Fury | The World in Fury |
 | Event 10, Death | Last Shores | The Census of Zol |
@@ -21,7 +20,9 @@ Clicking a row opens a movable scenario-details window. The row and detail view 
 | Event 14, Cannibalism | No Thaw Will Come | No Thaw Will Come |
 | Event 18, Resources Found | The World Opens Below | The Deep War Crosses the Seas |
 
-Fallout remains catalog-associated with Event 2 because the accepted Event 2 documentation owns that public terminal entry, even though its live terminal event uses the contamination namespace. Terminal mechanics without a numbered event-catalog owner are not assigned to an unrelated Event Details entry.
+## System-owned registry entries
+
+Fallout is an unnumbered system-owned registry entry. Its owner event and linked super-event fields are both `none`. It does not appear under Event 2 or borrow the Zombie Outbreak presentation. The Miscellaneous settings panel controls its scenario toggle, and the dedicated `fallout_world_end` system owns its blackout transition.
 
 Hidden easter-egg terminal branches are not appended to the public view arrays. They therefore receive no row, checkbox, title, details text, workbook entry, or public control from this system.
 
@@ -64,7 +65,8 @@ Every public natural terminal path calls a scenario-specific helper from `common
 - Registry, row rebuild, selection, active-state dispatch, and toggle effects: `common/scripted_effects/chaosx_events_log_effects.txt`
 - Stable registry tuning: `common/script_constants/world_end_scenario_registry_constants.txt`
 - Automatic-selection gates: `common/scripted_triggers/chaosx_world_end_scenario_triggers.txt`
-- Fallout threshold dispatcher: `common/scripted_effects/chaos_meter_effects.txt`
+- Fallout request, toggle, transition, and blackout dispatch: `common/scripted_effects/fallout_world_end_effects.txt`
+- Fallout event namespace and transition events: `events/fallout_world_end_events.txt`
 - Scripted GUI row, toggle, click, and detail-window handlers: `common/scripted_guis/chaosx_scripted_gui_events_log.txt`
 - Event Details and scenario-details layouts: `interface/chaosx_events_log_popup.gui`
 - Dynamic titles, owners, statuses, and details: `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`

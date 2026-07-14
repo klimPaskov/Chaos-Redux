@@ -1,0 +1,180 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 015 UTOPIA MANIFESTO ON ACTIONS
+# ============================================================================
+# One-shot history hooks for Event 015. ROOT/FROM scopes follow the installed
+# vanilla on-action documentation. No daily, weekly, or monthly world scan is
+# used.
+# ============================================================================
+
+on_actions = {
+	on_declare_war = {
+		effect = {
+			if = {
+				limit = { ROOT = { has_country_flag = utopia_manifesto_accepted } }
+				ROOT = { utopia_manifesto_record_achievement_offensive_war = yes }
+			}
+		}
+	}
+
+	# ROOT is the attacking side and FROM is the defending side.
+	on_war_relation_added = {
+		effect = {
+			ROOT = { save_event_target_as = utopia_manifesto_war_attacker }
+			FROM = { save_event_target_as = utopia_manifesto_war_defender }
+			if = {
+				limit = {
+					ROOT = {
+						has_country_flag = utopia_manifesto_accepted
+						has_country_flag = utopia_manifesto_case_enforced
+					}
+					FROM = { has_country_flag = utopia_manifesto_active_case_target }
+				}
+				ROOT = { utopia_manifesto_mark_enforcement_war_active = yes }
+			}
+			if = {
+				limit = { FROM = { has_country_flag = utopia_manifesto_accepted } }
+				FROM = { utopia_manifesto_register_defensive_war_challenges = yes }
+			}
+		}
+	}
+
+	# ROOT is the capitulated country and FROM is the winner.
+	on_capitulation = {
+		effect = {
+			ROOT = { save_event_target_as = utopia_manifesto_defeated_attacker }
+			if = {
+				limit = {
+					ROOT = {
+						check_variable = {
+							var = utopia_manifesto_event15_defenders^num
+							value = constant:utopia_manifesto_narrative_count.zero
+							compare = greater_than
+						}
+					}
+				}
+				ROOT = { utopia_manifesto_resolve_recorded_attacker_defeat = yes }
+			}
+		}
+	}
+
+	# ROOT is the annexer and FROM is the annexed country.
+	on_annex = {
+		effect = {
+			ROOT = { save_event_target_as = utopia_manifesto_annexing_country }
+			FROM = { save_event_target_as = utopia_manifesto_defeated_attacker }
+			if = {
+				limit = {
+					FROM = {
+						check_variable = {
+							var = utopia_manifesto_event15_defenders^num
+							value = constant:utopia_manifesto_narrative_count.zero
+							compare = greater_than
+						}
+					}
+				}
+				FROM = { utopia_manifesto_resolve_recorded_attacker_defeat = yes }
+			}
+			if = {
+				limit = { ROOT = { has_country_flag = utopia_manifesto_accepted } }
+				ROOT = {
+					if = {
+						limit = {
+							is_in_array = {
+								array = utopia_manifesto_active_case_targets
+								value = FROM
+							}
+						}
+						utopia_manifesto_invalidate_active_need_case = yes
+					}
+					if = {
+						limit = {
+							is_in_array = {
+								array = utopia_manifesto_league_members
+								value = FROM
+							}
+						}
+						utopia_manifesto_record_achievement_league_member_annexation = yes
+					}
+					if = {
+						limit = {
+							FROM = { NOT = { original_tag = ROOT } }
+							NOT = {
+								is_in_array = {
+									array = utopia_manifesto_active_case_targets
+									value = FROM
+								}
+							}
+						}
+						utopia_manifesto_record_achievement_unrelated_case_annexation = yes
+					}
+					utopia_manifesto_refresh_territorial_achievement_history = yes
+				}
+			}
+			if = {
+				limit = { FROM = { has_country_flag = utopia_manifesto_accepted } }
+				FROM = { utopia_manifesto_enter_disable_safe_state = yes }
+			}
+		}
+	}
+
+	# A peace conference can transfer coastline without a full annexation.
+	on_peaceconference_ended = {
+		effect = {
+			if = {
+				limit = { fallout_world_rewrite_callbacks_are_allowed = yes }
+				if = {
+					limit = { ROOT = { has_country_flag = utopia_manifesto_accepted } }
+					ROOT = {
+						utopia_manifesto_refresh_territorial_achievement_history = yes
+						utopia_manifesto_resolve_enforcement_after_peace = yes
+						utopia_manifesto_reconcile_integrated_commonwealth_state_ownership = yes
+					}
+				}
+				if = {
+					limit = { FROM = { has_country_flag = utopia_manifesto_accepted } }
+					FROM = {
+						utopia_manifesto_refresh_territorial_achievement_history = yes
+						utopia_manifesto_resolve_enforcement_after_peace = yes
+						utopia_manifesto_reconcile_integrated_commonwealth_state_ownership = yes
+					}
+				}
+			}
+		}
+	}
+
+	# ROOT is the new controller and FROM is the old controller. Recalculate only
+	# for the Event 15 actors whose controlled-state scale actually changed.
+	on_state_control_changed = {
+		effect = {
+			if = {
+				limit = { fallout_world_rewrite_callbacks_are_allowed = yes }
+				if = {
+					limit = { ROOT = { has_country_flag = utopia_manifesto_accepted } }
+					ROOT = {
+						utopia_manifesto_refresh_dynamic_costs = yes
+						if = {
+							limit = {
+								has_country_flag = utopia_manifesto_need_case_active
+								FROM.FROM = { has_state_flag = utopia_manifesto_active_case_state }
+							}
+							utopia_manifesto_validate_active_need_case = yes
+						}
+					}
+				}
+				if = {
+					limit = { FROM = { has_country_flag = utopia_manifesto_accepted } }
+					FROM = {
+						utopia_manifesto_refresh_dynamic_costs = yes
+						if = {
+							limit = {
+								has_country_flag = utopia_manifesto_need_case_active
+								FROM.FROM = { has_state_flag = utopia_manifesto_active_case_state }
+							}
+							utopia_manifesto_validate_active_need_case = yes
+						}
+					}
+				}
+			}
+		}
+	}
+}

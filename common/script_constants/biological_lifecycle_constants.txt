@@ -1,0 +1,613 @@
+# ============================================================================
+# CHAOS REDUX - BIOLOGICAL LIFECYCLE SCRIPT CONSTANTS
+# ============================================================================
+# Overview:
+# - Defines ordinary-pathogen agent, route, source, result, stage, and
+#   attribution enums.
+# - Centralizes incubation, growth, spread, death, response, doctrine,
+#   evidence, Condemnation, scheduling, and output bounds.
+# - Weaponized-zombie tuning intentionally remains outside this file.
+# ============================================================================
+
+bio_lifecycle_math = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	zero = 0
+	one = 1
+	hundred = 100
+	thousand = 1000
+	negation = -1
+}
+
+bio_lifecycle_agent = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	anthrax = 1
+	plague = 2
+	tularemia = 3
+	smallpox = 4
+}
+
+bio_lifecycle_route = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	strategic_raid = 1
+	operative_release = 2
+	battlefield_dissemination = 3
+	food_water_medical_sabotage = 4
+	laboratory_accident = 5
+	captured_facility_release = 6
+	doomsday_release = 7
+	connected_spread = 8
+	field_test_release = 9
+	strategic_raid_attacker_accident = 10
+}
+
+bio_lifecycle_source = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	deliberate = 1
+	accident = 2
+	spread = 3
+	captured_facility = 4
+	doomsday = 5
+	field_test = 6
+}
+
+bio_lifecycle_result = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	rejected = 0
+	failed = 1
+	partial = 2
+	success = 3
+	catastrophic = 4
+	accident = 5
+	spread = 6
+}
+
+bio_lifecycle_stage = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	incubating = 1
+	undetected_outbreak = 2
+	detected_outbreak = 3
+	contained = 4
+	recovered = 5
+}
+
+bio_lifecycle_attribution = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	unknown_natural = 0
+	suspicious = 1
+	probable_deliberate = 2
+	confirmed_attack = 3
+	confirmed_accident = 4
+}
+
+bio_lifecycle_proof = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	missing = 0
+	supplied = 1
+}
+
+bio_lifecycle_schedule = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	weekly_tick_days = 7
+	active_modifier_days = 10
+	minimum_event_delay_days = 1
+	incubation_anthrax_days = 5
+	incubation_anthrax_random_days = 5
+	incubation_plague_days = 4
+	incubation_plague_random_days = 4
+	incubation_tularemia_days = 5
+	incubation_tularemia_random_days = 6
+	incubation_smallpox_days = 12
+	incubation_smallpox_random_days = 9
+}
+
+bio_lifecycle_bounds = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	intensity_min = 0
+	intensity_max = 100
+	exposed_share_min = 0
+	exposed_share_max = 0.85
+	evidence_min = 0
+	evidence_max = 100
+	medical_min = 0
+	medical_max = 100
+	response_min = 0
+	response_max = 100
+	detection_chance_min = 5
+	detection_chance_max = 95
+	spread_chance_min = 0
+	spread_chance_max = 80
+	effect_scale_min = 0.10
+	effect_scale_max = 1
+	cleanup_intensity = 1
+	cleanup_exposed_share = 0.001
+	minimum_death_cap = 1
+}
+
+bio_lifecycle_intensity_band = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	isolated_min = 1
+	local_min = 20
+	serious_regional_min = 40
+	severe_multi_state_min = 60
+	catastrophic_min = 80
+}
+
+bio_lifecycle_evidence = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	suspicious_threshold = 20
+	probable_threshold = 45
+	confirmed_threshold = 75
+	detection_anthrax_add = 20
+	detection_plague_add = 12
+	detection_tularemia_add = 10
+	detection_smallpox_add = 15
+	repeated_deliberate_seed_mult = 1.25
+	cross_border_spread_add = 5
+	confirmed_accident_threshold = 45
+	confirmed_device_floor = 80
+	confirmed_operative_floor = 85
+	doomsday_floor = 100
+}
+
+bio_lifecycle_agent_profile = {
+	schema = {
+		any_key = yes
+		data = {
+			{
+				any_key = yes
+				data = fixed_point
+			}
+		}
+	}
+
+	anthrax = {
+		base_growth = 2
+		base_decline = 1.25
+		base_spread_chance = 5
+		base_detection_chance = 15
+		medical_points_per_intensity = 0.10
+		weekly_death_low = 0.000005
+		weekly_death_medium = 0.00004
+		weekly_death_high = 0.00015
+		death_cap_fraction = 0.015
+		persistence_mult = 1.35
+		spread_seed_mult = 0.55
+		spread_exposed_mult = 0.45
+		exposed_growth_per_intensity = 0.00020
+		exposed_decline_per_response = 0.00010
+	}
+
+	plague = {
+		base_growth = 5
+		base_decline = 1
+		base_spread_chance = 35
+		base_detection_chance = 25
+		medical_points_per_intensity = 0.16
+		weekly_death_low = 0.000003
+		weekly_death_medium = 0.00006
+		weekly_death_high = 0.00025
+		death_cap_fraction = 0.05
+		persistence_mult = 1
+		spread_seed_mult = 0.75
+		spread_exposed_mult = 0.70
+		exposed_growth_per_intensity = 0.00055
+		exposed_decline_per_response = 0.00008
+	}
+
+	tularemia = {
+		base_growth = 3
+		base_decline = 1.50
+		base_spread_chance = 18
+		base_detection_chance = 10
+		medical_points_per_intensity = 0.12
+		weekly_death_low = 0.0000005
+		weekly_death_medium = 0.000008
+		weekly_death_high = 0.00004
+		death_cap_fraction = 0.01
+		persistence_mult = 0.90
+		spread_seed_mult = 0.65
+		spread_exposed_mult = 0.55
+		exposed_growth_per_intensity = 0.00030
+		exposed_decline_per_response = 0.00012
+	}
+
+	smallpox = {
+		base_growth = 4
+		base_decline = 0.60
+		base_spread_chance = 30
+		base_detection_chance = 10
+		medical_points_per_intensity = 0.20
+		weekly_death_low = 0.000002
+		weekly_death_medium = 0.00005
+		weekly_death_high = 0.00020
+		death_cap_fraction = 0.08
+		persistence_mult = 1.50
+		spread_seed_mult = 0.80
+		spread_exposed_mult = 0.75
+		exposed_growth_per_intensity = 0.00050
+		exposed_decline_per_response = 0.00006
+	}
+}
+
+bio_lifecycle_route_profile = {
+	schema = {
+		any_key = yes
+		data = {
+			{
+				any_key = yes
+				data = fixed_point
+			}
+		}
+	}
+
+	strategic_raid = {
+		seed_intensity = 25
+		exposed_share = 0.08
+		evidence = 45
+		friendly_spread_risk = 0.20
+		condemnation = 50
+	}
+
+	operative_release = {
+		seed_intensity = 20
+		exposed_share = 0.05
+		evidence = 15
+		friendly_spread_risk = 0.35
+		condemnation = 30
+	}
+
+	battlefield_dissemination = {
+		seed_intensity = 20
+		exposed_share = 0.04
+		evidence = 50
+		friendly_spread_risk = 0.45
+		condemnation = 35
+	}
+
+	food_water_medical_sabotage = {
+		seed_intensity = 12
+		exposed_share = 0.02
+		evidence = 10
+		friendly_spread_risk = 0.25
+		condemnation = 30
+	}
+
+	laboratory_accident = {
+		seed_intensity = 18
+		exposed_share = 0.05
+		evidence = 20
+		friendly_spread_risk = 0.60
+		condemnation = 20
+	}
+
+	captured_facility_release = {
+		seed_intensity = 25
+		exposed_share = 0.08
+		evidence = 40
+		friendly_spread_risk = 0.55
+		condemnation = 40
+	}
+
+	doomsday_release = {
+		seed_intensity = 60
+		exposed_share = 0.25
+		evidence = 100
+		friendly_spread_risk = 0.85
+		condemnation = 300
+	}
+
+	connected_spread = {
+		seed_intensity = 8
+		exposed_share = 0.02
+		evidence = 5
+		friendly_spread_risk = 0
+		condemnation = 0
+	}
+
+	field_test_release = {
+		seed_intensity = 15
+		exposed_share = 0.04
+		evidence = 35
+		friendly_spread_risk = 0.50
+		condemnation = 35
+	}
+
+	strategic_raid_attacker_accident = {
+		seed_intensity = 22
+		exposed_share = 0.06
+		evidence = 55
+		friendly_spread_risk = 0.70
+		condemnation = 15
+	}
+}
+
+bio_lifecycle_result_mult = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	partial_seed = 0.55
+	partial_exposed = 0.50
+	partial_evidence = 0.80
+	success_seed = 1
+	success_exposed = 1
+	success_evidence = 1
+	catastrophic_seed = 1.35
+	catastrophic_exposed = 1.25
+	catastrophic_evidence = 1.30
+	accident_seed = 1
+	accident_exposed = 1
+	accident_evidence = 1
+}
+
+bio_lifecycle_doctrine = {
+	schema = {
+		any_key = yes
+		data = {
+			{
+				any_key = yes
+				data = fixed_point
+			}
+		}
+	}
+
+	theater_contamination = {
+		seed_potency_mult = 1.10
+		growth_mult = 1.10
+		spread_mult = 1.10
+		death_mult = 1.10
+		duration_mult = 1.10
+		medical_mult = 1.10
+		condemnation_mult = 1
+	}
+
+	terminal_hazard = {
+		seed_potency_mult = 1.15
+		growth_mult = 1.20
+		spread_mult = 1.20
+		death_mult = 1.25
+		duration_mult = 1.15
+		medical_mult = 1.20
+		condemnation_mult = 0.80
+	}
+}
+
+bio_lifecycle_response = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_surveillance = 10
+	base_containment = 10
+	base_medical = 10
+	base_biosecurity = 10
+	surveillance_networks_add = 30
+	rapid_response_surveillance_add = 25
+	integrated_control_surveillance_add = 20
+	field_epidemiology_surveillance_add = 15
+	rapid_response_containment_add = 25
+	integrated_control_containment_add = 30
+	field_epidemiology_containment_add = 15
+	pathogen_handling_biosecurity_add = 20
+	sealed_labs_biosecurity_add = 30
+	fail_safe_biosecurity_add = 40
+	field_hospital_1_medical_add = 10
+	field_hospital_2_medical_add = 10
+	field_hospital_3_medical_add = 10
+	field_hospital_4_medical_add = 10
+	mobile_hospitals_medical_add = 20
+	state_field_hospital_medical_add = 20
+	state_quarantine_containment_add = 25
+	detection_surveillance_factor = 0.50
+	detection_medical_factor = 0.20
+	detection_intensity_factor = 0.25
+	containment_decline_divisor = 25
+	medical_decline_divisor = 50
+	containment_growth_reduction_divisor = 200
+	medical_growth_reduction_divisor = 400
+	medical_saturation_recovery_divisor = 20
+	wartime_detection_penalty = 10
+	concealment_detection_factor = 0.50
+	medical_saturation_detection_factor = 0.10
+}
+
+bio_lifecycle_environment = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	pastoral_growth_mult = 0.85
+	rural_growth_mult = 0.90
+	town_growth_mult = 1.05
+	large_town_growth_mult = 1.10
+	dense_urban_growth_mult = 1.20
+	dense_urban_spread_mult = 1.30
+	dense_urban_death_mult = 1.10
+	dense_urban_detection_add = 10
+	war_damage_growth_mult = 1.20
+	war_damage_spread_mult = 1.25
+	war_damage_death_mult = 1.25
+	war_damage_detection_penalty = 20
+	war_damage_infrastructure_threshold = 4
+	low_stability_growth_mult = 1.15
+	low_stability_threshold = 0.40
+	quarantine_growth_mult = 0.85
+	quarantine_spread_mult = 0.50
+	quarantine_short_term_death_mult = 1.05
+	quarantine_detection_add = 10
+	closed_border_cross_border_mult = 0.70
+	repeated_seed_growth_add = 0.10
+	repeated_seed_growth_cap = 1.30
+	repeated_seed_spread_add = 0.10
+	repeated_seed_spread_cap = 1.20
+	repeated_deliberate_seed_death_mult = 1.10
+	chaos_low_threshold = 400
+	chaos_high_threshold = 600
+	chaos_severe_threshold = 800
+	chaos_terminal_threshold = 1000
+	chaos_low_growth_mult = 1.05
+	chaos_high_growth_mult = 1.10
+	chaos_severe_growth_mult = 1.15
+	chaos_terminal_growth_mult = 1.25
+	chaos_low_spread_mult = 1.05
+	chaos_high_spread_mult = 1.10
+	chaos_severe_spread_mult = 1.15
+	chaos_terminal_spread_mult = 1.25
+	chaos_low_detection_penalty = 5
+	chaos_high_detection_penalty = 8
+	chaos_severe_detection_penalty = 10
+	chaos_terminal_detection_penalty = 15
+	high_air_contamination_growth_mult = 1.10
+	extreme_air_contamination_growth_mult = 1.20
+	spread_intensity_factor = 0.35
+	spread_response_divisor = 200
+	cross_border_evidence_add = 5
+	minimum_spread_seed_intensity = 1
+	maximum_spread_seed_intensity = 35
+	minimum_spread_exposed_share = 0.002
+	maximum_spread_exposed_share = 0.20
+}
+
+bio_lifecycle_countermeasure = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	field_hospital_death_mult = 0.80
+	field_hospital_medical_mult = 0.75
+	anthrax_antibiotics_growth_mult = 0.70
+	anthrax_antibiotics_death_mult = 0.45
+	plague_antibiotics_growth_mult = 0.75
+	plague_antibiotics_death_mult = 0.55
+	tularemia_antibiotics_growth_mult = 0.65
+	tularemia_antibiotics_death_mult = 0.40
+	smallpox_vaccination_growth_mult = 0.65
+	smallpox_vaccination_spread_mult = 0.65
+	smallpox_vaccination_death_mult = 0.45
+	surveillance_80_growth_mult = 0.75
+	surveillance_80_spread_mult = 0.85
+	surveillance_80_death_mult = 0.90
+	surveillance_80_detection_add = 50
+	containment_80_growth_mult = 0.80
+	containment_80_spread_mult = 0.50
+	containment_80_death_mult = 0.85
+	containment_80_detection_add = 20
+	medical_80_growth_mult = 0.90
+	medical_80_spread_mult = 0.90
+	medical_80_death_mult = 0.50
+	medical_80_detection_add = 20
+	high_response_threshold = 80
+}
+
+bio_lifecycle_condemnation = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	probable_release_share = 0.40
+	confirmed_release_share = 0.60
+	accident_release_share = 1
+	repeated_cross_border_add = 20
+	coverup_add = 25
+	strategic_confirmed_floor = 30
+	mass_death_confirmed_floor = 70
+	experiment_discovery_floor = 20
+	doomsday_confirmed_floor = 200
+	mass_death_threshold = 100000
+	maximum = 500
+}
+
+bio_lifecycle_political = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	probable_domestic_war_support = -0.005
+	confirmed_domestic_war_support = -0.015
+	accident_domestic_war_support = -0.01
+	doomsday_domestic_war_support = -0.05
+}
+
+bio_lifecycle_history = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	one_use = 1
+	one_episode = 1
+	one_repeated_seed = 1
+}
+
+bio_lifecycle_effect = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	undetected_manpower = -0.02
+	undetected_production = -0.02
+	undetected_supply = -0.03
+	undetected_recovery = -0.02
+	medical_saturation_effect_divisor = 500
+	intensity_effect_divisor = 100
+	response_effect_divisor = 400
+}

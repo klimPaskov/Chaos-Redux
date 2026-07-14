@@ -1,6 +1,6 @@
 # Independence Wave super-event production and verification prompt
 
-Produce and wire two complete super-event packages for Chaos Redux Event 6, Independence Wave, using the approved research in `research/006_super_event_text_research.md` and `research/006_super_event_audio_research.md`.
+Prepare both super-event packages for Chaos Redux Event 6, Independence Wave, using the approved research in `research/006_super_event_text_research.md` and `research/006_super_event_audio_research.md`. Complete only rights-cleared production surfaces and retain every explicit blocker.
 
 Read and apply:
 
@@ -12,7 +12,7 @@ Read and apply:
 - `research/006_super_event_text_research.md`
 - `research/006_super_event_audio_research.md`
 
-Create or update the final super-event research and implementation note under `docs/super_events/`. The source choices are complete. Verify that the source pages still match the package, then produce audio and image assets and hand the main agent exact wiring data. Do not silently substitute a different title, quote, button, or track.
+Create or update the final super-event research and implementation note under `docs/super_events/`. The text choices and musical selections are complete. The exact `6001` recording is blocked for United States redistribution, while the `6002` source is verified and preserved. Produce only cleared assets and hand the main agent exact wiring data. Do not silently substitute a different title, quote, button, or recording.
 
 ## Super-event 1: League formation
 
@@ -51,7 +51,7 @@ Approved package:
 - title: `The League of New States`
 - button: `Small states, one covenant.`
 - quote: the short Woodrow Wilson Point XIV excerpt recorded in the research file
-- audio: Jeremiah Clarke, `A Trumpet Voluntary`, selected segment and source recorded in the audio file
+- audio: Jeremiah Clarke, `A Trumpet Voluntary`, with the accepted London Brass Players recording and segment held behind the documented `6001` rights blocker
 
 The final text package can vary by charter if the existing super-event system supports dynamic localisation cleanly. Otherwise select one broad package that reflects the first durable league, then use follow-up events for charter tone.
 
@@ -100,7 +100,7 @@ The text researcher only verifies the selected source pages and confirms UI fit.
 
 ## Audio research requirements
 
-Use `chaosx_super_event_audio_researcher` or the equivalent bounded workflow to download and process the two selected recordings. Preserve the source download, produce the exact game-ready 44.1 kHz OGG segments, verify duration and checksum, and document title, composer, performer, source, rights, attribution, source path, final path, audio ID, editing steps, and fit. Reject a source only if its documented rights or file integrity fail.
+Use `chaosx_super_event_audio_researcher` or the equivalent bounded workflow for rights-cleared production. Do not download, process, or wire the accepted `6001` London Brass Players recording unless permission or a waiver covering United States redistribution is obtained. Reopening that selection requires explicit user approval. Produce the exact game-ready 44.1 kHz `6002` OGG segment from the preserved source, verify duration and checksum, and document title, composer, performer, source, rights, attribution, source path, final path, audio ID, editing steps, and fit.
 
 Suggested final folder pattern:
 

@@ -1,52 +1,189 @@
 add_namespace = chaosx.nr16
 
-##############################################################################################################
-#    ##    ## ########        ##    #######
-#    ###   ## ##     ##     ####   ##     ##
-#    ####  ## ##     ##       ##   ##
-#    ## ## ## ########        ##   ########
-#    ##  #### ##   ##         ##   ##     ##
-#    ##   ### ##    ##        ##   ##     ##
-#    ##    ## ##     ##     ######  #######
-##############################################################################################################
-#   ######
-#   #     # #####  # #      #      #   ##   #    # #####     ####   ####  # ###### #    # ##### #  ####  #####
-#   #     # #    # # #      #      #  #  #  ##   #   #      #      #    # # #      ##   #   #   # #        #
-#   ######  #    # # #      #      # #    # # #  #   #       ####  #      # #####  # #  #   #   #  ####    #
-#   #     # #####  # #      #      # ###### #  # #   #           # #      # #      #  # #   #   #      #   #
-#   #     # #   #  # #      #      # #    # #   ##   #      #    # #    # # #      #   ##   #   # #    #   #
-#   ######  #    # # ###### ###### # #    # #    #   #       ####   ####  # ###### #    #   #   #  ####    #
+# ============================================================================
+# CHAOS REDUX - EVENT 016 BRILLIANT SCIENTIST OPENING
+# ============================================================================
+# The shared random-event dispatcher resolves one weighted eligible country
+# before firing .1. The visible appointment then recruits exactly one Doctor
+# Warren Kruger through a guarded scripted transaction. A human may redirect
+# the still-unrecruited character once to a prevalidated weighted recipient;
+# AI countries always choose one of the two appointment routes.
+# ============================================================================
 
-##############################################################################################################
-
+# Dispatcher entry. ROOT is already the validated prefire host.
 country_event = {
-    id = chaosx.nr16.1
-    title = chaosx.nr16.1.t
+	id = chaosx.nr16.1
+	hidden = yes
+	is_triggered_only = yes
 
-    hidden = yes
-    is_triggered_only = yes
-
-    immediate = {
-        random_country = {
-            limit = { OR = { is_major = yes is_ai = no } }
-            country_event = { id = chaosx.nr16.2 days = 1 }
-        }
-    }
+	immediate = {
+		if = {
+			limit = {
+				has_country_flag = brilliant_scientist_opening_chain_active
+				brilliant_scientist_is_eligible_host = yes
+				NOT = { has_global_flag = brilliant_scientist_event_resolved }
+			}
+			country_event = { id = chaosx.nr16.2 }
+		}
+	}
 }
 
-##############################################################################################################
-
+# First host appointment. No origin conclusion is revealed here.
 country_event = {
-    id = chaosx.nr16.2
-    title = chaosx.nr16.2.t
-    desc = chaosx.nr16.2.d
-    picture = GFX_report_event_generic_research_lab
+	id = chaosx.nr16.2
+	title = chaosx.nr16.2.t
+	desc = chaosx.nr16.2.d
+	picture = GFX_portrait_KRG_doctor_warren_kruger_stage_0
+	is_triggered_only = yes
 
-    is_triggered_only = yes
+	immediate = {
+		brilliant_scientist_select_initial_send_away_recipient = yes
+	}
 
-    option = {
-        name = chaosx.nr16.2.a
-        add_ideas = brilliant_scientist
-        news_event = { id = chaosx.news.18 days = 2 }
-    }
+	option = {
+		name = chaosx.nr16.2.a
+		trigger = {
+			brilliant_scientist_is_eligible_host = yes
+			NOT = { has_global_flag = brilliant_scientist_event_resolved }
+		}
+		ai_chance = {
+			base = constant:brilliant_scientist_opening_ai.public_base
+			modifier = { factor = constant:brilliant_scientist_opening_ai.public_democratic_factor has_government = democratic }
+			modifier = { factor = constant:brilliant_scientist_opening_ai.public_stable_factor has_stability > constant:brilliant_scientist_opening_ai.high_stability }
+			modifier = { factor = constant:brilliant_scientist_opening_ai.public_peace_factor has_war = no }
+			modifier = { factor = constant:brilliant_scientist_opening_ai.public_civilian_industry_factor num_of_factories > constant:brilliant_scientist_opening_ai.industrial_factory_gate }
+			modifier = { factor = constant:brilliant_scientist_opening_ai.public_computing_factor has_tech = computing_machine }
+		}
+		custom_effect_tooltip = brilliant_scientist_public_appointment_effect_tt
+		hidden_effect = {
+			set_temp_variable = { brilliant_scientist_recruitment_posture = constant:brilliant_scientist_recruitment_posture.public_compact }
+			brilliant_scientist_appoint_kruger_from_opening = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr16.2.b
+		trigger = {
+			brilliant_scientist_is_eligible_host = yes
+			NOT = { has_global_flag = brilliant_scientist_event_resolved }
+		}
+		ai_chance = {
+			base = constant:brilliant_scientist_opening_ai.secret_base
+			modifier = { factor = constant:brilliant_scientist_opening_ai.secret_war_factor has_war = yes }
+			modifier = {
+				factor = constant:brilliant_scientist_opening_ai.secret_authoritarian_factor
+				OR = {
+					has_government = fascism
+					has_government = communism
+					has_government = neutrality
+				}
+			}
+			modifier = { factor = constant:brilliant_scientist_opening_ai.secret_unstable_factor has_stability < constant:brilliant_scientist_opening_ai.low_stability }
+			modifier = {
+				factor = constant:brilliant_scientist_opening_ai.secret_strategic_facility_factor
+				OR = {
+					has_facility_specialization = specialization_nuclear
+					has_facility_specialization = specialization_air
+					has_facility_specialization = specialization_land
+					has_facility_specialization = specialization_naval
+					has_facility_specialization = specialization_biowarfare
+					has_facility_specialization = specialization_cw
+				}
+			}
+			modifier = { factor = constant:brilliant_scientist_opening_ai.secret_technology_gap_factor NOT = { has_tech = computing_machine } }
+		}
+		custom_effect_tooltip = brilliant_scientist_secret_appointment_effect_tt
+		hidden_effect = {
+			set_temp_variable = { brilliant_scientist_recruitment_posture = constant:brilliant_scientist_recruitment_posture.secret_directorate }
+			brilliant_scientist_appoint_kruger_from_opening = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr16.2.c
+		trigger = {
+			is_ai = no
+			NOT = { has_global_flag = brilliant_scientist_event_resolved }
+			has_event_target = brilliant_scientist_send_away_recipient
+			event_target:brilliant_scientist_send_away_recipient = {
+				brilliant_scientist_is_valid_initial_send_away_recipient = yes
+			}
+		}
+		ai_chance = { base = constant:brilliant_scientist_opening_ai.never }
+		custom_effect_tooltip = brilliant_scientist_send_away_effect_tt
+		hidden_effect = {
+			brilliant_scientist_forward_opening_to_selected_recipient = yes
+		}
+	}
+}
+
+# Recipient appointment. The referral cannot be repeated; the recipient must
+# choose the public or secret route and receives the same fixed character.
+country_event = {
+	id = chaosx.nr16.3
+	title = chaosx.nr16.3.t
+	desc = chaosx.nr16.3.d
+	picture = GFX_portrait_KRG_doctor_warren_kruger_stage_0
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr16.3.a
+		trigger = {
+			has_country_flag = brilliant_scientist_received_initial_referral
+			brilliant_scientist_is_eligible_host = yes
+			NOT = { has_global_flag = brilliant_scientist_event_resolved }
+		}
+		ai_chance = {
+			base = constant:brilliant_scientist_opening_ai.public_base
+			modifier = { factor = constant:brilliant_scientist_opening_ai.public_democratic_factor has_government = democratic }
+			modifier = { factor = constant:brilliant_scientist_opening_ai.public_stable_factor has_stability > constant:brilliant_scientist_opening_ai.high_stability }
+			modifier = { factor = constant:brilliant_scientist_opening_ai.public_peace_factor has_war = no }
+			modifier = { factor = constant:brilliant_scientist_opening_ai.public_civilian_industry_factor num_of_factories > constant:brilliant_scientist_opening_ai.industrial_factory_gate }
+			modifier = { factor = constant:brilliant_scientist_opening_ai.public_computing_factor has_tech = computing_machine }
+		}
+		custom_effect_tooltip = brilliant_scientist_public_appointment_effect_tt
+		hidden_effect = {
+			set_temp_variable = { brilliant_scientist_recruitment_posture = constant:brilliant_scientist_recruitment_posture.public_compact }
+			brilliant_scientist_appoint_kruger_from_opening = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr16.3.b
+		trigger = {
+			has_country_flag = brilliant_scientist_received_initial_referral
+			brilliant_scientist_is_eligible_host = yes
+			NOT = { has_global_flag = brilliant_scientist_event_resolved }
+		}
+		ai_chance = {
+			base = constant:brilliant_scientist_opening_ai.secret_base
+			modifier = { factor = constant:brilliant_scientist_opening_ai.secret_war_factor has_war = yes }
+			modifier = {
+				factor = constant:brilliant_scientist_opening_ai.secret_authoritarian_factor
+				OR = {
+					has_government = fascism
+					has_government = communism
+					has_government = neutrality
+				}
+			}
+			modifier = { factor = constant:brilliant_scientist_opening_ai.secret_unstable_factor has_stability < constant:brilliant_scientist_opening_ai.low_stability }
+			modifier = {
+				factor = constant:brilliant_scientist_opening_ai.secret_strategic_facility_factor
+				OR = {
+					has_facility_specialization = specialization_nuclear
+					has_facility_specialization = specialization_air
+					has_facility_specialization = specialization_land
+					has_facility_specialization = specialization_naval
+					has_facility_specialization = specialization_biowarfare
+					has_facility_specialization = specialization_cw
+				}
+			}
+			modifier = { factor = constant:brilliant_scientist_opening_ai.secret_technology_gap_factor NOT = { has_tech = computing_machine } }
+		}
+		custom_effect_tooltip = brilliant_scientist_secret_appointment_effect_tt
+		hidden_effect = {
+			set_temp_variable = { brilliant_scientist_recruitment_posture = constant:brilliant_scientist_recruitment_posture.secret_directorate }
+			brilliant_scientist_appoint_kruger_from_opening = yes
+		}
+	}
 }

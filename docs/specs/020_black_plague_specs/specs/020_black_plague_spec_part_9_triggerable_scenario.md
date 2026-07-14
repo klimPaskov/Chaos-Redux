@@ -317,7 +317,7 @@ The Black Plague-specific decisions remain separate decision entries inside the 
 
 The launch ends with one full rebuild of the existing disease mapmode.
 
-When Black Plague is selected:
+In the shared contamination mapmode:
 
 - every established Black Plague state uses a black base fill
 - status is communicated through outlines, status icons, patterns, and tooltips

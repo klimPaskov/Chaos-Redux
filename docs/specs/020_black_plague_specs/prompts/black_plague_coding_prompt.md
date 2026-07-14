@@ -52,7 +52,7 @@ Implement route-aware spread through land adjacency, internal transport, troop m
 
 Do not create a duplicate Black Plague decision category. Register the disease in the existing biological warfare and disease UI. Generic disease actions remain shared, while separate Black Plague-specific actions appear inside that same category when the selected disease and target qualify. Implement dynamic Prepared, Exposed, Infected, Containment, Recovery, and Cured action sets. Add selected-state values, country preparedness, countermeasure progress, Rat Infestation, state lists, filters, tooltips, and immediate mapmode refresh.
 
-When Black Plague is selected, every established Black Plague state must use a black base colour in the existing disease mapmode. Use outlines, patterns, status icons, and tooltips for phase, containment, weaponized provenance, and rat control. Do not use the normal generic disease fill for active Black Plague states.
+Every established Black Plague state visible to the mapmode player must use a black base colour in the existing disease mapmode regardless of the shared board's selected disease tab. Use outlines, patterns, status icons, and tooltips for phase, containment, weaponized provenance, and rat control. Do not use the normal generic disease fill for active Black Plague states.
 
 Prototype state-attached black fog only on a verified engine surface. If it cannot be implemented safely, write a reproducible blocker report. Do not substitute a generic screen tint and claim that the fog exists. The black disease mapmode remains mandatory regardless of fog feasibility.
 

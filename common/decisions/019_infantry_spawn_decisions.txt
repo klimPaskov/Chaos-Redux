@@ -1,0 +1,745 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 019 ORDINARY-COUNTRY DECISIONS AND MISSIONS
+# ============================================================================
+# Baseline lot disposition, Organized Muster institutions, Arsenal Lottery
+# organization, and four bounded request modes. Dynamic request costs are
+# refreshed by the Event 19 country management pulse and rechecked at payment.
+# ============================================================================
+
+infantry_spawn_formation_management_category = {
+	infantry_spawn_open_muster_board = {
+		icon = GFX_decision_generic_operation
+		visible = { infantry_spawn_has_evolution_iii = yes }
+		available = {
+			infantry_spawn_muster_board_is_available = yes
+			NOT = { has_country_flag = infantry_spawn_muster_board_open }
+		}
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_open_muster_board_tt
+			hidden_effect = { infantry_spawn_muster_board_open = yes }
+		}
+		ai_will_do = { base = constant:infantry_spawn_factor.disabled }
+	}
+
+	# -----------------------------------------------------------------------
+	# Baseline audit and lot disposition
+	# -----------------------------------------------------------------------
+
+	infantry_spawn_select_next_ordinary_lot = {
+		icon = GFX_decision_generic_operation
+		visible = { infantry_spawn_has_unresolved_generation = yes }
+		available = { infantry_spawn_management_is_available = yes }
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_select_next_ordinary_lot_tt
+			hidden_effect = { infantry_spawn_select_next_unresolved_ordinary_lot = yes }
+		}
+		ai_will_do = { base = constant:infantry_spawn_factor.disabled }
+	}
+
+	infantry_spawn_audit_selected_lot = {
+		icon = GFX_decision_generic_army_support
+		visible = {
+			infantry_spawn_can_audit_generation = yes
+			infantry_spawn_selected_lot_is_unresolved = yes
+			NOT = { infantry_spawn_selected_lot_is_anomalous = yes }
+			check_variable = { infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index = constant:infantry_spawn_lot_state.auditing }
+		}
+		available = { infantry_spawn_can_execute_selected_lot_audit = yes }
+		custom_cost_trigger = { infantry_spawn_can_execute_selected_lot_audit = yes }
+		custom_cost_text = infantry_spawn_audit_selected_lot_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_audit_selected_lot_tt
+			hidden_effect = { infantry_spawn_execute_selected_lot_audit_action = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.standard
+			modifier = { factor = constant:infantry_spawn_factor.strong infantry_spawn_control_is_low = yes }
+			modifier = { factor = constant:infantry_spawn_factor.strong has_country_flag = infantry_spawn_generation_stacked }
+		}
+	}
+
+	infantry_spawn_assign_territorial_roles = {
+		icon = GFX_decision_generic_reorganize_irregulars
+		visible = {
+			infantry_spawn_can_assign_territorial_role = yes
+			check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_state.training compare = less_than }
+			NOT = { has_country_flag = infantry_spawn_audit_decision_running }
+		}
+		available = { infantry_spawn_can_execute_selected_lot_territorial_assignment = yes }
+		custom_cost_trigger = { infantry_spawn_can_execute_selected_lot_territorial_assignment = yes }
+		custom_cost_text = infantry_spawn_support_equipment_management_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_assign_territorial_roles_tt
+			hidden_effect = { infantry_spawn_execute_selected_lot_territorial_action = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.three_quarters
+			modifier = { factor = constant:infantry_spawn_factor.double infantry_spawn_congestion_is_severe = yes }
+			modifier = { factor = constant:infantry_spawn_factor.strong NOT = { has_war = yes } }
+		}
+	}
+
+	infantry_spawn_open_standardization_cycle = {
+		icon = GFX_decision_generic_merge_plant_materiel
+		visible = {
+			infantry_spawn_can_standardize_selected_lot = yes
+			check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_state.training compare = less_than }
+			check_variable = { var = infantry_spawn_lot_profile_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_family.armored_reserve_group compare = less_than }
+			NOT = { has_country_flag = infantry_spawn_audit_decision_running }
+			NOT = { has_country_flag = infantry_spawn_standardization_running }
+		}
+		available = { infantry_spawn_can_execute_selected_lot_standardization = yes }
+		custom_cost_trigger = { infantry_spawn_can_execute_selected_lot_standardization = yes }
+		custom_cost_text = infantry_spawn_standardization_cycle_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_open_standardization_cycle_tt
+			hidden_effect = { infantry_spawn_execute_selected_lot_standardization_action = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.three_quarters
+			modifier = { factor = constant:infantry_spawn_factor.strong infantry_spawn_control_is_strong = yes }
+			modifier = { factor = constant:infantry_spawn_factor.half infantry_spawn_congestion_is_severe = yes }
+		}
+	}
+
+	infantry_spawn_supervised_demobilization = {
+		icon = GFX_decision_generic_disband_irregulars
+		visible = {
+			infantry_spawn_can_demobilize_selected_lot = yes
+			check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_state.training compare = less_than }
+			NOT = { has_country_flag = infantry_spawn_audit_decision_running }
+			NOT = { has_country_flag = infantry_spawn_demobilization_running }
+			NOT = { has_country_flag = infantry_spawn_specialist_preservation_running }
+		}
+		available = { infantry_spawn_can_execute_selected_lot_demobilization = yes }
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_supervised_demobilization_tt
+			hidden_effect = { infantry_spawn_execute_selected_lot_demobilization_action = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.half
+			modifier = { factor = constant:infantry_spawn_factor.triple infantry_spawn_congestion_is_severe = yes }
+			modifier = { factor = constant:infantry_spawn_factor.strong check_variable = { infantry_spawn_equipment_debt > constant:infantry_spawn_debt_threshold.severe } }
+			modifier = { factor = constant:infantry_spawn_factor.quarter has_war = yes }
+		}
+	}
+
+	infantry_spawn_emergency_field_integration = {
+		icon = GFX_decision_generic_military
+		visible = {
+			infantry_spawn_can_emergency_integrate_selected_lot = yes
+			check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_state.training compare = less_than }
+			NOT = { has_country_flag = infantry_spawn_audit_decision_running }
+		}
+		available = { infantry_spawn_can_execute_selected_lot_emergency_integration = yes }
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_emergency_field_integration_tt
+			hidden_effect = { infantry_spawn_execute_selected_lot_emergency_integration_action = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.half
+			modifier = { factor = constant:infantry_spawn_factor.triple has_war = yes }
+			modifier = { factor = constant:infantry_spawn_factor.half infantry_spawn_control_is_low = yes }
+		}
+	}
+
+	# -----------------------------------------------------------------------
+	# Evolution I - Organized Muster institutions
+	# -----------------------------------------------------------------------
+
+	infantry_spawn_establish_muster_districts = {
+		icon = GFX_decision_generic_colonial_administration
+		visible = {
+			infantry_spawn_has_evolution_i = yes
+			check_variable = { infantry_spawn_active_lot_count > 0 }
+			NOT = { has_country_flag = infantry_spawn_muster_districts_established }
+			NOT = { has_country_flag = infantry_spawn_muster_districts_running }
+		}
+		available = {
+			infantry_spawn_management_is_available = yes
+			check_variable = { var = army_experience value = constant:infantry_spawn_request_cost.base_army_experience compare = greater_than_or_equals }
+			check_variable = { var = num_equipment@support_equipment value = constant:infantry_spawn_request_cost.base_support_equipment compare = greater_than_or_equals }
+			check_variable = { var = num_equipment@train_equipment value = constant:infantry_spawn_request_cost.base_trains compare = greater_than_or_equals }
+		}
+		custom_cost_trigger = {
+			check_variable = { var = army_experience value = constant:infantry_spawn_request_cost.base_army_experience compare = greater_than_or_equals }
+			check_variable = { var = num_equipment@support_equipment value = constant:infantry_spawn_request_cost.base_support_equipment compare = greater_than_or_equals }
+			check_variable = { var = num_equipment@train_equipment value = constant:infantry_spawn_request_cost.base_trains compare = greater_than_or_equals }
+		}
+		custom_cost_text = infantry_spawn_muster_districts_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_establish_muster_districts_tt
+			hidden_effect = { infantry_spawn_start_muster_districts = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.standard
+			modifier = { factor = constant:infantry_spawn_factor.strong infantry_spawn_congestion_is_severe = yes }
+			modifier = { factor = constant:infantry_spawn_factor.strong NOT = { has_war = yes } }
+		}
+	}
+
+	infantry_spawn_appoint_integration_staff = {
+		icon = GFX_decision_generic_army_support
+		visible = {
+			infantry_spawn_has_evolution_i = yes
+			NOT = { has_country_flag = infantry_spawn_integration_staff_appointed }
+			NOT = { has_country_flag = infantry_spawn_integration_staff_search_running }
+		}
+		available = {
+			infantry_spawn_management_is_available = yes
+			check_variable = { var = army_experience value = constant:infantry_spawn_request_cost.base_army_experience compare = greater_than_or_equals }
+		}
+		custom_cost_trigger = {
+			check_variable = { var = army_experience value = constant:infantry_spawn_request_cost.base_army_experience compare = greater_than_or_equals }
+		}
+		custom_cost_text = infantry_spawn_army_experience_management_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_appoint_integration_staff_tt
+			hidden_effect = { infantry_spawn_start_integration_staff_search = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.standard
+			modifier = { factor = constant:infantry_spawn_factor.strong is_major = yes }
+			modifier = { factor = constant:infantry_spawn_factor.strong NOT = { has_war = yes } }
+		}
+	}
+
+	infantry_spawn_issue_common_tables = {
+		icon = GFX_decision_generic_merge_plant_materiel
+		visible = {
+			infantry_spawn_has_evolution_i = yes
+			infantry_spawn_can_standardize_selected_lot = yes
+			check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_state.training compare = less_than }
+			check_variable = { var = infantry_spawn_lot_profile_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_family.armored_reserve_group compare = less_than }
+			NOT = { has_country_flag = infantry_spawn_audit_decision_running }
+			NOT = { has_country_flag = infantry_spawn_standardization_running }
+		}
+		available = {
+			check_variable = { var = num_equipment@infantry_equipment value = constant:infantry_spawn_request_cost.base_infantry_equipment compare = greater_than_or_equals }
+			check_variable = { var = num_equipment@support_equipment value = constant:infantry_spawn_request_cost.base_support_equipment compare = greater_than_or_equals }
+		}
+		custom_cost_trigger = {
+			check_variable = { var = num_equipment@infantry_equipment value = constant:infantry_spawn_request_cost.base_infantry_equipment compare = greater_than_or_equals }
+			check_variable = { var = num_equipment@support_equipment value = constant:infantry_spawn_request_cost.base_support_equipment compare = greater_than_or_equals }
+		}
+		custom_cost_text = infantry_spawn_standardization_cycle_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_issue_common_tables_tt
+			hidden_effect = { infantry_spawn_issue_common_tables = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.standard
+			modifier = { factor = constant:infantry_spawn_factor.double has_country_flag = infantry_spawn_integration_staff_appointed }
+			modifier = { factor = constant:infantry_spawn_factor.half infantry_spawn_congestion_is_severe = yes }
+		}
+	}
+
+	infantry_spawn_preserve_specialist_companies = {
+		icon = GFX_decision_generic_research
+		visible = {
+			infantry_spawn_has_evolution_i = yes
+			infantry_spawn_can_demobilize_selected_lot = yes
+			check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_state.training compare = less_than }
+			check_variable = { infantry_spawn_lot_support_count_entries^infantry_spawn_selected_lot_index > 0 }
+			NOT = { has_country_flag = infantry_spawn_audit_decision_running }
+			NOT = { has_country_flag = infantry_spawn_specialist_preservation_running }
+			NOT = { has_country_flag = infantry_spawn_demobilization_running }
+		}
+		available = { infantry_spawn_can_execute_selected_lot_specialist_preservation = yes }
+		custom_cost_trigger = { infantry_spawn_can_execute_selected_lot_specialist_preservation = yes }
+		custom_cost_text = infantry_spawn_support_equipment_management_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_preserve_specialist_companies_tt
+			hidden_effect = { infantry_spawn_execute_selected_lot_specialist_preservation_action = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.three_quarters
+			modifier = { factor = constant:infantry_spawn_factor.double check_variable = { infantry_spawn_equipment_debt > constant:infantry_spawn_debt_threshold.severe } }
+			modifier = { factor = constant:infantry_spawn_factor.half has_war = yes }
+		}
+	}
+
+	infantry_spawn_recognize_emergency_reserve = {
+		icon = GFX_decision_generic_protection
+		visible = {
+			infantry_spawn_has_evolution_i = yes
+			infantry_spawn_selected_lot_is_unresolved = yes
+			NOT = { infantry_spawn_selected_lot_is_anomalous = yes }
+			check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_state.training compare = less_than }
+			NOT = { has_country_flag = infantry_spawn_audit_decision_running }
+			NOT = { has_country_flag = infantry_spawn_emergency_reserve_recognized }
+		}
+		available = { infantry_spawn_management_is_available = yes }
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_recognize_emergency_reserve_tt
+			hidden_effect = { infantry_spawn_recognize_selected_emergency_reserve = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.half
+			modifier = { factor = constant:infantry_spawn_factor.double has_war = yes }
+			modifier = { factor = constant:infantry_spawn_factor.strong infantry_spawn_control_is_strong = yes }
+			modifier = { factor = constant:infantry_spawn_factor.half infantry_spawn_control_is_low = yes }
+		}
+	}
+
+	# -----------------------------------------------------------------------
+	# Evolution II - organization and the bounded request lottery
+	# -----------------------------------------------------------------------
+
+	infantry_spawn_survey_formation_lots = {
+		icon = GFX_decision_generic_operation
+		visible = { infantry_spawn_has_evolution_ii = yes check_variable = { infantry_spawn_active_lot_count > 0 } }
+		available = { infantry_spawn_management_is_available = yes }
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_survey_formation_lots_tt
+			hidden_effect = {
+				infantry_spawn_select_first_unresolved_ordinary_lot = yes
+				infantry_spawn_close_resolved_generations = yes
+				infantry_spawn_refresh_request_costs = yes
+			}
+		}
+		ai_will_do = { base = constant:infantry_spawn_factor.disabled }
+	}
+
+	infantry_spawn_open_training_cycle = {
+		icon = GFX_decision_generic_army_support
+		visible = {
+			infantry_spawn_has_evolution_ii = yes
+			infantry_spawn_selected_lot_is_unresolved = yes
+			NOT = { infantry_spawn_selected_lot_is_anomalous = yes }
+			check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_state.training compare = less_than }
+			NOT = { has_country_flag = infantry_spawn_audit_decision_running }
+			NOT = { has_country_flag = infantry_spawn_training_cycle_running }
+		}
+		available = { infantry_spawn_can_execute_selected_lot_training = yes }
+		custom_cost_trigger = { infantry_spawn_can_execute_selected_lot_training = yes }
+		custom_cost_text = infantry_spawn_training_cycle_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_open_training_cycle_tt
+			hidden_effect = { infantry_spawn_execute_selected_lot_training_action = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.three_quarters
+			modifier = { factor = constant:infantry_spawn_factor.strong infantry_spawn_control_is_strong = yes }
+			modifier = { factor = constant:infantry_spawn_factor.quarter infantry_spawn_congestion_is_severe = yes }
+		}
+	}
+
+	infantry_spawn_reserve_rail_corridors = {
+		icon = GFX_decision_generic_train
+		visible = {
+			infantry_spawn_has_evolution_ii = yes
+			infantry_spawn_selected_lot_index_is_valid = yes
+			NOT = { infantry_spawn_selected_lot_is_anomalous = yes }
+			check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_state.demobilizing compare = less_than }
+			NOT = { has_country_flag = infantry_spawn_rail_corridor_running }
+		}
+		available = {
+			infantry_spawn_management_is_available = yes
+			check_variable = { var = num_equipment@train_equipment value = constant:infantry_spawn_request_cost.base_trains compare = greater_than_or_equals }
+			check_variable = { var = fuel_k value = constant:infantry_spawn_factor.quarter compare = greater_than_or_equals }
+		}
+		custom_cost_trigger = {
+			check_variable = { var = num_equipment@train_equipment value = constant:infantry_spawn_request_cost.base_trains compare = greater_than_or_equals }
+			check_variable = { var = fuel_k value = constant:infantry_spawn_factor.quarter compare = greater_than_or_equals }
+		}
+		custom_cost_text = infantry_spawn_rail_corridor_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_reserve_rail_corridors_tt
+			hidden_effect = { infantry_spawn_start_rail_corridor_mission = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.half
+			modifier = { factor = constant:infantry_spawn_factor.triple infantry_spawn_congestion_is_severe = yes }
+			modifier = { factor = constant:infantry_spawn_factor.half fuel_ratio < constant:infantry_spawn_factor.quarter }
+		}
+	}
+
+	infantry_spawn_request_field_reinforcement = {
+		icon = GFX_decision_generic_military
+		visible = { infantry_spawn_has_evolution_ii = yes NOT = { infantry_spawn_has_evolution_iii = yes } NOT = { has_country_flag = infantry_spawn_request_cooldown } }
+		available = { infantry_spawn_can_pay_field_request = yes }
+		custom_cost_trigger = { infantry_spawn_can_pay_field_request = yes }
+		custom_cost_text = infantry_spawn_request_field_reinforcement_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_request_field_reinforcement_tt
+			hidden_effect = { infantry_spawn_request_field_reinforcement_action = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.quarter
+			modifier = { factor = constant:infantry_spawn_factor.triple has_war = yes }
+			modifier = {
+				factor = constant:infantry_spawn_factor.disabled
+				infantry_spawn_congestion_is_severe = yes
+				NOT = { any_controlled_state = { is_capital = yes any_neighbor_state = { CONTROLLER = { has_war_with = ROOT } } } }
+			}
+		}
+	}
+
+	infantry_spawn_request_mobile_reserve = {
+		icon = GFX_decision_generic_motorized
+		visible = { infantry_spawn_has_evolution_ii = yes NOT = { infantry_spawn_has_evolution_iii = yes } NOT = { has_country_flag = infantry_spawn_request_cooldown } }
+		available = { infantry_spawn_can_pay_mobile_reserve_request = yes }
+		custom_cost_trigger = { infantry_spawn_can_pay_mobile_reserve_request = yes }
+		custom_cost_text = infantry_spawn_request_mobile_reserve_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_request_mobile_reserve_tt
+			hidden_effect = { infantry_spawn_request_mobile_reserve_action = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.tenth
+			modifier = { factor = constant:infantry_spawn_factor.triple has_war = yes }
+			modifier = { factor = constant:infantry_spawn_factor.disabled fuel_ratio < constant:infantry_spawn_factor.quarter }
+			modifier = {
+				factor = constant:infantry_spawn_factor.disabled
+				infantry_spawn_congestion_is_severe = yes
+				NOT = { any_controlled_state = { is_capital = yes any_neighbor_state = { CONTROLLER = { has_war_with = ROOT } } } }
+			}
+		}
+	}
+
+	infantry_spawn_request_territorial_defenders = {
+		icon = GFX_decision_generic_protection
+		visible = { infantry_spawn_has_evolution_ii = yes NOT = { infantry_spawn_has_evolution_iii = yes } NOT = { has_country_flag = infantry_spawn_request_cooldown } }
+		available = { infantry_spawn_can_pay_territorial_request = yes }
+		custom_cost_trigger = { infantry_spawn_can_pay_territorial_request = yes }
+		custom_cost_text = infantry_spawn_request_territorial_defenders_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_request_territorial_defenders_tt
+			hidden_effect = { infantry_spawn_request_territorial_defenders_action = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.quarter
+			modifier = { factor = constant:infantry_spawn_factor.triple infantry_spawn_congestion_is_severe = yes }
+			modifier = { factor = constant:infantry_spawn_factor.strong fuel_ratio < constant:infantry_spawn_factor.quarter }
+			modifier = {
+				factor = constant:infantry_spawn_factor.disabled
+				infantry_spawn_congestion_is_severe = yes
+				NOT = { any_controlled_state = { is_capital = yes any_neighbor_state = { CONTROLLER = { has_war_with = ROOT } } } }
+			}
+		}
+	}
+
+	infantry_spawn_request_specialist_firepower = {
+		icon = GFX_decision_generic_research
+		visible = { infantry_spawn_has_evolution_ii = yes NOT = { infantry_spawn_has_evolution_iii = yes } NOT = { has_country_flag = infantry_spawn_request_cooldown } }
+		available = { infantry_spawn_can_pay_specialist_request = yes }
+		custom_cost_trigger = { infantry_spawn_can_pay_specialist_request = yes }
+		custom_cost_text = infantry_spawn_request_specialist_firepower_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_request_specialist_firepower_tt
+			hidden_effect = { infantry_spawn_request_specialist_firepower_action = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.tenth
+			modifier = { factor = constant:infantry_spawn_factor.triple is_major = yes }
+			modifier = { factor = constant:infantry_spawn_factor.strong has_war = yes }
+			modifier = {
+				factor = constant:infantry_spawn_factor.disabled
+				infantry_spawn_congestion_is_severe = yes
+				NOT = { any_controlled_state = { is_capital = yes any_neighbor_state = { CONTROLLER = { has_war_with = ROOT } } } }
+			}
+		}
+	}
+
+	# -----------------------------------------------------------------------
+	# Evolution III - unrestricted request philosophies
+	# -----------------------------------------------------------------------
+
+	infantry_spawn_request_numbers = {
+		icon = GFX_decision_generic_military
+		visible = { infantry_spawn_has_evolution_iii = yes NOT = { has_country_flag = infantry_spawn_request_cooldown } }
+		available = { infantry_spawn_can_pay_numbers_request = yes }
+		custom_cost_trigger = { infantry_spawn_can_pay_numbers_request = yes }
+		custom_cost_text = infantry_spawn_request_numbers_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_request_numbers_tt
+			hidden_effect = { infantry_spawn_request_numbers_action = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.quarter
+			modifier = { factor = constant:infantry_spawn_factor.triple has_war = yes }
+			modifier = { factor = constant:infantry_spawn_factor.double check_variable = { infantry_spawn_ai_profile = constant:infantry_spawn_ai_profile.wartime_opportunist } }
+			modifier = { factor = constant:infantry_spawn_factor.quarter infantry_spawn_congestion_is_severe = yes }
+		}
+	}
+
+	infantry_spawn_request_discipline = {
+		icon = GFX_decision_generic_army_support
+		visible = { infantry_spawn_has_evolution_iii = yes NOT = { has_country_flag = infantry_spawn_request_cooldown } }
+		available = { infantry_spawn_can_pay_discipline_request = yes }
+		custom_cost_trigger = { infantry_spawn_can_pay_discipline_request = yes }
+		custom_cost_text = infantry_spawn_request_discipline_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_request_discipline_tt
+			hidden_effect = { infantry_spawn_request_discipline_action = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.quarter
+			modifier = { factor = constant:infantry_spawn_factor.triple check_variable = { infantry_spawn_ai_profile = constant:infantry_spawn_ai_profile.professionalizer } }
+			modifier = { factor = constant:infantry_spawn_factor.double infantry_spawn_control_is_strong = yes }
+			modifier = { factor = constant:infantry_spawn_factor.half infantry_spawn_control_is_low = yes }
+		}
+	}
+
+	infantry_spawn_request_firepower = {
+		icon = GFX_decision_generic_research
+		visible = { infantry_spawn_has_evolution_iii = yes NOT = { has_country_flag = infantry_spawn_request_cooldown } }
+		available = { infantry_spawn_can_pay_firepower_request = yes }
+		custom_cost_trigger = { infantry_spawn_can_pay_firepower_request = yes }
+		custom_cost_text = infantry_spawn_request_firepower_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_request_firepower_tt
+			hidden_effect = { infantry_spawn_request_firepower_action = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.tenth
+			modifier = { factor = constant:infantry_spawn_factor.triple is_major = yes }
+			modifier = { factor = constant:infantry_spawn_factor.double has_war = yes }
+			modifier = { factor = constant:infantry_spawn_factor.quarter check_variable = { infantry_spawn_equipment_debt > constant:infantry_spawn_debt_threshold.severe } }
+		}
+	}
+
+	infantry_spawn_request_mobility = {
+		icon = GFX_decision_generic_motorized
+		visible = { infantry_spawn_has_evolution_iii = yes NOT = { has_country_flag = infantry_spawn_request_cooldown } }
+		available = { infantry_spawn_can_pay_mobility_request = yes }
+		custom_cost_trigger = { infantry_spawn_can_pay_mobility_request = yes }
+		custom_cost_text = infantry_spawn_request_mobility_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_request_mobility_tt
+			hidden_effect = { infantry_spawn_request_mobility_action = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.tenth
+			modifier = { factor = constant:infantry_spawn_factor.triple has_war = yes }
+			modifier = { factor = constant:infantry_spawn_factor.disabled fuel_ratio < constant:infantry_spawn_factor.quarter }
+			modifier = { factor = constant:infantry_spawn_factor.quarter infantry_spawn_congestion_is_severe = yes }
+		}
+	}
+
+	infantry_spawn_request_anything = {
+		icon = GFX_decision_generic_operation
+		visible = { infantry_spawn_has_evolution_iii = yes NOT = { has_country_flag = infantry_spawn_request_cooldown } }
+		available = { infantry_spawn_can_pay_anything_request = yes }
+		custom_cost_trigger = { infantry_spawn_can_pay_anything_request = yes }
+		custom_cost_text = infantry_spawn_request_anything_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_request_anything_tt
+			hidden_effect = { infantry_spawn_request_anything_action = yes }
+		}
+		ai_will_do = {
+			base = constant:infantry_spawn_factor.tenth
+			modifier = { factor = constant:infantry_spawn_factor.triple check_variable = { infantry_spawn_ai_profile = constant:infantry_spawn_ai_profile.gambler } }
+			modifier = { factor = constant:infantry_spawn_factor.double infantry_spawn_control_is_low = yes }
+			modifier = { factor = constant:infantry_spawn_factor.quarter infantry_spawn_congestion_is_severe = yes }
+		}
+	}
+
+	# -----------------------------------------------------------------------
+	# Evolution IV - selected registry-family management
+	# -----------------------------------------------------------------------
+
+	infantry_spawn_request_selected_anomalous_family = {
+		icon = GFX_decision_generic_military
+		visible = { infantry_spawn_has_evolution_iv = yes }
+		available = { infantry_spawn_can_execute_selected_family_reinforcement = yes }
+		custom_cost_trigger = { infantry_spawn_can_execute_selected_family_reinforcement = yes }
+		custom_cost_text = infantry_spawn_request_selected_anomalous_family_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_request_selected_anomalous_family_tt
+			hidden_effect = { infantry_spawn_execute_selected_family_train_or_spawn = yes }
+		}
+		ai_will_do = { base = constant:infantry_spawn_factor.disabled }
+	}
+
+	infantry_spawn_open_selected_family_cantonment_decision = {
+		icon = GFX_decision_generic_construction
+		visible = { infantry_spawn_has_evolution_iv = yes }
+		available = { infantry_spawn_can_open_selected_family_cantonment = yes }
+		custom_cost_trigger = { infantry_spawn_can_open_selected_family_cantonment = yes }
+		custom_cost_text = infantry_spawn_open_selected_family_cantonment_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_open_selected_family_cantonment_tt
+			hidden_effect = { infantry_spawn_open_selected_family_cantonment = yes }
+		}
+		ai_will_do = { base = constant:infantry_spawn_factor.disabled }
+	}
+
+	infantry_spawn_appoint_selected_family_liaison_decision = {
+		icon = GFX_decision_generic_army_support
+		visible = { infantry_spawn_has_evolution_iv = yes }
+		available = { infantry_spawn_can_appoint_selected_family_liaison = yes }
+		custom_cost_trigger = { infantry_spawn_can_appoint_selected_family_liaison = yes }
+		custom_cost_text = infantry_spawn_appoint_selected_family_liaison_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_appoint_selected_family_liaison_tt
+			hidden_effect = { infantry_spawn_appoint_selected_family_liaison = yes }
+		}
+		ai_will_do = { base = constant:infantry_spawn_factor.disabled }
+	}
+
+	infantry_spawn_restrict_selected_family_deployment_decision = {
+		icon = GFX_decision_generic_protection
+		visible = { infantry_spawn_has_evolution_iv = yes }
+		available = { infantry_spawn_can_issue_selected_family_restricted_deployment = yes }
+		custom_cost_trigger = { infantry_spawn_can_issue_selected_family_restricted_deployment = yes }
+		custom_cost_text = infantry_spawn_restrict_selected_family_deployment_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_restrict_selected_family_deployment_tt
+			hidden_effect = { infantry_spawn_issue_selected_family_restricted_deployment = yes }
+		}
+		ai_will_do = { base = constant:infantry_spawn_factor.disabled }
+	}
+
+	infantry_spawn_sustain_selected_family_decision = {
+		icon = GFX_decision_generic_industry
+		visible = { infantry_spawn_has_evolution_iv = yes }
+		available = { infantry_spawn_can_sustain_selected_family = yes }
+		custom_cost_trigger = { infantry_spawn_can_sustain_selected_family = yes }
+		custom_cost_text = infantry_spawn_sustain_selected_family_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_sustain_selected_family_tt
+			hidden_effect = { infantry_spawn_sustain_selected_family = yes }
+		}
+		ai_will_do = { base = constant:infantry_spawn_factor.disabled }
+	}
+
+	infantry_spawn_seal_selected_family_breach_decision = {
+		icon = GFX_decision_generic_operation
+		visible = { infantry_spawn_has_evolution_iv = yes }
+		available = { infantry_spawn_can_seal_selected_family_breach = yes }
+		custom_cost_trigger = { infantry_spawn_can_seal_selected_family_breach = yes }
+		custom_cost_text = infantry_spawn_seal_selected_family_breach_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_seal_selected_family_breach_tt
+			hidden_effect = { infantry_spawn_seal_selected_family_breach = yes }
+		}
+		ai_will_do = { base = constant:infantry_spawn_factor.disabled }
+	}
+
+	infantry_spawn_disperse_selected_anomalous_lot_decision = {
+		icon = GFX_decision_generic_disband_irregulars
+		visible = { infantry_spawn_has_evolution_iv = yes }
+		available = { infantry_spawn_can_disperse_selected_anomalous_lot = yes }
+		custom_cost_trigger = { infantry_spawn_can_disperse_selected_anomalous_lot = yes }
+		custom_cost_text = infantry_spawn_disperse_selected_anomalous_lot_cost
+		complete_effect = {
+			custom_effect_tooltip = infantry_spawn_disperse_selected_anomalous_lot_tt
+			hidden_effect = { infantry_spawn_disperse_selected_anomalous_lot = yes }
+		}
+		ai_will_do = { base = constant:infantry_spawn_factor.disabled }
+	}
+
+	# -----------------------------------------------------------------------
+	# Activated missions. Targets are stable lot UIDs stored by their starters.
+	# -----------------------------------------------------------------------
+
+	infantry_spawn_formation_roll_call_mission = {
+		icon = GFX_decision_generic_army_support
+		allowed = { always = no }
+		activation = { always = no }
+		visible = { has_country_flag = infantry_spawn_audit_decision_running }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = infantry_spawn_audit_mission_days
+		available = { always = no }
+		timeout_effect = { infantry_spawn_complete_selected_lot_audit = yes }
+	}
+
+	infantry_spawn_standardization_cycle_mission = {
+		icon = GFX_decision_generic_merge_plant_materiel
+		allowed = { always = no }
+		activation = { always = no }
+		visible = { has_country_flag = infantry_spawn_standardization_running }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = infantry_spawn_standardization_mission_days
+		available = { always = no }
+		timeout_effect = { infantry_spawn_complete_selected_lot_standardization = yes }
+	}
+
+	infantry_spawn_supervised_demobilization_mission = {
+		icon = GFX_decision_generic_disband_irregulars
+		allowed = { always = no }
+		activation = { always = no }
+		visible = { has_country_flag = infantry_spawn_demobilization_running }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = infantry_spawn_demobilization_mission_days
+		available = { always = no }
+		timeout_effect = { infantry_spawn_complete_supervised_demobilization = yes }
+	}
+
+	infantry_spawn_training_cycle_mission = {
+		icon = GFX_decision_generic_army_support
+		allowed = { always = no }
+		activation = { always = no }
+		visible = { has_country_flag = infantry_spawn_training_cycle_running }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = infantry_spawn_training_mission_days
+		available = { always = no }
+		timeout_effect = { infantry_spawn_complete_selected_lot_training = yes }
+	}
+
+	infantry_spawn_muster_districts_mission = {
+		icon = GFX_decision_generic_colonial_administration
+		allowed = { always = no }
+		activation = { always = no }
+		visible = { has_country_flag = infantry_spawn_muster_districts_running }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = infantry_spawn_muster_district_mission_days
+		available = { always = no }
+		timeout_effect = { infantry_spawn_complete_muster_districts = yes }
+	}
+
+	infantry_spawn_officer_search_mission = {
+		icon = GFX_decision_generic_army_support
+		allowed = { always = no }
+		activation = { always = no }
+		visible = { has_country_flag = infantry_spawn_integration_staff_search_running }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = infantry_spawn_officer_search_mission_days
+		available = { always = no }
+		timeout_effect = { infantry_spawn_complete_integration_staff_search = yes }
+	}
+
+	infantry_spawn_specialist_preservation_mission = {
+		icon = GFX_decision_generic_research
+		allowed = { always = no }
+		activation = { always = no }
+		visible = { has_country_flag = infantry_spawn_specialist_preservation_running }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = infantry_spawn_specialist_mission_days
+		available = { always = no }
+		timeout_effect = { infantry_spawn_complete_specialist_preservation = yes }
+	}
+
+	infantry_spawn_rail_corridor_mission = {
+		icon = GFX_decision_generic_train
+		allowed = { always = no }
+		activation = { always = no }
+		visible = { has_country_flag = infantry_spawn_rail_corridor_running }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = infantry_spawn_rail_corridor_mission_days
+		available = { always = no }
+		timeout_effect = { infantry_spawn_complete_rail_corridor_mission = yes }
+	}
+
+	infantry_spawn_request_cooldown_mission = {
+		icon = GFX_decision_generic_operation
+		allowed = { always = no }
+		activation = { always = no }
+		visible = { has_country_flag = infantry_spawn_request_cooldown }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = infantry_spawn_request_cooldown_days
+		available = { always = no }
+		timeout_effect = { infantry_spawn_finish_request_cooldown = yes }
+	}
+}

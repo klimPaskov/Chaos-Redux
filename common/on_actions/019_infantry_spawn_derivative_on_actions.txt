@@ -1,0 +1,42 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 019 DERIVATIVE COUNTRY LIFECYCLE ON ACTIONS
+# ============================================================================
+# Narrow victory, capitulation, and annex hooks only. Recurring derivative
+# work is dispatched by the Event 019 country event pulse, never a world scan.
+# ============================================================================
+
+on_actions = {
+	on_capitulation = {
+		effect = {
+			if = {
+				limit = { FROM = { is_infantry_spawn_derivative_country = yes } }
+				FROM = { infantry_spawn_derivative_record_war_victory = yes }
+			}
+			if = {
+				limit = { ROOT = { is_infantry_spawn_derivative_country = yes } }
+				FROM = { save_event_target_as = infantry_spawn_achievement_derivative_winner }
+				ROOT = {
+					set_variable = { infantry_spawn_derivative_defeated_by = FROM }
+					infantry_spawn_derivative_handle_defeat = yes
+				}
+			}
+		}
+	}
+
+	on_annex = {
+		effect = {
+			if = {
+				limit = { FROM = { is_infantry_spawn_derivative_country = yes } }
+				ROOT = { save_event_target_as = infantry_spawn_achievement_derivative_winner }
+				FROM = {
+					if = {
+						limit = { NOT = { has_country_flag = infantry_spawn_derivative_defeat_recorded } }
+						set_variable = { infantry_spawn_derivative_defeated_by = ROOT }
+						infantry_spawn_derivative_handle_defeat = yes
+					}
+					infantry_spawn_derivative_final_cleanup = yes
+				}
+			}
+		}
+	}
+}

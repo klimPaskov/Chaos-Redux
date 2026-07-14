@@ -21,13 +21,13 @@ This checklist evaluates the planning package against the Event 6 request. `Comp
 | Legitimacy, recognition, foreign support, patron influence, league cooperation, claims, instability, and formables are represented | Parts 3 and 6 | Complete in source design | Script constants, variables, UI, and cleanup |
 | Shared content adapts across all candidates | Part 4 shared framework, Part 5 overlays, registries | Complete in source design | Prove country-specific play in audit |
 | Strong packages receive signature ambitions | Part 5 signature modules and candidate registry | Complete in source design | Historical leaders, routes, symbols, and state mapping |
-| New Event 6 tags end in X | Candidate registry and Part 1 tag rule | Complete in source design | Repository collision audit before registration |
-| Existing registered tags can be reused | Part 1 tag policy | Complete in source design | Confirm existing ownership and content compatibility |
+| New Event 6 tags end in X | Candidate registry, Part 1 tag rule, 2026-07-14 installed-registry scan | Complete in source design and current snapshot | Repeat the collision scan if either registry changes |
+| Existing registered tags can be reused | Part 1 tag policy, 2026-07-14 installed-registry scan | Complete in source design and current snapshot | Confirm package identity compatibility at content assignment |
 | Regional formables use data-driven families | Part 6 and formable registry | Complete in source design | Final state groups and tag or cosmetic-tag choices |
 | Formables require territory, politics, recognition, or league proof | Part 6 formation methods and discovery | Complete in source design | Implement readable requirements and staged integration |
 | A league or coalition can form among released countries | Part 6 network and league | Complete in source design | Implement faction, charter, goals, AI, and cleanup |
 | The league has goals, values, membership rules, and failure states | Part 6 | Complete in source design | Scripted GUI or decision presentation and AI equivalence |
-| A super-event marks league formation | Part 6, approved text research, approved audio research | Complete in source design and source research | Produce image and audio files, then wire localisation, GFX, sound, and playback |
+| A super-event marks league formation | Part 6, approved text research, corrected audio-rights research | Complete in source design, text research complete | Clear the exact `6001` recording rights before audio production or wiring, then produce the remaining package |
 | A second super-event marks a dangerous global milestone | Part 6 dangerous milestone, super-event prompt | Complete in source design | Select the qualifying milestone during implementation |
 | Ordinary waves do not receive super-events | Part 6 trigger thresholds | Complete in source design | Audit visibility flags and call sites |
 | The event has five evolutions | Part 2 | Complete in source design | Implement enable gates, MTTH, logging, and active actor updates |
@@ -45,7 +45,7 @@ This checklist evaluates the planning package against the Event 6 request. `Comp
 | Difficult achievements cover survival, league, formables, signature packages, and scenario play | Part 7 and achievement matrix | Complete in source design | Implement tracking, disqualifiers, localisation, and icons |
 | Event log, docs, catalog, and workbook alignment are planned | Part 7 and catalog handoff | Complete in source design | Update after final in-game wording exists |
 | Final player-facing text is direction-only in the source spec | All spec parts and prompts | Complete in source design | Implementation writes final localisation and runs text audit |
-| Final super-event titles, descriptions, buttons, quotes, and audio selections are sourced | Approved text and audio research files | Complete in source research | Produce final assets and preserve attribution |
+| Final super-event titles, descriptions, buttons, quotes, and musical selections are sourced | Approved text research and corrected audio-rights research | Text complete, `6002` source verified, `6001` blocked | Preserve approved wording and attribution, do not process `6001` without clearance |
 | Completion requires focused audits across all major surfaces | Part 7 acceptance and subagent briefs | Complete in source design | Run the named auditors after implementation |
 
 
@@ -57,5 +57,15 @@ This checklist evaluates the planning package against the Event 6 request. `Comp
 - [x] The ten signature packages have period institutions, leadership, territory, and symbol rules.
 - [x] Broad and sensitive packages are converted into explicit automatic, conditional, formable, community-specific, or scenario outcomes.
 - [x] Both super-event text packages are sourced and approved.
-- [x] Both super-event audio recordings have verified rights and edit plans.
+- [x] Both super-event musical selections and edit plans are recorded.
+- [x] The `6002` source and rights basis are verified.
+- [ ] The exact `6001` recording has United States redistribution clearance.
 - [x] The source register records core, regional, signature, sensitive-identity, quote, and audio sources.
+
+## Dated reconciliation gates
+
+- [x] All 206 packages were evaluated against the installed 2026-07-14 map.
+- [x] The result contains 149 bound and 57 unbound packages across all 111 accepted reservation groups.
+- [x] All 14 collision rows were independently recomputed.
+- [ ] Parent chooses an explicit state-level mutual exclusion for the Trabzon cross-group automatic conflict.
+- [ ] Parent requires the Himalayan confederation route to consume or exclude the Kashmir reservation.

@@ -16,6 +16,7 @@ Event 016 remains default-disabled and gameplay-incomplete. The original impleme
 - Six final Event 016-owned OGGs are complete at IDs 90 through 95. Shared music, sound, settings, event, GUI, and localisation wiring remains absent.
 - The exact stage-0 leader or scientist DDS and advisor DDS are complete and registered. Stage I through IV sprite contracts are pre-registered, but the referenced later assets remain missing.
 - Event 020 separately declares world-end ID 10 and visible IDs 85 through 87 in its own constants. Its visible overlap with Event 015 is external to Event 016.
+- Fallout is an independent unnumbered system under `chaosx.fallout`. It owns its request coordinator, blackout GUI, transition events, assets, and audio wrappers.
 
 ## Executive verdict
 
@@ -24,7 +25,7 @@ At the original map snapshot, Event 016 was only a three-file placeholder. The e
 Two architecture problems must be resolved before ordinary content work:
 
 1. The random-event system records the fire-once history row in the dispatch effect chain, before the scheduled country event's immediate block can choose a host. Event 016 therefore needs a prefire host resolver and a regular event target. Leaving host selection inside chaosx.nr16.1 produces an incorrect or missing event-log actor.
-2. Strategic Singularity must end in the canonical Fallout state while presenting an Event 016-specific super-event. The current contamination dispatcher always fires chaosx_contamination.12, whose immediate block hardcodes super-event and audio ID 4. Event 016 cannot safely raise contamination through the canonical effect until this path accepts a verified Event 016 source context.
+2. Strategic Singularity must keep its Event 016-specific super-event separate from the dedicated Fallout handoff. Event 016 needs a verified request-source mapping into `fallout_request_aftermath`, while Fallout retains ownership of its blackout transition and audio.
 
 No fallback, substitute tree, generic audio, placeholder asset, transform-only animation, generic country setup, or reduced achievement list is authorized.
 
@@ -385,33 +386,26 @@ Extend:
 
 Do not set world threat merely because Kruger is appointed or KRG exists. Use the specified autonomy, strategic weapon, conquest, and terminal thresholds.
 
-### 5. Strategic Singularity to canonical Fallout
+### 5. Strategic Singularity to the dedicated Fallout system
 
-The current canonical path is:
+The live Fallout ownership path is:
 
-- common/scripted_effects/chaos_meter_effects.txt: air_contamination_apply_delta_bp
-- air_contamination_try_fire_fallout_world_end
-- events/chemical_warfare_events.txt: chaosx_contamination.12
+- `common/scripted_effects/fallout_world_end_effects.txt` for request intake and transition control
+- `common/scripted_triggers/fallout_world_end_triggers.txt` for request validation
+- `common/script_constants/fallout_world_end_constants.txt` for source and intensity identities
+- `events/fallout_world_end_events.txt` under the `chaosx.fallout` namespace
 
-chaosx_contamination.12 currently hardcodes:
+Required Event 016 bridge:
 
-- super_event_visible value 4;
-- global.current_super_event_audio_id = 4;
-- play_current_super_event_audio;
-- world_end;
-- world_end_fallout.
+1. Event 016 verifies Strategic Singularity readiness and saves the source actor through its existing terminal preparation helper.
+2. Event 016 applies its required Chaos, Deaths, Condemnation, and Air Contamination consequences through the normal shared APIs.
+3. Event 016 shows and records super-event `94` as its own Strategic Singularity presentation before the Fallout handoff.
+4. Event 016 supplies Fallout-owned request source and intensity inputs, passes the verified actor when needed, and calls `fallout_request_aftermath`.
+5. The Fallout coordinator validates the request, sets `world_end` and `world_end_fallout`, and owns the `chaosx.fallout.*` blackout and rewrite sequence.
+6. Event 016 sets `world_end_strategic_singularity` and its terminal, evolution, and achievement state only after the Fallout request is accepted.
+7. Event 016 clears its request context on success, cancellation, invalid ownership, disarmament, and every aborted attempt.
 
-Required shared adapter or refactor:
-
-1. Event 016 installs a verified, short-lived Strategic Singularity pending-source context before applying the canonical contamination delta.
-2. The contamination delta still goes through air_contamination_apply_delta_bp.
-3. chaosx_contamination.12, or a shared Fallout commit effect extracted from it, selects the Event 016 Strategic Singularity presentation only when the verified context is present.
-4. Ordinary contamination collapse still uses generic Fallout super-event ID 4.
-5. Both paths set the canonical world_end and world_end_fallout state and call the existing world-end cleanup.
-6. The Event 016 path additionally sets world_end_strategic_singularity and records its Event 016 terminal/evolution/achievement state.
-7. Clear the pending source on success and on every abort path.
-
-This is shared infrastructure. The Event 016 implementer may make the narrow adapter, but must not duplicate the Fallout terminal state or create a second contamination system.
+Fallout does not use the Strategic Singularity image or track. Strategic Singularity does not replace the Fallout blackout GUI, dedicated music wrappers, sound wrappers, or final audio files. The exact Event 016 request-source constant remains parent-owned because the current Fallout source enum has no Event 016-specific entry.
 
 Canonical shared effects to call rather than reimplement:
 
@@ -897,8 +891,9 @@ The following files are high-collision shared surfaces. The Event 016 implemente
 | common/scripted_triggers/chaosx_dynamic_triggers.txt and .md | Special/nonhuman classification |
 | common/scripted_triggers/chaosx_world_threat_triggers.txt | Event 016 world-threat source |
 | common/scripted_triggers/chaosx_world_end_scenario_triggers.txt | Two independent scenario gates |
-| common/scripted_effects/chaos_meter_effects.txt | Narrow canonical Fallout source adapter and canonical consequence calls |
-| events/chemical_warfare_events.txt | Narrow source-aware chaosx_contamination.12 presentation or extracted shared commit helper |
+| common/scripted_effects/chaos_meter_effects.txt | Canonical Chaos and Air Contamination consequence calls only |
+| common/scripted_effects/fallout_world_end_effects.txt | Fallout-owned request intake called by the Event 016 terminal bridge |
+| common/script_constants/fallout_world_end_constants.txt | Event 016 request-source identity only if the parent confirms a dedicated source entry |
 | common/script_constants/chaos_meter_constants.txt | New Deaths reason only if required |
 | common/script_constants/condemnation_sanctions_constants.txt | New singularity context only if required |
 | common/scripted_effects/condemnation_sanctions_effects.txt | Call existing public entry effect; do not bypass it |
@@ -918,7 +913,7 @@ Parent/main agent ownership:
 - final tag, event ID, super-event ID, cosmetic tag, sprite, and localisation-key reservations;
 - all shared-file wiring;
 - review of every subagent patch;
-- final Fallout adapter decision;
+- final Event 016 to Fallout request-source mapping.
 - final AI and balance integration;
 - final asset and audio registration;
 - final workbook merge;
@@ -946,8 +941,7 @@ At the final pre-write status check, unrelated tracked and untracked changes wer
 - Event 019 constants;
 - triggerable scenarios;
 - air-cleanliness winter effects, triggers, UI, assets, plans, and documentation;
-- fallout_world_end_events.txt;
-- events/chemical_warfare_events.txt-related Fallout surfaces may be affected by concurrent world-end work;
+- fallout_world_end_events.txt and the dedicated Fallout effects, triggers, constants, GUI, music, and sound files.
 - localisation/english/chaosx_gui_l_english.yml;
 - numerous chemical-air visual assets.
 
@@ -956,7 +950,7 @@ This list is descriptive, not ownership. Re-run git status --short before every 
 Most important collision risks:
 
 1. chaosx_gui_l_english.yml is already shared by concurrent world-end/UI work.
-2. Fallout and triggerable-scenario files are active work areas; design the Strategic Singularity adapter against the live post-merge version.
+2. Fallout and triggerable-scenario files are active work areas. Design the Strategic Singularity request bridge against the live post-merge version.
 3. Super-event IDs are not reserved by an apparent gap.
 4. KRG is free in the inspected repository and vanilla, but needs a final whole-load-order check.
 5. The event catalog workbook may change independently; spreadsheet work must be serialized.
@@ -969,7 +963,7 @@ Most important collision risks:
 - Re-scan KRG, event/news namespace IDs, super-event IDs, cosmetic tags, sprite names, technology/project IDs, unit/equipment IDs, and achievement keys.
 - Preserve Event 020 scenario ID 10 and reserve Event 016 world-end scenario IDs 11 and 12.
 - Preserve Event 016 IDs 90 to 95 in the fixed six-role order. Event 015 occupies 85 through 89. Treat Event 020's separate 85 through 87 declarations as an external overlap to report, not as the Event 016 allocation reason.
-- Decide and document the source-aware canonical Fallout adapter.
+- Decide and document the Event 016 request-source mapping into the dedicated Fallout coordinator.
 - Freeze Event 016 constants categories, persistent flags, event targets, and helper contracts.
 - Merge accepted architectural decisions into the Event 016 source spec where needed.
 
@@ -1007,7 +1001,7 @@ Most important collision risks:
 
 ### Tranche 6: terminal systems and super-events
 
-- Implement world-threat gates, Laboratory World, Strategic Singularity, source-aware canonical Fallout, Deaths/Condemnation/Chaos consequences, aftermath, two world-end registry rows, and six final super-events.
+- Implement world-threat gates, Laboratory World, Strategic Singularity, the dedicated Fallout request bridge, Deaths, Condemnation, Chaos consequences, aftermath, two world-end registry rows, and six final super-events.
 - Preserve the collision-audited Event 016 IDs 90 through 95 and re-scan before shared registration.
 - Preserve the completed audio licences, source docs, and Event 016-owned OGGs. Finish shared settings-aware playback.
 
@@ -1036,7 +1030,7 @@ These are not permission to guess:
 - Exact event/news sub-ID plan beyond the fixed chaosx.nr16.1 root.
 - Exact route cosmetic-tag tokens and sprite names.
 - Exact character-transfer strategy when Kruger changes countries or becomes KRG leader.
-- Final source-aware Fallout adapter contract.
+- Final Event 016 request-source mapping into `fallout_request_aftermath`.
 - Whether Strategic Singularity requires a new shared Deaths reason and Condemnation context.
 - Final mapping of existing biowarfare projects into the Event 016 portfolio.
 - Exact project/technology/unit/equipment identifiers and balance values.
@@ -1049,4 +1043,4 @@ These are not permission to guess:
 
 This handoff completes only the requested repository integration map. It does not establish that Event 016 is implemented or ready to enable.
 
-No implementation simplifications were introduced in this map. Every accepted route and subsystem remains in scope, including four evolutions, fifteen project families, the full 85-to-115-focus KRG tree, six super-events, two world-end scenarios, source-aware canonical Fallout, and seventeen achievements.
+No implementation simplifications were introduced in this map. Every accepted route and subsystem remains in scope, including four evolutions, fifteen project families, the full 85-to-115-focus KRG tree, six super-events, two world-end scenarios, the dedicated Fallout request bridge, and seventeen achievements.

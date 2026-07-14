@@ -232,6 +232,24 @@ events_log_set_default_actor_for_current_event = {
 	}
 	else_if = {
 		limit = {
+			check_variable = { event_id = constant:utopia_manifesto_event.id }
+			has_event_target = utopia_manifesto_latest_actor
+			event_target:utopia_manifesto_latest_actor = { exists = yes }
+		}
+		event_target:utopia_manifesto_latest_actor = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		set_temp_variable = { events_log_default_has_actor = constant:utopia_manifesto_math.one }
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:brilliant_scientist_event.id }
+			has_event_target = brilliant_scientist_prefire_host
+			event_target:brilliant_scientist_prefire_host = { exists = yes }
+		}
+		event_target:brilliant_scientist_prefire_host = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		set_temp_variable = { events_log_default_has_actor = constant:brilliant_scientist_value.one }
+	}
+	else_if = {
+		limit = {
 			check_variable = { event_id = constant:cannibalism_event.id }
 			has_event_target = cannibalism_first_host
 			event_target:cannibalism_first_host = { exists = yes }
@@ -455,6 +473,17 @@ record_events_log_history_entry = {
 			event_target:resources_found_prefire_state = { resources_found_is_active_field = yes }
 		}
 		event_target:resources_found_prefire_state = { resources_found_bind_history_sequence = yes }
+	}
+	if = {
+		limit = { check_variable = { event_id = constant:brilliant_scientist_event.id } }
+		brilliant_scientist_bind_opening_history_sequence = yes
+		if = {
+			limit = { brilliant_scientist_has_current_host = yes }
+			event_target:brilliant_scientist_current_host = {
+				brilliant_scientist_finalize_opening_history_actor = yes
+				brilliant_scientist_finalize_pending_prefire_opening = yes
+			}
+		}
 	}
     every_country = {
         limit = {
@@ -796,13 +825,13 @@ initialize_world_end_scenario_registry = {
 	world_end_scenario_registry_add_entry = yes
 
 	set_temp_variable = { world_end_registry_id = constant:world_end_scenario_id.fallout }
-	set_temp_variable = { world_end_registry_owner_event_id = constant:world_end_scenario_owner_event.zombie_outbreak }
+	set_temp_variable = { world_end_registry_owner_event_id = constant:world_end_scenario_owner_event.none }
 	set_temp_variable = { world_end_registry_sort_order = constant:world_end_scenario_sort_order.secondary }
 	set_temp_variable = { world_end_registry_visibility = constant:world_end_scenario_visibility.public }
 	set_temp_variable = { world_end_registry_public_details_ready = constant:world_end_scenario_public_details.ready }
 	set_temp_variable = { world_end_registry_default_enabled = constant:world_end_scenario_default_enabled.enabled }
 	set_temp_variable = { world_end_registry_scenario_flag = constant:world_end_scenario_id.fallout }
-	set_temp_variable = { world_end_registry_super_event_id = constant:world_end_scenario_super_event.fallout }
+	set_temp_variable = { world_end_registry_super_event_id = constant:world_end_scenario_super_event.none }
 	set_temp_variable = { world_end_registry_title_key = constant:world_end_scenario_id.fallout }
 	set_temp_variable = { world_end_registry_details_key = constant:world_end_scenario_id.fallout }
 	set_temp_variable = { world_end_registry_availability_helper = constant:world_end_scenario_availability_helper.standard_world_end_rules }
@@ -1129,7 +1158,7 @@ events_log_toggle_selected_world_end_scenario_disabled = {
 			check_variable = { events_log_selected_world_end_scenario_id = constant:world_end_scenario_id.fallout }
 			check_variable = { events_log_selected_world_end_enabled > 0 }
 		}
-		air_contamination_try_fire_fallout_world_end = yes
+		fallout_evaluate_air_contamination_request = yes
 	}
 }
 
@@ -2063,6 +2092,50 @@ events_log_rebuild_open_event_details_view = {
 			set_temp_variable = { events_log_event_detail_preview_type = constant:resources_found_event.evolution_type }
 			set_temp_variable = { events_log_event_detail_preview_tier = constant:resources_found_event.evolution_iv_tier }
 			set_temp_variable = { events_log_event_detail_preview_stage = constant:resources_found_event.evolution_iv_stage }
+			events_log_add_event_detail_evolution_preview = yes
+		}
+
+		if = {
+			limit = { check_variable = { var = event_id value = constant:utopia_manifesto_event.id compare = equals } }
+			set_temp_variable = { events_log_event_detail_preview_type = constant:utopia_manifesto_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:utopia_manifesto_evolution.glosses_in_the_margin }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:utopia_manifesto_evolution.glosses_in_the_margin }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:utopia_manifesto_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:utopia_manifesto_evolution.necessary_shores }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:utopia_manifesto_evolution.necessary_shores }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:utopia_manifesto_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:utopia_manifesto_evolution.cities_of_one_measure }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:utopia_manifesto_evolution.cities_of_one_measure }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:utopia_manifesto_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:utopia_manifesto_evolution.nowhere_made_law }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:utopia_manifesto_evolution.nowhere_made_law }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:utopia_manifesto_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:utopia_manifesto_evolution.perfect_island }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:utopia_manifesto_evolution.perfect_island }
+			events_log_add_event_detail_evolution_preview = yes
+		}
+
+		if = {
+			limit = { check_variable = { var = event_id value = constant:brilliant_scientist_event.id compare = equals } }
+			set_temp_variable = { events_log_event_detail_preview_type = constant:brilliant_scientist_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:brilliant_scientist_event.evolution_i_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:brilliant_scientist_event.evolution_i_stage }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:brilliant_scientist_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:brilliant_scientist_event.evolution_ii_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:brilliant_scientist_event.evolution_ii_stage }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:brilliant_scientist_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:brilliant_scientist_event.evolution_iii_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:brilliant_scientist_event.evolution_iii_stage }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:brilliant_scientist_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:brilliant_scientist_event.evolution_iv_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:brilliant_scientist_event.evolution_iv_stage }
 			events_log_add_event_detail_evolution_preview = yes
 		}
 
@@ -3776,7 +3849,15 @@ rebuild_events_log_events_view = {
 			}
 			if = {
 				limit = {
-					check_variable = { event_id = 15 }
+					check_variable = { event_id = constant:utopia_manifesto_event.id }
+					NOT = { utopia_manifesto_automatic_event_is_available = yes }
+				}
+				set_temp_variable = { events_log_events_live_weight = -1 }
+			}
+			if = {
+				limit = {
+					check_variable = { event_id = constant:brilliant_scientist_event.id }
+					NOT = { brilliant_scientist_automatic_event_is_available = yes }
 				}
 				set_temp_variable = { events_log_events_live_weight = -1 }
 			}

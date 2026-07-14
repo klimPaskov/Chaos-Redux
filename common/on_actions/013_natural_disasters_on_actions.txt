@@ -13,18 +13,21 @@ on_actions = {
 	}
 	on_state_control_changed = {
 		effect = {
-			ROOT = { save_event_target_as = natural_disaster_new_responsible_country }
-			FROM = { save_event_target_as = natural_disaster_former_responsible_country }
-			FROM.FROM = {
-				if = {
-					limit = {
-						OR = {
-							has_state_flag = natural_disaster_impact_scheduled
-							natural_disaster_state_has_open_card = yes
+			if = {
+				limit = { fallout_world_rewrite_callbacks_are_allowed = yes }
+				ROOT = { save_event_target_as = natural_disaster_new_responsible_country }
+				FROM = { save_event_target_as = natural_disaster_former_responsible_country }
+				FROM.FROM = {
+					if = {
+						limit = {
+							OR = {
+								has_state_flag = natural_disaster_impact_scheduled
+								natural_disaster_state_has_open_card = yes
+							}
 						}
+						save_event_target_as = natural_disaster_transfer_state
+						natural_disaster_handle_state_control_change = yes
 					}
-					save_event_target_as = natural_disaster_transfer_state
-					natural_disaster_handle_state_control_change = yes
 				}
 			}
 		}

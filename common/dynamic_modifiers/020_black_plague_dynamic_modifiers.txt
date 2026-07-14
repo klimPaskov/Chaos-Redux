@@ -1,0 +1,25 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 020 BLACK PLAGUE DYNAMIC MODIFIERS
+# ============================================================================
+# One state modifier follows every established Black Plague state. Its stored
+# values are rebuilt from the canonical phase so disease load, containment,
+# treatment, collapse, and rat control remain part of one state machine.
+# ============================================================================
+
+black_plague_affected_state = {
+	icon = GFX_idea_black_death
+	attacker_modifier = yes
+
+	local_manpower = var:black_plague_modifier_local_manpower
+	local_resources = var:black_plague_modifier_local_resources
+	local_supplies = var:black_plague_modifier_local_supplies
+	state_production_speed_buildings_factor = var:black_plague_modifier_production
+	attrition_for_controller = var:black_plague_modifier_attrition
+	army_speed_factor_for_controller = var:black_plague_modifier_speed
+	resistance_target = var:black_plague_modifier_resistance
+	compliance_growth = var:black_plague_modifier_compliance
+
+	remove_trigger = {
+		NOT = { black_plague_state_is_established = yes }
+	}
+}

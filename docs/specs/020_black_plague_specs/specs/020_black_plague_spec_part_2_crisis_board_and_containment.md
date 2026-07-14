@@ -87,7 +87,7 @@ The existing disease mapmode is the authoritative spatial view. It updates whene
 
 ### Visual state families
 
-When Black Plague is the selected disease, every state with established Black Plague uses a black base fill instead of the normal generic disease colour. The base fill identifies the disease. Outlines, patterns, status icons, and tooltips identify the current phase.
+Every established Black Plague state visible to the mapmode player uses a black base fill instead of the normal generic disease colour. This remains true regardless of which disease tab is selected on the shared crisis board. The base fill identifies the disease. Outlines, patterns, status icons, and tooltips identify the current phase.
 
 | State status | Map direction | Purpose |
 | --- | --- | --- |
@@ -103,7 +103,7 @@ When Black Plague is the selected disease, every state with established Black Pl
 | Weaponized provenance | black base fill with a purple weaponized border or symbol | Known deliberate deployment |
 | Rat controlled | black base fill with a rat-control accent and status icon | Nonhuman control with active plague |
 
-The Black Plague colour resolver takes priority over the normal disease fill only while Black Plague is selected. Other diseases keep their existing mapmode colours. Exact outline colours must match the live palette and remain readable for color-impaired players. Status icons and tooltips must carry the same information so black is not the only signal.
+The Black Plague colour resolver takes priority over the normal disease fill for every visible established Black Plague state. Disease-tab selection controls crisis-board actions, not persistent map identity. States without established Black Plague keep their existing disease colours. Exact outline colours must match the live palette and remain readable for color-impaired players. Status icons and tooltips must carry the same information so black is not the only signal.
 
 ### Refresh contract
 

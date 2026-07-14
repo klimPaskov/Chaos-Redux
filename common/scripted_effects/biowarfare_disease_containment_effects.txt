@@ -1,0 +1,475 @@
+# ============================================================================
+# CHAOS REDUX - SHARED DISEASE CONTAINMENT BOARD EFFECTS
+# ============================================================================
+# Player-facing view construction for the existing disease containment
+# category. Gameplay remains in decisions and disease-owned effects. The board
+# keeps a public inspection state separate from the persistent, controlled
+# Black Plague response state used by paid actions.
+#
+# The only all-state scan in this file is an explicit player refresh for the
+# four legacy diseases, which do not have state registries. Black Plague views
+# always use Event 20's bounded registry. No recurring on_action calls this
+# scan.
+# ============================================================================
+
+disease_containment_board_initialize_country = {
+	cbrn_initialize_country_data = yes
+
+	if = {
+		limit = { NOT = { disease_containment_board_has_valid_selected_disease = yes } }
+		set_variable = { disease_containment_selected_disease = constant:disease_containment_agent.none }
+		if = {
+			limit = {
+				any_state_in = {
+					array = global.black_plague_active_states
+					is_controlled_by = ROOT
+					black_plague_state_is_tracked = yes
+				}
+			}
+			set_variable = { disease_containment_selected_disease = constant:disease_containment_agent.black_plague }
+		}
+		else_if = {
+			limit = { any_controlled_state = { has_dynamic_modifier = { modifier = anthrax_contaminated_state } } }
+			set_variable = { disease_containment_selected_disease = constant:disease_containment_agent.anthrax }
+		}
+		else_if = {
+			limit = { any_controlled_state = { has_dynamic_modifier = { modifier = plague_contaminated_state } } }
+			set_variable = { disease_containment_selected_disease = constant:disease_containment_agent.plague }
+		}
+		else_if = {
+			limit = { any_controlled_state = { has_dynamic_modifier = { modifier = tularemia_contaminated_state } } }
+			set_variable = { disease_containment_selected_disease = constant:disease_containment_agent.tularemia }
+		}
+		else_if = {
+			limit = { any_controlled_state = { has_dynamic_modifier = { modifier = smallpox_contaminated_state } } }
+			set_variable = { disease_containment_selected_disease = constant:disease_containment_agent.smallpox }
+		}
+	}
+
+	if = { limit = { NOT = { has_variable = disease_containment_board_status_filter } } set_variable = { disease_containment_board_status_filter = constant:disease_containment_status_filter.all } }
+	if = { limit = { NOT = { has_variable = disease_containment_board_ownership_filter } } set_variable = { disease_containment_board_ownership_filter = constant:disease_containment_ownership_filter.all_visible } }
+	if = { limit = { NOT = { has_variable = disease_containment_board_region_filter } } set_variable = { disease_containment_board_region_filter = constant:disease_containment_region_filter.all } }
+	if = { limit = { NOT = { has_variable = disease_containment_board_urgency_filter } } set_variable = { disease_containment_board_urgency_filter = constant:disease_containment_urgency_filter.all } }
+	if = { limit = { NOT = { has_variable = disease_containment_board_dirty } } set_variable = { disease_containment_board_dirty = constant:disease_containment_board_value.zero } }
+
+	if = { limit = { NOT = { has_variable = black_plague_countermeasure_progress } } set_variable = { black_plague_countermeasure_progress = constant:disease_containment_board_value.minimum } }
+	if = { limit = { NOT = { has_variable = black_plague_countermeasure_reserve } } set_variable = { black_plague_countermeasure_reserve = constant:disease_containment_board_value.minimum } }
+	if = { limit = { NOT = { has_variable = black_plague_response_burden } } set_variable = { black_plague_response_burden = constant:disease_containment_board_value.minimum } }
+	clamp_variable = { var = black_plague_countermeasure_progress min = constant:disease_containment_board_value.minimum max = constant:disease_containment_board_value.maximum }
+	clamp_variable = { var = black_plague_countermeasure_reserve min = constant:disease_containment_board_value.minimum max = constant:disease_containment_board_value.maximum }
+	clamp_variable = { var = black_plague_response_burden min = constant:disease_containment_board_value.minimum max = constant:disease_containment_board_value.maximum }
+}
+
+disease_containment_board_refresh_country_capacity = {
+	disease_containment_board_initialize_country = yes
+	set_variable = { disease_containment_board_preparedness = cbrn_biological_security }
+	multiply_variable = { disease_containment_board_preparedness = constant:disease_containment_preparedness.biological_security_weight }
+	add_to_variable = { disease_containment_board_preparedness = constant:disease_containment_preparedness.baseline }
+
+	if = {
+		limit = { has_bio_outbreak_prevention_tier_3 = yes }
+		add_to_variable = { disease_containment_board_preparedness = constant:disease_containment_preparedness.prevention_tier_3 }
+	}
+	else_if = {
+		limit = { has_bio_outbreak_prevention_tier_2_only = yes }
+		add_to_variable = { disease_containment_board_preparedness = constant:disease_containment_preparedness.prevention_tier_2 }
+	}
+	else_if = {
+		limit = { has_bio_outbreak_prevention_tier_1_only = yes }
+		add_to_variable = { disease_containment_board_preparedness = constant:disease_containment_preparedness.prevention_tier_1 }
+	}
+	if = {
+		limit = { has_country_flag = hygiene_measures_enforced }
+		add_to_variable = { disease_containment_board_preparedness = constant:disease_containment_preparedness.hygiene_program }
+	}
+	if = {
+		limit = { has_country_flag = quarantine_protocols_active }
+		add_to_variable = { disease_containment_board_preparedness = constant:disease_containment_preparedness.quarantine_protocols }
+	}
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = borders_completely_closed
+				has_idea = outbreak_prevention_borders_closed
+			}
+		}
+		add_to_variable = { disease_containment_board_preparedness = constant:disease_containment_preparedness.closed_borders }
+	}
+	if = {
+		limit = { has_war = yes }
+		subtract_from_variable = { disease_containment_board_preparedness = constant:disease_containment_preparedness.war_penalty }
+	}
+	if = {
+		limit = { stability < constant:disease_containment_preparedness.weak_stability_threshold }
+		subtract_from_variable = { disease_containment_board_preparedness = constant:disease_containment_preparedness.weak_stability_penalty }
+	}
+	clamp_variable = { var = disease_containment_board_preparedness min = constant:disease_containment_board_value.minimum max = constant:disease_containment_board_value.maximum }
+	set_variable = { disease_containment_board_medical_capacity = cbrn_medical_capacity }
+	clamp_variable = { var = disease_containment_board_medical_capacity min = constant:disease_containment_board_value.minimum max = constant:disease_containment_board_value.maximum }
+}
+
+disease_containment_board_refresh_country_phase = {
+	set_variable = { disease_containment_board_country_phase = constant:disease_containment_country_phase.prepared }
+	if = {
+		limit = { black_plague_country_has_uncontrolled_active_state = yes }
+		set_variable = { disease_containment_board_country_phase = constant:disease_containment_country_phase.infected }
+	}
+	else_if = {
+		limit = { black_plague_country_has_containment_state = yes }
+		set_variable = { disease_containment_board_country_phase = constant:disease_containment_country_phase.containment }
+	}
+	else_if = {
+		limit = { black_plague_country_has_monitored_state = yes }
+		set_variable = { disease_containment_board_country_phase = constant:disease_containment_country_phase.recovered }
+	}
+	else_if = {
+		limit = { black_plague_country_is_exposed = yes }
+		set_variable = { disease_containment_board_country_phase = constant:disease_containment_country_phase.exposed }
+	}
+}
+
+disease_containment_board_reset_metrics = {
+	set_variable = { disease_containment_board_visible_state_count = constant:disease_containment_board_value.zero }
+	set_variable = { disease_containment_board_critical_state_count = constant:disease_containment_board_value.zero }
+	set_variable = { disease_containment_board_controlled_state_count = constant:disease_containment_board_value.zero }
+	set_variable = { disease_containment_board_foreign_state_count = constant:disease_containment_board_value.zero }
+	set_variable = { disease_containment_board_rat_state_count = constant:disease_containment_board_value.zero }
+	set_variable = { disease_containment_board_incubating_state_count = constant:disease_containment_board_value.zero }
+	set_variable = { disease_containment_board_severe_state_count = constant:disease_containment_board_value.zero }
+	set_variable = { disease_containment_board_collapsed_state_count = constant:disease_containment_board_value.zero }
+	set_variable = { disease_containment_board_contained_state_count = constant:disease_containment_board_value.zero }
+	set_variable = { disease_containment_board_recovery_state_count = constant:disease_containment_board_value.zero }
+	clear_array = disease_containment_board_active_country_entries
+}
+
+disease_containment_board_count_current_black_plague_state = {
+	if = {
+		limit = { black_plague_state_is_visible_to_mapmode_player = yes }
+		ROOT = { add_to_variable = { disease_containment_board_visible_state_count = constant:disease_containment_board_value.one } }
+		if = {
+			limit = { black_plague_crisis_board_state_is_critical = yes }
+			ROOT = { add_to_variable = { disease_containment_board_critical_state_count = constant:disease_containment_board_value.one } }
+		}
+		if = {
+			limit = { is_controlled_by = ROOT }
+			ROOT = { add_to_variable = { disease_containment_board_controlled_state_count = constant:disease_containment_board_value.one } }
+		}
+		else = {
+			ROOT = { add_to_variable = { disease_containment_board_foreign_state_count = constant:disease_containment_board_value.one } }
+		}
+		if = {
+			limit = { black_plague_state_is_rat_controlled = yes }
+			ROOT = { add_to_variable = { disease_containment_board_rat_state_count = constant:disease_containment_board_value.one } }
+		}
+		else_if = {
+			limit = { black_plague_state_is_collapsed = yes }
+			ROOT = { add_to_variable = { disease_containment_board_collapsed_state_count = constant:disease_containment_board_value.one } }
+		}
+		else_if = {
+			limit = { black_plague_state_is_severe = yes }
+			ROOT = { add_to_variable = { disease_containment_board_severe_state_count = constant:disease_containment_board_value.one } }
+		}
+		else_if = {
+			limit = { black_plague_state_is_incubating = yes }
+			ROOT = { add_to_variable = { disease_containment_board_incubating_state_count = constant:disease_containment_board_value.one } }
+		}
+		else_if = {
+			limit = { black_plague_state_is_contained = yes }
+			ROOT = { add_to_variable = { disease_containment_board_contained_state_count = constant:disease_containment_board_value.one } }
+		}
+		else_if = {
+			limit = { black_plague_state_is_recovering = yes }
+			ROOT = { add_to_variable = { disease_containment_board_recovery_state_count = constant:disease_containment_board_value.one } }
+		}
+
+		if = {
+			limit = { CONTROLLER = { exists = yes } }
+			CONTROLLER = {
+				ROOT = {
+					if = {
+						limit = { NOT = { is_in_array = { array = disease_containment_board_active_country_entries value = PREV } } }
+						add_to_array = { array = disease_containment_board_active_country_entries value = PREV }
+					}
+				}
+			}
+		}
+	}
+}
+
+disease_containment_board_refresh_metrics = {
+	disease_containment_board_reset_metrics = yes
+	for_each_scope_loop = {
+		array = global.black_plague_active_states
+		disease_containment_board_count_current_black_plague_state = yes
+	}
+	set_variable = { disease_containment_board_active_country_count = disease_containment_board_active_country_entries^num }
+	disease_containment_board_refresh_country_capacity = yes
+	disease_containment_board_refresh_country_phase = yes
+}
+
+black_plague_crisis_board_set_current_state_urgency = {
+	set_variable = { disease_containment_board_urgency = constant:disease_containment_urgency.monitor }
+	if = {
+		limit = { black_plague_crisis_board_state_is_high_urgency = yes }
+		set_variable = { disease_containment_board_urgency = constant:disease_containment_urgency.high }
+	}
+	if = {
+		limit = { black_plague_crisis_board_state_is_critical = yes }
+		set_variable = { disease_containment_board_urgency = constant:disease_containment_urgency.critical }
+	}
+}
+
+black_plague_crisis_board_append_current_state_for_phase = {
+	if = {
+		limit = {
+			check_variable = {
+				var = black_plague_phase
+				value = disease_containment_board_phase_pass
+				compare = equals
+			}
+			black_plague_crisis_board_state_matches_filters = yes
+			ROOT = { NOT = { is_in_array = { array = disease_containment_board_state_entries value = PREV } } }
+		}
+		black_plague_crisis_board_set_current_state_urgency = yes
+		ROOT = { add_to_array = { array = disease_containment_board_state_entries value = PREV } }
+	}
+}
+
+black_plague_crisis_board_append_phase_pass = {
+	for_each_scope_loop = {
+		array = global.black_plague_active_states
+		black_plague_crisis_board_append_current_state_for_phase = yes
+	}
+}
+
+disease_containment_board_rebuild_black_plague_state_entries = {
+	set_temp_variable = { disease_containment_board_phase_pass = constant:black_plague_phase.rat_controlled }
+	black_plague_crisis_board_append_phase_pass = yes
+	set_temp_variable = { disease_containment_board_phase_pass = constant:black_plague_phase.collapsed }
+	black_plague_crisis_board_append_phase_pass = yes
+	set_temp_variable = { disease_containment_board_phase_pass = constant:black_plague_phase.severe_crisis }
+	black_plague_crisis_board_append_phase_pass = yes
+	set_temp_variable = { disease_containment_board_phase_pass = constant:black_plague_phase.infected }
+	black_plague_crisis_board_append_phase_pass = yes
+	set_temp_variable = { disease_containment_board_phase_pass = constant:black_plague_phase.incubating }
+	black_plague_crisis_board_append_phase_pass = yes
+	set_temp_variable = { disease_containment_board_phase_pass = constant:black_plague_phase.threatened }
+	black_plague_crisis_board_append_phase_pass = yes
+	set_temp_variable = { disease_containment_board_phase_pass = constant:black_plague_phase.contained }
+	black_plague_crisis_board_append_phase_pass = yes
+	set_temp_variable = { disease_containment_board_phase_pass = constant:black_plague_phase.recovery }
+	black_plague_crisis_board_append_phase_pass = yes
+	set_temp_variable = { disease_containment_board_phase_pass = constant:black_plague_phase.cured }
+	black_plague_crisis_board_append_phase_pass = yes
+}
+
+disease_containment_board_rebuild_ordinary_state_entries = {
+	# Explicit UI refresh only. Legacy diseases have no bounded state registry.
+	every_state = {
+		limit = {
+			disease_containment_board_state_matches_selected_ordinary_disease = yes
+			disease_containment_board_state_matches_ownership_filter = yes
+			disease_containment_board_state_matches_region_filter = yes
+		}
+		ROOT = { add_to_array = { array = disease_containment_board_state_entries value = PREV } }
+	}
+}
+
+black_plague_clear_response_state = {
+	if = {
+		limit = { has_variable = black_plague_selected_response_state }
+		var:black_plague_selected_response_state = {
+			clr_state_flag = black_plague_response_state_target
+			clear_variable = black_plague_response_state_owner
+		}
+	}
+	clear_variable = black_plague_selected_response_state
+	clear_variable = black_plague_response_state_candidate
+	add_to_variable = { disease_containment_board_dirty = constant:disease_containment_board_value.one }
+}
+
+black_plague_designate_response_state = {
+	if = {
+		limit = {
+			has_variable = black_plague_response_state_candidate
+			var:black_plague_response_state_candidate = { black_plague_response_state_is_selectable = yes }
+		}
+		if = {
+			limit = { has_variable = black_plague_selected_response_state }
+			var:black_plague_selected_response_state = {
+				clr_state_flag = black_plague_response_state_target
+				clear_variable = black_plague_response_state_owner
+			}
+		}
+		clear_variable = black_plague_selected_response_state
+		set_variable = { black_plague_selected_response_state = black_plague_response_state_candidate }
+		set_variable = { disease_containment_board_view_state = black_plague_response_state_candidate }
+		var:black_plague_selected_response_state = {
+			set_state_flag = black_plague_response_state_target
+			set_variable = { black_plague_response_state_owner = ROOT }
+		}
+		clear_variable = black_plague_response_state_candidate
+		add_to_variable = { disease_containment_board_dirty = constant:disease_containment_board_value.one }
+	}
+}
+
+black_plague_reconcile_response_state = {
+	if = {
+		limit = {
+			has_variable = black_plague_selected_response_state
+			NOT = { black_plague_country_has_valid_response_state = yes }
+		}
+		black_plague_clear_response_state = yes
+	}
+}
+
+disease_containment_board_reconcile_view_state = {
+	if = {
+		limit = {
+			has_variable = disease_containment_board_view_state
+			NOT = { disease_containment_board_has_valid_view_state = yes }
+		}
+		clear_variable = disease_containment_board_view_state
+	}
+	black_plague_reconcile_response_state = yes
+}
+
+disease_containment_board_rebuild_state_entries = {
+	disease_containment_board_initialize_country = yes
+	clear_array = disease_containment_board_state_entries
+	if = {
+		limit = { disease_containment_board_is_black_plague_selected = yes }
+		disease_containment_board_rebuild_black_plague_state_entries = yes
+	}
+	else_if = {
+		limit = { disease_containment_board_has_valid_selected_disease = yes }
+		disease_containment_board_rebuild_ordinary_state_entries = yes
+	}
+	set_variable = { disease_containment_board_state_count = disease_containment_board_state_entries^num }
+	disease_containment_board_reconcile_view_state = yes
+	if = {
+		limit = {
+			NOT = { has_variable = disease_containment_board_view_state }
+			check_variable = { disease_containment_board_state_entries^num > constant:disease_containment_board_value.zero }
+		}
+		set_variable = { disease_containment_board_view_state = disease_containment_board_state_entries^0 }
+	}
+	disease_containment_board_refresh_metrics = yes
+	add_to_variable = { disease_containment_board_dirty = constant:disease_containment_board_value.one }
+}
+
+disease_containment_board_open = {
+	disease_containment_board_initialize_country = yes
+	set_country_flag = disease_containment_board_open
+	disease_containment_board_rebuild_state_entries = yes
+	force_update_map_mode = contaminated_states_map_mode
+}
+
+disease_containment_board_close = {
+	clr_country_flag = disease_containment_board_open
+	clear_array = disease_containment_board_state_entries
+	clear_array = disease_containment_board_active_country_entries
+	clear_variable = disease_containment_board_view_state
+	add_to_variable = { disease_containment_board_dirty = constant:disease_containment_board_value.one }
+}
+
+disease_containment_board_refresh = {
+	disease_containment_board_rebuild_state_entries = yes
+	force_update_map_mode = contaminated_states_map_mode
+}
+
+disease_containment_board_select_anthrax_tab = {
+	set_variable = { disease_containment_selected_disease = constant:disease_containment_agent.anthrax }
+	disease_containment_board_rebuild_state_entries = yes
+}
+
+disease_containment_board_select_plague_tab = {
+	set_variable = { disease_containment_selected_disease = constant:disease_containment_agent.plague }
+	disease_containment_board_rebuild_state_entries = yes
+}
+
+disease_containment_board_select_tularemia_tab = {
+	set_variable = { disease_containment_selected_disease = constant:disease_containment_agent.tularemia }
+	disease_containment_board_rebuild_state_entries = yes
+}
+
+disease_containment_board_select_smallpox_tab = {
+	set_variable = { disease_containment_selected_disease = constant:disease_containment_agent.smallpox }
+	disease_containment_board_rebuild_state_entries = yes
+}
+
+disease_containment_board_select_black_plague_tab = {
+	set_variable = { disease_containment_selected_disease = constant:disease_containment_agent.black_plague }
+	disease_containment_board_rebuild_state_entries = yes
+}
+
+disease_containment_board_cycle_status_filter = {
+	add_to_variable = { disease_containment_board_status_filter = constant:disease_containment_board_value.one }
+	if = {
+		limit = { check_variable = { disease_containment_board_status_filter > constant:disease_containment_status_filter.monitoring } }
+		set_variable = { disease_containment_board_status_filter = constant:disease_containment_status_filter.all }
+	}
+	disease_containment_board_rebuild_state_entries = yes
+}
+
+disease_containment_board_cycle_ownership_filter = {
+	add_to_variable = { disease_containment_board_ownership_filter = constant:disease_containment_board_value.one }
+	if = {
+		limit = { check_variable = { disease_containment_board_ownership_filter > constant:disease_containment_ownership_filter.public_foreign } }
+		set_variable = { disease_containment_board_ownership_filter = constant:disease_containment_ownership_filter.all_visible }
+	}
+	disease_containment_board_rebuild_state_entries = yes
+}
+
+disease_containment_board_cycle_urgency_filter = {
+	add_to_variable = { disease_containment_board_urgency_filter = constant:disease_containment_board_value.one }
+	if = {
+		limit = { check_variable = { disease_containment_board_urgency_filter > constant:disease_containment_urgency_filter.critical_only } }
+		set_variable = { disease_containment_board_urgency_filter = constant:disease_containment_urgency_filter.all }
+	}
+	disease_containment_board_rebuild_state_entries = yes
+}
+
+disease_containment_board_select_state_entry = {
+	if = {
+		limit = {
+			check_variable = { disease_containment_board_state_entry_index > constant:disease_containment_board_value.negative_one }
+			check_variable = {
+				var = disease_containment_board_state_entry_index
+				value = disease_containment_board_state_entries^num
+				compare = less_than
+			}
+		}
+		set_variable = { disease_containment_board_view_state = disease_containment_board_state_entries^disease_containment_board_state_entry_index }
+		if = {
+			limit = { disease_containment_board_is_black_plague_selected = yes }
+			var:disease_containment_board_view_state = {
+				if = {
+					limit = { black_plague_response_state_is_selectable = yes }
+					ROOT = {
+						set_variable = { black_plague_response_state_candidate = PREV }
+						black_plague_designate_response_state = yes
+					}
+				}
+				else = { ROOT = { black_plague_clear_response_state = yes } }
+			}
+		}
+		add_to_variable = { disease_containment_board_dirty = constant:disease_containment_board_value.one }
+	}
+}
+
+disease_containment_board_goto_view_state = {
+	if = {
+		limit = { disease_containment_board_has_valid_view_state = yes }
+		var:disease_containment_board_view_state = { ROOT = { goto_state = PREV } }
+	}
+}
+
+black_plague_select_response_state_from_decision = {
+	if = {
+		limit = { FROM = { black_plague_response_state_is_selectable = yes } }
+		set_variable = { black_plague_response_state_candidate = FROM }
+		black_plague_designate_response_state = yes
+		disease_containment_board_refresh = yes
+	}
+}

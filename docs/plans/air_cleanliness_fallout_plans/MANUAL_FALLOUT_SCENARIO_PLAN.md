@@ -2,6 +2,27 @@
 
 Ownership authority: `FALLOUT_EVENT_AND_ASSET_OWNERSHIP.md`.
 
+## Current implementation status
+
+The exact installed-map sweep substrate exists but is dormant.
+
+- The proof targets installed Hearts of Iron IV build 1.19.2.0.
+- `chaosx.fallout.900` is the bootstrap, `.910` through `.950` identify batches 0 through 40, `.960` through `.966` identify verifier attempts 0 through 6, and `.903` is the exact seven-day callback.
+- The former generic `.901` and `.902` callbacks are absent.
+- Forty-one generated batch effects issue 10,154 native thermonuclear province calls across all 1,081 installed states. Batches 0 through 39 contain 250 targets and batch 40 contains 154.
+- The ledger excludes 118 assigned non-land provinces and includes 126 assigned land targets in impassable states because no official exclusion was found.
+- The native observer and state-sum verifier must pass before the countdown begins.
+- Static control flow runs aggregate Deaths, nuclear fallout, Air Contamination, Chaos history, condemnation, and treaty consequences once after complete verification.
+- Save recovery extends the existing host daily coordinator for hourly sweep and verifier callbacks and never adds a second recurring world iterator. The seven-day callback remains engine-owned and cannot be reconstructed from a calendar-day value.
+
+The public row and dispatch remain absent. The live registry ends at SCN-011 while the unfinished Black Plague package separately reserves raw id 12. Fallout cannot take 12 without collision and cannot take 13 until 12 is genuinely live.
+
+Runtime acceptance and bounded performance remain unobserved because Hearts of Iron IV was not run and must not be run for this documentation task. The dormant substrate is not a release claim.
+
+Vanilla `on_nuke_drop` schedules twelve one-day nuclear news events per callback. If every scripted call emits the callback, the sweep may schedule about 121,848 vanilla news event attempts. The mod callback cannot suppress that separate vanilla branch. Callback occurrence, callback synchrony, and the news-event load are release blockers.
+
+Static proof and map hashes are recorded in `FALLOUT_MANUAL_PROVINCE_SWEEP_PROOF.md`.
+
 ## Required player experience
 
 The manual Fallout scenario is a direct sandbox launch. It does not require Chaos, prior Air Contamination, a previous event, a focus route, or the ordinary Fallout risk model.
@@ -39,26 +60,19 @@ Do not move Africa Is One or any other existing scenario. Do not reuse a gap unl
 
 The public row should display `SCN-<allocated padded id>` only after the allocation has been verified from the live registry.
 
-## Engine feasibility gate
+## Engine feasibility and runtime release gate
 
 The exact province strike requirement is non-negotiable.
 
-Before implementation, prove one of these with official documentation and a vanilla or verified working test:
+Static source proof now establishes a supported province-valued `launch_nuke` call and an exact installed-map expansion. Runtime release still requires proof of these properties:
 
-- a nuclear effect that accepts `all_provinces = yes` in state scope
-- a province iterator or province selector that can execute the actual nuclear strike effect
-- a supported meta-effect that expands a verified province list into nuclear effects
-- another engine-native path that produces a real strike on every valid province
-
-The proof must demonstrate:
-
-- visual strike effect or equivalent engine strike state on every valid province
-- thermonuclear classification
-- state and province damage
-- fallout seeding
-- no invalid sea or lake targeting
-- bounded performance
-- deterministic completion
+- each `launch_nuke` call is accepted, including the 126 land targets in impassable states
+- `use_nuke = no` emits exactly one `on_nuke_drop` callback inside the guarded batch window
+- each target produces the required native province result
+- the exact thermonuclear classification and state damage remain intact
+- 250-call batches remain bounded for performance, save integrity, and multiplayer synchronization
+- the vanilla one-day news-event branch remains bounded
+- completion stays deterministic across all 41 batches
 
 Applying one strike per state does not satisfy this requirement. Adding only province modifiers does not satisfy it. Setting fallout variables without the actual strike does not satisfy it.
 
@@ -66,41 +80,40 @@ If the engine cannot perform the exact sweep, stop the scenario implementation a
 
 ## Valid province definition
 
-A province is valid when:
+A province is included in the installed-build ledger when:
 
 - it is a land province
-- it belongs to a valid map state
-- it is not a lake, sea zone, impassable engine-only province, or invalid placeholder
-- the strike effect accepts it
+- exactly one installed state assigns it
+- its id is greater than zero
 
-The final trigger is based on verified province properties from official documentation.
+The ledger excludes 118 assigned non-land ids. It includes 126 assigned land targets in states marked `impassable = yes` because neither the official effect documentation nor the offline wiki documents an exclusion. Runtime rejection of any such target is a blocker and does not authorize silently reducing the strike set.
 
 ## Strike batch architecture
 
 The manual scenario can generate thousands of strike calls. It must avoid multiplying unrelated global systems thousands of times.
 
-At launch:
+The dormant substrate currently sequences launch work as follows:
 
-1. set `fallout_manual_scenario_active`
-2. set `fallout_synthetic_strike_batch`
-3. stop ordinary event pacing and manual scenario UI actions
-4. initialize strike counters
-5. execute the exact province sweep
-6. apply state-level aggregate direct-strike count and thermonuclear fallout intensity
-7. clear `fallout_synthetic_strike_batch`
-8. write one aggregate Chaos and death-history context entry where appropriate
-9. start the seven-day countdown
+1. `.900` initializes the manual transaction and schedules batch token `.910`.
+2. Batch tokens `.910` through `.950` execute exactly one expected batch each.
+3. Verifier tokens `.960` through `.966` allow a bounded callback-settling window.
+4. Complete issued, observed, unique-state, state-sum, and array-size agreement applies aggregate consequences once.
+5. The verified transaction stores a seven-day countdown and schedules `.903`.
 
-During the synthetic batch, normal nuclear hooks should still apply physical state effects that are needed. They should suppress:
+Manual runtime schema 2 binds each scheduled callback to the active transaction generation. The host validator and the hourly callback preflight require the issued launch count to equal the exact completed-batch cursor before more native work. The callback also validates the last completed batch and observed-count bounds before opening the launch window. The countdown event and request wrapper both validate the active token before handoff. Schema 1 active transactions fail closed. Successful request handoff clears the due flag and countdown schedule provenance.
 
-- one news event per strike
+During the synthetic batch, normal nuclear hooks should still apply required physical state effects. Mod-owned callback consequences should suppress or aggregate:
+
+- one Chaos Redux news or report event per strike
 - one global Chaos history row per strike
 - one condemnation update per strike
 - one treaty violation event per strike
 - one sound or popup per strike
 - recursive Fallout request checks
 
-After the sweep, apply one aggregate diplomatic and historical consequence if the pre-Fallout world remains active for the seven-day interval.
+Chaos Redux owns aggregation for its callback consequences. It cannot suppress the twelve one-day news events scheduled by the separate vanilla `on_nuke_drop` branch. That unresolved engine load blocks public wiring.
+
+After the sweep, one aggregate diplomatic and historical consequence is applied only after complete verification and while the pre-Fallout world remains active for the seven-day interval.
 
 ## Thermonuclear classification
 
@@ -130,7 +143,7 @@ Required behavior:
 - bypass is enabled
 - intensity includes selected scenario intensity and measured strike result
 
-The blackout begins after the week, not immediately on confirmation.
+The live static path stores the end day as the verified start day plus seven and schedules `.903` with a literal seven-day delay. Only that engine-scheduled callback may submit the standard Fallout request. Daily reconciliation cannot submit early and cannot rebuild a lost countdown from an integer day. Lost ownership and an overdue callback fail closed. The blackout begins after the week, not immediately on confirmation.
 
 ## Intensity control
 
@@ -246,7 +259,8 @@ If the sweep needs batching, the seven-day countdown begins after the final batc
 - every existing scenario keeps its prior id and stored selection meaning
 - every valid province receives a verified thermonuclear strike
 - no invalid province is targeted
-- synthetic strike spam is aggregated
+- mod-owned callback consequences are aggregated once after complete verification
+- vanilla `on_nuke_drop` news-event amplification is resolved without weakening the strike set
 - seven-day delay is exact and persistent
 - the standard Fallout blackout begins on day seven
 - no normal super-event appears

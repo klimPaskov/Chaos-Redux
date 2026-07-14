@@ -957,6 +957,8 @@ Every package has a binding research row in `research/006_package_research_resol
 
 A package marked `specific_community_variant_only`, `formable_or_route_only`, or `scenario_variant_only` is fully resolved by that restriction. It cannot be promoted into the automatic pool merely to fill a wave. A conditional package enters only when the installed map provides the named unique state and the host survival planner succeeds.
 
+The current 2026-07-14 installed-map binding is recorded under `../../../plans/006_independence_wave_plans/package_bindings/`. It preserves the seven accepted disposition totals of 11 automatic, 44 automatic if not living, 77 automatic if unique, 32 high-chaos, 9 route-only, 30 specific-community, and 3 scenario packages. Current geography yields 149 bound and 57 unbound packages. An unbound row is unavailable, not permission to use nearby broad geography. The 29 automatic or high-chaos packages without a unique current state remain disabled, while the 26 unbound specific-community packages and 2 unbound scenario packages retain their accepted restrictions.
+
 ## Candidate selection equity
 
 The global candidate registry should not become Europe-heavy merely because European tags are easier to implement.

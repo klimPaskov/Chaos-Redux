@@ -27,7 +27,7 @@
 
 ## Mapmode rule
 
-When Black Plague is selected, every established Black Plague state uses a black base fill. Phase, containment, weaponized provenance, and rat control are carried by outlines, patterns, icons, and tooltips. Threatened states keep the shared warning colour until infection is established. Cured states leave the black fill after cleanup.
+Every established Black Plague state visible to the mapmode player uses a black base fill regardless of the shared board's selected disease tab. Phase, containment, weaponized provenance, and rat control are carried by outlines, patterns, icons, and tooltips. Threatened states keep the shared warning colour until infection is established. Cured states leave the black fill after cleanup.
 
 ## Provenance layer
 

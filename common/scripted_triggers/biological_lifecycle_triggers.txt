@@ -1,0 +1,295 @@
+# ============================================================================
+# CHAOS REDUX - BIOLOGICAL LIFECYCLE SCRIPTED TRIGGERS
+# ============================================================================
+# Overview:
+# - Validates normalized ordinary-pathogen seed records.
+# - Exposes independent incubation, active-outbreak, detection, and scheduler
+#   state for Anthrax, Plague, Tularemia, and Smallpox.
+# - Weaponized-zombie state is intentionally excluded.
+# ============================================================================
+
+bio_lifecycle_deliberate_seed_record_is_valid = {
+	has_event_target = bio_seed_actor
+	has_event_target = bio_seed_victim
+	check_variable = { var = bio_seed_actor_proof value = constant:bio_lifecycle_proof.supplied compare = equals }
+	check_variable = { var = bio_seed_victim_proof value = constant:bio_lifecycle_proof.supplied compare = equals }
+	CONTROLLER = { tag = event_target:bio_seed_victim }
+	OR = {
+		check_variable = { var = bio_seed_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
+		check_variable = { var = bio_seed_agent value = constant:bio_lifecycle_agent.plague compare = equals }
+		check_variable = { var = bio_seed_agent value = constant:bio_lifecycle_agent.tularemia compare = equals }
+		check_variable = { var = bio_seed_agent value = constant:bio_lifecycle_agent.smallpox compare = equals }
+	}
+	OR = {
+		check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.strategic_raid compare = equals }
+		check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.operative_release compare = equals }
+		check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.battlefield_dissemination compare = equals }
+		check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.food_water_medical_sabotage compare = equals }
+	}
+	check_variable = {
+		var = bio_seed_source
+		value = constant:bio_lifecycle_source.deliberate
+		compare = equals
+	}
+	check_variable = {
+		var = bio_seed_payload_debit_proof
+		value = constant:bio_lifecycle_proof.supplied
+		compare = equals
+	}
+	check_variable = {
+		var = bio_seed_payload_required
+		value = constant:bio_lifecycle_math.zero
+		compare = greater_than
+	}
+	check_variable = {
+		var = bio_seed_payload_consumed
+		value = constant:bio_lifecycle_math.zero
+		compare = greater_than
+	}
+	check_variable = {
+		var = bio_seed_payload_consumed
+		value = bio_seed_payload_required
+		compare = less_than_or_equals
+	}
+	OR = {
+		check_variable = {
+			var = bio_seed_result
+			value = constant:bio_lifecycle_result.partial
+			compare = equals
+		}
+		check_variable = {
+			var = bio_seed_result
+			value = constant:bio_lifecycle_result.success
+			compare = equals
+		}
+		check_variable = {
+			var = bio_seed_result
+			value = constant:bio_lifecycle_result.catastrophic
+			compare = equals
+		}
+	}
+}
+
+bio_lifecycle_accident_seed_record_is_valid = {
+	OR = {
+		check_variable = { var = bio_seed_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
+		check_variable = { var = bio_seed_agent value = constant:bio_lifecycle_agent.plague compare = equals }
+		check_variable = { var = bio_seed_agent value = constant:bio_lifecycle_agent.tularemia compare = equals }
+		check_variable = { var = bio_seed_agent value = constant:bio_lifecycle_agent.smallpox compare = equals }
+	}
+	OR = {
+		check_variable = {
+			var = bio_seed_source
+			value = constant:bio_lifecycle_source.accident
+			compare = equals
+		}
+		check_variable = {
+			var = bio_seed_source
+			value = constant:bio_lifecycle_source.captured_facility
+			compare = equals
+		}
+		check_variable = {
+			var = bio_seed_source
+			value = constant:bio_lifecycle_source.field_test
+			compare = equals
+		}
+	}
+	check_variable = {
+		var = bio_seed_result
+		value = constant:bio_lifecycle_result.accident
+		compare = equals
+	}
+	OR = {
+		AND = {
+			check_variable = { var = bio_seed_source value = constant:bio_lifecycle_source.accident compare = equals }
+			check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.laboratory_accident compare = equals }
+		}
+		AND = {
+			check_variable = { var = bio_seed_source value = constant:bio_lifecycle_source.captured_facility compare = equals }
+			check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.captured_facility_release compare = equals }
+		}
+		AND = {
+			check_variable = { var = bio_seed_source value = constant:bio_lifecycle_source.field_test compare = equals }
+			check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.field_test_release compare = equals }
+		}
+	}
+}
+
+bio_lifecycle_spread_seed_record_is_valid = {
+	OR = {
+		check_variable = { var = bio_seed_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
+		check_variable = { var = bio_seed_agent value = constant:bio_lifecycle_agent.plague compare = equals }
+		check_variable = { var = bio_seed_agent value = constant:bio_lifecycle_agent.tularemia compare = equals }
+		check_variable = { var = bio_seed_agent value = constant:bio_lifecycle_agent.smallpox compare = equals }
+	}
+	check_variable = {
+		var = bio_seed_route
+		value = constant:bio_lifecycle_route.connected_spread
+		compare = equals
+	}
+	check_variable = {
+		var = bio_seed_source
+		value = constant:bio_lifecycle_source.spread
+		compare = equals
+	}
+	check_variable = {
+		var = bio_seed_result
+		value = constant:bio_lifecycle_result.spread
+		compare = equals
+	}
+}
+
+bio_lifecycle_doomsday_seed_record_is_valid = {
+	has_event_target = bio_seed_actor
+	has_event_target = bio_seed_victim
+	check_variable = { var = bio_seed_actor_proof value = constant:bio_lifecycle_proof.supplied compare = equals }
+	check_variable = { var = bio_seed_victim_proof value = constant:bio_lifecycle_proof.supplied compare = equals }
+	CONTROLLER = { tag = event_target:bio_seed_victim }
+	OR = {
+		check_variable = { var = bio_seed_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
+		check_variable = { var = bio_seed_agent value = constant:bio_lifecycle_agent.plague compare = equals }
+		check_variable = { var = bio_seed_agent value = constant:bio_lifecycle_agent.tularemia compare = equals }
+		check_variable = { var = bio_seed_agent value = constant:bio_lifecycle_agent.smallpox compare = equals }
+	}
+	check_variable = {
+		var = bio_seed_route
+		value = constant:bio_lifecycle_route.doomsday_release
+		compare = equals
+	}
+	check_variable = {
+		var = bio_seed_source
+		value = constant:bio_lifecycle_source.doomsday
+		compare = equals
+	}
+	check_variable = {
+		var = bio_seed_payload_debit_proof
+		value = constant:bio_lifecycle_proof.supplied
+		compare = equals
+	}
+	check_variable = {
+		var = bio_seed_payload_required
+		value = constant:bio_lifecycle_math.zero
+		compare = greater_than
+	}
+	check_variable = {
+		var = bio_seed_payload_consumed
+		value = constant:bio_lifecycle_math.zero
+		compare = greater_than
+	}
+	check_variable = {
+		var = bio_seed_payload_consumed
+		value = bio_seed_payload_required
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = bio_seed_result
+		value = constant:bio_lifecycle_result.catastrophic
+		compare = equals
+	}
+}
+
+bio_lifecycle_seed_record_is_valid = {
+	has_variable = bio_seed_agent
+	has_variable = bio_seed_route
+	has_variable = bio_seed_source
+	has_variable = bio_seed_result
+	has_variable = bio_seed_intensity
+	has_variable = bio_seed_exposed_share
+	has_variable = bio_seed_evidence
+	check_variable = {
+		var = bio_seed_intensity
+		value = constant:bio_lifecycle_math.zero
+		compare = greater_than
+	}
+	check_variable = {
+		var = bio_seed_exposed_share
+		value = constant:bio_lifecycle_math.zero
+		compare = greater_than
+	}
+	check_variable = {
+		var = bio_seed_evidence
+		value = constant:bio_lifecycle_math.zero
+		compare = greater_than_or_equals
+	}
+	bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+	OR = {
+		bio_lifecycle_deliberate_seed_record_is_valid = yes
+		bio_lifecycle_accident_seed_record_is_valid = yes
+		bio_lifecycle_spread_seed_record_is_valid = yes
+		bio_lifecycle_doomsday_seed_record_is_valid = yes
+	}
+}
+
+bio_lifecycle_state_has_anthrax_episode = {
+	OR = {
+		has_state_flag = bio_agent_1_incubating
+		has_state_flag = bio_agent_1_active
+	}
+}
+
+bio_lifecycle_state_has_plague_episode = {
+	OR = {
+		has_state_flag = bio_agent_2_incubating
+		has_state_flag = bio_agent_2_active
+	}
+}
+
+bio_lifecycle_state_has_tularemia_episode = {
+	OR = {
+		has_state_flag = bio_agent_3_incubating
+		has_state_flag = bio_agent_3_active
+	}
+}
+
+bio_lifecycle_state_has_smallpox_episode = {
+	OR = {
+		has_state_flag = bio_agent_4_incubating
+		has_state_flag = bio_agent_4_active
+	}
+}
+
+bio_lifecycle_state_has_any_ordinary_episode = {
+	OR = {
+		bio_lifecycle_state_has_anthrax_episode = yes
+		bio_lifecycle_state_has_plague_episode = yes
+		bio_lifecycle_state_has_tularemia_episode = yes
+		bio_lifecycle_state_has_smallpox_episode = yes
+	}
+}
+
+bio_lifecycle_state_has_any_detected_outbreak = {
+	OR = {
+		has_state_flag = bio_agent_1_detected
+		has_state_flag = bio_agent_2_detected
+		has_state_flag = bio_agent_3_detected
+		has_state_flag = bio_agent_4_detected
+	}
+}
+
+bio_lifecycle_state_has_any_undetected_outbreak = {
+	OR = {
+		AND = {
+			has_state_flag = bio_agent_1_active
+			NOT = { has_state_flag = bio_agent_1_detected }
+		}
+		AND = {
+			has_state_flag = bio_agent_2_active
+			NOT = { has_state_flag = bio_agent_2_detected }
+		}
+		AND = {
+			has_state_flag = bio_agent_3_active
+			NOT = { has_state_flag = bio_agent_3_detected }
+		}
+		AND = {
+			has_state_flag = bio_agent_4_active
+			NOT = { has_state_flag = bio_agent_4_detected }
+		}
+	}
+}
+
+bio_lifecycle_state_is_eligible_ordinary_pathogen_target = {
+	NOT = { is_zombie_controlled_state = yes }
+	NOT = { has_state_category = wasteland }
+	CONTROLLER = { exists = yes }
+	state_population_k > constant:bio_lifecycle_math.zero
+}

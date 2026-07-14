@@ -167,12 +167,26 @@ Deaths view arrays:
 - `global.chaos_meter_deaths_view_total_entries`
 - `global.chaos_meter_deaths_view_reason_entries`
 - `global.chaos_meter_deaths_view_cause_air_winter_exposure_entries`
+- `global.chaos_meter_deaths_view_cause_black_plague_entries`
+- `global.chaos_meter_deaths_view_cause_fallout_aftermath_entries`
 
 Contaminated winter exposure follows the shared per-cause aggregation path:
 
 - `chaos_meter_deaths_country_cause_air_winter_exposure` stores the country total.
 - `temp_chaos_meter_deaths_unsorted_cause_air_winter_exposure_entries` carries that total through sorted rebuilds.
 - `global.chaos_meter_deaths_view_cause_air_winter_exposure_entries` supplies the country-row tooltip.
+
+Black Plague mortality follows the same exact-cause projection:
+
+- `chaos_meter_deaths_country_cause_black_plague` stores the country total.
+- `temp_chaos_meter_deaths_unsorted_cause_black_plague_entries` carries that total through sorted rebuilds.
+- `global.chaos_meter_deaths_view_cause_black_plague_entries` supplies the country-row tooltip.
+
+Fallout aftermath follows the same three-step projection:
+
+- `chaos_meter_deaths_country_cause_fallout_aftermath` stores the country total.
+- `temp_chaos_meter_deaths_unsorted_cause_fallout_aftermath_entries` carries that total through sorted rebuilds.
+- `global.chaos_meter_deaths_view_cause_fallout_aftermath_entries` supplies the country-row tooltip.
 
 ## Integration Notes
 
@@ -181,6 +195,8 @@ Contaminated winter exposure follows the shared per-cause aggregation path:
 - Disable/reenable settings transitions that change current value also write to history.
 - Deaths are registered through `chaos_meter_register_deaths`, which also synchronizes chaos gain from death milestones.
 - Contaminated winter exposure is Deaths reason `17` and uses `chaos_meter_deaths.air_winter_exposure_chaos_weight = 0.10` during chaos synchronization.
+- Black Plague is Deaths reason `18` and uses the normal `1` chaos per `1,000,000` recorded deaths conversion.
+- Fallout aftermath is Deaths reason `19` and uses the normal `1` chaos per `1,000,000` recorded deaths conversion.
 - Country totals shown in the deaths tab are maintained on country-scoped variables and legacy raw logs are backfilled through bounded rebuild chunks when needed.
 
 ## Icons and GFX Wiring

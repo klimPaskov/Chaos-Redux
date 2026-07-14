@@ -1,6 +1,6 @@
 # Super-Event Audio Packages
 
-This file records restored, sourced, and converted super-event audio assets used by the settings-aware super-event playback system.
+This file records restored, sourced, and converted super-event audio assets used by the settings-aware super-event playback system. It also records the dedicated Fallout blackout cue, which reads the same audio preferences without using an ordinary super-event audio ID.
 
 ## Zombie Outbreak
 
@@ -48,20 +48,6 @@ This file records restored, sourced, and converted super-event audio assets used
 - Duration: 1:35 final excerpt.
 - Conversion notes: sourced replacement for the prior generated cue; OGG and WAV are rendered from the same licensed recording.
 
-### Fallout
-
-- Super-event ID: `4`
-- Music file: `music/002_zombie_outbreak/super_event_4_fallout.ogg`
-- Sound-channel file: `sound/002_zombie_outbreak/super_event_4_fallout.wav`
-- Sound definition: `chaosx_super_event_fallout_track`
-- Source title: `Overture in C minor, Op. 62, "Coriolan"`
-- Composer / creator: Ludwig van Beethoven.
-- Performer / recording: Fulda Symphonic Orchestra, conducted by Simon Schindler.
-- Source URL: <https://commons.wikimedia.org/wiki/File:Ludwig_van_Beethoven_-_Overt%C3%BCre_c-moll,_op._62.ogg>
-- License: EFF Open Audio License v1.
-- Duration: 1:59.5 restored cue.
-- Conversion notes: restored the pre-placeholder track while retaining the stable file paths.
-
 ### The Dead Are Buried
 
 - Super-event ID: `5`
@@ -89,6 +75,27 @@ This file records restored, sourced, and converted super-event audio assets used
 - License: attribution verified; current package docs do not include a separate open-license source file for this restored cue.
 - Duration: 1:31.542 restored cue.
 - Conversion notes: restored the pre-placeholder track while retaining the stable file paths.
+
+## Fallout World End
+
+### Blackout Transition
+
+- Presentation owner: dedicated `fallout_world_end` system.
+- Playback effect: `fallout_play_blackout_audio`.
+- Music file: `music/fallout_world_end/fallout_world_end_blackout.ogg`.
+- Sound-channel file: `sound/fallout_world_end/fallout_world_end_blackout.wav`.
+- Music asset file: `music/fallout_world_end_music.asset`.
+- Sound asset file: `sound/fallout_world_end_sound.asset`.
+- Music wrappers: `fallout_world_end_blackout_0_5` through `fallout_world_end_blackout_3_0`.
+- Sound wrappers: `fallout_world_end_blackout_sound_0_5` through `fallout_world_end_blackout_sound_3_0`.
+- Source title: `Eyes In The Void`.
+- Composer and recording owner: Scott Buckley.
+- Official source page: <https://www.scottbuckley.com.au/library/eyes-in-the-void/>.
+- License: Creative Commons Attribution 4.0 International.
+- Duration: exactly 120 seconds.
+- Conversion notes: Chaos Redux excerpted `02:22.370` through `04:22.370`, applied fades and 12 dB attenuation, then produced 44.1 kHz OGG and WAV outputs.
+- Preference integration: the playback effect honors the shared super-event audio mode and volume settings while retaining Fallout-owned wrappers and assets.
+- Full source, attribution, hash, processing, and distribution ledger: `docs/assets/fallout_world_end/audio_manifest.md`.
 
 ## Holy Realm
 
@@ -336,6 +343,25 @@ This file records restored, sourced, and converted super-event audio assets used
 - License: public-domain traditional composition; CC BY-SA 2.0 performance.
 - Duration: 1:50 final excerpt.
 - Conversion notes: normalized and faded while retaining the source license metadata; registered at all six settings-aware levels in both playback modes.
+
+## Event 015 Utopia Manifesto
+
+### Utopia Has Neighbors
+
+- Super-event display slots: `96`, `97`, `98`, `99`, and `100`; playback audio ID: `57`.
+- Music file: `music/015_utopia_manifesto/super_event_57_utopia_has_neighbors.ogg`.
+- Sound-channel file: `sound/015_utopia_manifesto/super_event_57_utopia_has_neighbors.wav`.
+- Sound definition: `chaosx_super_event_utopia_manifesto_regional_proclamation_track`.
+- Source title: Johannes Brahms, *Symphony No. 3 in F major, Op. 90*, III. *Poco allegretto*.
+- Performer / recording source: Musopen Symphony Orchestra.
+- Source URL: <https://commons.wikimedia.org/wiki/File:Brahms,_Symphony_No._3_in_F_Major,_Op._90_-_III._Poco_allegretto.ogg>.
+- Frozen source revision: <https://commons.wikimedia.org/w/index.php?title=File:Brahms,_Symphony_No._3_in_F_Major,_Op._90_-_III._Poco_allegretto.ogg&oldid=956414568>.
+- Rights: public-domain composition and file-specific [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/) recording. CC0 applies to the Commons file and supplies a worldwide waiver of copyright and related or neighbouring rights to the extent allowed by law. Attribution is not required, but courtesy credit is retained and no endorsement is implied.
+- Preserved source: `docs/super_events/source_audio/015_utopia_manifesto/brahms_symphony_3_iii_poco_allegretto_musopen_cc0_original.ogg`; `8,770,243` bytes; Commons SHA-1 `38f129111cb55461c7749a52b7ac608a13709b11`; SHA-256 `ba1db2035d78954d5f15711594817ccceaa730bd83df68734cb724a2e3ba32df`.
+- Edit: Chaos Redux retained `00:00.000-01:56.000`, applied a `0.500 s` fade-in and `6.000 s` fade-out, normalized to approximately `-18 LUFS`, and encoded the `116.000000 s` 44.1 kHz stereo OGG/WAV derivatives.
+- Final hashes: OGG `68ebdcb9a4d81ca9863e85344fc19ab1ad99ffb7e83c836691d7a92181bfd1b9`; WAV `05da5a30ba49c6592e5295dd499e9ad3e97279586bb7e7d51228ad236ce58655`.
+- Uniqueness: a current scan of all `54` music OGGs and `52` sound WAVs found no use by another event. The only matching WAV is the expected Event 015 mirror.
+- Full source, licence, edit, technical, and uniqueness ledger: `docs/super_events/015_utopia_manifesto_super_event_audio_research.md`.
 
 ## Event 018 Resources Found
 

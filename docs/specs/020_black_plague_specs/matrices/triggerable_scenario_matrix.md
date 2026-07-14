@@ -70,7 +70,7 @@ These appear as separate decision entries inside the general disease category.
 
 ## Mapmode contract
 
-| State condition | Black Plague selected-map appearance |
+| State condition | Shared contamination-map appearance |
 | --- | --- |
 | Threatened only | existing amber warning colour |
 | Known Incubating | charcoal to authorized viewer, becoming black when established display threshold is reached |

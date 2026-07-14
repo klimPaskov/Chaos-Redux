@@ -4,7 +4,7 @@ Date: 2026-07-14
 
 ## Status
 
-This is a planning and reconciliation manifest. The Doctor Warren Kruger stage-0 source package, shared scientist or leader portrait, and advisor portrait are produced and registered in `interface/016_brilliant_scientist.gfx`. Their final character assignment remains part of the incomplete gameplay lifecycle. Stage I through IV static and animated sprite contracts are pre-registered, but all referenced later assets remain unproduced. All other Event 016 visual assets remain unproduced and unwired.
+This is a planning and reconciliation manifest. The Doctor Warren Kruger stage-0 source package, shared scientist or leader portrait, and advisor portrait are produced and registered in `interface/016_brilliant_scientist.gfx`. Their final character assignment remains part of the incomplete gameplay lifecycle. The opening appointment report card is produced, converted, and handed off, but its sprite and event references remain parent-owned and unwired. Stage I through IV static and animated sprite contracts are pre-registered, but all referenced later assets remain unproduced. All remaining Event 016 visual assets remain unproduced and unwired.
 
 Super-event text and audio research are complete for all six packages. Six final Event 016-owned OGG files are ready under `music/016_brilliant_scientist/` at visible IDs 90 through 95. Commit `0e8c6f8e` performed the role-preserving rename to those IDs. Shared music definitions, sound wrappers, settings-aware playback, event triggers, GUI, and localisation remain parent-owned and unwired.
 
@@ -23,7 +23,7 @@ Super-event text and audio research are complete for all six packages. Six final
 | Kruger stages I through III portrait states | Specification-defined | 0 | Sprite contracts registered, assets and state wiring missing |
 | Kruger State base and route flag triplets | Specification-defined | 0 | Unwired |
 | Directorate UI art | Specification-defined | 0 | Unwired |
-| Report and news images | Specification-defined | 0 | Unwired |
+| Report and news images | Specification-defined | 1 report / 0 news | Opening appointment report handed off; all remaining images unwired |
 | Focus, idea, decision, category, project, technology, unit, and equipment icons | Specification-defined | 0 | Unwired |
 
 ## Doctor Warren Kruger stage-0 source package
@@ -50,6 +50,43 @@ Super-event text and audio research are complete for all six packages. Six final
 The runtime large DDS is byte-identical to the approved tracked source and has SHA-256 `5D0CF3F973B6099DB895C96A6FED9544F30873076985DDF885032793C5183075`. The advisor DDS has SHA-256 `487F5D52167543FAFB998A103C1576321AC1DE67FFFDCF804F3B3AAF55122503`. Vanilla scientist characters use one `portraits = { army = { large = ... small = ... } }` family. The `156x210` large portrait therefore serves the scientist and later leader surfaces without a redundant second scientist DDS. The advisor derivative uses the verified vanilla `65x67` small-character surface rather than a guessed `64x64` icon.
 
 GFX and character wiring details are in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_base_portrait_source_handoff.md`. Commit `43125d91a` registered the two stage-0 sprites. The later Stage I through IV names currently registered in `interface/016_brilliant_scientist.gfx` are filename contracts only. No referenced later portrait DDS or animated sheet exists yet.
+
+## Opening appointment report event
+
+| Field | Evidence |
+| --- | --- |
+| Asset | Doctor Warren Kruger appointment dossier |
+| Related event | `chaosx.nr16.2` first-host appointment and `chaosx.nr16.3` referred-recipient appointment |
+| Event slug | `016_brilliant_scientist` |
+| Asset type | Static report event picture |
+| Intended use | Replace the raw Stage-0 portrait presentation in the two visible opening appointment events with a period dossier or report-card image |
+| Source mode | User-directed repository-tracked Stage-0 identity derivative; no image generation and no internet source |
+| Source PNG | `docs/assets/016_brilliant_scientist/source_png/report_events/report_event_016_brilliant_scientist_appointment_source.png` |
+| Processed PNG | `docs/assets/016_brilliant_scientist/processed_png/report_events/report_event_016_brilliant_scientist_appointment.png` |
+| Final DDS | `gfx/event_pictures/016_brilliant_scientist/report_event_016_brilliant_scientist_appointment.dds` |
+| Review contact sheet | `docs/assets/016_brilliant_scientist/contact_sheets/report_event_016_brilliant_scientist_appointment_contact_sheet.png` |
+| Target size | `210x176` |
+| Proposed sprite | `GFX_report_event_016_brilliant_scientist_appointment` |
+| Target GFX | `interface/016_brilliant_scientist.gfx` |
+| Localisation | Not applicable; the image is shared by the existing `chaosx.nr16.2` and `chaosx.nr16.3` text surfaces |
+| Status | `handed_off` |
+
+### Source and identity provenance
+
+- The source PNG is `206x164` RGBA and fully opaque, with SHA-256 `33C8ADD65AFB63DD6CD7E995E1C1DF05A2AD264B9D4F2802C8AB77DF8FF29D4D`.
+- Pixels `x=25..180`, `y=0..163` are exactly identical to pixels `x=0..155`, `y=0..163` of `docs/assets/016_brilliant_scientist/source_png/portraits/portrait_generic_biowarfare_europe_male_01_decoded.png`. The remaining source pixels are symmetric 25-pixel blue-grey side margins. No face, clothing, anatomy, or stage detail was generated, repainted, or substituted.
+- The source inherits the Stage-0 licensing note. It is approved for internal Event 016 use, is not claimed as public domain, and has unresolved external redistribution rights.
+- Stage I and later source art was not opened, processed, or reused for this asset.
+
+### Processing and output record
+
+- `.agents/skills/chaos-redux-event-assets/tools/process_report_event_image.py` applied the standard report treatment with a `192x153` card, 2-pixel paper border, 3-degree tilt, soft shadow, monochrome sepia tone, deterministic grain seed `1616`, and a transparent `210x176` RGBA canvas.
+- The processed PNG has SHA-256 `716CEC05CDD2F66E4FA96D61261857AD9676AAAED115E28D1411C3E3CFFAF03E`. Its four corner alpha values are zero, its alpha range is `0..255`, its non-zero alpha bounding box is `(5, 6, 209, 174)`, and every outer edge remains fully transparent, so neither the card nor shadow is hard-clipped.
+- `.tools/convert_to_dds.py` produced a one-level legacy uncompressed BGRA DDS with SHA-256 `5DFD9CC830A650271D7C66A3501E51F027ED160935151FB0153C8C1FDBB65B5B`. The file is exactly `147968` bytes, matching the 128-byte header plus `210 * 176 * 4` bytes of pixel data.
+- The DDS declares a 124-byte legacy header, `210x176`, pitch `840`, `DDS_PIXELFORMAT` size `32`, flags `65`, 32-bit BGRA masks `0x00FF0000`, `0x0000FF00`, `0x000000FF`, and `0xFF000000`, and `DDSCAPS_TEXTURE` at byte 108. Pillow decodes it successfully, and the decoded RGBA pixels are exactly identical to the processed PNG.
+- The contact sheet has SHA-256 `B3FB28D7A90738845EA074BB09099EAE6DEC056D8B6D60F67F1C98D2A3FFB9D7` and shows the approved source, processed RGBA card over a checker background, and decoded DDS together for review.
+
+Sprite registration and event-reference instructions are in `docs/assets/016_brilliant_scientist/gfx_handoff.md`. The bounded production handoff is `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_opening_report_asset_handoff.md`.
 
 ## Six super-event packages
 
@@ -115,7 +152,7 @@ Every final audio package needs source URL, author or performer, work and record
 ## Blockers
 
 - Visible super-event IDs 90 to 95 and world-end scenario IDs 11 and 12 are reserved. Their live shared-registry entries are not implemented.
-- Later image and animation production has not started. Stage 0 is the completed exception.
+- The opening appointment report is handed off but not wired. All later report and news images, super-event images, Stage I through IV portrait art, and animation packages remain unproduced.
 - Final OGGs are ready, but parent-owned shared music and optional sound-channel wiring remain absent.
 - Stage-0 GFX registration is complete, and later portrait contracts are pre-registered. Character assignment, later portrait files, GUI state wiring, achievement wiring, shared music and sound wiring, localisation, and gameplay wiring remain absent.
 - External redistribution rights for the copied stage-0 base remain unresolved. Internal Event 016 use is explicitly user-authorized.

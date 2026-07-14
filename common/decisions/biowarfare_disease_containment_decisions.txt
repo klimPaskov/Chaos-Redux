@@ -24,6 +24,33 @@
 
 chaosx_disease_containment_category = {
 
+	black_plague_select_response_state = {
+		icon = GFX_decision_category_contamination_defense
+		state_target = any_controlled_state
+		on_map_mode = map_only
+		visible = {
+			is_ai = no
+			disease_containment_board_is_black_plague_selected = yes
+			black_plague_country_has_selectable_response_state = yes
+		}
+		target_root_trigger = {
+			disease_containment_board_is_black_plague_selected = yes
+			black_plague_country_has_selectable_response_state = yes
+		}
+		target_trigger = {
+			FROM = { black_plague_response_state_is_selectable = yes }
+		}
+		available = {
+			disease_containment_board_is_black_plague_selected = yes
+			FROM = { black_plague_response_state_is_selectable = yes }
+		}
+		complete_effect = {
+			custom_effect_tooltip = black_plague_select_response_state_tt
+			black_plague_select_response_state_from_decision = yes
+		}
+		ai_will_do = { base = constant:disease_containment_board_value.zero }
+	}
+
     deploy_field_hospitals = {
         state_target = any_controlled_state
         target_trigger = {

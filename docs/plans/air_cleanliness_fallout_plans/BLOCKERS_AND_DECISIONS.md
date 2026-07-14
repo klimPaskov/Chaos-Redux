@@ -1,10 +1,10 @@
 # Blockers and Parent Decisions
 
-## Blocking items before gameplay edits
+## Current blocking items
 
 ## B1: writable repository and local official documentation
 
-Status: blocked in this environment
+Status: resolved
 
 Required evidence:
 
@@ -13,17 +13,13 @@ Required evidence:
 - local Hearts of Iron IV `documentation` folder
 - local vanilla game files
 
-Reason:
+Evidence:
 
-`AGENTS.md` requires the offline wiki, official documentation, and vanilla precedent before edits. The GitHub repository made the offline wiki visible for planning, but the local official documentation and game installation were not available here.
-
-Resolution:
-
-Complete Tranche 0 locally. No gameplay code was edited in this pass.
+The writable checkout, offline wiki snapshot, official documentation, and installed vanilla files were inspected locally. Engine-sensitive results are recorded in `ENGINE_SURFACE_PROOF.md` and `FALLOUT_MANUAL_PROVINCE_SWEEP_PROOF.md`.
 
 ## B2: exact province-wide thermonuclear strike
 
-Status: unproven
+Status: dormant substrate implemented, runtime release proof blocked
 
 Accepted requirement:
 
@@ -31,14 +27,20 @@ Every valid province must receive a thermonuclear strike.
 
 Observed evidence:
 
-- a global `every_state` scope exists
-- province selectors exist for some state effects
-- no repository precedent for `every_province` was found
-- no verified nuclear effect accepting all provinces was found in this pass
+- official `launch_nuke` accepts a province and explicit thermonuclear type
+- vanilla nuclear raids pass a variable-backed province id
+- the installed map contains 10,154 valid assigned land provinces across all 1,081 states
+- generated batches expand to the exact canonical ledger with no duplicates or omissions
+- runtime counters require issued, observed, state-count, and state-sum agreement
+- manual runtime schema 2 binds each scheduled callback to the active transaction generation
+- the daily validator binds issued calls to the exact completed-batch cursor before later native work
+- each hourly callback repeats the cursor, last-completed-batch, observation, and struck-state preflight before opening the native launch window
 
 Resolution gate:
 
-Prove the exact effect and scope with local official documentation and a working test.
+Review native acceptance for all target classes, one callback per call, guarded callback timing, batch cost, save integrity, and multiplayer synchronization. Hearts of Iron IV was not run in this task.
+
+Vanilla `on_nuke_drop` schedules twelve one-day nuclear news events for every callback. If all 10,154 scripted calls emit callbacks, it may schedule about 121,848 news event attempts. A mod callback cannot suppress that separate vanilla branch. This amplification is part of the release gate.
 
 Forbidden resolution:
 
@@ -49,12 +51,13 @@ Forbidden resolution:
 
 ## B3: manual scenario id allocation
 
-Status: live registry scan required
+Status: blocked by a live versus reserved allocation conflict
 
-Observed snapshot:
+Observed live checkout:
 
-- reserved raw id 7
-- Africa Is One raw id 8
+- the registered public scenario sequence ends at raw id 11
+- the unfinished Black Plague package separately reserves raw id 12
+- Black Plague does not yet register or dispatch a live SCN-012 row
 
 Allocation rule:
 
@@ -63,7 +66,7 @@ Allocation rule:
 - preserve every existing scenario id and stored selection value
 - update registry arrays, sorting, localisation, dispatch, and documentation with the allocated id
 
-The inspected snapshot is historical evidence only. A newer checkout may already contain additional scenarios, so the assigned Fallout id must come from the live registry scan.
+Fallout cannot take raw id 12 without colliding with Event 20. It cannot claim raw id 13 as the previous live maximum plus one until SCN-012 is genuinely live. The public Fallout row remains absent and no existing id was renumbered.
 
 ## B4: mapmode strip frame mismatch
 
@@ -81,21 +84,36 @@ Inspect actual DDS dimensions and frames. Correct metadata and documentation bef
 
 ## B5: full-screen GUI drawing order
 
-Status: local vanilla precedent required
+Status: open, static evidence proves limited pointer interception only
 
 Need proof that the blackout:
 
 - covers all ordinary windows and popups
-- blocks underlying input
+- has complete pointer priority over every required hardcoded popup
+- captures keyboard input and suppresses hardcoded shortcuts
+- obtains native exclusive input or another proven equivalent
 - remains visible through the rewrite
 - works at supported resolutions
 - remains synchronized in multiplayer
 
-Do not assume a top-bar parent is sufficient.
+Current static evidence:
+
+- a non-transparent top-layer blocker can intercept pointer hits on controls beneath its own layer
+- the official scripted-GUI schema expects an independent `containerWindowType`, while the current `interface/fallout_world_end.gui` root uses `windowType`
+- the current fixed `10000` by `10000` blocker does not prove all-resolution coverage
+- root parentlessness places a structurally valid scripted GUI over most UI, but not necessarily every hardcoded popup
+- the official scripted-GUI schema exposes no modal, exclusive-input, keyboard-capture, shortcut-suppression, or pause surface
+- vanilla native-exclusive examples depend on hardcoded `SetExclusive`, which is not exposed to scripted GUI
+- synchronized state can re-evaluate visibility only after the container binding is structurally valid, and no exposed exclusive-input state can be restored
+- `is_global_host` is a project simulation coordinator rather than a proven literal lobby host, and it cannot suppress client-local keyboard input
+
+Converting the root to a full-screen independent `containerWindowType` with percentage sizing is only a possible fallback for broader pointer coverage. It requires explicit user approval before any GUI change. It would not prove complete pointer priority, keyboard capture, shortcut suppression, native exclusive input, or pause control. Pointer-only behavior is not approved as a substitute for the required blackout.
+
+Do not assume a top-bar parent, root parentlessness, or pointer interception beneath one layer resolves B5.
 
 ## B6: old `world_end_fallout` save migration
 
-Status: parent policy required
+Status: schema v4 fail-closed policy implemented, full transition still blocked
 
 Potential old save states:
 
@@ -104,11 +122,52 @@ Potential old save states:
 - event system stopped
 - contamination at terminal threshold
 
-Recommended policy:
+Implemented policy:
 
-Route old terminal Fallout saves into the new transition using a versioned compatibility event, after clearing only the old Fallout presentation state.
+- completed Fallout saves are promoted to the current schema without restarting destruction
+- only the exact schema-3 map-return-error signature is recovered into schema v4
+- every other incomplete schema 1 through 3 transition fails closed under blackout
+- an incomplete terminal save with no schema also fails closed under blackout
+- migration does not infer safety from `fallout_transition_destructive_started` because schemas 1 through 3 never guaranteed that marker
+- no generic pre-destructive restart and no legacy altered-grade replay are active migration behavior
 
-The parent must decide whether old terminal saves are supported or explicitly unsupported. Do not leave the behavior implicit.
+The exact recoverable schema-3 signature requires the map-return phase, map return blocked, transition error set, `map_postcondition_failed`, and an error count of one. Any ambiguity remains blocked.
+
+## B7: player continuation and successor commit
+
+Status: commit and proof contracts implemented for ready targets, allocation, materialization, and package production blocked
+
+Implemented commit path:
+
+- human countries and source anchors are snapshotted
+- surviving-player capital reservations are resolved before the successor conflict inventory is built
+- derived inventory schema 1 records and validates every live country, possible country scope, state, reservation, safe candidate, and known overlapping event-package owner for the active transition generation
+- commit readiness requires an existing target with current-transition country and focus packages, survivable territory, and the exact reserved capital under its ownership and control
+- a two-pass preflight validates every existing commit and proposed target before any player switch, including cross-player collision checks
+- the durable assignment origin and generation ledger is written before an optional `change_tag_from`
+- recoverable commit errors can be retried, and persisted assignments can rebuild cleared reservations before strict validation
+- committed targets are reconstructed and revalidated against package generations, human control, exact capital reservation, durable origin, durable generation, and assignment uniqueness
+- provisional government classifier schema 1 deterministically resolves eleven live archetypes and fails closed on partial Machine Protocol claims or unmatched survivors
+- successor allocation schema 1 separates the frozen input inventory from post-mutation output proof
+- output proof requires unique assigned country scopes, unique capital states, exact live-landholder coverage, current package layers, conflict receipts, and cleanup ownership
+- the guarded allocation finalizer is the only effect that can set the completion flag
+
+Missing release work:
+
+- no active effect materializes a required player successor
+- no active producer applies the required country and focus packages or their current transition generations
+- no candidate-choice UI assigns a materialized successor to a player
+- no active allocator begins or finalizes general successor allocation
+- no active allocator chooses a Fallout package, regional package, final archetype package, conflict result, or cleanup owner
+- no producer populates the post-allocation assignment and package rows
+- Machine Protocol lacks complete live producers for its command-network and EMP-survival requirements
+- the known event-package ownership registry requires another live producer audit before any state or tag mutation
+
+The commit effect can finish an uncommitted player only when the selected target already exists and satisfies every current-generation readiness check. The code can set `fallout_player_materialization_required`, but it cannot resolve that state.
+
+Static inspection cannot prove whether `change_tag_from` makes the destination report `is_ai = no` immediately in the same effect chain. The commit effect checks that condition immediately after the switch. No Hearts of Iron IV run was authorized, so this timing remains a runtime blocker.
+
+The blackout and map-return postconditions must remain blocked until materialization, package and focus producers, target selection, general successor allocation, and the tag-switch timing proof exist.
 
 ## Design decisions already resolved
 

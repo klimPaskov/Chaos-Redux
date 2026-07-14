@@ -1,0 +1,40 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 019 ACHIEVEMENT ON ACTIONS
+# ============================================================================
+# One-shot capitulation and annexation history only. Vanilla documentation
+# gives on_army_leader_won_combat ROOT = unit leader and FROM = owner country;
+# it exposes no combat or participating-division scope. The four division-
+# battle achievements are therefore intentionally not wired to that callback.
+# No daily, weekly, or monthly country/world iteration is used here.
+# ============================================================================
+
+on_actions = {
+	# ROOT is the capitulated country and FROM is the winner.
+	on_capitulation = {
+		effect = {
+			ROOT = { save_event_target_as = infantry_spawn_achievement_defeated_country }
+			ROOT = { save_event_target_as = infantry_spawn_achievement_defeated_derivative }
+			FROM = { save_event_target_as = infantry_spawn_achievement_derivative_winner }
+			ROOT = { infantry_spawn_achievement_record_current_derivative_defeat = yes }
+			FROM = {
+				infantry_spawn_achievement_record_claimant_major_victory = yes
+				infantry_spawn_achievement_record_scenario_actor_victory = yes
+			}
+		}
+	}
+
+	# ROOT is the annexer and FROM is the annexed country.
+	on_annex = {
+		effect = {
+			FROM = { save_event_target_as = infantry_spawn_achievement_defeated_country }
+			FROM = { save_event_target_as = infantry_spawn_achievement_defeated_derivative }
+			ROOT = { save_event_target_as = infantry_spawn_achievement_derivative_winner }
+			FROM = { infantry_spawn_achievement_record_current_derivative_defeat = yes }
+			ROOT = {
+				infantry_spawn_achievement_record_claimant_major_victory = yes
+				infantry_spawn_achievement_record_scenario_actor_victory = yes
+			}
+		}
+	}
+}
+

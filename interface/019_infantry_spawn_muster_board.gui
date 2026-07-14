@@ -1,0 +1,281 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 019 MUSTER BOARD WINDOW
+# ============================================================================
+# Movable 1120x760 player interface. Decorative animation layers have explicit
+# static siblings; all text and interaction geometry remains separate from art.
+# ============================================================================
+
+@INFANTRY_SPAWN_MUSTER_WIDTH = 1120
+@INFANTRY_SPAWN_MUSTER_HEIGHT = 760
+@INFANTRY_SPAWN_MUSTER_PANEL_WIDTH = 1080
+@INFANTRY_SPAWN_MUSTER_PANEL_HEIGHT = 606
+@INFANTRY_SPAWN_MUSTER_LOT_ENTRY_WIDTH = 392
+@INFANTRY_SPAWN_MUSTER_LOT_ENTRY_HEIGHT = 52
+@INFANTRY_SPAWN_MUSTER_FAMILY_ENTRY_WIDTH = 390
+@INFANTRY_SPAWN_MUSTER_FAMILY_ENTRY_HEIGHT = 60
+@INFANTRY_SPAWN_MUSTER_HISTORY_ENTRY_WIDTH = 1010
+@INFANTRY_SPAWN_MUSTER_HISTORY_ENTRY_HEIGHT = 50
+
+guiTypes = {
+	containerWindowType = {
+		name = "infantry_spawn_muster_board_window"
+		position = { x = 0 y = 24 }
+		orientation = center
+		size = { width = @INFANTRY_SPAWN_MUSTER_WIDTH height = @INFANTRY_SPAWN_MUSTER_HEIGHT }
+		moveable = yes
+		clipping = no
+
+		iconType = {
+			name = "infantry_spawn_muster_background"
+			spriteType = "GFX_infantry_spawn_muster_board_background"
+			position = { x = 0 y = 0 }
+		}
+		iconType = {
+			name = "infantry_spawn_muster_seal_animated"
+			spriteType = "GFX_infantry_spawn_muster_seal_animated"
+			position = { x = 22 y = 18 }
+		}
+		iconType = {
+			name = "infantry_spawn_muster_seal_static"
+			spriteType = "GFX_infantry_spawn_muster_seal_static"
+			position = { x = 22 y = 18 }
+		}
+		iconType = {
+			name = "infantry_spawn_muster_critical_border_animated"
+			spriteType = "GFX_infantry_spawn_critical_command_border_animated"
+			position = { x = 938 y = 126 }
+		}
+		iconType = {
+			name = "infantry_spawn_muster_critical_border_static"
+			spriteType = "GFX_infantry_spawn_critical_command_border_static"
+			position = { x = 938 y = 126 }
+		}
+		iconType = {
+			name = "infantry_spawn_muster_anomalous_emblem_animated"
+			spriteType = "GFX_infantry_spawn_anomalous_registry_emblem_animated"
+			position = { x = 956 y = 28 }
+		}
+		iconType = {
+			name = "infantry_spawn_muster_anomalous_emblem_static"
+			spriteType = "GFX_infantry_spawn_anomalous_registry_emblem_static"
+			position = { x = 956 y = 28 }
+		}
+
+		instantTextBoxType = {
+			name = "infantry_spawn_muster_title"
+			position = { x = 102 y = 18 }
+			font = "hoi_30header"
+			text = "infantry_spawn_muster_gui_title"
+			format = left
+			maxWidth = 620
+			maxHeight = 38
+		}
+		instantTextBoxType = {
+			name = "infantry_spawn_muster_subtitle"
+			position = { x = 104 y = 56 }
+			font = "hoi_16mbs"
+			text = "infantry_spawn_muster_gui_subtitle"
+			format = left
+			maxWidth = 660
+			maxHeight = 36
+		}
+		buttonType = {
+			name = "infantry_spawn_muster_animation_toggle"
+			position = { x = 786 y = 26 }
+			spriteType = "GFX_chaosx_button_123x34"
+			buttonFont = "hoi_14mbs"
+			buttonText = "infantry_spawn_muster_gui_animations"
+			pdx_tooltip = "infantry_spawn_muster_gui_animations_tt"
+			clicksound = decisions_ui_button
+		}
+		buttonType = {
+			name = "infantry_spawn_muster_refresh"
+			position = { x = 786 y = 64 }
+			spriteType = "GFX_chaosx_button_123x34"
+			buttonFont = "hoi_14mbs"
+			buttonText = "infantry_spawn_muster_gui_refresh"
+			pdx_tooltip = "infantry_spawn_muster_gui_refresh_tt"
+			clicksound = decisions_ui_button
+		}
+		buttonType = {
+			name = "infantry_spawn_muster_close"
+			position = { x = 980 y = 72 }
+			spriteType = "GFX_chaosx_button_123x34"
+			buttonFont = "hoi_14mbs"
+			buttonText = "infantry_spawn_muster_gui_close"
+			pdx_tooltip = "infantry_spawn_muster_gui_close_tt"
+			clicksound = decisions_ui_button
+			scale = 0.86
+		}
+
+		buttonType = { name = "infantry_spawn_muster_tab_overview" position = { x = 26 y = 102 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_14mbs" buttonText = "infantry_spawn_muster_gui_tab_overview" pdx_tooltip = "infantry_spawn_muster_gui_tab_overview_tt" clicksound = decisions_ui_button }
+		buttonType = { name = "infantry_spawn_muster_tab_lots" position = { x = 160 y = 102 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_14mbs" buttonText = "infantry_spawn_muster_gui_tab_lots" pdx_tooltip = "infantry_spawn_muster_gui_tab_lots_tt" clicksound = decisions_ui_button }
+		buttonType = { name = "infantry_spawn_muster_tab_command" position = { x = 294 y = 102 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_14mbs" buttonText = "infantry_spawn_muster_gui_tab_command" pdx_tooltip = "infantry_spawn_muster_gui_tab_command_tt" clicksound = decisions_ui_button }
+		buttonType = { name = "infantry_spawn_muster_tab_anomalous" position = { x = 428 y = 102 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_14mbs" buttonText = "infantry_spawn_muster_gui_tab_anomalous" pdx_tooltip = "infantry_spawn_muster_gui_tab_anomalous_tt" clicksound = decisions_ui_button }
+		buttonType = { name = "infantry_spawn_muster_tab_history" position = { x = 562 y = 102 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_14mbs" buttonText = "infantry_spawn_muster_gui_tab_history" pdx_tooltip = "infantry_spawn_muster_gui_tab_history_tt" clicksound = decisions_ui_button }
+
+		containerWindowType = {
+			name = "infantry_spawn_muster_overview_panel"
+			position = { x = 20 y = 140 }
+			size = { width = @INFANTRY_SPAWN_MUSTER_PANEL_WIDTH height = @INFANTRY_SPAWN_MUSTER_PANEL_HEIGHT }
+			clipping = no
+			background = { name = "Background" quadTextureSprite = "GFX_tiled_window_transparent" }
+
+			instantTextBoxType = { name = "infantry_spawn_muster_control_card" position = { x = 26 y = 20 } font = "hoi_18mbs" text = "infantry_spawn_muster_gui_control" format = center maxWidth = 236 maxHeight = 72 pdx_tooltip = "infantry_spawn_muster_gui_control_tt" }
+			instantTextBoxType = { name = "infantry_spawn_muster_congestion_card" position = { x = 286 y = 20 } font = "hoi_18mbs" text = "infantry_spawn_muster_gui_congestion" format = center maxWidth = 236 maxHeight = 72 pdx_tooltip = "infantry_spawn_muster_gui_congestion_tt" }
+			instantTextBoxType = { name = "infantry_spawn_muster_debt_card" position = { x = 546 y = 20 } font = "hoi_18mbs" text = "infantry_spawn_muster_gui_debt" format = center maxWidth = 236 maxHeight = 72 pdx_tooltip = "infantry_spawn_muster_gui_debt_tt" }
+			instantTextBoxType = { name = "infantry_spawn_muster_saturation_card" position = { x = 806 y = 20 } font = "hoi_18mbs" text = "infantry_spawn_muster_gui_saturation" format = center maxWidth = 236 maxHeight = 72 pdx_tooltip = "infantry_spawn_muster_gui_saturation_tt" }
+
+			instantTextBoxType = { name = "infantry_spawn_muster_overview_summary" position = { x = 34 y = 108 } font = "hoi_18mbs" text = "infantry_spawn_muster_gui_overview_summary" format = left maxWidth = 1010 maxHeight = 112 pdx_tooltip = "infantry_spawn_muster_gui_overview_summary_tt" }
+			instantTextBoxType = { name = "infantry_spawn_muster_request_heading" position = { x = 34 y = 240 } font = "hoi_24header" text = "infantry_spawn_muster_gui_request_heading" format = left maxWidth = 680 maxHeight = 34 }
+			instantTextBoxType = { name = "infantry_spawn_muster_request_status" position = { x = 34 y = 276 } font = "hoi_16mbs" text = "infantry_spawn_muster_gui_request_status" format = left maxWidth = 1000 maxHeight = 54 pdx_tooltip = "infantry_spawn_muster_gui_request_status_tt" }
+
+			buttonType = { name = "infantry_spawn_muster_request_numbers" position = { x = 34 y = 350 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_14mbs" buttonText = "infantry_spawn_muster_gui_request_numbers" pdx_tooltip = "infantry_spawn_muster_gui_request_numbers_tt" clicksound = decisions_ui_button scale = 1.2 }
+			buttonType = { name = "infantry_spawn_muster_request_discipline" position = { x = 232 y = 350 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_14mbs" buttonText = "infantry_spawn_muster_gui_request_discipline" pdx_tooltip = "infantry_spawn_muster_gui_request_discipline_tt" clicksound = decisions_ui_button scale = 1.2 }
+			buttonType = { name = "infantry_spawn_muster_request_firepower" position = { x = 430 y = 350 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_14mbs" buttonText = "infantry_spawn_muster_gui_request_firepower" pdx_tooltip = "infantry_spawn_muster_gui_request_firepower_tt" clicksound = decisions_ui_button scale = 1.2 }
+			buttonType = { name = "infantry_spawn_muster_request_mobility" position = { x = 628 y = 350 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_14mbs" buttonText = "infantry_spawn_muster_gui_request_mobility" pdx_tooltip = "infantry_spawn_muster_gui_request_mobility_tt" clicksound = decisions_ui_button scale = 1.2 }
+			buttonType = { name = "infantry_spawn_muster_request_anything" position = { x = 826 y = 350 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_14mbs" buttonText = "infantry_spawn_muster_gui_request_anything" pdx_tooltip = "infantry_spawn_muster_gui_request_anything_tt" clicksound = decisions_ui_button scale = 1.2 }
+
+			instantTextBoxType = { name = "infantry_spawn_muster_request_costs_left" position = { x = 36 y = 414 } font = "hoi_16mbs" text = "infantry_spawn_muster_gui_request_costs_left" format = left maxWidth = 480 maxHeight = 150 }
+			instantTextBoxType = { name = "infantry_spawn_muster_request_costs_right" position = { x = 552 y = 414 } font = "hoi_16mbs" text = "infantry_spawn_muster_gui_request_costs_right" format = left maxWidth = 480 maxHeight = 150 }
+		}
+
+		containerWindowType = {
+			name = "infantry_spawn_muster_lots_panel"
+			position = { x = 20 y = 140 }
+			size = { width = @INFANTRY_SPAWN_MUSTER_PANEL_WIDTH height = @INFANTRY_SPAWN_MUSTER_PANEL_HEIGHT }
+			clipping = no
+			background = { name = "Background" quadTextureSprite = "GFX_tiled_window_transparent" }
+			instantTextBoxType = { name = "infantry_spawn_muster_lots_heading" position = { x = 20 y = 14 } font = "hoi_24header" text = "infantry_spawn_muster_gui_lots_heading" format = left maxWidth = 430 maxHeight = 34 }
+			containerWindowType = {
+				name = "infantry_spawn_muster_lot_list_panel"
+				position = { x = 18 y = 58 }
+				size = { width = 414 height = 516 }
+				clipping = yes
+				verticalScrollbar = "right_vertical_slider_intel"
+				scroll_wheel_factor = 42
+				smooth_scrolling = yes
+				background = { name = "Background" quadTextureSprite = "GFX_tiled_window_transparent" }
+				gridBoxType = { name = "infantry_spawn_muster_lot_dynamic_list" position = { x = 4 y = 0 } size = { width = @INFANTRY_SPAWN_MUSTER_LOT_ENTRY_WIDTH height = 506 } slotsize = { width = @INFANTRY_SPAWN_MUSTER_LOT_ENTRY_WIDTH height = @INFANTRY_SPAWN_MUSTER_LOT_ENTRY_HEIGHT } format = "UPPER_LEFT" max_slots_horizontal = 1 }
+			}
+
+			containerWindowType = {
+				name = "infantry_spawn_muster_selected_lot_card"
+				position = { x = 452 y = 52 }
+				size = { width = 608 height = 526 }
+				clipping = no
+				background = { name = "Background" quadTextureSprite = "GFX_tiled_window_transparent" }
+				instantTextBoxType = { name = "infantry_spawn_muster_selected_lot_title" position = { x = 18 y = 12 } font = "hoi_24header" text = "infantry_spawn_muster_gui_selected_lot_title" format = left maxWidth = 570 maxHeight = 34 }
+				instantTextBoxType = { name = "infantry_spawn_muster_selected_lot_profile" position = { x = 18 y = 56 } font = "hoi_18mbs" text = "infantry_spawn_muster_gui_selected_lot_profile" format = left maxWidth = 570 maxHeight = 92 pdx_tooltip = "infantry_spawn_muster_gui_selected_lot_profile_tt" }
+				instantTextBoxType = { name = "infantry_spawn_muster_selected_lot_accounting" position = { x = 18 y = 154 } font = "hoi_16mbs" text = "infantry_spawn_muster_gui_selected_lot_accounting" format = left maxWidth = 570 maxHeight = 92 pdx_tooltip = "infantry_spawn_muster_gui_selected_lot_accounting_tt" }
+				buttonType = { name = "infantry_spawn_muster_lot_audit" position = { x = 20 y = 274 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_14mbs" buttonText = "infantry_spawn_muster_gui_lot_audit" pdx_tooltip = "infantry_spawn_muster_gui_lot_audit_tt" clicksound = decisions_ui_button scale = 1.08 }
+				buttonType = { name = "infantry_spawn_muster_lot_territorial" position = { x = 166 y = 274 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_14mbs" buttonText = "infantry_spawn_muster_gui_lot_territorial" pdx_tooltip = "infantry_spawn_muster_gui_lot_territorial_tt" clicksound = decisions_ui_button scale = 1.08 }
+				buttonType = { name = "infantry_spawn_muster_lot_training" position = { x = 312 y = 274 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_14mbs" buttonText = "infantry_spawn_muster_gui_lot_training" pdx_tooltip = "infantry_spawn_muster_gui_lot_training_tt" clicksound = decisions_ui_button scale = 1.08 }
+				buttonType = { name = "infantry_spawn_muster_lot_standardize" position = { x = 458 y = 274 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_14mbs" buttonText = "infantry_spawn_muster_gui_lot_standardize" pdx_tooltip = "infantry_spawn_muster_gui_lot_standardize_tt" clicksound = decisions_ui_button scale = 1.08 }
+				buttonType = { name = "infantry_spawn_muster_lot_cadres" position = { x = 20 y = 334 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_14mbs" buttonText = "infantry_spawn_muster_gui_lot_cadres" pdx_tooltip = "infantry_spawn_muster_gui_lot_cadres_tt" clicksound = decisions_ui_button scale = 1.08 }
+				buttonType = { name = "infantry_spawn_muster_lot_demobilize" position = { x = 166 y = 334 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_14mbs" buttonText = "infantry_spawn_muster_gui_lot_demobilize" pdx_tooltip = "infantry_spawn_muster_gui_lot_demobilize_tt" clicksound = decisions_ui_button scale = 1.08 }
+				buttonType = { name = "infantry_spawn_muster_lot_emergency" position = { x = 312 y = 334 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_14mbs" buttonText = "infantry_spawn_muster_gui_lot_emergency" pdx_tooltip = "infantry_spawn_muster_gui_lot_emergency_tt" clicksound = decisions_ui_button scale = 1.08 }
+				instantTextBoxType = { name = "infantry_spawn_muster_selected_lot_footer" position = { x = 20 y = 406 } font = "hoi_16mbs" text = "infantry_spawn_muster_gui_selected_lot_footer" format = left maxWidth = 566 maxHeight = 94 }
+			}
+		}
+
+		containerWindowType = {
+			name = "infantry_spawn_muster_command_panel"
+			position = { x = 20 y = 140 }
+			size = { width = @INFANTRY_SPAWN_MUSTER_PANEL_WIDTH height = @INFANTRY_SPAWN_MUSTER_PANEL_HEIGHT }
+			clipping = no
+			background = { name = "Background" quadTextureSprite = "GFX_tiled_window_transparent" }
+			instantTextBoxType = { name = "infantry_spawn_muster_command_heading" position = { x = 24 y = 14 } font = "hoi_24header" text = "infantry_spawn_muster_gui_command_heading" format = left maxWidth = 690 maxHeight = 34 }
+			iconType = { name = "infantry_spawn_muster_claimant_portrait" spriteType = "GFX_portrait_infantry_spawn_claimant_01" position = { x = 32 y = 70 } }
+			buttonType = { name = "infantry_spawn_muster_claimant_cycle" position = { x = 48 y = 300 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_14mbs" buttonText = "infantry_spawn_muster_gui_claimant_cycle" pdx_tooltip = "infantry_spawn_muster_gui_claimant_cycle_tt" clicksound = decisions_ui_button }
+			instantTextBoxType = { name = "infantry_spawn_muster_claimant_name" position = { x = 226 y = 66 } font = "hoi_24header" text = "infantry_spawn_muster_gui_claimant_name" format = left maxWidth = 620 maxHeight = 38 }
+			instantTextBoxType = { name = "infantry_spawn_muster_claimant_identity" position = { x = 228 y = 112 } font = "hoi_18mbs" text = "infantry_spawn_muster_gui_claimant_identity" format = left maxWidth = 790 maxHeight = 112 pdx_tooltip = "infantry_spawn_muster_gui_claimant_identity_tt" }
+			instantTextBoxType = { name = "infantry_spawn_muster_claimant_demand" position = { x = 228 y = 232 } font = "hoi_18mbs" text = "infantry_spawn_muster_gui_claimant_demand" format = left maxWidth = 790 maxHeight = 94 pdx_tooltip = "infantry_spawn_muster_gui_claimant_demand_tt" }
+			buttonType = { name = "infantry_spawn_muster_claimant_recognize" position = { x = 228 y = 354 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_14mbs" buttonText = "infantry_spawn_muster_gui_claimant_recognize" pdx_tooltip = "infantry_spawn_muster_gui_claimant_recognize_tt" clicksound = decisions_ui_button scale = 1.08 }
+			buttonType = { name = "infantry_spawn_muster_claimant_accept" position = { x = 374 y = 354 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_14mbs" buttonText = "infantry_spawn_muster_gui_claimant_accept" pdx_tooltip = "infantry_spawn_muster_gui_claimant_accept_tt" clicksound = decisions_ui_button scale = 1.08 }
+			buttonType = { name = "infantry_spawn_muster_claimant_refuse" position = { x = 520 y = 354 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_14mbs" buttonText = "infantry_spawn_muster_gui_claimant_refuse" pdx_tooltip = "infantry_spawn_muster_gui_claimant_refuse_tt" clicksound = decisions_ui_button scale = 1.08 }
+			buttonType = { name = "infantry_spawn_muster_claimant_counter" position = { x = 666 y = 354 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_14mbs" buttonText = "infantry_spawn_muster_gui_claimant_counter" pdx_tooltip = "infantry_spawn_muster_gui_claimant_counter_tt" clicksound = decisions_ui_button scale = 1.08 }
+			buttonType = { name = "infantry_spawn_muster_claimant_discredit" position = { x = 812 y = 354 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_14mbs" buttonText = "infantry_spawn_muster_gui_claimant_discredit" pdx_tooltip = "infantry_spawn_muster_gui_claimant_discredit_tt" clicksound = decisions_ui_button scale = 1.08 }
+			buttonType = { name = "infantry_spawn_muster_claimant_arrest" position = { x = 812 y = 414 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_14mbs" buttonText = "infantry_spawn_muster_gui_claimant_arrest" pdx_tooltip = "infantry_spawn_muster_gui_claimant_arrest_tt" clicksound = decisions_ui_button scale = 1.08 }
+			instantTextBoxType = { name = "infantry_spawn_muster_claimant_footer" position = { x = 228 y = 428 } font = "hoi_16mbs" text = "infantry_spawn_muster_gui_claimant_footer" format = left maxWidth = 552 maxHeight = 126 }
+		}
+
+		containerWindowType = {
+			name = "infantry_spawn_muster_anomalous_panel"
+			position = { x = 20 y = 140 }
+			size = { width = @INFANTRY_SPAWN_MUSTER_PANEL_WIDTH height = @INFANTRY_SPAWN_MUSTER_PANEL_HEIGHT }
+			clipping = no
+			background = { name = "Background" quadTextureSprite = "GFX_tiled_window_transparent" }
+			instantTextBoxType = { name = "infantry_spawn_muster_anomalous_heading" position = { x = 20 y = 14 } font = "hoi_24header" text = "infantry_spawn_muster_gui_anomalous_heading" format = left maxWidth = 670 maxHeight = 34 }
+			containerWindowType = {
+				name = "infantry_spawn_muster_family_list_panel"
+				position = { x = 18 y = 58 }
+				size = { width = 412 height = 516 }
+				clipping = yes
+				verticalScrollbar = "right_vertical_slider_intel"
+				scroll_wheel_factor = 46
+				smooth_scrolling = yes
+				background = { name = "Background" quadTextureSprite = "GFX_tiled_window_transparent" }
+				gridBoxType = { name = "infantry_spawn_muster_family_dynamic_list" position = { x = 4 y = 0 } size = { width = @INFANTRY_SPAWN_MUSTER_FAMILY_ENTRY_WIDTH height = 506 } slotsize = { width = @INFANTRY_SPAWN_MUSTER_FAMILY_ENTRY_WIDTH height = @INFANTRY_SPAWN_MUSTER_FAMILY_ENTRY_HEIGHT } format = "UPPER_LEFT" max_slots_horizontal = 1 }
+			}
+			instantTextBoxType = { name = "infantry_spawn_muster_selected_family_title" position = { x = 456 y = 64 } font = "hoi_24header" text = "infantry_spawn_muster_gui_selected_family_title" format = left maxWidth = 570 maxHeight = 34 }
+			instantTextBoxType = { name = "infantry_spawn_muster_selected_family_status" position = { x = 458 y = 108 } font = "hoi_18mbs" text = "infantry_spawn_muster_gui_selected_family_status" format = left maxWidth = 580 maxHeight = 122 pdx_tooltip = "infantry_spawn_muster_gui_selected_family_status_tt" }
+			instantTextBoxType = { name = "infantry_spawn_muster_selected_family_cost" position = { x = 458 y = 238 } font = "hoi_16mbs" text = "infantry_spawn_muster_gui_selected_family_cost" format = left maxWidth = 580 maxHeight = 68 pdx_tooltip = "infantry_spawn_muster_gui_selected_family_cost_tt" }
+			buttonType = { name = "infantry_spawn_muster_family_reinforce" position = { x = 458 y = 330 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_14mbs" buttonText = "infantry_spawn_muster_gui_family_reinforce" pdx_tooltip = "infantry_spawn_muster_gui_family_reinforce_tt" clicksound = decisions_ui_button scale = 1.08 }
+			buttonType = { name = "infantry_spawn_muster_family_cantonment" position = { x = 604 y = 330 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_14mbs" buttonText = "infantry_spawn_muster_gui_family_cantonment" pdx_tooltip = "infantry_spawn_muster_gui_family_cantonment_tt" clicksound = decisions_ui_button scale = 1.08 }
+			buttonType = { name = "infantry_spawn_muster_family_liaison" position = { x = 750 y = 330 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_14mbs" buttonText = "infantry_spawn_muster_gui_family_liaison" pdx_tooltip = "infantry_spawn_muster_gui_family_liaison_tt" clicksound = decisions_ui_button scale = 1.08 }
+			buttonType = { name = "infantry_spawn_muster_family_restrict" position = { x = 896 y = 330 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_14mbs" buttonText = "infantry_spawn_muster_gui_family_restrict" pdx_tooltip = "infantry_spawn_muster_gui_family_restrict_tt" clicksound = decisions_ui_button scale = 1.08 }
+			buttonType = { name = "infantry_spawn_muster_family_sustain" position = { x = 458 y = 390 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_14mbs" buttonText = "infantry_spawn_muster_gui_family_sustain" pdx_tooltip = "infantry_spawn_muster_gui_family_sustain_tt" clicksound = decisions_ui_button scale = 1.08 }
+			buttonType = { name = "infantry_spawn_muster_family_contain" position = { x = 604 y = 390 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_14mbs" buttonText = "infantry_spawn_muster_gui_family_contain" pdx_tooltip = "infantry_spawn_muster_gui_family_contain_tt" clicksound = decisions_ui_button scale = 1.08 }
+			buttonType = { name = "infantry_spawn_muster_family_disperse" position = { x = 750 y = 390 } spriteType = "GFX_chaosx_button_123x34" buttonFont = "hoi_14mbs" buttonText = "infantry_spawn_muster_gui_family_disperse" pdx_tooltip = "infantry_spawn_muster_gui_family_disperse_tt" clicksound = decisions_ui_button scale = 1.08 }
+			instantTextBoxType = { name = "infantry_spawn_muster_anomalous_footer" position = { x = 458 y = 462 } font = "hoi_16mbs" text = "infantry_spawn_muster_gui_anomalous_footer" format = left maxWidth = 580 maxHeight = 100 }
+		}
+
+		containerWindowType = {
+			name = "infantry_spawn_muster_history_panel"
+			position = { x = 20 y = 140 }
+			size = { width = @INFANTRY_SPAWN_MUSTER_PANEL_WIDTH height = @INFANTRY_SPAWN_MUSTER_PANEL_HEIGHT }
+			clipping = no
+			background = { name = "Background" quadTextureSprite = "GFX_tiled_window_transparent" }
+			instantTextBoxType = { name = "infantry_spawn_muster_history_heading" position = { x = 20 y = 14 } font = "hoi_24header" text = "infantry_spawn_muster_gui_history_heading" format = left maxWidth = 670 maxHeight = 34 }
+			instantTextBoxType = { name = "infantry_spawn_muster_history_summary" position = { x = 20 y = 52 } font = "hoi_16mbs" text = "infantry_spawn_muster_gui_history_summary" format = left maxWidth = 1010 maxHeight = 54 pdx_tooltip = "infantry_spawn_muster_gui_history_summary_tt" }
+			containerWindowType = {
+				name = "infantry_spawn_muster_history_list_panel"
+				position = { x = 18 y = 118 }
+				size = { width = 1032 height = 448 }
+				clipping = yes
+				verticalScrollbar = "right_vertical_slider_intel"
+				scroll_wheel_factor = 44
+				smooth_scrolling = yes
+				background = { name = "Background" quadTextureSprite = "GFX_tiled_window_transparent" }
+				gridBoxType = { name = "infantry_spawn_muster_history_dynamic_list" position = { x = 4 y = 0 } size = { width = @INFANTRY_SPAWN_MUSTER_HISTORY_ENTRY_WIDTH height = 440 } slotsize = { width = @INFANTRY_SPAWN_MUSTER_HISTORY_ENTRY_WIDTH height = @INFANTRY_SPAWN_MUSTER_HISTORY_ENTRY_HEIGHT } format = "UPPER_LEFT" max_slots_horizontal = 1 }
+			}
+		}
+	}
+
+	containerWindowType = {
+		name = "infantry_spawn_muster_lot_entry"
+		position = { x = 0 y = 0 }
+		size = { width = @INFANTRY_SPAWN_MUSTER_LOT_ENTRY_WIDTH height = @INFANTRY_SPAWN_MUSTER_LOT_ENTRY_HEIGHT }
+		background = { name = "Background" quadTextureSprite = "GFX_tiled_window_transparent" }
+		buttonType = { name = "infantry_spawn_muster_lot_entry_select" position = { x = 0 y = 0 } size = { x = @INFANTRY_SPAWN_MUSTER_LOT_ENTRY_WIDTH y = @INFANTRY_SPAWN_MUSTER_LOT_ENTRY_HEIGHT } quadTextureSprite = "GFX_tiled_window_transparent" pdx_tooltip = "infantry_spawn_muster_gui_lot_entry_tt" clicksound = decisions_ui_button }
+		instantTextBoxType = { name = "infantry_spawn_muster_lot_entry_text" position = { x = 12 y = 6 } font = "hoi_16mbs" text = "infantry_spawn_muster_gui_lot_entry" format = left maxWidth = 366 maxHeight = 42 alwaysTransparent = yes }
+	}
+
+	containerWindowType = {
+		name = "infantry_spawn_muster_family_entry"
+		position = { x = 0 y = 0 }
+		size = { width = @INFANTRY_SPAWN_MUSTER_FAMILY_ENTRY_WIDTH height = @INFANTRY_SPAWN_MUSTER_FAMILY_ENTRY_HEIGHT }
+		background = { name = "Background" quadTextureSprite = "GFX_tiled_window_transparent" }
+		buttonType = { name = "infantry_spawn_muster_family_entry_select" position = { x = 0 y = 0 } size = { x = @INFANTRY_SPAWN_MUSTER_FAMILY_ENTRY_WIDTH y = @INFANTRY_SPAWN_MUSTER_FAMILY_ENTRY_HEIGHT } quadTextureSprite = "GFX_tiled_window_transparent" pdx_tooltip = "infantry_spawn_muster_gui_family_entry_tt" clicksound = decisions_ui_button }
+		instantTextBoxType = { name = "infantry_spawn_muster_family_entry_text" position = { x = 12 y = 6 } font = "hoi_16mbs" text = "infantry_spawn_muster_gui_family_entry" format = left maxWidth = 364 maxHeight = 50 alwaysTransparent = yes }
+	}
+
+	containerWindowType = {
+		name = "infantry_spawn_muster_history_entry"
+		position = { x = 0 y = 0 }
+		size = { width = @INFANTRY_SPAWN_MUSTER_HISTORY_ENTRY_WIDTH height = @INFANTRY_SPAWN_MUSTER_HISTORY_ENTRY_HEIGHT }
+		background = { name = "Background" quadTextureSprite = "GFX_tiled_window_transparent" }
+		instantTextBoxType = { name = "infantry_spawn_muster_history_entry_text" position = { x = 12 y = 6 } font = "hoi_16mbs" text = "infantry_spawn_muster_gui_history_entry" format = left maxWidth = 982 maxHeight = 40 alwaysTransparent = yes }
+	}
+}

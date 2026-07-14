@@ -1,0 +1,175 @@
+# ============================================================================
+# CHAOS REDUX - STRATEGIC BIOLOGICAL RAID SCRIPT CONSTANTS
+# ============================================================================
+# Overview:
+# - Maps the four native raid engine levels into the six accepted biological
+#   raid outcomes without inferring a launch state.
+# - Centralizes reservation, consumption, concealment, evidence, accident,
+#   Condemnation, command refund, staging, and AI tuning.
+# - Native essential equipment is the reservation debit. Script refunds only
+#   the exact unused matching model after an accepted resolution.
+# ============================================================================
+
+bio_strategic_raid_engine_outcome = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	failure = 1
+	limited_success = 2
+	success = 3
+	critical_success = 4
+}
+
+bio_strategic_raid_outcome = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	rejected = 0
+	failed_delivery = 1
+	partial_contamination = 2
+	hidden_contamination = 3
+	detected_outbreak_seed = 4
+	successful_outbreak_seed = 5
+	attacker_accident = 6
+}
+
+bio_strategic_raid_reservation = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	anthrax = 200
+	plague = 100
+	tularemia = 100
+	smallpox = 50
+}
+
+bio_strategic_raid_consumption = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	failed_min = 0.40
+	failed_max = 0.80
+	partial_min = 0.75
+	partial_max = 1
+	hidden = 1
+	detected = 1
+	successful = 1
+	attacker_accident = 1
+}
+
+bio_strategic_raid_outcome_profile = {
+	schema = {
+		any_key = yes
+		data = {
+			{
+				any_key = yes
+				data = fixed_point
+			}
+		}
+	}
+
+	failed_delivery = {
+		evidence = 55
+		condemnation = 12
+	}
+	partial_contamination = {
+		concealment = 10
+	}
+	hidden_contamination = {
+		evidence = 20
+		concealment = 45
+	}
+	detected_outbreak_seed = {
+		evidence = 70
+		concealment = 0
+	}
+	successful_outbreak_seed = {
+		evidence = 55
+		concealment = 10
+	}
+}
+
+bio_strategic_raid_selection = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	failed_delivery_weight = 100
+	attacker_accident_base_weight = 10
+	attacker_accident_insecurity_factor = 0.30
+	pathogen_handling_accident_mult = 0.85
+	sealed_laboratory_accident_mult = 0.70
+	fail_safe_accident_mult = 0.50
+	biological_hq_accident_mult = 0.80
+	sealed_bomb_bay_accident_mult = 0.75
+	hidden_contamination_base_weight = 50
+	detected_seed_base_weight = 50
+	attribution_control_hidden_factor = 0.40
+	target_surveillance_detected_add = 25
+	target_rapid_response_detected_add = 15
+	target_integrated_control_detected_add = 10
+	precision_release_hidden_add = 20
+}
+
+bio_strategic_raid_attempt_evidence = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum = 0
+	maximum = 100
+	decay_days = 90
+	decay_amount = 10
+	probable_release_share = 0.40
+	confirmed_release_share = 0.60
+}
+
+bio_strategic_raid_command = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	anthrax_cost = 10
+	plague_cost = 15
+	tularemia_cost = 8
+	smallpox_cost = 25
+	theater_refund_share = 0.10
+	terminal_refund_share = 0.20
+}
+
+bio_strategic_raid_staging = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_air_base_level = 1
+	minimum_infrastructure = 1
+}
+
+bio_strategic_raid_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	staging_base = 1
+	already_has_valid_staging_factor = 0
+	core_state_factor = 3
+	large_air_base_threshold = 4
+	large_air_base_factor = 2
+	good_infrastructure_threshold = 5
+	good_infrastructure_factor = 1.50
+	active_outbreak_factor = 0.10
+}

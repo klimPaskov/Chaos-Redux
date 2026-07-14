@@ -1,0 +1,402 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 020 BLACK PLAGUE CONSTANTS
+# ============================================================================
+# Canonical identifiers and tuning for the Black Plague state lifecycle,
+# weighted mainland origin, event-owned runtime pulse, exact mortality curve,
+# physical spread routes, rat infestation, state penalties, and cleanup memory.
+# All Event 020 gameplay files consume these values through constant: accessors.
+# ============================================================================
+
+black_plague_identity = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	event_id = 20
+	evolution_type = 20
+	event_cluster_id = 8
+	triggerable_scenario_id = 12
+	world_end_scenario_id = 10
+	rat_king_coronation_super_event_id = 85
+	world_end_super_event_id = 86
+	global_defeat_super_event_id = 87
+}
+
+black_plague_phase = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	clear = 0
+	threatened = 1
+	incubating = 2
+	infected = 3
+	severe_crisis = 4
+	collapsed = 5
+	contained = 6
+	recovery = 7
+	cured = 8
+	rat_controlled = 9
+}
+
+black_plague_provenance = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	natural = 1
+	accidental = 2
+	weaponized = 3
+	rat_occupation = 4
+	relapse = 5
+}
+
+black_plague_route = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	land_border = 1
+	internal_transport = 2
+	troop_movement = 3
+	refugee_movement = 4
+	port_local = 5
+	overseas_port = 6
+	biological_strike = 7
+	rat_occupation = 8
+}
+
+black_plague_value = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum = 0
+	maximum = 100
+	zero = 0
+	one = 1
+	people_per_thousand = 1000
+	percent_scale = 100
+	product_scale = 10000
+	modifier_load_divisor = 200
+	low_band = 20
+	medium_band = 40
+	high_band = 60
+	extreme_band = 80
+}
+
+black_plague_origin = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_population_k = 250
+	population_weight_divisor_k = 500
+	weight_minimum = 1
+	weight_cap = 64
+	capacity_multiplier_base = 1
+	pastoral_or_rural_multiplier = 0.55
+	town_multiplier = 0.45
+	large_town_multiplier = 0.35
+	city_multiplier = 0.30
+	large_city_multiplier = 0.25
+	metropolis_multiplier = 0.20
+	megalopolis_multiplier = 0.15
+	poor_infrastructure_threshold = 3
+	critical_infrastructure_threshold = 2
+	poor_infrastructure_multiplier = 0.45
+	critical_infrastructure_multiplier = 0.55
+	low_industry_threshold = 2
+	low_industry_multiplier = 0.30
+	no_prevention_multiplier = 0.65
+	basic_prevention_multiplier = 0.25
+	advanced_prevention_reduction = 0.25
+	integrated_prevention_reduction = 0.50
+	field_hospital_reduction = 0.35
+	field_hospital_tech_reduction = 0.10
+	advanced_field_hospital_tech_reduction = 0.18
+	mobile_hospital_tech_reduction = 0.24
+	quarantine_reduction = 0.25
+	occupation_bonus = 6
+	high_resistance_threshold = 25
+	high_resistance_bonus = 4
+	troop_presence_bonus = 5
+	refugee_pressure_bonus = 5
+	port_bonus = 2
+	transport_hub_bonus = 2
+	wartime_bonus = 3
+	weak_stability_threshold = 0.45
+	weak_stability_bonus = 4
+	capital_penalty = 8
+}
+
+black_plague_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	pulse_days = 7
+	incubation_min_days = 14
+	incubation_max_days_exclusive = 43
+	contained_hold_days = 42
+	recovery_hold_days = 84
+	monitoring_memory_days = 180
+	untreated_days_cap = 560
+	severe_devastation_interval_days = 56
+	collapsed_devastation_interval_days = 28
+	rat_devastation_interval_days = 21
+	opening_threatened_min = 2
+	opening_threatened_max_exclusive = 5
+}
+
+black_plague_initial = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	origin_load = 12
+	origin_mortality_pressure = 4
+	origin_spread_pressure = 5
+	origin_containment = 4
+	origin_treatment = 0
+	origin_relapse_risk = 8
+	origin_rat_infestation = 22
+	threatened_exposure = 14
+	spread_incubating_load = 9
+	spread_incubating_mortality = 3
+	spread_incubating_pressure = 4
+	spread_rat_infestation = 10
+	rat_occupation_load = 75
+	rat_occupation_mortality = 70
+	rat_occupation_spread = 80
+	rat_occupation_infestation = 100
+	weapon_load = 55
+	weapon_mortality = 45
+	weapon_spread = 55
+	weapon_infestation = 35
+}
+
+black_plague_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	establishment_exposure = 30
+	public_infection_load = 30
+	public_infection_mortality = 18
+	severe_load = 65
+	severe_mortality = 50
+	collapse_load = 90
+	collapse_mortality = 82
+	collapse_containment_ceiling = 30
+	containment_minimum = 60
+	containment_load_ceiling = 55
+	recovery_load_ceiling = 25
+	recovery_spread_ceiling = 20
+	cure_load_ceiling = 1
+	cure_exposure_ceiling = 5
+	cure_rat_ceiling = 10
+	relapse_exposure = 35
+	relapse_risk = 60
+	active_spread_phase_minimum = 2
+	active_spread_phase_maximum = 6
+}
+
+black_plague_growth = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	threatened_exposure_decay = 5
+	incubating_load = 3
+	incubating_mortality = 2
+	incubating_spread = 2
+	incubating_rats = 1
+	infected_load = 5
+	infected_mortality = 4
+	infected_spread = 4
+	infected_rats = 3
+	severe_load = 6
+	severe_mortality = 6
+	severe_spread = 6
+	severe_rats = 5
+	collapsed_load = 4
+	collapsed_mortality = 7
+	collapsed_spread = 8
+	collapsed_rats = 8
+	contained_load_reduction = 6
+	contained_mortality_reduction = 4
+	contained_spread_reduction = 6
+	contained_relapse_reduction = 3
+	recovery_load_reduction = 8
+	recovery_mortality_reduction = 6
+	recovery_spread_reduction = 8
+	recovery_relapse_reduction = 5
+	recovery_rat_reduction = 3
+	rat_controlled_load = 8
+	rat_controlled_mortality = 8
+	rat_controlled_spread = 8
+	rat_controlled_rats = 10
+	field_hospital_containment = 5
+	field_hospital_treatment = 6
+	quarantine_containment = 7
+	quarantine_spread_reduction = 5
+	basic_prevention_containment = 2
+	advanced_prevention_containment = 4
+	integrated_prevention_containment = 6
+	prevention_containment_divisor = 10
+	countermeasure_response_divisor = 20
+	disease_load_response_divisor = 25
+	treatment_response_divisor = 2
+	baseline_containment_decay = 1
+	untreated_decay_per_response = 14
+	untreated_treatment_threshold = 20
+	untreated_containment_threshold = 40
+	untreated_countermeasure_threshold = 35
+}
+
+black_plague_mortality = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	incubating_weekly_rate = 0.00028
+	infected_weekly_rate = 0.0020
+	severe_weekly_rate = 0.0085
+	collapsed_weekly_rate = 0.0087
+	contained_weekly_rate = 0.0008
+	recovery_weekly_rate = 0.0002
+	rat_controlled_weekly_rate = 0.0023
+	nonlinear_curve_scale = 0.0132
+	elapsed_rate_per_day = 0.000019
+	elapsed_rate_cap = 0.0052
+	maximum_weekly_rate = 0.080
+	response_divisor = 406
+	maximum_response_reduction = 0.74
+	evolution_i_factor = 1.60
+	weaponized_factor = 1.15
+	accidental_factor = 1.08
+	nonterminal_population_floor = 10000
+	terminal_population_floor = 0
+}
+
+black_plague_spread = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	land_border_base = 6
+	internal_transport_base = 4
+	troop_movement_bonus = 5
+	occupation_bonus = 4
+	refugee_bonus = 6
+	port_local_bonus = 3
+	overseas_port_base = 12
+	weaponized_base = 55
+	rat_occupation_base = 70
+	source_load_divisor = 10
+	source_spread_divisor = 20
+	target_containment_divisor = 20
+	target_countermeasure_divisor = 20
+	exposure_load_divisor = 4
+	exposure_spread_divisor = 3
+	exposure_relapse_divisor = 3
+	port_rat_gain = 4
+	minimum_exposure = 1
+	maximum_exposure = 100
+	evolution_i_factor = 1.30
+	closed_border_factor = 0.25
+	quarantine_factor = 0.55
+	port_inspection_factor = 0.50
+	transport_restriction_factor = 0.45
+	strong_prevention_factor = 0.70
+	land_success_weight = 28
+	land_failure_weight = 72
+	transport_success_weight = 18
+	transport_failure_weight = 82
+	troop_success_weight = 24
+	troop_failure_weight = 76
+	refugee_success_weight = 22
+	refugee_failure_weight = 78
+	port_local_success_weight = 20
+	port_local_failure_weight = 80
+	overseas_jump_weight = 6
+	overseas_no_jump_weight = 94
+}
+
+black_plague_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	incubating_local_manpower = -0.03
+	incubating_local_supplies = -0.03
+	incubating_production = -0.02
+	incubating_attrition = 0.02
+	incubating_speed = -0.02
+	infected_local_manpower = -0.12
+	infected_local_supplies = -0.15
+	infected_production = -0.12
+	infected_attrition = 0.08
+	infected_speed = -0.08
+	severe_local_manpower = -0.35
+	severe_local_supplies = -0.40
+	severe_production = -0.35
+	severe_attrition = 0.18
+	severe_speed = -0.20
+	severe_resistance = 0.10
+	severe_compliance = -0.10
+	collapsed_local_manpower = -0.65
+	collapsed_local_supplies = -0.70
+	collapsed_production = -0.65
+	collapsed_attrition = 0.35
+	collapsed_speed = -0.40
+	collapsed_resistance = 0.25
+	collapsed_compliance = -0.25
+	contained_local_manpower = -0.18
+	contained_local_supplies = -0.25
+	contained_production = -0.22
+	contained_attrition = 0.10
+	contained_speed = -0.18
+	recovery_local_manpower = -0.10
+	recovery_local_supplies = -0.12
+	recovery_production = -0.15
+	recovery_attrition = 0.04
+	recovery_speed = -0.08
+	rat_local_manpower = -0.85
+	rat_local_supplies = -0.80
+	rat_production = -0.80
+	rat_attrition = 0.45
+	rat_speed = -0.50
+	rat_resistance = 0.40
+	rat_compliance = -0.40
+}
+
+black_plague_devastation = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	severe_damage = 0.75
+	collapsed_damage = 1.75
+	rat_control_damage = 2.25
+	severe_repair_speed = -0.20
+	collapsed_repair_speed = -0.45
+	rat_control_repair_speed = -0.60
+}

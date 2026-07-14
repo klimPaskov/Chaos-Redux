@@ -1,108 +1,142 @@
-# Air Cleanliness and Fallout Repository Implementation Status
+# Air Cleanliness and Fallout Implementation Status
+
+Status reviewed against the live working tree on 2026-07-14.
+
+Overall status: partial implementation with hard release blockers. This document does not claim that Fallout, the manual scenario, the world rewrite, or the player handoff is complete.
 
 Ownership authority: `FALLOUT_EVENT_AND_ASSET_OWNERSHIP.md`.
 
-## Purpose
+## Design authority
 
-Air Cleanliness and Fallout are handled as an unnumbered system package. Fallout is a terminal world rewrite and manual scenario with its own event file, `chaosx.fallout` namespace, GUI, GFX, asset package, and optional audio package.
+The source specifications under `docs/specs/air_cleanliness_fallout_specs/` remain authoritative. This plans directory records implementation evidence, blockers, accepted decisions, audits, and resume state. It does not narrow the source design.
 
-This package converts the accepted Air Cleanliness and Fallout design pack into a repository implementation plan. It does not replace the source specifications in `air_cleanliness_fallout_planning_package_expanded.zip`. It records the live repository state, resolves design ownership, orders implementation tranches, defines hard validation gates, and preserves the exact next starting point for a writable local checkout.
+Fallout remains an unnumbered system package with dedicated ownership of:
 
-## Repository snapshot inspected
+- `events/fallout_world_end_events.txt`
+- the `chaosx.fallout` event namespace
+- Fallout scripted effects, triggers, constants, GUI, GFX, assets, and documentation
+- the blackout transition and post-Fallout rewrite
+- the dormant exact-province manual scenario substrate
 
-- Repository: `klimPaskov/Chaos-Redux`
-- Branch inspected: `master`
-- Commit inspected: `8044d232376fef3a1a3ca1ea3e0d487523924cc6`
-- Access mode in this pass: read only through the GitHub connector
-- Gameplay edits made: none
-- Repository files created or changed: none
+## Environment and proof basis
 
-## Source design status
+- Installed Hearts of Iron IV build inspected: 1.19.2.0
+- Required offline wiki pages inspected from `paradox_wiki/`
+- Official installed documentation and vanilla precedents inspected locally
+- Hearts of Iron IV runtime was not launched and must not be launched for this documentation reconciliation
+- Static artifacts and source inspection are evidence only, not runtime acceptance
 
-The accepted source design remains the expanded planning package with Part 1 through Part 12, three dedicated matrices, research notes, prompts, and the manual improvement-loop closure pass.
+## Live implemented foundations
 
-The source pack defines:
+### Air Cleanliness
 
-- a state-based Air Winter system
-- a dedicated winter mapmode
-- population, building, supply, and state-category consequences
-- flavour events with real mechanical effects
-- a reusable Fallout aftermath framework
-- a black-screen cinematic transition instead of a normal super-event
-- a total world rewrite with survivor governments, warlords, mutant fiction, and regional successor content
-- a manual scenario that strikes every valid province, waits seven days, then starts the rewrite
-- a three-layer focus design made from an archetype skeleton, regional overlay, and country memory overlay
-- a candidate pool of 99 successor identities
+The live Air system includes global contamination basis points, monthly host-owned updates, chemical and nuclear state inputs, natural smoke and ash pressure, threshold behavior, winter pressure, treaty behavior, nuclear fallout state intensity, UI read models, and a request path into the dedicated Fallout coordinator.
 
-The source pack remains design authority unless a later user decision changes it. This implementation plan does not shorten that design.
+### Fallout request and blackout skeleton
 
-## Current implementation state
+The live Fallout package includes:
 
-The live repository already contains several useful foundations:
+- `fallout_request_aftermath` and request validation
+- one host-owned reconciliation path
+- a versioned transition envelope with schema 4
+- blackout GUI state and phase events
+- player and world snapshots
+- deterministic state grading and survival values
+- population-loss, building-damage, category-conversion, and grade-modifier helpers
+- partial old-world diplomacy cleanup
+- deterministic provisional classification for eleven live government archetypes, with Machine Protocol fail closed
+- player-first reservation planning
+- generation-bound successor conflict inventory with country, possible-country, state, reservation, and known package-ownership rows
+- schema-1 post-allocation proof contract with unique country and capital checks, exact landholder coverage, package layers, conflict receipts, and cleanup ownership
+- two-pass player commit preflight for existing current-generation targets
+- durable assignment recording, retry recovery, commit reconstruction, and collision validation
+- strict map-return postconditions
 
-- global Air Contamination in basis points
-- a host-owned monthly contamination update
-- nuclear fallout state intensity and daily population loss
-- irreversible contamination and state-category degradation helpers
-- a data-driven triggerable-scenario window
-- two scripted state mapmodes
-- runtime focus-tree assignment through `load_focus_tree`
-- a large pool of custom successor tags from Soviet Collapse
-- cosmetic-tag patterns and country transformation helpers
+These are foundations. The phase chain cannot yet produce a valid complete post-Fallout world.
 
-The live repository does not yet contain the accepted Fallout overhaul. A stale terminal Fallout block exists outside a dedicated Fallout event file and sets normal world-end and super-event state. Delete it and do not retain it as a wrapper. The current winter mechanic is a random-state modifier pulse and lacks a persistent state phase system.
+## Dormant manual scenario substrate
 
-## Hard implementation gates
+The installed-build sweep proof contains 10,154 valid assigned land provinces across 1,081 states.
 
-Gameplay work must not begin until the following checks are completed in a writable local repository:
+- 118 assigned non-land provinces are excluded.
+- 126 assigned land targets in impassable states are included because no official exclusion was found.
+- Batches 0 through 39 contain 250 targets each.
+- Batch 40 contains 154 targets.
+- The total is 41 batches.
+- The ledger CSV `batch_index` uses floor division of the zero-based target position by 250 and matches the generated effects.
 
-1. Read the local offline Paradox wiki pages required by `AGENTS.md`.
-2. Read the official Hearts of Iron IV documentation under the local game installation.
-3. Confirm the exact engine effect available for a thermonuclear strike on every valid province.
-4. Inspect the actual selected and deselected mapmode strip textures and reconcile their frame count with the `.gfx` definition and documentation.
-5. Scan the live manual scenario registry and allocate Fallout to the next integer after the highest assigned id.
-6. Build a tag conflict ledger from vanilla tags, Chaos Redux tags, releasables, dynamic tags, and other feature-owned packages.
-7. Confirm the supported full-screen scripted GUI parent and drawing order against local vanilla GUI files.
-8. Create the dedicated Fallout event, script, GUI, GFX, asset, and optional audio ownership surfaces before migrating any caller.
+The event token layout is identity-bearing:
 
-A missing proof at any gate is a blocker. It must not be replaced with a smaller effect without explicit user approval.
+- `.900` is the bootstrap.
+- `.910` through `.950` identify batches 0 through 40.
+- `.960` through `.966` identify verifier attempts 0 through 6.
+- `.903` is the exact countdown callback.
+- The former generic `.901` and `.902` callbacks are absent.
 
-## Accepted implementation order
+The dormant manual runtime ledger is schema 2. Each scheduled batch, verifier, and countdown callback records the active transaction generation. Both the host validator and the hourly callback preflight reject stale or inconsistent ledgers before another native batch can run. The callback recomputes the exact issued-count-to-cursor and last-completed-batch invariants before opening the launch window. The countdown event and request wrapper independently validate the active token. Successful standard-request handoff clears both the due flag and countdown schedule provenance. Schema 1 active manual transactions fail closed.
 
-1. Reconcile source-of-truth documents and live code facts.
-2. Create `events/fallout_world_end_events.txt`, the `chaosx.fallout` namespace, and the dedicated Fallout asset surfaces.
-3. Implement the Air Winter state model and mapmode.
-4. Add winter population, building, supply, category, flavour, mitigation, AI, and treaty behavior.
-5. Implement the reusable Fallout request coordinator and black-screen state machine.
-6. Implement deterministic world-state grading and the world rewrite.
-7. Add the manual Fallout scenario after exact province-strike feasibility is proven.
-8. Implement a manually reviewed pilot batch of successor countries.
-9. Expand successor and focus content in regional batches.
-10. Complete assets, localisation, documentation, spreadsheet alignment, and audits.
+Static control flow requires issued calls, observed callbacks, unique struck states, state strike totals, and array size to agree before aggregate consequences run. Aggregate Deaths, fallout, Air Contamination, Chaos history, condemnation, and treaty consequences then run once. The countdown end is stored as the verified start day plus seven. Only the engine-scheduled seven-day callback may submit the request. Daily reconciliation cannot submit or reconstruct it, and lost ownership or an overdue callback fails closed.
 
-## Implementation ownership
+The public scenario row and dispatch are absent. The live registry ends at SCN-011. Event 20 reserves raw id 12 for Black Plague without registering a live SCN-012 row. Fallout cannot honestly allocate id 12 or claim id 13 as one greater than the live maximum.
 
-The parent implementation agent owns cross-system integration, final behavior, validation, and completion claims.
+## Runtime release boundary
 
-Recommended bounded subagent use:
+Static inspection does not prove that `launch_nuke` with `use_nuke = no` emits exactly one synchronous `on_nuke_drop` callback for every scripted call. It also does not prove native acceptance for all target classes, bounded batch cost, save integrity, multiplayer synchronization, or presentation quality.
 
-- `chaosx_scripted_system_architect` for shared effects, triggers, constants, cleanup, and state-machine logic
-- `chaosx_decision_mission_auditor` after the winter response and survival decision systems exist
-- `chaosx_country_package_auditor` after each successor batch
-- `chaosx_focus_tree_auditor` after each focus batch
-- `chaosx_localisation_auditor` after broad visible text exists
-- `chaosx_documentation_curator` after each major implementation tranche
-- `chaosx_spreadsheet_doc_worker` only after in-game wording and implementation facts are stable
-- `chaosx_event_completion_auditor` before any completion claim
+Vanilla `on_nuke_drop` schedules twelve one-day nuclear news events per callback. If all 10,154 scripted calls emit callbacks, vanilla may schedule about 121,848 one-day news event attempts. The Chaos Redux callback cannot suppress that separate vanilla branch. Callback occurrence, callback synchrony, and this news-event load are release blockers.
 
-All project custom subagents must use `fork_context=false` and must receive explicit paths, constraints, accepted design rules, and current implementation status.
+## Transition and migration boundary
 
-## Current stopping point
+Schema-v4 migration is fail closed:
 
-Repository implementation planning is complete in this package. No gameplay code has been changed. The next pass begins in a writable local checkout with local official documentation available.
+- completed saves are promoted non-destructively
+- only the exact schema-3 map-return-error signature is recovered
+- every other incomplete schema 1 through 3 state remains under blackout
+- an incomplete terminal state with no schema remains under blackout
+- migration does not infer that a missing `fallout_transition_destructive_started` marker means an old transition is safe
+- no generic pre-destructive restart and no legacy altered-grade replay are active behavior
 
-The first implementation action is Tranche 0 from `IMPLEMENTATION_TRANCHE_PLAN.md`, beginning with the three blocking proof tasks:
+Player reservations are calculated before the successor conflict inventory and before any successor allocation is permitted. Derived inventory schema 1 binds every row to the active transition generation. The validator checks every live country, every possible country scope, every state, exact candidate and reservation membership, human ownership and control, known overlapping event-package ownership, and capital consistency. A proposed target is commit-ready only when it already exists, has country and focus packages from the current transition generation, owns survivable territory, and owns and controls the exact capital reserved for that player. A global two-pass preflight validates all existing commits and proposed targets before any player switch. Exact single-error signatures can re-enter the inventory builder or player commit path for a clean retry. Other errors retain ownership of the transition ledger.
 
-- mapmode texture frame verification
-- next-free scenario id allocation
-- exact province-wide thermonuclear effect validation
+The government classifier aggregates frozen Fallout snapshot inputs before ownership changes. Eleven archetypes are live. Machine Protocol requires machine-continuity, command-network, EMP-survival, technical-state, and remote-refuge evidence, and remains unreachable until the missing producers exist. The classifier does not change politics or activate content.
+
+The conflict inventory is not an allocator. It does not choose tags, final package layers, conflict results, or cleanup owners. Its known package-ownership helper must be reviewed again against the live repository before ownership changes begin. The separate post-allocation proof requires unique assigned countries and capitals, exact live-landholder coverage, current package generations, and conflict and cleanup receipts. Its guarded finalizer is the only setter for `fallout_successor_allocation_complete`, but no active allocator calls it or produces the required rows.
+
+The commit path writes a durable assignment origin and generation before an optional `change_tag_from`, commits only after the target appears human controlled, and rebuilds and revalidates persisted commits on retry. This can commit an uncommitted player to an already materialized, current-generation target.
+
+Actual successor materialization, country and focus package producers, candidate-choice UI, and general successor allocation are not implemented. The code can set `fallout_player_materialization_required`, but it cannot resolve it. Package and focus generations remain mandatory for every commit and map-return validation.
+
+Static inspection cannot prove that `change_tag_from` makes the destination report `is_ai = no` immediately in the same effect chain. No Hearts of Iron IV run was authorized, so this immediate observation remains a runtime blocker.
+
+The old-world diplomacy proof gate also remains unresolved. Map return must stay blocked until all required postconditions are genuinely satisfied.
+
+## Hard release blockers
+
+1. Resolve the SCN-012 ownership conflict and register a truthful public Fallout row and dispatch only after a valid next id exists.
+2. Prove native strike acceptance, one callback per call, callback timing, performance, save behavior, and multiplayer behavior in a separately authorized runtime pass.
+3. Resolve the possible 121,848 vanilla news-event attempts without reducing the exact 10,154-target requirement.
+4. Implement general successor allocation and the country and focus package producers, including current transition generation ledgers. Re-audit every live event-package producer before the first state transfer or tag materialization.
+5. Implement player-successor materialization, candidate selection and choice UI, and collision-safe multiplayer handling where the source spec requires them. Prove the immediate `change_tag_from` handoff observation in an authorized runtime pass.
+6. Complete and prove the old-world diplomacy reset surfaces.
+7. Close the tracked blackout input, scripted-GUI binding, all-resolution drawing-order, and mapmode frame gates.
+8. Finish regional successor content, focus content, AI, localisation, assets, documentation alignment, and the required audits.
+
+## Resume map
+
+- Exact sweep proof: `FALLOUT_MANUAL_PROVINCE_SWEEP_PROOF.md`
+- Manual scenario contract and release gates: `MANUAL_FALLOUT_SCENARIO_PLAN.md`
+- Current hard blockers and accepted decisions: `BLOCKERS_AND_DECISIONS.md`
+- Transition ordering and postconditions: `FALLOUT_TRANSITION_ARCHITECTURE.md`
+- Source-of-truth routing: `SOURCE_OF_TRUTH_RECONCILIATION.md`
+- Implementation tranches: `IMPLEMENTATION_TRANCHE_PLAN.md`
+- Gameplay status for Air Cleanliness: `docs/systems/air_contamination_mechanic.md`
+- Manual runtime constants: `common/script_constants/fallout_manual_scenario_constants.txt`
+- Manual sweep effects: `common/scripted_effects/fallout_manual_province_sweep_effects.txt`
+- Manual coordinator effects: `common/scripted_effects/fallout_manual_scenario_effects.txt`
+- Fallout transition effects: `common/scripted_effects/fallout_world_end_effects.txt`
+- Fallout postcondition triggers: `common/scripted_triggers/fallout_world_end_triggers.txt`
+- Fallout event tokens and phase events: `events/fallout_world_end_events.txt`
+
+## Simplifications and fallbacks
+
+No fallback is approved. The exact province sweep, seven-day delay, full successor rewrite, player continuation, and postcondition-gated map return remain required. Missing work is reported as blocked rather than presented as complete.

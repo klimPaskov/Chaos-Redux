@@ -10,9 +10,9 @@ It introduces:
 - a `Condemnation` tab for country-level diplomatic blame tracking,
 - persistent global contamination tracking (`global.air_contamination_bp`),
 - monthly contamination accumulation/decay logic,
-- threshold-driven escalation (25/50/75/100/1000),
+- threshold-driven escalation at 25%, 50%, 75%, and 100%,
 - a 75%+ Air Cleanliness Treaty system with invitations and member decisions,
-- a new world-end scenario trigger: `Fallout`.
+- a contamination-driven request into the dedicated `Fallout` world-end system.
 
 ## System Flow
 
@@ -77,9 +77,9 @@ At `75%` contamination (`constant:air_contamination_threshold_bp.winter_75`), th
 - `100%` (`10000 bp`): irreversible mode starts:
 	- contamination cannot drop below 100%,
 	- fallout modifiers are applied globally,
-	- state categories degrade over time toward wasteland.
+	- state categories degrade over time toward wasteland,
+	- `fallout_evaluate_air_contamination_request` can submit the gradual-air-collapse request when Fallout is enabled and no other world end is active.
 - Final Silence forces contamination to exactly `100%` and locks future contamination changes at that value for the terminal branch.
-- `1000%` (`100000 bp`): triggers world-end scenario event `chaosx_contamination.12` (`Fallout`).
 
 One-time global threshold news events are fired from `events/chemical_warfare_events.txt` (`chaosx_contamination.1` to `.6`) for:
 
@@ -131,27 +131,38 @@ Hidden evidence is excluded from the list and detail snapshot until it is disclo
 
 ## World-End Integration
 
-A triggered terminal event owns the live Fallout transition:
+Fallout is owned by the dedicated `fallout_world_end` system. Its events live in `events/fallout_world_end_events.txt` under the `chaosx.fallout` namespace. Air Contamination is one request source for that system and does not own the terminal transition.
 
-- `events/chemical_warfare_events.txt` -> `country_event = { id = chaosx_contamination.12 }`
+After each contamination change, `air_contamination_apply_delta_bp` calls `fallout_evaluate_air_contamination_request`. At or above `100%`, the evaluator submits a gradual-air-collapse request through `fallout_request_aftermath` when no other world end is active and Fallout is enabled. Re-enabling Fallout at or above the threshold runs the same evaluator immediately.
 
-It sets:
+The Fallout request coordinator validates the request, records its source and intensity, and owns the transition that sets `world_end` and `world_end_fallout`. It can enter the `chaosx.fallout.*` transition chain and full-screen blackout GUI. Strict postconditions prevent map return while successor allocation, player continuation, country packages, focus packages, or old-world diplomacy cleanup remain incomplete. Fallout has no Event 2 ownership, ordinary super-event slot, or ordinary super-event audio ID.
 
-- `world_end`,
-- `world_end_fallout`,
-- `super_event_visible = 4` (30 days).
+The Fallout checkbox lives in the Miscellaneous settings panel. The shared world-end registry stores Fallout with owner event `none` and linked super-event `none`, so it is not projected into Event 2's Event Details rows.
 
-The public event catalog continues to associate Fallout with Event 2's world-end namespace. Event Details therefore shows Fallout as its own Event 2 row beside Zombie Apocalypse. Its checkbox gates the Fallout terminal event independently from Event 2 and the zombie ending.
+### Current transition boundary
 
-The central `air_contamination_apply_delta_bp` effect calls `air_contamination_try_fire_fallout_world_end` after each contamination change. The dispatcher preserves the existing contamination threshold, master world-end guards, Fallout scenario toggle, and super-event path. Re-enabling Fallout while contamination already meets the threshold runs the same dispatcher immediately.
+The live transition schema is version 4. Completed old Fallout saves are promoted non-destructively. Only the exact schema-3 map-return-error signature is recovered. Every other incomplete schema 1 through 3 state and every incomplete no-schema terminal state fail closed under blackout. No generic pre-destructive restart and no legacy altered-grade replay are active migration behavior.
+
+Player reservations are planned before the successor conflict ledger and before any successor allocation is permitted. The live commit path requires an already existing target with current-transition country and focus packages, survivable territory, and the exact reserved capital under its ownership and control. A two-pass global preflight validates every existing commit and proposed target before any switch. The durable assignment ledger is written before an optional `change_tag_from`, and retry recovery can rebuild reservations and revalidate assignment uniqueness.
+
+An uncommitted player can therefore be committed only when the selected target is already materialized and carries both package generations for the current transition. Actual successor materialization, country and focus package producers, candidate-choice UI, and general successor allocation are absent. Static inspection also cannot prove that the destination observes `is_ai = no` immediately after `change_tag_from`. No Hearts of Iron IV run was authorized. The map-return gate must remain closed until the missing systems, tag-switch timing proof, and full diplomacy reset are resolved.
+
+### Dormant manual Fallout scenario
+
+The manual scenario is a separate caller into the same transition. Its dormant installed-build substrate expands 10,154 valid assigned land targets across 1,081 states into 41 batches. Batches 0 through 39 contain 250 targets and batch 40 contains 154. The public scenario row and dispatch are absent because the live registry ends at SCN-011 while Event 20 reserves raw id 12 without a live SCN-012 row.
+
+Static control flow requires complete callback and state-count verification, applies aggregate Air and nuclear consequences once, and stores an exact seven-day countdown before requesting Fallout. Runtime behavior is not proven. In particular, `launch_nuke` with `use_nuke = no` callback occurrence and synchrony are unknown. If all calls emit `on_nuke_drop`, vanilla may schedule about 121,848 one-day nuclear news event attempts through its twelve repeated news-event branches. This is a release blocker.
 
 ## Icons and GFX Wiring
 
-### New sprite registration
+### Fallout-owned transition sprites
 
-- Add sprite definition in: `interface/chaosx_super_events.gfx`
-- Sprite name used in code: `GFX_super_event_fallout`
-- Expected texture path: `gfx/super_events/002_zombie_outbreak/super_event_fallout.dds`
+- Sprite definitions: `interface/fallout_world_end.gfx`
+- Blackout sprite: `GFX_fallout_blackout_tile`
+- Blackout texture: `gfx/interface/fallout_world_end/fallout_blackout_tile.dds`
+- State-grade idea sprite: `GFX_idea_fallout_state_grade`
+- State-grade idea texture: `gfx/interface/ideas/fallout_world_end/idea_fallout_state_grade.dds`
+- Asset manifest: `docs/assets/fallout_world_end/manifest.md`
 
 ### Existing sprite reused
 
@@ -165,5 +176,5 @@ The central `air_contamination_apply_delta_bp` effect calls `air_contamination_t
 
 1. Add more contamination sources (reactor accidents, industrial disasters, strategic bombardment side effects).
 2. Add regional climate bands so winter effects scale by latitude/biome instead of global random spread only.
-3. Add mitigation systems (global treaties, decontamination projects, adaptation tech) before irreversible collapse.
-4. Add dedicated fallout art package (`super_event_fallout`, air-tab iconography, threshold warning overlays).
+3. Expand mitigation systems with deeper decontamination projects and adaptation technology before irreversible collapse.
+4. Expand the Fallout-owned blackout and winter transition art with additional air-tab iconography and threshold warning overlays.

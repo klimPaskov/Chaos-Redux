@@ -1,0 +1,347 @@
+# ============================================================================
+# CHAOS REDUX - SHARED DISEASE CONTAINMENT BOARD TRIGGERS
+# ============================================================================
+# Country and state predicates for the shared disease switcher, crisis phase,
+# filtered state list, persistent Black Plague response target, and public
+# inspection view. ROOT is the viewing/responding country for state predicates.
+# ============================================================================
+
+disease_containment_board_has_valid_selected_disease = {
+	has_variable = disease_containment_selected_disease
+	check_variable = {
+		var = disease_containment_selected_disease
+		value = constant:disease_containment_agent.anthrax
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = disease_containment_selected_disease
+		value = constant:disease_containment_agent.black_plague
+		compare = less_than_or_equals
+	}
+}
+
+disease_containment_board_is_black_plague_selected = {
+	check_variable = { disease_containment_selected_disease = constant:disease_containment_agent.black_plague }
+}
+
+disease_containment_board_category_is_visible = {
+	OR = {
+		has_active_biowarfare_outbreak = yes
+		has_neighbor_with_active_biowarfare_outbreak = yes
+		has_country_flag = black_plague_crisis_board_available
+	}
+}
+
+disease_containment_board_state_matches_selected_ordinary_disease = {
+	OR = {
+		AND = {
+			ROOT = { check_variable = { disease_containment_selected_disease = constant:disease_containment_agent.anthrax } }
+			has_dynamic_modifier = { modifier = anthrax_contaminated_state }
+		}
+		AND = {
+			ROOT = { check_variable = { disease_containment_selected_disease = constant:disease_containment_agent.plague } }
+			has_dynamic_modifier = { modifier = plague_contaminated_state }
+		}
+		AND = {
+			ROOT = { check_variable = { disease_containment_selected_disease = constant:disease_containment_agent.tularemia } }
+			has_dynamic_modifier = { modifier = tularemia_contaminated_state }
+		}
+		AND = {
+			ROOT = { check_variable = { disease_containment_selected_disease = constant:disease_containment_agent.smallpox } }
+			has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+		}
+	}
+}
+
+disease_containment_board_state_matches_ownership_filter = {
+	OR = {
+		ROOT = {
+			check_variable = {
+				var = disease_containment_board_ownership_filter
+				value = constant:disease_containment_ownership_filter.all_visible
+				compare = equals
+			}
+		}
+		AND = {
+			ROOT = {
+				check_variable = {
+					var = disease_containment_board_ownership_filter
+					value = constant:disease_containment_ownership_filter.controlled
+					compare = equals
+				}
+			}
+			is_controlled_by = ROOT
+		}
+		AND = {
+			ROOT = {
+				check_variable = {
+					var = disease_containment_board_ownership_filter
+					value = constant:disease_containment_ownership_filter.public_foreign
+					compare = equals
+				}
+			}
+			NOT = { is_controlled_by = ROOT }
+		}
+	}
+}
+
+disease_containment_board_state_matches_region_filter = {
+	OR = {
+		ROOT = {
+			check_variable = {
+				var = disease_containment_board_region_filter
+				value = constant:disease_containment_region_filter.all
+				compare = equals
+			}
+		}
+		AND = {
+			ROOT = {
+				check_variable = {
+					var = disease_containment_board_region_filter
+					value = constant:disease_containment_region_filter.selected_region
+					compare = equals
+				}
+				has_variable = disease_containment_board_selected_region_id
+			}
+			has_variable = disease_containment_board_region_id
+			check_variable = {
+				var = disease_containment_board_region_id
+				value = ROOT.disease_containment_board_selected_region_id
+				compare = equals
+			}
+		}
+	}
+}
+
+black_plague_crisis_board_state_is_critical = {
+	OR = {
+		black_plague_state_is_severe = yes
+		black_plague_state_is_collapsed = yes
+		black_plague_state_is_rat_controlled = yes
+		check_variable = {
+			var = black_plague_mortality_pressure
+			value = constant:disease_containment_board_threshold.critical_mortality
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = black_plague_rat_infestation
+			value = constant:disease_containment_board_threshold.critical_rat_infestation
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+black_plague_crisis_board_state_is_high_urgency = {
+	OR = {
+		black_plague_crisis_board_state_is_critical = yes
+		black_plague_state_is_incubating = yes
+		black_plague_state_is_infected = yes
+		AND = {
+			black_plague_state_is_contained = yes
+			check_variable = {
+				var = black_plague_relapse_risk
+				value = constant:disease_containment_board_threshold.high_relapse_risk
+				compare = greater_than_or_equals
+			}
+		}
+		check_variable = {
+			var = black_plague_mortality_pressure
+			value = constant:disease_containment_board_threshold.high_mortality
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = black_plague_rat_infestation
+			value = constant:disease_containment_board_threshold.high_rat_infestation
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+black_plague_crisis_board_state_matches_status_filter = {
+	OR = {
+		ROOT = {
+			check_variable = {
+				var = disease_containment_board_status_filter
+				value = constant:disease_containment_status_filter.all
+				compare = equals
+			}
+		}
+		AND = {
+			ROOT = { check_variable = { disease_containment_board_status_filter = constant:disease_containment_status_filter.critical } }
+			black_plague_crisis_board_state_is_critical = yes
+		}
+		AND = {
+			ROOT = { check_variable = { disease_containment_board_status_filter = constant:disease_containment_status_filter.active } }
+			OR = {
+				black_plague_state_is_incubating = yes
+				black_plague_state_is_infected = yes
+				black_plague_state_is_severe = yes
+				black_plague_state_is_collapsed = yes
+				black_plague_state_is_rat_controlled = yes
+			}
+		}
+		AND = {
+			ROOT = { check_variable = { disease_containment_board_status_filter = constant:disease_containment_status_filter.containment } }
+			OR = {
+				black_plague_state_is_contained = yes
+				black_plague_state_is_recovering = yes
+			}
+		}
+		AND = {
+			ROOT = { check_variable = { disease_containment_board_status_filter = constant:disease_containment_status_filter.monitoring } }
+			OR = {
+				black_plague_state_is_threatened = yes
+				black_plague_state_is_cured = yes
+				has_state_flag = black_plague_monitoring_memory
+			}
+		}
+	}
+}
+
+black_plague_crisis_board_state_matches_urgency_filter = {
+	OR = {
+		ROOT = {
+			check_variable = {
+				var = disease_containment_board_urgency_filter
+				value = constant:disease_containment_urgency_filter.all
+				compare = equals
+			}
+		}
+		AND = {
+			ROOT = { check_variable = { disease_containment_board_urgency_filter = constant:disease_containment_urgency_filter.high_or_worse } }
+			black_plague_crisis_board_state_is_high_urgency = yes
+		}
+		AND = {
+			ROOT = { check_variable = { disease_containment_board_urgency_filter = constant:disease_containment_urgency_filter.critical_only } }
+			black_plague_crisis_board_state_is_critical = yes
+		}
+	}
+}
+
+black_plague_crisis_board_state_matches_filters = {
+	black_plague_state_is_tracked = yes
+	black_plague_state_is_visible_to_mapmode_player = yes
+	disease_containment_board_state_matches_ownership_filter = yes
+	disease_containment_board_state_matches_region_filter = yes
+	black_plague_crisis_board_state_matches_status_filter = yes
+	black_plague_crisis_board_state_matches_urgency_filter = yes
+}
+
+black_plague_response_state_is_selectable = {
+	black_plague_state_is_tracked = yes
+	black_plague_state_is_visible_to_mapmode_player = yes
+	is_controlled_by = ROOT
+	NOT = { black_plague_state_is_rat_controlled = yes }
+	NOT = { has_global_flag = world_end }
+}
+
+black_plague_country_has_selectable_response_state = {
+	any_controlled_state = { black_plague_response_state_is_selectable = yes }
+}
+
+black_plague_country_has_valid_response_state = {
+	has_variable = black_plague_selected_response_state
+	var:black_plague_selected_response_state = {
+		black_plague_response_state_is_selectable = yes
+		has_state_flag = black_plague_response_state_target
+		has_variable = black_plague_response_state_owner
+		check_variable = {
+			var = black_plague_response_state_owner
+			value = PREV
+			compare = equals
+		}
+	}
+}
+
+disease_containment_board_has_valid_view_state = {
+	has_variable = disease_containment_board_view_state
+	var:disease_containment_board_view_state = {
+		OR = {
+			AND = {
+				ROOT = { disease_containment_board_is_black_plague_selected = yes }
+				black_plague_crisis_board_state_matches_filters = yes
+			}
+			AND = {
+				ROOT = { NOT = { disease_containment_board_is_black_plague_selected = yes } }
+				disease_containment_board_state_matches_selected_ordinary_disease = yes
+				disease_containment_board_state_matches_ownership_filter = yes
+				disease_containment_board_state_matches_region_filter = yes
+			}
+		}
+	}
+}
+
+disease_containment_board_entry_is_selected = {
+	ROOT = { has_variable = disease_containment_board_view_state }
+	check_variable = {
+		var = id
+		value = ROOT.disease_containment_board_view_state
+		compare = equals
+	}
+}
+
+disease_containment_board_entry_is_response_target = {
+	ROOT = { has_variable = black_plague_selected_response_state }
+	check_variable = {
+		var = id
+		value = ROOT.black_plague_selected_response_state
+		compare = equals
+	}
+}
+
+disease_containment_board_view_state_is_controlled = {
+	disease_containment_board_has_valid_view_state = yes
+	var:disease_containment_board_view_state = { is_controlled_by = ROOT }
+}
+
+disease_containment_board_view_state_is_public_foreign = {
+	disease_containment_board_has_valid_view_state = yes
+	var:disease_containment_board_view_state = { NOT = { is_controlled_by = ROOT } }
+}
+
+black_plague_country_has_uncontrolled_active_state = {
+	any_state_in = {
+		array = global.black_plague_active_states
+		is_controlled_by = ROOT
+		OR = {
+			black_plague_state_is_incubating = yes
+			black_plague_state_is_infected = yes
+			black_plague_state_is_severe = yes
+			black_plague_state_is_collapsed = yes
+		}
+	}
+}
+
+black_plague_country_has_containment_state = {
+	any_state_in = {
+		array = global.black_plague_active_states
+		is_controlled_by = ROOT
+		OR = {
+			black_plague_state_is_contained = yes
+			black_plague_state_is_recovering = yes
+		}
+	}
+}
+
+black_plague_country_has_monitored_state = {
+	any_state_in = {
+		array = global.black_plague_active_states
+		is_controlled_by = ROOT
+		OR = {
+			black_plague_state_is_threatened = yes
+			black_plague_state_is_cured = yes
+			has_state_flag = black_plague_monitoring_memory
+		}
+	}
+}
+
+black_plague_country_is_exposed = {
+	OR = {
+		any_state_in = {
+			array = global.black_plague_active_states
+			is_controlled_by = ROOT
+			black_plague_state_is_threatened = yes
+		}
+		has_neighbor_with_active_biowarfare_outbreak = yes
+	}
+}

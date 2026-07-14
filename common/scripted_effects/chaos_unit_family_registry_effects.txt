@@ -1,0 +1,135 @@
+# ============================================================================
+# CHAOS REDUX - OPT-IN CHAOS UNIT FAMILY REGISTRY EFFECTS
+# ============================================================================
+# Provider registration inputs are temporary variables named
+# chaos_unit_family_register_*. Registration is idempotent by family id.
+# Consumers resolve a row, then use the recorded provider id in meta effects.
+# ============================================================================
+
+chaos_unit_family_initialize_registry = {
+	if = {
+		limit = { NOT = { has_global_flag = chaos_unit_family_registry_initialized } }
+		set_global_flag = chaos_unit_family_registry_initialized
+		set_variable = { global.chaos_unit_family_registry_revision = constant:chaos_unit_family_registry.contract_version }
+	}
+}
+
+chaos_unit_family_mark_registry_failure = {
+	set_global_flag = chaos_unit_family_registry_invariant_failure
+	set_global_flag = infantry_spawn_ledger_invariant_failure
+}
+
+chaos_unit_family_find_registration_row = {
+	set_temp_variable = { chaos_unit_family_registry_index = constant:chaos_unit_family_registry.not_found }
+	set_temp_variable = { chaos_unit_family_registry_scan_index = constant:chaos_unit_family_registry.first_index }
+	while_loop_effect = {
+		limit = {
+			check_variable = { chaos_unit_family_registry_index < constant:chaos_unit_family_registry.first_index }
+			check_variable = {
+				var = chaos_unit_family_registry_scan_index
+				value = global.chaos_unit_family_id_entries^num
+				compare = less_than
+			}
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = global.chaos_unit_family_id_entries^chaos_unit_family_registry_scan_index
+					value = chaos_unit_family_register_id
+					compare = equals
+				}
+			}
+			set_temp_variable = { chaos_unit_family_registry_index = chaos_unit_family_registry_scan_index }
+		}
+		add_to_temp_variable = { chaos_unit_family_registry_scan_index = 1 }
+	}
+}
+
+chaos_unit_family_register_current_provider = {
+	chaos_unit_family_initialize_registry = yes
+	if = {
+		limit = { chaos_unit_family_registry_is_aligned = no }
+		chaos_unit_family_mark_registry_failure = yes
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { chaos_unit_family_register_id < constant:chaos_unit_family_registry.minimum_family_id }
+				check_variable = { chaos_unit_family_register_provider_id < constant:chaos_unit_family_registry.minimum_provider_id }
+				NOT = { check_variable = { chaos_unit_family_register_contract_version = constant:chaos_unit_family_registry.contract_version } }
+			}
+		}
+		chaos_unit_family_mark_registry_failure = yes
+	}
+	else = {
+		chaos_unit_family_find_registration_row = yes
+		if = {
+			limit = { check_variable = { chaos_unit_family_registry_index < constant:chaos_unit_family_registry.first_index } }
+			add_to_array = { array = global.chaos_unit_family_id_entries value = chaos_unit_family_register_id }
+			add_to_array = { array = global.chaos_unit_family_provider_id_entries value = chaos_unit_family_register_provider_id }
+			add_to_array = { array = global.chaos_unit_family_source_event_id_entries value = chaos_unit_family_register_source_event_id }
+			add_to_array = { array = global.chaos_unit_family_availability_mode_entries value = chaos_unit_family_register_availability_mode }
+			add_to_array = { array = global.chaos_unit_family_event19_lot_policy_entries value = chaos_unit_family_register_event19_lot_policy }
+			add_to_array = { array = global.chaos_unit_family_derivative_profile_entries value = chaos_unit_family_register_derivative_profile }
+			add_to_array = { array = global.chaos_unit_family_sustainment_profile_entries value = chaos_unit_family_register_sustainment_profile }
+			add_to_array = { array = global.chaos_unit_family_containment_profile_entries value = chaos_unit_family_register_containment_profile }
+			add_to_array = { array = global.chaos_unit_family_ai_class_entries value = chaos_unit_family_register_ai_class }
+			add_to_array = { array = global.chaos_unit_family_visual_profile_entries value = chaos_unit_family_register_visual_profile }
+			add_to_array = { array = global.chaos_unit_family_cleanup_profile_entries value = chaos_unit_family_register_cleanup_profile }
+			add_to_array = { array = global.chaos_unit_family_parent_isolation_profile_entries value = chaos_unit_family_register_parent_isolation_profile }
+			add_to_array = { array = global.chaos_unit_family_spawn_weight_entries value = chaos_unit_family_register_spawn_weight }
+			add_to_array = { array = global.chaos_unit_family_contract_version_entries value = chaos_unit_family_register_contract_version }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					NOT = {
+						check_variable = {
+							var = global.chaos_unit_family_provider_id_entries^chaos_unit_family_registry_index
+							value = chaos_unit_family_register_provider_id
+							compare = equals
+						}
+					}
+					NOT = {
+						check_variable = {
+							var = global.chaos_unit_family_contract_version_entries^chaos_unit_family_registry_index
+							value = chaos_unit_family_register_contract_version
+							compare = equals
+						}
+					}
+				}
+			}
+			chaos_unit_family_mark_registry_failure = yes
+		}
+	}
+}
+
+chaos_unit_family_resolve_requested_id = {
+	set_temp_variable = { chaos_unit_family_registry_index = constant:chaos_unit_family_registry.not_found }
+	set_temp_variable = { chaos_unit_family_registry_scan_index = constant:chaos_unit_family_registry.first_index }
+	while_loop_effect = {
+		limit = {
+			check_variable = { chaos_unit_family_registry_index < constant:chaos_unit_family_registry.first_index }
+			check_variable = {
+				var = chaos_unit_family_registry_scan_index
+				value = global.chaos_unit_family_id_entries^num
+				compare = less_than
+			}
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = global.chaos_unit_family_id_entries^chaos_unit_family_registry_scan_index
+					value = chaos_unit_family_requested_id
+					compare = equals
+				}
+			}
+			set_temp_variable = { chaos_unit_family_registry_index = chaos_unit_family_registry_scan_index }
+		}
+		add_to_temp_variable = { chaos_unit_family_registry_scan_index = 1 }
+	}
+	if = {
+		limit = { check_variable = { chaos_unit_family_registry_index < constant:chaos_unit_family_registry.first_index } }
+		chaos_unit_family_mark_registry_failure = yes
+	}
+}
