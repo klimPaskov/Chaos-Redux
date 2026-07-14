@@ -41,6 +41,7 @@ Type controls cycle scenario-specific type variables:
 - Final Silence: nuclear or thermonuclear payload.
 - Death: Instant Outbreak only.
 - Disaster Barrage: Random Barrage, Geological Crisis, Weather Crisis, Skyfall Crisis, or Full Catalogue.
+- Every Banner Rises: Sovereign Scatter, Common Congress, Wars of Separation, three bounded Universal Belligerence rules, Patron Worlds, or Great Partition.
 - Africa Is One placeholder: fixed Reserved display with neutral placeholder launch event.
 - Coalition Unmasked: Regional Ring, Ideological Front, Great-Power Sponsor, Unlikely Coalition, or Random Coalition.
 - The Hunger Lines: Discipline Collapse, Ritual Cells, Silent Islands, Warlord States, or Convergence.
@@ -95,7 +96,15 @@ The five types select Random Barrage, Geological Crisis, Weather Crisis, Skyfall
 
 The scenario stores one Event 013 history row through `natural_disaster_log_mode.scenario_history`. It never sets `world_end` or another terminal flag. Launch is unavailable when a terminal world-end state is active or the selected crisis type has no physically compatible controlled state. After weighted family draws, Event 013 exhausts only that selected type's valid family pool; a same-chain rejection receives an explicit Barrage notice. It does not use a periodic world on-action.
 
-### SCN-008: Africa Is One
+### SCN-008: Every Banner Rises
+
+Every Banner Rises launches Event 006 through the shared frozen Liberation transaction. All four intensities attempt the same 149 exact current-map-bound package rows; 57 identities without a unique accepted state remain disabled and appear separately in the frozen result. Living tags, unready playable packages, invalid scopes, protected host remnants, reservation-group conflicts, Event 005 collisions, and failed live validation are rejected before ownership changes.
+
+Low, Medium, High, and Maximum select anchor, compact, extended, and extended territory packages while scaling forces, stocks, institutions, ambitions, and route access. Great Partition advances territory by one additional tier before reservation, capped at the accepted non-overlapping extension. The six type families control sovereign setup, congress and league state, former-host wars, bounded belligerence, patron distribution, and partition pressure. The result event reports releases, hosts, wars, league membership, territory, forces, and transaction proof; its decision ledger exposes every blocked package and exact rejection reason.
+
+The implementation contract, files, assets, and test matrix are documented in `docs/systems/independence_wave_triggerable_scenario.md`.
+
+### SCN-011: Africa Is One
 
 Reserved manual scenario placeholder for Event 012. It remains listed in the manual scenario window and launches only a neutral placeholder event until the source event is reworked.
 

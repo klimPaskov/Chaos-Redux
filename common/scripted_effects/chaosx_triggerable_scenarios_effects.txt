@@ -51,6 +51,7 @@ initialize_triggerable_scenarios_settings = {
 		limit = { NOT = { has_variable = triggerable_scenarios_cannibalism_type } }
 		set_variable = { triggerable_scenarios_cannibalism_type = constant:cannibalism_scenario.type_discipline_collapse }
 	}
+	independence_wave_scenario_initialize_settings = yes
 	if = {
 		limit = { NOT = { has_variable = triggerable_scenarios_sort_mode } }
 		set_variable = { triggerable_scenarios_sort_mode = constant:triggerable_scenario_sort_mode.id }
@@ -120,11 +121,11 @@ triggerable_scenarios_initialize_registry = {
 	}
 	add_to_array = {
 		array = global.triggerable_scenario_all_ids
-		value = constant:triggerable_scenario_id.africa_is_one
+		value = constant:triggerable_scenario_id.independence_wave
 	}
 	add_to_array = {
 		array = global.triggerable_scenario_all_name_sort_values
-		value = constant:triggerable_scenario_sort_value.africa_is_one_name
+		value = constant:triggerable_scenario_sort_value.independence_wave_name
 	}
 	add_to_array = {
 		array = global.triggerable_scenario_all_ids
@@ -141,6 +142,14 @@ triggerable_scenarios_initialize_registry = {
 	add_to_array = {
 		array = global.triggerable_scenario_all_name_sort_values
 		value = constant:triggerable_scenario_sort_value.cannibalism_name
+	}
+	add_to_array = {
+		array = global.triggerable_scenario_all_ids
+		value = constant:triggerable_scenario_id.africa_is_one
+	}
+	add_to_array = {
+		array = global.triggerable_scenario_all_name_sort_values
+		value = constant:triggerable_scenario_sort_value.africa_is_one_name
 	}
 }
 
@@ -192,6 +201,14 @@ triggerable_scenarios_rebuild_view = {
 		add_to_array = {
 			array = global.triggerable_scenario_view_name_sort_values
 			value = constant:triggerable_scenario_sort_value.disaster_barrage_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.independence_wave
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.independence_wave_name
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
@@ -282,6 +299,14 @@ triggerable_scenarios_rebuild_view = {
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.independence_wave
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.independence_wave_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
 			value = constant:triggerable_scenario_id.disaster_barrage
 		}
 		add_to_array = {
@@ -328,6 +353,14 @@ triggerable_scenarios_rebuild_view = {
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.africa_is_one
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.africa_is_one_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
 			value = constant:triggerable_scenario_id.cannibalism
 		}
 		add_to_array = {
@@ -344,11 +377,11 @@ triggerable_scenarios_rebuild_view = {
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
-			value = constant:triggerable_scenario_id.africa_is_one
+			value = constant:triggerable_scenario_id.independence_wave
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_name_sort_values
-			value = constant:triggerable_scenario_sort_value.africa_is_one_name
+			value = constant:triggerable_scenario_sort_value.independence_wave_name
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
@@ -466,11 +499,11 @@ triggerable_scenarios_rebuild_view = {
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
-			value = constant:triggerable_scenario_id.africa_is_one
+			value = constant:triggerable_scenario_id.independence_wave
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_name_sort_values
-			value = constant:triggerable_scenario_sort_value.africa_is_one_name
+			value = constant:triggerable_scenario_sort_value.independence_wave_name
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
@@ -487,6 +520,14 @@ triggerable_scenarios_rebuild_view = {
 		add_to_array = {
 			array = global.triggerable_scenario_view_name_sort_values
 			value = constant:triggerable_scenario_sort_value.cannibalism_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.africa_is_one
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.africa_is_one_name
 		}
 	}
 }
@@ -571,6 +612,11 @@ select_triggerable_scenario_death = {
 select_triggerable_scenario_disaster_barrage = {
 	initialize_triggerable_scenarios_settings = yes
 	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.disaster_barrage }
+}
+
+select_triggerable_scenario_independence_wave = {
+	initialize_triggerable_scenarios_settings = yes
+	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.independence_wave }
 }
 
 
@@ -686,6 +732,10 @@ triggerable_scenario_type_previous = {
 		}
 	}
 	else_if = {
+		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.independence_wave } }
+		independence_wave_scenario_type_previous = yes
+	}
+	else_if = {
 		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.final_silence } }
 		subtract_from_variable = { triggerable_scenarios_final_silence_type = 1 }
 		if = {
@@ -756,6 +806,10 @@ triggerable_scenario_type_next = {
 			limit = { check_variable = { triggerable_scenarios_disaster_barrage_type > constant:natural_disaster_scenario_type.full_catalogue } }
 			set_variable = { triggerable_scenarios_disaster_barrage_type = constant:natural_disaster_scenario_type.random_barrage }
 		}
+	}
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.independence_wave } }
+		independence_wave_scenario_type_next = yes
 	}
 	else_if = {
 		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.final_silence } }
@@ -865,11 +919,25 @@ trigger_selected_chaosx_scenario = {
 		limit = {
 			check_variable = {
 				var = triggerable_scenario_launch_id
+				value = constant:triggerable_scenario_id.independence_wave
+				compare = equals
+			}
+		}
+		set_variable = { independence_wave_scenario_queued_type = triggerable_scenarios_independence_wave_type }
+		set_variable = { independence_wave_scenario_queued_intensity = triggerable_scenarios_intensity }
+		set_variable = { independence_wave_scenario_queued_belligerence_rule = triggerable_scenarios_independence_wave_belligerence_rule }
+		set_country_flag = independence_wave_scenario_launch_queued
+		country_event = { id = chaosx.triggerable_scenarios.8 days = 1 }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = triggerable_scenario_launch_id
 				value = constant:triggerable_scenario_id.africa_is_one
 				compare = equals
 			}
 		}
-		country_event = { id = chaosx.triggerable_scenarios.8 days = 1 }
+		country_event = { id = chaosx.triggerable_scenarios.11 days = 1 }
 	}
 	else_if = {
 		limit = {
