@@ -1,10 +1,10 @@
 add_namespace = chemical_air_bomb
 
 # ============================================================================
-# CHAOS REDUX - TARGETED CHEMICAL AIR-BOMB PROCESSING
+# CHAOS REDUX - RETIRED CHEMICAL AIR ESTIMATOR EVENT
 # ============================================================================
-# Combat heat starts this self-scheduling country event. It replaces the
-# disabled all-country weekly scan and stops once heat or war activity ends.
+# The stable event ID remains as a cleanup endpoint for a previously scheduled
+# targeted tick. It cannot calculate or dispatch exposure and never reschedules.
 # ============================================================================
 
 country_event = {
@@ -13,15 +13,7 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		chem_air_bomb_weekly_tick = yes
-		if = {
-			limit = {
-				has_war = yes
-				check_variable = { chem_air_ground_ops_heat > constant:chem_air_bomb_detection.ground_ops.clear_below.value }
-			}
-			set_temp_variable = { chem_air_bomb_tick_days = constant:chem_air_bomb_detection.ground_ops.tick_days.value }
-			country_event = { id = chemical_air_bomb.1 days = chem_air_bomb_tick_days }
-		}
-		else = { clr_country_flag = chem_air_bomb_targeted_tick_active }
+		clear_variable = chem_air_ground_ops_heat
+		clr_country_flag = chem_air_bomb_targeted_tick_active
 	}
 }

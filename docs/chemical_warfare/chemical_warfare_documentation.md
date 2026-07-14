@@ -12,7 +12,7 @@ Chemical warfare is implemented as one connected gameplay package:
 4. Nerve-agent raid options (Sarin and Soman).
 5. US special-project raid options (Malodor and Aphrodisiac bombs).
 6. Shared condemnation and sanctions consequences.
-7. Chemical air bomb modules with targeted regional processing.
+7. Chemical air bomb modules as explicit-raid eligibility equipment.
 
 The system rewards preparation and logistics while making repeated chemical use politically costly.
 
@@ -139,7 +139,7 @@ Most major chemical delivery paths feed the public chemical source in the shared
 - Livens support combat use,
 - chemical tank support combat use,
 - nerve raids,
-- active chemical air-bomb regions,
+- completed selected-state chemical raids,
 - chemical doomsday release.
 
 Exception:
@@ -178,10 +178,10 @@ AI treats chemical warfare as a strategic path with tradeoffs.
 
 Chemical air bomb modules are active content.
 
-- They are present in progression and UI.
-- Ground-operation heat starts a targeted, self-scheduling country tick while war activity continues.
-- Active chemical-capable aircraft can contaminate affected states through regional processing.
-- A processed active region contributes public chemical condemnation with `chemical_air_strike` context.
+- They are present in aircraft progression and UI as payload-handling and explicit-operation eligibility components.
+- Ordinary missions, deployed aircraft counts, and ground combat never prove chemical release.
+- The former ground-operation-heat and regional aircraft estimator is retired.
+- Only an explicit selected-state raid may reserve payload and enter the shared CBRN exposure and Condemnation pipeline.
 
 ## Operational Notes
 
