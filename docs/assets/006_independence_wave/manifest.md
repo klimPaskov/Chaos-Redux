@@ -205,3 +205,14 @@ motifs, three route-owned real-person portrait DDS files, vanilla reuse
 boundaries, provenance and license notes, contact sheets, hashes, and explicit
 blockers. Its five Group B motif previews are not runtime flags and remain
 separate from generated fictional/civic route art.
+
+## Related northern and western Europe generated-art package
+
+The five fictional Group B civic baseline flag triplets, five fictional
+institutional council portraits, five independently generated fictional officer
+portraits, army thumbnails, prompts, decoded runtime review sheets, and exact
+hash inventory are documented in
+`northern_western_europe_generated_art_manifest.md`. ACX and AEX remain blocked
+at the country-content layer by geography/anchor ownership even though their art
+files are complete. No ideology or cosmetic flag variants were produced without
+an approved route mapping.

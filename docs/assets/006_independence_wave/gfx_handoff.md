@@ -161,3 +161,9 @@ documented in `northern_western_europe_gfx_handoff.md`. That handoff owns the
 proposed sprite names, exact texture paths, route locks, low-resolution BRI
 acceptance record, and the warning that ACX/AEX/AFX/AGX/AJX motif previews are
 not runtime flag sprites.
+
+The generated companion registration and character portrait fragments for ACX,
+AEX, AFX, AGX, and AJX are in
+`northern_western_europe_generated_art_gfx_handoff.md`. Its target registry is
+`interface/006_independence_wave_region_01_portraits.gfx`; country-package owners
+retain gameplay and localisation wiring.

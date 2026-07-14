@@ -57,7 +57,10 @@ Do not register these processed review files as flag or UI sprites:
 - `processed_png/country_symbols/ajx_saar_territory_1920_1935.png`.
 
 They are provenance-backed motif inputs for a separate generated period-civic
-flag pass. No ACX, AEX, AFX, AGX, or AJX TGA exists in this handoff.
+flag pass. No ACX, AEX, AFX, AGX, or AJX TGA exists in this source-only
+handoff; the final fictional baseline triplets and fictional portrait sprites
+are documented in
+`northern_western_europe_generated_art_gfx_handoff.md`.
 
 ## Validation evidence
 
