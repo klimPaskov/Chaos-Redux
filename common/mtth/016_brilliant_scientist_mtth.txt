@@ -1,0 +1,127 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 BRILLIANT SCIENTIST MTTH VARIABLES
+# ============================================================================
+# Country-scope prefire entries support evolved openings before recruitment;
+# active entries pace the corresponding chronology stage after a host exists.
+# Callers must check the matching brilliant_scientist_is_evolution_*_enabled
+# trigger before consuming mtth:brilliant_scientist_evolution_*_interval.
+# These entries are decision/event clocks only and create no periodic on_action.
+# ============================================================================
+
+brilliant_scientist_evolution_i_prefire_interval = {
+	base = constant:brilliant_scientist_evolution_mtth.evolution_i_prefire_days
+	modifier = {
+		factor = constant:brilliant_scientist_evolution_mtth_factor.chaos_high
+		check_variable = {
+			var = global.chaos_meter_value
+			value = constant:chaos_meter_tier_range.tier_3.min
+			compare = greater_than_or_equals
+		}
+	}
+	modifier = {
+		factor = constant:brilliant_scientist_evolution_mtth_factor.chaos_extreme
+		check_variable = {
+			var = global.chaos_meter_value
+			value = constant:chaos_meter_tier_range.tier_4.min
+			compare = greater_than_or_equals
+		}
+	}
+	modifier = { factor = constant:brilliant_scientist_evolution_mtth_factor.active_crisis has_war = yes }
+}
+
+brilliant_scientist_evolution_i_active_interval = {
+	base = constant:brilliant_scientist_evolution_mtth.evolution_i_active_days
+	modifier = { factor = constant:brilliant_scientist_evolution_mtth_factor.public_compact has_country_flag = brilliant_scientist_public_compact }
+	modifier = { factor = constant:brilliant_scientist_evolution_mtth_factor.secret_directorate has_country_flag = brilliant_scientist_secret_directorate }
+	modifier = { factor = constant:brilliant_scientist_evolution_mtth_factor.mandate_high brilliant_scientist_has_high_mandate = yes }
+	modifier = { factor = constant:brilliant_scientist_evolution_mtth_factor.advanced_project check_variable = { brilliant_scientist_project_prototype_count > constant:brilliant_scientist_value.one } }
+	modifier = { factor = constant:brilliant_scientist_evolution_mtth_factor.low_capacity brilliant_scientist_has_low_project_capacity = yes }
+}
+
+brilliant_scientist_evolution_ii_prefire_interval = {
+	base = constant:brilliant_scientist_evolution_mtth.evolution_ii_prefire_days
+	modifier = {
+		factor = constant:brilliant_scientist_evolution_mtth_factor.chaos_high
+		check_variable = {
+			var = global.chaos_meter_value
+			value = constant:chaos_meter_tier_range.tier_3.min
+			compare = greater_than_or_equals
+		}
+	}
+	modifier = {
+		factor = constant:brilliant_scientist_evolution_mtth_factor.chaos_extreme
+		check_variable = {
+			var = global.chaos_meter_value
+			value = constant:chaos_meter_tier_range.tier_4.min
+			compare = greater_than_or_equals
+		}
+	}
+	modifier = { factor = constant:brilliant_scientist_evolution_mtth_factor.active_crisis has_war = yes }
+}
+
+brilliant_scientist_evolution_ii_active_interval = {
+	base = constant:brilliant_scientist_evolution_mtth.evolution_ii_active_days
+	modifier = { factor = constant:brilliant_scientist_evolution_mtth_factor.exposure_high brilliant_scientist_has_high_exposure = yes }
+	modifier = { factor = constant:brilliant_scientist_evolution_mtth_factor.dependence_high brilliant_scientist_has_high_dependence = yes }
+	modifier = { factor = constant:brilliant_scientist_evolution_mtth_factor.advanced_project check_variable = { brilliant_scientist_project_deployment_count > constant:brilliant_scientist_value.zero } }
+	modifier = { factor = constant:brilliant_scientist_evolution_mtth_factor.active_crisis has_country_flag = brilliant_scientist_first_foreign_action_resolved }
+}
+
+brilliant_scientist_evolution_iii_prefire_interval = {
+	base = constant:brilliant_scientist_evolution_mtth.evolution_iii_prefire_days
+	modifier = {
+		factor = constant:brilliant_scientist_evolution_mtth_factor.chaos_high
+		check_variable = {
+			var = global.chaos_meter_value
+			value = constant:chaos_meter_tier_range.tier_3.min
+			compare = greater_than_or_equals
+		}
+	}
+	modifier = {
+		factor = constant:brilliant_scientist_evolution_mtth_factor.chaos_extreme
+		check_variable = {
+			var = global.chaos_meter_value
+			value = constant:chaos_meter_tier_range.tier_4.min
+			compare = greater_than_or_equals
+		}
+	}
+	modifier = { factor = constant:brilliant_scientist_evolution_mtth_factor.active_crisis has_war = yes }
+}
+
+brilliant_scientist_evolution_iii_active_interval = {
+	base = constant:brilliant_scientist_evolution_mtth.evolution_iii_active_days
+	modifier = { factor = constant:brilliant_scientist_evolution_mtth_factor.dependence_high brilliant_scientist_has_high_dependence = yes }
+	modifier = { factor = constant:brilliant_scientist_evolution_mtth_factor.advanced_project check_variable = { brilliant_scientist_project_weaponization_count > constant:brilliant_scientist_value.zero } }
+	modifier = { factor = constant:brilliant_scientist_evolution_mtth_factor.active_crisis has_country_flag = brilliant_scientist_dangerous_project_incident }
+	modifier = { factor = constant:brilliant_scientist_evolution_mtth_factor.stabilization has_country_flag = brilliant_scientist_temporal_stabilization_active }
+}
+
+brilliant_scientist_evolution_iv_prefire_interval = {
+	base = constant:brilliant_scientist_evolution_mtth.evolution_iv_prefire_days
+	modifier = {
+		factor = constant:brilliant_scientist_evolution_mtth_factor.chaos_high
+		check_variable = {
+			var = global.chaos_meter_value
+			value = constant:chaos_meter_tier_range.tier_3.min
+			compare = greater_than_or_equals
+		}
+	}
+	modifier = {
+		factor = constant:brilliant_scientist_evolution_mtth_factor.chaos_extreme
+		check_variable = {
+			var = global.chaos_meter_value
+			value = constant:chaos_meter_tier_range.tier_4.min
+			compare = greater_than_or_equals
+		}
+	}
+	modifier = { factor = constant:brilliant_scientist_evolution_mtth_factor.active_crisis has_war = yes }
+}
+
+brilliant_scientist_evolution_iv_active_interval = {
+	base = constant:brilliant_scientist_evolution_mtth.evolution_iv_active_days
+	modifier = { factor = constant:brilliant_scientist_evolution_mtth_factor.dependence_high brilliant_scientist_has_extreme_dependence = yes }
+	modifier = { factor = constant:brilliant_scientist_evolution_mtth_factor.exposure_high brilliant_scientist_has_extreme_exposure = yes }
+	modifier = { factor = constant:brilliant_scientist_evolution_mtth_factor.advanced_project check_variable = { brilliant_scientist_project_weaponization_count > constant:brilliant_scientist_value.two } }
+	modifier = { factor = constant:brilliant_scientist_evolution_mtth_factor.active_crisis has_country_flag = brilliant_scientist_formation_territory_verified }
+	modifier = { factor = constant:brilliant_scientist_evolution_mtth_factor.stabilization has_country_flag = brilliant_scientist_temporal_stabilization_active }
+}

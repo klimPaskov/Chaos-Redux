@@ -1,0 +1,922 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 BRILLIANT SCIENTIST TRIGGERS
+# ============================================================================
+# Overview:
+# - Validates Event 016 host, facility, transfer, foreign, formation, temporal,
+#   origin, evolution, project-ledger, and terminal inputs.
+# - Reads persistent country arrays maintained by the Event 016 effects file.
+# - Keeps exact Independent Capacity and Grievance values script-only; only the
+#   derived Government Control flags are intended for player-facing output.
+# - Never performs all-country work from an on_action. Pool triggers may be
+#   evaluated explicitly by the fire-once prefire resolver or a decision.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Host, character, and transfer validity
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope.
+brilliant_scientist_is_eligible_host = {
+	exists = yes
+	has_capitulated = no
+	is_subject = no
+	capital_scope = { is_controlled_by = ROOT }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { has_country_flag = brilliant_scientist_host_rejected_permanently }
+	NOT = { has_country_flag = brilliant_scientist_host_history }
+	NOT = { has_country_flag = brilliant_scientist_former_host }
+	NOT = { has_country_flag = brilliant_scientist_kruger_expelled }
+	NOT = { has_country_flag = brilliant_scientist_kruger_killed }
+	NOT = { has_country_flag = brilliant_scientist_kruger_transferred_away }
+	NOT = { has_country_flag = brilliant_scientist_kruger_lost }
+	NOT = { has_country_flag = brilliant_scientist_kruger_departed }
+	NOT = { has_country_flag = brilliant_scientist_kruger_received_by_transfer }
+	NOT = { has_country_flag = brilliant_scientist_kruger_state }
+	NOT = { has_global_flag = world_end }
+	any_owned_state = {
+		count = constant:brilliant_scientist_host_selection.minimum_core_states
+		is_owned_and_controlled_by = PREV
+		is_core_of = PREV
+	}
+	any_owned_state = {
+		is_owned_and_controlled_by = PREV
+		is_core_of = PREV
+		brilliant_scientist_is_valid_primary_facility_state = yes
+	}
+}
+
+# Any scope. This is an explicit availability query, not a periodic on_action.
+brilliant_scientist_has_any_eligible_host = {
+	any_country = {
+		brilliant_scientist_is_eligible_host = yes
+	}
+}
+
+# Any scope. The shared fire-once dispatcher additionally checks its disabled
+# and already-fired arrays; this helper owns Event 016-specific availability.
+brilliant_scientist_automatic_event_is_available = {
+	NOT = { has_global_flag = brilliant_scientist_event_resolved }
+	NOT = { has_global_flag = world_end }
+	brilliant_scientist_has_any_eligible_host = yes
+}
+
+# COUNTRY scope.
+brilliant_scientist_is_current_host = {
+	has_country_flag = brilliant_scientist_current_host
+	has_character = KRG_warren_kruger
+}
+
+# Any scope.
+brilliant_scientist_has_current_host = {
+	has_event_target = brilliant_scientist_current_host
+	event_target:brilliant_scientist_current_host = {
+		exists = yes
+		brilliant_scientist_is_current_host = yes
+	}
+}
+
+# COUNTRY scope. is_active_scientist is the engine-supported assignment gate;
+# rejecting it prevents transfer out of any active special project.
+brilliant_scientist_is_transfer_ready = {
+	brilliant_scientist_is_current_host = yes
+	KRG_warren_kruger = {
+		is_active_scientist = no
+	}
+	NOT = { has_country_flag = brilliant_scientist_kruger_confirmed_dead }
+	NOT = { has_country_flag = brilliant_scientist_kruger_confined }
+	NOT = { has_country_flag = brilliant_scientist_character_transaction_lock }
+	NOT = { has_global_flag = brilliant_scientist_character_transaction_lock }
+	NOT = { has_global_flag = world_end }
+}
+
+# COUNTRY scope, called on the proposed recipient.
+brilliant_scientist_is_valid_transfer_recipient = {
+	brilliant_scientist_is_eligible_host = yes
+	NOT = { has_country_flag = brilliant_scientist_current_host }
+	NOT = { has_country_flag = brilliant_scientist_character_transaction_lock }
+}
+
+# COUNTRY scope, called while the rejecting player is saved as the regular
+# brilliant_scientist_send_away_rejector target. This route occurs before any
+# nationality or role assignment and is deliberately separate from transfer.
+brilliant_scientist_is_valid_initial_send_away_recipient = {
+	brilliant_scientist_is_eligible_host = yes
+	has_event_target = brilliant_scientist_send_away_rejector
+	NOT = { tag = event_target:brilliant_scientist_send_away_rejector }
+}
+
+# COUNTRY scope, called on the old host after the regular recipient target has
+# been saved as brilliant_scientist_transfer_recipient.
+brilliant_scientist_transfer_inputs_are_valid = {
+	brilliant_scientist_is_transfer_ready = yes
+	has_event_target = brilliant_scientist_transfer_recipient
+	event_target:brilliant_scientist_transfer_recipient = {
+		brilliant_scientist_is_valid_transfer_recipient = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Visible and hidden value bands
+# ---------------------------------------------------------------------------
+
+brilliant_scientist_has_low_mandate = {
+	check_variable = { brilliant_scientist_mandate < constant:brilliant_scientist_measure.band_low }
+}
+
+brilliant_scientist_has_moderate_mandate = {
+	check_variable = { var = brilliant_scientist_mandate value = constant:brilliant_scientist_measure.band_low compare = greater_than_or_equals }
+	check_variable = { brilliant_scientist_mandate < constant:brilliant_scientist_measure.band_moderate }
+}
+
+brilliant_scientist_has_high_mandate = {
+	check_variable = { var = brilliant_scientist_mandate value = constant:brilliant_scientist_measure.band_moderate compare = greater_than_or_equals }
+	check_variable = { brilliant_scientist_mandate < constant:brilliant_scientist_measure.band_high }
+}
+
+brilliant_scientist_has_extreme_mandate = {
+	check_variable = {
+		var = brilliant_scientist_mandate
+		value = constant:brilliant_scientist_measure.band_high
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_has_low_dependence = {
+	check_variable = { brilliant_scientist_dependence < constant:brilliant_scientist_measure.band_low }
+}
+
+brilliant_scientist_has_moderate_dependence = {
+	check_variable = { var = brilliant_scientist_dependence value = constant:brilliant_scientist_measure.band_low compare = greater_than_or_equals }
+	check_variable = { brilliant_scientist_dependence < constant:brilliant_scientist_measure.band_moderate }
+}
+
+brilliant_scientist_has_high_dependence = {
+	check_variable = { var = brilliant_scientist_dependence value = constant:brilliant_scientist_measure.band_moderate compare = greater_than_or_equals }
+	check_variable = { brilliant_scientist_dependence < constant:brilliant_scientist_measure.band_high }
+}
+
+brilliant_scientist_has_extreme_dependence = {
+	check_variable = {
+		var = brilliant_scientist_dependence
+		value = constant:brilliant_scientist_measure.band_high
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_has_low_exposure = {
+	check_variable = { brilliant_scientist_exposure < constant:brilliant_scientist_measure.band_low }
+}
+
+brilliant_scientist_has_moderate_exposure = {
+	check_variable = { var = brilliant_scientist_exposure value = constant:brilliant_scientist_measure.band_low compare = greater_than_or_equals }
+	check_variable = { brilliant_scientist_exposure < constant:brilliant_scientist_measure.band_moderate }
+}
+
+brilliant_scientist_has_high_exposure = {
+	check_variable = { var = brilliant_scientist_exposure value = constant:brilliant_scientist_measure.band_moderate compare = greater_than_or_equals }
+	check_variable = { brilliant_scientist_exposure < constant:brilliant_scientist_measure.band_high }
+}
+
+brilliant_scientist_has_extreme_exposure = {
+	check_variable = {
+		var = brilliant_scientist_exposure
+		value = constant:brilliant_scientist_measure.band_high
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_has_low_project_capacity = {
+	check_variable = { brilliant_scientist_project_capacity < constant:brilliant_scientist_measure.band_low }
+}
+
+brilliant_scientist_has_moderate_project_capacity = {
+	check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_measure.band_low compare = greater_than_or_equals }
+	check_variable = { brilliant_scientist_project_capacity < constant:brilliant_scientist_measure.band_moderate }
+}
+
+brilliant_scientist_has_high_project_capacity = {
+	check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_measure.band_moderate compare = greater_than_or_equals }
+	check_variable = { brilliant_scientist_project_capacity < constant:brilliant_scientist_measure.band_high }
+}
+
+brilliant_scientist_has_extreme_project_capacity = {
+	check_variable = {
+		var = brilliant_scientist_project_capacity
+		value = constant:brilliant_scientist_measure.band_high
+		compare = greater_than_or_equals
+	}
+}
+
+# Hidden causal-state helpers. Do not surface the exact values in localisation.
+brilliant_scientist_has_low_independent_capacity = {
+	check_variable = { brilliant_scientist_independent_capacity < constant:brilliant_scientist_measure.band_low }
+}
+
+brilliant_scientist_has_high_independent_capacity = {
+	check_variable = {
+		var = brilliant_scientist_independent_capacity
+		value = constant:brilliant_scientist_measure.band_moderate
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_has_extreme_independent_capacity = {
+	check_variable = {
+		var = brilliant_scientist_independent_capacity
+		value = constant:brilliant_scientist_measure.band_high
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_has_low_grievance = {
+	check_variable = { brilliant_scientist_grievance < constant:brilliant_scientist_measure.band_low }
+}
+
+brilliant_scientist_has_high_grievance = {
+	check_variable = {
+		var = brilliant_scientist_grievance
+		value = constant:brilliant_scientist_measure.band_moderate
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_has_extreme_grievance = {
+	check_variable = {
+		var = brilliant_scientist_grievance
+		value = constant:brilliant_scientist_measure.band_high
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_control_is_stable = {
+	has_country_flag = brilliant_scientist_control_stable
+}
+
+brilliant_scientist_control_is_strained = {
+	has_country_flag = brilliant_scientist_control_strained
+}
+
+brilliant_scientist_control_is_compromised = {
+	has_country_flag = brilliant_scientist_control_compromised
+}
+
+brilliant_scientist_control_is_lost = {
+	has_country_flag = brilliant_scientist_control_lost
+}
+
+# ---------------------------------------------------------------------------
+# Facility targets
+# ---------------------------------------------------------------------------
+
+# STATE scope. The owner must also control the state. An explicit core is not
+# required: foreign and enclave laboratories may be lawful project sites.
+brilliant_scientist_is_valid_facility_state = {
+	impassable = no
+	OWNER = {
+		exists = yes
+		controls_state = PREV
+	}
+}
+
+# STATE scope. Appointment and transfer destinations must begin with an owned,
+# controlled core laboratory; foreign/enclave sites can be added only later.
+brilliant_scientist_is_valid_primary_facility_state = {
+	brilliant_scientist_is_valid_facility_state = yes
+	is_core_of = OWNER
+	NOT = { has_state_flag = brilliant_scientist_secondary_facility }
+	NOT = { has_state_flag = brilliant_scientist_facility_destroyed }
+}
+
+# STATE scope.
+brilliant_scientist_is_valid_secondary_facility_state = {
+	brilliant_scientist_is_valid_facility_state = yes
+	is_core_of = OWNER
+	NOT = { has_state_flag = brilliant_scientist_primary_facility }
+	NOT = { has_state_flag = brilliant_scientist_facility_destroyed }
+}
+
+# Any scope.
+brilliant_scientist_primary_facility_is_valid = {
+	has_event_target = brilliant_scientist_primary_facility
+	event_target:brilliant_scientist_primary_facility = {
+		exists = yes
+		brilliant_scientist_is_valid_primary_facility_state = yes
+		has_state_flag = brilliant_scientist_primary_facility
+		OWNER = { has_country_flag = brilliant_scientist_current_host }
+	}
+}
+
+# Any scope.
+brilliant_scientist_secondary_facility_is_valid = {
+	has_event_target = brilliant_scientist_secondary_facility
+	event_target:brilliant_scientist_secondary_facility = {
+		exists = yes
+		brilliant_scientist_is_valid_secondary_facility_state = yes
+		has_state_flag = brilliant_scientist_secondary_facility
+		OWNER = { has_country_flag = brilliant_scientist_current_host }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Generic project-stage and history readers
+# ---------------------------------------------------------------------------
+
+# Inputs are temporary brilliant_scientist_project_family and, where required,
+# brilliant_scientist_requested_project_stage. Call the Event 016 project-index
+# loader before reading the aligned arrays.
+brilliant_scientist_project_family_input_is_valid = {
+	check_variable = {
+		var = brilliant_scientist_project_family
+		value = constant:brilliant_scientist_project_family.none
+		compare = greater_than
+	}
+	check_variable = {
+		var = brilliant_scientist_project_family
+		value = constant:brilliant_scientist_project_family.max_exclusive
+		compare = less_than
+	}
+}
+
+brilliant_scientist_project_stage_input_is_valid = {
+	check_variable = {
+		var = brilliant_scientist_requested_project_stage
+		value = constant:brilliant_scientist_project_stage.none
+		compare = greater_than
+	}
+	check_variable = {
+		var = brilliant_scientist_requested_project_stage
+		value = constant:brilliant_scientist_project_stage.max_exclusive
+		compare = less_than
+	}
+}
+
+brilliant_scientist_project_at_least_requested_stage = {
+	brilliant_scientist_project_family_input_is_valid = yes
+	brilliant_scientist_project_stage_input_is_valid = yes
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^brilliant_scientist_project_index
+		value = brilliant_scientist_requested_project_stage
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_project_independently_replicated_to_requested_stage = {
+	brilliant_scientist_project_family_input_is_valid = yes
+	brilliant_scientist_project_stage_input_is_valid = yes
+	check_variable = {
+		var = brilliant_scientist_independent_project_stage_entries^brilliant_scientist_project_index
+		value = brilliant_scientist_requested_project_stage
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_project_is_suspended = {
+	is_in_array = {
+		array = brilliant_scientist_project_suspended_families
+		value = brilliant_scientist_project_family
+	}
+}
+
+brilliant_scientist_project_is_damaged = {
+	is_in_array = {
+		array = brilliant_scientist_project_damaged_families
+		value = brilliant_scientist_project_family
+	}
+}
+
+brilliant_scientist_project_is_published = {
+	is_in_array = {
+		array = brilliant_scientist_project_published_families
+		value = brilliant_scientist_project_family
+	}
+}
+
+brilliant_scientist_project_is_stolen = {
+	is_in_array = {
+		array = brilliant_scientist_project_stolen_families
+		value = brilliant_scientist_project_family
+	}
+}
+
+brilliant_scientist_project_is_dismantled = {
+	is_in_array = {
+		array = brilliant_scientist_project_dismantled_families
+		value = brilliant_scientist_project_family
+	}
+}
+
+brilliant_scientist_project_can_advance = {
+	brilliant_scientist_project_family_input_is_valid = yes
+	NOT = { brilliant_scientist_project_is_suspended = yes }
+	NOT = { brilliant_scientist_project_is_dismantled = yes }
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^brilliant_scientist_project_index
+		value = constant:brilliant_scientist_project_stage.weaponization
+		compare = less_than
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Evolution setting and readiness gates
+# ---------------------------------------------------------------------------
+
+brilliant_scientist_is_evolution_i_enabled = {
+	NOT = { has_global_flag = events_log_disabled_evolution_16_16_1 }
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:chaos_meter_tier_range.tier_1.min
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_is_evolution_ii_enabled = {
+	NOT = { has_global_flag = events_log_disabled_evolution_16_16_2 }
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:chaos_meter_tier_range.tier_2.min
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_is_evolution_iii_enabled = {
+	NOT = { has_global_flag = events_log_disabled_evolution_16_16_3 }
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:chaos_meter_tier_range.tier_3.min
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_is_evolution_iv_enabled = {
+	NOT = { has_global_flag = events_log_disabled_evolution_16_16_4 }
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:chaos_meter_tier_range.tier_4.min
+		compare = greater_than_or_equals
+	}
+}
+
+# COUNTRY scope. Count variables are refreshed by the Event 016 portfolio
+# helper before these triggers are queried.
+brilliant_scientist_evolution_i_is_ready = {
+	brilliant_scientist_is_current_host = yes
+	brilliant_scientist_is_evolution_i_enabled = yes
+	NOT = { has_global_flag = brilliant_scientist_evolution_i_chronology_recorded }
+	check_variable = {
+		var = brilliant_scientist_project_prototype_count
+		value = constant:brilliant_scientist_value.one
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_evolution_ii_is_ready = {
+	brilliant_scientist_is_current_host = yes
+	brilliant_scientist_is_evolution_ii_enabled = yes
+	NOT = { has_global_flag = brilliant_scientist_evolution_ii_chronology_recorded }
+	OR = {
+		has_country_flag = brilliant_scientist_first_foreign_action_resolved
+		check_variable = {
+			var = brilliant_scientist_high_interest_foreign_actor_count
+			value = constant:brilliant_scientist_value.one
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+brilliant_scientist_evolution_iii_is_ready = {
+	brilliant_scientist_is_current_host = yes
+	brilliant_scientist_is_evolution_iii_enabled = yes
+	NOT = { has_global_flag = brilliant_scientist_evolution_iii_chronology_recorded }
+	check_variable = {
+		var = brilliant_scientist_project_weaponization_count
+		value = constant:brilliant_scientist_value.one
+		compare = greater_than_or_equals
+	}
+	OR = {
+		brilliant_scientist_has_high_independent_capacity = yes
+		has_country_flag = brilliant_scientist_dangerous_project_incident
+	}
+}
+
+brilliant_scientist_evolution_iv_is_ready = {
+	brilliant_scientist_is_evolution_iv_enabled = yes
+	NOT = { has_global_flag = brilliant_scientist_evolution_iv_chronology_recorded }
+	OR = {
+		has_country_flag = brilliant_scientist_kruger_state
+		brilliant_scientist_institutional_capture_is_proven = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Foreign actors, targets, and action gates
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope.
+brilliant_scientist_is_valid_foreign_actor = {
+	exists = yes
+	has_capitulated = no
+	NOT = { has_country_flag = brilliant_scientist_current_host }
+	NOT = { has_country_flag = brilliant_scientist_kruger_state }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { has_global_flag = world_end }
+}
+
+brilliant_scientist_foreign_actor_target_is_valid = {
+	has_event_target = brilliant_scientist_foreign_actor
+	event_target:brilliant_scientist_foreign_actor = {
+		brilliant_scientist_is_valid_foreign_actor = yes
+	}
+}
+
+brilliant_scientist_foreign_target_state_is_valid = {
+	has_event_target = brilliant_scientist_foreign_target_state
+	brilliant_scientist_foreign_actor_target_is_valid = yes
+	event_target:brilliant_scientist_foreign_target_state = {
+		exists = yes
+		brilliant_scientist_is_valid_facility_state = yes
+		OWNER = { has_country_flag = brilliant_scientist_foreign_action_target }
+	}
+}
+
+# COUNTRY scope, called on the foreign actor. Interest is stored on that actor.
+brilliant_scientist_foreign_can_invite = {
+	brilliant_scientist_is_valid_foreign_actor = yes
+	brilliant_scientist_has_current_host = yes
+	check_variable = {
+		var = brilliant_scientist_foreign_interest
+		value = constant:brilliant_scientist_foreign.invitation_gate
+		compare = greater_than_or_equals
+	}
+	NOT = { has_war_with = event_target:brilliant_scientist_current_host }
+}
+
+brilliant_scientist_foreign_can_open_joint_laboratory = {
+	brilliant_scientist_foreign_can_invite = yes
+	check_variable = {
+		var = brilliant_scientist_foreign_interest
+		value = constant:brilliant_scientist_foreign.joint_lab_gate
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_foreign_can_offer_protection = {
+	brilliant_scientist_is_valid_foreign_actor = yes
+	brilliant_scientist_has_current_host = yes
+	check_variable = {
+		var = brilliant_scientist_foreign_interest
+		value = constant:brilliant_scientist_foreign.protection_gate
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_foreign_can_attempt_theft = {
+	brilliant_scientist_is_valid_foreign_actor = yes
+	brilliant_scientist_has_current_host = yes
+	check_variable = {
+		var = brilliant_scientist_foreign_interest
+		value = constant:brilliant_scientist_foreign.theft_gate
+		compare = greater_than_or_equals
+	}
+	event_target:brilliant_scientist_current_host = {
+		NOT = { brilliant_scientist_has_low_exposure = yes }
+	}
+}
+
+brilliant_scientist_foreign_can_attempt_sabotage = {
+	brilliant_scientist_foreign_can_attempt_theft = yes
+	check_variable = {
+		var = brilliant_scientist_foreign_interest
+		value = constant:brilliant_scientist_foreign.sabotage_gate
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_foreign_can_attempt_extraction = {
+	brilliant_scientist_is_valid_foreign_actor = yes
+	brilliant_scientist_has_current_host = yes
+	check_variable = {
+		var = brilliant_scientist_foreign_interest
+		value = constant:brilliant_scientist_foreign.extraction_gate
+		compare = greater_than_or_equals
+	}
+	event_target:brilliant_scientist_current_host = {
+		brilliant_scientist_is_transfer_ready = yes
+	}
+}
+
+brilliant_scientist_foreign_can_attempt_assassination = {
+	brilliant_scientist_is_valid_foreign_actor = yes
+	brilliant_scientist_has_current_host = yes
+	check_variable = {
+		var = brilliant_scientist_foreign_interest
+		value = constant:brilliant_scientist_foreign.assassination_gate
+		compare = greater_than_or_equals
+	}
+	event_target:brilliant_scientist_current_host = {
+		NOT = { has_country_flag = brilliant_scientist_kruger_confirmed_dead }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Institutional capture and formation inputs
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope. The input counters are deliberately explicit proof records;
+# territory failure or small-country status can never satisfy this gate.
+brilliant_scientist_institutional_capture_is_proven = {
+	brilliant_scientist_is_current_host = yes
+	has_country_flag = brilliant_scientist_sovereign_science_authority
+	check_variable = {
+		var = brilliant_scientist_dependence
+		value = constant:brilliant_scientist_institutional_capture.dependence_minimum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_government_control_score
+		value = constant:brilliant_scientist_institutional_capture.control_maximum
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_warned_incident_count
+		value = constant:brilliant_scientist_institutional_capture.warned_incidents_minimum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_captured_domain_count
+		value = constant:brilliant_scientist_institutional_capture.captured_domains_minimum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_statewide_captured_domain_count
+		value = constant:brilliant_scientist_institutional_capture.statewide_domains_minimum
+		compare = greater_than_or_equals
+	}
+	NOT = { has_global_flag = world_end }
+}
+
+# COUNTRY scope. Set the input counters only after an explicit territory plan
+# has been scored; this trigger never chooses a fallback state.
+brilliant_scientist_has_viable_formation_inputs = {
+	check_variable = {
+		var = brilliant_scientist_formation_selected_state_count
+		value = constant:brilliant_scientist_formation.minimum_origin_states
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_formation_territory_score
+		value = constant:brilliant_scientist_formation.minimum_territory_score
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_formation_host_remaining_state_count
+		value = constant:brilliant_scientist_formation.host_retained_states
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_formation_host_remaining_factory_count
+		value = constant:brilliant_scientist_formation.host_retained_factories
+		compare = greater_than_or_equals
+	}
+	has_country_flag = brilliant_scientist_formation_territory_verified
+	NOT = { has_global_flag = brilliant_scientist_kruger_state_active }
+	NOT = { has_global_flag = world_end }
+}
+
+brilliant_scientist_can_form_by_charter = {
+	brilliant_scientist_has_viable_formation_inputs = yes
+	has_country_flag = brilliant_scientist_charter_accepted
+	check_variable = {
+		var = brilliant_scientist_formation_selected_state_count
+		value = constant:brilliant_scientist_formation.charter_minimum_states
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_form_enclave = {
+	brilliant_scientist_has_viable_formation_inputs = yes
+	has_country_flag = brilliant_scientist_enclave_settlement
+	check_variable = {
+		var = brilliant_scientist_formation_selected_state_count
+		value = constant:brilliant_scientist_formation.enclave_minimum_states
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_form_by_rebellion = {
+	brilliant_scientist_has_viable_formation_inputs = yes
+	has_country_flag = brilliant_scientist_rebellion_committed
+	check_variable = {
+		var = brilliant_scientist_formation_selected_state_count
+		value = constant:brilliant_scientist_formation.rebellion_minimum_states
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_form_multi_site = {
+	brilliant_scientist_has_viable_formation_inputs = yes
+	has_country_flag = brilliant_scientist_multi_site_network_verified
+	check_variable = {
+		var = brilliant_scientist_formation_selected_state_count
+		value = constant:brilliant_scientist_formation.multi_site_minimum_states
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_can_form_by_institutional_capture = {
+	brilliant_scientist_has_viable_formation_inputs = yes
+	brilliant_scientist_institutional_capture_is_proven = yes
+	check_variable = {
+		var = brilliant_scientist_formation_selected_state_count
+		value = constant:brilliant_scientist_formation.takeover_minimum_states
+		compare = greater_than_or_equals
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Temporal debt, authentication, anchors, and origin evidence
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope. Caller supplies temporary synchronization cost and debt gain,
+# and must bind a named crisis/component/leader/unit target before committing.
+brilliant_scientist_temporal_action_is_ready = {
+	has_country_flag = brilliant_scientist_temporal_anchor_authenticated
+	has_country_flag = brilliant_scientist_temporal_action_target_bound
+	has_variable = brilliant_scientist_temporal_bound_target_id
+	NOT = { has_country_flag = brilliant_scientist_temporal_stabilization_active }
+	NOT = { has_country_flag = brilliant_scientist_temporal_anchor_lost }
+	check_variable = {
+		var = brilliant_scientist_temporal_sync_capacity
+		value = brilliant_scientist_temporal_sync_cost
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_temporal_debt
+		value = constant:brilliant_scientist_temporal.debt_maximum
+		compare = less_than
+	}
+	check_variable = { brilliant_scientist_temporal_bound_target_id > constant:brilliant_scientist_temporal_target.none }
+	NOT = {
+		is_in_array = {
+			array = brilliant_scientist_temporal_used_target_ids
+			value = brilliant_scientist_temporal_bound_target_id
+		}
+	}
+}
+
+brilliant_scientist_can_begin_temporal_stabilization = {
+	NOT = { has_country_flag = brilliant_scientist_temporal_stabilization_active }
+	check_variable = {
+		var = brilliant_scientist_temporal_debt
+		value = constant:brilliant_scientist_temporal.debt_warning
+		compare = greater_than_or_equals
+	}
+	brilliant_scientist_primary_facility_is_valid = yes
+}
+
+brilliant_scientist_origin_conclusion_is_unlocked = {
+	has_country_flag = brilliant_scientist_origin_conclusion_locked
+}
+
+brilliant_scientist_origin_evidence_is_sufficient = {
+	check_variable = {
+		var = brilliant_scientist_origin_independent_evidence_count
+		value = constant:brilliant_scientist_origin.independent_evidence_minimum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_origin_authenticated_source_count
+		value = constant:brilliant_scientist_origin.authenticated_sources_minimum
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_origin_public_proof_is_ready = {
+	brilliant_scientist_origin_conclusion_is_unlocked = yes
+	check_variable = {
+		var = brilliant_scientist_origin_independent_evidence_count
+		value = constant:brilliant_scientist_origin.public_proof_minimum
+		compare = greater_than_or_equals
+	}
+	has_country_flag = brilliant_scientist_origin_evidence_authenticated
+}
+
+# ---------------------------------------------------------------------------
+# Terminal commitment and readiness
+# ---------------------------------------------------------------------------
+
+brilliant_scientist_lab_world_scenario_is_enabled = {
+	NOT = {
+		is_in_array = {
+			array = global.disabled_world_end_scenarios
+			value = constant:brilliant_scientist_world_end.laboratory_world
+		}
+	}
+}
+
+brilliant_scientist_singularity_scenario_is_enabled = {
+	NOT = {
+		is_in_array = {
+			array = global.disabled_world_end_scenarios
+			value = constant:brilliant_scientist_world_end.strategic_singularity
+		}
+	}
+}
+
+brilliant_scientist_can_commit_to_singularity = {
+	has_country_flag = brilliant_scientist_kruger_state
+	brilliant_scientist_singularity_scenario_is_enabled = yes
+	NOT = { has_country_flag = brilliant_scientist_terminal_commitment_locked }
+	NOT = { has_global_flag = brilliant_scientist_lab_world_terminal_fired }
+	NOT = { has_global_flag = brilliant_scientist_singularity_permanently_cancelled }
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = world_end_disabled }
+}
+
+brilliant_scientist_can_commit_to_lab_world = {
+	has_country_flag = brilliant_scientist_kruger_state
+	brilliant_scientist_lab_world_scenario_is_enabled = yes
+	NOT = { has_country_flag = brilliant_scientist_terminal_commitment_locked }
+	NOT = { has_global_flag = brilliant_scientist_singularity_terminal_fired }
+	NOT = { has_global_flag = brilliant_scientist_lab_world_permanently_cancelled }
+	has_country_flag = brilliant_scientist_singularity_verified_nonterminal
+	NOT = { has_country_flag = brilliant_scientist_singularity_armed }
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = world_end_disabled }
+}
+
+brilliant_scientist_singularity_terminal_is_ready = {
+	has_country_flag = brilliant_scientist_kruger_state
+	has_country_flag = brilliant_scientist_terminal_commitment_singularity
+	has_country_flag = brilliant_scientist_singularity_armed
+	has_country_flag = brilliant_scientist_singularity_live_command_network
+	has_country_flag = brilliant_scientist_singularity_fail_deadly_active
+	brilliant_scientist_singularity_scenario_is_enabled = yes
+	check_variable = {
+		var = brilliant_scientist_singularity_component_count
+		value = constant:brilliant_scientist_singularity.components_required
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_singularity_live_command_node_count
+		value = constant:brilliant_scientist_singularity.minimum_live_command_nodes
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_singularity_power_link_count
+		value = constant:brilliant_scientist_singularity.minimum_power_links
+		compare = greater_than_or_equals
+	}
+	NOT = { has_global_flag = brilliant_scientist_singularity_terminal_fired }
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = world_end_disabled }
+}
+
+brilliant_scientist_singularity_capitulation_failsafe_is_ready = {
+	brilliant_scientist_singularity_terminal_is_ready = yes
+	surrender_progress > constant:brilliant_scientist_singularity.surrender_progress_threshold
+	NOT = { has_country_flag = brilliant_scientist_survivable_surrender_active }
+	NOT = { has_country_flag = brilliant_scientist_temporal_escape_active }
+}
+
+brilliant_scientist_lab_world_terminal_is_ready = {
+	has_country_flag = brilliant_scientist_kruger_state
+	has_country_flag = brilliant_scientist_terminal_commitment_lab_world
+	has_country_flag = brilliant_scientist_singularity_verified_nonterminal
+	NOT = { has_country_flag = brilliant_scientist_singularity_armed }
+	brilliant_scientist_lab_world_scenario_is_enabled = yes
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:chaos_meter_tier_range.tier_final.min
+		compare = greater_than
+	}
+	check_variable = {
+		var = brilliant_scientist_world_control_ratio
+		value = constant:brilliant_scientist_lab_world.minimum_world_control_ratio
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_integrated_state_ratio
+		value = constant:brilliant_scientist_lab_world.minimum_integrated_state_ratio
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_major_opposition_count
+		value = constant:brilliant_scientist_lab_world.maximum_major_opposition
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_global_administration_score
+		value = constant:brilliant_scientist_lab_world.minimum_administration_score
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_global_submission_score
+		value = constant:brilliant_scientist_lab_world.minimum_submission_score
+		compare = greater_than_or_equals
+	}
+	NOT = { has_global_flag = brilliant_scientist_lab_world_terminal_fired }
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = world_end_disabled }
+}
