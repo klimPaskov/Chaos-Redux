@@ -2,7 +2,6 @@
 
 | Surface | Source of truth after acceptance |
 | --- | --- |
-| Fictional scope and non-procedural boundary | `IMPLEMENTATION_SCOPE_AND_FIDELITY.md`, interpretation only and never a mechanic override |
 | Core gameplay and values | `specs/01_core_system_and_gameplay_loop.md` |
 | Doctrine paths and technologies | `specs/02_doctrine_architecture.md` and `matrices/doctrine_and_tech_matrix.md` |
 | Army HQ and regimental support | `specs/03_hq_command_and_regimental_support.md`, HQ and support matrices |

@@ -1,0 +1,377 @@
+# ============================================================================
+# CHAOS REDUX - GENERIC CBRN MILITARY INDUSTRIAL ORGANIZATIONS
+# ============================================================================
+# Overview:
+# - Defines the chemical-payload and chemical-air designer families mapped by
+#   the accepted country-program matrix.
+# - Equipment and production bonuses apply only to exact custom payload
+#   archetypes. No ordinary artillery piece, CAS airframe, tactical bomber, or
+#   unrelated support-equipment line receives these bonuses.
+# - Scripted route effects query completed traits through
+#   cbrn_designer_triggers.txt and remain subject to the shared payload,
+#   exposure, evidence, and Condemnation contracts.
+# - Static MIO values use one file-local tuning table because this database does
+#   not accept script-constant tokens in its native bonus fields.
+# ============================================================================
+
+@cbrn_mio_research_bonus = 0.10
+@cbrn_mio_task_capacity = 2
+@cbrn_mio_initial_research_bonus = 0.03
+@cbrn_mio_initial_efficiency_gain = 0.04
+
+@cbrn_munitions_initial_reliability = -0.02
+@cbrn_munitions_stable_reliability = 0.08
+@cbrn_munitions_stable_cost = 0.03
+@cbrn_munitions_persistent_reliability = 0.04
+@cbrn_munitions_persistent_cost = 0.06
+@cbrn_munitions_rapid_capacity = 0.10
+@cbrn_munitions_rapid_reliability = -0.05
+@cbrn_munitions_fuze_reliability = 0.10
+@cbrn_munitions_fuze_cost = 0.03
+@cbrn_munitions_high_output_capacity = 0.15
+@cbrn_munitions_high_output_cost = -0.08
+@cbrn_munitions_high_output_reliability = -0.08
+
+@cbrn_aerosol_sealed_reliability = 0.10
+@cbrn_aerosol_sealed_cost = 0.05
+@cbrn_aerosol_controlled_reliability = 0.06
+@cbrn_aerosol_controlled_efficiency_cap = 0.05
+@cbrn_aerosol_precision_cost = 0.08
+@cbrn_aerosol_precision_capacity = -0.05
+
+@cbrn_mio_ai_base = 1.00
+@cbrn_mio_ai_disabled = 0.00
+@cbrn_mio_ai_low = 0.50
+@cbrn_mio_ai_medium = 1.25
+@cbrn_mio_ai_high = 2.00
+@cbrn_mio_ai_very_high = 3.00
+
+cbrn_chemical_munitions_combine = {
+	icon = GFX_cbrn_chemical_munitions_combine
+
+	allowed = { always = yes }
+
+	visible = {
+		FROM = {
+			NOT = { is_actual_nonhuman_country = yes }
+			OR = {
+				cbrn_country_has_program = yes
+				has_tech = chlorine_gas
+				has_tech = mustard_gas
+				has_tech = tabun
+				has_tech = chemical_artillery_shells
+			}
+		}
+	}
+
+	available = {
+		FROM = {
+			OR = {
+				cbrn_country_has_program = yes
+				has_tech = chlorine_gas
+				has_tech = mustard_gas
+				has_tech = tabun
+				has_tech = chemical_artillery_shells
+			}
+		}
+	}
+
+	equipment_type = {
+		chemical_agent_payload
+		chemical_artillery_ammunition
+	}
+	research_categories = { chemical_warfare_tech }
+	research_bonus = @cbrn_mio_research_bonus
+	task_capacity = @cbrn_mio_task_capacity
+
+	ai_will_do = {
+		factor = @cbrn_mio_ai_base
+		modifier = { factor = @cbrn_mio_ai_disabled FROM = { is_actual_nonhuman_country = yes } }
+		modifier = { factor = @cbrn_mio_ai_high FROM = { cbrn_ai_has_battlefield_cbrn_profile = yes } }
+		modifier = { factor = @cbrn_mio_ai_low FROM = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+		modifier = { factor = @cbrn_mio_ai_high FROM = { OR = { original_tag = FRA original_tag = SOV } } }
+		modifier = { factor = @cbrn_mio_ai_medium FROM = { OR = { original_tag = GER original_tag = ITA } } }
+	}
+
+	tree_header_text = { text = cbrn_munitions_header_operations x = 2 }
+
+	initial_trait = {
+		name = cbrn_chemical_munitions_combine_initial_trait
+		equipment_bonus = { reliability = @cbrn_munitions_initial_reliability }
+		production_bonus = { production_efficiency_gain_factor = @cbrn_mio_initial_efficiency_gain }
+		organization_modifier = { military_industrial_organization_research_bonus = @cbrn_mio_initial_research_bonus }
+	}
+
+	trait = {
+		token = cbrn_munitions_stable_choking_fill
+		name = cbrn_munitions_stable_choking_fill
+		icon = GFX_generic_mio_trait_icon_reliability
+		position = { x = 1 y = 0 }
+		mutually_exclusive = { cbrn_munitions_persistent_agent_formulation }
+		available = {
+			owner = {
+				custom_trigger_tooltip = {
+					tooltip = cbrn_munitions_stable_choking_fill_requirement_tt
+					OR = {
+						has_tech = chlorine_gas
+						has_tech = phosgene
+					}
+				}
+			}
+		}
+		equipment_bonus = {
+			reliability = @cbrn_munitions_stable_reliability
+			build_cost_ic = @cbrn_munitions_stable_cost
+		}
+		on_complete = { custom_effect_tooltip = cbrn_munitions_stable_choking_fill_tt }
+		ai_will_do = {
+			base = @cbrn_mio_ai_base
+			modifier = { factor = @cbrn_mio_ai_high FROM = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+			modifier = { factor = @cbrn_mio_ai_low FROM = { cbrn_ai_route_allows_unrestricted_use = yes } }
+		}
+	}
+
+	trait = {
+		token = cbrn_munitions_persistent_agent_formulation
+		name = cbrn_munitions_persistent_agent_formulation
+		icon = GFX_generic_mio_trait_icon_soft_attack
+		position = { x = 3 y = 0 }
+		mutually_exclusive = { cbrn_munitions_stable_choking_fill }
+		available = {
+			owner = {
+				custom_trigger_tooltip = {
+					tooltip = cbrn_munitions_persistent_agent_formulation_requirement_tt
+					OR = {
+						has_tech = mustard_gas
+						has_tech = lewisite
+					}
+				}
+			}
+		}
+		equipment_bonus = {
+			reliability = @cbrn_munitions_persistent_reliability
+			build_cost_ic = @cbrn_munitions_persistent_cost
+		}
+		on_complete = { custom_effect_tooltip = cbrn_munitions_persistent_agent_formulation_tt }
+		ai_will_do = {
+			base = @cbrn_mio_ai_base
+			modifier = { factor = @cbrn_mio_ai_very_high FROM = { cbrn_ai_route_allows_unrestricted_use = yes } }
+			modifier = { factor = @cbrn_mio_ai_low FROM = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+		}
+	}
+
+	trait = {
+		token = cbrn_munitions_rapid_front_distribution
+		name = cbrn_munitions_rapid_front_distribution
+		icon = GFX_generic_mio_trait_icon_production_capacity
+		position = { x = 1 y = 1 }
+		any_parent = { cbrn_munitions_stable_choking_fill cbrn_munitions_persistent_agent_formulation }
+		available = {
+			owner = {
+				custom_trigger_tooltip = {
+					tooltip = cbrn_munitions_shell_route_requirement_tt
+					has_tech = chemical_artillery_shells
+				}
+			}
+		}
+		equipment_bonus = { reliability = @cbrn_munitions_rapid_reliability }
+		production_bonus = { production_capacity_factor = @cbrn_munitions_rapid_capacity }
+		on_complete = { custom_effect_tooltip = cbrn_munitions_rapid_front_distribution_tt }
+		ai_will_do = {
+			base = @cbrn_mio_ai_base
+			modifier = { factor = @cbrn_mio_ai_high FROM = { cbrn_ai_has_battlefield_cbrn_profile = yes } }
+		}
+	}
+
+	trait = {
+		token = cbrn_munitions_standardized_fuzes
+		name = cbrn_munitions_standardized_fuzes
+		icon = GFX_generic_mio_trait_icon_reliability
+		position = { x = 3 y = 1 }
+		any_parent = { cbrn_munitions_stable_choking_fill cbrn_munitions_persistent_agent_formulation }
+		available = {
+			owner = {
+				custom_trigger_tooltip = {
+					tooltip = cbrn_munitions_shell_route_requirement_tt
+					has_tech = chemical_artillery_shells
+				}
+			}
+		}
+		limit_to_equipment_type = { chemical_artillery_ammunition }
+		equipment_bonus = {
+			reliability = @cbrn_munitions_fuze_reliability
+			build_cost_ic = @cbrn_munitions_fuze_cost
+		}
+		on_complete = { custom_effect_tooltip = cbrn_munitions_standardized_fuzes_tt }
+		ai_will_do = { base = @cbrn_mio_ai_medium }
+	}
+
+	trait = {
+		token = cbrn_munitions_high_output_filling_complex
+		name = cbrn_munitions_high_output_filling_complex
+		icon = GFX_generic_mio_department_icon_support_production
+		special_trait_background = yes
+		position = { x = 2 y = 2 }
+		all_parents = { cbrn_munitions_rapid_front_distribution cbrn_munitions_standardized_fuzes }
+		available = {
+			owner = {
+				custom_trigger_tooltip = {
+					tooltip = cbrn_munitions_high_output_requirement_tt
+					cbrn_country_has_operational_readiness = yes
+				}
+			}
+		}
+		equipment_bonus = { reliability = @cbrn_munitions_high_output_reliability }
+		production_bonus = {
+			production_capacity_factor = @cbrn_munitions_high_output_capacity
+			production_cost_factor = @cbrn_munitions_high_output_cost
+		}
+		on_complete = { custom_effect_tooltip = cbrn_munitions_high_output_filling_complex_tt }
+		ai_will_do = {
+			base = @cbrn_mio_ai_low
+			modifier = { factor = @cbrn_mio_ai_very_high FROM = { cbrn_ai_route_allows_unrestricted_use = yes } }
+		}
+	}
+}
+
+cbrn_aerosol_air_delivery_bureau = {
+	icon = GFX_cbrn_aerosol_air_delivery_bureau
+
+	allowed = { always = yes }
+
+	visible = {
+		FROM = {
+			NOT = { is_actual_nonhuman_country = yes }
+			OR = {
+				has_tech = chemical_air_interdiction
+				is_special_project_completed = sp:sp_cw_malodor_bomb_program
+				is_special_project_completed = sp:sp_cw_aphrodisiac_bomb_program
+			}
+		}
+	}
+
+	available = {
+		FROM = {
+			OR = {
+				has_tech = chemical_air_interdiction
+				is_special_project_completed = sp:sp_cw_malodor_bomb_program
+				is_special_project_completed = sp:sp_cw_aphrodisiac_bomb_program
+			}
+		}
+	}
+
+	equipment_type = {
+		choking_chemical_air_payload
+		blister_chemical_air_payload
+		nerve_chemical_air_payload
+		incapacitating_chemical_air_payload
+	}
+	research_categories = { chemical_warfare_tech }
+	research_bonus = @cbrn_mio_research_bonus
+	task_capacity = @cbrn_mio_task_capacity
+
+	ai_will_do = {
+		factor = @cbrn_mio_ai_low
+		modifier = { factor = @cbrn_mio_ai_disabled FROM = { is_actual_nonhuman_country = yes } }
+		modifier = { factor = @cbrn_mio_ai_high FROM = { cbrn_ai_has_battlefield_cbrn_profile = yes } }
+		modifier = { factor = @cbrn_mio_ai_low FROM = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+		modifier = { factor = @cbrn_mio_ai_very_high FROM = { original_tag = USA } }
+		modifier = { factor = @cbrn_mio_ai_high FROM = { OR = { original_tag = ENG original_tag = GER } } }
+		modifier = { factor = @cbrn_mio_ai_medium FROM = { original_tag = ITA } }
+	}
+
+	tree_header_text = { text = cbrn_aerosol_header_airframe_interface x = 1 }
+	tree_header_text = { text = cbrn_aerosol_header_release_control x = 3 }
+
+	initial_trait = {
+		name = cbrn_aerosol_air_delivery_bureau_initial_trait
+		production_bonus = { production_efficiency_gain_factor = @cbrn_mio_initial_efficiency_gain }
+		organization_modifier = { military_industrial_organization_research_bonus = @cbrn_mio_initial_research_bonus }
+	}
+
+	trait = {
+		token = cbrn_aerosol_lightweight_payload_assemblies
+		name = cbrn_aerosol_lightweight_payload_assemblies
+		icon = GFX_generic_mio_trait_icon_build_cost_ic
+		position = { x = 1 y = 0 }
+		mutually_exclusive = { cbrn_aerosol_sealed_bomb_bay_interfaces }
+		on_complete = {
+			custom_effect_tooltip = cbrn_aerosol_lightweight_payload_assemblies_tt
+			FROM = { cbrn_unlock_lightweight_aerosol_modules_for_available_agents = yes }
+		}
+		ai_will_do = {
+			base = @cbrn_mio_ai_base
+			modifier = { factor = @cbrn_mio_ai_high FROM = { cbrn_profile_is_industrial_reserve = yes } }
+		}
+	}
+
+	trait = {
+		token = cbrn_aerosol_sealed_bomb_bay_interfaces
+		name = cbrn_aerosol_sealed_bomb_bay_interfaces
+		icon = GFX_generic_mio_trait_icon_reliability
+		position = { x = 3 y = 0 }
+		mutually_exclusive = { cbrn_aerosol_lightweight_payload_assemblies }
+		equipment_bonus = {
+			reliability = @cbrn_aerosol_sealed_reliability
+			build_cost_ic = @cbrn_aerosol_sealed_cost
+		}
+		on_complete = { custom_effect_tooltip = cbrn_aerosol_sealed_bomb_bay_interfaces_tt }
+		ai_will_do = {
+			base = @cbrn_mio_ai_base
+			modifier = { factor = @cbrn_mio_ai_high FROM = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+		}
+	}
+
+	trait = {
+		token = cbrn_aerosol_controlled_dispersal
+		name = cbrn_aerosol_controlled_dispersal
+		icon = GFX_generic_mio_trait_icon_air_ground_attack
+		position = { x = 2 y = 1 }
+		any_parent = { cbrn_aerosol_lightweight_payload_assemblies cbrn_aerosol_sealed_bomb_bay_interfaces }
+		equipment_bonus = { reliability = @cbrn_aerosol_controlled_reliability }
+		production_bonus = { production_efficiency_cap_factor = @cbrn_aerosol_controlled_efficiency_cap }
+		on_complete = { custom_effect_tooltip = cbrn_aerosol_controlled_dispersal_tt }
+		ai_will_do = { base = @cbrn_mio_ai_medium }
+	}
+
+	trait = {
+		token = cbrn_aerosol_long_range_payload
+		name = cbrn_aerosol_long_range_payload
+		icon = GFX_generic_mio_trait_icon_air_range
+		position = { x = 1 y = 2 }
+		all_parents = { cbrn_aerosol_controlled_dispersal }
+		mutually_exclusive = { cbrn_aerosol_precision_release }
+		available = {
+			owner = {
+				custom_trigger_tooltip = {
+					tooltip = cbrn_aerosol_long_range_payload_requirement_tt
+					cbrn_policy_allows_strategic_use = yes
+				}
+			}
+		}
+		on_complete = {
+			custom_effect_tooltip = cbrn_aerosol_long_range_payload_tt
+			FROM = { cbrn_unlock_long_range_aerosol_modules_for_available_agents = yes }
+		}
+		ai_will_do = {
+			base = @cbrn_mio_ai_low
+			modifier = { factor = @cbrn_mio_ai_very_high FROM = { cbrn_ai_route_allows_unrestricted_use = yes } }
+		}
+	}
+
+	trait = {
+		token = cbrn_aerosol_precision_release
+		name = cbrn_aerosol_precision_release
+		icon = GFX_generic_mio_trait_icon_air_ground_attack
+		position = { x = 3 y = 2 }
+		all_parents = { cbrn_aerosol_controlled_dispersal }
+		mutually_exclusive = { cbrn_aerosol_long_range_payload }
+		equipment_bonus = { build_cost_ic = @cbrn_aerosol_precision_cost }
+		production_bonus = { production_capacity_factor = @cbrn_aerosol_precision_capacity }
+		on_complete = { custom_effect_tooltip = cbrn_aerosol_precision_release_tt }
+		ai_will_do = {
+			base = @cbrn_mio_ai_base
+			modifier = { factor = @cbrn_mio_ai_high FROM = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+		}
+	}
+}

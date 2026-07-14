@@ -1,0 +1,41 @@
+# ============================================================================
+# CHAOS REDUX - AIR WINTER NORMAL-MAP VISUAL LIFECYCLE
+# ============================================================================
+# Technical proof surface for the ordinary-map entity route. The proof is
+# deliberately limited to one reviewed state and one stable entity id. It must
+# pass the recorded visual gate before final regional climate assets are wired.
+#
+# Public effect:
+# - air_winter_refresh_normal_map_proof_entity
+#
+# Scope: any synchronized gameplay scope.
+# Inputs: state 64 variable air_winter_phase.
+# Side effects: creates, replaces, or destroys entity id 8600064.
+# ============================================================================
+
+@AIR_WINTER_NORMAL_MAP_PROOF_ENTITY_ID = 8600064
+@AIR_WINTER_NORMAL_MAP_PROOF_STATE = 64
+@AIR_WINTER_NORMAL_MAP_PROOF_MIN_ZOOM = 1100
+@AIR_WINTER_NORMAL_MAP_PROOF_Z = 2
+@AIR_WINTER_NORMAL_MAP_PROOF_SCALE = 2
+
+air_winter_refresh_normal_map_proof_entity = {
+	if = {
+		limit = {
+			@AIR_WINTER_NORMAL_MAP_PROOF_STATE = {
+				check_variable = { air_winter_phase > constant:air_winter_phase.clear }
+			}
+		}
+		create_entity = {
+			entity = air_winter_normal_map_proof_entity
+			id = @AIR_WINTER_NORMAL_MAP_PROOF_ENTITY_ID
+			state = @AIR_WINTER_NORMAL_MAP_PROOF_STATE
+			z = @AIR_WINTER_NORMAL_MAP_PROOF_Z
+			scale = @AIR_WINTER_NORMAL_MAP_PROOF_SCALE
+			min_zoom = @AIR_WINTER_NORMAL_MAP_PROOF_MIN_ZOOM
+		}
+	}
+	else = {
+		destroy_entity = @AIR_WINTER_NORMAL_MAP_PROOF_ENTITY_ID
+	}
+}

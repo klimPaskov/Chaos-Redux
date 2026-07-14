@@ -71,16 +71,6 @@ Resolution:
 - required source verification for final historical names and firms
 - marked stockpile values as gameplay bands with confidence
 
-### Implementation framing risked becoming mechanic simplification
-
-Resolution:
-
-- kept the original specific chemical and biological wording across every numbered spec and matrix
-- added a narrow fictional-game scope file for the implementation agent
-- allowed direct public-facing terms when they improve clarity
-- prohibited real-world procedural guidance without changing game mechanics
-- made subject-based omission, merging, weakening, or generic replacement a completion defect
-
 ## Anti-bloat decision
 
 Further broad expansion is not recommended before implementation. The package already contains:

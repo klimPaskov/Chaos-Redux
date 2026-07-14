@@ -81,7 +81,7 @@ Supported. Intelligence operations preserve actor, target country, and selected 
 
 ### Military industrial organizations and designers
 
-Supported. Current MIO documentation and vanilla templates support allowed equipment types/categories, trait trees, production bonuses, research bonuses, and AI selection. No current Chaos Redux CBRN MIO exists, so the mapped country program/designers will be implemented as new, differentiated definitions rather than aliases to generic organizations.
+Supported with one exact-filter limit. Current MIO documentation and vanilla templates support allowed equipment types/categories, trait trees, production bonuses, research bonuses, AI selection, and completed-trait queries. Custom CBRN payload archetypes can therefore receive exact designer bonuses. Current MIO equipment filters and equipment groups cannot require that an aircraft variant carry one named module, so a native airframe weight, agility, or range bonus would also benefit conventional variants assigned to that MIO. Module-specific airframe-stat directions remain unsupported; no broad conventional-aircraft substitute is permitted. No current Chaos Redux CBRN MIO exists, so the mapped country program/designers will be implemented as new, differentiated definitions rather than aliases to generic organizations.
 
 ### AI
 
@@ -102,7 +102,7 @@ Persistent gameplay scope will remain in variables/arrays or explicitly managed 
 3. Medical response uses scripted capacity plus support equipment/trucks and vanilla medical technology, not a new equipment archetype.
 4. Tabun is a complete payload-capable agent where the numbered specs and delivery matrix map it. The legacy precursor-only description and missing delivery support will be migrated.
 5. The dedicated CBRN scripted GUI is implementable and remains in scope.
-6. Current-version MIO schemas support the mapped CBRN designers and remain in scope.
+6. Current-version MIO schemas support the six designer families and exact custom payload archetypes. They do not support a module-presence filter for aircraft-stat bonuses; that narrow designer direction remains an explicit engine limit rather than a broad-airframe fallback.
 7. Doctrine may reduce Condemnation impact. This is an explicit user instruction dated 2026-07-13. Evidence generation, attribution state, and confirmed-use records remain intact; doctrine mitigation does not erase the underlying use.
 
 ## Reconciliation and conflict ledger

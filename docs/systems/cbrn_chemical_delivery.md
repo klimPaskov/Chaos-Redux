@@ -21,6 +21,8 @@ The current implementation establishes the shared core, exact chemical-air desig
 | Military and civilian protection resolution | `common/scripted_effects/cbrn_protection_effects.txt` |
 | Targeted contamination, medical, and evidence recovery | `events/cbrn_chemical_delivery_events.txt` |
 | Sanctions stock detection and destruction | `common/scripted_triggers/condemnation_sanctions_triggers.txt` and `common/scripted_effects/condemnation_response_effects.txt` |
+| Chemical payload and air-delivery MIOs | `common/military_industrial_organization/organizations/cbrn_organizations.txt` |
+| Completed designer-trait checks and tuning | `common/scripted_triggers/cbrn_designer_triggers.txt` and `common/script_constants/cbrn_designer_constants.txt` |
 | Equipment and adaptation sprites | `interface/cbrn_chemical_delivery.gfx` |
 | Player-facing equipment and adaptation text | `localisation/english/cbrn_chemical_delivery_l_english.yml` |
 
@@ -68,6 +70,14 @@ Changing the air profile takes 28 days and discards 20 percent of prepared stock
 Chemical payload racks are exact-agent aircraft-design components for CAS and tactical bombers. The standard family covers Chlorine, Phosgene, Mustard, Lewisite, Tabun, Sarin, and Soman; the two US special projects unlock separate Malodor and experimental Behavioral-Agent racks. Strategic bombers are not eligible because no accepted current module precedent supports that route.
 
 The module identifies a design that can contribute to the matching selected-state raid. It adds production cost, loaded weight, and agility loss while keeping ordinary ground-attack value between 1 and 4. That conventional mission stat is not chemical exposure. A matching module, agent profile, class payload reserve, policy, readiness, and explicit raid outcome are all separate requirements. Idle aircraft and ordinary CAS or logistics missions never call the exposure pipeline.
+
+### Chemical delivery designers
+
+The Chemical Munitions Combine is restricted to strategic-agent and chemical-shell equipment. Completed traits can improve choking-shell conversion, lower choking dose, lengthen and intensify blister contamination, increase route evidence, shorten shell-line changes, or trade reliability for production. The Aerosol and Air Delivery Bureau is restricted to the four prepared chemical-air payload archetypes. Its exact supported scripted effects can lower friendly-release risk, narrow partial and catastrophic dose bands, lengthen air-line changes, lower civilian exposure, lower area contamination, or change strategic-route dose and risk.
+
+Neither organization applies a bonus to ordinary artillery, CAS, tactical-bomber, or support-equipment archetypes. Designer effects do not reduce evidence or Condemnation and do not bypass payload, route, protection, condition, policy, readiness, or confirmed-use floors.
+
+Current MIO filters cannot prove that an assigned aircraft variant carries one exact chemical rack. Module-specific airframe weight, agility, and range bonuses are therefore unsupported without also benefiting conventional variants. No broad-airframe bonus is present. The current Lightweight and Long-Range route/payload mappings remain disclosed, unaccepted proxies pending explicit user direction; they are not completion evidence.
 
 ## Standing formation loads
 
@@ -200,6 +210,8 @@ Equipment DDS files live in `gfx/interface/technologies/stage_6_chemical_deliver
 
 The nine exact aircraft-module packages live under `docs/assets/chaos_warfare_system/stage_6_chemical_air_modules/`. Every package has an independent 1448×1086 source PNG, a 56×42 processed RGBA PNG, a matching 56×42 32-bit BGRA DDS archive copy, and an identical runtime DDS under `gfx/interface/equipmentdesigner/planes/modules/stage_6_chemical_air/`. `interface/chaosx_equipment.gfx` registers `GFX_EMI_chem_air_bomb_<agent>` for Chlorine, Phosgene, Mustard, Lewisite, Tabun, Sarin, Soman, Malodor, and Behavioral Agent. The nine runtime files have nine unique hashes; none reuses the generic bomb-lock icon or another agent's module art.
 
+The two independent Stage 6 designer packages live under `docs/assets/chaos_warfare_system/stage_6_chemical_designers/`. Their final 64x64 uncompressed BGRA DDS files are registered by `interface/cbrn_designers.gfx` as `GFX_cbrn_chemical_munitions_combine` and `GFX_cbrn_aerosol_air_delivery_bureau`. The package includes independent source renders, processed PNGs, archive copies, prompt records, a checkerboard contact sheet, manifest, validation record, and GFX handoff; no icon is a placeholder or resized cross-type substitute.
+
 ## Pending implementation and future depth
 
 The following work is intentionally not represented as complete:
@@ -211,6 +223,6 @@ The following work is intentionally not represented as complete:
 - replacement of the six fail-closed legacy raid bodies, retirement of remaining legacy route effects, and only then activation of idempotent stock migration;
 - biological-agent logistics, incubation, spread, detection, treatment, accidents, and containment;
 - equipment-backed nerve-agent suppression with resistance trauma and severe consequence floors;
-- mapped equipment designers, route-aware country AI profiles, achievements, final localisation, and specialist completion audits.
+- resolution of the two disclosed Aerosol and Air Delivery Bureau proxy directions, the remaining four designer families, differentiated country assignments, route-aware country AI profiles, achievements, final localisation, and specialist completion audits.
 
 Possible later extensions, after the accepted package is complete, include richer depot-accident chains, captured-stock disposal, and state-specific handling infrastructure. They must reuse the exact payload and consequence contracts rather than creating parallel release paths.

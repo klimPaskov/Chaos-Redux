@@ -133,10 +133,20 @@ cbrn_chemical_air_raid_set_consumption_and_dose_internal = {
 			min = constant:cbrn_chemical_raid_outcome.partial_consumption_min
 			max = constant:cbrn_chemical_raid_outcome.partial_consumption_max
 		}
-		set_temp_variable_to_random = {
-			var = cbrn_raid_intended_dose_ratio
-			min = constant:cbrn_chemical_raid_outcome.partial_dose_min
-			max = constant:cbrn_chemical_raid_outcome.partial_dose_max
+		if = {
+			limit = { cbrn_designer_has_controlled_dispersal = yes }
+			set_temp_variable_to_random = {
+				var = cbrn_raid_intended_dose_ratio
+				min = constant:cbrn_aerosol_designer_effect.controlled_partial_dose_min
+				max = constant:cbrn_aerosol_designer_effect.controlled_partial_dose_max
+			}
+		}
+		else = {
+			set_temp_variable_to_random = {
+				var = cbrn_raid_intended_dose_ratio
+				min = constant:cbrn_chemical_raid_outcome.partial_dose_min
+				max = constant:cbrn_chemical_raid_outcome.partial_dose_max
+			}
 		}
 	}
 	else_if = {
@@ -147,10 +157,20 @@ cbrn_chemical_air_raid_set_consumption_and_dose_internal = {
 	else_if = {
 		limit = { check_variable = { var = cbrn_raid_result value = constant:cbrn_chemical_raid_result.catastrophic compare = equals } }
 		set_temp_variable = { cbrn_raid_consumption_ratio = constant:cbrn_chemical_raid_outcome.catastrophic_consumption }
-		set_temp_variable_to_random = {
-			var = cbrn_raid_intended_dose_ratio
-			min = constant:cbrn_chemical_raid_outcome.catastrophic_dose_min
-			max = constant:cbrn_chemical_raid_outcome.catastrophic_dose_max
+		if = {
+			limit = { cbrn_designer_has_controlled_dispersal = yes }
+			set_temp_variable_to_random = {
+				var = cbrn_raid_intended_dose_ratio
+				min = constant:cbrn_aerosol_designer_effect.controlled_catastrophic_dose_min
+				max = constant:cbrn_aerosol_designer_effect.controlled_catastrophic_dose_max
+			}
+		}
+		else = {
+			set_temp_variable_to_random = {
+				var = cbrn_raid_intended_dose_ratio
+				min = constant:cbrn_chemical_raid_outcome.catastrophic_dose_min
+				max = constant:cbrn_chemical_raid_outcome.catastrophic_dose_max
+			}
 		}
 	}
 

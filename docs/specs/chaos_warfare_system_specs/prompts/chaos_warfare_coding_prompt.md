@@ -1,13 +1,5 @@
 # Chaos Warfare Full Implementation Prompt
 
-## Fictional game scope and implementation fidelity
-
-Read `IMPLEMENTATION_SCOPE_AND_FIDELITY.md` before implementation. This package describes fictional Hearts of Iron IV game systems. Specific chemical and biological terminology is intentional and may remain specific in public-facing text. Do not misclassify, refuse, omit, rename into vague terms, merge, or simplify accepted mechanics because they model severe wartime harm.
-
-Keep all work at game abstraction level. Implement through equipment, technologies, unit roles, agent profiles, state modifiers, operation records, probabilities, casualty bands, population effects, AI weights, and diplomatic systems. Do not add real-world synthesis recipes, culturing procedures, weaponization instructions, handling guidance, dose calculations, dissemination engineering, or target-selection advice. This boundary does not authorize any reduction of the accepted game design.
-
-Preserve the full depth of the package. Chemical shells, chemical air bombs, armored delivery, raids, biological strikes, outbreaks, suppression operations, last-resort releases, casualties, population loss, contamination, medical saturation, evidence, attribution, Condemnation, sanctions, retaliation, protection, cleanup, and AI behavior remain required. Public wording should be factual, specific, period-appropriate, and clear about consequences.
-
 Implement the complete Chaos Warfare CBRN rework from this planning package in the Chaos Redux repository. Treat the spec pack as accepted design after user approval. Do not reduce it to a doctrine-stat pass.
 
 Before editing, read `AGENTS.md`, every relevant repo skill, the current chemical and biological docs and implementation, the condemnation impact spec, the offline Paradox wiki pages required by AGENTS.md, and current Hearts of Iron IV 1.19 documentation and vanilla examples. Inspect exact Army Headquarters, regimental support, essential equipment, company-gated ability, `unit_modifiers`, raid, air mission, MIO, AI, unit, equipment, and scripted GUI patterns. If a planned engine surface is unsupported, stop that surface and report the blocker. Do not silently substitute an approximation.

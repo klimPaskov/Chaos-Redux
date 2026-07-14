@@ -1,0 +1,214 @@
+# ============================================================================
+# CHAOS REDUX - AIR WINTER RESPONSE CONSTANTS
+# ============================================================================
+# Shared timings, paid-resource requirements, deterministic state results, and
+# AI priorities for the staged pre-Fallout Air Winter response category.
+# ============================================================================
+
+air_winter_response_timing = {
+	schema = { any_key = yes data = fixed_point }
+
+	designate_reception_days_reenable = 7
+	mask_distribution_days = 21
+	clinic_conversion_days = 45
+	air_sampling_days = 30
+	protected_crop_days = 60
+	ash_clearance_days = 30
+	rail_protection_days = 45
+	airbase_closure_days = 21
+	evacuation_plan_days = 30
+	shelter_law_days = 45
+	greenhouse_conversion_days = 90
+	controlled_evacuation_days = 45
+	state_triage_days = 30
+	abandonment_vote_days = 60
+	bunker_closure_days = 30
+	final_evacuation_days = 30
+	decontamination_days = 60
+
+	early_reenable_days = 30
+	infrastructure_reenable_days = 45
+	severe_reenable_days = 60
+	terminal_reenable_days = 90
+	early_state_cooldown_months = 2
+	infrastructure_state_cooldown_months = 4
+	severe_state_cooldown_months = 6
+	terminal_state_cooldown_months = 12
+	rail_protection_months = 6
+	airbase_closure_months = 3
+}
+
+air_winter_response_cost = {
+	schema = { any_key = yes data = fixed_point }
+
+	designate_reception_command = 2
+
+	mask_support = 100
+	mask_infantry = 500
+	mask_stability = 0.01
+
+	clinic_support = 150
+	clinic_manpower = 2000
+	clinic_civilian_factories = 2
+
+	sampling_support = 50
+	sampling_motorized = 25
+	sampling_command = 10
+
+	crop_support = 100
+	crop_motorized = 50
+	crop_fuel = 1000
+	crop_civilian_factories = 2
+
+	ash_motorized = 100
+	ash_manpower = 4000
+	ash_command = 15
+
+	rail_trains = 10
+	rail_support = 100
+	rail_manpower = 3000
+
+	airbase_fuel = 2000
+	airbase_command = 10
+	airbase_war_support = 0.01
+
+	planning_trains = 5
+	planning_support = 50
+	planning_command = 10
+
+	shelter_support = 200
+	shelter_manpower = 5000
+	shelter_stability = 0.02
+
+	greenhouse_support = 150
+	greenhouse_motorized = 100
+	greenhouse_fuel = 3000
+	greenhouse_civilian_factories = 4
+
+	controlled_evacuation_trains = 20
+	controlled_evacuation_convoys = 25
+	controlled_evacuation_manpower = 5000
+	controlled_evacuation_stability = 0.01
+
+	triage_support = 300
+	triage_manpower = 3000
+	triage_command = 20
+
+	abandonment_command = 25
+	abandonment_stability = 0.05
+
+	bunker_support = 250
+	bunker_infantry = 1000
+	bunker_stability = 0.03
+
+	final_evacuation_trains = 40
+	final_evacuation_convoys = 50
+	final_evacuation_support = 200
+	final_evacuation_manpower = 5000
+
+	decontamination_support = 300
+	decontamination_motorized = 150
+	decontamination_fuel = 5000
+	decontamination_command = 30
+
+	minimum_stability_for_light_cost = 0.10
+	minimum_stability_for_medium_cost = 0.20
+	minimum_stability_for_heavy_cost = 0.30
+	minimum_war_support_for_closure = 0.10
+}
+
+air_winter_response_result = {
+	schema = { any_key = yes data = fixed_point }
+
+	mask_exposure_reduction = 6
+	mask_disease_reduction = 5
+	mask_adaptation_gain = 2
+
+	clinic_disease_reduction = 12
+	clinic_shelter_gain = 8
+	clinic_recovery_gain = 8
+
+	sampling_adaptation_gain = 6
+	sampling_reclamation_gain = 3
+	sampling_pressure_reduction = 4
+
+	crop_food_gain = 18
+	crop_adaptation_gain = 5
+	crop_water_cost = 5
+
+	ash_building_pressure_reduction = 50
+	ash_category_damage_reduction = 8
+	ash_reclamation_gain = 8
+	ash_worker_risk_exposure = 50
+
+	rail_building_pressure_reduction = 25
+	rail_reclamation_gain = 4
+	rail_local_supply_bonus = 0.15
+	rail_repair_bonus = 0.25
+
+	airbase_exposure_reduction = 4
+	airbase_building_pressure_reduction = 10
+
+	planning_adaptation_gain = 3
+	planning_shelter_gain = 2
+
+	shelter_capacity_gain = 20
+	shelter_adaptation_gain = 5
+	shelter_refugee_pressure_gain = 5
+
+	greenhouse_food_gain = 30
+	greenhouse_water_cost = 10
+	greenhouse_reclamation_gain = 12
+
+	controlled_evacuation_population_share = 0.15
+	controlled_evacuation_receiver_pressure = 15
+	controlled_evacuation_source_pressure_reduction = 10
+
+	triage_disease_reduction = 20
+	triage_recovery_gain = 10
+	triage_food_cost = 5
+
+	bunker_exposure_reduction = 15
+	bunker_shelter_gain = 10
+	bunker_refugee_pressure_gain = 15
+
+	final_evacuation_population_share = 0.35
+	final_evacuation_receiver_pressure = 30
+	final_evacuation_source_pressure_reduction = 20
+	abandonment_hold_minimum_survival = 40
+
+	decontamination_exposure_reduction = 35
+	decontamination_disease_reduction = 10
+	decontamination_water_cost = 20
+	decontamination_reclamation_gain = 15
+	decontamination_failure_exposure = 15
+	decontamination_failure_disease = 10
+	decontamination_failure_building_pressure = 25
+	decontamination_minimum_survival = 35
+	decontamination_minimum_adaptation = 45
+	decontamination_minimum_water = 30
+
+	reception_maximum_phase = 3
+	reception_minimum_survival = 50
+	reception_minimum_shelter = 30
+	terminal_action_minimum_months = 6
+	minimum_source_population_k = 10
+}
+
+air_winter_response_ai = {
+	schema = { any_key = yes data = fixed_point }
+
+	base_early = 1
+	base_infrastructure = 1
+	base_severe = 1
+	base_terminal = 0.50
+	capital_factor = 3
+	high_population_factor = 2
+	critical_survival_factor = 2.50
+	war_strain_factor = 0.60
+	resource_strain_factor = 0.35
+	planned_evacuation_factor = 2
+	terminal_abandonment_factor = 0.25
+	high_population_k = 1000
+	critical_survival = 25
+}

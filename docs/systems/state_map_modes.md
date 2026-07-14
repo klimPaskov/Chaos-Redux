@@ -1,11 +1,14 @@
 # State Map Modes
 
-This adds two scripted state map modes for crisis visibility without duplicating gameplay logic.
+This adds five scripted state map modes for crisis visibility without duplicating gameplay logic.
 
 ## What was added
 
 1. `contaminated_states_map_mode`
 2. `deaths_state_map_mode`
+3. `air_winter_state_map_mode`
+4. `air_winter_exposure_map_mode`
+5. `air_winter_survival_map_mode`
 
 The contamination view reads the live state contamination systems:
 
@@ -48,6 +51,16 @@ The data flow is:
 
 This keeps the feature dynamic and easy to extend. Any future civilian-death source that already uses the shared chaos-meter registration path will automatically appear on the map without extra map-view-specific logic. Combat-caused civilian deaths use the same registration path, so the heat map highlights whichever frontier states actually receive those civilian-combat death entries.
 
+## Air Winter views
+
+The Air Winter package exposes its three accepted display layers as adjacent engine-native scripted mapmode buttons.
+
+- `air_winter_state_map_mode` colors phases 0 through 6 and uses border weight to distinguish worsening conditions from sustained recovery.
+- `air_winter_exposure_map_mode` uses the state's 0 through 100 exposure value as a continuous cold-blue to red burden gradient. The tooltip separates local fallout intensity, global air contamination, shelter protection, and adaptation.
+- `air_winter_survival_map_mode` uses the state's derived 0 through 100 survival value as a continuous red to green gradient. It exposes food, shelter, reclamation, recovery, adaptation, exposure, and regional conditions.
+
+The three buttons avoid an undocumented GUI-to-mapmode switch. They retain the normal scripted-mapmode render path, daily refresh, state tooltips, and ordinary map selection behavior. Their values come from the Air Winter monthly state update rather than a second visual-only calculation.
+
 ## Files
 
 - Map mode definitions: `common/map_modes/chaosx_state_map_modes.txt`
@@ -72,6 +85,12 @@ Scripted map modes do not resolve those shared-strip positions directly. They re
 - `GFX_mapmode_buttons_selected_small_deaths_state_map_mode`
 - `GFX_mapmode_buttons_deselected_small_contaminated_states_map_mode`
 - `GFX_mapmode_buttons_selected_small_contaminated_states_map_mode`
+- `GFX_mapmode_buttons_deselected_small_air_winter_state_map_mode`
+- `GFX_mapmode_buttons_selected_small_air_winter_state_map_mode`
+- `GFX_mapmode_buttons_deselected_small_air_winter_exposure_map_mode`
+- `GFX_mapmode_buttons_selected_small_air_winter_exposure_map_mode`
+- `GFX_mapmode_buttons_deselected_small_air_winter_survival_map_mode`
+- `GFX_mapmode_buttons_selected_small_air_winter_survival_map_mode`
 
 Their dedicated `20x18` DDS files live under `gfx/interface/mapmode/custom/`. Source and processed PNG copies are recorded under `docs/assets/shared_gfx_cleanup/`.
 

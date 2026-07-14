@@ -158,6 +158,7 @@ initialize_chaos_meter_system = {
 		set_variable = { chaos_meter_deaths_country_cause_natural_disaster = 0 }
 		set_variable = { chaos_meter_deaths_country_cause_cannibalism_consumption = 0 }
 		set_variable = { chaos_meter_deaths_country_cause_resource_field_incident = 0 }
+		set_variable = { chaos_meter_deaths_country_cause_air_winter_exposure = 0 }
 		set_variable = { chaos_meter_deaths_country_cause_unknown = 0 }
 		set_variable = { chaos_meter_deaths_country_last_sequence = 0 }
 		set_variable = { chaos_meter_deaths_country_last_date = 0 }
@@ -766,6 +767,7 @@ initialize_chaos_meter_country_deaths_totals_rebuild = {
 		set_variable = { chaos_meter_deaths_country_cause_natural_disaster = 0 }
 		set_variable = { chaos_meter_deaths_country_cause_cannibalism_consumption = 0 }
 		set_variable = { chaos_meter_deaths_country_cause_resource_field_incident = 0 }
+		set_variable = { chaos_meter_deaths_country_cause_air_winter_exposure = 0 }
 		set_variable = { chaos_meter_deaths_country_cause_unknown = 0 }
 		set_variable = { chaos_meter_deaths_country_last_sequence = 0 }
 		set_variable = { chaos_meter_deaths_country_last_date = 0 }
@@ -1020,6 +1022,16 @@ chaos_meter_add_country_deaths_cause_total = {
 				}
 			}
 			add_to_variable = { chaos_meter_deaths_country_cause_resource_field_incident = chaos_deaths_country_cause_value }
+		}
+		else_if = {
+			limit = {
+				check_variable = {
+					var = chaos_deaths_country_cause_reason
+					value = constant:chaos_meter_deaths_reason.air_winter_exposure
+					compare = equals
+				}
+			}
+			add_to_variable = { chaos_meter_deaths_country_cause_air_winter_exposure = chaos_deaths_country_cause_value }
 		}
 		else = {
 			add_to_variable = { chaos_meter_deaths_country_cause_unknown = chaos_deaths_country_cause_value }
@@ -1453,6 +1465,7 @@ rebuild_chaos_meter_deaths_view = {
 	clear_array = temp_chaos_meter_deaths_unsorted_cause_natural_disaster_entries
 	clear_array = temp_chaos_meter_deaths_unsorted_cause_cannibalism_consumption_entries
 	clear_array = temp_chaos_meter_deaths_unsorted_cause_resource_field_incident_entries
+	clear_array = temp_chaos_meter_deaths_unsorted_cause_air_winter_exposure_entries
 	clear_array = temp_chaos_meter_deaths_unsorted_cause_unknown_entries
     clear_array = temp_chaos_meter_deaths_unsorted_country_entries
     clear_array = temp_chaos_meter_deaths_unsorted_country_sort_entries
@@ -1580,6 +1593,10 @@ rebuild_chaos_meter_deaths_view = {
 					value = PREV.chaos_meter_deaths_country_cause_resource_field_incident
 				}
 				add_to_array = {
+					array = temp_chaos_meter_deaths_unsorted_cause_air_winter_exposure_entries
+					value = PREV.chaos_meter_deaths_country_cause_air_winter_exposure
+				}
+				add_to_array = {
 					array = temp_chaos_meter_deaths_unsorted_cause_unknown_entries
 					value = PREV.chaos_meter_deaths_country_cause_unknown
 				}
@@ -1635,6 +1652,7 @@ rebuild_chaos_meter_deaths_view = {
 	resize_array = { array = global.chaos_meter_deaths_view_cause_natural_disaster_entries size = chaos_deaths_view_sorted_count value = 0 }
 	resize_array = { array = global.chaos_meter_deaths_view_cause_cannibalism_consumption_entries size = chaos_deaths_view_sorted_count value = 0 }
 	resize_array = { array = global.chaos_meter_deaths_view_cause_resource_field_incident_entries size = chaos_deaths_view_sorted_count value = 0 }
+	resize_array = { array = global.chaos_meter_deaths_view_cause_air_winter_exposure_entries size = chaos_deaths_view_sorted_count value = 0 }
 	resize_array = { array = global.chaos_meter_deaths_view_cause_unknown_entries size = chaos_deaths_view_sorted_count value = 0 }
 	resize_array = { array = global.chaos_meter_deaths_view_country_entries size = chaos_deaths_view_sorted_count value = 0 }
 	resize_array = { array = global.chaos_meter_deaths_view_has_country_entries size = chaos_deaths_view_sorted_count value = 0 }
@@ -1774,6 +1792,7 @@ rebuild_chaos_meter_deaths_view = {
 		set_variable = { global.chaos_meter_deaths_view_cause_natural_disaster_entries^chaos_deaths_view_write_index = temp_chaos_meter_deaths_unsorted_cause_natural_disaster_entries^chaos_deaths_best_source_index }
 		set_variable = { global.chaos_meter_deaths_view_cause_cannibalism_consumption_entries^chaos_deaths_view_write_index = temp_chaos_meter_deaths_unsorted_cause_cannibalism_consumption_entries^chaos_deaths_best_source_index }
 		set_variable = { global.chaos_meter_deaths_view_cause_resource_field_incident_entries^chaos_deaths_view_write_index = temp_chaos_meter_deaths_unsorted_cause_resource_field_incident_entries^chaos_deaths_best_source_index }
+		set_variable = { global.chaos_meter_deaths_view_cause_air_winter_exposure_entries^chaos_deaths_view_write_index = temp_chaos_meter_deaths_unsorted_cause_air_winter_exposure_entries^chaos_deaths_best_source_index }
 		set_variable = { global.chaos_meter_deaths_view_cause_unknown_entries^chaos_deaths_view_write_index = temp_chaos_meter_deaths_unsorted_cause_unknown_entries^chaos_deaths_best_source_index }
         set_variable = { global.chaos_meter_deaths_view_country_entries^chaos_deaths_view_write_index = temp_chaos_meter_deaths_unsorted_country_entries^chaos_deaths_best_source_index }
         set_variable = { global.chaos_meter_deaths_view_has_country_entries^chaos_deaths_view_write_index = 1 }
@@ -2257,6 +2276,7 @@ chaos_meter_sync_open_deaths_view_country_entry = {
 				resize_array = { array = global.chaos_meter_deaths_view_cause_natural_disaster_entries size = chaos_deaths_view_new_size value = 0 }
 				resize_array = { array = global.chaos_meter_deaths_view_cause_cannibalism_consumption_entries size = chaos_deaths_view_new_size value = 0 }
 				resize_array = { array = global.chaos_meter_deaths_view_cause_resource_field_incident_entries size = chaos_deaths_view_new_size value = 0 }
+				resize_array = { array = global.chaos_meter_deaths_view_cause_air_winter_exposure_entries size = chaos_deaths_view_new_size value = 0 }
 				resize_array = { array = global.chaos_meter_deaths_view_cause_unknown_entries size = chaos_deaths_view_new_size value = 0 }
 				resize_array = { array = global.chaos_meter_deaths_view_country_entries size = chaos_deaths_view_new_size value = 0 }
 				resize_array = { array = global.chaos_meter_deaths_view_has_country_entries size = chaos_deaths_view_new_size value = 0 }
@@ -2285,6 +2305,7 @@ chaos_meter_sync_open_deaths_view_country_entry = {
 					set_variable = { global.chaos_meter_deaths_view_cause_natural_disaster_entries^chaos_deaths_view_write_index = PREV.chaos_meter_deaths_country_cause_natural_disaster }
 					set_variable = { global.chaos_meter_deaths_view_cause_cannibalism_consumption_entries^chaos_deaths_view_write_index = PREV.chaos_meter_deaths_country_cause_cannibalism_consumption }
 					set_variable = { global.chaos_meter_deaths_view_cause_resource_field_incident_entries^chaos_deaths_view_write_index = PREV.chaos_meter_deaths_country_cause_resource_field_incident }
+					set_variable = { global.chaos_meter_deaths_view_cause_air_winter_exposure_entries^chaos_deaths_view_write_index = PREV.chaos_meter_deaths_country_cause_air_winter_exposure }
 					set_variable = { global.chaos_meter_deaths_view_cause_unknown_entries^chaos_deaths_view_write_index = PREV.chaos_meter_deaths_country_cause_unknown }
 					set_variable = { global.chaos_meter_deaths_view_country_entries^chaos_deaths_view_write_index = chaos_deaths_log_country }
 					set_variable = { global.chaos_meter_deaths_view_has_country_entries^chaos_deaths_view_write_index = 1 }
@@ -2373,6 +2394,19 @@ chaos_meter_sync_chaos_from_deaths_delta = {
 			}
 			multiply_temp_variable = {
 				chaos_deaths_chaos_weighted_change = constant:chaos_meter_deaths.resource_field_incident_chaos_weight
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = chaos_deaths_reason
+				check_variable = {
+					var = chaos_deaths_reason
+					value = constant:chaos_meter_deaths_reason.air_winter_exposure
+					compare = equals
+				}
+			}
+			multiply_temp_variable = {
+				chaos_deaths_chaos_weighted_change = constant:chaos_meter_deaths.air_winter_exposure_chaos_weight
 			}
 		}
 
@@ -4535,15 +4569,6 @@ air_contamination_apply_state_modifier = {
 		set_temp_variable = { air_mod_attrition = air_mod_contamination_percent }
 		multiply_temp_variable = { air_mod_attrition = constant:air_contamination_country_mod.per_percent.attrition }
 
-		if = {
-			limit = { has_global_flag = { flag = air_contamination_winter value = 2 } }
-			add_to_temp_variable = { air_mod_attrition = constant:air_contamination_country_mod.winter_severe.attrition }
-		}
-		else_if = {
-			limit = { has_global_flag = { flag = air_contamination_winter value = 1 } }
-			add_to_temp_variable = { air_mod_attrition = constant:air_contamination_country_mod.winter_mild.attrition }
-		}
-
 		clamp_temp_variable = {
 			var = air_mod_attrition
 			min = 0
@@ -4629,90 +4654,6 @@ air_contamination_apply_state_modifier = {
 			}
 		}
 	}
-}
-
-air_contamination_apply_winter_effects = {
-    if = {
-        limit = { NOT = { has_global_flag = air_contamination_winter } }
-        if = {
-            limit = {
-                check_variable = {
-                    var = global.air_contamination_bp
-                    value = constant:air_contamination_threshold_bp.winter_75
-                    compare = greater_than_or_equals
-                }
-            }
-            random = {
-                chance = 24
-                set_global_flag = {
-                    flag = air_contamination_winter
-                    value = 2
-                    days = 120
-                }
-                log = "AIR CONTAMINATION: Severe nuclear winter started"
-                news_event = { id = chaosx_contamination.6 }
-            }
-        }
-        else_if = {
-            limit = {
-                check_variable = {
-                    var = global.air_contamination_bp
-                    value = constant:air_contamination_threshold_bp.winter_50
-                    compare = greater_than_or_equals
-                }
-            }
-            random = {
-                chance = 12
-                set_global_flag = {
-                    flag = air_contamination_winter
-                    value = 1
-                    days = 60
-                }
-                log = "AIR CONTAMINATION: Nuclear winter period started"
-                news_event = { id = chaosx_contamination.5 }
-            }
-        }
-    }
-
-    if = {
-        limit = { has_global_flag = air_contamination_winter }
-        set_temp_variable = { winter_random_states = constant:air_contamination_winter.random_states_mild }
-        set_temp_variable = { winter_state_modifier_days = constant:air_contamination_winter.state_modifier_days_mild }
-        set_temp_variable = { air_contamination_delta_bp = constant:air_contamination_delta_bp.winter_mild_monthly }
-
-        if = {
-            limit = { has_global_flag = { flag = air_contamination_winter value = 2 } }
-            set_temp_variable = { winter_random_states = constant:air_contamination_winter.random_states_severe }
-            set_temp_variable = { winter_state_modifier_days = constant:air_contamination_winter.state_modifier_days_severe }
-            set_temp_variable = { air_contamination_delta_bp = constant:air_contamination_delta_bp.winter_severe_monthly }
-        }
-
-        set_temp_variable = { air_chaos_reason_increase = constant:chaos_meter_history_reason.world_state.air_contamination_rise }
-        set_temp_variable = { air_chaos_reason_decrease = constant:chaos_meter_history_reason.world_state.air_contamination_fall }
-        air_contamination_apply_delta_bp = yes
-
-        set_temp_variable = { winter_random_states_left = winter_random_states }
-        while_loop_effect = {
-            limit = { check_variable = { winter_random_states_left > 0 } }
-            random_state = {
-                limit = { NOT = { has_state_category = wasteland } }
-                if = {
-                    limit = { has_global_flag = { flag = air_contamination_winter value = 2 } }
-                    add_dynamic_modifier = {
-                        modifier = fallout_thermonuclear
-                        days = winter_state_modifier_days
-                    }
-                }
-                else = {
-                    add_dynamic_modifier = {
-                        modifier = fallout_atomic
-                        days = winter_state_modifier_days
-                    }
-                }
-            }
-            subtract_from_temp_variable = { winter_random_states_left = 1 }
-        }
-    }
 }
 
 air_contamination_degrade_state_category = {
@@ -5114,6 +5055,15 @@ air_contamination_monthly_update = {
 		limit = { NOT = { has_variable = global.air_contamination_chaos_buffer_bp } }
 		set_variable = { global.air_contamination_chaos_buffer_bp = 0 }
 	}
+
+	# Air Winter consumes the completed contamination-state counts from the
+	# previous monthly pass before this pass rebuilds them below.
+	air_winter_begin_monthly_cycle = yes
+	if = {
+		limit = { has_global_flag = air_contamination_winter }
+		clr_global_flag = air_contamination_winter
+	}
+
     set_variable = { global.air_contamination_chem_states = 0 }
     set_variable = { global.air_contamination_fallout_states = 0 }
     set_variable = { global.air_contamination_chem_bp = 0 }
@@ -5249,7 +5199,13 @@ air_contamination_monthly_update = {
                 chaos_meter_register_state_civilian_deaths_percent = yes
             }
         }
+
+		# Reuse this existing world pass. Air Winter performs no second state scan.
+		air_winter_update_state = yes
     }
+
+	air_winter_finalize_monthly_cycle = yes
+	air_winter_refresh_normal_map_proof_entity = yes
 
     if = {
         limit = {
@@ -5306,18 +5262,6 @@ air_contamination_monthly_update = {
         set_temp_variable = { air_chaos_reason_increase = constant:chaos_meter_history_reason.world_state.air_contamination_rise }
         set_temp_variable = { air_chaos_reason_decrease = constant:chaos_meter_history_reason.world_state.air_contamination_fall }
         air_contamination_apply_delta_bp = yes
-
-        if = {
-            limit = {
-                NOT = { has_global_flag = air_contamination_irreversible }
-                check_variable = {
-                    var = global.air_contamination_bp
-                    value = constant:air_contamination_threshold_bp.winter_50
-                    compare = greater_than_or_equals
-                }
-            }
-            air_contamination_apply_winter_effects = yes
-        }
 
         if = {
             limit = { has_global_flag = air_contamination_irreversible }

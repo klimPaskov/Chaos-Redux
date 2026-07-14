@@ -250,6 +250,20 @@ genocide_prepare_death_multiplier_from_responsible = {
 		limit = { has_state_flag = genocide_restricted_chemical_site_active }
 		add_to_temp_variable = { chaos_state_deaths_mult = constant:genocide_death_multiplier.chemical_site_bonus }
 	}
+	# Terminal Hazard changes only the resolved death rate of an independently
+	# active camp network. It does not create a site, authorize a route, or alter
+	# the separate evidence, discovery, resistance, or Condemnation records.
+	if = {
+		limit = {
+			genocide_state_has_active_camps = yes
+			has_variable = genocide_responsible_country
+			var:genocide_responsible_country = {
+				has_idea = cbrn_terminal_hazard_doctrine_spirit
+				cbrn_policy_allows_extreme_use = yes
+			}
+		}
+		multiply_temp_variable = { chaos_state_deaths_mult = constant:cbrn_doctrine_spirit.terminal_hazard.camp_killing_efficiency_mult }
+	}
 	clamp_temp_variable = {
 		var = chaos_state_deaths_mult
 		min = 1

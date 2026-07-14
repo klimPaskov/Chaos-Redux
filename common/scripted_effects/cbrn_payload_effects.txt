@@ -287,6 +287,11 @@ cbrn_change_shell_filling_profile = {
 		}
 		set_variable = { cbrn_shell_filling_agent = cbrn_requested_payload_agent }
 		set_temp_variable = { cbrn_payload_profile_change_days = constant:cbrn_payload_profile_timing.shell_change_days }
+		if = {
+			limit = { cbrn_designer_has_rapid_front_distribution = yes }
+			multiply_temp_variable = { cbrn_payload_profile_change_days = constant:cbrn_munitions_designer_effect.rapid_distribution_profile_time_mult }
+			round_temp_variable = cbrn_payload_profile_change_days
+		}
 		set_country_flag = { flag = cbrn_shell_profile_change_in_progress days = cbrn_payload_profile_change_days }
 		set_temp_variable = { cbrn_payload_profile_change_accepted = constant:cbrn_proof.supplied }
 	}
@@ -307,6 +312,11 @@ cbrn_change_air_payload_profile = {
 		}
 		set_variable = { cbrn_air_payload_agent = cbrn_requested_payload_agent }
 		set_temp_variable = { cbrn_payload_profile_change_days = constant:cbrn_payload_profile_timing.air_change_days }
+		if = {
+			limit = { cbrn_designer_has_controlled_dispersal = yes }
+			multiply_temp_variable = { cbrn_payload_profile_change_days = constant:cbrn_aerosol_designer_effect.controlled_profile_time_mult }
+			round_temp_variable = cbrn_payload_profile_change_days
+		}
 		set_country_flag = { flag = cbrn_air_profile_change_in_progress days = cbrn_payload_profile_change_days }
 		set_temp_variable = { cbrn_payload_profile_change_accepted = constant:cbrn_proof.supplied }
 	}
@@ -422,6 +432,18 @@ cbrn_set_shell_conversion_recovery_internal = {
 			}
 		}
 		set_temp_variable = { cbrn_payload_conversion_recovery = constant:cbrn_payload_conversion.nerve_to_shell_recovery }
+	}
+
+	if = {
+		limit = {
+			cbrn_designer_has_stable_choking_fill = yes
+			OR = {
+				check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.chlorine compare = equals }
+				check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.phosgene compare = equals }
+			}
+		}
+		multiply_temp_variable = { cbrn_payload_conversion_recovery = constant:cbrn_munitions_designer_effect.stable_choking_shell_recovery_mult }
+		clamp_temp_variable = { var = cbrn_payload_conversion_recovery min = constant:cbrn_math.zero max = constant:cbrn_math.one }
 	}
 }
 

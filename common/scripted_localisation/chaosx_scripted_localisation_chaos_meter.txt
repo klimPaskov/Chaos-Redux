@@ -2000,15 +2000,31 @@ defined_text = {
 defined_text = {
 	name = GetAirContaminationWinterState
 	text = {
-		trigger = { has_global_flag = { flag = air_contamination_winter value = 2 } }
-		localization_key = chaos_meter.window.air.winter.state.severe
+		trigger = { check_variable = { global.air_winter_peak_phase > constant:air_winter_phase.ash_winter } }
+		localization_key = chaos_meter.window.air.winter.state.phase_6
 	}
 	text = {
-		trigger = { has_global_flag = { flag = air_contamination_winter value = 1 } }
-		localization_key = chaos_meter.window.air.winter.state.mild
+		trigger = { check_variable = { global.air_winter_peak_phase > constant:air_winter_phase.black_harvest } }
+		localization_key = chaos_meter.window.air.winter.state.phase_5
 	}
 	text = {
-		localization_key = chaos_meter.window.air.winter.state.none
+		trigger = { check_variable = { global.air_winter_peak_phase > constant:air_winter_phase.hard_freeze } }
+		localization_key = chaos_meter.window.air.winter.state.phase_4
+	}
+	text = {
+		trigger = { check_variable = { global.air_winter_peak_phase > constant:air_winter_phase.crop_shock } }
+		localization_key = chaos_meter.window.air.winter.state.phase_3
+	}
+	text = {
+		trigger = { check_variable = { global.air_winter_peak_phase > constant:air_winter_phase.dimming } }
+		localization_key = chaos_meter.window.air.winter.state.phase_2
+	}
+	text = {
+		trigger = { check_variable = { global.air_winter_peak_phase > constant:air_winter_phase.clear } }
+		localization_key = chaos_meter.window.air.winter.state.phase_1
+	}
+	text = {
+		localization_key = chaos_meter.window.air.winter.state.phase_0
 	}
 }
 
@@ -3356,6 +3372,23 @@ defined_text = {
 }
 
 defined_text = {
+	name = GetChaosMeterDeathsViewTooltipAirWinterExposureLine
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.chaos_meter_deaths_view_cause_air_winter_exposure_entries^chaos_deaths_index
+				value = 0
+				compare = greater_than
+			}
+		}
+		localization_key = chaos_meter.window.deaths.entry.tooltip.line.air_winter_exposure
+	}
+	text = {
+		localization_key = chaos_meter.window.deaths.entry.tooltip.line.none
+	}
+}
+
+defined_text = {
 	name = GetChaosMeterDeathsViewTooltipUnknownLine
 	text = {
 		trigger = {
@@ -3869,6 +3902,16 @@ defined_text = {
 			localization_key = chaos_meter.deaths.cause.resource_field_incident
 		}
 		text = {
+			trigger = {
+				check_variable = {
+					var = chaos_meter_deaths_selected_last_reason
+					value = constant:chaos_meter_deaths_reason.air_winter_exposure
+					compare = equals
+				}
+			}
+			localization_key = chaos_meter.deaths.cause.air_winter_exposure
+		}
+		text = {
 			localization_key = chaos_meter.deaths.cause.unknown
 		}
 }
@@ -4051,6 +4094,16 @@ defined_text = {
 				}
 			}
 			localization_key = chaos_meter.deaths.cause.resource_field_incident
+		}
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.chaos_meter_deaths_detail_reason_entries^chaos_deaths_detail_index
+					value = constant:chaos_meter_deaths_reason.air_winter_exposure
+					compare = equals
+				}
+			}
+			localization_key = chaos_meter.deaths.cause.air_winter_exposure
 		}
 		text = {
 			localization_key = chaos_meter.deaths.cause.unknown

@@ -1,9 +1,5 @@
 # Chaos Warfare Asset Production Prompt
 
-## Fictional scope and fidelity
-
-Specific chemical and biological imagery is valid for this fictional game asset package. Masks, protective suits, shells, bomb casings, projectors, contaminated terrain, laboratories, field hospitals, decontamination teams, and outbreak response scenes may be shown when the accepted spec requires them. Do not replace required assets with vague generic hazard imagery. Do not create instructional schematics, assembly diagrams, formulas, cutaways, procedural labels, or realistic operational guides.
-
 ## Task
 
 Produce the complete visual asset package for the accepted Chaos Warfare CBRN rework. Read the accepted specification files and the relevant sections of the Chaos Redux event-assets and frame-animation skills. Use the project asset subagent split. Icons belong to `chaosx_icon_artist`. Fictional UI panel art belongs to `chaosx_generated_event_art`. Real company logos, historical symbols, or archival scenes belong to `chaosx_asset_source_researcher` only after the implementation agent confirms they are required.

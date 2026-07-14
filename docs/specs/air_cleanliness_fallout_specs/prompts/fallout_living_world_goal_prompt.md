@@ -1,8 +1,6 @@
-# Goal: Implement the Air Cleanliness and Fallout Living World
-
 Implement `docs/specs/air_cleanliness_fallout_specs/`. Read `AGENTS.md`, relevant skills, accepted plans, engine references, and repo precedents. Record proof for engine-sensitive surfaces.
 
-Define Fallout events in `events/fallout_world_end_events.txt` under `add_namespace = chaosx.fallout`. Do not reuse zombie ids, files, assets, audio, sprites, or paths. Remove stale ownership and use one idempotent request coordinator. Fallout is not a super-event. Use a full-screen blackout GUI with sequential text, input blocking, save recovery, and host authority.
+Define Fallout events in `events/fallout_world_end_events.txt` under `add_namespace = chaosx.fallout`. Do not reuse zombie ids, files, assets, audio, sprites, or paths. Remove stale ownership and use one idempotent request coordinator. Fallout is not an ordinary super-event. Use a full-screen blackout GUI with sequential text, input blocking, save recovery, and host authority. Still play super-event sound for dramatic presentation.
 
 Implement Air Winter first. Use state phases 0 through 6 with exposure, recovery, adaptation, food, shelter, and reclamation values. Winter must affect population through the Deaths system, buildings, supply, state categories, military operations, disease, and events. Add a winter mapmode and make the normal map visibly colder. Use regional snow, frost, cold rain, ash, dead vegetation, frozen water, dim light, and thaw. Universal snow and a mapmode-only result fail. Prove the normal-map route before final assets.
 
