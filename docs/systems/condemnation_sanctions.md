@@ -142,7 +142,7 @@ The target arrays separate all active sanctioners from arms, strategic, total, a
 
 ## Source contexts and source integrations
 
-The shared helper is `condemnation_add_source`. Callers provide source type, base gain, visibility, severity, optional deaths, optional contamination, optional victim country, and a context id.
+The shared helper is `condemnation_add_source`. Callers provide source type, base gain, visibility, severity, optional deaths, optional contamination, optional victim country, and a context id. A verified no-release attempt may additionally supply temporary `condemnation_source_is_no_release_attempt` proof; the helper then records evidence-backed Condemnation without writing repeat-use, pledge-breach, stockpile-restriction-breach, recent-use, or `used_unconventional_weapon` history, and clears that one-shot proof before returning.
 
 | Context | Implemented source |
 | --- | --- |
