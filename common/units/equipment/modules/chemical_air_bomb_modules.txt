@@ -1,7 +1,21 @@
-# Chemical air-bomb modules:
-# - Chemical payload alternatives for existing bomb-lock style plane weapon slots.
-# - Unlocks are tied directly to chemical gas research technologies.
+# ============================================================================
+# CHAOS REDUX - CHEMICAL AIR PAYLOAD MODULES
+# ============================================================================
+# Overview:
+# - Defines exact-agent payload-handling racks for CAS and tactical bombers.
+# - Each rack is a native raid eligibility marker; it does not prove that an
+#   ordinary mission released chemical payload.
+# - Ordinary CAS/logistics stats remain deliberately modest. Toxic effects
+#   require a selected-state operation, matching payload reservation, and the
+#   shared CBRN exposure pipeline.
+# - Strategic bombers are intentionally unsupported by this module family.
+# - Static module fields use file-scoped constants, matching current vanilla
+#   equipment-module parsing while keeping every tuning value in one table.
+# ============================================================================
+
 equipment_modules = {
+	@CHEM_AIR_BOMB_DISMANTLE_IC = 0.50
+
 	@CHEM_AIR_BOMB_IC_CHLORINE = 2.40
 	@CHEM_AIR_BOMB_IC_PHOSGENE = 2.80
 	@CHEM_AIR_BOMB_IC_MUSTARD = 3.80
@@ -9,14 +23,18 @@ equipment_modules = {
 	@CHEM_AIR_BOMB_IC_TABUN = 5.80
 	@CHEM_AIR_BOMB_IC_SARIN = 6.20
 	@CHEM_AIR_BOMB_IC_SOMAN = 6.80
+	@CHEM_AIR_BOMB_IC_MALODOR = 3.20
+	@CHEM_AIR_BOMB_IC_BEHAVIORAL = 4.20
 
 	@CHEM_AIR_BOMB_GROUND_ATTACK_CHLORINE = 2
-	@CHEM_AIR_BOMB_GROUND_ATTACK_PHOSGENE = 3
-	@CHEM_AIR_BOMB_GROUND_ATTACK_MUSTARD = 4
-	@CHEM_AIR_BOMB_GROUND_ATTACK_LEWISITE = 5
-	@CHEM_AIR_BOMB_GROUND_ATTACK_TABUN = 6
-	@CHEM_AIR_BOMB_GROUND_ATTACK_SARIN = 7
-	@CHEM_AIR_BOMB_GROUND_ATTACK_SOMAN = 8
+	@CHEM_AIR_BOMB_GROUND_ATTACK_PHOSGENE = 2
+	@CHEM_AIR_BOMB_GROUND_ATTACK_MUSTARD = 3
+	@CHEM_AIR_BOMB_GROUND_ATTACK_LEWISITE = 3
+	@CHEM_AIR_BOMB_GROUND_ATTACK_TABUN = 3
+	@CHEM_AIR_BOMB_GROUND_ATTACK_SARIN = 4
+	@CHEM_AIR_BOMB_GROUND_ATTACK_SOMAN = 4
+	@CHEM_AIR_BOMB_GROUND_ATTACK_MALODOR = 1
+	@CHEM_AIR_BOMB_GROUND_ATTACK_BEHAVIORAL = 1
 
 	@CHEM_AIR_BOMB_AGILITY_CHLORINE = -14
 	@CHEM_AIR_BOMB_AGILITY_PHOSGENE = -15
@@ -25,27 +43,46 @@ equipment_modules = {
 	@CHEM_AIR_BOMB_AGILITY_TABUN = -19
 	@CHEM_AIR_BOMB_AGILITY_SARIN = -20
 	@CHEM_AIR_BOMB_AGILITY_SOMAN = -21
+	@CHEM_AIR_BOMB_AGILITY_MALODOR = -14
+	@CHEM_AIR_BOMB_AGILITY_BEHAVIORAL = -16
+
+	@CHEM_AIR_BOMB_WEIGHT_CHLORINE = 4
+	@CHEM_AIR_BOMB_WEIGHT_PHOSGENE = 5
+	@CHEM_AIR_BOMB_WEIGHT_MUSTARD = 5
+	@CHEM_AIR_BOMB_WEIGHT_LEWISITE = 6
+	@CHEM_AIR_BOMB_WEIGHT_TABUN = 7
+	@CHEM_AIR_BOMB_WEIGHT_SARIN = 8
+	@CHEM_AIR_BOMB_WEIGHT_SOMAN = 9
+	@CHEM_AIR_BOMB_WEIGHT_MALODOR = 4
+	@CHEM_AIR_BOMB_WEIGHT_BEHAVIORAL = 5
+
+	@CHEM_AIR_BOMB_XP_CHLORINE = 2
+	@CHEM_AIR_BOMB_XP_PHOSGENE = 2
+	@CHEM_AIR_BOMB_XP_MUSTARD = 3
+	@CHEM_AIR_BOMB_XP_LEWISITE = 3
+	@CHEM_AIR_BOMB_XP_TABUN = 4
+	@CHEM_AIR_BOMB_XP_SARIN = 4
+	@CHEM_AIR_BOMB_XP_SOMAN = 5
+	@CHEM_AIR_BOMB_XP_MALODOR = 2
+	@CHEM_AIR_BOMB_XP_BEHAVIORAL = 3
 
 	chem_air_bomb_chlorine = {
 		abbreviation = "cab_cl"
 		category = cas_weapon
 		sfx = sfx_ui_sd_module_turret
 		add_equipment_type = { cas tactical_bomber }
-
-		add_stats = {
-			build_cost_ic = @CHEM_AIR_BOMB_IC_CHLORINE
-		}
-		xp_cost = 2
-		allow_mission_type = { cas }
+		add_stats = { build_cost_ic = @CHEM_AIR_BOMB_IC_CHLORINE }
+		xp_cost = @CHEM_AIR_BOMB_XP_CHLORINE
+		allow_mission_type = { cas attack_logistics }
 		mission_type_stats = {
-			limit = { cas }
+			limit = { cas attack_logistics }
 			add_stats = {
-				weight = 4
+				weight = @CHEM_AIR_BOMB_WEIGHT_CHLORINE
 				air_ground_attack = @CHEM_AIR_BOMB_GROUND_ATTACK_CHLORINE
 				air_agility = @CHEM_AIR_BOMB_AGILITY_CHLORINE
 			}
 		}
-		dismantle_cost_ic = 0.5
+		dismantle_cost_ic = @CHEM_AIR_BOMB_DISMANTLE_IC
 	}
 
 	chem_air_bomb_phosgene = {
@@ -53,21 +90,18 @@ equipment_modules = {
 		category = cas_weapon
 		sfx = sfx_ui_sd_module_turret
 		add_equipment_type = { cas tactical_bomber }
-
-		add_stats = {
-			build_cost_ic = @CHEM_AIR_BOMB_IC_PHOSGENE
-		}
-		xp_cost = 2
-		allow_mission_type = { cas }
+		add_stats = { build_cost_ic = @CHEM_AIR_BOMB_IC_PHOSGENE }
+		xp_cost = @CHEM_AIR_BOMB_XP_PHOSGENE
+		allow_mission_type = { cas attack_logistics }
 		mission_type_stats = {
-			limit = { cas }
+			limit = { cas attack_logistics }
 			add_stats = {
-				weight = 5
+				weight = @CHEM_AIR_BOMB_WEIGHT_PHOSGENE
 				air_ground_attack = @CHEM_AIR_BOMB_GROUND_ATTACK_PHOSGENE
 				air_agility = @CHEM_AIR_BOMB_AGILITY_PHOSGENE
 			}
 		}
-		dismantle_cost_ic = 0.5
+		dismantle_cost_ic = @CHEM_AIR_BOMB_DISMANTLE_IC
 	}
 
 	chem_air_bomb_mustard = {
@@ -75,21 +109,18 @@ equipment_modules = {
 		category = cas_weapon
 		sfx = sfx_ui_sd_module_turret
 		add_equipment_type = { cas tactical_bomber }
-
-		add_stats = {
-			build_cost_ic = @CHEM_AIR_BOMB_IC_MUSTARD
-		}
-		xp_cost = 3
-		allow_mission_type = { cas }
+		add_stats = { build_cost_ic = @CHEM_AIR_BOMB_IC_MUSTARD }
+		xp_cost = @CHEM_AIR_BOMB_XP_MUSTARD
+		allow_mission_type = { cas attack_logistics }
 		mission_type_stats = {
-			limit = { cas }
+			limit = { cas attack_logistics }
 			add_stats = {
-				weight = 5
+				weight = @CHEM_AIR_BOMB_WEIGHT_MUSTARD
 				air_ground_attack = @CHEM_AIR_BOMB_GROUND_ATTACK_MUSTARD
 				air_agility = @CHEM_AIR_BOMB_AGILITY_MUSTARD
 			}
 		}
-		dismantle_cost_ic = 0.5
+		dismantle_cost_ic = @CHEM_AIR_BOMB_DISMANTLE_IC
 	}
 
 	chem_air_bomb_lewisite = {
@@ -97,21 +128,18 @@ equipment_modules = {
 		category = cas_weapon
 		sfx = sfx_ui_sd_module_turret
 		add_equipment_type = { cas tactical_bomber }
-
-		add_stats = {
-			build_cost_ic = @CHEM_AIR_BOMB_IC_LEWISITE
-		}
-		xp_cost = 3
-		allow_mission_type = { cas }
+		add_stats = { build_cost_ic = @CHEM_AIR_BOMB_IC_LEWISITE }
+		xp_cost = @CHEM_AIR_BOMB_XP_LEWISITE
+		allow_mission_type = { cas attack_logistics }
 		mission_type_stats = {
-			limit = { cas }
+			limit = { cas attack_logistics }
 			add_stats = {
-				weight = 6
+				weight = @CHEM_AIR_BOMB_WEIGHT_LEWISITE
 				air_ground_attack = @CHEM_AIR_BOMB_GROUND_ATTACK_LEWISITE
 				air_agility = @CHEM_AIR_BOMB_AGILITY_LEWISITE
 			}
 		}
-		dismantle_cost_ic = 0.5
+		dismantle_cost_ic = @CHEM_AIR_BOMB_DISMANTLE_IC
 	}
 
 	chem_air_bomb_tabun = {
@@ -119,21 +147,18 @@ equipment_modules = {
 		category = cas_weapon
 		sfx = sfx_ui_sd_module_turret
 		add_equipment_type = { cas tactical_bomber }
-
-		add_stats = {
-			build_cost_ic = @CHEM_AIR_BOMB_IC_TABUN
-		}
-		xp_cost = 4
-		allow_mission_type = { cas }
+		add_stats = { build_cost_ic = @CHEM_AIR_BOMB_IC_TABUN }
+		xp_cost = @CHEM_AIR_BOMB_XP_TABUN
+		allow_mission_type = { cas attack_logistics }
 		mission_type_stats = {
-			limit = { cas }
+			limit = { cas attack_logistics }
 			add_stats = {
-				weight = 7
+				weight = @CHEM_AIR_BOMB_WEIGHT_TABUN
 				air_ground_attack = @CHEM_AIR_BOMB_GROUND_ATTACK_TABUN
 				air_agility = @CHEM_AIR_BOMB_AGILITY_TABUN
 			}
 		}
-		dismantle_cost_ic = 0.5
+		dismantle_cost_ic = @CHEM_AIR_BOMB_DISMANTLE_IC
 	}
 
 	chem_air_bomb_sarin = {
@@ -141,21 +166,18 @@ equipment_modules = {
 		category = cas_weapon
 		sfx = sfx_ui_sd_module_turret
 		add_equipment_type = { cas tactical_bomber }
-
-		add_stats = {
-			build_cost_ic = @CHEM_AIR_BOMB_IC_SARIN
-		}
-		xp_cost = 4
-		allow_mission_type = { cas }
+		add_stats = { build_cost_ic = @CHEM_AIR_BOMB_IC_SARIN }
+		xp_cost = @CHEM_AIR_BOMB_XP_SARIN
+		allow_mission_type = { cas attack_logistics }
 		mission_type_stats = {
-			limit = { cas }
+			limit = { cas attack_logistics }
 			add_stats = {
-				weight = 8
+				weight = @CHEM_AIR_BOMB_WEIGHT_SARIN
 				air_ground_attack = @CHEM_AIR_BOMB_GROUND_ATTACK_SARIN
 				air_agility = @CHEM_AIR_BOMB_AGILITY_SARIN
 			}
 		}
-		dismantle_cost_ic = 0.5
+		dismantle_cost_ic = @CHEM_AIR_BOMB_DISMANTLE_IC
 	}
 
 	chem_air_bomb_soman = {
@@ -163,20 +185,55 @@ equipment_modules = {
 		category = cas_weapon
 		sfx = sfx_ui_sd_module_turret
 		add_equipment_type = { cas tactical_bomber }
-
-		add_stats = {
-			build_cost_ic = @CHEM_AIR_BOMB_IC_SOMAN
-		}
-		xp_cost = 5
-		allow_mission_type = { cas }
+		add_stats = { build_cost_ic = @CHEM_AIR_BOMB_IC_SOMAN }
+		xp_cost = @CHEM_AIR_BOMB_XP_SOMAN
+		allow_mission_type = { cas attack_logistics }
 		mission_type_stats = {
-			limit = { cas }
+			limit = { cas attack_logistics }
 			add_stats = {
-				weight = 9
+				weight = @CHEM_AIR_BOMB_WEIGHT_SOMAN
 				air_ground_attack = @CHEM_AIR_BOMB_GROUND_ATTACK_SOMAN
 				air_agility = @CHEM_AIR_BOMB_AGILITY_SOMAN
 			}
 		}
-		dismantle_cost_ic = 0.5
+		dismantle_cost_ic = @CHEM_AIR_BOMB_DISMANTLE_IC
+	}
+
+	chem_air_bomb_malodor = {
+		abbreviation = "cab_ma"
+		category = cas_weapon
+		sfx = sfx_ui_sd_module_turret
+		add_equipment_type = { cas tactical_bomber }
+		add_stats = { build_cost_ic = @CHEM_AIR_BOMB_IC_MALODOR }
+		xp_cost = @CHEM_AIR_BOMB_XP_MALODOR
+		allow_mission_type = { cas attack_logistics }
+		mission_type_stats = {
+			limit = { cas attack_logistics }
+			add_stats = {
+				weight = @CHEM_AIR_BOMB_WEIGHT_MALODOR
+				air_ground_attack = @CHEM_AIR_BOMB_GROUND_ATTACK_MALODOR
+				air_agility = @CHEM_AIR_BOMB_AGILITY_MALODOR
+			}
+		}
+		dismantle_cost_ic = @CHEM_AIR_BOMB_DISMANTLE_IC
+	}
+
+	chem_air_bomb_behavioral = {
+		abbreviation = "cab_be"
+		category = cas_weapon
+		sfx = sfx_ui_sd_module_turret
+		add_equipment_type = { cas tactical_bomber }
+		add_stats = { build_cost_ic = @CHEM_AIR_BOMB_IC_BEHAVIORAL }
+		xp_cost = @CHEM_AIR_BOMB_XP_BEHAVIORAL
+		allow_mission_type = { cas attack_logistics }
+		mission_type_stats = {
+			limit = { cas attack_logistics }
+			add_stats = {
+				weight = @CHEM_AIR_BOMB_WEIGHT_BEHAVIORAL
+				air_ground_attack = @CHEM_AIR_BOMB_GROUND_ATTACK_BEHAVIORAL
+				air_agility = @CHEM_AIR_BOMB_AGILITY_BEHAVIORAL
+			}
+		}
+		dismantle_cost_ic = @CHEM_AIR_BOMB_DISMANTLE_IC
 	}
 }

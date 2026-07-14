@@ -10,7 +10,7 @@ Chemical warfare is implemented as one connected gameplay package:
 2. Chemical Livens support companies (per chemical type).
 3. Chemical tank support companies (per chemical type and chassis class).
 4. Nerve-agent raid options (Sarin and Soman).
-5. US special-project raid options (Malodor and Aphrodisiac bombs).
+5. US special-project payload options (Malodor and behavioral agents).
 6. Shared condemnation and sanctions consequences.
 7. Chemical air bomb modules as explicit-raid eligibility equipment.
 
@@ -34,11 +34,10 @@ The genocide crisis system can consume restricted nerve-agent stockpiles through
 - The nerve branch uses G-series progression:
   - GA (Tabun) -> GB (Sarin) -> GD (Soman).
 - Nerve raids are tactical and short-lived in contamination persistence.
-- US special-project raids are also short-lived and focus on disruption rather than direct casualties.
-- US special-project raids do not add international condemnation.
-- Chemical air-delivered raids use the same province-targeted deployment model as the biological bomb raids.
-- Direct Sarin and Soman strikes consume their cylinder payloads without requiring deployed bomber wings. Only the rocket variants require missile equipment.
-- Air bomb modules feed targeted regional contamination and chemical-air-strike condemnation when chemical-capable aircraft are active in a heated war region.
+- US special-project payloads are short-lived and focus on disruption rather than direct casualties.
+- Chemical air-delivered operations require an explicit selected-state raid, an eligible CAS or tactical-bomber design carrying the exact agent module, and reserved payload equipment.
+- Every completed release passes through the shared chemical exposure pipeline. Ordinary air missions and idle chemical-capable aircraft never release an agent or contaminate a region.
+- The retained legacy Sarin, Soman, Malodor, and behavioral-agent raid identifiers are migration surfaces, not alternate delivery paths; they remain unavailable until their replacements satisfy the shared accounting contract.
 
 ## Core Gameplay Flow
 
@@ -49,7 +48,7 @@ The genocide crisis system can consume restricted nerve-agent stockpiles through
    - Livens support company,
    - Chemical tank support company,
    - Nerve raid (Sarin/Soman),
-   - US special raid (Malodor/Aphrodisiac),
+   - US special raid (Malodor/Behavioral Agent),
    - Chemical air bomb modules.
 4. Execute usage while managing condemnation growth.
 5. Adjust operations around weather, stockpiles, and diplomatic pressure.
@@ -124,12 +123,13 @@ Sarin and Soman raids are dedicated strike options.
 
 ## US Special Chemical Raids
 
-The malodor and aphrodisiac bombs are US-only special-project raid payloads.
+The Malodor and Behavioral-Agent payloads are US-only special-project raid payloads.
 
 - Delivered only through raids.
 - Built around temporary state disruption rather than major strength damage.
 - Malodor adds immediate org shock plus severe short-term disruption.
-- Aphrodisiac focuses on coordination, planning, reinforce, and defense breakdown.
+- The Behavioral-Agent payload focuses on coordination, planning, reinforcement, and defense breakdown.
+- A completed release records evidence and Condemnation through the same consequence contract as every other chemical agent.
 
 ## International Condemnation and Diplomacy
 
@@ -142,17 +142,16 @@ Most major chemical delivery paths feed the public chemical source in the shared
 - completed selected-state chemical raids,
 - chemical doomsday release.
 
-Exception:
+Exceptions:
 
 - Cylinder abilities used only against zombie-held fronts do not add condemnation.
-- US special-project malodor and aphrodisiac raids do not add condemnation.
 - Japan's targeted chemical campaign decisions against China use reduced campaign-specific condemnation values rather than the normal cylinder values.
 
 Chemical use records `chemical_combat`, `chemical_air_strike`, or `chemical_doomsday` context. Where a delivery path measures civilian deaths or contamination, the shared helper adds up to `100` from deaths at one point per `10,000`, plus up to `50` from contamination at `0.50` per point, before visibility and severity. Public gains contribute to the seven shared tiers from Normal through Pariah State. Eligible countries can impose scalable arms, strategic, total, and pariah restrictions. Chemical doomsday release starts from `40`, adds stockpile scaling divided by `1000` up to an additional `80`, and then applies doomsday severity.
 
 State-based chemical abilities, support-company scans, Japan's campaign action, and nerve-agent raids record the affected controller as the most recent victim when the engine exposes that country scope. This feeds direct-victim and guarantor participant scoring and enables compensation. A combat-result callback that exposes only the acting unit owner cannot name an opponent unless the associated state scan supplies one.
 
-Integrated Chemical Operations reduces the chemical source gain before it enters the shared bucket. It never removes the source, recent-use memory, treaty reaction, or sanctions consequences. The complete model is documented in `docs/systems/condemnation_sanctions.md`.
+Integrated Chemical Operations reduces only the Condemnation impact computed for a release. It does not reduce evidence, attribution, deaths, contamination, medical saturation, confirmed-use history, resistance trauma, or other consequence records. Any lower sanctions tier follows only from the ordinary Condemnation thresholds; doctrine does not bypass sanctions rules. The complete model is documented in `docs/systems/condemnation_sanctions.md`.
 
 ## Defensive Mitigation
 
@@ -178,10 +177,13 @@ AI treats chemical warfare as a strategic path with tradeoffs.
 
 Chemical air bomb modules are active content.
 
-- They are present in aircraft progression and UI as payload-handling and explicit-operation eligibility components.
+- Seven standard-agent racks and the two project-gated incapacitating-agent racks fit CAS and tactical-bomber designs; strategic bombers are not eligible.
+- They are present in aircraft progression and UI as payload-handling and selected-state-operation eligibility components.
+- Their ordinary CAS and logistics-attack values are deliberately modest and do not represent toxic exposure.
 - Ordinary missions, deployed aircraft counts, and ground combat never prove chemical release.
 - The former ground-operation-heat and regional aircraft estimator is retired.
 - Only an explicit selected-state raid may reserve payload and enter the shared CBRN exposure and Condemnation pipeline.
+- Aborted or failed raids retain their real payload loss and can create evidence and Condemnation, but their no-release proof prevents deaths, contamination, medical strain, mask loss, treaty-use history, and chemical-use achievements.
 
 ## Operational Notes
 
