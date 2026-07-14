@@ -291,6 +291,7 @@ cbrn_calculate_chemical_action_outputs = {
 	divide_temp_variable = { cbrn_action_payload_ratio = cbrn_action_payload_required }
 	clamp_temp_variable = { var = cbrn_action_payload_ratio min = constant:cbrn_action_input_bounds.payload_ratio_min max = constant:cbrn_action_input_bounds.payload_ratio_max }
 
+	set_temp_variable = { cbrn_action_release_efficiency_mult_local = cbrn_action_release_efficiency_mult }
 	set_temp_variable = { cbrn_action_weather_mult_local = cbrn_action_weather_mult }
 	set_temp_variable = { cbrn_action_terrain_mult_local = cbrn_action_terrain_mult }
 	set_temp_variable = { cbrn_action_target_density_mult_local = cbrn_action_target_density_mult }
@@ -302,6 +303,7 @@ cbrn_calculate_chemical_action_outputs = {
 	set_temp_variable = { cbrn_action_command_integration_local = cbrn_action_command_integration }
 	set_temp_variable = { cbrn_action_base_friendly_risk_local = cbrn_action_base_friendly_risk }
 
+	clamp_temp_variable = { var = cbrn_action_release_efficiency_mult_local min = constant:cbrn_action_input_bounds.release_efficiency_mult_min max = constant:cbrn_action_input_bounds.release_efficiency_mult_max }
 	clamp_temp_variable = { var = cbrn_action_weather_mult_local min = constant:cbrn_action_input_bounds.condition_mult_min max = constant:cbrn_action_input_bounds.condition_mult_max }
 	clamp_temp_variable = { var = cbrn_action_terrain_mult_local min = constant:cbrn_action_input_bounds.condition_mult_min max = constant:cbrn_action_input_bounds.condition_mult_max }
 	clamp_temp_variable = { var = cbrn_action_target_density_mult_local min = constant:cbrn_action_input_bounds.target_density_mult_min max = constant:cbrn_action_input_bounds.target_density_mult_max }
@@ -312,6 +314,7 @@ cbrn_calculate_chemical_action_outputs = {
 	clamp_temp_variable = { var = cbrn_action_forecast_confidence_local min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
 	clamp_temp_variable = { var = cbrn_action_command_integration_local min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
 	clamp_temp_variable = { var = cbrn_action_base_friendly_risk_local min = constant:cbrn_action_input_bounds.friendly_risk_min max = constant:cbrn_action_input_bounds.friendly_risk_max }
+	set_temp_variable = { cbrn_action_release_efficiency_mult = cbrn_action_release_efficiency_mult_local }
 	if = {
 		limit = {
 			has_tech = vehicle_overpressure_and_sealed_compartments
@@ -322,6 +325,7 @@ cbrn_calculate_chemical_action_outputs = {
 	}
 
 	set_temp_variable = { cbrn_action_dose_mult = cbrn_action_payload_ratio }
+	multiply_temp_variable = { cbrn_action_dose_mult = cbrn_action_release_efficiency_mult_local }
 	multiply_temp_variable = { cbrn_action_dose_mult = cbrn_action_weather_mult_local }
 	multiply_temp_variable = { cbrn_action_dose_mult = cbrn_action_terrain_mult_local }
 	multiply_temp_variable = { cbrn_action_dose_mult = cbrn_action_target_density_mult_local }
@@ -700,6 +704,7 @@ cbrn_reset_action_context = {
 	set_temp_variable = { cbrn_action_payload_required = constant:cbrn_math.zero }
 	set_temp_variable = { cbrn_action_payload_consumed = constant:cbrn_math.zero }
 	set_temp_variable = { cbrn_action_payload_consumed_proof = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_action_release_efficiency_mult = constant:cbrn_math.zero }
 	set_temp_variable = { cbrn_action_dispatch_proof = constant:cbrn_proof.missing }
 	set_temp_variable = { cbrn_action_evidence_floor_override = constant:cbrn_math.zero }
 	set_temp_variable = { cbrn_action_protection_resolved_proof = constant:cbrn_proof.missing }

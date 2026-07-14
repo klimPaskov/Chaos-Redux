@@ -1,0 +1,59 @@
+# ============================================================================
+# CHAOS REDUX - CBRN CHEMICAL RAID TRIGGERS
+# ============================================================================
+# Overview:
+# - Validates the native-raid reservation record before an exact-state adapter
+#   may record a failed attempt or continue into the shared exposure pipeline.
+# - Separates no-release results from actual releases without inferring target
+#   contamination from aircraft presence.
+# - Contains no effects and never supplies weather, terrain, or payload proof.
+# ============================================================================
+
+cbrn_chemical_air_raid_result_has_no_release = {
+	OR = {
+		check_variable = { var = cbrn_raid_result value = constant:cbrn_chemical_raid_result.aborted compare = equals }
+		check_variable = { var = cbrn_raid_result value = constant:cbrn_chemical_raid_result.failed compare = equals }
+	}
+}
+
+cbrn_chemical_air_raid_result_has_release = {
+	OR = {
+		check_variable = { var = cbrn_raid_result value = constant:cbrn_chemical_raid_result.partial compare = equals }
+		check_variable = { var = cbrn_raid_result value = constant:cbrn_chemical_raid_result.success compare = equals }
+		check_variable = { var = cbrn_raid_result value = constant:cbrn_chemical_raid_result.catastrophic compare = equals }
+	}
+}
+
+cbrn_chemical_air_raid_reservation_is_resolved = {
+	has_variable = cbrn_raid_result
+	has_variable = cbrn_raid_release_proof
+	has_variable = cbrn_raid_reservation_proof
+	check_variable = { var = cbrn_raid_reservation_proof value = constant:cbrn_proof.supplied compare = equals }
+	cbrn_action_agent_is_valid_chemical = yes
+	cbrn_action_agent_matches_class = yes
+	check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.chemical_air_raid compare = equals }
+	has_variable = cbrn_action_payload_required
+	check_variable = { var = cbrn_action_payload_required value = constant:cbrn_payload_route_cost.chemical_air_raid compare = equals }
+	has_variable = cbrn_action_payload_consumed
+	check_variable = { cbrn_action_payload_consumed > constant:cbrn_math.zero }
+	check_variable = {
+		var = cbrn_action_payload_consumed
+		value = cbrn_action_payload_required
+		compare = less_than_or_equals
+	}
+	has_variable = cbrn_action_payload_consumed_proof
+	check_variable = { var = cbrn_action_payload_consumed_proof value = constant:cbrn_proof.supplied compare = equals }
+	has_variable = cbrn_action_release_efficiency_mult
+	OR = {
+		AND = {
+			cbrn_chemical_air_raid_result_has_no_release = yes
+			check_variable = { var = cbrn_raid_release_proof value = constant:cbrn_proof.missing compare = equals }
+			check_variable = { var = cbrn_action_release_efficiency_mult value = constant:cbrn_math.zero compare = equals }
+		}
+		AND = {
+			cbrn_chemical_air_raid_result_has_release = yes
+			check_variable = { var = cbrn_raid_release_proof value = constant:cbrn_proof.supplied compare = equals }
+			check_variable = { cbrn_action_release_efficiency_mult > constant:cbrn_math.zero }
+		}
+	}
+}

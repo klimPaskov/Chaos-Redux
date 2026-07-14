@@ -40,6 +40,7 @@ Before adding new dynamic logic, check this file and reuse an existing effect if
 - [cbrn_apply_state_evidence_delta_internal](#cbrn_apply_state_evidence_delta_internal)
 - [cbrn_reset_action_context](#cbrn_reset_action_context)
 - [CBRN payload logistics](#cbrn-payload-logistics)
+- [CBRN chemical-air raid reservation](#cbrn-chemical-air-raid-reservation)
 - [cbrn_dispatch_chemical_action_record](#cbrn_dispatch_chemical_action_record)
 - [CBRN equipment snapshots and protection resolution](#cbrn-equipment-snapshots-and-protection-resolution)
 - [chem_set_equipment_backed_mask_reduction](#chem_set_equipment_backed_mask_reduction)
@@ -1016,11 +1017,11 @@ Required payload inputs: positive `cbrn_action_payload_required`, positive `cbrn
 
 Required protection inputs: outputs and proof from `cbrn_resolve_action_target_protection`.
 
-Required condition inputs and proof: `cbrn_action_weather_mult`, `cbrn_action_terrain_mult`, `cbrn_action_target_density_mult`, `cbrn_action_command_mult`, `cbrn_action_evidence_control_mult`, `cbrn_action_context_condemnation_mult`, a positive `cbrn_action_doctrine_condemnation_mult` validation value, `cbrn_action_forecast_confidence`, `cbrn_action_command_integration`, `cbrn_action_base_friendly_risk`, and `cbrn_action_conditions_resolved_proof`. The context multiplier carries retaliation and target-relationship effects. Immediately after validation, the public wrapper overwrites the doctrine value from the attacker country's Integrated CBRN Command mastery and clamps it to `0.70` through `1.00`; route adapters cannot select a different doctrine discount.
+Required condition inputs and proof: positive `cbrn_action_release_efficiency_mult`, `cbrn_action_weather_mult`, `cbrn_action_terrain_mult`, `cbrn_action_target_density_mult`, `cbrn_action_command_mult`, `cbrn_action_evidence_control_mult`, `cbrn_action_context_condemnation_mult`, a positive `cbrn_action_doctrine_condemnation_mult` validation value, `cbrn_action_forecast_confidence`, `cbrn_action_command_integration`, `cbrn_action_base_friendly_risk`, and `cbrn_action_conditions_resolved_proof`. Release efficiency is separate from payload consumption: it records the share and pattern of consumed payload that actually reached the intended exposure, allowing an operation to consume most of its reservation while delivering only a partial dose. The context multiplier carries retaliation and target-relationship effects. Immediately after validation, the public wrapper overwrites the doctrine value from the attacker country's Integrated CBRN Command mastery and clamps it to `0.70` through `1.00`; route adapters cannot select a different doctrine discount.
 
 Defaults: none. Validation is fail-closed. The continuous ordinary-air route returns `unsupported_continuous_air_route`; no neutral condition or idle-aircraft estimator is substituted.
 
-Outputs include `cbrn_action_result`, `cbrn_action_reject_reason`, victim event target/proof when known, payload ratio, dose, disruption, military and civilian death fractions, exposed share, contamination points/duration, medical burden, evidence, attribution, Condemnation base, friendly risk, `cbrn_action_vehicle_sealing_applied`, and source label. The vehicle-sealing proof is set only when the attacker has `vehicle_overpressure_and_sealed_compartments` and the verified route is armored delivery; it reduces friendly crew exposure without changing target harm, evidence, attribution, or Condemnation.
+Outputs include `cbrn_action_result`, `cbrn_action_reject_reason`, victim event target/proof when known, payload ratio, clamped release efficiency, dose, disruption, military and civilian death fractions, exposed share, contamination points/duration, medical burden, evidence, attribution, Condemnation base, friendly risk, `cbrn_action_vehicle_sealing_applied`, and source label. The vehicle-sealing proof is set only when the attacker has `vehicle_overpressure_and_sealed_compartments` and the verified route is armored delivery; it reduces friendly crew exposure without changing target harm, evidence, attribution, or Condemnation.
 
 Side effects: no persistent gameplay mutation. Rejected calls return zero consequence outputs. Accepted calls must immediately pass to `cbrn_dispatch_chemical_action_record` before the action context is reset.
 
@@ -1166,6 +1167,28 @@ set_temp_variable = { cbrn_action_delivery_route = constant:cbrn_delivery_route.
 # Set the remaining static action metadata.
 cbrn_set_default_payload_requirement_for_action = yes
 cbrn_try_debit_action_payload = yes
+```
+
+## CBRN chemical-air raid reservation
+
+`cbrn_resolve_chemical_air_raid_reservation` is the country-scope public reservation effect in `cbrn_chemical_raid_effects.txt`. It may be called only from a native raid outcome whose raid type reserved exactly 120 units of the matching choking, blister, nerve, or incapacitating air-payload archetype through `essential_equipment`. Native collection is the debit; the helper must not call `cbrn_try_debit_action_payload` a second time.
+
+Required temporary inputs are exact `cbrn_raid_agent` and one `cbrn_raid_engine_outcome` code for failure, limited success, success, or critical success. The effect first resets the shared action context, copies the exact raid agent into it, records the chemical-air route, derives the agent class, splits the engine failure result evenly between accepted Aborted and Failed outcomes, selects the centralized consumption and intended-dose bands, refunds the exact unused class-specific model, and records positive net consumption with native-reservation proof. Partial, successful, and catastrophic results additionally return a positive release-efficiency multiplier and release proof. Aborted and failed results return zero release efficiency and no release proof.
+
+Defaults: fail closed. An invalid agent or engine result leaves missing reservation proof and performs no refund. Outputs are temporary `cbrn_raid_result`, consumption/dose values, refund, reservation proof, release proof, and the shared action payload/release fields. Side effects are limited to returning unused payload stock; this effect does not select weather or terrain, resolve protection, contaminate a state, create deaths, add evidence, or apply Condemnation.
+
+Internal helpers map the agent class, map native outcomes, select consumption/dose, and refund the exact model. They are not route entry points.
+
+Example inside a native raid actor-country outcome block:
+
+```txt
+set_temp_variable = { cbrn_raid_agent = constant:cbrn_agent.sarin }
+set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.limited_success }
+cbrn_resolve_chemical_air_raid_reservation = yes
+if = {
+	limit = { cbrn_chemical_air_raid_reservation_is_resolved = yes }
+	# Continue through the exact-state condition and protection adapter.
+}
 ```
 
 ## cbrn_dispatch_chemical_action_record

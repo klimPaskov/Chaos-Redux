@@ -22,6 +22,8 @@ Before adding new dynamic trigger logic, check this file and reuse an existing t
 - [CBRN exact-state response gates](#cbrn-exact-state-response-gates)
 - [CBRN allied procurement and AI profiles](#cbrn-allied-procurement-and-ai-profiles)
 - [CBRN regimental support and AI gates](#cbrn-regimental-support-and-ai-gates)
+- [CBRN payload-logistics triggers](#cbrn-payload-logistics-triggers)
+- [CBRN chemical-air raid reservation triggers](#cbrn-chemical-air-raid-reservation-triggers)
 - [Chaos Warfare doctrine triggers](#chaos-warfare-doctrine-triggers)
 - [CBRN Army Headquarters triggers](#cbrn-army-headquarters-triggers)
 
@@ -394,6 +396,25 @@ if = {
 		cbrn_action_payload_stock_is_sufficient = yes
 	}
 	cbrn_try_debit_action_payload = yes
+}
+```
+
+## CBRN chemical-air raid reservation triggers
+
+These temporary-record triggers live in `cbrn_chemical_raid_triggers.txt` and are valid only inside a native raid outcome effect chain:
+
+- `cbrn_chemical_air_raid_result_has_no_release`: true only for the accepted aborted or failed result codes.
+- `cbrn_chemical_air_raid_result_has_release`: true only for partial, successful, or catastrophic releases.
+- `cbrn_chemical_air_raid_reservation_is_resolved`: requires the exact 120-lot reservation, positive net consumption no greater than that reservation, native reservation/debit proof, and a release-efficiency proof that agrees with the result class.
+
+Scope: enclosing raid outcome chain after the actor-country effect has called `cbrn_resolve_chemical_air_raid_reservation`. Inputs are temporary `cbrn_raid_*` and `cbrn_action_*` values. Defaults: false; missing or contradictory proof fails closed. Outputs: boolean only. Side effects: none. These triggers do not infer weather, terrain, release, or aircraft activity.
+
+Example:
+
+```txt
+if = {
+	limit = { cbrn_chemical_air_raid_reservation_is_resolved = yes }
+	# Continue to the no-release attempt record or the proven-release adapter.
 }
 ```
 
