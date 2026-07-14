@@ -1,0 +1,321 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 INDEPENDENCE WAVE DECISION TRIGGERS
+# ============================================================================
+# Reusable phase, target, mission-cap, resource-safety, and material-cost
+# predicates for DM-01 through DM-59. All country scans are initiated by a
+# player or AI targeted action. No periodic world iteration is performed here.
+# ============================================================================
+
+is_independence_wave_provisional_or_later = {
+	is_independence_wave_active_country = yes
+	check_variable = {
+		var = independence_wave_founding_phase
+		value = constant:independence_wave_founding_phase.provisional_state
+		compare = greater_than_or_equals
+	}
+}
+
+is_independence_wave_recognized_or_later = {
+	is_independence_wave_active_country = yes
+	check_variable = {
+		var = independence_wave_founding_phase
+		value = constant:independence_wave_founding_phase.recognized_state
+		compare = greater_than_or_equals
+	}
+}
+
+is_independence_wave_regional_power = {
+	is_independence_wave_active_country = yes
+	check_variable = {
+		var = independence_wave_founding_phase
+		value = constant:independence_wave_founding_phase.regional_power
+		compare = greater_than_or_equals
+	}
+}
+
+has_independence_wave_active_founding_mission = {
+	OR = {
+		has_active_mission = independence_wave_secure_provisional_capital
+		has_active_mission = independence_wave_establish_revenue_service
+		has_active_mission = independence_wave_register_population
+		has_active_mission = independence_wave_hold_first_assembly
+		has_active_mission = independence_wave_confirm_traditional_authority
+	}
+}
+
+has_independence_wave_active_diplomatic_action = {
+	OR = {
+		has_decision = independence_wave_send_diplomatic_mission
+		has_decision = independence_wave_request_former_host_recognition
+		has_decision = independence_wave_seek_regional_guarantee
+		has_decision = independence_wave_coordinate_recognition_campaign
+		has_decision = independence_wave_offer_ceasefire_line
+		has_decision = independence_wave_divide_state_property
+		has_decision = independence_wave_negotiate_citizenship_and_return
+		has_decision = independence_wave_demand_recognition_by_force
+		has_decision = independence_wave_offer_association_or_reunion
+	}
+}
+
+has_independence_wave_active_security_mission = {
+	OR = {
+		has_active_mission = independence_wave_integrate_militias
+		has_decision = independence_wave_secure_depot
+		has_active_mission = independence_wave_form_border_guards
+		has_decision = independence_wave_open_volunteer_corridor
+		has_active_mission = independence_wave_professionalize_army
+		has_active_mission = independence_wave_prepare_reclamation_defense
+	}
+}
+
+has_independence_wave_active_league_crisis = {
+	OR = {
+		has_decision = independence_wave_request_collective_recognition
+		has_decision = independence_wave_request_border_arbitration
+		has_decision = independence_wave_rescue_threatened_member
+		has_active_mission = independence_wave_convene_founding_congress
+		has_active_mission = independence_wave_challenge_league_leadership
+		has_active_mission = independence_wave_coordinate_reclamation_fronts
+		has_active_mission = independence_wave_transform_league_charter
+	}
+}
+
+has_independence_wave_active_border_operation = {
+	OR = {
+		has_decision = independence_wave_survey_claimed_districts
+		has_decision = independence_wave_sponsor_plebiscite
+		has_decision = independence_wave_negotiate_transfer
+		has_decision = independence_wave_prepare_border_ultimatum
+		has_decision = independence_wave_integrate_settled_district
+	}
+}
+
+has_independence_wave_active_formable_operation = {
+	OR = {
+		has_active_mission = independence_wave_convene_formation_congress
+		has_decision = independence_wave_integrate_member_region
+	}
+}
+
+can_pay_independence_wave_administration_light_cost = {
+	num_of_civilian_factories_available_for_projects > constant:independence_wave_decision_cost.civilian_factory_light
+	command_power > constant:independence_wave_decision_cost.command_power_light
+	has_manpower > constant:independence_wave_decision_cost.manpower_light
+}
+
+can_pay_independence_wave_administration_standard_cost = {
+	num_of_civilian_factories_available_for_projects > constant:independence_wave_decision_cost.civilian_factory_standard
+	command_power > constant:independence_wave_decision_cost.command_power_standard
+	has_manpower > constant:independence_wave_decision_cost.manpower_standard
+}
+
+can_pay_independence_wave_diplomatic_light_cost = {
+	command_power > constant:independence_wave_decision_cost.command_power_light
+	OR = {
+		has_equipment = { convoy > constant:independence_wave_decision_cost.convoy_light }
+		has_equipment = { train_equipment > constant:independence_wave_decision_cost.train_light }
+	}
+}
+
+can_pay_independence_wave_diplomatic_standard_cost = {
+	command_power > constant:independence_wave_decision_cost.command_power_standard
+	OR = {
+		has_equipment = { convoy > constant:independence_wave_decision_cost.convoy_standard }
+		has_equipment = { train_equipment > constant:independence_wave_decision_cost.train_standard }
+	}
+}
+
+can_pay_independence_wave_security_light_cost = {
+	command_power > constant:independence_wave_decision_cost.command_power_light
+	has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_light }
+	has_equipment = { support_equipment > constant:independence_wave_decision_cost.support_light }
+}
+
+can_pay_independence_wave_security_standard_cost = {
+	has_manpower > constant:independence_wave_decision_cost.manpower_standard
+	army_experience > constant:independence_wave_decision_cost.army_experience_standard
+	has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_standard }
+	has_equipment = { support_equipment > constant:independence_wave_decision_cost.support_standard }
+}
+
+can_pay_independence_wave_security_major_cost = {
+	has_manpower > constant:independence_wave_decision_cost.manpower_major
+	army_experience > constant:independence_wave_decision_cost.army_experience_major
+	has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_major }
+	has_equipment = { support_equipment > constant:independence_wave_decision_cost.support_major }
+}
+
+can_pay_independence_wave_strategic_cost = {
+	num_of_civilian_factories_available_for_projects > constant:independence_wave_decision_cost.civilian_factory_standard
+	stability > constant:independence_wave_decision_cost.stability_standard
+	war_support > constant:independence_wave_decision_cost.war_support_minor
+	can_pay_independence_wave_diplomatic_standard_cost = yes
+}
+
+has_independence_wave_safe_reserve_surplus = {
+	capital_scope = { is_controlled_by = ROOT }
+	NOT = { has_independence_wave_severe_instability = yes }
+	OR = {
+		has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_major }
+		has_equipment = { train_equipment > constant:independence_wave_decision_cost.train_major }
+		has_equipment = { convoy > constant:independence_wave_decision_cost.convoy_major }
+		has_fuel > constant:independence_wave_decision_cost.fuel_major
+	}
+}
+
+has_independence_wave_severe_host_threat = {
+	is_independence_wave_active_country = yes
+	has_independence_wave_living_former_host = yes
+	OR = {
+		check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.reclamation_conflict }
+		check_variable = {
+			var = independence_wave_reconquest_fear
+			value = constant:independence_wave_host_relation.conflict_gate
+			compare = greater_than_or_equals
+		}
+		var:independence_wave_former_host = { has_war_with = ROOT }
+	}
+}
+
+is_independence_wave_former_host_target = {
+	exists = yes
+	ROOT = {
+		has_independence_wave_living_former_host = yes
+		var:independence_wave_former_host = { tag = PREV }
+	}
+}
+
+is_valid_independence_wave_recognition_target = {
+	exists = yes
+	NOT = { tag = ROOT }
+	NOT = { has_war_with = ROOT }
+	OR = {
+		is_major = yes
+		is_neighbor_of = ROOT
+		is_independence_wave_active_country = yes
+	}
+}
+
+is_valid_independence_wave_patron_target = {
+	exists = yes
+	NOT = { tag = ROOT }
+	NOT = { has_war_with = ROOT }
+	NOT = { is_subject_of = ROOT }
+	OR = {
+		is_major = yes
+		is_neighbor_of = ROOT
+		has_guaranteed = ROOT
+	}
+}
+
+is_valid_independence_wave_network_target = {
+	is_independence_wave_active_country = yes
+	NOT = { tag = ROOT }
+	NOT = { has_war_with = ROOT }
+}
+
+is_valid_independence_wave_same_region_target = {
+	is_valid_independence_wave_network_target = yes
+	check_variable = {
+		var = independence_wave_region
+		value = ROOT.independence_wave_region
+		compare = equals
+	}
+}
+
+is_valid_independence_wave_depot_state = {
+	is_controlled_by = ROOT
+	is_owned_by = ROOT
+	NOT = {
+		AND = {
+			has_state_flag = independence_wave_dm18_depot_secured_by@ROOT
+			check_variable = {
+				var = independence_wave_dm18_generation@ROOT
+				value = ROOT.independence_wave_generation_id
+				compare = equals
+			}
+		}
+	}
+	OR = {
+		supply_node > 0
+		arms_factory > 0
+		infrastructure > 2
+	}
+	ROOT = {
+		divisions_in_state = {
+			state = PREV
+			size > constant:independence_wave_decision_gate.minimum_divisions
+		}
+	}
+}
+
+is_valid_independence_wave_ambition_state = {
+	owner = { exists = yes NOT = { tag = ROOT } }
+	controller = { exists = yes }
+	OR = {
+		is_claimed_by = ROOT
+		any_neighbor_state = { is_owned_by = ROOT }
+	}
+}
+
+is_valid_independence_wave_surveyed_state = {
+	is_valid_independence_wave_ambition_state = yes
+	has_state_flag = independence_wave_dm48_surveyed_by@ROOT
+	check_variable = {
+		var = independence_wave_dm48_generation@ROOT
+		value = ROOT.independence_wave_generation_id
+		compare = equals
+	}
+}
+
+is_valid_independence_wave_settled_state = {
+	is_controlled_by = ROOT
+	NOT = { is_core_of = ROOT }
+	OR = {
+		AND = {
+			has_state_flag = independence_wave_dm49_plebiscite_settled_by@ROOT
+			check_variable = { var = independence_wave_dm49_generation@ROOT value = ROOT.independence_wave_generation_id compare = equals }
+		}
+		AND = {
+			has_state_flag = independence_wave_dm50_transfer_settled_by@ROOT
+			check_variable = { var = independence_wave_dm50_generation@ROOT value = ROOT.independence_wave_generation_id compare = equals }
+		}
+		AND = {
+			has_state_flag = independence_wave_dm51_ultimatum_settled_by@ROOT
+			check_variable = { var = independence_wave_dm51_generation@ROOT value = ROOT.independence_wave_generation_id compare = equals }
+		}
+	}
+}
+
+is_valid_independence_wave_breakaway_sponsorship_state = {
+	is_independence_wave_candidate_anchor_available = yes
+	owner = { exists = yes NOT = { tag = ROOT } }
+	NOT = { has_state_flag = independence_wave_dm57_sponsorship_active }
+}
+
+can_independence_wave_use_high_chaos_actions = {
+	is_independence_wave_regional_power = yes
+	has_country_flag = independence_wave_route_radical_sovereignty
+	has_global_flag = independence_wave_evolution_5_open_sovereignty_enabled
+}
+
+can_independence_wave_prepare_formable = {
+	is_independence_wave_regional_power = yes
+	has_country_flag = independence_wave_formable_family_selected
+	has_country_flag = independence_wave_formable_discovered
+	check_variable = {
+		var = independence_wave_legitimacy
+		value = constant:independence_wave_decision_gate.formation_legitimacy
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = independence_wave_recognition
+		value = constant:independence_wave_decision_gate.formation_recognition
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = independence_wave_capacity
+		value = constant:independence_wave_decision_gate.formation_capacity
+		compare = greater_than_or_equals
+	}
+}

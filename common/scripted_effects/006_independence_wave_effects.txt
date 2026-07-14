@@ -155,6 +155,8 @@ independence_wave_select_government_route = {
 # deliberately preserved. Relationship rows are removed before their generation
 # key is cleared.
 independence_wave_reset_current_generation = {
+	independence_wave_cleanup_decision_layer = yes
+	independence_wave_clear_focus_runtime = yes
 	independence_wave_unregister_league_member = yes
 	independence_wave_unregister_league_founder = yes
 	independence_wave_unregister_network_member = yes
@@ -195,6 +197,24 @@ independence_wave_reset_current_generation = {
 	clr_country_flag = independence_wave_league_member
 	clr_country_flag = independence_wave_network_member
 	clr_country_flag = independence_wave_identity_idea_applied
+	clr_country_flag = independence_wave_force_package_applied
+	clr_country_flag = independence_wave_force_navy_inheritance_complete
+	clr_country_flag = independence_wave_force_air_inheritance_complete
+	clr_country_flag = independence_wave_force_navy_inheritance_enabled
+	clr_country_flag = independence_wave_force_air_inheritance_enabled
+	clr_country_flag = independence_wave_command_roster_ready
+	clr_country_flag = independence_wave_military_guardianship_active
+	clr_country_flag = independence_wave_reinforce_integrate_militias
+	clr_country_flag = independence_wave_reinforce_regional_guards
+	clr_country_flag = independence_wave_reinforce_secure_depots
+	clr_country_flag = independence_wave_reinforce_convert_defectors
+	clr_country_flag = independence_wave_reinforce_volunteer_corridors
+	clr_country_flag = independence_wave_reinforce_league_cadres
+	clr_country_flag = independence_wave_reinforce_factory_rail_guards
+	clr_country_flag = independence_wave_reinforce_terrain_units
+	clr_country_flag = independence_wave_reinforce_foreign_arms
+	clr_country_flag = independence_wave_reinforce_professional_officers
+	clr_country_flag = independence_wave_reinforce_capital_border_defense
 
 	set_variable = { liberation_origin = constant:liberation_origin.none }
 	clear_variable = independence_wave_generation_id
@@ -203,7 +223,35 @@ independence_wave_reset_current_generation = {
 	clear_variable = independence_wave_package_depth
 	clear_variable = independence_wave_territory_level
 	clear_variable = independence_wave_force_level
+	clear_variable = independence_wave_origin_chaos_band
 	clear_variable = independence_wave_package_archetype
+	clear_variable = independence_wave_force_profile
+	clear_variable = independence_wave_military_tradition
+	clear_variable = independence_wave_military_influence
+	clear_variable = independence_wave_reinforcement_pathway_count
+	clear_variable = independence_wave_force_package_generation_id
+	clear_variable = independence_wave_opening_force_budget
+	clear_variable = independence_wave_opening_division_count
+	clear_variable = independence_wave_opening_equipment_factor
+	clear_variable = independence_wave_opening_experience_factor
+	clear_variable = independence_wave_opening_population_k
+	clear_variable = independence_wave_opening_factory_count
+	clear_variable = independence_wave_opening_infrastructure_score
+	clear_variable = independence_wave_opening_railway_state_count
+	clear_variable = independence_wave_opening_port_level_count
+	clear_variable = independence_wave_opening_supply_node_count
+	clear_variable = independence_wave_opening_host_division_count
+	clear_variable = independence_wave_opening_host_surrender_progress
+	clr_country_flag = independence_wave_opening_host_was_at_war
+	clear_variable = independence_wave_opening_patron_support
+	clear_variable = independence_wave_opening_network_support
+	clear_variable = independence_wave_opening_infantry_stockpile
+	clear_variable = independence_wave_opening_support_stockpile
+	clear_variable = independence_wave_opening_artillery_stockpile
+	clear_variable = independence_wave_opening_train_stockpile
+	clear_variable = independence_wave_opening_truck_stockpile
+	clear_variable = independence_wave_opening_convoy_stockpile
+	clear_variable = independence_wave_opening_fuel_stockpile
 	clear_variable = independence_wave_origin_date
 	clear_variable = independence_wave_origin_end_reason
 	clear_variable = independence_wave_origin_end_date
@@ -267,6 +315,7 @@ independence_wave_initialize_country_origin = {
 		set_variable = { independence_wave_package_depth = independence_wave_setup_depth }
 		set_variable = { independence_wave_territory_level = independence_wave_setup_territory_level }
 		set_variable = { independence_wave_force_level = independence_wave_setup_force_level }
+		set_variable = { independence_wave_origin_chaos_band = independence_wave_setup_chaos_band }
 		set_variable = { independence_wave_package_archetype = independence_wave_setup_archetype }
 		set_variable = { independence_wave_origin_date = global.date }
 		set_variable = { independence_wave_former_host = event_target:independence_wave_setup_former_host }
@@ -2286,6 +2335,8 @@ independence_wave_end_active_origin = {
 		}
 		set_variable = { independence_wave_origin_end_reason = independence_wave_cleanup_reason }
 		set_variable = { independence_wave_origin_end_date = global.date }
+		independence_wave_cleanup_decision_layer = yes
+		independence_wave_clear_focus_runtime = yes
 		independence_wave_unregister_league_member = yes
 		independence_wave_unregister_network_member = yes
 		independence_wave_unregister_active_country = yes
