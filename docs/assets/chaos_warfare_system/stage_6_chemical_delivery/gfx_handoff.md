@@ -2,6 +2,8 @@
 
 Parent wiring only. No `.gfx` or `.gui` file was edited in this asset package.
 
+Asset production commit: `96ca1b7` (`Add Stage 6 chemical delivery asset icons`).
+
 The parent-registered declarations were verified in `interface/cbrn_chemical_delivery.gfx`; the sprite names and runtime texture paths below are exact. Equipment cards use the established runtime-equivalent technology directory and `131x52` framing. The raid map/type icon uses the parent-registered raids directory and the inspected vanilla `32x32` transparent map/type framing. The idea icon uses the parent-registered idea directory and the standard `64x64` transparent idea-icon framing.
 
 ## Ready-to-use sprite and texture mapping
