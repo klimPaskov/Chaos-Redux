@@ -632,6 +632,16 @@ record_events_log_evolution_entry = {
         set_variable = { global.events_log_evolution_sequence = 0 }
     }
 
+	# Optional one-shot input: temporary `events_log_evolution_date_override`.
+	# This lets a deferred evolution retain its canonical transition date while
+	# preserving the current date as the default for every existing caller.
+	set_temp_variable = { events_log_evolution_date_value = global.date }
+	if = {
+		limit = { has_variable = events_log_evolution_date_override }
+		set_temp_variable = { events_log_evolution_date_value = events_log_evolution_date_override }
+		set_temp_variable = { events_log_evolution_date_override = global.date }
+	}
+
     if = {
         limit = { NOT = { has_variable = events_log_evolution_type } }
         set_temp_variable = { events_log_evolution_type = 0 }
@@ -672,11 +682,11 @@ record_events_log_evolution_entry = {
         value = global.events_log_evolution_sequence
         index = 0
     }
-    add_to_array = {
-        array = global.events_log_evolution_date_entries
-        value = global.date
-        index = 0
-    }
+	add_to_array = {
+		array = global.events_log_evolution_date_entries
+		value = events_log_evolution_date_value
+		index = 0
+	}
     add_to_array = {
         array = global.events_log_evolution_type_entries
         value = events_log_evolution_type
@@ -1864,6 +1874,36 @@ events_log_rebuild_open_event_details_view = {
 			set_temp_variable = { events_log_event_detail_preview_stage = constant:soviet_collapse_high_chaos_event_log.world_collapse_successor_stage }
 			events_log_add_event_detail_evolution_preview = yes
 	        }
+
+		if = {
+			limit = {
+				check_variable = {
+					var = event_id
+					value = constant:independence_wave_evolution.event_id
+					compare = equals
+				}
+			}
+			set_temp_variable = { events_log_event_detail_preview_type = constant:independence_wave_evolution.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:independence_wave_evolution.replicable_independence_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:independence_wave_evolution.replicable_independence_stage }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:independence_wave_evolution.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:independence_wave_evolution.dormant_nations_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:independence_wave_evolution.dormant_nations_stage }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:independence_wave_evolution.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:independence_wave_evolution.armed_birth_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:independence_wave_evolution.armed_birth_stage }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:independence_wave_evolution.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:independence_wave_evolution.sovereign_congress_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:independence_wave_evolution.sovereign_congress_stage }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:independence_wave_evolution.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:independence_wave_evolution.open_sovereignty_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:independence_wave_evolution.open_sovereignty_stage }
+			events_log_add_event_detail_evolution_preview = yes
+		}
 
 		if = {
 			limit = {

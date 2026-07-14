@@ -1,0 +1,48 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 INDEPENDENCE WAVE EVOLUTION MTTH
+# ============================================================================
+# Returns the number of days until the next active-event evolution check.
+# The date is sampled only when Event 006 runs and is never driven by a daily,
+# weekly, monthly, or worldwide periodic on action.
+# ============================================================================
+
+independence_wave_evolution_interval = {
+	base = constant:independence_wave_evolution_mtth.base_days
+
+	modifier = {
+		factor = constant:independence_wave_evolution_mtth.world_collapse_factor
+		has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_final }
+	}
+	modifier = {
+		factor = constant:independence_wave_evolution_mtth.totalen_chaos_factor
+		has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_4 }
+	}
+	modifier = {
+		factor = constant:independence_wave_evolution_mtth.chaos_tier_factor
+		has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_3 }
+	}
+	modifier = {
+		factor = constant:independence_wave_evolution_mtth.rising_chaos_factor
+		has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_2 }
+	}
+	modifier = {
+		factor = constant:independence_wave_evolution_mtth.gathering_storm_factor
+		has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_1 }
+	}
+	modifier = {
+		factor = constant:independence_wave_evolution_mtth.thin_network_factor
+		check_variable = {
+			var = global.independence_wave_active_country_count
+			value = constant:independence_wave_league.minimum_living_origins
+			compare = less_than
+		}
+	}
+	modifier = {
+		factor = constant:independence_wave_evolution_mtth.dense_network_factor
+		check_variable = {
+			var = global.independence_wave_active_country_count
+			value = constant:independence_wave_evolution_mtth.dense_network_country_count
+			compare = greater_than_or_equals
+		}
+	}
+}
