@@ -4617,6 +4617,7 @@ soviet_collapse_setup_breakaway_country = {
 				has_country_flag = soviet_collapse_high_chaos_successor
 			}
 		}
+		soviet_collapse_mark_active_origin = yes
 		soviet_collapse_ensure_emergency_equipment_variants = yes
 		soviet_collapse_ensure_republic_country_component_variables = yes
 		if = {
@@ -4636,6 +4637,33 @@ soviet_collapse_setup_breakaway_country = {
 			soviet_collapse_load_event_created_focus_tree = yes
 			set_country_flag = soviet_collapse_regional_focus_tree_loaded
 		}
+	}
+}
+
+# Active origin is generation-local. The historical Event 005 identity flags
+# remain available for logs and campaign history after annexation, but only
+# this explicit contract blocks a living country from another origin system.
+soviet_collapse_mark_active_origin = {
+	if = {
+		limit = {
+			exists = yes
+			NOT = { has_country_flag = independence_wave_active_origin }
+			OR = {
+				NOT = { has_variable = liberation_origin }
+				check_variable = { liberation_origin = constant:liberation_origin.none }
+				check_variable = { liberation_origin = constant:liberation_origin.soviet_collapse }
+			}
+		}
+		set_country_flag = soviet_collapse_active_origin
+		set_variable = { liberation_origin = constant:liberation_origin.soviet_collapse }
+	}
+}
+
+soviet_collapse_clear_active_origin = {
+	clr_country_flag = soviet_collapse_active_origin
+	if = {
+		limit = { check_variable = { liberation_origin = constant:liberation_origin.soviet_collapse } }
+		set_variable = { liberation_origin = constant:liberation_origin.none }
 	}
 }
 
@@ -5139,6 +5167,7 @@ soviet_collapse_handle_breakaway_defeat = {
         }
         soviet_collapse_cleanup_resolved_breakaway_target = yes
     }
+	soviet_collapse_clear_active_origin = yes
 }
 
 soviet_collapse_mark_timeout_aid_recipient = {

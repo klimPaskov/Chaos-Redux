@@ -1,0 +1,307 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 INDEPENDENCE WAVE TRIGGERS
+# ============================================================================
+# Public value bands, founding phases, origin checks, patron thresholds, host
+# settlement state, network access, and league gates. No trigger here scans the
+# world or changes state.
+# ============================================================================
+
+is_independence_wave_active_country = {
+	exists = yes
+	has_country_flag = independence_wave_active_origin
+	check_variable = { liberation_origin = constant:liberation_origin.independence_wave }
+	NOT = { has_country_flag = independence_wave_origin_ended }
+}
+
+has_independence_wave_disputed_legitimacy = {
+	check_variable = { var = independence_wave_legitimacy value = constant:independence_wave_legitimacy_band.provisional compare = less_than }
+}
+
+has_independence_wave_established_legitimacy = {
+	check_variable = { var = independence_wave_legitimacy value = constant:independence_wave_legitimacy_band.established compare = greater_than_or_equals }
+}
+
+has_independence_wave_entrenched_legitimacy = {
+	check_variable = { var = independence_wave_legitimacy value = constant:independence_wave_legitimacy_band.entrenched compare = greater_than_or_equals }
+}
+
+has_independence_wave_foundational_legitimacy = {
+	check_variable = { var = independence_wave_legitimacy value = constant:independence_wave_legitimacy_band.foundational compare = greater_than_or_equals }
+}
+
+has_independence_wave_de_facto_recognition = {
+	check_variable = { var = independence_wave_recognition value = constant:independence_wave_recognition_band.de_facto compare = greater_than_or_equals }
+}
+
+has_independence_wave_treaty_backed_recognition = {
+	check_variable = { var = independence_wave_recognition value = constant:independence_wave_recognition_band.treaty_backed compare = greater_than_or_equals }
+}
+
+has_independence_wave_entrenched_recognition = {
+	check_variable = { var = independence_wave_recognition value = constant:independence_wave_recognition_band.internationally_entrenched compare = greater_than_or_equals }
+}
+
+has_independence_wave_functioning_capacity = {
+	check_variable = { var = independence_wave_capacity value = constant:independence_wave_capacity_band.functioning compare = greater_than_or_equals }
+}
+
+has_independence_wave_capable_government = {
+	check_variable = { var = independence_wave_capacity value = constant:independence_wave_capacity_band.capable compare = greater_than_or_equals }
+}
+
+has_independence_wave_prepared_security = {
+	check_variable = { var = independence_wave_security value = constant:independence_wave_security_band.prepared compare = greater_than_or_equals }
+}
+
+has_independence_wave_critical_instability = {
+	check_variable = { var = independence_wave_instability value = constant:independence_wave_instability_band.critical compare = greater_than_or_equals }
+}
+
+has_independence_wave_severe_instability = {
+	check_variable = { var = independence_wave_instability value = constant:independence_wave_instability_band.severe compare = greater_than_or_equals }
+}
+
+can_independence_wave_enter_provisional_phase = {
+	is_independence_wave_active_country = yes
+	check_variable = { independence_wave_founding_phase = constant:independence_wave_founding_phase.emergency_founding }
+	capital_scope = { is_controlled_by = ROOT }
+	check_variable = { var = independence_wave_capacity value = constant:independence_wave_phase_gate.provisional_capacity compare = greater_than_or_equals }
+}
+
+can_independence_wave_enter_recognized_phase = {
+	is_independence_wave_active_country = yes
+	check_variable = { independence_wave_founding_phase = constant:independence_wave_founding_phase.provisional_state }
+	OR = {
+		has_independence_wave_de_facto_recognition = yes
+		has_independence_wave_settled_host_relation = yes
+	}
+}
+
+can_independence_wave_enter_regional_power_phase = {
+	is_independence_wave_active_country = yes
+	check_variable = { independence_wave_founding_phase = constant:independence_wave_founding_phase.recognized_state }
+	check_variable = { var = independence_wave_legitimacy value = constant:independence_wave_phase_gate.regional_legitimacy compare = greater_than_or_equals }
+	check_variable = { var = independence_wave_recognition value = constant:independence_wave_phase_gate.regional_recognition compare = greater_than_or_equals }
+	check_variable = { var = independence_wave_capacity value = constant:independence_wave_phase_gate.regional_capacity compare = greater_than_or_equals }
+	check_variable = { var = independence_wave_security value = constant:independence_wave_phase_gate.regional_security compare = greater_than_or_equals }
+	NOT = { check_variable = { independence_wave_government_route = constant:independence_wave_government_route.undecided } }
+}
+
+has_independence_wave_settled_host_relation = {
+	OR = {
+		check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.recognized_separation }
+		check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.guarded_coexistence }
+		check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.client_settlement }
+		check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.host_collapse }
+	}
+}
+
+has_independence_wave_living_former_host = {
+	has_variable = independence_wave_former_host
+	var:independence_wave_former_host = { exists = yes }
+}
+
+has_valid_independence_wave_region = {
+	check_variable = { var = independence_wave_region value = constant:independence_wave_region.northern_western_europe compare = greater_than_or_equals }
+	check_variable = { var = independence_wave_region value = constant:independence_wave_region.americas_caribbean compare = less_than_or_equals }
+}
+
+has_current_independence_wave_identity_idea = {
+	OR = {
+		AND = { check_variable = { independence_wave_region = constant:independence_wave_region.northern_western_europe } has_idea = independence_wave_identity_northern_western_europe }
+		AND = { check_variable = { independence_wave_region = constant:independence_wave_region.mediterranean_iberia } has_idea = independence_wave_identity_mediterranean_iberia }
+		AND = { check_variable = { independence_wave_region = constant:independence_wave_region.balkans_danube } has_idea = independence_wave_identity_balkans_danube }
+		AND = { check_variable = { independence_wave_region = constant:independence_wave_region.eastern_europe_western_russia } has_idea = independence_wave_identity_eastern_europe_western_russia }
+		AND = { check_variable = { independence_wave_region = constant:independence_wave_region.volga_urals_siberia_far_east } has_idea = independence_wave_identity_volga_urals_siberia_far_east }
+		AND = { check_variable = { independence_wave_region = constant:independence_wave_region.caucasus_anatolia_mesopotamia } has_idea = independence_wave_identity_caucasus_anatolia_mesopotamia }
+		AND = { check_variable = { independence_wave_region = constant:independence_wave_region.levant_arabia } has_idea = independence_wave_identity_levant_arabia }
+		AND = { check_variable = { independence_wave_region = constant:independence_wave_region.north_africa_sahara } has_idea = independence_wave_identity_north_africa_sahara }
+		AND = { check_variable = { independence_wave_region = constant:independence_wave_region.west_central_africa } has_idea = independence_wave_identity_west_central_africa }
+		AND = { check_variable = { independence_wave_region = constant:independence_wave_region.east_africa_horn_great_lakes } has_idea = independence_wave_identity_east_africa_horn_great_lakes }
+		AND = { check_variable = { independence_wave_region = constant:independence_wave_region.southern_africa_indian_ocean } has_idea = independence_wave_identity_southern_africa_indian_ocean }
+		AND = { check_variable = { independence_wave_region = constant:independence_wave_region.south_asia_himalaya } has_idea = independence_wave_identity_south_asia_himalaya }
+		AND = { check_variable = { independence_wave_region = constant:independence_wave_region.southeast_east_asia_oceania } has_idea = independence_wave_identity_southeast_east_asia_oceania }
+		AND = { check_variable = { independence_wave_region = constant:independence_wave_region.americas_caribbean } has_idea = independence_wave_identity_americas_caribbean }
+	}
+}
+
+# Initialization reads regular event targets and unscoped temporary setup
+# values. Every input is validated before the first origin flag or variable is
+# mutated, so a malformed package cannot leave a partial active generation.
+has_valid_independence_wave_setup_input = {
+	exists = yes
+	NOT = { has_country_flag = independence_wave_active_origin }
+	NOT = { is_soviet_collapse_active_origin_country = yes }
+	has_event_target = independence_wave_setup_former_host
+	has_event_target = independence_wave_setup_anchor_state
+	event_target:independence_wave_setup_former_host = {
+		exists = yes
+		NOT = { tag = ROOT }
+	}
+	event_target:independence_wave_setup_anchor_state = {
+		is_owned_by = ROOT
+	}
+	check_variable = { var = independence_wave_setup_package_id value = constant:independence_wave_plan.first_package_id compare = greater_than_or_equals }
+	check_variable = { var = independence_wave_setup_package_id value = constant:independence_wave_registry.package_count compare = less_than_or_equals }
+	check_variable = { var = independence_wave_setup_region value = constant:independence_wave_region.northern_western_europe compare = greater_than_or_equals }
+	check_variable = { var = independence_wave_setup_region value = constant:independence_wave_region.americas_caribbean compare = less_than_or_equals }
+	check_variable = { var = independence_wave_setup_depth value = constant:independence_wave_package_depth.standard compare = greater_than_or_equals }
+	check_variable = { var = independence_wave_setup_depth value = constant:independence_wave_package_depth.signature compare = less_than_or_equals }
+	check_variable = { var = independence_wave_setup_territory_level value = constant:liberation_territory_level.anchor compare = greater_than_or_equals }
+	check_variable = { var = independence_wave_setup_territory_level value = constant:liberation_territory_level.extended compare = less_than_or_equals }
+	check_variable = { var = independence_wave_setup_force_level value = constant:liberation_force_level.fragile compare = greater_than_or_equals }
+	check_variable = { var = independence_wave_setup_force_level value = constant:liberation_force_level.high_chaos compare = less_than_or_equals }
+	check_variable = { var = independence_wave_setup_archetype value = constant:independence_wave_package_archetype.urban_administrative compare = greater_than_or_equals }
+	check_variable = { var = independence_wave_setup_archetype value = constant:independence_wave_package_archetype.nomadic_or_dispersed compare = less_than_or_equals }
+}
+
+has_independence_wave_patron_warning = {
+	check_variable = { var = independence_wave_strongest_patron_influence value = constant:independence_wave_patron.dominance_warning compare = greater_than_or_equals }
+}
+
+has_independence_wave_patron_dependency = {
+	check_variable = { var = independence_wave_strongest_patron_influence value = constant:independence_wave_patron.dependency compare = greater_than_or_equals }
+}
+
+has_independence_wave_patron_control = {
+	check_variable = { var = independence_wave_strongest_patron_influence value = constant:independence_wave_patron.control compare = greater_than_or_equals }
+}
+
+can_independence_wave_receive_network_invitation = {
+	is_independence_wave_active_country = yes
+	check_variable = { var = independence_wave_network_standing value = constant:independence_wave_network.invitation_gate compare = greater_than_or_equals }
+	NOT = { has_country_flag = independence_wave_client_route_locked }
+	NOT = { has_country_flag = independence_wave_network_member }
+	NOT = { is_in_array = { array = global.independence_wave_network_member_country_entries value = THIS } }
+}
+
+can_independence_wave_lead_network = {
+	is_independence_wave_active_country = yes
+	has_country_flag = independence_wave_network_member
+	independence_wave_network_member_arrays_are_aligned = yes
+	is_in_array = { array = global.independence_wave_network_member_country_entries value = THIS }
+	check_variable = { var = independence_wave_network_standing value = constant:independence_wave_network.leadership_gate compare = greater_than_or_equals }
+	has_independence_wave_established_legitimacy = yes
+	has_independence_wave_de_facto_recognition = yes
+}
+
+has_valid_independence_wave_patron_channel = {
+	check_variable = { var = independence_wave_patron_channel value = constant:independence_wave_patron_channel.recognition compare = greater_than_or_equals }
+	check_variable = { var = independence_wave_patron_channel value = constant:independence_wave_patron_channel.base_transit compare = less_than_or_equals }
+}
+
+has_valid_independence_wave_league_route = {
+	check_variable = { var = independence_wave_league_route_input value = constant:independence_wave_league_route.defensive_congress compare = greater_than_or_equals }
+	check_variable = { var = independence_wave_league_route_input value = constant:independence_wave_league_route.radical_revisionist compare = less_than_or_equals }
+}
+
+has_valid_independence_wave_government_route = {
+	check_variable = { var = independence_wave_government_route_input value = constant:independence_wave_government_route.constitutional_republic compare = greater_than_or_equals }
+	check_variable = { var = independence_wave_government_route_input value = constant:independence_wave_government_route.radical_sovereignty compare = less_than_or_equals }
+}
+
+can_independence_wave_open_regional_conference = {
+	can_independence_wave_lead_network = yes
+	check_variable = { var = global.independence_wave_active_country_count value = constant:independence_wave_league.minimum_living_origins compare = greater_than_or_equals }
+	check_variable = { var = global.independence_wave_network_member_count value = constant:independence_wave_league.formation_members compare = greater_than_or_equals }
+	check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.informal_network }
+}
+
+can_independence_wave_form_league = {
+	can_independence_wave_lead_network = yes
+	has_country_flag = independence_wave_congress_preparation_complete
+	has_global_flag = independence_wave_shared_strategic_problem
+	independence_wave_league_founder_arrays_are_aligned = yes
+	check_variable = { var = global.independence_wave_active_country_count value = constant:independence_wave_league.minimum_living_origins compare = greater_than_or_equals }
+	check_variable = { var = global.independence_wave_league_founder_count value = constant:independence_wave_league.formation_members compare = greater_than_or_equals }
+	check_variable = { var = global.independence_wave_league_cohesion value = constant:independence_wave_league.formation_cohesion compare = greater_than_or_equals }
+	check_variable = { var = global.independence_wave_league_common_cause value = constant:independence_wave_league.formation_common_cause compare = greater_than_or_equals }
+	check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.congress_preparation }
+	all_of_scopes = {
+		array = global.independence_wave_league_founder_entries
+		is_independence_wave_active_country = yes
+		has_country_flag = independence_wave_network_member
+		is_in_array = { array = global.independence_wave_network_member_country_entries value = THIS }
+		has_country_flag = independence_wave_league_founder
+		NOT = { has_country_flag = independence_wave_client_route_locked }
+		NOT = { has_independence_wave_patron_control = yes }
+	}
+}
+
+has_independence_wave_durable_league = {
+	check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.durable_league }
+	check_variable = { var = global.independence_wave_league_member_count value = constant:independence_wave_league.durable_members compare = greater_than_or_equals }
+	check_variable = { var = global.independence_wave_league_cohesion value = constant:independence_wave_league.durable_cohesion compare = greater_than_or_equals }
+}
+
+can_independence_wave_mark_league_durable = {
+	has_global_flag = independence_wave_league_durability_mission_complete
+	check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.formal_league }
+	check_variable = { var = global.independence_wave_league_member_count value = constant:independence_wave_league.durable_members compare = greater_than_or_equals }
+	check_variable = { var = global.independence_wave_league_cohesion value = constant:independence_wave_league.durable_cohesion compare = greater_than_or_equals }
+}
+
+can_independence_wave_trigger_danger_milestone = {
+	has_independence_wave_durable_league = yes
+	check_variable = { global.independence_wave_league_route = constant:independence_wave_league_route.radical_revisionist }
+	check_variable = { var = global.independence_wave_league_member_count value = constant:independence_wave_league.danger_members compare = greater_than_or_equals }
+	check_variable = { var = global.independence_wave_league_common_cause value = constant:independence_wave_league.danger_common_cause compare = greater_than_or_equals }
+	check_variable = { var = global.independence_wave_league_shared_reserve value = constant:independence_wave_league.danger_shared_reserve compare = greater_than_or_equals }
+	check_variable = { var = global.independence_wave_league_revisionist_actions value = constant:independence_wave_league.danger_revisionist_actions compare = greater_than_or_equals }
+	NOT = { has_global_flag = independence_wave_danger_super_event_fired }
+}
+
+independence_wave_patron_arrays_are_aligned = {
+	check_variable = { var = independence_wave_patron_owner_generation_entries^num value = independence_wave_patron_country_entries^num compare = equals }
+	check_variable = { var = independence_wave_patron_influence_entries^num value = independence_wave_patron_country_entries^num compare = equals }
+	check_variable = { var = independence_wave_patron_aid_value_entries^num value = independence_wave_patron_country_entries^num compare = equals }
+	check_variable = { var = independence_wave_patron_recognition_entries^num value = independence_wave_patron_country_entries^num compare = equals }
+	check_variable = { var = independence_wave_patron_arms_entries^num value = independence_wave_patron_country_entries^num compare = equals }
+	check_variable = { var = independence_wave_patron_volunteer_entries^num value = independence_wave_patron_country_entries^num compare = equals }
+	check_variable = { var = independence_wave_patron_industrial_entries^num value = independence_wave_patron_country_entries^num compare = equals }
+	check_variable = { var = independence_wave_patron_intelligence_entries^num value = independence_wave_patron_country_entries^num compare = equals }
+	check_variable = { var = independence_wave_patron_trade_entries^num value = independence_wave_patron_country_entries^num compare = equals }
+	check_variable = { var = independence_wave_patron_ideology_entries^num value = independence_wave_patron_country_entries^num compare = equals }
+	check_variable = { var = independence_wave_patron_loan_entries^num value = independence_wave_patron_country_entries^num compare = equals }
+	check_variable = { var = independence_wave_patron_base_entries^num value = independence_wave_patron_country_entries^num compare = equals }
+}
+
+independence_wave_network_member_arrays_are_aligned = {
+	check_variable = { var = global.independence_wave_network_member_generation_entries^num value = global.independence_wave_network_member_country_entries^num compare = equals }
+	check_variable = { var = global.independence_wave_network_member_region_entries^num value = global.independence_wave_network_member_country_entries^num compare = equals }
+}
+
+independence_wave_active_country_arrays_are_aligned = {
+	check_variable = { var = global.independence_wave_active_country_generation_entries^num value = global.independence_wave_active_countries^num compare = equals }
+}
+
+independence_wave_host_relation_arrays_are_aligned = {
+	check_variable = { var = independence_wave_host_generation_entries^num value = independence_wave_host_country_entries^num compare = equals }
+	check_variable = { var = independence_wave_host_claim_entries^num value = independence_wave_host_country_entries^num compare = equals }
+	check_variable = { var = independence_wave_host_hostility_entries^num value = independence_wave_host_country_entries^num compare = equals }
+	check_variable = { var = independence_wave_host_obligation_entries^num value = independence_wave_host_country_entries^num compare = equals }
+	check_variable = { var = independence_wave_host_property_entries^num value = independence_wave_host_country_entries^num compare = equals }
+	check_variable = { var = independence_wave_host_population_entries^num value = independence_wave_host_country_entries^num compare = equals }
+	check_variable = { var = independence_wave_host_border_entries^num value = independence_wave_host_country_entries^num compare = equals }
+	check_variable = { var = independence_wave_host_pressure_entries^num value = independence_wave_host_country_entries^num compare = equals }
+	check_variable = { var = independence_wave_host_fear_entries^num value = independence_wave_host_country_entries^num compare = equals }
+	check_variable = { var = independence_wave_host_outcome_entries^num value = independence_wave_host_country_entries^num compare = equals }
+}
+
+independence_wave_league_founder_arrays_are_aligned = {
+	check_variable = { var = global.independence_wave_league_founder_generation_entries^num value = global.independence_wave_league_founder_entries^num compare = equals }
+}
+
+independence_wave_league_member_arrays_are_aligned = {
+	check_variable = { var = global.independence_wave_league_member_generation_entries^num value = global.independence_wave_league_member_country_entries^num compare = equals }
+	check_variable = { var = global.independence_wave_league_member_region_entries^num value = global.independence_wave_league_member_country_entries^num compare = equals }
+	check_variable = { var = global.independence_wave_league_member_contribution_entries^num value = global.independence_wave_league_member_country_entries^num compare = equals }
+	check_variable = { var = global.independence_wave_league_member_confidence_entries^num value = global.independence_wave_league_member_country_entries^num compare = equals }
+}
+
+independence_wave_historical_generation_arrays_are_aligned = {
+	check_variable = { var = global.independence_wave_historical_generation_entries^num value = global.independence_wave_historical_country_entries^num compare = equals }
+	check_variable = { var = global.independence_wave_historical_package_entries^num value = global.independence_wave_historical_country_entries^num compare = equals }
+	check_variable = { var = global.independence_wave_historical_region_entries^num value = global.independence_wave_historical_country_entries^num compare = equals }
+	check_variable = { var = global.independence_wave_historical_origin_date_entries^num value = global.independence_wave_historical_country_entries^num compare = equals }
+}
