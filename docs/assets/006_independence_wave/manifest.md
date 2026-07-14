@@ -195,3 +195,13 @@ sizes in the accepted registry must be resolved before production.
 
 The final DDS decode sheet was built by reopening the actual runtime DDS files,
 not by reusing the processed PNGs.
+
+## Related country-package source manifest
+
+The bounded IW-001 through IW-010 plus IW-012 northern/western Europe source
+package is documented separately in
+`northern_western_europe_source_manifest.md`. It contains sourced historical
+motifs, three route-owned real-person portrait DDS files, vanilla reuse
+boundaries, provenance and license notes, contact sheets, hashes, and explicit
+blockers. Its five Group B motif previews are not runtime flags and remain
+separate from generated fictional/civic route art.

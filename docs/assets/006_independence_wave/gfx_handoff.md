@@ -153,3 +153,11 @@ The formable/league identities require final tags and approved motifs. The four
 animated pairs require GUI dimensions and real authored frame sequences with
 static fallbacks. `manifest.md` records the exact missing inputs and naming
 contract.
+
+## Northern and western Europe portrait handoff
+
+Three source-backed, route-owned portrait DDS files for BRI, RHI, and BAY are
+documented in `northern_western_europe_gfx_handoff.md`. That handoff owns the
+proposed sprite names, exact texture paths, route locks, low-resolution BRI
+acceptance record, and the warning that ACX/AEX/AFX/AGX/AJX motif previews are
+not runtime flag sprites.
