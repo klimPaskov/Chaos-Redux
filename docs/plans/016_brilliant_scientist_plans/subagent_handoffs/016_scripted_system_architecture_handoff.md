@@ -200,7 +200,11 @@ Important native-project clock rule: `brilliant_scientist_cost_duration_days` is
 
 The owned files provide exactly four once-only evolution wrappers and eight MTTH entries: prefire and active intervals for I-IV. Each wrapper places every persistent chronology/unlock write behind the shared disabled-evolution check and its once-only flag. `brilliant_scientist_record_prefire_evolved_opening` records each enabled stage up to the selected opening stage rather than skipping chronology.
 
-The MTTH entries centralize chaos, posture, value, project, crisis, and stabilization factors. They are consumed by targeted events or decisions only. This tranche adds no daily, weekly, monthly, or other periodic whole-world on-action.
+The accepted evolution timing contract uses a 90-day center after the relevant readiness gate becomes valid. All eight prefire and active MTTH base-day constants are therefore `90`. Chaos, posture, value, project, crisis, and stabilization modifiers shorten or lengthen that center without replacing the readiness gates. The entries are consumed by targeted events or decisions only. This tranche adds no daily, weekly, monthly, or other periodic whole-world on-action.
+
+Active evolution readiness preserves enabled chronology. Evolutions II, III, and IV require the preceding chronology record unless that preceding evolution is explicitly disabled. Evolution I accepts Theory or Prototype progress or proven facility-network investment, then separately requires route-neutral national importance through high Mandate, moderate-or-higher Dependence, or established public reputation. Evolution II also requires a Prototype or an exposed research advantage before foreign interest or action can advance it. Evolution III accepts either Weaponization or a completed impossible Prototype while retaining dangerous-incident or high-independent-capacity proof. Evolution IV retains Kruger State and institutional-capture routes and adds a hosted sovereign-science route with sovereign authority, advanced dangerous work, and strong independent-capacity or facility-network proof.
+
+The parent project and directorate surfaces own the proof writes for `brilliant_scientist_facility_network_invested`, `brilliant_scientist_public_reputation_established`, `brilliant_scientist_research_advantage_exposed`, `brilliant_scientist_impossible_prototype_completed`, `brilliant_scientist_impossible_autonomy_proven`, and `brilliant_scientist_sovereign_science_authority`.
 
 Parent Event Details wiring must add exactly four stable Event 016 preview rows and route their recorded actor to the actual current host/KRG actor.
 
@@ -235,6 +239,8 @@ The owned triggers accept only verified multi-state formation inputs. Charter, e
 ## Terminal contracts
 
 Laboratory World and Strategic Singularity are mutually exclusive commitments.
+
+Laboratory World may be selected directly when final singularity arming has never begun. Once parent project code sets the irreversible `brilliant_scientist_singularity_arming_ever_started` proof, both the commitment gate and terminal-readiness gate require `brilliant_scientist_singularity_verified_nonterminal`. Both gates always reject an armed or fail-deadly singularity and preserve the opposing terminal and permanent-cancellation locks. Parent project code must set the irreversible proof when final arming begins, not during harmless Theory, component, or construction work.
 
 The singularity component enums are:
 
