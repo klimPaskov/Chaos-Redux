@@ -4,18 +4,20 @@
 
 - Event: `006_independence_wave`
 - Families: `FORM-01`, `FORM-02`, and `FORM-04`
-- Asset type: three alternate-history generated base flags
+- Asset type: three alternate-history generated base flags with shared-design
+  ideology filename aliases
 - Source mode: official built-in `$imagegen` for every design
 - Accepted design authority:
   `docs/plans/006_independence_wave_plans/subagent_handoffs/006_form01_04_identity_research_2026_07_15.md`
 - Tag-audit authority:
   `docs/plans/006_independence_wave_plans/tag_audit/006_formable_identity_tag_collision_audit_2026_07_15.md`
-- Status: `handed_off`
+- Status: `complete`
 
 The accepted 2026-07-15 installed-mod and internal-registry audit records
-`KCX`, `NUX`, and `RLX` as collision-clean candidates. This package does not register those tags, change
-country identities, or wire gameplay. It installs only the requested runtime
-flag triplets and records the asset handoff.
+`KCX`, `NUX`, and `RLX` as collision-clean candidates. This package does not
+register those tags, change country identities, or wire gameplay. It installs
+the approved runtime flag ladders and the ideology filenames needed for stable
+HOI4 flag resolution.
 
 ## Source and processing rules
 
@@ -37,7 +39,8 @@ constructed rectangles, crosses, flowers, or river lines for ImageGen output.
 ### KCX - Celtic Congress
 
 - Family: `FORM-01`
-- Classification: alternate-history base flag; one shared design for all routes
+- Classification: alternate-history base flag; one shared design for all
+  routes and ideologies
 - Design: forest-green 1:2:1 outer panels around an ivory center, with the
   generated three-bell heather-purple cluster and dark-green stem
 - Prompt: `prompts/KCX_flag_imagegen_prompt.txt`
@@ -55,8 +58,11 @@ constructed rectangles, crosses, flowers, or river lines for ImageGen output.
 - Runtime TGAs:
   `gfx/flags/KCX.tga`, `gfx/flags/medium/KCX.tga`, and
   `gfx/flags/small/KCX.tga`
+- Shared-design ideology aliases: the same accepted ImageGen design is
+  installed at the normal, medium, and small paths for
+  `KCX_democratic`, `KCX_communism`, `KCX_fascism`, and `KCX_neutrality`.
 - Palette: `#22543D`, `#F1E8CF`, `#70456C`
-- Status: `handed_off`
+- Status: `complete`
 
 No prewar common Celtic Congress flag was found by the accepted research. The
 heather device is an explicit alternate-history use of the documented 1901
@@ -65,7 +71,8 @@ Congress flower, not a historical-flag claim.
 ### NUX - North Atlantic Union
 
 - Family: `FORM-02`
-- Classification: alternate-history base flag; one shared design for all routes
+- Classification: alternate-history base flag; one shared design for all
+  routes and ideologies
 - Design: Atlantic-navy field, broad generated white saltire, and a generated
   offset red Nordic cross layered above it
 - Prompt: `prompts/NUX_flag_imagegen_prompt.txt`
@@ -83,8 +90,11 @@ Congress flower, not a historical-flag claim.
 - Runtime TGAs:
   `gfx/flags/NUX.tga`, `gfx/flags/medium/NUX.tga`, and
   `gfx/flags/small/NUX.tga`
+- Shared-design ideology aliases: the same accepted ImageGen design is
+  installed at the normal, medium, and small paths for
+  `NUX_democratic`, `NUX_communism`, `NUX_fascism`, and `NUX_neutrality`.
 - Palette: `#102E4A`, `#FFFFFF`, `#B72F3B`
-- Status: `handed_off`
+- Status: `complete`
 
 No common flag existed for the accepted Event 006 membership. The saltire and
 Nordic-cross synthesis is alternate history and does not claim to reproduce a
@@ -94,7 +104,7 @@ member flag.
 
 - Family: `FORM-04`
 - Classification: historically grounded alternate-history base flag; one
-  shared design for all routes
+  shared design for all routes and ideologies
 - Design: generated equal green, warm-white, and red vertical fields with the
   generated continuous cobalt-blue Rhine device in the center field
 - Prompt: `prompts/RLX_flag_imagegen_prompt.txt`
@@ -112,8 +122,11 @@ member flag.
 - Runtime TGAs:
   `gfx/flags/RLX.tga`, `gfx/flags/medium/RLX.tga`, and
   `gfx/flags/small/RLX.tga`
+- Shared-design ideology aliases: the same accepted ImageGen design is
+  installed at the normal, medium, and small paths for
+  `RLX_democratic`, `RLX_communism`, `RLX_fascism`, and `RLX_neutrality`.
 - Palette: `#16834A`, `#F2F0E6`, `#C52D34`, `#245B86`
-- Status: `handed_off`
+- Status: `complete`
 
 The accepted research grounds the green-white-red colours in the 1923
 separatist flag but rejects its horizontal arrangement, which vanilla already
@@ -139,9 +152,16 @@ order with a continuous blue river device. The nine TGAs have exact dimensions,
 bottom-left origin, 32-bit RGBA encoding, and byte-identical package/runtime
 copies.
 
+The 36 ideology-named runtime files are byte-identical aliases of those nine
+approved runtime TGAs. They add no recolour, emblem mutation, route design, or
+locally redrawn art. The aliases preserve the accepted one-design rule while
+making every ideology filename explicit for the three custom formable tags.
+
 ## Variants, omissions, and blockers
 
-No ideology or route variant is supported, so none was created. No gameplay,
-localisation, `.gfx`, GUI, country registration, or identity adapter was
-changed. There is no asset-production blocker; later tag registration and
-gameplay wiring remain intentionally outside this package's authority.
+No visually distinct ideology or route variant is supported, so none was
+invented. The ideology-suffixed files are exact aliases of each approved
+ImageGen base design. No gameplay, localisation, `.gfx`, GUI, country
+registration, or identity adapter was changed. There is no asset-production
+blocker; tag registration and gameplay wiring remain outside this package's
+authority.
