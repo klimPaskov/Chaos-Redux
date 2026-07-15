@@ -7,8 +7,6 @@ description: Use when designing, implementing, auditing, or fixing Hearts of Iro
 
 Use this skill when a task touches national focus trees, focus-tree loading, focus effects, focus layout, focus localisation, focus icons, focus AI, focus-tree documentation, or event-created country trees.
 
-For complex tree cleanup or creation, use `hoi4.focus_inspect`, `hoi4.focus_render`, and `hoi4.focus_rewrite` for structural inspection, deterministic layout evidence, lint findings, comparison, and an in-scope rewrite. Keep the design, source review, localisation, AI, and final audit in this skill; do not require the tool for small edits.
-
 Use this skill together with:
 
 - `AGENTS.md` for repository-wide rules
@@ -718,6 +716,15 @@ When a route becomes impossible, use bypasses or availability logic cleanly.
 ## 12. Layout rules
 
 The tree must be readable in game.
+
+For complex cleanup or creation, use `hoi4-mcp-workbench` after the route plan
+and source review. Call `hoi4.focus_inspect` and `hoi4.focus_render`, then use
+`hoi4.focus_rewrite` for an in-scope rewrite or a complete new route plan. Set
+the MCP server `cwd` to the target mod and omit `workspaceId`; no mod-selection
+command is needed. Review layout diagnostics, rendered artifacts, the source
+diff, and the final focus audit. MCP supplies shared parsing, layout, rendering,
+and writes; this skill still owns design, prerequisites, localisation, AI,
+icons, balance, and completion.
 
 Required layout checks:
 
