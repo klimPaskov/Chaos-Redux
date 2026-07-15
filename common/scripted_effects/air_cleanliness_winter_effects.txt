@@ -427,6 +427,17 @@ air_winter_refresh_presentation_class_from_ledger = {
 	}
 }
 
+# Supported scope: any. Each call opens a distinct producer generation so a
+# same-date Fallout retry cannot authenticate a stale state receipt.
+air_winter_begin_fallout_snapshot_production = {
+	if = {
+		limit = { NOT = { has_variable = global.air_winter_fallout_snapshot_producer_generation } }
+		set_variable = { global.air_winter_fallout_snapshot_producer_generation = constant:air_winter_runtime.zero }
+	}
+	add_to_variable = { global.air_winter_fallout_snapshot_producer_generation = constant:air_winter_runtime.one }
+	set_variable = { global.air_winter_fallout_snapshot_producer_schema_version = constant:air_winter_fallout_snapshot_schema.version }
+}
+
 # Supported scope: STATE
 air_winter_record_original_category = {
 	if = {
@@ -593,6 +604,29 @@ air_winter_normalize_state_ledger = {
 	clamp_variable = { var = air_winter_rail_protection_months min = constant:air_winter_runtime.zero }
 	clamp_variable = { var = air_winter_airbase_closure_months min = constant:air_winter_runtime.zero }
 	clamp_variable = { var = air_winter_population_loss_memory min = constant:air_winter_runtime.zero }
+}
+
+# Supported scope: STATE. Fallout calls this only from its existing snapshot
+# state pass. Invalid states receive no initialization and no current receipt.
+air_winter_prepare_fallout_snapshot_source = {
+	clr_state_flag = air_winter_fallout_snapshot_produced
+	clear_variable = air_winter_fallout_snapshot_producer_schema_version
+	clear_variable = air_winter_fallout_snapshot_producer_generation
+	if = {
+		limit = {
+			air_winter_state_is_valid = yes
+			air_winter_fallout_snapshot_generation_is_open = yes
+		}
+		air_winter_record_original_category = yes
+		air_winter_initialize_state = yes
+		air_winter_normalize_state_ledger = yes
+		if = {
+			limit = { air_winter_fallout_snapshot_payload_is_canonical = yes }
+			set_variable = { air_winter_fallout_snapshot_producer_schema_version = global.air_winter_fallout_snapshot_producer_schema_version }
+			set_variable = { air_winter_fallout_snapshot_producer_generation = global.air_winter_fallout_snapshot_producer_generation }
+			set_state_flag = air_winter_fallout_snapshot_produced
+		}
+	}
 }
 
 # ---------------------------------------------------------------------------
@@ -1811,7 +1845,10 @@ air_winter_reset_state = {
 	clear_variable = air_winter_last_update_cycle_id
 	clear_variable = air_winter_last_update_date
 	clear_variable = air_winter_original_category
+	clear_variable = air_winter_fallout_snapshot_producer_schema_version
+	clear_variable = air_winter_fallout_snapshot_producer_generation
 	clr_state_flag = air_winter_initialized
+	clr_state_flag = air_winter_fallout_snapshot_produced
 	clr_state_flag = air_winter_suspended
 	clr_state_flag = air_winter_recent_phase_change
 	clr_state_flag = air_winter_phase_changed_this_tick
@@ -1902,6 +1939,8 @@ air_winter_reset_global = {
 	clear_variable = global.air_winter_last_finalize_date
 	clear_variable = global.air_winter_last_finalize_cycle_id
 	clear_variable = global.air_winter_visual_schema_version
+	clear_variable = global.air_winter_fallout_snapshot_producer_schema_version
+	clear_variable = global.air_winter_fallout_snapshot_producer_generation
 	clear_array = global.air_winter_event_candidate_countries
 	clear_array = global.air_winter_evacuation_cache_countries
 	clr_global_flag = air_winter_cycle_open

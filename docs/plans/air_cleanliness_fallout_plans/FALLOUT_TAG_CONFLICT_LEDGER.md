@@ -83,7 +83,7 @@ Government classifier schema 2 assigns a provisional origin archetype to every s
 - Machine Protocol is future-only. It requires a Brilliant Scientist machine-continuity memory, a live command network, a separately verified EMP-survival flag, a technical state, and a remote refuge. The live command network and EMP-survival requirements have no complete producer, so any partial machine claim remains unresolved rather than falling into another archetype.
 - Mutant Polity requires Chaos at the final tier, a biological or mixed cause, an owned altered-biosphere state, and separate hostable territory. This is fictional high-chaos content and does not gate the Fallout request.
 - Continuity Government requires a surviving pretransition capital. The stored government or exile flags preserve old-state memory but do not add meaningful discrimination because every snapshotted country records one government family.
-- Air Winter category memory is copied into `fallout_pretransition_air_winter_original_category` during the Fallout snapshot. Later Air Winter cleanup cannot change bunker, food, or maritime origin classification.
+- Air Winter category memory is copied into `fallout_pretransition_air_winter_original_category` only with a schema-8 produced or N/A provenance row. Later Air Winter cleanup cannot change bunker, food, or maritime origin classification.
 - The classifier stores the result in `fallout_government_origin_archetype`. The final applied package uses the separate `fallout_government_archetype` variable, so reviewed package selection can preserve origin memory without overwriting it.
 - The classifier does not change visible politics, select a country package, transfer territory, load a focus tree, or initialize AI.
 
