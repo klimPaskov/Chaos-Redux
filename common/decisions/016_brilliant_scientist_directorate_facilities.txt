@@ -5,6 +5,10 @@
 # laboratory, relocation request, hardening, and native repair mobilization.
 # ============================================================================
 
+# Timed country flags reject script-constant and variable tokens. Keep this
+# literal synchronized with brilliant_scientist_directorate_timing.relocation_cooldown_days.
+@brilliant_scientist_relocation_cooldown_days = 365
+
 brilliant_scientist_directorate_category = {
 	brilliant_scientist_formalize_primary_research_campus = {
 		icon = GFX_decision_generic_construction
@@ -381,8 +385,7 @@ brilliant_scientist_directorate_category = {
 		remove_effect = {
 			clr_country_flag = brilliant_scientist_facility_action_in_progress
 			set_country_flag = brilliant_scientist_directorate_relocation_requested
-			set_temp_variable = { brilliant_scientist_directorate_cooldown_days = constant:brilliant_scientist_directorate_timing.relocation_cooldown_days }
-			set_country_flag = { flag = brilliant_scientist_primary_relocation_recent days = brilliant_scientist_directorate_cooldown_days }
+			set_country_flag = { flag = brilliant_scientist_primary_relocation_recent days = @brilliant_scientist_relocation_cooldown_days }
 			set_variable = { brilliant_scientist_directorate_relocation_mandate_snapshot = brilliant_scientist_mandate }
 			set_variable = { brilliant_scientist_directorate_relocation_exposure_snapshot = brilliant_scientist_exposure }
 			set_variable = { brilliant_scientist_directorate_relocation_dependence_snapshot = brilliant_scientist_dependence }
