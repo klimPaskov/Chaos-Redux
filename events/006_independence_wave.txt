@@ -84,3 +84,313 @@ country_event = {
 		}
 	}
 }
+
+# ---------------------------------------------------------------------------
+# FORM-03 LCX post-charter constitutional and industrial progression
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr6.300
+	title = chaosx.nr6.300.t
+	desc = chaosx.nr6.300.d
+	picture = GFX_report_event_006_form03_charter_convention
+	is_triggered_only = yes
+	trigger = { has_independence_wave_form03_post_charter_progression = yes }
+
+	option = { name = chaosx.nr6.300.a custom_effect_tooltip = chaosx.nr6.300.a.tt }
+}
+
+country_event = {
+	id = chaosx.nr6.301
+	title = chaosx.nr6.301.t
+	desc = chaosx.nr6.301.d
+	picture = GFX_report_event_006_form03_charter_convention
+	is_triggered_only = yes
+	trigger = {
+		has_independence_wave_form03_post_charter_progression = yes
+		check_variable = { independence_wave_form03_language_model = constant:independence_wave_form03_language_model.none }
+	}
+
+	option = {
+		name = chaosx.nr6.301.a
+		custom_effect_tooltip = chaosx.nr6.301.a.tt
+		set_temp_variable = { independence_wave_form03_selected_language_model = constant:independence_wave_form03_language_model.parallel_services }
+		independence_wave_form03_select_language_model = yes
+		ai_chance = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_major
+				has_independence_wave_constitutional_route = yes
+				check_variable = {
+					var = independence_wave_recognition
+					value = constant:independence_wave_recognition_band.treaty_backed
+					compare = greater_than_or_equals
+				}
+				check_variable = {
+					var = independence_wave_capacity
+					value = constant:independence_wave_capacity_band.institutional
+					compare = greater_than_or_equals
+				}
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr6.301.b
+		custom_effect_tooltip = chaosx.nr6.301.b.tt
+		set_temp_variable = { independence_wave_form03_selected_language_model = constant:independence_wave_form03_language_model.territorial_administration }
+		independence_wave_form03_select_language_model = yes
+		ai_chance = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_major
+				owns_state = 34
+				controls_state = 34
+				owns_state = 36
+				controls_state = 36
+			}
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_major
+				OR = {
+					AND = {
+						BEL = { has_country_flag = independence_wave_form03_full_accession_requested }
+						HOL = { has_country_flag = independence_wave_form03_full_accession_requested }
+					}
+					AND = {
+						BEL = { has_country_flag = independence_wave_form03_full_accession_requested }
+						LUX = { has_country_flag = independence_wave_form03_full_accession_requested }
+					}
+					AND = {
+						HOL = { has_country_flag = independence_wave_form03_full_accession_requested }
+						LUX = { has_country_flag = independence_wave_form03_full_accession_requested }
+					}
+				}
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr6.301.c
+		custom_effect_tooltip = chaosx.nr6.301.c.tt
+		set_temp_variable = { independence_wave_form03_selected_language_model = constant:independence_wave_form03_language_model.working_register }
+		independence_wave_form03_select_language_model = yes
+		ai_chance = {
+			base = constant:independence_wave_decision_ai.low
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_major
+				OR = {
+					has_war = yes
+					check_variable = {
+						var = independence_wave_instability
+						value = constant:independence_wave_instability_band.severe
+						compare = greater_than_or_equals
+					}
+					independence_wave_capacity < constant:independence_wave_capacity_band.institutional
+				}
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr6.302
+	title = chaosx.nr6.302.t
+	desc = chaosx.nr6.302.d
+	picture = GFX_report_event_006_form03_charter_convention
+	is_triggered_only = yes
+	trigger = {
+		is_independence_wave_form03_sovereign_associate = yes
+		NOT = { has_independence_wave_form03_resolved_constitutional_status = yes }
+	}
+
+	option = {
+		name = chaosx.nr6.302.a
+		custom_effect_tooltip = chaosx.nr6.302.a.tt
+		set_country_flag = independence_wave_form03_full_accession_requested
+		set_country_flag = independence_wave_form03_language_vote_pending
+		clr_country_flag = independence_wave_form03_limited_associate
+		clr_country_flag = independence_wave_form03_language_guarantees_withheld
+		independence_wave_form03_report_current_member_to_carrier = yes
+		ai_chance = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_government = democratic }
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_opinion = { target = FROM value > constant:independence_wave_decision_gate.diplomatic_acceptance_opinion } }
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_double
+				FROM = {
+					check_variable = {
+						var = independence_wave_recognition
+						value = constant:independence_wave_recognition_band.treaty_backed
+						compare = greater_than_or_equals
+					}
+				}
+			}
+			modifier = { factor = constant:independence_wave_decision_ai.blocked has_war_with = FROM }
+		}
+	}
+
+	option = {
+		name = chaosx.nr6.302.b
+		custom_effect_tooltip = chaosx.nr6.302.b.tt
+		set_country_flag = independence_wave_form03_limited_associate
+		clr_country_flag = independence_wave_form03_full_accession_requested
+		clr_country_flag = independence_wave_form03_language_vote_pending
+		clr_country_flag = independence_wave_form03_language_guarantees_withheld
+		independence_wave_form03_report_current_member_to_carrier = yes
+		ai_chance = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_double
+				NOT = { num_of_civilian_factories_available_for_projects > constant:independence_wave_decision_cost.civilian_factory_light }
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr6.302.c
+		custom_effect_tooltip = chaosx.nr6.302.c.tt
+		set_country_flag = independence_wave_form03_language_guarantees_withheld
+		clr_country_flag = independence_wave_form03_full_accession_requested
+		clr_country_flag = independence_wave_form03_language_vote_pending
+		clr_country_flag = independence_wave_form03_limited_associate
+		independence_wave_form03_apply_member_settlement_to_host = yes
+		independence_wave_form03_report_current_member_to_carrier = yes
+		ai_chance = {
+			base = constant:independence_wave_decision_ai.low
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_major has_war_with = FROM }
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_opinion = { target = FROM value < constant:independence_wave_value.minimum } }
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double capital_scope = { NOT = { is_controlled_by = ROOT } } }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr6.303
+	title = chaosx.nr6.303.t
+	desc = chaosx.nr6.303.d
+	picture = GFX_report_event_006_form03_charter_convention
+	is_triggered_only = yes
+	trigger = {
+		is_independence_wave_form03_sovereign_associate = yes
+		NOT = { has_country_flag = independence_wave_form03_industrial_terms_ratified }
+		NOT = { has_country_flag = independence_wave_form03_industrial_terms_withheld }
+	}
+
+	option = {
+		name = chaosx.nr6.303.a
+		custom_effect_tooltip = chaosx.nr6.303.a.tt
+		set_country_flag = independence_wave_form03_corridor_invitation_pending
+		clr_country_flag = independence_wave_form03_industrial_terms_withheld
+		ai_chance = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = { factor = constant:independence_wave_focus_ai.war_avoid_factor has_war = yes }
+		}
+	}
+
+	option = {
+		name = chaosx.nr6.303.b
+		custom_effect_tooltip = chaosx.nr6.303.b.tt
+		set_country_flag = independence_wave_form03_industrial_terms_withheld
+		clr_country_flag = independence_wave_form03_corridor_invitation_pending
+		independence_wave_form03_report_current_member_to_carrier = yes
+		ai_chance = { base = constant:independence_wave_decision_ai.low }
+	}
+}
+
+country_event = {
+	id = chaosx.nr6.304
+	title = chaosx.nr6.304.t
+	desc = chaosx.nr6.304.d
+	picture = GFX_report_event_006_form03_charter_convention
+	is_triggered_only = yes
+	trigger = { is_independence_wave_form03_sovereign_associate = yes }
+
+	option = {
+		name = chaosx.nr6.304.a
+		custom_effect_tooltip = chaosx.nr6.304.a.tt
+		set_country_flag = independence_wave_form03_full_accession_requested
+		set_country_flag = independence_wave_form03_language_vote_pending
+		clr_country_flag = independence_wave_form03_limited_associate
+		clr_country_flag = independence_wave_form03_language_guarantees_withheld
+		independence_wave_form03_report_current_member_to_carrier = yes
+		ai_chance = { base = constant:independence_wave_decision_ai.high modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_government = democratic } }
+	}
+
+	option = {
+		name = chaosx.nr6.304.b
+		custom_effect_tooltip = chaosx.nr6.304.b.tt
+		set_country_flag = independence_wave_form03_limited_associate
+		clr_country_flag = independence_wave_form03_full_accession_requested
+		clr_country_flag = independence_wave_form03_language_vote_pending
+		clr_country_flag = independence_wave_form03_language_guarantees_withheld
+		independence_wave_form03_report_current_member_to_carrier = yes
+		ai_chance = { base = constant:independence_wave_decision_ai.standard }
+	}
+
+	option = {
+		name = chaosx.nr6.304.c
+		custom_effect_tooltip = chaosx.nr6.304.c.tt
+		set_country_flag = independence_wave_form03_language_guarantees_withheld
+		clr_country_flag = independence_wave_form03_full_accession_requested
+		clr_country_flag = independence_wave_form03_language_vote_pending
+		clr_country_flag = independence_wave_form03_limited_associate
+		independence_wave_form03_apply_member_settlement_to_host = yes
+		independence_wave_form03_report_current_member_to_carrier = yes
+		ai_chance = { base = constant:independence_wave_decision_ai.low modifier = { factor = constant:independence_wave_decision_ai.modifier_major has_war_with = FROM } }
+	}
+}
+
+country_event = {
+	id = chaosx.nr6.305
+	title = chaosx.nr6.305.t
+	desc = chaosx.nr6.305.d
+	picture = GFX_report_event_006_form03_charter_convention
+	is_triggered_only = yes
+	trigger = { has_independence_wave_form03_post_charter_progression = yes }
+
+	option = { name = chaosx.nr6.305.a }
+}
+
+country_event = {
+	id = chaosx.nr6.306
+	title = chaosx.nr6.306.t
+	desc = chaosx.nr6.306.d
+	picture = GFX_report_event_006_form03_charter_convention
+	is_triggered_only = yes
+	trigger = { has_country_flag = independence_wave_form03_post_charter_complete }
+
+	option = { name = chaosx.nr6.306.a custom_effect_tooltip = chaosx.nr6.306.a.tt }
+}
+
+country_event = {
+	id = chaosx.nr6.307
+	title = chaosx.nr6.307.t
+	desc = {
+		trigger = { check_variable = { independence_wave_form03_charter_outcome = constant:independence_wave_form03_outcome.charter_without_works } }
+		text = chaosx.nr6.307.charter_without_works.d
+	}
+	desc = {
+		trigger = { check_variable = { independence_wave_form03_charter_outcome = constant:independence_wave_form03_outcome.industrial_directorate } }
+		text = chaosx.nr6.307.industrial_directorate.d
+	}
+	desc = {
+		trigger = { check_variable = { independence_wave_form03_charter_outcome = constant:independence_wave_form03_outcome.dual_compromise } }
+		text = chaosx.nr6.307.dual_compromise.d
+	}
+	picture = GFX_report_event_006_form03_charter_convention
+	is_triggered_only = yes
+	trigger = { has_country_flag = independence_wave_form03_post_charter_compromise }
+
+	option = { name = chaosx.nr6.307.a custom_effect_tooltip = chaosx.nr6.307.a.tt }
+}
+
+country_event = {
+	id = chaosx.nr6.308
+	title = chaosx.nr6.308.t
+	desc = chaosx.nr6.308.d
+	picture = GFX_report_event_006_form03_charter_convention
+	is_triggered_only = yes
+	trigger = { has_country_flag = independence_wave_form03_post_charter_failed }
+
+	option = { name = chaosx.nr6.308.a custom_effect_tooltip = chaosx.nr6.308.a.tt }
+}

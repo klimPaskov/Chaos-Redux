@@ -344,14 +344,7 @@ independence_wave_decision_integrate_settled_state = {
 independence_wave_decision_integrate_formable_member_state = {
 	if = {
 		limit = {
-			is_controlled_by = ROOT
-			NOT = { is_core_of = ROOT }
-			NOT = {
-				AND = {
-					has_state_flag = independence_wave_dm56_integrated_by@ROOT
-					check_variable = { var = independence_wave_dm56_generation@ROOT value = ROOT.independence_wave_generation_id compare = equals }
-				}
-			}
+			is_registered_independence_wave_formable_integration_state = yes
 		}
 		add_core_of = ROOT
 		set_state_flag = independence_wave_dm56_integrated_by@ROOT
@@ -525,19 +518,12 @@ independence_wave_consume_committed_breakaway_sponsorships = {
 # its family-specific tag/cosmetic-tag, member-consent, and cleanup transaction.
 # This effect deliberately does not invent a fallback tag.
 independence_wave_decision_request_selected_formable_commit = {
-	if = {
-		limit = {
-			can_independence_wave_prepare_formable = yes
-			has_country_flag = independence_wave_formation_congress_complete
-			NOT = { has_country_flag = independence_wave_formable_commit_pending }
-		}
-		set_country_flag = independence_wave_formable_commit_pending
-		set_variable = { independence_wave_formable_commit_request_date = global.date }
-	}
+	independence_wave_formable_commit_selected_family = yes
 }
 
 # Parent integration hook: call before or from `independence_wave_end_active_origin`.
 independence_wave_cleanup_decision_layer = {
+	independence_wave_formable_cleanup_runtime = yes
 	if = {
 		limit = { has_country_flag = independence_wave_emergency_formations_active }
 		independence_wave_decision_demobilize_emergency_formations = yes

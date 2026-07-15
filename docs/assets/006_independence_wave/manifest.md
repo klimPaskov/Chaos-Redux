@@ -3,7 +3,8 @@
 ## Production contract
 
 - Scope: ASSET-007 through ASSET-038, the requested Post-Release Instability
-  registry-gap icon, and the unblocked portion of ASSET-047.
+  registry-gap icon, the researched FORM-01 through FORM-04 child packages of
+  ASSET-046 and ASSET-048, and the unblocked portion of ASSET-047.
 - Source mode: built-in `$imagegen`; generated masters are project-controlled and
   contain no third-party image material.
 - Source masters: `docs/assets/006_independence_wave/source_png/`.
@@ -139,12 +140,32 @@ community/faction ownership and date documented, plus a decision on whether it i
 community-wide, church-specific, Levies-specific, or political-faction-specific.
 The post-1968 modern Assyrian flag is not an acceptable 1936 baseline.
 
-## ASSET-046 formable flag and emblem blocker
+## ASSET-046 formable flags and remaining emblem coverage
 
-ASSET-046 is unproduced. The formable registry defines `FORM-01` through
-`FORM-48`, but it does not yet bind each family to a final gameplay tag, final
-identity motif, approved palette, or stable UI emblem reference. Creating generic
-emblems would be a prohibited substitute.
+ASSET-046 is partially produced for the four researched formable families that
+currently have operational implementations:
+
+- `FORM-01` Celtic Congress: `KCX`;
+- `FORM-02` North Atlantic Union: `NUX`;
+- `FORM-03` Confederation of the Low Countries: cosmetic identity `LCX`;
+- `FORM-04` Rhenish League: `RLX`.
+
+The generated source masters, processed ladders, final runtime TGAs, prompts,
+provenance, review sheets, validation, and checksums are recorded in:
+
+- `docs/assets/006_independence_wave/form01_02_04_flags_2026_07_15/`;
+- `docs/assets/006_independence_wave/low_countries_form03_2026_07_15/`.
+
+`KCX`, `NUX`, and `RLX` use one accepted ImageGen-authored design per tag and
+have explicit, byte-identical ideology filename aliases at normal, medium, and
+small sizes. `LCX` is a cosmetic identity whose accepted shared base ladder is
+resolved through its carrier. No route recolour or locally redrawn flag art was
+introduced.
+
+The remaining `FORM-05` through `FORM-48` flag identities and the per-family UI
+emblem set remain blocked until each family has a final gameplay tag, public
+identity, researched motif, approved palette, and stable UI consumer. Creating
+generic emblems would be a prohibited substitute.
 
 Reserved stable naming contract after those inputs are approved:
 
@@ -161,11 +182,32 @@ Reserved stable naming contract after those inputs are approved:
   `gfx/interface/006_independence_wave/emblems/independence_wave_league_emblem.dds`;
 - league sprite: `GFX_independence_wave_league_emblem`.
 
-Required input per `FORM-*` row: final tag, final public identity, verified or
-explicitly alternate-history motif, source/ownership note for any historical or
-community symbol, palette, route variants, and the UI sizes that consume the
-emblem. Parent implementation must decide whether the league emblem is universal
-or charter/route-specific before art begins.
+Required input for every unresolved `FORM-*` row remains: final tag, final public
+identity, verified or explicitly alternate-history motif, source/ownership note
+for any historical or community symbol, palette, route variants, and the UI
+sizes that consume the emblem. Parent implementation must decide whether the
+league emblem is universal or charter/route-specific before that art begins.
+
+## ASSET-048 regional report variants
+
+The researched FORM-03 child deliverable is produced and wired:
+
+- source and review package:
+  `docs/assets/006_independence_wave/low_countries_form03_progression/report_scene/`;
+- detailed requirement-to-runtime row:
+  `docs/assets/006_independence_wave/low_countries_form03_progression/report_scene/submanifest.md`;
+- runtime texture:
+  `gfx/event_pictures/006_independence_wave/report_event_006_form03_charter_convention.dds`;
+- sprite: `GFX_report_event_006_form03_charter_convention` in
+  `interface/006_independence_wave_event_pictures.gfx`;
+- consumers: `chaosx.nr6.300` through `chaosx.nr6.308`.
+
+The report scene is a built-in ImageGen alternate-history constitutional and
+engineering congress, processed as a 210x176 report card. Its runtime DDS has
+real alpha and a pixel-identical decoded review. The remaining regional report
+variants stay readiness-controlled and require their package-specific scene,
+consumer list, and provenance before production; the FORM-03 scene is not a
+substitute for those rows.
 
 ## ASSET-040 through ASSET-043: outside the static tranche
 

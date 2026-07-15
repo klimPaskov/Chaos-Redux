@@ -1687,6 +1687,145 @@ focus_tree = {
 	}
 
 	# -----------------------------------------------------------------------
+	# FORM-03 LCX post-charter language and industrial settlement
+	# -----------------------------------------------------------------------
+
+	focus = {
+		id = independence_wave_form03_open_charter_convention
+		icon = GFX_goal_independence_wave_form03_open_charter_convention
+		prerequisite = { focus = independence_wave_establish_integration_commission }
+		x = 52
+		y = 16
+		cost = @independence_wave_focus_short
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		allow_branch = { is_independence_wave_form03_active_carrier = yes }
+		available = { is_independence_wave_form03_active_carrier = yes }
+		completion_reward = {
+			custom_effect_tooltip = independence_wave_form03_open_charter_convention_effect_tt
+			hidden_effect = {
+				set_country_flag = independence_wave_form03_language_convention_unlocked
+				set_variable = { independence_wave_form03_charter_phase = constant:independence_wave_form03_phase.drafting }
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_focus_ai.urgent }
+	}
+
+	focus = {
+		id = independence_wave_form03_define_public_service_guarantees
+		icon = GFX_goal_independence_wave_form03_define_public_service_guarantees
+		prerequisite = { focus = independence_wave_form03_open_charter_convention }
+		x = 51
+		y = 17
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available = { has_independence_wave_form03_post_charter_progression = yes }
+		completion_reward = {
+			custom_effect_tooltip = independence_wave_form03_define_public_service_guarantees_effect_tt
+			hidden_effect = { set_country_flag = independence_wave_form03_public_service_actions_unlocked }
+		}
+		ai_will_do = {
+			base = constant:independence_wave_focus_ai.high
+			modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor has_independence_wave_constitutional_route = yes }
+			modifier = {
+				factor = constant:independence_wave_focus_ai.preferred_factor
+				has_country_flag = independence_wave_league_member
+				check_variable = { global.independence_wave_league_route = constant:independence_wave_league_route.development_compact }
+			}
+		}
+	}
+
+	focus = {
+		id = independence_wave_form03_establish_delta_works_board
+		icon = GFX_goal_independence_wave_form03_establish_delta_works_board
+		prerequisite = { focus = independence_wave_form03_open_charter_convention }
+		x = 53
+		y = 17
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+		available = { has_independence_wave_form03_post_charter_progression = yes }
+		completion_reward = {
+			custom_effect_tooltip = independence_wave_form03_establish_delta_works_board_effect_tt
+			hidden_effect = { set_country_flag = independence_wave_form03_industrial_board_unlocked }
+		}
+		ai_will_do = {
+			base = constant:independence_wave_focus_ai.high
+			modifier = {
+				factor = constant:independence_wave_focus_ai.strong_preference_factor
+				has_country_flag = independence_wave_league_member
+				check_variable = { global.independence_wave_league_route = constant:independence_wave_league_route.development_compact }
+			}
+			modifier = { factor = constant:independence_wave_focus_ai.preferred_factor has_independence_wave_constitutional_route = yes }
+		}
+	}
+
+	focus = {
+		id = independence_wave_form03_build_federal_appeals_and_examinations
+		icon = GFX_goal_independence_wave_form03_build_federal_appeals_and_examinations
+		prerequisite = { focus = independence_wave_form03_define_public_service_guarantees }
+		x = 51
+		y = 18
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available = { has_independence_wave_form03_post_charter_progression = yes }
+		completion_reward = {
+			custom_effect_tooltip = independence_wave_form03_build_federal_appeals_and_examinations_effect_tt
+			hidden_effect = { set_country_flag = independence_wave_form03_appeals_examinations_unlocked }
+		}
+		ai_will_do = { base = constant:independence_wave_focus_ai.urgent }
+	}
+
+	focus = {
+		id = independence_wave_form03_harmonize_corridor_standards
+		icon = GFX_goal_independence_wave_form03_harmonize_corridor_standards
+		prerequisite = { focus = independence_wave_form03_establish_delta_works_board }
+		x = 53
+		y = 18
+		cost = @independence_wave_focus_standard
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		available = { has_independence_wave_form03_post_charter_progression = yes }
+		completion_reward = {
+			custom_effect_tooltip = independence_wave_form03_harmonize_corridor_standards_effect_tt
+			hidden_effect = { set_country_flag = independence_wave_form03_corridor_standards_unlocked }
+		}
+		ai_will_do = { base = constant:independence_wave_focus_ai.urgent }
+	}
+
+	focus = {
+		id = independence_wave_form03_submit_low_countries_compact
+		icon = GFX_goal_independence_wave_form03_submit_low_countries_compact
+		prerequisite = { focus = independence_wave_form03_build_federal_appeals_and_examinations }
+		prerequisite = { focus = independence_wave_form03_harmonize_corridor_standards }
+		x = 52
+		y = 19
+		cost = @independence_wave_focus_long
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available = {
+			has_independence_wave_form03_post_charter_progression = yes
+			check_variable = {
+				var = independence_wave_form03_federal_accommodation
+				value = constant:independence_wave_form03_value.compromise
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = independence_wave_form03_industrial_integration
+				value = constant:independence_wave_form03_value.compromise
+				compare = greater_than_or_equals
+			}
+			has_independence_wave_form03_all_constitutional_statuses_resolved = yes
+		}
+		completion_reward = {
+			custom_effect_tooltip = independence_wave_form03_submit_low_countries_compact_effect_tt
+			hidden_effect = {
+				set_variable = { independence_wave_form03_charter_phase = constant:independence_wave_form03_phase.ratification }
+				set_variable = { independence_wave_form03_ratification_start_date = global.date }
+				set_country_flag = independence_wave_form03_ratification_window_open
+				activate_mission = independence_wave_form03_ratify_confederal_charter
+			}
+		}
+		ai_will_do = { base = constant:independence_wave_focus_ai.urgent }
+	}
+
+	# -----------------------------------------------------------------------
 	# Hidden high-chaos sovereignty. World Collapse opens this lane from the
 	# ambition milestone even without the radical government settlement and
 	# multiplies every revisionist-pressure contribution by 1.35.

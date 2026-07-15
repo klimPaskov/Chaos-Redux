@@ -82,6 +82,29 @@ independence_wave_formable_method = {
 	hidden_high_chaos_proclamation = 6
 }
 
+# Bit values stored in each family profile. The selected method remains the
+# readable enum above, while the mask lets one shared trigger validate every
+# FORM family without copying its decision surface.
+independence_wave_formable_method_bit = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	negotiated_federation = 1
+	dynastic_traditional_union = 2
+	revolutionary_union = 4
+	military_settlement = 8
+	league_transformation = 16
+	hidden_high_chaos_proclamation = 32
+	negotiated_modulus = 2
+	dynastic_modulus = 4
+	revolutionary_modulus = 8
+	military_modulus = 16
+	league_modulus = 32
+	hidden_modulus = 64
+}
+
 independence_wave_formable_discovery = {
 	schema = {
 		any_key = yes
@@ -106,6 +129,44 @@ independence_wave_formable_consent = {
 	observer = 1
 	consenting_member = 2
 	opposed_member = 3
+}
+
+independence_wave_formable_consent_rule = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	voluntary_membership = 1
+	unanimous_compact = 2
+	controlled_settlement = 3
+}
+
+independence_wave_formable_ai_willingness = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	never = 0
+	rare = 1
+	low = 2
+	moderate = 3
+	high = 4
+}
+
+independence_wave_formable_risk_tier = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	low = 1
+	moderate = 2
+	high = 3
+	severe = 4
 }
 
 independence_wave_formable_transaction = {
@@ -149,4 +210,111 @@ independence_wave_formable_tuning = {
 	loop_increment = 1
 	first_array_index = 0
 	no_entries = 0
+}
+
+independence_wave_formable_risk = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	total_weight = 100
+	minimum_failure_weight = 5
+	maximum_failure_weight = 85
+	low_base = 15
+	moderate_base = 25
+	high_base = 40
+	severe_base = 55
+	opposed_member_penalty = 15
+	observer_penalty = 5
+	controlled_anchor_relief = 10
+	surplus_consent_relief = 5
+	military_method_penalty = 10
+	hidden_method_penalty = 15
+}
+
+independence_wave_formable_duration = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	congress_window_days = 360
+	integration_days = 180
+}
+
+independence_wave_formable_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	# Negotiated, dynastic, and league commits combine the strategic and
+	# standard-administration command commitments.
+	civic_command_power = 40
+}
+
+# FORM-01 through FORM-48 source registry. These are discovery and transaction
+# profiles, not tag packages. An entry does not become formable-ready until its
+# owning family adapter separately certifies territory, identity, flags, and
+# integration policy at runtime.
+independence_wave_formable_registry = {
+	schema = {
+		any_key = yes
+		data = {
+			{
+				any_key = yes
+				data = fixed_point
+			}
+		}
+	}
+
+	celtic_cooperation_state = { region = 1 methods = 17 discovery = 4 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 3 risk_tier = 2 }
+	north_atlantic_compact = { region = 1 methods = 16 discovery = 2 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 4 risk_tier = 2 }
+	low_countries_federation = { region = 1 methods = 1 discovery = 2 minimum_members = 2 minimum_consents = 2 minimum_anchors = 2 ai_willingness = 4 risk_tier = 1 }
+	rhine_federation = { region = 1 methods = 9 discovery = 2 minimum_members = 2 minimum_consents = 2 minimum_anchors = 2 ai_willingness = 3 risk_tier = 2 }
+	mediterranean_island_league = { region = 2 methods = 16 discovery = 4 minimum_members = 2 minimum_consents = 2 minimum_anchors = 2 ai_willingness = 4 risk_tier = 2 }
+	adriatic_federation = { region = 3 methods = 17 discovery = 4 minimum_members = 2 minimum_consents = 2 minimum_anchors = 2 ai_willingness = 3 risk_tier = 2 }
+	iberian_federation = { region = 2 methods = 5 discovery = 2 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 2 risk_tier = 3 }
+	danubian_confederation = { region = 3 methods = 17 discovery = 4 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 4 risk_tier = 2 }
+	balkan_federation = { region = 3 methods = 13 discovery = 2 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 3 risk_tier = 3 }
+	baltic_federation = { region = 4 methods = 17 discovery = 4 minimum_members = 3 minimum_consents = 2 minimum_anchors = 3 ai_willingness = 4 risk_tier = 2 }
+	cossack_host_federation = { region = 4 methods = 9 discovery = 2 minimum_members = 2 minimum_consents = 2 minimum_anchors = 2 ai_willingness = 4 risk_tier = 2 }
+	volga_ural_federation = { region = 5 methods = 17 discovery = 2 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 4 risk_tier = 2 }
+	idel_ural = { region = 5 methods = 35 discovery = 2 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 3 risk_tier = 3 }
+	siberian_federation = { region = 5 methods = 9 discovery = 2 minimum_members = 3 minimum_consents = 2 minimum_anchors = 3 ai_willingness = 3 risk_tier = 3 }
+	northern_indigenous_confederation = { region = 5 methods = 1 discovery = 0 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 1 risk_tier = 4 }
+	transcaucasian_federation = { region = 6 methods = 17 discovery = 2 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 4 risk_tier = 3 }
+	north_caucasian_federation = { region = 6 methods = 9 discovery = 3 minimum_members = 3 minimum_consents = 2 minimum_anchors = 3 ai_willingness = 3 risk_tier = 3 }
+	mesopotamian_federation = { region = 6 methods = 9 discovery = 2 minimum_members = 2 minimum_consents = 2 minimum_anchors = 2 ai_willingness = 4 risk_tier = 3 }
+	fertile_crescent_union = { region = 7 methods = 13 discovery = 3 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 2 risk_tier = 4 }
+	arabian_federation = { region = 7 methods = 11 discovery = 2 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 4 risk_tier = 3 }
+	levantine_federation = { region = 7 methods = 17 discovery = 2 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 3 risk_tier = 3 }
+	maghreb_union = { region = 8 methods = 21 discovery = 2 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 4 risk_tier = 2 }
+	saharan_confederation = { region = 8 methods = 1 discovery = 0 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 1 risk_tier = 4 }
+	west_african_federation = { region = 9 methods = 5 discovery = 2 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 4 risk_tier = 2 }
+	sahel_confederation = { region = 9 methods = 11 discovery = 2 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 3 risk_tier = 3 }
+	kongo_basin_federation = { region = 9 methods = 3 discovery = 2 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 3 risk_tier = 3 }
+	great_lakes_federation = { region = 10 methods = 17 discovery = 2 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 3 risk_tier = 3 }
+	east_african_federation = { region = 10 methods = 17 discovery = 4 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 2 risk_tier = 3 }
+	horn_league_state = { region = 10 methods = 11 discovery = 2 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 3 risk_tier = 3 }
+	southern_african_confederation = { region = 11 methods = 17 discovery = 4 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 3 risk_tier = 3 }
+	indian_ocean_league_state = { region = 11 methods = 17 discovery = 4 minimum_members = 2 minimum_consents = 2 minimum_anchors = 2 ai_willingness = 4 risk_tier = 2 }
+	indus_federation = { region = 12 methods = 9 discovery = 3 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 3 risk_tier = 3 }
+	dravidian_federation = { region = 12 methods = 5 discovery = 2 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 3 risk_tier = 3 }
+	northeast_federation = { region = 12 methods = 1 discovery = 0 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 1 risk_tier = 4 }
+	himalayan_confederation = { region = 12 methods = 3 discovery = 2 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 3 risk_tier = 3 }
+	maritime_federation = { region = 13 methods = 25 discovery = 4 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 4 risk_tier = 3 }
+	mainland_southeast_asian_federation = { region = 13 methods = 5 discovery = 3 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 2 risk_tier = 4 }
+	polynesian_league_state = { region = 13 methods = 17 discovery = 4 minimum_members = 2 minimum_consents = 2 minimum_anchors = 2 ai_willingness = 4 risk_tier = 2 }
+	melanesian_federation = { region = 13 methods = 1 discovery = 0 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 1 risk_tier = 4 }
+	caribbean_federation = { region = 14 methods = 17 discovery = 4 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 4 risk_tier = 2 }
+	andean_confederation = { region = 14 methods = 13 discovery = 2 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 3 risk_tier = 3 }
+	qullasuyu_inspired_highland_union = { region = 14 methods = 33 discovery = 5 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 1 risk_tier = 4 }
+	gran_colombian_federation = { region = 14 methods = 9 discovery = 3 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 3 risk_tier = 3 }
+	rio_de_la_plata_confederation = { region = 14 methods = 9 discovery = 2 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 3 risk_tier = 3 }
+	mesoamerican_federation = { region = 14 methods = 5 discovery = 0 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 1 risk_tier = 4 }
+	northeastern_indigenous_confederation = { region = 14 methods = 1 discovery = 0 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 1 risk_tier = 4 }
+	southwestern_indigenous_compact = { region = 14 methods = 1 discovery = 0 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 1 risk_tier = 4 }
+	pacific_regional_federation = { region = 14 methods = 33 discovery = 5 minimum_members = 3 minimum_consents = 3 minimum_anchors = 3 ai_willingness = 1 risk_tier = 4 }
 }
