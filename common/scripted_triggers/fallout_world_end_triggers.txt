@@ -3224,9 +3224,10 @@ fallout_old_world_diplomacy_proven_surfaces_are_clean = {
 	NOT = { any_country = { is_in_peace_conference = yes } }
 }
 
-# Supported scope: COUNTRY. Market access and resource rights have exact reset
-# and validation routes. The other required surfaces remain fail closed until
-# an exact reset and validation route is proven.
+# Supported scope: COUNTRY. Docking rights have an exhaustive ordered-pair
+# inverse with a generation-bound application proof. Market access and resource
+# rights also have exact reset and readback routes. The other required surfaces
+# remain fail closed until an exact reset and validation route is proven.
 fallout_old_world_diplomacy_full_reset_is_verified = {
 	has_global_flag = fallout_transition_old_world_diplomacy_proven_complete
 	fallout_old_world_diplomacy_proven_surfaces_are_clean = yes
@@ -3237,17 +3238,30 @@ fallout_old_world_diplomacy_full_reset_is_verified = {
 	NOT = { has_global_flag = fallout_transition_trade_routes_reset_blocked }
 	NOT = { has_global_flag = fallout_transition_intelligence_reset_blocked }
 	NOT = { has_global_flag = fallout_transition_expeditionaries_reset_blocked }
+	has_global_flag = fallout_transition_docking_rights_reset_applied
 	has_global_flag = fallout_transition_docking_rights_reset_verified
 	has_global_flag = fallout_transition_market_access_reset_applied
 	has_global_flag = fallout_transition_market_access_reset_verified
 	has_global_flag = fallout_transition_resource_rights_reset_applied
 	has_global_flag = fallout_transition_resource_rights_reset_verified
+	has_variable = global.fallout_transition_docking_rights_reset_generation
+	has_variable = global.fallout_transition_docking_rights_verification_generation
 	has_variable = global.fallout_transition_market_access_reset_generation
 	has_variable = global.fallout_transition_market_access_verification_generation
 	has_variable = global.fallout_transition_resource_rights_reset_generation
 	has_variable = global.fallout_transition_resource_rights_verification_generation
 	has_variable = global.fallout_transition_lend_lease_verification_generation
 	has_variable = global.fallout_transition_expeditionaries_verification_generation
+	check_variable = {
+		var = global.fallout_transition_docking_rights_reset_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+	check_variable = {
+		var = global.fallout_transition_docking_rights_verification_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
 	check_variable = {
 		var = global.fallout_transition_market_access_reset_generation
 		value = global.fallout_transition_generation
