@@ -8,7 +8,7 @@ Purpose: dedicated regional ordinary-map visual assets for the nine stable `air_
 
 Final art status: complete for the regional package.
 
-Integration status: the synchronized five-slot state lifecycle is wired through the existing monthly state pass. It creates regional ground, two particle channels, dead vegetation, and mutually exclusive frozen-water or thaw entities with deterministic ids. No full-screen grade window or static accessibility setting was added. Runtime behavior remains subject to the proof gate in `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_REGIONAL_VISUAL_WIRING_PROOF.md`.
+Integration status: the synchronized five-slot state lifecycle is wired through the existing monthly state pass. It creates regional ground, two particle channels, dead vegetation, and mutually exclusive frozen-water or thaw entities with deterministic ids. The 2026-07-15 post-wire resolver, hash, DDS, state-ledger, and contact-sheet audit is recorded in `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_REGIONAL_VISUAL_WIRING_PROOF.md`. No full-screen grade window or static accessibility setting was added. Runtime behavior remains subject to that proof gate.
 
 Asset provenance: all raster source plates were generated as fictional Air Winter imagery. The package does not reuse vanilla, zombie, disaster, or unrelated mod textures. Mesh geometry was authored procedurally in Blender for this package. The particle `.asset` structure follows documented Paradox/vanilla syntax, but its textures and registrations are dedicated Air Winter assets.
 

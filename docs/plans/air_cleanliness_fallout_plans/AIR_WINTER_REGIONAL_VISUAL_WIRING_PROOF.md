@@ -109,6 +109,21 @@ The regional package contains:
 
 All runtime tokens referenced by the gameplay effect resolve to Fallout-owned files and identifiers. No zombie path, sprite, sound, image, or entity is referenced.
 
+## Post-wire static audit, 2026-07-15
+
+The final package was audited again from the live runtime files after integration:
+
+- The installed vanilla state database contains 1,081 unique state ids, exactly 1 through 1081. The typed presentation ledger contains 1,081 rows, 1,081 unique ids, no duplicate membership, no missing id, and no out-of-range id. Its class counts are 244 boreal, 76 temperate maritime, 58 Mediterranean, 202 arid plateau, 152 tropical monsoon, 47 equatorial rainforest, 176 mountain highland, 77 island oceanic, and 49 polar or subpolar.
+- The gameplay meta-effect can emit 81 mesh entity names and nine particle entity names. All 90 names resolve. The mesh asset has 166 unique entity definitions, including all 54 numeric class-phase aliases and all 27 numeric class-prop aliases. The particle asset has all nine required wrappers with no duplicate entity name.
+- The text registrations contain 106 file references and 101 unique paths. Every path exists. All 85 `pdxmesh` references resolve to one of the 85 registered mesh names. All nine particle instance types resolve to one of the nine particle-file definitions, and every wrapper particle resolves to one of the nine registered instances.
+- `mesh_export_report.json` contains 85 records. Every runtime mesh exists, every SHA-256 matches the record, and every diffuse, specular, and normal texture named by the record exists. The report records 54 `PdxMeshAdvanced` ground meshes and 31 `PdxMeshAlphaBlend` prop or static meshes.
+- `build_report.json` contains 181 DDS records. Every runtime file exists, has a valid DDS header, and matches its recorded width, height, and byte count. All 22 recorded source hashes match. The 16 separately authored particle source frames have 16 distinct hashes.
+- The 181 runtime DDS files have 177 distinct hashes. The only four duplicate groups are intentional pairs between each static fallback sprite and the matching static mesh diffuse. No other runtime DDS is duplicated. A content-hash comparison against all 134 repository DDS files under zombie-named paths found no identical file.
+- The current entity-id bands have no literal collision elsewhere in gameplay, GUI, or asset script. The installed state maximum remains 1081, below the documented band-overlap boundary.
+- The particle wrapper form matches vanilla `gfx/entities/weather_entities.asset`: an idle state with `state_time = 2`, a time-zero particle event, and `keep_particle = yes`. The Air Winter wrappers omit vanilla weather sound events by design.
+
+Decoded contact-sheet review found nine visibly distinct regional ground families, region-specific dead vegetation, ice, and thaw props, and four independently composed frames for each particle family. Warm and arid classes do not become copies of the boreal snow field. Early wet or frost phases may gain local highlight before the soot jump, while every class darkens from black harvest through terminal winter. This is asset and wiring evidence only. It does not convert the runtime observation gate into a pass.
+
 ## Unproven runtime boundary
 
 Static evidence cannot prove:
