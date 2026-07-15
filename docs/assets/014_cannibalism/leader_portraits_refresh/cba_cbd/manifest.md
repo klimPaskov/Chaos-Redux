@@ -10,6 +10,7 @@ Status: visually reviewed, processed, and installed in the existing live DDS pat
 - 28 per-portrait comparison sheets under `review_sheets/`.
 - Labelled final sheet at `contact_sheets/cba_cbd_warlords_contact_sheet.png`.
 - Enlarged scalp, face, and silhouette sheet at `contact_sheets/cba_cbd_baldness_audit_contact_sheet.png`.
+- Generation-group review sheets at `contact_sheets/cba_cbb_hoi4_repaint_contact_sheet.png` and `contact_sheets/cbc_cbd_hoi4_repaint_contact_sheet.png`.
 - Explicit 28/28 visual checklist at `baldness_audit.md`.
 - Prompt, action, generated-output, and source-hash record at `prompts/warlord_prompts.md`.
 - Live-file and sprite registration record at `gfx_handoff.md`.
@@ -36,16 +37,14 @@ Each identifier below has the matching files `source_png/<identifier>_source.png
 - Style-only references: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/den_thorvald_stauning.png`, `ire_eamon_de_valera.png`, and `fin_carl_mannerheim.png`.
 - Finish: `.tools/process_hoi4_portrait.py leader`, explicit full-source crop, `source-kind fictional`, 156x210 output, processor version 2.0.
 - DDS conversion: `.tools/convert_to_dds.py --width 156 --height 210`, producing uncompressed 32-bit RGBA/BGRA-compatible DDS files.
-- Visual decision: 28/28 approved as bald or severely shorn fictional adult men, with readable faces and actions, distinct silhouettes, restrained HOI4 treatment, and no prison, cell, bars, cage, restraint, or confinement imagery.
+- Visual decision: 28/28 approved as bald fictional adult men with readable actions, distinct silhouettes, matte opaque oil/gouache handling, simplified painted facial planes, muted interwar values, and no photographic, modern-digital, prison, cell, bar, cage, restraint, or confinement imagery.
 
 ## Image-generation accounting
 
-- Selected successful built-in outputs: 28, one independent selected output per portrait.
-- Superseded successful outputs: 10. The first CBA Asia, CBB default/Asia/Oceania/South America, CBC default/Africa, and CBD North America/Oceania/South America results were rejected during native-size whole-sheet review because hair or action readability did not meet the brief. Each was independently regenerated and fully reprocessed.
-- Additional moderation-blocked attempts: 5 portrait attempts, all retried once with less graphic but visually equivalent artificial-prop or non-graphic wording.
-- Total portrait invocations including blocked and visually superseded attempts: 43. The generated-output directory contains 38 persisted PNGs: 28 selected plus 10 superseded.
-- Initial blocked group: CBA North America, South America, and Oceania; request ID `6613135f-0ec8-449e-8903-1aa8a1d4c5b8`.
-- Later partially persisted group: CBD default and Africa outputs persisted and were selected; CBD Asia and Middle East did not persist and were retried; request ID `7e5fbfb6-958a-4c58-8fb5-c81e963485e9`.
-- No moderation retry exceeded one additional attempt, no requested slot remains unresolved, and no CLI, local procedural, alternate model, or derivative-image fallback was used.
+- Selected successful built-in outputs: 28, one independent selected master per portrait.
+- Visually superseded successful outputs: two. CBD North America was retried to move the kiss onto the skull's front incisors; CBD Oceania kept the version whose threaded counters read most clearly as teeth at 156x210.
+- Moderation-blocked attempts: one non-persisted CBB default request; its accepted retry used the same unnerving action with an unmistakably artificial stuffed-canvas mascot.
+- Total portrait invocations: 31, comprising 28 selected outputs, two persisted visual supersessions, and one non-persisted moderation rejection.
+- No requested slot remains unresolved, and no CLI, local procedural, alternate-model, transformed-old-portrait, source-substitution, or derivative-image fallback was used.
 
 The selected generated-output filenames, actions, source hashes, and moderation-safe prompt deltas are recorded in `prompts/warlord_prompts.md`.

@@ -1,6 +1,6 @@
 # Event 014 CBA-CBD Warlord Portrait Prompt and Source Record
 
-Status: final selected built-in ImageGen sources, visually approved at source scale and after 156x210 processing on 2026-07-15.
+Status: fresh classic-HOI4 repaints generated with built-in ImageGen and reviewed at source scale and after 156x210 processing on 2026-07-15.
 
 ## Shared production contract
 
@@ -17,13 +17,14 @@ Shared prompt requirements:
 - Distinct regional plausibility without caricature or sacred motifs.
 - Distinct face anatomy, build, expression, posture, clothing, hand action, prop, and open ruined environment.
 - A large face-adjacent disturbing action that remains legible after a 156x210 crop.
-- Restrained semi-realistic 1930s-1940s HOI4 oil-painted portrait treatment, not a film still, photograph, comic, or glossy fantasy render.
+- Unmistakable classic vanilla-HOI4 country-leader treatment: opaque oil/gouache paint, simplified illustrative facial planes, firm painted edges, muted interwar values, controlled highlights, and deliberately low photographic microdetail.
+- Explicit rejection of photographic pores, camera depth of field, cinematic rim lighting, glossy 3D rendering, modern digital-concept sheen, and modern tactical clothing or equipment.
 - No prison, cell, bars, cage, confinement, prisoner clothing, restraint, text, logo, flag, copied insignia, border, frame, or watermark.
 - No graphic injury or gore. When an action used skull-, tooth-, jaw-, hand-, or bone-like imagery, prompts identified artificial paper, resin, wood, cloth, or theatre props whenever required for safe non-graphic generation.
 
 Generated-output base directory:
 
-C:/Users/klimp/.codex/generated_images/019f662f-f9c7-7c30-ab46-fda7a6f15fc2/
+C:/Users/klimp/.codex/generated_images/019f5054-0304-78a1-9bde-779d630ae2cb/
 
 Workspace source relation:
 
@@ -37,86 +38,65 @@ The role/action column records the decisive per-portrait prompt delta. It is the
 
 | Asset | Regional name-pool role and selected prompt delta | Generated output | Source size | Source SHA-256 |
 | --- | --- | --- | --- | --- |
-| leader_CBA_warlord | Marek Varga, Europe/default: gaunt pale peacoat warlord in bombed masonry ruins, biting a tarnished dog tag between broken front teeth. | exec-4e41f343-0897-490e-aac4-05eb2b87b9f6.png | 1081x1455 | 1bf80952499e54e706ec7759c2652833bd0066ac3471d8eee086d7d0f0d565a0 |
-| leader_CBA_warlord_africa | Kwame Adu, Africa: tall dark-skinned rope-harness warlord in scorched urban ruins, inhaling the scent of a stained torn field glove beneath his nose. | exec-f158db87-c379-437b-bdbb-cae6afff263d.png | 1082x1454 | 3421a73e86aae55fe2d2efd763c0df44a2e3c5b538e51d57ec3e2255af7dd48a |
-| leader_CBA_warlord_asia | Ren Jingshu, Asia: fully bald indigo dockworker warlord at ruined river cranes, using pliers to pull a long linked strip of artificial resin false teeth from his grinning mouth. | exec-962f349c-a1c3-4276-94e3-48fb5a19558e.png | 1080x1456 | 8c95dfcd284396c7b09735c1e7b1e256356437398da371268d41e64631427f1f |
-| leader_CBA_warlord_middle_east | Farid Qassem, Middle East: hawk-faced wool-coated warlord in open dust ruins, whispering into a cracked jawbone-like relic beside his mouth. | exec-2bbcc249-0800-48b3-883a-1de7e47c41a2.png | 1082x1454 | ab45a0f6fcadda0f078f34dd00098d8bd6269fd4e4e26da17e1b87c58777d303 |
-| leader_CBA_warlord_north_america | Silas Mercer, North America: pale gaunt naval-coat warlord at a ruined frontier depot, wringing a stained ration cloth directly below his mouth. | exec-7e8ccedb-aae2-4367-929c-00a27525e5ea.png | 1080x1456 | 8b45ea71703721bbf65ef1781a942565f22e020973de0f57736f05806425d823 |
-| leader_CBA_warlord_oceania | Colin Mercer, Oceania: broad dock-coat warlord at a storm-battered port, staring cross-eyed at a tooth held on his open palm. | exec-3dee06c1-2cdd-49c4-97cb-1a1628408a0e.png | 1082x1454 | 785f0beb200bf2b0f13bb6b9fca282ee14967e45e1f1c1107a1fb9c4e2e6993c |
-| leader_CBA_warlord_south_america | Joaquín Ferreyra, South America: scarred dock-coat warlord in hillside ruins, holding a skull at cheek height with visible tongue-to-temple contact; the set's sole skull-lick action. | exec-1094ddc7-9347-4712-8d2f-a5fc8f400af2.png | 1081x1455 | a868a15ddafa08c63fbd48367b051fd215f9caf727874963892e6b164023eeac |
+| leader_CBA_warlord | Marek Varga, Europe/default: gaunt pale peacoat warlord grinning beside a dry skull in a softly painted ruined city. | exec-4d8475ad-7e30-4f44-82b1-c2b031717a05.png | 1080x1456 | 238e329b209906dbe1526c0ef8add2bd9acb5ab259078680a3dc0c3804467927 |
+| leader_CBA_warlord_africa | Kwame Adu, Africa: tall dark-skinned rope-harness warlord pressing an old leather field glove to his lips beneath a fixed one-eyed stare. | exec-4bbc2387-2078-4adc-b5ea-b458ce58c676.png | 1082x1453 | 8b561bf3646d161c224560f462b7496b40764ffa5491e321e76b409e7c374258 |
+| leader_CBA_warlord_asia | Ren Jingshu, Asia: bald indigo dockworker using pliers to pull a linked strip of false teeth from his mouth before old port cranes. | exec-ae1861de-d0e5-4bb8-b7b5-3a485e9c96c3.png | 1082x1454 | 8984656de9a3bc6bc5ac8d34e3e6596eb7153018ffdadb22c0730465e06c0711 |
+| leader_CBA_warlord_middle_east | Farid Qassem, Middle East: hawk-faced refinery warlord gripping a dry jawbone like a field telephone. | exec-2642295e-0530-462d-9cb2-8bd7e3f86bce.png | 1080x1456 | b9f3b5755cdfcfdd9d118f07b8a0136ded5d7f7a95c34b202c2b511a2114868c |
+| leader_CBA_warlord_north_america | Silas Mercer, North America: pale rail-depot warlord biting and twisting a dark ration cloth between both fists. | exec-4f5be1e3-40e6-4374-bfa5-9e6ce578c615.png | 1081x1455 | 02250378b1e3cef9bcf469e34a432d574c344c6d52924337694b4aed234c2bea |
+| leader_CBA_warlord_oceania | Colin Mercer, Oceania: broad oilskin dockworker pursing his lips over a tooth balanced on his open palm while staring cross-eyed at it. | exec-71575445-8831-433f-9892-c5f7f5bf14bd.png | 1080x1456 | aac22050e1d97c39c59e897575e050afff45667fbf123a206bcf3b40e07a12b5 |
+| leader_CBA_warlord_south_america | Joaquín Ferreyra, South America: scarred ochre-coated port warlord holding a skull against his cheek with unmistakable tongue-to-skull contact. | exec-8f4c716d-dbb5-4e26-9911-2829f92181b3.png | 1084x1451 | bd30eecc6c2337859b116a07731b57a71430b5821bcdcfd6ed884df6f4f52c1b |
 
 ### CBB
 
 | Asset | Regional name-pool role and selected prompt delta | Generated output | Source size | Source SHA-256 |
 | --- | --- | --- | --- | --- |
-| leader_CBB_warlord | Ivo Drask, Europe/default: massive flour-dusted rain-cape warlord in a ruined bakery square, biting one painted finger from a cracked papier-mâché hand prop. | exec-7c8e896c-a9b0-4c73-8be2-ea58ab603cbc.png | 1080x1456 | 60fca73859dc3ac402a61ceaf59cb487253098dec9dea2e1c949c78c4c39c664 |
-| leader_CBB_warlord_africa | Tesfaye Bekele, Africa: broad field-jacket warlord in open industrial ruins, cradling and caressing an uncanny carved feast mask. | exec-2717681f-b559-4be0-94ab-beb86ded630b.png | 1081x1455 | ba9157934d9bde9c1ed42093de49edfd877871b7acbdc758143e89009b9ca4c9 |
-| leader_CBB_warlord_asia | Kenji Arata, Asia: absolutely fully bald factory-coat warlord in a wrecked machine yard, stretching a cord of carved tooth-shaped beads between both fists and biting one free. | exec-ed564d0c-1ee5-440b-a734-06944d84443f.png | 1080x1456 | fd2362784154d0fb7279de67fcea1c409b51a0a3897a32e149647e22ed115599 |
-| leader_CBB_warlord_middle_east | Nadir Harun, Middle East: broad charcoal-coated warlord in oilfield ruins, painting a crooked rust-pigment mark across his cheek while watching himself in a metal mirror shard. | exec-a306e267-3478-4b72-a795-4b19285d8d28.png | 1082x1454 | f5a9b2d3c3ca47d13928786231833ed7bb1ca8d00fd1bfb5f1f6ad4b0add2b10 |
-| leader_CBB_warlord_north_america | Elias Boone, North America: broad dark-skinned armored work-coat warlord in flooded industrial ruins, using a hollow bone-like relic as a telescope against one eye. | exec-10645f87-b8ea-46df-b4ea-b2be0efbde35.png | 1081x1455 | b5cbf8b9e9f0e24d28d78cc2b85aac7f91704685f0f97050698081d5ffb24b27 |
-| leader_CBB_warlord_oceania | Edwin Rourke, Oceania: absolutely fully bald oilskin warlord at a storm wrecked wharf, chewing the stuffed arm of a stitched canvas ration puppet with a button-tooth grin. | exec-df10fe8e-8a75-42a1-8613-fa689c9bb2dd.png | 1081x1455 | 95b97c3235be8c500460ea86bdd00d7280ec9dc52a50bacc6417fce22178bf79 |
-| leader_CBB_warlord_south_america | Damião Rocha, South America: heavy oxblood dock-coat warlord at a tropical port, slurping through a metal straw set into the eye socket of an artificial papier-mâché skull-shaped cup. | exec-4207b5b7-33cf-4a7e-b1c3-d5d3f8fd8a2c.png | 1080x1456 | 4eeae81e7a80733fe27bfc118b4a3ce7ae3a6f6dc9afd9222d3cf66e560649d4 |
+| leader_CBB_warlord | Ivo Drask, Europe/default: massive flour-dusted rain-cape warlord chewing the stuffed finger of a cracked canvas ration mascot. | exec-e63e6d77-e4e2-4ffb-a0bd-defc2519c0f6.png | 1080x1456 | a18cdbd52f6414945d144f4962bb93bb7e208af71245f5aebcd268fa9bd69e03 |
+| leader_CBB_warlord_africa | Tesfaye Bekele, Africa: broad khaki-coated warlord kissing a split stitched-canvas mannequin face with exposed straw. | exec-6059f5b3-034a-4047-91e4-81bfc59a657a.png | 1082x1454 | 2cbda4fed04a6a3555c1b522c68f9221f6a01886a59c1139ea1e53d7bc7b7685 |
+| leader_CBB_warlord_asia | Kenji Arata, Asia: long-faced factory warlord pulling a cord of carved porcelain tooth beads taut between his fists and teeth. | exec-f1d51960-2e00-4618-a44c-6008f821545d.png | 1082x1453 | 5bafe4b5dde9c3cb9fc7d1b6f541e23bc5ba590ab2e970d4291ac81c0ae17c48 |
+| leader_CBB_warlord_middle_east | Nadir Harun, Middle East: soot-coated refinery warlord extending his grin with matte brick-red greasepaint while studying a metal mirror shard. | exec-a1c4e509-6d84-45bf-8286-64f2516f5321.png | 1082x1454 | 72dea0fc8292a9a45d3ecf46855c726015c57a91b38463849510b0ad9eccc5bf |
+| leader_CBB_warlord_north_america | Elias Boone, North America: broad railroad warlord peering through a dry jawbone like a telescope and pointing beyond the frame. | exec-dd1a5588-b19d-4ec8-adbb-f3d50879b6b5.png | 1082x1454 | 0bd3a4e013d185c3b78d35b5c81b5b9103038f8580ac305388f65e0e3aab8c87 |
+| leader_CBB_warlord_oceania | Edwin Rourke, Oceania: triangular-headed oilskin mechanic chewing the long cloth arm of a stitched canvas ration puppet. | exec-34390dfb-8398-41be-8c68-230ee2d412ff.png | 1081x1455 | ae2a5fac896696b0d72032fac45a1e57981efb406891b4739a1608a1123c681c |
+| leader_CBB_warlord_south_america | Damião Rocha, South America: heavy foundry warlord drinking through a bent brass tube from a riveted metal skull cup. | exec-25f073ea-873e-4df3-a7c9-b38c173388b1.png | 1082x1454 | 9f6e684b73ef14be8dca83ea577d8331c6cd3e74c7b96da97b3bcde28f99095b |
 
 ### CBC
 
 | Asset | Regional name-pool role and selected prompt delta | Generated output | Source size | Source SHA-256 |
 | --- | --- | --- | --- | --- |
-| leader_CBC_warlord | Aleksy Korven, Europe/default: lean wire-wrapped warlord in a ruined bell-tower square, holding a hollow papier-mâché skull to his ear like a telephone while screaming into its open painted mouth. | exec-d0a7205e-2c64-47cd-ac6b-ba4d81109f6a.png | 1083x1453 | 0922822dae53c5a849cfe310a6a57b61d9317672786feb177bd619c79bfe89c0 |
-| leader_CBC_warlord_africa | Juma Mbeki, Africa: long-faced railway-coat warlord at a ruined savanna junction, biting a comically oversized carved wooden molar and spraying visible wood chips. | exec-c124e6f6-771f-479a-bc2a-a44c574a123a.png | 1080x1456 | f5c49314e715b123763fc43fcb292cd67c211fea2081c7ef6dd4ebe175c3ae1f |
-| leader_CBC_warlord_asia | Arjun Mallick, Asia: heavyset armored field-coat warlord in blue-black rail ruins, licking an empty ration spoon with a fixed predatory stare. | exec-fa300093-1138-4f7e-bd7e-81e477b27cf6.png | 1081x1455 | 43d61535e4ebe0dc897ec9fc2d2b188581fa877f5b8a9818d97340ecd7cdbcb9 |
-| leader_CBC_warlord_middle_east | Samir al-Khatib, Middle East: lean dust-coated warlord in ruined refinery outskirts, slowly rubbing a tarnished coin across his lips. | exec-e82870dd-420c-472f-85dd-074c767b6f8c.png | 1082x1454 | 70e22d4b28b1f11b416f818e66831959bcb1ee5ea7aee35b631a9dc88af2a0cf |
-| leader_CBC_warlord_north_america | Gabriel Laurent, North America: lean forestry-coat warlord before a burned woodland camp, balancing a single pale tooth-shaped token on his extended tongue. | exec-6510231f-c14e-4935-8be5-5639ccc721f2.png | 1081x1455 | bbef21023cdcfb2bfd1e48655e3866c91005eabce4fb4383e25528a945b1cb57 |
-| leader_CBC_warlord_oceania | Thomas Keane, Oceania: gaunt utility-jacket warlord at gray coastal wreckage, playing a plain bone-like whistle held sideways between both hands. | exec-1fce390b-932c-44db-a002-0196928d239c.png | 1081x1455 | db020339965108d067f7c8686f089d14fe7150a6b4d54ad7605f04647987ffb9 |
-| leader_CBC_warlord_south_america | Esteban Varela, South America: narrow-faced improvised-armour warlord in hillside ruins, sewing a crooked grin onto a stitched ration puppet and cradling it against his cheek. | exec-d509bab0-1f86-44d1-a9d0-c9988dadd652.png | 1082x1454 | 5fc14fa004b53b2458811b53c67bb9871d1653aca9c7a22fdfaefb15e349f5da |
+| leader_CBC_warlord | Aleksy Korven, Europe/default: lean railway-coated warlord holding a dry skull to his ear and screaming into its open jaw before a bell tower. | exec-0738576b-56d5-4f3b-aa89-1ec79699ca7e.png | 1081x1455 | 8ca54fcc05b3098578e93d28352068c1a266d7ba14d17b7b3c38f8488bdbc079 |
+| leader_CBC_warlord_africa | Juma Mbeki, Africa: long-faced railway warlord biting an oversized faceted wooden molar at a savanna junction. | exec-35a0ca12-b483-442a-af2b-dd25e0d167a6.png | 1080x1456 | 2e7138e94e5969146e945c992b6b6481cdc41c40e334f989d66c25b132c15321 |
+| leader_CBC_warlord_asia | Arjun Mallick, Asia: heavyset indigo-coated dock foreman licking an empty scratched ration spoon before old river cranes. | exec-c8ede85b-ef20-44d9-b412-e5fc91861474.png | 1082x1453 | 1a652b2deea63b4b72aaa010a640195fe6207d07b087fecab598529d6ae24dd7 |
+| leader_CBC_warlord_middle_east | Samir al-Khatib, Middle East: lean camel-coated refinery warlord rubbing a tarnished coin directly across his lips. | exec-6c5948a5-944f-4405-8761-ad36b56f8f9e.png | 1080x1456 | be5106c895a3f1fb6af015577e7dd261f98ac1b759e6feb4283180aff62cebc6 |
+| leader_CBC_warlord_north_america | Gabriel Laurent, North America: lean forestry warlord balancing a carved tooth token upright on his tongue before burned pines. | exec-0c985150-22f2-4bf7-b097-8eae4ca75e82.png | 1080x1456 | de7bdf3c80e6f51db6fa0575da5733af0671d3905f2ca5a2089950a1cbecf132 |
+| leader_CBC_warlord_oceania | Thomas Keane, Oceania: gaunt waxed-cotton harbor warlord playing a plain drilled bone whistle at a storm-damaged wharf. | exec-a7157325-6bc2-4d66-b457-0b1dcaa8b8c5.png | 1082x1454 | d5e8bf3c1196330b3dfb5419ac8832b5a50aa540e7c4db9149dc7674f0e3bb58 |
+| leader_CBC_warlord_south_america | Esteban Varela, South America: narrow long-necked dock warlord stitching a crooked grin onto a canvas ration puppet held to his cheek. | exec-5548b13d-a34e-4433-9f08-bc25010e3cfb.png | 1080x1456 | 9179a5660a0f4c3187efa4a3bb39e6862e6677aa40cdb86111655e1365ea7371 |
 
 ### CBD
 
 | Asset | Regional name-pool role and selected prompt delta | Generated output | Source size | Source SHA-256 |
 | --- | --- | --- | --- | --- |
-| leader_CBD_warlord | Tomás Serrat, Europe/default: stocky armored engineer warlord in open urban rubble, tipping a tooth-shaped token into a tiny chipped metal cup held beneath his face. | exec-853f0fcf-7fc4-4c90-b206-b441ecf3cd0b.png | 1082x1454 | af8e40e170829fc1c7e013ec36b2b21057e871d093a26c3aba5aa60aab755646 |
-| leader_CBD_warlord_africa | Kofi N'Dour, Africa: angular mechanic-coat warlord in wrecked industrial ruins, threading tooth-shaped tokens onto plain wire with pliers. | exec-33043ea5-eb62-4ac0-8834-671cc9bc996f.png | 1080x1456 | 3daebd8d1756b1e0f712eb88836e4fd86e9cd3cf0939e8c6cb957dda0e5a9b7d |
-| leader_CBD_warlord_asia | Somchai Rattan, Asia: pale angular flight-jacket warlord in refinery ruins, filing an ivory-colored resin crooked-smile trinket beside his mouth. | exec-469729e4-332a-43f0-b518-e53bddffd1bb.png | 1083x1453 | 3dc825ad3747333ba7e2ba66a13df4e5118d54f7655d5b833811b3f9f316b4d9 |
-| leader_CBD_warlord_middle_east | Kemal Darzi, Middle East: stocky armored mechanic warlord in an open refinery wasteland, arranging three resin molar-shaped tokens along the rim of his steel collar. | exec-7ccf154e-44b3-4b63-9740-2b9383beb659.png | 1081x1455 | 974619d3741c841e27fd7c6b45f24d565158faa1b9648dfe48a20b417656abce |
-| leader_CBD_warlord_north_america | Mateo Cárdenas, North America: railroad-marshal warlord at a desert rail depot, clutching an artificial wire-framed papier-mâché skull and kissing its painted front teeth. | exec-7f212d0e-a95e-41f6-a035-313f627b19e1.png | 1080x1456 | 6a1ff9dce07529036ca1c69dd7998757039402ae9c076d1d40760484f8494a10 |
-| leader_CBD_warlord_oceania | Walter Haines, Oceania: bald oilskin radio warlord at a storm-dark coastal station, biting through a bent counting-frame wire with three carved tooth counters clamped in his teeth. | exec-6cd69079-faa7-44e2-be65-b34ce2180f93.png | 1080x1456 | 68cd1da493daf1076c7d5e2951dbad10987aa5ffc1278147c0375ab005325c54 |
-| leader_CBD_warlord_south_america | Augusto Paredes, South America: long-necked burgundy-and-olive highland warlord in Andean market ruins, pouring resin tooth-shaped game tokens into his wide-open mouth while hugging a helmet full of them. | exec-679f65a3-4134-45a3-8faf-ade0d0caa3a8.png | 1080x1456 | 209e7497c65691d29c9ab94fe90e61ade68e84f50743aaaa3b5dca8e4d27517b |
+| leader_CBD_warlord | Tomás Serrat, Europe/default: stocky engineer warlord tipping carved tooth tokens into a chipped cup held beneath his face. | exec-cc0c299a-e326-450b-84c9-30380b3c5e0b.png | 1076x1461 | 253f418540659ec7d0089768d835afe8492a52edfa287afb14fc04cda3270ad5 |
+| leader_CBD_warlord_africa | Kofi N'Dour, Africa: angular mechanic threading drilled tooth tokens on plain wire with old steel pliers. | exec-311a8289-ab45-44c6-ba2c-c8941b0243b6.png | 1082x1454 | c9416788687be05553dea96e3f417c38419b13151f8f0776c0e1de9f4b399296 |
+| leader_CBD_warlord_asia | Somchai Rattan, Asia: angular aviation-work-jacket warlord filing an artificial crooked jaw trinket beside his mouth. | exec-efe46c92-0d82-4fd3-aae8-44d43d4a5300.png | 1080x1456 | 1b084421f2f87819a18fff665c32b59379a99584f2b21a3cf49aaea18a89fce8 |
+| leader_CBD_warlord_middle_east | Kemal Darzi, Middle East: stocky high-collared mechanic arranging four carved molars along his wool collar. | exec-f735b3ba-abb0-475a-a287-fa0a6cbb98b2.png | 1080x1456 | 5fc51509c0fa5e4662eae13b00c60e9cb7263709bd6b4095447889329df99704 |
+| leader_CBD_warlord_north_america | Mateo Cárdenas, North America: long-faced railroad marshal puckering his lips directly against a dry skull's front incisors. | exec-a28571e7-2ff0-4f06-a2e2-b50f3c5d416e.png | 1083x1453 | 35998c034aa8b6972aee83d6a49c755179b6c9ab62645f9a2aa0069288dec7dc |
+| leader_CBD_warlord_oceania | Walter Haines, Oceania: broad waxed-cotton coastal warlord biting a bent counting wire threaded with tooth-shaped counters. | exec-975df947-e1d6-4301-b98e-3da0be9ec73b.png | 1054x1492 | 3a7932b70a0145e925d0046ae8cb77b03cdbfeef85a05ca7167b170ea15d1815 |
+| leader_CBD_warlord_south_america | Augusto Paredes, South America: long-necked highland warlord pouring carved tooth tokens from a battered tin cup into his open mouth. | exec-8b80f74d-976a-4fa6-bb4e-ac4fd701574a.png | 1080x1456 | ce0502d62af10b6a2c4c25ea0b9c3a62e0f868d9c61a7148ab01e9a5ec56dcfd |
 
-## Quality-gate supersessions
+## Quality-gate and retry accounting
 
-These ten persisted built-in results were valid generations but were rejected after the first whole-sheet 156x210 review. They remain only in the generated-output directory and are not installed in the workspace source, processed, metadata, review, or DDS paths.
-
-| Asset | Superseded output | Rejection reason |
-| --- | --- | --- |
-| leader_CBA_warlord_asia | exec-abc7762e-7b81-4d3d-a207-927051530ce5.png | Visible buzz cut and action not grotesque enough. |
-| leader_CBB_warlord | exec-f453f5de-25ba-4708-9902-59548d00b42b.png | Medal bite did not read as a sufficiently disturbing action. |
-| leader_CBB_warlord_asia | exec-b37086a0-b24d-4a86-8f5a-3ff19fb7195f.png | Visible buzz cut. |
-| leader_CBB_warlord_oceania | exec-66eb9af2-1d2a-45bd-837c-6a3bb85dd32d.png | Visible buzz cut and tooth-picking action read too ordinary. |
-| leader_CBB_warlord_south_america | exec-b10367d0-d913-446c-8ef3-0be6aa1c78a0.png | Folding a field dressing read as normal cloth handling. |
-| leader_CBC_warlord | exec-3029b568-876b-4f63-82aa-2ab3c5c78a9f.png | Tin-at-ear prop read like an ordinary watch. |
-| leader_CBC_warlord_africa | exec-cea1cece-9603-48d6-be1a-6124bbec22e6.png | Calm caliper display did not read as sufficiently deranged. |
-| leader_CBD_warlord_north_america | exec-77293775-d5ef-44f1-9942-444dcc90cd28.png | Skull brushing action and expression were too composed. |
-| leader_CBD_warlord_oceania | exec-e6f5ffe7-5c3f-4cb9-b51a-5e8492500de7.png | Counting-frame action read as ordinary abacus use. |
-| leader_CBD_warlord_south_america | exec-fe2ee95b-ab0f-4ee3-9ca5-541b63da7e58.png | Helmet-and-tongs sorting action read as an ordinary inventory gesture. |
-
-## Moderation retry accounting
-
-- Five portrait attempts did not persist and were retried once: the first CBA North America, CBA South America, CBA Oceania, CBD Asia, and CBD Middle East attempts.
-- First blocked request ID: 6613135f-0ec8-449e-8903-1aa8a1d4c5b8.
-- Later partially persisted request ID: 7e5fbfb6-958a-4c58-8fb5-c81e963485e9. CBD default and Africa persisted and were selected; CBD Asia and Middle East were regenerated individually.
-- No moderation retry exceeded one additional attempt.
-- Final selected outputs: 28.
-- Persisted but visually superseded outputs: 10.
-- Non-persisted moderation-blocked attempts: 5.
-- Total built-in portrait invocations: 43.
-- CLI generation, local procedural art, alternate models, and derivative-image fallbacks were not used.
+- Final selected outputs: 28 independent built-in ImageGen masters.
+- CBA-CBB calls: 15. One first-pass CBB default attempt was rejected by the generation service's violence filter and produced no asset; the accepted retry used the same disturbing pose with a clearly artificial stuffed-canvas mascot.
+- CBC-CBD calls: 16. Two persisted alternatives were rejected during action-readability review: `exec-511684c0-46b1-49a8-a3ca-e702799437cc.png` placed the CBD North America kiss above the skull's incisors, and `exec-71e59848-4c05-430c-9585-790565c53a6a.png` weakened the CBD Oceania tooth-counter silhouette.
+- Total built-in portrait invocations: 31; 28 selected, two visually superseded, one moderation-blocked without an output.
+- No CLI generation, local procedural art, alternate model, transformed old portrait, source substitution, or derivative-image fallback was used.
 
 ## Processing and review
 
 Each selected master was passed through .tools/process_hoi4_portrait.py leader with an explicit full-source crop, fictional source mode, the canonical leader reference directory, a 156x210 output, a JSON metadata record, and a per-portrait review sheet. The selected processed PNG was then converted through .tools/convert_to_dds.py at 156x210.
 
-The final native-size sheets are:
+The final native-size repaint sheets are:
 
-- contact_sheets/cba_cbd_warlords_contact_sheet.png
-- contact_sheets/cba_cbd_baldness_audit_contact_sheet.png
+- contact_sheets/cba_cbb_hoi4_repaint_contact_sheet.png
+- contact_sheets/cbc_cbd_hoi4_repaint_contact_sheet.png
 
-The final whole-sheet review confirmed that all 28 actions survive the crop, the corrected heads read as bald, every slot remains visually distinct, and no prison or confinement setting appears.
+The final whole-sheet review confirmed that all 28 actions survive the crop, every head reads as bald, every slot remains visually distinct, the classic matte HOI4 paint treatment survives at native size, and no modern or prison setting appears.

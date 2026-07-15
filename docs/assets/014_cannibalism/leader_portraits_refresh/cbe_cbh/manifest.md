@@ -7,7 +7,7 @@
 - Intended use: dynamically selected regional warlord portraits for CBE, CBF, CBG, and CBH.
 - Source mode: built-in `imagegen`; generation fits because every subject is an original fictional alternate-history warlord rather than a real historical person.
 - Apparent presentation: male-presenting; compatible with the existing masculine warlord name pools.
-- Source status: 28 accepted generated masters; 27 first-attempt safe prompts and one second-attempt safe prompt.
+- Source status: 28 accepted generated masters; 25 accepted on the first repaint call. CBG default and Africa were independently regenerated after their first candidates remained too glossy beside the vanilla references; CBH Africa was independently regenerated after the whole-set audit found its first tooth-row silhouette too close to CBG South America.
 - Era fit: invented damaged 1930s-1940s field clothing, webbing, armour scraps, smoke, dust, and period props, without readable insignia or modern equipment.
 - Source-license field: not applicable to generated fictional artwork.
 - Prompt record: `prompts/prompt_matrix.md`, with every complete accepted prompt preserved under `prompts/generated/`.
@@ -18,6 +18,7 @@
 - Per-portrait reference comparison sheets: `contact_sheets/reviews/`.
 - Aggregate source-crop review: `contact_sheets/source_contact_sheet.png`.
 - Aggregate final review: `contact_sheets/processed_contact_sheet.png`.
+- Repaint-group reviews: `contact_sheets/cbe_cbf_hoi4_repaint_contact_sheet.png` and `contact_sheets/cbg_cbh_hoi4_repaint_contact_sheet.png`.
 - Target format: 156x210, opaque uncompressed 32-bit BGRA legacy DDS.
 - Live DDS root: `gfx/leaders/014_cannibalism/`.
 - Existing registration file: `interface/014_cannibalism.gfx`, lines 199-230.
@@ -69,7 +70,7 @@ Common path abbreviations in the table are relative to this package for source, 
 - Each portrait has a distinct macabre but non-graphic action, prop, face construction, clothing silhouette, pose, light, and regional atmosphere.
 - CBG and CBH remain origin-agnostic feral warlords; no prison, cell, bar, cage, restraint, or prisoner-uniform imagery appears.
 - No actor or public-figure likeness, antlers, living sacred motif, copied portrait, readable insignia, or modern equipment appears.
-- The canonical vanilla leader references were used only for framing, value range, and painted finish.
+- The canonical vanilla leader references were used only for framing, value range, and painted finish. Final portraits use matte opaque oil/gouache shapes, simplified facial planes, restrained period values, and quiet brushed backgrounds rather than photographic or glossy modern-digital rendering.
 
 ## Simplifications, omissions, and blockers
 
