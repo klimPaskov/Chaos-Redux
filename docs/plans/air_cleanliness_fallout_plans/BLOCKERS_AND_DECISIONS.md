@@ -115,7 +115,7 @@ Do not assume a top-bar parent, root parentlessness, or pointer interception ben
 
 ## B6: old `world_end_fallout` save migration
 
-Status: schema 10 fail-closed policy implemented, full transition still blocked
+Status: schema 11 fail-closed policy implemented, full transition still blocked
 
 Potential old save states:
 
@@ -127,15 +127,19 @@ Potential old save states:
 Implemented policy:
 
 - completed Fallout saves are promoted to the current schema without restarting destruction
-- completed legacy saves are marked as lacking current-schema row receipts and receive no fabricated receipts
-- an active schema-7, schema-8, or schema-9 save may rebuild both snapshot halves only while still in the snapshot phase, before snapshot application or destruction, and without an unrelated error
+- completed legacy saves are marked as lacking current-schema and supply-network receipts and receive no fabricated receipts
+- an active schema-7, schema-8, schema-9, or schema-10 save may rebuild both snapshot halves only while still in the snapshot phase, before snapshot application or destruction, and without an unrelated error
+- an active schema-10 phase 2 save may promote before grading mutation
+- an active schema-10 phase 3 through 6 save may promote only before allocation, with current grading, and with exact live-to-frozen network equality for every destructive-grade state
+- a promoted schema-10 phase 5 or 6 save rewinds to physical collapse and invalidates derived government and conflict rows
+- schema-10 phase 7 or 8 saves and saves with initialized allocation remain blocked
 - every other incomplete legacy transition fails closed under blackout
 - an incomplete terminal save with no schema also fails closed under blackout
 - the former schema-3 map-return-error promotion is removed because consumed rows cannot acquire trustworthy Air Winter receipts after the fact
 - migration does not infer safety from a missing `fallout_transition_destructive_started` marker
 - no generic pre-destructive restart and no legacy altered-grade replay are active migration behavior
 
-The schema-7, schema-8, and schema-9 rebuild requires phase 1, no applied snapshot, no destructive-start receipt, and either no error or the exact one-error player or world snapshot signature. The rebuilt schema-10 row freezes the live state category separately from the historical Air Winter category and includes the market-access reset contract. Any ambiguity remains blocked.
+The schema-7 through schema-10 rebuild requires phase 1, no applied snapshot, no destructive-start receipt, and either no error or the exact one-error player or world snapshot signature. The rebuilt schema-11 row freezes the live state category separately from the historical Air Winter category and includes the market-access and province supply-network contracts. Any ambiguity remains blocked.
 
 Completed legacy Fallout saves have no proven reveal date. They are not given a fabricated scheduler timeline or initialization request. A migration policy for those saves must be approved before the living-world scheduler can run for them.
 
@@ -247,6 +251,16 @@ Map return still fails closed on these unresolved surfaces:
 
 No fallback reset is active for any of these surfaces.
 
+## B11: province supply-network runtime acceptance
+
+Status: schema-11 transaction implemented, static engine route supported, runtime topology proof blocked
+
+Dead-city and higher grades use `set_building_level` with the documented all-provinces selector for `supply_node` and `rail_way`. The state row freezes its immediate aggregate baseline and exact target. Each family retries only the idempotent set-to-zero command until both the aggregate variable and `any_province_building_level` report zero. Grades below dead city settle with an explicit no-op row. The global receipt commits only after every state is current, and the phase advances only after the durable global and state receipts pass.
+
+The installed documentation and close precedents establish the selector grammar and building identities. They do not prove that setting every selected `rail_way` level to zero removes every cross-state railway edge. They also do not guarantee immediate script visibility after the mutation. Hearts of Iron IV was not launched. An unsupported or delayed result therefore leaves the state unsettled under blackout and causes only an idempotent retry. It cannot fabricate the world receipt or advance the transition.
+
+Runtime acceptance remains required for railway topology, supply-node removal, immediate read visibility, save interruption, and multiplayer synchronization. `FALLOUT_SUPPLY_NETWORK_COLLAPSE_PROOF.md` records the exact static basis and test boundary.
+
 ## Design decisions already resolved
 
 ### D1: normal super-event removal
@@ -257,9 +271,11 @@ Fallout uses a dedicated blackout scripted GUI. It does not use a super-event sl
 
 ### D1A: provincial network damage proof
 
-Resolved for the exact state rewrite:
+Resolved for the static state rewrite contract:
 
-State-scoped `remove_building` is accepted for exact permanent loss of infrastructure, civilian factory, military factory, air base, and dockyard levels. Each family stores total levels before and after, and the observed decrease must equal the rounded request. Historical receipt identifiers containing `building_damage` are compatibility names only. State scope does not recursively find province buildings, so literal rail and supply-node loss remains blocked until a deterministic province registry and per-province receipt are implemented. The current supply-collapse flag and grade modifier prove gameplay pressure, not physical network destruction.
+State-scoped `remove_building` is accepted for exact permanent loss of infrastructure, civilian factory, military factory, air base, and dockyard levels. Each family stores total levels before and after, and the observed decrease must equal the rounded request. Historical receipt identifiers containing `building_damage` are compatibility names only.
+
+Province supply networks use the separate selector-backed `set_building_level` transaction. Dead-city and higher grades require physical zero for every selected supply node and railway before their row becomes current. The state supply-collapse flag and grade modifier remain gameplay effects, but they no longer stand in for physical network destruction. Runtime railway topology behavior remains B11 rather than an approved simplification.
 
 ### D2: treaty disposition
 

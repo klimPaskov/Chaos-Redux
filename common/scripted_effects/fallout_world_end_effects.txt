@@ -145,8 +145,11 @@ fallout_lock_transition = {
 	set_variable = { global.fallout_transition_generation = global.date }
 	set_variable = { global.fallout_transition_phase = constant:fallout_transition_phase.snapshot }
 	set_variable = { global.fallout_transition_schema_version = constant:fallout_world_end_schema.version }
+	clear_variable = global.fallout_supply_network_collapse_schema_version
+	clear_variable = global.fallout_supply_network_collapse_generation
 	clr_global_flag = fallout_transition_legacy_completed_without_air_winter_provenance
 	clr_global_flag = fallout_transition_legacy_completed_without_current_schema_receipts
+	clr_global_flag = fallout_transition_legacy_completed_without_supply_network_receipts
 	clr_global_flag = fallout_snapshot_prelock_capture_authorized
 	fallout_clear_recoverable_player_snapshot_error = yes
 	fallout_clear_recoverable_snapshot_error = yes
@@ -276,6 +279,11 @@ fallout_world_end_migrate_save = {
 						value = constant:fallout_world_end_schema.previous_market_access_reset_version
 						compare = equals
 					}
+					check_variable = {
+						var = global.fallout_transition_schema_version
+						value = constant:fallout_world_end_schema.previous_supply_network_version
+						compare = equals
+					}
 				}
 				check_variable = {
 					var = global.fallout_transition_phase
@@ -294,8 +302,46 @@ fallout_world_end_migrate_save = {
 			set_variable = { global.fallout_transition_dirty = constant:fallout_runtime.one }
 			clr_global_flag = fallout_transition_legacy_completed_without_air_winter_provenance
 			clr_global_flag = fallout_transition_legacy_completed_without_current_schema_receipts
+			clr_global_flag = fallout_transition_legacy_completed_without_supply_network_receipts
+			clear_variable = global.fallout_supply_network_collapse_schema_version
+			clear_variable = global.fallout_supply_network_collapse_generation
 			save_global_event_target_as = fallout_transition_coordinator
 			fallout_rebuild_complete_snapshot_epoch = yes
+			fallout_mark_blackout_gui_dirty = yes
+		}
+		else_if = {
+			limit = {
+				has_global_flag = world_end_fallout
+				has_global_flag = fallout_transition_active
+				NOT = { has_global_flag = fallout_active }
+				NOT = { has_global_flag = fallout_transition_complete }
+				NOT = { has_global_flag = fallout_transition_error }
+				NOT = { has_global_flag = fallout_successor_allocation_initialized }
+				check_variable = {
+					var = global.fallout_transition_schema_version
+					value = constant:fallout_world_end_schema.previous_supply_network_version
+					compare = equals
+				}
+				check_variable = { global.fallout_transition_phase > constant:fallout_transition_phase.snapshot }
+				check_variable = { global.fallout_transition_phase < constant:fallout_transition_phase.player_continuation }
+				OR = {
+					check_variable = { global.fallout_transition_phase = constant:fallout_transition_phase.state_grading }
+					AND = {
+						check_variable = { global.fallout_transition_phase > constant:fallout_transition_phase.state_grading }
+						fallout_state_grading_rows_are_current = yes
+						fallout_destructive_supply_network_live_matches_frozen_snapshot = yes
+					}
+				}
+			}
+			clr_global_flag = fallout_transition_schema_migration_blocked
+			clr_global_flag = fallout_transition_phase_event_scheduled
+			set_variable = { global.fallout_transition_schema_version = constant:fallout_world_end_schema.version }
+			set_variable = { global.fallout_transition_dirty = constant:fallout_runtime.one }
+			clr_global_flag = fallout_transition_legacy_completed_without_current_schema_receipts
+			clr_global_flag = fallout_transition_legacy_completed_without_supply_network_receipts
+			clear_variable = global.fallout_supply_network_collapse_schema_version
+			clear_variable = global.fallout_supply_network_collapse_generation
+			save_global_event_target_as = fallout_transition_coordinator
 			fallout_mark_blackout_gui_dirty = yes
 		}
 		else_if = {
@@ -312,6 +358,7 @@ fallout_world_end_migrate_save = {
 			set_global_flag = fallout_transition_map_return_applied
 			clr_global_flag = fallout_transition_legacy_completed_without_air_winter_provenance
 			set_global_flag = fallout_transition_legacy_completed_without_current_schema_receipts
+			set_global_flag = fallout_transition_legacy_completed_without_supply_network_receipts
 			set_variable = { global.fallout_transition_phase = constant:fallout_transition_phase.complete }
 			clr_global_flag = fallout_transition_schema_migration_blocked
 			set_variable = { global.fallout_transition_schema_version = constant:fallout_world_end_schema.version }
@@ -397,6 +444,69 @@ fallout_world_end_migrate_save = {
 		else = {
 			set_variable = { global.fallout_transition_schema_version = constant:fallout_world_end_schema.version }
 		}
+	}
+	fallout_reconcile_supply_network_schema_extension = yes
+}
+
+# Supported scope: COUNTRY. Schema 10 physical rows predate the province
+# supply-network receipt. Before successor allocation starts, a later active
+# phase may safely return to physical collapse and derive the missing receipt.
+# Unrelated owned errors and any begun allocation remain untouched.
+fallout_reconcile_supply_network_schema_extension = {
+	if = {
+		limit = {
+			has_global_flag = fallout_transition_active
+			NOT = { has_global_flag = fallout_transition_error }
+			NOT = { has_global_flag = fallout_successor_allocation_initialized }
+			has_variable = global.fallout_transition_generation
+			check_variable = {
+				var = global.fallout_transition_schema_version
+				value = constant:fallout_world_end_schema.version
+				compare = equals
+			}
+			check_variable = { global.fallout_transition_phase > constant:fallout_transition_phase.physical_collapse }
+			check_variable = { global.fallout_transition_phase < constant:fallout_transition_phase.player_continuation }
+			OR = {
+				NOT = { has_variable = global.fallout_supply_network_collapse_schema_version }
+				NOT = { has_variable = global.fallout_supply_network_collapse_generation }
+				NOT = {
+					check_variable = {
+						var = global.fallout_supply_network_collapse_schema_version
+						value = constant:fallout_supply_network_collapse_schema.version
+						compare = equals
+					}
+				}
+				NOT = {
+					check_variable = {
+						var = global.fallout_supply_network_collapse_generation
+						value = global.fallout_transition_generation
+						compare = equals
+					}
+				}
+			}
+		}
+		clr_global_flag = fallout_transition_phase_event_scheduled
+		clr_global_flag = fallout_transition_physical_collapse_applied
+		clr_global_flag = fallout_physical_collapse_complete
+		clr_global_flag = fallout_transition_government_sorting_applied
+		clr_global_flag = fallout_government_sorting_complete
+		clr_global_flag = fallout_transition_survivor_allocation_applied
+		clear_variable = global.fallout_supply_network_collapse_schema_version
+		clear_variable = global.fallout_supply_network_collapse_generation
+		if = {
+			limit = {
+				OR = {
+					has_global_flag = fallout_successor_conflict_ledger_built
+					has_global_flag = fallout_successor_conflict_ledger_invalid
+					has_variable = global.fallout_successor_conflict_ledger_generation
+					has_variable = global.fallout_successor_conflict_ledger_schema_version
+				}
+			}
+			fallout_reset_successor_conflict_inventory = yes
+		}
+		set_variable = { global.fallout_transition_phase = constant:fallout_transition_phase.physical_collapse }
+		add_to_variable = { global.fallout_transition_dirty = constant:fallout_runtime.one }
+		fallout_mark_blackout_gui_dirty = yes
 	}
 }
 
@@ -874,6 +984,24 @@ fallout_take_world_snapshot = {
 			clr_state_flag = fallout_pretransition_coastal
 			clr_state_flag = fallout_pretransition_air_winter_provenance_recorded
 			clr_state_flag = fallout_pretransition_state_category_recorded
+			clr_state_flag = fallout_supply_network_collapse_intent_committed
+			clr_state_flag = fallout_supply_node_collapse_settled
+			clr_state_flag = fallout_rail_way_collapse_settled
+			clr_state_flag = fallout_supply_network_collapse_evaluated
+			clr_state_flag = fallout_supply_network_collapse_reconciled
+			clr_state_flag = fallout_supply_network_collapse_applied
+			clear_variable = fallout_supply_network_collapse_schema_version
+			clear_variable = fallout_supply_network_collapse_generation
+			clear_variable = fallout_supply_network_snapshot_supply_node
+			clear_variable = fallout_supply_network_snapshot_rail_way
+			clear_variable = fallout_supply_network_before_supply_node
+			clear_variable = fallout_supply_network_before_rail_way
+			clear_variable = fallout_supply_network_requested_supply_node
+			clear_variable = fallout_supply_network_requested_rail_way
+			clear_variable = fallout_supply_network_after_supply_node
+			clear_variable = fallout_supply_network_after_rail_way
+			clear_variable = fallout_supply_network_observed_supply_node
+			clear_variable = fallout_supply_network_observed_rail_way
 			clear_variable = fallout_pretransition_capital_country
 			clear_variable = fallout_pretransition_player_owner
 			set_variable = { fallout_pretransition_nuclear_fallout_intensity = constant:fallout_runtime.zero }
@@ -1488,8 +1616,8 @@ fallout_calculate_building_damage_fraction = {
 }
 
 # Supported scope: STATE. The historical damage identifiers now record exact,
-# permanent level removal. Province buildings remain excluded because a state
-# call cannot recursively select their exact province instances.
+# permanent state-building level removal. Province buildings are handled by the
+# separate selector-backed supply-network transaction.
 fallout_apply_building_damage = {
 	if = {
 		limit = {
@@ -1665,6 +1793,196 @@ fallout_reconcile_building_damage_receipt = {
 			set_global_flag = fallout_transition_destructive_started
 		}
 		else = { clr_state_flag = fallout_building_damage_applied }
+	}
+}
+
+# Supported scope: STATE. Dead-city and higher grades remove every province
+# supply node and railway through the documented all-provinces selector. The
+# row intent is immutable. Each family settles only after its exact zero target
+# is visible. Retrying set-to-zero after an interrupted attempt is idempotent.
+fallout_apply_supply_network_collapse = {
+	if = {
+		limit = {
+			fallout_state_grading_row_is_current = yes
+			NOT = { has_state_flag = fallout_supply_network_collapse_intent_committed }
+		}
+		set_variable = { fallout_supply_network_before_supply_node = building_level@supply_node }
+		set_variable = { fallout_supply_network_before_rail_way = building_level@rail_way }
+		set_variable = { fallout_supply_network_snapshot_supply_node = fallout_pretransition_supply_node }
+		set_variable = { fallout_supply_network_snapshot_rail_way = fallout_pretransition_rail_way }
+		clr_state_flag = fallout_supply_node_collapse_settled
+		clr_state_flag = fallout_rail_way_collapse_settled
+		clr_state_flag = fallout_supply_network_collapse_evaluated
+		clr_state_flag = fallout_supply_network_collapse_reconciled
+		clr_state_flag = fallout_supply_network_collapse_applied
+		set_variable = { fallout_supply_network_collapse_schema_version = constant:fallout_supply_network_collapse_schema.version }
+		set_variable = { fallout_supply_network_collapse_generation = global.fallout_transition_generation }
+		set_variable = { fallout_supply_network_requested_supply_node = constant:fallout_runtime.zero }
+		set_variable = { fallout_supply_network_requested_rail_way = constant:fallout_runtime.zero }
+		if = {
+			limit = {
+				check_variable = {
+					var = fallout_state_grade
+					value = constant:fallout_state_grade.dead_city
+					compare = greater_than_or_equals
+				}
+			}
+			set_variable = { fallout_supply_network_requested_supply_node = fallout_supply_network_before_supply_node }
+			set_variable = { fallout_supply_network_requested_rail_way = fallout_supply_network_before_rail_way }
+		}
+		clear_variable = fallout_supply_network_after_supply_node
+		clear_variable = fallout_supply_network_after_rail_way
+		clear_variable = fallout_supply_network_observed_supply_node
+		clear_variable = fallout_supply_network_observed_rail_way
+		set_state_flag = fallout_supply_network_collapse_intent_committed
+	}
+	if = {
+		limit = {
+			has_state_flag = fallout_supply_network_collapse_intent_committed
+			check_variable = {
+				var = fallout_state_grade
+				value = constant:fallout_state_grade.dead_city
+				compare = greater_than_or_equals
+			}
+			NOT = { fallout_state_supply_node_surface_is_zero = yes }
+		}
+		clr_state_flag = fallout_supply_node_collapse_settled
+	}
+	if = {
+		limit = {
+			has_state_flag = fallout_supply_network_collapse_intent_committed
+			check_variable = {
+				var = fallout_state_grade
+				value = constant:fallout_state_grade.dead_city
+				compare = greater_than_or_equals
+			}
+			NOT = { fallout_state_rail_way_surface_is_zero = yes }
+		}
+		clr_state_flag = fallout_rail_way_collapse_settled
+	}
+	if = {
+		limit = {
+			has_state_flag = fallout_supply_network_collapse_intent_committed
+			NOT = { has_state_flag = fallout_supply_node_collapse_settled }
+		}
+		if = {
+			limit = {
+				fallout_state_grading_row_is_current = yes
+				check_variable = { fallout_state_grade < constant:fallout_state_grade.dead_city }
+			}
+			set_state_flag = fallout_supply_node_collapse_settled
+		}
+		else_if = {
+			limit = {
+				fallout_state_grading_row_is_current = yes
+				check_variable = {
+					var = fallout_state_grade
+					value = constant:fallout_state_grade.dead_city
+					compare = greater_than_or_equals
+				}
+			}
+			if = {
+				limit = { NOT = { fallout_state_supply_node_surface_is_zero = yes } }
+				set_global_flag = fallout_transition_destructive_started
+				set_building_level = {
+					type = supply_node
+					level = 0
+					province = {
+						all_provinces = yes
+						limit_to_border = no
+						level > 0
+					}
+				}
+			}
+			if = {
+				limit = { fallout_state_supply_node_surface_is_zero = yes }
+				set_state_flag = fallout_supply_node_collapse_settled
+			}
+		}
+	}
+	if = {
+		limit = {
+			has_state_flag = fallout_supply_network_collapse_intent_committed
+			NOT = { has_state_flag = fallout_rail_way_collapse_settled }
+		}
+		if = {
+			limit = {
+				fallout_state_grading_row_is_current = yes
+				check_variable = { fallout_state_grade < constant:fallout_state_grade.dead_city }
+			}
+			set_state_flag = fallout_rail_way_collapse_settled
+		}
+		else_if = {
+			limit = {
+				fallout_state_grading_row_is_current = yes
+				check_variable = {
+					var = fallout_state_grade
+					value = constant:fallout_state_grade.dead_city
+					compare = greater_than_or_equals
+				}
+			}
+			if = {
+				limit = { NOT = { fallout_state_rail_way_surface_is_zero = yes } }
+				set_global_flag = fallout_transition_destructive_started
+				set_building_level = {
+					type = rail_way
+					level = 0
+					province = {
+						all_provinces = yes
+						limit_to_border = no
+						level > 0
+					}
+				}
+			}
+			if = {
+				limit = { fallout_state_rail_way_surface_is_zero = yes }
+				set_state_flag = fallout_rail_way_collapse_settled
+			}
+		}
+	}
+	if = {
+		limit = {
+			has_state_flag = fallout_supply_network_collapse_intent_committed
+			has_state_flag = fallout_supply_node_collapse_settled
+			has_state_flag = fallout_rail_way_collapse_settled
+		}
+		fallout_reconcile_supply_network_collapse_receipt = yes
+	}
+}
+
+# Supported scope: STATE. This records the settled idempotent network result.
+# It never calls either engine mutation.
+fallout_reconcile_supply_network_collapse_receipt = {
+	clr_state_flag = fallout_supply_network_collapse_evaluated
+	clr_state_flag = fallout_supply_network_collapse_reconciled
+	clr_state_flag = fallout_supply_network_collapse_applied
+	set_variable = { fallout_supply_network_after_supply_node = building_level@supply_node }
+	set_variable = { fallout_supply_network_after_rail_way = building_level@rail_way }
+	set_variable = { fallout_supply_network_observed_supply_node = fallout_supply_network_before_supply_node }
+	subtract_from_variable = { fallout_supply_network_observed_supply_node = fallout_supply_network_after_supply_node }
+	clamp_variable = { var = fallout_supply_network_observed_supply_node min = constant:fallout_runtime.zero }
+	set_variable = { fallout_supply_network_observed_rail_way = fallout_supply_network_before_rail_way }
+	subtract_from_variable = { fallout_supply_network_observed_rail_way = fallout_supply_network_after_rail_way }
+	clamp_variable = { var = fallout_supply_network_observed_rail_way min = constant:fallout_runtime.zero }
+	if = {
+		limit = { fallout_state_supply_network_collapse_payload_is_exact = yes }
+		set_state_flag = fallout_supply_network_collapse_evaluated
+		set_state_flag = fallout_supply_network_collapse_reconciled
+		if = {
+			limit = {
+				check_variable = {
+					var = fallout_state_grade
+					value = constant:fallout_state_grade.dead_city
+					compare = greater_than_or_equals
+				}
+				OR = {
+					check_variable = { fallout_supply_network_before_supply_node > constant:fallout_runtime.zero }
+					check_variable = { fallout_supply_network_before_rail_way > constant:fallout_runtime.zero }
+				}
+			}
+			set_state_flag = fallout_supply_network_collapse_applied
+		}
+		else = { clr_state_flag = fallout_supply_network_collapse_applied }
 	}
 }
 
@@ -2516,6 +2834,7 @@ fallout_begin_successor_allocation_transaction = {
 		limit = {
 			NOT = { has_global_flag = fallout_transition_error }
 			NOT = { has_global_flag = fallout_successor_allocation_initialized }
+			fallout_physical_collapse_rows_are_durable = yes
 			has_global_flag = fallout_player_allocation_reservation_ledger_complete
 			fallout_player_allocation_reservation_ledger_is_current = yes
 			has_global_flag = fallout_successor_conflict_ledger_built
@@ -3720,6 +4039,8 @@ fallout_apply_transition_phase_physical_collapse = {
 			}
 			clr_global_flag = fallout_transition_physical_collapse_applied
 			clr_global_flag = fallout_physical_collapse_complete
+			clear_variable = global.fallout_supply_network_collapse_schema_version
+			clear_variable = global.fallout_supply_network_collapse_generation
 		}
 		if = {
 			limit = { NOT = { fallout_physical_collapse_rows_are_current = yes } }
@@ -3730,6 +4051,10 @@ fallout_apply_transition_phase_physical_collapse = {
 					fallout_apply_building_damage = yes
 				}
 				else = { fallout_reconcile_building_damage_receipt = yes }
+				if = {
+					limit = { NOT = { fallout_state_supply_network_collapse_receipt_is_current = yes } }
+					fallout_apply_supply_network_collapse = yes
+				}
 				if = {
 					limit = { NOT = { has_state_flag = fallout_category_conversion_mutation_issued } }
 					fallout_convert_state_category = yes
@@ -3753,6 +4078,11 @@ fallout_apply_transition_phase_physical_collapse = {
 		}
 		if = {
 			limit = { fallout_physical_collapse_rows_are_current = yes }
+			set_variable = { global.fallout_supply_network_collapse_schema_version = constant:fallout_supply_network_collapse_schema.version }
+			set_variable = { global.fallout_supply_network_collapse_generation = global.fallout_transition_generation }
+		}
+		if = {
+			limit = { fallout_physical_collapse_rows_are_durable = yes }
 			set_global_flag = fallout_transition_physical_collapse_applied
 			set_global_flag = fallout_physical_collapse_complete
 		}
@@ -3767,7 +4097,7 @@ fallout_apply_transition_phase_physical_collapse = {
 			NOT = { has_global_flag = fallout_transition_error }
 			has_global_flag = fallout_transition_physical_collapse_applied
 			has_global_flag = fallout_physical_collapse_complete
-			fallout_physical_collapse_rows_are_current = yes
+			fallout_physical_collapse_rows_are_durable = yes
 		}
 		set_temp_variable = { fallout_transition_next_phase = constant:fallout_transition_phase.government_sorting }
 		fallout_advance_transition_phase = yes

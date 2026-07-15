@@ -39,11 +39,11 @@ The live Fallout package includes:
 
 - `fallout_request_aftermath` and request validation
 - one project-coordinator reconciliation path with an at-most-once global-date receipt
-- a versioned transition envelope with schema 10
+- a versioned transition envelope with schema 11
 - blackout GUI state and phase events
 - player and world snapshots
 - deterministic state grading and survival values
-- generation-bound grading, post-mutation Deaths, permanent building-loss, no-upgrade category-conversion, and grade-modifier receipts
+- generation-bound grading, post-mutation Deaths, permanent state-building loss, province supply-network collapse, no-upgrade category-conversion, and grade-modifier receipts
 - partial old-world diplomacy cleanup with applied and verified market-access cancellation
 - deterministic provisional classification for eleven live government archetypes, with Machine Protocol fail closed
 - player-first source and state reservation planning, including landless-human materialization rows
@@ -103,11 +103,14 @@ Vanilla `on_nuke_drop` schedules twelve one-day nuclear news events per callback
 
 ## Transition and migration boundary
 
-Schema-10 migration is fail closed:
+Schema-11 migration is fail closed:
 
-- completed saves are promoted non-destructively
-- active schema-7, schema-8, and schema-9 saves rebuild only while still in the snapshot phase, before snapshot application or destruction, and without an unrelated error
-- completed legacy saves are marked as lacking current-schema row receipts and receive no fabricated receipts
+- completed schema-10 and older saves are promoted non-destructively and are marked as lacking both current-schema and supply-network receipts
+- active schema-7, schema-8, schema-9, and schema-10 saves rebuild only while still in the snapshot phase, before snapshot application or destruction, and without an unrelated error
+- an active schema-10 phase 2 transition can promote before grading mutation
+- an active schema-10 phase 3 through 6 transition can promote only before allocation, with current grading, and with exact live-to-frozen supply-network equality for every destructive-grade state
+- promoted phase 5 or 6 transitions rewind to physical collapse and discard derived government and conflict rows
+- completed legacy saves receive no fabricated receipts and do not replay destruction
 - the former schema-3 map-return-error promotion is removed
 - every other incomplete legacy state remains under blackout
 - an incomplete terminal state with no schema remains under blackout
@@ -118,7 +121,7 @@ Completed legacy Fallout saves have no proven reveal date. Migration does not in
 
 Player source reservation is separate from final destination materialization. Every snapshot-origin human state is reserved before the successor inventory is frozen. A landless human is retained as an explicit emergency-materialization source instead of raising a false missing-anchor error. Derived inventory schema 1 binds every row to the active transition generation. The validator checks every live country, every possible country scope, every state, exact candidate and reservation membership, human ownership and control, known overlapping event-package ownership, and capital consistency. A proposed target is commit-ready only when it already exists, has country and focus packages from the current transition generation, owns survivable territory, and owns and controls the exact capital reserved for that player. A global two-pass preflight validates all existing commits and proposed targets before any player switch. Exact single-error signatures can re-enter snapshot, reservation, inventory, peace-conference, or player-commit paths without taking ownership from another failure. Once allocation initialization consumes the reservation ledger, later drift records its own fail-closed error and cannot rebuild those rows.
 
-World transition schema 10 makes the snapshot, grading, population-loss, and physical-collapse ledgers hard phase barriers. One epoch freezes every player, state, and country input used by grading, survival, population targeting, category conversion, and provisional government classification. Air Winter owns a versioned live producer receipt. Valid states initialize and normalize through that producer before exact live-to-frozen comparison. Invalid states receive an explicit N/A kind and complete Air-owned payload. Every state separately freezes and proves its live category. Air Winter's historical original category remains provenance and classifier memory. Exact live owner, controller, and category equality are checked at capture. Blackout and world-end flags are committed only after both snapshot halves pass. Air Winter state mutation pauses during the active rewrite without adding a world pass. Grading rows recompute score and survival from frozen inputs. Population rows store frozen intent, clamp against live population, issue one mutation, observe the result, and only then register the exact loss through Deaths without applying state population twice. Global Deaths totals, sequence, and state-map ledger movement have stored receipts. Physical rows prove permanent `remove_building` loss for five state-building families, a category target no higher than the frozen live baseline, semantic supply collapse, exact grade and subtype modifiers, and rewrite generation. Mutation issue flags make retries observation-only. Map return uses durable transaction receipts, so later normal population or construction change does not invalidate completed destruction. Province rail and supply-node removal is excluded until per-province selection can be proved. Each phase advances only after every state row passes. The diplomacy transaction uses the approved `market_access_rights` cancellation pattern and the official `has_market_access_with` trigger for a global postcondition. Government classifier schema 2 aggregates the frozen rows before ownership changes. Eleven archetypes are live. Machine Protocol requires machine-continuity, command-network, EMP-survival, technical-state, and remote-refuge evidence, and remains unreachable until the missing producers exist. The provisional result is stored separately from the final package archetype. The classifier does not change politics or activate content.
+World transition schema 11 makes the snapshot, grading, population-loss, and physical-collapse ledgers hard phase barriers. One epoch freezes every player, state, and country input used by grading, survival, population targeting, category conversion, and provisional government classification. Air Winter owns a versioned live producer receipt. Valid states initialize and normalize through that producer before exact live-to-frozen comparison. Invalid states receive an explicit N/A kind and complete Air-owned payload. Every state separately freezes and proves its live category. Air Winter's historical original category remains provenance and classifier memory. Exact live owner, controller, and category equality are checked at capture. Blackout and world-end flags are committed only after both snapshot halves pass. Air Winter state mutation pauses during the active rewrite without adding a world pass. Grading rows recompute score and survival from frozen inputs. Population rows store frozen intent, clamp against live population, issue one mutation, observe the result, and only then register the exact loss through Deaths without applying state population twice. Global Deaths totals, sequence, and state-map ledger movement have stored receipts. Physical rows prove permanent `remove_building` loss for five state-building families, a category target no higher than the frozen live baseline, exact grade and subtype modifiers, and rewrite generation. Dead-city and higher grades also issue `set_building_level` through the documented all-provinces selector for `supply_node` and `rail_way`. Each family retries only the idempotent set-to-zero operation until both its aggregate and direct province query report zero. Current receipts require zero aggregate levels and no selected province above zero before the world receipt commits. Durable receipts protect later transition phases from ordinary construction drift. Exact railway topology mutation and immediate engine visibility remain runtime blockers because Hearts of Iron IV was not launched. Each phase advances only after every state row passes. The diplomacy transaction uses the approved `market_access_rights` cancellation pattern and the official `has_market_access_with` trigger for a global postcondition. Government classifier schema 2 aggregates the frozen rows before ownership changes. Eleven archetypes are live. Machine Protocol requires machine-continuity, command-network, EMP-survival, technical-state, and remote-refuge evidence, and remains unreachable until the missing producers exist. The provisional result is stored separately from the final package archetype. The classifier does not change politics or activate content.
 
 The conflict inventory is not an allocator. It does not choose tags, final package layers, conflict results, or cleanup owners. Its known package-ownership helper must be reviewed again against the live repository before ownership changes begin. Successor allocation schema 2 requires each input row to retain its frozen generation, leave the pending state, and own current resolution and cleanup generations. Each non-retired input row and output assignment must name each other, match resolution and generation, and share the same cleanup owner. Converted, released, and dynamically created outputs require distinct current-generation provenance receipts. Frozen possible-country membership is not release proof. A retired input must be landless and cannot name an output. The proof also cross-links every player-reserved source to the same continuation target, requires unique assigned countries and capitals, exact live-landholder coverage, and current package generations. Its guarded finalizer is the only setter for `fallout_successor_allocation_complete`, but no active allocator calls it or produces the required rows.
 
@@ -137,13 +140,14 @@ The old-world diplomacy proof gate also remains unresolved. Docking rights have 
 1. Register the reserved SCN-014 public Fallout row and dispatch only after the exact native sweep release gate passes.
 2. Prove native strike acceptance, one callback per call, callback timing, performance, save behavior, and multiplayer behavior in a separately authorized runtime pass.
 3. Resolve the possible 121,848 vanilla news-event attempts without reducing the exact 10,154-target requirement.
-4. Implement general successor allocation and the country and focus package producers, including current transition generation ledgers. Re-audit every live event-package producer before the first state transfer or tag materialization.
-5. Implement player-successor materialization, candidate selection and choice UI, and collision-safe multiplayer handling where the source spec requires them. Prove the immediate `change_tag_from` handoff observation in an authorized runtime pass.
-6. Complete and prove the old-world diplomacy reset surfaces.
-7. Close the tracked blackout input, scripted-GUI binding, and all-resolution drawing-order gates. The mapmode frame gate is resolved by `AIR_WINTER_MAPMODE_ICON_PROOF.md`.
-8. Finish regional successor content, focus content, AI, localisation, assets, documentation alignment, and the required audits.
-9. Resolve literal multiplayer lobby-host authority or retain it as an explicit engine blocker. The live project coordinator is deterministic and date-bounded, but it is not a documented lobby-host predicate.
-10. Implement and review the survival ledger, five-part orientation content, bounded candidate selection, event definitions, human choices, hidden AI resolution, content-owned cleanup, fatigue behavior, and runtime persistence proof before enabling the living-world scheduler.
+4. Prove that the all-provinces `set_building_level` route removes every supply node and railway edge and exposes the result to the receipt without issuing a family twice.
+5. Implement general successor allocation and the country and focus package producers, including current transition generation ledgers. Re-audit every live event-package producer before the first state transfer or tag materialization.
+6. Implement player-successor materialization, candidate selection and choice UI, and collision-safe multiplayer handling where the source spec requires them. Prove the immediate `change_tag_from` handoff observation in an authorized runtime pass.
+7. Complete and prove the old-world diplomacy reset surfaces.
+8. Close the tracked blackout input, scripted-GUI binding, and all-resolution drawing-order gates. The mapmode frame gate is resolved by `AIR_WINTER_MAPMODE_ICON_PROOF.md`.
+9. Finish regional successor content, focus content, AI, localisation, assets, documentation alignment, and the required audits.
+10. Resolve literal multiplayer lobby-host authority or retain it as an explicit engine blocker. The live project coordinator is deterministic and date-bounded, but it is not a documented lobby-host predicate.
+11. Implement and review the survival ledger, five-part orientation content, bounded candidate selection, event definitions, human choices, hidden AI resolution, content-owned cleanup, fatigue behavior, and runtime persistence proof before enabling the living-world scheduler.
 
 ## Resume map
 
@@ -152,6 +156,7 @@ The old-world diplomacy proof gate also remains unresolved. Docking rights have 
 - Current hard blockers and accepted decisions: `BLOCKERS_AND_DECISIONS.md`
 - Transition ordering and postconditions: `FALLOUT_TRANSITION_ARCHITECTURE.md`
 - Air Winter snapshot provenance and transactional lock: `FALLOUT_AIR_WINTER_SNAPSHOT_PROVENANCE_PROOF.md`
+- Province supply-network collapse and migration proof: `FALLOUT_SUPPLY_NETWORK_COLLAPSE_PROOF.md`
 - Source-of-truth routing: `SOURCE_OF_TRUTH_RECONCILIATION.md`
 - Implementation tranches: `IMPLEMENTATION_TRANCHE_PLAN.md`
 - Gameplay status for Air Cleanliness: `docs/systems/air_contamination_mechanic.md`

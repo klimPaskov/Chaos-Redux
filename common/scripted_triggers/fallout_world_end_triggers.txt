@@ -1040,7 +1040,7 @@ fallout_state_subtype_modifier_receipt_is_current = {
 }
 
 # Supported scope: STATE. Historical damage identifiers record permanently
-# removed building levels in transition schema 10.
+# removed building levels in transition schema 11.
 fallout_state_building_damage_receipt_is_durable = {
 	has_state_flag = fallout_building_damage_mutation_issued
 	has_state_flag = fallout_building_damage_evaluated
@@ -1117,6 +1117,189 @@ fallout_state_building_damage_receipt_is_current = {
 	check_variable = { var = fallout_building_damage_after_dockyard value = building_level@dockyard compare = equals }
 }
 
+# Supported scope: STATE. Both the aggregate and direct province selector must
+# report zero before a destructive family can settle.
+fallout_state_supply_node_surface_is_zero = {
+	check_variable = { building_level@supply_node = constant:fallout_runtime.zero }
+	NOT = {
+		any_province_building_level = {
+			province = { all_provinces = yes }
+			building = supply_node
+			level > 0
+		}
+	}
+}
+
+# Supported scope: STATE
+fallout_state_rail_way_surface_is_zero = {
+	check_variable = { building_level@rail_way = constant:fallout_runtime.zero }
+	NOT = {
+		any_province_building_level = {
+			province = { all_provinces = yes }
+			building = rail_way
+			level > 0
+		}
+	}
+}
+
+# Supported scope: STATE. This proves the exact province-network target and
+# observed aggregate loss before reconciliation flags are committed.
+fallout_state_supply_network_collapse_payload_is_exact = {
+	has_state_flag = fallout_supply_network_collapse_intent_committed
+	has_state_flag = fallout_supply_node_collapse_settled
+	has_state_flag = fallout_rail_way_collapse_settled
+	has_variable = fallout_supply_network_collapse_schema_version
+	has_variable = fallout_supply_network_collapse_generation
+	has_variable = fallout_supply_network_snapshot_supply_node
+	has_variable = fallout_supply_network_snapshot_rail_way
+	has_variable = fallout_supply_network_before_supply_node
+	has_variable = fallout_supply_network_before_rail_way
+	has_variable = fallout_supply_network_requested_supply_node
+	has_variable = fallout_supply_network_requested_rail_way
+	has_variable = fallout_supply_network_after_supply_node
+	has_variable = fallout_supply_network_after_rail_way
+	has_variable = fallout_supply_network_observed_supply_node
+	has_variable = fallout_supply_network_observed_rail_way
+	check_variable = {
+		var = fallout_supply_network_collapse_schema_version
+		value = constant:fallout_supply_network_collapse_schema.version
+		compare = equals
+	}
+	check_variable = {
+		var = fallout_supply_network_collapse_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+	check_variable = { var = fallout_supply_network_snapshot_supply_node value = fallout_pretransition_supply_node compare = equals }
+	check_variable = { var = fallout_supply_network_snapshot_rail_way value = fallout_pretransition_rail_way compare = equals }
+	check_variable = { fallout_supply_network_before_supply_node > constant:fallout_runtime.negative_one }
+	check_variable = { fallout_supply_network_before_rail_way > constant:fallout_runtime.negative_one }
+	check_variable = { fallout_supply_network_requested_supply_node > constant:fallout_runtime.negative_one }
+	check_variable = { fallout_supply_network_requested_rail_way > constant:fallout_runtime.negative_one }
+	check_variable = { fallout_supply_network_after_supply_node > constant:fallout_runtime.negative_one }
+	check_variable = { fallout_supply_network_after_rail_way > constant:fallout_runtime.negative_one }
+	check_variable = { fallout_supply_network_observed_supply_node > constant:fallout_runtime.negative_one }
+	check_variable = { fallout_supply_network_observed_rail_way > constant:fallout_runtime.negative_one }
+	OR = {
+		AND = {
+			check_variable = { fallout_state_grade < constant:fallout_state_grade.dead_city }
+			check_variable = { fallout_supply_network_requested_supply_node = constant:fallout_runtime.zero }
+			check_variable = { fallout_supply_network_requested_rail_way = constant:fallout_runtime.zero }
+			check_variable = { fallout_supply_network_observed_supply_node = constant:fallout_runtime.zero }
+			check_variable = { fallout_supply_network_observed_rail_way = constant:fallout_runtime.zero }
+			check_variable = { var = fallout_supply_network_after_supply_node value = fallout_supply_network_before_supply_node compare = equals }
+			check_variable = { var = fallout_supply_network_after_rail_way value = fallout_supply_network_before_rail_way compare = equals }
+		}
+		AND = {
+			check_variable = {
+				var = fallout_state_grade
+				value = constant:fallout_state_grade.dead_city
+				compare = greater_than_or_equals
+			}
+			check_variable = { var = fallout_supply_network_requested_supply_node value = fallout_supply_network_before_supply_node compare = equals }
+			check_variable = { var = fallout_supply_network_requested_rail_way value = fallout_supply_network_before_rail_way compare = equals }
+			check_variable = { fallout_supply_network_after_supply_node = constant:fallout_runtime.zero }
+			check_variable = { fallout_supply_network_after_rail_way = constant:fallout_runtime.zero }
+			check_variable = { var = fallout_supply_network_observed_supply_node value = fallout_supply_network_before_supply_node compare = equals }
+			check_variable = { var = fallout_supply_network_observed_rail_way value = fallout_supply_network_before_rail_way compare = equals }
+		}
+	}
+}
+
+# Supported scope: STATE. Reconciliation commits only after the stored payload
+# exactly matches the grade-owned target and observed engine result.
+fallout_state_supply_network_collapse_receipt_is_durable = {
+	has_state_flag = fallout_supply_network_collapse_evaluated
+	has_state_flag = fallout_supply_network_collapse_reconciled
+	fallout_state_supply_network_collapse_payload_is_exact = yes
+	OR = {
+		AND = {
+			check_variable = {
+				var = fallout_state_grade
+				value = constant:fallout_state_grade.dead_city
+				compare = greater_than_or_equals
+			}
+			OR = {
+				check_variable = { fallout_supply_network_before_supply_node > constant:fallout_runtime.zero }
+				check_variable = { fallout_supply_network_before_rail_way > constant:fallout_runtime.zero }
+			}
+			has_state_flag = fallout_supply_network_collapse_applied
+		}
+		AND = {
+			OR = {
+				check_variable = { fallout_state_grade < constant:fallout_state_grade.dead_city }
+				AND = {
+					check_variable = { fallout_supply_network_before_supply_node = constant:fallout_runtime.zero }
+					check_variable = { fallout_supply_network_before_rail_way = constant:fallout_runtime.zero }
+				}
+			}
+			NOT = { has_state_flag = fallout_supply_network_collapse_applied }
+		}
+	}
+}
+
+# Supported scope: STATE. This is the immediate phase-local live observation.
+fallout_state_supply_network_collapse_receipt_is_current = {
+	fallout_state_supply_network_collapse_receipt_is_durable = yes
+	OR = {
+		check_variable = { fallout_state_grade < constant:fallout_state_grade.dead_city }
+		AND = {
+			check_variable = {
+				var = fallout_state_grade
+				value = constant:fallout_state_grade.dead_city
+				compare = greater_than_or_equals
+			}
+			check_variable = { var = fallout_supply_network_after_supply_node value = building_level@supply_node compare = equals }
+			check_variable = { var = fallout_supply_network_after_rail_way value = building_level@rail_way compare = equals }
+			fallout_state_supply_node_surface_is_zero = yes
+			fallout_state_rail_way_surface_is_zero = yes
+		}
+	}
+}
+
+# Supported scope: COUNTRY. Once grading is complete, schema-10 recovery may
+# mutate only destructive-grade rows whose live network still matches snapshot.
+fallout_destructive_supply_network_live_matches_frozen_snapshot = {
+	collection_size = {
+		input = {
+			input = game:all_states
+			operators = {
+				limit = {
+					check_variable = {
+						var = fallout_state_grade
+						value = constant:fallout_state_grade.dead_city
+						compare = greater_than_or_equals
+					}
+					OR = {
+						NOT = { has_variable = fallout_pretransition_supply_node }
+						NOT = { has_variable = fallout_pretransition_rail_way }
+						NOT = { check_variable = { var = fallout_pretransition_supply_node value = building_level@supply_node compare = equals } }
+						NOT = { check_variable = { var = fallout_pretransition_rail_way value = building_level@rail_way compare = equals } }
+					}
+				}
+			}
+		}
+		value = constant:fallout_runtime.zero
+	}
+}
+
+# Supported scope: COUNTRY. Written only after every state row passes in the
+# current transition generation.
+fallout_supply_network_collapse_world_receipt_is_current = {
+	has_variable = global.fallout_supply_network_collapse_schema_version
+	has_variable = global.fallout_supply_network_collapse_generation
+	check_variable = {
+		var = global.fallout_supply_network_collapse_schema_version
+		value = constant:fallout_supply_network_collapse_schema.version
+		compare = equals
+	}
+	check_variable = {
+		var = global.fallout_supply_network_collapse_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+}
+
 # Supported scope: STATE. The stored target is recomputed from the frozen live
 # category and can never rank above that frozen baseline.
 fallout_state_category_receipt_is_current = {
@@ -1180,6 +1363,7 @@ fallout_state_category_receipt_is_current = {
 fallout_physical_collapse_components_are_current = {
 	fallout_population_loss_row_is_durable = yes
 	fallout_state_building_damage_receipt_is_durable = yes
+	fallout_state_supply_network_collapse_receipt_is_current = yes
 	fallout_state_category_receipt_is_current = yes
 	fallout_state_grade_modifier_receipt_is_current = yes
 	fallout_state_subtype_modifier_receipt_is_current = yes
@@ -1191,6 +1375,7 @@ fallout_physical_collapse_components_are_current = {
 fallout_physical_collapse_components_are_durable = {
 	fallout_population_loss_row_is_durable = yes
 	fallout_state_building_damage_receipt_is_durable = yes
+	fallout_state_supply_network_collapse_receipt_is_durable = yes
 	fallout_state_category_receipt_is_current = yes
 	fallout_state_grade_modifier_receipt_is_current = yes
 	fallout_state_subtype_modifier_receipt_is_current = yes
@@ -1235,6 +1420,7 @@ fallout_physical_collapse_rows_are_current = {
 # Supported scope: COUNTRY
 fallout_physical_collapse_rows_are_durable = {
 	fallout_population_loss_rows_are_durable = yes
+	fallout_supply_network_collapse_world_receipt_is_current = yes
 	collection_size = {
 		input = {
 			input = game:all_states
@@ -1796,6 +1982,7 @@ fallout_successor_state_inventory_row_is_current = {
 		value = global.fallout_transition_generation
 		compare = equals
 	}
+	fallout_state_supply_network_collapse_receipt_is_durable = yes
 	OWNER = { exists = yes }
 	CONTROLLER = { exists = yes }
 	OWNER = { tag = var:PREV.fallout_successor_state_inventory_owner }
@@ -3481,6 +3668,7 @@ fallout_player_primary_target_is_commit_ready = {
 
 # Supported scope: COUNTRY
 fallout_state_rewrite_postconditions_are_met = {
+	fallout_supply_network_collapse_world_receipt_is_current = yes
 	NOT = {
 		any_state = {
 			OR = {
@@ -3500,6 +3688,7 @@ fallout_state_rewrite_postconditions_are_met = {
 				NOT = { has_state_flag = fallout_state_graded }
 				NOT = { fallout_population_loss_row_is_durable = yes }
 				NOT = { fallout_state_building_damage_receipt_is_durable = yes }
+				NOT = { fallout_state_supply_network_collapse_receipt_is_durable = yes }
 				NOT = { fallout_state_category_receipt_is_current = yes }
 				NOT = { fallout_state_grade_modifier_receipt_is_current = yes }
 				NOT = { fallout_state_subtype_modifier_receipt_is_current = yes }
