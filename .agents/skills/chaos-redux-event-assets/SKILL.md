@@ -170,9 +170,10 @@ Use Codex's official `$imagegen` skill by default for:
 - decision icons
 - decision category icons
 - achievement icons
-- fictional flags
+- fictional flag designs
 - faction emblems
 - fictional leader portraits
+- advisor dossier frames, papers, seals, and patina overlays
 - UI panels
 - progression-state base art
 - other symbolic or fictional static assets
@@ -908,7 +909,10 @@ id.
 
 ## 20. Flags
 
-Flags should use clean symbolic designs that look like intentional flag art, not simple-shape placeholders, palette swaps, ugly filters, or flipped/recolored variants.
+Flags should use clean symbolic designs that look like intentional flag
+designs, not simple-shape placeholders, palette swaps, ugly filters, or
+flipped/recolored variants. Treat flags as flat identity assets, not artwork or
+illustrated scenes.
 
 Inspect the complete flat flag ladders in
 `assets/vanilla_reference/flags/normal/`,
@@ -927,7 +931,11 @@ Required flag sizes:
 
 HOI4 flag TGAs must use the same origin/header convention as vanilla flags. Validate with `file`; completed flag TGAs should read as Targa image data at the correct size and must not end with `- top`. If a flag displays upside down in-game while the artwork looks correct in an image viewer, fix the TGA encoding/origin on the flag files themselves. Do not add custom UI sprites, scripted-localisation routing, DDS display copies, or other workarounds for flag orientation.
 
-Avoid overly detailed symbols.
+Use enough heraldic detail to prove that the design is authored rather than a
+basic-shape placeholder, while keeping the principal emblem readable at
+`10x7`. Prefer a layered civic, heraldic, industrial, botanical, maritime, or
+institutional emblem with a clear outer silhouette over an isolated circle,
+star, arrow, stripe, or geometric blob.
 
 Avoid generated text unless the design absolutely requires it and the final output is manually checked.
 
@@ -948,7 +956,24 @@ For focus-tree or event route flag changes, use explicit cosmetic tags or route-
 
 Historical or historically grounded flags must use sourced motifs, documented heraldry, period symbols, or clearly explained alternate-history synthesis. If no directly attested flag exists, state that in the manifest and produce a historically grounded design from relevant motifs instead of inventing unrelated symbols.
 
-Generated fictional or alternate-history flag variants must come from generated/source artwork and then be processed into final flag sizes. Do not hand-draw final flags from basic rectangles, circles, stars, arrows, or random emblems unless those shapes are part of a researched or generated source design.
+Generated fictional or alternate-history flag variants must come from a
+separate `$imagegen` result for each visually distinct design and then be
+processed into final flag sizes. Preserve the generated emblem geometry,
+internal heraldic construction, and identifying details through export. Do not
+replace the generated design with local rectangles, circles, stars, arrows,
+traced silhouettes, or other programmatically drawn geometry. Do not use a
+solid-fill normalizer, aggressive palette quantizer, vector trace, or edge
+simplifier that reduces generated detail to primitive shapes. Mechanical
+cropping, colour management, edge cleanup, orientation correction, resizing,
+and TGA export are allowed, but they must not become the source of the design.
+
+Keep the full ImageGen source master and create a comparison sheet containing
+that master plus the normal, medium, and small exports. Reject a flag when its
+normal export no longer contains the distinctive generated emblem or when its
+small export reads as an accidental blob. Flags are designs/assets, not event
+artwork: the source and final files must still be flat, orthographic flag
+graphics without fabric, folds, a flagpole, a scene, perspective, lighting,
+shadows, or painterly surface texture.
 
 Before marking any flag complete, verify normal, medium, and small TGA files:
 
@@ -1015,22 +1040,41 @@ the dossier-card size; follow their cataloged owning sprite.
 
 Advisor, theorist, military-high-command, and officer-corps portrait icons are
 a separate asset type. Inspect `assets/vanilla_reference/portraits/advisors/`
-before
-work. The final target is `65x67`: a recognisable HOI4-styled
-head-and-shoulders portrait in the dark bevelled dossier-card presentation,
-with transparent outer corners and the small paper overlay used by vanilla.
+before work. The final target is `65x67`: a recognisable HOI4-styled
+head-and-shoulders portrait in the dark, irregular bevelled dossier-card
+presentation, with transparent outer corners and a small angled paper element.
+
+For a fictional advisor, generate a distinct full-resolution portrait master
+with `$imagegen`; do not reuse a country-leader crop or manufacture the person
+with a local drawing script. Use `$imagegen` for the reusable visual overlays
+needed by the dossier composition as well, including the frame, aged paper,
+seal, clipped corner, patina, or other visible card treatment. Generate those
+elements separately on a removable chroma-key background when direct alpha is
+unreliable, then follow the `$imagegen` transparency workflow and retain both
+the original generated source and the alpha-processed overlay.
 
 Do not satisfy an advisor icon by shrinking, padding, or directly wiring a
 `156x210` country-leader, commander, or operative portrait. Start from the
 approved portrait master, choose a separate explicit head-and-shoulders crop,
-and independently compose the subject inside the `65x67` dossier card before
-running `.tools/process_hoi4_portrait.py advisor`. The crop, subject scale,
-background treatment, bevelled frame, transparent outer corners, and paper
-overlay belong to this dossier composition. Retain the generated metadata and
-reference comparison sheet, inspect the result at native size and enlarged
-nearest-neighbour size, then convert the approved PNG with
-`.tools/convert_to_dds.py`. The depicted person must still be real sourced or
-imagegen-created artwork under the portrait rules above.
+and independently compose the subject inside the `65x67` dossier card with
+`.tools/process_hoi4_portrait.py advisor`. Advisor mode must receive approved
+ImageGen-authored frame and paper overlays. The processor may crop, resize,
+colour-grade, apply restrained perspective or angle, derive soft shadows from
+existing alpha, composite approved layers, validate, and export. It must not
+draw the frame, paper, seal, faux writing, bevel, patina, emblem, or any other
+visible dossier element from rectangles, rounded rectangles, polygons, lines,
+ellipses, gradients, procedural texture, or other primitive geometry.
+
+Retain the portrait master, generated overlay sources, alpha-processed
+overlays, overlay prompts, processor arguments, hashes, metadata, and reference
+comparison sheet. Inspect every result at native size and enlarged
+nearest-neighbour size beside at least two canonical vanilla advisor examples,
+then convert the approved PNG with `.tools/convert_to_dds.py`. The depicted
+person must still be real sourced or ImageGen-created under the portrait rules
+above. Reject cards whose generated overlay obscures the face, whose dossier
+paper resembles a large generic UI panel, or whose silhouette, value range,
+paper placement, and transparent corners do not read like the canonical
+advisor family.
 
 ## 21.2 Unit visual references
 

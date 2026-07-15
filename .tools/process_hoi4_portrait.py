@@ -2,15 +2,18 @@
 """Finish a style-approved portrait master for HOI4 leader or advisor use.
 
 This tool is a deterministic finishing and presentation step. It does not
-invent a person's face and it is not a substitute for source research or the
-required visual review against the canonical event-assets skill references in
-``assets/vanilla_reference/portraits/leaders`` and
-``assets/vanilla_reference/portraits/advisors``.
+invent a person's face or draw advisor-card artwork, and it is not a substitute
+for source research or the required visual review against the canonical
+event-assets skill references in ``assets/vanilla_reference/portraits/leaders``
+and ``assets/vanilla_reference/portraits/advisors``.
 
 Real people must start from an attributed archival image. Pass an explicit
 head-and-shoulders crop, preserve the person's recognisable features, and
 reject the result if the source is too weak to survive the HOI4 finish.
-Fictional portraits may start from an approved imagegen master.
+Fictional portraits may start from an approved ImageGen master. Advisor mode
+also requires separately generated, alpha-processed frame and paper overlays.
+The script only crops, grades, angles, shadows, composites, validates, and
+exports those approved sources.
 """
 
 from __future__ import annotations
@@ -21,12 +24,12 @@ import json
 import math
 from pathlib import Path
 
-from PIL import Image, ImageChops, ImageDraw, ImageEnhance, ImageFilter, ImageOps
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageOps
 
 
 LEADER_SIZE = (156, 210)
 ADVISOR_SIZE = (65, 67)
-PROCESSOR_VERSION = "1.1"
+PROCESSOR_VERSION = "2.0"
 REFERENCE_ROOT = Path(
 	".agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits"
 )
@@ -110,64 +113,119 @@ def make_leader(source_crop: Image.Image, source_kind: str, seed_text: str) -> I
 	return hoi4_finish(resized, source_kind, seed_text)
 
 
-def vertical_gradient(size: tuple[int, int], top: tuple[int, ...], bottom: tuple[int, ...]) -> Image.Image:
-	image = Image.new("RGBA", size)
-	draw = ImageDraw.Draw(image)
-	for y in range(size[1]):
-		ratio = y / max(1, size[1] - 1)
-		colour = tuple(round(top[index] * (1 - ratio) + bottom[index] * ratio) for index in range(4))
-		draw.line((0, y, size[0], y), fill=colour)
-	return image
+def sha256_file(path: Path) -> str:
+	digest = hashlib.sha256()
+	with path.open("rb") as handle:
+		for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+			digest.update(chunk)
+	return digest.hexdigest()
 
 
-def make_advisor(source_crop: Image.Image, source_kind: str, seed_text: str) -> Image.Image:
-	canvas = Image.new("RGBA", ADVISOR_SIZE, (0, 0, 0, 0))
+def load_generated_overlay(path: Path, label: str) -> Image.Image:
+	if not path.is_file():
+		raise FileNotFoundError(f"Missing {label} overlay: {path}")
+	with Image.open(path) as image:
+		overlay = image.convert("RGBA")
+	alpha = overlay.getchannel("A")
+	minimum, maximum = alpha.getextrema()
+	if minimum != 0 or maximum == 0:
+		raise ValueError(
+			f"{label} overlay must contain real transparent and visible pixels; "
+			f"alpha extrema were {(minimum, maximum)} for {path}"
+		)
+	visible = sum(1 for value in alpha.getdata() if value > 8)
+	coverage = visible / (overlay.width * overlay.height)
+	if coverage < 0.01 or coverage > 0.92:
+		raise ValueError(
+			f"{label} overlay has implausible visible coverage {coverage:.3f}: {path}"
+		)
+	return overlay
 
-	shadow = Image.new("RGBA", ADVISOR_SIZE, (0, 0, 0, 0))
-	shadow_draw = ImageDraw.Draw(shadow)
-	shadow_draw.rounded_rectangle((3, 3, 54, 65), radius=4, fill=(0, 0, 0, 178))
-	shadow = shadow.filter(ImageFilter.GaussianBlur(2.1))
-	canvas.alpha_composite(shadow)
 
-	outer = vertical_gradient((53, 65), (74, 73, 68, 255), (20, 22, 23, 255))
-	outer_mask = Image.new("L", outer.size, 0)
-	ImageDraw.Draw(outer_mask).rounded_rectangle((0, 0, 52, 64), radius=4, fill=255)
-	outer.putalpha(outer_mask)
-	canvas.alpha_composite(outer, (1, 0))
+def trim_transparent(image: Image.Image, label: str) -> Image.Image:
+	box = image.getchannel("A").getbbox()
+	if box is None:
+		raise ValueError(f"{label} overlay has no visible bounds")
+	return image.crop(box)
 
-	frame_draw = ImageDraw.Draw(canvas)
-	frame_draw.rounded_rectangle((2, 1, 52, 64), radius=4, outline=(144, 132, 108, 230), width=1)
-	frame_draw.rounded_rectangle((4, 3, 50, 62), radius=2, outline=(8, 10, 11, 245), width=2)
 
+def fit_overlay(image: Image.Image, size: tuple[int, int], label: str) -> Image.Image:
+	trimmed = trim_transparent(image, label)
+	contained = ImageOps.contain(trimmed, size, Image.Resampling.LANCZOS)
+	result = Image.new("RGBA", size, (0, 0, 0, 0))
+	result.alpha_composite(
+		contained,
+		((size[0] - contained.width) // 2, (size[1] - contained.height) // 2),
+	)
+	return result
+
+
+def alpha_shadow(layer: Image.Image, opacity: float, blur: float) -> Image.Image:
+	alpha = layer.getchannel("A").point(lambda value: round(value * opacity))
+	shadow = Image.new("RGBA", layer.size, (0, 0, 0, 255))
+	shadow.putalpha(alpha.filter(ImageFilter.GaussianBlur(blur)))
+	return shadow
+
+
+def composite_with_shadow(
+	canvas: Image.Image,
+	layer: Image.Image,
+	position: tuple[int, int],
+	shadow_offset: tuple[int, int],
+	opacity: float,
+	blur: float,
+) -> None:
+	shadow = alpha_shadow(layer, opacity, blur)
+	canvas.alpha_composite(
+		shadow,
+		(position[0] + shadow_offset[0], position[1] + shadow_offset[1]),
+	)
+	canvas.alpha_composite(layer, position)
+
+
+def make_advisor(
+	source_crop: Image.Image,
+	source_kind: str,
+	seed_text: str,
+	frame_overlay: Image.Image,
+	paper_overlay: Image.Image,
+) -> Image.Image:
+	# The portrait panel is an explicit crop/grade only. Its rectangular bounds
+	# sit beneath the generated frame, whose irregular alpha supplies the visible
+	# card silhouette and transparent outer corners.
 	portrait = ImageOps.fit(
 		source_crop,
-		(43, 56),
+		(48, 59),
 		method=Image.Resampling.LANCZOS,
-		centering=(0.5, 0.39),
+		centering=(0.5, 0.38),
 	)
 	portrait = hoi4_finish(portrait, source_kind, seed_text + ":advisor")
-	portrait_mask = Image.new("L", portrait.size, 0)
-	ImageDraw.Draw(portrait_mask).rounded_rectangle((0, 0, 42, 55), radius=1, fill=255)
-	portrait.putalpha(ImageChops.multiply(portrait.getchannel("A"), portrait_mask))
-	canvas.alpha_composite(portrait, (5, 5))
 
-	# The vanilla advisor surface presents the portrait as a dossier card. This
-	# original paper overlay reproduces that UI grammar without copying a vanilla
-	# advisor asset or adding readable/generated text.
-	paper = Image.new("RGBA", (27, 38), (0, 0, 0, 0))
-	paper_shadow = Image.new("RGBA", paper.size, (0, 0, 0, 0))
-	ImageDraw.Draw(paper_shadow).rounded_rectangle((3, 3, 25, 36), radius=1, fill=(0, 0, 0, 155))
-	paper_shadow = paper_shadow.filter(ImageFilter.GaussianBlur(1.2))
-	paper.alpha_composite(paper_shadow)
-	paper_draw = ImageDraw.Draw(paper)
-	paper_draw.polygon(((1, 1), (22, 0), (25, 33), (4, 36)), fill=(220, 207, 171, 255))
-	paper_draw.line(((2, 2), (22, 1), (24, 32)), fill=(245, 235, 207, 220), width=1)
-	for y, width in ((9, 13), (13, 16), (17, 12), (22, 15), (26, 10)):
-		paper_draw.line((7, y, 7 + width, y - 1), fill=(102, 89, 68, 150), width=1)
-	paper_draw.ellipse((7, 28, 13, 34), fill=(112, 45, 36, 205), outline=(61, 34, 28, 220), width=1)
-	paper = paper.rotate(-3.5, resample=Image.Resampling.BICUBIC, expand=False)
-	canvas.alpha_composite(paper, (37, 24))
+	card = Image.new("RGBA", (56, 65), (0, 0, 0, 0))
+	card.alpha_composite(portrait, (3, 3))
+	card.alpha_composite(fit_overlay(frame_overlay, card.size, "frame"))
+	card = card.rotate(
+		-0.85,
+		resample=Image.Resampling.BICUBIC,
+		expand=True,
+		fillcolor=(0, 0, 0, 0),
+	)
 
+	canvas = Image.new("RGBA", ADVISOR_SIZE, (0, 0, 0, 0))
+	card_x = max(0, (ADVISOR_SIZE[0] - card.width) // 2 - 3)
+	card_y = max(0, (ADVISOR_SIZE[1] - card.height) // 2)
+	composite_with_shadow(canvas, card, (card_x, card_y), (2, 2), 0.58, 1.45)
+
+	# The paper, patina, seal, and illegible dossier marks all originate in the
+	# generated overlay. The script only sizes, angles, shadows, and composites it.
+	paper = fit_overlay(paper_overlay, (27, 39), "paper")
+	paper = paper.rotate(
+		-4.25,
+		resample=Image.Resampling.BICUBIC,
+		expand=True,
+		fillcolor=(0, 0, 0, 0),
+	)
+	composite_with_shadow(canvas, paper, (37, 24), (1, 2), 0.50, 1.0)
 	return canvas
 
 
@@ -239,10 +297,24 @@ def parse_args() -> argparse.Namespace:
 		required=True,
 		help="Required head-and-shoulders crop in source pixels",
 	)
-	parser.add_argument("--source-kind", choices=("real", "fictional", "collective"), required=True)
+	parser.add_argument(
+		"--source-kind",
+		choices=("real", "fictional", "collective", "symbolic"),
+		required=True,
+	)
 	parser.add_argument("--review-sheet", type=Path, required=True)
 	parser.add_argument("--metadata", type=Path)
 	parser.add_argument("--reference-dir", type=Path)
+	parser.add_argument(
+		"--advisor-frame-overlay",
+		type=Path,
+		help="Required ImageGen-authored transparent frame overlay for advisor mode",
+	)
+	parser.add_argument(
+		"--advisor-paper-overlay",
+		type=Path,
+		help="Required ImageGen-authored transparent dossier-paper overlay for advisor mode",
+	)
 	return parser.parse_args()
 
 
@@ -258,9 +330,37 @@ def main() -> None:
 	if args.mode == "leader":
 		finished = make_leader(source_crop, args.source_kind, seed_text)
 		reference_dir = args.reference_dir or Path(__file__).resolve().parents[1] / REFERENCE_ROOT / "leaders"
+		overlay_metadata = None
 	else:
-		finished = make_advisor(source_crop, args.source_kind, seed_text)
+		if args.advisor_frame_overlay is None or args.advisor_paper_overlay is None:
+			raise ValueError(
+				"advisor mode requires --advisor-frame-overlay and --advisor-paper-overlay; "
+				"the processor never draws fallback dossier artwork"
+			)
+		frame_overlay = load_generated_overlay(args.advisor_frame_overlay, "frame")
+		paper_overlay = load_generated_overlay(args.advisor_paper_overlay, "paper")
+		finished = make_advisor(
+			source_crop,
+			args.source_kind,
+			seed_text,
+			frame_overlay,
+			paper_overlay,
+		)
 		reference_dir = args.reference_dir or Path(__file__).resolve().parents[1] / REFERENCE_ROOT / "advisors"
+		overlay_metadata = {
+			"frame": {
+				"path": str(args.advisor_frame_overlay),
+				"sha256": sha256_file(args.advisor_frame_overlay),
+				"size": list(frame_overlay.size),
+				"alpha_extrema": list(frame_overlay.getchannel("A").getextrema()),
+			},
+			"paper": {
+				"path": str(args.advisor_paper_overlay),
+				"sha256": sha256_file(args.advisor_paper_overlay),
+				"size": list(paper_overlay.size),
+				"alpha_extrema": list(paper_overlay.getchannel("A").getextrema()),
+			},
+		}
 
 	args.output.parent.mkdir(parents=True, exist_ok=True)
 	finished.save(args.output)
@@ -279,6 +379,14 @@ def main() -> None:
 		"size": list(finished.size),
 		"review_sheet": str(args.review_sheet),
 		"reference_dir": str(reference_dir),
+		"source_sha256": sha256_file(args.source),
+		"generated_overlays": overlay_metadata,
+		"composition_contract": (
+			"crop_grade_angle_alpha_shadow_composite_export_only; "
+			"no programmatically drawn advisor-card artwork"
+			if args.mode == "advisor"
+			else "crop_grade_export_only; no programmatically drawn leader subject, emblem, or institutional scene"
+		),
 		"status": "candidate_requires_visual_approval",
 	}
 	metadata_path.write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8")

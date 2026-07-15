@@ -216,3 +216,23 @@ hash inventory are documented in
 country-content layer by geography ownership. AEX is a vanilla `BEL_flanders`
 overlay and has no standalone Event 006 flag family. No ideology or cosmetic
 flag variants were produced without an approved route mapping.
+
+## 2026-07-15 character portrait replacement
+
+The current portrait source of truth is
+`portrait_regeneration_2026_07_15/manifest.md`. It replaces the generic
+fictional portrait evidence in the earlier northern/western handoffs without
+renaming runtime sprites. The package contains 18 independent official
+ImageGen masters, 18 installed `156x210` leader or commander DDS files, nine
+derived `50x67` commander thumbnails, individual vanilla-reference review
+sheets, actual-runtime DDS decode sheets, exact hashes, prompts, a visual
+acceptance record, and a reproducible guarded builder.
+
+The two user-approved historical portraits remain unchanged and hash-locked:
+
+- `portrait_BAY_rupprecht_of_bavaria.dds`;
+- `portrait_RHI_josef_friedrich_matthes.dds`.
+
+ACX, AEX, and AJX remain readiness-pool art rather than package-readiness
+claims because their current portrait sprites are not registered. AFX, AGX,
+RHI, BAY, SCO, and WLS retain their existing sprite and character wiring.
